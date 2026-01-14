@@ -1001,6 +1001,16 @@ def check_internal_links(output_dir: Path, quiet: bool = False):
     if not quiet:
         print(f"Link check complete: {valid_links}/{total_links} links are valid")
 
+    # Write full list to file (overwrites on each build)
+    link_issues_file = output_dir / "link-issues.txt"
+    with open(link_issues_file, 'w', encoding='utf-8') as f:
+        if issues:
+            f.write(f"Found {len(issues)} link issues:\n\n")
+            for issue in issues:
+                f.write(f"{issue}\n")
+        else:
+            f.write("No link issues found.\n")
+
     if issues:
         # Always print issues, even in quiet mode (these are warnings)
         print(f"Found {len(issues)} link issues:")
@@ -1008,6 +1018,7 @@ def check_internal_links(output_dir: Path, quiet: bool = False):
             print(f"  {issue}")
         if len(issues) > 20:
             print(f"  ... and {len(issues) - 20} more issues")
+        print(f"  Full list: {link_issues_file}")
     elif not quiet:
         print("All internal links are properly formatted and point to existing files!")
 
