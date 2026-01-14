@@ -114,3 +114,19 @@ llm-docs:
 		mkdir -p dist/docs/${VERSION}/$$variant/_static/public; \
 		cp dist/docs/${VERSION}/$$variant/llms-full.txt dist/docs/${VERSION}/$$variant/_static/public/llms-full.txt; \
 	done
+
+update-redirects:
+	@echo "Detecting moved pages from git history..."
+	@if command -v uv >/dev/null 2>&1; then \
+		uv run tools/redirect_generator/detect_moved_pages.py; \
+	else \
+		python3 tools/redirect_generator/detect_moved_pages.py; \
+	fi
+
+set-redirects-checkpoint:
+	@if command -v uv >/dev/null 2>&1; then \
+		uv run tools/redirect_generator/detect_moved_pages.py --set-checkpoint $(COMMIT); \
+	else \
+		python3 tools/redirect_generator/detect_moved_pages.py --set-checkpoint $(COMMIT); \
+	fi
+
