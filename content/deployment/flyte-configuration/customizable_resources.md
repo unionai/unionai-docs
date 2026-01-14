@@ -25,7 +25,7 @@ You can choose to customize these settings along increasing levels of specificit
 - Project, Domain, and Workflow name
 - Project, Domain, Workflow name and Launch plan name
 
-See [Project and domains](../../user-guide/development-cycle/projects-and-domains) for general information about those concepts.
+Projects and domains are the primary organizational concepts in Flyte for grouping workflows and managing access control.
 
 The following section will show you how to configure the settings along these dimensions.
 

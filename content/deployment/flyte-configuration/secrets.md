@@ -20,8 +20,7 @@ running container.
 ### Prerequisites
 
 - Install [kubectl](https://kubernetes.io/docs/tasks/tools/).
-- Have access to a Flyte cluster, for e.g. with `flytectl demo start` as
-  described [here](../../user-guide/development-cycle/running-in-a-local-cluster).
+- Have access to a Flyte cluster, for example using `flytectl demo start`.
 
 The first step to using secrets in Flyte is to create one on the backend.
 By default, Flyte uses the K8s-native secrets manager, which we'll use in this
