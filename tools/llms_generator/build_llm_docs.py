@@ -13,8 +13,9 @@ from pathlib import Path
 from typing import Set, List
 
 class LLMDocBuilder:
-    def __init__(self, base_path: Path):
+    def __init__(self, base_path: Path, quiet: bool = False):
         self.base_path = base_path
+        self.quiet = quiet
         self.visited_files: Set[str] = set()
         self.title_lookup: dict[str, str] = {}  # Maps file paths to hierarchical titles
         self.version = self._detect_version()
@@ -42,7 +43,8 @@ class LLMDocBuilder:
 
     def run_make_dist(self) -> bool:
         """Run make dist to regenerate all documentation variants."""
-        print("🔧 Running 'make dist' to regenerate documentation...")
+        if not self.quiet:
+            print("Running 'make dist' to regenerate documentation...")
         try:
             result = subprocess.run(['make', 'dist'],
                                   cwd=self.base_path,
@@ -50,13 +52,14 @@ class LLMDocBuilder:
                                   text=True,
                                   timeout=300)
             if result.returncode == 0:
-                print("✅ Successfully regenerated documentation")
+                if not self.quiet:
+                    print("Successfully regenerated documentation")
                 return True
             else:
-                print(f"❌ Make dist failed with return code {result.returncode}")
+                print(f"Error: Make dist failed with return code {result.returncode}")
                 return False
         except Exception as e:
-            print(f"❌ Error running make dist: {e}")
+            print(f"Error running make dist: {e}")
             return False
 
     def read_file_content(self, file_path: Path) -> str:
@@ -284,18 +287,21 @@ class LLMDocBuilder:
         md_dir = self.base_path / 'dist' / 'docs' / version / variant / 'md'
 
         if not md_dir.exists():
-            print(f"❌ Directory not found: {md_dir}")
+            print(f"Error: Directory not found: {md_dir}")
             return ""
 
-        print(f"📖 Building consolidated document for {variant}")
+        if not self.quiet:
+            print(f"Building consolidated document for {variant}")
 
         # First pass: Build lookup tables for all pages
-        print("  📝 First pass: Building lookup tables...")
+        if not self.quiet:
+            print("  First pass: Building lookup tables...")
         self.visited_files.clear()  # Reset for first pass
         self.build_lookup_tables(md_dir, 'index.md', md_dir, [])
 
         # Second pass: Process content with lookup tables populated
-        print("  📄 Second pass: Processing content...")
+        if not self.quiet:
+            print("  Second pass: Processing content...")
         consolidated_content = []
         self.process_page_depth_first(md_dir, 'index.md', consolidated_content, md_dir, [], variant, version)
 
@@ -319,7 +325,8 @@ class LLMDocBuilder:
                 file_path = base_dir / relative_path / 'index.md'
                 relative_path = f"{relative_path}/index.md"
             else:
-                print(f"⚠️  Could not find file for: {relative_path}")
+                if not self.quiet:
+                    print(f"Warning: Could not find file for: {relative_path}")
                 return
         else:
             file_path = base_dir / relative_path
@@ -331,7 +338,8 @@ class LLMDocBuilder:
         self.visited_files.add(canonical_path)
 
         if not file_path.exists():
-            print(f"⚠️  File not found: {file_path}")
+            if not self.quiet:
+                print(f"Warning: File not found: {file_path}")
             return
 
         # Get relative path from md root for the lookup key
@@ -393,13 +401,15 @@ class LLMDocBuilder:
                 file_path = base_dir / relative_path / 'index.md'
                 relative_path = f"{relative_path}/index.md"
             else:
-                print(f"⚠️  Could not find file for: {relative_path}")
+                if not self.quiet:
+                    print(f"Warning: Could not find file for: {relative_path}")
                 return
         else:
             file_path = base_dir / relative_path
 
         if not file_path.exists():
-            print(f"⚠️  File not found: {file_path}")
+            if not self.quiet:
+                print(f"Warning: File not found: {file_path}")
             return
 
         # Get relative path from md root for the delimiter
@@ -408,7 +418,8 @@ class LLMDocBuilder:
         except ValueError:
             relative_from_md = str(file_path)
 
-        print(f"  📄 Processing: {relative_from_md}")
+        if not self.quiet:
+            print(f"  Processing: {relative_from_md}")
 
         # Read the raw content
         raw_content = self.read_file_content(file_path)
@@ -442,7 +453,8 @@ class LLMDocBuilder:
 
         # Process subpages depth-first
         for link in subpage_links:
-            print(f"    🔗 Following: {link}")
+            if not self.quiet:
+                print(f"    Following: {link}")
             # Resolve relative to the current file's directory
             current_dir = file_path.parent
             self.process_page_depth_first(current_dir, link, consolidated, md_root, current_hierarchy, variant, version)
@@ -518,7 +530,8 @@ This consolidated documentation is ideal for:
 
         with open(root_file, 'w', encoding='utf-8') as f:
             f.write(root_content)
-        print(f"✅ Created root discovery: {root_file}")
+        if not self.quiet:
+            print(f"Created root discovery: {root_file}")
 
         # Version level discovery file
         version_content = self.create_version_discovery_content(variants, self.version)
@@ -526,7 +539,8 @@ This consolidated documentation is ideal for:
 
         with open(version_file, 'w', encoding='utf-8') as f:
             f.write(version_content)
-        print(f"✅ Created {self.version} discovery: {version_file}")
+        if not self.quiet:
+            print(f"Created {self.version} discovery: {version_file}")
 
     def create_root_discovery_content(self, variants: List[str]) -> str:
         """Create content for the root-level discovery file."""
@@ -644,20 +658,28 @@ GET /docs/{version}/byoc/llms.txt
 
 def main():
     import sys
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Build LLM-optimized documentation')
+    parser.add_argument('--no-make-dist', action='store_true', help='Skip running make dist')
+    parser.add_argument('--quiet', '-q', action='store_true', help='Suppress progress output')
+    args = parser.parse_args()
+
     base_path = Path.cwd()
-    builder = LLMDocBuilder(base_path)
+    builder = LLMDocBuilder(base_path, quiet=args.quiet)
 
     # Step 1: Regenerate documentation (skip if --no-make-dist is passed)
-    if '--no-make-dist' not in sys.argv and not builder.run_make_dist():
+    if not args.no_make_dist and not builder.run_make_dist():
         return 1
 
     # Step 2: Find variants
     variants = builder.find_variants()
     if not variants:
-        print("❌ No variants found")
+        print("Error: No variants found")
         return 1
 
-    print(f"📋 Found variants: {variants}")
+    if not args.quiet:
+        print(f"Found variants: {variants}")
 
     # Step 3: Build consolidated documents
     for variant in variants:
@@ -670,8 +692,9 @@ def main():
             with open(output_file, 'w', encoding='utf-8') as f:
                 f.write(consolidated_content)
 
-            file_size = len(consolidated_content)
-            print(f"✅ Saved: {output_file} ({file_size:,} characters)")
+            if not args.quiet:
+                file_size = len(consolidated_content)
+                print(f"Saved: {output_file} ({file_size:,} characters)")
 
             # Create redirect llms.txt file
             redirect_file = base_path / 'dist' / 'docs' / builder.version / variant / 'llms.txt'
@@ -680,9 +703,10 @@ def main():
             with open(redirect_file, 'w', encoding='utf-8') as f:
                 f.write(redirect_content)
 
-            print(f"✅ Created redirect: {redirect_file}")
+            if not args.quiet:
+                print(f"Created redirect: {redirect_file}")
         else:
-            print(f"❌ No content generated for {variant}")
+            print(f"Error: No content generated for {variant}")
 
     # Step 4: Create hierarchical discovery files
     builder.create_discovery_files(base_path, variants)

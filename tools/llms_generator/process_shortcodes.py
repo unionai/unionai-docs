@@ -657,8 +657,10 @@ def main():
     parser.add_argument('--input-dir', required=True, help='Input directory with markdown files')
     parser.add_argument('--output-dir', required=True, help='Output directory for processed files')
     parser.add_argument('--base-path', help='Base path for resolving file references', default='')
+    parser.add_argument('--quiet', '-q', action='store_true', help='Suppress progress output')
 
     args = parser.parse_args()
+    quiet = args.quiet
 
     input_dir = Path(args.input_dir)
     output_dir = Path(args.output_dir)
@@ -693,7 +695,8 @@ def main():
         # Create output directory if needed
         output_file.parent.mkdir(parents=True, exist_ok=True)
 
-        print(f"Processing: {rel_path} -> {output_rel_path}")
+        if not quiet:
+            print(f"Processing: {rel_path} -> {output_rel_path}")
 
         try:
             processed_content = processor.process_file(md_file)
@@ -707,7 +710,8 @@ def main():
     # Create root index.md if it doesn't exist
     root_index = output_dir / 'index.md'
     if not root_index.exists():
-        print("Creating root index.md...")
+        if not quiet:
+            print("Creating root index.md...")
 
         # Get top-level directories to list in root navigation
         top_level_dirs = []
@@ -761,25 +765,28 @@ Welcome to the documentation.
 
     # Restructure single pages (directories with only index.txt)
     # to be named files instead of directory/index.txt
-    restructure_single_pages(output_dir)
+    restructure_single_pages(output_dir, quiet)
 
     # Now that the final structure is in place, fix all internal links
-    print("Converting internal links to proper .md references...")
-    fix_internal_links_post_processing(output_dir, args.variant)
+    if not quiet:
+        print("Converting internal links to proper .md references...")
+    fix_internal_links_post_processing(output_dir, args.variant, quiet)
 
     # Check that all internal links have been properly converted
-    check_internal_links(output_dir)
+    check_internal_links(output_dir, quiet)
 
-    print(f"Processing complete. Output in: {output_dir}")
+    if not quiet:
+        print(f"Processing complete. Output in: {output_dir}")
     return 0
 
 
-def restructure_single_pages(output_dir: Path):
+def restructure_single_pages(output_dir: Path, quiet: bool = False):
     """
     Restructure single pages from {dir}/index.md to {parent}/{dirname}.md
     for directories that only contain index.md (no subdirectories or other files).
     """
-    print("Restructuring single pages...")
+    if not quiet:
+        print("Restructuring single pages...")
 
     # Find all directories that contain only index.md
     single_page_dirs = []
@@ -802,7 +809,8 @@ def restructure_single_pages(output_dir: Path):
         new_filename = f"{dir_path.name}.md"
         new_file_path = parent_dir / new_filename
 
-        print(f"  Moving {index_file.relative_to(output_dir)} -> {new_file_path.relative_to(output_dir)}")
+        if not quiet:
+            print(f"  Moving {index_file.relative_to(output_dir)} -> {new_file_path.relative_to(output_dir)}")
 
         try:
             # Move the index.md to the new location
@@ -815,7 +823,7 @@ def restructure_single_pages(output_dir: Path):
             print(f"    Error restructuring {dir_path}: {e}")
 
 
-def fix_internal_links_post_processing(output_dir: Path, variant: str):
+def fix_internal_links_post_processing(output_dir: Path, variant: str, quiet: bool = False):
     """
     Fix all internal links after the final file structure is in place.
     """
@@ -918,14 +926,16 @@ def fix_internal_links_post_processing(output_dir: Path, variant: str):
         except Exception as e:
             print(f"Error fixing links in {md_file.relative_to(output_dir)}: {e}")
 
-    print(f"Fixed {fixed_count} internal links across {total_files} files")
+    if not quiet:
+        print(f"Fixed {fixed_count} internal links across {total_files} files")
 
 
-def check_internal_links(output_dir: Path):
+def check_internal_links(output_dir: Path, quiet: bool = False):
     """
     Check that all internal links in the processed markdown files point to actual files.
     """
-    print("Checking internal links...")
+    if not quiet:
+        print("Checking internal links...")
 
     issues = []
     total_links = 0
@@ -988,16 +998,18 @@ def check_internal_links(output_dir: Path):
             issues.append(f"Error reading {md_file.relative_to(output_dir)}: {e}")
 
     # Report results
-    print(f"Link check complete: {valid_links}/{total_links} links are valid")
+    if not quiet:
+        print(f"Link check complete: {valid_links}/{total_links} links are valid")
 
     if issues:
+        # Always print issues, even in quiet mode (these are warnings)
         print(f"Found {len(issues)} link issues:")
         for issue in issues[:20]:  # Show first 20 issues
             print(f"  {issue}")
         if len(issues) > 20:
             print(f"  ... and {len(issues) - 20} more issues")
-    else:
-        print("✅ All internal links are properly formatted and point to existing files!")
+    elif not quiet:
+        print("All internal links are properly formatted and point to existing files!")
 
 
 if __name__ == '__main__':
