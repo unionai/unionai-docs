@@ -109,3 +109,7 @@ When adding documentation:
 2. Use `{{< variant ... >}}` blocks for variant-specific content
 3. Use `{{< key ... >}}` for product names that vary by variant
 4. Link to other docs with `{{< docs_home {variant} >}}`, not absolute URLs
+
+## Active Projects
+
+- **Visual QA System** (`tools/visual_qa/`): Automated screenshot capture and Claude Vision analysis for detecting rendering issues. See `tools/visual_qa/PROJECT_STATUS.md` for current status, next steps, and commands.

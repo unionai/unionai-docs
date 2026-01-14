@@ -1,0 +1,114 @@
+# Visual QA Page Configuration
+# Defines key pages to check for each documentation variant
+
+variants:
+  flyte:
+    key_pages:
+      # Homepage
+      - /
+      # User Guide
+      - /user-guide/
+      - /user-guide/getting-started/
+      - /user-guide/getting-started/local-setup/
+      - /user-guide/getting-started/basic-concepts/
+      - /user-guide/flyte-2/
+      - /user-guide/task-programming/
+      - /user-guide/task-programming/container-tasks/
+      - /user-guide/task-configuration/
+      - /user-guide/task-configuration/container-images/
+      - /user-guide/task-configuration/resources/
+      - /user-guide/run-scaling/
+      - /user-guide/run-scaling/scale-your-workflows/
+      # API Reference
+      - /api-reference/
+      - /api-reference/flyte-sdk/
+      - /api-reference/flyte-cli/
+      # Tutorials
+      - /tutorials/
+      - /tutorials/hpo/
+      - /tutorials/code-agent/
+      # Integrations
+      - /integrations/
+      - /integrations/connectors/
+      # Community
+      - /community/
+      - /community/contributing-docs/
+      # 404 page
+      - /404/
+
+  byoc:
+    key_pages:
+      # Homepage
+      - /
+      # User Guide
+      - /user-guide/
+      - /user-guide/getting-started/
+      - /user-guide/getting-started/local-setup/
+      - /user-guide/getting-started/cloud-setup/
+      - /user-guide/flyte-2/
+      - /user-guide/task-programming/
+      - /user-guide/task-programming/python-tasks/
+      - /user-guide/task-configuration/
+      - /user-guide/task-configuration/container-images/
+      - /user-guide/task-configuration/resources/
+      - /user-guide/running-scaling/
+      - /user-guide/running-scaling/workflows/
+      # API Reference
+      - /api-reference/
+      - /api-reference/flyte-sdk/
+      - /api-reference/flyte-cli/
+      # Tutorials
+      - /tutorials/
+      - /tutorials/hpo/
+      - /tutorials/code-agent/
+      # Deployment (BYOC-specific)
+      - /deployment/
+      - /deployment/data-plane-setup-on-aws/
+      - /deployment/data-plane-setup-on-gcp/
+      # Integrations
+      - /integrations/
+      - /integrations/connectors/
+      # Community
+      - /community/
+      # 404 page
+      - /404/
+
+  selfmanaged:
+    key_pages:
+      # Homepage
+      - /
+      # User Guide
+      - /user-guide/
+      - /user-guide/getting-started/
+      - /user-guide/getting-started/local-setup/
+      - /user-guide/getting-started/cloud-setup/
+      - /user-guide/flyte-2/
+      - /user-guide/task-programming/
+      - /user-guide/task-programming/python-tasks/
+      - /user-guide/task-configuration/
+      - /user-guide/task-configuration/container-images/
+      - /user-guide/task-configuration/resources/
+      - /user-guide/running-scaling/
+      - /user-guide/running-scaling/workflows/
+      # API Reference
+      - /api-reference/
+      - /api-reference/flyte-sdk/
+      - /api-reference/flyte-cli/
+      # Tutorials
+      - /tutorials/
+      - /tutorials/hpo/
+      - /tutorials/code-agent/
+      # Deployment (selfmanaged-specific)
+      - /deployment/
+      # Integrations
+      - /integrations/
+      - /integrations/connectors/
+      # Community
+      - /community/
+      # 404 page
+      - /404/
+
+viewports:
+  desktop:
+    width: 1920
+    height: 1080

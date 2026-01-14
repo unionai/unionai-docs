@@ -1,0 +1,108 @@
+name: Visual QA Check
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      variant:
+        description: 'Variant to test (leave empty for all)'
+        required: false
+        type: choice
+        options:
+          - ''
+          - flyte
+          - byoc
+          - selfmanaged
+      fail_on:
+        description: 'Severity level to fail on'
+        required: false
+        default: 'critical'
+        type: choice
+        options:
+          - critical
+          - major
+          - minor
+
+jobs:
+  visual-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.145.0'
+          extended: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: |
+          pip install playwright anthropic pyyaml
+          playwright install chromium
+
+      - name: Build documentation
+        run: make dist
+
+      - name: Install Caddy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y debian-keyring debian-archive-keyring apt-transport-https curl
+          curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+          curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+          sudo apt-get update
+          sudo apt-get install caddy
+
+      - name: Start documentation server
+        run: |
+          cd dist && caddy file-server --listen :9000 &
+          sleep 5
+          curl -s http://localhost:9000/docs/v2/flyte/ > /dev/null && echo "Server is up"
+
+      - name: Run Visual QA
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          VARIANT_ARG=""
+          if [ -n "${{ inputs.variant }}" ]; then
+            VARIANT_ARG="--variant ${{ inputs.variant }}"
+          fi
+
+          FAIL_ON="${{ inputs.fail_on }}"
+          if [ -z "$FAIL_ON" ]; then
+            FAIL_ON="critical"
+          fi
+
+          python -m tools.visual_qa.main \
+            --base-url http://localhost:9000 \
+            --config tools/visual_qa/pages.yaml \
+            --output-dir /tmp/visual-qa-results \
+            --fail-on "$FAIL_ON" \
+            $VARIANT_ARG
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-qa-screenshots
+          path: /tmp/visual-qa-results/screenshots/
+          retention-days: 7
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-qa-report
+          path: /tmp/visual-qa-results/report.json
+          retention-days: 7
