@@ -949,7 +949,13 @@ def check_internal_links(output_dir: Path, quiet: bool = False):
             with open(md_file, 'r', encoding='utf-8') as f:
                 content = f.read()
 
-            for match in re.finditer(link_pattern, content):
+            # Remove code blocks before checking links (links in code are examples, not real links)
+            # Remove fenced code blocks (```...```)
+            content_no_code = re.sub(r'```[\s\S]*?```', '', content)
+            # Remove inline code (`...`)
+            content_no_code = re.sub(r'`[^`]+`', '', content_no_code)
+
+            for match in re.finditer(link_pattern, content_no_code):
                 link_text, link_url = match.groups()
                 total_links += 1
 
@@ -975,10 +981,21 @@ def check_internal_links(output_dir: Path, quiet: bool = False):
                 current_dir = md_file.parent
                 try:
                     if base_url.startswith('/'):
-                        # Absolute path - this shouldn't happen in our processed files
+                        # Skip known valid absolute paths:
+                        # - /_static/ paths (images, downloads served by web server)
+                        # - /docs/v{version}/{variant}/ paths (cross-variant links)
+                        if base_url.startswith('/_static/') or re.match(r'^/docs/v\d+/', base_url):
+                            valid_links += 1
+                            continue
+                        # Other absolute paths are likely issues
                         issues.append(f"{md_file.relative_to(output_dir)}: Absolute path link '{link_url}'")
                         continue
                     else:
+                        # Skip relative paths to _static (images served by web server)
+                        if '/_static/' in base_url or base_url.startswith('../_static/') or '/_static/' in base_url:
+                            valid_links += 1
+                            continue
+
                         # Relative path from current file
                         target_path = (current_dir / base_url).resolve()
 

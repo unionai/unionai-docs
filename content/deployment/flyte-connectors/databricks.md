@@ -18,7 +18,7 @@ You can spin up a demo cluster using the following command:
 flytectl demo start
 ```
 
-Or install Flyte using the [flyte-binary helm chart](#deployment-deployment-cloud-simple).
+Or install Flyte using the [flyte-binary helm chart](https://github.com/flyteorg/flyte/tree/master/charts/flyte-binary).
 
 ### Flyte core
 

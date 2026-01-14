@@ -29,7 +29,7 @@ By the end of this step, you should have deployed an MMCloud OpCenter.
     flytectl demo start
     ```
 
-    Or install Flyte using the [flyte-binary helm chart](deployment-deployment-cloud-simple).
+    Or install Flyte using the [flyte-binary helm chart](https://github.com/flyteorg/flyte/tree/master/charts/flyte-binary).
 
 ### flyte-core
 

@@ -10,7 +10,7 @@ sidebar_expanded: true
 Components of your {{< key product_name >}} data plane will need to connect to and communicate with other resources in your cloud environment such as [AWS S3 storage](./enabling-aws-s3), [AWS Elastic Container Registry](./enabling-aws-ecr), and so forth.
 
 > [!NOTE] Secret management
-> We strongly recommend using the [{{< key product_name >}} secrets manager](../../user-guide/development-cycle/managing-secrets) to manage secrets rather than AWS Secrets Manager. If your organization must use AWS Secrets Manager, however, see [Enabling AWS Secrets Manager](./enabling-aws-secrets-manager).
+> We strongly recommend using the [{{< key product_name >}} secrets manager](../../user-guide/task-configuration/secrets) to manage secrets rather than AWS Secrets Manager. If your organization must use AWS Secrets Manager, however, see [Enabling AWS Secrets Manager](./enabling-aws-secrets-manager).
 
 As much as possible, access to the resources you need will be pre-configured by the {{< key product_name >}} team when they set up your data plane.
 For example, if you want your task code to have access to a specific S3 bucket or database, this can be pre-configured.
@@ -60,7 +60,7 @@ Global access is recommended for most use cases since it is simpler, but if you 
 
 > [!NOTE] Relationship with RBAC
 > The permissions being discussed here are attached to a project and domain.
-> This is independent of the permissions granted to users and machine applications through {{< key product_name >}}'s role-based access control (see [User management](../../user-guide/administration/user-management)).
+> This is independent of the permissions granted to users and machine applications through {{< key product_name >}}'s role-based access control.
 > But, the two types of permissions are related.
 >
 > For example, for a user (or machine application) to have read access to an S3 bucket, two things are required:

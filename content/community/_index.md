@@ -34,18 +34,18 @@ Union.ai is a commercial product built on top of the open source Flyte project.
 Since the success of Flyte is essential to the success of Union.ai,
 the company is dedicated to building and expanding the Flyte open source project and community.
 
-For information on how to get involved and how to keep in touch, see the [Flyte variant of this page]({{< docs_home flyte v2 >}}/community).
+For information on how to get involved and how to keep in touch, see the [Flyte variant of this page]({{< docs_home flyte v2 >}}community).
 
 {{< /markdown >}}
 {{< /variant >}}
 
 ## Contributing to documentation
 
-Union AI maintains and hosts both Flyte and Union documentation at [www.union.ai/docs]({{< docs_home root v2 >}}).
+Union AI maintains and hosts both Flyte and Union documentation at www.union.ai/docs.
 The two sets of documentation are deeply integrated, as the Union product is built on top of Flyte.
 To better maintain both sets of docs, they are hosted in the same repository (but rendered so that you can choose to view one or the other).
 
 Both the Flyte and Union documentation are open source.
 Flyte community members and Union customers are both welcome to contribute to the documentation.
 
-If you are interested, see [Contributing documentation and examples](./contributing-docs/_index).
+If you are interested, see [Contributing documentation and examples](./contributing-docs/).
