@@ -1,0 +1,77 @@
+name: Search Audit
+
+on:
+  # Daily schedule
+  schedule:
+    - cron: '0 6 * * *'  # 6 AM UTC daily
+
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      variant:
+        description: 'Variant to test'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - flyte
+          - byoc
+          - selfmanaged
+
+  # After documentation deployments (if you have a deploy workflow)
+  # workflow_run:
+  #   workflows: ["Deploy Documentation"]
+  #   types:
+  #     - completed
+
+jobs:
+  search-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install algoliasearch pyyaml
+
+      - name: Build documentation
+        run: make dist
+
+      - name: Run search audit
+        id: audit
+        env:
+          VARIANT: ${{ github.event.inputs.variant || 'all' }}
+        run: |
+          python -m tools.search_audit \
+            --variant "$VARIANT" \
+            --output search-audit-report.json \
+            --github-summary \
+            --no-fail
+
+      - name: Check for failures
+        run: |
+          # Check if there were failures in the report
+          if grep -q '"overall_status": "fail"' search-audit-report.json 2>/dev/null; then
+            echo "Search audit found issues - see report for details"
+            # Uncomment to fail the workflow on issues:
+            # exit 1
+          fi
+
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: search-audit-report
+          path: search-audit-report.json
+          retention-days: 30

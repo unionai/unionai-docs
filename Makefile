@@ -4,7 +4,7 @@ PREFIX := $(if $(VERSION),docs/$(VERSION),docs)
 PORT := 9000
 BUILD := $(shell date +%s)
 
-.PHONY: all dist variant dev update-examples sync-examples llm-docs
+.PHONY: all dist variant dev update-examples sync-examples llm-docs search-audit
 
 all: usage
 
@@ -72,6 +72,14 @@ check-jupyter:
 
 check-images:
 	./scripts/check_images.sh
+
+search-audit:
+	@echo "Running search audit..."
+	@if command -v uv >/dev/null 2>&1; then \
+		uv run python -m tools.search_audit --variant all; \
+	else \
+		python3 -m tools.search_audit --variant all; \
+	fi
 
 validate-urls:
 	@echo "Validating URLs across all variants..."

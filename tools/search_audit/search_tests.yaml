@@ -1,0 +1,164 @@
+# Search Audit Test Configuration
+# Defines curated relevance tests and auto-generation settings
+
+schema_version: "1.0"
+
+# Algolia connection (matches hugo.toml)
+algolia:
+  app_id: "ZK72K15QRI"
+  search_key: "59e5451a3db8540ee70dc8dd04fe6287"
+  index_name: "union"
+
+# Default settings
+defaults:
+  version: "v2"
+  hits_per_page: 20
+
+# Performance thresholds
+performance:
+  max_response_time_ms: 500
+  warn_response_time_ms: 200
+
+# Curated relevance tests - key queries with expected results
+relevance_tests:
+  # Core concepts
+  - name: "Core: task programming"
+    query: "task"
+    expected_urls:
+      - url: "/user-guide/task-programming/"
+        position_range: [1, 5]
+    tags: ["core"]
+
+  - name: "Core: workflow"
+    query: "workflow"
+    expected_urls:
+      - url: "/user-guide/run-scaling/"
+        position_range: [1, 5]
+    tags: ["core"]
+
+  - name: "Getting started"
+    query: "getting started"
+    expected_urls:
+      - url: "/user-guide/getting-started/"
+        position_range: [1, 3]
+    tags: ["onboarding"]
+
+  - name: "Local setup"
+    query: "local setup"
+    expected_urls:
+      - url: "/user-guide/getting-started/local-setup/"
+        position_range: [1, 3]
+    tags: ["onboarding"]
+
+  # Configuration
+  - name: "Container images"
+    query: "container image"
+    expected_urls:
+      - url: "/user-guide/task-configuration/container-images/"
+        position_range: [1, 5]
+    tags: ["configuration"]
+
+  - name: "Resources configuration"
+    query: "cpu memory resources"
+    expected_urls:
+      - url: "/user-guide/task-configuration/resources/"
+        position_range: [1, 5]
+    tags: ["configuration"]
+
+  - name: "Caching"
+    query: "cache"
+    expected_urls:
+      - url: "/user-guide/task-configuration/caching/"
+        position_range: [1, 5]
+    tags: ["configuration"]
+
+  - name: "Secrets"
+    query: "secrets"
+    expected_urls:
+      - url: "/user-guide/task-configuration/secrets/"
+        position_range: [1, 5]
+    tags: ["configuration"]
+
+  # API
+  - name: "SDK reference"
+    query: "flyte sdk"
+    expected_urls:
+      - url: "/api-reference/flyte-sdk/"
+        position_range: [1, 5]
+    tags: ["api"]
+
+  - name: "CLI reference"
+    query: "flyte cli"
+    expected_urls:
+      - url: "/api-reference/flyte-cli/"
+        position_range: [1, 5]
+    tags: ["api"]
+
+  # Tutorials
+  - name: "Tutorials landing"
+    query: "tutorials"
+    expected_urls:
+      - url: "/tutorials/"
+        position_range: [1, 3]
+    tags: ["tutorials"]
+
+  - name: "HPO tutorial"
+    query: "hyperparameter optimization"
+    expected_urls:
+      - url: "/tutorials/hpo/"
+        position_range: [1, 5]
+    tags: ["tutorials"]
+
+# Variant-specific tests
+variant_tests:
+  flyte:
+    - name: "Flyte deployment"
+      query: "flyte deployment"
+      expected_urls:
+        - url: "/deployment/"
+          position_range: [1, 5]
+
+  byoc:
+    - name: "BYOC AWS setup"
+      query: "aws data plane"
+      expected_urls:
+        - url: "/deployment/data-plane-setup-on-aws/"
+          position_range: [1, 5]
+
+    - name: "BYOC GCP setup"
+      query: "gcp data plane"
+      expected_urls:
+        - url: "/deployment/data-plane-setup-on-gcp/"
+          position_range: [1, 5]
+
+  selfmanaged:
+    - name: "Self-managed deployment"
+      query: "self managed deployment"
+      expected_urls:
+        - url: "/deployment/"
+          position_range: [1, 5]
+
+# Queries that should return results (zero-result detection)
+zero_result_checks:
+  - query: "workflow orchestration"
+  - query: "python sdk"
+  - query: "data pipeline"
+  - query: "machine learning"
+  - query: "container task"
+  - query: "async execution"
+  - query: "retry policy"
+  - query: "environment variables"
+
+# Auto-coverage generation settings
+auto_coverage:
+  enabled: true
+  # Maximum position where page should appear when searching its title
+  max_expected_position: 5
+  # Skip these URL patterns
+  skip_patterns:
+    - "/_index"
+    - "/404"
+    - "/categories/"
+    - "/tags/"
+  # Limit auto-generated tests per variant (for performance)
+  max_tests_per_variant: 50
