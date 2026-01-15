@@ -267,7 +267,8 @@ class LLMDocBuilder:
     def title_to_anchor(self, title: str) -> str:
         """Convert heading title to URL anchor format."""
         # Convert to lowercase, replace spaces with hyphens, remove special chars
-        anchor = re.sub(r'[^a-zA-Z0-9\s-]', '', title)
+        # Keep underscores as Hugo preserves them in anchors
+        anchor = re.sub(r'[^a-zA-Z0-9\s_-]', '', title)
         anchor = re.sub(r'\s+', '-', anchor.strip().lower())
         return anchor
 
