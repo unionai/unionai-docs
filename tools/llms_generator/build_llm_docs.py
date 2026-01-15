@@ -266,11 +266,13 @@ class LLMDocBuilder:
         return anchor_map
 
     def title_to_anchor(self, title: str) -> str:
-        """Convert heading title to URL anchor format."""
-        # Convert to lowercase, replace spaces with hyphens, remove special chars
-        # Keep underscores as Hugo preserves them in anchors
-        anchor = re.sub(r'[^a-zA-Z0-9\s_-]', '', title)
-        anchor = re.sub(r'\s+', '-', anchor.strip().lower())
+        """Convert heading title to URL anchor format matching Hugo's behavior."""
+        anchor = title.lower()
+        # Remove special chars except alphanumeric, spaces, underscores, hyphens
+        # Hugo removes chars like () but keeps spaces which become hyphens
+        anchor = re.sub(r'[^a-zA-Z0-9\s_-]', '', anchor)
+        # Replace whitespace with hyphens (each space becomes one hyphen)
+        anchor = re.sub(r'\s', '-', anchor.strip())
         return anchor
 
     def extract_subpage_links(self, content: str) -> List[str]:
