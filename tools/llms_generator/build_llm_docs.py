@@ -19,6 +19,8 @@ class LLMDocBuilder:
         self.visited_files: Set[str] = set()
         self.title_lookup: dict[str, str] = {}  # Maps file paths to hierarchical titles
         self.version = self._detect_version()
+        self.resolution_issues: List[dict] = []  # Track failed link resolutions
+        self.current_source_file: str = ""  # Track current file being processed
 
     def _detect_version(self) -> str:
         """Detect version from environment or makefile.inc."""
@@ -143,11 +145,23 @@ class LLMDocBuilder:
             return self.strip_common_prefix(title)
 
         # Fallback: use current hierarchy + link text (also strip prefix)
+        # Track this as a resolution failure
         if current_hierarchy:
             full_title = f"{' > '.join(current_hierarchy)} > {link_text}"
-            return self.strip_common_prefix(full_title)
+            fallback_title = self.strip_common_prefix(full_title)
+        else:
+            fallback_title = link_text
 
-        return link_text
+        # Record the resolution failure
+        self.resolution_issues.append({
+            'source_file': self.current_source_file,
+            'link_url': url,
+            'link_text': link_text,
+            'resolved_path': target_path,
+            'fallback_title': fallback_title,
+        })
+
+        return fallback_title
 
     def strip_common_prefix(self, title: str) -> str:
         """Remove 'Documentation > {variant}' prefix from hierarchical titles."""
@@ -290,6 +304,10 @@ class LLMDocBuilder:
             print(f"Error: Directory not found: {md_dir}")
             return ""
 
+        # Reset state for this variant
+        self.resolution_issues.clear()
+        self.current_source_file = ""
+
         if not self.quiet:
             print(f"Building consolidated document for {variant}")
 
@@ -306,6 +324,22 @@ class LLMDocBuilder:
         self.process_page_depth_first(md_dir, 'index.md', consolidated_content, md_dir, [], variant, version)
 
         return '\n'.join(consolidated_content)
+
+    def write_resolution_report(self, variant: str, version: str = None) -> Path:
+        """Write a report of link resolution issues to a file."""
+        version = version or self.version
+        report_file = self.base_path / 'dist' / 'docs' / version / variant / 'link-issues.txt'
+
+        with open(report_file, 'w', encoding='utf-8') as f:
+            if self.resolution_issues:
+                f.write(f"Found {len(self.resolution_issues)} link resolution issues:\n\n")
+                for issue in self.resolution_issues:
+                    f.write(f"{issue['source_file']}: Link [{issue['link_text']}]({issue['link_url']}) -> "
+                           f"could not resolve, used fallback: \"{issue['fallback_title']}\"\n")
+            else:
+                f.write("No link resolution issues found.\n")
+
+        return report_file
 
     def build_lookup_tables(self, base_dir: Path, relative_path: str, md_root: Path, hierarchy: List[str] = None):
         """Build lookup tables for all pages without processing content."""
@@ -420,6 +454,9 @@ class LLMDocBuilder:
 
         if not self.quiet:
             print(f"  Processing: {relative_from_md}")
+
+        # Track current source file for resolution issue reporting
+        self.current_source_file = relative_from_md
 
         # Read the raw content
         raw_content = self.read_file_content(file_path)
@@ -705,6 +742,19 @@ def main():
 
             if not args.quiet:
                 print(f"Created redirect: {redirect_file}")
+
+            # Write resolution issues report
+            report_file = builder.write_resolution_report(variant)
+            issue_count = len(builder.resolution_issues)
+            if issue_count > 0:
+                print(f"Found {issue_count} link resolution issues for {variant}:")
+                for issue in builder.resolution_issues[:10]:  # Show first 10
+                    print(f"  {issue['source_file']}: [{issue['link_text']}]({issue['link_url']})")
+                if issue_count > 10:
+                    print(f"  ... and {issue_count - 10} more issues")
+                print(f"  Full list: {report_file}")
+            elif not args.quiet:
+                print(f"No link resolution issues for {variant}")
         else:
             print(f"Error: No content generated for {variant}")
 
