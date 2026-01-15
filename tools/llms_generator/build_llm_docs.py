@@ -197,17 +197,18 @@ class LLMDocBuilder:
 
             if md_root:
                 # Convert to relative path from md root (which matches our lookup table keys)
-                key = str(resolved.relative_to(md_root))
+                # Normalize to lowercase for case-insensitive matching
+                key = str(resolved.relative_to(md_root)).lower()
             else:
                 # Fallback to filename only
-                key = str(resolved.name)
+                key = str(resolved.name).lower()
 
             if anchor:
                 key = f"{key}#{anchor}"
 
             return key
         except:
-            return url
+            return url.lower()
 
     def extract_page_title(self, content: str, file_path: Path) -> str:
         """Extract the main title from a markdown page."""
@@ -378,10 +379,11 @@ class LLMDocBuilder:
             return
 
         # Get relative path from md root for the lookup key
+        # Normalize to lowercase for case-insensitive matching (macOS filesystem is case-insensitive)
         try:
-            relative_from_md = str(file_path.relative_to(md_root))
+            relative_from_md = str(file_path.relative_to(md_root)).lower()
         except ValueError:
-            relative_from_md = str(file_path)
+            relative_from_md = str(file_path).lower()
 
         # Read the raw content
         raw_content = self.read_file_content(file_path)
@@ -393,9 +395,9 @@ class LLMDocBuilder:
         current_hierarchy = hierarchy + [page_title]
         hierarchical_title = ' > '.join(current_hierarchy)
 
-        # Store page in lookup table
+        # Store page in lookup table (keys normalized to lowercase)
         self.title_lookup[relative_from_md] = hierarchical_title
-        self.title_lookup[file_path.name] = hierarchical_title  # Also store by filename
+        self.title_lookup[file_path.name.lower()] = hierarchical_title  # Also store by filename
 
         # Parse and store heading hierarchy for anchor links
         anchor_map = self.parse_heading_hierarchy(raw_content, file_path, current_hierarchy)
@@ -405,7 +407,7 @@ class LLMDocBuilder:
             self.title_lookup[anchor_key] = anchor_title
 
             # Also store with just filename + anchor for relative links
-            filename_key = f"{file_path.name}#{anchor}"
+            filename_key = f"{file_path.name.lower()}#{anchor}"
             self.title_lookup[filename_key] = anchor_title
 
         # Extract subpages and recursively build lookup tables
