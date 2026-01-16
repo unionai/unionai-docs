@@ -19,7 +19,7 @@ class ParamInfo(TypedDict):
 
 ParamDict = Dict[str, ParamInfo]
 
-FrameworkType = Literal["python", "synchronicity", "syncify"]
+FrameworkType = Literal["python", "syncify"]
 
 
 class MethodInfo(TypedDict):
@@ -31,6 +31,7 @@ class MethodInfo(TypedDict):
     return_type: str
     return_doc: Optional[str]
     framework: FrameworkType
+    parent_name: Optional[str]
 
 
 class ClassDetails(TypedDict):

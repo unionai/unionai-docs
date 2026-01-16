@@ -1,6 +1,6 @@
 ---
 title: flyte.io
-version: 2.0.0b25
+version: 2.0.0b28
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -312,7 +312,7 @@ def model_copy(
 ) -> Self
 ```
 !!! abstract "Usage Documentation"
-    [`model_copy`](../concepts/models.md#model-copy)
+    [`model_copy`](../concepts/serialization.md#model_copy)
 
 Returns a copy of the model.
 
@@ -340,7 +340,6 @@ def model_dump(
     exclude_unset: bool,
     exclude_defaults: bool,
     exclude_none: bool,
-    exclude_computed_fields: bool,
     round_trip: bool,
     warnings: bool | Literal['none', 'warn', 'error'],
     fallback: Callable[[Any], Any] | None,
@@ -348,7 +347,7 @@ def model_dump(
 ) -> dict[str, Any]
 ```
 !!! abstract "Usage Documentation"
-    [`model_dump`](../concepts/serialization.md#python-mode)
+    [`model_dump`](../concepts/serialization.md#modelmodel_dump)
 
 Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
 
@@ -364,7 +363,6 @@ Generate a dictionary representation of the model, optionally specifying which f
 | `exclude_unset` | `bool` |
 | `exclude_defaults` | `bool` |
 | `exclude_none` | `bool` |
-| `exclude_computed_fields` | `bool` |
 | `round_trip` | `bool` |
 | `warnings` | `bool \| Literal['none', 'warn', 'error']` |
 | `fallback` | `Callable[[Any], Any] \| None` |
@@ -375,7 +373,6 @@ Generate a dictionary representation of the model, optionally specifying which f
 ```python
 def model_dump_json(
     indent: int | None,
-    ensure_ascii: bool,
     include: IncEx | None,
     exclude: IncEx | None,
     context: Any | None,
@@ -383,7 +380,6 @@ def model_dump_json(
     exclude_unset: bool,
     exclude_defaults: bool,
     exclude_none: bool,
-    exclude_computed_fields: bool,
     round_trip: bool,
     warnings: bool | Literal['none', 'warn', 'error'],
     fallback: Callable[[Any], Any] | None,
@@ -391,7 +387,7 @@ def model_dump_json(
 ) -> str
 ```
 !!! abstract "Usage Documentation"
-    [`model_dump_json`](../concepts/serialization.md#json-mode)
+    [`model_dump_json`](../concepts/serialization.md#modelmodel_dump_json)
 
 Generates a JSON representation of the model using Pydantic's `to_json` method.
 
@@ -400,7 +396,6 @@ Generates a JSON representation of the model using Pydantic's `to_json` method.
 | Parameter | Type |
 |-|-|
 | `indent` | `int \| None` |
-| `ensure_ascii` | `bool` |
 | `include` | `IncEx \| None` |
 | `exclude` | `IncEx \| None` |
 | `context` | `Any \| None` |
@@ -408,7 +403,6 @@ Generates a JSON representation of the model using Pydantic's `to_json` method.
 | `exclude_unset` | `bool` |
 | `exclude_defaults` | `bool` |
 | `exclude_none` | `bool` |
-| `exclude_computed_fields` | `bool` |
 | `round_trip` | `bool` |
 | `warnings` | `bool \| Literal['none', 'warn', 'error']` |
 | `fallback` | `Callable[[Any], Any] \| None` |
@@ -422,7 +416,6 @@ def model_json_schema(
     ref_template: str,
     schema_generator: type[GenerateJsonSchema],
     mode: JsonSchemaMode,
-    union_format: Literal['any_of', 'primitive_type_array'],
 ) -> dict[str, Any]
 ```
 Generates a JSON schema for a model class.
@@ -435,7 +428,6 @@ Generates a JSON schema for a model class.
 | `ref_template` | `str` |
 | `schema_generator` | `type[GenerateJsonSchema]` |
 | `mode` | `JsonSchemaMode` |
-| `union_format` | `Literal['any_of', 'primitive_type_array']` |
 
 #### model_parametrized_name()
 
@@ -501,7 +493,6 @@ the initial attempt to build the schema, and automatic rebuilding fails.
 def model_validate(
     obj: Any,
     strict: bool | None,
-    extra: ExtraValues | None,
     from_attributes: bool | None,
     context: Any | None,
     by_alias: bool | None,
@@ -516,7 +507,6 @@ Validate a pydantic model instance.
 |-|-|
 | `obj` | `Any` |
 | `strict` | `bool \| None` |
-| `extra` | `ExtraValues \| None` |
 | `from_attributes` | `bool \| None` |
 | `context` | `Any \| None` |
 | `by_alias` | `bool \| None` |
@@ -528,7 +518,6 @@ Validate a pydantic model instance.
 def model_validate_json(
     json_data: str | bytes | bytearray,
     strict: bool | None,
-    extra: ExtraValues | None,
     context: Any | None,
     by_alias: bool | None,
     by_name: bool | None,
@@ -545,7 +534,6 @@ Validate the given JSON data against the Pydantic model.
 |-|-|
 | `json_data` | `str \| bytes \| bytearray` |
 | `strict` | `bool \| None` |
-| `extra` | `ExtraValues \| None` |
 | `context` | `Any \| None` |
 | `by_alias` | `bool \| None` |
 | `by_name` | `bool \| None` |
@@ -556,7 +544,6 @@ Validate the given JSON data against the Pydantic model.
 def model_validate_strings(
     obj: Any,
     strict: bool | None,
-    extra: ExtraValues | None,
     context: Any | None,
     by_alias: bool | None,
     by_name: bool | None,
@@ -570,7 +557,6 @@ Validate the given object with string data against the Pydantic model.
 |-|-|
 | `obj` | `Any` |
 | `strict` | `bool \| None` |
-| `extra` | `ExtraValues \| None` |
 | `context` | `Any \| None` |
 | `by_alias` | `bool \| None` |
 | `by_name` | `bool \| None` |
@@ -1973,7 +1959,7 @@ def model_copy(
 ) -> Self
 ```
 !!! abstract "Usage Documentation"
-    [`model_copy`](../concepts/models.md#model-copy)
+    [`model_copy`](../concepts/serialization.md#model_copy)
 
 Returns a copy of the model.
 
@@ -2001,7 +1987,6 @@ def model_dump(
     exclude_unset: bool,
     exclude_defaults: bool,
     exclude_none: bool,
-    exclude_computed_fields: bool,
     round_trip: bool,
     warnings: bool | Literal['none', 'warn', 'error'],
     fallback: Callable[[Any], Any] | None,
@@ -2009,7 +1994,7 @@ def model_dump(
 ) -> dict[str, Any]
 ```
 !!! abstract "Usage Documentation"
-    [`model_dump`](../concepts/serialization.md#python-mode)
+    [`model_dump`](../concepts/serialization.md#modelmodel_dump)
 
 Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
 
@@ -2025,7 +2010,6 @@ Generate a dictionary representation of the model, optionally specifying which f
 | `exclude_unset` | `bool` |
 | `exclude_defaults` | `bool` |
 | `exclude_none` | `bool` |
-| `exclude_computed_fields` | `bool` |
 | `round_trip` | `bool` |
 | `warnings` | `bool \| Literal['none', 'warn', 'error']` |
 | `fallback` | `Callable[[Any], Any] \| None` |
@@ -2036,7 +2020,6 @@ Generate a dictionary representation of the model, optionally specifying which f
 ```python
 def model_dump_json(
     indent: int | None,
-    ensure_ascii: bool,
     include: IncEx | None,
     exclude: IncEx | None,
     context: Any | None,
@@ -2044,7 +2027,6 @@ def model_dump_json(
     exclude_unset: bool,
     exclude_defaults: bool,
     exclude_none: bool,
-    exclude_computed_fields: bool,
     round_trip: bool,
     warnings: bool | Literal['none', 'warn', 'error'],
     fallback: Callable[[Any], Any] | None,
@@ -2052,7 +2034,7 @@ def model_dump_json(
 ) -> str
 ```
 !!! abstract "Usage Documentation"
-    [`model_dump_json`](../concepts/serialization.md#json-mode)
+    [`model_dump_json`](../concepts/serialization.md#modelmodel_dump_json)
 
 Generates a JSON representation of the model using Pydantic's `to_json` method.
 
@@ -2061,7 +2043,6 @@ Generates a JSON representation of the model using Pydantic's `to_json` method.
 | Parameter | Type |
 |-|-|
 | `indent` | `int \| None` |
-| `ensure_ascii` | `bool` |
 | `include` | `IncEx \| None` |
 | `exclude` | `IncEx \| None` |
 | `context` | `Any \| None` |
@@ -2069,7 +2050,6 @@ Generates a JSON representation of the model using Pydantic's `to_json` method.
 | `exclude_unset` | `bool` |
 | `exclude_defaults` | `bool` |
 | `exclude_none` | `bool` |
-| `exclude_computed_fields` | `bool` |
 | `round_trip` | `bool` |
 | `warnings` | `bool \| Literal['none', 'warn', 'error']` |
 | `fallback` | `Callable[[Any], Any] \| None` |
@@ -2083,7 +2063,6 @@ def model_json_schema(
     ref_template: str,
     schema_generator: type[GenerateJsonSchema],
     mode: JsonSchemaMode,
-    union_format: Literal['any_of', 'primitive_type_array'],
 ) -> dict[str, Any]
 ```
 Generates a JSON schema for a model class.
@@ -2096,7 +2075,6 @@ Generates a JSON schema for a model class.
 | `ref_template` | `str` |
 | `schema_generator` | `type[GenerateJsonSchema]` |
 | `mode` | `JsonSchemaMode` |
-| `union_format` | `Literal['any_of', 'primitive_type_array']` |
 
 #### model_parametrized_name()
 
@@ -2160,7 +2138,6 @@ the initial attempt to build the schema, and automatic rebuilding fails.
 def model_validate(
     obj: Any,
     strict: bool | None,
-    extra: ExtraValues | None,
     from_attributes: bool | None,
     context: Any | None,
     by_alias: bool | None,
@@ -2175,7 +2152,6 @@ Validate a pydantic model instance.
 |-|-|
 | `obj` | `Any` |
 | `strict` | `bool \| None` |
-| `extra` | `ExtraValues \| None` |
 | `from_attributes` | `bool \| None` |
 | `context` | `Any \| None` |
 | `by_alias` | `bool \| None` |
@@ -2187,7 +2163,6 @@ Validate a pydantic model instance.
 def model_validate_json(
     json_data: str | bytes | bytearray,
     strict: bool | None,
-    extra: ExtraValues | None,
     context: Any | None,
     by_alias: bool | None,
     by_name: bool | None,
@@ -2204,7 +2179,6 @@ Validate the given JSON data against the Pydantic model.
 |-|-|
 | `json_data` | `str \| bytes \| bytearray` |
 | `strict` | `bool \| None` |
-| `extra` | `ExtraValues \| None` |
 | `context` | `Any \| None` |
 | `by_alias` | `bool \| None` |
 | `by_name` | `bool \| None` |
@@ -2215,7 +2189,6 @@ Validate the given JSON data against the Pydantic model.
 def model_validate_strings(
     obj: Any,
     strict: bool | None,
-    extra: ExtraValues | None,
     context: Any | None,
     by_alias: bool | None,
     by_name: bool | None,
@@ -2229,7 +2202,6 @@ Validate the given object with string data against the Pydantic model.
 |-|-|
 | `obj` | `Any` |
 | `strict` | `bool \| None` |
-| `extra` | `ExtraValues \| None` |
 | `context` | `Any \| None` |
 | `by_alias` | `bool \| None` |
 | `by_name` | `bool \| None` |
@@ -3067,7 +3039,7 @@ def model_copy(
 ) -> Self
 ```
 !!! abstract "Usage Documentation"
-    [`model_copy`](../concepts/models.md#model-copy)
+    [`model_copy`](../concepts/serialization.md#model_copy)
 
 Returns a copy of the model.
 
@@ -3095,7 +3067,6 @@ def model_dump(
     exclude_unset: bool,
     exclude_defaults: bool,
     exclude_none: bool,
-    exclude_computed_fields: bool,
     round_trip: bool,
     warnings: bool | Literal['none', 'warn', 'error'],
     fallback: Callable[[Any], Any] | None,
@@ -3103,7 +3074,7 @@ def model_dump(
 ) -> dict[str, Any]
 ```
 !!! abstract "Usage Documentation"
-    [`model_dump`](../concepts/serialization.md#python-mode)
+    [`model_dump`](../concepts/serialization.md#modelmodel_dump)
 
 Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
 
@@ -3119,7 +3090,6 @@ Generate a dictionary representation of the model, optionally specifying which f
 | `exclude_unset` | `bool` |
 | `exclude_defaults` | `bool` |
 | `exclude_none` | `bool` |
-| `exclude_computed_fields` | `bool` |
 | `round_trip` | `bool` |
 | `warnings` | `bool \| Literal['none', 'warn', 'error']` |
 | `fallback` | `Callable[[Any], Any] \| None` |
@@ -3130,7 +3100,6 @@ Generate a dictionary representation of the model, optionally specifying which f
 ```python
 def model_dump_json(
     indent: int | None,
-    ensure_ascii: bool,
     include: IncEx | None,
     exclude: IncEx | None,
     context: Any | None,
@@ -3138,7 +3107,6 @@ def model_dump_json(
     exclude_unset: bool,
     exclude_defaults: bool,
     exclude_none: bool,
-    exclude_computed_fields: bool,
     round_trip: bool,
     warnings: bool | Literal['none', 'warn', 'error'],
     fallback: Callable[[Any], Any] | None,
@@ -3146,7 +3114,7 @@ def model_dump_json(
 ) -> str
 ```
 !!! abstract "Usage Documentation"
-    [`model_dump_json`](../concepts/serialization.md#json-mode)
+    [`model_dump_json`](../concepts/serialization.md#modelmodel_dump_json)
 
 Generates a JSON representation of the model using Pydantic's `to_json` method.
 
@@ -3155,7 +3123,6 @@ Generates a JSON representation of the model using Pydantic's `to_json` method.
 | Parameter | Type |
 |-|-|
 | `indent` | `int \| None` |
-| `ensure_ascii` | `bool` |
 | `include` | `IncEx \| None` |
 | `exclude` | `IncEx \| None` |
 | `context` | `Any \| None` |
@@ -3163,7 +3130,6 @@ Generates a JSON representation of the model using Pydantic's `to_json` method.
 | `exclude_unset` | `bool` |
 | `exclude_defaults` | `bool` |
 | `exclude_none` | `bool` |
-| `exclude_computed_fields` | `bool` |
 | `round_trip` | `bool` |
 | `warnings` | `bool \| Literal['none', 'warn', 'error']` |
 | `fallback` | `Callable[[Any], Any] \| None` |
@@ -3177,7 +3143,6 @@ def model_json_schema(
     ref_template: str,
     schema_generator: type[GenerateJsonSchema],
     mode: JsonSchemaMode,
-    union_format: Literal['any_of', 'primitive_type_array'],
 ) -> dict[str, Any]
 ```
 Generates a JSON schema for a model class.
@@ -3190,7 +3155,6 @@ Generates a JSON schema for a model class.
 | `ref_template` | `str` |
 | `schema_generator` | `type[GenerateJsonSchema]` |
 | `mode` | `JsonSchemaMode` |
-| `union_format` | `Literal['any_of', 'primitive_type_array']` |
 
 #### model_parametrized_name()
 
@@ -3254,7 +3218,6 @@ the initial attempt to build the schema, and automatic rebuilding fails.
 def model_validate(
     obj: Any,
     strict: bool | None,
-    extra: ExtraValues | None,
     from_attributes: bool | None,
     context: Any | None,
     by_alias: bool | None,
@@ -3269,7 +3232,6 @@ Validate a pydantic model instance.
 |-|-|
 | `obj` | `Any` |
 | `strict` | `bool \| None` |
-| `extra` | `ExtraValues \| None` |
 | `from_attributes` | `bool \| None` |
 | `context` | `Any \| None` |
 | `by_alias` | `bool \| None` |
@@ -3281,7 +3243,6 @@ Validate a pydantic model instance.
 def model_validate_json(
     json_data: str | bytes | bytearray,
     strict: bool | None,
-    extra: ExtraValues | None,
     context: Any | None,
     by_alias: bool | None,
     by_name: bool | None,
@@ -3298,7 +3259,6 @@ Validate the given JSON data against the Pydantic model.
 |-|-|
 | `json_data` | `str \| bytes \| bytearray` |
 | `strict` | `bool \| None` |
-| `extra` | `ExtraValues \| None` |
 | `context` | `Any \| None` |
 | `by_alias` | `bool \| None` |
 | `by_name` | `bool \| None` |
@@ -3309,7 +3269,6 @@ Validate the given JSON data against the Pydantic model.
 def model_validate_strings(
     obj: Any,
     strict: bool | None,
-    extra: ExtraValues | None,
     context: Any | None,
     by_alias: bool | None,
     by_name: bool | None,
@@ -3323,7 +3282,6 @@ Validate the given object with string data against the Pydantic model.
 |-|-|
 | `obj` | `Any` |
 | `strict` | `bool \| None` |
-| `extra` | `ExtraValues \| None` |
 | `context` | `Any \| None` |
 | `by_alias` | `bool \| None` |
 | `by_name` | `bool \| None` |

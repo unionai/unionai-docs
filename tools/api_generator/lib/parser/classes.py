@@ -2,7 +2,7 @@ import importlib
 import inspect
 import sys
 from types import ModuleType
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 from enum import Enum
 
 import yaml
@@ -84,7 +84,7 @@ def get_class_details(class_path: str) -> Optional[ClassDetails]:
                 continue
 
             # Methods
-            method_info = parse_method(name, member)
+            method_info = parse_method(name, member, class_name)
             if method_info:
                 class_info["methods"].append(method_info)
 

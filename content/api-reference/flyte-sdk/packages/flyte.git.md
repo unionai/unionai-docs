@@ -1,6 +1,6 @@
 ---
 title: flyte.git
-version: 2.0.0b25
+version: 2.0.0b28
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
