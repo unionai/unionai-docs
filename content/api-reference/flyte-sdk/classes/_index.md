@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b43
+version: 2.0.0b48
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -34,7 +34,15 @@ sidebar_expanded: true
 | [`flyte.app.RunOutput`](../packages/flyte.app/runoutput) |Use a run's output for app parameters. |
 | [`flyte.app.Scaling`](../packages/flyte.app/scaling) | |
 | [`flyte.app.extras.FastAPIAppEnvironment`](../packages/flyte.app.extras/fastapiappenvironment) | |
+| [`flyte.app.extras.FastAPIPassthroughAuthMiddleware`](../packages/flyte.app.extras/fastapipassthroughauthmiddleware) |FastAPI middleware that automatically sets Flyte auth metadata from request headers. |
 | [`flyte.config.Config`](../packages/flyte.config/config) |This the parent configuration object and holds all the underlying configuration object types. |
+| [`flyte.connectors.AsyncConnector`](../packages/flyte.connectors/asyncconnector) |This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
+| [`flyte.connectors.AsyncConnectorExecutorMixin`](../packages/flyte.connectors/asyncconnectorexecutormixin) |This mixin class is used to run the connector task locally, and it's only used for local execution. |
+| [`flyte.connectors.ConnectorRegistry`](../packages/flyte.connectors/connectorregistry) |This is the registry for all connectors. |
+| [`flyte.connectors.ConnectorService`](../packages/flyte.connectors/connectorservice) | |
+| [`flyte.connectors.Resource`](../packages/flyte.connectors/resource) |This is the output resource of the job. |
+| [`flyte.connectors.ResourceMeta`](../packages/flyte.connectors/resourcemeta) |This is the metadata for the job. |
+| [`flyte.errors.ActionAbortedError`](../packages/flyte.errors/actionabortederror) |This error is raised when an action was aborted, externally. |
 | [`flyte.errors.ActionNotFoundError`](../packages/flyte.errors/actionnotfounderror) |This error is raised when the user tries to access an action that does not exist. |
 | [`flyte.errors.BaseRuntimeError`](../packages/flyte.errors/baseruntimeerror) |Base class for all Union runtime errors. |
 | [`flyte.errors.CustomError`](../packages/flyte.errors/customerror) |This error is raised when the user raises a custom error. |
@@ -51,11 +59,10 @@ sidebar_expanded: true
 | [`flyte.errors.OnlyAsyncIOSupportedError`](../packages/flyte.errors/onlyasynciosupportederror) |This error is raised when the user tries to use sync IO in an async task. |
 | [`flyte.errors.ParameterMaterializationError`](../packages/flyte.errors/parametermaterializationerror) |This error is raised when the user tries to use a Parameter in an App, that has delayed Materialization,. |
 | [`flyte.errors.PrimaryContainerNotFoundError`](../packages/flyte.errors/primarycontainernotfounderror) |This error is raised when the primary container is not found. |
-| [`flyte.errors.ReferenceTaskError`](../packages/flyte.errors/referencetaskerror) |This error is raised when the user tries to access a task that does not exist. |
-| [`flyte.errors.RemoteTaskError`](../packages/flyte.errors/remotetaskerror) |This error is raised when the user tries to access a task that does not exist. |
+| [`flyte.errors.RemoteTaskNotFoundError`](../packages/flyte.errors/remotetasknotfounderror) |This error is raised when the user tries to access a task that does not exist. |
+| [`flyte.errors.RemoteTaskUsageError`](../packages/flyte.errors/remotetaskusageerror) |This error is raised when the user tries to access a task that does not exist. |
 | [`flyte.errors.RestrictedTypeError`](../packages/flyte.errors/restrictedtypeerror) |This error is raised when the user uses a restricted type, for example current a Tuple is not supported for one. |
 | [`flyte.errors.RetriesExhaustedError`](../packages/flyte.errors/retriesexhaustederror) |This error is raised when the underlying task execution fails after all retries have been exhausted. |
-| [`flyte.errors.RunAbortedError`](../packages/flyte.errors/runabortederror) |This error is raised when the run is aborted by the user. |
 | [`flyte.errors.RuntimeDataValidationError`](../packages/flyte.errors/runtimedatavalidationerror) |This error is raised when the user tries to access a resource that does not exist or is invalid. |
 | [`flyte.errors.RuntimeSystemError`](../packages/flyte.errors/runtimesystemerror) |This error is raised when the underlying task execution fails because of a system error. |
 | [`flyte.errors.RuntimeUnknownError`](../packages/flyte.errors/runtimeunknownerror) |This error is raised when the underlying task execution fails because of an unknown error. |
@@ -70,11 +77,11 @@ sidebar_expanded: true
 | [`flyte.extras.ContainerTask`](../packages/flyte.extras/containertask) |This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
 | [`flyte.git.GitStatus`](../packages/flyte.git/gitstatus) |A class representing the status of a git repository. |
 | [`flyte.io.DataFrame`](../packages/flyte.io/dataframe) |This is the user facing DataFrame class. |
-| [`flyte.io.DataFrameDecoder`](../packages/flyte.io/dataframedecoder) |Helper class that provides a standard way to create an ABC using. |
-| [`flyte.io.DataFrameEncoder`](../packages/flyte.io/dataframeencoder) |Helper class that provides a standard way to create an ABC using. |
-| [`flyte.io.DataFrameTransformerEngine`](../packages/flyte.io/dataframetransformerengine) |Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
 | [`flyte.io.Dir`](../packages/flyte.io/dir) |A generic directory class representing a directory with files of a specified format. |
 | [`flyte.io.File`](../packages/flyte.io/file) |A generic file class representing a file with a specified format. |
+| [`flyte.io.extend.DataFrameDecoder`](../packages/flyte.io.extend/dataframedecoder) |Helper class that provides a standard way to create an ABC using. |
+| [`flyte.io.extend.DataFrameEncoder`](../packages/flyte.io.extend/dataframeencoder) |Helper class that provides a standard way to create an ABC using. |
+| [`flyte.io.extend.DataFrameTransformerEngine`](../packages/flyte.io.extend/dataframetransformerengine) |Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
 | [`flyte.models.ActionID`](../packages/flyte.models/actionid) |A class representing the ID of an Action, nested within a Run. |
 | [`flyte.models.ActionPhase`](../packages/flyte.models/actionphase) |Represents the execution phase of a Flyte action (run). |
 | [`flyte.models.Checkpoints`](../packages/flyte.models/checkpoints) |A class representing the checkpoints for a task. |
@@ -100,8 +107,8 @@ sidebar_expanded: true
 | [`flyte.remote.Secret`](../packages/flyte.remote/secret) | |
 | [`flyte.remote.Task`](../packages/flyte.remote/task) | |
 | [`flyte.remote.TaskDetails`](../packages/flyte.remote/taskdetails) | |
-| [`flyte.remote.Trigger`](../packages/flyte.remote/trigger) | |
-| [`flyte.remote.User`](../packages/flyte.remote/user) | |
+| [`flyte.remote.Trigger`](../packages/flyte.remote/trigger) |Represents a trigger in the Flyte platform. |
+| [`flyte.remote.User`](../packages/flyte.remote/user) |Represents a user in the Flyte platform. |
 | [`flyte.report.Report`](../packages/flyte.report/report) | |
 | [`flyte.storage.ABFS`](../packages/flyte.storage/abfs) |Any Azure Blob Storage specific configuration. |
 | [`flyte.storage.GCS`](../packages/flyte.storage/gcs) |Any GCS specific configuration. |
@@ -118,4 +125,6 @@ sidebar_expanded: true
 |-|-|
 | [`flyte.CachePolicy`](../packages/flyte/cachepolicy) |Base class for protocol classes. |
 | [`flyte.Link`](../packages/flyte/link) |Base class for protocol classes. |
+| [`flyte.extend.ImageBuilder`](../packages/flyte.extend/imagebuilder) |Base class for protocol classes. |
+| [`flyte.extend.ImageChecker`](../packages/flyte.extend/imagechecker) |Base class for protocol classes. |
 | [`flyte.types.Renderable`](../packages/flyte.types/renderable) |Base class for protocol classes. |

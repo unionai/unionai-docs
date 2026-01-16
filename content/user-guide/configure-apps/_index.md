@@ -64,5 +64,5 @@ Learn more about configuring apps:
 - [**App startup**](./app-environment-settings#app-startup): Understanding the difference between `args` and `command`
 - [**Including additional files**](./including-additional-files): How to include additional files needed by your app
 - [**App parameters**](./passing-parameters): Pass parameters to your app at deployment time
-- [**Autoscaling apps**](./app-environment-settings#autoscaling-apps): Configure scaling up and down based on traffic with idle TTL
+- [**Autoscaling apps**](./app-environment-settings#scaling): Configure scaling up and down based on traffic with idle TTL
 - [**App depending on other environments**](./apps-depending-on-environments): Use `depends_on` to deploy dependent apps together

@@ -1,19 +1,19 @@
 ---
-title: RunAbortedError
-version: 2.0.0b43
+title: ActionAbortedError
+version: 2.0.0b48
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 
-# RunAbortedError
+# ActionAbortedError
 
 **Package:** `flyte.errors`
 
-This error is raised when the run is aborted by the user.
+This error is raised when an action was aborted, externally. The parent action will raise this error.
 
 
 ```python
-class RunAbortedError(
+class ActionAbortedError(
     message: str,
 )
 ```

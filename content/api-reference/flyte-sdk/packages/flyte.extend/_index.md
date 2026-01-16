@@ -1,6 +1,6 @@
 ---
 title: flyte.extend
-version: 2.0.0b43
+version: 2.0.0b48
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -17,6 +17,13 @@ sidebar_expanded: true
 | [`AsyncFunctionTaskTemplate`](../flyte.extend/asyncfunctiontasktemplate) | A task template that wraps an asynchronous functions. |
 | [`ImageBuildEngine`](../flyte.extend/imagebuildengine) | ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
 | [`TaskTemplate`](../flyte.extend/tasktemplate) | Task template is a template for a task that can be executed. |
+
+### Protocols
+
+| Protocol | Description |
+|-|-|
+| [`ImageBuilder`](../flyte.extend/imagebuilder) | Base class for protocol classes. |
+| [`ImageChecker`](../flyte.extend/imagechecker) | Base class for protocol classes. |
 
 ### Methods
 
