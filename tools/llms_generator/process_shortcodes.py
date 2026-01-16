@@ -772,8 +772,8 @@ Welcome to the documentation.
         print("Converting internal links to proper .md references...")
     fix_internal_links_post_processing(output_dir, args.variant, quiet)
 
-    # Check that all internal links have been properly converted
-    check_internal_links(output_dir, quiet)
+    # Note: Link checking is now done in build_llm_docs.py during llms-full.txt generation
+    # where it can track actual resolution failures for hierarchical references
 
     if not quiet:
         print(f"Processing complete. Output in: {output_dir}")
@@ -1001,6 +1001,16 @@ def check_internal_links(output_dir: Path, quiet: bool = False):
     if not quiet:
         print(f"Link check complete: {valid_links}/{total_links} links are valid")
 
+    # Write full list to file (overwrites on each build)
+    link_issues_file = output_dir / "link-issues.txt"
+    with open(link_issues_file, 'w', encoding='utf-8') as f:
+        if issues:
+            f.write(f"Found {len(issues)} link issues:\n\n")
+            for issue in issues:
+                f.write(f"{issue}\n")
+        else:
+            f.write("No link issues found.\n")
+
     if issues:
         # Always print issues, even in quiet mode (these are warnings)
         print(f"Found {len(issues)} link issues:")
@@ -1008,6 +1018,7 @@ def check_internal_links(output_dir: Path, quiet: bool = False):
             print(f"  {issue}")
         if len(issues) > 20:
             print(f"  ... and {len(issues) - 20} more issues")
+        print(f"  Full list: {link_issues_file}")
     elif not quiet:
         print("All internal links are properly formatted and point to existing files!")
 
