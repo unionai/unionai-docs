@@ -1,6 +1,6 @@
 ---
 title: Considerations
-weight: 13
+weight: 14
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
