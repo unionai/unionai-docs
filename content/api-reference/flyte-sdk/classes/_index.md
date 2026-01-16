@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b47
+version: 2.0.0b48
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -42,6 +42,7 @@ sidebar_expanded: true
 | [`flyte.connectors.ConnectorService`](../packages/flyte.connectors/connectorservice) | |
 | [`flyte.connectors.Resource`](../packages/flyte.connectors/resource) |This is the output resource of the job. |
 | [`flyte.connectors.ResourceMeta`](../packages/flyte.connectors/resourcemeta) |This is the metadata for the job. |
+| [`flyte.errors.ActionAbortedError`](../packages/flyte.errors/actionabortederror) |This error is raised when an action was aborted, externally. |
 | [`flyte.errors.ActionNotFoundError`](../packages/flyte.errors/actionnotfounderror) |This error is raised when the user tries to access an action that does not exist. |
 | [`flyte.errors.BaseRuntimeError`](../packages/flyte.errors/baseruntimeerror) |Base class for all Union runtime errors. |
 | [`flyte.errors.CustomError`](../packages/flyte.errors/customerror) |This error is raised when the user raises a custom error. |
@@ -62,7 +63,6 @@ sidebar_expanded: true
 | [`flyte.errors.RemoteTaskUsageError`](../packages/flyte.errors/remotetaskusageerror) |This error is raised when the user tries to access a task that does not exist. |
 | [`flyte.errors.RestrictedTypeError`](../packages/flyte.errors/restrictedtypeerror) |This error is raised when the user uses a restricted type, for example current a Tuple is not supported for one. |
 | [`flyte.errors.RetriesExhaustedError`](../packages/flyte.errors/retriesexhaustederror) |This error is raised when the underlying task execution fails after all retries have been exhausted. |
-| [`flyte.errors.RunAbortedError`](../packages/flyte.errors/runabortederror) |This error is raised when the run is aborted by the user. |
 | [`flyte.errors.RuntimeDataValidationError`](../packages/flyte.errors/runtimedatavalidationerror) |This error is raised when the user tries to access a resource that does not exist or is invalid. |
 | [`flyte.errors.RuntimeSystemError`](../packages/flyte.errors/runtimesystemerror) |This error is raised when the underlying task execution fails because of a system error. |
 | [`flyte.errors.RuntimeUnknownError`](../packages/flyte.errors/runtimeunknownerror) |This error is raised when the underlying task execution fails because of an unknown error. |

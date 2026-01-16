@@ -55,6 +55,7 @@ identifiers:
   flyte.connectors.ConnectorService: /api-reference/flyte-sdk/packages/flyte.connectors/connectorservice/
   flyte.connectors.Resource: /api-reference/flyte-sdk/packages/flyte.connectors/resource/
   flyte.connectors.ResourceMeta: /api-reference/flyte-sdk/packages/flyte.connectors/resourcemeta/
+  flyte.errors.ActionAbortedError: /api-reference/flyte-sdk/packages/flyte.errors/actionabortederror/
   flyte.errors.ActionNotFoundError: /api-reference/flyte-sdk/packages/flyte.errors/actionnotfounderror/
   flyte.errors.BaseRuntimeError: /api-reference/flyte-sdk/packages/flyte.errors/baseruntimeerror/
   flyte.errors.CustomError: /api-reference/flyte-sdk/packages/flyte.errors/customerror/
@@ -75,7 +76,6 @@ identifiers:
   flyte.errors.RemoteTaskUsageError: /api-reference/flyte-sdk/packages/flyte.errors/remotetaskusageerror/
   flyte.errors.RestrictedTypeError: /api-reference/flyte-sdk/packages/flyte.errors/restrictedtypeerror/
   flyte.errors.RetriesExhaustedError: /api-reference/flyte-sdk/packages/flyte.errors/retriesexhaustederror/
-  flyte.errors.RunAbortedError: /api-reference/flyte-sdk/packages/flyte.errors/runabortederror/
   flyte.errors.RuntimeDataValidationError: /api-reference/flyte-sdk/packages/flyte.errors/runtimedatavalidationerror/
   flyte.errors.RuntimeSystemError: /api-reference/flyte-sdk/packages/flyte.errors/runtimesystemerror/
   flyte.errors.RuntimeUnknownError: /api-reference/flyte-sdk/packages/flyte.errors/runtimeunknownerror/
