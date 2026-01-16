@@ -23,7 +23,7 @@ Flyte 2 and Union 2 represent a fundamental shift in how workflows are written a
 {{< /variant >}}
 
 {{< note title="Ready to get started?" >}}
-Ready to get started? Go the [Getting started](../getting-started) guide to install Flyte 2 and run your first task.
+Ready to get started? Go to the [Quickstart](../quickstart) guide to install Flyte 2 and run your first task.
 {{< /note >}}
 
 ## Pure Python execution

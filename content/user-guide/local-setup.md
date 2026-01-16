@@ -32,7 +32,7 @@ flyte --version
 
 ## Configuration file
 
-As we did in [Getting started](./getting-started), use `flyte create config` to create a configuration file:
+As we did in [Quickstart](./quickstart), use `flyte create config` to create a configuration file:
 
 {{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
@@ -246,3 +246,9 @@ flyte.init(
     domain="development",
 )
 ```
+
+## Next steps
+
+With your environment set up, you're ready to learn the core concepts:
+
+- [**Flyte basics**](./flyte-basics): Understand TaskEnvironments, tasks, runs, and actions through working examples

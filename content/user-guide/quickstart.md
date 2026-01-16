@@ -1,11 +1,11 @@
 ---
-title: Getting started
+title: Quickstart
 weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
-# Getting started
+# Quickstart
 
 Let's get you up and running with your first workflow.
 
@@ -123,6 +123,9 @@ Click the link to view your run in the UI:
 
 ![V2 UI](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/v2ui.png)
 
-<!-- TODO: Add explanation of the UI elements and their functionality
-## Understanding the UI
--->
+## Next steps
+
+Now that you've run your first workflow:
+
+- [**Local setup**](./local-setup): Complete your development environment configuration
+- [**Flyte basics**](./flyte-basics): Learn core concepts through working examples
