@@ -1,0 +1,97 @@
+{{ define "main" }}
+{{- $variant := .Site.Params.variant -}}
+{{- $variantFullName := index .Site.Params.Key.product_full_name $variant -}}
+{{- $extraContent := readFile (printf "404.inc.html~%s" $variant) -}}
+<script>
+    function sanitizeText(text) {
+        if (!text) return '';
+        // Create a temporary element to escape HTML
+        const temp = document.createElement('div');
+        temp.textContent = text;
+        return temp.innerHTML;
+    }
+
+    function validateVariant(variant) {
+        // Only allow alphanumeric characters and hyphens
+        return variant && /^[a-zA-Z0-9-]+$/.test(variant) ? variant : null;
+    }
+
+    // Extract query string parameters
+    let url = new URL(window.location);
+    const source = sanitizeText(url.searchParams.get('source'));
+    const pVariant = validateVariant(url.searchParams.get('variant'));
+    const origin = sanitizeText(url.searchParams.get('origin'));
+    const targetVariant = validateVariant(url.searchParams.get('targetVariant'));
+    const targetHomeUrl = targetVariant ? `/docs/${encodeURIComponent(targetVariant)}` : '/docs/';
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (pVariant !== null && targetVariant !== null) {
+            const title = document.getElementById('title');
+            title.textContent = source;
+
+            const buttonContainer = document.getElementById('button-container');
+
+            const button = document.createElement('sl-button');
+            console.log(button);
+            button.href = targetHomeUrl;
+            button.textContent = `
+                Go to ${targetVariant.toLocaleUpperCase()} home
+            `;
+            buttonContainer.appendChild(button);
+
+            // Show variant-change elements and hide direct elements
+            document.querySelectorAll('.variant-change').forEach(el => {
+                el.style.display = 'block';
+            });
+
+            document.querySelectorAll('.direct').forEach(el => {
+                el.style.display = 'none';
+            });
+        } else {
+            // If url is present, it was redirected by a 404 handler
+            let hit = window.location.href;
+            if (url.searchParams.get("url") != null) {
+                url = new URL(url.searchParams.get("url"));
+                hit = url.toString();
+            }
+
+            // If the url already has originalUrl, just remove 1 level
+            // else add the current URL as originalUrl
+            //
+            // ... user-guide/a/b/c/
+            // ... user-guide/a/b/
+            // ... user-guide/a/
+            // ... user-guide/
+            url.pathname = url.pathname.endsWith("/")
+                ? url.pathname.replace(/\/[^\/]+\/$/, '/')
+                : url.pathname.replace(/\/[^\/]+$/, '');
+            if (url.searchParams.get('404') === null) {
+                url.searchParams.set('404', hit);
+            }
+            window.location.href = url.toString();
+        }
+    });
+</script>
+<div class="four-o-four container not-found">
+    <div class="direct small-header">404</div>
+
+    <h1 class="direct">
+        Page not found
+    </h1>
+
+    <div class="sorry variant-change">
+        The page you were on (<span id="title" class="title"></span>) has no directly corresponding page in <span class="title">{{ $variantFullName }}</span>.<br/>
+        Try searching from the <span class="title">{{ $variantFullName }}</span> home page.
+    </div>
+    <div class="sorry direct">
+        Sorry, the page you're looking for does not exist
+    </div>
+
+    <div id="button-container"></div>
+
+    <div class="content">
+        {{ $extraContent | safeHTML }}
+        {{ .Content }}
+    </div>
+</div>
+{{ end }}

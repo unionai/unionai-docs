@@ -5,6 +5,11 @@ variants: -flyte -serverless -byoc -selfmanaged
 
 # Shortcode Examples {.docs-builder .shortcodes}
 
+## Docs Home
+
+- Site root: {{< docs_home root v2 >}}
+- Variant (flyte): {{< docs_home flyte v2 >}}
+
 ## Icon
 
 > &#123;&#123;&lt; icon "book" &gt;&#125;&#125;
@@ -103,3 +108,9 @@ Various links to test navigation.
 Various links to test navigation.
 {{< /link-card >}}
 {{< /grid >}}
+
+## Code
+
+Code examples are integrated into the main documentation:
+
+[Community > Contributing Docs > Shortcodes > Code](../../community/contributing-docs/shortcodes#-code-)

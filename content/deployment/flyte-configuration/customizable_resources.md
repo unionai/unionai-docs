@@ -1,7 +1,7 @@
 ---
 title: Customizing resources
 weight: 7
-variants: +flyte -serverless -byoc -selfmanaged
+variants: -flyte -serverless -byoc -selfmanaged
 ---
 
 # Customizing project, domain, and workflow resources with flytectl
@@ -169,10 +169,9 @@ flytectl update workflow-execution-config
 
 This matchable attribute allows forcing a matching execution to consistently execute on a specific Kubernetes cluster for multi-cluster Flyte deployment set-up. In lieu of an explicit customization, cluster assignment is random.
 
-For setting up a multi-cluster environment, follow [the guide](https://www.union.ai/docs/flyte/deployment/flyte-deployment/multicluster/)
+For setting up a multi-cluster environment, follow [the guide](../flyte-deployment/multicluster)
 
 #### Customizing execution cluster label configuration
-
 
 Define an attributes file in `ec.yaml`:
 

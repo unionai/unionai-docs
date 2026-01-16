@@ -1,0 +1,22 @@
+name: Check Images Health
+
+on: [push]
+
+jobs:
+  check-images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+          fetch-depth: 0  # Fetch all history for proper git operations
+
+      - name: Run image validation
+        run: make check-images
+
+      - name: Report status
+        if: ${{ failure() }}
+        run: |
+          echo "::error::Image validation failed. Please ensure all images are properly referenced and they exist in this repository."

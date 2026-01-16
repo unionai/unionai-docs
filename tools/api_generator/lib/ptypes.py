@@ -1,28 +1,25 @@
-from typing import Dict, List, Literal, NotRequired, Optional, TypedDict
-
+from typing import Dict, List, Literal, Optional, TypedDict
 
 class PropertyInfo(TypedDict):
     name: str
-    type: NotRequired[Optional[str]]
-    doc: NotRequired[Optional[str]]
+    type: Optional[str]
+    doc: Optional[str]
 
 
 class VariableInfo(PropertyInfo):
     pass
 
 
-type ParamDict = Dict[str, ParamInfo]
-
-
 class ParamInfo(TypedDict):
     name: str
-    default: NotRequired[Optional[str]]
-    kind: NotRequired[Optional[str]]
-    type: NotRequired[Optional[str]]
-    doc: NotRequired[Optional[str]]
+    default: Optional[str]
+    kind: Optional[str]
+    type: Optional[str]
+    doc: Optional[str]
 
+ParamDict = Dict[str, ParamInfo]
 
-type FrameworkType = Literal["python", "synchronicity"]
+FrameworkType = Literal["python", "syncify"]
 
 
 class MethodInfo(TypedDict):
@@ -34,6 +31,7 @@ class MethodInfo(TypedDict):
     return_type: str
     return_doc: Optional[str]
     framework: FrameworkType
+    parent_name: Optional[str]
 
 
 class ClassDetails(TypedDict):
@@ -49,13 +47,13 @@ class ClassDetails(TypedDict):
     class_variables: List[VariableInfo]
 
 
-type ClassMap = dict[str, ClassDetails]
-type ClassPackageMap = dict[str, ClassMap]
+ClassMap = dict[str, ClassDetails]
+ClassPackageMap = dict[str, ClassMap]
 
 
 class PackageInfo(TypedDict):
     name: str
-    doc: NotRequired[Optional[str]]
+    doc: Optional[str]
     methods: List[MethodInfo]
     variables: List[VariableInfo]
 

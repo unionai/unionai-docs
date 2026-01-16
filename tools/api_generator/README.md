@@ -6,7 +6,24 @@ The examples below use the `uv` tool to manage the virtual environment, but you 
 
 ## Example usage
 
-For example, to generate the documentation for the `flytekit` package, you do the following:
+For example, to generate the documentation for the `flyte` package, you can use either the automated setup or manual setup:
+
+### Option 1: Automated Setup (Recommended)
+
+1. From the root of your local checkout of this repository, run the setup script:
+
+   ```bash
+   $ ./setup-api-generator.sh
+   ```
+
+2. Activate the virtual environment and run the generator:
+
+   ```bash
+   $ source .venv/bin/activate
+   $ make -f Makefile.api.flyte-sdk
+   ```
+
+### Option 2: Manual Setup
 
 1. Go to the root of your local checkout of this repository.
 
@@ -22,16 +39,22 @@ For example, to generate the documentation for the `flytekit` package, you do th
    $ source .venv/bin/activate
    ```
 
-4. Install the package you want to generate documentation for, e.g., `flytekit`:
+4. Install the package you want to generate documentation for, e.g., `flyte`:
 
    ```bash
-   $ uv add flytekit
+   $ uv add --pre flyte
+   ```
+
+5. Install additional dependencies:
+
+   ```bash
+   $ uv add pyyaml
    ```
 
 5 Run the generator for `flytekit`:
 
    ```bash
-   $ make -f Makefile.flytekit.api
+   $ make -f Makefile.api.flytekit
    ```
 
 The generator will introspect the `flytekit` package and produce the documentation in the form of Markdown files in the directory `content/api-reference/flytekirt-sdk/`.
@@ -51,11 +74,9 @@ $ make -f Makefile.<type>.<name>
 
 There is a predefined `Makefile` for each API/CLI:
 
-* `Makefile.api.flytekit`
-* `Makefile.api.union`
-* `Makefile.api.flytev2`
+* `Makefile.api.flyte-sdk`
 * `Makefile.api.plugins`
-* `Makefile.cli.flytectl`
+* `Makefile.cli.flyte`
 
 ## How it works
 

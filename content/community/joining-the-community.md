@@ -9,10 +9,10 @@ variants: +flyte -serverless -byoc -selfmanaged
 Keeping the lines of communication open is important in growing and maintain the Flyte community.
 Please join us on:
 
-[![Flyte Slack](https://img.shields.io/badge/Slack-Chat-pink?style=for-the-badge)](https://slack.flyte.org)
-[![Github Discussion](https://img.shields.io/badge/Github-Discussion-green?style=for-the-badge)](https://github.com/flyteorg/flyte/discussions)
-[![Twitter](https://img.shields.io/badge/Twitter-Social-blue?style=for-the-badge)](https://twitter.com/flyteorg)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Social-lightblue?style=for-the-badge)](https://www.linkedin.com/groups/13962256)
+[![Flyte Slack](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/community/joining-the-community/slack-chat-pink.svg)](https://slack.flyte.org)
+[![GitHub Discussion](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/community/joining-the-community/github-discussion-badge.svg)](https://github.com/flyteorg/flyte/discussions)
+[![Twitter](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/community/joining-the-community/twitter-social-blue.svg)](https://twitter.com/flyteorg)
+[![LinkedIn](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/community/joining-the-community/linkedin-social-lightblue.svg)](https://www.linkedin.com/groups/13962256)
 
 ## Community sync
 
@@ -57,11 +57,11 @@ Threads help us keep conversations contained and organized, reducing the time it
 
 **Thread best practices:**
 
-* Don't break your question into multiple messages. Put everything in one.
-* For long questions, write a few sentences in the first message, and put the rest in a thread.
-* If there's a code snippet (more than 5 lines of code), put it inside the thread.
-* Avoid using the “Also send to channel” feature unless it's really necessary.
-* If your question contains multiple questions, make sure to break them into multiple messages, so each could be answered in a separate thread.
+- Don't break your question into multiple messages. Put everything in one.
+- For long questions, write a few sentences in the first message, and put the rest in a thread.
+- If there's a code snippet (more than 5 lines of code), put it inside the thread.
+- Avoid using the “Also send to channel” feature unless it's really necessary.
+- If your question contains multiple questions, make sure to break them into multiple messages, so each could be answered in a separate thread.
 
 ### Do not post the same question across multiple channels
 
@@ -76,9 +76,9 @@ It is not a space to pitch your products or services directly to our members via
 
 We are excited to have a growing presence from vendors to help answer questions from community members as they may arise, but we have a strict 3-strike policy against solicitation:
 
-* **First occurrence**: We'll give you a friendly but public reminder that the behavior is inappropriate according to our guidelines.
-* **Second occurrence**: We'll send you a DM warning that any additional violations will result in removal from the community.
-* **Third occurrence**: We'll delete or ban your account.
+- **First occurrence**: We'll give you a friendly but public reminder that the behavior is inappropriate according to our guidelines.
+- **Second occurrence**: We'll send you a DM warning that any additional violations will result in removal from the community.
+- **Third occurrence**: We'll delete or ban your account.
 
 We reserve the right to ban users without notice if they are clearly spamming our community members.
 

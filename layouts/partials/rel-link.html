@@ -1,0 +1,40 @@
+{{- $target := . }}
+{{- $hasShortcode := hasPrefix $target "HAHAHUGOSHORTCODE" -}}
+{{- $link := $target }}
+{{/* If a shortcode starts the link, use it AS IS */}}
+{{- if or $hasShortcode (hasPrefix $target "http://") (hasPrefix $target "https://") (hasPrefix $target "mailto:") -}}
+    {{/* do nothing */}}
+{{- else if or (in page.RelPermalink "/api-reference/") -}}
+    {{/* do nothing */}}
+{{- else -}}
+    {{ $dest := strings.TrimSuffix ".md" $target }}
+    {{ $dest = strings.TrimSuffix "_index" $dest }}
+    
+    {{/* Normalize relative paths and extract fragments */}}
+    {{ $fragment := "" }}
+    {{ $path := $dest }}
+    {{ if (in $dest "#") }}
+        {{ $parts := split $dest "#" }}
+        {{ $path = index $parts 0 }}
+        {{ $fragment = printf "#%s" (index $parts 1) }}
+    {{ end }}
+    
+    {{/* Handle different path types */}}
+    {{- if or (hasPrefix $dest "/") (hasPrefix $dest "http") -}}
+        {{/* Absolute paths and URLs - use as-is */}}
+        {{- $link = $dest -}}
+    {{- else if eq $path "" -}}
+        {{/* Pure fragment identifier like "#foo" - link to current page */}}
+        {{- $link = printf "%s%s" page.RelPermalink $fragment -}}
+    {{- else if or (eq $path ".") (eq $path "./") -}}
+        {{/* Current directory with fragment like "./#foo" - link to current page */}}
+        {{- $link = printf "%s%s" page.RelPermalink $fragment -}}
+    {{- else if (hasSuffix page "_index.md") -}}
+        {{/* From index page - relative to current directory */}}
+        {{- $link = printf "%s%s%s" page.RelPermalink $path $fragment -}}
+    {{- else -}}
+        {{/* From non-index page - go up one level first */}}
+        {{- $link = printf "%s../%s%s" page.RelPermalink $path $fragment -}}
+    {{- end -}}
+{{- end -}}
+{{- return $link -}}

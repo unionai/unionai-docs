@@ -1,75 +1,31 @@
 ---
-title: API reference
+title: Reference
 weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 top_menu: true
 sidebar_expanded: true
 ---
 
-# API reference
+# Reference
 
-This section provides the reference material for all {{< key product_name >}} APIs, SDKs and CLIs.
+This section provides the reference material for the Flyte SDK and CLI.
 
-{{< variant serverless byoc selfmanaged >}}
-{{< markdown >}}
-
-To get started, add `union` to your project
+To get started, add `flyte` to your project
 
 ```shell
-$ uv add union
+$ uv pip install --no-cache --prerelease=allow --upgrade flyte
 ```
 
-This will install the Union and Flytekit SDKs and the `union` CLI.
-{{< /markdown >}}
+This will install both the Flyte SDK and CLI.
+
 {{< grid >}}
 
-{{< link-card target="flytekit-sdk" icon="workflow" title="Flytekit SDK" >}}
-The Flytekit SDK provides the core Python API for building Union.ai workflows and apps.
+{{< link-card target="flyte-sdk" icon="workflow" title="Flyte SDK" >}}
+The Flyte SDK provides the core Python API for building workflows and apps on your Union instance.
 {{< /link-card >}}
 
-{{< link-card target="union-sdk" icon="workflow" title="Union SDK" >}}
-The Union SDK provides additional Union.ai-specific capabilities, on top of the core Flytekit SDK.
-{{< /link-card >}}
-
-{{< link-card target="union-cli" icon="terminal" title="Union CLI" >}}
-The Union CLI is the command-line interface for interacting with your Union instance.
-{{< /link-card >}}
-
-{{< link-card target="uctl-cli" icon="terminal" title="Uctl CLI" >}}
-The Uctl CLI is an alternative CLI for performing administrative tasks and for use in CI/CD environments.
+{{< link-card target="flyte-cli" icon="terminal" title="Flyte CLI" >}}
+The Flyte CLI is the command-line interface for interacting with your Union instance.
 {{< /link-card >}}
 
 {{< /grid >}}
-{{< /variant >}}
-
-{{< variant flyte>}}
-{{< markdown >}}
-
-To get started, add `flytekit` to your project
-
-```shell
-$ uv add flytekit
-```
-
-This will install the Flytekit SDKs and the `pyflyte` CLI.
-{{< /markdown >}}
-{{< grid >}}
-
-{{< link-card target="flytekit-sdk" icon="workflow" title="Flytekit SDK" >}}
-The Flytekit SDK provides the core Python API for building Flyte workflows.
-{{< /link-card >}}
-
-{{< link-card target="pyflyte-cli" icon="terminal" title="Pyflyte CLI" >}}
-The Pyflyte CLI is the command-line interface for interacting with your Flyte instance.
-{{< /link-card >}}
-
-{{< link-card target="flytectl-cli" icon="terminal" title="Flytectl CLI" >}}
-The Flytectl CLI is an alternative CLI for performing administrative tasks and for use in CI/CD environments.
-{{< /link-card >}}
-
-{{< link-card target="flyteidl" icon="terminal" title="Flyteidl" >}}
-Flyteidl is the specification for the Flyte language in protobuf.
-{{< /link-card >}}
-
-{{< /grid >}}
-{{< /variant >}}

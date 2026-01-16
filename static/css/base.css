@@ -2,9 +2,11 @@
   /* Light theme variables (default) */
   --primary-color: var(--union-color);
   --text-color: #1f2937;
+  --text-color-light: #bfbfbf;
   --bg-color: #ffffff;
   --sidebar-bg: #f8fafc;
   --border-color: #e2e8f0;
+  --separator: #c7ccd6;
   --code-bg: #f1f5f9;
   --pre-bg: #1e293b;
   --pre-color: #e2e8f0;
@@ -38,6 +40,7 @@
   --breadcrumbs-height: 128px;
   --old-version-border: 3px solid var(--union-color);
   --old-version-background: hsl(0, 0%, 97%);
+  --banner-height: 48px;
 }
 
 :root .variant-flyte {
@@ -56,6 +59,7 @@
 [data-theme="dark"] {
   --primary-color: var(--union-color);
   --text-color: #cbd1d9;
+  --text-color-light: hsl(214, 0%, 50%);
   --bg-color: #121212;
   --sidebar-bg: #191919;
   --border-color: #282828;
@@ -100,7 +104,7 @@ body {
   z-index: 100;
 }
 .container {
-  height: calc(100dvh - var(--header-height) - var(--tabs-height));
+  height: calc(100dvh - var(--header-height) - var(--tabs-height) - var(--banner-height));
   overflow-y: auto;
 }
 .main-content {
@@ -134,6 +138,9 @@ h2 {
   font-weight: 600;
   margin: 2rem 0 1rem;
   color: var(--text-color);
+}
+h3, h4 {
+  margin: 1rem 0;
 }
 p {
   margin-bottom: 1.5rem;
@@ -329,8 +336,12 @@ sl-alert P + P {
   margin-top: 1rem;
 }
 
-.download {
+span.download {
   display: inline-flex;
+}
+
+div.download {
+  margin: 0.5rem 0;
 }
 
 footer {
@@ -339,4 +350,11 @@ footer {
 
 hr {
   margin-top: 2rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid var(--separator);
+}
+
+.codeblock {
+  margin-bottom: 1rem;
 }

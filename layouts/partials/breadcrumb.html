@@ -1,0 +1,67 @@
+<nav class="breadcrumb" aria-label="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+    {{- $url := .RelPermalink -}}
+    {{- $sections := split (trim $url "/") "/" -}}
+    {{- $variant := .Site.Params.variant -}}
+    <div class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        {{- $display := index .Site.Params.key "product_full_name" $variant -}}
+        {{- if not $display -}}
+            {{- $display = humanize $variant -}}
+        {{- end -}}
+        {{- if or (eq .RelPermalink .Site.BaseURL) (eq .RelPermalink "/") .Params.site_root -}}
+            <span itemprop="name">{{- $display -}}</span>
+        {{- else -}}
+            <a href="{{- .Site.BaseURL }}" itemprop="item"><span itemprop="name">{{ $display -}}</span></a>
+        {{- end -}}
+        <meta itemprop="position" content="1">
+    </div>
+
+    {{- $baseUrl := urls.Parse .Site.BaseURL -}}
+    {{- $basePath := $baseUrl.Path -}}
+    {{- $basePathCount := sub (len (split $basePath "/")) 2 -}}
+
+    {{/* Extract the base path from the breadcrumbs */}}
+    {{- $sections = after $basePathCount $sections -}}
+
+    {{- range $index, $section := $sections -}}
+        {{- if eq $section $variant -}}
+            {{- continue -}}
+        {{- end -}}
+        {{- $sectionURL := printf "/%s/" (delimit (first (add $index 1) $sections) "/") -}}
+        {{- $publicSectionURL := $sectionURL -}}
+        {{- $hasIndex := fileExists (printf "content/%s/_index.md" (delimit (first $index $sections) "/")) -}}
+        {{- if not $hasIndex -}}
+            {{- $path := (delimit (after 1 (split (delimit (first (add $index 1) $sections) "/") "/")) "/") -}}
+            {{- $sectionURL = printf "/%s/" $path -}}
+            {{- $hasIndex = fileExists (printf "content/%s/_index.md" $path) -}}
+        {{- end -}}
+        {{- $title := $section -}}
+        {{- with $.Site.GetPage $sectionURL -}}
+            {{- $title = partial "page-title.html" . -}}
+        {{- else -}}
+            {{- $title = humanize $section -}}
+        {{- end -}}
+        {{- $classes := slice "breadcrumb-item" -}}
+        {{- if eq $sectionURL $url }}
+            {{ $classes = $classes | append "active"}}
+        {{- end -}}
+        {{- $position := add $index 2 -}}
+        <div class='{{- delimit $classes " " -}}' itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            {{- if eq $sectionURL $url -}}
+                <span itemprop="name">{{- $title -}}</span>
+            {{- else if eq $index (sub (len $sections) 1) -}}
+                <span itemprop="name">{{- $title -}}</span>
+            {{- else if $hasIndex -}}
+                {{- $finalURL := $.Site.BaseURL -}}
+                {{- if and (strings.HasSuffix $finalURL "/") (strings.HasPrefix $publicSectionURL "/") -}}
+                    {{- $publicSectionURL = strings.TrimPrefix "/" $publicSectionURL -}}
+                {{- end -}}
+                <a href="{{- $finalURL }}{{ $publicSectionURL -}}" itemprop="item">
+                    <span itemprop="name">{{- $title -}}</span>
+                </a>
+            {{- else -}}
+                <span itemprop="name">{{- $title -}}</span>
+            {{- end -}}
+            <meta itemprop="position" content="{{ $position }}">
+        </div>
+    {{- end -}}
+</nav>

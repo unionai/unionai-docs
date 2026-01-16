@@ -1,0 +1,124 @@
+{{- $description := "" -}}
+
+{{- /* Check if this is an API reference page and provide better descriptions */ -}}
+{{- if or (in .RelPermalink "/api-reference/") (in .RelPermalink "/packages/") (.Description) -}}
+  {{- if .Description -}}
+    {{- $description = .Description -}}
+  {{- else -}}
+    {{- $description = "API reference documentation for Union.ai workflow orchestration and machine learning pipelines." -}}
+  {{- end -}}
+{{- else -}}
+  {{- /* Extract content description for regular pages */ -}}
+  {{- $body := .Content | replaceRE `(?is)^\s*<h1[^>]*>.*?</h1>\s*` "" -}}
+  {{- $p := findRE `(?is)<p[^>]*>(.*?)</p>` $body -}}
+  {{- if gt (len $p) 0 -}}
+    {{- $description = index $p 0 | plainify -}}
+  {{- else -}}
+    {{- $description = .Summary | plainify -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Clean and normalize the description */ -}}
+{{- $description = $description | htmlUnescape -}}
+{{- /* Fix common malformed patterns */ -}}
+{{- $description = $description | replaceRE `Union\.ai ServerlessUnion\.ai` "Union.ai" -}}
+{{- $description = $description | replaceRE `Union\.ai ([A-Z][a-z]+)Union\.ai` "Union.ai" -}}
+{{- /* Fix missing spaces after periods */ -}}
+{{- $description = $description | replaceRE `\.([A-Z])` ". $1" -}}
+{{- /* Remove function signatures from API descriptions */ -}}
+{{- $description = $description | replaceRE `^def [^)]+\)\s*-?&gt;?[^.]*\.?\s*` "" -}}
+{{- $description = $description | replaceRE `^Class Description\s+` "" -}}
+{{- /* Normalize whitespace and truncate */ -}}
+{{- $description = $description | replaceRE `\s+` " " | strings.TrimSpace -}}
+{{- if lt (len $description) 10 -}}
+  {{- $description = "Union.ai documentation for AI workflow orchestration and machine learning pipelines." -}}
+{{- end -}}
+{{- $description = $description | truncate 158 -}}
+
+{{- $variant := .Site.Params.variant -}}
+{{- $title := .Title | default .Site.Title -}}
+{{- $canonical := .Permalink | absURL -}}
+{{- $product_full_name := index .Site.Params.key.product_full_name $variant -}}
+{{- $image := "" -}}
+{{- if eq $product_full_name "Flyte OSS" -}}
+  {{- $image = printf "%s/images/icon-logo-flyte.png" (strings.TrimSuffix "/" .Site.BaseURL) -}}
+{{- else -}}
+  {{- $image = printf "%s/images/icon-logo.svg" (strings.TrimSuffix "/" .Site.BaseURL) -}}
+{{- end -}}
+{{- if not $image -}}
+  {{- $image = .Params.image | default .Site.Params.og_image | default "/images/og-image.png" | absURL -}}
+{{- end -}}
+
+<!-- SEO Meta Tags -->
+<meta name="description" content="{{ $description | truncate 160 }}">
+<meta name="keywords" content="{{ if .Params.keywords }}{{ delimit .Params.keywords ", " }}{{ else }}{{ delimit (slice "Union.ai" "Flyte" "AI workflows" "machine learning" "documentation") ", " }}{{ end }}">
+<meta name="author" content="{{ .Site.Params.author | default "Union.ai" }}">
+<meta name="robots" content="{{ if .Params.noindex }}noindex,nofollow{{ else }}index,follow{{ end }}">
+
+<!-- Canonical URL -->
+<link rel="canonical" href="{{ $canonical }}">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
+<meta property="og:url" content="{{ $canonical }}">
+<meta property="og:title" content="{{ $title }} | {{ .Site.Title }}">
+<meta property="og:description" content="{{ $description | truncate 160 }}">
+<meta property="og:image" content="{{ $image }}">
+<meta property="og:site_name" content="{{ .Site.Title }}">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="{{ $canonical }}">
+<meta property="twitter:title" content="{{ $title }} | {{ .Site.Title }}">
+<meta property="twitter:description" content="{{ $description | truncate 160 }}">
+<meta property="twitter:image" content="{{ $image }}">
+{{- if .Site.Params.twitter_site -}}
+<meta property="twitter:site" content="{{ .Site.Params.twitter_site }}">
+{{- end -}}
+{{- if .Site.Params.twitter_creator -}}
+<meta property="twitter:creator" content="{{ .Site.Params.twitter_creator }}">
+{{- end }}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  {{- if .IsHome -}}
+  "@type": "WebSite",
+  "name": "{{ .Site.Title }}",
+  "description": "{{ $description }}",
+  "url": "{{ .Site.BaseURL }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ .Site.BaseURL }}search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  },
+  {{- else -}}
+  "@type": "Article",
+  "headline": "{{ $title }}",
+  "description": "{{ $description }}",
+  "url": "{{ $canonical }}",
+  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+  {{- if .Lastmod -}}
+  "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
+  {{- end -}}
+  "author": {
+    "@type": "Organization",
+    "name": "{{ .Site.Params.author | default "Union.ai" }}",
+    "url": "{{ .Site.BaseURL }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ .Site.Params.author | default "Union.ai" }}",
+    "url": "{{ .Site.BaseURL }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ .Site.BaseURL }}images/logo.png"
+    }
+  },
+  {{- end -}}
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ $canonical }}"
+  }
+}
+</script>

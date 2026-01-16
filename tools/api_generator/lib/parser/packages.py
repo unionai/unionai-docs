@@ -3,11 +3,35 @@ import pkgutil
 import importlib
 from sys import stderr
 from types import ModuleType
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, List, Optional, Tuple
 
 from lib.ptypes import MethodInfo, PackageInfo, VariableInfo
 from lib.parser.methods import parse_method, parse_variable
 from lib.parser.synchronicity import is_synchronicity_method, parse_synchronicity_method
+from lib.parser.syncify import is_syncify_method, parse_syncify_method
+from lib.parser.callable import is_callable, parse_callable
+
+
+class SkippedModule:
+    """Track a module that failed to import."""
+    def __init__(self, name: str, error: str):
+        self.name = name
+        self.error = error
+
+
+# Global list to track skipped modules
+_skipped_modules: List[SkippedModule] = []
+
+
+def get_skipped_modules() -> List[SkippedModule]:
+    """Return list of modules that failed to import."""
+    return _skipped_modules
+
+
+def clear_skipped_modules():
+    """Clear the list of skipped modules."""
+    global _skipped_modules
+    _skipped_modules = []
 
 
 def get_package(name: str) -> Optional[Tuple[PackageInfo, ModuleType]]:
@@ -16,10 +40,12 @@ def get_package(name: str) -> Optional[Tuple[PackageInfo, ModuleType]]:
         print(f"Importing package: {name}", file=stderr)
         package = importlib.import_module(name)
     except Exception as e:
+        error_msg = str(e)
         print(
-            f"\033[93m[WARNING]:\033[0m Could not import package '{name}': {e}",
+            f"\033[93m[WARNING]:\033[0m Could not import package '{name}': {error_msg}",
             file=stderr,
         )
+        _skipped_modules.append(SkippedModule(name, error_msg))
         return None
 
     # Add the base package
@@ -81,8 +107,12 @@ def get_functions(info: PackageInfo, pkg: ModuleType) -> List[MethodInfo]:
         method_info = None
         if is_synchronicity_method(name, member):
             method_info = parse_synchronicity_method(name, member)
+        if is_syncify_method(name, member):
+            method_info = parse_syncify_method(name, member)
         if should_include(name, member, pkg, inspect.isfunction):
             method_info = parse_method(name, member)
+        if is_callable(name, member, pkg.__name__):
+            method_info = parse_callable(name, member, pkg.__name__)
         if method_info:
             result.append(method_info)
     return result

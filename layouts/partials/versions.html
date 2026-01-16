@@ -1,0 +1,18 @@
+{{- $versions := .Site.Params.versions -}}
+{{- $currentVersion := .Site.Params.current_version | default (index $versions 0) -}}
+{{- if $versions -}}
+Version:
+<select id="version-selector" onchange="handleVersionChange(event)"
+{{- if not hugo.IsProduction -}}
+    onmouseenter="document.getElementById('verwarn').style.display = '';"
+    onmouseout="document.getElementById('verwarn').style.display = 'none';"
+    disabled
+{{- end -}}
+>
+    {{- range $i, $ver := $versions -}}
+        <option value="{{- . -}}" data-latest="{{- eq $i 0 -}}" {{- if eq . $currentVersion -}}selected disabled{{ end -}}>
+            {{- . -}}
+        </option>
+    {{- end -}}
+</select>
+{{- end -}}

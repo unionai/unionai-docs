@@ -6,9 +6,28 @@ variants: +flyte -serverless -byoc -selfmanaged
 
 # Contributing code
 
-Thank you for taking the time to contribute to Flyte!
+Thank you for your interest in Flyte!
 
-Here are some guidelines for you to follow, which will make your first and follow-up contributions easier.
+> [!NOTE]
+> This page is part of the Flyte 2 documentation.
+> If you are interested in contributing code to for Flyte 1, switch the selector at the top of the page to \*v1\*\*.
+
+## FLyte 2
+
+Flyte 2 is currently in active development.
+
+The Flyte 2 SDK source code is available on [GitHub](https://github.com/flyteorg/flyte-sdk) under the same Apache license as the original Flyte 1.
+You are welcome to take a look, [download the package](https://pypi.org/project/flyte/#history) and try running code locally.
+Keep in mind that this is still in beta and is a work in progress.
+
+The Flyte 2 backend is not yet available as open source, (but it will be soon!)
+To run Flyte 2 code now you can apply for a [beta preview of the Union 2 backend](https://www.union.ai/beta).
+
+When the Flyte 2 backend is released we will roll out a full contributor program just as we have for Flyte 1.
+
+<!--
+
+Thank you for taking the time to contribute to Flyte!
 
 TL;DR: Find the repo-specific contribution guidelines in the [Component Reference](#component-reference) section.
 
@@ -74,9 +93,9 @@ For feedback at any point in the contribution process, feel free to reach out to
 To understand how the below components interact with each other, refer to [Understand the lifecycle of a workflow](#workflow-lifecycle).
 
 > [!NOTE]
-> With the exception of `flytekit`, the below components are maintained in the [flyte monorepo](https://github.com/flyteorg/flyte).
+> Except for `flytekit`, the below components are maintained in the [`flyte` monorepo](https://github.com/flyteorg/flyte).
 
-![Dependency graph between various flyteorg repos](https://raw.githubusercontent.com/flyteorg/static-resources/main/flyte/contribution_guide/dependency_graph.png)
+![Dependency graph between various flyteorg repos](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/community/contributing-code/dependency-graph.png)
 
 ### `flyte`
 
@@ -477,7 +496,7 @@ pyflyte run --image ${FLYTE_INTERNAL_IMAGE} --remote https://raw.githubuserconte
 
 **1. Set up local Flyte cluster.**
 
-Depending on your needs, refer to one of the following guides to set up up the Flyte cluster:
+Depending on your needs, refer to one of the following guides to set up the Flyte cluster:
 
 - If you do not need to change the backend code, refer to the section on [How to Set Up a Dev Environment for Flytekit?](#how-to-setup-dev-environment-for-flytekit)
 - If you need to change the backend code, refer to the section on
@@ -575,8 +594,7 @@ psql -h localhost -p 30001 -U postgres -d flyte
 
 **4. Access the k3s dashboard.**
 
-Access the k3s dashboard at:
-<http://localhost:30080/kubernetes-dashboard>.
+Access the k3s dashboard at [http://localhost:30080/kubernetes-dashboard](http://localhost:30080/kubernetes-dashboard).
 
 **5. Access the endpoints.**
 
@@ -597,3 +615,4 @@ You can access this endpoint at:
 # replace with your specific task execution parameters
 http://localhost:30080/api/v1/task_executions/flytesnacks/development/fe92c0a8cbf684ad19a8/n0?limit=10000
 ```
+-->

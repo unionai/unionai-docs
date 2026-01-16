@@ -1,373 +1,266 @@
 ---
 title: Local setup
-weight: 2
+weight: 1
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Local setup
 
-{{< variant serverless >}}
-{{< markdown >}}
+In this section we will explain the options for configuring the `flyte` CLI and SDK to connect to your Union/Flyte instance.
 
-In [Getting started](./_index) we showed you how to run your first workflow right in the {{< key product_name >}} interface, in the browser.
+Before proceeding, make sure you have completed the steps in [Getting started](../getting-started).
+You will need to have the `uv` tool and the `flyte` Python package installed.
 
-{{< /markdown >}}
-{{< /variant >}}
+## Setting up a configuration file
 
-In this section we will set up your local environment so that you can start building and deploying {{< key product_name >}} workflows from your local machine.
+In [Getting started](../getting-started) we used the `flyte create config` command to create a configuration file at `./.flyte/config.yaml`.
 
-## Install `uv`
-
-First, [install `uv`](https://docs.astral.sh/uv/#getting-started).
-
-> [!NOTE] Using `uv` as best practice
-> The `uv` tool is our [recommended package and project manager](https://docs.astral.sh/uv/).
-> It replaces `pip`, `pip-tools`, `pipx`, `poetry`, `pyenv`, `twine`, `virtualenv`, and more.
->
-> You can, of course, use other tools,
-> but all discussion in these pages will use `uv`,
-> so you will have to adapt the directions as appropriate.
-
-## Ensure the correct version of Python is installed
-
-{{< key kit_name >}} requires Python `>=3.9,<3.13`.
-We recommend using `3.12`.
-You can install it with:
-
-```shell
-$ uv python install 3.12
-```
-
-> [!NOTE] Uninstall higher versions of Python
-> When installing Python packages "as tools" (as we do below with the `{{< key kit >}}`),
-> `uv` will default to the latest version of Python available on your system.
-> If you have a version `>=3.13` installed, you will need to uninstall it since `{{< key kit >}}` requires `>=3.9,<3.13`.
-
-## Install the `{{< key cli >}}` CLI
-
-Once `uv` is installed, use it to install the `{{< key cli >}}` CLI by installing the `{{< key kit >}}` Python package:
-
-```shell
-$ uv tool install {{< key kit >}}
-```
-
-This will make the `{{< key cli >}}` CLI globally available on your system.
-
-> [!NOTE] Add the installation location to your PATH
-> `uv` installs tools in `~/.local/bin` by default.
-> Make sure this location is in your `PATH`, so you can run the `{{< key cli >}}` command from anywhere.
-> `uv` provides a convenience command to do this: `uv tool update-shell`.
->
-> Note that later in this guide we will be running the `{{< key cli >}}` CLI to run your workflows.
-> In those cases you will be running `{{< key cli >}}` within the Python virtual environment of your workflow project.
-> You will not be using this globally installed instance of `{{< key cli >}}`.
-> This instance of `{{< key cli >}}` is only used during the configuration step, below, when no projects yet exist.
-
-{{< variant flyte >}}
-{{< markdown >}}
-
-## Install Docker and get access to a container registry
-
-Flyte tasks are run in containers. Every container requires a container image that defines its software environment.
-When developing and running Flyte tasks and workflows, an important part of the process is building those images and pushing them to a container registry.
-Your Flyte installation then pulls down these images when it spins up the containers that run your tasks.
-
-To build and push the images you need to have Docker (or an equivalent container runtime) installed on your local machine.
-
-Go to [the Docker website](https://docs.docker.com/get-docker/) for installation directions.
-
-You will also need access to a container registry where you can push your images.
-Furthermore, the pushed images will need to be accessible to the Flyte installation you are using
-(The registry must be accessible and the images themselves must also have the appropriate permissions.
-For example, a public registry like `ghcr.io` with the images set to public, would work).
-
-## Install `flytectl` to set up a local cluster
-
-For production use you will need to install Flyte in your cloud infrastructure (see [Deployment](../../deployment)).
-Here we are using a local cluster for experimentation and demonstration purposes.
-
-To set up a local cluster you must first install the `flytectl` CLI.
-
-> [!NOTE] Flytectl vs Pyflyte
-> `flytectl` is different from the `pyflyte`.
->
-> `pyflyte` is a Python program and part of the `flytekit` SDK
-> It is the primary command-line tool used during Flyte development.
->
-> `flytectl` is a compiled binary (written in Go) and used for performing certain administrative tasks.
-> (see [Flytectl](../../api-reference/uctl-cli) for details)
-
-To install `flytectl`, follow these instructions:
-
-
-{{< /markdown >}}
-{{< tabs >}}
-{{< tab "macOS" >}}
-{{< markdown >}}
-
-To install `flytectl` on a Mac, use [Homebrew](https://brew.sh/), `curl`, or download the binary manually.
-
-**Homebrew**
-
-```shell
-$ brew tap flyteorg/homebrew-tap
-$ brew install flytectl
-```
-
-**curl**
-
-To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
-
-```shell
-$ curl -sL https://ctl.flyte.org/install | sudo bash -s -- -b /usr/local/bin
-```
-
-**Manual download**
-
-To download manually, see the [`flytectl` releases](https://github.com/flyteorg/flytectl/releases).
-
-{{< /markdown >}}
-{{< /tab >}}
-
-{{< tab "Linux" >}}
-{{< markdown >}}
-
-To install `flytectl` on Linux, use `curl` or download the binary manually.
-
-**curl**
-
-To use `curl`, set `BINDIR` to the installation location (it defaults to `./bin`) and run the following command
-(note that [jq](https://jqlang.org/) needs to be installed to run this script):
-
-```shell
-$ curl -sL https://ctl.flyte.org/install | sudo bash -s -- -b /usr/local/bin
-```
-
-**Manual download**
-
-To download manually, see the [`flytectl` releases](https://github.com/flyteorg/flytectl/releases).
-
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "Windows" >}}
-{{< markdown >}}
-
-To install `flytectl` on Windows, use `curl` , or download the binary manually.
-
-**curl**
-
-To use `curl`, in a Linux shell (such as [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)), set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
-
-```shell
-$ curl -sL https://ctl.flyte.org/install | sudo bash -s -- -b /usr/local/bin
-```
-
-**Manual download**
-
-To download manually, see the [`flytectl` releases](https://github.com/flyteorg/flytectl/releases).
-
-{{< /markdown >}}
-{{< /tab >}}
-{{< /tabs >}}
-{{< markdown >}}
-
-## Start Docker and the local cluster
-
-Once you have installed Docker and `flytectl`, do the following:
-
-1. Start the Docker daemon.
-
-2. Use `flytectl` to set up a local Flyte cluster by running:
-
-```shell
-$ flytectl demo start
-```
-
-This will start a local Flyte cluster on your machine and place a configuration file in `~/.flyte/config-sandbox.yaml`
-that contains the connection information to connect `pyflyte` (and `flytectl`) to that cluster.
-
-The local Flyte cluster will be available at `localhost:30080`.
-
-> [!NOTE] Try Flyte technology through {{< key product_name >}} Serverless
-> Alternatively, you can try using Flyte technology through {{< key product_name >}} Serverless.
-> With {{< key product_name >}} Serverless you do not need to install a local cluster and can start
-> experimenting immediately on a full cloud deployment.
-> You can even use the Workspaces in-browser IDE to quickly iterate on code.
-> See [{{< key product_name >}} Serverless > Getting started]({{< docs_home serverless >}}/user-guide/getting-started) for more details.
-
-{{< /markdown >}}
-{{< /variant >}}
 {{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
-
-## Configure the connection to your cluster
-
-Next, you need to create a configuration file that contains your {{< key product_name >}} connection information:
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant serverless >}}
-{{< markdown >}}
-
 ```shell
-$ {{< key cli >}} create login --serverless
+flyte create config \
+    --endpoint my-org.my-company.com \
+    --project my-project \
+    --domain development \
+    --builder remote
 ```
-
-This will create the `~/.union/config.yaml` with the configuration information to connect to {{< key product_name >}} Serverless.
-
-> [!NOTE] These directions apply to {{< key product_name >}} Serverless
-> To configure a connection to your {{< key product_name >}} instance in {{< key product_name >}} BYOC, see the
-> [BYOC version of this page]({{< docs_home byoc >}}/user-guide/getting-started/local-setup#configure-the-connection-to-your-cluster).
-> To configure a connection to your {{< key product_name >}} instance in {{< key product_name >}} Self-managed, see the
-> [Self-managed version of this page]({{< docs_home selfmanaged >}}/user-guide/getting-started/local-setup#configure-the-connection-to-your-cluster).
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant byoc selfmanaged >}}
-{{< markdown >}}
-
-```shell
-$ {{< key cli >}} create login --host <union-host-url>
-```
-
-`<union-host-url>` is the URL of your {{< key product_name >}} instance, mentioned in [Getting started](.#gather-your-credentials).
-
-This will create the `~/.union/config.yaml` with the configuration information to connect to your {{< key product_name >}} instance.
-
-> [!NOTE]
-> These directions apply to {{< key product_name >}} BYOC and Self-managed, where you connect to your own dedicated {{< key product_name >}} instance.
-> To configure a connection to {{< key product_name >}} Serverless, see the
-> [Serverless version of this page]({{< docs_home serverless >}}/user-guide/getting-started/local-setup#configure-the-connection-to-your-cluster).
-
-See [Running in a local cluster](../development-cycle/running-in-a-local-cluster) for more details on the format of the `yaml` file.
-<!-- TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content -->
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant serverless byoc selfmanaged >}}
-{{< markdown >}}
-
-By default, the {{< key cli_name >}} CLI will look for a configuration file at `~/.union/config.yaml`. (See [{{< key cli_name >}} CLI](../../api-reference/union-cli) for more details.)
-You can override this behavior to specify a different configuration file by setting the `{{< key config_env >}}` environment variable:
-
-```shell
-$ export {{< key config_env >}}=~/.my-config-location/my-config.yaml
-```
-
-Alternatively, you can always specify the configuration file on the command line when invoking `{{< key cli >}}` by using the `--config` flag.
-For example:
-
-```shell
-$ {{< key cli >}} --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
-```
-
-> [!WARNING]
-> If you have previously used {{< key product_name >}}, you may have configuration files left over that will interfere with
-> access to {{< key product_name >}} Serverless through the {{< key cli_name >}} CLI tool.
-> Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment
-> variables `UNIONAI_CONFIG` and `UNION_CONFIG` to avoid conflicts.
-
-See [Running in a local cluster](../development-cycle/running-in-a-local-cluster) for more details on
-the format of the `yaml` file.
-<!-- TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content -->
-
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
-
-## Configure the connection to your cluster
-
-To configure the connection from `pyflyte` and `flytectl` to your Flyte instance, set the `FLYTECTL_CONFIG` environment variable to point to the configuration file that `flytectl` created:
-
 ```shell
-$ export FLYTECTL_CONFIG=~/.flyte/config-sandbox.yaml
+flyte create config \
+    --endpoint my-org.my-company.com \
+    --project my-project \
+    --domain development \
+    --builder local
 ```
-
-This will allow you to interact with your local Flyte cluster.
-
-To interact with a Flyte cluster in the cloud you will need to adjust the configuration
-and point the environment variable to the new configuration file.
-
-Alternatively, you can always specify the configuration file on the command line when invoking `pyflyte` or `flytectl` by using the `--config` flag.
-For example:
-
-```shell
-$ pyflyte --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
-```
-
-See [Running in a local cluster](../development-cycle/running-in-a-local-cluster) for more details on the format of the `yaml` file.
-<!-- TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content -->
-
 {{< /markdown >}}
 {{< /variant >}}
 
-## Check your CLI configuration
+This command creates a file called `./flyte/config.yaml` in your current working directory:
 
-To check your CLI configuration, run:
-
-```shell
-$ {{< key cli >}} info
-```
-
-You should get a response like this:
-
-{{< variant byoc selfmanaged >}}
+{{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
-
-```shell
-$ {{< key cli >}} info
-╭────────────────────────────────────────────────────────── {{< key product_name >}} CLI Info ─────────────────────────────────────────────────────────────╮
-│                                                                                                                                       │
-│ {{< key cli >}} is the CLI to interact with {{< key product_name >}}. Use the CLI to register, create and track task and workflow executions locally and remotely. │
-│                                                                                                                                       │
-│ {{< key product_name >}} Version    : 0.1.132                                                                                                            │
-│ Flytekit Version : 1.14.3                                                                                                             │
-│ {{< key product_name >}} Endpoint   : <union-host-url>                                                                                                   │
-│ Config Source    : <path-to-config> file                                                                                              │
-│                                                                                                                                       │
-╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+```yaml
+admin:
+  endpoint: dns:///my-org.my-company.com
+image:
+  builder: remote
+task:
+  domain: development
+  org: my-org
+  project: my-project
 ```
-
-For more details on connection configuration see [Authentication](../development-cycle/authentication).
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant serverless >}}
-{{< markdown >}}
-
-```shell
-$ {{< key cli >}} info
-╭────────────────────────────────────────────────────────── {{< key product_name >}} CLI Info ─────────────────────────────────────────────────────────────╮
-│                                                                                                                                       │
-│ {{< key cli >}} is the CLI to interact with {{< key product_name >}}. Use the CLI to register, create and track task and workflow executions locally and remotely. │
-│                                                                                                                                       │
-│ {{< key product_name >}} Version    : 0.1.132                                                                                                            │
-│ Flytekit Version : 1.14.3                                                                                                             │
-│ {{< key product_name >}} Endpoint   : serverless-1.us-east-2.s.union.ai                                                                                  │
-│ Config Source    : <path-to-config> file                                                                                              │
-│                                                                                                                                       │
-╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-```
-
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
-
-```shell
-$ pyflyte info
-╭────────────────────────────────────────────────────────── Flytekit CLI Info ──────────────────────────────────────────────────────────╮
-│                                                                                                                                       │
-│ This CLI is meant to be used within a virtual environment that has Flytekit installed. Ideally it is used to iterate on your Flyte    │
-│ workflows and tasks.                                                                                                                  │
-│                                                                                                                                       │
-│ Flytekit Version: 1.15.0                                                                                                              │
-│ Flyte Backend Version: <flyte-backend-version>                                                                                        │
-│ Flyte Backend Endpoint: <flyte-host-url>                                                                                              │
-│                                                                                                                                       │
-╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+```yaml
+admin:
+  endpoint: dns:///my-org.my-company.com
+image:
+  builder: local
+task:
+  domain: development
+  org: my-org
+  project: my-project
 ```
-
 {{< /markdown >}}
 {{< /variant >}}
+
+{{< dropdown title="💡 See full example using all available options" >}}
+
+{{< variant byoc selfmanaged serverless >}}
+{{< markdown >}}
+The example below creates a configuration file called `my-config.yaml` in the current working directory with all of the available options
+```shell
+flyte create config \
+    --endpoint my-org.my-company.com \
+    --insecure \
+    --builder remote \
+    --domain development \
+    --org my-org \
+    --project my-project \
+    --output my-config.yaml \
+    --force
+```
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+The example below creates a configuration file called `my-config.yaml` in the current working directory.
+```shell
+flyte create config \
+    --endpoint my-org.my-company.com \
+    --insecure \
+    --builder local \
+    --domain development \
+    --org my-org \
+    --project my-project \
+    --output my-config.yaml \
+    --force
+```
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< markdown >}}
+See the [Reference](../../api-reference/flyte-cli#flyte-create-config) section for details on the available parameters.
+{{< /markdown >}}
+
+{{< /dropdown >}}
+
+{{< dropdown title="ℹ️ Notes about the properties in the config file" >}}
+{{< markdown >}}
+
+**`admin` section**: contains the connection details for your Union/Flyte instance.
+
+* `admin.endpoint` is the URL (always with `dns:///` prefix) of your Union/Flyte instance.
+If your instance UI is found at https://my-org.my-company.com, the actual endpoint used in this file would be `dns:///my-org.my-company.com`.
+
+* `admin.insecure` indicates whether to use an insecure connection (without TLS) to the Union/Flyte instance.
+A setting of `true` is almost always only used for connecting to a local instance on your own machine.
+
+**`image` section**: contains the configuration for building Docker images for your tasks.
+
+* `image.builder` specifies the image builder to use for building Docker images for your tasks.
+  * For Union instances this is usually set to `remote`, which means that the images will be built on Union's infrastructure using the Union `ImageBuilder`.
+  * For Flyte OSS instances, `ImageBuilder` is not available, so this property must be set to `local`.
+    This means that the images will be built locally on your machine.
+    You need to have Docker installed and running for this to work.
+    See [Image building](../task-configuration/container-images#image-building) for details.
+
+**`task` section**: contains the configuration for running tasks on your Union/Flyte instance.
+
+* `task.domain` specifies the domain in which the tasks will run.
+Domains are used to separate different environments, such as `development`, `staging`, and `production`.
+
+* `task.org` specifies the organization in which the tasks will run. The organization is usually synonymous with the name of the Union instance you are using, which is usually the same as the first part of the `admin.endpoint` URL.
+
+* `task.project` specifies the project in which the tasks will run. The project you specify here will be the default project to which tasks are deployed if no other project is specified. The project you specify must already exist on your Union/Flyte instance (it will not be auto-created on first deploy).
+
+<!-- TODO: add link to project creation when available -->
+{{< /markdown >}}
+{{< /dropdown >}}
+
+## Using the configuration file
+
+You can use the configuration file either explicitly by referencing it directly from a CLI or Python command, or implicitly by placing it in a specific location or setting an environment variable.
+
+### Specify a configuration file explicitly
+
+When using the `flyte` CLI, you can specify the configuration file explicitly by using the `--config` or `-c` parameter.
+
+You can explicitly specify the configuration file when running a `flyte` CLI command by using the `--config` parameter, like this:
+
+```shell
+flyte --config my-config.yaml run hello.py main
+```
+
+or just using the `-c` shorthand:
+
+```shell
+flyte -c my-config.yaml run hello.py main
+```
+
+When invoking flyte commands programmatically, you have to first initialize the Flyte SDK with the configuration file.
+
+To initialize with an explicitly specified configuration file, use [`flyte.init_from_config`](../../api-reference/flyte-sdk/packages/flyte#init_from_config):
+
+```python
+flyte.init_from_config("my-config.yaml")
+```
+
+Then you can continue with other `flyte` commands, such as running the main task:
+
+```python
+run = flyte.run(main)
+```
+
+### Use the configuration file implicitly
+
+You can also use the configuration file implicitly by placing it in a specific location or setting an environment variable.
+
+You can use the `flyte CLI` without an explicit `--config` like this:
+
+```shell
+flyte run hello.py main
+```
+
+You can also initializing the Flyte SDK programmatically without specifying a configuration file, like this:
+
+```python
+flyte.init_from_config()
+```
+
+In these cases, the SDK will search in the following order until it finds a configuration file:
+
+* `./config.yaml` (i.e., in the current working directory).
+* `./flyte/config.yaml` (i.e., in the `.flyte` directory in the current working directory).
+* `UCTL_CONFIG` (a file pointed to by this environment variable).
+* `FLYTECTL_CONFIG` (a file pointed to by this environment variable)
+* `~/.union/config.yaml`
+* `~/.flyte/config.yaml`
+
+### Checking your configuration
+
+You can check your current configuration by running the following command:
+
+```shell
+flyte get config
+```
+
+This will return the current configuration as a serialized Python object. For example
+
+```shell
+CLIConfig(
+    Config(
+        platform=PlatformConfig(endpoint='dns:///my-org.my-company.com', scopes=[]),
+        task=TaskConfig(org='my-org', project='my-project', domain='development'),
+        source=PosixPath('/Users/me/.flyte/config.yaml')
+    ),
+    <rich_click.rich_context.RichContext object at 0x104fb57f0>,
+    log_level=None,
+    insecure=None
+)
+```
+
+## Inline configuration
+
+### With `flyte` CLI
+
+You can also use Flyte SDK with inline configuration parameters, without using a configuration file.
+
+When using the `flyte` CLI, some parameters are specified after the top level command (i.e., `flyte`) while other are specified after the sub-command (for example, `run`).
+
+For example, you can run a workflow using the following command:
+
+```shell
+flyte \
+    --endpoint my-org.my-company.com \
+    --org my-org \
+    run \
+    --domain development \
+    --project my-project
+    hello.py \
+    main
+```
+
+See the [Flyte CLI reference](../../api-reference/flyte-cli) for details.
+
+When using the Flyte SDK programmatically, you can use the [`flyte.init`](../../api-reference/flyte-sdk/packages/flyte#init) function to specify the backend endpoint and other parameters directly in your code.
+
+### With `flyte` SDK
+
+To initialize the Flyte SDK with inline parameters, you can use the [`flyte.init`](../../api-reference/flyte-sdk/packages/flyte#init) function like this:
+
+```python
+flyte.init(
+    endpoint="dns:///my-org.my-company.com",
+    org="my-org",
+    project="my-project",
+    domain="development",
+)
+```
+
+See the [`flyte.init` reference](../../api-reference/flyte-sdk/packages/flyte#init) for details.

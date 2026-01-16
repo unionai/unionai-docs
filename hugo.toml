@@ -6,8 +6,33 @@
 # For variant-specific settings, use config.<variant>.toml.
 
 languageCode = 'en-us'
-theme = 'union'
 disableKinds = ["RSS"]
+enableRobotsTXT = true
+enableEmoji = true
+
+# Enable sitemap generation
+[outputs]
+  # 'home': The main site homepage. 'HTML' for the page, 'RSS' for feed readers.
+  home = ["HTML", "RSS"]
+
+  # 'page': Individual content pages. 'HTML' for the page, 'MD' for markdown processing.
+  page = ["HTML", "MD"]
+
+  # 'section': Top-level content sections (e.g., docs, tutorials). 'HTML' for rendering, 'RSS' for section-specific feeds, 'MD' for markdown processing.
+  section = ["HTML", "RSS", "MD"]
+
+  # 'taxonomy': Used for tag/category listing pages. 'HTML' for rendering, 'RSS' for taxonomy feeds.
+  taxonomy = ["HTML", "RSS"]
+
+  # 'robotsTXT': Generate robots.txt file for search engine crawling
+  robotsTXT = ["ROBOTS"]
+
+[outputFormats]
+  [outputFormats.MD]
+    mediaType = "text/plain"
+    baseName = "index"
+    path = "tmp-md"
+    isPlainText = true
 
 [params]
 _merge = "deep"
@@ -23,22 +48,7 @@ highlight_active = false
 #----------------------------------------------------------
 # Search
 
-[params.search.flyte]
-app_id = "854NZC4U4K"
-search_key = "a013df09b48c1317f0bad3605c1840e4"
-index_name = "union"
-
-[params.search.byoc]
-app_id = "JXAX1VOSS0"
-search_key = "f90406df1c8707c844facf29564446dc"
-index_name = "union"
-
-[params.search.selfmanaged]
+[params.search]
 app_id = "ZK72K15QRI"
 search_key = "59e5451a3db8540ee70dc8dd04fe6287"
-index_name = "union"
-
-[params.search.serverless]
-app_id = "L21F4ROAJM"
-search_key = "f34fa663e9e327dd7e79526567e5027f"
 index_name = "union"

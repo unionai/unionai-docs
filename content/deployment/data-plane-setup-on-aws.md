@@ -23,18 +23,18 @@ Ensure that you are logged into the desired AWS account and then select the appr
 
 | Region         | Launch Stack                                                                                                                                                                                                                                                                                                                                                                                                         |
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `us-east-1`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.12%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
-| `us-east-2`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.12%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
-| `us-west-2`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.12%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
-| `eu-west-1`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-west-1.console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.12%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
-| `eu-west-2`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-west-2.console.aws.amazon.com/cloudformation/home?region=eu-west-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.12%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
-| `eu-central-1` | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-central-1.console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.12%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin) |
+| `us-east-1`    | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.13%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
+| `us-east-2`    | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.13%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
+| `us-west-2`    | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.13%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
+| `eu-west-1`    | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://eu-west-1.console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.13%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
+| `eu-west-2`    | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://eu-west-2.console.aws.amazon.com/cloudformation/home?region=eu-west-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.13%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
+| `eu-central-1` | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://eu-central-1.console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.13%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin) |
 
 > [!NOTE] CloudFormation template
 > All of these buttons launch the same CloudFormation template, just in different regions.
 > The CloudFormation template itself is available at this URL:
 >
-> [https://union-public.s3.amazonaws.com/templates/v0.12/union-ai-admin-role.template.yaml](https://union-public.s3.amazonaws.com/templates/v0.11/union-ai-admin-role.template.yaml)
+> [https://union-public.s3.amazonaws.com/templates/v0.13/union-ai-admin-role.template.yaml](https://union-public.s3.amazonaws.com/templates/v0.13/union-ai-admin-role.template.yaml)
 >
 > For details on the functionality enabled by each of the permissions,
 > see the [release notes](https://github.com/unionai/union-cloud-infrastructure/releases).
@@ -44,11 +44,12 @@ Ensure that you are logged into the desired AWS account and then select the appr
 Once you have selected **Launch Stack**, you will be taken to the CloudFormation interface. Do the following:
 
 1. Check the profile name in the top right corner to confirm that you are in the correct account.
-1. Leave the default values in place:
-   - `union-ai-admin` for **Cross Account Role Name**.
+2. Leave the default values in place:
    - `UnionCloudAccess` for the **Stack Name**.
-1. Select the checkbox indicating that you acknowledge that AWS CloudFormation may create IAM resources with custom names.
-1. Select **Create Stack**.
+   - `union-ai-admin` for **Cross Account Role Name**.
+3. Enter the `external ID` provided by {{< key product_name >}} team for **ExternalId**  
+4. Select the checkbox indicating that you acknowledge that AWS CloudFormation may create IAM resources with custom names.
+5. Select **Create Stack**.
 
 ### Share the role ARN
 
@@ -417,12 +418,12 @@ You will use this policy in a later step.
             "servicequotas:GetServiceQuota",
             "cloudwatch:GetMetricStatistics"
          ],
-         "Resource":"_",
+         "Resource":"*",
          "Effect":"Allow",
          "Sid":"VisualEditor12"
       },
       {
-         "Action":"dynamodb:_",
+         "Action":"dynamodb:*",
          "Resource":[
             "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountID}:table/opta-*"
          ],
@@ -430,12 +431,12 @@ You will use this policy in a later step.
          "Sid":"VisualEditor13"
       },
       {
-         "Action":"s3:_",
+         "Action":"s3:*",
          "Resource":[
-            "arn:aws:s3:::opta-_",
-            "arn:aws:s3:::opta-_/",
-            "arn:aws:s3:::union-_",
-            "arn:aws:s3:::union-_/"
+            "arn:aws:s3:::opta-*",
+            "arn:aws:s3:::opta-*/",
+            "arn:aws:s3:::union-*",
+            "arn:aws:s3:::union-*/"
          ],
          "Effect":"Allow",
          "Sid":"VisualEditor14"
@@ -448,7 +449,7 @@ You will use this policy in a later step.
             "events:UntagResource"
          ],
          "Resource":[
-            "arn:aws:events:${AWS::Region}:${AWS::AccountID}:rule/Karpenter_"
+            "arn:aws:events:${AWS::Region}:${AWS::AccountID}:rule/Karpenter*"
          ],
          "Effect":"Allow"
       },
@@ -510,7 +511,7 @@ You will use this policy in a later step.
             "ec2:DeleteLaunchTemplateVersions",
             "ec2:ModifyLaunchTemplate"
          ],
-         "Resource":"_",
+         "Resource":"*",
          "Effect":"Allow",
          "Sid":"self1"
       },
@@ -527,7 +528,7 @@ You will use this policy in a later step.
             "autoscaling:DescribeTags",
             "autoscaling:DeleteTags"
          ],
-         "Resource":"_",
+         "Resource":"*",
          "Effect":"Allow",
          "Sid":"self2"
       },
@@ -589,7 +590,7 @@ You will use this policy in a later step.
             "ec2:DescribeVpcEndpoints",
             "ec2:DescribePrefixLists"
          ],
-         "Resource":"_",
+         "Resource":"*",
          "Effect":"Allow",
          "Sid":"AllowVpcEndpointReadPermissions"
       },
@@ -615,7 +616,7 @@ You will use this policy in a later step.
             "ecr:DescribeImages"
          ],
          "Resource":[
-            "arn:aws:ecr:_:${AWS::AccountID}:repository/union/_"
+            "arn:aws:ecr:*:${AWS::AccountID}:repository/union/*"
          ],
          "Effect":"Allow",
          "Sid":"UnionImageBuilderRepoAdmin"
@@ -624,7 +625,7 @@ You will use this policy in a later step.
          "Action":[
             "ecr:GetAuthorizationToken"
          ],
-         "Resource":"_",
+         "Resource":"*",
          "Effect":"Allow",
          "Sid":"UnionAdminAuthToken"
       }
@@ -710,3 +711,323 @@ Once your VPC is set up, you will need to provide the {{< key product_name >}} t
   - Example: `subnet-d7d3ce57d1a546401`
 - **Private subnet IDs** (one per availability zone)
   - Example: `subnet-bc2eafd5c11180be0`
+
+## Private EKS endpoint
+
+The requirements described so far, enable Union to operate with a `Public` or `Public and Private` EKS endpoint. 
+
+To deploy the Union operator in your EKS cluster and to perform troubleshooting at the Kubernetes layer, Union requires access to the [EKS endpoint](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html). 
+
+> This connection is not used for executions, only for cluster onboarding, upgrades and support.
+
+For additional security, the EKS endpoint can be configured as `Private` only. In such case, Union implements a VPC Endpoint connection over [Private Link](https://docs.aws.amazon.com/vpc/latest/userguide/endpoint-services-overview.html), a lightweight yet robust mechanism to ensure management traffic doesn't leave the AWS network.
+
+When AWS rolls out changes to the EKS endpoint, its IP address might change. To handle this and prevent any disconnect, the Union automation sets up a "jumper" ECS container in the customer account which forwards the incoming requests to the EKS Endpoint, acting as a reverse proxy, while a Network Load Balancer exposes an stable endpoint address. In this way, you get the security of a fully private connection and a reliable channel for Union staff to manage your cluster proactively or troubleshoot issues when needed.
+
+![](../_static/images/deployment/data-plane-setup-on-aws/aws_private_link_architecture.png)
+
+For this setup, there are additional requirements you'll need to complete in your AWS account:
+
+### Create additional roles for ECS
+
+#### ECS Task Execution role
+- **Role name**: `unionai-access-<REGION>-ecs-execution-role` 
+- **Attached policy**: `AmazonECSTaskExecutionRolePolicy` (built-in policy)
+- **Trust Relationship**:
+```json
+ {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "ecs-tasks.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+```
+
+#### ECS Task Definition role
+- **Role name**: `unionai-access-<REGION>-ecs-task-role`  
+- **Attached policy**:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowSSMMessageChannels",
+            "Effect": "Allow",
+            "Action": [
+                "ssmmessages:OpenDataChannel",
+                "ssmmessages:OpenControlChannel",
+                "ssmmessages:CreateDataChannel",
+                "ssmmessages:CreateControlChannel"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "UpdateInstanceInfo",
+            "Effect": "Allow",
+            "Action": "ssm:UpdateInstanceInformation",
+            "Resource": "*"
+        }
+    ]
+}
+```
+- **Trust Relationship**:
+```json
+ {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "ecs-tasks.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+```
+### Attach a new IAM policy to the Union role
+
+Add the following permissions as a new IAM policy attached to the `union-ai-admin` role (described in the [Prepare the policy document](#prepare-the-policy-documents) section) , replacing `REGION` and `ACCOUNT_ID` to match your environment:
+
+```json
+{
+    "Statement": [
+        {
+            "Action": [
+                "iam:GetRole"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:iam::<<ACCOUNT_ID>>:role/unionai-access-<<REGION>>-ecs-execution-role",
+                "arn:aws:iam::<<ACCOUNT_ID>>:role/unionai-access-<<REGION>>-ecs-task-role"
+            ],
+            "Sid": "ECSTaskRoles"
+        },
+        {
+            "Action": [
+                "application-autoscaling:DescribeScalableTargets",
+                "application-autoscaling:DescribeScalingActivities",
+                "application-autoscaling:DescribeScalingPolicies",
+                "cloudwatch:GetMetricData",
+                "cloudwatch:GetMetricStatistics",
+                "cloudwatch:ListMetrics",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DescribeSecurityGroups",
+                "ec2:DescribeSubnets",
+                "ec2:DescribeVpcAttribute",
+                "ec2:DescribeVpcEndpoints",
+                "ec2:DescribeVpcEndpointConnections",
+                "ec2:DescribeVpcEndpointServiceConfigurations",
+                "ec2:DescribeVpcs",
+                "ec2:DescribeInstances",
+                "ec2:DescribeInstanceStatus",
+                "ec2:GetConsoleOutput",
+                "ecs:DeregisterTaskDefinition",
+                "ecs:DescribeContainerInstances",
+                "ecs:DescribeServiceDeployments",
+                "ecs:DescribeServices",
+                "ecs:DescribeTaskDefinition",
+                "ecs:DescribeTasks",
+                "ecs:GetTaskProtection",
+                "ecs:ListClusters",
+                "ecs:ListServices",
+                "ecs:ListTaskDefinitionFamilies",
+                "ecs:ListTaskDefinitions",
+                "ecs:ListTasks",
+                "eks:DescribeClusterVersions",
+                "elasticloadbalancing:DescribeListeners",
+                "elasticloadbalancing:DescribeLoadBalancerAttributes",
+                "elasticloadbalancing:DescribeLoadBalancers",
+                "elasticloadbalancing:DescribeTags",
+                "elasticloadbalancing:DescribeTargetGroupAttributes",
+                "elasticloadbalancing:DescribeTargetGroups",
+                "elasticloadbalancing:DescribeTargetHealth",
+                "logs:DescribeLogGroups",
+                "servicediscovery:ListNamespaces",
+                "iam:SimulatePrincipalPolicy",
+                "ssm:StartSession"
+            ],
+            "Effect": "Allow",
+            "Resource": "*",
+            "Sid": "GlobalPermissions"
+        },
+        {
+            "Action": [
+                "ec2:AcceptVpcEndpointConnections",
+                "ec2:CreateTags",
+                "ec2:CreateVpcEndpointServiceConfiguration",
+                "ec2:DeleteVpcEndpointServiceConfigurations",
+                "ec2:DescribeVpcEndpointServicePermissions",
+                "ec2:ModifyVpcEndpointServiceConfiguration",
+                "ec2:ModifyVpcEndpointServicePermissions",
+                "ec2:RejectVpcEndpointConnections",
+                "ec2:StartVpcEndpointServicePrivateDnsVerification",
+                "vpce:AllowMultiRegion"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:ec2:<<REGION>>:<<ACCOUNT_ID>>:vpc-endpoint-service/*",
+            "Sid": "EC2ResourceSpecific"
+        },
+        {
+            "Action": [
+                "ec2:AuthorizeSecurityGroupEgress",
+                "ec2:AuthorizeSecurityGroupIngress",
+                "ec2:CreateSecurityGroup",
+                "ec2:CreateTags",
+                "ec2:DeleteSecurityGroup",
+                "ec2:RevokeSecurityGroupEgress"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:ec2:<<REGION>>:<<ACCOUNT_ID>>:security-group/*",
+                "arn:aws:ec2:<<REGION>>:<<ACCOUNT_ID>>:vpc/*"
+            ],
+            "Sid": "EC2SecurityGroups"
+        },
+        {
+            "Action": [
+                "eks:AccessKubernetesApi",
+                "eks:DeleteNodegroup",
+                "eks:DescribeCluster",
+                "eks:DescribeNodegroup"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:eks:<<REGION>>:<<ACCOUNT_ID>>:cluster/*",
+            "Sid": "EKSClusters"
+        },
+        {
+            "Action": [
+                "acm:AddTagsToCertificate",
+                "acm:DeleteCertificate",
+                "acm:DescribeCertificate",
+                "acm:ListTagsForCertificate",
+                "acm:RequestCertificate"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:acm:<<REGION>>:<<ACCOUNT_ID>>:certificate/*",
+            "Sid": "ACMCertificates"
+        },
+        {
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:DeleteLogGroup",
+                "logs:DescribeLogGroups",
+                "logs:FilterLogEvents",
+                "logs:GetLogEvents",
+                "logs:ListTagsForResource",
+                "logs:PutRetentionPolicy",
+                "logs:TagResource",
+                "logs:UntagResource"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:logs:<<REGION>>:<<ACCOUNT_ID>>:log-group:/ecs/unionai/proxy-*",
+                "arn:aws:logs:<<REGION>>:<<ACCOUNT_ID>>:log-group::log-stream"
+            ],
+            "Sid": "LogGroups"
+        },
+        {
+            "Action": [
+                "elasticloadbalancing:AddTags",
+                "elasticloadbalancing:CreateListener",
+                "elasticloadbalancing:CreateLoadBalancer",
+                "elasticloadbalancing:CreateTargetGroup",
+                "elasticloadbalancing:DescribeListeners",
+                "elasticloadbalancing:DescribeLoadBalancerAttributes",
+                "elasticloadbalancing:DescribeLoadBalancers",
+                "elasticloadbalancing:DescribeTargetGroups",
+                "elasticloadbalancing:DescribeTargetGroupAttributes",
+                "elasticloadbalancing:DescribeTags",
+                "elasticloadbalancing:DeleteListener",
+                "elasticloadbalancing:DeleteLoadBalancer",
+                "elasticloadbalancing:DeleteTargetGroup",
+                "elasticloadbalancing:ModifyLoadBalancerAttributes",
+                "elasticloadbalancing:ModifyTargetGroup",
+                "elasticloadbalancing:ModifyTargetGroupAttributes"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:elasticloadbalancing:<<REGION>>:<<ACCOUNT_ID>>:loadbalancer/net/unionai-access-*/*",
+                "arn:aws:elasticloadbalancing:<<REGION>>:<<ACCOUNT_ID>>:targetgroup/unionai-access-*/*",
+                "arn:aws:elasticloadbalancing:<<REGION>>:<<ACCOUNT_ID>>:listener/net/unionai-access-*/*"
+            ],
+            "Sid": "LoadBalancer"
+        },
+        {
+            "Action": [
+                "ecs:CreateCluster",
+                "ecs:CreateService",
+                "ecs:DeleteCluster",
+                "ecs:DeleteService",
+                "ecs:DescribeClusters",
+                "ecs:DescribeContainerInstances",
+                "ecs:DescribeServices",
+                "ecs:DescribeServiceDeployments",
+                "ecs:DescribeServiceRevisions",
+                "ecs:DescribeTaskDefinition",
+                "ecs:ExecuteCommand",
+                "ecs:ListClusters",
+                "ecs:ListTagsForResource",
+                "ecs:ListTaskDefinitions",
+                "ecs:ListServices",
+                "ecs:RegisterTaskDefinition",
+                "ecs:TagResource",
+                "ecs:UntagResource",
+                "ecs:UpdateService",
+                "ecs:StartTask",
+                "ecs:StopTask"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:ecs:<<REGION>>:<<ACCOUNT_ID>>:cluster/unionai-access-*",
+                "arn:aws:ecs:<<REGION>>:<<ACCOUNT_ID>>:service/unionai-access-*/*",
+                "arn:aws:ecs:<<REGION>>:<<ACCOUNT_ID>>:task/unionai-access-*/*",
+                "arn:aws:ecs:<<REGION>>:<<ACCOUNT_ID>>:task-definition/unionai-access-*:*"
+            ],
+            "Sid": "ECSClusterServiceTask"
+        },
+        {
+            "Action": [
+                "logs:DescribeLogGroups",
+                "logs:DescribeLogStreams",
+                "logs:GetLogEvents",
+                "logs:GetQueryResults",
+                "logs:StartQuery",
+                "logs:StopQuery"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:logs:<<REGION>>:<<ACCOUNT_ID>>:log-group:/aws/ecs/containerinsights/unionai-access-*/*",
+            "Sid": "ContainerInsights"
+        }
+    ],
+    "Version": "2012-10-17"
+}
+```
+Share the ARN of the two roles with the {{< key product_name >}} team.
+The {{< key product_name >}} team will get back to you to verify that they are able to assume the role.
+
+### Configure VPC Endpoints
+
+Ensure your VPC include these endpoints so when the Union stack needs to connect to the corresponding AWS services, it does so without leaving the AWS network:
+
+- `com.amazonaws.<REGION>.autoscaling`
+- `com.amazonaws.<REGION>.xray`
+- `com.amazonaws.<REGION>.s3`
+- `com.amazonaws.<REGION>.sts`
+- `com.amazonaws.<REGION>.ecr.api`
+- `com.amazonaws.<REGION>.ssm`
+- `com.amazonaws.<REGION>.ec2messages`
+- `com.amazonaws.<REGION>.ec2`
+- `com.amazonaws.<REGION>.ssmmessages`
+- `com.amazonaws.<REGION>.ecr.dkr`
+- `com.amazonaws.<REGION>.logs`
+- `com.amazonaws.<REGION>.eks-auth`
+- `com.amazonaws.<REGION>.eks`
+- `com.amazonaws.<REGION>.elasticloadbalancing`

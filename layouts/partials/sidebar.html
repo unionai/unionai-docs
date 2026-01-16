@@ -1,0 +1,167 @@
+{{- $sidebarEnabled := .Params.sidebar_enabled | default true -}}
+{{- if $sidebarEnabled -}}
+<sl-drawer label="Drawer" placement="start" class="drawer-sidebar" hidden>
+  <div slot="label">
+    {{- partial "header-logo.html" . -}}
+  </div>
+  <slot part="body">
+    <div class="show-on-mobile">
+      {{- partial "search.html" . -}}
+      {{- partial "tabs.html" (dict "page" . "style" "buttons") -}}
+      {{- partial "signup.html" . -}}
+    </div>
+  </slot>
+</sl-drawer>
+
+<div class="sidebar-items">
+  {{- block "site-nav" . }}{{ end -}}
+</div>
+
+<script>
+  const drawer = document.querySelector('.drawer-sidebar');
+  const sidebar = document.querySelector('.sidebar-items');
+  const sidebarContainer = document.querySelector('.sidebar');
+
+  const openButton = document.querySelector('.toggle-sidebar');
+
+  customElements.whenDefined('sl-drawer').then(() => {
+    drawer.parentElement.removeChild(drawer);
+    document.body.appendChild(drawer);
+
+    // Match media query for large screens (adjust breakpoint as needed)
+    const prefersOpen = window.matchMedia('(min-width: 1200px)');
+
+    openButton.addEventListener('click', () => {
+      drawer.show();
+    });
+
+    const evaluate = (matches) => {
+      sidebar.parentNode.removeChild(sidebar);
+
+      // Only show if the screen is large
+      if (matches) {
+        sidebarContainer.appendChild(sidebar);
+      } else {
+        drawer.appendChild(sidebar);
+      }
+
+      openButton.style.display = matches ? 'none' : 'block';
+    }
+
+    evaluate(prefersOpen.matches);
+
+    // Optional: listen for screen size changes
+    prefersOpen.addEventListener('change', event => {
+      evaluate(event.matches);
+    });
+  })
+</script>
+{{- else -}}
+<nav enabled="false" />
+{{- end -}}
+
+{{ define "site-nav" }}
+<nav class="site-nav" role="navigation" aria-label="Site navigation" itemscope itemtype="https://schema.org/SiteNavigationElement">
+  <span class="sr-only" itemprop="description">Documentation navigation for {{ .Site.Params.variant | humanize }} including user guides, tutorials, API references, and integration examples</span>
+  <ul>
+    {{- $current := . -}}
+    {{- range .Site.Sections -}}
+        {{- if eq $current.Section .Section -}}
+          {{- range .Pages.ByWeight -}}
+            {{- template "section-tree-nav" (dict "page" . "current" $current) -}}
+          {{- end -}}
+        {{- end -}}
+    {{- end -}}
+  </ul>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get all section titles
+      const sectionTitles = document.querySelectorAll('.section-title');
+
+      // Add click event listener to each section title
+      sectionTitles.forEach(title => {
+        const parentLi = title.closest('li');
+        const sectionPages = parentLi.querySelector('.section-pages');
+        const chevron = title.querySelector('.chevron');
+
+        // Set initial chevron state based on whether the section is collapsed
+        if (sectionPages.classList.contains('collapsed') && chevron) {
+          chevron.classList.add('rotated');
+        }
+
+        // Add click event to toggle visibility
+        title.addEventListener('click', function(e) {
+          // Check if the click was on the chevron
+          if (e.target.classList.contains('chevron') || e.target.closest('.chevron')) {
+            // Prevent default link behavior only when clicking on chevron
+            e.preventDefault();
+
+            // Toggle collapsed class
+            sectionPages.classList.toggle('collapsed');
+
+            // Toggle chevron rotation if it exists
+            if (chevron) {
+              chevron.classList.toggle('rotated');
+            }
+          }
+          // If click was not on chevron, default link behavior will navigate to the page
+        });
+      });
+    });
+  </script>
+</nav>
+{{- end -}}
+
+{{- define "section-tree-nav" -}}
+    {{- $access := partial "page-allowed.html" .page -}}
+    {{- if $access.allowed -}}
+        {{- $isActive := or (eq .page.RelPermalink .current.RelPermalink) (in .current.RelPermalink .page.RelPermalink) .page.Params.sidebar_expanded -}}
+        {{- $classes := slice -}}
+        {{- if eq .page.RelPermalink .current.RelPermalink -}}
+            {{- $classes = $classes | append "active" -}}
+        {{- end -}}
+        {{- if .page.IsSection -}}
+            {{- $classes = $classes | append "section-title" -}}
+        {{- else -}}
+            {{- $classes = $classes | append "page-link" -}}
+        {{- end -}}
+        {{- if $access.excluded -}}
+            {{- $classes = $classes | append "excluded" -}}
+        {{- end -}}
+        {{- if and $access.variant $access.excluded -}}
+            {{- $classes = $classes | append "conflict" -}}
+        {{- end -}}
+        {{- if and $access.development (not $access.excluded) -}}
+            {{- $classes = $classes | append "disabled" -}}
+        {{- end -}}
+        <li {{- if .page.IsSection }} itemscope itemtype="https://schema.org/CollectionPage"{{ end -}}>
+            <a href="{{- .page.RelPermalink -}}"
+                class='{{- delimit $classes " " -}}'
+                {{- if .page.IsSection }} itemprop="url"{{ end -}}>
+                  <div class="content">
+                    {{- if and .page.IsSection (gt (len .page.Pages) 0) -}}
+                        {{- if not .page.Params.top_menu -}}
+                          <img src="{{- "images/chevron-down.svg" | relURL }}" class="chevron{{ if not $isActive }} rotated{{ end -}}" />
+                        {{- end -}}
+                    {{- else -}}
+                      <img src="{{- "images/pixel.svg" | relURL }}" class="chevron hidden" />
+                    {{- end -}}
+                    <div style="flex: 1" {{- if .page.IsSection }} itemprop="name"{{ end -}}>{{- partial "page-title.html" .page -}}</div>
+                    {{- if and $access.variant $access.excluded -}}
+                    <sl-tooltip content="This page is both included and excluded from this variant.">
+                      <sl-icon name="exclamation-diamond"></sl-icon>
+                    </sl-tooltip>
+                    {{- end -}}
+                  </div>
+                </a>
+            {{- if .page.IsSection -}}
+                <ul class="section-pages{{- if not $isActive }} collapsed{{ end -}}">
+                    {{- range .page.Pages.ByWeight -}}
+                        {{- template "section-tree-nav" (dict "page" . "current" $.current) -}}
+                    {{- end -}}
+                </ul>
+            {{- end -}}
+        </li>
+    {{- end -}}
+{{- end -}}

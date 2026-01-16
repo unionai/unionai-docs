@@ -1,7 +1,6 @@
 import inspect
 import json
 from typing import TypedDict, Optional
-from sys import stderr
 
 from lib.ptypes import ParamDict, ParamInfo
 
@@ -35,6 +34,9 @@ def parse_docstring(docstring: str | None, source) -> Optional[DocstringInfo]:
             return None
     except:
         pass
+
+    # Removes the specicial !!!! notes
+    docstring = format_three_exclamation_notes(docstring)
 
     lines = docstring.split("\n")
     # print(lines)
@@ -81,10 +83,25 @@ def parse_docstring(docstring: str | None, source) -> Optional[DocstringInfo]:
                 param_parts = line.split(":")
                 if len(param_parts) != 2:
                     continue
-                current_param = param_parts[0]
+                param_name_and_type = param_parts[0].strip()
+                param_description = param_parts[1].strip()
+
+                # Extract type information from format: param_name (type)
+                param_type = None
+                if "(" in param_name_and_type and param_name_and_type.endswith(")"):
+                    # Find the last opening parenthesis to handle cases like "param_name (Dict[str, int])"
+                    type_start = param_name_and_type.rfind("(")
+                    current_param = param_name_and_type[:type_start].strip()
+                    param_type = param_name_and_type[type_start+1:-1].strip()
+                else:
+                    current_param = param_name_and_type
+
                 param = ParamInfo(
                     name=current_param,
-                    doc=param_parts[1],
+                    doc=param_description,
+                    type=param_type,
+                    default=None,
+                    kind=None,
                 )
                 result["params"][current_param] = param
                 args_continuation_spaces = -1
@@ -130,6 +147,9 @@ def parse_docstring(docstring: str | None, source) -> Optional[DocstringInfo]:
                 param = ParamInfo(
                     name=param_name,
                     doc=param_doc,
+                    type=None,
+                    default=None,
+                    kind=None,
                 )
                 result["params"][current_param] = param
                 # print("PARAM: ", param_name, param_doc)
@@ -194,6 +214,142 @@ def test_parse_args():
         python_exec: Python executable to use for install packages
     """
     print(json.dumps(parse_docstring(doc_with_args, source=None), indent=2))
+
+def convert_pydantic_links(text: str) -> str:
+    """
+    Convert pydantic documentation links to absolute URLs.
+
+    Handles two formats:
+    1. Relative path links: ../concepts/models.md#model-copy
+    2. Reference-style links: [`text`][pydantic.BaseModel.something]
+    """
+    import re
+    import sys
+
+    def replace_inline_link(match):
+        link_text = match.group(1)
+        link_path = match.group(2)
+
+        # Check if it's a relative pydantic docs link
+        if link_path.startswith('../concepts/') or link_path.startswith('./concepts/'):
+            # Convert ../concepts/models.md#model-copy to concepts/models/#model-copy
+            path = link_path.lstrip('./')
+            # Remove .md extension and adjust anchor
+            path = re.sub(r'\.md(#|$)', r'/\1', path)
+            return f'[{link_text}](https://docs.pydantic.dev/latest/{path})'
+
+        return match.group(0)
+
+    def replace_reference_link(match):
+        link_text = match.group(1)
+        reference = match.group(2)
+
+        # Map pydantic references to their API doc pages
+        if reference.startswith('pydantic_core.'):
+            url = f'https://docs.pydantic.dev/latest/api/pydantic_core/#{reference}'
+            return f'[{link_text}]({url})'
+        elif reference.startswith('pydantic.main.BaseModel.') or reference.startswith('pydantic.BaseModel.'):
+            url = f'https://docs.pydantic.dev/latest/api/base_model/#{reference}'
+            return f'[{link_text}]({url})'
+        elif reference.startswith('pydantic.config.ConfigDict.') or reference.startswith('pydantic.ConfigDict'):
+            url = f'https://docs.pydantic.dev/latest/api/config/#{reference}'
+            return f'[{link_text}]({url})'
+        elif reference.startswith('pydantic.fields.'):
+            url = f'https://docs.pydantic.dev/latest/api/fields/#{reference}'
+            return f'[{link_text}]({url})'
+        elif reference.startswith('pydantic.functional_serializers.'):
+            url = f'https://docs.pydantic.dev/latest/api/functional_serializers/#{reference}'
+            return f'[{link_text}]({url})'
+        elif reference.startswith('pydantic.root_model.'):
+            url = f'https://docs.pydantic.dev/latest/api/root_model/#{reference}'
+            return f'[{link_text}]({url})'
+        elif reference.startswith('pydantic.types.'):
+            url = f'https://docs.pydantic.dev/latest/api/types/#{reference}'
+            return f'[{link_text}]({url})'
+        elif reference.startswith('pydantic.'):
+            # Generic pydantic reference - try base_model as default
+            url = f'https://docs.pydantic.dev/latest/api/base_model/#{reference}'
+            return f'[{link_text}]({url})'
+
+        # Map Python stdlib references to docs.python.org
+        elif reference.startswith('object.'):
+            url = f'https://docs.python.org/3/library/stdtypes.html#{reference}'
+            return f'[{link_text}]({url})'
+        elif reference.startswith('functools.'):
+            url = f'https://docs.python.org/3/library/functools.html#{reference}'
+            return f'[{link_text}]({url})'
+        elif reference.startswith('inspect.'):
+            url = f'https://docs.python.org/3/library/inspect.html#{reference}'
+            return f'[{link_text}]({url})'
+        elif reference == 'frame-objects':
+            url = 'https://docs.python.org/3/reference/datamodel.html#frame-objects'
+            return f'[{link_text}]({url})'
+
+        # Log unhandled reference-style links
+        print(f"WARNING: Unhandled reference-style link: [{link_text}][{reference}]", file=sys.stderr)
+        return match.group(0)
+
+    # Match inline markdown links: [text](url)
+    text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', replace_inline_link, text)
+
+    # Match reference-style markdown links: [text][reference]
+    text = re.sub(r'\[([^\]]+)\]\[([^\]]+)\]', replace_reference_link, text)
+
+    return text
+
+
+def format_three_exclamation_notes(docstring: str) -> str:
+    """
+    Receives a docstring that contains lines like:
+
+        !!! warning "Deprecated"
+        This method is now deprecated; use `model_copy` instead.
+
+    And converts them to:
+
+        > [!WARNING] Deprecated
+        > This method is now deprecated; use `model_copy` instead.
+
+    Also handles !!! abstract and !!! note admonitions, and converts
+    relative pydantic documentation links to absolute URLs.
+    """
+    # First convert any pydantic-relative links to absolute URLs
+    docstring = convert_pydantic_links(docstring)
+
+    lines = docstring.split("\n")
+    result = []
+    converting = False
+    for line in lines:
+        stripped = line.strip()  # Check stripped version to handle leading whitespace
+        if stripped.startswith("!!! warning"):
+            parts = stripped.split(" ")
+            if len(parts) < 3:
+                continue
+            title = parts[2].replace('"', '')
+            result.append(f"> [!WARNING] {title}")
+            converting = True
+        elif stripped.startswith("!!! note"):
+            result.append("> [!NOTE]")
+            converting = True
+        elif stripped.startswith("!!! abstract"):
+            # Extract title from !!! abstract "Title"
+            parts = stripped.split('"')
+            title = parts[1] if len(parts) >= 2 else "Note"
+            # Add clarification for pydantic inherited method documentation
+            if title == "Usage Documentation":
+                title = "Usage Documentation (external docs for inherited method)"
+            result.append(f"> [!TIP] {title}")
+            converting = True
+        elif converting:
+            if len(stripped) > 0:
+                result.append(f"> {stripped}")
+            else:
+                result.append("")
+                converting = False
+        else:
+            converting = False
+            result.append(line)
+    return "\n".join(result)
 
 
 def main():

@@ -1,10 +1,10 @@
 import io
 import os
-from sys import flags
-from typing import Dict, List, Tuple
+import re
+from typing import Dict, List, Tuple, Optional
 
 from lib.generate.docstring import docstring_summary
-from lib.generate.hugo import write_front_matter
+from lib.generate.hugo import FrontMatterExtra, write_front_matter
 from lib.generate.methods import (
     generate_method,
     generate_method_decl,
@@ -15,14 +15,34 @@ from lib.generate.properties import generate_props
 from lib.ptypes import ClassDetails, ClassMap, ClassPackageMap, PackageInfo
 from lib.generate.helper import generate_anchor_from_name
 
-type PackageTree = Dict[str, List[str]]
+PackageTree = Dict[str, List[str]]
 
 ProtocolBaseClass = "Protocol"
 
 
+def escape_html_preserve_code_blocks(text):
+    """Escape HTML characters in text while preserving code blocks."""
+    if not text:
+        return text
+    
+    # Split on code block delimiters (```)
+    parts = re.split(r'(```.*?```)', text, flags=re.DOTALL)
+    
+    result = []
+    for i, part in enumerate(parts):
+        # Even indices are regular text, odd indices are code blocks
+        if i % 2 == 0:  # Regular text - escape HTML
+            escaped_part = part.replace("<", "&lt;").replace(">", "&gt;")
+            result.append(escaped_part)
+        else:  # Code block - don't escape
+            result.append(part)
+    
+    return ''.join(result)
+
+
 def generate_class_filename(fullname: str, pkg_root: str) -> str:
     nameParts = fullname.split(".")
-    return os.path.join(pkg_root, ".".join(nameParts[0:-1]), f"{nameParts[-1]}.md")
+    return os.path.join(pkg_root, ".".join(nameParts[0:-1]), f"{nameParts[-1].lower()}.md")
 
 
 def sift_class_and_errors(classes: ClassMap) -> Tuple[List[str], List[str]]:
@@ -43,12 +63,12 @@ def generate_class_link(
     pkg_base = os.path.relpath(pkg_root, os.path.dirname(relative_to_file))
     if flatten:
         anchor = generate_anchor_from_name(fullname)
-        result = f"{os.path.join("..", pkg_base, ".".join(nameParts[0:-1])).lower()}#{anchor}"
+        result = f"{os.path.join('..', pkg_base, '.'.join(nameParts[0:-1])).lower()}#{anchor}"
         return result
     else:
         result = os.path.join(
-            pkg_base, ".".join(nameParts[0:-1]), nameParts[-1]
-        ).lower()
+            pkg_base, ".".join(nameParts[0:-1]), nameParts[-1].lower()
+        )
         return result
 
 
@@ -58,6 +78,7 @@ def generate_class_index(
     pkg_root: str,
     flatten: bool,
     ignore_types: List[str],
+    frontmatter_extra: Optional[FrontMatterExtra],
 ):
     # Check if any package has classes defined
     has_classes = any(
@@ -69,6 +90,7 @@ def generate_class_index(
 
     if flatten:
         pkg_index = os.path.join(output_folder, "classes.md")
+        frontmatter_extra = None
     else:
         cls_root = os.path.join(output_folder, "classes")
         if not os.path.isdir(cls_root):
@@ -89,16 +111,16 @@ def generate_class_index(
                     classList[cls] = clsInfo
 
         if len(protocolList) > 0 and len(classList) > 0:
-            write_front_matter("Classes & Protocols", index)
+            write_front_matter("Classes & Protocols", index, frontmatter_extra)
         elif len(classList) > 0:
-            write_front_matter("Classes", index)
+            write_front_matter("Classes", index, frontmatter_extra)
         else:
-            write_front_matter("Protocols", index)
+            write_front_matter("Protocols", index, frontmatter_extra)
 
         if len(classList) > 0:
             index.write("# Classes\n\n")
 
-            index.write(f"| Class | Description |\n")
+            index.write("| Class | Description |\n")
             index.write("|-|-|\n")
 
             for cls, clsInfo in classList.items():
@@ -111,13 +133,13 @@ def generate_class_index(
                     flatten=flatten,
                 )
                 index.write(
-                    f"| [`{cls}`]({class_link}) |{docstring_summary(clsInfo["doc"])} |\n"
+                    f"| [`{cls}`]({class_link}) |{docstring_summary(clsInfo['doc'])} |\n"
                 )
 
         if len(protocolList) > 0:
             index.write("# Protocols\n\n")
 
-            index.write(f"| Protocol | Description |\n")
+            index.write("| Protocol | Description |\n")
             index.write("|-|-|\n")
 
             for cls, clsInfo in protocolList.items():
@@ -130,7 +152,7 @@ def generate_class_index(
                     flatten=flatten,
                 )
                 index.write(
-                    f"| [`{cls}`]({class_link}) |{docstring_summary(clsInfo["doc"])} |\n"
+                    f"| [`{cls}`]({class_link}) |{docstring_summary(clsInfo['doc'])} |\n"
                 )
 
 
@@ -139,7 +161,7 @@ def generate_class(fullname: str, info: ClassDetails, pkg_root: str):
     with open(class_file, "w") as output:
         write_front_matter(info["name"], output)
 
-        output.write(f"# {info["name"]}\n\n")
+        output.write(f"# {info['name']}\n\n")
         output.write(f"**Package:** `{'.'.join(info['path'].split('.')[:-1])}`\n\n")
 
         generate_class_details(info, output, doc_level=2)
@@ -149,7 +171,9 @@ def generate_class_details(
     info: ClassDetails, output: io.TextIOWrapper, doc_level: int
 ):
     if info["doc"]:
-        output.write(f"{info['doc']}\n\n")
+        # Escape HTML characters in class documentation while preserving code blocks
+        doc = escape_html_preserve_code_blocks(info["doc"])
+        output.write(f"{doc}\n\n")
 
     # Find the __init__ method if it exists
     init_method = next(
@@ -166,21 +190,22 @@ def generate_class_details(
             is_protocol=info["parent"] == ProtocolBaseClass,
         )
         if init_method["doc"]:
-            output.write(f"{init_method['doc']}\n\n")
+            # Escape HTML characters in __init__ method documentation while preserving code blocks
+            doc = escape_html_preserve_code_blocks(init_method["doc"])
+            output.write(f"{doc}\n\n")
         if info["parent"] != ProtocolBaseClass:
             generate_params(init_method, output)
 
-    methods = [method for method in info["methods"] if method["name"] != "__init__"]
+    if info["properties"]:
+        output.write(f"{'#' * (doc_level)} Properties\n\n")
+        generate_props(info["properties"], output)
 
+    methods = [method for method in info["methods"] if method["name"] != "__init__"]
     if methods:
         generate_method_list(methods, output, doc_level)
 
         for method in methods:
             generate_method(method, output, doc_level)
-
-    if info["properties"]:
-        output.write(f"{'#' * (doc_level)} Properties\n\n")
-        generate_props(info["properties"], output)
 
 
 def generate_classes(classes: ClassPackageMap, pkg_root: str, ignore_types: List[str]):
@@ -216,7 +241,7 @@ def generate_classes_and_error_list(
     if len(class_list) > 0:
         output.write(f"{'#' * (doc_level)} Classes\n\n")
 
-        output.write(f"| Class | Description |\n")
+        output.write("| Class | Description |\n")
         output.write("|-|-|\n")
 
         for classNameFull in class_list:
@@ -228,8 +253,9 @@ def generate_classes_and_error_list(
                 flatten=flatten,
             )
 
+            classNameWithoutPackage = classNameFull.replace(f"{pkg['name']}.", "")
             output.write(
-                f"| [`{classNameFull.replace(f"{pkg['name']}.", "")}`]({classLink}) | {docstring_summary(clsInfo['doc'])} |\n"
+                f"| [`{classNameWithoutPackage}`]({classLink}) | {docstring_summary(clsInfo['doc'])} |\n"
             )
 
         output.write("\n")
@@ -237,7 +263,7 @@ def generate_classes_and_error_list(
     if len(protocol_list) > 0:
         output.write(f"{'#' * (doc_level)} Protocols\n\n")
 
-        output.write(f"| Protocol | Description |\n")
+        output.write("| Protocol | Description |\n")
         output.write("|-|-|\n")
 
         for classNameFull in protocol_list:
@@ -249,8 +275,9 @@ def generate_classes_and_error_list(
                 flatten=flatten,
             )
 
+            classNameWithoutPackage = classNameFull.replace(f"{pkg['name']}.", "")
             output.write(
-                f"| [`{classNameFull.replace(f"{pkg['name']}.", "")}`]({classLink}) | {docstring_summary(clsInfo['doc'])} |\n"
+                f"| [`{classNameWithoutPackage}`]({classLink}) | {docstring_summary(clsInfo['doc'])} |\n"
             )
 
         output.write("\n")
@@ -258,7 +285,7 @@ def generate_classes_and_error_list(
     if len(exceptions) > 0:
         output.write(f"{'#' * (doc_level)} Errors\n\n")
 
-        output.write(f"| Exception | Description |\n")
+        output.write("| Exception | Description |\n")
         output.write("|-|-|\n")
 
         for exc in exceptions:
@@ -270,7 +297,7 @@ def generate_classes_and_error_list(
                 flatten=flatten,
             )
             output.write(
-                f"| [`{clsInfo["name"]}`]({classLink}) | {docstring_summary(clsInfo['doc'])} |\n"
+                f"| [`{clsInfo['name']}`]({classLink}) | {docstring_summary(clsInfo['doc'])} |\n"
             )
 
         output.write("\n")

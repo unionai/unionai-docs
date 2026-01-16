@@ -25,7 +25,7 @@ version_number=$(ver_from_string $hugo_ver)
 min_version_number=$(ver_from_string $hugo_min_version)
 
 
-if [[ $version_number -lt $min_version_number ]]; then
+if [[ "0x$version_number" -lt "0x$min_version_number" ]]; then
   cat <<EOF
 ---------------------------------------
 FATAL: 'hugo' version ${hugo_min_version} or greater required.

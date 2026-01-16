@@ -1,13 +1,13 @@
 ---
-title: Deployment
+title: Platform deployment
 weight: 4
-variants: +flyte -serverless +byoc +selfmanaged
+variants: -flyte -serverless +byoc +selfmanaged
 top_menu: true
 mermaid: true
 sidebar_expanded: true
 ---
 
-# Deployment
+# Platform deployment
 
 {{< variant byoc selfmanaged >}}
 {{< markdown >}}
@@ -34,7 +34,7 @@ Union supports data planes on Kubernetes clusters running on-premise or on cloud
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant selfmanaged >}}
 {{< grid >}}
 
 {{< link-card target="../deployment/cluster-recommendations" icon="box" title="Installation" >}}

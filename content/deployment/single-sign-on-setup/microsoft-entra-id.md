@@ -46,35 +46,34 @@ When registration finishes, the Microsoft Entra admin center will display the ap
 
 Copy the **Application (client) ID** and **Directory (tenant) ID** from the overview page to a text file on your computer.
 
-![Application and directory ID](/_static/images/user-guide/data-plane-setup/single-sign-on-setup/microsoft-entra-id/entra-id-application-and-directory-id.png)
+![Application and directory ID](../../_static/images/user-guide/data-plane-setup/single-sign-on-setup/microsoft-entra-id/entra-id-application-and-directory-id.png)
 
 ### Client secret
 
 To get the **client secret**, on the overview page, go to **Client credentials** and click **Add a certificate or secret**.
 
-![Client credentials](/_static/images/user-guide/data-plane-setup/single-sign-on-setup/microsoft-entra-id/entra-id-client-credentials.png)
+![Client credentials](../../_static/images/user-guide/data-plane-setup/single-sign-on-setup/microsoft-entra-id/entra-id-client-credentials.png)
 
 On the subsequent page, under **Client secrets**, click **New client secret** to generate a new secret.
 Copy the **Value** of this secret to a plain text file on your computer.
 
-![Client secret](/_static/images/user-guide/data-plane-setup/single-sign-on-setup/microsoft-entra-id/entra-id-client-secret.png)
+![Client secret](../../_static/images/user-guide/data-plane-setup/single-sign-on-setup/microsoft-entra-id/entra-id-client-secret.png)
 
 ## Share the client secret securely with {{< key product_name >}}
 
-1. Copy the public key provided by {{< key product_name >}} here:
-   {{< download "/_static/public/public-key.txt" "public-key.txt" >}}
+1. Copy the public key provided by {{< key product_name >}} here: {{< download "/_static/public/public-key.txt" >}}
 
-2. Go to [https://pgptool.org](https://pgptool.org/).
+2. Go to [https://pgptool.net](https://pgptool.net/).
 
-3. Click the **Encrypt** tab.
+3. Click the **Encrypt (+Sign)** tab.
 
-4. Upload the public key provided by {{< key product_name >}} under **Receiver's public key**.
+4. Enter public key in **Public Key (For Verification)** section.
 
-5. Skip the **Signer’s Private Key** section.
+5. Skip the **Private Key** section.
 
 6. Enter the **client secret** in plain text and encrypt it.
 
-7. Download the encrypted text and share it with the {{< key product_name >}} team over Slack.
+7. Save encypted text to a file and share with the {{< key product_name >}} team over Slack.
 
 8. Delete the **client secret** from the text file on your computer.
 

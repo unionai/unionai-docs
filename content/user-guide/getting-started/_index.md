@@ -1,138 +1,153 @@
 ---
 title: Getting started
-weight: 3
-sidebar_expanded: true
+weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
+sidebar_expanded: true
 ---
 
 # Getting started
 
-This section gives you a quick introduction to writing and running {{< key product_name >}} workflows.
+This section gives you a quick introduction to writing and running workflows on Union and Flyte 2.
 
-{{< variant serverless >}}
-{{< markdown >}}
+## Prerequisites
 
-## Sign up for {{< key product_name >}} Serverless
+You will need the following:
+- An active Python virtual environment with Python 3.10 or later.
+- The URL of you Union/Flyte instance.
+- An existing project set up on your Union/Flyte instance where you have permission to run workflows.
 
-First, sign up for {{< key product_name >}} Serverless:
-{{< /markdown >}}
+## Install the `flyte` package
 
-{{< button-link text="Create an account" target="https://signup.union.ai/" variant="warning" >}}
+Install the latest `flyte` package in the virtual environment (we are currently in beta, so you will have to enable prerelease installation). For example:
 
-{{< markdown >}}
-Once you've received confirmation that your sign-up succeeded, navigate to
-the UI at [serverless.union.ai](https://serverless.union.ai).
+```shell
+pip install --pre flyte
+```
 
-To get started, try selecting the default project, called `{{< key default_project >}}`, from the list of projects.
-This will take you to `{{< key default_project >}}` project dashboard:
+Check that installation succeeded (and that you have activated your virtual environment):
 
-![{{< key product_name >}} UI](/_static/images/quick-start/serverless-dashboard.png)
+```shell
+flyte --version
+```
 
-## Run your first workflow
+## Create a config.yaml
 
-Run your first workflow on a {{< key product_name >}} Workspace.
-{{< /markdown >}}
-
-{{< dropdown title="Start workspace" icon=arrow_forward >}}
-{{< markdown >}}
-
-Select **Workspaces** in the left navigation bar.
-
-Start the default workspace by clicking on the `default` workspace item.
-
-![Start workspace](/_static/images/quick-start/serverless-workspace-start.png))
-{{< /markdown >}}
-{{< /dropdown >}}
-
-{{< dropdown title="Open workspace" icon=arrow_forward >}}
-{{< markdown >}}
-
-When the `Status` is `Active` on the `default` workspace, you can click on it
-again to open the workspace.
-
-_It will take a few moments to load the VSCode interface._
-
-![Open workspace](/_static/images/quick-start/serverless-workspace-open.png)
-:::)
-
-{{< /markdown >}}
-{{< /dropdown >}}
-
-{{< dropdown title="Complete walkthrough" icon=arrow_forward >}}
-{{< markdown >}}
-
-Once the workspace is open, you should see a VSCode interface in your browser.
-
-![Workspace VSCode](/_static/images/quick-start/serverless-workspace-vscode.png)
-
-In the walkthrough, you'll learn how to:
-
-1. 🤖 Train a model
-2. 🔀 Parallelize model training
-3. 📘 Iterate on a Jupyter Notebook
-
-{{< /markdown >}}
-{{< /dropdown >}}
-
-{{< dropdown title="Stop workspace" icon=arrow_forward >}}
-{{< markdown >}}
-
-
-The workspace will terminate after 20 minutes of idle time, but you can also
-stop it manually on the Workspaces page.
-
-![Open workspace](/_static/images/quick-start/serverless-workspace-stop.png)
-
-{{< /markdown >}}
-{{< /dropdown >}}
-
-{{< markdown class="top-margin" >}}
-
-🎉 Congratulations! You've just run your first workflow on {{< key product_name >}}.
-
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant byoc selfmanaged >}}
-{{< markdown >}}
-
-## Gather your credentials
-
-After your administrator has onboarded you to {{< key product_name >}} (see [Deployment](../../deployment)), you should have the following at hand:
-
-- Your {{< key product_name >}} credentials.
-- The URL of your {{< key product_name >}} instance. We will refer to this as `<union-host-url>` below.
-
-## Log into {{< key product_name >}}
-
-Navigate to the UI at `<union-host-url>` and log in with your credentials.
-Once you have logged in you should see the {{< key product_name >}} UI.
-
-To get started, try selecting the default project, called `{{< key default_project >}}`, from the list of projects.
-This will take you to `{{< key default_project >}}` project dashboard:
-
-![{{< key product_name >}} UI](/_static/images/quick-start/byoc-dashboard.png)
-
-This dashboard gives you an overview of the workflows and tasks in your project.
-Since you are just starting out, it will be empty.
-To build and deploy your first workflow, the first step is to [set up your local environment](./local-setup).
-
-{{< /markdown >}}
-{{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
 
-## Try Flyte in your browser
+Next, create a configuration file that points to your Flyte instance.
+Use the [`flyte create config`](../../api-reference/flyte-cli#flyte-create-config) command, making the following changes:
 
-You can try Flyte in your browser without any setup simply by [signing up for **Union.ai Serverless**](https://signup.union.ai/).
+- Replace `my-org.my-company.com` with the actual URL of your Flyte backend instance.
+  You can simply copy the domain part of the URL from your browser when logged into your backend instance.
+- Replace `my-project` with an actual project.
+  The project you specify must already exist on your Flyte backend instance.
 
-[Union.ai Serverless is a fully-hosted version of Flyte]({{< docs_home serverless >}}) with additional features.
+```shell
+flyte create config \
+    --endpoint my-org.my-company.com \
+    --builder local \
+    --domain development \
+    --project my-project
+```
 
-## Try Flyte on your local machine
+### Ensure local Docker is working
 
-You can also install Flyte's SDK (called `flytekit`) and a local Flyte cluster to run workflows on your local machine.
+> [!NOTE]
+> We are using the `--builder local` option here to specify that we want to [build images](../task-configuration/container-images) locally.
+> If you were using a Union instance, you would typically use `--builder remote` instead to use Union's remote image builder.
+> With Flyte OSS instances, `local` is the only option available.
 
-To get started, follow the instructions on the next page, [Local setup](./local-setup).
+To enable local image building, ensure that
+- You have Docker installed and running on your machine
+- You have permission to read from the public GitHub `ghcr.io` registry.
+- You have successfully logged into the `ghcr.io` registry using Docker:
+
+```shell
+docker login ghcr.io
+```
 
 {{< /markdown >}}
 {{< /variant >}}
+{{< variant byoc selfmanaged serverless >}}
+{{< markdown >}}
+
+Next, create a configuration file that points to your Union instance.
+Use the [`flyte create config`](../../api-reference/flyte-cli#flyte-create-config) command, making the following changes:
+
+- Replace `my-org.my-company.com` with the actual URL of your Union backend instance.
+  You can simply copy the domain part of the URL from your browser when logged into your backend instance.
+- Replace `my-project` with an actual project.
+  The project you specify must already exist on your Union backend instance.
+
+```shell
+flyte create config \
+    --endpoint my-org.my-company.com \
+    --builder remote \
+    --domain development \
+    --project my-project
+```
+
+{{< /markdown >}}
+{{< /variant >}}
+
+By default, this will create a `./.flyte/config.yaml` file in your current working directory.
+See [Setting up a configuration file](./local-setup#setting-up-a-configuration-file) for details.
+
+{{< note >}}
+Run `flyte get config` to see the current configuration file being used by the `flyte` CLI.
+{{< /note >}}
+
+## Hello world example
+
+Create a file called `hello.py` with the following content:
+
+{{< code file="/external/unionai-examples/v2/user-guide/getting-started/hello.py" lang="python" >}}
+
+## Understanding the code
+
+In the code above we do the following:
+
+- Import the `flyte` package.
+- Define a `TaskEnvironment` to group the configuration used by tasks.
+- Define two tasks using the `@env.task` decorator.
+  - Tasks are regular Python functions, but each runs in its own container.
+  - When deployed to your Union/Flyte instance, each task execution will run in its own separate container.
+  - Both tasks use the same `env` (the same `TaskEnvironment`) so, while each runs in its own container, those containers will be configured identically.
+
+## Running the code
+
+Assuming that your current directory looks like this:
+
+```
+.
+├── hello.py
+└── .flyte
+    └── config.yaml
+```
+
+and your virtual environment is activated, you can run the script with:
+
+```shell
+flyte run hello.py main
+```
+
+This will package up the code and send it to your Flyte/Union instance for execution.
+
+## Viewing the results
+
+In your terminal, you should see output like this:
+
+```shell
+cg9s54pksbjsdxlz2gmc
+https://my-instance.example.com/v2/runs/project/my-project/domain/development/cg9s54pksbjsdxlz2gmc
+Run 'a0' completed successfully.
+```
+
+Click the link to go to your Flyte/Union instance and see the run in the UI:
+
+![V2 UI](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/v2ui.png)
+
+<!-- TODO: Add explanation of the UI elements and their functionality
+## Understanding the UI
+-->

@@ -33,14 +33,13 @@ First, select an existing project or set up a new project in the
 
 Next, retrieve your credentials: Click on your configured client and copy the values for **Client ID** and **Client secret** to a text file on your computer.
 
-![OAuth 2.0 credentials](/_static/images/user-guide/data-plane-setup/single-sign-on-setup/google-oidc/oauth-credentials.png)
+![OAuth 2.0 credentials](../../_static/images/user-guide/data-plane-setup/single-sign-on-setup/google-oidc/oauth-credentials.png)
 
 ## Share the client ID and client secret securely with {{< key product_name >}}
 
 Finally, you will need to share the client ID and client secret securely with {{< key product_name >}}:
 
-1. Copy the public key provided by {{< key product_name >}} here:
-   {{< download "/_static/public/public-key.txt" "public-key.txt" >}}
+1. Copy the public key provided by {{< key product_name >}} here: {{< download "/_static/public/public-key.txt" >}}
 
 2. Encrypt the given text file on your computer with a PGP tool of your choice.
 

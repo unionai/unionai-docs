@@ -1,7 +1,7 @@
 ---
 title: Monitoring
 weight: 2
-variants: +flyte -serverless -byoc -selfmanaged
+variants: -flyte -serverless -byoc -selfmanaged
 ---
 
 # Monitoring a Flyte deployment
@@ -19,7 +19,7 @@ These metrics help users diagnose whether an issue is inherent to the platform o
 
 At a high level, workflow execution goes through the following discrete steps:
 
-![](/_static/images/deployment/flyte_wf_timeline.svg)
+![](../../_static/images/deployment/flyte_wf_timeline.svg)
 
 
 1. **Acceptance**: Measures the time consumed from receiving a service call to creating an Execution (Unknown) and moving to QUEUED.
@@ -32,7 +32,7 @@ At a high level, workflow execution goes through the following discrete steps:
 
 ## Flyte statistics schema
 
-The following list the prefix used for each metric emitted by Flyte. The standardized prefixes make it it easy to query and analyze the statistics.
+The following list the prefix used for each metric emitted by Flyte. The standardized prefixes make it easy to query and analyze the statistics.
 
 * `propeller.all.workflow.acceptance-latency-ms` (timer in ms): Measures the time consumed from receiving a service call to creating an Execution (Unknown) and moving to QUEUED.
 * `propeller.all.node.queueing-latency-ms` (timer in ms): Measures the latency between the node moving to QUEUED and the handler reporting the executable moving to RUNNING state.
@@ -77,7 +77,7 @@ The corresponding JSON files for each dashboard are also located in the ``flyte`
 ## Setup instructions
 
 The dashboards rely on a working Prometheus deployment with access to your Kubernetes cluster and Flyte pods.
-Additionally, the user dashboard uses metrics that come from ``kube-state-metrics``. Both of these requirements can be fulfilled by installing the [kube-prometheus-stack](https://github.com/kubernetes/kube-state-metrics).
+Additionally, the user dashboard uses metrics that come from ``kube-state-metrics``. Both of these requirements can be fulfilled by installing the [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack).
 
 Once the prerequisites are in place, follow the instructions in this section to configure metrics scraping for the corresponding Helm chart:
 
@@ -114,27 +114,45 @@ The above configuration enables the ``serviceMonitor`` that Prometheus can then 
 {{< dropdown title="flyte-binary" icon=arrow_forward >}}
 {{< markdown >}}
 
-Save the following in a ``flyte-monitoring-overrides.yaml`` file and run a ``helm upgrade`` operation pointing to that ``--values`` file:
+1. Save the following in a ``flyte-monitoring-overrides.yaml`` file and run a ``helm upgrade`` operation pointing to that ``--values`` file:
 
 ```yaml
 configuration:
-inline:
+  inline:
     propeller:
-    prof-port: 10254
-    metrics-prefix: "flyte:"
+      prof-port: 10254
+      metrics-prefix: "flyte:"
     scheduler:
-    profilerPort: 10254
-    metricsScope: "flyte:"
+      profilerPort: 10254
+      metricsScope: "flyte:"
     flyteadmin:
-    profilerPort: 10254
+      profilerPort: 10254
 service:
-extraPorts:
-- name: http-metrics
+  extraPorts:
+  - name: http-metrics
     protocol: TCP
     port: 10254
 ```
+2. Create a ServiceMonitor with a configuration like the following:
 
-The above configuration enables a ``serviceMonitor`` that Prometheus can use to automatically discover services and scrape metrics from them.
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: flytemonitoring
+  namespace: flyte #or namespace where Flyte is installed
+  labels:
+    release: kube-prometheus-stack
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: flyte-binary
+      app.kubernetes.io/name: flyte-binary #read from Helm release name
+  endpoints:
+  - port: http-metrics
+    path: /metrics
+```
+
 
 {{< /markdown >}}
 {{< /dropdown >}}
