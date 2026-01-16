@@ -1,6 +1,6 @@
 ---
 title: ActionNotFoundError
-version: 2.0.0b47
+version: 2.0.0b48
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

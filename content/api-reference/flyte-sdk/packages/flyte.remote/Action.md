@@ -1,6 +1,6 @@
 ---
 title: Action
-version: 2.0.0b47
+version: 2.0.0b48
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -53,6 +53,7 @@ class Action(
 
 | Method | Description |
 |-|-|
+| [`abort()`](#abort) | Aborts / Terminates the action. |
 | [`details()`](#details) | Get the details of the action. |
 | [`done()`](#done) | Check if the action is done. |
 | [`get()`](#get) | Get a run by its ID or name. |
@@ -63,6 +64,19 @@ class Action(
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions,. |
 | [`watch()`](#watch) | Watch the action for updates, updating the internal Action state with latest details. |
+
+
+### abort()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Action instance>.abort.aio()`.
+```python
+def abort()
+```
+Aborts / Terminates the action.
 
 
 ### details()
