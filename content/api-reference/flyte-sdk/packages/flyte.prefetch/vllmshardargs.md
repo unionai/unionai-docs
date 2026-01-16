@@ -220,7 +220,7 @@ def model_copy(
     deep: bool,
 ) -> Self
 ```
-> [!TIP] Usage Documentation (inherited from pydantic)
+> [!TIP] Usage Documentation (external docs for inhertied method)
 > [`model_copy`](https://docs.pydantic.dev/latest/concepts/models/#model-copy)
 
 Returns a copy of the model.
@@ -256,7 +256,7 @@ def model_dump(
     serialize_as_any: bool,
 ) -> dict[str, Any]
 ```
-> [!TIP] Usage Documentation (inherited from pydantic)
+> [!TIP] Usage Documentation (external docs for inhertied method)
 > [`model_dump`](https://docs.pydantic.dev/latest/concepts/serialization/#python-mode)
 
 Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
@@ -299,7 +299,7 @@ def model_dump_json(
     serialize_as_any: bool,
 ) -> str
 ```
-> [!TIP] Usage Documentation (inherited from pydantic)
+> [!TIP] Usage Documentation (external docs for inhertied method)
 > [`model_dump_json`](https://docs.pydantic.dev/latest/concepts/serialization/#json-mode)
 
 Generates a JSON representation of the model using Pydantic's `to_json` method.
@@ -441,7 +441,7 @@ def model_validate_json(
     by_name: bool | None,
 ) -> Self
 ```
-> [!TIP] Usage Documentation (inherited from pydantic)
+> [!TIP] Usage Documentation (external docs for inhertied method)
 > [JSON Parsing](https://docs.pydantic.dev/latest/concepts/json/#json-parsing)
 
 Validate the given JSON data against the Pydantic model.
