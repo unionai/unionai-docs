@@ -1,6 +1,6 @@
 ---
 title: flytekit.deck.deck
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,6 +14,7 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`Deck`](.././flytekit.deck.deck#flytekitdeckdeckdeck) | Deck enable users to get customizable and default visibility into their tasks. |
+| [`DeckField`](.././flytekit.deck.deck#flytekitdeckdeckdeckfield) | DeckField is used to specify the fields that will be rendered in the deck. |
 | [`TimeLineDeck`](.././flytekit.deck.deck#flytekitdeckdecktimelinedeck) | The TimeLineDeck class is designed to render the execution time of each part of a task. |
 
 ### Methods
@@ -40,9 +41,9 @@ def generate_time_table(
     data: dict,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `data` | `dict` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `dict` | |
 
 #### get_deck_template()
 
@@ -94,11 +95,11 @@ class Deck(
     auto_add_to_deck: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `html` | `typing.Optional[str]` |
-| `auto_add_to_deck` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `html` | `typing.Optional[str]` | |
+| `auto_add_to_deck` | `bool` | |
 
 ### Methods
 
@@ -115,9 +116,9 @@ def append(
     html: str,
 ) -> Deck
 ```
-| Parameter | Type |
-|-|-|
-| `html` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `html` | `str` | |
 
 #### publish()
 
@@ -130,6 +131,22 @@ def publish()
 |-|-|-|
 | `html` |  |  |
 | `name` |  |  |
+
+## flytekit.deck.deck.DeckField
+
+DeckField is used to specify the fields that will be rendered in the deck.
+
+
+```python
+class DeckField(
+    args,
+    kwds,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwds` |  | |
 
 ## flytekit.deck.deck.TimeLineDeck
 
@@ -146,11 +163,11 @@ class TimeLineDeck(
     auto_add_to_deck: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `html` | `typing.Optional[str]` |
-| `auto_add_to_deck` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `html` | `typing.Optional[str]` | |
+| `auto_add_to_deck` | `bool` | |
 
 ### Methods
 
@@ -168,9 +185,9 @@ def append(
     html: str,
 ) -> Deck
 ```
-| Parameter | Type |
-|-|-|
-| `html` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `html` | `str` | |
 
 #### append_time_info()
 
@@ -179,9 +196,9 @@ def append_time_info(
     info: dict,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `info` | `dict` |
+| Parameter | Type | Description |
+|-|-|-|
+| `info` | `dict` | |
 
 #### publish()
 

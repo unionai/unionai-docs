@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.structured.structured_dataset
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -56,16 +56,16 @@ def convert_schema_type_to_structured_dataset_type(
     column_type: int,
 ) -> int
 ```
-| Parameter | Type |
-|-|-|
-| `column_type` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `column_type` | `int` | |
 
 #### extract_cols_and_format()
 
 ```python
 def extract_cols_and_format(
     t: typing.Any,
-) -> n: Tuple representing
+) -> typing.Tuple[Type[T], Optional[typing.OrderedDict[str, Type]], Optional[str], Optional['pa.lib.Schema']]
 ```
 Helper function, just used to iterate through Annotations and extract out the following information:
   - base type, if not Annotated, it will just be the type that was passed in.
@@ -80,9 +80,9 @@ If we add more things, we should put all the returned items in a dataclass inste
 
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.Any` | The incoming type which may or may not be Annotated :return: Tuple representing the original type, optional OrderedDict of columns, optional str for the format, optional pyarrow Schema |
 
 #### flatten_dict()
 
@@ -92,10 +92,10 @@ def flatten_dict(
     parent_key: str,
 ) -> typing.Dict
 ```
-| Parameter | Type |
-|-|-|
-| `sub_dict` | `dict` |
-| `parent_key` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `sub_dict` | `dict` | |
+| `parent_key` | `str` | |
 
 #### get_supported_types()
 
@@ -121,12 +121,12 @@ class StructuredDataset(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `dataframe` | `typing.Optional[typing.Any]` |
-| `uri` | `typing.Optional[str]` |
-| `metadata` | `typing.Optional[literals.StructuredDatasetMetadata]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dataframe` | `typing.Optional[typing.Any]` | |
+| `uri` | `typing.Optional[str]` | |
+| `metadata` | `typing.Optional[literals.StructuredDatasetMetadata]` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -165,14 +165,12 @@ def columns()
 
 ```python
 def deserialize_structured_dataset(
-    args,
-    kwargs,
-)
+    info,
+) -> StructuredDataset
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `info` |  | |
 
 #### from_dict()
 
@@ -182,10 +180,10 @@ def from_dict(
     dialect,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `d` |  |
-| `dialect` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `d` |  | |
+| `dialect` |  | |
 
 #### from_json()
 
@@ -196,11 +194,11 @@ def from_json(
     from_dict_kwargs: typing.Any,
 ) -> ~T
 ```
-| Parameter | Type |
-|-|-|
-| `data` | `typing.Union[str, bytes, bytearray]` |
-| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` |
-| `from_dict_kwargs` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `typing.Union[str, bytes, bytearray]` | |
+| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` | |
+| `from_dict_kwargs` | `typing.Any` | |
 
 #### iter()
 
@@ -214,23 +212,15 @@ def open(
     dataframe_type: Type[DF],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `dataframe_type` | `Type[DF]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dataframe_type` | `Type[DF]` | |
 
 #### serialize_structured_dataset()
 
 ```python
-def serialize_structured_dataset(
-    args,
-    kwargs,
-)
+def serialize_structured_dataset()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 #### set_literal()
 
 ```python
@@ -244,10 +234,10 @@ A public wrapper method to set the StructuredDataset Literal.
 This method provides external access to the internal _set_literal method.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `expected` | `LiteralType` | |
 
 #### to_dict()
 
@@ -262,10 +252,10 @@ def to_json(
     to_dict_kwargs: typing.Any,
 ) -> typing.Union[str, bytes, bytearray]
 ```
-| Parameter | Type |
-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` |
-| `to_dict_kwargs` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` | |
+| `to_dict_kwargs` | `typing.Any` | |
 
 ### Properties
 
@@ -296,12 +286,12 @@ and we have to get a Python value out of it. For the other way, see the Structur
 
 
 
-| Parameter | Type |
-|-|-|
-| `python_type` | `Type[DF]` |
-| `protocol` | `Optional[str]` |
-| `supported_format` | `Optional[str]` |
-| `additional_protocols` | `Optional[List[str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_type` | `Type[DF]` | The dataframe class in question that you want to register this decoder with |
+| `protocol` | `Optional[str]` | A prefix representing the storage driver (e.g. 's3, 'gs', 'bq', etc.). You can use either "s3" or "s3://". They are the same since the "://" will just be stripped by the constructor. If None, this decoder will be registered with all protocols that flytekit's data persistence layer is capable of handling. |
+| `supported_format` | `Optional[str]` | Arbitrary string representing the format. If not supplied then an empty string will be used. An empty string implies that the decoder works with any format. If the format being asked for does not exist, the transformer enginer will look for the "" decoder instead and write a warning. |
+| `additional_protocols` | `Optional[List[str]]` | |
 
 ### Methods
 
@@ -317,18 +307,18 @@ def decode(
     ctx: FlyteContext,
     flyte_value: literals.StructuredDataset,
     current_task_metadata: StructuredDatasetMetadata,
-) -> n: This function can either return an instance of the dataframe that this decoder handles, or an iterator
+) -> Union[DF, typing.Iterator[DF]]
 ```
 This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal
 value into a Python instance.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `flyte_value` | `literals.StructuredDataset` |
-| `current_task_metadata` | `StructuredDatasetMetadata` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `flyte_value` | `literals.StructuredDataset` | This will be a Flyte IDL StructuredDataset Literal - do not confuse this with the StructuredDataset class defined also in this module. |
+| `current_task_metadata` | `StructuredDatasetMetadata` | Metadata object containing the type (and columns if any) for the currently executing task. This type may have more or less information than the type information bundled inside the incoming flyte_value. :return: This function can either return an instance of the dataframe that this decoder handles, or an iterator of those dataframes. |
 
 ### Properties
 
@@ -359,11 +349,11 @@ the StructuredDatasetEncoder
 
 
 
-| Parameter | Type |
-|-|-|
-| `python_type` | `Type[T]` |
-| `protocol` | `Optional[str]` |
-| `supported_format` | `Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_type` | `Type[T]` | The dataframe class in question that you want to register this encoder with |
+| `protocol` | `Optional[str]` | A prefix representing the storage driver (e.g. 's3, 'gs', 'bq', etc.). You can use either "s3" or "s3://". They are the same since the "://" will just be stripped by the constructor. If None, this encoder will be registered with all protocols that flytekit's data persistence layer is capable of handling. |
+| `supported_format` | `Optional[str]` | Arbitrary string representing the format. If not supplied then an empty string will be used. An empty string implies that the encoder works with any format. If the format being asked for does not exist, the transformer engine will look for the "" encoder instead and write a warning. |
 
 ### Methods
 
@@ -379,7 +369,7 @@ def encode(
     ctx: FlyteContext,
     structured_dataset: StructuredDataset,
     structured_dataset_type: StructuredDatasetType,
-) -> n: This function should return a StructuredDataset literal object. Do not confuse this with the
+) -> literals.StructuredDataset
 ```
 Even if the user code returns a plain dataframe instance, the dataset transformer engine will wrap the
 incoming dataframe with defaults set for that dataframe
@@ -389,11 +379,11 @@ the
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `structured_dataset` | `StructuredDataset` |
-| `structured_dataset_type` | `StructuredDatasetType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `structured_dataset` | `StructuredDataset` | This is a StructuredDataset wrapper object. See more info above. |
+| `structured_dataset_type` | `StructuredDatasetType` | This the StructuredDatasetType, as found in the LiteralType of the interface of the task that invoked this encoding call. It is passed along to encoders so that authors of encoders can include it in the returned literals.StructuredDataset. See the IDL for more information on why this literal in particular carries the type information along with it. If the encoder doesn't supply it, it will also be filled in after the encoder runs by the transformer engine. :return: This function should return a StructuredDataset literal object. Do not confuse this with the StructuredDataset wrapper class used as input to this function - that is the user facing Python class. This function needs to return the IDL StructuredDataset. |
 
 ### Properties
 
@@ -447,10 +437,10 @@ def assert_type(
     v: typing.Any,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[StructuredDataset]` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[StructuredDataset]` | |
+| `v` | `typing.Any` | |
 
 #### async_to_literal()
 
@@ -468,12 +458,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `Union[StructuredDataset, typing.Any]` |
-| `python_type` | `Union[Type[StructuredDataset], Type]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `Union[StructuredDataset, typing.Any]` | The actual value to be transformed |
+| `python_type` | `Union[Type[StructuredDataset], Type]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### async_to_python_value()
 
@@ -514,11 +504,11 @@ with only one column.
 +-----------------------------+-----------------------------------------+--------------------------------------+
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T] \| StructuredDataset` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `lv` | `Literal` | |
+| `expected_python_type` | `Type[T] \| StructuredDataset` | |
 
 #### dict_to_structured_dataset()
 
@@ -528,10 +518,10 @@ def dict_to_structured_dataset(
     expected_python_type: Type[T] | StructuredDataset,
 ) -> T | StructuredDataset
 ```
-| Parameter | Type |
-|-|-|
-| `dict_obj` | `typing.Dict[str, str]` |
-| `expected_python_type` | `Type[T] \| StructuredDataset` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dict_obj` | `typing.Dict[str, str]` | |
+| `expected_python_type` | `Type[T] \| StructuredDataset` | |
 
 #### encode()
 
@@ -545,14 +535,14 @@ def encode(
     structured_literal_type: StructuredDatasetType,
 ) -> Literal
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `sd` | `StructuredDataset` |
-| `df_type` | `Type` |
-| `protocol` | `str` |
-| `format` | `str` |
-| `structured_literal_type` | `StructuredDatasetType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `sd` | `StructuredDataset` | |
+| `df_type` | `Type` | |
+| `protocol` | `str` | |
+| `format` | `str` | |
+| `structured_literal_type` | `StructuredDatasetType` | |
 
 #### from_binary_idl()
 
@@ -586,10 +576,10 @@ Related PR:
 - Link: https://github.com/flyteorg/flytekit/pull/2554
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T] \| StructuredDataset` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T] \| StructuredDataset` | |
 
 #### from_generic_idl()
 
@@ -622,10 +612,10 @@ Related PR:
 - Link: https://github.com/flyteorg/flytekit/pull/2554
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T] \| StructuredDataset` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T] \| StructuredDataset` | |
 
 #### get_decoder()
 
@@ -636,11 +626,11 @@ def get_decoder(
     format: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `df_type` | `Type` |
-| `protocol` | `str` |
-| `format` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `df_type` | `Type` | |
+| `protocol` | `str` | |
+| `format` | `str` | |
 
 #### get_encoder()
 
@@ -651,11 +641,11 @@ def get_encoder(
     format: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `df_type` | `Type` |
-| `protocol` | `str` |
-| `format` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `df_type` | `Type` | |
+| `protocol` | `str` | |
+| `format` | `str` | |
 
 #### get_literal_type()
 
@@ -670,9 +660,9 @@ The other aspects of it - columns, external schema type, etc. can be read from a
 
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `typing.Union[Type[StructuredDataset], typing.Any]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.Union[Type[StructuredDataset], typing.Any]` | The python dataframe type, which is mostly ignored. |
 
 #### guess_python_type()
 
@@ -684,9 +674,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -696,10 +686,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### iter_as()
 
@@ -711,12 +701,12 @@ def iter_as(
     updated_metadata: StructuredDatasetMetadata,
 ) -> typing.Iterator[DF]
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `sd` | `literals.StructuredDataset` |
-| `df_type` | `Type[DF]` |
-| `updated_metadata` | `StructuredDatasetMetadata` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `sd` | `literals.StructuredDataset` | |
+| `df_type` | `Type[DF]` | |
+| `updated_metadata` | `StructuredDatasetMetadata` | |
 
 #### open_as()
 
@@ -726,14 +716,14 @@ def open_as(
     sd: literals.StructuredDataset,
     df_type: Type[DF],
     updated_metadata: StructuredDatasetMetadata,
-) -> n: dataframe. It could be pandas dataframe or arrow table, etc.
+) -> DF
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `sd` | `literals.StructuredDataset` |
-| `df_type` | `Type[DF]` |
-| `updated_metadata` | `StructuredDatasetMetadata` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `sd` | `literals.StructuredDataset` | |
+| `df_type` | `Type[DF]` | |
+| `updated_metadata` | `StructuredDatasetMetadata` | New metadata type, since it might be different from the metadata in the literal. :return: dataframe. It could be pandas dataframe or arrow table, etc. |
 
 #### register()
 
@@ -751,13 +741,13 @@ specify a protocol (e.g. s3, gs, etc.) field, then
 
 
 
-| Parameter | Type |
-|-|-|
-| `h` | `Handlers` |
-| `default_for_type` | `bool` |
-| `override` | `bool` |
-| `default_format_for_type` | `bool` |
-| `default_storage_for_type` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `h` | `Handlers` | The StructuredDatasetEncoder or StructuredDatasetDecoder you wish to register with this transformer. |
+| `default_for_type` | `bool` | If set, when a user returns from a task an instance of the dataframe the handler handles, e.g. ``return pd.DataFrame(...)``, not wrapped around the ``StructuredDataset`` object, we will use this handler's protocol and format as the default, effectively saying that this handler will be called. Note that this shouldn't be set if your handler's protocol is None, because that implies that your handler is capable of handling all the different storage protocols that flytekit's data persistence layer is aware of. In these cases, the protocol is determined by the raw output data prefix set in the active context. |
+| `override` | `bool` | Override any previous registrations. If default_for_type is also set, this will also override the default. |
+| `default_format_for_type` | `bool` | Unlike the default_for_type arg that will set this handler's format and storage as the default, this will only set the format. Error if already set, unless override is specified. |
+| `default_storage_for_type` | `bool` | Same as above but only for the storage format. Error if already set, unless override is specified. |
 
 #### register_for_protocol()
 
@@ -774,14 +764,14 @@ def register_for_protocol(
 See the main register function instead.
 
 
-| Parameter | Type |
-|-|-|
-| `h` | `Handlers` |
-| `protocol` | `str` |
-| `default_for_type` | `bool` |
-| `override` | `bool` |
-| `default_format_for_type` | `bool` |
-| `default_storage_for_type` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `h` | `Handlers` | |
+| `protocol` | `str` | |
+| `default_for_type` | `bool` | |
+| `override` | `bool` | |
+| `default_format_for_type` | `bool` | |
+| `default_storage_for_type` | `bool` | |
 
 #### register_renderer()
 
@@ -791,10 +781,10 @@ def register_renderer(
     renderer: Renderable,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `python_type` | `Type` |
-| `renderer` | `Renderable` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_type` | `Type` | |
+| `renderer` | `Renderable` | |
 
 #### to_html()
 
@@ -808,11 +798,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.Any` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `typing.Any` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -830,12 +820,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.Any` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `typing.Any` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -849,11 +839,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 ### Properties
 

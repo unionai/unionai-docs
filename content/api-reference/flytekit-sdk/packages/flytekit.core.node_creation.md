@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.node_creation
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -66,9 +66,9 @@ needs to be dereferenced by the output name. ::
     t2(t1_node.o0)
 
 
-| Parameter | Type |
-|-|-|
-| `entity` | `Union[PythonTask, LaunchPlan, WorkflowBase, RemoteEntity]` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `entity` | `Union[PythonTask, LaunchPlan, WorkflowBase, RemoteEntity]` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 

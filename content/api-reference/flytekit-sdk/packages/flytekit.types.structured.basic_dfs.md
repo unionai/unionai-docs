@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.structured.basic_dfs
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -46,11 +46,11 @@ def get_pandas_storage_options(
     anonymous: bool,
 ) -> typing.Optional[typing.Dict]
 ```
-| Parameter | Type |
-|-|-|
-| `uri` | `str` |
-| `data_config` | `flytekit.configuration.DataConfig` |
-| `anonymous` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `uri` | `str` | |
+| `data_config` | `flytekit.configuration.DataConfig` | |
+| `anonymous` | `bool` | |
 
 ## flytekit.types.structured.basic_dfs.ArrowToParquetEncodingHandler
 
@@ -83,7 +83,7 @@ def encode(
     ctx: flytekit.core.context_manager.FlyteContext,
     structured_dataset: flytekit.types.structured.structured_dataset.StructuredDataset,
     structured_dataset_type: flytekit.models.types.StructuredDatasetType,
-) -> n: This function should return a StructuredDataset literal object. Do not confuse this with the
+) -> flytekit.models.literals.StructuredDataset
 ```
 Even if the user code returns a plain dataframe instance, the dataset transformer engine will wrap the
 incoming dataframe with defaults set for that dataframe
@@ -93,11 +93,11 @@ the
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `structured_dataset` | `flytekit.types.structured.structured_dataset.StructuredDataset` |
-| `structured_dataset_type` | `flytekit.models.types.StructuredDatasetType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `structured_dataset` | `flytekit.types.structured.structured_dataset.StructuredDataset` | This is a StructuredDataset wrapper object. See more info above. |
+| `structured_dataset_type` | `flytekit.models.types.StructuredDatasetType` | This the StructuredDatasetType, as found in the LiteralType of the interface of the task that invoked this encoding call. It is passed along to encoders so that authors of encoders can include it in the returned literals.StructuredDataset. See the IDL for more information on why this literal in particular carries the type information along with it. If the encoder doesn't supply it, it will also be filled in after the encoder runs by the transformer engine. :return: This function should return a StructuredDataset literal object. Do not confuse this with the StructuredDataset wrapper class used as input to this function - that is the user facing Python class. This function needs to return the IDL StructuredDataset. |
 
 ### Properties
 
@@ -137,18 +137,18 @@ def decode(
     ctx: flytekit.core.context_manager.FlyteContext,
     flyte_value: flytekit.models.literals.StructuredDataset,
     current_task_metadata: flytekit.models.literals.StructuredDatasetMetadata,
-) -> n: This function can either return an instance of the dataframe that this decoder handles, or an iterator
+) -> pd.DataFrame
 ```
 This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal
 value into a Python instance.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `flyte_value` | `flytekit.models.literals.StructuredDataset` |
-| `current_task_metadata` | `flytekit.models.literals.StructuredDatasetMetadata` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `flyte_value` | `flytekit.models.literals.StructuredDataset` | This will be a Flyte IDL StructuredDataset Literal - do not confuse this with the StructuredDataset class defined also in this module. |
+| `current_task_metadata` | `flytekit.models.literals.StructuredDatasetMetadata` | Metadata object containing the type (and columns if any) for the currently executing task. This type may have more or less information than the type information bundled inside the incoming flyte_value. :return: This function can either return an instance of the dataframe that this decoder handles, or an iterator of those dataframes. |
 
 ### Properties
 
@@ -189,7 +189,7 @@ def encode(
     ctx: flytekit.core.context_manager.FlyteContext,
     structured_dataset: flytekit.types.structured.structured_dataset.StructuredDataset,
     structured_dataset_type: flytekit.models.types.StructuredDatasetType,
-) -> n: This function should return a StructuredDataset literal object. Do not confuse this with the
+) -> flytekit.models.literals.StructuredDataset
 ```
 Even if the user code returns a plain dataframe instance, the dataset transformer engine will wrap the
 incoming dataframe with defaults set for that dataframe
@@ -199,11 +199,11 @@ the
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `structured_dataset` | `flytekit.types.structured.structured_dataset.StructuredDataset` |
-| `structured_dataset_type` | `flytekit.models.types.StructuredDatasetType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `structured_dataset` | `flytekit.types.structured.structured_dataset.StructuredDataset` | This is a StructuredDataset wrapper object. See more info above. |
+| `structured_dataset_type` | `flytekit.models.types.StructuredDatasetType` | This the StructuredDatasetType, as found in the LiteralType of the interface of the task that invoked this encoding call. It is passed along to encoders so that authors of encoders can include it in the returned literals.StructuredDataset. See the IDL for more information on why this literal in particular carries the type information along with it. If the encoder doesn't supply it, it will also be filled in after the encoder runs by the transformer engine. :return: This function should return a StructuredDataset literal object. Do not confuse this with the StructuredDataset wrapper class used as input to this function - that is the user facing Python class. This function needs to return the IDL StructuredDataset. |
 
 ### Properties
 
@@ -244,7 +244,7 @@ def encode(
     ctx: flytekit.core.context_manager.FlyteContext,
     structured_dataset: flytekit.types.structured.structured_dataset.StructuredDataset,
     structured_dataset_type: flytekit.models.types.StructuredDatasetType,
-) -> n: This function should return a StructuredDataset literal object. Do not confuse this with the
+) -> flytekit.models.literals.StructuredDataset
 ```
 Even if the user code returns a plain dataframe instance, the dataset transformer engine will wrap the
 incoming dataframe with defaults set for that dataframe
@@ -254,11 +254,11 @@ the
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `structured_dataset` | `flytekit.types.structured.structured_dataset.StructuredDataset` |
-| `structured_dataset_type` | `flytekit.models.types.StructuredDatasetType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `structured_dataset` | `flytekit.types.structured.structured_dataset.StructuredDataset` | This is a StructuredDataset wrapper object. See more info above. |
+| `structured_dataset_type` | `flytekit.models.types.StructuredDatasetType` | This the StructuredDatasetType, as found in the LiteralType of the interface of the task that invoked this encoding call. It is passed along to encoders so that authors of encoders can include it in the returned literals.StructuredDataset. See the IDL for more information on why this literal in particular carries the type information along with it. If the encoder doesn't supply it, it will also be filled in after the encoder runs by the transformer engine. :return: This function should return a StructuredDataset literal object. Do not confuse this with the StructuredDataset wrapper class used as input to this function - that is the user facing Python class. This function needs to return the IDL StructuredDataset. |
 
 ### Properties
 
@@ -298,18 +298,18 @@ def decode(
     ctx: flytekit.core.context_manager.FlyteContext,
     flyte_value: flytekit.models.literals.StructuredDataset,
     current_task_metadata: flytekit.models.literals.StructuredDatasetMetadata,
-) -> n: This function can either return an instance of the dataframe that this decoder handles, or an iterator
+) -> pa.Table
 ```
 This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal
 value into a Python instance.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `flyte_value` | `flytekit.models.literals.StructuredDataset` |
-| `current_task_metadata` | `flytekit.models.literals.StructuredDatasetMetadata` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `flyte_value` | `flytekit.models.literals.StructuredDataset` | This will be a Flyte IDL StructuredDataset Literal - do not confuse this with the StructuredDataset class defined also in this module. |
+| `current_task_metadata` | `flytekit.models.literals.StructuredDatasetMetadata` | Metadata object containing the type (and columns if any) for the currently executing task. This type may have more or less information than the type information bundled inside the incoming flyte_value. :return: This function can either return an instance of the dataframe that this decoder handles, or an iterator of those dataframes. |
 
 ### Properties
 
@@ -349,18 +349,18 @@ def decode(
     ctx: flytekit.core.context_manager.FlyteContext,
     flyte_value: flytekit.models.literals.StructuredDataset,
     current_task_metadata: flytekit.models.literals.StructuredDatasetMetadata,
-) -> n: This function can either return an instance of the dataframe that this decoder handles, or an iterator
+) -> pd.DataFrame
 ```
 This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal
 value into a Python instance.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `flyte_value` | `flytekit.models.literals.StructuredDataset` |
-| `current_task_metadata` | `flytekit.models.literals.StructuredDatasetMetadata` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `flyte_value` | `flytekit.models.literals.StructuredDataset` | This will be a Flyte IDL StructuredDataset Literal - do not confuse this with the StructuredDataset class defined also in this module. |
+| `current_task_metadata` | `flytekit.models.literals.StructuredDatasetMetadata` | Metadata object containing the type (and columns if any) for the currently executing task. This type may have more or less information than the type information bundled inside the incoming flyte_value. :return: This function can either return an instance of the dataframe that this decoder handles, or an iterator of those dataframes. |
 
 ### Properties
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.admin.task_execution
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -26,12 +26,12 @@ class TaskExecution(
     is_parent,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `input_uri` |  |
-| `closure` |  |
-| `is_parent` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `input_uri` |  | |
+| `closure` |  | |
+| `is_parent` |  | |
 
 ### Methods
 
@@ -41,7 +41,6 @@ class TaskExecution(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -49,11 +48,11 @@ class TaskExecution(
 ```python
 def from_flyte_idl(
     proto,
-) -> e: TaskExecution
+)
 ```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` |  | |
 
 #### serialize_to_string()
 
@@ -74,14 +73,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.task_execution_pb2.TaskExecution
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -113,17 +104,17 @@ class TaskExecutionClosure(
     metadata,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `phase` |  |
-| `logs` |  |
-| `started_at` |  |
-| `duration` |  |
-| `created_at` |  |
-| `updated_at` |  |
-| `output_uri` |  |
-| `error` |  |
-| `metadata` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `phase` |  | |
+| `logs` |  | |
+| `started_at` |  | |
+| `duration` |  | |
+| `created_at` |  | |
+| `updated_at` |  | |
+| `output_uri` |  | |
+| `error` |  | |
+| `metadata` |  | |
 
 ### Methods
 
@@ -133,7 +124,6 @@ class TaskExecutionClosure(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -141,11 +131,11 @@ class TaskExecutionClosure(
 ```python
 def from_flyte_idl(
     p,
-) -> e: TaskExecutionClosure
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
 
 #### serialize_to_string()
 
@@ -166,14 +156,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.task_execution_pb2.TaskExecutionClosure
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

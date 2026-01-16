@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.script_mode
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -46,11 +46,11 @@ Copies modules into destination that are in modules. The module files are copied
 3. Does not share a common path with the source_path.
 
 
-| Parameter | Type |
-|-|-|
-| `source_path` | `str` |
-| `destination` | `str` |
-| `modules` | `List[ModuleType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `source_path` | `str` | |
+| `destination` | `str` | |
+| `modules` | `List[ModuleType]` | |
 
 #### compress_scripts()
 
@@ -88,11 +88,11 @@ file alongside with the folder structure, i.e.:
 │       └── __init__.py
 
 
-| Parameter | Type |
-|-|-|
-| `source_path` | `str` |
-| `destination` | `str` |
-| `modules` | `List[ModuleType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `source_path` | `str` | |
+| `destination` | `str` | |
+| `modules` | `List[ModuleType]` | |
 
 #### get_all_modules()
 
@@ -105,10 +105,10 @@ def get_all_modules(
 Import python file with module_name in source_path and return all modules.
 
 
-| Parameter | Type |
-|-|-|
-| `source_path` | `str` |
-| `module_name` | `Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `source_path` | `str` | |
+| `module_name` | `Optional[str]` | |
 
 #### list_all_files()
 
@@ -119,11 +119,11 @@ def list_all_files(
     ignore_group: Optional[IgnoreGroup],
 ) -> List[str]
 ```
-| Parameter | Type |
-|-|-|
-| `source_path` | `str` |
-| `deref_symlinks` |  |
-| `ignore_group` | `Optional[IgnoreGroup]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `source_path` | `str` | |
+| `deref_symlinks` |  | |
+| `ignore_group` | `Optional[IgnoreGroup]` | |
 
 #### list_imported_modules_as_files()
 
@@ -140,10 +140,10 @@ Copies modules into destination that are in modules. The module files are copied
 3. Does not share a common path with the source_path.
 
 
-| Parameter | Type |
-|-|-|
-| `source_path` | `str` |
-| `modules` | `List[ModuleType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `source_path` | `str` | |
+| `modules` | `List[ModuleType]` | |
 
 #### ls_files()
 
@@ -168,12 +168,12 @@ This is used for two reasons.
 If the copy enum is set to loaded_modules, then the loaded sys modules will be used.
 
 
-| Parameter | Type |
-|-|-|
-| `source_path` | `str` |
-| `copy_file_detection` | `CopyFileDetection` |
-| `deref_symlinks` | `bool` |
-| `ignore_group` | `Optional[IgnoreGroup]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `source_path` | `str` | |
+| `copy_file_detection` | `CopyFileDetection` | |
+| `deref_symlinks` | `bool` | |
+| `ignore_group` | `Optional[IgnoreGroup]` | |
 
 #### tar_strip_file_attributes()
 
@@ -182,7 +182,7 @@ def tar_strip_file_attributes(
     tar_info: tarfile.TarInfo,
 ) -> tarfile.TarInfo
 ```
-| Parameter | Type |
-|-|-|
-| `tar_info` | `tarfile.TarInfo` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tar_info` | `tarfile.TarInfo` | |
 

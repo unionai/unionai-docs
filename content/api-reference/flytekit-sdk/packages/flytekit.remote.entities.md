@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.entities
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -40,12 +40,12 @@ class FlyteArrayNode(
 TODO: docstring
 
 
-| Parameter | Type |
-|-|-|
-| `flyte_node` | `FlyteNode` |
-| `parallelism` | `int` |
-| `min_successes` | `int` |
-| `min_success_ratio` | `float` |
+| Parameter | Type | Description |
+|-|-|-|
+| `flyte_node` | `FlyteNode` | |
+| `parallelism` | `int` | |
+| `min_successes` | `int` | |
+| `min_success_ratio` | `float` | |
 
 ### Methods
 
@@ -56,7 +56,6 @@ TODO: docstring
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -66,9 +65,9 @@ def from_flyte_idl(
     pb2_object,
 ) -> ArrayNode
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### promote_from_model()
 
@@ -78,10 +77,10 @@ def promote_from_model(
     flyte_node: FlyteNode,
 ) -> FlyteArrayNode
 ```
-| Parameter | Type |
-|-|-|
-| `model` | `_workflow_model.ArrayNode` |
-| `flyte_node` | `FlyteNode` |
+| Parameter | Type | Description |
+|-|-|-|
+| `model` | `_workflow_model.ArrayNode` | |
+| `flyte_node` | `FlyteNode` | |
 
 #### serialize_to_string()
 
@@ -101,14 +100,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -129,9 +120,9 @@ runtime based on a series of conditions that get evaluated on various parameters
 
 
 
-| Parameter | Type |
-|-|-|
-| `if_else` | `_workflow_model.IfElseBlock` |
+| Parameter | Type | Description |
+|-|-|-|
+| `if_else` | `_workflow_model.IfElseBlock` | |
 
 ### Methods
 
@@ -142,7 +133,6 @@ runtime based on a series of conditions that get evaluated on various parameters
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -152,9 +142,9 @@ def from_flyte_idl(
     pb2_objct,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_objct` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_objct` |  | |
 
 #### promote_from_model()
 
@@ -167,13 +157,13 @@ def promote_from_model(
     converted_sub_workflows: Dict[id_models.Identifier, FlyteWorkflow],
 ) -> Tuple[FlyteBranchNode, Dict[id_models.Identifier, FlyteWorkflow]]
 ```
-| Parameter | Type |
-|-|-|
-| `base_model` | `_workflow_model.BranchNode` |
-| `sub_workflows` | `Dict[id_models.Identifier, _workflow_model.WorkflowTemplate]` |
-| `node_launch_plans` | `Dict[id_models.Identifier, _launch_plan_model.LaunchPlanSpec]` |
-| `tasks` | `Dict[id_models.Identifier, FlyteTask]` |
-| `converted_sub_workflows` | `Dict[id_models.Identifier, FlyteWorkflow]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `base_model` | `_workflow_model.BranchNode` | |
+| `sub_workflows` | `Dict[id_models.Identifier, _workflow_model.WorkflowTemplate]` | |
+| `node_launch_plans` | `Dict[id_models.Identifier, _launch_plan_model.LaunchPlanSpec]` | |
+| `tasks` | `Dict[id_models.Identifier, FlyteTask]` | |
+| `converted_sub_workflows` | `Dict[id_models.Identifier, FlyteWorkflow]` | |
 
 #### serialize_to_string()
 
@@ -196,14 +186,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.workflow_pb2.BranchNode
 
 
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -221,11 +203,11 @@ class FlyteGateNode(
     approve: typing.Optional[flytekit.models.core.workflow.ApproveCondition],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `signal` | `typing.Optional[flytekit.models.core.workflow.SignalCondition]` |
-| `sleep` | `typing.Optional[flytekit.models.core.workflow.SleepCondition]` |
-| `approve` | `typing.Optional[flytekit.models.core.workflow.ApproveCondition]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `signal` | `typing.Optional[flytekit.models.core.workflow.SignalCondition]` | |
+| `sleep` | `typing.Optional[flytekit.models.core.workflow.SleepCondition]` | |
+| `approve` | `typing.Optional[flytekit.models.core.workflow.ApproveCondition]` | |
 
 ### Methods
 
@@ -236,7 +218,6 @@ class FlyteGateNode(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -246,9 +227,9 @@ def from_flyte_idl(
     pb2_object: flyteidl.core.workflow_pb2.GateNode,
 ) -> GateNode
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` | `flyteidl.core.workflow_pb2.GateNode` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` | `flyteidl.core.workflow_pb2.GateNode` | |
 
 #### promote_from_model()
 
@@ -257,9 +238,9 @@ def promote_from_model(
     model: _workflow_model.GateNode,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `model` | `_workflow_model.GateNode` |
+| Parameter | Type | Description |
+|-|-|-|
+| `model` | `_workflow_model.GateNode` | |
 
 #### serialize_to_string()
 
@@ -279,14 +260,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -309,11 +282,11 @@ class FlyteLaunchPlan(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -329,7 +302,6 @@ class FlyteLaunchPlan(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### compile()
@@ -341,11 +313,11 @@ def compile(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### construct_node_metadata()
 
@@ -362,20 +334,20 @@ def execute(
     kwargs,
 ) -> typing.Any
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### from_flyte_idl()
 
 ```python
 def from_flyte_idl(
     pb2,
-) -> e: LaunchPlanSpec
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` |  | |
 
 #### local_execute()
 
@@ -385,10 +357,10 @@ def local_execute(
     kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -403,10 +375,10 @@ def promote_from_model(
     model: _launch_plan_models.LaunchPlanSpec,
 ) -> FlyteLaunchPlan
 ```
-| Parameter | Type |
-|-|-|
-| `id` | `id_models.Identifier` |
-| `model` | `_launch_plan_models.LaunchPlanSpec` |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` | `id_models.Identifier` | |
+| `model` | `_launch_plan_models.LaunchPlanSpec` | |
 
 #### serialize_to_string()
 
@@ -429,14 +401,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.launch_plan_pb2.LaunchPlanSpec
 
 
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -446,6 +410,9 @@ def verbose_string()
 {{< /multiline >}} |
 | `auth_role` |  | {{< multiline >}}The authorization method with which to execute the workflow.
 :rtype: flytekit.models.common.AuthRole
+{{< /multiline >}} |
+| `concurrency_policy` |  | {{< multiline >}}Concurrency settings for the launch plan.
+:rtype: flytekit.models.concurrency.ConcurrencyPolicy
 {{< /multiline >}} |
 | `default_inputs` |  | {{< multiline >}}Input values to be passed for the execution
 :rtype: flytekit.models.interface.ParameterMap
@@ -498,17 +465,17 @@ class FlyteNode(
     array_node: Optional[FlyteArrayNode],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `upstream_nodes` |  |
-| `bindings` |  |
-| `metadata` |  |
-| `task_node` | `Optional[FlyteTaskNode]` |
-| `workflow_node` | `Optional[FlyteWorkflowNode]` |
-| `branch_node` | `Optional[FlyteBranchNode]` |
-| `gate_node` | `Optional[FlyteGateNode]` |
-| `array_node` | `Optional[FlyteArrayNode]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `upstream_nodes` |  | |
+| `bindings` |  | |
+| `metadata` |  | |
+| `task_node` | `Optional[FlyteTaskNode]` | |
+| `workflow_node` | `Optional[FlyteWorkflowNode]` | |
+| `branch_node` | `Optional[FlyteBranchNode]` | |
+| `gate_node` | `Optional[FlyteGateNode]` | |
+| `array_node` | `Optional[FlyteArrayNode]` | |
 
 ### Methods
 
@@ -519,7 +486,6 @@ class FlyteNode(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -527,11 +493,11 @@ class FlyteNode(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: Node
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### promote_from_model()
 
@@ -544,13 +510,13 @@ def promote_from_model(
     converted_sub_workflows: Dict[id_models.Identifier, FlyteWorkflow],
 ) -> Tuple[Optional[FlyteNode], Dict[id_models.Identifier, FlyteWorkflow]]
 ```
-| Parameter | Type |
-|-|-|
-| `model` | `_workflow_model.Node` |
-| `sub_workflows` | `Optional[Dict[id_models.Identifier, _workflow_model.WorkflowTemplate]]` |
-| `node_launch_plans` | `Optional[Dict[id_models.Identifier, _launch_plan_model.LaunchPlanSpec]]` |
-| `tasks` | `Dict[id_models.Identifier, FlyteTask]` |
-| `converted_sub_workflows` | `Dict[id_models.Identifier, FlyteWorkflow]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `model` | `_workflow_model.Node` | |
+| `sub_workflows` | `Optional[Dict[id_models.Identifier, _workflow_model.WorkflowTemplate]]` | |
+| `node_launch_plans` | `Optional[Dict[id_models.Identifier, _launch_plan_model.LaunchPlanSpec]]` | |
+| `tasks` | `Dict[id_models.Identifier, FlyteTask]` | |
+| `converted_sub_workflows` | `Dict[id_models.Identifier, FlyteWorkflow]` | |
 
 #### serialize_to_string()
 
@@ -571,14 +537,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.workflow_pb2.Node
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -653,21 +611,21 @@ class FlyteTask(
     should_register: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `type` |  |
-| `metadata` |  |
-| `interface` |  |
-| `custom` |  |
-| `container` |  |
-| `task_type_version` | `int` |
-| `security_context` |  |
-| `config` |  |
-| `k8s_pod` |  |
-| `sql` |  |
-| `extended_resources` |  |
-| `should_register` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `type` |  | |
+| `metadata` |  | |
+| `interface` |  | |
+| `custom` |  | |
+| `container` |  | |
+| `task_type_version` | `int` | |
+| `security_context` |  | |
+| `config` |  | |
+| `k8s_pod` |  | |
+| `sql` |  | |
+| `extended_resources` |  | |
+| `should_register` | `bool` | |
 
 ### Methods
 
@@ -683,7 +641,6 @@ class FlyteTask(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### compile()
@@ -695,11 +652,11 @@ def compile(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### construct_node_metadata()
 
@@ -716,20 +673,20 @@ def execute(
     kwargs,
 ) -> typing.Any
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### from_flyte_idl()
 
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: TaskSpec
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### local_execute()
 
@@ -739,10 +696,10 @@ def local_execute(
     kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -756,9 +713,9 @@ def promote_from_model(
     base_model: _task_model.TaskTemplate,
 ) -> FlyteTask
 ```
-| Parameter | Type |
-|-|-|
-| `base_model` | `_task_model.TaskTemplate` |
+| Parameter | Type | Description |
+|-|-|-|
+| `base_model` | `_task_model.TaskTemplate` | |
 
 #### serialize_to_string()
 
@@ -779,14 +736,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.tasks_pb2.TaskSpec
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -854,9 +803,9 @@ This code should be updated when more options are available.
 
 
 
-| Parameter | Type |
-|-|-|
-| `flyte_task` | `FlyteTask` |
+| Parameter | Type | Description |
+|-|-|-|
+| `flyte_task` | `FlyteTask` | |
 
 ### Methods
 
@@ -867,7 +816,6 @@ This code should be updated when more options are available.
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -875,11 +823,11 @@ This code should be updated when more options are available.
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: TaskNode
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### promote_from_model()
 
@@ -892,9 +840,9 @@ Takes the idl wrapper for a TaskNode,
 and returns the hydrated Flytekit object for it by fetching it with the FlyteTask control plane.
 
 
-| Parameter | Type |
-|-|-|
-| `task` | `FlyteTask` |
+| Parameter | Type | Description |
+|-|-|-|
+| `task` | `FlyteTask` | |
 
 #### serialize_to_string()
 
@@ -915,14 +863,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.workflow_pb2.TaskNode
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -955,19 +895,19 @@ class FlyteWorkflow(
     should_register: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` | `id_models.Identifier` |
-| `nodes` | `List[FlyteNode]` |
-| `interface` |  |
-| `output_bindings` |  |
-| `metadata` |  |
-| `metadata_defaults` |  |
-| `subworkflows` | `Optional[List[FlyteWorkflow]]` |
-| `tasks` | `Optional[List[FlyteTask]]` |
-| `launch_plans` | `Optional[Dict[id_models.Identifier, launch_plan_models.LaunchPlanSpec]]` |
-| `compiled_closure` | `Optional[compiler_models.CompiledWorkflowClosure]` |
-| `should_register` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` | `id_models.Identifier` | |
+| `nodes` | `List[FlyteNode]` | |
+| `interface` |  | |
+| `output_bindings` |  | |
+| `metadata` |  | |
+| `metadata_defaults` |  | |
+| `subworkflows` | `Optional[List[FlyteWorkflow]]` | |
+| `tasks` | `Optional[List[FlyteTask]]` | |
+| `launch_plans` | `Optional[Dict[id_models.Identifier, launch_plan_models.LaunchPlanSpec]]` | |
+| `compiled_closure` | `Optional[compiler_models.CompiledWorkflowClosure]` | |
+| `should_register` | `bool` | |
 
 ### Methods
 
@@ -985,7 +925,6 @@ class FlyteWorkflow(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### compile()
@@ -997,11 +936,11 @@ def compile(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### construct_node_metadata()
 
@@ -1018,20 +957,20 @@ def execute(
     kwargs,
 ) -> typing.Any
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### from_flyte_idl()
 
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: WorkflowSpec
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | flyteidl.admin.workflow_pb2.WorkflowSpec :rtype: WorkflowSpec |
 
 #### get_non_system_nodes()
 
@@ -1040,9 +979,9 @@ def get_non_system_nodes(
     nodes: List[_workflow_models.Node],
 ) -> List[_workflow_models.Node]
 ```
-| Parameter | Type |
-|-|-|
-| `nodes` | `List[_workflow_models.Node]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `nodes` | `List[_workflow_models.Node]` | |
 
 #### local_execute()
 
@@ -1052,10 +991,10 @@ def local_execute(
     kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -1074,10 +1013,10 @@ Extracts out the relevant portions of a FlyteWorkflow from a closure from the co
 
 
 
-| Parameter | Type |
-|-|-|
-| `closure` | `compiler_models.CompiledWorkflowClosure` |
-| `node_launch_plans` | `Optional[Dict[id_models, launch_plan_models.LaunchPlanSpec]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `closure` | `compiler_models.CompiledWorkflowClosure` | This is the closure returned by Admin |
+| `node_launch_plans` | `Optional[Dict[id_models, launch_plan_models.LaunchPlanSpec]]` | The reason this exists is because the compiled closure doesn't have launch plans. It only has subworkflows and tasks. Why this is unclear. If supplied, this map of launch plans will be |
 
 #### promote_from_model()
 
@@ -1089,12 +1028,12 @@ def promote_from_model(
     node_launch_plans: Optional[Dict[Identifier, launch_plan_models.LaunchPlanSpec]],
 ) -> FlyteWorkflow
 ```
-| Parameter | Type |
-|-|-|
-| `base_model` | `_workflow_models.WorkflowTemplate` |
-| `sub_workflows` | `Optional[Dict[Identifier, _workflow_models.WorkflowTemplate]]` |
-| `tasks` | `Optional[Dict[Identifier, FlyteTask]]` |
-| `node_launch_plans` | `Optional[Dict[Identifier, launch_plan_models.LaunchPlanSpec]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `base_model` | `_workflow_models.WorkflowTemplate` | |
+| `sub_workflows` | `Optional[Dict[Identifier, _workflow_models.WorkflowTemplate]]` | |
+| `tasks` | `Optional[Dict[Identifier, FlyteTask]]` | |
+| `node_launch_plans` | `Optional[Dict[Identifier, launch_plan_models.LaunchPlanSpec]]` | |
 
 #### serialize_to_string()
 
@@ -1115,14 +1054,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.workflow_pb2.WorkflowSpec
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -1182,10 +1113,10 @@ Refers to a the workflow the node is to execute. One of the references must be s
 
 
 
-| Parameter | Type |
-|-|-|
-| `flyte_workflow` | `FlyteWorkflow` |
-| `flyte_launch_plan` | `FlyteLaunchPlan` |
+| Parameter | Type | Description |
+|-|-|-|
+| `flyte_workflow` | `FlyteWorkflow` | |
+| `flyte_launch_plan` | `FlyteLaunchPlan` | |
 
 ### Methods
 
@@ -1196,7 +1127,6 @@ Refers to a the workflow the node is to execute. One of the references must be s
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1204,11 +1134,11 @@ Refers to a the workflow the node is to execute. One of the references must be s
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: WorkflowNode
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### promote_from_model()
 
@@ -1221,13 +1151,13 @@ def promote_from_model(
     converted_sub_workflows: Dict[id_models.Identifier, FlyteWorkflow],
 ) -> Tuple[FlyteWorkflowNode, Dict[id_models.Identifier, FlyteWorkflow]]
 ```
-| Parameter | Type |
-|-|-|
-| `base_model` | `_workflow_model.WorkflowNode` |
-| `sub_workflows` | `Dict[id_models.Identifier, _workflow_model.WorkflowTemplate]` |
-| `node_launch_plans` | `Dict[id_models.Identifier, _launch_plan_model.LaunchPlanSpec]` |
-| `tasks` | `Dict[Identifier, FlyteTask]` |
-| `converted_sub_workflows` | `Dict[id_models.Identifier, FlyteWorkflow]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `base_model` | `_workflow_model.WorkflowNode` | |
+| `sub_workflows` | `Dict[id_models.Identifier, _workflow_model.WorkflowTemplate]` | |
+| `node_launch_plans` | `Dict[id_models.Identifier, _launch_plan_model.LaunchPlanSpec]` | |
+| `tasks` | `Dict[Identifier, FlyteTask]` | |
+| `converted_sub_workflows` | `Dict[id_models.Identifier, FlyteWorkflow]` | |
 
 #### serialize_to_string()
 
@@ -1248,14 +1178,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.workflow_pb2.WorkflowNode
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

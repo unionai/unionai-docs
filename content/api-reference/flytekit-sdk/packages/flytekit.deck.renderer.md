@@ -1,6 +1,6 @@
 ---
 title: flytekit.deck.renderer
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -16,9 +16,14 @@ layout: py_api
 | [`ArrowRenderer`](.././flytekit.deck.renderer#flytekitdeckrendererarrowrenderer) | Render an Arrow dataframe as an HTML table. |
 | [`MarkdownRenderer`](.././flytekit.deck.renderer#flytekitdeckrenderermarkdownrenderer) | Convert a markdown string to HTML and return HTML as a unicode string. |
 | [`PythonDependencyRenderer`](.././flytekit.deck.renderer#flytekitdeckrendererpythondependencyrenderer) | PythonDependencyDeck is a deck that contains information about packages installed via pip. |
-| [`Renderable`](.././flytekit.deck.renderer#flytekitdeckrendererrenderable) | Base class for protocol classes. |
 | [`SourceCodeRenderer`](.././flytekit.deck.renderer#flytekitdeckrenderersourcecoderenderer) | Convert Python source code to HTML, and return HTML as a unicode string. |
 | [`TopFrameRenderer`](.././flytekit.deck.renderer#flytekitdeckrenderertopframerenderer) | Render a DataFrame as an HTML table. |
+
+### Protocols
+
+| Protocol | Description |
+|-|-|
+| [`Renderable`](.././flytekit.deck.renderer#flytekitdeckrendererrenderable) | Base class for protocol classes. |
 
 ### Variables
 
@@ -47,9 +52,9 @@ def to_html(
     df: pyarrow.Table,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `df` | `pyarrow.Table` |
+| Parameter | Type | Description |
+|-|-|-|
+| `df` | `pyarrow.Table` | |
 
 ## flytekit.deck.renderer.MarkdownRenderer
 
@@ -70,9 +75,9 @@ def to_html(
     text: str,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `text` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `text` | `str` | |
 
 ## flytekit.deck.renderer.PythonDependencyRenderer
 
@@ -84,9 +89,9 @@ class PythonDependencyRenderer(
     title: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `title` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `title` | `str` | |
 
 ### Methods
 
@@ -135,16 +140,8 @@ Protocol classes can be generic, they are defined as::
 
 
 ```python
-class Renderable(
-    args,
-    kwargs,
-)
+protocol Renderable()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 ### Methods
 
 | Method | Description |
@@ -163,9 +160,9 @@ Convert an object(markdown, pandas.dataframe) to HTML and return HTML as a unico
 Returns: An HTML document as a string.
 
 
-| Parameter | Type |
-|-|-|
-| `python_value` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_value` | `typing.Any` | |
 
 ## flytekit.deck.renderer.SourceCodeRenderer
 
@@ -177,9 +174,9 @@ class SourceCodeRenderer(
     title: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `title` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `title` | `str` | |
 
 ### Methods
 
@@ -201,9 +198,9 @@ This method applies a colorful style and replaces the color "#fff0f0" with "#fff
 
 
 
-| Parameter | Type |
-|-|-|
-| `source_code` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `source_code` | `str` | The Python source code to be converted. |
 
 ## flytekit.deck.renderer.TopFrameRenderer
 
@@ -216,10 +213,10 @@ class TopFrameRenderer(
     max_cols: int,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `max_rows` | `int` |
-| `max_cols` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `max_rows` | `int` | |
+| `max_cols` | `int` | |
 
 ### Methods
 
@@ -235,7 +232,7 @@ def to_html(
     df: pandas.DataFrame,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `df` | `pandas.DataFrame` |
+| Parameter | Type | Description |
+|-|-|-|
+| `df` | `pandas.DataFrame` | |
 

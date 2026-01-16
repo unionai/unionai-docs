@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.schedule
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -8,9 +8,7 @@ layout: py_api
 # flytekit.core.schedule
 
 
-.. autoclass:: flytekit.core.schedule.CronSchedule
-   :noindex:
-
+These classes provide functionality related to schedules.
 
 ## Directory
 
@@ -20,8 +18,13 @@ layout: py_api
 |-|-|
 | [`CronSchedule`](.././flytekit.core.schedule#flytekitcoreschedulecronschedule) | Use this when you have a launch plan that you want to run on a cron expression. |
 | [`FixedRate`](.././flytekit.core.schedule#flytekitcoreschedulefixedrate) | Use this class to schedule a fixed-rate interval for a launch plan. |
-| [`LaunchPlanTriggerBase`](.././flytekit.core.schedule#flytekitcoreschedulelaunchplantriggerbase) | Base class for protocol classes. |
 | [`OnSchedule`](.././flytekit.core.schedule#flytekitcorescheduleonschedule) | Base class for protocol classes. |
+
+### Protocols
+
+| Protocol | Description |
+|-|-|
+| [`LaunchPlanTriggerBase`](.././flytekit.core.schedule#flytekitcoreschedulelaunchplantriggerbase) | Base class for protocol classes. |
 
 ## flytekit.core.schedule.CronSchedule
 
@@ -47,12 +50,12 @@ class CronSchedule(
     kickoff_time_input_arg: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cron_expression` | `typing.Optional[str]` |
-| `schedule` | `typing.Optional[str]` |
-| `offset` | `typing.Optional[str]` |
-| `kickoff_time_input_arg` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cron_expression` | `typing.Optional[str]` | |
+| `schedule` | `typing.Optional[str]` | |
+| `offset` | `typing.Optional[str]` | |
+| `kickoff_time_input_arg` | `typing.Optional[str]` | |
 
 ### Methods
 
@@ -62,7 +65,6 @@ class CronSchedule(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -70,11 +72,11 @@ class CronSchedule(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: Schedule
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -95,14 +97,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.schedule_pb2.Schedule
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -138,10 +132,10 @@ class FixedRate(
     kickoff_time_input_arg: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `duration` | `datetime.timedelta` |
-| `kickoff_time_input_arg` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `duration` | `datetime.timedelta` | |
+| `kickoff_time_input_arg` | `typing.Optional[str]` | |
 
 ### Methods
 
@@ -151,7 +145,6 @@ class FixedRate(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -159,11 +152,11 @@ class FixedRate(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: Schedule
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -184,14 +177,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.schedule_pb2.Schedule
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -243,16 +228,8 @@ Protocol classes can be generic, they are defined as::
 
 
 ```python
-class LaunchPlanTriggerBase(
-    args,
-    kwargs,
-)
+protocol LaunchPlanTriggerBase()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 ### Methods
 
 | Method | Description |
@@ -268,10 +245,10 @@ def to_flyte_idl(
     kwargs,
 ) -> google.protobuf.message.Message
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ## flytekit.core.schedule.OnSchedule
 
@@ -312,9 +289,9 @@ class OnSchedule(
     schedule: typing.Union[flytekit.core.schedule.CronSchedule, flytekit.core.schedule.FixedRate],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `schedule` | `typing.Union[flytekit.core.schedule.CronSchedule, flytekit.core.schedule.FixedRate]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `schedule` | `typing.Union[flytekit.core.schedule.CronSchedule, flytekit.core.schedule.FixedRate]` | |
 
 ### Methods
 

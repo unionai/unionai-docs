@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.default_html
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -25,7 +25,7 @@ def get_default_success_html(
     endpoint: str,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
 

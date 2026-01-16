@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.repo
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -37,7 +37,7 @@ layout: py_api
 ```python
 def find_common_root(
     pkgs_or_mods: typing.Union[typing.Tuple[str], typing.List[str]],
-) -> n: The common detected root path, the output of _find_project_root
+) -> pathlib._local.Path
 ```
 Given an arbitrary list of folders and files, this function will use the script mode function to walk up
 the filesystem to find the first folder without an init file. If all the folders and files resolve to
@@ -45,9 +45,9 @@ the same root folder, then that Path is returned. Otherwise an error is raised.
 
 
 
-| Parameter | Type |
-|-|-|
-| `pkgs_or_mods` | `typing.Union[typing.Tuple[str], typing.List[str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pkgs_or_mods` | `typing.Union[typing.Tuple[str], typing.List[str]]` | :return: The common detected root path, the output of _find_project_root |
 
 #### list_packages_and_modules()
 
@@ -55,17 +55,17 @@ the same root folder, then that Path is returned. Otherwise an error is raised.
 def list_packages_and_modules(
     project_root: pathlib._local.Path,
     pkgs_or_mods: typing.List[str],
-) -> n: List of packages/modules, dot delineated.
+) -> typing.List[str]
 ```
 This is a helper function that returns the input list of python packages/modules as a dot delinated list
 relative to the given project_root.
 
 
 
-| Parameter | Type |
-|-|-|
-| `project_root` | `pathlib._local.Path` |
-| `pkgs_or_mods` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project_root` | `pathlib._local.Path` | |
+| `pkgs_or_mods` | `typing.List[str]` | :return: List of packages/modules, dot delineated. |
 
 #### package()
 
@@ -81,13 +81,13 @@ def package(
 Package the given entities and the source code (if fast is enabled) into a package with the given name in output
 
 
-| Parameter | Type |
-|-|-|
-| `serializable_entities` | `typing.List[typing.Union[flytekit.models.task.TaskSpec, flytekit.models.launch_plan.LaunchPlan, flytekit.models.admin.workflow.WorkflowSpec, flytekit.models.core.workflow.Node, flytekit.models.core.workflow.BranchNode, flytekit.models.core.workflow.ArrayNode]]` |
-| `source` | `str` |
-| `output` | `str` |
-| `deref_symlinks` | `bool` |
-| `fast_options` | `typing.Optional[flytekit.tools.fast_registration.FastPackageOptions]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `serializable_entities` | `typing.List[typing.Union[flytekit.models.task.TaskSpec, flytekit.models.launch_plan.LaunchPlan, flytekit.models.admin.workflow.WorkflowSpec, flytekit.models.core.workflow.Node, flytekit.models.core.workflow.BranchNode, flytekit.models.core.workflow.ArrayNode]]` | Entities that can be serialized |
+| `source` | `str` | source folder |
+| `output` | `str` | output package name with suffix |
+| `deref_symlinks` | `bool` | if enabled then symlinks are dereferenced during packaging |
+| `fast_options` | `typing.Optional[flytekit.tools.fast_registration.FastPackageOptions]` | Temporarily, for fast register, specify both the fast arg as well as copy_style fast == True with copy_style == None means use the old fast register tar'ring method. In the future the fast bool will be removed, and copy_style == None will mean do not fast register. |
 
 #### print_registration_status()
 
@@ -101,14 +101,14 @@ def print_registration_status(
     verbosity: int,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `i` | `flytekit.models.core.identifier.Identifier` |
-| `success` | `bool` |
-| `activation` | `bool` |
-| `dry_run` | `bool` |
-| `console_url` | `str` |
-| `verbosity` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `i` | `flytekit.models.core.identifier.Identifier` | |
+| `success` | `bool` | |
+| `activation` | `bool` | |
+| `dry_run` | `bool` | |
+| `console_url` | `str` | |
+| `verbosity` | `int` | |
 
 #### register()
 
@@ -127,6 +127,7 @@ def register(
     remote: flytekit.remote.remote.FlyteRemote,
     copy_style: <enum 'CopyFileDetection'>,
     env: typing.Optional[typing.Dict[str, str]],
+    default_resources: typing.Optional[flytekit.core.resources.ResourceSpec],
     dry_run: bool,
     activate_launchplans: bool,
     skip_errors: bool,
@@ -138,26 +139,27 @@ Temporarily, for fast register, specify both the fast arg as well as copy_style.
 fast == True with copy_style == None means use the old fast register tar'ring method.
 
 
-| Parameter | Type |
-|-|-|
-| `project` | `str` |
-| `domain` | `str` |
-| `image_config` | `flytekit.configuration.ImageConfig` |
-| `output` | `str` |
-| `destination_dir` | `str` |
-| `service_account` | `str` |
-| `raw_data_prefix` | `str` |
-| `version` | `typing.Optional[str]` |
-| `deref_symlinks` | `bool` |
-| `package_or_module` | `typing.Tuple[str]` |
-| `remote` | `flytekit.remote.remote.FlyteRemote` |
-| `copy_style` | `<enum 'CopyFileDetection'>` |
-| `env` | `typing.Optional[typing.Dict[str, str]]` |
-| `dry_run` | `bool` |
-| `activate_launchplans` | `bool` |
-| `skip_errors` | `bool` |
-| `show_files` | `bool` |
-| `verbosity` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `str` | |
+| `domain` | `str` | |
+| `image_config` | `flytekit.configuration.ImageConfig` | |
+| `output` | `str` | |
+| `destination_dir` | `str` | |
+| `service_account` | `str` | |
+| `raw_data_prefix` | `str` | |
+| `version` | `typing.Optional[str]` | |
+| `deref_symlinks` | `bool` | |
+| `package_or_module` | `typing.Tuple[str]` | |
+| `remote` | `flytekit.remote.remote.FlyteRemote` | |
+| `copy_style` | `<enum 'CopyFileDetection'>` | |
+| `env` | `typing.Optional[typing.Dict[str, str]]` | |
+| `default_resources` | `typing.Optional[flytekit.core.resources.ResourceSpec]` | |
+| `dry_run` | `bool` | |
+| `activate_launchplans` | `bool` | |
+| `skip_errors` | `bool` | |
+| `show_files` | `bool` | |
+| `verbosity` | `int` | |
 
 #### serialize_and_package()
 
@@ -177,15 +179,15 @@ Temporarily for fast package, specify both the fast arg as well as copy_style.
 fast == True with copy_style == None means use the old fast register tar'ring method.
 
 
-| Parameter | Type |
-|-|-|
-| `pkgs` | `typing.List[str]` |
-| `settings` | `flytekit.configuration.SerializationSettings` |
-| `source` | `str` |
-| `output` | `str` |
-| `deref_symlinks` | `bool` |
-| `options` | `typing.Optional[flytekit.core.options.Options]` |
-| `fast_options` | `typing.Optional[flytekit.tools.fast_registration.FastPackageOptions]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pkgs` | `typing.List[str]` | |
+| `settings` | `flytekit.configuration.SerializationSettings` | |
+| `source` | `str` | |
+| `output` | `str` | |
+| `deref_symlinks` | `bool` | |
+| `options` | `typing.Optional[flytekit.core.options.Options]` | |
+| `fast_options` | `typing.Optional[flytekit.tools.fast_registration.FastPackageOptions]` | |
 
 #### serialize_get_control_plane_entities()
 
@@ -201,12 +203,12 @@ See {{< py_class_ref flytekit.models.core.identifier.ResourceType >}} to match t
 entity type.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
-| `local_source_root` | `typing.Optional[str]` |
-| `options` | `typing.Optional[flytekit.core.options.Options]` |
-| `is_registration` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | SerializationSettings to be used |
+| `local_source_root` | `typing.Optional[str]` | Where to start looking for the code. |
+| `options` | `typing.Optional[flytekit.core.options.Options]` | |
+| `is_registration` | `bool` | Whether this is happening for registration. |
 
 #### serialize_load_only()
 
@@ -221,11 +223,11 @@ See {{< py_class_ref flytekit.models.core.identifier.ResourceType >}} to match t
 entity type.
 
 
-| Parameter | Type |
-|-|-|
-| `pkgs` | `typing.List[str]` |
-| `settings` | `flytekit.configuration.SerializationSettings` |
-| `local_source_root` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pkgs` | `typing.List[str]` | Dot-delimited Python packages/subpackages to look into for serialization. |
+| `settings` | `flytekit.configuration.SerializationSettings` | SerializationSettings to be used |
+| `local_source_root` | `typing.Optional[str]` | Where to start looking for the code. |
 
 #### serialize_to_folder()
 
@@ -241,13 +243,13 @@ def serialize_to_folder(
 Serialize the given set of python packages to a folder
 
 
-| Parameter | Type |
-|-|-|
-| `pkgs` | `typing.List[str]` |
-| `settings` | `flytekit.configuration.SerializationSettings` |
-| `local_source_root` | `typing.Optional[str]` |
-| `folder` | `str` |
-| `options` | `typing.Optional[flytekit.core.options.Options]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pkgs` | `typing.List[str]` | |
+| `settings` | `flytekit.configuration.SerializationSettings` | |
+| `local_source_root` | `typing.Optional[str]` | |
+| `folder` | `str` | |
+| `options` | `typing.Optional[flytekit.core.options.Options]` | |
 
 ## flytekit.tools.repo.NoSerializableEntitiesError
 

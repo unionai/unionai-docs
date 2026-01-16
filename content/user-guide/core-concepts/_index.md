@@ -1,7 +1,6 @@
 ---
 title: Core concepts
 weight: 4
-sidebar_expanded: true
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---

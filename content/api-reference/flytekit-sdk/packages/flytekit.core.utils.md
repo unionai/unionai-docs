@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.utils
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -43,9 +43,9 @@ def has_return_statement(
     func: typing.Callable,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `func` | `typing.Callable` |
+| Parameter | Type | Description |
+|-|-|-|
+| `func` | `typing.Callable` | |
 
 #### load_proto_from_file()
 
@@ -55,24 +55,24 @@ def load_proto_from_file(
     path,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_type` |  |
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_type` |  | |
+| `path` |  | |
 
 #### str2bool()
 
 ```python
 def str2bool(
     value: typing.Optional[str],
-) -> n: the boolean value
+) -> bool
 ```
 Convert a string to a boolean. This is useful for parsing environment variables.
 
 
-| Parameter | Type |
-|-|-|
-| `value` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `typing.Optional[str]` | The string to convert to a boolean :return: the boolean value |
 
 #### write_proto_to_file()
 
@@ -82,10 +82,10 @@ def write_proto_to_file(
     path,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` |  | |
+| `path` |  | |
 
 ## flytekit.core.utils.AutoDeletingTempDir
 
@@ -99,11 +99,11 @@ class AutoDeletingTempDir(
     cleanup,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `working_dir_prefix` |  |
-| `tmp_dir` |  |
-| `cleanup` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `working_dir_prefix` |  | |
+| `tmp_dir` |  | |
+| `cleanup` |  | |
 
 ### Methods
 
@@ -126,9 +126,9 @@ def get_named_tempfile(
     name,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` |  | |
 
 #### list_dir()
 
@@ -162,10 +162,10 @@ If the decorator is called with arguments, func will be None.
 If the decorator is called without arguments, func will be function to be decorated.
 
 
-| Parameter | Type |
-|-|-|
-| `task_function` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_function` |  | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -186,10 +186,10 @@ def execute(
 This method will be called when the decorated function is called.
 
 
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### get_extra_config()
 
@@ -206,9 +206,9 @@ class Directory(
     path,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
 
 ### Methods
 
@@ -250,7 +250,7 @@ class timeit(
     name: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | A string that describes the wrapped code block or function being executed. |
 

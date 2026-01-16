@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.scopes
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -50,11 +50,11 @@ user -- allowing them to know if they should take action themselves or pass on t
 We will dispatch metrics and such appropriately.
 
 
-| Parameter | Type |
-|-|-|
-| `wrapped` |  |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `wrapped` |  | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### user_entry_point()
 
@@ -76,11 +76,11 @@ we create here will only be handled within our system code so we don't need to w
 to the user.
 
 
-| Parameter | Type |
-|-|-|
-| `wrapped` |  |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `wrapped` |  | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ## flytekit.exceptions.scopes.FlyteScopedException
 
@@ -98,15 +98,15 @@ class FlyteScopedException(
     kind,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `context` |  |
-| `exc_type` |  |
-| `exc_value` |  |
-| `exc_tb` |  |
-| `top_trim` |  |
-| `bottom_trim` |  |
-| `kind` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `context` |  | |
+| `exc_type` |  | |
+| `exc_value` |  | |
+| `exc_tb` |  | |
+| `top_trim` |  | |
+| `bottom_trim` |  | |
+| `kind` |  | |
 
 ### Properties
 
@@ -134,12 +134,12 @@ class FlyteScopedSystemException(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `exc_type` |  |
-| `exc_value` |  |
-| `exc_tb` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `exc_type` |  | |
+| `exc_value` |  | |
+| `exc_tb` |  | |
+| `kwargs` | `**kwargs` | |
 
 ### Properties
 
@@ -168,12 +168,12 @@ class FlyteScopedUserException(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `exc_type` |  |
-| `exc_value` |  |
-| `exc_tb` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `exc_type` |  | |
+| `exc_value` |  | |
+| `exc_tb` |  | |
+| `kwargs` | `**kwargs` | |
 
 ### Properties
 

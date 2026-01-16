@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.executions
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -29,10 +29,10 @@ class FlyteNodeExecution(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -43,7 +43,6 @@ class FlyteNodeExecution(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -53,9 +52,9 @@ def from_flyte_idl(
     p: flyteidl.admin.node_execution_pb2.NodeExecution,
 ) -> NodeExecution
 ```
-| Parameter | Type |
-|-|-|
-| `p` | `flyteidl.admin.node_execution_pb2.NodeExecution` |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` | `flyteidl.admin.node_execution_pb2.NodeExecution` | |
 
 #### promote_from_model()
 
@@ -64,9 +63,9 @@ def promote_from_model(
     base_model: node_execution_models.NodeExecution,
 ) -> 'FlyteNodeExecution'
 ```
-| Parameter | Type |
-|-|-|
-| `base_model` | `node_execution_models.NodeExecution` |
+| Parameter | Type | Description |
+|-|-|-|
+| `base_model` | `node_execution_models.NodeExecution` | |
 
 #### serialize_to_string()
 
@@ -86,14 +85,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -135,10 +126,10 @@ class FlyteTaskExecution(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -149,7 +140,6 @@ class FlyteTaskExecution(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -157,11 +147,11 @@ class FlyteTaskExecution(
 ```python
 def from_flyte_idl(
     proto,
-) -> e: TaskExecution
+)
 ```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` |  | |
 
 #### promote_from_model()
 
@@ -170,9 +160,9 @@ def promote_from_model(
     base_model: admin_task_execution_models.TaskExecution,
 ) -> 'FlyteTaskExecution'
 ```
-| Parameter | Type |
-|-|-|
-| `base_model` | `admin_task_execution_models.TaskExecution` |
+| Parameter | Type | Description |
+|-|-|-|
+| `base_model` | `admin_task_execution_models.TaskExecution` | |
 
 #### serialize_to_string()
 
@@ -193,14 +183,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.task_execution_pb2.TaskExecution
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -240,12 +222,12 @@ class FlyteWorkflowExecution(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `type_hints` | `Optional[Dict[str, typing.Type]]` |
-| `remote` | `Optional['FlyteRemote']` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `type_hints` | `Optional[Dict[str, typing.Type]]` | |
+| `remote` | `Optional['FlyteRemote']` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -257,7 +239,6 @@ class FlyteWorkflowExecution(
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`sync()`](#sync) | Sync the state of the current execution and returns a new object with the updated state. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 | [`wait()`](#wait) | Wait for the execution to complete. |
 
 
@@ -266,11 +247,11 @@ class FlyteWorkflowExecution(
 ```python
 def from_flyte_idl(
     pb,
-) -> e: Execution
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb` |  | |
 
 #### promote_from_model()
 
@@ -281,11 +262,11 @@ def promote_from_model(
     type_hints: Optional[Dict[str, typing.Type]],
 ) -> 'FlyteWorkflowExecution'
 ```
-| Parameter | Type |
-|-|-|
-| `base_model` | `execution_models.Execution` |
-| `remote` | `Optional['FlyteRemote']` |
-| `type_hints` | `Optional[Dict[str, typing.Type]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `base_model` | `execution_models.Execution` | |
+| `remote` | `Optional['FlyteRemote']` | |
+| `type_hints` | `Optional[Dict[str, typing.Type]]` | |
 
 #### serialize_to_string()
 
@@ -310,9 +291,9 @@ def sync(
 Sync the state of the current execution and returns a new object with the updated state.
 
 
-| Parameter | Type |
-|-|-|
-| `sync_nodes` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `sync_nodes` | `bool` | |
 
 #### to_flyte_idl()
 
@@ -320,14 +301,6 @@ Sync the state of the current execution and returns a new object with the update
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.execution_pb2.Execution
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 #### wait()
@@ -343,11 +316,11 @@ Wait for the execution to complete. This is a blocking call.
 
 
 
-| Parameter | Type |
-|-|-|
-| `timeout` | `Optional[Union[timedelta, int]]` |
-| `poll_interval` | `Optional[Union[timedelta, int]]` |
-| `sync_nodes` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `timeout` | `Optional[Union[timedelta, int]]` | The maximum amount of time to wait for the execution to complete. It can be a timedelta or a duration in seconds as int. |
+| `poll_interval` | `Optional[Union[timedelta, int]]` | The amount of time to wait between polling the state of the execution. It can be a timedelta or a duration in seconds as int. |
+| `sync_nodes` | `bool` | Whether to sync the state of the nodes as well. |
 
 ### Properties
 
@@ -384,10 +357,10 @@ class RemoteExecutionBase(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ### Properties
 

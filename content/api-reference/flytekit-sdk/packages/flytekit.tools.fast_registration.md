@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.fast_registration
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -48,10 +48,10 @@ def compress_tarball(
 Compress code tarball using pigz if available, otherwise gzip
 
 
-| Parameter | Type |
-|-|-|
-| `source` | `os.PathLike` |
-| `output` | `os.PathLike` |
+| Parameter | Type | Description |
+|-|-|-|
+| `source` | `os.PathLike` | |
+| `output` | `os.PathLike` | |
 
 #### compute_digest()
 
@@ -64,10 +64,10 @@ def compute_digest(
 Walks the entirety of the source dir to compute a deterministic md5 hex digest of the dir contents.
 
 
-| Parameter | Type |
-|-|-|
-| `source` | `Union[os.PathLike, List[os.PathLike]]` |
-| `filter` | `Optional[callable]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `source` | `Union[os.PathLike, List[os.PathLike]]` | |
+| `filter` | `Optional[callable]` | |
 
 #### download_distribution()
 
@@ -80,10 +80,10 @@ def download_distribution(
 Downloads a remote code distribution and overwrites any local files.
 
 
-| Parameter | Type |
-|-|-|
-| `additional_distribution` | `str` |
-| `destination` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `additional_distribution` | `str` | |
+| `destination` | `str` | |
 
 #### fast_package()
 
@@ -99,12 +99,12 @@ Takes a source directory and packages everything not covered by common ignores i
 named after a hexdigest of the included files.
 
 
-| Parameter | Type |
-|-|-|
-| `source` | `os.PathLike` |
-| `output_dir` | `os.PathLike` |
-| `deref_symlinks` | `bool` |
-| `options` | `Optional[FastPackageOptions]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `source` | `os.PathLike` | |
+| `output_dir` | `os.PathLike` | |
+| `deref_symlinks` | `bool` | |
+| `options` | `Optional[FastPackageOptions]` | The CopyFileDetection option set to None :return os.PathLike: |
 
 #### get_additional_distribution_loc()
 
@@ -114,10 +114,10 @@ def get_additional_distribution_loc(
     identifier: str,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `remote_location` | `str` |
-| `identifier` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `remote_location` | `str` | |
+| `identifier` | `str` | |
 
 #### print_ls_tree()
 
@@ -127,10 +127,10 @@ def print_ls_tree(
     ls: typing.List[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `source` | `os.PathLike` |
-| `ls` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `source` | `os.PathLike` | |
+| `ls` | `typing.List[str]` | |
 
 ## flytekit.tools.fast_registration.FastPackageOptions
 
@@ -145,10 +145,10 @@ class FastPackageOptions(
     show_files: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `ignores` | `list[Ignore]` |
-| `keep_default_ignores` | `bool` |
-| `copy_style` | `Optional[CopyFileDetection]` |
-| `show_files` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ignores` | `list[Ignore]` | |
+| `keep_default_ignores` | `bool` | |
+| `copy_style` | `Optional[CopyFileDetection]` | |
+| `show_files` | `bool` | |
 

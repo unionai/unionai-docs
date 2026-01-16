@@ -1,6 +1,6 @@
 ---
 title: flytekit.utils.dict_formatter
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -28,7 +28,7 @@ def format_dict(
     original_dict: typing.Any,
     update_dict: typing.Dict[str, typing.Any],
     idempotence_token: typing.Optional[str],
-) -> n: The updated dictionary
+) -> typing.Any
 ```
 Recursively update a dictionary with format strings with values from another dictionary where the keys match
 the format string. This goes a little beyond regular python string formatting and uses `.` to denote nested keys.
@@ -43,12 +43,12 @@ then the result will be {"EndpointConfigName": "my-endpoint-config"}.
 
 
 
-| Parameter | Type |
-|-|-|
-| `service` | `str` |
-| `original_dict` | `typing.Any` |
-| `update_dict` | `typing.Dict[str, typing.Any]` |
-| `idempotence_token` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `service` | `str` | The AWS service to use |
+| `original_dict` | `typing.Any` | The dictionary to update (in place) |
+| `update_dict` | `typing.Dict[str, typing.Any]` | The dictionary to use for updating |
+| `idempotence_token` | `typing.Optional[str]` | Hash of config -- this is to ensure the execution ID is deterministic :return: The updated dictionary |
 
 #### get_nested_value()
 
@@ -61,10 +61,10 @@ def get_nested_value(
 Retrieve the nested value from a dictionary based on a list of keys.
 
 
-| Parameter | Type |
-|-|-|
-| `d` | `typing.Dict[str, typing.Any]` |
-| `keys` | `list[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `d` | `typing.Dict[str, typing.Any]` | |
+| `keys` | `list[str]` | |
 
 #### replace_placeholder()
 
@@ -79,10 +79,10 @@ def replace_placeholder(
 Replace a placeholder in the original string and handle the specific logic for the sagemaker service and idempotence token.
 
 
-| Parameter | Type |
-|-|-|
-| `service` | `str` |
-| `original_dict` | `str` |
-| `placeholder` | `str` |
-| `replacement` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `service` | `str` | |
+| `original_dict` | `str` | |
+| `placeholder` | `str` | |
+| `replacement` | `str` | |
 

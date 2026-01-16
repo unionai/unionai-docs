@@ -1,6 +1,6 @@
 ---
 title: flytekit.interaction.string_literals
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -31,9 +31,9 @@ def literal_map_string_repr(
 This method is used to convert a literal map to a string representation.
 
 
-| Parameter | Type |
-|-|-|
-| `lm` | `typing.Union[flytekit.models.literals.LiteralMap, typing.Dict[str, flytekit.models.literals.Literal]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `lm` | `typing.Union[flytekit.models.literals.LiteralMap, typing.Dict[str, flytekit.models.literals.Literal]]` | |
 
 #### literal_string_repr()
 
@@ -46,9 +46,9 @@ This method is used to convert a literal to a string representation. This is use
 use a shortened string representation of a literal, especially a FlyteFile, FlyteDirectory, or StructuredDataset.
 
 
-| Parameter | Type |
-|-|-|
-| `lit` | `flytekit.models.literals.Literal` |
+| Parameter | Type | Description |
+|-|-|-|
+| `lit` | `flytekit.models.literals.Literal` | |
 
 #### primitive_to_string()
 
@@ -60,9 +60,9 @@ def primitive_to_string(
 This method is used to convert a primitive to a string representation.
 
 
-| Parameter | Type |
-|-|-|
-| `primitive` | `flytekit.models.literals.Primitive` |
+| Parameter | Type | Description |
+|-|-|-|
+| `primitive` | `flytekit.models.literals.Primitive` | |
 
 #### scalar_to_string()
 
@@ -74,7 +74,7 @@ def scalar_to_string(
 This method is used to convert a scalar to a string representation.
 
 
-| Parameter | Type |
-|-|-|
-| `scalar` | `flytekit.models.literals.Scalar` |
+| Parameter | Type | Description |
+|-|-|-|
+| `scalar` | `flytekit.models.literals.Scalar` | |
 

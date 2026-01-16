@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.data
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -31,10 +31,10 @@ def download_literal(
 Download a single literal to a file, if it is a blob or structured dataset.
 
 
-| Parameter | Type |
-|-|-|
-| `file_access` | `flytekit.core.data_persistence.FileAccessProvider` |
-| `var` | `str` |
-| `data` | `flytekit.models.literals.Literal` |
-| `download_to` | `typing.Optional[pathlib._local.Path]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `file_access` | `flytekit.core.data_persistence.FileAccessProvider` | |
+| `var` | `str` | |
+| `data` | `flytekit.models.literals.Literal` | |
+| `download_to` | `typing.Optional[pathlib._local.Path]` | |
 

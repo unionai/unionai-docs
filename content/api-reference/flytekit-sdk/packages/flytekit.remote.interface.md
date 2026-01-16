@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.interface
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -28,10 +28,10 @@ outputs are represented directly as Python dicts, rather than going through the 
 
 
 
-| Parameter | Type |
-|-|-|
-| `inputs` |  |
-| `outputs` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `inputs` |  | |
+| `outputs` |  | |
 
 ### Methods
 
@@ -43,7 +43,6 @@ outputs are represented directly as Python dicts, rather than going through the 
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 | [`transform_interface_to_list()`](#transform_interface_to_list) | Takes a single task interface and interpolates it to an array interface - to allow performing distributed. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -53,20 +52,20 @@ def from_flyte_idl(
     proto: flyteidl.core.interface_pb2.TypedInterface,
 ) -> TypedInterface
 ```
-| Parameter | Type |
-|-|-|
-| `proto` | `flyteidl.core.interface_pb2.TypedInterface` |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` | `flyteidl.core.interface_pb2.TypedInterface` | |
 
 #### promote_from_model()
 
 ```python
 def promote_from_model(
     model,
-) -> e: TypedInterface
+)
 ```
-| Parameter | Type |
-|-|-|
-| `model` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `model` |  | |
 
 #### serialize_to_string()
 
@@ -98,18 +97,10 @@ Takes a single task interface and interpolates it to an array interface - to all
 python map like functions
 
 
-| Parameter | Type |
-|-|-|
-| `bound_inputs` | `typing.Set[str]` |
-| `excluded_inputs` | `typing.Set[str]` |
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
+| Parameter | Type | Description |
+|-|-|-|
+| `bound_inputs` | `typing.Set[str]` | fixed inputs that should not be updated to a list and will be maintained as is |
+| `excluded_inputs` | `typing.Set[str]` | inputs that should be excluded from the new interface |
 
 ### Properties
 

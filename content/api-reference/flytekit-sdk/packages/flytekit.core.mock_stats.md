@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.mock_stats
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -26,10 +26,10 @@ class MockStats(
 Initializes a new mock stats object
 
 
-| Parameter | Type |
-|-|-|
-| `scope` |  |
-| `tags` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `scope` |  | |
+| `tags` |  | |
 
 ### Methods
 
@@ -51,9 +51,9 @@ def current_tags(
     metric,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `metric` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `metric` |  | |
 
 #### current_value()
 
@@ -62,9 +62,9 @@ def current_value(
     metric,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `metric` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `metric` |  | |
 
 #### decr()
 
@@ -76,12 +76,12 @@ def decr(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `metric` |  |
-| `count` |  |
-| `tags` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `metric` |  | |
+| `count` |  | |
+| `tags` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### gauge()
 
@@ -93,12 +93,12 @@ def gauge(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `metric` |  |
-| `value` |  |
-| `tags` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `metric` |  | |
+| `value` |  | |
+| `tags` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### incr()
 
@@ -110,12 +110,12 @@ def incr(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `metric` |  |
-| `count` |  |
-| `tags` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `metric` |  | |
+| `count` |  | |
+| `tags` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### timer()
 
@@ -126,11 +126,11 @@ def timer(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `metric` |  |
-| `tags` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `metric` |  | |
+| `tags` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### timing()
 
@@ -139,7 +139,7 @@ def timing(
     metric,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `metric` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `metric` |  | |
 

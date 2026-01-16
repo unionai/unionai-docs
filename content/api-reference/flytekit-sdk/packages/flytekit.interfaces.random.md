@@ -1,6 +1,6 @@
 ---
 title: flytekit.interfaces.random
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -33,7 +33,7 @@ Currently, this is used by flytekit to create entropy in low entropy situations 
 index can be used as a seed to ensure sibling jobs do not have random collisions.
 
 
-| Parameter | Type |
-|-|-|
-| `seed` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `seed` |  | |
 

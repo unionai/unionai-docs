@@ -1,6 +1,6 @@
 ---
 title: flytekit.sensor.sensor_engine
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -53,11 +53,11 @@ def create(
 Return a resource meta that can be used to get the status of the task.
 
 
-| Parameter | Type |
-|-|-|
-| `task_template` | `flytekit.models.task.TaskTemplate` |
-| `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` |
-| `kwarg` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_template` | `flytekit.models.task.TaskTemplate` | |
+| `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` | |
+| `kwarg` |  | |
 
 #### delete()
 
@@ -70,10 +70,10 @@ def delete(
 Delete the task. This call should be idempotent. It should raise an error if fails to delete the task.
 
 
-| Parameter | Type |
-|-|-|
-| `resource_meta` | `flytekit.sensor.base_sensor.SensorMetadata` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `resource_meta` | `flytekit.sensor.base_sensor.SensorMetadata` | |
+| `kwargs` | `**kwargs` | |
 
 #### get()
 
@@ -88,10 +88,10 @@ can't write the structured dataset to the output location, so it returns the out
 and the propeller will write the structured dataset to the blob store.
 
 
-| Parameter | Type |
-|-|-|
-| `resource_meta` | `flytekit.sensor.base_sensor.SensorMetadata` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `resource_meta` | `flytekit.sensor.base_sensor.SensorMetadata` | |
+| `kwargs` | `**kwargs` | |
 
 #### get_logs()
 
@@ -104,10 +104,10 @@ def get_logs(
 Return the metrics for the task.
 
 
-| Parameter | Type |
-|-|-|
-| `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
+| `kwargs` | `**kwargs` | |
 
 #### get_metrics()
 
@@ -120,10 +120,10 @@ def get_metrics(
 Return the metrics for the task.
 
 
-| Parameter | Type |
-|-|-|
-| `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
+| `kwargs` | `**kwargs` | |
 
 ### Properties
 

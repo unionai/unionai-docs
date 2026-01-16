@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.directory.types
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -77,10 +77,10 @@ def assert_type(
     v: typing.Union[FlyteDirectory, os.PathLike, str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `typing.Type[FlyteDirectory]` |
-| `v` | `typing.Union[FlyteDirectory, os.PathLike, str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.Type[FlyteDirectory]` | |
+| `v` | `typing.Union[FlyteDirectory, os.PathLike, str]` | |
 
 #### async_to_literal()
 
@@ -98,12 +98,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `FlyteDirectory` |
-| `python_type` | `typing.Type[FlyteDirectory]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `FlyteDirectory` | The actual value to be transformed |
+| `python_type` | `typing.Type[FlyteDirectory]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### async_to_python_value()
 
@@ -117,11 +117,11 @@ def async_to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `typing.Type[FlyteDirectory]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `typing.Type[FlyteDirectory]` | Expected native python type that should be returned |
 
 #### dict_to_flyte_directory()
 
@@ -131,10 +131,10 @@ def dict_to_flyte_directory(
     expected_python_type: typing.Type[FlyteDirectory],
 ) -> FlyteDirectory
 ```
-| Parameter | Type |
-|-|-|
-| `dict_obj` | `typing.Dict[str, str]` |
-| `expected_python_type` | `typing.Type[FlyteDirectory]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dict_obj` | `typing.Dict[str, str]` | |
+| `expected_python_type` | `typing.Type[FlyteDirectory]` | |
 
 #### from_binary_idl()
 
@@ -168,10 +168,10 @@ Related PR:
 - Link: https://github.com/flyteorg/flytekit/pull/2554
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `typing.Type[FlyteDirectory]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `typing.Type[FlyteDirectory]` | |
 
 #### from_generic_idl()
 
@@ -204,10 +204,10 @@ Related PR:
 - Link: https://github.com/flyteorg/flytekit/pull/2554
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `typing.Type[FlyteDirectory]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `typing.Type[FlyteDirectory]` | |
 
 #### get_format()
 
@@ -216,9 +216,9 @@ def get_format(
     t: typing.Type[FlyteDirectory],
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `typing.Type[FlyteDirectory]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.Type[FlyteDirectory]` | |
 
 #### get_literal_type()
 
@@ -230,9 +230,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `typing.Type[FlyteDirectory]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.Type[FlyteDirectory]` | |
 
 #### guess_python_type()
 
@@ -244,9 +244,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -256,10 +256,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_html()
 
@@ -273,11 +273,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -295,12 +295,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.Any` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `typing.Any` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -314,11 +314,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 ### Properties
 
@@ -340,11 +340,11 @@ class FlyteDirectory(
     remote_directory: typing.Optional[typing.Union[os.PathLike, str, typing.Literal[False]]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `typing.Union[str, os.PathLike]` |
-| `downloader` | `typing.Optional[typing.Callable]` |
-| `remote_directory` | `typing.Optional[typing.Union[os.PathLike, str, typing.Literal[False]]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `typing.Union[str, os.PathLike]` | The source path that users are expected to call open() on |
+| `downloader` | `typing.Optional[typing.Callable]` | Optional function that can be passed that used to delay downloading of the actual fil until a user actually calls open(). |
+| `remote_directory` | `typing.Optional[typing.Union[os.PathLike, str, typing.Literal[False]]]` | If the user wants to return something and also specify where it should be uploaded to. If set to False, then flytekit will not upload the directory to the remote store. |
 
 ### Methods
 
@@ -391,24 +391,22 @@ Example:
       'mtime': 1677720780.2317934, 'ino': 1694329, 'nlink': 1}})]
 
 
-| Parameter | Type |
-|-|-|
-| `maxdepth` | `typing.Optional[int]` |
-| `topdown` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `maxdepth` | `typing.Optional[int]` | |
+| `topdown` | `bool` | |
+| `kwargs` | `**kwargs` | |
 
 #### deserialize_flyte_dir()
 
 ```python
 def deserialize_flyte_dir(
-    args,
-    kwargs,
-)
+    info,
+) -> FlyteDirectory
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `info` |  | |
 
 #### download()
 
@@ -428,10 +426,10 @@ def from_dict(
     infer_missing,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` |
-| `infer_missing` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
+| `infer_missing` |  | |
 
 #### from_json()
 
@@ -445,14 +443,14 @@ def from_json(
     kw,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` |
-| `parse_float` |  |
-| `parse_int` |  |
-| `parse_constant` |  |
-| `infer_missing` |  |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `typing.Union[str, bytes, bytearray]` | |
+| `parse_float` |  | |
+| `parse_int` |  | |
+| `parse_constant` |  | |
+| `infer_missing` |  | |
+| `kw` |  | |
 
 #### from_source()
 
@@ -464,9 +462,9 @@ def from_source(
 Create a new FlyteDirectory object with the remote source set to the input
 
 
-| Parameter | Type |
-|-|-|
-| `source` | `str \| os.PathLike` |
+| Parameter | Type | Description |
+|-|-|-|
+| `source` | `str \| os.PathLike` | |
 
 #### listdir()
 
@@ -492,9 +490,9 @@ open(entity[0], "r")  # flytekit will read data from the local disk if you open 
 ```
 
 
-| Parameter | Type |
-|-|-|
-| `directory` | `FlyteDirectory` |
+| Parameter | Type | Description |
+|-|-|-|
+| `directory` | `FlyteDirectory` | |
 
 #### new()
 
@@ -506,9 +504,9 @@ def new(
 Create a new FlyteDirectory object in current Flyte working directory.
 
 
-| Parameter | Type |
-|-|-|
-| `dirname` | `str \| os.PathLike` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dirname` | `str \| os.PathLike` | |
 
 #### new_dir()
 
@@ -522,9 +520,9 @@ If given a name, it will use the name given, otherwise it'll pick a random strin
 Collisions are not checked.
 
 
-| Parameter | Type |
-|-|-|
-| `name` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `typing.Optional[str]` | |
 
 #### new_file()
 
@@ -538,9 +536,9 @@ If given a name, it will use the name given, otherwise it'll pick a random strin
 Collisions are not checked.
 
 
-| Parameter | Type |
-|-|-|
-| `name` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `typing.Optional[str]` | |
 
 #### new_remote()
 
@@ -558,10 +556,10 @@ and let flytekit handle the uploading.
 
 
 
-| Parameter | Type |
-|-|-|
-| `stem` | `typing.Optional[str]` |
-| `alt` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `stem` | `typing.Optional[str]` | A stem to append to the path as the final prefix "directory". |
+| `alt` | `typing.Optional[str]` | An alternate first member of the prefix to use instead of the default. :return FlyteDirectory: A new FlyteDirectory object that points to a remote location. |
 
 #### schema()
 
@@ -578,31 +576,23 @@ def schema(
     unknown,
 ) -> SchemaType[A]
 ```
-| Parameter | Type |
-|-|-|
-| `infer_missing` | `bool` |
-| `only` |  |
-| `exclude` |  |
-| `many` | `bool` |
-| `context` |  |
-| `load_only` |  |
-| `dump_only` |  |
-| `partial` | `bool` |
-| `unknown` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `infer_missing` | `bool` | |
+| `only` |  | |
+| `exclude` |  | |
+| `many` | `bool` | |
+| `context` |  | |
+| `load_only` |  | |
+| `dump_only` |  | |
+| `partial` | `bool` | |
+| `unknown` |  | |
 
 #### serialize_flyte_dir()
 
 ```python
-def serialize_flyte_dir(
-    args,
-    kwargs,
-)
+def serialize_flyte_dir()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 #### to_dict()
 
 ```python
@@ -610,9 +600,9 @@ def to_dict(
     encode_json,
 ) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
-| Parameter | Type |
-|-|-|
-| `encode_json` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `encode_json` |  | |
 
 #### to_json()
 
@@ -629,17 +619,17 @@ def to_json(
     kw,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `skipkeys` | `bool` |
-| `ensure_ascii` | `bool` |
-| `check_circular` | `bool` |
-| `allow_nan` | `bool` |
-| `indent` | `typing.Union[int, str, NoneType]` |
-| `separators` | `typing.Tuple[str, str]` |
-| `default` | `typing.Callable` |
-| `sort_keys` | `bool` |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `skipkeys` | `bool` | |
+| `ensure_ascii` | `bool` | |
+| `check_circular` | `bool` | |
+| `allow_nan` | `bool` | |
+| `indent` | `typing.Union[int, str, NoneType]` | |
+| `separators` | `typing.Tuple[str, str]` | |
+| `default` | `typing.Callable` | |
+| `sort_keys` | `bool` | |
+| `kw` |  | |
 
 ### Properties
 

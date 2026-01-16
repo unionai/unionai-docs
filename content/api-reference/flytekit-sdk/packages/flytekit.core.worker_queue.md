@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.worker_queue
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,6 +14,7 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`Controller`](.././flytekit.core.worker_queue#flytekitcoreworker_queuecontroller) | This controller object is responsible for kicking off and monitoring executions against a Flyte Admin endpoint. |
+| [`ItemStatus`](.././flytekit.core.worker_queue#flytekitcoreworker_queueitemstatus) | Create a collection of name/value pairs. |
 | [`Update`](.././flytekit.core.worker_queue#flytekitcoreworker_queueupdate) |  |
 | [`WorkItem`](.././flytekit.core.worker_queue#flytekitcoreworker_queueworkitem) | This is a class to keep track of what the user requested. |
 
@@ -51,13 +52,13 @@ class Controller(
     exec_prefix: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `remote` | `FlyteRemote` |
-| `ss` | `SerializationSettings` |
-| `tag` | `str` |
-| `root_tag` | `str` |
-| `exec_prefix` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `remote` | `FlyteRemote` | |
+| `ss` | `SerializationSettings` | |
+| `tag` | `str` | |
+| `root_tag` | `str` | |
+| `exec_prefix` | `str` | |
 
 ### Methods
 
@@ -85,10 +86,10 @@ def add(
 Add an entity along with the requested inputs to be submitted to Admin for running and return a future
 
 
-| Parameter | Type |
-|-|-|
-| `entity` | `RunnableEntity` |
-| `input_kwargs` | `dict[str, typing.Any]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `entity` | `RunnableEntity` | |
+| `input_kwargs` | `dict[str, typing.Any]` | |
 
 #### for_sandbox()
 
@@ -97,9 +98,9 @@ def for_sandbox(
     exec_prefix: typing.Optional[str],
 ) -> Controller
 ```
-| Parameter | Type |
-|-|-|
-| `exec_prefix` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `exec_prefix` | `typing.Optional[str]` | |
 
 #### get_env()
 
@@ -121,11 +122,11 @@ def get_execution_name(
 Make a deterministic name
 
 
-| Parameter | Type |
-|-|-|
-| `entity` | `RunnableEntity` |
-| `idx` | `int` |
-| `input_kwargs` | `dict[str, typing.Any]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `entity` | `RunnableEntity` | |
+| `idx` | `int` | |
+| `input_kwargs` | `dict[str, typing.Any]` | |
 
 #### get_labels()
 
@@ -158,10 +159,10 @@ def launch_execution(
 This function launches executions.
 
 
-| Parameter | Type |
-|-|-|
-| `wi` | `WorkItem` |
-| `idx` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `wi` | `WorkItem` | |
+| `idx` | `int` | |
 
 #### reconcile_one()
 
@@ -174,9 +175,9 @@ This is responsible for processing one work item. Will launch, update, set error
 Any errors are captured in the update object.
 
 
-| Parameter | Type |
-|-|-|
-| `update` | `Update` |
+| Parameter | Type | Description |
+|-|-|-|
+| `update` | `Update` | |
 
 #### render_html()
 
@@ -184,6 +185,46 @@ Any errors are captured in the update object.
 def render_html()
 ```
 Render the callstack as a deck presentation to be shown after eager workflow execution.
+
+
+## flytekit.core.worker_queue.ItemStatus
+
+Create a collection of name/value pairs.
+
+Example enumeration:
+
+>>> class Color(Enum):
+...     RED = 1
+...     BLUE = 2
+...     GREEN = 3
+
+Access them by:
+
+- attribute access:
+
+  >>> Color.RED
+  <Color.RED: 1>
+
+- value lookup:
+
+  >>> Color(1)
+  <Color.RED: 1>
+
+- name lookup:
+
+  >>> Color['RED']
+  <Color.RED: 1>
+
+Enumerations can be iterated over, and know how many members they have:
+
+>>> len(Color)
+3
+
+>>> list(Color)
+[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]
+
+Methods can be added to enumerations, and members can have their own
+attributes -- see the documentation for details.
 
 
 ## flytekit.core.worker_queue.Update
@@ -197,13 +238,13 @@ class Update(
     error: typing.Optional[BaseException],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `work_item` | `WorkItem` |
-| `idx` | `int` |
-| `status` | `typing.Optional[ItemStatus]` |
-| `wf_exec` | `typing.Optional[FlyteWorkflowExecution]` |
-| `error` | `typing.Optional[BaseException]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `work_item` | `WorkItem` | |
+| `idx` | `int` | |
+| `status` | `typing.Optional[ItemStatus]` | |
+| `wf_exec` | `typing.Optional[FlyteWorkflowExecution]` | |
+| `error` | `typing.Optional[BaseException]` | |
 
 ## flytekit.core.worker_queue.WorkItem
 
@@ -223,16 +264,16 @@ class WorkItem(
     uuid: typing.Optional[uuid.UUID],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `entity` | `RunnableEntity` |
-| `input_kwargs` | `dict[str, typing.Any]` |
-| `result` | `typing.Any` |
-| `error` | `typing.Optional[BaseException]` |
-| `status` | `ItemStatus` |
-| `wf_exec` | `typing.Optional[FlyteWorkflowExecution]` |
-| `python_interface` | `typing.Optional[Interface]` |
-| `uuid` | `typing.Optional[uuid.UUID]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `entity` | `RunnableEntity` | |
+| `input_kwargs` | `dict[str, typing.Any]` | |
+| `result` | `typing.Any` | |
+| `error` | `typing.Optional[BaseException]` | |
+| `status` | `ItemStatus` | |
+| `wf_exec` | `typing.Optional[FlyteWorkflowExecution]` | |
+| `python_interface` | `typing.Optional[Interface]` | |
+| `uuid` | `typing.Optional[uuid.UUID]` | |
 
 ### Properties
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.catalog
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -24,10 +24,10 @@ class CatalogArtifactTag(
     name: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `artifact_id` | `str` |
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `artifact_id` | `str` | |
+| `name` | `str` | |
 
 ### Methods
 
@@ -37,7 +37,6 @@ class CatalogArtifactTag(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -47,9 +46,9 @@ def from_flyte_idl(
     p: flyteidl.core.catalog_pb2.CatalogArtifactTag,
 ) -> CatalogArtifactTag
 ```
-| Parameter | Type |
-|-|-|
-| `p` | `flyteidl.core.catalog_pb2.CatalogArtifactTag` |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` | `flyteidl.core.catalog_pb2.CatalogArtifactTag` | |
 
 #### serialize_to_string()
 
@@ -69,14 +68,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -94,11 +85,11 @@ class CatalogMetadata(
     source_task_execution: flytekit.models.core.identifier.TaskExecutionIdentifier,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `dataset_id` | `flytekit.models.core.identifier.Identifier` |
-| `artifact_tag` | `flytekit.models.core.catalog.CatalogArtifactTag` |
-| `source_task_execution` | `flytekit.models.core.identifier.TaskExecutionIdentifier` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dataset_id` | `flytekit.models.core.identifier.Identifier` | |
+| `artifact_tag` | `flytekit.models.core.catalog.CatalogArtifactTag` | |
+| `source_task_execution` | `flytekit.models.core.identifier.TaskExecutionIdentifier` | |
 
 ### Methods
 
@@ -108,7 +99,6 @@ class CatalogMetadata(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -118,9 +108,9 @@ def from_flyte_idl(
     pb: flyteidl.core.catalog_pb2.CatalogMetadata,
 ) -> CatalogMetadata
 ```
-| Parameter | Type |
-|-|-|
-| `pb` | `flyteidl.core.catalog_pb2.CatalogMetadata` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb` | `flyteidl.core.catalog_pb2.CatalogMetadata` | |
 
 #### serialize_to_string()
 
@@ -140,14 +130,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |

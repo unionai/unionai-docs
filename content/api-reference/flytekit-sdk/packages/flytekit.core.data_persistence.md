@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.data_persistence
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -47,10 +47,10 @@ def azure_setup_args(
     anonymous: bool,
 ) -> typing.Dict[str, typing.Any]
 ```
-| Parameter | Type |
-|-|-|
-| `azure_cfg` | `flytekit.configuration.AzureBlobStorageConfig` |
-| `anonymous` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `azure_cfg` | `flytekit.configuration.AzureBlobStorageConfig` | |
+| `anonymous` | `bool` | |
 
 #### get_additional_fsspec_call_kwargs()
 
@@ -65,10 +65,10 @@ to create the filesystem. These kwargs returned here are for when the filesystem
 
 
 
-| Parameter | Type |
-|-|-|
-| `protocol` | `typing.Union[str, tuple]` |
-| `method_name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `protocol` | `typing.Union[str, tuple]` | s3, gcs, etc. |
+| `method_name` | `str` | Pass in the __name__ of the fsspec.filesystem function. _'s will be ignored. |
 
 #### get_fsspec_storage_options()
 
@@ -80,12 +80,12 @@ def get_fsspec_storage_options(
     kwargs,
 ) -> typing.Dict[str, typing.Any]
 ```
-| Parameter | Type |
-|-|-|
-| `protocol` | `str` |
-| `data_config` | `typing.Optional[flytekit.configuration.DataConfig]` |
-| `anonymous` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `protocol` | `str` | |
+| `data_config` | `typing.Optional[flytekit.configuration.DataConfig]` | |
+| `anonymous` | `bool` | |
+| `kwargs` | `**kwargs` | |
 
 #### s3_setup_args()
 
@@ -95,10 +95,10 @@ def s3_setup_args(
     anonymous: bool,
 ) -> typing.Dict[str, typing.Any]
 ```
-| Parameter | Type |
-|-|-|
-| `s3_cfg` | `flytekit.configuration.S3Config` |
-| `anonymous` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `s3_cfg` | `flytekit.configuration.S3Config` | |
+| `anonymous` | `bool` | |
 
 ## flytekit.core.data_persistence.FileAccessProvider
 
@@ -114,12 +114,12 @@ class FileAccessProvider(
     execution_metadata: typing.Optional[dict],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `local_sandbox_dir` | `typing.Union[str, os.PathLike]` |
-| `raw_output_prefix` | `str` |
-| `data_config` | `typing.Optional[flytekit.configuration.DataConfig]` |
-| `execution_metadata` | `typing.Optional[dict]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_sandbox_dir` | `typing.Union[str, os.PathLike]` | A local temporary working directory, that should be used to store data |
+| `raw_output_prefix` | `str` | |
+| `data_config` | `typing.Optional[flytekit.configuration.DataConfig]` | |
+| `execution_metadata` | `typing.Optional[dict]` | |
 
 ### Methods
 
@@ -164,12 +164,12 @@ def async_get_data(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `remote_path` | `str` |
-| `local_path` | `str` |
-| `is_multipart` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `remote_path` | `str` | |
+| `local_path` | `str` | |
+| `is_multipart` | `bool` | |
+| `kwargs` | `**kwargs` | |
 
 #### async_put_data()
 
@@ -186,12 +186,12 @@ we don't use the true local proxy if the remote path is a file://
 
 
 
-| Parameter | Type |
-|-|-|
-| `local_path` | `typing.Union[str, os.PathLike]` |
-| `remote_path` | `str` |
-| `is_multipart` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_path` | `typing.Union[str, os.PathLike]` | |
+| `remote_path` | `str` | |
+| `is_multipart` | `bool` | |
+| `kwargs` | `**kwargs` | |
 
 #### async_put_raw_data()
 
@@ -204,7 +204,7 @@ def async_put_raw_data(
     encoding: str,
     skip_raw_data_prefix: bool,
     kwargs,
-) -> n: Returns the final path data was written to.
+) -> str
 ```
 This is a more flexible version of put that accepts a file-like object or a string path.
 Writes to the raw output prefix only. If you want to write to another fs use put_data or get the fsspec
@@ -220,15 +220,15 @@ Writes to:
 
 
 
-| Parameter | Type |
-|-|-|
-| `lpath` | `typing.Union[str, os.PathLike, pathlib._local.Path, bytes, _io.BufferedReader, _io.BytesIO, _io.StringIO]` |
-| `upload_prefix` | `typing.Optional[str]` |
-| `file_name` | `typing.Optional[str]` |
-| `read_chunk_size_bytes` | `int` |
-| `encoding` | `str` |
-| `skip_raw_data_prefix` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `lpath` | `typing.Union[str, os.PathLike, pathlib._local.Path, bytes, _io.BufferedReader, _io.BytesIO, _io.StringIO]` | A file-like object or a string path |
+| `upload_prefix` | `typing.Optional[str]` | A prefix to add to the path, see above for usage, can be an "". If None then a random string will be generated |
+| `file_name` | `typing.Optional[str]` | A file name to add to the path. If None, then the file name will be the tail of the path if lpath is a file, or a random string if lpath is a buffer |
+| `read_chunk_size_bytes` | `int` | If lpath is a buffer, this is the chunk size to read from it |
+| `encoding` | `str` | If lpath is a io.StringIO, this is the encoding to use to encode it to binary. |
+| `skip_raw_data_prefix` | `bool` | If True, the raw data prefix will not be prepended to the upload_prefix |
+| `kwargs` | `**kwargs` | Additional kwargs are passed into the fsspec put() call or the open() call :return: Returns the final path data was written to. |
 
 #### download()
 
@@ -242,11 +242,11 @@ def download(
 Downloads from remote to local
 
 
-| Parameter | Type |
-|-|-|
-| `remote_path` | `str` |
-| `local_path` | `str` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `remote_path` | `str` | |
+| `local_path` | `str` | |
+| `kwargs` | `**kwargs` | |
 
 #### download_directory()
 
@@ -260,11 +260,11 @@ def download_directory(
 Downloads directory from given remote to local path
 
 
-| Parameter | Type |
-|-|-|
-| `remote_path` | `str` |
-| `local_path` | `str` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `remote_path` | `str` | |
+| `local_path` | `str` | |
+| `kwargs` | `**kwargs` | |
 
 #### exists()
 
@@ -273,9 +273,9 @@ def exists(
     path: str,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
 
 #### generate_new_custom_path()
 
@@ -284,7 +284,7 @@ def generate_new_custom_path(
     fs: typing.Optional[fsspec.spec.AbstractFileSystem],
     alt: typing.Optional[str],
     stem: typing.Optional[str],
-) -> n: The new path.
+) -> str
 ```
 Generates a new path with the raw output prefix and a random string appended to it.
 Optionally, you can provide an alternate prefix and a stem. If stem is provided, it
@@ -297,11 +297,11 @@ s3://my-alt-bucket/default-prefix-part/my-stem
 
 
 
-| Parameter | Type |
-|-|-|
-| `fs` | `typing.Optional[fsspec.spec.AbstractFileSystem]` |
-| `alt` | `typing.Optional[str]` |
-| `stem` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `fs` | `typing.Optional[fsspec.spec.AbstractFileSystem]` | The filesystem to use. If None, the context's raw output filesystem is used. |
+| `alt` | `typing.Optional[str]` | An alternate first member of the prefix to use instead of the default. |
+| `stem` | `typing.Optional[str]` | A stem to append to the path. :return: The new path. |
 
 #### get()
 
@@ -313,12 +313,12 @@ def get(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `from_path` | `str` |
-| `to_path` | `str` |
-| `recursive` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `from_path` | `str` | |
+| `to_path` | `str` | |
+| `recursive` | `bool` | |
+| `kwargs` | `**kwargs` | |
 
 #### get_async_filesystem_for_path()
 
@@ -329,11 +329,11 @@ def get_async_filesystem_for_path(
     kwargs,
 ) -> typing.Union[fsspec.asyn.AsyncFileSystem, fsspec.spec.AbstractFileSystem]
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
-| `anonymous` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
+| `anonymous` | `bool` | |
+| `kwargs` | `**kwargs` | |
 
 #### get_data()
 
@@ -345,12 +345,12 @@ def get_data(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `remote_path` | `str` |
-| `local_path` | `str` |
-| `is_multipart` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `remote_path` | `str` | |
+| `local_path` | `str` | |
+| `is_multipart` | `bool` | |
+| `kwargs` | `**kwargs` | |
 
 #### get_file_tail()
 
@@ -359,9 +359,9 @@ def get_file_tail(
     file_path_or_file_name: str,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `file_path_or_file_name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `file_path_or_file_name` | `str` | |
 
 #### get_filesystem()
 
@@ -373,12 +373,12 @@ def get_filesystem(
     kwargs,
 ) -> fsspec.spec.AbstractFileSystem
 ```
-| Parameter | Type |
-|-|-|
-| `protocol` | `typing.Optional[str]` |
-| `anonymous` | `bool` |
-| `path` | `typing.Optional[str]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `protocol` | `typing.Optional[str]` | |
+| `anonymous` | `bool` | |
+| `path` | `typing.Optional[str]` | |
+| `kwargs` | `**kwargs` | |
 
 #### get_filesystem_for_path()
 
@@ -389,11 +389,11 @@ def get_filesystem_for_path(
     kwargs,
 ) -> fsspec.spec.AbstractFileSystem
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
-| `anonymous` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
+| `anonymous` | `bool` | |
+| `kwargs` | `**kwargs` | |
 
 #### get_random_local_directory()
 
@@ -410,9 +410,9 @@ def get_random_local_path(
 Use file_path_or_file_name, when you want a random directory, but want to preserve the leaf file name
 
 
-| Parameter | Type |
-|-|-|
-| `file_path_or_file_name` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `file_path_or_file_name` | `typing.Optional[str]` | |
 
 #### get_random_remote_directory()
 
@@ -426,9 +426,9 @@ def get_random_remote_path(
     file_path_or_file_name: typing.Optional[str],
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `file_path_or_file_name` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `file_path_or_file_name` | `typing.Optional[str]` | |
 
 #### get_random_string()
 
@@ -445,24 +445,24 @@ def is_remote(
 Deprecated. Let's find a replacement
 
 
-| Parameter | Type |
-|-|-|
-| `path` | `typing.Union[str, os.PathLike]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `typing.Union[str, os.PathLike]` | |
 
 #### join()
 
 ```python
 def join(
-    args: `*args`,
+    args: *args,
     unstrip: bool,
     fs: typing.Optional[fsspec.spec.AbstractFileSystem],
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `unstrip` | `bool` |
-| `fs` | `typing.Optional[fsspec.spec.AbstractFileSystem]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `unstrip` | `bool` | |
+| `fs` | `typing.Optional[fsspec.spec.AbstractFileSystem]` | |
 
 #### put_data()
 
@@ -479,12 +479,12 @@ we don't use the true local proxy if the remote path is a file://
 
 
 
-| Parameter | Type |
-|-|-|
-| `local_path` | `typing.Union[str, os.PathLike]` |
-| `remote_path` | `str` |
-| `is_multipart` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_path` | `typing.Union[str, os.PathLike]` | |
+| `remote_path` | `str` | |
+| `is_multipart` | `bool` | |
+| `kwargs` | `**kwargs` | |
 
 #### put_raw_data()
 
@@ -497,7 +497,7 @@ def put_raw_data(
     encoding: str,
     skip_raw_data_prefix: bool,
     kwargs,
-) -> n: Returns the final path data was written to.
+) -> str
 ```
 This is a more flexible version of put that accepts a file-like object or a string path.
 Writes to the raw output prefix only. If you want to write to another fs use put_data or get the fsspec
@@ -513,15 +513,15 @@ Writes to:
 
 
 
-| Parameter | Type |
-|-|-|
-| `lpath` | `typing.Union[str, os.PathLike, pathlib._local.Path, bytes, _io.BufferedReader, _io.BytesIO, _io.StringIO]` |
-| `upload_prefix` | `typing.Optional[str]` |
-| `file_name` | `typing.Optional[str]` |
-| `read_chunk_size_bytes` | `int` |
-| `encoding` | `str` |
-| `skip_raw_data_prefix` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `lpath` | `typing.Union[str, os.PathLike, pathlib._local.Path, bytes, _io.BufferedReader, _io.BytesIO, _io.StringIO]` | A file-like object or a string path |
+| `upload_prefix` | `typing.Optional[str]` | A prefix to add to the path, see above for usage, can be an "". If None then a random string will be generated |
+| `file_name` | `typing.Optional[str]` | A file name to add to the path. If None, then the file name will be the tail of the path if lpath is a file, or a random string if lpath is a buffer |
+| `read_chunk_size_bytes` | `int` | If lpath is a buffer, this is the chunk size to read from it |
+| `encoding` | `str` | If lpath is a io.StringIO, this is the encoding to use to encode it to binary. |
+| `skip_raw_data_prefix` | `bool` | If True, the raw data prefix will not be prepended to the upload_prefix |
+| `kwargs` | `**kwargs` | Additional kwargs are passed into the fsspec put() call or the open() call :return: Returns the final path data was written to. |
 
 #### recursive_paths()
 
@@ -531,10 +531,10 @@ def recursive_paths(
     t: str,
 ) -> typing.Tuple[str, str]
 ```
-| Parameter | Type |
-|-|-|
-| `f` | `str` |
-| `t` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `f` | `str` | |
+| `t` | `str` | |
 
 #### sep()
 
@@ -543,9 +543,9 @@ def sep(
     file_system: typing.Optional[fsspec.spec.AbstractFileSystem],
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `file_system` | `typing.Optional[fsspec.spec.AbstractFileSystem]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `file_system` | `typing.Optional[fsspec.spec.AbstractFileSystem]` | |
 
 #### strip_file_header()
 
@@ -558,10 +558,10 @@ def strip_file_header(
 Drops file:// if it exists from the file
 
 
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
-| `trim_trailing_sep` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
+| `trim_trailing_sep` | `bool` | |
 
 #### upload()
 
@@ -572,11 +572,11 @@ def upload(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `file_path` | `str` |
-| `to_path` | `str` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `file_path` | `str` | |
+| `to_path` | `str` | |
+| `kwargs` | `**kwargs` | |
 
 #### upload_directory()
 
@@ -587,11 +587,11 @@ def upload_directory(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `local_path` | `str` |
-| `remote_path` | `str` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_path` | `str` | |
+| `remote_path` | `str` | |
+| `kwargs` | `**kwargs` | |
 
 ### Properties
 

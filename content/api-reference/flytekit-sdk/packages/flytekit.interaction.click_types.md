@@ -1,6 +1,6 @@
 ---
 title: flytekit.interaction.click_types
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -34,6 +34,7 @@ layout: py_api
 | [`labels_callback()`](#labels_callback) | Callback for click to parse labels. |
 | [`literal_type_to_click_type()`](#literal_type_to_click_type) | Converts a Flyte LiteralType given a python_type to a click. |
 | [`modify_literal_uris()`](#modify_literal_uris) | Modifies the literal object recursively to replace the URIs with the native paths. |
+| [`resource_callback()`](#resource_callback) | Click callback to parse resource strings like 'cpu=1,mem=2Gi' into a Resources object. |
 
 
 ### Variables
@@ -41,6 +42,7 @@ layout: py_api
 | Property | Type | Description |
 |-|-|-|
 | `SIMPLE_TYPE_CONVERTER` | `dict` |  |
+| `click_version` | `str` |  |
 
 ## Methods
 
@@ -54,9 +56,9 @@ def is_pydantic_basemodel(
 Checks if the python type is a pydantic BaseModel
 
 
-| Parameter | Type |
-|-|-|
-| `python_type` | `typing.Type` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_type` | `typing.Type` | |
 
 #### key_value_callback()
 
@@ -70,11 +72,11 @@ def key_value_callback(
 Callback for click to parse key-value pairs.
 
 
-| Parameter | Type |
-|-|-|
-| `_` | `typing.Any` |
-| `param` | `str` |
-| `values` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `_` | `typing.Any` | |
+| `param` | `str` | |
+| `values` | `typing.List[str]` | |
 
 #### labels_callback()
 
@@ -88,11 +90,11 @@ def labels_callback(
 Callback for click to parse labels.
 
 
-| Parameter | Type |
-|-|-|
-| `_` | `typing.Any` |
-| `param` | `str` |
-| `values` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `_` | `typing.Any` | |
+| `param` | `str` | |
+| `values` | `typing.List[str]` | |
 
 #### literal_type_to_click_type()
 
@@ -105,10 +107,10 @@ def literal_type_to_click_type(
 Converts a Flyte LiteralType given a python_type to a click.ParamType
 
 
-| Parameter | Type |
-|-|-|
-| `lt` | `flytekit.models.types.LiteralType` |
-| `python_type` | `typing.Type` |
+| Parameter | Type | Description |
+|-|-|-|
+| `lt` | `flytekit.models.types.LiteralType` | |
+| `python_type` | `typing.Type` | |
 
 #### modify_literal_uris()
 
@@ -120,9 +122,27 @@ def modify_literal_uris(
 Modifies the literal object recursively to replace the URIs with the native paths.
 
 
-| Parameter | Type |
-|-|-|
-| `lit` | `flytekit.models.literals.Literal` |
+| Parameter | Type | Description |
+|-|-|-|
+| `lit` | `flytekit.models.literals.Literal` | |
+
+#### resource_callback()
+
+```python
+def resource_callback(
+    _: typing.Any,
+    param: str,
+    value: typing.Optional[str],
+) -> typing.Optional[flytekit.core.resources.Resources]
+```
+Click callback to parse resource strings like 'cpu=1,mem=2Gi' into a Resources object
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `_` | `typing.Any` | |
+| `param` | `str` | |
+| `value` | `typing.Optional[str]` | |
 
 ## flytekit.interaction.click_types.DateTimeType
 
@@ -182,11 +202,11 @@ descriptive message.
 
 
 
-| Parameter | Type |
-|-|-|
-| `value` | `typing.Any` |
-| `param` | `typing.Optional[click.core.Parameter]` |
-| `ctx` | `typing.Optional[click.core.Context]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `typing.Any` | The value to convert. |
+| `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
+| `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
 
 #### fail()
 
@@ -200,11 +220,11 @@ def fail(
 Helper method to fail with an invalid value message.
 
 
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
@@ -216,9 +236,9 @@ def get_metavar(
 Returns the metavar default for this param if it provides one.
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### get_missing_message()
 
@@ -233,9 +253,9 @@ parameter.
 .. versionadded:: 2.0
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### shell_complete()
 
@@ -254,11 +274,11 @@ completions as well.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `Context` |
-| `param` | `Parameter` |
-| `incomplete` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `Context` | Invocation context for this command. |
+| `param` | `Parameter` | The parameter that is requesting completion. |
+| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
 
 #### split_envvar_value()
 
@@ -275,9 +295,9 @@ then leading and trailing whitespace is ignored.  Otherwise, leading
 and trailing splitters usually lead to empty items being included.
 
 
-| Parameter | Type |
-|-|-|
-| `rv` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `rv` | `str` | |
 
 #### to_info_dict()
 
@@ -349,11 +369,11 @@ descriptive message.
 
 
 
-| Parameter | Type |
-|-|-|
-| `value` | `typing.Any` |
-| `param` | `typing.Optional[click.core.Parameter]` |
-| `ctx` | `typing.Optional[click.core.Context]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `typing.Any` | The value to convert. |
+| `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
+| `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
 
 #### fail()
 
@@ -367,11 +387,11 @@ def fail(
 Helper method to fail with an invalid value message.
 
 
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
@@ -383,9 +403,9 @@ def get_metavar(
 Returns the metavar default for this param if it provides one.
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### get_missing_message()
 
@@ -400,9 +420,9 @@ parameter.
 .. versionadded:: 2.0
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### shell_complete()
 
@@ -421,11 +441,11 @@ completions as well.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `Context` |
-| `param` | `Parameter` |
-| `incomplete` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `Context` | Invocation context for this command. |
+| `param` | `Parameter` | The parameter that is requesting completion. |
+| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
 
 #### split_envvar_value()
 
@@ -442,9 +462,9 @@ then leading and trailing whitespace is ignored.  Otherwise, leading
 and trailing splitters usually lead to empty items being included.
 
 
-| Parameter | Type |
-|-|-|
-| `rv` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `rv` | `str` | |
 
 #### to_info_dict()
 
@@ -516,11 +536,11 @@ descriptive message.
 
 
 
-| Parameter | Type |
-|-|-|
-| `value` | `typing.Any` |
-| `param` | `typing.Optional[click.core.Parameter]` |
-| `ctx` | `typing.Optional[click.core.Context]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `typing.Any` | The value to convert. |
+| `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
+| `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
 
 #### fail()
 
@@ -534,11 +554,11 @@ def fail(
 Helper method to fail with an invalid value message.
 
 
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
@@ -550,9 +570,9 @@ def get_metavar(
 Returns the metavar default for this param if it provides one.
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### get_missing_message()
 
@@ -567,9 +587,9 @@ parameter.
 .. versionadded:: 2.0
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### shell_complete()
 
@@ -588,11 +608,11 @@ completions as well.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `Context` |
-| `param` | `Parameter` |
-| `incomplete` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `Context` | Invocation context for this command. |
+| `param` | `Parameter` | The parameter that is requesting completion. |
+| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
 
 #### split_envvar_value()
 
@@ -609,9 +629,9 @@ then leading and trailing whitespace is ignored.  Otherwise, leading
 and trailing splitters usually lead to empty items being included.
 
 
-| Parameter | Type |
-|-|-|
-| `rv` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `rv` | `str` | |
 
 #### to_info_dict()
 
@@ -648,9 +668,9 @@ class EnumParamType(
     enum_type: typing.Type[enum.Enum],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `enum_type` | `typing.Type[enum.Enum]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `enum_type` | `typing.Type[enum.Enum]` | |
 
 ### Methods
 
@@ -689,11 +709,11 @@ descriptive message.
 
 
 
-| Parameter | Type |
-|-|-|
-| `value` | `typing.Any` |
-| `param` | `typing.Optional[click.core.Parameter]` |
-| `ctx` | `typing.Optional[click.core.Context]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `typing.Any` | The value to convert. |
+| `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
+| `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
 
 #### fail()
 
@@ -707,11 +727,11 @@ def fail(
 Helper method to fail with an invalid value message.
 
 
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
@@ -723,9 +743,9 @@ def get_metavar(
 Returns the metavar default for this param if it provides one.
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### get_missing_message()
 
@@ -740,9 +760,9 @@ parameter.
 .. versionadded:: 2.0
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### shell_complete()
 
@@ -757,11 +777,11 @@ Complete choices that start with the incomplete value.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `Context` |
-| `param` | `Parameter` |
-| `incomplete` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `Context` | Invocation context for this command. |
+| `param` | `Parameter` | The parameter that is requesting completion. |
+| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
 
 #### split_envvar_value()
 
@@ -778,9 +798,9 @@ then leading and trailing whitespace is ignored.  Otherwise, leading
 and trailing splitters usually lead to empty items being included.
 
 
-| Parameter | Type |
-|-|-|
-| `rv` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `rv` | `str` | |
 
 #### to_info_dict()
 
@@ -852,11 +872,11 @@ descriptive message.
 
 
 
-| Parameter | Type |
-|-|-|
-| `value` | `typing.Any` |
-| `param` | `typing.Optional[click.core.Parameter]` |
-| `ctx` | `typing.Optional[click.core.Context]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `typing.Any` | The value to convert. |
+| `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
+| `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
 
 #### fail()
 
@@ -870,11 +890,11 @@ def fail(
 Helper method to fail with an invalid value message.
 
 
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
@@ -886,9 +906,9 @@ def get_metavar(
 Returns the metavar default for this param if it provides one.
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### get_missing_message()
 
@@ -903,9 +923,9 @@ parameter.
 .. versionadded:: 2.0
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### shell_complete()
 
@@ -924,11 +944,11 @@ completions as well.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `Context` |
-| `param` | `Parameter` |
-| `incomplete` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `Context` | Invocation context for this command. |
+| `param` | `Parameter` | The parameter that is requesting completion. |
+| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
 
 #### split_envvar_value()
 
@@ -945,9 +965,9 @@ then leading and trailing whitespace is ignored.  Otherwise, leading
 and trailing splitters usually lead to empty items being included.
 
 
-| Parameter | Type |
-|-|-|
-| `rv` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `rv` | `str` | |
 
 #### to_info_dict()
 
@@ -973,12 +993,12 @@ class FlyteLiteralConverter(
     is_remote: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `flyte_ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `literal_type` | `flytekit.models.types.LiteralType` |
-| `python_type` | `typing.Type` |
-| `is_remote` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `flyte_ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `literal_type` | `flytekit.models.types.LiteralType` | |
+| `python_type` | `typing.Type` | |
+| `is_remote` | `bool` | |
 
 ### Methods
 
@@ -1000,11 +1020,11 @@ def convert(
 Convert the value to a Flyte Literal or a python native type. This is used by click to convert the input.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `click.core.Context` |
-| `param` | `typing.Optional[click.core.Parameter]` |
-| `value` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `click.core.Context` | |
+| `param` | `typing.Optional[click.core.Parameter]` | |
+| `value` | `typing.Any` | |
 
 #### is_bool()
 
@@ -1073,11 +1093,11 @@ descriptive message.
 
 
 
-| Parameter | Type |
-|-|-|
-| `value` | `typing.Any` |
-| `param` | `typing.Optional[click.core.Parameter]` |
-| `ctx` | `typing.Optional[click.core.Context]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `typing.Any` | The value to convert. |
+| `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
+| `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
 
 #### fail()
 
@@ -1091,11 +1111,11 @@ def fail(
 Helper method to fail with an invalid value message.
 
 
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
@@ -1107,9 +1127,9 @@ def get_metavar(
 Returns the metavar default for this param if it provides one.
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### get_missing_message()
 
@@ -1124,9 +1144,9 @@ parameter.
 .. versionadded:: 2.0
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### shell_complete()
 
@@ -1145,11 +1165,11 @@ completions as well.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `Context` |
-| `param` | `Parameter` |
-| `incomplete` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `Context` | Invocation context for this command. |
+| `param` | `Parameter` | The parameter that is requesting completion. |
+| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
 
 #### split_envvar_value()
 
@@ -1166,9 +1186,9 @@ then leading and trailing whitespace is ignored.  Otherwise, leading
 and trailing splitters usually lead to empty items being included.
 
 
-| Parameter | Type |
-|-|-|
-| `rv` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `rv` | `str` | |
 
 #### to_info_dict()
 
@@ -1208,9 +1228,9 @@ class JsonParamType(
     python_type: typing.Type,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `python_type` | `typing.Type` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_type` | `typing.Type` | |
 
 ### Methods
 
@@ -1249,11 +1269,11 @@ descriptive message.
 
 
 
-| Parameter | Type |
-|-|-|
-| `value` | `typing.Any` |
-| `param` | `typing.Optional[click.core.Parameter]` |
-| `ctx` | `typing.Optional[click.core.Context]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `typing.Any` | The value to convert. |
+| `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
+| `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
 
 #### fail()
 
@@ -1267,11 +1287,11 @@ def fail(
 Helper method to fail with an invalid value message.
 
 
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
@@ -1283,9 +1303,9 @@ def get_metavar(
 Returns the metavar default for this param if it provides one.
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### get_missing_message()
 
@@ -1300,9 +1320,9 @@ parameter.
 .. versionadded:: 2.0
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### shell_complete()
 
@@ -1321,11 +1341,11 @@ completions as well.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `Context` |
-| `param` | `Parameter` |
-| `incomplete` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `Context` | Invocation context for this command. |
+| `param` | `Parameter` | The parameter that is requesting completion. |
+| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
 
 #### split_envvar_value()
 
@@ -1342,9 +1362,9 @@ then leading and trailing whitespace is ignored.  Otherwise, leading
 and trailing splitters usually lead to empty items being included.
 
 
-| Parameter | Type |
-|-|-|
-| `rv` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `rv` | `str` | |
 
 #### to_info_dict()
 
@@ -1416,11 +1436,11 @@ descriptive message.
 
 
 
-| Parameter | Type |
-|-|-|
-| `value` | `typing.Any` |
-| `param` | `typing.Optional[click.core.Parameter]` |
-| `ctx` | `typing.Optional[click.core.Context]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `typing.Any` | The value to convert. |
+| `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
+| `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
 
 #### fail()
 
@@ -1434,25 +1454,27 @@ def fail(
 Helper method to fail with an invalid value message.
 
 
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
 ```python
 def get_metavar(
-    param: Parameter,
+    param: click.core.Parameter,
+    args,
 ) -> typing.Optional[str]
 ```
 Returns the metavar default for this param if it provides one.
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `click.core.Parameter` | |
+| `args` | `*args` | |
 
 #### get_missing_message()
 
@@ -1467,9 +1489,9 @@ parameter.
 .. versionadded:: 2.0
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### shell_complete()
 
@@ -1488,11 +1510,11 @@ completions as well.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `Context` |
-| `param` | `Parameter` |
-| `incomplete` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `Context` | Invocation context for this command. |
+| `param` | `Parameter` | The parameter that is requesting completion. |
+| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
 
 #### split_envvar_value()
 
@@ -1509,9 +1531,9 @@ then leading and trailing whitespace is ignored.  Otherwise, leading
 and trailing splitters usually lead to empty items being included.
 
 
-| Parameter | Type |
-|-|-|
-| `rv` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `rv` | `str` | |
 
 #### to_info_dict()
 
@@ -1569,11 +1591,11 @@ descriptive message.
 
 
 
-| Parameter | Type |
-|-|-|
-| `value` | `typing.Any` |
-| `param` | `typing.Optional[click.core.Parameter]` |
-| `ctx` | `typing.Optional[click.core.Context]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `typing.Any` | The value to convert. |
+| `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
+| `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
 
 #### fail()
 
@@ -1587,11 +1609,11 @@ def fail(
 Helper method to fail with an invalid value message.
 
 
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
@@ -1603,9 +1625,9 @@ def get_metavar(
 Returns the metavar default for this param if it provides one.
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### get_missing_message()
 
@@ -1620,9 +1642,9 @@ parameter.
 .. versionadded:: 2.0
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### shell_complete()
 
@@ -1641,11 +1663,11 @@ completions as well.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `Context` |
-| `param` | `Parameter` |
-| `incomplete` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `Context` | Invocation context for this command. |
+| `param` | `Parameter` | The parameter that is requesting completion. |
+| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
 
 #### split_envvar_value()
 
@@ -1662,9 +1684,9 @@ then leading and trailing whitespace is ignored.  Otherwise, leading
 and trailing splitters usually lead to empty items being included.
 
 
-| Parameter | Type |
-|-|-|
-| `rv` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `rv` | `str` | |
 
 #### to_info_dict()
 
@@ -1690,9 +1712,9 @@ class UnionParamType(
     types: typing.List[click.types.ParamType],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `types` | `typing.List[click.types.ParamType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `types` | `typing.List[click.types.ParamType]` | |
 
 ### Methods
 
@@ -1720,11 +1742,11 @@ Important to implement NoneType / Optional.
 Also could we just determine the click types from the python types
 
 
-| Parameter | Type |
-|-|-|
-| `value` | `typing.Any` |
-| `param` | `typing.Optional[click.core.Parameter]` |
-| `ctx` | `typing.Optional[click.core.Context]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `typing.Any` | |
+| `param` | `typing.Optional[click.core.Parameter]` | |
+| `ctx` | `typing.Optional[click.core.Context]` | |
 
 #### fail()
 
@@ -1738,11 +1760,11 @@ def fail(
 Helper method to fail with an invalid value message.
 
 
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
@@ -1754,9 +1776,9 @@ def get_metavar(
 Returns the metavar default for this param if it provides one.
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### get_missing_message()
 
@@ -1771,9 +1793,9 @@ parameter.
 .. versionadded:: 2.0
 
 
-| Parameter | Type |
-|-|-|
-| `param` | `Parameter` |
+| Parameter | Type | Description |
+|-|-|-|
+| `param` | `Parameter` | |
 
 #### shell_complete()
 
@@ -1792,11 +1814,11 @@ completions as well.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `Context` |
-| `param` | `Parameter` |
-| `incomplete` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `Context` | Invocation context for this command. |
+| `param` | `Parameter` | The parameter that is requesting completion. |
+| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
 
 #### split_envvar_value()
 
@@ -1813,9 +1835,9 @@ then leading and trailing whitespace is ignored.  Otherwise, leading
 and trailing splitters usually lead to empty items being included.
 
 
-| Parameter | Type |
-|-|-|
-| `rv` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `rv` | `str` | |
 
 #### to_info_dict()
 

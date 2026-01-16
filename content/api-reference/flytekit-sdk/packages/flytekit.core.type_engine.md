@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.type_engine
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -20,6 +20,7 @@ layout: py_api
 | [`DictTransformer`](.././flytekit.core.type_engine#flytekitcoretype_enginedicttransformer) | Transformer that transforms an univariate dictionary Dict[str, T] to a Literal Map or. |
 | [`EnumTransformer`](.././flytekit.core.type_engine#flytekitcoretype_engineenumtransformer) | Enables converting a python type enum. |
 | [`ListTransformer`](.././flytekit.core.type_engine#flytekitcoretype_enginelisttransformer) | Transformer that handles a univariate typing. |
+| [`LiteralTypeTransformer`](.././flytekit.core.type_engine#flytekitcoretype_engineliteraltypetransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
 | [`LiteralsResolver`](.././flytekit.core.type_engine#flytekitcoretype_engineliteralsresolver) | LiteralsResolver is a helper class meant primarily for use with the FlyteRemote experience or any other situation. |
 | [`ProtobufTransformer`](.././flytekit.core.type_engine#flytekitcoretype_engineprotobuftransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
 | [`RestrictedTypeTransformer`](.././flytekit.core.type_engine#flytekitcoretype_enginerestrictedtypetransformer) | Types registered with the RestrictedTypeTransformer are not allowed to be converted to and from literals. |
@@ -85,10 +86,10 @@ def convert_marshmallow_json_schema_to_python_class(
 Generate a model class based on the provided JSON Schema
 
 
-| Parameter | Type |
-|-|-|
-| `schema` | `dict` |
-| `schema_name` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | dict representing valid JSON schema |
+| `schema_name` | `typing.Any` | dataclass name of return type |
 
 #### convert_mashumaro_json_schema_to_python_class()
 
@@ -101,10 +102,10 @@ def convert_mashumaro_json_schema_to_python_class(
 Generate a model class based on the provided JSON Schema
 
 
-| Parameter | Type |
-|-|-|
-| `schema` | `dict` |
-| `schema_name` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | dict representing valid JSON schema |
+| `schema_name` | `typing.Any` | dataclass name of return type |
 
 #### dataclass_from_dict()
 
@@ -117,10 +118,10 @@ def dataclass_from_dict(
 Utility function to construct a dataclass object from dict
 
 
-| Parameter | Type |
-|-|-|
-| `cls` | `type` |
-| `src` | `typing.Dict[str, typing.Any]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` | `type` | |
+| `src` | `typing.Dict[str, typing.Any]` | |
 
 #### generate_attribute_list_from_dataclass_json()
 
@@ -130,10 +131,10 @@ def generate_attribute_list_from_dataclass_json(
     schema_name: typing.Any,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `schema` | `dict` |
-| `schema_name` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
+| `schema_name` | `typing.Any` | |
 
 #### generate_attribute_list_from_dataclass_json_mixin()
 
@@ -143,10 +144,10 @@ def generate_attribute_list_from_dataclass_json_mixin(
     schema_name: typing.Any,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `schema` | `dict` |
-| `schema_name` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
+| `schema_name` | `typing.Any` | |
 
 #### get_batch_size()
 
@@ -155,9 +156,9 @@ def get_batch_size(
     t: Type,
 ) -> Optional[int]
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type` | |
 
 #### get_underlying_type()
 
@@ -169,9 +170,9 @@ def get_underlying_type(
 Return the underlying type for annotated types or the type itself
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Type` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type` | |
 
 #### is_annotated()
 
@@ -180,9 +181,9 @@ def is_annotated(
     t: Type,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type` | |
 
 #### modify_literal_uris()
 
@@ -195,9 +196,9 @@ Modifies the literal object recursively to replace the URIs with the native path
 type "flyte://"
 
 
-| Parameter | Type |
-|-|-|
-| `lit` | `Literal` |
+| Parameter | Type | Description |
+|-|-|-|
+| `lit` | `Literal` | |
 
 #### strict_type_hint_matching()
 
@@ -214,10 +215,10 @@ Raises ValueError, like in case of [1,2,3] type() will just give `list`, which w
 Raises ValueError also if the transformer found for the raw type doesn't have a literal type match.
 
 
-| Parameter | Type |
-|-|-|
-| `input_val` | `typing.Any` |
-| `target_literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `input_val` | `typing.Any` | |
+| `target_literal_type` | `LiteralType` | |
 
 ## flytekit.core.type_engine.AsyncTypeTransformer
 
@@ -231,11 +232,11 @@ class AsyncTypeTransformer(
     enable_type_assertions: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `t` | `Type[T]` |
-| `enable_type_assertions` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `t` | `Type[T]` | |
+| `enable_type_assertions` | `bool` | |
 
 ### Methods
 
@@ -262,10 +263,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
+| `v` | `T` | |
 
 #### async_to_literal()
 
@@ -283,12 +284,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `T` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### async_to_python_value()
 
@@ -302,11 +303,11 @@ def async_to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 #### from_binary_idl()
 
@@ -329,10 +330,10 @@ Life Cycle:
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -349,10 +350,10 @@ Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_literal_type()
 
@@ -364,9 +365,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
 
 #### guess_python_type()
 
@@ -378,9 +379,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -390,10 +391,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_html()
 
@@ -407,11 +408,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -429,12 +430,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.Any` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `typing.Any` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -448,11 +449,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 ### Properties
 
@@ -487,9 +488,9 @@ class BatchSize(
     val: int,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `val` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `val` | `int` | |
 
 ### Properties
 
@@ -528,10 +529,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
+| `v` | `T` | |
 
 #### from_binary_idl()
 
@@ -554,10 +555,10 @@ Life Cycle:
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -574,10 +575,10 @@ Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_literal_type()
 
@@ -589,9 +590,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Type[typing.BinaryIO]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[typing.BinaryIO]` | |
 
 #### guess_python_type()
 
@@ -603,9 +604,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -615,10 +616,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_html()
 
@@ -632,11 +633,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -654,12 +655,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.BinaryIO` |
-| `python_type` | `Type[typing.BinaryIO]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `typing.BinaryIO` | The actual value to be transformed |
+| `python_type` | `Type[typing.BinaryIO]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -673,11 +674,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[typing.BinaryIO]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[typing.BinaryIO]` | Expected native python type that should be returned |
 
 ### Properties
 
@@ -743,8 +744,6 @@ Output will look like
 > The schema support is experimental and is useful for auto-completing in the UI/CLI
 
 
-
-
 ```python
 def DataclassTransformer()
 ```
@@ -771,10 +770,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `expected_type` | `Type[DataClassJsonMixin]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `expected_type` | `Type[DataClassJsonMixin]` | |
+| `v` | `T` | |
 
 #### from_binary_idl()
 
@@ -797,10 +796,10 @@ Life Cycle:
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -817,10 +816,10 @@ Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_literal_type()
 
@@ -833,9 +832,9 @@ Extracts the Literal type definition for a Dataclass and returns a type Struct.
 If possible also extracts the JSONSchema for the dataclass.
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
 
 #### isinstance_generic()
 
@@ -845,10 +844,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_generic_literal()
 
@@ -865,12 +864,12 @@ Set `FLYTE_USE_OLD_DC_FORMAT=true` to use the old JSON-based format.
 Note: This is deprecated and will be removed in the future.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `python_type` | `Type[T]` | |
+| `expected` | `LiteralType` | |
 
 #### to_html()
 
@@ -884,11 +883,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -906,12 +905,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `T` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -925,11 +924,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 ### Properties
 
@@ -980,10 +979,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
+| `v` | `T` | |
 
 #### async_to_literal()
 
@@ -1001,12 +1000,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.Any` |
-| `python_type` | `Type[dict]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `typing.Any` | The actual value to be transformed |
+| `python_type` | `Type[dict]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### async_to_python_value()
 
@@ -1020,11 +1019,11 @@ def async_to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[dict]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[dict]` | Expected native python type that should be returned |
 
 #### dict_to_binary_literal()
 
@@ -1040,12 +1039,12 @@ Converts a Python dictionary to a Flyte-specific ``Literal`` using MessagePack e
 Falls back to Pickle if encoding fails and `allow_pickle` is True.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `v` | `dict` |
-| `python_type` | `Type[dict]` |
-| `allow_pickle` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `v` | `dict` | |
+| `python_type` | `Type[dict]` | |
+| `allow_pickle` | `bool` | |
 
 #### dict_to_generic_literal()
 
@@ -1062,12 +1061,12 @@ Creates a flyte-specific ``Literal`` value from a native python dictionary.
 Note: This is deprecated and will be removed in the future.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `v` | `dict` |
-| `python_type` | `Type[dict]` |
-| `allow_pickle` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `v` | `dict` | |
+| `python_type` | `Type[dict]` | |
+| `allow_pickle` | `bool` | |
 
 #### extract_types()
 
@@ -1076,9 +1075,9 @@ def extract_types(
     t: Optional[Type[dict]],
 ) -> typing.Tuple
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Optional[Type[dict]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Optional[Type[dict]]` | |
 
 #### from_binary_idl()
 
@@ -1101,10 +1100,10 @@ Life Cycle:
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -1121,10 +1120,10 @@ Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_literal_type()
 
@@ -1136,9 +1135,9 @@ def get_literal_type(
 Transforms a native python dictionary to a flyte-specific ``LiteralType``
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Type[dict]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[dict]` | |
 
 #### guess_python_type()
 
@@ -1150,9 +1149,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### is_pickle()
 
@@ -1161,9 +1160,9 @@ def is_pickle(
     python_type: Type[dict],
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `python_type` | `Type[dict]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_type` | `Type[dict]` | |
 
 #### isinstance_generic()
 
@@ -1173,10 +1172,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_html()
 
@@ -1190,11 +1189,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -1212,12 +1211,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.Any` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `typing.Any` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -1231,11 +1230,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 ### Properties
 
@@ -1279,10 +1278,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[enum.Enum]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[enum.Enum]` | |
+| `v` | `T` | |
 
 #### from_binary_idl()
 
@@ -1305,10 +1304,10 @@ Life Cycle:
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -1325,10 +1324,10 @@ Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_literal_type()
 
@@ -1340,9 +1339,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
 
 #### guess_python_type()
 
@@ -1354,9 +1353,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -1366,10 +1365,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_html()
 
@@ -1383,11 +1382,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -1405,12 +1404,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `enum.Enum` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `enum.Enum` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -1424,11 +1423,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 ### Properties
 
@@ -1476,10 +1475,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
+| `v` | `T` | |
 
 #### async_to_literal()
 
@@ -1497,12 +1496,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `T` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### async_to_python_value()
 
@@ -1516,11 +1515,11 @@ def async_to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 #### from_binary_idl()
 
@@ -1543,10 +1542,10 @@ Life Cycle:
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -1563,10 +1562,10 @@ Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_literal_type()
 
@@ -1578,9 +1577,9 @@ def get_literal_type(
 Only univariate Lists are supported in Flyte
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
 
 #### get_sub_type()
 
@@ -1592,9 +1591,9 @@ def get_sub_type(
 Return the generic Type T of the List
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
 
 #### get_sub_type_or_none()
 
@@ -1606,9 +1605,9 @@ def get_sub_type_or_none(
 Return the generic Type T of the List, or None if the generic type cannot be inferred
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
 
 #### guess_python_type()
 
@@ -1620,9 +1619,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -1632,10 +1631,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_html()
 
@@ -1649,11 +1648,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -1671,12 +1670,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.Any` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `typing.Any` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -1690,11 +1689,216 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` |  |  |
+| `name` |  |  |
+| `python_type` |  | {{< multiline >}}This returns the python type
+{{< /multiline >}} |
+| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
+{{< /multiline >}} |
+
+## flytekit.core.type_engine.LiteralTypeTransformer
+
+Base transformer type that should be implemented for every python native type that can be handled by flytekit
+
+
+```python
+def LiteralTypeTransformer()
+```
+### Methods
+
+| Method | Description |
 |-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| [`assert_type()`](#assert_type) |  |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
+| [`get_base_type()`](#get_base_type) |  |
+| [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
+| [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
+| [`isinstance_generic()`](#isinstance_generic) |  |
+| [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
+| [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
+| [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
+
+
+#### assert_type()
+
+```python
+def assert_type(
+    python_type: Type,
+    python_val: T,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `python_type` | `Type` | |
+| `python_val` | `T` | |
+
+#### from_binary_idl()
+
+```python
+def from_binary_idl(
+    binary_idl_object: Binary,
+    expected_python_type: Type[T],
+) -> Optional[T]
+```
+This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀
+
+For untyped dict, dataclass, and pydantic basemodel:
+Life Cycle (Untyped Dict as example):
+    python val -> msgpack bytes -> binary literal scalar -> msgpack bytes -> python val
+                  (to_literal)                             (from_binary_idl)
+
+For attribute access:
+Life Cycle:
+    python val -> msgpack bytes -> binary literal scalar -> resolved golang value -> binary literal scalar -> msgpack bytes -> python val
+                  (to_literal)                            (propeller attribute access)                       (from_binary_idl)
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
+
+#### from_generic_idl()
+
+```python
+def from_generic_idl(
+    generic: Struct,
+    expected_python_type: Type[T],
+) -> Optional[T]
+```
+TODO: Support all Flyte Types.
+This is for dataclass attribute access from input created from the Flyte Console.
+
+Note:
+- This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
+
+#### get_base_type()
+
+```python
+def get_base_type(
+    t: Type,
+) -> Type
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type` | |
+
+#### get_literal_type()
+
+```python
+def get_literal_type(
+    t: Type,
+) -> LiteralType
+```
+Converts the python type to a Flyte LiteralType
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type` | |
+
+#### guess_python_type()
+
+```python
+def guess_python_type(
+    literal_type: LiteralType,
+) -> Type
+```
+Converts the Flyte LiteralType to a python object type.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
+
+#### isinstance_generic()
+
+```python
+def isinstance_generic(
+    obj,
+    generic_alias,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
+
+#### to_html()
+
+```python
+def to_html(
+    ctx: FlyteContext,
+    python_val: T,
+    expected_python_type: Type[T],
+) -> str
+```
+Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
+
+#### to_literal()
+
+```python
+def to_literal(
+    ctx: FlyteContext,
+    python_val: T,
+    python_type: Type,
+    expected: LiteralType,
+) -> Literal
+```
+Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type.
+Implementers should refrain from using type(python_val) instead rely on the passed in python_type. If these
+do not match (or are not allowed) the Transformer implementer should raise an AssertionError, clearly stating
+what was the mismatch
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `T` | The actual value to be transformed |
+| `python_type` | `Type` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
+
+#### to_python_value()
+
+```python
+def to_python_value(
+    ctx: FlyteContext,
+    lv: Literal,
+    expected_python_type: Type,
+) -> object
+```
+Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type` | Expected native python type that should be returned |
 
 ### Properties
 
@@ -1721,11 +1925,11 @@ class LiteralsResolver(
     ctx: Optional[FlyteContext],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `literals` | `typing.Dict[str, Literal]` |
-| `variable_map` | `Optional[Dict[str, _interface_models.Variable]]` |
-| `ctx` | `Optional[FlyteContext]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literals` | `typing.Dict[str, Literal]` | A Python map of strings to Flyte Literal models. |
+| `variable_map` | `Optional[Dict[str, _interface_models.Variable]]` | This map should be basically one side (either input or output) of the Flyte TypedInterface model and is used to guess the Python type through the TypeEngine if a Python type is not specified by the user. TypeEngine guessing is flaky though, so calls to get() should specify the as_type parameter when possible. |
+| `ctx` | `Optional[FlyteContext]` | |
 
 ### Methods
 
@@ -1759,9 +1963,9 @@ This function relies on Python interface outputs being ordered correctly.
 
 
 
-| Parameter | Type |
-|-|-|
-| `python_interface` | `Interface` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_interface` | `Interface` | Only outputs are used but easier to pass the whole interface. |
 
 #### clear()
 
@@ -1784,10 +1988,10 @@ def fromkeys(
     value,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `iterable` |  |
-| `value` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `iterable` |  | |
+| `value` |  | |
 
 #### get()
 
@@ -1795,7 +1999,7 @@ def fromkeys(
 def get(
     attr: str,
     as_type: Optional[typing.Type],
-) -> n: Python native value from the LiteralMap
+) -> typing.Any
 ```
 This will get the ``attr`` value from the Literal map, and invoke the TypeEngine to convert it into a Python
 native value. A Python type can optionally be supplied. If successful, the native value will be cached and
@@ -1803,10 +2007,10 @@ future calls will return the cached value instead.
 
 
 
-| Parameter | Type |
-|-|-|
-| `attr` | `str` |
-| `as_type` | `Optional[typing.Type]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `attr` | `str` | |
+| `as_type` | `Optional[typing.Type]` | :return: Python native value from the LiteralMap |
 
 #### get_literal()
 
@@ -1815,9 +2019,9 @@ def get_literal(
     key: str,
 ) -> Literal
 ```
-| Parameter | Type |
-|-|-|
-| `key` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `key` | `str` | |
 
 #### items()
 
@@ -1847,10 +2051,10 @@ D.pop(k[,d]) -> v, remove specified key and return the corresponding value.
 If key is not found, d is returned if given, otherwise KeyError is raised.
 
 
-| Parameter | Type |
-|-|-|
-| `key` |  |
-| `default` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `key` |  | |
+| `default` |  | |
 
 #### popitem()
 
@@ -1872,10 +2076,10 @@ def setdefault(
 D.setdefault(k[,d]) -> D.get(k,d), also set D[k]=d if k not in D
 
 
-| Parameter | Type |
-|-|-|
-| `key` |  |
-| `default` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `key` |  | |
+| `default` |  | |
 
 #### update()
 
@@ -1891,10 +2095,10 @@ If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v
 In either case, this is followed by: for k, v in F.items(): D[k] = v
 
 
-| Parameter | Type |
-|-|-|
-| `other` |  |
-| `kwds` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `other` |  | |
+| `kwds` |  | |
 
 #### update_type_hints()
 
@@ -1903,9 +2107,9 @@ def update_type_hints(
     type_hints: typing.Dict[str, typing.Type],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `type_hints` | `typing.Dict[str, typing.Type]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `type_hints` | `typing.Dict[str, typing.Type]` | |
 
 #### values()
 
@@ -1955,10 +2159,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
+| `v` | `T` | |
 
 #### from_binary_idl()
 
@@ -1981,10 +2185,10 @@ Life Cycle:
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -2001,10 +2205,10 @@ Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_literal_type()
 
@@ -2016,9 +2220,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
 
 #### guess_python_type()
 
@@ -2030,9 +2234,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -2042,10 +2246,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### tag()
 
@@ -2054,9 +2258,9 @@ def tag(
     expected_python_type: Type[T],
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `expected_python_type` | `Type[T]` | |
 
 #### to_html()
 
@@ -2070,11 +2274,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -2099,12 +2303,12 @@ Because the remote handling works without errors, we implement conversion with t
 https://github.com/flyteorg/flyte/blob/a87585ab7cbb6a047c76d994b3f127c4210070fd/flytepropeller/pkg/controller/nodes/attr_path_resolver.go#L72-L106
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `python_type` | `Type[T]` | |
+| `expected` | `LiteralType` | |
 
 #### to_python_value()
 
@@ -2118,11 +2322,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 ### Properties
 
@@ -2152,10 +2356,10 @@ class RestrictedTypeTransformer(
     t: Type[T],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `t` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `t` | `Type[T]` | |
 
 ### Methods
 
@@ -2180,10 +2384,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
+| `v` | `T` | |
 
 #### from_binary_idl()
 
@@ -2206,10 +2410,10 @@ Life Cycle:
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -2226,10 +2430,10 @@ Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_literal_type()
 
@@ -2241,9 +2445,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Optional[Type[T]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Optional[Type[T]]` | |
 
 #### guess_python_type()
 
@@ -2255,9 +2459,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -2267,10 +2471,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_html()
 
@@ -2284,11 +2488,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -2306,12 +2510,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `T` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -2325,11 +2529,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 ### Properties
 
@@ -2356,13 +2560,13 @@ class SimpleTransformer(
     from_literal_transformer: typing.Callable[[Literal], T],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `t` | `Type[T]` |
-| `lt` | `LiteralType` |
-| `to_literal_transformer` | `typing.Callable[[T], Literal]` |
-| `from_literal_transformer` | `typing.Callable[[Literal], T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `t` | `Type[T]` | |
+| `lt` | `LiteralType` | |
+| `to_literal_transformer` | `typing.Callable[[T], Literal]` | |
+| `from_literal_transformer` | `typing.Callable[[Literal], T]` | |
 
 ### Methods
 
@@ -2387,10 +2591,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
+| `v` | `T` | |
 
 #### from_binary_idl()
 
@@ -2413,10 +2617,10 @@ Life Cycle:
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -2433,10 +2637,10 @@ Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_literal_type()
 
@@ -2448,9 +2652,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Optional[Type[T]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Optional[Type[T]]` | |
 
 #### guess_python_type()
 
@@ -2462,9 +2666,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -2474,10 +2678,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_html()
 
@@ -2491,11 +2695,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -2513,12 +2717,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `T` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -2532,11 +2736,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 ### Properties
 
@@ -2581,10 +2785,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
+| `v` | `T` | |
 
 #### from_binary_idl()
 
@@ -2607,10 +2811,10 @@ Life Cycle:
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -2627,10 +2831,10 @@ Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_literal_type()
 
@@ -2642,9 +2846,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `typing.TextIO` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.TextIO` | |
 
 #### guess_python_type()
 
@@ -2656,9 +2860,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -2668,10 +2872,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_html()
 
@@ -2685,11 +2889,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -2707,12 +2911,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.TextIO` |
-| `python_type` | `Type[typing.TextIO]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `typing.TextIO` | The actual value to be transformed |
+| `python_type` | `Type[typing.TextIO]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -2726,11 +2930,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[typing.TextIO]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[typing.TextIO]` | Expected native python type that should be returned |
 
 ### Properties
 
@@ -2790,12 +2994,12 @@ def async_to_literal(
 Converts a python value of a given type and expected ``LiteralType`` into a resolved ``Literal`` value.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.Any` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `typing.Any` | |
+| `python_type` | `Type[T]` | |
+| `expected` | `LiteralType` | |
 
 #### async_to_python_value()
 
@@ -2806,11 +3010,11 @@ def async_to_python_value(
     expected_python_type: Type,
 ) -> typing.Any
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `lv` | `Literal` | |
+| `expected_python_type` | `Type` | |
 
 #### calculate_hash()
 
@@ -2820,10 +3024,10 @@ def calculate_hash(
     python_type: Type[T],
 ) -> Optional[str]
 ```
-| Parameter | Type |
-|-|-|
-| `python_val` | `typing.Any` |
-| `python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_val` | `typing.Any` | |
+| `python_type` | `Type[T]` | |
 
 #### dict_to_literal_map()
 
@@ -2834,11 +3038,11 @@ def dict_to_literal_map(
     type_hints: Optional[typing.Dict[str, type]],
 ) -> LiteralMap
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `d` | `typing.Dict[str, typing.Any]` |
-| `type_hints` | `Optional[typing.Dict[str, type]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `d` | `typing.Dict[str, typing.Any]` | |
+| `type_hints` | `Optional[typing.Dict[str, type]]` | |
 
 #### dict_to_literal_map_pb()
 
@@ -2849,11 +3053,11 @@ def dict_to_literal_map_pb(
     type_hints: Optional[typing.Dict[str, type]],
 ) -> Optional[literals_pb2.LiteralMap]
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `d` | `typing.Dict[str, typing.Any]` |
-| `type_hints` | `Optional[typing.Dict[str, type]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `d` | `typing.Dict[str, typing.Any]` | |
+| `type_hints` | `Optional[typing.Dict[str, type]]` | |
 
 #### get_available_transformers()
 
@@ -2873,9 +3077,9 @@ def get_transformer(
 Implements a recursive search for the transformer.
 
 
-| Parameter | Type |
-|-|-|
-| `python_type` | `Type` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_type` | `Type` | |
 
 #### guess_python_type()
 
@@ -2887,9 +3091,9 @@ def guess_python_type(
 Transforms a flyte-specific ``LiteralType`` to a regular python value.
 
 
-| Parameter | Type |
-|-|-|
-| `flyte_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `flyte_type` | `LiteralType` | |
 
 #### guess_python_types()
 
@@ -2901,9 +3105,9 @@ def guess_python_types(
 Transforms a dictionary of flyte-specific ``Variable`` objects to a dictionary of regular python values.
 
 
-| Parameter | Type |
-|-|-|
-| `flyte_variable_dict` | `typing.Dict[str, _interface_models.Variable]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `flyte_variable_dict` | `typing.Dict[str, _interface_models.Variable]` | |
 
 #### lazy_import_transformers()
 
@@ -2923,12 +3127,12 @@ def literal_map_to_kwargs(
     literal_types: typing.Optional[typing.Dict[str, _interface_models.Variable]],
 ) -> typing.Dict[str, typing.Any]
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lm` | `LiteralMap` |
-| `python_types` | `typing.Optional[typing.Dict[str, type]]` |
-| `literal_types` | `typing.Optional[typing.Dict[str, _interface_models.Variable]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `lm` | `LiteralMap` | |
+| `python_types` | `typing.Optional[typing.Dict[str, type]]` | |
+| `literal_types` | `typing.Optional[typing.Dict[str, _interface_models.Variable]]` | |
 
 #### named_tuple_to_variable_map()
 
@@ -2940,9 +3144,9 @@ def named_tuple_to_variable_map(
 Converts a python-native ``NamedTuple`` to a flyte-specific VariableMap of named literals.
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `typing.NamedTuple` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.NamedTuple` | |
 
 #### register()
 
@@ -2955,10 +3159,10 @@ def register(
 This should be used for all types that respond with the right type annotation when you use type(...) function
 
 
-| Parameter | Type |
-|-|-|
-| `transformer` | `TypeTransformer` |
-| `additional_types` | `Optional[typing.List[Type]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `transformer` | `TypeTransformer` | |
+| `additional_types` | `Optional[typing.List[Type]]` | |
 
 #### register_additional_type()
 
@@ -2969,11 +3173,11 @@ def register_additional_type(
     override,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `transformer` | `TypeTransformer[T]` |
-| `additional_type` | `Type[T]` |
-| `override` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `transformer` | `TypeTransformer[T]` | |
+| `additional_type` | `Type[T]` | |
+| `override` |  | |
 
 #### register_restricted_type()
 
@@ -2983,10 +3187,10 @@ def register_restricted_type(
     type: Type[T],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `type` | `Type[T]` | |
 
 #### to_html()
 
@@ -2997,11 +3201,11 @@ def to_html(
     expected_python_type: Type[typing.Any],
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.Any` |
-| `expected_python_type` | `Type[typing.Any]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `typing.Any` | |
+| `expected_python_type` | `Type[typing.Any]` | |
 
 #### to_literal()
 
@@ -3018,12 +3222,12 @@ to_literal function, and allowing this to_literal function, to then invoke yet a
 namely an async transformer.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.Any` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `typing.Any` | |
+| `python_type` | `Type[T]` | |
+| `expected` | `LiteralType` | |
 
 #### to_literal_checks()
 
@@ -3034,11 +3238,11 @@ def to_literal_checks(
     expected: LiteralType,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `python_val` | `typing.Any` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_val` | `typing.Any` | |
+| `python_type` | `Type[T]` | |
+| `expected` | `LiteralType` | |
 
 #### to_literal_type()
 
@@ -3050,9 +3254,9 @@ def to_literal_type(
 Converts a python type into a flyte specific ``LiteralType``
 
 
-| Parameter | Type |
-|-|-|
-| `python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_type` | `Type[T]` | |
 
 #### to_python_value()
 
@@ -3066,11 +3270,11 @@ def to_python_value(
 Converts a Literal value with an expected python type into a python value.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `lv` | `Literal` | |
+| `expected_python_type` | `Type` | |
 
 #### unwrap_offloaded_literal()
 
@@ -3080,10 +3284,10 @@ def unwrap_offloaded_literal(
     lv: Literal,
 ) -> Literal
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `lv` | `Literal` | |
 
 ## flytekit.core.type_engine.TypeTransformer
 
@@ -3097,11 +3301,11 @@ class TypeTransformer(
     enable_type_assertions: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `t` | `Type[T]` |
-| `enable_type_assertions` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `t` | `Type[T]` | |
+| `enable_type_assertions` | `bool` | |
 
 ### Methods
 
@@ -3126,10 +3330,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
+| `v` | `T` | |
 
 #### from_binary_idl()
 
@@ -3152,10 +3356,10 @@ Life Cycle:
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -3172,10 +3376,10 @@ Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_literal_type()
 
@@ -3187,9 +3391,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
 
 #### guess_python_type()
 
@@ -3201,9 +3405,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -3213,10 +3417,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_html()
 
@@ -3230,11 +3434,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -3252,12 +3456,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `T` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -3271,11 +3475,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 ### Properties
 
@@ -3328,10 +3532,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
+| `v` | `T` | |
 
 #### async_to_literal()
 
@@ -3349,12 +3553,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `T` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### async_to_python_value()
 
@@ -3368,11 +3572,11 @@ def async_to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 #### from_binary_idl()
 
@@ -3395,10 +3599,10 @@ Life Cycle:
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -3415,10 +3619,10 @@ Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_literal_type()
 
@@ -3430,9 +3634,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
 
 #### get_sub_type_in_optional()
 
@@ -3444,9 +3648,9 @@ def get_sub_type_in_optional(
 Return the generic Type T of the Optional type
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
 
 #### guess_python_type()
 
@@ -3458,9 +3662,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### is_optional_type()
 
@@ -3469,9 +3673,9 @@ def is_optional_type(
     t: Type,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type` | |
 
 #### isinstance_generic()
 
@@ -3481,10 +3685,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_html()
 
@@ -3498,11 +3702,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -3520,12 +3724,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.Any` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `typing.Any` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -3539,11 +3743,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 ### Properties
 

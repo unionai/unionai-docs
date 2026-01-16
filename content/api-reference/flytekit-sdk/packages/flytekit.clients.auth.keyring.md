@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.keyring
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -30,13 +30,13 @@ class Credentials(
     id_token: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `access_token` | `str` |
-| `refresh_token` | `typing.Optional[str]` |
-| `for_endpoint` | `str` |
-| `expires_in` | `typing.Optional[int]` |
-| `id_token` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `access_token` | `str` | |
+| `refresh_token` | `typing.Optional[str]` | |
+| `for_endpoint` | `str` | |
+| `expires_in` | `typing.Optional[int]` | |
+| `id_token` | `typing.Optional[str]` | |
 
 ## flytekit.clients.auth.keyring.KeyringStore
 
@@ -59,9 +59,9 @@ def delete(
     for_endpoint: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `for_endpoint` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `for_endpoint` | `str` | |
 
 #### retrieve()
 
@@ -70,9 +70,9 @@ def retrieve(
     for_endpoint: str,
 ) -> typing.Optional[flytekit.clients.auth.keyring.Credentials]
 ```
-| Parameter | Type |
-|-|-|
-| `for_endpoint` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `for_endpoint` | `str` | |
 
 #### store()
 
@@ -81,7 +81,7 @@ def store(
     credentials: flytekit.clients.auth.keyring.Credentials,
 ) -> flytekit.clients.auth.keyring.Credentials
 ```
-| Parameter | Type |
-|-|-|
-| `credentials` | `flytekit.clients.auth.keyring.Credentials` |
+| Parameter | Type | Description |
+|-|-|-|
+| `credentials` | `flytekit.clients.auth.keyring.Credentials` | |
 

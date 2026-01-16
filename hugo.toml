@@ -10,22 +10,30 @@ theme = 'union'
 disableKinds = ["RSS"]
 enableRobotsTXT = true
 
-# Enable sitemap generation
+# Enable sitemap generation and markdown output for LLM docs
 [outputs]
   # 'home': The main site homepage. 'HTML' for the page, 'RSS' for feed readers.
   home = ["HTML", "RSS"]
 
-  # 'page': Individual content pages. Only 'HTML' is needed for standard page rendering.
-  page = ["HTML"]
+  # 'page': Individual content pages. 'HTML' for standard rendering, 'MD' for LLM docs.
+  page = ["HTML", "MD"]
 
-  # 'section': Top-level content sections (e.g., docs, tutorials). 'HTML' for rendering, 'RSS' for section-specific feeds.
-  section = ["HTML", "RSS"]
+  # 'section': Top-level content sections (e.g., docs, tutorials). 'HTML' for rendering, 'RSS' for section-specific feeds, 'MD' for LLM docs.
+  section = ["HTML", "RSS", "MD"]
 
   # 'taxonomy': Used for tag/category listing pages. 'HTML' for rendering, 'RSS' for taxonomy feeds.
   taxonomy = ["HTML", "RSS"]
 
   # 'robotsTXT': Generate robots.txt file for search engine crawling
   robotsTXT = ["ROBOTS"]
+
+# Define output formats
+[outputFormats]
+  [outputFormats.MD]
+    mediaType = "text/plain"
+    baseName = "index"
+    path = "tmp-md"
+    isPlainText = true
 
 [params]
 _merge = "deep"

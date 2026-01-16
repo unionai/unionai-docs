@@ -44,8 +44,8 @@ SklearnModel = union.Artifact(name="sklearn-model")
 # image is public.
 image_spec = union.ImageSpec(
     name="union-serve-sklearn-fastapi",
-    packages=["union-runtime>=0.1.10", "scikit-learn==1.5.2", "joblib==1.5.1", "fastapi[standard]"],
-    registry=os.getenv("REGISTRY"),
+    packages=["union-runtime>=0.1.18", "scikit-learn==1.5.2", "joblib==1.5.1", "fastapi[standard]"],
+    builder="union"
 )
 
 ml_models = {}
@@ -119,7 +119,7 @@ SklearnModel = union.Artifact(name="sklearn-model")
 # If you are using `ghcr.io` as your registry, make sure the image is public.
 image_spec = union.ImageSpec(
     packages=["scikit-learn==1.5.2", "joblib==1.5.1"],
-    registry=os.getenv("REGISTRY"),
+    builder="union"
 )
 
 # The `task` that trains a `RandomForestRegressor` model.

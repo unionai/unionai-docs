@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.promise
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,13 +14,20 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`ComparisonExpression`](.././flytekit.core.promise#flytekitcorepromisecomparisonexpression) | ComparisonExpression refers to an expression of the form (lhs operator rhs), where lhs and rhs are operands. |
+| [`ComparisonOps`](.././flytekit.core.promise#flytekitcorepromisecomparisonops) | Create a collection of name/value pairs. |
 | [`ConjunctionExpression`](.././flytekit.core.promise#flytekitcorepromiseconjunctionexpression) | A Conjunction Expression is an expression of the form either (A and B) or (A or B). |
-| [`HasFlyteInterface`](.././flytekit.core.promise#flytekitcorepromisehasflyteinterface) | Base class for protocol classes. |
-| [`LocallyExecutable`](.././flytekit.core.promise#flytekitcorepromiselocallyexecutable) | Base class for protocol classes. |
+| [`ConjunctionOps`](.././flytekit.core.promise#flytekitcorepromiseconjunctionops) | Create a collection of name/value pairs. |
 | [`NodeOutput`](.././flytekit.core.promise#flytekitcorepromisenodeoutput) |  |
 | [`Promise`](.././flytekit.core.promise#flytekitcorepromisepromise) | This object is a wrapper and exists for three main reasons. |
-| [`SupportsNodeCreation`](.././flytekit.core.promise#flytekitcorepromisesupportsnodecreation) | Base class for protocol classes. |
 | [`VoidPromise`](.././flytekit.core.promise#flytekitcorepromisevoidpromise) | This object is returned for tasks that do not return any outputs (declared interface is empty). |
+
+### Protocols
+
+| Protocol | Description |
+|-|-|
+| [`HasFlyteInterface`](.././flytekit.core.promise#flytekitcorepromisehasflyteinterface) | Base class for protocol classes. |
+| [`LocallyExecutable`](.././flytekit.core.promise#flytekitcorepromiselocallyexecutable) | Base class for protocol classes. |
+| [`SupportsNodeCreation`](.././flytekit.core.promise#flytekitcorepromisesupportsnodecreation) | Base class for protocol classes. |
 
 ### Methods
 
@@ -65,11 +72,11 @@ def async_flyte_entity_call_handler(
 This is a limited async version of the main call handler.
 
 
-| Parameter | Type |
-|-|-|
-| `entity` | `SupportsNodeCreation` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `entity` | `SupportsNodeCreation` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### binding_data_from_python_std()
 
@@ -82,13 +89,13 @@ def binding_data_from_python_std(
     nodes: List[Node],
 ) -> _literals_models.BindingData
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `_flyte_context.FlyteContext` |
-| `expected_literal_type` | `_type_models.LiteralType` |
-| `t_value` | `Any` |
-| `t_value_type` | `typing.Type[T]` |
-| `nodes` | `List[Node]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `_flyte_context.FlyteContext` | |
+| `expected_literal_type` | `_type_models.LiteralType` | |
+| `t_value` | `Any` | |
+| `t_value_type` | `typing.Type[T]` | |
+| `nodes` | `List[Node]` | |
 
 #### binding_from_python_std()
 
@@ -101,13 +108,13 @@ def binding_from_python_std(
     t_value_type: type,
 ) -> Tuple[_literals_models.Binding, List[Node]]
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `_flyte_context.FlyteContext` |
-| `var_name` | `str` |
-| `expected_literal_type` | `_type_models.LiteralType` |
-| `t_value` | `Any` |
-| `t_value_type` | `type` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `_flyte_context.FlyteContext` | |
+| `var_name` | `str` | |
+| `expected_literal_type` | `_type_models.LiteralType` | |
+| `t_value` | `Any` | |
+| `t_value_type` | `type` | |
 
 #### create_and_link_node()
 
@@ -119,21 +126,21 @@ def create_and_link_node(
     add_node_to_compilation_state: bool,
     node_id: str,
     kwargs,
-) -> n:  Optional[Union[Tuple[Promise], Promise, VoidPromise]]
+) -> Optional[Union[Tuple[Promise], Promise, VoidPromise]]
 ```
 This method is used to generate a node with bindings within a flytekit workflow. this is useful to traverse the
 workflow using regular python interpreter and generate nodes and promises whenever an execution is encountered
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `entity` | `SupportsNodeCreation` |
-| `overridden_interface` | `Optional[Interface]` |
-| `add_node_to_compilation_state` | `bool` |
-| `node_id` | `str` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `entity` | `SupportsNodeCreation` | RemoteEntity |
+| `overridden_interface` | `Optional[Interface]` | utilize this interface instead of the one provided by the entity. This is useful for ArrayNode as there's a mismatch between the underlying interface and inputs |
+| `add_node_to_compilation_state` | `bool` | bool that enables for nodes to be created but not linked to the workflow. This is useful when creating nodes nested under other nodes such as ArrayNode |
+| `node_id` | `str` | str if provided, this will be used as the node id. |
+| `kwargs` | `**kwargs` | Dict[str, Any] default inputs passed from the user to this entity. Can be promises. :return:  Optional[Union[Tuple[Promise], Promise, VoidPromise]] |
 
 #### create_and_link_node_from_remote()
 
@@ -147,7 +154,7 @@ def create_and_link_node_from_remote(
     _inputs_not_allowed: Optional[Set[str]],
     _ignorable_inputs: Optional[Set[str]],
     kwargs,
-) -> n:  Optional[Union[Tuple[Promise], Promise, VoidPromise]]
+) -> Optional[Union[Tuple[Promise], Promise, VoidPromise]]
 ```
 This method is used to generate a node with bindings especially when using remote entities, like FlyteWorkflow,
 FlyteTask and FlyteLaunchplan.
@@ -158,16 +165,16 @@ interface, so all comparisons need to happen using the Literals.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `entity` | `HasFlyteInterface` |
-| `overridden_interface` | `Optional[_interface_models.TypedInterface]` |
-| `add_node_to_compilation_state` | `bool` |
-| `node_id` | `str` |
-| `_inputs_not_allowed` | `Optional[Set[str]]` |
-| `_ignorable_inputs` | `Optional[Set[str]]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `entity` | `HasFlyteInterface` | RemoteEntity |
+| `overridden_interface` | `Optional[_interface_models.TypedInterface]` | utilize this interface instead of the one provided by the entity. This is useful for ArrayNode as there's a mismatch between the underlying interface and inputs |
+| `add_node_to_compilation_state` | `bool` | bool that enables for nodes to be created but not linked to the workflow. This is useful when creating nodes nested under other nodes such as ArrayNode |
+| `node_id` | `str` | str if provided, this will be used as the node id. |
+| `_inputs_not_allowed` | `Optional[Set[str]]` | Set of all variable names that should not be provided when using this entity. Useful for Launchplans with `fixed` inputs |
+| `_ignorable_inputs` | `Optional[Set[str]]` | Set of all variable names that are optional, but if provided will be overridden. Useful for launchplans with `default` inputs |
+| `kwargs` | `**kwargs` | Dict[str, Any] default inputs passed from the user to this entity. Can be promises. :return:  Optional[Union[Tuple[Promise], Promise, VoidPromise]] |
 
 #### create_native_named_tuple()
 
@@ -183,11 +190,11 @@ it possible to run things locally and expect a more native behavior, i.e. addres
 by name.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `promises` | `Union[Tuple[Promise], Promise, VoidPromise, None]` |
-| `entity_interface` | `Interface` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `promises` | `Union[Tuple[Promise], Promise, VoidPromise, None]` | |
+| `entity_interface` | `Interface` | |
 
 #### create_task_output()
 
@@ -197,10 +204,10 @@ def create_task_output(
     entity_interface: Optional[Interface],
 ) -> Optional[Union[Tuple[Promise], Promise]]
 ```
-| Parameter | Type |
-|-|-|
-| `promises` | `Optional[Union[List[Promise], Promise]]` |
-| `entity_interface` | `Optional[Interface]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `promises` | `Optional[Union[List[Promise], Promise]]` | |
+| `entity_interface` | `Optional[Interface]` | |
 
 #### extract_obj_name()
 
@@ -213,9 +220,9 @@ Generates a shortened name, without the module information. Useful for node-name
 object information often separated by `.` in the python fully qualified notation
 
 
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
 
 #### flyte_entity_call_handler()
 
@@ -240,11 +247,11 @@ method. When one of these entities is () aka __called__, there are three things 
    we should expect inputs to be native Python values and that we should return Python native values.
 
 
-| Parameter | Type |
-|-|-|
-| `entity` | `SupportsNodeCreation` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `entity` | `SupportsNodeCreation` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### get_primitive_val()
 
@@ -253,9 +260,9 @@ def get_primitive_val(
     prim: Primitive,
 ) -> Any
 ```
-| Parameter | Type |
-|-|-|
-| `prim` | `Primitive` |
+| Parameter | Type | Description |
+|-|-|-|
+| `prim` | `Primitive` | |
 
 #### resolve_attr_path_in_dict()
 
@@ -265,10 +272,10 @@ def resolve_attr_path_in_dict(
     attr_path: List[Union[str, int]],
 ) -> Any
 ```
-| Parameter | Type |
-|-|-|
-| `d` | `dict` |
-| `attr_path` | `List[Union[str, int]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `d` | `dict` | |
+| `attr_path` | `List[Union[str, int]]` | |
 
 #### resolve_attr_path_in_pb_struct()
 
@@ -283,10 +290,10 @@ Resolves the protobuf struct (e.g. dataclass) with attribute path.
 Note that the return type can be google.protobuf.struct_pb2.Struct or google.protobuf.struct_pb2.ListValue.
 
 
-| Parameter | Type |
-|-|-|
-| `st` | `_struct.Struct` |
-| `attr_path` | `List[Union[str, int]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `st` | `_struct.Struct` | |
+| `attr_path` | `List[Union[str, int]]` | |
 
 #### resolve_attr_path_in_promise()
 
@@ -299,9 +306,9 @@ resolve_attr_path_in_promise resolves the attribute path in a promise and return
 This is for local execution only. The remote execution will be resolved in flytepropeller.
 
 
-| Parameter | Type |
-|-|-|
-| `p` | `Promise` |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` | `Promise` | |
 
 #### resolve_attr_path_recursively()
 
@@ -313,9 +320,9 @@ def resolve_attr_path_recursively(
 This function resolves the attribute path in a nested structure recursively.
 
 
-| Parameter | Type |
-|-|-|
-| `v` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `v` | `Any` | |
 
 #### to_binding()
 
@@ -324,9 +331,9 @@ def to_binding(
     p: Promise,
 ) -> _literals_models.Binding
 ```
-| Parameter | Type |
-|-|-|
-| `p` | `Promise` |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` | `Promise` | |
 
 #### translate_inputs_to_literals()
 
@@ -365,12 +372,12 @@ This helper function is used both when sorting out inputs to a task, as well as 
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `incoming_values` | `Dict[str, Any]` |
-| `flyte_interface_types` | `Dict[str, _interface_models.Variable]` |
-| `native_types` | `Dict[str, type]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | Context needed in case a non-primitive literal needs to be translated to a Flyte literal (like a file) |
+| `incoming_values` | `Dict[str, Any]` | This is a map of your task's input or wf's output kwargs basically |
+| `flyte_interface_types` | `Dict[str, _interface_models.Variable]` | One side of an {{&lt; py_class_ref flytekit.models.interface.TypedInterface &gt;}} basically. |
+| `native_types` | `Dict[str, type]` | Map to native Python type. |
 
 #### translate_inputs_to_native()
 
@@ -381,11 +388,11 @@ def translate_inputs_to_native(
     flyte_interface_types: Dict[str, _interface_models.Variable],
 ) -> Dict[str, _literals_models.Literal]
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `incoming_values` | `Dict[str, Any]` |
-| `flyte_interface_types` | `Dict[str, _interface_models.Variable]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `incoming_values` | `Dict[str, Any]` | |
+| `flyte_interface_types` | `Dict[str, _interface_models.Variable]` | |
 
 ## flytekit.core.promise.ComparisonExpression
 
@@ -400,11 +407,11 @@ class ComparisonExpression(
     rhs: Union['Promise', Any],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `lhs` | `Union['Promise', Any]` |
-| `op` | `ComparisonOps` |
-| `rhs` | `Union['Promise', Any]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `lhs` | `Union['Promise', Any]` | |
+| `op` | `ComparisonOps` | |
+| `rhs` | `Union['Promise', Any]` | |
 
 ### Methods
 
@@ -425,6 +432,46 @@ def eval()
 | `lhs` |  |  |
 | `op` |  |  |
 | `rhs` |  |  |
+
+## flytekit.core.promise.ComparisonOps
+
+Create a collection of name/value pairs.
+
+Example enumeration:
+
+>>> class Color(Enum):
+...     RED = 1
+...     BLUE = 2
+...     GREEN = 3
+
+Access them by:
+
+- attribute access:
+
+  >>> Color.RED
+  <Color.RED: 1>
+
+- value lookup:
+
+  >>> Color(1)
+  <Color.RED: 1>
+
+- name lookup:
+
+  >>> Color['RED']
+  <Color.RED: 1>
+
+Enumerations can be iterated over, and know how many members they have:
+
+>>> len(Color)
+3
+
+>>> list(Color)
+[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]
+
+Methods can be added to enumerations, and members can have their own
+attributes -- see the documentation for details.
+
 
 ## flytekit.core.promise.ConjunctionExpression
 
@@ -442,11 +489,11 @@ class ConjunctionExpression(
     rhs: Union[ComparisonExpression, 'ConjunctionExpression'],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `lhs` | `Union[ComparisonExpression, 'ConjunctionExpression']` |
-| `op` | `ConjunctionOps` |
-| `rhs` | `Union[ComparisonExpression, 'ConjunctionExpression']` |
+| Parameter | Type | Description |
+|-|-|-|
+| `lhs` | `Union[ComparisonExpression, 'ConjunctionExpression']` | |
+| `op` | `ConjunctionOps` | |
+| `rhs` | `Union[ComparisonExpression, 'ConjunctionExpression']` | |
 
 ### Methods
 
@@ -467,6 +514,46 @@ def eval()
 | `lhs` |  |  |
 | `op` |  |  |
 | `rhs` |  |  |
+
+## flytekit.core.promise.ConjunctionOps
+
+Create a collection of name/value pairs.
+
+Example enumeration:
+
+>>> class Color(Enum):
+...     RED = 1
+...     BLUE = 2
+...     GREEN = 3
+
+Access them by:
+
+- attribute access:
+
+  >>> Color.RED
+  <Color.RED: 1>
+
+- value lookup:
+
+  >>> Color(1)
+  <Color.RED: 1>
+
+- name lookup:
+
+  >>> Color['RED']
+  <Color.RED: 1>
+
+Enumerations can be iterated over, and know how many members they have:
+
+>>> len(Color)
+3
+
+>>> list(Color)
+[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]
+
+Methods can be added to enumerations, and members can have their own
+attributes -- see the documentation for details.
+
 
 ## flytekit.core.promise.HasFlyteInterface
 
@@ -503,16 +590,8 @@ Protocol classes can be generic, they are defined as::
 
 
 ```python
-class HasFlyteInterface(
-    args,
-    kwargs,
-)
+protocol HasFlyteInterface()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 ### Methods
 
 | Method | Description |
@@ -567,16 +646,8 @@ Protocol classes can be generic, they are defined as::
 
 
 ```python
-class LocallyExecutable(
-    args,
-    kwargs,
-)
+protocol LocallyExecutable()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 ### Methods
 
 | Method | Description |
@@ -593,10 +664,10 @@ def local_execute(
     kwargs,
 ) -> Union[Tuple[Promise], Promise, VoidPromise, None]
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -612,11 +683,11 @@ class NodeOutput(
     attr_path: Optional[List[Union[str, int]]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `node` | `Node` |
-| `var` | `str` |
-| `attr_path` | `Optional[List[Union[str, int]]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `node` | `Node` | |
+| `var` | `str` | The name of the variable this NodeOutput references |
+| `attr_path` | `Optional[List[Union[str, int]]]` | |
 
 ### Methods
 
@@ -627,7 +698,6 @@ class NodeOutput(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 | [`with_attr()`](#with_attr) |  |
 
 
@@ -641,11 +711,11 @@ def deepcopy()
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: OutputReference
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -668,14 +738,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.types.OutputReference
 
 
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 #### with_attr()
 
 ```python
@@ -683,9 +745,9 @@ def with_attr(
     key,
 ) -> NodeOutput
 ```
-| Parameter | Type |
-|-|-|
-| `key` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `key` |  | |
 
 ### Properties
 
@@ -732,11 +794,11 @@ class Promise(
     type: typing.Optional[_type_models.LiteralType],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `var` | `str` |
-| `val` | `Union[NodeOutput, _literals_models.Literal]` |
-| `type` | `typing.Optional[_type_models.LiteralType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `var` | `str` | |
+| `val` | `Union[NodeOutput, _literals_models.Literal]` | |
+| `type` | `typing.Optional[_type_models.LiteralType]` | |
 
 ### Methods
 
@@ -769,9 +831,9 @@ def is_(
     v: bool,
 ) -> ComparisonExpression
 ```
-| Parameter | Type |
-|-|-|
-| `v` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `v` | `bool` | |
 
 #### is_false()
 
@@ -803,31 +865,27 @@ def with_overrides(
     task_config: Optional[Any],
     container_image: Optional[str],
     accelerator: Optional[BaseAccelerator],
-    cache: Optional[bool],
-    cache_version: Optional[str],
-    cache_serialize: Optional[bool],
+    cache: Optional[Union[bool, Cache]],
     args,
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `node_name` | `Optional[str]` |
-| `aliases` | `Optional[Dict[str, str]]` |
-| `requests` | `Optional[Resources]` |
-| `limits` | `Optional[Resources]` |
-| `timeout` | `Optional[Union[int, datetime.timedelta, object]]` |
-| `retries` | `Optional[int]` |
-| `interruptible` | `Optional[bool]` |
-| `name` | `Optional[str]` |
-| `task_config` | `Optional[Any]` |
-| `container_image` | `Optional[str]` |
-| `accelerator` | `Optional[BaseAccelerator]` |
-| `cache` | `Optional[bool]` |
-| `cache_version` | `Optional[str]` |
-| `cache_serialize` | `Optional[bool]` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `node_name` | `Optional[str]` | |
+| `aliases` | `Optional[Dict[str, str]]` | |
+| `requests` | `Optional[Resources]` | |
+| `limits` | `Optional[Resources]` | |
+| `timeout` | `Optional[Union[int, datetime.timedelta, object]]` | |
+| `retries` | `Optional[int]` | |
+| `interruptible` | `Optional[bool]` | |
+| `name` | `Optional[str]` | |
+| `task_config` | `Optional[Any]` | |
+| `container_image` | `Optional[str]` | |
+| `accelerator` | `Optional[BaseAccelerator]` | |
+| `cache` | `Optional[Union[bool, Cache]]` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### with_var()
 
@@ -836,9 +894,9 @@ def with_var(
     new_var: str,
 ) -> Promise
 ```
-| Parameter | Type |
-|-|-|
-| `new_var` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `new_var` | `str` | |
 
 ### Properties
 
@@ -900,16 +958,8 @@ Protocol classes can be generic, they are defined as::
 
 
 ```python
-class SupportsNodeCreation(
-    args,
-    kwargs,
-)
+protocol SupportsNodeCreation()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 ### Methods
 
 | Method | Description |
@@ -941,10 +991,10 @@ class VoidPromise(
     ref: Optional[NodeOutput],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `task_name` | `str` |
-| `ref` | `Optional[NodeOutput]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_name` | `str` | |
+| `ref` | `Optional[NodeOutput]` | |
 
 ### Methods
 
@@ -966,10 +1016,10 @@ This is a placeholder and should do nothing. It is only here to enable local exe
 where a task returns nothing.
 
 
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### with_overrides()
 
@@ -979,10 +1029,10 @@ def with_overrides(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ### Properties
 

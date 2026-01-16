@@ -1,6 +1,6 @@
 ---
 title: union.artifacts
-version: 0.1.191
+version: 0.1.198
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -55,26 +55,26 @@ class Artifact(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | `*args` |
-| `project` | `Optional[str]` |
-| `domain` | `Optional[str]` |
-| `name` | `Optional[str]` |
-| `version` | `Optional[str]` |
-| `time_partitioned` | `bool` |
-| `time_partition` | `Optional[TimePartition]` |
-| `time_partition_granularity` | `Optional[Granularity]` |
-| `partition_keys` | `Optional[typing.List[str]]` |
-| `partitions` | `Optional[Union[Partitions, typing.Dict[str, str]]]` |
-| `python_val` | `Optional[typing.Any]` |
-| `python_type` | `Optional[typing.Type]` |
-| `literal` | `Optional[Literal]` |
-| `literal_type` | `Optional[LiteralType]` |
-| `short_description` | `Optional[str]` |
-| `source` | `Optional[artifacts_pb2.ArtifactSource]` |
-| `card` | `Optional[Card]` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `project` | `Optional[str]` | Should not be directly user provided, the project/domain will come from the project/domain of the execution that produced the output. These values will be filled in automatically when retrieving however. |
+| `domain` | `Optional[str]` | See above. |
+| `name` | `Optional[str]` | The name of the Artifact. This should be user provided. |
+| `version` | `Optional[str]` | Version of the Artifact, typically the execution ID, plus some additional entropy. Not user provided. |
+| `time_partitioned` | `bool` | Whether or not this Artifact will have a time partition. |
+| `time_partition` | `Optional[TimePartition]` | If you want to manually pass in the full TimePartition object |
+| `time_partition_granularity` | `Optional[Granularity]` | If you don't want to manually pass in the full TimePartition object, but want to control the granularity when one is automatically created for you. Note that consistency checking is limited while in alpha. |
+| `partition_keys` | `Optional[typing.List[str]]` | This is a list of keys that will be used to partition the Artifact. These are not the values. Values are set via a () on the artifact and will end up in the partition_values field. |
+| `partitions` | `Optional[Union[Partitions, typing.Dict[str, str]]]` | This is a dictionary of partition keys to values. |
+| `python_val` | `Optional[typing.Any]` | The Python value. |
+| `python_type` | `Optional[typing.Type]` | The Python type. |
+| `literal` | `Optional[Literal]` | |
+| `literal_type` | `Optional[LiteralType]` | |
+| `short_description` | `Optional[str]` | |
+| `source` | `Optional[artifacts_pb2.ArtifactSource]` | |
+| `card` | `Optional[Card]` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -126,12 +126,12 @@ You can mix and match with the input syntax as well.
         return RideCountData.create_from(df, time_partition=datetime.datetime.now())
 
 
-| Parameter | Type |
-|-|-|
-| `o` | `O` |
-| `card` | `Optional[SerializableToString]` |
-| `args` | `*args` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `o` | `O` | |
+| `card` | `Optional[SerializableToString]` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### embed_as_query()
 
@@ -147,12 +147,12 @@ This should only be called in the context of a Trigger. The type of query this r
 query() function. This type of query is used to reference the triggering artifact, rather than running a query.
 
 
-| Parameter | Type |
-|-|-|
-| `partition` | `Optional[str]` |
-| `bind_to_time_partition` | `Optional[bool]` |
-| `expr` | `Optional[str]` |
-| `op` | `Optional[Op]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `partition` | `Optional[str]` | Can embed a time partition |
+| `bind_to_time_partition` | `Optional[bool]` | Set to true if you want to bind to a time partition |
+| `expr` | `Optional[str]` | Only valid if there's a time partition. |
+| `op` | `Optional[Op]` | If expr is given, then op is what to do with it. |
 
 #### from_flyte_idl()
 
@@ -164,9 +164,9 @@ def from_flyte_idl(
 Converts the IDL representation to this object.
 
 
-| Parameter | Type |
-|-|-|
-| `pb2` | `artifacts_pb2.Artifact` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `artifacts_pb2.Artifact` | |
 
 #### get()
 
@@ -180,9 +180,9 @@ execution, leveraging the LiteralsResolver (and underneath that the TypeEngine) 
 Python value.
 
 
-| Parameter | Type |
-|-|-|
-| `as_type` | `Optional[typing.Type]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `as_type` | `Optional[typing.Type]` | |
 
 #### initialize()
 
@@ -212,14 +212,14 @@ Set by remote
 - project, domain
 
 
-| Parameter | Type |
-|-|-|
-| `python_val` | `typing.Any` |
-| `python_type` | `typing.Type` |
-| `name` | `Optional[str]` |
-| `literal_type` | `Optional[LiteralType]` |
-| `version` | `Optional[str]` |
-| `tags` | `Optional[typing.List[str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_val` | `typing.Any` | |
+| `python_type` | `typing.Type` | |
+| `name` | `Optional[str]` | |
+| `literal_type` | `Optional[LiteralType]` | |
+| `version` | `Optional[str]` | |
+| `tags` | `Optional[typing.List[str]]` | |
 
 #### metadata()
 
@@ -237,13 +237,13 @@ def query(
     kwargs,
 ) -> ArtifactQuery
 ```
-| Parameter | Type |
-|-|-|
-| `project` | `Optional[str]` |
-| `domain` | `Optional[str]` |
-| `time_partition` | `Optional[Union[datetime.datetime, TimePartition, art_id.InputBindingData]]` |
-| `partitions` | `Optional[Union[typing.Dict[str, str], Partitions]]` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `Optional[str]` | |
+| `domain` | `Optional[str]` | |
+| `time_partition` | `Optional[Union[datetime.datetime, TimePartition, art_id.InputBindingData]]` | |
+| `partitions` | `Optional[Union[typing.Dict[str, str], Partitions]]` | |
+| `kwargs` | `**kwargs` | |
 
 #### set_resolver()
 
@@ -252,9 +252,9 @@ def set_resolver(
     resolver: LiteralsResolver,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `resolver` | `LiteralsResolver` |
+| Parameter | Type | Description |
+|-|-|-|
+| `resolver` | `LiteralsResolver` | |
 
 #### set_source()
 
@@ -263,9 +263,9 @@ def set_source(
     source: artifacts_pb2.ArtifactSource,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `source` | `artifacts_pb2.ArtifactSource` |
+| Parameter | Type | Description |
+|-|-|-|
+| `source` | `artifacts_pb2.ArtifactSource` | |
 
 #### to_create_request()
 
@@ -274,9 +274,9 @@ def to_create_request(
     a: Artifact,
 ) -> artifacts_pb2.CreateArtifactRequest
 ```
-| Parameter | Type |
-|-|-|
-| `a` | `Artifact` |
+| Parameter | Type | Description |
+|-|-|-|
+| `a` | `Artifact` | |
 
 #### to_id_idl()
 
@@ -304,10 +304,10 @@ class DataCard(
     card_type: CardType,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `text` | `str` |
-| `card_type` | `CardType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `text` | `str` | |
+| `card_type` | `CardType` | |
 
 ### Methods
 
@@ -324,9 +324,9 @@ def from_obj(
     card_obj: typing.Any,
 ) -> Card
 ```
-| Parameter | Type |
-|-|-|
-| `card_obj` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `card_obj` | `typing.Any` | |
 
 #### serialize_to_string()
 
@@ -336,10 +336,10 @@ def serialize_to_string(
     variable_name: str,
 ) -> typing.Tuple[str, str]
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `variable_name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `variable_name` | `str` | |
 
 ## union.artifacts.ModelCard
 
@@ -349,10 +349,10 @@ class ModelCard(
     card_type: CardType,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `text` | `str` |
-| `card_type` | `CardType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `text` | `str` | |
+| `card_type` | `CardType` | |
 
 ### Methods
 
@@ -369,9 +369,9 @@ def from_obj(
     card_obj: typing.Any,
 ) -> Card
 ```
-| Parameter | Type |
-|-|-|
-| `card_obj` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `card_obj` | `typing.Any` | |
 
 #### serialize_to_string()
 
@@ -381,10 +381,10 @@ def serialize_to_string(
     variable_name: str,
 ) -> typing.Tuple[str, str]
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `variable_name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `variable_name` | `str` | |
 
 ## union.artifacts.OnArtifact
 
@@ -398,10 +398,10 @@ class OnArtifact(
     inputs: typing.Optional[typing.Dict[str, typing.Union[typing.Any, flytekit.core.artifact.Artifact, flytekit.core.artifact.ArtifactQuery]]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `trigger_on` | `typing.Union[flytekit.core.artifact.Artifact, flytekit.core.artifact.ArtifactQuery]` |
-| `inputs` | `typing.Optional[typing.Dict[str, typing.Union[typing.Any, flytekit.core.artifact.Artifact, flytekit.core.artifact.ArtifactQuery]]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `trigger_on` | `typing.Union[flytekit.core.artifact.Artifact, flytekit.core.artifact.ArtifactQuery]` | |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Union[typing.Any, flytekit.core.artifact.Artifact, flytekit.core.artifact.ArtifactQuery]]]` | |
 
 ### Methods
 
@@ -426,10 +426,10 @@ chosen Parameter as the method by which things like artifact queries are passed 
 that, and converts constants to Literals.
 
 
-| Parameter | Type |
-|-|-|
-| `input_python_interface` | `typing.Dict[str, typing.Type]` |
-| `input_typed_interface` | `typing.Dict[str, flytekit.models.interface.Variable]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `input_python_interface` | `typing.Dict[str, typing.Type]` | |
+| `input_typed_interface` | `typing.Dict[str, flytekit.models.interface.Variable]` | |
 
 #### to_flyte_idl()
 
@@ -439,8 +439,8 @@ def to_flyte_idl(
     kwargs,
 ) -> flyteidl.artifacts.artifacts_pb2.Trigger
 ```
-| Parameter | Type |
-|-|-|
-| `args` | `*args` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 

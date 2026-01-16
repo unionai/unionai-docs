@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.metrics
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -33,9 +33,9 @@ def aggregate_reference_span(
     span,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `span` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `span` |  | |
 
 #### aggregate_spans()
 
@@ -44,9 +44,9 @@ def aggregate_spans(
     spans,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `spans` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `spans` |  | |
 
 #### print_span()
 
@@ -57,11 +57,11 @@ def print_span(
     identifier,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `span` |  |
-| `indent` |  |
-| `identifier` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `span` |  | |
+| `indent` |  | |
+| `identifier` |  | |
 
 ## flytekit.remote.metrics.FlyteExecutionSpan
 
@@ -70,9 +70,9 @@ class FlyteExecutionSpan(
     span: flyteidl.core.metrics_pb2.Span,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `span` | `flyteidl.core.metrics_pb2.Span` |
+| Parameter | Type | Description |
+|-|-|-|
+| `span` | `flyteidl.core.metrics_pb2.Span` | |
 
 ### Methods
 
@@ -84,7 +84,6 @@ class FlyteExecutionSpan(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### dump()
@@ -104,9 +103,9 @@ def from_flyte_idl(
     pb,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb` |  | |
 
 #### serialize_to_string()
 
@@ -126,14 +125,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |

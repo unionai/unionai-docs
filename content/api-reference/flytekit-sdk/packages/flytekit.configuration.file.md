@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration.file
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -45,9 +45,9 @@ def bool_transformer(
     config_val: typing.Any,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `config_val` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config_val` | `typing.Any` | |
 
 #### comma_list_transformer()
 
@@ -56,9 +56,9 @@ def comma_list_transformer(
     config_val: typing.Any,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `config_val` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config_val` | `typing.Any` | |
 
 #### int_transformer()
 
@@ -67,9 +67,9 @@ def int_transformer(
     config_val: typing.Any,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `config_val` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config_val` | `typing.Any` | |
 
 #### read_file_if_exists()
 
@@ -77,16 +77,16 @@ def int_transformer(
 def read_file_if_exists(
     filename: typing.Optional[str],
     encoding,
-) -> n: The contents of the file as a string or None.
+) -> typing.Optional[str]
 ```
 Reads the contents of the file if passed a path. Otherwise, returns None.
 
 
 
-| Parameter | Type |
-|-|-|
-| `filename` | `typing.Optional[str]` |
-| `encoding` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `filename` | `typing.Optional[str]` | The file path to load |
+| `encoding` |  | The encoding to use when reading the file. :return: The contents of the file as a string or None. |
 
 #### set_if_exists()
 
@@ -104,11 +104,11 @@ and return the updated dictionary.
 > The input dictionary ``d`` will be mutated.
 
 
-| Parameter | Type |
-|-|-|
-| `d` | `dict` |
-| `k` | `str` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `d` | `dict` | |
+| `k` | `str` | |
+| `v` | `typing.Any` | |
 
 ## flytekit.configuration.file.ConfigEntry
 
@@ -124,11 +124,11 @@ class ConfigEntry(
     transform: typing.Optional[typing.Callable[[str], typing.Any]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `legacy` | `LegacyConfigEntry` |
-| `yaml_entry` | `typing.Optional[YamlConfigEntry]` |
-| `transform` | `typing.Optional[typing.Callable[[str], typing.Any]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `legacy` | `LegacyConfigEntry` | |
+| `yaml_entry` | `typing.Optional[YamlConfigEntry]` | |
+| `transform` | `typing.Optional[typing.Callable[[str], typing.Any]]` | |
 
 ### Methods
 
@@ -142,7 +142,7 @@ class ConfigEntry(
 ```python
 def read(
     cfg: typing.Optional[ConfigFile],
-) -> n:
+) -> typing.Optional[typing.Any]
 ```
 Reads the config Entry from the various sources in the following order,
 #. First try to read from the relevant environment variable,
@@ -153,9 +153,9 @@ The constructor for ConfigFile currently does not allow specification of both th
 
 
 
-| Parameter | Type |
-|-|-|
-| `cfg` | `typing.Optional[ConfigFile]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `typing.Optional[ConfigFile]` | :return: |
 
 ## flytekit.configuration.file.ConfigFile
 
@@ -167,9 +167,9 @@ class ConfigFile(
 Load the config from this location
 
 
-| Parameter | Type |
-|-|-|
-| `location` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `location` | `str` | |
 
 ### Methods
 
@@ -185,9 +185,9 @@ def get(
     c: typing.Union[LegacyConfigEntry, YamlConfigEntry],
 ) -> typing.Any
 ```
-| Parameter | Type |
-|-|-|
-| `c` | `typing.Union[LegacyConfigEntry, YamlConfigEntry]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `c` | `typing.Union[LegacyConfigEntry, YamlConfigEntry]` | |
 
 ### Properties
 
@@ -208,11 +208,11 @@ class LegacyConfigEntry(
     type_: typing.Type,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `section` | `str` |
-| `option` | `str` |
-| `type_` | `typing.Type` |
+| Parameter | Type | Description |
+|-|-|-|
+| `section` | `str` | |
+| `option` | `str` | |
+| `type_` | `typing.Type` | |
 
 ### Methods
 
@@ -233,16 +233,16 @@ def get_env_name()
 ```python
 def read_from_env(
     transform: typing.Optional[typing.Callable],
-) -> n:
+) -> typing.Optional[typing.Any]
 ```
 Reads the config entry from environment variable, the structure of the env var is current
 ``FLYTE_{SECTION}_{OPTION}`` all upper cased. We will change this in the future.
 :return:
 
 
-| Parameter | Type |
-|-|-|
-| `transform` | `typing.Optional[typing.Callable]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `transform` | `typing.Optional[typing.Callable]` | |
 
 #### read_from_file()
 
@@ -252,10 +252,10 @@ def read_from_file(
     transform: typing.Optional[typing.Callable],
 ) -> typing.Optional[typing.Any]
 ```
-| Parameter | Type |
-|-|-|
-| `cfg` | `ConfigFile` |
-| `transform` | `typing.Optional[typing.Callable]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `ConfigFile` | |
+| `transform` | `typing.Optional[typing.Callable]` | |
 
 ## flytekit.configuration.file.YamlConfigEntry
 
@@ -268,10 +268,10 @@ class YamlConfigEntry(
     config_value_type: typing.Type,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `switch` | `str` |
-| `config_value_type` | `typing.Type` |
+| Parameter | Type | Description |
+|-|-|-|
+| `switch` | `str` | |
+| `config_value_type` | `typing.Type` | |
 
 ### Methods
 
@@ -288,8 +288,8 @@ def read_from_file(
     transform: typing.Optional[typing.Callable],
 ) -> typing.Optional[typing.Any]
 ```
-| Parameter | Type |
-|-|-|
-| `cfg` | `ConfigFile` |
-| `transform` | `typing.Optional[typing.Callable]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `ConfigFile` | |
+| `transform` | `typing.Optional[typing.Callable]` | |
 

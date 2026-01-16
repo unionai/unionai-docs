@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.tracked_abc
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -42,8 +42,8 @@ Register a virtual subclass of an ABC.
 Returns the subclass, to allow usage as a class decorator.
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `subclass` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `subclass` |  | |
 

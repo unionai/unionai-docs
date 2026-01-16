@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.workflow_closure
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -23,10 +23,10 @@ class WorkflowClosure(
     tasks,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `workflow` |  |
-| `tasks` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `workflow` |  | |
+| `tasks` |  | |
 
 ### Methods
 
@@ -36,7 +36,6 @@ class WorkflowClosure(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -44,11 +43,11 @@ class WorkflowClosure(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: WorkflowClosure
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -69,14 +68,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.workflow_closure_pb2.WorkflowClosure
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

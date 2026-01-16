@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.compiler
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -25,9 +25,9 @@ class CompiledTask(
     template,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `template` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `template` |  | |
 
 ### Methods
 
@@ -37,7 +37,6 @@ class CompiledTask(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -45,11 +44,11 @@ class CompiledTask(
 ```python
 def from_flyte_idl(
     p,
-) -> e: CompiledTask
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
 
 #### serialize_to_string()
 
@@ -72,14 +71,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.compiler_pb2.CompiledTask
 
 
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -96,10 +87,10 @@ class CompiledWorkflow(
     connections,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `template` |  |
-| `connections` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `template` |  | |
+| `connections` |  | |
 
 ### Methods
 
@@ -109,7 +100,6 @@ class CompiledWorkflow(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -117,11 +107,11 @@ class CompiledWorkflow(
 ```python
 def from_flyte_idl(
     p,
-) -> e: CompiledWorkflow
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
 
 #### serialize_to_string()
 
@@ -144,14 +134,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.compiler_pb2.CompiledWorkflow
 
 
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -171,11 +153,11 @@ class CompiledWorkflowClosure(
     tasks,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `primary` |  |
-| `sub_workflows` |  |
-| `tasks` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `primary` |  | |
+| `sub_workflows` |  | |
+| `tasks` |  | |
 
 ### Methods
 
@@ -185,7 +167,6 @@ class CompiledWorkflowClosure(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -193,11 +174,11 @@ class CompiledWorkflowClosure(
 ```python
 def from_flyte_idl(
     p,
-) -> e: CompiledWorkflowClosure
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
 
 #### serialize_to_string()
 
@@ -220,14 +201,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.compiler_pb2.CompiledWorkflowClosure
 
 
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -248,10 +221,10 @@ class ConnectionSet(
     downstream,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `upstream` |  |
-| `downstream` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `upstream` |  | |
+| `downstream` |  | |
 
 ### Methods
 
@@ -261,7 +234,6 @@ class ConnectionSet(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -269,11 +241,11 @@ class ConnectionSet(
 ```python
 def from_flyte_idl(
     p,
-) -> e: ConnectionSet
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
 
 #### serialize_to_string()
 
@@ -294,14 +266,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.compiler_pb2.ConnectionSet
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

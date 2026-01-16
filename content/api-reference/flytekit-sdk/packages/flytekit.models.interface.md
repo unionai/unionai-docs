@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.interface
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -34,13 +34,13 @@ Declares an input parameter.  A parameter is used as input to a launch plan and 
     the special ability to have a default value or mark itself as required.
 
 
-| Parameter | Type |
-|-|-|
-| `var` |  |
-| `default` |  |
-| `required` |  |
-| `artifact_query` | `typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactQuery]` |
-| `artifact_id` | `typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactID]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `var` |  | |
+| `default` |  | |
+| `required` |  | |
+| `artifact_query` | `typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactQuery]` | Specify this to bind to a query instead of a constant. |
+| `artifact_id` | `typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactID]` | When you want to bind to a known artifact pointer. |
 
 ### Methods
 
@@ -50,7 +50,6 @@ Declares an input parameter.  A parameter is used as input to a launch plan and 
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -58,11 +57,11 @@ Declares an input parameter.  A parameter is used as input to a launch plan and 
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: Parameter
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -83,14 +82,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.interface_pb2.Parameter
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -122,9 +113,9 @@ class ParameterMap(
 A map of Parameters
 
 
-| Parameter | Type |
-|-|-|
-| `parameters` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `parameters` |  | |
 
 ### Methods
 
@@ -134,7 +125,6 @@ A map of Parameters
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -142,11 +132,11 @@ A map of Parameters
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: ParameterMap
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -167,14 +157,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.interface_pb2.ParameterMap
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -198,10 +180,10 @@ outputs are represented directly as Python dicts, rather than going through the 
 
 
 
-| Parameter | Type |
-|-|-|
-| `inputs` |  |
-| `outputs` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `inputs` |  | |
+| `outputs` |  | |
 
 ### Methods
 
@@ -212,7 +194,6 @@ outputs are represented directly as Python dicts, rather than going through the 
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 | [`transform_interface_to_list()`](#transform_interface_to_list) | Takes a single task interface and interpolates it to an array interface - to allow performing distributed. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -222,9 +203,9 @@ def from_flyte_idl(
     proto: flyteidl.core.interface_pb2.TypedInterface,
 ) -> TypedInterface
 ```
-| Parameter | Type |
-|-|-|
-| `proto` | `flyteidl.core.interface_pb2.TypedInterface` |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` | `flyteidl.core.interface_pb2.TypedInterface` | |
 
 #### serialize_to_string()
 
@@ -256,18 +237,10 @@ Takes a single task interface and interpolates it to an array interface - to all
 python map like functions
 
 
-| Parameter | Type |
-|-|-|
-| `bound_inputs` | `typing.Set[str]` |
-| `excluded_inputs` | `typing.Set[str]` |
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
+| Parameter | Type | Description |
+|-|-|-|
+| `bound_inputs` | `typing.Set[str]` | fixed inputs that should not be updated to a list and will be maintained as is |
+| `excluded_inputs` | `typing.Set[str]` | inputs that should be excluded from the new interface |
 
 ### Properties
 
@@ -287,12 +260,12 @@ class Variable(
     artifact_tag: typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactTag],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `type` |  |
-| `description` |  |
-| `artifact_partial_id` | `typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactID]` |
-| `artifact_tag` | `typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactTag]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `type` |  | |
+| `description` |  | |
+| `artifact_partial_id` | `typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactID]` | Optional Artifact object to control how the artifact is created when the task runs. |
+| `artifact_tag` | `typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactTag]` | Optional ArtifactTag object to automatically tag things. |
 
 ### Methods
 
@@ -303,7 +276,6 @@ class Variable(
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
 | [`to_flyte_idl_list()`](#to_flyte_idl_list) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -313,9 +285,9 @@ def from_flyte_idl(
     variable_proto,
 ) -> flyteidl.core.interface_pb2.Variable
 ```
-| Parameter | Type |
-|-|-|
-| `variable_proto` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `variable_proto` |  | |
 
 #### serialize_to_string()
 
@@ -346,14 +318,6 @@ def to_flyte_idl_list()
 :rtype: flyteidl.core.interface_pb2.Variable
 
 
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -379,9 +343,9 @@ A map of Variables
 
 
 
-| Parameter | Type |
-|-|-|
-| `variables` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `variables` |  | |
 
 ### Methods
 
@@ -391,7 +355,6 @@ A map of Variables
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: dict[Text, Variable]. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -399,11 +362,11 @@ A map of Variables
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: VariableMap
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -424,14 +387,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: dict[Text, Variable]
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

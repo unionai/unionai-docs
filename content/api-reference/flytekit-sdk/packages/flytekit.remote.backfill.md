@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.backfill
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -29,7 +29,7 @@ def create_backfill_workflow(
     per_node_timeout: datetime.timedelta,
     per_node_retries: int,
     failure_policy: typing.Optional[flytekit.core.workflow.WorkflowFailurePolicy],
-) -> n: WorkflowBase, datetime datetime -> New generated workflow, datetime for first instance of backfill, datetime for last instance of backfill
+) -> typing.Tuple[flytekit.core.workflow.WorkflowBase, datetime.datetime, datetime.datetime]
 ```
 Generates a new imperative workflow for the launchplan that can be used to backfill the given launchplan.
 This can only be used to generate  backfilling workflow only for schedulable launchplans
@@ -56,13 +56,13 @@ wf = create_backfill_workflow(start_date, start_date, for_lp=lp) # start and end
 
 
 
-| Parameter | Type |
-|-|-|
-| `start_date` | `datetime.datetime` |
-| `end_date` | `datetime.datetime` |
-| `for_lp` | `typing.Union[flytekit.core.launch_plan.LaunchPlan, flytekit.remote.entities.FlyteLaunchPlan]` |
-| `parallel` | `bool` |
-| `per_node_timeout` | `datetime.timedelta` |
-| `per_node_retries` | `int` |
-| `failure_policy` | `typing.Optional[flytekit.core.workflow.WorkflowFailurePolicy]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `start_date` | `datetime.datetime` | datetime generate a backfill starting at this datetime (exclusive) |
+| `end_date` | `datetime.datetime` | datetime generate a backfill ending at this datetime (inclusive) |
+| `for_lp` | `typing.Union[flytekit.core.launch_plan.LaunchPlan, flytekit.remote.entities.FlyteLaunchPlan]` | typing.Union[LaunchPlan, FlyteLaunchPlan] the backfill is generated for this launchplan |
+| `parallel` | `bool` | if the backfill should be run in parallel. False (default) will run each bacfill sequentially |
+| `per_node_timeout` | `datetime.timedelta` | timedelta Timeout to use per node |
+| `per_node_retries` | `int` | int Retries to user per node |
+| `failure_policy` | `typing.Optional[flytekit.core.workflow.WorkflowFailurePolicy]` | WorkflowFailurePolicy Failure policy to use for the backfill workflow :return: WorkflowBase, datetime datetime -&gt; New generated workflow, datetime for first instance of backfill, datetime for last instance of backfill |
 

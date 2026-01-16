@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.node
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -36,9 +36,9 @@ This function will raise an exception if any of the resources have promises in t
 support promises in resources / runtime overriding of resources through input values.
 
 
-| Parameter | Type |
-|-|-|
-| `resources` | `_resources_model` |
+| Parameter | Type | Description |
+|-|-|-|
+| `resources` | `_resources_model` | |
 
 #### assert_not_promise()
 
@@ -52,10 +52,10 @@ This function will raise an exception if the value is a promise. This should be 
 accidentally use a promise in a place where we don't support it.
 
 
-| Parameter | Type |
-|-|-|
-| `v` | `Any` |
-| `location` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `v` | `Any` | |
+| `location` | `str` | |
 
 ## flytekit.core.node.Node
 
@@ -72,13 +72,13 @@ class Node(
     flyte_entity: Any,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` | `str` |
-| `metadata` | `_workflow_model.NodeMetadata` |
-| `bindings` | `List[_literal_models.Binding]` |
-| `upstream_nodes` | `List[Node]` |
-| `flyte_entity` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` | `str` | |
+| `metadata` | `_workflow_model.NodeMetadata` | |
+| `bindings` | `List[_literal_models.Binding]` | |
+| `upstream_nodes` | `List[Node]` | |
+| `flyte_entity` | `Any` | |
 
 ### Methods
 
@@ -102,9 +102,9 @@ other direction is not implemented to further avoid confusion. Right shift was p
 because that's what most users are familiar with.
 
 
-| Parameter | Type |
-|-|-|
-| `other` | `Node` |
+| Parameter | Type | Description |
+|-|-|-|
+| `other` | `Node` | |
 
 #### with_overrides()
 
@@ -121,9 +121,7 @@ def with_overrides(
     task_config: Optional[Any],
     container_image: Optional[str],
     accelerator: Optional[BaseAccelerator],
-    cache: Optional[bool],
-    cache_version: Optional[str],
-    cache_serialize: Optional[bool],
+    cache: Optional[Union[bool, Cache]],
     shared_memory: Optional[Union[L[True], str]],
     pod_template: Optional[PodTemplate],
     resources: Optional[Resources],
@@ -131,27 +129,25 @@ def with_overrides(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `node_name` | `Optional[str]` |
-| `aliases` | `Optional[Dict[str, str]]` |
-| `requests` | `Optional[Resources]` |
-| `limits` | `Optional[Resources]` |
-| `timeout` | `Optional[Union[int, datetime.timedelta, object]]` |
-| `retries` | `Optional[int]` |
-| `interruptible` | `Optional[bool]` |
-| `name` | `Optional[str]` |
-| `task_config` | `Optional[Any]` |
-| `container_image` | `Optional[str]` |
-| `accelerator` | `Optional[BaseAccelerator]` |
-| `cache` | `Optional[bool]` |
-| `cache_version` | `Optional[str]` |
-| `cache_serialize` | `Optional[bool]` |
-| `shared_memory` | `Optional[Union[L[True], str]]` |
-| `pod_template` | `Optional[PodTemplate]` |
-| `resources` | `Optional[Resources]` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `node_name` | `Optional[str]` | |
+| `aliases` | `Optional[Dict[str, str]]` | |
+| `requests` | `Optional[Resources]` | |
+| `limits` | `Optional[Resources]` | |
+| `timeout` | `Optional[Union[int, datetime.timedelta, object]]` | |
+| `retries` | `Optional[int]` | |
+| `interruptible` | `Optional[bool]` | |
+| `name` | `Optional[str]` | |
+| `task_config` | `Optional[Any]` | |
+| `container_image` | `Optional[str]` | |
+| `accelerator` | `Optional[BaseAccelerator]` | |
+| `cache` | `Optional[Union[bool, Cache]]` | |
+| `shared_memory` | `Optional[Union[L[True], str]]` | |
+| `pod_template` | `Optional[PodTemplate]` | |
+| `resources` | `Optional[Resources]` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ### Properties
 

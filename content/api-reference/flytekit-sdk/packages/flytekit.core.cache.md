@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.cache
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,8 +14,13 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`Cache`](.././flytekit.core.cache#flytekitcorecachecache) | Cache configuration for a task. |
-| [`CachePolicy`](.././flytekit.core.cache#flytekitcorecachecachepolicy) | Base class for protocol classes. |
 | [`VersionParameters`](.././flytekit.core.cache#flytekitcorecacheversionparameters) | Parameters used for version hash generation. |
+
+### Protocols
+
+| Protocol | Description |
+|-|-|
+| [`CachePolicy`](.././flytekit.core.cache#flytekitcorecachecachepolicy) | Base class for protocol classes. |
 
 ### Variables
 
@@ -39,13 +44,13 @@ class Cache(
     policies: typing.Union[typing.List[flytekit.core.cache.CachePolicy], flytekit.core.cache.CachePolicy, NoneType],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `version` | `typing.Optional[str]` |
-| `serialize` | `bool` |
-| `ignored_inputs` | `typing.Union[typing.Tuple[str, ...], str]` |
-| `salt` | `str` |
-| `policies` | `typing.Union[typing.List[flytekit.core.cache.CachePolicy], flytekit.core.cache.CachePolicy, NoneType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `version` | `typing.Optional[str]` | |
+| `serialize` | `bool` | |
+| `ignored_inputs` | `typing.Union[typing.Tuple[str, ...], str]` | |
+| `salt` | `str` | |
+| `policies` | `typing.Union[typing.List[flytekit.core.cache.CachePolicy], flytekit.core.cache.CachePolicy, NoneType]` | |
 
 ### Methods
 
@@ -67,9 +72,9 @@ def get_version(
     params: flytekit.core.cache.VersionParameters,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `params` | `flytekit.core.cache.VersionParameters` |
+| Parameter | Type | Description |
+|-|-|-|
+| `params` | `flytekit.core.cache.VersionParameters` | |
 
 ## flytekit.core.cache.CachePolicy
 
@@ -106,16 +111,8 @@ Protocol classes can be generic, they are defined as::
 
 
 ```python
-class CachePolicy(
-    args,
-    kwargs,
-)
+protocol CachePolicy()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 ### Methods
 
 | Method | Description |
@@ -131,10 +128,10 @@ def get_version(
     params: flytekit.core.cache.VersionParameters,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `salt` | `str` |
-| `params` | `flytekit.core.cache.VersionParameters` |
+| Parameter | Type | Description |
+|-|-|-|
+| `salt` | `str` | |
+| `params` | `flytekit.core.cache.VersionParameters` | |
 
 ## flytekit.core.cache.VersionParameters
 
@@ -153,10 +150,10 @@ class VersionParameters(
     pod_template_name: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `func` | `typing.Callable[~P, ~FuncOut]` |
-| `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, NoneType]` |
-| `pod_template` | `typing.Optional[flytekit.core.pod_template.PodTemplate]` |
-| `pod_template_name` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `func` | `typing.Callable[~P, ~FuncOut]` | |
+| `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, NoneType]` | |
+| `pod_template` | `typing.Optional[flytekit.core.pod_template.PodTemplate]` | |
+| `pod_template_name` | `typing.Optional[str]` | |
 

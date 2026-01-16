@@ -1,0 +1,12 @@
+Metadata-Version: 2.4
+Name: unionai-docs-tools
+Version: 0.1.0
+Summary: Tools for building Union.ai documentation
+Requires-Python: >=3.8
+License-File: LICENSE
+Requires-Dist: toml>=0.10.2
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: isort; extra == "dev"
+Dynamic: license-file

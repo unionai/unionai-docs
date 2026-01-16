@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.named_entity
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -26,11 +26,11 @@ class NamedEntityIdentifier(
     name,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project` |  |
-| `domain` |  |
-| `name` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` |  | |
+| `domain` |  | |
+| `name` |  | |
 
 ### Methods
 
@@ -40,7 +40,6 @@ class NamedEntityIdentifier(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -48,11 +47,11 @@ class NamedEntityIdentifier(
 ```python
 def from_flyte_idl(
     p,
-) -> e: Identifier
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
 
 #### serialize_to_string()
 
@@ -75,14 +74,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.common_pb2.NamedEntityIdentifier
 
 
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -103,10 +94,10 @@ class NamedEntityMetadata(
     state,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `description` |  |
-| `state` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `description` |  | |
+| `state` |  | |
 
 ### Methods
 
@@ -116,7 +107,6 @@ class NamedEntityMetadata(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -124,11 +114,11 @@ class NamedEntityMetadata(
 ```python
 def from_flyte_idl(
     p,
-) -> e: Identifier
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
 
 #### serialize_to_string()
 
@@ -149,14 +139,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.common_pb2.NamedEntityMetadata
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -184,9 +166,9 @@ def verbose_string()
 ```python
 def enum_to_string(
     val,
-) -> e: Text
+)
 ```
-| Parameter | Type |
-|-|-|
-| `val` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `val` |  | |
 

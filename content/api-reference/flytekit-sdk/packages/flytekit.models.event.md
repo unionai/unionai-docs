@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.event
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -22,9 +22,9 @@ class TaskExecutionMetadata(
     external_resources,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `external_resources` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `external_resources` |  | |
 
 ### Methods
 
@@ -34,7 +34,6 @@ class TaskExecutionMetadata(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -42,11 +41,11 @@ class TaskExecutionMetadata(
 ```python
 def from_flyte_idl(
     proto,
-) -> e: TaskExecutionMetadata
+)
 ```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` |  | |
 
 #### serialize_to_string()
 
@@ -67,14 +66,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.event.TaskExecutionMetadata
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

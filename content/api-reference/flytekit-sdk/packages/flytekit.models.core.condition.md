@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.condition
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -31,10 +31,10 @@ Multiple expressions can be combined using a conjunction or a disjunction to res
 
 
 
-| Parameter | Type |
-|-|-|
-| `conjunction` |  |
-| `comparison` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `conjunction` |  | |
+| `comparison` |  | |
 
 ### Methods
 
@@ -44,7 +44,6 @@ Multiple expressions can be combined using a conjunction or a disjunction to res
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -54,9 +53,9 @@ def from_flyte_idl(
     pb2_object,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -77,14 +76,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.condition_pb2.BooleanExpression
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -113,11 +104,11 @@ Each expression results in a boolean result.
 
 
 
-| Parameter | Type |
-|-|-|
-| `operator` |  |
-| `left_value` |  |
-| `right_value` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `operator` |  | |
+| `left_value` |  | |
+| `right_value` |  | |
 
 ### Methods
 
@@ -127,7 +118,6 @@ Each expression results in a boolean result.
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -137,9 +127,9 @@ def from_flyte_idl(
     pb2_object,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -160,14 +150,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.condition_pb2.ComparisonExpression
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -197,11 +179,11 @@ class ConjunctionExpression(
 Defines a conjunction expression of two boolean expressions.
 
 
-| Parameter | Type |
-|-|-|
-| `operator` |  |
-| `left_expression` |  |
-| `right_expression` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `operator` |  | |
+| `left_expression` |  | |
+| `right_expression` |  | |
 
 ### Methods
 
@@ -211,7 +193,6 @@ Defines a conjunction expression of two boolean expressions.
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -221,9 +202,9 @@ def from_flyte_idl(
     pb2_object,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -244,14 +225,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.condition_pb2.ConjunctionExpression
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -281,11 +254,11 @@ class Operand(
 Defines an operand to a comparison expression.
 
 
-| Parameter | Type |
-|-|-|
-| `primitive` |  |
-| `var` |  |
-| `scalar` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `primitive` |  | |
+| `var` |  | |
+| `scalar` |  | |
 
 ### Methods
 
@@ -295,7 +268,6 @@ Defines an operand to a comparison expression.
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -305,9 +277,9 @@ def from_flyte_idl(
     pb2_object,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -328,14 +300,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.condition_pb2.Operand
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

@@ -253,7 +253,7 @@ You can do so by specifying these files in a .flyteignore file in the root of yo
 {{< markdown >}}
 
 {{< key ctl_name >}} supports inspecting execution by retrieving its details. For a deeper dive, refer to the
-[API reference](../../api-reference/flytectl-cli/_index) guide.
+[Reference](../../api-reference/flytectl-cli/_index) guide.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -261,7 +261,7 @@ You can do so by specifying these files in a .flyteignore file in the root of yo
 {{< markdown >}}
 
 {{< key ctl_name >}} supports inspecting execution by retrieving its details. For a deeper dive, refer to the
-[API reference](../../api-reference/uctl-cli/_index) guide.
+[Reference](../../api-reference/uctl-cli/_index) guide.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -451,5 +451,3 @@ In the case where workflows are registered on each commit in your build pipeline
 
 * **Container Image Specification** : When managing multiple images across tasks within a workflow, use the `--image` flag during registration to specify which image to use.
   This avoids hardcoding the image within the task definition, promoting reusability and flexibility in workflows.
-
-

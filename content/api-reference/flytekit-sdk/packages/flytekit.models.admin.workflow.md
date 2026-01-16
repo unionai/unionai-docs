@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.admin.workflow
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -23,12 +23,14 @@ layout: py_api
 class Workflow(
     id,
     closure,
+    short_description,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `closure` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `closure` |  | |
+| `short_description` |  | |
 
 ### Methods
 
@@ -38,7 +40,6 @@ class Workflow(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -46,11 +47,11 @@ class Workflow(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> n: Workflow
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -73,14 +74,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.workflow_pb2.Workflow
 
 
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -90,6 +83,8 @@ def verbose_string()
 | `id` |  | {{< multiline >}}:rtype: flytekit.models.core.identifier.Identifier
 {{< /multiline >}} |
 | `is_empty` |  |  |
+| `short_description` |  | {{< multiline >}}:rtype: str
+{{< /multiline >}} |
 
 ## flytekit.models.admin.workflow.WorkflowClosure
 
@@ -98,9 +93,9 @@ class WorkflowClosure(
     compiled_workflow,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `compiled_workflow` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `compiled_workflow` |  | |
 
 ### Methods
 
@@ -110,7 +105,6 @@ class WorkflowClosure(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -118,11 +112,11 @@ class WorkflowClosure(
 ```python
 def from_flyte_idl(
     p,
-) -> e: WorkflowClosure
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
 
 #### serialize_to_string()
 
@@ -145,14 +139,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.workflow_pb2.WorkflowClosure
 
 
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -173,11 +159,11 @@ class WorkflowSpec(
 This object fully encapsulates the specification of a workflow
 
 
-| Parameter | Type |
-|-|-|
-| `template` | `flytekit.models.core.workflow.WorkflowTemplate` |
-| `sub_workflows` | `typing.List[flytekit.models.core.workflow.WorkflowTemplate]` |
-| `docs` | `typing.Optional[flytekit.models.documentation.Documentation]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `template` | `flytekit.models.core.workflow.WorkflowTemplate` | |
+| `sub_workflows` | `typing.List[flytekit.models.core.workflow.WorkflowTemplate]` | |
+| `docs` | `typing.Optional[flytekit.models.documentation.Documentation]` | |
 
 ### Methods
 
@@ -187,7 +173,6 @@ This object fully encapsulates the specification of a workflow
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -195,11 +180,11 @@ This object fully encapsulates the specification of a workflow
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: WorkflowSpec
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | flyteidl.admin.workflow_pb2.WorkflowSpec :rtype: WorkflowSpec |
 
 #### serialize_to_string()
 
@@ -220,14 +205,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.workflow_pb2.WorkflowSpec
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

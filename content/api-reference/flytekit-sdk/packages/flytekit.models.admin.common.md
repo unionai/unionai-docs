@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.admin.common
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -23,10 +23,10 @@ class Sort(
     direction,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `key` |  |
-| `direction` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `key` |  | |
+| `direction` |  | |
 
 ### Methods
 
@@ -37,7 +37,6 @@ class Sort(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -45,22 +44,22 @@ class Sort(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: Sort
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### from_python_std()
 
 ```python
 def from_python_std(
     text,
-) -> e: Sort
+)
 ```
-| Parameter | Type |
-|-|-|
-| `text` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `text` |  | |
 
 #### serialize_to_string()
 
@@ -81,14 +80,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.common_pb2.Sort
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

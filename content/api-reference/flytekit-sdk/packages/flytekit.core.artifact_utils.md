@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.artifact_utils
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -26,9 +26,9 @@ def idl_partitions_from_dict(
     p: Optional[Dict[str, str]],
 ) -> Optional[Partitions]
 ```
-| Parameter | Type |
-|-|-|
-| `p` | `Optional[Dict[str, str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` | `Optional[Dict[str, str]]` | |
 
 #### idl_time_partition_from_datetime()
 
@@ -38,8 +38,8 @@ def idl_time_partition_from_datetime(
     time_partition_granularity: Optional[Granularity],
 ) -> Optional[TimePartition]
 ```
-| Parameter | Type |
-|-|-|
-| `tp` | `Optional[datetime]` |
-| `time_partition_granularity` | `Optional[Granularity]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tp` | `Optional[datetime]` | |
+| `time_partition_granularity` | `Optional[Granularity]` | |
 

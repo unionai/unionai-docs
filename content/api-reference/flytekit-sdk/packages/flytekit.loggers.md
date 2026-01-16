@@ -1,6 +1,6 @@
 ---
 title: flytekit.loggers
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -39,15 +39,15 @@ layout: py_api
 ```python
 def get_level_from_cli_verbosity(
     verbosity: int,
-) -> n: logging level
+) -> int
 ```
 Converts a verbosity level from the CLI to a logging level.
 
 
 
-| Parameter | Type |
-|-|-|
-| `verbosity` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `verbosity` | `int` | verbosity level from the CLI :return: logging level |
 
 #### initialize_global_loggers()
 
@@ -80,11 +80,11 @@ developer logger is only used for debugging. It is possible to selectively tune 
 
 
 
-| Parameter | Type |
-|-|-|
-| `handler` | `typing.Optional[logging.Handler]` |
-| `filter` | `typing.Optional[logging.Filter]` |
-| `level` | `typing.Optional[int]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `handler` | `typing.Optional[logging.Handler]` | logging.Handler to add to the user_space_logger |
+| `filter` | `typing.Optional[logging.Filter]` | logging.Filter to add to the user_space_logger |
+| `level` | `typing.Optional[int]` | logging level to set the user_space_logger to |
 
 #### set_flytekit_log_properties()
 
@@ -102,11 +102,11 @@ the corresponding property on the flytekit logger will not be set.
 
 
 
-| Parameter | Type |
-|-|-|
-| `handler` | `typing.Optional[logging.Handler]` |
-| `filter` | `typing.Optional[logging.Filter]` |
-| `level` | `typing.Optional[int]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `handler` | `typing.Optional[logging.Handler]` | logging.Handler to add to the flytekit logger |
+| `filter` | `typing.Optional[logging.Filter]` | logging.Filter to add to the flytekit logger |
+| `level` | `typing.Optional[int]` | logging level to set the flytekit logger to |
 
 #### set_user_logger_properties()
 
@@ -121,11 +121,11 @@ user_space logger, refers to the user's logger. It is possible to selectively tu
 
 
 
-| Parameter | Type |
-|-|-|
-| `handler` | `typing.Optional[logging.Handler]` |
-| `filter` | `typing.Optional[logging.Filter]` |
-| `level` | `typing.Optional[int]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `handler` | `typing.Optional[logging.Handler]` | logging.Handler to add to the user_space_logger |
+| `filter` | `typing.Optional[logging.Filter]` | logging.Filter to add to the user_space_logger |
+| `level` | `typing.Optional[int]` | logging level to set the user_space_logger to |
 
 #### upgrade_to_rich_logging()
 
@@ -134,7 +134,7 @@ def upgrade_to_rich_logging(
     log_level: typing.Optional[int],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `log_level` | `typing.Optional[int]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `log_level` | `typing.Optional[int]` | |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.interfaces.cli_identifiers
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -28,13 +28,13 @@ class Identifier(
     version,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `resource_type` |  |
-| `project` |  |
-| `domain` |  |
-| `name` |  |
-| `version` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `resource_type` |  | |
+| `project` |  | |
+| `domain` |  | |
+| `name` |  | |
+| `version` |  | |
 
 ### Methods
 
@@ -47,7 +47,6 @@ class Identifier(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -55,36 +54,36 @@ class Identifier(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: Identifier
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### from_python_std()
 
 ```python
 def from_python_std(
     string,
-) -> e: Identifier
+)
 ```
 Parses a string in the correct format into an identifier
 
 
-| Parameter | Type |
-|-|-|
-| `string` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `string` |  | |
 
 #### promote_from_model()
 
 ```python
 def promote_from_model(
     base_model,
-) -> e: Identifier
+)
 ```
-| Parameter | Type |
-|-|-|
-| `base_model` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `base_model` |  | |
 
 #### resource_type_name()
 
@@ -110,14 +109,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.identifier_pb2.Identifier
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -146,11 +137,11 @@ class TaskExecutionIdentifier(
     retry_attempt,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `task_id` |  |
-| `node_execution_id` |  |
-| `retry_attempt` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_id` |  | |
+| `node_execution_id` |  | |
+| `retry_attempt` |  | |
 
 ### Methods
 
@@ -162,7 +153,6 @@ class TaskExecutionIdentifier(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -170,36 +160,36 @@ class TaskExecutionIdentifier(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: TaskExecutionIdentifier
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### from_python_std()
 
 ```python
 def from_python_std(
     string,
-) -> e: TaskExecutionIdentifier
+)
 ```
 Parses a string in the correct format into an identifier
 
 
-| Parameter | Type |
-|-|-|
-| `string` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `string` |  | |
 
 #### promote_from_model()
 
 ```python
 def promote_from_model(
     base_model,
-) -> e: TaskExecutionIdentifier
+)
 ```
-| Parameter | Type |
-|-|-|
-| `base_model` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `base_model` |  | |
 
 #### serialize_to_string()
 
@@ -220,14 +210,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.identifier_pb2.TaskExecutionIdentifier
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -251,11 +233,11 @@ class WorkflowExecutionIdentifier(
     name,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project` |  |
-| `domain` |  |
-| `name` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` |  | |
+| `domain` |  | |
+| `name` |  | |
 
 ### Methods
 
@@ -267,7 +249,6 @@ class WorkflowExecutionIdentifier(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -275,36 +256,36 @@ class WorkflowExecutionIdentifier(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: WorkflowExecutionIdentifier
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### from_python_std()
 
 ```python
 def from_python_std(
     string,
-) -> e: WorkflowExecutionIdentifier
+)
 ```
 Parses a string in the correct format into an identifier
 
 
-| Parameter | Type |
-|-|-|
-| `string` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `string` |  | |
 
 #### promote_from_model()
 
 ```python
 def promote_from_model(
     base_model,
-) -> e: WorkflowExecutionIdentifier
+)
 ```
-| Parameter | Type |
-|-|-|
-| `base_model` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `base_model` |  | |
 
 #### serialize_to_string()
 
@@ -325,14 +306,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.identifier_pb2.WorkflowExecutionIdentifier
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

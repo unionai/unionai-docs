@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.project
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -30,12 +30,12 @@ platform.
 
 
 
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `name` |  |
-| `description` |  |
-| `state` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `name` |  | |
+| `description` |  | |
+| `state` |  | |
 
 ### Methods
 
@@ -47,7 +47,6 @@ platform.
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### active_project()
@@ -57,9 +56,9 @@ def active_project(
     id,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
 
 #### archived_project()
 
@@ -68,20 +67,20 @@ def archived_project(
     id,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
 
 #### from_flyte_idl()
 
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: Project
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -102,14 +101,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.project_pb2.Project
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

@@ -1,6 +1,6 @@
 ---
 title: flytekit.interfaces.stats.taggable
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -31,16 +31,16 @@ def get_stats(
     cfg: flytekit.configuration.StatsConfig,
     prefix: str,
     tags: typing.Dict[str, str],
-) -> e: TaggableStats
+) -> flytekit.interfaces.stats.taggable.TaggableStats
 ```
 :rtype: TaggableStats
 
 
-| Parameter | Type |
-|-|-|
-| `cfg` | `flytekit.configuration.StatsConfig` |
-| `prefix` | `str` |
-| `tags` | `typing.Dict[str, str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `flytekit.configuration.StatsConfig` | |
+| `prefix` | `str` | |
+| `tags` | `typing.Dict[str, str]` | |
 
 ## flytekit.interfaces.stats.taggable.TaggableStats
 
@@ -63,13 +63,13 @@ class TaggableStats(
     tags,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `client` |  |
-| `full_prefix` |  |
-| `cfg` | `flytekit.configuration.StatsConfig` |
-| `prefix` |  |
-| `tags` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `client` |  | |
+| `full_prefix` |  | |
+| `cfg` | `flytekit.configuration.StatsConfig` | |
+| `prefix` |  | |
+| `tags` |  | |
 
 ### Methods
 
@@ -93,9 +93,9 @@ def extend_tags(
     tags,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `tags` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `tags` |  | |
 
 #### get_stats()
 
@@ -105,10 +105,10 @@ def get_stats(
     copy_tags,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` |  |
-| `copy_tags` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` |  | |
+| `copy_tags` |  | |
 
 #### pipeline()
 

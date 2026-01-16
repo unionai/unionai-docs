@@ -1,6 +1,6 @@
 ---
 title: flytekit.clis.helpers
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -37,10 +37,10 @@ def display_help_with_error(
     message: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `click.core.Context` |
-| `message` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `click.core.Context` | |
+| `message` | `str` | |
 
 #### hydrate_registration_parameters()
 
@@ -56,41 +56,41 @@ def hydrate_registration_parameters(
 This is called at registration time to fill out identifier fields (e.g. project, domain, version) that are mutable.
 
 
-| Parameter | Type |
-|-|-|
-| `resource_type` | `int` |
-| `project` | `str` |
-| `domain` | `str` |
-| `version` | `str` |
-| `entity` | `typing.Union[flyteidl.admin.launch_plan_pb2.LaunchPlan, flyteidl.admin.workflow_pb2.WorkflowSpec, flyteidl.admin.task_pb2.TaskSpec]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `resource_type` | `int` | |
+| `project` | `str` | |
+| `domain` | `str` | |
+| `version` | `str` | |
+| `entity` | `typing.Union[flyteidl.admin.launch_plan_pb2.LaunchPlan, flyteidl.admin.workflow_pb2.WorkflowSpec, flyteidl.admin.task_pb2.TaskSpec]` | |
 
 #### parse_args_into_dict()
 
 ```python
 def parse_args_into_dict(
     input_arguments,
-) -> e: dict[Text, Text]
+)
 ```
 Takes a tuple like (u'input_b=mystr', u'input_c=18') and returns a dictionary of input name to the
 original string value
 
 
 
-| Parameter | Type |
-|-|-|
-| `input_arguments` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `input_arguments` |  | |
 
 #### str2bool()
 
 ```python
 def str2bool(
     str,
-) -> e: bool
+)
 ```
 bool('False') is True in Python, so we need to do some string parsing.  Use the same words in ConfigParser
 
 
-| Parameter | Type |
-|-|-|
-| `str` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `str` |  | |
 

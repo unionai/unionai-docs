@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.module_loader
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -31,9 +31,9 @@ def add_sys_path(
 Temporarily add given path to `sys.path`.
 
 
-| Parameter | Type |
-|-|-|
-| `path` | `typing.Union[str, os.PathLike]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `typing.Union[str, os.PathLike]` | |
 
 #### just_load_modules()
 
@@ -45,9 +45,9 @@ def just_load_modules(
 This one differs from the above in that we don't yield anything, just load all the modules.
 
 
-| Parameter | Type |
-|-|-|
-| `pkgs` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pkgs` | `typing.List[str]` | |
 
 #### load_object_from_module()
 
@@ -59,9 +59,9 @@ def load_object_from_module(
 TODO: Handle corner cases, like where the first part is [] maybe
 
 
-| Parameter | Type |
-|-|-|
-| `object_location` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `object_location` | `str` | |
 
 #### module_load_error_handler()
 
@@ -71,8 +71,8 @@ def module_load_error_handler(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 

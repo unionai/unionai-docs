@@ -1,6 +1,6 @@
 ---
 title: flytekit.interactive.vscode_lib.config
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -36,11 +36,11 @@ class VscodeConfig(
     extension_remote_paths: typing.Optional[typing.List[str]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code_server_remote_paths` | `typing.Optional[typing.Dict[str, str]]` |
-| `code_server_dir_names` | `typing.Optional[typing.Dict[str, str]]` |
-| `extension_remote_paths` | `typing.Optional[typing.List[str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code_server_remote_paths` | `typing.Optional[typing.Dict[str, str]]` | |
+| `code_server_dir_names` | `typing.Optional[typing.Dict[str, str]]` | |
+| `extension_remote_paths` | `typing.Optional[typing.List[str]]` | |
 
 ### Methods
 
@@ -59,7 +59,7 @@ def add_extensions(
 Add additional extensions to the extension_remote_paths list.
 
 
-| Parameter | Type |
-|-|-|
-| `extensions` | `typing.Union[str, typing.List[str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `extensions` | `typing.Union[str, typing.List[str]]` | |
 

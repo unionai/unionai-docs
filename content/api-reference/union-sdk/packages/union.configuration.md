@@ -1,6 +1,6 @@
 ---
 title: union.configuration
-version: 0.1.191
+version: 0.1.198
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -39,9 +39,9 @@ def configure_pyflyte_cli(
 Configure pyflyte's CLI.
 
 
-| Parameter | Type |
-|-|-|
-| `main` | `click.core.Group` |
+| Parameter | Type | Description |
+|-|-|-|
+| `main` | `click.core.Group` | |
 
 #### get_auth_success_html()
 
@@ -53,9 +53,9 @@ def get_auth_success_html(
 Get default success html. Return None to use flytekit's default success html.
 
 
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
 
 #### get_default_cache_policies()
 
@@ -83,12 +83,12 @@ def get_remote(
     data_upload_location: typing.Optional[str],
 ) -> UnionRemote
 ```
-| Parameter | Type |
-|-|-|
-| `config` | `typing.Optional[str]` |
-| `project` | `str` |
-| `domain` | `str` |
-| `data_upload_location` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config` | `typing.Optional[str]` | |
+| `project` | `str` | |
+| `domain` | `str` | |
+| `data_upload_location` | `typing.Optional[str]` | |
 
 #### secret_requires_group()
 

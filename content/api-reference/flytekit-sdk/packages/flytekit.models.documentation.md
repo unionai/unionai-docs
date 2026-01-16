@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.documentation
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -32,12 +32,12 @@ class Description(
     format: <enum 'DescriptionFormat'>,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `value` | `typing.Optional[str]` |
-| `uri` | `typing.Optional[str]` |
-| `icon_link` | `typing.Optional[str]` |
-| `format` | `<enum 'DescriptionFormat'>` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `typing.Optional[str]` | |
+| `uri` | `typing.Optional[str]` | |
+| `icon_link` | `typing.Optional[str]` | |
+| `format` | `<enum 'DescriptionFormat'>` | |
 
 ### Methods
 
@@ -47,7 +47,6 @@ class Description(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -57,9 +56,9 @@ def from_flyte_idl(
     pb2_object: flyteidl.admin.description_entity_pb2.Description,
 ) -> Description
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` | `flyteidl.admin.description_entity_pb2.Description` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` | `flyteidl.admin.description_entity_pb2.Description` | |
 
 #### serialize_to_string()
 
@@ -79,14 +78,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -106,11 +97,11 @@ class Documentation(
     source_code: typing.Optional[flytekit.models.documentation.SourceCode],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `short_description` | `typing.Optional[str]` |
-| `long_description` | `typing.Optional[flytekit.models.documentation.Description]` |
-| `source_code` | `typing.Optional[flytekit.models.documentation.SourceCode]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `short_description` | `typing.Optional[str]` | |
+| `long_description` | `typing.Optional[flytekit.models.documentation.Description]` | |
+| `source_code` | `typing.Optional[flytekit.models.documentation.SourceCode]` | |
 
 ### Methods
 
@@ -120,7 +111,6 @@ class Documentation(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -130,9 +120,9 @@ def from_flyte_idl(
     pb2_object: flyteidl.admin.description_entity_pb2.DescriptionEntity,
 ) -> Documentation
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` | `flyteidl.admin.description_entity_pb2.DescriptionEntity` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` | `flyteidl.admin.description_entity_pb2.DescriptionEntity` | |
 
 #### serialize_to_string()
 
@@ -152,14 +142,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -176,9 +158,9 @@ class SourceCode(
     link: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `link` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `link` | `typing.Optional[str]` | |
 
 ### Methods
 
@@ -188,7 +170,6 @@ class SourceCode(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -198,9 +179,9 @@ def from_flyte_idl(
     pb2_object: flyteidl.admin.description_entity_pb2.SourceCode,
 ) -> SourceCode
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` | `flyteidl.admin.description_entity_pb2.SourceCode` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` | `flyteidl.admin.description_entity_pb2.SourceCode` | |
 
 #### serialize_to_string()
 
@@ -220,14 +201,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
