@@ -215,6 +215,32 @@ def test_parse_args():
     """
     print(json.dumps(parse_docstring(doc_with_args, source=None), indent=2))
 
+def convert_pydantic_links(text: str) -> str:
+    """
+    Convert relative pydantic documentation links to absolute URLs.
+
+    e.g. ../concepts/models.md#model-copy -> https://docs.pydantic.dev/latest/concepts/models/#model-copy
+    """
+    import re
+
+    def replace_link(match):
+        link_text = match.group(1)
+        link_path = match.group(2)
+
+        # Check if it's a relative pydantic docs link
+        if link_path.startswith('../concepts/') or link_path.startswith('./concepts/'):
+            # Convert ../concepts/models.md#model-copy to concepts/models/#model-copy
+            path = link_path.lstrip('./')
+            # Remove .md extension and adjust anchor
+            path = re.sub(r'\.md(#|$)', r'/\1', path)
+            return f'[{link_text}](https://docs.pydantic.dev/latest/{path})'
+
+        return match.group(0)
+
+    # Match markdown links: [text](url)
+    return re.sub(r'\[([^\]]+)\]\(([^)]+)\)', replace_link, text)
+
+
 def format_three_exclamation_notes(docstring: str) -> str:
     """
     Receives a docstring that contains lines like:
@@ -226,7 +252,13 @@ def format_three_exclamation_notes(docstring: str) -> str:
 
         > [WARN] Deprecated
         > This method is now deprecated; use `model_copy` instead.
+
+    Also handles !!! abstract and !!! note admonitions, and converts
+    relative pydantic documentation links to absolute URLs.
     """
+    # First convert any pydantic-relative links to absolute URLs
+    docstring = convert_pydantic_links(docstring)
+
     lines = docstring.split("\n")
     result = []
     converting = False
@@ -240,6 +272,12 @@ def format_three_exclamation_notes(docstring: str) -> str:
             converting = True
         elif line.startswith("!!! note"):
             result.append("> [!NOTE]")
+            converting = True
+        elif line.startswith("!!! abstract"):
+            # Extract title from !!! abstract "Title"
+            parts = line.split('"')
+            title = parts[1] if len(parts) >= 2 else "Note"
+            result.append(f"> [!TIP] {title}")
             converting = True
         elif converting:
             if len(line.strip()) > 0 and line != len(line.strip()):
