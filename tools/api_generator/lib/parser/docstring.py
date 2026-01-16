@@ -337,7 +337,7 @@ def format_three_exclamation_notes(docstring: str) -> str:
             title = parts[1] if len(parts) >= 2 else "Note"
             # Add clarification for pydantic inherited method documentation
             if title == "Usage Documentation":
-                title = "Usage Documentation (inherited from pydantic)"
+                title = "Usage Documentation (external docs for inhertied method)"
             result.append(f"> [!TIP] {title}")
             converting = True
         elif converting:
