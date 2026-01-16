@@ -8,7 +8,7 @@ from lib.generate.helper import generate_anchor_from_name
 
 
 def escape_html_preserve_code_blocks(text):
-    """Escape HTML characters in text while preserving code blocks."""
+    """Escape HTML characters in text while preserving code blocks and blockquotes."""
     if not text:
         return text
 
@@ -18,9 +18,27 @@ def escape_html_preserve_code_blocks(text):
     result = []
     for i, part in enumerate(parts):
         # Even indices are regular text, odd indices are code blocks
-        if i % 2 == 0:  # Regular text - escape HTML
-            escaped_part = part.replace("<", "&lt;").replace(">", "&gt;")
-            result.append(escaped_part)
+        if i % 2 == 0:  # Regular text - escape HTML but preserve blockquotes
+            lines = part.split('\n')
+            escaped_lines = []
+            for line in lines:
+                stripped = line.lstrip()
+                if stripped.startswith('>'):
+                    # Preserve blockquote prefix, escape only the content after it
+                    prefix_len = len(line) - len(stripped)
+                    prefix = line[:prefix_len]
+                    # Find the blockquote marker(s) and content
+                    bq_match = re.match(r'^(>+\s*)', stripped)
+                    if bq_match:
+                        bq_prefix = bq_match.group(1)
+                        content = stripped[len(bq_prefix):]
+                        content = content.replace("<", "&lt;").replace(">", "&gt;")
+                        escaped_lines.append(f"{prefix}{bq_prefix}{content}")
+                    else:
+                        escaped_lines.append(line.replace("<", "&lt;").replace(">", "&gt;"))
+                else:
+                    escaped_lines.append(line.replace("<", "&lt;").replace(">", "&gt;"))
+            result.append('\n'.join(escaped_lines))
         else:  # Code block - don't escape
             result.append(part)
 

@@ -13,11 +13,14 @@ from pathlib import Path
 from typing import Set, List
 
 class LLMDocBuilder:
-    def __init__(self, base_path: Path):
+    def __init__(self, base_path: Path, quiet: bool = False):
         self.base_path = base_path
+        self.quiet = quiet
         self.visited_files: Set[str] = set()
         self.title_lookup: dict[str, str] = {}  # Maps file paths to hierarchical titles
         self.version = self._detect_version()
+        self.resolution_issues: List[dict] = []  # Track failed link resolutions
+        self.current_source_file: str = ""  # Track current file being processed
 
     def _detect_version(self) -> str:
         """Detect version from environment or makefile.inc."""
@@ -42,7 +45,8 @@ class LLMDocBuilder:
 
     def run_make_dist(self) -> bool:
         """Run make dist to regenerate all documentation variants."""
-        print("🔧 Running 'make dist' to regenerate documentation...")
+        if not self.quiet:
+            print("Running 'make dist' to regenerate documentation...")
         try:
             result = subprocess.run(['make', 'dist'],
                                   cwd=self.base_path,
@@ -50,13 +54,14 @@ class LLMDocBuilder:
                                   text=True,
                                   timeout=300)
             if result.returncode == 0:
-                print("✅ Successfully regenerated documentation")
+                if not self.quiet:
+                    print("Successfully regenerated documentation")
                 return True
             else:
-                print(f"❌ Make dist failed with return code {result.returncode}")
+                print(f"Error: Make dist failed with return code {result.returncode}")
                 return False
         except Exception as e:
-            print(f"❌ Error running make dist: {e}")
+            print(f"Error running make dist: {e}")
             return False
 
     def read_file_content(self, file_path: Path) -> str:
@@ -140,11 +145,23 @@ class LLMDocBuilder:
             return self.strip_common_prefix(title)
 
         # Fallback: use current hierarchy + link text (also strip prefix)
+        # Track this as a resolution failure
         if current_hierarchy:
             full_title = f"{' > '.join(current_hierarchy)} > {link_text}"
-            return self.strip_common_prefix(full_title)
+            fallback_title = self.strip_common_prefix(full_title)
+        else:
+            fallback_title = link_text
 
-        return link_text
+        # Record the resolution failure
+        self.resolution_issues.append({
+            'source_file': self.current_source_file,
+            'link_url': url,
+            'link_text': link_text,
+            'resolved_path': target_path,
+            'fallback_title': fallback_title,
+        })
+
+        return fallback_title
 
     def strip_common_prefix(self, title: str) -> str:
         """Remove 'Documentation > {variant}' prefix from hierarchical titles."""
@@ -180,17 +197,18 @@ class LLMDocBuilder:
 
             if md_root:
                 # Convert to relative path from md root (which matches our lookup table keys)
-                key = str(resolved.relative_to(md_root))
+                # Normalize to lowercase for case-insensitive matching
+                key = str(resolved.relative_to(md_root)).lower()
             else:
                 # Fallback to filename only
-                key = str(resolved.name)
+                key = str(resolved.name).lower()
 
             if anchor:
                 key = f"{key}#{anchor}"
 
             return key
         except:
-            return url
+            return url.lower()
 
     def extract_page_title(self, content: str, file_path: Path) -> str:
         """Extract the main title from a markdown page."""
@@ -248,10 +266,13 @@ class LLMDocBuilder:
         return anchor_map
 
     def title_to_anchor(self, title: str) -> str:
-        """Convert heading title to URL anchor format."""
-        # Convert to lowercase, replace spaces with hyphens, remove special chars
-        anchor = re.sub(r'[^a-zA-Z0-9\s-]', '', title)
-        anchor = re.sub(r'\s+', '-', anchor.strip().lower())
+        """Convert heading title to URL anchor format matching Hugo's behavior."""
+        anchor = title.lower()
+        # Remove special chars except alphanumeric, spaces, underscores, hyphens
+        # Hugo removes chars like () but keeps spaces which become hyphens
+        anchor = re.sub(r'[^a-zA-Z0-9\s_-]', '', anchor)
+        # Replace whitespace with hyphens (each space becomes one hyphen)
+        anchor = re.sub(r'\s', '-', anchor.strip())
         return anchor
 
     def extract_subpage_links(self, content: str) -> List[str]:
@@ -284,22 +305,45 @@ class LLMDocBuilder:
         md_dir = self.base_path / 'dist' / 'docs' / version / variant / 'md'
 
         if not md_dir.exists():
-            print(f"❌ Directory not found: {md_dir}")
+            print(f"Error: Directory not found: {md_dir}")
             return ""
 
-        print(f"📖 Building consolidated document for {variant}")
+        # Reset state for this variant
+        self.resolution_issues.clear()
+        self.current_source_file = ""
+
+        if not self.quiet:
+            print(f"Building consolidated document for {variant}")
 
         # First pass: Build lookup tables for all pages
-        print("  📝 First pass: Building lookup tables...")
+        if not self.quiet:
+            print("  First pass: Building lookup tables...")
         self.visited_files.clear()  # Reset for first pass
         self.build_lookup_tables(md_dir, 'index.md', md_dir, [])
 
         # Second pass: Process content with lookup tables populated
-        print("  📄 Second pass: Processing content...")
+        if not self.quiet:
+            print("  Second pass: Processing content...")
         consolidated_content = []
         self.process_page_depth_first(md_dir, 'index.md', consolidated_content, md_dir, [], variant, version)
 
         return '\n'.join(consolidated_content)
+
+    def write_resolution_report(self, variant: str, version: str = None) -> Path:
+        """Write a report of link resolution issues to a file."""
+        version = version or self.version
+        report_file = self.base_path / 'dist' / 'docs' / version / variant / 'link-issues.txt'
+
+        with open(report_file, 'w', encoding='utf-8') as f:
+            if self.resolution_issues:
+                f.write(f"Found {len(self.resolution_issues)} link resolution issues:\n\n")
+                for issue in self.resolution_issues:
+                    f.write(f"{issue['source_file']}: Link [{issue['link_text']}]({issue['link_url']}) -> "
+                           f"could not resolve, used fallback: \"{issue['fallback_title']}\"\n")
+            else:
+                f.write("No link resolution issues found.\n")
+
+        return report_file
 
     def build_lookup_tables(self, base_dir: Path, relative_path: str, md_root: Path, hierarchy: List[str] = None):
         """Build lookup tables for all pages without processing content."""
@@ -319,7 +363,8 @@ class LLMDocBuilder:
                 file_path = base_dir / relative_path / 'index.md'
                 relative_path = f"{relative_path}/index.md"
             else:
-                print(f"⚠️  Could not find file for: {relative_path}")
+                if not self.quiet:
+                    print(f"Warning: Could not find file for: {relative_path}")
                 return
         else:
             file_path = base_dir / relative_path
@@ -331,14 +376,16 @@ class LLMDocBuilder:
         self.visited_files.add(canonical_path)
 
         if not file_path.exists():
-            print(f"⚠️  File not found: {file_path}")
+            if not self.quiet:
+                print(f"Warning: File not found: {file_path}")
             return
 
         # Get relative path from md root for the lookup key
+        # Normalize to lowercase for case-insensitive matching (macOS filesystem is case-insensitive)
         try:
-            relative_from_md = str(file_path.relative_to(md_root))
+            relative_from_md = str(file_path.relative_to(md_root)).lower()
         except ValueError:
-            relative_from_md = str(file_path)
+            relative_from_md = str(file_path).lower()
 
         # Read the raw content
         raw_content = self.read_file_content(file_path)
@@ -350,9 +397,9 @@ class LLMDocBuilder:
         current_hierarchy = hierarchy + [page_title]
         hierarchical_title = ' > '.join(current_hierarchy)
 
-        # Store page in lookup table
+        # Store page in lookup table (keys normalized to lowercase)
         self.title_lookup[relative_from_md] = hierarchical_title
-        self.title_lookup[file_path.name] = hierarchical_title  # Also store by filename
+        self.title_lookup[file_path.name.lower()] = hierarchical_title  # Also store by filename
 
         # Parse and store heading hierarchy for anchor links
         anchor_map = self.parse_heading_hierarchy(raw_content, file_path, current_hierarchy)
@@ -362,7 +409,7 @@ class LLMDocBuilder:
             self.title_lookup[anchor_key] = anchor_title
 
             # Also store with just filename + anchor for relative links
-            filename_key = f"{file_path.name}#{anchor}"
+            filename_key = f"{file_path.name.lower()}#{anchor}"
             self.title_lookup[filename_key] = anchor_title
 
         # Extract subpages and recursively build lookup tables
@@ -393,13 +440,15 @@ class LLMDocBuilder:
                 file_path = base_dir / relative_path / 'index.md'
                 relative_path = f"{relative_path}/index.md"
             else:
-                print(f"⚠️  Could not find file for: {relative_path}")
+                if not self.quiet:
+                    print(f"Warning: Could not find file for: {relative_path}")
                 return
         else:
             file_path = base_dir / relative_path
 
         if not file_path.exists():
-            print(f"⚠️  File not found: {file_path}")
+            if not self.quiet:
+                print(f"Warning: File not found: {file_path}")
             return
 
         # Get relative path from md root for the delimiter
@@ -408,7 +457,11 @@ class LLMDocBuilder:
         except ValueError:
             relative_from_md = str(file_path)
 
-        print(f"  📄 Processing: {relative_from_md}")
+        if not self.quiet:
+            print(f"  Processing: {relative_from_md}")
+
+        # Track current source file for resolution issue reporting
+        self.current_source_file = relative_from_md
 
         # Read the raw content
         raw_content = self.read_file_content(file_path)
@@ -442,7 +495,8 @@ class LLMDocBuilder:
 
         # Process subpages depth-first
         for link in subpage_links:
-            print(f"    🔗 Following: {link}")
+            if not self.quiet:
+                print(f"    Following: {link}")
             # Resolve relative to the current file's directory
             current_dir = file_path.parent
             self.process_page_depth_first(current_dir, link, consolidated, md_root, current_hierarchy, variant, version)
@@ -518,7 +572,8 @@ This consolidated documentation is ideal for:
 
         with open(root_file, 'w', encoding='utf-8') as f:
             f.write(root_content)
-        print(f"✅ Created root discovery: {root_file}")
+        if not self.quiet:
+            print(f"Created root discovery: {root_file}")
 
         # Version level discovery file
         version_content = self.create_version_discovery_content(variants, self.version)
@@ -526,7 +581,8 @@ This consolidated documentation is ideal for:
 
         with open(version_file, 'w', encoding='utf-8') as f:
             f.write(version_content)
-        print(f"✅ Created {self.version} discovery: {version_file}")
+        if not self.quiet:
+            print(f"Created {self.version} discovery: {version_file}")
 
     def create_root_discovery_content(self, variants: List[str]) -> str:
         """Create content for the root-level discovery file."""
@@ -644,20 +700,28 @@ GET /docs/{version}/byoc/llms.txt
 
 def main():
     import sys
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Build LLM-optimized documentation')
+    parser.add_argument('--no-make-dist', action='store_true', help='Skip running make dist')
+    parser.add_argument('--quiet', '-q', action='store_true', help='Suppress progress output')
+    args = parser.parse_args()
+
     base_path = Path.cwd()
-    builder = LLMDocBuilder(base_path)
+    builder = LLMDocBuilder(base_path, quiet=args.quiet)
 
     # Step 1: Regenerate documentation (skip if --no-make-dist is passed)
-    if '--no-make-dist' not in sys.argv and not builder.run_make_dist():
+    if not args.no_make_dist and not builder.run_make_dist():
         return 1
 
     # Step 2: Find variants
     variants = builder.find_variants()
     if not variants:
-        print("❌ No variants found")
+        print("Error: No variants found")
         return 1
 
-    print(f"📋 Found variants: {variants}")
+    if not args.quiet:
+        print(f"Found variants: {variants}")
 
     # Step 3: Build consolidated documents
     for variant in variants:
@@ -670,8 +734,9 @@ def main():
             with open(output_file, 'w', encoding='utf-8') as f:
                 f.write(consolidated_content)
 
-            file_size = len(consolidated_content)
-            print(f"✅ Saved: {output_file} ({file_size:,} characters)")
+            if not args.quiet:
+                file_size = len(consolidated_content)
+                print(f"Saved: {output_file} ({file_size:,} characters)")
 
             # Create redirect llms.txt file
             redirect_file = base_path / 'dist' / 'docs' / builder.version / variant / 'llms.txt'
@@ -680,9 +745,23 @@ def main():
             with open(redirect_file, 'w', encoding='utf-8') as f:
                 f.write(redirect_content)
 
-            print(f"✅ Created redirect: {redirect_file}")
+            if not args.quiet:
+                print(f"Created redirect: {redirect_file}")
+
+            # Write resolution issues report
+            report_file = builder.write_resolution_report(variant)
+            issue_count = len(builder.resolution_issues)
+            if issue_count > 0:
+                print(f"Found {issue_count} link resolution issues for {variant}:")
+                for issue in builder.resolution_issues[:10]:  # Show first 10
+                    print(f"  {issue['source_file']}: [{issue['link_text']}]({issue['link_url']})")
+                if issue_count > 10:
+                    print(f"  ... and {issue_count - 10} more issues")
+                print(f"  Full list: {report_file}")
+            elif not args.quiet:
+                print(f"No link resolution issues for {variant}")
         else:
-            print(f"❌ No content generated for {variant}")
+            print(f"Error: No content generated for {variant}")
 
     # Step 4: Create hierarchical discovery files
     builder.create_discovery_files(base_path, variants)

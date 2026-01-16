@@ -1,6 +1,6 @@
 ---
 title: flyte.errors
-version: 2.0.0b47
+version: 2.0.0b48
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -20,6 +20,7 @@ unknown error.
 
 | Exception | Description |
 |-|-|
+| [`ActionAbortedError`](../flyte.errors/actionabortederror) | This error is raised when an action was aborted, externally. |
 | [`ActionNotFoundError`](../flyte.errors/actionnotfounderror) | This error is raised when the user tries to access an action that does not exist. |
 | [`BaseRuntimeError`](../flyte.errors/baseruntimeerror) | Base class for all Union runtime errors. |
 | [`CustomError`](../flyte.errors/customerror) | This error is raised when the user raises a custom error. |
@@ -40,7 +41,6 @@ unknown error.
 | [`RemoteTaskUsageError`](../flyte.errors/remotetaskusageerror) | This error is raised when the user tries to access a task that does not exist. |
 | [`RestrictedTypeError`](../flyte.errors/restrictedtypeerror) | This error is raised when the user uses a restricted type, for example current a Tuple is not supported for one. |
 | [`RetriesExhaustedError`](../flyte.errors/retriesexhaustederror) | This error is raised when the underlying task execution fails after all retries have been exhausted. |
-| [`RunAbortedError`](../flyte.errors/runabortederror) | This error is raised when the run is aborted by the user. |
 | [`RuntimeDataValidationError`](../flyte.errors/runtimedatavalidationerror) | This error is raised when the user tries to access a resource that does not exist or is invalid. |
 | [`RuntimeSystemError`](../flyte.errors/runtimesystemerror) | This error is raised when the underlying task execution fails because of a system error. |
 | [`RuntimeUnknownError`](../flyte.errors/runtimeunknownerror) | This error is raised when the underlying task execution fails because of an unknown error. |
