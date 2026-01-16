@@ -153,11 +153,4 @@ print(run.status)
 
 ## Next steps
 
-You now understand the core concepts of Flyte:
-
-- **TaskEnvironment** configures where code runs
-- **Tasks** are Python functions that execute remotely
-- **Runs** track complete executions you initiate
-- **Actions** are individual task executions within a run
-
-Ready to build something more substantial? Head to [First project](../first-project) to create an end-to-end machine learning workflow.
+You now understand tasks and how Flyte tracks their execution. Next, let's learn about [apps](./introducing-apps) - Flyte's approach to long-running services.

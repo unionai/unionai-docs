@@ -14,6 +14,7 @@ By the end of this section, you'll understand:
 - **TaskEnvironment**: The container configuration that defines where and how your code runs
 - **Tasks**: Python functions that execute remotely in containers
 - **Runs and Actions**: How Flyte tracks and manages your executions
+- **Apps**: Long-running services for APIs, dashboards, and inference endpoints
 
 Each concept is introduced with a practical example you can run yourself.
 

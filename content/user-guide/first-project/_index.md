@@ -37,15 +37,14 @@ Before starting, make sure you've completed:
 
 - [Quickstart](../quickstart) - Your first workflow
 - [Local setup](../local-setup) - Development environment configured
-- [Flyte basics](../flyte-basics) - TaskEnvironment, tasks, runs, and actions
+- [Flyte basics](../flyte-basics) - TaskEnvironment, tasks, runs, actions, and apps
 
 ## Project structure
 
 This section is organized as a tutorial:
 
-1. [**Introducing apps**](./introducing-apps) - What apps are and how they differ from tasks
-2. [**Training pipeline**](./training-pipeline) - Build the model training workflow
-3. [**Serving the model**](./serving-the-model) - Create the FastAPI serving app
-4. [**Connecting training to serving**](./connecting-training-to-serving) - Wire them together with RunOutput
+1. [**Training pipeline**](./training-pipeline) - Build the model training workflow
+2. [**Serving the model**](./serving-the-model) - Create the FastAPI serving app
+3. [**Connecting training to serving**](./connecting-training-to-serving) - Wire them together with RunOutput
 
 Each part builds on the previous one. By the end, you'll have a working ML system with training and inference.

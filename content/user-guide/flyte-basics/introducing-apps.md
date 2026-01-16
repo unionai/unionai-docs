@@ -1,12 +1,12 @@
 ---
 title: Introducing apps
-weight: 1
+weight: 4
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Introducing apps
 
-Before we build our serving component, let's understand what apps are and how they differ from tasks.
+Now that you understand tasks, let's learn about apps - Flyte's way of running long-lived services.
 
 ## Tasks vs apps
 
@@ -101,10 +101,13 @@ Use **apps** when:
 - Users interact in real-time
 - You need a persistent endpoint
 
-In our project, we'll use:
-- **Tasks** for training (batch processing, needs durability)
-- **App** for serving (fast inference, HTTP endpoint)
-
 ## Next steps
 
-Now that you understand apps, let's build the [training pipeline](./training-pipeline) that will produce the model our app will serve.
+You now understand the core building blocks of Flyte:
+
+- **TaskEnvironment** and **AppEnvironment** configure where code runs
+- **Tasks** are functions that execute and complete
+- **Apps** are long-running services
+- **Runs** and **Actions** track executions
+
+Ready to put it all together? Head to [First project](../first-project) to build an end-to-end ML system with training tasks and a serving app.
