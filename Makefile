@@ -114,3 +114,4 @@ llm-docs:
 		mkdir -p dist/docs/${VERSION}/$$variant/_static/public; \
 		cp dist/docs/${VERSION}/$$variant/llms-full.txt dist/docs/${VERSION}/$$variant/_static/public/llms-full.txt; \
 	done
+	@cp static/llms-reference-card.md dist/docs/${VERSION}/llms-reference-card.md
