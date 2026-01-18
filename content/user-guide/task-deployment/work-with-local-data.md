@@ -14,7 +14,7 @@ Flyte provides several built-in types for handling data:
 - `flyte.io.File` for individual files
 - `flyte.io.Dir` for directories
 
-You can also create custom type extensions for specialized data types. See [custom types](handling-custom-types) for details.
+You can also create custom type extensions for specialized data types. See [custom types](../task-programming/handling-custom-types) for details.
 
 ## Local execution
 
