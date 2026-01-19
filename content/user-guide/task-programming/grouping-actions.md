@@ -1,6 +1,6 @@
 ---
 title: Grouping actions
-weight: 150
+weight: 12
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

@@ -1,10 +1,10 @@
 ---
 title: Other features
-weight: 200
+weight: 15
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-This guide covers advanced programming patterns and techniques for working with Flyte tasks.
+This section covers advanced programming patterns and techniques for working with Flyte tasks.
 
 ## Task Forwarding
 

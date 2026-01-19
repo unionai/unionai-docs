@@ -1,6 +1,6 @@
 ---
 title: Remote tasks
-weight: 110
+weight: 9
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -393,7 +393,7 @@ if __name__ == "__main__":
     print(f"Execution URL: {run.url}")
     # You can wait for the execution
     run.wait()
-    
+
     # You can then retrieve the outputs
     print(f"Pipeline result: {run.outputs()}")
 ```

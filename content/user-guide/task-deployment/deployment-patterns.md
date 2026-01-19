@@ -1,13 +1,13 @@
 ---
 title: Deployment patterns
-weight: 6
+weight: 9
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
 # Deployment patterns
 
-Once you understand the basics of task deployment, you can leverage various deployment patterns to handle different project structures, dependency management approaches, and deployment requirements. This guide covers the most common patterns with practical examples.
+Once you understand the basics of task deployment, you can leverage various deployment patterns to handle different project structures, dependency management approaches, and deployment requirements. This section covers the most common patterns with practical examples.
 
 ## Overview of deployment patterns
 

@@ -1,6 +1,6 @@
 ---
 title: Custom types
-weight: 90
+weight: 4
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---

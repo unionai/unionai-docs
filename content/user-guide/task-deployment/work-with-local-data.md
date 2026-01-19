@@ -1,6 +1,6 @@
 ---
 title: Work with local data
-weight: 1
+weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
