@@ -1,6 +1,6 @@
 ---
 title: Interact with runs and actions
-weight: 1
+weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 mermaid: true
@@ -11,7 +11,7 @@ mermaid: true
 When a task is launched, the resulting execution is called a **run**.
 Because tasks typically call other tasks, a run will almost always involve multiple sub-task executions. Each such execution is called an **action**.
 
-Through the Flyte SDK and CLI, you can interact with the run and its actions to monitor progress, retrieve results, and access data. This guide explains how to work with runs and actions programmatically and through the CLI.
+Through the Flyte SDK and CLI, you can interact with the run and its actions to monitor progress, retrieve results, and access data. This section explains how to work with runs and actions programmatically and through the CLI.
 
 ## Understanding runs and actions
 

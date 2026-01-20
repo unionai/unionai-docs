@@ -83,21 +83,6 @@ def pipeline(x: int) -> int:
 
 When you run `pipeline`, it becomes the top-level task and orchestrates `step_one` and `step_two`.
 
-## Workflows without the decorator
-
-If you're familiar with Flyte 1, you might remember the `@workflow` decorator. In Flyte 2, workflows are just Python code:
-
-```python
-# Flyte 2: Pure Python
-@env.task
-def my_workflow(input: str) -> str:
-    result_a = task_a(input)
-    result_b = task_b(result_a)
-    return result_b
-```
-
-The structure of your workflow is defined by how your tasks call each other, not by a special decorator.
-
 ## Running tasks locally
 
 For quick testing, you can call a task like a regular function:

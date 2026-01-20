@@ -54,50 +54,7 @@ When you run `pipeline(5)`:
 | **Run** | Complete execution initiated by user | Runs list, top-level view |
 | **Action** | Single task execution | Individual task details, logs |
 
-## Running tasks remotely
-
-You can run tasks from the command line or from Python.
-
-### From the command line
-
-```shell
-flyte run my_script.py pipeline --x 5
-```
-
-This deploys your code and executes it immediately. The output shows the run ID and a URL to view it in the UI.
-
-### From Python
-
-```python
-import flyte
-
-flyte.init_from_config()
-result = flyte.run(pipeline, x=5)
-print(result)  # 20
-```
-
-The `flyte.run()` function deploys and executes your task, then returns the result.
-
-## Running locally for testing
-
-Sometimes you want to test without deploying to the backend.
-
-### From the command line
-
-```shell
-flyte run --local my_script.py pipeline --x 5
-```
-
-### From Python
-
-```python
-import flyte
-
-result = flyte.with_runcontext(mode="local").run(pipeline, x=5)
-print(result)  # 20
-```
-
-Local runs execute on your machine. They're useful for quick iteration but don't track data in the UI or use remote resources.
+For details on how to run tasks locally and remotely, see [Tasks](./tasks#running-tasks-locally).
 
 ## Viewing runs in the UI
 

@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Key capabilities
 
-Now that you understand the core concepts—TaskEnvironment, tasks, runs, and apps—here's an overview of what Flyte can do. Each capability is covered in detail later in the documentation.
+Now that you understand the core concepts -- `TaskEnvironment`, tasks, runs, and apps -- here's an overview of what Flyte can do. Each capability is covered in detail later in the documentation.
 
 ## Environment and resources
 

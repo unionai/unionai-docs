@@ -1,11 +1,11 @@
 ---
-title: Flyte 2
-weight: 1
+title: From Flyte 1 to Flyte 2
+weight: 5
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
-# Flyte 2
+# From Flyte 1 to Flyte 2
 
 {{< variant flyte >}}
 {{< markdown >}}
@@ -22,30 +22,9 @@ Flyte 2 and Union 2 represent a fundamental shift in how workflows are written a
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< note title="Ready to get started?" >}}
-Ready to get started? Go to the [Quickstart](../quickstart) guide to install Flyte 2 and run your first task.
+{{< note title="New to Flyte?" >}}
+If you're new to Flyte, start with [Why Flyte?](../why-flyte) and the [Quickstart](../quickstart) guide instead. This section is for users migrating from Flyte 1.
 {{< /note >}}
-
-## Pure Python execution
-
-Write workflows in pure Python, enabling a more natural development experience and removing the constraints of a
-domain-specific language (DSL).
-
-{{< tabs "flyte-2-python" >}}
-{{< tab "Sync Python" >}}
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/sync_example.py" fragment="all" lang="python" >}}
-{{< /tab >}}
-{{< tab "Async Python" >}}
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async_example.py" fragment="all" lang="python" >}}
-{{< /tab >}}
-{{< /tabs >}}
-
-As you can see in the hello world example, workflows can be constructed at runtime, allowing for more flexible and
-adaptive behavior. The Flyte 2 also supports:
-
-- Python's asynchronous programming model to express parallelism.
-- Python's native error handling with `try-except` to overridden configurations, like resource requests.
-- Predefined static workflows when compile-time safety is critical.
 
 ## Simplified API
 
@@ -64,15 +43,7 @@ The new API is more intuitive, with fewer abstractions to learn and a focus on s
 There is no `@workflow` decorator. Instead, "workflows" are authored through a pattern of tasks calling tasks.
 Tasks are defined within environments, which encapsulate the context and resources needed for execution.
 
-## Fine-grained reproducibility and recoverability
-
-Flyte tasks support caching via `@env.task(cache=...)`, but tracing with `@flyte.trace` augments task level-caching
-even further enabling reproducibility and recovery at the sub-task function level.
-
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/trace.py" fragment="all" lang="python" >}}
-
-Here the `call_llm` function is called in the same container as `main` that serves as an automated checkpoint with full
-observability in the UI. If the task run fails, the workflow is able to recover and replay from where it left off.
+For details on the pure Python model and async support, see [Pure Python](pure-python) and [Asynchronous model](async).
 
 ## Improved remote functionality
 

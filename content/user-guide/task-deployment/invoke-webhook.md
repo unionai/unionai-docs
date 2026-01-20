@@ -1,6 +1,6 @@
 ---
 title: Running Tasks via Webhooks
-weight: 5
+weight: 8
 variants: -flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
@@ -234,7 +234,7 @@ async def run_task(
         run = await flyte.run.aio(task, **inputs)
 
         return {"url": run.url, "name": run.name}
-    
+
     except flyte.errors.RemoteTaskNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

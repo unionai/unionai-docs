@@ -86,9 +86,9 @@ Create `hello.py`:
 
 Here's what's happening:
 
-- **`TaskEnvironment`** groups configuration for your tasks (container image, resources, etc.)
-- **`@env.task`** turns Python functions into tasks that run in their own containers
-- Both tasks share the same `env`, so they'll have identical container configurations
+- **`TaskEnvironment`** specifies configuration for your tasks (container image, resources, etc.)
+- **`@env.task`** turns Python functions into tasks that run remotely
+- Both tasks share the same `env`, so they'll have identical configurations
 
 ## Run it
 
@@ -127,5 +127,5 @@ Click the link to view your run in the UI:
 
 Now that you've run your first workflow:
 
-- [**Local setup**](./local-setup): Complete your development environment configuration
+- [**Why Flyte?**](./why-flyte): Understand what makes Flyte different
 - [**Flyte basics**](./flyte-basics): Learn core concepts through working examples

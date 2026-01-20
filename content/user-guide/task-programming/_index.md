@@ -1,6 +1,6 @@
 ---
 title: Build tasks
-weight: 7
+weight: 9
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---

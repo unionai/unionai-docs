@@ -1,6 +1,6 @@
 ---
 title: Local setup
-weight: 3
+weight: 6
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -249,6 +249,6 @@ flyte.init(
 
 ## Next steps
 
-With your environment set up, you're ready to learn the core concepts:
+With your environment fully configured, you're ready to build:
 
-- [**Flyte basics**](./flyte-basics): Understand TaskEnvironments, tasks, runs, and actions through working examples
+- [**First project**](./first-project): Build an end-to-end ML system with training and serving
