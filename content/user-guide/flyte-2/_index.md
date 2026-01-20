@@ -41,7 +41,7 @@ domain-specific language (DSL).
 {{< /tabs >}}
 
 As you can see in the hello world example, workflows can be constructed at runtime, allowing for more flexible and
-adaptive behavior. The Flyte 2 also supports:
+adaptive behavior. Flyte 2 supports:
 
 - Python's asynchronous programming model to express parallelism.
 - Python's native error handling with `try-except` to overridden configurations, like resource requests.

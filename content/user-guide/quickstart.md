@@ -38,9 +38,9 @@ Create a config file pointing to your Flyte instance. Replace the placeholder va
 ```shell
 flyte create config \
     --endpoint my-org.my-company.com \
-    --builder local \
     --domain development \
-    --project my-project
+    --project my-project \
+    --builder local
 ```
 
 ### Set up local Docker
@@ -64,9 +64,9 @@ Create a config file pointing to your Union instance. Replace the placeholder va
 ```shell
 flyte create config \
     --endpoint my-org.my-company.com \
-    --builder remote \
     --domain development \
-    --project my-project
+    --project my-project \
+    --builder remote
 ```
 
 {{< /markdown >}}
@@ -86,9 +86,9 @@ Create `hello.py`:
 
 Here's what's happening:
 
-- **`TaskEnvironment`** groups configuration for your tasks (container image, resources, etc.)
-- **`@env.task`** turns Python functions into tasks that run in their own containers
-- Both tasks share the same `env`, so they'll have identical container configurations
+- **`TaskEnvironment`** specifies configuration for your tasks (container image, resources, etc.)
+- **`@env.task`** turns Python functions into tasks that run remotely
+- Both tasks share the same `env`, so they'll have identical configurations
 
 ## Run it
 

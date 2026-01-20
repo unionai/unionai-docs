@@ -39,8 +39,8 @@ As we did in [Quickstart](./quickstart), use `flyte create config` to create a c
 ```shell
 flyte create config \
     --endpoint my-org.my-company.com \
-    --project my-project \
     --domain development \
+    --project my-project \
     --builder remote
 ```
 {{< /markdown >}}
@@ -50,8 +50,8 @@ flyte create config \
 ```shell
 flyte create config \
     --endpoint my-org.my-company.com \
-    --project my-project \
     --domain development \
+    --project my-project \
     --builder local
 ```
 {{< /markdown >}}
@@ -96,11 +96,11 @@ Create a custom config file with all available options:
 ```shell
 flyte create config \
     --endpoint my-org.my-company.com \
-    --insecure \
-    --builder remote \
-    --domain development \
     --org my-org \
+    --domain development \
     --project my-project \
+    --builder remote \
+    --insecure \
     --output my-config.yaml \
     --force
 ```
@@ -112,11 +112,11 @@ Create a custom config file with all available options:
 ```shell
 flyte create config \
     --endpoint my-org.my-company.com \
-    --insecure \
-    --builder local \
-    --domain development \
     --org my-org \
+    --domain development \
     --project my-project \
+    --builder local \
+    --insecure \
     --output my-config.yaml \
     --force
 ```
@@ -159,21 +159,22 @@ You can reference your config file explicitly or let the SDK find it automatical
 
 ### Explicit configuration
 
-**CLI** — Use `--config` or `-c`:
+**CLI**: Use `--config` or `-c`:
 
 ```shell
 flyte --config my-config.yaml run hello.py main
 flyte -c my-config.yaml run hello.py main
 ```
 
-**Python** — Initialize with [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte#init_from_config):
+**Python**: Initialize with [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte#init_from_config):
 
 ```python
 flyte.init_from_config("my-config.yaml")
 run = flyte.run(main)
 ```
 
-### Implicit configuration
+{{< dropdown title="Configuration precedence" icon="control_knobs" >}}
+{{< markdown >}}
 
 Without an explicit path, the SDK searches these locations in order:
 
@@ -183,6 +184,9 @@ Without an explicit path, the SDK searches these locations in order:
 4. `FLYTECTL_CONFIG` environment variable
 5. `~/.union/config.yaml`
 6. `~/.flyte/config.yaml`
+
+{{< /markdown >}}
+{{< /dropdown >}}
 
 **CLI:**
 ```shell
