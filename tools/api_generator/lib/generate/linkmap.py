@@ -11,6 +11,7 @@ def generate_linkmap_metadata(
     classes: ClassPackageMap,
     pkg_root: str,
     api_name: str,
+    include_short_names: bool = False,
 ):
     # Skip the content root (remove first path component: content/a/b/c -> a/b/c)
     site_root = "/".join(pkg_root.split("/")[1:])
@@ -18,18 +19,28 @@ def generate_linkmap_metadata(
     # Build packages metadata from the packages list
     packages_dict = {pkg["name"]: f"/{site_root}/{pkg['name']}/" for pkg in packages}
 
-    # Build identifiers metadata from classes
+    # Build methods metadata
     methods_dict = {}
     for pkg in packages:
         for m in pkg["methods"]:
-            methods_dict[f"{pkg['name']}.{m['name']}"] = f"/{site_root}/{pkg['name']}/#{m['name']}"
+            url = f"/{site_root}/{pkg['name']}/#{m['name']}"
+            # Add fully qualified name
+            methods_dict[f"{pkg['name']}.{m['name']}"] = url
+            # Add short name for easier matching in docs (plugins only)
+            if include_short_names:
+                methods_dict[m['name']] = url
 
-
+    # Build identifiers metadata from classes
     identifiers_dict = {}
     for pkg in classes:
         for clz in classes[pkg]:
-            # Assuming clz has name and url attributes
-            identifiers_dict[clz] = f"/{site_root}/{pkg}/{clz.split(".")[-1:][0].lower()}/"
+            url = f"/{site_root}/{pkg}/{clz.split('.')[-1].lower()}/"
+            # Add fully qualified name
+            identifiers_dict[clz] = url
+            # Add short name for easier matching in docs (plugins only)
+            if include_short_names:
+                short_name = clz.split('.')[-1]
+                identifiers_dict[short_name] = url
 
 
 
