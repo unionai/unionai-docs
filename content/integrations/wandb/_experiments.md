@@ -143,7 +143,7 @@ async def must_share_run(x: int) -> int:
 
 ## Configuration with `wandb_config`
 
-Use `wandb_config()` to configure W&B runs. You can set it at the workflow level or override it for specific tasks.
+Use `wandb_config()` to configure W&B runs. You can set it at the workflow level or override it for specific tasks, allowing you to provide configuration values at runtime.
 
 ### Workflow-level configuration
 
