@@ -1,6 +1,6 @@
 ---
 title: Local setup
-weight: 3
+weight: 6
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -260,6 +260,6 @@ See related methods:
 
 ## Next steps
 
-With your environment set up, you're ready to learn the core concepts:
+With your environment fully configured, you're ready to build:
 
 - [**Flyte basics**](./flyte-basics): Understand `TaskEnvironment`s, tasks, runs, and actions through working examples.

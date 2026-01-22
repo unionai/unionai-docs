@@ -127,5 +127,5 @@ Click the link to view your run in the UI:
 
 Now that you've run your first workflow:
 
-- [**Local setup**](./local-setup): Complete your development environment configuration
+- [**Why Flyte?**](./why-flyte): Understand what makes Flyte different
 - [**Flyte basics**](./flyte-basics): Learn core concepts through working examples

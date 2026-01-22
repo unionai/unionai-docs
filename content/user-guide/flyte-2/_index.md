@@ -1,11 +1,11 @@
 ---
-title: Flyte 2
-weight: 1
+title: From Flyte 1 to Flyte 2
+weight: 5
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
-# Flyte 2
+# From Flyte 1 to Flyte 2
 
 {{< variant flyte >}}
 {{< markdown >}}
@@ -22,8 +22,8 @@ Flyte 2 and Union 2 represent a fundamental shift in how workflows are written a
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< note title="Ready to get started?" >}}
-Ready to get started? Go to the [Quickstart](../quickstart) guide to install Flyte 2 and run your first task.
+{{< note title="New to Flyte?" >}}
+If you're new to Flyte, start with [Why Flyte?](../why-flyte) and the [Quickstart](../quickstart) guide instead. This section is for users migrating from Flyte 1.
 {{< /note >}}
 
 ## Pure Python execution

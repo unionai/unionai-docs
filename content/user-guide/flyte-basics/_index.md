@@ -7,7 +7,7 @@ sidebar_expanded: true
 
 # Flyte basics
 
-Now that you've completed the [Quickstart](../quickstart) and [set up your local environment](../local-setup), let's explore Flyte's core concepts through working examples.
+Now that you've completed the [Quickstart](../quickstart), let's explore Flyte's core concepts through working examples.
 
 By the end of this section, you'll understand:
 
