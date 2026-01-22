@@ -35,7 +35,7 @@ This notebook demonstrates a production-ready pattern for processing millions of
 - Data validation against third-party services
 
 **The Problem:** When you have so many inputs that you must:
-1. Split them into batches 
+1. Split them into batches
 2. Submit each batch to an external service and wait for completion
 3. Handle failures without losing progress
 4. Optimize resource usage across thousands of operations
@@ -68,11 +68,11 @@ Instead of creating a new container for each task:
 - **Resource optimization:** Dramatically reduced startup overhead
 
 ### Key Benefits:
-- **Automatic checkpointing** at batch and operation boundaries  
-- **Resume from last successful point** on any failure  
-- **No wasted compute** - never re-execute completed work  
-- **Massive parallelism** - process thousands of batches concurrently  
-- **Cost efficient** - container reuse minimizes cold-start overhead  
+- **Automatic checkpointing** at batch and operation boundaries
+- **Resume from last successful point** on any failure
+- **No wasted compute** - never re-execute completed work
+- **Massive parallelism** - process thousands of batches concurrently
+- **Cost efficient** - container reuse minimizes cold-start overhead
 
 ### Architecture Flow:
 ```
@@ -91,8 +91,8 @@ Instead of creating a new container for each task:
 
 **Diagram shows:**
 - Input data split into batches
-- Reusable container pool 
-- Concurrent processing within each replica 
+- Reusable container pool
+- Concurrent processing within each replica
 - Submit and wait phases with `@flyte.trace` checkpoints
 - Parallel execution across all batches
 
@@ -210,27 +210,27 @@ Instead of creating a new Kubernetes Pod for every task execution, Reusable Cont
 # Create a TaskEnvironment with Reusable Containers for batch processing
 batch_env = flyte.TaskEnvironment(
     name="batch_processor",  # Name used for Kubernetes pods: batch_processor-<hash>
-    
+
     # Resource allocation per replica (per pod)
     resources=flyte.Resources(
         memory="2Gi",  # Memory per replica
         cpu="1"        # CPU cores per replica
     ),
-    
+
     # Reusable container configuration
     reusable=flyte.ReusePolicy(
         # Number of replica pods to maintain
         # (min, max) - scales between these values based on workload
         replicas=(3, 10),  # Start with 3, scale up to 10 as needed
-        
+
         # Concurrency: How many items each replica processes simultaneously
         # Higher = more throughput per replica, but more memory usage
         concurrency=5,  # Each pod handles 5 concurrent operations
-        
+
         # How long idle replicas stay alive before being torn down
         idle_ttl=timedelta(minutes=5),  # Keep warm for 5 minutes
     ),
-    
+
     # Use the container image we defined earlier
     image=image,
 )
@@ -239,7 +239,7 @@ batch_env = flyte.TaskEnvironment(
 # With replicas=(3, 10) and concurrency=5:
 # - Minimum concurrent processing: 3 replicas × 5 concurrency = 15 operations
 # - Maximum concurrent processing: 10 replicas × 5 concurrency = 50 operations
-# 
+#
 # For 1,000 batches with these settings:
 # - Best case: 50 batches processing simultaneously
 # - Time to process all: ~20 rounds of execution
@@ -247,11 +247,11 @@ batch_env = flyte.TaskEnvironment(
 
 ### Understanding TaskEnvironment Parameters
 
-**name:** 
+**name:**
 - Used as the prefix for Kubernetes pod names
 - Example: `batch_processor-abc123`
 
-**resources:** 
+**resources:**
 - Compute resources allocated to *each replica*
 - Set based on your task's memory and CPU needs
 - Tip: Monitor actual usage and adjust accordingly
@@ -287,19 +287,19 @@ The orchestrator task coordinates all batch processing but doesn't need containe
 # Create a separate environment for the orchestrator task
 orchestrator_env = flyte.TaskEnvironment(
     name="orchestrator",
-    
+
     # depends_on: Use the same image as batch_env (avoids rebuilding)
     # Flyte will build batch_env's image first, then reuse it here.
     # This is also needed as the orchestrator task calls batch tasks that use batch_env.
     depends_on=[batch_env],
-    
+
     # Orchestrator needs more memory to track all batch executions
     # but doesn't need reusable containers (runs once per workflow)
     resources=flyte.Resources(
         memory="4Gi",  # More memory to manage many parallel batches
         cpu="1"        # Single CPU is sufficient for orchestration
     ),
-    
+
     image=image,  # Same image, different resource allocation
 )
 ```
@@ -322,22 +322,22 @@ This separation optimizes both cost and performance.
 
 ## Step 4: Define External Service Interactions
 
-These helper functions simulate interactions with external services (APIs, web scraping, etc.). 
+These helper functions simulate interactions with external services (APIs, web scraping, etc.).
 
 
 ```python
 async def submit_to_service(request_id: int) -> str:
     """
     Submit a request to an external service and get a job ID.
-    
+
     This simulates the "submit" phase of a batch job pattern where you:
     1. Send data to an external service
     2. Receive a job/task ID for tracking
     3. Use that ID to poll for completion later
-    
+
     PRODUCTION IMPLEMENTATION:
     Replace this simulation with your actual service call:
-    
+
     ```python
     async with httpx.AsyncClient() as client:
         response = await client.post(
@@ -348,10 +348,10 @@ async def submit_to_service(request_id: int) -> str:
         response.raise_for_status()
         return response.json()["job_id"]
     ```
-    
+
     Args:
         request_id: Unique identifier for this request
-        
+
     Returns:
         job_id: Identifier to track this job's progress
     """
@@ -363,19 +363,19 @@ async def submit_to_service(request_id: int) -> str:
 async def poll_job_status(job_id: str, request_id: int) -> int:
     """
     Poll an external service until a job completes and return results.
-    
+
     This simulates the "wait" phase where you:
     1. Repeatedly check if a submitted job has completed
     2. Wait between checks to avoid overwhelming the service
     3. Return the final result when ready
-    
+
     PRODUCTION IMPLEMENTATION:
     Replace this simulation with your actual polling logic:
-    
+
     ```python
     async with httpx.AsyncClient() as client:
         max_attempts = 60  # 5 minutes with 5-second intervals
-        
+
         for attempt in range(max_attempts):
             response = await client.get(
                 f"https://your-service.com/api/status/{job_id}",
@@ -383,22 +383,22 @@ async def poll_job_status(job_id: str, request_id: int) -> int:
             )
             response.raise_for_status()
             status = response.json()
-            
+
             if status["state"] == "completed":
                 return status["result"]
             elif status["state"] == "failed":
                 raise Exception(f"Job {job_id} failed: {status['error']}")
-            
+
             # Wait before next poll
             await asyncio.sleep(5)
-        
+
         raise TimeoutError(f"Job {job_id} did not complete in time")
     ```
-    
+
     Args:
         job_id: The job identifier from submit_to_service
         request_id: Original request ID for logging/tracking
-        
+
     Returns:
         result: The processed result from the external service
     """
@@ -436,20 +436,20 @@ This is the heart of the pattern. The `process_batch` task processes a batch of 
 async def process_batch(batch_start: int, batch_end: int) -> List[int]:
     """
     Process a single batch of items with checkpointed phases.
-    
+
     This function demonstrates the core micro-batching pattern with:
     1. Two-phase processing (submit → wait)
     2. Automatic checkpointing via @flyte.trace
     3. Error handling without stopping the entire batch
     4. Concurrent processing within the batch
-    
+
     Args:
         batch_start: Starting index for this batch (inclusive)
         batch_end: Ending index for this batch (exclusive)
-        
+
     Returns:
         List of processed results (or -1 for failed items)
-        
+
     Example:
         process_batch(0, 1000) processes items 0-999
         process_batch(1000, 2000) processes items 1000-1999
@@ -462,25 +462,25 @@ async def process_batch(batch_start: int, batch_end: int) -> List[int]:
     async def submit_phase(items: List[int]) -> Dict[int, str]:
         """
         Submit all items concurrently and collect job IDs.
-        
+
         This function:
         1. Launches submit_to_service() for ALL items simultaneously
         2. Waits for all submissions to complete with asyncio.gather()
         3. Handles errors gracefully (return_exceptions=True)
         4. Maps each request_id to its job_id (or None if failed)
-        
+
         Why @flyte.trace here:
         - If this phase succeeds but wait_phase fails, we don't re-submit
         - Checkpointed data includes all job_ids for the wait phase
         - Forward recovery from exact failure point
-    
+
         """
 
         job_ids = await asyncio.gather(
             *(submit_to_service(request_id=x) for x in items),
             return_exceptions=True  # Don't stop on individual failures
         )
-        
+
         # Map request IDs to job IDs (or None for failures)
         job_mapping = {}
         for request_id, job_id in zip(items, job_ids):
@@ -489,7 +489,7 @@ async def process_batch(batch_start: int, batch_end: int) -> List[int]:
                 job_mapping[request_id] = None  # Mark as failed
             else:
                 job_mapping[request_id] = job_id
-        
+
         return job_mapping
 
     # ========================================
@@ -499,18 +499,18 @@ async def process_batch(batch_start: int, batch_end: int) -> List[int]:
     async def wait_phase(job_mapping: Dict[int, str]) -> List[int]:
         """
         Poll all submitted jobs until completion.
-        
+
         This function:
         1. Takes the checkpointed job_mapping from submit_phase
         2. Polls all jobs concurrently
         3. Handles polling errors gracefully
         4. Returns final results
-        
+
         WHY @flyte.trace HERE:
         - If polling fails partway through, we resume with cached job_mapping
         - Don't re-submit jobs that were already submitted
         - Each successful poll is checkpointed
-        
+
         ERROR HANDLING:
         - Jobs that failed in submit_phase (None) are skipped
         - Polling failures are caught and marked as -1
@@ -526,7 +526,7 @@ async def process_batch(batch_start: int, batch_end: int) -> List[int]:
             ),
             return_exceptions=True  # Don't stop on individual failures
         )
-        
+
         # Process results and handle errors
         processed_results = []
         for request_id, result in zip(job_mapping.keys(), results):
@@ -535,38 +535,38 @@ async def process_batch(batch_start: int, batch_end: int) -> List[int]:
                 processed_results.append(-1)  # Mark as failed
             else:
                 processed_results.append(result)
-        
+
         return processed_results
-    
+
     # ========================================
     # EXECUTE BOTH PHASES SEQUENTIALLY
     # ========================================
     # Create the list of items for this batch
     items = list(range(batch_start, batch_end))
-    
+
     # Phase 1: Submit all items and get job IDs (checkpointed)
     job_mapping = await submit_phase(items)
-    
+
     # Phase 2: Wait for all jobs to complete (checkpointed)
     results = await wait_phase(job_mapping)
-    
+
     # Log batch completion stats
     successful = len([r for r in results if r != -1])
     print(f"Batch {batch_start}-{batch_end}: {successful}/{len(results)} successful")
-    
+
     return results
 
 # ========================================
 # CHECKPOINT & RECOVERY BEHAVIOR
 # ========================================
-# 
+#
 # Scenario 1: Task fails during submit_phase
 # → Retries resume from last checkpoint
-# 
+#
 # Scenario 2: Task fails after submit_phase completes
 # → Resumes directly to wait_phase with cached job_mapping
 # → No re-submissions!
-# 
+#
 # Scenario 3: Task fails during wait_phase
 # → Resumes wait_phase with cached job_mapping
 # → Already-polled jobs are not polled again (Flyte makes operations idempotent)
@@ -607,29 +607,29 @@ async def microbatch_workflow(
 ) -> List[int]:
     """
     Main task orchestrating the entire micro-batching process.
-    
+
     This task:
     1. Calculates optimal batch distribution
     2. Launches all batch tasks in parallel
     3. Aggregates results from completed batches
     4. Provides comprehensive execution statistics
-    
+
     Args:
         total_items: Total number of items to process (default: 1M)
         batch_size: Number of items per batch (default: 1K)
-        
+
     Returns:
         Aggregated results from all batches (list of processed values)
-        
+
     Execution Flow:
         1M items → 1,000 batches → Parallel execution → Aggregated results
-        
+
     Resource Usage:
         - This task: 4Gi memory, 1 CPU (orchestration only)
         - Each batch task: 2Gi memory, 1 CPU (from batch_env)
         - Reusable containers handle actual processing
     """
-    
+
     # ========================================
     # STEP 1: CALCULATE BATCH DISTRIBUTION
     # ========================================
@@ -638,12 +638,12 @@ async def microbatch_workflow(
         (start, min(start + batch_size, total_items))
         for start in range(0, total_items, batch_size)
     ]
-    
+
     print(f"Processing {total_items:,} items in {len(batches):,} batches of size {batch_size:,}")
     print(f"Expected parallelism: {batch_env.reusable.replicas[0]}-{batch_env.reusable.replicas[1]} replicas")
     print(f"Concurrency per replica: {batch_env.reusable.concurrency}")
     print(f"Max simultaneous batches: {batch_env.reusable.replicas[1] * batch_env.reusable.concurrency}")
-    
+
     # ========================================
     # STEP 2: LAUNCH ALL BATCHES IN PARALLEL
     # ========================================
@@ -652,18 +652,18 @@ async def microbatch_workflow(
     # - All execute concurrently within container pool limits
     # - Reusable containers handle the workload efficiently
     # - return_exceptions=True prevents one batch failure from stopping all
-    
+
     print(f"\n Launching {len(batches):,} parallel batch tasks...")
-    
+
     # Rate limiter to control API throughput
     max_concurrent_batches = 10  # Adjust based on API rate limits
     semaphore = asyncio.Semaphore(max_concurrent_batches)
-    
+
     async def rate_limited_batch(start: int, end: int):
         """Wrapper to enforce rate limiting on batch processing."""
         async with semaphore:
             return await process_batch(batch_start=start, batch_end=end)
-    
+
     batch_results = await asyncio.gather(
         *(rate_limited_batch(start, end) for start, end in batches),
         return_exceptions=True  # Isolated failure handling per batch
@@ -674,7 +674,7 @@ async def microbatch_workflow(
     all_results = []
     failed_batches = 0
     failed_items = 0
-    
+
     for i, batch_result in enumerate(batch_results):
         if isinstance(batch_result, Exception):
             # Entire batch failed (task-level failure)
@@ -684,11 +684,11 @@ async def microbatch_workflow(
             # Batch completed, but individual items may have failed
             all_results.extend(batch_result)
             failed_items += len([r for r in batch_result if r == -1])
-    
+
     # Calculate final statistics
     success_count = len([r for r in all_results if r != -1])
     total_processed = len(all_results)
-    
+
     # ========================================
     # STEP 4: REPORT EXECUTION SUMMARY
     # ========================================
@@ -706,7 +706,7 @@ async def microbatch_workflow(
     print(f" Success rate:           {success_count / total_items * 100:.2f}%")
     print(f" Items processed:        {total_processed:,} / {total_items:,}")
     print(f"{'=' * 60}\n")
-    
+
     return all_results
 
 # ========================================
@@ -769,11 +769,11 @@ if __name__ == "__main__":
     print(f"Expected batches: {NUMBER_OF_INPUTS // BATCH_SIZE:,}")
     print("=" * 60)
     print()
-    
+
     # Launch the workflow remotely (runs on Flyte cluster)
     # The 'await' is needed because flyte.run.aio() is async
     r = await flyte.run.aio(microbatch_workflow)
-    
+
     # Print execution details
     print(f"\n{'=' * 60}")
     print(f" EXECUTION STARTED")
@@ -787,7 +787,7 @@ if __name__ == "__main__":
     print(f"   • Inspect logs for each batch")
     print(f"   • Analyze resource utilization")
     print(f"{'=' * 60}\n")
-    
+
 
 # ========================================
 # MONITORING AND DEBUGGING TIPS
