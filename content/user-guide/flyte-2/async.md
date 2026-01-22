@@ -22,12 +22,7 @@ It is also a natural fit for the expression parallelism in workflows.
 
 ### Understanding concurrency vs. parallelism
 
-Before diving into Flyte 2's approach, it's essential to understand the distinction between concurrency and parallelism:
-
-| Concurrency | Parallelism |
-| --- | --- |
-| Dealing with multiple tasks at once through interleaved execution, even on a single thread. | Executing multiple tasks truly simultaneously across multiple cores or machines. |
-| Performance benefits come from allowing the system to switch between tasks when one is waiting for external operations. | This is a subset of concurrency where tasks run at the same time rather than being interleaved. |
+**Concurrency** means running multiple tasks at once. This can be achieved by interleaving execution on a single thread (switching between tasks when one is waiting) or by true **parallelism**—executing tasks truly simultaneously across multiple cores or machines. Parallelism is a form of concurrency, but concurrency doesn't require parallelism.
 
 ### Python's async evolution
 
@@ -78,11 +73,11 @@ This means you achieve true parallelism for:
 
 The Flyte platform handles the complex orchestration while you express parallelism using intuitive `async` syntax.
 
-## Bridging the transition: Sync support and migration tools
+## Calling sync tasks from async tasks
 
-### Seamless synchronous task support
+### Synchronous task support
 
-Recognizing that many existing codebases use synchronous functions, Flyte 2 provides seamless backward compatibility:
+Since many existing codebases use synchronous functions, Flyte 2 provides synchronous support:
 
 {{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async/async.py" fragment="calling-sync-from-async" lang="python" >}}
 
