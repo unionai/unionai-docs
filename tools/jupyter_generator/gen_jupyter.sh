@@ -6,9 +6,9 @@ if [[ $VERBOSE -eq 1 ]]; then
     set -x
 fi
 
-if ! command jupyter --version > /dev/null; then
-    echo "Please install jupyter"
-    exit 1
+if ! command -v jupyter > /dev/null 2>&1; then
+    echo "Jupyter not installed, skipping notebook conversion (using committed files)"
+    exit 0
 fi
 
 declare content
