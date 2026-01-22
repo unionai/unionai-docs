@@ -93,14 +93,14 @@ Where `app` is the variable name of the `AppEnvironment` object.
 
 - `url`: The app's URL
 - `endpoint`: The app's endpoint URL
-- `status`: Current status of the app
+- `deployment_status`: Current status of the app
 - `name`: App name
 
 ```python
 app = flyte.serve(app_env)
 print(f"URL: {app.url}")
 print(f"Endpoint: {app.endpoint}")
-print(f"Status: {app.status}")
+print(f"Status: {app.deployment_status}")
 ```
 
 ## Best practices
