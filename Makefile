@@ -14,6 +14,8 @@ usage:
 base:
 	@if ! ./scripts/pre-build-checks.sh; then exit 1; fi
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
+	@echo "Converting Jupyter notebooks..."
+	@./tools/jupyter_generator/gen_jupyter.sh
 	rm -rf dist
 	mkdir -p dist
 	mkdir -p dist/docs
@@ -67,9 +69,6 @@ update-examples:
 
 init-examples:
 	git submodule update --init
-
-check-jupyter:
-	./tools/jupyter_generator/check_jupyter.sh
 
 check-images:
 	./scripts/check_images.sh
