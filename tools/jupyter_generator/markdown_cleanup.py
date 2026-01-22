@@ -24,6 +24,18 @@ def process_file(file_path):
 
     content = docs_url_pattern.sub(replace_docs_url, content)
 
+    # Adjust heading levels: ## -> #, ### -> ##, etc.
+    # This ensures notebooks that start with ## get proper # titles
+    def adjust_heading(match):
+        hashes = match.group(1)
+        text = match.group(2)
+        if len(hashes) > 1:
+            return '#' * (len(hashes) - 1) + ' ' + text
+        return match.group(0)  # Don't change # headings
+
+    heading_pattern = re.compile(r'^(#{2,6})\s+(.+)$', re.MULTILINE)
+    content = heading_pattern.sub(adjust_heading, content)
+
     # Remove all <style>...</style> blocks
     style_pattern = re.compile(r'<style.*?>.*?</style>', re.DOTALL)
     content = style_pattern.sub('', content)
