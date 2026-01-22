@@ -116,15 +116,11 @@ for file in $content; do
    comment at the top of the file.
 
 -->
-
-{{< right mb="2rem" >}}
-{{< download "${nb_repo_link}" "Download this notebook" >}}
-{{< /right >}}
 EOF
     echo "" >> "$file.new"
     cat "$tmp_file" \
         | sed -e "s#\($(basename "$file" .md).gen_files\)#./\1#" \
-        | python tools/jupyter_generator/markdown_cleanup.py \
+        | NOTEBOOK_LINK="$nb_repo_link" python tools/jupyter_generator/markdown_cleanup.py \
         >> "$file.new"
 
     # Replace original file and clean up

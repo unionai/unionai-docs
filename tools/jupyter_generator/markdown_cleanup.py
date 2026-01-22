@@ -1,5 +1,6 @@
 import sys
 import re
+import os
 import htmltabletomd
 
 def process_file(file_path):
@@ -35,6 +36,15 @@ def process_file(file_path):
 
     heading_pattern = re.compile(r'^(#{2,6})\s+(.+)$', re.MULTILINE)
     content = heading_pattern.sub(adjust_heading, content)
+
+    # Insert download link after the first # heading
+    notebook_link = os.environ.get('NOTEBOOK_LINK')
+    if notebook_link:
+        first_heading_pattern = re.compile(r'^(# .+)$', re.MULTILINE)
+        match = first_heading_pattern.search(content)
+        if match:
+            download_shortcode = f'\n\n{{{{< download "{notebook_link}" "Download this notebook" >}}}}\n'
+            content = content[:match.end()] + download_shortcode + content[match.end():]
 
     # Remove all <style>...</style> blocks
     style_pattern = re.compile(r'<style.*?>.*?</style>', re.DOTALL)

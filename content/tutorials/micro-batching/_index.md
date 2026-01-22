@@ -14,11 +14,10 @@ jupyter_notebook: /external/unionai-examples/v2/tutorials/batching_patterns/batc
 
 -->
 
-{{< right mb="2rem" >}}
-{{< download "https://github.com/unionai/unionai-examples/blob/main/v2/tutorials/batching_patterns/batch_processing.ipynb" "Download this notebook" >}}
-{{< /right >}}
-
 # Union Solutions Note: Batching Strategies for efficient scale
+
+{{< download "https://github.com/unionai/unionai-examples/blob/main/v2/tutorials/batching_patterns/batch_processing.ipynb" "Download this notebook" >}}
+
 
 This notebook demonstrates a production-ready pattern for processing millions of items efficiently using Flyte v2's advanced features. You'll learn how to build resilient, scalable workflows that can handle failures gracefully and optimize resource consumption.
 
