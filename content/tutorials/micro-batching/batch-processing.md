@@ -586,7 +586,7 @@ async def process_batch(batch_start: int, batch_end: int) -> List[int]:
 - Ensure traced functions are idempotent when possible
 - Keep traced function signatures simple (serializable inputs/outputs)
 
-See the [Traces](https://www.union.ai/docs/v2/byoc/user-guide/task-programming/traces/) docs for more details on how it works
+See the [Traces]({{< docs_home byoc v2 >}}/user-guide/task-programming/traces/) docs for more details on how it works
 
 ## Step 6: Implement the Orchestrator Workflow
 
@@ -823,7 +823,7 @@ On execution, this is what this example looks like at the Kubernetes level:
 
 ![](./images/reusable-containers-k8s.png)
 
-This is, 10 replicas (as defined in the `TaskEnvironment`) and the driver Pod that runs the parent task (`a0`). [Learn more about the parent task](https://www.union.ai/docs/v2/byoc/user-guide/considerations/#driver-pod-requirements).
+This is, 10 replicas (as defined in the `TaskEnvironment`) and the driver Pod that runs the parent task (`a0`). [Learn more about the parent task]({{< docs_home byoc v2 >}}/user-guide/considerations/#driver-pod-requirements).
 
 ## Batch Size Selection
 
@@ -838,7 +838,7 @@ This is, 10 replicas (as defined in the `TaskEnvironment`) and the driver Pod th
 - Failure tolerance (critical = smaller batches for faster recovery)
 - Total workload size (larger total = can use larger batches)
 
-Read the [Optimization strategies](https://www.union.ai/docs/v2/byoc/user-guide/run-scaling/scale-your-workflows/#2-batch-workloads-to-reduce-overhead) page to understand the overheads associated with an execution and how to choose the appropiate batch size.
+Read the [Optimization strategies]({{< docs_home byoc v2 >}}/user-guide/run-scaling/scale-your-workflows/#2-batch-workloads-to-reduce-overhead) page to understand the overheads associated with an execution and how to choose the appropiate batch size.
 
 
 
@@ -863,5 +863,5 @@ This notebook demonstrated a production-ready micro-batching pattern for Flyte v
 - Test with your actual dataset
 - Monitor and optimize based on production metrics
 
-For questions or issues, refer to [Flyte v2 documentation](https://www.union.ai/docs/v2/byoc/user-guide/flyte-2/) or reach out to [Union.ai support](https://www.union.ai/consultation).
+For questions or issues, refer to [Flyte v2 documentation]({{< docs_home byoc v2 >}}/user-guide/flyte-2/) or reach out to [Union.ai support](https://www.union.ai/consultation).
 

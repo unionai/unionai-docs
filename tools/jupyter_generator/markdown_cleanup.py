@@ -10,6 +10,20 @@ def process_file(file_path):
         print(f"Error reading from stdin: {e}", file=sys.stderr)
         sys.exit(1)
 
+    # Convert absolute union.ai docs URLs to relative shortcode links
+    # Pattern: https://www.union.ai/docs/v2/{variant}/{path}
+    # Result: {{< docs_home {variant} v2 >}}/{path}
+    docs_url_pattern = re.compile(
+        r'https://www\.union\.ai/docs/(v\d+)/(flyte|byoc|serverless|selfmanaged)/([^\s\)\"\'>\]]+)'
+    )
+    def replace_docs_url(match):
+        version = match.group(1)
+        variant = match.group(2)
+        path = match.group(3)
+        return f'{{{{< docs_home {variant} {version} >}}}}/{path}'
+
+    content = docs_url_pattern.sub(replace_docs_url, content)
+
     # Remove all <style>...</style> blocks
     style_pattern = re.compile(r'<style.*?>.*?</style>', re.DOTALL)
     content = style_pattern.sub('', content)
