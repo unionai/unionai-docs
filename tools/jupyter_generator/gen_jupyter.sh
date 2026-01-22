@@ -88,6 +88,14 @@ for file in $content; do
         rm -rf "$gen_files_dir"
     fi
 
+    # Copy images directory from notebook source if it exists
+    notebook_dir="$(dirname ".$notebook")"
+    if [[ -d "$notebook_dir/images" ]]; then
+        echo "Copying images from $notebook_dir/images to $output_dir/images"
+        mkdir -p "$output_dir/images"
+        cp -R "$notebook_dir/images/"* "$output_dir/images/"
+    fi
+
     jupyter nbconvert --to markdown ".$notebook" --output-dir "$output_dir" --output "$(basename "$file" .md).gen"
 
     # Save the front matter from the original file and append the new content
