@@ -66,13 +66,16 @@ Tasks are defined within environments, which encapsulate the context and resourc
 
 ## Fine-grained reproducibility and recoverability
 
-Flyte tasks support caching via `@env.task(cache=...)`, but tracing with `@flyte.trace` augments task level-caching
-even further enabling reproducibility and recovery at the sub-task function level.
+As in Flyte 1, Flyte 2 supports caching at the task level (via `@env.task(cache=...)`), but it further enables recovery at the finer-grained, sub-task level through a feature called tracing (via `@flyte.trace`).
 
 {{< code file="/external/unionai-examples/v2/user-guide/flyte-2/trace.py" fragment="all" lang="python" >}}
 
-Here the `call_llm` function is called in the same container as `main` that serves as an automated checkpoint with full
-observability in the UI. If the task run fails, the workflow is able to recover and replay from where it left off.
+Here `call_llm` runs in the same container as `main` and acts as an automated checkpoint with full observability in the UI.
+If the task fails due to a system error (e.g., node preemption or infrastructure failure), Flyte can recover and replay from the
+last successful trace rather than restarting from the beginning.
+
+Note that tracing is distinct from caching: traces are recovered only if there is a system failure
+whereas with cached outputs are persisted for reuse across separate runs.
 
 ## Improved remote functionality
 
@@ -101,7 +104,7 @@ Author and run workflows and fetch workflow metadata (I/O and logs) directly fro
 Schedule tasks in milliseconds with reusable containers, which massively increases the throughput of containerized tasks.
 
 {{< /markdown >}}
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/reuse.py" fragment="env" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/reuse.py" fragment="env" lang="python" >}}
 {{< markdown >}}
 
 Coupled with multi-cluster, multi-cloud, and multi-region support, Flyte 2 can scale to handle even the most demanding

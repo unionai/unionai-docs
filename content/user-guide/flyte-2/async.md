@@ -77,12 +77,10 @@ The Flyte platform handles the complex orchestration while you express paralleli
 
 ### Synchronous task support
 
-Since many existing codebases use synchronous functions, Flyte 2 provides synchronous support:
+Since many existing codebases use synchronous functions, Flyte 2 provides synchronous support. Under the hood, Flyte automatically "asyncifies" synchronous functions, wrapping them to participate seamlessly in the async execution model.
+You don't need to rewrite existing code, just leverage the `.aio()` method when calling sync tasks from async contexts:
 
 {{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async/async.py" fragment="calling-sync-from-async" lang="python" >}}
-
-Under the hood, Flyte automatically "asyncifies" synchronous functions, wrapping them to participate seamlessly in the async execution model.
-You don't need to rewrite existing code—just leverage the `.aio()` method when calling sync tasks from async contexts.
 
 ### The `flyte.map` function: Familiar patterns
 

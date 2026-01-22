@@ -19,8 +19,10 @@ Configure how and where your code runs.
   → [Resources](../task-configuration/resources)
 
 {{< variant byoc serverless selfmanaged >}}
+{{< markdown >}}
 - **Reusable containers**: Eliminate container startup overhead with pooled, warm containers for millisecond-level task scheduling
   → [Reusable containers](../task-configuration/reusable-containers)
+{{< /markdown >}}
 {{< /variant >}}
 
 ## Deployment
@@ -28,8 +30,10 @@ Configure how and where your code runs.
 Get your code running remotely.
 
 {{< variant byoc serverless selfmanaged >}}
+{{< markdown >}}
 - **Cloud image building**: Build container images remotely without needing local Docker
   → [Container images](../task-configuration/container-images)
+{{< /markdown >}}
 {{< /variant >}}
 
 - **Code packaging**: Your local code is automatically bundled and deployed to remote execution
