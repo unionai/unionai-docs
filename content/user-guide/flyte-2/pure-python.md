@@ -18,7 +18,7 @@ Flyte 2 introduces a new way of writing workflows that is based on pure Python, 
 
 {{< tabs "whats-new-dsl-to-python" >}}
 {{< tab "Flyte 1" >}}
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/pure-python/flyte_1.py" fragment="all" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/pure-python/flyte_1.py" lang="python" >}}
 {{< /tab >}}
 {{< tab "Flyte 2" >}}
 {{< code file="/external/unionai-examples/v2/user-guide/flyte-2/pure-python/flyte_2.py" fragment="all" lang="python" >}}
