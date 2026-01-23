@@ -3,7 +3,7 @@ title: Batching strategies
 weight: 1
 variants: +flyte -serverless -byoc -selfmanaged
 jupyter_notebook: /external/unionai-examples/v2/tutorials/batching_patterns/batch_processing.ipynb
-content_hash: 1784f89685fc7316b87814dea48cbb8902bee0a41aa04118ae58d437ce85c9ce
+content_hash: 896e9043d9b7717348dab812013db544ea0a48a8ba12bb5103bac095d9cd1155
 ---
 
 <!--
@@ -863,5 +863,4 @@ This notebook demonstrated a production-ready micro-batching pattern for Flyte v
 - Test with your actual dataset
 - Monitor and optimize based on production metrics
 
-For questions or issues, refer to [Flyte v2 documentation]({{< docs_home byoc v2 >}}/user-guide/flyte-2/) or reach out to [Union.ai support](https://www.union.ai/consultation).
 
