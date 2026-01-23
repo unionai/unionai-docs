@@ -1,5 +1,5 @@
 ---
-title: Batching strategies for efficient scale
+title: Batching strategies
 weight: 1
 variants: +flyte -serverless -byoc -selfmanaged
 jupyter_notebook: /external/unionai-examples/v2/tutorials/batching_patterns/batch_processing.ipynb
@@ -34,7 +34,7 @@ This notebook demonstrates a production-ready pattern for processing millions of
 - Data validation against third-party services
 
 **The Problem:** When you have so many inputs that you must:
-1. Split them into batches 
+1. Split them into batches
 2. Submit each batch to an external service and wait for completion
 3. Handle failures without losing progress
 4. Optimize resource usage across thousands of operations
@@ -67,11 +67,11 @@ Instead of creating a new container for each task:
 - **Resource optimization:** Dramatically reduced startup overhead
 
 ### Key Benefits:
-- **Automatic checkpointing** at batch and operation boundaries  
-- **Resume from last successful point** on any failure  
-- **No wasted compute** - never re-execute completed work  
-- **Massive parallelism** - process thousands of batches concurrently  
-- **Cost efficient** - container reuse minimizes cold-start overhead  
+- **Automatic checkpointing** at batch and operation boundaries
+- **Resume from last successful point** on any failure
+- **No wasted compute** - never re-execute completed work
+- **Massive parallelism** - process thousands of batches concurrently
+- **Cost efficient** - container reuse minimizes cold-start overhead
 
 ### Architecture Flow:
 ```
@@ -90,8 +90,8 @@ Instead of creating a new container for each task:
 
 **Diagram shows:**
 - Input data split into batches
-- Reusable container pool 
-- Concurrent processing within each replica 
+- Reusable container pool
+- Concurrent processing within each replica
 - Submit and wait phases with `@flyte.trace` checkpoints
 - Parallel execution across all batches
 
@@ -246,11 +246,11 @@ batch_env = flyte.TaskEnvironment(
 
 #### Understanding TaskEnvironment Parameters
 
-**name:** 
+**name:**
 - Used as the prefix for Kubernetes pod names
 - Example: `batch_processor-abc123`
 
-**resources:** 
+**resources:**
 - Compute resources allocated to *each replica*
 - Set based on your task's memory and CPU needs
 - Tip: Monitor actual usage and adjust accordingly
@@ -321,7 +321,7 @@ This separation optimizes both cost and performance.
 
 ### Step 4: Define External Service Interactions
 
-These helper functions simulate interactions with external services (APIs, web scraping, etc.). 
+These helper functions simulate interactions with external services (APIs, web scraping, etc.).
 
 
 ```python
