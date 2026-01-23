@@ -105,6 +105,7 @@ for file in $content; do
     # Create a new file with front matter and converted content
     echo '---' > "$file.new"
     echo "$front_matter" | grep -v '^---' | grep -v content_hash >> "$file.new"
+    echo "content_hash: $(shasum -a 256 ".$notebook" | cut -d ' ' -f 1)" >> "$file.new"
     echo '---' >> "$file.new"
     echo "" >> "$file.new"
     cat <<EOF >> "$file.new"

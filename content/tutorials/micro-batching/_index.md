@@ -3,6 +3,7 @@ title: Supermarket regression notebook
 weight: 1
 variants: +flyte -serverless -byoc -selfmanaged
 jupyter_notebook: /external/unionai-examples/v2/tutorials/batching_patterns/batch_processing.ipynb
+content_hash: 60df1a1c888fb7ed5cba93ed3d785a0d355f9a1f96b6f7cc420c4cb934ad9f90
 ---
 
 <!--

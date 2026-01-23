@@ -1,0 +1,22 @@
+name: Check Jupyter Notebooks
+
+on: [push]
+
+jobs:
+  check-jupyter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+          fetch-depth: 0
+
+      - name: Validate notebook hashes
+        run: make check-jupyter
+
+      - name: Report status
+        if: ${{ failure() }}
+        run: |
+          echo "::error::Jupyter notebook validation failed. Run 'make -f Makefile.jupyter' locally to regenerate."

@@ -70,6 +70,9 @@ update-examples:
 init-examples:
 	git submodule update --init
 
+check-jupyter:
+	./tools/jupyter_generator/check_jupyter.sh
+
 check-images:
 	./scripts/check_images.sh
 
