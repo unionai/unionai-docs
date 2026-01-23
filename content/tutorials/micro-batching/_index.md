@@ -18,7 +18,7 @@ content_hash: 1784f89685fc7316b87814dea48cbb8902bee0a41aa04118ae58d437ce85c9ce
 # Batching strategies for efficient scaling
 
 > [!NOTE]
-> Notebook available [here](https://github.com/unionai/unionai-examples/blob/main/v2/tutorials/batching_patterns/batch_processing.ipynb).
+> [View source on GitHub](https://github.com/unionai/unionai-examples/blob/main/v2/tutorials/batching_patterns/batch_processing.ipynb) | [Run in Google Colab](https://colab.research.google.com/github/unionai/unionai-examples/blob/main/v2/tutorials/batching_patterns/batch_processing.ipynb)
 
 
 This notebook demonstrates a production-ready pattern for processing millions of items efficiently using Flyte v2's advanced features. You'll learn how to build resilient, scalable workflows that can handle failures gracefully and optimize resource consumption.

@@ -31,7 +31,11 @@ def process_file(file_path):
         first_heading_pattern = re.compile(r'^(#{1,2} .+)$', re.MULTILINE)
         match = first_heading_pattern.search(content)
         if match:
-            download_shortcode = f'\n\n> [!NOTE]\n> Notebook available [here]({notebook_link}).\n'
+            # Convert GitHub blob URL to Colab URL
+            # From: https://github.com/org/repo/blob/branch/path
+            # To: https://colab.research.google.com/github/org/repo/blob/branch/path
+            colab_link = notebook_link.replace('https://github.com/', 'https://colab.research.google.com/github/')
+            download_shortcode = f'\n\n> [!NOTE]\n> [View source on GitHub]({notebook_link}) | [Run in Google Colab]({colab_link})\n'
             content = content[:match.end()] + download_shortcode + content[match.end():]
 
     # Remove all <style>...</style> blocks
