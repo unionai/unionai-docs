@@ -31,7 +31,7 @@ def process_file(file_path):
         first_heading_pattern = re.compile(r'^(#{1,2} .+)$', re.MULTILINE)
         match = first_heading_pattern.search(content)
         if match:
-            download_shortcode = f'\n\n{{{{< download "{notebook_link}" "Download this notebook" >}}}}\n'
+            download_shortcode = f'\n\n> [!NOTE]\n> Notebook available [here]({notebook_link}).\n'
             content = content[:match.end()] + download_shortcode + content[match.end():]
 
     # Remove all <style>...</style> blocks
