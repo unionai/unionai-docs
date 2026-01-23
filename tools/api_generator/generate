@@ -21,6 +21,7 @@ def main():
     parser.add_argument("--ignore_types", nargs="+", help="Types to skip generation", default=[])
     parser.add_argument("--weight", type=int, help="Root page weight", required=False, default=0)
     parser.add_argument("--expanded", type=bool, help="Expand the package structure", default=False)
+    parser.add_argument("--short-names", action="store_true", help="Include short names in linkmap for easier matching", default=False)
     args = parser.parse_args()
 
     # Read out.yaml file, parse and convert to ptypes.ParsedInfo
@@ -39,6 +40,7 @@ def main():
             weight=args.weight,
             expanded=args.expanded,
             api_name=args.name,
+            include_short_names=args.short_names,
         )
 
 

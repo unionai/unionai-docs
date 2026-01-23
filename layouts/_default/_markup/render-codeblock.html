@@ -8,7 +8,8 @@
 {{- if ne $codeToHighlight .Inner -}}
     {{- /* We need to pass the modified code to the highlighter */ -}}
     {{- /* Hugo doesn't allow modifying the context, so we use a workaround */ -}}
-    {{- $opts := dict "lang" .Type -}}
+    {{- /* Preserve highlight options (like hl_lines) from the original code fence */ -}}
+    {{- $opts := .Options | default dict -}}
     {{- $highlighted := transform.Highlight $codeToHighlight .Type $opts -}}
     {{- /* Rename language-* classes to syntax-* to prevent 1Password prism.js interference */ -}}
     {{- /* Handle both single class and multiple classes: class="language-python" or class="highlight language-python" */ -}}
