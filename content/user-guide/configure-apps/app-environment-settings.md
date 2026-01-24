@@ -286,7 +286,7 @@ app before it starts.
 
 The server function is called before the app instance shuts down during scale down. It is defined using the
 `@app_env.on_shutdown` decorator. This is useful if you need to clean up any state or external connections in the
-container running the app..
+container running the app.
 
 {{< code file="/external/unionai-examples/v2/user-guide/configure-apps/fastapi-server-example.py" fragment=on-shutdown-decorator lang=python >}}
 
