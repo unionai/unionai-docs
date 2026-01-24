@@ -1,6 +1,6 @@
 ---
 title: DataFrame
-version: 2.0.0b49
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -58,6 +58,7 @@ validated to form a valid model.
 | Method | Description |
 |-|-|
 | [`all()`](#all) |  |
+| [`all_sync()`](#all_sync) |  |
 | [`column_names()`](#column_names) |  |
 | [`columns()`](#columns) |  |
 | [`construct()`](#construct) |  |
@@ -99,6 +100,11 @@ validated to form a valid model.
 
 ```python
 def all()
+```
+### all_sync()
+
+```python
+def all_sync()
 ```
 ### column_names()
 
