@@ -1,6 +1,6 @@
 ---
 title: flyte.types
-version: 2.0.0b49
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
