@@ -50,67 +50,13 @@ project/
 
 ### Example: Multi-file Streamlit app
 
-```python
-# main.py
-import streamlit as st
-from utils import process_data
-from components import render_chart
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/main.py" fragment=streamlit-app lang=python >}}
 
-st.title("Multi-file Streamlit App")
-
-data = st.file_uploader("Upload data file")
-
-if data:
-    processed = process_data(data)
-    render_chart(processed)
-```
-
-```python
-# utils.py
-import pandas as pd
-
-def process_data(data_file):
-    """Process uploaded data file."""
-    df = pd.read_csv(data_file)
-    # ... processing logic ...
-    return df
-```
-
-```python
-# components.py
-import streamlit as st
-
-def render_chart(data):
-    """Render a chart component."""
-    st.line_chart(data)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/utils.py" lang=python >}}
 
 ### Deploying multi-file Streamlit app
 
-```python
-import flyte
-import flyte.app
-
-image = flyte.Image.from_debian_base(python_version=(3, 12)).with_pip_packages(
-    "streamlit==1.41.1",
-    "pandas==2.2.3",
-)
-
-app_env = flyte.app.AppEnvironment(
-    name="streamlit-multi-file",
-    image=image,
-    args="streamlit run main.py --server.port 8080",
-    port=8080,
-    include=["main.py", "utils.py", "components.py"],  # Include all files
-    resources=flyte.Resources(cpu="1", memory="1Gi"),
-    requires_auth=False,
-)
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    app = flyte.deploy(app_env)
-    print(f"App URL: {app[0].url}")
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/multi_file_streamlit.py" fragment=app-env lang=python >}}
 
 ## Complex multi-file example
 
@@ -134,67 +80,17 @@ project/
 
 ### Example code
 
-```python
-# app.py
-from fastapi import FastAPI
-from models.user import User
-from services.auth import authenticate
-from utils.helpers import format_response
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/complex_multi_file/app.py" fragment=complex-app lang=python >}}
 
-app = FastAPI(title="Complex Multi-file App")
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/complex_multi_file/models/user.py" fragment=user-model lang=python >}}
 
-@app.get("/users/{user_id}")
-async def get_user(user_id: int):
-    user = User(id=user_id, name="John Doe")
-    return format_response(user)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/complex_multi_file/services/auth.py" fragment=auth-service lang=python >}}
 
-```python
-# models/user.py
-from pydantic import BaseModel
-
-class User(BaseModel):
-    id: int
-    name: str
-```
-
-```python
-# services/auth.py
-def authenticate(token: str) -> bool:
-    # ... authentication logic ...
-    return True
-```
-
-```python
-# utils/helpers.py
-def format_response(data):
-    return {"data": data, "status": "success"}
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/complex_multi_file/utils/helpers.py" fragment=helpers lang=python >}}
 
 ### Deploying complex app
 
-```python
-from flyte.app.extras import FastAPIAppEnvironment
-import flyte
-
-app_env = FastAPIAppEnvironment(
-    name="complex-app",
-    app=app,
-    image=flyte.Image.from_debian_base(python_version=(3, 12)).with_pip_packages(
-        "fastapi",
-        "uvicorn",
-        "pydantic",
-    ),
-    # Include all necessary files
-    include=[
-        "app.py",
-        "models/",
-        "services/",
-        "utils/",
-    ],
-    resources=flyte.Resources(cpu=1, memory="512Mi"),
-)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/complex_multi_file/app.py" fragment=complex-env lang=python >}}
 
 ## Best practices
 
