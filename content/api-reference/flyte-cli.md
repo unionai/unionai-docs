@@ -12,12 +12,12 @@ This is the command line interface for Flyte.
 {{< markdown >}}
 | Object | Action |
 | ------ | -- |
+| `action` | [`abort`](#flyte-abort-action), [`get`](#flyte-get-action)  |
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
 | `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
-| `action` | [`get`](#flyte-get-action)  |
 | `app` | [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
@@ -29,7 +29,7 @@ This is the command line interface for Flyte.
 {{< markdown >}}
 | Action | On |
 | ------ | -- |
-| `abort` | [`run`](#flyte-abort-run)  |
+| `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
 | `create` | [`config`](#flyte-create-config), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
 | `delete` | [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
@@ -105,6 +105,21 @@ $ flyte --config /path/to/config.yaml run ...
 
 Abort an ongoing process.
 
+#### flyte abort action
+
+**`flyte abort action [OPTIONS] RUN_NAME ACTION_NAME`**
+
+Abort an action associated with a run.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--reason` | `text` | `Manually aborted from the CLI` | The reason to abort the run. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
 #### flyte abort run
 
 **`flyte abort run [OPTIONS] RUN_NAME`**
@@ -113,6 +128,7 @@ Abort a run.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `--reason` | `text` | `Manually aborted from the CLI` | The reason to abort the run. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`

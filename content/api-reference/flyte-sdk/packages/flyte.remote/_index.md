@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 2.0.0b48
+version: 2.0.0b49
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -115,10 +115,16 @@ and create authentication interceptors that perform async operations.
 
 #### upload_dir()
 
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await upload_dir.aio()`.
 ```python
 def upload_dir(
     dir_path: pathlib._local.Path,
     verify: bool,
+    prefix: str | None,
 ) -> str
 ```
 Uploads a directory to a remote location and returns the remote URI.
@@ -129,6 +135,7 @@ Uploads a directory to a remote location and returns the remote URI.
 |-|-|-|
 | `dir_path` | `pathlib._local.Path` | The directory path to upload. |
 | `verify` | `bool` | Whether to verify the certificate for HTTPS requests. :return: The remote URI of the uploaded directory. |
+| `prefix` | `str \| None` | |
 
 #### upload_file()
 
@@ -141,6 +148,7 @@ Uploads a directory to a remote location and returns the remote URI.
 def upload_file(
     fp: pathlib._local.Path,
     verify: bool,
+    fname: str | None,
 ) -> typing.Tuple[str, str]
 ```
 Uploads a file to a remote location and returns the remote URI.
@@ -150,5 +158,6 @@ Uploads a file to a remote location and returns the remote URI.
 | Parameter | Type | Description |
 |-|-|-|
 | `fp` | `pathlib._local.Path` | The file path to upload. |
-| `verify` | `bool` | Whether to verify the certificate for HTTPS requests. :return: A tuple containing the MD5 digest and the remote URI. |
+| `verify` | `bool` | Whether to verify the certificate for HTTPS requests. |
+| `fname` | `str \| None` | Optional file name for the remote path. :return: Tuple of (MD5 digest hex string, remote native URL). |
 

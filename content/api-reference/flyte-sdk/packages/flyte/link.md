@@ -1,6 +1,6 @@
 ---
 title: Link
-version: 2.0.0b48
+version: 2.0.0b49
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -62,6 +62,7 @@ def get_link(
     parent_action_name: str,
     action_name: str,
     pod_name: str,
+    kwargs,
 ) -> str
 ```
 Returns a task log link given the action.
@@ -76,5 +77,6 @@ Link can have template variables that are replaced by the backend.
 | `context` | `typing.Dict[str, str]` | Additional context for generating the link. |
 | `parent_action_name` | `str` | The name of the parent action. |
 | `action_name` | `str` | The name of the action. |
-| `pod_name` | `str` | The name of the pod. :return: The generated link. |
+| `pod_name` | `str` | The name of the pod. |
+| `kwargs` | `**kwargs` | Additional keyword arguments. :return: The generated link. |
 
