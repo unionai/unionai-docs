@@ -1,6 +1,6 @@
 ---
 title: Action
-version: 2.0.0b48
+version: 2.0.0b49
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -74,10 +74,16 @@ class Action(
 > To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
 > `result = await <Action instance>.abort.aio()`.
 ```python
-def abort()
+def abort(
+    reason: str,
+)
 ```
 Aborts / Terminates the action.
 
+
+| Parameter | Type | Description |
+|-|-|-|
+| `reason` | `str` | |
 
 ### details()
 
