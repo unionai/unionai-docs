@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b48
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -545,6 +545,8 @@ Initialize the Flyte system with passthrough authentication.
 
 This authentication mode allows you to pass custom authentication metadata
 using the `flyte.remote.auth_metadata()` context manager.
+
+The endpoint is automatically configured from the environment if in a flyte cluster with endpoint injected.
 
 
 

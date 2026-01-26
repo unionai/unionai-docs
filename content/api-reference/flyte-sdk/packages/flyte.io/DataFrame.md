@@ -1,6 +1,6 @@
 ---
 title: DataFrame
-version: 2.0.0b48
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -9,8 +9,20 @@ layout: py_api
 
 **Package:** `flyte.io`
 
-This is the user facing DataFrame class. Please don't confuse it with the literals.StructuredDataset
-class (that is just a model, a Python class representation of the protobuf).
+A Flyte meta DataFrame object, that wraps all other dataframe types (usually available as plugins, pandas.DataFrame
+and pyarrow.Table are supported natively, just install these libraries).
+
+Known eco-system plugins that supply other dataframe encoding plugins are,
+1. `flyteplugins-polars` - pl.DataFrame
+2. `flyteplugins-spark` - pyspark.DataFrame
+
+You can add other implementations by extending following `flyte.io.extend`.
+
+The Flyte DataFrame object serves 2 main purposes:
+1. Interoperability between various dataframe objects. A task can generate a pandas.DataFrame and another task
+ can accept a flyte.io.DataFrame, which can be converted to any dataframe.
+2. Allows for non materialized access to DataFrame objects. So, for example you can accept any dataframe as a
+flyte.io.DataFrame and this is just a reference and will not materialize till you force `.all()` or `.iter()` etc
 
 
 ```python
@@ -34,6 +46,7 @@ validated to form a valid model.
 
 | Property | Type | Description |
 |-|-|-|
+| `lazy_uploader` | `None` |  |
 | `literal` | `None` |  |
 | `metadata` | `None` |  |
 | `model_extra` | `None` | Get extra fields set during validation.  Returns:     A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`. |
@@ -45,14 +58,17 @@ validated to form a valid model.
 | Method | Description |
 |-|-|
 | [`all()`](#all) |  |
+| [`all_sync()`](#all_sync) |  |
 | [`column_names()`](#column_names) |  |
 | [`columns()`](#columns) |  |
 | [`construct()`](#construct) |  |
 | [`copy()`](#copy) | Returns a copy of the model. |
 | [`deserialize_dataframe()`](#deserialize_dataframe) |  |
 | [`dict()`](#dict) |  |
-| [`from_df()`](#from_df) | Wrapper to create a DataFrame from a dataframe. |
+| [`from_df()`](#from_df) | Deprecated: Please use wrap_df, as that is the right name. |
 | [`from_existing_remote()`](#from_existing_remote) | Create a DataFrame reference from an existing remote dataframe. |
+| [`from_local()`](#from_local) | This method is useful to upload the dataframe eagerly and get the actual DataFrame. |
+| [`from_local_sync()`](#from_local_sync) | This method is useful to upload the dataframe eagerly and get the actual DataFrame. |
 | [`from_orm()`](#from_orm) |  |
 | [`iter()`](#iter) |  |
 | [`json()`](#json) |  |
@@ -77,12 +93,18 @@ validated to form a valid model.
 | [`set_literal()`](#set_literal) | A public wrapper method to set the DataFrame Literal. |
 | [`update_forward_refs()`](#update_forward_refs) |  |
 | [`validate()`](#validate) |  |
+| [`wrap_df()`](#wrap_df) | Wrapper to create a DataFrame from a dataframe. |
 
 
 ### all()
 
 ```python
 def all()
+```
+### all_sync()
+
+```python
+def all_sync()
 ```
 ### column_names()
 
@@ -179,10 +201,11 @@ def from_df(
     uri: typing.Optional[str],
 ) -> DataFrame
 ```
-Wrapper to create a DataFrame from a dataframe.
-The reason this is implemented as a wrapper instead of a full translation invoking
-the type engine and the encoders is because there's too much information in the type
-signature of the task that we don't want the user to have to replicate.
+Deprecated: Please use wrap_df, as that is the right name.
+
+Creates a new Flyte DataFrame from any registered DataFrame type (For example, pandas.DataFrame).
+Other dataframe types are usually supported through plugins like `flyteplugins-polars`, `flyteplugins-spark`
+etc.
 
 
 | Parameter | Type | Description |
@@ -208,6 +231,58 @@ Create a DataFrame reference from an existing remote dataframe.
 | `remote_path` | `str` | The remote path to the existing dataframe |
 | `format` | `typing.Optional[str]` | Format of the stored dataframe |
 | `kwargs` | `**kwargs` | |
+
+### from_local()
+
+```python
+def from_local(
+    df: typing.Any,
+    columns: typing.OrderedDict[str, type[typing.Any]] | None,
+    remote_destination: str | None,
+) -> DataFrame
+```
+This method is useful to upload the dataframe eagerly and get the actual DataFrame.
+
+This is useful to upload small local datasets onto Flyte and also upload dataframes from notebooks. This
+uses signed urls and is thus not the most efficient way of uploading.
+
+In tasks (at runtime) it uses the task context and the underlying fast storage sub-system to upload the data.
+
+At runtime it is recommended to use `DataFrame.wrap_df` as it is simpler.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `df` | `typing.Any` | The dataframe object to be uploaded and converted. |
+| `columns` | `typing.OrderedDict[str, type[typing.Any]] \| None` | Optionally, any column information to be stored as part of the metadata |
+| `remote_destination` | `str \| None` | Optional destination URI to upload to, if not specified, this is automatically determined based on the current context. For example, locally it will use flyte:// automatic data management system to upload data (this is slow and useful for smaller datasets). On remote it will use the storage configuration and the raw data directory setting in the task context.  Returns: DataFrame object. |
+
+### from_local_sync()
+
+```python
+def from_local_sync(
+    df: typing.Any,
+    columns: typing.OrderedDict[str, type[typing.Any]] | None,
+    remote_destination: str | None,
+) -> DataFrame
+```
+This method is useful to upload the dataframe eagerly and get the actual DataFrame.
+
+This is useful to upload small local datasets onto Flyte and also upload dataframes from notebooks. This
+uses signed urls and is thus not the most efficient way of uploading.
+
+In tasks (at runtime) it uses the task context and the underlying fast storage sub-system to upload the data.
+
+At runtime it is recommended to use `DataFrame.wrap_df` as it is simpler.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `df` | `typing.Any` | The dataframe object to be uploaded and converted. |
+| `columns` | `typing.OrderedDict[str, type[typing.Any]] \| None` | Optionally, any column information to be stored as part of the metadata |
+| `remote_destination` | `str \| None` | Optional destination URI to upload to, if not specified, this is automatically determined based on the current context. For example, locally it will use flyte:// automatic data management system to upload data (this is slow and useful for smaller datasets). On remote it will use the storage configuration and the raw data directory setting in the task context.  Returns: DataFrame object. |
 
 ### from_orm()
 
@@ -690,4 +765,22 @@ def validate(
 | Parameter | Type | Description |
 |-|-|-|
 | `value` | `Any` | |
+
+### wrap_df()
+
+```python
+def wrap_df(
+    val: typing.Optional[typing.Any],
+    uri: typing.Optional[str],
+) -> DataFrame
+```
+Wrapper to create a DataFrame from a dataframe.
+Other dataframe types are usually supported through plugins like `flyteplugins-polars`, `flyteplugins-spark`
+etc.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `val` | `typing.Optional[typing.Any]` | |
+| `uri` | `typing.Optional[str]` | |
 

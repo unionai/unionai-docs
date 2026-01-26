@@ -1,6 +1,6 @@
 ---
 title: Dir
-version: 2.0.0b48
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -200,6 +200,7 @@ validated to form a valid model.
 
 | Property | Type | Description |
 |-|-|-|
+| `lazy_uploader` | `None` |  |
 | `model_extra` | `None` | Get extra fields set during validation.  Returns:     A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`. |
 | `model_fields_set` | `None` | Returns the set of fields that have been explicitly set on this model instance.  Returns:     A set of strings representing the fields that have been set,         i.e. that were not filled from defaults. |
 
@@ -229,7 +230,7 @@ validated to form a valid model.
 | [`model_dump_json()`](#model_dump_json) | Generates a JSON representation of the model using Pydantic's `to_json` method. |
 | [`model_json_schema()`](#model_json_schema) | Generates a JSON schema for a model class. |
 | [`model_parametrized_name()`](#model_parametrized_name) | Compute the class name for parametrizations of generic classes. |
-| [`model_post_init()`](#model_post_init) | Override this method to perform additional initialization after `__init__` and `model_construct`. |
+| [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialise private attributes. |
 | [`model_rebuild()`](#model_rebuild) | Try to rebuild the pydantic-core schema for the model. |
 | [`model_validate()`](#model_validate) | Validate a pydantic model instance. |
 | [`model_validate_json()`](#model_validate_json) | Validate the given JSON data against the Pydantic model. |
@@ -931,13 +932,15 @@ def model_post_init(
     context: Any,
 )
 ```
-Override this method to perform additional initialization after `__init__` and `model_construct`.
-This is useful if you want to do some validation that requires the entire model to be initialized.
+This function is meant to behave like a BaseModel method to initialise private attributes.
+
+It takes context as an argument since that's what pydantic-core passes when calling it.
+
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `context` | `Any` | |
+| `context` | `Any` | The context. |
 
 ### model_rebuild()
 

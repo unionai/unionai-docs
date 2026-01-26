@@ -1,6 +1,6 @@
 ---
 title: Run
-version: 2.0.0b48
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -60,10 +60,16 @@ class Run(
 > To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
 > `result = await <Run instance>.abort.aio()`.
 ```python
-def abort()
+def abort(
+    reason: str,
+)
 ```
 Aborts / Terminates the run.
 
+
+| Parameter | Type | Description |
+|-|-|-|
+| `reason` | `str` | |
 
 ### details()
 

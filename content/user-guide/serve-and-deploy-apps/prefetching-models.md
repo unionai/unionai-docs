@@ -23,19 +23,7 @@ Prefetching models provides several benefits:
 
 ### Using Python SDK
 
-```python
-import flyte
-
-# Prefetch a HuggingFace model
-run = flyte.prefetch.hf_model(repo="Qwen/Qwen3-0.6B")
-
-# Wait for prefetch to complete
-run.wait()
-
-# Get the model path
-model_path = run.outputs()[0].path
-print(f"Model prefetched to: {model_path}")
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=basic-prefetch lang=python >}}
 
 ### Using CLI
 
@@ -53,28 +41,7 @@ flyte prefetch hf-model Qwen/Qwen3-0.6B --wait
 
 Use the prefetched model in your vLLM or SGLang app:
 
-```python
-from flyteplugins.vllm import VLLMAppEnvironment
-import flyte
-
-# Prefetch the model
-run = flyte.prefetch.hf_model(repo="Qwen/Qwen3-0.6B")
-run.wait()
-
-# Use the prefetched model
-vllm_app = VLLMAppEnvironment(
-    name="my-llm-app",
-    model_path=flyte.app.RunOutput(
-        type="directory",
-        run_name=run.name,
-    ),
-    model_id="qwen3-0.6b",
-    resources=flyte.Resources(cpu="4", memory="16Gi", gpu="L40s:1"),
-    stream_model=True,
-)
-
-app = flyte.serve(vllm_app)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=using-prefetched-models lang=python >}}
 
 > [!TIP]
 > You can also use prefetched models as parameters to your generic `[[AppEnvironment]]`s or `FastAPIAppEnvironment`s.
@@ -83,23 +50,13 @@ app = flyte.serve(vllm_app)
 
 ### Custom artifact name
 
-```python
-run = flyte.prefetch.hf_model(
-    repo="Qwen/Qwen3-0.6B",
-    artifact_name="qwen-0.6b-model",  # Custom name for the stored model
-)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=custom-artifact-name lang=python >}}
 
 ### With HuggingFace token
 
 If the model requires authentication:
 
-```python
-run = flyte.prefetch.hf_model(
-    repo="meta-llama/Llama-2-7b-hf",
-    hf_token_key="HF_TOKEN",  # Name of Flyte secret containing HF token
-)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=hf-token lang=python >}}
 
 The default value for `hf_token_key` is `HF_TOKEN`, where `HF_TOKEN` is the name of the Flyte secret containing your
 HuggingFace token. If this secret doesn't exist, you can create a secret using the [flyte create secret CLI](../task-configuration/secrets).
@@ -113,14 +70,7 @@ In some cases, the HuggingFace model may not support filestreaming, in which cas
 downloading the model weights to the task pod's disk storage first, then uploading them to your storage backend. In this
 case, you can specify custom resources for the prefetch task to override the default resources.
 
-```python
-run = flyte.prefetch.hf_model(
-    repo="Qwen/Qwen3-0.6B",
-    cpu="4",
-    mem="16Gi",
-    ephemeral_storage="100Gi",
-)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=with-resources lang=python >}}
 
 ## Sharding models for multi-GPU
 
@@ -128,25 +78,7 @@ run = flyte.prefetch.hf_model(
 
 Shard a model for tensor parallelism:
 
-```python
-from flyte.prefetch import ShardConfig, VLLMShardArgs
-
-run = flyte.prefetch.hf_model(
-    repo="meta-llama/Llama-2-70b-hf",
-    resources=flyte.Resources(cpu="8", memory="32Gi", gpu="L40s:4"),
-    shard_config=ShardConfig(
-        engine="vllm",
-        args=VLLMShardArgs(
-            tensor_parallel_size=4,
-            dtype="auto",
-            trust_remote_code=True,
-        ),
-    ),
-    hf_token_key="HF_TOKEN",
-)
-
-run.wait()
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=vllm-sharding lang=python >}}
 
 Currently, the `flyte.prefetch.hf_model` function only supports sharding models
 using the `vllm` engine. Once sharded, these models can be loaded with other
@@ -179,48 +111,7 @@ flyte prefetch hf-model meta-llama/Llama-2-70b-hf \
 
 After prefetching and sharding, serve the model in your app:
 
-```python
-# Use in vLLM app
-vllm_app = VLLMAppEnvironment(
-    name="multi-gpu-llm-app",
-    # this will download the model from HuggingFace into the app container's filesystem
-    model_hf_path="Qwen/Qwen3-0.6B",
-    model_id="llama-2-70b",
-    resources=flyte.Resources(
-        cpu="8",
-        memory="32Gi",
-        gpu="L40s:4",  # Match the number of GPUs used for sharding
-    ),
-    extra_args=[
-        "--tensor-parallel-size", "4",  # Match sharding config
-    ],
-)
-
-if __name__ == "__main__":
-    # Prefetch with sharding
-    run = flyte.prefetch.hf_model(
-        repo="meta-llama/Llama-2-70b-hf",
-        accelerator="L40s:4",
-        shard_config=ShardConfig(
-            engine="vllm",
-            args=VLLMShardArgs(tensor_parallel_size=4),
-        ),
-    )
-    run.wait()
-
-    flyte.serve(
-        vllm_app.clone_with(
-            name=vllm_app.name,
-            # override the model path to use the prefetched model
-            model_path=flyte.app.RunOutput(type="directory", run_name=run.name),
-            # set the hf_model_path to None
-            hf_model_path=None,
-            # stream the model from flyte object store directly to the GPU
-            stream_model=True,
-        )
-    )
-
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=using-sharded-models lang=python >}}
 
 ## CLI options
 
@@ -249,60 +140,7 @@ flyte prefetch hf-model <repo> \
 
 Here's a complete example of prefetching and using a model:
 
-```python
-import flyte
-from flyteplugins.vllm import VLLMAppEnvironment
-from flyte.prefetch import ShardConfig, VLLMShardArgs
-
-
-# define the app environment
-vllm_app = VLLMAppEnvironment(
-    name="qwen-serving-app",
-    # this will download the model from HuggingFace into the app container's filesystem
-    model_hf_path="Qwen/Qwen3-0.6B",
-    model_id="qwen3-0.6b",
-    resources=flyte.Resources(
-        cpu="4",
-        memory="16Gi",
-        gpu="L40s:1",
-        disk="10Gi",
-    ),
-    scaling=flyte.app.Scaling(
-        replicas=(0, 1),
-        scaledown_after=600,
-    ),
-    requires_auth=False,
-)
-
-if __name__ == "__main__":
-    # prefetch the model
-    print("Prefetching model...")
-    run = flyte.prefetch.hf_model(
-        repo="Qwen/Qwen3-0.6B",
-        artifact_name="qwen-0.6b",
-        cpu="4",
-        mem="16Gi",
-        ephemeral_storage="50Gi",
-    )
-
-    # wait for completion
-    print("Waiting for prefetch to complete...")
-    run.wait()
-    print(f"Model prefetched: {run.outputs()[0].path}")
-
-    # deploy the app
-    print("Deploying app...")
-    flyte.init_from_config()
-    app = flyte.serve(
-        vllm_app.clone_with(
-            name=vllm_app.name,
-            model_path=flyte.app.RunOutput(type="directory", run_name=run.name),
-            hf_model_path=None,
-            stream_model=True,
-        )
-    )
-    print(f"App deployed: {app.url}")
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=complete-example lang=python >}}
 
 ## Best practices
 

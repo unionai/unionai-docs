@@ -12,34 +12,30 @@ Streamlit is a popular framework for building interactive web applications and d
 
 The simplest way to deploy a Streamlit app is to use the built-in Streamlit "hello" demo:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/basic_streamlit.py" lang=python >}}
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/basic_streamlit.py" fragment=app-definition lang=python >}}
 
-## Custom Streamlit app
+This just serves the built-in Streamlit "hello" demo.
 
-For a custom Streamlit app, use the `include` parameter to bundle your app files:
+## Single-file Streamlit app
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/custom_streamlit.py" lang=python >}}
+For a single-file Streamlit app, you can wrap the app code in a function and use the `args` parameter to specify the command to run the app.
+Note that the command is running the file itself, and uses the `--server` flag to start the server.
 
-Your `main.py` file would contain your Streamlit app code:
+This is useful when you have a relatively small and simple app that you want to deploy as a single file.
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/main.py" fragment=streamlit-app lang=python >}}
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/single_file_streamlit.py" fragment=streamlit-app lang=python >}}
+
+Note that the `if __name__ == "__main__"` block is used to both serve the `AppEnvironment` *and* run the app code via
+the `streamlit run` command using the `--server` flag.
 
 ## Multi-file Streamlit app
 
-For apps with multiple files, include all necessary files:
+When your streamlit application grows more complex, you may want to split your app into multiple files.
+For a multi-file Streamlit app, use the `include` parameter to bundle your app files:
 
-```python
-app_env = flyte.app.AppEnvironment(
-    name="streamlit-multi-file",
-    image=image,
-    args="streamlit run main.py --server.port 8080",
-    port=8080,
-    include=["main.py", "utils.py", "components.py"],  # Include all files
-    resources=flyte.Resources(cpu="1", memory="1Gi"),
-)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/multi_file_streamlit.py" fragment=app-env lang=python >}}
 
-Structure your project like this:
+Where your project structure looks like this:
 
 ```
 project/
@@ -48,94 +44,25 @@ project/
 └── components.py     # Reusable components
 ```
 
+Your `main.py` file would contain your Streamlit app code:
+
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/main.py" fragment=streamlit-app lang=python >}}
+
 ## Example: Data visualization dashboard
 
-Here's a complete example of a Streamlit dashboard:
+Here's a complete example of a Streamlit dashboard, all in a single file.
 
-```python
-# main.py
-import streamlit as st
-import pandas as pd
-import numpy as np
+Define the streamlit app in the `main` function:
 
-st.title("Sales Dashboard")
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/data_visualization_dashboard.py" fragment=streamlit-app lang=python >}}
 
-# Load data
-@st.cache_data
-def load_data():
-    return pd.DataFrame({
-        "date": pd.date_range("2024-01-01", periods=100, freq="D"),
-        "sales": np.random.randint(1000, 5000, 100),
-    })
+Define the `AppEnvironment` to serve the app:
 
-data = load_data()
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/data_visualization_dashboard.py" fragment=app-env lang=python >}}
 
-# Sidebar filters
-st.sidebar.header("Filters")
-start_date = st.sidebar.date_input("Start date", value=data["date"].min())
-end_date = st.sidebar.date_input("End date", value=data["date"].max())
+And finally the app serving logic:
 
-# Filter data
-filtered_data = data[
-    (data["date"] >= pd.Timestamp(start_date)) &
-    (data["date"] <= pd.Timestamp(end_date))
-]
-
-# Display metrics
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.metric("Total Sales", f"${filtered_data['sales'].sum():,.0f}")
-with col2:
-    st.metric("Average Sales", f"${filtered_data['sales'].mean():,.0f}")
-with col3:
-    st.metric("Days", len(filtered_data))
-
-# Chart
-st.line_chart(filtered_data.set_index("date")["sales"])
-```
-
-Deploy with:
-
-```python
-import flyte
-import flyte.app
-
-image = flyte.Image.from_debian_base(python_version=(3, 12)).with_pip_packages(
-    "streamlit==1.41.1",
-    "pandas==2.2.3",
-    "numpy==2.2.3",
-)
-
-app_env = flyte.app.AppEnvironment(
-    name="sales-dashboard",
-    image=image,
-    args="streamlit run main.py --server.port 8080",
-    port=8080,
-    include=["main.py"],
-    resources=flyte.Resources(cpu="2", memory="2Gi"),
-    requires_auth=False,
-)
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    app = flyte.deploy(app_env)
-    print(f"Dashboard URL: {app[0].url}")
-```
-
-## Custom domain
-
-You can use a custom subdomain for your Streamlit app:
-
-```python
-app_env = flyte.app.AppEnvironment(
-    name="streamlit-app",
-    image=image,
-    command="streamlit hello --server.port 8080",
-    port=8080,
-    domain=flyte.app.Domain(subdomain="dashboard"),  # Custom subdomain
-    resources=flyte.Resources(cpu="1", memory="1Gi"),
-)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/data_visualization_dashboard.py" fragment=serve lang=python >}}
 
 ## Best practices
 
