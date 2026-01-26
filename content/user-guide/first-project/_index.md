@@ -5,6 +5,8 @@ variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
+# First project
+
 This example demonstrates a two-stage RAG (Retrieval-Augmented Generation) pattern:
 an offline embedding pipeline that processes and stores quotes, followed by an online
 serving application that enables semantic search.

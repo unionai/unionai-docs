@@ -5,6 +5,8 @@ variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
+# Second project
+
 This example demonstrates a resilient agentic report generator that showcases
 Flyte 2.0's advanced features for building production-grade AI workflows.
 
