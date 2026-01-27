@@ -7,24 +7,7 @@ sidebar_expanded: false
 
 # From Flyte 1 to Flyte 2
 
-{{< variant flyte >}}
-{{< markdown >}}
-
-Flyte 2 represents a fundamental shift in how workflows are written and executed in Flyte.
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant byoc selfmanaged serverless >}}
-{{< markdown >}}
-
-Flyte 2 and Union 2 represent a fundamental shift in how workflows are written and executed in Union.
-
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< note title="New to Flyte?" >}}
-If you're new to Flyte, start with [Why Flyte?](../why-flyte) and the [Quickstart](../quickstart) guide instead. This section is for users migrating from Flyte 1.
-{{< /note >}}
+Flyte 2 represents a fundamental shift in how Flyte workflows are written and executed.
 
 ## Pure Python execution
 
@@ -101,22 +84,21 @@ Author and run workflows and fetch workflow metadata (I/O and logs) directly fro
 
 ## High performance engine
 
-Schedule tasks in milliseconds with reusable containers, which massively increases the throughput of containerized tasks.
+When running on a Union.ai backend, Flyte 2 enables you to schedule tasks in milliseconds with reusable containers, which massively increases the throughput of containerized tasks.
 
 {{< /markdown >}}
 {{< code file="/external/unionai-examples/v2/user-guide/flyte-2/reuse.py" fragment="env" lang="python" >}}
 {{< markdown >}}
 
-Coupled with multi-cluster, multi-cloud, and multi-region support, Flyte 2 can scale to handle even the most demanding
-workflows.
-
-{{< /markdown >}}
-{{< /variant >}}
+Coupled with multi-cluster, multi-cloud, and multi-region support, Flyte 2 on Union.ai can scale to handle even the most demanding workflows.
 
 ## Enhanced UI
 
-New UI with a streamlined and user-friendly experience for authoring and managing workflows.
+The Union.ai backend also offers a new UI with a streamlined and user-friendly experience for authoring and managing workflows.
 
 ![New UI](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/v2ui.png)
 
 This UI improves the visualization of workflow execution and monitoring, simplifying access to logs, metadata, and other important information.
+
+{{< /markdown >}}
+{{< /variant >}}
