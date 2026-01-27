@@ -4,6 +4,8 @@ weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
+# Parallel outputs
+
 After refining the report, the pipeline generates multiple output formats in
 parallel. This demonstrates how to use `asyncio.gather` for concurrent execution
 within a task.

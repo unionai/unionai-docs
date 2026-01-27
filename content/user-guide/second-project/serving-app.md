@@ -4,6 +4,8 @@ weight: 4
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
+# Serving app
+
 The final piece is a serving application that displays generated reports and
 provides an interactive interface. This demonstrates how to connect apps to
 pipeline outputs using `RunOutput`.

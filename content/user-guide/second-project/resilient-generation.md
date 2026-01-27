@@ -4,6 +4,8 @@ weight: 1
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
+# Resilient generation
+
 This section covers the foundational patterns for building resilient LLM-powered
 tasks: reusable environments, traced function calls, and retry strategies.
 

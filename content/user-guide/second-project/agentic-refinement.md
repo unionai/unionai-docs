@@ -4,6 +4,8 @@ weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
+# Agentic refinement
+
 The core of this example is an agentic refinement loop: generate content, critique
 it, revise based on feedback, and repeat until quality meets a threshold. This
 pattern is fundamental to building self-improving AI systems.
