@@ -1,6 +1,6 @@
 ---
 title: Quickstart
-weight: 1
+weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---

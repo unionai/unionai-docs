@@ -1,10 +1,10 @@
 ---
-title: Why Flyte?
-weight: 2
+title: Overview
+weight: 1
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Why Flyte?
+# Overview
 
 Flyte is a workflow orchestration platform designed for AI applications, data pipelines, and ML workflows. From traditional batch processing to agentic AI systems that make decisions and take actions autonomously, Flyte combines the simplicity of writing pure Python with the reliability of a production-grade execution engine.
 

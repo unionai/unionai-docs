@@ -1,11 +1,11 @@
 ---
-title: Flyte basics
+title: Core concepts
 weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
-# Flyte basics
+# Core concepts
 
 Now that you've completed the [Quickstart](../quickstart), let's explore Flyte's core concepts through working examples.
 
