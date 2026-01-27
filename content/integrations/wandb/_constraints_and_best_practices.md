@@ -44,15 +44,6 @@ async def my_trace():
     ...
 ```
 
-## UI reruns with `with_runcontext`
-
-Reruns triggered from the UI do not currently work when `wandb_config` is provided via the `with_runcontext` context manager. This is because the UI launch form does not yet support supplying `custom_context` values alongside inputs.
-
-Support for providing this configuration in the UI is planned. In the meantime, you can either:
-
-- use the `wandb_config` context manager instead of providing it via `with_runcontext`, or
-- trigger runs from the command line.
-
 ## Maximum sweep agents
 
 [W&B limits sweeps to a maximum of 20 concurrent agents](https://docs.wandb.ai/models/sweeps/existing-project#3-launch-agents).

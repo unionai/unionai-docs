@@ -1,6 +1,6 @@
 ---
 title: Wandb
-version: 2.0.0b49.dev15+g590cd201b
+version: 2.0.0b52
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -10,6 +10,7 @@ layout: py_api
 **Package:** `flyteplugins.wandb`
 
 Generates a Weights & Biases run link.
+
 
 
 ```python
@@ -24,12 +25,12 @@ class Wandb(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `host` | `str` | |
-| `project` | `typing.Optional[str]` | |
-| `entity` | `typing.Optional[str]` | |
+| `host` | `str` | Base W&B host URL |
+| `project` | `typing.Optional[str]` | W&B project name (overrides context config if provided) |
+| `entity` | `typing.Optional[str]` | W&B entity/team name (overrides context config if provided) 1. "auto" (default): Creates new run if no parent run exists, otherwise shares parent's run 2. "new": Always creates a new wandb run with a unique ID 3. "shared": Always shares the parent's run ID (useful for child tasks) |
 | `run_mode` | `typing.Literal['auto', 'new', 'shared']` | |
-| `id` | `typing.Optional[str]` | |
-| `name` | `str` | |
+| `id` | `typing.Optional[str]` | Optional W&B run ID (overrides context config if provided) |
+| `name` | `str` | Link name in the Flyte UI |
 
 ## Methods
 
@@ -64,6 +65,6 @@ Link can have template variables that are replaced by the backend.
 | `context` | `typing.Dict[str, str]` | Additional context for generating the link. |
 | `parent_action_name` | `str` | The name of the parent action. |
 | `action_name` | `str` | The name of the action. |
-| `pod_name` | `str` | The name of the pod. :return: The generated link. |
-| `kwargs` | `**kwargs` | |
+| `pod_name` | `str` | The name of the pod. |
+| `kwargs` | `**kwargs` | Additional keyword arguments. :return: The generated link. |
 

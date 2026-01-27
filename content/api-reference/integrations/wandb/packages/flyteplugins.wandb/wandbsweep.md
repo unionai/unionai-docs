@@ -1,6 +1,6 @@
 ---
 title: WandbSweep
-version: 2.0.0b49.dev15+g590cd201b
+version: 2.0.0b52
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -10,6 +10,7 @@ layout: py_api
 **Package:** `flyteplugins.wandb`
 
 Generates a Weights & Biases Sweep link.
+
 
 
 ```python
@@ -23,11 +24,11 @@ class WandbSweep(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `host` | `str` | |
-| `project` | `typing.Optional[str]` | |
-| `entity` | `typing.Optional[str]` | |
-| `id` | `typing.Optional[str]` | |
-| `name` | `str` | |
+| `host` | `str` | Base W&B host URL |
+| `project` | `typing.Optional[str]` | W&B project name (overrides context config if provided) |
+| `entity` | `typing.Optional[str]` | W&B entity/team name (overrides context config if provided) |
+| `id` | `typing.Optional[str]` | Optional W&B sweep ID (overrides context config if provided) |
+| `name` | `str` | Link name in the Flyte UI |
 
 ## Methods
 
@@ -62,6 +63,6 @@ Link can have template variables that are replaced by the backend.
 | `context` | `typing.Dict[str, str]` | Additional context for generating the link. |
 | `parent_action_name` | `str` | The name of the parent action. |
 | `action_name` | `str` | The name of the action. |
-| `pod_name` | `str` | The name of the pod. :return: The generated link. |
-| `kwargs` | `**kwargs` | |
+| `pod_name` | `str` | The name of the pod. |
+| `kwargs` | `**kwargs` | Additional keyword arguments. :return: The generated link. |
 

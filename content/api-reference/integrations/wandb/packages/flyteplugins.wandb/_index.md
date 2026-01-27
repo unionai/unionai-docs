@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.wandb
-version: 2.0.0b49.dev15+g590cd201b
+version: 2.0.0b52
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -26,9 +26,9 @@ layout: py_api
    @wandb_init(project="my-project", entity="my-team")
    @env.task
    async def train_model(learning_rate: float) -> str:
-       run = get_wandb_run()
-       run.log({"loss": 0.5, "learning_rate": learning_rate})
-       return run.id
+       wandb_run = get_wandb_run()
+       wandb_run.log({"loss": 0.5, "learning_rate": learning_rate})
+       return wandb_run.id
    ```
 
 2. Parent/Child Tasks with Run Reuse:
@@ -37,19 +37,19 @@ layout: py_api
    @wandb_init  # Automatically reuses parent's run ID
    @env.task
    async def child_task(x: int) -> str:
-       run = get_wandb_run()
-       run.log({"child_metric": x * 2})
-       return run.id
+       wandb_run = get_wandb_run()
+       wandb_run.log({"child_metric": x * 2})
+       return wandb_run.id
 
    @wandb_init(project="my-project", entity="my-team")
    @env.task
    async def parent_task() -> str:
-       run = get_wandb_run()
-       run.log({"parent_metric": 100})
+       wandb_run = get_wandb_run()
+       wandb_run.log({"parent_metric": 100})
 
        # Child reuses parent's run by default (run_mode="auto")
        await child_task(5)
-       return run.id
+       return wandb_run.id
    ```
 
 3. Configuration with context manager:
@@ -57,7 +57,7 @@ layout: py_api
    ```python
    from flyteplugins.wandb import wandb_config
 
-   run = flyte.with_runcontext(
+   r = flyte.with_runcontext(
        custom_context=wandb_config(
            project="my-project",
            entity="my-team",
@@ -72,9 +72,9 @@ layout: py_api
    @wandb_init(run_mode="new")  # Always creates a new run
    @env.task
    async def independent_child() -> str:
-       run = get_wandb_run()
-       run.log({"independent_metric": 42})
-       return run.id
+       wandb_run = get_wandb_run()
+       wandb_run.log({"independent_metric": 42})
+       return wandb_run.id
    ```
 
 5. Running sweep agents in parallel:
@@ -85,11 +85,11 @@ layout: py_api
 
    @wandb_init
    async def objective():
-       run = wandb.run
-       config = run.config
+       wandb_run = wandb.run
+       config = wandb_run.config
        ...
 
-       run.log({"loss": loss_value})
+       wandb_run.log({"loss": loss_value})
 
    @wandb_sweep
    @env.task
@@ -113,7 +113,7 @@ layout: py_api
        return sweep_id
 
    # Run with 2 parallel agents
-   run = flyte.with_runcontext(
+   r = flyte.with_runcontext(
        custom_context={
            **wandb_config(project="my-project", entity="my-team"),
            **wandb_sweep_config(
@@ -136,17 +136,6 @@ Decorator order: `@wandb_init` or `@wandb_sweep` must be the outermost decorator
 async def my_task():
     ...
 ```
-
-Helper Functions:
-- get_wandb_run(): Access the current W&B run object (or None if not in a run)
-- get_wandb_run_dir(): Get local path to current run's directory (no network call)
-- download_wandb_run_dir(): Download run files from wandb cloud (for cross-task access)
-- download_wandb_run_logs(): Async traced function to download run logs after task completion
-- download_wandb_sweep_dirs(): Download all run directories for a sweep
-- download_wandb_sweep_logs(): Async traced function to download sweep logs after task completion
-- get_wandb_sweep_id(): Access the current sweep ID (or None if not in a sweep)
-- get_wandb_context(): Access the current W&B context
-- get_wandb_sweep_context(): Access the current W&B sweep context
 
 ## Directory
 
@@ -172,7 +161,7 @@ Helper Functions:
 | [`get_wandb_sweep_id()`](#get_wandb_sweep_id) | Get the current wandb `sweep_id` if within a `@wandb_sweep` decorated task. |
 | [`wandb_config()`](#wandb_config) | Create wandb configuration. |
 | [`wandb_init()`](#wandb_init) | Decorator to automatically initialize wandb for Flyte tasks and wandb sweep objectives. |
-| [`wandb_sweep()`](#wandb_sweep) | Decorator to create a wandb sweep and make sweep_id available. |
+| [`wandb_sweep()`](#wandb_sweep) | Decorator to create a wandb sweep and make `sweep_id` available. |
 | [`wandb_sweep_config()`](#wandb_sweep_config) | Create wandb sweep configuration for hyperparameter optimization. |
 
 
@@ -193,9 +182,10 @@ Downloads all run files and optionally exports metrics history to JSON.
 This enables access to wandb data from any task or after workflow completion.
 
 Downloaded contents:
-    - `summary.json` - final summary metrics (always exported)
-    - `metrics_history.json` - step-by-step metrics (if `include_history=True`)
-    - Plus any files synced by wandb (`requirements.txt`, `wandb_metadata.json`, etc.)
+
+    - summary.json - final summary metrics (always exported)
+    - metrics_history.json - step-by-step metrics (if include_history=True)
+    - Plus any files synced by wandb (requirements.txt, wandb_metadata.json, etc.)
 
 
 
@@ -319,7 +309,7 @@ def get_wandb_sweep_id()
 ```
 Get the current wandb `sweep_id` if within a `@wandb_sweep` decorated task.
 
-Returns None if not within a wandb_sweep context.
+Returns `None` if not within a `wandb_sweep` context.
 
 Returns:
     `str` | `None`: The sweep ID or None.
@@ -345,23 +335,23 @@ def wandb_config(
 Create wandb configuration.
 
 This function works in two contexts:
-1. With flyte.with_runcontext() - sets global wandb config
+1. With `flyte.with_runcontext()` - sets global wandb config
 2. As a context manager - overrides config for specific tasks
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `project` | `typing.Optional[str]` | wandb project name |
-| `entity` | `typing.Optional[str]` | wandb entity (team or username) |
-| `id` | `typing.Optional[str]` | unique run id (auto-generated if not provided) |
-| `name` | `typing.Optional[str]` | human-readable run name |
-| `tags` | `typing.Optional[list[str]]` | list of tags for organizing runs |
-| `config` | `typing.Optional[dict[str, typing.Any]]` | dictionary of hyperparameters |
-| `mode` | `typing.Optional[str]` | "online", "offline", or "disabled" |
-| `group` | `typing.Optional[str]` | group name for related runs |
-| `run_mode` | `typing.Literal['auto', 'new', 'shared']` | Flyte-specific run mode - "auto", "new", or "shared" Controls whether tasks create new W&B runs or share existing ones |
-| `download_logs` | `bool` | If True, downloads wandb run files after task completes and shows them as a trace output in the Flyte UI |
+| `project` | `typing.Optional[str]` | W&B project name |
+| `entity` | `typing.Optional[str]` | W&B entity (team or username) |
+| `id` | `typing.Optional[str]` | Unique run id (auto-generated if not provided) |
+| `name` | `typing.Optional[str]` | Human-readable run name |
+| `tags` | `typing.Optional[list[str]]` | List of tags for organizing runs |
+| `config` | `typing.Optional[dict[str, typing.Any]]` | Dictionary of hyperparameters |
+| `mode` | `typing.Optional[str]` | "online", "offline" or "disabled" |
+| `group` | `typing.Optional[str]` | Group name for related runs |
+| `run_mode` | `typing.Literal['auto', 'new', 'shared']` | Flyte-specific run mode - "auto", "new" or "shared". Controls whether tasks create new W&B runs or share existing ones |
+| `download_logs` | `bool` | If `True`, downloads wandb run files after task completes and shows them as a trace output in the Flyte UI |
 | `kwargs` | `**kwargs` | |
 
 #### wandb_init()
@@ -384,7 +374,7 @@ Decorator to automatically initialize wandb for Flyte tasks and wandb sweep obje
 |-|-|-|
 | `_func` | `typing.Optional[~F]` | |
 | `run_mode` | `typing.Literal['auto', 'new', 'shared']` | |
-| `download_logs` | `typing.Optional[bool]` | If True, downloads wandb run files after task completes and shows them as a trace output in the Flyte UI. If None, uses the value from wandb_config() context if set. |
+| `download_logs` | `typing.Optional[bool]` | If `True`, downloads wandb run files after task completes and shows them as a trace output in the Flyte UI. If None, uses the value from `wandb_config()` context if set. |
 | `project` | `typing.Optional[str]` | W&B project name (overrides context config if provided) |
 | `entity` | `typing.Optional[str]` | W&B entity/team name (overrides context config if provided) |
 | `kwargs` | `**kwargs` | |
@@ -400,13 +390,13 @@ def wandb_sweep(
     kwargs,
 ) -> ~F
 ```
-Decorator to create a wandb sweep and make sweep_id available.
+Decorator to create a wandb sweep and make `sweep_id` available.
 
 This decorator:
 1. Creates a wandb sweep using config from context
-2. Makes sweep_id available via get_wandb_sweep_id()
+2. Makes `sweep_id` available via `get_wandb_sweep_id()`
 3. Automatically adds a W&B sweep link to the task
-4. Optionally downloads all sweep run logs as a trace output (if download_logs=True)
+4. Optionally downloads all sweep run logs as a trace output (if `download_logs=True`)
 
 
 
@@ -415,7 +405,7 @@ This decorator:
 | `_func` | `typing.Optional[~F]` | |
 | `project` | `typing.Optional[str]` | W&B project name (overrides context config if provided) |
 | `entity` | `typing.Optional[str]` | W&B entity/team name (overrides context config if provided) |
-| `download_logs` | `typing.Optional[bool]` | If True, downloads all sweep run files after task completes and shows them as a trace output in the Flyte UI. If None, uses the value from wandb_sweep_config() context if set. |
+| `download_logs` | `typing.Optional[bool]` | if `True`, downloads all sweep run files after task completes and shows them as a trace output in the Flyte UI. If None, uses the value from wandb_sweep_config() context if set. |
 | `kwargs` | `**kwargs` | |
 
 #### wandb_sweep_config()
@@ -445,7 +435,7 @@ Create wandb sweep configuration for hyperparameter optimization.
 | `project` | `typing.Optional[str]` | W&B project for the sweep |
 | `entity` | `typing.Optional[str]` | W&B entity for the sweep |
 | `prior_runs` | `typing.Optional[list[str]]` | List of prior run IDs to include in the sweep analysis |
-| `name` | `typing.Optional[str]` | Sweep name (auto-generated as "{run_name}-{action_name}" if not provided) |
-| `download_logs` | `bool` | If True, downloads all sweep run files after task completes and shows them as a trace output in the Flyte UI - early_terminate: Early termination config - description: Sweep description - command: CLI command to run - controller: Sweep controller config ps://docs.wandb.ai/models/sweeps/sweep-config-keys |
+| `name` | `typing.Optional[str]` | Sweep name (auto-generated as `{run_name}-{action_name}` if not provided) |
+| `download_logs` | `bool` | If `True`, downloads all sweep run files after task completes and shows them as a trace output in the Flyte UI |
 | `kwargs` | `**kwargs` | |
 
