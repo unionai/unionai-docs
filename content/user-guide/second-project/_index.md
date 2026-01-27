@@ -1,8 +1,8 @@
 ---
 title: Second project
-weight: 8
+weight: 7
 variants: +flyte +serverless +byoc +selfmanaged
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Second project
