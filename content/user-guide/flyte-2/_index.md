@@ -1,11 +1,11 @@
 ---
-title: From Flyte 1 to Flyte 2
-weight: 4
+title: From Flyte 1 to 2
+weight: 6
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
-# From Flyte 1 to Flyte 2
+# From Flyte 1 to 2
 
 Flyte 2 represents a fundamental shift in how Flyte workflows are written and executed.
 
