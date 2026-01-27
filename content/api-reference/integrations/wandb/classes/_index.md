@@ -1,6 +1,6 @@
 ---
 title: Classes
-version: 2.0.0b49.dev15+g590cd201b
+version: 2.0.0b52
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
