@@ -1,14 +1,13 @@
 ---
 title: Considerations
-weight: 21
+weight: 4
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Considerations
 
 Flyte 2 represents a substantial change from Flyte 1.
-While the static graph execution model will soon be available and will mirror Flyte 1 almost exactly, the primary mode of execution in Flyte 2 should remain pure-Python-based.
-That is, each Python-based task action has the ability to act as its own engine, kicking off sub-actions, and assembling the outputs, passing them to yet other sub-actions and such.
+Each Python-based task action has the ability to act as its own engine, kicking off sub-actions, and assembling the outputs, passing them to yet other sub-actions and such.
 
 While this model of execution comes with an enormous amount of flexibility, that flexibility does warrant some caveats to keep in mind when authoring your tasks.
 

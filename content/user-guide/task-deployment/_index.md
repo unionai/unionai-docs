@@ -1,8 +1,8 @@
 ---
 title: Run and deploy tasks
-weight: 5
+weight: 9
 variants: +flyte +serverless +byoc +selfmanaged
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Run and deploy tasks

@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Fanout
 
-Flyte is designed to scale effortlessly, allowing you to run workflows with large fan-outs.
+Flyte is designed to scale effortlessly, allowing you to run workflows with large fanouts.
 When you need to execute many tasks in parallel—such as processing a large dataset or running hyperparameter sweeps—Flyte provides powerful patterns to implement these operations efficiently.
 
 {{< variant byoc selfmanaged serverless >}}
