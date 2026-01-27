@@ -1,8 +1,7 @@
 ---
 title: Authenticating
-weight: 16
+weight: 14
 variants: -flyte +serverless +byoc +selfmanaged
-sidebar_expanded: true
 ---
 
 # Authenticating with Union
