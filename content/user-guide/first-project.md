@@ -1,6 +1,6 @@
 ---
 title: First project
-weight: 6
+weight: 5
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
