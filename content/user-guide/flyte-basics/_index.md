@@ -1,8 +1,8 @@
 ---
 title: Flyte basics
-weight: 4
+weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Flyte basics

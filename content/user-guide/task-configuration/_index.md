@@ -1,8 +1,8 @@
 ---
 title: Configure tasks
-weight: 9
+weight: 7
 variants: +flyte +serverless +byoc +selfmanaged
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Configure tasks

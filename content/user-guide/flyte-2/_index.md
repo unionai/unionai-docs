@@ -1,8 +1,8 @@
 ---
 title: From Flyte 1 to Flyte 2
-weight: 5
+weight: 4
 variants: +flyte +serverless +byoc +selfmanaged
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # From Flyte 1 to Flyte 2
