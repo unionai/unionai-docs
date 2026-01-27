@@ -26,7 +26,7 @@ In this tutorial, you'll learn how to:
 
 Climate modeling presents unique computational challenges:
 
-1. **Multi-source data**: Satellite imagery, reanalysis products, and station observations must be combined from diverse sources.
+1. **Multi-source data**: Satellite imagery, reanalysis products, and station observations must be combined and harmonized.
 
 2. **Massive compute**: Atmospheric simulations require GPU acceleration for physics calculations across millions of grid points.
 
@@ -86,11 +86,11 @@ Define specialized environments for different computational needs:
 
 {{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="task-envs" lang="python" >}}
 
-We configure three environments:
+Three environments handle different workloads:
 
 1. **`gpu_env`**: H200 GPU for atmospheric simulation
-2. **`dask_env`**: Distributed cluster for preprocessing with scheduler and workers
-3. **`cpu_env`**: CPU-based tasks for data ingestion and orchestration, with secrets for ERA5 API access
+2. **`dask_env`**: Distributed cluster for preprocessing (scheduler + workers)
+3. **`cpu_env`**: Data ingestion and orchestration, with secrets for ERA5 API access
 
 ## Ingest satellite data
 
@@ -146,9 +146,9 @@ Execute ensemble atmospheric physics on H200 GPUs:
 
 The GPU simulation:
 - Generates ensemble members with perturbed initial conditions
-- Runs full atmospheric physics including advection, pressure gradients, and condensation
+- Runs atmospheric physics (advection, pressure gradients, condensation)
 - Uses `torch.compile` for optimized kernel execution
-- Detects extreme events (hurricanes, heatwaves) during simulation
+- Detects extreme events during simulation
 - Returns ensemble mean, spread, and detected phenomena
 
 ## Distribute across multiple GPUs
@@ -159,8 +159,8 @@ Scale ensemble forecasts across multiple GPUs:
 
 This task:
 - Distributes ensemble members evenly across GPUs
-- Launches parallel GPU tasks with `asyncio.gather`
-- Collects results from all GPUs
+- Launches parallel tasks with `asyncio.gather`
+- Aggregates results from all GPUs
 
 ## Real-time analytics
 
@@ -171,7 +171,7 @@ Monitor convergence and detect extreme events:
 Analytics functions:
 - **analyze_simulation_convergence**: Check if ensemble spread has stabilized
 - **detect_extreme_events**: Identify hurricanes (high winds + low pressure) and heatwaves
-- **recommend_parameter_adjustments**: Suggest timestep or resolution changes
+- **recommend_parameter_adjustments**: Suggest timestep or resolution adjustments
 
 ## Orchestrate the adaptive workflow
 
@@ -181,16 +181,16 @@ The main workflow coordinates all stages with real-time reporting:
 
 The workflow:
 1. **Ingests data in parallel** from satellites, reanalysis, and stations
-2. **Preprocesses** combined atmospheric state
+2. **Preprocesses** the combined atmospheric state
 3. **Runs iterative simulation** with convergence checking
 4. **Detects extreme events** and refines mesh if needed
-5. **Streams updates** to live dashboard
+5. **Streams updates** to a live dashboard
 
 Key features:
 - `flyte.group()` for visual organization in the UI
 - Real-time Flyte Reports with HTML/JavaScript dashboards
-- Adaptive mesh refinement when hurricanes detected
-- Early stopping when convergence achieved
+- Adaptive mesh refinement when hurricanes are detected
+- Early stopping when convergence is achieved
 
 ## Run the simulation
 
@@ -230,21 +230,21 @@ The simulation monitors for:
 ### Adaptive mesh refinement
 
 When extreme events are detected:
-- Grid resolution doubles (e.g., 10km → 5km)
+- Grid resolution doubles (e.g., 10 km → 5 km)
 - Timestep reduces for numerical stability
-- Ensemble size may adjust for computational efficiency
+- Ensemble size adjusts for computational efficiency
 
 ### Real-time reporting
 
 Flyte Reports provide:
-- Live convergence rate tracking
+- Live convergence tracking
 - Extreme event timeline
-- Performance metrics per GPU partition
-- Interactive simulation parameters display
+- Per-GPU performance metrics
+- Interactive parameter display
 
-## What's next?
+## Next steps
 
-- Add more sophisticated physics (radiation, boundary layer schemes)
-- Integrate machine learning surrogates for accelerated simulation
+- Add sophisticated physics (radiation, boundary layer schemes)
+- Integrate ML surrogates for accelerated simulation
 - Add post-processing for forecast products (precipitation, wind gusts)
 - Implement data assimilation for improved initial conditions

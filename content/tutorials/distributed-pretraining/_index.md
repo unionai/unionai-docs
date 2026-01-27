@@ -26,13 +26,13 @@ In this tutorial, you'll learn how to:
 
 Training large language models presents unique challenges:
 
-1. **Resource management**: LLMs require significant GPU memory and compute. Flyte handles dynamic resource allocation across multiple nodes.
+1. **Resource management**: LLMs require substantial GPU memory and compute. Flyte handles dynamic resource allocation across multiple nodes.
 
-2. **Data streaming**: Training datasets can be terabytes in size. Flyte's integration with streaming datasets enables efficient data loading without downloading entire datasets.
+2. **Data streaming**: Training datasets can be terabytes in size. Flyte integrates with streaming datasets for efficient data loading without downloading entire datasets upfront.
 
-3. **Fault tolerance**: Long-running training jobs need checkpoint management and recovery. Flyte provides built-in caching and resumption capabilities.
+3. **Fault tolerance**: Long-running training jobs need checkpoint management and recovery. Flyte provides built-in caching and resumption.
 
-4. **Observability**: Training runs can last days or weeks. Flyte Reports provide real-time visibility into training progress.
+4. **Observability**: Training runs can last days or weeks. Flyte Reports provide real-time visibility into progress.
 
 ## Architecture overview
 
@@ -44,15 +44,15 @@ The training pipeline consists of three main components:
 
 ## Define dependencies and imports
 
-We start by importing the necessary modules for distributed training:
+Start by importing the necessary modules:
 
 {{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="imports" lang="python" >}}
 
-These imports include:
+Key imports:
 - `flyte` and `flyte.report` for orchestration and reporting
-- `lightning` for training orchestration
+- `lightning` for training loop management
 - `torch` and `torch.nn` for model definition
-- `flyteplugins.pytorch.task.Elastic` for distributed training configuration
+- `flyteplugins.pytorch.task.Elastic` for distributed training
 
 ## Configure training constants
 
@@ -76,17 +76,17 @@ This image includes:
 
 ## Configure task environments
 
-Define specialized task environments for different stages of the pipeline:
+Define specialized environments for different pipeline stages:
 
 {{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="task-envs" lang="python" >}}
 
-We define three environments:
+Three environments handle different workloads:
 
 1. **`data_loading_env`**: Moderate resources for tokenization and data preparation
-2. **`distributed_llm_training_env`**: High-performance GPU configuration with H200 GPUs, shared memory for NCCL, and Elastic plugin for distributed training
-3. **`driver_env`**: Lightweight environment for orchestrating the pipeline
+2. **`distributed_llm_training_env`**: H200 GPUs with shared memory for NCCL and the Elastic plugin for distributed training
+3. **`driver_env`**: Lightweight environment for pipeline orchestration
 
-The `Elastic` plugin configuration specifies the distributed training topology with `nnodes` (number of nodes) and `nproc_per_node` (GPUs per node).
+The `Elastic` plugin specifies the distributed topology: `nnodes` (number of nodes) and `nproc_per_node` (GPUs per node).
 
 ## Define model configurations
 
@@ -102,10 +102,10 @@ Build a GPT-2 style transformer from scratch:
 
 {{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="gpt-model" lang="python" >}}
 
-The model includes:
-- **GPTConfig**: Configuration dataclass for model hyperparameters
+The model consists of:
+- **GPTConfig**: Model hyperparameters
 - **GPTBlock**: Transformer block with causal self-attention and MLP
-- **GPTModel**: Full language model with embeddings, transformer blocks, and language modeling head
+- **GPTModel**: Full language model with embeddings, transformer blocks, and LM head
 
 Key features:
 - Causal masking for autoregressive generation
@@ -114,14 +114,14 @@ Key features:
 
 ## Create the Lightning training module
 
-Wrap the model in a PyTorch Lightning module for training:
+Wrap the model in a PyTorch Lightning module:
 
 {{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="lightning-module" lang="python" >}}
 
-The Lightning module provides:
+The Lightning module handles:
 - **Training step**: Causal language modeling loss with label shifting
 - **Validation step**: Evaluation metrics including perplexity
-- **Optimizer configuration**: AdamW with weight decay separation and cosine learning rate schedule with warmup
+- **Optimizer**: AdamW with weight decay separation and cosine LR schedule with warmup
 
 ## Implement custom callbacks
 
@@ -150,10 +150,10 @@ Convert datasets to MDS format for efficient streaming:
 
 {{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="data-loading-task" lang="python" >}}
 
-Key features:
-- Streaming dataset loading for memory efficiency
-- Document concatenation to create fixed-length sequences
-- Sharded output for parallel data loading
+This task:
+- Loads datasets in streaming mode for memory efficiency
+- Concatenates documents into fixed-length sequences
+- Writes sharded output for parallel data loading
 
 ## Implement distributed training
 
@@ -162,10 +162,10 @@ The main training task orchestrates multi-GPU training:
 {{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="training-task" lang="python" >}}
 
 This task:
-- Configures FSDP (Fully Sharded Data Parallel) for memory-efficient distributed training
-- Sets up streaming data loaders that automatically shard data across GPUs
-- Initializes the Lightning trainer with appropriate callbacks and strategies
-- Supports checkpoint resumption for fault-tolerant training
+- Configures FSDP for memory-efficient distributed training
+- Sets up streaming data loaders that auto-shard across GPUs
+- Initializes the Lightning trainer with callbacks and strategies
+- Supports checkpoint resumption for fault tolerance
 
 ## Create the main pipeline
 
@@ -196,26 +196,25 @@ uv run train.py
 
 ### FSDP for large models
 
-FSDP (Fully Sharded Data Parallel) enables training models that don't fit in a single GPU's memory by:
-- Sharding model parameters across GPUs
-- Sharding optimizer states and gradients
+FSDP (Fully Sharded Data Parallel) enables training models that exceed single-GPU memory by:
+- Sharding parameters, optimizer states, and gradients across GPUs
 - All-gathering parameters only when needed for computation
 
 ### Streaming data loading
 
 MosaicML Streaming provides:
-- Efficient data loading without downloading entire datasets
+- Efficient loading without downloading entire datasets upfront
 - Automatic sharding across distributed workers
-- Resumable data iteration for fault tolerance
+- Resumable iteration for fault tolerance
 
 ### Real-time reporting
 
-Flyte Reports enable:
+Flyte Reports provide:
 - Live training metrics visualization
-- Interactive charts with loss curves and learning rate schedules
+- Interactive loss and learning rate charts
 - No external monitoring infrastructure required
 
-## What's next?
+## Next steps
 
 - Experiment with different model sizes (1.5B, 30B, 65B)
 - Try different datasets (SlimPajama, The Pile, etc.)
