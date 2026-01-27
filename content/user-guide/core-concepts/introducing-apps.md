@@ -1,10 +1,10 @@
 ---
-title: Introducing apps
+title: Apps
 weight: 4
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Introducing apps
+# Apps
 
 Now that you understand tasks, let's learn about apps - Flyte's way of running long-lived services.
 
