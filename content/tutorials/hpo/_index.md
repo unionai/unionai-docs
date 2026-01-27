@@ -1,6 +1,6 @@
 ---
 title: Hyperparameter optimization
-weight: 1
+weight: 10
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
