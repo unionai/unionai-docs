@@ -2,24 +2,28 @@ from importlib import metadata
 from sys import stderr
 
 from lib.parser.classes import get_classes
-from lib.parser.packages import get_functions, get_subpackages, get_variables, get_skipped_modules, clear_skipped_modules
+from lib.parser.packages import get_functions, get_subpackages, get_all_only, get_variables, get_skipped_modules, clear_skipped_modules
 from lib.ptypes import ParsedInfo
 
 
-def parse(package: str) -> ParsedInfo:
+def parse(package: str, distribution: str = None, all_only: bool = False) -> ParsedInfo:
     # Clear any previously skipped modules
     clear_skipped_modules()
 
+    dist_name = distribution or package
     try:
-        version = metadata.version(package)
+        version = metadata.version(dist_name)
     except metadata.PackageNotFoundError:
         print(
-            f"FATAL: Package {package} not found. Did you have it installed?",
+            f"FATAL: Distribution '{dist_name}' not found. Did you have it installed?",
             file=stderr,
         )
         exit(1)
 
-    pkgAndMods = get_subpackages(package)
+    if all_only:
+        pkgAndMods = get_all_only(package)
+    else:
+        pkgAndMods = get_subpackages(package)
 
     clss = {}
     for pp in pkgAndMods:
