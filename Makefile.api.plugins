@@ -28,6 +28,8 @@ API_DATA=/tmp/${NAME}.api.yaml
 LANDING_PAGE ?= include/api.plugin.md
 VENV_DIR=.venv
 SKIP_VENV_SETUP ?= false
+# Strip extras from PLUGIN_DIST for version lookup (e.g., pkg[extra] -> pkg)
+PLUGIN_DIST_NAME ?= $(shell echo '${PLUGIN_DIST}' | sed 's/\[.*//')
 
 .PHONY: all
 all: check_vars setup_venv parser generate
@@ -61,11 +63,15 @@ parser: check_vars clean_api_data
 ifeq ($(SKIP_VENV_SETUP),false)
 	$(VENV_DIR)/bin/python tools/api_generator/parser \
 		--package ${PLUGIN_MODULE} \
-		--output ${API_DATA}
+		--distribution ${PLUGIN_DIST_NAME} \
+		--output ${API_DATA} \
+		--all-only
 else
 	tools/api_generator/parser \
 		--package ${PLUGIN_MODULE} \
-		--output ${API_DATA}
+		--distribution ${PLUGIN_DIST_NAME} \
+		--output ${API_DATA} \
+		--all-only
 endif
 
 .PHONY: generate

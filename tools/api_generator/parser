@@ -13,9 +13,19 @@ def main():
     )
     parser.add_argument("--package", help="Package to parse", required=True)
     parser.add_argument("--output", help="Output file", required=True)
+    parser.add_argument(
+        "--distribution",
+        help="Distribution name for version lookup (defaults to --package)",
+    )
+    parser.add_argument(
+        "--all-only",
+        action="store_true",
+        help="Only parse symbols in __all__, skip subpackage discovery",
+    )
     args = parser.parse_args()
 
-    result = parse(args.package)
+    distribution = args.distribution or args.package
+    result = parse(args.package, distribution=distribution, all_only=args.all_only)
 
     yaml_output = yaml.dump(
         result,

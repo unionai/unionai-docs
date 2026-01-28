@@ -162,7 +162,7 @@ These integrations typically handle:
 
 Connectors are stateless, long‑running services that receive execution requests via gRPC and then submit work to external (or internal) systems. Each connector runs as its own Kubernetes deployment, and is triggered when a Flyte task of the matching type is executed.
 
-Although they normally run inside the control plane, you can also run connectors locally as long as the required secrets/credentials are present,because connectors are just Python services that can be spawned in‑process.
+Although they normally run inside the control plane, you can also run connectors locally as long as the required secrets/credentials are present locally. This is useful because connectors are just Python services that can be spawned in‑process.
 
 Connectors are designed to scale horizontally and reduce load on the core Flyte backend because they execute _outside_ the core system. This decoupling makes connectors efficient, resilient, and easy to iterate on. You can even test them locally without modifying backend configuration, which reduces friction during development.
 

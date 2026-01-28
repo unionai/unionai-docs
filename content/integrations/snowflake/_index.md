@@ -29,7 +29,7 @@ This installs the Snowflake Python connector and the `cryptography` library for 
 
 Here's a minimal example that runs a SQL query on Snowflake:
 
-```python
+```python {hl_lines=[2, 4, 12]}
 from flyte.io import DataFrame
 from flyteplugins.connectors.snowflake import Snowflake, SnowflakeConfig
 
@@ -58,9 +58,9 @@ This defines a task called `count_users` that runs `SELECT COUNT(*) FROM users` 
 
 ![Snowflake Link](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/snowflake/ui.png)
 
-To run the task, create a `TaskEnvironment` from it and execute:
+To run the task, create a `TaskEnvironment` from it and execute it locally or remotely:
 
-```python
+```python {hl_lines=3}
 import flyte
 
 snowflake_env = flyte.TaskEnvironment.from_task("snowflake_env", count_users)
@@ -109,7 +109,7 @@ Common options include:
 
 Example with a role:
 
-```python
+```python {hl_lines=8}
 config = SnowflakeConfig(
     account="myorg-myaccount",
     user="flyte_user",
@@ -124,13 +124,13 @@ config = SnowflakeConfig(
 
 ## Authentication
 
-The connector supports two authentication approaches: key-pair authentication and password or other methods through `connection_kwargs`.
+The connector supports two authentication approaches: key-pair authentication, and password-based or other authentication methods provided through `connection_kwargs`.
 
 ### Key-pair authentication
 
 Key-pair authentication is the recommended approach for automated workloads. Pass the names of the Flyte secrets containing the private key and optional passphrase:
 
-```python
+```python {hl_lines=[5, 6]}
 query = Snowflake(
     name="secure_query",
     query_template="SELECT * FROM sensitive_data",
@@ -140,7 +140,7 @@ query = Snowflake(
 )
 ```
 
-The `snowflake_private_key` parameter is the name of the secret that contains your PEM-encoded private key. The `snowflake_private_key_passphrase` parameter is the name of the secret that contains the passphrase, if your key is encrypted. If your key is not encrypted, omit the passphrase parameter.
+The `snowflake_private_key` parameter is the name of the secret (or secret key) that contains your PEM-encoded private key. The `snowflake_private_key_passphrase` parameter is the name of the secret (or secret key) that contains the passphrase, if your key is encrypted. If your key is not encrypted, omit the passphrase parameter.
 
 The connector decodes the PEM key and converts it to DER format for Snowflake authentication.
 
@@ -152,7 +152,7 @@ The connector decodes the PEM key and converts it to DER format for Snowflake au
 
 Pass the password through `connection_kwargs`:
 
-```python
+```python {hl_lines=8}
 config = SnowflakeConfig(
     account="myorg-myaccount",
     user="flyte_user",
@@ -169,7 +169,7 @@ config = SnowflakeConfig(
 
 For OAuth-based authentication, specify the authenticator and token:
 
-```python
+```python {hl_lines=["8-9"]}
 config = SnowflakeConfig(
     account="myorg-myaccount",
     user="flyte_user",
@@ -229,7 +229,7 @@ flat_params = {
 
 ### Parameterized `SELECT`
 
-```python
+```python {hl_lines=[5, 7]}
 from flyte.io import DataFrame
 
 events_by_date = Snowflake(
@@ -241,9 +241,9 @@ events_by_date = Snowflake(
 )
 ```
 
-Call the task with the required inputs:
+You can call the task with the required inputs:
 
-```python
+```python {hl_lines=3}
 @env.task
 async def fetch_events() -> DataFrame:
     return await events_by_date(event_date="2024-01-15")
@@ -253,7 +253,7 @@ async def fetch_events() -> DataFrame:
 
 You can define multiple input parameters of different types:
 
-```python
+```python {hl_lines=["4-8", "12-15"]}
 filtered_events = Snowflake(
     name="filtered_events",
     query_template="""
@@ -279,13 +279,9 @@ filtered_events = Snowflake(
 
 ## Retrieving query results
 
-If your query produces output, set `output_dataframe_type` to capture the results. The connector automatically retrieves the query results and returns them as the specified DataFrame type.
+If your query produces output, set `output_dataframe_type` to capture the results. `output_dataframe_type` accepts `DataFrame` from `flyte.io`. This is a meta-wrapper type that represents tabular results and can be materialized into a concrete DataFrame implementation using `open()` where you specify the target type and `all()`.
 
-`output_dataframe_type` accepts `DataFrame` from `flyte.io`. This is a meta-wrapper type that represents tabular results and can be materialized into a concrete DataFrame implementation using `open()` and `all()`.
-
-At present, only `pandas.DataFrame` is supported. If you specify `pandas.DataFrame` as the `output_dataframe_type` for a `Snowflake` task, the task returns a `pandas.DataFrame` directly. In this case, you do not need to call `open()` and `all()` to materialize the results.
-
-```python
+```python {hl_lines=13}
 from flyte.io import DataFrame
 
 top_customers = Snowflake(
@@ -302,9 +298,9 @@ top_customers = Snowflake(
 )
 ```
 
-The results are returned directly when you call the task. Use `open()` to set the target type and `all()` to materialize the results:
+At present, only `pandas.DataFrame` is supported. The results are returned directly when you call the task:
 
-```python
+```python {hl_lines=6}
 import pandas as pd
 
 @env.task
@@ -315,9 +311,9 @@ async def analyze_top_customers() -> dict:
     return {"total_spend": float(total_spend)}
 ```
 
-Or set `output_dataframe_type` to `pandas.DataFrame` to receive the results directly as a Pandas DataFrame:
+If you specify `pandas.DataFrame` as the `output_dataframe_type`, you do not need to call `open()` and `all()` to materialize the results.
 
-```python
+```python {hl_lines=[1, 13, "18-19"]}
 import pandas as pd
 
 top_customers = Snowflake(
@@ -332,182 +328,21 @@ top_customers = Snowflake(
     plugin_config=config,
     output_dataframe_type=pd.DataFrame,
 )
+
+@env.task
+async def analyze_top_customers() -> dict:
+    df = await top_customers()
+    total_spend = df["total_spend"].sum()
+    return {"total_spend": float(total_spend)}
 ```
 
 > [!NOTE]
-> Be sure to inject the `SNOWFLAKE_PRIVATE_KEY` and `SNOWFLAKE_PRIVATE_KEY_PASSPHRASE` environment variables as secrets into your downstream tasks, as they must have access to Snowflake credentials in order to retrieve the DataFrame results.
+> Be sure to inject the `SNOWFLAKE_PRIVATE_KEY` and `SNOWFLAKE_PRIVATE_KEY_PASSPHRASE` environment variables as secrets into your downstream tasks, as they must have access to Snowflake credentials in order to retrieve the DataFrame results. More on how you can create secrets [here](../../user-guide/task-configuration/secrets.md).
 
-If you don't need query results (for example, DDL statements or INSERT queries), omit `output_dataframe_type`:
+If you don't need query results (for example, `DDL` statements or `INSERT` queries), omit `output_dataframe_type`.
 
-```python
-create_table = Snowflake(
-    name="create_staging_table",
-    query_template="""
-        CREATE TABLE IF NOT EXISTS staging.events (
-            event_id STRING,
-            event_date DATE,
-            payload VARIANT
-        )
-    """,
-    plugin_config=config,
-)
-```
-
-## Complete example
+## End-to-end example
 
 Here's a complete workflow that uses the Snowflake connector as part of a data pipeline. The workflow creates a staging table, inserts records, queries aggregated results and processes them in a downstream task.
 
-```python
-import flyte
-from flyte.io import DataFrame
-from flyteplugins.connectors.snowflake import Snowflake, SnowflakeConfig
-
-config = SnowflakeConfig(
-    account="myorg-myaccount",
-    user="flyte_user",
-    database="ANALYTICS",
-    schema="PUBLIC",
-    warehouse="COMPUTE_WH",
-    connection_kwargs={
-        "role": "ETL_ROLE",
-    },
-)
-
-# Step 1: Create the staging table if it doesn't exist
-create_staging = Snowflake(
-    name="create_staging",
-    query_template="""
-        CREATE TABLE IF NOT EXISTS staging.daily_events (
-            event_id STRING,
-            event_date DATE,
-            user_id STRING,
-            event_type STRING,
-            payload VARIANT
-        )
-    """,
-    plugin_config=config,
-    snowflake_private_key="snowflake",
-    snowflake_private_key_passphrase="snowflake_passphrase",
-)
-
-# Step 2: Insert a record into the staging table
-insert_events = Snowflake(
-    name="insert_event",
-    query_template="""
-        INSERT INTO staging.daily_events (event_id, event_date, user_id, event_type)
-        VALUES (%(event_id)s, %(event_date)s, %(user_id)s, %(event_type)s)
-    """,
-    plugin_config=config,
-    inputs={
-        "event_id": list[str],
-        "event_date": list[str],
-        "user_id": list[str],
-        "event_type": list[str],
-    },
-    snowflake_private_key="snowflake",
-    snowflake_private_key_passphrase="snowflake_passphrase",
-    batch=True,
-)
-
-# Step 3: Query aggregated results for a given date
-daily_summary = Snowflake(
-    name="daily_summary",
-    query_template="""
-        SELECT
-            event_type,
-            COUNT(*) AS event_count,
-            COUNT(DISTINCT user_id) AS unique_users
-        FROM staging.daily_events
-        WHERE event_date = %(report_date)s
-        GROUP BY event_type
-        ORDER BY event_count DESC
-    """,
-    plugin_config=config,
-    inputs={"report_date": str},
-    output_dataframe_type=DataFrame,
-    snowflake_private_key="snowflake",
-    snowflake_private_key_passphrase="snowflake_passphrase",
-)
-
-# Create environments for all Snowflake tasks
-snowflake_env = flyte.TaskEnvironment.from_task(
-    "snowflake_env", create_staging, insert_events, daily_summary
-)
-
-# Main pipeline environment, depends on the Snowflake task environments
-env = flyte.TaskEnvironment(
-    name="analytics_env",
-    resources=flyte.Resources(memory="512Mi"),
-    image=flyte.Image.from_debian_base(name="analytics").with_pip_packages(
-        "flyteplugins-connectors[snowflake]", pre=True
-    ),
-    secrets=[
-        flyte.Secret(key="snowflake", as_env_var="SNOWFLAKE_PRIVATE_KEY"),
-        flyte.Secret(
-            key="snowflake_passphrase", as_env_var="SNOWFLAKE_PRIVATE_KEY_PASSPHRASE"
-        ),
-    ],
-    depends_on=[snowflake_env],
-)
-
-
-# Step 4: Process the results in Python
-@env.task
-async def generate_report(summary: DataFrame) -> dict:
-    import pandas as pd
-
-    df = await summary.open(pd.DataFrame).all()
-    total_events = df["event_count"].sum()
-    top_event = df.iloc[0]["event_type"]
-    return {
-        "total_events": int(total_events),
-        "top_event_type": top_event,
-        "event_types_count": len(df),
-    }
-
-
-# Compose the pipeline
-@env.task
-async def run_daily_pipeline(
-    event_ids: list[str],
-    event_dates: list[str],
-    user_ids: list[str],
-    event_types: list[str],
-) -> dict:
-    await create_staging()
-    await insert_events(
-        event_id=event_ids,
-        event_date=event_dates,
-        user_id=user_ids,
-        event_type=event_types,
-    )
-    summary = await daily_summary(report_date=event_dates[0])
-    return await generate_report(summary=summary)
-```
-
-Run the pipeline:
-
-```python
-if __name__ == "__main__":
-    flyte.init_from_config()
-
-    # Run locally
-    run = flyte.with_runcontext(mode="local").run(
-        run_daily_pipeline,
-        event_ids=["event-1", "event-2"],
-        event_dates=["2023-01-01", "2023-01-02"],
-        user_ids=["user-1", "user-2"],
-        event_types=["click", "view"],
-    )
-
-    # Or run remotely
-    run = flyte.with_runcontext(mode="remote").run(
-        run_daily_pipeline,
-        event_ids=["event-1", "event-2"],
-        event_dates=["2023-01-01", "2023-01-02"],
-        user_ids=["user-1", "user-2"],
-        event_types=["click", "view"],
-    )
-
-    print(run.url)
-```
+{{< code file="/external/unionai-examples/v2/integrations/connectors/snowflake/example.py" lang=python highlight="3 5 17 34 53 73-75 81-83 85-88 90">}}

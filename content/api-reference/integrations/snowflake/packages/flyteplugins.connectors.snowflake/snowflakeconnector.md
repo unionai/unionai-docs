@@ -1,6 +1,6 @@
 ---
 title: SnowflakeConnector
-version: 2.0.0b53.dev3+g082aa0f49
+version: 2.0.0b53.dev0+gffe4b8411.d20260127
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
