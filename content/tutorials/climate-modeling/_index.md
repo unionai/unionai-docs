@@ -7,244 +7,228 @@ sidebar_expanded: true
 
 # GPU-accelerated climate modeling
 
+Climate modeling is hard for two reasons: data and compute. Satellite imagery arrives continuously from multiple sources. Reanalysis datasets have to be pulled from remote APIs. Weather station data shows up in different formats and schemas. And once all of that is finally in one place, running atmospheric physics simulations demands serious GPU compute.
+
+In practice, many climate workflows are held together with scripts, cron jobs, and a lot of manual babysitting. Data ingestion breaks without warning. GPU jobs run overnight with little visibility into what's happening. When something interesting shows up in a simulation, like a developing hurricane, no one notices until the job finishes hours later.
+
+In this tutorial, we build a production-grade climate modeling pipeline using Flyte. We ingest data from three different sources in parallel, combine it with Dask, run ensemble atmospheric simulations on H200 GPUs, detect extreme weather events as they emerge, and visualize everything in a live dashboard. The entire pipeline is orchestrated, cached, and fault-tolerant, so it can run reliably at scale.
+
+![Report](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/tutorials/climate-modeling/report.png)
+
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/climate_modeling/simulation.py).
+> Full code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/climate_modeling/simulation.py).
 
-This tutorial demonstrates how to build a GPU-accelerated climate modeling workflow using Flyte. You'll learn how to ingest multi-source atmospheric data, run ensemble simulations on H200 GPUs, detect extreme weather events, and visualize results in real-time.
+## Overview
 
-## Use case
+We're building an ensemble weather forecasting system. Ensemble forecasting runs the same simulation multiple times with slightly different initial conditions. This quantifies forecast uncertainty. Instead of saying "the temperature will be 25°C", we can say "the temperature will be 24-26°C with 90% confidence".
 
-In this tutorial, you'll learn how to:
+The pipeline has five stages:
 
-- Ingest data from multiple sources: GOES satellites, ERA5 reanalysis, and weather stations
-- Preprocess atmospheric data using Dask for scalable computation
-- Run ensemble forecasts on H200 GPUs with PyTorch
-- Detect hurricanes and heatwaves in real-time
-- Visualize simulation progress with live Flyte Reports
+1. **Data ingestion**: Pull satellite imagery from NOAA GOES, reanalysis data from ERA5, and surface observations from weather stations in parallel.
+2. **Preprocessing**: Fuse the datasets, interpolate to a common grid, and run quality control using Dask for distributed computation.
+3. **GPU simulation**: Run ensemble atmospheric physics on H200 GPUs. Each ensemble member evolves independently. PyTorch handles the tensor operations; `torch.compile` optimizes the kernels.
+4. **Event detection**: Monitor for hurricanes (high wind + low pressure) and heatwaves during simulation. When extreme events are detected, the pipeline can adaptively refine the grid resolution.
+5. **Real-time reporting**: Stream metrics to a live Flyte Reports dashboard showing convergence and detected events.
 
-## Why Flyte for climate modeling?
+This workflow is a good example of where Flyte shines!
 
-Climate modeling presents unique computational challenges:
+- **Parallel data ingestion**: Three different data sources, three different APIs, all running concurrently. Flyte's async task execution handles this naturally.
+- **Resource heterogeneity**: Data ingestion needs CPU and network. Preprocessing needs a Dask cluster. Simulation needs GPUs. Flyte provisions exactly what each stage needs.
+- **Caching**: ERA5 data fetches can take minutes. Run the pipeline twice with the same date range, and Flyte skips the fetch entirely.
+- **Adaptive workflows**: When a hurricane is detected, we can dynamically refine the simulation. Flyte makes this kind of conditional logic straightforward.
 
-1. **Multi-source data**: Satellite imagery, reanalysis products, and station observations must be combined and harmonized.
+## Implementation
 
-2. **Massive compute**: Atmospheric simulations require GPU acceleration for physics calculations across millions of grid points.
-
-3. **Ensemble forecasting**: Running hundreds of ensemble members in parallel requires orchestration across multiple GPUs.
-
-4. **Real-time monitoring**: Long-running simulations need live dashboards for convergence tracking and event detection.
-
-5. **Adaptive workflows**: Simulations may need to refine resolution or adjust parameters based on detected phenomena.
-
-## Architecture overview
-
-The climate modeling pipeline consists of five main stages:
-
-1. **Data ingestion**: Parallel ingestion from GOES satellites, ERA5 reanalysis, and NOAA weather stations
-2. **Preprocessing**: Data fusion and quality control using Dask
-3. **GPU simulation**: Ensemble atmospheric physics on H200 GPUs
-4. **Analytics**: Real-time convergence monitoring and extreme event detection
-5. **Adaptive refinement**: Dynamic mesh refinement based on detected phenomena
-
-## Define dependencies and imports
-
-Start by importing the necessary modules:
+### Dependencies and container image
 
 {{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="imports" lang="python" >}}
 
-Key imports include:
-- `flyte` for orchestration
-- `xarray` for handling multi-dimensional climate data
-- `flyteplugins.dask` for distributed preprocessing
-
-## Define data structures
-
-Create dataclasses to organize simulation parameters and results:
-
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="dataclasses" lang="python" >}}
-
-These structures define:
-- **SimulationParams**: Grid resolution, physics schemes, ensemble size, and convergence criteria
-- **ClimateMetrics**: Per-iteration metrics including wind speed, pressure, and detected phenomena
-- **SimulationSummary**: Final summary with total events and convergence status
-
-## Build the container image
-
-Create a specialized image for climate modeling:
+The key imports include `xarray` for multi-dimensional climate data, `flyteplugins.dask` for distributed preprocessing, and `flyte` for orchestration.
 
 {{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="image" lang="python" >}}
 
-The image includes:
-- NetCDF and HDF5 libraries for climate data formats
-- ECMWF tools for GRIB format support
-- xarray and Dask for scalable data processing
-- PyTorch for GPU-accelerated physics
+Climate data comes in specialized formats such as NetCDF, HDF5, and GRIB. The container image includes libraries to work with all of them, along with PyTorch for GPU computation and the ECMWF client for accessing ERA5 data.
 
-## Configure task environments
+### Simulation parameters and data structures
 
-Define specialized environments for different computational needs:
+{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="dataclasses" lang="python" >}}
+
+`SimulationParams` defines the core behavior of the simulation, including grid resolution, physics schemes, and ensemble size. The default configuration runs 800 ensemble members, which is sufficient to produce statistically meaningful uncertainty estimates.
+
+> [!NOTE]
+> Decreasing the grid spacing via `grid_resolution_km` (for example, from 10 km to 5 km) increases grid resolution and significantly increases memory usage because it introduces more data points and intermediate state. Even with 141 GB of H200 GPU memory, high-resolution or adaptively refined simulations may exceed available VRAM, especially when running large ensembles.
+>
+> To mitigate this, consider reducing the ensemble size, limiting the refined region, running fewer physics variables, or scaling the simulation across more GPUs so memory is distributed more evenly.
+
+`ClimateMetrics` collects diagnostics at each iteration, such as convergence rate, energy conservation, and detected phenomena. These metrics are streamed to the real-time dashboard so you can monitor how the simulation evolves as it runs.
+
+### Task environments
+
+Different stages need different resources. Flyte's `TaskEnvironment` declares exactly what each task requires:
 
 {{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="task-envs" lang="python" >}}
 
-Three environments handle different workloads:
+Here’s what each environment is responsible for:
 
-1. **`gpu_env`**: H200 GPU for atmospheric simulation
-2. **`dask_env`**: Distributed cluster for preprocessing (scheduler + workers)
-3. **`cpu_env`**: Data ingestion and orchestration, with secrets for ERA5 API access
+- **`gpu_env`**: Runs the atmospheric simulations on H200 GPUs. The 130 GB of GPU memory is used to hold the ensemble members in VRAM during execution.
+- **`dask_env`**: Provides a distributed Dask cluster for preprocessing. A scheduler and multiple workers handle data fusion and transformation in parallel.
+- **`cpu_env`**: Handles data ingestion and orchestration. This environment also includes the secrets required to access the ERA5 API.
 
-## Ingest satellite data
+The `depends_on` setting on `cpu_env` ensures that Flyte builds the GPU and Dask images first. Once those environments are ready, the orchestration task can launch the specialized simulation and preprocessing tasks.
 
-Fetch GOES satellite imagery from NOAA's public S3 buckets:
+### Data ingestion: multiple sources in parallel
+
+Climate models need data from multiple sources. Each source has different formats, APIs, and failure modes. We handle them as separate Flyte tasks that run concurrently.
+
+**Satellite imagery from NOAA GOES**
 
 {{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="ingest-satellite" lang="python" >}}
 
-This task:
-- Selects GOES-East or GOES-West based on region
-- Fetches cloud imagery and precipitable water products
-- Applies geographic filtering to the requested region
-- Combines multiple days into a single dataset
+This task fetches cloud imagery and precipitable water products from NOAA's public S3 buckets. GOES-16 covers the Atlantic; GOES-17 covers the Pacific. The task selects the appropriate satellite based on region, fetches multiple days in parallel using `asyncio.gather`, and combines everything into a single xarray Dataset.
 
-## Ingest reanalysis data
-
-Fetch ERA5 reanalysis from the Copernicus Climate Data Store:
+**ERA5 reanalysis from Copernicus**
 
 {{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="ingest-reanalysis" lang="python" >}}
 
-ERA5 provides:
-- 3D atmospheric fields (temperature, wind, humidity)
-- Multiple pressure levels from surface to stratosphere
-- Consistent global coverage at ~30km resolution
+ERA5 provides 3D atmospheric fields such as temperature, wind, humidity at multiple pressure levels from surface to stratosphere. The ECMWF datastores client handles authentication via Flyte secrets. Each day fetches in parallel, then gets concatenated.
 
-## Ingest weather station data
-
-Fetch ground observations from NOAA's Integrated Surface Database:
+**Surface observations from weather stations:**
 
 {{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="ingest-station" lang="python" >}}
 
-Station data provides:
-- Real-time surface observations
-- Temperature, pressure, wind, and visibility
-- Ground truth for model validation
+Ground truth comes from NOAA's Integrated Surface Database. The task filters stations by geographic bounds, fetches hourly observations, and returns a Parquet file for efficient downstream processing.
 
-## Preprocess atmospheric data
+All three tasks return Flyte `File` objects that hold references to data in blob storage. No data moves until a downstream task actually needs it.
 
-Combine and quality-control data using Dask:
+### Preprocessing with Dask
 
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="preprocess" lang="python" >}}
+The three data sources need to be combined into a unified atmospheric state. This means:
+- Interpolating to a common grid
+- Handling missing values
+- Merging variables from different sources
+- Quality control
 
-Preprocessing includes:
-- Merging satellite and reanalysis datasets
-- Interpolating to common grids
-- Filling missing values
-- Adding station metadata
+This is a perfect fit for Dask to handle lazy evaluation over chunked arrays:
 
-## Run GPU-accelerated simulation
+```python
+@dask_env.task
+async def preprocess_atmospheric_data(
+    satellite_data: File,
+    reanalysis_data: File,
+    station_data: File,
+    target_resolution_km: float,
+) -> File:
+```
 
-Execute ensemble atmospheric physics on H200 GPUs:
+This task connects to the Dask cluster provisioned by Flyte, loads the datasets with appropriate chunking, merges satellite and reanalysis grids, fills in missing values, and persists the result. Flyte caches the output, so preprocessing only runs when the inputs change.
 
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="gpu-simulation" lang="python" >}}
+### GPU-accelerated atmospheric simulation
 
-The GPU simulation:
-- Generates ensemble members with perturbed initial conditions
-- Runs atmospheric physics (advection, pressure gradients, condensation)
-- Uses `torch.compile` for optimized kernel execution
-- Detects extreme events during simulation
-- Returns ensemble mean, spread, and detected phenomena
+Now the core: running atmospheric physics on the GPU. Each ensemble member is an independent forecast with slightly perturbed initial conditions.
 
-## Distribute across multiple GPUs
+{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="gpu-simulation-signature" lang="python" >}}
 
-Scale ensemble forecasts across multiple GPUs:
+The task accepts a subset of ensemble members (`ensemble_start` to `ensemble_end`). This enables distributing 800 members across multiple GPUs.
+
+The physics step is the computational kernel. It runs advection (wind transport), pressure gradients, Coriolis forces, turbulent diffusion, and moisture condensation:
+
+{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="physics-step" lang="python" >}}
+
+`@torch.compile(mode="reduce-overhead")` compiles this function into optimized CUDA kernels. Combined with mixed precision (`torch.cuda.amp.autocast`), this runs 3-4x faster than eager PyTorch.
+
+Every 10 timesteps, the simulation checks for extreme events:
+- **Hurricanes**: Wind speed > 33 m/s with low pressure
+- **Heatwaves**: Temperature anomalies exceeding thresholds
+
+Detected phenomena get logged to the metrics, which flow to the live dashboard.
+
+### Distributing across multiple GPUs
+
+800 ensemble members is a lot for one GPU, so we distribute them:
 
 {{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="distributed-ensemble" lang="python" >}}
 
-This task:
-- Distributes ensemble members evenly across GPUs
-- Launches parallel tasks with `asyncio.gather`
-- Aggregates results from all GPUs
+The task splits the ensemble members evenly across the available GPUs, launches the simulation runs in parallel using `asyncio.gather`, and then aggregates the results. With five GPUs, each GPU runs 160 ensemble members. Flyte takes care of scheduling, so GPU tasks start automatically as soon as resources become available.
 
-## Real-time analytics
+### The main workflow
 
-Monitor convergence and detect extreme events:
-
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="analytics" lang="python" >}}
-
-Analytics functions:
-- **analyze_simulation_convergence**: Check if ensemble spread has stabilized
-- **detect_extreme_events**: Identify hurricanes (high winds + low pressure) and heatwaves
-- **recommend_parameter_adjustments**: Suggest timestep or resolution adjustments
-
-## Orchestrate the adaptive workflow
-
-The main workflow coordinates all stages with real-time reporting:
+Everything comes together in the orchestration task:
 
 {{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="main-workflow" lang="python" >}}
 
-The workflow:
-1. **Ingests data in parallel** from satellites, reanalysis, and stations
-2. **Preprocesses** the combined atmospheric state
-3. **Runs iterative simulation** with convergence checking
-4. **Detects extreme events** and refines mesh if needed
-5. **Streams updates** to a live dashboard
+`report=True` enables Flyte Reports for live monitoring.
 
-Key features:
-- `flyte.group()` for visual organization in the UI
-- Real-time Flyte Reports with HTML/JavaScript dashboards
-- Adaptive mesh refinement when hurricanes are detected
-- Early stopping when convergence is achieved
+{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="workflow-ingestion" lang="python" >}}
 
-## Run the simulation
+`flyte.group("data-ingestion")` visually groups the ingestion tasks in the Flyte UI. Inside the group, three tasks launch concurrently. `asyncio.gather` waits for all three to complete before preprocessing begins.
 
-Execute the workflow:
+The workflow then enters an iterative loop:
+1. Run GPU simulation (single or multi-GPU)
+2. Check convergence by comparing forecasts across iterations
+3. Detect extreme events
+4. If a hurricane is detected and we haven't refined yet, double the grid resolution
+5. Stream metrics to the live dashboard
+6. Repeat until converged or max iterations reached
+
+Adaptive mesh refinement is the key feature here. When the simulation detects a hurricane forming, it automatically increases resolution to capture the fine-scale dynamics. This is expensive, so we limit it to one refinement per run.
+
+### Running the pipeline
 
 {{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="main" lang="python" >}}
 
-Before running, set up your ECMWF API credentials:
+Before running, set up ERA5 API credentials:
 
 ```bash
 flyte create secret cds_api_key <YOUR_CDS_API_KEY>
 flyte create secret cds_api_url https://cds.climate.copernicus.eu/api
 ```
 
-Then run the simulation:
+Then launch:
 
 ```bash
 flyte create config --endpoint <FLYTE_OR_UNION_ENDPOINT> --project <PROJECT_NAME> --domain <DOMAIN_NAME> --builder remote
 uv run simulation.py
 ```
 
-## Key features
+The default configuration uses the Atlantic region for September 2024, which is hurricane season.
+
+## Key concepts
 
 ### Ensemble forecasting
 
-Ensemble methods quantify forecast uncertainty by:
-- Perturbing initial conditions within observational error bounds
-- Running multiple independent forecasts
-- Computing ensemble mean (most likely outcome) and spread (uncertainty)
+Weather prediction is inherently uncertain. Small errors in the initial conditions grow over time due to chaotic dynamics, which means a single forecast can only ever be one possible outcome.
 
-### Extreme event detection
-
-The simulation monitors for:
-- **Hurricanes**: Wind speed > 33 m/s with pressure < 980 mb
-- **Heatwaves**: Temperature anomalies exceeding thresholds
+Ensemble forecasting addresses this uncertainty by:
+- Perturbing the initial conditions within known observational error bounds
+- Running many independent forecasts
+- Computing the ensemble mean as the most likely outcome and the ensemble spread as a measure of uncertainty
 
 ### Adaptive mesh refinement
 
-When extreme events are detected:
-- Grid resolution doubles (e.g., 10 km → 5 km)
-- Timestep reduces for numerical stability
-- Ensemble size adjusts for computational efficiency
+When a hurricane begins to form, coarse spatial grids are not sufficient to resolve critical features like eyewall dynamics. Adaptive mesh refinement allows the simulation to focus compute where it matters most by:
+- Increasing grid resolution, for example from 10 km to 5 km
+- Reducing the timestep to maintain numerical stability
+- Refining only the regions of interest instead of the entire domain
 
-### Real-time reporting
+This approach is computationally expensive, but it is essential for producing accurate intensity forecasts.
 
-Flyte Reports provide:
-- Live convergence tracking
-- Extreme event timeline
-- Per-GPU performance metrics
-- Interactive parameter display
+### Real-time event detection
 
-## Next steps
+Rather than analyzing results after a simulation completes, this pipeline detects significant events as the simulation runs.
 
-- Add sophisticated physics (radiation, boundary layer schemes)
-- Integrate ML surrogates for accelerated simulation
-- Add post-processing for forecast products (precipitation, wind gusts)
-- Implement data assimilation for improved initial conditions
+The system monitors for conditions such as:
+- **Hurricanes**: Wind speeds exceeding 33 m/s (Category 1 threshold) combined with central pressure below 980 mb
+- **Heatwaves**: Sustained temperature anomalies over a defined period
+
+Detecting these events in real time enables adaptive responses, such as refining the simulation or triggering alerts, and supports earlier warnings for extreme weather.
+
+## Where to go next
+
+This example is intentionally scoped to keep the ideas clear, but there are several natural ways to extend it for more realistic workloads.
+
+To model different ocean basins, change the `region` parameter to values like `"pacific"` or `"indian"`. The ingestion tasks automatically adjust to pull the appropriate satellite coverage for each region.
+
+To run longer forecasts, increase `simulation_hours` in `SimulationParams`. The default of 240 hours, or 10 days, is typical for medium-range forecasting, but you can run longer simulations if you have the compute budget.
+
+Finally, the physics step here is deliberately simplified. Production systems usually incorporate additional components such as radiation schemes, boundary layer parameterizations, and land surface models. These can be added incrementally as separate steps without changing the overall structure of the pipeline.
+
