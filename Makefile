@@ -139,4 +139,8 @@ check-api-docs:
 	@uv run tools/api_generator/check_versions.py --check
 
 update-api-docs:
-	@uv run tools/api_generator/check_versions.py --update
+	@if command -v uv >/dev/null 2>&1; then \
+		uv run tools/api_generator/check_versions.py --update; \
+	else \
+		echo "uv not available, skipping API docs update (using committed docs)"; \
+	fi
