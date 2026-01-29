@@ -43,10 +43,10 @@ This enables large-scale parallelism without requiring users to operate or maint
 
 | Plugin               | Description                                      | Common use cases                                       |
 | -------------------- | ------------------------------------------------ | ------------------------------------------------------ |
-| [Ray](./ray)         | Provisions Ray clusters via KubeRay              | Distributed Python, ML training, hyperparameter tuning |
-| [Spark](./spark)     | Provisions Spark clusters via Spark Operator     | Large-scale data processing, ETL pipelines             |
-| [Dask](./dask)       | Provisions Dask clusters via Dask Operator       | Parallel Python workloads, dataframe operations        |
-| [PyTorch](./pytorch) | Distributed PyTorch training with elastic launch | Single-node and multi-node training                    |
+| [Ray](./ray/)         | Provisions Ray clusters via KubeRay              | Distributed Python, ML training, hyperparameter tuning |
+| [Spark](./spark/)     | Provisions Spark clusters via Spark Operator     | Large-scale data processing, ETL pipelines             |
+| [Dask](./dask/)       | Provisions Dask clusters via Dask Operator       | Parallel Python workloads, dataframe operations        |
+| [PyTorch](./pytorch/) | Distributed PyTorch training with elastic launch | Single-node and multi-node training                    |
 
 Each plugin encapsulates:
 
@@ -155,8 +155,8 @@ These integrations typically handle:
 
 | Plugin                        | Description                                   | Common use cases                              |
 | ----------------------------- | --------------------------------------------- | --------------------------------------------- |
-| [OpenAI](./openai)            | Drop-in replacement for OpenAI `FunctionTool` | Agentic workflows                             |
-| [Weights and Biases](./wandb) | Weights & Biases integration                  | Experiment tracking and hyperparameter tuning |
+| [OpenAI](./openai/)            | Drop-in replacement for OpenAI `FunctionTool` | Agentic workflows                             |
+| [Weights and Biases](./wandb/) | Weights & Biases integration                  | Experiment tracking and hyperparameter tuning |
 
 ## Connectors
 
