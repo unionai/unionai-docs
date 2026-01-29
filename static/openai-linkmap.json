@@ -1,0 +1,7 @@
+{
+  "identifiers": {},
+  "methods": {
+    "flyteplugins.openai.agents.function_tool": "/api-reference/integrations/openai/packages/flyteplugins.openai.agents/#function_tool",
+    "function_tool": "/api-reference/integrations/openai/packages/flyteplugins.openai.agents/#function_tool"
+  }
+}

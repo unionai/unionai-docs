@@ -76,10 +76,10 @@ clean: clean_output_folder clean_venv
 .PHONY: cli
 cli:
 ifeq ($(SKIP_VENV_SETUP),false)
-	(cat "include/cli.flyte.md"; echo; $(VENV_DIR)/bin/flyte gen docs --type markdown) > $(CLI_OUTPUT_FILE).tmp
+	(sed "s/%%VERSION%%/$$($(VENV_DIR)/bin/python -c 'import flyte; print(flyte.__version__)')/" "include/cli.flyte.md"; echo; $(VENV_DIR)/bin/flyte gen docs --type markdown) > $(CLI_OUTPUT_FILE).tmp
 	mv $(CLI_OUTPUT_FILE).tmp $(CLI_OUTPUT_FILE)
 else
-	(cat "include/cli.flyte.md"; echo; flyte gen docs --type markdown) > $(CLI_OUTPUT_FILE).tmp
+	(sed "s/%%VERSION%%/$$(python -c 'import flyte; print(flyte.__version__)')/" "include/cli.flyte.md"; echo; flyte gen docs --type markdown) > $(CLI_OUTPUT_FILE).tmp
 	mv $(CLI_OUTPUT_FILE).tmp $(CLI_OUTPUT_FILE)
 endif
 

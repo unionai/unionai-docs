@@ -2,20 +2,26 @@
 #
 # Examples:
 #   make -f Makefile.api.plugins PLUGIN=flyteplugins.wandb TITLE="Weights & Biases" NAME=wandb
+#   make -f Makefile.api.plugins PLUGIN=flyteplugins.connectors INSTALL="flyteplugins-connectors[bigquery,databricks,snowflake]" TITLE="Connectors" NAME=connectors
 #
 # For packages available locally:
 #  make -f Makefile.api.plugins PLUGIN=flyteplugins.wandb TITLE="Weights & Biases" NAME=wandb SKIP_VENV_SETUP=true
 #
 # Required variables:
-#   PLUGIN - The pip package name (e.g., flytekitplugins-wandb)
-#   TITLE  - The display title for the documentation
-#   NAME   - The folder name under content/api-reference/integrations/ (e.g., wandb)
+#   PLUGIN  - Python import path (e.g., flyteplugins.wandb) used by the parser
+#   TITLE   - The display title for the documentation
+#   NAME    - The folder name under content/api-reference/integrations/ (e.g., wandb)
+#
+# Optional variables:
+#   INSTALL - pip install specifier (defaults to PLUGIN). Use to add extras,
+#             e.g., "flyteplugins-connectors[bigquery,databricks,snowflake]"
 
 OUTPUT_FOLDER=content/api-reference/integrations/${NAME}
 API_DATA=/tmp/${NAME}.api.yaml
 LANDING_PAGE ?= include/api.plugin.md
 VENV_DIR=.venv
 SKIP_VENV_SETUP ?= false
+INSTALL ?= ${PLUGIN}
 
 .PHONY: all
 all: check_vars setup_venv parser generate
@@ -32,8 +38,8 @@ ifeq ($(SKIP_VENV_SETUP),false)
 	@echo "Setting up fresh virtual environment..."
 	rm -rf $(VENV_DIR)
 	uv venv $(VENV_DIR)
-	@echo "Installing ${PLUGIN}..."
-	uv pip install --python $(VENV_DIR)/bin/python --pre --upgrade '${PLUGIN}'
+	@echo "Installing ${INSTALL}..."
+	uv pip install --python $(VENV_DIR)/bin/python --pre --upgrade '${INSTALL}'
 	@echo "Virtual environment setup complete. Using $(VENV_DIR)/bin/python"
 else
 	@echo "Skipping venv setup (SKIP_VENV_SETUP=true)"
@@ -102,17 +108,17 @@ help:
 	@echo "  make -f Makefile.api.plugins PLUGIN=<package> TITLE=\"<title>\" NAME=<folder>"
 	@echo ""
 	@echo "Required variables:"
-	@echo "  PLUGIN - The pip package name (e.g., flytekitplugins-wandb)"
-	@echo "  TITLE  - The display title for the documentation"
-	@echo "  NAME   - The folder name under content/api-reference/integrations/"
+	@echo "  PLUGIN  - Python import path (e.g., flyteplugins.wandb)"
+	@echo "  TITLE   - The display title for the documentation"
+	@echo "  NAME    - The folder name under content/api-reference/integrations/"
 	@echo ""
 	@echo "Options:"
+	@echo "  INSTALL=...          - pip install specifier (defaults to PLUGIN). Use for extras."
 	@echo "  SKIP_VENV_SETUP=true - Skip automatic venv setup and use current environment"
 	@echo ""
 	@echo "Examples:"
-	@echo "  make -f Makefile.api.plugins PLUGIN=flytekitplugins-wandb TITLE=\"Weights & Biases\" NAME=wandb"
-	@echo "  make -f Makefile.api.plugins PLUGIN=flytekitplugins-ray TITLE=\"Ray\" NAME=ray"
-	@echo "  make -f Makefile.api.plugins PLUGIN=flytekitplugins-spark TITLE=\"Spark\" NAME=spark"
+	@echo "  make -f Makefile.api.plugins PLUGIN=flyteplugins.wandb TITLE=\"Weights & Biases\" NAME=wandb"
+	@echo "  make -f Makefile.api.plugins PLUGIN=flyteplugins.connectors INSTALL=\"flyteplugins-connectors[bigquery,databricks,snowflake]\" TITLE=\"Connectors\" NAME=connectors"
 	@echo ""
 	@echo "Targets:"
 	@echo "  all              - Set up venv, parse, and generate (default)"
