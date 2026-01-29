@@ -1,0 +1,14 @@
+{
+  "identifiers": {
+    "flyteplugins.union.remote.ApiKey": "/api-reference/integrations/union/packages/flyteplugins.union.remote/apikey/",
+    "ApiKey": "/api-reference/integrations/union/packages/flyteplugins.union.remote/apikey/",
+    "flyteplugins.union.utils.auth.AppClientCredentials": "/api-reference/integrations/union/packages/flyteplugins.union.utils.auth/appclientcredentials/",
+    "AppClientCredentials": "/api-reference/integrations/union/packages/flyteplugins.union.utils.auth/appclientcredentials/"
+  },
+  "methods": {
+    "flyteplugins.union.utils.auth.encode_app_client_credentials": "/api-reference/integrations/union/packages/flyteplugins.union.utils.auth/#encode_app_client_credentials",
+    "encode_app_client_credentials": "/api-reference/integrations/union/packages/flyteplugins.union.utils.auth/#encode_app_client_credentials",
+    "flyteplugins.union.utils.auth.is_serverless_endpoint": "/api-reference/integrations/union/packages/flyteplugins.union.utils.auth/#is_serverless_endpoint",
+    "is_serverless_endpoint": "/api-reference/integrations/union/packages/flyteplugins.union.utils.auth/#is_serverless_endpoint"
+  }
+}
