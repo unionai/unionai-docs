@@ -1,0 +1,7 @@
+{
+  "identifiers": {
+    "flyteplugins.vllm.VLLMAppEnvironment": "/api-reference/integrations/vllm/packages/flyteplugins.vllm/vllmappenvironment/",
+    "VLLMAppEnvironment": "/api-reference/integrations/vllm/packages/flyteplugins.vllm/vllmappenvironment/"
+  },
+  "methods": {}
+}

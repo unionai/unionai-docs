@@ -4,7 +4,7 @@ PREFIX := $(if $(VERSION),docs/$(VERSION),docs)
 PORT := 9000
 BUILD := $(shell date +%s)
 
-.PHONY: all dist variant dev update-examples sync-examples llm-docs
+.PHONY: all dist variant dev update-examples sync-examples llm-docs check-api-docs update-api-docs update-redirects dry-run-redirects
 
 all: usage
 
@@ -24,6 +24,8 @@ base:
 	#cp -R static/* dist/${PREFIX}/
 
 dist: base
+	make update-redirects
+	make update-api-docs
 	make variant VARIANT=flyte
 	# make variant VARIANT=serverless
 	make variant VARIANT=byoc
@@ -133,3 +135,12 @@ dry-run-redirects:
 		python3 tools/redirect_generator/detect_moved_pages.py --dry-run; \
 	fi
 
+check-api-docs:
+	@uv run tools/api_generator/check_versions.py --check
+
+update-api-docs:
+	@if [ -t 0 ]; then \
+		uv run tools/api_generator/check_versions.py --update; \
+	else \
+		echo "Non-interactive environment, skipping API docs update"; \
+	fi
