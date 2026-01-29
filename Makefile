@@ -118,17 +118,18 @@ llm-docs:
 	done
 
 update-redirects:
-	@echo "Detecting moved pages from git history..."
+	@echo "Detecting moved pages and appending to redirects.csv..."
 	@if command -v uv >/dev/null 2>&1; then \
 		uv run tools/redirect_generator/detect_moved_pages.py; \
 	else \
 		python3 tools/redirect_generator/detect_moved_pages.py; \
 	fi
 
-set-redirects-checkpoint:
+dry-run-redirects:
+	@echo "Dry run: detecting moved pages from git history..."
 	@if command -v uv >/dev/null 2>&1; then \
-		uv run tools/redirect_generator/detect_moved_pages.py --set-checkpoint $(COMMIT); \
+		uv run tools/redirect_generator/detect_moved_pages.py --dry-run; \
 	else \
-		python3 tools/redirect_generator/detect_moved_pages.py --set-checkpoint $(COMMIT); \
+		python3 tools/redirect_generator/detect_moved_pages.py --dry-run; \
 	fi
 
