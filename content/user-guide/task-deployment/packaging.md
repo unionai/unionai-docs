@@ -1,6 +1,6 @@
 ---
 title: Packaging
-weight: 5
+weight: 7
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
@@ -993,12 +993,3 @@ if __name__ == "__main__":
    ```python
    version = "v1.0.0"  # Major.Minor.Patch
    ```
-
----
-
-## Further reading
-
-- [Image API Reference](../api-reference/flyte-sdk/packages/flyte/Image.md) - Complete Image class documentation
-- [TaskEnvironment](../api-reference/flyte-sdk/packages/flyte/TaskEnvironment.md) - Environment configuration options
-- [Configuration Guide](./configuration/) - Setting up Flyte config files
-

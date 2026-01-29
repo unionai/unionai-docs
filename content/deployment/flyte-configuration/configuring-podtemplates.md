@@ -1,7 +1,7 @@
 ---
 title: Using Pod Templates
 weight: 5
-variants: +flyte -serverless -byoc -selfmanaged
+variants: -flyte -serverless -byoc -selfmanaged
 mermaid: true
 ---
 
@@ -23,7 +23,7 @@ There are three ways of defining [PodTemplate](https://kubernetes.io/docs/concep
 
 ## A note about containers kinds
 
-In a Kubernetes Pod, you can have multiple containers but typically there is one considered "primary", or the one that runs the microservice or main application. 
+In a Kubernetes Pod, you can have multiple containers but typically there is one considered "primary", or the one that runs the microservice or main application.
 You can also have [initContainers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/#understanding-init-containers) which are designed to run before the primary to perform anciliary tasks like downloading data. They run sequentially and must complete succesfully before the primary container can run. You would define them under a separate section of the PodTemplate spec:
 
 ```yaml
@@ -42,7 +42,7 @@ template:
       image: busybox:1.28
       command: ['sh', '-c', "until nslookup mydb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
 ```
-A special case of `initContainer` are the [sidecar containers](https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/#pod-sidecar-containers). They are also designed to extend the functionality of the primary container but they remain running even after the Pod startup process completes. 
+A special case of `initContainer` are the [sidecar containers](https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/#pod-sidecar-containers). They are also designed to extend the functionality of the primary container but they remain running even after the Pod startup process completes.
 You would configure them as an `initContainer` but with a policy that enables them to be restarted independently from the primary container:
 
 ```yaml
@@ -147,11 +147,11 @@ Containers:
     Environment:
       eKeyC:                              eValC
       eKeyD:                              eValD
-      ... 
+      ...
 Volumes:
   volume:
     Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
-    Medium:     
+    Medium:
     SizeLimit:  <unset>
  ...
 Tolerations:                 ...

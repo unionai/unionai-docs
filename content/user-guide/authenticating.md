@@ -1,8 +1,7 @@
 ---
 title: Authenticating
-weight: 20
+weight: 14
 variants: -flyte +serverless +byoc +selfmanaged
-sidebar_expanded: true
 ---
 
 # Authenticating with Union
@@ -153,16 +152,22 @@ Open that URL on any device with a browser, enter the code, and authentication c
 
 #### Programmatic usage
 
+**In Python scripts:**
+
 ```python
 import flyte
 
-# Initialize with device flow authentication
-flyte.init(endpoint="dns:///your-union-endpoint", headless=True)
+env = flyte.TaskEnvironment("my-project")
 
-# Your code here
-@flyte.task
+@env.task
 def my_task():
     return "Hello Union!"
+
+if __name__ == "__main__":
+    # Initialize with device flow authentication
+    flyte.init(endpoint="dns:///your-union-endpoint", headless=True)
+
+    # Your workflow execution code here
 ```
 
 **Example: Google Colab**
@@ -178,7 +183,9 @@ flyte.init(
 )
 
 # Define and run your workflows
-@flyte.task
+env = flyte.TaskEnvironment("my-project")
+
+@env.task
 def process_data(data: str) -> str:
     return f"Processed: {data}"
 ```
@@ -236,35 +243,123 @@ flyte delete api-key my-ci-key
 
 #### Programmatic usage
 
+The Flyte SDK provides two methods for initializing with API keys:
+
+1. **Using `flyte.init_from_api_key()`** (recommended for API key authentication):
+
 ```python
 import flyte
-import os
 
-# Initialize with API key - endpoint is embedded in the key
-api_key = os.getenv("FLYTE_API_KEY")
-flyte.init(api_key=api_key)
+# Initialize with API key from FLYTE_API_KEY environment variable (default)
+flyte.init_from_api_key()
+
+# Or explicitly pass the API key
+flyte.init_from_api_key(api_key="your-encoded-api-key")
+
+# Use with remote APIs
+import flyte.remote as remote
+tasks = remote.Task.listall(project="flytesnacks", domain="development")
 ```
 
-**Example: Automated Script**
+2. **Using `flyte.init()` with api_key parameter**:
+
+```python
+import flyte
+
+# Initialize with API key - endpoint is embedded in the key
+flyte.init(api_key="your-encoded-api-key")
+
+# Use with remote APIs
+import flyte.remote as remote
+tasks = remote.Task.listall(project="flytesnacks", domain="development")
+```
+
+Both methods work identically. The `init_from_api_key()` method is a convenience function specifically designed for API key authentication. If no `api_key` parameter is provided, it automatically reads from the `FLYTE_API_KEY` environment variable.
+
+> [!NOTE]
+> The API key is a base64-encoded string containing endpoint, client_id, client_secret, and org information. The SDK automatically decodes this and uses OAuth2 client credentials flow for authentication.
+
+**Example: Automated deployment script**
 
 ```python
 #!/usr/bin/env python3
 import flyte
-import os
 
-# Read API key from environment
-api_key = os.getenv("FLYTE_API_KEY")
-if not api_key:
-    raise ValueError("FLYTE_API_KEY environment variable not set")
+env = flyte.TaskEnvironment("my-project")
 
-# Initialize - no endpoint needed
-flyte.init(api_key=api_key)
-
-# Deploy or run workflows
-@flyte.task
+@env.task
 def automated_task():
     return "Deployed from automation"
+
+if __name__ == "__main__":
+    # Option 1: Use init_from_api_key (reads from FLYTE_API_KEY env var by default)
+    flyte.init_from_api_key()
+
+    # Option 2: Explicitly pass the API key
+    # import os
+    # api_key = os.getenv("FLYTE_API_KEY")
+    # if not api_key:
+    #     raise ValueError("FLYTE_API_KEY environment variable not set")
+    # flyte.init_from_api_key(api_key=api_key)
+
+    # Deploy or run workflows
+    # ... your deployment code here
 ```
+
+**Example: Script using Flyte remote APIs**
+
+When you're not declaring tasks but only calling remote APIs, you can call `flyte.init()` at module level (similar to notebooks):
+
+```python
+#!/usr/bin/env python3
+import flyte
+import flyte.remote as remote
+
+# Initialize with API key
+flyte.init_from_api_key()
+
+# Use remote APIs
+tasks = remote.Task.listall(project="flytesnacks", domain="development")
+for task in tasks:
+    print(f"Task: {task.name}")
+```
+
+#### Using API keys with Union Apps
+
+API keys created with `flyte create api-key` can be used to authenticate requests to Union Apps hosted on your Union cluster. However, note that:
+
+> [!IMPORTANT]
+> API keys **cannot** be used directly against Union APIs (like the admin API) unless you're using the Flyte SDK or another language SDK/OAuth2 client. For direct API access, contact the Union team for guidance on proper authentication methods.
+
+**Using API keys with Union Apps:**
+
+When you create an API key using `flyte create api-key`, you can use it to invoke HTTP endpoints in your Union Apps by passing it in the `Authorization: Bearer` header:
+
+```bash
+# Create an API key
+flyte create api-key my-app-key
+
+# Use the API key to call a Union App endpoint
+curl -H "Authorization: Bearer <your-api-key>" \
+  https://little-credit-4fff1.apps.dogfood-gcp.cloud-staging.union.ai/profile
+```
+
+**Example response:**
+
+```json
+{
+  "subject": "Some-subject-id",
+  "name": ""
+}
+```
+
+The `/profile` endpoint (or similar identity endpoints in your app) returns information about the authenticated identity. When using an API key, this will be a bot identity, as the API key uses client app ID and secret for authentication.
+
+> [!TIP]
+> Different Union Apps may expose different endpoints. Common patterns include:
+> - `/profile` or `/me` - Returns the authenticated user/bot identity
+> - `/health` - Health check endpoint
+> - Custom application endpoints specific to your workflow
 
 ## Comparison table
 

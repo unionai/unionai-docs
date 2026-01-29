@@ -1,6 +1,6 @@
 ---
 title: TaskDetails
-version: 2.0.0b40
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -22,13 +22,28 @@ class TaskDetails(
 | `max_inline_io_bytes` | `int` | |
 | `overriden_queue` | `Optional[str]` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cache` | `None` | The cache policy of the task. |
+| `default_input_args` | `None` | The default input arguments of the task. |
+| `interface` | `None` | The interface of the task. |
+| `name` | `None` | The name of the task. |
+| `queue` | `None` | Get the queue name to use for task execution, if overridden. |
+| `required_args` | `None` | The required input arguments of the task. |
+| `resources` | `None` | Get the resource requests and limits for the task as a tuple (requests, limits). |
+| `secrets` | `None` | Get the list of secret keys required by the task. |
+| `task_type` | `None` | The type of the task. |
+| `version` | `None` | The version of the task. |
+
 ## Methods
 
 | Method | Description |
 |-|-|
 | [`fetch()`](#fetch) |  |
 | [`get()`](#get) | Get a task by its ID or name. |
-| [`override()`](#override) |  |
+| [`override()`](#override) | Create a new TaskDetails with overridden properties. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 
@@ -93,17 +108,21 @@ def override(
     kwargs: **kwargs,
 ) -> TaskDetails
 ```
+Create a new TaskDetails with overridden properties.
+
+
+
 | Parameter | Type | Description |
 |-|-|-|
-| `short_name` | `Optional[str]` | |
-| `resources` | `Optional[flyte.Resources]` | |
-| `retries` | `Union[int, flyte.RetryStrategy]` | |
-| `timeout` | `Optional[flyte.TimeoutType]` | |
-| `env_vars` | `Optional[Dict[str, str]]` | |
-| `secrets` | `Optional[flyte.SecretRequest]` | |
-| `max_inline_io_bytes` | `Optional[int]` | |
-| `cache` | `Optional[flyte.Cache]` | |
-| `queue` | `Optional[str]` | |
+| `short_name` | `Optional[str]` | Optional short name for the task. |
+| `resources` | `Optional[flyte.Resources]` | Optional resource requirements. |
+| `retries` | `Union[int, flyte.RetryStrategy]` | Number of retries or retry strategy. |
+| `timeout` | `Optional[flyte.TimeoutType]` | Execution timeout. |
+| `env_vars` | `Optional[Dict[str, str]]` | Environment variables to set. |
+| `secrets` | `Optional[flyte.SecretRequest]` | Secret requests for the task. |
+| `max_inline_io_bytes` | `Optional[int]` | Maximum inline I/O size in bytes. |
+| `cache` | `Optional[flyte.Cache]` | Cache configuration. |
+| `queue` | `Optional[str]` | Queue name for task execution. :return: A new TaskDetails instance with the overrides applied. |
 | `kwargs` | `**kwargs` | |
 
 ### to_dict()
@@ -127,18 +146,4 @@ Convert the object to a JSON string.
 Returns:
     str: A JSON string representation of the object.
 
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `cache` | `None` | The cache policy of the task. |
-| `default_input_args` | `None` | The default input arguments of the task. |
-| `name` | `None` | The name of the task. |
-| `queue` | `None` | The queue to use for the task. |
-| `required_args` | `None` | The required input arguments of the task. |
-| `resources` | `None` | The resources of the task. |
-| `secrets` | `None` | The secrets of the task. |
-| `task_type` | `None` | The type of the task. |
-| `version` | `None` | The version of the task. |
 

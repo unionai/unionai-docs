@@ -1,6 +1,6 @@
 ---
 title: Action
-version: 2.0.0b40
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -9,7 +9,21 @@ layout: py_api
 
 **Package:** `flyte.remote`
 
-A class representing an action. It is used to manage the run of a task and its state on the remote Union API.
+A class representing an action. It is used to manage the "execution" of a task and its state on the remote API.
+
+From a datamodel perspective, a Run consists of actions. All actions are linearly nested under a parent action.
+ Actions have unique auto-generated identifiers, that are unique within a parent action.
+
+ &lt;pre&gt;
+ run
+  - a0
+    - action1 under a0
+    - action2 under a0
+        - action1 under action2 under a0
+        - action2 under action1 under action2 under a0
+        - ...
+    - ...
+&lt;/pre&gt;
 
 
 ```python
@@ -23,21 +37,53 @@ class Action(
 | `pb2` | `run_definition_pb2.Action` | |
 | `_details` | `ActionDetails \| None` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `action_id` | `None` | Get the action ID. |
+| `name` | `None` | Get the name of the action. |
+| `phase` | `None` | Get the phase of the action.  Returns:     The current execution phase as an ActionPhase enum |
+| `raw_phase` | `None` | Get the raw phase of the action. |
+| `run_name` | `None` | Get the name of the run. |
+| `start_time` | `None` | Get the start time of the action. |
+| `task_name` | `None` | Get the name of the task. |
+
 ## Methods
 
 | Method | Description |
 |-|-|
+| [`abort()`](#abort) | Aborts / Terminates the action. |
 | [`details()`](#details) | Get the details of the action. |
 | [`done()`](#done) | Check if the action is done. |
 | [`get()`](#get) | Get a run by its ID or name. |
 | [`listall()`](#listall) | Get all actions for a given run. |
-| [`show_logs()`](#show_logs) |  |
+| [`show_logs()`](#show_logs) | Display logs for the action. |
 | [`sync()`](#sync) | Sync the action with the remote server. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions,. |
 | [`watch()`](#watch) | Watch the action for updates, updating the internal Action state with latest details. |
 
+
+### abort()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Action instance>.abort.aio()`.
+```python
+def abort(
+    reason: str,
+)
+```
+Aborts / Terminates the action.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `reason` | `str` | |
 
 ### details()
 
@@ -125,13 +171,17 @@ def show_logs(
     filter_system: bool,
 )
 ```
+Display logs for the action.
+
+
+
 | Parameter | Type | Description |
 |-|-|-|
-| `attempt` | `int \| None` | |
-| `max_lines` | `int` | |
-| `show_ts` | `bool` | |
-| `raw` | `bool` | |
-| `filter_system` | `bool` | |
+| `attempt` | `int \| None` | The attempt number to show logs for (defaults to latest attempt). |
+| `max_lines` | `int` | Maximum number of log lines to display in the viewer. |
+| `show_ts` | `bool` | Whether to show timestamps with each log line. |
+| `raw` | `bool` | If True, print logs directly without the interactive viewer. |
+| `filter_system` | `bool` | If True, filter out system-generated log lines. |
 
 ### sync()
 
@@ -198,16 +248,4 @@ ensuring that properties like `phase` reflect the current state.
 |-|-|-|
 | `cache_data_on_done` | `bool` | |
 | `wait_for` | `WaitFor` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `action_id` | `None` | Get the action ID. |
-| `name` | `None` | Get the name of the action. |
-| `phase` | `None` | Get the phase of the action.  Returns:     The current execution phase as an ActionPhase enum |
-| `raw_phase` | `None` | Get the raw phase of the action. |
-| `run_name` | `None` | Get the name of the run. |
-| `start_time` | `None` | Get the start time of the action. |
-| `task_name` | `None` | Get the name of the task. |
 

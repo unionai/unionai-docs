@@ -11,12 +11,12 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: 'true'
-          fetch-depth: 0  # Fetch all history for proper git operations
+          fetch-depth: 0
 
-      - name: Run Jupyter notebook validation
+      - name: Validate notebook hashes
         run: make check-jupyter
 
       - name: Report status
         if: ${{ failure() }}
         run: |
-          echo "::error::Jupyter notebook validation failed. Please ensure all notebooks are properly synced and content hashes are up-to-date."
+          echo "::error::Jupyter notebook validation failed. Run 'make -f Makefile.jupyter' locally to regenerate."

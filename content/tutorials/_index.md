@@ -11,6 +11,14 @@ sidebar_expanded: true
 This section contains tutorials that showcase relevant use cases and provide step-by-step instructions on how to implement various features using Flyte and Union.
 
 {{< grid >}}
+{{< link-card target="distributed-pretraining" title="Distributed LLM pretraining" >}}
+Pretrain large language models at scale with PyTorch Lightning, FSDP, and H200 GPUs, featuring streaming data and real-time metrics.
+{{< /link-card >}}
+
+{{< link-card target="climate-modeling" title="GPU-accelerated climate modeling" >}}
+Run ensemble atmospheric simulations on H200 GPUs with multi-source data ingestion and real-time extreme event detection.
+{{< /link-card >}}
+
 {{< link-card target="trading-agents" title="Multi-agent trading simulation" >}}
 A multi-agent trading simulation, modeling how agents within a firm might interact, strategize, and make trades collaboratively.
 {{< /link-card >}}

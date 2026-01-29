@@ -1,8 +1,8 @@
 ---
 title: Scale your runs
-weight: 6
+weight: 10
 variants: +flyte +serverless +byoc +selfmanaged
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Scale your runs

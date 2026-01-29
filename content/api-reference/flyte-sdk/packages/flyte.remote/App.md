@@ -1,6 +1,6 @@
 ---
 title: App
-version: 2.0.0b40
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -21,6 +21,17 @@ class App(
 |-|-|-|
 | `pb2` | `app_definition_pb2.App` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `deployment_status` | `None` | Get the deployment status of the app Returns: |
+| `desired_state` | `None` | Get the desired state of the app. |
+| `endpoint` | `None` | Get the public endpoint URL of the app. |
+| `name` | `None` | Get the name of the app. |
+| `revision` | `None` | Get the revision number of the app. |
+| `url` | `None` | Get the console URL for viewing the app. |
+
 ## Methods
 
 | Method | Description |
@@ -29,8 +40,8 @@ class App(
 | [`create()`](#create) |  |
 | [`deactivate()`](#deactivate) | Stop the app. |
 | [`get()`](#get) | Get an app by name. |
-| [`is_active()`](#is_active) |  |
-| [`is_deactivated()`](#is_deactivated) |  |
+| [`is_active()`](#is_active) | Check if the app is currently active or started. |
+| [`is_deactivated()`](#is_deactivated) | Check if the app is currently deactivated or stopped. |
 | [`listall()`](#listall) |  |
 | [`replace()`](#replace) | Replace an existing app's that matches the given name, with a new spec and optionally labels. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
@@ -126,11 +137,17 @@ Get an app by name.
 ```python
 def is_active()
 ```
+Check if the app is currently active or started.
+
+
 ### is_deactivated()
 
 ```python
 def is_deactivated()
 ```
+Check if the app is currently deactivated or stopped.
+
+
 ### listall()
 
 
@@ -244,15 +261,4 @@ Watch for the app to reach activated or deactivated state.
 | Parameter | Type | Description |
 |-|-|-|
 | `wait_for` | `WaitFor` | ["activated", "deactivated"]  Returns: The app in the desired state. Raises: RuntimeError if the app did not reach desired state and failed! |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `deployment_status` | `None` | Get the deployment status of the app Returns: |
-| `desired_state` | `None` |  |
-| `endpoint` | `None` |  |
-| `name` | `None` |  |
-| `revision` | `None` |  |
-| `url` | `None` |  |
 

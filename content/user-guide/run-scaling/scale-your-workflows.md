@@ -333,7 +333,7 @@ Follow this workflow to optimize your Flyte workflows:
 
 ## Real-world example: PyIceberg batch processing
 
-For a comprehensive example of efficient data processing with Flyte, see the [PyIceberg parallel batch aggregation example](https://github.com/unionai/flyte-sdk/blob/main/examples/data_processing/pyiceberg_example.py). This example demonstrates:
+For a comprehensive example of efficient data processing with Flyte, see the [PyIceberg parallel batch aggregation example](https://github.com/flyteorg/flyte-sdk/blob/main/examples/data_processing/pyiceberg_example.py). This example demonstrates:
 
 - **Zero-copy data passing**: Pass file paths instead of data between tasks
 - **Reusable containers with concurrency**: Maximize CPU utilization across workers

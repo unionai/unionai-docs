@@ -110,7 +110,7 @@ This is particularly useful for passing API keys or other sensitive values to co
 > [!TIP]
 > For most `AppEnvironment`s, use `args` instead of `command` to specify the app startup command
 > in the container. This is because `args` will use the `fserve` command to run the app, which
-> unlocks features like local code bundling and file/directory mounting via input injection.
+> unlocks features like local code bundling and file/directory mounting via parameter injection.
 
 ### `command`
 
@@ -201,24 +201,24 @@ app_env = flyte.app.AppEnvironment(
 > [!NOTE]
 > Learn more about including additional files in your app deployment [here](./including-additional-files).
 
-### `inputs`
+### `parameters`
 
-The `inputs` parameter passes inputs to your app at deployment time. Inputs can be primitive values, files, directories, or delayed values like `RunOutput` or `AppEndpoint`.
+The `parameters` parameter passes parameters to your app at deployment time. Parameters can be primitive values, files, directories, or delayed values like `RunOutput` or `AppEndpoint`.
 
 ```python
 app_env = flyte.app.AppEnvironment(
     name="my-app",
-    inputs=[
-        flyte.app.Input(name="config", value="foo", env_var="BAR"),
-        flyte.app.Input(name="model", value=flyte.io.File(path="s3://bucket/model.pkl"), mount="/mnt/model"),
-        flyte.app.Input(name="data", value=flyte.io.File(path="s3://bucket/data.pkl"), mount="/mnt/data"),
+    parameters=[
+        flyte.app.Parameter(name="config", value="foo", env_var="BAR"),
+        flyte.app.Parameter(name="model", value=flyte.io.File(path="s3://bucket/model.pkl"), mount="/mnt/model"),
+        flyte.app.Parameter(name="data", value=flyte.io.File(path="s3://bucket/data.pkl"), mount="/mnt/data"),
     ],
     # ...
 )
 ```
 
 > [!NOTE]
-> Learn more about passing inputs to your app at deployment time [here](./passing-inputs).
+> Learn more about passing parameters to your app at deployment time [here](./passing-parameters).
 
 ### `scaling`
 
@@ -253,32 +253,62 @@ frontend_env = flyte.app.AppEnvironment(
 ```
 
 > [!NOTE]
-> Learn more about app environment dependencies [here](./apps-depending-on-environments).
+> Learn more about app environment dependencies [her e](./apps-depending-on-environments).
 
 ## App startup
 
-Understanding the difference between `args` and `command` is crucial for properly configuring how your app starts.
+There are two ways to start up an app in Flyte:
+1. With a server function using `@app_env.server`
+2. As a container command using `command` or `args`
 
-### Command vs args
+### Server decorator via `@app_env.server`
 
-In container terminology:
+The server function is a Python function that runs the app. It is defined using the `@app_env.server` decorator.
 
-- **`command`**: The executable or entrypoint that runs
-- **`args`**: Arguments passed to that command
+{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/fastapi-server-example.py" fragment=fastapi-app lang=python >}}
 
-In Flyte apps:
+The `@app_env.server` decorator allows you to define a synchronous or asynchronous function that runs the app, either
+with a server start command like `uvicorn.run`, [`HTTPServer.serve_forever`](https://docs.python.org/3/library/http.server.html), etc.
 
-- **`command`**: The full command to run your app (for example, `"streamlit hello --server.port 8080"`)
-- **`args`**: Arguments to pass to your app's command (used with the default Flyte command or your custom command)
+> [!NOTE]
+> Generally the `[[FastAPIAppEnvironment]]` handles serving automatically under the hood,
+> the example above just shows how the `@app_env.server` decorator can be used to define a server function
+> that runs the app.
 
-### Default startup behavior
+#### Startup hook
+
+The server function is called after the app is started up, and before the app is shut down. It is defined using the `@app_env.on_startup` decorator. This is useful if you need to load any state or external connections needed to run the
+app before it starts.
+
+{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/fastapi-server-example.py" fragment=on-startup-decorator lang=python >}}
+
+#### Shutdown hook
+
+The server function is called before the app instance shuts down during scale down. It is defined using the
+`@app_env.on_shutdown` decorator. This is useful if you need to clean up any state or external connections in the
+container running the app.
+
+{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/fastapi-server-example.py" fragment=on-shutdown-decorator lang=python >}}
+
+### Container command via `command` vs `args`
+
+The difference between `args` and `command` is crucial for properly configuring how your app starts.
+
+- **`command`**: The full command to run your app, for example, `"streamlit hello --server.port 8080"`. For most use
+  cases, you don't need to specify `command` as it's automatically configured, and uses the `fserve` executable to
+  run the app. `fserve` does additional setup for you, like setting up the code bundle and loading [parameters](./passing-parameters) if provided, so it's highly recommended to use the default command.
+- **`args`**: Arguments to pass to your app's command (used with the default Flyte command or your custom command). The
+  `fserve` executable takes in additional arguments, which you can specify as the arguments needed to run your app, e.g.
+  `uvicorn run main.py --server.port 8080`.
+
+#### Default startup behavior
 
 When you don't specify a `command`, Flyte generates a default command that uses `fserve` to run your app. This default command handles:
 
 - Setting up the code bundle
 - Configuring the version
 - Setting up project/domain context
-- Injecting inputs if provided
+- Injecting parameters if provided
 
 The default command looks like:
 
@@ -288,9 +318,7 @@ fserve --version <version> --project <project> --domain <domain> -- <args>
 
 So if you specify `args`, they'll be appended after the `--` separator.
 
-### Startup examples
-
-#### Using args with default command
+#### Using args with the default command
 
 When you use `args` without specifying `command`, the args are passed to the default Flyte command:
 
@@ -302,7 +330,7 @@ This effectively runs:
 fserve --version ... --project ... --domain ... -- streamlit run main.py --server.port 8080
 ```
 
-#### Using explicit command
+#### Using an explicit command
 
 When you specify a `command`, it completely replaces the default command:
 
@@ -314,7 +342,7 @@ This runs exactly:
 streamlit hello --server.port 8080
 ```
 
-#### Using command with args
+#### Using a command with args
 
 You can combine both, though this is less common:
 
@@ -329,34 +357,9 @@ When using `FastAPIAppEnvironment`, the command is automatically configured to r
 The `FastAPIAppEnvironment` automatically:
 
 1. Detects the module and variable name of your FastAPI app
-2. Sets the command to run `uvicorn <module>:<app_var> --port <port>`
+2. Uses an internal server function to start the app via `uvicorn.run`.
 3. Handles all the startup configuration for you
 
-### Startup best practices
-
-1. **Use specialized app environments** when available (for example, `FastAPIAppEnvironment`) – they handle command setup automatically.
-2. **Use `args`** when you need code bundling and input injection.
-3. **Use `command`** for simple, standalone apps that don't need code bundling.
-4. **Always set `port`** to match what your app actually listens on.
-5. **Use `include`** with `args` to bundle your app code files.
-
-
-## Complete example
-
-Here's a complete example showing various environment, startup, and scaling settings:
-
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/environment-settings-example.py" lang=python >}}
-
-This example demonstrates:
-
-- Setting a custom `type` identifier
-- Configuring the port
-- Specifying compute resources
-- Injecting secrets as environment variables
-- Setting environment variables
-- Making the app publicly accessible
-- Targeting a specific cluster pool
-- Adding a description
-- Configuring autoscaling behavior
+## Shared settings
 
 For more details on shared settings like images, resources, and secrets, refer to the [task configuration](../task-configuration/) documentation.

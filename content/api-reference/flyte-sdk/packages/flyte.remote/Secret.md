@@ -1,6 +1,6 @@
 ---
 title: Secret
-version: 2.0.0b40
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -18,14 +18,21 @@ class Secret(
 |-|-|-|
 | `pb2` | `definition_pb2.Secret` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` | Get the name of the secret. |
+| `type` | `None` | Get the type of the secret as a string ("regular" or "image_pull"). |
+
 ## Methods
 
 | Method | Description |
 |-|-|
-| [`create()`](#create) |  |
-| [`delete()`](#delete) |  |
-| [`get()`](#get) |  |
-| [`listall()`](#listall) |  |
+| [`create()`](#create) | Create a new secret. |
+| [`delete()`](#delete) | Delete a secret by name. |
+| [`get()`](#get) | Retrieve a secret by name. |
+| [`listall()`](#listall) | List all secrets in the current project and domain. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 
@@ -45,12 +52,16 @@ def create(
     type: SecretTypes,
 )
 ```
+Create a new secret.
+
+
+
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
-| `name` | `str` | |
-| `value` | `Union[str, bytes]` | |
-| `type` | `SecretTypes` | |
+| `name` | `str` | The name of the secret. |
+| `value` | `Union[str, bytes]` | The secret value as a string or bytes. |
+| `type` | `SecretTypes` | Type of secret - either "regular" or "image_pull". |
 
 ### delete()
 
@@ -65,10 +76,14 @@ def delete(
     name,
 )
 ```
+Delete a secret by name.
+
+
+
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
-| `name` |  | |
+| `name` |  | The name of the secret to delete. |
 
 ### get()
 
@@ -83,10 +98,14 @@ def get(
     name: str,
 ) -> Secret
 ```
+Retrieve a secret by name.
+
+
+
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
-| `name` | `str` | |
+| `name` | `str` | The name of the secret to retrieve. :return: A Secret object. |
 
 ### listall()
 
@@ -101,10 +120,14 @@ def listall(
     limit: int,
 ) -> AsyncIterator[Secret]
 ```
+List all secrets in the current project and domain.
+
+
+
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
-| `limit` | `int` | |
+| `limit` | `int` | Maximum number of secrets to return per page. :return: An async iterator of Secret objects. |
 
 ### to_dict()
 
@@ -127,11 +150,4 @@ Convert the object to a JSON string.
 Returns:
     str: A JSON string representation of the object.
 
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `name` | `None` |  |
-| `type` | `None` |  |
 

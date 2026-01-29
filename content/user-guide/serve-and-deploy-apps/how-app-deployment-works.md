@@ -21,25 +21,7 @@ When you deploy an app, the following happens:
 
 Deploy an app:
 
-```python
-import flyte
-import flyte.app
-
-app_env = flyte.app.AppEnvironment(
-    name="my-prod-app",
-    # ...
-)
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    deployments = flyte.deploy(app_env)
-
-    # Access deployed apps from deployments
-    for deployment in deployments:
-        for deployed_env in deployment.envs.values():
-            print(f"Deployed: {deployed_env.env.name}")
-            print(f"URL: {deployed_env.deployed_app.url}")
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=basic-deploy lang=python >}}
 
 `flyte.deploy()` returns a list of `Deployment` objects. Each `Deployment` contains a dictionary of `DeployedEnvironment` objects (one for each environment deployed, including environment dependencies). For apps, the `DeployedEnvironment` is a `DeployedAppEnvironment` which has a `deployed_app` property of type `App`.
 
@@ -52,52 +34,20 @@ Flyte automatically creates a deployment plan that includes:
 - All [app environment dependencies](../configure-apps/apps-depending-on-environments) (via `depends_on`)
 - Proper deployment order
 
-```python
-app1_env = flyte.app.AppEnvironment(name="backend", ...)
-app2_env = flyte.app.AppEnvironment(name="frontend", depends_on=[app1_env], ...)
-
-# Deploying app2_env will also deploy app1_env
-deployments = flyte.deploy(app2_env)
-
-# deployments contains both app1_env and app2_env
-assert len(deployments) == 2
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=deployment-plan lang=python >}}
 
 ## Overriding App configuration at deployment time
 
 If you need to override the app configuration at deployment time, you can use the `clone_with` method to create a new
 app environment with the desired overrides.
 
-```python
-app_env = flyte.app.AppEnvironment(name="my-app", ...)
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    deployments = flyte.deploy(
-        app_env.clone_with(app_env.name, resources=flyte.Resources(cpu="2", memory="2Gi"))
-    )
-    for deployment in deployments:
-        for deployed_env in deployment.envs.values():
-            print(f"Deployed: {deployed_env.env.name}")
-            print(f"URL: {deployed_env.deployed_app.url}")
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=clone-with lang=python >}}
 
 ## Activation/deactivation
 
 Unlike serving, deployment does not automatically activate apps. You need to activate them explicitly:
 
-```python
-deployments = flyte.deploy(app_env)
-
-from flyte.remote import App
-app = App.get(name=app_env.name)
-
-# deactivate the app
-app.deactivate()
-
-# activate the app
-app.activate()
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=activation-deactivation lang=python >}}
 
 See [Activating and deactivating apps](./activating-and-deactivating-apps) for more details.
 
@@ -123,37 +73,7 @@ flyte deploy path/to/app.py app \
 
 ## Example: Full deployment configuration
 
-```python
-import flyte
-import flyte.app
-
-app_env = flyte.app.AppEnvironment(
-    name="my-prod-app",
-    # ... configuration ...
-)
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    
-    deployments = flyte.deploy(
-        app_env,
-        dryrun=False,
-        version="v1.0.0",
-        interactive_mode=False,
-        copy_style="loaded_modules",
-    )
-    
-    # Access deployed apps from deployments
-    for deployment in deployments:
-        for deployed_env in deployment.envs.values():
-            app = deployed_env.deployed_app
-            print(f"Deployed: {deployed_env.env.name}")
-            print(f"URL: {app.url}")
-
-            # Activate the app
-            app.activate()
-            print(f"Activated: {app.name}")
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=full-deployment lang=python >}}
 
 ## Best practices
 
@@ -162,30 +82,15 @@ if __name__ == "__main__":
 3. **Test first**: Test with serve before deploying to production.
 4. **Manage dependencies**: Use `depends_on` to manage app dependencies.
 5. **Activation strategy**: Have a strategy for activating/deactivating apps.
-6. **Rollback plan**: Keep old versions available for rollback.
 7. **Use dry-run**: Test deployments with `dry_run=True` first.
 8. **Separate environments**: Use different projects/domains for different environments.
-9. **Input management**: Consider using environment-specific input values.
+9. **Parameter management**: Consider using environment-specific parameter values.
 
 ## Deployment status and return value
 
 `flyte.deploy()` returns a list of `Deployment` objects. Each `Deployment` contains a dictionary of `DeployedEnvironment` objects:
 
-```python
-deployments = flyte.deploy(app_env)
-
-for deployment in deployments:
-    for deployed_env in deployment.envs.values():
-        if hasattr(deployed_env, 'deployed_app'):
-            # Access deployed environment
-            env = deployed_env.env
-            app = deployed_env.deployed_app
-
-            # Access deployment info
-            print(f"Name: {env.name}")
-            print(f"URL: {app.url}")
-            print(f"Status: {app.deployment_status}")
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=deployment-status lang=python >}}
 
 For apps, each `DeployedAppEnvironment` includes:
 

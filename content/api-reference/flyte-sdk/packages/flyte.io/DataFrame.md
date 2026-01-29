@@ -1,6 +1,6 @@
 ---
 title: DataFrame
-version: 2.0.0b40
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -9,8 +9,20 @@ layout: py_api
 
 **Package:** `flyte.io`
 
-This is the user facing DataFrame class. Please don't confuse it with the literals.StructuredDataset
-class (that is just a model, a Python class representation of the protobuf).
+A Flyte meta DataFrame object, that wraps all other dataframe types (usually available as plugins, pandas.DataFrame
+and pyarrow.Table are supported natively, just install these libraries).
+
+Known eco-system plugins that supply other dataframe encoding plugins are,
+1. `flyteplugins-polars` - pl.DataFrame
+2. `flyteplugins-spark` - pyspark.DataFrame
+
+You can add other implementations by extending following `flyte.io.extend`.
+
+The Flyte DataFrame object serves 2 main purposes:
+1. Interoperability between various dataframe objects. A task can generate a pandas.DataFrame and another task
+ can accept a flyte.io.DataFrame, which can be converted to any dataframe.
+2. Allows for non materialized access to DataFrame objects. So, for example you can accept any dataframe as a
+flyte.io.DataFrame and this is just a reference and will not materialize till you force `.all()` or `.iter()` etc
 
 
 ```python
@@ -20,7 +32,7 @@ class DataFrame(
 ```
 Create a new model by parsing and validating input data from keyword arguments.
 
-Raises [`ValidationError`][pydantic_core.ValidationError] if the input data cannot be
+Raises [`ValidationError`](https://docs.pydantic.dev/latest/api/pydantic_core/#pydantic_core.ValidationError) if the input data cannot be
 validated to form a valid model.
 
 `self` is explicitly positional-only to allow `self` as a field name.
@@ -30,32 +42,46 @@ validated to form a valid model.
 |-|-|-|
 | `data` | `Any` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `lazy_uploader` | `None` |  |
+| `literal` | `None` |  |
+| `metadata` | `None` |  |
+| `model_extra` | `None` | Get extra fields set during validation.  Returns:     A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`. |
+| `model_fields_set` | `None` | Returns the set of fields that have been explicitly set on this model instance.  Returns:     A set of strings representing the fields that have been set,         i.e. that were not filled from defaults. |
+| `val` | `None` |  |
+
 ## Methods
 
 | Method | Description |
 |-|-|
 | [`all()`](#all) |  |
+| [`all_sync()`](#all_sync) |  |
 | [`column_names()`](#column_names) |  |
 | [`columns()`](#columns) |  |
 | [`construct()`](#construct) |  |
 | [`copy()`](#copy) | Returns a copy of the model. |
 | [`deserialize_dataframe()`](#deserialize_dataframe) |  |
 | [`dict()`](#dict) |  |
-| [`from_df()`](#from_df) | Wrapper to create a DataFrame from a dataframe. |
+| [`from_df()`](#from_df) | Deprecated: Please use wrap_df, as that is the right name. |
 | [`from_existing_remote()`](#from_existing_remote) | Create a DataFrame reference from an existing remote dataframe. |
+| [`from_local()`](#from_local) | This method is useful to upload the dataframe eagerly and get the actual DataFrame. |
+| [`from_local_sync()`](#from_local_sync) | This method is useful to upload the dataframe eagerly and get the actual DataFrame. |
 | [`from_orm()`](#from_orm) |  |
 | [`iter()`](#iter) |  |
 | [`json()`](#json) |  |
 | [`model_construct()`](#model_construct) | Creates a new instance of the `Model` class with validated data. |
-| [`model_copy()`](#model_copy) | !!! abstract "Usage Documentation". |
-| [`model_dump()`](#model_dump) | !!! abstract "Usage Documentation". |
-| [`model_dump_json()`](#model_dump_json) | !!! abstract "Usage Documentation". |
+| [`model_copy()`](#model_copy) | Returns a copy of the model. |
+| [`model_dump()`](#model_dump) | Generate a dictionary representation of the model, optionally specifying which fields to include or exclude. |
+| [`model_dump_json()`](#model_dump_json) | Generates a JSON representation of the model using Pydantic's `to_json` method. |
 | [`model_json_schema()`](#model_json_schema) | Generates a JSON schema for a model class. |
 | [`model_parametrized_name()`](#model_parametrized_name) | Compute the class name for parametrizations of generic classes. |
 | [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialise private attributes. |
 | [`model_rebuild()`](#model_rebuild) | Try to rebuild the pydantic-core schema for the model. |
 | [`model_validate()`](#model_validate) | Validate a pydantic model instance. |
-| [`model_validate_json()`](#model_validate_json) | !!! abstract "Usage Documentation". |
+| [`model_validate_json()`](#model_validate_json) | Validate the given JSON data against the Pydantic model. |
 | [`model_validate_strings()`](#model_validate_strings) | Validate the given object with string data against the Pydantic model. |
 | [`open()`](#open) | Load the handler if needed. |
 | [`parse_file()`](#parse_file) |  |
@@ -67,12 +93,18 @@ validated to form a valid model.
 | [`set_literal()`](#set_literal) | A public wrapper method to set the DataFrame Literal. |
 | [`update_forward_refs()`](#update_forward_refs) |  |
 | [`validate()`](#validate) |  |
+| [`wrap_df()`](#wrap_df) | Wrapper to create a DataFrame from a dataframe. |
 
 
 ### all()
 
 ```python
 def all()
+```
+### all_sync()
+
+```python
+def all_sync()
 ```
 ### column_names()
 
@@ -109,8 +141,8 @@ def copy(
 ```
 Returns a copy of the model.
 
-&gt; [!WARNING] Deprecated
-&gt; This method is now deprecated; use `model_copy` instead.
+> [!WARNING] Deprecated
+> This method is now deprecated; use `model_copy` instead.
 
 If you need `include` or `exclude`, use:
 
@@ -169,10 +201,11 @@ def from_df(
     uri: typing.Optional[str],
 ) -> DataFrame
 ```
-Wrapper to create a DataFrame from a dataframe.
-The reason this is implemented as a wrapper instead of a full translation invoking
-the type engine and the encoders is because there's too much information in the type
-signature of the task that we don't want the user to have to replicate.
+Deprecated: Please use wrap_df, as that is the right name.
+
+Creates a new Flyte DataFrame from any registered DataFrame type (For example, pandas.DataFrame).
+Other dataframe types are usually supported through plugins like `flyteplugins-polars`, `flyteplugins-spark`
+etc.
 
 
 | Parameter | Type | Description |
@@ -198,6 +231,58 @@ Create a DataFrame reference from an existing remote dataframe.
 | `remote_path` | `str` | The remote path to the existing dataframe |
 | `format` | `typing.Optional[str]` | Format of the stored dataframe |
 | `kwargs` | `**kwargs` | |
+
+### from_local()
+
+```python
+def from_local(
+    df: typing.Any,
+    columns: typing.OrderedDict[str, type[typing.Any]] | None,
+    remote_destination: str | None,
+) -> DataFrame
+```
+This method is useful to upload the dataframe eagerly and get the actual DataFrame.
+
+This is useful to upload small local datasets onto Flyte and also upload dataframes from notebooks. This
+uses signed urls and is thus not the most efficient way of uploading.
+
+In tasks (at runtime) it uses the task context and the underlying fast storage sub-system to upload the data.
+
+At runtime it is recommended to use `DataFrame.wrap_df` as it is simpler.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `df` | `typing.Any` | The dataframe object to be uploaded and converted. |
+| `columns` | `typing.OrderedDict[str, type[typing.Any]] \| None` | Optionally, any column information to be stored as part of the metadata |
+| `remote_destination` | `str \| None` | Optional destination URI to upload to, if not specified, this is automatically determined based on the current context. For example, locally it will use flyte:// automatic data management system to upload data (this is slow and useful for smaller datasets). On remote it will use the storage configuration and the raw data directory setting in the task context.  Returns: DataFrame object. |
+
+### from_local_sync()
+
+```python
+def from_local_sync(
+    df: typing.Any,
+    columns: typing.OrderedDict[str, type[typing.Any]] | None,
+    remote_destination: str | None,
+) -> DataFrame
+```
+This method is useful to upload the dataframe eagerly and get the actual DataFrame.
+
+This is useful to upload small local datasets onto Flyte and also upload dataframes from notebooks. This
+uses signed urls and is thus not the most efficient way of uploading.
+
+In tasks (at runtime) it uses the task context and the underlying fast storage sub-system to upload the data.
+
+At runtime it is recommended to use `DataFrame.wrap_df` as it is simpler.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `df` | `typing.Any` | The dataframe object to be uploaded and converted. |
+| `columns` | `typing.OrderedDict[str, type[typing.Any]] \| None` | Optionally, any column information to be stored as part of the metadata |
+| `remote_destination` | `str \| None` | Optional destination URI to upload to, if not specified, this is automatically determined based on the current context. For example, locally it will use flyte:// automatic data management system to upload data (this is slow and useful for smaller datasets). On remote it will use the storage configuration and the raw data directory setting in the task context.  Returns: DataFrame object. |
 
 ### from_orm()
 
@@ -255,18 +340,18 @@ Creates a new instance of the `Model` class with validated data.
 Creates a new model setting `__dict__` and `__pydantic_fields_set__` from trusted or pre-validated data.
 Default values are respected, but no other validation is performed.
 
-&gt; [!NOTE]
-&gt; `model_construct()` generally respects the `model_config.extra` setting on the provided model.
-&gt; That is, if `model_config.extra == 'allow'`, then all extra passed values are added to the model instance's `__dict__`
-&gt; and `__pydantic_extra__` fields. If `model_config.extra == 'ignore'` (the default), then all extra passed values are ignored.
-&gt; Because no validation is performed with a call to `model_construct()`, having `model_config.extra == 'forbid'` does not result in
-&gt; an error if extra values are passed, but they will be ignored.
+> [!NOTE]
+> `model_construct()` generally respects the `model_config.extra` setting on the provided model.
+> That is, if `model_config.extra == 'allow'`, then all extra passed values are added to the model instance's `__dict__`
+> and `__pydantic_extra__` fields. If `model_config.extra == 'ignore'` (the default), then all extra passed values are ignored.
+> Because no validation is performed with a call to `model_construct()`, having `model_config.extra == 'forbid'` does not result in
+> an error if extra values are passed, but they will be ignored.
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_fields_set` | `set[str] \| None` | A set of field names that were originally explicitly set during instantiation. If provided, this is directly used for the [`model_fields_set`][pydantic.BaseModel.model_fields_set] attribute. Otherwise, the field names from the `values` argument will be used. |
+| `_fields_set` | `set[str] \| None` | A set of field names that were originally explicitly set during instantiation. If provided, this is directly used for the [`model_fields_set`](https://docs.pydantic.dev/latest/api/base_model/#pydantic.BaseModel.model_fields_set) attribute. Otherwise, the field names from the `values` argument will be used. |
 | `values` | `Any` | Trusted or pre-validated data dictionary. |
 
 ### model_copy()
@@ -277,15 +362,15 @@ def model_copy(
     deep: bool,
 ) -> Self
 ```
-!!! abstract "Usage Documentation"
-    [`model_copy`](../concepts/models.md#model-copy)
+> [!TIP] Usage Documentation (external docs for inherited method)
+> [`model_copy`](https://docs.pydantic.dev/latest/concepts/models/#model-copy)
 
 Returns a copy of the model.
 
-&gt; [!NOTE]
-&gt; The underlying instance's [`__dict__`][object.__dict__] attribute is copied. This
-&gt; might have unexpected side effects if you store anything in it, on top of the model
-&gt; fields (e.g. the value of [cached properties][functools.cached_property]).
+> [!NOTE]
+> The underlying instance's [`__dict__`](https://docs.python.org/3/library/stdtypes.html#object.__dict__) attribute is copied. This
+> might have unexpected side effects if you store anything in it, on top of the model
+> fields (e.g. the value of [cached properties](https://docs.python.org/3/library/functools.html#functools.cached_property)).
 
 
 
@@ -313,8 +398,8 @@ def model_dump(
     serialize_as_any: bool,
 ) -> dict[str, Any]
 ```
-!!! abstract "Usage Documentation"
-    [`model_dump`](../concepts/serialization.md#python-mode)
+> [!TIP] Usage Documentation (external docs for inherited method)
+> [`model_dump`](https://docs.pydantic.dev/latest/concepts/serialization/#python-mode)
 
 Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
 
@@ -332,8 +417,8 @@ Generate a dictionary representation of the model, optionally specifying which f
 | `exclude_none` | `bool` | Whether to exclude fields that have a value of `None`. |
 | `exclude_computed_fields` | `bool` | Whether to exclude computed fields. While this can be useful for round-tripping, it is usually recommended to use the dedicated `round_trip` parameter instead. |
 | `round_trip` | `bool` | If True, dumped values should be valid as input for non-idempotent types such as Json[T]. |
-| `warnings` | `bool \| Literal['none', 'warn', 'error']` | How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors, "error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError]. |
-| `fallback` | `Callable[[Any], Any] \| None` | A function to call when an unknown value is encountered. If not provided, a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised. |
+| `warnings` | `bool \| Literal['none', 'warn', 'error']` | How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors, "error" raises a [`PydanticSerializationError`](https://docs.pydantic.dev/latest/api/pydantic_core/#pydantic_core.PydanticSerializationError). |
+| `fallback` | `Callable[[Any], Any] \| None` | A function to call when an unknown value is encountered. If not provided, a [`PydanticSerializationError`](https://docs.pydantic.dev/latest/api/pydantic_core/#pydantic_core.PydanticSerializationError) error is raised. |
 | `serialize_as_any` | `bool` | Whether to serialize fields with duck-typing serialization behavior. |
 
 ### model_dump_json()
@@ -356,8 +441,8 @@ def model_dump_json(
     serialize_as_any: bool,
 ) -> str
 ```
-!!! abstract "Usage Documentation"
-    [`model_dump_json`](../concepts/serialization.md#json-mode)
+> [!TIP] Usage Documentation (external docs for inherited method)
+> [`model_dump_json`](https://docs.pydantic.dev/latest/concepts/serialization/#json-mode)
 
 Generates a JSON representation of the model using Pydantic's `to_json` method.
 
@@ -376,8 +461,8 @@ Generates a JSON representation of the model using Pydantic's `to_json` method.
 | `exclude_none` | `bool` | Whether to exclude fields that have a value of `None`. |
 | `exclude_computed_fields` | `bool` | Whether to exclude computed fields. While this can be useful for round-tripping, it is usually recommended to use the dedicated `round_trip` parameter instead. |
 | `round_trip` | `bool` | If True, dumped values should be valid as input for non-idempotent types such as Json[T]. |
-| `warnings` | `bool \| Literal['none', 'warn', 'error']` | How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors, "error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError]. |
-| `fallback` | `Callable[[Any], Any] \| None` | A function to call when an unknown value is encountered. If not provided, a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised. |
+| `warnings` | `bool \| Literal['none', 'warn', 'error']` | How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors, "error" raises a [`PydanticSerializationError`](https://docs.pydantic.dev/latest/api/pydantic_core/#pydantic_core.PydanticSerializationError). |
+| `fallback` | `Callable[[Any], Any] \| None` | A function to call when an unknown value is encountered. If not provided, a [`PydanticSerializationError`](https://docs.pydantic.dev/latest/api/pydantic_core/#pydantic_core.PydanticSerializationError) error is raised. |
 | `serialize_as_any` | `bool` | Whether to serialize fields with duck-typing serialization behavior. |
 
 ### model_json_schema()
@@ -482,7 +567,7 @@ Validate a pydantic model instance.
 |-|-|-|
 | `obj` | `Any` | The object to validate. |
 | `strict` | `bool \| None` | Whether to enforce types strictly. |
-| `extra` | `ExtraValues \| None` | Whether to ignore, allow, or forbid extra data during model validation. See the [`extra` configuration value][pydantic.ConfigDict.extra] for details. |
+| `extra` | `ExtraValues \| None` | Whether to ignore, allow, or forbid extra data during model validation. See the [`extra` configuration value](https://docs.pydantic.dev/latest/api/config/#pydantic.ConfigDict.extra) for details. |
 | `from_attributes` | `bool \| None` | Whether to extract data from object attributes. |
 | `context` | `Any \| None` | Additional context to pass to the validator. |
 | `by_alias` | `bool \| None` | Whether to use the field's alias when validating against the provided input data. |
@@ -500,8 +585,8 @@ def model_validate_json(
     by_name: bool | None,
 ) -> Self
 ```
-!!! abstract "Usage Documentation"
-    [JSON Parsing](../concepts/json.md#json-parsing)
+> [!TIP] Usage Documentation (external docs for inherited method)
+> [JSON Parsing](https://docs.pydantic.dev/latest/concepts/json/#json-parsing)
 
 Validate the given JSON data against the Pydantic model.
 
@@ -511,7 +596,7 @@ Validate the given JSON data against the Pydantic model.
 |-|-|-|
 | `json_data` | `str \| bytes \| bytearray` | The JSON data to validate. |
 | `strict` | `bool \| None` | Whether to enforce types strictly. |
-| `extra` | `ExtraValues \| None` | Whether to ignore, allow, or forbid extra data during model validation. See the [`extra` configuration value][pydantic.ConfigDict.extra] for details. |
+| `extra` | `ExtraValues \| None` | Whether to ignore, allow, or forbid extra data during model validation. See the [`extra` configuration value](https://docs.pydantic.dev/latest/api/config/#pydantic.ConfigDict.extra) for details. |
 | `context` | `Any \| None` | Extra variables to pass to the validator. |
 | `by_alias` | `bool \| None` | Whether to use the field's alias when validating against the provided input data. |
 | `by_name` | `bool \| None` | Whether to use the field's name when validating against the provided input data. |
@@ -536,7 +621,7 @@ Validate the given object with string data against the Pydantic model.
 |-|-|-|
 | `obj` | `Any` | The object containing string data to validate. |
 | `strict` | `bool \| None` | Whether to enforce types strictly. |
-| `extra` | `ExtraValues \| None` | Whether to ignore, allow, or forbid extra data during model validation. See the [`extra` configuration value][pydantic.ConfigDict.extra] for details. |
+| `extra` | `ExtraValues \| None` | Whether to ignore, allow, or forbid extra data during model validation. See the [`extra` configuration value](https://docs.pydantic.dev/latest/api/config/#pydantic.ConfigDict.extra) for details. |
 | `context` | `Any \| None` | Extra variables to pass to the validator. |
 | `by_alias` | `bool \| None` | Whether to use the field's alias when validating against the provided input data. |
 | `by_name` | `bool \| None` | Whether to use the field's name when validating against the provided input data. |
@@ -681,13 +766,21 @@ def validate(
 |-|-|-|
 | `value` | `Any` | |
 
-## Properties
+### wrap_df()
 
-| Property | Type | Description |
+```python
+def wrap_df(
+    val: typing.Optional[typing.Any],
+    uri: typing.Optional[str],
+) -> DataFrame
+```
+Wrapper to create a DataFrame from a dataframe.
+Other dataframe types are usually supported through plugins like `flyteplugins-polars`, `flyteplugins-spark`
+etc.
+
+
+| Parameter | Type | Description |
 |-|-|-|
-| `literal` | `None` |  |
-| `metadata` | `None` |  |
-| `model_extra` | `None` | Get extra fields set during validation.  Returns:     A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`. |
-| `model_fields_set` | `None` | Returns the set of fields that have been explicitly set on this model instance.  Returns:     A set of strings representing the fields that have been set,         i.e. that were not filled from defaults. |
-| `val` | `None` |  |
+| `val` | `typing.Optional[typing.Any]` | |
+| `uri` | `typing.Optional[str]` | |
 

@@ -6,9 +6,9 @@ if [[ $VERBOSE -eq 1 ]]; then
     set -x
 fi
 
-if ! command jupyter --version > /dev/null; then
-    echo "Please install jupyter"
-    exit 1
+if ! command -v jupyter > /dev/null 2>&1; then
+    echo "Jupyter not installed, skipping notebook conversion (using committed files)"
+    exit 0
 fi
 
 declare content
@@ -88,6 +88,14 @@ for file in $content; do
         rm -rf "$gen_files_dir"
     fi
 
+    # Copy images directory from notebook source if it exists
+    notebook_dir="$(dirname ".$notebook")"
+    if [[ -d "$notebook_dir/images" ]]; then
+        echo "Copying images from $notebook_dir/images to $output_dir/images"
+        mkdir -p "$output_dir/images"
+        cp -R "$notebook_dir/images/"* "$output_dir/images/"
+    fi
+
     jupyter nbconvert --to markdown ".$notebook" --output-dir "$output_dir" --output "$(basename "$file" .md).gen"
 
     # Save the front matter from the original file and append the new content
@@ -97,7 +105,7 @@ for file in $content; do
     # Create a new file with front matter and converted content
     echo '---' > "$file.new"
     echo "$front_matter" | grep -v '^---' | grep -v content_hash >> "$file.new"
-    echo "content_hash: $(shasum -a 256 ".$notebook" | cut -d ' ' -f 1) # hash managed by Makefile.jupyter (do not edit)" >> "$file.new"
+    echo "content_hash: $(shasum -a 256 ".$notebook" | cut -d ' ' -f 1)" >> "$file.new"
     echo '---' >> "$file.new"
     echo "" >> "$file.new"
     cat <<EOF >> "$file.new"
@@ -109,15 +117,11 @@ for file in $content; do
    comment at the top of the file.
 
 -->
-
-{{< right mb="2rem" >}}
-{{< download "${nb_repo_link}" "Download this notebook" >}}
-{{< /right >}}
 EOF
     echo "" >> "$file.new"
     cat "$tmp_file" \
         | sed -e "s#\($(basename "$file" .md).gen_files\)#./\1#" \
-        | python tools/jupyter_generator/markdown_cleanup.py \
+        | NOTEBOOK_LINK="$nb_repo_link" python tools/jupyter_generator/markdown_cleanup.py \
         >> "$file.new"
 
     # Replace original file and clean up

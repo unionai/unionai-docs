@@ -1,6 +1,6 @@
 ---
 title: AppEnvironment
-version: 2.0.0b40
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -29,7 +29,7 @@ class AppEnvironment(
     domain: Domain | None,
     links: List[Link],
     include: List[str],
-    inputs: List[Input],
+    parameters: List[Parameter],
     cluster_pool: str,
 )
 ```
@@ -53,8 +53,14 @@ class AppEnvironment(
 | `domain` | `Domain \| None` | Domain to use for the app. |
 | `links` | `List[Link]` | Links to other environments. |
 | `include` | `List[str]` | Files to include in the environment to run the app. |
-| `inputs` | `List[Input]` | Inputs to pass to the app environment. |
+| `parameters` | `List[Parameter]` | Parameters to pass to the app environment. |
 | `cluster_pool` | `str` | Cluster pool to use for the app environment. |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `endpoint` | `None` |  |
 
 ## Methods
 
@@ -65,6 +71,9 @@ class AppEnvironment(
 | [`container_args()`](#container_args) |  |
 | [`container_cmd()`](#container_cmd) |  |
 | [`get_port()`](#get_port) |  |
+| [`on_shutdown()`](#on_shutdown) | Decorator to define the shutdown function for the app environment. |
+| [`on_startup()`](#on_startup) | Decorator to define the startup function for the app environment. |
+| [`server()`](#server) | Decorator to define the server function for the app environment. |
 
 
 ### add_dependency()
@@ -124,22 +133,74 @@ def container_args(
 ```python
 def container_cmd(
     serialize_context: SerializationContext,
-    input_overrides: list[Input] | None,
+    parameter_overrides: list[Parameter] | None,
 ) -> List[str]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `serialize_context` | `SerializationContext` | |
-| `input_overrides` | `list[Input] \| None` | |
+| `parameter_overrides` | `list[Parameter] \| None` | |
 
 ### get_port()
 
 ```python
 def get_port()
 ```
-## Properties
+### on_shutdown()
 
-| Property | Type | Description |
+```python
+def on_shutdown(
+    fn: Callable[..., None],
+) -> Callable[..., None]
+```
+Decorator to define the shutdown function for the app environment.
+
+This function is called after the server function is called.
+
+This decorated function can be a sync or async function, and accepts input
+parameters based on the Parameters defined in the AppEnvironment
+definition.
+
+
+| Parameter | Type | Description |
 |-|-|-|
-| `endpoint` | `None` |  |
+| `fn` | `Callable[..., None]` | |
+
+### on_startup()
+
+```python
+def on_startup(
+    fn: Callable[..., None],
+) -> Callable[..., None]
+```
+Decorator to define the startup function for the app environment.
+
+This function is called before the server function is called.
+
+The decorated function can be a sync or async function, and accepts input
+parameters based on the Parameters defined in the AppEnvironment
+definition.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `fn` | `Callable[..., None]` | |
+
+### server()
+
+```python
+def server(
+    fn: Callable[..., None],
+) -> Callable[..., None]
+```
+Decorator to define the server function for the app environment.
+
+This decorated function can be a sync or async function, and accepts input
+parameters based on the Parameters defined in the AppEnvironment
+definition.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `fn` | `Callable[..., None]` | |
 

@@ -1,6 +1,6 @@
 ---
 title: ReusePolicy
-version: 2.0.0b40
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -33,6 +33,13 @@ class ReusePolicy(
 | `concurrency` | `int` | The maximum number of tasks that can run concurrently in one instance of the environment. Concurrency of greater than 1 is only supported for `async` tasks. |
 | `scaledown_ttl` | `typing.Union[int, datetime.timedelta]` | The minimum time to wait before scaling down each replica, specified as either seconds (int) or a timedelta. This is useful to prevent rapid scaling down of replicas when tasks are running frequently. If not set, the default is configured in the backend. |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `max_replicas` | `None` | Returns the maximum number of replicas. |
+| `min_replicas` | `None` | Returns the minimum number of replicas. |
+
 ## Methods
 
 | Method | Description |
@@ -47,11 +54,4 @@ def get_scaledown_ttl()
 ```
 Returns the scaledown TTL as a timedelta. If scaledown_ttl is not set, returns None.
 
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `max_replicas` | `None` | Returns the maximum number of replicas. |
-| `min_replicas` | `None` | Returns the minimum number of replicas. |
 

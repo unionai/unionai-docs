@@ -1,6 +1,6 @@
 ---
 title: Task
-version: 2.0.0b40
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,9 +14,21 @@ class Task(
     pb2: task_definition_pb2.Task,
 )
 ```
+Initialize a Task object.
+
+
+
 | Parameter | Type | Description |
 |-|-|-|
-| `pb2` | `task_definition_pb2.Task` | |
+| `pb2` | `task_definition_pb2.Task` | The task protobuf definition. |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` | The name of the task. |
+| `url` | `None` | Get the console URL for viewing the task. |
+| `version` | `None` | The version of the task. |
 
 ## Methods
 
@@ -106,12 +118,4 @@ Convert the object to a JSON string.
 Returns:
     str: A JSON string representation of the object.
 
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `name` | `None` | The name of the task. |
-| `url` | `None` |  |
-| `version` | `None` | The version of the task. |
 

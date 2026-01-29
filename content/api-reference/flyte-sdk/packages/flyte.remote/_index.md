@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 2.0.0b40
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -28,19 +28,48 @@ Remote Entities that are accessible from the Union Server once deployed or creat
 | [`Secret`](../flyte.remote/secret) |  |
 | [`Task`](../flyte.remote/task) |  |
 | [`TaskDetails`](../flyte.remote/taskdetails) |  |
-| [`Trigger`](../flyte.remote/trigger) |  |
-| [`User`](../flyte.remote/user) |  |
+| [`Trigger`](../flyte.remote/trigger) | Represents a trigger in the Flyte platform. |
+| [`User`](../flyte.remote/user) | Represents a user in the Flyte platform. |
 
 ### Methods
 
 | Method | Description |
 |-|-|
+| [`auth_metadata()`](#auth_metadata) | This context manager allows you to pass contextualized auth metadata downstream to the Flyte authentication system. |
 | [`create_channel()`](#create_channel) | Creates a new gRPC channel with appropriate authentication interceptors. |
 | [`upload_dir()`](#upload_dir) | Uploads a directory to a remote location and returns the remote URI. |
 | [`upload_file()`](#upload_file) | Uploads a file to a remote location and returns the remote URI. |
 
 
 ## Methods
+
+#### auth_metadata()
+
+```python
+def auth_metadata(
+    kv: typing.Tuple[str, str],
+)
+```
+This context manager allows you to pass contextualized auth metadata downstream to the Flyte authentication system.
+
+This is only useful if flyte.init_passthrough() has been called.
+
+Example:
+```python
+
+flyte.init_passthrough("my-endpoint")
+
+...
+
+with auth_metadata((key1, value1), (key2, value2)):
+    ...
+```
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `kv` | `typing.Tuple[str, str]` | |
 
 #### create_channel()
 
@@ -86,10 +115,16 @@ and create authentication interceptors that perform async operations.
 
 #### upload_dir()
 
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await upload_dir.aio()`.
 ```python
 def upload_dir(
     dir_path: pathlib._local.Path,
     verify: bool,
+    prefix: str | None,
 ) -> str
 ```
 Uploads a directory to a remote location and returns the remote URI.
@@ -100,6 +135,7 @@ Uploads a directory to a remote location and returns the remote URI.
 |-|-|-|
 | `dir_path` | `pathlib._local.Path` | The directory path to upload. |
 | `verify` | `bool` | Whether to verify the certificate for HTTPS requests. :return: The remote URI of the uploaded directory. |
+| `prefix` | `str \| None` | |
 
 #### upload_file()
 
@@ -112,6 +148,7 @@ Uploads a directory to a remote location and returns the remote URI.
 def upload_file(
     fp: pathlib._local.Path,
     verify: bool,
+    fname: str | None,
 ) -> typing.Tuple[str, str]
 ```
 Uploads a file to a remote location and returns the remote URI.
@@ -121,5 +158,6 @@ Uploads a file to a remote location and returns the remote URI.
 | Parameter | Type | Description |
 |-|-|-|
 | `fp` | `pathlib._local.Path` | The file path to upload. |
-| `verify` | `bool` | Whether to verify the certificate for HTTPS requests. :return: A tuple containing the MD5 digest and the remote URI. |
+| `verify` | `bool` | Whether to verify the certificate for HTTPS requests. |
+| `fname` | `str \| None` | Optional file name for the remote path. :return: Tuple of (MD5 digest hex string, remote native URL). |
 

@@ -1,6 +1,6 @@
 ---
 title: Run
-version: 2.0.0b40
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -23,6 +23,15 @@ class Run(
 |-|-|-|
 | `pb2` | `run_definition_pb2.Run` | |
 | `_details` | `RunDetails \| None` | |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` | Get the name of the run. |
+| `phase` | `None` | Get the phase of the run. |
+| `raw_phase` | `None` | Get the raw phase of the run. |
+| `url` | `None` | Get the URL of the run. |
 
 ## Methods
 
@@ -51,10 +60,16 @@ class Run(
 > To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
 > `result = await <Run instance>.abort.aio()`.
 ```python
-def abort()
+def abort(
+    reason: str,
+)
 ```
 Aborts / Terminates the run.
 
+
+| Parameter | Type | Description |
+|-|-|-|
+| `reason` | `str` | |
 
 ### details()
 
@@ -142,7 +157,7 @@ Get all runs for the current project and domain.
 | `task_name` | `str \| None` | Filter runs by task name. |
 | `task_version` | `str \| None` | Filter runs by task version. |
 | `created_by_subject` | `str \| None` | Filter runs by the subject that created them. (this is not username, but the subject) |
-| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the Run list, in the format (field, order). |
 | `limit` | `int` | The maximum number of runs to return. :return: An iterator of runs. |
 
 ### outputs()
@@ -253,13 +268,4 @@ This method updates the Run's action state, ensuring that properties like
 | Parameter | Type | Description |
 |-|-|-|
 | `cache_data_on_done` | `bool` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `name` | `None` | Get the name of the run. |
-| `phase` | `None` | Get the phase of the run. |
-| `raw_phase` | `None` | Get the raw phase of the run. |
-| `url` | `None` | Get the URL of the run. |
 

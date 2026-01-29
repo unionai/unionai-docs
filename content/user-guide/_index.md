@@ -100,7 +100,7 @@ Flyte 2 represents a fundamental shift in how AI workflows are written and execu
 more in this section.
 {{< /link-card >}}
 
-{{< link-card target="getting-started" icon="123" title="Getting started" >}}
+{{< link-card target="quickstart" icon="123" title="Quickstart" >}}
 Install Flyte 2, configure your local IDE, create and run your first task, and inspect the results in 2 minutes.
 {{< /link-card >}}
 {{< /grid >}}

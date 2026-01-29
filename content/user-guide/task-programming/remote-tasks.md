@@ -1,6 +1,6 @@
 ---
 title: Remote tasks
-weight: 110
+weight: 9
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -93,7 +93,7 @@ run = flyte.run(data_processor, input_path="s3://data.parquet")
 
 ### Error handling
 
-Because of lazy loading, if a referenced task doesn't exist, you won't get an error when calling `get()`. Instead, the error occurs during invocation, raising a `flyte.errors.ReferenceTaskError`:
+Because of lazy loading, if a referenced task doesn't exist, you won't get an error when calling `get()`. Instead, the error occurs during invocation, raising a `flyte.errors.RemoteTaskNotFoundError`:
 
 ```python
 import flyte
@@ -109,7 +109,7 @@ data_processor = flyte.remote.Task.get(
 try:
     # Error occurs here during invocation
     run = flyte.run(data_processor, input_path="s3://data.parquet")
-except flyte.errors.ReferenceTaskError as e:
+except flyte.errors.RemoteTaskNotFoundError as e:
     print(f"Task not found or invocation failed: {e}")
     # Handle the error - perhaps use a fallback task
     # or notify the user that the task needs to be deployed
@@ -118,16 +118,20 @@ except flyte.errors.ReferenceTaskError as e:
 You can also catch errors when using remote tasks within other tasks:
 
 ```python
+import flyte.errors
+
 @env.task
 async def pipeline_with_fallback(data_path: str) -> dict:
     try:
         # Try to use the remote task
         result = await data_processor(input_path=data_path)
         return {"status": "success", "result": result}
-    except flyte.errors.ReferenceTaskError as e:
+    except flyte.errors.RemoteTaskNotFoundError as e:
         # Fallback to local processing
         print(f"Remote task failed: {e}, using local fallback")
         return {"status": "fallback", "result": local_process(data_path)}
+    except flyte.errors.RemoteTaskUsageError as e:
+        raise ValueError(f"Bad Usage of remote task, maybe arguments dont match!")
 ```
 
 ### Eager fetching with `fetch()`
@@ -158,8 +162,11 @@ try:
     run1 = flyte.run(data_processor, input_path="s3://data1.parquet")
     run2 = flyte.run(task_details, input_path="s3://data2.parquet")
 
-except flyte.errors.ReferenceTaskError as e:
-    print(f"Task validation failed at startup: {e}")
+except flyte.errors.RemoteTaskNotFoundError as e:
+    print(f"Task not found failed at startup: {e}")
+    raise
+except flyte.errors.RemoteTaskUsageError as e:
+    print(f"Task run validation failed....")
     # Handle the error before any execution attempts
 ```
 
@@ -179,7 +186,7 @@ async def initialize_service():
         task_details = await processor_ref.fetch.aio()
         print(f"Task {task_details.name} loaded successfully")
         return processor_ref  # Return the cached reference
-    except flyte.errors.ReferenceTaskError as e:
+    except flyte.errors.RemoteTaskNotFoundError as e:
         print(f"Failed to load task: {e}")
         raise
 
@@ -242,7 +249,7 @@ async def dynamic_pipeline(task_name: str, data_path: str):
     try:
         result = await processor(input_path=data_path)
         return result
-    except flyte.errors.ReferenceTaskError as e:
+    except flyte.errors.RemoteTaskNotFoundError as e:
         raise ValueError(f"Task {task_name} not found: {e}")
 ```
 
@@ -386,7 +393,7 @@ if __name__ == "__main__":
     print(f"Execution URL: {run.url}")
     # You can wait for the execution
     run.wait()
-    
+
     # You can then retrieve the outputs
     print(f"Pipeline result: {run.outputs()}")
 ```
@@ -724,7 +731,7 @@ flyte deploy orchestration_env/
 
 ## Limitations
 
-1. **Lazy error detection**: Because of lazy loading, errors about missing or invalid tasks only occur during invocation, not when calling `get()`. You'll receive a `flyte.errors.ReferenceTaskError` if the task doesn't exist or can't be invoked.
+1. **Lazy error detection**: Because of lazy loading, errors about missing or invalid tasks only occur during invocation, not when calling `get()`. You'll receive a `flyte.errors.RemoteTaskNotFoundError` if the task doesn't exist and `flyte.errors.RemoteTaskUsageError` if it can't be invoked in the way you are passing either arguments or overrides.
 
 2. **Type fidelity**: While Flyte translates types seamlessly, you work with Flyte's representation of Pydantic models, not the exact original types
 

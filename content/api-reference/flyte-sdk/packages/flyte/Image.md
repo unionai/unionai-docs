@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.0.0b40
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -46,6 +46,12 @@ class Image(
 | `_ref_name` | `Optional[str]` | |
 | `_layers` | `Tuple[Layer, ...]` | |
 | `_image_registry_secret` | `Optional[Secret]` | |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `uri` | `None` | Returns the URI of the image in the format &lt;registry&gt;/&lt;name&gt;:&lt;tag&gt; |
 
 ## Methods
 

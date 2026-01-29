@@ -1,6 +1,6 @@
 ---
 title: Automatic prompt engineering
-weight: 1
+weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
@@ -20,7 +20,7 @@ Flyte turns prompt engineering into a systematic process. With Flyte we can:
 - Recover from failures without losing progress.
 - Trace the lineage of every experiment for reproducibility.
 
-And we're not limited to prompts. Just like [hyperparameter optimization](../hpo/_index.md) in ML, we can tune model temperature, retrieval strategies, tool usage, and more. Over time, this grows into full agentic evaluations, tracking not only prompts but also how agents behave, make decisions, and interact with their environment.
+And we're not limited to prompts. Just like [hyperparameter optimization](../hpo) in ML, we can tune model temperature, retrieval strategies, tool usage, and more. Over time, this grows into full agentic evaluations, tracking not only prompts but also how agents behave, make decisions, and interact with their environment.
 
 In this tutorial, we'll build an automated prompt engineering pipeline with Flyte, step by step.
 

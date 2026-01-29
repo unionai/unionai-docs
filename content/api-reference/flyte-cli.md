@@ -12,13 +12,12 @@ This is the command line interface for Flyte.
 {{< markdown >}}
 | Object | Action |
 | ------ | -- |
+| `action` | [`abort`](#flyte-abort-action), [`get`](#flyte-get-action)  |
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
-| `api-key` | [`create⁺`](#flyte-create-api-key), [`delete⁺`](#flyte-delete-api-key), [`get⁺`](#flyte-get-api-key)  |
 | `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
-| `action` | [`get`](#flyte-get-action)  |
 | `app` | [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
@@ -26,26 +25,22 @@ This is the command line interface for Flyte.
 | `task` | [`get`](#flyte-get-task)  |
 | `hf-model` | [`prefetch`](#flyte-prefetch-hf-model)  |
 | `deployed-task` | [`run`](#flyte-run-deployed-task)  |
-
-**⁺** Plugin command - see command documentation for installation instructions
 {{< /markdown >}}
 {{< markdown >}}
 | Action | On |
 | ------ | -- |
-| `abort` | [`run`](#flyte-abort-run)  |
+| `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
-| `create` | [`api-key⁺`](#flyte-create-api-key), [`config`](#flyte-create-config), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
-| `delete` | [`api-key⁺`](#flyte-delete-api-key), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
+| `create` | [`config`](#flyte-create-config), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
+| `delete` | [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
 | [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
+| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
 | `update` | [`app`](#flyte-update-app), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
-
-**⁺** Plugin command - see command documentation for installation instructions
 {{< /markdown >}}
 {{< /grid >}}
 
@@ -97,10 +92,11 @@ $ flyte --config /path/to/config.yaml run ...
 `--verbose`{{< /multiline >}} | `integer` | `0` | Show verbose messages and exception traces. Repeating multiple times increases the verbosity (e.g., -vvv). |
 | `--org` | `text` | `Sentinel.UNSET` | The organization to which the command applies. |
 | {{< multiline >}}`-c`
-`--config`{{< /multiline >}} | `path` | `Sentinel.UNSET` | Path to the configuration file to use. If not specified, the default configuration file is used. |
+`--config`{{< /multiline >}} | `file` | `Sentinel.UNSET` | Path to the configuration file to use. If not specified, the default configuration file is used. |
 | {{< multiline >}}`--output-format`
 `-of`{{< /multiline >}} | `choice` | `table` | Output format for commands that support it. Defaults to 'table'. |
 | `--log-format` | `choice` | `console` | Formatting for logs, defaults to 'console' which is meant to be human readable. 'json' is meant for machine parsing. |
+| `--reset-root-logger` | `boolean` | `False` | If set, the root logger will be reset to use Flyte logging style |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte abort
@@ -108,6 +104,21 @@ $ flyte --config /path/to/config.yaml run ...
 **`flyte abort COMMAND [ARGS]...`**
 
 Abort an ongoing process.
+
+#### flyte abort action
+
+**`flyte abort action [OPTIONS] RUN_NAME ACTION_NAME`**
+
+Abort an action associated with a run.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--reason` | `text` | `Manually aborted from the CLI` | The reason to abort the run. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte abort run
 
@@ -117,6 +128,7 @@ Abort a run.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `--reason` | `text` | `Manually aborted from the CLI` | The reason to abort the run. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -140,32 +152,6 @@ environments.
 **`flyte create COMMAND [ARGS]...`**
 
 Create resources in a Flyte deployment.
-
-#### flyte create api-key
-
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
-
-**`flyte create api-key [OPTIONS]`**
-
-Create an API key for headless authentication.
-
-This creates OAuth application credentials that can be used to authenticate
-with Union without interactive login. The generated API key should be set
-as the FLYTE_API_KEY environment variable. Oauth applications should not be
-confused with Union Apps, which are a different construct entirely.
-
-Examples:
-
-    # Create an API key named "ci-pipeline"
-    $ flyte create api-key --name ci-pipeline
-
-    # The output will include an export command like:
-    # export FLYTE_API_KEY="<base64-encoded-credentials>"
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `--name` | `text` | `Sentinel.UNSET` | Name for API key |
-| `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte create config
 
@@ -289,27 +275,6 @@ This will create a trigger that runs every day at midnight.
 **`flyte delete COMMAND [ARGS]...`**
 
 Remove resources from a Flyte deployment.
-
-#### flyte delete api-key
-
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
-
-**`flyte delete api-key [OPTIONS] CLIENT_ID`**
-
-Delete an API key.
-
-Examples:
-
-    # Delete an API key (with confirmation)
-    $ flyte delete api-key my-client-id
-
-    # Delete without confirmation
-    $ flyte delete api-key my-client-id --yes
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `--yes` | `boolean` | `False` | Skip confirmation prompt |
-| `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte delete secret
 
@@ -513,33 +478,6 @@ Get all actions for a run or details for a specific action.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-#### flyte get api-key
-
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
-
-**`flyte get api-key [OPTIONS] [CLIENT_ID]`**
-
-Get or list API keys.
-
-If CLIENT-ID is provided, gets a specific API key.
-Otherwise, lists all API keys.
-
-Examples:
-
-    # List all API keys
-    $ flyte get api-key
-
-    # List with a limit
-    $ flyte get api-key --limit 10
-
-    # Get a specific API key
-    $ flyte get api-key my-client-id
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `--limit` | `integer` | `100` | Maximum number of keys to list |
-| `--help` | `boolean` | `False` | Show this message and exit. |
-
 #### flyte get app
 
 **`flyte get app [OPTIONS] [NAME]`**
@@ -656,11 +594,20 @@ The run details will include information about the run, its status, but only the
 
 If you want to see the actions for a run, use `get action <run_name>`.
 
+You can filter runs by task name and optionally task version:
+
+```bash
+$ flyte get run --task-name my_task
+$ flyte get run --task-name my_task --task-version v1.0
+```
+
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Limit the number of runs to fetch when listing. |
 | `--in-phase` | `choice` | `Sentinel.UNSET` | Filter runs by their status. |
 | `--only-mine` | `boolean` | `False` | Show only runs created by the current user (you). |
+| `--task-name` | `text` |  | Filter runs by task name. |
+| `--task-version` | `text` |  | Filter runs by task version. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -891,13 +838,15 @@ flyte run hello.py my_task --help
 `-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
+| `--run-project` | `text` |  | Run the remote task in this project, only applicable when using `deployed-task` subcommand. |
+| `--run-domain` | `text` |  | Run the remote task in this domain, only applicable when using `deployed-task` subcommand. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte run deployed-task
 
 **`flyte run deployed-task [OPTIONS] COMMAND [ARGS]...`**
 
-Run reference task from the Flyte backend
+Run remote task from the Flyte backend
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|

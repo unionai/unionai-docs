@@ -46,7 +46,8 @@ def generate_site(
     ignore_types: List[str],
     weight: int,
     expanded: bool,
-    api_name: str | None
+    api_name: str | None,
+    include_short_names: bool = False,
 ):
     set_variants(variants)
     set_version(source["version"])
@@ -111,4 +112,5 @@ def generate_site(
             classes=source["classes"],
             pkg_root=pkg_root,
             api_name=api_name,
+            include_short_names=include_short_names,
         )

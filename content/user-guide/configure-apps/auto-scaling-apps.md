@@ -11,7 +11,7 @@ Flyte apps support autoscaling, allowing them to scale up and down based on traf
 
 ### Scaling configuration
 
-The `scaling` parameter uses a `Scaling` object to configure autoscaling behavior:
+The `scaling` parameter uses a `[[Scaling]]` object to configure autoscaling behavior:
 
 ```python
 scaling=flyte.app.Scaling(

@@ -1,6 +1,6 @@
 ---
 title: Cron
-version: 2.0.0b40
+version: 2.0.0b50
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -12,13 +12,13 @@ layout: py_api
 This class defines a Cron automation that can be associated with a Trigger in Flyte.
 Example usage:
 ```python
-from flyte.trigger import Trigger, Cron
-my_trigger = Trigger(
+my_trigger = flyte.Trigger(
     name="my_cron_trigger",
-    automation=Cron("0 * * * *"),  # Runs every hour
+    automation=flyte.Cron("0 * * * *"),  # Runs every hour
     description="A trigger that runs every hour",
 )
 ```
+
 
 
 ```python
@@ -29,8 +29,8 @@ class Cron(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `expression` | `str` | |
-| `timezone` | `Timezone` | |
+| `expression` | `str` | String cron expression to trigger - Example |
+| `timezone` | `Timezone` | One of Timezone values. |
 
 ## Properties
 

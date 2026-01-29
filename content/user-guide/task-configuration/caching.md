@@ -185,5 +185,4 @@ result = flyte.run(my_cached_task, data="test")
 Local cache behavior:
 - Stored in `~/.flyte/local-cache/` directory
 - No project/domain isolation (since running locally)
-- Can be cleared with `flyte local-cache clear`
 - Disabled by setting `FLYTE_LOCAL_CACHE_ENABLED=false`
