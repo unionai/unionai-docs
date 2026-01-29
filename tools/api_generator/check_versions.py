@@ -198,16 +198,6 @@ def main():
     for r in outdated:
         print(f"  {r['package']}: {r['committed']} -> {r['latest']}")
 
-    try:
-        answer = input("\nRegenerate outdated API docs? [y/N] ").strip().lower()
-    except EOFError:
-        print("Non-interactive environment, skipping.")
-        return
-
-    if answer != "y":
-        print("Skipping regeneration.")
-        return
-
     regenerate(outdated)
     print("\nDone. Review and commit the updated docs.")
 

@@ -139,8 +139,4 @@ check-api-docs:
 	@uv run tools/api_generator/check_versions.py --check
 
 update-api-docs:
-	@if [ -t 0 ]; then \
-		uv run tools/api_generator/check_versions.py --update; \
-	else \
-		echo "Non-interactive environment, skipping API docs update"; \
-	fi
+	@uv run tools/api_generator/check_versions.py --update
