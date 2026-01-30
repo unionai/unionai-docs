@@ -1,6 +1,6 @@
 ---
 title: flyte.storage
-version: 2.0.0b52
+version: 2.0.0b53
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -226,6 +226,7 @@ def put(
     from_path: str,
     to_path: Optional[str],
     recursive: bool,
+    batch_size: Optional[int],
     kwargs,
 ) -> str
 ```
@@ -234,6 +235,7 @@ def put(
 | `from_path` | `str` | |
 | `to_path` | `Optional[str]` | |
 | `recursive` | `bool` | |
+| `batch_size` | `Optional[int]` | |
 | `kwargs` | `**kwargs` | |
 
 #### put_stream()

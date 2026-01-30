@@ -1,6 +1,6 @@
 ---
 title: ImageBuildEngine
-version: 2.0.0b52
+version: 2.0.0b53
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -27,7 +27,8 @@ def build(
     builder: ImageBuildEngine.ImageBuilderType | None,
     dry_run: bool,
     force: bool,
-) -> str
+    wait: bool,
+) -> 'ImageBuild'
 ```
 Build the image. Images to be tagged with latest will always be built. Otherwise, this engine will check the
 registry to see if the manifest exists.
@@ -39,5 +40,6 @@ registry to see if the manifest exists.
 | `image` | `Image` | |
 | `builder` | `ImageBuildEngine.ImageBuilderType \| None` | |
 | `dry_run` | `bool` | Tell the builder to not actually build. Different builders will have different behaviors. |
-| `force` | `bool` | Skip the existence check. Normally if the image already exists we won't build it. :return: |
+| `force` | `bool` | Skip the existence check. Normally if the image already exists we won't build it. |
+| `wait` | `bool` | Wait for the build to finish. If wait is False when using the remote image builder, the function will return the build image task URL. :return: An ImageBuild object with the image URI and remote run (if applicable). |
 
