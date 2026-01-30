@@ -1069,3 +1069,4 @@ www.union.ai/docs/v2/byoc/user-guide/getting-started,https://www.union.ai/docs/v
 www.union.ai/docs/v2/flyte/user-guide/getting-started,https://www.union.ai/docs/v2/flyte/user-guide/quickstart,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/v2/selfmanaged/user-guide/getting-started,https://www.union.ai/docs/v2/selfmanaged/user-guide/quickstart,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/v2/serverless/user-guide/getting-started,https://www.union.ai/docs/v2/serverless/user-guide/quickstart,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/test-redirect-delete-me,https://www.union.ai/docs,302,TRUE,FALSE,TRUE,TRUE
