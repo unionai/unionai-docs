@@ -215,33 +215,16 @@ Follow guidance in this section to integrate Image Builder with private registri
 
 #### Github Container Registry
 
-1. Encode the token for your registry in `base64` format:
-
+1. Follow [github guide](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) to login to the registry locally.
+2. Create a Union secret:
 ```bash
-echo -n "your-username:your-token" | base64
+flyte create secret --type image_pull --from-docker-config --registries ghcr.io SECRET_NAME
 ```
-> This is the same you'd find in your `$HOME/docker/config.json` file after you succesfully login using the token. [Learn more](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
 
-2. Store this in a JSON file using this structure:
+> This secret will be available to all projects and domains in your tenant. [Learn more about Union Secrets](../../user-guide/development-cycle/managing-secrets.md)
+> Check alternative ways to create image pull secrets in the [API reference](../../api-reference/flyte-cli#flyte-create-secret)
 
-```json
-{
-  "auths": {
-    "ghcr.io": {
-      "auth": "<YOUR_ENCODED_TOKEN>",
-    }
- } 
-}
-
-```
-3. Create a Union secret:
-
-```bash
-union create secret --type image-pull-secret --value-file <YOUR_JSON_CONFIG_FILE> <YOUR_SECRET_NAME>
-```
-> This secret will be available to all projects and domains in your tenant. If you want to scope it down add --project and --domain. [Learn more about Union Secrets](../../user-guide/development-cycle/managing-secrets.md)
-
-4. Reference this secret in the Image object:
+1. Reference this secret in the Image object:
 
 ```python
 env = flyte.TaskEnvironment(
