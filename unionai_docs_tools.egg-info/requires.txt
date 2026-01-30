@@ -1,6 +1,1 @@
 toml>=0.10.2
-
-[dev]
-pytest
-black
-isort

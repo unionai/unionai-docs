@@ -1,0 +1,14 @@
+packages:
+  flyteplugins.pytorch: /api-reference/integrations/pytorch/packages/flyteplugins.pytorch/
+  flyteplugins.pytorch.task: /api-reference/integrations/pytorch/packages/flyteplugins.pytorch.task/
+identifiers:
+  flyteplugins.pytorch.Elastic: /api-reference/integrations/pytorch/packages/flyteplugins.pytorch/elastic/
+  Elastic: /api-reference/integrations/pytorch/packages/flyteplugins.pytorch.task/elastic/
+  flyteplugins.pytorch.task.Elastic: /api-reference/integrations/pytorch/packages/flyteplugins.pytorch.task/elastic/
+  flyteplugins.pytorch.task.RunPolicy: /api-reference/integrations/pytorch/packages/flyteplugins.pytorch.task/runpolicy/
+  RunPolicy: /api-reference/integrations/pytorch/packages/flyteplugins.pytorch.task/runpolicy/
+  flyteplugins.pytorch.task.TorchFunctionTask: /api-reference/integrations/pytorch/packages/flyteplugins.pytorch.task/torchfunctiontask/
+  TorchFunctionTask: /api-reference/integrations/pytorch/packages/flyteplugins.pytorch.task/torchfunctiontask/
+methods:
+  flyteplugins.pytorch.task.launcher_entrypoint: /api-reference/integrations/pytorch/packages/flyteplugins.pytorch.task/#launcher_entrypoint
+  launcher_entrypoint: /api-reference/integrations/pytorch/packages/flyteplugins.pytorch.task/#launcher_entrypoint

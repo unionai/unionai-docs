@@ -1,4 +1,3 @@
-import os
 
 
 def generate_anchor_from_name(name: str) -> str:
