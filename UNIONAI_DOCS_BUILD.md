@@ -36,10 +36,6 @@ This document describes how the Union.ai documentation platform works, including
   - [Check Redirects](#check-redirects-check-redirects)
   - [Cloudflare Pages preview](#cloudflare-pages-preview)
   - [Quick fix for most failures](#quick-fix-for-most-failures)
-- [Troubleshooting](#troubleshooting)
-  - [Missing content](#missing-content)
-  - [Page visibility](#page-visibility)
-  - [Build failures](#build-failures)
 
 ---
 
@@ -107,6 +103,30 @@ To highlight the active variant's content (to distinguish it from common content
 ```toml
 highlight_active = true
 ```
+
+### Missing content
+
+Content may be hidden due to `{{< variant ... >}}` blocks. To see what's missing, adjust the variant show/hide settings in development mode.
+
+For a production-like view:
+
+```toml
+show_inactive = false
+highlight_active = false
+```
+
+For full developer visibility:
+
+```toml
+show_inactive = true
+highlight_active = true
+```
+
+### Page visibility
+
+The developer site shows in red any pages missing from the variant. For a page to exist in a variant, it must be listed in the `variants:` frontmatter at the top of the file. Clicking on a red page gives you the path you need to add.
+
+See [Contributing docs and examples](https://union.ai/docs/flyte/community/contributing-docs) for authoring guidelines.
 
 ## Managing tutorial pages
 
@@ -444,40 +464,3 @@ Then commit the updated `redirects.csv`.
 ### Quick fix for most failures
 
 Running `make dist` locally regenerates everything: API docs, redirects, and notebook conversions. It's the single command that covers all the generated-file checks. Commit any changed files afterward.
-
-## Troubleshooting
-
-### Missing content
-
-Content may be hidden due to `{{< variant ... >}}` blocks. To see what's missing, adjust the variant show/hide settings in development mode.
-
-For a production-like view:
-
-```toml
-show_inactive = false
-highlight_active = false
-```
-
-For full developer visibility:
-
-```toml
-show_inactive = true
-highlight_active = true
-```
-
-### Page visibility
-
-The developer site shows in red any pages missing from the variant. For a page to exist in a variant, it must be listed in the `variants:` frontmatter at the top of the file. Clicking on a red page gives you the path you need to add.
-
-See [Contributing docs and examples](https://union.ai/docs/flyte/community/contributing-docs) for authoring guidelines.
-
-### Build failures
-
-If the Cloudflare Pages build fails:
-
-1. Check that Python 3.8+ is available
-2. Verify that the `toml` package can be installed
-3. Check Hugo version compatibility (must be >= 0.145.0)
-4. Review build logs for specific Python errors
-
-The build script automatically falls back from `uv run` to `python3` if uv is not available.
