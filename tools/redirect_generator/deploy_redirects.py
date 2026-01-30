@@ -55,6 +55,11 @@ def parse_csv(csv_path: Path) -> list[dict]:
                     file=sys.stderr,
                 )
                 continue
+            subpath_matching = row[4].strip().upper() == "TRUE"
+            preserve_path_suffix = row[6].strip().upper() == "TRUE"
+            # CF API rejects preserve_path_suffix when subpath_matching is off
+            if preserve_path_suffix and not subpath_matching:
+                preserve_path_suffix = False
             items.append(
                 {
                     "redirect": {
@@ -62,9 +67,9 @@ def parse_csv(csv_path: Path) -> list[dict]:
                         "target_url": row[1].strip(),
                         "status_code": int(row[2].strip()),
                         "include_subdomains": row[3].strip().upper() == "TRUE",
-                        "subpath_matching": row[4].strip().upper() == "TRUE",
+                        "subpath_matching": subpath_matching,
                         "preserve_query_string": row[5].strip().upper() == "TRUE",
-                        "preserve_path_suffix": row[6].strip().upper() == "TRUE",
+                        "preserve_path_suffix": preserve_path_suffix,
                     }
                 }
             )
