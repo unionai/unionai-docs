@@ -1,6 +1,6 @@
 ---
 title: App
-version: 2.0.0b52
+version: 2.0.0b53
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -39,6 +39,7 @@ class App(
 | [`activate()`](#activate) | Start the app. |
 | [`create()`](#create) |  |
 | [`deactivate()`](#deactivate) | Stop the app. |
+| [`delete()`](#delete) | Delete an app by name. |
 | [`get()`](#get) | Get an app by name. |
 | [`is_active()`](#is_active) | Check if the app is currently active or started. |
 | [`is_deactivated()`](#is_deactivated) | Check if the app is currently deactivated or stopped. |
@@ -105,6 +106,32 @@ Stop the app
 | Parameter | Type | Description |
 |-|-|-|
 | `wait` | `bool` | Wait for the app to reach the deactivated state |
+
+### delete()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await App.delete.aio()`.
+```python
+def delete(
+    cls,
+    name: str,
+    project: str | None,
+    domain: str | None,
+)
+```
+Delete an app by name.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `name` | `str` | The name of the app to delete. |
+| `project` | `str \| None` | The name of the project to delete. |
+| `domain` | `str \| None` | The name of the domain to delete. |
 
 ### get()
 

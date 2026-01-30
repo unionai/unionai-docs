@@ -1,6 +1,6 @@
 ---
 title: Dir
-version: 2.0.0b52
+version: 2.0.0b53
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -477,6 +477,7 @@ def from_local(
     local_path: Union[str, Path],
     remote_destination: Optional[str],
     dir_cache_key: Optional[str],
+    batch_size: Optional[int],
 ) -> Dir[T]
 ```
 Asynchronously create a new Dir by uploading a local directory to remote storage.
@@ -522,6 +523,7 @@ async def upload_with_cache_key() -> Dir:
 | `local_path` | `Union[str, Path]` | Path to the local directory |
 | `remote_destination` | `Optional[str]` | Optional remote path to store the directory. If None, a path will be automatically generated. |
 | `dir_cache_key` | `Optional[str]` | Optional precomputed hash value to use for cache key computation when this Dir is used as an input to discoverable tasks. If not specified, the cache key will be based on directory attributes. |
+| `batch_size` | `Optional[int]` | Optional concurrency limit for uploading files. If not specified, the default value is determined by the FLYTE_IO_BATCH_SIZE environment variable (default: 32). |
 
 ### from_local_sync()
 
