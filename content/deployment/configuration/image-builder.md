@@ -224,13 +224,19 @@ flyte create secret --type image_pull --from-docker-config --registries ghcr.io 
 > This secret will be available to all projects and domains in your tenant. [Learn more about Union Secrets](../../user-guide/development-cycle/managing-secrets.md)
 > Check alternative ways to create image pull secrets in the [API reference](../../api-reference/flyte-cli#flyte-create-secret)
 
-1. Reference this secret in the Image object:
+3. Reference this secret in the Image object:
 
 ```python
 env = flyte.TaskEnvironment(
     name="hello_v2",
-    image=flyte.Image.from_debian_base(registry="<my registry url>", name="private", registry_secret="<YOUR_SECRET_NAME>")
-        .with_pip_packages("<package 1>", "<package 2>")
+    # Allow image builder to pull and push from the private registry. `registry` field isn't required if it's configured
+    # as the default registry in imagebuilder section in the helm chart values file.
+    image=flyte.Image.from_debian_base(registry="<my registry url>", name="private", registry_secret="<YOUR_SECRET_NAME>") 
+        .with_pip_packages("<package 1>", "<package 2>"),
+    # Mount the same secret to allow tasks to pull that image
+    secrets=["<YOUR_SECRET_NAME>"]
 )
 ```
-This will enable Image Builder to push images and layers to a private GHCR.
+
+This will enable Image Builder to push images and layers to a private GHCR. It'll also allow pods for this task environment to pull
+this image at runtime.
