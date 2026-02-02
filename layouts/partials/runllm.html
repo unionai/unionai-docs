@@ -1,12 +1,10 @@
 {{- if not .Site.Params.current_version -}}
 <script>
 (function() {
-  var keys = [];
-  var secret = 'rlm';
+  var loaded = false;
   document.addEventListener('keydown', function(e) {
-    keys.push(e.key.toLowerCase());
-    keys = keys.slice(-secret.length);
-    if (keys.join('') === secret && !document.getElementById('runllm-widget-script')) {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'j' && !loaded) {
+      loaded = true;
       var s = document.createElement('script');
       s.type = 'module';
       s.id = 'runllm-widget-script';
