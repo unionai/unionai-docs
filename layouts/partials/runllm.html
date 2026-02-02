@@ -1,3 +1,4 @@
+{{- if not .Site.Params.current_version -}}
 <script
   type="module"
   id="runllm-widget-script"
@@ -11,3 +12,4 @@
   runllm-brand-logo="{{ "images/icon-logo.svg" | absURL }}"
   async
 ></script>
+{{- end -}}
