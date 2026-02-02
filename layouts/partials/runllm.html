@@ -1,15 +1,27 @@
 {{- if not .Site.Params.current_version -}}
-<script
-  type="module"
-  id="runllm-widget-script"
-  src="https://widget.runllm.com"
-  crossorigin="true"
-  version="stable"
-  runllm-keyboard-shortcut="Mod+j"
-  runllm-name="Union"
-  runllm-position="BOTTOM_RIGHT"
-  runllm-assistant-id="60"
-  runllm-brand-logo="{{ "images/icon-logo.svg" | absURL }}"
-  async
-></script>
+<script>
+(function() {
+  var keys = [];
+  var secret = 'rlm';
+  document.addEventListener('keydown', function(e) {
+    keys.push(e.key.toLowerCase());
+    keys = keys.slice(-secret.length);
+    if (keys.join('') === secret && !document.getElementById('runllm-widget-script')) {
+      var s = document.createElement('script');
+      s.type = 'module';
+      s.id = 'runllm-widget-script';
+      s.src = 'https://widget.runllm.com';
+      s.crossOrigin = 'true';
+      s.setAttribute('version', 'stable');
+      s.setAttribute('runllm-keyboard-shortcut', 'Mod+j');
+      s.setAttribute('runllm-name', 'Union');
+      s.setAttribute('runllm-position', 'BOTTOM_RIGHT');
+      s.setAttribute('runllm-assistant-id', '60');
+      s.setAttribute('runllm-brand-logo', '{{ "images/icon-logo.svg" | absURL }}');
+      s.async = true;
+      document.body.appendChild(s);
+    }
+  });
+})();
+</script>
 {{- end -}}
