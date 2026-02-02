@@ -3,7 +3,7 @@
 (function() {
   var loaded = false;
   document.addEventListener('keydown', function(e) {
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'j' && !loaded) {
+    if ((e.metaKey || e.ctrlKey) && e.key === '/' && !loaded) {
       loaded = true;
       var s = document.createElement('script');
       s.type = 'module';
@@ -11,7 +11,7 @@
       s.src = 'https://widget.runllm.com';
       s.crossOrigin = 'true';
       s.setAttribute('version', 'stable');
-      s.setAttribute('runllm-keyboard-shortcut', 'Mod+j');
+      s.setAttribute('runllm-keyboard-shortcut', 'Mod+/');
       s.setAttribute('runllm-name', 'Union');
       s.setAttribute('runllm-position', 'BOTTOM_RIGHT');
       s.setAttribute('runllm-assistant-id', '60');
