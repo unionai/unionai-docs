@@ -19,11 +19,11 @@
   right: 20px;
   padding: 10px 20px;
   border-radius: 24px;
-  background: var(--union-color);
-  color: #fff;
-  border: none;
+  background: #fff;
+  color: var(--union-color);
+  border: 2px solid var(--union-color);
   cursor: grab;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,6 +34,10 @@
   transition: box-shadow 0.2s;
   touch-action: none;
 }
+#runllm-trigger img {
+  width: 20px;
+  height: 20px;
+}
 #runllm-trigger:hover {
   box-shadow: 0 4px 16px rgba(0,0,0,0.4);
 }
@@ -41,7 +45,7 @@
   cursor: grabbing;
 }
 </style>
-<button id="runllm-trigger" title="Ask AI">💬 Ask AI</button>
+<button id="runllm-trigger" title="Ask AI"><img src="{{ "images/icon-logo.svg" | relURL }}" alt=""> Ask AI</button>
 <script>
 (function() {
   var btn = document.getElementById('runllm-trigger');
