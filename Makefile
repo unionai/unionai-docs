@@ -4,7 +4,7 @@ PREFIX := $(if $(VERSION),docs/$(VERSION),docs)
 PORT := 9000
 BUILD := $(shell date +%s)
 
-.PHONY: all dist variant dev update-examples sync-examples llm-docs check-api-docs update-api-docs
+.PHONY: all dist variant dev update-examples sync-examples llm-docs
 
 all: usage
 
@@ -24,7 +24,6 @@ base:
 	#cp -R static/* dist/${PREFIX}/
 
 dist: base
-	# make update-api-docs
 	make variant VARIANT=flyte
 	make variant VARIANT=serverless
 	make variant VARIANT=byoc
@@ -117,13 +116,3 @@ llm-docs:
 		mkdir -p dist/docs/${VERSION}/$$variant/_static/public; \
 		cp dist/docs/${VERSION}/$$variant/llms-full.txt dist/docs/${VERSION}/$$variant/_static/public/llms-full.txt; \
 	done
-
-check-api-docs:
-	@uv run tools/api_generator/check_versions.py --check
-
-update-api-docs:
-	@if command -v uv >/dev/null 2>&1; then \
-		uv run tools/api_generator/check_versions.py --update; \
-	else \
-		echo "uv not available, skipping API docs update (using committed docs)"; \
-	fi
