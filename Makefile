@@ -4,7 +4,7 @@ PREFIX := $(if $(VERSION),docs/$(VERSION),docs)
 PORT := 9000
 BUILD := $(shell date +%s)
 
-.PHONY: all dist variant dev update-examples sync-examples llm-docs check-api-docs update-api-docs update-redirects dry-run-redirects deploy-redirects
+.PHONY: all dist variant dev update-examples sync-examples llm-docs check-api-docs update-api-docs
 
 all: usage
 
@@ -24,7 +24,6 @@ base:
 	#cp -R static/* dist/${PREFIX}/
 
 dist: base
-	make update-redirects
 	# make update-api-docs
 	make variant VARIANT=flyte
 	make variant VARIANT=serverless
@@ -118,25 +117,6 @@ llm-docs:
 		mkdir -p dist/docs/${VERSION}/$$variant/_static/public; \
 		cp dist/docs/${VERSION}/$$variant/llms-full.txt dist/docs/${VERSION}/$$variant/_static/public/llms-full.txt; \
 	done
-
-update-redirects:
-	@echo "Detecting moved pages and appending to redirects.csv..."
-	@if command -v uv >/dev/null 2>&1; then \
-		uv run tools/redirect_generator/detect_moved_pages.py; \
-	else \
-		python3 tools/redirect_generator/detect_moved_pages.py; \
-	fi
-
-dry-run-redirects:
-	@echo "Dry run: detecting moved pages from git history..."
-	@if command -v uv >/dev/null 2>&1; then \
-		uv run tools/redirect_generator/detect_moved_pages.py --dry-run; \
-	else \
-		python3 tools/redirect_generator/detect_moved_pages.py --dry-run; \
-	fi
-
-deploy-redirects:
-	@python3 tools/redirect_generator/deploy_redirects.py
 
 check-api-docs:
 	@uv run tools/api_generator/check_versions.py --check
