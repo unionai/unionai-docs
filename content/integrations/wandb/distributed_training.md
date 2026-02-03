@@ -20,7 +20,7 @@ The plugin:
 
 Here's a minimal example that logs metrics from a distributed training task. By default (`run_mode="auto"`), only rank 0 logs to W&B, preventing duplicate entries:
 
-{{< code file="/external/unionai-examples/v2/integrations/flyte-plugins/wandb/distributed_training_quick_start.py" lang=python highlight="" >}}
+{{< code file="/external/unionai-examples/v2/integrations/flyte-plugins/wandb/distributed_training_quick_start.py" lang=python highlight="4-5 15 20 25-26 32" >}}
 
 A few things to note:
 
@@ -64,7 +64,7 @@ For single-node distributed training, configure the `Elastic` plugin with `nnode
 
 ### Basic example with `auto` mode
 
-```python
+```python {hl_lines=["6-7", 13, 18, 30]}
 import os
 
 import torch
@@ -109,7 +109,7 @@ def train_single_node() -> float:
 
 When you need to see metrics from all GPUs in a single run, use `run_mode="shared"`:
 
-```python
+```python {hl_lines=[3, 13]}
 import os
 
 @wandb_init(run_mode="shared")
@@ -150,7 +150,7 @@ In the W&B UI, metrics from each rank appear with distinct labels, allowing you 
 
 For multi-node distributed training, set `nnodes` to your node count. The plugin automatically creates separate W&B runs for each node (in `auto` mode) and includes the worker index in run IDs.
 
-```python
+```python {hl_lines=["11-12", "27-30", "35", "59-60", "95-98"]}
 import os
 
 import torch
