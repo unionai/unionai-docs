@@ -1,0 +1,14 @@
+{{- if not .Site.Params.show_deprecation_message -}}
+<script
+  type="module"
+  id="runllm-widget-script"
+  src="https://widget.runllm.com"
+  crossorigin="true"
+  version="stable"
+  runllm-name="Union"
+  runllm-position="BOTTOM_RIGHT"
+  runllm-assistant-id="60"
+  runllm-brand-logo="{{ "images/icon-logo.svg" | absURL }}"
+  async
+></script>
+{{- end -}}
