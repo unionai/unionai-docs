@@ -12,6 +12,7 @@ sidebar_expanded: false
 - Automatically initialize W&B runs in your tasks without boilerplate
 - Link directly from the Flyte UI to your W&B runs and sweeps
 - Share W&B runs across parent and child tasks
+- Track distributed training jobs across multiple GPUs and nodes
 - Run hyperparameter sweeps with parallel agents
 
 ## Installation
@@ -44,6 +45,7 @@ The plugin handles calling `wandb.init()` and `wandb.finish()` for you, and auto
 This integration guide is split into focused sections, depending on how you want to use Weights & Biases with Flyte:
 
 - **[Experiments](_experiments)**: Create and manage W&B runs from Flyte tasks.
+- **[Distributed training](_distributed_training)**: Track experiments across multi-GPU and multi-node training jobs.
 - **[Sweeps](_sweeps)**: Run hyperparameter searches and manage sweep execution from Flyte tasks.
 - **[Downloading logs](_downloading_logs)**: Download logs and execution metadata from Weights & Biases.
 - **[Constraints and best practices](_constraints_and_best_practices)**: Learn about limitations, edge cases and recommended patterns.
