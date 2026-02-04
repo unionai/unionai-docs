@@ -9,6 +9,81 @@
   runllm-position="BOTTOM_RIGHT"
   runllm-assistant-id="60"
   runllm-brand-logo="{{ "images/icon-logo.svg" | absURL }}"
+  runllm-hide-trigger-button="true"
   async
 ></script>
+<style>
+#runllm-trigger {
+  position: fixed;
+  bottom: 64px;
+  right: 64px;
+  padding: 14px 28px;
+  border-radius: 28px;
+  box-sizing: border-box;
+  background: #fff;
+  color: #000;
+  border: 3px solid var(--union-color);
+  cursor: grab;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 9999;
+  font-size: 16px;
+  font-weight: 500;
+  transition: box-shadow 0.2s;
+  touch-action: none;
+}
+#runllm-trigger img {
+  width: 18px;
+  height: 18px;
+}
+#runllm-trigger:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+#runllm-trigger:active {
+  cursor: grabbing;
+}
+</style>
+<button id="runllm-trigger" title="Ask AI"><img src="{{ "images/icon-logo.svg" | relURL }}" alt=""> Ask AI</button>
+<script>
+(function() {
+  var btn = document.getElementById('runllm-trigger');
+  var isDragging = false;
+  var wasDragged = false;
+  var startX, startY, startLeft, startTop;
+
+  btn.addEventListener('pointerdown', function(e) {
+    isDragging = true;
+    wasDragged = false;
+    startX = e.clientX;
+    startY = e.clientY;
+    var rect = btn.getBoundingClientRect();
+    startLeft = rect.left;
+    startTop = rect.top;
+    btn.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+
+  document.addEventListener('pointermove', function(e) {
+    if (!isDragging) return;
+    var dx = e.clientX - startX;
+    var dy = e.clientY - startY;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) wasDragged = true;
+    btn.style.left = (startLeft + dx) + 'px';
+    btn.style.top = (startTop + dy) + 'px';
+    btn.style.right = 'auto';
+    btn.style.bottom = 'auto';
+  });
+
+  document.addEventListener('pointerup', function(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    if (!wasDragged && window.runllm) {
+      window.runllm.open();
+    }
+  });
+})();
+</script>
 {{- end -}}
