@@ -6,13 +6,18 @@ if [[ $VERBOSE -eq 1 ]]; then
     set -x
 fi
 
-# Require uv for local builds
-if ! command -v uv > /dev/null 2>&1; then
-    echo "uv not found, skipping notebook conversion (using committed files)"
+# In CI, skip conversion and use committed files
+if [[ -n "$CI" ]]; then
+    echo "CI environment detected, skipping notebook conversion (using committed files)"
     exit 0
 fi
 
-# Ensure jupyter and dependencies are installed
+# Local build - ensure jupyter and dependencies are installed via uv
+if ! command -v uv > /dev/null 2>&1; then
+    echo "Error: uv is required for local builds. Install from https://docs.astral.sh/uv/"
+    exit 1
+fi
+
 uv pip install jupyter htmltabletomd --quiet
 
 declare content
