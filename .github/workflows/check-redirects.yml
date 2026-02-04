@@ -17,16 +17,20 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Generate redirects
-        run: make update-redirects
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
 
-      - name: Check for uncommitted redirect changes
+      - name: Check for missing redirects
         run: |
+          echo "=== Detecting moved pages ==="
+          uv run tools/redirect_generator/detect_moved_pages.py --dry-run
+          echo ""
+          echo "=== Checking for uncommitted changes ==="
+          uv run tools/redirect_generator/detect_moved_pages.py
           if ! git diff --exit-code redirects.csv; then
             echo ""
-            echo "=== Redirect changes detected ==="
-            git diff redirects.csv
-            echo ""
-            echo "::error::Redirect file is out of date. Run 'make update-redirects' (or 'make dist') locally and commit the changes."
+            echo "::error::Redirect file is out of date. The above output shows what redirects need to be added."
+            echo "::error::Run 'make update-redirects' (or 'make dist') locally and commit the changes."
             exit 1
           fi
+          echo "All redirects are up to date."
