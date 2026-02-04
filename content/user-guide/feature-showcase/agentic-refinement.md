@@ -2,6 +2,7 @@
 title: Agentic refinement
 weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
+mermaid: true
 ---
 
 # Agentic refinement
@@ -16,27 +17,12 @@ Traditional pipelines are linear: input → process → output. Agentic workflow
 are iterative: they evaluate their own output and improve it through multiple
 cycles.
 
-```
-┌──────────────┐
-│   Generate   │
-└──────┬───────┘
-       │
-       ▼
-┌──────────────┐     score >= threshold
-│   Critique   │ ──────────────────────────► Done
-└──────┬───────┘
-       │ score < threshold
-       ▼
-┌──────────────┐
-│    Revise    │
-└──────┬───────┘
-       │
-       └────────────────┐
-                        │
-       ┌────────────────┘
-       │
-       ▼
-    (repeat)
+```mermaid
+flowchart TD
+    A[Generate] --> B[Critique]
+    B -->|score >= threshold| C[Done]
+    B -->|score < threshold| D[Revise]
+    D --> B
 ```
 
 ## Critique task

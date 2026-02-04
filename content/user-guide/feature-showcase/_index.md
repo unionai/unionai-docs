@@ -3,6 +3,7 @@ title: Feature showcase
 weight: 6
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
+mermaid: true
 ---
 
 # Feature showcase
@@ -19,44 +20,36 @@ An intelligent report generator that:
 
 ## Concepts covered
 
-| Feature | Description | First project? |
-|---------|-------------|----------------|
-| `ReusePolicy` | Keep containers warm between tasks for cost efficiency | No |
-| `@flyte.trace` | Checkpoint LLM calls for recovery and observability | No |
-| `RetryStrategy` | Handle transient API failures gracefully | No |
-| `flyte.group` | Organize agentic iterations in the UI | No |
-| `asyncio.gather` | Run independent operations in parallel | No |
-| Pydantic models | Structured LLM outputs | No |
+| Feature | Description |
+|---------|-------------|
+| `ReusePolicy` | Keep containers warm between tasks for cost efficiency |
+| `@flyte.trace` | Checkpoint LLM calls for recovery and observability |
+| `RetryStrategy` | Handle transient API failures gracefully |
+| `flyte.group` | Organize agentic iterations in the UI |
+| `asyncio.gather` | Run independent operations in parallel |
+| Pydantic models | Structured LLM outputs |
 
 ## Architecture
 
-```
-[Topic Input]
-      │
-      ▼
-┌─────────────────────────────────────┐
-│  generate_initial_draft             │  ← RetryStrategy + @flyte.trace
-└─────────────────────────────────────┘
-      │
-      ▼
-┌─────────────────────────────────────┐
-│  refinement_loop                    │
-│  ┌───────────────────────────────┐  │
-│  │ flyte.group("refinement_N")   │  │
-│  │  • critique_content (traced)  │  │
-│  │  • revise_content (traced)    │  │
-│  └───────────────────────────────┘  │
-│  [loop until score >= threshold]    │
-└─────────────────────────────────────┘
-      │
-      ▼
-┌─────────────────────────────────────┐
-│  format_outputs                     │  ← asyncio.gather (parallel)
-│  • Markdown, HTML, Summary          │
-└─────────────────────────────────────┘
-      │
-      ▼
-[Output: Dir with formatted docs]
+```mermaid
+flowchart TD
+    A[Topic Input] --> B
+
+    B["generate_initial_draft<br/><i>RetryStrategy + @flyte.trace</i>"]
+    B --> C
+
+    subgraph C [refinement_loop]
+        direction TB
+        subgraph D ["flyte.group('refinement_N')"]
+            E["• critique_content (traced)"]
+            F["• revise_content (traced)"]
+        end
+        G["loop until score >= threshold"]
+    end
+    C --> H
+
+    H["format_outputs<br/><i>asyncio.gather (parallel)</i><br/>• Markdown, HTML, Summary"]
+    H --> I[Output: Dir with formatted docs]
 ```
 
 ## Prerequisites
