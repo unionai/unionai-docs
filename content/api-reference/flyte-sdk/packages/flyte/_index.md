@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b50
+version: 2.0.0b53
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -23,6 +23,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`Environment`](../flyte/environment) |  |
 | [`FixedRate`](../flyte/fixedrate) | This class defines a FixedRate automation that can be associated with a Trigger in Flyte. |
 | [`Image`](../flyte/image) | This is a representation of Container Images, which can be used to create layered images programmatically. |
+| [`ImageBuild`](../flyte/imagebuild) | Result of an image build operation. |
 | [`PodTemplate`](../flyte/podtemplate) | Custom PodTemplate specification for a Task. |
 | [`Resources`](../flyte/resources) | Resources such as CPU, Memory, and GPU that can be allocated to a task. |
 | [`RetryStrategy`](../flyte/retrystrategy) | Retry strategy for the task or task environment. |
@@ -167,23 +168,21 @@ Create a TPU device instance.
 ```python
 def build(
     image: Image,
-) -> str
+    dry_run: bool,
+    force: bool,
+    wait: bool,
+) -> ImageBuild
 ```
 Build an image. The existing async context will be used.
-
-Example:
-```
-import flyte
-image = flyte.Image("example_image")
-if __name__ == "__main__":
-    asyncio.run(flyte.build.aio(image))
-```
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `image` | `Image` | The image(s) to build. :return: The image URI. |
+| `image` | `Image` | The image(s) to build. |
+| `dry_run` | `bool` | Tell the builder to not actually build. Different builders will have different behaviors. |
+| `force` | `bool` | Skip the existence check. Normally if the image already exists we won't build it. |
+| `wait` | `bool` | Wait for the build to finish. If wait is False, the function will return immediately and the build will run in the background. |
 
 #### build_images()
 

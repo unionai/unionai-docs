@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b50
+version: 2.0.0b53
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -16,6 +16,7 @@ sidebar_expanded: true
 | [`flyte.Environment`](../packages/flyte/environment) | |
 | [`flyte.FixedRate`](../packages/flyte/fixedrate) |This class defines a FixedRate automation that can be associated with a Trigger in Flyte. |
 | [`flyte.Image`](../packages/flyte/image) |This is a representation of Container Images, which can be used to create layered images programmatically. |
+| [`flyte.ImageBuild`](../packages/flyte/imagebuild) |Result of an image build operation. |
 | [`flyte.PodTemplate`](../packages/flyte/podtemplate) |Custom PodTemplate specification for a Task. |
 | [`flyte.Resources`](../packages/flyte/resources) |Resources such as CPU, Memory, and GPU that can be allocated to a task. |
 | [`flyte.RetryStrategy`](../packages/flyte/retrystrategy) |Retry strategy for the task or task environment. |
@@ -45,6 +46,7 @@ sidebar_expanded: true
 | [`flyte.errors.ActionAbortedError`](../packages/flyte.errors/actionabortederror) |This error is raised when an action was aborted, externally. |
 | [`flyte.errors.ActionNotFoundError`](../packages/flyte.errors/actionnotfounderror) |This error is raised when the user tries to access an action that does not exist. |
 | [`flyte.errors.BaseRuntimeError`](../packages/flyte.errors/baseruntimeerror) |Base class for all Union runtime errors. |
+| [`flyte.errors.CodeBundleError`](../packages/flyte.errors/codebundleerror) |This error is raised when the code bundle cannot be created, for example when no files are found to bundle. |
 | [`flyte.errors.CustomError`](../packages/flyte.errors/customerror) |This error is raised when the user raises a custom error. |
 | [`flyte.errors.DeploymentError`](../packages/flyte.errors/deploymenterror) |This error is raised when the deployment of a task fails, or some preconditions for deployment are not met. |
 | [`flyte.errors.ImageBuildError`](../packages/flyte.errors/imagebuilderror) |This error is raised when the image build fails. |

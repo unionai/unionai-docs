@@ -1,0 +1,16 @@
+{
+  "identifiers": {
+    "flyteplugins.polars.df_transformer.ParquetToPolarsDecodingHandler": "/api-reference/integrations/polars/packages/flyteplugins.polars.df_transformer/parquettopolarsdecodinghandler/",
+    "ParquetToPolarsDecodingHandler": "/api-reference/integrations/polars/packages/flyteplugins.polars.df_transformer/parquettopolarsdecodinghandler/",
+    "flyteplugins.polars.df_transformer.ParquetToPolarsLazyFrameDecodingHandler": "/api-reference/integrations/polars/packages/flyteplugins.polars.df_transformer/parquettopolarslazyframedecodinghandler/",
+    "ParquetToPolarsLazyFrameDecodingHandler": "/api-reference/integrations/polars/packages/flyteplugins.polars.df_transformer/parquettopolarslazyframedecodinghandler/",
+    "flyteplugins.polars.df_transformer.PolarsLazyFrameToParquetEncodingHandler": "/api-reference/integrations/polars/packages/flyteplugins.polars.df_transformer/polarslazyframetoparquetencodinghandler/",
+    "PolarsLazyFrameToParquetEncodingHandler": "/api-reference/integrations/polars/packages/flyteplugins.polars.df_transformer/polarslazyframetoparquetencodinghandler/",
+    "flyteplugins.polars.df_transformer.PolarsToParquetEncodingHandler": "/api-reference/integrations/polars/packages/flyteplugins.polars.df_transformer/polarstoparquetencodinghandler/",
+    "PolarsToParquetEncodingHandler": "/api-reference/integrations/polars/packages/flyteplugins.polars.df_transformer/polarstoparquetencodinghandler/"
+  },
+  "methods": {
+    "flyteplugins.polars.df_transformer.get_polars_storage_options": "/api-reference/integrations/polars/packages/flyteplugins.polars.df_transformer/#get_polars_storage_options",
+    "get_polars_storage_options": "/api-reference/integrations/polars/packages/flyteplugins.polars.df_transformer/#get_polars_storage_options"
+  }
+}
