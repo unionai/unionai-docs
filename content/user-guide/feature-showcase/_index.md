@@ -38,13 +38,11 @@ flowchart TD
     B["generate_initial_draft<br/><i>RetryStrategy + @flyte.trace</i>"]
     B --> C
 
-    subgraph C [refinement_loop]
+    subgraph C ["refinement_loop"]
         direction TB
-        subgraph D ["flyte.group('refinement_N')"]
-            E["• critique_content (traced)"]
-            F["• revise_content (traced)"]
-        end
-        G["loop until score >= threshold"]
+        D[critique_content] -->|score >= threshold| E[exit loop]
+        D -->|score < threshold| F[revise_content]
+        F --> D
     end
     C --> H
 
