@@ -156,12 +156,14 @@ This example demonstrated:
 
 | Feature | What it does |
 |---------|--------------|
-| `ReusePolicy` | Keeps containers warm for efficient batch processing |
+| `ReusePolicy` | Keeps containers warm for high-throughput batch processing |
 | `@flyte.trace` | Checkpoints LLM calls for recovery and observability |
 | `RetryStrategy` | Handles transient API failures gracefully |
 | `flyte.group` | Organizes parallel batches and iterations in the UI |
 | `asyncio.gather` | Fans out to process multiple topics concurrently |
-| `RunOutput` | Connects apps to batch pipeline outputs |
+| Pydantic models | Structured LLM outputs |
+| `AppEnvironment` | Deploys interactive Streamlit apps |
+| `RunOutput` | Connects apps to pipeline outputs |
 
 These patterns form the foundation for building production-grade AI workflows
 that are resilient, observable, and cost-efficient at scale.
