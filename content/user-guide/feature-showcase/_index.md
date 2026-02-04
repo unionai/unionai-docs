@@ -13,41 +13,65 @@ Flyte 2.0's advanced features for building production-grade AI workflows.
 
 ## What you'll build
 
-An intelligent report generator that:
-1. Generates an initial draft using an LLM
-2. Iteratively critiques and refines the draft until it meets a quality threshold
-3. Produces multiple output formats (Markdown, HTML, summary) in parallel
+A batch report generator that:
+1. Processes multiple topics in parallel
+2. Iteratively critiques and refines each report until it meets a quality threshold
+3. Produces multiple output formats (Markdown, HTML, summary) for each report
+4. Serves results through an interactive UI
 
 ## Concepts covered
 
 | Feature | Description |
 |---------|-------------|
-| `ReusePolicy` | Keep containers warm between tasks for cost efficiency |
+| `ReusePolicy` | Keep containers warm for high-throughput batch processing |
 | `@flyte.trace` | Checkpoint LLM calls for recovery and observability |
 | `RetryStrategy` | Handle transient API failures gracefully |
-| `flyte.group` | Organize agentic iterations in the UI |
-| `asyncio.gather` | Run independent operations in parallel |
+| `flyte.group` | Organize parallel batches and iterations in the UI |
+| `asyncio.gather` | Fan out to process multiple topics concurrently |
 | Pydantic models | Structured LLM outputs |
 
 ## Architecture
 
 ```mermaid
 flowchart TD
-    A[Topic Input] --> B
+    A[Topics List] --> B
 
-    B["generate_initial_draft<br/><i>RetryStrategy + @flyte.trace</i>"]
+    B["report_batch_pipeline<br/><i>driver_env</i>"]
+
+    subgraph B1 ["refine_all (parallel)"]
+        direction LR
+        R1["refine_report<br/>topic 1"]
+        R2["refine_report<br/>topic 2"]
+        R3["refine_report<br/>topic N"]
+    end
+    B --> B1
+
+    subgraph B2 ["format_all (parallel)"]
+        direction LR
+        F1["format_outputs<br/>report 1"]
+        F2["format_outputs<br/>report 2"]
+        F3["format_outputs<br/>report N"]
+    end
+    B1 --> B2
+
+    B2 --> C["Output: List of Dirs"]
+```
+
+Each `refine_report` task runs in a reusable container (`llm_env`) and performs
+multiple LLM calls through traced functions:
+
+```mermaid
+flowchart TD
+    A[Topic] --> B["generate_initial_draft<br/><i>@flyte.trace</i>"]
     B --> C
 
     subgraph C ["refinement_loop"]
         direction TB
-        D[critique_content] -->|score >= threshold| E[exit loop]
-        D -->|score < threshold| F[revise_content]
+        D["critique_content<br/><i>@flyte.trace</i>"] -->|score >= threshold| E[exit loop]
+        D -->|score < threshold| F["revise_content<br/><i>@flyte.trace</i>"]
         F --> D
     end
-    C --> H
-
-    H["format_outputs<br/><i>asyncio.gather (parallel)</i><br/>• Markdown, HTML, Summary"]
-    H --> I[Output: Dir with formatted docs]
+    C --> G[Refined Report]
 ```
 
 ## Prerequisites
@@ -70,8 +94,9 @@ flyte secret create openai-api-key
 
 ## Key takeaways
 
-1. **Reusable environments**: `ReusePolicy` keeps containers warm, reducing cold start
-   latency and improving cost efficiency for bursty LLM workloads.
+1. **Reusable environments for batch processing**: `ReusePolicy` keeps containers warm,
+   enabling efficient processing of multiple topics without cold start overhead. With
+   5 topics × ~7 LLM calls each, the reusable pool handles ~35 calls efficiently.
 
 2. **Checkpointed LLM calls**: `@flyte.trace` provides automatic checkpointing at the
    function level, enabling recovery without re-running expensive API calls.
@@ -79,5 +104,5 @@ flyte secret create openai-api-key
 3. **Agentic patterns**: The generate-critique-revise loop demonstrates how to build
    self-improving AI workflows with clear observability through `flyte.group`.
 
-4. **Parallel execution**: `asyncio.gather` runs independent operations concurrently,
-   maximizing throughput when generating multiple output formats.
+4. **Parallel fan-out**: `asyncio.gather` processes multiple topics concurrently,
+   maximizing throughput by running refinement tasks in parallel across the batch.

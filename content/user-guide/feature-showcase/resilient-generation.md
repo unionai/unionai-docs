@@ -9,11 +9,20 @@ variants: +flyte +serverless +byoc +selfmanaged
 This section covers the foundational patterns for building resilient LLM-powered
 tasks: reusable environments, traced function calls, and retry strategies.
 
-## Reusable environments
+## Two environments
 
-LLM tasks often run in bursts—generating a report might require multiple API calls
-in quick succession. Without container reuse, each task would incur cold start
-overhead. `ReusePolicy` solves this by keeping containers warm between tasks.
+This example uses two task environments with different characteristics:
+
+1. **`llm_env`** (reusable): For tasks that make many LLM calls in a loop or
+   process batches in parallel. Container reuse avoids cold starts.
+2. **`driver_env`** (standard): For orchestration tasks that fan out work to
+   other tasks but don't make LLM calls themselves.
+
+### Reusable environment for LLM work
+
+When processing a batch of topics, each topic goes through multiple LLM calls
+(generate, critique, revise, repeat). With 5 topics × ~7 calls each, that's ~35
+LLM calls. `ReusePolicy` keeps containers warm to handle this efficiently:
 
 {{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="reusable-env" >}}
 
@@ -26,13 +35,21 @@ overhead. `ReusePolicy` solves this by keeping containers warm between tasks.
 | `scaledown_ttl` | Minimum wait before scaling down a replica |
 | `idle_ttl` | Time after which idle containers shut down completely |
 
-The configuration above keeps 2 containers ready, processes 1 task at a time per
+The configuration above keeps 2 containers ready, allows 4 concurrent tasks per
 container, waits 5 minutes before scaling down, and shuts down after 30 minutes
 of inactivity.
 
 {{< note >}}
 Both `scaledown_ttl` and `idle_ttl` must be at least 30 seconds.
 {{< /note >}}
+
+### Standard environment for orchestration
+
+The driver environment doesn't need container reuse—it just coordinates work.
+The `depends_on` parameter declares that tasks in this environment call tasks
+in `llm_env`, ensuring both environments are deployed together:
+
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="driver-env" >}}
 
 ## Traced LLM calls
 
@@ -60,19 +77,35 @@ Don't use `@flyte.trace` for:
 - Simple computations (overhead outweighs benefit)
 - Operations with side effects that shouldn't be skipped
 
-## Retry strategies
+## Traced helper functions
 
-Transient failures are common with external APIs—rate limits, network issues, and
-service outages. The `retries` parameter handles these gracefully.
+The LLM-calling functions are decorated with `@flyte.trace` rather than being
+separate tasks. This keeps the architecture simple while still providing
+checkpointing:
 
 {{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="generate-draft" >}}
+
+These traced functions run inside the `refine_report` task. If the task fails
+and retries, completed traced calls return cached results instead of re-executing.
+
+## Retry strategies
+
+The task that orchestrates the LLM calls uses `retries` to handle transient failures:
+
+```python
+@llm_env.task(retries=3)
+async def refine_report(topic: str, ...) -> str:
+    # Traced functions are called here
+    draft = await generate_initial_draft(topic)
+    ...
+```
 
 ### Configuring retries
 
 You can specify retries as a simple integer:
 
 ```python
-@env.task(retries=3)
+@llm_env.task(retries=3)
 async def my_task():
     ...
 ```
@@ -80,14 +113,14 @@ async def my_task():
 Or use `RetryStrategy` for more control:
 
 ```python
-@env.task(retries=flyte.RetryStrategy(count=3))
+@llm_env.task(retries=flyte.RetryStrategy(count=3))
 async def my_task():
     ...
 ```
 
 ### Combining tracing with retries
 
-When you combine `@flyte.trace` with retries, you get the best of both worlds:
+When you combine `@flyte.trace` with task-level retries, you get the best of both:
 
 1. Task fails after completing some traced calls
 2. Flyte retries the task

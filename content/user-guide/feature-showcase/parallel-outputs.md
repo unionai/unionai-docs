@@ -74,13 +74,10 @@ with flyte.group("formatting"):
     markdown, html, summary = await asyncio.gather(...)
 ```
 
-In the Flyte UI, this appears as:
+In the Flyte UI, traced calls within the group are organized together:
 
 ```
-report_pipeline
-├── generate_initial_draft
-├── refinement_1
-│   └── ...
+format_outputs
 └── formatting
     ├── format_as_markdown (traced)
     ├── format_as_html (traced)
@@ -110,21 +107,25 @@ return await Dir.from_local(output_dir)
 The `Dir.from_local()` call uploads the directory to {{< key product_name >}}'s
 artifact storage, making it available to downstream tasks or applications.
 
-## The main pipeline
+## The batch pipeline
 
-The main pipeline task orchestrates everything:
+The batch pipeline processes multiple topics in parallel, demonstrating where
+`ReusePolicy` truly shines:
 
-{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="main-pipeline" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="batch-pipeline" >}}
 
 ### Pipeline flow
 
-1. **refine_report**: Generates and iteratively improves the content
-2. **format_outputs**: Creates all output formats in parallel
-3. **Return Dir**: Provides the formatted outputs as a directory artifact
+1. **Fan out refine_all**: Process all topics in parallel using `asyncio.gather`
+2. **Fan out format_all**: Format all reports in parallel
+3. **Return list of Dirs**: Each directory contains one report's outputs
+
+With 5 topics, each making ~7 LLM calls, the reusable container pool handles
+~35 LLM calls efficiently without cold starts.
 
 ## Running the pipeline
 
-To run the complete pipeline:
+To run the batch pipeline:
 
 {{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="main" >}}
 
@@ -133,10 +134,9 @@ uv run generate.py
 ```
 
 The pipeline will:
-1. Generate an initial draft on the given topic
-2. Critique and revise until quality threshold is met
-3. Generate Markdown, HTML, and summary formats in parallel
-4. Return a directory containing all outputs
+1. Process all topics in parallel (each with iterative refinement)
+2. Format all reports in parallel
+3. Return a list of directories, each containing a report's outputs
 
 ## Cost optimization tips
 
@@ -158,8 +158,8 @@ Fewer iterations mean fewer API calls:
 
 ```python
 run = flyte.run(
-    report_pipeline,
-    topic="...",
+    report_batch_pipeline,
+    topics=["Topic A", "Topic B"],
     max_iterations=2,      # Limit iterations
     quality_threshold=7,   # Accept slightly lower quality
 )
@@ -171,24 +171,27 @@ The `cache="auto"` setting on the environment caches task outputs. Running the
 same pipeline with the same inputs returns cached results instantly:
 
 ```python
-env = flyte.TaskEnvironment(
+llm_env = flyte.TaskEnvironment(
     ...
     cache="auto",  # Cache task outputs
 )
 ```
 
-### 4. Batch operations
+### 4. Scale the batch
 
-If generating reports for multiple topics, consider batching:
+The batch pipeline already processes topics in parallel. To handle larger batches,
+adjust the `ReusePolicy`:
 
 ```python
-topics = ["Topic A", "Topic B", "Topic C"]
-runs = [flyte.run(report_pipeline, topic=t) for t in topics]
-for run in runs:
-    run.wait()
+reusable=flyte.ReusePolicy(
+    replicas=4,           # More containers for larger batches
+    concurrency=4,        # Tasks per container
+    ...
+)
 ```
 
-With `ReusePolicy`, the same containers handle all topics, minimizing cold starts.
+With 4 replicas × 4 concurrency = 16 slots, you can process 16 topics' refinement
+tasks concurrently.
 
 ## Next steps
 

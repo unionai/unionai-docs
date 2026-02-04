@@ -25,9 +25,10 @@ flowchart TD
     D --> B
 ```
 
-## Critique task
+## Critique function
 
-The critique task evaluates the current draft and returns structured feedback:
+The critique function evaluates the current draft and returns structured feedback.
+It's a traced function (not a separate task) that runs inside `refine_report`:
 
 {{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="critique-content" >}}
 
@@ -35,10 +36,11 @@ Key points:
 - Uses `json_mode=True` to ensure the LLM returns valid JSON
 - Parses the response into a Pydantic `Critique` model
 - Returns a typed object for reliable downstream processing
+- `@flyte.trace` provides checkpointing—if the task retries, completed critiques aren't re-run
 
-## Revise task
+## Revise function
 
-The revise task takes the current draft and specific improvements to address:
+The revise function takes the current draft and specific improvements to address:
 
 {{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="revise-content" >}}
 
@@ -51,7 +53,8 @@ from scratch.
 
 ## The refinement loop
 
-The `refine_report` task orchestrates the iterative refinement:
+The `refine_report` task orchestrates the iterative refinement. It runs in the
+reusable `llm_env` because it makes multiple LLM calls through traced functions:
 
 {{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="refinement-loop" >}}
 
@@ -63,6 +66,10 @@ The `refine_report` task orchestrates the iterative refinement:
 4. **Check threshold**: If score meets `quality_threshold`, exit early
 5. **Revise**: If below threshold, revise based on improvements
 6. **Repeat**: Continue until threshold met or iterations exhausted
+
+All the LLM calls (generate, critique, revise) are traced functions inside this
+single task. This keeps the task graph simple while the reusable container handles
+the actual LLM work efficiently.
 
 ### Early exit
 
@@ -83,18 +90,19 @@ for i in range(max_iterations):
 
 ### Why use flyte.group?
 
-Groups provide hierarchical organization in the Flyte UI:
+Groups provide hierarchical organization in the Flyte UI. Since critique and
+revise are traced functions (not separate tasks), groups help organize them:
 
 ```
-report_pipeline
-├── generate_initial_draft
+refine_report
+├── generate_initial_draft (traced)
 ├── refinement_1
-│   ├── critique_content
-│   └── revise_content
+│   ├── critique_content (traced)
+│   └── revise_content (traced)
 ├── refinement_2
-│   ├── critique_content
-│   └── revise_content
-└── format_outputs
+│   ├── critique_content (traced)
+│   └── revise_content (traced)
+└── [returns refined report]
 ```
 
 Benefits:
