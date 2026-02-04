@@ -29,6 +29,8 @@ A batch report generator that:
 | `flyte.group` | Organize parallel batches and iterations in the UI |
 | `asyncio.gather` | Fan out to process multiple topics concurrently |
 | Pydantic models | Structured LLM outputs |
+| `AppEnvironment` | Deploy interactive Streamlit apps |
+| `RunOutput` | Connect apps to pipeline outputs |
 
 ## Architecture
 
