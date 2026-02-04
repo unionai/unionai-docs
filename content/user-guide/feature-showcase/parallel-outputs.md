@@ -14,7 +14,7 @@ within a task.
 
 Each output format has a dedicated traced function:
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/generate.py" lang="python" fragment="format-functions" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="format-functions" >}}
 
 ### Why trace formatting functions?
 
@@ -29,7 +29,7 @@ the LLM. By tracing all formatting functions:
 
 The `format_outputs` task runs all formatters concurrently:
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/generate.py" lang="python" fragment="parallel-formatting" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="parallel-formatting" >}}
 
 ### How asyncio.gather works
 
@@ -114,7 +114,7 @@ artifact storage, making it available to downstream tasks or applications.
 
 The main pipeline task orchestrates everything:
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/generate.py" lang="python" fragment="main-pipeline" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="main-pipeline" >}}
 
 ### Pipeline flow
 
@@ -126,7 +126,7 @@ The main pipeline task orchestrates everything:
 
 To run the complete pipeline:
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/generate.py" lang="python" fragment="main" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="main" >}}
 
 ```bash
 uv run generate.py

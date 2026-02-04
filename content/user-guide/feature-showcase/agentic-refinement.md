@@ -43,7 +43,7 @@ cycles.
 
 The critique task evaluates the current draft and returns structured feedback:
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/generate.py" lang="python" fragment="critique-content" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="critique-content" >}}
 
 Key points:
 - Uses `json_mode=True` to ensure the LLM returns valid JSON
@@ -54,7 +54,7 @@ Key points:
 
 The revise task takes the current draft and specific improvements to address:
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/generate.py" lang="python" fragment="revise-content" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="revise-content" >}}
 
 The prompt includes:
 1. The list of improvements from the critique
@@ -67,7 +67,7 @@ from scratch.
 
 The `refine_report` task orchestrates the iterative refinement:
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/generate.py" lang="python" fragment="refinement-loop" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="refinement-loop" >}}
 
 ### How it works
 

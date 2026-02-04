@@ -15,7 +15,7 @@ LLM tasks often run in bursts—generating a report might require multiple API c
 in quick succession. Without container reuse, each task would incur cold start
 overhead. `ReusePolicy` solves this by keeping containers warm between tasks.
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/generate.py" lang="python" fragment="reusable-env" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="reusable-env" >}}
 
 ### ReusePolicy parameters
 
@@ -41,7 +41,7 @@ When a traced function completes successfully, its result is cached. If the task
 fails and restarts, previously completed traced calls return their cached results
 instead of re-executing.
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/generate.py" lang="python" fragment="traced-llm-call" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="traced-llm-call" >}}
 
 ### Benefits of tracing
 
@@ -65,7 +65,7 @@ Don't use `@flyte.trace` for:
 Transient failures are common with external APIs—rate limits, network issues, and
 service outages. The `retries` parameter handles these gracefully.
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/generate.py" lang="python" fragment="generate-draft" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="generate-draft" >}}
 
 ### Configuring retries
 
@@ -101,14 +101,14 @@ re-run the entire chain when a single call fails.
 
 The example uses a separate `prompts.py` module for system prompts and Pydantic models:
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/prompts.py" lang="python" fragment="system-prompts" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/prompts.py" lang="python" fragment="system-prompts" >}}
 
 ### Pydantic models for structured output
 
 LLM responses can be unpredictable. Using Pydantic models with JSON mode ensures
 you get structured, validated data:
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/prompts.py" lang="python" fragment="critique-model" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/prompts.py" lang="python" fragment="critique-model" >}}
 
 The `Critique` model validates that:
 - `score` is an integer between 1 and 10

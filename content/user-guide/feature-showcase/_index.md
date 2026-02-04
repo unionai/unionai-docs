@@ -1,11 +1,11 @@
 ---
-title: Second project
+title: Feature showcase
 weight: 6
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
-# Second project
+# Feature showcase
 
 This example demonstrates a resilient agentic report generator that showcases
 Flyte 2.0's advanced features for building production-grade AI workflows.

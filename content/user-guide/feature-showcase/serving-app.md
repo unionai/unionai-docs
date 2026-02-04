@@ -15,7 +15,7 @@ pipeline outputs using `RunOutput`.
 The `AppEnvironment` defines how the Streamlit application runs and connects to
 the report generation pipeline:
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/serve.py" lang="python" fragment="app-env" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/serve.py" lang="python" fragment="app-env" >}}
 
 ### Key configuration
 
@@ -55,13 +55,13 @@ run ID or storage location.
 
 The app loads and displays the generated report:
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/app.py" lang="python" fragment="load-report" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/app.py" lang="python" fragment="load-report" >}}
 
 ### Displaying the report
 
 The app provides multiple views of the generated content:
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/app.py" lang="python" fragment="display-report" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/app.py" lang="python" fragment="display-report" >}}
 
 Features:
 - **Executive summary**: Expandable section with the key takeaways
@@ -72,13 +72,13 @@ Features:
 
 The app includes instructions for generating new reports:
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/app.py" lang="python" fragment="generation-ui" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/app.py" lang="python" fragment="generation-ui" >}}
 
 ## Deploying the app
 
 To deploy the report generator application:
 
-{{< code file="/external/unionai-examples/v2/user-guide/second-project/serve.py" lang="python" fragment="main" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/serve.py" lang="python" fragment="main" >}}
 
 ```bash
 uv run serve.py
@@ -124,7 +124,7 @@ For real-time updates without redeployment, you could:
 Here's the full project structure:
 
 ```
-second-project/
+feature-showcase/
 ├── generate.py    # Main pipeline with agentic refinement
 ├── prompts.py     # System prompts and Pydantic models
 ├── serve.py       # App deployment configuration
@@ -140,7 +140,7 @@ second-project/
 
 2. **Run the pipeline**:
    ```bash
-   cd /path/to/unionai-examples/v2/user-guide/second-project
+   cd /path/to/unionai-examples/v2/user-guide/feature-showcase
    uv run generate.py
    ```
 
