@@ -1,6 +1,6 @@
 ---
 title: TaskTemplate
-version: 2.0.0b53
+version: 2.0.0b54
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -29,7 +29,7 @@ class TaskTemplate(
     short_name: str,
     task_type: str,
     task_type_version: int,
-    image: Union[str, Image, Literal['auto']],
+    image: Union[str, Image, Literal['auto']] | None,
     resources: Optional[Resources],
     cache: CacheRequest,
     interruptible: bool,
@@ -58,7 +58,7 @@ class TaskTemplate(
 | `short_name` | `str` | |
 | `task_type` | `str` | Router type for the task, this is used to determine how the task will be executed. This is usually set to match with th execution plugin. |
 | `task_type_version` | `int` | |
-| `image` | `Union[str, Image, Literal['auto']]` | Optional The image to use for the task, if set to "auto" will use the default image for the python version with flyte installed |
+| `image` | `Union[str, Image, Literal['auto']] \| None` | Optional The image to use for the task, if set to "auto" will use the default image for the python version with flyte installed |
 | `resources` | `Optional[Resources]` | Optional The resources to use for the task |
 | `cache` | `CacheRequest` | Optional The cache policy for the task, defaults to auto, which will cache the results of the task. |
 | `interruptible` | `bool` | Optional The interruptible policy for the task, defaults to False, which means the task will not be scheduled on interruptible nodes. If set to True, the task will be scheduled on interruptible nodes, and the code should handle interruptions and resumptions. |
