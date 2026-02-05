@@ -58,9 +58,9 @@ Union.ai Self-managed supports data planes on Amazon Web Services (AWS), Google 
 ## Control plane
 
 Union.ai operates the control plane in its own cloud infrastructure in Amazon Web Services (AWS).
-The control plane holds:
+The control plane has access to:
 
-* Workload execution state information
+* Workflow execution state information
 * Names of tasks and other deployed entities
 * Pointers to object storage locations in the data plane (but not any user data)
 * Union.ai IDP
