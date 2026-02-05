@@ -7,7 +7,7 @@ variants: -flyte -serverless +byoc +selfmanaged
 # User management
 
 {{< key product_name >}} comes with role-based access control management out of the box.
-The authorization system is based on the following concepts:
+This authorization system is based on the following concepts:
 
 * **Action**: An action that can be performed by a **user** or **application**.
 For example, `register_flyte_inventory` is the action of registering tasks and workflows.
