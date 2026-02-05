@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.wandb
-version: 2.0.0b53
+version: 2.0.0b54
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -15,6 +15,7 @@ layout: py_api
 - Parent/child task support with automatic run reuse
 - W&B sweep creation and management with `@wandb_sweep` decorator
 - Configuration management with `wandb_config()` and `wandb_sweep_config()`
+- Distributed training support (auto-detects PyTorch DDP/torchrun)
 
 ## Basic usage:
 
@@ -128,6 +129,64 @@ layout: py_api
    ).run(run_parallel_sweep, num_agents=2, trials_per_agent=5)
    ```
 
+6. Distributed Training Support:
+
+   The plugin auto-detects distributed training from environment variables
+   (RANK, WORLD_SIZE, LOCAL_RANK, etc.) set by torchrun/torch.distributed.elastic.
+
+   By default (`run_mode="auto"`):
+   - Single-node: Only rank 0 logs (1 run)
+   - Multi-node: Local rank 0 of each worker logs (1 run per worker)
+
+   ```python
+   from flyteplugins.pytorch.task import Elastic
+   from flyteplugins.wandb import wandb_init, get_wandb_run
+
+   torch_env = flyte.TaskEnvironment(
+       name="torch_env",
+       resources=flyte.Resources(cpu=(1, 2), memory=("1Gi", "5Gi"), gpu="V100:4"),
+       plugin_config=Elastic(nnodes=2, nproc_per_node=2),
+   )
+
+   @wandb_init
+   @torch_env.task
+   async def train_distributed():
+       torch.distributed.init_process_group("nccl")
+
+       # Only local rank 0 gets a W&B run, other ranks get None
+       run = get_wandb_run()
+       if run:
+           run.log({"loss": loss})
+
+       return run.id if run else "non-primary-rank"
+   ```
+
+   Use `run_mode="shared"` for all ranks to log to a single shared run:
+
+   ```python
+   @wandb_init(run_mode="shared")
+   @torch_env.task
+   async def train_distributed_shared():
+       # All ranks log to the same W&B run (with x_label to identify each rank)
+       run = get_wandb_run()
+       run.log({"rank_metric": value})
+       return run.id
+   ```
+
+   Use `run_mode="new"` for each rank to have its own W&B run:
+
+   ```python
+   @wandb_init(run_mode="new")
+   @torch_env.task
+   async def train_distributed_separate_runs():
+       # Each rank gets its own W&B run (grouped in W&B UI)
+       # Run IDs: {run_name}-{action_name}-rank-{rank} (single-node)
+       # Run IDs: {run_name}-{action_name}-worker-{worker}-rank-{rank} (multi-node)
+       run = get_wandb_run()
+       run.log({"rank_metric": value})
+       return run.id
+   ```
+
 Decorator order: `@wandb_init` or `@wandb_sweep` must be the outermost decorator:
 
 ```python
@@ -154,6 +213,7 @@ async def my_task():
 | [`download_wandb_run_logs()`](#download_wandb_run_logs) | Traced function to download wandb run logs after task completion. |
 | [`download_wandb_sweep_dirs()`](#download_wandb_sweep_dirs) | Download all run data for a wandb sweep. |
 | [`download_wandb_sweep_logs()`](#download_wandb_sweep_logs) | Traced function to download wandb sweep logs after task completion. |
+| [`get_distributed_info()`](#get_distributed_info) | Get distributed training info if running in a distributed context. |
 | [`get_wandb_context()`](#get_wandb_context) | Get wandb config from current Flyte context. |
 | [`get_wandb_run()`](#get_wandb_run) | Get the current wandb run if within a `@wandb_init` decorated task or trace. |
 | [`get_wandb_run_dir()`](#get_wandb_run_dir) | Get the local directory path for the current wandb run. |
@@ -256,6 +316,26 @@ trace output in the Flyte UI.
 |-|-|-|
 | `sweep_id` | `str` | The wandb sweep ID to download. |
 
+#### get_distributed_info()
+
+```python
+def get_distributed_info()
+```
+Get distributed training info if running in a distributed context.
+
+This function auto-detects distributed training from environment variables
+set by torchrun/torch.distributed.elastic.
+
+Returns:
+    dict | None: Dictionary with distributed info or None if not distributed.
+        - rank: Global rank (0 to world_size-1)
+        - local_rank: Rank within the node (0 to local_world_size-1)
+        - world_size: Total number of processes
+        - local_world_size: Processes per node
+        - worker_index: Node/worker index (0 to num_workers-1)
+        - num_workers: Total number of nodes/workers
+
+
 #### get_wandb_context()
 
 ```python
@@ -350,7 +430,7 @@ This function works in two contexts:
 | `config` | `typing.Optional[dict[str, typing.Any]]` | Dictionary of hyperparameters |
 | `mode` | `typing.Optional[str]` | "online", "offline" or "disabled" |
 | `group` | `typing.Optional[str]` | Group name for related runs |
-| `run_mode` | `typing.Literal['auto', 'new', 'shared']` | Flyte-specific run mode - "auto", "new" or "shared". Controls whether tasks create new W&B runs or share existing ones |
+| `run_mode` | `typing.Literal['auto', 'new', 'shared']` | Flyte-specific run mode - "auto", "new" or "shared". Controls whether tasks create new W&B runs or share existing ones. In distributed training context: - "auto" (default): Single-node: only rank 0 logs.   Multi-node: local rank 0 of each worker logs (1 run per worker). - "shared": All ranks log to a single shared W&B run. - "new": Each rank gets its own W&B run (grouped in W&B UI). |
 | `download_logs` | `bool` | If `True`, downloads wandb run files after task completes and shows them as a trace output in the Flyte UI |
 | `kwargs` | `**kwargs` | |
 

@@ -1,6 +1,6 @@
 ---
 title: TaskEnvironment
-version: 2.0.0b53
+version: 2.0.0b54
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -32,7 +32,7 @@ class TaskEnvironment(
     env_vars: Optional[Dict[str, str]],
     resources: Optional[Resources],
     interruptible: bool,
-    image: Union[str, Image, Literal['auto']],
+    image: Union[str, Image, Literal['auto'], None],
     cache: CacheRequest,
     reusable: ReusePolicy | None,
     plugin_config: Optional[Any],
@@ -49,7 +49,7 @@ class TaskEnvironment(
 | `env_vars` | `Optional[Dict[str, str]]` | Environment variables to set for the environment. |
 | `resources` | `Optional[Resources]` | Resources to allocate for the environment. |
 | `interruptible` | `bool` | |
-| `image` | `Union[str, Image, Literal['auto']]` | Docker image to use for the environment. If set to "auto", will use the default image. |
+| `image` | `Union[str, Image, Literal['auto'], None]` | Docker image to use for the environment. If set to "auto", will use the default image. |
 | `cache` | `CacheRequest` | Cache policy for the environment. |
 | `reusable` | `ReusePolicy \| None` | Reuse policy for the environment, if set, a python process may be reused for multiple tasks. |
 | `plugin_config` | `Optional[Any]` | Optional plugin configuration for custom task types. If set, all tasks in this environment will use the specified plugin configuration. |
