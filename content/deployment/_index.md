@@ -32,7 +32,8 @@ The data plane runs in your cloud account and VPC. It composes the required serv
 
 {{< variant selfmanaged >}}
 {{< markdown >}}
-{{< key product_full_name >}} allows platform operators to manage the Union data plane themselves on a Kubernetes cluster that they control and maintain. In this model, Union has no permissions to access the cluster or accompanying cloud services.
+{{< key product_full_name >}} allows platform operators to manage the Union data plane themselves on a Kubernetes cluster that they control and maintain. In this model, Union only manages the control plane scaling and resiliency. Your platform team manages data plane hardware, upgrades and permissions. You do not need to provide any permissions to the Union system to create a {{< key product_full_name >}} dataplane.
+
 {{< key product_full_name >}} supports data planes on Amazon WebServices (AWS), Google Cloud Platform (GCP), Microsoft Azure or Oracle Compute Infrastructure (OCI).
 {{< /markdown >}}
 {{< /variant >}}
