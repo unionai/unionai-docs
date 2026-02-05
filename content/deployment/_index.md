@@ -12,25 +12,28 @@ sidebar_expanded: true
 {{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
-{{< key product_name >}} uses a hybrid model cloud service: {{< key product_name >}} maintains the control plane of the application on its own cloud infrastructure in Amazon Web Services (AWS).
-This is where all administration and management functionality resides.
+The {{< key product_name >}} platform utilizes a split control plane / data plane model that separates workflow orchestration logic (control plane) from user code, data (inputs and outputs), images, and logs (which live in the data plane).
+{{< key product_name >}} always operates the control plane in its own cloud infrastructure in Amazon Web Services (AWS). The control plane houses our IDP, workload execution state, the names of tasks and other deployed entities, and pointers to object storage locations in the data plane (but not any user data).
 
-Your data and the actual computation involved in executing your tasks and workflows takes place on the data plane, a virtual private cloud that you control, but that is administered and managed by the {{< key product_name >}} control plane.
-To enable the administration and management of your data plane, you grant {{< key product_name >}} the required permissions when you set up your data plane.
+The data plane runs in your cloud account and VPC. It composes the required services to run and monitor workflows - a Kubernetes cluster, and object storage bucket, an image registry, a secrets manager, a logging solution, and IAM role with proper access. When you run a workflow, the code is sent to the object storage bucket, the image is built on a builder node and pushed to the registry, a pod is created and assumes the IAM permissions from the role, then the image is pulled down, and the container loads its data inputs from and, when the job is complete, saves its outputs to, the object store. All of this happens in the data plane, with the control plane aware only of the workflow execution state, and not the code, data, logs, secrets, or any other proprietary information.
+
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant byoc >}}
 {{< markdown >}}
 
-{{< key product_name >}} supports data planes on Amazon WebServices (AWS), Google Cloud Platform (GCP), and Microsoft Azure.
+{{< key product_full_name >}} is meant to be a fully "serverless in your cloud", turnkey product that enables you to offload all infrastructure management to Union, who will handle deployment, monitoring, Kubernetes upgrades, and all other operational concerns with the platform.
+{{< key product_full_name >}} supports data planes on Amazon WebServices (AWS), Google Cloud Platform (GCP), and Microsoft Azure.
+
 
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant selfmanaged >}}
 {{< markdown >}}
-Union supports data planes on Kubernetes clusters running on-premise or on cloud providers Amazon WebServices (AWS), Google Cloud Platform (GCP), Microsoft Azure or Oracle Compute Infrastructure
+{{< key product_full_name >}} allows platform operators to manage the Union data plane themselves on a Kubernetes cluster that they control and maintain. In this model, Union has no permissions to access the cluster or accompanying cloud services.
+{{< key product_full_name >}} supports data planes on Amazon WebServices (AWS), Google Cloud Platform (GCP), Microsoft Azure or Oracle Compute Infrastructure (OCI).
 {{< /markdown >}}
 {{< /variant >}}
 
