@@ -17,7 +17,7 @@ BYOC and Self-managed differ only in _who manages the data plane_: With BYOC, Un
 {{< variant byoc >}}
 {{< markdown >}}
 
-> [[!NOTE]]
+> [!NOTE]
 > These are the BYOC docs. You can switch to the Union.ai Self-managed docs with the product selector above.
 
 ## Union.ai BYOC
@@ -32,7 +32,7 @@ Union.ai BYOC supports data planes on Amazon Web Services (AWS), Google Cloud Pl
 {{< variant selfmanaged >}}
 {{< markdown >}}
 
-> [[!NOTE]]
+> [!NOTE]
 > These are the Self-managed docs. You can switch to the Union.ai BYOC docs with the product selector above.
 
 ## Union.ai Self-managed
