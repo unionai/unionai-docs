@@ -10,9 +10,14 @@ sidebar_expanded: true
 # Platform deployment
 
 The Union.ai platform uses a split control plane / data plane model.
-In both BYOC and Self-managed products, your code, input and output data, container images and logs reside entirely on the data plane, which runs in your cloud account, while the control plane runs on Union.ai's cloud account, providing the workflow orchestration logic.
+In both BYOC and Self-managed deployments, your code, input and output data, container images and logs reside entirely on the data plane, which runs in your cloud account, while the control plane runs on Union.ai's cloud account, providing the workflow orchestration logic.
 
-BYOC and Self-managed differ only in _who manages the data plane_: With BYOC, Union.ai manages your data plane (in your account) for you. With Self-managed you manage the data plane entirely yourself.
+The control plane does not have access to the code, data, images, or logs in the data plane.
+
+If you choose a Self-managed deployment, your data isolation is further enhanced by the fact that you manage your data plane entirely on your own, without providing administrative access to Union.ai employees.
+
+If you choose BYOC Union.ai manages your data plane (in your account) for you. The data isolation of the control vs data plane is still enforced, but Union.ai will have administrative access to your data plane.
+
 
 {{< variant byoc >}}
 {{< markdown >}}
