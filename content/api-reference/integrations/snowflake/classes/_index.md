@@ -1,6 +1,6 @@
 ---
 title: Classes
-version: 2.0.0b53.dev0+gffe4b8411.d20260127
+version: 2.0.0b54
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -9,6 +9,10 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flyteplugins.connectors.snowflake.Snowflake`](../packages/flyteplugins.connectors.snowflake/snowflake) |This mixin class is used to run the connector task locally, and it's only used for local execution. |
-| [`flyteplugins.connectors.snowflake.SnowflakeConfig`](../packages/flyteplugins.connectors.snowflake/snowflakeconfig) |Configure a Snowflake Task using a `SnowflakeConfig` object. |
-| [`flyteplugins.connectors.snowflake.SnowflakeConnector`](../packages/flyteplugins.connectors.snowflake/snowflakeconnector) |This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
+| [`flyteplugins.snowflake.Snowflake`](../packages/flyteplugins.snowflake/snowflake) |This mixin class is used to run the connector task locally, and it's only used for local execution. |
+| [`flyteplugins.snowflake.SnowflakeConfig`](../packages/flyteplugins.snowflake/snowflakeconfig) |SnowflakeConfig should be used to configure a Snowflake Task. |
+| [`flyteplugins.snowflake.SnowflakeConnector`](../packages/flyteplugins.snowflake/snowflakeconnector) |This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
+| [`flyteplugins.snowflake.connector.SnowflakeConnector`](../packages/flyteplugins.snowflake.connector/snowflakeconnector) |This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
+| [`flyteplugins.snowflake.connector.SnowflakeJobMetadata`](../packages/flyteplugins.snowflake.connector/snowflakejobmetadata) | |
+| [`flyteplugins.snowflake.task.Snowflake`](../packages/flyteplugins.snowflake.task/snowflake) |This mixin class is used to run the connector task locally, and it's only used for local execution. |
+| [`flyteplugins.snowflake.task.SnowflakeConfig`](../packages/flyteplugins.snowflake.task/snowflakeconfig) |SnowflakeConfig should be used to configure a Snowflake Task. |

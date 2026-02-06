@@ -2,14 +2,10 @@
 #
 # Examples:
 #   make -f Makefile.api.plugins PLUGIN=flyteplugins.wandb TITLE="Weights & Biases" NAME=wandb
+#   make -f Makefile.api.plugins PLUGIN=flyteplugins.connectors INSTALL="flyteplugins-connectors[bigquery,databricks,snowflake]" TITLE="Connectors" NAME=connectors
 #
 # For packages available locally:
-#   make -f Makefile.api.plugins \
-#     PLUGIN_DIST="flyteplugins-connectors[snowflake]" \
-#     PLUGIN_MODULE="flyteplugins.connectors" \
-#     TITLE="Snowflake" \
-#     NAME=snowflake \
-#     SKIP_VENV_SETUP=true
+#  make -f Makefile.api.plugins PLUGIN=flyteplugins.wandb TITLE="Weights & Biases" NAME=wandb SKIP_VENV_SETUP=true
 #
 # Required variables:
 #   PLUGIN  - Python import path (e.g., flyteplugins.wandb) used by the parser
@@ -32,8 +28,7 @@ all: check_vars setup_venv parser generate
 
 .PHONY: check_vars
 check_vars:
-	@if [ -z "${PLUGIN_DIST}" ]; then echo "ERROR: PLUGIN_DIST is not set"; exit 1; fi
-	@if [ -z "${PLUGIN_MODULE}" ]; then echo "ERROR: PLUGIN_MODULE is not set"; exit 1; fi
+	@if [ -z "${PLUGIN}" ]; then echo "ERROR: PLUGIN is not set"; exit 1; fi
 	@if [ -z "${TITLE}" ]; then echo "ERROR: TITLE is not set"; exit 1; fi
 	@if [ -z "${NAME}" ]; then echo "ERROR: NAME is not set"; exit 1; fi
 
@@ -57,17 +52,9 @@ clean_api_data:
 .PHONY: parser
 parser: check_vars clean_api_data
 ifeq ($(SKIP_VENV_SETUP),false)
-	$(VENV_DIR)/bin/python tools/api_generator/parser \
-		--package ${PLUGIN_MODULE} \
-		--distribution ${PLUGIN_DIST_NAME} \
-		--output ${API_DATA} \
-		--all-only
+	$(VENV_DIR)/bin/python tools/api_generator/parser --package ${PLUGIN} --output ${API_DATA}
 else
-	tools/api_generator/parser \
-		--package ${PLUGIN_MODULE} \
-		--distribution ${PLUGIN_DIST_NAME} \
-		--output ${API_DATA} \
-		--all-only
+	tools/api_generator/parser --package ${PLUGIN} --output ${API_DATA}
 endif
 
 .PHONY: generate
@@ -118,10 +105,7 @@ help:
 	@echo "Integration API Documentation Generator"
 	@echo ""
 	@echo "Usage:"
-	@echo "  make -f Makefile.api.plugins \\"
-	@echo "    PLUGIN_DIST=\"<pip-package>[extras]\" \\"
-	@echo "    PLUGIN_MODULE=\"<python.import.path>\" \\"
-	@echo "    TITLE=\"<title>\" NAME=<folder>"
+	@echo "  make -f Makefile.api.plugins PLUGIN=<package> TITLE=\"<title>\" NAME=<folder>"
 	@echo ""
 	@echo "Required variables:"
 	@echo "  PLUGIN  - Python import path (e.g., flyteplugins.wandb)"
@@ -137,10 +121,10 @@ help:
 	@echo "  make -f Makefile.api.plugins PLUGIN=flyteplugins.connectors INSTALL=\"flyteplugins-connectors[bigquery,databricks,snowflake]\" TITLE=\"Connectors\" NAME=connectors"
 	@echo ""
 	@echo "Targets:"
-	@echo "  all                - Set up venv, parse, and generate (default)"
-	@echo "  setup_venv         - Create fresh venv and install the plugin"
-	@echo "  parser             - Parse plugin package to extract API data"
-	@echo "  generate           - Generate documentation from API data"
+	@echo "  all              - Set up venv, parse, and generate (default)"
+	@echo "  setup_venv       - Create fresh venv and install the plugin"
+	@echo "  parser           - Parse plugin package to extract API data"
+	@echo "  generate         - Generate documentation from API data"
 	@echo "  clean_output_folder - Remove generated output folder"
-	@echo "  clean_venv         - Remove the virtual environment"
-	@echo "  clean              - Clean output folder, API data, and venv"
+	@echo "  clean_venv       - Remove the virtual environment"
+	@echo "  clean            - Clean both output folder and venv"

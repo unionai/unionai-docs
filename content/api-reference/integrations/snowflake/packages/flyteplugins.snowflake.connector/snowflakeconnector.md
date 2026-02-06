@@ -1,13 +1,13 @@
 ---
 title: SnowflakeConnector
-version: 2.0.0b53.dev0+gffe4b8411.d20260127
+version: 2.0.0b54
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 
 # SnowflakeConnector
 
-**Package:** `flyteplugins.connectors.snowflake`
+**Package:** `flyteplugins.snowflake.connector`
 
 This is the base class for all async connectors, and it defines the interface that all connectors must implement.
 The connector service is responsible for invoking connectors.
@@ -37,25 +37,24 @@ def create(
     snowflake_private_key: typing.Optional[str],
     snowflake_private_key_passphrase: typing.Optional[str],
     kwargs,
-) -> flyteplugins.connectors.snowflake.connector.SnowflakeJobMetadata
+) -> flyteplugins.snowflake.connector.SnowflakeJobMetadata
 ```
 Submit a query to Snowflake asynchronously.
 
 
-
 | Parameter | Type | Description |
 |-|-|-|
-| `task_template` | `flyteidl2.core.tasks_pb2.TaskTemplate` | The Flyte task template containing the SQL query and configuration. |
-| `inputs` | `typing.Optional[typing.Dict[str, typing.Any]]` | Optional dictionary of input parameters for parameterized queries. |
-| `snowflake_private_key` | `typing.Optional[str]` | The private key content set as a Flyte secret. |
-| `snowflake_private_key_passphrase` | `typing.Optional[str]` | The passphrase for the private key set as a Flyte secret, if any. |
+| `task_template` | `flyteidl2.core.tasks_pb2.TaskTemplate` | |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
+| `snowflake_private_key` | `typing.Optional[str]` | |
+| `snowflake_private_key_passphrase` | `typing.Optional[str]` | |
 | `kwargs` | `**kwargs` | |
 
 ### delete()
 
 ```python
 def delete(
-    resource_meta: flyteplugins.connectors.snowflake.connector.SnowflakeJobMetadata,
+    resource_meta: flyteplugins.snowflake.connector.SnowflakeJobMetadata,
     snowflake_private_key: typing.Optional[str],
     snowflake_private_key_passphrase: typing.Optional[str],
     kwargs,
@@ -64,19 +63,18 @@ def delete(
 Cancel a running Snowflake query.
 
 
-
 | Parameter | Type | Description |
 |-|-|-|
-| `resource_meta` | `flyteplugins.connectors.snowflake.connector.SnowflakeJobMetadata` | The SnowflakeJobMetadata containing the query ID. |
-| `snowflake_private_key` | `typing.Optional[str]` | The private key content set as a Flyte secret. |
-| `snowflake_private_key_passphrase` | `typing.Optional[str]` | The passphrase for the private key set as a Flyte secret, if any. |
+| `resource_meta` | `flyteplugins.snowflake.connector.SnowflakeJobMetadata` | |
+| `snowflake_private_key` | `typing.Optional[str]` | |
+| `snowflake_private_key_passphrase` | `typing.Optional[str]` | |
 | `kwargs` | `**kwargs` | |
 
 ### get()
 
 ```python
 def get(
-    resource_meta: flyteplugins.connectors.snowflake.connector.SnowflakeJobMetadata,
+    resource_meta: flyteplugins.snowflake.connector.SnowflakeJobMetadata,
     snowflake_private_key: typing.Optional[str],
     snowflake_private_key_passphrase: typing.Optional[str],
     kwargs,
@@ -85,12 +83,11 @@ def get(
 Poll the status of a Snowflake query.
 
 
-
 | Parameter | Type | Description |
 |-|-|-|
-| `resource_meta` | `flyteplugins.connectors.snowflake.connector.SnowflakeJobMetadata` | The SnowflakeJobMetadata containing the query ID. |
-| `snowflake_private_key` | `typing.Optional[str]` | The private key content set as a Flyte secret. |
-| `snowflake_private_key_passphrase` | `typing.Optional[str]` | The passphrase for the private key set as a Flyte secret, if any. |
+| `resource_meta` | `flyteplugins.snowflake.connector.SnowflakeJobMetadata` | |
+| `snowflake_private_key` | `typing.Optional[str]` | |
+| `snowflake_private_key_passphrase` | `typing.Optional[str]` | |
 | `kwargs` | `**kwargs` | |
 
 ### get_logs()

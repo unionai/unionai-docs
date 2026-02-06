@@ -1,10 +1,17 @@
 packages:
-  flyteplugins.connectors.snowflake: /api-reference/integrations/snowflake/packages/flyteplugins.connectors.snowflake/
+  flyteplugins.snowflake: /api-reference/integrations/snowflake/packages/flyteplugins.snowflake/
+  flyteplugins.snowflake.connector: /api-reference/integrations/snowflake/packages/flyteplugins.snowflake.connector/
+  flyteplugins.snowflake.task: /api-reference/integrations/snowflake/packages/flyteplugins.snowflake.task/
 identifiers:
-  flyteplugins.connectors.snowflake.Snowflake: /api-reference/integrations/snowflake/packages/flyteplugins.connectors.snowflake/snowflake/
-  Snowflake: /api-reference/integrations/snowflake/packages/flyteplugins.connectors.snowflake/snowflake/
-  flyteplugins.connectors.snowflake.SnowflakeConfig: /api-reference/integrations/snowflake/packages/flyteplugins.connectors.snowflake/snowflakeconfig/
-  SnowflakeConfig: /api-reference/integrations/snowflake/packages/flyteplugins.connectors.snowflake/snowflakeconfig/
-  flyteplugins.connectors.snowflake.SnowflakeConnector: /api-reference/integrations/snowflake/packages/flyteplugins.connectors.snowflake/snowflakeconnector/
-  SnowflakeConnector: /api-reference/integrations/snowflake/packages/flyteplugins.connectors.snowflake/snowflakeconnector/
+  flyteplugins.snowflake.Snowflake: /api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflake/
+  Snowflake: /api-reference/integrations/snowflake/packages/flyteplugins.snowflake.task/snowflake/
+  flyteplugins.snowflake.SnowflakeConfig: /api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflakeconfig/
+  SnowflakeConfig: /api-reference/integrations/snowflake/packages/flyteplugins.snowflake.task/snowflakeconfig/
+  flyteplugins.snowflake.SnowflakeConnector: /api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflakeconnector/
+  SnowflakeConnector: /api-reference/integrations/snowflake/packages/flyteplugins.snowflake.connector/snowflakeconnector/
+  flyteplugins.snowflake.connector.SnowflakeConnector: /api-reference/integrations/snowflake/packages/flyteplugins.snowflake.connector/snowflakeconnector/
+  flyteplugins.snowflake.connector.SnowflakeJobMetadata: /api-reference/integrations/snowflake/packages/flyteplugins.snowflake.connector/snowflakejobmetadata/
+  SnowflakeJobMetadata: /api-reference/integrations/snowflake/packages/flyteplugins.snowflake.connector/snowflakejobmetadata/
+  flyteplugins.snowflake.task.Snowflake: /api-reference/integrations/snowflake/packages/flyteplugins.snowflake.task/snowflake/
+  flyteplugins.snowflake.task.SnowflakeConfig: /api-reference/integrations/snowflake/packages/flyteplugins.snowflake.task/snowflakeconfig/
 methods: {}

@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 2.0.0b53.dev0+gffe4b8411.d20260127
+version: 2.0.0b54
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -9,4 +9,6 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.connectors.snowflake`](flyteplugins.connectors.snowflake) | Key features:. |
+| [`flyteplugins.snowflake`](flyteplugins.snowflake) |  |
+| [`flyteplugins.snowflake.connector`](flyteplugins.snowflake.connector) |  |
+| [`flyteplugins.snowflake.task`](flyteplugins.snowflake.task) |  |
