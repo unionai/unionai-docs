@@ -11,8 +11,12 @@ To set up your {{< key product_name >}} data plane on Amazon Web Services (AWS),
 
 There are two approaches to setting up your data plane:
 
-- **CDK setup**: Use the {{< key product_name >}} [EKS Blueprints addon](https://www.npmjs.com/package/@unionai/union-eks-blueprints-addon) with [AWS CDK](https://aws.amazon.com/cdk/) to automate the provisioning of your data plane infrastructure, including the EKS cluster, IAM roles, and Helm chart deployment.
-- **Manual setup**: Use AWS CloudFormation or the AWS console to create the required IAM roles and permissions, then share the role ARN with the {{< key product_name >}} team.
+## Recommended Approach: CDK
+
+Use the {{< key product_name >}} [EKS Blueprints addon](https://www.npmjs.com/package/@unionai/union-eks-blueprints-addon) with [AWS CDK](https://aws.amazon.com/cdk/) to automate the provisioning of your data plane infrastructure, including the EKS cluster, IAM roles, and Helm chart deployment.
+
+> [!NOTE]
+> If the CDK path does not work for you, use AWS CloudFormation or the AWS console to create the required IAM roles and permissions, follow the [manual](./manual) installation steps.
 
 {{< grid >}}
 
