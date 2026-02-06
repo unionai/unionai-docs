@@ -313,7 +313,7 @@ Here is an example of how to use the `ModelTrainTask`:
 
 ```python
 import flyte
-from flyteplugins.connectors.model_training import ModelTrainTask
+from flyteplugins.model_training import ModelTrainTask
 
 model_train_task = ModelTrainTask(
     name="model_train",
@@ -326,7 +326,7 @@ env = flyte.TaskEnvironment(
     name="hello_world",
     resources=flyte.Resources(memory="250Mi"),
     image=flyte.Image.from_debian_base(name="model_training").with_pip_packages(
-        "flyteplugins-connectors[model_training]", pre=True
+        "flyteplugins-model-training", pre=True
     ),
     depends_on=[model_train_env],
 )
@@ -354,7 +354,7 @@ from flyte import Image
 from flyte.extend import ImageBuildEngine
 
 
-async def build_flyte_connector_image(registry: str, name: str, builder: str = "local"):
+async def build_flyte_connector_bigquery_image(registry: str, name: str, builder: str = "local"):
     """
     Build the SDK default connector image optionally overriding
     the container registry and image name.
@@ -367,15 +367,15 @@ async def build_flyte_connector_image(registry: str, name: str, builder: str = "
 
     default_image = Image.from_debian_base(
         registry=registry, name=name
-    ).with_pip_packages("flyteintegrations-connectors[bigquery]", pre=True)
+    ).with_pip_packages("flyteintegrations-bigquery", pre=True)
     await ImageBuildEngine.build(default_image, builder=builder)
 
 
 if __name__ == "__main__":
     print("Building connector image...")
     asyncio.run(
-        build_flyte_connector_image(
-            registry="<YOUR_REGISTRY>", name="flyte-connectors", builder="local"
+        build_flyte_connector_bigquery_image(
+            registry="<YOUR_REGISTRY>", name="flyte-bigquery", builder="local"
         )
     )
 ```
