@@ -20,7 +20,7 @@ The connector supports:
 ## Installation
 
 ```shell
-pip install flyteplugins-connectors[snowflake]
+pip install flyteplugins-snowflake
 ```
 
 This installs the Snowflake Python connector and the `cryptography` library for key-pair authentication.
@@ -78,7 +78,7 @@ if __name__ == "__main__":
 ```
 
 > [!NOTE]
-> The `TaskEnvironment` created by `from_task` does not need an image or pip packages. Snowflake tasks are connector tasks, which means the query executes on the connector service, not in your task container. In `local` mode, the connector runs in-process and requires `flyteplugins-connectors[snowflake]` and credentials to be available on your machine. In `remote` mode, the connector runs on the control plane.
+> The `TaskEnvironment` created by `from_task` does not need an image or pip packages. Snowflake tasks are connector tasks, which means the query executes on the connector service, not in your task container. In `local` mode, the connector runs in-process and requires `flyteplugins-snowflake` and credentials to be available on your machine. In `remote` mode, the connector runs on the control plane.
 
 ## Configuration
 
@@ -150,7 +150,7 @@ The connector decodes the PEM key and converts it to DER format for Snowflake au
 
 ### Password authentication
 
-Pass the password through `connection_kwargs`:
+Send the password via `connection_kwargs`:
 
 ```python {hl_lines=8}
 config = SnowflakeConfig(
@@ -191,7 +191,7 @@ Use the `inputs` parameter to define typed inputs for your query. Input values a
 
 The `inputs` dictionary maps parameter names to Python values. Supported scalar types include `str`, `int`, `float`, and `bool`.
 
-To insert multiple rows in a single query, you can also provide lists as input values. When using list inputs, be sure to set `batch=True` on the `Snowflake` task. This enables automatic batching, where the inputs are expanded and sent as a single multi-row query instead of multiple individual statements.
+To insert multiple rows in a single query, you can also provide lists as input values. When using list inputs, be sure to set `batch=True` on the `Snowflake` task. This enables automatic batching, where the inputs are expanded and sent as a single multi-row query instead of you having to write multiple individual statements.
 
 ### Batched `INSERT` with list inputs
 
@@ -345,4 +345,4 @@ If you don't need query results (for example, `DDL` statements or `INSERT` queri
 
 Here's a complete workflow that uses the Snowflake connector as part of a data pipeline. The workflow creates a staging table, inserts records, queries aggregated results and processes them in a downstream task.
 
-{{< code file="/external/unionai-examples/v2/integrations/connectors/snowflake/example.py" lang=python highlight="3 5 17 34 53 73-75 81-83 85-88 90">}}
+{{< code file="/external/unionai-examples/v2/integrations/connectors/snowflake/example.py" lang=python highlight="3 5 17 20 34 37 42-45 49 53 56 67 73-75 82 85-88 90 99">}}
