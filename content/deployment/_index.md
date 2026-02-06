@@ -16,7 +16,7 @@ The control plane does not have access to the code, data, images, or logs in the
 
 If you choose a Self-managed deployment, your data isolation is further enhanced by the fact that you manage your data plane entirely on your own, without providing administrative access to Union.ai employees.
 
-If you choose BYOC Union.ai manages your data plane (in your account) for you. The data isolation of the control vs data plane is still enforced, but Union.ai will have administrative access to your data plane.
+If you choose a BYOC deployment, Union.ai manages your data plane (in your account) for you. The data isolation of the control vs. data plane is still enforced, but Union.ai will have administrative access to your data plane.
 
 {{< variant byoc >}}
 {{< markdown >}}
