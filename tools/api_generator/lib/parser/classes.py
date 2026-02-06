@@ -86,6 +86,9 @@ def get_class_details(class_path: str) -> Optional[ClassDetails]:
             # Methods
             method_info = parse_method(name, member, class_name)
             if method_info:
+                # For __init__ methods, use class-level parameter documentation if available
+                if name == "__init__" and doc_info and "params" in doc_info and doc_info["params"]:
+                    method_info["params_doc"] = doc_info["params"]
                 class_info["methods"].append(method_info)
 
             # Properties

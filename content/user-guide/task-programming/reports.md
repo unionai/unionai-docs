@@ -1,6 +1,6 @@
 ---
 title: Reports
-weight: 100
+weight: 7
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -9,7 +9,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 The reports feature allows you to display and update custom output in the UI during task execution.
 
 First, you set the `report=True` flag in the task decorator. This enables the reporting feature for that task.
-Within a task with reporting enabled, a [`flyte.report.Report`](../../api-reference/flyte-sdk/packages/flyte.report#flytereportreport) object is created automatically.
+Within a task with reporting enabled, a [`flyte.report.Report`](../../api-reference/flyte-sdk/packages/flyte.report/report) object is created automatically.
 
 A `Report` object contains one or more tabs, each of which contains HTML.
 You can write HTML to an existing tab and create new tabs to organize your content.

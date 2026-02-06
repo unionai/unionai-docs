@@ -1,17 +1,12 @@
 ---
 title: Migration
-weight: 30
+weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Migration from Flyte 1 to Flyte 2
 
-> [!NOTE]
-> Automated migration from Flyte 1 to Flyte 2 is coming soon.
-
-Flyte 2 will soon offer automated migration from Flyte 1 to 2.
-
-In the meantime you can migrate manually by following the steps below.:
+You can migrate from Flyte 1 to Flyte 2 by following the steps below:
 
 ### 1. Move task configuration to a `TaskEnvironment` object
 
@@ -29,7 +24,7 @@ Then, you replace the `@workflow` and `@task` decorators with `@env.task` decora
 
 {{< tab "Flyte 1" >}}
 {{< markdown >}}
-Here's a simple hello world example with fan-out.
+Here's a simple hello world example with fanout.
 
 ```python
 import flytekit
@@ -100,9 +95,3 @@ Learn more about about the benefits of async in the [Asynchronous Model](./async
 
 {{< /tab >}}
 {{< /tabs >}}
-
-### 3. Leverage enhanced capabilities
-
-- Add conditional logic and loops within workflows
-- Implement proper error handling with try/except
-- Create dynamic workflows that adapt to runtime conditions

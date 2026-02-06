@@ -1,7 +1,9 @@
 ---
 title: "Flyte CLI"
+version: %%VERSION%%
 variants: +flyte +byoc +selfmanaged +serverless
-weight: 2
+layout: py_api
+weight: 1
 ---
 
 # Flyte CLI

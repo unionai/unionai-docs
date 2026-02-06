@@ -1,6 +1,6 @@
 ---
 title: Automatic prompt engineering
-weight: 1
+weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
@@ -20,7 +20,7 @@ Flyte turns prompt engineering into a systematic process. With Flyte we can:
 - Recover from failures without losing progress.
 - Trace the lineage of every experiment for reproducibility.
 
-And we're not limited to prompts. Just like [hyperparameter optimization](../hpo/_index.md) in ML, we can tune model temperature, retrieval strategies, tool usage, and more. Over time, this grows into full agentic evaluations, tracking not only prompts but also how agents behave, make decisions, and interact with their environment.
+And we're not limited to prompts. Just like [hyperparameter optimization](../hpo) in ML, we can tune model temperature, retrieval strategies, tool usage, and more. Over time, this grows into full agentic evaluations, tracking not only prompts but also how agents behave, make decisions, and interact with their environment.
 
 In this tutorial, we'll build an automated prompt engineering pipeline with Flyte, step by step.
 
@@ -158,7 +158,7 @@ Most prompt engineering pipelines start as quick scripts or notebooks. They're f
 
 With Flyte 2, we get a more reliable setup:
 
-- Run many evaluations in parallel with [async Python](../../user-guide/flyte-2/async.md#true-parallelism-for-all-workloads) or [native DSL](../../user-guide/flyte-2/async.md#the-flytemap-function-familiar-patterns).
+- Run many evaluations in parallel with [async Python](../../user-guide/flyte-2/async#true-parallelism-for-all-workloads) or [native DSL](../../user-guide/flyte-2/async#the-flytemap-function-familiar-patterns).
 - Watch accuracy improve in real time and link results back to the exact dataset, prompt, and model config used.
 - Resume cleanly after failures without rerunning everything from scratch.
 - Reuse the same pattern to tune other parameters like temperature, retrieval depth, or agent strategies, not just prompts.

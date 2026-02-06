@@ -1,4 +1,5 @@
 import inspect
+from functools import cached_property
 from typing import Optional, Any
 from lib.parser.docstring import parse_docstring
 from lib.ptypes import MethodInfo, PropertyInfo, VariableInfo, FrameworkType, ParamInfo
@@ -68,7 +69,7 @@ def do_parse_method(name: str, member: Any, framework: FrameworkType,
 
 
 def parse_property(name: str, member: object) -> Optional[PropertyInfo]:
-    if not isinstance(member, property):
+    if not isinstance(member, (property, cached_property)):
         return None
 
     doc_info = parse_docstring(inspect.getdoc(member), source=member)

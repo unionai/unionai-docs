@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 2.0.0b28
+version: 2.0.0b53
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -11,6 +11,8 @@ sidebar_expanded: true
 | Package | Description |
 |-|-|
 | [`flyte`](flyte) | Flyte SDK for authoring compound AI applications, services and workflows. |
+| [`flyte.app`](flyte.app) |  |
+| [`flyte.app.extras`](flyte.app.extras) |  |
 | [`flyte.config`](flyte.config) |  |
 | [`flyte.connectors`](flyte.connectors) |  |
 | [`flyte.connectors.utils`](flyte.connectors.utils) |  |
@@ -19,7 +21,9 @@ sidebar_expanded: true
 | [`flyte.extras`](flyte.extras) |  |
 | [`flyte.git`](flyte.git) |  |
 | [`flyte.io`](flyte.io) | ## IO data types. |
+| [`flyte.io.extend`](flyte.io.extend) |  |
 | [`flyte.models`](flyte.models) |  |
+| [`flyte.prefetch`](flyte.prefetch) | Prefetch utilities for Flyte. |
 | [`flyte.remote`](flyte.remote) | Remote Entities that are accessible from the Union Server once deployed or created. |
 | [`flyte.report`](flyte.report) |  |
 | [`flyte.storage`](flyte.storage) |  |

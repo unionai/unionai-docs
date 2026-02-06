@@ -7,6 +7,7 @@ from lib.generate.packages import (
     generate_package_folders,
     generate_package_index,
 )
+from lib.generate.linkmap import generate_linkmap_metadata
 from lib.ptypes import ParsedInfo
 
 PackageTree = Dict[str, List[str]]
@@ -45,6 +46,8 @@ def generate_site(
     ignore_types: List[str],
     weight: int,
     expanded: bool,
+    api_name: str | None,
+    include_short_names: bool = False,
 ):
     set_variants(variants)
     set_version(source["version"])
@@ -102,3 +105,12 @@ def generate_site(
         pass
     else:
         generate_classes(classes=source["classes"], pkg_root=pkg_root, ignore_types=ignore_types)
+
+    if api_name:
+        generate_linkmap_metadata(
+            packages=source["packages"],
+            classes=source["classes"],
+            pkg_root=pkg_root,
+            api_name=api_name,
+            include_short_names=include_short_names,
+        )

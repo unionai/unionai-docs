@@ -1,6 +1,6 @@
 ---
 title: Notebooks
-weight: 110
+weight: 8
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -19,7 +19,7 @@ Download the following notebook file and open it in your favorite Jupyter enviro
 In this example we have a simple workflow defined in our notebook.
 You can iterate on the code in the notebook while running each cell in turn.
 
-Note that the [`flyte.init`](../../api-reference/flyte-sdk/packages/flyte#init) call at the top of the notebook looks like this:
+Note that the [`flyte.init()`](../../api-reference/flyte-sdk/packages/flyte#init) call at the top of the notebook looks like this:
 
 ```python
 flyte.init(
@@ -40,6 +40,8 @@ Similarly, you can download the following notebook file and open it in your favo
 {{< download "/_static/public/remote.ipynb" "remote.ipynb" >}}
 -->
 
-In this example we use [`flyte.remote`](../../api-reference/flyte-sdk/packages/flyte.remote) to list existing runs, access them, and download their details and logs
+In this example we use the `flyte.remote` package to list existing runs, access them, and download their details and logs.
+
+For a comprehensive guide on working with runs, actions, inputs, and outputs, see [Interact with runs and actions](../task-deployment/interacting-with-runs).
 
 

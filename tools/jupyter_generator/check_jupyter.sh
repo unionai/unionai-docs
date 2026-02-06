@@ -1,49 +1,44 @@
 #!/bin/bash
 
-declare content
-content=$(find content -name "*.md" -exec sh -c 'head -n 10 "$1" | grep -l "^jupyter_notebook:" "$1"' sh {} \;)
-readonly content
+# Check that generated jupyter notebook files are in sync with source notebooks
+# This script only compares hashes - it doesn't require jupyter to be installed
 
-# Go through each file and:
-# 1. Read the jupyuter_notebook field
-# 2. Calculate the hash of the notebook
-# 3. Compare the hash with the content_hash field
-# 4. Calculate the hash of the copy @ content/_static/notebooks
-# 5. Compare the hash with the content_hash field
-# 6. If the hash is different, print message about it
-# 7. If any notebook hash is different, exit with 1
+set -e
 
-exit_code=0
+errors=0
 
-for file in $content; do
+# Find all markdown files with jupyter_notebook in frontmatter
+for file in $(find content -name "*.md" -exec sh -c 'head -n 10 "$1" | grep -q "^jupyter_notebook:" && echo "$1"' sh {} \;); do
     notebook=$(head -n 10 "$file" | grep "^jupyter_notebook:" | sed 's/^jupyter_notebook: //')
-    content_hash=$(head -n 10 "$file" | grep "^content_hash:" | sed 's/^content_hash: //' | awk '{print $1}')
-    
-    if [ -z "$content_hash" ]; then
+    stored_hash=$(head -n 10 "$file" | grep "^content_hash:" | sed 's/^content_hash: //')
+
+    if [[ -z "$stored_hash" ]]; then
         echo "ERROR: $file is missing content_hash field"
-        exit_code=1
+        echo "  Run 'make -f Makefile.jupyter' to regenerate"
+        errors=1
         continue
     fi
-    
-    # Calculate hash of the original notebook
-    if [ -f ".$notebook" ]; then
-        original_hash=$(shasum -a 256 ".$notebook" | cut -d ' ' -f 1)
-        
-        if [ "$original_hash" != "$content_hash" ]; then
-            echo "ERROR: $file has different hash than original notebook (.$notebook)"
-            echo "  Expected: $content_hash"
-            echo "  Got:      $original_hash"
-            exit_code=1
-        fi
-    else
-        echo "ERROR: Original notebook not found: .$notebook"
-        exit_code=1
-    fi   
+
+    if [[ ! -f ".$notebook" ]]; then
+        echo "ERROR: Notebook not found: .$notebook (referenced by $file)"
+        errors=1
+        continue
+    fi
+
+    current_hash=$(shasum -a 256 ".$notebook" | cut -d ' ' -f 1)
+
+    if [[ "$stored_hash" != "$current_hash" ]]; then
+        echo "ERROR: $file is out of sync with source notebook"
+        echo "  Source: .$notebook"
+        echo "  Expected hash: $current_hash"
+        echo "  Stored hash:   $stored_hash"
+        echo "  Run 'make -f Makefile.jupyter' to regenerate"
+        errors=1
+    fi
 done
 
-if [[ $exit_code -eq 0 ]]; then
-    echo "[ OK ] All notebooks are up to date"
+if [[ $errors -eq 1 ]]; then
+    exit 1
 fi
 
-exit $exit_code
-
+echo "All jupyter notebooks are in sync"

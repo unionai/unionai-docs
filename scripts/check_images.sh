@@ -26,7 +26,7 @@ find content -name "*.md" | while read -r file; do
         cd "$(dirname "$file")"
 
         # echo "Checking image: $img_path"
-        if [[ "$img_path" != https://* && -f "$img_path" ]]; then
+        if [[ "$img_path" != https://* && ! -f "$img_path" ]]; then
             echo "1" > "$temp_error_file"
             echo "ERROR: '$img_path' not found in '$file'"
             continue

@@ -16,9 +16,9 @@ If a specific task has its own `resources` defined in the decorator, it will ove
 
 If neither `TaskEnvironment` nor the task decorator specifies `resources`, the default resource allocation will be used.
 
-## Resources dataclass
+## Resources data class
 
-The `Resources` dataclass provides the following initialization parameters:
+The `Resources` data class provides the following initialization parameters:
 
 ```python
 resources = flyte.Resources(
@@ -152,6 +152,7 @@ custom_device = flyte.Device(
 
 resources = flyte.Resources(gpu=custom_device)
 ```
+
 ### TPU resources
 
 For Google Cloud TPU workloads you can specify TPU resources using the `TPU` helper class:

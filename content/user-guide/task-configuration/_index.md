@@ -1,13 +1,13 @@
 ---
-title: Task configuration
-weight: 3
+title: Configure tasks
+weight: 7
 variants: +flyte +serverless +byoc +selfmanaged
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
-# Task configuration
+# Configure tasks
 
-As we saw in [**Getting started**](../getting-started), you can run any Python function as a task in Flyte just by decorating it with `@env.task`.
+As we saw in [**Quickstart**](../quickstart), you can run any Python function as a task in Flyte just by decorating it with `@env.task`.
 
 This allows you to run your Python code in a distributed manner, with each function running in its own container.
 Flyte manages the spinning up of the containers, the execution of the code, and the passing of data between the tasks.
@@ -50,25 +50,28 @@ Here is an example of how these levels work together, showing each level with al
 
 Here is an overview of all task configuration parameters available at each level and how they interact:
 
-| Parameter | `TaskEnvironment` | `@env.task` decorator | `override` on task invocation |
-|-----------|-------------|-----------|------------|
-| **name** | ✅ Yes (required) | ❌ No | ❌ No |
-| **short_name** | ❌ No | ✅ Yes | ✅ Yes |
-| **image** | ✅ Yes | ❌ No | ❌ No |
-| **resources** | ✅ Yes | ❌ No | ✅ Yes (if not `reusable`) |
-| **env_vars** | ✅ Yes | ❌ No | ✅ Yes (if not `reusable`) |
-| **secrets** | ✅ Yes | ✅ Yes (if not `reusable`) | ✅ Yes (if not `reusable`) |
-| **cache** | ✅ Yes | ✅ Yes | ✅ Yes |
-| **pod_template** | ✅ Yes | ✅ Yes | ❌ No |
-| **reusable** | ✅ Yes (see below)| ❌ No | ✅ Yes |
-| **depends_on** | ✅ Yes | ❌ No | ❌ No |
-| **description** | ✅ Yes | ❌ No | ❌ No |
-| **plugin_config** | ✅ Yes | ❌ No | ❌ No |
-| **report** | ❌ No | ✅ Yes | ❌ No |
-| **max_inline_io_bytes** | ❌ No | ✅ Yes | ✅ Yes |
-| **retries** | ❌ No | ✅ Yes | ✅ Yes |
-| **timeout** | ❌ No | ✅ Yes | ✅ Yes |
-| **docs** | ❌ No | ✅ Yes | ❌ No |
+| Parameter               | `TaskEnvironment`  | `@env.task` decorator      | `override` on task invocation |
+|-------------------------|--------------------|----------------------------|-------------------------------|
+| **name**                | ✅ Yes (required)  | ❌ No                      | ❌ No                         |
+| **short_name**          | ❌ No              | ✅ Yes                     | ✅ Yes                        |
+| **image**               | ✅ Yes             | ❌ No                      | ❌ No                         |
+| **resources**           | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
+| **env_vars**            | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
+| **secrets**             | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
+| **cache**               | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
+| **pod_template**        | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
+| **reusable**            | ✅ Yes             | ❌ No                      | ✅ Yes                        |
+| **depends_on**          | ✅ Yes             | ❌ No                      | ❌ No                         |
+| **description**         | ✅ Yes             | ❌ No                      | ❌ No                         |
+| **plugin_config**       | ✅ Yes             | ❌ No                      | ❌ No                         |
+| **report**              | ❌ No              | ✅ Yes                     | ❌ No                         |
+| **max_inline_io_bytes** | ❌ No              | ✅ Yes                     | ✅ Yes                        |
+| **retries**             | ❌ No              | ✅ Yes                     | ✅ Yes                        |
+| **timeout**             | ❌ No              | ✅ Yes                     | ✅ Yes                        |
+| **triggers**            | ❌ No              | ✅ Yes                     | ❌ No                         |
+| **interruptible**       | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
+| **queue**               | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
+| **docs**                | ❌ No              | ✅ Yes                     | ❌ No                         |
 
 ## Task configuration parameters
 
@@ -90,6 +93,10 @@ The full set of parameters available for configuring a task environment, task de
   Here, the name of the TaskEnvironment is `my_env` and the fully qualified name of the task is `my_env.my_task`.
   The `TaskEnvironment` name and fully qualified name of a task name are both fixed and cannot be overridden.
 
+<!-- TODO: Add when available
+* See [Names and descriptions](./names-and-descriptions).
+-->
+
 ### `short_name`
 
 * Type: `str` (required)
@@ -101,30 +108,33 @@ The full set of parameters available for configuring a task environment, task de
   The short name is used, for example, in parts of the UI.
   Overriding it does not change the fully qualified name of the task.
 
+<!-- TODO: Add when available
+* See [Names and descriptions](./names-and-descriptions).
+-->
+
 ### `image`
 
 * Type: `Union[str, Image, Literal['auto']]`
 
 * Specifies the Docker image to use for the task container.
-  Can be a URL reference to a Docker image, an [`Image` object](../../api-reference/flyte-sdk/packages/flyte#flyteimage), or the string `auto`.
+  Can be a URL reference to a Docker image, an [`Image` object](../../api-reference/flyte-sdk/packages/flyte/image), or the string `auto`.
   If set to `auto`, or if this parameter is not set, the [default image]() will be used.
-  See [Container images](./container-images).
 
 * Only settable at the `TaskEnvironment` level.
+
+* See [Container images](./container-images).
 
 ### `resources`
 
 * Type: `Optional[Resources]`
 
 * Specifies the compute resources, such as CPU and Memory, required by the task environment using a
-  [`Resources`](../../api-reference/flyte-sdk/packages/flyte#flyteresources) object.
-
-<!-- [TODO: add when available]
-  See [Resource specification](./resources) for more details.
--->
+  [`Resources`](../../api-reference/flyte-sdk/packages/flyte/resources) object.
 
 * Can be set at the `TaskEnvironment` level and overridden at the `task.override()` invocation level
   (but only if `reuseable` is not in effect).
+
+* See [Resources](./resources).
 
 ### `env_vars`
 
@@ -133,24 +143,30 @@ The full set of parameters available for configuring a task environment, task de
 * A dictionary of environment variables to be made available in the task container.
   These variables can be used to configure the task at runtime, such as setting API keys or other configuration values.
 
+<!-- TODO: Add when available
+* See [Environment variables](./env-vars).
+-->
+
 ### `secrets`
 
 * Type: `Optional[SecretRequest]` where `SecretRequest` is an alias for `Union[str, Secret, List[str | Secret]]`
 
 * The secrets to be made available in the task container.
-  See the [Secrets section](./secrets) and the API docs for the [`Secret` object](../../api-reference/flyte-sdk/packages/flyte#flytesecret).
 
-* Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level and at the `task.override()` invocation level, but, in both cases, only if `reuseable` is not in effect.
+* Can be set at the `TaskEnvironment` level and overridden at the `task.override()` invocation level, but only if `reuseable` is not in effect.
+
+* See [Secrets](./secrets) and the API docs for the [`Secret` object](../../api-reference/flyte-sdk/packages/flyte/secret).
 
 ### `cache`
 
 * Type: `Union[CacheRequest]` where `CacheRequest` is an alias for `Literal["auto", "override", "disable", "enabled"] | Cache`.
 
 * Specifies the caching policy to be used for this task.
-  See [Caching](./caching).
 
 * Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level
   and at the `task.override()` invocation level.
+
+* See [Caching](./caching).
 
 ### `pod_template`
 
@@ -159,11 +175,9 @@ The full set of parameters available for configuring a task environment, task de
 * A pod template that defines the Kubernetes pod configuration for the task.
   A string reference to a named template or a `kubernetes.client.V1PodTemplate` object.
 
-<!-- TODO: Add when available
-See [Using pod templates](./pod-templates).
--->
+* Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level and the `task.override()` invocation level.
 
-* Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level, but not at the `task.override()` invocation level.
+* See [Pod templates](./pod-templates).
 
 ### `reusable`
 
@@ -173,7 +187,7 @@ See [Using pod templates](./pod-templates).
 > [!NOTE]
 > The `reusable` setting controls the [**reusable containers** feature](./reusable-containers).
 > This feature is only available when running your Flyte code on a Union.ai backend.
-> See [one of the Union.ai product variants of this page]({{< docs_home byoc v2>}}/user-guide/reusable-containers) for details.
+> See [one of the Union.ai product variants of this page]({{< docs_home byoc v2 >}}/user-guide/reusable-containers) for details.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -184,13 +198,12 @@ See [Using pod templates](./pod-templates).
 
 * A `ReusePolicy` that defines whether the task environment can be reused.
   If set, the task environment will be reused across multiple task invocations.
-  See [Reusable containers](./reusable-containers) and the API docs for the [`ReusePolicy` object](../../api-reference/flyte-sdk/packages/flyte#flytereusepolicy).
 
+* When a `TaskEnvironment` has `reusable` set, then `resources`, `env_vars`, and `secrets` can only be overridden in `task.override()`
+  if accompanied by an explicit `reusable="off"` in the same `task.override()` invocation.
+  Additionally, `secrets` can only be overridden at the `@env.task` decorator level if the `TaskEnvironment` (`env`) does not have `reusable` set.
 
-When a `TaskEnvironment` has `reusable` set, then `resources`, `env_vars`, and `secrets` can only be overridden in `task.override()` if accompanied by an
-explicit `reusable="off"` in the same `task.override()` invocation.
-
-Additionally, `secrets` can only be overridden at the `@env.task` decorator level if the `TaskEnvironment` (`env`) does not have `reusable` set.
+* See [Reusable containers](./reusable-containers) and the API docs for the [`ReusePolicy` object](../../api-reference/flyte-sdk/packages/flyte/reusepolicy).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -199,17 +212,13 @@ Additionally, `secrets` can only be overridden at the `@env.task` decorator leve
 
 * Type: `List[Environment]`
 
-* A list of [`Environment`](../../api-reference/flyte-sdk/packages/flyte#flyteenvironment)
-   objects that this `TaskEnvironment` depends on.
-   When deploying this `TaskEnvironment`, the system will ensure that any dependencies
-   of the listed `Environment`s are also available.
+* A list of [`Environment`](../../api-reference/flyte-sdk/packages/flyte/environment) objects that this `TaskEnvironment` depends on.
+   When deploying this `TaskEnvironment`, the system will ensure that any dependencies of the listed `Environment`s are also available.
    This is useful when you have a set of task environments that depend on each other.
 
-<!-- TODO: Add when available
-See [Environment dependencies](./environment-dependencies)
--->
-
 * Can only be set at the `TaskEnvironment` level, not at the `@env.task` decorator level or the `task.override()` invocation level.
+
+* See [Multiple environments](./multiple-environments)
 
 ### `description`
 
@@ -221,6 +230,10 @@ See [Environment dependencies](./environment-dependencies)
 * Can only be set at the `TaskEnvironment` level, not at the `@env.task` decorator level
   or the `task.override()` invocation level.
 
+<!--
+* See [Names and descriptions](./names-and-descriptions).
+-->
+
 ### `plugin_config`
 
 * Type: `Optional[Any]`
@@ -231,25 +244,40 @@ See [Environment dependencies](./environment-dependencies)
 * Can only be set at the `TaskEnvironment` level, not at the `@env.task` decorator level
   or the `task.override()` invocation level.
 
+<!--
+* See [Plugin configuration](./plugin-configuration).
+-->
+
 ### `report`
 
 * Type: `bool`
+
 * Whether to generate the HTML report for the task.
   If set to `True`, the task will generate an HTML report that can be viewed in the Flyte UI.
+
 * Can only be set at the `@env.task` decorator level,
   not at the `TaskEnvironment` level or the `task.override()` invocation level.
+
 * See [Reports](../task-programming/reports).
+
+<!--
+* See [Configuring reports](../task-configuration/configuring-reports) and [Reports](../task-programming/reports).
+-->
 
 ### `max_inline_io_bytes`
 
 * Type: `int`
 
 * Maximum allowed size (in bytes) for all inputs and outputs passed directly to the task
-  (e.g., primitives, strings, dicts).
-  Does not apply to [`flyte.File`, `flyte.Dir`](../task-programming/files-and-directories), or [`flyte.DataFrame`](../task-programming/dataclasses-and-structures) (since these are passed by reference).
+  (e.g., primitives, strings, dictionaries).
+  Does not apply to [`flyte.io.File`, `flyte.io.Dir`](../task-programming/files-and-directories), or [`flyte.DataFrame`](../task-programming/dataclasses-and-structures) (since these are passed by reference).
 
 * Can be set at the `@env.task` decorator level and overridden at the `task.override()` invocation level.
   If not set, the default value is `MAX_INLINE_IO_BYTES` (which is 100 MiB).
+
+<!-- TODO: Add when available
+* See [Maximum inline I/O](./maximum-inline-io).
+-->
 
 ### `retries`
 
@@ -258,11 +286,9 @@ See [Environment dependencies](./environment-dependencies)
 * The number of retries for the task, or a `RetryStrategy` object that defines the retry behavior.
   If set to `0`, no retries will be attempted.
 
-<!-- TODO: Add when available
-See [Retries](./retries).
--->
-
 * Can be set at the `@env.task` decorator level and overridden at the `task.override()` invocation level.
+
+* See [Retries and timeouts](./retries-and-timeouts).
 
 ### `timeout`
 
@@ -271,11 +297,48 @@ See [Retries](./retries).
 * The timeout for the task, either as a `timedelta` object or an integer representing seconds.
   If set to `0`, no timeout will be applied.
 
+* Can be set at the `@env.task` decorator level and overridden at the `task.override()` invocation level.
+
+* See [Retries and timeouts](./retries-and-timeouts).
+
+### `triggers`
+
+* Type: `Tuple[Trigger, ...] | Trigger`
+
+* A trigger or tuple of triggers that define when the task should be executed.
+
+* Can only be set at the `@env.task` decorator level. It cannot be overridden.
+
+*  See [Triggers](./triggers).
+
+### `interruptible`
+
+* Type: `bool`
+
+* Specifies whether the task is interruptible.
+  If set to `True`, the task can be scheduled on a spot instance, otherwise it can only be scheduled on on-demand instances.
+
+* Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level and at the `task.override()` invocation level.
+
 <!-- TODO: Add when available
-See [Timeouts](./timeouts).
+* See [Interruptible tasks](./interruptible-tasks).
 -->
 
-* Can be set at the `@env.task` decorator level and overridden at the `task.override()` invocation level.
+### `queue`
+
+* Type: `Optional[str]`
+
+* Specifies the queue to which the task should be directed, where the queue is identified by its name.
+  If set to `None`, the default queue will be used.
+  Queues serve to point to a specific partitions of your compute infrastructure (for example, a specific cluster in multi-cluster setup).
+  They are configured as part of your Union/Flyte deployment.
+
+* Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level
+  and at the `task.override()` invocation level.
+
+<!-- TODO: Add when available
+* See [Queues](./queues).
+-->
 
 ### `docs`
 
@@ -284,3 +347,7 @@ See [Timeouts](./timeouts).
 * Documentation for the task, including usage examples and explanations of the task's behavior.
 
 * Can only be set at the `@env.task` decorator level. It cannot be overridden.
+
+<!-- TODO: Add when available
+* See [Names and descriptions](./names-and-descriptions).
+-->
