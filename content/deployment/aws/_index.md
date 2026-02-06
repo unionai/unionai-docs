@@ -24,8 +24,4 @@ Use the {{< key product_name >}} [EKS Blueprints addon](https://www.npmjs.com/pa
 Automate data plane provisioning with AWS CDK and EKS Blueprints
 {{< /link-card >}}
 
-{{< link-card target="./manual" icon="settings" title="Manual setup" >}}
-Set up your data plane using CloudFormation or the AWS console
-{{< /link-card >}}
-
 {{< /grid >}}
