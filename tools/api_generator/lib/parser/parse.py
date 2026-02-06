@@ -2,13 +2,7 @@ from importlib import metadata
 from sys import stderr
 
 from lib.parser.classes import get_classes
-from lib.parser.packages import (
-    get_functions,
-    get_subpackages,
-    get_variables,
-    get_skipped_modules,
-    clear_skipped_modules,
-)
+from lib.parser.packages import get_functions, get_subpackages, get_variables, get_skipped_modules, clear_skipped_modules
 from lib.ptypes import ParsedInfo
 
 
