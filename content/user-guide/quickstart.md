@@ -12,7 +12,7 @@ Let's get you up and running with your first workflow.
 ## What you'll need
 
 - Python 3.10+ in a virtual environment
-- Access to a Union/Flyte instance (you'll need the URL of your instance)
+- Access to a {{< key product_name >}} instance (you'll need the URL of your instance)
 
 ## Install the SDK
 
@@ -44,7 +44,7 @@ flyte create config \
 ```
 
 We will use the `flytesnacks` project and the `development` domain.
-These exist by default on any newly installed Flyte/Union instance.
+These exist by default on any newly installed Flyte instance.
 
 ### Set up local Docker
 
@@ -73,12 +73,12 @@ flyte create config \
 ```
 
 We will use the `flytesnacks` project and the `development` domain.
-These exist by default on any newly installed Flyte/Union instance.
+These exist by default on any newly installed Union.ai instance.
 
 {{< /markdown >}}
 {{< /variant >}}
 
-This creates `./.flyte/config.yaml` in your current directory. See [Setting up a configuration file](./local-setup#setting-up-a-configuration-file) for more options.
+This creates `./.flyte/config.yaml` in your current directory. See [Setting up a configuration file](./local-setup#configuration-file) for more options.
 
 {{< note >}}
 Run `flyte get config` to check which configuration is currently active.
@@ -133,5 +133,4 @@ Click the link to view your run in the UI:
 
 Now that you've run your first workflow:
 
-- [**Why Flyte?**](./why-flyte): Understand what makes Flyte different
-- [**Flyte basics**](./flyte-basics): Learn core concepts through working examples
+- [**Core concepts**](./core-concepts): Understand the core concepts of Flyte programming
