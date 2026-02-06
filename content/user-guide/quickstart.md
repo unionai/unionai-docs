@@ -62,7 +62,7 @@ docker login ghcr.io
 {{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
 
-Create a config file pointing to your Union instance. Replace the placeholder values with your actual endpoint and project name:
+Create a config file pointing to your Union instance. Replace the placeholder value with your actual endpoint:
 
 ```shell
 flyte create config \
