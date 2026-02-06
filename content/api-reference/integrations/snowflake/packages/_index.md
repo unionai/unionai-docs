@@ -10,5 +10,3 @@ layout: py_api
 | Package | Description |
 |-|-|
 | [`flyteplugins.snowflake`](flyteplugins.snowflake) |  |
-| [`flyteplugins.snowflake.connector`](flyteplugins.snowflake.connector) |  |
-| [`flyteplugins.snowflake.task`](flyteplugins.snowflake.task) |  |

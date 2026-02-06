@@ -10,5 +10,3 @@ layout: py_api
 | Package | Description |
 |-|-|
 | [`flyteplugins.spark`](flyteplugins.spark) |  |
-| [`flyteplugins.spark.df_transformer`](flyteplugins.spark.df_transformer) |  |
-| [`flyteplugins.spark.task`](flyteplugins.spark.task) |  |

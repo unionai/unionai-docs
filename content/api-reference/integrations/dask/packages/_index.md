@@ -10,4 +10,3 @@ layout: py_api
 | Package | Description |
 |-|-|
 | [`flyteplugins.dask`](flyteplugins.dask) |  |
-| [`flyteplugins.dask.task`](flyteplugins.dask.task) |  |

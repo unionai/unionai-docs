@@ -1,16 +1,11 @@
 {
   "identifiers": {
     "flyteplugins.snowflake.Snowflake": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflake/",
-    "Snowflake": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake.task/snowflake/",
+    "Snowflake": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflake/",
     "flyteplugins.snowflake.SnowflakeConfig": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflakeconfig/",
-    "SnowflakeConfig": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake.task/snowflakeconfig/",
+    "SnowflakeConfig": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflakeconfig/",
     "flyteplugins.snowflake.SnowflakeConnector": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflakeconnector/",
-    "SnowflakeConnector": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake.connector/snowflakeconnector/",
-    "flyteplugins.snowflake.connector.SnowflakeConnector": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake.connector/snowflakeconnector/",
-    "flyteplugins.snowflake.connector.SnowflakeJobMetadata": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake.connector/snowflakejobmetadata/",
-    "SnowflakeJobMetadata": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake.connector/snowflakejobmetadata/",
-    "flyteplugins.snowflake.task.Snowflake": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake.task/snowflake/",
-    "flyteplugins.snowflake.task.SnowflakeConfig": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake.task/snowflakeconfig/"
+    "SnowflakeConnector": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflakeconnector/"
   },
   "methods": {}
 }

@@ -1,20 +1,11 @@
 {
   "identifiers": {
     "flyteplugins.dask.Dask": "/api-reference/integrations/dask/packages/flyteplugins.dask/dask/",
-    "Dask": "/api-reference/integrations/dask/packages/flyteplugins.dask.task/dask/",
+    "Dask": "/api-reference/integrations/dask/packages/flyteplugins.dask/dask/",
     "flyteplugins.dask.Scheduler": "/api-reference/integrations/dask/packages/flyteplugins.dask/scheduler/",
-    "Scheduler": "/api-reference/integrations/dask/packages/flyteplugins.dask.task/scheduler/",
+    "Scheduler": "/api-reference/integrations/dask/packages/flyteplugins.dask/scheduler/",
     "flyteplugins.dask.WorkerGroup": "/api-reference/integrations/dask/packages/flyteplugins.dask/workergroup/",
-    "WorkerGroup": "/api-reference/integrations/dask/packages/flyteplugins.dask.task/workergroup/",
-    "flyteplugins.dask.task.Dask": "/api-reference/integrations/dask/packages/flyteplugins.dask.task/dask/",
-    "flyteplugins.dask.task.DaskTask": "/api-reference/integrations/dask/packages/flyteplugins.dask.task/dasktask/",
-    "DaskTask": "/api-reference/integrations/dask/packages/flyteplugins.dask.task/dasktask/",
-    "flyteplugins.dask.task.DownloadCodeBundleSchedulerPlugin": "/api-reference/integrations/dask/packages/flyteplugins.dask.task/downloadcodebundleschedulerplugin/",
-    "DownloadCodeBundleSchedulerPlugin": "/api-reference/integrations/dask/packages/flyteplugins.dask.task/downloadcodebundleschedulerplugin/",
-    "flyteplugins.dask.task.DownloadCodeBundleWorkerPlugin": "/api-reference/integrations/dask/packages/flyteplugins.dask.task/downloadcodebundleworkerplugin/",
-    "DownloadCodeBundleWorkerPlugin": "/api-reference/integrations/dask/packages/flyteplugins.dask.task/downloadcodebundleworkerplugin/",
-    "flyteplugins.dask.task.Scheduler": "/api-reference/integrations/dask/packages/flyteplugins.dask.task/scheduler/",
-    "flyteplugins.dask.task.WorkerGroup": "/api-reference/integrations/dask/packages/flyteplugins.dask.task/workergroup/"
+    "WorkerGroup": "/api-reference/integrations/dask/packages/flyteplugins.dask/workergroup/"
   },
   "methods": {}
 }
