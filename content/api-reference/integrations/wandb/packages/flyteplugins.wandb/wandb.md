@@ -1,6 +1,6 @@
 ---
 title: Wandb
-version: 2.0.0b53
+version: 2.0.0b54
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -21,16 +21,20 @@ class Wandb(
     run_mode: typing.Literal['auto', 'new', 'shared'],
     id: typing.Optional[str],
     name: str,
+    _is_distributed: bool,
+    _worker_index: typing.Optional[int],
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `host` | `str` | Base W&B host URL |
 | `project` | `typing.Optional[str]` | W&B project name (overrides context config if provided) |
-| `entity` | `typing.Optional[str]` | W&B entity/team name (overrides context config if provided) 1. "auto" (default): Creates new run if no parent run exists, otherwise shares parent's run 2. "new": Always creates a new wandb run with a unique ID 3. "shared": Always shares the parent's run ID (useful for child tasks) |
+| `entity` | `typing.Optional[str]` | W&B entity/team name (overrides context config if provided) - "auto" (default): Use parent's run if available, otherwise create new - "new": Always creates a new wandb run with a unique ID - "shared": Always shares the parent's run ID (useful for child tasks) In distributed training context: - "auto" (default): Single-node: only rank 0 logs   Multi-node: only local rank 0 of each worker logs - "shared": Link to a single shared W&B run. - "new": Link to group view. |
 | `run_mode` | `typing.Literal['auto', 'new', 'shared']` | |
 | `id` | `typing.Optional[str]` | Optional W&B run ID (overrides context config if provided) |
 | `name` | `str` | Link name in the Flyte UI |
+| `_is_distributed` | `bool` | |
+| `_worker_index` | `typing.Optional[int]` | |
 
 ## Methods
 

@@ -1,6 +1,6 @@
 ---
 title: TorchFunctionTask
-version: 2.0.0b53
+version: 2.0.0b54
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -19,7 +19,7 @@ class TorchFunctionTask(
     short_name: str,
     task_type: str,
     task_type_version: int,
-    image: Union[str, Image, Literal['auto']],
+    image: Union[str, Image, Literal['auto']] | None,
     resources: Optional[Resources],
     cache: CacheRequest,
     interruptible: bool,
@@ -50,7 +50,7 @@ class TorchFunctionTask(
 | `short_name` | `str` | |
 | `task_type` | `str` | |
 | `task_type_version` | `int` | |
-| `image` | `Union[str, Image, Literal['auto']]` | |
+| `image` | `Union[str, Image, Literal['auto']] \| None` | |
 | `resources` | `Optional[Resources]` | |
 | `cache` | `CacheRequest` | |
 | `interruptible` | `bool` | |

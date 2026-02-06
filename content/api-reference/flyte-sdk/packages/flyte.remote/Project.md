@@ -1,6 +1,6 @@
 ---
 title: Project
-version: 2.0.0b53
+version: 2.0.0b54
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,12 +14,12 @@ A class representing a project in the Union API.
 
 ```python
 class Project(
-    pb2: project_pb2.Project,
+    pb2: project_service_pb2.Project,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `pb2` | `project_pb2.Project` | |
+| `pb2` | `project_service_pb2.Project` | |
 
 ## Methods
 

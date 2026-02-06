@@ -14,6 +14,8 @@ methods:
   download_wandb_sweep_dirs: /api-reference/integrations/wandb/packages/flyteplugins.wandb/#download_wandb_sweep_dirs
   flyteplugins.wandb.download_wandb_sweep_logs: /api-reference/integrations/wandb/packages/flyteplugins.wandb/#download_wandb_sweep_logs
   download_wandb_sweep_logs: /api-reference/integrations/wandb/packages/flyteplugins.wandb/#download_wandb_sweep_logs
+  flyteplugins.wandb.get_distributed_info: /api-reference/integrations/wandb/packages/flyteplugins.wandb/#get_distributed_info
+  get_distributed_info: /api-reference/integrations/wandb/packages/flyteplugins.wandb/#get_distributed_info
   flyteplugins.wandb.get_wandb_context: /api-reference/integrations/wandb/packages/flyteplugins.wandb/#get_wandb_context
   get_wandb_context: /api-reference/integrations/wandb/packages/flyteplugins.wandb/#get_wandb_context
   flyteplugins.wandb.get_wandb_run: /api-reference/integrations/wandb/packages/flyteplugins.wandb/#get_wandb_run
