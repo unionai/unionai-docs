@@ -10,4 +10,3 @@ layout: py_api
 | Package | Description |
 |-|-|
 | [`flyteplugins.ray`](flyteplugins.ray) |  |
-| [`flyteplugins.ray.task`](flyteplugins.ray.task) |  |

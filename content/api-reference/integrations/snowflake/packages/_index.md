@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.dask`](flyteplugins.dask) |  |
+| [`flyteplugins.snowflake`](flyteplugins.snowflake) |  |
