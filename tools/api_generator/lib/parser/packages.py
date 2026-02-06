@@ -59,37 +59,6 @@ def get_package(name: str) -> Optional[Tuple[PackageInfo, ModuleType]]:
     return pkg, package
 
 
-def get_all_only(package_name: str) -> List[Tuple[PackageInfo, ModuleType]]:
-    """
-    Only process symbols explicitly exported in the package's __all__.
-
-    This avoids walking all submodules and only documents the public API
-    as defined by __all__.
-
-    Args:
-        package_name: Name of the package to process
-
-    Returns:
-        List containing just the top-level package (members filtered by __all__)
-    """
-    pkg_mod = get_package(package_name)
-    if pkg_mod is None:
-        return []
-
-    pkgInfo, pkg = pkg_mod
-    all_exports = getattr(pkg, "__all__", None)
-
-    if all_exports is None:
-        print(
-            f"\033[93m[WARNING]:\033[0m {package_name} has no __all__, falling back to subpackage walk",
-            file=stderr,
-        )
-        return get_subpackages(package_name)
-
-    print(f"Using __all__ exports only: {all_exports}", file=stderr)
-    return [(pkgInfo, pkg)]
-
-
 def get_subpackages(package_name: str) -> List[Tuple[PackageInfo, ModuleType]]:
     """
     Recursively enumerate all subpackages of a given Python package.
