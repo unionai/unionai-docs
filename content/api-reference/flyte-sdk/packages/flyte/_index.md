@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b50
+version: 2.0.0b54
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -23,6 +23,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`Environment`](../flyte/environment) |  |
 | [`FixedRate`](../flyte/fixedrate) | This class defines a FixedRate automation that can be associated with a Trigger in Flyte. |
 | [`Image`](../flyte/image) | This is a representation of Container Images, which can be used to create layered images programmatically. |
+| [`ImageBuild`](../flyte/imagebuild) | Result of an image build operation. |
 | [`PodTemplate`](../flyte/podtemplate) | Custom PodTemplate specification for a Task. |
 | [`Resources`](../flyte/resources) | Resources such as CPU, Memory, and GPU that can be allocated to a task. |
 | [`RetryStrategy`](../flyte/retrystrategy) | Retry strategy for the task or task environment. |
@@ -167,23 +168,21 @@ Create a TPU device instance.
 ```python
 def build(
     image: Image,
-) -> str
+    dry_run: bool,
+    force: bool,
+    wait: bool,
+) -> ImageBuild
 ```
 Build an image. The existing async context will be used.
-
-Example:
-```
-import flyte
-image = flyte.Image("example_image")
-if __name__ == "__main__":
-    asyncio.run(flyte.build.aio(image))
-```
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `image` | `Image` | The image(s) to build. :return: The image URI. |
+| `image` | `Image` | The image(s) to build. |
+| `dry_run` | `bool` | Tell the builder to not actually build. Different builders will have different behaviors. |
+| `force` | `bool` | Skip the existence check. Normally if the image already exists we won't build it. |
+| `wait` | `bool` | Wait for the build to finish. If wait is False, the function will return immediately and the build will run in the background. |
 
 #### build_images()
 
@@ -695,6 +694,7 @@ def with_runcontext(
     queue: Optional[str],
     custom_context: Dict[str, str] | None,
     cache_lookup_scope: CacheLookupScope,
+    preserve_original_types: bool,
 ) -> _Runner
 ```
 Launch a new run with the given parameters as the context.
@@ -739,7 +739,8 @@ if __name__ == "__main__":
 | `disable_run_cache` | `bool` | Optional If true, the run cache will be disabled. This is useful for testing purposes. |
 | `queue` | `Optional[str]` | Optional The queue to use for the run. This is used to specify the cluster to use for the run. |
 | `custom_context` | `Dict[str, str] \| None` | Optional global input context to pass to the task. This will be available via get_custom_context() within the task and will automatically propagate to sub-tasks. Acts as base/default values that can be overridden by context managers in the code. |
-| `cache_lookup_scope` | `CacheLookupScope` | Optional Scope to use for the run. This is used to specify the scope to use for cache lookups. If not specified, it will be set to the default scope (global unless overridden at the system level).  :return: runner |
+| `cache_lookup_scope` | `CacheLookupScope` | Optional Scope to use for the run. This is used to specify the scope to use for cache lookups. If not specified, it will be set to the default scope (global unless overridden at the system level). |
+| `preserve_original_types` | `bool` | Optional If true, the type engine will preserve original types (e.g., pd.DataFrame) when guessing python types from literal types. If false (default), it will return the generic flyte.io.DataFrame. This option is automatically set to True if interactive_mode is True unless overridden explicitly by this parameter.  :return: runner |
 
 #### with_servecontext()
 

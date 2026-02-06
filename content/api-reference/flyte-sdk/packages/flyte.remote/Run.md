@@ -1,6 +1,6 @@
 ---
 title: Run
-version: 2.0.0b50
+version: 2.0.0b54
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -17,12 +17,14 @@ Union API.
 class Run(
     pb2: run_definition_pb2.Run,
     _details: RunDetails | None,
+    _preserve_original_types: bool,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `pb2` | `run_definition_pb2.Run` | |
 | `_details` | `RunDetails \| None` | |
+| `_preserve_original_types` | `bool` | |
 
 ## Properties
 

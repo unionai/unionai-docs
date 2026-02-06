@@ -1,6 +1,8 @@
 ---
 title: "Flyte CLI"
+version: 2.0.0b54
 variants: +flyte +byoc +selfmanaged +serverless
+layout: py_api
 weight: 1
 ---
 
@@ -17,8 +19,8 @@ This is the command line interface for Flyte.
 | `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
+| `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
-| `app` | [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
 | `project` | [`get`](#flyte-get-project)  |
@@ -32,7 +34,7 @@ This is the command line interface for Flyte.
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
 | `create` | [`config`](#flyte-create-config), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
-| `delete` | [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
+| `delete` | [`app`](#flyte-delete-app), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
 | [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
 | `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
@@ -233,7 +235,7 @@ $ flyte create secret my_secret --type image_pull --from-docker-config --registr
 | `--from-file` | `path` | `Sentinel.UNSET` | Path to the file with the binary secret. Mutually exclusive with value, from_docker_config, registry. |
 | `--type` | `choice` | `regular` | Type of the secret. |
 | `--from-docker-config` | `boolean` | `False` | Create image pull secret from Docker config file (only for --type image_pull). Mutually exclusive with value, from_file, registry, username, password. |
-| `--docker-config-path` | `path` | `Sentinel.UNSET` | Path to Docker config file (defaults to ~/.docker/config.json or $DOCKER_CONFIG). |
+| `--docker-config-path` | `path` | `Sentinel.UNSET` | Path to Docker config file (defaults to ~/.docker/config.json or $DOCKER_CONFIG). Requires from_docker_config. |
 | `--registries` | `text` | `Sentinel.UNSET` | Comma-separated list of registries to include (only with --from-docker-config). |
 | `--registry` | `text` | `Sentinel.UNSET` | Registry hostname (e.g., ghcr.io, docker.io) for explicit credentials (only for --type image_pull). Mutually exclusive with value, from_file, from_docker_config. |
 | `--username` | `text` | `Sentinel.UNSET` | Username for the registry (only with --registry). |
@@ -275,6 +277,20 @@ This will create a trigger that runs every day at midnight.
 **`flyte delete COMMAND [ARGS]...`**
 
 Remove resources from a Flyte deployment.
+
+#### flyte delete app
+
+**`flyte delete app [OPTIONS] NAME`**
+
+Delete apps from a Flyte deployment.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte delete secret
 

@@ -1,6 +1,6 @@
 ---
 title: AsyncFunctionTaskTemplate
-version: 2.0.0b50
+version: 2.0.0b54
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -20,7 +20,7 @@ class AsyncFunctionTaskTemplate(
     short_name: str,
     task_type: str,
     task_type_version: int,
-    image: Union[str, Image, Literal['auto']],
+    image: Union[str, Image, Literal['auto']] | None,
     resources: Optional[Resources],
     cache: CacheRequest,
     interruptible: bool,
@@ -51,7 +51,7 @@ class AsyncFunctionTaskTemplate(
 | `short_name` | `str` | |
 | `task_type` | `str` | |
 | `task_type_version` | `int` | |
-| `image` | `Union[str, Image, Literal['auto']]` | |
+| `image` | `Union[str, Image, Literal['auto']] \| None` | |
 | `resources` | `Optional[Resources]` | |
 | `cache` | `CacheRequest` | |
 | `interruptible` | `bool` | |

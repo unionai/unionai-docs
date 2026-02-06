@@ -1,0 +1,16 @@
+{
+  "identifiers": {
+    "flyteplugins.spark.ParquetToSparkDecoder": "/api-reference/integrations/spark/packages/flyteplugins.spark/parquettosparkdecoder/",
+    "ParquetToSparkDecoder": "/api-reference/integrations/spark/packages/flyteplugins.spark.df_transformer/parquettosparkdecoder/",
+    "flyteplugins.spark.Spark": "/api-reference/integrations/spark/packages/flyteplugins.spark/spark/",
+    "Spark": "/api-reference/integrations/spark/packages/flyteplugins.spark.task/spark/",
+    "flyteplugins.spark.SparkToParquetEncoder": "/api-reference/integrations/spark/packages/flyteplugins.spark/sparktoparquetencoder/",
+    "SparkToParquetEncoder": "/api-reference/integrations/spark/packages/flyteplugins.spark.df_transformer/sparktoparquetencoder/",
+    "flyteplugins.spark.df_transformer.ParquetToSparkDecoder": "/api-reference/integrations/spark/packages/flyteplugins.spark.df_transformer/parquettosparkdecoder/",
+    "flyteplugins.spark.df_transformer.SparkToParquetEncoder": "/api-reference/integrations/spark/packages/flyteplugins.spark.df_transformer/sparktoparquetencoder/",
+    "flyteplugins.spark.task.PysparkFunctionTask": "/api-reference/integrations/spark/packages/flyteplugins.spark.task/pysparkfunctiontask/",
+    "PysparkFunctionTask": "/api-reference/integrations/spark/packages/flyteplugins.spark.task/pysparkfunctiontask/",
+    "flyteplugins.spark.task.Spark": "/api-reference/integrations/spark/packages/flyteplugins.spark.task/spark/"
+  },
+  "methods": {}
+}
