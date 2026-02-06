@@ -18,36 +18,19 @@ If you choose a Self-managed deployment, your data isolation is further enhanced
 
 If you choose BYOC Union.ai manages your data plane (in your account) for you. The data isolation of the control vs data plane is still enforced, but Union.ai will have administrative access to your data plane.
 
-
 {{< variant byoc >}}
 {{< markdown >}}
 
 > [!NOTE]
 > These are the BYOC docs. You can switch to the Union.ai Self-managed docs with the product selector above.
 
-## Union.ai BYOC
-
-Union.ai BYOC is a fully "serverless in your cloud", turnkey product that enables you to offload all infrastructure management to Union.ai, who will handle deployment, monitoring, Kubernetes upgrades, and all other operational aspects of the platform.
-
-Union.ai BYOC supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), and Microsoft Azure.
-
 {{< /markdown >}}
 {{< /variant >}}
-
 {{< variant selfmanaged >}}
 {{< markdown >}}
 
 > [!NOTE]
 > These are the Self-managed docs. You can switch to the Union.ai BYOC docs with the product selector above.
-
-## Union.ai Self-managed
-
-Union.ai Self-managed allows you to manage the data plane yourself on cloud infrastructure that you control and maintain.
-In this model, Union.ai only manages the control plane scaling and resiliency.
-Your platform team manages data plane hardware, upgrades and permissions.
-You do not need to provide any permissions to the Union.ai system to create a data plane.
-
-Union.ai Self-managed supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), Microsoft Azure and Oracle Compute Infrastructure (OCI).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -85,6 +68,33 @@ When you run your workflow:
 5. Containers load their inputs from, and save their outputs to, the object store
 
 All of this happens in the data plane, with the control plane aware only of the workflow execution state, and not the code, data, logs, secrets, or any other proprietary information. The data plane communicates with the control plane through an outgoing port through a zero trust proxy. There is no open incoming port to the data plane.
+
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant byoc >}}
+{{< markdown >}}
+
+## BYOC deployment
+
+Union.ai BYOC is a fully "serverless in your cloud", turnkey product where all infrastructure management is offloaded to Union.ai:
+
+* The data plane resides in your cloud provider account but is managed by Union.ai, who will handle deployment, monitoring, Kubernetes upgrades, and all other operational aspects of the platform. BYOC deployment supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), and Microsoft Azure.
+
+* The control plane, as with all Union.ai deployment options, resides in the Union.ai AWS account and is administered by Union.ai. However, as mentioned, data separation is maintained between the data plane and the control plane, with no control plane access to the code, input/output, images or logs in the data plane.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant selfmanaged >}}
+{{< markdown >}}
+
+## Self-managed deployment
+
+Union.ai Self-managed allows you to manage the data plane yourself on cloud infrastructure that you control and maintain:
+
+* The data plane resides in your cloud provider account and is managed by you. Your team will handle deployment, monitoring, Kubernetes upgrades, and all other operational aspects of the platform. You do not need to provide any permissions to the Union.ai system to create a data plane. Self-managed deployment supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), Microsoft Azure and Oracle Compute Infrastructure (OCI).
+
+* The control plane, as with all Union.ai deployment options, resides in the Union.ai Amazon Web Services (AWS) account and is administered by Union.ai. However, as mentioned, data separation is maintained between the data plane and the control plane, with no control plane access to the code, input/output, images or logs in the data plane.
 
 {{< /markdown >}}
 {{< /variant >}}
