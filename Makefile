@@ -4,7 +4,7 @@ PREFIX := $(if $(VERSION),docs/$(VERSION),docs)
 PORT := 9000
 BUILD := $(shell date +%s)
 
-.PHONY: all dist variant dev update-examples sync-examples llm-docs check-api-docs update-api-docs update-redirects dry-run-redirects deploy-redirects
+.PHONY: all dist variant dev update-examples sync-examples llm-docs check-api-docs update-api-docs update-redirects dry-run-redirects deploy-redirects check-deleted-pages
 
 all: usage
 
@@ -137,6 +137,13 @@ dry-run-redirects:
 
 deploy-redirects:
 	@python3 tools/redirect_generator/deploy_redirects.py
+
+check-deleted-pages:
+	@if command -v uv >/dev/null 2>&1; then \
+		uv run tools/redirect_generator/check_deleted_pages.py; \
+	else \
+		python3 tools/redirect_generator/check_deleted_pages.py; \
+	fi
 
 check-api-docs:
 	@uv run tools/api_generator/check_versions.py --check
