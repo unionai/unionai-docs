@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.0.0b54
+version: 2.0.0b55
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 weight: 1
@@ -852,6 +852,7 @@ flyte run hello.py my_task --help
 | `--name` | `text` | `Sentinel.UNSET` | Name of the run. If not provided, a random name will be generated. |
 | {{< multiline >}}`--follow`
 `-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
+| `--tui` | `boolean` | `False` | Show interactive TUI for local execution (requires flyte[tui]). |
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
 | `--run-project` | `text` |  | Run the remote task in this project, only applicable when using `deployed-task` subcommand. |

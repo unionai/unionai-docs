@@ -1,6 +1,6 @@
 ---
 title: SnowflakeConfig
-version: 2.0.0b54
+version: 2.0.0b55
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -9,11 +9,12 @@ layout: py_api
 
 **Package:** `flyteplugins.snowflake`
 
-SnowflakeConfig should be used to configure a Snowflake Task.
+Configure a Snowflake Task using a `SnowflakeConfig` object.
 
 Additional connection parameters (role, authenticator, session_parameters, etc.) can be passed
 via connection_kwargs.
 See: https://docs.snowflake.com/en/developer-guide/python-connector/python-connector-api
+
 
 
 ```python
@@ -28,10 +29,10 @@ class SnowflakeConfig(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `account` | `str` | |
-| `database` | `str` | |
-| `schema` | `str` | |
-| `warehouse` | `str` | |
-| `user` | `str` | |
-| `connection_kwargs` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
+| `account` | `str` | The Snowflake account identifier. |
+| `database` | `str` | The Snowflake database name. |
+| `schema` | `str` | The Snowflake schema name. |
+| `warehouse` | `str` | The Snowflake warehouse name. |
+| `user` | `str` | The Snowflake user name. |
+| `connection_kwargs` | `typing.Optional[typing.Dict[str, typing.Any]]` | Optional dictionary of additional Snowflake connection parameters. |
 

@@ -1,6 +1,6 @@
 ---
 title: ActionOutputs
-version: 2.0.0b54
+version: 2.0.0b55
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -38,12 +38,14 @@ Output:
 class ActionOutputs(
     pb2: common_pb2.Outputs,
     data: Tuple[Any, ...],
+    fields: List[str] | None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `pb2` | `common_pb2.Outputs` | |
 | `data` | `Tuple[Any, ...]` | |
+| `fields` | `List[str] \| None` | |
 
 ## Properties
 
