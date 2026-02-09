@@ -105,6 +105,27 @@ def run_git_command(args: List[str], cwd: Path) -> str:
     return result.stdout
 
 
+def get_published_files(repo_path: Path) -> Set[str]:
+    """Get all content files that have ever existed on main (i.e., were published)."""
+    # Files currently on main
+    current = run_git_command(
+        ['ls-tree', '-r', '--name-only', 'main', '--', 'content/'],
+        repo_path
+    )
+    # Files deleted on main (existed before but were removed)
+    deleted_on_main = run_git_command(
+        ['log', 'main', '--diff-filter=D', '--name-only', '--format=', '--', 'content/'],
+        repo_path
+    )
+    published = set()
+    for output in [current, deleted_on_main]:
+        for line in output.strip().split('\n'):
+            line = line.strip()
+            if line and line.endswith('.md'):
+                published.add(line)
+    return published
+
+
 def detect_deleted_files(repo_path: Path) -> List[str]:
     """Detect content files deleted in git history.
 
@@ -165,6 +186,17 @@ def main() -> int:
 
     if not deleted_files:
         print("No deleted content files found.")
+        return 0
+
+    # Filter to only files that were published on main
+    published_files = get_published_files(repo_path)
+    unpublished = [f for f in deleted_files if f not in published_files]
+    deleted_files = [f for f in deleted_files if f in published_files]
+    if unpublished:
+        print(f"  Skipping {len(unpublished)} files never published on main")
+
+    if not deleted_files:
+        print("No published deleted content files found.")
         return 0
 
     # Exclude files that currently exist (delete-then-recreate)
