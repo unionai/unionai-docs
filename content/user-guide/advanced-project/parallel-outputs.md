@@ -12,18 +12,19 @@ within a task.
 
 ## The formatting functions
 
-Each output format has a dedicated traced function:
+The pipeline generates three outputs: markdown, HTML, and an executive summary.
+Only `generate_summary` uses `@flyte.trace` because it makes an LLM call.
+The markdown and HTML functions are simple, deterministic transformations that
+don't benefit from checkpointing:
 
 {{< code file="/external/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="format-functions" >}}
 
-### Why trace formatting functions?
+### When to trace and when not to
 
-Even though markdown and HTML conversion are fast, the summary generation calls
-the LLM. By tracing all formatting functions:
-
-1. **Consistency**: All formatters follow the same pattern
-2. **Recovery**: If summary generation fails, markdown/HTML results are cached
-3. **Observability**: Each format appears separately in the UI
+Use `@flyte.trace` for operations that are expensive, non-deterministic, or
+call external APIs (like `generate_summary`). Skip it for cheap, deterministic
+transformations (like `format_as_markdown` and `format_as_html`) where
+re-running on retry is trivial.
 
 ## Parallel execution with asyncio.gather
 
@@ -74,13 +75,13 @@ with flyte.group("formatting"):
     markdown, html, summary = await asyncio.gather(...)
 ```
 
-In the Flyte UI, traced calls within the group are organized together:
+In the Flyte UI, the traced call within the group is visible:
 
 ```
 format_outputs
 └── formatting
-    ├── format_as_markdown (traced)
-    ├── format_as_html (traced)
+    ├── format_as_markdown
+    ├── format_as_html
     └── generate_summary (traced)
 ```
 
