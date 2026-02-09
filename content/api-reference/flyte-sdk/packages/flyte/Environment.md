@@ -1,6 +1,6 @@
 ---
 title: Environment
-version: 2.0.0b53
+version: 2.0.0b55
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -19,7 +19,7 @@ class Environment(
     env_vars: Optional[Dict[str, str]],
     resources: Optional[Resources],
     interruptible: bool,
-    image: Union[str, Image, Literal['auto']],
+    image: Union[str, Image, Literal['auto'], None],
 )
 ```
 | Parameter | Type | Description |
@@ -32,7 +32,7 @@ class Environment(
 | `env_vars` | `Optional[Dict[str, str]]` | Environment variables to set for the environment. |
 | `resources` | `Optional[Resources]` | Resources to allocate for the environment. |
 | `interruptible` | `bool` | Whether the environment is interruptible and can be scheduled on spot/preemptible instances |
-| `image` | `Union[str, Image, Literal['auto']]` | Docker image to use for the environment. If set to "auto", will use the default image. |
+| `image` | `Union[str, Image, Literal['auto'], None]` | Docker image to use for the environment. If set to "auto", will use the default image. |
 
 ## Methods
 

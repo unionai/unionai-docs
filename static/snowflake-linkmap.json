@@ -1,0 +1,11 @@
+{
+  "identifiers": {
+    "flyteplugins.snowflake.Snowflake": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflake/",
+    "Snowflake": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflake/",
+    "flyteplugins.snowflake.SnowflakeConfig": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflakeconfig/",
+    "SnowflakeConfig": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflakeconfig/",
+    "flyteplugins.snowflake.SnowflakeConnector": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflakeconnector/",
+    "SnowflakeConnector": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflakeconnector/"
+  },
+  "methods": {}
+}

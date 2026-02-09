@@ -116,4 +116,4 @@ Work interactively.
 
 ## Next steps
 
-Ready to put it all together? Head to [First project](../first-project) to build an end-to-end ML system with training tasks and a serving app.
+Ready to put it all together? Head to [Basic project](../basic-project) to build an end-to-end ML system with training tasks and a serving app.

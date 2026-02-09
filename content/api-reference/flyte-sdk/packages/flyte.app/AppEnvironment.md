@@ -1,6 +1,6 @@
 ---
 title: AppEnvironment
-version: 2.0.0b53
+version: 2.0.0b55
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -19,7 +19,7 @@ class AppEnvironment(
     env_vars: Optional[Dict[str, str]],
     resources: Optional[Resources],
     interruptible: bool,
-    image: Union[str, Image, Literal['auto']],
+    image: Union[str, Image, Literal['auto'], None],
     type: Optional[str],
     port: int | Port,
     args: *args,
@@ -43,7 +43,7 @@ class AppEnvironment(
 | `env_vars` | `Optional[Dict[str, str]]` | Environment variables to set for the environment. |
 | `resources` | `Optional[Resources]` | Resources to allocate for the environment. |
 | `interruptible` | `bool` | |
-| `image` | `Union[str, Image, Literal['auto']]` | Docker image to use for the environment. If set to "auto", will use the default image. |
+| `image` | `Union[str, Image, Literal['auto'], None]` | Docker image to use for the environment. If set to "auto", will use the default image. |
 | `type` | `Optional[str]` | Type of the environment. |
 | `port` | `int \| Port` | Port to use for the app server. |
 | `args` | `*args` | Arguments to pass to app. |

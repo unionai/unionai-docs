@@ -1,6 +1,6 @@
 ---
 title: TypeEngine
-version: 2.0.0b53
+version: 2.0.0b55
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -23,7 +23,7 @@ of user objects
 | [`get_available_transformers()`](#get_available_transformers) | Returns all python types for which transformers are available. |
 | [`get_transformer()`](#get_transformer) | Implements a recursive search for the transformer. |
 | [`guess_python_type()`](#guess_python_type) | Transforms a flyte-specific ``LiteralType`` to a regular python value. |
-| [`guess_python_types()`](#guess_python_types) | Transforms a dictionary of flyte-specific ``Variable`` objects to a dictionary of regular python values. |
+| [`guess_python_types()`](#guess_python_types) | Transforms a list of flyte-specific ``VariableEntry`` objects to a dictionary of regular python values. |
 | [`lazy_import_transformers()`](#lazy_import_transformers) | Only load the transformers if needed. |
 | [`literal_map_to_kwargs()`](#literal_map_to_kwargs) | Given a ``LiteralMap`` (usually an input into a task - intermediate), convert to kwargs for the task. |
 | [`named_tuple_to_variable_map()`](#named_tuple_to_variable_map) | Converts a python-native ``NamedTuple`` to a flyte-specific VariableMap of named literals. |
@@ -96,15 +96,15 @@ Transforms a flyte-specific ``LiteralType`` to a regular python value.
 
 ```python
 def guess_python_types(
-    flyte_variable_dict: typing.Dict[str, interface_pb2.Variable],
+    flyte_variable_list: typing.List[interface_pb2.VariableEntry],
 ) -> typing.Dict[str, Type[Any]]
 ```
-Transforms a dictionary of flyte-specific ``Variable`` objects to a dictionary of regular python values.
+Transforms a list of flyte-specific ``VariableEntry`` objects to a dictionary of regular python values.
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `flyte_variable_dict` | `typing.Dict[str, interface_pb2.Variable]` | |
+| `flyte_variable_list` | `typing.List[interface_pb2.VariableEntry]` | |
 
 ### lazy_import_transformers()
 

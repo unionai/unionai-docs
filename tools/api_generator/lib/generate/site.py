@@ -52,12 +52,10 @@ def generate_site(
     set_variants(variants)
     set_version(source["version"])
 
-    if not os.path.isdir(output_folder):
-        os.mkdir(output_folder)
+    os.makedirs(output_folder, exist_ok=True)
 
     pkg_root = os.path.join(output_folder, "packages")
-    if not os.path.isdir(pkg_root):
-        os.mkdir(pkg_root)
+    os.makedirs(pkg_root, exist_ok=True)
 
     # Generate site
     generate_home(
