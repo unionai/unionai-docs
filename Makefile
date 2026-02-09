@@ -25,6 +25,7 @@ base:
 
 dist: base
 	make update-redirects
+	-make check-deleted-pages
 	make update-api-docs
 	make variant VARIANT=flyte
 	# make variant VARIANT=serverless
