@@ -34,3 +34,10 @@ jobs:
             exit 1
           fi
           echo "All redirects are up to date."
+
+      - name: Check deleted pages have redirects
+        run: |
+          if ! make check-deleted-pages; then
+            echo "::error::Deleted pages are missing redirects. Run 'make check-deleted-pages' for details, then add redirects to redirects.csv or exclude paths in .redirects-exclude."
+            exit 1
+          fi

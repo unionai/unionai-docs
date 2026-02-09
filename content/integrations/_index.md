@@ -162,9 +162,15 @@ These integrations typically handle:
 
 Connectors are stateless, long‑running services that receive execution requests via gRPC and then submit work to external (or internal) systems. Each connector runs as its own Kubernetes deployment, and is triggered when a Flyte task of the matching type is executed.
 
-Although they normally run inside the control plane, you can also run connectors locally as long as the required secrets/credentials are present,because connectors are just Python services that can be spawned in‑process.
+Although they normally run inside the control plane, you can also run connectors locally as long as the required secrets/credentials are present locally. This is useful because connectors are just Python services that can be spawned in‑process.
 
-Connectors are designed to scale horizontally and reduce load on the core Flyte backend because they execute _outside_ the core system. This decoupling makes connectors efficient, resilient and easy to iterate on. You can even test them locally without modifying backend configuration, which reduces friction during development.
+Connectors are designed to scale horizontally and reduce load on the core Flyte backend because they execute _outside_ the core system. This decoupling makes connectors efficient, resilient, and easy to iterate on. You can even test them locally without modifying backend configuration, which reduces friction during development.
+
+### Supported connectors
+
+| Connector                | Description                                 | Common use cases                         |
+| ------------------------ | ------------------------------------------- | ---------------------------------------- |
+| [Snowflake](./snowflake) | Run SQL queries on Snowflake asynchronously | Data warehousing, ETL, analytics queries |
 
 ### Creating a new connector
 
@@ -248,9 +254,6 @@ class ModelTrainingConnector(AsyncConnector):
         async with httpx.AsyncClient() as client:
             r = await client.get(f"{resource_meta.endpoint}/{resource_meta.job_id}")
 
-        if r.status_code != 200:
-            return Resource(phase=TaskExecution.RUNNING)
-
         data = r.json()
 
         if data["status"] == "finished":
@@ -271,7 +274,7 @@ class ModelTrainingConnector(AsyncConnector):
             await client.delete(f"{resource_meta.endpoint}/{resource_meta.job_id}")
 ```
 
-To actually use this connector, you must also define a task whose `task_type` matches the connector.
+To use this connector, you should define a task whose `task_type` matches the connector.
 
 ```python
 import flyte.io
@@ -283,50 +286,61 @@ from flyte.models import NativeInterface, SerializationContext
 
 
 class ModelTrainTask(AsyncConnectorExecutorMixin, TaskTemplate):
-  _TASK_TYPE = "external_model_training"
+    _TASK_TYPE = "external_model_training"
 
-  def __init__(
-      self,
-      name: str,
-      endpoint: str,
-      **kwargs,
-  ):
-    super().__init__(
-      name=name,
-      interface=NativeInterface(
-          inputs={"epochs": int, "dataset_uri": str},
-          outputs={"results": flyte.io.File},
-      ),
-      task_type=self._TASK_TYPE,
-      **kwargs,
-    )
-    self.endpoint = endpoint
+    def __init__(
+        self,
+        name: str,
+        endpoint: str,
+        **kwargs,
+    ):
+        super().__init__(
+            name=name,
+            interface=NativeInterface(
+                inputs={"epochs": int, "dataset_uri": str},
+                outputs={"results": flyte.io.File},
+            ),
+            task_type=self._TASK_TYPE,
+            **kwargs,
+        )
+        self.endpoint = endpoint
 
-  def custom_config(self, sctx: SerializationContext) -> Optional[Dict[str, Any]]:
-    return {"endpoint": self.endpoint}
+    def custom_config(self, sctx: SerializationContext) -> Optional[Dict[str, Any]]:
+        return {"endpoint": self.endpoint}
 ```
 
 Here is an example of how to use the `ModelTrainTask`:
 
 ```python
 import flyte
-env = flyte.TaskEnvironment(name="hello_world", resources=flyte.Resources(memory="250Mi"))
+from flyteplugins.model_training import ModelTrainTask
 
 model_train_task = ModelTrainTask(
     name="model_train",
     endpoint="https://example-mltrain.com",
 )
 
+model_train_env = flyte.TaskEnvironment.from_task("model_train_env", model_train_task)
+
+env = flyte.TaskEnvironment(
+    name="hello_world",
+    resources=flyte.Resources(memory="250Mi"),
+    image=flyte.Image.from_debian_base(name="model_training").with_pip_packages(
+        "flyteplugins-model-training", pre=True
+    ),
+    depends_on=[model_train_env],
+)
+
+
 @env.task
 def data_prep() -> str:
     return "gs://my-bucket/dataset.csv"
+
 
 @env.task
 def train_model(epochs: int) -> flyte.io.File:
     dataset_uri = data_prep()
     return model_train_task(epochs=epochs, dataset_uri=dataset_uri)
-
-
 ```
 
 ### Build a custom connector image
@@ -340,11 +354,9 @@ from flyte import Image
 from flyte.extend import ImageBuildEngine
 
 
-async def build_flyte_connector_image(
-    registry: str, name: str, builder: str = "local"
-):
+async def build_flyte_connector_bigquery_image(registry: str, name: str, builder: str = "local"):
     """
-    Build the SDK default connector image, optionally overriding
+    Build the SDK default connector image optionally overriding
     the container registry and image name.
 
     Args:
@@ -353,12 +365,17 @@ async def build_flyte_connector_image(
         builder:  e.g. "local" or "remote".
     """
 
-    default_image = Image.from_debian_base(registry=registry, name=name).with_pip_packages(
-        "flyteintegrations-connectors[bigquery]", pre=True
-    )
+    default_image = Image.from_debian_base(
+        registry=registry, name=name
+    ).with_pip_packages("flyteintegrations-bigquery", pre=True)
     await ImageBuildEngine.build(default_image, builder=builder)
+
 
 if __name__ == "__main__":
     print("Building connector image...")
-    asyncio.run(build_flyte_connector_image(registry="<YOUR_REGISTRY>", name="flyte-connectors", builder="local"))
+    asyncio.run(
+        build_flyte_connector_bigquery_image(
+            registry="<YOUR_REGISTRY>", name="flyte-bigquery", builder="local"
+        )
+    )
 ```

@@ -1,6 +1,6 @@
 ---
 title: RunDetails
-version: 2.0.0b53
+version: 2.0.0b55
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -16,11 +16,13 @@ Union API.
 ```python
 class RunDetails(
     pb2: run_definition_pb2.RunDetails,
+    _preserve_original_types: bool,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `pb2` | `run_definition_pb2.RunDetails` | |
+| `_preserve_original_types` | `bool` | |
 
 ## Properties
 

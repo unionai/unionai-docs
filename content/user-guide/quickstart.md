@@ -12,7 +12,7 @@ Let's get you up and running with your first workflow.
 ## What you'll need
 
 - Python 3.10+ in a virtual environment
-- Access to a Union/Flyte instance (you'll need the URL and a project where you can run workflows)
+- Access to a {{< key product_name >}} instance (you'll need the URL of your instance)
 
 ## Install the SDK
 
@@ -33,15 +33,18 @@ flyte --version
 {{< variant flyte >}}
 {{< markdown >}}
 
-Create a config file pointing to your Flyte instance. Replace the placeholder values with your actual endpoint and project name:
+Create a config file pointing to your Flyte instance. Replace the placeholder value with your actual endpoint:
 
 ```shell
 flyte create config \
-    --endpoint my-org.my-company.com \
+    --endpoint <my-org.my-company.com> \
     --domain development \
-    --project my-project \
+    --project flytesnacks \
     --builder local
 ```
+
+We will use the `flytesnacks` project and the `development` domain.
+These exist by default on any newly installed Flyte instance.
 
 ### Set up local Docker
 
@@ -59,20 +62,23 @@ docker login ghcr.io
 {{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
 
-Create a config file pointing to your Union instance. Replace the placeholder values with your actual endpoint and project name:
+Create a config file pointing to your Union instance. Replace the placeholder value with your actual endpoint:
 
 ```shell
 flyte create config \
-    --endpoint my-org.my-company.com \
+    --endpoint <my-org.my-company.com> \
     --domain development \
-    --project my-project \
+    --project flytesnacks \
     --builder remote
 ```
+
+We will use the `flytesnacks` project and the `development` domain.
+These exist by default on any newly installed Union.ai instance.
 
 {{< /markdown >}}
 {{< /variant >}}
 
-This creates `./.flyte/config.yaml` in your current directory. See [Setting up a configuration file](./local-setup#setting-up-a-configuration-file) for more options.
+This creates `./.flyte/config.yaml` in your current directory. See [Setting up a configuration file](./local-setup#configuration-file) for more options.
 
 {{< note >}}
 Run `flyte get config` to check which configuration is currently active.
@@ -127,5 +133,4 @@ Click the link to view your run in the UI:
 
 Now that you've run your first workflow:
 
-- [**Why Flyte?**](./why-flyte): Understand what makes Flyte different
-- [**Flyte basics**](./flyte-basics): Learn core concepts through working examples
+- [**Core concepts**](./core-concepts): Understand the core concepts of Flyte programming

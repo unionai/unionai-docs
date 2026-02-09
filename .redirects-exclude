@@ -1,0 +1,60 @@
+# Patterns for deleted content pages that don't need redirects.
+# One path pattern per line, relative to repo root.
+# Supports fnmatch glob patterns (e.g. content/api-reference/*)
+# Lines starting with # are comments. Empty lines are ignored.
+
+# Auto-generated API reference pages (regenerated each build)
+content/api-reference/*
+
+# Internal docs builder tooling
+content/__docs_builder__/*
+
+# Legacy deletions predating the introduction of this check.
+# These sections were restructured during the v1 -> v2 migration.
+content/architecture/*
+content/community/*
+content/deployment/installation.md
+content/integrations/connectors/*
+content/integrations/deprecated-integrations/*
+content/integrations/external-service-backend-plugins/*
+content/integrations/flyte-operators/*
+content/integrations/flyte-plugins/*
+content/integrations/flytekit-plugins/*
+content/integrations/native-backend-plugins/*
+content/tutorials/bioinformatics/*
+content/tutorials/compound-ai-systems/*
+content/tutorials/diffusion-models/*
+content/tutorials/feature-engineering/*
+content/tutorials/finance/*
+content/tutorials/flytelab/*
+content/tutorials/language-models/*
+content/tutorials/model-training/*
+content/tutorials/parallel-processing-and-job-scheduling/*
+content/tutorials/retrieval-augmented-generation/*
+content/tutorials/serving/*
+content/tutorials/time-series/*
+content/user-guide/about-flyte.md
+content/user-guide/administration/*
+content/user-guide/configure-apps/passing-inputs.md
+content/user-guide/core-concepts/actors/*
+content/user-guide/core-concepts/artifacts/*
+content/user-guide/core-concepts/caching.md
+content/user-guide/core-concepts/image-spec.md
+content/user-guide/core-concepts/launch-plans/*
+content/user-guide/core-concepts/named-outputs.md
+content/user-guide/core-concepts/serving/*
+content/user-guide/core-concepts/tasks/*
+content/user-guide/core-concepts/workflows/*
+content/user-guide/core-concepts/workspaces.md
+content/user-guide/data-input-output/*
+content/user-guide/development-cycle/*
+content/user-guide/faq.md
+content/user-guide/getting-started/first-project.md
+content/user-guide/getting-started/local-setup.md
+content/user-guide/getting-started/running-your-workflow.md
+content/user-guide/getting-started/running.md
+content/user-guide/getting-started/serving-apps.md
+content/user-guide/getting-started/understanding-the-code.md
+content/user-guide/introduction.md
+content/user-guide/other-topics/*
+content/user-guide/programming/*

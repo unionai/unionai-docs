@@ -18,13 +18,6 @@ package = "flyte"
 version_file = "content/api-reference/flyte-sdk/_index.md"
 
 [[plugins]]
-package = "flyteplugins-connectors"
-plugin = "flyteplugins.connectors"
-title = "Connectors"
-name = "connectors"
-extras = ["bigquery", "databricks", "snowflake"]
-
-[[plugins]]
 package = "flyteplugins-dask"
 plugin = "flyteplugins.dask"
 title = "Dask"
@@ -83,3 +76,9 @@ package = "flyteplugins-wandb"
 plugin = "flyteplugins.wandb"
 title = "Weights & Biases"
 name = "wandb"
+
+[[plugins]]
+package = "flyteplugins-snowflake"
+plugin = "flyteplugins.snowflake"
+title = "Snowflake"
+name = "snowflake"

@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.0.0b53
+version: 2.0.0b55
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -477,8 +477,8 @@ If `project_install_mode` is "install_project", it will also copy directory
 
 | Parameter | Type | Description |
 |-|-|-|
-| `pyproject_file` | `str \| Path` | path to the pyproject.toml file, needs to have a corresponding uv.lock file |
-| `uvlock` | `Path \| None` | path to the uv.lock file, if not specified, will use the default uv.lock file in the same directory as the pyproject.toml file. (pyproject.parent / uv.lock) |
+| `pyproject_file` | `str \| Path` | path to the pyproject.toml file |
+| `uvlock` | `Path \| None` | path to the uv.lock file, if not specified, will use the default uv.lock file in the same directory as the pyproject.toml file if it exists. (pyproject.parent / uv.lock) |
 | `index_url` | `Optional[str]` | index url to use for pip install, default is None |
 | `extra_index_urls` | `Union[List[str], Tuple[str, ...], None]` | extra index urls to use for pip install, default is None |
 | `pre` | `bool` | whether to allow pre-release versions, default is False |

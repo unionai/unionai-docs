@@ -1,6 +1,6 @@
 ---
 title: FastAPIAppEnvironment
-version: 2.0.0b53
+version: 2.0.0b55
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -19,7 +19,7 @@ class FastAPIAppEnvironment(
     env_vars: Optional[Dict[str, str]],
     resources: Optional[Resources],
     interruptible: bool,
-    image: Union[str, Image, Literal['auto']],
+    image: Union[str, Image, Literal['auto'], None],
     port: int | Port,
     args: *args,
     command: Optional[Union[List[str], str]],
@@ -46,7 +46,7 @@ class FastAPIAppEnvironment(
 | `env_vars` | `Optional[Dict[str, str]]` | |
 | `resources` | `Optional[Resources]` | |
 | `interruptible` | `bool` | |
-| `image` | `Union[str, Image, Literal['auto']]` | |
+| `image` | `Union[str, Image, Literal['auto'], None]` | |
 | `port` | `int \| Port` | |
 | `args` | `*args` | |
 | `command` | `Optional[Union[List[str], str]]` | |
