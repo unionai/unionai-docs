@@ -14,7 +14,7 @@ within a task.
 
 Each output format has a dedicated traced function:
 
-{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="format-functions" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="format-functions" >}}
 
 ### Why trace formatting functions?
 
@@ -29,7 +29,7 @@ the LLM. By tracing all formatting functions:
 
 The `format_outputs` task runs all formatters concurrently:
 
-{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="parallel-formatting" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="parallel-formatting" >}}
 
 ### How asyncio.gather works
 
@@ -112,7 +112,7 @@ artifact storage, making it available to downstream tasks or applications.
 The batch pipeline processes multiple topics in parallel, demonstrating where
 `ReusePolicy` truly shines:
 
-{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="batch-pipeline" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="batch-pipeline" >}}
 
 ### Pipeline flow
 
@@ -127,7 +127,7 @@ With 5 topics, each making ~7 LLM calls, the reusable container pool handles
 
 To run the batch pipeline:
 
-{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="main" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="main" >}}
 
 ```bash
 uv run generate.py

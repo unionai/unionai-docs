@@ -24,7 +24,7 @@ When processing a batch of topics, each topic goes through multiple LLM calls
 (generate, critique, revise, repeat). With 5 topics × ~7 calls each, that's ~35
 LLM calls. `ReusePolicy` keeps containers warm to handle this efficiently:
 
-{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="reusable-env" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="reusable-env" >}}
 
 ### ReusePolicy parameters
 
@@ -49,7 +49,7 @@ The driver environment doesn't need container reuse—it just coordinates work.
 The `depends_on` parameter declares that tasks in this environment call tasks
 in `llm_env`, ensuring both environments are deployed together:
 
-{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="driver-env" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="driver-env" >}}
 
 ## Traced LLM calls
 
@@ -58,7 +58,7 @@ When a traced function completes successfully, its result is cached. If the task
 fails and restarts, previously completed traced calls return their cached results
 instead of re-executing.
 
-{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="traced-llm-call" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="traced-llm-call" >}}
 
 ### Benefits of tracing
 
@@ -83,7 +83,7 @@ The LLM-calling functions are decorated with `@flyte.trace` rather than being
 separate tasks. This keeps the architecture simple while still providing
 checkpointing:
 
-{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/generate.py" lang="python" fragment="generate-draft" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="generate-draft" >}}
 
 These traced functions run inside the `refine_report` task. If the task fails
 and retries, completed traced calls return cached results instead of re-executing.
@@ -134,14 +134,14 @@ re-run the entire chain when a single call fails.
 
 The example uses a separate `prompts.py` module for system prompts and Pydantic models:
 
-{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/prompts.py" lang="python" fragment="system-prompts" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/prompts.py" lang="python" fragment="system-prompts" >}}
 
 ### Pydantic models for structured output
 
 LLM responses can be unpredictable. Using Pydantic models with JSON mode ensures
 you get structured, validated data:
 
-{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/prompts.py" lang="python" fragment="critique-model" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/prompts.py" lang="python" fragment="critique-model" >}}
 
 The `Critique` model validates that:
 - `score` is an integer between 1 and 10

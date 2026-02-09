@@ -15,7 +15,7 @@ pipeline outputs using `RunOutput`.
 The `AppEnvironment` defines how the Streamlit application runs and connects to
 the batch report pipeline:
 
-{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/serve.py" lang="python" fragment="app-env" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/serve.py" lang="python" fragment="app-env" >}}
 
 ### Key configuration
 
@@ -53,13 +53,13 @@ The app can then scan this directory for all generated reports.
 
 The app loads and displays all generated reports from the batch pipeline:
 
-{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/app.py" lang="python" fragment="load-reports" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/app.py" lang="python" fragment="load-reports" >}}
 
 ### Displaying multiple reports
 
 The app provides a sidebar for selecting between reports when multiple are available:
 
-{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/app.py" lang="python" fragment="display-reports" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/app.py" lang="python" fragment="display-reports" >}}
 
 Features:
 - **Report selector**: Sidebar navigation when multiple reports exist
@@ -71,13 +71,13 @@ Features:
 
 The app includes instructions for generating new reports:
 
-{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/app.py" lang="python" fragment="generation-ui" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/app.py" lang="python" fragment="generation-ui" >}}
 
 ## Deploying the app
 
 To deploy the report generator application:
 
-{{< code file="/external/unionai-examples/v2/user-guide/feature-showcase/serve.py" lang="python" fragment="main" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/serve.py" lang="python" fragment="main" >}}
 
 ```bash
 uv run serve.py
@@ -123,7 +123,7 @@ For real-time updates without redeployment, you could:
 Here's the full project structure:
 
 ```
-feature-showcase/
+advanced-project/
 ├── generate.py    # Main pipeline with agentic refinement
 ├── prompts.py     # System prompts and Pydantic models
 ├── serve.py       # App deployment configuration
@@ -139,7 +139,7 @@ feature-showcase/
 
 2. **Run the pipeline**:
    ```bash
-   cd /path/to/unionai-examples/v2/user-guide/feature-showcase
+   cd /path/to/unionai-examples/v2/user-guide/advanced-project
    uv run generate.py
    ```
 
