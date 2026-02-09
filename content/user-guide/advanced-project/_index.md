@@ -1,12 +1,12 @@
 ---
-title: Feature showcase
+title: Advanced project
 weight: 6
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
 mermaid: true
 ---
 
-# Feature showcase
+# Advanced project: LLM reporting agent
 
 This example demonstrates a resilient agentic report generator that showcases
 Flyte 2.0's advanced features for building production-grade AI workflows.
