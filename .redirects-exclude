@@ -58,3 +58,8 @@ content/user-guide/getting-started/understanding-the-code.md
 content/user-guide/introduction.md
 content/user-guide/other-topics/*
 content/user-guide/programming/*
+
+# Pages created and deleted within peeter/second-project branch (never published)
+content/user-guide/first-project/*
+content/user-guide/flyte-basics/*
+content/user-guide/why-flyte.md
