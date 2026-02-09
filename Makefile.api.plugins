@@ -2,7 +2,6 @@
 #
 # Examples:
 #   make -f Makefile.api.plugins PLUGIN=flyteplugins.wandb TITLE="Weights & Biases" NAME=wandb
-#   make -f Makefile.api.plugins PLUGIN=flyteplugins.connectors INSTALL="flyteplugins-connectors[bigquery,databricks,snowflake]" TITLE="Connectors" NAME=connectors
 #
 # For packages available locally:
 #  make -f Makefile.api.plugins PLUGIN=flyteplugins.wandb TITLE="Weights & Biases" NAME=wandb SKIP_VENV_SETUP=true
@@ -14,7 +13,7 @@
 #
 # Optional variables:
 #   INSTALL - pip install specifier (defaults to PLUGIN). Use to add extras,
-#             e.g., "flyteplugins-connectors[bigquery,databricks,snowflake]"
+#             e.g., "flyteplugins-<PLUGIN>[<EXTRAS>]"
 
 OUTPUT_FOLDER=content/api-reference/integrations/${NAME}
 API_DATA=/tmp/${NAME}.api.yaml
@@ -52,9 +51,9 @@ clean_api_data:
 .PHONY: parser
 parser: check_vars clean_api_data
 ifeq ($(SKIP_VENV_SETUP),false)
-	$(VENV_DIR)/bin/python tools/api_generator/parser --package ${PLUGIN} --output ${API_DATA}
+	$(VENV_DIR)/bin/python tools/api_generator/parser --package ${PLUGIN} --output ${API_DATA} --all-only
 else
-	tools/api_generator/parser --package ${PLUGIN} --output ${API_DATA}
+	tools/api_generator/parser --package ${PLUGIN} --output ${API_DATA} --all-only
 endif
 
 .PHONY: generate

@@ -1,6 +1,6 @@
 ---
 title: ActionDetails
-version: 2.0.0b53
+version: 2.0.0b55
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -17,6 +17,7 @@ class ActionDetails(
     pb2: run_definition_pb2.ActionDetails,
     _inputs: ActionInputs | None,
     _outputs: ActionOutputs | None,
+    _preserve_original_types: bool,
 )
 ```
 | Parameter | Type | Description |
@@ -24,6 +25,7 @@ class ActionDetails(
 | `pb2` | `run_definition_pb2.ActionDetails` | |
 | `_inputs` | `ActionInputs \| None` | |
 | `_outputs` | `ActionOutputs \| None` | |
+| `_preserve_original_types` | `bool` | |
 
 ## Properties
 

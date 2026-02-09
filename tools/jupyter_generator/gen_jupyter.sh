@@ -6,10 +6,19 @@ if [[ $VERBOSE -eq 1 ]]; then
     set -x
 fi
 
-if ! command -v jupyter > /dev/null 2>&1; then
-    echo "Jupyter not installed, skipping notebook conversion (using committed files)"
+# In CI, skip conversion and use committed files
+if [[ -n "$CI" ]]; then
+    echo "CI environment detected, skipping notebook conversion (using committed files)"
     exit 0
 fi
+
+# Local build - ensure jupyter and dependencies are installed via uv
+if ! command -v uv > /dev/null 2>&1; then
+    echo "Error: uv is required for local builds. Install from https://docs.astral.sh/uv/"
+    exit 1
+fi
+
+uv pip install jupyter htmltabletomd --quiet
 
 declare content
 content=$(find content -name "*.md" -exec sh -c 'head -n 10 "$1" | grep -l "^jupyter_notebook:" "$1"' sh {} \;)
@@ -52,7 +61,7 @@ get_repo_url_for_file() {
 
     # Get the relative path of the file within the repository
     # Use Python for cross-platform compatibility (macOS doesn't support realpath --relative-to)
-    relative_path=$(python3 -c "import os.path; print(os.path.relpath('$(realpath "$file_path")', '$(realpath "$repo_root")'))")
+    relative_path=$(uv run python3 -c "import os.path; print(os.path.relpath('$(realpath "$file_path")', '$(realpath "$repo_root")'))")
 
     # Determine the default branch (main or master)
     local default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|^refs/remotes/origin/||')
@@ -96,7 +105,7 @@ for file in $content; do
         cp -R "$notebook_dir/images/"* "$output_dir/images/"
     fi
 
-    jupyter nbconvert --to markdown ".$notebook" --output-dir "$output_dir" --output "$(basename "$file" .md).gen"
+    uv run jupyter nbconvert --to markdown ".$notebook" --output-dir "$output_dir" --output "$(basename "$file" .md).gen"
 
     # Save the front matter from the original file and append the new content
     front_matter=$(sed -n '/^---$/,/^---$/p' "$file")
@@ -121,7 +130,7 @@ EOF
     echo "" >> "$file.new"
     cat "$tmp_file" \
         | sed -e "s#\($(basename "$file" .md).gen_files\)#./\1#" \
-        | NOTEBOOK_LINK="$nb_repo_link" python tools/jupyter_generator/markdown_cleanup.py \
+        | NOTEBOOK_LINK="$nb_repo_link" uv run python3 tools/jupyter_generator/markdown_cleanup.py \
         >> "$file.new"
 
     # Replace original file and clean up
