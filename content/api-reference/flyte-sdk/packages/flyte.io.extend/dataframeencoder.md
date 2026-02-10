@@ -9,10 +9,6 @@ layout: py_api
 
 **Package:** `flyte.io.extend`
 
-Helper class that provides a standard way to create an ABC using
-inheritance.
-
-
 ```python
 class DataFrameEncoder(
     python_type: Type[T],

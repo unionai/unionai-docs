@@ -9,9 +9,6 @@ layout: py_api
 
 **Package:** `flyte.remote`
 
-A mixin class that provides a method to convert an object to a JSON-serializable dictionary.
-
-
 ```python
 class App(
     pb2: app_definition_pb2.App,

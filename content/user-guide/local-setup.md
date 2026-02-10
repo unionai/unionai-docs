@@ -253,10 +253,10 @@ flyte.init(
 
 See related methods:
 
-* [`flyte.init_from_api_key`](../api-reference/flyte-sdk/packages/flyte##init_from_api_key)
-* [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte##init_from_config)
-* [`flyte.init_in_cluster`](../api-reference/flyte-sdk/packages/flyte##init_in_cluster)
-* [`flyte.init_passthrough`](../api-reference/flyte-sdk/packages/flyte##init_passthrough)
+* [`flyte.init_from_api_key`](../api-reference/flyte-sdk/packages/flyte#init_from_api_key)
+* [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte#init_from_config)
+* [`flyte.init_in_cluster`](../api-reference/flyte-sdk/packages/flyte#init_in_cluster)
+* [`flyte.init_passthrough`](../api-reference/flyte-sdk/packages/flyte#init_passthrough)
 
 ## Next steps
 

@@ -12,6 +12,7 @@ layout: py_api
 Data storage configuration that applies across any provider.
 
 
+
 ```python
 class Storage(
     retries: int,

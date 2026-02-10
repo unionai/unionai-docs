@@ -12,6 +12,7 @@ layout: py_api
 Represents a trigger in the Flyte platform.
 
 
+
 ```python
 class Trigger(
     pb2: trigger_definition_pb2.Trigger,

@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when the underlying task execution is interrupted.
 
 
+
 ```python
 class TaskInterruptedError(
     code: str,

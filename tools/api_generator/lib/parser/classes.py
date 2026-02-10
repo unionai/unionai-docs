@@ -61,7 +61,7 @@ def get_class_details(class_path: str) -> Optional[ClassDetails]:
             return None
 
         # Basic class info
-        doc_info = parse_docstring(inspect.getdoc(cls), source=cls)
+        doc_info = parse_docstring(cls.__doc__, source=cls)
         class_info = ClassDetails(
             name=class_name,
             path=class_path,

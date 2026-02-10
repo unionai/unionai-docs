@@ -12,6 +12,7 @@ layout: py_api
 Configuration for rewriting paths during input loading.
 
 
+
 ```python
 class PathRewrite(
     old_prefix: str,

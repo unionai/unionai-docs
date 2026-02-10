@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when the user tries to access a resource that does not exist or is invalid.
 
 
+
 ```python
 class SlowDownError(
     message: str,

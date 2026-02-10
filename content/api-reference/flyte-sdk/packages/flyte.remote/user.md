@@ -12,6 +12,7 @@ layout: py_api
 Represents a user in the Flyte platform.
 
 
+
 ```python
 class User(
     pb2: UserInfoResponse,

@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when the deployment of a task fails, or some preconditions for deployment are not met.
 
 
+
 ```python
 class DeploymentError(
     message: str,

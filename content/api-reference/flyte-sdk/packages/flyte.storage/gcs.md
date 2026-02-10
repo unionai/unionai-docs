@@ -12,6 +12,7 @@ layout: py_api
 Any GCS specific configuration.
 
 
+
 ```python
 class GCS(
     retries: int,

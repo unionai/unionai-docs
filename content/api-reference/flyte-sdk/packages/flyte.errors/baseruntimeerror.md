@@ -13,6 +13,7 @@ Base class for all Union runtime errors. These errors are raised when the underl
 because of a user error, system error or an unknown error.
 
 
+
 ```python
 class BaseRuntimeError(
     code: str,

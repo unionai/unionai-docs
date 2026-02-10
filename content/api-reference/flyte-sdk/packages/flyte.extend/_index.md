@@ -22,8 +22,8 @@ sidebar_expanded: true
 
 | Protocol | Description |
 |-|-|
-| [`ImageBuilder`](../flyte.extend/imagebuilder) | Base class for protocol classes. |
-| [`ImageChecker`](../flyte.extend/imagechecker) | Base class for protocol classes. |
+| [`ImageBuilder`](../flyte.extend/imagebuilder) |  |
+| [`ImageChecker`](../flyte.extend/imagechecker) |  |
 
 ### Methods
 

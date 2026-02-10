@@ -13,6 +13,7 @@ This error is raised when the user uses a restricted type, for example current a
  value.
 
 
+
 ```python
 class RestrictedTypeError(
     message: str,

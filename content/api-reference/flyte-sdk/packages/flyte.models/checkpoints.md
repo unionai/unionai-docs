@@ -12,6 +12,7 @@ layout: py_api
 A class representing the checkpoints for a task. This is used to store the checkpoints for the task execution.
 
 
+
 ```python
 class Checkpoints(
     prev_checkpoint_path: str | None,

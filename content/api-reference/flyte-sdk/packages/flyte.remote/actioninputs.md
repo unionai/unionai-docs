@@ -28,6 +28,7 @@ Output:
 ```
 
 
+
 ```python
 class ActionInputs(
     pb2: common_pb2.Inputs,

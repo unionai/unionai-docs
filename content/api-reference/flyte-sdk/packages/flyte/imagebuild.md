@@ -18,6 +18,7 @@ Attributes:
         builder. None when using the local builder.
 
 
+
 ```python
 class ImageBuild(
     uri: str | None,

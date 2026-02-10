@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when the underlying task execution fails after all retries have been exhausted.
 
 
+
 ```python
 class RetriesExhaustedError(
     code: str,

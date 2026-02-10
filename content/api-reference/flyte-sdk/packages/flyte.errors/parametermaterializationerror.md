@@ -13,6 +13,7 @@ This error is raised when the user tries to use a Parameter in an App, that has 
 but the materialization fails.
 
 
+
 ```python
 class ParameterMaterializationError(
     message: str,

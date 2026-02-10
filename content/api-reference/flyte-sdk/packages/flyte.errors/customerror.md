@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when the user raises a custom error.
 
 
+
 ```python
 class CustomError(
     code: str,

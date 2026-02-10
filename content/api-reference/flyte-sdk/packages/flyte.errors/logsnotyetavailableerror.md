@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when the logs are not yet available for a task.
 
 
+
 ```python
 class LogsNotYetAvailableError(
     message: str,

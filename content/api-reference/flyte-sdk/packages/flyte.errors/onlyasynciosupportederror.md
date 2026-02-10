@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when the user tries to use sync IO in an async task.
 
 
+
 ```python
 class OnlyAsyncIOSupportedError(
     message: str,

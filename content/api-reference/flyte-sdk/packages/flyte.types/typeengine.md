@@ -15,6 +15,7 @@ Users can implement their own TypeTransformers and register them with the TypeEn
 of user objects
 
 
+
 ## Methods
 
 | Method | Description |

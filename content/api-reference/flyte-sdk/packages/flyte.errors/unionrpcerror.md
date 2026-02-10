@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when communication with the Union server fails.
 
 
+
 ```python
 class UnionRpcError(
     code: str,

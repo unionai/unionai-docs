@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when the image cannot be pulled.
 
 
+
 ```python
 class ImagePullBackOffError(
     code: str,

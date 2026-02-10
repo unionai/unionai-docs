@@ -13,6 +13,7 @@ A task template that wraps an asynchronous functions. This is automatically crea
 is decorated with the task decorator.
 
 
+
 ```python
 class AsyncFunctionTaskTemplate(
     name: str,

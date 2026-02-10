@@ -12,6 +12,7 @@ layout: py_api
 A class representing an action. It is used to manage the run of a task and its state on the remote Union API.
 
 
+
 ```python
 class ActionDetails(
     pb2: run_definition_pb2.ActionDetails,

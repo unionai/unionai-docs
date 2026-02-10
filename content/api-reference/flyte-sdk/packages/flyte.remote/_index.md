@@ -21,7 +21,7 @@ Remote Entities that are accessible from the Union Server once deployed or creat
 | [`ActionDetails`](../flyte.remote/actiondetails) | A class representing an action. |
 | [`ActionInputs`](../flyte.remote/actioninputs) | A class representing the inputs of an action. |
 | [`ActionOutputs`](../flyte.remote/actionoutputs) | A class representing the outputs of an action. |
-| [`App`](../flyte.remote/app) | A mixin class that provides a method to convert an object to a JSON-serializable dictionary. |
+| [`App`](../flyte.remote/app) |  |
 | [`Project`](../flyte.remote/project) | A class representing a project in the Union API. |
 | [`Run`](../flyte.remote/run) | A class representing a run of a task. |
 | [`RunDetails`](../flyte.remote/rundetails) | A class representing a run of a task. |

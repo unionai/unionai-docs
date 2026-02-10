@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when the Union system is tried to access without being initialized.
 
 
+
 ```python
 class InitializationError(
     code: str,

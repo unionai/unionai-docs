@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when the image build fails.
 
 
+
 ```python
 class ImageBuildError(
     message: str,

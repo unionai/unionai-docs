@@ -9,6 +9,3 @@ layout: py_api
 
 **Package:** `flyte.types`
 
-Inappropriate argument type.
-
-

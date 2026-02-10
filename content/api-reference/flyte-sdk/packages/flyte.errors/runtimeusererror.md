@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when the underlying task execution fails because of an error in the user's code.
 
 
+
 ```python
 class RuntimeUserError(
     code: str,

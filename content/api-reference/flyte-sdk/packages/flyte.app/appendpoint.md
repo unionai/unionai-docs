@@ -16,6 +16,7 @@ an upstream app, given by a specific app name. This gives the app access to
 the upstream app's endpoint as a public or private url.
 
 
+
 ```python
 class AppEndpoint(
     data: Any,

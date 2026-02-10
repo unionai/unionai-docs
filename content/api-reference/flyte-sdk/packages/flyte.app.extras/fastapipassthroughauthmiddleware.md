@@ -31,6 +31,7 @@ Thread Safety:
     authentication will not interfere with each other.
 
 
+
 ```python
 class FastAPIPassthroughAuthMiddleware(
     app,

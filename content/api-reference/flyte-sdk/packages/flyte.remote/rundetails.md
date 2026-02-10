@@ -13,6 +13,7 @@ A class representing a run of a task. It is used to manage the run of a task and
 Union API.
 
 
+
 ```python
 class RunDetails(
     pb2: run_definition_pb2.RunDetails,

@@ -13,6 +13,7 @@ This is the registry for all connectors.
 The connector service will look up the connector registry based on the task type and version.
 
 
+
 ## Methods
 
 | Method | Description |

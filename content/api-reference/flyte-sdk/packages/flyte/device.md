@@ -15,6 +15,7 @@ param quantity: The number of devices of this type.
 param partition: The partition of the device (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus).
 
 
+
 ```python
 class Device(
     quantity: int,

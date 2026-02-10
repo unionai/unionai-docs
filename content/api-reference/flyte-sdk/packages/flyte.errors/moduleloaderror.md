@@ -13,6 +13,7 @@ This error is raised when the module cannot be loaded, either because it does no
  syntax error.
 
 
+
 ```python
 class ModuleLoadError(
     message: str,

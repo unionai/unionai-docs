@@ -12,6 +12,7 @@ layout: py_api
 A class representing a project in the Union API.
 
 
+
 ```python
 class Project(
     pb2: project_service_pb2.Project,

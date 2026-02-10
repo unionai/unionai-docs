@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when the image name is invalid.
 
 
+
 ```python
 class InvalidImageNameError(
     code: str,

@@ -38,8 +38,8 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | Protocol | Description |
 |-|-|
 | [`AppHandle`](../flyte/apphandle) | Protocol defining the common interface between local and remote app handles. |
-| [`CachePolicy`](../flyte/cachepolicy) | Base class for protocol classes. |
-| [`Link`](../flyte/link) | Base class for protocol classes. |
+| [`CachePolicy`](../flyte/cachepolicy) |  |
+| [`Link`](../flyte/link) |  |
 
 ### Methods
 

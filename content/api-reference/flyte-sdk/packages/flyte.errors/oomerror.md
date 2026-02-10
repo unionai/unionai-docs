@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when the underlying task execution fails because of an out-of-memory error.
 
 
+
 ```python
 class OOMError(
     code: str,

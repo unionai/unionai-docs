@@ -25,6 +25,7 @@ The Flyte DataFrame object serves 2 main purposes:
 flyte.io.DataFrame and this is just a reference and will not materialize till you force `.all()` or `.iter()` etc
 
 
+
 ```python
 class DataFrame(
     data: Any,
