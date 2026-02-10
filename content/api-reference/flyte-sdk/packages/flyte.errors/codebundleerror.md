@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when the code bundle cannot be created, for example when no files are found to bundle.
 
 
+
 ```python
 class CodeBundleError(
     message: str,

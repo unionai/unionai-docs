@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when an action was aborted, externally. The parent action will raise this error.
 
 
+
 ```python
 class ActionAbortedError(
     message: str,

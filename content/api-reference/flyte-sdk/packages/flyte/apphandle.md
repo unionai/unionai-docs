@@ -15,6 +15,7 @@ Both ``_LocalApp`` (local serving) and ``App`` (remote serving) satisfy this
 protocol, enabling calling code to work uniformly regardless of the serving mode.
 
 
+
 ```python
 protocol AppHandle()
 ```

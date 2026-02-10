@@ -12,6 +12,7 @@ layout: py_api
 This is the metadata for the job. For example, the id of the job.
 
 
+
 ```python
 def ResourceMeta()
 ```

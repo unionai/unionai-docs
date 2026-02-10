@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when the user tries to access a task that does not exist.
 
 
+
 ```python
 class RemoteTaskNotFoundError(
     message: str,

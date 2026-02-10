@@ -13,6 +13,7 @@ This error is raised when the user tries to use a task from within a trace. Task
 not traces.
 
 
+
 ```python
 class TraceDoesNotAllowNestedTasksError(
     message: str,
