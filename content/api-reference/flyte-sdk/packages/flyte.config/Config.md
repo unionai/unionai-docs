@@ -1,6 +1,6 @@
 ---
 title: Config
-version: 2.0.0b55
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -22,6 +22,7 @@ class Config(
     platform: PlatformConfig,
     task: TaskConfig,
     image: ImageConfig,
+    local: LocalConfig,
     source: pathlib.Path | None,
 )
 ```
@@ -30,6 +31,7 @@ class Config(
 | `platform` | `PlatformConfig` | |
 | `task` | `TaskConfig` | |
 | `image` | `ImageConfig` | |
+| `local` | `LocalConfig` | |
 | `source` | `pathlib.Path \| None` | |
 
 ## Methods

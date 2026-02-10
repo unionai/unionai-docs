@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.wandb
-version: 2.0.0b54
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -134,9 +134,13 @@ layout: py_api
    The plugin auto-detects distributed training from environment variables
    (RANK, WORLD_SIZE, LOCAL_RANK, etc.) set by torchrun/torch.distributed.elastic.
 
-   By default (`run_mode="auto"`):
+   The `rank_scope` parameter controls the scope of run creation:
+   - `"global"` (default): Global scope - 1 run/group across all workers
+   - `"worker"`: Worker scope - 1 run/group per worker
+
+   By default (`run_mode="auto"`, `rank_scope="global"`):
    - Single-node: Only rank 0 logs (1 run)
-   - Multi-node: Local rank 0 of each worker logs (1 run per worker)
+   - Multi-node: Only global rank 0 logs (1 run)
 
    ```python
    from flyteplugins.pytorch.task import Elastic
@@ -153,7 +157,7 @@ layout: py_api
    async def train_distributed():
        torch.distributed.init_process_group("nccl")
 
-       # Only local rank 0 gets a W&B run, other ranks get None
+       # Only global rank 0 gets a W&B run, other ranks get None
        run = get_wandb_run()
        if run:
            run.log({"loss": loss})
@@ -161,13 +165,33 @@ layout: py_api
        return run.id if run else "non-primary-rank"
    ```
 
-   Use `run_mode="shared"` for all ranks to log to a single shared run:
+   Use `rank_scope="worker"` to get 1 run per worker:
 
    ```python
-   @wandb_init(run_mode="shared")
+   @wandb_init(rank_scope="worker")
+   @torch_env.task
+   async def train_distributed_per_worker():
+       # Multi-node: local rank 0 of each worker gets a W&B run (1 run per worker)
+       run = get_wandb_run()
+       if run:
+           run.log({"loss": loss})
+       return run.id if run else "non-primary-rank"
+   ```
+
+   Use `run_mode="shared"` for all ranks to log to shared run(s):
+
+   ```python
+   @wandb_init(run_mode="shared")  # rank_scope="global": 1 shared run across all ranks
    @torch_env.task
    async def train_distributed_shared():
        # All ranks log to the same W&B run (with x_label to identify each rank)
+       run = get_wandb_run()
+       run.log({"rank_metric": value})
+       return run.id
+
+   @wandb_init(run_mode="shared", rank_scope="worker")  # 1 shared run per worker
+   @torch_env.task
+   async def train_distributed_shared_per_worker():
        run = get_wandb_run()
        run.log({"rank_metric": value})
        return run.id
@@ -176,12 +200,18 @@ layout: py_api
    Use `run_mode="new"` for each rank to have its own W&B run:
 
    ```python
-   @wandb_init(run_mode="new")
+   @wandb_init(run_mode="new")  # rank_scope="global": all runs in 1 group
    @torch_env.task
    async def train_distributed_separate_runs():
        # Each rank gets its own W&B run (grouped in W&B UI)
-       # Run IDs: {run_name}-{action_name}-rank-{rank} (single-node)
-       # Run IDs: {run_name}-{action_name}-worker-{worker}-rank-{rank} (multi-node)
+       # Run IDs: {base}-rank-{global_rank}
+       run = get_wandb_run()
+       run.log({"rank_metric": value})
+       return run.id
+
+   @wandb_init(run_mode="new", rank_scope="worker")  # runs grouped per worker
+   @torch_env.task
+   async def train_distributed_separate_runs_per_worker():
        run = get_wandb_run()
        run.log({"rank_metric": value})
        return run.id
@@ -408,6 +438,7 @@ def wandb_config(
     mode: typing.Optional[str],
     group: typing.Optional[str],
     run_mode: typing.Literal['auto', 'new', 'shared'],
+    rank_scope: typing.Literal['global', 'worker'],
     download_logs: bool,
     kwargs: **kwargs,
 ) -> flyteplugins.wandb._context._WandBConfig
@@ -430,7 +461,8 @@ This function works in two contexts:
 | `config` | `typing.Optional[dict[str, typing.Any]]` | Dictionary of hyperparameters |
 | `mode` | `typing.Optional[str]` | "online", "offline" or "disabled" |
 | `group` | `typing.Optional[str]` | Group name for related runs |
-| `run_mode` | `typing.Literal['auto', 'new', 'shared']` | Flyte-specific run mode - "auto", "new" or "shared". Controls whether tasks create new W&B runs or share existing ones. In distributed training context: - "auto" (default): Single-node: only rank 0 logs.   Multi-node: local rank 0 of each worker logs (1 run per worker). - "shared": All ranks log to a single shared W&B run. - "new": Each rank gets its own W&B run (grouped in W&B UI). |
+| `run_mode` | `typing.Literal['auto', 'new', 'shared']` | "auto", "new" or "shared". Controls whether tasks create new W&B runs or share existing ones. - "auto" (default): Creates new run if no parent run exists, otherwise shares parent's run - "new": Always creates a new wandb run with a unique ID - "shared": Always shares the parent's run ID In distributed training context (single-node): - "auto" (default): Only rank 0 logs. - "shared": All ranks log to a single shared W&B run. - "new": Each rank gets its own W&B run (grouped in W&B UI). Multi-node: behavior depends on `rank_scope`. |
+| `rank_scope` | `typing.Literal['global', 'worker']` | "global" or "worker". Controls which ranks log in distributed training. run_mode="auto": - "global" (default): Only global rank 0 logs (1 run total). - "worker": Local rank 0 of each worker logs (1 run per worker). run_mode="shared": - "global": All ranks log to a single shared W&B run. - "worker": Ranks per worker log to a single shared W&B run (1 run per worker). run_mode="new": - "global": Each rank gets its own W&B run (1 run total). - "worker": Each rank gets its own W&B run grouped per worker -&gt; N runs. |
 | `download_logs` | `bool` | If `True`, downloads wandb run files after task completes and shows them as a trace output in the Flyte UI |
 | `kwargs` | `**kwargs` | |
 
@@ -439,7 +471,8 @@ This function works in two contexts:
 ```python
 def wandb_init(
     _func: typing.Optional[~F],
-    run_mode: typing.Literal['auto', 'new', 'shared'],
+    run_mode: typing.Optional[typing.Literal['auto', 'new', 'shared']],
+    rank_scope: typing.Optional[typing.Literal['global', 'worker']],
     download_logs: typing.Optional[bool],
     project: typing.Optional[str],
     entity: typing.Optional[str],
@@ -453,7 +486,8 @@ Decorator to automatically initialize wandb for Flyte tasks and wandb sweep obje
 | Parameter | Type | Description |
 |-|-|-|
 | `_func` | `typing.Optional[~F]` | |
-| `run_mode` | `typing.Literal['auto', 'new', 'shared']` | |
+| `run_mode` | `typing.Optional[typing.Literal['auto', 'new', 'shared']]` | |
+| `rank_scope` | `typing.Optional[typing.Literal['global', 'worker']]` | Flyte-specific rank scope - "global" or "worker". Controls which ranks log in distributed training. run_mode="auto": - "global" (default): Only global rank 0 logs (1 run total). - "worker": Local rank 0 of each worker logs (1 run per worker). run_mode="shared": - "global": All ranks log to a single shared W&B run. - "worker": Ranks per worker log to a single shared W&B run (1 run per worker). run_mode="new": - "global": Each rank gets its own W&B run (1 run total). - "worker": Each rank gets its own W&B run grouped per worker -&gt; N runs. |
 | `download_logs` | `typing.Optional[bool]` | If `True`, downloads wandb run files after task completes and shows them as a trace output in the Flyte UI. If None, uses the value from `wandb_config()` context if set. |
 | `project` | `typing.Optional[str]` | W&B project name (overrides context config if provided) |
 | `entity` | `typing.Optional[str]` | W&B entity/team name (overrides context config if provided) |

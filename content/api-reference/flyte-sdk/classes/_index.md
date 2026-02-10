@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b55
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -72,6 +72,7 @@ sidebar_expanded: true
 | [`flyte.errors.SlowDownError`](../packages/flyte.errors/slowdownerror) |This error is raised when the user tries to access a resource that does not exist or is invalid. |
 | [`flyte.errors.TaskInterruptedError`](../packages/flyte.errors/taskinterruptederror) |This error is raised when the underlying task execution is interrupted. |
 | [`flyte.errors.TaskTimeoutError`](../packages/flyte.errors/tasktimeouterror) |This error is raised when the underlying task execution runs for longer than the specified timeout. |
+| [`flyte.errors.TraceDoesNotAllowNestedTasksError`](../packages/flyte.errors/tracedoesnotallownestedtaskserror) |This error is raised when the user tries to use a task from within a trace. |
 | [`flyte.errors.UnionRpcError`](../packages/flyte.errors/unionrpcerror) |This error is raised when communication with the Union server fails. |
 | [`flyte.extend.AsyncFunctionTaskTemplate`](../packages/flyte.extend/asyncfunctiontasktemplate) |A task template that wraps an asynchronous functions. |
 | [`flyte.extend.ImageBuildEngine`](../packages/flyte.extend/imagebuildengine) |ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
@@ -125,6 +126,7 @@ sidebar_expanded: true
 
 | Protocol | Description |
 |-|-|
+| [`flyte.AppHandle`](../packages/flyte/apphandle) |Protocol defining the common interface between local and remote app handles. |
 | [`flyte.CachePolicy`](../packages/flyte/cachepolicy) |Base class for protocol classes. |
 | [`flyte.Link`](../packages/flyte/link) |Base class for protocol classes. |
 | [`flyte.extend.ImageBuilder`](../packages/flyte.extend/imagebuilder) |Base class for protocol classes. |
