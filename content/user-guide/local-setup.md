@@ -141,7 +141,7 @@ See the [CLI reference](../api-reference/flyte-cli#flyte-create-config) for all 
 
 - `builder`: How container images are built.
   - `remote` (Union): Images built on Union's infrastructure.
-  - `local` (Flyte OSS): Images built on your machine. Requires Docker. See [Image building](../task-configuration/container-images#image-building).
+  - `local` (Flyte OSS): Images built on your machine. Requires Docker. See [Image building](./task-configuration/container-images#image-building).
 
 **`task`** — Default settings for task execution.
 
@@ -262,4 +262,4 @@ See related methods:
 
 With your environment fully configured, you're ready to build:
 
-- [**Flyte basics**](./flyte-basics): Understand `TaskEnvironment`s, tasks, runs, and actions through working examples.
+- [**Core concepts**](./core-concepts): Understand `TaskEnvironment`s, tasks, runs, and actions through working examples.

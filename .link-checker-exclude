@@ -1,0 +1,25 @@
+# Exclusion patterns for check_internal_links.py
+# Each line is a regex matched against "source_file:link_url"
+
+# Contributing-docs pages referencing repo-level files
+# DEVELOPER.md and SHORTCODES.md are repo files, not Hugo content pages
+contributing-docs/shortcodes\.md:DEVELOPER\.md
+contributing-docs/authoring\.md:SHORTCODES\.md
+
+# API reference auto-generated cross-references (case mismatch in generated content)
+api-reference/flyte-sdk/
+api-reference/plugins/
+
+# Links inside variant-conditional blocks (checker doesn't process Hugo shortcodes)
+# These links are only rendered for their target variant
+community/_index\.md:\./joining-the-community
+community/_index\.md:\./contributing-code
+
+# Links inside HTML comments (TODO placeholders for planned pages)
+user-guide/task-configuration/_index\.md
+
+# Link inside variant-conditional block (byoc block on selfmanaged-only page)
+deployment/architecture/overview\.md:\.\./configuring-your-data-plane
+
+# OpenAI page intentionally excludes serverless variant
+integrations/_index\.md:\./openai
