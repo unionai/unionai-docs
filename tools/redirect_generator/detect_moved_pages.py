@@ -173,8 +173,10 @@ def generate_redirect_entries(
             old_url = content_path_to_url(old_path, variant, version)
             new_url = content_path_to_url(new_path, variant, version)
 
-            # Skip self-redirects (rename resolved to same URL)
-            if old_url == new_url:
+            # Skip self-redirects (rename resolved to same URL).
+            # Case-insensitive comparison because Hugo lowercases all URL paths
+            # by default, so case-only renames don't change the published URL.
+            if old_url.lower() == new_url.lower():
                 continue
 
             # Skip if redirect already exists
