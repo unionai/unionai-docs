@@ -90,7 +90,7 @@ For feedback at any point in the contribution process, feel free to reach out to
 
 ## Component Reference
 
-To understand how the below components interact with each other, refer to [Understand the lifecycle of a workflow](#workflow-lifecycle).
+To understand how the below components interact with each other, refer to [Component Reference](#component-reference).
 
 > [!NOTE]
 > Except for `flytekit`, the below components are maintained in the [`flyte` monorepo](https://github.com/flyteorg/flyte).
@@ -228,7 +228,7 @@ image. The following tools are required:
 - [Contributing code](#contributing-code)
   - [Becoming a contributor](#becoming-a-contributor)
     - [Before submitting your PR](#before-submitting-your-pr)
-  - [🐞 File an issue](#-file-an-issue)
+  - [🐞 File an issue](#file-an-issue)
   - [Component Reference](#component-reference)
     - [`flyte`](#flyte)
     - [`flyteidl`](#flyteidl)
