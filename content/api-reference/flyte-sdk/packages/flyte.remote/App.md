@@ -1,6 +1,6 @@
 ---
 title: App
-version: 2.0.0b55
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -40,6 +40,8 @@ class App(
 | [`create()`](#create) |  |
 | [`deactivate()`](#deactivate) | Stop the app. |
 | [`delete()`](#delete) | Delete an app by name. |
+| [`ephemeral_ctx()`](#ephemeral_ctx) | Async context manager that activates the app and deactivates it when the context is exited. |
+| [`ephemeral_ctx_sync()`](#ephemeral_ctx_sync) | Context manager that activates the app and deactivates it when the context is exited. |
 | [`get()`](#get) | Get an app by name. |
 | [`is_active()`](#is_active) | Check if the app is currently active or started. |
 | [`is_deactivated()`](#is_deactivated) | Check if the app is currently deactivated or stopped. |
@@ -68,7 +70,7 @@ Start the app
 
 | Parameter | Type | Description |
 |-|-|-|
-| `wait` | `bool` | Wait for the app to reach started state |
+| `wait` | `bool` | Wait for the app to reach activated state |
 
 ### create()
 
@@ -98,7 +100,7 @@ def create(
 ```python
 def deactivate(
     wait: bool,
-)
+) -> App
 ```
 Stop the app
 
@@ -132,6 +134,22 @@ Delete an app by name.
 | `name` | `str` | The name of the app to delete. |
 | `project` | `str \| None` | The name of the project to delete. |
 | `domain` | `str \| None` | The name of the domain to delete. |
+
+### ephemeral_ctx()
+
+```python
+def ephemeral_ctx()
+```
+Async context manager that activates the app and deactivates it when the context is exited.
+
+
+### ephemeral_ctx_sync()
+
+```python
+def ephemeral_ctx_sync()
+```
+Context manager that activates the app and deactivates it when the context is exited.
+
 
 ### get()
 
