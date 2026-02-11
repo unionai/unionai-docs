@@ -213,13 +213,20 @@ def main() -> int:
 
     # Exclude files that currently exist (delete-then-recreate).
     # Also handle foo.md -> foo/_index.md conversions (same URL in Hugo).
+    # Use case-insensitive matching since Hugo lowercases all URLs.
+    content_dir = repo_path / 'content'
+    existing_paths = {
+        p.relative_to(content_dir).as_posix().lower()
+        for p in content_dir.rglob('*.md')
+    }
     still_exist = []
     truly_deleted = []
     for path in deleted_files:
-        full = repo_path / path
-        if full.exists():
+        rel = path.removeprefix('content/').lower()
+        stem = rel.removesuffix('.md')
+        if rel in existing_paths:
             still_exist.append(path)
-        elif full.suffix == '.md' and (full.with_suffix('') / '_index.md').exists():
+        elif f"{stem}/_index.md" in existing_paths:
             still_exist.append(path)
         else:
             truly_deleted.append(path)
