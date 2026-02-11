@@ -211,11 +211,15 @@ def main() -> int:
         print("No published deleted content files found.")
         return 0
 
-    # Exclude files that currently exist (delete-then-recreate)
+    # Exclude files that currently exist (delete-then-recreate).
+    # Also handle foo.md -> foo/_index.md conversions (same URL in Hugo).
     still_exist = []
     truly_deleted = []
     for path in deleted_files:
-        if (repo_path / path).exists():
+        full = repo_path / path
+        if full.exists():
+            still_exist.append(path)
+        elif full.suffix == '.md' and (full.with_suffix('') / '_index.md').exists():
             still_exist.append(path)
         else:
             truly_deleted.append(path)
