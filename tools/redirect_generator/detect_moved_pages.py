@@ -311,6 +311,27 @@ def main():
         print("No renames of published files found")
         return 0
 
+    # Skip renames where the source URL is still served (e.g. foo.md -> foo/_index.md).
+    # Use case-insensitive matching since Hugo lowercases all URLs.
+    content_dir = repo_path / 'content'
+    existing_paths = {
+        p.relative_to(content_dir).as_posix().lower()
+        for p in content_dir.rglob('*.md')
+    }
+    preserved = []
+    for old_path, new_path in renames:
+        rel = old_path.removeprefix('content/').lower()
+        stem = rel.removesuffix('.md')
+        if rel in existing_paths or f"{stem}/_index.md" in existing_paths:
+            preserved.append((old_path, new_path))
+    if preserved:
+        print(f"  Skipping {len(preserved)} renames where source URL is still served")
+        renames = [(o, n) for o, n in renames if (o, n) not in preserved]
+
+    if not renames:
+        print("No redirects needed")
+        return 0
+
     print(f"Loading existing redirects from {args.output}...")
     existing = load_existing_redirects(output_path)
     print(f"  Found {len(existing)} existing redirects")
