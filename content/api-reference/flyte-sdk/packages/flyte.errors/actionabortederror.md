@@ -1,6 +1,6 @@
 ---
 title: ActionAbortedError
-version: 2.0.0b54
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -10,6 +10,7 @@ layout: py_api
 **Package:** `flyte.errors`
 
 This error is raised when an action was aborted, externally. The parent action will raise this error.
+
 
 
 ```python

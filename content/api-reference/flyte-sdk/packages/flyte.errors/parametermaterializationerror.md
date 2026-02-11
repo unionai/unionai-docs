@@ -1,6 +1,6 @@
 ---
 title: ParameterMaterializationError
-version: 2.0.0b54
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -11,6 +11,7 @@ layout: py_api
 
 This error is raised when the user tries to use a Parameter in an App, that has delayed Materialization,
 but the materialization fails.
+
 
 
 ```python

@@ -1,6 +1,6 @@
 ---
 title: flyte.extend
-version: 2.0.0b54
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -22,8 +22,8 @@ sidebar_expanded: true
 
 | Protocol | Description |
 |-|-|
-| [`ImageBuilder`](../flyte.extend/imagebuilder) | Base class for protocol classes. |
-| [`ImageChecker`](../flyte.extend/imagechecker) | Base class for protocol classes. |
+| [`ImageBuilder`](../flyte.extend/imagebuilder) |  |
+| [`ImageChecker`](../flyte.extend/imagechecker) |  |
 
 ### Methods
 

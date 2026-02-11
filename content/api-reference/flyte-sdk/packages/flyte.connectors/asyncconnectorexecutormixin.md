@@ -1,6 +1,6 @@
 ---
 title: AsyncConnectorExecutorMixin
-version: 2.0.0b54
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -11,6 +11,7 @@ layout: py_api
 
 This mixin class is used to run the connector task locally, and it's only used for local execution.
 Task should inherit from this class if the task can be run in the connector.
+
 
 
 ## Methods

@@ -1,6 +1,6 @@
 ---
 title: AppEndpoint
-version: 2.0.0b54
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,6 +14,7 @@ Embed an upstream app's endpoint as an app parameter.
 This enables the declaration of an app parameter dependency on a the endpoint of
 an upstream app, given by a specific app name. This gives the app access to
 the upstream app's endpoint as a public or private url.
+
 
 
 ```python
