@@ -1,6 +1,6 @@
 ---
 title: ImageBuild
-version: 2.0.0b55
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -16,6 +16,7 @@ Attributes:
         and hasn't completed yet.
     remote_run: The Run object that kicked off an image build job when using the remote
         builder. None when using the local builder.
+
 
 
 ```python

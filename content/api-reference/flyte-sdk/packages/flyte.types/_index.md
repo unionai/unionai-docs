@@ -1,6 +1,6 @@
 ---
 title: flyte.types
-version: 2.0.0b55
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -42,13 +42,13 @@ It is always possible to bypass the type system and use the `FlytePickle` type t
 
 | Protocol | Description |
 |-|-|
-| [`Renderable`](../flyte.types/renderable) | Base class for protocol classes. |
+| [`Renderable`](../flyte.types/renderable) |  |
 
 ### Errors
 
 | Exception | Description |
 |-|-|
-| [`TypeTransformerFailedError`](../flyte.types/typetransformerfailederror) | Inappropriate argument type. |
+| [`TypeTransformerFailedError`](../flyte.types/typetransformerfailederror) |  |
 
 ### Methods
 

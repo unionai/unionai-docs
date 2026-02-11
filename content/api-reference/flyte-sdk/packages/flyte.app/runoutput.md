@@ -1,6 +1,6 @@
 ---
 title: RunOutput
-version: 2.0.0b55
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -43,6 +43,7 @@ Get the output of a specific task run:
 ```python
 run_output = RunOutput(type="file", task_name="env.my_task", task_version="xyz")
 ```
+
 
 
 ```python

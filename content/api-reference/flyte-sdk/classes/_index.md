@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b55
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -72,6 +72,7 @@ sidebar_expanded: true
 | [`flyte.errors.SlowDownError`](../packages/flyte.errors/slowdownerror) |This error is raised when the user tries to access a resource that does not exist or is invalid. |
 | [`flyte.errors.TaskInterruptedError`](../packages/flyte.errors/taskinterruptederror) |This error is raised when the underlying task execution is interrupted. |
 | [`flyte.errors.TaskTimeoutError`](../packages/flyte.errors/tasktimeouterror) |This error is raised when the underlying task execution runs for longer than the specified timeout. |
+| [`flyte.errors.TraceDoesNotAllowNestedTasksError`](../packages/flyte.errors/tracedoesnotallownestedtaskserror) |This error is raised when the user tries to use a task from within a trace. |
 | [`flyte.errors.UnionRpcError`](../packages/flyte.errors/unionrpcerror) |This error is raised when communication with the Union server fails. |
 | [`flyte.extend.AsyncFunctionTaskTemplate`](../packages/flyte.extend/asyncfunctiontasktemplate) |A task template that wraps an asynchronous functions. |
 | [`flyte.extend.ImageBuildEngine`](../packages/flyte.extend/imagebuildengine) |ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
@@ -81,8 +82,8 @@ sidebar_expanded: true
 | [`flyte.io.DataFrame`](../packages/flyte.io/dataframe) |A Flyte meta DataFrame object, that wraps all other dataframe types (usually available as plugins, pandas. |
 | [`flyte.io.Dir`](../packages/flyte.io/dir) |A generic directory class representing a directory with files of a specified format. |
 | [`flyte.io.File`](../packages/flyte.io/file) |A generic file class representing a file with a specified format. |
-| [`flyte.io.extend.DataFrameDecoder`](../packages/flyte.io.extend/dataframedecoder) |Helper class that provides a standard way to create an ABC using. |
-| [`flyte.io.extend.DataFrameEncoder`](../packages/flyte.io.extend/dataframeencoder) |Helper class that provides a standard way to create an ABC using. |
+| [`flyte.io.extend.DataFrameDecoder`](../packages/flyte.io.extend/dataframedecoder) | |
+| [`flyte.io.extend.DataFrameEncoder`](../packages/flyte.io.extend/dataframeencoder) | |
 | [`flyte.io.extend.DataFrameTransformerEngine`](../packages/flyte.io.extend/dataframetransformerengine) |Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
 | [`flyte.models.ActionID`](../packages/flyte.models/actionid) |A class representing the ID of an Action, nested within a Run. |
 | [`flyte.models.ActionPhase`](../packages/flyte.models/actionphase) |Represents the execution phase of a Flyte action (run). |
@@ -102,7 +103,7 @@ sidebar_expanded: true
 | [`flyte.remote.ActionDetails`](../packages/flyte.remote/actiondetails) |A class representing an action. |
 | [`flyte.remote.ActionInputs`](../packages/flyte.remote/actioninputs) |A class representing the inputs of an action. |
 | [`flyte.remote.ActionOutputs`](../packages/flyte.remote/actionoutputs) |A class representing the outputs of an action. |
-| [`flyte.remote.App`](../packages/flyte.remote/app) |A mixin class that provides a method to convert an object to a JSON-serializable dictionary. |
+| [`flyte.remote.App`](../packages/flyte.remote/app) | |
 | [`flyte.remote.Project`](../packages/flyte.remote/project) |A class representing a project in the Union API. |
 | [`flyte.remote.Run`](../packages/flyte.remote/run) |A class representing a run of a task. |
 | [`flyte.remote.RunDetails`](../packages/flyte.remote/rundetails) |A class representing a run of a task. |
@@ -120,13 +121,14 @@ sidebar_expanded: true
 | [`flyte.types.FlytePickle`](../packages/flyte.types/flytepickle) |This type is only used by flytekit internally. |
 | [`flyte.types.TypeEngine`](../packages/flyte.types/typeengine) |Core Extensible TypeEngine of Flytekit. |
 | [`flyte.types.TypeTransformer`](../packages/flyte.types/typetransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
-| [`flyte.types.TypeTransformerFailedError`](../packages/flyte.types/typetransformerfailederror) |Inappropriate argument type. |
+| [`flyte.types.TypeTransformerFailedError`](../packages/flyte.types/typetransformerfailederror) | |
 # Protocols
 
 | Protocol | Description |
 |-|-|
-| [`flyte.CachePolicy`](../packages/flyte/cachepolicy) |Base class for protocol classes. |
-| [`flyte.Link`](../packages/flyte/link) |Base class for protocol classes. |
-| [`flyte.extend.ImageBuilder`](../packages/flyte.extend/imagebuilder) |Base class for protocol classes. |
-| [`flyte.extend.ImageChecker`](../packages/flyte.extend/imagechecker) |Base class for protocol classes. |
-| [`flyte.types.Renderable`](../packages/flyte.types/renderable) |Base class for protocol classes. |
+| [`flyte.AppHandle`](../packages/flyte/apphandle) |Protocol defining the common interface between local and remote app handles. |
+| [`flyte.CachePolicy`](../packages/flyte/cachepolicy) | |
+| [`flyte.Link`](../packages/flyte/link) | |
+| [`flyte.extend.ImageBuilder`](../packages/flyte.extend/imagebuilder) | |
+| [`flyte.extend.ImageChecker`](../packages/flyte.extend/imagechecker) | |
+| [`flyte.types.Renderable`](../packages/flyte.types/renderable) | |

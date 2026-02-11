@@ -1,6 +1,6 @@
 ---
 title: FastAPIPassthroughAuthMiddleware
-version: 2.0.0b55
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -29,6 +29,7 @@ Thread Safety:
     This middleware is async-safe and properly isolates auth metadata per request
     using Python's contextvars. Multiple concurrent requests with different
     authentication will not interfere with each other.
+
 
 
 ```python

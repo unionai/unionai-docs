@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b55
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -37,8 +37,9 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 
 | Protocol | Description |
 |-|-|
-| [`CachePolicy`](../flyte/cachepolicy) | Base class for protocol classes. |
-| [`Link`](../flyte/link) | Base class for protocol classes. |
+| [`AppHandle`](../flyte/apphandle) | Protocol defining the common interface between local and remote app handles. |
+| [`CachePolicy`](../flyte/cachepolicy) |  |
+| [`Link`](../flyte/link) |  |
 
 ### Methods
 
@@ -374,6 +375,7 @@ def init(
     source_config_path: Optional[Path],
     sync_local_sys_paths: bool,
     load_plugin_type_transformers: bool,
+    local_persistence: bool,
 )
 ```
 Initialize the Flyte system with the given configuration. This method should be called before any other Flyte
@@ -410,7 +412,8 @@ remote API methods are called. Thread-safe implementation.
 | `images` | `typing.Dict[str, str] \| None` | Optional dict of images that can be used by referencing the image name. |
 | `source_config_path` | `Optional[Path]` | Optional path to the source configuration file (This is only used for documentation) |
 | `sync_local_sys_paths` | `bool` | Whether to include and synchronize local sys.path entries under the root directory into the remote container (default: True). |
-| `load_plugin_type_transformers` | `bool` | If enabled (default True), load the type transformer plugins registered under the "flyte.plugins.types" entry point group. :return: None |
+| `load_plugin_type_transformers` | `bool` | If enabled (default True), load the type transformer plugins registered under the "flyte.plugins.types" entry point group. |
+| `local_persistence` | `bool` | Whether to enable SQLite persistence for local run metadata (default :return: None |
 
 #### init_from_api_key()
 
@@ -618,7 +621,7 @@ Run a task with the given parameters
 ```python
 def serve(
     app_env: 'AppEnvironment',
-) -> 'App'
+) -> AppHandle
 ```
 Serve a Flyte app using an AppEnvironment.
 
@@ -748,6 +751,7 @@ if __name__ == "__main__":
 
 ```python
 def with_servecontext(
+    mode: ServeMode | None,
     version: Optional[str],
     copy_style: CopyFiles,
     dry_run: bool,
@@ -760,6 +764,11 @@ def with_servecontext(
     log_format: LogFormat,
     interactive_mode: bool | None,
     copy_bundle_to: pathlib.Path | None,
+    deactivate_timeout: float | None,
+    activate_timeout: float | None,
+    health_check_timeout: float | None,
+    health_check_interval: float | None,
+    health_check_path: str | None,
 ) -> _Serve
 ```
 Create a serve context with custom configuration.
@@ -767,15 +776,22 @@ Create a serve context with custom configuration.
 This function allows you to customize how an app is served, including
 overriding environment variables, cluster pool, logging, and other deployment settings.
 
-Example:
+Use ``mode="local"`` to serve the app on localhost (non-blocking) so you can
+immediately invoke tasks that call the app endpoint:
+
 ```python
-import logging
 import flyte
-from flyte.app.extras import FastAPIAppEnvironment
 
-env = FastAPIAppEnvironment(name="my-app", ...)
+local_app = flyte.with_servecontext(mode="local").serve(app_env)
+local_app.is_active()  # wait for the server to start
+# ... call tasks that use app_env.endpoint ...
+local_app.deactivate()
+```
 
-# Serve with custom env vars, logging, and cluster pool
+Use ``mode="remote"`` (or omit *mode* when a Flyte client is configured) to
+deploy the app to the Flyte backend:
+
+```python
 app = flyte.with_servecontext(
     env_vars={"DATABASE_URL": "postgresql://..."},
     log_level=logging.DEBUG,
@@ -792,6 +808,7 @@ print(f"App URL: {app.url}")
 
 | Parameter | Type | Description |
 |-|-|-|
+| `mode` | `ServeMode \| None` | "local" to run on localhost, "remote" to deploy to the Flyte backend. When ``None`` the mode is inferred from the current configuration. |
 | `version` | `Optional[str]` | Optional version override for the app deployment |
 | `copy_style` | `CopyFiles` | |
 | `dry_run` | `bool` | |
@@ -804,4 +821,9 @@ print(f"App URL: {app.url}")
 | `log_format` | `LogFormat` | |
 | `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are considered interactive mode, while scripts are not. This is used to determine how the code bundle is created. This is used to determine if the app should be served in interactive mode or not. |
 | `copy_bundle_to` | `pathlib.Path \| None` | When dry_run is True, the bundle will be copied to this location if specified |
+| `deactivate_timeout` | `float \| None` | Timeout in seconds for waiting for the app to stop during ``deactivate(wait=True)``. Defaults to 6 s. |
+| `activate_timeout` | `float \| None` | Total timeout in seconds when polling the health-check endpoint during ``activate(wait=True)``. Defaults to 60 s. |
+| `health_check_timeout` | `float \| None` | Per-request timeout in seconds for each health-check HTTP request. Defaults to 2 s. |
+| `health_check_interval` | `float \| None` | Interval in seconds between consecutive health-check polls. Defaults to 1 s. |
+| `health_check_path` | `str \| None` | URL path used for the local health-check probe (e.g. ``"/healthz"``). Defaults to ``"/health"``. |
 

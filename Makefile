@@ -4,7 +4,7 @@ PREFIX := $(if $(VERSION),docs/$(VERSION),docs)
 PORT := 9000
 BUILD := $(shell date +%s)
 
-.PHONY: all dist variant dev update-examples sync-examples llm-docs check-api-docs update-api-docs update-redirects dry-run-redirects deploy-redirects check-deleted-pages
+.PHONY: all dist variant dev update-examples sync-examples llm-docs check-api-docs update-api-docs update-redirects dry-run-redirects deploy-redirects check-deleted-pages check-links
 
 all: usage
 
@@ -27,6 +27,7 @@ dist: base
 	make update-redirects
 	-make check-deleted-pages
 	make update-api-docs
+	-make check-links
 	make variant VARIANT=flyte
 	# make variant VARIANT=serverless
 	make variant VARIANT=byoc
@@ -144,6 +145,13 @@ check-deleted-pages:
 		uv run tools/redirect_generator/check_deleted_pages.py; \
 	else \
 		python3 tools/redirect_generator/check_deleted_pages.py; \
+	fi
+
+check-links:
+	@if command -v uv >/dev/null 2>&1; then \
+		uv run tools/link_checker/check_internal_links.py; \
+	else \
+		python3 tools/link_checker/check_internal_links.py; \
 	fi
 
 check-api-docs:
