@@ -105,16 +105,27 @@ def run_git_command(args: List[str], cwd: Path) -> str:
     return result.stdout
 
 
+def resolve_main_ref(repo_path: Path) -> str:
+    """Resolve the main branch ref, preferring local 'main' then 'origin/main'."""
+    for ref in ['main', 'origin/main']:
+        result = run_git_command(['rev-parse', '--verify', ref], repo_path)
+        if result.strip():
+            return ref
+    print("Error: neither 'main' nor 'origin/main' ref found", file=sys.stderr)
+    sys.exit(1)
+
+
 def get_published_files(repo_path: Path) -> Set[str]:
     """Get all content files that have ever existed on main (i.e., were published)."""
+    main_ref = resolve_main_ref(repo_path)
     # Files currently on main
     current = run_git_command(
-        ['ls-tree', '-r', '--name-only', 'main', '--', 'content/'],
+        ['ls-tree', '-r', '--name-only', main_ref, '--', 'content/'],
         repo_path
     )
     # Files deleted on main (existed before but were removed)
     deleted_on_main = run_git_command(
-        ['log', 'main', '--diff-filter=D', '--name-only', '--format=', '--', 'content/'],
+        ['log', main_ref, '--diff-filter=D', '--name-only', '--format=', '--', 'content/'],
         repo_path
     )
     published = set()
