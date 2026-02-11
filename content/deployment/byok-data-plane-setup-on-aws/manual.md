@@ -1,7 +1,7 @@
 ---
 title: Manual setup on AWS
 weight: 2
-variants: -flyte -serverless +byoc +selfmanaged
+variants: -flyte -serverless -byoc +selfmanaged
 ---
 
 # Manual setup on AWS
