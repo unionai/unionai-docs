@@ -6,7 +6,7 @@ variants: -flyte -serverless -byoc +selfmanaged
 
 # Image Builder
 
-Union Image Builder supports the ability to build container images within the dataplane. Subsequently enabling the use of the `remote` builder type for any defined [Container Image](../../user-guide/task-configuration/container-images.md).
+Union Image Builder supports the ability to build container images within the dataplane. This enables the use of the `remote` builder type for any defined [Container Image](../../user-guide/task-configuration/container-images.md).
 
 Configure the use of remote image builder:
 ```bash
@@ -22,7 +22,7 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-> By default, Image Builder is disabled. And has to be enabled by configuring the builder type to `remote` in flyte config
+> By default, Image Builder is disabled and has to be enabled by configuring the builder type to `remote` in flyte config
 
 ## Requirements
 
@@ -47,7 +47,7 @@ imageBuilder:
   # -- E.g. "tcp://buildkitd.buildkit.svc.cluster.local:1234"
   buildkitUri: ""
 
-  # -- The default repository to publish images to "registry" is not specified with imagespec.
+  # -- The default repository to publish images to when "registry" is not specified in ImageSpec.
   # -- Note, the build-image task will fail unless "registry" is specified or a default repository is provided.
   defaultRepository: ""
 
@@ -74,9 +74,9 @@ imageBuilder:
 
 By default, Union is intended to be configured to use [IAM roles for service accounts (IRSA)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) for authentication. Setting `authenticationType` to `aws` configures Union image builder related services to use AWS default credential chain. Additionally, Union image builder uses [`docker-credential-ecr-login`](https://github.com/awslabs/amazon-ecr-credential-helper) to authenticate to the ecr repository configured with `defaultRepository`.
 
-`defaultRepository` should be the full qualified ecr repository namem `<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/<REPOSITORY_NAME>`.
+`defaultRepository` should be the fully qualified ECR repository name, e.g. `<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/<REPOSITORY_NAME>`.
 
-Therefore, it is necessary to configure the user role with permissions the following permissions.
+Therefore, it is necessary to configure the user role with the following permissions.
 
 ```json
 {
@@ -99,7 +99,7 @@ Therefore, it is necessary to configure the user role with permissions the follo
 }
 ```
 
-Simarly, the `operator-proxy` requires the following permissions
+Similarly, the `operator-proxy` requires the following permissions
 
 ```json
 {
@@ -213,7 +213,7 @@ By default, Union is designed to use Azure [Workload Identity Federation](https:
 
 Follow guidance in this section to integrate Image Builder with private registries:
 
-#### Github Container Registry
+#### GitHub Container Registry
 
 1. Follow the [GitHub guide](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) to log in to the registry locally.
 2. Create a Union secret:
