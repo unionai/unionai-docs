@@ -1,6 +1,6 @@
 ---
 title: VLLMShardArgs
-version: 2.0.0b54
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

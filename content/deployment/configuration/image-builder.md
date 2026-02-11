@@ -239,7 +239,7 @@ echo -n "your-username:your-token" | base64
 ```bash
 union create secret --type image-pull-secret --value-file <YOUR_JSON_CONFIG_FILE> <YOUR_SECRET_NAME>
 ```
-> This secret will be available to all projects and domains in your tenant. If you want to scope it down add --project and --domain. [Learn more about Union Secrets](../../user-guide/development-cycle/managing-secrets.md)
+> This secret will be available to all projects and domains in your tenant. If you want to scope it down add --project and --domain. [Learn more about Union Secrets](../../user-guide/task-configuration/secrets)
 
 4. Reference this secret in the Image object:
 

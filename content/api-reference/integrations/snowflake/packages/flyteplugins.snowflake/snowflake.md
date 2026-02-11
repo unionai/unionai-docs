@@ -1,6 +1,6 @@
 ---
 title: Snowflake
-version: 2.0.0b54
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -19,25 +19,29 @@ class Snowflake(
     query_template: str,
     plugin_config: flyteplugins.snowflake.task.SnowflakeConfig,
     inputs: typing.Optional[typing.Dict[str, typing.Type]],
-    output_dataframe_type: typing.Optional[typing.Type[flyte.io._dataframe.dataframe.DataFrame]],
+    output_dataframe_type: typing.Optional[typing.Type],
+    secret_group: typing.Optional[str],
     snowflake_private_key: typing.Optional[str],
     snowflake_private_key_passphrase: typing.Optional[str],
+    batch: bool,
     kwargs,
 )
 ```
-To be used to query Snowflake databases.
+Task to run parameterized SQL queries against Snowflake.
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | The name of this task, should be unique in the project |
-| `query_template` | `str` | The actual query to run. We use Flyte's Golang templating format for query templating. |
-| `plugin_config` | `flyteplugins.snowflake.task.SnowflakeConfig` | SnowflakeConfig object (includes connection_kwargs for additional parameters) |
-| `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | Name and type of inputs specified as an ordered dictionary |
-| `output_dataframe_type` | `typing.Optional[typing.Type[flyte.io._dataframe.dataframe.DataFrame]]` | If some data is produced by this query, then you can specify the output dataframe type. |
-| `snowflake_private_key` | `typing.Optional[str]` | The name of the secret containing the Snowflake private key for key-pair auth. |
-| `snowflake_private_key_passphrase` | `typing.Optional[str]` | The name of the secret containing the private key passphrase (if encrypted).  Note: For password authentication or other auth methods, pass them via plugin_config.connection_kwargs. |
+| `name` | `str` | The name of this task. |
+| `query_template` | `str` | The actual query to run. This can be parameterized using Python's printf-style string formatting with named parameters (e.g. %(param_name)s). |
+| `plugin_config` | `flyteplugins.snowflake.task.SnowflakeConfig` | `SnowflakeConfig` object containing connection metadata. |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | Name and type of inputs specified as a dictionary. |
+| `output_dataframe_type` | `typing.Optional[typing.Type]` | If some data is produced by this query, then you can specify the output dataframe type. |
+| `secret_group` | `typing.Optional[str]` | Optional group for secrets in the secret store. The environment variable name is auto-generated from ``{secret_group}_{key}``, uppercased with hyphens replaced by underscores. If omitted, the key alone is used. |
+| `snowflake_private_key` | `typing.Optional[str]` | The secret key for the Snowflake private key (key-pair auth). |
+| `snowflake_private_key_passphrase` | `typing.Optional[str]` | The secret key for the private key passphrase (if encrypted). |
+| `batch` | `bool` | When True, list inputs are expanded into a multi-row VALUES clause. The query_template should contain a single ``VALUES (%(col)s, ...)`` placeholder and each input should be a list of equal length. |
 | `kwargs` | `**kwargs` | |
 
 ## Properties

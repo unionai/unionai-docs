@@ -21,6 +21,7 @@ packages:
   flyte.syncify: /api-reference/flyte-sdk/packages/flyte.syncify/
   flyte.types: /api-reference/flyte-sdk/packages/flyte.types/
 identifiers:
+  flyte.AppHandle: /api-reference/flyte-sdk/packages/flyte/apphandle/
   flyte.Cache: /api-reference/flyte-sdk/packages/flyte/cache/
   flyte.CachePolicy: /api-reference/flyte-sdk/packages/flyte/cachepolicy/
   flyte.Cron: /api-reference/flyte-sdk/packages/flyte/cron/
@@ -85,6 +86,7 @@ identifiers:
   flyte.errors.SlowDownError: /api-reference/flyte-sdk/packages/flyte.errors/slowdownerror/
   flyte.errors.TaskInterruptedError: /api-reference/flyte-sdk/packages/flyte.errors/taskinterruptederror/
   flyte.errors.TaskTimeoutError: /api-reference/flyte-sdk/packages/flyte.errors/tasktimeouterror/
+  flyte.errors.TraceDoesNotAllowNestedTasksError: /api-reference/flyte-sdk/packages/flyte.errors/tracedoesnotallownestedtaskserror/
   flyte.errors.UnionRpcError: /api-reference/flyte-sdk/packages/flyte.errors/unionrpcerror/
   flyte.extend.AsyncFunctionTaskTemplate: /api-reference/flyte-sdk/packages/flyte.extend/asyncfunctiontasktemplate/
   flyte.extend.ImageBuildEngine: /api-reference/flyte-sdk/packages/flyte.extend/imagebuildengine/

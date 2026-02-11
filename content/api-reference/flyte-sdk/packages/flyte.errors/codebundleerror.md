@@ -1,6 +1,6 @@
 ---
 title: CodeBundleError
-version: 2.0.0b54
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -10,6 +10,7 @@ layout: py_api
 **Package:** `flyte.errors`
 
 This error is raised when the code bundle cannot be created, for example when no files are found to bundle.
+
 
 
 ```python

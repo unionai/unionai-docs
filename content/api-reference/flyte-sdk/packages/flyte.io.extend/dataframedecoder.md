@@ -1,6 +1,6 @@
 ---
 title: DataFrameDecoder
-version: 2.0.0b54
+version: 2.0.0b56
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -8,10 +8,6 @@ layout: py_api
 # DataFrameDecoder
 
 **Package:** `flyte.io.extend`
-
-Helper class that provides a standard way to create an ABC using
-inheritance.
-
 
 ```python
 class DataFrameDecoder(

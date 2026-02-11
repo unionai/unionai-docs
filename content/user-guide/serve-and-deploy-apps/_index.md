@@ -1,6 +1,6 @@
 ---
 title: Serve and deploy apps
-weight: 13
+weight: 14
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
 ---
@@ -67,5 +67,5 @@ flyte deploy path/to/app.py app_env
 - [**How app serving works**](./how-app-serving-works): Understanding the serve process and configuration options
 - [**How app deployment works**](./how-app-deployment-works): Understanding the deploy process and configuration options
 - [**Activating and deactivating apps**](./activating-and-deactivating-apps): Managing app lifecycle
-- [**Model training and serving**](../first-project/): Train a model with tasks and serve it via FastAPI
+- [**Model training and serving**](../basic-project/): Train a model with tasks and serve it via FastAPI
 - [**Prefetching models**](./prefetching-models): Download and shard HuggingFace models for vLLM and SGLang

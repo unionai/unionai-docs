@@ -57,7 +57,7 @@ def read_variants(repo_path: Path) -> List[str]:
     return variants
 
 
-def run_git_command(args: List[str], cwd: Path) -> str:
+def run_git_command(args: List[str], cwd: Path, quiet: bool = False) -> str:
     """Run a git command and return stdout."""
     result = subprocess.run(
         ['git'] + args,
@@ -66,9 +66,42 @@ def run_git_command(args: List[str], cwd: Path) -> str:
         text=True
     )
     if result.returncode != 0:
-        print(f"Git error: {result.stderr}", file=sys.stderr)
+        if not quiet:
+            print(f"Git error: {result.stderr}", file=sys.stderr)
         return ""
     return result.stdout
+
+
+def resolve_main_ref(repo_path: Path) -> str:
+    """Resolve the main branch ref, preferring local 'main' then 'origin/main'."""
+    for ref in ['main', 'origin/main']:
+        result = run_git_command(['rev-parse', '--verify', ref], repo_path, quiet=True)
+        if result.strip():
+            return ref
+    print("Error: neither 'main' nor 'origin/main' ref found", file=sys.stderr)
+    sys.exit(1)
+
+
+def get_published_files(repo_path: Path) -> Set[str]:
+    """Get all content files that have ever existed on main (i.e., were published)."""
+    main_ref = resolve_main_ref(repo_path)
+    # Files currently on main
+    current = run_git_command(
+        ['ls-tree', '-r', '--name-only', main_ref, '--', 'content/'],
+        repo_path
+    )
+    # Files deleted on main (existed before but were removed)
+    deleted_on_main = run_git_command(
+        ['log', main_ref, '--diff-filter=D', '--name-only', '--format=', '--', 'content/'],
+        repo_path
+    )
+    published = set()
+    for output in [current, deleted_on_main]:
+        for line in output.strip().split('\n'):
+            line = line.strip()
+            if line and line.endswith('.md'):
+                published.add(line)
+    return published
 
 
 def detect_renames(repo_path: Path) -> List[Tuple[str, str]]:
@@ -152,8 +185,10 @@ def generate_redirect_entries(
             old_url = content_path_to_url(old_path, variant, version)
             new_url = content_path_to_url(new_path, variant, version)
 
-            # Skip self-redirects (rename resolved to same URL)
-            if old_url == new_url:
+            # Skip self-redirects (rename resolved to same URL).
+            # Case-insensitive comparison because Hugo lowercases all URL paths
+            # by default, so case-only renames don't change the published URL.
+            if old_url.lower() == new_url.lower():
                 continue
 
             # Skip if redirect already exists
@@ -263,6 +298,17 @@ def main():
 
     if not renames:
         print("No renames found")
+        return 0
+
+    # Filter to only renames where the source was published on main
+    published_files = get_published_files(repo_path)
+    unpublished_renames = [(o, n) for o, n in renames if o not in published_files]
+    renames = [(o, n) for o, n in renames if o in published_files]
+    if unpublished_renames:
+        print(f"  Skipping {len(unpublished_renames)} renames of files never published on main")
+
+    if not renames:
+        print("No renames of published files found")
         return 0
 
     print(f"Loading existing redirects from {args.output}...")
