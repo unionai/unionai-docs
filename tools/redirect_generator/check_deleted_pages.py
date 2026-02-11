@@ -91,7 +91,7 @@ def load_existing_redirects(csv_path: Path) -> Dict[str, str]:
     return existing
 
 
-def run_git_command(args: List[str], cwd: Path) -> str:
+def run_git_command(args: List[str], cwd: Path, quiet: bool = False) -> str:
     """Run a git command and return stdout."""
     result = subprocess.run(
         ['git'] + args,
@@ -100,7 +100,8 @@ def run_git_command(args: List[str], cwd: Path) -> str:
         text=True
     )
     if result.returncode != 0:
-        print(f"Git error: {result.stderr}", file=sys.stderr)
+        if not quiet:
+            print(f"Git error: {result.stderr}", file=sys.stderr)
         return ""
     return result.stdout
 
@@ -108,7 +109,7 @@ def run_git_command(args: List[str], cwd: Path) -> str:
 def resolve_main_ref(repo_path: Path) -> str:
     """Resolve the main branch ref, preferring local 'main' then 'origin/main'."""
     for ref in ['main', 'origin/main']:
-        result = run_git_command(['rev-parse', '--verify', ref], repo_path)
+        result = run_git_command(['rev-parse', '--verify', ref], repo_path, quiet=True)
         if result.strip():
             return ref
     print("Error: neither 'main' nor 'origin/main' ref found", file=sys.stderr)
