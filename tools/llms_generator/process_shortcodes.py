@@ -6,7 +6,7 @@ This script post-processes Hugo-generated markdown files to convert shortcodes
 into clean markdown equivalents.
 
 Usage:
-    python process_shortcodes.py --variant=byoc --version=v2 --input-dir=dist/docs/v2/byoc/tmp-md --output-dir=dist/docs/v2/byoc/md
+    python process_shortcodes.py --variant=byoc --version=v2 --input-dir=dist/docs/v2/byoc/tmp-md --output-dir=dist/docs/v2/byoc
 """
 
 import argparse
@@ -606,7 +606,7 @@ class ShortcodeProcessor:
             try:
                 if base_url.startswith('/'):
                     # Absolute path from site root - convert to relative
-                    site_root = Path('dist/docs') / self.version / self.variant / 'md'
+                    site_root = Path('dist/docs') / self.version / self.variant
                     target_path = site_root / base_url.lstrip('/')
                 else:
                     # Relative path from current file
@@ -669,11 +669,11 @@ def main():
         print(f"Error: Input directory {input_dir} does not exist")
         return 1
 
-    # Create output directory (clear it first if it exists)
+    # Clean up any existing content.md files in the output tree
+    # (cannot rmtree since output_dir is the HTML dist tree)
     if output_dir.exists():
-        import shutil
-        shutil.rmtree(output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
+        for llm_file in output_dir.rglob('content.md'):
+            llm_file.unlink()
 
     processor = ShortcodeProcessor(args.variant, args.version, args.base_path, args.input_dir)
 
@@ -688,15 +688,14 @@ def main():
             str(rel_path).startswith('__docs_builder__/')):
             continue
 
-        # Change .txt extension to .md for output
-        output_rel_path = rel_path.with_suffix('.md')
-        output_file = output_dir / output_rel_path
+        # Write content.md alongside index.html in the same directory
+        output_file = output_dir / rel_path.parent / 'content.md'
 
-        # Create output directory if needed
+        # Create output directory if needed (should already exist from HTML build)
         output_file.parent.mkdir(parents=True, exist_ok=True)
 
         if not quiet:
-            print(f"Processing: {rel_path} -> {output_rel_path}")
+            print(f"Processing: {rel_path} -> {rel_path.parent / 'content.md'}")
 
         try:
             processed_content = processor.process_file(md_file)
@@ -707,16 +706,16 @@ def main():
         except Exception as e:
             print(f"Error processing {rel_path}: {e}")
 
-    # Create root index.md if it doesn't exist
-    root_index = output_dir / 'index.md'
+    # Create root content.md if it doesn't exist
+    root_index = output_dir / 'content.md'
     if not root_index.exists():
         if not quiet:
-            print("Creating root index.md...")
+            print("Creating root content.md...")
 
-        # Get top-level directories to list in root navigation
+        # Get top-level directories that have content.md (doc sections only)
         top_level_dirs = []
         for item in output_dir.iterdir():
-            if item.is_dir() and not item.name.startswith('_') and item.name != '404':
+            if item.is_dir() and (item / 'content.md').exists():
                 top_level_dirs.append(item.name)
 
         # Sort directories by priority (User Guide first, Release Notes last)
@@ -756,20 +755,16 @@ Welcome to the documentation.
 
         root_content += f"""
 ---
-**Source**: _index.md
-**URL**: /docs/{args.version}/{args.variant}/
+**Source**: https://github.com/unionai/unionai-docs/blob/main/content/_index.md
+**HTML**: https://www.union.ai/docs/{args.version}/{args.variant}/
 """
 
         with open(root_index, 'w', encoding='utf-8') as f:
             f.write(root_content)
 
-    # Restructure single pages (directories with only index.txt)
-    # to be named files instead of directory/index.txt
-    restructure_single_pages(output_dir, quiet)
-
-    # Now that the final structure is in place, fix all internal links
+    # Fix all internal links to point to content.md files
     if not quiet:
-        print("Converting internal links to proper .md references...")
+        print("Converting internal links to content.md references...")
     fix_internal_links_post_processing(output_dir, args.variant, quiet)
 
     # Note: Link checking is now done in build_llm_docs.py during llms-full.txt generation
@@ -780,49 +775,6 @@ Welcome to the documentation.
     return 0
 
 
-def restructure_single_pages(output_dir: Path, quiet: bool = False):
-    """
-    Restructure single pages from {dir}/index.md to {parent}/{dirname}.md
-    for directories that only contain index.md (no subdirectories or other files).
-    """
-    if not quiet:
-        print("Restructuring single pages...")
-
-    # Find all directories that contain only index.md
-    single_page_dirs = []
-
-    for root, dirs, files in os.walk(output_dir):
-        root_path = Path(root)
-
-        # Skip the root output directory itself
-        if root_path == output_dir:
-            continue
-
-        # Check if this directory contains only index.md
-        if len(files) == 1 and files[0] == 'index.md' and len(dirs) == 0:
-            single_page_dirs.append(root_path)
-
-    # Process each single page directory
-    for dir_path in single_page_dirs:
-        index_file = dir_path / 'index.md'
-        parent_dir = dir_path.parent
-        new_filename = f"{dir_path.name}.md"
-        new_file_path = parent_dir / new_filename
-
-        if not quiet:
-            print(f"  Moving {index_file.relative_to(output_dir)} -> {new_file_path.relative_to(output_dir)}")
-
-        try:
-            # Move the index.md to the new location
-            index_file.rename(new_file_path)
-
-            # Remove the now-empty directory
-            dir_path.rmdir()
-
-        except Exception as e:
-            print(f"    Error restructuring {dir_path}: {e}")
-
-
 def fix_internal_links_post_processing(output_dir: Path, variant: str, quiet: bool = False):
     """
     Fix all internal links after the final file structure is in place.
@@ -831,10 +783,10 @@ def fix_internal_links_post_processing(output_dir: Path, variant: str, quiet: bo
     fixed_count = 0
     total_files = 0
 
-    for md_file in output_dir.rglob('*.md'):
+    for llm_file in output_dir.rglob('content.md'):
         total_files += 1
         try:
-            with open(md_file, 'r', encoding='utf-8') as f:
+            with open(llm_file, 'r', encoding='utf-8') as f:
                 content = f.read()
 
             original_content = content
@@ -859,12 +811,12 @@ def fix_internal_links_post_processing(output_dir: Path, variant: str, quiet: bo
                 if not base_url:  # Empty base URL means anchor-only
                     return match.group(0)
 
-                # Skip if it already points to a .md file
-                if base_url.endswith('.md'):
+                # Skip if it already points to a content.md file
+                if base_url.endswith('content.md'):
                     return match.group(0)
 
-                # Convert Hugo-style path to final .md file reference
-                current_dir = md_file.parent
+                # Convert Hugo-style path to content.md file reference
+                current_dir = llm_file.parent
                 try:
                     if base_url.startswith('/'):
                         # Absolute path - convert to relative from current file
@@ -874,38 +826,17 @@ def fix_internal_links_post_processing(output_dir: Path, variant: str, quiet: bo
                         # Relative path from current file
                         target_path = (current_dir / base_url).resolve()
 
-                    # Now check what actually exists in the final structure
-                    if target_path.exists():
-                        if target_path.is_dir():
-                            # Directory exists, link to index.md
-                            if (target_path / 'index.md').exists():
-                                rel_path = os.path.relpath(target_path / 'index.md', current_dir)
-                                fixed_count += 1
-                                return f'[{link_text}]({rel_path}{anchor})'
-                        elif target_path.is_file() and target_path.suffix == '.md':
-                            # .md file exists
-                            rel_path = os.path.relpath(target_path, current_dir)
-                            fixed_count += 1
-                            return f'[{link_text}]({rel_path}{anchor})'
-
-                    # Check if there's a corresponding .md file
-                    md_file_path = target_path.with_suffix('.md')
-                    if md_file_path.exists():
-                        rel_path = os.path.relpath(md_file_path, current_dir)
+                    # Every page is {dir}/content.md — check if target dir has one
+                    if target_path.is_dir() and (target_path / 'content.md').exists():
+                        rel_path = os.path.relpath(target_path / 'content.md', current_dir)
                         fixed_count += 1
                         return f'[{link_text}]({rel_path}{anchor})'
 
-                    # Check if there's a directory with index.md
-                    if (target_path / 'index.md').exists():
-                        rel_path = os.path.relpath(target_path / 'index.md', current_dir)
-                        fixed_count += 1
-                        return f'[{link_text}]({rel_path}{anchor})'
-
-                    # Special handling for directory links (ending with /)
-                    if base_url.endswith('/'):
-                        dir_path = target_path.parent / target_path.name.rstrip('/')
-                        if (dir_path / 'index.md').exists():
-                            rel_path = os.path.relpath(dir_path / 'index.md', current_dir)
+                    # For trailing-slash links, strip and try as directory
+                    if str(base_url).endswith('/'):
+                        clean_path = target_path.parent / target_path.name.rstrip('/')
+                        if clean_path.is_dir() and (clean_path / 'content.md').exists():
+                            rel_path = os.path.relpath(clean_path / 'content.md', current_dir)
                             fixed_count += 1
                             return f'[{link_text}]({rel_path}{anchor})'
 
@@ -920,11 +851,11 @@ def fix_internal_links_post_processing(output_dir: Path, variant: str, quiet: bo
 
             # Write back if changed
             if content != original_content:
-                with open(md_file, 'w', encoding='utf-8') as f:
+                with open(llm_file, 'w', encoding='utf-8') as f:
                     f.write(content)
 
         except Exception as e:
-            print(f"Error fixing links in {md_file.relative_to(output_dir)}: {e}")
+            print(f"Error fixing links in {llm_file.relative_to(output_dir)}: {e}")
 
     if not quiet:
         print(f"Fixed {fixed_count} internal links across {total_files} files")
