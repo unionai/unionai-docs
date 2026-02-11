@@ -1,14 +1,14 @@
 ---
-title: Data plane setup on AWS
-weight: 4
+title: Manual setup on AWS
+weight: 2
 variants: -flyte -serverless -byoc +selfmanaged
 ---
 
-# Data plane setup on AWS
+# Manual setup on AWS
 
-{{< key product_name >}}’s modular architecture allows for great flexibility and control.
+{{< key product_name >}}'s modular architecture allows for great flexibility and control.
 The customer can decide how many clusters to have, their shape, and who has access to what.
-All communication is encrypted.  The Union architecture is described on the [Architecture](./architecture) page.
+All communication is encrypted.  The Union architecture is described on the [Architecture](../architecture) page.
 
 ## Assumptions
 
@@ -17,12 +17,12 @@ All communication is encrypted.  The Union architecture is described on the [Arc
 * You have a Kubernetes cluster, running one of the most recent three minor K8s versions.
   [Learn more](https://kubernetes.io/releases/version-skew-policy/)
 * You have configured an S3 bucket.
-* You have an IAM Role, Trust Policy and OIDC provider configured as indicated in the [AWS section in Cluster Recommendations](./cluster-recommendations#aws) section.
+* You have an IAM Role, Trust Policy and OIDC provider configured as indicated in the [AWS section in Cluster Recommendations](../cluster-recommendations#aws) section.
 
 ## Prerequisites
 
 * Install [Helm 3](https://helm.sh/docs/intro/install/).
-* Install [uctl](../api-reference/uctl-cli).
+* Install [uctl](../../api-reference/uctl-cli).
 
 ## Deploy the {{< key product_name >}} operator
 
@@ -83,7 +83,7 @@ All communication is encrypted.  The Union architecture is described on the [Arc
    * Create the `EAGER_API_KEY` as instructed in Step 7 of the command output. This step is required for every dataplane you plan to use for v2 executions.
 
 3. Update the values file correctly:
-   For example, `<UNION_FLYTE_ROLE_ARN>` is the ARN of the new IAM role created in the [AWS Cluster Recommendations](./cluster-recommendations#iam)
+   For example, `<UNION_FLYTE_ROLE_ARN>` is the ARN of the new IAM role created in the [AWS Cluster Recommendations](../cluster-recommendations#iam)
 
 4. Optionally configure the resource `limits` and `requests` for the different services.
    By default, these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.
