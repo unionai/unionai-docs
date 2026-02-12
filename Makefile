@@ -87,9 +87,9 @@ validate-urls:
 		echo "Checking $$variant..."; \
 		if [ -d "dist/docs/${VERSION}/$$variant" ]; then \
 			if command -v uv >/dev/null 2>&1; then \
-				uv run python3 validate_urls.py dist/docs/${VERSION}/$$variant; \
+				uv run python3 tools/validate_urls.py dist/docs/${VERSION}/$$variant; \
 			else \
-				python3 validate_urls.py dist/docs/${VERSION}/$$variant; \
+				python3 tools/validate_urls.py dist/docs/${VERSION}/$$variant; \
 			fi; \
 		else \
 			echo "No processed markdown found for $$variant"; \
@@ -102,9 +102,9 @@ url-stats:
 		echo "=== $$variant ==="; \
 		if [ -d "dist/docs/${VERSION}/$$variant" ]; then \
 			if command -v uv >/dev/null 2>&1; then \
-				uv run python3 validate_urls.py dist/docs/${VERSION}/$$variant --stats; \
+				uv run python3 tools/validate_urls.py dist/docs/${VERSION}/$$variant --stats; \
 			else \
-				python3 validate_urls.py dist/docs/${VERSION}/$$variant --stats; \
+				python3 tools/validate_urls.py dist/docs/${VERSION}/$$variant --stats; \
 			fi; \
 		else \
 			echo "No processed markdown found for $$variant"; \
