@@ -252,7 +252,15 @@ def resolve_relative_link(link_path: str, source_file: Path, content_dir: Path,
     # Handle explicit _index references: ./section/_index -> ./section
     if clean_path.endswith("/_index"):
         clean_path = clean_path[:-len("/_index")]
-    resolved = (source_dir / clean_path).resolve()
+
+    # Match the render hook (rel-link.html): from a non-index (leaf) page,
+    # bare ../ refers to the section's _index (content parent), not the
+    # filesystem parent directory.
+    is_index = source_file.name == "_index.md"
+    if not is_index and clean_path == "..":
+        resolved = source_dir.resolve()
+    else:
+        resolved = (source_dir / clean_path).resolve()
 
     try:
         rel_to_content = resolved.relative_to(content_dir.resolve())
