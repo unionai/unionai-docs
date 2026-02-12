@@ -32,10 +32,6 @@
     {{- else if (hasSuffix page "_index.md") -}}
         {{/* From index page - relative to current directory */}}
         {{- $link = printf "%s%s%s" page.RelPermalink $path $fragment -}}
-    {{- else if or (eq $path "..") (eq $path "../") -}}
-        {{/* From non-index page, bare ../ means section index (content parent).
-             Don't add extra ../ — the page URL already has an extra level. */}}
-        {{- $link = printf "%s../%s" page.RelPermalink $fragment -}}
     {{- else -}}
         {{/* From non-index page - go up one level first */}}
         {{- $link = printf "%s../%s%s" page.RelPermalink $path $fragment -}}
