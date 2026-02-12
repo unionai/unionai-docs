@@ -44,7 +44,7 @@ variant:
 			--variant=${VARIANT} \
 			--version=${VERSION} \
 			--input-dir=dist/docs/${VERSION}/${VARIANT}/tmp-md \
-			--output-dir=dist/docs/${VERSION}/${VARIANT}/md \
+			--output-dir=dist/docs/${VERSION}/${VARIANT} \
 			--base-path=. \
 			--quiet; \
 		else \
@@ -52,10 +52,11 @@ variant:
 			--variant=${VARIANT} \
 			--version=${VERSION} \
 			--input-dir=dist/docs/${VERSION}/${VARIANT}/tmp-md \
-			--output-dir=dist/docs/${VERSION}/${VARIANT}/md \
+			--output-dir=dist/docs/${VERSION}/${VARIANT} \
 			--base-path=. \
 			--quiet; \
-		fi \
+		fi; \
+		rm -rf dist/docs/${VERSION}/${VARIANT}/tmp-md; \
 	fi
 
 dev:
@@ -84,11 +85,11 @@ validate-urls:
 	@echo "Validating URLs across all variants..."
 	@for variant in flyte byoc serverless selfmanaged; do \
 		echo "Checking $$variant..."; \
-		if [ -d "dist/docs/${VERSION}/$$variant/md" ]; then \
+		if [ -d "dist/docs/${VERSION}/$$variant" ]; then \
 			if command -v uv >/dev/null 2>&1; then \
-				uv run python3 validate_urls.py dist/docs/${VERSION}/$$variant/md; \
+				uv run python3 tools/validate_urls.py dist/docs/${VERSION}/$$variant; \
 			else \
-				python3 validate_urls.py dist/docs/${VERSION}/$$variant/md; \
+				python3 tools/validate_urls.py dist/docs/${VERSION}/$$variant; \
 			fi; \
 		else \
 			echo "No processed markdown found for $$variant"; \
@@ -99,11 +100,11 @@ url-stats:
 	@echo "URL statistics across all variants:"
 	@for variant in flyte byoc serverless selfmanaged; do \
 		echo "=== $$variant ==="; \
-		if [ -d "dist/docs/${VERSION}/$$variant/md" ]; then \
+		if [ -d "dist/docs/${VERSION}/$$variant" ]; then \
 			if command -v uv >/dev/null 2>&1; then \
-				uv run python3 validate_urls.py dist/docs/${VERSION}/$$variant/md --stats; \
+				uv run python3 tools/validate_urls.py dist/docs/${VERSION}/$$variant --stats; \
 			else \
-				python3 validate_urls.py dist/docs/${VERSION}/$$variant/md --stats; \
+				python3 tools/validate_urls.py dist/docs/${VERSION}/$$variant --stats; \
 			fi; \
 		else \
 			echo "No processed markdown found for $$variant"; \
@@ -116,10 +117,6 @@ llm-docs:
 	else \
 		VERSION=${VERSION} python3 tools/llms_generator/build_llm_docs.py --no-make-dist --quiet; \
 	fi
-	@for variant in flyte byoc selfmanaged; do \
-		mkdir -p dist/docs/${VERSION}/$$variant/_static/public; \
-		cp dist/docs/${VERSION}/$$variant/llms-full.txt dist/docs/${VERSION}/$$variant/_static/public/llms-full.txt; \
-	done
 
 update-redirects:
 	@echo "Detecting moved pages and appending to redirects.csv..."

@@ -1,8 +1,0 @@
-LICENSE
-README.md
-pyproject.toml
-unionai_docs_tools.egg-info/PKG-INFO
-unionai_docs_tools.egg-info/SOURCES.txt
-unionai_docs_tools.egg-info/dependency_links.txt
-unionai_docs_tools.egg-info/requires.txt
-unionai_docs_tools.egg-info/top_level.txt

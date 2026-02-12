@@ -23,3 +23,6 @@ deployment/architecture/overview\.md:\.\./configuring-your-data-plane
 
 # OpenAI page intentionally excludes serverless variant
 integrations/_index\.md:\./openai
+
+# content.md links on flyte-context page (build artifact, not a Hugo page)
+flyte-context\.md:content\.md

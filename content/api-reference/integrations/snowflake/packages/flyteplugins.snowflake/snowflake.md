@@ -1,6 +1,6 @@
 ---
 title: Snowflake
-version: 2.0.0b56
+version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -8,10 +8,6 @@ layout: py_api
 # Snowflake
 
 **Package:** `flyteplugins.snowflake`
-
-This mixin class is used to run the connector task locally, and it's only used for local execution.
-Task should inherit from this class if the task can be run in the connector.
-
 
 ```python
 class Snowflake(

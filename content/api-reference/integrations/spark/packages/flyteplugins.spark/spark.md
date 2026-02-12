@@ -1,6 +1,6 @@
 ---
 title: Spark
-version: 2.0.0b56
+version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -19,6 +19,7 @@ Attributes:
     applications_path (Optional[str]): Path to the main application file.
     driver_pod (Optional[PodTemplate]): Pod template for the driver pod.
     executor_pod (Optional[PodTemplate]): Pod template for the executor pods.
+
 
 
 ```python

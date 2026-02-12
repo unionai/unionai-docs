@@ -1,6 +1,6 @@
 ---
 title: Weights & Biases
-version: 2.0.0b56
+version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

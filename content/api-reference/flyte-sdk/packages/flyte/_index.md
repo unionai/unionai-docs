@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b56
+version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -54,6 +54,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`build_images()`](#build_images) | Build the images for the given environments. |
 | [`ctx()`](#ctx) | Returns flyte. |
 | [`current_domain()`](#current_domain) | Returns the current domain from Runtime environment (on the cluster) or from the initialized configuration. |
+| [`current_project()`](#current_project) | Returns the current project from the Runtime environment (on the cluster) or from the initialized configuration. |
 | [`custom_context()`](#custom_context) | Synchronous context manager to set input context for tasks spawned within this block. |
 | [`deploy()`](#deploy) | Deploy the given environment or list of environments. |
 | [`get_custom_context()`](#get_custom_context) | Get the current input context. |
@@ -225,6 +226,20 @@ NOTE: This will not work if you deploy a task to a domain and then run it in ano
 
 Raises InitializationError if the configuration is not initialized or domain is not set.
 :return: The current domain
+
+
+#### current_project()
+
+```python
+def current_project()
+```
+Returns the current project from the Runtime environment (on the cluster) or from the initialized configuration.
+This is safe to be used during `deploy`, `run` and within `task` code.
+
+NOTE: This will not work if you deploy a task to a project and then run it in another project.
+
+Raises InitializationError if the configuration is not initialized or project is not set.
+:return: The current project
 
 
 #### custom_context()

@@ -8,6 +8,9 @@ Sitemap: {{ .Site.BaseURL }}sitemap.xml
 Disallow: /admin/
 Disallow: /private/
 Disallow: /_internal/
+Disallow: /*/content.md
+Allow: /*/llms.txt
+Allow: /*/llms-full.txt
 
 # Allow search engines to crawl CSS and JS files
 Allow: /css/
