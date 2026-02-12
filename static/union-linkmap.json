@@ -1,5 +1,7 @@
 {
   "identifiers": {
+    "flyteplugins.union.remote.ApiKey": "/api-reference/integrations/union/packages/flyteplugins.union.remote/apikey/",
+    "ApiKey": "/api-reference/integrations/union/packages/flyteplugins.union.remote/apikey/",
     "flyteplugins.union.utils.auth.AppClientCredentials": "/api-reference/integrations/union/packages/flyteplugins.union.utils.auth/appclientcredentials/",
     "AppClientCredentials": "/api-reference/integrations/union/packages/flyteplugins.union.utils.auth/appclientcredentials/"
   },

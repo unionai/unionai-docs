@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.union.utils.auth
-version: 0.1.0
+version: 0.1.1
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.polars.df_transformer
-version: 2.0.0b56
+version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,10 +13,10 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ParquetToPolarsDecodingHandler`](../flyteplugins.polars.df_transformer/parquettopolarsdecodinghandler) | Helper class that provides a standard way to create an ABC using. |
-| [`ParquetToPolarsLazyFrameDecodingHandler`](../flyteplugins.polars.df_transformer/parquettopolarslazyframedecodinghandler) | Helper class that provides a standard way to create an ABC using. |
-| [`PolarsLazyFrameToParquetEncodingHandler`](../flyteplugins.polars.df_transformer/polarslazyframetoparquetencodinghandler) | Helper class that provides a standard way to create an ABC using. |
-| [`PolarsToParquetEncodingHandler`](../flyteplugins.polars.df_transformer/polarstoparquetencodinghandler) | Helper class that provides a standard way to create an ABC using. |
+| [`ParquetToPolarsDecodingHandler`](../flyteplugins.polars.df_transformer/parquettopolarsdecodinghandler) |  |
+| [`ParquetToPolarsLazyFrameDecodingHandler`](../flyteplugins.polars.df_transformer/parquettopolarslazyframedecodinghandler) |  |
+| [`PolarsLazyFrameToParquetEncodingHandler`](../flyteplugins.polars.df_transformer/polarslazyframetoparquetencodinghandler) |  |
+| [`PolarsToParquetEncodingHandler`](../flyteplugins.polars.df_transformer/polarstoparquetencodinghandler) |  |
 
 ### Methods
 

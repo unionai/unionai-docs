@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.snowflake
-version: 2.0.0b56
+version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
 | Class | Description |
 |-|-|
-| [`Snowflake`](../flyteplugins.snowflake/snowflake) | This mixin class is used to run the connector task locally, and it's only used for local execution. |
+| [`Snowflake`](../flyteplugins.snowflake/snowflake) |  |
 | [`SnowflakeConfig`](../flyteplugins.snowflake/snowflakeconfig) | Configure a Snowflake Task using a `SnowflakeConfig` object. |
-| [`SnowflakeConnector`](../flyteplugins.snowflake/snowflakeconnector) | This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
+| [`SnowflakeConnector`](../flyteplugins.snowflake/snowflakeconnector) |  |
 

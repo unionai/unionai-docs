@@ -1,6 +1,6 @@
 ---
 title: SnowflakeConnector
-version: 2.0.0b56
+version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -8,14 +8,6 @@ layout: py_api
 # SnowflakeConnector
 
 **Package:** `flyteplugins.snowflake`
-
-This is the base class for all async connectors, and it defines the interface that all connectors must implement.
-The connector service is responsible for invoking connectors.
-The executor will communicate with the connector service to create tasks, get the status of tasks, and delete tasks.
-
-All the connectors should be registered in the ConnectorRegistry.
-Connector Service will look up the connector based on the task type and version.
-
 
 ## Methods
 
