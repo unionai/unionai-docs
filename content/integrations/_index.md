@@ -43,10 +43,10 @@ This enables large-scale parallelism without requiring users to operate or maint
 
 | Plugin               | Description                                      | Common use cases                                       |
 | -------------------- | ------------------------------------------------ | ------------------------------------------------------ |
-| [Ray](./ray)         | Provisions Ray clusters via KubeRay              | Distributed Python, ML training, hyperparameter tuning |
-| [Spark](./spark)     | Provisions Spark clusters via Spark Operator     | Large-scale data processing, ETL pipelines             |
-| [Dask](./dask)       | Provisions Dask clusters via Dask Operator       | Parallel Python workloads, dataframe operations        |
-| [PyTorch](./pytorch) | Distributed PyTorch training with elastic launch | Single-node and multi-node training                    |
+| [Ray](./ray/_index)         | Provisions Ray clusters via KubeRay              | Distributed Python, ML training, hyperparameter tuning |
+| [Spark](./spark/_index)     | Provisions Spark clusters via Spark Operator     | Large-scale data processing, ETL pipelines             |
+| [Dask](./dask/_index)       | Provisions Dask clusters via Dask Operator       | Parallel Python workloads, dataframe operations        |
+| [PyTorch](./pytorch/_index) | Distributed PyTorch training with elastic launch | Single-node and multi-node training                    |
 
 Each plugin encapsulates:
 
@@ -156,7 +156,7 @@ These integrations typically handle:
 | Plugin                        | Description                                   | Common use cases                              |
 | ----------------------------- | --------------------------------------------- | --------------------------------------------- |
 | [OpenAI](./openai)            | Drop-in replacement for OpenAI `FunctionTool` | Agentic workflows                             |
-| [Weights and Biases](./wandb) | Weights & Biases integration                  | Experiment tracking and hyperparameter tuning |
+| [Weights and Biases](./wandb/_index) | Weights & Biases integration                  | Experiment tracking and hyperparameter tuning |
 
 ## Connectors
 
@@ -170,7 +170,7 @@ Connectors are designed to scale horizontally and reduce load on the core Flyte 
 
 | Connector                | Description                                 | Common use cases                         |
 | ------------------------ | ------------------------------------------- | ---------------------------------------- |
-| [Snowflake](./snowflake) | Run SQL queries on Snowflake asynchronously | Data warehousing, ETL, analytics queries |
+| [Snowflake](./snowflake/_index) | Run SQL queries on Snowflake asynchronously | Data warehousing, ETL, analytics queries |
 
 ### Creating a new connector
 

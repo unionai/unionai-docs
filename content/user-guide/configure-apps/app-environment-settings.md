@@ -362,4 +362,4 @@ The `FastAPIAppEnvironment` automatically:
 
 ## Shared settings
 
-For more details on shared settings like images, resources, and secrets, refer to the [task configuration](../task-configuration/) documentation.
+For more details on shared settings like images, resources, and secrets, refer to the [task configuration](../task-configuration/_index) documentation.

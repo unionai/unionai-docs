@@ -133,4 +133,4 @@ Click the link to view your run in the UI:
 
 Now that you've run your first workflow:
 
-- [**Core concepts**](./core-concepts): Understand the core concepts of Flyte programming
+- [**Core concepts**](./core-concepts/_index): Understand the core concepts of Flyte programming

@@ -44,12 +44,12 @@ The plugin handles calling `wandb.init()` and `wandb.finish()` for you, and auto
 
 This integration guide is split into focused sections, depending on how you want to use Weights & Biases with Flyte:
 
-- **[Experiments](experiments)**: Create and manage W&B runs from Flyte tasks.
-- **[Distributed training](distributed_training)**: Track experiments across multi-GPU and multi-node training jobs.
-- **[Sweeps](sweeps)**: Run hyperparameter searches and manage sweep execution from Flyte tasks.
-- **[Downloading logs](downloading_logs)**: Download logs and execution metadata from Weights & Biases.
-- **[Constraints and best practices](constraints_and_best_practices)**: Learn about limitations, edge cases and recommended patterns.
-- **[Manual integration](manual)**: Use Weights & Biases directly in Flyte tasks without decorators or helpers.
+- **[Experiments](./experiments)**: Create and manage W&B runs from Flyte tasks.
+- **[Distributed training](./distributed_training)**: Track experiments across multi-GPU and multi-node training jobs.
+- **[Sweeps](./sweeps)**: Run hyperparameter searches and manage sweep execution from Flyte tasks.
+- **[Downloading logs](./downloading_logs)**: Download logs and execution metadata from Weights & Biases.
+- **[Constraints and best practices](./constraints_and_best_practices)**: Learn about limitations, edge cases and recommended patterns.
+- **[Manual integration](./manual)**: Use Weights & Biases directly in Flyte tasks without decorators or helpers.
 
 {{< note >}}
 We've included additional examples developed while testing edge cases of the plugin [here](https://github.com/flyteorg/flyte-sdk/tree/main/plugins/wandb/examples).

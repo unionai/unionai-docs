@@ -80,7 +80,7 @@ While `AppEnvironment` inherits from `Environment` (the same base class as `Task
 | `parameters` | ✅ | ❌ | Parameters to pass to app |
 | `cluster_pool` | ✅ | ❌ | Cluster pool for deployment |
 
-Parameters like `image`, `resources`, `secrets`, `env_vars`, and `depends_on` are shared between both environment types. See the [task configuration](../task-configuration/) docs for details on these shared parameters.
+Parameters like `image`, `resources`, `secrets`, `env_vars`, and `depends_on` are shared between both environment types. See the [task configuration](../task-configuration/_index) docs for details on these shared parameters.
 
 
 ## Configuration topics

@@ -89,10 +89,12 @@ flyte secret create openai-api-key
 
 ## Parts
 
-1. **[Resilient generation](resilient-generation)**: Set up reusable environments, traced LLM calls, and retry strategies
-2. **[Agentic refinement](agentic-refinement)**: Build the iterative critique-and-revise loop
-3. **[Parallel outputs](parallel-outputs)**: Generate multiple formats concurrently
-4. **[Serving app](serving-app)**: Deploy an interactive UI for report generation
+1. **[Resilient generation](./resilient-generation)**: Set up reusable environments, traced LLM calls, and retry strategies
+2. **[Agentic refinement](./agentic-refinement)**: Build the iterative critique-and-revise loop
+3. **[Parallel outputs](./parallel-outputs)**: Generate multiple formats concurrently
+4. **[Serving app](./serving-app)**: Deploy an interactive UI for report generation
+
+[Resilient generation]()
 
 ## Key takeaways
 

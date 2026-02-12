@@ -2,7 +2,8 @@
 """Check internal cross-page links in Hugo source content.
 
 Scans content/ markdown files, resolves relative links against Hugo's routing
-rules, and reports broken links per variant.
+rules, and reports broken links per variant.  Also enforces link notation
+standards (no .md extension, explicit _index for section references, etc.).
 
 Usage:
     python tools/link_checker/check_internal_links.py [--variant byoc] [--exclude-file .link-checker-exclude]
@@ -227,14 +228,28 @@ def resolve_relative_link(link_path: str, source_file: Path, content_dir: Path,
     if has_md_ext:
         # Direct .md file reference
         target_path = (source_dir / file_part).resolve()
-        rel_to_content = target_path.relative_to(content_dir.resolve())
-        route = str(rel_to_content.with_suffix(""))
 
         if not target_path.is_file():
             return False, f"file not found: {file_part}", None
 
+        rel_to_content = target_path.relative_to(content_dir.resolve())
+
+        # Compute Hugo route: _index.md -> directory, other.md -> path without suffix
+        if target_path.name == "_index.md":
+            route = str(rel_to_content.parent)
+            if route == ".":
+                route = ""
+        else:
+            route = str(rel_to_content.with_suffix(""))
+
         if route not in variant_pages:
             return False, f"page not in variant: {file_part}", None
+
+        # Validate anchor if present
+        if anchor:
+            headings = extract_headings_from_file(target_path)
+            if anchor not in headings:
+                return False, f"anchor #{anchor} not found in {file_part}", target_path
 
         return True, "", target_path
 
@@ -249,9 +264,26 @@ def resolve_relative_link(link_path: str, source_file: Path, content_dir: Path,
     # Extensionless link - resolve via Hugo rules
     # Normalize trailing slash: ./section/ -> ./section
     clean_path = file_part.rstrip("/")
-    # Handle explicit _index references: ./section/_index -> ./section
-    if clean_path.endswith("/_index"):
+
+    # Handle explicit _index references: resolve to section directory
+    is_index_ref = False
+    if clean_path == "_index":
+        clean_path = "."
+        is_index_ref = True
+    elif clean_path.endswith("/_index"):
         clean_path = clean_path[:-len("/_index")]
+        is_index_ref = True
+
+    # Handle "." from leaf pages: render hook resolves to self, not section index.
+    # But if this is an _index reference (e.g. bare "_index"), resolve to section.
+    if clean_path in (".", "./") and source_file.name != "_index.md" and not is_index_ref:
+        # "." from a leaf page means "this page" (matching render hook behavior)
+        if anchor:
+            headings = extract_headings_from_file(source_file)
+            if anchor not in headings:
+                return False, f"anchor #{anchor} not found (in self)", source_file
+        return True, "", source_file
+
     resolved = (source_dir / clean_path).resolve()
 
     try:
@@ -260,6 +292,10 @@ def resolve_relative_link(link_path: str, source_file: Path, content_dir: Path,
         return False, f"resolves outside content/: {file_part}", None
 
     route = str(rel_to_content)
+
+    # Normalize: "." becomes ""
+    if route == ".":
+        route = ""
 
     # Check if route exists in variant pages
     if route in variant_pages:
@@ -276,6 +312,55 @@ def resolve_relative_link(link_path: str, source_file: Path, content_dir: Path,
         return False, f"page exists but not in this variant: {file_part}", None
 
     return False, f"page not found: {file_part} (resolved to {route})", None
+
+
+def lint_link(link_url: str, link_text: str, source_file: Path, content_dir: Path,
+              page_files: dict[str, Path], target_file: Path | None) -> str | None:
+    """Check link notation standards.  Returns an error message or None if OK."""
+    file_part = link_url.split("#", 1)[0]
+
+    # Rule 1: No .md extension in links
+    if ".md" in file_part:
+        fixed = link_url.replace(".md", "")
+        return (f"remove .md extension from link: [{link_text}]({link_url})\n"
+                f"    fix: [{link_text}]({fixed})")
+
+    # Rule 2: No .#anchor or ./#anchor (ambiguous)
+    if source_file.name != "_index.md":
+        if file_part in (".", "./"):
+            anchor_part = link_url.split("#", 1)
+            if len(anchor_part) > 1:
+                return (f"ambiguous .#anchor from leaf page: [{link_text}]({link_url})\n"
+                        f"    fix: use [{link_text}](#{anchor_part[1]}) for self-anchor"
+                        f" or [{link_text}](_index#{anchor_part[1]}) for section index")
+
+    # Rule 3: Resolved target is _index.md but link doesn't use _index
+    if target_file and target_file.name == "_index.md" and "_index" not in link_url:
+        # Compute the suggested fix - preserve original prefix (e.g. ./ or ../)
+        clean = file_part.rstrip("/")
+        if clean in (".", "./", ""):
+            suggested = "_index"
+        else:
+            suggested = clean + "/_index"
+        # Preserve anchor
+        anchor_part = link_url.split("#", 1)
+        if len(anchor_part) > 1:
+            suggested += f"#{anchor_part[1]}"
+        return (f"link to section page should use explicit _index: [{link_text}]({link_url})\n"
+                f"    fix: [{link_text}]({suggested})")
+
+    # Rule 4: Bare relative name without ./ prefix
+    if (file_part and
+            not file_part.startswith("./") and
+            not file_part.startswith("../") and
+            not file_part.startswith("_index") and
+            not file_part.startswith("/") and
+            "/" not in file_part and
+            not file_part.startswith(".")):
+        return (f"use ./ prefix for relative links: [{link_text}]({link_url})\n"
+                f"    fix: [{link_text}](./{link_url})")
+
+    return None
 
 
 def load_exclude_patterns(exclude_file: Path) -> list[re.Pattern]:
@@ -320,12 +405,16 @@ def check_variant(variant: str, content_dir: Path, variant_pages: dict[str, set[
         if not source_file:
             continue
 
+        # Skip api-reference (auto-generated, has render hook passthrough)
+        source_rel = str(source_file.relative_to(content_dir))
+        if source_rel.startswith("api-reference"):
+            continue
+
         try:
             content = source_file.read_text(encoding="utf-8")
         except Exception:
             continue
 
-        source_rel = str(source_file.relative_to(content_dir))
         links = extract_links(content)
 
         for line_num, link_text, link_url in links:
@@ -348,8 +437,8 @@ def check_variant(variant: str, content_dir: Path, variant_pages: dict[str, set[
                     )
                 continue
 
-            # Relative link
-            is_valid, err_msg, _ = resolve_relative_link(
+            # Relative link — resolve and validate
+            is_valid, err_msg, target_file = resolve_relative_link(
                 link_url, source_file, content_dir, pages, page_files
             )
 
@@ -358,6 +447,13 @@ def check_variant(variant: str, content_dir: Path, variant_pages: dict[str, set[
                     f"  {source_rel}:{line_num}: {err_msg}"
                     f" [{link_text}]({link_url})"
                 )
+                continue
+
+            # Lint: check notation standards
+            lint_msg = lint_link(link_url, link_text, source_file, content_dir,
+                                page_files, target_file)
+            if lint_msg:
+                errors.append(f"  {source_rel}:{line_num}: {lint_msg}")
 
     return errors
 
@@ -389,7 +485,7 @@ def main():
     for variant in variants_to_check:
         errors = check_variant(variant, content_dir, variant_pages, page_files, exclude_patterns)
         if errors:
-            print(f"\n{variant}: {len(errors)} broken link(s)")
+            print(f"\n{variant}: {len(errors)} error(s)")
             for err in errors:
                 print(err)
             total_errors += len(errors)
@@ -397,7 +493,7 @@ def main():
             print(f"{variant}: all links OK")
 
     if total_errors:
-        print(f"\nTotal: {total_errors} broken link(s) found")
+        print(f"\nTotal: {total_errors} error(s) found")
         return 1
 
     print("\nAll internal links are valid.")

@@ -7,7 +7,7 @@ sidebar_expanded: true
 
 # Running Tasks via Webhooks
 
-On Union, you can deploy apps (see [Apps documentation](../build-apps)) that can run any deployed Flyte tasks. These apps can be REST API services, like FastAPI, that accept HTTP requests and run tasks on behalf of the caller.
+On Union, you can deploy apps (see [Apps documentation](../build-apps/_index)) that can run any deployed Flyte tasks. These apps can be REST API services, like FastAPI, that accept HTTP requests and run tasks on behalf of the caller.
 
 A key feature of this approach is **passthrough authentication** - the app can carry forward the identity of the caller and use their credentials to run the task. This ensures proper authorization and audit trails, as tasks are executed with the permissions of the actual user making the request.
 

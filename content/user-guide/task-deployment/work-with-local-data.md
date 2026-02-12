@@ -35,11 +35,11 @@ run.wait()
 print(run.outputs()[0])
 ```
 
-For more details on local execution, see [how task run works](how-task-run-works#local-execution).
+For more details on local execution, see [how task run works](./how-task-run-works#local-execution).
 
 ## Uploading local data to remote runs
 
-When you want to send local data to a remote task, you need to upload it first. Flyte provides a secure data uploading system that handles this automatically. The same system used for [code bundling](packaging) can upload files, DataFrames, and directories.
+When you want to send local data to a remote task, you need to upload it first. Flyte provides a secure data uploading system that handles this automatically. The same system used for [code bundling](./packaging) can upload files, DataFrames, and directories.
 
 To upload local data, use the Flyte core representation for that type with the `from_local_sync()` method.
 
@@ -213,7 +213,7 @@ flyte.init_from_config(
 )
 ```
 
-For details on configuring storage access, see [interact with runs and actions](interacting-with-runs#accessing-large-data-from-cloud-storage).
+For details on configuring storage access, see [interact with runs and actions](./interacting-with-runs#accessing-large-data-from-cloud-storage).
 
 ## Summary
 

@@ -154,4 +154,4 @@ triggers a retry (if configured).
 ## Next steps
 
 With resilient generation in place, you're ready to build the
-[agentic refinement loop](agentic-refinement).
+[agentic refinement loop](./agentic-refinement).
