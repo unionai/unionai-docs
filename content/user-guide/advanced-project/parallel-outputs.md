@@ -196,5 +196,5 @@ tasks concurrently.
 
 ## Next steps
 
-Learn how to [deploy a serving app](serving-app) that connects to the pipeline
+Learn how to [deploy a serving app](./serving-app) that connects to the pipeline
 outputs and provides an interactive UI for report generation.

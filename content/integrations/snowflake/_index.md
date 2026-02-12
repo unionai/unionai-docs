@@ -337,7 +337,7 @@ async def analyze_top_customers() -> dict:
 ```
 
 > [!NOTE]
-> Be sure to inject the `SNOWFLAKE_PRIVATE_KEY` and `SNOWFLAKE_PRIVATE_KEY_PASSPHRASE` environment variables as secrets into your downstream tasks, as they must have access to Snowflake credentials in order to retrieve the DataFrame results. More on how you can create secrets [here](../../user-guide/task-configuration/secrets.md).
+> Be sure to inject the `SNOWFLAKE_PRIVATE_KEY` and `SNOWFLAKE_PRIVATE_KEY_PASSPHRASE` environment variables as secrets into your downstream tasks, as they must have access to Snowflake credentials in order to retrieve the DataFrame results. More on how you can create secrets [here](../../user-guide/task-configuration/secrets).
 
 If you don't need query results (for example, `DDL` statements or `INSERT` queries), omit `output_dataframe_type`.
 

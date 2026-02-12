@@ -166,7 +166,7 @@ flyte --config my-config.yaml run hello.py main
 flyte -c my-config.yaml run hello.py main
 ```
 
-**Python**: Initialize with [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte#init_from_config):
+**Python**: Initialize with [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte/_index#init_from_config):
 
 ```python
 flyte.init_from_config("my-config.yaml")
@@ -240,7 +240,7 @@ See the [CLI reference](../api-reference/flyte-cli) for details.
 
 ### Python
 
-Use [`flyte.init`](../api-reference/flyte-sdk/packages/flyte#init):
+Use [`flyte.init`](../api-reference/flyte-sdk/packages/flyte/_index#init):
 
 ```python
 flyte.init(
@@ -253,13 +253,13 @@ flyte.init(
 
 See related methods:
 
-* [`flyte.init_from_api_key`](../api-reference/flyte-sdk/packages/flyte#init_from_api_key)
-* [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte#init_from_config)
-* [`flyte.init_in_cluster`](../api-reference/flyte-sdk/packages/flyte#init_in_cluster)
-* [`flyte.init_passthrough`](../api-reference/flyte-sdk/packages/flyte#init_passthrough)
+* [`flyte.init_from_api_key`](../api-reference/flyte-sdk/packages/flyte/_index#init_from_api_key)
+* [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte/_index#init_from_config)
+* [`flyte.init_in_cluster`](../api-reference/flyte-sdk/packages/flyte/_index#init_in_cluster)
+* [`flyte.init_passthrough`](../api-reference/flyte-sdk/packages/flyte/_index#init_passthrough)
 
 ## Next steps
 
 With your environment fully configured, you're ready to build:
 
-- [**Core concepts**](./core-concepts): Understand `TaskEnvironment`s, tasks, runs, and actions through working examples.
+- [**Core concepts**](./core-concepts/_index): Understand `TaskEnvironment`s, tasks, runs, and actions through working examples.

@@ -39,7 +39,7 @@ The two versions of the docs are stored in separate branches of the GitHub repos
 * [`v1` branch](https://github.com/unionai/unionai-docs/tree/v1) for the v1 docs.
 * [`main` branch](https://github.com/unionai/unionai-docs) for the v2 docs.
 
-See [Versions](./versions.md) for more details.
+See [Versions](./versions) for more details.
 
 ## Variants
 
@@ -53,7 +53,7 @@ The result is that:
   There is no need to keep multiple copies of the same content in-sync.
 * Content specific to a variant is conditionally rendered based on the selected variant.
 
-See [Variants](./variants.md) for more details.
+See [Variants](./variants) for more details.
 
 ## Both Flyte and Union docs are open source
 

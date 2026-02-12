@@ -53,7 +53,7 @@ Unlike Flyte 1, there is no explicit `@workflow` construct in Flyte 2; instead, 
 
 ## Working with runs
 
-Runs are created when you execute tasks using `flyte run` or `flyte.run()`. For details on running tasks, see [how task run works](how-task-run-works). To learn about running previously deployed remote tasks, see [remote tasks](../task-programming/remote-tasks).
+Runs are created when you execute tasks using `flyte run` or `flyte.run()`. For details on running tasks, see [how task run works](./how-task-run-works). To learn about running previously deployed remote tasks, see [remote tasks](../task-programming/remote-tasks).
 
 ### Retrieving a run
 

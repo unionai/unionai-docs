@@ -7,27 +7,33 @@
 {{- else if or (in page.RelPermalink "/api-reference/") -}}
     {{/* do nothing */}}
 {{- else -}}
-    {{ $dest := strings.TrimSuffix ".md" $target }}
-    {{ $dest = strings.TrimSuffix "_index" $dest }}
-    
-    {{/* Normalize relative paths and extract fragments */}}
+    {{/* 1. Extract fragment FIRST, before any suffix trimming */}}
     {{ $fragment := "" }}
-    {{ $path := $dest }}
-    {{ if (in $dest "#") }}
-        {{ $parts := split $dest "#" }}
+    {{ $path := $target }}
+    {{ if (in $target "#") }}
+        {{ $parts := split $target "#" }}
         {{ $path = index $parts 0 }}
         {{ $fragment = printf "#%s" (index $parts 1) }}
     {{ end }}
-    
-    {{/* Handle different path types */}}
-    {{- if or (hasPrefix $dest "/") (hasPrefix $dest "http") -}}
+
+    {{/* 2. Trim .md suffix and detect _index references */}}
+    {{ $path = strings.TrimSuffix ".md" $path }}
+    {{ $isIndexRef := false }}
+    {{ if or (eq $path "_index") (hasSuffix $path "/_index") }}
+        {{ $isIndexRef = true }}
+        {{ $path = strings.TrimSuffix "_index" $path }}
+        {{ $path = strings.TrimSuffix "/" $path }}
+    {{ end }}
+
+    {{/* 3. Handle different path types */}}
+    {{- if or (hasPrefix $path "/") (hasPrefix $path "http") -}}
         {{/* Absolute paths and URLs - use as-is */}}
-        {{- $link = $dest -}}
-    {{- else if eq $path "" -}}
-        {{/* Pure fragment identifier like "#foo" - link to current page */}}
+        {{- $link = printf "%s%s" $path $fragment -}}
+    {{- else if and (eq $path "") (not $isIndexRef) -}}
+        {{/* Pure fragment like "#foo" - link to current page */}}
         {{- $link = printf "%s%s" page.RelPermalink $fragment -}}
-    {{- else if or (eq $path ".") (eq $path "./") -}}
-        {{/* Current directory with fragment like "./#foo" - link to current page */}}
+    {{- else if and (not $isIndexRef) (or (eq $path ".") (eq $path "./")) -}}
+        {{/* Explicit current page: ".#foo" or "./#foo" - link to current page */}}
         {{- $link = printf "%s%s" page.RelPermalink $fragment -}}
     {{- else if (hasSuffix page "_index.md") -}}
         {{/* From index page - relative to current directory */}}

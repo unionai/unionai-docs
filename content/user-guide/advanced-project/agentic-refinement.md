@@ -156,4 +156,4 @@ based on your quality requirements and budget.
 ## Next steps
 
 With the agentic refinement loop complete, learn how to
-[generate multiple outputs in parallel](parallel-outputs).
+[generate multiple outputs in parallel](./parallel-outputs).

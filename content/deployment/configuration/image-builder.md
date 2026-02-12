@@ -6,14 +6,14 @@ variants: -flyte -serverless -byoc +selfmanaged
 
 # Image Builder
 
-Union Image Builder supports the ability to build container images within the dataplane. This enables the use of the `remote` builder type for any defined [Container Image](../../user-guide/task-configuration/container-images.md).
+Union Image Builder supports the ability to build container images within the dataplane. This enables the use of the `remote` builder type for any defined [Container Image](../../user-guide/task-configuration/container-images).
 
 Configure the use of remote image builder:
 ```bash
 flyte create config --builder=remote --endpoint...
 ```
 
-Write custom [container images](../../user-guide/task-configuration/container-images.md):
+Write custom [container images](../../user-guide/task-configuration/container-images):
 ```python
 env = flyte.TaskEnvironment(
     name="hello_v2",

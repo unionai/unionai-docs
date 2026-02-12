@@ -10,7 +10,7 @@ Remote tasks let you use previously deployed tasks without importing their code 
 
 ## Prerequisites
 
-Remote tasks must be deployed before you can use them. See the [task deployment guide](../task-deployment) for details.
+Remote tasks must be deployed before you can use them. See the [task deployment guide](../task-deployment/_index) for details.
 
 ## Basic usage
 
@@ -745,5 +745,5 @@ flyte deploy orchestration_env/
 
 ## Next steps
 
-- Learn about [task deployment](../task-deployment)
-- Explore [task environments and configuration](../task-configuration)
+- Learn about [task deployment](../task-deployment/_index)
+- Explore [task environments and configuration](../task-configuration/_index)
