@@ -6,6 +6,10 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Migration from Flyte 1 to Flyte 2
 
+{{< note >}}
+For a comprehensive reference covering imports, secrets, resources, caching, map tasks, async patterns, and more, see the [Flyte v1 to v2 Migration Guide](/flyte-v1-to-v2-migration-guide.md). It's a single-file cheatsheet designed to give an LLM full context for one-shot migrations — useful but not perfect for complex workflows.
+{{< /note >}}
+
 You can migrate from Flyte 1 to Flyte 2 by following the steps below:
 
 ### 1. Move task configuration to a `TaskEnvironment` object
