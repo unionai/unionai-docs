@@ -41,3 +41,4 @@ main.py
 .python-version
 uv.lock
 .claude/
+.flyte/

@@ -14,6 +14,12 @@ Flyte 2 exposes these capabilities through integrations.
 
 Under the hood, integrations are implemented using Flyte 2's plugin system, which provides a consistent way to extend the platform without modifying core execution logic.
 
+| Plugin | Description |
+| ------ | ----------- |
+| [Ray](./flyte-plugins/ray) | Run Ray jobs on your Flyte cluster |
+| [Spark](./flyte-plugins/spark) | Run Spark jobs on your Flyte cluster |
+| [OpenAI](./flyte-plugins/openai) | Integrate with OpenAI SDKs in your Flyte workflows |
+| [Connectors](./flyte-plugins/connectors) | Integrate with external services and platforms |
 An integration allows you to declaratively enable new capabilities such as distributed compute frameworks or third-party services without manually managing infrastructure. You specify what you need, and Flyte takes care of how it is provisioned, used and cleaned up.
 
 This page covers:
@@ -21,7 +27,7 @@ This page covers:
 - The types of integrations Flyte 2 supports today
 - How integrations fit into Flyte 2's execution model
 - How to use integrations in your tasks
-- The integrations available out of the box
+- The integrations are available out of the box
 
 If you need functionality that doesn't exist yet, Flyte 2's plugin system is intentionally open-ended. You can build and register your own integrations using the same architecture described here.
 
@@ -98,7 +104,7 @@ When a task associated with a `TaskEnvironment` runs:
 Below is a complete example showing how a task gains access to a Dask cluster simply by running inside an environment configured with the Dask plugin.
 
 ```python
-from flyteintegrations.dask import Dask, WorkerGroup
+from flyteplugins.dask import Dask, WorkerGroup
 import flyte
 
 # Define the Dask cluster configuration
