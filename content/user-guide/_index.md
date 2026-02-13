@@ -17,7 +17,7 @@ Flyte empowers AI development teams to rapidly ship high-quality code to product
 You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 > [!NOTE]
-> These are the Flyte **2.0 beta** docs.
+> These are the Flyte **2.0** docs.
 > To switch to [version 1.0]({{< docs_home flyte v1 >}}) or to the commercial product, [**Union.ai**]({{< docs_home byoc v2 >}}), use the selectors above.
 >
 > This documentation for open-source Flyte is maintained by Union.ai.
@@ -35,16 +35,15 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 * Achieve millisecond-level execution times with reusable containers.
 * Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale, or compliance.
 
+{{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v2 >}}).
+
+{{< key product_name >}} Serverless provides all the features of Flyte, plus much more, all in a turn-key, fully-managed, cloud environment.
+There is zero infrastructure to deal with, and you pay only for the resources you use.
+Your data and workflow code is stored safely and securely in the Union.ai cloud infrastructure.
+
 > [!NOTE]
-> These are the Union.ai **2.0 beta** docs.
+> These are the Union.ai **2.0** docs.
 > To switch to [version 1.0]({{< docs_home serverless v1 >}}) or to another product variant, use the selectors above.
->
-> {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v2 >}}).
->
-> {{< key product_name >}} Serverless provides all the features of Flyte, plus much more,
-> all in a turn-key, fully-managed, cloud environment.
-> There is zero infrastructure to deal with, and you pay only for the resources you use.
-> Your data and workflow code is stored safely and securely in the Union.ai cloud infrastructure.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -59,14 +58,14 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 * Achieve millisecond-level execution times with reusable containers.
 * Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale, or compliance.
 
+{{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v2 >}}).
+
+{{< key product_name >}} BYOC (Bring Your Own Cloud) provides all the features of Flyte, plus much more
+in an environment where you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
+
 > [!NOTE]
-> These are the Union.ai **2.0 beta** docs.
+> These are the Union.ai **2.0** docs.
 > To switch to [version 1.0]({{< docs_home byoc v1 >}}) or to another product variant, use the selectors above.
->
-> {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v2 >}}).
->
-> {{< key product_name >}} BYOC (Bring Your Own Cloud) provides all the features of Flyte, plus much more
-> in an environment where you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -81,14 +80,14 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 * Achieve millisecond-level execution times with reusable containers.
 * Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale, or compliance.
 
+{{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v2 >}}).
+
+{{< key product_name >}} Self-managed provides all the features of Flyte, plus much more
+while letting you keep your data and workflow code private and secure on your infrastructure and under your own management.
+
 > [!NOTE]
-> These are the Union.ai **2.0 beta** docs.
+> These are the Union.ai **2.0** docs.
 > To switch to [version 1.0]({{< docs_home selfmanaged v1 >}}) or to another product variant, use the selectors above.
->
-> {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v2 >}}).
->
-> {{< key product_name >}} Self-managed provides all the features of Flyte, plus much more
-> while letting you keep your data and workflow code on your infrastructure and under your own management.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -100,7 +99,7 @@ Flyte 2 represents a fundamental shift in how AI workflows are written and execu
 more in this section.
 {{< /link-card >}}
 
-{{< link-card target="getting-started" icon="123" title="Getting started" >}}
+{{< link-card target="quickstart" icon="123" title="Quickstart" >}}
 Install Flyte 2, configure your local IDE, create and run your first task, and inspect the results in 2 minutes.
 {{< /link-card >}}
 {{< /grid >}}

@@ -1,6 +1,6 @@
 ---
 title: AppEndpoint
-version: 2.0.0b48
+version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,6 +14,7 @@ Embed an upstream app's endpoint as an app parameter.
 This enables the declaration of an app parameter dependency on a the endpoint of
 an upstream app, given by a specific app name. This gives the app access to
 the upstream app's endpoint as a public or private url.
+
 
 
 ```python
@@ -51,7 +52,7 @@ validated to form a valid model.
 | [`from_orm()`](#from_orm) |  |
 | [`get()`](#get) |  |
 | [`json()`](#json) |  |
-| [`materialize()`](#materialize) |  |
+| [`materialize()`](#materialize) | Returns the AppEndpoint object, the endpoint is retrieved at serving time by the fserve executable. |
 | [`model_construct()`](#model_construct) | Creates a new instance of the `Model` class with validated data. |
 | [`model_copy()`](#model_copy) | Returns a copy of the model. |
 | [`model_dump()`](#model_dump) | Generate a dictionary representation of the model, optionally specifying which fields to include or exclude. |
@@ -197,6 +198,9 @@ def json(
 ```python
 def materialize()
 ```
+Returns the AppEndpoint object, the endpoint is retrieved at serving time by the fserve executable.
+
+
 ### model_construct()
 
 ```python

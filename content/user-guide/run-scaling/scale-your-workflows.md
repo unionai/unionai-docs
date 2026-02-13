@@ -83,10 +83,10 @@ If task runtime is comparable to or less than overhead, consider:
 To optimize performance, understand how tasks flow through the system:
 
 1. **Control plane to data plane**: Tasks flow from the control plane (Run Service, Queue Service) to the data plane (Executor Service).
-2. **Data movement**: Data moves between tasks through object storage. See [Data flow](data-flow) for details.
+2. **Data movement**: Data moves between tasks through object storage. See [Data flow](./data-flow) for details.
 3. **State replication**: Queue Service reliably replicates state back to Run Service for visualization. The Run Service may be slightly behind actual execution.
 
-For a detailed walkthrough of task execution, see [Life of a run](life-of-a-run).
+For a detailed walkthrough of task execution, see [Life of a run](./life-of-a-run).
 
 ## Optimization strategies
 

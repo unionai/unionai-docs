@@ -46,17 +46,16 @@ def generate_site(
     ignore_types: List[str],
     weight: int,
     expanded: bool,
-    api_name: str | None
+    api_name: str | None,
+    include_short_names: bool = False,
 ):
     set_variants(variants)
     set_version(source["version"])
 
-    if not os.path.isdir(output_folder):
-        os.mkdir(output_folder)
+    os.makedirs(output_folder, exist_ok=True)
 
     pkg_root = os.path.join(output_folder, "packages")
-    if not os.path.isdir(pkg_root):
-        os.mkdir(pkg_root)
+    os.makedirs(pkg_root, exist_ok=True)
 
     # Generate site
     generate_home(
@@ -111,4 +110,5 @@ def generate_site(
             classes=source["classes"],
             pkg_root=pkg_root,
             api_name=api_name,
+            include_short_names=include_short_names,
         )

@@ -1,8 +1,8 @@
 ---
 title: Build apps
-weight: 11
+weight: 13
 variants: +flyte +serverless +byoc +selfmanaged
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Build apps
@@ -10,7 +10,7 @@ sidebar_expanded: true
 This section covers how to build different types of apps with Flyte, including Streamlit dashboards, FastAPI REST APIs, vLLM and SGLang model servers, webhooks, and WebSocket applications.
 
 > [!TIP]
-> Go to [the app serving quickstart](../getting-started/serving-apps) to see a quick example of how to serve an app.
+> Go to [Introducing apps](../core-concepts/introducing-apps) for an overview of apps and a quick example.
 
 ## App types
 

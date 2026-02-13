@@ -1,8 +1,8 @@
 ---
 title: Configure apps
-weight: 10
+weight: 12
 variants: +flyte +serverless +byoc +selfmanaged
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Configure apps
@@ -20,18 +20,45 @@ Similar to `[[TaskEnvironment]]`, configuration can be set when creating the `[[
 
 ## Hello World example
 
-Here's a complete example of deploying a simple Streamlit "hello world" app with a custom subdomain:
+Here's a complete example of deploying a simple Streamlit "hello world" app with a custom subdomain.
+
+There are two ways to build apps in Flyte:
+1. Defining `AppEnvironment(.., args=[...])` to run the app with the underlying `fserve` command.
+2. Defining `@app_env.server` to run the app with a custom server function.
+
+{{< tabs "hello-world-app" >}}
+{{< tab "Using fserve args" >}}
 
 {{< code file="/external/unionai-examples/v2/user-guide/configure-apps/hello-world-app.py" lang=python >}}
 
+{{< markdown >}}
 This example demonstrates:
 
 - Creating a custom Docker image with Streamlit
-- Setting the `args` to run the Streamlit hello app
+- Setting the `args` to run the Streamlit hello app, which uses the underlying `fserve` command to run the app.
 - Configuring the port
 - Setting resource limits
 - Disabling authentication (for public access)
 - Using a custom subdomain
+{{< /markdown >}}
+
+{{< /tab >}}
+{{< tab "Using @app_env.server" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/hello-world-app-server.py" lang=python >}}
+
+{{< markdown >}}
+This example demonstrates:
+
+- Creating a custom Docker image with Streamlit
+- Using the `@app_env.server` decorator to define a server function that runs the Streamlit hello app.
+- Configuring the port
+- Setting resource limits
+- Disabling authentication (for public access)
+- Using a custom subdomain
+{{< /markdown >}}
+
+{{< /tab >}}
+{{< /tabs >}}
 
 Once deployed, your app will be accessible at the generated URL or your custom subdomain.
 
@@ -53,7 +80,7 @@ While `AppEnvironment` inherits from `Environment` (the same base class as `Task
 | `parameters` | ✅ | ❌ | Parameters to pass to app |
 | `cluster_pool` | ✅ | ❌ | Cluster pool for deployment |
 
-Parameters like `image`, `resources`, `secrets`, `env_vars`, and `depends_on` are shared between both environment types. See the [task configuration](../task-configuration/) docs for details on these shared parameters.
+Parameters like `image`, `resources`, `secrets`, `env_vars`, and `depends_on` are shared between both environment types. See the [task configuration](../task-configuration/_index) docs for details on these shared parameters.
 
 
 ## Configuration topics

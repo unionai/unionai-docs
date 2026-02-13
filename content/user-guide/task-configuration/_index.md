@@ -1,13 +1,13 @@
 ---
 title: Configure tasks
-weight: 3
+weight: 8
 variants: +flyte +serverless +byoc +selfmanaged
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Configure tasks
 
-As we saw in [**Getting started**](../getting-started), you can run any Python function as a task in Flyte just by decorating it with `@env.task`.
+As we saw in [**Quickstart**](../quickstart), you can run any Python function as a task in Flyte just by decorating it with `@env.task`.
 
 This allows you to run your Python code in a distributed manner, with each function running in its own container.
 Flyte manages the spinning up of the containers, the execution of the code, and the passing of data between the tasks.

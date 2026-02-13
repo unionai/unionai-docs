@@ -245,4 +245,4 @@ Understanding the life of a run reveals several optimization opportunities:
 5. **Efficient data flow**: Minimize data transfer by using reference types (files, directories) instead of inline data.
 6. **Caching**: Enable task caching to avoid redundant computation.
 
-For detailed performance tuning guidance, see [Scale your workflows](performance).
+For detailed performance tuning guidance, see [Scale your workflows](./scale-your-workflows).

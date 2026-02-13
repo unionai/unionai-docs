@@ -110,7 +110,7 @@ There are two ways that the image can be built:
 
 ### Configuring the `builder`
 
-[Earlier](../getting-started/local-setup), we discussed the `image.builder` property in the `config.yaml`.
+[Earlier](../local-setup), we discussed the `image.builder` property in the `config.yaml`.
 
 For Flyte OSS instances, this property must be set to `local`.
 

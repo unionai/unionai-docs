@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 2.0.0b48
+version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -16,9 +16,10 @@ sidebar_expanded: true
 | [`flyte.config`](flyte.config) |  |
 | [`flyte.connectors`](flyte.connectors) |  |
 | [`flyte.connectors.utils`](flyte.connectors.utils) |  |
+| [`flyte.durable`](flyte.durable) | Flyte durable utilities. |
 | [`flyte.errors`](flyte.errors) | Exceptions raised by Union. |
 | [`flyte.extend`](flyte.extend) |  |
-| [`flyte.extras`](flyte.extras) |  |
+| [`flyte.extras`](flyte.extras) | Flyte extras package. |
 | [`flyte.git`](flyte.git) |  |
 | [`flyte.io`](flyte.io) | ## IO data types. |
 | [`flyte.io.extend`](flyte.io.extend) |  |

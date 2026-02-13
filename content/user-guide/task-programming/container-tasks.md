@@ -1,6 +1,6 @@
 ---
 title: Raw Container Tasks
-weight: 100
+weight: 6
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

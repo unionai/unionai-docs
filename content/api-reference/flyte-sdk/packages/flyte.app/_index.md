@@ -1,6 +1,6 @@
 ---
 title: flyte.app
-version: 2.0.0b48
+version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -28,10 +28,20 @@ sidebar_expanded: true
 
 | Method | Description |
 |-|-|
+| [`ctx()`](#ctx) | Returns the current app context. |
 | [`get_parameter()`](#get_parameter) | Get parameters for application or endpoint. |
 
 
 ## Methods
+
+#### ctx()
+
+```python
+def ctx()
+```
+Returns the current app context.
+Returns: AppContext
+
 
 #### get_parameter()
 

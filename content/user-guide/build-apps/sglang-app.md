@@ -93,25 +93,7 @@ print(response.choices[0].message.content)
 
 For larger models, use multiple GPUs with tensor parallelism:
 
-```python
-sglang_app = SGLangAppEnvironment(
-    name="multi-gpu-sglang-app",
-    model_hf_path="meta-llama/Llama-2-70b-hf",
-    model_id="llama-2-70b",
-    resources=flyte.Resources(
-        cpu="8",
-        memory="32Gi",
-        gpu="L40s:4",  # 4 GPUs for tensor parallelism
-        disk="100Gi",
-    ),
-    extra_args=[
-        "--tp", "4",  # Tensor parallelism size (4 GPUs)
-        "--max-model-len", "4096",
-        "--mem-fraction-static", "0.9",
-    ],
-    requires_auth=False,
-)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/sglang/sglang_multi_gpu.py" fragment=multi-gpu lang=python >}}
 
 The tensor parallelism size (`--tp`) should match the number of GPUs specified in resources.
 

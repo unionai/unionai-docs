@@ -1,5 +1,6 @@
 import sys
 import re
+import os
 import htmltabletomd
 
 def process_file(file_path):
@@ -9,6 +10,33 @@ def process_file(file_path):
     except Exception as e:
         print(f"Error reading from stdin: {e}", file=sys.stderr)
         sys.exit(1)
+
+    # Convert absolute union.ai docs URLs to relative shortcode links
+    # Pattern: https://www.union.ai/docs/v2/{variant}/{path}
+    # Result: {{< docs_home {variant} v2 >}}/{path}
+    docs_url_pattern = re.compile(
+        r'https://www\.union\.ai/docs/(v\d+)/(flyte|byoc|serverless|selfmanaged)/([^\s\)\"\'>\]]+)'
+    )
+    def replace_docs_url(match):
+        version = match.group(1)
+        variant = match.group(2)
+        path = match.group(3)
+        return f'{{{{< docs_home {variant} {version} >}}}}/{path}'
+
+    content = docs_url_pattern.sub(replace_docs_url, content)
+
+    # Insert download link after the first heading (## or #)
+    notebook_link = os.environ.get('NOTEBOOK_LINK')
+    if notebook_link:
+        first_heading_pattern = re.compile(r'^(#{1,2} .+)$', re.MULTILINE)
+        match = first_heading_pattern.search(content)
+        if match:
+            # Convert GitHub blob URL to Colab URL
+            # From: https://github.com/org/repo/blob/branch/path
+            # To: https://colab.research.google.com/github/org/repo/blob/branch/path
+            colab_link = notebook_link.replace('https://github.com/', 'https://colab.research.google.com/github/')
+            download_shortcode = f'\n\n> [!NOTE]\n> [View source on GitHub]({notebook_link}) | [Run in Google Colab]({colab_link})\n'
+            content = content[:match.end()] + download_shortcode + content[match.end():]
 
     # Remove all <style>...</style> blocks
     style_pattern = re.compile(r'<style.*?>.*?</style>', re.DOTALL)

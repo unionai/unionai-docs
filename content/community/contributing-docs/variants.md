@@ -53,7 +53,7 @@ If you wanted to make the page available for only the `flyte` and `serverless` v
 
 `+flyte +serverless -byoc -selfmanaged`
 
-In [live preview mode](./authoring-core-content#live-preview) with the `show_inactive` flag enabled, you will see all pages in the navigation tree, with the ones unavailable for the current variant grayed out.
+In [live preview mode](./authoring#live-preview) with the `show_inactive` flag enabled, you will see all pages in the navigation tree, with the ones unavailable for the current variant grayed out.
 
 As you can see, the `variants` field expects a space-separated list of keywords:
 

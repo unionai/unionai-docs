@@ -1,6 +1,6 @@
 ---
 title: RestrictedTypeError
-version: 2.0.0b48
+version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -11,6 +11,7 @@ layout: py_api
 
 This error is raised when the user uses a restricted type, for example current a Tuple is not supported for one
  value.
+
 
 
 ```python

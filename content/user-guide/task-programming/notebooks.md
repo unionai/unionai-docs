@@ -1,6 +1,6 @@
 ---
 title: Notebooks
-weight: 110
+weight: 8
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -19,7 +19,7 @@ Download the following notebook file and open it in your favorite Jupyter enviro
 In this example we have a simple workflow defined in our notebook.
 You can iterate on the code in the notebook while running each cell in turn.
 
-Note that the [`flyte.init()`](../../api-reference/flyte-sdk/packages/flyte#init) call at the top of the notebook looks like this:
+Note that the [`flyte.init()`](../../api-reference/flyte-sdk/packages/flyte/_index#init) call at the top of the notebook looks like this:
 
 ```python
 flyte.init(

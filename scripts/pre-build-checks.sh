@@ -8,6 +8,7 @@ check_mentions_docs() {
                      | grep -vi binary \
                      | grep -v content/community/contributing-docs/redirects.md \
                      | grep -v content/api-reference/flyte-cli.md \
+                     | grep -v content/api-reference/flyte-context.md \
                      | cut -d: -f1 | sort | uniq)
   readonly mentions_doc
 

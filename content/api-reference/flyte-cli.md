@@ -1,6 +1,8 @@
 ---
 title: "Flyte CLI"
+version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
+layout: py_api
 weight: 1
 ---
 
@@ -12,33 +14,35 @@ This is the command line interface for Flyte.
 {{< markdown >}}
 | Object | Action |
 | ------ | -- |
+| `action` | [`abort`](#flyte-abort-action), [`get`](#flyte-get-action)  |
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
 | `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
+| `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
-| `action` | [`get`](#flyte-get-action)  |
-| `app` | [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
 | `project` | [`get`](#flyte-get-project)  |
 | `task` | [`get`](#flyte-get-task)  |
 | `hf-model` | [`prefetch`](#flyte-prefetch-hf-model)  |
 | `deployed-task` | [`run`](#flyte-run-deployed-task)  |
+| `tui` | [`start`](#flyte-start-tui)  |
 {{< /markdown >}}
 {{< markdown >}}
 | Action | On |
 | ------ | -- |
-| `abort` | [`run`](#flyte-abort-run)  |
+| `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
 | `create` | [`config`](#flyte-create-config), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
-| `delete` | [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
+| `delete` | [`app`](#flyte-delete-app), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
 | [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
 | `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
+| `start` | [`tui`](#flyte-start-tui)  |
 | `update` | [`app`](#flyte-update-app), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
@@ -105,6 +109,21 @@ $ flyte --config /path/to/config.yaml run ...
 
 Abort an ongoing process.
 
+#### flyte abort action
+
+**`flyte abort action [OPTIONS] RUN_NAME ACTION_NAME`**
+
+Abort an action associated with a run.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--reason` | `text` | `Manually aborted from the CLI` | The reason to abort the run. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
 #### flyte abort run
 
 **`flyte abort run [OPTIONS] RUN_NAME`**
@@ -113,6 +132,7 @@ Abort a run.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `--reason` | `text` | `Manually aborted from the CLI` | The reason to abort the run. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -156,6 +176,7 @@ If the file already exists, it will raise an error unless the `--force` option i
 | {{< multiline >}}`--image-builder`
 `--builder`{{< /multiline >}} | `choice` | `local` | Image builder to use for building images. Defaults to 'local'. |
 | `--auth-type` | `choice` |  | Authentication type to use for the Flyte backend. Defaults to 'pkce'. |
+| `--local-persistence` | `boolean` | `False` | Enable SQLite persistence for local run metadata, allowing past runs to be browsed via 'flyte start tui'. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -217,7 +238,7 @@ $ flyte create secret my_secret --type image_pull --from-docker-config --registr
 | `--from-file` | `path` | `Sentinel.UNSET` | Path to the file with the binary secret. Mutually exclusive with value, from_docker_config, registry. |
 | `--type` | `choice` | `regular` | Type of the secret. |
 | `--from-docker-config` | `boolean` | `False` | Create image pull secret from Docker config file (only for --type image_pull). Mutually exclusive with value, from_file, registry, username, password. |
-| `--docker-config-path` | `path` | `Sentinel.UNSET` | Path to Docker config file (defaults to ~/.docker/config.json or $DOCKER_CONFIG). |
+| `--docker-config-path` | `path` | `Sentinel.UNSET` | Path to Docker config file (defaults to ~/.docker/config.json or $DOCKER_CONFIG). Requires from_docker_config. |
 | `--registries` | `text` | `Sentinel.UNSET` | Comma-separated list of registries to include (only with --from-docker-config). |
 | `--registry` | `text` | `Sentinel.UNSET` | Registry hostname (e.g., ghcr.io, docker.io) for explicit credentials (only for --type image_pull). Mutually exclusive with value, from_file, from_docker_config. |
 | `--username` | `text` | `Sentinel.UNSET` | Username for the registry (only with --registry). |
@@ -259,6 +280,20 @@ This will create a trigger that runs every day at midnight.
 **`flyte delete COMMAND [ARGS]...`**
 
 Remove resources from a Flyte deployment.
+
+#### flyte delete app
+
+**`flyte delete app [OPTIONS] NAME`**
+
+Delete apps from a Flyte deployment.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte delete secret
 
@@ -820,6 +855,7 @@ flyte run hello.py my_task --help
 | `--name` | `text` | `Sentinel.UNSET` | Name of the run. If not provided, a random name will be generated. |
 | {{< multiline >}}`--follow`
 `-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
+| `--tui` | `boolean` | `False` | Show interactive TUI for local execution (requires flyte[tui]). |
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
 | `--run-project` | `text` |  | Run the remote task in this project, only applicable when using `deployed-task` subcommand. |
@@ -854,6 +890,13 @@ Example usage:
 
 ```bash
 flyte serve examples/apps/basic_app.py app_env
+```
+
+**Local serving:** Use the `--local` flag to serve the app on localhost without
+deploying to the Flyte backend. This is useful for local development and testing:
+
+```bash
+flyte serve --local examples/apps/single_script_fastapi.py env
 ```
 
 Arguments to the serve command are provided right after the `serve` command and before the file name.
@@ -921,7 +964,29 @@ Serving deployed apps is not currently supported through this CLI command.
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
 | {{< multiline >}}`--env-var`
 `-e`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Environment variable to set in the app. Format: KEY=VALUE. Can be specified multiple times. Example: --env-var LOG_LEVEL=DEBUG --env-var DATABASE_URL=postgresql://... |
+| `--local` | `boolean` | `False` | Serve the app locally on localhost instead of deploying to the Flyte backend. The app will be served on the port defined in the AppEnvironment. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+### flyte start
+
+**`flyte start COMMAND [ARGS]...`**
+
+Start various Flyte services.
+
+#### flyte start tui
+
+**`flyte start tui`**
+
+Launch TUI explore mode to browse past local runs. To use the TUI install `pip install flyte[tui]`
+TUI, allows you to explore all your local runs if you have persistence enabled.
+
+Persistence can be enabled in 2 ways,
+1. By setting it in the config to record every local run
+```bash
+flyte create config --endpoint ...  --local-persistence
+```
+2. By passing it in flyte.init(local_persistence=True)
+This will record all `flyte.run` runs, that are local and are within the flyte.init being active.
 
 ### flyte update
 

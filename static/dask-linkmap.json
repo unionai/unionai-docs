@@ -1,0 +1,11 @@
+{
+  "identifiers": {
+    "flyteplugins.dask.Dask": "/api-reference/integrations/dask/packages/flyteplugins.dask/dask/",
+    "Dask": "/api-reference/integrations/dask/packages/flyteplugins.dask/dask/",
+    "flyteplugins.dask.Scheduler": "/api-reference/integrations/dask/packages/flyteplugins.dask/scheduler/",
+    "Scheduler": "/api-reference/integrations/dask/packages/flyteplugins.dask/scheduler/",
+    "flyteplugins.dask.WorkerGroup": "/api-reference/integrations/dask/packages/flyteplugins.dask/workergroup/",
+    "WorkerGroup": "/api-reference/integrations/dask/packages/flyteplugins.dask/workergroup/"
+  },
+  "methods": {}
+}

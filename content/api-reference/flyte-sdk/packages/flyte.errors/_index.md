@@ -1,6 +1,6 @@
 ---
 title: flyte.errors
-version: 2.0.0b48
+version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -23,6 +23,7 @@ unknown error.
 | [`ActionAbortedError`](../flyte.errors/actionabortederror) | This error is raised when an action was aborted, externally. |
 | [`ActionNotFoundError`](../flyte.errors/actionnotfounderror) | This error is raised when the user tries to access an action that does not exist. |
 | [`BaseRuntimeError`](../flyte.errors/baseruntimeerror) | Base class for all Union runtime errors. |
+| [`CodeBundleError`](../flyte.errors/codebundleerror) | This error is raised when the code bundle cannot be created, for example when no files are found to bundle. |
 | [`CustomError`](../flyte.errors/customerror) | This error is raised when the user raises a custom error. |
 | [`DeploymentError`](../flyte.errors/deploymenterror) | This error is raised when the deployment of a task fails, or some preconditions for deployment are not met. |
 | [`ImageBuildError`](../flyte.errors/imagebuilderror) | This error is raised when the image build fails. |
@@ -48,6 +49,7 @@ unknown error.
 | [`SlowDownError`](../flyte.errors/slowdownerror) | This error is raised when the user tries to access a resource that does not exist or is invalid. |
 | [`TaskInterruptedError`](../flyte.errors/taskinterruptederror) | This error is raised when the underlying task execution is interrupted. |
 | [`TaskTimeoutError`](../flyte.errors/tasktimeouterror) | This error is raised when the underlying task execution runs for longer than the specified timeout. |
+| [`TraceDoesNotAllowNestedTasksError`](../flyte.errors/tracedoesnotallownestedtaskserror) | This error is raised when the user tries to use a task from within a trace. |
 | [`UnionRpcError`](../flyte.errors/unionrpcerror) | This error is raised when communication with the Union server fails. |
 
 ### Methods

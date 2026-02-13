@@ -22,35 +22,13 @@ When you serve an app, the following happens:
 
 The simplest way to serve an app:
 
-```python
-import flyte
-import flyte.app
-
-app_env = flyte.app.AppEnvironment(
-    name="my-dev-app",
-    parameters=[flyte.app.Parameter(name="model_path", value="s3://bucket/models/model.pkl")],
-    # ...
-)
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    app = flyte.serve(app_env)
-    print(f"App served at: {app.url}")
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_examples.py" fragment=basic-serve lang=python >}}
 
 ## Overriding parameters
 
 One key advantage of serving is the ability to override parameters dynamically:
 
-```python
-app = flyte.with_servecontext(
-    input_values={
-        "my-dev-app": {
-            "model_path": "s3://bucket/models/test-model.pkl",
-        }
-    }
-).serve(app_env)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_examples.py" fragment=override-parameters lang=python >}}
 
 This is useful for:
 - Testing different configurations
@@ -61,21 +39,7 @@ This is useful for:
 
 Use `with_servecontext()` for more control over the serving process:
 
-```python
-import flyte
-
-app = flyte.with_servecontext(
-    version="v1.0.0",
-    project="my-project",
-    domain="development",
-    env_vars={"LOG_LEVEL": "DEBUG"},
-    input_values={"app-name": {"input": "value"}},
-    cluster_pool="dev-pool",
-    log_level=logging.INFO,
-    log_format="json",
-    dry_run=False,
-).serve(app_env)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_examples.py" fragment=advanced-serving lang=python >}}
 
 ## Using CLI
 
@@ -93,15 +57,10 @@ Where `app` is the variable name of the `AppEnvironment` object.
 
 - `url`: The app's URL
 - `endpoint`: The app's endpoint URL
-- `status`: Current status of the app
+- `deployment_status`: Current status of the app
 - `name`: App name
 
-```python
-app = flyte.serve(app_env)
-print(f"URL: {app.url}")
-print(f"Endpoint: {app.endpoint}")
-print(f"Status: {app.status}")
-```
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_examples.py" fragment=return-value lang=python >}}
 
 ## Best practices
 

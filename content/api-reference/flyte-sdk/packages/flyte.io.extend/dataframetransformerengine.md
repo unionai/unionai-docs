@@ -1,6 +1,6 @@
 ---
 title: DataFrameTransformerEngine
-version: 2.0.0b48
+version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -12,6 +12,7 @@ layout: py_api
 Think of this transformer as a higher-level meta transformer that is used for all the dataframe types.
 If you are bringing a custom data frame type, or any data frame type, to flytekit, instead of
 registering with the main type engine, you should register with this transformer instead.
+
 
 
 ```python
@@ -35,6 +36,7 @@ def DataFrameTransformerEngine()
 | [`get_decoder()`](#get_decoder) |  |
 | [`get_encoder()`](#get_encoder) |  |
 | [`get_literal_type()`](#get_literal_type) | Provide a concrete implementation so that writers of custom dataframe handlers since there's nothing that. |
+| [`get_structured_dataset_type()`](#get_structured_dataset_type) |  |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
 | [`iter_as()`](#iter_as) |  |
@@ -153,6 +155,21 @@ The other aspects of it - columns, external schema type, etc. can be read from a
 | Parameter | Type | Description |
 |-|-|-|
 | `t` | `typing.Union[Type[DataFrame], typing.Any]` | The python dataframe type, which is mostly ignored. |
+
+### get_structured_dataset_type()
+
+```python
+def get_structured_dataset_type(
+    storage_format: str | None,
+    pa_schema: Optional['pa.lib.Schema'],
+    column_map: typing.OrderedDict[str, type[typing.Any]] | None,
+) -> types_pb2.StructuredDatasetType
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `storage_format` | `str \| None` | |
+| `pa_schema` | `Optional['pa.lib.Schema']` | |
+| `column_map` | `typing.OrderedDict[str, type[typing.Any]] \| None` | |
 
 ### guess_python_type()
 

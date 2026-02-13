@@ -1,8 +1,8 @@
 ---
 title: Build tasks
-weight: 4
+weight: 9
 variants: +flyte +serverless +byoc +selfmanaged
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Build tasks
@@ -24,12 +24,13 @@ The task programming section covers key patterns for building effective Flyte wo
 - [**Grouping actions**](./grouping-actions): Organize related task executions into logical groups for better visualization and management in the UI.
 - [**Container tasks**](./container-tasks): Run arbitrary containers in any language without the Flyte SDK installed, using Flyte's copilot sidecar for seamless data flow.
 - [**Remote tasks**](./remote-tasks): Use previously deployed tasks without importing their code or dependencies, enabling team collaboration and task reuse.
-- [**Pod templates**](./pod_templates): Extend tasks with Kubernetes pod templates to add sidecars, volume mounts, and advanced Kubernetes configurations.
-- [**Other features**](./other_features): Advanced patterns like task forwarding and other specialized task execution techniques.
+- [**Pod templates**](../task-configuration/pod-templates): Extend tasks with Kubernetes pod templates to add sidecars, volume mounts, and advanced Kubernetes configurations.
+- [**Abort and cancel actions**](./abort-tasks): Stop in-progress actions automatically, programmatically, or manually via the CLI and UI.
+- [**Other features**](./other-features): Advanced patterns like task forwarding and other specialized task execution techniques.
 
 **Development and debugging**
 - [**Notebooks**](./notebooks): Write and iterate on workflows directly in Jupyter notebooks for interactive development and experimentation.
-- [**Unit testing**](./unit_testing): Test your Flyte tasks using direct invocation for business logic or `flyte.run()` for Flyte-specific features.
+- [**Unit testing**](./unit-testing): Test your Flyte tasks using direct invocation for business logic or `flyte.run()` for Flyte-specific features.
 - [**Reports**](./reports): Generate custom HTML reports during task execution to display progress, results, and visualizations in the UI.
 - [**Traces**](./traces): Add fine-grained observability to helper functions within your tasks for better debugging and resumption capabilities.
 - [**Error handling**](./error-handling): Implement robust error recovery strategies, including automatic resource scaling and graceful failure handling.
@@ -50,5 +51,6 @@ These programming patterns become essential as your workflows grow in complexity
 - Create **reports** to monitor long-running workflows and share results with stakeholders.
 - Use **custom context** when you need lightweight, cross-cutting metadata to flow through your task hierarchy without becoming part of the task's logical inputs.
 - Write **unit tests** to validate your task logic and ensure type transformations work correctly before deployment.
+- Use **abort and cancel** to stop unnecessary actions when conditions change, such as early convergence in HPO or manual intervention.
 
 Each guide includes practical examples and best practices to help you implement these patterns effectively in your own workflows.

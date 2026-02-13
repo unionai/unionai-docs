@@ -1,6 +1,6 @@
 ---
 title: ConnectorEnvironment
-version: 2.0.0b48
+version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -19,7 +19,7 @@ class ConnectorEnvironment(
     env_vars: Optional[Dict[str, str]],
     resources: Optional[Resources],
     interruptible: bool,
-    image: Union[str, Image, Literal['auto']],
+    image: Union[str, Image, Literal['auto'], None],
     type: str,
     port: int | flyte.app._types.Port,
     args: *args,
@@ -43,7 +43,7 @@ class ConnectorEnvironment(
 | `env_vars` | `Optional[Dict[str, str]]` | |
 | `resources` | `Optional[Resources]` | |
 | `interruptible` | `bool` | |
-| `image` | `Union[str, Image, Literal['auto']]` | |
+| `image` | `Union[str, Image, Literal['auto'], None]` | |
 | `type` | `str` | |
 | `port` | `int \| flyte.app._types.Port` | |
 | `args` | `*args` | |

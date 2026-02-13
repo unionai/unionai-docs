@@ -23,21 +23,39 @@
     return match ? match[1] : '';
   };
 
+  // Load and merge multiple linkmap files
+  const loadLinkmaps = async (basePath) => {
+    const linkmapFiles = ['flytesdk-linkmap.json', 'wandb-linkmap.json', 'snowflake-linkmap.json'];
+    const merged = { identifiers: {}, methods: {} };
+
+    for (const filename of linkmapFiles) {
+      try {
+        const url = basePath ? `${basePath}/${filename}` : `/${filename}`;
+        const response = await fetch(url);
+        if (response.ok) {
+          const data = await response.json();
+          Object.assign(merged.identifiers, data.identifiers || {});
+          Object.assign(merged.methods, data.methods || {});
+        }
+      } catch (e) {
+        // Silently ignore missing linkmaps
+      }
+    }
+
+    return merged;
+  };
+
   // Load linkmap and process inline code
   const processInlineCode = async () => {
     try {
       const basePath = getBasePath();
 
-      // Construct the JSON URL - it's at the root of the site
-      const jsonURL = basePath ? `${basePath}/flytesdk-linkmap.json` : '/flytesdk-linkmap.json';
-      const response = await fetch(jsonURL);
+      const linkmap = await loadLinkmaps(basePath);
 
-      if (!response.ok) {
-        console.warn('Could not load linkmap for inline code linking');
+      if (Object.keys(linkmap.identifiers).length === 0 && Object.keys(linkmap.methods).length === 0) {
+        console.warn('Could not load any linkmaps for inline code linking');
         return;
       }
-
-      const linkmap = await response.json();
 
       // Find all <code> elements that are NOT inside <pre> (inline code only)
       const codeElements = document.querySelectorAll('code:not(pre code)');
@@ -52,7 +70,8 @@
           const displayText = innerText; // What we'll show (without brackets)
 
           // Strip trailing () for matching
-          const textForMatching = innerText.endsWith('()') ? innerText.slice(0, -2) : innerText;
+          let textForMatching = innerText.endsWith('()') ? innerText.slice(0, -2) : innerText;
+          textForMatching = textForMatching.startsWith('@') ? textForMatching.slice(1) : textForMatching;
 
           // Check if it's a ClassName.method pattern (for magic matching)
           const classMethodMatch = textForMatching.match(/^([^.]+)\.(.+)$/);
@@ -108,7 +127,8 @@
 
         // Regular matching (no magic markers)
         // Strip trailing () for matching methods
-        const textForMatching = text.endsWith('()') ? text.slice(0, -2) : text;
+        let textForMatching = text.endsWith('()') ? text.slice(0, -2) : text;
+        textForMatching = textForMatching.startsWith('@') ? textForMatching.slice(1) : textForMatching;
 
         // Check if it's a ClassName.method or fully.qualified.ClassName.method pattern
         const classMethodMatch = textForMatching.match(/^(.+)\.(.+)$/);

@@ -8,7 +8,17 @@
 {{- $modified := false -}}
 
 {{- if eq $lang "python" -}}
-    {{- $flyteapi := site.Data.flytesdk -}}
+    {{- /* Load and merge all API data sources */ -}}
+    {{- $flyteapi := dict "identifiers" (dict) "methods" (dict) "packages" (dict) -}}
+    {{- with site.Data.flytesdk -}}
+        {{- $flyteapi = merge $flyteapi (dict "identifiers" (.identifiers | default dict) "methods" (.methods | default dict) "packages" (.packages | default dict)) -}}
+    {{- end -}}
+    {{- with site.Data.wandb -}}
+        {{- $flyteapi = merge $flyteapi (dict "identifiers" (merge $flyteapi.identifiers (.identifiers | default dict)) "methods" (merge $flyteapi.methods (.methods | default dict)) "packages" (merge $flyteapi.packages (.packages | default dict))) -}}
+    {{- end -}}
+    {{- with site.Data.snowflake -}}
+        {{- $flyteapi = merge $flyteapi (dict "identifiers" (merge $flyteapi.identifiers (.identifiers | default dict)) "methods" (merge $flyteapi.methods (.methods | default dict)) "packages" (merge $flyteapi.packages (.packages | default dict))) -}}
+    {{- end -}}
 
     {{- /* First, protect strings by replacing them with markers */ -}}
     {{- $stringMap := dict -}}

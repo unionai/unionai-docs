@@ -1,0 +1,11 @@
+{
+  "identifiers": {
+    "flyteplugins.ray.HeadNodeConfig": "/api-reference/integrations/ray/packages/flyteplugins.ray/headnodeconfig/",
+    "HeadNodeConfig": "/api-reference/integrations/ray/packages/flyteplugins.ray/headnodeconfig/",
+    "flyteplugins.ray.RayJobConfig": "/api-reference/integrations/ray/packages/flyteplugins.ray/rayjobconfig/",
+    "RayJobConfig": "/api-reference/integrations/ray/packages/flyteplugins.ray/rayjobconfig/",
+    "flyteplugins.ray.WorkerNodeConfig": "/api-reference/integrations/ray/packages/flyteplugins.ray/workernodeconfig/",
+    "WorkerNodeConfig": "/api-reference/integrations/ray/packages/flyteplugins.ray/workernodeconfig/"
+  },
+  "methods": {}
+}

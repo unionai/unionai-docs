@@ -10,4 +10,4 @@ Details on how to author, build and publish the docs can be found on the website
 
 <!-- Trigger Cloudflare build - Dec 5, 2025 -->
 
-The source code for that section can be found in this repository under `content/community/contributing-docs/`.
+The source code for that section can be found in this repository under `content/community/contributing-docs/

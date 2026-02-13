@@ -1,0 +1,6 @@
+packages:
+  flyteplugins.sglang: /api-reference/integrations/sglang/packages/flyteplugins.sglang/
+identifiers:
+  flyteplugins.sglang.SGLangAppEnvironment: /api-reference/integrations/sglang/packages/flyteplugins.sglang/sglangappenvironment/
+  SGLangAppEnvironment: /api-reference/integrations/sglang/packages/flyteplugins.sglang/sglangappenvironment/
+methods: {}

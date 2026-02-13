@@ -1,6 +1,6 @@
 ---
 title: ResourceMeta
-version: 2.0.0b48
+version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -10,6 +10,7 @@ layout: py_api
 **Package:** `flyte.connectors`
 
 This is the metadata for the job. For example, the id of the job.
+
 
 
 ```python

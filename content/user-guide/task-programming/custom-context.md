@@ -1,6 +1,6 @@
 ---
-title: Custom Context
-weight: 100
+title: Custom context
+weight: 5
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -26,7 +26,7 @@ Custom context, on the other hand, is implicit metadata. It consists only of str
 
 ## When to use it and when not to
 
-Custom Context is perfect when you need metadata, not domain data, to flow through your tasks.
+Custom context is perfect when you need metadata, not domain data, to flow through your tasks.
 
 Good use cases:
 

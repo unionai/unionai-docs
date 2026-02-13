@@ -1,8 +1,8 @@
 ---
 title: Serve and deploy apps
-weight: 12
+weight: 14
 variants: +flyte +serverless +byoc +selfmanaged
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Serve and deploy apps
@@ -31,50 +31,12 @@ Deployment is designed for production use:
 {{< tabs "serve-vs-deploy" >}}
 {{< tab "Serve" >}}
 
-{{< markdown >}}
-```python
-import flyte
-import flyte.app
-
-app_env = flyte.app.AppEnvironment(
-    name="my-app",
-    image=flyte.app.Image.from_debian_base().with_pip_packages("streamlit==1.41.1"),
-    args=["streamlit", "hello", "--server.port", "8080"],
-    port=8080,
-    resources=flyte.Resources(cpu="1", memory="1Gi"),
-)
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    app = flyte.serve(app_env)
-    print(f"Served at: {app.url}")
-```
-{{< /markdown >}}
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_and_deploy_examples.py" fragment=serve-example lang=python >}}
 {{< /tab >}}
 
 {{< tab "Deploy" >}}
 
-{{< markdown >}}
-```python
-import flyte
-import flyte.app
-
-app_env = flyte.app.AppEnvironment(
-    name="my-app",
-    image=flyte.app.Image.from_debian_base().with_pip_packages("streamlit==1.41.1"),
-    args=["streamlit", "hello", "--server.port", "8080"],
-    port=8080,
-    resources=flyte.Resources(cpu="1", memory="1Gi"),
-)
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    deployments = flyte.deploy(app_env)
-    # Access deployed app URL from the deployment
-    for deployed_env in deployments[0].envs.values():
-        print(f"Deployed: {deployed_env.deployed_app.url}")
-```
-{{< /markdown >}}
+{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_and_deploy_examples.py" fragment=deploy-example lang=python >}}
 {{< /tab >}}
 {{< /tabs >}}
 
@@ -105,4 +67,5 @@ flyte deploy path/to/app.py app_env
 - [**How app serving works**](./how-app-serving-works): Understanding the serve process and configuration options
 - [**How app deployment works**](./how-app-deployment-works): Understanding the deploy process and configuration options
 - [**Activating and deactivating apps**](./activating-and-deactivating-apps): Managing app lifecycle
+- [**Model training and serving**](../basic-project/): Train a model with tasks and serve it via FastAPI
 - [**Prefetching models**](./prefetching-models): Download and shard HuggingFace models for vLLM and SGLang

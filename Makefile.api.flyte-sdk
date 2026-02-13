@@ -1,10 +1,11 @@
 OUTPUT_FOLDER=content/api-reference/flyte-sdk
+CLI_OUTPUT_FILE=content/api-reference/flyte-cli.md
 API_DATA=/tmp/flyte-sdk.api.yaml
 VENV_DIR=.venv
 SKIP_VENV_SETUP ?= false
 
 .PHONY: all
-all: setup_venv parser generate
+all: setup_venv parser generate cli
 
 .PHONY: setup_venv
 setup_venv:
@@ -72,13 +73,24 @@ clean_venv:
 .PHONY: clean
 clean: clean_output_folder clean_venv
 
+.PHONY: cli
+cli:
+ifeq ($(SKIP_VENV_SETUP),false)
+	(sed "s/%%VERSION%%/$$($(VENV_DIR)/bin/python -c 'import flyte; print(flyte.__version__)')/" "include/cli.flyte.md"; echo; $(VENV_DIR)/bin/flyte gen docs --type markdown) > $(CLI_OUTPUT_FILE).tmp
+	mv $(CLI_OUTPUT_FILE).tmp $(CLI_OUTPUT_FILE)
+else
+	(sed "s/%%VERSION%%/$$(python -c 'import flyte; print(flyte.__version__)')/" "include/cli.flyte.md"; echo; flyte gen docs --type markdown) > $(CLI_OUTPUT_FILE).tmp
+	mv $(CLI_OUTPUT_FILE).tmp $(CLI_OUTPUT_FILE)
+endif
+
 .PHONY: help
 help:
 	@echo "Available targets:"
-	@echo "  all              - Set up venv, parse, and generate (default)"
+	@echo "  all              - Set up venv, parse, generate API docs, and generate CLI docs (default)"
 	@echo "  setup_venv       - Create fresh venv and install flyte with optional dependencies"
 	@echo "  parser           - Parse flyte package to extract API data"
-	@echo "  generate         - Generate documentation from API data"
+	@echo "  generate         - Generate API documentation from API data"
+	@echo "  cli              - Generate CLI documentation"
 	@echo "  clean_output_folder - Remove generated output folder"
 	@echo "  clean_venv       - Remove the virtual environment"
 	@echo "  clean            - Clean both output folder and venv"
