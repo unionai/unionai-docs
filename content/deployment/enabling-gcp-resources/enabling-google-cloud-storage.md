@@ -20,7 +20,7 @@ For {{< key product_name >}} customers whose data plane is in GCP, we walk throu
 
 To enable access to a GCS bucket you have to add the `<UserFlyteGSA>` Google Service Account as a principal to that bucket and assign it a role that includes the permissions that you want your code to have.
 
-* Find the actual name and email of the `<UserFlyteGSA>` in your {{< key product_name >}} data plane GCP project (See [Find the actual name of `<UserFlyteGSA>`](.#find-the-actual-name-of-userflytegsa))
+* Find the actual name and email of the `<UserFlyteGSA>` in your {{< key product_name >}} data plane GCP project (See [Find the actual name of `<UserFlyteGSA>`](_index#find-the-actual-name-of-userflytegsa))
 * Go to **Cloud Storage > Buckets** and select the bucket to which you want to grant access.
 * In the **Bucket details** view select the **Permissions** tab and then select **GRANT ACCESS**:
 
@@ -29,7 +29,7 @@ To enable access to a GCS bucket you have to add the `<UserFlyteGSA>` Google Ser
 * In the **Grant access** panel:
   * Under **Add principals**, paste the actual name (in email form) of the `<UserFlyteGSA>` into the **New principals** field.
   * Under **Assign roles** add as many roles as you need.
-    In the example below we add the roles enabling reading and writing: **Storage Object Viewer**, **Storage Object Creator**, and **Storage Legacy Bucket Reader**.
+    In the example below we add the roles enabling reading and writing: **Storage Object Viewer** and **Storage Object Creator**.
 
 ![](../../_static/images/user-guide/integrations/enabling-gcp-resources/enabling-google-cloud-storage/grant-access-to-bucket.png)
 
@@ -39,4 +39,4 @@ Your bucket should now be **globally accessible** to task code in all Flyte proj
 
 > [!NOTE] Domain-scoped permissions are not self-service
 > If you want to assign permissions in a more fine-grained way, per project and/or domain, you need to contact the {{< key product_name >}} team.
-> See [Domain-scoped access](.#domain-scoped-access).
+> See [Domain-scoped access](_index#domain-scoped-access).

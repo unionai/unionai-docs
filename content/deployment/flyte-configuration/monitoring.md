@@ -1,7 +1,7 @@
 ---
 title: Monitoring
 weight: 2
-variants: +flyte -serverless -byoc -selfmanaged
+variants: -flyte -serverless -byoc -selfmanaged
 ---
 
 # Monitoring a Flyte deployment
@@ -142,7 +142,7 @@ metadata:
   name: flytemonitoring
   namespace: flyte #or namespace where Flyte is installed
   labels:
-    release: kube-prometheus-stack 
+    release: kube-prometheus-stack
 spec:
   selector:
     matchLabels:

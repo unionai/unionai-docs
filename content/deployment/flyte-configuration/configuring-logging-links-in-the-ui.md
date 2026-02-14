@@ -1,7 +1,7 @@
 ---
 title: Logging links in the UI
 weight: 3
-variants: +flyte -serverless -byoc -selfmanaged
+variants: -flyte -serverless -byoc -selfmanaged
 ---
 
 # Configuring logging links in the UI
@@ -68,7 +68,7 @@ task_logs:
       cloudwatch-region: <AWS_REGION>
       cloudwatch-log-group: <LOG_GROUP_NAME>
       cloudwatch-template-uri: "https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logEventViewer:group=/flyte-production/kubernetes;stream=var.log.containers.{{.podName}}_{{.namespace}}_{{.containerName}}-{{.containerId}}.log"
-  
+
 ```
 ### Stackdriver (Google Cloud Logging)
 
@@ -163,7 +163,7 @@ task_logs:
 ### Configure dynamic log links
 
 Dynamic log links have two unique characteristics:
-1. Not shown by default for all tasks, and 
+1. Not shown by default for all tasks, and
 2. Can use template variables provided during task registration.
 
 Configure dynamic log links in the flytepropeller the following way:

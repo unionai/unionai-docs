@@ -6,20 +6,27 @@ variants: -flyte -serverless -byoc +selfmanaged
 
 # Image Builder
 
-Union Image Builder supports the ability to build container images within the dataplane. Subsequently enabling the use of the `union` builder type within defined [ImageSpecs](../../user-guide/development-cycle/image-spec.md).
+Union Image Builder supports the ability to build container images within the dataplane. This enables the use of the `remote` builder type for any defined [Container Image](../../user-guide/task-configuration/container-images).
 
+Configure the use of remote image builder:
+```bash
+flyte create config --builder=remote --endpoint...
+```
+
+Write custom [container images](../../user-guide/task-configuration/container-images):
 ```python
-image_spec = union.ImageSpec(
-    builder="union",
-    name="say-hello-image",
+env = flyte.TaskEnvironment(
+    name="hello_v2",
+    image=flyte.Image.from_debian_base()
+        .with_pip_packages("<package 1>", "<package 2>")
 )
 ```
 
-> By default, Image Builder is disabled.
+> By default, Image Builder is disabled and has to be enabled by configuring the builder type to `remote` in flyte config
 
 ## Requirements
 
-* Union requires that a `production` domain exists. The image building process runs in the `system` project by default.
+* The image building process runs in the target run's project and domain. Any image push secrets needed to push images to the registry will need to be accessible from the project & domain where the build happens.
 
 ## Configuration
 
@@ -40,7 +47,7 @@ imageBuilder:
   # -- E.g. "tcp://buildkitd.buildkit.svc.cluster.local:1234"
   buildkitUri: ""
 
-  # -- The default repository to publish images to "registry" is not specified with imagespec.
+  # -- The default repository to publish images to when "registry" is not specified in ImageSpec.
   # -- Note, the build-image task will fail unless "registry" is specified or a default repository is provided.
   defaultRepository: ""
 
@@ -67,9 +74,9 @@ imageBuilder:
 
 By default, Union is intended to be configured to use [IAM roles for service accounts (IRSA)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) for authentication. Setting `authenticationType` to `aws` configures Union image builder related services to use AWS default credential chain. Additionally, Union image builder uses [`docker-credential-ecr-login`](https://github.com/awslabs/amazon-ecr-credential-helper) to authenticate to the ecr repository configured with `defaultRepository`.
 
-`defaultRepository` should be the full qualified ecr repository namem `<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/<REPOSITORY_NAME>`.
+`defaultRepository` should be the fully qualified ECR repository name, e.g. `<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/<REPOSITORY_NAME>`.
 
-Therefore, it is necessary to configure the user role with permissions the following permissions.
+Therefore, it is necessary to configure the user role with the following permissions.
 
 ```json
 {
@@ -92,7 +99,7 @@ Therefore, it is necessary to configure the user role with permissions the follo
 }
 ```
 
-Simarly, the `operator-proxy` requires the following permissions
+Similarly, the `operator-proxy` requires the following permissions
 
 ```json
 {
@@ -113,7 +120,7 @@ Simarly, the `operator-proxy` requires the following permissions
 
 #### AWS Cross Account access
 
-Access to repositories that do not exist in the same AWS account as the data plane requires additional ECR resource-based permissions. An ECR policy like the following is required if the configured `defaultRepository` or ImageSpec's `registry` exists in an AWS account different from the dataplane's.
+Access to repositories that do not exist in the same AWS account as the data plane requires additional ECR resource-based permissions. An ECR policy like the following is required if the configured `defaultRepository` or `ImageSpec`'s `registry` exists in an AWS account different from the dataplane's.
 
 ```json
 {
@@ -182,7 +189,7 @@ In order to support a private ImageSpec `base_image` the following permissions a
 
 ### Google Cloud Platform
 
-By default, GCP uses [Kubernetes Service Accounts to GCP IAM](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity#kubernetes-sa-to-iam) for authentication. Setting `authenticationType` to `google` configures Union image builder related services to use GCP default credential chain. Additionally, Union image builder uses [`docker-credential-gcr`](https://github.com/GoogleCloudPlatform/docker-credential-gcr) to authenticate to the google artifact registries referenced by `defaultRepository`.
+By default, GCP uses [Kubernetes Service Accounts to GCP IAM](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity#kubernetes-sa-to-iam) for authentication. Setting `authenticationType` to `google` configures Union image builder related services to use GCP default credential chain. Additionally, Union image builder uses [`docker-credential-gcr`](https://github.com/GoogleCloudPlatform/docker-credential-gcr) to authenticate to the Google artifact registries referenced by `defaultRepository`.
 
 `defaultRepository` should be the full name to the repository in combination with an optional image name prefix. `<GCP_LOCATION>-docker.pkg.dev/<GCP_PROJECT_ID>/<REPOSITORY_NAME>/<IMAGE_PREFIX>`.
 
@@ -200,60 +207,36 @@ Access to registries that do not exist in the same GCP project as the data plane
 By default, Union is designed to use Azure [Workload Identity Federation](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster) for authentication using [user-assigned managed identities](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-manage-user-assigned-managed-identities?pivots=identity-mi-methods-azp) in place of AWS IAM roles.
 
 * Configure the user "role" user-assigned managed identity with the `AcrPush` role.
-* Configure the Azure kubelet identity id and operator-proxy user-assigned managed identities with the `AcrPull` role.
+* Configure the Azure kubelet identity ID and operator-proxy user-assigned managed identities with the `AcrPull` role.
 
 ### Private registries
 
 Follow guidance in this section to integrate Image Builder with private registries:
 
-#### Github Container Registry
+#### GitHub Container Registry
 
-1. Encode the token for your registry in `base64` format:
-
+1. Follow the [GitHub guide](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) to log in to the registry locally.
+2. Create a Union secret:
 ```bash
-echo -n "your-username:your-token" | base64
+flyte create secret --type image_pull --from-docker-config --registries ghcr.io SECRET_NAME
 ```
-> This is the same you'd find in your `$HOME/docker/config.json` file after you succesfully login using the token. [Learn more](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
 
-2. Store this in a JSON file using this structure:
+> This secret will be available to all projects and domains in your tenant. [Learn more about Union Secrets](./union-secrets)
+> Check alternative ways to create image pull secrets in the [API reference](../../api-reference/flyte-cli#flyte-create-secret)
 
-```json
-{
-  "auths": {
-
-		"ghcr.io": {
-                        "auth": "<YOUR_ENCODED_TOKEN>",
-               }
- } 
-}
-
-```
-3. Create a Union secret:
-
-```bash
-union create secret --type image-pull-secret --value-file <YOUR_JSON_CONFIG_FILE> <YOUR_SECRET_NAME>
-```
-> This secret will be available to all projects and domains in your tenant. If you want to scope it down add --project and --domain. [Learn more about Union Secrets](../../user-guide/development-cycle/managing-secrets.md)
-
-4. Reference this secret in the ImageSpec object:
+3. Reference this secret in the Image object:
 
 ```python
-image = ImageSpec(
-    builder="union",
-    name="private-image"
-    packages=["union"],
-    builder_options={
-        "imagepull_secret_name": "<YOUR_SECRET_NAME>",
-    }
+env = flyte.TaskEnvironment(
+    name="hello_v2",
+    # Allow image builder to pull and push from the private registry. `registry` field isn't required if it's configured
+    # as the default registry in imagebuilder section in the helm chart values file.
+    image=flyte.Image.from_debian_base(registry="<my registry url>", name="private", registry_secret="<YOUR_SECRET_NAME>")
+        .with_pip_packages("<package 1>", "<package 2>"),
+    # Mount the same secret to allow tasks to pull that image
+    secrets=["<YOUR_SECRET_NAME>"]
 )
-
 ```
-This will enable Image Builder to push images and layers to a private GHCR.
 
-5. Request the secret so the task can pull the image:
-
-```python
-@task(container_image=image, secret_requests=[union.Secret(key="<YOUR_SECRET_NAME>")])
-def my_task() -> int:
-  ...
-```
+This will enable Image Builder to push images and layers to a private GHCR. It'll also allow pods for this task environment to pull
+this image at runtime.

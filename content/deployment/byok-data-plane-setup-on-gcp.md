@@ -1,28 +1,30 @@
 ---
-title: Data plane setup on AWS
+title: Data plane setup on GCP
 weight: 4
 variants: -flyte -serverless -byoc +selfmanaged
 ---
 
-# Data plane setup on AWS
+# Data plane setup on GKE (GCP)
 
 {{< key product_name >}}’s modular architecture allows for great flexibility and control.
 The customer can decide how many clusters to have, their shape, and who has access to what.
-All communication is encrypted.  The Union architecture is described on the [Architecture](../architecture) page.
+All communication is encrypted.
+The Union architecture is described on the [Architecture](./architecture/_index) page.
+
+> [!NOTE] These instructions cover installing Union.ai in an on-premise Kubernetes cluster.
+> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./byok-data-plane-setup-on-aws/_index), [Azure](./byok-data-plane-setup-on-azure), [OCI](./byok-data-plane-setup-on-oci).
 
 ## Assumptions
 
-* You have a {{< key product_name >}} organization, and you know the control plane URL for your organization.
-* You have a cluster name provided by or coordinated with Union.
-* You have a Kubernetes cluster, running one of the most recent three minor K8s versions.
-  [Learn more](https://kubernetes.io/releases/version-skew-policy/)
-* You have configured an S3 bucket.
-* You have an IAM Role, Trust Policy and OIDC provider configured as indicated in the [AWS section in Cluster Recommendations](./cluster-recommendations#aws) section.
+* You have a {{< key product_name >}} organization, and you know the control plane URL for your organization. (e.g. https://your-org-name.us-east-2.unionai.cloud).
+* You have a Kubernetes cluster, running one of the most recent three minor Kubernetes versions. [Learn more](https://kubernetes.io/releases/version-skew-policy/).
+* A GCS Bucket and Google Service Accounts that has access to
+* Existing Kubernetes Service Accounts with access to the bucket or permissions to create Service Account bindings
 
 ## Prerequisites
 
 * Install [Helm 3](https://helm.sh/docs/intro/install/).
-* Install [union](../api-reference/union-cli) and [uctl](../api-reference/uctl-cli).
+* Install [uctl](../api-reference/uctl-cli/_index).
 
 ## Deploy the {{< key product_name >}} operator
 
@@ -33,15 +35,15 @@ All communication is encrypted.  The Union architecture is described on the [Arc
    helm repo update
    ```
 
-2. Use the `uctl selfserve provision-dataplane-resources` command to generate a new client and client secret for communicating with your Union control plane, provision authorization permissions for the app to operate on the union cluster name you have selected, generate values file to install dataplane in your Kubernetes cluster and provide follow-up instructions:
+2. Use the `uctl selfserve provision-dataplane-resources` command to generate a new client and client secret for communicating with your Union control plane, provision authorization permissions for the app to operate on the Union cluster name you have selected, generate values file to install dataplane in your Kubernetes cluster and provide follow-up instructions:
 
    ```shell
    uctl config init --host=<YOUR_UNION_CONTROL_PLANE_URL>
-   uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME>  --provider aws
+   uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME>  --provider gcp
    ```
 
    * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
-     It will also generate a YAML file specific to the provider that you specify, in this case `aws`:
+     It will also generate a YAML file specific to the provider that you specify, in this case `metal`, meaning "bare metal", or generic:
 
    ```shell
     -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ----------
@@ -56,12 +58,12 @@ All communication is encrypted.  The Union architecture is described on the [Arc
    Installation Instructions
    ======================================================================
 
-   Step 1: Setup the infrastucture on AWS. Our team can share terrform scripts to help with this.
+   Step 1: Prepare your Kubernetes cluster.
 
    Step 2: Clone and navigate to helm-charts repository
      git clone https://github.com/unionai/helm-charts && cd helm-charts
 
-   Step 3: Ensure S3 bucket & IAM roles are configured; set role ARN(s) in values
+   Step 3: Configure your S3-compatible storage endpoint & credentials in the values file
 
    Step 4: Install the data plane CRDs
      helm upgrade --install unionai-dataplane-crds charts/dataplane-crds
@@ -79,11 +81,12 @@ All communication is encrypted.  The Union architecture is described on the [Arc
 
    Step 8: You can now trigger v2 executions on this dataplane.
    ```
-   * Save the secret that is displayed. Union does not store the credentials, rerunning the same command can be used to show same secret later which stream through the OAuth Apps provider.
-   * Create the `EAGER_API_KEY` as instructed in Step 7 of the command output. This step is required for every dataplane you plan to use for v2 executions.
 
-3. Update the values file correctly:
-   For example, `<UNION_FLYTE_ROLE_ARN>` is the ARN of the new IAM role created in the [AWS Cluster Recommendations](./cluster-recommendations#iam)
+  * Save the secret that is displayed. Union does not store the credentials, rerunning the same command can be used to show same secret later which stream through the OAuth Apps provider.
+  * Create the `EAGER_API_KEY` as instructed in Step 7 of the command output. This step is required for every dataplane you plan to use for V2 executions.
+
+3.  Update the values file correctly:
+    For example, `<UNION_FLYTE_ROLE_ARN>` is the ARN of the new IAM role created in the [AWS Cluster Recommendations](./cluster-recommendations#iam)
 
 4. Optionally configure the resource `limits` and `requests` for the different services.
    By default, these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.
