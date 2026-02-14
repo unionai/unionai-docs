@@ -36,7 +36,7 @@ Once the data plane is deployed in your AWS or GCP account, there are different 
 
 Default nodes guarantee the basic operation of the data plane and are always running. Example services that run on these nodes include autoscaling (worker nodes), monitoring services, union operator, and many more.
 
-Worker nodes are responsible for executing your workloads. You have full control over the configuration of your [worker nodes](./data-plane-setup/configuring-your-data-plane#worker-node-groups).
+Worker nodes are responsible for executing your workloads. You have full control over the configuration of your [worker nodes](./configuring-your-data-plane#worker-node-groups).
 
 When worker nodes are not in use, they automatically scale down to the configured minimum. (The default is zero.)
 

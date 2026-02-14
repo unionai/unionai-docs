@@ -1,7 +1,7 @@
 ---
 title: Platform deployment
 weight: 4
-variants: +flyte -serverless +byoc +selfmanaged
+variants: -flyte -serverless +byoc +selfmanaged
 top_menu: true
 mermaid: true
 sidebar_expanded: true
@@ -9,28 +9,93 @@ sidebar_expanded: true
 
 # Platform deployment
 
-{{< variant byoc selfmanaged >}}
+The Union.ai platform uses a split-plane model with separate control and data planes.
+
+In both BYOC and Self-managed deployments, your code, input and output data, container images and logs reside entirely on the **data plane**, which runs in your cloud account, while the **control plane** runs on Union.ai's cloud account, providing the workflow orchestration logic.
+
+The **control plane** does not have access to the code, data, images, or logs in the **data plane**.
+
+If you choose a **Self-managed deployment**, your data isolation is further enhanced by the fact that you manage your data plane entirely on your own, without providing any access to Union.ai customer support.
+
+If you choose a **BYOC deployment**, Union.ai manages the Kubernetes cluster in your data plane for you. The data isolation of the control vs. data plane is still enforced - for example, Union.ai has no access to your object storage or logs. However, Union.ai customer support will have some access to your cluster, though strictly for upgrades, provisioning, and other actions related to maintaining cluster health.
+{{< variant byoc >}}
 {{< markdown >}}
 
-{{< key product_name >}} uses a hybrid model cloud service: {{< key product_name >}} maintains the control plane of the application on its own cloud infrastructure in Amazon Web Services (AWS).
-This is where all administration and management functionality resides.
+> [!NOTE]
+> These are the BYOC docs. You can switch to the Union.ai Self-managed docs with the product selector above.
 
-Your data and the actual computation involved in executing your tasks and workflows takes place on the data plane, a virtual private cloud that you control, but that is administered and managed by the {{< key product_name >}} control plane.
-To enable the administration and management of your data plane, you grant {{< key product_name >}} the required permissions when you set up your data plane.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant selfmanaged >}}
+{{< markdown >}}
+
+> [!NOTE]
+> These are the Self-managed docs. You can switch to the Union.ai BYOC docs with the product selector above.
+
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant byoc >}}
 {{< markdown >}}
 
-{{< key product_name >}} supports data planes on Amazon WebServices (AWS), Google Cloud Platform (GCP), and Microsoft Azure.
+## BYOC deployment
+
+The BYOC deployment offers a fully "serverless in your cloud", turnkey solution where all infrastructure management is offloaded to Union.ai:
+
+* The **data plane** resides in your cloud provider account but is managed by Union.ai, who will handle deployment, monitoring, Kubernetes upgrades, and all other operational aspects of the platform. BYOC deployment supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), and Microsoft Azure.
+
+* The **control plane**, as with all Union.ai deployment options, resides in the Union.ai AWS account and is administered by Union.ai. However, as mentioned, data separation is maintained between the data plane and the control plane, with no control plane access to the code, input/output, images or logs in the data plane.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant selfmanaged >}}
+{{< markdown >}}
+
+## Self-managed deployment
+
+The Self-managed deployment allows you to manage the data plane yourself on cloud infrastructure that you control and maintain:
+
+* The **data plane** resides in your cloud provider account and is managed by you. Your team will handle deployment, monitoring, Kubernetes upgrades, and all other operational aspects of the platform. You do not need to provide any permissions to the Union.ai system to create a data plane. Self-managed deployment supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), Microsoft Azure and Oracle Compute Infrastructure (OCI).
+
+* The **control plane**, as with all Union.ai deployment options, resides in the Union.ai Amazon Web Services (AWS) account and is administered by Union.ai. However, as mentioned, data separation is maintained between the data plane and the control plane, with no control plane access to the code, input/output, images or logs in the data plane.
 
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant selfmanaged >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
-Union supports data planes on Kubernetes clusters running on-premise or on cloud providers Amazon WebServices (AWS), Google Cloud Platform (GCP), Microsoft Azure or Oracle Compute Infrastructure
+
+## Data plane
+
+The data plane runs in your cloud account and VPC. It is composed of the required services to run and monitor workflows:
+
+* Kubernetes cluster
+* Object storage bucket
+* Container image registry
+* Secrets manager
+* Logging solution
+* IAM role with proper access
+
+When you run your workflow:
+
+1. Your code is sent to the object storage bucket
+2. Container images are built on a builder node and pushed to the registry
+3. Pods are created and assume the IAM role
+4. Container images are pulled down from the registry for each pod as needed
+5. Containers load their inputs from, and save their outputs to, the object store
+
+All of this happens in the data plane, with the control plane aware only of the workflow execution state, and not the code, data, logs, secrets, or any other proprietary information. The data plane communicates with the control plane through an outgoing port through a zero trust proxy. There is no open incoming port to the data plane.
+
+## Control plane
+
+Union.ai operates the control plane in its own cloud infrastructure in Amazon Web Services (AWS).
+The control plane has access to:
+
+* Workflow execution state information
+* Names of tasks and other deployed entities
+* Pointers to object storage locations in the data plane (but not any user data)
+* Union.ai IDP
+
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -42,40 +107,4 @@ Installing {{< key product_name >}}
 {{< /link-card >}}
 
 {{< /grid >}}
-{{< /variant >}}
-
-
-{{< variant flyte >}}
-{{< markdown >}}
-
-Flyte is distributed as a Helm chart with different supported deployment scenarios.
-{{< key product_name >}} is the platform built on top of Flyte that extends its capabilities to include RBAC, instant containers, real-time serving and more.
-The following diagram describes the available deployment paths for both options:
-
-```mermaid
-flowchart TD
-    A("Deployment paths") --> n1["Testing/evaluating"] & n4["Production <br>deployment"]
-    n1 -- Flyte+{{< key product_name >}} in the browser --> n2["{{< key product_name >}} Serverless<br>"]
-    n1 -- Compact Flyte cluster in a local container --> n3["flytectl demo start<br>"]
-    n4 --> n5["Run Flyte"] & n8["Run {{< key product_name >}}"]
-    n5 -- small scale --> n6["flyte-binary<br>Helm chart"]
-    n5 -- large scale or multi-cluster --> n7["flyte-core<br>Helm chart"]
-    n8 -- "You manage your data plane. {{< key product_name >}} manages the control plane" --> n9["Self-managed"]
-    n8 -- {{< key product_name >}} manages control and data planes --> n10["BYOC"]
-
-    n1@{ shape: diam}
-    n4@{ shape: rounded}
-    n2@{ shape: rounded}
-    n3@{ shape: rounded}
-    n5@{ shape: diam}
-    n8@{ shape: diam}
-    n6@{ shape: rounded}
-    n7@{ shape: rounded}
-    n9@{ shape: rounded}
-    n10@{ shape: rounded}
-```
-
-This section walks you through the process to create a Flyte cluster and cover topics related to enabling and configuring plugins, authentication, performance tuning, and maintaining Flyte as a production-grade service.
-
-{{< /markdown >}}
 {{< /variant >}}

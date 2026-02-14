@@ -108,7 +108,7 @@ Note that for each interruptible node group, an identical on-demand group will b
 This fallback group will be identical in all respects to the interruptible group (instance type, taints, disk size, etc.), apart from being on-demand instead of interruptible.
 The fallback group will be used when the retries on the interruptible group have been exhausted.
 
-For more information on interruptible instances, see [Interruptible instances](../user-guide/core-concepts/tasks/task-hardware-environment/interruptible-instances).
+For more information on interruptible instances, see the interruptible instances documentation.
 
 ### Taints
 
@@ -201,9 +201,9 @@ Values provided by you are in single quotes (').
 
 ## After deployment
 
-Once {{< key product_name >}} has configured and deployed your cluster(s), you will be able to see your data plane setup in [Usage > Compute](../user-guide/administration/resources).
+Once {{< key product_name >}} has configured and deployed your cluster(s), you will be able to see your data plane setup in **Usage > Compute**.
 
 ## Adjusting your configuration
 
-To make changes to your cluster configuration, go to the [{{< key product_name >}} Support Portal](https://support.union.ai).
+To make changes to your cluster configuration, go to the [{{< key product_name >}} Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
 This portal also accessible from **Usage > Compute** through the **Adjust Configuration** button.
