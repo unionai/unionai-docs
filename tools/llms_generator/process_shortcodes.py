@@ -178,7 +178,10 @@ class ShortcodeProcessor:
 
                 # Generate markdown code block
                 lang_str = lang or ""
-                return f"```{lang_str}\n{file_content.rstrip()}\n```\n\n*Source: {file_path}*"
+                source_url = file_path
+                if source_url.startswith('/external/unionai-examples/'):
+                    source_url = 'https://github.com/unionai/unionai-examples/blob/main/' + source_url[len('/external/unionai-examples/'):]
+                return f"```{lang_str}\n{file_content.rstrip()}\n```\n\n*Source: {source_url}*"
 
             except Exception as e:
                 return f"```\n# Error reading file: {file_path}\n# {str(e)}\n```"
@@ -436,22 +439,10 @@ class ShortcodeProcessor:
         def replace_link_card(match):
             target, icon, title, card_content = match.groups()
 
-            # Convert icon to emoji if available
-            icon_map = {
-                "lightbulb": "💡",
-                "123": "🔢",
-                "book": "📚",
-                "code": "💻",
-                "settings": "⚙️",
-                "rocket": "🚀",
-                "chart": "📊"
-            }
-            icon_emoji = icon_map.get(icon, "🔗") if icon else "🔗"
-
             # Create markdown card representation
             title = title or "Link"
             # Use target URL as-is
-            return f"\n### {icon_emoji} [{title}]({target})\n\n{card_content.strip()}\n"
+            return f"\n### [{title}]({target})\n\n{card_content.strip()}\n"
 
         return re.sub(pattern, replace_link_card, content, flags=re.DOTALL)
 

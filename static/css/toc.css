@@ -26,8 +26,9 @@
 
 .container .toc-container .toc-header {
   font-weight: 600;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  padding-left: 1rem;
 }
 
 .container .toc-container .toc-list,
@@ -48,6 +49,23 @@
 .toc .toc-list .toc-link::before,
 .toc .toc-list .is-active-link::before {
   background-color: unset;
+}
+
+.container .toc-container .toc-llm-link {
+  margin-top: 2rem;
+  margin-bottom: 0;
+  padding-left: 1rem;
+  font-weight: 600;
+  color: var(--text-secondary-color, #666);
+}
+
+.container .toc-container .toc-llm-link a {
+  color: var(--text-secondary-color, #666);
+  text-decoration: none;
+}
+
+.container .toc-container .toc-llm-link a:hover {
+  text-decoration: underline;
 }
 
 @media (max-width: 1500px) {
