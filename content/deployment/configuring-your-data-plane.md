@@ -206,5 +206,5 @@ Once {{< key product_name >}} has configured and deployed your cluster(s), you w
 
 ## Adjusting your configuration
 
-To make changes to your cluster configuration, go to the [{{< key product_name >}} Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
+To make changes to your cluster configuration, go to the [{{< key product_name >}} Support Portal](https://support.union.ai).
 This portal also accessible from **Usage > Compute** through the **Adjust Configuration** button.
