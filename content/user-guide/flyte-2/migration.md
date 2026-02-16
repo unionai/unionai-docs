@@ -6,6 +6,10 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Migration from Flyte 1 to Flyte 2
 
+{{< note >}}
+For comprehensive migration reference with detailed API mappings, parameter tables, and complete examples, see [Migration from Flyte 1](../../api-reference/migration/_index) in the Reference section.
+{{< /note >}}
+
 You can migrate from Flyte 1 to Flyte 2 by following the steps below:
 
 ### 1. Move task configuration to a `TaskEnvironment` object
