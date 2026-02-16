@@ -28,7 +28,7 @@ You will need to send the following details to the {{< key product_name >}} team
 
 ## Cloud provider
 
-You can choose either AWS or GCP as your cloud provider.
+You can choose AWS, Azure, or GCP as your cloud provider.
 If you choose to have multiple clusters, they must all be in the same provider.
 
 ## Multi-cluster
@@ -37,7 +37,7 @@ You can choose a single or multi-cluster configuration.
 
 In a multi-cluster configuration, you have separate clusters for each of your Flyte domains and/or Flyte projects.
 
-A cluster in this context refers to a distinct EKS (in AWS) or GKE (in GCP) instance in its own AWS account or GCP project.
+A cluster in this context refers to a distinct EKS (in AWS), AKS (in Azure), or GKE (in GCP) instance in its own AWS account, Azure subscription, or GCP project.
 
 The most common set up is to have a separate cluster for each Flyte domain: development, staging, and production.
 
@@ -49,7 +49,7 @@ See [Multi-cluster](./multi-cluster) for more information.
 
 ## Account ID
 
-Provide the ID of the AWS account or GCP project in which each cluster will reside.
+Provide the ID of the AWS account, Azure subscription, or GCP project in which each cluster will reside.
 
 ## Region
 
@@ -70,15 +70,15 @@ See [Data retention policy](./data-retention-policy) for more details.
 
 ## Worker node groups
 
-Specify the worker node groups (in AWS) or worker node pools (in GCP) that you wish to have, with the following details for each. For more information about worker nodes, see [Platform architecture](./platform-architecture).
+Specify the worker node groups (in AWS) or worker node pools (in Azure and GCP) that you wish to have, with the following details for each. For more information about worker nodes, see [Platform architecture](./platform-architecture).
 
 ### Node group name
 
-The name of the node group. This will be used as the node group name in the EKS or GKE console.
+The name of the node group. This will be used as the node group name in the EKS, AKS, or GKE console.
 
 ### Node type
 
-The instance type name, for example, `p3d.4xlarge`. (See [AWS instance types](https://aws.amazon.com/ec2/instance-types) or [GCP machine types](https://cloud.google.com/compute/docs/machine-types) for more information. Also see [Resources held back](#resources-held-back) below.)
+The instance type name, for example, `p3d.4xlarge`. (See [AWS instance types](https://aws.amazon.com/ec2/instance-types), [Azure VM sizes](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes), or [GCP machine types](https://cloud.google.com/compute/docs/machine-types) for more information. Also see [Resources held back](#resources-held-back) below.)
 
 ### Minimum
 
@@ -99,10 +99,11 @@ The maximum node number. This setting must be explicitly set to a value greater 
 
 > [!NOTE]
 > In AWS, the term *spot instance* is used.
-> In GCP, the equivalent term is *spot vm*.
-> Here we use the term *interruptible instance* generically for both providers.
+> In Azure, the equivalent term is *spot VM*.
+> In GCP, the equivalent term is *spot VM*.
+> Here we use the term *interruptible instance* generically for all providers.
 
-Specify whether this will be a **interruptible instance** or an **on-demand instance** node group.
+Specify whether this will be an **interruptible instance** or an **on-demand instance** node group.
 
 Note that for each interruptible node group, an identical on-demand group will be configured as a fallback.
 This fallback group will be identical in all respects to the interruptible group (instance type, taints, disk size, etc.), apart from being on-demand instead of interruptible.
@@ -205,5 +206,5 @@ Once {{< key product_name >}} has configured and deployed your cluster(s), you w
 
 ## Adjusting your configuration
 
-To make changes to your cluster configuration, go to the [{{< key product_name >}} Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
+To make changes to your cluster configuration, go to the [{{< key product_name >}} Support Portal](https://support.union.ai).
 This portal also accessible from **Usage > Compute** through the **Adjust Configuration** button.
