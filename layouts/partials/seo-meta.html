@@ -8,11 +8,11 @@
     {{- $description = "API reference documentation for Union.ai workflow orchestration and machine learning pipelines." -}}
   {{- end -}}
 {{- else -}}
-  {{- /* Extract content description for regular pages */ -}}
-  {{- $body := .Content | replaceRE `(?is)^\s*<h1[^>]*>.*?</h1>\s*` "" -}}
-  {{- $p := findRE `(?is)<p[^>]*>(.*?)</p>` $body -}}
-  {{- if gt (len $p) 0 -}}
-    {{- $description = index $p 0 | plainify -}}
+  {{- /* Extract content description from plain text (avoids re-rendering shortcodes) */ -}}
+  {{- $body := .Plain -}}
+  {{- $sentences := findRE `[^.!?]+[.!?]` $body -}}
+  {{- if gt (len $sentences) 0 -}}
+    {{- $description = index $sentences 0 | replaceRE `\s+` " " | strings.TrimSpace -}}
   {{- else -}}
     {{- $description = .Summary | plainify -}}
   {{- end -}}
