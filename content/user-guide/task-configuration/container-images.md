@@ -165,9 +165,9 @@ When `image.builder` in the `config.yaml` is set to `remote` (and you are runnin
 There is no set up of Docker nor any other local configuration required on your part.
 
 > [!NOTE]
-> The Flyte SDK verifies if the image builder is enabled for your cluster by checking if the `image_build` task is deployed in the `system` project in the `production` domain.
-> If you are using custom roles and policies, make sure to assign users the `view_flyte_inventory` action for project-domain pair `production/system`.
-> See [the docs for user management](https://www.union.ai/docs/v1/byoc/user-guide/administration/user-management) for more details on creating and assigning custom roles and policies.
+> The Flyte SDK checks whether the image builder is enabled for your cluster by verifying that the `image_build` task is deployed in the `system` project within the `production` domain.
+> If you are using custom roles and policies, ensure that users are granted the `view_flyte_inventory` action for the `production/system` project-domain pair.
+> See the [user management documentation](https://www.union.ai/docs/v1/byoc/user-guide/administration/user-management) for more details on creating and assigning custom roles and policies.
 
 
 #### ImageBuilder with external registries
