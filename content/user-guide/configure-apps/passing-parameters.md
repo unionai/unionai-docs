@@ -69,7 +69,7 @@ This is useful for:
 
 Here's a complete example showing how to use parameters in a FastAPI app:
 
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/app-inputs-fastapi-example.py" lang=python >}}
+{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/app-parameters-fastapi-example.py" lang=python >}}
 
 ## Example: Using RunOutput for model serving
 

@@ -12,6 +12,7 @@
 {{- $fileName := .Get "file" -}}
 {{- $fragment := .Get "fragment" -}}
 {{- $showFragments := .Params.show_fragments -}}
+{{- $callingFile := .Page.File.Path -}}
 
 {{- /* Define allowed prefixes */ -}}
 {{- $allowedPrefixes := slice "/static/" "/assets/" "/_static/" "/external/" -}}
@@ -26,7 +27,6 @@
 
 {{- /* Fail if fileName doesn't have an allowed prefix */ -}}
 {{- if not $isAllowed -}}
-  {{- $callingFile := .Page.File.Path -}}
   {{- errorf "File path must start with one of the allowed prefixes: %s. Got: %s (called from: %s)" (delimit $allowedPrefixes ", ") $fileName $callingFile -}}
 {{- end -}}
 
@@ -45,11 +45,28 @@
   {{- $githubURL = printf "https://github.com/unionai/unionai-examples/blob/main/%s" $relativePath -}}
 {{- end -}}
 
+{{- /* Check if file exists (readFile returns empty string for missing files) */ -}}
+{{- $fileExists := true -}}
+{{- if not $file -}}
+  {{- $fileExists = false -}}
+  {{- if hasPrefix $fileName "/external/unionai-examples/" -}}
+    {{- errorf "File not found: %s (referenced from %s). The examples submodule may be out of date — run 'make update-examples' to update it." $fileName $callingFile -}}
+  {{- else -}}
+    {{- errorf "File not found: %s (referenced from %s)." $fileName $callingFile -}}
+  {{- end -}}
+  <div style="border: 2px dashed red; color: red; padding: 0.5rem 1rem; margin-bottom: 1rem;">
+    File not found: <code>{{ $fileName }}</code> (referenced from <code>{{ $callingFile }}</code>).
+    {{- if hasPrefix $fileName "/external/unionai-examples/" }}
+    The examples submodule may be out of date — run <code>make update-examples</code> to update it.
+    {{- end }}
+  </div>
+{{- end -}}
+
 {{- $lines := split $file "\n" -}}
 {{- $filteredLines := slice -}}
 
 {{- /* Handle fragment if specified */ -}}
-{{- if $fragment -}}
+{{- if and $fragment $fileExists -}}
   {{- $startMarker := printf "{{docs-fragment %s}}" $fragment -}}
   {{- $endMarker := printf "{{/docs-fragment %s}}" $fragment -}}
   {{- $foundStart := false -}}
@@ -65,13 +82,23 @@
     {{- end -}}
   {{- end -}}
   {{- if not $foundStart -}}
-    {{- warnf "Fragment marker '%s' not found in file %s. Please mark a section with the following markers: %s and %s"
-          $fragment $fileName (printf "{{docs-fragment %s}}" $fragment) (printf "{{/docs-fragment %s}}" $fragment) -}}
+    {{- errorf "Fragment '%s' not found in file %s (referenced from %s). Ensure the file contains markers: %s and %s"
+          $fragment $fileName $callingFile (printf "{{docs-fragment %s}}" $fragment) (printf "{{/docs-fragment %s}}" $fragment) -}}
     <div style="border: 2px dashed red; color: red; padding: 0.5rem 1rem; margin-bottom: 1rem;">
-      Fragment marker '{{$fragment}}' not found in file {{$fileName}}. Please mark a section with the following markers:
-      <code>{{ "{{docs-fragment " }}{{ $fragment }}{{ "}}" }}</code> and <code>{{ "{{/docs-fragment}}" }}</code>
+      Fragment '<code>{{ $fragment }}</code>' not found in file <code>{{ $fileName }}</code>.
+      Ensure the file contains markers:
+      <code>{{ "{{docs-fragment " }}{{ $fragment }}{{ "}}" }}</code> and <code>{{ "{{/docs-fragment " }}{{ $fragment }}{{ "}}" }}</code>
+    </div>
+  {{- else if not $foundEnd -}}
+    {{- errorf "Fragment '%s' start marker found but end marker missing in file %s (referenced from %s). Expected: %s"
+          $fragment $fileName $callingFile (printf "{{/docs-fragment %s}}" $fragment) -}}
+    <div style="border: 2px dashed red; color: red; padding: 0.5rem 1rem; margin-bottom: 1rem;">
+      Fragment '<code>{{ $fragment }}</code>' start marker found but end marker missing in file <code>{{ $fileName }}</code>.
+      Expected: <code>{{ "{{/docs-fragment " }}{{ $fragment }}{{ "}}" }}</code>
     </div>
   {{- end -}}
+{{- else if and $fragment (not $fileExists) -}}
+  {{- /* File missing — already reported above, skip fragment processing */ -}}
 {{- else if and $lineStart $lineEnd -}}
   {{- $start := int $lineStart -}}
   {{- $end := int $lineEnd -}}
