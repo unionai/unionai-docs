@@ -4,7 +4,7 @@ PREFIX := $(if $(VERSION),docs/$(VERSION),docs)
 PORT := 9000
 BUILD := $(shell date +%s)
 
-.PHONY: all dist variant dev update-examples sync-examples llm-docs check-api-docs update-api-docs update-redirects dry-run-redirects deploy-redirects check-deleted-pages check-links clean clean-generated
+.PHONY: all dist variant dev update-examples sync-examples llm-docs check-api-docs update-api-docs update-redirects dry-run-redirects deploy-redirects check-deleted-pages check-links check-generated-content clean clean-generated
 
 all: usage
 
@@ -14,6 +14,9 @@ usage:
 clean:
 	rm -rf dist public
 
+# WARNING: clean-generated removes all generated content (API docs, CLI docs,
+# notebooks, YAML data, linkmaps). Do NOT commit after running this without
+# regenerating via 'make dist'. CI will block the merge (check-generated-content).
 clean-generated: clean
 	rm -rf content/_static/notebooks
 	rm -rf content/api-reference/flyte-sdk/packages content/api-reference/flyte-sdk/classes
@@ -161,6 +164,9 @@ check-links:
 	else \
 		python3 tools/link_checker/check_internal_links.py; \
 	fi
+
+check-generated-content:
+	@uv run tools/check_generated_content.py
 
 check-api-docs:
 	@uv run tools/api_generator/check_versions.py --check
