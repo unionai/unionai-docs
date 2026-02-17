@@ -32,7 +32,6 @@ variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
 	@VERSION=${VERSION} ./scripts/run_hugo.sh --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
 	@VERSION=${VERSION} VARIANT=${VARIANT} PREFIX=${PREFIX} BUILD=${BUILD} ./scripts/gen_404.sh
-	@echo "Processing shortcodes in markdown files..."
 	@if [ -d "dist/docs/${VERSION}/${VARIANT}/tmp-md" ]; then \
 		if command -v uv >/dev/null 2>&1; then \
 		uv run tools/llms_generator/process_shortcodes.py \
@@ -40,14 +39,16 @@ variant:
 			--version=${VERSION} \
 			--input-dir=dist/docs/${VERSION}/${VARIANT}/tmp-md \
 			--output-dir=dist/docs/${VERSION}/${VARIANT}/md \
-			--base-path=.; \
+			--base-path=. \
+			--quiet; \
 		else \
 		python3 tools/llms_generator/process_shortcodes.py \
 			--variant=${VARIANT} \
 			--version=${VERSION} \
 			--input-dir=dist/docs/${VERSION}/${VARIANT}/tmp-md \
 			--output-dir=dist/docs/${VERSION}/${VARIANT}/md \
-			--base-path=.; \
+			--base-path=. \
+			--quiet; \
 		fi \
 	fi
 
@@ -104,11 +105,10 @@ url-stats:
 	done
 
 llm-docs:
-	@echo "Building LLM-optimized documentation..."
 	@if command -v uv >/dev/null 2>&1; then \
-		VERSION=${VERSION} uv run tools/llms_generator/build_llm_docs.py --no-make-dist; \
+		VERSION=${VERSION} uv run tools/llms_generator/build_llm_docs.py --no-make-dist --quiet; \
 	else \
-		VERSION=${VERSION} python3 tools/llms_generator/build_llm_docs.py --no-make-dist; \
+		VERSION=${VERSION} python3 tools/llms_generator/build_llm_docs.py --no-make-dist --quiet; \
 	fi
 	@for variant in flyte byoc selfmanaged serverless; do \
 		mkdir -p dist/docs/${VERSION}/$$variant/_static/public; \
