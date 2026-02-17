@@ -1,6 +1,6 @@
 ---
 title: Secret
-version: 2.0.0
+version: 2.0.0b58
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -35,7 +35,7 @@ TODO: Add support for secret versioning (some stores) and secret groups (some st
 class Secret(
     key: str,
     group: typing.Optional[str],
-    mount: pathlib._local.Path | None,
+    mount: pathlib.Path | None,
     as_env_var: typing.Optional[str],
 )
 ```
@@ -43,7 +43,7 @@ class Secret(
 |-|-|-|
 | `key` | `str` | The name of the secret in the secret store. |
 | `group` | `typing.Optional[str]` | The group of the secret in the secret store. |
-| `mount` | `pathlib._local.Path \| None` | For now, the only supported mount path is "/etc/flyte/secrets". TODO: support arbitrary mount paths. Today only "/etc/flyte/secrets" is supported |
+| `mount` | `pathlib.Path \| None` | For now, the only supported mount path is "/etc/flyte/secrets". TODO: support arbitrary mount paths. Today only "/etc/flyte/secrets" is supported |
 | `as_env_var` | `typing.Optional[str]` | The name of the environment variable that the secret should be mounted as. |
 
 ## Methods

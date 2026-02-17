@@ -1,6 +1,6 @@
 ---
 title: AppHandle
-version: 2.0.0
+version: 2.0.0b58
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -11,9 +11,9 @@ layout: py_api
 
 Protocol defining the common interface between local and remote app handles.
 
-Both ``_LocalApp`` (local serving) and ``App`` (remote serving) satisfy this
-protocol, enabling calling code to work uniformly regardless of the serving mode.
-
+    Both ``_LocalApp`` (local serving) and ``App`` (remote serving) satisfy this
+    protocol, enabling calling code to work uniformly regardless of the serving mode.
+    
 
 
 ```python
