@@ -130,8 +130,8 @@ class LLMDocBuilder:
                     current_page_title = self.strip_common_prefix(' > '.join(current_hierarchy))
                     return f"**{current_page_title} > {text}**"
 
-            # For internal content.md links (with or without anchors), convert to hierarchical reference
-            if 'content.md' in url and not url.startswith(('http://', 'https://')):
+            # For internal page.md links (with or without anchors), convert to hierarchical reference
+            if 'page.md' in url and not url.startswith(('http://', 'https://')):
                 hierarchical_title = self.resolve_hierarchical_title(url, current_file_path, current_hierarchy, text)
                 return f"**{hierarchical_title}**"
 
@@ -349,13 +349,13 @@ class LLMDocBuilder:
         if not self.quiet:
             print("  First pass: Building lookup tables...")
         self.visited_files.clear()  # Reset for first pass
-        self.build_lookup_tables(variant_dir, 'content.md', variant_dir, [])
+        self.build_lookup_tables(variant_dir, 'page.md', variant_dir, [])
 
         # Second pass: Process content with lookup tables populated
         if not self.quiet:
             print("  Second pass: Processing content...")
         consolidated_content = []
-        self.process_page_depth_first(variant_dir, 'content.md', consolidated_content, variant_dir, [], variant, version)
+        self.process_page_depth_first(variant_dir, 'page.md', consolidated_content, variant_dir, [], variant, version)
 
         return '\n'.join(consolidated_content)
 
@@ -380,20 +380,20 @@ class LLMDocBuilder:
         if hierarchy is None:
             hierarchy = []
 
-        # Resolve the full path — every page is {dir}/content.md
+        # Resolve the full path — every page is {dir}/page.md
         if relative_path.endswith('/'):
-            file_path = base_dir / relative_path / 'content.md'
-            relative_path = relative_path + 'content.md'
-        elif relative_path.endswith('content.md'):
+            file_path = base_dir / relative_path / 'page.md'
+            relative_path = relative_path + 'page.md'
+        elif relative_path.endswith('page.md'):
             file_path = base_dir / relative_path
         else:
-            # Relative path is a directory name, look for content.md inside
-            if (base_dir / relative_path / 'content.md').exists():
-                file_path = base_dir / relative_path / 'content.md'
-                relative_path = f"{relative_path}/content.md"
+            # Relative path is a directory name, look for page.md inside
+            if (base_dir / relative_path / 'page.md').exists():
+                file_path = base_dir / relative_path / 'page.md'
+                relative_path = f"{relative_path}/page.md"
             else:
                 if not self.quiet:
-                    print(f"Warning: Could not find content.md for: {relative_path}")
+                    print(f"Warning: Could not find page.md for: {relative_path}")
                 return
 
         # Avoid infinite loops
@@ -454,20 +454,20 @@ class LLMDocBuilder:
         if hierarchy is None:
             hierarchy = []
 
-        # Resolve the full path — every page is {dir}/content.md
+        # Resolve the full path — every page is {dir}/page.md
         if relative_path.endswith('/'):
-            file_path = base_dir / relative_path / 'content.md'
-            relative_path = relative_path + 'content.md'
-        elif relative_path.endswith('content.md'):
+            file_path = base_dir / relative_path / 'page.md'
+            relative_path = relative_path + 'page.md'
+        elif relative_path.endswith('page.md'):
             file_path = base_dir / relative_path
         else:
-            # Relative path is a directory name, look for content.md inside
-            if (base_dir / relative_path / 'content.md').exists():
-                file_path = base_dir / relative_path / 'content.md'
-                relative_path = f"{relative_path}/content.md"
+            # Relative path is a directory name, look for page.md inside
+            if (base_dir / relative_path / 'page.md').exists():
+                file_path = base_dir / relative_path / 'page.md'
+                relative_path = f"{relative_path}/page.md"
             else:
                 if not self.quiet:
-                    print(f"Warning: Could not find content.md for: {relative_path}")
+                    print(f"Warning: Could not find page.md for: {relative_path}")
                 return
 
         if not file_path.exists():
@@ -504,8 +504,8 @@ class LLMDocBuilder:
 
         # Add page delimiter with URL
         if variant and version:
-            # Convert content.md path to web path
-            web_path = relative_from_root.replace('/content.md', '').replace('content.md', '')
+            # Convert page.md path to web path
+            web_path = relative_from_root.replace('/page.md', '').replace('page.md', '')
             if not web_path or web_path == '/':
                 web_path = ''
 
@@ -514,7 +514,7 @@ class LLMDocBuilder:
 
             # Collect index entry (with path_key for heading lookup)
             stripped_title = self.strip_common_prefix(' > '.join(current_hierarchy))
-            llm_url = f"{url}/content.md" if web_path else f"{url}/content.md"
+            llm_url = f"{url}/page.md" if web_path else f"{url}/page.md"
             self.index_entries.append((stripped_title, llm_url, relative_from_root.lower()))
         else:
             consolidated.append(f"\n=== PAGE: {relative_from_root} ===\n")
@@ -536,20 +536,20 @@ class LLMDocBuilder:
 
         variants = []
         for item in dist_path.iterdir():
-            if item.is_dir() and (item / 'content.md').exists():
+            if item.is_dir() and (item / 'page.md').exists():
                 variants.append(item.name)
 
         return sorted(variants)
 
     def _path_depth(self, path_key: str) -> int:
-        """Get the directory depth of a path_key (0 = root content.md)."""
-        parts = path_key.replace('content.md', '').strip('/').split('/')
+        """Get the directory depth of a path_key (0 = root page.md)."""
+        parts = path_key.replace('page.md', '').strip('/').split('/')
         parts = [p for p in parts if p]
         return len(parts)
 
     def _frontmatter_title(self, path_key: str) -> str:
         """Extract frontmatter title from the source _index.md file."""
-        dir_path = path_key.replace('/content.md', '').replace('content.md', '').strip('/')
+        dir_path = path_key.replace('/page.md', '').replace('page.md', '').strip('/')
         if dir_path:
             source_file = self.base_path / 'content' / dir_path / '_index.md'
         else:
@@ -593,7 +593,7 @@ class LLMDocBuilder:
             "",
             "Each entry below is `- [Page title](URL)` followed by the"
             " H2/H3 headings found on that page."
-            " Pages link to individual `content.md` files."
+            " Pages link to individual `page.md` files."
             " Sections marked with a \"Section bundle\" link have a `section.md`"
             " that concatenates all pages in the section into a single file"
             " — use it to load an entire section into context at once.",
@@ -650,7 +650,7 @@ class LLMDocBuilder:
                     lines.append(entry)
 
                     # Add bundle reference if this child has a section bundle
-                    child_dir = child_key.replace('/content.md', '').replace('content.md', '').strip('/')
+                    child_dir = child_key.replace('/page.md', '').replace('page.md', '').strip('/')
                     if child_dir in self.bundle_sections:
                         lines.append(f"  > Section bundle (all pages): {self.bundle_sections[child_dir]}")
 
@@ -667,11 +667,11 @@ class LLMDocBuilder:
         return '\n'.join(lines)
 
     def enhance_subpage_listings(self, variant: str, version: str = None):
-        """Post-process content.md files to enhance ## Subpages sections with H2/H3 headings."""
+        """Post-process page.md files to enhance ## Subpages sections with H2/H3 headings."""
         version = version or self.version
         variant_dir = self.base_path / 'dist' / 'docs' / version / variant
 
-        for content_file in variant_dir.rglob('content.md'):
+        for content_file in variant_dir.rglob('page.md'):
             try:
                 relative_key = str(content_file.relative_to(variant_dir)).lower()
             except ValueError:
@@ -704,10 +704,10 @@ class LLMDocBuilder:
                     continue
 
                 # Resolve child path to get the path key for heading lookup
-                if child_path_part.endswith('content.md'):
+                if child_path_part.endswith('page.md'):
                     child_path = (content_file.parent / child_path_part).resolve()
                 else:
-                    child_path = (content_file.parent / child_path_part.rstrip('/') / 'content.md').resolve()
+                    child_path = (content_file.parent / child_path_part.rstrip('/') / 'page.md').resolve()
 
                 try:
                     child_key = str(child_path.relative_to(variant_dir)).lower()
@@ -730,7 +730,7 @@ class LLMDocBuilder:
             print(f"Enhanced subpage listings for {variant}")
 
     def absolutize_links(self, variant: str, version: str = None):
-        """Convert all relative links in content.md files to absolute URLs."""
+        """Convert all relative links in page.md files to absolute URLs."""
         version = version or self.version
         variant_dir = self.base_path / 'dist' / 'docs' / version / variant
         base_url = f"https://www.union.ai/docs/{version}/{variant}"
@@ -738,7 +738,7 @@ class LLMDocBuilder:
         fixed_count = 0
         total_files = 0
 
-        for content_file in variant_dir.rglob('content.md'):
+        for content_file in variant_dir.rglob('page.md'):
             total_files += 1
             try:
                 content = content_file.read_text(encoding='utf-8')
@@ -855,12 +855,12 @@ class LLMDocBuilder:
             if not link_path:
                 return match.group(0)
             resolved = (current_file.parent / link_path).resolve()
-            # Leaf page content.md files are one directory level deeper than their
+            # Leaf page page.md files are one directory level deeper than their
             # Hugo source files, so ../foo resolves one level too shallow.
             # If the resolved path doesn't exist, try from one level up.
-            if not resolved.exists() and not (resolved / 'content.md').exists():
+            if not resolved.exists() and not (resolved / 'page.md').exists():
                 alt = (current_file.parent.parent / link_path).resolve()
-                if alt.exists() or (alt / 'content.md').exists():
+                if alt.exists() or (alt / 'page.md').exists():
                     resolved = alt
 
             # Check if it's within the bundle section
@@ -892,18 +892,18 @@ class LLMDocBuilder:
         return re.sub(r'\[([^\]]+)\]\(([^)]+)\)', replace_link, content)
 
     def _collect_bundle_pages(self, section_dir: Path, content_file: Path) -> List[Path]:
-        """Collect all content.md files in a section, depth-first following ## Subpages."""
+        """Collect all page.md files in a section, depth-first following ## Subpages."""
         pages = [content_file]
         content = content_file.read_text(encoding='utf-8')
         subpage_links = self.extract_subpage_links(content)
         for link in subpage_links:
             child_path = (content_file.parent / link).resolve()
             if child_path.is_dir():
-                child_content = child_path / 'content.md'
-            elif child_path.name == 'content.md':
+                child_content = child_path / 'page.md'
+            elif child_path.name == 'page.md':
                 child_content = child_path
             else:
-                child_content = child_path / 'content.md'
+                child_content = child_path / 'page.md'
             if child_content.exists():
                 pages.extend(self._collect_bundle_pages(section_dir, child_content))
         return pages
@@ -916,13 +916,13 @@ class LLMDocBuilder:
         bundle_count = 0
 
         # Find all section directories with llm_readable_bundle: true
-        for content_file in variant_dir.rglob('content.md'):
+        for content_file in variant_dir.rglob('page.md'):
             try:
                 rel_path = str(content_file.relative_to(variant_dir))
             except ValueError:
                 continue
 
-            dir_path = rel_path.replace('/content.md', '').replace('content.md', '').strip('/')
+            dir_path = rel_path.replace('/page.md', '').replace('page.md', '').strip('/')
             if not dir_path:
                 continue
 
@@ -960,7 +960,7 @@ class LLMDocBuilder:
                     page_rel = str(page_file.relative_to(variant_dir))
                 except ValueError:
                     page_rel = str(page_file)
-                web_path = page_rel.replace('/content.md', '').replace('content.md', '')
+                web_path = page_rel.replace('/page.md', '').replace('page.md', '')
                 page_url = f"{base_url}/{web_path}".rstrip('/')
                 bundle_parts.append(f"=== PAGE: {page_url} ===\n")
                 bundle_parts.append(page_content.strip())
@@ -1073,7 +1073,7 @@ def main():
                 file_size = len(consolidated_content)
                 print(f"Saved: {output_file} ({file_size:,} characters)")
 
-            # Enhance content.md subpage listings with H2/H3 headings
+            # Enhance page.md subpage listings with H2/H3 headings
             builder.enhance_subpage_listings(variant)
 
             # Generate section bundles (before absolutize so subpage links are still relative)

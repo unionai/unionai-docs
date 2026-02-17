@@ -24,11 +24,11 @@ This document describes how the Union.ai documentation platform works, including
   - [Deploying redirects to Cloudflare](#deploying-redirects-to-cloudflare)
 - [LLM documentation pipeline](#llm-documentation-pipeline)
   - [Overview](#overview)
-  - [Architecture](#architecture)
+  - [Generated output structure](#generated-output-structure)
   - [Processing pipeline](#processing-pipeline)
-  - [Output files](#output-files)
+  - [Section bundles](#section-bundles-sectionmd)
   - [Key implementation details](#key-implementation-details)
-  - [Benefits for LLM usage](#benefits-for-llm-usage)
+  - [Updating the LLM docs](#updating-the-llm-docs)
 - [CI checks on pull requests](#ci-checks-on-pull-requests)
   - [Check API Docs](#check-api-docs-check-api-docs)
   - [Check Images](#check-images-check-images)
@@ -263,148 +263,90 @@ python3 tools/redirect_generator/deploy_redirects.py --dry-run
 
 ### Overview
 
-The build generates consolidated, LLM-optimized documentation files from the Hugo source. These are single-file documents with all internal links converted to hierarchical text references, designed for use with Large Language Models.
+The build generates LLM-optimized documentation at four levels of granularity, designed for AI coding agents and AI search engines:
 
-### Architecture
+| File | Scope | Description |
+|------|-------|-------------|
+| `page.md` | Per page | Clean Markdown version of every page, with links to other `page.md` files |
+| `section.md` | Per section | Single-file bundle of all pages in a section (where enabled) |
+| `llms.txt` | Per variant | Page index with H2/H3 headings, grouped by section |
+| `llms-full.txt` | Per variant | Entire documentation as one file with hierarchical link references |
 
-**Source content structure:**
+### Generated output structure
+
 ```
-content/
+dist/docs/llms.txt                          # Root discovery: lists versions
+dist/docs/v2/llms.txt                       # Version discovery: lists variants
+dist/docs/v2/{variant}/
+├── llms.txt                                # Page index with headings
+├── llms-full.txt                           # Full consolidated doc
+├── page.md                                 # Root page
 ├── user-guide/
-│   ├── getting-started/
-│   │   ├── index.md
-│   │   ├── local-setup.md
-│   │   └── ...
+│   ├── page.md                             # User Guide landing page
 │   ├── task-configuration/
+│   │   ├── page.md                         # Section landing page
+│   │   ├── section.md                      # Section bundle (all pages concatenated)
+│   │   ├── resources/
+│   │   │   └── page.md
+│   │   ├── caching/
+│   │   │   └── page.md
+│   │   └── ...
 │   └── ...
-├── tutorials/
-├── integrations/
 └── ...
-```
-
-**Generated output structure:**
-```
-dist/docs/v2/
-├── flyte/
-│   ├── md/           # Hugo-generated markdown
-│   └── llms-full.txt # LLM-optimized consolidated doc
-├── byoc/
-│   ├── md/
-│   └── llms-full.txt
-├── selfmanaged/
-│   └── ...
-└── serverless/
-    └── ...
 ```
 
 ### Processing pipeline
 
-1. **Documentation regeneration**: `make dist` rebuilds all Hugo variants.
+The `make llm-docs` target (called automatically by `make dist`) runs two scripts in sequence:
 
-2. **Variant discovery**: Automatically discovers available variants in `dist/docs/v2/`.
+**Stage 1: `process_shortcodes.py`** — Generates `page.md` files
 
-3. **Page traversal**: Starting from `md/index.md`, follows `## Subpages` links depth-first:
-   ```markdown
-   ## Subpages
-   - [User Guide](user-guide/index.md)
-   - [Tutorials](tutorials/index.md)
-   ```
+1. Reads Hugo's Markdown output from `tmp-md/` (Hugo builds this alongside HTML via the MD output format).
+2. Resolves all shortcodes: `{{< variant >}}`, `{{< code >}}`, `{{< tabs >}}`, `{{< note >}}`, `{{< key >}}`, `{{< llm-bundle-note >}}`, etc.
+3. Writes the result as `page.md` alongside each `index.html` in `dist/`.
+4. Converts all internal links to point to other `page.md` files using relative paths.
 
-4. **Hierarchy building**: Builds complete page hierarchy as it traverses:
-   - `index.md` → "Documentation"
-   - `user-guide/index.md` → "Documentation > User Guide"
-   - `user-guide/getting-started/local-setup.md` → "Documentation > User Guide > Getting Started > Local Setup"
+**Stage 2: `build_llm_docs.py`** — Generates bundles and indexes
 
-5. **Heading analysis**: For each page, parses all markdown headings to build an anchor lookup:
-   ```markdown
-   # Local Setup                    → Page title (already in hierarchy)
-   ## Setting up a configuration    → "Getting Started > Local Setup > Setting up a configuration file"
-   ### Specify explicitly           → "Getting Started > Local Setup > Setting up a configuration file > Specify explicitly"
-   ```
+1. **Lookup tables**: Traverses all `page.md` files depth-first via `## Subpages` links, building a lookup table mapping file paths and anchors to hierarchical titles (e.g. `"user-guide/task-configuration/resources/page.md"` → `"Configure tasks > Resources"`).
+2. **`llms-full.txt`**: Processes all pages, converting internal `page.md` links to hierarchical bold references (e.g. `**Configure tasks > Resources**`).
+3. **Subpage enhancement**: Adds H2/H3 headings to `## Subpages` listings in `page.md` files.
+4. **Section bundles**: Generates `section.md` for sections with `llm_readable_bundle: true`.
+5. **Link absolutization**: Converts all relative links in `page.md` files to absolute URLs (`https://www.union.ai/docs/...`).
+6. **`llms.txt`**: Creates the page index with headings and bundle references.
 
-6. **Link processing**: Converts all internal links to hierarchical references:
-   - **Cross-page links:** `[Local setup](local-setup.md)` → `**Getting started > Local setup**`
-   - **Anchor links:** `[Config](local-setup.md#setting-up-a-configuration-file)` → `**Getting started > Local setup > Setting up a configuration file**`
-   - **Same-page anchors:** `[Image building](#image-building)` → `**Task configuration > Container images > Image building**`
-   - **External links:** Preserved unchanged
-   - **Cross-variant links:** Preserved unchanged
-   - **Static files:** Preserved unchanged
+### Section bundles (`section.md`)
 
-### Output files
+To enable a `section.md` bundle for a documentation section, two things are required in the section's `_index.md`:
 
-Two files are generated per variant:
+1. Frontmatter: `llm_readable_bundle: true`
+2. Body: `{{< llm-bundle-note >}}` shortcode (renders a note pointing to the bundle)
 
-1. **`llms-full.txt`** — The complete consolidated documentation:
-   - Complete documentation for that variant in depth-first order
-   - Page delimiters: `=== PAGE: path/to/file.md ===`
-   - Hierarchical internal links: All `.md` and `#anchor` links converted to `**Page > Section**` format
-   - Preserved external links: GitHub, cross-variant, and static file links unchanged
+A CI check (`check-llm-bundle-notes`) verifies these are always in sync.
 
-2. **`llms.txt`** — A redirect/discovery file:
-   - Brief explanation of the LLM documentation system
-   - Link to the corresponding `llms-full.txt` file
-   - Variant and version information
-   - Usage guidance for LLMs and RAG systems
+In section bundles, links to pages within the section become hierarchical bold references, while links to pages outside the section become absolute URLs.
 
 ### Key implementation details
 
-**Lookup table system.** The builder maintains a comprehensive lookup table mapping file paths and anchors to hierarchical names:
-```
-# Pages
-"user-guide/getting-started/local-setup.md" → "Getting Started > Local Setup"
+**Link conversion in `llms-full.txt`:**
+- Cross-page: `[Resources](../resources/page.md)` → `**Configure tasks > Resources**`
+- Anchor: `[Caching](../caching/page.md#cache-versions)` → `**Configure tasks > Caching > Cache versions**`
+- Same-page: `[Image building](#image-building)` → `**Container images > Image building**`
+- External links preserved unchanged
 
-# Anchors
-"local-setup.md#using-the-configuration-file" → "Getting Started > Local Setup > Using the configuration file"
-```
+**Hierarchy optimization:** Strips the `Documentation > {Variant}` prefix automatically.
 
-**Anchor generation.** Heading titles are converted to URL anchors using standard rules:
-- Lowercase conversion
-- Space to hyphen replacement
-- Special character removal
-- Example: "Setting up a Configuration File" → "setting-up-a-configuration-file"
-
-**Hierarchy optimization.** The system automatically strips redundant prefixes:
-- Raw: "Documentation > Flyte > Getting Started > Local Setup"
-- Optimized: "Getting Started > Local Setup" (in flyte variant)
-
-**Error handling:**
-- Missing files: Warnings logged, processing continues
-- Broken links: Fallback to link text with current context
-- Invalid anchors: Graceful fallback to text-based reference
-
-### Benefits for LLM usage
-
-**Internal references:**
-- No broken links — all internal `.md` references point to content in the same file
-- Searchable — LLMs can find any referenced content by searching hierarchical titles
-- Context-rich — every reference includes full page and section hierarchy
-- Consistent format — all internal references follow `**Page > Section**` pattern
-
-**Complete content:**
-- Single file — all documentation in one consolidated file per variant
-- Proper order — content follows logical depth-first navigation structure
-- No duplication — each page appears exactly once
-
-**LLM-friendly format:**
-- Clear delimiters for page boundaries
-- Hierarchical structure matching how humans think about documentation
-- No file system dependencies — all references are text-based within the same document
-
-**Integration targets:**
-- Vector databases for semantic search
-- RAG systems for question answering
-- AI assistants for documentation support
-- API documentation tools that consume markdown
-- Training datasets for domain-specific models
+**Error handling:** Missing files log warnings; broken links fall back to link text with context. A `link-issues.txt` report is written per variant.
 
 ### Updating the LLM docs
 
-The LLM documentation builder automatically regenerates content from the current Hugo source:
+LLM documentation regenerates automatically as part of `make dist`. To regenerate only the LLM files:
 
-1. Modify files in `content/`
-2. Run `make dist` (or `python build_llm_docs.py` directly)
-3. New files are included automatically if linked via `## Subpages`
-4. New Hugo variants are automatically detected and processed
+```
+make llm-docs
+```
+
+New pages are included automatically if linked via `## Subpages` in their parent's Hugo output. New variants are detected automatically.
 
 ## CI checks on pull requests
 

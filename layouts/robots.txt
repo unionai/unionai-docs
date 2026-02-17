@@ -8,7 +8,7 @@ Sitemap: {{ .Site.BaseURL }}sitemap.xml
 Disallow: /admin/
 Disallow: /private/
 Disallow: /_internal/
-Disallow: /*/content.md
+Disallow: /*/page.md
 Allow: /*/llms.txt
 Allow: /*/llms-full.txt
 

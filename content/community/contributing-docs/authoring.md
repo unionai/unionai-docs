@@ -88,6 +88,7 @@ weight: 3
 | `sidebar_expanded` | bool | If `true` the section becomes expanded in the sidebar. Permanently.              |
 | `site_root`        | bool | If `true` indicates that the page is the site landing page                        |
 | `toc_max`          | int  | Maximum heading to incorporate in the right navigation table of contents.         |
+| `llm_readable_bundle` | bool | If `true`, generates a `section.md` bundle for this section. Requires `{{</* llm-bundle-note */>}}` shortcode. See [LLM-optimized documentation](./llm-docs). |
 
 ## Conditional Content
 
