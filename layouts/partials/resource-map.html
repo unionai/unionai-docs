@@ -12,7 +12,7 @@
             {{- $.page.Scratch.SetInMap "resource_permalinks" $ref $res.Permalink -}}
             {{- $res.Publish -}}
         {{- else -}}
-            {{- warnf "Could not load resource %s @ %s" $ref $source -}}
+            {{- errorf "Could not load resource %s @ %s (in %s)." $ref $source $.page.Path -}}
             <div style="border: 2px dashed red; color: red; padding: 0.5rem 1rem; margin-bottom: 1rem;">
                 Could not load resource
                 <span style='white-space: nowrap'>{{ $ref }}</span>:
@@ -20,7 +20,7 @@
             </div>
         {{- end -}}
     {{- else -}}
-        {{- warnf "Could not find resource %s @ %s" $ref $source -}}
+        {{- errorf "Could not find resource %s @ %s (in %s)." $ref $source $.page.Path -}}
         <div style="border: 2px dashed red; color: red; padding: 0.5rem 1rem; margin-bottom: 1rem;">
             Could not find resource
                 <span style='white-space: nowrap'>{{ $ref }}</span>:

@@ -1,19 +1,7 @@
 {{ define "main" }}
 <article class="plugin">
-    <script>
-        function toggleTech() {
-            const panel = document.querySelector('sl-details')
-            panel.style.display = panel.style.display === 'none' ? 'block' : 'none'
-        }
-    </script>
-    
     <div class="content">
-        <h1>
-            {{ .Params.title }}
-            <!-- <sl-button onclick="toggleTech()">
-                Technical Specification
-            </sl-button> -->
-        </h1>
+        <h1>{{ .Params.title }}</h1>
 
         {{ block "specs" . }}{{ end }}
         
