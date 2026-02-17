@@ -31,7 +31,6 @@ declare target="dist/docs/${VARIANT}"
 
 if [[ -z $VERSION ]]; then
     echo "Version LATEST"
-    target="dist/docs/${VARIANT}"
 else
     echo "Version $VERSION"
     target="dist/docs/${VERSION}/${VARIANT}"

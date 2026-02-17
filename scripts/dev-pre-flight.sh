@@ -18,12 +18,12 @@ if [[ ! -e hugo.local.toml ]]; then
     "(please copy it from 'hugo.local.toml~sample' to get started)"
 fi
 
-if grep -q -c variant_hide_in_development "hugo.local.toml"; then
+if grep -q variant_hide_in_development "hugo.local.toml"; then
   fatal \
     "You have legacy settings in 'hugo.local.toml'" \
     "(please copy settings from 'hugo.local.toml~sample')"
 fi
-if grep -q -c variant_identify_variant_in_development "hugo.local.toml"; then
+if grep -q variant_identify_variant_in_development "hugo.local.toml"; then
   fatal \
     "You have legacy settings in 'hugo.local.toml'" \
     "(please copy settings from 'hugo.local.toml~sample')"
@@ -32,8 +32,7 @@ fi
 # Check if we have all the settings described in the sample file
 known_settings=$(
   tr -d ' ' <"hugo.local.toml~sample" |
-    tr -d ' ' | cut -d= -f1 | grep -v '^#' | grep -v '\[params]' | sort |
-    cut -d= -f1 | grep -v '^#' | grep -v '\[params]' | sort
+    cut -d= -f1 | grep -v '^#' | grep -v '\[params\]' | sort
 )
 for sett in $known_settings; do
   if ! tr -d ' ' <"hugo.local.toml" | grep -q -c "^$sett="; then
