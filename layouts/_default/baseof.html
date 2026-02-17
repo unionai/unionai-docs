@@ -68,12 +68,7 @@
       <div class="sidebar">{{- partial "sidebar.html" . -}}</div>
       <div class="main-content">
         {{- if $access.development -}}
-        {{- $classes := slice "not-in-prod" "page-warn" }}
-        {{- if $access.excluded -}}
-        {{- $classes = $classes | append "not-allowed" -}}
-        {{- else -}}
-        {{- $classes = $classes | append "not-allowed" -}}
-        {{- end -}}
+        {{- $classes := slice "not-in-prod" "page-warn" "not-allowed" }}
         <div class='{{- delimit $classes " " -}}'>
           <div style="flex: 1">
             {{- if $access.excluded -}}

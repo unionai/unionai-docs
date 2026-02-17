@@ -33,8 +33,6 @@
 {{- if lt (len $description) 10 -}}
   {{- $description = "Union.ai documentation for AI workflow orchestration and machine learning pipelines." -}}
 {{- end -}}
-{{- $description = $description | truncate 158 -}}
-
 {{- $variant := .Site.Params.variant -}}
 {{- $title := .Title | default .Site.Title -}}
 {{- $canonical := .Permalink | absURL -}}
@@ -44,9 +42,6 @@
   {{- $image = printf "%s/images/icon-logo-flyte.png" (strings.TrimSuffix "/" .Site.BaseURL) -}}
 {{- else -}}
   {{- $image = printf "%s/images/icon-logo.svg" (strings.TrimSuffix "/" .Site.BaseURL) -}}
-{{- end -}}
-{{- if not $image -}}
-  {{- $image = .Params.image | default .Site.Params.og_image | default "/images/og-image.png" | absURL -}}
 {{- end -}}
 
 <!-- SEO Meta Tags -->
