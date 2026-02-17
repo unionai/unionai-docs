@@ -25,10 +25,10 @@ that points to:
 All links within LLM-optimized files use absolute URLs (`https://www.union.ai/docs/...`),
 so files work correctly when copied locally and used outside the docs site.
 
-## Per-page Markdown (`content.md`)
+## Per-page Markdown (`page.md`)
 
 Every page on this site has a parallel LLM-optimized version in clean Markdown,
-accessible at the same URL path with `/content.md` appended and via the "**This page**" link in the "**LLM-optimized**" section of the right sidebar.
+accessible at the same URL path with `/page.md` appended and via the "**This page**" link in the "**LLM-optimized**" section of the right sidebar.
 For example, this page is at:
 
 {{< variant byoc >}}
@@ -53,19 +53,19 @@ and its LLM-optimized version is at:
 
 {{< variant byoc >}}
 {{< markdown >}}
-* [`{{< docs_home byoc v2 >}}/api-reference/flyte-context/content.md`](content.md)
+* [`{{< docs_home byoc v2 >}}/api-reference/flyte-context/page.md`](page.md)
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant flyte >}}
 {{< markdown >}}
-* [`{{< docs_home flyte v2 >}}/api-reference/flyte-context/content.md`](content.md)
+* [`{{< docs_home flyte v2 >}}/api-reference/flyte-context/page.md`](page.md)
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant selfmanaged >}}
 {{< markdown >}}
-* [`{{< docs_home selfmanaged v2 >}}/api-reference/flyte-context/content.md`](content.md)
+* [`{{< docs_home selfmanaged v2 >}}/api-reference/flyte-context/page.md`](page.md)
 {{< /markdown >}}
 {{< /variant >}}
 
