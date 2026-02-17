@@ -1,7 +1,7 @@
 ---
 title: Connector setup
 weight: 15
-variants: -flyte -serverless -byoc -selfmanaged
+variants: +flyte -serverless -byoc -selfmanaged
 sidebar_expanded: true
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: FlyteScheduler configuration
 weight: 4
-variants: -flyte -serverless -byoc -selfmanaged
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # Flyte Scheduler Configuration
