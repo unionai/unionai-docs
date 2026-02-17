@@ -1,7 +1,7 @@
 ---
 title: Platform deployment
 weight: 4
-variants: -flyte -serverless +byoc +selfmanaged
+variants: +flyte -serverless +byoc +selfmanaged
 top_menu: true
 mermaid: true
 sidebar_expanded: true
