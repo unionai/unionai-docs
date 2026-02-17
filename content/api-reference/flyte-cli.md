@@ -3,7 +3,7 @@ title: "Flyte CLI"
 version: 2.0.0b57
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
-weight: 1
+weight: 3
 ---
 
 # Flyte CLI

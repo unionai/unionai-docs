@@ -36,7 +36,7 @@ ifeq ($(SKIP_VENV_SETUP),false)
 		--title "Flyte SDK" \
 		--api "${API_DATA}" \
 		--include include/api.flyte-sdk.md \
-		--weight 2 \
+		--weight 4 \
 		--expanded true \
 		--no-flatten true \
 		--variants \
@@ -51,7 +51,7 @@ else
 		--title "Flyte SDK" \
 		--api "${API_DATA}" \
 		--include include/api.flyte-sdk.md \
-		--weight 2 \
+		--weight 4 \
 		--expanded true \
 		--no-flatten true \
 		--variants \

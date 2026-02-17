@@ -1,12 +1,27 @@
 ---
-title: AI coding agent support
+title: AI support
 variants: +flyte +byoc +selfmanaged +serverless
 weight: 1
 ---
 
-# AI coding agent support
+# AI support
 
-## Clean Markdown
+This site provides LLM-optimized documentation at four levels of granularity,
+designed for use by AI coding agents such as
+[Claude Code](https://docs.anthropic.com/en/docs/claude-code),
+[Cursor](https://www.cursor.com/),
+[Windsurf](https://windsurf.com/),
+and similar tools.
+These files also follow the [`llms.txt` convention](https://llmstxt.org/),
+making them discoverable by AI search engines.
+
+Every page on the site also has a **LLM readable** link in the right-hand sidebar
+that points to the LLM-readable version of that page and the page index.
+
+All links within LLM-readable files use absolute URLs (`https://www.union.ai/docs/...`),
+so files work correctly when copied locally and used outside the docs site.
+
+## Per-page Markdown (`content.md`)
 
 Every page on this site has a parallel LLM-readable version in clean Markdown,
 accessible at the same URL path with `/content.md` appended.
@@ -50,22 +65,86 @@ and its LLM-readable version is at:
 {{< /markdown >}}
 {{< /variant >}}
 
-These pages are designed to be consumed by AI coding agents such as
-[Claude Code](https://docs.anthropic.com/en/docs/claude-code),
-[Cursor](https://www.cursor.com/),
-[Windsurf](https://windsurf.com/),
-and similar tools.
+Section landing pages include a `## Subpages` table listing child pages with their H2/H3 headings,
+making it easy to identify the right page to fetch.
+
+## Section bundles (`section.md`)
+
+For key documentation sections, a curated bundle file concatenates all pages in the section
+into a single `section.md` file. These are sized to fit within modern LLM context windows
+and are ideal for pasting into a prompt or adding to project context.
+
+Available bundles:
+
+{{< variant byoc >}}
+{{< markdown >}}
+**User guide:**
+* [`Core concepts`]({{< docs_home byoc v2 >}}/user-guide/core-concepts/section.md) (~6K tokens)
+* [`Configure tasks`]({{< docs_home byoc v2 >}}/user-guide/task-configuration/section.md) (~32K tokens)
+* [`Build tasks`]({{< docs_home byoc v2 >}}/user-guide/task-programming/section.md) (~35K tokens)
+* [`Run and deploy tasks`]({{< docs_home byoc v2 >}}/user-guide/task-deployment/section.md) (~38K tokens)
+* [`Build apps`]({{< docs_home byoc v2 >}}/user-guide/build-apps/section.md) (~33K tokens)
+* [`From Flyte 1 to 2`]({{< docs_home byoc v2 >}}/user-guide/flyte-2/section.md) (~7K tokens)
+* [`Scale your runs`]({{< docs_home byoc v2 >}}/user-guide/run-scaling/section.md) (~10K tokens)
+
+**Reference:**
+* [`Migration from Flyte 1`]({{< docs_home byoc v2 >}}/api-reference/migration/section.md) (~13K tokens)
+
+**Integrations:**
+* [`Integrations`]({{< docs_home byoc v2 >}}/integrations/section.md) (~27K tokens)
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+**User guide:**
+* [`Core concepts`]({{< docs_home flyte v2 >}}/user-guide/core-concepts/section.md) (~6K tokens)
+* [`Configure tasks`]({{< docs_home flyte v2 >}}/user-guide/task-configuration/section.md) (~32K tokens)
+* [`Build tasks`]({{< docs_home flyte v2 >}}/user-guide/task-programming/section.md) (~35K tokens)
+* [`Run and deploy tasks`]({{< docs_home flyte v2 >}}/user-guide/task-deployment/section.md) (~38K tokens)
+* [`Build apps`]({{< docs_home flyte v2 >}}/user-guide/build-apps/section.md) (~33K tokens)
+* [`From Flyte 1 to 2`]({{< docs_home flyte v2 >}}/user-guide/flyte-2/section.md) (~7K tokens)
+* [`Scale your runs`]({{< docs_home flyte v2 >}}/user-guide/run-scaling/section.md) (~10K tokens)
+
+**Reference:**
+* [`Migration from Flyte 1`]({{< docs_home flyte v2 >}}/api-reference/migration/section.md) (~13K tokens)
+
+**Integrations:**
+* [`Integrations`]({{< docs_home flyte v2 >}}/integrations/section.md) (~27K tokens)
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant selfmanaged >}}
+{{< markdown >}}
+**User guide:**
+* [`Core concepts`]({{< docs_home selfmanaged v2 >}}/user-guide/core-concepts/section.md) (~6K tokens)
+* [`Configure tasks`]({{< docs_home selfmanaged v2 >}}/user-guide/task-configuration/section.md) (~32K tokens)
+* [`Build tasks`]({{< docs_home selfmanaged v2 >}}/user-guide/task-programming/section.md) (~35K tokens)
+* [`Run and deploy tasks`]({{< docs_home selfmanaged v2 >}}/user-guide/task-deployment/section.md) (~38K tokens)
+* [`Build apps`]({{< docs_home selfmanaged v2 >}}/user-guide/build-apps/section.md) (~33K tokens)
+* [`From Flyte 1 to 2`]({{< docs_home selfmanaged v2 >}}/user-guide/flyte-2/section.md) (~7K tokens)
+* [`Scale your runs`]({{< docs_home selfmanaged v2 >}}/user-guide/run-scaling/section.md) (~10K tokens)
+
+**Reference:**
+* [`Migration from Flyte 1`]({{< docs_home selfmanaged v2 >}}/api-reference/migration/section.md) (~13K tokens)
+
+**Integrations:**
+* [`Integrations`]({{< docs_home selfmanaged v2 >}}/integrations/section.md) (~27K tokens)
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Page index (`llms.txt`)
 
-The `llms.txt` file is a compact index of all of these LLM-readable pages.
-Adding this index into the context of your coding tool gives it direct access to these docs.
+The `llms.txt` file is a compact index of all LLM-readable pages, organized by section.
+Each page entry includes the H2/H3 headings found on that page, so an agent can identify
+the right page to fetch without downloading it first.
+
+Sections that have a `section.md` bundle are marked in the index.
 
 Download it and append its contents to the `AGENTS.md`, `CLAUDE.md` or similar file in your project root.
 Make sure you append the index into a file that is **loaded into context by default** by your coding tool.
 Adding it as a skill or tool is less effective because the agent must decide to load it
 rather than having the information always available.
-
 
 {{< variant byoc >}}
 {{< markdown >}}
