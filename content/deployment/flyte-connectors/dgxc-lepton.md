@@ -1,7 +1,7 @@
 ---
 title: DGXC Lepton connector
 weight: 19
-variants: -flyte -serverless -byoc -selfmanaged
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # DGXC Lepton Connector
