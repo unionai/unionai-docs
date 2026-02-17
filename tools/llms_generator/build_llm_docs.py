@@ -303,6 +303,7 @@ class LLMDocBuilder:
         if not self.quiet:
             print("  Second pass: Processing content...")
         consolidated_content = []
+        self.visited_files.clear()  # Reset for second pass
         self.process_page_depth_first(md_dir, 'index.md', consolidated_content, md_dir, [], variant, version)
 
         return '\n'.join(consolidated_content)
@@ -407,6 +408,12 @@ class LLMDocBuilder:
         if not file_path.exists():
             print(f"⚠️  File not found: {file_path}")
             return
+
+        # Avoid infinite loops
+        canonical_path = str(file_path.resolve())
+        if canonical_path in self.visited_files:
+            return
+        self.visited_files.add(canonical_path)
 
         # Get relative path from md root for the delimiter
         try:
