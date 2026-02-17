@@ -25,6 +25,7 @@ class LLMDocBuilder:
         self.index_entries: List[tuple] = []  # (hierarchical_title, page_url, path_key) for index
         self.page_headings: dict[str, List[str]] = {}  # path_key -> [H2/H3 heading titles]
         self.section_pages: set[str] = set()  # path_keys of pages that have subpages
+        self.bundle_sections: dict[str, str] = {}  # dir_path -> bundle URL (populated by generate_bundles)
 
     def _detect_version(self) -> str:
         """Detect version from environment or makefile.inc."""
@@ -644,6 +645,11 @@ class LLMDocBuilder:
                         relative_title, child_url, headings)
                     lines.append(entry)
 
+                    # Add bundle reference if this child has a section bundle
+                    child_dir = child_key.replace('/content.md', '').replace('content.md', '').strip('/')
+                    if child_dir in self.bundle_sections:
+                        lines.append(f"  > Section bundle (all pages): {self.bundle_sections[child_dir]}")
+
                 lines.append("")
 
             else:
@@ -783,6 +789,178 @@ class LLMDocBuilder:
         if not self.quiet:
             print(f"Converted {fixed_count} links to absolute URLs in {total_files} files for {variant}")
 
+    def _has_frontmatter_param(self, dir_path: str, param: str) -> bool:
+        """Check if a source _index.md file has a specific frontmatter param set to true."""
+        if dir_path:
+            source_file = self.base_path / 'content' / dir_path / '_index.md'
+        else:
+            source_file = self.base_path / 'content' / '_index.md'
+
+        if not source_file.exists():
+            return False
+
+        try:
+            with open(source_file, 'r', encoding='utf-8') as f:
+                content = f.read()
+            match = re.match(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+            if match:
+                for line in match.group(1).split('\n'):
+                    if line.strip().startswith(f'{param}:'):
+                        value = line.split(':', 1)[1].strip().lower()
+                        return value in ('true', 'yes')
+        except Exception:
+            pass
+        return False
+
+    def _strip_subpages_section(self, content: str) -> str:
+        """Remove ## Subpages section from content."""
+        return re.sub(r'\n## Subpages\s*\n.*?(?=\n---\n|\Z)', '', content, flags=re.DOTALL)
+
+    def _process_bundle_links(self, content: str, current_file: Path, section_dir: Path) -> str:
+        """Process links in bundle content: internal links become hierarchical titles,
+        external links stay as absolute URLs."""
+        def replace_link(match):
+            text = match.group(1)
+            url = match.group(2)
+
+            # Keep external links unchanged
+            if url.startswith(('http://', 'https://', 'mailto:')):
+                # Check if this URL points within the bundle section
+                variant_dir = self.variant_root
+                section_rel = str(section_dir.relative_to(variant_dir))
+                section_url_prefix = f"https://www.union.ai/docs/{self.version}/"
+                # Find the variant from the path
+                try:
+                    variant = str(variant_dir.relative_to(
+                        self.base_path / 'dist' / 'docs' / self.version))
+                except ValueError:
+                    return match.group(0)
+                full_prefix = f"{section_url_prefix}{variant}/{section_rel}"
+
+                if url.startswith(full_prefix):
+                    # Internal to bundle — resolve to hierarchical title
+                    # Extract the path relative to variant dir from the URL
+                    url_path = url.replace(section_url_prefix + variant + '/', '')
+                    # Try to find in title_lookup
+                    # The URL may end with content.md or be a directory path
+                    if 'content.md' in url_path:
+                        lookup_key = url_path.split('#')[0].lower()
+                    else:
+                        path_part = url_path.split('#')[0].rstrip('/')
+                        lookup_key = f"{path_part}/content.md".lower()
+
+                    if lookup_key in self.title_lookup:
+                        title = self.strip_common_prefix(self.title_lookup[lookup_key])
+                        return f"**{title}**"
+
+                # External to bundle — keep absolute URL
+                return match.group(0)
+
+            # Anchor-only links
+            if url.startswith('#'):
+                try:
+                    rel_path = str(current_file.relative_to(self.variant_root)).lower()
+                except ValueError:
+                    return match.group(0)
+                anchor_key = f"{rel_path}#{url[1:]}"
+                if anchor_key in self.title_lookup:
+                    return f"**{self.strip_common_prefix(self.title_lookup[anchor_key])}**"
+                return match.group(0)
+
+            return match.group(0)
+
+        return re.sub(r'\[([^\]]+)\]\(([^)]+)\)', replace_link, content)
+
+    def _collect_bundle_pages(self, section_dir: Path, content_file: Path) -> List[Path]:
+        """Collect all content.md files in a section, depth-first following ## Subpages."""
+        pages = [content_file]
+        content = content_file.read_text(encoding='utf-8')
+        subpage_links = self.extract_subpage_links(content)
+        for link in subpage_links:
+            child_path = (content_file.parent / link).resolve()
+            if child_path.is_dir():
+                child_content = child_path / 'content.md'
+            elif child_path.name == 'content.md':
+                child_content = child_path
+            else:
+                child_content = child_path / 'content.md'
+            if child_content.exists():
+                pages.extend(self._collect_bundle_pages(section_dir, child_content))
+        return pages
+
+    def generate_bundles(self, variant: str, version: str = None):
+        """Generate section.md bundle files for sections with llm_readable_bundle: true."""
+        version = version or self.version
+        variant_dir = self.base_path / 'dist' / 'docs' / version / variant
+        base_url = f"https://www.union.ai/docs/{version}/{variant}"
+        bundle_count = 0
+
+        # Find all section directories with llm_readable_bundle: true
+        for content_file in variant_dir.rglob('content.md'):
+            try:
+                rel_path = str(content_file.relative_to(variant_dir))
+            except ValueError:
+                continue
+
+            dir_path = rel_path.replace('/content.md', '').replace('content.md', '').strip('/')
+            if not dir_path:
+                continue
+
+            if not self._has_frontmatter_param(dir_path, 'llm_readable_bundle'):
+                continue
+
+            # This section gets a bundle
+            section_dir = content_file.parent
+
+            # Collect all pages depth-first
+            pages = self._collect_bundle_pages(section_dir, content_file)
+
+            # Build the bundle content
+            bundle_parts = []
+            section_title = self._frontmatter_title(rel_path.lower())
+            bundle_parts.append(f"# {section_title or dir_path}")
+            bundle_parts.append(f"> This bundle contains all pages in the {section_title} section.")
+            bundle_parts.append(f"> Source: {base_url}/{dir_path}/")
+            bundle_parts.append("")
+
+            for page_file in pages:
+                page_content = page_file.read_text(encoding='utf-8')
+
+                # Strip ## Subpages section
+                page_content = self._strip_subpages_section(page_content)
+
+                # Strip the trailing Source/HTML footer
+                page_content = re.sub(r'\n---\n\*\*Source\*\*:.*$', '', page_content, flags=re.DOTALL)
+
+                # Process links
+                page_content = self._process_bundle_links(page_content, page_file, section_dir)
+
+                # Add page delimiter
+                try:
+                    page_rel = str(page_file.relative_to(variant_dir))
+                except ValueError:
+                    page_rel = str(page_file)
+                web_path = page_rel.replace('/content.md', '').replace('content.md', '')
+                page_url = f"{base_url}/{web_path}".rstrip('/')
+                bundle_parts.append(f"=== PAGE: {page_url} ===\n")
+                bundle_parts.append(page_content.strip())
+                bundle_parts.append("")
+
+            # Write section.md
+            bundle_file = section_dir / 'section.md'
+            bundle_file.write_text('\n'.join(bundle_parts) + '\n', encoding='utf-8')
+            bundle_count += 1
+
+            # Track for llms.txt index
+            self.bundle_sections[dir_path.lower()] = f"{base_url}/{dir_path}/section.md"
+
+            if not self.quiet:
+                bundle_size = bundle_file.stat().st_size
+                print(f"  Bundle: {dir_path}/section.md ({bundle_size:,} bytes, {len(pages)} pages)")
+
+        if not self.quiet:
+            print(f"Generated {bundle_count} section bundles for {variant}")
+
     def create_discovery_files(self, base_path: Path, variants: List[str]) -> None:
         """Create hierarchical discovery files for LLM documentation."""
 
@@ -880,6 +1058,9 @@ def main():
 
             # Convert relative links to absolute URLs
             builder.absolutize_links(variant)
+
+            # Generate section bundles
+            builder.generate_bundles(variant)
 
             # Create llms.txt page index
             redirect_file = base_path / 'dist' / 'docs' / builder.version / variant / 'llms.txt'
