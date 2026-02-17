@@ -37,6 +37,8 @@ readonly target
 
 echo "Target: $target"
 
+# --panicOnWarning makes all warnf calls fatal (not just errorf).
+# This is intentional: content issues should block deployment.
 hugo --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml,.hugo.build.toml \
     --destination "${target}" --baseURL "${baseURL}" \
     --panicOnWarning 1> "$run_log" 2>&1
@@ -58,6 +60,6 @@ sed '
     | grep -v "suppress this warning" | grep -v "ignoreLogs ="
 echo '--------------------------'
 if [[ $err -ne 0 ]]; then
-    echo "FATAL: Hugo failed"
+    echo "FATAL: Hugo build failed for variant=${VARIANT}"
     exit 1
 fi

@@ -80,7 +80,7 @@ dev:
 	hugo server --config hugo.toml,hugo.site.toml,hugo.ver.toml,hugo.dev.toml,hugo.local.toml
 
 serve:
-	@if [ ! -d dist ]; then "echo Run `make dist` first"; exit 1; fi
+	@if [ ! -d dist ]; then echo "Run 'make dist' first"; exit 1; fi
 	@PORT=${PORT} LAUNCH=${LAUNCH} ./scripts/serve.sh
 
 update-examples:

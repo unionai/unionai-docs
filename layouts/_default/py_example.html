@@ -2,10 +2,7 @@
   {{- $enforceRunOnUnion := .Params.enforce_run_on_union | default true -}}
   
   {{- if not (strings.HasSuffix .Params.example_file ".py") -}}
-    {{ warnf "Example file %s does not have a .py extension" .Params.example_file }}
-    <div style="border: 2px dashed orange; color: orange; padding: 0.5rem 1rem; margin-bottom: 1rem;">
-      Warning: The example file <code>{{ .Params.example_file }}</code> does not have a Python (.py) extension.
-    </div>
+    {{ errorf "Example file %s does not have a .py extension (in %s)." .Params.example_file .Path }}
   {{- end -}}
 
   {{- partial "resource-map.html" (dict "page" . "bom" .Params.resources) -}}
@@ -13,7 +10,11 @@
   <div class="markdown-content">
     {{ $content := readFile .Params.example_file }}
     {{ if not $content }}
-    {{ warnf "Could not find example file %s" .Params.example_file }}
+      {{- if hasPrefix .Params.example_file "/external/unionai-examples/" -}}
+        {{ errorf "File not found: %s (referenced from %s). The examples submodule may be out of date — run 'make update-examples' to update it." .Params.example_file .Path }}
+      {{- else -}}
+        {{ errorf "File not found: %s (referenced from %s)." .Params.example_file .Path }}
+      {{- end -}}
     {{ end }}
     {{ $lines := split $content "\n" }}
     {{ $inCodeBlock := false }}

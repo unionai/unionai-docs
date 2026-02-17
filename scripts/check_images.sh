@@ -18,7 +18,7 @@ find content -name "*.md" | while read -r file; do
         img_path=$(echo "$img_path" | sed -E 's/"[^"]*"//g' | sed -E "s/'[^']*'//g" | xargs)
 
         if [[ "$img_path" == /* ]]; then
-            echo "ERROR: $img_path is asbolute path in '$file'"
+            echo "ERROR: $img_path is absolute path in '$file'"
             echo "1" > "$temp_error_file"
             continue
         fi
@@ -40,7 +40,7 @@ done
 error=$(cat "$temp_error_file")
 
 if [[ $error -eq 1 ]]; then
-    echo "FATAL: One of more checks failed."
+    echo "FATAL: One or more checks failed."
     exit 1
 else
     echo "All checks passed."
