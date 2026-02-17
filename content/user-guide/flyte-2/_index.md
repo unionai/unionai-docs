@@ -8,10 +8,7 @@ llm_readable_bundle: true
 
 # From Flyte 1 to 2
 
-{{< note >}}
-An LLM-readable bundle of this entire section is available at [`section.md`](section.md).
-This single file contains all pages in this section, optimized for AI coding agent context.
-{{< /note >}}
+{{< llm-bundle-note >}}
 
 Flyte 2 represents a fundamental shift in how Flyte workflows are written and executed.
 

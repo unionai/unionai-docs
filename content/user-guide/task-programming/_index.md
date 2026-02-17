@@ -8,10 +8,7 @@ llm_readable_bundle: true
 
 # Build tasks
 
-{{< note >}}
-An LLM-readable bundle of this entire section is available at [`section.md`](section.md).
-This single file contains all pages in this section, optimized for AI coding agent context.
-{{< /note >}}
+{{< llm-bundle-note >}}
 
 This section covers the essential programming patterns and techniques for developing robust Flyte workflows. Once you understand the basics of task configuration, these guides will help you build sophisticated, production-ready data pipelines and machine learning workflows.
 

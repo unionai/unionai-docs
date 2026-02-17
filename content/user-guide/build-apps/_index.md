@@ -8,10 +8,7 @@ llm_readable_bundle: true
 
 # Build apps
 
-{{< note >}}
-An LLM-readable bundle of this entire section is available at [`section.md`](section.md).
-This single file contains all pages in this section, optimized for AI coding agent context.
-{{< /note >}}
+{{< llm-bundle-note >}}
 
 This section covers how to build different types of apps with Flyte, including Streamlit dashboards, FastAPI REST APIs, vLLM and SGLang model servers, webhooks, and WebSocket applications.
 

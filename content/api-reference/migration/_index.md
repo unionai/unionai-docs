@@ -8,10 +8,7 @@ llm_readable_bundle: true
 
 # Migration from Flyte 1 to Flyte 2
 
-{{< note >}}
-An LLM-readable bundle of this entire section is available at [`section.md`](section.md).
-This single file contains all pages in this section, optimized for AI coding agent context.
-{{< /note >}}
+{{< llm-bundle-note >}}
 
 This section provides a comprehensive reference for migrating Flyte 1 (flytekit) workflows to Flyte 2 (flyte SDK).
 

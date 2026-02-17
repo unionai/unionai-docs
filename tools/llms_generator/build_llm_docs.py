@@ -592,7 +592,11 @@ class LLMDocBuilder:
             f"> Site: {base_url}",
             "",
             "Each entry below is `- [Page title](URL)` followed by the"
-            " H2/H3 headings found on that page.",
+            " H2/H3 headings found on that page."
+            " Pages link to individual `content.md` files."
+            " Sections marked with a \"Section bundle\" link have a `section.md`"
+            " that concatenates all pages in the section into a single file"
+            " — use it to load an entire section into context at once.",
             "",
         ]
 
@@ -818,48 +822,27 @@ class LLMDocBuilder:
 
     def _process_bundle_links(self, content: str, current_file: Path, section_dir: Path) -> str:
         """Process links in bundle content: internal links become hierarchical titles,
-        external links stay as absolute URLs."""
+        external links become absolute URLs. Runs before absolutize_links()."""
+        variant_dir = self.variant_root
+        try:
+            variant = str(variant_dir.relative_to(
+                self.base_path / 'dist' / 'docs' / self.version))
+        except ValueError:
+            return content
+        base_url = f"https://www.union.ai/docs/{self.version}/{variant}"
+
         def replace_link(match):
             text = match.group(1)
             url = match.group(2)
 
-            # Keep external links unchanged
+            # Already-absolute links
             if url.startswith(('http://', 'https://', 'mailto:')):
-                # Check if this URL points within the bundle section
-                variant_dir = self.variant_root
-                section_rel = str(section_dir.relative_to(variant_dir))
-                section_url_prefix = f"https://www.union.ai/docs/{self.version}/"
-                # Find the variant from the path
-                try:
-                    variant = str(variant_dir.relative_to(
-                        self.base_path / 'dist' / 'docs' / self.version))
-                except ValueError:
-                    return match.group(0)
-                full_prefix = f"{section_url_prefix}{variant}/{section_rel}"
-
-                if url.startswith(full_prefix):
-                    # Internal to bundle — resolve to hierarchical title
-                    # Extract the path relative to variant dir from the URL
-                    url_path = url.replace(section_url_prefix + variant + '/', '')
-                    # Try to find in title_lookup
-                    # The URL may end with content.md or be a directory path
-                    if 'content.md' in url_path:
-                        lookup_key = url_path.split('#')[0].lower()
-                    else:
-                        path_part = url_path.split('#')[0].rstrip('/')
-                        lookup_key = f"{path_part}/content.md".lower()
-
-                    if lookup_key in self.title_lookup:
-                        title = self.strip_common_prefix(self.title_lookup[lookup_key])
-                        return f"**{title}**"
-
-                # External to bundle — keep absolute URL
                 return match.group(0)
 
             # Anchor-only links
             if url.startswith('#'):
                 try:
-                    rel_path = str(current_file.relative_to(self.variant_root)).lower()
+                    rel_path = str(current_file.relative_to(variant_dir)).lower()
                 except ValueError:
                     return match.group(0)
                 anchor_key = f"{rel_path}#{url[1:]}"
@@ -867,7 +850,44 @@ class LLMDocBuilder:
                     return f"**{self.strip_common_prefix(self.title_lookup[anchor_key])}**"
                 return match.group(0)
 
-            return match.group(0)
+            # Relative link — resolve to filesystem path
+            link_path = url.split('#')[0].strip()
+            if not link_path:
+                return match.group(0)
+            resolved = (current_file.parent / link_path).resolve()
+            # Leaf page content.md files are one directory level deeper than their
+            # Hugo source files, so ../foo resolves one level too shallow.
+            # If the resolved path doesn't exist, try from one level up.
+            if not resolved.exists() and not (resolved / 'content.md').exists():
+                alt = (current_file.parent.parent / link_path).resolve()
+                if alt.exists() or (alt / 'content.md').exists():
+                    resolved = alt
+
+            # Check if it's within the bundle section
+            try:
+                resolved.relative_to(section_dir.resolve())
+                is_internal = True
+            except ValueError:
+                is_internal = False
+
+            if is_internal:
+                # Convert to hierarchical title
+                try:
+                    lookup_key = str(resolved.relative_to(variant_dir)).lower()
+                except ValueError:
+                    return match.group(0)
+                if lookup_key in self.title_lookup:
+                    title = self.strip_common_prefix(self.title_lookup[lookup_key])
+                    return f"**{title}**"
+                return match.group(0)
+            else:
+                # External to bundle — absolutize the URL
+                try:
+                    rel_to_variant = str(resolved.relative_to(variant_dir))
+                except ValueError:
+                    return match.group(0)
+                abs_url = f"{base_url}/{rel_to_variant}"
+                return f"[{text}]({abs_url})"
 
         return re.sub(r'\[([^\]]+)\]\(([^)]+)\)', replace_link, content)
 
@@ -1056,11 +1076,11 @@ def main():
             # Enhance content.md subpage listings with H2/H3 headings
             builder.enhance_subpage_listings(variant)
 
+            # Generate section bundles (before absolutize so subpage links are still relative)
+            builder.generate_bundles(variant)
+
             # Convert relative links to absolute URLs
             builder.absolutize_links(variant)
-
-            # Generate section bundles
-            builder.generate_bundles(variant)
 
             # Create llms.txt page index
             redirect_file = base_path / 'dist' / 'docs' / builder.version / variant / 'llms.txt'

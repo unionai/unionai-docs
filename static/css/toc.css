@@ -55,13 +55,23 @@
   margin-top: 2rem;
   margin-bottom: 0;
   padding-left: 1rem;
-  font-weight: 600;
   color: var(--text-secondary-color, #666);
 }
 
 .container .toc-container .toc-llm-link a {
+  display: block;
   color: var(--text-secondary-color, #666);
   text-decoration: none;
+  font-weight: normal;
+}
+
+.container .toc-container .toc-llm-link > a:first-child {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.container .toc-container .toc-llm-link > a:not(:first-child) {
+  padding-left: 1rem;
 }
 
 .container .toc-container .toc-llm-link a:hover {

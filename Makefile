@@ -4,12 +4,23 @@ PREFIX := $(if $(VERSION),docs/$(VERSION),docs)
 PORT := 9000
 BUILD := $(shell date +%s)
 
-.PHONY: all dist variant dev update-examples sync-examples llm-docs check-api-docs update-api-docs update-redirects dry-run-redirects deploy-redirects check-deleted-pages check-links
+.PHONY: all dist variant dev update-examples sync-examples llm-docs check-api-docs update-api-docs update-redirects dry-run-redirects deploy-redirects check-deleted-pages check-links clean clean-generated
 
 all: usage
 
 usage:
 	@./scripts/make_usage.sh
+
+clean:
+	rm -rf dist public
+
+clean-generated: clean
+	rm -rf content/_static/notebooks
+	rm -rf content/api-reference/flyte-sdk/packages content/api-reference/flyte-sdk/classes
+	rm -f content/api-reference/flyte-cli.md
+	rm -rf content/api-reference/integrations/*/
+	rm -f data/*.yaml
+	rm -f static/*-linkmap.json
 
 base:
 	@if ! ./scripts/pre-build-checks.sh; then exit 1; fi
@@ -153,6 +164,9 @@ check-links:
 
 check-api-docs:
 	@uv run tools/api_generator/check_versions.py --check
+
+check-llm-bundle-notes:
+	@uv run python tools/llms_generator/check_llm_bundle_notes.py
 
 update-api-docs:
 	@if command -v uv >/dev/null 2>&1; then \
