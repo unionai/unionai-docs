@@ -44,51 +44,31 @@ sequenceDiagram
 ## Prerequisites
 
 - A {{< key product_name >}} deployment with the control plane installed.
-- An Okta account (or another supported OIDC provider).
+- An OIDC-compliant Identity Provider (IdP) such as Okta, Azure AD, or Auth0.
 - Access to create OAuth applications in your IdP.
-- AWS Secrets Manager access for storing client secrets (if using the Terraform module).
+- A secret management solution for delivering client secrets to pods (e.g., External Secrets Operator with AWS Secrets Manager, HashiCorp Vault, or native Kubernetes secrets).
 
-## Configuring Okta
+## Configuring your Identity Provider
 
-The {{< key product_name >}} Terraform module can automatically provision the required Okta applications. If you are managing Okta manually, create the following applications:
-
-### Required OAuth applications
-
-{{< tabs >}}
-{{< tab "Terraform (automated)" >}}
-
-Set the following variables in your Terraform configuration to enable Okta provisioning:
-
-```hcl
-module "union_extension" {
-  source = "path/to/selfmanaged/union_extension/aws"
-
-  # Okta OIDC authentication
-  okta_org_name = "your-org"          # e.g. "dev-12345678"
-  okta_base_url = "okta.com"          # or "oktapreview.com" for dev
-  okta_group_id = "your-okta-group"   # Group to assign apps to
-  okta_idp_id   = "your-idp-id"       # IdP ID for social auth (optional)
-
-  # ... other variables
-}
-```
-
-The module creates:
+You must create several OAuth applications in your IdP. The table below summarizes the required applications and their purposes:
 
 | Application | Type | Grant Types | Purpose |
 |---|---|---|---|
-| `flyteadmin` | Web | `authorization_code` | Browser login via OIDC |
-| `flytectl` | Native (PKCE) | `authorization_code`, `device_code` | SDK and CLI authentication |
-| `internal` | Service | `client_credentials` | Control plane service-to-service |
-| `operator` | Service | `client_credentials` | Dataplane operator heartbeats |
-| `eager` | Service | `client_credentials` | Eager mode task execution |
+| Web app (browser login) | Web | `authorization_code` | Browser login via OIDC |
+| Native app (SDK/CLI) | Native (PKCE) | `authorization_code`, `device_code` | SDK and CLI authentication |
+| Internal service app | Service | `client_credentials` | Control plane service-to-service |
+| Operator service app | Service | `client_credentials` | Dataplane operator heartbeats |
+| Eager service app | Service | `client_credentials` | Eager mode task execution |
 
-All applications are assigned to a custom authorization server with a single `all` scope.
+### Authorization server setup
 
-{{< /tab >}}
-{{< tab "Manual" >}}
+1. Create a custom authorization server in your IdP (or use the default).
+2. Add a scope named `all`.
+3. Add an access policy that allows all registered clients listed above.
+4. Add a policy rule that permits `authorization_code`, `client_credentials`, and `device_code` grant types.
+5. Note the **Issuer URI** (e.g., `https://dev-12345678.okta.com/oauth2/<server-id>`).
 
-Create the following OAuth applications in your IdP:
+### Application details
 
 **1. Web application (browser login)**
 
@@ -107,36 +87,32 @@ Create the following OAuth applications in your IdP:
 - **Sign-in redirect URI**: `http://localhost:53593/callback`
 - **Require PKCE**: Always
 - **Consent**: Trusted (skip consent screen)
-- Note the **Client ID** (no secret for public clients).
+- Note the **Client ID** (no secret needed for public clients).
 
 **3. Service application (control plane internal)**
 
 - **Type**: Service (machine-to-machine)
 - **Grant types**: `client_credentials`
 - Note the **Client ID** and **Client Secret**.
-- Store the client secret in AWS Secrets Manager.
+- Store the client secret securely for delivery to control plane pods (see [Secret delivery](#secret-delivery)).
 
 **4. Service application (dataplane operator)**
 
 - **Type**: Service (machine-to-machine)
 - **Grant types**: `client_credentials`
 - Note the **Client ID** and **Client Secret**.
-- Store the client secret in AWS Secrets Manager.
+- Store the client secret securely for delivery to dataplane pods (see [Secret delivery](#secret-delivery)).
 
-**Authorization server setup:**
+**5. Service application (eager mode)** *(optional)*
 
-1. Create a custom authorization server (or use the default).
-2. Add a scope named `all`.
-3. Add an access policy that allows all registered clients.
-4. Add a policy rule that permits `authorization_code`, `client_credentials`, and `device_code` grant types.
-5. Note the **Issuer URI** (e.g., `https://dev-12345678.okta.com/oauth2/<server-id>`).
-
-{{< /tab >}}
-{{< /tabs >}}
+- **Type**: Service (machine-to-machine)
+- **Grant types**: `client_credentials`
+- Note the **Client ID** and **Client Secret**.
+- Only required if you use [eager mode]({{< docs_home selfmanaged >}}deployment/configuration/eager-mode) tasks.
 
 ## Control plane Helm configuration
 
-The control plane chart requires auth configuration in several sections. If you are using the Terraform module, these values are generated automatically.
+The control plane Helm chart requires auth configuration in several sections.
 
 ### Flyteadmin OIDC configuration
 
@@ -150,10 +126,10 @@ flyte:
         appAuth:
           authServerType: External
           externalAuthServer:
-            baseUrl: "https://<okta-org>.okta.com/oauth2/<auth-server-id>"
+            baseUrl: "<issuer-uri>"  # e.g. "https://dev-12345678.okta.com/oauth2/default"
           thirdPartyConfig:
             flyteClient:
-              clientId: "<flytectl-client-id>"  # Native app (SDK/CLI)
+              clientId: "<native-app-client-id>"  # SDK/CLI
               redirectUri: "http://localhost:53593/callback"
               scopes:
                 - all
@@ -166,8 +142,8 @@ flyte:
         httpAuthorizationHeader: flyte-authorization
         userAuth:
           openId:
-            baseUrl: "https://<okta-org>.okta.com/oauth2/<auth-server-id>"
-            clientId: "<flyteadmin-client-id>"  # Web app
+            baseUrl: "<issuer-uri>"
+            clientId: "<web-app-client-id>"
             scopes:
               - profile
               - openid
@@ -210,13 +186,13 @@ The `trustedIdentityClaims` configuration enables identity propagation: when a s
 
 ### Secret delivery
 
-Client secrets are delivered to pods via External Secrets Operator (ESO):
+Client secrets must be delivered to pods as files mounted into the container filesystem. The control plane deployment mounts the Kubernetes secret `service-shared-secret` at `/etc/secrets/union/`, so the internal service app client secret must be available at `/etc/secrets/union/client_secret`.
 
-```
-AWS Secrets Manager → ExternalSecret → K8s Secret → Volume Mount → Pod
-```
+You can populate this secret using any method that works in your environment:
 
-The Terraform module automatically creates the `ExternalSecret` resources. If configuring manually, create an `ExternalSecret` that syncs your IdP client secret into the `service-shared-secret` Kubernetes secret:
+**Option A: External Secrets Operator (recommended)**
+
+If you use [External Secrets Operator (ESO)](https://external-secrets.io/) with a cloud secret store (AWS Secrets Manager, Azure Key Vault, GCP Secret Manager, HashiCorp Vault, etc.), create an `ExternalSecret` that syncs the client secret into the `service-shared-secret` Kubernetes secret:
 
 ```yaml
 apiVersion: external-secrets.io/v1
@@ -236,10 +212,20 @@ spec:
   data:
     - secretKey: client_secret
       remoteRef:
-        key: "<your-secrets-manager-key>"
+        key: "<your-secret-store-key>"
 ```
 
-The control plane deployment mounts `service-shared-secret` at `/etc/secrets/union/`, making the secret available at `/etc/secrets/union/client_secret`.
+> [!NOTE]
+> `creationPolicy: Merge` ensures this ExternalSecret adds the `client_secret` key alongside any existing keys in `service-shared-secret` (such as the database password).
+
+**Option B: Direct Kubernetes secret**
+
+If you manage secrets directly, add the `client_secret` key to the existing `service-shared-secret`:
+
+```bash
+kubectl patch secret service-shared-secret -n <namespace> \
+  --type merge -p '{"stringData":{"client_secret":"<your-client-secret>"}}'
+```
 
 ### Ingress auth annotations
 
@@ -271,11 +257,11 @@ operator:
   clientId: "<operator-client-id>"
 ```
 
-The client secret is delivered via `ExternalSecret` into a K8s secret mounted by the operator pod.
+The client secret must be delivered into a Kubernetes secret mounted by the operator pod. Use the same secret delivery approach described in [Secret delivery](#secret-delivery) (ESO, direct secret, etc.).
 
 ### Eager mode
 
-Eager mode tasks call back to the control plane during execution. The `eager` app credentials are delivered as `EAGER_API_KEY` via `ExternalSecret` into the flytepropeller pod environment.
+Eager mode tasks call back to the control plane during execution. The eager service app client secret is delivered as `EAGER_API_KEY` into the flytepropeller pod environment.
 
 ## SDK and CLI authentication
 
@@ -340,4 +326,4 @@ Verify that `useAuth: true` is set in `flyte.configmap.adminServer.server.securi
 
 1. Verify the operator pod has the client secret mounted.
 2. Check operator logs for auth-related errors.
-3. Verify the operator's Okta app is included in the authorization server's access policy client whitelist.
+3. Verify the operator's service app is included in the authorization server's access policy client whitelist.
