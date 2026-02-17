@@ -143,6 +143,7 @@ class ShortcodeProcessor:
         # Then process leaf shortcodes
         content = self.process_code_shortcodes(content)
         content = self.process_note_shortcodes_recursive(content)
+        content = self.process_llm_bundle_note_shortcodes(content)
         content = self.process_warning_shortcodes_recursive(content)
         content = self.process_link_card_shortcodes_recursive(content)
         content = self.process_multiline_shortcodes(content)
@@ -207,6 +208,16 @@ class ShortcodeProcessor:
             return f"> **📝 {title}**\n>\n" + "\n".join(quoted_lines)
 
         return re.sub(pattern, replace_note, content, flags=re.DOTALL)
+
+    def process_llm_bundle_note_shortcodes(self, content: str) -> str:
+        """Process {{< llm-bundle-note >}} shortcodes."""
+        replacement = (
+            "> **📝 Note**\n"
+            ">\n"
+            "> An LLM-optimized bundle of this entire section is available at [`section.md`](section.md).\n"
+            "> This single file contains all pages in this section, optimized for AI coding agent context."
+        )
+        return re.sub(r'\{\{<\s*llm-bundle-note\s*>\}\}', replacement, content)
 
     def process_warning_shortcodes_recursive(self, content: str) -> str:
         """Process {{< warning >}} shortcodes with support for nested shortcodes."""

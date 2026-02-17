@@ -8,10 +8,7 @@ llm_readable_bundle: true
 
 # Run and deploy tasks
 
-{{< note >}}
-An LLM-readable bundle of this entire section is available at [`section.md`](section.md).
-This single file contains all pages in this section, optimized for AI coding agent context.
-{{< /note >}}
+{{< llm-bundle-note >}}
 
 You have seen how to configure and build the tasks that compose your project.
 Now you need to decide how to execute them on your Flyte backend.

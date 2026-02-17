@@ -1,10 +1,10 @@
 ---
-title: Flyte overview
+title: Overview
 weight: 1
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Flyte overview
+# Overview
 
 In this guide we cover how to build AI applications, data pipelines, and ML workflows using the Flyte 2 SDK.
 

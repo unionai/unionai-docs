@@ -8,10 +8,7 @@ llm_readable_bundle: true
 
 # Core concepts
 
-{{< note >}}
-An LLM-readable bundle of this entire section is available at [`section.md`](section.md).
-This single file contains all pages in this section, optimized for AI coding agent context.
-{{< /note >}}
+{{< llm-bundle-note >}}
 
 Now that you've completed the [Quickstart](../quickstart), let's explore Flyte's core concepts through working examples.
 

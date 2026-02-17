@@ -29,7 +29,10 @@
 </script>
 <div class="toc-container">
     <div class="toc-llm-link">
-        LLM readable<br>(<a href="{{ .RelPermalink }}content.md">this page</a>{{ if .Params.llm_readable_bundle }} | <a href="{{ .RelPermalink }}section.md">section bundle</a>{{ end }} | <a href="{{ .Site.BaseURL }}llms.txt">full docs index</a>)
+        <a href="{{ .Site.BaseURL }}api-reference/flyte-context/"><strong>LLM-optimized</strong></a>
+        <a href="{{ .RelPermalink }}content.md">This page</a>
+        {{ if .Params.llm_readable_bundle }}<a href="{{ .RelPermalink }}section.md">This section in one file</a>{{ end }}
+        <a href="{{ .Site.BaseURL }}llms.txt">Full docs index</a>
     </div>
     <div class="toc-header">On this page</div>
     <div class="toc"></div>

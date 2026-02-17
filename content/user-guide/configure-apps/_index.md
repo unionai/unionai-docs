@@ -3,9 +3,12 @@ title: Configure apps
 weight: 12
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
+llm_readable_bundle: true
 ---
 
 # Configure apps
+
+{{< llm-bundle-note >}}
 
 `[[AppEnvironment]]`s allows you to configure the environment in which your app runs, including the container image, compute resources, secrets, domains, scaling behavior, and more.
 
