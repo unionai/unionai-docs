@@ -15,7 +15,7 @@ You can attach links to tasks in two ways:
 - **Statically** in the task decorator with `links=`
 - **Dynamically** at call time with `task.override(links=...)`
 
-`Link` is a Python [Protocol](https://docs.python.org/3/library/typing.html#typing.Protocol) that you subclass to define how URLs are generated.
+`Link` is a Python [Protocol](https://docs.python.org/3/library/typing.html#typing.Protocol) that you subclass to define how URLs are generated. The Weights & Biases plugin provides a [built-in link implementation](../../api-reference/integrations/wandb/packages/flyteplugins.wandb/wandb) as an example.
 
 ## Creating a link
 
@@ -59,7 +59,7 @@ The link appears as a clickable "Grafana" link in the Flyte UI for every executi
 
 ## Using execution metadata
 
-The `get_link()` method receives execution metadata that you can use to construct dynamic URLs. Here's an example modeled on the [built-in Wandb](../../integrations/wandb/_index.md) link that uses the `context` dict to resolve a run ID:
+The `get_link()` method receives execution metadata that you can use to construct dynamic URLs. Here's an example modeled on the [built-in Wandb](../../integrations/wandb/_index) link that uses the `context` dict to resolve a run ID:
 
 ```python
 from dataclasses import dataclass
