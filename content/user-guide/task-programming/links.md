@@ -69,7 +69,7 @@ from flyte import Link
 
 
 @dataclass
-class WandbLink(Link):
+class Wandb(Link):
     project: str
     entity: str
     id: Optional[str] = None
@@ -102,7 +102,7 @@ Use `task.override(links=...)` to set links at runtime. This is useful when link
 import os
 
 import flyte
-from flyteplugins.wandb import WandbLink
+from flyteplugins.wandb import Wandb
 
 
 env = flyte.TaskEnvironment(...)
@@ -121,7 +121,7 @@ def train_model(config: dict) -> dict:
 async def main(wandb_id: str) -> dict:
     result = train_model.override(
         links=(
-            WandbLink(
+            Wandb(
                 project=WANDB_PROJECT,
                 entity=WANDB_ENTITY,
                 id=wandb_id,
