@@ -1,11 +1,14 @@
 ---
 title: Migration from Flyte 1
-weight: 4
+weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
-sidebar_expanded: false
+sidebar_expanded: true
+llm_readable_bundle: true
 ---
 
 # Migration from Flyte 1 to Flyte 2
+
+{{< llm-bundle-note >}}
 
 This section provides a comprehensive reference for migrating Flyte 1 (flytekit) workflows to Flyte 2 (flyte SDK).
 

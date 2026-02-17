@@ -3,9 +3,12 @@ title: From Flyte 1 to 2
 weight: 7
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
+llm_readable_bundle: true
 ---
 
 # From Flyte 1 to 2
+
+{{< llm-bundle-note >}}
 
 Flyte 2 represents a fundamental shift in how Flyte workflows are written and executed.
 

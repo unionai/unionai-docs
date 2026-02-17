@@ -3,9 +3,12 @@ title: Build apps
 weight: 13
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
+llm_readable_bundle: true
 ---
 
 # Build apps
+
+{{< llm-bundle-note >}}
 
 This section covers how to build different types of apps with Flyte, including Streamlit dashboards, FastAPI REST APIs, vLLM and SGLang model servers, webhooks, and WebSocket applications.
 

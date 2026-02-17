@@ -3,9 +3,12 @@ title: Core concepts
 weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
+llm_readable_bundle: true
 ---
 
 # Core concepts
+
+{{< llm-bundle-note >}}
 
 Now that you've completed the [Quickstart](../quickstart), let's explore Flyte's core concepts through working examples.
 

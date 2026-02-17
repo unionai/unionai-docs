@@ -4,9 +4,12 @@ weight: 4
 variants: +flyte +serverless +byoc +selfmanaged
 top_menu: true
 sidebar_expanded: true
+llm_readable_bundle: true
 ---
 
 # Integrations
+
+{{< llm-bundle-note >}}
 
 Flyte 2 is designed to be extensible by default. While the core platform covers the most common orchestration needs, many production workloads require specialized infrastructure, external services or execution semantics that go beyond the core runtime.
 

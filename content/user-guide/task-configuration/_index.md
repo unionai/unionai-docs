@@ -3,9 +3,12 @@ title: Configure tasks
 weight: 8
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
+llm_readable_bundle: true
 ---
 
 # Configure tasks
+
+{{< llm-bundle-note >}}
 
 As we saw in [**Quickstart**](../quickstart), you can run any Python function as a task in Flyte just by decorating it with `@env.task`.
 

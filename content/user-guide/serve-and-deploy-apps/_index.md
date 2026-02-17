@@ -3,9 +3,12 @@ title: Serve and deploy apps
 weight: 14
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
+llm_readable_bundle: true
 ---
 
 # Serve and deploy apps
+
+{{< llm-bundle-note >}}
 
 Flyte provides two main ways to deploy apps: **serve** (for development) and **deploy** (for production). This section covers both methods and their differences.
 

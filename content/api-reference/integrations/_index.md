@@ -1,7 +1,7 @@
 ---
 title: Integrations
 variants: +flyte +serverless +byoc +selfmanaged
-weight: 10
+weight: 5
 sidebar_expanded: true
 ---
 
