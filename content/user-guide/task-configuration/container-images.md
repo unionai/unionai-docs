@@ -32,7 +32,7 @@ The `flyte.Image` object provides a fluent interface for building container imag
 
 You start building your image with on of the `from_` methods:
 
-* `[[Image.from_base()]]`: Start from a pre-built image (Note: The image should be accessible to the imagebuilder).
+* `[[Image.from_base()]]`: Start from a pre-built image (Note: The image should be accessible to the image builder).
 * `[[Image.from_debian_base()]]`: Start from a [Debian](https://www.debian.org/) based base image, that contains flyte already.
 * `[[Image.from_uv_script()]]`: Start with a new image build from a [uv script](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies), slower but easier.
 
@@ -46,7 +46,7 @@ You can then layer on additional components using the `with_` methods:
 * `[[Image.with_requirements()]]`: Specify a requirements.txt file (all packages will be installed).
 * `[[Image.with_source_file()]]`: Specify a source file to include in the image (the file will be copied).
 * `[[Image.with_source_folder()]]`: Specify a source folder to include in the image (entire folder will be copied).
-* `[[Image.with_uv_project()]]`: Use this with `pyproject.toml` or `uv.lock` based projects. 
+* `[[Image.with_uv_project()]]`: Use this with `pyproject.toml` or `uv.lock` based projects.
 * `[[Image.with_poetry_project()]]`: Create a new image with the specified `poetry.lock`
 * `[[Image.with_workdir()]]`: Specify the working directory for the image.
 
@@ -167,7 +167,7 @@ There is no set up of Docker nor any other local configuration required on your 
 > [!NOTE]
 > The Flyte SDK checks whether the image builder is enabled for your cluster by verifying that the `image_build` task is deployed in the `system` project within the `production` domain.
 > If you are using custom roles and policies, ensure that users are granted the `view_flyte_inventory` action for the `production/system` project-domain pair.
-> See the [user management documentation](https://www.union.ai/docs/v1/byoc/user-guide/administration/user-management) for more details on creating and assigning custom roles and policies.
+> See the [V1 user management documentation]({{< docs_home byoc v1 >}}/user-guide/administration/user-management) for more details on creating and assigning custom roles and policies (V2 user management currently works identically to V1).
 
 
 #### ImageBuilder with external registries
