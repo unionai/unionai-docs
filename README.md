@@ -8,4 +8,6 @@ This repository holds all documentation for the [Flyte OSS project](https://www.
 
 Details on how to author, build and publish the docs can be found on the website itself at [Contributing docs and examples](https://union.ai/docs/flyte/community/contributing-docs).
 
-The source code for that section can be found in this repository under `content/community/contributing-docs/`.
+<!-- Trigger Cloudflare build - Dec 5, 2025 -->
+
+The source code for that section can be found in this repository under `content/community/contributing-docs/

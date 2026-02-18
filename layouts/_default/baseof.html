@@ -61,19 +61,14 @@
       <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MB6L88S" height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
-    {{- partial "flyte-banner.html" . -}} <!-- comment out when removing banner; also adjust banner-height in base.css -->
+    {{- partial "flyte-banner.html" . -}}
     <header>{{- partial "header.html" . -}}</header>
     <div class="tabs">{{- partial "tabs.html" (dict "page" .) -}}</div>
     <div class="container">
       <div class="sidebar">{{- partial "sidebar.html" . -}}</div>
       <div class="main-content">
         {{- if $access.development -}}
-        {{- $classes := slice "not-in-prod" "page-warn" }}
-        {{- if $access.excluded -}}
-        {{- $classes = $classes | append "not-allowed" -}}
-        {{- else -}}
-        {{- $classes = $classes | append "not-allowed" -}}
-        {{- end -}}
+        {{- $classes := slice "not-in-prod" "page-warn" "not-allowed" }}
         <div class='{{- delimit $classes " " -}}'>
           <div style="flex: 1">
             {{- if $access.excluded -}}
@@ -81,7 +76,7 @@
             {{- else -}}
             This page visibility is not declared for '{{- $variant -}}'.
             <div class="not-allowed how-to-fix">
-              <a href="https://github.com/unionai/docs-builder/blob/master/AUTHOR.md#page-visibility">How to fix?</a>
+              <a href="https://github.com/unionai/unionai-docs/blob/master/AUTHOR.md#page-visibility">How to fix?</a>
             </div>
             {{- end -}}
           </div>
@@ -109,6 +104,7 @@
       </div>
       {{- partial "toc.html" . -}}
     </div>
+    {{- partial "runllm.html" . -}}
   </body>
 </html>
 {{- end -}}

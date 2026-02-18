@@ -2,7 +2,7 @@ import importlib
 import inspect
 import sys
 from types import ModuleType
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 from enum import Enum
 
 import yaml
@@ -61,7 +61,7 @@ def get_class_details(class_path: str) -> Optional[ClassDetails]:
             return None
 
         # Basic class info
-        doc_info = parse_docstring(inspect.getdoc(cls), source=cls)
+        doc_info = parse_docstring(cls.__doc__, source=cls)
         class_info = ClassDetails(
             name=class_name,
             path=class_path,
@@ -84,8 +84,11 @@ def get_class_details(class_path: str) -> Optional[ClassDetails]:
                 continue
 
             # Methods
-            method_info = parse_method(name, member)
+            method_info = parse_method(name, member, class_name)
             if method_info:
+                # For __init__ methods, use class-level parameter documentation if available
+                if name == "__init__" and doc_info and "params" in doc_info and doc_info["params"]:
+                    method_info["params_doc"] = doc_info["params"]
                 class_info["methods"].append(method_info)
 
             # Properties

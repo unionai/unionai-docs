@@ -13,7 +13,11 @@ hugo.local.toml
 .DS_Store
 *.swp
 __pycache__/
+*.egg-info/
 .hugo_build.lock
+double-redirect-report.txt
+markdown_tree_analysis.json
+meta_descriptions.json
 
 # Ignore test file
 content/test.md
@@ -24,15 +28,16 @@ test*.html
 # Tools
 tools/link_checker/config.yml
 link_checker_output.json
+data/flytesdk.yaml
+static/flytesdk-linkmap.json
 
 # IDEs
 .vscode
 .idea
-*.code-workspace
 
 # Do not save temporary uv settings
-pyproject.toml
 .venv/
 main.py
 .python-version
 uv.lock
+.claude/

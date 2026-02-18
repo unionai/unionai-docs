@@ -19,6 +19,13 @@ class LLMDocBuilder:
         self.visited_files: Set[str] = set()
         self.title_lookup: dict[str, str] = {}  # Maps file paths to hierarchical titles
         self.version = self._detect_version()
+        self.resolution_issues: List[dict] = []  # Track failed link resolutions
+        self.current_source_file: str = ""  # Track current file being processed
+        self.variant_root: Path = Path()  # Set per-variant in build_consolidated_doc
+        self.index_entries: List[tuple] = []  # (hierarchical_title, page_url, path_key) for index
+        self.page_headings: dict[str, List[str]] = {}  # path_key -> [H2/H3 heading titles]
+        self.section_pages: set[str] = set()  # path_keys of pages that have subpages
+        self.bundle_sections: dict[str, str] = {}  # dir_path -> bundle URL (populated by generate_bundles)
 
     def _detect_version(self) -> str:
         """Detect version from environment or makefile.inc."""
@@ -56,10 +63,10 @@ class LLMDocBuilder:
                     print("Successfully regenerated documentation")
                 return True
             else:
-                print(f"❌ Make dist failed with return code {result.returncode}")
+                print(f"Error: Make dist failed with return code {result.returncode}")
                 return False
         except Exception as e:
-            print(f"❌ Error running make dist: {e}")
+            print(f"Error running make dist: {e}")
             return False
 
     def read_file_content(self, file_path: Path) -> str:
@@ -110,7 +117,11 @@ class LLMDocBuilder:
             # Convert same-page anchor links to hierarchical references
             if url.startswith('#'):
                 anchor = url[1:]  # Remove the # prefix
-                anchor_key = f"{current_file_path.name}#{anchor}"
+                try:
+                    rel_path = str(current_file_path.relative_to(self.variant_root)).lower()
+                except ValueError:
+                    rel_path = current_file_path.name.lower()
+                anchor_key = f"{rel_path}#{anchor}"
                 if anchor_key in self.title_lookup:
                     hierarchical_title = self.title_lookup[anchor_key]
                     return f"**{hierarchical_title}**"
@@ -119,8 +130,8 @@ class LLMDocBuilder:
                     current_page_title = self.strip_common_prefix(' > '.join(current_hierarchy))
                     return f"**{current_page_title} > {text}**"
 
-            # For internal .md links (with or without anchors), convert to hierarchical reference
-            if '.md' in url and not url.startswith(('http://', 'https://')):
+            # For internal page.md links (with or without anchors), convert to hierarchical reference
+            if 'page.md' in url and not url.startswith(('http://', 'https://')):
                 hierarchical_title = self.resolve_hierarchical_title(url, current_file_path, current_hierarchy, text)
                 return f"**{hierarchical_title}**"
 
@@ -143,11 +154,23 @@ class LLMDocBuilder:
             return self.strip_common_prefix(title)
 
         # Fallback: use current hierarchy + link text (also strip prefix)
+        # Track this as a resolution failure
         if current_hierarchy:
             full_title = f"{' > '.join(current_hierarchy)} > {link_text}"
-            return self.strip_common_prefix(full_title)
+            fallback_title = self.strip_common_prefix(full_title)
+        else:
+            fallback_title = link_text
 
-        return link_text
+        # Record the resolution failure
+        self.resolution_issues.append({
+            'source_file': self.current_source_file,
+            'link_url': url,
+            'link_text': link_text,
+            'resolved_path': target_path,
+            'fallback_title': fallback_title,
+        })
+
+        return fallback_title
 
     def strip_common_prefix(self, title: str) -> str:
         """Remove 'Documentation > {variant}' prefix from hierarchical titles."""
@@ -174,26 +197,19 @@ class LLMDocBuilder:
             else:  # Just anchor, same file
                 resolved = current_file_path
 
-            # Find the md root to get relative path
-            md_root = None
-            for parent in resolved.parents:
-                if parent.name == 'md':
-                    md_root = parent
-                    break
-
-            if md_root:
-                # Convert to relative path from md root (which matches our lookup table keys)
-                key = str(resolved.relative_to(md_root))
-            else:
+            # Get path relative to variant root (matches our lookup table keys)
+            try:
+                key = str(resolved.relative_to(self.variant_root)).lower()
+            except ValueError:
                 # Fallback to filename only
-                key = str(resolved.name)
+                key = str(resolved.name).lower()
 
             if anchor:
                 key = f"{key}#{anchor}"
 
             return key
         except:
-            return url
+            return url.lower()
 
     def extract_page_title(self, content: str, file_path: Path) -> str:
         """Extract the main title from a markdown page."""
@@ -204,7 +220,7 @@ class LLMDocBuilder:
 
         # Fallback to filename
         name = file_path.stem
-        if name == 'index':
+        if name in ('index', 'content'):
             name = file_path.parent.name
         return name.replace('-', ' ').replace('_', ' ').title()
 
@@ -251,11 +267,38 @@ class LLMDocBuilder:
         return anchor_map
 
     def title_to_anchor(self, title: str) -> str:
-        """Convert heading title to URL anchor format."""
-        # Convert to lowercase, replace spaces with hyphens, remove special chars
-        anchor = re.sub(r'[^a-zA-Z0-9\s-]', '', title)
-        anchor = re.sub(r'\s+', '-', anchor.strip().lower())
+        """Convert heading title to URL anchor format matching Hugo's behavior."""
+        anchor = title.lower()
+        # Remove special chars except alphanumeric, spaces, underscores, hyphens
+        # Hugo removes chars like () but keeps spaces which become hyphens
+        anchor = re.sub(r'[^a-zA-Z0-9\s_-]', '', anchor)
+        # Replace whitespace with hyphens (each space becomes one hyphen)
+        anchor = re.sub(r'\s', '-', anchor.strip())
         return anchor
+
+    def extract_h2_h3_headings(self, content: str) -> List[str]:
+        """Extract H2 and H3 heading titles from content for index/subpage listings."""
+        headings = []
+        for match in re.finditer(r'^(#{2,3})\s+(.+?)\s*$', content, re.MULTILINE):
+            title = match.group(2).strip()
+            if title.lower() != 'subpages':
+                headings.append(title)
+        return headings
+
+    def format_subpage_entry(self, title: str, url: str, headings: List[str],
+                             as_index: bool = False) -> str:
+        """Format a page entry with H2/H3 headings.
+
+        as_index=True:  Title|url + indented headings (for llms.txt pipe format)
+        as_index=False: - [Title](url) + indented headings (for markdown subpage tables)
+        """
+        if as_index:
+            lines = [f"{title}|{url}"]
+        else:
+            lines = [f"- [{title}]({url})"]
+        for heading in headings:
+            lines.append(f"  - {heading}")
+        return '\n'.join(lines)
 
     def extract_subpage_links(self, content: str) -> List[str]:
         """Extract links from ## Subpages section."""
@@ -284,11 +327,20 @@ class LLMDocBuilder:
     def build_consolidated_doc(self, variant: str, version: str = None) -> str:
         """Build consolidated document by following subpage links depth-first."""
         version = version or self.version
-        md_dir = self.base_path / 'dist' / 'docs' / version / variant / 'md'
+        variant_dir = self.base_path / 'dist' / 'docs' / version / variant
 
-        if not md_dir.exists():
-            print(f"❌ Directory not found: {md_dir}")
+        if not variant_dir.exists():
+            print(f"Error: Directory not found: {variant_dir}")
             return ""
+
+        self.variant_root = variant_dir
+
+        # Reset state for this variant
+        self.resolution_issues.clear()
+        self.index_entries.clear()
+        self.page_headings.clear()
+        self.section_pages.clear()
+        self.current_source_file = ""
 
         if not self.quiet:
             print(f"Building consolidated document for {variant}")
@@ -297,39 +349,52 @@ class LLMDocBuilder:
         if not self.quiet:
             print("  First pass: Building lookup tables...")
         self.visited_files.clear()  # Reset for first pass
-        self.build_lookup_tables(md_dir, 'index.md', md_dir, [])
+        self.build_lookup_tables(variant_dir, 'page.md', variant_dir, [])
 
         # Second pass: Process content with lookup tables populated
         if not self.quiet:
             print("  Second pass: Processing content...")
         consolidated_content = []
-        self.visited_files.clear()  # Reset for second pass
-        self.process_page_depth_first(md_dir, 'index.md', consolidated_content, md_dir, [], variant, version)
+        self.process_page_depth_first(variant_dir, 'page.md', consolidated_content, variant_dir, [], variant, version)
 
         return '\n'.join(consolidated_content)
+
+    def write_resolution_report(self, variant: str, version: str = None) -> Path:
+        """Write a report of link resolution issues to a file."""
+        version = version or self.version
+        report_file = self.base_path / 'dist' / 'docs' / version / variant / 'link-issues.txt'
+
+        with open(report_file, 'w', encoding='utf-8') as f:
+            if self.resolution_issues:
+                f.write(f"Found {len(self.resolution_issues)} link resolution issues:\n\n")
+                for issue in self.resolution_issues:
+                    f.write(f"{issue['source_file']}: Link [{issue['link_text']}]({issue['link_url']}) -> "
+                           f"could not resolve, used fallback: \"{issue['fallback_title']}\"\n")
+            else:
+                f.write("No link resolution issues found.\n")
+
+        return report_file
 
     def build_lookup_tables(self, base_dir: Path, relative_path: str, md_root: Path, hierarchy: List[str] = None):
         """Build lookup tables for all pages without processing content."""
         if hierarchy is None:
             hierarchy = []
 
-        # Resolve the full path
+        # Resolve the full path — every page is {dir}/page.md
         if relative_path.endswith('/'):
-            file_path = base_dir / relative_path / 'index.md'
-            relative_path = relative_path + 'index.md'
-        elif not relative_path.endswith('.md'):
-            # Try both with and without .md extension
-            if (base_dir / f"{relative_path}.md").exists():
-                file_path = base_dir / f"{relative_path}.md"
-                relative_path = f"{relative_path}.md"
-            elif (base_dir / relative_path / 'index.md').exists():
-                file_path = base_dir / relative_path / 'index.md'
-                relative_path = f"{relative_path}/index.md"
-            else:
-                print(f"⚠️  Could not find file for: {relative_path}")
-                return
-        else:
+            file_path = base_dir / relative_path / 'page.md'
+            relative_path = relative_path + 'page.md'
+        elif relative_path.endswith('page.md'):
             file_path = base_dir / relative_path
+        else:
+            # Relative path is a directory name, look for page.md inside
+            if (base_dir / relative_path / 'page.md').exists():
+                file_path = base_dir / relative_path / 'page.md'
+                relative_path = f"{relative_path}/page.md"
+            else:
+                if not self.quiet:
+                    print(f"Warning: Could not find page.md for: {relative_path}")
+                return
 
         # Avoid infinite loops
         canonical_path = str(file_path.resolve())
@@ -338,14 +403,16 @@ class LLMDocBuilder:
         self.visited_files.add(canonical_path)
 
         if not file_path.exists():
-            print(f"⚠️  File not found: {file_path}")
+            if not self.quiet:
+                print(f"Warning: File not found: {file_path}")
             return
 
-        # Get relative path from md root for the lookup key
+        # Get relative path from variant root for the lookup key
+        # Normalize to lowercase for case-insensitive matching (macOS filesystem is case-insensitive)
         try:
-            relative_from_md = str(file_path.relative_to(md_root))
+            relative_from_root = str(file_path.relative_to(md_root)).lower()
         except ValueError:
-            relative_from_md = str(file_path)
+            relative_from_root = str(file_path).lower()
 
         # Read the raw content
         raw_content = self.read_file_content(file_path)
@@ -357,23 +424,23 @@ class LLMDocBuilder:
         current_hierarchy = hierarchy + [page_title]
         hierarchical_title = ' > '.join(current_hierarchy)
 
-        # Store page in lookup table
-        self.title_lookup[relative_from_md] = hierarchical_title
-        self.title_lookup[file_path.name] = hierarchical_title  # Also store by filename
+        # Store page in lookup table (keys normalized to lowercase)
+        self.title_lookup[relative_from_root] = hierarchical_title
 
         # Parse and store heading hierarchy for anchor links
         anchor_map = self.parse_heading_hierarchy(raw_content, file_path, current_hierarchy)
         for anchor, anchor_title in anchor_map.items():
-            # Store with full file path + anchor
-            anchor_key = f"{relative_from_md}#{anchor}"
+            anchor_key = f"{relative_from_root}#{anchor}"
             self.title_lookup[anchor_key] = anchor_title
 
-            # Also store with just filename + anchor for relative links
-            filename_key = f"{file_path.name}#{anchor}"
-            self.title_lookup[filename_key] = anchor_title
+        # Extract H2/H3 headings for index/subpage listings
+        h2h3 = self.extract_h2_h3_headings(raw_content)
+        self.page_headings[relative_from_root] = h2h3
 
         # Extract subpages and recursively build lookup tables
         subpage_links = self.extract_subpage_links(raw_content)
+        if subpage_links:
+            self.section_pages.add(relative_from_root)
         for link in subpage_links:
             # Resolve relative to the current file's directory
             current_dir = file_path.parent
@@ -387,42 +454,38 @@ class LLMDocBuilder:
         if hierarchy is None:
             hierarchy = []
 
-        # Resolve the full path (same logic as build_lookup_tables)
+        # Resolve the full path — every page is {dir}/page.md
         if relative_path.endswith('/'):
-            file_path = base_dir / relative_path / 'index.md'
-            relative_path = relative_path + 'index.md'
-        elif not relative_path.endswith('.md'):
-            # Try both with and without .md extension
-            if (base_dir / f"{relative_path}.md").exists():
-                file_path = base_dir / f"{relative_path}.md"
-                relative_path = f"{relative_path}.md"
-            elif (base_dir / relative_path / 'index.md').exists():
-                file_path = base_dir / relative_path / 'index.md'
-                relative_path = f"{relative_path}/index.md"
-            else:
-                print(f"⚠️  Could not find file for: {relative_path}")
-                return
-        else:
+            file_path = base_dir / relative_path / 'page.md'
+            relative_path = relative_path + 'page.md'
+        elif relative_path.endswith('page.md'):
             file_path = base_dir / relative_path
+        else:
+            # Relative path is a directory name, look for page.md inside
+            if (base_dir / relative_path / 'page.md').exists():
+                file_path = base_dir / relative_path / 'page.md'
+                relative_path = f"{relative_path}/page.md"
+            else:
+                if not self.quiet:
+                    print(f"Warning: Could not find page.md for: {relative_path}")
+                return
 
         if not file_path.exists():
-            print(f"⚠️  File not found: {file_path}")
+            if not self.quiet:
+                print(f"Warning: File not found: {file_path}")
             return
 
-        # Avoid infinite loops
-        canonical_path = str(file_path.resolve())
-        if canonical_path in self.visited_files:
-            return
-        self.visited_files.add(canonical_path)
-
-        # Get relative path from md root for the delimiter
+        # Get relative path from variant root for the delimiter
         try:
-            relative_from_md = str(file_path.relative_to(md_root))
+            relative_from_root = str(file_path.relative_to(md_root))
         except ValueError:
-            relative_from_md = str(file_path)
+            relative_from_root = str(file_path)
 
         if not self.quiet:
-            print(f"  Processing: {relative_from_md}")
+            print(f"  Processing: {relative_from_root}")
+
+        # Track current source file for resolution issue reporting
+        self.current_source_file = relative_from_root
 
         # Read the raw content
         raw_content = self.read_file_content(file_path)
@@ -441,17 +504,20 @@ class LLMDocBuilder:
 
         # Add page delimiter with URL
         if variant and version:
-            # Convert .md path to web path (remove .md and convert index.md to directory)
-            web_path = relative_from_md.replace('.md', '')
-            if web_path.endswith('/index'):
-                web_path = web_path[:-6]  # Remove '/index'
-            if web_path == 'index':
-                web_path = ''  # Root index becomes empty path
+            # Convert page.md path to web path
+            web_path = relative_from_root.replace('/page.md', '').replace('page.md', '')
+            if not web_path or web_path == '/':
+                web_path = ''
 
             url = f"https://www.union.ai/docs/{version}/{variant}/{web_path}".rstrip('/')
             consolidated.append(f"\n=== PAGE: {url} ===\n")
+
+            # Collect index entry (with path_key for heading lookup)
+            stripped_title = self.strip_common_prefix(' > '.join(current_hierarchy))
+            llm_url = f"{url}/page.md" if web_path else f"{url}/page.md"
+            self.index_entries.append((stripped_title, llm_url, relative_from_root.lower()))
         else:
-            consolidated.append(f"\n=== PAGE: {relative_from_md} ===\n")
+            consolidated.append(f"\n=== PAGE: {relative_from_root} ===\n")
         consolidated.append(content)
 
         # Process subpages depth-first
@@ -470,13 +536,46 @@ class LLMDocBuilder:
 
         variants = []
         for item in dist_path.iterdir():
-            if item.is_dir() and (item / 'md').exists():
+            if item.is_dir() and (item / 'page.md').exists():
                 variants.append(item.name)
 
         return sorted(variants)
 
-    def create_redirect_content(self, variant: str) -> str:
-        """Create content for the redirect llms.txt file."""
+    def _path_depth(self, path_key: str) -> int:
+        """Get the directory depth of a path_key (0 = root page.md)."""
+        parts = path_key.replace('page.md', '').strip('/').split('/')
+        parts = [p for p in parts if p]
+        return len(parts)
+
+    def _frontmatter_title(self, path_key: str) -> str:
+        """Extract frontmatter title from the source _index.md file."""
+        dir_path = path_key.replace('/page.md', '').replace('page.md', '').strip('/')
+        if dir_path:
+            source_file = self.base_path / 'content' / dir_path / '_index.md'
+        else:
+            source_file = self.base_path / 'content' / '_index.md'
+
+        if not source_file.exists():
+            return ''
+
+        try:
+            with open(source_file, 'r', encoding='utf-8') as f:
+                content = f.read()
+            match = re.match(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+            if match:
+                for line in match.group(1).split('\n'):
+                    if line.startswith('title:'):
+                        return line.split(':', 1)[1].strip().strip('"').strip("'")
+        except Exception:
+            pass
+        return ''
+
+    def create_index_content(self, variant: str) -> str:
+        """Create a page index for llms.txt.
+
+        Lists all pages grouped by top-level section, each with
+        H2/H3 headings for discoverability.
+        """
         variant_names = {
             'flyte': 'Flyte Open Source',
             'byoc': 'Union.ai BYOC (Bring Your Own Cloud)',
@@ -485,50 +584,408 @@ class LLMDocBuilder:
         }
 
         variant_display = variant_names.get(variant, variant.title())
+        base_url = f"https://www.union.ai/docs/{self.version}/{variant}"
 
-        return f"""# {variant_display} Documentation (LLM-Optimized)
+        lines = [
+            f"# {variant_display} Documentation",
+            f"> Full documentation (single file): {base_url}/llms-full.txt",
+            f"> Site: {base_url}",
+            "",
+            "Each entry below is `- [Page title](URL)` followed by the"
+            " H2/H3 headings found on that page."
+            " Pages link to individual `page.md` files."
+            " Sections marked with a \"Section bundle\" link have a `section.md`"
+            " that concatenates all pages in the section into a single file"
+            " — use it to load an entire section into context at once.",
+            "",
+        ]
 
-This is the LLM-optimized documentation redirect for **{variant_display}** ({self.version}).
+        # Group entries by top-level section
+        sections = []
+        current_section = None
 
-## Full Documentation
+        for title, url, path_key in self.index_entries:
+            depth = self._path_depth(path_key)
 
-For the complete consolidated documentation optimized for Large Language Models, see:
+            if depth == 0:
+                # Root page — skip
+                continue
+            elif depth == 1:
+                # Top-level entry (section or standalone page)
+                if current_section is not None:
+                    sections.append(current_section)
+                current_section = {
+                    'title': title,
+                    'display_name': self._frontmatter_title(path_key) or title,
+                    'url': url,
+                    'path_key': path_key,
+                    'children': []
+                }
+            else:
+                # Deeper page — belongs to current section
+                if current_section is not None:
+                    current_section['children'].append((title, url, path_key))
 
-👉 **[llms-full.txt](llms-full.txt)**
+        if current_section is not None:
+            sections.append(current_section)
 
-The `llms-full.txt` file contains:
-- Complete {variant_display} documentation in a single file
-- All internal links converted to hierarchical references (e.g., `**Getting started > Local setup**`)
-- Depth-first page organization following the documentation structure
-- Perfect format for LLM consumption, RAG systems, and vector databases
+        # Format each section
+        for i, section in enumerate(sections):
+            if i > 0:
+                lines.append("---")
+                lines.append("")
 
-## File Details
+            lines.append(f"## {section['display_name']}")
+            lines.append("")
 
-- **Variant**: {variant}
-- **Version**: {self.version}
-- **Format**: LLM-optimized consolidated markdown
-- **Size**: ~1.4MB+ of comprehensive documentation
-- **Update frequency**: Generated automatically from source documentation
+            if section['children']:
+                for child_title, child_url, child_key in section['children']:
+                    # Strip section prefix from title
+                    prefix = section['title'] + ' > '
+                    relative_title = child_title[len(prefix):] if child_title.startswith(prefix) else child_title
 
-## Usage
+                    headings = self.page_headings.get(child_key, [])
+                    entry = self.format_subpage_entry(
+                        relative_title, child_url, headings)
+                    lines.append(entry)
 
-This consolidated documentation is ideal for:
-- Large Language Model context and training
-- RAG (Retrieval-Augmented Generation) systems
-- Vector database ingestion
-- AI assistants and chatbots
-- Automated documentation analysis
+                    # Add bundle reference if this child has a section bundle
+                    child_dir = child_key.replace('/page.md', '').replace('page.md', '').strip('/')
+                    if child_dir in self.bundle_sections:
+                        lines.append(f"  > Section bundle (all pages): {self.bundle_sections[child_dir]}")
 
----
+                lines.append("")
 
-*Generated automatically from the Union.ai documentation system.*
-"""
+            else:
+                # Standalone page at top level
+                headings = self.page_headings.get(section['path_key'], [])
+                entry = self.format_subpage_entry(
+                    section['display_name'], section['url'], headings)
+                lines.append(entry)
+                lines.append("")
+
+        return '\n'.join(lines)
+
+    def enhance_subpage_listings(self, variant: str, version: str = None):
+        """Post-process page.md files to enhance ## Subpages sections with H2/H3 headings."""
+        version = version or self.version
+        variant_dir = self.base_path / 'dist' / 'docs' / version / variant
+
+        for content_file in variant_dir.rglob('page.md'):
+            try:
+                relative_key = str(content_file.relative_to(variant_dir)).lower()
+            except ValueError:
+                continue
+
+            if relative_key not in self.section_pages:
+                continue
+
+            # This is a section page — enhance its subpage listing
+            content = content_file.read_text(encoding='utf-8')
+
+            # Parse existing subpage links
+            subpages_pattern = r'## Subpages\s*\n(.*?)(?=\n##|\n---|\Z)'
+            match = re.search(subpages_pattern, content, re.DOTALL | re.IGNORECASE)
+            if not match:
+                continue
+
+            subpages_content = match.group(1).strip()
+            link_pattern = r'- \[([^\]]+)\]\(([^)]+)\)'
+
+            enhanced_lines = ["## Subpages\n"]
+
+            for link_match in re.finditer(link_pattern, subpages_content):
+                child_title = link_match.group(1)
+                child_url = link_match.group(2)
+                child_path_part = child_url.split('#')[0].strip()
+
+                if not child_path_part or child_path_part.startswith(('http://', 'https://')):
+                    enhanced_lines.append(f"- [{child_title}]({child_url})")
+                    continue
+
+                # Resolve child path to get the path key for heading lookup
+                if child_path_part.endswith('page.md'):
+                    child_path = (content_file.parent / child_path_part).resolve()
+                else:
+                    child_path = (content_file.parent / child_path_part.rstrip('/') / 'page.md').resolve()
+
+                try:
+                    child_key = str(child_path.relative_to(variant_dir)).lower()
+                except ValueError:
+                    child_key = ""
+
+                headings = self.page_headings.get(child_key, [])
+                entry = self.format_subpage_entry(child_title, child_url, headings)
+                enhanced_lines.append(entry)
+
+            enhanced_table = '\n'.join(enhanced_lines)
+
+            # Replace the existing ## Subpages section
+            new_content = re.sub(subpages_pattern, enhanced_table + '\n', content,
+                                 flags=re.DOTALL | re.IGNORECASE)
+
+            content_file.write_text(new_content, encoding='utf-8')
+
+        if not self.quiet:
+            print(f"Enhanced subpage listings for {variant}")
+
+    def absolutize_links(self, variant: str, version: str = None):
+        """Convert all relative links in page.md files to absolute URLs."""
+        version = version or self.version
+        variant_dir = self.base_path / 'dist' / 'docs' / version / variant
+        base_url = f"https://www.union.ai/docs/{version}/{variant}"
+        link_pattern = r'\[([^\]]*)\]\(([^)]+)\)'
+        fixed_count = 0
+        total_files = 0
+
+        for content_file in variant_dir.rglob('page.md'):
+            total_files += 1
+            try:
+                content = content_file.read_text(encoding='utf-8')
+            except Exception:
+                continue
+
+            original_content = content
+
+            def replace_link(match, _file=content_file):
+                nonlocal fixed_count
+                link_text, link_url = match.groups()
+
+                # Skip external links
+                if re.match(r'^[a-zA-Z][a-zA-Z0-9+.-]*:', link_url):
+                    return match.group(0)
+
+                # Skip anchor-only links
+                if link_url.startswith('#'):
+                    return match.group(0)
+
+                # Handle root-relative paths (e.g. /docs/v2/flyte/...)
+                if link_url.startswith('/'):
+                    fixed_count += 1
+                    return f'[{link_text}](https://www.union.ai{link_url})'
+
+                # Split URL and anchor
+                url_parts = link_url.split('#', 1)
+                base_path_part = url_parts[0]
+                anchor = '#' + url_parts[1] if len(url_parts) > 1 else ''
+
+                if not base_path_part:
+                    return match.group(0)
+
+                # Resolve relative path to absolute filesystem path
+                resolved = (_file.parent / base_path_part).resolve()
+
+                # Convert to path relative to variant dir
+                try:
+                    rel_to_variant = resolved.relative_to(variant_dir.resolve())
+                except ValueError:
+                    return match.group(0)
+
+                absolute_url = f"{base_url}/{rel_to_variant}{anchor}"
+                fixed_count += 1
+                return f'[{link_text}]({absolute_url})'
+
+            content = re.sub(link_pattern, replace_link, content)
+
+            if content != original_content:
+                content_file.write_text(content, encoding='utf-8')
+
+        if not self.quiet:
+            print(f"Converted {fixed_count} links to absolute URLs in {total_files} files for {variant}")
+
+    def _has_frontmatter_param(self, dir_path: str, param: str) -> bool:
+        """Check if a source _index.md file has a specific frontmatter param set to true."""
+        if dir_path:
+            source_file = self.base_path / 'content' / dir_path / '_index.md'
+        else:
+            source_file = self.base_path / 'content' / '_index.md'
+
+        if not source_file.exists():
+            return False
+
+        try:
+            with open(source_file, 'r', encoding='utf-8') as f:
+                content = f.read()
+            match = re.match(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+            if match:
+                for line in match.group(1).split('\n'):
+                    if line.strip().startswith(f'{param}:'):
+                        value = line.split(':', 1)[1].strip().lower()
+                        return value in ('true', 'yes')
+        except Exception:
+            pass
+        return False
+
+    def _strip_subpages_section(self, content: str) -> str:
+        """Remove ## Subpages section from content."""
+        return re.sub(r'\n## Subpages\s*\n.*?(?=\n---\n|\Z)', '', content, flags=re.DOTALL)
+
+    def _process_bundle_links(self, content: str, current_file: Path, section_dir: Path) -> str:
+        """Process links in bundle content: internal links become hierarchical titles,
+        external links become absolute URLs. Runs before absolutize_links()."""
+        variant_dir = self.variant_root
+        try:
+            variant = str(variant_dir.relative_to(
+                self.base_path / 'dist' / 'docs' / self.version))
+        except ValueError:
+            return content
+        base_url = f"https://www.union.ai/docs/{self.version}/{variant}"
+
+        def replace_link(match):
+            text = match.group(1)
+            url = match.group(2)
+
+            # Already-absolute links
+            if url.startswith(('http://', 'https://', 'mailto:')):
+                return match.group(0)
+
+            # Anchor-only links
+            if url.startswith('#'):
+                try:
+                    rel_path = str(current_file.relative_to(variant_dir)).lower()
+                except ValueError:
+                    return match.group(0)
+                anchor_key = f"{rel_path}#{url[1:]}"
+                if anchor_key in self.title_lookup:
+                    return f"**{self.strip_common_prefix(self.title_lookup[anchor_key])}**"
+                return match.group(0)
+
+            # Relative link — resolve to filesystem path
+            link_path = url.split('#')[0].strip()
+            if not link_path:
+                return match.group(0)
+            resolved = (current_file.parent / link_path).resolve()
+            # Leaf page page.md files are one directory level deeper than their
+            # Hugo source files, so ../foo resolves one level too shallow.
+            # If the resolved path doesn't exist, try from one level up.
+            if not resolved.exists() and not (resolved / 'page.md').exists():
+                alt = (current_file.parent.parent / link_path).resolve()
+                if alt.exists() or (alt / 'page.md').exists():
+                    resolved = alt
+
+            # Check if it's within the bundle section
+            try:
+                resolved.relative_to(section_dir.resolve())
+                is_internal = True
+            except ValueError:
+                is_internal = False
+
+            if is_internal:
+                # Convert to hierarchical title
+                try:
+                    lookup_key = str(resolved.relative_to(variant_dir)).lower()
+                except ValueError:
+                    return match.group(0)
+                if lookup_key in self.title_lookup:
+                    title = self.strip_common_prefix(self.title_lookup[lookup_key])
+                    return f"**{title}**"
+                return match.group(0)
+            else:
+                # External to bundle — absolutize the URL
+                try:
+                    rel_to_variant = str(resolved.relative_to(variant_dir))
+                except ValueError:
+                    return match.group(0)
+                abs_url = f"{base_url}/{rel_to_variant}"
+                return f"[{text}]({abs_url})"
+
+        return re.sub(r'\[([^\]]+)\]\(([^)]+)\)', replace_link, content)
+
+    def _collect_bundle_pages(self, section_dir: Path, content_file: Path) -> List[Path]:
+        """Collect all page.md files in a section, depth-first following ## Subpages."""
+        pages = [content_file]
+        content = content_file.read_text(encoding='utf-8')
+        subpage_links = self.extract_subpage_links(content)
+        for link in subpage_links:
+            child_path = (content_file.parent / link).resolve()
+            if child_path.is_dir():
+                child_content = child_path / 'page.md'
+            elif child_path.name == 'page.md':
+                child_content = child_path
+            else:
+                child_content = child_path / 'page.md'
+            if child_content.exists():
+                pages.extend(self._collect_bundle_pages(section_dir, child_content))
+        return pages
+
+    def generate_bundles(self, variant: str, version: str = None):
+        """Generate section.md bundle files for sections with llm_readable_bundle: true."""
+        version = version or self.version
+        variant_dir = self.base_path / 'dist' / 'docs' / version / variant
+        base_url = f"https://www.union.ai/docs/{version}/{variant}"
+        bundle_count = 0
+
+        # Find all section directories with llm_readable_bundle: true
+        for content_file in variant_dir.rglob('page.md'):
+            try:
+                rel_path = str(content_file.relative_to(variant_dir))
+            except ValueError:
+                continue
+
+            dir_path = rel_path.replace('/page.md', '').replace('page.md', '').strip('/')
+            if not dir_path:
+                continue
+
+            if not self._has_frontmatter_param(dir_path, 'llm_readable_bundle'):
+                continue
+
+            # This section gets a bundle
+            section_dir = content_file.parent
+
+            # Collect all pages depth-first
+            pages = self._collect_bundle_pages(section_dir, content_file)
+
+            # Build the bundle content
+            bundle_parts = []
+            section_title = self._frontmatter_title(rel_path.lower())
+            bundle_parts.append(f"# {section_title or dir_path}")
+            bundle_parts.append(f"> This bundle contains all pages in the {section_title} section.")
+            bundle_parts.append(f"> Source: {base_url}/{dir_path}/")
+            bundle_parts.append("")
+
+            for page_file in pages:
+                page_content = page_file.read_text(encoding='utf-8')
+
+                # Strip ## Subpages section
+                page_content = self._strip_subpages_section(page_content)
+
+                # Strip the trailing Source/HTML footer
+                page_content = re.sub(r'\n---\n\*\*Source\*\*:.*$', '', page_content, flags=re.DOTALL)
+
+                # Process links
+                page_content = self._process_bundle_links(page_content, page_file, section_dir)
+
+                # Add page delimiter
+                try:
+                    page_rel = str(page_file.relative_to(variant_dir))
+                except ValueError:
+                    page_rel = str(page_file)
+                web_path = page_rel.replace('/page.md', '').replace('page.md', '')
+                page_url = f"{base_url}/{web_path}".rstrip('/')
+                bundle_parts.append(f"=== PAGE: {page_url} ===\n")
+                bundle_parts.append(page_content.strip())
+                bundle_parts.append("")
+
+            # Write section.md
+            bundle_file = section_dir / 'section.md'
+            bundle_file.write_text('\n'.join(bundle_parts) + '\n', encoding='utf-8')
+            bundle_count += 1
+
+            # Track for llms.txt index
+            self.bundle_sections[dir_path.lower()] = f"{base_url}/{dir_path}/section.md"
+
+            if not self.quiet:
+                bundle_size = bundle_file.stat().st_size
+                print(f"  Bundle: {dir_path}/section.md ({bundle_size:,} bytes, {len(pages)} pages)")
+
+        if not self.quiet:
+            print(f"Generated {bundle_count} section bundles for {variant}")
 
     def create_discovery_files(self, base_path: Path, variants: List[str]) -> None:
         """Create hierarchical discovery files for LLM documentation."""
 
         # Root level discovery file (/docs/llms.txt)
-        root_content = self.create_root_discovery_content(variants)
+        root_content = self.create_root_discovery_content()
         root_file = base_path / 'dist' / 'docs' / 'llms.txt'
 
         with open(root_file, 'w', encoding='utf-8') as f:
@@ -545,114 +1002,31 @@ This consolidated documentation is ideal for:
         if not self.quiet:
             print(f"Created {self.version} discovery: {version_file}")
 
-    def create_root_discovery_content(self, variants: List[str]) -> str:
+    def create_root_discovery_content(self) -> str:
         """Create content for the root-level discovery file."""
-        return f"""# Union.ai Documentation (LLM-Optimized)
-
-This is the root discovery file for LLM-optimized documentation across all Union.ai and Flyte products.
-
-## Available Documentation Versions
-
-- **[Version 1 Documentation](v1/llms.txt)** - Legacy documentation with all v1 variants
-- **[Version 2 Documentation](v2/llms.txt)** - Current documentation with all v2 variants
-
-## Navigation Guide
-
-### For LLMs and RAG Systems
-1. **Version browsing**: Use `v1/llms.txt` or `v2/llms.txt` for detailed version-specific variant information
-2. **Direct access**: Navigate through version-specific discovery files to access consolidated documentation
-3. **Variant browsing**: Use `{{version}}/{{variant}}/llms.txt` for specific variant details
-
-### Documentation Structure
-- **Root** (`/docs/llms.txt`) - This file, overview of all versions
-- **Version** (`/docs/{{version}}/llms.txt`) - All variants for that version
-- **Variant** (`/docs/{{version}}/{{variant}}/llms.txt`) - Redirect to specific consolidated documentation
-- **Content** (`/docs/{{version}}/{{variant}}/llms-full.txt`) - Complete consolidated documentation
-
-## File Characteristics
-
-Each `llms-full.txt` file contains:
-- **Complete documentation** for that variant (~1.4MB+ each)
-- **Hierarchical internal links** - All `.md` and `#anchor` links converted to searchable references
-- **Depth-first organization** - Content follows logical navigation structure
-- **LLM-optimized format** - Perfect for RAG systems, vector databases, and AI assistants
-
-## Product Information
-
-- **Flyte**: Open source workflow orchestration platform maintained by Union.ai
-- **Union.ai Products**: Commercial offerings built on Flyte with additional enterprise features
-- **Version 2**: Current generation with pure Python execution and simplified API
-- **Version 1**: Legacy version with YAML-based workflows and decorators
-- **All variants**: Share core Flyte functionality with product-specific enhancements
-
----
-
-*Generated automatically from the Union.ai documentation system.*
-*Last updated: {self.get_current_timestamp()}*
-"""
+        base = "https://www.union.ai/docs"
+        lines = [
+            "# Union.ai Documentation",
+            f"> Current version: {self.version}",
+            "",
+            "## Versions",
+            f"{self.version}|{base}/{self.version}/llms.txt",
+            "",
+        ]
+        return '\n'.join(lines)
 
     def create_version_discovery_content(self, variants: List[str], version: str) -> str:
         """Create content for version-level discovery file."""
-        variant_names = {
-            'flyte': 'Flyte Open Source',
-            'byoc': 'Union.ai BYOC (Bring Your Own Cloud)',
-            'selfmanaged': 'Union.ai Self-managed',
-            'serverless': 'Union.ai Serverless'
-        }
-
-        variant_descriptions = {
-            'flyte': 'Free and open source workflow orchestration platform',
-            'byoc': 'Commercial Union.ai product - bring your own cloud infrastructure',
-            'selfmanaged': 'Commercial Union.ai product - fully managed deployment',
-            'serverless': 'Commercial Union.ai product - serverless execution'
-        }
-
-        # Create direct links to consolidated documentation
-        variant_links = []
+        base = f"https://www.union.ai/docs/{version}"
+        lines = [
+            f"# Union.ai {version.upper()} Documentation",
+            "",
+            "## Variants",
+        ]
         for variant in sorted(variants):
-            name = variant_names.get(variant, variant.title())
-            desc = variant_descriptions.get(variant, f'{variant.title()} variant documentation')
-            variant_links.append(f"- **[{name}]({variant}/llms-full.txt)** - {desc}")
-
-        return f"""# Version {version.upper()} Documentation (LLM-Optimized)
-
-This is the version-level discovery file for all **Version {version.upper()}** documentation variants.
-
-## Available Documentation
-
-{chr(10).join(variant_links)}
-
-## Navigation
-
-- **[Root Documentation](../llms.txt)** - Overview of all versions and variants
-- **Direct Access** - Click the links above for complete consolidated documentation
-- **Variant Details** - Use `{{variant}}/llms.txt` for variant-specific information
-
-## File Information
-
-Each `llms-full.txt` file contains:
-- **Complete documentation** for that variant (~1.4MB+ each)
-- **Hierarchical internal links** - All `.md` and `#anchor` links converted to searchable references
-- **Depth-first organization** - Content follows logical navigation structure
-- **LLM-optimized format** - Perfect for RAG systems, vector databases, and AI assistants
-
-## Usage Examples
-
-```
-# Access complete variant documentation directly
-GET /docs/{version}/flyte/llms-full.txt
-GET /docs/{version}/byoc/llms-full.txt
-
-# Get variant information and redirect
-GET /docs/{version}/flyte/llms.txt
-GET /docs/{version}/byoc/llms.txt
-```
-
----
-
-*Generated automatically from the Union.ai documentation system.*
-*Last updated: {self.get_current_timestamp()}*
-"""
+            lines.append(f"{variant}|{base}/{variant}/llms.txt")
+        lines.append("")
+        return '\n'.join(lines)
 
     def get_current_timestamp(self) -> str:
         """Get current timestamp for documentation."""
@@ -661,21 +1035,27 @@ GET /docs/{version}/byoc/llms.txt
 
 def main():
     import sys
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Build LLM-optimized documentation')
+    parser.add_argument('--no-make-dist', action='store_true', help='Skip running make dist')
+    parser.add_argument('--quiet', '-q', action='store_true', help='Suppress progress output')
+    args = parser.parse_args()
+
     base_path = Path.cwd()
-    quiet = '--quiet' in sys.argv
-    builder = LLMDocBuilder(base_path, quiet=quiet)
+    builder = LLMDocBuilder(base_path, quiet=args.quiet)
 
     # Step 1: Regenerate documentation (skip if --no-make-dist is passed)
-    if '--no-make-dist' not in sys.argv and not builder.run_make_dist():
+    if not args.no_make_dist and not builder.run_make_dist():
         return 1
 
     # Step 2: Find variants
     variants = builder.find_variants()
     if not variants:
-        print("❌ No variants found")
+        print("Error: No variants found")
         return 1
 
-    if not quiet:
+    if not args.quiet:
         print(f"Found variants: {variants}")
 
     # Step 3: Build consolidated documents
@@ -689,21 +1069,43 @@ def main():
             with open(output_file, 'w', encoding='utf-8') as f:
                 f.write(consolidated_content)
 
-            file_size = len(consolidated_content)
-            if not quiet:
+            if not args.quiet:
+                file_size = len(consolidated_content)
                 print(f"Saved: {output_file} ({file_size:,} characters)")
 
-            # Create redirect llms.txt file
+            # Enhance page.md subpage listings with H2/H3 headings
+            builder.enhance_subpage_listings(variant)
+
+            # Generate section bundles (before absolutize so subpage links are still relative)
+            builder.generate_bundles(variant)
+
+            # Convert relative links to absolute URLs
+            builder.absolutize_links(variant)
+
+            # Create llms.txt page index
             redirect_file = base_path / 'dist' / 'docs' / builder.version / variant / 'llms.txt'
-            redirect_content = builder.create_redirect_content(variant)
+            redirect_content = builder.create_index_content(variant)
 
             with open(redirect_file, 'w', encoding='utf-8') as f:
                 f.write(redirect_content)
 
-            if not quiet:
+            if not args.quiet:
                 print(f"Created redirect: {redirect_file}")
+
+            # Write resolution issues report
+            report_file = builder.write_resolution_report(variant)
+            issue_count = len(builder.resolution_issues)
+            if issue_count > 0:
+                print(f"Found {issue_count} link resolution issues for {variant}:")
+                for issue in builder.resolution_issues[:10]:  # Show first 10
+                    print(f"  {issue['source_file']}: [{issue['link_text']}]({issue['link_url']})")
+                if issue_count > 10:
+                    print(f"  ... and {issue_count - 10} more issues")
+                print(f"  Full list: {report_file}")
+            elif not args.quiet:
+                print(f"No link resolution issues for {variant}")
         else:
-            print(f"No content generated for {variant}")
+            print(f"Error: No content generated for {variant}")
 
     # Step 4: Create hierarchical discovery files
     builder.create_discovery_files(base_path, variants)

@@ -32,9 +32,6 @@ This renders section content and lists child pages in markdown format.
 {{- end }}
 
 ---
-**Source**: {{ .File.Path }}
-**URL**: {{ .Permalink }}
-{{- if .Date }}
-**Date**: {{ .Date.Format "2006-01-02" }}
-{{- end }}
+**Source**: https://github.com/unionai/unionai-docs/blob/main/content/{{ .File.Path }}
+**HTML**: https://www.union.ai{{ .Permalink }}
 {{ end }}

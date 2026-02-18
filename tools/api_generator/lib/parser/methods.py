@@ -1,17 +1,25 @@
 import inspect
+from functools import cached_property
 from typing import Optional, Any
 from lib.parser.docstring import parse_docstring
 from lib.ptypes import MethodInfo, PropertyInfo, VariableInfo, FrameworkType, ParamInfo
 
 
-def parse_method(name: str, member: object) -> Optional[MethodInfo]:
-    if not (inspect.isfunction(member) or inspect.ismethod(member)):
+def parse_method(name: str, member: object, parent_name: str | None = None) -> Optional[MethodInfo]:
+    from lib.parser.syncify import is_syncify_method
+    framework: FrameworkType = "python"
+    if is_syncify_method(name, member):
+        framework = "syncify"
+        if parent_name and inspect.isfunction(getattr(member, "fn")):
+            parent_name = f"<{parent_name} instance>"
+    elif not (inspect.isfunction(member) or inspect.ismethod(member)):
         return None
 
-    return do_parse_method(name, member, "python")
+    return do_parse_method(name, member, framework, parent_name)
 
 
-def do_parse_method(name: str, member: Any, framework: FrameworkType) -> Optional[MethodInfo]:
+def do_parse_method(name: str, member: Any, framework: FrameworkType,
+                    parent_name: str | None = None) -> Optional[MethodInfo]:
     doc_info = parse_docstring(inspect.getdoc(member), source=member)
     docstr = doc_info["docstring"] if doc_info else None
     params_docs = doc_info["params"] if doc_info else None
@@ -47,6 +55,7 @@ def do_parse_method(name: str, member: Any, framework: FrameworkType) -> Optiona
                 ),
                 kind=str(param.kind),
                 type=str(param_types[param.name]),
+                doc=None
             )
             for param in inspect.signature(member).parameters.values()
         ],
@@ -54,12 +63,13 @@ def do_parse_method(name: str, member: Any, framework: FrameworkType) -> Optiona
         return_type=str(return_type),
         return_doc=return_doc,
         framework=framework,
+        parent_name=parent_name
     )
     return method_info
 
 
 def parse_property(name: str, member: object) -> Optional[PropertyInfo]:
-    if not isinstance(member, property):
+    if not isinstance(member, (property, cached_property)):
         return None
 
     doc_info = parse_docstring(inspect.getdoc(member), source=member)
@@ -67,6 +77,7 @@ def parse_property(name: str, member: object) -> Optional[PropertyInfo]:
     property_info = PropertyInfo(
         name=name,
         doc=docstr,
+        type=None
     )
     return property_info
 
@@ -79,6 +90,7 @@ def parse_variable(name: str, member: object) -> Optional[VariableInfo]:
     var_info = VariableInfo(
         name=name,
         type=mtype,
+        doc=None
     )
 
     return var_info

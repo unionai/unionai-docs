@@ -4,24 +4,43 @@ PREFIX := $(if $(VERSION),docs/$(VERSION),docs)
 PORT := 9000
 BUILD := $(shell date +%s)
 
-.PHONY: all dist variant dev update-examples sync-examples llm-docs
+.PHONY: all base dist variant dev serve usage update-examples sync-examples llm-docs check-api-docs update-api-docs update-redirects dry-run-redirects deploy-redirects check-deleted-pages check-links check-generated-content clean clean-generated
 
 all: usage
 
 usage:
 	@./scripts/make_usage.sh
 
+clean:
+	rm -rf dist public
+
+# WARNING: clean-generated removes all generated content (API docs, CLI docs,
+# notebooks, YAML data, linkmaps). Do NOT commit after running this without
+# regenerating via 'make dist'. CI will block the merge (check-generated-content).
+clean-generated: clean
+	rm -rf content/_static/notebooks
+	rm -rf content/api-reference/flyte-sdk/packages content/api-reference/flyte-sdk/classes
+	rm -f content/api-reference/flyte-cli.md
+	rm -rf content/api-reference/integrations/*/
+	rm -f data/*.yaml
+	rm -f static/*-linkmap.json
+
 base:
 	@if ! ./scripts/pre-build-checks.sh; then exit 1; fi
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
+	@echo "Converting Jupyter notebooks..."
+	@./tools/jupyter_generator/gen_jupyter.sh
 	rm -rf dist
 	mkdir -p dist
 	mkdir -p dist/docs
 	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/index.html
 	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/docs/index.html
-	#cp -R static/* dist/${PREFIX}/
 
 dist: base
+	make update-redirects
+	-make check-deleted-pages
+	make update-api-docs
+	-make check-links
 	make variant VARIANT=flyte
 	make variant VARIANT=serverless
 	make variant VARIANT=byoc
@@ -30,7 +49,7 @@ dist: base
 
 variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
-	@VERSION=${VERSION} ./scripts/run_hugo.sh --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
+	@VERSION=${VERSION} ./scripts/run_hugo.sh
 	@VERSION=${VERSION} VARIANT=${VARIANT} PREFIX=${PREFIX} BUILD=${BUILD} ./scripts/gen_404.sh
 	@if [ -d "dist/docs/${VERSION}/${VARIANT}/tmp-md" ]; then \
 		if command -v uv >/dev/null 2>&1; then \
@@ -38,7 +57,7 @@ variant:
 			--variant=${VARIANT} \
 			--version=${VERSION} \
 			--input-dir=dist/docs/${VERSION}/${VARIANT}/tmp-md \
-			--output-dir=dist/docs/${VERSION}/${VARIANT}/md \
+			--output-dir=dist/docs/${VERSION}/${VARIANT} \
 			--base-path=. \
 			--quiet; \
 		else \
@@ -46,10 +65,11 @@ variant:
 			--variant=${VARIANT} \
 			--version=${VERSION} \
 			--input-dir=dist/docs/${VERSION}/${VARIANT}/tmp-md \
-			--output-dir=dist/docs/${VERSION}/${VARIANT}/md \
+			--output-dir=dist/docs/${VERSION}/${VARIANT} \
 			--base-path=. \
 			--quiet; \
-		fi \
+		fi; \
+		rm -rf dist/docs/${VERSION}/${VARIANT}/tmp-md; \
 	fi
 
 dev:
@@ -59,7 +79,7 @@ dev:
 	hugo server --config hugo.toml,hugo.site.toml,hugo.ver.toml,hugo.dev.toml,hugo.local.toml
 
 serve:
-	@if [ ! -d dist ]; then "echo Run `make dist` first"; exit 1; fi
+	@if [ ! -d dist ]; then echo "Run 'make dist' first"; exit 1; fi
 	@PORT=${PORT} LAUNCH=${LAUNCH} ./scripts/serve.sh
 
 update-examples:
@@ -78,11 +98,11 @@ validate-urls:
 	@echo "Validating URLs across all variants..."
 	@for variant in flyte byoc serverless selfmanaged; do \
 		echo "Checking $$variant..."; \
-		if [ -d "dist/docs/${VERSION}/$$variant/md" ]; then \
+		if [ -d "dist/docs/${VERSION}/$$variant" ]; then \
 			if command -v uv >/dev/null 2>&1; then \
-				uv run python3 validate_urls.py dist/docs/${VERSION}/$$variant/md; \
+				uv run python3 tools/validate_urls.py dist/docs/${VERSION}/$$variant; \
 			else \
-				python3 validate_urls.py dist/docs/${VERSION}/$$variant/md; \
+				python3 tools/validate_urls.py dist/docs/${VERSION}/$$variant; \
 			fi; \
 		else \
 			echo "No processed markdown found for $$variant"; \
@@ -93,11 +113,11 @@ url-stats:
 	@echo "URL statistics across all variants:"
 	@for variant in flyte byoc serverless selfmanaged; do \
 		echo "=== $$variant ==="; \
-		if [ -d "dist/docs/${VERSION}/$$variant/md" ]; then \
+		if [ -d "dist/docs/${VERSION}/$$variant" ]; then \
 			if command -v uv >/dev/null 2>&1; then \
-				uv run python3 validate_urls.py dist/docs/${VERSION}/$$variant/md --stats; \
+				uv run python3 tools/validate_urls.py dist/docs/${VERSION}/$$variant --stats; \
 			else \
-				python3 validate_urls.py dist/docs/${VERSION}/$$variant/md --stats; \
+				python3 tools/validate_urls.py dist/docs/${VERSION}/$$variant --stats; \
 			fi; \
 		else \
 			echo "No processed markdown found for $$variant"; \
@@ -110,7 +130,48 @@ llm-docs:
 	else \
 		VERSION=${VERSION} python3 tools/llms_generator/build_llm_docs.py --no-make-dist --quiet; \
 	fi
-	@for variant in flyte byoc selfmanaged serverless; do \
-		mkdir -p dist/docs/${VERSION}/$$variant/_static/public; \
-		cp dist/docs/${VERSION}/$$variant/llms-full.txt dist/docs/${VERSION}/$$variant/_static/public/llms-full.txt; \
-	done
+
+update-redirects:
+	@echo "Detecting moved pages and appending to redirects.csv..."
+	@if command -v uv >/dev/null 2>&1; then \
+		uv run tools/redirect_generator/detect_moved_pages.py; \
+	else \
+		python3 tools/redirect_generator/detect_moved_pages.py; \
+	fi
+
+dry-run-redirects:
+	@echo "Dry run: detecting moved pages from git history..."
+	@if command -v uv >/dev/null 2>&1; then \
+		uv run tools/redirect_generator/detect_moved_pages.py --dry-run; \
+	else \
+		python3 tools/redirect_generator/detect_moved_pages.py --dry-run; \
+	fi
+
+deploy-redirects:
+	@python3 tools/redirect_generator/deploy_redirects.py
+
+check-deleted-pages:
+	@if command -v uv >/dev/null 2>&1; then \
+		uv run tools/redirect_generator/check_deleted_pages.py; \
+	else \
+		python3 tools/redirect_generator/check_deleted_pages.py; \
+	fi
+
+check-links:
+	@if command -v uv >/dev/null 2>&1; then \
+		uv run tools/link_checker/check_internal_links.py; \
+	else \
+		python3 tools/link_checker/check_internal_links.py; \
+	fi
+
+check-generated-content:
+	@echo "Skipped on v1 (v2-specific)."
+
+check-api-docs:
+	@echo "Skipped on v1 (v2-specific)."
+
+check-llm-bundle-notes:
+	@echo "Skipped on v1 (v2-specific)."
+
+update-api-docs:
+	@echo "Skipped on v1 (API docs are frozen, flytekit-based)."

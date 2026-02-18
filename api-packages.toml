@@ -1,0 +1,84 @@
+# API documentation package registry
+#
+# Lists all packages whose API docs we generate.
+# Used by tools/api_generator/check_versions.py to detect
+# when committed docs are outdated relative to PyPI releases.
+#
+# To add a new plugin, add a [[plugins]] entry below.
+#
+# Fields:
+#   package  - PyPI package name (for version checks and pip install)
+#   plugin   - Python import path (for the API parser, passed as PLUGIN to Makefile)
+#   title    - Display title for the documentation
+#   name     - Folder name under content/api-reference/integrations/
+#   extras   - (optional) pip extras to install, e.g. ["bigquery", "snowflake"]
+
+[sdk]
+package = "flyte"
+version_file = "content/api-reference/flyte-sdk/_index.md"
+
+[[plugins]]
+package = "flyteplugins-dask"
+plugin = "flyteplugins.dask"
+title = "Dask"
+name = "dask"
+
+[[plugins]]
+package = "flyteplugins-openai"
+plugin = "flyteplugins.openai"
+title = "OpenAI"
+name = "openai"
+
+[[plugins]]
+package = "flyteplugins-polars"
+plugin = "flyteplugins.polars"
+title = "Polars"
+name = "polars"
+
+[[plugins]]
+package = "flyteplugins-pytorch"
+plugin = "flyteplugins.pytorch"
+title = "PyTorch"
+name = "pytorch"
+
+[[plugins]]
+package = "flyteplugins-ray"
+plugin = "flyteplugins.ray"
+title = "Ray"
+name = "ray"
+
+[[plugins]]
+package = "flyteplugins-sglang"
+plugin = "flyteplugins.sglang"
+title = "SGLang"
+name = "sglang"
+
+[[plugins]]
+package = "flyteplugins-spark"
+plugin = "flyteplugins.spark"
+title = "Spark"
+name = "spark"
+
+[[plugins]]
+package = "flyteplugins-union"
+plugin = "flyteplugins.union"
+title = "Union"
+name = "union"
+
+[[plugins]]
+package = "flyteplugins-vllm"
+plugin = "flyteplugins.vllm"
+title = "vLLM"
+name = "vllm"
+
+[[plugins]]
+package = "flyteplugins-wandb"
+plugin = "flyteplugins.wandb"
+title = "Weights & Biases"
+name = "wandb"
+
+[[plugins]]
+package = "flyteplugins-snowflake"
+plugin = "flyteplugins.snowflake"
+title = "Snowflake"
+name = "snowflake"
