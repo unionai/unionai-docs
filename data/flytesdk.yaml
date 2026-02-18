@@ -99,6 +99,7 @@ identifiers:
   flyte.io.DataFrame: /api-reference/flyte-sdk/packages/flyte.io/dataframe/
   flyte.io.Dir: /api-reference/flyte-sdk/packages/flyte.io/dir/
   flyte.io.File: /api-reference/flyte-sdk/packages/flyte.io/file/
+  flyte.io.HashFunction: /api-reference/flyte-sdk/packages/flyte.io/hashfunction/
   flyte.io.extend.DataFrameDecoder: /api-reference/flyte-sdk/packages/flyte.io.extend/dataframedecoder/
   flyte.io.extend.DataFrameEncoder: /api-reference/flyte-sdk/packages/flyte.io.extend/dataframeencoder/
   flyte.io.extend.DataFrameTransformerEngine: /api-reference/flyte-sdk/packages/flyte.io.extend/dataframetransformerengine/

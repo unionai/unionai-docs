@@ -1,6 +1,6 @@
 ---
 title: DataFrame
-version: 2.0.0b57
+version: 2.0.0b60
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -90,6 +90,7 @@ validated to form a valid model.
 | [`parse_raw()`](#parse_raw) |  |
 | [`schema()`](#schema) |  |
 | [`schema_json()`](#schema_json) |  |
+| [`schema_match()`](#schema_match) |  |
 | [`serialize_dataframe()`](#serialize_dataframe) |  |
 | [`set_literal()`](#set_literal) | A public wrapper method to set the DataFrame Literal. |
 | [`update_forward_refs()`](#update_forward_refs) |  |
@@ -240,6 +241,7 @@ def from_local(
     df: typing.Any,
     columns: typing.OrderedDict[str, type[typing.Any]] | None,
     remote_destination: str | None,
+    hash_method: HashMethod | str | None,
 ) -> DataFrame
 ```
 This method is useful to upload the dataframe eagerly and get the actual DataFrame.
@@ -251,13 +253,30 @@ In tasks (at runtime) it uses the task context and the underlying fast storage s
 
 At runtime it is recommended to use `DataFrame.wrap_df` as it is simpler.
 
+Example (With hash_method for cache key computation):
+
+```python
+import pandas as pd
+from flyte.io import DataFrame, HashFunction
+
+def hash_pandas_dataframe(df: pd.DataFrame) -> str:
+    return str(pd.util.hash_pandas_object(df).sum())
+
+@env.task
+async def foo() -> DataFrame:
+    df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
+    hash_method = HashFunction.from_fn(hash_pandas_dataframe)
+    return await DataFrame.from_local(df, hash_method=hash_method)
+```
+
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `df` | `typing.Any` | The dataframe object to be uploaded and converted. |
 | `columns` | `typing.OrderedDict[str, type[typing.Any]] \| None` | Optionally, any column information to be stored as part of the metadata |
-| `remote_destination` | `str \| None` | Optional destination URI to upload to, if not specified, this is automatically determined based on the current context. For example, locally it will use flyte:// automatic data management system to upload data (this is slow and useful for smaller datasets). On remote it will use the storage configuration and the raw data directory setting in the task context.  Returns: DataFrame object. |
+| `remote_destination` | `str \| None` | Optional destination URI to upload to, if not specified, this is automatically determined based on the current context. For example, locally it will use flyte:// automatic data management system to upload data (this is slow and useful for smaller datasets). On remote it will use the storage configuration and the raw data directory setting in the task context. |
+| `hash_method` | `HashMethod \| str \| None` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will compute the hash from the dataframe. If not specified, the cache key will be based on dataframe attributes.  Returns: DataFrame object. |
 
 ### from_local_sync()
 
@@ -266,6 +285,7 @@ def from_local_sync(
     df: typing.Any,
     columns: typing.OrderedDict[str, type[typing.Any]] | None,
     remote_destination: str | None,
+    hash_method: HashMethod | str | None,
 ) -> DataFrame
 ```
 This method is useful to upload the dataframe eagerly and get the actual DataFrame.
@@ -277,13 +297,30 @@ In tasks (at runtime) it uses the task context and the underlying fast storage s
 
 At runtime it is recommended to use `DataFrame.wrap_df` as it is simpler.
 
+Example (With hash_method for cache key computation):
+
+```python
+import pandas as pd
+from flyte.io import DataFrame, HashFunction
+
+def hash_pandas_dataframe(df: pd.DataFrame) -> str:
+    return str(pd.util.hash_pandas_object(df).sum())
+
+@env.task
+def foo() -> DataFrame:
+    df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
+    hash_method = HashFunction.from_fn(hash_pandas_dataframe)
+    return DataFrame.from_local_sync(df, hash_method=hash_method)
+```
+
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `df` | `typing.Any` | The dataframe object to be uploaded and converted. |
 | `columns` | `typing.OrderedDict[str, type[typing.Any]] \| None` | Optionally, any column information to be stored as part of the metadata |
-| `remote_destination` | `str \| None` | Optional destination URI to upload to, if not specified, this is automatically determined based on the current context. For example, locally it will use flyte:// automatic data management system to upload data (this is slow and useful for smaller datasets). On remote it will use the storage configuration and the raw data directory setting in the task context.  Returns: DataFrame object. |
+| `remote_destination` | `str \| None` | Optional destination URI to upload to, if not specified, this is automatically determined based on the current context. For example, locally it will use flyte:// automatic data management system to upload data (this is slow and useful for smaller datasets). On remote it will use the storage configuration and the raw data directory setting in the task context. |
+| `hash_method` | `HashMethod \| str \| None` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will compute the hash from the dataframe. If not specified, the cache key will be based on dataframe attributes.  Returns: DataFrame object. |
 
 ### from_orm()
 
@@ -723,6 +760,17 @@ def schema_json(
 | `by_alias` | `bool` | |
 | `ref_template` | `str` | |
 | `dumps_kwargs` | `Any` | |
+
+### schema_match()
+
+```python
+def schema_match(
+    incoming: dict,
+) -> bool
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `incoming` | `dict` | |
 
 ### serialize_dataframe()
 
