@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.0.0b57
+version: 2.0.0b60
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -31,6 +31,7 @@ class Image(
     name: Optional[str],
     platform: Tuple[Architecture, ...],
     python_version: Tuple[int, int],
+    extendable: bool,
     _ref_name: Optional[str],
     _layers: Tuple[Layer, ...],
     _image_registry_secret: Optional[Secret],
@@ -44,6 +45,7 @@ class Image(
 | `name` | `Optional[str]` | |
 | `platform` | `Tuple[Architecture, ...]` | |
 | `python_version` | `Tuple[int, int]` | |
+| `extendable` | `bool` | |
 | `_ref_name` | `Optional[str]` | |
 | `_layers` | `Tuple[Layer, ...]` | |
 | `_image_registry_secret` | `Optional[Secret]` | |
@@ -89,6 +91,7 @@ def clone(
     base_image: Optional[str],
     python_version: Optional[Tuple[int, int]],
     addl_layer: Optional[Layer],
+    extendable: Optional[bool],
 ) -> Image
 ```
 Use this method to clone the current image and change the registry and name
@@ -100,9 +103,10 @@ Use this method to clone the current image and change the registry and name
 | `registry` | `Optional[str]` | Registry to use for the image |
 | `registry_secret` | `Optional[str \| Secret]` | Secret to use to pull/push the private image. |
 | `name` | `Optional[str]` | Name of the image |
-| `base_image` | `Optional[str]` | |
+| `base_image` | `Optional[str]` | Base image to use for the image |
 | `python_version` | `Optional[Tuple[int, int]]` | Python version for the image, if not specified, will use the current Python version |
-| `addl_layer` | `Optional[Layer]` | Additional layer to add to the image. This will be added to the end of the layers. :return: |
+| `addl_layer` | `Optional[Layer]` | Additional layer to add to the image. This will be added to the end of the layers. |
+| `extendable` | `Optional[bool]` | Whether the image is extendable by other images. If True, the image can be used as a base image for other images, and additional layers can be added on top of it. If False, the image cannot be used as a base image for other images, and additional layers cannot be added on top of it. If None (default), defaults to False for safety. :return: |
 
 ### from_base()
 
