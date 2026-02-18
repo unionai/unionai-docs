@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b57
+version: 2.0.0b59
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -82,6 +82,7 @@ sidebar_expanded: true
 | [`flyte.io.DataFrame`](../packages/flyte.io/dataframe) |A Flyte meta DataFrame object, that wraps all other dataframe types (usually available as plugins, pandas. |
 | [`flyte.io.Dir`](../packages/flyte.io/dir) |A generic directory class representing a directory with files of a specified format. |
 | [`flyte.io.File`](../packages/flyte.io/file) |A generic file class representing a file with a specified format. |
+| [`flyte.io.HashFunction`](../packages/flyte.io/hashfunction) |A hash method that wraps a user-provided function to compute hashes. |
 | [`flyte.io.extend.DataFrameDecoder`](../packages/flyte.io.extend/dataframedecoder) | |
 | [`flyte.io.extend.DataFrameEncoder`](../packages/flyte.io.extend/dataframeencoder) | |
 | [`flyte.io.extend.DataFrameTransformerEngine`](../packages/flyte.io.extend/dataframetransformerengine) |Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |

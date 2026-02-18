@@ -1,6 +1,6 @@
 ---
 title: ContainerTask
-version: 2.0.0b57
+version: 2.0.0b59
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -23,8 +23,8 @@ class ContainerTask(
     inputs: typing.Optional[typing.Dict[str, typing.Type]],
     arguments: typing.Optional[typing.List[str]],
     outputs: typing.Optional[typing.Dict[str, typing.Type]],
-    input_data_dir: str | pathlib._local.Path,
-    output_data_dir: str | pathlib._local.Path,
+    input_data_dir: str | pathlib.Path,
+    output_data_dir: str | pathlib.Path,
     metadata_format: typing.Literal['JSON', 'YAML', 'PROTO'],
     local_logs: bool,
     kwargs,
@@ -38,8 +38,8 @@ class ContainerTask(
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | The inputs to the task. This is a dictionary of input names to types. |
 | `arguments` | `typing.Optional[typing.List[str]]` | The arguments to pass to the command. This is a list of strings. |
 | `outputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | The outputs of the task. This is a dictionary of output names to types. |
-| `input_data_dir` | `str \| pathlib._local.Path` | The directory where the input data is stored. This is a string or a Path object. |
-| `output_data_dir` | `str \| pathlib._local.Path` | The directory where the output data is stored. This is a string or a Path object. |
+| `input_data_dir` | `str \| pathlib.Path` | The directory where the input data is stored. This is a string or a Path object. |
+| `output_data_dir` | `str \| pathlib.Path` | The directory where the output data is stored. This is a string or a Path object. |
 | `metadata_format` | `typing.Literal['JSON', 'YAML', 'PROTO']` | The format of the output file. This can be "JSON", "YAML", or "PROTO". |
 | `local_logs` | `bool` | If True, logs will be printed to the console in the local execution. |
 | `kwargs` | `**kwargs` | |
