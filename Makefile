@@ -4,7 +4,7 @@ PREFIX := $(if $(VERSION),docs/$(VERSION),docs)
 PORT := 9000
 BUILD := $(shell date +%s)
 
-.PHONY: all dist variant dev update-examples sync-examples llm-docs check-api-docs update-api-docs update-redirects dry-run-redirects deploy-redirects check-deleted-pages check-links check-generated-content clean clean-generated
+.PHONY: all base dist variant dev serve usage update-examples sync-examples llm-docs check-api-docs update-api-docs update-redirects dry-run-redirects deploy-redirects check-deleted-pages check-links check-generated-content clean clean-generated
 
 all: usage
 
@@ -35,7 +35,6 @@ base:
 	mkdir -p dist/docs
 	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/index.html
 	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/docs/index.html
-	#cp -R static/* dist/${PREFIX}/
 
 dist: base
 	make update-redirects
@@ -43,14 +42,14 @@ dist: base
 	make update-api-docs
 	-make check-links
 	make variant VARIANT=flyte
-	# make variant VARIANT=serverless
+	# Serverless variant build is currently disabled
 	make variant VARIANT=byoc
 	make variant VARIANT=selfmanaged
 	make llm-docs
 
 variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
-	@VERSION=${VERSION} ./scripts/run_hugo.sh --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
+	@VERSION=${VERSION} ./scripts/run_hugo.sh
 	@VERSION=${VERSION} VARIANT=${VARIANT} PREFIX=${PREFIX} BUILD=${BUILD} ./scripts/gen_404.sh
 	@if [ -d "dist/docs/${VERSION}/${VARIANT}/tmp-md" ]; then \
 		if command -v uv >/dev/null 2>&1; then \
@@ -80,7 +79,7 @@ dev:
 	hugo server --config hugo.toml,hugo.site.toml,hugo.ver.toml,hugo.dev.toml,hugo.local.toml
 
 serve:
-	@if [ ! -d dist ]; then "echo Run `make dist` first"; exit 1; fi
+	@if [ ! -d dist ]; then echo "Run 'make dist' first"; exit 1; fi
 	@PORT=${PORT} LAUNCH=${LAUNCH} ./scripts/serve.sh
 
 update-examples:
