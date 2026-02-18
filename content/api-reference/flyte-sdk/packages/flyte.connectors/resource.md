@@ -1,6 +1,6 @@
 ---
 title: Resource
-version: 2.0.0b57
+version: 2.0.0b59
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -28,7 +28,7 @@ Attributes
 
 ```python
 class Resource(
-    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10c4869f0>,
+    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1627ce570>,
     message: typing.Optional[str],
     log_links: typing.Optional[typing.List[flyteidl2.core.execution_pb2.TaskLog]],
     outputs: typing.Optional[typing.Dict[str, typing.Any]],
@@ -37,7 +37,7 @@ class Resource(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10c4869f0>` | |
+| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1627ce570>` | |
 | `message` | `typing.Optional[str]` | |
 | `log_links` | `typing.Optional[typing.List[flyteidl2.core.execution_pb2.TaskLog]]` | |
 | `outputs` | `typing.Optional[typing.Dict[str, typing.Any]]` | |

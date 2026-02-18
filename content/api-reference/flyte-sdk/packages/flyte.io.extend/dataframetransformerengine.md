@@ -1,6 +1,6 @@
 ---
 title: DataFrameTransformerEngine
-version: 2.0.0b57
+version: 2.0.0b59
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -44,6 +44,7 @@ def DataFrameTransformerEngine()
 | [`register()`](#register) | Call this with any Encoder or Decoder to register it with the flytekit type system. |
 | [`register_for_protocol()`](#register_for_protocol) | See the main register function instead. |
 | [`register_renderer()`](#register_renderer) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | The only tricky thing with converting a Literal (say the output of an earlier task), to a Python value at. |
@@ -288,6 +289,24 @@ def register_renderer(
 |-|-|-|
 | `python_type` | `Type` | |
 | `renderer` | `Renderable` | |
+
+### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 ### to_html()
 
