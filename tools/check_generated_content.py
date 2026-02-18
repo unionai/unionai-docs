@@ -29,9 +29,6 @@ except ModuleNotFoundError:
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CONFIG_FILE = REPO_ROOT / "api-packages.toml"
 
-# Names that always have data YAML and linkmap files (not listed in api-packages.toml)
-HARDCODED_DATA_NAMES = ["connectors"]
-
 
 def load_config() -> dict:
     with open(CONFIG_FILE, "rb") as f:
@@ -75,14 +72,14 @@ def check_all(config: dict) -> list[str]:
             errors.append(f"Plugin '{name}': no .md files in content/api-reference/integrations/{name}/")
 
     # --- Data YAML files ---
-    data_names = ["flytesdk"] + [p["name"] for p in plugins] + HARDCODED_DATA_NAMES
+    data_names = ["flytesdk"] + [p["name"] for p in plugins]
     for name in data_names:
         yaml_file = REPO_ROOT / "data" / f"{name}.yaml"
         if not yaml_file.is_file():
             errors.append(f"Data YAML: missing data/{name}.yaml")
 
     # --- Linkmap JSON files ---
-    linkmap_names = ["flytesdk"] + [p["name"] for p in plugins] + HARDCODED_DATA_NAMES
+    linkmap_names = ["flytesdk"] + [p["name"] for p in plugins]
     for name in linkmap_names:
         linkmap_file = REPO_ROOT / "static" / f"{name}-linkmap.json"
         if not linkmap_file.is_file():
