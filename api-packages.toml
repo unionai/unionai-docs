@@ -28,9 +28,10 @@
 #   package          - (optional) PyPI package providing the CLI
 #   import           - (optional) Python import for version detection
 #   include          - Path to the header template file
-#   output_file      - Output file path for generated docs
+#   output_file      - Output file path for single-file CLI docs (use one of output_file or output_dir)
+#   output_dir       - Output directory for multi-file CLI docs (use one of output_file or output_dir)
 #   gen_command      - (optional) Command to generate CLI docs (Python CLIs)
-#   type             - (optional) "go" for Go-based CLIs (uses scripts/gen-cli-docs)
+#   type             - (optional) "go" for Go-based CLIs (externally produced)
 #   binary           - (optional) Binary name for Go CLIs
 #
 # Fields for [plugins_config]:

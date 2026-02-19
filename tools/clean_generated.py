@@ -57,8 +57,10 @@ def main() -> None:
 
     # --- CLI generated content ---
     for cli in config.get("clis", []):
-        output_file = REPO_ROOT / cli["output_file"]
-        remove_path(output_file, cli["output_file"])
+        if "output_file" in cli:
+            remove_path(REPO_ROOT / cli["output_file"], cli["output_file"])
+        elif "output_dir" in cli:
+            remove_path(REPO_ROOT / cli["output_dir"], cli["output_dir"])
 
     # --- Plugin generated content ---
     plugins_config = config.get("plugins_config", {})

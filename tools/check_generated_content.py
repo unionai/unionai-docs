@@ -10,7 +10,7 @@ Check that all generated content files exist in the repository.
 
 Reads api-packages.toml and verifies expected files for:
   - SDK API docs (packages/ and classes/ under each SDK's output_folder)
-  - CLI docs (each CLI's output_file)
+  - CLI docs (each CLI's output_file or output_dir)
   - Plugin API docs (under plugins_config.output_base/{name}/)
   - Data YAML files (data/{generator_name}.yaml, data/{plugin_name}.yaml)
   - Linkmap JSON files (static/{generator_name}-linkmap.json, static/{plugin_name}-linkmap.json)
@@ -71,9 +71,16 @@ def check_all(config: dict) -> list[str]:
 
     # --- CLI docs ---
     for cli in config.get("clis", []):
-        cli_file = REPO_ROOT / cli["output_file"]
-        if not cli_file.is_file():
-            errors.append(f"CLI docs: missing {cli['output_file']}")
+        if "output_file" in cli:
+            cli_path = REPO_ROOT / cli["output_file"]
+            if not cli_path.is_file():
+                errors.append(f"CLI docs: missing {cli['output_file']}")
+        elif "output_dir" in cli:
+            cli_path = REPO_ROOT / cli["output_dir"]
+            if not cli_path.is_dir():
+                errors.append(f"CLI docs: directory missing: {cli['output_dir']}/")
+            elif not has_md_files(cli_path):
+                errors.append(f"CLI docs: no .md files in {cli['output_dir']}/")
 
     # --- Plugin API docs ---
     plugins_config = config.get("plugins_config", {})
