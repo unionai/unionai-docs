@@ -1,6 +1,7 @@
 from typing import List
 
 import json
+import os
 import yaml
 
 from lib.ptypes import ClassPackageMap, PackageInfo
@@ -51,10 +52,12 @@ def generate_linkmap_metadata(
     }
 
     # Write YAML file
+    os.makedirs("data", exist_ok=True)
     with open(f"data/{api_name}.yaml", "w") as file:
         yaml.dump(metadata, file, default_flow_style=False, sort_keys=False)
 
     # Write JSON file for client-side use (identifiers and methods only)
+    os.makedirs("static", exist_ok=True)
     client_linkmap = {
         "identifiers": identifiers_dict,
         "methods": methods_dict
