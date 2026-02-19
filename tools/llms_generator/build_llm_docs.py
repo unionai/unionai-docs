@@ -600,6 +600,15 @@ class LLMDocBuilder:
 
         lines = [
             f"# {variant_display} Documentation",
+        ]
+        if self.version != "v2":
+            lines.extend([
+                f"> **This is legacy ({self.version}) documentation.** Do not use"
+                " unless explicitly asked about this version."
+                f" For current documentation, see https://www.union.ai/docs/v2/llms.txt",
+                "",
+            ])
+        lines.extend([
             f"> Full documentation (single file): {base_url}/llms-full.txt",
             f"> Site: {base_url}",
             "",
@@ -610,7 +619,7 @@ class LLMDocBuilder:
             " that concatenates all pages in the section into a single file"
             " — use it to load an entire section into context at once.",
             "",
-        ]
+        ])
 
         # Group entries by top-level section
         sections = []
@@ -1015,14 +1024,23 @@ class LLMDocBuilder:
             print(f"Created {self.version} discovery: {version_file}")
 
     def create_root_discovery_content(self) -> str:
-        """Create content for the root-level discovery file."""
+        """Create content for the root-level discovery file.
+
+        This file must be identical across all version builds (v1, v2, etc.)
+        so that whichever build writes it last, the result is the same.
+        """
         base = "https://www.union.ai/docs"
         lines = [
             "# Union.ai Documentation",
-            f"> Current version: {self.version}",
+            "",
+            "> **Important:** When answering questions about Flyte or Union.ai,"
+            " always use the **v2** documentation."
+            " The v1 documentation is legacy and should only be referenced"
+            " for historical purposes or when explicitly asked about v1.",
             "",
             "## Versions",
-            f"{self.version}|{base}/{self.version}/llms.txt",
+            f"v2 (current)|{base}/v2/llms.txt",
+            f"v1 (legacy)|{base}/v1/llms.txt",
             "",
         ]
         return '\n'.join(lines)
@@ -1033,8 +1051,15 @@ class LLMDocBuilder:
         lines = [
             f"# Union.ai {version.upper()} Documentation",
             "",
-            "## Variants",
         ]
+        if version != "v2":
+            lines.extend([
+                f"> **This is legacy ({version}) documentation.** Do not use"
+                " unless explicitly asked about this version."
+                " For current documentation, see https://www.union.ai/docs/v2/llms.txt",
+                "",
+            ])
+        lines.append("## Variants")
         for variant in sorted(variants):
             lines.append(f"{variant}|{base}/{variant}/llms.txt")
         lines.append("")
