@@ -1,4 +1,4 @@
-# Integration API documentation generator
+# Plugin API documentation generator
 #
 # Examples:
 #   make -f Makefile.api.plugins PLUGIN=flyteplugins.wandb TITLE="Weights & Biases" NAME=wandb
@@ -9,15 +9,19 @@
 # Required variables:
 #   PLUGIN  - Python import path (e.g., flyteplugins.wandb) used by the parser
 #   TITLE   - The display title for the documentation
-#   NAME    - The folder name under content/api-reference/integrations/ (e.g., wandb)
+#   NAME    - The folder name under the plugins output base directory
 #
 # Optional variables:
 #   INSTALL - pip install specifier (defaults to PLUGIN). Use to add extras,
 #             e.g., "flyteplugins-<PLUGIN>[<EXTRAS>]"
 
-OUTPUT_FOLDER=content/api-reference/integrations/${NAME}
+# Read output base from api-packages.toml config
+PLUGINS_OUTPUT_BASE := $(shell uv run tools/api_config.py plugins_config output_base)
+PLUGINS_DEFAULT_INCLUDE := $(shell uv run tools/api_config.py plugins_config default_include)
+
+OUTPUT_FOLDER=$(PLUGINS_OUTPUT_BASE)/${NAME}
 API_DATA=/tmp/${NAME}.api.yaml
-LANDING_PAGE ?= include/api.plugin.md
+LANDING_PAGE ?= $(PLUGINS_DEFAULT_INCLUDE)
 VENV_DIR=.venv
 SKIP_VENV_SETUP ?= false
 INSTALL ?= ${PLUGIN}
@@ -109,7 +113,7 @@ help:
 	@echo "Required variables:"
 	@echo "  PLUGIN  - Python import path (e.g., flyteplugins.wandb)"
 	@echo "  TITLE   - The display title for the documentation"
-	@echo "  NAME    - The folder name under content/api-reference/integrations/"
+	@echo "  NAME    - The folder name under the plugins output base (from api-packages.toml)"
 	@echo ""
 	@echo "Options:"
 	@echo "  INSTALL=...          - pip install specifier (defaults to PLUGIN). Use for extras."

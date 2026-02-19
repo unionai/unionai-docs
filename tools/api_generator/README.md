@@ -20,7 +20,7 @@ For example, to generate the documentation for the `flyte` package, you can use 
 
    ```bash
    $ source .venv/bin/activate
-   $ make -f Makefile.api.flyte-sdk
+   $ make -f Makefile.api.sdk
    ```
 
 ### Option 2: Manual Setup
@@ -74,9 +74,8 @@ $ make -f Makefile.<type>.<name>
 
 There is a predefined `Makefile` for each API/CLI:
 
-* `Makefile.api.flyte-sdk`
-* `Makefile.api.plugins`
-* `Makefile.cli.flyte`
+* `Makefile.api.sdk` — SDK and CLI docs (config-driven via `api-packages.toml`)
+* `Makefile.api.plugins` — Plugin docs (config-driven via `api-packages.toml`)
 
 ## How it works
 

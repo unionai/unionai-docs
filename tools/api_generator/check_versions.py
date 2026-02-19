@@ -87,24 +87,26 @@ def get_pypi_latest(package: str) -> str | None:
 def check_all(config: dict) -> list[dict]:
     """Check all packages. Returns list of dicts with package info and status."""
     results = []
+    plugins_config = config.get("plugins_config", {})
+    output_base = plugins_config.get("output_base", "content/api-reference/integrations")
 
-    # SDK
-    sdk = config["sdk"]
-    version_file = REPO_ROOT / sdk["version_file"]
-    committed = extract_frontmatter_version(version_file)
-    latest = get_pypi_latest(sdk["package"])
-    results.append({
-        "type": "sdk",
-        "package": sdk["package"],
-        "committed": committed,
-        "latest": latest,
-        "outdated": _is_outdated(committed, latest),
-        "version_file": sdk["version_file"],
-    })
+    # SDKs
+    for sdk in config.get("sdks", []):
+        version_file = REPO_ROOT / sdk["version_file"]
+        committed = extract_frontmatter_version(version_file)
+        latest = get_pypi_latest(sdk["package"])
+        results.append({
+            "type": "sdk",
+            "package": sdk["package"],
+            "committed": committed,
+            "latest": latest,
+            "outdated": _is_outdated(committed, latest),
+            "version_file": sdk["version_file"],
+        })
 
     # Plugins
     for plugin in config.get("plugins", []):
-        version_file = REPO_ROOT / f"content/api-reference/integrations/{plugin['name']}/_index.md"
+        version_file = REPO_ROOT / output_base / plugin["name"] / "_index.md"
         committed = extract_frontmatter_version(version_file)
         latest = get_pypi_latest(plugin["package"])
         results.append({
@@ -117,7 +119,7 @@ def check_all(config: dict) -> list[dict]:
             "committed": committed,
             "latest": latest,
             "outdated": _is_outdated(committed, latest),
-            "version_file": f"content/api-reference/integrations/{plugin['name']}/_index.md",
+            "version_file": f"{output_base}/{plugin['name']}/_index.md",
         })
 
     return results
@@ -144,6 +146,34 @@ def print_results(results: list[dict]) -> None:
         print(f"  {r['package']}: committed={committed} latest={latest} [{status}]")
 
 
+def check_missing_files(config: dict) -> bool:
+    """Check if any generated content files are missing. Returns True if something is missing."""
+    # SDK content
+    for sdk in config.get("sdks", []):
+        output = REPO_ROOT / sdk["output_folder"]
+        for subdir in ("packages", "classes"):
+            if not (output / subdir).is_dir():
+                return True
+
+    # CLI content
+    for cli in config.get("clis", []):
+        if "output_file" in cli:
+            if not (REPO_ROOT / cli["output_file"]).is_file():
+                return True
+        elif "output_dir" in cli:
+            if not (REPO_ROOT / cli["output_dir"]).is_dir():
+                return True
+
+    # Plugin content
+    plugins_config = config.get("plugins_config", {})
+    output_base = plugins_config.get("output_base", "content/api-reference/integrations")
+    for plugin in config.get("plugins", []):
+        if not (REPO_ROOT / output_base / plugin["name"]).is_dir():
+            return True
+
+    return False
+
+
 def regenerate(results: list[dict]) -> None:
     """Invoke existing Makefiles to regenerate outdated docs."""
     for r in results:
@@ -152,7 +182,7 @@ def regenerate(results: list[dict]) -> None:
         if r["type"] == "sdk":
             print(f"\nRegenerating SDK docs ({r['package']})...")
             subprocess.run(
-                ["make", "-f", "Makefile.api.flyte-sdk"],
+                ["make", "-f", "Makefile.api.sdk"],
                 cwd=REPO_ROOT,
                 check=True,
             )
@@ -183,8 +213,9 @@ def main():
     print_results(results)
 
     outdated = [r for r in results if r["outdated"]]
+    missing = check_missing_files(config) if args.update else False
 
-    if not outdated:
+    if not outdated and not missing:
         print("All API docs are up-to-date.")
         return
 
@@ -194,11 +225,33 @@ def main():
         sys.exit(1)
 
     # --update mode
-    print(f"\n{len(outdated)} package(s) have newer versions on PyPI:")
-    for r in outdated:
-        print(f"  {r['package']}: {r['committed']} -> {r['latest']}")
+    if outdated:
+        print(f"\n{len(outdated)} package(s) have newer versions on PyPI:")
+        for r in outdated:
+            print(f"  {r['package']}: {r['committed']} -> {r['latest']}")
+        regenerate(outdated)
+    elif missing:
+        print("\nGenerated content files are missing. Running full regeneration...")
+        subprocess.run(
+            ["make", "-f", "Makefile.api.sdk"],
+            cwd=REPO_ROOT,
+            check=True,
+        )
+        # Regenerate all plugins
+        plugins_config = config.get("plugins_config", {})
+        output_base = plugins_config.get("output_base", "content/api-reference/integrations")
+        for plugin in config.get("plugins", []):
+            if not (REPO_ROOT / output_base / plugin["name"]).is_dir():
+                print(f"\nRegenerating plugin docs ({plugin['package']})...")
+                cmd = [
+                    "make", "-f", "Makefile.api.plugins",
+                    f"PLUGIN={plugin['plugin']}", f"TITLE={plugin['title']}", f"NAME={plugin['name']}",
+                ]
+                if plugin.get("extras"):
+                    extras_str = ",".join(plugin["extras"])
+                    cmd.append(f"INSTALL={plugin['package']}[{extras_str}]")
+                subprocess.run(cmd, cwd=REPO_ROOT, check=True)
 
-    regenerate(outdated)
     print("\nDone. Review and commit the updated docs.")
 
 

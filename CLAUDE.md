@@ -26,9 +26,8 @@ make init-examples                          # Initialize external/unionai-exampl
 make update-examples                        # Update to latest
 
 # API documentation regeneration
-make -f Makefile.api.flyte-sdk              # Flyte SDK API docs
-make -f Makefile.api.plugins                # Plugin API docs
-make -f Makefile.cli.flyte                  # CLI docs
+make -f Makefile.api.sdk                    # SDK API + CLI docs (config-driven)
+make -f Makefile.api.plugins                # Plugin API docs (config-driven)
 
 # Validation
 make check-images                           # Validate image references
