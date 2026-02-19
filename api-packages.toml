@@ -22,7 +22,6 @@ generator_title = "Flytekit SDK"
 include = "include/api.flytekit.md"
 output_folder = "content/api-reference/flytekit-sdk"
 version_file = "content/api-reference/flytekit-sdk/_index.md"
-no_flatten = true
 variants = "+flyte +byoc +selfmanaged +serverless"
 
 [[sdks]]
@@ -34,7 +33,6 @@ generator_title = "Union SDK"
 include = "include/api.union.md"
 output_folder = "content/api-reference/union-sdk"
 version_file = "content/api-reference/union-sdk/_index.md"
-no_flatten = true
 variants = "+byoc +selfmanaged +serverless -flyte"
 
 # === CLIs ===

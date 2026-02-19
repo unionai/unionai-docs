@@ -4,6 +4,7 @@ import json
 import os
 import yaml
 
+from lib.generate.helper import generate_anchor_from_name
 from lib.ptypes import ClassPackageMap, PackageInfo
 
 
@@ -13,6 +14,7 @@ def generate_linkmap_metadata(
     pkg_root: str,
     api_name: str,
     include_short_names: bool = False,
+    flatten: bool = False,
 ):
     # Skip the content root (remove first path component: content/a/b/c -> a/b/c)
     site_root = "/".join(pkg_root.split("/")[1:])
@@ -35,7 +37,10 @@ def generate_linkmap_metadata(
     identifiers_dict = {}
     for pkg in classes:
         for clz in classes[pkg]:
-            url = f"/{site_root}/{pkg}/{clz.split('.')[-1].lower()}/"
+            if flatten:
+                url = f"/{site_root}/{pkg}/#{generate_anchor_from_name(clz)}"
+            else:
+                url = f"/{site_root}/{pkg}/{clz.split('.')[-1].lower()}/"
             # Add fully qualified name
             identifiers_dict[clz] = url
             # Add short name for easier matching in docs (plugins only)
