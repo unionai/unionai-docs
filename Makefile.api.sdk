@@ -1,0 +1,42 @@
+# Config-driven SDK and CLI API doc generator
+#
+# Reads [[sdks]] and [[clis]] from api-packages.toml.
+# Delegates actual generation to Python scripts.
+#
+# Examples:
+#   make -f Makefile.api.sdk                       # Full build with fresh venv
+#   make -f Makefile.api.sdk SKIP_VENV_SETUP=true  # Use current environment
+#   make -f Makefile.api.sdk sdks                  # SDK docs only
+#   make -f Makefile.api.sdk clis                  # CLI docs only
+
+SKIP_VENV_SETUP ?= false
+
+.PHONY: all
+all: sdks clis
+
+.PHONY: sdks
+sdks:
+	@SKIP_VENV_SETUP=$(SKIP_VENV_SETUP) uv run tools/api_sdk_generate.py
+
+.PHONY: clis
+clis:
+	@SKIP_VENV_SETUP=$(SKIP_VENV_SETUP) uv run tools/api_cli_generate.py
+
+.PHONY: clean
+clean:
+	@uv run tools/clean_generated.py
+
+.PHONY: help
+help:
+	@echo "Config-driven SDK and CLI API Doc Generator"
+	@echo ""
+	@echo "Reads [[sdks]] and [[clis]] from api-packages.toml."
+	@echo ""
+	@echo "Targets:"
+	@echo "  all   - Generate SDK and CLI docs (default)"
+	@echo "  sdks  - Generate SDK API docs only"
+	@echo "  clis  - Generate CLI docs only"
+	@echo "  clean - Remove all generated SDK/CLI/plugin content"
+	@echo ""
+	@echo "Options:"
+	@echo "  SKIP_VENV_SETUP=true - Skip automatic venv setup and use current environment"

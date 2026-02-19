@@ -9,11 +9,11 @@
 Check that all generated content files exist in the repository.
 
 Reads api-packages.toml and verifies expected files for:
-  - SDK API docs (packages/ and classes/ under content/api-reference/flyte-sdk/)
-  - CLI docs (content/api-reference/flyte-cli.md)
-  - Plugin API docs (content/api-reference/integrations/{name}/)
-  - Data YAML files (data/{name}.yaml)
-  - Linkmap JSON files (static/{name}-linkmap.json)
+  - SDK API docs (packages/ and classes/ under each SDK's output_folder)
+  - CLI docs (each CLI's output_file)
+  - Plugin API docs (under plugins_config.output_base/{name}/)
+  - Data YAML files (data/{generator_name}.yaml, data/{plugin_name}.yaml)
+  - Linkmap JSON files (static/{generator_name}-linkmap.json, static/{plugin_name}-linkmap.json)
 
 Exit codes: 0 = all present, 1 = missing content detected.
 """
@@ -48,39 +48,52 @@ def check_all(config: dict) -> list[str]:
     errors = []
 
     # --- SDK API docs ---
-    sdk_packages = REPO_ROOT / "content" / "api-reference" / "flyte-sdk" / "packages"
-    sdk_classes = REPO_ROOT / "content" / "api-reference" / "flyte-sdk" / "classes"
+    for sdk in config.get("sdks", []):
+        output_folder = sdk["output_folder"]
+        sdk_packages = REPO_ROOT / output_folder / "packages"
+        sdk_classes = REPO_ROOT / output_folder / "classes"
 
-    if not has_md_files(sdk_packages):
-        errors.append("SDK API packages: no .md files in content/api-reference/flyte-sdk/packages/")
-    if not sdk_classes.is_dir():
-        errors.append("SDK API classes: directory missing: content/api-reference/flyte-sdk/classes/")
+        if not has_md_files(sdk_packages):
+            errors.append(f"SDK API packages: no .md files in {output_folder}/packages/")
+        if not sdk_classes.is_dir():
+            errors.append(f"SDK API classes: directory missing: {output_folder}/classes/")
+
+        # Data YAML
+        gen_name = sdk["generator_name"]
+        yaml_file = REPO_ROOT / "data" / f"{gen_name}.yaml"
+        if not yaml_file.is_file():
+            errors.append(f"Data YAML: missing data/{gen_name}.yaml")
+
+        # Linkmap JSON
+        linkmap_file = REPO_ROOT / "static" / f"{gen_name}-linkmap.json"
+        if not linkmap_file.is_file():
+            errors.append(f"Linkmap: missing static/{gen_name}-linkmap.json")
 
     # --- CLI docs ---
-    cli_doc = REPO_ROOT / "content" / "api-reference" / "flyte-cli.md"
-    if not cli_doc.is_file():
-        errors.append("CLI docs: missing content/api-reference/flyte-cli.md")
+    for cli in config.get("clis", []):
+        cli_file = REPO_ROOT / cli["output_file"]
+        if not cli_file.is_file():
+            errors.append(f"CLI docs: missing {cli['output_file']}")
 
     # --- Plugin API docs ---
+    plugins_config = config.get("plugins_config", {})
+    output_base = plugins_config.get("output_base", "content/api-reference/integrations")
+
     plugins = config.get("plugins", [])
     for plugin in plugins:
         name = plugin["name"]
-        plugin_dir = REPO_ROOT / "content" / "api-reference" / "integrations" / name
+        plugin_dir = REPO_ROOT / output_base / name
         if not plugin_dir.is_dir():
-            errors.append(f"Plugin '{name}': directory missing: content/api-reference/integrations/{name}/")
+            errors.append(f"Plugin '{name}': directory missing: {output_base}/{name}/")
         elif not has_md_files(plugin_dir):
-            errors.append(f"Plugin '{name}': no .md files in content/api-reference/integrations/{name}/")
+            errors.append(f"Plugin '{name}': no .md files in {output_base}/{name}/")
 
-    # --- Data YAML files ---
-    data_names = ["flytesdk"] + [p["name"] for p in plugins]
-    for name in data_names:
+        # Data YAML
         yaml_file = REPO_ROOT / "data" / f"{name}.yaml"
         if not yaml_file.is_file():
             errors.append(f"Data YAML: missing data/{name}.yaml")
 
-    # --- Linkmap JSON files ---
-    linkmap_names = ["flytesdk"] + [p["name"] for p in plugins]
-    for name in linkmap_names:
+        # Linkmap JSON
         linkmap_file = REPO_ROOT / "static" / f"{name}-linkmap.json"
         if not linkmap_file.is_file():
             errors.append(f"Linkmap: missing static/{name}-linkmap.json")

@@ -19,11 +19,7 @@ clean:
 # regenerating via 'make dist'. CI will block the merge (check-generated-content).
 clean-generated: clean
 	rm -rf content/_static/notebooks
-	rm -rf content/api-reference/flyte-sdk/packages content/api-reference/flyte-sdk/classes
-	rm -f content/api-reference/flyte-cli.md
-	rm -rf content/api-reference/integrations/*/
-	rm -f data/*.yaml
-	rm -f static/*-linkmap.json
+	@uv run tools/clean_generated.py
 
 base:
 	@if ! ./scripts/pre-build-checks.sh; then exit 1; fi

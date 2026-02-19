@@ -36,7 +36,7 @@ Hugo merges all `hugo.*.toml` and `config.*.toml` files into a single configurat
 |---|---|
 | `Makefile` | Primary build orchestrator: `make dist`, `make dev`, `make serve`, `make llm-docs`, etc. |
 | `makefile.inc` | Shared Makefile variables (version number) |
-| `Makefile.api.flyte-sdk` | API documentation generation for the Flyte SDK |
+| `Makefile.api.sdk` | Config-driven API documentation generation for SDKs and CLIs |
 | `Makefile.api.plugins` | API documentation generation for Flyte plugins |
 | `build.sh` | Cloudflare Pages build entry point (installs deps, runs `make dist`) |
 | `scripts/` | Shell scripts: serve (`Caddyfile`), pre-build checks, 404 page generation |
