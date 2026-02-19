@@ -16,7 +16,7 @@ spun up for a specific Spark job and torn down after completion.
 To install the plugin, run the following command:
 
 ```bash
-pip install --pre flyteplugins-spark
+pip install flyteplugins-spark
 ```
 
 The following example shows how to configure Spark in a `TaskEnvironment`. Flyte automatically provisions a Spark cluster for each task using this configuration:

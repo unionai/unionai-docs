@@ -42,7 +42,7 @@ ifeq ($(SKIP_VENV_SETUP),false)
 	rm -rf $(VENV_DIR)
 	uv venv $(VENV_DIR)
 	@echo "Installing ${INSTALL}..."
-	uv pip install --python $(VENV_DIR)/bin/python --pre --upgrade '${INSTALL}'
+	uv pip install --python $(VENV_DIR)/bin/python --upgrade '${INSTALL}'
 	@echo "Virtual environment setup complete. Using $(VENV_DIR)/bin/python"
 else
 	@echo "Skipping venv setup (SKIP_VENV_SETUP=true)"

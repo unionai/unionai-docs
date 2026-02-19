@@ -163,7 +163,7 @@ If you'd like to run the `reflect_on_decisions` task instead, comment out the `m
 Then run:
 
 ```
-uv run --prerelease=allow main.py
+uv run main.py
 ```
 
 ## Why Flyte? _(A quick note before you go)_

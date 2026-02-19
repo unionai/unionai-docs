@@ -9,7 +9,7 @@ Flyte v2 is a workflow orchestrator focused on AI development teams to rapidly s
 - **Pure Python**: Workflow orchestration using native Python syntax
 - **Asynchronous Model**: Built for modern async/await paradigms
 - **Performance & Scale**: Optimized for complex AI workloads
-- **Beta Status**: Currently in 2.0 beta with active development
+- **Active Development**: Under active development with regular releases
 
 ## Getting Started
 

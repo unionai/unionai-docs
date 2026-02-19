@@ -21,7 +21,7 @@ Create a virtual environment and install the `flyte` package:
 ```shell
 uv venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-uv pip install --prerelease=allow flyte
+uv pip install flyte
 ```
 
 Verify installation:

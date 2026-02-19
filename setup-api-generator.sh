@@ -15,9 +15,9 @@ fi
 echo "📦 Creating virtual environment..."
 uv venv --clear
 
-# Install flyte beta from PyPI into the virtual environment
-echo "⬇️  Installing latest flyte beta release..."
-uv pip install --pre flyte
+# Install flyte from PyPI into the virtual environment
+echo "⬇️  Installing latest flyte release..."
+uv pip install flyte
 
 # Install additional dependencies needed by the API generator
 echo "📋 Installing API generator dependencies..."

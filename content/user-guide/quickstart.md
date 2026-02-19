@@ -16,10 +16,10 @@ Let's get you up and running with your first workflow.
 
 ## Install the SDK
 
-Install the `flyte` package (currently in beta, so prerelease flag required):
+Install the `flyte` package:
 
 ```shell
-pip install --pre flyte
+pip install flyte
 ```
 
 Verify it worked:

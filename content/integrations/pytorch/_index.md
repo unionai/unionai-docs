@@ -16,7 +16,7 @@ spun up for a specific Pytorch job and torn down after completion.
 To install the plugin, run the following command:
 
 ```shell
-$ pip install --pre flyteplugins-pytorch
+$ pip install flyteplugins-pytorch
 ```
 
 The following example shows how to configure Pytorch in a `TaskEnvironment`. Flyte automatically provisions a Pytorch cluster for each task using this configuration:

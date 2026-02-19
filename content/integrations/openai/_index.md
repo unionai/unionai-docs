@@ -16,5 +16,5 @@ you can build LLM-augmented workflows and agentic applications on Flyte.
 To install the OpenAI plugin, run the following command:
 
 ```bash
-pip install --pre flyteplugins-openai
+pip install flyteplugins-openai
 ```
