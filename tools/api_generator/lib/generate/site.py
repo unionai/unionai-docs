@@ -111,4 +111,5 @@ def generate_site(
             pkg_root=pkg_root,
             api_name=api_name,
             include_short_names=include_short_names,
+            flatten=flatten,
         )
