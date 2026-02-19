@@ -86,7 +86,7 @@ workflows. This pairing allows for:
 
 * **Resource Allocations and Quotas**: By setting quotas for each project-domain pair, {{< key product_name >}} can ensure that workflows do not exceed designated limits, preventing any project or domain from unintentionally impacting resources available to others. Additionally, you can configure unique resource defaults—such as memory, CPU, and storage allocations—for each project-domain pair. This allows each pair to meet the specific requirements of its workflows, which is particularly valuable given the unique needs across different projects. More details [here](../core-concepts/tasks/task-hardware-environment/customizing-task-resources#execution-defaults-and-resource-quotas) and [here](../administration/resources).
 
-* **Configuring Secrets**: {{< key product_name >}} allows you to configure secrets at the project-domain level, ensuring sensitive information, such as API keys and tokens, is accessible only within the specific workflows that need them. This enhances security by isolating secrets according to the project and domain, reducing the risk of unauthorized access across environments. More details [here](managing-secrets).
+* **Configuring Secrets**: {{< key product_name >}} allows you to configure secrets at the project-domain level, ensuring sensitive information, such as API keys and tokens, is accessible only within the specific workflows that need them. This enhances security by isolating secrets according to the project and domain, reducing the risk of unauthorized access across environments. More details [here](./managing-secrets).
 
 ## Domains: Clear Environment Separation
 

@@ -117,7 +117,7 @@ Or if you want a warning:
 
 There are various short codes to generate content or special components (tabs, dropdowns, etc.)
 
-Refer to [**Content Generation**](./shortcodes.md) for more information.
+Refer to [**Content Generation**](./shortcodes) for more information.
 
 ## Python Generated Content
 
