@@ -12,7 +12,7 @@
 SKIP_VENV_SETUP ?= false
 
 .PHONY: all
-all: sdks clis
+all: sdks clis clean-venv
 
 .PHONY: sdks
 sdks:
@@ -21,6 +21,14 @@ sdks:
 .PHONY: clis
 clis:
 	@SKIP_VENV_SETUP=$(SKIP_VENV_SETUP) uv run tools/api_cli_generate.py
+
+.PHONY: clean-venv
+clean-venv:
+ifeq ($(SKIP_VENV_SETUP),true)
+	@true
+else
+	@rm -rf .venv && echo "Cleaned up venv."
+endif
 
 .PHONY: clean
 clean:

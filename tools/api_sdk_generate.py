@@ -122,9 +122,8 @@ def main() -> None:
         run_generator(python, sdk, api_data)
         print(f"Done: {sdk['output_folder']}")
 
-    if not skip_venv and VENV_DIR.exists():
-        shutil.rmtree(VENV_DIR)
-        print("\nCleaned up venv.")
+    # Note: venv is NOT cleaned up here — Makefile.api.sdk handles cleanup
+    # after both sdks and clis targets complete, since clis needs the venv too.
 
 
 if __name__ == "__main__":
