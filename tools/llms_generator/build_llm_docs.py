@@ -138,8 +138,20 @@ class LLMDocBuilder:
             # Keep other links unchanged (absolute paths like /docs/, static files, etc.)
             return match.group(0)
 
+        # Protect inline code spans from link processing by replacing them with placeholders
+        code_spans = []
+        def protect_code_span(match):
+            code_spans.append(match.group(0))
+            return f'\x00CODE{len(code_spans) - 1}\x00'
+        content = re.sub(r'`[^`]+`', protect_code_span, content)
+
         # Process markdown links
         content = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', replace_internal_link, content)
+
+        # Restore code spans
+        for i, span in enumerate(code_spans):
+            content = content.replace(f'\x00CODE{i}\x00', span)
+
         return content
 
     def resolve_hierarchical_title(self, url: str, current_file_path: Path, current_hierarchy: List[str], link_text: str) -> str:
