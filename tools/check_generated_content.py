@@ -55,8 +55,10 @@ def check_all(config: dict) -> list[str]:
 
         if not has_md_files(sdk_packages):
             errors.append(f"SDK API packages: no .md files in {output_folder}/packages/")
-        if not sdk_classes.is_dir():
-            errors.append(f"SDK API classes: directory missing: {output_folder}/classes/")
+        # classes/ is a directory in no-flatten mode, a single .md file in flatten mode
+        sdk_classes_file = REPO_ROOT / output_folder / "classes.md"
+        if not sdk_classes.is_dir() and not sdk_classes_file.is_file():
+            errors.append(f"SDK API classes: missing {output_folder}/classes/ or {output_folder}/classes.md")
 
         # Data YAML
         gen_name = sdk["generator_name"]
