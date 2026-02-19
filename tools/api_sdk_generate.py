@@ -89,7 +89,7 @@ def run_generator(python: Path, sdk: dict, api_data: str) -> None:
     if sdk.get("no_flatten"):
         cmd.extend(["--no-flatten", str(sdk["no_flatten"])])
     if sdk.get("variants"):
-        cmd.extend(["--variants"] + sdk["variants"].split())
+        cmd.extend(["--variants", sdk["variants"]])
 
     print(f"Generating docs -> {output_folder}")
     subprocess.run(cmd, cwd=REPO_ROOT, check=True)

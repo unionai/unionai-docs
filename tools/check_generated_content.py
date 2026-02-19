@@ -85,6 +85,7 @@ def check_all(config: dict) -> list[str]:
     # --- Plugin API docs ---
     plugins_config = config.get("plugins_config", {})
     output_base = plugins_config.get("output_base", "content/api-reference/integrations")
+    check_plugin_linkmaps = plugins_config.get("check_linkmaps", True)
 
     plugins = config.get("plugins", [])
     for plugin in plugins:
@@ -95,15 +96,16 @@ def check_all(config: dict) -> list[str]:
         elif not has_md_files(plugin_dir):
             errors.append(f"Plugin '{name}': no .md files in {output_base}/{name}/")
 
-        # Data YAML
-        yaml_file = REPO_ROOT / "data" / f"{name}.yaml"
-        if not yaml_file.is_file():
-            errors.append(f"Data YAML: missing data/{name}.yaml")
+        if check_plugin_linkmaps:
+            # Data YAML
+            yaml_file = REPO_ROOT / "data" / f"{name}.yaml"
+            if not yaml_file.is_file():
+                errors.append(f"Data YAML: missing data/{name}.yaml")
 
-        # Linkmap JSON
-        linkmap_file = REPO_ROOT / "static" / f"{name}-linkmap.json"
-        if not linkmap_file.is_file():
-            errors.append(f"Linkmap: missing static/{name}-linkmap.json")
+            # Linkmap JSON
+            linkmap_file = REPO_ROOT / "static" / f"{name}-linkmap.json"
+            if not linkmap_file.is_file():
+                errors.append(f"Linkmap: missing static/{name}-linkmap.json")
 
     return errors
 

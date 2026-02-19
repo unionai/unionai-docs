@@ -70,12 +70,8 @@ ifeq ($(SKIP_VENV_SETUP),false)
 		--include ${LANDING_PAGE} \
 		--no-flatten true \
 		--short-names \
-		--variants \
-			+flyte \
-			+byoc \
-			+selfmanaged \
-			+serverless \
-		--output "${OUTPUT_FOLDER}"
+		--variants "+flyte +byoc +selfmanaged +serverless" \
+		--output_dir "${OUTPUT_FOLDER}"
 else
 	tools/api_generator/generate \
 		--name ${NAME} \
@@ -84,12 +80,8 @@ else
 		--include ${LANDING_PAGE} \
 		--no-flatten true \
 		--short-names \
-		--variants \
-			+flyte \
-			+byoc \
-			+selfmanaged \
-			+serverless \
-		--output "${OUTPUT_FOLDER}"
+		--variants "+flyte +byoc +selfmanaged +serverless" \
+		--output_dir "${OUTPUT_FOLDER}"
 endif
 
 .PHONY: clean_output_folder
