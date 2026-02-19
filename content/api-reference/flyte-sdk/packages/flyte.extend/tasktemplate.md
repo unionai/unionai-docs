@@ -1,6 +1,6 @@
 ---
 title: TaskTemplate
-version: 2.0.0b60
+version: 2.0.0
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

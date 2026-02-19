@@ -76,7 +76,7 @@ In `llms-full.txt`, all internal `page.md` links are converted to hierarchical b
 
 * Cross-page: `[Resources](../resources/page.md)` becomes `**Configure tasks > Resources**`
 * Same-page anchor: `[Image building](#image-building)` becomes `**Container images > Image building**`
-* External links (http/https) are preserved unchanged.
+* External links (`http`/`https`) are preserved unchanged.
 
 This makes the file self-contained with no broken references.
 
