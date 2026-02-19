@@ -87,24 +87,26 @@ def get_pypi_latest(package: str) -> str | None:
 def check_all(config: dict) -> list[dict]:
     """Check all packages. Returns list of dicts with package info and status."""
     results = []
+    plugins_config = config.get("plugins_config", {})
+    output_base = plugins_config.get("output_base", "content/api-reference/integrations")
 
-    # SDK
-    sdk = config["sdk"]
-    version_file = REPO_ROOT / sdk["version_file"]
-    committed = extract_frontmatter_version(version_file)
-    latest = get_pypi_latest(sdk["package"])
-    results.append({
-        "type": "sdk",
-        "package": sdk["package"],
-        "committed": committed,
-        "latest": latest,
-        "outdated": _is_outdated(committed, latest),
-        "version_file": sdk["version_file"],
-    })
+    # SDKs
+    for sdk in config.get("sdks", []):
+        version_file = REPO_ROOT / sdk["version_file"]
+        committed = extract_frontmatter_version(version_file)
+        latest = get_pypi_latest(sdk["package"])
+        results.append({
+            "type": "sdk",
+            "package": sdk["package"],
+            "committed": committed,
+            "latest": latest,
+            "outdated": _is_outdated(committed, latest),
+            "version_file": sdk["version_file"],
+        })
 
     # Plugins
     for plugin in config.get("plugins", []):
-        version_file = REPO_ROOT / f"content/api-reference/integrations/{plugin['name']}/_index.md"
+        version_file = REPO_ROOT / output_base / plugin["name"] / "_index.md"
         committed = extract_frontmatter_version(version_file)
         latest = get_pypi_latest(plugin["package"])
         results.append({
@@ -117,7 +119,7 @@ def check_all(config: dict) -> list[dict]:
             "committed": committed,
             "latest": latest,
             "outdated": _is_outdated(committed, latest),
-            "version_file": f"content/api-reference/integrations/{plugin['name']}/_index.md",
+            "version_file": f"{output_base}/{plugin['name']}/_index.md",
         })
 
     return results
@@ -152,7 +154,7 @@ def regenerate(results: list[dict]) -> None:
         if r["type"] == "sdk":
             print(f"\nRegenerating SDK docs ({r['package']})...")
             subprocess.run(
-                ["make", "-f", "Makefile.api.flyte-sdk"],
+                ["make", "-f", "Makefile.api.sdk"],
                 cwd=REPO_ROOT,
                 check=True,
             )

@@ -1,84 +1,342 @@
-# API documentation package registry
+# API documentation package registry (v1)
 #
 # Lists all packages whose API docs we generate.
-# Used by tools/api_generator/check_versions.py to detect
-# when committed docs are outdated relative to PyPI releases.
+# Used by tools throughout the build pipeline.
 #
-# To add a new plugin, add a [[plugins]] entry below.
+# Sections:
+#   [[sdks]]          - SDK packages (v1 has flytekit + union)
+#   [[clis]]          - CLI documentation entries
+#   [plugins_config]  - Shared plugin settings (output_base, default_include)
+#   [[plugins]]       - Plugin packages
 #
-# Fields:
-#   package  - PyPI package name (for version checks and pip install)
-#   plugin   - Python import path (for the API parser, passed as PLUGIN to Makefile)
-#   title    - Display title for the documentation
-#   name     - Folder name under content/api-reference/integrations/
-#   extras   - (optional) pip extras to install, e.g. ["bigquery", "snowflake"]
+# See api-packages.toml on main (v2) for full field documentation.
 
-[sdk]
-package = "flyte"
-version_file = "content/api-reference/flyte-sdk/_index.md"
+# === SDK packages ===
+
+[[sdks]]
+package = "flytekit"
+install = "flytekit"
+parser_package = "flytekit"
+generator_name = "flytekit"
+generator_title = "Flytekit SDK"
+include = "include/api.flytekit.md"
+output_folder = "content/api-reference/flytekit-sdk"
+version_file = "content/api-reference/flytekit-sdk/_index.md"
+no_flatten = true
+variants = "+flyte +byoc +selfmanaged +serverless"
+
+[[sdks]]
+package = "union"
+install = "union"
+parser_package = "union"
+generator_name = "union"
+generator_title = "Union SDK"
+include = "include/api.union.md"
+output_folder = "content/api-reference/union-sdk"
+version_file = "content/api-reference/union-sdk/_index.md"
+no_flatten = true
+variants = "+byoc +selfmanaged +serverless -flyte"
+
+# === CLIs ===
+
+[[clis]]
+name = "flytectl"
+type = "go"
+binary = "flytectl"
+include = "include/cli.flytectl.md"
+output_dir = "content/api-reference/flytectl-cli"
+
+[[clis]]
+name = "uctl"
+type = "go"
+binary = "uctl"
+include = "include/cli.uctl.md"
+output_dir = "content/api-reference/uctl-cli"
+
+# === Plugins ===
+
+[plugins_config]
+output_base = "content/api-reference/plugins"
+default_include = "include/api.plugin.md"
 
 [[plugins]]
-package = "flyteplugins-dask"
-plugin = "flyteplugins.dask"
+package = "flytekitplugins-airflow"
+plugin = "flytekitplugins.airflow"
+title = "Apache Airflow"
+name = "airflow"
+
+[[plugins]]
+package = "flytekitplugins-async-fsspec"
+plugin = "flytekitplugins.async_fsspec"
+title = "Async FSSpec"
+name = "async-fsspec"
+
+[[plugins]]
+package = "flytekitplugins-athena"
+plugin = "flytekitplugins.athena"
+title = "AWS Athena"
+name = "aws-athena"
+
+[[plugins]]
+package = "flytekitplugins-awsbatch"
+plugin = "flytekitplugins.awsbatch"
+title = "AWS Batch"
+name = "aws-batch"
+
+[[plugins]]
+package = "flytekitplugins-awssagemaker"
+plugin = "flytekitplugins.awssagemaker"
+title = "AWS SageMaker"
+name = "aws-sagemaker"
+
+[[plugins]]
+package = "flytekitplugins-bigquery"
+plugin = "flytekitplugins.bigquery"
+title = "BigQuery"
+name = "bigquery"
+
+[[plugins]]
+package = "flytekitplugins-cometml"
+plugin = "flytekitplugins.cometml"
+title = "Comet ML"
+name = "comet-ml"
+
+[[plugins]]
+package = "flytekitplugins-dask"
+plugin = "flytekitplugins.dask"
 title = "Dask"
 name = "dask"
 
 [[plugins]]
-package = "flyteplugins-openai"
-plugin = "flyteplugins.openai"
+package = "flytekitplugins-data-fsspec"
+plugin = "flytekitplugins.data_fsspec"
+title = "FSSpec"
+name = "data-fsspec"
+
+[[plugins]]
+package = "flytekitplugins-dbt"
+plugin = "flytekitplugins.dbt"
+title = "DBT"
+name = "dbt"
+
+[[plugins]]
+package = "flytekitplugins-deck-standard"
+plugin = "flytekitplugins.deck"
+title = "Deck"
+name = "deck-standard"
+
+[[plugins]]
+package = "flytekitplugins-dolt"
+plugin = "flytekitplugins.dolt"
+title = "Dolt"
+name = "dolt"
+
+[[plugins]]
+package = "flytekitplugins-duckdb"
+plugin = "flytekitplugins.duckdb"
+title = "DuckDB"
+name = "duckdb"
+
+[[plugins]]
+package = "flytekitplugins-envd"
+plugin = "flytekitplugins.envd"
+title = "Envd"
+name = "envd"
+
+[[plugins]]
+package = "flytekitplugins-flyteinteractive"
+plugin = "flytekitplugins.flyteinteractive"
+title = "Flyte Interactive"
+name = "flyteinteractive"
+
+[[plugins]]
+package = "flytekitplugins-great-expectations"
+plugin = "flytekitplugins.great_expectations"
+title = "Great Expectations"
+name = "greatexpectations"
+
+[[plugins]]
+package = "flytekitplugins-hive"
+plugin = "flytekitplugins.hive"
+title = "Hive"
+name = "hive"
+
+[[plugins]]
+package = "flytekitplugins-huggingface"
+plugin = "flytekitplugins.huggingface"
+title = "Hugging Face"
+name = "huggingface"
+
+[[plugins]]
+package = "flytekitplugins-identity-aware-proxy"
+plugin = "flytekitplugins.identity_aware_proxy"
+title = "Google IAP"
+name = "identity-aware-proxy"
+
+[[plugins]]
+package = "flytekitplugins-inference"
+plugin = "flytekitplugins.inference"
+title = "Inference"
+name = "inference"
+
+[[plugins]]
+package = "flytekitplugins-pod"
+plugin = "flytekitplugins.pod"
+title = "Kubernetes Pod"
+name = "k8s-pod"
+
+[[plugins]]
+package = "flytekitplugins-kfmpi"
+plugin = "flytekitplugins.kfmpi"
+title = "Kubeflow MPI"
+name = "kf-mpi"
+
+[[plugins]]
+package = "flytekitplugins-kfpytorch"
+plugin = "flytekitplugins.kfpytorch"
+title = "Kubeflow PyTorch"
+name = "kf-pytorch"
+
+[[plugins]]
+package = "flytekitplugins-kftensorflow"
+plugin = "flytekitplugins.kftensorflow"
+title = "Kubeflow TensorFlow"
+name = "kf-tensorflow"
+
+[[plugins]]
+package = "flytekitplugins-memray"
+plugin = "flytekitplugins.memray"
+title = "Memray Profiling"
+name = "memray"
+
+[[plugins]]
+package = "flytekitplugins-mlflow"
+plugin = "flytekitplugins.mlflow"
+title = "MLflow"
+name = "mlflow"
+
+[[plugins]]
+package = "flytekitplugins-mmcloud"
+plugin = "flytekitplugins.mmcloud"
+title = "Memory Machine Cloud"
+name = "mmcloud"
+
+[[plugins]]
+package = "flytekitplugins-modin"
+plugin = "flytekitplugins.modin"
+title = "Modin"
+name = "modin"
+
+[[plugins]]
+package = "flytekitplugins-neptune"
+plugin = "flytekitplugins.neptune"
+title = "Neptune"
+name = "neptune"
+
+[[plugins]]
+package = "flytekitplugins-omegaconf"
+plugin = "flytekitplugins.omegaconf"
+title = "OmegaConf"
+name = "omegaconf"
+
+[[plugins]]
+package = "flytekitplugins-onnxpytorch"
+plugin = "flytekitplugins.onnxpytorch"
+title = "ONNX PyTorch"
+name = "onnx-pytorch"
+
+[[plugins]]
+package = "flytekitplugins-onnxscikitlearn"
+plugin = "flytekitplugins.onnxscikitlearn"
+title = "ONNX ScikitLearn"
+name = "onnx-scikitlearn"
+
+[[plugins]]
+package = "flytekitplugins-onnxtensorflow"
+plugin = "flytekitplugins.onnxtensorflow"
+title = "ONNX TensorFlow"
+name = "onnx-tensorflow"
+
+[[plugins]]
+package = "flytekitplugins-openai"
+plugin = "flytekitplugins.openai"
 title = "OpenAI"
 name = "openai"
 
 [[plugins]]
-package = "flyteplugins-polars"
-plugin = "flyteplugins.polars"
+package = "flytekitplugins-optuna"
+plugin = "flytekitplugins.optuna"
+title = "Optuna"
+name = "optuna"
+
+[[plugins]]
+package = "flytekitplugins-pandera"
+plugin = "flytekitplugins.pandera"
+title = "Pandera"
+name = "pandera"
+
+[[plugins]]
+package = "flytekitplugins-papermill"
+plugin = "flytekitplugins.papermill"
+title = "Papermill"
+name = "papermill"
+
+[[plugins]]
+package = "flytekitplugins-perian"
+plugin = "flytekitplugins.perian"
+title = "Perian Job Platform"
+name = "perian"
+
+[[plugins]]
+package = "flytekitplugins-polars"
+plugin = "flytekitplugins.polars"
 title = "Polars"
 name = "polars"
 
 [[plugins]]
-package = "flyteplugins-pytorch"
-plugin = "flyteplugins.pytorch"
-title = "PyTorch"
-name = "pytorch"
-
-[[plugins]]
-package = "flyteplugins-ray"
-plugin = "flyteplugins.ray"
+package = "flytekitplugins-ray"
+plugin = "flytekitplugins.ray"
 title = "Ray"
 name = "ray"
 
 [[plugins]]
-package = "flyteplugins-sglang"
-plugin = "flyteplugins.sglang"
-title = "SGLang"
-name = "sglang"
+package = "flytekitplugins-slurm"
+plugin = "flytekitplugins.slurm"
+title = "Slurm"
+name = "slurm"
 
 [[plugins]]
-package = "flyteplugins-spark"
-plugin = "flyteplugins.spark"
+package = "flytekitplugins-snowflake"
+plugin = "flytekitplugins.snowflake"
+title = "Snowflake"
+name = "snowflake"
+
+[[plugins]]
+package = "flytekitplugins-spark"
+plugin = "flytekitplugins.spark"
 title = "Spark"
 name = "spark"
 
 [[plugins]]
-package = "flyteplugins-union"
-plugin = "flyteplugins.union"
-title = "Union"
-name = "union"
+package = "flytekitplugins-sqlalchemy"
+plugin = "flytekitplugins.sqlalchemy"
+title = "SQLAlchemy"
+name = "sqlalchemy"
 
 [[plugins]]
-package = "flyteplugins-vllm"
-plugin = "flyteplugins.vllm"
-title = "vLLM"
-name = "vllm"
+package = "flytekitplugins-vaex"
+plugin = "flytekitplugins.vaex"
+title = "Vaex"
+name = "vaex"
 
 [[plugins]]
-package = "flyteplugins-wandb"
-plugin = "flyteplugins.wandb"
+package = "flytekitplugins-wandb"
+plugin = "flytekitplugins.wandb"
 title = "Weights & Biases"
 name = "wandb"
 
 [[plugins]]
-package = "flyteplugins-snowflake"
-plugin = "flyteplugins.snowflake"
-title = "Snowflake"
-name = "snowflake"
+package = "flytekitplugins-whylogs"
+plugin = "flytekitplugins.whylogs"
+title = "whylogs"
+name = "whylogs"

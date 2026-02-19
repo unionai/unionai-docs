@@ -19,11 +19,7 @@ clean:
 # regenerating via 'make dist'. CI will block the merge (check-generated-content).
 clean-generated: clean
 	rm -rf content/_static/notebooks
-	rm -rf content/api-reference/flyte-sdk/packages content/api-reference/flyte-sdk/classes
-	rm -f content/api-reference/flyte-cli.md
-	rm -rf content/api-reference/integrations/*/
-	rm -f data/*.yaml
-	rm -f static/*-linkmap.json
+	@uv run tools/clean_generated.py
 
 base:
 	@if ! ./scripts/pre-build-checks.sh; then exit 1; fi
@@ -165,13 +161,17 @@ check-links:
 	fi
 
 check-generated-content:
-	@echo "Skipped on v1 (v2-specific)."
+	@uv run tools/check_generated_content.py
 
 check-api-docs:
-	@echo "Skipped on v1 (v2-specific)."
+	@uv run tools/api_generator/check_versions.py --check
 
 check-llm-bundle-notes:
-	@echo "Skipped on v1 (v2-specific)."
+	@echo "Skipped on v1 (v2-specific shortcode)."
 
 update-api-docs:
-	@echo "Skipped on v1 (API docs are frozen, flytekit-based)."
+	@if command -v uv >/dev/null 2>&1; then \
+		uv run tools/api_generator/check_versions.py --update; \
+	else \
+		echo "uv not available, skipping API docs update (using committed docs)"; \
+	fi
