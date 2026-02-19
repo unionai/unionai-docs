@@ -15,7 +15,7 @@
 
 [[sdks]]
 package = "flytekit"
-install = "flytekit"
+install = "flytekit pandas numpy scikit-learn torch tensorflow keras pydantic sqlalchemy pyarrow prometheus-client 'httpx<1' snowflake-connector-python google-cloud-bigquery google-cloud-bigquery-storage"
 parser_package = "flytekit"
 generator_name = "flytekit"
 generator_title = "Flytekit SDK"
@@ -58,6 +58,7 @@ output_dir = "content/api-reference/uctl-cli"
 [plugins_config]
 output_base = "content/api-reference/plugins"
 default_include = "include/api.plugin.md"
+check_linkmaps = false  # v1 plugins don't have linkmap/data files (can't regenerate all plugins)
 
 [[plugins]]
 package = "flytekitplugins-airflow"
@@ -84,12 +85,6 @@ title = "AWS Batch"
 name = "aws-batch"
 
 [[plugins]]
-package = "flytekitplugins-awssagemaker"
-plugin = "flytekitplugins.awssagemaker"
-title = "AWS SageMaker"
-name = "aws-sagemaker"
-
-[[plugins]]
 package = "flytekitplugins-bigquery"
 plugin = "flytekitplugins.bigquery"
 title = "BigQuery"
@@ -108,28 +103,10 @@ title = "Dask"
 name = "dask"
 
 [[plugins]]
-package = "flytekitplugins-data-fsspec"
-plugin = "flytekitplugins.data_fsspec"
-title = "FSSpec"
-name = "data-fsspec"
-
-[[plugins]]
 package = "flytekitplugins-dbt"
 plugin = "flytekitplugins.dbt"
 title = "DBT"
 name = "dbt"
-
-[[plugins]]
-package = "flytekitplugins-deck-standard"
-plugin = "flytekitplugins.deck"
-title = "Deck"
-name = "deck-standard"
-
-[[plugins]]
-package = "flytekitplugins-dolt"
-plugin = "flytekitplugins.dolt"
-title = "Dolt"
-name = "dolt"
 
 [[plugins]]
 package = "flytekitplugins-duckdb"
@@ -222,12 +199,6 @@ title = "Memory Machine Cloud"
 name = "mmcloud"
 
 [[plugins]]
-package = "flytekitplugins-modin"
-plugin = "flytekitplugins.modin"
-title = "Modin"
-name = "modin"
-
-[[plugins]]
 package = "flytekitplugins-neptune"
 plugin = "flytekitplugins.neptune"
 title = "Neptune"
@@ -240,22 +211,10 @@ title = "OmegaConf"
 name = "omegaconf"
 
 [[plugins]]
-package = "flytekitplugins-onnxpytorch"
-plugin = "flytekitplugins.onnxpytorch"
-title = "ONNX PyTorch"
-name = "onnx-pytorch"
-
-[[plugins]]
 package = "flytekitplugins-onnxscikitlearn"
 plugin = "flytekitplugins.onnxscikitlearn"
 title = "ONNX ScikitLearn"
 name = "onnx-scikitlearn"
-
-[[plugins]]
-package = "flytekitplugins-onnxtensorflow"
-plugin = "flytekitplugins.onnxtensorflow"
-title = "ONNX TensorFlow"
-name = "onnx-tensorflow"
 
 [[plugins]]
 package = "flytekitplugins-openai"
@@ -322,12 +281,6 @@ package = "flytekitplugins-sqlalchemy"
 plugin = "flytekitplugins.sqlalchemy"
 title = "SQLAlchemy"
 name = "sqlalchemy"
-
-[[plugins]]
-package = "flytekitplugins-vaex"
-plugin = "flytekitplugins.vaex"
-title = "Vaex"
-name = "vaex"
 
 [[plugins]]
 package = "flytekitplugins-wandb"

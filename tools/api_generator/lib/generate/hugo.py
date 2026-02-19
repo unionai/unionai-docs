@@ -7,9 +7,12 @@ version = "0.0.0"
 variants = ""
 
 
-def set_variants(v: List[str]):
+def set_variants(v):
     global variants
-    variants = " ".join(v)
+    if isinstance(v, list):
+        variants = " ".join(v)
+    else:
+        variants = v or ""
 
 
 def set_version(v: str):

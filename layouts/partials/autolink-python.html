@@ -10,13 +10,10 @@
 {{- if eq $lang "python" -}}
     {{- /* Load and merge all API data sources */ -}}
     {{- $flyteapi := dict "identifiers" (dict) "methods" (dict) "packages" (dict) -}}
-    {{- with site.Data.flytesdk -}}
+    {{- with site.Data.flytekit -}}
         {{- $flyteapi = merge $flyteapi (dict "identifiers" (.identifiers | default dict) "methods" (.methods | default dict) "packages" (.packages | default dict)) -}}
     {{- end -}}
-    {{- with site.Data.wandb -}}
-        {{- $flyteapi = merge $flyteapi (dict "identifiers" (merge $flyteapi.identifiers (.identifiers | default dict)) "methods" (merge $flyteapi.methods (.methods | default dict)) "packages" (merge $flyteapi.packages (.packages | default dict))) -}}
-    {{- end -}}
-    {{- with site.Data.snowflake -}}
+    {{- with site.Data.union -}}
         {{- $flyteapi = merge $flyteapi (dict "identifiers" (merge $flyteapi.identifiers (.identifiers | default dict)) "methods" (merge $flyteapi.methods (.methods | default dict)) "packages" (merge $flyteapi.packages (.packages | default dict))) -}}
     {{- end -}}
 

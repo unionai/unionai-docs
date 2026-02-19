@@ -176,17 +176,21 @@ def check_missing_files(config: dict) -> bool:
 
 def regenerate(results: list[dict]) -> None:
     """Invoke existing Makefiles to regenerate outdated docs."""
+    # Makefile.api.sdk regenerates ALL SDKs/CLIs in one pass, so only call once
+    has_outdated_sdk = any(r["outdated"] and r["type"] == "sdk" for r in results)
+    if has_outdated_sdk:
+        outdated_sdks = [r["package"] for r in results if r["outdated"] and r["type"] == "sdk"]
+        print(f"\nRegenerating SDK docs ({', '.join(outdated_sdks)})...")
+        subprocess.run(
+            ["make", "-f", "Makefile.api.sdk", "sdks"],
+            cwd=REPO_ROOT,
+            check=True,
+        )
+
     for r in results:
         if not r["outdated"]:
             continue
-        if r["type"] == "sdk":
-            print(f"\nRegenerating SDK docs ({r['package']})...")
-            subprocess.run(
-                ["make", "-f", "Makefile.api.sdk"],
-                cwd=REPO_ROOT,
-                check=True,
-            )
-        elif r["type"] == "plugin":
+        if r["type"] == "plugin":
             print(f"\nRegenerating plugin docs ({r['package']})...")
             cmd = [
                 "make", "-f", "Makefile.api.plugins",
@@ -233,7 +237,7 @@ def main():
     elif missing:
         print("\nGenerated content files are missing. Running full regeneration...")
         subprocess.run(
-            ["make", "-f", "Makefile.api.sdk"],
+            ["make", "-f", "Makefile.api.sdk", "sdks"],
             cwd=REPO_ROOT,
             check=True,
         )

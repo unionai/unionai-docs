@@ -42,7 +42,7 @@ ifeq ($(SKIP_VENV_SETUP),false)
 	rm -rf $(VENV_DIR)
 	uv venv $(VENV_DIR)
 	@echo "Installing ${INSTALL}..."
-	uv pip install --python $(VENV_DIR)/bin/python --pre --upgrade '${INSTALL}'
+	uv pip install --python $(VENV_DIR)/bin/python --upgrade '${INSTALL}'
 	@echo "Virtual environment setup complete. Using $(VENV_DIR)/bin/python"
 else
 	@echo "Skipping venv setup (SKIP_VENV_SETUP=true)"
@@ -70,12 +70,8 @@ ifeq ($(SKIP_VENV_SETUP),false)
 		--include ${LANDING_PAGE} \
 		--no-flatten true \
 		--short-names \
-		--variants \
-			+flyte \
-			+byoc \
-			+selfmanaged \
-			+serverless \
-		--output "${OUTPUT_FOLDER}"
+		--variants "+flyte +byoc +selfmanaged +serverless" \
+		--output_dir "${OUTPUT_FOLDER}"
 else
 	tools/api_generator/generate \
 		--name ${NAME} \
@@ -84,12 +80,8 @@ else
 		--include ${LANDING_PAGE} \
 		--no-flatten true \
 		--short-names \
-		--variants \
-			+flyte \
-			+byoc \
-			+selfmanaged \
-			+serverless \
-		--output "${OUTPUT_FOLDER}"
+		--variants "+flyte +byoc +selfmanaged +serverless" \
+		--output_dir "${OUTPUT_FOLDER}"
 endif
 
 .PHONY: clean_output_folder

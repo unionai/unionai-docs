@@ -16,6 +16,7 @@ Respects SKIP_VENV_SETUP=true env var to use the current Python instead.
 """
 
 import os
+import shlex
 import shutil
 import subprocess
 import sys
@@ -41,11 +42,13 @@ def setup_venv(install_spec: str) -> None:
     if VENV_DIR.exists():
         shutil.rmtree(VENV_DIR)
     subprocess.run(["uv", "venv", str(VENV_DIR)], check=True)
+    # install_spec may contain multiple space-separated packages (with shell quoting)
+    packages = shlex.split(install_spec)
     print(f"Installing {install_spec}...")
     subprocess.run([
         "uv", "pip", "install",
         "--python", str(VENV_DIR / "bin" / "python"),
-        "--pre", "--upgrade", install_spec,
+        "--upgrade", *packages,
     ], check=True)
 
 
@@ -89,7 +92,7 @@ def run_generator(python: Path, sdk: dict, api_data: str) -> None:
     if sdk.get("no_flatten"):
         cmd.extend(["--no-flatten", str(sdk["no_flatten"])])
     if sdk.get("variants"):
-        cmd.extend(["--variants"] + sdk["variants"].split())
+        cmd.extend(["--variants", sdk["variants"]])
 
     print(f"Generating docs -> {output_folder}")
     subprocess.run(cmd, cwd=REPO_ROOT, check=True)

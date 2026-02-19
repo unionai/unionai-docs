@@ -18,7 +18,8 @@ if ! command -v uv > /dev/null 2>&1; then
     exit 1
 fi
 
-uv pip install jupyter htmltabletomd --quiet
+# Dependencies (jupyter, htmltabletomd) are provided inline via `uv run --with`
+# in the commands below, so no separate install step is needed.
 
 declare content
 content=$(find content -name "*.md" -exec sh -c 'head -n 10 "$1" | grep -l "^jupyter_notebook:" "$1"' sh {} \;)
@@ -105,7 +106,7 @@ for file in $content; do
         cp -R "$notebook_dir/images/"* "$output_dir/images/"
     fi
 
-    uv run jupyter nbconvert --to markdown ".$notebook" --output-dir "$output_dir" --output "$(basename "$file" .md).gen"
+    uv run --with jupyter jupyter nbconvert --to markdown ".$notebook" --output-dir "$output_dir" --output "$(basename "$file" .md).gen"
 
     # Save the front matter from the original file and append the new content
     front_matter=$(sed -n '/^---$/,/^---$/p' "$file")
@@ -130,7 +131,7 @@ EOF
     echo "" >> "$file.new"
     cat "$tmp_file" \
         | sed -e "s#\($(basename "$file" .md).gen_files\)#./\1#" \
-        | NOTEBOOK_LINK="$nb_repo_link" uv run python3 tools/jupyter_generator/markdown_cleanup.py \
+        | NOTEBOOK_LINK="$nb_repo_link" uv run --with htmltabletomd python3 tools/jupyter_generator/markdown_cleanup.py \
         >> "$file.new"
 
     # Replace original file and clean up
