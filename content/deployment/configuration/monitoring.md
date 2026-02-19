@@ -148,6 +148,34 @@ spec:
 
 Replace `<namespace>` with the namespace where the data plane is installed (default: `union`).
 
+### Excluding Union-internal metrics
+
+The data plane deploys an internal `union-features` Prometheus instance that powers Task Level Monitoring and cost tracking. If your Prometheus Operator uses a broad or empty `serviceMonitorSelector`, it may inadvertently scrape the internal ServiceMonitors and PodMonitors.
+
+To prevent this, configure your Prometheus operator with a `NotIn` selector that excludes the `union-features` group:
+
+```yaml
+# In your Prometheus CR or kube-prometheus-stack values
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelector:
+      matchExpressions:
+        - key: platform.union.ai/prometheus-group
+          operator: NotIn
+          values: ["union-features"]
+    podMonitorSelector:
+      matchExpressions:
+        - key: platform.union.ai/prometheus-group
+          operator: NotIn
+          values: ["union-features"]
+```
+
+The `NotIn` operator matches resources where the label is **absent** or has any value other than `union-features`. This safely includes your own ServiceMonitors, the Union `union-services` monitors, and any other monitors in the cluster, while excluding the internal Union features stack.
+
+{{< note >}}
+If you are running both the data plane and control plane in the same cluster, this selector also covers control plane ServiceMonitors, since they carry the `union-services` label (not `union-features`).
+{{< /note >}}
+
 ## Alertmanager
 
 Alertmanager is disabled by default. To enable it and route alerts to a receiver:
