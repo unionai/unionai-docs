@@ -18,6 +18,7 @@ The Flyte 2 SDK source code is available on [GitHub](https://github.com/flyteorg
 You are welcome to take a look, [download the package](https://pypi.org/project/flyte/#history) and try running code locally.
 
 The Flyte 2 backend is not yet available as open source, (but it will be soon!)
+To run Flyte 2 code now you can apply for a [beta preview of the Union 2 backend](https://www.union.ai/beta).
 
 When the Flyte 2 backend is released we will roll out a full contributor program just as we have for Flyte 1.
 
