@@ -13,7 +13,7 @@ vLLM is a high-performance library for serving large language models (LLMs). Fly
 First, install the vLLM plugin:
 
 ```bash
-pip install --pre flyteplugins-vllm
+pip install flyteplugins-vllm
 ```
 
 ## Basic vLLM app

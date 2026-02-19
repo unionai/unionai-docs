@@ -103,7 +103,7 @@ Prepare the runtime environment for execution
 
 
 ```python
-!uv pip install --no-cache --prerelease=allow --upgrade "flyte>=2.0.0b52" "unionai-reuse>=0.1.10"
+!uv pip install --no-cache --upgrade "flyte>=2.0.0" "unionai-reuse>=0.1.10"
 ```
 
 ### Step 1: Initialize Flyte Configuration

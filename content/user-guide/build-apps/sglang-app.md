@@ -13,7 +13,7 @@ SGLang is a fast structured generation library for large language models (LLMs).
 First, install the SGLang plugin:
 
 ```bash
-pip install --pre flyteplugins-sglang
+pip install flyteplugins-sglang
 ```
 
 ## Basic SGLang app

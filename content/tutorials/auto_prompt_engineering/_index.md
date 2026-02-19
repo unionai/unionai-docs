@@ -147,7 +147,7 @@ We add a simple main block so we can run the workflow as a script:
 Run it with:
 
 ```
-uv run --prerelease=allow optimizer.py
+uv run optimizer.py
 ```
 
 ![Execution](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/gifs/tutorials/prompt_engineering/execution.gif)

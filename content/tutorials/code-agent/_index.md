@@ -165,5 +165,5 @@ async def always_succeeds() -> int:
 You can run the code agent on a Flyte/Union cluster using the following command:
 
 ```
-uv run --prerelease=allow agent.py
+uv run agent.py
 ```

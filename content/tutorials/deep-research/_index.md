@@ -127,7 +127,7 @@ flyte create secret TAVILY_API_KEY <>
 Run the agent:
 
 ```
-uv run --prerelease=allow agent.py
+uv run agent.py
 ```
 
 If you want to test it locally first, run the following commands:
@@ -139,7 +139,7 @@ brew install basictex # restart your terminal after install
 export TOGETHER_API_KEY=<>
 export TAVILY_API_KEY=<>
 
-uv run --prerelease=allow agent.py
+uv run agent.py
 ```
 
 ## Evaluate with Weights & Biases Weave
@@ -154,7 +154,7 @@ You can run this pipeline locally as follows:
 export HUGGINGFACE_TOKEN=<> # https://huggingface.co/settings/tokens
 export WANDB_API_KEY=<> # https://wandb.ai/settings
 
-uv run --prerelease=allow weave_evals.py
+uv run weave_evals.py
 ```
 
 The script will run all tasks in the pipeline and log the evaluation results to Weights & Biases.

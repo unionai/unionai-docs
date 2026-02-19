@@ -56,7 +56,7 @@ def extract_frontmatter_version(version_file: Path) -> str | None:
 
 
 def get_pypi_latest(package: str) -> str | None:
-    """Get latest version (including pre-releases) from PyPI."""
+    """Get latest version from PyPI."""
     url = f"https://pypi.org/pypi/{package}/json"
     try:
         with urllib.request.urlopen(url, timeout=15) as resp:
@@ -65,7 +65,7 @@ def get_pypi_latest(package: str) -> str | None:
         print(f"  Warning: failed to query PyPI for {package}: {e}", file=sys.stderr)
         return None
 
-    # Find the latest version from all releases (including pre-releases)
+    # Find the latest version from all releases
     versions = []
     for ver_str, files in data.get("releases", {}).items():
         # Skip yanked releases and releases with no files

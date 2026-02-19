@@ -12,16 +12,12 @@ Thank you for your interest in Flyte!
 > This page is part of the Flyte 2 documentation.
 > If you are interested in contributing code to for Flyte 1, switch the selector at the top of the page to \*v1\*\*.
 
-## FLyte 2
-
-Flyte 2 is currently in active development.
+## Flyte 2
 
 The Flyte 2 SDK source code is available on [GitHub](https://github.com/flyteorg/flyte-sdk) under the same Apache license as the original Flyte 1.
 You are welcome to take a look, [download the package](https://pypi.org/project/flyte/#history) and try running code locally.
-Keep in mind that this is still in beta and is a work in progress.
 
 The Flyte 2 backend is not yet available as open source, (but it will be soon!)
-To run Flyte 2 code now you can apply for a [beta preview of the Union 2 backend](https://www.union.ai/beta).
 
 When the Flyte 2 backend is released we will roll out a full contributor program just as we have for Flyte 1.
 

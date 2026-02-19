@@ -21,7 +21,7 @@ To install the plugin, run the following command:
 To install the Ray plugin, run the following command:
 
 ```shell
-$ pip install --pre flyteplugins-ray
+$ pip install flyteplugins-ray
 ```
 
 The following example shows how to configure Ray in a `TaskEnvironment`. Flyte automatically provisions a Ray cluster for each task using this configuration:
