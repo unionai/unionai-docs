@@ -108,23 +108,9 @@
     }
 
     // Fully-qualified names that appear literally in the code text
-    // Also add short names and package names so split spans can match
     for (const [fullName, url] of Object.entries(linkmap.identifiers)) {
       if (text.includes(fullName)) {
         matches[fullName] = url;
-        // Add short name (last segment) for split-span matching
-        const lastDot = fullName.lastIndexOf('.');
-        if (lastDot > 0) {
-          const shortName = fullName.slice(lastDot + 1);
-          if (!matches[shortName]) {
-            matches[shortName] = url;
-          }
-          // Add the package prefix so "flyte" in "flyte.Resources" can match
-          const pkg = fullName.slice(0, lastDot);
-          if (linkmap.packages[pkg] && !matches[pkg]) {
-            matches[pkg] = linkmap.packages[pkg];
-          }
-        }
       }
     }
 
@@ -162,21 +148,66 @@
         // Sort keys longest-first to prefer longer matches
         const sortedKeys = Object.keys(matchSet).sort((a, b) => b.length - a.length);
 
-        // Walk all <span> elements with name-like Chroma classes
-        const spans = codeEl.querySelectorAll('span');
-        spans.forEach(span => {
-          if (!hasNameClass(span)) return;
-          if (span.closest('a')) return;
+        // Collect name spans in document order (excluding line/cl wrapper spans)
+        const allSpans = Array.from(codeEl.querySelectorAll('span'));
+
+        for (let i = 0; i < allSpans.length; i++) {
+          const span = allSpans[i];
+          if (!hasNameClass(span)) continue;
+          if (span.closest('a')) continue;
 
           const spanText = span.textContent;
-
-          // For decorators, strip leading @ for matching
           const textForMatch = spanText.startsWith('@') ? spanText.slice(1) : spanText;
 
+          // Try to build a dotted name by looking ahead: name.name.name...
+          // Chroma emits: <span class="n">pkg</span><span class="o">.</span><span class="n">Name</span>
+          let dottedName = textForMatch;
+          let dottedSpans = [span]; // spans to coalesce
+          let dotSpans = [];        // the "." operator spans between names
+          let j = i + 1;
+          while (j + 1 < allSpans.length) {
+            const dotSpan = allSpans[j];
+            const nextSpan = allSpans[j + 1];
+            // Check for operator "." followed by a name span
+            if (dotSpan.textContent === '.' &&
+                dotSpan.className.split(/\s+/).some(c => c === 'o') &&
+                hasNameClass(nextSpan)) {
+              const candidate = dottedName + '.' + nextSpan.textContent;
+              // Only extend if the longer dotted name exists in the matchSet
+              if (matchSet[candidate]) {
+                dottedName = candidate;
+                dotSpans.push(dotSpan);
+                dottedSpans.push(nextSpan);
+                j += 2;
+                continue;
+              }
+            }
+            break;
+          }
+
+          // Check if the (possibly dotted) name matches
+          let url = matchSet[dottedName];
+          if (url) {
+            const fullURL = `${basePath}${url}`;
+            const link = document.createElement('a');
+            link.href = fullURL;
+            // Insert link before the first span
+            span.parentNode.insertBefore(link, span);
+            // Move all spans (names and dots) inside the link
+            link.appendChild(span);
+            for (let k = 0; k < dotSpans.length; k++) {
+              link.appendChild(dotSpans[k]);
+              link.appendChild(dottedSpans[k + 1]);
+            }
+            // Skip past the spans we just consumed
+            i = j - 1;
+            continue;
+          }
+
+          // No dotted match — try single span match
           for (const key of sortedKeys) {
             if (textForMatch === key) {
-              const url = matchSet[key];
-              const fullURL = `${basePath}${url}`;
+              const fullURL = `${basePath}${matchSet[key]}`;
               const link = document.createElement('a');
               link.href = fullURL;
               span.parentNode.insertBefore(link, span);
@@ -184,7 +215,7 @@
               break;
             }
           }
-        });
+        }
       });
     } catch (error) {
       console.error('Error processing code block links:', error);
