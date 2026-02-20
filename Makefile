@@ -32,16 +32,8 @@ base:
 	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/index.html
 	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/docs/index.html
 
-dist: base
-	make update-redirects
-	-make check-deleted-pages
-	make update-api-docs
-	-make check-links
-	make variant VARIANT=flyte
-	make variant VARIANT=serverless
-	make variant VARIANT=byoc
-	make variant VARIANT=selfmanaged
-	make llm-docs
+dist:
+	@./scripts/build_dist.sh
 
 variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi

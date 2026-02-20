@@ -619,7 +619,7 @@ class LLMDocBuilder:
             " that concatenates all pages in the section into a single file"
             " — use it to load an entire section into context at once.",
             "",
-        ]
+        ])
 
         # Group entries by top-level section
         sections = []
