@@ -47,6 +47,8 @@ custom_js = [
   "inline-code-linker.js",
 ]
 
+api_linkmap_sources = ["flytekit", "union"]
+
 [params.variant_weights]
 flyte = 1
 serverless = 4

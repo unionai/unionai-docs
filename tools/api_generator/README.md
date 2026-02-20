@@ -42,7 +42,7 @@ For example, to generate the documentation for the `flyte` package, you can use 
 4. Install the package you want to generate documentation for, e.g., `flyte`:
 
    ```bash
-   $ uv add --pre flyte
+   $ uv add flyte
    ```
 
 5. Install additional dependencies:

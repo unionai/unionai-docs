@@ -8,13 +8,17 @@
 {{- $modified := false -}}
 
 {{- if eq $lang "python" -}}
-    {{- /* Load and merge all API data sources */ -}}
+    {{- /* Load and merge all API data sources from params.api_linkmap_sources */ -}}
     {{- $flyteapi := dict "identifiers" (dict) "methods" (dict) "packages" (dict) -}}
-    {{- with site.Data.flytekit -}}
-        {{- $flyteapi = merge $flyteapi (dict "identifiers" (.identifiers | default dict) "methods" (.methods | default dict) "packages" (.packages | default dict)) -}}
-    {{- end -}}
-    {{- with site.Data.union -}}
-        {{- $flyteapi = merge $flyteapi (dict "identifiers" (merge $flyteapi.identifiers (.identifiers | default dict)) "methods" (merge $flyteapi.methods (.methods | default dict)) "packages" (merge $flyteapi.packages (.packages | default dict))) -}}
+    {{- $sources := site.Params.api_linkmap_sources | default slice -}}
+    {{- range $i, $sourceName := $sources -}}
+        {{- with index site.Data $sourceName -}}
+            {{- if eq $i 0 -}}
+                {{- $flyteapi = merge $flyteapi (dict "identifiers" (.identifiers | default dict) "methods" (.methods | default dict) "packages" (.packages | default dict)) -}}
+            {{- else -}}
+                {{- $flyteapi = merge $flyteapi (dict "identifiers" (merge $flyteapi.identifiers (.identifiers | default dict)) "methods" (merge $flyteapi.methods (.methods | default dict)) "packages" (merge $flyteapi.packages (.packages | default dict))) -}}
+            {{- end -}}
+        {{- end -}}
     {{- end -}}
 
     {{- /* First, protect strings by replacing them with markers */ -}}

@@ -18,8 +18,7 @@ if ! command -v uv > /dev/null 2>&1; then
     exit 1
 fi
 
-# Dependencies (jupyter, htmltabletomd) are provided inline via `uv run --with`
-# in the commands below, so no separate install step is needed.
+# Dependencies (jupyter, htmltabletomd) are injected inline via `uv run --with` below
 
 declare content
 content=$(find content -name "*.md" -exec sh -c 'head -n 10 "$1" | grep -l "^jupyter_notebook:" "$1"' sh {} \;)

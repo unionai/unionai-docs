@@ -156,10 +156,14 @@ check-generated-content:
 	@uv run tools/check_generated_content.py
 
 check-api-docs:
-	@echo "Skipped on v1 (API docs are frozen at committed versions)."
+	@uv run tools/api_generator/check_versions.py --check
 
 check-llm-bundle-notes:
-	@echo "Skipped on v1 (v2-specific shortcode)."
+	@uv run python tools/llms_generator/check_llm_bundle_notes.py
 
 update-api-docs:
-	@echo "Skipped on v1 (API docs are frozen at committed versions)."
+	@if command -v uv >/dev/null 2>&1; then \
+		uv run tools/api_generator/check_versions.py --update; \
+	else \
+		echo "uv not available, skipping API docs update (using committed docs)"; \
+	fi

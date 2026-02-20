@@ -56,7 +56,7 @@ def extract_frontmatter_version(version_file: Path) -> str | None:
 
 
 def get_pypi_latest(package: str) -> str | None:
-    """Get latest version (including pre-releases) from PyPI."""
+    """Get latest version from PyPI."""
     url = f"https://pypi.org/pypi/{package}/json"
     try:
         with urllib.request.urlopen(url, timeout=15) as resp:
@@ -65,7 +65,7 @@ def get_pypi_latest(package: str) -> str | None:
         print(f"  Warning: failed to query PyPI for {package}: {e}", file=sys.stderr)
         return None
 
-    # Find the latest version from all releases (including pre-releases)
+    # Find the latest stable version from all releases
     versions = []
     for ver_str, files in data.get("releases", {}).items():
         # Skip yanked releases and releases with no files
@@ -74,7 +74,9 @@ def get_pypi_latest(package: str) -> str | None:
         if all(f.get("yanked", False) for f in files):
             continue
         try:
-            versions.append(Version(ver_str))
+            v = Version(ver_str)
+            if not v.is_prerelease:
+                versions.append(v)
         except Exception:
             continue
 
@@ -176,7 +178,7 @@ def check_missing_files(config: dict) -> bool:
 
 def regenerate(results: list[dict]) -> None:
     """Invoke existing Makefiles to regenerate outdated docs."""
-    # Makefile.api.sdk regenerates ALL SDKs/CLIs in one pass, so only call once
+    # Regenerate all SDKs together (the sdks target handles all [[sdks]] entries)
     has_outdated_sdk = any(r["outdated"] and r["type"] == "sdk" for r in results)
     if has_outdated_sdk:
         outdated_sdks = [r["package"] for r in results if r["outdated"] and r["type"] == "sdk"]
@@ -237,7 +239,7 @@ def main():
     elif missing:
         print("\nGenerated content files are missing. Running full regeneration...")
         subprocess.run(
-            ["make", "-f", "Makefile.api.sdk", "sdks"],
+            ["make", "-f", "Makefile.api.sdk"],
             cwd=REPO_ROOT,
             check=True,
         )
