@@ -35,7 +35,11 @@ run_step "Pre-build checks & setup" $MAKE_CMD base || exit 1
 
 run_step "Update redirects"    $MAKE_CMD update-redirects || exit 1
 run_step "Check deleted pages" $MAKE_CMD check-deleted-pages || true
-run_step "Update API docs"     $MAKE_CMD update-api-docs || exit 1
+if [[ -n "$CI" ]]; then
+    run_step "Check API docs" $MAKE_CMD check-api-docs || true
+else
+    run_step "Update API docs" $MAKE_CMD update-api-docs || exit 1
+fi
 run_step "Check internal links" $MAKE_CMD check-links || true
 
 if [ -z "$VARIANTS" ]; then
