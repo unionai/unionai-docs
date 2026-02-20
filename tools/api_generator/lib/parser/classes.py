@@ -14,8 +14,11 @@ from lib.parser.methods import parse_method, parse_property, parse_variable
 
 
 def isclass(member: Any) -> bool:
-    memberClass = getattr(member, "__class__", None)
-    return inspect.isclass(member) and (memberClass is None or memberClass != Enum)
+    try:
+        memberClass = getattr(member, "__class__", None)
+        return inspect.isclass(member) and (memberClass is None or memberClass != Enum)
+    except (ImportError, Exception):
+        return False
 
 def get_classes(source: PackageInfo, package: ModuleType) -> Dict[str, ClassDetails]:
     # Skip if any private packages
