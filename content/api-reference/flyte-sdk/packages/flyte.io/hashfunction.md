@@ -1,6 +1,6 @@
 ---
 title: HashFunction
-version: 2.0.0
+version: 2.0.0b58
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -11,22 +11,22 @@ layout: py_api
 
 A hash method that wraps a user-provided function to compute hashes.
 
-This class allows you to define custom hashing logic by providing a callable
-that takes data and returns a hash string. It implements the HashMethod protocol,
-making it compatible with Flyte's hashing infrastructure.
+    This class allows you to define custom hashing logic by providing a callable
+    that takes data and returns a hash string. It implements the HashMethod protocol,
+    making it compatible with Flyte's hashing infrastructure.
 
-Example:
-    &gt;&gt;&gt; def my_hash(data: bytes) -&gt; str:
-    ...     return hashlib.md5(data).hexdigest()
-    &gt;&gt;&gt; hash_fn = HashFunction.from_fn(my_hash)
-    &gt;&gt;&gt; hash_fn.update(b"hello")
-    &gt;&gt;&gt; hash_fn.result()
-    '5d41402abc4b2a76b9719d911017c592'
+    Example:
+        &gt;&gt;&gt; def my_hash(data: bytes) -&gt; str:
+        ...     return hashlib.md5(data).hexdigest()
+        &gt;&gt;&gt; hash_fn = HashFunction.from_fn(my_hash)
+        &gt;&gt;&gt; hash_fn.update(b"hello")
+        &gt;&gt;&gt; hash_fn.result()
+        '5d41402abc4b2a76b9719d911017c592'
 
-Attributes:
-    _fn: The callable that computes the hash from input data.
-    _value: The most recently computed hash value.
-
+    Attributes:
+        _fn: The callable that computes the hash from input data.
+        _value: The most recently computed hash value.
+    
 
 
 ```python
