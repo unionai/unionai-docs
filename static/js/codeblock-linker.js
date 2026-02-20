@@ -108,9 +108,23 @@
     }
 
     // Fully-qualified names that appear literally in the code text
+    // Also add short names and package names so split spans can match
     for (const [fullName, url] of Object.entries(linkmap.identifiers)) {
       if (text.includes(fullName)) {
         matches[fullName] = url;
+        // Add short name (last segment) for split-span matching
+        const lastDot = fullName.lastIndexOf('.');
+        if (lastDot > 0) {
+          const shortName = fullName.slice(lastDot + 1);
+          if (!matches[shortName]) {
+            matches[shortName] = url;
+          }
+          // Add the package prefix so "flyte" in "flyte.Resources" can match
+          const pkg = fullName.slice(0, lastDot);
+          if (linkmap.packages[pkg] && !matches[pkg]) {
+            matches[pkg] = linkmap.packages[pkg];
+          }
+        }
       }
     }
 
