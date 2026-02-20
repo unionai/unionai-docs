@@ -2,6 +2,13 @@
 # Full dist build with progress reporting and timing instrumentation.
 # Called by: make dist
 
+# Ensure uv is available (Cloudflare Pages doesn't include it)
+if ! command -v uv >/dev/null 2>&1; then
+    echo "Installing uv..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+
 export BUILD_TIMER_FILE=$(mktemp)
 source scripts/build_timer.sh
 
