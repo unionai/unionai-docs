@@ -85,6 +85,17 @@ def generate_go_cli(cli: dict) -> None:
     """Generate CLI docs for a Go-based CLI."""
     binary = cli["binary"]
     include = cli["include"]
+
+    # Go CLIs may use output_file (single file) or output_dir (multi-file, pre-committed)
+    if "output_dir" in cli:
+        output_dir = REPO_ROOT / cli["output_dir"]
+        if output_dir.is_dir():
+            print(f"  Skipping {binary}: output_dir already exists ({cli['output_dir']})")
+        else:
+            print(f"  Warning: {binary} output_dir missing ({cli['output_dir']}), "
+                  f"but Go CLI generation is not supported on this branch")
+        return
+
     output_file = REPO_ROOT / cli["output_file"]
 
     # Use the gen-cli-docs script
