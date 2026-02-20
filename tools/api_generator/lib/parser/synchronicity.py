@@ -11,7 +11,7 @@ def is_synchronicity_method(name: str, member: object) -> bool:
             )
             != -1
         )
-    except (AttributeError, ValueError, KeyError):
+    except (AttributeError, ValueError, KeyError, ImportError):
         return False
 
 
