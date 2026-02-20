@@ -57,6 +57,7 @@ output_dir = "content/api-reference/uctl-cli"
 output_base = "content/api-reference/plugins"
 default_include = "include/api.plugin.md"
 check_linkmaps = false  # v1 plugins don't have linkmap/data files (can't regenerate all plugins)
+no_flatten = false  # v1: flat output (single .md per package) to match published URLs
 
 [[plugins]]
 package = "flytekitplugins-airflow"

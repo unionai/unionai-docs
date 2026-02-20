@@ -50,7 +50,12 @@ def main():
         pc = config.get("plugins_config", {})
         if len(sys.argv) >= 3:
             key = sys.argv[2]
-            print(pc.get(key, ""))
+            val = pc.get(key, "")
+            # Print booleans as lowercase true/false for shell consumption
+            if isinstance(val, bool):
+                print("true" if val else "false")
+            else:
+                print(val)
         else:
             for k, v in pc.items():
                 print(f"{k}={v}")
