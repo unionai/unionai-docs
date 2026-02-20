@@ -37,11 +37,18 @@ readonly target
 
 echo "Target: $target"
 
+# Optional Hugo diagnostics (pass through from environment):
+#   HUGO_METRICS=true  — --templateMetrics --templateMetricsHints
+#   HUGO_VERBOSE=true  — --logLevel info --printPathWarnings --printMemoryUsage
+hugo_extra_flags=""
+[[ "$HUGO_METRICS" == "true" ]] && hugo_extra_flags+=" --templateMetrics --templateMetricsHints"
+[[ "$HUGO_VERBOSE" == "true" ]] && hugo_extra_flags+=" --logLevel info --printPathWarnings --printMemoryUsage"
+
 # --panicOnWarning makes all warnf calls fatal (not just errorf).
 # This is intentional: content issues should block deployment.
 hugo --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml,${hugo_build_toml} \
     --destination "${target}" --baseURL "${baseURL}" \
-    --noBuildLock --panicOnWarning 1> "$run_log" 2>&1
+    --noBuildLock --panicOnWarning $hugo_extra_flags 1> "$run_log" 2>&1
 
 err=$?
 echo '--------------------------'
