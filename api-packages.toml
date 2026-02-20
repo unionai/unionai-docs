@@ -43,6 +43,7 @@ type = "go"
 binary = "flytectl"
 include = "include/cli.flytectl.md"
 output_dir = "content/api-reference/flytectl-cli"
+frozen = true
 
 [[clis]]
 name = "uctl"
@@ -50,6 +51,7 @@ type = "go"
 binary = "uctl"
 include = "include/cli.uctl.md"
 output_dir = "content/api-reference/uctl-cli"
+frozen = true
 
 # === Plugins ===
 
