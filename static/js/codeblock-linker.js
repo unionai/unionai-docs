@@ -19,7 +19,7 @@
   const loadLinkmaps = async (basePath) => {
     const sources = window.__LINKMAP_SOURCES || [];
     const linkmapFiles = sources.map(s => `${s}-linkmap.json`);
-    const merged = { identifiers: {}, methods: {} };
+    const merged = { packages: {}, identifiers: {}, methods: {} };
 
     for (const filename of linkmapFiles) {
       try {
@@ -27,6 +27,7 @@
         const response = await fetch(url);
         if (response.ok) {
           const data = await response.json();
+          Object.assign(merged.packages, data.packages || {});
           Object.assign(merged.identifiers, data.identifiers || {});
           Object.assign(merged.methods, data.methods || {});
         }
@@ -48,6 +49,9 @@
   // Parse "from X import Y, Z" and "import X" statements
   const parseImports = (text) => {
     const symbols = {}; // shortName -> fullQualifiedName
+    const packages = {}; // alias -> packageName
+
+    // "from X import Y, Z" style
     const fromImportRe = /^from\s+([\w.]+)\s+import\s+(.+)$/gm;
     let match;
     while ((match = fromImportRe.exec(text)) !== null) {
@@ -61,17 +65,45 @@
         }
       }
     }
-    return symbols;
+
+    // "import X" and "import X as Y" style
+    const importRe = /^import\s+([\w.]+)(?:\s+as\s+(\w+))?$/gm;
+    while ((match = importRe.exec(text)) !== null) {
+      const pkg = match[1];
+      const alias = match[2] || pkg;
+      packages[alias] = pkg;
+    }
+
+    return { symbols, packages };
   };
 
-  // Build a map of shortName -> URL for a given code block
-  const buildMatchSet = (text, symbols, linkmap) => {
+  // Build a map of name -> URL for a given code block
+  const buildMatchSet = (text, imports, linkmap) => {
     const matches = {}; // name -> url
+    const { symbols, packages } = imports;
 
-    // From imports: check if full qualified name is in the linkmap
+    // "from X import Y": check if full qualified name is in the linkmap
     for (const [shortName, fullName] of Object.entries(symbols)) {
       if (linkmap.identifiers[fullName]) {
         matches[shortName] = linkmap.identifiers[fullName];
+      }
+    }
+
+    // "import X": add the package name itself if it's in packages linkmap
+    for (const [alias, pkg] of Object.entries(packages)) {
+      if (linkmap.packages[pkg]) {
+        matches[alias] = linkmap.packages[pkg];
+      }
+      // Also add all pkg.* identifiers by their short name
+      const prefix = pkg + '.';
+      for (const [fullName, url] of Object.entries(linkmap.identifiers)) {
+        if (fullName.startsWith(prefix)) {
+          const shortName = fullName.slice(prefix.length);
+          // Only single-level names (not nested like "app.AppEndpoint")
+          if (/^\w+$/.test(shortName)) {
+            matches[shortName] = url;
+          }
+        }
       }
     }
 
@@ -108,8 +140,8 @@
 
       codeEls.forEach(codeEl => {
         const text = codeEl.textContent;
-        const symbols = parseImports(text);
-        const matchSet = buildMatchSet(text, symbols, linkmap);
+        const imports = parseImports(text);
+        const matchSet = buildMatchSet(text, imports, linkmap);
 
         if (Object.keys(matchSet).length === 0) return;
 

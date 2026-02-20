@@ -1,4 +1,20 @@
 {
+  "packages": {
+    "union": "/api-reference/union-sdk/packages/union/",
+    "union.actor": "/api-reference/union-sdk/packages/union.actor/",
+    "union.app": "/api-reference/union-sdk/packages/union.app/",
+    "union.app.llm": "/api-reference/union-sdk/packages/union.app.llm/",
+    "union.artifacts": "/api-reference/union-sdk/packages/union.artifacts/",
+    "union.cache": "/api-reference/union-sdk/packages/union.cache/",
+    "union.cli": "/api-reference/union-sdk/packages/union.cli/",
+    "union.configuration": "/api-reference/union-sdk/packages/union.configuration/",
+    "union.filesystems": "/api-reference/union-sdk/packages/union.filesystems/",
+    "union.internal": "/api-reference/union-sdk/packages/union.internal/",
+    "union.map": "/api-reference/union-sdk/packages/union.map/",
+    "union.remote": "/api-reference/union-sdk/packages/union.remote/",
+    "union.ucimage": "/api-reference/union-sdk/packages/union.ucimage/",
+    "union.workspace": "/api-reference/union-sdk/packages/union.workspace/"
+  },
   "identifiers": {
     "union.ActorEnvironment": "/api-reference/union-sdk/packages/union/#unionactorenvironment",
     "union.Artifact": "/api-reference/union-sdk/packages/union/#unionartifact",

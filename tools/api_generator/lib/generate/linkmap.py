@@ -61,8 +61,9 @@ def generate_linkmap_metadata(
     with open(f"data/{api_name}.yaml", "w") as file:
         yaml.dump(metadata, file, default_flow_style=False, sort_keys=False)
 
-    # Write JSON file for client-side use (identifiers and methods only)
+    # Write JSON file for client-side use
     client_linkmap = {
+        "packages": packages_dict,
         "identifiers": identifiers_dict,
         "methods": methods_dict
     }
