@@ -47,44 +47,65 @@ if [ -z "$VARIANTS" ]; then
     exit 1
 fi
 
-# Run Hugo variant builds in parallel — each writes to its own dist/ subdirectory.
-printf "\n\033[1;36m==>\033[0m \033[1mHugo builds (parallel: $VARIANTS)\033[0m\n"
-parallel_start=$(date +%s)
-pids=()
-variant_logs=()
+# PARALLEL_HUGO controls whether Hugo variant builds run in parallel or sequentially.
+# Can be set explicitly (PARALLEL_HUGO=true/false), or defaults per environment:
+#   CI:    sequential (PARALLEL_HUGO_CI, default: false)
+#   Local: sequential (PARALLEL_HUGO_LOCAL, default: false)
+if [[ -z "$PARALLEL_HUGO" ]]; then
+    if [[ -n "$CI" ]]; then
+        PARALLEL_HUGO="${PARALLEL_HUGO_CI:-false}"
+    else
+        PARALLEL_HUGO="${PARALLEL_HUGO_LOCAL:-false}"
+    fi
+fi
+
 variant_list=($VARIANTS)
 
-for variant in "${variant_list[@]}"; do
-    log=$(mktemp)
-    variant_logs+=("$log")
-    (
-        vstart=$(date +%s)
-        $MAKE_CMD variant VARIANT=$variant > "$log" 2>&1
-        rc=$?
-        echo "$(( $(date +%s) - vstart )) Hugo build: $variant" >> "$BUILD_TIMER_FILE"
-        exit $rc
-    ) &
-    pids+=($!)
-done
+if [[ "$PARALLEL_HUGO" == "true" ]]; then
+    printf "\n\033[1;36m==>\033[0m \033[1mHugo builds (parallel: $VARIANTS)\033[0m\n"
+    parallel_start=$(date +%s)
+    pids=()
+    variant_logs=()
 
-# Wait for all, collect failures
-failed_variants=()
-for i in "${!pids[@]}"; do
-    if ! wait "${pids[$i]}"; then
-        failed_variants+=("${variant_list[$i]}")
-    fi
-done
+    for variant in "${variant_list[@]}"; do
+        log=$(mktemp)
+        variant_logs+=("$log")
+        (
+            vstart=$(date +%s)
+            $MAKE_CMD variant VARIANT=$variant > "$log" 2>&1
+            rc=$?
+            echo "$(( $(date +%s) - vstart )) Hugo build: $variant" >> "$BUILD_TIMER_FILE"
+            exit $rc
+        ) &
+        pids+=($!)
+    done
 
-# Print logs (always, so Hugo output is visible)
-for i in "${!variant_list[@]}"; do
-    printf "\n\033[1;36m--- %s ---\033[0m\n" "${variant_list[$i]}"
-    cat "${variant_logs[$i]}"
-    rm -f "${variant_logs[$i]}"
-done
+    # Wait for all, collect failures
+    failed_variants=()
+    for i in "${!pids[@]}"; do
+        if ! wait "${pids[$i]}"; then
+            failed_variants+=("${variant_list[$i]}")
+        fi
+    done
 
-# Record wall-clock time for the parallel group
-parallel_elapsed=$(( $(date +%s) - parallel_start ))
-echo "${parallel_elapsed} Hugo builds (wall clock)" >> "$BUILD_TIMER_FILE"
+    # Print logs (always, so Hugo output is visible)
+    for i in "${!variant_list[@]}"; do
+        printf "\n\033[1;36m--- %s ---\033[0m\n" "${variant_list[$i]}"
+        cat "${variant_logs[$i]}"
+        rm -f "${variant_logs[$i]}"
+    done
+
+    # Record wall-clock time for the parallel group
+    parallel_elapsed=$(( $(date +%s) - parallel_start ))
+    echo "${parallel_elapsed} Hugo builds (wall clock)" >> "$BUILD_TIMER_FILE"
+else
+    printf "\n\033[1;36m==>\033[0m \033[1mHugo builds (sequential: $VARIANTS)\033[0m\n"
+    failed_variants=()
+
+    for variant in "${variant_list[@]}"; do
+        run_step "Hugo build: $variant" $MAKE_CMD variant VARIANT=$variant || failed_variants+=("$variant")
+    done
+fi
 
 if [ ${#failed_variants[@]} -ne 0 ]; then
     echo "FAILED variants: ${failed_variants[*]}"
