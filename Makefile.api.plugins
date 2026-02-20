@@ -40,7 +40,7 @@ setup_venv: check_vars
 ifeq ($(SKIP_VENV_SETUP),false)
 	@echo "Setting up fresh virtual environment..."
 	rm -rf $(VENV_DIR)
-	uv venv $(VENV_DIR)
+	uv venv $(VENV_DIR) --python 3.12
 	@echo "Installing ${INSTALL}..."
 	uv pip install --python $(VENV_DIR)/bin/python --upgrade '${INSTALL}'
 	@echo "Virtual environment setup complete. Using $(VENV_DIR)/bin/python"
