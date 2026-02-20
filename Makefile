@@ -33,7 +33,7 @@ base:
 	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/docs/index.html
 
 dist:
-	@./scripts/build_dist.sh
+	@VARIANTS="$(VARIANTS)" ./scripts/build_dist.sh
 
 variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
