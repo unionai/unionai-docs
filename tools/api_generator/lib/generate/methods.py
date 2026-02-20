@@ -56,7 +56,7 @@ def generate_method_decl(
     filtered_params = [param for param in method["params"] if param["name"] != "self"]
 
     if method["framework"] == "syncify":
-        qual_name = f"{method["parent_name"]}.{name}" if method["parent_name"] else name
+        qual_name = f"{method['parent_name']}.{name}" if method["parent_name"] else name
         output.write(
             f"""
 > [!NOTE] This method can be called both synchronously or asynchronously.
