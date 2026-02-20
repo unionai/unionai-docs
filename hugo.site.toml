@@ -24,6 +24,7 @@ custom_css = [
   "breadcrumb.css",
   "flyte-banner.css",
   "card.css",
+  "chroma.css",
   "codeblock.css",
   "footer.css",
   "header.css",
@@ -45,6 +46,7 @@ custom_js = [
   "theme.js",
   "tags.js",
   "inline-code-linker.js",
+  "codeblock-linker.js",
 ]
 
 api_linkmap_sources = ["flytekit", "union"]

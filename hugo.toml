@@ -41,6 +41,8 @@ show_inactive = false
 highlight_active = false
 
 [markup]
+  [markup.highlight]
+    noClasses = false
   [markup.goldmark]
     [markup.goldmark.parser]
       [markup.goldmark.parser.attribute]

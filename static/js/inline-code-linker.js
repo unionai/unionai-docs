@@ -25,7 +25,8 @@
 
   // Load and merge multiple linkmap files
   const loadLinkmaps = async (basePath) => {
-    const linkmapFiles = ['flytekit-linkmap.json', 'union-linkmap.json'];
+    const sources = window.__LINKMAP_SOURCES || [];
+    const linkmapFiles = sources.map(s => `${s}-linkmap.json`);
     const merged = { identifiers: {}, methods: {} };
 
     for (const filename of linkmapFiles) {
