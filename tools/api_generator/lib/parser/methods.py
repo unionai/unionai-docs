@@ -1,8 +1,17 @@
 import inspect
+import re
 from functools import cached_property
 from typing import Optional, Any
 from lib.parser.docstring import parse_docstring
 from lib.ptypes import MethodInfo, PropertyInfo, VariableInfo, FrameworkType, ParamInfo
+
+# Pattern: <some.module.ClassName object at 0x7f...>
+_OBJECT_REPR_RE = re.compile(r"<([\w.]+)\s+object\s+at\s+0x[0-9a-fA-F]+>")
+
+
+def _sanitize_type_str(s: str) -> str:
+    """Replace object repr strings (with memory addresses) with just the class path."""
+    return _OBJECT_REPR_RE.sub(r"\1", s)
 
 
 def parse_method(name: str, member: object, parent_name: str | None = None) -> Optional[MethodInfo]:
@@ -44,7 +53,7 @@ def do_parse_method(name: str, member: Any, framework: FrameworkType,
     method_info = MethodInfo(
         name=name,
         doc=docstr,
-        signature=str(sig),
+        signature=_sanitize_type_str(str(sig)),
         params=[
             ParamInfo(
                 name=param.name,
@@ -54,13 +63,13 @@ def do_parse_method(name: str, member: Any, framework: FrameworkType,
                     else None
                 ),
                 kind=str(param.kind),
-                type=str(param_types[param.name]),
+                type=_sanitize_type_str(str(param_types[param.name])),
                 doc=None
             )
             for param in inspect.signature(member).parameters.values()
         ],
         params_doc=params_docs,
-        return_type=str(return_type),
+        return_type=_sanitize_type_str(str(return_type)),
         return_doc=return_doc,
         framework=framework,
         parent_name=parent_name
