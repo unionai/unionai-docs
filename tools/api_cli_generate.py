@@ -140,6 +140,9 @@ def main() -> None:
         python = VENV_DIR / "bin" / "python"
 
     for cli in clis:
+        if cli.get("frozen", False):
+            print(f"Skipping {cli['name']}: frozen (committed content)")
+            continue
         cli_type = cli.get("type", "python")
         print(f"Generating CLI docs for {cli['name']}...")
 
