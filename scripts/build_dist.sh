@@ -112,5 +112,4 @@ if [ ${#failed_variants[@]} -ne 0 ]; then
     exit 1
 fi
 
-
 run_step "Generate LLM docs" $MAKE_CMD llm-docs || exit 1
