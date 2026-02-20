@@ -15,9 +15,11 @@
 #   INSTALL - pip install specifier (defaults to PLUGIN). Use to add extras,
 #             e.g., "flyteplugins-<PLUGIN>[<EXTRAS>]"
 
-# Read output base from api-packages.toml config
+# Read config from api-packages.toml
 PLUGINS_OUTPUT_BASE := $(shell uv run tools/api_config.py plugins_config output_base)
 PLUGINS_DEFAULT_INCLUDE := $(shell uv run tools/api_config.py plugins_config default_include)
+PLUGINS_NO_FLATTEN := $(shell uv run tools/api_config.py plugins_config no_flatten)
+NO_FLATTEN_FLAG := $(if $(filter true,$(PLUGINS_NO_FLATTEN)),--no-flatten true,)
 
 OUTPUT_FOLDER=$(PLUGINS_OUTPUT_BASE)/${NAME}
 API_DATA=/tmp/${NAME}.api.yaml
@@ -68,7 +70,7 @@ ifeq ($(SKIP_VENV_SETUP),false)
 		--title "${TITLE}" \
 		--api "${API_DATA}" \
 		--include ${LANDING_PAGE} \
-		--no-flatten true \
+		$(NO_FLATTEN_FLAG) \
 		--short-names \
 		--variants "+flyte +byoc +selfmanaged +serverless" \
 		--output_dir "${OUTPUT_FOLDER}"
@@ -78,7 +80,7 @@ else
 		--title "${TITLE}" \
 		--api "${API_DATA}" \
 		--include ${LANDING_PAGE} \
-		--no-flatten true \
+		$(NO_FLATTEN_FLAG) \
 		--short-names \
 		--variants "+flyte +byoc +selfmanaged +serverless" \
 		--output_dir "${OUTPUT_FOLDER}"
