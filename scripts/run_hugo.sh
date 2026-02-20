@@ -1,4 +1,5 @@
 #!/bin/bash
+set -o pipefail
 
 declare run_log
 run_log=$(mktemp)
@@ -48,7 +49,7 @@ hugo_extra_flags=""
 # This is intentional: content issues should block deployment.
 hugo --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml,${hugo_build_toml} \
     --destination "${target}" --baseURL "${baseURL}" \
-    --noBuildLock --panicOnWarning $hugo_extra_flags 1> "$run_log" 2>&1
+    --noBuildLock --panicOnWarning $hugo_extra_flags 2>&1 | tee "$run_log"
 
 err=$?
 echo '--------------------------'
