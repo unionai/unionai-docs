@@ -33,6 +33,7 @@
 #   gen_command      - (optional) Command to generate CLI docs (Python CLIs)
 #   type             - (optional) "go" for Go-based CLIs (externally produced)
 #   binary           - (optional) Binary name for Go CLIs
+#   frozen           - (optional) If true, skip clean/generate (committed content, no longer regenerable)
 #
 # Fields for [plugins_config]:
 #   output_base      - Base directory for plugin output (e.g., integrations or plugins)
@@ -71,6 +72,14 @@ import = "flyte"
 include = "include/cli.flyte.md"
 output_file = "content/api-reference/flyte-cli.md"
 gen_command = "flyte gen docs --type markdown"
+
+[[clis]]
+name = "uctl"
+type = "go"
+binary = "uctl"
+include = "include/cli.uctl.md"
+output_dir = "content/api-reference/uctl-cli"
+frozen = true
 
 # === Plugins ===
 

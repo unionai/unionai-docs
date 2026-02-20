@@ -57,6 +57,8 @@ def main() -> None:
 
     # --- CLI generated content ---
     for cli in config.get("clis", []):
+        if cli.get("frozen", False):
+            continue
         if "output_file" in cli:
             remove_path(REPO_ROOT / cli["output_file"], cli["output_file"])
         elif "output_dir" in cli:
