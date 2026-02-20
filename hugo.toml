@@ -5,6 +5,7 @@
 # For site-specific settings, use hugo.site.toml.
 # For variant-specific settings, use config.<variant>.toml.
 
+timeout = "5m"
 languageCode = 'en-us'
 disableKinds = ["RSS"]
 enableRobotsTXT = true
