@@ -11,14 +11,7 @@ PROCESS_CALLABLES = [
 
 def is_callable(name: str, member: Any, parent_name: str) -> bool:
     """Check if a member is a callable object (i.e., has a __call__ method)."""
-    # Check allowlist first to avoid triggering __getattr__ on objects that
-    # raise exceptions (e.g., flytekit context manager objects).
-    if f"{parent_name}.{name}" not in PROCESS_CALLABLES:
-        return False
-    try:
-        return hasattr(member, "__call__")
-    except Exception:
-        return False
+    return f"{parent_name}.{name}" in PROCESS_CALLABLES and hasattr(member, "__call__")
 
 def parse_callable(name: str, member: Any, parent_name: str = None) -> Optional[MethodInfo]:
     """Parse a callable member and extract its information."""
