@@ -31,7 +31,12 @@ run_step "Check deleted pages" $MAKE_CMD check-deleted-pages || true
 run_step "Update API docs"     $MAKE_CMD update-api-docs || exit 1
 run_step "Check internal links" $MAKE_CMD check-links || true
 
-for variant in flyte byoc selfmanaged; do
+if [ -z "$VARIANTS" ]; then
+    echo "ERROR: VARIANTS is not set" >&2
+    exit 1
+fi
+
+for variant in $VARIANTS; do
     run_step "Hugo build: $variant" $MAKE_CMD variant VARIANT=$variant || exit 1
 done
 
