@@ -37,6 +37,7 @@
 # Fields for [plugins_config]:
 #   output_base      - Base directory for plugin output (e.g., integrations or plugins)
 #   default_include  - Default header template for plugins
+#   no_flatten       - If true, generate hierarchical output (separate class files)
 #
 # Fields for [[plugins]]:
 #   package  - PyPI package name (for version checks and pip install)
@@ -76,6 +77,7 @@ gen_command = "flyte gen docs --type markdown"
 [plugins_config]
 output_base = "content/api-reference/integrations"
 default_include = "include/api.plugin.md"
+no_flatten = true  # v2: hierarchical output (separate class files per package)
 
 [[plugins]]
 package = "flyteplugins-dask"
