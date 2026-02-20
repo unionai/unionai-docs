@@ -458,6 +458,18 @@ def check_variant(variant: str, content_dir: Path, variant_pages: dict[str, set[
     return errors
 
 
+def get_version_from_makefile_inc() -> str | None:
+    """Read VERSION from makefile.inc (e.g. 'v1', 'v2')."""
+    inc = Path("makefile.inc")
+    if not inc.is_file():
+        return None
+    for line in inc.read_text().splitlines():
+        line = line.strip()
+        if line.startswith("VERSION") and ":=" in line:
+            return line.split(":=", 1)[1].strip()
+    return None
+
+
 def main():
     parser = argparse.ArgumentParser(description="Check internal links in Hugo source content.")
     parser.add_argument("--variant", choices=VARIANTS, help="Check a single variant (default: all)")
@@ -475,8 +487,12 @@ def main():
     # Build page index
     variant_pages, page_files = build_page_index(content_dir)
 
-    # Load exclusion patterns
+    # Load exclusion patterns (shared + version-specific if it exists)
     exclude_patterns = load_exclude_patterns(args.exclude_file)
+    version = get_version_from_makefile_inc()
+    if version:
+        version_exclude = args.exclude_file.with_suffix(f".{version}")
+        exclude_patterns.extend(load_exclude_patterns(version_exclude))
 
     # Determine which variants to check
     variants_to_check = [args.variant] if args.variant else VARIANTS

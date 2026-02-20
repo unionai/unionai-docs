@@ -9,7 +9,7 @@ def is_syncify_method(name: str, member: object) -> bool:
             member.__class__.__name__ == "_SyncWrapper" and
             member.__class__.__module__ == "flyte.syncify._api"
         )
-    except (AttributeError, ValueError, KeyError):
+    except (AttributeError, ValueError, KeyError, ImportError):
         return False
 
 
