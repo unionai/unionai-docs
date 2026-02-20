@@ -1,4 +1,7 @@
 {
+  "packages": {
+    "flyteplugins.wandb": "/api-reference/integrations/wandb/packages/flyteplugins.wandb/"
+  },
   "identifiers": {
     "flyteplugins.wandb.Wandb": "/api-reference/integrations/wandb/packages/flyteplugins.wandb/wandb/",
     "Wandb": "/api-reference/integrations/wandb/packages/flyteplugins.wandb/wandb/",

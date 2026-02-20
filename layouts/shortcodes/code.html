@@ -133,40 +133,15 @@
     {{- $highlightOptions = printf "linenos=false,hl_lines=%s" $highlight -}}
 {{- end -}}
 
-{{/* Apply autolinking for Python code */}}
-{{- $autolinkResult := partial "autolink-python.html" (dict "code" $content "lang" $lang) -}}
-{{- $codeToHighlight := $autolinkResult.code -}}
-{{- $linkMap := $autolinkResult.linkMap -}}
-
 {{/* Highlight the code */}}
-{{- $highlighted := highlight $codeToHighlight $lang $highlightOptions -}}
+{{- $highlighted := highlight $content $lang $highlightOptions -}}
 {{- /* Rename language-* classes to syntax-* to prevent 1Password prism.js interference */ -}}
 {{- /* Handle both single class and multiple classes: class="language-python" or class="highlight language-python" */ -}}
 {{- $highlighted = replaceRE `class="([^"]*\s)?language-([^"]+)"` `class="$1syntax-$2"` $highlighted -}}
 {{- $highlighted = replaceRE `class="([^"]*\s)?lang-([^"]+)"` `class="$1syntax-$2"` $highlighted -}}
 {{- /* Also rename data-lang attributes */ -}}
 {{- $highlighted = replaceRE `data-lang="([^"]+)"` `data-syntax="$1"` $highlighted -}}
-
-{{/* Replace markers with actual links if we did autolinking */}}
 {{- $processedHTML := $highlighted -}}
-{{- if gt (len $linkMap) 0 -}}
-    {{- $basePath := "" -}}
-    {{- with site.BaseURL -}}
-        {{- $parsed := urls.Parse . -}}
-        {{- $basePath = $parsed.Path -}}
-        {{- $basePath = strings.TrimSuffix "/" $basePath -}}
-    {{- end -}}
-    {{- range $marker, $data := $linkMap -}}
-        {{- $fullURL := printf "%s%s" $basePath $data.url -}}
-        {{- if $data.dotted -}}
-            {{- $link := printf `<a href="%s">%s</a>` $fullURL $data.text -}}
-            {{- $processedHTML = replace $processedHTML $marker $link -}}
-        {{- else -}}
-            {{- $link := printf `<a href="%s">%s</a>` $fullURL $data.text -}}
-            {{- $processedHTML = replace $processedHTML $marker $link -}}
-        {{- end -}}
-    {{- end -}}
-{{- end -}}
 
 {{/* Generate the complete codeblock HTML structure */}}
 <div class="codeblock">
