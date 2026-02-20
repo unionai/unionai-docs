@@ -9,6 +9,8 @@ if ! command -v uv >/dev/null 2>&1; then
     export PATH="$HOME/.local/bin:$PATH"
 fi
 
+echo "Environment: CI=${CI:-<unset>} CF_PAGES=${CF_PAGES:-<unset>}"
+
 export BUILD_TIMER_FILE=$(mktemp)
 source scripts/build_timer.sh
 
@@ -35,7 +37,7 @@ run_step "Pre-build checks & setup" $MAKE_CMD base || exit 1
 
 run_step "Update redirects"    $MAKE_CMD update-redirects || exit 1
 run_step "Check deleted pages" $MAKE_CMD check-deleted-pages || true
-if [[ -n "$CI" ]]; then
+if [[ -n "$CI" || -n "$CF_PAGES" ]]; then
     run_step "Check API docs" $MAKE_CMD check-api-docs || true
 else
     run_step "Update API docs" $MAKE_CMD update-api-docs || exit 1
@@ -52,7 +54,7 @@ fi
 #   CI:    sequential (PARALLEL_HUGO_CI, default: false)
 #   Local: sequential (PARALLEL_HUGO_LOCAL, default: false)
 if [[ -z "$PARALLEL_HUGO" ]]; then
-    if [[ -n "$CI" ]]; then
+    if [[ -n "$CI" || -n "$CF_PAGES" ]]; then
         PARALLEL_HUGO="${PARALLEL_HUGO_CI:-false}"
     else
         PARALLEL_HUGO="${PARALLEL_HUGO_LOCAL:-false}"

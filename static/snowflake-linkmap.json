@@ -1,4 +1,7 @@
 {
+  "packages": {
+    "flyteplugins.snowflake": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/"
+  },
   "identifiers": {
     "flyteplugins.snowflake.Snowflake": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflake/",
     "Snowflake": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflake/",

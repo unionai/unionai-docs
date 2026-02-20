@@ -7,7 +7,7 @@ if [[ $VERBOSE -eq 1 ]]; then
 fi
 
 # In CI, skip conversion and use committed files
-if [[ -n "$CI" ]]; then
+if [[ -n "$CI" || -n "$CF_PAGES" ]]; then
     echo "CI environment detected, skipping notebook conversion (using committed files)"
     exit 0
 fi
