@@ -9,25 +9,13 @@
 /include/                   @unionai/site-managers
 /static/                    @unionai/site-managers
 /data/run_on_union.yaml     @unionai/site-infra
-404.html.tmpl*              @unionai/site-managers
-config.*.toml               @unionai/site-managers
 hugo.site.toml              @unionai/site-managers
-redirects-*.csv             @unionai/site-managers
 
 #-----------------------------------
 # Infrastructure
+/infra/             @unionai/site-infra
 /data/              @unionai/site-infra
-/layouts/           @unionai/site-infra
-/scripts/           @unionai/site-infra
-/themes/            @unionai/site-infra
-/tools/             @unionai/site-infra
-/tools/             @unionai/site-infra
-/archetypes/        @unionai/site-infra
 Makefile*           @unionai/site-infra
-hugo.*.toml         @unionai/site-infra
-config.*.toml       @unionai/site-infra
-index.html.tmpl     @unionai/site-infra
-404.*               @unionai/site-infra
 APIS.md             @unionai/site-infra
 AUTHOR.md           @unionai/site-infra
 DEVELOPER.md        @unionai/site-infra

@@ -130,7 +130,7 @@ EOF
     echo "" >> "$file.new"
     cat "$tmp_file" \
         | sed -e "s#\($(basename "$file" .md).gen_files\)#./\1#" \
-        | NOTEBOOK_LINK="$nb_repo_link" uv run --with htmltabletomd python3 tools/jupyter_generator/markdown_cleanup.py \
+        | NOTEBOOK_LINK="$nb_repo_link" uv run --with htmltabletomd python3 infra/tools/jupyter_generator/markdown_cleanup.py \
         >> "$file.new"
 
     # Replace original file and clean up

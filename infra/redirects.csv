@@ -1145,3 +1145,7 @@ www.union.ai/docs/v2/byoc/user-guide/first-project,https://www.union.ai/docs/v2/
 www.union.ai/docs/v2/flyte/user-guide/first-project,https://www.union.ai/docs/v2/flyte/user-guide/basic-project,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/v2/selfmanaged/user-guide/first-project,https://www.union.ai/docs/v2/selfmanaged/user-guide/basic-project,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/v2/serverless/user-guide/first-project,https://www.union.ai/docs/v2/serverless/user-guide/basic-project,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/docs/v1/byoc/api-reference/plugins/airflow/packages/flytekitplugins.airflow.agent,https://www.union.ai/docs/v1/byoc/api-reference/plugins/airflow/packages/flytekitplugins.airflow.connector,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/docs/v1/flyte/api-reference/plugins/airflow/packages/flytekitplugins.airflow.agent,https://www.union.ai/docs/v1/flyte/api-reference/plugins/airflow/packages/flytekitplugins.airflow.connector,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/docs/v1/selfmanaged/api-reference/plugins/airflow/packages/flytekitplugins.airflow.agent,https://www.union.ai/docs/v1/selfmanaged/api-reference/plugins/airflow/packages/flytekitplugins.airflow.connector,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/docs/v1/serverless/api-reference/plugins/airflow/packages/flytekitplugins.airflow.agent,https://www.union.ai/docs/v1/serverless/api-reference/plugins/airflow/packages/flytekitplugins.airflow.connector,302,TRUE,FALSE,TRUE,TRUE

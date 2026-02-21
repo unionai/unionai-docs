@@ -4,10 +4,10 @@
 # Delegates actual generation to Python scripts.
 #
 # Examples:
-#   make -f Makefile.api.sdk                       # Full build with fresh venv
-#   make -f Makefile.api.sdk SKIP_VENV_SETUP=true  # Use current environment
-#   make -f Makefile.api.sdk sdks                  # SDK docs only
-#   make -f Makefile.api.sdk clis                  # CLI docs only
+#   make -f infra/Makefile.api.sdk                       # Full build with fresh venv
+#   make -f infra/Makefile.api.sdk SKIP_VENV_SETUP=true  # Use current environment
+#   make -f infra/Makefile.api.sdk sdks                  # SDK docs only
+#   make -f infra/Makefile.api.sdk clis                  # CLI docs only
 
 SKIP_VENV_SETUP ?= false
 
@@ -16,11 +16,11 @@ all: sdks clis clean-venv
 
 .PHONY: sdks
 sdks:
-	@SKIP_VENV_SETUP=$(SKIP_VENV_SETUP) uv run tools/api_sdk_generate.py
+	@SKIP_VENV_SETUP=$(SKIP_VENV_SETUP) uv run infra/tools/api_sdk_generate.py
 
 .PHONY: clis
 clis:
-	@SKIP_VENV_SETUP=$(SKIP_VENV_SETUP) uv run tools/api_cli_generate.py
+	@SKIP_VENV_SETUP=$(SKIP_VENV_SETUP) uv run infra/tools/api_cli_generate.py
 
 .PHONY: clean-venv
 clean-venv:
@@ -32,7 +32,7 @@ endif
 
 .PHONY: clean
 clean:
-	@uv run tools/clean_generated.py
+	@uv run infra/tools/clean_generated.py
 
 .PHONY: help
 help:

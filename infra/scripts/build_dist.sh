@@ -11,8 +11,10 @@ fi
 
 echo "Environment: CI=${CI:-<unset>} CF_PAGES=${CF_PAGES:-<unset>}"
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
 export BUILD_TIMER_FILE=$(mktemp)
-source scripts/build_timer.sh
+source "$SCRIPT_DIR/build_timer.sh"
 
 # Always print summary, even on failure
 trap 'build_summary' EXIT

@@ -21,6 +21,8 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Set
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _repo import get_repo_root, INFRA_ROOT
 
 # Makefile include that defines VERSION
 MAKEFILE_INC = 'makefile.inc'
@@ -28,7 +30,7 @@ MAKEFILE_INC = 'makefile.inc'
 # Hugo variant config file pattern: config.{variant}.toml
 VARIANT_CONFIG_GLOB = 'config.*.toml'
 
-# Default files
+# Default files (in infra/)
 REDIRECTS_FILE = 'redirects.csv'
 EXCLUDE_FILE = '.redirects-exclude'
 
@@ -44,13 +46,13 @@ def read_version(repo_path: Path) -> str:
 
 
 def read_variants(repo_path: Path) -> List[str]:
-    """Read variant names from config.{variant}.toml files."""
+    """Read variant names from config.{variant}.toml files in infra/."""
     variants = sorted(
         p.stem.split('.', 1)[1]
-        for p in repo_path.glob(VARIANT_CONFIG_GLOB)
+        for p in INFRA_ROOT.glob(VARIANT_CONFIG_GLOB)
     )
     if not variants:
-        print(f"Error: no {VARIANT_CONFIG_GLOB} files found in {repo_path}",
+        print(f"Error: no {VARIANT_CONFIG_GLOB} files found in {INFRA_ROOT}",
               file=sys.stderr)
         sys.exit(1)
     return variants
@@ -161,7 +163,7 @@ def detect_deleted_files(repo_path: Path) -> List[str]:
 
 def load_exclude_patterns(repo_path: Path) -> List[str]:
     """Load exclusion patterns from .redirects-exclude."""
-    exclude_path = repo_path / EXCLUDE_FILE
+    exclude_path = INFRA_ROOT / EXCLUDE_FILE
     if not exclude_path.exists():
         return []
 
@@ -186,7 +188,7 @@ def is_excluded(path: str, patterns: List[str]) -> bool:
 
 
 def main() -> int:
-    repo_path = Path(__file__).parent.parent.parent
+    repo_path = get_repo_root()
     version = read_version(repo_path)
     variants = read_variants(repo_path)
 
@@ -255,7 +257,7 @@ def main() -> int:
         return 0
 
     # Load existing redirects
-    redirects = load_existing_redirects(repo_path / REDIRECTS_FILE)
+    redirects = load_existing_redirects(INFRA_ROOT / REDIRECTS_FILE)
     print(f"  Loaded {len(redirects)} existing redirects from {REDIRECTS_FILE}")
 
     # Check each deleted file for redirects across all variants

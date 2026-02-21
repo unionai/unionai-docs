@@ -1,4 +1,8 @@
 {
+  "packages": {
+    "flyteplugins.polars": "/api-reference/integrations/polars/packages/flyteplugins.polars/",
+    "flyteplugins.polars.df_transformer": "/api-reference/integrations/polars/packages/flyteplugins.polars.df_transformer/"
+  },
   "identifiers": {
     "flyteplugins.polars.df_transformer.ParquetToPolarsDecodingHandler": "/api-reference/integrations/polars/packages/flyteplugins.polars.df_transformer/parquettopolarsdecodinghandler/",
     "ParquetToPolarsDecodingHandler": "/api-reference/integrations/polars/packages/flyteplugins.polars.df_transformer/parquettopolarsdecodinghandler/",

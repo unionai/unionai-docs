@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: [redirects.csv]
+    paths: [infra/redirects.csv]
 
 jobs:
   deploy-redirects:
@@ -24,4 +24,4 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_LIST_ID: ${{ secrets.CLOUDFLARE_LIST_ID }}
-        run: python3 tools/redirect_generator/deploy_redirects.py
+        run: python3 infra/tools/redirect_generator/deploy_redirects.py
