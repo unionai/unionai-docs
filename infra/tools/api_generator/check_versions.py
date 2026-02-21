@@ -129,6 +129,7 @@ def check_all(config: dict) -> list[dict]:
             "plugin": plugin["plugin"],
             "name": plugin["name"],
             "title": plugin["title"],
+            "install": plugin.get("install"),
             "extras": plugin.get("extras", []),
             "committed": committed,
             "latest": latest,
@@ -216,7 +217,10 @@ def regenerate(results: list[dict]) -> None:
                 "make", "-f", "infra/Makefile.api.plugins",
                 f"PLUGIN={r['plugin']}", f"TITLE={r['title']}", f"NAME={r['name']}",
             ]
-            if r.get("extras"):
+            # Determine the install spec: explicit install field > extras > default
+            if r.get("install"):
+                cmd.append(f"INSTALL={r['install']}")
+            elif r.get("extras"):
                 extras_str = ",".join(r["extras"])
                 cmd.append(f"INSTALL={r['package']}[{extras_str}]")
             subprocess.run(cmd, cwd=REPO_ROOT, check=True)
