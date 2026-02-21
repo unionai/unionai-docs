@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.envd.image_builder
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -41,9 +41,9 @@ def create_envd_config(
     image_spec: flytekit.image_spec.image_spec.ImageSpec,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | |
 
 #### envd_context_switch()
 
@@ -52,9 +52,9 @@ def envd_context_switch(
     registry: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `registry` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `registry` | `str` | |
 
 #### execute_command()
 
@@ -63,13 +63,14 @@ def execute_command(
     command: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `command` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `command` | `str` | |
 
 ## flytekitplugins.envd.image_builder.EnvdImageSpecBuilder
 
 This class is used to build a docker image using envd.
+
 
 
 ### Methods
@@ -91,9 +92,9 @@ Build the docker image and push it to the registry.
 
 
 
-| Parameter | Type |
-|-|-|
-| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | image spec of the task. |
 
 #### should_build()
 
@@ -106,7 +107,7 @@ Whether or not the builder should build the ImageSpec.
 
 
 
-| Parameter | Type |
-|-|-|
-| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | image spec of the task. |
 

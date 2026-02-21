@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.huggingface.sd_transformers
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,8 +14,8 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`HuggingFaceDatasetRenderer`](.././flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformershuggingfacedatasetrenderer) | The datasets. |
-| [`HuggingFaceDatasetToParquetEncodingHandler`](.././flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformershuggingfacedatasettoparquetencodinghandler) | Helper class that provides a standard way to create an ABC using. |
-| [`ParquetToHuggingFaceDatasetDecodingHandler`](.././flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformersparquettohuggingfacedatasetdecodinghandler) | Helper class that provides a standard way to create an ABC using. |
+| [`HuggingFaceDatasetToParquetEncodingHandler`](.././flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformershuggingfacedatasettoparquetencodinghandler) |  |
+| [`ParquetToHuggingFaceDatasetDecodingHandler`](.././flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformersparquettohuggingfacedatasetdecodinghandler) |  |
 
 ### Variables
 
@@ -26,6 +26,7 @@ layout: py_api
 ## flytekitplugins.huggingface.sd_transformers.HuggingFaceDatasetRenderer
 
 The datasets.Dataset printable representation is saved to HTML.
+
 
 
 ### Methods
@@ -42,15 +43,11 @@ def to_html(
     df: datasets.arrow_dataset.Dataset,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `df` | `datasets.arrow_dataset.Dataset` |
+| Parameter | Type | Description |
+|-|-|-|
+| `df` | `datasets.arrow_dataset.Dataset` | |
 
 ## flytekitplugins.huggingface.sd_transformers.HuggingFaceDatasetToParquetEncodingHandler
-
-Helper class that provides a standard way to create an ABC using
-inheritance.
-
 
 ```python
 def HuggingFaceDatasetToParquetEncodingHandler()
@@ -62,6 +59,14 @@ flytekit type engine is trying to convert into a Flyte Literal. For the other wa
 the StructuredDatasetEncoder
 
 
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
 
 ### Methods
 
@@ -77,7 +82,7 @@ def encode(
     ctx: flytekit.core.context_manager.FlyteContext,
     structured_dataset: flytekit.types.structured.structured_dataset.StructuredDataset,
     structured_dataset_type: flytekit.models.types.StructuredDatasetType,
-) -> n: This function should return a StructuredDataset literal object. Do not confuse this with the
+) -> flytekit.models.literals.StructuredDataset
 ```
 Even if the user code returns a plain dataframe instance, the dataset transformer engine will wrap the
 incoming dataframe with defaults set for that dataframe
@@ -87,25 +92,13 @@ the
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `structured_dataset` | `flytekit.types.structured.structured_dataset.StructuredDataset` |
-| `structured_dataset_type` | `flytekit.models.types.StructuredDatasetType` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `structured_dataset` | `flytekit.types.structured.structured_dataset.StructuredDataset` | This is a StructuredDataset wrapper object. See more info above. |
+| `structured_dataset_type` | `flytekit.models.types.StructuredDatasetType` | This the StructuredDatasetType, as found in the LiteralType of the interface of the task that invoked this encoding call. It is passed along to encoders so that authors of encoders can include it in the returned literals.StructuredDataset. See the IDL for more information on why this literal in particular carries the type information along with it. If the encoder doesn't supply it, it will also be filled in after the encoder runs by the transformer engine. :return: This function should return a StructuredDataset literal object. Do not confuse this with the StructuredDataset wrapper class used as input to this function - that is the user facing Python class. This function needs to return the IDL StructuredDataset. |
 
 ## flytekitplugins.huggingface.sd_transformers.ParquetToHuggingFaceDatasetDecodingHandler
-
-Helper class that provides a standard way to create an ABC using
-inheritance.
-
 
 ```python
 def ParquetToHuggingFaceDatasetDecodingHandler()
@@ -116,6 +109,14 @@ dataframe libraries. This is the decoder interface, meaning it is used when ther
 and we have to get a Python value out of it. For the other way, see the StructuredDatasetEncoder
 
 
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
 
 ### Methods
 
@@ -131,24 +132,16 @@ def decode(
     ctx: flytekit.core.context_manager.FlyteContext,
     flyte_value: flytekit.models.literals.StructuredDataset,
     current_task_metadata: flytekit.models.literals.StructuredDatasetMetadata,
-) -> n: This function can either return an instance of the dataframe that this decoder handles, or an iterator
+) -> datasets.arrow_dataset.Dataset
 ```
 This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal
 value into a Python instance.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `flyte_value` | `flytekit.models.literals.StructuredDataset` |
-| `current_task_metadata` | `flytekit.models.literals.StructuredDatasetMetadata` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `flyte_value` | `flytekit.models.literals.StructuredDataset` | This will be a Flyte IDL StructuredDataset Literal - do not confuse this with the StructuredDataset class defined also in this module. |
+| `current_task_metadata` | `flytekit.models.literals.StructuredDatasetMetadata` | Metadata object containing the type (and columns if any) for the currently executing task. This type may have more or less information than the type information bundled inside the incoming flyte_value. :return: This function can either return an instance of the dataframe that this decoder handles, or an iterator of those dataframes. |
 

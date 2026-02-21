@@ -1,0 +1,19 @@
+{
+  "packages": {
+    "flytekitplugins.pandera": "/api-reference/plugins/pandera/packages/flytekitplugins.pandera/",
+    "flytekitplugins.pandera.config": "/api-reference/plugins/pandera/packages/flytekitplugins.pandera.config/",
+    "flytekitplugins.pandera.pandas_renderer": "/api-reference/plugins/pandera/packages/flytekitplugins.pandera.pandas_renderer/",
+    "flytekitplugins.pandera.pandas_transformer": "/api-reference/plugins/pandera/packages/flytekitplugins.pandera.pandas_transformer/"
+  },
+  "identifiers": {
+    "flytekitplugins.pandera.config.ValidationConfig": "/api-reference/plugins/pandera/packages/flytekitplugins.pandera.config/#flytekitpluginspanderaconfigvalidationconfig",
+    "ValidationConfig": "/api-reference/plugins/pandera/packages/flytekitplugins.pandera.config/#flytekitpluginspanderaconfigvalidationconfig",
+    "flytekitplugins.pandera.pandas_renderer.PandasReport": "/api-reference/plugins/pandera/packages/flytekitplugins.pandera.pandas_renderer/#flytekitpluginspanderapandas_rendererpandasreport",
+    "PandasReport": "/api-reference/plugins/pandera/packages/flytekitplugins.pandera.pandas_renderer/#flytekitpluginspanderapandas_rendererpandasreport",
+    "flytekitplugins.pandera.pandas_renderer.PandasReportRenderer": "/api-reference/plugins/pandera/packages/flytekitplugins.pandera.pandas_renderer/#flytekitpluginspanderapandas_rendererpandasreportrenderer",
+    "PandasReportRenderer": "/api-reference/plugins/pandera/packages/flytekitplugins.pandera.pandas_renderer/#flytekitpluginspanderapandas_rendererpandasreportrenderer",
+    "flytekitplugins.pandera.pandas_transformer.PanderaPandasTransformer": "/api-reference/plugins/pandera/packages/flytekitplugins.pandera.pandas_transformer/#flytekitpluginspanderapandas_transformerpanderapandastransformer",
+    "PanderaPandasTransformer": "/api-reference/plugins/pandera/packages/flytekitplugins.pandera.pandas_transformer/#flytekitpluginspanderapandas_transformerpanderapandastransformer"
+  },
+  "methods": {}
+}

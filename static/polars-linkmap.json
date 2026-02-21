@@ -1,0 +1,19 @@
+{
+  "packages": {
+    "flytekitplugins.polars": "/api-reference/plugins/polars/packages/flytekitplugins.polars/",
+    "flytekitplugins.polars.sd_transformers": "/api-reference/plugins/polars/packages/flytekitplugins.polars.sd_transformers/"
+  },
+  "identifiers": {
+    "flytekitplugins.polars.sd_transformers.ParquetToPolarsDataFrameDecodingHandler": "/api-reference/plugins/polars/packages/flytekitplugins.polars.sd_transformers/#flytekitpluginspolarssd_transformersparquettopolarsdataframedecodinghandler",
+    "ParquetToPolarsDataFrameDecodingHandler": "/api-reference/plugins/polars/packages/flytekitplugins.polars.sd_transformers/#flytekitpluginspolarssd_transformersparquettopolarsdataframedecodinghandler",
+    "flytekitplugins.polars.sd_transformers.ParquetToPolarsLazyFrameDecodingHandler": "/api-reference/plugins/polars/packages/flytekitplugins.polars.sd_transformers/#flytekitpluginspolarssd_transformersparquettopolarslazyframedecodinghandler",
+    "ParquetToPolarsLazyFrameDecodingHandler": "/api-reference/plugins/polars/packages/flytekitplugins.polars.sd_transformers/#flytekitpluginspolarssd_transformersparquettopolarslazyframedecodinghandler",
+    "flytekitplugins.polars.sd_transformers.PolarsDataFrameRenderer": "/api-reference/plugins/polars/packages/flytekitplugins.polars.sd_transformers/#flytekitpluginspolarssd_transformerspolarsdataframerenderer",
+    "PolarsDataFrameRenderer": "/api-reference/plugins/polars/packages/flytekitplugins.polars.sd_transformers/#flytekitpluginspolarssd_transformerspolarsdataframerenderer",
+    "flytekitplugins.polars.sd_transformers.PolarsDataFrameToParquetEncodingHandler": "/api-reference/plugins/polars/packages/flytekitplugins.polars.sd_transformers/#flytekitpluginspolarssd_transformerspolarsdataframetoparquetencodinghandler",
+    "PolarsDataFrameToParquetEncodingHandler": "/api-reference/plugins/polars/packages/flytekitplugins.polars.sd_transformers/#flytekitpluginspolarssd_transformerspolarsdataframetoparquetencodinghandler",
+    "flytekitplugins.polars.sd_transformers.PolarsLazyFrameToParquetEncodingHandler": "/api-reference/plugins/polars/packages/flytekitplugins.polars.sd_transformers/#flytekitpluginspolarssd_transformerspolarslazyframetoparquetencodinghandler",
+    "PolarsLazyFrameToParquetEncodingHandler": "/api-reference/plugins/polars/packages/flytekitplugins.polars.sd_transformers/#flytekitpluginspolarssd_transformerspolarslazyframetoparquetencodinghandler"
+  },
+  "methods": {}
+}

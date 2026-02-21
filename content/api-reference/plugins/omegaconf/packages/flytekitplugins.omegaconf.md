@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.omegaconf
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -8,6 +8,12 @@ layout: py_api
 # flytekitplugins.omegaconf
 
 ## Directory
+
+### Classes
+
+| Class | Description |
+|-|-|
+| [`OmegaConfTransformerMode`](.././flytekitplugins.omegaconf#flytekitpluginsomegaconfomegaconftransformermode) | Operation Mode indicating whether a (potentially unannotated) DictConfig object or a structured config using the. |
 
 ### Methods
 
@@ -38,9 +44,9 @@ def local_transformer_mode(
 Context manager to set a local serialization mode for OmegaConf objects.
 
 
-| Parameter | Type |
-|-|-|
-| `mode` | `<enum 'OmegaConfTransformerMode'>` |
+| Parameter | Type | Description |
+|-|-|-|
+| `mode` | `<enum 'OmegaConfTransformerMode'>` | |
 
 #### set_transformer_mode()
 
@@ -52,7 +58,17 @@ def set_transformer_mode(
 Set the global serialization mode for OmegaConf objects.
 
 
-| Parameter | Type |
-|-|-|
-| `mode` | `<enum 'OmegaConfTransformerMode'>` |
+| Parameter | Type | Description |
+|-|-|-|
+| `mode` | `<enum 'OmegaConfTransformerMode'>` | |
+
+## flytekitplugins.omegaconf.OmegaConfTransformerMode
+
+Operation Mode indicating whether a (potentially unannotated) DictConfig object or a structured config using the
+underlying dataclass is returned.
+
+Note: We define a single shared config across all transformers as recursive calls should refer to the same config
+Note: The latter requires the use of structured configs.
+
+
 

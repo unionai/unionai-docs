@@ -1,0 +1,25 @@
+packages:
+  flytekitplugins.inference: /api-reference/plugins/inference/packages/flytekitplugins.inference/
+  flytekitplugins.inference.nim: /api-reference/plugins/inference/packages/flytekitplugins.inference.nim/
+  flytekitplugins.inference.nim.serve: /api-reference/plugins/inference/packages/flytekitplugins.inference.nim.serve/
+  flytekitplugins.inference.ollama: /api-reference/plugins/inference/packages/flytekitplugins.inference.ollama/
+  flytekitplugins.inference.ollama.serve: /api-reference/plugins/inference/packages/flytekitplugins.inference.ollama.serve/
+  flytekitplugins.inference.sidecar_template: /api-reference/plugins/inference/packages/flytekitplugins.inference.sidecar_template/
+  flytekitplugins.inference.vllm: /api-reference/plugins/inference/packages/flytekitplugins.inference.vllm/
+  flytekitplugins.inference.vllm.serve: /api-reference/plugins/inference/packages/flytekitplugins.inference.vllm.serve/
+identifiers:
+  flytekitplugins.inference.nim.serve.NIM: /api-reference/plugins/inference/packages/flytekitplugins.inference.nim.serve/#flytekitpluginsinferencenimservenim
+  NIM: /api-reference/plugins/inference/packages/flytekitplugins.inference.nim.serve/#flytekitpluginsinferencenimservenim
+  flytekitplugins.inference.nim.serve.NIMSecrets: /api-reference/plugins/inference/packages/flytekitplugins.inference.nim.serve/#flytekitpluginsinferencenimservenimsecrets
+  NIMSecrets: /api-reference/plugins/inference/packages/flytekitplugins.inference.nim.serve/#flytekitpluginsinferencenimservenimsecrets
+  flytekitplugins.inference.ollama.serve.Model: /api-reference/plugins/inference/packages/flytekitplugins.inference.ollama.serve/#flytekitpluginsinferenceollamaservemodel
+  Model: /api-reference/plugins/inference/packages/flytekitplugins.inference.ollama.serve/#flytekitpluginsinferenceollamaservemodel
+  flytekitplugins.inference.ollama.serve.Ollama: /api-reference/plugins/inference/packages/flytekitplugins.inference.ollama.serve/#flytekitpluginsinferenceollamaserveollama
+  Ollama: /api-reference/plugins/inference/packages/flytekitplugins.inference.ollama.serve/#flytekitpluginsinferenceollamaserveollama
+  flytekitplugins.inference.sidecar_template.ModelInferenceTemplate: /api-reference/plugins/inference/packages/flytekitplugins.inference.sidecar_template/#flytekitpluginsinferencesidecar_templatemodelinferencetemplate
+  ModelInferenceTemplate: /api-reference/plugins/inference/packages/flytekitplugins.inference.sidecar_template/#flytekitpluginsinferencesidecar_templatemodelinferencetemplate
+  flytekitplugins.inference.vllm.serve.HFSecret: /api-reference/plugins/inference/packages/flytekitplugins.inference.vllm.serve/#flytekitpluginsinferencevllmservehfsecret
+  HFSecret: /api-reference/plugins/inference/packages/flytekitplugins.inference.vllm.serve/#flytekitpluginsinferencevllmservehfsecret
+  flytekitplugins.inference.vllm.serve.VLLM: /api-reference/plugins/inference/packages/flytekitplugins.inference.vllm.serve/#flytekitpluginsinferencevllmservevllm
+  VLLM: /api-reference/plugins/inference/packages/flytekitplugins.inference.vllm.serve/#flytekitpluginsinferencevllmservevllm
+methods: {}

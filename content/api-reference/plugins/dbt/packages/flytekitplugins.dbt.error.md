@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.dbt.error
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -35,16 +35,17 @@ logs : list of str
     Logs produced by the command execution.
 
 
+
 ```python
 class DBTHandledError(
     message: str,
     logs: typing.List[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
-| `logs` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
+| `logs` | `typing.List[str]` | |
 
 ## flytekitplugins.dbt.error.DBTUnhandledError
 
@@ -65,14 +66,15 @@ logs : list of str
     Logs produced by the command execution.
 
 
+
 ```python
 class DBTUnhandledError(
     message: str,
     logs: typing.List[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
-| `logs` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
+| `logs` | `typing.List[str]` | |
 

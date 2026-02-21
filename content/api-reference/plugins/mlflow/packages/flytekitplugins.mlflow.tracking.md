@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.mlflow.tracking
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -33,10 +33,10 @@ def get_run_metrics(
 Extracts all metrics and returns a dictionary of metric name to the list of metric for the given run_id
 
 
-| Parameter | Type |
-|-|-|
-| `c` | `mlflow.tracking.client.MlflowClient` |
-| `run_id` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `c` | `mlflow.tracking.client.MlflowClient` | |
+| `run_id` | `str` | |
 
 #### get_run_params()
 
@@ -49,10 +49,10 @@ def get_run_params(
 Extracts all parameters and returns a dictionary of metric name to the list of metric for the given run_id
 
 
-| Parameter | Type |
-|-|-|
-| `c` | `mlflow.tracking.client.MlflowClient` |
-| `run_id` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `c` | `mlflow.tracking.client.MlflowClient` | |
+| `run_id` | `str` | |
 
 #### metric_to_df()
 
@@ -64,9 +64,9 @@ def metric_to_df(
 Converts mlflow Metric object to a dataframe of 2 columns ['timestamp', 'value']
 
 
-| Parameter | Type |
-|-|-|
-| `metrics` | `typing.List[mlflow.entities.metric.Metric]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `metrics` | `typing.List[mlflow.entities.metric.Metric]` | |
 
 #### mlflow_autolog()
 
@@ -104,11 +104,11 @@ by default, or a user-provided ``experiment_name`` in the decorator.
 
 
 
-| Parameter | Type |
-|-|-|
-| `fn` |  |
-| `framework` |  |
-| `experiment_name` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `fn` |  | Function to generate autologs for. |
+| `framework` |  | The mlflow module to use for autologging |
+| `experiment_name` | `typing.Optional[str]` | The MLFlow experiment name. If not provided, uses the Flyte execution name. |
 
 #### plot_metrics()
 
@@ -117,7 +117,7 @@ def plot_metrics(
     metrics: typing.Dict[str, pandas.core.frame.DataFrame],
 ) -> typing.Optional[plotly.graph_objs._figure.Figure]
 ```
-| Parameter | Type |
-|-|-|
-| `metrics` | `typing.Dict[str, pandas.core.frame.DataFrame]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `metrics` | `typing.Dict[str, pandas.core.frame.DataFrame]` | |
 

@@ -1,6 +1,6 @@
 ---
 title: union.actor
-version: 0.1.201
+version: 0.1.202
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---

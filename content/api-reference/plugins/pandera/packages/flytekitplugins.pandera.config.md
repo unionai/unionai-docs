@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.pandera.config
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -23,7 +23,7 @@ class ValidationConfig(
     on_error: typing.Literal['raise', 'warn'],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `on_error` | `typing.Literal['raise', 'warn']` |
+| Parameter | Type | Description |
+|-|-|-|
+| `on_error` | `typing.Literal['raise', 'warn']` | |
 

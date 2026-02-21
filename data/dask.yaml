@@ -1,0 +1,18 @@
+packages:
+  flytekitplugins.dask: /api-reference/plugins/dask/packages/flytekitplugins.dask/
+  flytekitplugins.dask.models: /api-reference/plugins/dask/packages/flytekitplugins.dask.models/
+  flytekitplugins.dask.task: /api-reference/plugins/dask/packages/flytekitplugins.dask.task/
+identifiers:
+  flytekitplugins.dask.models.DaskJob: /api-reference/plugins/dask/packages/flytekitplugins.dask.models/#flytekitpluginsdaskmodelsdaskjob
+  DaskJob: /api-reference/plugins/dask/packages/flytekitplugins.dask.models/#flytekitpluginsdaskmodelsdaskjob
+  flytekitplugins.dask.models.Scheduler: /api-reference/plugins/dask/packages/flytekitplugins.dask.models/#flytekitpluginsdaskmodelsscheduler
+  Scheduler: /api-reference/plugins/dask/packages/flytekitplugins.dask.task/#flytekitpluginsdasktaskscheduler
+  flytekitplugins.dask.models.WorkerGroup: /api-reference/plugins/dask/packages/flytekitplugins.dask.models/#flytekitpluginsdaskmodelsworkergroup
+  WorkerGroup: /api-reference/plugins/dask/packages/flytekitplugins.dask.task/#flytekitpluginsdasktaskworkergroup
+  flytekitplugins.dask.task.Dask: /api-reference/plugins/dask/packages/flytekitplugins.dask.task/#flytekitpluginsdasktaskdask
+  Dask: /api-reference/plugins/dask/packages/flytekitplugins.dask.task/#flytekitpluginsdasktaskdask
+  flytekitplugins.dask.task.DaskTask: /api-reference/plugins/dask/packages/flytekitplugins.dask.task/#flytekitpluginsdasktaskdasktask
+  DaskTask: /api-reference/plugins/dask/packages/flytekitplugins.dask.task/#flytekitpluginsdasktaskdasktask
+  flytekitplugins.dask.task.Scheduler: /api-reference/plugins/dask/packages/flytekitplugins.dask.task/#flytekitpluginsdasktaskscheduler
+  flytekitplugins.dask.task.WorkerGroup: /api-reference/plugins/dask/packages/flytekitplugins.dask.task/#flytekitpluginsdasktaskworkergroup
+methods: {}

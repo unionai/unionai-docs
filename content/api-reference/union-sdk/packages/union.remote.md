@@ -1,6 +1,6 @@
 ---
 title: union.remote
-version: 0.1.201
+version: 0.1.202
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -120,6 +120,7 @@ Initialize a FlyteRemote object.
 | [`activate_launchplan()`](#activate_launchplan) | Given a launchplan, activate it, all previous versions are deactivated. |
 | [`approve()`](#approve) |  |
 | [`auto()`](#auto) |  |
+| [`close_async_channel()`](#close_async_channel) | Close the async gRPC channel if one was created. |
 | [`create_artifact()`](#create_artifact) | Create an artifact in FlyteAdmin. |
 | [`deactivate_launchplan()`](#deactivate_launchplan) | Given a launchplan, deactivate it, all previous versions are deactivated. |
 | [`deploy_app()`](#deploy_app) | Deploy an application. |
@@ -231,6 +232,14 @@ def auto(
 | `data_upload_location` | `str` | |
 | `interactive_mode_enabled` | `bool` | |
 | `kwargs` | `**kwargs` | |
+
+#### close_async_channel()
+
+```python
+def close_async_channel()
+```
+Close the async gRPC channel if one was created.
+
 
 #### create_artifact()
 
