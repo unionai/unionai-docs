@@ -11,7 +11,7 @@ PROCESS_CALLABLES = [
 
 def is_callable(name: str, member: Any, parent_name: str) -> bool:
     """Check if a member is a callable object (i.e., has a __call__ method)."""
-    return hasattr(member, "__call__") and f"{parent_name}.{name}" in PROCESS_CALLABLES
+    return f"{parent_name}.{name}" in PROCESS_CALLABLES and hasattr(member, "__call__")
 
 def parse_callable(name: str, member: Any, parent_name: str = None) -> Optional[MethodInfo]:
     """Parse a callable member and extract its information."""

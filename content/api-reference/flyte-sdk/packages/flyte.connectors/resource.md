@@ -28,7 +28,7 @@ Attributes
 
 ```python
 class Resource(
-    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x109fe74d0>,
+    phase: google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper,
     message: typing.Optional[str],
     log_links: typing.Optional[typing.List[flyteidl2.core.execution_pb2.TaskLog]],
     outputs: typing.Optional[typing.Dict[str, typing.Any]],
@@ -37,7 +37,7 @@ class Resource(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x109fe74d0>` | |
+| `phase` | `google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper` | |
 | `message` | `typing.Optional[str]` | |
 | `log_links` | `typing.Optional[typing.List[flyteidl2.core.execution_pb2.TaskLog]]` | |
 | `outputs` | `typing.Optional[typing.Dict[str, typing.Any]]` | |

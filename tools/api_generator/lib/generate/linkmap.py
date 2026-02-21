@@ -4,6 +4,7 @@ import json
 import os
 import yaml
 
+from lib.generate.helper import generate_anchor_from_name
 from lib.ptypes import ClassPackageMap, PackageInfo
 
 
@@ -13,6 +14,7 @@ def generate_linkmap_metadata(
     pkg_root: str,
     api_name: str,
     include_short_names: bool = False,
+    flatten: bool = False,
 ):
     # Skip the content root (remove first path component: content/a/b/c -> a/b/c)
     site_root = "/".join(pkg_root.split("/")[1:])
@@ -35,7 +37,10 @@ def generate_linkmap_metadata(
     identifiers_dict = {}
     for pkg in classes:
         for clz in classes[pkg]:
-            url = f"/{site_root}/{pkg}/{clz.split('.')[-1].lower()}/"
+            if flatten:
+                url = f"/{site_root}/{pkg}/#{generate_anchor_from_name(clz)}"
+            else:
+                url = f"/{site_root}/{pkg}/{clz.split('.')[-1].lower()}/"
             # Add fully qualified name
             identifiers_dict[clz] = url
             # Add short name for easier matching in docs (plugins only)
@@ -56,11 +61,12 @@ def generate_linkmap_metadata(
     with open(f"data/{api_name}.yaml", "w") as file:
         yaml.dump(metadata, file, default_flow_style=False, sort_keys=False)
 
-    # Write JSON file for client-side use (identifiers and methods only)
-    os.makedirs("static", exist_ok=True)
+    # Write JSON file for client-side use
     client_linkmap = {
+        "packages": packages_dict,
         "identifiers": identifiers_dict,
         "methods": methods_dict
     }
+    os.makedirs("static", exist_ok=True)
     with open(f"static/{api_name}-linkmap.json", "w") as file:
         json.dump(client_linkmap, file, indent=2)

@@ -166,8 +166,11 @@ def get_variables(info, pkg) -> List[VariableInfo]:
 
 
 def should_include(name: str, obj: Any, package: ModuleType, filter=None) -> bool:
-    if filter is not None and not filter(obj):
-        # print(f"[should_include] Skipping {name} as it doesn't match filter", file=stderr)
+    try:
+        if filter is not None and not filter(obj):
+            # print(f"[should_include] Skipping {name} as it doesn't match filter", file=stderr)
+            return False
+    except (ImportError, Exception):
         return False
 
     all_allow_list = getattr(package, "__all__", None)
@@ -193,7 +196,7 @@ def should_include(name: str, obj: Any, package: ModuleType, filter=None) -> boo
             if all_allow_list is None or name not in all_allow_list:
                 # print(f"[should_include] Resource {name} is {obj.__module__} imported @ [{all_allow_list}]", file=stderr)
                 return False
-    except AttributeError:
+    except (AttributeError, ImportError, Exception):
         pass
 
     # print(f"[should_include] Keeping {name}", file=stderr)

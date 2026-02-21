@@ -44,6 +44,9 @@ def main() -> None:
 
     # --- SDK generated content ---
     for sdk in config.get("sdks", []):
+        if sdk.get("frozen", False):
+            print(f"Skipping {sdk['generator_name']}: frozen (committed content)")
+            continue
         output = REPO_ROOT / sdk["output_folder"]
         packages_dir = output / "packages"
         classes_dir = output / "classes"
@@ -57,6 +60,8 @@ def main() -> None:
 
     # --- CLI generated content ---
     for cli in config.get("clis", []):
+        if cli.get("frozen", False):
+            continue
         if "output_file" in cli:
             remove_path(REPO_ROOT / cli["output_file"], cli["output_file"])
         elif "output_dir" in cli:
@@ -67,6 +72,9 @@ def main() -> None:
     output_base = plugins_config.get("output_base", "content/api-reference/integrations")
 
     for plugin in config.get("plugins", []):
+        if plugin.get("frozen", False):
+            print(f"Skipping plugin {plugin['name']}: frozen (committed content)")
+            continue
         name = plugin["name"]
         plugin_dir = REPO_ROOT / output_base / name
         remove_path(plugin_dir, f"{output_base}/{name}")
