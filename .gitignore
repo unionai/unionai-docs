@@ -21,12 +21,12 @@ meta_descriptions.json
 
 # Ignore test file
 content/test.md
-layouts/**/test.html
-themes/**/test.html
+infra/layouts/**/test.html
+infra/themes/**/test.html
 test*.html
 
 # Tools
-tools/link_checker/config.yml
+infra/tools/link_checker/config.yml
 link_checker_output.json
 data/flytesdk.yaml
 static/flytesdk-linkmap.json

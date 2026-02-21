@@ -47,7 +47,7 @@ hugo_extra_flags=""
 
 # --panicOnWarning makes all warnf calls fatal (not just errorf).
 # This is intentional: content issues should block deployment.
-hugo --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml,${hugo_build_toml} \
+hugo --config infra/hugo.toml,hugo.site.toml,infra/hugo.ver.toml,infra/config.${VARIANT}.toml,${hugo_build_toml} \
     --destination "${target}" --baseURL "${baseURL}" \
     --noBuildLock --panicOnWarning $hugo_extra_flags 2>&1 | tee "$run_log"
 

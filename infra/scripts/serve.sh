@@ -33,4 +33,5 @@ EOF
   exit 1
 fi
 
-caddy run --config scripts/Caddyfile --watch
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+caddy run --config "$SCRIPT_DIR/Caddyfile" --watch
