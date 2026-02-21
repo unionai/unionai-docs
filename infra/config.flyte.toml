@@ -1,5 +1,0 @@
-baseURL = '/docs/flyte/'
-
-[params]
-_merge = "deep"
-variant = "flyte"
