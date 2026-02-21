@@ -65,6 +65,8 @@ def get_generated_paths(config: dict, content_only: bool = False) -> List[str]:
 
     # SDK docs
     for sdk in config.get("sdks", []):
+        if sdk.get("frozen", False):
+            continue
         output = sdk["output_folder"]
         paths.append(f"{output}/packages")
         paths.append(f"{output}/classes")
@@ -75,6 +77,8 @@ def get_generated_paths(config: dict, content_only: bool = False) -> List[str]:
 
     # CLI docs
     for cli in config.get("clis", []):
+        if cli.get("frozen", False):
+            continue
         if "output_dir" in cli:
             paths.append(cli["output_dir"])
         elif "output_file" in cli:
@@ -84,6 +88,8 @@ def get_generated_paths(config: dict, content_only: bool = False) -> List[str]:
     plugins_config = config.get("plugins_config", {})
     output_base = plugins_config.get("output_base", "content/api-reference/integrations")
     for plugin in config.get("plugins", []):
+        if plugin.get("frozen", False):
+            continue
         name = plugin["name"]
         paths.append(f"{output_base}/{name}")
         if not content_only:
