@@ -72,31 +72,44 @@ def run_git_command(args: List[str], cwd: Path, quiet: bool = False) -> str:
     return result.stdout
 
 
-def resolve_main_ref(repo_path: Path) -> str:
-    """Resolve the main branch ref, preferring local 'main' then 'origin/main'."""
-    for ref in ['main', 'origin/main']:
+def resolve_production_ref(repo_path: Path) -> str:
+    """Resolve the production branch ref for the current version.
+
+    Both 'main' (v2) and 'v1' are production branches. Determine which one
+    to use based on the VERSION in makefile.inc, then resolve the ref.
+    """
+    version = read_version(repo_path)
+
+    if version == 'v1':
+        candidates = ['v1', 'origin/v1']
+    else:
+        candidates = ['main', 'origin/main']
+
+    for ref in candidates:
         result = run_git_command(['rev-parse', '--verify', ref], repo_path, quiet=True)
         if result.strip():
             return ref
-    print("Error: neither 'main' nor 'origin/main' ref found", file=sys.stderr)
+
+    print(f"Error: no production branch ref found for version {version} "
+          f"(tried {', '.join(candidates)})", file=sys.stderr)
     sys.exit(1)
 
 
 def get_published_files(repo_path: Path) -> Set[str]:
-    """Get all content files that have ever existed on main (i.e., were published)."""
-    main_ref = resolve_main_ref(repo_path)
-    # Files currently on main
+    """Get all content files that have ever existed on the production branch."""
+    prod_ref = resolve_production_ref(repo_path)
+    # Files currently on the production branch
     current = run_git_command(
-        ['ls-tree', '-r', '--name-only', main_ref, '--', 'content/'],
+        ['ls-tree', '-r', '--name-only', prod_ref, '--', 'content/'],
         repo_path
     )
-    # Files deleted on main (existed before but were removed)
-    deleted_on_main = run_git_command(
-        ['log', main_ref, '--diff-filter=D', '--name-only', '--format=', '--', 'content/'],
+    # Files deleted on the production branch (existed before but were removed)
+    deleted = run_git_command(
+        ['log', prod_ref, '--diff-filter=D', '--name-only', '--format=', '--', 'content/'],
         repo_path
     )
     published = set()
-    for output in [current, deleted_on_main]:
+    for output in [current, deleted]:
         for line in output.strip().split('\n'):
             line = line.strip()
             if line and line.endswith('.md'):
@@ -300,12 +313,12 @@ def main():
         print("No renames found")
         return 0
 
-    # Filter to only renames where the source was published on main
+    # Filter to only renames where the source was previously published
     published_files = get_published_files(repo_path)
     unpublished_renames = [(o, n) for o, n in renames if o not in published_files]
     renames = [(o, n) for o, n in renames if o in published_files]
     if unpublished_renames:
-        print(f"  Skipping {len(unpublished_renames)} renames of files never published on main")
+        print(f"  Skipping {len(unpublished_renames)} renames of files never published on {resolve_production_ref(repo_path)}")
 
     if not renames:
         print("No renames of published files found")
