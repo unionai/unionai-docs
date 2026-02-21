@@ -5,6 +5,11 @@
 # For site-specific settings, use hugo.site.toml.
 # For variant-specific settings, use config.<variant>.toml.
 
+# Directory remapping — Hugo runs from repo root, templates live in infra/
+layoutDir = "infra/layouts"
+archetypeDir = "infra/archetypes"
+themesDir = "infra/themes"
+
 timeout = "5m"
 languageCode = 'en-us'
 disableKinds = ["RSS"]

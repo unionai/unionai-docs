@@ -16,9 +16,9 @@
 #             e.g., "flyteplugins-<PLUGIN>[<EXTRAS>]"
 
 # Read config from api-packages.toml
-PLUGINS_OUTPUT_BASE := $(shell uv run tools/api_config.py plugins_config output_base)
-PLUGINS_DEFAULT_INCLUDE := $(shell uv run tools/api_config.py plugins_config default_include)
-PLUGINS_NO_FLATTEN := $(shell uv run tools/api_config.py plugins_config no_flatten)
+PLUGINS_OUTPUT_BASE := $(shell uv run infra/tools/api_config.py plugins_config output_base)
+PLUGINS_DEFAULT_INCLUDE := $(shell uv run infra/tools/api_config.py plugins_config default_include)
+PLUGINS_NO_FLATTEN := $(shell uv run infra/tools/api_config.py plugins_config no_flatten)
 NO_FLATTEN_FLAG := $(if $(filter true,$(PLUGINS_NO_FLATTEN)),--no-flatten true,)
 
 OUTPUT_FOLDER=$(PLUGINS_OUTPUT_BASE)/${NAME}
@@ -57,15 +57,15 @@ clean_api_data:
 .PHONY: parser
 parser: check_vars clean_api_data
 ifeq ($(SKIP_VENV_SETUP),false)
-	$(VENV_DIR)/bin/python tools/api_generator/parser --package ${PLUGIN} --output ${API_DATA} --all-only
+	$(VENV_DIR)/bin/python infra/tools/api_generator/parser --package ${PLUGIN} --output ${API_DATA} --all-only
 else
-	tools/api_generator/parser --package ${PLUGIN} --output ${API_DATA} --all-only
+	infra/tools/api_generator/parser --package ${PLUGIN} --output ${API_DATA} --all-only
 endif
 
 .PHONY: generate
 generate: check_vars clean_output_folder
 ifeq ($(SKIP_VENV_SETUP),false)
-	$(VENV_DIR)/bin/python tools/api_generator/generate \
+	$(VENV_DIR)/bin/python infra/tools/api_generator/generate \
 		--name ${NAME} \
 		--title "${TITLE}" \
 		--api "${API_DATA}" \
@@ -75,7 +75,7 @@ ifeq ($(SKIP_VENV_SETUP),false)
 		--variants "+flyte +byoc +selfmanaged +serverless" \
 		--output_dir "${OUTPUT_FOLDER}"
 else
-	tools/api_generator/generate \
+	infra/tools/api_generator/generate \
 		--name ${NAME} \
 		--title "${TITLE}" \
 		--api "${API_DATA}" \

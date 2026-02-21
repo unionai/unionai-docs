@@ -25,7 +25,9 @@ try:
 except ModuleNotFoundError:
     import tomli as tomllib  # type: ignore[no-redef]
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+from _repo import get_repo_root, INFRA_ROOT
+
+REPO_ROOT = get_repo_root()
 CONFIG_FILE = REPO_ROOT / "api-packages.toml"
 VENV_DIR = REPO_ROOT / ".venv"
 
@@ -99,7 +101,7 @@ def generate_go_cli(cli: dict) -> None:
     output_file = REPO_ROOT / cli["output_file"]
 
     # Use the gen-cli-docs script
-    gen_script = REPO_ROOT / "scripts" / "gen-cli-docs"
+    gen_script = INFRA_ROOT / "scripts" / "gen-cli-docs"
     if gen_script.exists():
         result = subprocess.run(
             [str(gen_script), binary],
@@ -122,7 +124,7 @@ def generate_go_cli(cli: dict) -> None:
         os.rename(tmp_file, output_file)
         print(f"  Generated {cli['output_file']}")
     else:
-        print(f"  Warning: scripts/gen-cli-docs not found, skipping {binary}")
+        print(f"  Warning: infra/scripts/gen-cli-docs not found, skipping {binary}")
 
 
 def main() -> None:
