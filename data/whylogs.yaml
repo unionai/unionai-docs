@@ -1,3 +1,10 @@
-packages: {}
-identifiers: {}
+packages:
+  flytekitplugins.whylogs: /api-reference/plugins/whylogs/packages/flytekitplugins.whylogs/
+identifiers:
+  flytekitplugins.whylogs.WhylogsConstraintsRenderer: /api-reference/plugins/whylogs/packages/flytekitplugins.whylogs/#flytekitpluginswhylogswhylogsconstraintsrenderer
+  WhylogsConstraintsRenderer: /api-reference/plugins/whylogs/packages/flytekitplugins.whylogs/#flytekitpluginswhylogswhylogsconstraintsrenderer
+  flytekitplugins.whylogs.WhylogsDatasetProfileTransformer: /api-reference/plugins/whylogs/packages/flytekitplugins.whylogs/#flytekitpluginswhylogswhylogsdatasetprofiletransformer
+  WhylogsDatasetProfileTransformer: /api-reference/plugins/whylogs/packages/flytekitplugins.whylogs/#flytekitpluginswhylogswhylogsdatasetprofiletransformer
+  flytekitplugins.whylogs.WhylogsSummaryDriftRenderer: /api-reference/plugins/whylogs/packages/flytekitplugins.whylogs/#flytekitpluginswhylogswhylogssummarydriftrenderer
+  WhylogsSummaryDriftRenderer: /api-reference/plugins/whylogs/packages/flytekitplugins.whylogs/#flytekitpluginswhylogswhylogssummarydriftrenderer
 methods: {}
