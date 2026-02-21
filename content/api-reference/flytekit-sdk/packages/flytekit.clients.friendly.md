@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.friendly
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -24,14 +24,16 @@ layout: py_api
 ## flytekit.clients.friendly.SynchronousFlyteClient
 
 This is a low-level client that users can use to make direct gRPC service calls to the control plane. See the
-:std:doc:`service spec <idl:protos/docs/service/index>`. This is more user-friendly interface than the
-{{< py_class_ref flytekit.clients.raw.RawSynchronousFlyteClient >}} so users should try to use this class
+:std:doc:`service spec &lt;idl:protos/docs/service/index&gt;`. This is more user-friendly interface than the
+{{&lt; py_class_ref flytekit.clients.raw.RawSynchronousFlyteClient &gt;}} so users should try to use this class
 first. Create a client by
 
 ```python
 SynchronousFlyteClient("your.domain:port", insecure=True)
 # insecure should be True if your flyteadmin deployment doesn't have SSL enabled
 ```
+
+
 
 
 ```python
@@ -48,6 +50,13 @@ Initializes a gRPC channel to the given Flyte Admin service.
 |-|-|-|
 | `cfg` | `PlatformConfig` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `raw` | `None` | Gives access to the raw client :rtype: flytekit.clients.raw.RawSynchronousFlyteClient |
+| `url` | `None` |  |
 
 ### Methods
 
@@ -291,7 +300,7 @@ def get_download_artifact_signed_url(
     project: str,
     domain: str,
     name: str,
-    artifact_type: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10c990ef0>,
+    artifact_type: google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper,
     expires_in: datetime.timedelta,
 ) -> flyteidl.service.dataproxy_pb2.CreateDownloadLinkResponse
 ```
@@ -305,7 +314,7 @@ Get a signed url for an artifact.
 | `project` | `str` | Name of the project the resource belongs to |
 | `domain` | `str` | Name of the domain the resource belongs to |
 | `name` | `str` | User or system provided value for the resource |
-| `artifact_type` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10c990ef0>` | ArtifactType of the artifact requested |
+| `artifact_type` | `google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper` | ArtifactType of the artifact requested |
 | `expires_in` | `datetime.timedelta` | If provided this defines a requested expiration duration for the generated url :rtype: flyteidl.service.dataproxy_pb2.CreateDownloadLinkResponse |
 
 #### get_download_signed_url()
@@ -1060,13 +1069,4 @@ def with_root_certificate(
 |-|-|-|
 | `cfg` | `PlatformConfig` | |
 | `root_cert_file` | `str` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `raw` |  | {{< multiline >}}Gives access to the raw client
-:rtype: flytekit.clients.raw.RawSynchronousFlyteClient
-{{< /multiline >}} |
-| `url` |  |  |
 

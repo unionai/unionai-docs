@@ -1,0 +1,19 @@
+packages:
+  flytekitplugins.papermill: /api-reference/plugins/papermill/packages/flytekitplugins.papermill/
+  flytekitplugins.papermill.task: /api-reference/plugins/papermill/packages/flytekitplugins.papermill.task/
+identifiers:
+  flytekitplugins.papermill.task.NotebookTask: /api-reference/plugins/papermill/packages/flytekitplugins.papermill.task/#flytekitpluginspapermilltasknotebooktask
+  NotebookTask: /api-reference/plugins/papermill/packages/flytekitplugins.papermill.task/#flytekitpluginspapermilltasknotebooktask
+methods:
+  flytekitplugins.papermill.task.load_flytedirectory: /api-reference/plugins/papermill/packages/flytekitplugins.papermill.task/#load_flytedirectory
+  load_flytedirectory: /api-reference/plugins/papermill/packages/flytekitplugins.papermill.task/#load_flytedirectory
+  flytekitplugins.papermill.task.load_flytefile: /api-reference/plugins/papermill/packages/flytekitplugins.papermill.task/#load_flytefile
+  load_flytefile: /api-reference/plugins/papermill/packages/flytekitplugins.papermill.task/#load_flytefile
+  flytekitplugins.papermill.task.load_python_val_from_file: /api-reference/plugins/papermill/packages/flytekitplugins.papermill.task/#load_python_val_from_file
+  load_python_val_from_file: /api-reference/plugins/papermill/packages/flytekitplugins.papermill.task/#load_python_val_from_file
+  flytekitplugins.papermill.task.load_structureddataset: /api-reference/plugins/papermill/packages/flytekitplugins.papermill.task/#load_structureddataset
+  load_structureddataset: /api-reference/plugins/papermill/packages/flytekitplugins.papermill.task/#load_structureddataset
+  flytekitplugins.papermill.task.record_outputs: /api-reference/plugins/papermill/packages/flytekitplugins.papermill.task/#record_outputs
+  record_outputs: /api-reference/plugins/papermill/packages/flytekitplugins.papermill.task/#record_outputs
+  flytekitplugins.papermill.task.save_python_val_to_file: /api-reference/plugins/papermill/packages/flytekitplugins.papermill.task/#save_python_val_to_file
+  save_python_val_to_file: /api-reference/plugins/papermill/packages/flytekitplugins.papermill.task/#save_python_val_to_file

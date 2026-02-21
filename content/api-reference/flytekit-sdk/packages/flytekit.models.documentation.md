@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.documentation
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -24,6 +24,7 @@ by clients, such as the console or command line tools with in-tact
 formatting.
 
 
+
 ```python
 class Description(
     value: typing.Optional[str],
@@ -38,6 +39,12 @@ class Description(
 | `uri` | `typing.Optional[str]` | |
 | `icon_link` | `typing.Optional[str]` | |
 | `format` | `<enum 'DescriptionFormat'>` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -78,12 +85,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-
 ## flytekit.models.documentation.Documentation
 
 DescriptionEntity contains detailed description for the task/workflow/launch plan.
@@ -99,9 +100,15 @@ class Documentation(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `short_description` | `typing.Optional[str]` | |
-| `long_description` | `typing.Optional[flytekit.models.documentation.Description]` | |
-| `source_code` | `typing.Optional[flytekit.models.documentation.SourceCode]` | |
+| `short_description` | `typing.Optional[str]` | One-liner overview of the entity. |
+| `long_description` | `typing.Optional[flytekit.models.documentation.Description]` | Full user description with formatting preserved. |
+| `source_code` | `typing.Optional[flytekit.models.documentation.SourceCode]` | link to source code used to define this entity |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -142,15 +149,10 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-
 ## flytekit.models.documentation.SourceCode
 
 Link to source code used to define this task or workflow.
+
 
 
 ```python
@@ -161,6 +163,12 @@ class SourceCode(
 | Parameter | Type | Description |
 |-|-|-|
 | `link` | `typing.Optional[str]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -201,9 +209,3 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-

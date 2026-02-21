@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.whylogs
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -30,7 +30,7 @@ logic. An example constraints object definition can be written as follows:
     builder = ConstraintsBuilder(profile_view)
     num_constraint = MetricConstraint(
                         name=f'numbers between {min_value} and {max_value} only',
-                        condition=lambda x: x.min > min_value and x.max < max_value,
+                        condition=lambda x: x.min &gt; min_value and x.max &lt; max_value,
                         metric_selector=MetricsSelector(
                                                 metric_name='distribution',
                                                 column_name='sepal_length'
@@ -42,6 +42,7 @@ logic. An example constraints object definition can be written as follows:
 
 Each Constraints object (builder.build() in the former example) can have as many constraints as
 desired. If you want to learn more, check out our docs and examples at https://whylogs.readthedocs.io/
+
 
 
 ### Methods
@@ -58,18 +59,28 @@ def to_html(
     constraints: whylogs.core.constraints.metric_constraints.Constraints,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `constraints` | `whylogs.core.constraints.metric_constraints.Constraints` |
+| Parameter | Type | Description |
+|-|-|-|
+| `constraints` | `whylogs.core.constraints.metric_constraints.Constraints` | |
 
 ## flytekitplugins.whylogs.WhylogsDatasetProfileTransformer
 
 Transforms whylogs Dataset Profile Views to and from a Schema (typed/untyped)
 
 
+
 ```python
 def WhylogsDatasetProfileTransformer()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ### Methods
 
 | Method | Description |
@@ -93,10 +104,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
+| `v` | `T` | |
 
 #### from_binary_idl()
 
@@ -110,19 +121,19 @@ This function primarily handles deserialization for untyped dicts, dataclasses, 
 
 For untyped dict, dataclass, and pydantic basemodel:
 Life Cycle (Untyped Dict as example):
-    python val -> msgpack bytes -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                             (from_binary_idl)
 
 For attribute access:
 Life Cycle:
-    python val -> msgpack bytes -> binary literal scalar -> resolved golang value -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; resolved golang value -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -139,10 +150,10 @@ Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_literal_type()
 
@@ -154,9 +165,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `typing.Type[whylogs.core.view.dataset_profile_view.DatasetProfileView]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.Type[whylogs.core.view.dataset_profile_view.DatasetProfileView]` | |
 
 #### guess_python_type()
 
@@ -168,9 +179,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -180,10 +191,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_html()
 
@@ -197,11 +208,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `python_val` | `whylogs.core.view.dataset_profile_view.DatasetProfileView` |
-| `expected_python_type` | `typing.Type[whylogs.core.view.dataset_profile_view.DatasetProfileView]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `python_val` | `whylogs.core.view.dataset_profile_view.DatasetProfileView` | |
+| `expected_python_type` | `typing.Type[whylogs.core.view.dataset_profile_view.DatasetProfileView]` | |
 
 #### to_literal()
 
@@ -219,12 +230,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `python_val` | `whylogs.core.view.dataset_profile_view.DatasetProfileView` |
-| `python_type` | `typing.Type[whylogs.core.view.dataset_profile_view.DatasetProfileView]` |
-| `expected` | `flytekit.models.types.LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `whylogs.core.view.dataset_profile_view.DatasetProfileView` | The actual value to be transformed |
+| `python_type` | `typing.Type[whylogs.core.view.dataset_profile_view.DatasetProfileView]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `flytekit.models.types.LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -238,28 +249,18 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `lv` | `flytekit.models.literals.Literal` |
-| `expected_python_type` | `typing.Type[whylogs.core.view.dataset_profile_view.DatasetProfileView]` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | FlyteContext |
+| `lv` | `flytekit.models.literals.Literal` | The received literal Value |
+| `expected_python_type` | `typing.Type[whylogs.core.view.dataset_profile_view.DatasetProfileView]` | Expected native python type that should be returned |
 
 ## flytekitplugins.whylogs.WhylogsSummaryDriftRenderer
 
 Creates a whylogs' Summary Drift report from two pandas DataFrames. One of them
 is the reference and the other one is the target data, meaning that this is what
 the report will compare it against.
+
 
 
 ### Methods
@@ -273,8 +274,8 @@ the report will compare it against.
 
 ```python
 def to_html(
-    reference_data: pandas.core.frame.DataFrame,
-    target_data: pandas.core.frame.DataFrame,
+    reference_data: pandas.DataFrame,
+    target_data: pandas.DataFrame,
 ) -> str
 ```
 This static method will profile the input data and then generate an HTML report
@@ -282,8 +283,8 @@ with the Summary Drift calculations for all the dataframe's columns
 
 
 
-| Parameter | Type |
-|-|-|
-| `reference_data` | `pandas.core.frame.DataFrame` |
-| `target_data` | `pandas.core.frame.DataFrame` |
+| Parameter | Type | Description |
+|-|-|-|
+| `reference_data` | `pandas.DataFrame` | The DataFrame that will be the reference for the drift report :type: pandas.DataFrame |
+| `target_data` | `pandas.DataFrame` | The data to compare against and create the Summary Drift report :type target_data: pandas.DataFrame |
 

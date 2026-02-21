@@ -1,0 +1,9 @@
+packages:
+  flytekitplugins.awsbatch: /api-reference/plugins/aws-batch/packages/flytekitplugins.awsbatch/
+  flytekitplugins.awsbatch.task: /api-reference/plugins/aws-batch/packages/flytekitplugins.awsbatch.task/
+identifiers:
+  flytekitplugins.awsbatch.task.AWSBatchConfig: /api-reference/plugins/aws-batch/packages/flytekitplugins.awsbatch.task/#flytekitpluginsawsbatchtaskawsbatchconfig
+  AWSBatchConfig: /api-reference/plugins/aws-batch/packages/flytekitplugins.awsbatch.task/#flytekitpluginsawsbatchtaskawsbatchconfig
+  flytekitplugins.awsbatch.task.AWSBatchFunctionTask: /api-reference/plugins/aws-batch/packages/flytekitplugins.awsbatch.task/#flytekitpluginsawsbatchtaskawsbatchfunctiontask
+  AWSBatchFunctionTask: /api-reference/plugins/aws-batch/packages/flytekitplugins.awsbatch.task/#flytekitpluginsawsbatchtaskawsbatchfunctiontask
+methods: {}

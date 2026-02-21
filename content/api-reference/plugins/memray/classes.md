@@ -1,6 +1,6 @@
 ---
 title: Classes
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -9,5 +9,4 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.memray.memray_profiling`](../packages/flytekitplugins.memray#flytekitpluginsmemraymemray_profiling) |Abstract class for class decorators. |
-| [`flytekitplugins.memray.profiling.memray_profiling`](../packages/flytekitplugins.memray.profiling#flytekitpluginsmemrayprofilingmemray_profiling) |Abstract class for class decorators. |
+| [`flytekitplugins.memray.memray_profiling`](../packages/flytekitplugins.memray#flytekitpluginsmemraymemray_profiling) | |

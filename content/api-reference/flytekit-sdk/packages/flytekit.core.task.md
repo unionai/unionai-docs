@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.task
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Echo`](.././flytekit.core.task#flytekitcoretaskecho) | Base Class for all Tasks with a Python native ``Interface``. |
+| [`Echo`](.././flytekit.core.task#flytekitcoretaskecho) |  |
 | [`ReferenceTask`](.././flytekit.core.task#flytekitcoretaskreferencetask) | This is a reference task, the body of the function passed in through the constructor will never be used, only the. |
 | [`TaskPlugins`](.././flytekit.core.task#flytekitcoretasktaskplugins) | This is the TaskPlugins factory for task types that are derivative of PythonFunctionTask. |
 
@@ -66,7 +66,7 @@ Eager workflow decorator.
 
 This type of task will execute all Flyte entities within it eagerly, meaning that all python constructs can be
 used inside of an ``@eager``-decorated function. This is because eager workflows use a
-{{< py_class_ref flytekit.remote.remote.FlyteRemote >}} object to kick off executions when a flyte entity needs to produce a
+{{&lt; py_class_ref flytekit.remote.remote.FlyteRemote &gt;}} object to kick off executions when a flyte entity needs to produce a
 value. Basically think about it as: every Flyte entity that is called(), the stack frame is an execution with its
 own Flyte URL. Results (or the error) are fetched when the execution is finished.
 
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     result = asyncio.run(eager_workflow(x=1))
     print(f"Result: {result}")  # "Result: 4"
 ```
-Unlike {{< py_func_ref dynamic workflows flytekit.dynamic >}}, eager workflows are not compiled into a workflow spec, but
+Unlike {{&lt; py_func_ref dynamic workflows flytekit.dynamic &gt;}}, eager workflows are not compiled into a workflow spec, but
 uses python's [`async`](https://docs.python.org/3/library/asyncio.html) capabilities to execute flyte entities.
 
 > [!NOTE]
@@ -104,8 +104,8 @@ uses python's [`async`](https://docs.python.org/3/library/asyncio.html) capabili
 
 > [!IMPORTANT]
 > A ``client_secret_group`` and ``client_secret_key`` is needed for authenticating via
-   {{< py_class_ref flytekit.remote.remote.FlyteRemote >}} using the ``client_credentials`` authentication, which is
-   configured via {{< py_class_ref flytekit.configuration.PlatformConfig >}}.
+   {{&lt; py_class_ref flytekit.remote.remote.FlyteRemote &gt;}} using the ``client_credentials`` authentication, which is
+   configured via {{&lt; py_class_ref flytekit.configuration.PlatformConfig &gt;}}.
 
    ```python
     from flytekit.remote import FlyteRemote
@@ -154,10 +154,10 @@ object will not initiate a network call to Admin, which is why the user is asked
 If at registration time the interface provided causes an issue with compilation, an error will be returned.
 
 Example:
-<!--
+&lt;!--
 .. literalinclude:: ../../../tests/flytekit/unit/core/test_references.py
    :pyobject: ref_t1
--->
+--&gt;
 ```python
 @reference_task(
 project="flytesnacks",
@@ -241,7 +241,7 @@ For specific task types
 def my_task(x: int, y: typing.Dict[str, str]) -> str:
     ...
 ```
-Please see some cookbook :std:ref:`task examples <cookbook:tasks>` for additional information.
+Please see some cookbook :std:ref:`task examples &lt;cookbook:tasks&gt;` for additional information.
 
 
 
@@ -258,7 +258,7 @@ Please see some cookbook :std:ref:`task examples <cookbook:tasks>` for additiona
 | `environment` | `Optional[Dict[str, str]]` | Environment variables that should be added for this tasks execution |
 | `requests` | `Optional[Resources]` | Specify compute resource requests for your task. For Pod-plugin tasks, these values will apply only to the primary container. |
 | `limits` | `Optional[Resources]` | Compute limits. Specify compute resource limits for your task. For Pod-plugin tasks, these values will apply only to the primary container. For more information, please see {{&lt; py_class_ref flytekit.Resources &gt;}}. |
-| `secret_requests` | `Optional[List[Secret]]` | Keys that can identify the secrets supplied at runtime. Ideally the secret keys should also be semi-descriptive. The key values will be available from runtime, if the backend is configured to provide secrets and if secrets are available in the configured secrets store. Possible options for secret stores are - Vault, Confidant, Kube secrets, AWS KMS etc Refer to {{&lt; py_class_ref Secret &gt;}} to understand how to specify the request for a secret. It may change based on the backend provider.  &gt; [!NOTE] &gt; During local execution, the secrets will be pulled from the local environment variables with the format `{GROUP}_{GROUP_VERSION}_{KEY}`, where all the characters are capitalized and the prefix is not used. |
+| `secret_requests` | `Optional[List[Secret]]` | Keys that can identify the secrets supplied at runtime. Ideally the secret keys should also be semi-descriptive. The key values will be available from runtime, if the backend is configured to provide secrets and if secrets are available in the configured secrets store. Possible options for secret stores are - Vault, Confidant, Kube secrets, AWS KMS etc Refer to {{&lt; py_class_ref Secret &gt;}} to understand how to specify the request for a secret. It may change based on the backend provider.  > [!NOTE] > During local execution, the secrets will be pulled from the local environment variables with the format `{GROUP}_{GROUP_VERSION}_{KEY}`, where all the characters are capitalized and the prefix is not used. |
 | `execution_mode` | `PythonFunctionTask.ExecutionBehavior` | This is mainly for internal use. Please ignore. It is filled in automatically. |
 | `node_dependency_hints` | `Optional[Iterable[Union[PythonFunctionTask, _annotated_launchplan.LaunchPlan, _annotated_workflow.WorkflowBase]]]` | A list of tasks, launchplans, or workflows that this task depends on. This is only for dynamic tasks/workflows, where flyte cannot automatically determine the dependencies prior to runtime. Even on dynamic tasks this is optional, but in some scenarios it will make registering the workflow easier, because it allows registration to be done the same as for static tasks/workflows.  For example this is useful to run launchplans dynamically, because launchplans must be registered on flyteadmin before they can be run. Tasks and workflows do not have this requirement.  ```python @workflow def workflow0(): ...  launchplan0 = LaunchPlan.get_or_create(workflow0)  # Specify node_dependency_hints so that launchplan0 will be registered on flyteadmin, despite this being a # dynamic task. @dynamic(node_dependency_hints=[launchplan0]) def launch_dynamically(): # To run a sub-launchplan it must have previously been registered on flyteadmin. return [launchplan0]*10 ``` |
 | `task_resolver` | `Optional[TaskResolverMixin]` | Provide a custom task resolver. |
@@ -277,10 +277,6 @@ Please see some cookbook :std:ref:`task examples <cookbook:tasks>` for additiona
 | `kwargs` | `**kwargs` | |
 
 ## flytekit.core.task.Echo
-
-Base Class for all Tasks with a Python native ``Interface``. This should be directly used for task types, that do
-not have a python function to be executed. Otherwise refer to {{< py_class_ref flytekit.PythonFunctionTask >}}.
-
 
 ```python
 class Echo(
@@ -310,6 +306,27 @@ task-plugins:
 | `name` | `str` | The name of the task. |
 | `inputs` | `Optional[Dict[str, Type]]` | Name and type of inputs specified as a dictionary. e.g. {"a": int, "b": str}. |
 | `kwargs` | `**kwargs` | All other args required by the parent type - PythonTask. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -604,38 +621,12 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
 | `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
-
 ## flytekit.core.task.ReferenceTask
 
 This is a reference task, the body of the function passed in through the constructor will never be used, only the
 signature of the function will be. The signature should also match the signature of the task you're referencing,
 as stored by Flyte Admin, if not, workflows using this will break upon compilation.
+
 
 
 ```python
@@ -656,6 +647,29 @@ class ReferenceTask(
 | `version` | `str` | |
 | `inputs` | `Dict[str, type]` | |
 | `outputs` | `Dict[str, Type]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `id` | `None` |  |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` |  |
+| `reference` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -956,34 +970,6 @@ Please see the implementation of the dispatch_execute function in the real task.
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
 | `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `id` |  |  |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  |  |
-| `python_interface` |  |  |
-| `reference` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
-
 ## flytekit.core.task.TaskPlugins
 
 This is the TaskPlugins factory for task types that are derivative of PythonFunctionTask.
@@ -996,10 +982,10 @@ TaskPlugins.register_pythontask_plugin(config_object_type, plugin_object_type)
 # Plugin_object_type is a derivative of ``PythonFunctionTask``
 ```
 Examples of available task plugins include different query-based plugins such as
-{{< py_class_ref flytekitplugins.athena.task.AthenaTask >}} and {{< py_class_ref flytekitplugins.hive.task.HiveTask >}}, kubeflow
-operators like {{< py_class_ref plugins.kfpytorch.flytekitplugins.kfpytorch.task.PyTorchFunctionTask >}} and
-{{< py_class_ref plugins.kftensorflow.flytekitplugins.kftensorflow.task.TensorflowFunctionTask >}}, and generic plugins like
-{{< py_class_ref flytekitplugins.pod.task.PodFunctionTask >}} which doesn't integrate with third party tools or services.
+{{&lt; py_class_ref flytekitplugins.athena.task.AthenaTask &gt;}} and {{&lt; py_class_ref flytekitplugins.hive.task.HiveTask &gt;}}, kubeflow
+operators like {{&lt; py_class_ref plugins.kfpytorch.flytekitplugins.kfpytorch.task.PyTorchFunctionTask &gt;}} and
+{{&lt; py_class_ref plugins.kftensorflow.flytekitplugins.kftensorflow.task.TensorflowFunctionTask &gt;}}, and generic plugins like
+{{&lt; py_class_ref flytekitplugins.pod.task.PodFunctionTask &gt;}} which doesn't integrate with third party tools or services.
 
 The `task_config` is different for every task plugin type. This is filled out by users when they define a task to
 specify plugin-specific behavior and features.  For example, with a query type task plugin, the config might store
@@ -1007,6 +993,7 @@ information related to which database to query.
 
 The `plugin_object_type` can be used to customize execution behavior and task serialization properties in tandem
 with the `task_config`.
+
 
 
 ### Methods

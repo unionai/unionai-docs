@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.repo
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,7 +13,7 @@ layout: py_api
 
 | Exception | Description |
 |-|-|
-| [`NoSerializableEntitiesError`](.././flytekit.tools.repo#flytekittoolsreponoserializableentitieserror) | Common base class for all non-exit exceptions. |
+| [`NoSerializableEntitiesError`](.././flytekit.tools.repo#flytekittoolsreponoserializableentitieserror) |  |
 
 ### Methods
 
@@ -199,7 +199,7 @@ def serialize_get_control_plane_entities(
     is_registration: bool,
 ) -> typing.List[typing.Union[flytekit.models.task.TaskSpec, flytekit.models.launch_plan.LaunchPlan, flytekit.models.admin.workflow.WorkflowSpec, flytekit.models.core.workflow.Node, flytekit.models.core.workflow.BranchNode, flytekit.models.core.workflow.ArrayNode]]
 ```
-See {{< py_class_ref flytekit.models.core.identifier.ResourceType >}} to match the trailing index in the file name with the
+See {{&lt; py_class_ref flytekit.models.core.identifier.ResourceType &gt;}} to match the trailing index in the file name with the
 entity type.
 
 
@@ -219,7 +219,7 @@ def serialize_load_only(
     local_source_root: typing.Optional[str],
 )
 ```
-See {{< py_class_ref flytekit.models.core.identifier.ResourceType >}} to match the trailing index in the file name with the
+See {{&lt; py_class_ref flytekit.models.core.identifier.ResourceType &gt;}} to match the trailing index in the file name with the
 entity type.
 
 
@@ -252,7 +252,4 @@ Serialize the given set of python packages to a folder
 | `options` | `typing.Optional[flytekit.core.options.Options]` | |
 
 ## flytekit.tools.repo.NoSerializableEntitiesError
-
-Common base class for all non-exit exceptions.
-
 

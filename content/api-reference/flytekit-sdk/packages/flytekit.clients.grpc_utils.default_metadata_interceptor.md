@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.grpc_utils.default_metadata_interceptor
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,12 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`DefaultMetadataInterceptor`](.././flytekit.clients.grpc_utils.default_metadata_interceptor#flytekitclientsgrpc_utilsdefault_metadata_interceptordefaultmetadatainterceptor) | Affords intercepting unary-unary invocations. |
+| [`DefaultMetadataInterceptor`](.././flytekit.clients.grpc_utils.default_metadata_interceptor#flytekitclientsgrpc_utilsdefault_metadata_interceptordefaultmetadatainterceptor) |  |
 
 ## flytekit.clients.grpc_utils.default_metadata_interceptor.DefaultMetadataInterceptor
-
-Affords intercepting unary-unary invocations.
-
 
 ### Methods
 

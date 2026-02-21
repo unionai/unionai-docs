@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.errors
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -36,6 +36,18 @@ class ContainerError(
 | `origin` | `int` | A value from ExecutionError.ErrorKind. Don't confuse this with error kind, even though both are called kind. |
 | `timestamp` | `google.protobuf.timestamp_pb2.Timestamp` | |
 | `worker` | `str` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `code` | `None` | :rtype: Text |
+| `is_empty` | `None` |  |
+| `kind` | `None` | :rtype: int |
+| `message` | `None` | :rtype: Text |
+| `origin` | `None` | The origin of the error, an enum value from ExecutionError.ErrorKind |
+| `timestamp` | `None` | The timestamp of the error, as number of seconds and nanos since Epoch |
+| `worker` | `None` | The worker name where the error originated |
 
 ### Methods
 
@@ -79,24 +91,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.errors_pb2.ContainerError
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `code` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `kind` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `message` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `origin` |  | {{< multiline >}}The origin of the error, an enum value from ExecutionError.ErrorKind
-{{< /multiline >}} |
-| `timestamp` |  | {{< multiline >}}The timestamp of the error, as number of seconds and nanos since Epoch
-{{< /multiline >}} |
-| `worker` |  | {{< multiline >}}The worker name where the error originated
-{{< /multiline >}} |
-
 ## flytekit.models.core.errors.ErrorDocument
 
 ```python
@@ -107,6 +101,13 @@ class ErrorDocument(
 | Parameter | Type | Description |
 |-|-|-|
 | `error` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `error` | `None` | :rtype: ContainerError |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -149,12 +150,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.core.errors_pb2.ErrorDocument
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `error` |  | {{< multiline >}}:rtype: ContainerError
-{{< /multiline >}} |
-| `is_empty` |  |  |
 

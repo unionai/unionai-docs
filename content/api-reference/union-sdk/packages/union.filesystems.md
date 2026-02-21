@@ -1,6 +1,6 @@
 ---
 title: union.filesystems
-version: 0.1.198
+version: 0.1.202
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -14,19 +14,10 @@ Module for fsspec implementations.
 
 | Class | Description |
 |-|-|
-| [`AsyncUnionFS`](.././union.filesystems#unionfilesystemsasyncunionfs) | Async file operations, default implementations. |
-| [`AsyncUnionMetaFS`](.././union.filesystems#unionfilesystemsasyncunionmetafs) | Async file operations, default implementations. |
+| [`AsyncUnionFS`](.././union.filesystems#unionfilesystemsasyncunionfs) |  |
+| [`AsyncUnionMetaFS`](.././union.filesystems#unionfilesystemsasyncunionmetafs) |  |
 
 ## union.filesystems.AsyncUnionFS
-
-Async file operations, default implementations
-
-Passes bulk operations to asyncio.gather for concurrent operation.
-
-Implementations that have concurrent batch operations and/or async methods
-should inherit from this class instead of AbstractFileSystem. Docstrings are
-copied from the un-underscored method in AbstractFileSystem, if not given.
-
 
 ```python
 class AsyncUnionFS(
@@ -67,6 +58,17 @@ loop: asyncio-compatible IOLoop or None
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `fsid` | `None` | Persistent filesystem id that can be used to compare filesystems across sessions. |
+| `loop` | `None` |  |
+| `max_attempts` | `None` |  |
+| `max_concurrent_tasks` | `None` |  |
+| `retries` | `None` |  |
+| `transaction` | `None` | A context within which files are committed together upon exit  Requires the file class to implement `.commit()` and `.discard()` for the normal and exception cases. |
+
 ### Methods
 
 | Method | Description |
@@ -1801,33 +1803,7 @@ encoding, errors, newline: same as `open`.
 | `newline` |  | |
 | `kwargs` | `**kwargs` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `fsid` |  | {{< multiline >}}Persistent filesystem id that can be used to compare filesystems
-across sessions.
-{{< /multiline >}} |
-| `loop` |  |  |
-| `max_attempts` |  |  |
-| `max_concurrent_tasks` |  |  |
-| `retries` |  |  |
-| `transaction` |  | {{< multiline >}}A context within which files are committed together upon exit
-
-Requires the file class to implement `.commit()` and `.discard()`
-for the normal and exception cases.
-{{< /multiline >}} |
-
 ## union.filesystems.AsyncUnionMetaFS
-
-Async file operations, default implementations
-
-Passes bulk operations to asyncio.gather for concurrent operation.
-
-Implementations that have concurrent batch operations and/or async methods
-should inherit from this class instead of AbstractFileSystem. Docstrings are
-copied from the un-underscored method in AbstractFileSystem, if not given.
-
 
 ```python
 class AsyncUnionMetaFS(
@@ -1868,6 +1844,14 @@ loop: asyncio-compatible IOLoop or None
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `fsid` | `None` | Persistent filesystem id that can be used to compare filesystems across sessions. |
+| `loop` | `None` |  |
+| `transaction` | `None` | A context within which files are committed together upon exit  Requires the file class to implement `.commit()` and `.discard()` for the normal and exception cases. |
+
 ### Methods
 
 | Method | Description |
@@ -3601,18 +3585,4 @@ encoding, errors, newline: same as `open`.
 | `errors` |  | |
 | `newline` |  | |
 | `kwargs` | `**kwargs` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `fsid` |  | {{< multiline >}}Persistent filesystem id that can be used to compare filesystems
-across sessions.
-{{< /multiline >}} |
-| `loop` |  |  |
-| `transaction` |  | {{< multiline >}}A context within which files are committed together upon exit
-
-Requires the file class to implement `.commit()` and `.discard()`
-for the normal and exception cases.
-{{< /multiline >}} |
 

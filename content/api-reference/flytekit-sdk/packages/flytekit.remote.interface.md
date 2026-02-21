@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.interface
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -32,6 +32,14 @@ outputs are represented directly as Python dicts, rather than going through the 
 |-|-|-|
 | `inputs` |  | |
 | `outputs` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `inputs` | `None` |  |
+| `is_empty` | `None` |  |
+| `outputs` | `None` |  |
 
 ### Methods
 
@@ -101,12 +109,4 @@ python map like functions
 |-|-|-|
 | `bound_inputs` | `typing.Set[str]` | fixed inputs that should not be updated to a list and will be maintained as is |
 | `excluded_inputs` | `typing.Set[str]` | inputs that should be excluded from the new interface |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `inputs` |  |  |
-| `is_empty` |  |  |
-| `outputs` |  |  |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.local_fsspec
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -18,6 +18,7 @@ layout: py_api
 ## flytekit.core.local_fsspec.FlyteLocalFileSystem
 
 This class doesn't do anything except override the separator so that it works on windows
+
 
 
 ```python
@@ -54,6 +55,13 @@ loop: asyncio-compatible IOLoop or None
 |-|-|-|
 | `auto_mkdir` |  | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `fsid` | `None` | Persistent filesystem id that can be used to compare filesystems across sessions. |
+| `transaction` | `None` | A context within which files are committed together upon exit  Requires the file class to implement `.commit()` and `.discard()` for the normal and exception cases. |
 
 ### Methods
 
@@ -1826,17 +1834,4 @@ encoding, errors, newline: same as `open`.
 | `errors` |  | |
 | `newline` |  | |
 | `kwargs` | `**kwargs` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `fsid` |  | {{< multiline >}}Persistent filesystem id that can be used to compare filesystems
-across sessions.
-{{< /multiline >}} |
-| `transaction` |  | {{< multiline >}}A context within which files are committed together upon exit
-
-Requires the file class to implement `.commit()` and `.discard()`
-for the normal and exception cases.
-{{< /multiline >}} |
 

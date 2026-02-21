@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.tracked_abc
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -20,6 +20,7 @@ layout: py_api
 This class exists because if you try to inherit from abc.ABC and TrackedInstance by itself, you'll get the
 well-known ``TypeError: metaclass conflict: the metaclass of a derived class must be a (non-strict) subclass
 of the metaclasses of all its bases`` error.
+
 
 
 ### Methods

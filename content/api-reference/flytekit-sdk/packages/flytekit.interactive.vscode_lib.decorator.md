@@ -1,6 +1,6 @@
 ---
 title: flytekit.interactive.vscode_lib.decorator
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`vscode`](.././flytekit.interactive.vscode_lib.decorator#flytekitinteractivevscode_libdecoratorvscode) | Abstract class for class decorators. |
+| [`vscode`](.././flytekit.interactive.vscode_lib.decorator#flytekitinteractivevscode_libdecoratorvscode) |  |
 
 ### Methods
 
@@ -188,10 +188,6 @@ Generate a Python script for users to resume the task.
 | `pid` | `int` | |
 
 ## flytekit.interactive.vscode_lib.decorator.vscode
-
-Abstract class for class decorators.
-We can attach config on the decorator class and use it in the upper level.
-
 
 ```python
 class vscode(

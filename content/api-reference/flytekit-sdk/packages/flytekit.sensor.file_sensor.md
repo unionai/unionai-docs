@@ -1,6 +1,6 @@
 ---
 title: flytekit.sensor.file_sensor
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,14 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`FileSensor`](.././flytekit.sensor.file_sensor#flytekitsensorfile_sensorfilesensor) | Base class for all sensors. |
+| [`FileSensor`](.././flytekit.sensor.file_sensor#flytekitsensorfile_sensorfilesensor) |  |
 
 ## flytekit.sensor.file_sensor.FileSensor
-
-Base class for all sensors. Sensors are tasks that are designed to run forever and periodically check for some
-condition to be met. When the condition is met, the sensor will complete. Sensors are designed to be run by the
-connector and not by the Flyte engine.
-
 
 ```python
 class FileSensor(
@@ -34,6 +29,27 @@ class FileSensor(
 | `name` | `str` | |
 | `timeout` | `typing.Union[datetime.timedelta, int, NoneType]` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -356,31 +372,4 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
 | `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
 

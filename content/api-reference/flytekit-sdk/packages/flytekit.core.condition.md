@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.condition
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -17,7 +17,7 @@ layout: py_api
 | [`Case`](.././flytekit.core.condition#flytekitcoreconditioncase) |  |
 | [`Condition`](.././flytekit.core.condition#flytekitcoreconditioncondition) |  |
 | [`ConditionalSection`](.././flytekit.core.condition#flytekitcoreconditionconditionalsection) | ConditionalSection is used to denote a condition within a Workflow. |
-| [`LocalExecutedConditionalSection`](.././flytekit.core.condition#flytekitcoreconditionlocalexecutedconditionalsection) | ConditionalSection is used to denote a condition within a Workflow. |
+| [`LocalExecutedConditionalSection`](.././flytekit.core.condition#flytekitcoreconditionlocalexecutedconditionalsection) |  |
 | [`SkippedConditionalSection`](.././flytekit.core.condition#flytekitcoreconditionskippedconditionalsection) | This ConditionalSection is used for nested conditionals, when the branch has been evaluated to false. |
 
 ### Methods
@@ -213,7 +213,7 @@ class BranchNode(
 
 | Property | Type | Description |
 |-|-|-|
-| `name` |  |  |
+| `name` | `None` |  |
 
 ## flytekit.core.condition.Case
 
@@ -229,6 +229,15 @@ class Case(
 | `cs` | `ConditionalSection` | |
 | `expr` | `Optional[Union[ComparisonExpression, ConjunctionExpression]]` | |
 | `stmt` | `str` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `err` | `None` |  |
+| `expr` | `None` |  |
+| `output_node` | `None` |  |
+| `output_promise` | `None` |  |
 
 ### Methods
 
@@ -259,15 +268,6 @@ def then(
 | Parameter | Type | Description |
 |-|-|-|
 | `p` | `Union[Promise, Tuple[Promise]]` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `err` |  |  |
-| `expr` |  |  |
-| `output_node` |  |  |
-| `output_promise` |  |  |
 
 ## flytekit.core.condition.Condition
 
@@ -310,14 +310,15 @@ ConditionalSection is used to denote a condition within a Workflow. This default
 for Compilation mode. It is advised to derive the class and re-implement the `start_branch` and `end_branch` methods
 to override the compilation behavior
 
-> [!NOTE]
-> Conditions can only be used within a workflow context.
+&gt; [!NOTE]
+&gt; Conditions can only be used within a workflow context.
 
 Usage:
 
 ```python
 v =  conditional("fractions").if_((my_input > 0.1) & (my_input < 1.0)).then(...)...
 ```
+
 
 
 ```python
@@ -328,6 +329,13 @@ class ConditionalSection(
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cases` | `None` |  |
+| `name` | `None` |  |
 
 ### Methods
 
@@ -385,28 +393,7 @@ At the start of an execution of every branch this method should be called.
 | `c` | `Case` | -&gt; the case that represents this branch |
 | `last_case` | `bool` | -&gt; a boolean that indicates if this is the last branch in the ifelseblock |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `cases` |  |  |
-| `name` |  |  |
-
 ## flytekit.core.condition.LocalExecutedConditionalSection
-
-ConditionalSection is used to denote a condition within a Workflow. This default conditional section only works
-for Compilation mode. It is advised to derive the class and re-implement the `start_branch` and `end_branch` methods
-to override the compilation behavior
-
-> [!NOTE]
-> Conditions can only be used within a workflow context.
-
-Usage:
-
-```python
-v =  conditional("fractions").if_((my_input > 0.1) & (my_input < 1.0)).then(...)...
-```
-
 
 ```python
 class LocalExecutedConditionalSection(
@@ -416,6 +403,13 @@ class LocalExecutedConditionalSection(
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cases` | `None` |  |
+| `name` | `None` |  |
 
 ### Methods
 
@@ -476,17 +470,11 @@ At the start of an execution of every branch this method should be called.
 | `c` | `Case` | -&gt; the case that represents this branch |
 | `last_case` | `bool` | -&gt; a boolean that indicates if this is the last branch in the ifelseblock |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `cases` |  |  |
-| `name` |  |  |
-
 ## flytekit.core.condition.SkippedConditionalSection
 
 This ConditionalSection is used for nested conditionals, when the branch has been evaluated to false.
 This ensures that the branch is not evaluated and thus the local tasks are not executed.
+
 
 
 ```python
@@ -497,6 +485,13 @@ class SkippedConditionalSection(
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cases` | `None` |  |
+| `name` | `None` |  |
 
 ### Methods
 
@@ -551,11 +546,4 @@ At the start of an execution of every branch this method should be called.
 |-|-|-|
 | `c` | `Case` | -&gt; the case that represents this branch |
 | `last_case` | `bool` | -&gt; a boolean that indicates if this is the last branch in the ifelseblock |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `cases` |  |  |
-| `name` |  |  |
 

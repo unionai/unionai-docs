@@ -3,7 +3,7 @@ title: Supermarket regression notebook
 weight: 1
 variants: +flyte -serverless -byoc -selfmanaged
 jupyter_notebook: /external/unionai-examples/v1/flyte-tutorials/exploratory_data_analysis/exploratory_data_analysis/supermarket_regression.ipynb
-content_hash: 33f3516212efb81c7e6c1a046936238cfe031ab6843f163b872ce68e13118567 # hash managed by Makefile.jupyter (do not edit)
+content_hash: 33f3516212efb81c7e6c1a046936238cfe031ab6843f163b872ce68e13118567
 ---
 
 <!--
@@ -15,11 +15,11 @@ content_hash: 33f3516212efb81c7e6c1a046936238cfe031ab6843f163b872ce68e13118567 #
 
 -->
 
-{{< right mb="2rem" >}}
-{{< download "https://github.com/unionai/unionai-examples/blob/main/v1/flyte-tutorials/exploratory_data_analysis/exploratory_data_analysis/supermarket_regression.ipynb" "Download this notebook" >}}
-{{< /right >}}
-
 # Supermarket Regression Notebook
+
+> [!NOTE]
+> [View source on GitHub](https://github.com/unionai/unionai-examples/blob/main/v1/flyte-tutorials/exploratory_data_analysis/exploratory_data_analysis/supermarket_regression.ipynb) | [Run in Google Colab](https://colab.research.google.com/github/unionai/unionai-examples/blob/main/v1/flyte-tutorials/exploratory_data_analysis/exploratory_data_analysis/supermarket_regression.ipynb)
+
 
 
 ```python

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.catalog
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -28,6 +28,14 @@ class CatalogArtifactTag(
 |-|-|-|
 | `artifact_id` | `str` | |
 | `name` | `str` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `artifact_id` | `None` |  |
+| `is_empty` | `None` |  |
+| `name` | `None` |  |
 
 ### Methods
 
@@ -68,14 +76,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `artifact_id` |  |  |
-| `is_empty` |  |  |
-| `name` |  |  |
-
 ## flytekit.models.core.catalog.CatalogMetadata
 
 ```python
@@ -90,6 +90,16 @@ class CatalogMetadata(
 | `dataset_id` | `flytekit.models.core.identifier.Identifier` | |
 | `artifact_tag` | `flytekit.models.core.catalog.CatalogArtifactTag` | |
 | `source_task_execution` | `flytekit.models.core.identifier.TaskExecutionIdentifier` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `artifact_tag` | `None` |  |
+| `dataset_id` | `None` |  |
+| `is_empty` | `None` |  |
+| `source_execution` | `None` | This is a one of but for now there's only one thing in the one of |
+| `source_task_execution` | `None` |  |
 
 ### Methods
 
@@ -130,14 +140,3 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `artifact_tag` |  |  |
-| `dataset_id` |  |  |
-| `is_empty` |  |  |
-| `source_execution` |  | {{< multiline >}}This is a one of but for now there's only one thing in the one of
-{{< /multiline >}} |
-| `source_task_execution` |  |  |
-

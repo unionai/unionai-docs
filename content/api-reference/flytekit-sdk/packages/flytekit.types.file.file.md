@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.file.file
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,7 +14,7 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`FlyteFile`](.././flytekit.types.file.file#flytekittypesfilefileflytefile) |  |
-| [`FlyteFilePathTransformer`](.././flytekit.types.file.file#flytekittypesfilefileflytefilepathtransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`FlyteFilePathTransformer`](.././flytekit.types.file.file#flytekittypesfilefileflytefilepathtransformer) |  |
 
 ### Methods
 
@@ -57,6 +57,14 @@ FlyteFile's init method.
 | `downloader` | `typing.Callable` | Optional function that can be passed that used to delay downloading of the actual fil until a user actually calls open(). |
 | `remote_path` | `typing.Optional[typing.Union[os.PathLike, str, bool]]` | If the user wants to return something and also specify where it should be uploaded to. Alternatively, if the user wants to specify a remote path for a file that's already in the blob store, the path should point to the location and remote_path should be set to False. |
 | `metadata` | `typing.Optional[dict[str, str]]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `downloaded` | `None` |  |
+| `remote_path` | `None` |  |
+| `remote_source` | `None` | If this is an input to a task, and the original path is an ``s3`` bucket, Flytekit downloads the file for the user. In case the user wants access to the original path, it will be here. |
 
 ### Methods
 
@@ -222,24 +230,20 @@ def to_json(
 | `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` | |
 | `to_dict_kwargs` | `typing.Any` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `downloaded` |  |  |
-| `remote_path` |  |  |
-| `remote_source` |  | {{< multiline >}}If this is an input to a task, and the original path is an ``s3`` bucket, Flytekit downloads the
-file for the user. In case the user wants access to the original path, it will be here.
-{{< /multiline >}} |
-
 ## flytekit.types.file.file.FlyteFilePathTransformer
-
-Base transformer type that should be implemented for every python native type that can be handled by flytekit
-
 
 ```python
 def FlyteFilePathTransformer()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ### Methods
 
 | Method | Description |
@@ -340,7 +344,7 @@ def from_binary_idl(
 If the input is from flytekit, the Life Cycle will be as follows:
 
 Life Cycle:
-binary IDL                 -> resolved binary         -> bytes                   -> expected Python object
+binary IDL                 -&gt; resolved binary         -&gt; bytes                   -&gt; expected Python object
 (flytekit customized          (propeller processing)     (flytekit binary IDL)      (flytekit customized
 serialization)                                                                       deserialization)
 
@@ -377,7 +381,7 @@ def from_generic_idl(
 If the input is from Flyte Console, the Life Cycle will be as follows:
 
 Life Cycle:
-json str            -> protobuf struct         -> resolved protobuf struct   -> expected Python object
+json str            -&gt; protobuf struct         -&gt; resolved protobuf struct   -&gt; expected Python object
 (console user input)   (console output)           (propeller)                   (flytekit customized deserialization)
 
 Example Code:
@@ -553,15 +557,4 @@ it logs a debug message and returns. If the actual file does not exist, it retur
 |-|-|-|
 | `python_type` | `typing.Type[FlyteFile]` | The expected type of the file |
 | `source_path` | `typing.Union[str, os.PathLike]` | The path to the file to validate :raises ValueError: If the real type of the file is not the same as the expected python_type |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
 

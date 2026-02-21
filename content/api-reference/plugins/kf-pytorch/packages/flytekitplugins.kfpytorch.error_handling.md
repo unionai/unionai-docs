@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.kfpytorch.error_handling
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -58,7 +58,7 @@ a file named `recoverable_error`.
 
 
 
-| Parameter | Type |
-|-|-|
-| `failure` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `failure` |  | The error in the worker process. |
 

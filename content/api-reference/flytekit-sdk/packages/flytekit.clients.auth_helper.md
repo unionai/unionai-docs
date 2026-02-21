@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth_helper
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -222,6 +222,7 @@ exceptions and raise Exception from the Family flytekit.exceptions
 A custom HTTPAdapter that adds authentication headers to requests of a session.
 
 
+
 ```python
 class AuthenticationHTTPAdapter(
     authenticator,
@@ -278,11 +279,11 @@ def add_headers(
 ```
 Add any headers needed by the connection. As of v2.0 this does
 nothing by default, but is left for overriding by users that subclass
-the :class:`HTTPAdapter <requests.adapters.HTTPAdapter>`.
+the :class:`HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;`.
 
 This should not be called from user code, and is only exposed for use
 when subclassing the
-:class:`HTTPAdapter <requests.adapters.HTTPAdapter>`.
+:class:`HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;`.
 
 
 
@@ -344,10 +345,10 @@ def build_response(
     resp,
 )
 ```
-Builds a :class:`Response <requests.Response>` object from a urllib3
+Builds a :class:`Response &lt;requests.Response&gt;` object from a urllib3
 response. This should not be called from user code, and is only exposed
 for use when subclassing the
-:class:`HTTPAdapter <requests.adapters.HTTPAdapter>`
+:class:`HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;`
 
 
 
@@ -368,7 +369,7 @@ def cert_verify(
 ```
 Verify a SSL certificate. This method should not be called from user
 code, and is only exposed for use when subclassing the
-:class:`HTTPAdapter <requests.adapters.HTTPAdapter>`.
+:class:`HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;`.
 
 
 
@@ -399,11 +400,11 @@ def get_connection(
 )
 ```
 DEPRECATED: Users should move to `get_connection_with_tls_context`
-for all subclasses of HTTPAdapter using Requests>=2.32.2.
+for all subclasses of HTTPAdapter using Requests&gt;=2.32.2.
 
 Returns a urllib3 connection for the given URL. This should not be
 called from user code, and is only exposed for use when subclassing the
-:class:`HTTPAdapter <requests.adapters.HTTPAdapter>`.
+:class:`HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;`.
 
 
 
@@ -424,7 +425,7 @@ def get_connection_with_tls_context(
 ```
 Returns a urllib3 connection for the given request and TLS settings.
 This should not be called from user code, and is only exposed for use
-when subclassing the :class:`HTTPAdapter <requests.adapters.HTTPAdapter>`.
+when subclassing the :class:`HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;`.
 
 
 
@@ -449,7 +450,7 @@ Initializes a urllib3 PoolManager.
 
 This method should not be called from user code, and is only
 exposed for use when subclassing the
-:class:`HTTPAdapter <requests.adapters.HTTPAdapter>`.
+:class:`HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;`.
 
 
 
@@ -474,7 +475,7 @@ CONNECT is being used.
 
 This should not be called from user code, and is only exposed for use
 when subclassing the
-:class:`HTTPAdapter <requests.adapters.HTTPAdapter>`.
+:class:`HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;`.
 
 
 
@@ -494,7 +495,7 @@ Return urllib3 ProxyManager for the given proxy.
 
 This method should not be called from user code, and is only
 exposed for use when subclassing the
-:class:`HTTPAdapter <requests.adapters.HTTPAdapter>`.
+:class:`HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;`.
 
 
 
@@ -518,7 +519,7 @@ be used. Otherwise, we should only use the path portion of the URL.
 
 This should not be called from user code, and is only exposed for use
 when subclassing the
-:class:`HTTPAdapter <requests.adapters.HTTPAdapter>`.
+:class:`HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;`.
 
 
 
@@ -549,6 +550,7 @@ If the response returns a 401 status code, refreshes the credentials and retries
 ## flytekit.clients.auth_helper.RemoteClientConfigStore
 
 This class implements the ClientConfigStore that is served by the Flyte Server, that implements AuthMetadataService
+
 
 
 ```python

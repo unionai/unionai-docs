@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.utils
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -92,6 +92,7 @@ def write_proto_to_file(
 Creates a posix safe tempdir which is auto deleted once out of scope
 
 
+
 ```python
 class AutoDeletingTempDir(
     working_dir_prefix,
@@ -104,6 +105,12 @@ class AutoDeletingTempDir(
 | `working_dir_prefix` |  | |
 | `tmp_dir` |  | |
 | `cleanup` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` | :rtype: Text |
 
 ### Methods
 
@@ -139,17 +146,11 @@ The list of absolute filepaths for all immediate sub-paths
 :rtype: list[Text]
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `name` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-
 ## flytekit.core.utils.ClassDecorator
 
 Abstract class for class decorators.
 We can attach config on the decorator class and use it in the upper level.
+
 
 
 ```python
@@ -210,6 +211,12 @@ class Directory(
 |-|-|-|
 | `path` |  | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` | :rtype: Text |
+
 ### Methods
 
 | Method | Description |
@@ -226,13 +233,6 @@ The list of absolute filepaths for all immediate sub-paths
 :rtype: list[Text]
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `name` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-
 ## flytekit.core.utils.timeit
 
 A context manager and a decorator that measures the execution time of the wrapped code block or functions.
@@ -243,6 +243,7 @@ def function()
 
 with timeit("Wrapped code block description"):
     # your code
+
 
 
 ```python

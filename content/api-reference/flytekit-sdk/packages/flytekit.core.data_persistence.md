@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.data_persistence
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -106,6 +106,7 @@ This is the class that is available through the FlyteContext and can be used for
 durable store.
 
 
+
 ```python
 class FileAccessProvider(
     local_sandbox_dir: typing.Union[str, os.PathLike],
@@ -120,6 +121,16 @@ class FileAccessProvider(
 | `raw_output_prefix` | `str` | |
 | `data_config` | `typing.Optional[flytekit.configuration.DataConfig]` | |
 | `execution_metadata` | `typing.Optional[dict]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `data_config` | `None` |  |
+| `local_access` | `None` |  |
+| `local_sandbox_dir` | `None` | This is a context based temp dir. |
+| `raw_output_fs` | `None` | Returns a file system corresponding to the provided raw output prefix |
+| `raw_output_prefix` | `None` |  |
 
 ### Methods
 
@@ -592,16 +603,4 @@ def upload_directory(
 | `local_path` | `str` | |
 | `remote_path` | `str` | |
 | `kwargs` | `**kwargs` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `data_config` |  |  |
-| `local_access` |  |  |
-| `local_sandbox_dir` |  | {{< multiline >}}This is a context based temp dir.
-{{< /multiline >}} |
-| `raw_output_fs` |  | {{< multiline >}}Returns a file system corresponding to the provided raw output prefix
-{{< /multiline >}} |
-| `raw_output_prefix` |  |  |
 

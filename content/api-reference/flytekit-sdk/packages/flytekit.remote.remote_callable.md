@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.remote_callable
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,13 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`RemoteEntity`](.././flytekit.remote.remote_callable#flytekitremoteremote_callableremoteentity) | Helper class that provides a standard way to create an ABC using. |
+| [`RemoteEntity`](.././flytekit.remote.remote_callable#flytekitremoteremote_callableremoteentity) |  |
 
 ## flytekit.remote.remote_callable.RemoteEntity
-
-Helper class that provides a standard way to create an ABC using
-inheritance.
-
 
 ```python
 class RemoteEntity(
@@ -31,6 +27,14 @@ class RemoteEntity(
 |-|-|-|
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `id` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` |  |
 
 ### Methods
 
@@ -95,11 +99,3 @@ def local_execute(
 ```python
 def local_execution_mode()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `id` |  |  |
-| `name` |  |  |
-| `python_interface` |  |  |
-

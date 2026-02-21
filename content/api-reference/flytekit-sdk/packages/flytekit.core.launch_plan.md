@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.launch_plan
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -53,7 +53,7 @@ If at registration time the interface provided causes an issue with compilation,
 ## flytekit.core.launch_plan.LaunchPlan
 
 Launch Plans are one of the core constructs of Flyte. Please take a look at the discussion in the
-:std:ref:`core concepts <flyte:divedeep-launchplans>` if you are unfamiliar with them.
+:std:ref:`core concepts &lt;flyte:divedeep-launchplans&gt;` if you are unfamiliar with them.
 
 Every workflow is registered with a default launch plan, which is just a launch plan with none of the additional
 attributes set - no default values, fixed values, schedules, etc. Assuming you have the following workflow
@@ -82,6 +82,8 @@ To configure the remaining parameters, you'll need to import the relevant model 
 from flytekit.models.common import Annotations, AuthRole, Labels, RawOutputDataConfig
 ```
 Then use as follows:
+
+
 
 
 ```python
@@ -120,6 +122,29 @@ class LaunchPlan(
 | `overwrite_cache` | `Optional[bool]` | |
 | `auto_activate` | `bool` | |
 | `concurrency` | `Optional[ConcurrencyPolicy]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `annotations` | `None` |  |
+| `concurrency` | `None` |  |
+| `fixed_inputs` | `None` |  |
+| `interface` | `None` |  |
+| `labels` | `None` |  |
+| `max_parallelism` | `None` |  |
+| `name` | `None` |  |
+| `notifications` | `None` |  |
+| `overwrite_cache` | `None` |  |
+| `parameters` | `None` |  |
+| `python_interface` | `None` |  |
+| `raw_output_data_config` | `None` |  |
+| `saved_inputs` | `None` |  |
+| `schedule` | `None` |  |
+| `security_context` | `None` |  |
+| `should_auto_activate` | `None` |  |
+| `trigger` | `None` |  |
+| `workflow` | `None` |  |
 
 ### Methods
 
@@ -282,34 +307,12 @@ cached version is returned
 | `auto_activate` | `bool` | If set to True, the launch plan will be activated automatically on registration. Default is False. |
 | `concurrency` | `Optional[ConcurrencyPolicy]` | Defines execution concurrency limits and policy when limit is reached |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `annotations` |  |  |
-| `concurrency` |  |  |
-| `fixed_inputs` |  |  |
-| `interface` |  |  |
-| `labels` |  |  |
-| `max_parallelism` |  |  |
-| `name` |  |  |
-| `notifications` |  |  |
-| `overwrite_cache` |  |  |
-| `parameters` |  |  |
-| `python_interface` |  |  |
-| `raw_output_data_config` |  |  |
-| `saved_inputs` |  |  |
-| `schedule` |  |  |
-| `security_context` |  |  |
-| `should_auto_activate` |  |  |
-| `trigger` |  |  |
-| `workflow` |  |  |
-
 ## flytekit.core.launch_plan.ReferenceLaunchPlan
 
 A reference launch plan serves as a pointer to a Launch Plan that already exists on your Flyte installation. This
 object will not initiate a network call to Admin, which is why the user is asked to provide the expected interface.
 If at registration time the interface provided causes an issue with compilation, an error will be returned.
+
 
 
 ```python
@@ -330,6 +333,31 @@ class ReferenceLaunchPlan(
 | `version` | `str` | |
 | `inputs` | `Dict[str, Type]` | |
 | `outputs` | `Dict[str, Type]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `annotations` | `None` |  |
+| `concurrency` | `None` |  |
+| `fixed_inputs` | `None` |  |
+| `id` | `None` |  |
+| `interface` | `None` |  |
+| `labels` | `None` |  |
+| `max_parallelism` | `None` |  |
+| `name` | `None` |  |
+| `notifications` | `None` |  |
+| `overwrite_cache` | `None` |  |
+| `parameters` | `None` |  |
+| `python_interface` | `None` |  |
+| `raw_output_data_config` | `None` |  |
+| `reference` | `None` |  |
+| `saved_inputs` | `None` |  |
+| `schedule` | `None` |  |
+| `security_context` | `None` |  |
+| `should_auto_activate` | `None` |  |
+| `trigger` | `None` |  |
+| `workflow` | `None` |  |
 
 ### Methods
 
@@ -559,29 +587,4 @@ Please see the implementation of the dispatch_execute function in the real task.
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
 | `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `annotations` |  |  |
-| `concurrency` |  |  |
-| `fixed_inputs` |  |  |
-| `id` |  |  |
-| `interface` |  |  |
-| `labels` |  |  |
-| `max_parallelism` |  |  |
-| `name` |  |  |
-| `notifications` |  |  |
-| `overwrite_cache` |  |  |
-| `parameters` |  |  |
-| `python_interface` |  |  |
-| `raw_output_data_config` |  |  |
-| `reference` |  |  |
-| `saved_inputs` |  |  |
-| `schedule` |  |  |
-| `security_context` |  |  |
-| `should_auto_activate` |  |  |
-| `trigger` |  |  |
-| `workflow` |  |  |
 

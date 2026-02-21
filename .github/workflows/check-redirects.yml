@@ -1,0 +1,43 @@
+name: Check Redirects
+
+on: [push]
+
+jobs:
+  check-redirects:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Full history required for rename detection
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Check for missing redirects
+        run: |
+          echo "=== Detecting moved pages ==="
+          uv run tools/redirect_generator/detect_moved_pages.py --dry-run
+          echo ""
+          echo "=== Checking for uncommitted changes ==="
+          uv run tools/redirect_generator/detect_moved_pages.py
+          if ! git diff --exit-code redirects.csv; then
+            echo ""
+            echo "::error::Redirect file is out of date. The above output shows what redirects need to be added."
+            echo "::error::Run 'make update-redirects' (or 'make dist') locally and commit the changes."
+            exit 1
+          fi
+          echo "All redirects are up to date."
+
+      - name: Check deleted pages have redirects
+        run: |
+          if ! make check-deleted-pages; then
+            echo "::error::Deleted pages are missing redirects. Run 'make check-deleted-pages' for details, then add redirects to redirects.csv or exclude paths in .redirects-exclude."
+            exit 1
+          fi

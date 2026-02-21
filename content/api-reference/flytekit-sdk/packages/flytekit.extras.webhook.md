@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.webhook
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -32,7 +32,13 @@ class WebhookConnector(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `client` | `typing.Optional[httpx.AsyncClient]` | |
+| `client` | `typing.Optional[httpx.AsyncClient]` | An optional HTTP client to use for sending requests. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `task_category` | `None` | task category that the connector supports |
 
 ### Methods
 
@@ -62,13 +68,6 @@ It uses asyncio to send the request and process the response using the httpx lib
 | `output_prefix` | `str` | |
 | `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` | |
 | `kwargs` | `**kwargs` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `task_category` |  | {{< multiline >}}task category that the connector supports
-{{< /multiline >}} |
 
 ## flytekit.extras.webhook.WebhookTask
 
@@ -147,16 +146,37 @@ class WebhookTask(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | |
-| `url` | `str` | |
-| `method` | `str` | |
-| `headers` | `typing.Optional[typing.Dict[str, str]]` | |
-| `data` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
-| `dynamic_inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
-| `show_data` | `bool` | |
-| `show_url` | `bool` | |
-| `description` | `typing.Optional[str]` | |
-| `timeout` | `typing.Union[int, datetime.timedelta]` | |
+| `name` | `str` | Name of this task, should be unique in the project. |
+| `url` | `str` | The endpoint or URL to invoke for this webhook. This can be a static string or a Python format string, where the format arguments are the dynamic_inputs to the task, secrets, etc. Refer to the description for more details of available formatting parameters. |
+| `method` | `str` | The HTTP method to use for the request. Default is POST. |
+| `headers` | `typing.Optional[typing.Dict[str, str]]` | The headers to send with the request. This can be a static dictionary or a Python format string, where the format arguments are the dynamic_inputs to the task, secrets, etc. Refer to the description for more details of available formatting parameters. |
+| `data` | `typing.Optional[typing.Dict[str, typing.Any]]` | The body to send with the request. This can be a static dictionary or a Python format string, where the format arguments are the dynamic_inputs to the task, secrets, etc. Refer to the description for more details of available formatting parameters. The data should be a JSON-serializable dictionary and will be sent as the JSON body of the POST request and as the query parameters of the GET request. |
+| `dynamic_inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | The dynamic inputs to the task. The keys are the names of the inputs and the values are the types of the inputs. These inputs are available under the prefix `inputs.` to be used in the URL, headers, body, and other formatted fields. |
+| `show_data` | `bool` | If True, the body of the request will be logged in the UI as the output of the task. |
+| `show_url` | `bool` | If True, the URL of the request will be logged in the UI as the output of the task. |
+| `description` | `typing.Optional[str]` | Description of the task. |
+| `timeout` | `typing.Union[int, datetime.timedelta]` | The timeout for the request (connection and read). Default is 10 seconds. If an int is provided, it is considered as seconds. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -447,31 +467,4 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
 | `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
 

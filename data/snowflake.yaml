@@ -1,0 +1,20 @@
+packages:
+  flytekitplugins.snowflake: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake/
+  flytekitplugins.snowflake.connector: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/
+  flytekitplugins.snowflake.task: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.task/
+identifiers:
+  flytekitplugins.snowflake.connector.SnowflakeConnector: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#flytekitpluginssnowflakeconnectorsnowflakeconnector
+  SnowflakeConnector: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#flytekitpluginssnowflakeconnectorsnowflakeconnector
+  flytekitplugins.snowflake.connector.SnowflakeJobMetadata: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#flytekitpluginssnowflakeconnectorsnowflakejobmetadata
+  SnowflakeJobMetadata: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#flytekitpluginssnowflakeconnectorsnowflakejobmetadata
+  flytekitplugins.snowflake.task.SnowflakeConfig: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.task/#flytekitpluginssnowflaketasksnowflakeconfig
+  SnowflakeConfig: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.task/#flytekitpluginssnowflaketasksnowflakeconfig
+  flytekitplugins.snowflake.task.SnowflakeTask: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.task/#flytekitpluginssnowflaketasksnowflaketask
+  SnowflakeTask: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.task/#flytekitpluginssnowflaketasksnowflaketask
+methods:
+  flytekitplugins.snowflake.connector.construct_query_link: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#construct_query_link
+  construct_query_link: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#construct_query_link
+  flytekitplugins.snowflake.connector.get_connection: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#get_connection
+  get_connection: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#get_connection
+  flytekitplugins.snowflake.connector.get_private_key: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#get_private_key
+  get_private_key: /api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#get_private_key

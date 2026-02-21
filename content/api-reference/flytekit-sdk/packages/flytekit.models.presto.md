@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.presto
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -39,6 +39,16 @@ Initializes a new PrestoQuery.
 | `catalog` |  | |
 | `schema` |  | |
 | `statement` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `catalog` | `None` | :rtype: int |
+| `is_empty` | `None` |  |
+| `routing_group` | `None` | The query string. :rtype: str |
+| `schema` | `None` | :rtype: int |
+| `statement` | `None` | :rtype: int |
 
 ### Methods
 
@@ -81,19 +91,4 @@ def to_flyte_idl()
 ```
 :rtype: _presto.PrestoQuery
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `catalog` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `routing_group` |  | {{< multiline >}}The query string.
-:rtype: str
-{{< /multiline >}} |
-| `schema` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `statement` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
 

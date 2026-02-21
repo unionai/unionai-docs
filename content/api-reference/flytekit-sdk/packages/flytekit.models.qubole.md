@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.qubole
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -39,6 +39,15 @@ Initializes a new HiveQuery.
 | `query` |  | |
 | `timeout_sec` |  | |
 | `retry_count` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `query` | `None` | The query string. :rtype: str |
+| `retry_count` | `None` | :rtype: int |
+| `timeout_sec` | `None` | :rtype: int |
 
 ### Methods
 
@@ -82,19 +91,6 @@ def to_flyte_idl()
 :rtype: _qubole.HiveQuery
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `query` |  | {{< multiline >}}The query string.
-:rtype: str
-{{< /multiline >}} |
-| `retry_count` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `timeout_sec` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-
 ## flytekit.models.qubole.HiveQueryCollection
 
 ```python
@@ -109,6 +105,13 @@ Initializes a new HiveQueryCollection.
 | Parameter | Type | Description |
 |-|-|-|
 | `queries` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `queries` | `None` | :rtype: list[HiveQuery] |
 
 ### Methods
 
@@ -152,14 +155,6 @@ def to_flyte_idl()
 :rtype: _qubole.HiveQueryCollection
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `queries` |  | {{< multiline >}}:rtype: list[HiveQuery]
-{{< /multiline >}} |
-
 ## flytekit.models.qubole.QuboleHiveJob
 
 ```python
@@ -180,6 +175,16 @@ Initializes a HiveJob.
 | `cluster_label` |  | |
 | `tags` |  | |
 | `query_collection` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cluster_label` | `None` | The cluster label where the query should be executed :rtype: Text |
+| `is_empty` | `None` |  |
+| `query` | `None` | The query to be executed :rtype: HiveQuery |
+| `query_collection` | `None` | The queries to be executed :rtype: HiveQueryCollection |
+| `tags` | `None` | User tags for the queries :rtype: list[Text] |
 
 ### Methods
 
@@ -222,22 +227,4 @@ def to_flyte_idl()
 ```
 :rtype: _qubole.QuboleHiveJob
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `cluster_label` |  | {{< multiline >}}The cluster label where the query should be executed
-:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `query` |  | {{< multiline >}}The query to be executed
-:rtype: HiveQuery
-{{< /multiline >}} |
-| `query_collection` |  | {{< multiline >}}The queries to be executed
-:rtype: HiveQueryCollection
-{{< /multiline >}} |
-| `tags` |  | {{< multiline >}}User tags for the queries
-:rtype: list[Text]
-{{< /multiline >}} |
 

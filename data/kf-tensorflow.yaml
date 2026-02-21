@@ -1,0 +1,23 @@
+packages:
+  flytekitplugins.kftensorflow: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow/
+  flytekitplugins.kftensorflow.task: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/
+identifiers:
+  flytekitplugins.kftensorflow.task.Chief: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtaskchief
+  Chief: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtaskchief
+  flytekitplugins.kftensorflow.task.CleanPodPolicy: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtaskcleanpodpolicy
+  CleanPodPolicy: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtaskcleanpodpolicy
+  flytekitplugins.kftensorflow.task.Evaluator: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtaskevaluator
+  Evaluator: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtaskevaluator
+  flytekitplugins.kftensorflow.task.PS: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtaskps
+  PS: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtaskps
+  flytekitplugins.kftensorflow.task.RestartPolicy: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtaskrestartpolicy
+  RestartPolicy: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtaskrestartpolicy
+  flytekitplugins.kftensorflow.task.RunPolicy: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtaskrunpolicy
+  RunPolicy: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtaskrunpolicy
+  flytekitplugins.kftensorflow.task.TensorflowFunctionTask: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtasktensorflowfunctiontask
+  TensorflowFunctionTask: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtasktensorflowfunctiontask
+  flytekitplugins.kftensorflow.task.TfJob: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtasktfjob
+  TfJob: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtasktfjob
+  flytekitplugins.kftensorflow.task.Worker: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtaskworker
+  Worker: /api-reference/plugins/kf-tensorflow/packages/flytekitplugins.kftensorflow.task/#flytekitpluginskftensorflowtaskworker
+methods: {}

@@ -174,7 +174,7 @@ database.
 "100"
 ```
 
-### connMaxLifeTime ([config.Duration](#config.duration))
+### connMaxLifeTime (config.Duration)
 
 sets the maximum amount of time a connection may be reused
 
@@ -184,7 +184,7 @@ sets the maximum amount of time a connection may be reused
 1h0m0s
 ```
 
-### postgres ([database.PostgresConfig](#database.postgresconfig))
+### postgres (database.PostgresConfig)
 
 **Default Value**:
 
@@ -200,7 +200,7 @@ readReplicaHost: localhost
 username: postgres
 ```
 
-### sqlite ([database.SQLiteConfig](#database.sqliteconfig))
+### sqlite (database.SQLiteConfig)
 
 **Default Value**:
 
@@ -369,7 +369,7 @@ Number of heartbeats before a reservation expires without an extension.
 "3"
 ```
 
-### max-reservation-heartbeat ([config.Duration](#config.duration))
+### max-reservation-heartbeat (config.Duration)
 
 The maximum available reservation extension heartbeat interval.
 
@@ -412,7 +412,7 @@ Sets the minimum logging level.
 "3"
 ```
 
-### formatter ([logger.FormatterConfig](#logger.formatterconfig))
+### formatter (logger.FormatterConfig)
 
 Sets logging format.
 
@@ -447,7 +447,7 @@ Sets the type of exporter to configure
 noop
 ```
 
-### file ([otelutils.FileConfig](#otelutils.fileconfig))
+### file (otelutils.FileConfig)
 
 Configuration for exporting telemetry traces to a file
 
@@ -457,7 +457,7 @@ Configuration for exporting telemetry traces to a file
 filename: /tmp/trace.txt
 ```
 
-### jaeger ([otelutils.JaegerConfig](#otelutils.jaegerconfig))
+### jaeger (otelutils.JaegerConfig)
 
 Configuration for exporting telemetry traces to a jaeger
 
@@ -467,7 +467,7 @@ Configuration for exporting telemetry traces to a jaeger
 endpoint: http://localhost:14268/api/traces
 ```
 
-### otlpgrpc ([otelutils.OtlpGrpcConfig](#otelutils.otlpgrpcconfig))
+### otlpgrpc (otelutils.OtlpGrpcConfig)
 
 Configuration for exporting telemetry traces to an OTLP gRPC collector
 
@@ -477,7 +477,7 @@ Configuration for exporting telemetry traces to an OTLP gRPC collector
 endpoint: http://localhost:4317
 ```
 
-### otlphttp ([otelutils.OtlpHttpConfig](#otelutils.otlphttpconfig))
+### otlphttp (otelutils.OtlpHttpConfig)
 
 Configuration for exporting telemetry traces to an OTLP HTTP collector
 
@@ -487,7 +487,7 @@ Configuration for exporting telemetry traces to an OTLP HTTP collector
 endpoint: http://localhost:4318/v1/traces
 ```
 
-### sampler ([otelutils.SamplerConfig](#otelutils.samplerconfig))
+### sampler (otelutils.SamplerConfig)
 
 Configuration for the sampler to use for the tracer
 
@@ -578,7 +578,7 @@ Sets the type of storage to configure \[s3/minio/local/mem/stow\].
 s3
 ```
 
-### connection ([storage.ConnectionConfig](#storage.connectionconfig))
+### connection (storage.ConnectionConfig)
 
 **Default Value**:
 
@@ -591,7 +591,7 @@ region: us-east-1
 secret-key: ""
 ```
 
-### stow ([storage.StowConfig](#storage.stowconfig))
+### stow (storage.StowConfig)
 
 Storage config for stow backend.
 
@@ -623,7 +623,7 @@ containers/buckets as they are encountered
 "false"
 ```
 
-### cache ([storage.CachingConfig](#storage.cachingconfig))
+### cache (storage.CachingConfig)
 
 **Default Value**:
 
@@ -632,7 +632,7 @@ max_size_mbs: 0
 target_gc_percent: 0
 ```
 
-### limits ([storage.LimitsConfig](#storage.limitsconfig))
+### limits (storage.LimitsConfig)
 
 Sets limits for stores.
 
@@ -642,7 +642,7 @@ Sets limits for stores.
 maxDownloadMBs: 2
 ```
 
-### defaultHttpClient ([storage.HTTPClientConfig](#storage.httpclientconfig))
+### defaultHttpClient (storage.HTTPClientConfig)
 
 Sets the default http client config.
 
@@ -653,7 +653,7 @@ headers: null
 timeout: 0s
 ```
 
-### signedUrl ([storage.SignedURLConfig](#storage.signedurlconfig))
+### signedUrl (storage.SignedURLConfig)
 
 Sets config for SignedURL.
 
@@ -688,7 +688,7 @@ Sets the garbage collection target percentage.
 
 #### storage.ConnectionConfig
 
-##### endpoint ([config.URL](#config.url))
+##### endpoint (config.URL)
 
 URL for storage client to connect to.
 
@@ -750,7 +750,7 @@ Disables SSL connection. Should only be used for development.
 
 #### config.URL
 
-##### URL ([url.URL](#url.url))
+##### URL (url.URL)
 
 **Default Value**:
 
@@ -868,7 +868,7 @@ null
 null
 ```
 
-##### timeout ([config.Duration](#config.duration))
+##### timeout (config.Duration)
 
 Sets time out on the http client.
 

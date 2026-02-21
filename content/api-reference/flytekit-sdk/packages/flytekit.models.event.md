@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.event
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -25,6 +25,13 @@ class TaskExecutionMetadata(
 | Parameter | Type | Description |
 |-|-|-|
 | `external_resources` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `external_resources` | `None` | :rtype: google.protobuf.internal.containers.RepeatedCompositeFieldContainer |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -67,12 +74,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.event.TaskExecutionMetadata
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `external_resources` |  | {{< multiline >}}:rtype: google.protobuf.internal.containers.RepeatedCompositeFieldContainer
-{{< /multiline >}} |
-| `is_empty` |  |  |
 

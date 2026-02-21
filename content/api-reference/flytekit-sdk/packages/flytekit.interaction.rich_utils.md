@@ -1,6 +1,6 @@
 ---
 title: flytekit.interaction.rich_utils
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,28 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`RichCallback`](.././flytekit.interaction.rich_utils#flytekitinteractionrich_utilsrichcallback) | Base class and interface for callback mechanism. |
+| [`RichCallback`](.././flytekit.interaction.rich_utils#flytekitinteractionrich_utilsrichcallback) |  |
 
 ## flytekit.interaction.rich_utils.RichCallback
-
-Base class and interface for callback mechanism
-
-This class can be used directly for monitoring file transfers by
-providing ``callback=Callback(hooks=...)`` (see the ``hooks`` argument,
-below), or subclassed for more specialised behaviour.
-
-Parameters
-----------
-size: int (optional)
-    Nominal quantity for the value that corresponds to a complete
-    transfer, e.g., total number of tiles or total number of
-    bytes
-value: int (0)
-    Starting internal counter value
-hooks: dict or None
-    A dict of named functions to be called on each update. The signature
-    of these must be ``f(size, value, **kwargs)``
-
 
 ```python
 class RichCallback(

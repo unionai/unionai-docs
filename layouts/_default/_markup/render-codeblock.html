@@ -1,8 +1,15 @@
 {{- $result := transform.HighlightCodeBlock . -}}
+{{- /* Rename language-* classes to syntax-* to prevent 1Password prism.js interference */ -}}
+{{- /* Handle both single class and multiple classes: class="language-python" or class="highlight language-python" */ -}}
+{{- $wrapped := replaceRE `class="([^"]*\s)?language-([^"]+)"` `class="$1syntax-$2"` $result.Wrapped -}}
+{{- $wrapped = replaceRE `class="([^"]*\s)?lang-([^"]+)"` `class="$1syntax-$2"` $wrapped -}}
+{{- /* Also rename data-lang attributes */ -}}
+{{- $wrapped = replaceRE `data-lang="([^"]+)"` `data-syntax="$1"` $wrapped -}}
 {{- $uniqueID := printf "code-%s-%d" (sha1 .Inner) .Ordinal -}}
+
 <div class="codeblock">
     <div class="copy">
         <sl-copy-button from="{{- $uniqueID -}}"></sl-copy-button>
     </div>
-    <div id="{{- $uniqueID -}}" class="code">{{ $result.Wrapped }}</div>
+    <div id="{{- $uniqueID -}}" class="code" data-1p-ignore="true" data-bwignore="true" data-lastpass-ignore="true" autocomplete="off" contenteditable="false">{{ $wrapped | safeHTML }}</div>
 </div>

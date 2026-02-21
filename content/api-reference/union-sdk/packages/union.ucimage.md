@@ -1,6 +1,6 @@
 ---
 title: union.ucimage
-version: 0.1.198
+version: 0.1.202
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---

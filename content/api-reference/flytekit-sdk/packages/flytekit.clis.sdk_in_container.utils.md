@@ -1,6 +1,6 @@
 ---
 title: flytekit.clis.sdk_in_container.utils
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -147,6 +147,7 @@ format, and will also split the packages if the user passed in a comma separated
 Helper class that wraps the invoke method of a click command to catch exceptions and print them in a nice way.
 
 
+
 ```python
 class ErrorHandlingCommand(
     args: *args,
@@ -160,6 +161,13 @@ Create RichGroup instance.
 |-|-|-|
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `console` | `None` | Rich Console.  This is a separate instance from the help formatter that allows full control of the console configuration.  See `rich_config` decorator for how to apply the settings. |
+| `help_config` | `None` | Rich Help Configuration. |
 
 ### Methods
 
@@ -176,7 +184,7 @@ Create RichGroup instance.
 | [`format_help_text()`](#format_help_text) | Writes the help text to the formatter if it exists. |
 | [`format_options()`](#format_options) | Writes all the options into the formatter if they exist. |
 | [`format_usage()`](#format_usage) | Writes the usage line into the formatter. |
-| [`get_command()`](#get_command) | Given a context and a command name, this returns a. |
+| [`get_command()`](#get_command) | Given a context and a command name, this returns a :class:`Command`. |
 | [`get_help()`](#get_help) | Formats the help into a string and returns it. |
 | [`get_help_option()`](#get_help_option) | Return the help option object. |
 | [`get_help_option_names()`](#get_help_option_names) | Returns the names for the help option. |
@@ -186,15 +194,15 @@ Create RichGroup instance.
 | [`get_usage()`](#get_usage) | Formats the usage line into a string and returns it. |
 | [`group()`](#group) | A shortcut decorator for declaring and attaching a group to. |
 | [`invoke()`](#invoke) | Given a context, this invokes the attached callback (if it exists). |
-| [`list_commands()`](#list_commands) | Returns a list of subcommand names in the order they should. |
+| [`list_commands()`](#list_commands) | Returns a list of subcommand names in the order they should appear. |
 | [`main()`](#main) | This is the way to invoke a script with all the bells and. |
 | [`make_context()`](#make_context) | This function when given an info name and arguments will kick. |
 | [`make_parser()`](#make_parser) | Creates the underlying option parser for this command. |
-| [`parse_args()`](#parse_args) | Given a context and a list of arguments this creates the parser. |
+| [`parse_args()`](#parse_args) |  |
 | [`resolve_command()`](#resolve_command) |  |
 | [`result_callback()`](#result_callback) | Adds a result callback to the command. |
 | [`shell_complete()`](#shell_complete) | Return a list of completions for the incomplete value. |
-| [`to_info_dict()`](#to_info_dict) | Gather information that could be useful for a tool generating. |
+| [`to_info_dict()`](#to_info_dict) |  |
 
 
 #### add_command()
@@ -249,8 +257,8 @@ Add a RichPanel to the RichCommand.
 
 ```python
 def collect_usage_pieces(
-    ctx: click.core.Context,
-) -> typing.List[str]
+    ctx: Context,
+) -> list[str]
 ```
 Returns all the pieces that go into the usage line and returns
 it as a list of strings.
@@ -258,7 +266,7 @@ it as a list of strings.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `ctx` | `click.core.Context` | |
+| `ctx` | `Context` | |
 
 #### command()
 
@@ -382,8 +390,8 @@ Writes all the options into the formatter if they exist.
 
 ```python
 def format_usage(
-    ctx: click.core.Context,
-    formatter: click.formatting.HelpFormatter,
+    ctx: Context,
+    formatter: HelpFormatter,
 )
 ```
 Writes the usage line into the formatter.
@@ -393,8 +401,8 @@ This is a low-level method called by :meth:`get_usage`.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `ctx` | `click.core.Context` | |
-| `formatter` | `click.formatting.HelpFormatter` | |
+| `ctx` | `Context` | |
+| `formatter` | `HelpFormatter` | |
 
 #### get_command()
 
@@ -404,8 +412,8 @@ def get_command(
     cmd_name: str,
 ) -> Optional[click.Command]
 ```
-Given a context and a command name, this returns a
-:class:`Command` object if it exists or returns `None`.
+Given a context and a command name, this returns a :class:`Command`
+object if it exists or returns ``None``.
 
 
 | Parameter | Type | Description |
@@ -417,7 +425,7 @@ Given a context and a command name, this returns a
 
 ```python
 def get_help(
-    ctx: click.core.Context,
+    ctx: Context,
 ) -> str
 ```
 Formats the help into a string and returns it.
@@ -427,7 +435,7 @@ Calls :meth:`format_help` internally.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `ctx` | `click.core.Context` | |
+| `ctx` | `Context` | |
 
 #### get_help_option()
 
@@ -452,26 +460,26 @@ Skipped if :attr:`add_help_option` is ``False``.
 
 ```python
 def get_help_option_names(
-    ctx: click.core.Context,
-) -> typing.List[str]
+    ctx: Context,
+) -> list[str]
 ```
 Returns the names for the help option.
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `ctx` | `click.core.Context` | |
+| `ctx` | `Context` | |
 
 #### get_params()
 
 ```python
 def get_params(
-    ctx: click.core.Context,
-) -> typing.List[ForwardRef('Parameter')]
+    ctx: Context,
+) -> list[Parameter]
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `ctx` | `click.core.Context` | |
+| `ctx` | `Context` | |
 
 #### get_rich_table_row()
 
@@ -510,7 +518,7 @@ long help string.
 
 ```python
 def get_usage(
-    ctx: click.core.Context,
+    ctx: Context,
 ) -> str
 ```
 Formats the usage line into a string and returns it.
@@ -520,7 +528,7 @@ Calls :meth:`format_usage` internally.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `ctx` | `click.core.Context` | |
+| `ctx` | `Context` | |
 
 #### group()
 
@@ -569,16 +577,15 @@ in the right way.
 
 ```python
 def list_commands(
-    ctx: click.core.Context,
-) -> typing.List[str]
+    ctx: Context,
+) -> list[str]
 ```
-Returns a list of subcommand names in the order they should
-appear.
+Returns a list of subcommand names in the order they should appear.
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `ctx` | `click.core.Context` | |
+| `ctx` | `Context` | |
 
 #### main()
 
@@ -615,11 +622,11 @@ a :class:`Command`.
 
 ```python
 def make_context(
-    info_name: typing.Optional[str],
+    info_name: str | None,
     args: *args,
-    parent: typing.Optional[click.core.Context],
-    extra: typing.Any,
-) -> click.core.Context
+    parent: Context | None,
+    extra: t.Any,
+) -> Context
 ```
 This function when given an info name and arguments will kick
 off the parsing and create a new :class:`Context`.  It does not
@@ -632,54 +639,49 @@ this method, set the :attr:`context_class` attribute.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `info_name` | `typing.Optional[str]` | the info name for this invocation.  Generally this is the most descriptive name for the script or command.  For the toplevel script it's usually the name of the script, for commands below it's the name of the command. |
+| `info_name` | `str \| None` | the info name for this invocation.  Generally this is the most descriptive name for the script or command.  For the toplevel script it's usually the name of the script, for commands below it's the name of the command. |
 | `args` | `*args` | the arguments to parse as list of strings. |
-| `parent` | `typing.Optional[click.core.Context]` | the parent context if available. |
-| `extra` | `typing.Any` | extra keyword arguments forwarded to the context constructor.  .. versionchanged:: 8.0 Added the :attr:`context_class` attribute. |
+| `parent` | `Context \| None` | the parent context if available. |
+| `extra` | `t.Any` | extra keyword arguments forwarded to the context constructor.  .. versionchanged:: 8.0 Added the :attr:`context_class` attribute. |
 
 #### make_parser()
 
 ```python
 def make_parser(
-    ctx: click.core.Context,
-) -> click.parser.OptionParser
+    ctx: Context,
+) -> _OptionParser
 ```
 Creates the underlying option parser for this command.
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `ctx` | `click.core.Context` | |
+| `ctx` | `Context` | |
 
 #### parse_args()
 
 ```python
 def parse_args(
-    ctx: click.core.Context,
+    ctx: Context,
     args: *args,
-) -> typing.List[str]
+) -> list[str]
 ```
-Given a context and a list of arguments this creates the parser
-and parses the arguments, then modifies the context as necessary.
-This is automatically invoked by :meth:`make_context`.
-
-
 | Parameter | Type | Description |
 |-|-|-|
-| `ctx` | `click.core.Context` | |
+| `ctx` | `Context` | |
 | `args` | `*args` | |
 
 #### resolve_command()
 
 ```python
 def resolve_command(
-    ctx: click.core.Context,
+    ctx: Context,
     args: *args,
-) -> typing.Tuple[typing.Optional[str], typing.Optional[click.core.Command], typing.List[str]]
+) -> tuple[str | None, Command | None, list[str]]
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `ctx` | `click.core.Context` | |
+| `ctx` | `Context` | |
 | `args` | `*args` | |
 
 #### result_callback()
@@ -687,7 +689,7 @@ def resolve_command(
 ```python
 def result_callback(
     replace: bool,
-) -> typing.Callable[[~F], ~F]
+) -> t.Callable[[F], F]
 ```
 Adds a result callback to the command.  By default if a
 result callback is already registered this will chain them but
@@ -718,9 +720,9 @@ Example::
 
 ```python
 def shell_complete(
-    ctx: click.core.Context,
+    ctx: Context,
     incomplete: str,
-) -> typing.List[ForwardRef('CompletionItem')]
+) -> list[CompletionItem]
 ```
 Return a list of completions for the incomplete value. Looks
 at the names of options, subcommands, and chained
@@ -730,7 +732,7 @@ multi-commands.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `ctx` | `click.core.Context` | Invocation context for this command. |
+| `ctx` | `Context` | Invocation context for this command. |
 | `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
 
 #### to_info_dict()
@@ -740,32 +742,9 @@ def to_info_dict(
     ctx: click.Context,
 ) -> Dict[str, Any]
 ```
-Gather information that could be useful for a tool generating
-user-facing documentation. This traverses the entire structure
-below this command.
-
-Use :meth:`click.Context.to_info_dict` to traverse the entire
-CLI structure.
-
-
-
 | Parameter | Type | Description |
 |-|-|-|
-| `ctx` | `click.Context` | A  .. versionadded:: 8.0 |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `console` |  | {{< multiline >}}Rich Console.
-
-This is a separate instance from the help formatter that allows full control of the
-console configuration.
-
-See `rich_config` decorator for how to apply the settings.
-{{< /multiline >}} |
-| `help_config` |  | {{< multiline >}}Rich Help Configuration.
-{{< /multiline >}} |
+| `ctx` | `click.Context` | |
 
 ## flytekit.clis.sdk_in_container.utils.PyFlyteParams
 

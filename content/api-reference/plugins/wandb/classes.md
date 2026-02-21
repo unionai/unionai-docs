@@ -1,6 +1,6 @@
 ---
 title: Classes
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -9,5 +9,4 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.wandb.wandb_init`](../packages/flytekitplugins.wandb#flytekitpluginswandbwandb_init) |Abstract class for class decorators. |
-| [`flytekitplugins.wandb.tracking.wandb_init`](../packages/flytekitplugins.wandb.tracking#flytekitpluginswandbtrackingwandb_init) |Abstract class for class decorators. |
+| [`flytekitplugins.wandb.wandb_init`](../packages/flytekitplugins.wandb#flytekitpluginswandbwandb_init) | |

@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.workflow
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -105,10 +105,10 @@ If at registration time the interface provided causes an issue with compilation,
 
 Example:
 
-<!--
+&lt;!--
 .. literalinclude:: ../../../tests/flytekit/unit/core/test_references.py
    :pyobject: ref_wf1
--->
+--&gt;
 ```python
 @reference_workflow(project="proj", domain="development", name="wf_name", version="abc")
 def ref_wf1(a: int) -> typing.Tuple[str, str]:
@@ -150,9 +150,9 @@ the platform, local runs notwithstanding).
 
 Example:
 
-<!--
+&lt;!--
 .. literalinclude:: ../../../tests/flytekit/unit/core/test_workflows.py
--->
+--&gt;
 
 ```python
 import os
@@ -676,10 +676,10 @@ rror_message}", failed_node_id="fn0")
 
 Again, users should keep in mind that even though the body of the function looks like regular Python, it is
 actually not. When flytekit scans the workflow function, the objects being passed around between the tasks are not
-your typical Python values. So even though you may have a task ``t1() -> int``, when ``a = t1()`` is called, ``a``
+your typical Python values. So even though you may have a task ``t1() -&gt; int``, when ``a = t1()`` is called, ``a``
 will not be an integer so if you try to ``range(a)`` you'll get an error.
 
-Please see the :ref:`user guide <cookbook:workflow>` for more usage examples.
+Please see the :ref:`user guide &lt;cookbook:workflow&gt;` for more usage examples.
 
 
 
@@ -700,13 +700,13 @@ better suited to programmatic applications.
 
 Assuming you have some tasks like so
 
-<!--
+&lt;!--
 .. literalinclude:: ../../../tests/flytekit/unit/core/test_imperative.py
    :start-after: # docs_tasks_start
    :end-before: # docs_tasks_end
    :language: python
    :dedent: 4
--->
+--&gt;
 ```python
 @task
 def t1(a: str) -> str:
@@ -719,13 +719,13 @@ def t2():
 
 You could create a workflow imperatively like so
 
-<!--
+&lt;!--
 .. literalinclude:: ../../../tests/flytekit/unit/core/test_imperative.py
    :start-after: # docs_start
    :end-before: # docs_end
    :language: python
    :dedent: 4
--->
+--&gt;
 ```python
 # Create the workflow with a name. This needs to be unique within the project and takes the place of the function
 # name that's used for regular decorated function-based workflows.
@@ -741,13 +741,13 @@ wb.add_workflow_output("from_n0t1", node.outputs["o0"])
 
 This workflow would be identical on the back-end to
 
-<!--
+&lt;!--
 .. literalinclude:: ../../../tests/flytekit/unit/core/test_imperative.py
    :start-after: # docs_equivalent_start
    :end-before: # docs_equivalent_end
    :language: python
    :dedent: 4
--->
+--&gt;
 ```python
 nt = typing.NamedTuple("wf_output", [("from_n0t1", str)])
 
@@ -763,6 +763,7 @@ imperative example. The imperative paradigm makes the naming of workflow outputs
 deal in function-workflows because names tend to not be necessary.
 
 
+
 ```python
 class ImperativeWorkflow(
     name: str,
@@ -775,6 +776,25 @@ class ImperativeWorkflow(
 | `name` | `str` | |
 | `failure_policy` | `Optional[WorkflowFailurePolicy]` | |
 | `interruptible` | `bool` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `compilation_state` | `None` | Compilation is done a bit at a time, one task or other entity call at a time. This is why this workflow class has to keep track of its own compilation state. |
+| `default_options` | `None` |  |
+| `docs` | `None` |  |
+| `failure_node` | `None` |  |
+| `inputs` | `None` | This holds the input promises to the workflow. The nodes in these Promise objects should always point to the global start node. |
+| `interface` | `None` |  |
+| `name` | `None` |  |
+| `nodes` | `None` |  |
+| `on_failure` | `None` |  |
+| `output_bindings` | `None` |  |
+| `python_interface` | `None` |  |
+| `short_name` | `None` |  |
+| `workflow_metadata` | `None` |  |
+| `workflow_metadata_defaults` | `None` |  |
 
 ### Methods
 
@@ -979,34 +999,12 @@ These conditions assume that all nodes and workflow i/o changes were done with t
 do additional checking.
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `compilation_state` |  | {{< multiline >}}Compilation is done a bit at a time, one task or other entity call at a time. This is why this workflow
-class has to keep track of its own compilation state.
-{{< /multiline >}} |
-| `default_options` |  |  |
-| `docs` |  |  |
-| `failure_node` |  |  |
-| `inputs` |  | {{< multiline >}}This holds the input promises to the workflow. The nodes in these Promise objects should always point to
-the global start node.
-{{< /multiline >}} |
-| `interface` |  |  |
-| `name` |  |  |
-| `nodes` |  |  |
-| `on_failure` |  |  |
-| `output_bindings` |  |  |
-| `python_interface` |  |  |
-| `short_name` |  |  |
-| `workflow_metadata` |  |  |
-| `workflow_metadata_defaults` |  |  |
-
 ## flytekit.core.workflow.PythonFunctionWorkflow
 
 Please read :std:ref:`flyte:divedeep-workflows` first for a high-level understanding of what workflows are in Flyte.
 This Python object represents a workflow  defined by a function and decorated with the
-{{< py_func_ref `@workflow <flytekit.workflow>` >}} decorator. Please see notes on that object for additional information.
+{{&lt; py_func_ref `@workflow &lt;flytekit.workflow&gt;` &gt;}} decorator. Please see notes on that object for additional information.
+
 
 
 ```python
@@ -1031,6 +1029,27 @@ class PythonFunctionWorkflow(
 | `docs` | `Optional[Documentation]` | |
 | `pickle_untyped` | `bool` | |
 | `default_options` | `Optional[Options]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `default_options` | `None` |  |
+| `docs` | `None` |  |
+| `failure_node` | `None` |  |
+| `function` | `None` |  |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `name` | `None` |  |
+| `nodes` | `None` |  |
+| `on_failure` | `None` |  |
+| `output_bindings` | `None` |  |
+| `python_interface` | `None` |  |
+| `short_name` | `None` |  |
+| `workflow_metadata` | `None` |  |
+| `workflow_metadata_defaults` | `None` |  |
 
 ### Methods
 
@@ -1171,32 +1190,12 @@ Overridable function that can optionally return a custom name for a given task
 |-|-|-|
 | `t` | `PythonAutoContainerTask` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `default_options` |  |  |
-| `docs` |  |  |
-| `failure_node` |  |  |
-| `function` |  |  |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `name` |  |  |
-| `nodes` |  |  |
-| `on_failure` |  |  |
-| `output_bindings` |  |  |
-| `python_interface` |  |  |
-| `short_name` |  |  |
-| `workflow_metadata` |  |  |
-| `workflow_metadata_defaults` |  |  |
-
 ## flytekit.core.workflow.ReferenceWorkflow
 
 A reference workflow is a pointer to a workflow that already exists on your Flyte installation. This
 object will not initiate a network call to Admin, which is why the user is asked to provide the expected interface.
 If at registration time the interface provided causes an issue with compilation, an error will be returned.
+
 
 
 ```python
@@ -1217,6 +1216,29 @@ class ReferenceWorkflow(
 | `version` | `str` | |
 | `inputs` | `Dict[str, Type]` | |
 | `outputs` | `Dict[str, Type]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `default_options` | `None` |  |
+| `docs` | `None` |  |
+| `failure_node` | `None` |  |
+| `function` | `None` |  |
+| `id` | `None` |  |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `name` | `None` |  |
+| `nodes` | `None` |  |
+| `on_failure` | `None` |  |
+| `output_bindings` | `None` |  |
+| `python_interface` | `None` |  |
+| `reference` | `None` |  |
+| `short_name` | `None` |  |
+| `workflow_metadata` | `None` |  |
+| `workflow_metadata_defaults` | `None` |  |
 
 ### Methods
 
@@ -1372,29 +1394,6 @@ Please see the implementation of the dispatch_execute function in the real task.
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
 | `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `default_options` |  |  |
-| `docs` |  |  |
-| `failure_node` |  |  |
-| `function` |  |  |
-| `id` |  |  |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `name` |  |  |
-| `nodes` |  |  |
-| `on_failure` |  |  |
-| `output_bindings` |  |  |
-| `python_interface` |  |  |
-| `reference` |  |  |
-| `short_name` |  |  |
-| `workflow_metadata` |  |  |
-| `workflow_metadata_defaults` |  |  |
-
 ## flytekit.core.workflow.WorkflowBase
 
 ```python
@@ -1419,6 +1418,23 @@ class WorkflowBase(
 | `docs` | `Optional[Documentation]` | |
 | `default_options` | `Optional[Options]` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `default_options` | `None` |  |
+| `docs` | `None` |  |
+| `failure_node` | `None` |  |
+| `interface` | `None` |  |
+| `name` | `None` |  |
+| `nodes` | `None` |  |
+| `on_failure` | `None` |  |
+| `output_bindings` | `None` |  |
+| `python_interface` | `None` |  |
+| `short_name` | `None` |  |
+| `workflow_metadata` | `None` |  |
+| `workflow_metadata_defaults` | `None` |  |
 
 ### Methods
 
@@ -1476,27 +1492,11 @@ def local_execute(
 ```python
 def local_execution_mode()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `default_options` |  |  |
-| `docs` |  |  |
-| `failure_node` |  |  |
-| `interface` |  |  |
-| `name` |  |  |
-| `nodes` |  |  |
-| `on_failure` |  |  |
-| `output_bindings` |  |  |
-| `python_interface` |  |  |
-| `short_name` |  |  |
-| `workflow_metadata` |  |  |
-| `workflow_metadata_defaults` |  |  |
-
 ## flytekit.core.workflow.WorkflowFailurePolicy
 
 Defines the behavior for a workflow execution in the case of an observed node execution failure. By default, a
 workflow execution will immediately enter a failed state if a component node fails.
+
 
 
 ## flytekit.core.workflow.WorkflowMetadata
@@ -1527,6 +1527,7 @@ def to_flyte_model()
 This class is similarly named to the one above. Please see the IDL for more information but essentially, this
 WorkflowMetadataDefaults class represents the defaults that are handed down to a workflow's tasks, whereas
 WorkflowMetadata represents metadata about the workflow itself.
+
 
 
 ```python

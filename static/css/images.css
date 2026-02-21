@@ -1,3 +1,21 @@
+.imageblock {
+  position: relative;
+  margin: 1rem 0;
+}
+
+.imageblock > .image {
+  display: block;
+}
+
+img[title="small"] {
+  max-width: 450px;
+  height: auto;
+}
+
+img[title="medium"] {
+  max-width: 600px;
+  height: auto;
+}
 
 img[title="small:center"] {
   max-width: 450px;

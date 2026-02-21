@@ -1,0 +1,15 @@
+packages:
+  flytekitplugins.onnxscikitlearn: /api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn/
+  flytekitplugins.onnxscikitlearn.schema: /api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn.schema/
+identifiers:
+  flytekitplugins.onnxscikitlearn.schema.ScikitLearn2ONNX: /api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn.schema/#flytekitpluginsonnxscikitlearnschemascikitlearn2onnx
+  ScikitLearn2ONNX: /api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn.schema/#flytekitpluginsonnxscikitlearnschemascikitlearn2onnx
+  flytekitplugins.onnxscikitlearn.schema.ScikitLearn2ONNXConfig: /api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn.schema/#flytekitpluginsonnxscikitlearnschemascikitlearn2onnxconfig
+  ScikitLearn2ONNXConfig: /api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn.schema/#flytekitpluginsonnxscikitlearnschemascikitlearn2onnxconfig
+  flytekitplugins.onnxscikitlearn.schema.ScikitLearn2ONNXTransformer: /api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn.schema/#flytekitpluginsonnxscikitlearnschemascikitlearn2onnxtransformer
+  ScikitLearn2ONNXTransformer: /api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn.schema/#flytekitpluginsonnxscikitlearnschemascikitlearn2onnxtransformer
+methods:
+  flytekitplugins.onnxscikitlearn.schema.extract_config: /api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn.schema/#extract_config
+  extract_config: /api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn.schema/#extract_config
+  flytekitplugins.onnxscikitlearn.schema.to_onnx: /api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn.schema/#to_onnx
+  to_onnx: /api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn.schema/#to_onnx

@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.system
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,21 +13,18 @@ layout: py_api
 
 | Exception | Description |
 |-|-|
-| [`FlyteAgentNotFound`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteagentnotfound) | Assertion failed. |
-| [`FlyteConnectorNotFound`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteconnectornotfound) | Assertion failed. |
-| [`FlyteDownloadDataException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytedownloaddataexception) | Common base class for all non-exit exceptions. |
-| [`FlyteEntrypointNotLoadable`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteentrypointnotloadable) | Common base class for all non-exit exceptions. |
-| [`FlyteNonRecoverableSystemException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytenonrecoverablesystemexception) | Common base class for all non-exit exceptions. |
-| [`FlyteNotImplementedException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytenotimplementedexception) | Method or function hasn't been implemented yet. |
-| [`FlyteSystemAssertion`](.././flytekit.exceptions.system#flytekitexceptionssystemflytesystemassertion) | Assertion failed. |
-| [`FlyteSystemException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytesystemexception) | Common base class for all non-exit exceptions. |
-| [`FlyteSystemUnavailableException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytesystemunavailableexception) | Common base class for all non-exit exceptions. |
-| [`FlyteUploadDataException`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteuploaddataexception) | Common base class for all non-exit exceptions. |
+| [`FlyteAgentNotFound`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteagentnotfound) |  |
+| [`FlyteConnectorNotFound`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteconnectornotfound) |  |
+| [`FlyteDownloadDataException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytedownloaddataexception) |  |
+| [`FlyteEntrypointNotLoadable`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteentrypointnotloadable) |  |
+| [`FlyteNonRecoverableSystemException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytenonrecoverablesystemexception) |  |
+| [`FlyteNotImplementedException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytenotimplementedexception) |  |
+| [`FlyteSystemAssertion`](.././flytekit.exceptions.system#flytekitexceptionssystemflytesystemassertion) |  |
+| [`FlyteSystemException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytesystemexception) |  |
+| [`FlyteSystemUnavailableException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytesystemunavailableexception) |  |
+| [`FlyteUploadDataException`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteuploaddataexception) |  |
 
 ## flytekit.exceptions.system.FlyteAgentNotFound
-
-Assertion failed.
-
 
 ```python
 class FlyteAgentNotFound(
@@ -44,13 +41,9 @@ class FlyteAgentNotFound(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteConnectorNotFound
-
-Assertion failed.
-
 
 ```python
 class FlyteConnectorNotFound(
@@ -67,13 +60,9 @@ class FlyteConnectorNotFound(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteDownloadDataException
-
-Common base class for all non-exit exceptions.
-
 
 ```python
 class FlyteDownloadDataException(
@@ -90,13 +79,9 @@ class FlyteDownloadDataException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteEntrypointNotLoadable
-
-Common base class for all non-exit exceptions.
-
 
 ```python
 class FlyteEntrypointNotLoadable(
@@ -115,13 +100,9 @@ class FlyteEntrypointNotLoadable(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteNonRecoverableSystemException
-
-Common base class for all non-exit exceptions.
-
 
 ```python
 class FlyteNonRecoverableSystemException(
@@ -140,14 +121,10 @@ FlyteNonRecoverableSystemException is thrown when a system code raises an except
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
-| `value` |  |  |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `value` | `None` |  |
 
 ## flytekit.exceptions.system.FlyteNotImplementedException
-
-Method or function hasn't been implemented yet.
-
 
 ```python
 class FlyteNotImplementedException(
@@ -164,13 +141,9 @@ class FlyteNotImplementedException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteSystemAssertion
-
-Assertion failed.
-
 
 ```python
 class FlyteSystemAssertion(
@@ -187,13 +160,9 @@ class FlyteSystemAssertion(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteSystemException
-
-Common base class for all non-exit exceptions.
-
 
 ```python
 class FlyteSystemException(
@@ -210,13 +179,9 @@ class FlyteSystemException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteSystemUnavailableException
-
-Common base class for all non-exit exceptions.
-
 
 ```python
 class FlyteSystemUnavailableException(
@@ -233,13 +198,9 @@ class FlyteSystemUnavailableException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteUploadDataException
-
-Common base class for all non-exit exceptions.
-
 
 ```python
 class FlyteUploadDataException(
@@ -256,6 +217,5 @@ class FlyteUploadDataException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 

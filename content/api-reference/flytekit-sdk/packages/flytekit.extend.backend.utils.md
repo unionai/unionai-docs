@@ -1,6 +1,6 @@
 ---
 title: flytekit.extend.backend.utils
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -28,7 +28,7 @@ layout: py_api
 ```python
 def convert_to_flyte_phase(
     state: str,
-) -> <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10ccd3710>
+) -> google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper
 ```
 Convert the state from the connector to the phase in flyte.
 
@@ -63,7 +63,7 @@ def get_connector_secret(
 
 ```python
 def is_terminal_phase(
-    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10ccd3710>,
+    phase: google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper,
 ) -> bool
 ```
 Return true if the phase is terminal.
@@ -71,7 +71,7 @@ Return true if the phase is terminal.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10ccd3710>` | |
+| `phase` | `google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper` | |
 
 #### mirror_async_methods()
 

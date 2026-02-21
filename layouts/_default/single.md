@@ -11,12 +11,6 @@ This renders the content with shortcodes processed for markdown output.
 {{ .RawContent }}
 
 ---
-**Source**: {{ .File.Path }}
-**URL**: {{ .Permalink }}
-{{- if .Date }}
-**Date**: {{ .Date.Format "2006-01-02" }}
-{{- end }}
-{{- if .Params.weight }}
-**Weight**: {{ .Params.weight }}
-{{- end }}
+**Source**: https://github.com/unionai/unionai-docs/blob/main/content/{{ .File.Path }}
+**HTML**: https://www.union.ai{{ .Permalink }}
 {{ end }}

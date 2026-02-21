@@ -1,6 +1,6 @@
 ---
 title: flytekit.clis.sdk_in_container.serialize
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`SerializationMode`](.././flytekit.clis.sdk_in_container.serialize#flytekitclissdk_in_containerserializeserializationmode) | Create a collection of name/value pairs. |
+| [`SerializationMode`](.././flytekit.clis.sdk_in_container.serialize#flytekitclissdk_in_containerserializeserializationmode) |  |
 
 ### Methods
 
@@ -62,7 +62,7 @@ These can be inspected by calling (in the launch plan case)
 flyte-cli parse-proto -f filename.pb -p flyteidl.admin.launch_plan_pb2.LaunchPlan
 ```
 
-See {{< py_class_ref flytekit.models.core.identifier.ResourceType >}}   to match the trailing index in the file name with the
+See {{&lt; py_class_ref flytekit.models.core.identifier.ResourceType &gt;}}   to match the trailing index in the file name with the
 entity type.
 
 
@@ -79,42 +79,4 @@ entity type.
 | `env` | `typing.Optional[typing.Dict[str, str]]` | |
 
 ## flytekit.clis.sdk_in_container.serialize.SerializationMode
-
-Create a collection of name/value pairs.
-
-Example enumeration:
-
->>> class Color(Enum):
-...     RED = 1
-...     BLUE = 2
-...     GREEN = 3
-
-Access them by:
-
-- attribute access:
-
-  >>> Color.RED
-  <Color.RED: 1>
-
-- value lookup:
-
-  >>> Color(1)
-  <Color.RED: 1>
-
-- name lookup:
-
-  >>> Color['RED']
-  <Color.RED: 1>
-
-Enumerations can be iterated over, and know how many members they have:
-
->>> len(Color)
-3
-
->>> list(Color)
-[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]
-
-Methods can be added to enumerations, and members can have their own
-attributes -- see the documentation for details.
-
 

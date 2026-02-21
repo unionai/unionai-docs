@@ -1,0 +1,13 @@
+packages:
+  flytekitplugins.slurm: /api-reference/plugins/slurm/packages/flytekitplugins.slurm/
+  flytekitplugins.slurm.ssh_utils: /api-reference/plugins/slurm/packages/flytekitplugins.slurm.ssh_utils/
+identifiers:
+  flytekitplugins.slurm.ssh_utils.SSHConfig: /api-reference/plugins/slurm/packages/flytekitplugins.slurm.ssh_utils/#flytekitpluginsslurmssh_utilssshconfig
+  SSHConfig: /api-reference/plugins/slurm/packages/flytekitplugins.slurm.ssh_utils/#flytekitpluginsslurmssh_utilssshconfig
+  flytekitplugins.slurm.ssh_utils.SlurmCluster: /api-reference/plugins/slurm/packages/flytekitplugins.slurm.ssh_utils/#flytekitpluginsslurmssh_utilsslurmcluster
+  SlurmCluster: /api-reference/plugins/slurm/packages/flytekitplugins.slurm.ssh_utils/#flytekitpluginsslurmssh_utilsslurmcluster
+methods:
+  flytekitplugins.slurm.ssh_utils.get_ssh_conn: /api-reference/plugins/slurm/packages/flytekitplugins.slurm.ssh_utils/#get_ssh_conn
+  get_ssh_conn: /api-reference/plugins/slurm/packages/flytekitplugins.slurm.ssh_utils/#get_ssh_conn
+  flytekitplugins.slurm.ssh_utils.ssh_connect: /api-reference/plugins/slurm/packages/flytekitplugins.slurm.ssh_utils/#ssh_connect
+  ssh_connect: /api-reference/plugins/slurm/packages/flytekitplugins.slurm.ssh_utils/#ssh_connect

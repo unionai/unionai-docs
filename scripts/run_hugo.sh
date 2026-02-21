@@ -1,10 +1,11 @@
 #!/bin/bash
+set -o pipefail
 
 declare run_log
 run_log=$(mktemp)
 readonly run_log
 
-declare -r hugo_build_toml=".hugo.build.toml"
+declare -r hugo_build_toml=".hugo.build.${VARIANT}.toml"
 
 trap 'rm -f "$run_log" "$hugo_build_toml"' EXIT
 
@@ -16,18 +17,18 @@ fi
 declare target
 declare baseURL
 
-rm -f ".hugo.build.toml"
+rm -f "$hugo_build_toml"
 
 if [[ -z $VERSION ]]; then
     echo "Version LATEST"
     target="dist/docs/${VARIANT}"
     baseURL="/docs/${VARIANT}/"
-    touch "hugo.build.toml"
+    touch "$hugo_build_toml"
 else
     echo "Version $VERSION"
     target="dist/docs/${VERSION}/${VARIANT}"
     baseURL="/docs/${VERSION}/${VARIANT}/"
-    cat << EOF > ".hugo.build.toml"
+    cat << EOF > "$hugo_build_toml"
 [params]
 current_version = "${VERSION}"
 EOF
@@ -37,9 +38,18 @@ readonly target
 
 echo "Target: $target"
 
-hugo --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml,.hugo.build.toml \
+# Optional Hugo diagnostics (pass through from environment):
+#   HUGO_METRICS=true  — --templateMetrics --templateMetricsHints
+#   HUGO_VERBOSE=true  — --logLevel info --printPathWarnings --printMemoryUsage
+hugo_extra_flags=""
+[[ "$HUGO_METRICS" == "true" ]] && hugo_extra_flags+=" --templateMetrics --templateMetricsHints"
+[[ "$HUGO_VERBOSE" == "true" ]] && hugo_extra_flags+=" --logLevel info --printPathWarnings --printMemoryUsage"
+
+# --panicOnWarning makes all warnf calls fatal (not just errorf).
+# This is intentional: content issues should block deployment.
+hugo --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml,${hugo_build_toml} \
     --destination "${target}" --baseURL "${baseURL}" \
-    --panicOnWarning 1> "$run_log" 2>&1
+    --noBuildLock --panicOnWarning $hugo_extra_flags 2>&1 | tee "$run_log"
 
 err=$?
 echo '--------------------------'
@@ -58,6 +68,6 @@ sed '
     | grep -v "suppress this warning" | grep -v "ignoreLogs ="
 echo '--------------------------'
 if [[ $err -ne 0 ]]; then
-    echo "FATAL: Hugo failed"
+    echo "FATAL: Hugo build failed for variant=${VARIANT}"
     exit 1
 fi

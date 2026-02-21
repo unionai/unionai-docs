@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.dask.task
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -30,14 +30,15 @@ class Dask(
     workers: flytekitplugins.dask.task.WorkerGroup,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `scheduler` | `flytekitplugins.dask.task.Scheduler` |
-| `workers` | `flytekitplugins.dask.task.WorkerGroup` |
+| Parameter | Type | Description |
+|-|-|-|
+| `scheduler` | `flytekitplugins.dask.task.Scheduler` | Configuration for the scheduler pod. Optional, defaults to ``Scheduler()``. |
+| `workers` | `flytekitplugins.dask.task.WorkerGroup` | Configuration for the pods of the default worker group. Optional, defaults to ``WorkerGroup()``. |
 
 ## flytekitplugins.dask.task.DaskTask
 
 Actual Plugin that transforms the local python code for execution within a dask cluster
+
 
 
 ```python
@@ -47,11 +48,38 @@ class DaskTask(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `task_config` | `flytekitplugins.dask.task.Dask` |
-| `task_function` | `typing.Callable` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_config` | `flytekitplugins.dask.task.Dask` | |
+| `task_function` | `typing.Callable` | |
+| `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `container_image` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `execution_mode` | `None` |  |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` | Returns the name of the task. |
+| `node_dependency_hints` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `resources` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_function` | `None` |  |
+| `task_resolver` | `None` |  |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -98,11 +126,11 @@ def compile(
 Generates a node that encapsulates this task in a workflow definition.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### compile_into_workflow()
 
@@ -117,11 +145,11 @@ In the case of dynamic workflows, this function will produce a workflow definiti
 then proceed to be executed.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `task_function` | `Callable` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `task_function` | `Callable` | |
+| `kwargs` | `**kwargs` | |
 
 #### construct_node_metadata()
 
@@ -148,10 +176,10 @@ This method is also invoked during runtime.
 * ``DynamicJobSpec`` is returned when a dynamic workflow is executed
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
 #### dynamic_execute()
 
@@ -172,10 +200,10 @@ When running for real in production, the task would stop after the compilation s
 representing that newly generated workflow, instead of executing it.
 
 
-| Parameter | Type |
-|-|-|
-| `task_function` | `Callable` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_function` | `Callable` | |
+| `kwargs` | `**kwargs` | |
 
 #### execute()
 
@@ -188,9 +216,9 @@ This method will be invoked to execute the task. If you do decide to override th
 handle dynamic tasks or you will no longer be able to use the task as a dynamic task generator.
 
 
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### find_lhs()
 
@@ -208,9 +236,9 @@ Returns the command which should be used in the container definition for the ser
 registered on a hosted Flyte platform.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_config()
 
@@ -223,9 +251,9 @@ Returns the task config as a serializable dictionary. This task config consists 
 defined for this task.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_container()
 
@@ -237,24 +265,24 @@ def get_container(
 Returns the container definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_custom()
 
 ```python
 def get_custom(
     settings: flytekit.configuration.SerializationSettings,
-) -> n: Dictionary representation of the dask task config.
+) -> typing.Optional[typing.Dict[str, typing.Any]]
 ```
 Serialize the `dask` task config into a dict.
 
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | Current serialization settings :return: Dictionary representation of the dask task config. |
 
 #### get_default_command()
 
@@ -266,9 +294,9 @@ def get_default_command(
 Returns the default pyflyte-execute command used to run this on hosted Flyte platforms.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_extended_resources()
 
@@ -280,9 +308,9 @@ def get_extended_resources(
 Returns the extended resources to allocate to the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_image()
 
@@ -294,9 +322,9 @@ def get_image(
 Update image spec based on fast registration usage, and return string representing the image
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_input_types()
 
@@ -316,9 +344,9 @@ def get_k8s_pod(
 Returns the kubernetes pod definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_sql()
 
@@ -330,9 +358,9 @@ def get_sql(
 Returns the Sql definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_type_for_input_var()
 
@@ -345,10 +373,10 @@ def get_type_for_input_var(
 Returns the python type for an input variable by name.
 
 
-| Parameter | Type |
-|-|-|
-| `k` | `str` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k` | `str` | |
+| `v` | `typing.Any` | |
 
 #### get_type_for_output_var()
 
@@ -361,10 +389,10 @@ def get_type_for_output_var(
 Returns the python type for the specified output variable by name.
 
 
-| Parameter | Type |
-|-|-|
-| `k` | `str` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k` | `str` | |
+| `v` | `typing.Any` | |
 
 #### local_execute()
 
@@ -379,10 +407,10 @@ Use this function when calling a task with native values (or Promises containing
 Python native values).
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -402,10 +430,10 @@ or alter the outputs to match the intended tasks outputs. If not overridden, the
 
 
 
-| Parameter | Type |
-|-|-|
-| `user_params` | `typing.Optional[flytekit.core.context_manager.ExecutionParameters]` |
-| `rval` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `user_params` | `typing.Optional[flytekit.core.context_manager.ExecutionParameters]` | are the modified user params as created during the pre_execute step |
+| `rval` | `typing.Any` | |
 
 #### pre_execute()
 
@@ -422,9 +450,9 @@ setup before the type transformers are called
 This should return either the same context of the mutated context
 
 
-| Parameter | Type |
-|-|-|
-| `user_params` | `typing.Optional[flytekit.core.context_manager.ExecutionParameters]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `user_params` | `typing.Optional[flytekit.core.context_manager.ExecutionParameters]` | |
 
 #### reset_command_fn()
 
@@ -446,10 +474,10 @@ def sandbox_execute(
 Call dispatch_execute, in the context of a local sandbox execution. Not invoked during runtime.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
 #### set_command_fn()
 
@@ -463,9 +491,9 @@ However, it can be useful to update the command with which the task is serialize
 running map tasks ("pyflyte-map-execute") or for fast-executed tasks.
 
 
-| Parameter | Type |
-|-|-|
-| `get_command_fn` | `Optional[Callable[[SerializationSettings], List[str]]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `get_command_fn` | `Optional[Callable[[SerializationSettings], List[str]]]` | |
 
 #### set_resolver()
 
@@ -478,43 +506,9 @@ By default, flytekit uses the DefaultTaskResolver to resolve the task. This meth
 task resolver. It can be useful to override the task resolver for specific cases like running tasks in the jupyter notebook.
 
 
-| Parameter | Type |
-|-|-|
-| `resolver` | `TaskResolverMixin` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `container_image` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `execution_mode` |  |  |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  | {{< multiline >}}Returns the name of the task.
-{{< /multiline >}} |
-| `node_dependency_hints` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `resources` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_function` |  |  |
-| `task_resolver` |  |  |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
+| `resolver` | `TaskResolverMixin` | |
 
 ## flytekitplugins.dask.task.Scheduler
 
@@ -529,11 +523,11 @@ class Scheduler(
     limits: typing.Optional[flytekit.core.resources.Resources],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `image` | `typing.Optional[str]` |
-| `requests` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `limits` | `typing.Optional[flytekit.core.resources.Resources]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image` | `typing.Optional[str]` | Custom image to use. If ``None``, will use the same image the task was registered with. Optional, defaults to ``None``. The image must have ``dask[distributed]`` installed and should have the same Python environment as the rest of the cluster (job runner pod + worker pods). |
+| `requests` | `typing.Optional[flytekit.core.resources.Resources]` | Resources to request for the scheduler pod. If ``None``, the requests passed into the task will be used. Optional, defaults to ``None``. |
+| `limits` | `typing.Optional[flytekit.core.resources.Resources]` | Resource limits for the scheduler pod. If ``None``, the limits passed into the task will be used. Optional, defaults to ``None``. |
 
 ## flytekitplugins.dask.task.WorkerGroup
 
@@ -549,10 +543,10 @@ class WorkerGroup(
     limits: typing.Optional[flytekit.core.resources.Resources],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `number_of_workers` | `typing.Optional[int]` |
-| `image` | `typing.Optional[str]` |
-| `requests` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `limits` | `typing.Optional[flytekit.core.resources.Resources]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `number_of_workers` | `typing.Optional[int]` | Number of workers to use. Optional, defaults to 1. |
+| `image` | `typing.Optional[str]` | Custom image to use. If ``None``, will use the same image the task was registered with. Optional, defaults to ``None``. The image must have ``dask[distributed]`` installed. The provided image should have the same Python environment as the job runner/driver as well as the scheduler. |
+| `requests` | `typing.Optional[flytekit.core.resources.Resources]` | Resources to request for the worker pods. If ``None``, the requests passed into the task will be used. Optional, defaults to ``None``. |
+| `limits` | `typing.Optional[flytekit.core.resources.Resources]` | Resource limits for the worker pods. If ``None``, the limits passed into the task will be used. Optional, defaults to ``None``. |
 

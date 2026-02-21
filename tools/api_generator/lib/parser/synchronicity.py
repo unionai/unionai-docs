@@ -1,6 +1,4 @@
-import inspect
 from typing import Any, Optional
-from lib.parser.docstring import parse_docstring
 from lib.parser.methods import do_parse_method
 from lib.ptypes import MethodInfo
 
@@ -13,7 +11,7 @@ def is_synchronicity_method(name: str, member: object) -> bool:
             )
             != -1
         )
-    except (AttributeError, ValueError, KeyError):
+    except (AttributeError, ValueError, KeyError, ImportError):
         return False
 
 

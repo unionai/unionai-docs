@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.base_sql_task
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -30,6 +30,7 @@ and `flytekitplugins.athena.task.AthenaTask` for examples of how to use it as a 
    :noindex:
 
 
+
 ```python
 class SQLTask(
     name: str,
@@ -56,6 +57,28 @@ directly. See `flytekit.extras.sqlite3.task.SQLite3Task`
 | `metadata` | `typing.Optional[flytekit.core.base_task.TaskMetadata]` | |
 | `outputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `query_template` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -379,32 +402,4 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
 | `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `query_template` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
 

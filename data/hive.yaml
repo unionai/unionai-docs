@@ -1,0 +1,11 @@
+packages:
+  flytekitplugins.hive: /api-reference/plugins/hive/packages/flytekitplugins.hive/
+  flytekitplugins.hive.task: /api-reference/plugins/hive/packages/flytekitplugins.hive.task/
+identifiers:
+  flytekitplugins.hive.task.HiveConfig: /api-reference/plugins/hive/packages/flytekitplugins.hive.task/#flytekitpluginshivetaskhiveconfig
+  HiveConfig: /api-reference/plugins/hive/packages/flytekitplugins.hive.task/#flytekitpluginshivetaskhiveconfig
+  flytekitplugins.hive.task.HiveSelectTask: /api-reference/plugins/hive/packages/flytekitplugins.hive.task/#flytekitpluginshivetaskhiveselecttask
+  HiveSelectTask: /api-reference/plugins/hive/packages/flytekitplugins.hive.task/#flytekitpluginshivetaskhiveselecttask
+  flytekitplugins.hive.task.HiveTask: /api-reference/plugins/hive/packages/flytekitplugins.hive.task/#flytekitpluginshivetaskhivetask
+  HiveTask: /api-reference/plugins/hive/packages/flytekitplugins.hive.task/#flytekitpluginshivetaskhivetask
+methods: {}

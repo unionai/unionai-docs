@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.grpc_utils.wrap_exception_interceptor
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,12 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`RetryExceptionWrapperInterceptor`](.././flytekit.clients.grpc_utils.wrap_exception_interceptor#flytekitclientsgrpc_utilswrap_exception_interceptorretryexceptionwrapperinterceptor) | Affords intercepting unary-unary invocations. |
+| [`RetryExceptionWrapperInterceptor`](.././flytekit.clients.grpc_utils.wrap_exception_interceptor#flytekitclientsgrpc_utilswrap_exception_interceptorretryexceptionwrapperinterceptor) |  |
 
 ## flytekit.clients.grpc_utils.wrap_exception_interceptor.RetryExceptionWrapperInterceptor
-
-Affords intercepting unary-unary invocations.
-
 
 ```python
 class RetryExceptionWrapperInterceptor(

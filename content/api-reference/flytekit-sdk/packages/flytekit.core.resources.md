@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.resources
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -189,11 +189,12 @@ second value is the limit. If the value is a single value, then both the request
 set to that value. For example, the `Resource(cpu=("1", "2"), mem=1024)` will set the cpu request to 1, cpu limit to 2,
 mem limit and request to 1024.
 
-> [!NOTE]
-> Persistent storage is not currently supported on the Flyte backend.
+&gt; [!NOTE]
+&gt; Persistent storage is not currently supported on the Flyte backend.
 
-Please see the :std:ref:`User Guide <cookbook:customizing task resources>` for detailed examples.
+Please see the :std:ref:`User Guide &lt;cookbook:customizing task resources&gt;` for detailed examples.
 Also refer to the [`K8s conventions.`](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes)
+
 
 
 ```python

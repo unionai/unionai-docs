@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.sqlite3.task
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -15,7 +15,7 @@ layout: py_api
 |-|-|
 | [`SQLite3Config`](.././flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3config) | Use this configuration to configure if sqlite3 files that should be loaded by the task. |
 | [`SQLite3Task`](.././flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3task) | Run client side SQLite3 queries that optionally return a FlyteSchema object. |
-| [`SQLite3TaskExecutor`](.././flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3taskexecutor) | Please see the notes for the metaclass above first. |
+| [`SQLite3TaskExecutor`](.././flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3taskexecutor) |  |
 
 ### Methods
 
@@ -62,24 +62,24 @@ class SQLite3Config(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `uri` | `str` | |
-| `compressed` | `bool` | |
+| `uri` | `str` | default FlyteFile that will be downloaded on execute |
+| `compressed` | `bool` | Boolean that indicates if the given file is a compressed archive. Supported file types are [zip, tar, gztar, bztar, xztar] |
 
 ## flytekit.extras.sqlite3.task.SQLite3Task
 
 Run client side SQLite3 queries that optionally return a FlyteSchema object.
 
-> [!NOTE]
-> This is a pre-built container task. That is, your user container will not be used at task execution time.
+&gt; [!NOTE]
+&gt; This is a pre-built container task. That is, your user container will not be used at task execution time.
    Instead the image defined in this task definition will be used instead.
 
-<!--
+&lt;!--
 .. literalinclude:: ../../../tests/flytekit/unit/extras/sqlite3/test_task.py
    :start-after: # sqlite3_start
    :end-before: # sqlite3_end
    :language: python
    :dedent: 4
--->
+--&gt;
 ```python
 sql_task = SQLite3Task(
         "test",
@@ -94,8 +94,9 @@ sql_task = SQLite3Task(
 ```
 
 
-See the :ref:`integrations guide <cookbook:integrations_sql_sqlite3>` for additional usage examples and
-the base class {{< py_class_ref flytekit.extend.PythonCustomizedContainerTask >}} as well.
+See the :ref:`integrations guide &lt;cookbook:integrations_sql_sqlite3&gt;` for additional usage examples and
+the base class {{&lt; py_class_ref flytekit.extend.PythonCustomizedContainerTask &gt;}} as well.
+
 
 
 ```python
@@ -118,6 +119,35 @@ class SQLite3Task(
 | `output_schema_type` | `typing.Optional[typing.Type[ForwardRef('FlyteSchema')]]` | |
 | `container_image` | `typing.Optional[str]` | This is the external container image the task should run at platform-run-time. |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `container_image` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `executor` | `None` |  |
+| `executor_type` | `None` |  |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` | Return the name of the underlying task. |
+| `output_columns` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `query_template` | `None` |  |
+| `resources` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_resolver` | `None` |  |
+| `task_template` | `None` | Override the base class implementation to serialize on first call. |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -467,54 +497,7 @@ def serialize_to_model(
 |-|-|-|
 | `settings` | `SerializationSettings` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `container_image` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `executor` |  |  |
-| `executor_type` |  |  |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  | {{< multiline >}}Return the name of the underlying task.
-{{< /multiline >}} |
-| `output_columns` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `query_template` |  |  |
-| `resources` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_resolver` |  |  |
-| `task_template` |  | {{< multiline >}}Override the base class implementation to serialize on first call.
-{{< /multiline >}} |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
-
 ## flytekit.extras.sqlite3.task.SQLite3TaskExecutor
-
-Please see the notes for the metaclass above first.
-
-This functionality has two use-cases currently,
-* Keep track of naming for non-function ``PythonAutoContainerTasks``.  That is, things like the
-  {{< py_class_ref flytekit.extras.sqlite3.task.SQLite3Task >}} task.
-* Task resolvers, because task resolvers are instances of {{< py_class_ref flytekit.core.python_auto_container.TaskResolverMixin >}}
-  classes, not the classes themselves, which means we need to look on the left hand side of them to see how to
-  find them at task execution time.
-
 
 ```python
 class SQLite3TaskExecutor(
@@ -526,6 +509,14 @@ class SQLite3TaskExecutor(
 |-|-|-|
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `instantiated_in` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
 
 ### Methods
 
@@ -559,11 +550,3 @@ that wasn't serialized into the template.
 ```python
 def find_lhs()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `instantiated_in` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-

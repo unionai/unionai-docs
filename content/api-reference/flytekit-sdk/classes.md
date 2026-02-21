@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -21,25 +21,25 @@ layout: py_api
 | [`flytekit.clients.auth.authenticator.CommandAuthenticator`](../packages/flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorcommandauthenticator) |This Authenticator retrieves access_token using the provided command. |
 | [`flytekit.clients.auth.authenticator.DeviceCodeAuthenticator`](../packages/flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatordevicecodeauthenticator) |This Authenticator implements the Device Code authorization flow useful for headless user authentication. |
 | [`flytekit.clients.auth.authenticator.PKCEAuthenticator`](../packages/flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorpkceauthenticator) |This Authenticator encapsulates the entire PKCE flow and automatically opens a browser window for login. |
-| [`flytekit.clients.auth.authenticator.StaticClientConfigStore`](../packages/flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorstaticclientconfigstore) |Client Config store retrieve client config. |
+| [`flytekit.clients.auth.authenticator.StaticClientConfigStore`](../packages/flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorstaticclientconfigstore) | |
 | [`flytekit.clients.auth.exceptions.AccessTokenNotFoundError`](../packages/flytekit.clients.auth.exceptions#flytekitclientsauthexceptionsaccesstokennotfounderror) |This error is raised with Access token is not found or if Refreshing the token fails. |
 | [`flytekit.clients.auth.exceptions.AuthenticationError`](../packages/flytekit.clients.auth.exceptions#flytekitclientsauthexceptionsauthenticationerror) |This is raised for any AuthenticationError. |
 | [`flytekit.clients.auth.exceptions.AuthenticationPending`](../packages/flytekit.clients.auth.exceptions#flytekitclientsauthexceptionsauthenticationpending) |This is raised if the token endpoint returns authentication pending. |
 | [`flytekit.clients.auth.keyring.Credentials`](../packages/flytekit.clients.auth.keyring#flytekitclientsauthkeyringcredentials) |Stores the credentials together. |
 | [`flytekit.clients.auth.keyring.KeyringStore`](../packages/flytekit.clients.auth.keyring#flytekitclientsauthkeyringkeyringstore) |Methods to access Keyring Store. |
 | [`flytekit.clients.auth.token_client.DeviceCodeResponse`](../packages/flytekit.clients.auth.token_client#flytekitclientsauthtoken_clientdevicecoderesponse) |Response from device auth flow endpoint. |
-| [`flytekit.clients.auth.token_client.GrantType`](../packages/flytekit.clients.auth.token_client#flytekitclientsauthtoken_clientgranttype) |str(object='') -> str. |
+| [`flytekit.clients.auth.token_client.GrantType`](../packages/flytekit.clients.auth.token_client#flytekitclientsauthtoken_clientgranttype) | |
 | [`flytekit.clients.auth_helper.AuthenticationHTTPAdapter`](../packages/flytekit.clients.auth_helper#flytekitclientsauth_helperauthenticationhttpadapter) |A custom HTTPAdapter that adds authentication headers to requests of a session. |
 | [`flytekit.clients.auth_helper.RemoteClientConfigStore`](../packages/flytekit.clients.auth_helper#flytekitclientsauth_helperremoteclientconfigstore) |This class implements the ClientConfigStore that is served by the Flyte Server, that implements AuthMetadataService. |
 | [`flytekit.clients.friendly.SynchronousFlyteClient`](../packages/flytekit.clients.friendly#flytekitclientsfriendlysynchronousflyteclient) |This is a low-level client that users can use to make direct gRPC service calls to the control plane. |
 | [`flytekit.clients.grpc_utils.auth_interceptor.AuthUnaryInterceptor`](../packages/flytekit.clients.grpc_utils.auth_interceptor#flytekitclientsgrpc_utilsauth_interceptorauthunaryinterceptor) |This Interceptor can be used to automatically add Auth Metadata for every call - lazily in case authentication. |
-| [`flytekit.clients.grpc_utils.default_metadata_interceptor.DefaultMetadataInterceptor`](../packages/flytekit.clients.grpc_utils.default_metadata_interceptor#flytekitclientsgrpc_utilsdefault_metadata_interceptordefaultmetadatainterceptor) |Affords intercepting unary-unary invocations. |
-| [`flytekit.clients.grpc_utils.wrap_exception_interceptor.RetryExceptionWrapperInterceptor`](../packages/flytekit.clients.grpc_utils.wrap_exception_interceptor#flytekitclientsgrpc_utilswrap_exception_interceptorretryexceptionwrapperinterceptor) |Affords intercepting unary-unary invocations. |
+| [`flytekit.clients.grpc_utils.default_metadata_interceptor.DefaultMetadataInterceptor`](../packages/flytekit.clients.grpc_utils.default_metadata_interceptor#flytekitclientsgrpc_utilsdefault_metadata_interceptordefaultmetadatainterceptor) | |
+| [`flytekit.clients.grpc_utils.wrap_exception_interceptor.RetryExceptionWrapperInterceptor`](../packages/flytekit.clients.grpc_utils.wrap_exception_interceptor#flytekitclientsgrpc_utilswrap_exception_interceptorretryexceptionwrapperinterceptor) | |
 | [`flytekit.clients.raw.RawSynchronousFlyteClient`](../packages/flytekit.clients.raw#flytekitclientsrawrawsynchronousflyteclient) |This is a thin synchronous wrapper around the auto-generated GRPC stubs for communicating with the admin service. |
-| [`flytekit.clis.sdk_in_container.serialize.SerializationMode`](../packages/flytekit.clis.sdk_in_container.serialize#flytekitclissdk_in_containerserializeserializationmode) |Create a collection of name/value pairs. |
+| [`flytekit.clis.sdk_in_container.serialize.SerializationMode`](../packages/flytekit.clis.sdk_in_container.serialize#flytekitclissdk_in_containerserializeserializationmode) | |
 | [`flytekit.clis.sdk_in_container.utils.ErrorHandlingCommand`](../packages/flytekit.clis.sdk_in_container.utils#flytekitclissdk_in_containerutilserrorhandlingcommand) |Helper class that wraps the invoke method of a click command to catch exceptions and print them in a nice way. |
 | [`flytekit.clis.sdk_in_container.utils.PyFlyteParams`](../packages/flytekit.clis.sdk_in_container.utils#flytekitclissdk_in_containerutilspyflyteparams) | |
-| [`flytekit.configuration.AuthType`](../packages/flytekit.configuration#flytekitconfigurationauthtype) |Create a collection of name/value pairs. |
+| [`flytekit.configuration.AuthType`](../packages/flytekit.configuration#flytekitconfigurationauthtype) | |
 | [`flytekit.configuration.AzureBlobStorageConfig`](../packages/flytekit.configuration#flytekitconfigurationazureblobstorageconfig) |Any Azure Blob Storage specific configuration. |
 | [`flytekit.configuration.Config`](../packages/flytekit.configuration#flytekitconfigurationconfig) |This the parent configuration object and holds all the underlying configuration object types. |
 | [`flytekit.configuration.DataConfig`](../packages/flytekit.configuration#flytekitconfigurationdataconfig) |Any data storage specific configuration. |
@@ -57,7 +57,7 @@ layout: py_api
 | [`flytekit.configuration.StatsConfig`](../packages/flytekit.configuration#flytekitconfigurationstatsconfig) |Configuration for sending statsd. |
 | [`flytekit.configuration.TaskConfig`](../packages/flytekit.configuration#flytekitconfigurationtaskconfig) |Any Project/Domain/Org configuration. |
 | [`flytekit.configuration.default_images.DefaultImages`](../packages/flytekit.configuration.default_images#flytekitconfigurationdefault_imagesdefaultimages) |We may want to load the default images from remote - maybe s3 location etc?. |
-| [`flytekit.configuration.default_images.PythonVersion`](../packages/flytekit.configuration.default_images#flytekitconfigurationdefault_imagespythonversion) |Create a collection of name/value pairs. |
+| [`flytekit.configuration.default_images.PythonVersion`](../packages/flytekit.configuration.default_images#flytekitconfigurationdefault_imagespythonversion) | |
 | [`flytekit.configuration.feature_flags.FeatureFlags`](../packages/flytekit.configuration.feature_flags#flytekitconfigurationfeature_flagsfeatureflags) | |
 | [`flytekit.configuration.file.ConfigEntry`](../packages/flytekit.configuration.file#flytekitconfigurationfileconfigentry) |A top level Config entry holder, that holds multiple different representations of the config. |
 | [`flytekit.configuration.file.ConfigFile`](../packages/flytekit.configuration.file#flytekitconfigurationfileconfigfile) | |
@@ -75,15 +75,15 @@ layout: py_api
 | [`flytekit.configuration.internal.Secrets`](../packages/flytekit.configuration.internal#flytekitconfigurationinternalsecrets) | |
 | [`flytekit.configuration.internal.StatsD`](../packages/flytekit.configuration.internal#flytekitconfigurationinternalstatsd) | |
 | [`flytekit.configuration.plugin.FlytekitPlugin`](../packages/flytekit.configuration.plugin#flytekitconfigurationpluginflytekitplugin) | |
-| [`flytekit.constants.CopyFileDetection`](../packages/flytekit.constants#flytekitconstantscopyfiledetection) |Create a collection of name/value pairs. |
+| [`flytekit.constants.CopyFileDetection`](../packages/flytekit.constants#flytekitconstantscopyfiledetection) | |
 | [`flytekit.core.annotation.FlyteAnnotation`](../packages/flytekit.core.annotation#flytekitcoreannotationflyteannotation) |A core object to add arbitrary annotations to flyte types. |
 | [`flytekit.core.array_node.ArrayNode`](../packages/flytekit.core.array_node#flytekitcorearray_nodearraynode) | |
-| [`flytekit.core.array_node_map_task.ArrayNodeMapTask`](../packages/flytekit.core.array_node_map_task#flytekitcorearray_node_map_taskarraynodemaptask) |Base Class for all Tasks with a Python native ``Interface``. |
+| [`flytekit.core.array_node_map_task.ArrayNodeMapTask`](../packages/flytekit.core.array_node_map_task#flytekitcorearray_node_map_taskarraynodemaptask) | |
 | [`flytekit.core.array_node_map_task.ArrayNodeMapTaskResolver`](../packages/flytekit.core.array_node_map_task#flytekitcorearray_node_map_taskarraynodemaptaskresolver) |Special resolver that is used for ArrayNodeMapTasks. |
 | [`flytekit.core.artifact.Artifact`](../packages/flytekit.core.artifact#flytekitcoreartifactartifact) |An Artifact is effectively just a metadata layer on top of data that exists in Flyte. |
 | [`flytekit.core.artifact.ArtifactIDSpecification`](../packages/flytekit.core.artifact#flytekitcoreartifactartifactidspecification) |This is a special object that helps specify how Artifacts are to be created. |
 | [`flytekit.core.artifact.ArtifactQuery`](../packages/flytekit.core.artifact#flytekitcoreartifactartifactquery) | |
-| [`flytekit.core.artifact.DefaultArtifactSerializationHandler`](../packages/flytekit.core.artifact#flytekitcoreartifactdefaultartifactserializationhandler) |This protocol defines the interface for serializing artifact-related entities down to Flyte IDL. |
+| [`flytekit.core.artifact.DefaultArtifactSerializationHandler`](../packages/flytekit.core.artifact#flytekitcoreartifactdefaultartifactserializationhandler) | |
 | [`flytekit.core.artifact.InputsBase`](../packages/flytekit.core.artifact#flytekitcoreartifactinputsbase) |A class to provide better partition semantics. |
 | [`flytekit.core.artifact.Partition`](../packages/flytekit.core.artifact#flytekitcoreartifactpartition) | |
 | [`flytekit.core.artifact.Partitions`](../packages/flytekit.core.artifact#flytekitcoreartifactpartitions) | |
@@ -104,7 +104,7 @@ layout: py_api
 | [`flytekit.core.condition.Case`](../packages/flytekit.core.condition#flytekitcoreconditioncase) | |
 | [`flytekit.core.condition.Condition`](../packages/flytekit.core.condition#flytekitcoreconditioncondition) | |
 | [`flytekit.core.condition.ConditionalSection`](../packages/flytekit.core.condition#flytekitcoreconditionconditionalsection) |ConditionalSection is used to denote a condition within a Workflow. |
-| [`flytekit.core.condition.LocalExecutedConditionalSection`](../packages/flytekit.core.condition#flytekitcoreconditionlocalexecutedconditionalsection) |ConditionalSection is used to denote a condition within a Workflow. |
+| [`flytekit.core.condition.LocalExecutedConditionalSection`](../packages/flytekit.core.condition#flytekitcoreconditionlocalexecutedconditionalsection) | |
 | [`flytekit.core.condition.SkippedConditionalSection`](../packages/flytekit.core.condition#flytekitcoreconditionskippedconditionalsection) |This ConditionalSection is used for nested conditionals, when the branch has been evaluated to false. |
 | [`flytekit.core.container_task.ContainerTask`](../packages/flytekit.core.container_task#flytekitcorecontainer_taskcontainertask) |This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
 | [`flytekit.core.context_manager.BranchEvalMode`](../packages/flytekit.core.context_manager#flytekitcorecontext_managerbranchevalmode) |This is a 3-way class, with the None value meaning that we are not within a conditional context. |
@@ -139,9 +139,9 @@ layout: py_api
 | [`flytekit.core.options.Options`](../packages/flytekit.core.options#flytekitcoreoptionsoptions) |These are options that can be configured for a launchplan during registration or overridden during an execution. |
 | [`flytekit.core.pod_template.PodTemplate`](../packages/flytekit.core.pod_template#flytekitcorepod_templatepodtemplate) |Custom PodTemplate specification for a Task. |
 | [`flytekit.core.promise.ComparisonExpression`](../packages/flytekit.core.promise#flytekitcorepromisecomparisonexpression) |ComparisonExpression refers to an expression of the form (lhs operator rhs), where lhs and rhs are operands. |
-| [`flytekit.core.promise.ComparisonOps`](../packages/flytekit.core.promise#flytekitcorepromisecomparisonops) |Create a collection of name/value pairs. |
+| [`flytekit.core.promise.ComparisonOps`](../packages/flytekit.core.promise#flytekitcorepromisecomparisonops) | |
 | [`flytekit.core.promise.ConjunctionExpression`](../packages/flytekit.core.promise#flytekitcorepromiseconjunctionexpression) |A Conjunction Expression is an expression of the form either (A and B) or (A or B). |
-| [`flytekit.core.promise.ConjunctionOps`](../packages/flytekit.core.promise#flytekitcorepromiseconjunctionops) |Create a collection of name/value pairs. |
+| [`flytekit.core.promise.ConjunctionOps`](../packages/flytekit.core.promise#flytekitcorepromiseconjunctionops) | |
 | [`flytekit.core.promise.NodeOutput`](../packages/flytekit.core.promise#flytekitcorepromisenodeoutput) | |
 | [`flytekit.core.promise.Promise`](../packages/flytekit.core.promise#flytekitcorepromisepromise) |This object is a wrapper and exists for three main reasons. |
 | [`flytekit.core.promise.VoidPromise`](../packages/flytekit.core.promise#flytekitcorepromisevoidpromise) |This object is returned for tasks that do not return any outputs (declared interface is empty). |
@@ -154,8 +154,8 @@ layout: py_api
 | [`flytekit.core.python_customized_container_task.TaskTemplateResolver`](../packages/flytekit.core.python_customized_container_task#flytekitcorepython_customized_container_tasktasktemplateresolver) |This is a special resolver that resolves the task above at execution time, using only the ``TaskTemplate``,. |
 | [`flytekit.core.python_function_task.AsyncPythonFunctionTask`](../packages/flytekit.core.python_function_task#flytekitcorepython_function_taskasyncpythonfunctiontask) |This is the base task for eager tasks, as well as normal async tasks. |
 | [`flytekit.core.python_function_task.EagerAsyncPythonFunctionTask`](../packages/flytekit.core.python_function_task#flytekitcorepython_function_taskeagerasyncpythonfunctiontask) |This is the base eager task (aka eager workflow) type. |
-| [`flytekit.core.python_function_task.EagerFailureHandlerTask`](../packages/flytekit.core.python_function_task#flytekitcorepython_function_taskeagerfailurehandlertask) |A Python AutoContainer task should be used as the base for all extensions that want the user's code to be in the. |
-| [`flytekit.core.python_function_task.EagerFailureTaskResolver`](../packages/flytekit.core.python_function_task#flytekitcorepython_function_taskeagerfailuretaskresolver) |Flytekit tasks interact with the Flyte platform very, very broadly in two steps. |
+| [`flytekit.core.python_function_task.EagerFailureHandlerTask`](../packages/flytekit.core.python_function_task#flytekitcorepython_function_taskeagerfailurehandlertask) | |
+| [`flytekit.core.python_function_task.EagerFailureTaskResolver`](../packages/flytekit.core.python_function_task#flytekitcorepython_function_taskeagerfailuretaskresolver) | |
 | [`flytekit.core.python_function_task.PythonFunctionTask`](../packages/flytekit.core.python_function_task#flytekitcorepython_function_taskpythonfunctiontask) |A Python Function task should be used as the base for all extensions that have a python function. |
 | [`flytekit.core.python_function_task.PythonInstanceTask`](../packages/flytekit.core.python_function_task#flytekitcorepython_function_taskpythoninstancetask) |This class should be used as the base class for all Tasks that do not have a user defined function body, but have. |
 | [`flytekit.core.reference_entity.LaunchPlanReference`](../packages/flytekit.core.reference_entity#flytekitcorereference_entitylaunchplanreference) |A reference object containing metadata that points to a remote launch plan. |
@@ -169,39 +169,39 @@ layout: py_api
 | [`flytekit.core.resources.Resources`](../packages/flytekit.core.resources#flytekitcoreresourcesresources) |This class is used to specify both resource requests and resource limits. |
 | [`flytekit.core.schedule.CronSchedule`](../packages/flytekit.core.schedule#flytekitcoreschedulecronschedule) |Use this when you have a launch plan that you want to run on a cron expression. |
 | [`flytekit.core.schedule.FixedRate`](../packages/flytekit.core.schedule#flytekitcoreschedulefixedrate) |Use this class to schedule a fixed-rate interval for a launch plan. |
-| [`flytekit.core.schedule.OnSchedule`](../packages/flytekit.core.schedule#flytekitcorescheduleonschedule) |Base class for protocol classes. |
+| [`flytekit.core.schedule.OnSchedule`](../packages/flytekit.core.schedule#flytekitcorescheduleonschedule) | |
 | [`flytekit.core.shim_task.ExecutableTemplateShimTask`](../packages/flytekit.core.shim_task#flytekitcoreshim_taskexecutabletemplateshimtask) |The canonical ``@task`` decorated Python function task is pretty simple to reason about. |
-| [`flytekit.core.shim_task.ShimTaskExecutor`](../packages/flytekit.core.shim_task#flytekitcoreshim_taskshimtaskexecutor) |Please see the notes for the metaclass above first. |
-| [`flytekit.core.task.Echo`](../packages/flytekit.core.task#flytekitcoretaskecho) |Base Class for all Tasks with a Python native ``Interface``. |
+| [`flytekit.core.shim_task.ShimTaskExecutor`](../packages/flytekit.core.shim_task#flytekitcoreshim_taskshimtaskexecutor) | |
+| [`flytekit.core.task.Echo`](../packages/flytekit.core.task#flytekitcoretaskecho) | |
 | [`flytekit.core.task.ReferenceTask`](../packages/flytekit.core.task#flytekitcoretaskreferencetask) |This is a reference task, the body of the function passed in through the constructor will never be used, only the. |
 | [`flytekit.core.task.TaskPlugins`](../packages/flytekit.core.task#flytekitcoretasktaskplugins) |This is the TaskPlugins factory for task types that are derivative of PythonFunctionTask. |
 | [`flytekit.core.tracked_abc.FlyteTrackedABC`](../packages/flytekit.core.tracked_abc#flytekitcoretracked_abcflytetrackedabc) |This class exists because if you try to inherit from abc. |
 | [`flytekit.core.tracker.InstanceTrackingMeta`](../packages/flytekit.core.tracker#flytekitcoretrackerinstancetrackingmeta) |Please see the original class :flytekit. |
 | [`flytekit.core.tracker.TrackedInstance`](../packages/flytekit.core.tracker#flytekitcoretrackertrackedinstance) |Please see the notes for the metaclass above first. |
-| [`flytekit.core.type_engine.AsyncTypeTransformer`](../packages/flytekit.core.type_engine#flytekitcoretype_engineasynctypetransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`flytekit.core.type_engine.AsyncTypeTransformer`](../packages/flytekit.core.type_engine#flytekitcoretype_engineasynctypetransformer) | |
 | [`flytekit.core.type_engine.BatchSize`](../packages/flytekit.core.type_engine#flytekitcoretype_enginebatchsize) |This is used to annotate a FlyteDirectory when we want to download/upload the contents of the directory in batches. |
 | [`flytekit.core.type_engine.BinaryIOTransformer`](../packages/flytekit.core.type_engine#flytekitcoretype_enginebinaryiotransformer) |Handler for BinaryIO. |
 | [`flytekit.core.type_engine.DataclassTransformer`](../packages/flytekit.core.type_engine#flytekitcoretype_enginedataclasstransformer) |The Dataclass Transformer provides a type transformer for dataclasses. |
 | [`flytekit.core.type_engine.DictTransformer`](../packages/flytekit.core.type_engine#flytekitcoretype_enginedicttransformer) |Transformer that transforms an univariate dictionary Dict[str, T] to a Literal Map or. |
 | [`flytekit.core.type_engine.EnumTransformer`](../packages/flytekit.core.type_engine#flytekitcoretype_engineenumtransformer) |Enables converting a python type enum. |
 | [`flytekit.core.type_engine.ListTransformer`](../packages/flytekit.core.type_engine#flytekitcoretype_enginelisttransformer) |Transformer that handles a univariate typing. |
-| [`flytekit.core.type_engine.LiteralTypeTransformer`](../packages/flytekit.core.type_engine#flytekitcoretype_engineliteraltypetransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`flytekit.core.type_engine.LiteralTypeTransformer`](../packages/flytekit.core.type_engine#flytekitcoretype_engineliteraltypetransformer) | |
 | [`flytekit.core.type_engine.LiteralsResolver`](../packages/flytekit.core.type_engine#flytekitcoretype_engineliteralsresolver) |LiteralsResolver is a helper class meant primarily for use with the FlyteRemote experience or any other situation. |
-| [`flytekit.core.type_engine.ProtobufTransformer`](../packages/flytekit.core.type_engine#flytekitcoretype_engineprotobuftransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
-| [`flytekit.core.type_engine.RestrictedTypeError`](../packages/flytekit.core.type_engine#flytekitcoretype_enginerestrictedtypeerror) |Common base class for all non-exit exceptions. |
+| [`flytekit.core.type_engine.ProtobufTransformer`](../packages/flytekit.core.type_engine#flytekitcoretype_engineprotobuftransformer) | |
+| [`flytekit.core.type_engine.RestrictedTypeError`](../packages/flytekit.core.type_engine#flytekitcoretype_enginerestrictedtypeerror) | |
 | [`flytekit.core.type_engine.RestrictedTypeTransformer`](../packages/flytekit.core.type_engine#flytekitcoretype_enginerestrictedtypetransformer) |Types registered with the RestrictedTypeTransformer are not allowed to be converted to and from literals. |
 | [`flytekit.core.type_engine.SimpleTransformer`](../packages/flytekit.core.type_engine#flytekitcoretype_enginesimpletransformer) |A Simple implementation of a type transformer that uses simple lambdas to transform and reduces boilerplate. |
 | [`flytekit.core.type_engine.TextIOTransformer`](../packages/flytekit.core.type_engine#flytekitcoretype_enginetextiotransformer) |Handler for TextIO. |
 | [`flytekit.core.type_engine.TypeEngine`](../packages/flytekit.core.type_engine#flytekitcoretype_enginetypeengine) |Core Extensible TypeEngine of Flytekit. |
 | [`flytekit.core.type_engine.TypeTransformer`](../packages/flytekit.core.type_engine#flytekitcoretype_enginetypetransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
-| [`flytekit.core.type_engine.TypeTransformerFailedError`](../packages/flytekit.core.type_engine#flytekitcoretype_enginetypetransformerfailederror) |Inappropriate argument type. |
+| [`flytekit.core.type_engine.TypeTransformerFailedError`](../packages/flytekit.core.type_engine#flytekitcoretype_enginetypetransformerfailederror) | |
 | [`flytekit.core.type_engine.UnionTransformer`](../packages/flytekit.core.type_engine#flytekitcoretype_engineuniontransformer) |Transformer that handles a typing. |
 | [`flytekit.core.utils.AutoDeletingTempDir`](../packages/flytekit.core.utils#flytekitcoreutilsautodeletingtempdir) |Creates a posix safe tempdir which is auto deleted once out of scope. |
 | [`flytekit.core.utils.ClassDecorator`](../packages/flytekit.core.utils#flytekitcoreutilsclassdecorator) |Abstract class for class decorators. |
 | [`flytekit.core.utils.Directory`](../packages/flytekit.core.utils#flytekitcoreutilsdirectory) | |
 | [`flytekit.core.utils.timeit`](../packages/flytekit.core.utils#flytekitcoreutilstimeit) |A context manager and a decorator that measures the execution time of the wrapped code block or functions. |
 | [`flytekit.core.worker_queue.Controller`](../packages/flytekit.core.worker_queue#flytekitcoreworker_queuecontroller) |This controller object is responsible for kicking off and monitoring executions against a Flyte Admin endpoint. |
-| [`flytekit.core.worker_queue.ItemStatus`](../packages/flytekit.core.worker_queue#flytekitcoreworker_queueitemstatus) |Create a collection of name/value pairs. |
+| [`flytekit.core.worker_queue.ItemStatus`](../packages/flytekit.core.worker_queue#flytekitcoreworker_queueitemstatus) | |
 | [`flytekit.core.worker_queue.Update`](../packages/flytekit.core.worker_queue#flytekitcoreworker_queueupdate) | |
 | [`flytekit.core.worker_queue.WorkItem`](../packages/flytekit.core.worker_queue#flytekitcoreworker_queueworkitem) |This is a class to keep track of what the user requested. |
 | [`flytekit.core.workflow.ImperativeWorkflow`](../packages/flytekit.core.workflow#flytekitcoreworkflowimperativeworkflow) |An imperative workflow is a programmatic analogue to the typical ``@workflow`` function-based workflow and is. |
@@ -219,75 +219,75 @@ layout: py_api
 | [`flytekit.deck.renderer.PythonDependencyRenderer`](../packages/flytekit.deck.renderer#flytekitdeckrendererpythondependencyrenderer) |PythonDependencyDeck is a deck that contains information about packages installed via pip. |
 | [`flytekit.deck.renderer.SourceCodeRenderer`](../packages/flytekit.deck.renderer#flytekitdeckrenderersourcecoderenderer) |Convert Python source code to HTML, and return HTML as a unicode string. |
 | [`flytekit.deck.renderer.TopFrameRenderer`](../packages/flytekit.deck.renderer#flytekitdeckrenderertopframerenderer) |Render a DataFrame as an HTML table. |
-| [`flytekit.exceptions.base.FlyteException`](../packages/flytekit.exceptions.base#flytekitexceptionsbaseflyteexception) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.base.FlyteRecoverableException`](../packages/flytekit.exceptions.base#flytekitexceptionsbaseflyterecoverableexception) |Common base class for all non-exit exceptions. |
+| [`flytekit.exceptions.base.FlyteException`](../packages/flytekit.exceptions.base#flytekitexceptionsbaseflyteexception) | |
+| [`flytekit.exceptions.base.FlyteRecoverableException`](../packages/flytekit.exceptions.base#flytekitexceptionsbaseflyterecoverableexception) | |
 | [`flytekit.exceptions.eager.EagerException`](../packages/flytekit.exceptions.eager#flytekitexceptionseagereagerexception) |Raised when a node in an eager workflow encounters an error. |
-| [`flytekit.exceptions.scopes.FlyteScopedException`](../packages/flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopedexception) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.scopes.FlyteScopedSystemException`](../packages/flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopedsystemexception) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.scopes.FlyteScopedUserException`](../packages/flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopeduserexception) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.system.FlyteAgentNotFound`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflyteagentnotfound) |Assertion failed. |
-| [`flytekit.exceptions.system.FlyteConnectorNotFound`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflyteconnectornotfound) |Assertion failed. |
-| [`flytekit.exceptions.system.FlyteDownloadDataException`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflytedownloaddataexception) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.system.FlyteEntrypointNotLoadable`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflyteentrypointnotloadable) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.system.FlyteNonRecoverableSystemException`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflytenonrecoverablesystemexception) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.system.FlyteNotImplementedException`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflytenotimplementedexception) |Method or function hasn't been implemented yet. |
-| [`flytekit.exceptions.system.FlyteSystemAssertion`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflytesystemassertion) |Assertion failed. |
-| [`flytekit.exceptions.system.FlyteSystemException`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflytesystemexception) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.system.FlyteSystemUnavailableException`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflytesystemunavailableexception) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.system.FlyteUploadDataException`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflyteuploaddataexception) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.user.FlyteAssertion`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyteassertion) |Assertion failed. |
-| [`flytekit.exceptions.user.FlyteAuthenticationException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyteauthenticationexception) |Assertion failed. |
-| [`flytekit.exceptions.user.FlyteCompilationException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytecompilationexception) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.user.FlyteDataNotFoundException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytedatanotfoundexception) |Inappropriate argument value (of correct type). |
-| [`flytekit.exceptions.user.FlyteDisapprovalException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytedisapprovalexception) |Assertion failed. |
-| [`flytekit.exceptions.user.FlyteEntityAlreadyExistsException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyteentityalreadyexistsexception) |Assertion failed. |
-| [`flytekit.exceptions.user.FlyteEntityNotExistException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyteentitynotexistexception) |Assertion failed. |
-| [`flytekit.exceptions.user.FlyteEntityNotFoundException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyteentitynotfoundexception) |Inappropriate argument value (of correct type). |
-| [`flytekit.exceptions.user.FlyteFailureNodeInputMismatchException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytefailurenodeinputmismatchexception) |Assertion failed. |
-| [`flytekit.exceptions.user.FlyteInvalidInputException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyteinvalidinputexception) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.user.FlyteMissingReturnValueException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytemissingreturnvalueexception) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.user.FlyteMissingTypeException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytemissingtypeexception) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.user.FlytePromiseAttributeResolveException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytepromiseattributeresolveexception) |Assertion failed. |
-| [`flytekit.exceptions.user.FlyteRecoverableException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyterecoverableexception) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.user.FlyteTimeout`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytetimeout) |Assertion failed. |
-| [`flytekit.exceptions.user.FlyteTypeException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytetypeexception) |Inappropriate argument type. |
-| [`flytekit.exceptions.user.FlyteUserException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyteuserexception) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.user.FlyteUserRuntimeException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyteuserruntimeexception) |Common base class for all non-exit exceptions. |
-| [`flytekit.exceptions.user.FlyteValidationException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytevalidationexception) |Assertion failed. |
-| [`flytekit.exceptions.user.FlyteValueException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytevalueexception) |Inappropriate argument value (of correct type). |
+| [`flytekit.exceptions.scopes.FlyteScopedException`](../packages/flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopedexception) | |
+| [`flytekit.exceptions.scopes.FlyteScopedSystemException`](../packages/flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopedsystemexception) | |
+| [`flytekit.exceptions.scopes.FlyteScopedUserException`](../packages/flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopeduserexception) | |
+| [`flytekit.exceptions.system.FlyteAgentNotFound`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflyteagentnotfound) | |
+| [`flytekit.exceptions.system.FlyteConnectorNotFound`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflyteconnectornotfound) | |
+| [`flytekit.exceptions.system.FlyteDownloadDataException`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflytedownloaddataexception) | |
+| [`flytekit.exceptions.system.FlyteEntrypointNotLoadable`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflyteentrypointnotloadable) | |
+| [`flytekit.exceptions.system.FlyteNonRecoverableSystemException`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflytenonrecoverablesystemexception) | |
+| [`flytekit.exceptions.system.FlyteNotImplementedException`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflytenotimplementedexception) | |
+| [`flytekit.exceptions.system.FlyteSystemAssertion`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflytesystemassertion) | |
+| [`flytekit.exceptions.system.FlyteSystemException`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflytesystemexception) | |
+| [`flytekit.exceptions.system.FlyteSystemUnavailableException`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflytesystemunavailableexception) | |
+| [`flytekit.exceptions.system.FlyteUploadDataException`](../packages/flytekit.exceptions.system#flytekitexceptionssystemflyteuploaddataexception) | |
+| [`flytekit.exceptions.user.FlyteAssertion`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyteassertion) | |
+| [`flytekit.exceptions.user.FlyteAuthenticationException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyteauthenticationexception) | |
+| [`flytekit.exceptions.user.FlyteCompilationException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytecompilationexception) | |
+| [`flytekit.exceptions.user.FlyteDataNotFoundException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytedatanotfoundexception) | |
+| [`flytekit.exceptions.user.FlyteDisapprovalException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytedisapprovalexception) | |
+| [`flytekit.exceptions.user.FlyteEntityAlreadyExistsException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyteentityalreadyexistsexception) | |
+| [`flytekit.exceptions.user.FlyteEntityNotExistException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyteentitynotexistexception) | |
+| [`flytekit.exceptions.user.FlyteEntityNotFoundException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyteentitynotfoundexception) | |
+| [`flytekit.exceptions.user.FlyteFailureNodeInputMismatchException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytefailurenodeinputmismatchexception) | |
+| [`flytekit.exceptions.user.FlyteInvalidInputException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyteinvalidinputexception) | |
+| [`flytekit.exceptions.user.FlyteMissingReturnValueException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytemissingreturnvalueexception) | |
+| [`flytekit.exceptions.user.FlyteMissingTypeException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytemissingtypeexception) | |
+| [`flytekit.exceptions.user.FlytePromiseAttributeResolveException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytepromiseattributeresolveexception) | |
+| [`flytekit.exceptions.user.FlyteRecoverableException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyterecoverableexception) | |
+| [`flytekit.exceptions.user.FlyteTimeout`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytetimeout) | |
+| [`flytekit.exceptions.user.FlyteTypeException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytetypeexception) | |
+| [`flytekit.exceptions.user.FlyteUserException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyteuserexception) | |
+| [`flytekit.exceptions.user.FlyteUserRuntimeException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflyteuserruntimeexception) | |
+| [`flytekit.exceptions.user.FlyteValidationException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytevalidationexception) | |
+| [`flytekit.exceptions.user.FlyteValueException`](../packages/flytekit.exceptions.user#flytekitexceptionsuserflytevalueexception) | |
 | [`flytekit.extend.backend.base_connector.AsyncConnectorBase`](../packages/flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorasyncconnectorbase) |This is the base class for all async connectors. |
 | [`flytekit.extend.backend.base_connector.AsyncConnectorExecutorMixin`](../packages/flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorasyncconnectorexecutormixin) |This mixin class is used to run the async task locally, and it's only used for local execution. |
-| [`flytekit.extend.backend.base_connector.ConnectorBase`](../packages/flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorconnectorbase) |Helper class that provides a standard way to create an ABC using. |
+| [`flytekit.extend.backend.base_connector.ConnectorBase`](../packages/flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorconnectorbase) | |
 | [`flytekit.extend.backend.base_connector.ConnectorRegistry`](../packages/flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorconnectorregistry) |This is the registry for all connectors. |
 | [`flytekit.extend.backend.base_connector.Resource`](../packages/flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorresource) |This is the output resource of the job. |
 | [`flytekit.extend.backend.base_connector.ResourceMeta`](../packages/flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorresourcemeta) |This is the metadata for the job. |
 | [`flytekit.extend.backend.base_connector.SyncConnectorBase`](../packages/flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorsyncconnectorbase) |This is the base class for all sync connectors. |
 | [`flytekit.extend.backend.base_connector.SyncConnectorExecutorMixin`](../packages/flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorsyncconnectorexecutormixin) |This mixin class is used to run the sync task locally, and it's only used for local execution. |
 | [`flytekit.extend.backend.base_connector.TaskCategory`](../packages/flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectortaskcategory) | |
-| [`flytekit.extend.backend.connector_service.AsyncConnectorService`](../packages/flytekit.extend.backend.connector_service#flytekitextendbackendconnector_serviceasyncconnectorservice) |AsyncAgentService defines an RPC Service that allows propeller to send the request to the agent server asynchronously. |
-| [`flytekit.extend.backend.connector_service.ConnectorMetadataService`](../packages/flytekit.extend.backend.connector_service#flytekitextendbackendconnector_serviceconnectormetadataservice) |AgentMetadataService defines an RPC service that is also served over HTTP via grpc-gateway. |
-| [`flytekit.extend.backend.connector_service.SyncConnectorService`](../packages/flytekit.extend.backend.connector_service#flytekitextendbackendconnector_servicesyncconnectorservice) |SyncAgentService defines an RPC Service that allows propeller to send the request to the agent server synchronously. |
+| [`flytekit.extend.backend.connector_service.AsyncConnectorService`](../packages/flytekit.extend.backend.connector_service#flytekitextendbackendconnector_serviceasyncconnectorservice) | |
+| [`flytekit.extend.backend.connector_service.ConnectorMetadataService`](../packages/flytekit.extend.backend.connector_service#flytekitextendbackendconnector_serviceconnectormetadataservice) | |
+| [`flytekit.extend.backend.connector_service.SyncConnectorService`](../packages/flytekit.extend.backend.connector_service#flytekitextendbackendconnector_servicesyncconnectorservice) | |
 | [`flytekit.extras.accelerators.BaseAccelerator`](../packages/flytekit.extras.accelerators#flytekitextrasacceleratorsbaseaccelerator) |Base class for all accelerator types. |
 | [`flytekit.extras.accelerators.GPUAccelerator`](../packages/flytekit.extras.accelerators#flytekitextrasacceleratorsgpuaccelerator) |Class that represents a GPU accelerator. |
 | [`flytekit.extras.accelerators.MultiInstanceGPUAccelerator`](../packages/flytekit.extras.accelerators#flytekitextrasacceleratorsmultiinstancegpuaccelerator) |Base class for all multi-instance GPU accelerator types. |
 | [`flytekit.extras.cloud_pickle_resolver.ExperimentalNaiveCloudPickleResolver`](../packages/flytekit.extras.cloud_pickle_resolver#flytekitextrascloud_pickle_resolverexperimentalnaivecloudpickleresolver) |Please do not use this resolver, basically ever. |
-| [`flytekit.extras.pydantic_transformer.transformer.PydanticTransformer`](../packages/flytekit.extras.pydantic_transformer.transformer#flytekitextraspydantic_transformertransformerpydantictransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`flytekit.extras.pydantic_transformer.transformer.PydanticTransformer`](../packages/flytekit.extras.pydantic_transformer.transformer#flytekitextraspydantic_transformertransformerpydantictransformer) | |
 | [`flytekit.extras.pytorch.checkpoint.PyTorchCheckpoint`](../packages/flytekit.extras.pytorch.checkpoint#flytekitextraspytorchcheckpointpytorchcheckpoint) |This class is helpful to save a checkpoint. |
 | [`flytekit.extras.pytorch.checkpoint.PyTorchCheckpointTransformer`](../packages/flytekit.extras.pytorch.checkpoint#flytekitextraspytorchcheckpointpytorchcheckpointtransformer) |TypeTransformer that supports serializing and deserializing checkpoint. |
-| [`flytekit.extras.pytorch.native.PyTorchModuleTransformer`](../packages/flytekit.extras.pytorch.native#flytekitextraspytorchnativepytorchmoduletransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
-| [`flytekit.extras.pytorch.native.PyTorchTensorTransformer`](../packages/flytekit.extras.pytorch.native#flytekitextraspytorchnativepytorchtensortransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
-| [`flytekit.extras.pytorch.native.PyTorchTypeTransformer`](../packages/flytekit.extras.pytorch.native#flytekitextraspytorchnativepytorchtypetransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
-| [`flytekit.extras.sklearn.native.SklearnEstimatorTransformer`](../packages/flytekit.extras.sklearn.native#flytekitextrassklearnnativesklearnestimatortransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
-| [`flytekit.extras.sklearn.native.SklearnTypeTransformer`](../packages/flytekit.extras.sklearn.native#flytekitextrassklearnnativesklearntypetransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`flytekit.extras.pytorch.native.PyTorchModuleTransformer`](../packages/flytekit.extras.pytorch.native#flytekitextraspytorchnativepytorchmoduletransformer) | |
+| [`flytekit.extras.pytorch.native.PyTorchTensorTransformer`](../packages/flytekit.extras.pytorch.native#flytekitextraspytorchnativepytorchtensortransformer) | |
+| [`flytekit.extras.pytorch.native.PyTorchTypeTransformer`](../packages/flytekit.extras.pytorch.native#flytekitextraspytorchnativepytorchtypetransformer) | |
+| [`flytekit.extras.sklearn.native.SklearnEstimatorTransformer`](../packages/flytekit.extras.sklearn.native#flytekitextrassklearnnativesklearnestimatortransformer) | |
+| [`flytekit.extras.sklearn.native.SklearnTypeTransformer`](../packages/flytekit.extras.sklearn.native#flytekitextrassklearnnativesklearntypetransformer) | |
 | [`flytekit.extras.sqlite3.task.SQLite3Config`](../packages/flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3config) |Use this configuration to configure if sqlite3 files that should be loaded by the task. |
 | [`flytekit.extras.sqlite3.task.SQLite3Task`](../packages/flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3task) |Run client side SQLite3 queries that optionally return a FlyteSchema object. |
-| [`flytekit.extras.sqlite3.task.SQLite3TaskExecutor`](../packages/flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3taskexecutor) |Please see the notes for the metaclass above first. |
+| [`flytekit.extras.sqlite3.task.SQLite3TaskExecutor`](../packages/flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3taskexecutor) | |
 | [`flytekit.extras.tasks.shell.AttrDict`](../packages/flytekit.extras.tasks.shell#flytekitextrastasksshellattrdict) |Convert a dictionary to an attribute style lookup. |
 | [`flytekit.extras.tasks.shell.OutputLocation`](../packages/flytekit.extras.tasks.shell#flytekitextrastasksshelloutputlocation) | |
 | [`flytekit.extras.tasks.shell.ProcessResult`](../packages/flytekit.extras.tasks.shell#flytekitextrastasksshellprocessresult) |Stores a process return code, standard output and standard error. |
 | [`flytekit.extras.tasks.shell.RawShellTask`](../packages/flytekit.extras.tasks.shell#flytekitextrastasksshellrawshelltask) | |
 | [`flytekit.extras.tasks.shell.ShellTask`](../packages/flytekit.extras.tasks.shell#flytekitextrastasksshellshelltask) | |
-| [`flytekit.extras.tensorflow.model.TensorFlowModelTransformer`](../packages/flytekit.extras.tensorflow.model#flytekitextrastensorflowmodeltensorflowmodeltransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`flytekit.extras.tensorflow.model.TensorFlowModelTransformer`](../packages/flytekit.extras.tensorflow.model#flytekitextrastensorflowmodeltensorflowmodeltransformer) | |
 | [`flytekit.extras.tensorflow.record.TFRecordDatasetConfig`](../packages/flytekit.extras.tensorflow.record#flytekitextrastensorflowrecordtfrecorddatasetconfig) |TFRecordDatasetConfig can be used while creating tf. |
 | [`flytekit.extras.tensorflow.record.TensorFlowRecordFileTransformer`](../packages/flytekit.extras.tensorflow.record#flytekitextrastensorflowrecordtensorflowrecordfiletransformer) |TypeTransformer that supports serialising and deserialising to and from TFRecord file. |
 | [`flytekit.extras.tensorflow.record.TensorFlowRecordsDirTransformer`](../packages/flytekit.extras.tensorflow.record#flytekitextrastensorflowrecordtensorflowrecordsdirtransformer) |TypeTransformer that supports serialising and deserialising to and from TFRecord directory. |
@@ -300,27 +300,27 @@ layout: py_api
 | [`flytekit.image_spec.image_spec.ImageSpec`](../packages/flytekit.image_spec.image_spec#flytekitimage_specimage_specimagespec) |This class is used to specify the docker image that will be used to run the task. |
 | [`flytekit.image_spec.image_spec.ImageSpecBuilder`](../packages/flytekit.image_spec.image_spec#flytekitimage_specimage_specimagespecbuilder) | |
 | [`flytekit.image_spec.noop_builder.NoOpBuilder`](../packages/flytekit.image_spec.noop_builder#flytekitimage_specnoop_buildernoopbuilder) |Noop image builder. |
-| [`flytekit.interaction.click_types.DateTimeType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesdatetimetype) |The DateTime type converts date strings into `datetime` objects. |
-| [`flytekit.interaction.click_types.DirParamType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesdirparamtype) |Represents the type of a parameter. |
-| [`flytekit.interaction.click_types.DurationParamType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesdurationparamtype) |Represents the type of a parameter. |
-| [`flytekit.interaction.click_types.EnumParamType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesenumparamtype) |The choice type allows a value to be checked against a fixed set. |
-| [`flytekit.interaction.click_types.FileParamType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesfileparamtype) |Represents the type of a parameter. |
+| [`flytekit.interaction.click_types.DateTimeType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesdatetimetype) | |
+| [`flytekit.interaction.click_types.DirParamType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesdirparamtype) | |
+| [`flytekit.interaction.click_types.DurationParamType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesdurationparamtype) | |
+| [`flytekit.interaction.click_types.EnumParamType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesenumparamtype) | |
+| [`flytekit.interaction.click_types.FileParamType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesfileparamtype) | |
 | [`flytekit.interaction.click_types.FlyteLiteralConverter`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesflyteliteralconverter) | |
-| [`flytekit.interaction.click_types.JSONIteratorParamType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesjsoniteratorparamtype) |Represents the type of a parameter. |
-| [`flytekit.interaction.click_types.JsonParamType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesjsonparamtype) |Represents the type of a parameter. |
-| [`flytekit.interaction.click_types.PickleParamType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typespickleparamtype) |Represents the type of a parameter. |
+| [`flytekit.interaction.click_types.JSONIteratorParamType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesjsoniteratorparamtype) | |
+| [`flytekit.interaction.click_types.JsonParamType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesjsonparamtype) | |
+| [`flytekit.interaction.click_types.PickleParamType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typespickleparamtype) | |
 | [`flytekit.interaction.click_types.StructuredDatasetParamType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesstructureddatasetparamtype) |TODO handle column types. |
 | [`flytekit.interaction.click_types.UnionParamType`](../packages/flytekit.interaction.click_types#flytekitinteractionclick_typesunionparamtype) |A composite type that allows for multiple types to be specified. |
-| [`flytekit.interaction.rich_utils.RichCallback`](../packages/flytekit.interaction.rich_utils#flytekitinteractionrich_utilsrichcallback) |Base class and interface for callback mechanism. |
+| [`flytekit.interaction.rich_utils.RichCallback`](../packages/flytekit.interaction.rich_utils#flytekitinteractionrich_utilsrichcallback) | |
 | [`flytekit.interactive.vscode_lib.config.VscodeConfig`](../packages/flytekit.interactive.vscode_lib.config#flytekitinteractivevscode_libconfigvscodeconfig) |VscodeConfig is the config contains default URLs of the VSCode server and extension remote paths. |
-| [`flytekit.interactive.vscode_lib.decorator.vscode`](../packages/flytekit.interactive.vscode_lib.decorator#flytekitinteractivevscode_libdecoratorvscode) |Abstract class for class decorators. |
+| [`flytekit.interactive.vscode_lib.decorator.vscode`](../packages/flytekit.interactive.vscode_lib.decorator#flytekitinteractivevscode_libdecoratorvscode) | |
 | [`flytekit.interfaces.cli_identifiers.Identifier`](../packages/flytekit.interfaces.cli_identifiers#flytekitinterfacescli_identifiersidentifier) | |
 | [`flytekit.interfaces.cli_identifiers.TaskExecutionIdentifier`](../packages/flytekit.interfaces.cli_identifiers#flytekitinterfacescli_identifierstaskexecutionidentifier) | |
 | [`flytekit.interfaces.cli_identifiers.WorkflowExecutionIdentifier`](../packages/flytekit.interfaces.cli_identifiers#flytekitinterfacescli_identifiersworkflowexecutionidentifier) | |
 | [`flytekit.interfaces.stats.client.DummyStatsClient`](../packages/flytekit.interfaces.stats.client#flytekitinterfacesstatsclientdummystatsclient) |A dummy client for statsd. |
 | [`flytekit.interfaces.stats.client.ScopeableStatsProxy`](../packages/flytekit.interfaces.stats.client#flytekitinterfacesstatsclientscopeablestatsproxy) |A Proxy object for an underlying statsd client. |
-| [`flytekit.interfaces.stats.client.StatsClientProxy`](../packages/flytekit.interfaces.stats.client#flytekitinterfacesstatsclientstatsclientproxy) |A Proxy object for an underlying statsd client. |
-| [`flytekit.interfaces.stats.taggable.TaggableStats`](../packages/flytekit.interfaces.stats.taggable#flytekitinterfacesstatstaggabletaggablestats) |A Proxy object for an underlying statsd client. |
+| [`flytekit.interfaces.stats.client.StatsClientProxy`](../packages/flytekit.interfaces.stats.client#flytekitinterfacesstatsclientstatsclientproxy) | |
+| [`flytekit.interfaces.stats.taggable.TaggableStats`](../packages/flytekit.interfaces.stats.taggable#flytekitinterfacesstatstaggabletaggablestats) | |
 | [`flytekit.models.admin.common.Sort`](../packages/flytekit.models.admin.common#flytekitmodelsadmincommonsort) | |
 | [`flytekit.models.admin.task_execution.TaskExecution`](../packages/flytekit.models.admin.task_execution#flytekitmodelsadmintask_executiontaskexecution) | |
 | [`flytekit.models.admin.task_execution.TaskExecutionClosure`](../packages/flytekit.models.admin.task_execution#flytekitmodelsadmintask_executiontaskexecutionclosure) | |
@@ -333,10 +333,10 @@ layout: py_api
 | [`flytekit.models.common.AuthRole`](../packages/flytekit.models.common#flytekitmodelscommonauthrole) | |
 | [`flytekit.models.common.EmailNotification`](../packages/flytekit.models.common#flytekitmodelscommonemailnotification) | |
 | [`flytekit.models.common.Envs`](../packages/flytekit.models.common#flytekitmodelscommonenvs) | |
-| [`flytekit.models.common.FlyteABCMeta`](../packages/flytekit.models.common#flytekitmodelscommonflyteabcmeta) |Metaclass for defining Abstract Base Classes (ABCs). |
+| [`flytekit.models.common.FlyteABCMeta`](../packages/flytekit.models.common#flytekitmodelscommonflyteabcmeta) | |
 | [`flytekit.models.common.FlyteCustomIdlEntity`](../packages/flytekit.models.common#flytekitmodelscommonflytecustomidlentity) | |
 | [`flytekit.models.common.FlyteIdlEntity`](../packages/flytekit.models.common#flytekitmodelscommonflyteidlentity) | |
-| [`flytekit.models.common.FlyteType`](../packages/flytekit.models.common#flytekitmodelscommonflytetype) |Metaclass for defining Abstract Base Classes (ABCs). |
+| [`flytekit.models.common.FlyteType`](../packages/flytekit.models.common#flytekitmodelscommonflytetype) | |
 | [`flytekit.models.common.Labels`](../packages/flytekit.models.common#flytekitmodelscommonlabels) | |
 | [`flytekit.models.common.NamedEntityIdentifier`](../packages/flytekit.models.common#flytekitmodelscommonnamedentityidentifier) | |
 | [`flytekit.models.common.Notification`](../packages/flytekit.models.common#flytekitmodelscommonnotification) | |
@@ -401,11 +401,11 @@ layout: py_api
 | [`flytekit.models.execution.ExecutionMetadata`](../packages/flytekit.models.execution#flytekitmodelsexecutionexecutionmetadata) | |
 | [`flytekit.models.execution.ExecutionSpec`](../packages/flytekit.models.execution#flytekitmodelsexecutionexecutionspec) | |
 | [`flytekit.models.execution.LiteralMapBlob`](../packages/flytekit.models.execution#flytekitmodelsexecutionliteralmapblob) | |
-| [`flytekit.models.execution.NodeExecutionGetDataResponse`](../packages/flytekit.models.execution#flytekitmodelsexecutionnodeexecutiongetdataresponse) |Currently, node, task, and workflow execution all have the same get data response. |
+| [`flytekit.models.execution.NodeExecutionGetDataResponse`](../packages/flytekit.models.execution#flytekitmodelsexecutionnodeexecutiongetdataresponse) | |
 | [`flytekit.models.execution.NotificationList`](../packages/flytekit.models.execution#flytekitmodelsexecutionnotificationlist) | |
 | [`flytekit.models.execution.SystemMetadata`](../packages/flytekit.models.execution#flytekitmodelsexecutionsystemmetadata) | |
-| [`flytekit.models.execution.TaskExecutionGetDataResponse`](../packages/flytekit.models.execution#flytekitmodelsexecutiontaskexecutiongetdataresponse) |Currently, node, task, and workflow execution all have the same get data response. |
-| [`flytekit.models.execution.WorkflowExecutionGetDataResponse`](../packages/flytekit.models.execution#flytekitmodelsexecutionworkflowexecutiongetdataresponse) |Currently, node, task, and workflow execution all have the same get data response. |
+| [`flytekit.models.execution.TaskExecutionGetDataResponse`](../packages/flytekit.models.execution#flytekitmodelsexecutiontaskexecutiongetdataresponse) | |
+| [`flytekit.models.execution.WorkflowExecutionGetDataResponse`](../packages/flytekit.models.execution#flytekitmodelsexecutionworkflowexecutiongetdataresponse) | |
 | [`flytekit.models.filters.Contains`](../packages/flytekit.models.filters#flytekitmodelsfilterscontains) | |
 | [`flytekit.models.filters.Equal`](../packages/flytekit.models.filters#flytekitmodelsfiltersequal) | |
 | [`flytekit.models.filters.Filter`](../packages/flytekit.models.filters#flytekitmodelsfiltersfilter) | |
@@ -517,12 +517,14 @@ layout: py_api
 | [`flytekit.remote.remote.FlyteRemote`](../packages/flytekit.remote.remote#flytekitremoteremoteflyteremote) |Main entrypoint for programmatically accessing a Flyte remote backend. |
 | [`flytekit.remote.remote.RegistrationSkipped`](../packages/flytekit.remote.remote#flytekitremoteremoteregistrationskipped) |RegistrationSkipped error is raised when trying to register an entity that is not registrable. |
 | [`flytekit.remote.remote.ResolvedIdentifiers`](../packages/flytekit.remote.remote#flytekitremoteremoteresolvedidentifiers) | |
-| [`flytekit.remote.remote_callable.RemoteEntity`](../packages/flytekit.remote.remote_callable#flytekitremoteremote_callableremoteentity) |Helper class that provides a standard way to create an ABC using. |
+| [`flytekit.remote.remote_callable.RemoteEntity`](../packages/flytekit.remote.remote_callable#flytekitremoteremote_callableremoteentity) | |
+| [`flytekit.remote.remote_fs.FlyteFS`](../packages/flytekit.remote.remote_fs#flytekitremoteremote_fsflytefs) |Want this to behave mostly just like the HTTP file system. |
 | [`flytekit.remote.remote_fs.FlytePathResolver`](../packages/flytekit.remote.remote_fs#flytekitremoteremote_fsflytepathresolver) | |
+| [`flytekit.remote.remote_fs.HttpFileWriter`](../packages/flytekit.remote.remote_fs#flytekitremoteremote_fshttpfilewriter) | |
 | [`flytekit.sensor.base_sensor.BaseSensor`](../packages/flytekit.sensor.base_sensor#flytekitsensorbase_sensorbasesensor) |Base class for all sensors. |
 | [`flytekit.sensor.base_sensor.SensorMetadata`](../packages/flytekit.sensor.base_sensor#flytekitsensorbase_sensorsensormetadata) | |
-| [`flytekit.sensor.file_sensor.FileSensor`](../packages/flytekit.sensor.file_sensor#flytekitsensorfile_sensorfilesensor) |Base class for all sensors. |
-| [`flytekit.sensor.sensor_engine.SensorEngine`](../packages/flytekit.sensor.sensor_engine#flytekitsensorsensor_enginesensorengine) |This is the base class for all async connectors. |
+| [`flytekit.sensor.file_sensor.FileSensor`](../packages/flytekit.sensor.file_sensor#flytekitsensorfile_sensorfilesensor) | |
+| [`flytekit.sensor.sensor_engine.SensorEngine`](../packages/flytekit.sensor.sensor_engine#flytekitsensorsensor_enginesensorengine) | |
 | [`flytekit.tools.fast_registration.FastPackageOptions`](../packages/flytekit.tools.fast_registration#flytekittoolsfast_registrationfastpackageoptions) |FastPackageOptions is used to set configuration options when packaging files. |
 | [`flytekit.tools.ignore.DockerIgnore`](../packages/flytekit.tools.ignore#flytekittoolsignoredockerignore) |Uses docker-py's PatternMatcher to check whether a path is ignored. |
 | [`flytekit.tools.ignore.FlyteIgnore`](../packages/flytekit.tools.ignore#flytekittoolsignoreflyteignore) |Uses a. |
@@ -530,66 +532,66 @@ layout: py_api
 | [`flytekit.tools.ignore.Ignore`](../packages/flytekit.tools.ignore#flytekittoolsignoreignore) |Base for Ignores, implements core logic. |
 | [`flytekit.tools.ignore.IgnoreGroup`](../packages/flytekit.tools.ignore#flytekittoolsignoreignoregroup) |Groups multiple Ignores and checks a path against them. |
 | [`flytekit.tools.ignore.StandardIgnore`](../packages/flytekit.tools.ignore#flytekittoolsignorestandardignore) |Retains the standard ignore functionality that previously existed. |
-| [`flytekit.tools.repo.NoSerializableEntitiesError`](../packages/flytekit.tools.repo#flytekittoolsreponoserializableentitieserror) |Common base class for all non-exit exceptions. |
+| [`flytekit.tools.repo.NoSerializableEntitiesError`](../packages/flytekit.tools.repo#flytekittoolsreponoserializableentitieserror) | |
 | [`flytekit.types.directory.types.FlyteDirToMultipartBlobTransformer`](../packages/flytekit.types.directory.types#flytekittypesdirectorytypesflytedirtomultipartblobtransformer) |This transformer handles conversion between the Python native FlyteDirectory class defined above, and the Flyte. |
 | [`flytekit.types.directory.types.FlyteDirectory`](../packages/flytekit.types.directory.types#flytekittypesdirectorytypesflytedirectory) | |
 | [`flytekit.types.error.error.ErrorTransformer`](../packages/flytekit.types.error.error#flytekittypeserrorerrorerrortransformer) |Enables converting a python type FlyteError to LiteralType. |
 | [`flytekit.types.error.error.FlyteError`](../packages/flytekit.types.error.error#flytekittypeserrorerrorflyteerror) |Special Task type that will be used in the failure node. |
 | [`flytekit.types.file.FileExt`](../packages/flytekit.types.file#flytekittypesfilefileext) |Used for annotating file extension types of FlyteFile. |
 | [`flytekit.types.file.file.FlyteFile`](../packages/flytekit.types.file.file#flytekittypesfilefileflytefile) | |
-| [`flytekit.types.file.file.FlyteFilePathTransformer`](../packages/flytekit.types.file.file#flytekittypesfilefileflytefilepathtransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`flytekit.types.file.file.FlyteFilePathTransformer`](../packages/flytekit.types.file.file#flytekittypesfilefileflytefilepathtransformer) | |
 | [`flytekit.types.file.image.PILImageTransformer`](../packages/flytekit.types.file.image#flytekittypesfileimagepilimagetransformer) |TypeTransformer that supports PIL. |
 | [`flytekit.types.iterator.iterator.FlyteIterator`](../packages/flytekit.types.iterator.iterator#flytekittypesiteratoriteratorflyteiterator) | |
-| [`flytekit.types.iterator.iterator.IteratorTransformer`](../packages/flytekit.types.iterator.iterator#flytekittypesiteratoriteratoriteratortransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
-| [`flytekit.types.iterator.json_iterator.JSONIterator`](../packages/flytekit.types.iterator.json_iterator#flytekittypesiteratorjson_iteratorjsoniterator) |Abstract base class for generic types. |
+| [`flytekit.types.iterator.iterator.IteratorTransformer`](../packages/flytekit.types.iterator.iterator#flytekittypesiteratoriteratoriteratortransformer) | |
+| [`flytekit.types.iterator.json_iterator.JSONIterator`](../packages/flytekit.types.iterator.json_iterator#flytekittypesiteratorjson_iteratorjsoniterator) | |
 | [`flytekit.types.iterator.json_iterator.JSONIteratorTransformer`](../packages/flytekit.types.iterator.json_iterator#flytekittypesiteratorjson_iteratorjsoniteratortransformer) |A JSON iterator that handles conversion between an iterator/generator and a JSONL file. |
 | [`flytekit.types.numpy.ndarray.NumpyArrayTransformer`](../packages/flytekit.types.numpy.ndarray#flytekittypesnumpyndarraynumpyarraytransformer) |TypeTransformer that supports np. |
 | [`flytekit.types.pickle.pickle.FlytePickle`](../packages/flytekit.types.pickle.pickle#flytekittypespicklepickleflytepickle) |This type is only used by flytekit internally. |
-| [`flytekit.types.pickle.pickle.FlytePickleTransformer`](../packages/flytekit.types.pickle.pickle#flytekittypespicklepickleflytepickletransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`flytekit.types.pickle.pickle.FlytePickleTransformer`](../packages/flytekit.types.pickle.pickle#flytekittypespicklepickleflytepickletransformer) | |
 | [`flytekit.types.schema.types.FlyteSchema`](../packages/flytekit.types.schema.types#flytekittypesschematypesflyteschema) | |
-| [`flytekit.types.schema.types.FlyteSchemaTransformer`](../packages/flytekit.types.schema.types#flytekittypesschematypesflyteschematransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
-| [`flytekit.types.schema.types.LocalIOSchemaReader`](../packages/flytekit.types.schema.types#flytekittypesschematypeslocalioschemareader) |Base SchemaReader to handle any readers (that can manage their own IO or otherwise). |
-| [`flytekit.types.schema.types.LocalIOSchemaWriter`](../packages/flytekit.types.schema.types#flytekittypesschematypeslocalioschemawriter) |Abstract base class for generic types. |
+| [`flytekit.types.schema.types.FlyteSchemaTransformer`](../packages/flytekit.types.schema.types#flytekittypesschematypesflyteschematransformer) | |
+| [`flytekit.types.schema.types.LocalIOSchemaReader`](../packages/flytekit.types.schema.types#flytekittypesschematypeslocalioschemareader) | |
+| [`flytekit.types.schema.types.LocalIOSchemaWriter`](../packages/flytekit.types.schema.types#flytekittypesschematypeslocalioschemawriter) | |
 | [`flytekit.types.schema.types.SchemaEngine`](../packages/flytekit.types.schema.types#flytekittypesschematypesschemaengine) |This is the core Engine that handles all schema sub-systems. |
 | [`flytekit.types.schema.types.SchemaFormat`](../packages/flytekit.types.schema.types#flytekittypesschematypesschemaformat) |Represents the schema storage format (at rest). |
 | [`flytekit.types.schema.types.SchemaHandler`](../packages/flytekit.types.schema.types#flytekittypesschematypesschemahandler) | |
-| [`flytekit.types.schema.types.SchemaOpenMode`](../packages/flytekit.types.schema.types#flytekittypesschematypesschemaopenmode) |Create a collection of name/value pairs. |
+| [`flytekit.types.schema.types.SchemaOpenMode`](../packages/flytekit.types.schema.types#flytekittypesschematypesschemaopenmode) | |
 | [`flytekit.types.schema.types.SchemaReader`](../packages/flytekit.types.schema.types#flytekittypesschematypesschemareader) |Base SchemaReader to handle any readers (that can manage their own IO or otherwise). |
-| [`flytekit.types.schema.types.SchemaWriter`](../packages/flytekit.types.schema.types#flytekittypesschematypesschemawriter) |Abstract base class for generic types. |
+| [`flytekit.types.schema.types.SchemaWriter`](../packages/flytekit.types.schema.types#flytekittypesschematypesschemawriter) | |
 | [`flytekit.types.schema.types_pandas.PandasDataFrameTransformer`](../packages/flytekit.types.schema.types_pandas#flytekittypesschematypes_pandaspandasdataframetransformer) |Transforms a pd. |
-| [`flytekit.types.schema.types_pandas.PandasSchemaReader`](../packages/flytekit.types.schema.types_pandas#flytekittypesschematypes_pandaspandasschemareader) |Base SchemaReader to handle any readers (that can manage their own IO or otherwise). |
-| [`flytekit.types.schema.types_pandas.PandasSchemaWriter`](../packages/flytekit.types.schema.types_pandas#flytekittypesschematypes_pandaspandasschemawriter) |Abstract base class for generic types. |
+| [`flytekit.types.schema.types_pandas.PandasSchemaReader`](../packages/flytekit.types.schema.types_pandas#flytekittypesschematypes_pandaspandasschemareader) | |
+| [`flytekit.types.schema.types_pandas.PandasSchemaWriter`](../packages/flytekit.types.schema.types_pandas#flytekittypesschematypes_pandaspandasschemawriter) | |
 | [`flytekit.types.schema.types_pandas.ParquetIO`](../packages/flytekit.types.schema.types_pandas#flytekittypesschematypes_pandasparquetio) | |
-| [`flytekit.types.structured.basic_dfs.ArrowToParquetEncodingHandler`](../packages/flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsarrowtoparquetencodinghandler) |Helper class that provides a standard way to create an ABC using. |
-| [`flytekit.types.structured.basic_dfs.CSVToPandasDecodingHandler`](../packages/flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfscsvtopandasdecodinghandler) |Helper class that provides a standard way to create an ABC using. |
-| [`flytekit.types.structured.basic_dfs.PandasToCSVEncodingHandler`](../packages/flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfspandastocsvencodinghandler) |Helper class that provides a standard way to create an ABC using. |
-| [`flytekit.types.structured.basic_dfs.PandasToParquetEncodingHandler`](../packages/flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfspandastoparquetencodinghandler) |Helper class that provides a standard way to create an ABC using. |
-| [`flytekit.types.structured.basic_dfs.ParquetToArrowDecodingHandler`](../packages/flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsparquettoarrowdecodinghandler) |Helper class that provides a standard way to create an ABC using. |
-| [`flytekit.types.structured.basic_dfs.ParquetToPandasDecodingHandler`](../packages/flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsparquettopandasdecodinghandler) |Helper class that provides a standard way to create an ABC using. |
-| [`flytekit.types.structured.bigquery.ArrowToBQEncodingHandlers`](../packages/flytekit.types.structured.bigquery#flytekittypesstructuredbigqueryarrowtobqencodinghandlers) |Helper class that provides a standard way to create an ABC using. |
-| [`flytekit.types.structured.bigquery.BQToArrowDecodingHandler`](../packages/flytekit.types.structured.bigquery#flytekittypesstructuredbigquerybqtoarrowdecodinghandler) |Helper class that provides a standard way to create an ABC using. |
-| [`flytekit.types.structured.bigquery.BQToPandasDecodingHandler`](../packages/flytekit.types.structured.bigquery#flytekittypesstructuredbigquerybqtopandasdecodinghandler) |Helper class that provides a standard way to create an ABC using. |
-| [`flytekit.types.structured.bigquery.PandasToBQEncodingHandlers`](../packages/flytekit.types.structured.bigquery#flytekittypesstructuredbigquerypandastobqencodinghandlers) |Helper class that provides a standard way to create an ABC using. |
-| [`flytekit.types.structured.snowflake.PandasToSnowflakeEncodingHandlers`](../packages/flytekit.types.structured.snowflake#flytekittypesstructuredsnowflakepandastosnowflakeencodinghandlers) |Helper class that provides a standard way to create an ABC using. |
-| [`flytekit.types.structured.snowflake.SnowflakeToPandasDecodingHandler`](../packages/flytekit.types.structured.snowflake#flytekittypesstructuredsnowflakesnowflaketopandasdecodinghandler) |Helper class that provides a standard way to create an ABC using. |
-| [`flytekit.types.structured.structured_dataset.DuplicateHandlerError`](../packages/flytekit.types.structured.structured_dataset#flytekittypesstructuredstructured_datasetduplicatehandlererror) |Inappropriate argument value (of correct type). |
+| [`flytekit.types.structured.basic_dfs.ArrowToParquetEncodingHandler`](../packages/flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsarrowtoparquetencodinghandler) | |
+| [`flytekit.types.structured.basic_dfs.CSVToPandasDecodingHandler`](../packages/flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfscsvtopandasdecodinghandler) | |
+| [`flytekit.types.structured.basic_dfs.PandasToCSVEncodingHandler`](../packages/flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfspandastocsvencodinghandler) | |
+| [`flytekit.types.structured.basic_dfs.PandasToParquetEncodingHandler`](../packages/flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfspandastoparquetencodinghandler) | |
+| [`flytekit.types.structured.basic_dfs.ParquetToArrowDecodingHandler`](../packages/flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsparquettoarrowdecodinghandler) | |
+| [`flytekit.types.structured.basic_dfs.ParquetToPandasDecodingHandler`](../packages/flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsparquettopandasdecodinghandler) | |
+| [`flytekit.types.structured.bigquery.ArrowToBQEncodingHandlers`](../packages/flytekit.types.structured.bigquery#flytekittypesstructuredbigqueryarrowtobqencodinghandlers) | |
+| [`flytekit.types.structured.bigquery.BQToArrowDecodingHandler`](../packages/flytekit.types.structured.bigquery#flytekittypesstructuredbigquerybqtoarrowdecodinghandler) | |
+| [`flytekit.types.structured.bigquery.BQToPandasDecodingHandler`](../packages/flytekit.types.structured.bigquery#flytekittypesstructuredbigquerybqtopandasdecodinghandler) | |
+| [`flytekit.types.structured.bigquery.PandasToBQEncodingHandlers`](../packages/flytekit.types.structured.bigquery#flytekittypesstructuredbigquerypandastobqencodinghandlers) | |
+| [`flytekit.types.structured.snowflake.PandasToSnowflakeEncodingHandlers`](../packages/flytekit.types.structured.snowflake#flytekittypesstructuredsnowflakepandastosnowflakeencodinghandlers) | |
+| [`flytekit.types.structured.snowflake.SnowflakeToPandasDecodingHandler`](../packages/flytekit.types.structured.snowflake#flytekittypesstructuredsnowflakesnowflaketopandasdecodinghandler) | |
+| [`flytekit.types.structured.structured_dataset.DuplicateHandlerError`](../packages/flytekit.types.structured.structured_dataset#flytekittypesstructuredstructured_datasetduplicatehandlererror) | |
 | [`flytekit.types.structured.structured_dataset.StructuredDataset`](../packages/flytekit.types.structured.structured_dataset#flytekittypesstructuredstructured_datasetstructureddataset) |This is the user facing StructuredDataset class. |
-| [`flytekit.types.structured.structured_dataset.StructuredDatasetDecoder`](../packages/flytekit.types.structured.structured_dataset#flytekittypesstructuredstructured_datasetstructureddatasetdecoder) |Helper class that provides a standard way to create an ABC using. |
-| [`flytekit.types.structured.structured_dataset.StructuredDatasetEncoder`](../packages/flytekit.types.structured.structured_dataset#flytekittypesstructuredstructured_datasetstructureddatasetencoder) |Helper class that provides a standard way to create an ABC using. |
+| [`flytekit.types.structured.structured_dataset.StructuredDatasetDecoder`](../packages/flytekit.types.structured.structured_dataset#flytekittypesstructuredstructured_datasetstructureddatasetdecoder) | |
+| [`flytekit.types.structured.structured_dataset.StructuredDatasetEncoder`](../packages/flytekit.types.structured.structured_dataset#flytekittypesstructuredstructured_datasetstructureddatasetencoder) | |
 | [`flytekit.types.structured.structured_dataset.StructuredDatasetTransformerEngine`](../packages/flytekit.types.structured.structured_dataset#flytekittypesstructuredstructured_datasetstructureddatasettransformerengine) |Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
 | [`flytekit.utils.rate_limiter.RateLimiter`](../packages/flytekit.utils.rate_limiter#flytekitutilsrate_limiterratelimiter) |Rate limiter that allows up to a certain number of requests per minute. |
 # Protocols
 
 | Protocol | Description |
 |-|-|
-| [`flytekit.configuration.plugin.FlytekitPluginProtocol`](../packages/flytekit.configuration.plugin#flytekitconfigurationpluginflytekitpluginprotocol) |Base class for protocol classes. |
+| [`flytekit.configuration.plugin.FlytekitPluginProtocol`](../packages/flytekit.configuration.plugin#flytekitconfigurationpluginflytekitpluginprotocol) | |
 | [`flytekit.core.artifact.ArtifactSerializationHandler`](../packages/flytekit.core.artifact#flytekitcoreartifactartifactserializationhandler) |This protocol defines the interface for serializing artifact-related entities down to Flyte IDL. |
-| [`flytekit.core.cache.CachePolicy`](../packages/flytekit.core.cache#flytekitcorecachecachepolicy) |Base class for protocol classes. |
+| [`flytekit.core.cache.CachePolicy`](../packages/flytekit.core.cache#flytekitcorecachecachepolicy) | |
 | [`flytekit.core.context_manager.SerializableToString`](../packages/flytekit.core.context_manager#flytekitcorecontext_managerserializabletostring) |This protocol is used by the Artifact create_from function. |
-| [`flytekit.core.promise.HasFlyteInterface`](../packages/flytekit.core.promise#flytekitcorepromisehasflyteinterface) |Base class for protocol classes. |
-| [`flytekit.core.promise.LocallyExecutable`](../packages/flytekit.core.promise#flytekitcorepromiselocallyexecutable) |Base class for protocol classes. |
-| [`flytekit.core.promise.SupportsNodeCreation`](../packages/flytekit.core.promise#flytekitcorepromisesupportsnodecreation) |Base class for protocol classes. |
-| [`flytekit.core.schedule.LaunchPlanTriggerBase`](../packages/flytekit.core.schedule#flytekitcoreschedulelaunchplantriggerbase) |Base class for protocol classes. |
-| [`flytekit.deck.renderer.Renderable`](../packages/flytekit.deck.renderer#flytekitdeckrendererrenderable) |Base class for protocol classes. |
-| [`flytekit.extras.pytorch.checkpoint.IsDataclass`](../packages/flytekit.extras.pytorch.checkpoint#flytekitextraspytorchcheckpointisdataclass) |Base class for protocol classes. |
-| [`flytekit.sensor.base_sensor.SensorConfig`](../packages/flytekit.sensor.base_sensor#flytekitsensorbase_sensorsensorconfig) |Base class for protocol classes. |
+| [`flytekit.core.promise.HasFlyteInterface`](../packages/flytekit.core.promise#flytekitcorepromisehasflyteinterface) | |
+| [`flytekit.core.promise.LocallyExecutable`](../packages/flytekit.core.promise#flytekitcorepromiselocallyexecutable) | |
+| [`flytekit.core.promise.SupportsNodeCreation`](../packages/flytekit.core.promise#flytekitcorepromisesupportsnodecreation) | |
+| [`flytekit.core.schedule.LaunchPlanTriggerBase`](../packages/flytekit.core.schedule#flytekitcoreschedulelaunchplantriggerbase) | |
+| [`flytekit.deck.renderer.Renderable`](../packages/flytekit.deck.renderer#flytekitdeckrendererrenderable) | |
+| [`flytekit.extras.pytorch.checkpoint.IsDataclass`](../packages/flytekit.extras.pytorch.checkpoint#flytekitextraspytorchcheckpointisdataclass) | |
+| [`flytekit.sensor.base_sensor.SensorConfig`](../packages/flytekit.sensor.base_sensor#flytekitsensorbase_sensorsensorconfig) | |

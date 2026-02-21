@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.tensorflow.record
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -56,10 +56,10 @@ class TFRecordDatasetConfig(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `compression_type` | `typing.Optional[str]` | |
-| `buffer_size` | `typing.Optional[int]` | |
-| `num_parallel_reads` | `typing.Optional[int]` | |
-| `name` | `typing.Optional[str]` | |
+| `compression_type` | `typing.Optional[str]` | A scalar evaluating to one of "" (no compression), "ZLIB", or "GZIP". |
+| `buffer_size` | `typing.Optional[int]` | The number of bytes in the read buffer. If None, a sensible default for both local and remote file systems is used. |
+| `num_parallel_reads` | `typing.Optional[int]` | The number of files to read in parallel. If greater than one, the record of files read in parallel are outputted in an interleaved order. |
+| `name` | `typing.Optional[str]` | A name for the operation. |
 
 ### Methods
 
@@ -177,9 +177,19 @@ TypeTransformer that supports serialising and deserialising to and from TFRecord
 https://www.tensorflow.org/tutorials/load_data/tfrecord
 
 
+
 ```python
 def TensorFlowRecordFileTransformer()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ### Methods
 
 | Method | Description |
@@ -220,12 +230,12 @@ This function primarily handles deserialization for untyped dicts, dataclasses, 
 
 For untyped dict, dataclass, and pydantic basemodel:
 Life Cycle (Untyped Dict as example):
-    python val -> msgpack bytes -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                             (from_binary_idl)
 
 For attribute access:
 Life Cycle:
-    python val -> msgpack bytes -> binary literal scalar -> resolved golang value -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; resolved golang value -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
@@ -354,26 +364,25 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 | `lv` | `flytekit.models.literals.Literal` | The received literal Value |
 | `expected_python_type` | `typing.Type[flytekit.types.file.file.FlyteFile.__class_getitem__.<locals>._SpecificFormatClass]` | Expected native python type that should be returned |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
-
 ## flytekit.extras.tensorflow.record.TensorFlowRecordsDirTransformer
 
 TypeTransformer that supports serialising and deserialising to and from TFRecord directory.
 https://www.tensorflow.org/tutorials/load_data/tfrecord
 
 
+
 ```python
 def TensorFlowRecordsDirTransformer()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ### Methods
 
 | Method | Description |
@@ -414,12 +423,12 @@ This function primarily handles deserialization for untyped dicts, dataclasses, 
 
 For untyped dict, dataclass, and pydantic basemodel:
 Life Cycle (Untyped Dict as example):
-    python val -> msgpack bytes -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                             (from_binary_idl)
 
 For attribute access:
 Life Cycle:
-    python val -> msgpack bytes -> binary literal scalar -> resolved golang value -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; resolved golang value -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
@@ -547,15 +556,4 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | FlyteContext |
 | `lv` | `flytekit.models.literals.Literal` | The received literal Value |
 | `expected_python_type` | `typing.Type[flytekit.types.directory.types.FlyteDirectory.__class_getitem__.<locals>._SpecificFormatDirectoryClass]` | Expected native python type that should be returned |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
 

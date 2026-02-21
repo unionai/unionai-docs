@@ -27,7 +27,7 @@
 {{- end -}}
 
 {{- if and (not $isAllowed) (not $isExcluded) -}}
-    {{ warnf "[Page Visibility] Page %s at path %s neither allowed and excluded from variant %s. See AUTHOR.md for help." $path .Path $variant}}
+    {{ warnf "[Page Visibility] Page %s at path %s neither allowed nor excluded from variant %s. See AUTHOR.md for help." $path .Path $variant}}
 {{- end -}}
 
 {{-

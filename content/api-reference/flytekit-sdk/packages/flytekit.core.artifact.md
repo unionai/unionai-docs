@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.artifact
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -16,7 +16,7 @@ layout: py_api
 | [`Artifact`](.././flytekit.core.artifact#flytekitcoreartifactartifact) | An Artifact is effectively just a metadata layer on top of data that exists in Flyte. |
 | [`ArtifactIDSpecification`](.././flytekit.core.artifact#flytekitcoreartifactartifactidspecification) | This is a special object that helps specify how Artifacts are to be created. |
 | [`ArtifactQuery`](.././flytekit.core.artifact#flytekitcoreartifactartifactquery) |  |
-| [`DefaultArtifactSerializationHandler`](.././flytekit.core.artifact#flytekitcoreartifactdefaultartifactserializationhandler) | This protocol defines the interface for serializing artifact-related entities down to Flyte IDL. |
+| [`DefaultArtifactSerializationHandler`](.././flytekit.core.artifact#flytekitcoreartifactdefaultartifactserializationhandler) |  |
 | [`InputsBase`](.././flytekit.core.artifact#flytekitcoreartifactinputsbase) | A class to provide better partition semantics. |
 | [`Partition`](.././flytekit.core.artifact#flytekitcoreartifactpartition) |  |
 | [`Partitions`](.././flytekit.core.artifact#flytekitcoreartifactpartitions) |  |
@@ -49,8 +49,9 @@ and the manner (i.e. name, partitions) in which they are created.
 Control creation parameters at task/workflow execution time ::
 
     @task
-    def t1() -> Annotated[nn.Module, Artifact(name="my.artifact.name")]:
+    def t1() -&gt; Annotated[nn.Module, Artifact(name="my.artifact.name")]:
         ...
+
 
 
 ```python
@@ -77,6 +78,14 @@ class Artifact(
 | `time_partition_granularity` | `Optional[Granularity]` | If you don't want to manually pass in the full TimePartition object, but want to control the granularity when one is automatically created for you. Note that consistency checking is limited while in alpha. |
 | `partition_keys` | `Optional[typing.List[str]]` | This is a list of keys that will be used to partition the Artifact. These are not the values. Values are set via a () on the artifact and will end up in the partition_values field. |
 | `partitions` | `Optional[Union[Partitions, typing.Dict[str, str]]]` | This is a dictionary of partition keys to values. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `concrete_artifact_id` | `None` |  |
+| `partitions` | `None` |  |
+| `time_partition` | `None` |  |
 
 ### Methods
 
@@ -108,7 +117,7 @@ done so.
     EstError = Artifact(name="estimation_error", partition_keys=["dataset"], time_partitioned=True)
 
     @task
-    def t1() -> Annotated[pd.DataFrame, Pricing], Annotated[float, EstError]:
+    def t1() -&gt; Annotated[pd.DataFrame, Pricing], Annotated[float, EstError]:
         df = get_pricing_results()
         dt = get_time()
         return Pricing.create_from(df, region="dubai"),             EstError.create_from(msq_error, dataset="train", time_partition=dt)
@@ -116,7 +125,7 @@ done so.
 You can mix and match with the input syntax as well.
 
     @task
-    def my_task() -> Annotated[pd.DataFrame, RideCountData(region=Inputs.region)]:
+    def my_task() -&gt; Annotated[pd.DataFrame, RideCountData(region=Inputs.region)]:
         ...
         return RideCountData.create_from(df, time_partition=datetime.datetime.now())
 
@@ -178,14 +187,6 @@ This is here instead of translator because it's in the interface, a relatively s
 that's exposed to the user.
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `concrete_artifact_id` |  |  |
-| `partitions` |  |  |
-| `time_partition` |  |  |
-
 ## flytekit.core.artifact.ArtifactIDSpecification
 
 This is a special object that helps specify how Artifacts are to be created. See the comment in the
@@ -193,6 +194,7 @@ call function of the main Artifact class. Also see the handling code in transfor
 information. There's a limited set of information that we ultimately need in a TypedInterface, so it
 doesn't make sense to carry the full Artifact object around. This object should be sufficient, despite
 having a pointer to the main artifact.
+
 
 
 ```python
@@ -253,6 +255,12 @@ class ArtifactQuery(
 | `partitions` | `Optional[Partitions]` | |
 | `tag` | `Optional[str]` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `bound` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -307,15 +315,10 @@ def to_flyte_idl(
 |-|-|-|
 | `kwargs` | `**kwargs` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `bound` |  |  |
-
 ## flytekit.core.artifact.ArtifactSerializationHandler
 
 This protocol defines the interface for serializing artifact-related entities down to Flyte IDL.
+
 
 
 ```python
@@ -370,9 +373,6 @@ def time_partition_to_idl(
 | `kwargs` | `**kwargs` | |
 
 ## flytekit.core.artifact.DefaultArtifactSerializationHandler
-
-This protocol defines the interface for serializing artifact-related entities down to Flyte IDL.
-
 
 ### Methods
 
@@ -429,6 +429,7 @@ Used for invoking an Artifact to bind partition keys to input values.
 If there's a good reason to use a metaclass in the future we can, but a simple instance suffices for now
 
 
+
 ## flytekit.core.artifact.Partition
 
 ```python
@@ -452,6 +453,12 @@ class Partitions(
 | Parameter | Type | Description |
 |-|-|-|
 | `partitions` | `Optional[typing.Mapping[str, Union[str, art_id.InputBindingData, Partition]]]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `partitions` | `None` |  |
 
 ### Methods
 
@@ -482,12 +489,6 @@ def to_flyte_idl(
 | Parameter | Type | Description |
 |-|-|-|
 | `kwargs` | `**kwargs` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `partitions` |  |  |
 
 ## flytekit.core.artifact.Serializer
 

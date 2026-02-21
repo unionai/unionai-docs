@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.directory.types
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -42,14 +42,25 @@ def noop()
 This transformer handles conversion between the Python native FlyteDirectory class defined above, and the Flyte
 IDL literal/type of Multipart Blob. Please see the FlyteDirectory comments for additional information.
 
-> [!CAUTION] caution:
-> The transformer will not check if the given path is actually a directory. This is because the path could be
+&gt; [!CAUTION] caution:
+&gt; The transformer will not check if the given path is actually a directory. This is because the path could be
    a remote reference.
+
+
 
 
 ```python
 def FlyteDirToMultipartBlobTransformer()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ### Methods
 
 | Method | Description |
@@ -147,7 +158,7 @@ def from_binary_idl(
 If the input is from flytekit, the Life Cycle will be as follows:
 
 Life Cycle:
-binary IDL                 -> resolved binary         -> bytes                   -> expected Python object
+binary IDL                 -&gt; resolved binary         -&gt; bytes                   -&gt; expected Python object
 (flytekit customized          (propeller processing)     (flytekit binary IDL)      (flytekit customized
 serialization)                                                                       deserialization)
 
@@ -184,7 +195,7 @@ def from_generic_idl(
 If the input is from Flyte Console, the Life Cycle will be as follows:
 
 Life Cycle:
-json str            -> protobuf struct         -> resolved protobuf struct   -> expected Python object
+json str            -&gt; protobuf struct         -&gt; resolved protobuf struct   -&gt; expected Python object
 (console user input)   (console output)           (propeller)                   (flytekit customized deserialization)
 
 Example Code:
@@ -320,17 +331,6 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 | `lv` | `Literal` | The received literal Value |
 | `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
-
 ## flytekit.types.directory.types.FlyteDirectory
 
 ```python
@@ -345,6 +345,15 @@ class FlyteDirectory(
 | `path` | `typing.Union[str, os.PathLike]` | The source path that users are expected to call open() on |
 | `downloader` | `typing.Optional[typing.Callable]` | Optional function that can be passed that used to delay downloading of the actual fil until a user actually calls open(). |
 | `remote_directory` | `typing.Optional[typing.Union[os.PathLike, str, typing.Literal[False]]]` | If the user wants to return something and also specify where it should be uploaded to. If set to False, then flytekit will not upload the directory to the remote store. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `downloaded` | `None` |  |
+| `remote_directory` | `None` |  |
+| `remote_source` | `None` | If this is an input to a task, and the original path is s3://something, flytekit will download the directory for the user. In case the user wants access to the original path, it will be here. |
+| `sep` | `None` |  |
 
 ### Methods
 
@@ -630,15 +639,4 @@ def to_json(
 | `default` | `typing.Callable` | |
 | `sort_keys` | `bool` | |
 | `kw` |  | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `downloaded` |  |  |
-| `remote_directory` |  |  |
-| `remote_source` |  | {{< multiline >}}If this is an input to a task, and the original path is s3://something, flytekit will download the
-directory for the user. In case the user wants access to the original path, it will be here.
-{{< /multiline >}} |
-| `sep` |  |  |
 

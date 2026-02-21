@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.cloud_pickle_resolver
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -32,6 +32,7 @@ TODO: Replace this with a version that will upload the data to S3 or some other 
   and will download the data upon ``load_task``. This will require additional changes to Admin however.
 
 
+
 ```python
 class ExperimentalNaiveCloudPickleResolver(
     args,
@@ -42,6 +43,14 @@ class ExperimentalNaiveCloudPickleResolver(
 |-|-|-|
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `instantiated_in` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
 
 ### Methods
 
@@ -116,12 +125,4 @@ Overridable function that can optionally return a custom name for a given task
 | Parameter | Type | Description |
 |-|-|-|
 | `t` | `flytekit.core.base_task.Task` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `instantiated_in` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
 

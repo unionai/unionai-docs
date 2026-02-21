@@ -16,15 +16,9 @@ find content -name "*.md" | while read -r file; do
         img_path=$(echo "$img_tag" | sed -E 's/!\[[^]]*\]\(([^)]+)\)/\1/')
         # Remove any title or size attributes that might be in quotes
         img_path=$(echo "$img_path" | sed -E 's/"[^"]*"//g' | sed -E "s/'[^']*'//g" | xargs)
-        
-        if [[ "$img_path" == /* ]]; then
-            echo "ERROR: $img_path is asbolute path in '$file'"
-            echo "1" > "$temp_error_file"
-            continue
-        fi
 
-        if [[ "$img_path" == https://* ]]; then
-            echo "ERROR: $img_path is external URL in '$file'"
+        if [[ "$img_path" == /* ]]; then
+            echo "ERROR: $img_path is absolute path in '$file'"
             echo "1" > "$temp_error_file"
             continue
         fi
@@ -32,7 +26,7 @@ find content -name "*.md" | while read -r file; do
         cd "$(dirname "$file")"
 
         # echo "Checking image: $img_path"
-        if [[ ! -f "$img_path" ]]; then
+        if [[ "$img_path" != https://* && ! -f "$img_path" ]]; then
             echo "1" > "$temp_error_file"
             echo "ERROR: '$img_path' not found in '$file'"
             continue
@@ -46,7 +40,7 @@ done
 error=$(cat "$temp_error_file")
 
 if [[ $error -eq 1 ]]; then
-    echo "FATAL: One of more checks failed."
+    echo "FATAL: One or more checks failed."
     exit 1
 else
     echo "All checks passed."

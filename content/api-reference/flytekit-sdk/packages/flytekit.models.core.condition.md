@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.condition
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -35,6 +35,14 @@ Multiple expressions can be combined using a conjunction or a disjunction to res
 |-|-|-|
 | `conjunction` |  | |
 | `comparison` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `comparison` | `None` | Comparison expression or None if not set. :rtype: ComparisonExpression |
+| `conjunction` | `None` | Conjunction expression or None if not set. :rtype: ConjunctionExpression |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -78,18 +86,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.condition_pb2.BooleanExpression
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `comparison` |  | {{< multiline >}}Comparison expression or None if not set.
-:rtype: ComparisonExpression
-{{< /multiline >}} |
-| `conjunction` |  | {{< multiline >}}Conjunction expression or None if not set.
-:rtype: ConjunctionExpression
-{{< /multiline >}} |
-| `is_empty` |  |  |
-
 ## flytekit.models.core.condition.ComparisonExpression
 
 ```python
@@ -109,6 +105,15 @@ Each expression results in a boolean result.
 | `operator` |  | |
 | `left_value` |  | |
 | `right_value` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `left_value` | `None` | Gets the left value for the comparison expression. :rtype: Operand |
+| `operator` | `None` | Gets the operator representing this comparison expression. :rtype: ComparisonExpression.Operator |
+| `right_value` | `None` | Gets the right value for the comparison expression. :rtype: Operand |
 
 ### Methods
 
@@ -152,21 +157,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.condition_pb2.ComparisonExpression
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `left_value` |  | {{< multiline >}}Gets the left value for the comparison expression.
-:rtype: Operand
-{{< /multiline >}} |
-| `operator` |  | {{< multiline >}}Gets the operator representing this comparison expression.
-:rtype: ComparisonExpression.Operator
-{{< /multiline >}} |
-| `right_value` |  | {{< multiline >}}Gets the right value for the comparison expression.
-:rtype: Operand
-{{< /multiline >}} |
-
 ## flytekit.models.core.condition.ConjunctionExpression
 
 ```python
@@ -184,6 +174,15 @@ Defines a conjunction expression of two boolean expressions.
 | `operator` |  | |
 | `left_expression` |  | |
 | `right_expression` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `left_expression` | `None` | Gets the left value for the conjunction expression. :rtype: Operand |
+| `operator` | `None` | Gets the operator representing this conjunction expression. :rtype: ConjunctionExpression.LogicalOperator |
+| `right_expression` | `None` | Gets the right value for the conjunction expression. :rtype: Operand |
 
 ### Methods
 
@@ -227,21 +226,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.condition_pb2.ConjunctionExpression
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `left_expression` |  | {{< multiline >}}Gets the left value for the conjunction expression.
-:rtype: Operand
-{{< /multiline >}} |
-| `operator` |  | {{< multiline >}}Gets the operator representing this conjunction expression.
-:rtype: ConjunctionExpression.LogicalOperator
-{{< /multiline >}} |
-| `right_expression` |  | {{< multiline >}}Gets the right value for the conjunction expression.
-:rtype: Operand
-{{< /multiline >}} |
-
 ## flytekit.models.core.condition.Operand
 
 ```python
@@ -259,6 +243,15 @@ Defines an operand to a comparison expression.
 | `primitive` |  | |
 | `var` |  | |
 | `scalar` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `primitive` | `None` | :rtype: flytekit.models.literals.Primitive |
+| `scalar` | `None` | :rtype: flytekit.models.literals.Scalar |
+| `var` | `None` | :rtype: Text |
 
 ### Methods
 
@@ -301,16 +294,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.core.condition_pb2.Operand
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `primitive` |  | {{< multiline >}}:rtype: flytekit.models.literals.Primitive
-{{< /multiline >}} |
-| `scalar` |  | {{< multiline >}}:rtype: flytekit.models.literals.Scalar
-{{< /multiline >}} |
-| `var` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
 

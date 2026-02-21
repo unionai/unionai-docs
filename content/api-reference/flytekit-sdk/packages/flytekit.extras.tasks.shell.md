@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.tasks.shell
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -70,6 +70,7 @@ Convert a dictionary to an attribute style lookup. Do not use this in regular pl
 namespacing inputs and outputs
 
 
+
 ```python
 class AttrDict(
     args,
@@ -92,9 +93,9 @@ class OutputLocation(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `var` | `str` | |
-| `var_type` | `typing.Type` | |
-| `location` | `typing.Union[os.PathLike, str]` | |
+| `var` | `str` | str The name of the output variable |
+| `var_type` | `typing.Type` | typing.Type The type of output variable |
+| `location` | `typing.Union[os.PathLike, str]` | os.PathLike The location where this output variable will be written to or a regex that accepts input vars and generates the path. Of the form ``"{{ .inputs.v }}.tmp.md"``. This example for a given input v, at path `/tmp/abc.csv` will resolve to `/tmp/abc.csv.tmp.md` |
 
 ## flytekit.extras.tasks.shell.ProcessResult
 
@@ -111,9 +112,9 @@ class ProcessResult(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `returncode` | `int` | |
-| `output` | `str` | |
-| `error` | `str` | |
+| `returncode` | `int` | int The sub-process return code |
+| `output` | `str` | str The sub-process standard output string |
+| `error` | `str` | str The sub-process standard error string |
 
 ## flytekit.extras.tasks.shell.RawShellTask
 
@@ -138,12 +139,12 @@ This class is not meant to be instantiated into tasks by users, but used with th
 template. The template itself will export the desired environment variables, and subsequently execute the
 desired "raw" script with the specified arguments.
 
-> [!NOTE]
-> This means that within your workflow, you can dynamically control the env variables, arguments, and even the
+&gt; [!NOTE]
+&gt; This means that within your workflow, you can dynamically control the env variables, arguments, and even the
     actual script you want to run.
 
-> [!NOTE]
-> The downside is that a dynamic workflow will be required. The "raw" script passed in at execution time must
+&gt; [!NOTE]
+&gt; The downside is that a dynamic workflow will be required. The "raw" script passed in at execution time must
     be at the specified location.
 
 These args are forwarded directly to the parent `ShellTask` constructor as behavior does not diverge
@@ -159,6 +160,33 @@ These args are forwarded directly to the parent `ShellTask` constructor as behav
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
 | `output_locs` | `typing.Optional[typing.List[flytekit.extras.tasks.shell.OutputLocation]]` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `container_image` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `resources` | `None` |  |
+| `result` | `None` |  |
+| `script` | `None` |  |
+| `script_file` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_resolver` | `None` |  |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -562,39 +590,6 @@ task resolver. It can be useful to override the task resolver for specific cases
 |-|-|-|
 | `resolver` | `TaskResolverMixin` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `container_image` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `resources` |  |  |
-| `result` |  |  |
-| `script` |  |  |
-| `script_file` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_resolver` |  |  |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
-
 ## flytekit.extras.tasks.shell.ShellTask
 
 ```python
@@ -621,6 +616,33 @@ class ShellTask(
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | A Dictionary of input names to types |
 | `output_locs` | `typing.Optional[typing.List[flytekit.extras.tasks.shell.OutputLocation]]` | A list of {{&lt; py_class_ref OutputLocations &gt;}} |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `container_image` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `resources` | `None` |  |
+| `result` | `None` |  |
+| `script` | `None` |  |
+| `script_file` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_resolver` | `None` |  |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -1003,37 +1025,4 @@ task resolver. It can be useful to override the task resolver for specific cases
 | Parameter | Type | Description |
 |-|-|-|
 | `resolver` | `TaskResolverMixin` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `container_image` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `resources` |  |  |
-| `result` |  |  |
-| `script` |  |  |
-| `script_file` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_resolver` |  |  |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
 

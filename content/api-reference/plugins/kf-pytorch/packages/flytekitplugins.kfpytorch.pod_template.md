@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.kfpytorch.pod_template
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -28,7 +28,7 @@ def add_shared_mem_volume_to_pod_template(
 Add shared memory volume and volume mount to the pod template.
 
 
-| Parameter | Type |
-|-|-|
-| `pod_template` | `flytekit.core.pod_template.PodTemplate` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pod_template` | `flytekit.core.pod_template.PodTemplate` | |
 

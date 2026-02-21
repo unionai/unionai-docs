@@ -3,7 +3,7 @@ title: How to trigger the Feast workflow using FlyteRemote
 weight: 1
 variants: +flyte -serverless -byoc -selfmanaged
 jupyter_notebook: /external/unionai-examples/v1/flyte-tutorials/feast_integration/feast_integration/feast_flyte_remote.ipynb
-content_hash: 31f842f6f6cf1882c9053752df732909e5b5b34d2dd401ab33688e527a245275 # hash managed by Makefile.jupyter (do not edit)
+content_hash: 31f842f6f6cf1882c9053752df732909e5b5b34d2dd401ab33688e527a245275
 ---
 
 <!--
@@ -15,11 +15,11 @@ content_hash: 31f842f6f6cf1882c9053752df732909e5b5b34d2dd401ab33688e527a245275 #
 
 -->
 
-{{< right mb="2rem" >}}
-{{< download "https://github.com/unionai/unionai-examples/blob/main/v1/flyte-tutorials/feast_integration/feast_integration/feast_flyte_remote.ipynb" "Download this notebook" >}}
-{{< /right >}}
-
 # How to Trigger the Feast Workflow using FlyteRemote
+
+> [!NOTE]
+> [View source on GitHub](https://github.com/unionai/unionai-examples/blob/main/v1/flyte-tutorials/feast_integration/feast_integration/feast_flyte_remote.ipynb) | [Run in Google Colab](https://colab.research.google.com/github/unionai/unionai-examples/blob/main/v1/flyte-tutorials/feast_integration/feast_integration/feast_flyte_remote.ipynb)
+
 
 The goal of this notebook is to train a simple [Gaussian Naive Bayes model using sklearn](https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html) on a modified [Horse-Colic dataset from UCI](https://archive.ics.uci.edu/ml/datasets/Horse+Colic).
 

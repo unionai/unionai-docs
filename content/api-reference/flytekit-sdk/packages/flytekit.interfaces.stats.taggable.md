@@ -1,6 +1,6 @@
 ---
 title: flytekit.interfaces.stats.taggable
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`TaggableStats`](.././flytekit.interfaces.stats.taggable#flytekitinterfacesstatstaggabletaggablestats) | A Proxy object for an underlying statsd client. |
+| [`TaggableStats`](.././flytekit.interfaces.stats.taggable#flytekitinterfacesstatstaggabletaggablestats) |  |
 
 ### Methods
 
@@ -44,16 +44,6 @@ def get_stats(
 
 ## flytekit.interfaces.stats.taggable.TaggableStats
 
-A Proxy object for an underlying statsd client.
-Adds a new call, scope(prefix), which returns a new proxy to the same
-client which will prefix all calls to underlying methods with the scoped prefix:
-new_client = client.get_stats('a')
-new_client.incr('b') # Metric name = a.b
-This can be nested:
-newer_client = new_client.get_stats('subsystem')
-newer_client.incr('bad') # Metric name = a.subsystem.bad
-
-
 ```python
 class TaggableStats(
     client,
@@ -70,6 +60,12 @@ class TaggableStats(
 | `cfg` | `flytekit.configuration.StatsConfig` | |
 | `prefix` |  | |
 | `tags` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `full_prefix` | `None` |  |
 
 ### Methods
 
@@ -115,9 +111,3 @@ def get_stats(
 ```python
 def pipeline()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `full_prefix` |  |  |
-

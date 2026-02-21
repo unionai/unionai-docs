@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.schedule
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -35,6 +35,17 @@ One of cron_expression or fixed rate must be specified.
 | `cron_expression` |  | |
 | `rate` |  | |
 | `cron_schedule` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cron_expression` | `None` | :rtype: Text |
+| `cron_schedule` | `None` | :rtype: Schedule.CronSchedule |
+| `is_empty` | `None` |  |
+| `kickoff_time_input_arg` | `None` |  |
+| `rate` | `None` | :rtype: Schedule.FixedRate |
+| `schedule_expression` | `None` |  |
 
 ### Methods
 
@@ -77,18 +88,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.schedule_pb2.Schedule
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `cron_expression` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `cron_schedule` |  | {{< multiline >}}:rtype: Schedule.CronSchedule
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `kickoff_time_input_arg` |  |  |
-| `rate` |  | {{< multiline >}}:rtype: Schedule.FixedRate
-{{< /multiline >}} |
-| `schedule_expression` |  |  |
 

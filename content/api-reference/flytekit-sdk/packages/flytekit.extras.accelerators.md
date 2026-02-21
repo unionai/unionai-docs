@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.accelerators
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -109,6 +109,7 @@ def my_task() -> None:
 Base class for all accelerator types. This class is not meant to be instantiated directly.
 
 
+
 ### Methods
 
 | Method | Description |
@@ -126,6 +127,7 @@ def to_flyte_idl()
 Class that represents a GPU accelerator. The class can be instantiated with any valid GPU device name, but
 it is recommended to use one of the pre-defined constants below, as name has to match the name of the device
 configured on the cluster.
+
 
 
 ```python
@@ -156,6 +158,13 @@ below, as name has to match the name of the device configured on the cluster.
 For example, to specify a 10GB partition of an A100 GPU, use ``A100.partition_2g_10gb``.
 
 
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `unpartitioned` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -180,9 +189,3 @@ def partitioned(
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `unpartitioned` |  |  |
-

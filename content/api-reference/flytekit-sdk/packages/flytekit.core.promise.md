@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.promise
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,9 +14,9 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`ComparisonExpression`](.././flytekit.core.promise#flytekitcorepromisecomparisonexpression) | ComparisonExpression refers to an expression of the form (lhs operator rhs), where lhs and rhs are operands. |
-| [`ComparisonOps`](.././flytekit.core.promise#flytekitcorepromisecomparisonops) | Create a collection of name/value pairs. |
+| [`ComparisonOps`](.././flytekit.core.promise#flytekitcorepromisecomparisonops) |  |
 | [`ConjunctionExpression`](.././flytekit.core.promise#flytekitcorepromiseconjunctionexpression) | A Conjunction Expression is an expression of the form either (A and B) or (A or B). |
-| [`ConjunctionOps`](.././flytekit.core.promise#flytekitcorepromiseconjunctionops) | Create a collection of name/value pairs. |
+| [`ConjunctionOps`](.././flytekit.core.promise#flytekitcorepromiseconjunctionops) |  |
 | [`NodeOutput`](.././flytekit.core.promise#flytekitcorepromisenodeoutput) |  |
 | [`Promise`](.././flytekit.core.promise#flytekitcorepromisepromise) | This object is a wrapper and exists for three main reasons. |
 | [`VoidPromise`](.././flytekit.core.promise#flytekitcorepromisevoidpromise) | This object is returned for tasks that do not return any outputs (declared interface is empty). |
@@ -25,9 +25,9 @@ layout: py_api
 
 | Protocol | Description |
 |-|-|
-| [`HasFlyteInterface`](.././flytekit.core.promise#flytekitcorepromisehasflyteinterface) | Base class for protocol classes. |
-| [`LocallyExecutable`](.././flytekit.core.promise#flytekitcorepromiselocallyexecutable) | Base class for protocol classes. |
-| [`SupportsNodeCreation`](.././flytekit.core.promise#flytekitcorepromisesupportsnodecreation) | Base class for protocol classes. |
+| [`HasFlyteInterface`](.././flytekit.core.promise#flytekitcorepromisehasflyteinterface) |  |
+| [`LocallyExecutable`](.././flytekit.core.promise#flytekitcorepromiselocallyexecutable) |  |
+| [`SupportsNodeCreation`](.././flytekit.core.promise#flytekitcorepromisesupportsnodecreation) |  |
 
 ### Methods
 
@@ -350,7 +350,7 @@ be converted into Flyte literals) or Promises (the literals in which would just 
 
 When calling a task inside a workflow, a user might do something like this.
 
-    def my_wf(in1: int) -> int:
+    def my_wf(in1: int) -&gt; int:
         a = task_1(in1=in1)
         b = task_2(in1=5, in2=a)
         return b
@@ -360,7 +360,7 @@ literal 5 to a Flyte literal.
 
 More interesting is this:
 
-    def my_wf(in1: int, in2: int) -> int:
+    def my_wf(in1: int, in2: int) -&gt; int:
         a = task_1(in1=in1)
         b = task_2(in1=5, in2=[a, in2])
         return b
@@ -397,7 +397,8 @@ def translate_inputs_to_native(
 ## flytekit.core.promise.ComparisonExpression
 
 ComparisonExpression refers to an expression of the form (lhs operator rhs), where lhs and rhs are operands
-and operator can be any comparison expression like <, >, <=, >=, ==, !=
+and operator can be any comparison expression like &lt;, &gt;, &lt;=, &gt;=, ==, !=
+
 
 
 ```python
@@ -413,6 +414,14 @@ class ComparisonExpression(
 | `op` | `ComparisonOps` | |
 | `rhs` | `Union['Promise', Any]` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `lhs` | `None` |  |
+| `op` | `None` |  |
+| `rhs` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -425,53 +434,7 @@ class ComparisonExpression(
 ```python
 def eval()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `lhs` |  |  |
-| `op` |  |  |
-| `rhs` |  |  |
-
 ## flytekit.core.promise.ComparisonOps
-
-Create a collection of name/value pairs.
-
-Example enumeration:
-
->>> class Color(Enum):
-...     RED = 1
-...     BLUE = 2
-...     GREEN = 3
-
-Access them by:
-
-- attribute access:
-
-  >>> Color.RED
-  <Color.RED: 1>
-
-- value lookup:
-
-  >>> Color(1)
-  <Color.RED: 1>
-
-- name lookup:
-
-  >>> Color['RED']
-  <Color.RED: 1>
-
-Enumerations can be iterated over, and know how many members they have:
-
->>> len(Color)
-3
-
->>> list(Color)
-[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]
-
-Methods can be added to enumerations, and members can have their own
-attributes -- see the documentation for details.
-
 
 ## flytekit.core.promise.ConjunctionExpression
 
@@ -480,6 +443,7 @@ where A, B are two expressions (comparison or conjunctions) and (and, or) are lo
 
 A conjunctionExpression evaluates to True or False depending on the logical operator and the truth values of
 each of the expressions A & B
+
 
 
 ```python
@@ -495,6 +459,14 @@ class ConjunctionExpression(
 | `op` | `ConjunctionOps` | |
 | `rhs` | `Union[ComparisonExpression, 'ConjunctionExpression']` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `lhs` | `None` |  |
+| `op` | `None` |  |
+| `rhs` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -507,91 +479,20 @@ class ConjunctionExpression(
 ```python
 def eval()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `lhs` |  |  |
-| `op` |  |  |
-| `rhs` |  |  |
-
 ## flytekit.core.promise.ConjunctionOps
 
-Create a collection of name/value pairs.
-
-Example enumeration:
-
->>> class Color(Enum):
-...     RED = 1
-...     BLUE = 2
-...     GREEN = 3
-
-Access them by:
-
-- attribute access:
-
-  >>> Color.RED
-  <Color.RED: 1>
-
-- value lookup:
-
-  >>> Color(1)
-  <Color.RED: 1>
-
-- name lookup:
-
-  >>> Color['RED']
-  <Color.RED: 1>
-
-Enumerations can be iterated over, and know how many members they have:
-
->>> len(Color)
-3
-
->>> list(Color)
-[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]
-
-Methods can be added to enumerations, and members can have their own
-attributes -- see the documentation for details.
-
-
 ## flytekit.core.promise.HasFlyteInterface
-
-Base class for protocol classes.
-
-Protocol classes are defined as::
-
-    class Proto(Protocol):
-        def meth(self) -> int:
-            ...
-
-Such classes are primarily used with static type checkers that recognize
-structural subtyping (static duck-typing).
-
-For example::
-
-    class C:
-        def meth(self) -> int:
-            return 0
-
-    def func(x: Proto) -> int:
-        return x.meth()
-
-    func(C())  # Passes static type check
-
-See PEP 544 for details. Protocol classes decorated with
-@typing.runtime_checkable act as simple-minded runtime protocols that check
-only the presence of given attributes, ignoring their type signatures.
-Protocol classes can be generic, they are defined as::
-
-    class GenProto[T](Protocol):
-        def meth(self) -> T:
-            ...
-
 
 ```python
 protocol HasFlyteInterface()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `interface` | `None` |  |
+| `name` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -604,46 +505,7 @@ protocol HasFlyteInterface()
 ```python
 def construct_node_metadata()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `interface` |  |  |
-| `name` |  |  |
-
 ## flytekit.core.promise.LocallyExecutable
-
-Base class for protocol classes.
-
-Protocol classes are defined as::
-
-    class Proto(Protocol):
-        def meth(self) -> int:
-            ...
-
-Such classes are primarily used with static type checkers that recognize
-structural subtyping (static duck-typing).
-
-For example::
-
-    class C:
-        def meth(self) -> int:
-            return 0
-
-    def func(x: Proto) -> int:
-        return x.meth()
-
-    func(C())  # Passes static type check
-
-See PEP 544 for details. Protocol classes decorated with
-@typing.runtime_checkable act as simple-minded runtime protocols that check
-only the presence of given attributes, ignoring their type signatures.
-Protocol classes can be generic, they are defined as::
-
-    class GenProto[T](Protocol):
-        def meth(self) -> T:
-            ...
-
 
 ```python
 protocol LocallyExecutable()
@@ -688,6 +550,16 @@ class NodeOutput(
 | `node` | `Node` | |
 | `var` | `str` | The name of the variable this NodeOutput references |
 | `attr_path` | `Optional[List[Union[str, int]]]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `attr_path` | `None` | The attribute path the promise will be resolved with. :rtype: list[union[str, int]] |
+| `is_empty` | `None` |  |
+| `node` | `None` | Return Node object. |
+| `node_id` | `None` | Override the underlying node_id property to refer to the Node's id. This is to make sure that overriding node IDs from with_overrides gets serialized correctly. :rtype: Text |
+| `var` | `None` | Variable name must refer to an output variable for the node. :rtype: Text |
 
 ### Methods
 
@@ -749,30 +621,12 @@ def with_attr(
 |-|-|-|
 | `key` |  | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `attr_path` |  | {{< multiline >}}The attribute path the promise will be resolved with.
-:rtype: list[union[str, int]]
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `node` |  | {{< multiline >}}Return Node object.
-{{< /multiline >}} |
-| `node_id` |  | {{< multiline >}}Override the underlying node_id property to refer to the Node's id. This is to make sure that overriding
-node IDs from with_overrides gets serialized correctly.
-:rtype: Text
-{{< /multiline >}} |
-| `var` |  | {{< multiline >}}Variable name must refer to an output variable for the node.
-:rtype: Text
-{{< /multiline >}} |
-
 ## flytekit.core.promise.Promise
 
 This object is a wrapper and exists for three main reasons. Let's assume we're dealing with a task like ::
 
     @task
-    def t1() -> (int, str): ...
+    def t1() -&gt; (int, str): ...
 
 #. Handling the duality between compilation and local execution - when the task function is run in a local execution
    mode inside a workflow function, a Python integer and string are produced. When the task is being compiled as
@@ -787,6 +641,7 @@ This object is a wrapper and exists for three main reasons. Let's assume we're d
 #. Assorted handling for conditionals.
 
 
+
 ```python
 class Promise(
     var: str,
@@ -799,6 +654,16 @@ class Promise(
 | `var` | `str` | |
 | `val` | `Union[NodeOutput, _literals_models.Literal]` | |
 | `type` | `typing.Optional[_type_models.LiteralType]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `attr_path` | `None` | The attribute path the promise will be resolved with. :rtype: List[Union[str, int]] |
+| `is_ready` | `None` | Returns if the Promise is READY (is not a reference and the val is actually ready)  Usage ::     p = Promise(...)    ...    if p.is_ready():         print(p.val)    else:         print(p.ref) |
+| `ref` | `None` | If the promise is NOT READY / Incomplete, then it maps to the origin node that owns the promise |
+| `val` | `None` | If the promise is ready then this holds the actual evaluate value in Flyte's type system |
+| `var` | `None` | Name of the variable bound with this promise |
 
 ### Methods
 
@@ -898,68 +763,18 @@ def with_var(
 |-|-|-|
 | `new_var` | `str` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `attr_path` |  | {{< multiline >}}The attribute path the promise will be resolved with.
-:rtype: List[Union[str, int]]
-{{< /multiline >}} |
-| `is_ready` |  | {{< multiline >}}Returns if the Promise is READY (is not a reference and the val is actually ready)
-
-Usage ::
-
-   p = Promise(...)
-   ...
-   if p.is_ready():
-        print(p.val)
-   else:
-        print(p.ref)
-{{< /multiline >}} |
-| `ref` |  | {{< multiline >}}If the promise is NOT READY / Incomplete, then it maps to the origin node that owns the promise
-{{< /multiline >}} |
-| `val` |  | {{< multiline >}}If the promise is ready then this holds the actual evaluate value in Flyte's type system
-{{< /multiline >}} |
-| `var` |  | {{< multiline >}}Name of the variable bound with this promise
-{{< /multiline >}} |
-
 ## flytekit.core.promise.SupportsNodeCreation
-
-Base class for protocol classes.
-
-Protocol classes are defined as::
-
-    class Proto(Protocol):
-        def meth(self) -> int:
-            ...
-
-Such classes are primarily used with static type checkers that recognize
-structural subtyping (static duck-typing).
-
-For example::
-
-    class C:
-        def meth(self) -> int:
-            return 0
-
-    def func(x: Proto) -> int:
-        return x.meth()
-
-    func(C())  # Passes static type check
-
-See PEP 544 for details. Protocol classes decorated with
-@typing.runtime_checkable act as simple-minded runtime protocols that check
-only the presence of given attributes, ignoring their type signatures.
-Protocol classes can be generic, they are defined as::
-
-    class GenProto[T](Protocol):
-        def meth(self) -> T:
-            ...
-
 
 ```python
 protocol SupportsNodeCreation()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` |  |
+| `python_interface` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -972,17 +787,11 @@ protocol SupportsNodeCreation()
 ```python
 def construct_node_metadata()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `name` |  |  |
-| `python_interface` |  |  |
-
 ## flytekit.core.promise.VoidPromise
 
 This object is returned for tasks that do not return any outputs (declared interface is empty)
 VoidPromise cannot be interacted with and does not allow comparisons or any operations
+
 
 
 ```python
@@ -995,6 +804,13 @@ class VoidPromise(
 |-|-|-|
 | `task_name` | `str` | |
 | `ref` | `Optional[NodeOutput]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `ref` | `None` |  |
+| `task_name` | `None` |  |
 
 ### Methods
 
@@ -1033,11 +849,4 @@ def with_overrides(
 |-|-|-|
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `ref` |  |  |
-| `task_name` |  |  |
 

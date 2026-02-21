@@ -1,6 +1,6 @@
 ---
 title: union.actor
-version: 0.1.198
+version: 0.1.202
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -14,7 +14,7 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`ActorEnvironment`](.././union.actor#unionactoractorenvironment) | ActorEnvironment class. |
-| [`ActorTask`](.././union.actor#unionactoractortask) | A Python Function task should be used as the base for all extensions that have a python function. |
+| [`ActorTask`](.././union.actor#unionactoractortask) |  |
 
 ### Methods
 
@@ -62,41 +62,26 @@ class ActorEnvironment(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | |
-| `container_image` | `Optional[Union[str, ImageSpec]]` | |
-| `replica_count` | `int` | |
-| `ttl_seconds` | `Optional[int]` | |
-| `environment` | `Optional[Dict[str, str]]` | |
-| `requests` | `Optional[Resources]` | |
-| `limits` | `Optional[Resources]` | |
-| `accelerator` | `Optional[BaseAccelerator]` | |
-| `secret_requests` | `Optional[List[Secret]]` | |
-| `pod_template` | `Optional[PodTemplate]` | |
-| `interruptible` | `bool` | |
+| `name` | `str` | The name of the actor. This is used in conjunction with the project, domain, and version to uniquely identify the actor. |
+| `container_image` | `Optional[Union[str, ImageSpec]]` | The container image to use for the task. Set to default image if none provided. |
+| `replica_count` | `int` | The number of workers to provision that are able to accept tasks. |
+| `ttl_seconds` | `Optional[int]` | How long to keep the Actor alive while no tasks are being run. If not provided the default configuration value of 90s will be used. |
+| `environment` | `Optional[Dict[str, str]]` | Environment variables as key, value pairs in a Python dictionary. |
+| `requests` | `Optional[Resources]` | Compute resource requests per task. |
+| `limits` | `Optional[Resources]` | Compute resource limits. |
+| `accelerator` | `Optional[BaseAccelerator]` | The accelerator device to use for the task. |
+| `secret_requests` | `Optional[List[Secret]]` | Keys (ideally descriptive) that can identify the secrets supplied at runtime. |
+| `pod_template` | `Optional[PodTemplate]` | The pod template to use as the base configuration for actor replica pods. |
+| `interruptible` | `bool` | Whether the actor replica pods are labelled as interruptible. |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `task` |  |  |
-| `version` |  |  |
+| `task` | `None` |  |
+| `version` | `None` |  |
 
 ## union.actor.ActorTask
-
-A Python Function task should be used as the base for all extensions that have a python function. It will
-automatically detect interface of the python function and when serialized on the hosted Flyte platform handles the
-writing execution command to execute the function
-
-It is advised this task is used using the @task decorator as follows
-
-```python
-@task
-def my_func(a: int) -> str:
-    ...
-```
-In the above code, the name of the function, the module, and the interface (inputs = int and outputs = str) will be
-auto detected.
-
 
 ```python
 class ActorTask(
@@ -110,6 +95,33 @@ class ActorTask(
 | `task_config` | `ActorEnvironment` | |
 | `task_function` | `Callable` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `container_image` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `execution_mode` | `None` |  |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` | Returns the name of the task. |
+| `node_dependency_hints` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `resources` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_function` | `None` |  |
+| `task_resolver` | `None` |  |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -560,38 +572,4 @@ task resolver. It can be useful to override the task resolver for specific cases
 | Parameter | Type | Description |
 |-|-|-|
 | `resolver` | `TaskResolverMixin` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `container_image` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `execution_mode` |  |  |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  | {{< multiline >}}Returns the name of the task.
-{{< /multiline >}} |
-| `node_dependency_hints` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `resources` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_function` |  |  |
-| `task_resolver` |  |  |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
 

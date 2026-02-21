@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.node
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -63,6 +63,7 @@ This class will hold all the things necessary to make an SdkNode but we won't ma
 ID, which from the registration step
 
 
+
 ```python
 class Node(
     id: str,
@@ -79,6 +80,19 @@ class Node(
 | `bindings` | `List[_literal_models.Binding]` | |
 | `upstream_nodes` | `List[Node]` | |
 | `flyte_entity` | `Any` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `bindings` | `None` |  |
+| `flyte_entity` | `None` |  |
+| `id` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` |  |
+| `outputs` | `None` |  |
+| `run_entity` | `None` |  |
+| `upstream_nodes` | `None` |  |
 
 ### Methods
 
@@ -97,7 +111,7 @@ def runs_before(
 ```
 This is typically something we shouldn't do. This modifies an attribute of the other instance rather than
 self. But it's done so only because we wanted this English function to be the same as the shift function.
-That is, calling node_1.runs_before(node_2) and node_1 >> node_2 are the same. The shift operator going the
+That is, calling node_1.runs_before(node_2) and node_1 &gt;&gt; node_2 are the same. The shift operator going the
 other direction is not implemented to further avoid confusion. Right shift was picked rather than left shift
 because that's what most users are familiar with.
 
@@ -148,17 +162,4 @@ def with_overrides(
 | `resources` | `Optional[Resources]` | |
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `bindings` |  |  |
-| `flyte_entity` |  |  |
-| `id` |  |  |
-| `metadata` |  |  |
-| `name` |  |  |
-| `outputs` |  |  |
-| `run_entity` |  |  |
-| `upstream_nodes` |  |  |
 

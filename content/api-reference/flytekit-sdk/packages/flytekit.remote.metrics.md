@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.metrics
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -74,6 +74,12 @@ class FlyteExecutionSpan(
 |-|-|-|
 | `span` | `flyteidl.core.metrics_pb2.Span` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -125,9 +131,3 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-

@@ -1,0 +1,9 @@
+packages:
+  flytekitplugins.pod: /api-reference/plugins/k8s-pod/packages/flytekitplugins.pod/
+  flytekitplugins.pod.task: /api-reference/plugins/k8s-pod/packages/flytekitplugins.pod.task/
+identifiers:
+  flytekitplugins.pod.task.Pod: /api-reference/plugins/k8s-pod/packages/flytekitplugins.pod.task/#flytekitpluginspodtaskpod
+  Pod: /api-reference/plugins/k8s-pod/packages/flytekitplugins.pod.task/#flytekitpluginspodtaskpod
+  flytekitplugins.pod.task.PodFunctionTask: /api-reference/plugins/k8s-pod/packages/flytekitplugins.pod.task/#flytekitpluginspodtaskpodfunctiontask
+  PodFunctionTask: /api-reference/plugins/k8s-pod/packages/flytekitplugins.pod.task/#flytekitpluginspodtaskpodfunctiontask
+methods: {}

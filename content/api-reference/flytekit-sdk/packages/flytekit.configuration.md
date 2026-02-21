@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -122,7 +122,7 @@ Users typically shouldn't be concerned with these configurations, as they are ty
 
 | Class | Description |
 |-|-|
-| [`AuthType`](.././flytekit.configuration#flytekitconfigurationauthtype) | Create a collection of name/value pairs. |
+| [`AuthType`](.././flytekit.configuration#flytekitconfigurationauthtype) |  |
 | [`AzureBlobStorageConfig`](.././flytekit.configuration#flytekitconfigurationazureblobstorageconfig) | Any Azure Blob Storage specific configuration. |
 | [`Config`](.././flytekit.configuration#flytekitconfigurationconfig) | This the parent configuration object and holds all the underlying configuration object types. |
 | [`DataConfig`](.././flytekit.configuration#flytekitconfigurationdataconfig) | Any data storage specific configuration. |
@@ -155,47 +155,10 @@ Users typically shouldn't be concerned with these configurations, as they are ty
 
 ## flytekit.configuration.AuthType
 
-Create a collection of name/value pairs.
-
-Example enumeration:
-
->>> class Color(Enum):
-...     RED = 1
-...     BLUE = 2
-...     GREEN = 3
-
-Access them by:
-
-- attribute access:
-
-  >>> Color.RED
-  <Color.RED: 1>
-
-- value lookup:
-
-  >>> Color(1)
-  <Color.RED: 1>
-
-- name lookup:
-
-  >>> Color['RED']
-  <Color.RED: 1>
-
-Enumerations can be iterated over, and know how many members they have:
-
->>> len(Color)
-3
-
->>> list(Color)
-[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]
-
-Methods can be added to enumerations, and members can have their own
-attributes -- see the documentation for details.
-
-
 ## flytekit.configuration.AzureBlobStorageConfig
 
 Any Azure Blob Storage specific configuration.
+
 
 
 ```python
@@ -248,6 +211,7 @@ Attributes:
     stats (StatsConfig): Configuration for statsd metrics.
     data_config (DataConfig): Data storage configuration.
     local_sandbox_path (str): Path for local sandbox runs.
+
 
 
 ```python
@@ -356,6 +320,7 @@ Flyte sandbox environment we store the access key id and secret.
 All DataPersistence plugins are passed all DataConfig and the plugin should correctly use the right config
 
 
+
 ```python
 class DataConfig(
     s3: S3Config,
@@ -393,6 +358,7 @@ def auto(
 
 This object carries information about the path of the entrypoint command that will be invoked at runtime.
 This is where `pyflyte-execute` code can be found. This is useful for cases like pyspark execution.
+
 
 
 ```python
@@ -517,6 +483,7 @@ def to_json(
 ## flytekit.configuration.FastSerializationSettings
 
 This object hold information about settings necessary to serialize an object so that it can be fast-registered.
+
 
 
 ```python
@@ -647,6 +614,7 @@ def to_json(
 Any GCS specific configuration.
 
 
+
 ```python
 class GCSConfig(
     gsutil_parallelism: bool,
@@ -677,6 +645,7 @@ def auto(
 ## flytekit.configuration.GenericPersistenceConfig
 
 Data storage configuration that applies across any provider.
+
 
 
 ```python
@@ -721,6 +690,7 @@ Attributes:
     digest (str): Optional digest used to specify which version of an image to pull
 
 
+
 ```python
 class Image(
     name: str,
@@ -735,6 +705,13 @@ class Image(
 | `fqn` | `str` | |
 | `tag` | `Optional[str]` | |
 | `digest` | `Optional[str]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `full` | `None` | " Return the full image name with tag or digest, whichever is available.  When using a tag the separator is `:` and when using a digest the separator is `@`. |
+| `version` | `None` | Return the version of the image. This could be the tag or digest, whichever is available. |
 
 ### Methods
 
@@ -872,18 +849,6 @@ def to_json(
 | `sort_keys` | `bool` | |
 | `kw` |  | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `full` |  | {{< multiline >}}"
-Return the full image name with tag or digest, whichever is available.
-
-When using a tag the separator is `:` and when using a digest the separator is `@`.
-{{< /multiline >}} |
-| `version` |  | {{< multiline >}}Return the version of the image. This could be the tag or digest, whichever is available.
-{{< /multiline >}} |
-
 ## flytekit.configuration.ImageConfig
 
 We recommend you to use ImageConfig.auto(img_name=None) to create an ImageConfig.
@@ -895,6 +860,7 @@ along with optional additional images. Each image in the config must have a uniq
 Attributes:
     default_image (Optional[Image]): The default image to be used as a container for task serialization.
     images (List[Image]): Optional, additional images which can be used in task container definitions.
+
 
 
 ```python
@@ -1114,8 +1080,8 @@ def validate_image(
 ) -> ImageConfig
 ```
 Validates the image to match the standard format. Also validates that only one default image
-is provided. a default image, is one that is specified as ``default=<image_uri>`` or just ``<image_uri>``. All
-other images should be provided with a name, in the format ``name=<image_uri>`` This method can be used with the
+is provided. a default image, is one that is specified as ``default=&lt;image_uri&gt;`` or just ``&lt;image_uri&gt;``. All
+other images should be provided with a name, in the format ``name=&lt;image_uri&gt;`` This method can be used with the
 CLI
 
 
@@ -1129,6 +1095,7 @@ CLI
 ## flytekit.configuration.LocalConfig
 
 Any configuration specific to local runs.
+
 
 
 ```python
@@ -1186,20 +1153,20 @@ class PlatformConfig(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `endpoint` | `str` | |
-| `insecure` | `bool` | |
-| `insecure_skip_verify` | `bool` | |
-| `ca_cert_file_path` | `typing.Optional[str]` | |
-| `console_endpoint` | `typing.Optional[str]` | |
-| `command` | `typing.Optional[typing.List[str]]` | |
-| `proxy_command` | `typing.Optional[typing.List[str]]` | |
-| `client_id` | `typing.Optional[str]` | |
-| `client_credentials_secret` | `typing.Optional[str]` | |
-| `scopes` | `List[str]` | |
-| `auth_mode` | `AuthType` | |
+| `endpoint` | `str` | DNS for Flyte backend |
+| `insecure` | `bool` | Whether or not to use SSL |
+| `insecure_skip_verify` | `bool` | Whether to skip SSL certificate verification |
+| `ca_cert_file_path` | `typing.Optional[str]` | [optional] str Root Cert to be loaded and used to verify admin |
+| `console_endpoint` | `typing.Optional[str]` | endpoint for console if different from Flyte backend |
+| `command` | `typing.Optional[typing.List[str]]` | This command is executed to return a token using an external process |
+| `proxy_command` | `typing.Optional[typing.List[str]]` | This command is executed to return a token for proxy authorization using an external process |
+| `client_id` | `typing.Optional[str]` | This is the public identifier for the app which handles authorization for a Flyte deployment. More details here: https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/. |
+| `client_credentials_secret` | `typing.Optional[str]` | Used for service auth, which is automatically called during pyflyte. This will allow the Flyte engine to read the password directly from the environment variable. Note that this is less secure! Please only use this if mounting the secret as a file is impossible |
+| `scopes` | `List[str]` | List of scopes to request. This is only applicable to the client credentials flow |
+| `auth_mode` | `AuthType` | The OAuth mode to use. Defaults to pkce flow |
 | `audience` | `typing.Optional[str]` | |
 | `rpc_retries` | `int` | |
-| `http_proxy_url` | `typing.Optional[str]` | |
+| `http_proxy_url` | `typing.Optional[str]` | [optional] HTTP Proxy to be used for OAuth requests |
 
 ### Methods
 
@@ -1239,6 +1206,7 @@ def for_endpoint(
 ## flytekit.configuration.S3Config
 
 S3 specific configuration
+
 
 
 ```python
@@ -1296,9 +1264,9 @@ class SecretsConfig(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `env_prefix` | `str` | |
-| `default_dir` | `str` | |
-| `file_prefix` | `str` | |
+| `env_prefix` | `str` | This is the prefix that will be used to lookup for injected secrets at runtime. |
+| `default_dir` | `str` | This is the default directory that will be used to find secrets as individual files under. |
+| `file_prefix` | `str` | This is the prefix for the file in the default dir. |
 
 ### Methods
 
@@ -1347,6 +1315,7 @@ Attributes:
     source_root (Optional[str]): The root directory of the source code.
 
 
+
 ```python
 class SerializationSettings(
     image_config: ImageConfig,
@@ -1375,6 +1344,13 @@ class SerializationSettings(
 | `flytekit_virtualenv_root` | `Optional[str]` | |
 | `fast_serialization_settings` | `Optional[FastSerializationSettings]` | |
 | `source_root` | `Optional[str]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `entrypoint_settings` | `None` |  |
+| `serialized_context` | `None` | :return: returns the serialization context as a base64encoded, gzip compressed, json strinnn |
 
 ### Methods
 
@@ -1562,7 +1538,7 @@ def venv_root_from_interpreter(
 ) -> str
 ```
 Computes the path of the virtual environment root, based on the passed in python interpreter path
-for example /opt/venv/bin/python3 -> /opt/venv
+for example /opt/venv/bin/python3 -&gt; /opt/venv
 
 
 | Parameter | Type | Description |
@@ -1580,14 +1556,6 @@ The setting will be available in the `env` field with the key `SERIALIZED_CONTEX
 :return: A newly constructed SerializationSettings, or self, if it already has the serializationSettings
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `entrypoint_settings` |  |  |
-| `serialized_context` |  | {{< multiline >}}:return: returns the serialization context as a base64encoded, gzip compressed, json strinnn
-{{< /multiline >}} |
-
 ## flytekit.configuration.StatsConfig
 
 Configuration for sending statsd.
@@ -1604,10 +1572,10 @@ class StatsConfig(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `host` | `str` | |
-| `port` | `int` | |
-| `disabled` | `bool` | |
-| `disabled_tags` | `bool` | |
+| `host` | `str` | The statsd host |
+| `port` | `int` | statsd port |
+| `disabled` | `bool` | Whether or not to send |
+| `disabled_tags` | `bool` | Turn on to reduce cardinality. |
 
 ### Methods
 
@@ -1633,6 +1601,7 @@ Reads from environment variable, followed by ConfigFile provided
 ## flytekit.configuration.TaskConfig
 
 Any Project/Domain/Org configuration.
+
 
 
 ```python

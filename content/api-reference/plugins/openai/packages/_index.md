@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -9,8 +9,8 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.openai.batch.agent`](flytekitplugins.openai.batch.agent) |  |
+| [`flytekitplugins.openai.batch.connector`](flytekitplugins.openai.batch.connector) |  |
 | [`flytekitplugins.openai.batch.task`](flytekitplugins.openai.batch.task) |  |
 | [`flytekitplugins.openai.batch.workflow`](flytekitplugins.openai.batch.workflow) |  |
-| [`flytekitplugins.openai.chatgpt.agent`](flytekitplugins.openai.chatgpt.agent) |  |
+| [`flytekitplugins.openai.chatgpt.connector`](flytekitplugins.openai.chatgpt.connector) |  |
 | [`flytekitplugins.openai.chatgpt.task`](flytekitplugins.openai.chatgpt.task) |  |

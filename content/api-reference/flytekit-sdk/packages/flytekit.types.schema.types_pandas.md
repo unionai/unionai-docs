@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.schema.types_pandas
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,8 +14,8 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`PandasDataFrameTransformer`](.././flytekit.types.schema.types_pandas#flytekittypesschematypes_pandaspandasdataframetransformer) | Transforms a pd. |
-| [`PandasSchemaReader`](.././flytekit.types.schema.types_pandas#flytekittypesschematypes_pandaspandasschemareader) | Base SchemaReader to handle any readers (that can manage their own IO or otherwise). |
-| [`PandasSchemaWriter`](.././flytekit.types.schema.types_pandas#flytekittypesschematypes_pandaspandasschemawriter) | Abstract base class for generic types. |
+| [`PandasSchemaReader`](.././flytekit.types.schema.types_pandas#flytekittypesschematypes_pandaspandasschemareader) |  |
+| [`PandasSchemaWriter`](.././flytekit.types.schema.types_pandas#flytekittypesschematypes_pandaspandasschemawriter) |  |
 | [`ParquetIO`](.././flytekit.types.schema.types_pandas#flytekittypesschematypes_pandasparquetio) |  |
 
 ## flytekit.types.schema.types_pandas.PandasDataFrameTransformer
@@ -23,9 +23,19 @@ layout: py_api
 Transforms a pd.DataFrame to Schema without column types.
 
 
+
 ```python
 def PandasDataFrameTransformer()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ### Methods
 
 | Method | Description |
@@ -61,8 +71,8 @@ def assert_type(
 ```python
 def async_to_literal(
     ctx: flytekit.core.context_manager.FlyteContext,
-    python_val: pandas.core.frame.DataFrame,
-    python_type: typing.Type[pandas.core.frame.DataFrame],
+    python_val: pandas.DataFrame,
+    python_type: typing.Type[pandas.DataFrame],
     expected: flytekit.models.types.LiteralType,
 ) -> flytekit.models.literals.Literal
 ```
@@ -75,8 +85,8 @@ what was the mismatch
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
-| `python_val` | `pandas.core.frame.DataFrame` | The actual value to be transformed |
-| `python_type` | `typing.Type[pandas.core.frame.DataFrame]` | The assumed type of the value (this matches the declared type on the function) |
+| `python_val` | `pandas.DataFrame` | The actual value to be transformed |
+| `python_type` | `typing.Type[pandas.DataFrame]` | The assumed type of the value (this matches the declared type on the function) |
 | `expected` | `flytekit.models.types.LiteralType` | Expected Literal Type |
 
 #### async_to_python_value()
@@ -85,8 +95,8 @@ what was the mismatch
 def async_to_python_value(
     ctx: flytekit.core.context_manager.FlyteContext,
     lv: flytekit.models.literals.Literal,
-    expected_python_type: typing.Type[pandas.core.frame.DataFrame],
-) -> pandas.core.frame.DataFrame
+    expected_python_type: typing.Type[pandas.DataFrame],
+) -> pandas.DataFrame
 ```
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
@@ -95,7 +105,7 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | FlyteContext |
 | `lv` | `flytekit.models.literals.Literal` | The received literal Value |
-| `expected_python_type` | `typing.Type[pandas.core.frame.DataFrame]` | Expected native python type that should be returned |
+| `expected_python_type` | `typing.Type[pandas.DataFrame]` | Expected native python type that should be returned |
 
 #### from_binary_idl()
 
@@ -109,12 +119,12 @@ This function primarily handles deserialization for untyped dicts, dataclasses, 
 
 For untyped dict, dataclass, and pydantic basemodel:
 Life Cycle (Untyped Dict as example):
-    python val -> msgpack bytes -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                             (from_binary_idl)
 
 For attribute access:
 Life Cycle:
-    python val -> msgpack bytes -> binary literal scalar -> resolved golang value -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; resolved golang value -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
@@ -147,7 +157,7 @@ Note:
 
 ```python
 def get_literal_type(
-    t: typing.Type[pandas.core.frame.DataFrame],
+    t: typing.Type[pandas.DataFrame],
 ) -> flytekit.models.types.LiteralType
 ```
 Converts the python type to a Flyte LiteralType
@@ -155,7 +165,7 @@ Converts the python type to a Flyte LiteralType
 
 | Parameter | Type | Description |
 |-|-|-|
-| `t` | `typing.Type[pandas.core.frame.DataFrame]` | |
+| `t` | `typing.Type[pandas.DataFrame]` | |
 
 #### guess_python_type()
 
@@ -189,7 +199,7 @@ def isinstance_generic(
 ```python
 def to_html(
     ctx: flytekit.core.context_manager.FlyteContext,
-    python_val: pandas.core.frame.DataFrame,
+    python_val: pandas.DataFrame,
     expected_python_type: typing.Type[~T],
 )
 ```
@@ -199,7 +209,7 @@ Converts any python val (dataframe, int, float) to a html string, and it will be
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `python_val` | `pandas.core.frame.DataFrame` | |
+| `python_val` | `pandas.DataFrame` | |
 | `expected_python_type` | `typing.Type[~T]` | |
 
 #### to_literal()
@@ -243,22 +253,7 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 | `lv` | `Literal` | The received literal Value |
 | `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
-
 ## flytekit.types.schema.types_pandas.PandasSchemaReader
-
-Base SchemaReader to handle any readers (that can manage their own IO or otherwise)
-Use the simplified base LocalIOSchemaReader for non distributed dataframes
-
 
 ```python
 class PandasSchemaReader(
@@ -272,6 +267,13 @@ class PandasSchemaReader(
 | `local_dir` | `str` | |
 | `cols` | `typing.Optional[typing.Dict[str, type]]` | |
 | `fmt` | `<enum 'SchemaFormat'>` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `column_names` | `None` |  |
+| `from_path` | `None` |  |
 
 ### Methods
 
@@ -303,37 +305,7 @@ def iter(
 |-|-|-|
 | `kwargs` | `**kwargs` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `column_names` |  |  |
-| `from_path` |  |  |
-
 ## flytekit.types.schema.types_pandas.PandasSchemaWriter
-
-Abstract base class for generic types.
-
-On Python 3.12 and newer, generic classes implicitly inherit from
-Generic when they declare a parameter list after the class's name::
-
-    class Mapping[KT, VT]:
-        def __getitem__(self, key: KT) -> VT:
-            ...
-        # Etc.
-
-On older versions of Python, however, generic classes have to
-explicitly inherit from Generic.
-
-After a class has been declared to be generic, it can then be used as
-follows::
-
-    def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:
-        try:
-            return mapping[key]
-        except KeyError:
-            return default
-
 
 ```python
 class PandasSchemaWriter(
@@ -347,6 +319,13 @@ class PandasSchemaWriter(
 | `local_dir` | `str` | |
 | `cols` | `typing.Optional[typing.Dict[str, type]]` | |
 | `fmt` | `<enum 'SchemaFormat'>` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `column_names` | `None` |  |
+| `to_path` | `None` |  |
 
 ### Methods
 
@@ -368,13 +347,6 @@ def write(
 | `dfs` |  | |
 | `kwargs` | `**kwargs` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `column_names` |  |  |
-| `to_path` |  |  |
-
 ## flytekit.types.schema.types_pandas.ParquetIO
 
 ### Methods
@@ -392,7 +364,7 @@ def read(
     files: os.PathLike,
     columns: typing.Optional[typing.List[str]],
     kwargs,
-) -> pandas.core.frame.DataFrame
+) -> pandas.DataFrame
 ```
 | Parameter | Type | Description |
 |-|-|-|
@@ -404,7 +376,7 @@ def read(
 
 ```python
 def write(
-    df: pandas.core.frame.DataFrame,
+    df: pandas.DataFrame,
     to_file: os.PathLike,
     coerce_timestamps: str,
     allow_truncated_timestamps: bool,
@@ -416,7 +388,7 @@ Writes data frame as a chunk to the local directory owned by the Schema object. 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `df` | `pandas.core.frame.DataFrame` | data frame to write as parquet |
+| `df` | `pandas.DataFrame` | data frame to write as parquet |
 | `to_file` | `os.PathLike` | Sink file to write the dataframe to |
 | `coerce_timestamps` | `str` | format to store timestamp in parquet. 'us', 'ms', 's' are allowed values. Note: if your timestamps will lose data due to the coercion, your write will fail!  Nanoseconds are problematic in the Parquet format and will not work. See allow_truncated_timestamps. |
 | `allow_truncated_timestamps` | `bool` | default False. Allow truncation when coercing timestamps to a coarser resolution. |

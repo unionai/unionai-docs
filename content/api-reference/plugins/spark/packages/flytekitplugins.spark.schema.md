@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.spark.schema
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,27 +13,38 @@ layout: py_api
 
 | Class | Description |
 |-|-|
+| [`ClassicSparkDataFrameSchemaReader`](.././flytekitplugins.spark.schema#flytekitpluginssparkschemaclassicsparkdataframeschemareader) | Implements how Classic SparkDataFrame should be read using the ``open`` method of FlyteSchema. |
+| [`ClassicSparkDataFrameSchemaWriter`](.././flytekitplugins.spark.schema#flytekitpluginssparkschemaclassicsparkdataframeschemawriter) | Implements how Classic SparkDataFrame should be written using ``open`` method of FlyteSchema. |
+| [`ClassicSparkDataFrameTransformer`](.././flytekitplugins.spark.schema#flytekitpluginssparkschemaclassicsparkdataframetransformer) | Transforms Classic Spark DataFrame's to and from a Schema (typed/untyped). |
 | [`SparkDataFrameSchemaReader`](.././flytekitplugins.spark.schema#flytekitpluginssparkschemasparkdataframeschemareader) | Implements how SparkDataFrame should be read using the ``open`` method of FlyteSchema. |
 | [`SparkDataFrameSchemaWriter`](.././flytekitplugins.spark.schema#flytekitpluginssparkschemasparkdataframeschemawriter) | Implements how SparkDataFrame should be written to using ``open`` method of FlyteSchema. |
 | [`SparkDataFrameTransformer`](.././flytekitplugins.spark.schema#flytekitpluginssparkschemasparkdataframetransformer) | Transforms Spark DataFrame's to and from a Schema (typed/untyped). |
 
-## flytekitplugins.spark.schema.SparkDataFrameSchemaReader
+## flytekitplugins.spark.schema.ClassicSparkDataFrameSchemaReader
 
-Implements how SparkDataFrame should be read using the ``open`` method of FlyteSchema
+Implements how Classic SparkDataFrame should be read using the ``open`` method of FlyteSchema
+
 
 
 ```python
-class SparkDataFrameSchemaReader(
+class ClassicSparkDataFrameSchemaReader(
     from_path: str,
     cols: typing.Optional[typing.Dict[str, type]],
     fmt: <enum 'SchemaFormat'>,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `from_path` | `str` |
-| `cols` | `typing.Optional[typing.Dict[str, type]]` |
-| `fmt` | `<enum 'SchemaFormat'>` |
+| Parameter | Type | Description |
+|-|-|-|
+| `from_path` | `str` | |
+| `cols` | `typing.Optional[typing.Dict[str, type]]` | |
+| `fmt` | `<enum 'SchemaFormat'>` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `column_names` | `None` |  |
+| `from_path` | `None` |  |
 
 ### Methods
 
@@ -48,11 +59,11 @@ class SparkDataFrameSchemaReader(
 ```python
 def all(
     kwargs,
-) -> pyspark.sql.dataframe.DataFrame
+) -> pyspark.sql.classic.dataframe.DataFrame
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### iter()
 
@@ -61,34 +72,35 @@ def iter(
     kwargs,
 ) -> typing.Generator[~T, NoneType, NoneType]
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `column_names` |  |  |
-| `from_path` |  |  |
+| `kwargs` | `**kwargs` | |
 
-## flytekitplugins.spark.schema.SparkDataFrameSchemaWriter
+## flytekitplugins.spark.schema.ClassicSparkDataFrameSchemaWriter
 
-Implements how SparkDataFrame should be written to using ``open`` method of FlyteSchema
+Implements how Classic SparkDataFrame should be written using ``open`` method of FlyteSchema
+
 
 
 ```python
-class SparkDataFrameSchemaWriter(
+class ClassicSparkDataFrameSchemaWriter(
     to_path: str,
     cols: typing.Optional[typing.Dict[str, type]],
     fmt: <enum 'SchemaFormat'>,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `to_path` | `str` |
-| `cols` | `typing.Optional[typing.Dict[str, type]]` |
-| `fmt` | `<enum 'SchemaFormat'>` |
+| Parameter | Type | Description |
+|-|-|-|
+| `to_path` | `str` | |
+| `cols` | `typing.Optional[typing.Dict[str, type]]` | |
+| `fmt` | `<enum 'SchemaFormat'>` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `column_names` | `None` |  |
+| `to_path` | `None` |  |
 
 ### Methods
 
@@ -101,30 +113,33 @@ class SparkDataFrameSchemaWriter(
 
 ```python
 def write(
-    dfs: pyspark.sql.dataframe.DataFrame,
+    dfs: pyspark.sql.classic.dataframe.DataFrame,
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `dfs` | `pyspark.sql.dataframe.DataFrame` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dfs` | `pyspark.sql.classic.dataframe.DataFrame` | |
+| `kwargs` | `**kwargs` | |
 
+## flytekitplugins.spark.schema.ClassicSparkDataFrameTransformer
+
+Transforms Classic Spark DataFrame's to and from a Schema (typed/untyped)
+
+
+
+```python
+def ClassicSparkDataFrameTransformer()
+```
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `column_names` |  |  |
-| `to_path` |  |  |
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
-## flytekitplugins.spark.schema.SparkDataFrameTransformer
-
-Transforms Spark DataFrame's to and from a Schema (typed/untyped)
-
-
-```python
-def SparkDataFrameTransformer()
-```
 ### Methods
 
 | Method | Description |
@@ -148,10 +163,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
+| `v` | `T` | |
 
 #### from_binary_idl()
 
@@ -165,19 +180,19 @@ This function primarily handles deserialization for untyped dicts, dataclasses, 
 
 For untyped dict, dataclass, and pydantic basemodel:
 Life Cycle (Untyped Dict as example):
-    python val -> msgpack bytes -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                             (from_binary_idl)
 
 For attribute access:
 Life Cycle:
-    python val -> msgpack bytes -> binary literal scalar -> resolved golang value -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; resolved golang value -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -194,24 +209,24 @@ Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_literal_type()
 
 ```python
 def get_literal_type(
-    t: typing.Type[pyspark.sql.dataframe.DataFrame],
+    t: typing.Type[pyspark.sql.classic.dataframe.DataFrame],
 ) -> flytekit.models.types.LiteralType
 ```
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `typing.Type[pyspark.sql.dataframe.DataFrame]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.Type[pyspark.sql.classic.dataframe.DataFrame]` | |
 
 #### guess_python_type()
 
@@ -223,9 +238,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -235,10 +250,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_html()
 
@@ -252,11 +267,305 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
+
+#### to_literal()
+
+```python
+def to_literal(
+    ctx: flytekit.core.context_manager.FlyteContext,
+    python_val: pyspark.sql.classic.dataframe.DataFrame,
+    python_type: typing.Type[pyspark.sql.classic.dataframe.DataFrame],
+    expected: flytekit.models.types.LiteralType,
+) -> flytekit.models.literals.Literal
+```
+Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type.
+Implementers should refrain from using type(python_val) instead rely on the passed in python_type. If these
+do not match (or are not allowed) the Transformer implementer should raise an AssertionError, clearly stating
+what was the mismatch
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `pyspark.sql.classic.dataframe.DataFrame` | The actual value to be transformed |
+| `python_type` | `typing.Type[pyspark.sql.classic.dataframe.DataFrame]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `flytekit.models.types.LiteralType` | Expected Literal Type |
+
+#### to_python_value()
+
+```python
+def to_python_value(
+    ctx: flytekit.core.context_manager.FlyteContext,
+    lv: flytekit.models.literals.Literal,
+    expected_python_type: typing.Type[pyspark.sql.classic.dataframe.DataFrame],
+) -> ~T
+```
+Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | FlyteContext |
+| `lv` | `flytekit.models.literals.Literal` | The received literal Value |
+| `expected_python_type` | `typing.Type[pyspark.sql.classic.dataframe.DataFrame]` | Expected native python type that should be returned |
+
+## flytekitplugins.spark.schema.SparkDataFrameSchemaReader
+
+Implements how SparkDataFrame should be read using the ``open`` method of FlyteSchema
+
+
+
+```python
+class SparkDataFrameSchemaReader(
+    from_path: str,
+    cols: typing.Optional[typing.Dict[str, type]],
+    fmt: <enum 'SchemaFormat'>,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `from_path` | `str` | |
+| `cols` | `typing.Optional[typing.Dict[str, type]]` | |
+| `fmt` | `<enum 'SchemaFormat'>` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `column_names` | `None` |  |
+| `from_path` | `None` |  |
+
+### Methods
+
+| Method | Description |
 |-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| [`all()`](#all) |  |
+| [`iter()`](#iter) |  |
+
+
+#### all()
+
+```python
+def all(
+    kwargs,
+) -> pyspark.sql.dataframe.DataFrame
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
+
+#### iter()
+
+```python
+def iter(
+    kwargs,
+) -> typing.Generator[~T, NoneType, NoneType]
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
+
+## flytekitplugins.spark.schema.SparkDataFrameSchemaWriter
+
+Implements how SparkDataFrame should be written to using ``open`` method of FlyteSchema
+
+
+
+```python
+class SparkDataFrameSchemaWriter(
+    to_path: str,
+    cols: typing.Optional[typing.Dict[str, type]],
+    fmt: <enum 'SchemaFormat'>,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `to_path` | `str` | |
+| `cols` | `typing.Optional[typing.Dict[str, type]]` | |
+| `fmt` | `<enum 'SchemaFormat'>` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `column_names` | `None` |  |
+| `to_path` | `None` |  |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`write()`](#write) |  |
+
+
+#### write()
+
+```python
+def write(
+    dfs: pyspark.sql.dataframe.DataFrame,
+    kwargs,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `dfs` | `pyspark.sql.dataframe.DataFrame` | |
+| `kwargs` | `**kwargs` | |
+
+## flytekitplugins.spark.schema.SparkDataFrameTransformer
+
+Transforms Spark DataFrame's to and from a Schema (typed/untyped)
+
+
+
+```python
+def SparkDataFrameTransformer()
+```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`assert_type()`](#assert_type) |  |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
+| [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
+| [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
+| [`isinstance_generic()`](#isinstance_generic) |  |
+| [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
+| [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
+| [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
+
+
+#### assert_type()
+
+```python
+def assert_type(
+    t: Type[T],
+    v: T,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
+| `v` | `T` | |
+
+#### from_binary_idl()
+
+```python
+def from_binary_idl(
+    binary_idl_object: Binary,
+    expected_python_type: Type[T],
+) -> Optional[T]
+```
+This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀
+
+For untyped dict, dataclass, and pydantic basemodel:
+Life Cycle (Untyped Dict as example):
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
+                  (to_literal)                             (from_binary_idl)
+
+For attribute access:
+Life Cycle:
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; resolved golang value -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
+                  (to_literal)                            (propeller attribute access)                       (from_binary_idl)
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
+
+#### from_generic_idl()
+
+```python
+def from_generic_idl(
+    generic: Struct,
+    expected_python_type: Type[T],
+) -> Optional[T]
+```
+TODO: Support all Flyte Types.
+This is for dataclass attribute access from input created from the Flyte Console.
+
+Note:
+- This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
+
+#### get_literal_type()
+
+```python
+def get_literal_type(
+    t: typing.Type[pyspark.sql.dataframe.DataFrame],
+) -> flytekit.models.types.LiteralType
+```
+Converts the python type to a Flyte LiteralType
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.Type[pyspark.sql.dataframe.DataFrame]` | |
+
+#### guess_python_type()
+
+```python
+def guess_python_type(
+    literal_type: LiteralType,
+) -> Type[T]
+```
+Converts the Flyte LiteralType to a python object type.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
+
+#### isinstance_generic()
+
+```python
+def isinstance_generic(
+    obj,
+    generic_alias,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
+
+#### to_html()
+
+```python
+def to_html(
+    ctx: FlyteContext,
+    python_val: T,
+    expected_python_type: Type[T],
+) -> str
+```
+Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -274,12 +583,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `python_val` | `pyspark.sql.dataframe.DataFrame` |
-| `python_type` | `typing.Type[pyspark.sql.dataframe.DataFrame]` |
-| `expected` | `flytekit.models.types.LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `pyspark.sql.dataframe.DataFrame` | The actual value to be transformed |
+| `python_type` | `typing.Type[pyspark.sql.dataframe.DataFrame]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `flytekit.models.types.LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -293,20 +602,9 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `lv` | `flytekit.models.literals.Literal` |
-| `expected_python_type` | `typing.Type[pyspark.sql.dataframe.DataFrame]` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | FlyteContext |
+| `lv` | `flytekit.models.literals.Literal` | The received literal Value |
+| `expected_python_type` | `typing.Type[pyspark.sql.dataframe.DataFrame]` | Expected native python type that should be returned |
 

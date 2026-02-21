@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.optuna
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -40,12 +40,12 @@ def optimize(
     study: typing.Optional[optuna.study.study.Study],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `objective` | `typing.Union[typing.Callable[typing.Concatenate[optuna.trial._trial.Trial, ~P], typing.Union[typing.Awaitable[typing.Union[float, tuple[float, ...]]], float, tuple[float, ...]]], flytekit.core.python_function_task.AsyncPythonFunctionTask, NoneType]` |
-| `concurrency` | `int` |
-| `n_trials` | `int` |
-| `study` | `typing.Optional[optuna.study.study.Study]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `objective` | `typing.Union[typing.Callable[typing.Concatenate[optuna.trial._trial.Trial, ~P], typing.Union[typing.Awaitable[typing.Union[float, tuple[float, ...]]], float, tuple[float, ...]]], flytekit.core.python_function_task.AsyncPythonFunctionTask, NoneType]` | |
+| `concurrency` | `int` | |
+| `n_trials` | `int` | |
+| `study` | `typing.Optional[optuna.study.study.Study]` | |
 
 ## flytekitplugins.optuna.Optimizer
 
@@ -58,13 +58,19 @@ class Optimizer(
     delay: int,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `objective` | `typing.Union[typing.Callable[typing.Concatenate[optuna.trial._trial.Trial, ~P], typing.Union[typing.Awaitable[typing.Union[float, tuple[float, ...]]], float, tuple[float, ...]]], flytekit.core.python_function_task.AsyncPythonFunctionTask]` |
-| `concurrency` | `int` |
-| `n_trials` | `int` |
-| `study` | `typing.Optional[optuna.study.study.Study]` |
-| `delay` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `objective` | `typing.Union[typing.Callable[typing.Concatenate[optuna.trial._trial.Trial, ~P], typing.Union[typing.Awaitable[typing.Union[float, tuple[float, ...]]], float, tuple[float, ...]]], flytekit.core.python_function_task.AsyncPythonFunctionTask]` | |
+| `concurrency` | `int` | |
+| `n_trials` | `int` | |
+| `study` | `typing.Optional[optuna.study.study.Study]` | |
+| `delay` | `int` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_imperative` | `None` |  |
 
 ### Methods
 
@@ -81,14 +87,8 @@ def spawn(
     inputs: dict[str, typing.Any],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `semaphore` | `asyncio.locks.Semaphore` |
-| `inputs` | `dict[str, typing.Any]` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `is_imperative` |  |  |
+| `semaphore` | `asyncio.locks.Semaphore` | |
+| `inputs` | `dict[str, typing.Any]` | |
 

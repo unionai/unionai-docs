@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.dynamic_job
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -37,6 +37,17 @@ Initializes a new FutureTaskDocument.
 | `min_successes` |  | |
 | `outputs` |  | |
 | `subworkflows` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `min_successes` | `None` | An absolute number of the minimum number of successful completions of subtasks. As     soon as this criteria is met, the future job will be marked as successful and outputs will be computed. :rtype: int |
+| `nodes` | `None` | A collection of dynamic nodes. :rtype: list[_workflow.Node] |
+| `outputs` | `None` | Describes how to bind the final output of the future task from the outputs of executed nodes.     The referenced ids in bindings should have the generated id for the subtask. :rtype: list[flytekit.models.literals.Binding] |
+| `subworkflows` | `None` | A collection of subworkflows to execute. :rtype: list[flytekit.models.core.workflow.WorkflowTemplate] |
+| `tasks` | `None` | A collection of tasks to execute. :rtype: list[_task.TaskTemplate] |
 
 ### Methods
 
@@ -79,27 +90,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.core.dynamic_job.DynamicJobSpec
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `min_successes` |  | {{< multiline >}}An absolute number of the minimum number of successful completions of subtasks. As
-    soon as this criteria is met, the future job will be marked as successful and outputs will be computed.
-:rtype: int
-{{< /multiline >}} |
-| `nodes` |  | {{< multiline >}}A collection of dynamic nodes.
-:rtype: list[_workflow.Node]
-{{< /multiline >}} |
-| `outputs` |  | {{< multiline >}}Describes how to bind the final output of the future task from the outputs of executed nodes.
-    The referenced ids in bindings should have the generated id for the subtask.
-:rtype: list[flytekit.models.literals.Binding]
-{{< /multiline >}} |
-| `subworkflows` |  | {{< multiline >}}A collection of subworkflows to execute.
-:rtype: list[flytekit.models.core.workflow.WorkflowTemplate]
-{{< /multiline >}} |
-| `tasks` |  | {{< multiline >}}A collection of tasks to execute.
-:rtype: list[_task.TaskTemplate]
-{{< /multiline >}} |
 

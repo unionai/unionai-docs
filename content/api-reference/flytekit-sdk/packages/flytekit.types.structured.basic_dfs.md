@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.structured.basic_dfs
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,12 +13,12 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ArrowToParquetEncodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsarrowtoparquetencodinghandler) | Helper class that provides a standard way to create an ABC using. |
-| [`CSVToPandasDecodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfscsvtopandasdecodinghandler) | Helper class that provides a standard way to create an ABC using. |
-| [`PandasToCSVEncodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfspandastocsvencodinghandler) | Helper class that provides a standard way to create an ABC using. |
-| [`PandasToParquetEncodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfspandastoparquetencodinghandler) | Helper class that provides a standard way to create an ABC using. |
-| [`ParquetToArrowDecodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsparquettoarrowdecodinghandler) | Helper class that provides a standard way to create an ABC using. |
-| [`ParquetToPandasDecodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsparquettopandasdecodinghandler) | Helper class that provides a standard way to create an ABC using. |
+| [`ArrowToParquetEncodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsarrowtoparquetencodinghandler) |  |
+| [`CSVToPandasDecodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfscsvtopandasdecodinghandler) |  |
+| [`PandasToCSVEncodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfspandastocsvencodinghandler) |  |
+| [`PandasToParquetEncodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfspandastoparquetencodinghandler) |  |
+| [`ParquetToArrowDecodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsparquettoarrowdecodinghandler) |  |
+| [`ParquetToPandasDecodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsparquettopandasdecodinghandler) |  |
 
 ### Methods
 
@@ -54,10 +54,6 @@ def get_pandas_storage_options(
 
 ## flytekit.types.structured.basic_dfs.ArrowToParquetEncodingHandler
 
-Helper class that provides a standard way to create an ABC using
-inheritance.
-
-
 ```python
 def ArrowToParquetEncodingHandler()
 ```
@@ -68,6 +64,14 @@ flytekit type engine is trying to convert into a Flyte Literal. For the other wa
 the StructuredDatasetEncoder
 
 
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
 
 ### Methods
 
@@ -99,19 +103,7 @@ the
 | `structured_dataset` | `flytekit.types.structured.structured_dataset.StructuredDataset` | This is a StructuredDataset wrapper object. See more info above. |
 | `structured_dataset_type` | `flytekit.models.types.StructuredDatasetType` | This the StructuredDatasetType, as found in the LiteralType of the interface of the task that invoked this encoding call. It is passed along to encoders so that authors of encoders can include it in the returned literals.StructuredDataset. See the IDL for more information on why this literal in particular carries the type information along with it. If the encoder doesn't supply it, it will also be filled in after the encoder runs by the transformer engine. :return: This function should return a StructuredDataset literal object. Do not confuse this with the StructuredDataset wrapper class used as input to this function - that is the user facing Python class. This function needs to return the IDL StructuredDataset. |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
-
 ## flytekit.types.structured.basic_dfs.CSVToPandasDecodingHandler
-
-Helper class that provides a standard way to create an ABC using
-inheritance.
-
 
 ```python
 def CSVToPandasDecodingHandler()
@@ -122,6 +114,14 @@ dataframe libraries. This is the decoder interface, meaning it is used when ther
 and we have to get a Python value out of it. For the other way, see the StructuredDatasetEncoder
 
 
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
 
 ### Methods
 
@@ -150,19 +150,7 @@ value into a Python instance.
 | `flyte_value` | `flytekit.models.literals.StructuredDataset` | This will be a Flyte IDL StructuredDataset Literal - do not confuse this with the StructuredDataset class defined also in this module. |
 | `current_task_metadata` | `flytekit.models.literals.StructuredDatasetMetadata` | Metadata object containing the type (and columns if any) for the currently executing task. This type may have more or less information than the type information bundled inside the incoming flyte_value. :return: This function can either return an instance of the dataframe that this decoder handles, or an iterator of those dataframes. |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
-
 ## flytekit.types.structured.basic_dfs.PandasToCSVEncodingHandler
-
-Helper class that provides a standard way to create an ABC using
-inheritance.
-
 
 ```python
 def PandasToCSVEncodingHandler()
@@ -175,6 +163,14 @@ the StructuredDatasetEncoder
 
 
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -205,19 +201,7 @@ the
 | `structured_dataset` | `flytekit.types.structured.structured_dataset.StructuredDataset` | This is a StructuredDataset wrapper object. See more info above. |
 | `structured_dataset_type` | `flytekit.models.types.StructuredDatasetType` | This the StructuredDatasetType, as found in the LiteralType of the interface of the task that invoked this encoding call. It is passed along to encoders so that authors of encoders can include it in the returned literals.StructuredDataset. See the IDL for more information on why this literal in particular carries the type information along with it. If the encoder doesn't supply it, it will also be filled in after the encoder runs by the transformer engine. :return: This function should return a StructuredDataset literal object. Do not confuse this with the StructuredDataset wrapper class used as input to this function - that is the user facing Python class. This function needs to return the IDL StructuredDataset. |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
-
 ## flytekit.types.structured.basic_dfs.PandasToParquetEncodingHandler
-
-Helper class that provides a standard way to create an ABC using
-inheritance.
-
 
 ```python
 def PandasToParquetEncodingHandler()
@@ -230,6 +214,14 @@ the StructuredDatasetEncoder
 
 
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -260,19 +252,7 @@ the
 | `structured_dataset` | `flytekit.types.structured.structured_dataset.StructuredDataset` | This is a StructuredDataset wrapper object. See more info above. |
 | `structured_dataset_type` | `flytekit.models.types.StructuredDatasetType` | This the StructuredDatasetType, as found in the LiteralType of the interface of the task that invoked this encoding call. It is passed along to encoders so that authors of encoders can include it in the returned literals.StructuredDataset. See the IDL for more information on why this literal in particular carries the type information along with it. If the encoder doesn't supply it, it will also be filled in after the encoder runs by the transformer engine. :return: This function should return a StructuredDataset literal object. Do not confuse this with the StructuredDataset wrapper class used as input to this function - that is the user facing Python class. This function needs to return the IDL StructuredDataset. |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
-
 ## flytekit.types.structured.basic_dfs.ParquetToArrowDecodingHandler
-
-Helper class that provides a standard way to create an ABC using
-inheritance.
-
 
 ```python
 def ParquetToArrowDecodingHandler()
@@ -283,6 +263,14 @@ dataframe libraries. This is the decoder interface, meaning it is used when ther
 and we have to get a Python value out of it. For the other way, see the StructuredDatasetEncoder
 
 
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
 
 ### Methods
 
@@ -311,19 +299,7 @@ value into a Python instance.
 | `flyte_value` | `flytekit.models.literals.StructuredDataset` | This will be a Flyte IDL StructuredDataset Literal - do not confuse this with the StructuredDataset class defined also in this module. |
 | `current_task_metadata` | `flytekit.models.literals.StructuredDatasetMetadata` | Metadata object containing the type (and columns if any) for the currently executing task. This type may have more or less information than the type information bundled inside the incoming flyte_value. :return: This function can either return an instance of the dataframe that this decoder handles, or an iterator of those dataframes. |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
-
 ## flytekit.types.structured.basic_dfs.ParquetToPandasDecodingHandler
-
-Helper class that provides a standard way to create an ABC using
-inheritance.
-
 
 ```python
 def ParquetToPandasDecodingHandler()
@@ -334,6 +310,14 @@ dataframe libraries. This is the decoder interface, meaning it is used when ther
 and we have to get a Python value out of it. For the other way, see the StructuredDatasetEncoder
 
 
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
 
 ### Methods
 
@@ -361,12 +345,4 @@ value into a Python instance.
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
 | `flyte_value` | `flytekit.models.literals.StructuredDataset` | This will be a Flyte IDL StructuredDataset Literal - do not confuse this with the StructuredDataset class defined also in this module. |
 | `current_task_metadata` | `flytekit.models.literals.StructuredDatasetMetadata` | Metadata object containing the type (and columns if any) for the currently executing task. This type may have more or less information than the type information bundled inside the incoming flyte_value. :return: This function can either return an instance of the dataframe that this decoder handles, or an iterator of those dataframes. |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
 

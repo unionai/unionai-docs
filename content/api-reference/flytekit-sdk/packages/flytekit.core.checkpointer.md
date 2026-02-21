@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.checkpointer
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -20,6 +20,7 @@ layout: py_api
 
 Base class for Checkpoint system. Checkpoint system allows reading and writing custom checkpoints from user
 scripts
+
 
 
 ### Methods
@@ -98,6 +99,7 @@ Sync Checkpoint, will synchronously checkpoint a user given file or folder.
 It will also synchronously download / restore previous checkpoints, when restore is invoked.
 
 TODO: Implement an async checkpoint system
+
 
 
 ```python

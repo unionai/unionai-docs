@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.executions
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -33,6 +33,25 @@ class FlyteNodeExecution(
 |-|-|-|
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `closure` | `None` | :rtype: NodeExecutionClosure |
+| `error` | `None` | If execution is in progress, raise an exception. Otherwise, return None if no error was present upon reaching completion. |
+| `executions` | `None` |  |
+| `id` | `None` | :rtype: flytekit.models.core.identifier.NodeExecutionIdentifier |
+| `input_uri` | `None` | :rtype: Text |
+| `inputs` | `None` |  |
+| `interface` | `None` | Return the interface of the task or subworkflow associated with this node execution. |
+| `is_done` | `None` | Whether or not the execution is complete. |
+| `is_empty` | `None` |  |
+| `metadata` | `None` |  |
+| `outputs` | `None` | :return: Returns the outputs LiteralsResolver to the execution :raises: ``FlyteAssertion`` error if execution is in progress or execution ended in error. |
+| `subworkflow_node_executions` | `None` | This returns underlying node executions in instances where the current node execution is a parent node. This happens when it's either a static or dynamic subworkflow. |
+| `task_executions` | `None` |  |
+| `workflow_executions` | `None` |  |
 
 ### Methods
 
@@ -85,36 +104,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `closure` |  | {{< multiline >}}:rtype: NodeExecutionClosure
-{{< /multiline >}} |
-| `error` |  | {{< multiline >}}If execution is in progress, raise an exception. Otherwise, return None if no error was present upon
-reaching completion.
-{{< /multiline >}} |
-| `executions` |  |  |
-| `id` |  | {{< multiline >}}:rtype: flytekit.models.core.identifier.NodeExecutionIdentifier
-{{< /multiline >}} |
-| `input_uri` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `inputs` |  |  |
-| `interface` |  | {{< multiline >}}Return the interface of the task or subworkflow associated with this node execution.
-{{< /multiline >}} |
-| `is_done` |  | {{< multiline >}}Whether or not the execution is complete.
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `metadata` |  |  |
-| `outputs` |  | {{< multiline >}}:return: Returns the outputs LiteralsResolver to the execution
-:raises: ``FlyteAssertion`` error if execution is in progress or execution ended in error.
-{{< /multiline >}} |
-| `subworkflow_node_executions` |  | {{< multiline >}}This returns underlying node executions in instances where the current node execution is
-a parent node. This happens when it's either a static or dynamic subworkflow.
-{{< /multiline >}} |
-| `task_executions` |  |  |
-| `workflow_executions` |  |  |
-
 ## flytekit.remote.executions.FlyteTaskExecution
 
 A class encapsulating a task execution being run on a Flyte remote backend.
@@ -130,6 +119,21 @@ class FlyteTaskExecution(
 |-|-|-|
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `closure` | `None` | :rtype: TaskExecutionClosure |
+| `error` | `None` | If execution is in progress, raise an exception. Otherwise, return None if no error was present upon reaching completion. |
+| `id` | `None` | :rtype: flytekit.models.core.identifier.TaskExecutionIdentifier |
+| `input_uri` | `None` | :rtype: Text |
+| `inputs` | `None` |  |
+| `is_done` | `None` | Whether or not the execution is complete. |
+| `is_empty` | `None` |  |
+| `is_parent` | `None` | :rtype: bool |
+| `outputs` | `None` | :return: Returns the outputs LiteralsResolver to the execution :raises: ``FlyteAssertion`` error if execution is in progress or execution ended in error. |
+| `task` | `None` |  |
 
 ### Methods
 
@@ -185,30 +189,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.task_execution_pb2.TaskExecution
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `closure` |  | {{< multiline >}}:rtype: TaskExecutionClosure
-{{< /multiline >}} |
-| `error` |  | {{< multiline >}}If execution is in progress, raise an exception. Otherwise, return None if no error was present upon
-reaching completion.
-{{< /multiline >}} |
-| `id` |  | {{< multiline >}}:rtype: flytekit.models.core.identifier.TaskExecutionIdentifier
-{{< /multiline >}} |
-| `input_uri` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `inputs` |  |  |
-| `is_done` |  | {{< multiline >}}Whether or not the execution is complete.
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `is_parent` |  | {{< multiline >}}:rtype: bool
-{{< /multiline >}} |
-| `outputs` |  | {{< multiline >}}:return: Returns the outputs LiteralsResolver to the execution
-:raises: ``FlyteAssertion`` error if execution is in progress or execution ended in error.
-{{< /multiline >}} |
-| `task` |  |  |
-
 ## flytekit.remote.executions.FlyteWorkflowExecution
 
 A class encapsulating a workflow execution being run on a Flyte remote backend.
@@ -228,6 +208,23 @@ class FlyteWorkflowExecution(
 | `remote` | `Optional['FlyteRemote']` | |
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `closure` | `None` | :rtype: ExecutionClosure |
+| `error` | `None` | If execution is in progress, raise an exception.  Otherwise, return None if no error was present upon reaching completion. |
+| `execution_url` | `None` |  |
+| `flyte_workflow` | `None` |  |
+| `id` | `None` | :rtype: flytekit.models.core.identifier.WorkflowExecutionIdentifier |
+| `inputs` | `None` |  |
+| `is_done` | `None` | Whether or not the execution is complete. |
+| `is_empty` | `None` |  |
+| `is_successful` | `None` | Whether or not the execution is successful. |
+| `node_executions` | `None` | Get a dictionary of node executions that are a part of this workflow execution. |
+| `outputs` | `None` | :return: Returns the outputs LiteralsResolver to the execution :raises: ``FlyteAssertion`` error if execution is in progress or execution ended in error. |
+| `spec` | `None` | :rtype: ExecutionSpec |
 
 ### Methods
 
@@ -322,33 +319,6 @@ Wait for the execution to complete. This is a blocking call.
 | `poll_interval` | `Optional[Union[timedelta, int]]` | The amount of time to wait between polling the state of the execution. It can be a timedelta or a duration in seconds as int. |
 | `sync_nodes` | `bool` | Whether to sync the state of the nodes as well. |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `closure` |  | {{< multiline >}}:rtype: ExecutionClosure
-{{< /multiline >}} |
-| `error` |  | {{< multiline >}}If execution is in progress, raise an exception.  Otherwise, return None if no error was present upon
-reaching completion.
-{{< /multiline >}} |
-| `execution_url` |  |  |
-| `flyte_workflow` |  |  |
-| `id` |  | {{< multiline >}}:rtype: flytekit.models.core.identifier.WorkflowExecutionIdentifier
-{{< /multiline >}} |
-| `inputs` |  |  |
-| `is_done` |  | {{< multiline >}}Whether or not the execution is complete.
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `is_successful` |  | {{< multiline >}}Whether or not the execution is successful.
-{{< /multiline >}} |
-| `node_executions` |  | {{< multiline >}}Get a dictionary of node executions that are a part of this workflow execution.
-{{< /multiline >}} |
-| `outputs` |  | {{< multiline >}}:return: Returns the outputs LiteralsResolver to the execution
-:raises: ``FlyteAssertion`` error if execution is in progress or execution ended in error.
-{{< /multiline >}} |
-| `spec` |  | {{< multiline >}}:rtype: ExecutionSpec
-{{< /multiline >}} |
-
 ## flytekit.remote.executions.RemoteExecutionBase
 
 ```python
@@ -366,10 +336,8 @@ class RemoteExecutionBase(
 
 | Property | Type | Description |
 |-|-|-|
-| `error` |  |  |
-| `inputs` |  |  |
-| `is_done` |  |  |
-| `outputs` |  | {{< multiline >}}:return: Returns the outputs LiteralsResolver to the execution
-:raises: ``FlyteAssertion`` error if execution is in progress or execution ended in error.
-{{< /multiline >}} |
+| `error` | `None` |  |
+| `inputs` | `None` |  |
+| `is_done` | `None` |  |
+| `outputs` | `None` | :return: Returns the outputs LiteralsResolver to the execution :raises: ``FlyteAssertion`` error if execution is in progress or execution ended in error. |
 

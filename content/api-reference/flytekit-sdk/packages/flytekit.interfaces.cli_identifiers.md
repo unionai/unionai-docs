@@ -1,6 +1,6 @@
 ---
 title: flytekit.interfaces.cli_identifiers
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -35,6 +35,17 @@ class Identifier(
 | `domain` |  | |
 | `name` |  | |
 | `version` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `domain` | `None` | :rtype: Text |
+| `is_empty` | `None` |  |
+| `name` | `None` | :rtype: Text |
+| `project` | `None` | :rtype: Text |
+| `resource_type` | `None` | enum value from ResourceType :rtype: int |
+| `version` | `None` | :rtype: Text |
 
 ### Methods
 
@@ -111,23 +122,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.identifier_pb2.Identifier
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `domain` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `name` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `project` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `resource_type` |  | {{< multiline >}}enum value from ResourceType
-:rtype: int
-{{< /multiline >}} |
-| `version` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-
 ## flytekit.interfaces.cli_identifiers.TaskExecutionIdentifier
 
 ```python
@@ -142,6 +136,15 @@ class TaskExecutionIdentifier(
 | `task_id` |  | |
 | `node_execution_id` |  | |
 | `retry_attempt` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `node_execution_id` | `None` | :rtype: NodeExecutionIdentifier |
+| `retry_attempt` | `None` | :rtype: int |
+| `task_id` | `None` | :rtype: Identifier |
 
 ### Methods
 
@@ -212,18 +215,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.identifier_pb2.TaskExecutionIdentifier
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `node_execution_id` |  | {{< multiline >}}:rtype: NodeExecutionIdentifier
-{{< /multiline >}} |
-| `retry_attempt` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `task_id` |  | {{< multiline >}}:rtype: Identifier
-{{< /multiline >}} |
-
 ## flytekit.interfaces.cli_identifiers.WorkflowExecutionIdentifier
 
 ```python
@@ -238,6 +229,15 @@ class WorkflowExecutionIdentifier(
 | `project` |  | |
 | `domain` |  | |
 | `name` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `domain` | `None` | :rtype: Text |
+| `is_empty` | `None` |  |
+| `name` | `None` | :rtype: Text |
+| `project` | `None` | :rtype: Text |
 
 ### Methods
 
@@ -307,16 +307,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.core.identifier_pb2.WorkflowExecutionIdentifier
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `domain` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `name` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `project` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
 

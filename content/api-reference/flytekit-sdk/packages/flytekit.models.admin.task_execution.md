@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.admin.task_execution
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -32,6 +32,16 @@ class TaskExecution(
 | `input_uri` |  | |
 | `closure` |  | |
 | `is_parent` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `closure` | `None` | :rtype: TaskExecutionClosure |
+| `id` | `None` | :rtype: flytekit.models.core.identifier.TaskExecutionIdentifier |
+| `input_uri` | `None` | :rtype: Text |
+| `is_empty` | `None` |  |
+| `is_parent` | `None` | :rtype: bool |
 
 ### Methods
 
@@ -75,20 +85,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.task_execution_pb2.TaskExecution
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `closure` |  | {{< multiline >}}:rtype: TaskExecutionClosure
-{{< /multiline >}} |
-| `id` |  | {{< multiline >}}:rtype: flytekit.models.core.identifier.TaskExecutionIdentifier
-{{< /multiline >}} |
-| `input_uri` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `is_parent` |  | {{< multiline >}}:rtype: bool
-{{< /multiline >}} |
-
 ## flytekit.models.admin.task_execution.TaskExecutionClosure
 
 ```python
@@ -115,6 +111,21 @@ class TaskExecutionClosure(
 | `output_uri` |  | |
 | `error` |  | |
 | `metadata` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `created_at` | `None` | :rtype: datetime.datetime |
+| `duration` | `None` | :rtype: datetime.timedelta |
+| `error` | `None` | :rtype: flytekit.models.core.execution.ExecutionError |
+| `is_empty` | `None` |  |
+| `logs` | `None` | :rtype: list[flytekit.models.core.execution.TaskLog] |
+| `metadata` | `None` | :rtype: flytekit.models.event.TaskExecutionMetadata |
+| `output_uri` | `None` | :rtype: Text |
+| `phase` | `None` | Enum value from flytekit.models.core.execution.TaskExecutionPhase :rtype: flytekit.models.core.execution.TaskExecutionPhase |
+| `started_at` | `None` | :rtype: datetime.datetime |
+| `updated_at` | `None` | :rtype: datetime.datetime |
 
 ### Methods
 
@@ -157,29 +168,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.task_execution_pb2.TaskExecutionClosure
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `created_at` |  | {{< multiline >}}:rtype: datetime.datetime
-{{< /multiline >}} |
-| `duration` |  | {{< multiline >}}:rtype: datetime.timedelta
-{{< /multiline >}} |
-| `error` |  | {{< multiline >}}:rtype: flytekit.models.core.execution.ExecutionError
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `logs` |  | {{< multiline >}}:rtype: list[flytekit.models.core.execution.TaskLog]
-{{< /multiline >}} |
-| `metadata` |  | {{< multiline >}}:rtype: flytekit.models.event.TaskExecutionMetadata
-{{< /multiline >}} |
-| `output_uri` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `phase` |  | {{< multiline >}}Enum value from flytekit.models.core.execution.TaskExecutionPhase
-:rtype: flytekit.models.core.execution.TaskExecutionPhase
-{{< /multiline >}} |
-| `started_at` |  | {{< multiline >}}:rtype: datetime.datetime
-{{< /multiline >}} |
-| `updated_at` |  | {{< multiline >}}:rtype: datetime.datetime
-{{< /multiline >}} |
 

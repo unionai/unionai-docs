@@ -5,20 +5,21 @@
 # For site-specific settings, use hugo.site.toml.
 # For variant-specific settings, use config.<variant>.toml.
 
+timeout = "5m"
 languageCode = 'en-us'
-theme = 'union'
 disableKinds = ["RSS"]
 enableRobotsTXT = true
+enableEmoji = true
 
-# Enable sitemap generation and markdown output for LLM docs
+# Enable sitemap generation
 [outputs]
   # 'home': The main site homepage. 'HTML' for the page, 'RSS' for feed readers.
   home = ["HTML", "RSS"]
 
-  # 'page': Individual content pages. 'HTML' for standard rendering, 'MD' for LLM docs.
+  # 'page': Individual content pages. 'HTML' for the page, 'MD' for markdown processing.
   page = ["HTML", "MD"]
 
-  # 'section': Top-level content sections (e.g., docs, tutorials). 'HTML' for rendering, 'RSS' for section-specific feeds, 'MD' for LLM docs.
+  # 'section': Top-level content sections (e.g., docs, tutorials). 'HTML' for rendering, 'RSS' for section-specific feeds, 'MD' for markdown processing.
   section = ["HTML", "RSS", "MD"]
 
   # 'taxonomy': Used for tag/category listing pages. 'HTML' for rendering, 'RSS' for taxonomy feeds.
@@ -27,7 +28,6 @@ enableRobotsTXT = true
   # 'robotsTXT': Generate robots.txt file for search engine crawling
   robotsTXT = ["ROBOTS"]
 
-# Define output formats
 [outputFormats]
   [outputFormats.MD]
     mediaType = "text/plain"
@@ -41,6 +41,8 @@ show_inactive = false
 highlight_active = false
 
 [markup]
+  [markup.highlight]
+    noClasses = false
   [markup.goldmark]
     [markup.goldmark.parser]
       [markup.goldmark.parser.attribute]

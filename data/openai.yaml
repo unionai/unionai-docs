@@ -1,0 +1,39 @@
+packages:
+  flytekitplugins.openai: /api-reference/plugins/openai/packages/flytekitplugins.openai/
+  flytekitplugins.openai.batch: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch/
+  flytekitplugins.openai.batch.connector: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.connector/
+  flytekitplugins.openai.batch.task: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/
+  flytekitplugins.openai.batch.workflow: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.workflow/
+  flytekitplugins.openai.chatgpt: /api-reference/plugins/openai/packages/flytekitplugins.openai.chatgpt/
+  flytekitplugins.openai.chatgpt.connector: /api-reference/plugins/openai/packages/flytekitplugins.openai.chatgpt.connector/
+  flytekitplugins.openai.chatgpt.task: /api-reference/plugins/openai/packages/flytekitplugins.openai.chatgpt.task/
+identifiers:
+  flytekitplugins.openai.batch.connector.BatchEndpointConnector: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.connector/#flytekitpluginsopenaibatchconnectorbatchendpointconnector
+  BatchEndpointConnector: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.connector/#flytekitpluginsopenaibatchconnectorbatchendpointconnector
+  flytekitplugins.openai.batch.connector.BatchEndpointMetadata: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.connector/#flytekitpluginsopenaibatchconnectorbatchendpointmetadata
+  BatchEndpointMetadata: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.connector/#flytekitpluginsopenaibatchconnectorbatchendpointmetadata
+  flytekitplugins.openai.batch.connector.State: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.connector/#flytekitpluginsopenaibatchconnectorstate
+  State: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.connector/#flytekitpluginsopenaibatchconnectorstate
+  flytekitplugins.openai.batch.task.BatchEndpointTask: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/#flytekitpluginsopenaibatchtaskbatchendpointtask
+  BatchEndpointTask: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/#flytekitpluginsopenaibatchtaskbatchendpointtask
+  flytekitplugins.openai.batch.task.BatchResult: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/#flytekitpluginsopenaibatchtaskbatchresult
+  BatchResult: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/#flytekitpluginsopenaibatchtaskbatchresult
+  flytekitplugins.openai.batch.task.DownloadJSONFilesExecutor: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/#flytekitpluginsopenaibatchtaskdownloadjsonfilesexecutor
+  DownloadJSONFilesExecutor: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/#flytekitpluginsopenaibatchtaskdownloadjsonfilesexecutor
+  flytekitplugins.openai.batch.task.DownloadJSONFilesTask: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/#flytekitpluginsopenaibatchtaskdownloadjsonfilestask
+  DownloadJSONFilesTask: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/#flytekitpluginsopenaibatchtaskdownloadjsonfilestask
+  flytekitplugins.openai.batch.task.OpenAIFileConfig: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/#flytekitpluginsopenaibatchtaskopenaifileconfig
+  OpenAIFileConfig: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/#flytekitpluginsopenaibatchtaskopenaifileconfig
+  flytekitplugins.openai.batch.task.OpenAIFileDefaultImages: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/#flytekitpluginsopenaibatchtaskopenaifiledefaultimages
+  OpenAIFileDefaultImages: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/#flytekitpluginsopenaibatchtaskopenaifiledefaultimages
+  flytekitplugins.openai.batch.task.UploadJSONLFileExecutor: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/#flytekitpluginsopenaibatchtaskuploadjsonlfileexecutor
+  UploadJSONLFileExecutor: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/#flytekitpluginsopenaibatchtaskuploadjsonlfileexecutor
+  flytekitplugins.openai.batch.task.UploadJSONLFileTask: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/#flytekitpluginsopenaibatchtaskuploadjsonlfiletask
+  UploadJSONLFileTask: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.task/#flytekitpluginsopenaibatchtaskuploadjsonlfiletask
+  flytekitplugins.openai.chatgpt.connector.ChatGPTConnector: /api-reference/plugins/openai/packages/flytekitplugins.openai.chatgpt.connector/#flytekitpluginsopenaichatgptconnectorchatgptconnector
+  ChatGPTConnector: /api-reference/plugins/openai/packages/flytekitplugins.openai.chatgpt.connector/#flytekitpluginsopenaichatgptconnectorchatgptconnector
+  flytekitplugins.openai.chatgpt.task.ChatGPTTask: /api-reference/plugins/openai/packages/flytekitplugins.openai.chatgpt.task/#flytekitpluginsopenaichatgpttaskchatgpttask
+  ChatGPTTask: /api-reference/plugins/openai/packages/flytekitplugins.openai.chatgpt.task/#flytekitpluginsopenaichatgpttaskchatgpttask
+methods:
+  flytekitplugins.openai.batch.workflow.create_batch: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.workflow/#create_batch
+  create_batch: /api-reference/plugins/openai/packages/flytekitplugins.openai.batch.workflow/#create_batch

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.launch_plan
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -36,6 +36,14 @@ At most one of assumable_iam_role or kubernetes_service_account can be set.
 |-|-|-|
 | `assumable_iam_role` |  | |
 | `kubernetes_service_account` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `assumable_iam_role` | `None` | The IAM role to execute the workflow with :rtype: Text |
+| `is_empty` | `None` |  |
+| `kubernetes_service_account` | `None` | The kubernetes service account to execute the workflow with :rtype: Text |
 
 ### Methods
 
@@ -79,18 +87,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.launch_plan_pb2.Auth
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `assumable_iam_role` |  | {{< multiline >}}The IAM role to execute the workflow with
-:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `kubernetes_service_account` |  | {{< multiline >}}The kubernetes service account to execute the workflow with
-:rtype: Text
-{{< /multiline >}} |
-
 ## flytekit.models.launch_plan.LaunchPlan
 
 ```python
@@ -107,6 +103,16 @@ class LaunchPlan(
 | `spec` |  | |
 | `closure` |  | |
 | `auto_activate` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `closure` | `None` | :rtype: LaunchPlanClosure |
+| `id` | `None` | :rtype: flytekit.models.core.identifier.Identifier |
+| `is_empty` | `None` |  |
+| `should_auto_activate` | `None` |  |
+| `spec` | `None` | :rtype: LaunchPlanSpec |
 
 ### Methods
 
@@ -150,19 +156,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.launch_plan_pb2.LaunchPlan
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `closure` |  | {{< multiline >}}:rtype: LaunchPlanClosure
-{{< /multiline >}} |
-| `id` |  | {{< multiline >}}:rtype: flytekit.models.core.identifier.Identifier
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `should_auto_activate` |  |  |
-| `spec` |  | {{< multiline >}}:rtype: LaunchPlanSpec
-{{< /multiline >}} |
-
 ## flytekit.models.launch_plan.LaunchPlanClosure
 
 ```python
@@ -177,6 +170,15 @@ class LaunchPlanClosure(
 | `state` |  | |
 | `expected_inputs` |  | |
 | `expected_outputs` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `expected_inputs` | `None` | :rtype: flytekit.models.interface.ParameterMap |
+| `expected_outputs` | `None` | :rtype: flytekit.models.interface.VariableMap |
+| `is_empty` | `None` |  |
+| `state` | `None` | :rtype: LaunchPlanState |
 
 ### Methods
 
@@ -220,18 +222,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.launch_plan_pb2.LaunchPlanClosure
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `expected_inputs` |  | {{< multiline >}}:rtype: flytekit.models.interface.ParameterMap
-{{< /multiline >}} |
-| `expected_outputs` |  | {{< multiline >}}:rtype: flytekit.models.interface.VariableMap
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `state` |  | {{< multiline >}}:rtype: LaunchPlanState
-{{< /multiline >}} |
-
 ## flytekit.models.launch_plan.LaunchPlanMetadata
 
 ```python
@@ -246,6 +236,15 @@ class LaunchPlanMetadata(
 | `schedule` |  | |
 | `notifications` |  | |
 | `launch_conditions` |  | Additional metadata for launching |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `launch_conditions` | `None` |  |
+| `notifications` | `None` | List of notifications based on Execution status transitions :rtype: list[flytekit.models.common.Notification] |
+| `schedule` | `None` | Schedule to execute the Launch Plan :rtype: flytekit.models.schedule.Schedule |
 
 ### Methods
 
@@ -290,19 +289,6 @@ List of notifications based on Execution status transitions
 :rtype: flyteidl.admin.launch_plan_pb2.LaunchPlanMetadata
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `launch_conditions` |  |  |
-| `notifications` |  | {{< multiline >}}List of notifications based on Execution status transitions
-:rtype: list[flytekit.models.common.Notification]
-{{< /multiline >}} |
-| `schedule` |  | {{< multiline >}}Schedule to execute the Launch Plan
-:rtype: flytekit.models.schedule.Schedule
-{{< /multiline >}} |
-
 ## flytekit.models.launch_plan.LaunchPlanSpec
 
 ```python
@@ -339,6 +325,24 @@ The spec for a Launch Plan.
 | `security_context` | `typing.Optional[flytekit.models.security.SecurityContext]` | This can be used to add security information to a LaunchPlan, which will be used by every execution |
 | `overwrite_cache` | `typing.Optional[bool]` | |
 | `concurrency_policy` | `typing.Optional[flytekit.models.concurrency.ConcurrencyPolicy]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `annotations` | `None` | The annotations to execute the workflow with :rtype: flytekit.models.common.Annotations |
+| `auth_role` | `None` | The authorization method with which to execute the workflow. :rtype: flytekit.models.common.AuthRole |
+| `concurrency_policy` | `None` | Concurrency settings for the launch plan. :rtype: flytekit.models.concurrency.ConcurrencyPolicy |
+| `default_inputs` | `None` | Input values to be passed for the execution :rtype: flytekit.models.interface.ParameterMap |
+| `entity_metadata` | `None` | :rtype: LaunchPlanMetadata |
+| `fixed_inputs` | `None` | Fixed, non-overridable inputs for the Launch Plan :rtype: flytekit.models.literals.LiteralMap |
+| `is_empty` | `None` |  |
+| `labels` | `None` | The labels to execute the workflow with :rtype: flytekit.models.common.Labels |
+| `max_parallelism` | `None` |  |
+| `overwrite_cache` | `None` |  |
+| `raw_output_data_config` | `None` | Where to store offloaded data like Blobs and Schemas :rtype: flytekit.models.common.RawOutputDataConfig |
+| `security_context` | `None` |  |
+| `workflow_id` | `None` | Unique identifier for the workflow in question :rtype: flytekit.models.core.identifier.Identifier |
 
 ### Methods
 
@@ -381,41 +385,6 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.launch_plan_pb2.LaunchPlanSpec
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `annotations` |  | {{< multiline >}}The annotations to execute the workflow with
-:rtype: flytekit.models.common.Annotations
-{{< /multiline >}} |
-| `auth_role` |  | {{< multiline >}}The authorization method with which to execute the workflow.
-:rtype: flytekit.models.common.AuthRole
-{{< /multiline >}} |
-| `concurrency_policy` |  | {{< multiline >}}Concurrency settings for the launch plan.
-:rtype: flytekit.models.concurrency.ConcurrencyPolicy
-{{< /multiline >}} |
-| `default_inputs` |  | {{< multiline >}}Input values to be passed for the execution
-:rtype: flytekit.models.interface.ParameterMap
-{{< /multiline >}} |
-| `entity_metadata` |  | {{< multiline >}}:rtype: LaunchPlanMetadata
-{{< /multiline >}} |
-| `fixed_inputs` |  | {{< multiline >}}Fixed, non-overridable inputs for the Launch Plan
-:rtype: flytekit.models.literals.LiteralMap
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `labels` |  | {{< multiline >}}The labels to execute the workflow with
-:rtype: flytekit.models.common.Labels
-{{< /multiline >}} |
-| `max_parallelism` |  |  |
-| `overwrite_cache` |  |  |
-| `raw_output_data_config` |  | {{< multiline >}}Where to store offloaded data like Blobs and Schemas
-:rtype: flytekit.models.common.RawOutputDataConfig
-{{< /multiline >}} |
-| `security_context` |  |  |
-| `workflow_id` |  | {{< multiline >}}Unique identifier for the workflow in question
-:rtype: flytekit.models.core.identifier.Identifier
-{{< /multiline >}} |
 
 ## flytekit.models.launch_plan.LaunchPlanState
 

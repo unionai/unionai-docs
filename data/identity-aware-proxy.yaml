@@ -1,0 +1,11 @@
+packages:
+  flytekitplugins.identity_aware_proxy: /api-reference/plugins/identity-aware-proxy/packages/flytekitplugins.identity_aware_proxy/
+  flytekitplugins.identity_aware_proxy.cli: /api-reference/plugins/identity-aware-proxy/packages/flytekitplugins.identity_aware_proxy.cli/
+identifiers:
+  flytekitplugins.identity_aware_proxy.cli.GCPIdentityAwareProxyAuthenticator: /api-reference/plugins/identity-aware-proxy/packages/flytekitplugins.identity_aware_proxy.cli/#flytekitpluginsidentity_aware_proxycligcpidentityawareproxyauthenticator
+  GCPIdentityAwareProxyAuthenticator: /api-reference/plugins/identity-aware-proxy/packages/flytekitplugins.identity_aware_proxy.cli/#flytekitpluginsidentity_aware_proxycligcpidentityawareproxyauthenticator
+methods:
+  flytekitplugins.identity_aware_proxy.cli.get_gcp_secret_manager_secret: /api-reference/plugins/identity-aware-proxy/packages/flytekitplugins.identity_aware_proxy.cli/#get_gcp_secret_manager_secret
+  get_gcp_secret_manager_secret: /api-reference/plugins/identity-aware-proxy/packages/flytekitplugins.identity_aware_proxy.cli/#get_gcp_secret_manager_secret
+  flytekitplugins.identity_aware_proxy.cli.get_service_account_id_token: /api-reference/plugins/identity-aware-proxy/packages/flytekitplugins.identity_aware_proxy.cli/#get_service_account_id_token
+  get_service_account_id_token: /api-reference/plugins/identity-aware-proxy/packages/flytekitplugins.identity_aware_proxy.cli/#get_service_account_id_token

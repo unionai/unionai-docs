@@ -1,0 +1,6 @@
+packages:
+  flytekitplugins.wandb: /api-reference/plugins/wandb/packages/flytekitplugins.wandb/
+identifiers:
+  flytekitplugins.wandb.wandb_init: /api-reference/plugins/wandb/packages/flytekitplugins.wandb/#flytekitpluginswandbwandb_init
+  wandb_init: /api-reference/plugins/wandb/packages/flytekitplugins.wandb/#flytekitpluginswandbwandb_init
+methods: {}

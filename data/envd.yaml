@@ -1,0 +1,13 @@
+packages:
+  flytekitplugins.envd: /api-reference/plugins/envd/packages/flytekitplugins.envd/
+  flytekitplugins.envd.image_builder: /api-reference/plugins/envd/packages/flytekitplugins.envd.image_builder/
+identifiers:
+  flytekitplugins.envd.image_builder.EnvdImageSpecBuilder: /api-reference/plugins/envd/packages/flytekitplugins.envd.image_builder/#flytekitpluginsenvdimage_builderenvdimagespecbuilder
+  EnvdImageSpecBuilder: /api-reference/plugins/envd/packages/flytekitplugins.envd.image_builder/#flytekitpluginsenvdimage_builderenvdimagespecbuilder
+methods:
+  flytekitplugins.envd.image_builder.create_envd_config: /api-reference/plugins/envd/packages/flytekitplugins.envd.image_builder/#create_envd_config
+  create_envd_config: /api-reference/plugins/envd/packages/flytekitplugins.envd.image_builder/#create_envd_config
+  flytekitplugins.envd.image_builder.envd_context_switch: /api-reference/plugins/envd/packages/flytekitplugins.envd.image_builder/#envd_context_switch
+  envd_context_switch: /api-reference/plugins/envd/packages/flytekitplugins.envd.image_builder/#envd_context_switch
+  flytekitplugins.envd.image_builder.execute_command: /api-reference/plugins/envd/packages/flytekitplugins.envd.image_builder/#execute_command
+  execute_command: /api-reference/plugins/envd/packages/flytekitplugins.envd.image_builder/#execute_command
