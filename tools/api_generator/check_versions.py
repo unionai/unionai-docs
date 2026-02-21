@@ -94,11 +94,16 @@ def check_all(config: dict) -> list[dict]:
 
     # SDKs
     for sdk in config.get("sdks", []):
+        if sdk.get("frozen", False):
+            continue
         version_file = REPO_ROOT / sdk["version_file"]
         committed = extract_frontmatter_version(version_file)
         latest = get_pypi_latest(sdk["package"])
         output = REPO_ROOT / sdk["output_folder"]
-        content_missing = not (output / "packages").is_dir() or not (output / "classes").is_dir()
+        # classes can be a directory (no-flatten) or a single .md file (flatten)
+        classes_dir = output / "classes"
+        classes_file = output / "classes.md"
+        content_missing = not (output / "packages").is_dir() or not (classes_dir.is_dir() or classes_file.is_file())
         results.append({
             "type": "sdk",
             "package": sdk["package"],
@@ -110,6 +115,8 @@ def check_all(config: dict) -> list[dict]:
 
     # Plugins
     for plugin in config.get("plugins", []):
+        if plugin.get("frozen", False):
+            continue
         version_file = REPO_ROOT / output_base / plugin["name"] / "_index.md"
         committed = extract_frontmatter_version(version_file)
         latest = get_pypi_latest(plugin["package"])
@@ -128,6 +135,8 @@ def check_all(config: dict) -> list[dict]:
 
     # CLIs
     for cli in config.get("clis", []):
+        if cli.get("frozen", False):
+            continue
         if "output_file" in cli:
             content_missing = not (REPO_ROOT / cli["output_file"]).is_file()
         elif "output_dir" in cli:

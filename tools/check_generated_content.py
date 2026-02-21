@@ -49,6 +49,8 @@ def check_all(config: dict) -> list[str]:
 
     # --- SDK API docs ---
     for sdk in config.get("sdks", []):
+        if sdk.get("frozen", False):
+            continue
         output_folder = sdk["output_folder"]
         sdk_packages = REPO_ROOT / output_folder / "packages"
         sdk_classes = REPO_ROOT / output_folder / "classes"
@@ -73,6 +75,8 @@ def check_all(config: dict) -> list[str]:
 
     # --- CLI docs ---
     for cli in config.get("clis", []):
+        if cli.get("frozen", False):
+            continue
         if "output_file" in cli:
             cli_path = REPO_ROOT / cli["output_file"]
             if not cli_path.is_file():
@@ -91,6 +95,8 @@ def check_all(config: dict) -> list[str]:
 
     plugins = config.get("plugins", [])
     for plugin in plugins:
+        if plugin.get("frozen", False):
+            continue
         name = plugin["name"]
         plugin_dir = REPO_ROOT / output_base / name
         if not plugin_dir.is_dir():
