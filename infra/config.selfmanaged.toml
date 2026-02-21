@@ -1,5 +1,0 @@
-baseURL = '/docs/selfmanaged/'
-
-[params]
-_merge = "deep"
-variant = "selfmanaged"

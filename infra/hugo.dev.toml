@@ -1,9 +1,0 @@
-# hugo.dev.toml - Settings for developer mode, a.k.a., 'make dev'
-
-baseURL = 'http://localhost/dev/site/p/'
-
-[server]
-  [[server.redirects]]
-    from = '/**'
-    status = 200
-    to = '/dev/site/p/404/'

@@ -1,8 +1,0 @@
-<div class="logo-container">
-    <a href="{{ .Site.BaseURL }}">
-        <img src="{{ printf "images/%s" (index .Site.Params.Key.logo .Site.Params.variant) | relURL }}" class="logo" />
-    </a>
-    <a href="{{ .Site.BaseURL }}" class="title">
-        <div>{{ index .Site.Params.Key.product_name .Site.Params.variant }} Docs</div>
-    </a>
-</div>

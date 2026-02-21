@@ -20,8 +20,22 @@ TARGETS := usage clean clean-generated base dist variant dev serve \
 	check-deleted-pages check-links check-generated-content check-api-docs \
 	check-llm-bundle-notes update-api-docs
 
+# Guard: fail fast if the infra submodule is not initialized.
+.PHONY: _check-infra
+_check-infra:
+	@if [ ! -f infra/Makefile ]; then \
+		echo "ERROR: infra/ submodule not initialized. Run: git submodule update --init"; \
+		exit 1; \
+	fi
+
 .PHONY: $(TARGETS)
-$(TARGETS):
+$(TARGETS): _check-infra
 	@$(MAKE) --no-print-directory -f infra/Makefile $@
+
+# Submodule update helpers (not forwarded to infra/Makefile).
+.PHONY: update-infra
+update-infra:
+	git submodule update --remote infra
+	@echo "infra/ updated to latest. Review and commit the change."
 
 .DEFAULT_GOAL := usage
