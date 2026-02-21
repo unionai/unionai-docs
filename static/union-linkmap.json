@@ -1,4 +1,17 @@
 {
+  "packages": {
+    "flyteplugins.union": "/api-reference/integrations/union/packages/flyteplugins.union/",
+    "flyteplugins.union.cli": "/api-reference/integrations/union/packages/flyteplugins.union.cli/",
+    "flyteplugins.union.cli.api_key": "/api-reference/integrations/union/packages/flyteplugins.union.cli.api_key/",
+    "flyteplugins.union.internal": "/api-reference/integrations/union/packages/flyteplugins.union.internal/",
+    "flyteplugins.union.internal.validate": "/api-reference/integrations/union/packages/flyteplugins.union.internal.validate/",
+    "flyteplugins.union.internal.validate.validate": "/api-reference/integrations/union/packages/flyteplugins.union.internal.validate.validate/",
+    "flyteplugins.union.internal.validate.validate.validate_pb2": "/api-reference/integrations/union/packages/flyteplugins.union.internal.validate.validate.validate_pb2/",
+    "flyteplugins.union.internal.validate.validate.validate_pb2_grpc": "/api-reference/integrations/union/packages/flyteplugins.union.internal.validate.validate.validate_pb2_grpc/",
+    "flyteplugins.union.remote": "/api-reference/integrations/union/packages/flyteplugins.union.remote/",
+    "flyteplugins.union.utils": "/api-reference/integrations/union/packages/flyteplugins.union.utils/",
+    "flyteplugins.union.utils.auth": "/api-reference/integrations/union/packages/flyteplugins.union.utils.auth/"
+  },
   "identifiers": {
     "flyteplugins.union.remote.ApiKey": "/api-reference/integrations/union/packages/flyteplugins.union.remote/apikey/",
     "ApiKey": "/api-reference/integrations/union/packages/flyteplugins.union.remote/apikey/",

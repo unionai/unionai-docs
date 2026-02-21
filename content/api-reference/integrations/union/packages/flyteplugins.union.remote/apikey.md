@@ -11,30 +11,30 @@ layout: py_api
 
 Represents a Union API Key (OAuth Application).
 
-API Keys in Union are OAuth 2.0 applications that can be used for
-headless authentication. They support client credentials flow for
-machine-to-machine authentication.
+    API Keys in Union are OAuth 2.0 applications that can be used for
+    headless authentication. They support client credentials flow for
+    machine-to-machine authentication.
 
-Attributes:
-    pb2: The underlying protobuf App message
-    organization: The organization this API key belongs to (for serverless)
-    encoded_credentials: Base64-encoded credentials for UNION_API_KEY env var
+    Attributes:
+        pb2: The underlying protobuf App message
+        organization: The organization this API key belongs to (for serverless)
+        encoded_credentials: Base64-encoded credentials for UNION_API_KEY env var
 
-Example:
-    # Create a new API key
-    api_key = ApiKey.create(name="ci-pipeline")
-    print(f"export FLYTE_API_KEY="{api_key.encoded_credentials}"")
+    Example:
+        # Create a new API key
+        api_key = ApiKey.create(name="ci-pipeline")
+        print(f"export FLYTE_API_KEY="{api_key.encoded_credentials}"")
 
-    # List all API keys
-    for key in ApiKey.listall():
-        print(f"{key.client_id}: {key.client_name}")
+        # List all API keys
+        for key in ApiKey.listall():
+            print(f"{key.client_id}: {key.client_name}")
 
-    # Get a specific API key
-    key = ApiKey.get(client_id="my-client-id")
+        # Get a specific API key
+        key = ApiKey.get(client_id="my-client-id")
 
-    # Delete an API key
-    ApiKey.delete(client_id="my-client-id")
-
+        # Delete an API key
+        ApiKey.delete(client_id="my-client-id")
+    
 
 
 ```python

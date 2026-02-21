@@ -1,4 +1,7 @@
 {
+  "packages": {
+    "flyteplugins.spark": "/api-reference/integrations/spark/packages/flyteplugins.spark/"
+  },
   "identifiers": {
     "flyteplugins.spark.ParquetToSparkDecoder": "/api-reference/integrations/spark/packages/flyteplugins.spark/parquettosparkdecoder/",
     "ParquetToSparkDecoder": "/api-reference/integrations/spark/packages/flyteplugins.spark/parquettosparkdecoder/",

@@ -1,4 +1,7 @@
 {
+  "packages": {
+    "flyteplugins.ray": "/api-reference/integrations/ray/packages/flyteplugins.ray/"
+  },
   "identifiers": {
     "flyteplugins.ray.HeadNodeConfig": "/api-reference/integrations/ray/packages/flyteplugins.ray/headnodeconfig/",
     "HeadNodeConfig": "/api-reference/integrations/ray/packages/flyteplugins.ray/headnodeconfig/",
