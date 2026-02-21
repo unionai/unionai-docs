@@ -16,7 +16,10 @@ import re
 import sys
 from pathlib import Path
 
-CONTENT_DIR = Path(__file__).resolve().parent.parent.parent / 'content'
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _repo import get_repo_root
+
+CONTENT_DIR = get_repo_root() / 'content'
 FRONTMATTER_PARAM = 'llm_readable_bundle'
 SHORTCODE = '{{< llm-bundle-note >}}'
 

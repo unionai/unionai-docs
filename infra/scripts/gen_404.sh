@@ -17,12 +17,15 @@ ensure_var "PREFIX"
 ensure_var "VARIANT"
 ensure_var "BUILD"
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+INFRA_DIR="$(dirname "$SCRIPT_DIR")"
+
 declare source
 
-if [[ -e "404.html.tmpl~${VARIANT}" ]]; then
-    source="404.html.tmpl~${VARIANT}"
+if [[ -e "${INFRA_DIR}/404.html.tmpl~${VARIANT}" ]]; then
+    source="${INFRA_DIR}/404.html.tmpl~${VARIANT}"
 else
-    source="404.html.tmpl"
+    source="${INFRA_DIR}/404.html.tmpl"
 fi
 
 readonly source

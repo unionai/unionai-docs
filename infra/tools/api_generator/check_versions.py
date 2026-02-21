@@ -31,7 +31,10 @@ try:
 except ModuleNotFoundError:
     import tomli as tomllib  # type: ignore[no-redef]
 
-REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _repo import get_repo_root
+
+REPO_ROOT = get_repo_root()
 CONFIG_FILE = REPO_ROOT / "api-packages.toml"
 
 
@@ -126,6 +129,7 @@ def check_all(config: dict) -> list[dict]:
             "plugin": plugin["plugin"],
             "name": plugin["name"],
             "title": plugin["title"],
+            "install": plugin.get("install"),
             "extras": plugin.get("extras", []),
             "committed": committed,
             "latest": latest,
@@ -188,7 +192,7 @@ def regenerate(results: list[dict]) -> None:
         outdated_sdks = [r["package"] for r in results if r["outdated"] and r["type"] == "sdk"]
         print(f"\nRegenerating SDK docs ({', '.join(outdated_sdks)})...")
         subprocess.run(
-            ["make", "-f", "Makefile.api.sdk", "sdks"],
+            ["make", "-f", "infra/Makefile.api.sdk", "sdks"],
             cwd=REPO_ROOT,
             check=True,
         )
@@ -199,7 +203,7 @@ def regenerate(results: list[dict]) -> None:
         outdated_clis = [r["name"] for r in results if r["outdated"] and r["type"] == "cli"]
         print(f"\nRegenerating CLI docs ({', '.join(outdated_clis)})...")
         subprocess.run(
-            ["make", "-f", "Makefile.api.sdk", "clis"],
+            ["make", "-f", "infra/Makefile.api.sdk", "clis"],
             cwd=REPO_ROOT,
             check=True,
         )
@@ -210,10 +214,13 @@ def regenerate(results: list[dict]) -> None:
         if r["type"] == "plugin":
             print(f"\nRegenerating plugin docs ({r['package']})...")
             cmd = [
-                "make", "-f", "Makefile.api.plugins",
+                "make", "-f", "infra/Makefile.api.plugins",
                 f"PLUGIN={r['plugin']}", f"TITLE={r['title']}", f"NAME={r['name']}",
             ]
-            if r.get("extras"):
+            # Determine the install spec: explicit install field > extras > default
+            if r.get("install"):
+                cmd.append(f"INSTALL={r['install']}")
+            elif r.get("extras"):
                 extras_str = ",".join(r["extras"])
                 cmd.append(f"INSTALL={r['package']}[{extras_str}]")
             subprocess.run(cmd, cwd=REPO_ROOT, check=True)

@@ -25,6 +25,9 @@ import urllib.request
 import urllib.error
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _repo import INFRA_ROOT
+
 REDIRECTS_FILE = "redirects.csv"
 CF_API_BASE = "https://api.cloudflare.com/client/v4"
 POLL_INTERVAL_SECONDS = 2
@@ -158,9 +161,8 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    # Resolve CSV path relative to repo root
-    repo_root = Path(__file__).parent.parent.parent
-    csv_path = repo_root / args.csv
+    # Resolve CSV path relative to infra/
+    csv_path = INFRA_ROOT / args.csv
 
     if not csv_path.exists():
         print(f"Error: {csv_path} not found", file=sys.stderr)

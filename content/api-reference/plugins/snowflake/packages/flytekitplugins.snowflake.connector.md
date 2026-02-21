@@ -50,7 +50,7 @@ def construct_query_link(
 ```python
 def get_connection(
     metadata: flytekitplugins.snowflake.connector.SnowflakeJobMetadata,
-) -> <module 'snowflake.connector' from '/Users/ppiegaze/repos/unionai/unionai-docs/.venv/lib/python3.12/site-packages/snowflake/connector/__init__.py'>
+) -> <module 'snowflake.connector' from '/private/tmp/unionai-docs-v1/.venv/lib/python3.12/site-packages/snowflake/connector/__init__.py'>
 ```
 | Parameter | Type | Description |
 |-|-|-|

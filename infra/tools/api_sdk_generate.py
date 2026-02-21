@@ -27,7 +27,9 @@ try:
 except ModuleNotFoundError:
     import tomli as tomllib  # type: ignore[no-redef]
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+from _repo import get_repo_root
+
+REPO_ROOT = get_repo_root()
 CONFIG_FILE = REPO_ROOT / "api-packages.toml"
 VENV_DIR = REPO_ROOT / ".venv"
 
@@ -57,7 +59,7 @@ def run_parser(python: Path, sdk: dict) -> str:
     api_data = f"/tmp/{sdk['generator_name']}.api.yaml"
     cmd = [
         str(python),
-        "tools/api_generator/parser",
+        "infra/tools/api_generator/parser",
         "--package", sdk["parser_package"],
         "--output", api_data,
     ]
@@ -77,7 +79,7 @@ def run_generator(python: Path, sdk: dict, api_data: str) -> None:
 
     cmd = [
         str(python),
-        "tools/api_generator/generate",
+        "infra/tools/api_generator/generate",
         "--name", sdk["generator_name"],
         "--title", sdk["generator_title"],
         "--api", api_data,

@@ -19,11 +19,13 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Tuple, Set
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _repo import get_repo_root, INFRA_ROOT
 
 # CSV format flags (matching existing redirects.csv)
 CSV_FLAGS = '302,TRUE,FALSE,TRUE,TRUE'
 
-# Default output file
+# Default output file (in infra/)
 REDIRECTS_FILE = 'redirects.csv'
 
 # Makefile include that defines VERSION
@@ -45,13 +47,13 @@ def read_version(repo_path: Path) -> str:
 
 
 def read_variants(repo_path: Path) -> List[str]:
-    """Read variant names from config.{variant}.toml files in the repo root."""
+    """Read variant names from config.{variant}.toml files in infra/."""
     variants = sorted(
         p.stem.split('.', 1)[1]
-        for p in repo_path.glob(VARIANT_CONFIG_GLOB)
+        for p in INFRA_ROOT.glob(VARIANT_CONFIG_GLOB)
     )
     if not variants:
-        print(f"Error: no {VARIANT_CONFIG_GLOB} files found in {repo_path}",
+        print(f"Error: no {VARIANT_CONFIG_GLOB} files found in {INFRA_ROOT}",
               file=sys.stderr)
         sys.exit(1)
     return variants
@@ -300,8 +302,8 @@ def main():
     )
     args = parser.parse_args()
 
-    repo_path = Path(__file__).parent.parent.parent
-    output_path = repo_path / args.output
+    repo_path = get_repo_root()
+    output_path = INFRA_ROOT / args.output
     version = read_version(repo_path)
     variants = read_variants(repo_path)
 
