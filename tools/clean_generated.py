@@ -44,6 +44,9 @@ def main() -> None:
 
     # --- SDK generated content ---
     for sdk in config.get("sdks", []):
+        if sdk.get("frozen", False):
+            print(f"Skipping {sdk['generator_name']}: frozen (committed content)")
+            continue
         output = REPO_ROOT / sdk["output_folder"]
         packages_dir = output / "packages"
         classes_dir = output / "classes"
@@ -69,6 +72,9 @@ def main() -> None:
     output_base = plugins_config.get("output_base", "content/api-reference/integrations")
 
     for plugin in config.get("plugins", []):
+        if plugin.get("frozen", False):
+            print(f"Skipping plugin {plugin['name']}: frozen (committed content)")
+            continue
         name = plugin["name"]
         plugin_dir = REPO_ROOT / output_base / name
         remove_path(plugin_dir, f"{output_base}/{name}")

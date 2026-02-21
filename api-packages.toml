@@ -92,8 +92,8 @@ title = "BigQuery"
 name = "bigquery"
 
 [[plugins]]
-package = "flytekitplugins-cometml"
-plugin = "flytekitplugins.cometml"
+package = "flytekitplugins-comet-ml"
+plugin = "flytekitplugins.comet_ml"
 title = "Comet ML"
 name = "comet-ml"
 
@@ -242,10 +242,11 @@ title = "Papermill"
 name = "papermill"
 
 [[plugins]]
-package = "flytekitplugins-perian"
-plugin = "flytekitplugins.perian"
+package = "flytekitplugins-perian-job"
+plugin = "flytekitplugins.perian_job"
 title = "Perian Job Platform"
 name = "perian"
+frozen = true
 
 [[plugins]]
 package = "flytekitplugins-polars"
@@ -291,6 +292,7 @@ name = "wandb"
 
 [[plugins]]
 package = "flytekitplugins-whylogs"
+install = "flytekitplugins-whylogs pandas"
 plugin = "flytekitplugins.whylogs"
 title = "whylogs"
 name = "whylogs"

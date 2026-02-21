@@ -1,0 +1,6 @@
+packages:
+  flytekitplugins.comet_ml: /api-reference/plugins/comet-ml/packages/flytekitplugins.comet_ml/
+identifiers: {}
+methods:
+  flytekitplugins.comet_ml.comet_ml_login: /api-reference/plugins/comet-ml/packages/flytekitplugins.comet_ml/#comet_ml_login
+  comet_ml_login: /api-reference/plugins/comet-ml/packages/flytekitplugins.comet_ml/#comet_ml_login

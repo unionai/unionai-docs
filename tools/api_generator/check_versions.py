@@ -94,6 +94,8 @@ def check_all(config: dict) -> list[dict]:
 
     # SDKs
     for sdk in config.get("sdks", []):
+        if sdk.get("frozen", False):
+            continue
         version_file = REPO_ROOT / sdk["version_file"]
         committed = extract_frontmatter_version(version_file)
         latest = get_pypi_latest(sdk["package"])
@@ -110,6 +112,8 @@ def check_all(config: dict) -> list[dict]:
 
     # Plugins
     for plugin in config.get("plugins", []):
+        if plugin.get("frozen", False):
+            continue
         version_file = REPO_ROOT / output_base / plugin["name"] / "_index.md"
         committed = extract_frontmatter_version(version_file)
         latest = get_pypi_latest(plugin["package"])
@@ -128,6 +132,8 @@ def check_all(config: dict) -> list[dict]:
 
     # CLIs
     for cli in config.get("clis", []):
+        if cli.get("frozen", False):
+            continue
         if "output_file" in cli:
             content_missing = not (REPO_ROOT / cli["output_file"]).is_file()
         elif "output_dir" in cli:
