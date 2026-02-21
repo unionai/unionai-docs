@@ -10,6 +10,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
+          submodules: 'true'
           fetch-depth: 0  # Full history required for rename detection
 
       - name: Set up Python
