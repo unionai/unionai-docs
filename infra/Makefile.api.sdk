@@ -4,10 +4,10 @@
 # Delegates actual generation to Python scripts.
 #
 # Examples:
-#   make -f Makefile.api.sdk                       # Full build with fresh venv
-#   make -f Makefile.api.sdk SKIP_VENV_SETUP=true  # Use current environment
-#   make -f Makefile.api.sdk sdks                  # SDK docs only
-#   make -f Makefile.api.sdk clis                  # CLI docs only
+#   make -f infra/Makefile.api.sdk                       # Full build with fresh venv
+#   make -f infra/Makefile.api.sdk SKIP_VENV_SETUP=true  # Use current environment
+#   make -f infra/Makefile.api.sdk sdks                  # SDK docs only
+#   make -f infra/Makefile.api.sdk clis                  # CLI docs only
 
 SKIP_VENV_SETUP ?= false
 

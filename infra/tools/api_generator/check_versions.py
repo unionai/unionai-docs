@@ -191,7 +191,7 @@ def regenerate(results: list[dict]) -> None:
         outdated_sdks = [r["package"] for r in results if r["outdated"] and r["type"] == "sdk"]
         print(f"\nRegenerating SDK docs ({', '.join(outdated_sdks)})...")
         subprocess.run(
-            ["make", "-f", "Makefile.api.sdk", "sdks"],
+            ["make", "-f", "infra/Makefile.api.sdk", "sdks"],
             cwd=REPO_ROOT,
             check=True,
         )
@@ -202,7 +202,7 @@ def regenerate(results: list[dict]) -> None:
         outdated_clis = [r["name"] for r in results if r["outdated"] and r["type"] == "cli"]
         print(f"\nRegenerating CLI docs ({', '.join(outdated_clis)})...")
         subprocess.run(
-            ["make", "-f", "Makefile.api.sdk", "clis"],
+            ["make", "-f", "infra/Makefile.api.sdk", "clis"],
             cwd=REPO_ROOT,
             check=True,
         )
@@ -213,7 +213,7 @@ def regenerate(results: list[dict]) -> None:
         if r["type"] == "plugin":
             print(f"\nRegenerating plugin docs ({r['package']})...")
             cmd = [
-                "make", "-f", "Makefile.api.plugins",
+                "make", "-f", "infra/Makefile.api.plugins",
                 f"PLUGIN={r['plugin']}", f"TITLE={r['title']}", f"NAME={r['name']}",
             ]
             if r.get("extras"):

@@ -1,10 +1,10 @@
 # Plugin API documentation generator
 #
 # Examples:
-#   make -f Makefile.api.plugins PLUGIN=flyteplugins.wandb TITLE="Weights & Biases" NAME=wandb
+#   make -f infra/Makefile.api.plugins PLUGIN=flyteplugins.wandb TITLE="Weights & Biases" NAME=wandb
 #
 # For packages available locally:
-#  make -f Makefile.api.plugins PLUGIN=flyteplugins.wandb TITLE="Weights & Biases" NAME=wandb SKIP_VENV_SETUP=true
+#  make -f infra/Makefile.api.plugins PLUGIN=flyteplugins.wandb TITLE="Weights & Biases" NAME=wandb SKIP_VENV_SETUP=true
 #
 # Required variables:
 #   PLUGIN  - Python import path (e.g., flyteplugins.wandb) used by the parser
@@ -102,7 +102,7 @@ help:
 	@echo "Integration API Documentation Generator"
 	@echo ""
 	@echo "Usage:"
-	@echo "  make -f Makefile.api.plugins PLUGIN=<package> TITLE=\"<title>\" NAME=<folder>"
+	@echo "  make -f infra/Makefile.api.plugins PLUGIN=<package> TITLE=\"<title>\" NAME=<folder>"
 	@echo ""
 	@echo "Required variables:"
 	@echo "  PLUGIN  - Python import path (e.g., flyteplugins.wandb)"
@@ -114,8 +114,8 @@ help:
 	@echo "  SKIP_VENV_SETUP=true - Skip automatic venv setup and use current environment"
 	@echo ""
 	@echo "Examples:"
-	@echo "  make -f Makefile.api.plugins PLUGIN=flyteplugins.wandb TITLE=\"Weights & Biases\" NAME=wandb"
-	@echo "  make -f Makefile.api.plugins PLUGIN=flyteplugins.connectors INSTALL=\"flyteplugins-connectors[bigquery,databricks,snowflake]\" TITLE=\"Connectors\" NAME=connectors"
+	@echo "  make -f infra/Makefile.api.plugins PLUGIN=flyteplugins.wandb TITLE=\"Weights & Biases\" NAME=wandb"
+	@echo "  make -f infra/Makefile.api.plugins PLUGIN=flyteplugins.connectors INSTALL=\"flyteplugins-connectors[bigquery,databricks,snowflake]\" TITLE=\"Connectors\" NAME=connectors"
 	@echo ""
 	@echo "Targets:"
 	@echo "  all              - Set up venv, parse, and generate (default)"
