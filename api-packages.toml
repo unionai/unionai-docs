@@ -290,9 +290,3 @@ plugin = "flytekitplugins.wandb"
 title = "Weights & Biases"
 name = "wandb"
 
-[[plugins]]
-package = "flytekitplugins-whylogs"
-install = "flytekitplugins-whylogs pandas"
-plugin = "flytekitplugins.whylogs"
-title = "whylogs"
-name = "whylogs"
