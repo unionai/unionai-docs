@@ -14,17 +14,17 @@ See [Hugo Installation](https://gohugo.io/getting-started/installing/).
 
 ## Clone the repository
 
-Clone the [`unionai/docs`](https://github.com/unionai/unionai-docs) repository to your local machine.
+Clone the [`unionai/unionai-docs`](https://github.com/unionai/unionai-docs) repository to your local machine.
 
 The content is located in the `content/` folder in the form of Markdown files.
 The hierarchy of the files and folders under `content/` directly reflect the URL and navigation structure of the site.
 
 ## Live preview
 
-Next, set up the live preview by going to the root of your local repository check-out and copy `hugo.local.toml~sample` to `hugo.local.toml`:
+Next, set up the live preview by going to the root of your local repository check-out and copy the sample configuration file to `hugo.local.toml`:
 
 ```shell
-$ cp hugo.local.toml~sample hugo.local.toml
+$ cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml
 ```
 
 This file contains the configuration for the live preview:
