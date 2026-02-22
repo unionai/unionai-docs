@@ -88,7 +88,7 @@ Run `flyte get config` to check which configuration is currently active.
 
 Create `hello.py`:
 
-{{< code file="/external/unionai-examples/v2/user-guide/getting-started/hello.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/getting-started/hello.py" lang="python" >}}
 
 Here's what's happening:
 

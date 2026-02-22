@@ -5,7 +5,7 @@
 #-----------------------------------
 # Site maintainers
 /content/                   @unionai/site-managers
-/external/                  @unionai/site-managers
+/unionai-examples/          @unionai/site-managers
 /include/                   @unionai/site-managers
 /static/                    @unionai/site-managers
 /data/run_on_union.yaml     @unionai/site-infra
@@ -13,7 +13,7 @@ hugo.site.toml              @unionai/site-managers
 
 #-----------------------------------
 # Infrastructure
-/infra/             @unionai/site-infra
+/unionai-docs-infra/ @unionai/site-infra
 /data/              @unionai/site-infra
 Makefile*           @unionai/site-infra
 APIS.md             @unionai/site-infra

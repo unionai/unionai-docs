@@ -20,13 +20,13 @@ pip install flyteplugins-sglang
 
 Here's a simple example serving a HuggingFace model:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/sglang/basic_sglang.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/sglang/basic_sglang.py" lang=python >}}
 
 ## Using prefetched models
 
 You can use models prefetched with `flyte.prefetch`:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/sglang/sglang_with_prefetch.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/sglang/sglang_with_prefetch.py" lang=python >}}
 
 ## Model streaming
 
@@ -93,7 +93,7 @@ print(response.choices[0].message.content)
 
 For larger models, use multiple GPUs with tensor parallelism:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/sglang/sglang_multi_gpu.py" fragment=multi-gpu lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/sglang/sglang_multi_gpu.py" fragment=multi-gpu lang=python >}}
 
 The tensor parallelism size (`--tp`) should match the number of GPUs specified in resources.
 

@@ -21,4 +21,4 @@ pip install flyteplugins-spark
 
 The following example shows how to configure Spark in a `TaskEnvironment`. Flyte automatically provisions a Spark cluster for each task using this configuration:
 
-{{< code file="/external/unionai-examples/v2/integrations/flyte-plugins/spark/spark_example.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/integrations/flyte-plugins/spark/spark_example.py" lang="python" >}}

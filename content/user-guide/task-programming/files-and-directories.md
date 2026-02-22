@@ -25,7 +25,7 @@ The `File` and `Dir` classes provide both `sync` and `async` methods to interact
 
 The examples below show the basic use-cases of uploading files and directories created locally, and using them as inputs to a task.
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/files-and-directories/file_and_dir.py" fragment="write-file" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/files-and-directories/file_and_dir.py" fragment="write-file" lang="python" >}}
 
 The upload happens when the [`File.from_local`](../../api-reference/flyte-sdk/packages/flyte.io/file#from_local) command is called.
 Because the upload would otherwise block execution, `File.from_local` is implemented as an `async` function.
@@ -35,10 +35,10 @@ This is a slightly more complicated task that calls the task above to produce `F
 
 These are assembled into a directory and the `Dir` object is returned, also via invoking `from_local`.
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/files-and-directories/file_and_dir.py" fragment="write-and-check-files" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/files-and-directories/file_and_dir.py" fragment="write-and-check-files" lang="python" >}}
 
 Finally, these tasks show how to use an offloaded type as an input.
 Helper functions like `walk` and `open` have been added to the objects
 and do what you might expect.
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/files-and-directories/file_and_dir.py" fragment="create-and-check-dir" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/files-and-directories/file_and_dir.py" fragment="create-and-check-dir" lang="python" >}}

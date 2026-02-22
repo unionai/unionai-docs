@@ -16,7 +16,7 @@ This ability is a direct result of the fact that workflows are now written in re
 giving you with all the power and flexibility of Python error handling.
 Let's look at an example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/error-handling/error_handling.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/error-handling/error_handling.py" lang="python" >}}
 <!-- TODO:
 Create better example.
 -->

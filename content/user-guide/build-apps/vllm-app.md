@@ -20,13 +20,13 @@ pip install flyteplugins-vllm
 
 Here's a simple example serving a HuggingFace model:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/vllm/basic_vllm.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/vllm/basic_vllm.py" lang=python >}}
 
 ## Using prefetched models
 
 You can use models prefetched with `flyte.prefetch`:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/vllm/vllm_with_prefetch.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/vllm/vllm_with_prefetch.py" lang=python >}}
 
 ## Model streaming
 
@@ -93,7 +93,7 @@ print(response.choices[0].message.content)
 
 For larger models, use multiple GPUs with tensor parallelism:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/vllm/vllm_multi_gpu.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/vllm/vllm_multi_gpu.py" lang=python >}}
 
 The `tensor-parallel-size` should match the number of GPUs specified in resources.
 

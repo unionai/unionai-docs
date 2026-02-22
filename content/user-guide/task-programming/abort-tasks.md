@@ -26,7 +26,7 @@ This means you don't need to manually clean up child actions. Flyte handles it f
 
 Consider this example where `main` exits after 10 seconds, but it has spawned a `sleep_for` action that is set to run for 30 seconds:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/abort-tasks/action_lifetime.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/abort-tasks/action_lifetime.py" lang="python" >}}
 
 When `main` returns after 10 seconds, the `sleep_for` action (which still has 20 seconds remaining) is automatically aborted.
 The `sleep_for` task receives an `asyncio.CancelledError`, giving it a chance to handle the cancellation gracefully.
@@ -41,7 +41,7 @@ To cancel actions programmatically:
 1. Launch actions using `asyncio.create_task()` and retain references to the returned task objects.
 2. When the desired condition is met, call `.cancel()` on the tasks you want to stop.
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/abort-tasks/cancel_tasks.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/abort-tasks/cancel_tasks.py" lang="python" >}}
 
 In this code:
 
@@ -70,7 +70,7 @@ flyte abort <run-name> <action-name>
 
 When using `asyncio.gather()` with `return_exceptions=True`, externally aborted actions return an `ActionAbortedError` instead of raising it. This lets you inspect results and handle aborts on a per-action basis:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/abort-tasks/external_abort.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/abort-tasks/external_abort.py" lang="python" >}}
 
 In this code:
 

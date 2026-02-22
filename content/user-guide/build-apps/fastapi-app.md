@@ -12,7 +12,7 @@ FastAPI is a modern, fast web framework for building APIs. Flyte provides `FastA
 
 Here's a simple FastAPI app:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/basic_fastapi.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/basic_fastapi.py" lang=python >}}
 
 Once deployed, you can:
 - Access the API at the generated URL
@@ -23,7 +23,7 @@ Once deployed, you can:
 
 Here's an example of serving a scikit-learn model:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/ml_model_serving.py" fragment=ml-model lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/ml_model_serving.py" fragment=ml-model lang=python >}}
 
 
 ## Accessing Swagger documentation
@@ -42,17 +42,17 @@ The Swagger UI provides an interactive interface where you can:
 
 ## Example: REST API with multiple endpoints
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/rest_api.py" fragment=rest-api lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/rest_api.py" fragment=rest-api lang=python >}}
 
 ## Multi-file FastAPI app
 
 Here's an example of a multi-file FastAPI app:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/multi_file/app.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/multi_file/app.py" lang=python >}}
 
 The helper module:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/multi_file/module.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/multi_file/module.py" lang=python >}}
 
 See [Multi-script apps](./multi-script-apps) for more details on building FastAPI apps with multiple files.
 

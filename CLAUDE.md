@@ -14,7 +14,7 @@ This is a **multi-variant Hugo documentation site** for Flyte (open-source) and 
 
 ```bash
 # Development (requires hugo.local.toml setup first)
-cp infra/hugo.local.toml~sample hugo.local.toml  # First time only
+cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml  # First time only
 make dev                                          # Start dev server at localhost:1313
 
 # Production build
@@ -22,12 +22,12 @@ make dist                                   # Build all variants to dist/
 make serve PORT=4444                        # Serve dist/ locally
 
 # Examples submodule
-make init-examples                          # Initialize external/unionai-examples
+make init-examples                          # Initialize unionai-examples
 make update-examples                        # Update to latest
 
 # API documentation regeneration
-make -f infra/Makefile.api.sdk              # SDK API + CLI docs (config-driven)
-make -f infra/Makefile.api.plugins          # Plugin API docs (config-driven)
+make -f unionai-docs-infra/Makefile.api.sdk              # SDK API + CLI docs (config-driven)
+make -f unionai-docs-infra/Makefile.api.plugins          # Plugin API docs (config-driven)
 
 # Validation
 make check-images                           # Validate image references
@@ -39,7 +39,7 @@ make validate-urls                          # Check for broken URLs
 
 ### Repository Layout
 
-The repo separates **version-specific content/config** (top level) from **shared build infrastructure** (`infra/`):
+The repo separates **version-specific content/config** (top level) from **shared build infrastructure** (`unionai-docs-infra/`):
 
 **Top level** — files that differ between `main` (v2) and `v1` branches:
 - `makefile.inc` - VERSION, VARIANTS
@@ -47,16 +47,16 @@ The repo separates **version-specific content/config** (top level) from **shared
 - `api-packages.toml` - API package registry
 - `content/`, `data/`, `static/`, `include/` - Content and generated data
 
-**`infra/`** — shared build infrastructure (identical across branches):
-- `infra/Makefile` - Real build logic
-- `infra/hugo.toml`, `infra/hugo.ver.toml`, `infra/config.{variant}.toml` - Hugo config
-- `infra/scripts/` - Build shell scripts
-- `infra/tools/` - Python build tools
-- `infra/layouts/` - Hugo templates, partials, shortcodes
-- `infra/themes/` - Hugo theme
-- `infra/redirects.csv` - Redirect data
+**`unionai-docs-infra/`** — shared build infrastructure (identical across branches):
+- `unionai-docs-infra/Makefile` - Real build logic
+- `unionai-docs-infra/hugo.toml`, `unionai-docs-infra/hugo.ver.toml`, `unionai-docs-infra/config.{variant}.toml` - Hugo config
+- `unionai-docs-infra/scripts/` - Build shell scripts
+- `unionai-docs-infra/tools/` - Python build tools
+- `unionai-docs-infra/layouts/` - Hugo templates, partials, shortcodes
+- `unionai-docs-infra/themes/` - Hugo theme
+- `unionai-docs-infra/redirects.csv` - Redirect data
 
-The thin top-level `Makefile` forwards all targets to `infra/Makefile` via `make -f`.
+The thin top-level `Makefile` forwards all targets to `unionai-docs-infra/Makefile` via `make -f`.
 
 ### Variant System
 
@@ -86,10 +86,10 @@ Union cloud content here
 ### Hugo Configuration Chain
 
 Configs are merged in order:
-1. `infra/hugo.toml` - Core settings (includes directory remapping for `infra/layouts`, etc.)
+1. `unionai-docs-infra/hugo.toml` - Core settings (includes directory remapping for `unionai-docs-infra/layouts`, etc.)
 2. `hugo.site.toml` - Site-wide settings (version-specific)
-3. `infra/hugo.ver.toml` - Version definitions
-4. `infra/config.{variant}.toml` - Variant-specific settings
+3. `unionai-docs-infra/hugo.ver.toml` - Version definitions
+4. `unionai-docs-infra/config.{variant}.toml` - Variant-specific settings
 5. `hugo.local.toml` - Local dev overrides (not committed)
 
 ### LLM Documentation Pipeline
@@ -99,7 +99,7 @@ The build generates `llms-full.txt` files for each variant - consolidated single
 ## Development Setup
 
 1. Install Hugo >= 0.145.0: `brew install hugo`
-2. Copy config: `cp infra/hugo.local.toml~sample hugo.local.toml`
+2. Copy config: `cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml`
 3. Run: `make dev`
 
 Development settings in `hugo.local.toml`:

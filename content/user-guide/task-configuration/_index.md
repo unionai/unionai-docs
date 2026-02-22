@@ -17,7 +17,7 @@ Flyte manages the spinning up of the containers, the execution of the code, and 
 
 The simplest possible case is a `TaskEnvironment` with only a `name` parameter, and an `env.task` decorator, with no parameters:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/task_config.py" fragment="simple" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/task_config.py" fragment="simple" lang="python" >}}
 
 > [!NOTE]
 > Notice how the `TaskEnvironment` is assigned to the variable `env` and then that variable is
@@ -47,7 +47,7 @@ For shared parameters, the more specific level will override the more general on
 
 Here is an example of how these levels work together, showing each level with all available parameters:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/task_config.py" fragment="config-levels" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/task_config.py" fragment="config-levels" lang="python" >}}
 
 ### Parameter interaction
 
@@ -91,7 +91,7 @@ The full set of parameters available for configuring a task environment, task de
   The fully qualified name is always the `TaskEnvironment` name (the one above) followed by a period and then the task function name (the name of the Python function being decorated).
   For example:
 
-  {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/task_config.py" fragment="simple" lang="python" >}}
+  {{< code file="/unionai-examples/v2/user-guide/task-configuration/task_config.py" fragment="simple" lang="python" >}}
 
   Here, the name of the TaskEnvironment is `my_env` and the fully qualified name of the task is `my_env.my_task`.
   The `TaskEnvironment` name and fully qualified name of a task name are both fixed and cannot be overridden.
