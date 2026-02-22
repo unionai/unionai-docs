@@ -154,6 +154,30 @@ The claims available depend on your IdP and authorization server configuration. 
 > [!NOTE]
 > Verify that your IdP includes the desired claims in the access token (not just the ID token). Some IdPs require explicit configuration to include claims like `groups` or `preferred_username` in access tokens.
 
+## Security model
+
+When identity injection is enabled, the configured annotation and environment variable keys are **authoritative** — they always reflect the authenticated caller's JWT claims and cannot be overridden by user-specified values.
+
+The control plane applies identity-injected values **after** any user-provided annotations, so configured `targetKey` values always contain the real caller identity. Users cannot spoof identity annotations by setting them directly on the execution request.
+
+Users can still set annotations on keys that are **not** managed by identity injection. Only the specific `targetKey` values in the configuration are protected.
+
+## Behavior with triggers and retries
+
+### Triggered runs (schedules, cron)
+
+When a user deploys a trigger (e.g. via `@workflow.schedule`), the control plane extracts the **deployer's** JWT claims at deploy time and stores them in the trigger specification. When the trigger fires on schedule, the stored identity flows through automatically — no re-injection occurs at fire time.
+
+This means triggered runs are attributed to the **person or application that deployed the trigger**, not the system scheduler.
+
+If a trigger is redeployed by a different user, the new deployer's identity replaces the old one.
+
+### Retried or relaunched runs
+
+When a failed run is retried (relaunched), identity injection runs again with the **retrier's** authenticated context. The retrier's identity annotations overwrite the original values on the new execution.
+
+This is the correct behavior for audit — the retrier initiated this specific execution. The original failed run retains the original identity for historical audit.
+
 ## Use case: credential injection with MutatingAdmissionWebhook
 
 A common pattern is to combine identity injection with a MutatingAdmissionWebhook that injects cloud credentials based on the caller's identity:
