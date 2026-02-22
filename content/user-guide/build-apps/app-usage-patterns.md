@@ -25,7 +25,7 @@ Tasks can call apps by making HTTP requests to the app's endpoint. This is usefu
 
 ### Example: Task calling an app
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/task_calling_app.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/task_calling_app.py" lang=python >}}
 
 Key points:
 - The task environment uses `depends_on=[app_env]` to ensure the app is deployed first
@@ -46,7 +46,7 @@ Webhooks are HTTP endpoints that trigger actions in response to external events.
 
 Here's a simple webhook that triggers Flyte tasks:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/webhook/basic_webhook.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/webhook/basic_webhook.py" lang=python >}}
 
 Once deployed, you can trigger tasks via HTTP POST:
 
@@ -73,15 +73,15 @@ Response:
 
 Use Pydantic for input validation:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/webhook_validation.py" fragment=validation-model lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/webhook_validation.py" fragment=validation-model lang=python >}}
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/webhook_validation.py" fragment=validated-webhook lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/webhook_validation.py" fragment=validated-webhook lang=python >}}
 
 **Webhook with response waiting**
 
 Wait for task completion:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/webhook_wait.py" fragment=wait-webhook lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/webhook_wait.py" fragment=wait-webhook lang=python >}}
 
 **Webhook with secret management**
 
@@ -124,7 +124,7 @@ Security considerations:
 
 Here's an example webhook that triggers tasks based on GitHub events:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/github_webhook.py" fragment=github-webhook lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/github_webhook.py" fragment=github-webhook lang=python >}}
 
 ## Call app from app
 
@@ -136,7 +136,7 @@ Apps can call other apps by making HTTP requests. This is useful for:
 
 ### Example: App calling another app
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/app_calling_app.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/app_calling_app.py" lang=python >}}
 
 Key points:
 - Use `depends_on=[env1]` to ensure dependencies are deployed first
@@ -147,7 +147,7 @@ Key points:
 
 You can pass app endpoints as parameters for more flexibility:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/app_calling_app_endpoint.py" fragment=using-app-endpoint lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/app_calling_app_endpoint.py" fragment=using-app-endpoint lang=python >}}
 
 ## WebSocket-based patterns
 
@@ -157,31 +157,31 @@ WebSockets enable bidirectional, real-time communication between clients and ser
 
 Here's a simple FastAPI app with WebSocket support:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/websocket/basic_websocket.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/websocket/basic_websocket.py" lang=python >}}
 
 ### WebSocket patterns
 
 **Echo server**
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/websocket/websocket_patterns.py" fragment=echo-server lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/websocket/websocket_patterns.py" fragment=echo-server lang=python >}}
 
 **Broadcast server**
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/websocket/websocket_patterns.py" fragment=broadcast-server lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/websocket/websocket_patterns.py" fragment=broadcast-server lang=python >}}
 
 **Real-time data streaming**
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/websocket/websocket_patterns.py" fragment=streaming-server lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/websocket/websocket_patterns.py" fragment=streaming-server lang=python >}}
 
 **Chat application**
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/websocket/websocket_patterns.py" fragment=chat-room lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/websocket/websocket_patterns.py" fragment=chat-room lang=python >}}
 
 ### Using WebSockets with Flyte tasks
 
 You can trigger Flyte tasks from WebSocket messages:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/websocket/task_runner_websocket.py" fragment=task-runner-websocket lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/websocket/task_runner_websocket.py" fragment=task-runner-websocket lang=python >}}
 
 ### WebSocket client example
 

@@ -69,7 +69,7 @@ This image is itself based on the official Python Docker image (specifically `py
 Starting there, you can layer additional features onto your image.
 For example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/container-images/from_debian_base.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/container-images/from_debian_base.py" lang="python" >}}
 
 > [!NOTE]
 > The `registry` parameter is only needed if you are building the image locally. It is not required when using the Union backend `ImageBuilder`.
@@ -87,7 +87,7 @@ Another common technique for defining an image is to use [`uv` inline script met
 The `from_uv_script` method starts with the default Flyte image and adds the dependencies specified in the `uv` metadata.
 For example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/container-images/from_uv_script.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/container-images/from_uv_script.py" lang="python" >}}
 
 The advantage of this approach is that the dependencies used when running a script locally and when running it on the Flyte/Union backend are always the same (as long as you use `uv` to run your scripts locally).
 This means you can develop and test your scripts in a consistent environment, reducing the chances of encountering issues when deploying to the backend.

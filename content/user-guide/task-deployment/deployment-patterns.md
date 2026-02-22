@@ -33,7 +33,7 @@ The simplest deployment pattern involves defining both your tasks and task envir
 
 ### Example structure
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/simple_file.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/simple_file.py" lang="python" >}}
 
 ### Deployment commands
 
@@ -63,17 +63,17 @@ When you need full control over the container environment, you can specify a cus
 
 ### Example structure
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/Dockerfile" lang="dockerfile" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/Dockerfile" lang="dockerfile" >}}
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/dockerfile_env.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/dockerfile_env.py" lang="python" >}}
 
 ### Alternative: Dockerfile in different directory
 
 You can also reference Dockerfiles from subdirectories:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/src/docker_env_in_dir.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/src/docker_env_in_dir.py" lang="python" >}}
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/Dockerfile.workdir" lang="dockerfile" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/Dockerfile.workdir" lang="dockerfile" >}}
 
 ### Key considerations
 
@@ -135,13 +135,13 @@ pyproject_package/
 The business logic is completely separate from Flyte and can be used independently:
 
 #### Data Loading (`data/loader.py`)
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/data/loader.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/data/loader.py" lang="python" >}}
 
 #### Data Processing (`data/processor.py`)
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/data/processor.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/data/processor.py" lang="python" >}}
 
 #### Analysis (`models/analyzer.py`)
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/models/analyzer.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/models/analyzer.py" lang="python" >}}
 
 These modules demonstrate:
 - **No Flyte dependencies** - can be tested and used independently
@@ -154,17 +154,17 @@ These modules demonstrate:
 
 The Flyte tasks orchestrate the business logic with proper async execution:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/tasks/tasks.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/tasks/tasks.py" lang="python" >}}
 
 ### Entrypoint configuration
 
 The main entrypoint demonstrates proper initialization and execution patterns:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/main.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/main.py" lang="python" >}}
 
 ### Dependencies and configuration
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/pyproject.toml" lang="toml" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/pyproject.toml" lang="toml" >}}
 
 ### Key features
 
@@ -333,13 +333,13 @@ However, sometimes you need to **completely embed your code into the container i
 
 ### Key configuration
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/full_build/main.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/full_build/main.py" lang="python" >}}
 
 ### Local dependency example
 
 The main.py file imports from a local dependency that gets included in the build:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/full_build/dep.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/full_build/dep.py" lang="python" >}}
 
 ### Critical configuration components
 
@@ -461,9 +461,9 @@ pythonpath/
 
 ### Implementation
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pythonpath/workflows/workflow.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pythonpath/workflows/workflow.py" lang="python" >}}
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pythonpath/src/my_module.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pythonpath/src/my_module.py" lang="python" >}}
 
 ### Task environment dependencies
 
@@ -546,7 +546,7 @@ For environments that need to change based on deployment context (development vs
 
 Use `flyte.current_domain()` to deterministically create different task environments based on the deployment domain:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dynamic_environments/environment_picker.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dynamic_environments/environment_picker.py" lang="python" >}}
 
 ### Why this pattern works
 
@@ -578,7 +578,7 @@ Use `flyte.current_domain()` to deterministically create different task environm
 
 For cases where you need to pass domain information as environment variables to the container runtime, use this approach:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dynamic_environments_with_envvars/environment_picker.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dynamic_environments_with_envvars/environment_picker.py" lang="python" >}}
 
 #### Key differences from domain-based approach
 
@@ -629,7 +629,7 @@ flyte deploy environment_picker.py
 
 For programmatic usage, ensure proper initialization:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dynamic_environments/main.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dynamic_environments/main.py" lang="python" >}}
 
 ### When to use dynamic environments
 

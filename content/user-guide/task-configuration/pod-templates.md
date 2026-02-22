@@ -44,7 +44,7 @@ image = flyte.Image.from_debian_base().with_pip_packages("kubernetes")
 
 Here's a complete example showing how to configure labels, annotations, environment variables, and image pull secrets:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/pod-templates/pod_template.py" fragment="pod-template" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/pod-templates/pod_template.py" fragment="pod-template" lang="python" >}}
 
 ## PodTemplate parameters
 

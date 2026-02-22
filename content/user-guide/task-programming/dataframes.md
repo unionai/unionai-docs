@@ -16,13 +16,13 @@ The `flyte.io.DataFrame` type provides serialization support for common engines 
 
 For our example we will start by setting up our task environment with the required dependencies and create some sample data.
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="setup" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="setup" lang="python" >}}
 
 ## Create a raw DataFrame
 
 Now, let's create a task that returns a native Pandas DataFrame:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="raw-dataframe" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="raw-dataframe" lang="python" >}}
 
 This is the most basic use-case of how to pass DataFrames (of all kinds, not just Pandas).
 We simply create the DataFrame as normal, and return it.
@@ -40,7 +40,7 @@ Flyte supports auto-serialization for the following DataFrame types:
 
 Alternatively you can also create a `flyte.io.DataFrame` object directly from a native object with the `from_df` method:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="from-df" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="from-df" lang="python" >}}
 
 The `flyte.io.DataFrame` class creates a thin wrapper around objects of any standard DataFrame type. It serves as a generic "any DataFrame type" (a concept that Python itself does not currently offer).
 
@@ -52,7 +52,7 @@ The advantage of the unified `flyte.io.DataFrame` wrapper is that you can be exp
 
 You can leverage Flyte to automatically download and convert the DataFrame between types when needed:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="automatic" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="automatic" lang="python" >}}
 
 This task takes two DataFrames as input. We'll pass one raw Pandas DataFrame, and one `flyte.io.DataFrame`.
 Flyte automatically converts the `flyte.io.DataFrame` to a Pandas DataFrame (since we declared that as the input type) before passing it to the task.
@@ -62,7 +62,7 @@ The actual download and conversion happens only when we access the data, in this
 
 When a task receives a `flyte.io.DataFrame`, you can request a concrete backend representation. For example, to download as a pandas DataFrame:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="download" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="download" lang="python" >}}
 
 The `open()` call delegates to the DataFrame handler for the stored format and converts to the requested in-memory type.
 
@@ -70,4 +70,4 @@ The `open()` call delegates to the DataFrame handler for the stored format and c
 
 Finally, we can define a `main` function to run the tasks defined above and a `__main__` block to execute the workflow:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="main" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="main" lang="python" >}}

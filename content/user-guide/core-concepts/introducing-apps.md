@@ -55,7 +55,7 @@ Let's create a minimal FastAPI app to see how this works.
 
 First, create `hello_app.py`:
 
-{{< code file="/external/unionai-examples/v2/user-guide/getting-started/serving/hello_app.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/getting-started/serving/hello_app.py" lang="python" >}}
 
 ### Understanding the code
 

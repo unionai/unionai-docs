@@ -21,4 +21,4 @@ $ pip install flyteplugins-pytorch
 
 The following example shows how to configure Pytorch in a `TaskEnvironment`. Flyte automatically provisions a Pytorch cluster for each task using this configuration:
 
-{{< code file="/external/unionai-examples/v2/integrations/flyte-plugins/pytorch/pytorch_example.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/integrations/flyte-plugins/pytorch/pytorch_example.py" lang="python" >}}

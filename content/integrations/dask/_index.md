@@ -25,4 +25,4 @@ $ pip install flyteplugins-dask
 
 The following example shows how to configure Dask in a `TaskEnvironment`. Flyte automatically provisions a Dask cluster for each task using this configuration:
 
-{{< code file="/external/unionai-examples/v2/integrations/flyte-plugins/dask/dask_example.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/integrations/flyte-plugins/dask/dask_example.py" lang="python" >}}

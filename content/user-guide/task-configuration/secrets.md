@@ -83,7 +83,7 @@ To use a literal string secret, specify it in the `TaskEnvironment` along with t
 You can then access it using `os.getenv()` in your task code.
 For example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/secrets/secrets.py" fragment="literal" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/secrets/secrets.py" fragment="literal" lang="python" >}}
 
 ## Using a file secret
 
@@ -93,7 +93,7 @@ The file will be mounted at `/etc/flyte/secrets/<SECRET_KEY>`.
 
 For example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/secrets/secrets.py" fragment="file" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/secrets/secrets.py" fragment="file" lang="python" >}}
 
 > [!NOTE]
 > Currently, to access a file secret you must specify a `mount` parameter value of `"/etc/flyte/secrets"`.
