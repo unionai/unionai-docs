@@ -22,7 +22,7 @@ Currently, the docs site supports four variants:
 
 Each variant is referenced in the page logic using its respective code name: `flyte`, `serverless`, `byoc`, or `selfmanaged`.
 
-The available set of variants are defined in the `config.<code_name>.toml` files in the root of the repository.
+The available set of variants are defined in the `config.<code_name>.toml` files in the `unionai-docs-infra/` directory.
 
 ## Variants at the whole-page level
 
@@ -33,7 +33,7 @@ In the public website, if you are on page in one variant, and you change to a di
 If it does not exist, you will see a message indicating that the page is not available in the selected variant.
 
 In the source Markdown, the presence or absence of a page in a given variant is governed by  `variants` field in the front matter parameter of the page.
-For example, if you look at the Markdown source for [this page (the page you are currently viewing)](https://github.com/unionai/docs/content/community/contributing-docs.md), you will see the following front matter:
+For example, if you look at the Markdown source for [this page (the page you are currently viewing)](https://github.com/unionai/unionai-docs/blob/v1/content/community/contributing-docs.md), you will see the following front matter:
 
 ```markdown
 ---
@@ -59,7 +59,7 @@ As you can see, the `variants` field expects a space-separated list of keywords:
 
 * The code names for the currently variants are, `flyte`, `serverless`, `byoc`, and `selfmanaged`.
 * All supported variants must be included explicitly in every `variants` field with a leading `+` or `-`. There is no default behavior.
-* The supported variants are configured in the root of the repository in the files named `config.<variant>.toml`.
+* The supported variants are configured in the `unionai-docs-infra/` directory in the files named `config.<variant>.toml`.
 
 ## Conditional rendering within a page
 
@@ -125,7 +125,7 @@ For more details on the `{{</* key */>}}` shortcode, see the [Shortcodes > `key`
 
 ## Full example
 
-Here is full example. If you look at the Markdown source for [this page (the page you are currently viewing)](https://github.com/unionai/docs/content/community/contributing-docs/variants.md), you will see the following section:
+Here is full example. If you look at the Markdown source for [this page (the page you are currently viewing)](https://github.com/unionai/unionai-docs/blob/v1/content/community/contributing-docs/variants.md), you will see the following section:
 
 ```markdown
 > **This text is visible in all variants.**
@@ -204,13 +204,13 @@ For example, if we have a variant `acme`, then when built the content goes to:
 
 To create a new variant a few steps are required:
 
-| File                    | Changes                                                        |
-| ----------------------- | -------------------------------------------------------------- |
-| `hugo.site.toml`        | Add to `params.variant_weights` and all `params.key`           |
-| `hugo.toml`             | Add to `params.search`                                         |
-| `Makefile`              | Add a new `make variant` to `dist` target                      |
-| `<content>.md`          | Add either `+<variant>` or `-<variant>` to all content pages   |
-| `config.<variant>.toml` | Create a new file and configure `baseURL` and `params.variant` |
+| File                                      | Changes                                                        |
+| ----------------------------------------- | -------------------------------------------------------------- |
+| `hugo.site.toml`                          | Add to `params.variant_weights` and all `params.key`           |
+| `unionai-docs-infra/hugo.toml`            | Add to `params.search`                                         |
+| `unionai-docs-infra/Makefile`             | Add a new `make variant` to `dist` target                      |
+| `<content>.md`                            | Add either `+<variant>` or `-<variant>` to all content pages   |
+| `unionai-docs-infra/config.<variant>.toml`| Create a new file and configure `baseURL` and `params.variant` |
 
 ### Testing the new variant
 
