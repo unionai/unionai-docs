@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['infra']
+    paths: ['unionai-docs-infra']
 
 jobs:
   deploy-redirects:
@@ -26,16 +26,16 @@ jobs:
             echo "Manual trigger, proceeding with deploy."
             exit 0
           fi
-          # For push events, check if the infra submodule ref changed and
+          # For push events, check if the unionai-docs-infra submodule ref changed and
           # whether that change includes redirects.csv
-          OLD_REF=$(git diff HEAD~1 HEAD -- infra | grep "^-Subproject" | awk '{print $3}' || true)
-          NEW_REF=$(git diff HEAD~1 HEAD -- infra | grep "^+Subproject" | awk '{print $3}' || true)
+          OLD_REF=$(git diff HEAD~1 HEAD -- unionai-docs-infra | grep "^-Subproject" | awk '{print $3}' || true)
+          NEW_REF=$(git diff HEAD~1 HEAD -- unionai-docs-infra | grep "^+Subproject" | awk '{print $3}' || true)
           if [ -z "$OLD_REF" ] || [ -z "$NEW_REF" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No submodule ref change detected, skipping."
             exit 0
           fi
-          if git -C infra diff --name-only "$OLD_REF" "$NEW_REF" | grep -q "^redirects.csv$"; then
+          if git -C unionai-docs-infra diff --name-only "$OLD_REF" "$NEW_REF" | grep -q "^redirects.csv$"; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
             echo "redirects.csv changed, proceeding with deploy."
           else
@@ -55,4 +55,4 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_LIST_ID: ${{ secrets.CLOUDFLARE_LIST_ID }}
-        run: python3 infra/tools/redirect_generator/deploy_redirects.py
+        run: python3 unionai-docs-infra/tools/redirect_generator/deploy_redirects.py
