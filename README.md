@@ -8,12 +8,11 @@ This repository holds all documentation for the [Flyte OSS project](https://www.
 
 ## Repository structure
 
-The docs system uses two repositories:
+The docs system uses three repositories:
 
 - **[unionai-docs](https://github.com/unionai/unionai-docs)** (this repo) — version-specific content (`content/`, `data/`, `linkmap/`, `include/`), configuration (`api-packages.toml`, `makefile.inc`), and CI workflows.
-- **[unionai-docs-infra](https://github.com/unionai/unionai-docs-infra)** (submodule at `unionai-docs-infra/`) — shared build infrastructure: Hugo config, layouts, themes, Python tools, scripts, and redirect data. Identical across `main` (v2) and `v1` branches.
-
-A third submodule, **[unionai-examples](https://github.com/unionai/unionai-examples)** (at `unionai-examples/`), contains example code referenced by the docs.
+- **[unionai-docs-infra](https://github.com/unionai/unionai-docs-infra)** (submodule within `unionai-docs` at `unionai-docs-infra/`) — shared build infrastructure: Hugo config, layouts, themes, Python tools, scripts, and redirect data. Identical across `main` (v2) and `v1` branches.
+- **[unionai-examples](https://github.com/unionai/unionai-examples)** (submodule within `unionai-docs` at `unionai-examples/`), contains example code referenced by the docs.
 
 ## Quick start
 
