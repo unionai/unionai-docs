@@ -2,6 +2,11 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Selfmanaged & Selfhosted Context
+
+For selfhosted or selfmanaged context, refer to the Notion guide:
+https://www.notion.so/3108cc06513d81a08bb1d3b9135385f1
+
 ## Project Overview
 
 This is a **multi-variant Hugo documentation site** for Flyte (open-source) and Union.ai products. A single source generates four documentation variants:
