@@ -35,7 +35,7 @@ sequenceDiagram
 ## Prerequisites
 
 - [Authentication]({{< docs_home selfmanaged >}}/deployment/configuration/authentication/) must be configured and working.
-- Your IdP must include the desired claims in the issued JWT tokens (e.g. `preferred_username`, `sub`, `email`, `groups`).
+- Your IdP must include the desired claims in the **access token** (not just the ID token). See [Ensuring claims are in access tokens](#ensuring-claims-are-in-access-tokens) below.
 
 ## Configuration
 
@@ -151,8 +151,60 @@ The claims available depend on your IdP and authorization server configuration. 
 | `email` | User's email address | Notification routing, identity |
 | `groups` | Group memberships | Role-based credential injection |
 
+## Ensuring claims are in access tokens
+
+Identity injection reads claims from the OAuth2 **access token**, not the ID token. This is a critical distinction because many IdPs only include standard claims like `preferred_username`, `email`, and `groups` in ID tokens by default.
+
+The `sub` claim is always present in access tokens and works without additional configuration. For any other claim, you must explicitly configure your authorization server to include it in access tokens.
+
+> [!IMPORTANT]
+> If a configured `claimName` is not present in the access token, the annotation or environment variable will be silently skipped (with a warning in the service logs if `required: true`). The pod is still created.
+
+### Okta
+
+In Okta, add a custom claim on your authorization server with `claim_type` set to **Access Token** (called "RESOURCE" in the API):
+
+1. Go to **Security > API > Authorization Servers > \[your server\] > Claims**
+2. Click **Add Claim**
+3. Set:
+   - **Name**: `preferred_username` (or whichever claim you need)
+   - **Include in token type**: **Access Token**
+   - **Value type**: Expression
+   - **Value**: `(user != null) ? user.login : app.clientId`
+4. Save
+
+If managing Okta via Terraform, add an `okta_auth_server_claim` resource:
+
+```hcl
+resource "okta_auth_server_claim" "preferred_username" {
+  auth_server_id          = okta_auth_server.main.id
+  name                    = "preferred_username"
+  claim_type              = "RESOURCE"
+  value_type              = "EXPRESSION"
+  value                   = "(user != null) ? user.login : app.clientId"
+  always_include_in_token = true
+  status                  = "ACTIVE"
+}
+```
+
+### Other IdPs
+
+- **Azure AD / Entra ID**: Configure optional claims in the app registration under **Token configuration > Add optional claim > Access**.
+- **Keycloak**: Add protocol mappers to the client scope with **Add to access token** enabled.
+- **Auth0**: Use Actions or Rules to add custom claims to the access token.
+
+### Verifying claims
+
+To verify that a claim is present in the access token, decode a token at [jwt.io](https://jwt.io) and inspect its payload. You can also check the service logs:
+
+```bash
+kubectl logs -n union-cp deploy/executions --tail=100 | grep -i "claim.*not found"
+```
+
+If you see `Required claim '<name>' not found in identity context`, the claim is missing from the access token.
+
 > [!NOTE]
-> Verify that your IdP includes the desired claims in the access token (not just the ID token). Some IdPs require explicit configuration to include claims like `groups` or `preferred_username` in access tokens.
+> After adding a new claim to the authorization server, existing cached tokens will not contain it. Users must re-authenticate (e.g. delete cached credentials and log in again) to get a fresh access token with the new claim.
 
 ## Security model
 
