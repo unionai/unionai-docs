@@ -26,7 +26,7 @@ test*.html
 # Tools
 link_checker_output.json
 data/flytesdk.yaml
-static/flytesdk-linkmap.json
+linkmap/flytesdk-linkmap.json
 
 # IDEs
 .vscode
