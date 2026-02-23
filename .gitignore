@@ -1,26 +1,26 @@
-# This is only for development mode
-config/_default
-
-# Build dirs
+# Build artifacts
 /public/
 /dist/
 .hugo.build.*.toml
+.hugo_build.lock
 
-# Developer overrides
+# Dev override
 hugo.local.toml
+
+# Dev artifacts
+config/_default
 
 # Trash files
 .DS_Store
 *.swp
 __pycache__/
 *.egg-info/
-.hugo_build.lock
 
 # IDEs
 .vscode
 .idea
 
-# Do not save temporary uv settings
+# Temporary uv settings
 .venv/
 .python-version
 uv.lock
