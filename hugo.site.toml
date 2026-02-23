@@ -47,6 +47,7 @@ custom_js = [
   "tags.js",
   "inline-code-linker.js",
   "codeblock-linker.js",
+  "codeblock-copy-strip.js",
 ]
 
 api_linkmap_sources = ["flytesdk", "wandb", "snowflake"]
