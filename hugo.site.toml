@@ -50,8 +50,6 @@ custom_js = [
   "codeblock-copy-strip.js",
 ]
 
-api_linkmap_sources = ["flytesdk", "wandb", "snowflake"]
-
 [params.variant_weights]
 flyte = 1
 serverless = 4
