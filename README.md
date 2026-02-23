@@ -36,5 +36,5 @@ Requires Hugo >= 0.145.0 (`brew install hugo`).
 
 ## Further reading
 
-- **[unionai-docs-infra/README.md](unionai-docs-infra/README.md)** — comprehensive build system documentation (local dev, production builds, CI checks, Cloudflare deployment, LLM docs pipeline).
+- **[unionai-docs-infra/README.md](https://github.com/unionai/unionai-docs-infra/blob/main/README.md)** — comprehensive build system documentation (local dev, production builds, CI checks, Cloudflare deployment, LLM docs pipeline).
 - **[Contributing docs and examples](https://union.ai/docs/flyte/community/contributing-docs)** — authoring guide, shortcodes, variants, API docs (source at `content/community/contributing-docs/`).
