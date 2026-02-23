@@ -1,7 +1,7 @@
 # This is only for development mode
 config/_default
 
-# Generated content
+# Build dirs
 /public/
 /dist/
 .hugo.build.*.toml
@@ -15,18 +15,6 @@ hugo.local.toml
 __pycache__/
 *.egg-info/
 .hugo_build.lock
-double-redirect-report.txt
-markdown_tree_analysis.json
-meta_descriptions.json
-
-# Ignore test file
-content/test.md
-test*.html
-
-# Tools
-link_checker_output.json
-data/flytesdk.yaml
-static/flytesdk-linkmap.json
 
 # IDEs
 .vscode
@@ -34,7 +22,8 @@ static/flytesdk-linkmap.json
 
 # Do not save temporary uv settings
 .venv/
-main.py
 .python-version
 uv.lock
+
+# AI assistant
 .claude/
