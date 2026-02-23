@@ -43,13 +43,13 @@ The repo separates **version-specific content/config** (top level) from **shared
 
 **Top level** — files that differ between `main` (v2) and `v1` branches:
 - `makefile.inc` - VERSION, VARIANTS
-- `hugo.site.toml` - Site-wide settings
 - `api-packages.toml` - API package registry
-- `content/`, `data/`, `static/`, `include/` - Content and generated data
+- `content/`, `data/`, `linkmap/`, `include/` - Content and generated data
 
 **`unionai-docs-infra/`** — shared build infrastructure (identical across branches):
 - `unionai-docs-infra/Makefile` - Real build logic
-- `unionai-docs-infra/hugo.toml`, `unionai-docs-infra/hugo.ver.toml`, `unionai-docs-infra/config.{variant}.toml` - Hugo config
+- `unionai-docs-infra/hugo.toml`, `unionai-docs-infra/hugo.site.toml`, `unionai-docs-infra/hugo.ver.toml`, `unionai-docs-infra/config.{variant}.toml` - Hugo config
+- `unionai-docs-infra/static/` - Shared static assets (CSS, JS, images)
 - `unionai-docs-infra/scripts/` - Build shell scripts
 - `unionai-docs-infra/tools/` - Python build tools
 - `unionai-docs-infra/layouts/` - Hugo templates, partials, shortcodes
