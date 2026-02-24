@@ -1,7 +1,7 @@
 ---
 title: Local development
 weight: 4
-variants: +flyte
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
@@ -11,7 +11,7 @@ Flyte gives you a local development toolkit for ML pipelines and AI agents. Cach
 
 When you're ready to scale, the same code runs on a remote Flyte cluster with GPUs. No rewrites.
 
-[image placeholder: graphic showing local terminal TUI]
+![TUI agent run](../../_static/images/user-guide/local/tui_agent_run.png)
 
 ---
 
