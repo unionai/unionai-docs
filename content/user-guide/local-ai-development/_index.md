@@ -7,7 +7,7 @@ sidebar_expanded: true
 
 # Local AI Development with Flyte
 
-Flyte gives you a local development toolkit for ML pipelines and AI agents. Cache expensive operations, generate HTML reports, perform lightweight experiment tracking, trace sub-task execution, and serve models — all from `pip install flyte`. No Flyte cluster or Docker needed.
+Flyte gives you a local development toolkit for ML pipelines and AI agents. Cache expensive operations, generate HTML reports, perform lightweight experiment tracking, trace sub-task execution, and serve models, all from `pip install flyte`. No Flyte cluster or Docker needed.
 
 When you're ready to scale, the same code runs on a remote Flyte cluster with GPUs. No rewrites.
 
@@ -41,57 +41,57 @@ That's it. Every feature below works with just these two steps.
 |---------|-------------|---------|
 | [TUI](#terminal-ui) | Live terminal dashboard with task tree, logs, and details | `--tui` flag |
 | [Tracing](#tracing) | Sub-task visibility in the TUI | `@flyte.trace` |
-| [Experiment tracking](#lightweight-experiment-tracking) | Browse and compare past runs | `flyte start tui` |
 | [Caching](#caching) | Skip recomputation on repeated inputs | `cache="auto"` |
 | [Reports](#reports) | HTML and markdown dashboards generated from tasks | `report=True` |
 | [Serving](#serving) | Run tasks as local API endpoints or apps | `flyte.with_servecontext()` |
 | [Plugins](#plugins) | Integrate external tools like Weights & Biases | `@wandb_init` |
-| [Secrets](#managing-secrets-locally) | Managing API keys locally and remotely | `flyte.Secret` |
 
 ---
 
 ## TaskEnvironment
 
-Every Flyte task runs inside a [`TaskEnvironment`](../core-concepts/task-environment) that defines its image, compute resources, and secrets. Locally, the image, resources, and secrets are ignored — tasks run in your local Python environment. On a cluster, Flyte builds the container and schedules the work.
-
-This makes it easy to switch between local development and remote runs.
+Even when running locally, every Flyte task must be defined within a [`TaskEnvironment`](../core-concepts/task-environment). This is what enables local features like caching, reporting, and the TUI. Without it, Flyte has no context to manage your task execution. Locally, settings like image, compute resources, and secrets are ignored and tasks run in your local Python environment.
 
 ```python
 import flyte
 
-image = flyte.Image.from_debian_base(python_version=(3, 12)).with_pip_packages(
-    "torch", "torchvision", "matplotlib",
-)
-
-env = flyte.TaskEnvironment(
-    name="ml_pipeline",
-    image=image,
-    resources=flyte.Resources(cpu=2, memory="4Gi", gpu=1),
-    secrets=flyte.Secret(key="my_api_key", as_env_var="API_KEY"),
-)
+env = flyte.TaskEnvironment(name="my_env")
 
 @env.task
-async def my_task(x: int) -> int:
+async def double(x: int) -> int:
     return x * 2
+
+@env.task
+async def add_one(x: int) -> int:
+    return x + 1
+
+@env.workflow
+async def my_pipeline(x: int) -> int:
+    doubled = await double(x=x)
+    return await add_one(x=doubled)
 ```
 
-Write your environment config once and it works everywhere — your laptop, CI, and production cluster.
+Tasks can be composed into workflows by chaining them together with `@env.workflow`. Each task runs independently and Flyte manages the data flow between them.
+
+When you're ready to run on a remote cluster, the same `TaskEnvironment` can be expanded to configure container images, compute resources, and secrets. See [`TaskEnvironment`](../core-concepts/task-environment) for details.
 
 ---
 
 ## Running tasks
 
-Run any task locally from the command line:
+Once you have a task defined within a `TaskEnvironment`, you can run it locally using the `flyte run` CLI. The `--local` flag tells Flyte to execute the task in your local Python environment rather than on a remote cluster. You can also add `--tui` to launch the interactive Terminal UI for real-time monitoring.
 
 ```bash
 # Basic execution
 flyte run --local my_pipeline.py my_task --arg value
 
-# With the interactive TUI
+# With the interactive TUI (see more in next section)
 flyte run --local --tui my_pipeline.py my_task --arg value
 ```
 
-Drop `--local` to run on a remote cluster:
+You can also run tasks programmatically using the Python SDK with `flyte.run()`. See [Run and deploy tasks](../task-deployment) for details.
+
+Drop `--local` to run on a remote cluster if one is configured:
 
 ```bash
 flyte run my_pipeline.py my_task --arg value
@@ -121,6 +121,8 @@ What you see:
 - **Details panel**: inputs, outputs, timing, report paths
 - **Traced sub-tasks**: child nodes for `@flyte.trace` decorated functions
 
+Flyte persists the inputs and outputs of every task run locally, so you can always go back and inspect what a task received and produced. Combined with [Reports](#reports), which generate HTML summaries of metrics, charts, and results, this gives you a lightweight experiment management system.
+
 **Keyboard shortcuts:**
 
 | Key | Action |
@@ -129,9 +131,21 @@ What you see:
 | `d` | Details tab |
 | `l` | Logs tab |
 
+### Exploring past runs
+
+You can also launch the TUI on its own to browse past runs, compare inputs and outputs, and review reports:
+
+```bash
+flyte start tui
+```
+
+[image placeholder: TUI explore mode showing a table of past runs with columns for task name, status, start time, duration, and inputs]
+
 ### Tracing
 
-[`@flyte.trace`](../task-programming/traces) gives sub-task visibility. Traced functions show up as child nodes in the TUI with their own timing, inputs, and outputs.
+Unlike `@env.task`, which defines an independent unit of work that Flyte schedules, caches, and tracks on its own, [`@flyte.trace`](../task-programming/traces) is for functions that run *inside* a task. A traced function must be called from within a task and can't run on its own. It gives you visibility into the internal steps of a task without the overhead of making each step a separate task.
+
+Traced functions show up as child nodes under their parent task in the TUI, each with their own timing, inputs, and outputs.
 
 ```python
 @flyte.trace
@@ -141,24 +155,23 @@ async def search(query: str) -> str:
 
 @env.task
 async def agent(request: str) -> str:
-    results = await search(request)    # Traced — visible in TUI
+    results = await search(request)    # Traced, visible in TUI
     answer = await summarize(results)   # Also traced if decorated
     return answer
 ```
 
 [image placeholder: TUI screenshot showing agent task with search and summarize as indented child nodes, each with their own timing]
 
-For agents, trace your tool functions to see exactly which tools were called. For ML, trace preprocessing steps or feature engineering.
+This is particularly useful for AI agents where you want to see exactly which tools were called, and for ML pipelines where you want to trace preprocessing or feature engineering steps within a larger task.
 
 ---
 
 ## Caching
 
-`cache="auto"` stores task outputs in local SQLite, keyed on task name + inputs. Same inputs = instant results, no recomputation.
+Add `cache="auto"` to any task and Flyte stores its outputs in a local SQLite database, keyed on task name and inputs. Same inputs means instant results with no recomputation.
 
-Commonly used to skip rerunning tasks, such as downloading and pre-processing data.
+This speeds up your development loop significantly. Instead of re-running your entire pipeline on every change, only the tasks that actually changed will re-execute. Use it to skip re-downloading data, avoid replaying earlier steps in agentic chains, or bypass any expensive computation while you iterate.
 
-It's also useful for developing longer agentic runs where you want to iterate further down the tree without re-running earlier agent tasks.
 
 ```python
 @env.task(cache="auto")
@@ -169,24 +182,28 @@ async def load_data(data_dir: str = "./data") -> str:
 ```
 
 ```bash
-# First run — downloads data, trains model
+# First run: downloads data, trains model
 flyte run --local --tui my_pipeline.py pipeline --epochs 5
 
-# Second run — load_data cached ($), only training re-runs
+# Second run: load_data cached ($), only training re-runs
 flyte run --local --tui my_pipeline.py pipeline --epochs 10
 ```
 
 [image placeholder: TUI screenshot showing load_data with $ cache indicator, train running]
 
-On a remote cluster, the same `cache="auto"` uses the cluster's distributed cache store — no code changes.
+On a remote cluster, the same `cache="auto"` uses the cluster's distributed cache store with no code changes.
+
+Flyte also supports `cache="override"` for explicit version control over cache keys, and `cache="disable"` (the default) for tasks that should always re-run. You can also set caching at the `TaskEnvironment` level to apply a default across all tasks. See [Caching](../task-configuration/caching) for the full configuration options.
 
 ---
 
 ## Reports
 
-`report=True` lets any task generate an HTML file — charts, tables, images — saved alongside the output. See [Reports](../task-programming/reports) for the full API.
+Add `report=True` to a task and it can generate an HTML report (charts, tables, images, or any HTML content) saved alongside the task output. Reports give you a human-readable view of what a task produced, without digging through logs or raw data.
 
-This is useful for experiment tracking and creating easy-to-read documents.
+Combined with [caching](#caching) and the persisted inputs/outputs from each run, reports act as lightweight experiment tracking. Each run produces a self-contained HTML file you can open in a browser, compare across runs, and share with your team. No external experiment tracking tools needed.
+
+See [Reports](../task-programming/reports) for the full API.
 
 ```python
 import flyte.report
@@ -208,81 +225,103 @@ async def evaluate(model_file: File, test_data: str) -> str:
 
 [image placeholder: browser showing rendered HTML report with training loss/accuracy curves and hyperparameter table]
 
-Locally, reports are saved as HTML files — the TUI shows the path. On a cluster, they render in the Flyte UI.
-
----
-
-## Lightweight experiment tracking
-
-Every local run is persisted (inputs, outputs, duration, status) in SQLite. Browse and compare past runs in the TUI:
-
-```bash
-# Run experiments with different hyperparameters
-flyte run --local my_pipeline.py pipeline --epochs 5 --lr 0.001
-flyte run --local my_pipeline.py pipeline --epochs 10 --lr 0.001
-flyte run --local my_pipeline.py pipeline --epochs 5 --lr 0.01
-
-# Browse all runs
-flyte start tui
-```
-
-[image placeholder: TUI explore mode showing a table of past runs with columns for task name, status, start time, duration, and inputs]
-
-| Key | Action |
-|-----|--------|
-| `Enter` | View run details |
-| `s` | Cycle sort order |
-| `r` | Refresh |
-| `d` | Delete run |
+Locally, reports are saved as HTML files and the TUI shows the path. On a cluster, they render in the Flyte UI.
 
 ---
 
 ## Serving
 
-Serve tasks as local API endpoints or Gradio apps using Flyte's app framework. See [Serve and deploy apps](../serve-and-deploy-apps) for more details.
+Flyte's app framework lets you serve tasks as local API endpoints or interactive UIs during development, then deploy the same code to a remote cluster with no changes. See [Serve and deploy apps](../serve-and-deploy-apps) for the full guide.
 
 ### FastAPI (model serving)
 
+A common ML pattern: train a model with a Flyte pipeline, then serve predictions from it. During local development, the app loads the model from a local file (e.g. `model.pt` saved by your training pipeline). When deployed remotely, Flyte's `Parameter` system automatically resolves the model from the latest training run output.
+
 ```python
+from contextlib import asynccontextmanager
+from pathlib import Path
+import os
+
+from fastapi import FastAPI
+import flyte
+from flyte.app import Parameter, RunOutput
 from flyte.app.extras import FastAPIAppEnvironment
 
-app = FastAPI(title="My Model")
+MODEL_PATH_ENV = "MODEL_PATH"
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Load model on startup, either local file or remote run output."""
+    model_path = Path(os.environ.get(MODEL_PATH_ENV, "model.pt"))
+    model = load_model(model_path)
+    app.state.model = model
+    yield
+
+app = FastAPI(title="MNIST Predictor", lifespan=lifespan)
 
 serving_env = FastAPIAppEnvironment(
-    name="my-model",
+    name="mnist-predictor",
     app=app,
-    image=image,
+    parameters=[
+        # Remote: resolves model from the latest train run and sets MODEL_PATH
+        Parameter(
+            name="model",
+            value=RunOutput(task_name="ml_pipeline.pipeline", type="file", getter=(1,)),
+            download=True,
+            env_var=MODEL_PATH_ENV,
+        ),
+    ],
+    image=flyte.Image.from_debian_base(python_version=(3, 12)).with_pip_packages(
+        "fastapi", "uvicorn", "torch", "torchvision",
+    ),
     resources=flyte.Resources(cpu=1, memory="4Gi"),
 )
 
 @app.get("/predict")
-async def predict(input: str) -> dict:
-    return {"result": app.state.model.predict(input)}
+async def predict(index: int = 0) -> dict:
+    return {"prediction": app.state.model(index)}
 
 if __name__ == "__main__":
-    # Serve locally
+    # Local: skip RunOutput resolution, lifespan falls back to local model.pt
+    serving_env.parameters = []
     local_app = flyte.with_servecontext(mode="local").serve(serving_env)
     local_app.activate(wait=True)
 ```
 
 ```bash
-# Local
+# Local: loads model.pt from disk
 python serve_model.py
 
-# Remote
+# Remote: resolves model from latest training run
 flyte deploy serve_model.py serving_env
 ```
 
 ### Gradio (agent UI)
 
+For AI agents, a Gradio app lets you build an interactive UI that kicks off agent runs. The app uses `flyte.with_runcontext()` to run the agent task either locally or on a remote cluster, controlled by an environment variable.
+
 ```python
+import os
+import flyte
 import flyte.app
+from research_agent import agent
+
+RUN_MODE = os.getenv("RUN_MODE", "remote")
 
 serving_env = flyte.app.AppEnvironment(
-    name="my-agent-ui",
-    image=image,
+    name="research-agent-ui",
+    image=flyte.Image.from_debian_base(python_version=(3, 12)).with_pip_packages(
+        "gradio", "langchain-core", "langchain-openai", "langgraph",
+    ),
+    secrets=flyte.Secret(key="OPENAI_API_KEY", as_env_var="OPENAI_API_KEY"),
     port=7860,
 )
+
+def run_query(request: str):
+    """Kick off the agent as a Flyte task."""
+    result = flyte.with_runcontext(mode=RUN_MODE).run(agent, request=request)
+    result.wait()
+    return result.outputs()[0]
 
 @serving_env.server
 def app_server():
@@ -292,36 +331,17 @@ if __name__ == "__main__":
     create_demo().launch()
 ```
 
-```bash
-# Local
-python agent_app.py
+The `RUN_MODE` variable gives you a smooth development progression:
 
-# Remote
-flyte deploy agent_app.py serving_env
-```
-
-### Kicking off tasks from apps
-
-Apps can trigger Flyte tasks and stream results back to the UI:
-
-```python
-def run_query(request: str):
-    result = flyte.with_runcontext(mode=RUN_MODE).run(agent, request=request)
-    result.wait()
-    return result.outputs()[0]
-```
-
-This enables three development modes:
-
-1. **Fully local** — `RUN_MODE=local python app.py`
-2. **Local app, remote task** — `python app.py` (default)
-3. **Full remote** — `flyte deploy app.py serving_env`
+1. **Fully local**: `RUN_MODE=local python agent_app.py`. Everything runs in your local Python environment, great for rapid iteration.
+2. **Local app, remote task**: `python agent_app.py`. The UI runs locally but the agent executes on the cluster with full compute resources.
+3. **Full remote**: `flyte deploy agent_app.py serving_env`. Both the UI and agent run on the cluster.
 
 ---
 
 ## Plugins
 
-Flyte's plugin system integrates external tools. Plugins add decorators and context functions that work in both local and remote execution.
+Flyte's plugin system integrates external tools directly into your tasks. Plugins add decorators and context functions that work in both local and remote execution. Install a package, add a decorator, and you're set. See the full list at [Integrations](../../integrations).
 
 ### Weights & Biases
 
@@ -357,13 +377,24 @@ flyte create secret wandb_api_key <your-key>
 flyte run wandb_pipeline.py pipeline
 ```
 
+### OpenAI
+
+The `flyteplugins-openai` package provides a drop-in replacement for the OpenAI SDK that adds observability and caching to LLM calls. See [OpenAI integration](../../integrations/openai) for details.
+
+### Distributed compute
+
+When you're ready to scale beyond your local machine, Flyte plugins can provision ephemeral compute clusters on demand:
+
+- **[Spark](../../integrations/spark)**: large-scale data processing and ETL (`flyteplugins-spark`)
+- **[Ray](../../integrations/ray)**: distributed Python, ML training, and hyperparameter tuning (`flyteplugins-ray`)
+- **[Dask](../../integrations/dask)**: parallel Python workloads and dataframe operations (`flyteplugins-dask`)
+- **[PyTorch](../../integrations/pytorch)**: distributed training with elastic launch (`flyteplugins-pytorch`)
+
 ---
 
-## Managing secrets locally
+## A note on secrets
 
-Flyte doesn't manage your local secrets. Use environment variables or a `.env` file for local development.
-
-**Locally:** use `.env` files or environment variables.
+Most AI development involves API keys and credentials. Locally, Flyte reads secrets from your environment. Use a `.env` file or export them directly:
 
 ```bash
 # .env
@@ -371,20 +402,7 @@ OPENAI_API_KEY=sk-...
 WANDB_API_KEY=...
 ```
 
-**On the cluster:** create secrets and reference them in your task environments.
-
-```bash
-flyte create secret MY_API_KEY <value>
-```
-
-```python
-env = flyte.TaskEnvironment(
-    name="my_env",
-    secrets=flyte.Secret(key="MY_API_KEY", as_env_var="API_KEY"),
-)
-```
-
-The `flyte.Secret` declaration is used for remote deployment. Locally, the SDK reads from your environment.
+When you move to a cluster, define secrets in your `TaskEnvironment` with `flyte.Secret` and Flyte manages them for you. The same code works in both environments. See [Secrets](../task-configuration/secrets) for full details.
 
 ---
 
@@ -396,8 +414,8 @@ The same code runs in both environments. Here's what changes:
 |---------|-------|--------|
 | **Run pipeline** | `flyte run --local` | `flyte run` |
 | **TUI** | `--tui` flag | Dashboard in Flyte UI |
-| **Caching** | `cache="auto"` — local SQLite | `cache="auto"` — cluster cache |
-| **Reports** | `report=True` — local HTML file | `report=True` — in Flyte UI |
+| **Caching** | `cache="auto"`, local SQLite | `cache="auto"`, cluster cache |
+| **Reports** | `report=True`, local HTML file | `report=True`, in Flyte UI |
 | **Serving** | `python serve.py` | `flyte deploy serve.py env` |
 | **Model loading in app2** | Falls back to local file | `RunOutput` resolves from pipeline |
 | **Secrets** | `.env` / environment variables | `flyte create secret` / `flyte.Secret` |
