@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.filters
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -39,6 +39,12 @@ class Contains(
 | `key` |  | |
 | `values` |  | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -87,12 +93,6 @@ def to_flyte_idl()
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
 :rtype: Text
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
 
 ## flytekit.models.filters.Equal
 
@@ -107,6 +107,12 @@ class Equal(
 | `key` |  | |
 | `value` |  | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -155,12 +161,6 @@ def to_flyte_idl()
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
 :rtype: Text
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
 
 ## flytekit.models.filters.Filter
 
@@ -175,6 +175,12 @@ class Filter(
 | `key` |  | |
 | `value` |  | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -224,12 +230,6 @@ For supporting the auto-generated REST API, filters must be dumped to a string f
 :rtype: Text
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-
 ## flytekit.models.filters.FilterList
 
 ```python
@@ -240,6 +240,12 @@ class FilterList(
 | Parameter | Type | Description |
 |-|-|-|
 | `filter_list` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -277,12 +283,6 @@ def to_flyte_idl()
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
 :rtype: Text
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
 
 ## flytekit.models.filters.GreaterThan
 
@@ -297,6 +297,12 @@ class GreaterThan(
 | `key` |  | |
 | `value` |  | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -345,12 +351,6 @@ def to_flyte_idl()
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
 :rtype: Text
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
 
 ## flytekit.models.filters.GreaterThanOrEqual
 
@@ -365,6 +365,12 @@ class GreaterThanOrEqual(
 | `key` |  | |
 | `value` |  | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -413,12 +419,6 @@ def to_flyte_idl()
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
 :rtype: Text
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
 
 ## flytekit.models.filters.LessThan
 
@@ -433,6 +433,12 @@ class LessThan(
 | `key` |  | |
 | `value` |  | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -481,12 +487,6 @@ def to_flyte_idl()
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
 :rtype: Text
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
 
 ## flytekit.models.filters.LessThanOrEqual
 
@@ -501,6 +501,12 @@ class LessThanOrEqual(
 | `key` |  | |
 | `value` |  | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -549,12 +555,6 @@ def to_flyte_idl()
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
 :rtype: Text
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
 
 ## flytekit.models.filters.NotEqual
 
@@ -569,6 +569,12 @@ class NotEqual(
 | `key` |  | |
 | `value` |  | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -617,12 +623,6 @@ def to_flyte_idl()
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
 :rtype: Text
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
 
 ## flytekit.models.filters.SetFilter
 
@@ -637,6 +637,12 @@ class SetFilter(
 | `key` |  | |
 | `values` |  | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -685,12 +691,6 @@ def to_flyte_idl()
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
 :rtype: Text
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
 
 ## flytekit.models.filters.ValueIn
 
@@ -705,6 +705,12 @@ class ValueIn(
 | `key` |  | |
 | `values` |  | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -753,12 +759,6 @@ def to_flyte_idl()
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
 :rtype: Text
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
 
 ## flytekit.models.filters.ValueNotIn
 
@@ -773,6 +773,12 @@ class ValueNotIn(
 | `key` |  | |
 | `values` |  | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -821,10 +827,4 @@ def to_flyte_idl()
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
 :rtype: Text
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
 

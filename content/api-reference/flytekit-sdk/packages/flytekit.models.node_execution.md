@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.node_execution
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -31,6 +31,14 @@ class DynamicWorkflowNodeMetadata(
 |-|-|-|
 | `id` | `flytekit.models.core.identifier.Identifier` | |
 | `compiled_workflow` | `flytekit.models.core.compiler.CompiledWorkflowClosure` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `compiled_workflow` | `None` |  |
+| `id` | `None` |  |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -71,14 +79,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `compiled_workflow` |  |  |
-| `id` |  |  |
-| `is_empty` |  |  |
-
 ## flytekit.models.node_execution.NodeExecution
 
 ```python
@@ -95,6 +95,16 @@ class NodeExecution(
 | `input_uri` |  | |
 | `closure` |  | |
 | `metadata` | `flyteidl.admin.node_execution_pb2.NodeExecutionMetaData` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `closure` | `None` | :rtype: NodeExecutionClosure |
+| `id` | `None` | :rtype: flytekit.models.core.identifier.NodeExecutionIdentifier |
+| `input_uri` | `None` | :rtype: Text |
+| `is_empty` | `None` |  |
+| `metadata` | `None` |  |
 
 ### Methods
 
@@ -135,19 +145,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `closure` |  | {{< multiline >}}:rtype: NodeExecutionClosure
-{{< /multiline >}} |
-| `id` |  | {{< multiline >}}:rtype: flytekit.models.core.identifier.NodeExecutionIdentifier
-{{< /multiline >}} |
-| `input_uri` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `metadata` |  |  |
-
 ## flytekit.models.node_execution.NodeExecutionClosure
 
 ```python
@@ -176,6 +173,23 @@ class NodeExecutionClosure(
 | `task_node_metadata` | `typing.Optional[flytekit.models.node_execution.TaskNodeMetadata]` | |
 | `created_at` | `typing.Optional[datetime.datetime]` | |
 | `updated_at` | `typing.Optional[datetime.datetime]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `created_at` | `None` |  |
+| `deck_uri` | `None` | :rtype: str |
+| `duration` | `None` | :rtype: datetime.timedelta |
+| `error` | `None` | :rtype: flytekit.models.core.execution.ExecutionError |
+| `is_empty` | `None` |  |
+| `output_uri` | `None` | :rtype: Text |
+| `phase` | `None` | :rtype: int |
+| `started_at` | `None` | :rtype: datetime.datetime |
+| `target_metadata` | `None` |  |
+| `task_node_metadata` | `None` |  |
+| `updated_at` | `None` |  |
+| `workflow_node_metadata` | `None` |  |
 
 ### Methods
 
@@ -219,29 +233,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.node_execution_pb2.NodeExecutionClosure
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `created_at` |  |  |
-| `deck_uri` |  | {{< multiline >}}:rtype: str
-{{< /multiline >}} |
-| `duration` |  | {{< multiline >}}:rtype: datetime.timedelta
-{{< /multiline >}} |
-| `error` |  | {{< multiline >}}:rtype: flytekit.models.core.execution.ExecutionError
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `output_uri` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `phase` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `started_at` |  | {{< multiline >}}:rtype: datetime.datetime
-{{< /multiline >}} |
-| `target_metadata` |  |  |
-| `task_node_metadata` |  |  |
-| `updated_at` |  |  |
-| `workflow_node_metadata` |  |  |
-
 ## flytekit.models.node_execution.TaskNodeMetadata
 
 ```python
@@ -254,6 +245,14 @@ class TaskNodeMetadata(
 |-|-|-|
 | `cache_status` | `int` | |
 | `catalog_key` | `flytekit.models.core.catalog.CatalogMetadata` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cache_status` | `None` |  |
+| `catalog_key` | `None` |  |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -294,14 +293,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `cache_status` |  |  |
-| `catalog_key` |  |  |
-| `is_empty` |  |  |
-
 ## flytekit.models.node_execution.WorkflowNodeMetadata
 
 ```python
@@ -312,6 +303,13 @@ class WorkflowNodeMetadata(
 | Parameter | Type | Description |
 |-|-|-|
 | `execution_id` | `flytekit.models.core.identifier.WorkflowExecutionIdentifier` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `execution_id` | `None` |  |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -352,10 +350,3 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `execution_id` |  |  |
-| `is_empty` |  |  |
-

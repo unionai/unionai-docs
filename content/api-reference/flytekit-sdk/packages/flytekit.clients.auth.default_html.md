@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.default_html
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

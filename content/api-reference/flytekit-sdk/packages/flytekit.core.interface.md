@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.interface
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -82,26 +82,26 @@ name the outputs accordingly, either by using our default name function, or from
 
     # Option 1
     nt1 = typing.NamedTuple("NT1", x_str=str, y_int=int)
-    def t(a: int, b: str) -> nt1: ...
+    def t(a: int, b: str) -&gt; nt1: ...
 
     # Option 2
-    def t(a: int, b: str) -> typing.NamedTuple("NT1", x_str=str, y_int=int): ...
+    def t(a: int, b: str) -&gt; typing.NamedTuple("NT1", x_str=str, y_int=int): ...
 
     # Option 3
-    def t(a: int, b: str) -> typing.Tuple[int, str]: ...
+    def t(a: int, b: str) -&gt; typing.Tuple[int, str]: ...
 
     # Option 4
-    def t(a: int, b: str) -> (int, str): ...
+    def t(a: int, b: str) -&gt; (int, str): ...
 
     # Option 5
-    def t(a: int, b: str) -> str: ...
+    def t(a: int, b: str) -&gt; str: ...
 
     # Option 6
-    def t(a: int, b: str) -> None: ...
+    def t(a: int, b: str) -&gt; None: ...
 
     # Options 7/8
-    def t(a: int, b: str) -> List[int]: ...
-    def t(a: int, b: str) -> Dict[str, int]: ...
+    def t(a: int, b: str) -&gt; List[int]: ...
+    def t(a: int, b: str) -&gt; Dict[str, int]: ...
 
 Note that Options 1 and 2 are identical, just syntactic sugar. In the NamedTuple case, we'll use the names in the
 definition. In all other cases, we'll automatically generate output names, indexed starting at 0.
@@ -310,6 +310,7 @@ def verify_outputs_artifact_bindings(
 A Python native interface object, like inspect.signature but simpler.
 
 
+
 ```python
 class Interface(
     inputs: Union[Optional[Dict[str, Type]], Optional[Dict[str, Tuple[Type, Any]]]],
@@ -324,6 +325,19 @@ class Interface(
 | `outputs` | `Union[Optional[Dict[str, Type]], Optional[Dict[str, Optional[Type]]]]` | Output variables and their types as a dictionary |
 | `output_tuple_name` | `Optional[str]` | This is used to store the name of a typing.NamedTuple when the task or workflow returns one. This is also used as a proxy for better or for worse for the presence of a tuple return type, primarily used when handling one-element NamedTuples. |
 | `docstring` | `Optional[Docstring]` | Docstring of the annotated @task or @workflow from which the interface derives from. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `default_inputs_as_kwargs` | `None` |  |
+| `docstring` | `None` |  |
+| `inputs` | `None` |  |
+| `inputs_with_defaults` | `None` |  |
+| `output_names` | `None` |  |
+| `output_tuple` | `None` |  |
+| `output_tuple_name` | `None` |  |
+| `outputs` | `None` |  |
 
 ### Methods
 
@@ -378,17 +392,4 @@ This method allows addition of extra outputs are expected from a task specificat
 | Parameter | Type | Description |
 |-|-|-|
 | `extra_outputs` | `Dict[str, Type]` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `default_inputs_as_kwargs` |  |  |
-| `docstring` |  |  |
-| `inputs` |  |  |
-| `inputs_with_defaults` |  |  |
-| `output_names` |  |  |
-| `output_tuple` |  |  |
-| `output_tuple_name` |  |  |
-| `outputs` |  |  |
 

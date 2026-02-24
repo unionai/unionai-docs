@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.kftensorflow.task
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -9,7 +9,7 @@ layout: py_api
 
 
 This Plugin adds the capability of running distributed tensorflow training to Flyte using backend plugins, natively on
-Kubernetes. It leverages `TF Job <https://github.com/kubeflow/tf-operator>`_ Plugin from kubeflow.
+Kubernetes. It leverages [`TF Job`](https://github.com/kubeflow/tf-operator) Plugin from kubeflow.
 
 ## Directory
 
@@ -18,11 +18,13 @@ Kubernetes. It leverages `TF Job <https://github.com/kubeflow/tf-operator>`_ Plu
 | Class | Description |
 |-|-|
 | [`Chief`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskchief) |  |
+| [`CleanPodPolicy`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskcleanpodpolicy) | CleanPodPolicy describes how to deal with pods when the job is finished. |
 | [`Evaluator`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskevaluator) |  |
 | [`PS`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskps) |  |
+| [`RestartPolicy`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskrestartpolicy) | RestartPolicy describes how the replicas should be restarted. |
 | [`RunPolicy`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskrunpolicy) | RunPolicy describes a set of policies to apply to the execution of a Kubeflow job. |
 | [`TensorflowFunctionTask`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtasktensorflowfunctiontask) | Plugin that submits a TFJob (see https://github. |
-| [`TfJob`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtasktfjob) | Configuration for an executable `TensorFlow Job <https://github. |
+| [`TfJob`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtasktfjob) | Configuration for an executable [`TensorFlow Job`](https://github. |
 | [`Worker`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskworker) |  |
 
 ## flytekitplugins.kftensorflow.task.Chief
@@ -36,13 +38,19 @@ class Chief(
     restart_policy: typing.Optional[flytekitplugins.kftensorflow.task.RestartPolicy],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `image` | `typing.Optional[str]` |
-| `requests` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `limits` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `replicas` | `typing.Optional[int]` |
-| `restart_policy` | `typing.Optional[flytekitplugins.kftensorflow.task.RestartPolicy]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image` | `typing.Optional[str]` | |
+| `requests` | `typing.Optional[flytekit.core.resources.Resources]` | |
+| `limits` | `typing.Optional[flytekit.core.resources.Resources]` | |
+| `replicas` | `typing.Optional[int]` | |
+| `restart_policy` | `typing.Optional[flytekitplugins.kftensorflow.task.RestartPolicy]` | |
+
+## flytekitplugins.kftensorflow.task.CleanPodPolicy
+
+CleanPodPolicy describes how to deal with pods when the job is finished.
+
+
 
 ## flytekitplugins.kftensorflow.task.Evaluator
 
@@ -55,13 +63,13 @@ class Evaluator(
     restart_policy: typing.Optional[flytekitplugins.kftensorflow.task.RestartPolicy],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `image` | `typing.Optional[str]` |
-| `requests` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `limits` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `replicas` | `int` |
-| `restart_policy` | `typing.Optional[flytekitplugins.kftensorflow.task.RestartPolicy]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image` | `typing.Optional[str]` | |
+| `requests` | `typing.Optional[flytekit.core.resources.Resources]` | |
+| `limits` | `typing.Optional[flytekit.core.resources.Resources]` | |
+| `replicas` | `int` | |
+| `restart_policy` | `typing.Optional[flytekitplugins.kftensorflow.task.RestartPolicy]` | |
 
 ## flytekitplugins.kftensorflow.task.PS
 
@@ -74,13 +82,19 @@ class PS(
     restart_policy: typing.Optional[flytekitplugins.kftensorflow.task.RestartPolicy],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `image` | `typing.Optional[str]` |
-| `requests` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `limits` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `replicas` | `typing.Optional[int]` |
-| `restart_policy` | `typing.Optional[flytekitplugins.kftensorflow.task.RestartPolicy]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image` | `typing.Optional[str]` | |
+| `requests` | `typing.Optional[flytekit.core.resources.Resources]` | |
+| `limits` | `typing.Optional[flytekit.core.resources.Resources]` | |
+| `replicas` | `typing.Optional[int]` | |
+| `restart_policy` | `typing.Optional[flytekitplugins.kftensorflow.task.RestartPolicy]` | |
+
+## flytekitplugins.kftensorflow.task.RestartPolicy
+
+RestartPolicy describes how the replicas should be restarted
+
+
 
 ## flytekitplugins.kftensorflow.task.RunPolicy
 
@@ -96,17 +110,18 @@ class RunPolicy(
     backoff_limit: typing.Optional[int],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `clean_pod_policy` | `<enum 'CleanPodPolicy'>` |
-| `ttl_seconds_after_finished` | `typing.Optional[int]` |
-| `active_deadline_seconds` | `typing.Optional[int]` |
-| `backoff_limit` | `typing.Optional[int]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `clean_pod_policy` | `<enum 'CleanPodPolicy'>` | The policy for cleaning up pods after the job completes. Defaults to None. |
+| `ttl_seconds_after_finished` | `typing.Optional[int]` | The time-to-live (TTL) in seconds for cleaning up finished jobs. |
+| `active_deadline_seconds` | `typing.Optional[int]` | The duration (in seconds) since startTime during which the job can remain active before it is terminated. Must be a positive integer. This setting applies only to pods where restartPolicy is OnFailure or Always. |
+| `backoff_limit` | `typing.Optional[int]` | The number of retries before marking this job as failed. |
 
 ## flytekitplugins.kftensorflow.task.TensorflowFunctionTask
 
 Plugin that submits a TFJob (see https://github.com/kubeflow/tf-operator)
     defined by the code within the _task_function to k8s cluster.
+
 
 
 ```python
@@ -116,11 +131,38 @@ class TensorflowFunctionTask(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `task_config` | `flytekitplugins.kftensorflow.task.TfJob` |
-| `task_function` | `typing.Callable` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_config` | `flytekitplugins.kftensorflow.task.TfJob` | |
+| `task_function` | `typing.Callable` | |
+| `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `container_image` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `execution_mode` | `None` |  |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` | Returns the name of the task. |
+| `node_dependency_hints` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `resources` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_function` | `None` |  |
+| `task_resolver` | `None` |  |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -167,11 +209,11 @@ def compile(
 Generates a node that encapsulates this task in a workflow definition.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### compile_into_workflow()
 
@@ -186,11 +228,11 @@ In the case of dynamic workflows, this function will produce a workflow definiti
 then proceed to be executed.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `task_function` | `Callable` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `task_function` | `Callable` | |
+| `kwargs` | `**kwargs` | |
 
 #### construct_node_metadata()
 
@@ -217,10 +259,10 @@ This method is also invoked during runtime.
 * ``DynamicJobSpec`` is returned when a dynamic workflow is executed
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
 #### dynamic_execute()
 
@@ -241,10 +283,10 @@ When running for real in production, the task would stop after the compilation s
 representing that newly generated workflow, instead of executing it.
 
 
-| Parameter | Type |
-|-|-|
-| `task_function` | `Callable` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_function` | `Callable` | |
+| `kwargs` | `**kwargs` | |
 
 #### execute()
 
@@ -257,9 +299,9 @@ This method will be invoked to execute the task. If you do decide to override th
 handle dynamic tasks or you will no longer be able to use the task as a dynamic task generator.
 
 
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### find_lhs()
 
@@ -277,9 +319,9 @@ Returns the command which should be used in the container definition for the ser
 registered on a hosted Flyte platform.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_config()
 
@@ -292,9 +334,9 @@ Returns the task config as a serializable dictionary. This task config consists 
 defined for this task.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_container()
 
@@ -306,9 +348,9 @@ def get_container(
 Returns the container definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_custom()
 
@@ -320,9 +362,9 @@ def get_custom(
 Return additional plugin-specific custom data (if any) as a serializable dictionary.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_default_command()
 
@@ -334,9 +376,9 @@ def get_default_command(
 Returns the default pyflyte-execute command used to run this on hosted Flyte platforms.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_extended_resources()
 
@@ -348,9 +390,9 @@ def get_extended_resources(
 Returns the extended resources to allocate to the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_image()
 
@@ -362,9 +404,9 @@ def get_image(
 Update image spec based on fast registration usage, and return string representing the image
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_input_types()
 
@@ -384,9 +426,9 @@ def get_k8s_pod(
 Returns the kubernetes pod definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_sql()
 
@@ -398,9 +440,9 @@ def get_sql(
 Returns the Sql definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_type_for_input_var()
 
@@ -413,10 +455,10 @@ def get_type_for_input_var(
 Returns the python type for an input variable by name.
 
 
-| Parameter | Type |
-|-|-|
-| `k` | `str` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k` | `str` | |
+| `v` | `typing.Any` | |
 
 #### get_type_for_output_var()
 
@@ -429,10 +471,10 @@ def get_type_for_output_var(
 Returns the python type for the specified output variable by name.
 
 
-| Parameter | Type |
-|-|-|
-| `k` | `str` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k` | `str` | |
+| `v` | `typing.Any` | |
 
 #### local_execute()
 
@@ -447,10 +489,10 @@ Use this function when calling a task with native values (or Promises containing
 Python native values).
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -470,10 +512,10 @@ or alter the outputs to match the intended tasks outputs. If not overridden, the
 
 
 
-| Parameter | Type |
-|-|-|
-| `user_params` | `typing.Optional[flytekit.core.context_manager.ExecutionParameters]` |
-| `rval` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `user_params` | `typing.Optional[flytekit.core.context_manager.ExecutionParameters]` | are the modified user params as created during the pre_execute step |
+| `rval` | `typing.Any` | |
 
 #### pre_execute()
 
@@ -490,9 +532,9 @@ setup before the type transformers are called
 This should return either the same context of the mutated context
 
 
-| Parameter | Type |
-|-|-|
-| `user_params` | `typing.Optional[flytekit.core.context_manager.ExecutionParameters]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `user_params` | `typing.Optional[flytekit.core.context_manager.ExecutionParameters]` | |
 
 #### reset_command_fn()
 
@@ -514,10 +556,10 @@ def sandbox_execute(
 Call dispatch_execute, in the context of a local sandbox execution. Not invoked during runtime.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
 #### set_command_fn()
 
@@ -531,9 +573,9 @@ However, it can be useful to update the command with which the task is serialize
 running map tasks ("pyflyte-map-execute") or for fast-executed tasks.
 
 
-| Parameter | Type |
-|-|-|
-| `get_command_fn` | `Optional[Callable[[SerializationSettings], List[str]]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `get_command_fn` | `Optional[Callable[[SerializationSettings], List[str]]]` | |
 
 #### set_resolver()
 
@@ -546,47 +588,13 @@ By default, flytekit uses the DefaultTaskResolver to resolve the task. This meth
 task resolver. It can be useful to override the task resolver for specific cases like running tasks in the jupyter notebook.
 
 
-| Parameter | Type |
-|-|-|
-| `resolver` | `TaskResolverMixin` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `container_image` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `execution_mode` |  |  |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  | {{< multiline >}}Returns the name of the task.
-{{< /multiline >}} |
-| `node_dependency_hints` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `resources` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_function` |  |  |
-| `task_resolver` |  |  |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
+| `resolver` | `TaskResolverMixin` | |
 
 ## flytekitplugins.kftensorflow.task.TfJob
 
-Configuration for an executable `TensorFlow Job <https://github.com/kubeflow/tf-operator>`_. Use this
+Configuration for an executable [`TensorFlow Job`](https://github.com/kubeflow/tf-operator). Use this
 to run distributed TensorFlow training on Kubernetes.
 
 
@@ -604,17 +612,17 @@ class TfJob(
     num_evaluator_replicas: typing.Optional[int],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `chief` | `flytekitplugins.kftensorflow.task.Chief` |
-| `ps` | `flytekitplugins.kftensorflow.task.PS` |
-| `worker` | `flytekitplugins.kftensorflow.task.Worker` |
-| `evaluator` | `flytekitplugins.kftensorflow.task.Evaluator` |
-| `run_policy` | `typing.Optional[flytekitplugins.kftensorflow.task.RunPolicy]` |
-| `num_workers` | `typing.Optional[int]` |
-| `num_ps_replicas` | `typing.Optional[int]` |
-| `num_chief_replicas` | `typing.Optional[int]` |
-| `num_evaluator_replicas` | `typing.Optional[int]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `chief` | `flytekitplugins.kftensorflow.task.Chief` | Configuration for the chief replica group. |
+| `ps` | `flytekitplugins.kftensorflow.task.PS` | Configuration for the parameter server (PS) replica group. |
+| `worker` | `flytekitplugins.kftensorflow.task.Worker` | Configuration for the worker replica group. |
+| `evaluator` | `flytekitplugins.kftensorflow.task.Evaluator` | Configuration for the evaluator replica group. |
+| `run_policy` | `typing.Optional[flytekitplugins.kftensorflow.task.RunPolicy]` | Configuration for the run policy. |
+| `num_workers` | `typing.Optional[int]` | [DEPRECATED] This argument is deprecated. Use `worker.replicas` instead. |
+| `num_ps_replicas` | `typing.Optional[int]` | [DEPRECATED] This argument is deprecated. Use `ps.replicas` instead. |
+| `num_chief_replicas` | `typing.Optional[int]` | [DEPRECATED] This argument is deprecated. Use `chief.replicas` instead. |
+| `num_evaluator_replicas` | `typing.Optional[int]` | |
 
 ## flytekitplugins.kftensorflow.task.Worker
 
@@ -627,11 +635,11 @@ class Worker(
     restart_policy: typing.Optional[flytekitplugins.kftensorflow.task.RestartPolicy],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `image` | `typing.Optional[str]` |
-| `requests` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `limits` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `replicas` | `typing.Optional[int]` |
-| `restart_policy` | `typing.Optional[flytekitplugins.kftensorflow.task.RestartPolicy]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image` | `typing.Optional[str]` | |
+| `requests` | `typing.Optional[flytekit.core.resources.Resources]` | |
+| `limits` | `typing.Optional[flytekit.core.resources.Resources]` | |
+| `replicas` | `typing.Optional[int]` | |
+| `restart_policy` | `typing.Optional[flytekitplugins.kftensorflow.task.RestartPolicy]` | |
 

@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -9,5 +9,5 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.snowflake.agent`](flytekitplugins.snowflake.agent) |  |
+| [`flytekitplugins.snowflake.connector`](flytekitplugins.snowflake.connector) |  |
 | [`flytekitplugins.snowflake.task`](flytekitplugins.snowflake.task) |  |

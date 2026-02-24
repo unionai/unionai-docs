@@ -6,7 +6,7 @@ variants: -flyte +serverless +byoc +selfmanaged
 
 # Deploying Custom Flyte Connectors
 
-[Flyte connectors](../../../integrations/connectors/_index.md) allow you to extend Union's capabilities by integrating with external services.
+[Flyte connectors](../../../integrations/connectors/_index) allow you to extend Union's capabilities by integrating with external services.
 This guide explains how to deploy custom connectors that can be used in your Flyte workflows.
 
 ## Overview

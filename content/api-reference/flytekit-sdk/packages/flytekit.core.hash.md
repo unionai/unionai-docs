@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.hash
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -25,6 +25,7 @@ layout: py_api
 ## flytekit.core.hash.HashMethod
 
 Flyte-specific object used to wrap the hash function for a specific type
+
 
 
 ```python

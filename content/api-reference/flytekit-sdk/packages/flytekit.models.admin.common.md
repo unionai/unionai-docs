@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.admin.common
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -27,6 +27,14 @@ class Sort(
 |-|-|-|
 | `key` |  | |
 | `direction` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `direction` | `None` | :rtype: int |
+| `is_empty` | `None` |  |
+| `key` | `None` | :rtype: Text |
 
 ### Methods
 
@@ -81,14 +89,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.common_pb2.Sort
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `direction` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `key` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
 

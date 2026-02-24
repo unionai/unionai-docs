@@ -14,7 +14,7 @@ This site has special blocks that can be used to generate code for Union.
 > Note that this page is only visible locally. It does not appear in the menus or in the production build.
 >
 > If you need instructions on how to create the local environment and get the
-> `localhost:1313` server running, please refer to the [local development guide](DEVELOPER.md).
+> `localhost:1313` server running, please refer to the [local development guide](./publishing).
 
 ## How to specify a "shortcode"
 
@@ -142,7 +142,7 @@ While, in the BYOC, Self-managed and Serverless variants of the site it will ren
 
 > The Union.ai platform is awesome.
 
-You can add keywords and specify their value, per variant, in `hugo.toml`:
+You can add keywords and specify their value, per variant, in `hugo.site.toml`:
 
 ```toml
 [params.key.product_full_name]

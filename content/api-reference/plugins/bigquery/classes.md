@@ -1,6 +1,6 @@
 ---
 title: Classes
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -9,7 +9,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.bigquery.agent.BigQueryAgent`](../packages/flytekitplugins.bigquery.agent#flytekitpluginsbigqueryagentbigqueryagent) |This is the base class for all async agents. |
-| [`flytekitplugins.bigquery.agent.BigQueryMetadata`](../packages/flytekitplugins.bigquery.agent#flytekitpluginsbigqueryagentbigquerymetadata) | |
+| [`flytekitplugins.bigquery.connector.BigQueryConnector`](../packages/flytekitplugins.bigquery.connector#flytekitpluginsbigqueryconnectorbigqueryconnector) | |
+| [`flytekitplugins.bigquery.connector.BigQueryMetadata`](../packages/flytekitplugins.bigquery.connector#flytekitpluginsbigqueryconnectorbigquerymetadata) | |
 | [`flytekitplugins.bigquery.task.BigQueryConfig`](../packages/flytekitplugins.bigquery.task#flytekitpluginsbigquerytaskbigqueryconfig) |BigQueryConfig should be used to configure a BigQuery Task. |
 | [`flytekitplugins.bigquery.task.BigQueryTask`](../packages/flytekitplugins.bigquery.task#flytekitpluginsbigquerytaskbigquerytask) |This is the simplest form of a BigQuery Task, that can be used even for tasks that do not produce any output. |

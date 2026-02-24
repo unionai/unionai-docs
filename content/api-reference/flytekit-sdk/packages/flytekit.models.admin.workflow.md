@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.admin.workflow
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -31,6 +31,15 @@ class Workflow(
 | `id` |  | |
 | `closure` |  | |
 | `short_description` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `closure` | `None` | :rtype: WorkflowClosure |
+| `id` | `None` | :rtype: flytekit.models.core.identifier.Identifier |
+| `is_empty` | `None` |  |
+| `short_description` | `None` | :rtype: str |
 
 ### Methods
 
@@ -74,18 +83,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.workflow_pb2.Workflow
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `closure` |  | {{< multiline >}}:rtype: WorkflowClosure
-{{< /multiline >}} |
-| `id` |  | {{< multiline >}}:rtype: flytekit.models.core.identifier.Identifier
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `short_description` |  | {{< multiline >}}:rtype: str
-{{< /multiline >}} |
-
 ## flytekit.models.admin.workflow.WorkflowClosure
 
 ```python
@@ -96,6 +93,13 @@ class WorkflowClosure(
 | Parameter | Type | Description |
 |-|-|-|
 | `compiled_workflow` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `compiled_workflow` | `None` | :rtype: flytekit.models.core.compiler.CompiledWorkflowClosure |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -139,14 +143,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.workflow_pb2.WorkflowClosure
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `compiled_workflow` |  | {{< multiline >}}:rtype: flytekit.models.core.compiler.CompiledWorkflowClosure
-{{< /multiline >}} |
-| `is_empty` |  |  |
-
 ## flytekit.models.admin.workflow.WorkflowSpec
 
 ```python
@@ -164,6 +160,15 @@ This object fully encapsulates the specification of a workflow
 | `template` | `flytekit.models.core.workflow.WorkflowTemplate` | |
 | `sub_workflows` | `typing.List[flytekit.models.core.workflow.WorkflowTemplate]` | |
 | `docs` | `typing.Optional[flytekit.models.documentation.Documentation]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `docs` | `None` | :rtype: Description entity for the workflow |
+| `is_empty` | `None` |  |
+| `sub_workflows` | `None` | :rtype: list[flytekit.models.core.workflow.WorkflowTemplate] |
+| `template` | `None` | :rtype: flytekit.models.core.workflow.WorkflowTemplate |
 
 ### Methods
 
@@ -206,16 +211,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.workflow_pb2.WorkflowSpec
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `docs` |  | {{< multiline >}}:rtype: Description entity for the workflow
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `sub_workflows` |  | {{< multiline >}}:rtype: list[flytekit.models.core.workflow.WorkflowTemplate]
-{{< /multiline >}} |
-| `template` |  | {{< multiline >}}:rtype: flytekit.models.core.workflow.WorkflowTemplate
-{{< /multiline >}} |
 

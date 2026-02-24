@@ -15,7 +15,7 @@ We will use GitHub Actions as the example CI/CD system.
 
 An API key is registered in your {{< key product_name >}} control plane to enable external systems to perform actions on your behalf.
 To allow your CI/CD system to authenticate with {{< key product_name >}}, create a {{< key product_name >}} API key.
-See [Managing API keys](./managing-api-keys.md) for details.
+See [Managing API keys](./managing-api-keys) for details.
 
 ```shell
 $ {{< key cli >}} create api-key admin --name my-cicd-key
@@ -79,7 +79,7 @@ jobs:
 ```
 
 > [!NOTE]
-> The `Register to Union` step registers the launch plans and related Flyte entities in the `launchplans` directory. It sets the project and domain, activates launch plans automatically, and pins the version to the Git commit SHA for traceability across all registered Flyte entities. See {{< key cli >}} [register](../../api-reference/union-cli.md#register) for additional options.
+> The `Register to Union` step registers the launch plans and related Flyte entities in the `launchplans` directory. It sets the project and domain, activates launch plans automatically, and pins the version to the Git commit SHA for traceability across all registered Flyte entities. See {{< key cli >}} [register](../../api-reference/union-cli#register) for additional options.
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant  flyte >}}

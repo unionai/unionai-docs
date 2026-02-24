@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.node_creation
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -42,7 +42,7 @@ outputs, how do you specify that t2 should run before t1? ::
 
     t2_node.runs_before(t1_node)
     # OR
-    t2_node >> t1_node
+    t2_node &gt;&gt; t1_node
 
 This works for tasks that take inputs as well, say a ``t3(in1: int)`` ::
 
@@ -52,7 +52,7 @@ You can still use this method to handle setting certain overrides ::
 
     t3_node = create_node(t3, in1=some_int).with_overrides(...)
 
-Outputs, if there are any, will be accessible. A `t4() -> (int, str)` ::
+Outputs, if there are any, will be accessible. A `t4() -&gt; (int, str)` ::
 
     t4_node = create_node(t4)
 

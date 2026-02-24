@@ -1,0 +1,27 @@
+{
+  "packages": {
+    "flytekitplugins.kfmpi": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi/",
+    "flytekitplugins.kfmpi.task": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/"
+  },
+  "identifiers": {
+    "flytekitplugins.kfmpi.task.CleanPodPolicy": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitaskcleanpodpolicy",
+    "CleanPodPolicy": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitaskcleanpodpolicy",
+    "flytekitplugins.kfmpi.task.HorovodFunctionTask": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitaskhorovodfunctiontask",
+    "HorovodFunctionTask": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitaskhorovodfunctiontask",
+    "flytekitplugins.kfmpi.task.HorovodJob": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitaskhorovodjob",
+    "HorovodJob": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitaskhorovodjob",
+    "flytekitplugins.kfmpi.task.Launcher": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitasklauncher",
+    "Launcher": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitasklauncher",
+    "flytekitplugins.kfmpi.task.MPIFunctionTask": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitaskmpifunctiontask",
+    "MPIFunctionTask": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitaskmpifunctiontask",
+    "flytekitplugins.kfmpi.task.MPIJob": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitaskmpijob",
+    "MPIJob": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitaskmpijob",
+    "flytekitplugins.kfmpi.task.RestartPolicy": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitaskrestartpolicy",
+    "RestartPolicy": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitaskrestartpolicy",
+    "flytekitplugins.kfmpi.task.RunPolicy": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitaskrunpolicy",
+    "RunPolicy": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitaskrunpolicy",
+    "flytekitplugins.kfmpi.task.Worker": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitaskworker",
+    "Worker": "/api-reference/plugins/kf-mpi/packages/flytekitplugins.kfmpi.task/#flytekitpluginskfmpitaskworker"
+  },
+  "methods": {}
+}

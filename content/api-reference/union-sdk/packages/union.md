@@ -1,6 +1,6 @@
 ---
 title: union
-version: 0.1.198
+version: 0.1.202
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -26,14 +26,14 @@ layout: py_api
 | [`Resources`](.././union#unionresources) | This class is used to specify both resource requests and resource limits. |
 | [`Secret`](.././union#unionsecret) | See :std:ref:`cookbook:secrets` for usage examples. |
 | [`StructuredDataset`](.././union#unionstructureddataset) | This is the user facing StructuredDataset class. |
-| [`UnionRemote`](.././union#unionunionremote) | Main entrypoint for programmatically accessing a Flyte remote backend. |
+| [`UnionRemote`](.././union#unionunionremote) |  |
 | [`VersionParameters`](.././union#unionversionparameters) | Parameters used for version hash generation. |
 
 ### Protocols
 
 | Protocol | Description |
 |-|-|
-| [`CachePolicy`](.././union#unioncachepolicy) | Base class for protocol classes. |
+| [`CachePolicy`](.././union#unioncachepolicy) |  |
 
 ### Methods
 
@@ -76,7 +76,7 @@ Usage
 flytekit.current_context().logging.info(...)
 ```
 
-Available params are documented in {{< py_class_ref flytekit.core.context_manager.ExecutionParams >}}.
+Available params are documented in {{&lt; py_class_ref flytekit.core.context_manager.ExecutionParams &gt;}}.
 There are some special params, that should be available
 
 
@@ -189,7 +189,7 @@ For specific task types
 def my_task(x: int, y: typing.Dict[str, str]) -> str:
     ...
 ```
-Please see some cookbook :std:ref:`task examples <cookbook:tasks>` for additional information.
+Please see some cookbook :std:ref:`task examples &lt;cookbook:tasks&gt;` for additional information.
 
 
 
@@ -206,7 +206,7 @@ Please see some cookbook :std:ref:`task examples <cookbook:tasks>` for additiona
 | `environment` | `Optional[Dict[str, str]]` | Environment variables that should be added for this tasks execution |
 | `requests` | `Optional[Resources]` | Specify compute resource requests for your task. For Pod-plugin tasks, these values will apply only to the primary container. |
 | `limits` | `Optional[Resources]` | Compute limits. Specify compute resource limits for your task. For Pod-plugin tasks, these values will apply only to the primary container. For more information, please see {{&lt; py_class_ref flytekit.Resources &gt;}}. |
-| `secret_requests` | `Optional[List[Secret]]` | Keys that can identify the secrets supplied at runtime. Ideally the secret keys should also be semi-descriptive. The key values will be available from runtime, if the backend is configured to provide secrets and if secrets are available in the configured secrets store. Possible options for secret stores are - Vault, Confidant, Kube secrets, AWS KMS etc Refer to {{&lt; py_class_ref Secret &gt;}} to understand how to specify the request for a secret. It may change based on the backend provider.  &gt; [!NOTE] &gt; During local execution, the secrets will be pulled from the local environment variables with the format `{GROUP}_{GROUP_VERSION}_{KEY}`, where all the characters are capitalized and the prefix is not used. |
+| `secret_requests` | `Optional[List[Secret]]` | Keys that can identify the secrets supplied at runtime. Ideally the secret keys should also be semi-descriptive. The key values will be available from runtime, if the backend is configured to provide secrets and if secrets are available in the configured secrets store. Possible options for secret stores are - Vault, Confidant, Kube secrets, AWS KMS etc Refer to {{&lt; py_class_ref Secret &gt;}} to understand how to specify the request for a secret. It may change based on the backend provider.  > [!NOTE] > During local execution, the secrets will be pulled from the local environment variables with the format `{GROUP}_{GROUP_VERSION}_{KEY}`, where all the characters are capitalized and the prefix is not used. |
 | `execution_mode` | `PythonFunctionTask.ExecutionBehavior` | This is mainly for internal use. Please ignore. It is filled in automatically. |
 | `node_dependency_hints` | `Optional[Iterable[Union[PythonFunctionTask, _annotated_launchplan.LaunchPlan, _annotated_workflow.WorkflowBase]]]` | A list of tasks, launchplans, or workflows that this task depends on. This is only for dynamic tasks/workflows, where flyte cannot automatically determine the dependencies prior to runtime. Even on dynamic tasks this is optional, but in some scenarios it will make registering the workflow easier, because it allows registration to be done the same as for static tasks/workflows.  For example this is useful to run launchplans dynamically, because launchplans must be registered on flyteadmin before they can be run. Tasks and workflows do not have this requirement.  ```python @workflow def workflow0(): ...  launchplan0 = LaunchPlan.get_or_create(workflow0)  # Specify node_dependency_hints so that launchplan0 will be registered on flyteadmin, despite this being a # dynamic task. @dynamic(node_dependency_hints=[launchplan0]) def launch_dynamically(): # To run a sub-launchplan it must have previously been registered on flyteadmin. return [launchplan0]*10 ``` |
 | `task_resolver` | `Optional[TaskResolverMixin]` | Provide a custom task resolver. |
@@ -250,9 +250,9 @@ the platform, local runs notwithstanding).
 
 Example:
 
-<!--
+&lt;!--
 .. literalinclude:: ../../../tests/flytekit/unit/core/test_workflows.py
--->
+--&gt;
 
 ```python
 import os
@@ -776,10 +776,10 @@ rror_message}", failed_node_id="fn0")
 
 Again, users should keep in mind that even though the body of the function looks like regular Python, it is
 actually not. When flytekit scans the workflow function, the objects being passed around between the tasks are not
-your typical Python values. So even though you may have a task ``t1() -> int``, when ``a = t1()`` is called, ``a``
+your typical Python values. So even though you may have a task ``t1() -&gt; int``, when ``a = t1()`` is called, ``a``
 will not be an integer so if you try to ``range(a)`` you'll get an error.
 
-Please see the :ref:`user guide <cookbook:workflow>` for more usage examples.
+Please see the :ref:`user guide &lt;cookbook:workflow&gt;` for more usage examples.
 
 
 
@@ -816,24 +816,24 @@ class ActorEnvironment(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | |
-| `container_image` | `Optional[Union[str, ImageSpec]]` | |
-| `replica_count` | `int` | |
-| `ttl_seconds` | `Optional[int]` | |
-| `environment` | `Optional[Dict[str, str]]` | |
-| `requests` | `Optional[Resources]` | |
-| `limits` | `Optional[Resources]` | |
-| `accelerator` | `Optional[BaseAccelerator]` | |
-| `secret_requests` | `Optional[List[Secret]]` | |
-| `pod_template` | `Optional[PodTemplate]` | |
-| `interruptible` | `bool` | |
+| `name` | `str` | The name of the actor. This is used in conjunction with the project, domain, and version to uniquely identify the actor. |
+| `container_image` | `Optional[Union[str, ImageSpec]]` | The container image to use for the task. Set to default image if none provided. |
+| `replica_count` | `int` | The number of workers to provision that are able to accept tasks. |
+| `ttl_seconds` | `Optional[int]` | How long to keep the Actor alive while no tasks are being run. If not provided the default configuration value of 90s will be used. |
+| `environment` | `Optional[Dict[str, str]]` | Environment variables as key, value pairs in a Python dictionary. |
+| `requests` | `Optional[Resources]` | Compute resource requests per task. |
+| `limits` | `Optional[Resources]` | Compute resource limits. |
+| `accelerator` | `Optional[BaseAccelerator]` | The accelerator device to use for the task. |
+| `secret_requests` | `Optional[List[Secret]]` | Keys (ideally descriptive) that can identify the secrets supplied at runtime. |
+| `pod_template` | `Optional[PodTemplate]` | The pod template to use as the base configuration for actor replica pods. |
+| `interruptible` | `bool` | Whether the actor replica pods are labelled as interruptible. |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `task` |  |  |
-| `version` |  |  |
+| `task` | `None` |  |
+| `version` | `None` |  |
 
 ## union.Artifact
 
@@ -848,6 +848,7 @@ df_artifact = Artifact.get("flyte://a1")
 remote.execute(wf, inputs={"a": df_artifact})
 
 Note that Python fields will be missing when retrieved from the service.
+
 
 
 ```python
@@ -893,6 +894,14 @@ class Artifact(
 | `card` | `Optional[Card]` | |
 | `kwargs` | `**kwargs` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `concrete_artifact_id` | `None` |  |
+| `partitions` | `None` |  |
+| `time_partition` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -930,7 +939,7 @@ done so.
     EstError = Artifact(name="estimation_error", partition_keys=["dataset"], time_partitioned=True)
 
     @task
-    def t1() -> Annotated[pd.DataFrame, Pricing], Annotated[float, EstError]:
+    def t1() -&gt; Annotated[pd.DataFrame, Pricing], Annotated[float, EstError]:
         df = get_pricing_results()
         dt = get_time()
         return Pricing.create_from(df, region="dubai"),             EstError.create_from(msq_error, dataset="train", time_partition=dt)
@@ -938,7 +947,7 @@ done so.
 You can mix and match with the input syntax as well.
 
     @task
-    def my_task() -> Annotated[pd.DataFrame, RideCountData(region=Inputs.region)]:
+    def my_task() -&gt; Annotated[pd.DataFrame, RideCountData(region=Inputs.region)]:
         ...
         return RideCountData.create_from(df, time_partition=datetime.datetime.now())
 
@@ -1105,14 +1114,6 @@ This is here instead of translator because it's in the interface, a relatively s
 that's exposed to the user.
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `concrete_artifact_id` |  |  |
-| `partitions` |  |  |
-| `time_partition` |  |  |
-
 ## union.Cache
 
 Cache configuration for a task.
@@ -1130,11 +1131,11 @@ class Cache(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `version` | `typing.Optional[str]` | |
-| `serialize` | `bool` | |
-| `ignored_inputs` | `typing.Union[typing.Tuple[str, ...], str]` | |
-| `salt` | `str` | |
-| `policies` | `typing.Union[typing.List[flytekit.core.cache.CachePolicy], flytekit.core.cache.CachePolicy, NoneType]` | |
+| `version` | `typing.Optional[str]` | The version of the task. If not provided, the version will be generated based on the cache policies. :type version: Optional[str] |
+| `serialize` | `bool` | Boolean that indicates if identical (ie. same inputs) instances of this task should be executed in serial when caching is enabled. This means that given multiple concurrent executions over identical inputs, only a single instance executes and the rest wait to reuse the cached results. :type serialize: bool |
+| `ignored_inputs` | `typing.Union[typing.Tuple[str, ...], str]` | A tuple of input names to ignore when generating the version hash. :type ignored_inputs: Union[Tuple[str, ...], str] |
+| `salt` | `str` | A salt used in the hash generation. :type salt: str |
+| `policies` | `typing.Union[typing.List[flytekit.core.cache.CachePolicy], flytekit.core.cache.CachePolicy, NoneType]` | A list of cache policies to generate the version hash. :type policies: Optional[Union[List[CachePolicy], CachePolicy]] |
 
 ### Methods
 
@@ -1161,38 +1162,6 @@ def get_version(
 | `params` | `flytekit.core.cache.VersionParameters` | |
 
 ## union.CachePolicy
-
-Base class for protocol classes.
-
-Protocol classes are defined as::
-
-    class Proto(Protocol):
-        def meth(self) -> int:
-            ...
-
-Such classes are primarily used with static type checkers that recognize
-structural subtyping (static duck-typing).
-
-For example::
-
-    class C:
-        def meth(self) -> int:
-            return 0
-
-    def func(x: Proto) -> int:
-        return x.meth()
-
-    func(C())  # Passes static type check
-
-See PEP 544 for details. Protocol classes decorated with
-@typing.runtime_checkable act as simple-minded runtime protocols that check
-only the presence of given attributes, ignoring their type signatures.
-Protocol classes can be generic, they are defined as::
-
-    class GenProto[T](Protocol):
-        def meth(self) -> T:
-            ...
-
 
 ```python
 protocol CachePolicy()
@@ -1222,6 +1191,7 @@ def get_version(
 This is an intermediate class that represents Flyte Tasks that run a container at execution time. This is the vast
 majority of tasks - the typical ``@task`` decorated tasks for instance all run a container. An example of
 something that doesn't run a container would be something like the Athena SQL task.
+
 
 
 ```python
@@ -1268,6 +1238,28 @@ class ContainerTask(
 | `local_logs` | `bool` | |
 | `resources` | `typing.Optional[flytekit.core.resources.Resources]` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `resources` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -1562,34 +1554,6 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
 | `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `resources` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
-
 ## union.Deck
 
 Deck enable users to get customizable and default visibility into their tasks.
@@ -1628,6 +1592,7 @@ def t2() -> Annotated[pd.DataFrame, TopFrameRenderer(10)]:
 ```
 
 
+
 ```python
 class Deck(
     name: str,
@@ -1640,6 +1605,13 @@ class Deck(
 | `name` | `str` | |
 | `html` | `typing.Optional[str]` | |
 | `auto_add_to_deck` | `bool` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `html` | `None` |  |
+| `name` | `None` |  |
 
 ### Methods
 
@@ -1665,13 +1637,6 @@ def append(
 ```python
 def publish()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `html` |  |  |
-| `name` |  |  |
-
 ## union.FlyteDirectory
 
 ```python
@@ -1686,6 +1651,15 @@ class FlyteDirectory(
 | `path` | `typing.Union[str, os.PathLike]` | The source path that users are expected to call open() on |
 | `downloader` | `typing.Optional[typing.Callable]` | Optional function that can be passed that used to delay downloading of the actual fil until a user actually calls open(). |
 | `remote_directory` | `typing.Optional[typing.Union[os.PathLike, str, typing.Literal[False]]]` | If the user wants to return something and also specify where it should be uploaded to. If set to False, then flytekit will not upload the directory to the remote store. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `downloaded` | `None` |  |
+| `remote_directory` | `None` |  |
+| `remote_source` | `None` | If this is an input to a task, and the original path is s3://something, flytekit will download the directory for the user. In case the user wants access to the original path, it will be here. |
+| `sep` | `None` |  |
 
 ### Methods
 
@@ -1742,12 +1716,14 @@ Example:
 
 ```python
 def deserialize_flyte_dir(
-    info,
-) -> FlyteDirectory
+    args,
+    kwargs,
+)
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `info` |  | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### download()
 
@@ -1932,8 +1908,16 @@ def schema(
 #### serialize_flyte_dir()
 
 ```python
-def serialize_flyte_dir()
+def serialize_flyte_dir(
+    args,
+    kwargs,
+)
 ```
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
+
 #### to_dict()
 
 ```python
@@ -1972,17 +1956,6 @@ def to_json(
 | `sort_keys` | `bool` | |
 | `kw` |  | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `downloaded` |  |  |
-| `remote_directory` |  |  |
-| `remote_source` |  | {{< multiline >}}If this is an input to a task, and the original path is s3://something, flytekit will download the
-directory for the user. In case the user wants access to the original path, it will be here.
-{{< /multiline >}} |
-| `sep` |  |  |
-
 ## union.FlyteFile
 
 ```python
@@ -2003,6 +1976,14 @@ FlyteFile's init method.
 | `downloader` | `typing.Callable` | Optional function that can be passed that used to delay downloading of the actual fil until a user actually calls open(). |
 | `remote_path` | `typing.Optional[typing.Union[os.PathLike, str, bool]]` | If the user wants to return something and also specify where it should be uploaded to. Alternatively, if the user wants to specify a remote path for a file that's already in the blob store, the path should point to the location and remote_path should be set to False. |
 | `metadata` | `typing.Optional[dict[str, str]]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `downloaded` | `None` |  |
+| `remote_path` | `None` |  |
+| `remote_source` | `None` | If this is an input to a task, and the original path is an ``s3`` bucket, Flytekit downloads the file for the user. In case the user wants access to the original path, it will be here. |
 
 ### Methods
 
@@ -2026,12 +2007,14 @@ FlyteFile's init method.
 
 ```python
 def deserialize_flyte_file(
-    info,
-) -> 'FlyteFile'
+    args,
+    kwargs,
+)
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `info` |  | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### download()
 
@@ -2148,8 +2131,16 @@ def copy_file(ff: FlyteFile) -> FlyteFile:
 #### serialize_flyte_file()
 
 ```python
-def serialize_flyte_file()
+def serialize_flyte_file(
+    args,
+    kwargs,
+)
 ```
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
+
 #### to_dict()
 
 ```python
@@ -2167,16 +2158,6 @@ def to_json(
 |-|-|-|
 | `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` | |
 | `to_dict_kwargs` | `typing.Any` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `downloaded` |  |  |
-| `remote_path` |  |  |
-| `remote_source` |  | {{< multiline >}}If this is an input to a task, and the original path is an ``s3`` bucket, Flytekit downloads the
-file for the user. In case the user wants access to the original path, it will be here.
-{{< /multiline >}} |
 
 ## union.ImageSpec
 
@@ -2227,6 +2208,7 @@ Attributes:
     builder_options (Optional[Dict[str, Any]]): Additional options for the builder. This is a dictionary that will be passed to the builder.
         The options are builder-specific and may not be supported by all builders.
     builder_config (Optional[typing.Dict[str, typing.Any]]): Custom builder images configuration, such as uv and micromamba images.
+
 
 
 ```python
@@ -2293,6 +2275,13 @@ class ImageSpec(
 | `runtime_packages` | `typing.Optional[typing.List[str]]` | |
 | `builder_options` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
 | `builder_config` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `id` | `None` | Calculate a unique hash as the ID for the ImageSpec, and it will be used to 1. Identify the imageSpec in the ImageConfig in the serialization context. 2. Check if the current container image in the pod is built from this image spec in `is_container()`.  ImageConfig: - deduced abc: flyteorg/flytekit:123 - deduced xyz: flyteorg/flytekit:456  The result of this property also depends on whether or not update_image_spec_copy_handling was called.  :return: a unique identifier of the ImageSpec |
+| `tag` | `None` | Calculate a hash from the image spec. The hash will be the tag of the image. We will also read the content of the requirement file and the source root to calculate the hash. Therefore, it will generate different hash if new dependencies are added or the source code is changed.  Keep in mind the fields source_root and copy may be changed by update_image_spec_copy_handling, so when you call this property in relation to that function matter will change the output. |
 
 ### Methods
 
@@ -2449,7 +2438,7 @@ Builder that returns a new image spec with runtime packages. Dev packages will b
 ## union.LaunchPlan
 
 Launch Plans are one of the core constructs of Flyte. Please take a look at the discussion in the
-:std:ref:`core concepts <flyte:divedeep-launchplans>` if you are unfamiliar with them.
+:std:ref:`core concepts &lt;flyte:divedeep-launchplans&gt;` if you are unfamiliar with them.
 
 Every workflow is registered with a default launch plan, which is just a launch plan with none of the additional
 attributes set - no default values, fixed values, schedules, etc. Assuming you have the following workflow
@@ -2478,6 +2467,8 @@ To configure the remaining parameters, you'll need to import the relevant model 
 from flytekit.models.common import Annotations, AuthRole, Labels, RawOutputDataConfig
 ```
 Then use as follows:
+
+
 
 
 ```python
@@ -2516,6 +2507,29 @@ class LaunchPlan(
 | `overwrite_cache` | `Optional[bool]` | |
 | `auto_activate` | `bool` | |
 | `concurrency` | `Optional[ConcurrencyPolicy]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `annotations` | `None` |  |
+| `concurrency` | `None` |  |
+| `fixed_inputs` | `None` |  |
+| `interface` | `None` |  |
+| `labels` | `None` |  |
+| `max_parallelism` | `None` |  |
+| `name` | `None` |  |
+| `notifications` | `None` |  |
+| `overwrite_cache` | `None` |  |
+| `parameters` | `None` |  |
+| `python_interface` | `None` |  |
+| `raw_output_data_config` | `None` |  |
+| `saved_inputs` | `None` |  |
+| `schedule` | `None` |  |
+| `security_context` | `None` |  |
+| `should_auto_activate` | `None` |  |
+| `trigger` | `None` |  |
+| `workflow` | `None` |  |
 
 ### Methods
 
@@ -2678,29 +2692,6 @@ cached version is returned
 | `auto_activate` | `bool` | If set to True, the launch plan will be activated automatically on registration. Default is False. |
 | `concurrency` | `Optional[ConcurrencyPolicy]` | Defines execution concurrency limits and policy when limit is reached |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `annotations` |  |  |
-| `concurrency` |  |  |
-| `fixed_inputs` |  |  |
-| `interface` |  |  |
-| `labels` |  |  |
-| `max_parallelism` |  |  |
-| `name` |  |  |
-| `notifications` |  |  |
-| `overwrite_cache` |  |  |
-| `parameters` |  |  |
-| `python_interface` |  |  |
-| `raw_output_data_config` |  |  |
-| `saved_inputs` |  |  |
-| `schedule` |  |  |
-| `security_context` |  |  |
-| `should_auto_activate` |  |  |
-| `trigger` |  |  |
-| `workflow` |  |  |
-
 ## union.PodTemplate
 
 Custom PodTemplate specification for a Task.
@@ -2752,11 +2743,12 @@ second value is the limit. If the value is a single value, then both the request
 set to that value. For example, the `Resource(cpu=("1", "2"), mem=1024)` will set the cpu request to 1, cpu limit to 2,
 mem limit and request to 1024.
 
-> [!NOTE]
-> Persistent storage is not currently supported on the Flyte backend.
+&gt; [!NOTE]
+&gt; Persistent storage is not currently supported on the Flyte backend.
 
-Please see the :std:ref:`User Guide <cookbook:customizing task resources>` for detailed examples.
+Please see the :std:ref:`User Guide &lt;cookbook:customizing task resources&gt;` for detailed examples.
 Also refer to the [`K8s conventions.`](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes)
+
 
 
 ```python
@@ -2853,6 +2845,12 @@ class Secret(
 | `mount_requirement` | `<enum 'MountType'>` | |
 | `env_var` | `typing.Optional[str]` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -2892,16 +2890,11 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-
 ## union.StructuredDataset
 
 This is the user facing StructuredDataset class. Please don't confuse it with the literals.StructuredDataset
 class (that is just a model, a Python class representation of the protobuf).
+
 
 
 ```python
@@ -2918,6 +2911,14 @@ class StructuredDataset(
 | `uri` | `typing.Optional[str]` | |
 | `metadata` | `typing.Optional[literals.StructuredDatasetMetadata]` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `dataframe` | `None` |  |
+| `literal` | `None` |  |
+| `metadata` | `None` |  |
 
 ### Methods
 
@@ -2956,12 +2957,14 @@ def columns()
 
 ```python
 def deserialize_structured_dataset(
-    info,
-) -> StructuredDataset
+    args,
+    kwargs,
+)
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `info` |  | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### from_dict()
 
@@ -3010,8 +3013,16 @@ def open(
 #### serialize_structured_dataset()
 
 ```python
-def serialize_structured_dataset()
+def serialize_structured_dataset(
+    args,
+    kwargs,
+)
 ```
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
+
 #### set_literal()
 
 ```python
@@ -3048,21 +3059,7 @@ def to_json(
 | `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` | |
 | `to_dict_kwargs` | `typing.Any` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `dataframe` |  |  |
-| `literal` |  |  |
-| `metadata` |  |  |
-
 ## union.UnionRemote
-
-Main entrypoint for programmatically accessing a Flyte remote backend.
-
-The term 'remote' is synonymous with 'backend' or 'deployment' and refers to a hosted instance of the
-Flyte platform, which comes with a Flyte Admin server on some known URI.
-
 
 ```python
 class UnionRemote(
@@ -3089,14 +3086,37 @@ Initialize a FlyteRemote object.
 | `interactive_mode_enabled` | `typing.Optional[bool]` | If set to True, the FlyteRemote will pickle the task/workflow, if False, it will not. If set to None, then it will automatically detect if it is running in an interactive environment like a Jupyter notebook and enable interactive mode. |
 | `kwargs` | `**kwargs` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `apps_service_client` | `None` |  |
+| `artifacts_client` | `None` |  |
+| `async_channel` | `None` |  |
+| `authorizer_service_client` | `None` |  |
+| `client` | `None` | Return a SynchronousFlyteClient for additional operations. |
+| `config` | `None` | Image config. |
+| `context` | `None` |  |
+| `default_domain` | `None` | Default project to use when fetching or executing flyte entities. |
+| `default_project` | `None` | Default project to use when fetching or executing flyte entities. |
+| `file_access` | `None` | File access provider to use for offloading non-literal inputs/outputs. |
+| `hooks_async_client` | `None` |  |
+| `hooks_sync_client` | `None` |  |
+| `images_client` | `None` |  |
+| `interactive_mode_enabled` | `None` | If set to True, the FlyteRemote will pickle the task/workflow. |
+| `secret_client` | `None` |  |
+| `sync_channel` | `None` | Return channel from client. This channel already has the org passed in dynamically by the interceptor. |
+| `user_service_client` | `None` |  |
+| `users_client` | `None` |  |
+
 ### Methods
 
 | Method | Description |
 |-|-|
 | [`activate_launchplan()`](#activate_launchplan) | Given a launchplan, activate it, all previous versions are deactivated. |
 | [`approve()`](#approve) |  |
-| [`async_channel()`](#async_channel) |  |
 | [`auto()`](#auto) |  |
+| [`close_async_channel()`](#close_async_channel) | Close the async gRPC channel if one was created. |
 | [`create_artifact()`](#create_artifact) | Create an artifact in FlyteAdmin. |
 | [`deactivate_launchplan()`](#deactivate_launchplan) | Given a launchplan, deactivate it, all previous versions are deactivated. |
 | [`deploy_app()`](#deploy_app) | Deploy an application. |
@@ -3188,11 +3208,6 @@ def approve(
 | `project` | `str` | The execution project, will default to the Remote's default project. |
 | `domain` | `str` | The execution domain, will default to the Remote's default domain. |
 
-#### async_channel()
-
-```python
-def async_channel()
-```
 #### auto()
 
 ```python
@@ -3213,6 +3228,14 @@ def auto(
 | `data_upload_location` | `str` | |
 | `interactive_mode_enabled` | `bool` | |
 | `kwargs` | `**kwargs` | |
+
+#### close_async_channel()
+
+```python
+def close_async_channel()
+```
+Close the async gRPC channel if one was created.
+
 
 #### create_artifact()
 
@@ -3348,7 +3371,7 @@ settings for entities that have already been registered on Admin.
 | `tags` | `typing.Optional[typing.List[str]]` | Tags to be set for the execution. |
 | `cluster_pool` | `typing.Optional[str]` | Specify cluster pool on which newly created execution should be placed. |
 | `execution_cluster_label` | `typing.Optional[str]` | Specify label of cluster(s) on which newly created execution should be placed. |
-| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs to first be registered. If not provided, a default will be used.  &gt; [!NOTE] &gt; The ``name`` and ``version`` arguments do not apply to ``FlyteTask``, ``FlyteLaunchPlan``, and ``FlyteWorkflow`` entity inputs. These values are determined by referencing the entity identifier values. |
+| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs to first be registered. If not provided, a default will be used.  > [!NOTE] > The ``name`` and ``version`` arguments do not apply to ``FlyteTask``, ``FlyteLaunchPlan``, and ``FlyteWorkflow`` entity inputs. These values are determined by referencing the entity identifier values. |
 
 #### execute_local_launch_plan()
 
@@ -4100,7 +4123,7 @@ def launch_backfill(
 Creates and launches a backfill workflow for the given launchplan. If launchplan version is not specified,
 then the latest launchplan is retrieved.
 The from_date is exclusive and end_date is inclusive and backfill run for all instances in between. ::
-    -> (start_date - exclusive, end_date inclusive)
+    -&gt; (start_date - exclusive, end_date inclusive)
 
 If dry_run is specified, the workflow is created and returned.
 If execute==False is specified then the workflow is created and registered.
@@ -4624,35 +4647,6 @@ Wait for an execution to finish.
 | `poll_interval` | `typing.Optional[typing.Union[timedelta, int]]` | sync workflow execution at this interval. It can be a timedelta or a duration in seconds as int. |
 | `sync_nodes` | `bool` | passed along to the sync call for the workflow execution |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `apps_service_client` |  |  |
-| `artifacts_client` |  |  |
-| `authorizer_service_client` |  |  |
-| `client` |  | {{< multiline >}}Return a SynchronousFlyteClient for additional operations.
-{{< /multiline >}} |
-| `config` |  | {{< multiline >}}Image config.
-{{< /multiline >}} |
-| `context` |  |  |
-| `default_domain` |  | {{< multiline >}}Default project to use when fetching or executing flyte entities.
-{{< /multiline >}} |
-| `default_project` |  | {{< multiline >}}Default project to use when fetching or executing flyte entities.
-{{< /multiline >}} |
-| `file_access` |  | {{< multiline >}}File access provider to use for offloading non-literal inputs/outputs.
-{{< /multiline >}} |
-| `hooks_async_client` |  |  |
-| `hooks_sync_client` |  |  |
-| `images_client` |  |  |
-| `interactive_mode_enabled` |  | {{< multiline >}}If set to True, the FlyteRemote will pickle the task/workflow.
-{{< /multiline >}} |
-| `secret_client` |  |  |
-| `sync_channel` |  | {{< multiline >}}Return channel from client. This channel already has the org passed in dynamically by the interceptor.
-{{< /multiline >}} |
-| `user_service_client` |  |  |
-| `users_client` |  |  |
-
 ## union.VersionParameters
 
 Parameters used for version hash generation.
@@ -4673,7 +4667,7 @@ class VersionParameters(
 | Parameter | Type | Description |
 |-|-|-|
 | `func` | `typing.Callable[~P, ~FuncOut]` | |
-| `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, NoneType]` | |
+| `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, NoneType]` | The container image to generate a version for. This can be a string representing the image name or an ImageSpec object. :type container_image: Optional[Union[str, ImageSpec]] |
 | `pod_template` | `typing.Optional[flytekit.core.pod_template.PodTemplate]` | |
 | `pod_template_name` | `typing.Optional[str]` | |
 

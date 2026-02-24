@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.array_node_map_task
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ArrayNodeMapTask`](.././flytekit.core.array_node_map_task#flytekitcorearray_node_map_taskarraynodemaptask) | Base Class for all Tasks with a Python native ``Interface``. |
+| [`ArrayNodeMapTask`](.././flytekit.core.array_node_map_task#flytekitcorearray_node_map_taskarraynodemaptask) |  |
 | [`ArrayNodeMapTaskResolver`](.././flytekit.core.array_node_map_task#flytekitcorearray_node_map_taskarraynodemaptaskresolver) | Special resolver that is used for ArrayNodeMapTasks. |
 
 ### Methods
@@ -83,10 +83,6 @@ or the drop in replacement ArrayNode implementation
 
 ## flytekit.core.array_node_map_task.ArrayNodeMapTask
 
-Base Class for all Tasks with a Python native ``Interface``. This should be directly used for task types, that do
-not have a python function to be executed. Otherwise refer to {{< py_class_ref flytekit.PythonFunctionTask >}}.
-
-
 ```python
 class ArrayNodeMapTask(
     python_function_task: typing.Union[flytekit.core.python_function_task.PythonFunctionTask, flytekit.core.python_function_task.PythonInstanceTask, functools.partial],
@@ -107,6 +103,34 @@ class ArrayNodeMapTask(
 | `bound_inputs` | `typing.Optional[typing.Set[str]]` | The set of inputs that should be bound to the map task |
 | `bound_inputs_values` | `typing.Optional[typing.Dict[str, typing.Any]]` | Inputs that are bound to the array node and will not be mapped over |
 | `kwargs` | `**kwargs` | Additional keyword arguments to pass to the base class |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `bound_inputs` | `None` |  |
+| `concurrency` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `execution_mode` | `None` |  |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `is_original_sub_node_interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `min_success_ratio` | `None` |  |
+| `min_successes` | `None` |  |
+| `name` | `None` |  |
+| `python_function_task` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -440,40 +464,6 @@ def set_command_prefix(
 |-|-|-|
 | `cmd` | `typing.Optional[typing.List[str]]` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `bound_inputs` |  |  |
-| `concurrency` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `execution_mode` |  |  |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `is_original_sub_node_interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `min_success_ratio` |  |  |
-| `min_successes` |  |  |
-| `name` |  |  |
-| `python_function_task` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
-
 ## flytekit.core.array_node_map_task.ArrayNodeMapTaskResolver
 
 Special resolver that is used for ArrayNodeMapTasks.
@@ -482,7 +472,7 @@ When a maptask is created its interface is interpolated from the interface of th
 simply converts every input into a list/collection input.
 
 For example:
-  interface -> (i: int, j: str) -> str  => map_task interface -> (i: List[int], j: List[str]) -> List[str]
+  interface -&gt; (i: int, j: str) -&gt; str  =&gt; map_task interface -&gt; (i: List[int], j: List[str]) -&gt; List[str]
 
 But in cases in which `j` is bound to a fixed value by using `functools.partial` we need a way to ensure that
 the interface is not simply interpolated, but only the unbound inputs are interpolated.
@@ -498,10 +488,11 @@ print(mt.interface)
 
 output:
 
-        (i: List[int], j: str) -> List[str]
+        (i: List[int], j: str) -&gt; List[str]
 
 But, at runtime this information is lost. To reconstruct this, we use ArrayNodeMapTaskResolver that records the "bound vars"
 and then at runtime reconstructs the interface with this knowledge
+
 
 
 ```python
@@ -514,6 +505,14 @@ class ArrayNodeMapTaskResolver(
 |-|-|-|
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `instantiated_in` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
 
 ### Methods
 
@@ -591,12 +590,4 @@ Overridable function that can optionally return a custom name for a given task
 | Parameter | Type | Description |
 |-|-|-|
 | `t` | `flytekit.core.base_task.Task` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `instantiated_in` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
 

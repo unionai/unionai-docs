@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.notification
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -38,6 +38,7 @@ Email(phases=[WorkflowExecutionPhase.SUCCEEDED], recipients_email=["my-team@emai
 ```
 
 
+
 ```python
 class Email(
     phases: typing.List[int],
@@ -48,6 +49,16 @@ class Email(
 |-|-|-|
 | `phases` | `typing.List[int]` | |
 | `recipients_email` | `typing.List[str]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `email` | `None` | :rtype: EmailNotification |
+| `is_empty` | `None` |  |
+| `pager_duty` | `None` | :rtype: PagerDutyNotification |
+| `phases` | `None` | A list of phases to which users can associate the notifications. :rtype: list[int] |
+| `slack` | `None` | :rtype: SlackNotification |
 
 ### Methods
 
@@ -90,21 +101,6 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.common_pb2.Notification
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `email` |  | {{< multiline >}}:rtype: EmailNotification
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `pager_duty` |  | {{< multiline >}}:rtype: PagerDutyNotification
-{{< /multiline >}} |
-| `phases` |  | {{< multiline >}}A list of phases to which users can associate the notifications.
-:rtype: list[int]
-{{< /multiline >}} |
-| `slack` |  | {{< multiline >}}:rtype: SlackNotification
-{{< /multiline >}} |
 
 ## flytekit.core.notification.Notification
 
@@ -123,6 +119,16 @@ class Notification(
 | `pager_duty` | `flytekit.models.common.PagerDutyNotification` | |
 | `slack` | `flytekit.models.common.SlackNotification` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `email` | `None` | :rtype: EmailNotification |
+| `is_empty` | `None` |  |
+| `pager_duty` | `None` | :rtype: PagerDutyNotification |
+| `phases` | `None` | A list of phases to which users can associate the notifications. :rtype: list[int] |
+| `slack` | `None` | :rtype: SlackNotification |
+
 ### Methods
 
 | Method | Description |
@@ -165,21 +171,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.common_pb2.Notification
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `email` |  | {{< multiline >}}:rtype: EmailNotification
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `pager_duty` |  | {{< multiline >}}:rtype: PagerDutyNotification
-{{< /multiline >}} |
-| `phases` |  | {{< multiline >}}A list of phases to which users can associate the notifications.
-:rtype: list[int]
-{{< /multiline >}} |
-| `slack` |  | {{< multiline >}}:rtype: SlackNotification
-{{< /multiline >}} |
-
 ## flytekit.core.notification.PagerDuty
 
 This notification should be used when sending emails to the PagerDuty service.
@@ -189,6 +180,7 @@ from flytekit.models.core.execution import WorkflowExecutionPhase
 
 PagerDuty(phases=[WorkflowExecutionPhase.SUCCEEDED], recipients_email=["my-team@email.com"])
 ```
+
 
 
 ```python
@@ -202,6 +194,16 @@ class PagerDuty(
 | `phases` | `typing.List[int]` | |
 | `recipients_email` | `typing.List[str]` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `email` | `None` | :rtype: EmailNotification |
+| `is_empty` | `None` |  |
+| `pager_duty` | `None` | :rtype: PagerDutyNotification |
+| `phases` | `None` | A list of phases to which users can associate the notifications. :rtype: list[int] |
+| `slack` | `None` | :rtype: SlackNotification |
+
 ### Methods
 
 | Method | Description |
@@ -244,21 +246,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.common_pb2.Notification
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `email` |  | {{< multiline >}}:rtype: EmailNotification
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `pager_duty` |  | {{< multiline >}}:rtype: PagerDutyNotification
-{{< /multiline >}} |
-| `phases` |  | {{< multiline >}}A list of phases to which users can associate the notifications.
-:rtype: list[int]
-{{< /multiline >}} |
-| `slack` |  | {{< multiline >}}:rtype: SlackNotification
-{{< /multiline >}} |
-
 ## flytekit.core.notification.Slack
 
 This notification should be used when sending emails to the Slack.
@@ -268,6 +255,7 @@ from flytekit.models.core.execution import WorkflowExecutionPhase
 
 Slack(phases=[WorkflowExecutionPhase.SUCCEEDED], recipients_email=["my-team@email.com"])
 ```
+
 
 
 ```python
@@ -281,6 +269,16 @@ class Slack(
 | `phases` | `typing.List[int]` | |
 | `recipients_email` | `typing.List[str]` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `email` | `None` | :rtype: EmailNotification |
+| `is_empty` | `None` |  |
+| `pager_duty` | `None` | :rtype: PagerDutyNotification |
+| `phases` | `None` | A list of phases to which users can associate the notifications. :rtype: list[int] |
+| `slack` | `None` | :rtype: SlackNotification |
+
 ### Methods
 
 | Method | Description |
@@ -322,19 +320,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.common_pb2.Notification
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `email` |  | {{< multiline >}}:rtype: EmailNotification
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `pager_duty` |  | {{< multiline >}}:rtype: PagerDutyNotification
-{{< /multiline >}} |
-| `phases` |  | {{< multiline >}}A list of phases to which users can associate the notifications.
-:rtype: list[int]
-{{< /multiline >}} |
-| `slack` |  | {{< multiline >}}:rtype: SlackNotification
-{{< /multiline >}} |
 

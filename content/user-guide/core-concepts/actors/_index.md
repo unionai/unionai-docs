@@ -104,7 +104,7 @@ def wf():
 {{< /markdown >}}
 {{< /variant >}}
 
-You can learn more about the trade-offs between actors and regular tasks, as well as the efficiency gains you can expect [here](actors-and-regular-tasks).
+You can learn more about the trade-offs between actors and regular tasks, as well as the efficiency gains you can expect [here](./actors-and-regular-tasks).
 
 ## Caching on Actor Replicas
 
@@ -218,4 +218,4 @@ def wf(init_value: int = 1, state: int = 3) -> int:
 
 You can see that the first call of `evaluate` took considerable time as it involves allocating a node for the task, creating a container, and loading the model. The subsequent calls of `evaluate` execute in a fraction of the time.
 
-You can see examples of more advanced actor usage [here](actor-examples).
+You can see examples of more advanced actor usage [here](./actor-examples).

@@ -12,9 +12,9 @@ sidebar_expanded: false
 - **Model endpoints** with generic web frameworks like FastAPI or optimized inference frameworks like vLLM and SGLang.
 - **AI inference-time** components like MCP servers, ephemeral agent memory state stores, etc.
 - **Interactive dashboards** and other interfaces to interact with and visualize data and models from your workflows using frameworks like Streamlit, Gradio, Tensorboard, FastHTML, Dash, Panel, Voila, FiftyOne.
-- **Flyte Connectors**, which are [light-weight, long running services](../../../integrations/connectors/_index.md) that connect to external
+- **Flyte Connectors**, which are [light-weight, long running services](../../../integrations/connectors/_index) that connect to external
 services like OpenAI, BigQuery, and Snowflake.
-- **Any other web services** like [web hooks](../../../tutorials/serving/custom-webhooks.md) that can be implemented via web frameworks like FastAPI, Starlette.
+- **Any other web services** like [web hooks](../../../tutorials/serving/custom-webhooks) that can be implemented via web frameworks like FastAPI, Starlette.
 
 ## Example app
 

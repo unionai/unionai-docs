@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.great_expectations.schema
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -15,7 +15,7 @@ layout: py_api
 |-|-|
 | [`GreatExpectationsFlyteConfig`](.././flytekitplugins.great_expectations.schema#flytekitpluginsgreat_expectationsschemagreatexpectationsflyteconfig) | Use this configuration to configure GreatExpectations Plugin. |
 | [`GreatExpectationsType`](.././flytekitplugins.great_expectations.schema#flytekitpluginsgreat_expectationsschemagreatexpectationstype) | Use this class to send the GreatExpectationsFlyteConfig. |
-| [`GreatExpectationsTypeTransformer`](.././flytekitplugins.great_expectations.schema#flytekitpluginsgreat_expectationsschemagreatexpectationstypetransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`GreatExpectationsTypeTransformer`](.././flytekitplugins.great_expectations.schema#flytekitpluginsgreat_expectationsschemagreatexpectationstypetransformer) |  |
 
 ## flytekitplugins.great_expectations.schema.GreatExpectationsFlyteConfig
 
@@ -35,16 +35,16 @@ class GreatExpectationsFlyteConfig(
     context_root_dir: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `datasource_name` | `str` |
-| `expectation_suite_name` | `str` |
-| `data_connector_name` | `str` |
-| `data_asset_name` | `typing.Optional[str]` |
-| `local_file_path` | `typing.Optional[str]` |
-| `checkpoint_params` | `typing.Optional[typing.Dict[str, typing.Union[str, typing.List[str]]]]` |
-| `batch_request_config` | `typing.Optional[flytekitplugins.great_expectations.task.BatchRequestConfig]` |
-| `context_root_dir` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `datasource_name` | `str` | tell where your data lives and how to get it |
+| `expectation_suite_name` | `str` | suite which consists of the data expectations |
+| `data_connector_name` | `str` | connector to identify data batches |
+| `data_asset_name` | `typing.Optional[str]` | name of the data asset (to be used for RuntimeBatchRequest) |
+| `local_file_path` | `typing.Optional[str]` | dataset file path useful for FlyteFile and FlyteSchema |
+| `checkpoint_params` | `typing.Optional[typing.Dict[str, typing.Union[str, typing.List[str]]]]` | optional SimpleCheckpoint parameters |
+| `batch_request_config` | `typing.Optional[flytekitplugins.great_expectations.task.BatchRequestConfig]` | batchrequest config |
+| `context_root_dir` | `str` | directory in which GreatExpectations' configuration resides |
 
 ### Methods
 
@@ -65,10 +65,10 @@ def from_dict(
     infer_missing,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` |
-| `infer_missing` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
+| `infer_missing` |  | |
 
 #### from_json()
 
@@ -82,14 +82,14 @@ def from_json(
     kw,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` |
-| `parse_float` |  |
-| `parse_int` |  |
-| `parse_constant` |  |
-| `infer_missing` |  |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `typing.Union[str, bytes, bytearray]` | |
+| `parse_float` |  | |
+| `parse_int` |  | |
+| `parse_constant` |  | |
+| `infer_missing` |  | |
+| `kw` |  | |
 
 #### schema()
 
@@ -106,17 +106,17 @@ def schema(
     unknown,
 ) -> SchemaType[A]
 ```
-| Parameter | Type |
-|-|-|
-| `infer_missing` | `bool` |
-| `only` |  |
-| `exclude` |  |
-| `many` | `bool` |
-| `context` |  |
-| `load_only` |  |
-| `dump_only` |  |
-| `partial` | `bool` |
-| `unknown` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `infer_missing` | `bool` | |
+| `only` |  | |
+| `exclude` |  | |
+| `many` | `bool` | |
+| `context` |  | |
+| `load_only` |  | |
+| `dump_only` |  | |
+| `partial` | `bool` | |
+| `unknown` |  | |
 
 #### to_dict()
 
@@ -125,9 +125,9 @@ def to_dict(
     encode_json,
 ) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
-| Parameter | Type |
-|-|-|
-| `encode_json` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `encode_json` |  | |
 
 #### to_json()
 
@@ -144,17 +144,17 @@ def to_json(
     kw,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `skipkeys` | `bool` |
-| `ensure_ascii` | `bool` |
-| `check_circular` | `bool` |
-| `allow_nan` | `bool` |
-| `indent` | `typing.Union[int, str, NoneType]` |
-| `separators` | `typing.Tuple[str, str]` |
-| `default` | `typing.Callable` |
-| `sort_keys` | `bool` |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `skipkeys` | `bool` | |
+| `ensure_ascii` | `bool` | |
+| `check_circular` | `bool` | |
+| `allow_nan` | `bool` | |
+| `indent` | `typing.Union[int, str, NoneType]` | |
+| `separators` | `typing.Tuple[str, str]` | |
+| `default` | `typing.Callable` | |
+| `sort_keys` | `bool` | |
+| `kw` |  | |
 
 ## flytekitplugins.great_expectations.schema.GreatExpectationsType
 
@@ -176,12 +176,18 @@ def config()
 ```
 ## flytekitplugins.great_expectations.schema.GreatExpectationsTypeTransformer
 
-Base transformer type that should be implemented for every python native type that can be handled by flytekit
-
-
 ```python
 def GreatExpectationsTypeTransformer()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ### Methods
 
 | Method | Description |
@@ -206,10 +212,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
+| `v` | `T` | |
 
 #### from_binary_idl()
 
@@ -223,19 +229,19 @@ This function primarily handles deserialization for untyped dicts, dataclasses, 
 
 For untyped dict, dataclass, and pydantic basemodel:
 Life Cycle (Untyped Dict as example):
-    python val -> msgpack bytes -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                             (from_binary_idl)
 
 For attribute access:
 Life Cycle:
-    python val -> msgpack bytes -> binary literal scalar -> resolved golang value -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; resolved golang value -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -252,10 +258,10 @@ Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_config()
 
@@ -264,9 +270,9 @@ def get_config(
     t: typing.Type[flytekitplugins.great_expectations.schema.GreatExpectationsType],
 ) -> typing.Tuple[typing.Type, flytekitplugins.great_expectations.schema.GreatExpectationsFlyteConfig]
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `typing.Type[flytekitplugins.great_expectations.schema.GreatExpectationsType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.Type[flytekitplugins.great_expectations.schema.GreatExpectationsType]` | |
 
 #### get_literal_type()
 
@@ -278,9 +284,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `typing.Type[flytekitplugins.great_expectations.schema.GreatExpectationsType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.Type[flytekitplugins.great_expectations.schema.GreatExpectationsType]` | |
 
 #### guess_python_type()
 
@@ -292,9 +298,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -304,10 +310,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_html()
 
@@ -321,11 +327,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -343,12 +349,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `python_val` | `typing.Union[flytekit.types.file.file.FlyteFile, flytekit.types.schema.types.FlyteSchema, str]` |
-| `python_type` | `typing.Type[flytekitplugins.great_expectations.schema.GreatExpectationsType]` |
-| `expected` | `flytekit.models.types.LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `typing.Union[flytekit.types.file.file.FlyteFile, flytekit.types.schema.types.FlyteSchema, str]` | The actual value to be transformed |
+| `python_type` | `typing.Type[flytekitplugins.great_expectations.schema.GreatExpectationsType]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `flytekit.models.types.LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -362,20 +368,9 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `lv` | `flytekit.models.literals.Literal` |
-| `expected_python_type` | `typing.Type[flytekitplugins.great_expectations.schema.GreatExpectationsType]` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | FlyteContext |
+| `lv` | `flytekit.models.literals.Literal` | The received literal Value |
+| `expected_python_type` | `typing.Type[flytekitplugins.great_expectations.schema.GreatExpectationsType]` | Expected native python type that should be returned |
 

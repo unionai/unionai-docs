@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.raw
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -29,6 +29,7 @@ SynchronousFlyteClient(PlatformConfig(endpoint="a.b.com", insecure=True))
 ```
 
 
+
 ```python
 class RawSynchronousFlyteClient(
     cfg: PlatformConfig,
@@ -43,6 +44,12 @@ Initializes a gRPC channel to the given Flyte Admin service.
 |-|-|-|
 | `cfg` | `PlatformConfig` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `url` | `None` |  |
 
 ### Methods
 
@@ -784,10 +791,4 @@ def with_root_certificate(
 |-|-|-|
 | `cfg` | `PlatformConfig` | |
 | `root_cert_file` | `str` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `url` |  |  |
 

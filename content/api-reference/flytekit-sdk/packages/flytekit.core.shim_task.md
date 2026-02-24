@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.shim_task
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,7 +14,7 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`ExecutableTemplateShimTask`](.././flytekit.core.shim_task#flytekitcoreshim_taskexecutabletemplateshimtask) | The canonical ``@task`` decorated Python function task is pretty simple to reason about. |
-| [`ShimTaskExecutor`](.././flytekit.core.shim_task#flytekitcoreshim_taskshimtaskexecutor) | Please see the notes for the metaclass above first. |
+| [`ShimTaskExecutor`](.././flytekit.core.shim_task#flytekitcoreshim_taskshimtaskexecutor) |  |
 
 ### Variables
 
@@ -36,13 +36,14 @@ has two components:
 Basically at execution time (both locally and on a Flyte cluster), the task template is given to the executor,
 which is responsible for computing and returning the results.
 
-> [!NOTE]
-> The interface at execution time will have to derived from the Flyte IDL interface, which means it may be lossy.
+&gt; [!NOTE]
+&gt; The interface at execution time will have to derived from the Flyte IDL interface, which means it may be lossy.
   This is because when a task is serialized from Python into the ``TaskTemplate`` some information is lost because
    Flyte IDL can't keep track of every single Python type (or Java type if writing in the Java flytekit).
 
 This class also implements the ``dispatch_execute`` and ``execute`` functions to make it look like a ``PythonTask``
 that the ``entrypoint.py`` can execute, even though this class doesn't inherit from ``PythonTask``.
+
 
 
 ```python
@@ -59,6 +60,15 @@ class ExecutableTemplateShimTask(
 | `executor_type` | `Type[ShimTaskExecutor]` | |
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `executor` | `None` |  |
+| `executor_type` | `None` |  |
+| `name` | `None` | Return the name of the underlying task. |
+| `task_template` | `None` |  |
 
 ### Methods
 
@@ -132,27 +142,7 @@ This function is a stub, just here to keep dispatch_execute compatibility betwee
 |-|-|-|
 | `user_params` | `Optional[ExecutionParameters]` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `executor` |  |  |
-| `executor_type` |  |  |
-| `name` |  | {{< multiline >}}Return the name of the underlying task.
-{{< /multiline >}} |
-| `task_template` |  |  |
-
 ## flytekit.core.shim_task.ShimTaskExecutor
-
-Please see the notes for the metaclass above first.
-
-This functionality has two use-cases currently,
-* Keep track of naming for non-function ``PythonAutoContainerTasks``.  That is, things like the
-  {{< py_class_ref flytekit.extras.sqlite3.task.SQLite3Task >}} task.
-* Task resolvers, because task resolvers are instances of {{< py_class_ref flytekit.core.python_auto_container.TaskResolverMixin >}}
-  classes, not the classes themselves, which means we need to look on the left hand side of them to see how to
-  find them at task execution time.
-
 
 ```python
 class ShimTaskExecutor(
@@ -164,6 +154,14 @@ class ShimTaskExecutor(
 |-|-|-|
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `instantiated_in` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
 
 ### Methods
 
@@ -197,11 +195,3 @@ that wasn't serialized into the template.
 ```python
 def find_lhs()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `instantiated_in` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-

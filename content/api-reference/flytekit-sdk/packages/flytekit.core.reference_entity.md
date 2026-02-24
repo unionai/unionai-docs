@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.reference_entity
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -45,8 +45,8 @@ class LaunchPlanReference(
 
 | Property | Type | Description |
 |-|-|-|
-| `id` |  |  |
-| `resource_type` |  |  |
+| `id` | `None` |  |
+| `resource_type` | `None` |  |
 
 ## flytekit.core.reference_entity.Reference
 
@@ -69,8 +69,8 @@ class Reference(
 
 | Property | Type | Description |
 |-|-|-|
-| `id` |  |  |
-| `resource_type` |  |  |
+| `id` | `None` |  |
+| `resource_type` | `None` |  |
 
 ## flytekit.core.reference_entity.ReferenceEntity
 
@@ -86,6 +86,16 @@ class ReferenceEntity(
 | `reference` | `typing.Union[flytekit.core.reference_entity.WorkflowReference, flytekit.core.reference_entity.TaskReference, flytekit.core.reference_entity.LaunchPlanReference]` | |
 | `inputs` | `typing.Dict[str, typing.Type]` | |
 | `outputs` | `typing.Dict[str, typing.Type]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `id` | `None` |  |
+| `interface` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` |  |
+| `reference` | `None` |  |
 
 ### Methods
 
@@ -167,16 +177,6 @@ Please see the implementation of the dispatch_execute function in the real task.
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
 | `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `id` |  |  |
-| `interface` |  |  |
-| `name` |  |  |
-| `python_interface` |  |  |
-| `reference` |  |  |
-
 ## flytekit.core.reference_entity.ReferenceSpec
 
 ```python
@@ -192,8 +192,7 @@ class ReferenceSpec(
 
 | Property | Type | Description |
 |-|-|-|
-| `template` |  | {{< multiline >}}:rtype: ReferenceTemplate
-{{< /multiline >}} |
+| `template` | `None` | :rtype: ReferenceTemplate |
 
 ## flytekit.core.reference_entity.ReferenceTemplate
 
@@ -217,12 +216,8 @@ workflows or dynamic tasks.
 
 | Property | Type | Description |
 |-|-|-|
-| `id` |  | {{< multiline >}}User-specified information that uniquely identifies this reference.
-:rtype: flytekit.models.core.identifier.Identifier
-{{< /multiline >}} |
-| `resource_type` |  | {{< multiline >}}The type of reference.
-:rtype: flytekit.models.core.identifier.ResourceType
-{{< /multiline >}} |
+| `id` | `None` | User-specified information that uniquely identifies this reference. :rtype: flytekit.models.core.identifier.Identifier |
+| `resource_type` | `None` | The type of reference. :rtype: flytekit.models.core.identifier.ResourceType |
 
 ## flytekit.core.reference_entity.TaskReference
 
@@ -248,8 +243,8 @@ class TaskReference(
 
 | Property | Type | Description |
 |-|-|-|
-| `id` |  |  |
-| `resource_type` |  |  |
+| `id` | `None` |  |
+| `resource_type` | `None` |  |
 
 ## flytekit.core.reference_entity.WorkflowReference
 
@@ -275,6 +270,6 @@ class WorkflowReference(
 
 | Property | Type | Description |
 |-|-|-|
-| `id` |  |  |
-| `resource_type` |  |  |
+| `id` | `None` |  |
+| `resource_type` | `None` |  |
 

@@ -1,0 +1,20 @@
+{
+  "packages": {
+    "flytekitplugins.great_expectations": "/api-reference/plugins/greatexpectations/packages/flytekitplugins.great_expectations/",
+    "flytekitplugins.great_expectations.schema": "/api-reference/plugins/greatexpectations/packages/flytekitplugins.great_expectations.schema/",
+    "flytekitplugins.great_expectations.task": "/api-reference/plugins/greatexpectations/packages/flytekitplugins.great_expectations.task/"
+  },
+  "identifiers": {
+    "flytekitplugins.great_expectations.schema.GreatExpectationsFlyteConfig": "/api-reference/plugins/greatexpectations/packages/flytekitplugins.great_expectations.schema/#flytekitpluginsgreat_expectationsschemagreatexpectationsflyteconfig",
+    "GreatExpectationsFlyteConfig": "/api-reference/plugins/greatexpectations/packages/flytekitplugins.great_expectations.schema/#flytekitpluginsgreat_expectationsschemagreatexpectationsflyteconfig",
+    "flytekitplugins.great_expectations.schema.GreatExpectationsType": "/api-reference/plugins/greatexpectations/packages/flytekitplugins.great_expectations.schema/#flytekitpluginsgreat_expectationsschemagreatexpectationstype",
+    "GreatExpectationsType": "/api-reference/plugins/greatexpectations/packages/flytekitplugins.great_expectations.schema/#flytekitpluginsgreat_expectationsschemagreatexpectationstype",
+    "flytekitplugins.great_expectations.schema.GreatExpectationsTypeTransformer": "/api-reference/plugins/greatexpectations/packages/flytekitplugins.great_expectations.schema/#flytekitpluginsgreat_expectationsschemagreatexpectationstypetransformer",
+    "GreatExpectationsTypeTransformer": "/api-reference/plugins/greatexpectations/packages/flytekitplugins.great_expectations.schema/#flytekitpluginsgreat_expectationsschemagreatexpectationstypetransformer",
+    "flytekitplugins.great_expectations.task.BatchRequestConfig": "/api-reference/plugins/greatexpectations/packages/flytekitplugins.great_expectations.task/#flytekitpluginsgreat_expectationstaskbatchrequestconfig",
+    "BatchRequestConfig": "/api-reference/plugins/greatexpectations/packages/flytekitplugins.great_expectations.task/#flytekitpluginsgreat_expectationstaskbatchrequestconfig",
+    "flytekitplugins.great_expectations.task.GreatExpectationsTask": "/api-reference/plugins/greatexpectations/packages/flytekitplugins.great_expectations.task/#flytekitpluginsgreat_expectationstaskgreatexpectationstask",
+    "GreatExpectationsTask": "/api-reference/plugins/greatexpectations/packages/flytekitplugins.great_expectations.task/#flytekitpluginsgreat_expectationstaskgreatexpectationstask"
+  },
+  "methods": {}
+}

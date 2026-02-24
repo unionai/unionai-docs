@@ -1,6 +1,6 @@
 ---
 title: flytekit.interfaces.stats.client
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -15,7 +15,7 @@ layout: py_api
 |-|-|
 | [`DummyStatsClient`](.././flytekit.interfaces.stats.client#flytekitinterfacesstatsclientdummystatsclient) | A dummy client for statsd. |
 | [`ScopeableStatsProxy`](.././flytekit.interfaces.stats.client#flytekitinterfacesstatsclientscopeablestatsproxy) | A Proxy object for an underlying statsd client. |
-| [`StatsClientProxy`](.././flytekit.interfaces.stats.client#flytekitinterfacesstatsclientstatsclientproxy) | A Proxy object for an underlying statsd client. |
+| [`StatsClientProxy`](.././flytekit.interfaces.stats.client#flytekitinterfacesstatsclientstatsclientproxy) |  |
 
 ### Methods
 
@@ -230,6 +230,7 @@ newer_client = new_client.get_stats('subsystem')
 newer_client.incr('bad') # Metric name = a.subsystem.bad
 
 
+
 ```python
 class ScopeableStatsProxy(
     client,
@@ -266,16 +267,6 @@ def get_stats(
 def pipeline()
 ```
 ## flytekit.interfaces.stats.client.StatsClientProxy
-
-A Proxy object for an underlying statsd client.
-Adds a new call, scope(prefix), which returns a new proxy to the same
-client which will prefix all calls to underlying methods with the scoped prefix:
-new_client = client.get_stats('a')
-new_client.incr('b') # Metric name = a.b
-This can be nested:
-newer_client = new_client.get_stats('subsystem')
-newer_client.incr('bad') # Metric name = a.subsystem.bad
-
 
 ```python
 class StatsClientProxy(

@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.python_customized_container_task
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -25,7 +25,7 @@ layout: py_api
 
 ## flytekit.core.python_customized_container_task.PythonCustomizedContainerTask
 
-Please take a look at the comments for {{< py_class_ref flytekit.extend.ExecutableTemplateShimTask >}} as well. This class
+Please take a look at the comments for {{&lt; py_class_ref flytekit.extend.ExecutableTemplateShimTask &gt;}} as well. This class
 should be subclassed and a custom Executor provided as a default to this parent class constructor
 when building a new external-container flytekit-only plugin.
 
@@ -41,6 +41,7 @@ to write such a task, authors need to
 
 Keep in mind that the total size of the ``TaskTemplate`` still needs to be small, since these will be accessed
 frequently by the Flyte engine.
+
 
 
 ```python
@@ -71,6 +72,33 @@ class PythonCustomizedContainerTask(
 | `environment` | `Optional[Dict[str, str]]` | Environment variables you want the task to have when run. |
 | `secret_requests` | `Optional[List[Secret]]` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `container_image` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `executor` | `None` |  |
+| `executor_type` | `None` |  |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` | Return the name of the underlying task. |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `resources` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_resolver` | `None` |  |
+| `task_template` | `None` | Override the base class implementation to serialize on first call. |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -390,41 +418,6 @@ def serialize_to_model(
 |-|-|-|
 | `settings` | `SerializationSettings` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `container_image` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `executor` |  |  |
-| `executor_type` |  |  |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  | {{< multiline >}}Return the name of the underlying task.
-{{< /multiline >}} |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `resources` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_resolver` |  |  |
-| `task_template` |  | {{< multiline >}}Override the base class implementation to serialize on first call.
-{{< /multiline >}} |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
-
 ## flytekit.core.python_customized_container_task.TaskTemplateResolver
 
 This is a special resolver that resolves the task above at execution time, using only the ``TaskTemplate``,
@@ -448,9 +441,18 @@ This resolver differs in that,
 Also, ``get_all_tasks`` will always return an empty list, at least for now.
 
 
+
 ```python
 def TaskTemplateResolver()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `instantiated_in` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -524,12 +526,4 @@ Overridable function that can optionally return a custom name for a given task
 | Parameter | Type | Description |
 |-|-|-|
 | `t` | `flytekit.core.base_task.Task` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `instantiated_in` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
 

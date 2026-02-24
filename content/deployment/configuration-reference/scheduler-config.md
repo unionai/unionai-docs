@@ -38,7 +38,7 @@ variants: +flyte -serverless -byoc -selfmanaged
 
 ## Section: admin
 
-### endpoint ([config.URL](#config.url))
+### endpoint (config.URL)
 
 For admin types, specify where the uri of the service is located.
 
@@ -80,7 +80,7 @@ Use specified certificate file to verify the admin server peer.
 ""
 ```
 
-### maxBackoffDelay ([config.Duration](#config.duration))
+### maxBackoffDelay (config.Duration)
 
 Max delay for grpc backoff
 
@@ -90,7 +90,7 @@ Max delay for grpc backoff
 8s
 ```
 
-### perRetryTimeout ([config.Duration](#config.duration))
+### perRetryTimeout (config.Duration)
 
 gRPC per retry timeout
 
@@ -131,7 +131,7 @@ admin.ClientSecret,Pkce,ExternalCommand are valid values
 ClientSecret
 ```
 
-### tokenRefreshWindow ([config.Duration](#config.duration))
+### tokenRefreshWindow (config.Duration)
 
 Max duration between token refresh attempt and token expiry.
 
@@ -244,7 +244,7 @@ Custom metadata header to pass JWT
 ""
 ```
 
-### pkceConfig ([pkce.Config](#pkce.config))
+### pkceConfig (pkce.Config)
 
 Config for Pkce authentication flow.
 
@@ -255,7 +255,7 @@ refreshTime: 5m0s
 timeout: 2m0s
 ```
 
-### deviceFlowConfig ([deviceflow.Config](#deviceflow.config))
+### deviceFlowConfig (deviceflow.Config)
 
 Config for Device authentication flow.
 
@@ -295,7 +295,7 @@ Command for external proxy-authorization token generation
 ""
 ```
 
-### httpProxyURL ([config.URL](#config.url))
+### httpProxyURL (config.URL)
 
 OPTIONAL: HTTP Proxy to be used for OAuth requests.
 
@@ -317,7 +317,7 @@ OPTIONAL: HTTP Proxy to be used for OAuth requests.
 
 #### config.URL
 
-##### URL ([url.URL](#url.url))
+##### URL (url.URL)
 
 **Default Value**:
 
@@ -427,7 +427,7 @@ null
 
 #### deviceflow.Config
 
-##### refreshTime ([config.Duration](#config.duration))
+##### refreshTime (config.Duration)
 
 grace period from the token expiry after which it would refresh the
 token.
@@ -438,7 +438,7 @@ token.
 5m0s
 ```
 
-##### timeout ([config.Duration](#config.duration))
+##### timeout (config.Duration)
 
 amount of time the device flow should complete or else it will be
 cancelled.
@@ -449,7 +449,7 @@ cancelled.
 10m0s
 ```
 
-##### pollInterval ([config.Duration](#config.duration))
+##### pollInterval (config.Duration)
 
 amount of time the device flow would poll the token endpoint if auth
 server doesn\'t return a polling interval. Okta and google IDP do return
@@ -463,7 +463,7 @@ an interval\'
 
 #### pkce.Config
 
-##### timeout ([config.Duration](#config.duration))
+##### timeout (config.Duration)
 
 Amount of time the browser session would be active for authentication
 from client app.
@@ -474,7 +474,7 @@ from client app.
 2m0s
 ```
 
-##### refreshTime ([config.Duration](#config.duration))
+##### refreshTime (config.Duration)
 
 grace period from the token expiry after which it would refresh the
 token.
@@ -531,7 +531,7 @@ Disables auth enforcement on Grpc Endpoints.
 null
 ```
 
-### httpProxyURL ([config.URL](#config.url))
+### httpProxyURL (config.URL)
 
 OPTIONAL: HTTP Proxy to be used for OAuth requests.
 
@@ -541,7 +541,7 @@ OPTIONAL: HTTP Proxy to be used for OAuth requests.
 ""
 ```
 
-### userAuth ([config.UserAuthConfig](#config.userauthconfig))
+### userAuth (config.UserAuthConfig)
 
 Defines Auth options for users.
 
@@ -566,7 +566,7 @@ openId:
 redirectUrl: /console
 ```
 
-### appAuth ([config.OAuth2Options](#config.oauth2options))
+### appAuth (config.OAuth2Options)
 
 Defines Auth options for apps. UserAuth must be enabled for AppAuth to
 work.
@@ -661,7 +661,7 @@ thirdPartyConfig:
 Self
 ```
 
-##### selfAuthServer ([config.AuthorizationServer](#config.authorizationserver))
+##### selfAuthServer (config.AuthorizationServer)
 
 Authorization Server config to run as a service. Use this when using an
 IdP that does not offer a custom OAuth2 Authorization Server.
@@ -729,7 +729,7 @@ staticClients:
 tokenSigningRSAKeySecretName: token_rsa_key.pem
 ```
 
-##### externalAuthServer ([config.ExternalAuthorizationServer](#config.externalauthorizationserver))
+##### externalAuthServer (config.ExternalAuthorizationServer)
 
 External Authorization Server config.
 
@@ -744,7 +744,7 @@ retryAttempts: 5
 retryDelay: 1s
 ```
 
-##### thirdPartyConfig ([config.ThirdPartyConfigOptions](#config.thirdpartyconfigoptions))
+##### thirdPartyConfig (config.ThirdPartyConfigOptions)
 
 Defines settings to instruct flyte cli tools (and optionally others) on
 what config to use to setup their client.
@@ -774,7 +774,7 @@ default value is <https://>\<requestUri.HostAndPort\>/
 ""
 ```
 
-##### accessTokenLifespan ([config.Duration](#config.duration))
+##### accessTokenLifespan (config.Duration)
 
 Defines the lifespan of issued access tokens.
 
@@ -784,7 +784,7 @@ Defines the lifespan of issued access tokens.
 30m0s
 ```
 
-##### refreshTokenLifespan ([config.Duration](#config.duration))
+##### refreshTokenLifespan (config.Duration)
 
 Defines the lifespan of issued access tokens.
 
@@ -794,7 +794,7 @@ Defines the lifespan of issued access tokens.
 1h0m0s
 ```
 
-##### authorizationCodeLifespan ([config.Duration](#config.duration))
+##### authorizationCodeLifespan (config.Duration)
 
 Defines the lifespan of issued access tokens.
 
@@ -894,7 +894,7 @@ flytepropeller:
 
 #### config.ExternalAuthorizationServer
 
-##### baseUrl ([config.URL](#config.url))
+##### baseUrl (config.URL)
 
 This should be the base url of the authorization server that you are
 trying to hit. With Okta for instance, it will look something like
@@ -917,7 +917,7 @@ expected to be the public Uri of the service.
 []
 ```
 
-##### metadataUrl ([config.URL](#config.url))
+##### metadataUrl (config.URL)
 
 Optional: If the server doesn\'t support
 /.well-known/oauth-authorization-server, you can set a custom metadata
@@ -929,7 +929,7 @@ url here.\'
 ""
 ```
 
-##### httpProxyURL ([config.URL](#config.url))
+##### httpProxyURL (config.URL)
 
 OPTIONAL: HTTP Proxy to be used for OAuth requests.
 
@@ -950,7 +950,7 @@ the OAuth metadata
 "5"
 ```
 
-##### retryDelay ([config.Duration](#config.duration))
+##### retryDelay (config.Duration)
 
 Optional, Duration to wait between retries
 
@@ -962,7 +962,7 @@ Optional, Duration to wait between retries
 
 #### config.ThirdPartyConfigOptions
 
-##### flyteClient ([config.FlyteClientConfig](#config.flyteclientconfig))
+##### flyteClient (config.FlyteClientConfig)
 
 **Default Value**:
 
@@ -1022,7 +1022,7 @@ Audience to use when initiating OAuth2 authorization requests.
 
 #### config.UserAuthConfig
 
-##### redirectUrl ([config.URL](#config.url))
+##### redirectUrl (config.URL)
 
 **Default Value**:
 
@@ -1030,7 +1030,7 @@ Audience to use when initiating OAuth2 authorization requests.
 /console
 ```
 
-##### openId ([config.OpenIDOptions](#config.openidoptions))
+##### openId (config.OpenIDOptions)
 
 OpenID Configuration for User Auth
 
@@ -1046,7 +1046,7 @@ scopes:
 - profile
 ```
 
-##### httpProxyURL ([config.URL](#config.url))
+##### httpProxyURL (config.URL)
 
 OPTIONAL: HTTP Proxy to be used for OAuth requests.
 
@@ -1076,7 +1076,7 @@ OPTIONAL: Secret name to use for cookie block key.
 cookie_block_key
 ```
 
-##### cookieSetting ([config.CookieSettings](#config.cookiesettings))
+##### cookieSetting (config.CookieSettings)
 
 settings used by cookies created for user auth
 
@@ -1148,7 +1148,7 @@ oidc_client_secret
 ""
 ```
 
-##### baseUrl ([config.URL](#config.url))
+##### baseUrl (config.URL)
 
 **Default Value**:
 
@@ -1197,7 +1197,7 @@ Use insecure grpc connection
 "false"
 ```
 
-### max-cache-age ([config.Duration](#config.duration))
+### max-cache-age (config.Duration)
 
 Cache entries past this age will incur cache miss. 0 means cache never
 expires
@@ -1278,7 +1278,7 @@ Set the default service config for the catalog gRPC client
 local
 ```
 
-### aws ([interfaces.AWSConfig](#interfaces.awsconfig))
+### aws (interfaces.AWSConfig)
 
 **Default Value**:
 
@@ -1286,7 +1286,7 @@ local
 region: ""
 ```
 
-### gcp ([interfaces.GCPConfig](#interfaces.gcpconfig))
+### gcp (interfaces.GCPConfig)
 
 **Default Value**:
 
@@ -1294,7 +1294,7 @@ region: ""
 projectId: ""
 ```
 
-### kafka ([interfaces.KafkaConfig](#interfaces.kafkaconfig))
+### kafka (interfaces.KafkaConfig)
 
 **Default Value**:
 
@@ -1315,7 +1315,7 @@ tlsConfig:
 version: ""
 ```
 
-### eventsPublisher ([interfaces.EventsPublisherConfig](#interfaces.eventspublisherconfig))
+### eventsPublisher (interfaces.EventsPublisherConfig)
 
 **Default Value**:
 
@@ -1413,7 +1413,7 @@ null
 null
 ```
 
-##### saslConfig ([interfaces.SASLConfig](#interfaces.saslconfig))
+##### saslConfig (interfaces.SASLConfig)
 
 **Default Value**:
 
@@ -1426,7 +1426,7 @@ passwordPath: ""
 user: ""
 ```
 
-##### tlsConfig ([interfaces.TLSConfig](#interfaces.tlsconfig))
+##### tlsConfig (interfaces.TLSConfig)
 
 **Default Value**:
 
@@ -1539,7 +1539,7 @@ keyPath: ""
 {}
 ```
 
-### refreshInterval ([config.Duration](#config.duration))
+### refreshInterval (config.Duration)
 
 **Default Value**:
 
@@ -1700,7 +1700,7 @@ database.
 "100"
 ```
 
-### connMaxLifeTime ([config.Duration](#config.duration))
+### connMaxLifeTime (config.Duration)
 
 sets the maximum amount of time a connection may be reused
 
@@ -1710,7 +1710,7 @@ sets the maximum amount of time a connection may be reused
 1h0m0s
 ```
 
-### postgres ([database.PostgresConfig](#database.postgresconfig))
+### postgres (database.PostgresConfig)
 
 **Default Value**:
 
@@ -1726,7 +1726,7 @@ readReplicaHost: localhost
 username: postgres
 ```
 
-### sqlite ([database.SQLiteConfig](#database.sqliteconfig))
+### sqlite (database.SQLiteConfig)
 
 **Default Value**:
 
@@ -1951,7 +1951,7 @@ specifying the jitter factor for event recording retries.
 local
 ```
 
-### aws ([interfaces.AWSConfig](#interfaces.awsconfig))
+### aws (interfaces.AWSConfig)
 
 **Default Value**:
 
@@ -1959,7 +1959,7 @@ local
 region: ""
 ```
 
-### gcp ([interfaces.GCPConfig](#interfaces.gcpconfig))
+### gcp (interfaces.GCPConfig)
 
 **Default Value**:
 
@@ -1967,7 +1967,7 @@ region: ""
 projectId: ""
 ```
 
-### eventsPublisher ([interfaces.EventsPublisherConfig](#interfaces.eventspublisherconfig))
+### eventsPublisher (interfaces.EventsPublisherConfig)
 
 **Default Value**:
 
@@ -2140,7 +2140,7 @@ null
 null
 ```
 
-### featureGates ([interfaces.FeatureGates](#interfaces.featuregates))
+### featureGates (interfaces.FeatureGates)
 
 Enable experimental features.
 
@@ -2216,7 +2216,7 @@ Sets the minimum logging level.
 "3"
 ```
 
-### formatter ([logger.FormatterConfig](#logger.formatterconfig))
+### formatter (logger.FormatterConfig)
 
 Sets logging format.
 
@@ -2282,7 +2282,7 @@ local
 ""
 ```
 
-### aws ([interfaces.AWSConfig](#interfaces.awsconfig))
+### aws (interfaces.AWSConfig)
 
 **Default Value**:
 
@@ -2290,7 +2290,7 @@ local
 region: ""
 ```
 
-### gcp ([interfaces.GCPConfig](#interfaces.gcpconfig))
+### gcp (interfaces.GCPConfig)
 
 **Default Value**:
 
@@ -2298,7 +2298,7 @@ region: ""
 projectId: ""
 ```
 
-### publisher ([interfaces.NotificationsPublisherConfig](#interfaces.notificationspublisherconfig))
+### publisher (interfaces.NotificationsPublisherConfig)
 
 **Default Value**:
 
@@ -2306,7 +2306,7 @@ projectId: ""
 topicName: ""
 ```
 
-### processor ([interfaces.NotificationsProcessorConfig](#interfaces.notificationsprocessorconfig))
+### processor (interfaces.NotificationsProcessorConfig)
 
 **Default Value**:
 
@@ -2315,7 +2315,7 @@ accountId: ""
 queueName: ""
 ```
 
-### emailer ([interfaces.NotificationsEmailerConfig](#interfaces.notificationsemailerconfig))
+### emailer (interfaces.NotificationsEmailerConfig)
 
 **Default Value**:
 
@@ -2352,7 +2352,7 @@ subject: ""
 
 #### interfaces.NotificationsEmailerConfig
 
-##### emailServerConfig ([interfaces.EmailServerConfig](#interfaces.emailserverconfig))
+##### emailServerConfig (interfaces.EmailServerConfig)
 
 **Default Value**:
 
@@ -2498,7 +2498,7 @@ Sets the type of exporter to configure
 noop
 ```
 
-### file ([otelutils.FileConfig](#otelutils.fileconfig))
+### file (otelutils.FileConfig)
 
 Configuration for exporting telemetry traces to a file
 
@@ -2508,7 +2508,7 @@ Configuration for exporting telemetry traces to a file
 filename: /tmp/trace.txt
 ```
 
-### jaeger ([otelutils.JaegerConfig](#otelutils.jaegerconfig))
+### jaeger (otelutils.JaegerConfig)
 
 Configuration for exporting telemetry traces to a jaeger
 
@@ -2518,7 +2518,7 @@ Configuration for exporting telemetry traces to a jaeger
 endpoint: http://localhost:14268/api/traces
 ```
 
-### otlpgrpc ([otelutils.OtlpGrpcConfig](#otelutils.otlpgrpcconfig))
+### otlpgrpc (otelutils.OtlpGrpcConfig)
 
 Configuration for exporting telemetry traces to an OTLP gRPC collector
 
@@ -2528,7 +2528,7 @@ Configuration for exporting telemetry traces to an OTLP gRPC collector
 endpoint: http://localhost:4317
 ```
 
-### otlphttp ([otelutils.OtlpHttpConfig](#otelutils.otlphttpconfig))
+### otlphttp (otelutils.OtlpHttpConfig)
 
 Configuration for exporting telemetry traces to an OTLP HTTP collector
 
@@ -2538,7 +2538,7 @@ Configuration for exporting telemetry traces to an OTLP HTTP collector
 endpoint: http://localhost:4318/v1/traces
 ```
 
-### sampler ([otelutils.SamplerConfig](#otelutils.samplerconfig))
+### sampler (otelutils.SamplerConfig)
 
 Configuration for the sampler to use for the tracer
 
@@ -2619,7 +2619,7 @@ always
 
 ## Section: plugins
 
-### connector-service ([connector.Config](#connector.config))
+### connector-service (connector.Config)
 
 **Default Value**:
 
@@ -2658,7 +2658,7 @@ webApi:
     qps: 10
 ```
 
-### catalogcache ([catalog.Config](#catalog.config))
+### catalogcache (catalog.Config)
 
 **Default Value**:
 
@@ -2673,7 +2673,7 @@ writer:
   workers: 10
 ```
 
-### connector-service ([connector.Config](#connector.config))
+### connector-service (connector.Config)
 
 **Default Value**:
 
@@ -2712,7 +2712,7 @@ webApi:
     qps: 10
 ```
 
-### k8s ([config.K8sPluginConfig](#config.k8spluginconfig))
+### k8s (config.K8sPluginConfig)
 
 **Default Value**:
 
@@ -2770,7 +2770,7 @@ update-backoff-retries: 5
 update-base-backoff-duration: 10
 ```
 
-### k8s-array ([k8s.Config](#k8s.config))
+### k8s-array (k8s.Config)
 
 **Default Value**:
 
@@ -2818,7 +2818,7 @@ scheduler: ""
 tolerations: null
 ```
 
-### logs ([logs.LogConfig](#logs.logconfig))
+### logs (logs.LogConfig)
 
 **Default Value**:
 
@@ -2841,7 +2841,7 @@ templates: null
 
 #### connector.Config
 
-##### webApi ([webapi.PluginConfig](#webapi.pluginconfig))
+##### webApi (webapi.PluginConfig)
 
 Defines config for the base WebAPI plugin.
 
@@ -2864,7 +2864,7 @@ writeRateLimiter:
   qps: 10
 ```
 
-##### resourceConstraints ([core.ResourceConstraintsSpec](#core.resourceconstraintsspec))
+##### resourceConstraints (core.ResourceConstraintsSpec)
 
 **Default Value**:
 
@@ -2875,7 +2875,7 @@ ProjectScopeResourceConstraint:
   Value: 100
 ```
 
-##### defaultConnector ([connector.Deployment](#connector.deployment))
+##### defaultConnector (connector.Deployment)
 
 The default connector.
 
@@ -2916,7 +2916,7 @@ null
 - task_type_2
 ```
 
-##### pollInterval ([config.Duration](#config.duration))
+##### pollInterval (config.Duration)
 
 The interval at which the plugin should poll the connector for metadata
 updates.
@@ -2961,7 +2961,7 @@ updates.
 null
 ```
 
-##### defaultTimeout ([config.Duration](#config.duration))
+##### defaultTimeout (config.Duration)
 
 **Default Value**:
 
@@ -2971,7 +2971,7 @@ null
 
 #### core.ResourceConstraintsSpec
 
-##### ProjectScopeResourceConstraint ([core.ResourceConstraint](#core.resourceconstraint))
+##### ProjectScopeResourceConstraint (core.ResourceConstraint)
 
 **Default Value**:
 
@@ -2979,7 +2979,7 @@ null
 Value: 100
 ```
 
-##### NamespaceScopeResourceConstraint ([core.ResourceConstraint](#core.resourceconstraint))
+##### NamespaceScopeResourceConstraint (core.ResourceConstraint)
 
 **Default Value**:
 
@@ -3007,7 +3007,7 @@ Value: 50
 default: 1000
 ```
 
-##### readRateLimiter ([webapi.RateLimiterConfig](#webapi.ratelimiterconfig))
+##### readRateLimiter (webapi.RateLimiterConfig)
 
 Defines rate limiter properties for read actions (e.g. retrieve status).
 
@@ -3018,7 +3018,7 @@ burst: 100
 qps: 10
 ```
 
-##### writeRateLimiter ([webapi.RateLimiterConfig](#webapi.ratelimiterconfig))
+##### writeRateLimiter (webapi.RateLimiterConfig)
 
 Defines rate limiter properties for write actions.
 
@@ -3029,7 +3029,7 @@ burst: 100
 qps: 10
 ```
 
-##### caching ([webapi.CachingConfig](#webapi.cachingconfig))
+##### caching (webapi.CachingConfig)
 
 Defines caching characteristics.
 
@@ -3062,7 +3062,7 @@ Defines the maximum number of items to cache.
 "500000"
 ```
 
-##### resyncInterval ([config.Duration](#config.duration))
+##### resyncInterval (config.Duration)
 
 Defines the sync interval.
 
@@ -3116,7 +3116,7 @@ Defines the maximum burst size.
 
 #### catalog.Config
 
-##### reader ([workqueue.Config](#workqueue.config))
+##### reader (workqueue.Config)
 
 Catalog reader workqueue config. Make sure the index cache must be big
 enough to accommodate the biggest array task allowed to run on the
@@ -3130,7 +3130,7 @@ maxRetries: 3
 workers: 10
 ```
 
-##### writer ([workqueue.Config](#workqueue.config))
+##### writer (workqueue.Config)
 
 Catalog writer workqueue config. Make sure the index cache must be big
 enough to accommodate the biggest array task allowed to run on the
@@ -3237,7 +3237,7 @@ null
 null
 ```
 
-##### default-cpus ([resource.Quantity](#resource.quantity))
+##### default-cpus (resource.Quantity)
 
 Defines a default value for cpu for containers if not specified.
 
@@ -3247,7 +3247,7 @@ Defines a default value for cpu for containers if not specified.
 "1"
 ```
 
-##### default-memory ([resource.Quantity](#resource.quantity))
+##### default-memory (resource.Quantity)
 
 Defines a default value for memory for containers if not specified.
 
@@ -3331,7 +3331,7 @@ null
 null
 ```
 
-##### co-pilot ([config.FlyteCoPilotConfig](#config.flytecopilotconfig))
+##### co-pilot (config.FlyteCoPilotConfig)
 
 Co-Pilot Configuration
 
@@ -3364,7 +3364,7 @@ the resource is finalized.
 "false"
 ```
 
-##### create-container-error-grace-period ([config.Duration](#config.duration))
+##### create-container-error-grace-period (config.Duration)
 
 **Default Value**:
 
@@ -3372,7 +3372,7 @@ the resource is finalized.
 3m0s
 ```
 
-##### create-container-config-error-grace-period ([config.Duration](#config.duration))
+##### create-container-config-error-grace-period (config.Duration)
 
 **Default Value**:
 
@@ -3380,7 +3380,7 @@ the resource is finalized.
 0s
 ```
 
-##### image-pull-backoff-grace-period ([config.Duration](#config.duration))
+##### image-pull-backoff-grace-period (config.Duration)
 
 **Default Value**:
 
@@ -3396,7 +3396,7 @@ the resource is finalized.
 ""
 ```
 
-##### pod-pending-timeout ([config.Duration](#config.duration))
+##### pod-pending-timeout (config.Duration)
 
 **Default Value**:
 
@@ -3487,7 +3487,7 @@ FlytePropeller.
 ""
 ```
 
-##### default-pod-template-resync ([config.Duration](#config.duration))
+##### default-pod-template-resync (config.Duration)
 
 Frequency of resyncing default pod templates
 
@@ -3612,7 +3612,7 @@ Name of the data volume that is created for storing outputs
 flyte-outputs
 ```
 
-##### start-timeout ([config.Duration](#config.duration))
+##### start-timeout (config.Duration)
 
 **Default Value**:
 
@@ -3652,7 +3652,7 @@ Default storage limit for individual inputs / outputs
 
 #### resource.Quantity
 
-##### i ([resource.int64Amount](#resource.int64amount))
+##### i (resource.int64Amount)
 
 **Default Value**:
 
@@ -3660,7 +3660,7 @@ Default storage limit for individual inputs / outputs
 {}
 ```
 
-##### d ([resource.infDecAmount](#resource.infdecamount))
+##### d (resource.infDecAmount)
 
 **Default Value**:
 
@@ -3714,7 +3714,7 @@ null
 
 #### connector.Config
 
-##### webApi ([webapi.PluginConfig](#webapi.pluginconfig))
+##### webApi (webapi.PluginConfig)
 
 Defines config for the base WebAPI plugin.
 
@@ -3737,7 +3737,7 @@ writeRateLimiter:
   qps: 10
 ```
 
-##### resourceConstraints ([core.ResourceConstraintsSpec](#core.resourceconstraintsspec))
+##### resourceConstraints (core.ResourceConstraintsSpec)
 
 **Default Value**:
 
@@ -3748,7 +3748,7 @@ ProjectScopeResourceConstraint:
   Value: 100
 ```
 
-##### defaultConnector ([connector.Deployment](#connector.deployment))
+##### defaultConnector (connector.Deployment)
 
 The default connector.
 
@@ -3789,7 +3789,7 @@ The connectors.
 - task_type_4
 ```
 
-##### pollInterval ([config.Duration](#config.duration))
+##### pollInterval (config.Duration)
 
 The interval at which the plugin should poll the connector for metadata
 updates.
@@ -3834,7 +3834,7 @@ updates.
 null
 ```
 
-##### defaultTimeout ([config.Duration](#config.duration))
+##### defaultTimeout (config.Duration)
 
 **Default Value**:
 
@@ -3875,7 +3875,7 @@ Maximum size of array job.
 "5000"
 ```
 
-##### resourceConfig ([k8s.ResourceConfig](#k8s.resourceconfig))
+##### resourceConfig (k8s.ResourceConfig)
 
 **Default Value**:
 
@@ -3884,7 +3884,7 @@ limit: 0
 primaryLabel: ""
 ```
 
-##### remoteClusterConfig ([k8s.ClusterConfig](#k8s.clusterconfig))
+##### remoteClusterConfig (k8s.ClusterConfig)
 
 **Default Value**:
 
@@ -3922,7 +3922,7 @@ null
 ""
 ```
 
-##### OutputAssembler ([workqueue.Config](#workqueue.config))
+##### OutputAssembler (workqueue.Config)
 
 **Default Value**:
 
@@ -3932,7 +3932,7 @@ maxRetries: 5
 workers: 10
 ```
 
-##### ErrorAssembler ([workqueue.Config](#workqueue.config))
+##### ErrorAssembler (workqueue.Config)
 
 **Default Value**:
 
@@ -3942,7 +3942,7 @@ maxRetries: 5
 workers: 10
 ```
 
-##### logs ([k8s.LogConfig](#k8s.logconfig))
+##### logs (k8s.LogConfig)
 
 Config for log links for k8s array jobs.
 
@@ -3988,7 +3988,7 @@ Remote K8s cluster endpoint
 ""
 ```
 
-##### auth ([k8s.Auth](#k8s.auth))
+##### auth (k8s.Auth)
 
 **Default Value**:
 
@@ -4042,7 +4042,7 @@ Certificate path
 
 #### k8s.LogConfig
 
-##### config ([logs.LogConfig (config)](#logs.logconfig-config))
+##### config (logs.LogConfig (config))
 
 Defines the log config for k8s logs.
 
@@ -4375,7 +4375,7 @@ Number of threads to process workflows
 "20"
 ```
 
-### workflow-reeval-duration ([config.Duration](#config.duration))
+### workflow-reeval-duration (config.Duration)
 
 Frequency of re-evaluating workflows
 
@@ -4385,7 +4385,7 @@ Frequency of re-evaluating workflows
 10s
 ```
 
-### downstream-eval-duration ([config.Duration](#config.duration))
+### downstream-eval-duration (config.Duration)
 
 Frequency of re-evaluating downstream tasks
 
@@ -4405,7 +4405,7 @@ Namespaces to watch for this propeller
 all
 ```
 
-### prof-port ([config.Port](#config.port))
+### prof-port (config.Port)
 
 Profiler port
 
@@ -4438,7 +4438,7 @@ all data sandboxes should be stored.
 ""
 ```
 
-### queue ([config.CompositeQueueConfig](#config.compositequeueconfig))
+### queue (config.CompositeQueueConfig)
 
 Workflow workqueue configuration, affects the way the work is consumed
 from the queue.
@@ -4517,7 +4517,7 @@ between 1-23 hours
 "23"
 ```
 
-### gc-interval ([config.Duration](#config.duration))
+### gc-interval (config.Duration)
 
 Run periodic GC every 30 minutes
 
@@ -4527,7 +4527,7 @@ Run periodic GC every 30 minutes
 30m0s
 ```
 
-### leader-election ([config.LeaderElectionConfig](#config.leaderelectionconfig))
+### leader-election (config.LeaderElectionConfig)
 
 Config for leader election.
 
@@ -4574,7 +4574,7 @@ Prometheus servers.
 "false"
 ```
 
-### kube-client-config ([config.KubeClientConfig](#config.kubeclientconfig))
+### kube-client-config (config.KubeClientConfig)
 
 Configuration to control the Kubernetes client
 
@@ -4586,7 +4586,7 @@ qps: 100
 timeout: 30s
 ```
 
-### node-config ([config.NodeConfig](#config.nodeconfig))
+### node-config (config.NodeConfig)
 
 config for a workflow node
 
@@ -4615,7 +4615,7 @@ for one workflow - \>1 =\> turbo-mode is enabled.
 "8"
 ```
 
-### event-config ([config.EventConfig](#config.eventconfig))
+### event-config (config.EventConfig)
 
 Configures execution event behavior.
 
@@ -4724,7 +4724,7 @@ array nodes
 "8"
 ```
 
-### array-node-config ([config.ArrayNodeConfig](#config.arraynodeconfig))
+### array-node-config (config.ArrayNodeConfig)
 
 Configuration for array nodes
 
@@ -4736,7 +4736,7 @@ event-version: 0
 use-map-plugin-logs: false
 ```
 
-### literal-offloading-config ([config.LiteralOffloadingConfig](#config.literaloffloadingconfig))
+### literal-offloading-config (config.LiteralOffloadingConfig)
 
 config used for literal offloading.
 
@@ -4750,7 +4750,7 @@ supported-sdk-versions:
   FLYTE_SDK: 1.13.14
 ```
 
-### admin-launcher ([launchplan.AdminConfig](#launchplan.adminconfig))
+### admin-launcher (launchplan.AdminConfig)
 
 **Default Value**:
 
@@ -4762,7 +4762,7 @@ tps: 100
 workers: 10
 ```
 
-### resourcemanager ([config.Config](#config.config))
+### resourcemanager (config.Config)
 
 **Default Value**:
 
@@ -4777,7 +4777,7 @@ resourceMaxQuota: 1000
 type: noop
 ```
 
-### workflowstore ([workflowstore.Config](#workflowstore.config))
+### workflowstore (workflowstore.Config)
 
 **Default Value**:
 
@@ -4830,7 +4830,7 @@ Type of composite queue to use for the WorkQueue
 batch
 ```
 
-##### queue ([config.WorkqueueConfig](#config.workqueueconfig))
+##### queue (config.WorkqueueConfig)
 
 Workflow workqueue configuration, affects the way the work is consumed
 from the queue.
@@ -4845,7 +4845,7 @@ rate: 1000
 type: maxof
 ```
 
-##### sub-queue ([config.WorkqueueConfig](#config.workqueueconfig))
+##### sub-queue (config.WorkqueueConfig)
 
 SubQueue configuration, affects the way the nodes cause the top-level
 Work to be re-evaluated.
@@ -4860,7 +4860,7 @@ rate: 1000
 type: bucket
 ```
 
-##### batching-interval ([config.Duration](#config.duration))
+##### batching-interval (config.Duration)
 
 Duration for which downstream updates are buffered
 
@@ -4890,7 +4890,7 @@ Type of RateLimiter to use for the WorkQueue
 maxof
 ```
 
-##### base-delay ([config.Duration](#config.duration))
+##### base-delay (config.Duration)
 
 base backoff delay for failure
 
@@ -4900,7 +4900,7 @@ base backoff delay for failure
 0s
 ```
 
-##### max-delay ([config.Duration](#config.duration))
+##### max-delay (config.Duration)
 
 Max backoff delay for failure
 
@@ -4952,7 +4952,7 @@ Global limit for concurrent Qubole queries
 "1000"
 ```
 
-##### redis ([config.RedisConfig](#config.redisconfig))
+##### redis (config.RedisConfig)
 
 Config for Redis resourcemanager.
 
@@ -5070,7 +5070,7 @@ Max burst rate for throttle. 0 defaults to 10
 "25"
 ```
 
-##### timeout ([config.Duration](#config.duration))
+##### timeout (config.Duration)
 
 Max duration allowed for every request to KubeAPI before giving up. 0
 implies no timeout.
@@ -5093,7 +5093,7 @@ Enables/Disables leader election.
 "false"
 ```
 
-##### lock-config-map ([types.NamespacedName](#types.namespacedname))
+##### lock-config-map (types.NamespacedName)
 
 ConfigMap namespace/name to use for resource lock.
 
@@ -5104,7 +5104,7 @@ Name: ""
 Namespace: ""
 ```
 
-##### lease-duration ([config.Duration](#config.duration))
+##### lease-duration (config.Duration)
 
 Duration that non-leader candidates will wait to force acquire
 leadership. This is measured against time of last observed ack.
@@ -5115,7 +5115,7 @@ leadership. This is measured against time of last observed ack.
 15s
 ```
 
-##### renew-deadline ([config.Duration](#config.duration))
+##### renew-deadline (config.Duration)
 
 Duration that the acting master will retry refreshing leadership before
 giving up.
@@ -5126,7 +5126,7 @@ giving up.
 10s
 ```
 
-##### retry-period ([config.Duration](#config.duration))
+##### retry-period (config.Duration)
 
 Duration the LeaderElector clients should wait between tries of actions.
 
@@ -5197,7 +5197,7 @@ Size of a literal at which to fail fast
 
 #### config.NodeConfig
 
-##### default-deadlines ([config.DefaultDeadlines](#config.defaultdeadlines))
+##### default-deadlines (config.DefaultDeadlines)
 
 Default value for timeouts
 
@@ -5264,7 +5264,7 @@ This is useful to reduce the size of workflow state in etcd.
 
 #### config.DefaultDeadlines
 
-##### node-execution-deadline ([config.Duration](#config.duration))
+##### node-execution-deadline (config.Duration)
 
 Default value of node execution timeout that includes the time spent to
 run the node/workflow
@@ -5275,7 +5275,7 @@ run the node/workflow
 0s
 ```
 
-##### node-active-deadline ([config.Duration](#config.duration))
+##### node-active-deadline (config.Duration)
 
 Default value of node timeout that includes the time spent queued.
 
@@ -5285,7 +5285,7 @@ Default value of node timeout that includes the time spent queued.
 0s
 ```
 
-##### workflow-active-deadline ([config.Duration](#config.duration))
+##### workflow-active-deadline (config.Duration)
 
 Default value of workflow timeout that includes the time spent queued.
 
@@ -5348,7 +5348,7 @@ Number of parallel workers to work on the queue.
 "10"
 ```
 
-##### cache-resync-duration ([config.Duration](#config.duration))
+##### cache-resync-duration (config.Duration)
 
 Frequency of re-syncing launchplans within the auto refresh cache.
 
@@ -5458,7 +5458,7 @@ none
 ""
 ```
 
-### signedUrls ([interfaces.SignedURL](#interfaces.signedurl))
+### signedUrls (interfaces.SignedURL)
 
 **Default Value**:
 
@@ -5517,7 +5517,7 @@ GetNodeExecutionData and GetTaskExecutionData response objects.
 
 ## Section: scheduler
 
-### profilerPort ([config.Port](#config.port))
+### profilerPort (config.Port)
 
 **Default Value**:
 
@@ -5525,7 +5525,7 @@ GetNodeExecutionData and GetTaskExecutionData response objects.
 10254
 ```
 
-### eventScheduler ([interfaces.EventSchedulerConfig](#interfaces.eventschedulerconfig))
+### eventScheduler (interfaces.EventSchedulerConfig)
 
 **Default Value**:
 
@@ -5539,7 +5539,7 @@ scheme: local
 targetName: ""
 ```
 
-### workflowExecutor ([interfaces.WorkflowExecutorConfig](#interfaces.workflowexecutorconfig))
+### workflowExecutor (interfaces.WorkflowExecutorConfig)
 
 **Default Value**:
 
@@ -5622,7 +5622,7 @@ local
 null
 ```
 
-##### local ([interfaces.FlyteSchedulerConfig](#interfaces.flyteschedulerconfig))
+##### local (interfaces.FlyteSchedulerConfig)
 
 **Default Value**:
 
@@ -5674,7 +5674,7 @@ local
 null
 ```
 
-##### local ([interfaces.FlyteWorkflowExecutorConfig](#interfaces.flyteworkflowexecutorconfig))
+##### local (interfaces.FlyteWorkflowExecutorConfig)
 
 **Default Value**:
 
@@ -5687,7 +5687,7 @@ useUTCTz: false
 
 #### interfaces.FlyteWorkflowExecutorConfig
 
-##### adminRateLimit ([interfaces.AdminRateLimit](#interfaces.adminratelimit))
+##### adminRateLimit (interfaces.AdminRateLimit)
 
 **Default Value**:
 
@@ -5797,7 +5797,7 @@ The address of the Kubernetes API server.
 ""
 ```
 
-### security ([config.ServerSecurityOptions](#config.serversecurityoptions))
+### security (config.ServerSecurityOptions)
 
 **Default Value**:
 
@@ -5817,7 +5817,7 @@ ssl:
 useAuth: false
 ```
 
-### grpc ([config.GrpcConfig](#config.grpcconfig))
+### grpc (config.GrpcConfig)
 
 **Default Value**:
 
@@ -5828,7 +5828,7 @@ port: 8089
 serverReflection: true
 ```
 
-### thirdPartyConfig ([config.ThirdPartyConfigOptions](#config.thirdpartyconfigoptions))
+### thirdPartyConfig (config.ThirdPartyConfigOptions)
 
 Deprecated please use auth.appAuth.thirdPartyConfig instead.
 
@@ -5842,7 +5842,7 @@ flyteClient:
   scopes: []
 ```
 
-### dataProxy ([config.DataProxyConfig](#config.dataproxyconfig))
+### dataProxy (config.DataProxyConfig)
 
 Defines data proxy configuration.
 
@@ -5868,7 +5868,7 @@ The amount of time allowed to read request headers.
 "32"
 ```
 
-### kubeClientConfig ([config.KubeClientConfig (kubeClientConfig)](#config.kubeclientconfig-kubeclientconfig))
+### kubeClientConfig (config.KubeClientConfig (kubeClientConfig))
 
 Configuration to control the Kubernetes client
 
@@ -5882,7 +5882,7 @@ timeout: 30s
 
 #### config.DataProxyConfig
 
-##### upload ([config.DataProxyUploadConfig](#config.dataproxyuploadconfig))
+##### upload (config.DataProxyUploadConfig)
 
 Defines data proxy upload configuration.
 
@@ -5895,7 +5895,7 @@ maxSize: 6Mi
 storagePrefix: ""
 ```
 
-##### download ([config.DataProxyDownloadConfig](#config.dataproxydownloadconfig))
+##### download (config.DataProxyDownloadConfig)
 
 Defines data proxy download configuration.
 
@@ -5907,7 +5907,7 @@ maxExpiresIn: 1h0m0s
 
 #### config.DataProxyDownloadConfig
 
-##### maxExpiresIn ([config.Duration](#config.duration))
+##### maxExpiresIn (config.Duration)
 
 Maximum allowed expiration duration.
 
@@ -5919,7 +5919,7 @@ Maximum allowed expiration duration.
 
 #### config.DataProxyUploadConfig
 
-##### maxSize ([resource.Quantity](#resource.quantity))
+##### maxSize (resource.Quantity)
 
 Maximum allowed upload size.
 
@@ -5929,7 +5929,7 @@ Maximum allowed upload size.
 6Mi
 ```
 
-##### maxExpiresIn ([config.Duration](#config.duration))
+##### maxExpiresIn (config.Duration)
 
 Maximum allowed expiration duration.
 
@@ -6025,7 +6025,7 @@ Max burst rate for throttle. 0 defaults to 10
 "25"
 ```
 
-##### timeout ([config.Duration](#config.duration))
+##### timeout (config.Duration)
 
 Max duration allowed for every request to KubeAPI before giving up. 0
 implies no timeout.
@@ -6046,7 +6046,7 @@ implies no timeout.
 "false"
 ```
 
-##### ssl ([config.SslOptions](#config.ssloptions))
+##### ssl (config.SslOptions)
 
 **Default Value**:
 
@@ -6134,7 +6134,7 @@ Sets the type of storage to configure \[s3/minio/local/mem/stow\].
 s3
 ```
 
-### connection ([storage.ConnectionConfig](#storage.connectionconfig))
+### connection (storage.ConnectionConfig)
 
 **Default Value**:
 
@@ -6147,7 +6147,7 @@ region: us-east-1
 secret-key: ""
 ```
 
-### stow ([storage.StowConfig](#storage.stowconfig))
+### stow (storage.StowConfig)
 
 Storage config for stow backend.
 
@@ -6179,7 +6179,7 @@ containers/buckets as they are encountered
 "false"
 ```
 
-### cache ([storage.CachingConfig](#storage.cachingconfig))
+### cache (storage.CachingConfig)
 
 **Default Value**:
 
@@ -6188,7 +6188,7 @@ max_size_mbs: 0
 target_gc_percent: 0
 ```
 
-### limits ([storage.LimitsConfig](#storage.limitsconfig))
+### limits (storage.LimitsConfig)
 
 Sets limits for stores.
 
@@ -6198,7 +6198,7 @@ Sets limits for stores.
 maxDownloadMBs: 2
 ```
 
-### defaultHttpClient ([storage.HTTPClientConfig](#storage.httpclientconfig))
+### defaultHttpClient (storage.HTTPClientConfig)
 
 Sets the default http client config.
 
@@ -6209,7 +6209,7 @@ headers: null
 timeout: 0s
 ```
 
-### signedUrl ([storage.SignedURLConfig](#storage.signedurlconfig))
+### signedUrl (storage.SignedURLConfig)
 
 Sets config for SignedURL.
 
@@ -6244,7 +6244,7 @@ Sets the garbage collection target percentage.
 
 #### storage.ConnectionConfig
 
-##### endpoint ([config.URL](#config.url))
+##### endpoint (config.URL)
 
 URL for storage client to connect to.
 
@@ -6314,7 +6314,7 @@ Disables SSL connection. Should only be used for development.
 null
 ```
 
-##### timeout ([config.Duration](#config.duration))
+##### timeout (config.Duration)
 
 Sets time out on the http client.
 
@@ -6370,7 +6370,7 @@ Configuration for stow backend. Refer to github/flyteorg/stow
 
 ## Section: task_resources
 
-### defaults ([interfaces.TaskResourceSet](#interfaces.taskresourceset))
+### defaults (interfaces.TaskResourceSet)
 
 **Default Value**:
 
@@ -6381,7 +6381,7 @@ gpu: "0"
 memory: 200Mi
 ```
 
-### limits ([interfaces.TaskResourceSet](#interfaces.taskresourceset))
+### limits (interfaces.TaskResourceSet)
 
 **Default Value**:
 
@@ -6394,7 +6394,7 @@ memory: 1Gi
 
 #### interfaces.TaskResourceSet
 
-##### cpu ([resource.Quantity](#resource.quantity))
+##### cpu (resource.Quantity)
 
 **Default Value**:
 
@@ -6402,7 +6402,7 @@ memory: 1Gi
 "2"
 ```
 
-##### gpu ([resource.Quantity](#resource.quantity))
+##### gpu (resource.Quantity)
 
 **Default Value**:
 
@@ -6410,7 +6410,7 @@ memory: 1Gi
 "0"
 ```
 
-##### memory ([resource.Quantity](#resource.quantity))
+##### memory (resource.Quantity)
 
 **Default Value**:
 
@@ -6418,7 +6418,7 @@ memory: 1Gi
 200Mi
 ```
 
-##### ephemeralStorage ([resource.Quantity](#resource.quantity))
+##### ephemeralStorage (resource.Quantity)
 
 **Default Value**:
 
@@ -6428,7 +6428,7 @@ memory: 1Gi
 
 ## Section: tasks
 
-### task-plugins ([config.TaskPluginConfig](#config.taskpluginconfig))
+### task-plugins (config.TaskPluginConfig)
 
 Task plugin configuration
 
@@ -6449,7 +6449,7 @@ Maximum number of plugin phase versions allowed for one phase.
 "100000"
 ```
 
-### backoff ([config.BackOffConfig](#config.backoffconfig))
+### backoff (config.BackOffConfig)
 
 Config for Exponential BackOff implementation
 
@@ -6483,7 +6483,7 @@ backoff
 "2"
 ```
 
-##### max-duration ([config.Duration](#config.duration))
+##### max-duration (config.Duration)
 
 The cap of the backoff duration
 

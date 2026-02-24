@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.annotation
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -28,6 +28,12 @@ class TypeAnnotation(
 | Parameter | Type | Description |
 |-|-|-|
 | `annotations` | `typing.Dict[str, typing.Any]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `annotations` | `None` | :rtype: dict[str, Any] |
 
 ### Methods
 
@@ -73,11 +79,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.core.types_pb2.TypeAnnotation
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `annotations` |  | {{< multiline >}}:rtype: dict[str, Any]
-{{< /multiline >}} |
 

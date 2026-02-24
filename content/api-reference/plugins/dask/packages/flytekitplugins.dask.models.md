@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.dask.models
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -29,10 +29,18 @@ class DaskJob(
     workers: flytekitplugins.dask.models.WorkerGroup,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `scheduler` | `flytekitplugins.dask.models.Scheduler` |
-| `workers` | `flytekitplugins.dask.models.WorkerGroup` |
+| Parameter | Type | Description |
+|-|-|-|
+| `scheduler` | `flytekitplugins.dask.models.Scheduler` | Configuration for the scheduler |
+| `workers` | `flytekitplugins.dask.models.WorkerGroup` | Configuration of the default worker group |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `scheduler` | `None` | :return: Configuration for the scheduler pod |
+| `workers` | `None` | :return: Configuration of the default worker group |
 
 ### Methods
 
@@ -41,7 +49,6 @@ class DaskJob(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :return: The dask job serialized to protobuf. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### serialize_to_string()
@@ -65,24 +72,6 @@ def to_flyte_idl()
 :return: The dask job serialized to protobuf
 
 
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `scheduler` |  | {{< multiline >}}:return: Configuration for the scheduler pod
-{{< /multiline >}} |
-| `workers` |  | {{< multiline >}}:return: Configuration of the default worker group
-{{< /multiline >}} |
-
 ## flytekitplugins.dask.models.Scheduler
 
 Configuration for the scheduler pod
@@ -95,10 +84,18 @@ class Scheduler(
     resources: typing.Optional[flytekit.models.task.Resources],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `image` | `typing.Optional[str]` |
-| `resources` | `typing.Optional[flytekit.models.task.Resources]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image` | `typing.Optional[str]` | Optional image to use. |
+| `resources` | `typing.Optional[flytekit.models.task.Resources]` | Optional resources to use. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `image` | `None` | :return: The optional image for the scheduler pod |
+| `is_empty` | `None` |  |
+| `resources` | `None` | :return: Optional resources for the scheduler pod |
 
 ### Methods
 
@@ -107,7 +104,6 @@ class Scheduler(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :return: The scheduler spec serialized to protobuf. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### serialize_to_string()
@@ -131,24 +127,6 @@ def to_flyte_idl()
 :return: The scheduler spec serialized to protobuf
 
 
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `image` |  | {{< multiline >}}:return: The optional image for the scheduler pod
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `resources` |  | {{< multiline >}}:return: Optional resources for the scheduler pod
-{{< /multiline >}} |
-
 ## flytekitplugins.dask.models.WorkerGroup
 
 Configuration for a dask worker group
@@ -162,11 +140,20 @@ class WorkerGroup(
     resources: typing.Optional[flytekit.models.task.Resources],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `number_of_workers` | `int` |
-| `image` | `typing.Optional[str]` |
-| `resources` | `typing.Optional[flytekit.models.task.Resources]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `number_of_workers` | `int` | Number of workers in the group |
+| `image` | `typing.Optional[str]` | Optional image to use for the pods of the worker group |
+| `resources` | `typing.Optional[flytekit.models.task.Resources]` | Optional resources to use for the pods of the worker group |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `image` | `None` | :return: The optional image to use for the worker pods |
+| `is_empty` | `None` |  |
+| `number_of_workers` | `None` | :return: Optional number of workers for the worker group |
+| `resources` | `None` | :return: Optional resources to use for the worker pods |
 
 ### Methods
 
@@ -175,7 +162,6 @@ class WorkerGroup(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :return: The dask cluster serialized to protobuf. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### serialize_to_string()
@@ -198,24 +184,4 @@ def to_flyte_idl()
 ```
 :return: The dask cluster serialized to protobuf
 
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `image` |  | {{< multiline >}}:return: The optional image to use for the worker pods
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `number_of_workers` |  | {{< multiline >}}:return: Optional number of workers for the worker group
-{{< /multiline >}} |
-| `resources` |  | {{< multiline >}}:return: Optional resources to use for the worker pods
-{{< /multiline >}} |
 

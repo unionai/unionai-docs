@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.security
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -35,6 +35,12 @@ class Identity(
 | `k8s_service_account` | `typing.Optional[str]` | |
 | `oauth2_client` | `typing.Optional[flytekit.models.security.OAuth2Client]` | |
 | `execution_identity` | `typing.Optional[str]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -75,12 +81,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-
 ## flytekit.models.security.OAuth2Client
 
 ```python
@@ -93,6 +93,12 @@ class OAuth2Client(
 |-|-|-|
 | `client_id` | `str` | |
 | `client_secret` | `str` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -133,12 +139,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-
 ## flytekit.models.security.OAuth2TokenRequest
 
 ```python
@@ -157,6 +157,12 @@ class OAuth2TokenRequest(
 | `idp_discovery_endpoint` | `typing.Optional[str]` | |
 | `token_endpoint` | `typing.Optional[str]` | |
 | `type_` | `<enum 'Type'>` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -197,12 +203,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-
 ## flytekit.models.security.Secret
 
 See :std:ref:`cookbook:secrets` for usage examples.
@@ -225,6 +225,12 @@ class Secret(
 | `group_version` | `typing.Optional[str]` | |
 | `mount_requirement` | `<enum 'MountType'>` | |
 | `env_var` | `typing.Optional[str]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -265,16 +271,11 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-
 ## flytekit.models.security.SecurityContext
 
 This is a higher level wrapper object that for the most part users shouldn't have to worry about. You should
-be able to just use {{< py_class_ref flytekit.Secret >}} instead.
+be able to just use {{&lt; py_class_ref flytekit.Secret &gt;}} instead.
+
 
 
 ```python
@@ -289,6 +290,12 @@ class SecurityContext(
 | `run_as` | `typing.Optional[flytekit.models.security.Identity]` | |
 | `secrets` | `typing.Optional[typing.List[flytekit.models.security.Secret]]` | |
 | `tokens` | `typing.Optional[typing.List[flytekit.models.security.OAuth2TokenRequest]]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -329,9 +336,3 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-

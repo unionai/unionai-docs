@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.interface
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -41,6 +41,18 @@ Declares an input parameter.  A parameter is used as input to a launch plan and 
 | `required` |  | |
 | `artifact_query` | `typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactQuery]` | Specify this to bind to a query instead of a constant. |
 | `artifact_id` | `typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactID]` | When you want to bind to a known artifact pointer. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `artifact_id` | `None` |  |
+| `artifact_query` | `None` |  |
+| `behavior` | `None` | :rtype: T |
+| `default` | `None` | This is the default literal value that will be applied for this parameter if not user specified. :rtype: flytekit.models.literals.Literal |
+| `is_empty` | `None` |  |
+| `required` | `None` | If True, this parameter must be specified.  There cannot be a default value. :rtype: bool |
+| `var` | `None` | The variable definition for this input parameter. :rtype: Variable |
 
 ### Methods
 
@@ -84,25 +96,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.interface_pb2.Parameter
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `artifact_id` |  |  |
-| `artifact_query` |  |  |
-| `behavior` |  | {{< multiline >}}:rtype: T
-{{< /multiline >}} |
-| `default` |  | {{< multiline >}}This is the default literal value that will be applied for this parameter if not user specified.
-:rtype: flytekit.models.literals.Literal
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `required` |  | {{< multiline >}}If True, this parameter must be specified.  There cannot be a default value.
-:rtype: bool
-{{< /multiline >}} |
-| `var` |  | {{< multiline >}}The variable definition for this input parameter.
-:rtype: Variable
-{{< /multiline >}} |
-
 ## flytekit.models.interface.ParameterMap
 
 ```python
@@ -116,6 +109,13 @@ A map of Parameters
 | Parameter | Type | Description |
 |-|-|-|
 | `parameters` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `parameters` | `None` | :rtype: dict[Text, Parameter] |
 
 ### Methods
 
@@ -159,14 +159,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.interface_pb2.ParameterMap
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `parameters` |  | {{< multiline >}}:rtype: dict[Text, Parameter]
-{{< /multiline >}} |
-
 ## flytekit.models.interface.TypedInterface
 
 ```python
@@ -184,6 +176,14 @@ outputs are represented directly as Python dicts, rather than going through the 
 |-|-|-|
 | `inputs` |  | |
 | `outputs` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `inputs` | `None` |  |
+| `is_empty` | `None` |  |
+| `outputs` | `None` |  |
 
 ### Methods
 
@@ -242,14 +242,6 @@ python map like functions
 | `bound_inputs` | `typing.Set[str]` | fixed inputs that should not be updated to a list and will be maintained as is |
 | `excluded_inputs` | `typing.Set[str]` | inputs that should be excluded from the new interface |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `inputs` |  |  |
-| `is_empty` |  |  |
-| `outputs` |  |  |
-
 ## flytekit.models.interface.Variable
 
 ```python
@@ -266,6 +258,16 @@ class Variable(
 | `description` |  | |
 | `artifact_partial_id` | `typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactID]` | Optional Artifact object to control how the artifact is created when the task runs. |
 | `artifact_tag` | `typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactTag]` | Optional ArtifactTag object to automatically tag things. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `artifact_partial_id` | `None` |  |
+| `artifact_tag` | `None` |  |
+| `description` | `None` | This is a help string that can provide context for what this variable means in relation to a task or workflow. :rtype: Text |
+| `is_empty` | `None` |  |
+| `type` | `None` | This describes the type of value that must be provided to satisfy this variable. :rtype: flytekit.models.types.LiteralType |
 
 ### Methods
 
@@ -318,20 +320,6 @@ def to_flyte_idl_list()
 :rtype: flyteidl.core.interface_pb2.Variable
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `artifact_partial_id` |  |  |
-| `artifact_tag` |  |  |
-| `description` |  | {{< multiline >}}This is a help string that can provide context for what this variable means in relation to a task or workflow.
-:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `type` |  | {{< multiline >}}This describes the type of value that must be provided to satisfy this variable.
-:rtype: flytekit.models.types.LiteralType
-{{< /multiline >}} |
-
 ## flytekit.models.interface.VariableMap
 
 ```python
@@ -346,6 +334,13 @@ A map of Variables
 | Parameter | Type | Description |
 |-|-|-|
 | `variables` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `variables` | `None` | :rtype: dict[Text, Variable] |
 
 ### Methods
 
@@ -388,12 +383,4 @@ def to_flyte_idl()
 ```
 :rtype: dict[Text, Variable]
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `variables` |  | {{< multiline >}}:rtype: dict[Text, Variable]
-{{< /multiline >}} |
 

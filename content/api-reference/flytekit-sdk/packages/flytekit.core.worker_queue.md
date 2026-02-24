@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.worker_queue
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,7 +14,7 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`Controller`](.././flytekit.core.worker_queue#flytekitcoreworker_queuecontroller) | This controller object is responsible for kicking off and monitoring executions against a Flyte Admin endpoint. |
-| [`ItemStatus`](.././flytekit.core.worker_queue#flytekitcoreworker_queueitemstatus) | Create a collection of name/value pairs. |
+| [`ItemStatus`](.././flytekit.core.worker_queue#flytekitcoreworker_queueitemstatus) |  |
 | [`Update`](.././flytekit.core.worker_queue#flytekitcoreworker_queueupdate) |  |
 | [`WorkItem`](.././flytekit.core.worker_queue#flytekitcoreworker_queueworkitem) | This is a class to keep track of what the user requested. |
 
@@ -41,6 +41,7 @@ which is consistently hashed.
 After calling `add`, a background thread is started to reconcile the state of this dictionary of WorkItem entries.
 Executions that should be kicked off will be kicked off, and ones that are running will be checked. This runs
 in a loop similar to a controller loop in a k8s operator.
+
 
 
 ```python
@@ -189,44 +190,6 @@ Render the callstack as a deck presentation to be shown after eager workflow exe
 
 ## flytekit.core.worker_queue.ItemStatus
 
-Create a collection of name/value pairs.
-
-Example enumeration:
-
->>> class Color(Enum):
-...     RED = 1
-...     BLUE = 2
-...     GREEN = 3
-
-Access them by:
-
-- attribute access:
-
-  >>> Color.RED
-  <Color.RED: 1>
-
-- value lookup:
-
-  >>> Color(1)
-  <Color.RED: 1>
-
-- name lookup:
-
-  >>> Color['RED']
-  <Color.RED: 1>
-
-Enumerations can be iterated over, and know how many members they have:
-
->>> len(Color)
-3
-
->>> list(Color)
-[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]
-
-Methods can be added to enumerations, and members can have their own
-attributes -- see the documentation for details.
-
-
 ## flytekit.core.worker_queue.Update
 
 ```python
@@ -250,6 +213,7 @@ class Update(
 
 This is a class to keep track of what the user requested. Since it captures the arguments that the user wants
 to run the entity with, an arbitrary map, can't make this frozen.
+
 
 
 ```python
@@ -279,5 +243,5 @@ class WorkItem(
 
 | Property | Type | Description |
 |-|-|-|
-| `is_in_terminal_state` |  |  |
+| `is_in_terminal_state` | `None` |  |
 

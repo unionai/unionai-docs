@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.array_node
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -73,6 +73,24 @@ class ArrayNode(
 | `min_success_ratio` | `typing.Optional[float]` | The minimum ratio of successful executions. |
 | `metadata` | `typing.Optional[flytekit.models.core.workflow.NodeMetadata]` | The metadata for the underlying node |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `bindings` | `None` |  |
+| `bound_inputs` | `None` |  |
+| `concurrency` | `None` |  |
+| `data_mode` | `None` |  |
+| `execution_mode` | `None` |  |
+| `flyte_entity` | `None` |  |
+| `interface` | `None` |  |
+| `is_original_sub_node_interface` | `None` |  |
+| `min_success_ratio` | `None` |  |
+| `min_successes` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` |  |
+| `upstream_nodes` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -105,21 +123,3 @@ def local_execute(
 ```python
 def local_execution_mode()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `bindings` |  |  |
-| `bound_inputs` |  |  |
-| `concurrency` |  |  |
-| `data_mode` |  |  |
-| `execution_mode` |  |  |
-| `flyte_entity` |  |  |
-| `interface` |  |  |
-| `is_original_sub_node_interface` |  |  |
-| `min_success_ratio` |  |  |
-| `min_successes` |  |  |
-| `name` |  |  |
-| `python_interface` |  |  |
-| `upstream_nodes` |  |  |
-

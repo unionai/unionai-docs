@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.structured.structured_dataset
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,15 +14,15 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`StructuredDataset`](.././flytekit.types.structured.structured_dataset#flytekittypesstructuredstructured_datasetstructureddataset) | This is the user facing StructuredDataset class. |
-| [`StructuredDatasetDecoder`](.././flytekit.types.structured.structured_dataset#flytekittypesstructuredstructured_datasetstructureddatasetdecoder) | Helper class that provides a standard way to create an ABC using. |
-| [`StructuredDatasetEncoder`](.././flytekit.types.structured.structured_dataset#flytekittypesstructuredstructured_datasetstructureddatasetencoder) | Helper class that provides a standard way to create an ABC using. |
+| [`StructuredDatasetDecoder`](.././flytekit.types.structured.structured_dataset#flytekittypesstructuredstructured_datasetstructureddatasetdecoder) |  |
+| [`StructuredDatasetEncoder`](.././flytekit.types.structured.structured_dataset#flytekittypesstructuredstructured_datasetstructureddatasetencoder) |  |
 | [`StructuredDatasetTransformerEngine`](.././flytekit.types.structured.structured_dataset#flytekittypesstructuredstructured_datasetstructureddatasettransformerengine) | Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
 
 ### Errors
 
 | Exception | Description |
 |-|-|
-| [`DuplicateHandlerError`](.././flytekit.types.structured.structured_dataset#flytekittypesstructuredstructured_datasetduplicatehandlererror) | Inappropriate argument value (of correct type). |
+| [`DuplicateHandlerError`](.././flytekit.types.structured.structured_dataset#flytekittypesstructuredstructured_datasetduplicatehandlererror) |  |
 
 ### Methods
 
@@ -104,13 +104,11 @@ def get_supported_types()
 ```
 ## flytekit.types.structured.structured_dataset.DuplicateHandlerError
 
-Inappropriate argument value (of correct type).
-
-
 ## flytekit.types.structured.structured_dataset.StructuredDataset
 
 This is the user facing StructuredDataset class. Please don't confuse it with the literals.StructuredDataset
 class (that is just a model, a Python class representation of the protobuf).
+
 
 
 ```python
@@ -127,6 +125,14 @@ class StructuredDataset(
 | `uri` | `typing.Optional[str]` | |
 | `metadata` | `typing.Optional[literals.StructuredDatasetMetadata]` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `dataframe` | `None` |  |
+| `literal` | `None` |  |
+| `metadata` | `None` |  |
 
 ### Methods
 
@@ -257,19 +263,7 @@ def to_json(
 | `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` | |
 | `to_dict_kwargs` | `typing.Any` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `dataframe` |  |  |
-| `literal` |  |  |
-| `metadata` |  |  |
-
 ## flytekit.types.structured.structured_dataset.StructuredDatasetDecoder
-
-Helper class that provides a standard way to create an ABC using
-inheritance.
-
 
 ```python
 class StructuredDatasetDecoder(
@@ -292,6 +286,14 @@ and we have to get a Python value out of it. For the other way, see the Structur
 | `protocol` | `Optional[str]` | A prefix representing the storage driver (e.g. 's3, 'gs', 'bq', etc.). You can use either "s3" or "s3://". They are the same since the "://" will just be stripped by the constructor. If None, this decoder will be registered with all protocols that flytekit's data persistence layer is capable of handling. |
 | `supported_format` | `Optional[str]` | Arbitrary string representing the format. If not supplied then an empty string will be used. An empty string implies that the decoder works with any format. If the format being asked for does not exist, the transformer enginer will look for the "" decoder instead and write a warning. |
 | `additional_protocols` | `Optional[List[str]]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
 
 ### Methods
 
@@ -320,19 +322,7 @@ value into a Python instance.
 | `flyte_value` | `literals.StructuredDataset` | This will be a Flyte IDL StructuredDataset Literal - do not confuse this with the StructuredDataset class defined also in this module. |
 | `current_task_metadata` | `StructuredDatasetMetadata` | Metadata object containing the type (and columns if any) for the currently executing task. This type may have more or less information than the type information bundled inside the incoming flyte_value. :return: This function can either return an instance of the dataframe that this decoder handles, or an iterator of those dataframes. |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
-
 ## flytekit.types.structured.structured_dataset.StructuredDatasetEncoder
-
-Helper class that provides a standard way to create an ABC using
-inheritance.
-
 
 ```python
 class StructuredDatasetEncoder(
@@ -354,6 +344,14 @@ the StructuredDatasetEncoder
 | `python_type` | `Type[T]` | The dataframe class in question that you want to register this encoder with |
 | `protocol` | `Optional[str]` | A prefix representing the storage driver (e.g. 's3, 'gs', 'bq', etc.). You can use either "s3" or "s3://". They are the same since the "://" will just be stripped by the constructor. If None, this encoder will be registered with all protocols that flytekit's data persistence layer is capable of handling. |
 | `supported_format` | `Optional[str]` | Arbitrary string representing the format. If not supplied then an empty string will be used. An empty string implies that the encoder works with any format. If the format being asked for does not exist, the transformer engine will look for the "" encoder instead and write a warning. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
 
 ### Methods
 
@@ -385,14 +383,6 @@ the
 | `structured_dataset` | `StructuredDataset` | This is a StructuredDataset wrapper object. See more info above. |
 | `structured_dataset_type` | `StructuredDatasetType` | This the StructuredDatasetType, as found in the LiteralType of the interface of the task that invoked this encoding call. It is passed along to encoders so that authors of encoders can include it in the returned literals.StructuredDataset. See the IDL for more information on why this literal in particular carries the type information along with it. If the encoder doesn't supply it, it will also be filled in after the encoder runs by the transformer engine. :return: This function should return a StructuredDataset literal object. Do not confuse this with the StructuredDataset wrapper class used as input to this function - that is the user facing Python class. This function needs to return the IDL StructuredDataset. |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
-
 ## flytekit.types.structured.structured_dataset.StructuredDatasetTransformerEngine
 
 Think of this transformer as a higher-level meta transformer that is used for all the dataframe types.
@@ -400,9 +390,19 @@ If you are bringing a custom data frame type, or any data frame type, to flyteki
 registering with the main type engine, you should register with this transformer instead.
 
 
+
 ```python
 def StructuredDatasetTransformerEngine()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ### Methods
 
 | Method | Description |
@@ -477,7 +477,7 @@ def async_to_python_value(
 The only tricky thing with converting a Literal (say the output of an earlier task), to a Python value at
 the start of a task execution, is the column subsetting behavior. For example, if you have,
 
-def t1() -> Annotated[StructuredDataset, kwtypes(col_a=int, col_b=float)]: ...
+def t1() -&gt; Annotated[StructuredDataset, kwtypes(col_a=int, col_b=float)]: ...
 def t2(in_a: Annotated[StructuredDataset, kwtypes(col_b=float)]): ...
 
 where t2(in_a=t1()), when t2 does in_a.open(pd.DataFrame).all(), it should get a DataFrame
@@ -555,7 +555,7 @@ def from_binary_idl(
 If the input is from flytekit, the Life Cycle will be as follows:
 
 Life Cycle:
-binary IDL                 -> resolved binary         -> bytes                   -> expected Python object
+binary IDL                 -&gt; resolved binary         -&gt; bytes                   -&gt; expected Python object
 (flytekit customized          (propeller processing)     (flytekit binary IDL)      (flytekit customized
 serialization)                                                                       deserialization)
 
@@ -592,7 +592,7 @@ def from_generic_idl(
 If the input is from Flyte Console, the Life Cycle will be as follows:
 
 Life Cycle:
-json str            -> protobuf struct         -> resolved protobuf struct   -> expected Python object
+json str            -&gt; protobuf struct         -&gt; resolved protobuf struct   -&gt; expected Python object
 (console user input)   (console output)           (propeller)                   (flytekit customized deserialization)
 
 Example Code:
@@ -844,15 +844,4 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 | `ctx` | `FlyteContext` | FlyteContext |
 | `lv` | `Literal` | The received literal Value |
 | `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
 

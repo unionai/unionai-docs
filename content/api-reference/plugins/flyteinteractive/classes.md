@@ -1,6 +1,6 @@
 ---
 title: Classes
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -9,4 +9,4 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.flyteinteractive.jupyter_lib.decorator.jupyter`](../packages/flytekitplugins.flyteinteractive.jupyter_lib.decorator#flytekitpluginsflyteinteractivejupyter_libdecoratorjupyter) |Abstract class for class decorators. |
+| [`flytekitplugins.flyteinteractive.jupyter_lib.decorator.jupyter`](../packages/flytekitplugins.flyteinteractive.jupyter_lib.decorator#flytekitpluginsflyteinteractivejupyter_libdecoratorjupyter) | |

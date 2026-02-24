@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.pytorch.native
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`PyTorchModuleTransformer`](.././flytekit.extras.pytorch.native#flytekitextraspytorchnativepytorchmoduletransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
-| [`PyTorchTensorTransformer`](.././flytekit.extras.pytorch.native#flytekitextraspytorchnativepytorchtensortransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
-| [`PyTorchTypeTransformer`](.././flytekit.extras.pytorch.native#flytekitextraspytorchnativepytorchtypetransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`PyTorchModuleTransformer`](.././flytekit.extras.pytorch.native#flytekitextraspytorchnativepytorchmoduletransformer) |  |
+| [`PyTorchTensorTransformer`](.././flytekit.extras.pytorch.native#flytekitextraspytorchnativepytorchtensortransformer) |  |
+| [`PyTorchTypeTransformer`](.././flytekit.extras.pytorch.native#flytekitextraspytorchnativepytorchtypetransformer) |  |
 
 ### Variables
 
@@ -25,12 +25,18 @@ layout: py_api
 
 ## flytekit.extras.pytorch.native.PyTorchModuleTransformer
 
-Base transformer type that should be implemented for every python native type that can be handled by flytekit
-
-
 ```python
 def PyTorchModuleTransformer()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ### Methods
 
 | Method | Description |
@@ -71,12 +77,12 @@ This function primarily handles deserialization for untyped dicts, dataclasses, 
 
 For untyped dict, dataclass, and pydantic basemodel:
 Life Cycle (Untyped Dict as example):
-    python val -> msgpack bytes -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                             (from_binary_idl)
 
 For attribute access:
 Life Cycle:
-    python val -> msgpack bytes -> binary literal scalar -> resolved golang value -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; resolved golang value -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
@@ -205,25 +211,20 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 | `lv` | `flytekit.models.literals.Literal` | The received literal Value |
 | `expected_python_type` | `typing.Type[~T]` | Expected native python type that should be returned |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
-
 ## flytekit.extras.pytorch.native.PyTorchTensorTransformer
-
-Base transformer type that should be implemented for every python native type that can be handled by flytekit
-
 
 ```python
 def PyTorchTensorTransformer()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ### Methods
 
 | Method | Description |
@@ -264,12 +265,12 @@ This function primarily handles deserialization for untyped dicts, dataclasses, 
 
 For untyped dict, dataclass, and pydantic basemodel:
 Life Cycle (Untyped Dict as example):
-    python val -> msgpack bytes -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                             (from_binary_idl)
 
 For attribute access:
 Life Cycle:
-    python val -> msgpack bytes -> binary literal scalar -> resolved golang value -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; resolved golang value -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
@@ -398,21 +399,7 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 | `lv` | `flytekit.models.literals.Literal` | The received literal Value |
 | `expected_python_type` | `typing.Type[~T]` | Expected native python type that should be returned |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
-
 ## flytekit.extras.pytorch.native.PyTorchTypeTransformer
-
-Base transformer type that should be implemented for every python native type that can be handled by flytekit
-
 
 ```python
 class PyTorchTypeTransformer(
@@ -426,6 +413,15 @@ class PyTorchTypeTransformer(
 | `name` | `str` | |
 | `t` | `Type[T]` | |
 | `enable_type_assertions` | `bool` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 
@@ -467,12 +463,12 @@ This function primarily handles deserialization for untyped dicts, dataclasses, 
 
 For untyped dict, dataclass, and pydantic basemodel:
 Life Cycle (Untyped Dict as example):
-    python val -> msgpack bytes -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                             (from_binary_idl)
 
 For attribute access:
 Life Cycle:
-    python val -> msgpack bytes -> binary literal scalar -> resolved golang value -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; resolved golang value -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
@@ -600,15 +596,4 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | FlyteContext |
 | `lv` | `flytekit.models.literals.Literal` | The received literal Value |
 | `expected_python_type` | `typing.Type[~T]` | Expected native python type that should be returned |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
 

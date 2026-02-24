@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.python_function_task
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -15,8 +15,8 @@ layout: py_api
 |-|-|
 | [`AsyncPythonFunctionTask`](.././flytekit.core.python_function_task#flytekitcorepython_function_taskasyncpythonfunctiontask) | This is the base task for eager tasks, as well as normal async tasks. |
 | [`EagerAsyncPythonFunctionTask`](.././flytekit.core.python_function_task#flytekitcorepython_function_taskeagerasyncpythonfunctiontask) | This is the base eager task (aka eager workflow) type. |
-| [`EagerFailureHandlerTask`](.././flytekit.core.python_function_task#flytekitcorepython_function_taskeagerfailurehandlertask) | A Python AutoContainer task should be used as the base for all extensions that want the user's code to be in the. |
-| [`EagerFailureTaskResolver`](.././flytekit.core.python_function_task#flytekitcorepython_function_taskeagerfailuretaskresolver) | Flytekit tasks interact with the Flyte platform very, very broadly in two steps. |
+| [`EagerFailureHandlerTask`](.././flytekit.core.python_function_task#flytekitcorepython_function_taskeagerfailurehandlertask) |  |
+| [`EagerFailureTaskResolver`](.././flytekit.core.python_function_task#flytekitcorepython_function_taskeagerfailuretaskresolver) |  |
 | [`PythonFunctionTask`](.././flytekit.core.python_function_task#flytekitcorepython_function_taskpythonfunctiontask) | A Python Function task should be used as the base for all extensions that have a python function. |
 | [`PythonInstanceTask`](.././flytekit.core.python_function_task#flytekitcorepython_function_taskpythoninstancetask) | This class should be used as the base class for all Tasks that do not have a user defined function body, but have. |
 
@@ -33,6 +33,7 @@ layout: py_api
 
 This is the base task for eager tasks, as well as normal async tasks
 Really only need to override the call function.
+
 
 
 ```python
@@ -59,6 +60,33 @@ class AsyncPythonFunctionTask(
 | `node_dependency_hints` | `Optional[Iterable[Union['PythonFunctionTask', '_annotated_launch_plan.LaunchPlan', WorkflowBase]]]` | |
 | `pickle_untyped` | `bool` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `container_image` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `execution_mode` | `None` |  |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` | Returns the name of the task. |
+| `node_dependency_hints` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `resources` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_function` | `None` |  |
+| `task_resolver` | `None` |  |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -506,46 +534,14 @@ task resolver. It can be useful to override the task resolver for specific cases
 |-|-|-|
 | `resolver` | `TaskResolverMixin` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `container_image` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `execution_mode` |  |  |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  | {{< multiline >}}Returns the name of the task.
-{{< /multiline >}} |
-| `node_dependency_hints` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `resources` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_function` |  |  |
-| `task_resolver` |  |  |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
-
 ## flytekit.core.python_function_task.EagerAsyncPythonFunctionTask
 
 This is the base eager task (aka eager workflow) type. It replaces the previous experiment eager task type circa
 Q4 2024. Users unfamiliar with this concept should refer to the documentation for more information.
 But basically, Python becomes propeller, and every task invocation, creates a stack frame on the Flyte cluster in
 the form of an execution rather than on the actual memory stack.
+
+
 
 
 ```python
@@ -570,6 +566,33 @@ class EagerAsyncPythonFunctionTask(
 | `node_dependency_hints` | `Optional[Iterable[Union['PythonFunctionTask', '_annotated_launch_plan.LaunchPlan', WorkflowBase]]]` | |
 | `enable_deck` | `bool` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `container_image` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `execution_mode` | `None` |  |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` | Returns the name of the task. |
+| `node_dependency_hints` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `resources` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_function` | `None` |  |
+| `task_resolver` | `None` |  |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -620,29 +643,29 @@ Overrides the base execute function. This function does not handle dynamic at al
 
 Some notes on the different call scenarios since it's a little different than other tasks.
 a) starting local execution - eager_task()
-    -> last condition of call handler,
-    -> set execution mode and self.local_execute()
-    -> self.execute(native_vals)
-      -> 1) -> task function() or 2) -> self.run_with_backend()  # fn name will be changed.
+    -&gt; last condition of call handler,
+    -&gt; set execution mode and self.local_execute()
+    -&gt; self.execute(native_vals)
+      -&gt; 1) -&gt; task function() or 2) -&gt; self.run_with_backend()  # fn name will be changed.
 b) inside an eager task local execution - calling normal_task()
-    -> call handler detects in eager local execution (middle part of call handler)
-    -> call normal_task's local_execute()
+    -&gt; call handler detects in eager local execution (middle part of call handler)
+    -&gt; call normal_task's local_execute()
 c) inside an eager task local execution - calling async_normal_task()
-    -> produces a coro, which when awaited/run
-        -> call handler detects in eager local execution (middle part of call handler)
-        -> call async_normal_task's local_execute()
-        -> call AsyncPythonFunctionTask's async_execute(), which awaits the task function
+    -&gt; produces a coro, which when awaited/run
+        -&gt; call handler detects in eager local execution (middle part of call handler)
+        -&gt; call async_normal_task's local_execute()
+        -&gt; call AsyncPythonFunctionTask's async_execute(), which awaits the task function
 d) inside an eager task local execution - calling another_eager_task()
-    -> produces a coro, which when awaited/run
-        -> call handler detects in eager local execution (middle part of call handler)
-        -> call another_eager_task's local_execute()
-        -> results are returned instead of being passed to create_native_named_tuple
+    -&gt; produces a coro, which when awaited/run
+        -&gt; call handler detects in eager local execution (middle part of call handler)
+        -&gt; call another_eager_task's local_execute()
+        -&gt; results are returned instead of being passed to create_native_named_tuple
 d) eager_task, starting backend execution from entrypoint.py
-    -> eager_task.dispatch_execute(literals)
-    -> eager_task.execute(native values)
-    -> awaits eager_task.run_with_backend()  # fn name will be changed
+    -&gt; eager_task.dispatch_execute(literals)
+    -&gt; eager_task.execute(native values)
+    -&gt; awaits eager_task.run_with_backend()  # fn name will be changed
 e) in an eager task during backend execution, calling any flyte_entity()
-    -> add the entity to the worker queue and await the result.
+    -&gt; add the entity to the worker queue and await the result.
 
 
 | Parameter | Type | Description |
@@ -1083,48 +1106,7 @@ task resolver. It can be useful to override the task resolver for specific cases
 |-|-|-|
 | `resolver` | `TaskResolverMixin` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `container_image` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `execution_mode` |  |  |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  | {{< multiline >}}Returns the name of the task.
-{{< /multiline >}} |
-| `node_dependency_hints` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `resources` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_function` |  |  |
-| `task_resolver` |  |  |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
-
 ## flytekit.core.python_function_task.EagerFailureHandlerTask
-
-A Python AutoContainer task should be used as the base for all extensions that want the user's code to be in the
-container and the container information to be automatically captured.
-This base will auto configure the image and image version to be used for all its derivatives.
-
-If you are looking to extend, you might prefer to use ``PythonFunctionTask`` or ``PythonInstanceTask``
-
 
 ```python
 class EagerFailureHandlerTask(
@@ -1140,6 +1122,30 @@ class EagerFailureHandlerTask(
 | `container_image` | `Optional[Union[str, ImageSpec]]` | |
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `container_image` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `resources` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_resolver` | `None` |  |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -1520,69 +1526,13 @@ task resolver. It can be useful to override the task resolver for specific cases
 |-|-|-|
 | `resolver` | `TaskResolverMixin` | |
 
+## flytekit.core.python_function_task.EagerFailureTaskResolver
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `container_image` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `resources` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_resolver` |  |  |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
-
-## flytekit.core.python_function_task.EagerFailureTaskResolver
-
-Flytekit tasks interact with the Flyte platform very, very broadly in two steps. They need to be uploaded to Admin,
-and then they are run by the user upon request (either as a single task execution or as part of a workflow). In any
-case, at execution time, for most tasks (that is those that generate a container target) the container image
-containing the task needs to be spun up again at which point the container needs to know which task it's supposed
-to run and how to rehydrate the task object.
-
-For example, the serialization of a simple task ::
-
-    # in repo_root/workflows/example.py
-    @task
-    def t1(...) -> ...: ...
-
-might result in a container with arguments like ::
-
-    pyflyte-execute --inputs s3://path/inputs.pb --output-prefix s3://outputs/location         --raw-output-data-prefix /tmp/data         --resolver flytekit.core.python_auto_container.default_task_resolver         --         task-module repo_root.workflows.example task-name t1
-
-At serialization time, the container created for the task will start out automatically with the ``pyflyte-execute``
-bit, along with the requisite input/output args and the offloaded data prefix. Appended to that will be two things,
-
-#. the ``location`` of the task's task resolver, followed by two dashes, followed by
-#. the arguments provided by calling the ``loader_args`` function below.
-
-The ``default_task_resolver`` declared below knows that
-
-* When ``loader_args`` is called on a task, to look up the module the task is in, and the name of the task (the
-  key of the task in the module, either the function name, or the variable it was assigned to).
-* When ``load_task`` is called, it interprets the first part of the command as the module to call
-  ``importlib.import_module`` on, and then looks for a key ``t1``.
-
-This is just the default behavior. Users should feel free to implement their own resolvers.
-
+| `location` | `None` |  |
 
 ### Methods
 
@@ -1652,12 +1602,6 @@ Overridable function that can optionally return a custom name for a given task
 |-|-|-|
 | `t` | `flytekit.core.base_task.Task` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `location` |  |  |
-
 ## flytekit.core.python_function_task.PythonFunctionTask
 
 A Python Function task should be used as the base for all extensions that have a python function. It will
@@ -1673,6 +1617,7 @@ def my_func(a: int) -> str:
 ```
 In the above code, the name of the function, the module, and the interface (inputs = int and outputs = str) will be
 auto detected.
+
 
 
 ```python
@@ -1699,6 +1644,33 @@ class PythonFunctionTask(
 | `node_dependency_hints` | `Optional[Iterable[Union['PythonFunctionTask', '_annotated_launch_plan.LaunchPlan', WorkflowBase]]]` | |
 | `pickle_untyped` | `bool` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `container_image` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `execution_mode` | `None` |  |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` | Returns the name of the task. |
+| `node_dependency_hints` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `resources` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_function` | `None` |  |
+| `task_resolver` | `None` |  |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -2128,40 +2100,6 @@ task resolver. It can be useful to override the task resolver for specific cases
 |-|-|-|
 | `resolver` | `TaskResolverMixin` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `container_image` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `execution_mode` |  |  |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  | {{< multiline >}}Returns the name of the task.
-{{< /multiline >}} |
-| `node_dependency_hints` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `resources` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_function` |  |  |
-| `task_resolver` |  |  |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
-
 ## flytekit.core.python_function_task.PythonInstanceTask
 
 This class should be used as the base class for all Tasks that do not have a user defined function body, but have
@@ -2174,6 +2112,8 @@ x = MyInstanceTask(name="x", .....)
 # this can be invoked as
 x(a=5) # depending on the interface of the defined task
 ```
+
+
 
 
 ```python
@@ -2195,6 +2135,30 @@ Please see class level documentation.
 | `task_type` | `str` | |
 | `task_resolver` | `Optional[TaskResolverMixin]` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `container_image` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `resources` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_resolver` | `None` |  |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -2577,34 +2541,4 @@ task resolver. It can be useful to override the task resolver for specific cases
 | Parameter | Type | Description |
 |-|-|-|
 | `resolver` | `TaskResolverMixin` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `container_image` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `resources` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_resolver` |  |  |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
 

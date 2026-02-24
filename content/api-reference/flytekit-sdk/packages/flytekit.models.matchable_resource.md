@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.matchable_resource
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -37,6 +37,13 @@ Dict values should be the custom values which get substituted during resource cr
 | Parameter | Type | Description |
 |-|-|-|
 | `attributes` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `attributes` | `None` | Custom resource attributes which will be applied in cluster resource management :rtype: dict[Text, Text] |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -80,15 +87,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.matchable_resource_pb2.ClusterResourceAttributes
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `attributes` |  | {{< multiline >}}Custom resource attributes which will be applied in cluster resource management
-:rtype: dict[Text, Text]
-{{< /multiline >}} |
-| `is_empty` |  |  |
-
 ## flytekit.models.matchable_resource.ExecutionClusterLabel
 
 ```python
@@ -103,6 +101,13 @@ Label value to determine where the execution will be run
 | Parameter | Type | Description |
 |-|-|-|
 | `value` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `value` | `None` | :rtype: Text |
 
 ### Methods
 
@@ -146,14 +151,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.matchable_resource_pb2.ExecutionClusterLabel
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `value` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-
 ## flytekit.models.matchable_resource.ExecutionQueueAttributes
 
 ```python
@@ -168,6 +165,13 @@ Tags used for assigning execution queues for tasks matching a project, domain an
 | Parameter | Type | Description |
 |-|-|-|
 | `tags` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `tags` | `None` | :rtype: list[Text] |
 
 ### Methods
 
@@ -210,14 +214,6 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.matchable_resource_pb2.ExecutionQueueAttributes
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `tags` |  | {{< multiline >}}:rtype: list[Text]
-{{< /multiline >}} |
 
 ## flytekit.models.matchable_resource.MatchableResource
 
@@ -272,6 +268,16 @@ At most one target from cluster_resource_attributes, execution_queue_attributes 
 | `execution_cluster_label` |  | |
 | `plugin_overrides` |  | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cluster_resource_attributes` | `None` | Custom resource attributes which will be applied in cluster resource creation (e.g. quotas). :rtype: ClusterResourceAttributes |
+| `execution_cluster_label` | `None` | Label value to determine where the execution will be run. :rtype: ExecutionClusterLabel |
+| `execution_queue_attributes` | `None` | Tags used for assigning execution queues for tasks. :rtype: ExecutionQueueAttributes |
+| `is_empty` | `None` |  |
+| `plugin_overrides` | `None` | Plugin implementation overrides for specific task types. :rtype: PluginOverrides |
+
 ### Methods
 
 | Method | Description |
@@ -314,24 +320,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.matchable_resource_pb2.MatchingAttributes
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `cluster_resource_attributes` |  | {{< multiline >}}Custom resource attributes which will be applied in cluster resource creation (e.g. quotas).
-:rtype: ClusterResourceAttributes
-{{< /multiline >}} |
-| `execution_cluster_label` |  | {{< multiline >}}Label value to determine where the execution will be run.
-:rtype: ExecutionClusterLabel
-{{< /multiline >}} |
-| `execution_queue_attributes` |  | {{< multiline >}}Tags used for assigning execution queues for tasks.
-:rtype: ExecutionQueueAttributes
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `plugin_overrides` |  | {{< multiline >}}Plugin implementation overrides for specific task types.
-:rtype: PluginOverrides
-{{< /multiline >}} |
-
 ## flytekit.models.matchable_resource.PluginOverride
 
 ```python
@@ -350,6 +338,15 @@ Alternate plugin implementations requested for a specific task type.
 | `task_type` |  | |
 | `plugin_id` |  | |
 | `missing_plugin_behavior` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `missing_plugin_behavior` | `None` | :rtype: int |
+| `plugin_id` | `None` | :rtype: list[Text] |
+| `task_type` | `None` | :rtype: Text |
 
 ### Methods
 
@@ -405,18 +402,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.matchable_resource_pb2.PluginOverride
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `missing_plugin_behavior` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `plugin_id` |  | {{< multiline >}}:rtype: list[Text]
-{{< /multiline >}} |
-| `task_type` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-
 ## flytekit.models.matchable_resource.PluginOverrides
 
 ```python
@@ -431,6 +416,13 @@ Alternate plugin implementations for designated task types.
 | Parameter | Type | Description |
 |-|-|-|
 | `overrides` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `overrides` | `None` | :rtype: list[PluginOverride] |
 
 ### Methods
 
@@ -473,12 +465,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.matchable_resource_pb2.PluginOverrides
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `overrides` |  | {{< multiline >}}:rtype: list[PluginOverride]
-{{< /multiline >}} |
 

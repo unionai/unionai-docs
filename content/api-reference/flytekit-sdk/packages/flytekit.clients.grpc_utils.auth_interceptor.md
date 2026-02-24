@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.grpc_utils.auth_interceptor
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -21,6 +21,7 @@ This Interceptor can be used to automatically add Auth Metadata for every call -
 is needed.
 
 
+
 ```python
 class AuthUnaryInterceptor(
     get_authenticator: typing.Callable[[], flytekit.clients.auth.authenticator.Authenticator],
@@ -29,6 +30,12 @@ class AuthUnaryInterceptor(
 | Parameter | Type | Description |
 |-|-|-|
 | `get_authenticator` | `typing.Callable[[], flytekit.clients.auth.authenticator.Authenticator]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `authenticator` | `None` |  |
 
 ### Methods
 
@@ -74,10 +81,4 @@ and then retries with the new token
 | `continuation` | `typing.Callable` | |
 | `client_call_details` | `grpc.ClientCallDetails` | |
 | `request` | `typing.Any` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `authenticator` |  |  |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.types
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -34,6 +34,14 @@ class Error(
 |-|-|-|
 | `failed_node_id` | `str` | |
 | `message` | `str` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `failed_node_id` | `None` |  |
+| `is_empty` | `None` |  |
+| `message` | `None` |  |
 
 ### Methods
 
@@ -74,14 +82,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `failed_node_id` |  |  |
-| `is_empty` |  |  |
-| `message` |  |  |
-
 ## flytekit.models.types.LiteralType
 
 ```python
@@ -116,6 +116,23 @@ This is a oneof message, only one of the kwargs may be set, representing one of 
 | `metadata` |  | |
 | `structure` |  | |
 | `annotation` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `annotation` | `None` | :rtype: flytekit.models.annotation.TypeAnnotation |
+| `blob` | `None` |  |
+| `collection_type` | `None` | The collection value type |
+| `enum_type` | `None` |  |
+| `is_empty` | `None` |  |
+| `map_value_type` | `None` | The Value for a dictionary. Key is always string |
+| `metadata` | `None` | :rtype: dict[Text, T] |
+| `schema` | `None` |  |
+| `simple` | `None` |  |
+| `structure` | `None` |  |
+| `structured_dataset_type` | `None` |  |
+| `union_type` | `None` |  |
 
 ### Methods
 
@@ -159,27 +176,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.types_pb2.LiteralType
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `annotation` |  | {{< multiline >}}:rtype: flytekit.models.annotation.TypeAnnotation
-{{< /multiline >}} |
-| `blob` |  |  |
-| `collection_type` |  | {{< multiline >}}The collection value type
-{{< /multiline >}} |
-| `enum_type` |  |  |
-| `is_empty` |  |  |
-| `map_value_type` |  | {{< multiline >}}The Value for a dictionary. Key is always string
-{{< /multiline >}} |
-| `metadata` |  | {{< multiline >}}:rtype: dict[Text, T]
-{{< /multiline >}} |
-| `schema` |  |  |
-| `simple` |  |  |
-| `structure` |  |  |
-| `structured_dataset_type` |  |  |
-| `union_type` |  |  |
-
 ## flytekit.models.types.OutputReference
 
 ```python
@@ -199,6 +195,15 @@ A reference to an output produced by a node. The type can be retrieved -and vali
 | `node_id` |  | |
 | `var` |  | |
 | `attr_path` | `typing.List[typing.Union[str, int]]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `attr_path` | `None` | The attribute path the promise will be resolved with. :rtype: list[union[str, int]] |
+| `is_empty` | `None` |  |
+| `node_id` | `None` | Node id must exist at the graph layer. :rtype: Text |
+| `var` | `None` | Variable name must refer to an output variable for the node. :rtype: Text |
 
 ### Methods
 
@@ -242,21 +247,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.types.OutputReference
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `attr_path` |  | {{< multiline >}}The attribute path the promise will be resolved with.
-:rtype: list[union[str, int]]
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `node_id` |  | {{< multiline >}}Node id must exist at the graph layer.
-:rtype: Text
-{{< /multiline >}} |
-| `var` |  | {{< multiline >}}Variable name must refer to an output variable for the node.
-:rtype: Text
-{{< /multiline >}} |
-
 ## flytekit.models.types.SchemaType
 
 ```python
@@ -267,6 +257,13 @@ class SchemaType(
 | Parameter | Type | Description |
 |-|-|-|
 | `columns` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `columns` | `None` | A list of columns defining the underlying data frame. :rtype: list[SchemaType.SchemaColumn] |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -310,15 +307,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.types_pb2.SchemaType
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `columns` |  | {{< multiline >}}A list of columns defining the underlying data frame.
-:rtype: list[SchemaType.SchemaColumn]
-{{< /multiline >}} |
-| `is_empty` |  |  |
-
 ## flytekit.models.types.SimpleType
 
 ## flytekit.models.types.StructuredDatasetType
@@ -337,6 +325,16 @@ class StructuredDatasetType(
 | `format` | `str` | |
 | `external_schema_type` | `str` | |
 | `external_schema_bytes` | `bytes` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `columns` | `None` |  |
+| `external_schema_bytes` | `None` |  |
+| `external_schema_type` | `None` |  |
+| `format` | `None` |  |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -377,19 +375,10 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `columns` |  |  |
-| `external_schema_bytes` |  |  |
-| `external_schema_type` |  |  |
-| `format` |  |  |
-| `is_empty` |  |  |
-
 ## flytekit.models.types.TypeStructure
 
 Models _types_pb2.TypeStructure
+
 
 
 ```python
@@ -402,6 +391,14 @@ class TypeStructure(
 |-|-|-|
 | `tag` | `str` | |
 | `dataclass_type` | `typing.Dict[str, ForwardRef('LiteralType')]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `dataclass_type` | `None` |  |
+| `is_empty` | `None` |  |
+| `tag` | `None` |  |
 
 ### Methods
 
@@ -442,17 +439,10 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `dataclass_type` |  |  |
-| `is_empty` |  |  |
-| `tag` |  |  |
-
 ## flytekit.models.types.UnionType
 
 Models _types_pb2.UnionType
+
 
 
 ```python
@@ -463,6 +453,13 @@ class UnionType(
 | Parameter | Type | Description |
 |-|-|-|
 | `variants` | `typing.List[ForwardRef('LiteralType')]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `variants` | `None` |  |
 
 ### Methods
 
@@ -503,10 +500,3 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `variants` |  |  |
-

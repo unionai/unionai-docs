@@ -1,6 +1,6 @@
 ---
 title: flytekit.extend.backend.connector_service
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AsyncConnectorService`](.././flytekit.extend.backend.connector_service#flytekitextendbackendconnector_serviceasyncconnectorservice) | AsyncAgentService defines an RPC Service that allows propeller to send the request to the agent server asynchronously. |
-| [`ConnectorMetadataService`](.././flytekit.extend.backend.connector_service#flytekitextendbackendconnector_serviceconnectormetadataservice) | AgentMetadataService defines an RPC service that is also served over HTTP via grpc-gateway. |
-| [`SyncConnectorService`](.././flytekit.extend.backend.connector_service#flytekitextendbackendconnector_servicesyncconnectorservice) | SyncAgentService defines an RPC Service that allows propeller to send the request to the agent server synchronously. |
+| [`AsyncConnectorService`](.././flytekit.extend.backend.connector_service#flytekitextendbackendconnector_serviceasyncconnectorservice) |  |
+| [`ConnectorMetadataService`](.././flytekit.extend.backend.connector_service#flytekitextendbackendconnector_serviceconnectormetadataservice) |  |
+| [`SyncConnectorService`](.././flytekit.extend.backend.connector_service#flytekitextendbackendconnector_servicesyncconnectorservice) |  |
 
 ### Methods
 
@@ -48,10 +48,6 @@ def record_connector_metrics(
 | `func` | `typing.Callable` | |
 
 ## flytekit.extend.backend.connector_service.AsyncConnectorService
-
-AsyncAgentService defines an RPC Service that allows propeller to send the request to the agent server asynchronously.
-    
-
 
 ### Methods
 
@@ -154,10 +150,6 @@ Errors include
 
 ## flytekit.extend.backend.connector_service.ConnectorMetadataService
 
-AgentMetadataService defines an RPC service that is also served over HTTP via grpc-gateway.
-This service allows propeller or users to get the metadata of agents.
-
-
 ### Methods
 
 | Method | Description |
@@ -201,10 +193,6 @@ Fetch a list of :ref:`ref_flyteidl.admin.Agent` definitions.
 | `context` | `grpc.ServicerContext` | |
 
 ## flytekit.extend.backend.connector_service.SyncConnectorService
-
-SyncAgentService defines an RPC Service that allows propeller to send the request to the agent server synchronously.
-    
-
 
 ### Methods
 

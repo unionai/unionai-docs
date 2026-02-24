@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.flyteinteractive.jupyter_lib.jupyter_constants
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

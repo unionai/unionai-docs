@@ -1,0 +1,13 @@
+{
+  "packages": {
+    "flytekitplugins.async_fsspec": "/api-reference/plugins/async-fsspec/packages/flytekitplugins.async_fsspec/",
+    "flytekitplugins.async_fsspec.s3fs": "/api-reference/plugins/async-fsspec/packages/flytekitplugins.async_fsspec.s3fs/",
+    "flytekitplugins.async_fsspec.s3fs.constants": "/api-reference/plugins/async-fsspec/packages/flytekitplugins.async_fsspec.s3fs.constants/",
+    "flytekitplugins.async_fsspec.s3fs.s3fs": "/api-reference/plugins/async-fsspec/packages/flytekitplugins.async_fsspec.s3fs.s3fs/"
+  },
+  "identifiers": {
+    "flytekitplugins.async_fsspec.s3fs.s3fs.AsyncS3FileSystem": "/api-reference/plugins/async-fsspec/packages/flytekitplugins.async_fsspec.s3fs.s3fs/#flytekitpluginsasync_fsspecs3fss3fsasyncs3filesystem",
+    "AsyncS3FileSystem": "/api-reference/plugins/async-fsspec/packages/flytekitplugins.async_fsspec.s3fs.s3fs/#flytekitpluginsasync_fsspecs3fss3fsasyncs3filesystem"
+  },
+  "methods": {}
+}

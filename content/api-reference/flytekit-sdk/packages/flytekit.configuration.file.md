@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration.file
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -117,6 +117,7 @@ Legacy means the INI style config files. YAML support is for the flytectl config
 when flytectl starts a sandbox
 
 
+
 ```python
 class ConfigEntry(
     legacy: LegacyConfigEntry,
@@ -171,6 +172,13 @@ Load the config from this location
 |-|-|-|
 | `location` | `str` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `legacy_config` | `None` |  |
+| `yaml_config` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -189,13 +197,6 @@ def get(
 |-|-|-|
 | `c` | `typing.Union[LegacyConfigEntry, YamlConfigEntry]` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `legacy_config` |  |  |
-| `yaml_config` |  |  |
-
 ## flytekit.configuration.file.LegacyConfigEntry
 
 Creates a record for the config entry. contains
@@ -210,9 +211,9 @@ class LegacyConfigEntry(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `section` | `str` | |
-| `option` | `str` | |
-| `type_` | `typing.Type` | |
+| `section` | `str` | section the option should be found under |
+| `option` | `str` | the option str to lookup |
+| `type_` | `typing.Type` | Expected type of the value |
 
 ### Methods
 
@@ -270,8 +271,8 @@ class YamlConfigEntry(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `switch` | `str` | |
-| `config_value_type` | `typing.Type` | |
+| `switch` | `str` | dot-delimited string that should match flytectl args. Leaving it as dot-delimited instead of a list of strings because it's easier to maintain alignment with flytectl. |
+| `config_value_type` | `typing.Type` | Expected type of the value |
 
 ### Methods
 
