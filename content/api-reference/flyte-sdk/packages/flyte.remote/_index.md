@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 2.0.0
+version: 2.0.1
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -85,6 +85,7 @@ def create_channel(
     compression: typing.Optional[grpc.Compression],
     http_session: httpx.AsyncClient | None,
     proxy_command: typing.Optional[typing.List[str]],
+    rpc_retries: typing.Optional[int],
     kwargs,
 ) -> grpc.aio._base_channel.Channel
 ```
@@ -111,6 +112,7 @@ and create authentication interceptors that perform async operations.
 | `compression` | `typing.Optional[grpc.Compression]` | Compression method for the channel |
 | `http_session` | `httpx.AsyncClient \| None` | Pre-configured HTTP session to use for requests |
 | `proxy_command` | `typing.Optional[typing.List[str]]` | List of strings for proxy command configuration |
+| `rpc_retries` | `typing.Optional[int]` | Number of times to retry gRPC calls (flyte.init defaults to 3). None means do not install the interceptor at all. |
 | `kwargs` | `**kwargs` | Additional arguments passed to various functions - For grpc.aio.insecure_channel/secure_channel: - root_certificates: Root certificates for SSL credentials - private_key: Private key for SSL credentials - certificate_chain: Certificate chain for SSL credentials - options: gRPC channel options - compression: gRPC compression method - For proxy configuration: - proxy_env: Dict of environment variables for proxy - proxy_timeout: Timeout for proxy connection - For authentication interceptors (passed to create_auth_interceptors and create_proxy_auth_interceptors): - auth_type: The authentication type to use ("Pkce", "ClientSecret", "ExternalCommand", "DeviceFlow") - command: Command to execute for ExternalCommand authentication - client_id: Client ID for ClientSecret authentication - client_secret: Client secret for ClientSecret authentication - client_credentials_secret: Client secret for ClientSecret authentication (alias) - scopes: List of scopes to request during authentication - audience: Audience for the token - http_proxy_url: HTTP proxy URL - verify: Whether to verify SSL certificates - ca_cert_path: Optional path to CA certificate file - header_key: Header key to use for authentication - redirect_uri: OAuth2 redirect URI for PKCE authentication - add_request_auth_code_params_to_request_access_token_params: Whether to add auth code params to token request - request_auth_code_params: Parameters to add to login URI opened in browser - request_access_token_params: Parameters to add when exchanging auth code for access token - refresh_access_token_params: Parameters to add when refreshing access token :return: grpc.aio.Channel with authentication interceptors configured |
 
 #### upload_dir()
