@@ -1,6 +1,6 @@
 ---
 title: AppHandle
-version: 2.0.0
+version: 2.0.1
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -25,6 +25,7 @@ protocol AppHandle()
 |-|-|-|
 | `endpoint` | `None` |  |
 | `name` | `None` |  |
+| `url` | `None` |  |
 
 ## Methods
 
