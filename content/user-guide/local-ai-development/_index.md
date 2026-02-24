@@ -20,7 +20,7 @@ When you're ready to scale, the same code runs on a remote Flyte cluster with GP
 To run the terminal user interface (TUI) you'll also need an additional Python package installed along with the Flyte SDK.
 
 ```bash
-pip install 'flyte>=2.0[tui]'
+pip install "flyte[tui]>=2.0"    
 ```
 
 To enable run persistence so you can browse past runs, set local persistence to true in the Flyte config:
@@ -107,11 +107,9 @@ The TUI is an interactive split-screen dashboard. Task tree on the left, details
 flyte run --local --tui my_pipeline.py pipeline --epochs 5
 ```
 
-[image placeholder: TUI screenshot showing task tree with load_data (cached), train (running), evaluate (pending) on left; live training logs on right]
-
 This is useful for tracking ML training pipelines and AI agents with a lot of tool calls and sub-agents.
 
-[image placeholder: Agent TUI run]
+![TUI agent run](../../_static/images/user-guide/local/tui_agent_run.png)
 
 What you see:
 
@@ -139,8 +137,6 @@ You can also launch the TUI on its own to browse past runs, compare inputs and o
 flyte start tui
 ```
 
-[image placeholder: TUI explore mode showing a table of past runs with columns for task name, status, start time, duration, and inputs]
-
 ### Tracing
 
 Unlike `@env.task`, which defines an independent unit of work that Flyte schedules, caches, and tracks on its own, [`@flyte.trace`](../task-programming/traces) is for functions that run *inside* a task. A traced function must be called from within a task and can't run on its own. It gives you visibility into the internal steps of a task without the overhead of making each step a separate task.
@@ -159,8 +155,6 @@ async def agent(request: str) -> str:
     answer = await summarize(results)   # Also traced if decorated
     return answer
 ```
-
-[image placeholder: TUI screenshot showing agent task with search and summarize as indented child nodes, each with their own timing]
 
 This is particularly useful for AI agents where you want to see exactly which tools were called, and for ML pipelines where you want to trace preprocessing or feature engineering steps within a larger task.
 
@@ -188,8 +182,6 @@ flyte run --local --tui my_pipeline.py pipeline --epochs 5
 # Second run: load_data cached ($), only training re-runs
 flyte run --local --tui my_pipeline.py pipeline --epochs 10
 ```
-
-[image placeholder: TUI screenshot showing load_data with $ cache indicator, train running]
 
 On a remote cluster, the same `cache="auto"` uses the cluster's distributed cache store with no code changes.
 
@@ -222,8 +214,6 @@ async def evaluate(model_file: File, test_data: str) -> str:
 
     return f"Accuracy: {accuracy:.4f}"
 ```
-
-[image placeholder: browser showing rendered HTML report with training loss/accuracy curves and hyperparameter table]
 
 Locally, reports are saved as HTML files and the TUI shows the path. On a cluster, they render in the Flyte UI.
 
@@ -424,15 +414,8 @@ The same code runs in both environments. Here's what changes:
 
 The [`TaskEnvironment`](../core-concepts/task-environment) is the bridge. Locally, image and resources are ignored. On the cluster, Flyte builds containers and allocates compute from the same definition.
 
-[image placeholder: diagram showing TaskEnvironment definition in the center, with arrows to "Local: runs in your Python env" on left and "Remote: builds container, allocates GPU" on right]
-
 ---
 
 ## Next steps
 
-For full end-to-end walkthroughs with complete code examples:
-
-| Guide | What you'll build |
-|-------|-------------------|
-| [ML pipeline development](ml-pipelines) | Train ResNet18 on MNIST with caching, reports, TUI, model serving, and W&B tracking |
-| [Agent development](agents) | Build a LangGraph research agent with tool tracing, Gradio UI, and three deployment modes |
+When you're ready to run on a remote Flyte cluster, see [Local setup](../local-setup) to configure the CLI and SDK to connect to your cluster.
