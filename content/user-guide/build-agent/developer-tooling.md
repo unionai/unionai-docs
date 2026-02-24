@@ -1,5 +1,5 @@
 ---
-title: Agentic refinement
+title: Developer tooling
 weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
 mermaid: true

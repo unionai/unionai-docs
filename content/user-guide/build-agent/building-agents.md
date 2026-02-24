@@ -1,5 +1,5 @@
 ---
-title: Agentic refinement
+title: Building agents on Union
 weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
 mermaid: true
