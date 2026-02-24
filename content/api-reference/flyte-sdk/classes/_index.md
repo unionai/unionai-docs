@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0
+version: 2.0.1
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -36,6 +36,7 @@ sidebar_expanded: true
 | [`flyte.app.Scaling`](../packages/flyte.app/scaling) | |
 | [`flyte.app.extras.FastAPIAppEnvironment`](../packages/flyte.app.extras/fastapiappenvironment) | |
 | [`flyte.app.extras.FastAPIPassthroughAuthMiddleware`](../packages/flyte.app.extras/fastapipassthroughauthmiddleware) |FastAPI middleware that automatically sets Flyte auth metadata from request headers. |
+| [`flyte.app.extras.FlyteWebhookAppEnvironment`](../packages/flyte.app.extras/flytewebhookappenvironment) |A pre-built FastAPI app environment for common Flyte webhook operations. |
 | [`flyte.config.Config`](../packages/flyte.config/config) |This the parent configuration object and holds all the underlying configuration object types. |
 | [`flyte.connectors.AsyncConnector`](../packages/flyte.connectors/asyncconnector) |This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
 | [`flyte.connectors.AsyncConnectorExecutorMixin`](../packages/flyte.connectors/asyncconnectorexecutormixin) |This mixin class is used to run the connector task locally, and it's only used for local execution. |
@@ -114,6 +115,9 @@ sidebar_expanded: true
 | [`flyte.remote.Trigger`](../packages/flyte.remote/trigger) |Represents a trigger in the Flyte platform. |
 | [`flyte.remote.User`](../packages/flyte.remote/user) |Represents a user in the Flyte platform. |
 | [`flyte.report.Report`](../packages/flyte.report/report) | |
+| [`flyte.sandbox.CodeTaskTemplate`](../packages/flyte.sandbox/codetasktemplate) |A sandboxed task created from a code string rather than a decorated function. |
+| [`flyte.sandbox.SandboxedConfig`](../packages/flyte.sandbox/sandboxedconfig) |Configuration for a sandboxed task executed via Monty. |
+| [`flyte.sandbox.SandboxedTaskTemplate`](../packages/flyte.sandbox/sandboxedtasktemplate) |A task template that executes the function body in a Monty sandbox. |
 | [`flyte.storage.ABFS`](../packages/flyte.storage/abfs) |Any Azure Blob Storage specific configuration. |
 | [`flyte.storage.GCS`](../packages/flyte.storage/gcs) |Any GCS specific configuration. |
 | [`flyte.storage.S3`](../packages/flyte.storage/s3) |S3 specific configuration. |

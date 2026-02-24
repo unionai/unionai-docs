@@ -14,7 +14,7 @@ export PORT
 # Forward all known targets to unionai-docs-infra/Makefile.
 # These must be listed explicitly because Make's % pattern rule won't match
 # targets that correspond to existing files/directories (e.g., dist/).
-TARGETS := usage clean clean-generated base dist variant dev serve \
+TARGETS := usage help clean clean-generated base dist variant dev serve \
 	update-examples init-examples check-jupyter check-images validate-urls \
 	url-stats llm-docs update-redirects dry-run-redirects deploy-redirects \
 	check-deleted-pages check-links check-generated-content check-api-docs \
