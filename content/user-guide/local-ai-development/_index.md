@@ -89,7 +89,7 @@ flyte run --local my_pipeline.py my_task --arg value
 flyte run --local --tui my_pipeline.py my_task --arg value
 ```
 
-You can also run tasks programmatically using the Python SDK with `flyte.run()`. See [Run and deploy tasks](../task-deployment) for details.
+You can also run tasks programmatically using the Python SDK with `flyte.run()`. See [Run and deploy tasks](../task-deployment/_index) for details.
 
 Drop `--local` to run on a remote cluster if one is configured:
 
@@ -221,7 +221,7 @@ Locally, reports are saved as HTML files and the TUI shows the path. On a cluste
 
 ## Serving
 
-Flyte's app framework lets you serve tasks as local API endpoints or interactive UIs during development, then deploy the same code to a remote cluster with no changes. See [Serve and deploy apps](../serve-and-deploy-apps) for the full guide.
+Flyte's app framework lets you serve tasks as local API endpoints or interactive UIs during development, then deploy the same code to a remote cluster with no changes. See [Serve and deploy apps](../serve-and-deploy-apps/_index) for the full guide.
 
 ### FastAPI (model serving)
 
@@ -331,7 +331,7 @@ The `RUN_MODE` variable gives you a smooth development progression:
 
 ## Plugins
 
-Flyte's plugin system integrates external tools directly into your tasks. Plugins add decorators and context functions that work in both local and remote execution. Install a package, add a decorator, and you're set. See the full list at [Integrations](../../integrations).
+Flyte's plugin system integrates external tools directly into your tasks. Plugins add decorators and context functions that work in both local and remote execution. Install a package, add a decorator, and you're set. See the full list at [Integrations](../../integrations/_index).
 
 ### Weights & Biases
 
@@ -369,16 +369,16 @@ flyte run wandb_pipeline.py pipeline
 
 ### OpenAI
 
-The `flyteplugins-openai` package provides a drop-in replacement for the OpenAI SDK that adds observability and caching to LLM calls. See [OpenAI integration](../../integrations/openai) for details.
+The `flyteplugins-openai` package provides a drop-in replacement for the OpenAI SDK that adds observability and caching to LLM calls. See [OpenAI integration](../../integrations/openai/_index) for details.
 
 ### Distributed compute
 
 When you're ready to scale beyond your local machine, Flyte plugins can provision ephemeral compute clusters on demand:
 
-- **[Spark](../../integrations/spark)**: large-scale data processing and ETL (`flyteplugins-spark`)
-- **[Ray](../../integrations/ray)**: distributed Python, ML training, and hyperparameter tuning (`flyteplugins-ray`)
-- **[Dask](../../integrations/dask)**: parallel Python workloads and dataframe operations (`flyteplugins-dask`)
-- **[PyTorch](../../integrations/pytorch)**: distributed training with elastic launch (`flyteplugins-pytorch`)
+- **[Spark](../../integrations/spark/_index)**: large-scale data processing and ETL (`flyteplugins-spark`)
+- **[Ray](../../integrations/ray/_index)**: distributed Python, ML training, and hyperparameter tuning (`flyteplugins-ray`)
+- **[Dask](../../integrations/dask/_index)**: parallel Python workloads and dataframe operations (`flyteplugins-dask`)
+- **[PyTorch](../../integrations/pytorch/_index)**: distributed training with elastic launch (`flyteplugins-pytorch`)
 
 ---
 
