@@ -1,7 +1,7 @@
 ---
 title: Streaming workflow notifications
 weight: 21
-variants: -serverless - flyte +byoc +selfmanaged
+variants: -serverless -flyte +byoc +selfmanaged
 ---
 
 # Streaming workflow notifications
