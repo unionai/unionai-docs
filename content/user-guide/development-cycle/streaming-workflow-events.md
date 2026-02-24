@@ -1,10 +1,10 @@
 ---
-title: Streaming workflow notifications
+title: Streaming workflow events
 weight: 21
 variants: -serverless -flyte +byoc +selfmanaged
 ---
 
-# Streaming workflow notifications
+# Streaming workflow events
 
 {{< key product_name >}} exposes a streaming API so you can receive workflow, task, and node execution phase events in real time and implement your own alerting, dashboards, or automation. This page describes the interface and shows how to consume events and react to them (for example, sending Slack alerts when a node fails or is queued too long).
 
