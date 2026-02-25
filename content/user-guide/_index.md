@@ -92,6 +92,10 @@ while letting you keep your data and workflow code private and secure on your in
 {{< /markdown >}}
 {{< /variant >}}
 
+{{< note >}}
+Want to try Flyte without installing anything? [Try Flyte 2 in your browser](https://flyte2intro.apps.demo.hosted.unionai.cloud/).
+{{< /note >}}
+
 {{< grid >}}
 
 {{< link-card target="flyte-2" icon="lightbulb" title="Flyte 2" >}}
