@@ -1,15 +1,15 @@
 ---
 title: Developer tooling
-weight: 2
+weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 mermaid: true
 ---
 
-## 4. Developer Tooling
+# Developer tooling
 
-### 4a. Migrating from V1 to V2
+## Migrating from V1 to V2
 
-For teams already on Union V1, we have a migration context file that has been helping other customers convert workflows to V2 (often in a single pass with Claude). **See [`FLYTE_V1_TO_V2_MIGRATION_CONTEXT.md`](https://gist.github.com/LeonKolyang/2151397b78e30e7ea8f717a6702f47f1).**
+For teams already on Union V1, there's a migration context file that's been helping other customers convert workflows to V2 (often in a single pass with Claude). **See [`FLYTE_V1_TO_V2_MIGRATION_CONTEXT.md`](https://gist.github.com/LeonKolyang/2151397b78e30e7ea8f717a6702f47f1).**
 
 Key V1 to V2 changes:
 - V2 is **pure Python**, with no YAML and no separate workflow decorator
@@ -17,11 +17,12 @@ Key V1 to V2 changes:
 - App serving is built-in with `flyte.serve()`
 - Better local development and debugging experience
 
-> Migration guide: [From Flyte 1 to 2](https://www.union.ai/docs/v2/byoc/user-guide/flyte-2/)
+> [!TIP]
+> See the migration guide: [From Flyte 1 to 2](https://www.union.ai/docs/v2/byoc/user-guide/flyte-2/).
 
-### 4b. Claude Code Agents & MCP
+## Claude Code agents and MCP
 
-**Claude Code agents for Flyte/Union:** Union provides four specialist Claude Code agents that teams can drop into their workflow. Each agent is a markdown file with a system prompt that turns Claude into a domain expert. Available at [`unionai/claude-agents-public`](https://github.com/unionai/claude-agents-public):
+Union provides four specialist Claude Code agents that teams can drop into their workflow. Each agent is a markdown file with a system prompt that turns Claude into a domain expert. They're available at [`unionai/claude-agents-public`](https://github.com/unionai/claude-agents-public):
 
 | Agent | What it does |
 |-------|-------------|
@@ -32,4 +33,4 @@ Key V1 to V2 changes:
 
 **Setup:** Clone the repo, then copy the agent `.md` files into your Claude Code project's `.claude/agents/` directory. Once installed, Claude Code can invoke them by name for specialized tasks (e.g., ask Claude to "use the flyte-expert agent to design a training pipeline").
 
-**Context7 / MCP:** Flyte docs are already available on [Context7](https://context7.com) as an MCP service, which lets Claude fetch up-to-date docs without web searches. Union-specific docs are not yet published there; this is on our TODO list. In the meantime, Claude is generally good at finding Union/Flyte documentation autonomously.
+**Context7 / MCP:** Flyte docs are already available on [Context7](https://context7.com) as an MCP service, which lets Claude fetch up-to-date docs without web searches. Union-specific docs aren't yet published there; this is on our TODO list. In the meantime, Claude is generally good at finding Union/Flyte documentation autonomously.

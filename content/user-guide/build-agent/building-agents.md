@@ -5,7 +5,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 mermaid: true
 ---
 
-## 3. Building Agents on Union
+# Building agents on Union
 
 Union is framework-agnostic: use any Python LLM library (OpenAI SDK, Anthropic SDK, LangChain, LiteLLM, etc.) inside your tasks. The platform provides the production infrastructure layer: sandboxed execution, parallel fan-out, durable checkpointing, and observability for every step of the agent loop.
 
@@ -16,7 +16,7 @@ Two decorators are all you need:
 | **`@env.task`** | Runs a function in its own container on Union with dedicated resources, dependencies, and secrets | A sandboxed agent step with its own execution environment |
 | **`@flyte.trace`** | Marks a helper function for observability, where each call appears as a span in the Union dashboard with captured I/O | An observability hook on your LLM calls, tool executions, and routing decisions |
 
-### 3a. ReAct pattern: Reason, Act, Observe (no framework needed)
+## ReAct pattern: Reason, Act, Observe (no framework needed)
 
 The [ReAct pattern](https://arxiv.org/abs/2210.03629) is the most common agent architecture: the LLM reasons about what to do, calls a tool, observes the result, and repeats until done. Here it is in pure Python on Union, without LangGraph or CrewAI, just the agentic loop:
 
@@ -86,13 +86,14 @@ flyte run agent.py react_agent --goal "What is (12 + 8) * 3?"
 - The agent's inputs and final output are durably persisted, letting you inspect any past run end-to-end
 - Swap in your own tools (web search, database queries, API calls) by adding to the `TOOLS` dict
 
-> [Agentic Refinement docs](https://www.union.ai/docs/v2/byoc/user-guide/advanced-project/agentic-refinement/) | [Traces docs](https://www.union.ai/docs/v2/byoc/user-guide/task-programming/traces/) | [More patterns (planner, debate, etc.)](https://github.com/unionai/workshops/tree/main/tutorials/multi-agent-workflows)
+> [!TIP]
+> See the [Agentic Refinement docs](https://www.union.ai/docs/v2/byoc/user-guide/advanced-project/agentic-refinement/), [Traces docs](https://www.union.ai/docs/v2/byoc/user-guide/task-programming/traces/), and [more patterns (planner, debate, etc.)](https://github.com/unionai/workshops/tree/main/tutorials/multi-agent-workflows).
 
-### 3b. Plan-and-Execute with parallel fan-out (LangGraph on Union)
+## Plan-and-Execute with parallel fan-out (LangGraph on Union)
 
 The [Plan-and-Execute pattern](https://blog.langchain.com/plan-and-execute-agents/) splits a complex query into sub-tasks, fans them out in parallel, then synthesizes the results. This example runs a LangGraph research agent with web search tool calling, and Union handles the parallelization, giving each sub-task its own container.
 
-**`graph.py`**, a LangGraph agent with tool calling (search the web, then summarize):
+Here's `graph.py`, a LangGraph agent with tool calling (search the web, then summarize):
 
 ```python
 import flyte
@@ -125,7 +126,7 @@ def build_research_graph(openai_key: str, tavily_key: str):
     return g.compile()
 ```
 
-**`workflow.py`**, plan topics, fan-out research in parallel, synthesize:
+And `workflow.py`, which plans topics, fans out research in parallel, and synthesizes:
 
 ```python
 import os, json, asyncio, flyte
@@ -192,9 +193,10 @@ research_workflow (orchestrator)
 - **Observability:** `@flyte.trace` on the LangGraph nodes means every LLM call, every tool call, and every routing decision is visible as a span in the Union dashboard
 - **Durable checkpointing:** Each task's output is persisted. If `synthesize` fails, re-running skips the completed `plan` and `research` steps (with caching enabled)
 
-> Full runnable code (3 agents): [workshops/tutorials/langgraph](https://github.com/unionai/workshops/tree/main/tutorials/langgraph)
+> [!TIP]
+> See the full runnable code (3 agents) at [workshops/tutorials/langgraph](https://github.com/unionai/workshops/tree/main/tutorials/langgraph).
 
-### 3c. More agentic patterns
+## More agentic patterns
 
 Union is framework-agnostic, so these patterns work with any LLM library. Each maps to well-known agent architectures:
 
@@ -207,7 +209,7 @@ Union is framework-agnostic, so these patterns work with any LLM library. Each m
 | **Debate** | Multiple agents solve independently, then debate to consensus | High-stakes decisions where diverse reasoning improves accuracy | [multi-agent-workflows/debate](https://github.com/unionai/workshops/tree/main/tutorials/multi-agent-workflows) |
 | **Sequential (Prompt Chaining)** | Static pipeline of LLM calls, no dynamic routing | Predictable multi-step transformations (extract → validate → format) | [multi-agent-workflows/sequential](https://github.com/unionai/workshops/tree/main/tutorials/multi-agent-workflows) |
 
-### 3d. How Union's primitives map to the agent stack
+## How Union's primitives map to the agent stack
 
 If you're coming from LangGraph, CrewAI, OpenAI Agents SDK, or similar frameworks, here's how the concepts you already know translate:
 
@@ -217,7 +219,7 @@ If you're coming from LangGraph, CrewAI, OpenAI Agents SDK, or similar framework
 
 **Parallel fan-out** (LangGraph's `Send()`, n8n's Split in Batches) is `asyncio.gather()`. Each awaited task gets its own container, giving you true parallelism on separate hardware, not just concurrent coroutines.
 
-**State and checkpointing** (LangGraph's Checkpointers, Threads) is automatic. Every task's inputs and outputs are durably persisted. `@flyte.trace` adds sub-step checkpoints within a task. Re-running with caching enabled skips completed steps, which is Union's equivalent of replaying from a checkpoint.
+**State and checkpointing** (LangGraph's Checkpointers, Threads) is automatic. Every task's inputs and outputs are durably persisted. `@flyte.trace` adds sub-step checkpoints within a task. Re-running with caching enabled skips completed steps, Union's equivalent of replaying from a checkpoint.
 
 **Routing and conditional logic** (LangGraph's `add_conditional_edges`, n8n's If/Switch nodes) is Python `if/else`. No special API needed.
 
@@ -225,4 +227,4 @@ If you're coming from LangGraph, CrewAI, OpenAI Agents SDK, or similar framework
 
 **Guardrails and validation** are Python code between steps: `if/else` checks, Pydantic validation, structured output parsing, or libraries like NeMo Guardrails. Raise an exception to fail a step and trigger retries.
 
-**Observability:** the Union dashboard shows the full execution tree with per-step inputs, outputs, logs, resource usage, and timing. `@flyte.trace` adds spans within a task for fine-grained visibility into individual LLM calls and tool invocations. For LLM-specific metrics (token usage, cost per call), integrate with Langfuse or LangSmith from within your tasks.
+**Observability:** The Union dashboard shows the full execution tree with per-step inputs, outputs, logs, resource usage, and timing. `@flyte.trace` adds spans within a task for fine-grained visibility into individual LLM calls and tool invocations. For LLM-specific metrics (token usage, cost per call), integrate with Langfuse or LangSmith from within your tasks.

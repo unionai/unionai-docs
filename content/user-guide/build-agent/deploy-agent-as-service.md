@@ -1,15 +1,15 @@
 ---
 title: Deploy an agent as a service
-weight: 2
+weight: 1
 variants: +flyte +serverless +byoc +selfmanaged
 mermaid: true
 ---
 
-## 2. Deploy an Agent as a Service
+# Deploy an agent as a service
 
 Union makes it straightforward to deploy internal apps (chatbots, dashboards, API endpoints) behind a URL, with no separate infrastructure. This is how you turn an agent into a hosted service that your team (or other agents) can call.
 
-**FastAPI example** (`app.py`):
+Here's a FastAPI example (`app.py`):
 
 ```python
 import flyte
@@ -44,5 +44,6 @@ Union assigns a URL, handles TLS, and auto-scales. You can also serve vLLM and S
 
 **Webhook pattern:** Need event-driven agent triggers? Deploy a FastAPI app that receives webhooks and calls `flyte.run()` to kick off agentic workflows programmatically.
 
-> Docs: [Configure Apps](https://www.union.ai/docs/v2/byoc/user-guide/configure-apps/) | [Build Apps](https://www.union.ai/docs/v2/byoc/user-guide/build-apps/) | [FastAPI Apps](https://www.union.ai/docs/v2/byoc/user-guide/build-apps/fastapi-app/)
-> Hands-on example: [solutions-engineering/hands_on/04_app](https://github.com/unionai/solutions-engineering/tree/main/hands_on/04_app)
+> [!TIP]
+> See [Configure Apps](https://www.union.ai/docs/v2/byoc/user-guide/configure-apps/), [Build Apps](https://www.union.ai/docs/v2/byoc/user-guide/build-apps/), and [FastAPI Apps](https://www.union.ai/docs/v2/byoc/user-guide/build-apps/fastapi-app/) for more details.
+> For a hands-on example, see [solutions-engineering/hands_on/04_app](https://github.com/unionai/solutions-engineering/tree/main/hands_on/04_app).
