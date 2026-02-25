@@ -22,6 +22,15 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 >
 > This documentation for open-source Flyte is maintained by Union.ai.
 
+> [!NOTE]
+> These docs may mention cloud execution of Flyte 2 code.
+>
+> * Flyte 2 is available today for [local execution]($local-execution$).
+> * Cloud execution is available with the [Union.ai backend]({{< docs_home byoc v2 >}}).
+> * Cloud execution for open-source Flyte is coming soon.
+>
+> Join the Flyte 2 production trial, hosted on [Union.ai](https://www.union.ai/beta).
+
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant serverless >}}
