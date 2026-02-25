@@ -1,5 +1,5 @@
 ---
-title: Streaming workflow events
+title: Streaming execution events
 weight: 21
 variants: -serverless -flyte +byoc +selfmanaged
 ---
