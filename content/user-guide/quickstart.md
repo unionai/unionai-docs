@@ -16,7 +16,6 @@ Want to try Flyte without installing anything? [Try Flyte 2 in your browser](htt
 ## What you'll need
 
 - Python 3.10+ in a virtual environment
-- Access to a {{< key product_name >}} instance (you'll need the URL of your instance)
 
 ## Install the SDK
 
