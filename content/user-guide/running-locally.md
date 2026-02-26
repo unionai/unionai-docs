@@ -1,35 +1,20 @@
 ---
-title: Local development
+title: Running locally
 weight: 4
 variants: +flyte +byoc +selfmanaged
-sidebar_expanded: true
 ---
 
-# Local development
+# Running locally
 
 Flyte runs locally with no cluster or Docker needed. Install the SDK, write tasks, and run them on your machine. When you're ready to scale, drop the `--local` flag and the same code runs on a remote cluster with GPUs.
 
-![TUI agent run](../../_static/images/user-guide/local/tui_agent_run.png)
+![TUI agent run](../_static/images/user-guide/local/tui_agent_run.png)
 
 ---
 
 ## Getting started
 
-To run the terminal user interface (TUI) you'll need an additional Python package installed along with the Flyte SDK.
-
-```bash
-pip install "flyte[tui]>=2.0"
-```
-
-To enable run persistence so you can browse past runs, set local persistence to true in the Flyte config:
-
-```yaml
-# .flyte/config.yaml
-local:
-  persistence: true
-```
-
-That's it. Every feature below works with just these two steps.
+If you haven't already, install the SDK and configure local persistence as described in the [Quickstart](./quickstart).
 
 ---
 
@@ -63,7 +48,7 @@ The TUI is an interactive split-screen dashboard. Task tree on the left, details
 flyte run --local --tui my_pipeline.py pipeline --epochs 5
 ```
 
-![TUI agent run](../../_static/images/user-guide/local/tui_agent_run.png)
+![TUI agent run](../_static/images/user-guide/local/tui_agent_run.png)
 
 What you see:
 
@@ -126,4 +111,4 @@ The [`TaskEnvironment`](../core-concepts/task-environment) is the bridge. Locall
 
 ## Next steps
 
-When you're ready to run on a remote Flyte cluster, see [Local setup](../local-setup) to configure the CLI and SDK to connect to your cluster.
+When you're ready to run on a remote Flyte cluster, see [Connecting to a cluster](./connecting-to-a-cluster) to configure the CLI and SDK.

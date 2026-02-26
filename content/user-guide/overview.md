@@ -57,7 +57,7 @@ Flyte ensures that runs can be reproduced exactly:
 Caching is configurable per task:
 
 ```python
-@env.task(cache=True)
+@env.task(cache="auto")
 async def expensive_computation(data: str) -> str:
     # This result will be cached and reused for identical inputs
     ...
