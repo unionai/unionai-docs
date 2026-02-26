@@ -24,6 +24,9 @@ Install the `flyte` package:
 ```shell
 pip install 'flyte[tui]'
 ```
+{{< note >}}
+We also install the `tui` extra to enable the terminal user interface.
+{{< /note >}}
 
 Verify it worked:
 
@@ -32,7 +35,7 @@ flyte --version
 # Flyte SDK version: 2.*.*
 ```
 
-## Configure your connection
+## Configure
 
 Create a config file for local execution. Runs will be persisted locally in a SQLite database.
 
