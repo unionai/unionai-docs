@@ -1,6 +1,6 @@
 ---
 title: From Flyte 1 to 2
-weight: 7
+weight: 8
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true

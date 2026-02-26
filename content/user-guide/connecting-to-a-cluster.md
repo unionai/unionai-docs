@@ -1,10 +1,10 @@
 ---
-title: Local setup
-weight: 4
+title: Connecting to a cluster
+weight: 5
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Local setup
+# Connecting to a cluster
 
 This guide covers setting up your local development environment and configuring the `flyte` CLI and SDK to connect to your Union/Flyte instance.
 

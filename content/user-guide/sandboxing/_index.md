@@ -1,6 +1,6 @@
 ---
 title: Sandboxing
-weight: 15
+weight: 16
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true
