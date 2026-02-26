@@ -101,9 +101,5 @@ To navigate to the run details, double-click it or press `Enter` to view the run
 Now that you've run your first workflow:
 
 - [**Core concepts**](./core-concepts/_index): Understand the core concepts of Flyte programming
-{{< variant flyte byoc selfmanaged >}}
-{{< markdown >}}
 - [**Running locally**](./running-locally): Learn about the TUI, caching, and other features that work locally
-{{< /markdown >}}
-{{< /variant >}}
 - [**Connecting to a cluster**](./connecting-to-a-cluster): Configure your environment for remote execution
