@@ -32,6 +32,10 @@ _check-infra:
 $(TARGETS): _check-infra
 	@$(MAKE) --no-print-directory -f unionai-docs-infra/Makefile $@
 
+.PHONY: init-infra
+init-infra:
+	git submodule update --init
+
 # Submodule update helpers (not forwarded to unionai-docs-infra/Makefile).
 .PHONY: update-infra
 update-infra:
