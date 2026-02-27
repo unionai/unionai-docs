@@ -1,6 +1,6 @@
 ---
 title: flyte.extras
-version: 2.0.1
+version: 2.0.2
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -12,13 +12,14 @@ sidebar_expanded: true
 Flyte extras package.
 This package provides various utilities that make it possible to build highly customized workflows.
 
-1. ContainerTask: Execute arbitrary pre-containerized applications, without needed the `flyte-sdk` to be installed.
-                  This extra uses `flyte copilot` system to inject inputs and slurp outputs from the container run.
+1. ContainerTask: Execute arbitrary pre-containerized applications, without needing the `flyte-sdk`
+                  to be installed. This extra uses `flyte copilot` system to inject inputs and slurp
+                  outputs from the container run.
 
-2. Time utilities: Usage of Time.now, time.sleep or asyncio.sleep bring non-determinism to a program. This module
-                   provides a few utilities that make it possible to bring determinism to workflows that need to access
-                   time related functions. This determinism persists across crashes and restarts making the process
-                   durable.
+2. Time utilities: Usage of Time.now, time.sleep or asyncio.sleep bring non-determinism to a program.
+                   This module provides a few utilities that make it possible to bring determinism to
+                   workflows that need to access time related functions. This determinism persists
+                   across crashes and restarts making the process durable.
 
 ## Directory
 

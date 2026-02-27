@@ -1,6 +1,6 @@
 ---
 title: ConnectorEnvironment
-version: 2.0.1
+version: 2.0.2
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -31,6 +31,7 @@ class ConnectorEnvironment(
     include: List[str],
     parameters: List[Parameter],
     cluster_pool: str,
+    timeouts: Timeouts,
 )
 ```
 | Parameter | Type | Description |
@@ -55,6 +56,7 @@ class ConnectorEnvironment(
 | `include` | `List[str]` | |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | |
+| `timeouts` | `Timeouts` | |
 
 ## Properties
 

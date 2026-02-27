@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.1
+version: 2.0.2
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -34,6 +34,7 @@ sidebar_expanded: true
 | [`flyte.app.Port`](../packages/flyte.app/port) | |
 | [`flyte.app.RunOutput`](../packages/flyte.app/runoutput) |Use a run's output for app parameters. |
 | [`flyte.app.Scaling`](../packages/flyte.app/scaling) | |
+| [`flyte.app.Timeouts`](../packages/flyte.app/timeouts) |Timeout configuration for the application. |
 | [`flyte.app.extras.FastAPIAppEnvironment`](../packages/flyte.app.extras/fastapiappenvironment) | |
 | [`flyte.app.extras.FastAPIPassthroughAuthMiddleware`](../packages/flyte.app.extras/fastapipassthroughauthmiddleware) |FastAPI middleware that automatically sets Flyte auth metadata from request headers. |
 | [`flyte.app.extras.FlyteWebhookAppEnvironment`](../packages/flyte.app.extras/flytewebhookappenvironment) |A pre-built FastAPI app environment for common Flyte webhook operations. |
@@ -55,6 +56,7 @@ sidebar_expanded: true
 | [`flyte.errors.InitializationError`](../packages/flyte.errors/initializationerror) |This error is raised when the Union system is tried to access without being initialized. |
 | [`flyte.errors.InlineIOMaxBytesBreached`](../packages/flyte.errors/inlineiomaxbytesbreached) |This error is raised when the inline IO max bytes limit is breached. |
 | [`flyte.errors.InvalidImageNameError`](../packages/flyte.errors/invalidimagenameerror) |This error is raised when the image name is invalid. |
+| [`flyte.errors.InvalidPackageError`](../packages/flyte.errors/invalidpackageerror) |Raised when an invalid system package is detected during image build. |
 | [`flyte.errors.LogsNotYetAvailableError`](../packages/flyte.errors/logsnotyetavailableerror) |This error is raised when the logs are not yet available for a task. |
 | [`flyte.errors.ModuleLoadError`](../packages/flyte.errors/moduleloaderror) |This error is raised when the module cannot be loaded, either because it does not exist or because of a. |
 | [`flyte.errors.NotInTaskContextError`](../packages/flyte.errors/notintaskcontexterror) |This error is raised when the user tries to access the task context outside of a task. |
@@ -116,6 +118,7 @@ sidebar_expanded: true
 | [`flyte.remote.User`](../packages/flyte.remote/user) |Represents a user in the Flyte platform. |
 | [`flyte.report.Report`](../packages/flyte.report/report) | |
 | [`flyte.sandbox.CodeTaskTemplate`](../packages/flyte.sandbox/codetasktemplate) |A sandboxed task created from a code string rather than a decorated function. |
+| [`flyte.sandbox.ImageConfig`](../packages/flyte.sandbox/imageconfig) |Configuration for Docker image building at runtime. |
 | [`flyte.sandbox.SandboxedConfig`](../packages/flyte.sandbox/sandboxedconfig) |Configuration for a sandboxed task executed via Monty. |
 | [`flyte.sandbox.SandboxedTaskTemplate`](../packages/flyte.sandbox/sandboxedtasktemplate) |A task template that executes the function body in a Monty sandbox. |
 | [`flyte.storage.ABFS`](../packages/flyte.storage/abfs) |Any Azure Blob Storage specific configuration. |
