@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.polars.df_transformer
-version: 2.0.1
+version: 2.0.2
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

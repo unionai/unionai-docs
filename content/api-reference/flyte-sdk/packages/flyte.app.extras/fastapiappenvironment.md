@@ -1,6 +1,6 @@
 ---
 title: FastAPIAppEnvironment
-version: 2.0.1
+version: 2.0.2
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -30,6 +30,7 @@ class FastAPIAppEnvironment(
     include: List[str],
     parameters: List[Parameter],
     cluster_pool: str,
+    timeouts: Timeouts,
     type: str,
     app: fastapi.FastAPI,
     uvicorn_config: uvicorn.Config | None,
@@ -57,6 +58,7 @@ class FastAPIAppEnvironment(
 | `include` | `List[str]` | |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | |
+| `timeouts` | `Timeouts` | |
 | `type` | `str` | |
 | `app` | `fastapi.FastAPI` | |
 | `uvicorn_config` | `uvicorn.Config \| None` | |

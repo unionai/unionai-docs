@@ -1,6 +1,6 @@
 ---
 title: AppEnvironment
-version: 2.0.1
+version: 2.0.2
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -31,6 +31,7 @@ class AppEnvironment(
     include: List[str],
     parameters: List[Parameter],
     cluster_pool: str,
+    timeouts: Timeouts,
 )
 ```
 | Parameter | Type | Description |
@@ -55,6 +56,7 @@ class AppEnvironment(
 | `include` | `List[str]` | Files to include in the environment to run the app. |
 | `parameters` | `List[Parameter]` | Parameters to pass to the app environment. |
 | `cluster_pool` | `str` | Cluster pool to use for the app environment. |
+| `timeouts` | `Timeouts` | Timeout configuration for the app environment. |
 
 ## Properties
 
