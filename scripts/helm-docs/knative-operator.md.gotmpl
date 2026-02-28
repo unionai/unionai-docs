@@ -1,0 +1,32 @@
+---
+title: Knative Operator chart
+variants: -flyte -byoc +selfmanaged -serverless
+weight: 2
+---
+
+{{ template "chart.description" . }}
+
+## Chart info
+
+| | |
+|---|---|
+| **Chart version** | {{ .Version }} |
+| **App version** | {{ .AppVersion }} |
+{{- if .KubeVersion }}
+| **Kubernetes version** | `{{ .KubeVersion }}` |
+{{- end }}
+
+{{- if .Dependencies }}
+
+## Dependencies
+
+{{ template "chart.requirementsTable" . }}
+{{- end }}
+
+## Values
+
+| Key | Type | Description | Default |
+|-----|------|-------------|---------|
+{{- range .Values }}
+| {{ .Key }} | {{ .Type }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} |
+{{- end }}
