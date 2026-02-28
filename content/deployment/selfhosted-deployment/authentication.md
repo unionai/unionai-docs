@@ -110,7 +110,7 @@ Note the **Client ID** and **Client Secret** — these are encoded into the EAGE
 
 ## Step 2: Configure control plane
 
-Add OIDC settings to your customer overrides file:
+Add OIDC settings to your control plane overrides file:
 
 ```yaml
 global:
@@ -162,7 +162,7 @@ kubectl create secret generic union-controlplane-secrets \
 
 ## Step 4: Configure data plane
 
-Add the operator client ID to your data plane customer overrides file:
+Add the operator client ID to your data plane overrides file:
 
 ```yaml
 global:
@@ -209,14 +209,14 @@ helm upgrade unionai-controlplane unionai/controlplane \
   --namespace union-cp \
   -f values.<cloud>.selfhosted-intracluster.yaml \
   -f values.registry.yaml \
-  -f values.<cloud>.selfhosted-customer.yaml \
+  -f values.<cloud>.selfhosted-overrides.yaml \
   --timeout 15m --wait
 
 # Upgrade data plane
 helm upgrade unionai-dataplane unionai/dataplane \
   --namespace union \
   -f values.<cloud>.selfhosted-intracluster.yaml \
-  -f values.<cloud>.selfhosted-customer.yaml \
+  -f values.<cloud>.selfhosted-overrides.yaml \
   --timeout 10m --wait
 ```
 

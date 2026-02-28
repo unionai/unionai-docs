@@ -36,7 +36,7 @@ helm upgrade --install unionai-dataplane-crds unionai/dataplane-crds \
 curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.aws.selfhosted-intracluster.yaml
 ```
 
-Create a customer overrides file `values.aws.selfhosted-customer.yaml`:
+Create an overrides file `values.aws.selfhosted-overrides.yaml`:
 
 ```yaml
 global:
@@ -61,15 +61,15 @@ helm upgrade --install unionai-dataplane unionai/dataplane \
   --namespace union \
   --create-namespace \
   -f values.aws.selfhosted-intracluster.yaml \
-  -f values.aws.selfhosted-customer.yaml \
+  -f values.aws.selfhosted-overrides.yaml \
   --timeout 10m \
   --wait
 ```
 
 **Values file layers (applied in order):**
 
-1. `values.aws.selfhosted-intracluster.yaml` — AWS infrastructure defaults (storage, networking, intra-cluster communication)
-2. `values.aws.selfhosted-customer.yaml` — Your environment-specific overrides
+1. [`values.aws.selfhosted-intracluster.yaml`](https://github.com/unionai/helm-charts/blob/main/charts/dataplane/values.aws.selfhosted-intracluster.yaml) — AWS infrastructure defaults (storage, networking, intra-cluster communication)
+2. `values.aws.selfhosted-overrides.yaml` — Your environment-specific overrides
 
 ### Step 4: Verify installation
 
