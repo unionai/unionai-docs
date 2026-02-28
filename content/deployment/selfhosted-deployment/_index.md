@@ -110,7 +110,7 @@ Deploy the control plane first, then the data plane.
 Deploy the control plane with Amazon RDS and S3
 {{< /link-card >}}
 
-{{< link-card target="./control-plane-gcp" icon="server" title="Control plane on GCP" >}}
+{{< link-card target="./control-plane-gcp" icon="server" title="Control plane on GCP (Preview)" >}}
 Deploy the control plane with Cloud SQL and GCS
 {{< /link-card >}}
 
@@ -118,7 +118,7 @@ Deploy the control plane with Cloud SQL and GCS
 Deploy the data plane with S3 and IRSA
 {{< /link-card >}}
 
-{{< link-card target="./data-plane-gcp" icon="cpu" title="Data plane on GCP" >}}
+{{< link-card target="./data-plane-gcp" icon="cpu" title="Data plane on GCP (Preview)" >}}
 Deploy the data plane with GCS and Workload Identity
 {{< /link-card >}}
 
