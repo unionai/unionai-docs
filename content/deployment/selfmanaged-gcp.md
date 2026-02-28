@@ -1,10 +1,10 @@
 ---
-title: Data plane setup on generic Kubernetes
-weight: 3
+title: Data plane setup on GCP
+weight: 4
 variants: -flyte -serverless -byoc +selfmanaged
 ---
 
-# Data plane setup on generic Kubernetes
+# Data plane setup on GKE (GCP)
 
 {{< key product_name >}}’s modular architecture allows for great flexibility and control.
 The customer can decide how many clusters to have, their shape, and who has access to what.
@@ -12,14 +12,14 @@ All communication is encrypted.
 The Union architecture is described on the [Architecture](./architecture/_index) page.
 
 > [!NOTE] These instructions cover installing Union.ai in an on-premise Kubernetes cluster.
-> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./selfmanaged-data-plane-setup-on-aws/_index), [Azure](./selfmanaged-data-plane-setup-on-azure), [OCI](./selfmanaged-data-plane-setup-on-oci).
+> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./selfmanaged-aws/_index), [Azure](./selfmanaged-azure), [OCI](./selfmanaged-oci).
 
 ## Assumptions
 
 * You have a {{< key product_name >}} organization, and you know the control plane URL for your organization. (e.g. https://your-org-name.us-east-2.unionai.cloud).
-* You have a cluster name provided by or coordinated with Union.
 * You have a Kubernetes cluster, running one of the most recent three minor Kubernetes versions. [Learn more](https://kubernetes.io/releases/version-skew-policy/).
-* Object storage provided by a vendor or an S3 compatible platform (such as [Minio](https://min.io)).
+* A GCS Bucket and Google Service Accounts that has access to
+* Existing Kubernetes Service Accounts with access to the bucket or permissions to create Service Account bindings
 
 ## Prerequisites
 
@@ -39,7 +39,7 @@ The Union architecture is described on the [Architecture](./architecture/_index)
 
    ```shell
    uctl config init --host=<YOUR_UNION_CONTROL_PLANE_URL>
-   uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME>  --provider metal
+   uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME>  --provider gcp
    ```
 
    * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
