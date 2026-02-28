@@ -8,6 +8,11 @@ variants: -flyte -serverless -byoc +selfmanaged
 
 This guide covers deploying the {{< key product_name >}} control plane in a GCP environment as part of a [self-hosted deployment](./_index).
 
+> [!NOTE]
+> Self-hosted intra-cluster deployment is currently officially supported on **AWS** only.
+> GCP support is in preview and additional cloud providers are coming soon.
+> For production deployments, see [Control plane on AWS](./control-plane-aws).
+
 ## Prerequisites
 
 In addition to the [general prerequisites](./_index#prerequisites), you need:

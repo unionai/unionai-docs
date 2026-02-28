@@ -9,6 +9,11 @@ variants: -flyte -serverless -byoc +selfmanaged
 This guide covers deploying the {{< key product_name >}} data plane in the same cluster as your control plane, as part of a [self-hosted deployment](./_index).
 
 > [!NOTE]
+> Self-hosted intra-cluster deployment is currently officially supported on **AWS** only.
+> GCP support is in preview and additional cloud providers are coming soon.
+> For production deployments, see [Data plane on AWS](./data-plane-aws).
+
+> [!NOTE]
 > Deploy the [control plane](./control-plane-gcp) first before proceeding with data plane installation.
 
 ## Prerequisites

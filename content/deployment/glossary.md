@@ -12,7 +12,7 @@ variants: -flyte -serverless -byoc +selfmanaged
 : {{< key product_name >}} hosts the control plane. You manage the data plane in your own cloud account. Data plane provisioning is handled via `uctl selfserve`. See [Platform deployment](./_index).
 
 **Self-hosted deployment**
-: You host both the control plane and data plane in the same Kubernetes cluster. All communication stays within your infrastructure via Kubernetes internal networking. See [Self-hosted deployment](./selfhosted-deployment).
+: You host both the control plane and data plane in the same Kubernetes cluster. All communication stays within your infrastructure via Kubernetes internal networking. See [Self-hosted deployment](./selfhosted-deployment/_index).
 
 ## Architecture components
 
