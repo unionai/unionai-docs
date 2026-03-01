@@ -192,13 +192,13 @@ sum_task = make_reducer("sum")
 product_task = make_reducer("product")
 ```
 
-## Building code-mode agents
+## Building agents with programmatic tool calling
 
-The sandboxed orchestrator and `orchestrate_local()` are the foundation for building **code-mode agents** — systems where an LLM generates Python orchestration code, and the sandbox executes it with registered tools.
+The sandboxed orchestrator and `orchestrate_local()` are the foundation for building agents that use **programmatic tool calling** — systems where an LLM generates Python orchestration code, and the sandbox executes it with registered tools.
 
 Because `orchestrate_local()` accepts a plain code string and a list of tool functions, you can wire it into an LLM generate-execute-retry loop: the model writes code, the sandbox runs it, and on failure the error feeds back to the model for correction.
 
-See [Code mode](./code-mode) for the full concept, agent implementation patterns, and end-to-end examples.
+See [Programmatic tool calling for agents](./code-mode) for the full concept, agent implementation patterns, and end-to-end examples.
 
 ## Syntax restrictions
 
