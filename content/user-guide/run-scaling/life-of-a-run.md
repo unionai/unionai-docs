@@ -71,9 +71,9 @@ For more details on code packaging, see [Packaging](../task-deployment/packaging
 
 Once the code bundle is created:
 
-1. **Negotiate signed URL**: The SDK requests a signed URL from the backend.
-2. **Upload**: The code bundle is uploaded to the signed URL location in object storage.
-3. **Reference stored**: The backend stores a reference to the uploaded bundle.
+1. **Request signed URL**: The SDK sends the bundle checksum and target path to the Control Plane.
+2. **Control Plane obtains URL**: The Control Plane calls the Data Plane to obtain a signed URL for that checksum and path.
+3. **Direct upload**: The signed URL is returned to the SDK, which uploads the code bundle directly to the object store.
 
 ## Phase 5: Run creation and queuing
 
@@ -106,7 +106,6 @@ If the task invokes other tasks:
 ### Execution flow diagram
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#1f2937', 'primaryTextColor':'#e5e7eb', 'primaryBorderColor':'#6b7280', 'lineColor':'#9ca3af', 'secondaryColor':'#374151', 'tertiaryColor':'#1f2937', 'actorBorder':'#6b7280', 'actorTextColor':'#e5e7eb', 'signalColor':'#9ca3af', 'signalTextColor':'#e5e7eb'}}}%%
 sequenceDiagram
     participant Client as SDK/Client
     participant Control as Control Plane<br/>(Queue Service)
@@ -117,9 +116,11 @@ sequenceDiagram
     Client->>Client: Analyze code & discover environments
     Client->>Client: Build images (if changed)
     Client->>Client: Bundle code
-    Client->>Control: Upload code bundle
-    Control->>Data: Store code bundle
-    Data->>ObjStore: Write code bundle
+    Client->>Control: Request signed URL (checksum, path)
+    Control->>Data: Get signed URL for bundle
+    Data-->>Control: Signed URL
+    Control-->>Client: Signed URL
+    Client->>ObjStore: Upload code bundle (signed URL)
     Client->>Control: CreateRun API with inputs
     Control->>Data: Copy inputs
     Data->>ObjStore: Write inputs
@@ -182,7 +183,6 @@ When using [reusable containers](../task-configuration/reusable-containers), the
 ### Reusable container execution flow
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#1f2937', 'primaryTextColor':'#e5e7eb', 'primaryBorderColor':'#6b7280', 'lineColor':'#9ca3af', 'secondaryColor':'#374151', 'tertiaryColor':'#1f2937', 'actorBorder':'#6b7280', 'actorTextColor':'#e5e7eb', 'signalColor':'#9ca3af', 'signalTextColor':'#e5e7eb'}}}%%
 sequenceDiagram
     participant Control as Queue Service
     participant Executor as Executor Service
