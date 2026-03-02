@@ -7,4 +7,4 @@ def main():
 # {{docs-fragment entrypoint}}
 if __name__ == "__main__":
     main()
-# {{/docs-fragment}}
+# {{/docs-fragment entrypoint}}

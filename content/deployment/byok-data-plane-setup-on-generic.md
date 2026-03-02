@@ -9,10 +9,10 @@ variants: -flyte -serverless -byoc +selfmanaged
 {{< key product_name >}}’s modular architecture allows for great flexibility and control.
 The customer can decide how many clusters to have, their shape, and who has access to what.
 All communication is encrypted.
-The Union architecture is described on the [Architecture](../architecture) page.
+The Union architecture is described on the [Architecture](./architecture/_index) page.
 
 > [!NOTE] These instructions cover installing Union.ai in an on-premise Kubernetes cluster.
-> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./byok-data-plane-setup-on-aws), [Azure](./byok-data-plane-setup-on-azure), [OCI](./byok-data-plane-setup-on-oci).
+> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./byok-data-plane-setup-on-aws/_index), [Azure](./byok-data-plane-setup-on-azure), [OCI](./byok-data-plane-setup-on-oci).
 
 ## Assumptions
 
@@ -24,7 +24,7 @@ The Union architecture is described on the [Architecture](../architecture) page.
 ## Prerequisites
 
 * Install [Helm 3](https://helm.sh/docs/intro/install/).
-* Install [union](../api-reference/union-cli) and [uctl](../api-reference/uctl-cli).
+* Install [uctl](../api-reference/uctl-cli/_index).
 
 ## Deploy the {{< key product_name >}} operator
 

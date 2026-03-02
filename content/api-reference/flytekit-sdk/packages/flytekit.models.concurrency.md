@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.concurrency
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -41,6 +41,7 @@ def enum_to_string(
 Defines the concurrency policy for a launch plan.
 
 
+
 ```python
 class ConcurrencyPolicy(
     max_concurrency: int,
@@ -51,6 +52,14 @@ class ConcurrencyPolicy(
 |-|-|-|
 | `max_concurrency` | `int` | |
 | `behavior` | `flytekit.models.concurrency.ConcurrencyLimitBehavior` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `behavior` | `None` | Policy behavior when concurrency limit is reached. |
+| `is_empty` | `None` |  |
+| `max_concurrency` | `None` | Maximum number of concurrent workflows allowed. |
 
 ### Methods
 
@@ -93,14 +102,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.launch_plan_pb2.ConcurrencyPolicy
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `behavior` |  | {{< multiline >}}Policy behavior when concurrency limit is reached.
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `max_concurrency` |  | {{< multiline >}}Maximum number of concurrent workflows allowed.
-{{< /multiline >}} |
 

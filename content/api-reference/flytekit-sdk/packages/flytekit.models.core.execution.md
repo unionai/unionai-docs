@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.execution
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -35,6 +35,16 @@ class ExecutionError(
 | `message` | `str` | |
 | `error_uri` | `str` | |
 | `kind` | `int` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `code` | `None` | :rtype: Text |
+| `error_uri` | `None` | :rtype: Text |
+| `is_empty` | `None` |  |
+| `kind` | `None` | Enum value from ErrorKind |
+| `message` | `None` | :rtype: Text |
 
 ### Methods
 
@@ -77,20 +87,6 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.core.execution_pb2.ExecutionError
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `code` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `error_uri` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `kind` |  | {{< multiline >}}Enum value from ErrorKind
-{{< /multiline >}} |
-| `message` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
 
 ## flytekit.models.core.execution.NodeExecutionPhase
 
@@ -149,6 +145,16 @@ class TaskLog(
 | `message_format` | `typing.Optional[flytekit.models.core.execution.TaskLog.MessageFormat]` | |
 | `ttl` | `typing.Optional[datetime.timedelta]` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `message_format` | `None` | Enum value from TaskLog.MessageFormat :rtype: MessageFormat |
+| `name` | `None` | :rtype: Text |
+| `ttl` | `None` | :rtype: datetime.timedelta |
+| `uri` | `None` | :rtype: Text |
+
 ### Methods
 
 | Method | Description |
@@ -191,25 +197,11 @@ def to_flyte_idl()
 :rtype: flyteidl.core.execution_pb2.TaskLog
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `message_format` |  | {{< multiline >}}Enum value from TaskLog.MessageFormat
-:rtype: MessageFormat
-{{< /multiline >}} |
-| `name` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `ttl` |  | {{< multiline >}}:rtype: datetime.timedelta
-{{< /multiline >}} |
-| `uri` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-
 ## flytekit.models.core.execution.WorkflowExecutionPhase
 
-This class holds enum values used for setting notifications. See {{< py_class_ref flytekit.Email >}}
+This class holds enum values used for setting notifications. See {{&lt; py_class_ref flytekit.Email &gt;}}
 for sample usage.
+
 
 
 ### Methods

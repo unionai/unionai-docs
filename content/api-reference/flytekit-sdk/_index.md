@@ -1,6 +1,6 @@
 ---
 title: Flytekit SDK
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -36,6 +36,6 @@ $ uv add union
 This will install the Union SDK, which is a superset of the Flytekit SDK.
 It will also install the `union` command-line tool.
 
-When working with the Union SDK you will be us=ing the `union` CLI and both the Flytekit SDK and the Union SDK docs.
+When working with the Union SDK you will be using the `union` CLI and both the Flytekit SDK and the Union SDK docs.
 
 

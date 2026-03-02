@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.gate
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -102,6 +102,7 @@ A gate is a type of node that behaves like a task, but instead of running code, 
 for user input to proceed or wait for a timer to complete running.
 
 
+
 ```python
 class Gate(
     name: str,
@@ -118,6 +119,16 @@ class Gate(
 | `upstream_item` | `typing.Optional[typing.Any]` | |
 | `sleep_duration` | `typing.Optional[datetime.timedelta]` | |
 | `timeout` | `typing.Optional[datetime.timedelta]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `input_type` | `None` |  |
+| `literal_type` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` | This will not be valid during local execution Part of SupportsNodeCreation interface |
+| `sleep_duration` | `None` |  |
 
 ### Methods
 
@@ -151,15 +162,3 @@ def local_execute(
 ```python
 def local_execution_mode()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `input_type` |  |  |
-| `literal_type` |  |  |
-| `name` |  |  |
-| `python_interface` |  | {{< multiline >}}This will not be valid during local execution
-Part of SupportsNodeCreation interface
-{{< /multiline >}} |
-| `sleep_duration` |  |  |
-

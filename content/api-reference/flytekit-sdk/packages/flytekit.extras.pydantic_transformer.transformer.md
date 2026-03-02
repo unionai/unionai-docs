@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.pydantic_transformer.transformer
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`PydanticTransformer`](.././flytekit.extras.pydantic_transformer.transformer#flytekitextraspydantic_transformertransformerpydantictransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`PydanticTransformer`](.././flytekit.extras.pydantic_transformer.transformer#flytekitextraspydantic_transformertransformerpydantictransformer) |  |
 
 ### Variables
 
@@ -26,12 +26,18 @@ layout: py_api
 
 ## flytekit.extras.pydantic_transformer.transformer.PydanticTransformer
 
-Base transformer type that should be implemented for every python native type that can be handled by flytekit
-
-
 ```python
 def PydanticTransformer()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ### Methods
 
 | Method | Description |
@@ -73,12 +79,12 @@ This function primarily handles deserialization for untyped dicts, dataclasses, 
 
 For untyped dict, dataclass, and pydantic basemodel:
 Life Cycle (Untyped Dict as example):
-    python val -> msgpack bytes -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                             (from_binary_idl)
 
 For attribute access:
 Life Cycle:
-    python val -> msgpack bytes -> binary literal scalar -> resolved golang value -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; resolved golang value -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
@@ -228,15 +234,4 @@ Hence we have to handle 2 kinds of cases.
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
 | `lv` | `flytekit.models.literals.Literal` | |
 | `expected_python_type` | `typing.Type[pydantic.main.BaseModel]` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
 

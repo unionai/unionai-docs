@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.workflow_closure
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -27,6 +27,14 @@ class WorkflowClosure(
 |-|-|-|
 | `workflow` |  | |
 | `tasks` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `tasks` | `None` | :rtype: list[flytekit.models.task.TaskTemplate] |
+| `workflow` | `None` | :rtype: flytekit.models.core.workflow.WorkflowTemplate |
 
 ### Methods
 
@@ -69,14 +77,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.core.workflow_closure_pb2.WorkflowClosure
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `tasks` |  | {{< multiline >}}:rtype: list[flytekit.models.task.TaskTemplate]
-{{< /multiline >}} |
-| `workflow` |  | {{< multiline >}}:rtype: flytekit.models.core.workflow.WorkflowTemplate
-{{< /multiline >}} |
 

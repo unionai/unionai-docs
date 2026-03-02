@@ -1,0 +1,29 @@
+name: Check Internal Links
+
+on: [push]
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Check internal links
+        run: make check-links
+
+      - name: Report status
+        if: ${{ failure() }}
+        run: |
+          echo "::error::Internal link check failed. Run 'make check-links' locally for details."

@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.remote
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -42,6 +42,7 @@ The term 'remote' is synonymous with 'backend' or 'deployment' and refers to a h
 Flyte platform, which comes with a Flyte Admin server on some known URI.
 
 
+
 ```python
 class FlyteRemote(
     config: Config,
@@ -66,6 +67,18 @@ Initialize a FlyteRemote object.
 | `data_upload_location` | `str` | this is where all the default data will be uploaded when providing inputs. The default location - `s3://my-s3-bucket/data` works for sandbox/demo environment. Please override this for non-sandbox cases. |
 | `interactive_mode_enabled` | `typing.Optional[bool]` | If set to True, the FlyteRemote will pickle the task/workflow, if False, it will not. If set to None, then it will automatically detect if it is running in an interactive environment like a Jupyter notebook and enable interactive mode. |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `client` | `None` | Return a SynchronousFlyteClient for additional operations. |
+| `config` | `None` | Image config. |
+| `context` | `None` |  |
+| `default_domain` | `None` | Default project to use when fetching or executing flyte entities. |
+| `default_project` | `None` | Default project to use when fetching or executing flyte entities. |
+| `file_access` | `None` | File access provider to use for offloading non-literal inputs/outputs. |
+| `interactive_mode_enabled` | `None` | If set to True, the FlyteRemote will pickle the task/workflow. |
 
 ### Methods
 
@@ -279,7 +292,7 @@ settings for entities that have already been registered on Admin.
 | `tags` | `typing.Optional[typing.List[str]]` | Tags to be set for the execution. |
 | `cluster_pool` | `typing.Optional[str]` | Specify cluster pool on which newly created execution should be placed. |
 | `execution_cluster_label` | `typing.Optional[str]` | Specify label of cluster(s) on which newly created execution should be placed. |
-| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs to first be registered. If not provided, a default will be used.  &gt; [!NOTE] &gt; The ``name`` and ``version`` arguments do not apply to ``FlyteTask``, ``FlyteLaunchPlan``, and ``FlyteWorkflow`` entity inputs. These values are determined by referencing the entity identifier values. |
+| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs to first be registered. If not provided, a default will be used.  > [!NOTE] > The ``name`` and ``version`` arguments do not apply to ``FlyteTask``, ``FlyteLaunchPlan``, and ``FlyteWorkflow`` entity inputs. These values are determined by referencing the entity identifier values. |
 
 #### execute_local_launch_plan()
 
@@ -983,7 +996,7 @@ def launch_backfill(
 Creates and launches a backfill workflow for the given launchplan. If launchplan version is not specified,
 then the latest launchplan is retrieved.
 The from_date is exclusive and end_date is inclusive and backfill run for all instances in between. ::
-    -> (start_date - exclusive, end_date inclusive)
+    -&gt; (start_date - exclusive, end_date inclusive)
 
 If dry_run is specified, the workflow is created and returned.
 If execute==False is specified then the workflow is created and registered.
@@ -1434,27 +1447,10 @@ Wait for an execution to finish.
 | `poll_interval` | `typing.Optional[typing.Union[timedelta, int]]` | sync workflow execution at this interval. It can be a timedelta or a duration in seconds as int. |
 | `sync_nodes` | `bool` | passed along to the sync call for the workflow execution |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `client` |  | {{< multiline >}}Return a SynchronousFlyteClient for additional operations.
-{{< /multiline >}} |
-| `config` |  | {{< multiline >}}Image config.
-{{< /multiline >}} |
-| `context` |  |  |
-| `default_domain` |  | {{< multiline >}}Default project to use when fetching or executing flyte entities.
-{{< /multiline >}} |
-| `default_project` |  | {{< multiline >}}Default project to use when fetching or executing flyte entities.
-{{< /multiline >}} |
-| `file_access` |  | {{< multiline >}}File access provider to use for offloading non-literal inputs/outputs.
-{{< /multiline >}} |
-| `interactive_mode_enabled` |  | {{< multiline >}}If set to True, the FlyteRemote will pickle the task/workflow.
-{{< /multiline >}} |
-
 ## flytekit.remote.remote.RegistrationSkipped
 
 RegistrationSkipped error is raised when trying to register an entity that is not registrable.
+
 
 
 ## flytekit.remote.remote.ResolvedIdentifiers

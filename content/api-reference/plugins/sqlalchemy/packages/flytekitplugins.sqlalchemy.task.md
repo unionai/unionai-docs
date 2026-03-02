@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.sqlalchemy.task
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -16,7 +16,7 @@ layout: py_api
 | [`SQLAlchemyConfig`](.././flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemyconfig) | Use this configuration to configure task. |
 | [`SQLAlchemyDefaultImages`](.././flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemydefaultimages) | Default images for the sqlalchemy flytekit plugin. |
 | [`SQLAlchemyTask`](.././flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemytask) | Makes it possible to run client side SQLAlchemy queries that optionally return a FlyteSchema object. |
-| [`SQLAlchemyTaskExecutor`](.././flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemytaskexecutor) | Please see the notes for the metaclass above first. |
+| [`SQLAlchemyTaskExecutor`](.././flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemytaskexecutor) |  |
 
 ## flytekitplugins.sqlalchemy.task.SQLAlchemyConfig
 
@@ -36,11 +36,11 @@ class SQLAlchemyConfig(
     secret_connect_args: typing.Optional[typing.Dict[str, flytekit.models.security.Secret]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `uri` | `str` |
-| `connect_args` | `typing.Optional[typing.Dict[str, typing.Any]]` |
-| `secret_connect_args` | `typing.Optional[typing.Dict[str, flytekit.models.security.Secret]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `uri` | `str` | default sqlalchemy connector |
+| `connect_args` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
+| `secret_connect_args` | `typing.Optional[typing.Dict[str, flytekit.models.security.Secret]]` | flyte secrets loaded into sqlalchemy connect args -- ex: {"password": flytekit.models.security.Secret(name=SECRET_NAME, group=SECRET_GROUP)} |
 
 ### Methods
 
@@ -81,10 +81,10 @@ def find_image_for(
     flytekit_version: typing.Optional[str],
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `python_version` | `typing.Optional[flytekit.configuration.default_images.PythonVersion]` |
-| `flytekit_version` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_version` | `typing.Optional[flytekit.configuration.default_images.PythonVersion]` | |
+| `flytekit_version` | `typing.Optional[str]` | |
 
 #### get_version_suffix()
 
@@ -94,6 +94,7 @@ def get_version_suffix()
 ## flytekitplugins.sqlalchemy.task.SQLAlchemyTask
 
 Makes it possible to run client side SQLAlchemy queries that optionally return a FlyteSchema object
+
 
 
 ```python
@@ -107,15 +108,44 @@ class SQLAlchemyTask(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `query_template` | `str` |
-| `task_config` | `flytekitplugins.sqlalchemy.task.SQLAlchemyConfig` |
-| `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` |
-| `output_schema_type` | `typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]]` |
-| `container_image` | `str` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | unique name for the task, usually the function's module and name. |
+| `query_template` | `str` | |
+| `task_config` | `flytekitplugins.sqlalchemy.task.SQLAlchemyConfig` | Configuration object for Task. Should be a unique type for that specific Task |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
+| `output_schema_type` | `typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]]` | |
+| `container_image` | `str` | This is the external container image the task should run at platform-run-time. |
+| `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `container_image` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `executor` | `None` |  |
+| `executor_type` | `None` |  |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` | Return the name of the underlying task. |
+| `output_columns` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `query_template` | `None` |  |
+| `resources` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_resolver` | `None` |  |
+| `task_template` | `None` | Override the base class implementation to serialize on first call. |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -159,11 +189,11 @@ def compile(
 Generates a node that encapsulates this task in a workflow definition.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### construct_node_metadata()
 
@@ -186,10 +216,10 @@ interface before executing. Also, we refer to ``self.task_template`` rather than
 classes that derive from the base ``PythonTask``.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `input_literal_map` | `_literal_models.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `input_literal_map` | `_literal_models.LiteralMap` | |
 
 #### execute()
 
@@ -201,9 +231,9 @@ def execute(
 Rather than running here, send everything to the executor.
 
 
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### find_lhs()
 
@@ -217,9 +247,9 @@ def get_command(
     settings: SerializationSettings,
 ) -> List[str]
 ```
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_config()
 
@@ -232,9 +262,9 @@ Returns the task config as a serializable dictionary. This task config consists 
 defined for this task.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_container()
 
@@ -246,9 +276,9 @@ def get_container(
 Returns the container definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_custom()
 
@@ -260,9 +290,9 @@ def get_custom(
 Return additional plugin-specific custom data (if any) as a serializable dictionary.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_extended_resources()
 
@@ -274,9 +304,9 @@ def get_extended_resources(
 Returns the extended resources to allocate to the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_image()
 
@@ -285,9 +315,9 @@ def get_image(
     settings: SerializationSettings,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_input_types()
 
@@ -307,9 +337,9 @@ def get_k8s_pod(
 Returns the kubernetes pod definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_query()
 
@@ -318,9 +348,9 @@ def get_query(
     kwargs,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### get_sql()
 
@@ -332,9 +362,9 @@ def get_sql(
 Returns the Sql definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_type_for_input_var()
 
@@ -347,10 +377,10 @@ def get_type_for_input_var(
 Returns the python type for an input variable by name.
 
 
-| Parameter | Type |
-|-|-|
-| `k` | `str` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k` | `str` | |
+| `v` | `typing.Any` | |
 
 #### get_type_for_output_var()
 
@@ -363,10 +393,10 @@ def get_type_for_output_var(
 Returns the python type for the specified output variable by name.
 
 
-| Parameter | Type |
-|-|-|
-| `k` | `str` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k` | `str` | |
+| `v` | `typing.Any` | |
 
 #### interpolate_query()
 
@@ -380,10 +410,10 @@ This function will fill in the query template with the provided kwargs and retur
 Please note that when SQL tasks run in Flyte, this step is done by the task executor.
 
 
-| Parameter | Type |
-|-|-|
-| `query_template` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `query_template` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execute()
 
@@ -398,10 +428,10 @@ Use this function when calling a task with native values (or Promises containing
 Python native values).
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -419,10 +449,10 @@ def post_execute(
 This function is a stub, just here to keep dispatch_execute compatibility between this class and PythonTask.
 
 
-| Parameter | Type |
-|-|-|
-| `_` | `Optional[ExecutionParameters]` |
-| `rval` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `_` | `Optional[ExecutionParameters]` | |
+| `rval` | `Any` | |
 
 #### pre_execute()
 
@@ -434,9 +464,9 @@ def pre_execute(
 This function is a stub, just here to keep dispatch_execute compatibility between this class and PythonTask.
 
 
-| Parameter | Type |
-|-|-|
-| `user_params` | `Optional[ExecutionParameters]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `user_params` | `Optional[ExecutionParameters]` | |
 
 #### sandbox_execute()
 
@@ -449,10 +479,10 @@ def sandbox_execute(
 Call dispatch_execute, in the context of a local sandbox execution. Not invoked during runtime.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
 #### serialize_to_model()
 
@@ -461,58 +491,11 @@ def serialize_to_model(
     settings: SerializationSettings,
 ) -> _task_model.TaskTemplate
 ```
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `container_image` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `executor` |  |  |
-| `executor_type` |  |  |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  | {{< multiline >}}Return the name of the underlying task.
-{{< /multiline >}} |
-| `output_columns` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `query_template` |  |  |
-| `resources` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_resolver` |  |  |
-| `task_template` |  | {{< multiline >}}Override the base class implementation to serialize on first call.
-{{< /multiline >}} |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
+| `settings` | `SerializationSettings` | |
 
 ## flytekitplugins.sqlalchemy.task.SQLAlchemyTaskExecutor
-
-Please see the notes for the metaclass above first.
-
-This functionality has two use-cases currently,
-* Keep track of naming for non-function ``PythonAutoContainerTasks``.  That is, things like the
-  :py:class:`flytekit.extras.sqlite3.task.SQLite3Task` task.
-* Task resolvers, because task resolvers are instances of :py:class:`flytekit.core.python_auto_container.TaskResolverMixin`
-  classes, not the classes themselves, which means we need to look on the left hand side of them to see how to
-  find them at task execution time.
-
 
 ```python
 class SQLAlchemyTaskExecutor(
@@ -520,10 +503,18 @@ class SQLAlchemyTaskExecutor(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `instantiated_in` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
 
 ### Methods
 
@@ -539,7 +530,7 @@ class SQLAlchemyTaskExecutor(
 def execute_from_model(
     tt: flytekit.models.task.TaskTemplate,
     kwargs,
-) -> n: Python native output values from the task.
+) -> typing.Any
 ```
 This function must be overridden and is where all the business logic for running a task should live. Keep in
 mind that you're only working with the ``TaskTemplate``. You won't have access to any information in the task
@@ -547,21 +538,13 @@ that wasn't serialized into the template.
 
 
 
-| Parameter | Type |
-|-|-|
-| `tt` | `flytekit.models.task.TaskTemplate` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tt` | `flytekit.models.task.TaskTemplate` | This is the template, the serialized form of the task. |
+| `kwargs` | `**kwargs` | These are the Python native input values to the task. :return: Python native output values from the task. |
 
 #### find_lhs()
 
 ```python
 def find_lhs()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `instantiated_in` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-

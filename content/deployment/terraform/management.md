@@ -65,7 +65,7 @@ Create an API key using the Flyte CLI:
 union create api-key admin --name "terraform-api-key"
 ```
 
-For more information on creating API keys, see the [Flyte CLI documentation](../../api-reference/flyte-cli#flyte-create-api-key).
+For more information on creating API keys, see the [Flyte CLI documentation](../../api-reference/flyte-cli#flyte-create-config).
 
 Save the generated key securely, as it will be used to authenticate all Terraform operations against your Union deployment.
 

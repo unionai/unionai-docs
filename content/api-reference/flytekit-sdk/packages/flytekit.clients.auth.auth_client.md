@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.auth_client
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -23,6 +23,7 @@ layout: py_api
 
 Authorization client that stores the credentials in keyring and uses oauth2 standard flow to retrieve the
 credentials. NOTE: This will open an web browser to retrieve the credentials.
+
 
 
 ```python
@@ -112,12 +113,13 @@ class AuthorizationCode(
 
 | Property | Type | Description |
 |-|-|-|
-| `code` |  |  |
-| `state` |  |  |
+| `code` | `None` |  |
+| `state` | `None` |  |
 
 ## flytekit.clients.auth.auth_client.EndpointMetadata
 
 This class can be used to control the rendering of the page on login successful or failure
+
 
 
 ```python
@@ -137,6 +139,7 @@ class EndpointMetadata(
 
 A simple wrapper around BaseHTTPServer.BaseHTTPRequestHandler that handles a callback URL that accepts an
 authorization token.
+
 
 
 ```python
@@ -470,6 +473,7 @@ A simple wrapper around the BaseHTTPServer.HTTPServer implementation that binds 
 authorization code callbacks.
 
 
+
 ```python
 class OAuthHTTPServer(
     server_address: typing.Tuple[str, int],
@@ -491,6 +495,13 @@ Constructor.  May be extended, do not override.
 | `bind_and_activate` | `bool` | |
 | `redirect_path` | `str` | |
 | `queue` | `Queue` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `redirect_path` | `None` |  |
+| `remote_metadata` | `None` |  |
 
 ### Methods
 
@@ -738,11 +749,4 @@ Return True if we should proceed with this request.
 |-|-|-|
 | `request` |  | |
 | `client_address` |  | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `redirect_path` |  |  |
-| `remote_metadata` |  |  |
 

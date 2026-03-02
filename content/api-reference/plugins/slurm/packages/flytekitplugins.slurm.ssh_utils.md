@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.slurm.ssh_utils
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -48,10 +48,10 @@ Get an existing SSH connection or create a new one if needed.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ssh_config` | `typing.Dict[str, typing.Union[str, typing.List[str], typing.Tuple[str, ...]]]` |
-| `slurm_cluster_to_ssh_conn` | `typing.Dict[flytekitplugins.slurm.ssh_utils.SlurmCluster, asyncssh.connection.SSHClientConnection]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ssh_config` | `typing.Dict[str, typing.Union[str, typing.List[str], typing.Tuple[str, ...]]]` | SSH configuration dictionary, including host and username. |
+| `slurm_cluster_to_ssh_conn` | `typing.Dict[flytekitplugins.slurm.ssh_utils.SlurmCluster, asyncssh.connection.SSHClientConnection]` | A mapping of SlurmCluster to existing SSHClientConnection objects. |
 
 #### ssh_connect()
 
@@ -64,25 +64,26 @@ Make an SSH client connection.
 
 
 
-| Parameter | Type |
-|-|-|
-| `ssh_config` | `typing.Dict[str, typing.Any]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ssh_config` | `typing.Dict[str, typing.Any]` | Options of SSH client connection defined in SSHConfig. |
 
 ## flytekitplugins.slurm.ssh_utils.SSHConfig
 
 A customized version of SSHClientConnectionOptions, tailored to specific needs.
 
-This config is based on the official SSHClientConnectionOptions but includes
-only a subset of options, with some fields adjusted to be optional or required.
-For the official options, please refer to:
-https://asyncssh.readthedocs.io/en/latest/api.html#asyncssh.SSHClientConnectionOptions
+    This config is based on the official SSHClientConnectionOptions but includes
+    only a subset of options, with some fields adjusted to be optional or required.
+    For the official options, please refer to:
+    https://asyncssh.readthedocs.io/en/latest/api.html#asyncssh.SSHClientConnectionOptions
 
-Attributes:
-    host (str): The hostname or address to connect to.
-    username (Optional[str]): The username to authenticate as on the server.
-    client_keys (Union[str, List[str], Tuple[str, ...]]): File paths to private keys which will be used to authenticate the
-        client via public key authentication. The default value is an empty tuple since
-        client public key authentication is mandatory.
+    Attributes:
+        host (str): The hostname or address to connect to.
+        username (Optional[str]): The username to authenticate as on the server.
+        client_keys (Union[str, List[str], Tuple[str, ...]]): File paths to private keys which will be used to authenticate the
+            client via public key authentication. The default value is an empty tuple since
+            client public key authentication is mandatory.
+    
 
 
 ```python
@@ -92,11 +93,11 @@ class SSHConfig(
     client_keys: typing.Union[str, typing.List[str], typing.Tuple[str, ...]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `host` | `str` |
-| `username` | `typing.Optional[str]` |
-| `client_keys` | `typing.Union[str, typing.List[str], typing.Tuple[str, ...]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `host` | `str` | |
+| `username` | `typing.Optional[str]` | |
+| `client_keys` | `typing.Union[str, typing.List[str], typing.Tuple[str, ...]]` | |
 
 ### Methods
 
@@ -113,9 +114,9 @@ def from_dict(
     ssh_config: typing.Dict[str, typing.Any],
 ) -> ~T
 ```
-| Parameter | Type |
-|-|-|
-| `ssh_config` | `typing.Dict[str, typing.Any]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ssh_config` | `typing.Dict[str, typing.Any]` | |
 
 #### to_dict()
 
@@ -126,9 +127,10 @@ def to_dict()
 
 A Slurm cluster instance is defined by a pair of (Slurm host, username).
 
-Attributes:
-    host (str): The hostname or address to connect to.
-    username (Optional[str]): The username to authenticate as on the server.
+    Attributes:
+        host (str): The hostname or address to connect to.
+        username (Optional[str]): The username to authenticate as on the server.
+    
 
 
 ```python
@@ -137,8 +139,8 @@ class SlurmCluster(
     username: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `host` | `str` |
-| `username` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `host` | `str` | |
+| `username` | `typing.Optional[str]` | |
 

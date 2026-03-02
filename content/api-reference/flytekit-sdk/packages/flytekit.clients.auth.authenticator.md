@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.authenticator
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -20,11 +20,12 @@ layout: py_api
 | [`CommandAuthenticator`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorcommandauthenticator) | This Authenticator retrieves access_token using the provided command. |
 | [`DeviceCodeAuthenticator`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatordevicecodeauthenticator) | This Authenticator implements the Device Code authorization flow useful for headless user authentication. |
 | [`PKCEAuthenticator`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorpkceauthenticator) | This Authenticator encapsulates the entire PKCE flow and automatically opens a browser window for login. |
-| [`StaticClientConfigStore`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorstaticclientconfigstore) | Client Config store retrieve client config. |
+| [`StaticClientConfigStore`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorstaticclientconfigstore) |  |
 
 ## flytekit.clients.auth.authenticator.Authenticator
 
 Base authenticator for all authentication flows
+
 
 
 ```python
@@ -73,6 +74,7 @@ def refresh_credentials()
 Client Configuration that is needed by the authenticator
 
 
+
 ```python
 class ClientConfig(
     token_endpoint: str,
@@ -101,6 +103,7 @@ class ClientConfig(
 Client Config store retrieve client config. this can be done in multiple ways
 
 
+
 ### Methods
 
 | Method | Description |
@@ -116,6 +119,7 @@ def get_client_config()
 ## flytekit.clients.auth.authenticator.ClientCredentialsAuthenticator
 
 This Authenticator uses ClientId and ClientSecret to authenticate
+
 
 
 ```python
@@ -180,6 +184,7 @@ the credentials for basic auth must be present from wherever this code is runnin
 This Authenticator retrieves access_token using the provided command
 
 
+
 ```python
 class CommandAuthenticator(
     command: typing.List[str],
@@ -226,6 +231,7 @@ This Authenticator implements the Device Code authorization flow useful for head
 Examples described
 - https://developer.okta.com/docs/guides/device-authorization-grant/main/
 - https://auth0.com/docs/get-started/authentication-and-authorization-flow/device-authorization-flow#device-flow
+
 
 
 ```python
@@ -286,6 +292,7 @@ contain ["offline", "all"] - as OIDC scopes are ungrantable in Auth0 customer AP
 for in the POST request during the token caching process.
 
 
+
 ```python
 class PKCEAuthenticator(
     endpoint: str,
@@ -333,9 +340,6 @@ def get_credentials()
 def refresh_credentials()
 ```
 ## flytekit.clients.auth.authenticator.StaticClientConfigStore
-
-Client Config store retrieve client config. this can be done in multiple ways
-
 
 ```python
 class StaticClientConfigStore(

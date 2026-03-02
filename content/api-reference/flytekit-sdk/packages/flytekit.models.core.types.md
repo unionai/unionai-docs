@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.types
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -21,6 +21,7 @@ layout: py_api
 This type represents offloaded data and is typically used for things like files.
 
 
+
 ```python
 class BlobType(
     format,
@@ -31,6 +32,14 @@ class BlobType(
 |-|-|-|
 | `format` |  | |
 | `dimensionality` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `dimensionality` | `None` | An integer from BlobType.BlobDimensionality enum :rtype: int |
+| `format` | `None` | A string describing the format of the underlying blob data. :rtype: Text |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -74,21 +83,10 @@ def to_flyte_idl()
 :rtype: flyteidl.core.types_pb2.BlobType
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `dimensionality` |  | {{< multiline >}}An integer from BlobType.BlobDimensionality enum
-:rtype: int
-{{< /multiline >}} |
-| `format` |  | {{< multiline >}}A string describing the format of the underlying blob data.
-:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-
 ## flytekit.models.core.types.EnumType
 
 Models _types_pb2.EnumType
+
 
 
 ```python
@@ -99,6 +97,13 @@ class EnumType(
 | Parameter | Type | Description |
 |-|-|-|
 | `values` | `typing.List[str]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `values` | `None` |  |
 
 ### Methods
 
@@ -139,10 +144,3 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `values` |  |  |
-

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.domain
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -31,6 +31,14 @@ class Domain(
 |-|-|-|
 | `id` |  | |
 | `name` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `id` | `None` | A globally unique identifier associated with this domain. :rtype: Text |
+| `is_empty` | `None` |  |
+| `name` | `None` | A human-readable name for this domain. :rtype: Text |
 
 ### Methods
 
@@ -73,16 +81,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.project_pb2.Domain
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `id` |  | {{< multiline >}}A globally unique identifier associated with this domain.
-:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `name` |  | {{< multiline >}}A human-readable name for this domain.
-:rtype: Text
-{{< /multiline >}} |
 

@@ -1,6 +1,6 @@
 ---
 title: union.artifacts
-version: 0.1.198
+version: 0.1.202
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -31,6 +31,7 @@ df_artifact = Artifact.get("flyte://a1")
 remote.execute(wf, inputs={"a": df_artifact})
 
 Note that Python fields will be missing when retrieved from the service.
+
 
 
 ```python
@@ -76,6 +77,14 @@ class Artifact(
 | `card` | `Optional[Card]` | |
 | `kwargs` | `**kwargs` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `concrete_artifact_id` | `None` |  |
+| `partitions` | `None` |  |
+| `time_partition` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -113,7 +122,7 @@ done so.
     EstError = Artifact(name="estimation_error", partition_keys=["dataset"], time_partitioned=True)
 
     @task
-    def t1() -> Annotated[pd.DataFrame, Pricing], Annotated[float, EstError]:
+    def t1() -&gt; Annotated[pd.DataFrame, Pricing], Annotated[float, EstError]:
         df = get_pricing_results()
         dt = get_time()
         return Pricing.create_from(df, region="dubai"),             EstError.create_from(msq_error, dataset="train", time_partition=dt)
@@ -121,7 +130,7 @@ done so.
 You can mix and match with the input syntax as well.
 
     @task
-    def my_task() -> Annotated[pd.DataFrame, RideCountData(region=Inputs.region)]:
+    def my_task() -&gt; Annotated[pd.DataFrame, RideCountData(region=Inputs.region)]:
         ...
         return RideCountData.create_from(df, time_partition=datetime.datetime.now())
 
@@ -288,14 +297,6 @@ This is here instead of translator because it's in the interface, a relatively s
 that's exposed to the user.
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `concrete_artifact_id` |  |  |
-| `partitions` |  |  |
-| `time_partition` |  |  |
-
 ## union.artifacts.DataCard
 
 ```python
@@ -306,8 +307,8 @@ class DataCard(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `text` | `str` | |
-| `card_type` | `CardType` | |
+| `text` | `str` | DataCard contents. |
+| `card_type` | `CardType` |  |
 
 ### Methods
 
@@ -351,8 +352,8 @@ class ModelCard(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `text` | `str` | |
-| `card_type` | `CardType` | |
+| `text` | `str` | ModelCard contents. |
+| `card_type` | `CardType` |  |
 
 ### Methods
 
@@ -400,8 +401,8 @@ class OnArtifact(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `trigger_on` | `typing.Union[flytekit.core.artifact.Artifact, flytekit.core.artifact.ArtifactQuery]` | |
-| `inputs` | `typing.Optional[typing.Dict[str, typing.Union[typing.Any, flytekit.core.artifact.Artifact, flytekit.core.artifact.ArtifactQuery]]]` | |
+| `trigger_on` | `typing.Union[flytekit.core.artifact.Artifact, flytekit.core.artifact.ArtifactQuery]` | Artifact on which to trigger. |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Union[typing.Any, flytekit.core.artifact.Artifact, flytekit.core.artifact.ArtifactQuery]]]` | Dict of inputs.  Example usage::  OnArtifact( trigger_on=dailyArtifact, inputs={ # Use the matched Artifact "today_upstream": dailyArtifact, "yesterday_upstream": dailyArtifact.query( time_partition=dailyArtifact. time_partition - timedelta(days=1)), # Use the matched hourly Artifact "other_daily_upstream": hourlyArtifact.query( partitions={"region": "LAX"}), # Static value "SEA" that will be passed as input "region": "SEA", "other_artifact": UnrelatedArtifact.query( time_partition=dailyArtifact. time_partition - timedelta(days=1)), "other_artifact_2": UnrelatedArtifact.query( time_partition=hourlyArtifact.time_partition.truncate_to_day()), "other_artifact_3": UnrelatedArtifact.query( region=hourlyArtifact.time_partition.truncate_to_day()), }, ) |
 
 ### Methods
 

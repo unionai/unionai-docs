@@ -1,6 +1,6 @@
 ---
 title: flytekit.sensor.sensor_engine
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,23 +13,20 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`SensorEngine`](.././flytekit.sensor.sensor_engine#flytekitsensorsensor_enginesensorengine) | This is the base class for all async connectors. |
+| [`SensorEngine`](.././flytekit.sensor.sensor_engine#flytekitsensorsensor_enginesensorengine) |  |
 
 ## flytekit.sensor.sensor_engine.SensorEngine
-
-This is the base class for all async connectors.
-It defines the interface that all connectors must implement.
-The connector service is responsible for invoking connectors. The propeller will communicate with the connector service
-to create tasks, get the status of tasks, and delete tasks.
-
-All the connectors should be registered in the ConnectorRegistry.
-Connector Service
-will look up the connector based on the task type. Every task type can only have one connector.
-
 
 ```python
 def SensorEngine()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `metadata_type` | `None` |  |
+| `task_category` | `None` | task category that the connector supports |
+
 ### Methods
 
 | Method | Description |
@@ -124,12 +121,4 @@ Return the metrics for the task.
 |-|-|-|
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
 | `kwargs` | `**kwargs` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `metadata_type` |  |  |
-| `task_category` |  | {{< multiline >}}task category that the connector supports
-{{< /multiline >}} |
 

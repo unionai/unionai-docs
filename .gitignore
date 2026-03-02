@@ -1,38 +1,29 @@
-# This is only for development mode
-config/_default
-
-# Generated content
+# Build artifacts
 /public/
 /dist/
-.hugo.build.toml
+.hugo.build.*.toml
+.hugo_build.lock
 
-# Developer overrides
+# Dev override
 hugo.local.toml
+
+# Dev artifacts
+config/_default
 
 # Trash files
 .DS_Store
 *.swp
 __pycache__/
-.hugo_build.lock
-
-# Ignore test file
-content/test.md
-layouts/**/test.html
-themes/**/test.html
-test*.html
-
-# Tools
-tools/link_checker/config.yml
-link_checker_output.json
+*.egg-info/
 
 # IDEs
 .vscode
 .idea
-*.code-workspace
 
-# Do not save temporary uv settings
-pyproject.toml
+# Temporary uv settings
 .venv/
-main.py
 .python-version
 uv.lock
+
+# AI assistant
+.claude/

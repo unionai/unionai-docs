@@ -1,0 +1,17 @@
+{
+  "packages": {
+    "flytekitplugins.omegaconf": "/api-reference/plugins/omegaconf/packages/flytekitplugins.omegaconf/"
+  },
+  "identifiers": {
+    "flytekitplugins.omegaconf.OmegaConfTransformerMode": "/api-reference/plugins/omegaconf/packages/flytekitplugins.omegaconf/#flytekitpluginsomegaconfomegaconftransformermode",
+    "OmegaConfTransformerMode": "/api-reference/plugins/omegaconf/packages/flytekitplugins.omegaconf/#flytekitpluginsomegaconfomegaconftransformermode"
+  },
+  "methods": {
+    "flytekitplugins.omegaconf.get_transformer_mode": "/api-reference/plugins/omegaconf/packages/flytekitplugins.omegaconf/#get_transformer_mode",
+    "get_transformer_mode": "/api-reference/plugins/omegaconf/packages/flytekitplugins.omegaconf/#get_transformer_mode",
+    "flytekitplugins.omegaconf.local_transformer_mode": "/api-reference/plugins/omegaconf/packages/flytekitplugins.omegaconf/#local_transformer_mode",
+    "local_transformer_mode": "/api-reference/plugins/omegaconf/packages/flytekitplugins.omegaconf/#local_transformer_mode",
+    "flytekitplugins.omegaconf.set_transformer_mode": "/api-reference/plugins/omegaconf/packages/flytekitplugins.omegaconf/#set_transformer_mode",
+    "set_transformer_mode": "/api-reference/plugins/omegaconf/packages/flytekitplugins.omegaconf/#set_transformer_mode"
+  }
+}

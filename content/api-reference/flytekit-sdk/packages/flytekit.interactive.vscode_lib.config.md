@@ -1,6 +1,6 @@
 ---
 title: flytekit.interactive.vscode_lib.config
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -38,9 +38,9 @@ class VscodeConfig(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `code_server_remote_paths` | `typing.Optional[typing.Dict[str, str]]` | |
-| `code_server_dir_names` | `typing.Optional[typing.Dict[str, str]]` | |
-| `extension_remote_paths` | `typing.Optional[typing.List[str]]` | |
+| `code_server_remote_paths` | `typing.Optional[typing.Dict[str, str]]` | The URL of the code-server tarball. |
+| `code_server_dir_names` | `typing.Optional[typing.Dict[str, str]]` | The name of the code-server directory. |
+| `extension_remote_paths` | `typing.Optional[typing.List[str]]` | The URLs of the VSCode extensions. You can find all available extensions at https://open-vsx.org/. |
 
 ### Methods
 

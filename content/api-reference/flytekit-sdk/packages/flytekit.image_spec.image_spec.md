@@ -1,6 +1,6 @@
 ---
 title: flytekit.image_spec.image_spec
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -51,6 +51,7 @@ Validate Docker container registry name.
 ## flytekit.image_spec.image_spec.ImageBuildEngine
 
 ImageBuildEngine contains a list of builders that can be used to build an ImageSpec.
+
 
 
 ### Methods
@@ -144,6 +145,7 @@ Attributes:
     builder_config (Optional[typing.Dict[str, typing.Any]]): Custom builder images configuration, such as uv and micromamba images.
 
 
+
 ```python
 class ImageSpec(
     name: str,
@@ -208,6 +210,13 @@ class ImageSpec(
 | `runtime_packages` | `typing.Optional[typing.List[str]]` | |
 | `builder_options` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
 | `builder_config` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `id` | `None` | Calculate a unique hash as the ID for the ImageSpec, and it will be used to 1. Identify the imageSpec in the ImageConfig in the serialization context. 2. Check if the current container image in the pod is built from this image spec in `is_container()`.  ImageConfig: - deduced abc: flyteorg/flytekit:123 - deduced xyz: flyteorg/flytekit:456  The result of this property also depends on whether or not update_image_spec_copy_handling was called.  :return: a unique identifier of the ImageSpec |
+| `tag` | `None` | Calculate a hash from the image spec. The hash will be the tag of the image. We will also read the content of the requirement file and the source root to calculate the hash. Therefore, it will generate different hash if new dependencies are added or the source code is changed.  Keep in mind the fields source_root and copy may be changed by update_image_spec_copy_handling, so when you call this property in relation to that function matter will change the output. |
 
 ### Methods
 

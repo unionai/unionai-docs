@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -9,5 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.wandb`](flytekitplugins.wandb) | . |
-| [`flytekitplugins.wandb.tracking`](flytekitplugins.wandb.tracking) |  |
+| [`flytekitplugins.wandb`](flytekitplugins.wandb) |  |

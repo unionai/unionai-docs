@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.compiler
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -28,6 +28,13 @@ class CompiledTask(
 | Parameter | Type | Description |
 |-|-|-|
 | `template` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `template` | `None` | :rtype: TODO |
 
 ### Methods
 
@@ -71,14 +78,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.compiler_pb2.CompiledTask
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `template` |  | {{< multiline >}}:rtype: TODO
-{{< /multiline >}} |
-
 ## flytekit.models.core.compiler.CompiledWorkflow
 
 ```python
@@ -91,6 +90,14 @@ class CompiledWorkflow(
 |-|-|-|
 | `template` |  | |
 | `connections` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `connections` | `None` | :rtype: ConnectionSet |
+| `is_empty` | `None` |  |
+| `template` | `None` | :rtype: flytekit.models.core.workflow.WorkflowTemplate |
 
 ### Methods
 
@@ -134,16 +141,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.compiler_pb2.CompiledWorkflow
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `connections` |  | {{< multiline >}}:rtype: ConnectionSet
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `template` |  | {{< multiline >}}:rtype: flytekit.models.core.workflow.WorkflowTemplate
-{{< /multiline >}} |
-
 ## flytekit.models.core.compiler.CompiledWorkflowClosure
 
 ```python
@@ -158,6 +155,15 @@ class CompiledWorkflowClosure(
 | `primary` |  | |
 | `sub_workflows` |  | |
 | `tasks` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `primary` | `None` | :rtype: CompiledWorkflow |
+| `sub_workflows` | `None` | :rtype: list[CompiledWorkflow] |
+| `tasks` | `None` | :rtype: list[CompiledTask] |
 
 ### Methods
 
@@ -201,18 +207,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.compiler_pb2.CompiledWorkflowClosure
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `primary` |  | {{< multiline >}}:rtype: CompiledWorkflow
-{{< /multiline >}} |
-| `sub_workflows` |  | {{< multiline >}}:rtype: list[CompiledWorkflow]
-{{< /multiline >}} |
-| `tasks` |  | {{< multiline >}}:rtype: list[CompiledTask]
-{{< /multiline >}} |
-
 ## flytekit.models.core.compiler.ConnectionSet
 
 ```python
@@ -225,6 +219,14 @@ class ConnectionSet(
 |-|-|-|
 | `upstream` |  | |
 | `downstream` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `downstream` | `None` | :rtype: dict[Text, ConnectionSet.IdList] |
+| `is_empty` | `None` |  |
+| `upstream` | `None` | :rtype: dict[Text, ConnectionSet.IdList] |
 
 ### Methods
 
@@ -267,14 +269,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.core.compiler_pb2.ConnectionSet
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `downstream` |  | {{< multiline >}}:rtype: dict[Text, ConnectionSet.IdList]
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `upstream` |  | {{< multiline >}}:rtype: dict[Text, ConnectionSet.IdList]
-{{< /multiline >}} |
 

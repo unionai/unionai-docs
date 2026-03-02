@@ -1,0 +1,24 @@
+{
+  "packages": {
+    "flytekitplugins.flyteinteractive": "/api-reference/plugins/flyteinteractive/packages/flytekitplugins.flyteinteractive/",
+    "flytekitplugins.flyteinteractive.constants": "/api-reference/plugins/flyteinteractive/packages/flytekitplugins.flyteinteractive.constants/",
+    "flytekitplugins.flyteinteractive.jupyter_lib": "/api-reference/plugins/flyteinteractive/packages/flytekitplugins.flyteinteractive.jupyter_lib/",
+    "flytekitplugins.flyteinteractive.jupyter_lib.decorator": "/api-reference/plugins/flyteinteractive/packages/flytekitplugins.flyteinteractive.jupyter_lib.decorator/",
+    "flytekitplugins.flyteinteractive.jupyter_lib.jupyter_constants": "/api-reference/plugins/flyteinteractive/packages/flytekitplugins.flyteinteractive.jupyter_lib.jupyter_constants/",
+    "flytekitplugins.flyteinteractive.utils": "/api-reference/plugins/flyteinteractive/packages/flytekitplugins.flyteinteractive.utils/",
+    "flytekitplugins.flyteinteractive.vscode_lib": "/api-reference/plugins/flyteinteractive/packages/flytekitplugins.flyteinteractive.vscode_lib/",
+    "flytekitplugins.flyteinteractive.vscode_lib.config": "/api-reference/plugins/flyteinteractive/packages/flytekitplugins.flyteinteractive.vscode_lib.config/",
+    "flytekitplugins.flyteinteractive.vscode_lib.decorator": "/api-reference/plugins/flyteinteractive/packages/flytekitplugins.flyteinteractive.vscode_lib.decorator/",
+    "flytekitplugins.flyteinteractive.vscode_lib.vscode_constants": "/api-reference/plugins/flyteinteractive/packages/flytekitplugins.flyteinteractive.vscode_lib.vscode_constants/"
+  },
+  "identifiers": {
+    "flytekitplugins.flyteinteractive.jupyter_lib.decorator.jupyter": "/api-reference/plugins/flyteinteractive/packages/flytekitplugins.flyteinteractive.jupyter_lib.decorator/#flytekitpluginsflyteinteractivejupyter_libdecoratorjupyter",
+    "jupyter": "/api-reference/plugins/flyteinteractive/packages/flytekitplugins.flyteinteractive.jupyter_lib.decorator/#flytekitpluginsflyteinteractivejupyter_libdecoratorjupyter"
+  },
+  "methods": {
+    "flytekitplugins.flyteinteractive.jupyter_lib.decorator.exit_handler": "/api-reference/plugins/flyteinteractive/packages/flytekitplugins.flyteinteractive.jupyter_lib.decorator/#exit_handler",
+    "exit_handler": "/api-reference/plugins/flyteinteractive/packages/flytekitplugins.flyteinteractive.jupyter_lib.decorator/#exit_handler",
+    "flytekitplugins.flyteinteractive.jupyter_lib.decorator.write_example_notebook": "/api-reference/plugins/flyteinteractive/packages/flytekitplugins.flyteinteractive.jupyter_lib.decorator/#write_example_notebook",
+    "write_example_notebook": "/api-reference/plugins/flyteinteractive/packages/flytekitplugins.flyteinteractive.jupyter_lib.decorator/#write_example_notebook"
+  }
+}

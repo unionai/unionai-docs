@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration.plugin
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -38,7 +38,7 @@ my_plugin = "my_module:MyCustomPlugin"
 
 | Protocol | Description |
 |-|-|
-| [`FlytekitPluginProtocol`](.././flytekit.configuration.plugin#flytekitconfigurationpluginflytekitpluginprotocol) | Base class for protocol classes. |
+| [`FlytekitPluginProtocol`](.././flytekit.configuration.plugin#flytekitconfigurationpluginflytekitpluginprotocol) |  |
 
 ### Methods
 
@@ -144,38 +144,6 @@ Return True if secrets require group entry during registration time.
 
 
 ## flytekit.configuration.plugin.FlytekitPluginProtocol
-
-Base class for protocol classes.
-
-Protocol classes are defined as::
-
-    class Proto(Protocol):
-        def meth(self) -> int:
-            ...
-
-Such classes are primarily used with static type checkers that recognize
-structural subtyping (static duck-typing).
-
-For example::
-
-    class C:
-        def meth(self) -> int:
-            return 0
-
-    def func(x: Proto) -> int:
-        return x.meth()
-
-    func(C())  # Passes static type check
-
-See PEP 544 for details. Protocol classes decorated with
-@typing.runtime_checkable act as simple-minded runtime protocols that check
-only the presence of given attributes, ignoring their type signatures.
-Protocol classes can be generic, they are defined as::
-
-    class GenProto[T](Protocol):
-        def meth(self) -> T:
-            ...
-
 
 ```python
 protocol FlytekitPluginProtocol()

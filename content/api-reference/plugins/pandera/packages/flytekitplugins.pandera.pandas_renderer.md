@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.pandera.pandas_renderer
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -34,18 +34,18 @@ layout: py_api
 
 ```python
 class PandasReport(
-    summary: pandas.core.frame.DataFrame,
-    data_preview: pandas.core.frame.DataFrame,
-    schema_error_df: typing.Optional[pandas.core.frame.DataFrame],
-    data_error_df: typing.Optional[pandas.core.frame.DataFrame],
+    summary: pandas.DataFrame,
+    data_preview: pandas.DataFrame,
+    schema_error_df: typing.Optional[pandas.DataFrame],
+    data_error_df: typing.Optional[pandas.DataFrame],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `summary` | `pandas.core.frame.DataFrame` |
-| `data_preview` | `pandas.core.frame.DataFrame` |
-| `schema_error_df` | `typing.Optional[pandas.core.frame.DataFrame]` |
-| `data_error_df` | `typing.Optional[pandas.core.frame.DataFrame]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `summary` | `pandas.DataFrame` | |
+| `data_preview` | `pandas.DataFrame` | |
+| `schema_error_df` | `typing.Optional[pandas.DataFrame]` | |
+| `data_error_df` | `typing.Optional[pandas.DataFrame]` | |
 
 ## flytekitplugins.pandera.pandas_renderer.PandasReportRenderer
 
@@ -54,9 +54,9 @@ class PandasReportRenderer(
     title: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `title` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `title` | `str` | |
 
 ### Methods
 
@@ -70,13 +70,13 @@ class PandasReportRenderer(
 ```python
 def to_html(
     data: pandas.DataFrame,
-    schema: pandera.api.pandas.container.DataFrameSchema,
+    schema: pandera._pandas_deprecated.DataFrameSchema,
     error: typing.Optional[pandera.errors.SchemaErrors],
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `data` | `pandas.DataFrame` |
-| `schema` | `pandera.api.pandas.container.DataFrameSchema` |
-| `error` | `typing.Optional[pandera.errors.SchemaErrors]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `pandas.DataFrame` | |
+| `schema` | `pandera._pandas_deprecated.DataFrameSchema` | |
+| `error` | `typing.Optional[pandera.errors.SchemaErrors]` | |
 

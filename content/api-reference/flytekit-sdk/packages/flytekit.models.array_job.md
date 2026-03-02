@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.array_job
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -34,6 +34,16 @@ Initializes a new ArrayJob.
 | `size` |  | |
 | `min_successes` |  | |
 | `min_success_ratio` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `min_success_ratio` | `None` |  |
+| `min_successes` | `None` | An absolute number of the minimum number of successful completions of subtasks. As soon as this criteria is met,     the array job will be marked as successful and outputs will be computed.  :rtype: int |
+| `parallelism` | `None` | Defines the minimum number of instances to bring up concurrently at any given point.  :rtype: int |
+| `size` | `None` | Defines the number of instances to launch at most. This number should match the size of the input if the job requires processing of all input data. This has to be a positive number.  rtype: int |
 
 ### Methods
 
@@ -95,24 +105,3 @@ def to_dict()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `min_success_ratio` |  |  |
-| `min_successes` |  | {{< multiline >}}An absolute number of the minimum number of successful completions of subtasks. As soon as this criteria is met,
-    the array job will be marked as successful and outputs will be computed.
-
-:rtype: int
-{{< /multiline >}} |
-| `parallelism` |  | {{< multiline >}}Defines the minimum number of instances to bring up concurrently at any given point.
-
-:rtype: int
-{{< /multiline >}} |
-| `size` |  | {{< multiline >}}Defines the number of instances to launch at most. This number should match the size of the input if the job
-requires processing of all input data. This has to be a positive number.
-
-rtype: int
-{{< /multiline >}} |
-

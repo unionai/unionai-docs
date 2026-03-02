@@ -1,6 +1,6 @@
 ---
 title: union.remote
-version: 0.1.198
+version: 0.1.202
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -15,7 +15,7 @@ layout: py_api
 |-|-|
 | [`HuggingFaceModelInfo`](.././union.remote#unionremotehuggingfacemodelinfo) | Captures information about a Hugging Face model. |
 | [`ShardConfig`](.././union.remote#unionremoteshardconfig) |  |
-| [`UnionRemote`](.././union.remote#unionremoteunionremote) | Main entrypoint for programmatically accessing a Flyte remote backend. |
+| [`UnionRemote`](.././union.remote#unionremoteunionremote) |  |
 | [`VLLMShardArgs`](.././union.remote#unionremotevllmshardargs) |  |
 
 ## union.remote.HuggingFaceModelInfo
@@ -40,15 +40,15 @@ class HuggingFaceModelInfo(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `repo` | `str` | |
-| `artifact_name` | `str \| None` | |
-| `model_type` | `str \| None` | |
-| `architecture` | `str \| None` | |
-| `task` | `str` | |
-| `modality` | `typing.List[str] \| None` | |
-| `serial_format` | `str` | |
-| `short_description` | `str \| None` | |
-| `shard_config` | `ShardConfig \| None` | |
+| `repo` | `str` | The model repo name in huggingface. |
+| `artifact_name` | `str \| None` | The name of the Union artifact to use for the cached model. |
+| `model_type` | `str \| None` | The model type. |
+| `architecture` | `str \| None` | The model architecture. |
+| `task` | `str` | The model task. |
+| `modality` | `typing.List[str] \| None` | The model modality. |
+| `serial_format` | `str` | The model serialization format. |
+| `short_description` | `str \| None` | A short description of the model. |
+| `shard_config` | `ShardConfig \| None` | Configuration to shard the model with. |
 
 ## union.remote.ShardConfig
 
@@ -64,12 +64,6 @@ class ShardConfig(
 | `args` | `*args` | |
 
 ## union.remote.UnionRemote
-
-Main entrypoint for programmatically accessing a Flyte remote backend.
-
-The term 'remote' is synonymous with 'backend' or 'deployment' and refers to a hosted instance of the
-Flyte platform, which comes with a Flyte Admin server on some known URI.
-
 
 ```python
 class UnionRemote(
@@ -96,14 +90,37 @@ Initialize a FlyteRemote object.
 | `interactive_mode_enabled` | `typing.Optional[bool]` | If set to True, the FlyteRemote will pickle the task/workflow, if False, it will not. If set to None, then it will automatically detect if it is running in an interactive environment like a Jupyter notebook and enable interactive mode. |
 | `kwargs` | `**kwargs` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `apps_service_client` | `None` |  |
+| `artifacts_client` | `None` |  |
+| `async_channel` | `None` |  |
+| `authorizer_service_client` | `None` |  |
+| `client` | `None` | Return a SynchronousFlyteClient for additional operations. |
+| `config` | `None` | Image config. |
+| `context` | `None` |  |
+| `default_domain` | `None` | Default project to use when fetching or executing flyte entities. |
+| `default_project` | `None` | Default project to use when fetching or executing flyte entities. |
+| `file_access` | `None` | File access provider to use for offloading non-literal inputs/outputs. |
+| `hooks_async_client` | `None` |  |
+| `hooks_sync_client` | `None` |  |
+| `images_client` | `None` |  |
+| `interactive_mode_enabled` | `None` | If set to True, the FlyteRemote will pickle the task/workflow. |
+| `secret_client` | `None` |  |
+| `sync_channel` | `None` | Return channel from client. This channel already has the org passed in dynamically by the interceptor. |
+| `user_service_client` | `None` |  |
+| `users_client` | `None` |  |
+
 ### Methods
 
 | Method | Description |
 |-|-|
 | [`activate_launchplan()`](#activate_launchplan) | Given a launchplan, activate it, all previous versions are deactivated. |
 | [`approve()`](#approve) |  |
-| [`async_channel()`](#async_channel) |  |
 | [`auto()`](#auto) |  |
+| [`close_async_channel()`](#close_async_channel) | Close the async gRPC channel if one was created. |
 | [`create_artifact()`](#create_artifact) | Create an artifact in FlyteAdmin. |
 | [`deactivate_launchplan()`](#deactivate_launchplan) | Given a launchplan, deactivate it, all previous versions are deactivated. |
 | [`deploy_app()`](#deploy_app) | Deploy an application. |
@@ -195,11 +212,6 @@ def approve(
 | `project` | `str` | The execution project, will default to the Remote's default project. |
 | `domain` | `str` | The execution domain, will default to the Remote's default domain. |
 
-#### async_channel()
-
-```python
-def async_channel()
-```
 #### auto()
 
 ```python
@@ -220,6 +232,14 @@ def auto(
 | `data_upload_location` | `str` | |
 | `interactive_mode_enabled` | `bool` | |
 | `kwargs` | `**kwargs` | |
+
+#### close_async_channel()
+
+```python
+def close_async_channel()
+```
+Close the async gRPC channel if one was created.
+
 
 #### create_artifact()
 
@@ -355,7 +375,7 @@ settings for entities that have already been registered on Admin.
 | `tags` | `typing.Optional[typing.List[str]]` | Tags to be set for the execution. |
 | `cluster_pool` | `typing.Optional[str]` | Specify cluster pool on which newly created execution should be placed. |
 | `execution_cluster_label` | `typing.Optional[str]` | Specify label of cluster(s) on which newly created execution should be placed. |
-| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs to first be registered. If not provided, a default will be used.  &gt; [!NOTE] &gt; The ``name`` and ``version`` arguments do not apply to ``FlyteTask``, ``FlyteLaunchPlan``, and ``FlyteWorkflow`` entity inputs. These values are determined by referencing the entity identifier values. |
+| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs to first be registered. If not provided, a default will be used.  > [!NOTE] > The ``name`` and ``version`` arguments do not apply to ``FlyteTask``, ``FlyteLaunchPlan``, and ``FlyteWorkflow`` entity inputs. These values are determined by referencing the entity identifier values. |
 
 #### execute_local_launch_plan()
 
@@ -1107,7 +1127,7 @@ def launch_backfill(
 Creates and launches a backfill workflow for the given launchplan. If launchplan version is not specified,
 then the latest launchplan is retrieved.
 The from_date is exclusive and end_date is inclusive and backfill run for all instances in between. ::
-    -> (start_date - exclusive, end_date inclusive)
+    -&gt; (start_date - exclusive, end_date inclusive)
 
 If dry_run is specified, the workflow is created and returned.
 If execute==False is specified then the workflow is created and registered.
@@ -1630,35 +1650,6 @@ Wait for an execution to finish.
 | `timeout` | `typing.Optional[typing.Union[timedelta, int]]` | maximum amount of time to wait. It can be a timedelta or a duration in seconds as int. |
 | `poll_interval` | `typing.Optional[typing.Union[timedelta, int]]` | sync workflow execution at this interval. It can be a timedelta or a duration in seconds as int. |
 | `sync_nodes` | `bool` | passed along to the sync call for the workflow execution |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `apps_service_client` |  |  |
-| `artifacts_client` |  |  |
-| `authorizer_service_client` |  |  |
-| `client` |  | {{< multiline >}}Return a SynchronousFlyteClient for additional operations.
-{{< /multiline >}} |
-| `config` |  | {{< multiline >}}Image config.
-{{< /multiline >}} |
-| `context` |  |  |
-| `default_domain` |  | {{< multiline >}}Default project to use when fetching or executing flyte entities.
-{{< /multiline >}} |
-| `default_project` |  | {{< multiline >}}Default project to use when fetching or executing flyte entities.
-{{< /multiline >}} |
-| `file_access` |  | {{< multiline >}}File access provider to use for offloading non-literal inputs/outputs.
-{{< /multiline >}} |
-| `hooks_async_client` |  |  |
-| `hooks_sync_client` |  |  |
-| `images_client` |  |  |
-| `interactive_mode_enabled` |  | {{< multiline >}}If set to True, the FlyteRemote will pickle the task/workflow.
-{{< /multiline >}} |
-| `secret_client` |  |  |
-| `sync_channel` |  | {{< multiline >}}Return channel from client. This channel already has the org passed in dynamically by the interceptor.
-{{< /multiline >}} |
-| `user_service_client` |  |  |
-| `users_client` |  |  |
 
 ## union.remote.VLLMShardArgs
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.file
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -25,6 +25,7 @@ This is useful for extensions that have periods in them, e.g., "tar.gz".
 
 Example:
 TAR_GZ = Annotated[str, FileExt("tar.gz")]
+
 
 
 ```python

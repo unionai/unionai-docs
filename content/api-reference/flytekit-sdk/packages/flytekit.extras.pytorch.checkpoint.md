@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.pytorch.checkpoint
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -20,41 +20,9 @@ layout: py_api
 
 | Protocol | Description |
 |-|-|
-| [`IsDataclass`](.././flytekit.extras.pytorch.checkpoint#flytekitextraspytorchcheckpointisdataclass) | Base class for protocol classes. |
+| [`IsDataclass`](.././flytekit.extras.pytorch.checkpoint#flytekitextraspytorchcheckpointisdataclass) |  |
 
 ## flytekit.extras.pytorch.checkpoint.IsDataclass
-
-Base class for protocol classes.
-
-Protocol classes are defined as::
-
-    class Proto(Protocol):
-        def meth(self) -> int:
-            ...
-
-Such classes are primarily used with static type checkers that recognize
-structural subtyping (static duck-typing).
-
-For example::
-
-    class C:
-        def meth(self) -> int:
-            return 0
-
-    def func(x: Proto) -> int:
-        return x.meth()
-
-    func(C())  # Passes static type check
-
-See PEP 544 for details. Protocol classes decorated with
-@typing.runtime_checkable act as simple-minded runtime protocols that check
-only the presence of given attributes, ignoring their type signatures.
-Protocol classes can be generic, they are defined as::
-
-    class GenProto[T](Protocol):
-        def meth(self) -> T:
-            ...
-
 
 ```python
 protocol IsDataclass()
@@ -62,6 +30,7 @@ protocol IsDataclass()
 ## flytekit.extras.pytorch.checkpoint.PyTorchCheckpoint
 
 This class is helpful to save a checkpoint.
+
 
 
 ```python
@@ -192,9 +161,19 @@ def to_json(
 TypeTransformer that supports serializing and deserializing checkpoint.
 
 
+
 ```python
 def PyTorchCheckpointTransformer()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ### Methods
 
 | Method | Description |
@@ -235,12 +214,12 @@ This function primarily handles deserialization for untyped dicts, dataclasses, 
 
 For untyped dict, dataclass, and pydantic basemodel:
 Life Cycle (Untyped Dict as example):
-    python val -> msgpack bytes -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                             (from_binary_idl)
 
 For attribute access:
 Life Cycle:
-    python val -> msgpack bytes -> binary literal scalar -> resolved golang value -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; resolved golang value -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
@@ -368,15 +347,4 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | FlyteContext |
 | `lv` | `flytekit.models.literals.Literal` | The received literal Value |
 | `expected_python_type` | `typing.Type[flytekit.extras.pytorch.checkpoint.PyTorchCheckpoint]` | Expected native python type that should be returned |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
 

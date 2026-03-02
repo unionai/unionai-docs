@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.lazy_entity
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -27,6 +27,7 @@ Fetches the entity when the entity is called or when the entity is retrieved.
 The entity is derived from RemoteEntity so that it behaves exactly like the mimicked entity.
 
 
+
 ```python
 class LazyEntity(
     name: str,
@@ -41,6 +42,15 @@ class LazyEntity(
 | `getter` | `typing.Callable[[], ~T]` | |
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `entity` | `None` | If not already fetched / available, then the entity will be force fetched. |
+| `id` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` |  |
 
 ### Methods
 
@@ -111,13 +121,3 @@ def local_execute(
 ```python
 def local_execution_mode()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `entity` |  | {{< multiline >}}If not already fetched / available, then the entity will be force fetched.
-{{< /multiline >}} |
-| `id` |  |  |
-| `name` |  |  |
-| `python_interface` |  |  |
-

@@ -142,7 +142,7 @@ metadata:
   name: flytemonitoring
   namespace: flyte #or namespace where Flyte is installed
   labels:
-    release: kube-prometheus-stack 
+    release: kube-prometheus-stack
 spec:
   selector:
     matchLabels:

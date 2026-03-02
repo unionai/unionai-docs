@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.common
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -17,10 +17,10 @@ layout: py_api
 | [`AuthRole`](.././flytekit.models.common#flytekitmodelscommonauthrole) |  |
 | [`EmailNotification`](.././flytekit.models.common#flytekitmodelscommonemailnotification) |  |
 | [`Envs`](.././flytekit.models.common#flytekitmodelscommonenvs) |  |
-| [`FlyteABCMeta`](.././flytekit.models.common#flytekitmodelscommonflyteabcmeta) | Metaclass for defining Abstract Base Classes (ABCs). |
+| [`FlyteABCMeta`](.././flytekit.models.common#flytekitmodelscommonflyteabcmeta) |  |
 | [`FlyteCustomIdlEntity`](.././flytekit.models.common#flytekitmodelscommonflytecustomidlentity) |  |
 | [`FlyteIdlEntity`](.././flytekit.models.common#flytekitmodelscommonflyteidlentity) |  |
-| [`FlyteType`](.././flytekit.models.common#flytekitmodelscommonflytetype) | Metaclass for defining Abstract Base Classes (ABCs). |
+| [`FlyteType`](.././flytekit.models.common#flytekitmodelscommonflytetype) |  |
 | [`Labels`](.././flytekit.models.common#flytekitmodelscommonlabels) |  |
 | [`NamedEntityIdentifier`](.././flytekit.models.common#flytekitmodelscommonnamedentityidentifier) |  |
 | [`Notification`](.././flytekit.models.common#flytekitmodelscommonnotification) |  |
@@ -43,6 +43,13 @@ Annotation values to be applied to a workflow execution resource.
 | Parameter | Type | Description |
 |-|-|-|
 | `values` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `values` | `None` |  |
 
 ### Methods
 
@@ -86,13 +93,6 @@ def to_flyte_idl()
 :rtype: _common_pb2.Annotations
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `values` |  |  |
-
 ## flytekit.models.common.AuthRole
 
 ```python
@@ -111,6 +111,14 @@ Either one or both of the assumable IAM role and/or the K8s service account can 
 |-|-|-|
 | `assumable_iam_role` |  | |
 | `kubernetes_service_account` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `assumable_iam_role` | `None` | The IAM role to execute the workflow with :rtype: Text |
+| `is_empty` | `None` |  |
+| `kubernetes_service_account` | `None` | The kubernetes service account to execute the workflow with :rtype: Text |
 
 ### Methods
 
@@ -154,18 +162,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.launch_plan_pb2.Auth
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `assumable_iam_role` |  | {{< multiline >}}The IAM role to execute the workflow with
-:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `kubernetes_service_account` |  | {{< multiline >}}The kubernetes service account to execute the workflow with
-:rtype: Text
-{{< /multiline >}} |
-
 ## flytekit.models.common.EmailNotification
 
 ```python
@@ -176,6 +172,13 @@ class EmailNotification(
 | Parameter | Type | Description |
 |-|-|-|
 | `recipients_email` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `recipients_email` | `None` | :rtype: list[Text] |
 
 ### Methods
 
@@ -219,14 +222,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.common_pb2.EmailNotification
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `recipients_email` |  | {{< multiline >}}:rtype: list[Text]
-{{< /multiline >}} |
-
 ## flytekit.models.common.Envs
 
 ```python
@@ -237,6 +232,13 @@ class Envs(
 | Parameter | Type | Description |
 |-|-|-|
 | `envs` | `typing.Dict[str, str]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `envs` | `None` |  |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -277,27 +279,7 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `envs` |  |  |
-| `is_empty` |  |  |
-
 ## flytekit.models.common.FlyteABCMeta
-
-Metaclass for defining Abstract Base Classes (ABCs).
-
-Use this metaclass to create an ABC.  An ABC can be subclassed
-directly, and then acts as a mix-in class.  You can also register
-unrelated concrete classes (even built-in classes) and unrelated
-ABCs as 'virtual subclasses' -- these and their descendants will
-be considered subclasses of the registering ABC by the built-in
-issubclass() function, but the registering ABC won't show up in
-their MRO (Method Resolution Order) nor will method
-implementations defined by the registering ABC be callable (not
-even via super()).
-
 
 ### Methods
 
@@ -325,6 +307,12 @@ Returns the subclass, to allow usage as a class decorator.
 | `subclass` |  | |
 
 ## flytekit.models.common.FlyteCustomIdlEntity
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -387,13 +375,13 @@ Converts self to a dictionary.
 ```python
 def to_flyte_idl()
 ```
+## flytekit.models.common.FlyteIdlEntity
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `is_empty` |  |  |
-
-## flytekit.models.common.FlyteIdlEntity
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -422,26 +410,7 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-
 ## flytekit.models.common.FlyteType
-
-Metaclass for defining Abstract Base Classes (ABCs).
-
-Use this metaclass to create an ABC.  An ABC can be subclassed
-directly, and then acts as a mix-in class.  You can also register
-unrelated concrete classes (even built-in classes) and unrelated
-ABCs as 'virtual subclasses' -- these and their descendants will
-be considered subclasses of the registering ABC by the built-in
-issubclass() function, but the registering ABC won't show up in
-their MRO (Method Resolution Order) nor will method
-implementations defined by the registering ABC be callable (not
-even via super()).
-
 
 ### Methods
 
@@ -527,6 +496,13 @@ Label values to be applied to a workflow execution resource.
 |-|-|-|
 | `values` |  | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `values` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -569,13 +545,6 @@ def to_flyte_idl()
 :rtype: dict[Text, Text]
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `values` |  |  |
-
 ## flytekit.models.common.NamedEntityIdentifier
 
 ```python
@@ -590,6 +559,15 @@ class NamedEntityIdentifier(
 | `project` |  | |
 | `domain` |  | |
 | `name` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `domain` | `None` | The name of the domain within the project. :rtype: Text |
+| `is_empty` | `None` |  |
+| `name` | `None` | The name of the entity within the namespace of the project and domain. :rtype: Text |
+| `project` | `None` | The name of the project in which this entity lives. :rtype: Text |
 
 ### Methods
 
@@ -634,21 +612,6 @@ Stores object to a Flyte-IDL defined protobuf.
 :rtype: flyteidl.admin.common_pb2.NamedEntityIdentifier
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `domain` |  | {{< multiline >}}The name of the domain within the project.
-:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `name` |  | {{< multiline >}}The name of the entity within the namespace of the project and domain.
-:rtype: Text
-{{< /multiline >}} |
-| `project` |  | {{< multiline >}}The name of the project in which this entity lives.
-:rtype: Text
-{{< /multiline >}} |
-
 ## flytekit.models.common.Notification
 
 ```python
@@ -669,6 +632,16 @@ Represents a structure for notifications based on execution status.
 | `email` | `flytekit.models.common.EmailNotification` | |
 | `pager_duty` | `flytekit.models.common.PagerDutyNotification` | |
 | `slack` | `flytekit.models.common.SlackNotification` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `email` | `None` | :rtype: EmailNotification |
+| `is_empty` | `None` |  |
+| `pager_duty` | `None` | :rtype: PagerDutyNotification |
+| `phases` | `None` | A list of phases to which users can associate the notifications. :rtype: list[int] |
+| `slack` | `None` | :rtype: SlackNotification |
 
 ### Methods
 
@@ -712,21 +685,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.common_pb2.Notification
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `email` |  | {{< multiline >}}:rtype: EmailNotification
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `pager_duty` |  | {{< multiline >}}:rtype: PagerDutyNotification
-{{< /multiline >}} |
-| `phases` |  | {{< multiline >}}A list of phases to which users can associate the notifications.
-:rtype: list[int]
-{{< /multiline >}} |
-| `slack` |  | {{< multiline >}}:rtype: SlackNotification
-{{< /multiline >}} |
-
 ## flytekit.models.common.PagerDutyNotification
 
 ```python
@@ -737,6 +695,13 @@ class PagerDutyNotification(
 | Parameter | Type | Description |
 |-|-|-|
 | `recipients_email` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `recipients_email` | `None` | :rtype: list[Text] |
 
 ### Methods
 
@@ -780,14 +745,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.common_pb2.PagerDutyNotification
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `recipients_email` |  | {{< multiline >}}:rtype: list[Text]
-{{< /multiline >}} |
-
 ## flytekit.models.common.RawOutputDataConfig
 
 ```python
@@ -798,6 +755,13 @@ class RawOutputDataConfig(
 | Parameter | Type | Description |
 |-|-|-|
 | `output_location_prefix` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `output_location_prefix` | `None` |  |
 
 ### Methods
 
@@ -841,13 +805,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.common_pb2.Auth
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `output_location_prefix` |  |  |
-
 ## flytekit.models.common.SlackNotification
 
 ```python
@@ -858,6 +815,13 @@ class SlackNotification(
 | Parameter | Type | Description |
 |-|-|-|
 | `recipients_email` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `recipients_email` | `None` | :rtype: list[Text] |
 
 ### Methods
 
@@ -901,14 +865,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.common_pb2.SlackNotification
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `recipients_email` |  | {{< multiline >}}:rtype: list[Text]
-{{< /multiline >}} |
-
 ## flytekit.models.common.UrlBlob
 
 ```python
@@ -921,6 +877,14 @@ class UrlBlob(
 |-|-|-|
 | `url` |  | |
 | `bytes` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `bytes` | `None` | :rtype: int |
+| `is_empty` | `None` |  |
+| `url` | `None` | :rtype: Text |
 
 ### Methods
 
@@ -963,14 +927,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.common_pb2.UrlBlob
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `bytes` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `url` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
 

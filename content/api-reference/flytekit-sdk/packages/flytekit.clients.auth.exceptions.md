@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.exceptions
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -22,13 +22,16 @@ layout: py_api
 This error is raised with Access token is not found or if Refreshing the token fails
 
 
+
 ## flytekit.clients.auth.exceptions.AuthenticationError
 
 This is raised for any AuthenticationError
 
 
+
 ## flytekit.clients.auth.exceptions.AuthenticationPending
 
 This is raised if the token endpoint returns authentication pending
+
 
 

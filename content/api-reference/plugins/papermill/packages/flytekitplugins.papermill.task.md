@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.papermill.task
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -48,9 +48,9 @@ Loads a FlyteDirectory from a file.
 
 
 
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | path to the file |
 
 #### load_flytefile()
 
@@ -63,9 +63,9 @@ Loads a FlyteFile from a file.
 
 
 
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | path to the file |
 
 #### load_python_val_from_file()
 
@@ -82,10 +82,10 @@ reusing the parameters cell for local development.
 
 
 
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
-| `dtype` | `~T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | path to the file |
+| `dtype` | `~T` | the type of the literal |
 
 #### load_structureddataset()
 
@@ -98,9 +98,9 @@ Loads a StructuredDataset from a file.
 
 
 
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | path to the file |
 
 #### record_outputs()
 
@@ -114,9 +114,9 @@ It will convert all outputs to a Flyte understandable format. For Files, Directo
 FlyteDirectory, or wrap up your paths in these decorators.
 
 
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### save_python_val_to_file()
 
@@ -129,9 +129,9 @@ Save a python value to a local file as a Flyte literal.
 
 
 
-| Parameter | Type |
-|-|-|
-| `input` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `input` | `typing.Any` | the python value |
 
 ## flytekitplugins.papermill.task.NotebookTask
 
@@ -144,7 +144,7 @@ cell. The task will inject the outputs observed from Flyte
 
 Property 2:
 For a notebook that produces outputs, that should be consumed by a subsequent notebook, use the method
-:py:func:`record_outputs` in your notebook after the outputs are ready and pass all outputs.
+{{&lt; py_func_ref record_outputs &gt;}} in your notebook after the outputs are ready and pass all outputs.
 
 Usage:
 
@@ -161,7 +161,7 @@ Usage:
     #cell end
 
 Step 2: Wrap in a task
-Now point to the notebook and create an instance of :py:class:`NotebookTask` as follows
+Now point to the notebook and create an instance of {{&lt; py_class_ref NotebookTask &gt;}} as follows
 
 Usage:
 
@@ -214,6 +214,7 @@ The Task produces 2 implicit outputs.
     Most output types are supported as long as FlyteFile etc is used.
 
 
+
 ```python
 class NotebookTask(
     name: str,
@@ -230,17 +231,44 @@ class NotebookTask(
 Please see class level documentation.
 
 
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `notebook_path` | `str` |
-| `render_deck` | `bool` |
-| `stream_logs` | `bool` |
-| `task_config` | `~T` |
-| `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` |
-| `outputs` | `typing.Optional[typing.Dict[str, typing.Type]]` |
-| `output_notebooks` | `typing.Optional[bool]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `notebook_path` | `str` | |
+| `render_deck` | `bool` | |
+| `stream_logs` | `bool` | |
+| `task_config` | `~T` | |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
+| `outputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
+| `output_notebooks` | `typing.Optional[bool]` | |
+| `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `container_image` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` |  |
+| `notebook_path` | `None` |  |
+| `output_notebook_path` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `rendered_output_path` | `None` |  |
+| `resources` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_resolver` | `None` |  |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -287,11 +315,11 @@ def compile(
 Generates a node that encapsulates this task in a workflow definition.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### construct_node_metadata()
 
@@ -318,10 +346,10 @@ This method is also invoked during runtime.
 * ``DynamicJobSpec`` is returned when a dynamic workflow is executed
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
 #### execute()
 
@@ -336,9 +364,9 @@ TODO: Figure out how to share FlyteContext ExecutionParameters with the notebook
 For Spark, the notebooks today need to use the new_session or just getOrCreate session and get a handle to the singleton
 
 
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### extract_outputs()
 
@@ -351,9 +379,9 @@ Parse Outputs from Notebook.
 This looks for a cell, with the tag "outputs" to be present.
 
 
-| Parameter | Type |
-|-|-|
-| `nb` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `nb` | `str` | |
 
 #### find_lhs()
 
@@ -371,9 +399,9 @@ Returns the command which should be used in the container definition for the ser
 registered on a hosted Flyte platform.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_config()
 
@@ -386,9 +414,9 @@ Returns the task config as a serializable dictionary. This task config consists 
 defined for this task.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_container()
 
@@ -400,9 +428,9 @@ def get_container(
 Returns the container definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_custom()
 
@@ -414,9 +442,9 @@ def get_custom(
 Return additional plugin-specific custom data (if any) as a serializable dictionary.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_default_command()
 
@@ -428,9 +456,9 @@ def get_default_command(
 Returns the default pyflyte-execute command used to run this on hosted Flyte platforms.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_extended_resources()
 
@@ -442,9 +470,9 @@ def get_extended_resources(
 Returns the extended resources to allocate to the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_image()
 
@@ -456,9 +484,9 @@ def get_image(
 Update image spec based on fast registration usage, and return string representing the image
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_input_types()
 
@@ -478,9 +506,9 @@ def get_k8s_pod(
 Returns the kubernetes pod definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_sql()
 
@@ -492,9 +520,9 @@ def get_sql(
 Returns the Sql definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_type_for_input_var()
 
@@ -507,10 +535,10 @@ def get_type_for_input_var(
 Returns the python type for an input variable by name.
 
 
-| Parameter | Type |
-|-|-|
-| `k` | `str` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k` | `str` | |
+| `v` | `typing.Any` | |
 
 #### get_type_for_output_var()
 
@@ -523,10 +551,10 @@ def get_type_for_output_var(
 Returns the python type for the specified output variable by name.
 
 
-| Parameter | Type |
-|-|-|
-| `k` | `str` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k` | `str` | |
+| `v` | `typing.Any` | |
 
 #### local_execute()
 
@@ -541,10 +569,10 @@ Use this function when calling a task with native values (or Promises containing
 Python native values).
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -564,10 +592,10 @@ or alter the outputs to match the intended tasks outputs. If not overridden, the
 
 
 
-| Parameter | Type |
-|-|-|
-| `user_params` | `flytekit.core.context_manager.ExecutionParameters` |
-| `rval` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `user_params` | `flytekit.core.context_manager.ExecutionParameters` | are the modified user params as created during the pre_execute step |
+| `rval` | `typing.Any` | |
 
 #### pre_execute()
 
@@ -584,9 +612,9 @@ setup before the type transformers are called
 This should return either the same context of the mutated context
 
 
-| Parameter | Type |
-|-|-|
-| `user_params` | `flytekit.core.context_manager.ExecutionParameters` |
+| Parameter | Type | Description |
+|-|-|-|
+| `user_params` | `flytekit.core.context_manager.ExecutionParameters` | |
 
 #### render_nb_html()
 
@@ -601,10 +629,10 @@ We are using nbconvert htmlexporter and its classic template
 later about how to customize the exporter further.
 
 
-| Parameter | Type |
-|-|-|
-| `from_nb` | `str` |
-| `to` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `from_nb` | `str` | |
+| `to` | `str` | |
 
 #### reset_command_fn()
 
@@ -626,10 +654,10 @@ def sandbox_execute(
 Call dispatch_execute, in the context of a local sandbox execution. Not invoked during runtime.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
 #### set_command_fn()
 
@@ -643,9 +671,9 @@ However, it can be useful to update the command with which the task is serialize
 running map tasks ("pyflyte-map-execute") or for fast-executed tasks.
 
 
-| Parameter | Type |
-|-|-|
-| `get_command_fn` | `Optional[Callable[[SerializationSettings], List[str]]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `get_command_fn` | `Optional[Callable[[SerializationSettings], List[str]]]` | |
 
 #### set_resolver()
 
@@ -658,40 +686,7 @@ By default, flytekit uses the DefaultTaskResolver to resolve the task. This meth
 task resolver. It can be useful to override the task resolver for specific cases like running tasks in the jupyter notebook.
 
 
-| Parameter | Type |
-|-|-|
-| `resolver` | `TaskResolverMixin` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `container_image` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  |  |
-| `notebook_path` |  |  |
-| `output_notebook_path` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `rendered_output_path` |  |  |
-| `resources` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_resolver` |  |  |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
+| `resolver` | `TaskResolverMixin` | |
 

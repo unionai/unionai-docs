@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.legacy_map_task
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -46,19 +46,19 @@ def map_task(
 )
 ```
 Use a map task for parallelizable tasks that run across a list of an input type. A map task can be composed of
-any individual {{<py_class_ref "flytekit.PythonFunctionTask">}}.
+any individual {{&lt;py_class_ref "flytekit.PythonFunctionTask"&gt;}}.
 
-Invoke a map task with arguments using {{<py_class_ref list>}} version of the expected input.
+Invoke a map task with arguments using {{&lt;py_class_ref list&gt;}} version of the expected input.
 
 Usage:
 
-<!--
+&lt;!--
 .. literalinclude:: ../../../tests/flytekit/unit/core/test_map_task.py
    :start-after: # test_map_task_start
    :end-before: # test_map_task_end
    :language: python
    :dedent: 4
--->
+--&gt;
 
 ```python
 @task
@@ -75,7 +75,7 @@ def my_wf(x: typing.List[int]) -> typing.List[typing.Optional[str]]:
     )(a=x).with_overrides(requests=Resources(cpu="10M"))
 ```
 At run time, the underlying map task will be run for every value in the input collection. Attributes
-such as {{<py_class_ref "flytekit.TaskMetadata">}} and ``with_overrides`` are applied to individual instances
+such as {{&lt;py_class_ref "flytekit.TaskMetadata"&gt;}} and ``with_overrides`` are applied to individual instances
 of the mapped task.
 
 **Map Task Plugins**
@@ -108,8 +108,9 @@ A custom plugin can also be implemented to handle the task type.
 
 ## flytekit.core.legacy_map_task.MapPythonTask
 
-A MapPythonTask defines a {{< py_class_ref flytekit.PythonTask >}} which specifies how to run
-an inner {{< py_class_ref flytekit.PythonFunctionTask >}} across a range of inputs in parallel.
+A MapPythonTask defines a {{&lt; py_class_ref flytekit.PythonTask &gt;}} which specifies how to run
+an inner {{&lt; py_class_ref flytekit.PythonFunctionTask &gt;}} across a range of inputs in parallel.
+
 
 
 ```python
@@ -132,6 +133,29 @@ Wrapper that creates a MapPythonTask
 | `min_success_ratio` | `typing.Optional[float]` | If specified, this determines the minimum fraction of total jobs which can complete successfully before terminating this task and marking it successful |
 | `bound_inputs` | `typing.Optional[typing.Set[str]]` | List[str] specifies a list of variable names within the interface of python_function_task, that are already bound and should not be considered as list inputs, but scalar values. This is mostly useful at runtime and is passed in by MapTaskResolver. This field is not required when a `partial` method is specified. The bound_vars will be auto-deduced from the `partial.keywords`. |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `bound_inputs` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `run_task` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -465,35 +489,6 @@ def set_command_prefix(
 |-|-|-|
 | `cmd` | `typing.Optional[typing.List[str]]` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `bound_inputs` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `run_task` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
-
 ## flytekit.core.legacy_map_task.MapTaskResolver
 
 Special resolver that is used for MapTasks.
@@ -502,7 +497,7 @@ When a maptask is created its interface is interpolated from the interface of th
 simply converts every input into a list/collection input.
 
 For example:
-  interface -> (i: int, j: str) -> str  => map_task interface -> (i: List[int], j: List[str]) -> List[str]
+  interface -&gt; (i: int, j: str) -&gt; str  =&gt; map_task interface -&gt; (i: List[int], j: List[str]) -&gt; List[str]
 
 But in cases in which `j` is bound to a fixed value by using `functools.partial` we need a way to ensure that
 the interface is not simply interpolated, but only the unbound inputs are interpolated.
@@ -518,10 +513,11 @@ print(mt.interface)
 
 output:
 
-        (i: List[int], j: str) -> List[str]
+        (i: List[int], j: str) -&gt; List[str]
 
 But, at runtime this information is lost. To reconstruct this, we use MapTaskResolver that records the "bound vars"
 and then at runtime reconstructs the interface with this knowledge
+
 
 
 ```python
@@ -534,6 +530,14 @@ class MapTaskResolver(
 |-|-|-|
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `instantiated_in` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
 
 ### Methods
 
@@ -611,12 +615,4 @@ Overridable function that can optionally return a custom name for a given task
 | Parameter | Type | Description |
 |-|-|-|
 | `t` | `flytekit.core.base_task.Task` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `instantiated_in` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
 

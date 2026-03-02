@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.project
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -36,6 +36,16 @@ platform.
 | `name` |  | |
 | `description` |  | |
 | `state` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `description` | `None` | A concise description for this project. :rtype: Text |
+| `id` | `None` | A globally unique identifier associated with this project :rtype: Text |
+| `is_empty` | `None` |  |
+| `name` | `None` | A human-readable name for this project. :rtype: Text |
+| `state` | `None` | The state of this project. :rtype: int |
 
 ### Methods
 
@@ -102,22 +112,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.project_pb2.Project
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `description` |  | {{< multiline >}}A concise description for this project.
-:rtype: Text
-{{< /multiline >}} |
-| `id` |  | {{< multiline >}}A globally unique identifier associated with this project
-:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `name` |  | {{< multiline >}}A human-readable name for this project.
-:rtype: Text
-{{< /multiline >}} |
-| `state` |  | {{< multiline >}}The state of this project.
-:rtype: int
-{{< /multiline >}} |
 

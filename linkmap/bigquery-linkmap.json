@@ -1,0 +1,18 @@
+{
+  "packages": {
+    "flytekitplugins.bigquery": "/api-reference/plugins/bigquery/packages/flytekitplugins.bigquery/",
+    "flytekitplugins.bigquery.connector": "/api-reference/plugins/bigquery/packages/flytekitplugins.bigquery.connector/",
+    "flytekitplugins.bigquery.task": "/api-reference/plugins/bigquery/packages/flytekitplugins.bigquery.task/"
+  },
+  "identifiers": {
+    "flytekitplugins.bigquery.connector.BigQueryConnector": "/api-reference/plugins/bigquery/packages/flytekitplugins.bigquery.connector/#flytekitpluginsbigqueryconnectorbigqueryconnector",
+    "BigQueryConnector": "/api-reference/plugins/bigquery/packages/flytekitplugins.bigquery.connector/#flytekitpluginsbigqueryconnectorbigqueryconnector",
+    "flytekitplugins.bigquery.connector.BigQueryMetadata": "/api-reference/plugins/bigquery/packages/flytekitplugins.bigquery.connector/#flytekitpluginsbigqueryconnectorbigquerymetadata",
+    "BigQueryMetadata": "/api-reference/plugins/bigquery/packages/flytekitplugins.bigquery.connector/#flytekitpluginsbigqueryconnectorbigquerymetadata",
+    "flytekitplugins.bigquery.task.BigQueryConfig": "/api-reference/plugins/bigquery/packages/flytekitplugins.bigquery.task/#flytekitpluginsbigquerytaskbigqueryconfig",
+    "BigQueryConfig": "/api-reference/plugins/bigquery/packages/flytekitplugins.bigquery.task/#flytekitpluginsbigquerytaskbigqueryconfig",
+    "flytekitplugins.bigquery.task.BigQueryTask": "/api-reference/plugins/bigquery/packages/flytekitplugins.bigquery.task/#flytekitpluginsbigquerytaskbigquerytask",
+    "BigQueryTask": "/api-reference/plugins/bigquery/packages/flytekitplugins.bigquery.task/#flytekitpluginsbigquerytaskbigquerytask"
+  },
+  "methods": {}
+}

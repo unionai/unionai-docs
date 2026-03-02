@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.token_client
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,7 +14,7 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`DeviceCodeResponse`](.././flytekit.clients.auth.token_client#flytekitclientsauthtoken_clientdevicecoderesponse) | Response from device auth flow endpoint. |
-| [`GrantType`](.././flytekit.clients.auth.token_client#flytekitclientsauthtoken_clientgranttype) | str(object='') -> str. |
+| [`GrantType`](.././flytekit.clients.auth.token_client#flytekitclientsauthtoken_clientgranttype) |  |
 
 ### Methods
 
@@ -150,6 +150,7 @@ Response from device auth flow endpoint
      'interval': 5}
 
 
+
 ```python
 class DeviceCodeResponse(
     device_code: str,
@@ -186,18 +187,6 @@ def from_json_response(
 | `j` | `typing.Dict` | |
 
 ## flytekit.clients.auth.token_client.GrantType
-
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to 'utf-8'.
-errors defaults to 'strict'.
-
 
 ```python
 class GrantType(

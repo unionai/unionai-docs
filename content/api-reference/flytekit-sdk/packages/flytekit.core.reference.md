@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.reference
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -31,18 +31,18 @@ def get_reference_entity(
     outputs: Dict[str, Type],
 )
 ```
-See the documentation for {{< py_class_ref flytekit.reference_task >}} and {{< py_class_ref flytekit.reference_workflow >}} as well.
+See the documentation for {{&lt; py_class_ref flytekit.reference_task &gt;}} and {{&lt; py_class_ref flytekit.reference_workflow &gt;}} as well.
 
 This function is the general form of the two aforementioned functions. It's better for programmatic usage, as
 the interface is passed in as arguments instead of analyzed from type annotations.
 
-<!--
+&lt;!--
 .. literalinclude:: ../../../tests/flytekit/unit/core/test_references.py
    :start-after: # docs_ref_start
    :end-before: # docs_ref_end
    :language: python
    :dedent: 4
--->
+--&gt;
 ```python
 ref_entity = get_reference_entity(
     _identifier_model.ResourceType.WORKFLOW,

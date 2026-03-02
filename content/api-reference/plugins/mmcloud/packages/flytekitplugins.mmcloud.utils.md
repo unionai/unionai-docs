@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.mmcloud.utils
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -39,10 +39,10 @@ def async_check_output(
 This behaves similarly to subprocess.check_output().
 
 
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### flyte_to_mmcloud_resources()
 
@@ -55,22 +55,22 @@ def flyte_to_mmcloud_resources(
 Map Flyte (K8s) resources to MMCloud resources.
 
 
-| Parameter | Type |
-|-|-|
-| `requests` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `limits` | `typing.Optional[flytekit.core.resources.Resources]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `requests` | `typing.Optional[flytekit.core.resources.Resources]` | |
+| `limits` | `typing.Optional[flytekit.core.resources.Resources]` | |
 
 #### mmcloud_status_to_flyte_phase()
 
 ```python
 def mmcloud_status_to_flyte_phase(
     status: str,
-) -> <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x121406390>
+) -> google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper
 ```
 Map MMCloud status to Flyte phase.
 
 
-| Parameter | Type |
-|-|-|
-| `status` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `status` | `str` | |
 

@@ -139,8 +139,6 @@ Union recommends using [Microsoft Entra Workload ID](https://learn.microsoft.com
 
 Ensure your AKS cluster is [enabled as OIDC Issuer](https://learn.microsoft.com/en-us/azure/aks/use-oidc-issuer).
 
-### Backend services
-
 Create a User Assigned Managed Identity with Federated Credentials that map to the following Kubernetes Service Accounts:
 
 **Subject Identifier**
@@ -149,6 +147,7 @@ Create a User Assigned Managed Identity with Federated Credentials that map to t
 - `system:serviceaccount:<NAMESPACE>:flytepropeller-webhook-system`
 - `system:serviceaccount:<NAMESPACE>:operator-system`
 - `system:serviceaccount:<NAMESPACE>:proxy-system`
+- `system:serviceaccount:<NAMESPACE>:executor`
 
 Where `<NAMESPACE>` is where you plan to install the Union operator (`union` by default)
 
@@ -168,6 +167,25 @@ Create a User Assigned Managed Identity with Federated Credentials that map to t
 
 Assign the `Storage Blob Data Owner` role to this Identity at the Storage Account level.
 
+## Azure Key Vault
+Union ships with an embedded secrets manager. Alternatively, you can enable Union to consume secrets from Azure Key Vault adding the following to your Helm values file:
+
+```yaml
+config:
+
+  ## Optional integration with Azure Key Vault secrets manager
+  core:
+    webhook:
+      embeddedSecretManagerConfig:
+        enabled: true
+        type: Azure
+        azureConfig:
+          vaultURI: ""https://kv-myorg-prod.vault.azure.net/" #full key vault URI
+      secretManagerTypes:
+        - Azure
+        - Embedded
+
+```
 ## Node pools
 
 By default, the Union installation request the following resources:

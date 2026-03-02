@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.execution
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -20,11 +20,11 @@ layout: py_api
 | [`ExecutionMetadata`](.././flytekit.models.execution#flytekitmodelsexecutionexecutionmetadata) |  |
 | [`ExecutionSpec`](.././flytekit.models.execution#flytekitmodelsexecutionexecutionspec) |  |
 | [`LiteralMapBlob`](.././flytekit.models.execution#flytekitmodelsexecutionliteralmapblob) |  |
-| [`NodeExecutionGetDataResponse`](.././flytekit.models.execution#flytekitmodelsexecutionnodeexecutiongetdataresponse) | Currently, node, task, and workflow execution all have the same get data response. |
+| [`NodeExecutionGetDataResponse`](.././flytekit.models.execution#flytekitmodelsexecutionnodeexecutiongetdataresponse) |  |
 | [`NotificationList`](.././flytekit.models.execution#flytekitmodelsexecutionnotificationlist) |  |
 | [`SystemMetadata`](.././flytekit.models.execution#flytekitmodelsexecutionsystemmetadata) |  |
-| [`TaskExecutionGetDataResponse`](.././flytekit.models.execution#flytekitmodelsexecutiontaskexecutiongetdataresponse) | Currently, node, task, and workflow execution all have the same get data response. |
-| [`WorkflowExecutionGetDataResponse`](.././flytekit.models.execution#flytekitmodelsexecutionworkflowexecutiongetdataresponse) | Currently, node, task, and workflow execution all have the same get data response. |
+| [`TaskExecutionGetDataResponse`](.././flytekit.models.execution#flytekitmodelsexecutiontaskexecutiongetdataresponse) |  |
+| [`WorkflowExecutionGetDataResponse`](.././flytekit.models.execution#flytekitmodelsexecutionworkflowexecutiongetdataresponse) |  |
 
 ## flytekit.models.execution.AbortMetadata
 
@@ -38,6 +38,14 @@ class AbortMetadata(
 |-|-|-|
 | `cause` | `str` | |
 | `principal` | `str` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cause` | `None` |  |
+| `is_empty` | `None` |  |
+| `principal` | `None` |  |
 
 ### Methods
 
@@ -78,14 +86,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `cause` |  |  |
-| `is_empty` |  |  |
-| `principal` |  |  |
-
 ## flytekit.models.execution.ClusterAssignment
 
 ```python
@@ -96,6 +96,13 @@ class ClusterAssignment(
 | Parameter | Type | Description |
 |-|-|-|
 | `cluster_pool` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cluster_pool` | `None` | :rtype: Text |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -139,14 +146,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin._cluster_assignment_pb2.ClusterAssignment
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `cluster_pool` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-
 ## flytekit.models.execution.Execution
 
 ```python
@@ -161,6 +160,15 @@ class Execution(
 | `id` |  | |
 | `spec` |  | |
 | `closure` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `closure` | `None` | :rtype: ExecutionClosure |
+| `id` | `None` | :rtype: flytekit.models.core.identifier.WorkflowExecutionIdentifier |
+| `is_empty` | `None` |  |
+| `spec` | `None` | :rtype: ExecutionSpec |
 
 ### Methods
 
@@ -204,18 +212,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.execution_pb2.Execution
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `closure` |  | {{< multiline >}}:rtype: ExecutionClosure
-{{< /multiline >}} |
-| `id` |  | {{< multiline >}}:rtype: flytekit.models.core.identifier.WorkflowExecutionIdentifier
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `spec` |  | {{< multiline >}}:rtype: ExecutionSpec
-{{< /multiline >}} |
-
 ## flytekit.models.execution.ExecutionClosure
 
 ```python
@@ -223,7 +219,7 @@ class ExecutionClosure(
     phase: int,
     started_at: datetime.datetime,
     duration: datetime.timedelta,
-    error: typing.Optional[flytekit.models.core.execution.ExecutionError],
+    error: typing.Optional[_core_execution.ExecutionError],
     outputs: typing.Optional[LiteralMapBlob],
     abort_metadata: typing.Optional[AbortMetadata],
     created_at: typing.Optional[datetime.datetime],
@@ -235,11 +231,25 @@ class ExecutionClosure(
 | `phase` | `int` | From the flytekit.models.core.execution.WorkflowExecutionPhase enum |
 | `started_at` | `datetime.datetime` | |
 | `duration` | `datetime.timedelta` | Duration for which the execution has been running. |
-| `error` | `typing.Optional[flytekit.models.core.execution.ExecutionError]` | |
+| `error` | `typing.Optional[_core_execution.ExecutionError]` | |
 | `outputs` | `typing.Optional[LiteralMapBlob]` | |
 | `abort_metadata` | `typing.Optional[AbortMetadata]` | Specifies metadata around an aborted workflow execution. |
 | `created_at` | `typing.Optional[datetime.datetime]` | |
 | `updated_at` | `typing.Optional[datetime.datetime]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `abort_metadata` | `None` |  |
+| `created_at` | `None` |  |
+| `duration` | `None` |  |
+| `error` | `None` |  |
+| `is_empty` | `None` |  |
+| `outputs` | `None` |  |
+| `phase` | `None` | From the flytekit.models.core.execution.WorkflowExecutionPhase enum |
+| `started_at` | `None` |  |
+| `updated_at` | `None` |  |
 
 ### Methods
 
@@ -283,21 +293,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.execution_pb2.ExecutionClosure
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `abort_metadata` |  |  |
-| `created_at` |  |  |
-| `duration` |  |  |
-| `error` |  |  |
-| `is_empty` |  |  |
-| `outputs` |  |  |
-| `phase` |  | {{< multiline >}}From the flytekit.models.core.execution.WorkflowExecutionPhase enum
-{{< /multiline >}} |
-| `started_at` |  |  |
-| `updated_at` |  |  |
-
 ## flytekit.models.execution.ExecutionMetadata
 
 ```python
@@ -320,6 +315,19 @@ class ExecutionMetadata(
 | `parent_node_execution` | `Optional[_identifier.NodeExecutionIdentifier]` | Which subworkflow node (if any) launched this execution |
 | `reference_execution` | `Optional[_identifier.WorkflowExecutionIdentifier]` | Optional, reference workflow execution related to this execution |
 | `system_metadata` | `Optional[SystemMetadata]` | Optional, platform-specific metadata about the execution. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `mode` | `None` | An enum value from ExecutionMetadata.ExecutionMode which specifies how the job started. |
+| `nesting` | `None` | An integer representing how deeply nested the workflow is (i.e. was it triggered by a parent workflow) |
+| `parent_node_execution` | `None` | Which subworkflow node (if any) launched this execution |
+| `principal` | `None` | The entity that triggered the execution |
+| `reference_execution` | `None` | Optional, reference workflow execution related to this execution |
+| `scheduled_at` | `None` | For scheduled executions, the requested time for execution for this specific schedule invocation. |
+| `system_metadata` | `None` | Optional, platform-specific metadata about the execution. |
 
 ### Methods
 
@@ -363,26 +371,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.execution_pb2.ExecutionMetadata
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `mode` |  | {{< multiline >}}An enum value from ExecutionMetadata.ExecutionMode which specifies how the job started.
-{{< /multiline >}} |
-| `nesting` |  | {{< multiline >}}An integer representing how deeply nested the workflow is (i.e. was it triggered by a parent workflow)
-{{< /multiline >}} |
-| `parent_node_execution` |  | {{< multiline >}}Which subworkflow node (if any) launched this execution
-{{< /multiline >}} |
-| `principal` |  | {{< multiline >}}The entity that triggered the execution
-{{< /multiline >}} |
-| `reference_execution` |  | {{< multiline >}}Optional, reference workflow execution related to this execution
-{{< /multiline >}} |
-| `scheduled_at` |  | {{< multiline >}}For scheduled executions, the requested time for execution for this specific schedule invocation.
-{{< /multiline >}} |
-| `system_metadata` |  | {{< multiline >}}Optional, platform-specific metadata about the execution.
-{{< /multiline >}} |
-
 ## flytekit.models.execution.ExecutionSpec
 
 ```python
@@ -423,6 +411,28 @@ class ExecutionSpec(
 | `tags` | `Optional[typing.List[str]]` | Optional list of tags to apply to the execution. |
 | `cluster_assignment` | `Optional[ClusterAssignment]` | |
 | `execution_cluster_label` | `Optional[ExecutionClusterLabel]` | Optional execution cluster label to use for this execution. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `annotations` | `None` | :rtype: flytekit.models.common.Annotations |
+| `auth_role` | `None` | :rtype: flytekit.models.common.AuthRole |
+| `cluster_assignment` | `None` |  |
+| `disable_all` | `None` | :rtype: Optional[bool] |
+| `envs` | `None` |  |
+| `execution_cluster_label` | `None` |  |
+| `interruptible` | `None` |  |
+| `is_empty` | `None` |  |
+| `labels` | `None` | :rtype: flytekit.models.common.Labels |
+| `launch_plan` | `None` | If the values were too large, this is the URI where the values were offloaded. :rtype: flytekit.models.core.identifier.Identifier |
+| `max_parallelism` | `None` |  |
+| `metadata` | `None` | :rtype: ExecutionMetadata |
+| `notifications` | `None` | :rtype: Optional[NotificationList] |
+| `overwrite_cache` | `None` |  |
+| `raw_output_data_config` | `None` | :rtype: flytekit.models.common.RawOutputDataConfig |
+| `security_context` | `None` |  |
+| `tags` | `None` |  |
 
 ### Methods
 
@@ -466,37 +476,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.execution_pb2.ExecutionSpec
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `annotations` |  | {{< multiline >}}:rtype: flytekit.models.common.Annotations
-{{< /multiline >}} |
-| `auth_role` |  | {{< multiline >}}:rtype: flytekit.models.common.AuthRole
-{{< /multiline >}} |
-| `cluster_assignment` |  |  |
-| `disable_all` |  | {{< multiline >}}:rtype: Optional[bool]
-{{< /multiline >}} |
-| `envs` |  |  |
-| `execution_cluster_label` |  |  |
-| `interruptible` |  |  |
-| `is_empty` |  |  |
-| `labels` |  | {{< multiline >}}:rtype: flytekit.models.common.Labels
-{{< /multiline >}} |
-| `launch_plan` |  | {{< multiline >}}If the values were too large, this is the URI where the values were offloaded.
-:rtype: flytekit.models.core.identifier.Identifier
-{{< /multiline >}} |
-| `max_parallelism` |  |  |
-| `metadata` |  | {{< multiline >}}:rtype: ExecutionMetadata
-{{< /multiline >}} |
-| `notifications` |  | {{< multiline >}}:rtype: Optional[NotificationList]
-{{< /multiline >}} |
-| `overwrite_cache` |  |  |
-| `raw_output_data_config` |  | {{< multiline >}}:rtype: flytekit.models.common.RawOutputDataConfig
-{{< /multiline >}} |
-| `security_context` |  |  |
-| `tags` |  |  |
-
 ## flytekit.models.execution.LiteralMapBlob
 
 ```python
@@ -509,6 +488,14 @@ class LiteralMapBlob(
 |-|-|-|
 | `values` |  | |
 | `uri` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `uri` | `None` | :rtype: Text |
+| `values` | `None` | :rtype: flytekit.models.literals.LiteralMap |
 
 ### Methods
 
@@ -552,21 +539,7 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.execution_pb2.LiteralMapBlob
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `uri` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `values` |  | {{< multiline >}}:rtype: flytekit.models.literals.LiteralMap
-{{< /multiline >}} |
-
 ## flytekit.models.execution.NodeExecutionGetDataResponse
-
-Currently, node, task, and workflow execution all have the same get data response. So we'll create this common
-superclass to reduce code duplication until things diverge in the future.
-
 
 ```python
 class NodeExecutionGetDataResponse(
@@ -580,6 +553,17 @@ class NodeExecutionGetDataResponse(
 | `args` | `*args` | |
 | `dynamic_workflow` | `typing.Optional[DynamicWorkflowNodeMetadata]` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `dynamic_workflow` | `None` |  |
+| `full_inputs` | `None` | :rtype: _literals_models.LiteralMap |
+| `full_outputs` | `None` | :rtype: _literals_models.LiteralMap |
+| `inputs` | `None` | :rtype: _common_models.UrlBlob |
+| `is_empty` | `None` |  |
+| `outputs` | `None` | :rtype: _common_models.UrlBlob |
 
 ### Methods
 
@@ -623,21 +607,6 @@ def to_flyte_idl()
 :rtype: _node_execution_pb2.NodeExecutionGetDataResponse
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `dynamic_workflow` |  |  |
-| `full_inputs` |  | {{< multiline >}}:rtype: _literals_models.LiteralMap
-{{< /multiline >}} |
-| `full_outputs` |  | {{< multiline >}}:rtype: _literals_models.LiteralMap
-{{< /multiline >}} |
-| `inputs` |  | {{< multiline >}}:rtype: _common_models.UrlBlob
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `outputs` |  | {{< multiline >}}:rtype: _common_models.UrlBlob
-{{< /multiline >}} |
-
 ## flytekit.models.execution.NotificationList
 
 ```python
@@ -648,6 +617,13 @@ class NotificationList(
 | Parameter | Type | Description |
 |-|-|-|
 | `notifications` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `notifications` | `None` | :rtype: list[flytekit.models.common.Notification] |
 
 ### Methods
 
@@ -691,14 +667,6 @@ def to_flyte_idl()
 :rtype:  flyteidl.admin.execution_pb2.NotificationList
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `notifications` |  | {{< multiline >}}:rtype: list[flytekit.models.common.Notification]
-{{< /multiline >}} |
-
 ## flytekit.models.execution.SystemMetadata
 
 ```python
@@ -709,6 +677,13 @@ class SystemMetadata(
 | Parameter | Type | Description |
 |-|-|-|
 | `execution_cluster` | `str` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `execution_cluster` | `None` |  |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -749,18 +724,7 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `execution_cluster` |  |  |
-| `is_empty` |  |  |
-
 ## flytekit.models.execution.TaskExecutionGetDataResponse
-
-Currently, node, task, and workflow execution all have the same get data response. So we'll create this common
-superclass to reduce code duplication until things diverge in the future.
-
 
 ```python
 class TaskExecutionGetDataResponse(
@@ -776,6 +740,16 @@ class TaskExecutionGetDataResponse(
 | `outputs` |  | |
 | `full_inputs` |  | |
 | `full_outputs` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `full_inputs` | `None` | :rtype: _literals_models.LiteralMap |
+| `full_outputs` | `None` | :rtype: _literals_models.LiteralMap |
+| `inputs` | `None` | :rtype: _common_models.UrlBlob |
+| `is_empty` | `None` |  |
+| `outputs` | `None` | :rtype: _common_models.UrlBlob |
 
 ### Methods
 
@@ -819,25 +793,7 @@ def to_flyte_idl()
 :rtype: _task_execution_pb2.TaskExecutionGetDataResponse
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `full_inputs` |  | {{< multiline >}}:rtype: _literals_models.LiteralMap
-{{< /multiline >}} |
-| `full_outputs` |  | {{< multiline >}}:rtype: _literals_models.LiteralMap
-{{< /multiline >}} |
-| `inputs` |  | {{< multiline >}}:rtype: _common_models.UrlBlob
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `outputs` |  | {{< multiline >}}:rtype: _common_models.UrlBlob
-{{< /multiline >}} |
-
 ## flytekit.models.execution.WorkflowExecutionGetDataResponse
-
-Currently, node, task, and workflow execution all have the same get data response. So we'll create this common
-superclass to reduce code duplication until things diverge in the future.
-
 
 ```python
 class WorkflowExecutionGetDataResponse(
@@ -853,6 +809,16 @@ class WorkflowExecutionGetDataResponse(
 | `outputs` |  | |
 | `full_inputs` |  | |
 | `full_outputs` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `full_inputs` | `None` | :rtype: _literals_models.LiteralMap |
+| `full_outputs` | `None` | :rtype: _literals_models.LiteralMap |
+| `inputs` | `None` | :rtype: _common_models.UrlBlob |
+| `is_empty` | `None` |  |
+| `outputs` | `None` | :rtype: _common_models.UrlBlob |
 
 ### Methods
 
@@ -895,18 +861,4 @@ def to_flyte_idl()
 ```
 :rtype: _execution_pb2.WorkflowExecutionGetDataResponse
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `full_inputs` |  | {{< multiline >}}:rtype: _literals_models.LiteralMap
-{{< /multiline >}} |
-| `full_outputs` |  | {{< multiline >}}:rtype: _literals_models.LiteralMap
-{{< /multiline >}} |
-| `inputs` |  | {{< multiline >}}:rtype: _common_models.UrlBlob
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `outputs` |  | {{< multiline >}}:rtype: _common_models.UrlBlob
-{{< /multiline >}} |
 

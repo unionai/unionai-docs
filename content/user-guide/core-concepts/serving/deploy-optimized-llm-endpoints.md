@@ -12,7 +12,7 @@ designed to reduce cold start times and provide efficient model serving
 capabilities.
 
 For information on how to cache models from HuggingFace Hub as Union Artifacts,
-see the [Cache a HuggingFace Model as an Artifact](cache-huggingface-model.md) guide.
+see the [Cache a HuggingFace Model as an Artifact](./cache-huggingface-model) guide.
 
 ## Overview
 
@@ -27,14 +27,14 @@ By default, both classes provide:
 - **Fast model loading** by streaming model weights directly from blob storage to GPU memory.
 - **Distributed inference** with options for shared memory and tensor parallelism.
 
-You can also serve models with other frameworks like [FastAPI](./serving-a-model.md), but doing so would require more
+You can also serve models with other frameworks like [FastAPI](./serving-a-model), but doing so would require more
 effort to achieve high performance, whereas vLLM and SGLang provide highly performant LLM endpoints out of the box.
 
 ## Basic Example: Deploy a Non-Sharded Model
 
 ### Deploy with vLLM
 
-Assuming that you have followed the guide to [cache models from huggingface](cache-huggingface-model.md)
+Assuming that you have followed the guide to [cache models from huggingface](./cache-huggingface-model)
 and have a model artifact named `qwen2-5-0-5b-instruct`, you can deploy a simple LLM endpoint with the following code:
 
 ```python

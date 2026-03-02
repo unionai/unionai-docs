@@ -1,0 +1,26 @@
+{
+  "packages": {
+    "flytekitplugins.mmcloud": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud/",
+    "flytekitplugins.mmcloud.connector": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.connector/",
+    "flytekitplugins.mmcloud.task": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.task/",
+    "flytekitplugins.mmcloud.utils": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.utils/"
+  },
+  "identifiers": {
+    "flytekitplugins.mmcloud.connector.MMCloudConnector": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.connector/#flytekitpluginsmmcloudconnectormmcloudconnector",
+    "MMCloudConnector": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.connector/#flytekitpluginsmmcloudconnectormmcloudconnector",
+    "flytekitplugins.mmcloud.connector.MMCloudMetadata": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.connector/#flytekitpluginsmmcloudconnectormmcloudmetadata",
+    "MMCloudMetadata": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.connector/#flytekitpluginsmmcloudconnectormmcloudmetadata",
+    "flytekitplugins.mmcloud.task.MMCloudConfig": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.task/#flytekitpluginsmmcloudtaskmmcloudconfig",
+    "MMCloudConfig": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.task/#flytekitpluginsmmcloudtaskmmcloudconfig",
+    "flytekitplugins.mmcloud.task.MMCloudTask": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.task/#flytekitpluginsmmcloudtaskmmcloudtask",
+    "MMCloudTask": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.task/#flytekitpluginsmmcloudtaskmmcloudtask"
+  },
+  "methods": {
+    "flytekitplugins.mmcloud.utils.async_check_output": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.utils/#async_check_output",
+    "async_check_output": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.utils/#async_check_output",
+    "flytekitplugins.mmcloud.utils.flyte_to_mmcloud_resources": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.utils/#flyte_to_mmcloud_resources",
+    "flyte_to_mmcloud_resources": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.utils/#flyte_to_mmcloud_resources",
+    "flytekitplugins.mmcloud.utils.mmcloud_status_to_flyte_phase": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.utils/#mmcloud_status_to_flyte_phase",
+    "mmcloud_status_to_flyte_phase": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.utils/#mmcloud_status_to_flyte_phase"
+  }
+}

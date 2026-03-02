@@ -1,0 +1,10 @@
+{
+  "packages": {
+    "flytekitplugins.memray": "/api-reference/plugins/memray/packages/flytekitplugins.memray/"
+  },
+  "identifiers": {
+    "flytekitplugins.memray.memray_profiling": "/api-reference/plugins/memray/packages/flytekitplugins.memray/#flytekitpluginsmemraymemray_profiling",
+    "memray_profiling": "/api-reference/plugins/memray/packages/flytekitplugins.memray/#flytekitpluginsmemraymemray_profiling"
+  },
+  "methods": {}
+}

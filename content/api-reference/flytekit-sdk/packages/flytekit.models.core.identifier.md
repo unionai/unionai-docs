@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.identifier
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -38,6 +38,17 @@ class Identifier(
 | `domain` |  | |
 | `name` |  | |
 | `version` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `domain` | `None` | :rtype: Text |
+| `is_empty` | `None` |  |
+| `name` | `None` | :rtype: Text |
+| `project` | `None` | :rtype: Text |
+| `resource_type` | `None` | enum value from ResourceType :rtype: int |
+| `version` | `None` | :rtype: Text |
 
 ### Methods
 
@@ -87,23 +98,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.identifier_pb2.Identifier
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `domain` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `name` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `project` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `resource_type` |  | {{< multiline >}}enum value from ResourceType
-:rtype: int
-{{< /multiline >}} |
-| `version` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-
 ## flytekit.models.core.identifier.NodeExecutionIdentifier
 
 ```python
@@ -116,6 +110,14 @@ class NodeExecutionIdentifier(
 |-|-|-|
 | `node_id` |  | |
 | `execution_id` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `execution_id` | `None` | :rtype: WorkflowExecutionIdentifier |
+| `is_empty` | `None` |  |
+| `node_id` | `None` | :rtype: Text |
 
 ### Methods
 
@@ -159,16 +161,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.identifier_pb2.NodeExecutionIdentifier
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `execution_id` |  | {{< multiline >}}:rtype: WorkflowExecutionIdentifier
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `node_id` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-
 ## flytekit.models.core.identifier.ResourceType
 
 ## flytekit.models.core.identifier.SignalIdentifier
@@ -183,6 +175,14 @@ class SignalIdentifier(
 |-|-|-|
 | `signal_id` | `str` | User provided name for the gate node. |
 | `execution_id` | `flytekit.models.core.identifier.WorkflowExecutionIdentifier` | The workflow execution id this signal is for. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `execution_id` | `None` |  |
+| `is_empty` | `None` |  |
+| `signal_id` | `None` |  |
 
 ### Methods
 
@@ -223,14 +223,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `execution_id` |  |  |
-| `is_empty` |  |  |
-| `signal_id` |  |  |
-
 ## flytekit.models.core.identifier.TaskExecutionIdentifier
 
 ```python
@@ -245,6 +237,15 @@ class TaskExecutionIdentifier(
 | `task_id` |  | |
 | `node_execution_id` |  | |
 | `retry_attempt` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `node_execution_id` | `None` | :rtype: NodeExecutionIdentifier |
+| `retry_attempt` | `None` | :rtype: int |
+| `task_id` | `None` | :rtype: Identifier |
 
 ### Methods
 
@@ -288,18 +289,6 @@ def to_flyte_idl()
 :rtype: flyteidl.core.identifier_pb2.TaskExecutionIdentifier
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `node_execution_id` |  | {{< multiline >}}:rtype: NodeExecutionIdentifier
-{{< /multiline >}} |
-| `retry_attempt` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `task_id` |  | {{< multiline >}}:rtype: Identifier
-{{< /multiline >}} |
-
 ## flytekit.models.core.identifier.WorkflowExecutionIdentifier
 
 ```python
@@ -314,6 +303,15 @@ class WorkflowExecutionIdentifier(
 | `project` |  | |
 | `domain` |  | |
 | `name` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `domain` | `None` | :rtype: Text |
+| `is_empty` | `None` |  |
+| `name` | `None` | :rtype: Text |
+| `project` | `None` | :rtype: Text |
 
 ### Methods
 
@@ -356,16 +354,4 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.core.identifier_pb2.WorkflowExecutionIdentifier
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `domain` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `name` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `project` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.schema.types
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,15 +14,15 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`FlyteSchema`](.././flytekit.types.schema.types#flytekittypesschematypesflyteschema) |  |
-| [`FlyteSchemaTransformer`](.././flytekit.types.schema.types#flytekittypesschematypesflyteschematransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
-| [`LocalIOSchemaReader`](.././flytekit.types.schema.types#flytekittypesschematypeslocalioschemareader) | Base SchemaReader to handle any readers (that can manage their own IO or otherwise). |
-| [`LocalIOSchemaWriter`](.././flytekit.types.schema.types#flytekittypesschematypeslocalioschemawriter) | Abstract base class for generic types. |
+| [`FlyteSchemaTransformer`](.././flytekit.types.schema.types#flytekittypesschematypesflyteschematransformer) |  |
+| [`LocalIOSchemaReader`](.././flytekit.types.schema.types#flytekittypesschematypeslocalioschemareader) |  |
+| [`LocalIOSchemaWriter`](.././flytekit.types.schema.types#flytekittypesschematypeslocalioschemawriter) |  |
 | [`SchemaEngine`](.././flytekit.types.schema.types#flytekittypesschematypesschemaengine) | This is the core Engine that handles all schema sub-systems. |
 | [`SchemaFormat`](.././flytekit.types.schema.types#flytekittypesschematypesschemaformat) | Represents the schema storage format (at rest). |
 | [`SchemaHandler`](.././flytekit.types.schema.types#flytekittypesschematypesschemahandler) |  |
-| [`SchemaOpenMode`](.././flytekit.types.schema.types#flytekittypesschematypesschemaopenmode) | Create a collection of name/value pairs. |
+| [`SchemaOpenMode`](.././flytekit.types.schema.types#flytekittypesschematypesschemaopenmode) |  |
 | [`SchemaReader`](.././flytekit.types.schema.types#flytekittypesschematypesschemareader) | Base SchemaReader to handle any readers (that can manage their own IO or otherwise). |
-| [`SchemaWriter`](.././flytekit.types.schema.types#flytekittypesschematypesschemawriter) | Abstract base class for generic types. |
+| [`SchemaWriter`](.././flytekit.types.schema.types#flytekittypesschematypesschemawriter) |  |
 
 ### Methods
 
@@ -69,6 +69,13 @@ class FlyteSchema(
 | `remote_path` | `typing.Optional[str]` | |
 | `supported_mode` | `SchemaOpenMode` | |
 | `downloader` | `typing.Optional[typing.Callable]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `local_path` | `None` |  |
+| `supported_mode` | `None` |  |
 
 ### Methods
 
@@ -189,21 +196,20 @@ def to_json(
 | `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` | |
 | `to_dict_kwargs` | `typing.Any` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `local_path` |  |  |
-| `supported_mode` |  |  |
-
 ## flytekit.types.schema.types.FlyteSchemaTransformer
-
-Base transformer type that should be implemented for every python native type that can be handled by flytekit
-
 
 ```python
 def FlyteSchemaTransformer()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ### Methods
 
 | Method | Description |
@@ -300,7 +306,7 @@ def from_binary_idl(
 If the input is from flytekit, the Life Cycle will be as follows:
 
 Life Cycle:
-binary IDL                 -> resolved binary         -> bytes                   -> expected Python object
+binary IDL                 -&gt; resolved binary         -&gt; bytes                   -&gt; expected Python object
 (flytekit customized          (propeller processing)     (flytekit binary IDL)      (flytekit customized
 serialization)                                                                       deserialization)
 
@@ -337,7 +343,7 @@ def from_generic_idl(
 If the input is from Flyte Console, the Life Cycle will be as follows:
 
 Life Cycle:
-json str            -> protobuf struct         -> resolved protobuf struct   -> expected Python object
+json str            -&gt; protobuf struct         -&gt; resolved protobuf struct   -&gt; expected Python object
 (console user input)   (console output)           (propeller)                   (flytekit customized deserialization)
 
 Example Code:
@@ -462,22 +468,7 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 | `lv` | `Literal` | The received literal Value |
 | `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
-
 ## flytekit.types.schema.types.LocalIOSchemaReader
-
-Base SchemaReader to handle any readers (that can manage their own IO or otherwise)
-Use the simplified base LocalIOSchemaReader for non distributed dataframes
-
 
 ```python
 class LocalIOSchemaReader(
@@ -491,6 +482,13 @@ class LocalIOSchemaReader(
 | `from_path` | `str` | |
 | `cols` | `typing.Optional[typing.Dict[str, type]]` | |
 | `fmt` | `SchemaFormat` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `column_names` | `None` |  |
+| `from_path` | `None` |  |
 
 ### Methods
 
@@ -522,37 +520,7 @@ def iter(
 |-|-|-|
 | `kwargs` | `**kwargs` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `column_names` |  |  |
-| `from_path` |  |  |
-
 ## flytekit.types.schema.types.LocalIOSchemaWriter
-
-Abstract base class for generic types.
-
-On Python 3.12 and newer, generic classes implicitly inherit from
-Generic when they declare a parameter list after the class's name::
-
-    class Mapping[KT, VT]:
-        def __getitem__(self, key: KT) -> VT:
-            ...
-        # Etc.
-
-On older versions of Python, however, generic classes have to
-explicitly inherit from Generic.
-
-After a class has been declared to be generic, it can then be used as
-follows::
-
-    def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:
-        try:
-            return mapping[key]
-        except KeyError:
-            return default
-
 
 ```python
 class LocalIOSchemaWriter(
@@ -566,6 +534,13 @@ class LocalIOSchemaWriter(
 | `to_local_path` | `str` | |
 | `cols` | `typing.Optional[typing.Dict[str, type]]` | |
 | `fmt` | `SchemaFormat` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `column_names` | `None` |  |
+| `to_path` | `None` |  |
 
 ### Methods
 
@@ -587,18 +562,12 @@ def write(
 | `dfs` |  | |
 | `kwargs` | `**kwargs` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `column_names` |  |  |
-| `to_path` |  |  |
-
 ## flytekit.types.schema.types.SchemaEngine
 
 This is the core Engine that handles all schema sub-systems. All schema types needs to be registered with this
 to allow direct support for that type in FlyteSchema.
 e.g. of possible supported types are Pandas.DataFrame, Spark.DataFrame, Vaex.DataFrame, etc.
+
 
 
 ### Methods
@@ -640,6 +609,7 @@ Represents the schema storage format (at rest).
 Currently only parquet is supported
 
 
+
 ## flytekit.types.schema.types.SchemaHandler
 
 ```python
@@ -661,48 +631,11 @@ class SchemaHandler(
 
 ## flytekit.types.schema.types.SchemaOpenMode
 
-Create a collection of name/value pairs.
-
-Example enumeration:
-
->>> class Color(Enum):
-...     RED = 1
-...     BLUE = 2
-...     GREEN = 3
-
-Access them by:
-
-- attribute access:
-
-  >>> Color.RED
-  <Color.RED: 1>
-
-- value lookup:
-
-  >>> Color(1)
-  <Color.RED: 1>
-
-- name lookup:
-
-  >>> Color['RED']
-  <Color.RED: 1>
-
-Enumerations can be iterated over, and know how many members they have:
-
->>> len(Color)
-3
-
->>> list(Color)
-[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]
-
-Methods can be added to enumerations, and members can have their own
-attributes -- see the documentation for details.
-
-
 ## flytekit.types.schema.types.SchemaReader
 
 Base SchemaReader to handle any readers (that can manage their own IO or otherwise)
 Use the simplified base LocalIOSchemaReader for non distributed dataframes
+
 
 
 ```python
@@ -717,6 +650,13 @@ class SchemaReader(
 | `from_path` | `str` | |
 | `cols` | `typing.Optional[typing.Dict[str, type]]` | |
 | `fmt` | `SchemaFormat` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `column_names` | `None` |  |
+| `from_path` | `None` |  |
 
 ### Methods
 
@@ -748,37 +688,7 @@ def iter(
 |-|-|-|
 | `kwargs` | `**kwargs` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `column_names` |  |  |
-| `from_path` |  |  |
-
 ## flytekit.types.schema.types.SchemaWriter
-
-Abstract base class for generic types.
-
-On Python 3.12 and newer, generic classes implicitly inherit from
-Generic when they declare a parameter list after the class's name::
-
-    class Mapping[KT, VT]:
-        def __getitem__(self, key: KT) -> VT:
-            ...
-        # Etc.
-
-On older versions of Python, however, generic classes have to
-explicitly inherit from Generic.
-
-After a class has been declared to be generic, it can then be used as
-follows::
-
-    def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:
-        try:
-            return mapping[key]
-        except KeyError:
-            return default
-
 
 ```python
 class SchemaWriter(
@@ -792,6 +702,13 @@ class SchemaWriter(
 | `to_path` | `str` | |
 | `cols` | `typing.Optional[typing.Dict[str, type]]` | |
 | `fmt` | `SchemaFormat` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `column_names` | `None` |  |
+| `to_path` | `None` |  |
 
 ### Methods
 
@@ -812,11 +729,4 @@ def write(
 |-|-|-|
 | `dfs` |  | |
 | `kwargs` | `**kwargs` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `column_names` |  |  |
-| `to_path` |  |  |
 

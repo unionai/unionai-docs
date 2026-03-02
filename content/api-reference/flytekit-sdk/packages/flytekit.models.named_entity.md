@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.named_entity
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -31,6 +31,15 @@ class NamedEntityIdentifier(
 | `project` |  | |
 | `domain` |  | |
 | `name` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `domain` | `None` | :rtype: Text |
+| `is_empty` | `None` |  |
+| `name` | `None` | :rtype: Text |
+| `project` | `None` | :rtype: Text |
 
 ### Methods
 
@@ -74,18 +83,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.common_pb2.NamedEntityIdentifier
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `domain` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `name` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `project` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-
 ## flytekit.models.named_entity.NamedEntityMetadata
 
 ```python
@@ -98,6 +95,14 @@ class NamedEntityMetadata(
 |-|-|-|
 | `description` |  | |
 | `state` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `description` | `None` | :rtype: Text |
+| `is_empty` | `None` |  |
+| `state` | `None` | enum value from NamedEntityState :rtype: int |
 
 ### Methods
 
@@ -140,17 +145,6 @@ def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.common_pb2.NamedEntityMetadata
 
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `description` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `state` |  | {{< multiline >}}enum value from NamedEntityState
-:rtype: int
-{{< /multiline >}} |
 
 ## flytekit.models.named_entity.NamedEntityState
 

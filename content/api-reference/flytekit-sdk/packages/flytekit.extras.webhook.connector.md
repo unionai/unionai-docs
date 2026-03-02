@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.webhook.connector
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -44,7 +44,13 @@ class WebhookConnector(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `client` | `typing.Optional[httpx.AsyncClient]` | |
+| `client` | `typing.Optional[httpx.AsyncClient]` | An optional HTTP client to use for sending requests. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `task_category` | `None` | task category that the connector supports |
 
 ### Methods
 
@@ -74,11 +80,4 @@ It uses asyncio to send the request and process the response using the httpx lib
 | `output_prefix` | `str` | |
 | `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` | |
 | `kwargs` | `**kwargs` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `task_category` |  | {{< multiline >}}task category that the connector supports
-{{< /multiline >}} |
 

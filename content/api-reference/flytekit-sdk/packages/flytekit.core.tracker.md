@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.tracker
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -147,7 +147,7 @@ def isnested(
 ```
 Returns true if a function is local to another function and is not accessible through a module
 
-This would essentially be any function with a `.<local>.` (defined within a function) e.g.
+This would essentially be any function with a `.&lt;local&gt;.` (defined within a function) e.g.
 
 ```python
 def foo():
@@ -190,16 +190,18 @@ caused the instance to be created. This is useful because it means that we can t
 variable that the instance was assigned to.
 
 
+
 ## flytekit.core.tracker.TrackedInstance
 
 Please see the notes for the metaclass above first.
 
 This functionality has two use-cases currently,
 * Keep track of naming for non-function ``PythonAutoContainerTasks``.  That is, things like the
-  {{< py_class_ref flytekit.extras.sqlite3.task.SQLite3Task >}} task.
-* Task resolvers, because task resolvers are instances of {{< py_class_ref flytekit.core.python_auto_container.TaskResolverMixin >}}
+  {{&lt; py_class_ref flytekit.extras.sqlite3.task.SQLite3Task &gt;}} task.
+* Task resolvers, because task resolvers are instances of {{&lt; py_class_ref flytekit.core.python_auto_container.TaskResolverMixin &gt;}}
   classes, not the classes themselves, which means we need to look on the left hand side of them to see how to
   find them at task execution time.
+
 
 
 ```python
@@ -213,6 +215,14 @@ class TrackedInstance(
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `instantiated_in` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -225,11 +235,3 @@ class TrackedInstance(
 ```python
 def find_lhs()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `instantiated_in` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-

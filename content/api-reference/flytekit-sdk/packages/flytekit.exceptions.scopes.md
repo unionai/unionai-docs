@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.scopes
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,9 +13,9 @@ layout: py_api
 
 | Exception | Description |
 |-|-|
-| [`FlyteScopedException`](.././flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopedexception) | Common base class for all non-exit exceptions. |
-| [`FlyteScopedSystemException`](.././flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopedsystemexception) | Common base class for all non-exit exceptions. |
-| [`FlyteScopedUserException`](.././flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopeduserexception) | Common base class for all non-exit exceptions. |
+| [`FlyteScopedException`](.././flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopedexception) |  |
+| [`FlyteScopedSystemException`](.././flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopedsystemexception) |  |
+| [`FlyteScopedUserException`](.././flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopeduserexception) |  |
 
 ### Methods
 
@@ -84,9 +84,6 @@ to the user.
 
 ## flytekit.exceptions.scopes.FlyteScopedException
 
-Common base class for all non-exit exceptions.
-
-
 ```python
 class FlyteScopedException(
     context,
@@ -112,19 +109,14 @@ class FlyteScopedException(
 
 | Property | Type | Description |
 |-|-|-|
-| `error_code` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `kind` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `traceback` |  |  |
-| `type` |  |  |
-| `value` |  |  |
-| `verbose_message` |  |  |
+| `error_code` | `None` | :rtype: Text |
+| `kind` | `None` | :rtype: int |
+| `traceback` | `None` |  |
+| `type` | `None` |  |
+| `value` | `None` |  |
+| `verbose_message` | `None` |  |
 
 ## flytekit.exceptions.scopes.FlyteScopedSystemException
-
-Common base class for all non-exit exceptions.
-
 
 ```python
 class FlyteScopedSystemException(
@@ -145,20 +137,14 @@ class FlyteScopedSystemException(
 
 | Property | Type | Description |
 |-|-|-|
-| `error_code` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `kind` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `traceback` |  |  |
-| `type` |  |  |
-| `value` |  |  |
-| `verbose_message` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
+| `error_code` | `None` | :rtype: Text |
+| `kind` | `None` | :rtype: int |
+| `traceback` | `None` |  |
+| `type` | `None` |  |
+| `value` | `None` |  |
+| `verbose_message` | `None` | :rtype: Text |
 
 ## flytekit.exceptions.scopes.FlyteScopedUserException
-
-Common base class for all non-exit exceptions.
-
 
 ```python
 class FlyteScopedUserException(
@@ -179,13 +165,10 @@ class FlyteScopedUserException(
 
 | Property | Type | Description |
 |-|-|-|
-| `error_code` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `kind` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `traceback` |  |  |
-| `type` |  |  |
-| `value` |  |  |
-| `verbose_message` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
+| `error_code` | `None` | :rtype: Text |
+| `kind` | `None` | :rtype: int |
+| `traceback` | `None` |  |
+| `type` | `None` |  |
+| `value` | `None` |  |
+| `verbose_message` | `None` | :rtype: Text |
 

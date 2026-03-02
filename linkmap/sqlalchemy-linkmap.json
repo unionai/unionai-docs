@@ -1,0 +1,17 @@
+{
+  "packages": {
+    "flytekitplugins.sqlalchemy": "/api-reference/plugins/sqlalchemy/packages/flytekitplugins.sqlalchemy/",
+    "flytekitplugins.sqlalchemy.task": "/api-reference/plugins/sqlalchemy/packages/flytekitplugins.sqlalchemy.task/"
+  },
+  "identifiers": {
+    "flytekitplugins.sqlalchemy.task.SQLAlchemyConfig": "/api-reference/plugins/sqlalchemy/packages/flytekitplugins.sqlalchemy.task/#flytekitpluginssqlalchemytasksqlalchemyconfig",
+    "SQLAlchemyConfig": "/api-reference/plugins/sqlalchemy/packages/flytekitplugins.sqlalchemy.task/#flytekitpluginssqlalchemytasksqlalchemyconfig",
+    "flytekitplugins.sqlalchemy.task.SQLAlchemyDefaultImages": "/api-reference/plugins/sqlalchemy/packages/flytekitplugins.sqlalchemy.task/#flytekitpluginssqlalchemytasksqlalchemydefaultimages",
+    "SQLAlchemyDefaultImages": "/api-reference/plugins/sqlalchemy/packages/flytekitplugins.sqlalchemy.task/#flytekitpluginssqlalchemytasksqlalchemydefaultimages",
+    "flytekitplugins.sqlalchemy.task.SQLAlchemyTask": "/api-reference/plugins/sqlalchemy/packages/flytekitplugins.sqlalchemy.task/#flytekitpluginssqlalchemytasksqlalchemytask",
+    "SQLAlchemyTask": "/api-reference/plugins/sqlalchemy/packages/flytekitplugins.sqlalchemy.task/#flytekitpluginssqlalchemytasksqlalchemytask",
+    "flytekitplugins.sqlalchemy.task.SQLAlchemyTaskExecutor": "/api-reference/plugins/sqlalchemy/packages/flytekitplugins.sqlalchemy.task/#flytekitpluginssqlalchemytasksqlalchemytaskexecutor",
+    "SQLAlchemyTaskExecutor": "/api-reference/plugins/sqlalchemy/packages/flytekitplugins.sqlalchemy.task/#flytekitpluginssqlalchemytasksqlalchemytaskexecutor"
+  },
+  "methods": {}
+}

@@ -8,7 +8,7 @@ variants: -flyte -serverless +byoc -selfmanaged
 
 > [!NOTE]
 > This documentation is for customers who must use AWS Secrets Manager for organizational reasons. For everyone else, we strongly recommend using the
-> [{{< key product_name >}} secrets manager](../../user-guide/development-cycle/managing-secrets) to manage secrets rather than AWS Secrets Manager.
+> [{{< key product_name >}} secrets manager](../../user-guide/task-configuration/secrets) to manage secrets rather than AWS Secrets Manager.
 
 To enable your code to access secrets from AWS Secrets Manager you will need to
 

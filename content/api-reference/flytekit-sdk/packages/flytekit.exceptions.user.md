@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.user
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,31 +13,28 @@ layout: py_api
 
 | Exception | Description |
 |-|-|
-| [`FlyteAssertion`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteassertion) | Assertion failed. |
-| [`FlyteAuthenticationException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteauthenticationexception) | Assertion failed. |
-| [`FlyteCompilationException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytecompilationexception) | Common base class for all non-exit exceptions. |
-| [`FlyteDataNotFoundException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytedatanotfoundexception) | Inappropriate argument value (of correct type). |
-| [`FlyteDisapprovalException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytedisapprovalexception) | Assertion failed. |
-| [`FlyteEntityAlreadyExistsException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteentityalreadyexistsexception) | Assertion failed. |
-| [`FlyteEntityNotExistException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteentitynotexistexception) | Assertion failed. |
-| [`FlyteEntityNotFoundException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteentitynotfoundexception) | Inappropriate argument value (of correct type). |
-| [`FlyteFailureNodeInputMismatchException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytefailurenodeinputmismatchexception) | Assertion failed. |
-| [`FlyteInvalidInputException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteinvalidinputexception) | Common base class for all non-exit exceptions. |
-| [`FlyteMissingReturnValueException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytemissingreturnvalueexception) | Common base class for all non-exit exceptions. |
-| [`FlyteMissingTypeException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytemissingtypeexception) | Common base class for all non-exit exceptions. |
-| [`FlytePromiseAttributeResolveException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytepromiseattributeresolveexception) | Assertion failed. |
-| [`FlyteRecoverableException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyterecoverableexception) | Common base class for all non-exit exceptions. |
-| [`FlyteTimeout`](.././flytekit.exceptions.user#flytekitexceptionsuserflytetimeout) | Assertion failed. |
-| [`FlyteTypeException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytetypeexception) | Inappropriate argument type. |
-| [`FlyteUserException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteuserexception) | Common base class for all non-exit exceptions. |
-| [`FlyteUserRuntimeException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteuserruntimeexception) | Common base class for all non-exit exceptions. |
-| [`FlyteValidationException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytevalidationexception) | Assertion failed. |
-| [`FlyteValueException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytevalueexception) | Inappropriate argument value (of correct type). |
+| [`FlyteAssertion`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteassertion) |  |
+| [`FlyteAuthenticationException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteauthenticationexception) |  |
+| [`FlyteCompilationException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytecompilationexception) |  |
+| [`FlyteDataNotFoundException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytedatanotfoundexception) |  |
+| [`FlyteDisapprovalException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytedisapprovalexception) |  |
+| [`FlyteEntityAlreadyExistsException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteentityalreadyexistsexception) |  |
+| [`FlyteEntityNotExistException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteentitynotexistexception) |  |
+| [`FlyteEntityNotFoundException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteentitynotfoundexception) |  |
+| [`FlyteFailureNodeInputMismatchException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytefailurenodeinputmismatchexception) |  |
+| [`FlyteInvalidInputException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteinvalidinputexception) |  |
+| [`FlyteMissingReturnValueException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytemissingreturnvalueexception) |  |
+| [`FlyteMissingTypeException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytemissingtypeexception) |  |
+| [`FlytePromiseAttributeResolveException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytepromiseattributeresolveexception) |  |
+| [`FlyteRecoverableException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyterecoverableexception) |  |
+| [`FlyteTimeout`](.././flytekit.exceptions.user#flytekitexceptionsuserflytetimeout) |  |
+| [`FlyteTypeException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytetypeexception) |  |
+| [`FlyteUserException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteuserexception) |  |
+| [`FlyteUserRuntimeException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteuserruntimeexception) |  |
+| [`FlyteValidationException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytevalidationexception) |  |
+| [`FlyteValueException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytevalueexception) |  |
 
 ## flytekit.exceptions.user.FlyteAssertion
-
-Assertion failed.
-
 
 ```python
 class FlyteAssertion(
@@ -54,13 +51,9 @@ class FlyteAssertion(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteAuthenticationException
-
-Assertion failed.
-
 
 ```python
 class FlyteAuthenticationException(
@@ -77,13 +70,9 @@ class FlyteAuthenticationException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteCompilationException
-
-Common base class for all non-exit exceptions.
-
 
 ```python
 class FlyteCompilationException(
@@ -100,13 +89,9 @@ class FlyteCompilationException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteDataNotFoundException
-
-Inappropriate argument value (of correct type).
-
 
 ```python
 class FlyteDataNotFoundException(
@@ -121,13 +106,9 @@ class FlyteDataNotFoundException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteDisapprovalException
-
-Assertion failed.
-
 
 ```python
 class FlyteDisapprovalException(
@@ -144,13 +125,9 @@ class FlyteDisapprovalException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteEntityAlreadyExistsException
-
-Assertion failed.
-
 
 ```python
 class FlyteEntityAlreadyExistsException(
@@ -167,13 +144,9 @@ class FlyteEntityAlreadyExistsException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteEntityNotExistException
-
-Assertion failed.
-
 
 ```python
 class FlyteEntityNotExistException(
@@ -190,13 +163,9 @@ class FlyteEntityNotExistException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteEntityNotFoundException
-
-Inappropriate argument value (of correct type).
-
 
 ```python
 class FlyteEntityNotFoundException(
@@ -213,13 +182,9 @@ class FlyteEntityNotFoundException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteFailureNodeInputMismatchException
-
-Assertion failed.
-
 
 ```python
 class FlyteFailureNodeInputMismatchException(
@@ -236,13 +201,9 @@ class FlyteFailureNodeInputMismatchException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteInvalidInputException
-
-Common base class for all non-exit exceptions.
-
 
 ```python
 class FlyteInvalidInputException(
@@ -257,13 +218,9 @@ class FlyteInvalidInputException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteMissingReturnValueException
-
-Common base class for all non-exit exceptions.
-
 
 ```python
 class FlyteMissingReturnValueException(
@@ -280,13 +237,9 @@ class FlyteMissingReturnValueException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteMissingTypeException
-
-Common base class for all non-exit exceptions.
-
 
 ```python
 class FlyteMissingTypeException(
@@ -303,13 +256,9 @@ class FlyteMissingTypeException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlytePromiseAttributeResolveException
-
-Assertion failed.
-
 
 ```python
 class FlytePromiseAttributeResolveException(
@@ -326,13 +275,9 @@ class FlytePromiseAttributeResolveException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteRecoverableException
-
-Common base class for all non-exit exceptions.
-
 
 ```python
 class FlyteRecoverableException(
@@ -349,13 +294,9 @@ class FlyteRecoverableException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteTimeout
-
-Assertion failed.
-
 
 ```python
 class FlyteTimeout(
@@ -372,13 +313,9 @@ class FlyteTimeout(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteTypeException
-
-Inappropriate argument type.
-
 
 ```python
 class FlyteTypeException(
@@ -399,13 +336,9 @@ class FlyteTypeException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteUserException
-
-Common base class for all non-exit exceptions.
-
 
 ```python
 class FlyteUserException(
@@ -422,13 +355,9 @@ class FlyteUserException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteUserRuntimeException
-
-Common base class for all non-exit exceptions.
-
 
 ```python
 class FlyteUserRuntimeException(
@@ -449,14 +378,10 @@ FlyteUserRuntimeException is thrown when a user code raises an exception.
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
-| `value` |  |  |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `value` | `None` |  |
 
 ## flytekit.exceptions.user.FlyteValidationException
-
-Assertion failed.
-
 
 ```python
 class FlyteValidationException(
@@ -473,13 +398,9 @@ class FlyteValidationException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteValueException
-
-Inappropriate argument value (of correct type).
-
 
 ```python
 class FlyteValueException(
@@ -496,6 +417,5 @@ class FlyteValueException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 

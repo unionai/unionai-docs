@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.dbt.schema
-version: 0.0.0+develop
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -44,6 +44,7 @@ flags : dict
     Dictionary containing CLI flags to be added to the ``dbt run`` command (default=False).
 
 
+
 ```python
 class BaseDBTInput(
     project_dir: str,
@@ -55,15 +56,15 @@ class BaseDBTInput(
     flags: dict,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project_dir` | `str` |
-| `profiles_dir` | `str` |
-| `profile` | `str` |
-| `target` | `str` |
-| `output_path` | `str` |
-| `ignore_handled_error` | `bool` |
-| `flags` | `dict` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project_dir` | `str` | |
+| `profiles_dir` | `str` | |
+| `profile` | `str` | |
+| `target` | `str` | |
+| `output_path` | `str` | |
+| `ignore_handled_error` | `bool` | |
+| `flags` | `dict` | |
 
 ### Methods
 
@@ -85,10 +86,10 @@ def from_dict(
     infer_missing,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` |
-| `infer_missing` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
+| `infer_missing` |  | |
 
 #### from_json()
 
@@ -102,14 +103,14 @@ def from_json(
     kw,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` |
-| `parse_float` |  |
-| `parse_int` |  |
-| `parse_constant` |  |
-| `infer_missing` |  |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `typing.Union[str, bytes, bytearray]` | |
+| `parse_float` |  | |
+| `parse_int` |  | |
+| `parse_constant` |  | |
+| `infer_missing` |  | |
+| `kw` |  | |
 
 #### schema()
 
@@ -126,17 +127,17 @@ def schema(
     unknown,
 ) -> SchemaType[A]
 ```
-| Parameter | Type |
-|-|-|
-| `infer_missing` | `bool` |
-| `only` |  |
-| `exclude` |  |
-| `many` | `bool` |
-| `context` |  |
-| `load_only` |  |
-| `dump_only` |  |
-| `partial` | `bool` |
-| `unknown` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `infer_missing` | `bool` | |
+| `only` |  | |
+| `exclude` |  | |
+| `many` | `bool` | |
+| `context` |  | |
+| `load_only` |  | |
+| `dump_only` |  | |
+| `partial` | `bool` | |
+| `unknown` |  | |
 
 #### to_args()
 
@@ -158,9 +159,9 @@ def to_dict(
     encode_json,
 ) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
-| Parameter | Type |
-|-|-|
-| `encode_json` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `encode_json` |  | |
 
 #### to_json()
 
@@ -177,17 +178,17 @@ def to_json(
     kw,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `skipkeys` | `bool` |
-| `ensure_ascii` | `bool` |
-| `check_circular` | `bool` |
-| `allow_nan` | `bool` |
-| `indent` | `typing.Union[int, str, NoneType]` |
-| `separators` | `typing.Tuple[str, str]` |
-| `default` | `typing.Callable` |
-| `sort_keys` | `bool` |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `skipkeys` | `bool` | |
+| `ensure_ascii` | `bool` | |
+| `check_circular` | `bool` | |
+| `allow_nan` | `bool` | |
+| `indent` | `typing.Union[int, str, NoneType]` | |
+| `separators` | `typing.Tuple[str, str]` | |
+| `default` | `typing.Callable` | |
+| `sort_keys` | `bool` | |
+| `kw` |  | |
 
 ## flytekitplugins.dbt.schema.BaseDBTOutput
 
@@ -201,16 +202,17 @@ exit_code : int
     Exit code returned by DBT CLI.
 
 
+
 ```python
 class BaseDBTOutput(
     command: str,
     exit_code: int,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `command` | `str` |
-| `exit_code` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `command` | `str` | |
+| `exit_code` | `int` | |
 
 ### Methods
 
@@ -231,10 +233,10 @@ def from_dict(
     infer_missing,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` |
-| `infer_missing` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
+| `infer_missing` |  | |
 
 #### from_json()
 
@@ -248,14 +250,14 @@ def from_json(
     kw,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` |
-| `parse_float` |  |
-| `parse_int` |  |
-| `parse_constant` |  |
-| `infer_missing` |  |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `typing.Union[str, bytes, bytearray]` | |
+| `parse_float` |  | |
+| `parse_int` |  | |
+| `parse_constant` |  | |
+| `infer_missing` |  | |
+| `kw` |  | |
 
 #### schema()
 
@@ -272,17 +274,17 @@ def schema(
     unknown,
 ) -> SchemaType[A]
 ```
-| Parameter | Type |
-|-|-|
-| `infer_missing` | `bool` |
-| `only` |  |
-| `exclude` |  |
-| `many` | `bool` |
-| `context` |  |
-| `load_only` |  |
-| `dump_only` |  |
-| `partial` | `bool` |
-| `unknown` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `infer_missing` | `bool` | |
+| `only` |  | |
+| `exclude` |  | |
+| `many` | `bool` | |
+| `context` |  | |
+| `load_only` |  | |
+| `dump_only` |  | |
+| `partial` | `bool` | |
+| `unknown` |  | |
 
 #### to_dict()
 
@@ -291,9 +293,9 @@ def to_dict(
     encode_json,
 ) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
-| Parameter | Type |
-|-|-|
-| `encode_json` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `encode_json` |  | |
 
 #### to_json()
 
@@ -310,17 +312,17 @@ def to_json(
     kw,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `skipkeys` | `bool` |
-| `ensure_ascii` | `bool` |
-| `check_circular` | `bool` |
-| `allow_nan` | `bool` |
-| `indent` | `typing.Union[int, str, NoneType]` |
-| `separators` | `typing.Tuple[str, str]` |
-| `default` | `typing.Callable` |
-| `sort_keys` | `bool` |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `skipkeys` | `bool` | |
+| `ensure_ascii` | `bool` | |
+| `check_circular` | `bool` | |
+| `allow_nan` | `bool` | |
+| `indent` | `typing.Union[int, str, NoneType]` | |
+| `separators` | `typing.Tuple[str, str]` | |
+| `default` | `typing.Callable` | |
+| `sort_keys` | `bool` | |
+| `kw` |  | |
 
 ## flytekitplugins.dbt.schema.DBTFreshnessInput
 
@@ -332,6 +334,7 @@ select : List[str]
     List of model to be executed (default : None).
 exclude : List[str]
     List of model to be excluded (default : None).
+
 
 
 ```python
@@ -347,17 +350,17 @@ class DBTFreshnessInput(
     exclude: typing.Optional[typing.List[str]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project_dir` | `str` |
-| `profiles_dir` | `str` |
-| `profile` | `str` |
-| `target` | `str` |
-| `output_path` | `str` |
-| `ignore_handled_error` | `bool` |
-| `flags` | `dict` |
-| `select` | `typing.Optional[typing.List[str]]` |
-| `exclude` | `typing.Optional[typing.List[str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project_dir` | `str` | |
+| `profiles_dir` | `str` | |
+| `profile` | `str` | |
+| `target` | `str` | |
+| `output_path` | `str` | |
+| `ignore_handled_error` | `bool` | |
+| `flags` | `dict` | |
+| `select` | `typing.Optional[typing.List[str]]` | |
+| `exclude` | `typing.Optional[typing.List[str]]` | |
 
 ### Methods
 
@@ -379,10 +382,10 @@ def from_dict(
     infer_missing,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` |
-| `infer_missing` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
+| `infer_missing` |  | |
 
 #### from_json()
 
@@ -396,14 +399,14 @@ def from_json(
     kw,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` |
-| `parse_float` |  |
-| `parse_int` |  |
-| `parse_constant` |  |
-| `infer_missing` |  |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `typing.Union[str, bytes, bytearray]` | |
+| `parse_float` |  | |
+| `parse_int` |  | |
+| `parse_constant` |  | |
+| `infer_missing` |  | |
+| `kw` |  | |
 
 #### schema()
 
@@ -420,17 +423,17 @@ def schema(
     unknown,
 ) -> SchemaType[A]
 ```
-| Parameter | Type |
-|-|-|
-| `infer_missing` | `bool` |
-| `only` |  |
-| `exclude` |  |
-| `many` | `bool` |
-| `context` |  |
-| `load_only` |  |
-| `dump_only` |  |
-| `partial` | `bool` |
-| `unknown` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `infer_missing` | `bool` | |
+| `only` |  | |
+| `exclude` |  | |
+| `many` | `bool` | |
+| `context` |  | |
+| `load_only` |  | |
+| `dump_only` |  | |
+| `partial` | `bool` | |
+| `unknown` |  | |
 
 #### to_args()
 
@@ -452,9 +455,9 @@ def to_dict(
     encode_json,
 ) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
-| Parameter | Type |
-|-|-|
-| `encode_json` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `encode_json` |  | |
 
 #### to_json()
 
@@ -471,17 +474,17 @@ def to_json(
     kw,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `skipkeys` | `bool` |
-| `ensure_ascii` | `bool` |
-| `check_circular` | `bool` |
-| `allow_nan` | `bool` |
-| `indent` | `typing.Union[int, str, NoneType]` |
-| `separators` | `typing.Tuple[str, str]` |
-| `default` | `typing.Callable` |
-| `sort_keys` | `bool` |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `skipkeys` | `bool` | |
+| `ensure_ascii` | `bool` | |
+| `check_circular` | `bool` | |
+| `allow_nan` | `bool` | |
+| `indent` | `typing.Union[int, str, NoneType]` | |
+| `separators` | `typing.Tuple[str, str]` | |
+| `default` | `typing.Callable` | |
+| `sort_keys` | `bool` | |
+| `kw` |  | |
 
 ## flytekitplugins.dbt.schema.DBTFreshnessOutput
 
@@ -493,6 +496,7 @@ raw_sources : str
     Raw value of DBT's ``sources.json``.
 
 
+
 ```python
 class DBTFreshnessOutput(
     command: str,
@@ -500,11 +504,11 @@ class DBTFreshnessOutput(
     raw_sources: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `command` | `str` |
-| `exit_code` | `int` |
-| `raw_sources` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `command` | `str` | |
+| `exit_code` | `int` | |
+| `raw_sources` | `str` | |
 
 ### Methods
 
@@ -525,10 +529,10 @@ def from_dict(
     infer_missing,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` |
-| `infer_missing` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
+| `infer_missing` |  | |
 
 #### from_json()
 
@@ -542,14 +546,14 @@ def from_json(
     kw,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` |
-| `parse_float` |  |
-| `parse_int` |  |
-| `parse_constant` |  |
-| `infer_missing` |  |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `typing.Union[str, bytes, bytearray]` | |
+| `parse_float` |  | |
+| `parse_int` |  | |
+| `parse_constant` |  | |
+| `infer_missing` |  | |
+| `kw` |  | |
 
 #### schema()
 
@@ -566,17 +570,17 @@ def schema(
     unknown,
 ) -> SchemaType[A]
 ```
-| Parameter | Type |
-|-|-|
-| `infer_missing` | `bool` |
-| `only` |  |
-| `exclude` |  |
-| `many` | `bool` |
-| `context` |  |
-| `load_only` |  |
-| `dump_only` |  |
-| `partial` | `bool` |
-| `unknown` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `infer_missing` | `bool` | |
+| `only` |  | |
+| `exclude` |  | |
+| `many` | `bool` | |
+| `context` |  | |
+| `load_only` |  | |
+| `dump_only` |  | |
+| `partial` | `bool` | |
+| `unknown` |  | |
 
 #### to_dict()
 
@@ -585,9 +589,9 @@ def to_dict(
     encode_json,
 ) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
-| Parameter | Type |
-|-|-|
-| `encode_json` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `encode_json` |  | |
 
 #### to_json()
 
@@ -604,17 +608,17 @@ def to_json(
     kw,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `skipkeys` | `bool` |
-| `ensure_ascii` | `bool` |
-| `check_circular` | `bool` |
-| `allow_nan` | `bool` |
-| `indent` | `typing.Union[int, str, NoneType]` |
-| `separators` | `typing.Tuple[str, str]` |
-| `default` | `typing.Callable` |
-| `sort_keys` | `bool` |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `skipkeys` | `bool` | |
+| `ensure_ascii` | `bool` | |
+| `check_circular` | `bool` | |
+| `allow_nan` | `bool` | |
+| `indent` | `typing.Union[int, str, NoneType]` | |
+| `separators` | `typing.Tuple[str, str]` | |
+| `default` | `typing.Callable` | |
+| `sort_keys` | `bool` | |
+| `kw` |  | |
 
 ## flytekitplugins.dbt.schema.DBTRunInput
 
@@ -626,6 +630,7 @@ select : List[str]
     List of model to be executed (default=None).
 exclude : List[str]
     List of model to be excluded (default=None).
+
 
 
 ```python
@@ -641,17 +646,17 @@ class DBTRunInput(
     exclude: typing.Optional[typing.List[str]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project_dir` | `str` |
-| `profiles_dir` | `str` |
-| `profile` | `str` |
-| `target` | `str` |
-| `output_path` | `str` |
-| `ignore_handled_error` | `bool` |
-| `flags` | `dict` |
-| `select` | `typing.Optional[typing.List[str]]` |
-| `exclude` | `typing.Optional[typing.List[str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project_dir` | `str` | |
+| `profiles_dir` | `str` | |
+| `profile` | `str` | |
+| `target` | `str` | |
+| `output_path` | `str` | |
+| `ignore_handled_error` | `bool` | |
+| `flags` | `dict` | |
+| `select` | `typing.Optional[typing.List[str]]` | |
+| `exclude` | `typing.Optional[typing.List[str]]` | |
 
 ### Methods
 
@@ -673,10 +678,10 @@ def from_dict(
     infer_missing,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` |
-| `infer_missing` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
+| `infer_missing` |  | |
 
 #### from_json()
 
@@ -690,14 +695,14 @@ def from_json(
     kw,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` |
-| `parse_float` |  |
-| `parse_int` |  |
-| `parse_constant` |  |
-| `infer_missing` |  |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `typing.Union[str, bytes, bytearray]` | |
+| `parse_float` |  | |
+| `parse_int` |  | |
+| `parse_constant` |  | |
+| `infer_missing` |  | |
+| `kw` |  | |
 
 #### schema()
 
@@ -714,17 +719,17 @@ def schema(
     unknown,
 ) -> SchemaType[A]
 ```
-| Parameter | Type |
-|-|-|
-| `infer_missing` | `bool` |
-| `only` |  |
-| `exclude` |  |
-| `many` | `bool` |
-| `context` |  |
-| `load_only` |  |
-| `dump_only` |  |
-| `partial` | `bool` |
-| `unknown` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `infer_missing` | `bool` | |
+| `only` |  | |
+| `exclude` |  | |
+| `many` | `bool` | |
+| `context` |  | |
+| `load_only` |  | |
+| `dump_only` |  | |
+| `partial` | `bool` | |
+| `unknown` |  | |
 
 #### to_args()
 
@@ -746,9 +751,9 @@ def to_dict(
     encode_json,
 ) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
-| Parameter | Type |
-|-|-|
-| `encode_json` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `encode_json` |  | |
 
 #### to_json()
 
@@ -765,17 +770,17 @@ def to_json(
     kw,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `skipkeys` | `bool` |
-| `ensure_ascii` | `bool` |
-| `check_circular` | `bool` |
-| `allow_nan` | `bool` |
-| `indent` | `typing.Union[int, str, NoneType]` |
-| `separators` | `typing.Tuple[str, str]` |
-| `default` | `typing.Callable` |
-| `sort_keys` | `bool` |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `skipkeys` | `bool` | |
+| `ensure_ascii` | `bool` | |
+| `check_circular` | `bool` | |
+| `allow_nan` | `bool` | |
+| `indent` | `typing.Union[int, str, NoneType]` | |
+| `separators` | `typing.Tuple[str, str]` | |
+| `default` | `typing.Callable` | |
+| `sort_keys` | `bool` | |
+| `kw` |  | |
 
 ## flytekitplugins.dbt.schema.DBTRunOutput
 
@@ -789,6 +794,7 @@ raw_manifest : str
     Raw value of DBT's ``manifest.json``.
 
 
+
 ```python
 class DBTRunOutput(
     command: str,
@@ -797,12 +803,12 @@ class DBTRunOutput(
     raw_manifest: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `command` | `str` |
-| `exit_code` | `int` |
-| `raw_run_result` | `str` |
-| `raw_manifest` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `command` | `str` | |
+| `exit_code` | `int` | |
+| `raw_run_result` | `str` | |
+| `raw_manifest` | `str` | |
 
 ### Methods
 
@@ -823,10 +829,10 @@ def from_dict(
     infer_missing,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` |
-| `infer_missing` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
+| `infer_missing` |  | |
 
 #### from_json()
 
@@ -840,14 +846,14 @@ def from_json(
     kw,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` |
-| `parse_float` |  |
-| `parse_int` |  |
-| `parse_constant` |  |
-| `infer_missing` |  |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `typing.Union[str, bytes, bytearray]` | |
+| `parse_float` |  | |
+| `parse_int` |  | |
+| `parse_constant` |  | |
+| `infer_missing` |  | |
+| `kw` |  | |
 
 #### schema()
 
@@ -864,17 +870,17 @@ def schema(
     unknown,
 ) -> SchemaType[A]
 ```
-| Parameter | Type |
-|-|-|
-| `infer_missing` | `bool` |
-| `only` |  |
-| `exclude` |  |
-| `many` | `bool` |
-| `context` |  |
-| `load_only` |  |
-| `dump_only` |  |
-| `partial` | `bool` |
-| `unknown` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `infer_missing` | `bool` | |
+| `only` |  | |
+| `exclude` |  | |
+| `many` | `bool` | |
+| `context` |  | |
+| `load_only` |  | |
+| `dump_only` |  | |
+| `partial` | `bool` | |
+| `unknown` |  | |
 
 #### to_dict()
 
@@ -883,9 +889,9 @@ def to_dict(
     encode_json,
 ) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
-| Parameter | Type |
-|-|-|
-| `encode_json` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `encode_json` |  | |
 
 #### to_json()
 
@@ -902,17 +908,17 @@ def to_json(
     kw,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `skipkeys` | `bool` |
-| `ensure_ascii` | `bool` |
-| `check_circular` | `bool` |
-| `allow_nan` | `bool` |
-| `indent` | `typing.Union[int, str, NoneType]` |
-| `separators` | `typing.Tuple[str, str]` |
-| `default` | `typing.Callable` |
-| `sort_keys` | `bool` |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `skipkeys` | `bool` | |
+| `ensure_ascii` | `bool` | |
+| `check_circular` | `bool` | |
+| `allow_nan` | `bool` | |
+| `indent` | `typing.Union[int, str, NoneType]` | |
+| `separators` | `typing.Tuple[str, str]` | |
+| `default` | `typing.Callable` | |
+| `sort_keys` | `bool` | |
+| `kw` |  | |
 
 ## flytekitplugins.dbt.schema.DBTTestInput
 
@@ -924,6 +930,7 @@ select : List[str]
     List of model to be executed (default : None).
 exclude : List[str]
     List of model to be excluded (default : None).
+
 
 
 ```python
@@ -939,17 +946,17 @@ class DBTTestInput(
     exclude: typing.Optional[typing.List[str]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project_dir` | `str` |
-| `profiles_dir` | `str` |
-| `profile` | `str` |
-| `target` | `str` |
-| `output_path` | `str` |
-| `ignore_handled_error` | `bool` |
-| `flags` | `dict` |
-| `select` | `typing.Optional[typing.List[str]]` |
-| `exclude` | `typing.Optional[typing.List[str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project_dir` | `str` | |
+| `profiles_dir` | `str` | |
+| `profile` | `str` | |
+| `target` | `str` | |
+| `output_path` | `str` | |
+| `ignore_handled_error` | `bool` | |
+| `flags` | `dict` | |
+| `select` | `typing.Optional[typing.List[str]]` | |
+| `exclude` | `typing.Optional[typing.List[str]]` | |
 
 ### Methods
 
@@ -971,10 +978,10 @@ def from_dict(
     infer_missing,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` |
-| `infer_missing` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
+| `infer_missing` |  | |
 
 #### from_json()
 
@@ -988,14 +995,14 @@ def from_json(
     kw,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` |
-| `parse_float` |  |
-| `parse_int` |  |
-| `parse_constant` |  |
-| `infer_missing` |  |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `typing.Union[str, bytes, bytearray]` | |
+| `parse_float` |  | |
+| `parse_int` |  | |
+| `parse_constant` |  | |
+| `infer_missing` |  | |
+| `kw` |  | |
 
 #### schema()
 
@@ -1012,17 +1019,17 @@ def schema(
     unknown,
 ) -> SchemaType[A]
 ```
-| Parameter | Type |
-|-|-|
-| `infer_missing` | `bool` |
-| `only` |  |
-| `exclude` |  |
-| `many` | `bool` |
-| `context` |  |
-| `load_only` |  |
-| `dump_only` |  |
-| `partial` | `bool` |
-| `unknown` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `infer_missing` | `bool` | |
+| `only` |  | |
+| `exclude` |  | |
+| `many` | `bool` | |
+| `context` |  | |
+| `load_only` |  | |
+| `dump_only` |  | |
+| `partial` | `bool` | |
+| `unknown` |  | |
 
 #### to_args()
 
@@ -1044,9 +1051,9 @@ def to_dict(
     encode_json,
 ) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
-| Parameter | Type |
-|-|-|
-| `encode_json` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `encode_json` |  | |
 
 #### to_json()
 
@@ -1063,17 +1070,17 @@ def to_json(
     kw,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `skipkeys` | `bool` |
-| `ensure_ascii` | `bool` |
-| `check_circular` | `bool` |
-| `allow_nan` | `bool` |
-| `indent` | `typing.Union[int, str, NoneType]` |
-| `separators` | `typing.Tuple[str, str]` |
-| `default` | `typing.Callable` |
-| `sort_keys` | `bool` |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `skipkeys` | `bool` | |
+| `ensure_ascii` | `bool` | |
+| `check_circular` | `bool` | |
+| `allow_nan` | `bool` | |
+| `indent` | `typing.Union[int, str, NoneType]` | |
+| `separators` | `typing.Tuple[str, str]` | |
+| `default` | `typing.Callable` | |
+| `sort_keys` | `bool` | |
+| `kw` |  | |
 
 ## flytekitplugins.dbt.schema.DBTTestOutput
 
@@ -1087,6 +1094,7 @@ raw_manifest : str
     Raw value of DBT's ``manifest.json``.
 
 
+
 ```python
 class DBTTestOutput(
     command: str,
@@ -1095,12 +1103,12 @@ class DBTTestOutput(
     raw_manifest: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `command` | `str` |
-| `exit_code` | `int` |
-| `raw_run_result` | `str` |
-| `raw_manifest` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `command` | `str` | |
+| `exit_code` | `int` | |
+| `raw_run_result` | `str` | |
+| `raw_manifest` | `str` | |
 
 ### Methods
 
@@ -1121,10 +1129,10 @@ def from_dict(
     infer_missing,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` |
-| `infer_missing` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
+| `infer_missing` |  | |
 
 #### from_json()
 
@@ -1138,14 +1146,14 @@ def from_json(
     kw,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` |
-| `parse_float` |  |
-| `parse_int` |  |
-| `parse_constant` |  |
-| `infer_missing` |  |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `typing.Union[str, bytes, bytearray]` | |
+| `parse_float` |  | |
+| `parse_int` |  | |
+| `parse_constant` |  | |
+| `infer_missing` |  | |
+| `kw` |  | |
 
 #### schema()
 
@@ -1162,17 +1170,17 @@ def schema(
     unknown,
 ) -> SchemaType[A]
 ```
-| Parameter | Type |
-|-|-|
-| `infer_missing` | `bool` |
-| `only` |  |
-| `exclude` |  |
-| `many` | `bool` |
-| `context` |  |
-| `load_only` |  |
-| `dump_only` |  |
-| `partial` | `bool` |
-| `unknown` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `infer_missing` | `bool` | |
+| `only` |  | |
+| `exclude` |  | |
+| `many` | `bool` | |
+| `context` |  | |
+| `load_only` |  | |
+| `dump_only` |  | |
+| `partial` | `bool` | |
+| `unknown` |  | |
 
 #### to_dict()
 
@@ -1181,9 +1189,9 @@ def to_dict(
     encode_json,
 ) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
-| Parameter | Type |
-|-|-|
-| `encode_json` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `encode_json` |  | |
 
 #### to_json()
 
@@ -1200,15 +1208,15 @@ def to_json(
     kw,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `skipkeys` | `bool` |
-| `ensure_ascii` | `bool` |
-| `check_circular` | `bool` |
-| `allow_nan` | `bool` |
-| `indent` | `typing.Union[int, str, NoneType]` |
-| `separators` | `typing.Tuple[str, str]` |
-| `default` | `typing.Callable` |
-| `sort_keys` | `bool` |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `skipkeys` | `bool` | |
+| `ensure_ascii` | `bool` | |
+| `check_circular` | `bool` | |
+| `allow_nan` | `bool` | |
+| `indent` | `typing.Union[int, str, NoneType]` | |
+| `separators` | `typing.Tuple[str, str]` | |
+| `default` | `typing.Callable` | |
+| `sort_keys` | `bool` | |
+| `kw` |  | |
 

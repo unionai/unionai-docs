@@ -1,6 +1,6 @@
 ---
 title: flytekit.extend.backend.base_connector
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -15,7 +15,7 @@ layout: py_api
 |-|-|
 | [`AsyncConnectorBase`](.././flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorasyncconnectorbase) | This is the base class for all async connectors. |
 | [`AsyncConnectorExecutorMixin`](.././flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorasyncconnectorexecutormixin) | This mixin class is used to run the async task locally, and it's only used for local execution. |
-| [`ConnectorBase`](.././flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorconnectorbase) | Helper class that provides a standard way to create an ABC using. |
+| [`ConnectorBase`](.././flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorconnectorbase) |  |
 | [`ConnectorRegistry`](.././flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorconnectorregistry) | This is the registry for all connectors. |
 | [`Resource`](.././flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorresource) | This is the output resource of the job. |
 | [`ResourceMeta`](.././flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorresourcemeta) | This is the metadata for the job. |
@@ -35,6 +35,7 @@ Connector Service
 will look up the connector based on the task type. Every task type can only have one connector.
 
 
+
 ```python
 class AsyncConnectorBase(
     metadata_type: flytekit.extend.backend.base_connector.ResourceMeta,
@@ -45,6 +46,13 @@ class AsyncConnectorBase(
 |-|-|-|
 | `metadata_type` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `metadata_type` | `None` |  |
+| `task_category` | `None` | task category that the connector supports |
 
 ### Methods
 
@@ -145,20 +153,13 @@ Return the metrics for the task.
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
 | `kwargs` | `**kwargs` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `metadata_type` |  |  |
-| `task_category` |  | {{< multiline >}}task category that the connector supports
-{{< /multiline >}} |
-
 ## flytekit.extend.backend.base_connector.AsyncConnectorExecutorMixin
 
 This mixin class is used to run the async task locally, and it's only used for local execution.
 Task should inherit from this class if the task can be run in the connector.
 
 Asynchronous tasks are tasks that take a long time to complete, such as running a query.
+
 
 
 ### Methods
@@ -197,10 +198,6 @@ def execute(
 
 ## flytekit.extend.backend.base_connector.ConnectorBase
 
-Helper class that provides a standard way to create an ABC using
-inheritance.
-
-
 ```python
 class ConnectorBase(
     task_type_name: str,
@@ -218,14 +215,14 @@ class ConnectorBase(
 
 | Property | Type | Description |
 |-|-|-|
-| `task_category` |  | {{< multiline >}}task category that the connector supports
-{{< /multiline >}} |
+| `task_category` | `None` | task category that the connector supports |
 
 ## flytekit.extend.backend.base_connector.ConnectorRegistry
 
 This is the registry for all connectors.
 The connector service will look up the connector registry based on the task type.
 The connector metadata service will look up the connector metadata based on the connector name.
+
 
 
 ### Methods
@@ -312,9 +309,10 @@ Attributes
         The custom info of the job. For example, the job config.
 
 
+
 ```python
 class Resource(
-    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10ccd3710>,
+    phase: google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper,
     message: typing.Optional[str],
     log_links: typing.Optional[typing.List[flyteidl.core.execution_pb2.TaskLog]],
     outputs: typing.Union[flytekit.models.literals.LiteralMap, typing.Dict[str, typing.Any], NoneType],
@@ -323,7 +321,7 @@ class Resource(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10ccd3710>` | |
+| `phase` | `google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper` | |
 | `message` | `typing.Optional[str]` | |
 | `log_links` | `typing.Optional[typing.List[flyteidl.core.execution_pb2.TaskLog]]` | |
 | `outputs` | `typing.Union[flytekit.models.literals.LiteralMap, typing.Dict[str, typing.Any], NoneType]` | |
@@ -360,6 +358,7 @@ normal model class that inherits from FlyteIdlEntity
 ## flytekit.extend.backend.base_connector.ResourceMeta
 
 This is the metadata for the job. For example, the id of the job.
+
 
 
 ```python
@@ -407,6 +406,7 @@ Connector Service
 will look up the connector based on the task type. Every task type can only have one connector.
 
 
+
 ```python
 class SyncConnectorBase(
     task_type_name: str,
@@ -419,6 +419,12 @@ class SyncConnectorBase(
 | `task_type_name` | `str` | |
 | `task_type_version` | `int` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `task_category` | `None` | task category that the connector supports |
 
 ### Methods
 
@@ -447,13 +453,6 @@ This is the method that the connector will run.
 | `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` | |
 | `kwargs` | `**kwargs` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `task_category` |  | {{< multiline >}}task category that the connector supports
-{{< /multiline >}} |
-
 ## flytekit.extend.backend.base_connector.SyncConnectorExecutorMixin
 
 This mixin class is used to run the sync task locally, and it's only used for local execution.
@@ -461,6 +460,7 @@ Task should inherit from this class if the task can be run in the connector.
 
 Synchronous tasks run quickly and can return their results instantly.
 Sending a prompt to ChatGPT and getting a response, or retrieving some metadata from a backend system.
+
 
 
 ### Methods
@@ -498,6 +498,6 @@ class TaskCategory(
 
 | Property | Type | Description |
 |-|-|-|
-| `name` |  |  |
-| `version` |  |  |
+| `name` | `None` |  |
+| `version` | `None` |  |
 

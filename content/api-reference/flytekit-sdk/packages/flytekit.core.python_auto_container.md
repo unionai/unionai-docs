@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.python_auto_container
-version: 1.16.10
+version: 1.16.14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -86,6 +86,7 @@ from where. (or to where but that is hard-coded)
 This resolved is used when the task is defined in a notebook. It is used to load the task from the notebook.
 
 
+
 ```python
 class DefaultNotebookTaskResolver(
     args,
@@ -96,6 +97,14 @@ class DefaultNotebookTaskResolver(
 |-|-|-|
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `instantiated_in` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
 
 ### Methods
 
@@ -171,17 +180,10 @@ Overridable function that can optionally return a custom name for a given task
 |-|-|-|
 | `t` | `flytekit.core.base_task.Task` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `instantiated_in` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-
 ## flytekit.core.python_auto_container.DefaultTaskResolver
 
 Please see the notes in the TaskResolverMixin as it describes this default behavior.
+
 
 
 ```python
@@ -195,6 +197,14 @@ class DefaultTaskResolver(
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `instantiated_in` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -269,14 +279,6 @@ Overridable function that can optionally return a custom name for a given task
 |-|-|-|
 | `t` | `flytekit.core.base_task.Task` | |
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `instantiated_in` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-
 ## flytekit.core.python_auto_container.PickledEntity
 
 Represents the structure of the pickled object stored in the .pkl file for interactive mode.
@@ -284,6 +286,7 @@ Represents the structure of the pickled object stored in the .pkl file for inter
 Attributes:
     metadata: Metadata about the pickled entities including Python version
     entities: Dictionary mapping entity names to their PythonAutoContainerTask instances
+
 
 
 ```python
@@ -305,6 +308,7 @@ Attributes:
     python_version: The Python version string (e.g. "3.12.0") used to create the pickle
 
 
+
 ```python
 class PickledEntityMetadata(
     python_version: str,
@@ -321,6 +325,7 @@ container and the container information to be automatically captured.
 This base will auto configure the image and image version to be used for all its derivatives.
 
 If you are looking to extend, you might prefer to use ``PythonFunctionTask`` or ``PythonInstanceTask``
+
 
 
 ```python
@@ -359,6 +364,30 @@ class PythonAutoContainerTask(
 | `shared_memory` | `Optional[Union[L[True], str]]` | If True, then shared memory will be attached to the container where the size is equal to the allocated memory. If str, then the shared memory is set to that size. |
 | `resources` | `Optional[Resources]` | Specify both the request and the limit. When the value is set to a tuple or list, the first value is the request and the second value is the limit. If the value is a single value, then both the requests and limit is set to that value. For example, the `Resource(cpu=("1", "2"), mem="1Gi")` will set the cpu request to 1, cpu limit to 2, and mem request to 1Gi. |
 | `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `container_image` | `None` |  |
+| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `None` | If true, this task will not output deck html file |
+| `docs` | `None` |  |
+| `enable_deck` | `None` | If true, this task will output deck html file |
+| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
+| `instantiated_in` | `None` |  |
+| `interface` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
+| `metadata` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` | Returns this task's python interface. |
+| `resources` | `None` |  |
+| `security_context` | `None` |  |
+| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_resolver` | `None` |  |
+| `task_type` | `None` |  |
+| `task_type_version` | `None` |  |
 
 ### Methods
 
@@ -741,34 +770,4 @@ task resolver. It can be useful to override the task resolver for specific cases
 | Parameter | Type | Description |
 |-|-|-|
 | `resolver` | `TaskResolverMixin` | |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `container_image` |  |  |
-| `deck_fields` |  | {{< multiline >}}If not empty, this task will output deck html file for the specified decks
-{{< /multiline >}} |
-| `disable_deck` |  | {{< multiline >}}If true, this task will not output deck html file
-{{< /multiline >}} |
-| `docs` |  |  |
-| `enable_deck` |  | {{< multiline >}}If true, this task will output deck html file
-{{< /multiline >}} |
-| `environment` |  | {{< multiline >}}Any environment variables that supplied during the execution of the task.
-{{< /multiline >}} |
-| `instantiated_in` |  |  |
-| `interface` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-| `metadata` |  |  |
-| `name` |  |  |
-| `python_interface` |  | {{< multiline >}}Returns this task's python interface.
-{{< /multiline >}} |
-| `resources` |  |  |
-| `security_context` |  |  |
-| `task_config` |  | {{< multiline >}}Returns the user-specified task config which is used for plugin-specific handling of the task.
-{{< /multiline >}} |
-| `task_resolver` |  |  |
-| `task_type` |  |  |
-| `task_type_version` |  |  |
 
