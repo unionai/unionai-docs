@@ -122,12 +122,6 @@ To build and deploy your first workflow, the first step is to [set up your local
 {{< variant flyte >}}
 {{< markdown >}}
 
-## Try Flyte in your browser
-
-You can try Flyte in your browser without any setup simply by [signing up for **Union.ai Serverless**](https://signup.union.ai/).
-
-[Union.ai Serverless is a fully-hosted version of Flyte]({{< docs_home serverless v1 >}}) with additional features.
-
 ## Try Flyte on your local machine
 
 You can also install Flyte's SDK (called `flytekit`) and a local Flyte cluster to run workflows on your local machine.
