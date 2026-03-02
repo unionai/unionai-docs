@@ -28,5 +28,8 @@ weight: 1
 | Key | Type | Description | Default |
 |-----|------|-------------|---------|
 {{- range .Values }}
-| {{ .Key }} | {{ .Type }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} |
+{{- $desc := .Description }}{{ if not $desc }}{{ $desc = .AutoDescription }}{{ end }}
+{{- $def := .Default }}{{ if not $def }}{{ $def = .AutoDefault }}{{ end }}
+{{- if gt (len $def) 100 }}{{ $def = printf "`(see values.yaml)`" }}{{ end }}
+| {{ .Key }} | {{ .Type }} | {{ $desc }} | {{ $def }} |
 {{- end }}
