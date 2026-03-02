@@ -1,29 +1,29 @@
 ---
-title: Code mode
+title: Programmatic tool calling for agents
 weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true
 ---
 
-# Code mode
+# Programmatic tool calling for agents
 
-**Code mode** is a pattern where LLMs write executable code instead of making individual tool calls.
+**Programmatic tool calling** (also known as **code mode**) is a pattern where LLMs write executable code instead of making individual tool calls.
 Rather than the model emitting a sequence of JSON tool-call objects and the system routing each one, the model generates a single block of code that calls multiple tools, transforms data, and applies logic — all executed in a sandbox.
 
 The key insight: LLMs are trained on billions of lines of code, but only a small amount of synthetic tool-call data.
 Code generation is a more natural and reliable output modality for models than structured tool-call schemas.
 
-## Code mode vs tool calling
+## Programmatic tool calling vs sequential tool calling
 
-In traditional tool calling, every intermediate result passes through the model's context window.
+In sequential tool calling, every intermediate result passes through the model's context window.
 The model calls one tool, reads the result, decides what to do next, calls another tool, and so on.
 Each round-trip costs tokens and latency.
 
-In code mode, the model generates a complete program upfront.
+With programmatic tool calling, the model generates a complete program upfront.
 The sandbox executes it, and only the final result returns to the model.
 
-| Aspect | Tool calling | Code mode |
+| Aspect | Sequential tool calling | Programmatic tool calling |
 |--------|-------------|-----------|
 | **Output format** | JSON tool-call objects, one at a time | A single block of executable code |
 | **Data flow** | Every intermediate result passes through the model | Intermediate results stay in the sandbox |
@@ -31,19 +31,19 @@ The sandbox executes it, and only the final result returns to the model.
 | **Multi-step logic** | Model re-invoked at every step | Sandbox executes loops, conditionals, transforms |
 | **Scaling with tools** | Context grows linearly with number of tool definitions | Tools discovered progressively or loaded on demand |
 
-## Why code mode is powerful
+## Why programmatic tool calling is powerful
 
 ### Token efficiency
 
-Traditional tool calling loads all tool definitions into the context window upfront and passes every intermediate result through the model.
-Code mode reduces this dramatically:
+Sequential tool calling loads all tool definitions into the context window upfront and passes every intermediate result through the model.
+Programmatic tool calling reduces this dramatically:
 
 - **98%+ context reduction** reported by Anthropic when using code execution with MCP servers — from 150,000 tokens down to 2,000 tokens for the same task.
-- **99.9% reduction** reported by Cloudflare for large APIs — approximately 1,000 tokens with code mode versus 1.17 million tokens when exposing each API endpoint as a separate tool.
+- **99.9% reduction** reported by Cloudflare for large APIs — approximately 1,000 tokens with programmatic tool calling versus 1.17 million tokens when exposing each API endpoint as a separate tool.
 
 ### Performance
 
-By eliminating round-trips through the model for intermediate steps, code mode achieves significant speed improvements.
+By eliminating round-trips through the model for intermediate steps, programmatic tool calling achieves significant speed improvements.
 The sandbox evaluates conditionals, loops, and data transformations locally — no "time to first token" delay for each step.
 
 ### Natural programming patterns
@@ -57,7 +57,7 @@ Code naturally expresses patterns that are awkward or impossible in tool-call se
 
 ### Progressive tool discovery
 
-Instead of loading hundreds of tool definitions into the context window, code mode supports progressive discovery.
+Instead of loading hundreds of tool definitions into the context window, programmatic tool calling supports progressive discovery.
 The model can search for relevant tools, load only what it needs, and compose them in code.
 
 ### Data privacy
@@ -65,11 +65,11 @@ The model can search for relevant tools, load only what it needs, and compose th
 Intermediate results stay in the sandbox execution environment.
 They never re-enter the model's context window, which means sensitive data (PII, credentials, financial records) can be processed without the model seeing it.
 
-## Example: tool calling vs code mode
+## Example: sequential vs programmatic tool calling
 
 Consider a task: "Analyze sales data, filter for Q4, calculate statistics, and create a chart."
 
-### Tool calling approach
+### Sequential tool calling approach
 
 The model makes serial tool calls, with each result passing through the context window:
 
@@ -90,7 +90,7 @@ Step 4: Model → tool_call: create_chart("bar", "Q4 Revenue", ...)
 Four round-trips through the model.
 The 150KB dataset enters the context window and stays there.
 
-### Code mode approach
+### Programmatic tool calling approach
 
 The model generates a single code block:
 
@@ -178,7 +178,7 @@ ALL_TOOLS = {
 The `ALL_TOOLS` dict is the single source of truth.
 The agent introspects it to build the system prompt, and the sandbox uses it to resolve function calls.
 
-## Example: code-mode agent
+## Example: programmatic tool-calling agent
 
 The `CodeModeAgent` implements the generate-execute-retry loop:
 
