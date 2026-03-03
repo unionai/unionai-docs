@@ -1,7 +1,7 @@
 ---
 title: Viewing launch plans
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Viewing launch plans

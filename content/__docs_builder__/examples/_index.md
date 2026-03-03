@@ -1,4 +1,4 @@
 ---
 title: General Examples
-variants: -flyte -serverless -byoc -selfmanaged
+variants: -flyte -byoc -selfmanaged
 ---

@@ -1,30 +1,13 @@
 ---
 title: Setting up a production project
 weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Setting up a production project
 
 In {{< key product_name >}}, your work is organized in a hierarchy with the following structure:
 
-{{< variant serverless >}}
-{{< markdown >}}
-
-* **Account**: Your account on {{< key product_name >}}, tied to your GitHub identity.
-* **Domains**: Within your account there are three domains, `development`, `staging`, and `production`, used to organize your code during the development process.
-* **Projects**: Orthogonal to domains, projects are used to organize your code into logical groups. You can create as many projects as you need.
-
-A given workflow will reside in a specific project. For example, let's say `my_workflow` is a workflow in `my_project`.
-
-When you start working on `my_workflow` you would typically register it in the project-domain `my_project/development`.
-
-As you work on successive iterations of the workflow you might promote `my_workflow` to `my_project/staging` and eventually  `my_project/production`.
-
-Promotion is done simply by [re-registering the workflow to the new project-domain](./running-your-code).
-
-{{< /markdown >}}
-{{< /variant >}}
 {{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
@@ -72,7 +55,7 @@ $ flytectl create project \
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant serverless byoc selfmanaged >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 You can create a new project in the {{< key product_name >}} UI by clicking on the project breadcrumb at the top left and selecting **All projects**:

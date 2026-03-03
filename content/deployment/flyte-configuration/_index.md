@@ -1,6 +1,6 @@
 ---
 title: Platform configuration
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 weight: 14
 sidebar_expanded: true
 ---

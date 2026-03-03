@@ -1,6 +1,6 @@
 ---
 title: flytectl config validate
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 ---
 
 # flytectl config validate

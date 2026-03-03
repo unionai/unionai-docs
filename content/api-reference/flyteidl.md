@@ -1,6 +1,6 @@
 ---
 title: Flyteidl
-variants: -byoc -selfmanaged -serverless +flyte
+variants: -byoc -selfmanaged +flyte
 weight: 5
 ---
 

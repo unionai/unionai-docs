@@ -1,7 +1,7 @@
 ---
 title: Consuming artifacts in workflows
 weight: 3
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 ---
 
 # Consuming artifacts in workflows

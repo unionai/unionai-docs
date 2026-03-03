@@ -1,6 +1,6 @@
 ---
 title: LLM context documents
-variants: +flyte +byoc +selfmanaged +serverless
+variants: +flyte +byoc +selfmanaged
 weight: 1
 ---
 

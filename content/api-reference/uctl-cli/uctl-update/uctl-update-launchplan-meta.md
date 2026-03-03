@@ -1,6 +1,6 @@
 ---
 title: uctl update launchplan-meta
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl update launchplan-meta

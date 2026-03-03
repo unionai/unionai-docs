@@ -1,7 +1,7 @@
 ---
 title: Testing
 weight: 19
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 sidebar_expanded: false
 ---
 

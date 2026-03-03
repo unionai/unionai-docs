@@ -1,6 +1,6 @@
 ---
 title: uctl create execution
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl create execution

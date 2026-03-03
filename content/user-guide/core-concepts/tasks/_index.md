@@ -1,7 +1,7 @@
 ---
 title: Tasks
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
@@ -35,14 +35,6 @@ While (most) tasks are locally executable, when a task is deployed to {{< key pr
 {{< markdown >}}
 
 This allows tasks to have their own independent set of [software dependencies](./task-software-environment/_index) and [hardware requirements](./task-hardware-environment/_index).
-For example, a task that requires a GPU can be deployed to {{< key product_name >}} with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant serverless >}}
-{{< markdown >}}
-
-This allows tasks to have their own independent set of [software dependencies](../../core-concepts/image-spec) and [hardware requirements](./task-hardware-environment/_index).
 For example, a task that requires a GPU can be deployed to {{< key product_name >}} with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 
 {{< /markdown >}}

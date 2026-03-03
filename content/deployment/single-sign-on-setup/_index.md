@@ -1,7 +1,7 @@
 ---
 title: Single sign on setup
 weight: 12
-variants: -flyte -serverless +byoc -selfmanaged
+variants: -flyte +byoc -selfmanaged
 sidebar_expanded: true
 ---
 

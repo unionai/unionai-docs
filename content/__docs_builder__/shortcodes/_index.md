@@ -1,6 +1,6 @@
 ---
 title: Shortcode Examples
-variants: -flyte -serverless -byoc -selfmanaged
+variants: -flyte -byoc -selfmanaged
 ---
 
 # Shortcode Examples {.docs-builder .shortcodes}

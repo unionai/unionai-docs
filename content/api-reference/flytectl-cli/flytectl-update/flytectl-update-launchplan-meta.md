@@ -1,6 +1,6 @@
 ---
 title: flytectl update launchplan-meta
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 ---
 
 # flytectl update launchplan-meta

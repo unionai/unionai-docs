@@ -1,6 +1,6 @@
 ---
 title: Sentiment Classification with Language Models
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 weight: 2
 layout: py_example
 example_file: /unionai-examples/v1/tutorials/sentiment_classifier/sentiment_classifier.py

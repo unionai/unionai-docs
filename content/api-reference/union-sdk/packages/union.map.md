@@ -1,7 +1,7 @@
 ---
 title: union.map
 version: 0.1.202
-variants: +byoc +selfmanaged +serverless -flyte
+variants: +byoc +selfmanaged -flyte
 layout: py_api
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: MMCloud connector
 weight: 13
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 ---
 
 # MMCloud Connector

@@ -1,7 +1,7 @@
 ---
 title: FlyteFile and FlyteDirectory
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 
@@ -455,17 +455,6 @@ def workflow():
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant serverless >}}
-{{< markdown >}}
-
-> [!NOTE] Upload location
-> With {{< key product_name >}} Serverless, the remote location to which `FlyteFile` and `FlyteDirectory` upload container-local files is always a randomly generated (universally unique) location in {{< key product_name >}}'s internal object store. It cannot be changed.
->
-> With {{< key product_name >}} BYOC, the upload location is configurable.
-> See [FlyteFile and FlyteDirectory > Changing the data upload location](../data-input-output/flyte-file-and-flyte-directory#changing-the-data-upload-location).
-
-{{< /markdown >}}
-{{< /variant >}}
 
 {{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}

@@ -1,7 +1,7 @@
 ---
 title: Architecture
 weight: 6
-variants: +flyte -serverless -byoc +selfmanaged
+variants: +flyte -byoc +selfmanaged
 top_menu: true
 sidebar_expanded: true
 ---
