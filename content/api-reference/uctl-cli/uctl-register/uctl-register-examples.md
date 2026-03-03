@@ -1,6 +1,6 @@
 ---
 title: uctl register examples
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl register examples

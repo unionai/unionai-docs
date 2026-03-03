@@ -1,7 +1,7 @@
 ---
 title: Connecting to a cluster
 weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Connecting to a cluster
@@ -38,7 +38,7 @@ flyte --version
 
 As we did in [Quickstart](./quickstart), use `flyte create config` to create a configuration file:
 
-{{< variant byoc selfmanaged serverless >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 ```shell
 flyte create config \
@@ -63,7 +63,7 @@ flyte create config \
 
 This creates `./.flyte/config.yaml`:
 
-{{< variant byoc selfmanaged serverless >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 ```yaml
 admin:
@@ -94,7 +94,7 @@ task:
 
 {{< dropdown title="Full example with all options" icon="bento" >}}
 
-{{< variant byoc selfmanaged serverless >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 Create a custom config file with all available options:
 ```shell

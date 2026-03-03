@@ -1,6 +1,6 @@
 ---
 title: Page 1
-variants: -flyte -serverless -byoc -selfmanaged
+variants: -flyte -byoc -selfmanaged
 ---
 
 # Page1

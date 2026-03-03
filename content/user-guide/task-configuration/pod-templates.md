@@ -1,7 +1,7 @@
 ---
 title: Pod templates
 weight: 6
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Pod templates

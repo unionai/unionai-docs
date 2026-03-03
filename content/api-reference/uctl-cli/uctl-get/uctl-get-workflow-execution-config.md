@@ -1,6 +1,6 @@
 ---
 title: uctl get workflow-execution-config
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl get workflow-execution-config

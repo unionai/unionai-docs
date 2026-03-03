@@ -1,7 +1,7 @@
 ---
 title: Batch inference
 weight: 4
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 mermaid: true
 ---
 
@@ -165,7 +165,7 @@ async with TokenBatcher(
 
 `TokenBatcher` checks the `TokenEstimator` protocol (`estimate_tokens()`) in addition to `CostEstimator` (`estimate_cost()`), making it natural to work with prompt types.
 
-{{< variant byoc selfmanaged serverless >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 ## Combining with reusable containers

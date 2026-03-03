@@ -1,7 +1,7 @@
 ---
 title: Custom context
 weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Custom context

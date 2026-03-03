@@ -1,6 +1,6 @@
 ---
 title: Code Blocks
-variants: -flyte -serverless -byoc -selfmanaged
+variants: -flyte -byoc -selfmanaged
 ---
 
 # Code Blocks
