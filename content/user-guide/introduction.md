@@ -25,19 +25,13 @@ Flyte provides the building blocks need for an end-to-end AI platform:
 
 ## Trying out Flyte
 
-You can try out Flyte in a couple ways:
-
-* To set up a local cluster on your own machine, go to [Getting started](../user-guide/getting-started).
-* To try a turn-key cloud service that includes all of Flyte plus additional features, go to [Union.ai Serverless Getting started]({{< docs_home serverless v1 >}}/user-guide/getting-started).
+To set up a local cluster on your own machine, go to [Getting started](../user-guide/getting-started).
 
 ## Flyte in production
 
 For production use, you will need to [deploy and manage Flyte on your own cloud infrastructure](../deployment/_index).
 
-If you prefer a managed solution, have a look at:
-
-* [Union.ai Serverless]({{< docs_home serverless v1 >}}).
-* [Union.ai BYOC (Bring Your Own Cloud)]({{< docs_home byoc v1 >}}).
+If you prefer a managed solution, have a look at [Union.ai BYOC (Bring Your Own Cloud)]({{< docs_home byoc v1 >}}).
 
 {{< /markdown >}}
 {{< /variant >}}

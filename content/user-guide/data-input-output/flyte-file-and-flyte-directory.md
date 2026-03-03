@@ -472,10 +472,6 @@ def workflow():
 
 ## Changing the data upload location
 
-> [!NOTE] Upload location
-> With {{< key product_name >}} Serverless, the remote location to which `FlyteFile` and `FlyteDirectory` upload container-local
-> files is always a randomly generated (universally unique) location in {{< key product_name >}}'s internal object store. It cannot be changed.
->
 > With {{< key product_name >}} BYOC, the upload location is configurable.
 
 By default, {{< key product_name >}} uploads local files or directories to the default **raw data store** ({{< key product_name >}}'s dedicated internal object store).
