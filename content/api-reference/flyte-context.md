@@ -1,6 +1,6 @@
 ---
 title: LLM-optimized documentation
-variants: +flyte +byoc +selfmanaged +serverless
+variants: +flyte +byoc +selfmanaged
 weight: 1
 ---
 

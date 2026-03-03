@@ -1,7 +1,7 @@
 ---
 title: Running Tasks via Webhooks
 weight: 8
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---
 

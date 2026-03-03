@@ -1,14 +1,14 @@
 ---
 title: Release notes
 weight: 6
-variants: +serverless +byoc +selfmanaged -flyte
+variants: +byoc +selfmanaged -flyte
 top_menu: true
 sidebar_expanded: true
 ---
 
 # Release notes
 
-{{< variant serverless byoc selfmanaged >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 ## November 2025

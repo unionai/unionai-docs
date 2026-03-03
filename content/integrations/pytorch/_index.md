@@ -1,7 +1,7 @@
 ---
 title: Pytorch
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 ---
 # Pytorch

@@ -1,6 +1,6 @@
 ---
 title: uctl delete identityassignments
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl delete identityassignments

@@ -1,7 +1,7 @@
 ---
 title: Examples and common gotchas
 weight: 8
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Examples and common gotchas

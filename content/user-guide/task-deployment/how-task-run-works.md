@@ -1,7 +1,7 @@
 ---
 title: How task run works
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 mermaid: true
 ---

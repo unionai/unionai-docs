@@ -1,7 +1,7 @@
 ---
 title: Classes
 version: 0.1.1
-variants: +flyte +byoc +selfmanaged +serverless
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 

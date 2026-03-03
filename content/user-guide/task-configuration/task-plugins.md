@@ -1,7 +1,7 @@
 ---
 title: Plugins
 weight: 20
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Task Plugins

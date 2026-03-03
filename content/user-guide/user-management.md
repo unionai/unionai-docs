@@ -1,7 +1,7 @@
 ---
 title: User management
 weight: 18
-variants: -flyte -serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 ---
 
 # User management

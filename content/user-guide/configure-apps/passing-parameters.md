@@ -1,7 +1,7 @@
 ---
 title: Passing parameters into app environments
 weight: 4
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Passing parameters into app environments

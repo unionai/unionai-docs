@@ -1,7 +1,7 @@
 ---
 title: Parallelism and async
 weight: 6
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Parallelism and async

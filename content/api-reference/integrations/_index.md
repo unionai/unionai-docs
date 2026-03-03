@@ -1,6 +1,6 @@
 ---
 title: Integrations
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 weight: 5
 sidebar_expanded: true
 ---

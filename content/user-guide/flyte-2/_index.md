@@ -1,7 +1,7 @@
 ---
 title: From Flyte 1 to 2
 weight: 8
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true
 ---
@@ -82,7 +82,7 @@ Author and run workflows and fetch workflow metadata (I/O and logs) directly fro
 
 ![Native Notebook](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/notebook.png)
 
-{{< variant byoc selfmanaged serverless >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 ## High performance engine
