@@ -1,7 +1,7 @@
 ---
 title: ImageSpec
 weight: 7
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # ImageSpec
@@ -57,21 +57,6 @@ Here, the `ImageSpec` class is used to specify the container image to be used fo
 When you execute the `{{< key cli >}} run` or `{{< key cli >}} register` command, {{< key product_name >}} will build the container image defined in `ImageSpec` block
 (as well as registering the tasks and workflows defined in your code).
 
-{{< variant serverless >}}
-{{< markdown >}}
-## {{< key product_name >}} cloud image builder {#cloud-image-builder}
-
-{{< key product_name >}} Serverless will build the image using its `ImageBuilder` service in the cloud
-and registered the image in {{< key product_name >}}'s own container registry.
-From there it will be pulled and installed in the task container when it spins up.
-All this is done transparently and does not require any set up by the user.
-
-> [!NOTE] Local image build in BYOC
-> In {{< key product_name >}} Serverless images defined by `ImageSpec` are always built using the {{< key product_name >}} cloud image builder.
-> In {{< key product_name >}} BYOC, you can optionally build images from the `ImageSpec` on your local machine by specifying `builder="envd"` in the `ImageSpec`.
-> See [Local image builder](#local-image-builder) in the BYOC documentation for more details.
-{{< /markdown >}}
-{{< /variant >}}
 {{< variant byoc selfmanaged >}}
 {{< markdown >}}
 

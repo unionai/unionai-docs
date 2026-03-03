@@ -1,7 +1,7 @@
 ---
 title: Custom types
 weight: 1
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 ---
 
 # Custom types

@@ -1,7 +1,7 @@
 ---
 title: Viewing workflow executions
 weight: 8
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Viewing workflow executions

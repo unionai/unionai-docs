@@ -1,6 +1,6 @@
 ---
 title: flytectl delete clusterpool
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 ---
 
 # flytectl delete clusterpool

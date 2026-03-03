@@ -1,7 +1,7 @@
 ---
 title: Task hardware environment
 weight: 7
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
@@ -9,20 +9,6 @@ sidebar_expanded: false
 
 ## Customizing task resources
 
-{{< variant serverless >}}
-{{< markdown >}}
-
-You can customize the hardware environment in which your task code executes through configuration in the `@{{< key kit_as >}}.task` decorator by specifying `requests` and `limits` on:
-
-* CPU number
-* GPU number
-* Memory size
-* Ephemeral storage size
-
-See [Customizing task resources](./customizing-task-resources) for details.
-
-{{< /markdown >}}
-{{< /variant >}}
 {{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 

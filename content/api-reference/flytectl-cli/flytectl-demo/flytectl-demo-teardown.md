@@ -1,6 +1,6 @@
 ---
 title: flytectl demo teardown
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 ---
 
 # flytectl demo teardown

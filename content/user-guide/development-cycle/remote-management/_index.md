@@ -1,7 +1,7 @@
 ---
 title: Remote management
 weight: 19
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
@@ -24,7 +24,7 @@ import {{< key kit_import >}}
 remote = {{< key kit_as >}}.{{< key kit_remote >}}()
 ```
 
-{{< variant serverless byoc selfmanaged >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 By default, when created with a no-argument constructor, `{{< key kit_remote >}}` will use the prevailing configuration in the local environment to connect to {{< key product_name >}},
 that is, the same configuration as would be used by the {{< key cli_name >}} CLI in that environment
@@ -84,22 +84,6 @@ remote = {{< key kit_as >}}.{{< key kit_remote >}}(
 ```
 
 For details see [the API docs for `flytekit.configuration.Config`](../../../api-reference/flytekit-sdk/packages/flytekit.configuration#flytekitconfigurationconfig)
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant serverless >}}
-{{< markdown >}}
-
-Alternatively, you can initialize `{{< key kit_remote >}}` by explicitly specifying a project, and a domain:
-
-```python
-import {{< key kit_import >}}
-
-remote = {{< key kit_as >}}.{{< key kit_remote >}}(
-    default_project="my-project",
-    default_domain="my-domain",
-)
-```
 
 {{< /markdown >}}
 {{< /variant >}}

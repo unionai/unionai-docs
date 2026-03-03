@@ -1,7 +1,7 @@
 ---
 title: Viewing tasks
 weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Viewing tasks

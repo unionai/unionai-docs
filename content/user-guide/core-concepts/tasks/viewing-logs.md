@@ -1,7 +1,7 @@
 ---
 title: Viewing logs
 weight: 6
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Viewing logs
@@ -21,7 +21,7 @@ Also, if you configure the Kubernetes dashboard, the Flyte console will display 
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc serverless >}}
+{{< variant byoc >}}
 
 {{< markdown >}}
 

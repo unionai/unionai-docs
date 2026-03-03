@@ -1,6 +1,6 @@
 ---
 title: Flyte deployment
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 weight: 13
 sidebar_expanded: true
 ---

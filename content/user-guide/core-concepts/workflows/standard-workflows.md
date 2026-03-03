@@ -1,7 +1,7 @@
 ---
 title: Standard workflows
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Standard workflows
@@ -20,12 +20,6 @@ The syntax of a standard workflow definition can only include the following:
 ## Evaluation of a standard workflow
 
 {{< variant byoc selfmanaged flyte >}}
-{{< markdown >}}
-When a standard workflow is [run locally in a Python environment](../../development-cycle/running-your-code#running-a-script-in-local-python) it is executed as a normal Python function.
-However, when it is registered to {{< key product_name >}}, the top level `@{{< key kit_as >}}.workflow`-decorated function is evaluated as follows:
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant serverless >}}
 {{< markdown >}}
 When a standard workflow is [run locally in a Python environment](../../development-cycle/running-your-code#running-a-script-in-local-python) it is executed as a normal Python function.
 However, when it is registered to {{< key product_name >}}, the top level `@{{< key kit_as >}}.workflow`-decorated function is evaluated as follows:

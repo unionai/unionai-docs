@@ -1,7 +1,7 @@
 ---
 title: Activating and deactivating
 weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Activating and deactivating
@@ -91,7 +91,6 @@ See [Uctl CLI](../../../api-reference/uctl-cli) for more details.
 {{< /markdown >}}
 {{< /variant >}}
 
-<!-- TODO: Adjust Remote code or serverless vs everything else -->
 ## Activating and deactivating a launch plan in Python with `{{< key kit_remote >}}`
 
 To activate a launch plan using version `{{< key kit_remote >}}`:

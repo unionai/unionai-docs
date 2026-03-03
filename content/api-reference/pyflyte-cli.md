@@ -1,7 +1,7 @@
 ---
 title: Pyflyte CLI
 weight: 3
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 ---
 
 # {{< key cli_name >}} CLI
@@ -21,16 +21,6 @@ This will install the `{{< key cli >}}` CLI globally on your system [as a `uv` t
 
 ## Configure the `{{< key cli >}}` CLI
 
-{{< variant serverless >}}
-{{< markdown >}}
-To configure the `{{< key cli >}}` CLI to connect to {{< key product_name >}} Serverless, run the following command:
-
-```shell
-$ {{< key cli >}} create login --serverless
-```
-
-{{< /markdown >}}
-{{< /variant >}}
 {{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
@@ -71,7 +61,7 @@ The `{{< key cli >}}` CLI will check for configuration files as follows:
 
 First, if a `--config` option is used, it will use the specified config file.
 
-{{< variant serverless byoc selfmanaged >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 Second, the config files pointed to by the following environment variables (in this order):
@@ -92,7 +82,7 @@ Second, the config file pointed to by the `FLYTECTL_CONFIG` environment variable
 
 Third, the following hard-coded locations (in this order):
 
-{{< variant serverless byoc selfmanaged >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 Third, the following hard-coded locations (in this order):

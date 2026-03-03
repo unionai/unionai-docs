@@ -1,7 +1,7 @@
 ---
 title: Running your workflow
 weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Running your workflow
@@ -91,7 +91,7 @@ $ {{< key cli >}} run --remote -env FLYTE_IMAGE_REGISTRY=${FLYTE_IMAGE_REGISTRY}
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant serverless byoc selfmanaged >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 ```shell
 $ {{< key cli >}} run --remote --project my-project --domain development hello_world.py hello_world_wf
@@ -101,19 +101,6 @@ $ {{< key cli >}} run --remote --project my-project --domain development hello_w
 
 The output displays a URL that links to the workflow execution in the UI:
 
-{{< variant serverless >}}
-{{< markdown >}}
-
-```shell
-👍 Build submitted!
-⏳ Waiting for build to finish at: https://serverless.union.ai/org/...
-✅ Build completed in 0:01:57!
-
-[✔] Go to https://serverless.union.ai/org/... to see execution in the UI.
-```
-
-{{< /markdown >}}
-{{< /variant >}}
 
 {{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}

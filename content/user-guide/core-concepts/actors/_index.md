@@ -1,7 +1,7 @@
 ---
 title: Actors
 weight: 4
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
@@ -13,11 +13,6 @@ To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/
 
 ### `ActorEnvironment` parameters
 
-{{< variant serverless >}}
-{{< markdown >}}
-* **container_image:** The container image to use for the task. This container must have the `{{< key kit >}}` python package installed. Defaults to `cr.union.ai/union/unionai:py3.11-latest`.
-{{< /markdown >}}
-{{< /variant >}}
 {{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 * **container_image:** The container image to use for the task. This container must have the `{{< key kit >}}` python package installed, so this must be updated from the default (i.e. `cr.flyte.org/flyteorg/flytekit:py3.11-latest`).
@@ -32,38 +27,6 @@ To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/
 
 The following example shows how to create a basic `ActorEnvironment` and use it for one task:
 
-{{< variant serverless >}}
-{{< markdown >}}
-
-```python
-# hello_world.py
-
-import {{< key kit_import >}}
-
-
-actor = {{< key kit_as >}}.ActorEnvironment(
-    name="my-actor",
-    replica_count=1,
-    ttl_seconds=30,
-    requests={{< key kit_as >}}.Resources(
-        cpu="2",
-        mem="300Mi",
-    ),
-)
-
-
-@actor.task
-def say_hello() -> str:
-    return "hello"
-
-
-@{{< key kit_as >}}.workflow
-def wf():
-    say_hello()
-```
-
-{{< /markdown >}}
-{{< /variant >}}
 {{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
@@ -124,46 +87,6 @@ The `@actor_cache` decorator provides a powerful mechanism to cache the results 
 
 Below is a simplified example showcasing the use of `@actor_cache` for caching repetitive tasks. This dummy example demonstrates caching model that is loaded by the `load_model` task.
 
-{{< variant serverless >}}
-{{< markdown >}}
-
-```python
-# caching_basic.py
-
-from time import sleep
-
-import {{< key kit_import >}}
-
-
-actor = {{< key kit_as >}}.ActorEnvironment(
-    name="my-actor",
-    replica_count=1,
-)
-
-
-@{{< key kit_as >}}.actor_cache
-def load_model(state: int) -> callable:
-    sleep(4)  # simulate model loading
-    return lambda value: state + value
-
-
-@actor.task
-def evaluate(value: int, state: int) -> int:
-    model = load_model(state=state)
-    return model(value)
-
-
-@{{< key kit_as >}}.workflow
-def wf(init_value: int = 1, state: int = 3) -> int:
-    out = evaluate(value=init_value, state=state)
-    out = evaluate(value=out, state=state)
-    out = evaluate(value=out, state=state)
-    out = evaluate(value=out, state=state)
-    return out
-```
-
-{{< /markdown >}}
-{{< /variant >}}
 {{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 

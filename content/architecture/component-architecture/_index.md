@@ -1,7 +1,7 @@
 ---
 title: Component Architecture
 weight: 9
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 sidebar_expanded: true
 ---
 

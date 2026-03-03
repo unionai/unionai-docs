@@ -1,7 +1,7 @@
 ---
 title: flytekit.clients.auth.auth_client
 version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 

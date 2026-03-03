@@ -1,6 +1,6 @@
 ---
 title: flytectl get cluster-pool-attributes
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 ---
 
 # flytectl get cluster-pool-attributes

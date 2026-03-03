@@ -1,6 +1,6 @@
 ---
 title: flytectl demo start
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 ---
 
 # flytectl demo start

@@ -1,7 +1,7 @@
 ---
 title: Decorating tasks
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Decorating tasks
@@ -112,7 +112,7 @@ pyflyte run --remote \
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant serverless byoc selfmanaged >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 ```bash
 union run --remote decorating_tasks.py decorating_task_wf --x 10

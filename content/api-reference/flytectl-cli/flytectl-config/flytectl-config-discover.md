@@ -1,6 +1,6 @@
 ---
 title: flytectl config discover
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 ---
 
 # flytectl config discover
