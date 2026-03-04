@@ -4,6 +4,8 @@ weight: 5
 variants: -flyte +byoc +selfmanaged
 ---
 
+# Secrets management
+
 Union.ai provides enterprise-grade secrets management with a security-first design that ensures secret values never leave the customer’s infrastructure during normal operations.
 
 ## Secrets architecture
