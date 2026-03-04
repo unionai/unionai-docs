@@ -43,9 +43,10 @@ namespace_mapping:
 {{< variant selfmanaged >}}
 ## Self-hosted control plane configuration
 
-If you are running a [self-hosted deployment](../selfhosted-deployment/_index) (control plane and data plane in the same cluster), you **must** also set namespace mapping on the control plane.
+If you are running a [self-hosted deployment](../selfhosted-deployment/_index) (control plane and data plane in the same cluster), you **must** also configure namespace mapping on the control plane for V1 executions.
 
-The control plane's flyteadmin service determines the target namespace when creating V1 workflow executions. If the control plane and data plane have different namespace mappings, executions will be created targeting namespaces that don't exist.
+> [!IMPORTANT]
+> The control plane and data plane namespace mapping templates **must match exactly**. A mismatch causes flyteadmin to assign V1 executions to namespaces that the data plane hasn't created.
 
 Add the following to your control plane Helm values:
 
@@ -53,16 +54,15 @@ Add the following to your control plane Helm values:
 flyte:
   configmap:
     namespace_config:
-      namespace_config:
-        namespace_mapping:
-          template: "myorg-{{ '{{' }} project {{ '}}' }}-{{ '{{' }} domain {{ '}}' }}"
+      namespace_mapping:
+        template: "myorg-{{ '{{' }} project {{ '}}' }}-{{ '{{' }} domain {{ '}}' }}"
 ```
 
-> [!IMPORTANT]
-> The control plane and data plane namespace mapping templates **must match exactly**. A mismatch causes flyteadmin to assign executions to namespaces that the data plane hasn't created.
+> [!NOTE]
+> `namespace_config` is the flyte-core subchart template key (it renders to `namespace_config.yaml`). `namespace_mapping` is the Go config section flyteadmin reads at runtime. This path uses `toYaml` (not `tpl`), so the Go template delimiters pass through as-is — **no backtick escaping is needed**.
 
 > [!NOTE]
-> This setting only affects V1 workflow executions. V2 executions use a different namespace resolution path.
+> V2 executions resolve namespaces on the data plane side and do not require control plane namespace mapping configuration.
 {{< /variant >}}
 
 ## How it works
