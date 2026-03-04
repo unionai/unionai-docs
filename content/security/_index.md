@@ -16,7 +16,7 @@ This document provides a comprehensive overview of Union.ai’s security practic
 
 Union.ai’s security model is built on several core principles:
 
-* **Data sovereignty:** Customer data is stored and computed only within the customer's data plane.
+* **Data residency:** Customer data is stored and computed only within the customer's data plane.
   The Union.ai control plane stores only orchestration metadata—no task inputs, outputs, code, logs, secrets, or container images.
 * **Architectural isolation:** A strict separation between the Union-hosted control plane and the customer-hosted data plane ensures that the blast radius of any control plane compromise does not extend to customer data.
 * **Outbound only connectivity:** The Cloudflare Tunnel connecting the control plane to the data plane is outbound-only from the customer’s network, requiring no inbound firewall rules.
@@ -49,7 +49,7 @@ Union.ai offers multiple deployment models to meet varying enterprise requiremen
 
 | Deployment Model | Control plane | Data plane | Union Admin Permissions | Private Link Permissions | Best For |
 | --- | --- | --- | --- | --- | --- |
-| BYOC (Bring Your Own Cloud) | Union.ai hosted and managed | Customer cloud account hosted, Union.ai managed | Yes | Yes | Managed operation for enterprises that require complete data sovereignty and a lower support overhead. |
+| BYOC (Bring Your Own Cloud) | Union.ai hosted and managed | Customer cloud account hosted, Union.ai managed | Yes | Yes | Managed operation for enterprises that require strict data residency and a lower support overhead. |
 | Self-Managed (Hybrid) | Union.ai hosted and managed | Customer cloud account hosted and managed | No | No | Organizations requiring full infrastructure control or those with specific compliance or unique infrastructure needs. |
 | Self-Managed + Support | Union.ai hosted and managed | Customer cloud account hosted and managed | No | Yes | Self-managed deployments with Union-managed private connectivity for cluster management support. |
 | Air-gapped | Union.ai hosted and managed | Customer cloud account hosted and managed (air-gapped) | No | No | Maximum isolation environments with no external connectivity requirements. |
