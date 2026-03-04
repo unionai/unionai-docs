@@ -4,6 +4,8 @@ weight: 8
 variants: -flyte +byoc +selfmanaged
 ---
 
+# Compliance and certifications
+
 ## Certifications overview
 
 Union.ai maintains a rigorous certification program validated by independent third-party auditors.

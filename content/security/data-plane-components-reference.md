@@ -4,6 +4,8 @@ weight: 12
 variants: -flyte +byoc +selfmanaged
 ---
 
+# Data plane components reference
+
 This section provides a detailed reference for each security-relevant component running on the customer’s data plane.
 Understanding these components is essential for enterprise security teams conducting architecture reviews.
 

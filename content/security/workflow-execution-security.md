@@ -4,6 +4,8 @@ weight: 9
 variants: -flyte +byoc +selfmanaged
 ---
 
+# Workflow execution security
+
 This section traces the security controls applied at each stage of a workflow’s lifecycle, from registration through execution and result retrieval.
 
 ## Task registration
