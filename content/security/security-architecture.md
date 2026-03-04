@@ -4,6 +4,8 @@ weight: 2
 variants: -flyte +byoc +selfmanaged
 ---
 
+# Security architecture
+
 Union.ai’s security architecture is founded on the principle of strict separation between orchestration (control plane) and execution (data plane).
 This architectural decision ensures that customer data remains within the customer’s own cloud infrastructure at all times.
 

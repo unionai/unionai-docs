@@ -4,6 +4,8 @@ weight: 15
 variants: -flyte +byoc +selfmanaged
 ---
 
+# Appendix
+
 ## A. Data residency summary
 
 | Data | Stored In | Accessed Via | Transits control plane? |

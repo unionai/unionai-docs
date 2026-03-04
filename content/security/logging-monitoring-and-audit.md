@@ -4,6 +4,8 @@ weight: 7
 variants: -flyte +byoc +selfmanaged
 ---
 
+# Logging, monitoring, and audit
+
 ## Task logging
 
 Logs are collected by Fluentbit (deployed as a DaemonSet on the data plane) and shipped to the customer’s cloud-native log service:

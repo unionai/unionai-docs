@@ -4,6 +4,8 @@ weight: 3
 variants: -flyte +byoc +selfmanaged
 ---
 
+# Data protection
+
 ## Data classification
 
 Union.ai maintains a rigorous data classification framework.

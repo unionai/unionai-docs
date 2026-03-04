@@ -4,6 +4,8 @@ weight: 6
 variants: -flyte +byoc +selfmanaged
 ---
 
+# Infrastructure security
+
 ## Kubernetes security
 
 The data plane runs on customer-managed Kubernetes clusters with the following security measures:
