@@ -4,9 +4,9 @@ weight: 8
 variants: -flyte +byoc +selfmanaged
 top_menu: true
 sidebar_expanded: true
-sidebar_self: Security
-sidebar_self_icon: shield-check
 ---
+
+# Security
 
 Union.ai provides a production-grade workflow orchestration platform built on Flyte, designed for AI/ML and data-intensive workloads.
 Security is foundational to Union.ai’s architecture, not an afterthought.
