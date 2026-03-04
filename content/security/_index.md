@@ -1640,14 +1640,6 @@ Replace `<REGION>` with your AWS region (e.g., `us-east-2`).
 | `com.amazonaws.<REGION>.eks` | Interact with EKS |
 | `com.amazonaws.<REGION>.elasticloadbalancing` | Interact with Elastic Load Balancing |
 
-## Contact and resources
+## Contact
 
-Trust Center: trust.union.ai
-
-Website: union.ai
-
-Documentation: docs.union.ai
-
-SOC 2 Type II Report: Available upon request
-
-Security Inquiries: Contact your Union.ai account representative or visit trust.union.ai
+For security-related inquiries you can contact your Union.ai account representative, visit [trust.union.ai](https://trust.union.ai), or email `security@unionai.ai`.
