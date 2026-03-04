@@ -151,9 +151,7 @@ Presigned URLs are single-object scope, operation-specific (GET or PUT), time-li
 For logs and observability metrics, the control plane acts as a stateless relay—streaming data from the data plane through the Cloudflare tunnel to the client in real time.
 The data passes through the control plane’s memory as an encrypted stream but is never written to disk, cached, or stored.
 
-https://www.union.ai/docs/v2/byoc/user-guide/run-scaling/life-of-a-run/#execution-flow-diagram
-
-<!-- TODO: Add data flow diagram -->
+<!-- TODO: Add data flow diagram (see /user-guide/run-scaling/life-of-a-run/#execution-flow-diagram) -->
 
 The code bundle is directly uploaded to object store using signed URLs.
 
