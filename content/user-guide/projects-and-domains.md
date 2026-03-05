@@ -143,6 +143,8 @@ project = await flyte.remote.Project.get.aio(name="my-project", org="my-org")
 
 When you log in to your {{< key product_name >}} instance, you land on the **Projects** page, which lists all projects in your organization. By default, the domain is set to `development`. You can change the active domain using the selector in the top left.
 
+A **Recently viewed** list on the left sidebar provides quick access to your most commonly used projects.
+
 From the project list you can:
 
 * **Open a project**: Select a project from the list to navigate to it.
