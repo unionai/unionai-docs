@@ -1,6 +1,7 @@
 ---
 title: Dataplane chart
 variants: -flyte -byoc +selfmanaged
+chart_version: 2026.2.10
 weight: 1
 ---
 

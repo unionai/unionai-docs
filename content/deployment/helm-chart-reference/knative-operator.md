@@ -1,6 +1,7 @@
 ---
 title: Knative Operator chart
 variants: -flyte -byoc +selfmanaged
+chart_version: 2025.6.3
 weight: 2
 ---
 
