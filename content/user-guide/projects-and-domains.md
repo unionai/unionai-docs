@@ -141,9 +141,13 @@ project = await flyte.remote.Project.get.aio(name="my-project", org="my-org")
 
 ## Managing projects via the UI
 
-You can also create and manage projects through the {{< key product_name >}} console.
+When you log in to your {{< key product_name >}} instance, you land on the **Projects** page, which lists all projects in your organization. By default, the domain is set to `development`. You can change the active domain using the selector in the top left.
 
-<!-- TODO: describe UI flow for project management -->
+From the project list you can:
+
+* **Open a project**: Select a project from the list to navigate to it.
+* **Create a project**: Click **+ New project** in the top right. In the dialog, specify a name and description. The project will be created across all three domains.
+* **Archive a project**: Click the three-dot menu on a project's entry and select **Archive project**.
 
 ## Domains
 
