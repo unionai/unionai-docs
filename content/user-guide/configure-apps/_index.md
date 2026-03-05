@@ -1,6 +1,6 @@
 ---
 title: Configure apps
-weight: 13
+weight: 14
 variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true
