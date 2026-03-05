@@ -22,6 +22,8 @@ The authorization system is based on the following concepts:
 * **Project**: A set of associated workflows, tasks, launch plans, and other {{< key product_name >}} entities.
 * **Domain**: Categories representing the standard environments used in the development process: **development**, **staging**, and **production**.
 * **Project-domain pair**: The set of projects is divided orthogonally by the three **domains**.
+
+For more details on these concepts and how to manage projects, see [Projects and domains](./projects-and-domains).
   The result is a set of project-domain pairs.
   For example: `{{< key default_project >}}/development`, `{{< key default_project >}}/staging`, and `{{< key default_project >}}/production`.
 
