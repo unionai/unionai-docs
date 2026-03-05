@@ -1,6 +1,6 @@
 ---
 title: User
-version: 0.2.0
+version: 0.2.1
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -34,12 +34,39 @@ class User(
 
 | Method | Description |
 |-|-|
+| [`create()`](#create) | Create (invite) a new user. |
 | [`delete()`](#delete) | Delete a user. |
 | [`get()`](#get) | Get a user by subject identifier. |
 | [`listall()`](#listall) | List all users in the organization. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 
+
+### create()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await User.create.aio()`.
+```python
+def create(
+    cls,
+    first_name: str,
+    last_name: str,
+    email: str,
+) -> User
+```
+Create (invite) a new user.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `first_name` | `str` | The user's first name. |
+| `last_name` | `str` | The user's last name. |
+| `email` | `str` | The user's email address. |
 
 ### delete()
 
@@ -94,15 +121,18 @@ Get a user by subject identifier.
 def listall(
     cls,
     limit: int,
+    email: str | None,
 ) -> AsyncIterator[User]
 ```
 List all users in the organization.
 
 
+
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
-| `limit` | `int` | |
+| `limit` | `int` | Maximum number of users to return. |
+| `email` | `str \| None` | Filter by email (server-side, exact match). |
 
 ### to_dict()
 

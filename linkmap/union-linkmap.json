@@ -3,6 +3,7 @@
     "flyteplugins.union": "/api-reference/integrations/union/packages/flyteplugins.union/",
     "flyteplugins.union.cli": "/api-reference/integrations/union/packages/flyteplugins.union.cli/",
     "flyteplugins.union.cli.api_key": "/api-reference/integrations/union/packages/flyteplugins.union.cli.api_key/",
+    "flyteplugins.union.cli.assignment": "/api-reference/integrations/union/packages/flyteplugins.union.cli.assignment/",
     "flyteplugins.union.cli.member": "/api-reference/integrations/union/packages/flyteplugins.union.cli.member/",
     "flyteplugins.union.cli.policy": "/api-reference/integrations/union/packages/flyteplugins.union.cli.policy/",
     "flyteplugins.union.cli.role": "/api-reference/integrations/union/packages/flyteplugins.union.cli.role/",
@@ -19,6 +20,8 @@
   "identifiers": {
     "flyteplugins.union.remote.ApiKey": "/api-reference/integrations/union/packages/flyteplugins.union.remote/apikey/",
     "ApiKey": "/api-reference/integrations/union/packages/flyteplugins.union.remote/apikey/",
+    "flyteplugins.union.remote.Assignment": "/api-reference/integrations/union/packages/flyteplugins.union.remote/assignment/",
+    "Assignment": "/api-reference/integrations/union/packages/flyteplugins.union.remote/assignment/",
     "flyteplugins.union.remote.Member": "/api-reference/integrations/union/packages/flyteplugins.union.remote/member/",
     "Member": "/api-reference/integrations/union/packages/flyteplugins.union.remote/member/",
     "flyteplugins.union.remote.Policy": "/api-reference/integrations/union/packages/flyteplugins.union.remote/policy/",

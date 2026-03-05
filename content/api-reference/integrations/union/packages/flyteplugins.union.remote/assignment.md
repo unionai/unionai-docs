@@ -1,46 +1,44 @@
 ---
-title: Policy
+title: Assignment
 version: 0.2.1
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
-# Policy
+# Assignment
 
 **Package:** `flyteplugins.union.remote`
 
-Represents a Union RBAC Policy.
+Represents role/policy assignments for an identity.
 
 
 ```python
-class Policy(
-    pb2: PolicyPb2,
+class Assignment(
+    pb2: IdentityAssignment,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `pb2` | `PolicyPb2` | |
+| `pb2` | `IdentityAssignment` | |
 
 ## Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `bindings` | `None` |  |
-| `description` | `None` |  |
-| `name` | `None` |  |
-| `organization` | `None` |  |
+| `policies` | `None` |  |
+| `roles` | `None` |  |
+| `subject` | `None` |  |
 
 ## Methods
 
 | Method | Description |
 |-|-|
-| [`create()`](#create) | Create a new policy. |
-| [`delete()`](#delete) | Delete a policy. |
-| [`get()`](#get) | Get a policy by name. |
-| [`listall()`](#listall) | List all policies in the organization. |
+| [`create()`](#create) | Assign a policy to an identity. |
+| [`get()`](#get) | Get assignments for an identity. |
+| [`listall()`](#listall) | List assignments for all members in the organization. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
-| [`update()`](#update) | Update a policy by diffing bindings and applying add/remove operations. |
+| [`unassign()`](#unassign) | Unassign a policy from an identity. |
 
 
 ### create()
@@ -49,45 +47,29 @@ class Policy(
 > [!NOTE] This method can be called both synchronously or asynchronously.
 > Default invocation is sync and will block.
 > To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
-> `result = await Policy.create.aio()`.
+> `result = await Assignment.create.aio()`.
 ```python
 def create(
     cls,
-    name: str,
-    description: str,
-    bindings: list[dict] | None,
-) -> Policy
+    user_subject: str | None,
+    creds_subject: str | None,
+    email: str | None,
+    policy: str,
+) -> Assignment
 ```
-Create a new policy.
+Assign a policy to an identity.
+
+Exactly one of user_subject, creds_subject, or email must be provided.
+
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
-| `name` | `str` | |
-| `description` | `str` | |
-| `bindings` | `list[dict] \| None` | |
-
-### delete()
-
-
-> [!NOTE] This method can be called both synchronously or asynchronously.
-> Default invocation is sync and will block.
-> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
-> `result = await Policy.delete.aio()`.
-```python
-def delete(
-    cls,
-    name: str,
-)
-```
-Delete a policy.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `cls` |  | |
-| `name` | `str` | |
+| `user_subject` | `str \| None` | User subject identifier. |
+| `creds_subject` | `str \| None` | Client credentials application subject. |
+| `email` | `str \| None` | User email for lookup. |
+| `policy` | `str` | Policy name to assign. |
 
 ### get()
 
@@ -95,20 +77,24 @@ Delete a policy.
 > [!NOTE] This method can be called both synchronously or asynchronously.
 > Default invocation is sync and will block.
 > To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
-> `result = await Policy.get.aio()`.
+> `result = await Assignment.get.aio()`.
 ```python
 def get(
     cls,
-    name: str,
-) -> Policy
+    user_subject: str | None,
+    creds_subject: str | None,
+) -> Assignment
 ```
-Get a policy by name.
+Get assignments for an identity.
+
+One of user_subject or creds_subject must be provided.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
-| `name` | `str` | |
+| `user_subject` | `str \| None` | |
+| `creds_subject` | `str \| None` | |
 
 ### listall()
 
@@ -116,14 +102,14 @@ Get a policy by name.
 > [!NOTE] This method can be called both synchronously or asynchronously.
 > Default invocation is sync and will block.
 > To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
-> `result = await Policy.listall.aio()`.
+> `result = await Assignment.listall.aio()`.
 ```python
 def listall(
     cls,
     limit: int,
-) -> AsyncIterator[Policy]
+) -> AsyncIterator[Assignment]
 ```
-List all policies in the organization.
+List assignments for all members in the organization.
 
 
 | Parameter | Type | Description |
@@ -153,28 +139,30 @@ Returns:
     str: A JSON string representation of the object.
 
 
-### update()
+### unassign()
 
 
 > [!NOTE] This method can be called both synchronously or asynchronously.
 > Default invocation is sync and will block.
 > To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
-> `result = await Policy.update.aio()`.
+> `result = await Assignment.unassign.aio()`.
 ```python
-def update(
+def unassign(
     cls,
-    name: str,
-    old_bindings: list[dict],
-    new_bindings: list[dict],
-) -> Policy
+    user_subject: str | None,
+    creds_subject: str | None,
+    policy: str,
+)
 ```
-Update a policy by diffing bindings and applying add/remove operations.
+Unassign a policy from an identity.
+
+One of user_subject or creds_subject must be provided.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
-| `name` | `str` | |
-| `old_bindings` | `list[dict]` | |
-| `new_bindings` | `list[dict]` | |
+| `user_subject` | `str \| None` | |
+| `creds_subject` | `str \| None` | |
+| `policy` | `str` | |
 

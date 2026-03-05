@@ -1,6 +1,6 @@
 ---
 title: Role
-version: 0.2.0
+version: 0.2.1
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
