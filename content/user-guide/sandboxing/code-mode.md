@@ -1,7 +1,7 @@
 ---
 title: Programmatic tool calling for agents
 weight: 3
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true
 ---

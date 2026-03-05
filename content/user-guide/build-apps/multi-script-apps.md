@@ -1,7 +1,7 @@
 ---
 title: Multi-script apps
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Multi-script apps

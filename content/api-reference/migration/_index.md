@@ -1,7 +1,7 @@
 ---
 title: Migration from Flyte 1
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 llm_readable_bundle: true
 ---
