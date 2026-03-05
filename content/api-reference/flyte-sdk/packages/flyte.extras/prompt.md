@@ -1,0 +1,46 @@
+---
+title: Prompt
+version: 2.0.3
+variants: +flyte +byoc +selfmanaged
+layout: py_api
+---
+
+# Prompt
+
+**Package:** `flyte.extras`
+
+Simple prompt record with built-in token estimation.
+
+This is a convenience type for common LLM use cases.  For richer
+prompt types (e.g. with system messages, metadata), define your own
+dataclass implementing :class:`TokenEstimator`.
+
+Attributes:
+    text: The prompt text.
+
+
+
+```python
+class Prompt(
+    text: str,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `text` | `str` | |
+
+## Methods
+
+| Method | Description |
+|-|-|
+| [`estimate_tokens()`](#estimate_tokens) | Rough token estimate (~4 chars per token). |
+
+
+### estimate_tokens()
+
+```python
+def estimate_tokens()
+```
+Rough token estimate (~4 chars per token).
+
+
