@@ -1,0 +1,128 @@
+---
+title: User
+version: 0.2.0
+variants: +flyte +byoc +selfmanaged
+layout: py_api
+---
+
+# User
+
+**Package:** `flyteplugins.union.remote`
+
+Represents a Union user.
+
+
+```python
+class User(
+    pb2: UserPb2,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `UserPb2` | |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `email` | `None` |  |
+| `first_name` | `None` |  |
+| `last_name` | `None` |  |
+| `subject` | `None` |  |
+
+## Methods
+
+| Method | Description |
+|-|-|
+| [`delete()`](#delete) | Delete a user. |
+| [`get()`](#get) | Get a user by subject identifier. |
+| [`listall()`](#listall) | List all users in the organization. |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
+
+
+### delete()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await User.delete.aio()`.
+```python
+def delete(
+    cls,
+    subject: str,
+)
+```
+Delete a user.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `subject` | `str` | |
+
+### get()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await User.get.aio()`.
+```python
+def get(
+    cls,
+    subject: str,
+) -> User
+```
+Get a user by subject identifier.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `subject` | `str` | |
+
+### listall()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await User.listall.aio()`.
+```python
+def listall(
+    cls,
+    limit: int,
+) -> AsyncIterator[User]
+```
+List all users in the organization.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `limit` | `int` | |
+
+### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
+
+
