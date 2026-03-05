@@ -56,6 +56,10 @@ for CHART in "${CHARTS[@]}"; do
     --template-files "$CHART.md.gotmpl" \
     --output-file README.md
 
-  cp "$OUTPUT" "$DEST"
+  # Wrap angle-bracket placeholders (e.g. <ACCOUNT_ID>, <configmap-name>) in
+  # backticks so Hugo's goldmark renderer doesn't treat them as raw HTML.
+  # Pattern: < followed by a letter, then 1+ letters/digits/underscores/hyphens, then >
+  # Minimum 2 chars inside brackets to avoid matching real HTML tags like <p>, <a>.
+  sed -E 's/<([A-Za-z][A-Za-z0-9_-]+)>/`<\1>`/g' "$OUTPUT" > "$DEST"
   echo "Generated: $DEST"
 done
