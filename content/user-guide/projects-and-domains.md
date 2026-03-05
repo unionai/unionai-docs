@@ -109,6 +109,36 @@ Restore an archived project to active status:
 uctl update project -p my-project --activate
 ```
 
+## Listing projects programmatically
+
+You can list and retrieve projects from Python using [`flyte.remote.Project`](../api-reference/flyte-sdk/packages/flyte.remote/project/_index):
+
+```python
+import flyte
+
+flyte.init_from_config()
+
+# Get a specific project
+project = flyte.remote.Project.get(name="my-project", org="my-org")
+
+# List all projects
+for project in flyte.remote.Project.listall():
+    print(project.to_dict())
+
+# List with filtering and sorting
+for project in flyte.remote.Project.listall(sort_by=("created_at", "desc")):
+    print(project.to_dict())
+```
+
+Both `get()` and `listall()` support async execution via `.aio()`:
+
+```python
+project = await flyte.remote.Project.get.aio(name="my-project", org="my-org")
+```
+
+> [!NOTE]
+> The Python SDK provides read-only access to projects. To create or modify projects, use the `uctl` CLI or the UI.
+
 ## Managing projects via the UI
 
 You can also create and manage projects through the {{< key product_name >}} console.
