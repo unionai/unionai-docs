@@ -1,7 +1,7 @@
 ---
 title: Serve and deploy apps
-weight: 14
-variants: +flyte +serverless +byoc +selfmanaged
+weight: 15
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true
 ---

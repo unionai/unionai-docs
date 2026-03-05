@@ -1,7 +1,7 @@
 ---
 title: App environments
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # App environment settings

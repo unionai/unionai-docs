@@ -1,7 +1,7 @@
 ---
 title: CodeTaskTemplate
-version: 2.0.1
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.3
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -88,6 +88,7 @@ class CodeTaskTemplate(
 
 | Property | Type | Description |
 |-|-|-|
+| `json_schema` | `None` | JSON schema for the task inputs, following the Flyte standard.  Delegates to NativeInterface.json_schema, which uses the type engine to produce a LiteralType per input and converts to JSON schema. |
 | `native_interface` | `None` |  |
 | `source_file` | `None` | Returns the source file of the function, if available. This is useful for debugging and tracing. |
 

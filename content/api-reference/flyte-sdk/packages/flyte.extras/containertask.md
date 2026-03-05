@@ -1,7 +1,7 @@
 ---
 title: ContainerTask
-version: 2.0.1
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.3
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -27,6 +27,7 @@ class ContainerTask(
     output_data_dir: str | pathlib._local.Path,
     metadata_format: typing.Literal['JSON', 'YAML', 'PROTO'],
     local_logs: bool,
+    block_network: bool,
     kwargs,
 )
 ```
@@ -42,6 +43,7 @@ class ContainerTask(
 | `output_data_dir` | `str \| pathlib._local.Path` | The directory where the output data is stored. This is a string or a Path object. |
 | `metadata_format` | `typing.Literal['JSON', 'YAML', 'PROTO']` | The format of the output file. This can be "JSON", "YAML", or "PROTO". |
 | `local_logs` | `bool` | If True, logs will be printed to the console in the local execution. |
+| `block_network` | `bool` | |
 | `kwargs` | `**kwargs` | |
 
 ## Properties
@@ -56,7 +58,7 @@ class ContainerTask(
 | Method | Description |
 |-|-|
 | [`aio()`](#aio) | The aio function allows executing "sync" tasks, in an async context. |
-| [`config()`](#config) | Returns additional configuration for the task. |
+| [`config()`](#config) | Return the configuration for the container task, including network settings. |
 | [`container_args()`](#container_args) | Returns the container args for the task. |
 | [`custom_config()`](#custom_config) | Returns additional configuration for the task. |
 | [`data_loading_config()`](#data_loading_config) | This configuration allows executing raw containers in Flyte using the Flyte CoPilot system. |
@@ -104,16 +106,16 @@ async def my_new_parent_task(n: int) -> List[int]:
 
 ```python
 def config(
-    sctx: SerializationContext,
-) -> Dict[str, str]
+    sctx: flyte.models.SerializationContext,
+) -> typing.Dict[str, str]
 ```
-Returns additional configuration for the task. This is a set of key-value pairs that can be used to
-configure the task execution environment at runtime. This is usually used by plugins.
+Return the configuration for the container task, including network settings.
+This is for remote execution.
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `sctx` | `SerializationContext` | |
+| `sctx` | `flyte.models.SerializationContext` | |
 
 ### container_args()
 

@@ -1,7 +1,7 @@
 ---
 title: App usage patterns
 weight: 3
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # App usage patterns
@@ -125,6 +125,47 @@ Security considerations:
 Here's an example webhook that triggers tasks based on GitHub events:
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/github_webhook.py" fragment=github-webhook lang=python >}}
+
+### Gradio agent UI
+
+For AI agents, a Gradio app lets you build an interactive UI that kicks off agent runs. The app uses `flyte.with_runcontext()` to run the agent task either locally or on a remote cluster, controlled by an environment variable.
+
+```python
+import os
+import flyte
+import flyte.app
+from research_agent import agent
+
+RUN_MODE = os.getenv("RUN_MODE", "remote")
+
+serving_env = flyte.app.AppEnvironment(
+    name="research-agent-ui",
+    image=flyte.Image.from_debian_base(python_version=(3, 12)).with_pip_packages(
+        "gradio", "langchain-core", "langchain-openai", "langgraph",
+    ),
+    secrets=flyte.Secret(key="OPENAI_API_KEY", as_env_var="OPENAI_API_KEY"),
+    port=7860,
+)
+
+def run_query(request: str):
+    """Kick off the agent as a Flyte task."""
+    result = flyte.with_runcontext(mode=RUN_MODE).run(agent, request=request)
+    result.wait()
+    return result.outputs()[0]
+
+@serving_env.server
+def app_server():
+    create_demo().launch(server_name="0.0.0.0", server_port=7860)
+
+if __name__ == "__main__":
+    create_demo().launch()
+```
+
+The `RUN_MODE` variable gives you a smooth development progression:
+
+1. **Fully local**: `RUN_MODE=local python agent_app.py`. Everything runs in your local Python environment, great for rapid iteration.
+2. **Local app, remote task**: `python agent_app.py`. The UI runs locally but the agent executes on the cluster with full compute resources.
+3. **Full remote**: `flyte deploy agent_app.py serving_env`. Both the UI and agent run on the cluster.
 
 ## Call app from app
 

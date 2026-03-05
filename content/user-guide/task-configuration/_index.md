@@ -1,7 +1,7 @@
 ---
 title: Configure tasks
-weight: 8
-variants: +flyte +serverless +byoc +selfmanaged
+weight: 9
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true
 ---
@@ -194,7 +194,7 @@ The full set of parameters available for configuring a task environment, task de
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged serverless >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 * Type: `ReusePolicy | None`

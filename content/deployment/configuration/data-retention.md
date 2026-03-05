@@ -1,7 +1,7 @@
 ---
 title: Data retention policies
 weight: 7
-variants: -flyte -serverless -byoc +selfmanaged
+variants: -flyte -byoc +selfmanaged
 description: Implications of object storage retention or lifecycle policies on the default bucket and metadata.
 ---
 

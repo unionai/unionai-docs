@@ -1,7 +1,7 @@
 ---
 title: NativeInterface
-version: 2.0.1
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.3
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -28,6 +28,12 @@ class NativeInterface(
 | `outputs` | `Dict[str, Type]` | |
 | `docstring` | `Optional[Docstring]` | |
 | `_remote_defaults` | `Optional[Dict[str, literals_pb2.Literal]]` | |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `json_schema` | `None` | Convert task inputs to a JSON schema dict.  Uses the Flyte type engine to produce a LiteralType for each input, then converts to JSON schema. |
 
 ## Methods
 

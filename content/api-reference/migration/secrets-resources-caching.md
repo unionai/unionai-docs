@@ -1,7 +1,7 @@
 ---
 title: Secrets, resources, and caching
 weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Secrets, resources, and caching

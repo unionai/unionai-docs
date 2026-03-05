@@ -1,7 +1,7 @@
 ---
 title: Enabling GCP resources
 weight: 10
-variants: -flyte -serverless +byoc -selfmanaged
+variants: -flyte +byoc -selfmanaged
 sidebar_expanded: true
 ---
 
@@ -64,7 +64,7 @@ Global access is recommended for most use cases since it is simpler, but if you 
 
 > [!NOTE] Relationship with RBAC
 > The permissions being discussed here are attached to a domain.
-> This is independent of the permissions granted to users and machine applications through {{< key product_name >}}'s role-based access control (see the user management documentation).
+> This is independent of the permissions granted to users and machine applications through {{< key product_name >}}'s role-based access control (see [User management](../../user-guide/user-management)).
 > But, the two types of permissions are related.
 >
 > For example, for a user (or machine application) to have read access to a Cloud Storage bucket, two things are required:

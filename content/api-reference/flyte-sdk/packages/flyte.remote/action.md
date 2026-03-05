@@ -1,7 +1,7 @@
 ---
 title: Action
-version: 2.0.1
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.3
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -140,8 +140,9 @@ def listall(
     cls,
     for_run_name: str,
     in_phase: Tuple[ActionPhase | str, ...] | None,
-    filters: str | None,
     sort_by: Tuple[str, Literal['asc', 'desc']] | None,
+    created_at: TimeFilter | None,
+    updated_at: TimeFilter | None,
 ) -> Union[Iterator[Action], AsyncIterator[Action]]
 ```
 Get all actions for a given run.
@@ -153,8 +154,9 @@ Get all actions for a given run.
 | `cls` |  | |
 | `for_run_name` | `str` | The name of the run. |
 | `in_phase` | `Tuple[ActionPhase \| str, ...] \| None` | Filter actions by one or more phases. |
-| `filters` | `str \| None` | The filters to apply to the project list. |
-| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). :return: An iterator of actions. |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). |
+| `created_at` | `TimeFilter \| None` | Filter actions by creation time range. |
+| `updated_at` | `TimeFilter \| None` | Filter actions by last-update time range. :return: An iterator of actions. |
 
 ### show_logs()
 

@@ -1,12 +1,16 @@
 ---
-title: Local setup
-weight: 4
-variants: +flyte +serverless +byoc +selfmanaged
+title: Connecting to a cluster
+weight: 5
+variants: +flyte +byoc +selfmanaged
 ---
 
-# Local setup
+# Connecting to a cluster
 
 This guide covers setting up your local development environment and configuring the `flyte` CLI and SDK to connect to your Union/Flyte instance.
+
+{{< note >}}
+Want to try Flyte without installing anything? [Try Flyte 2 in your browser](https://flyte2intro.apps.demo.hosted.unionai.cloud/).
+{{< /note >}}
 
 ## Prerequisites
 
@@ -34,7 +38,7 @@ flyte --version
 
 As we did in [Quickstart](./quickstart), use `flyte create config` to create a configuration file:
 
-{{< variant byoc selfmanaged serverless >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 ```shell
 flyte create config \
@@ -59,7 +63,7 @@ flyte create config \
 
 This creates `./.flyte/config.yaml`:
 
-{{< variant byoc selfmanaged serverless >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 ```yaml
 admin:
@@ -90,7 +94,7 @@ task:
 
 {{< dropdown title="Full example with all options" icon="bento" >}}
 
-{{< variant byoc selfmanaged serverless >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 Create a custom config file with all available options:
 ```shell
@@ -120,6 +124,18 @@ flyte create config \
     --output my-config.yaml \
     --force
 ```
+
+### Set up local Docker
+
+Since Flyte OSS uses local image building, you'll need Docker running and logged into the GitHub registry:
+
+```shell
+docker login ghcr.io
+```
+
+> [!NOTE]
+> The `--builder local` option means images are [built locally](./task-configuration/container-images). Union instances can use `--builder remote` instead.
+
 {{< /markdown >}}
 {{< /variant >}}
 

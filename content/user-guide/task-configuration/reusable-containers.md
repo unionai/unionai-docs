@@ -1,7 +1,7 @@
 ---
 title: Reusable containers
 weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Reusable containers
@@ -19,7 +19,7 @@ This approach reduces start up overhead and improves resource efficiency.
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged serverless >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 > [!NOTE]

@@ -1,7 +1,7 @@
 ---
 title: Retries and timeouts
 weight: 8
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Retries and timeouts

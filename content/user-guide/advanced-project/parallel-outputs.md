@@ -1,7 +1,7 @@
 ---
 title: Parallel outputs
 weight: 3
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Parallel outputs

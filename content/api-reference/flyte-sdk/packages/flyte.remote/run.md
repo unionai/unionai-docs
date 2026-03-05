@@ -1,7 +1,7 @@
 ---
 title: Run
-version: 2.0.1
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.3
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -147,6 +147,10 @@ def listall(
     created_by_subject: str | None,
     sort_by: Tuple[str, Literal['asc', 'desc']] | None,
     limit: int,
+    project: str | None,
+    domain: str | None,
+    created_at: TimeFilter | None,
+    updated_at: TimeFilter | None,
 ) -> AsyncIterator[Run]
 ```
 Get all runs for the current project and domain.
@@ -161,7 +165,11 @@ Get all runs for the current project and domain.
 | `task_version` | `str \| None` | Filter runs by task version. |
 | `created_by_subject` | `str \| None` | Filter runs by the subject that created them. (this is not username, but the subject) |
 | `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the Run list, in the format (field, order). |
-| `limit` | `int` | The maximum number of runs to return. :return: An iterator of runs. |
+| `limit` | `int` | The maximum number of runs to return. |
+| `project` | `str \| None` | The project to list runs for. Defaults to the globally configured project. |
+| `domain` | `str \| None` | The domain to list runs for. Defaults to the globally configured domain. |
+| `created_at` | `TimeFilter \| None` | Filter runs by creation time range. |
+| `updated_at` | `TimeFilter \| None` | Filter runs by last-update time range. :return: An iterator of runs. |
 
 ### outputs()
 

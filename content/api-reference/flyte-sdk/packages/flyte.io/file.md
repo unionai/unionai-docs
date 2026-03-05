@@ -1,7 +1,7 @@
 ---
 title: File
-version: 2.0.1
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.3
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -200,6 +200,7 @@ validated to form a valid model.
 | [`model_validate()`](#model_validate) | Validate a pydantic model instance. |
 | [`model_validate_json()`](#model_validate_json) | Validate the given JSON data against the Pydantic model. |
 | [`model_validate_strings()`](#model_validate_strings) | Validate the given object with string data against the Pydantic model. |
+| [`named_remote()`](#named_remote) | Create a File reference whose remote path is derived deterministically from *name*. |
 | [`new_remote()`](#new_remote) | Create a new File reference for a remote file that will be written to. |
 | [`open()`](#open) | Asynchronously open the file and return a file-like object. |
 | [`open_sync()`](#open_sync) | Synchronously open the file and return a file-like object. |
@@ -860,6 +861,33 @@ Validate the given object with string data against the Pydantic model.
 | `context` | `Any \| None` | Extra variables to pass to the validator. |
 | `by_alias` | `bool \| None` | Whether to use the field's alias when validating against the provided input data. |
 | `by_name` | `bool \| None` | Whether to use the field's name when validating against the provided input data. |
+
+### named_remote()
+
+```python
+def named_remote(
+    name: str,
+) -> File[T]
+```
+Create a File reference whose remote path is derived deterministically from *name*.
+
+Unlike :meth:`new_remote`, which generates a random path on every call, this method
+produces the same path for the same *name* within a given task execution. This makes
+it safe across retries: the first attempt uploads to the path and subsequent retries
+resolve to the identical location without re-uploading.
+
+The path is optionally namespaced by the node ID extracted from the backend
+raw-data path, which follows the convention:
+
+    {run_name}-{node_id}-{attempt_index}
+
+If extraction fails, the function falls back to the run base directory alone.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | Plain filename (e.g., "data.csv"). Must not contain path separators. |
 
 ### new_remote()
 

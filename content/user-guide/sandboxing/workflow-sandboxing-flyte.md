@@ -1,7 +1,7 @@
 ---
 title: Workflow sandboxing
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true
 mermaid: true
@@ -24,45 +24,34 @@ The result: LLMs generate the orchestration code (control flow, conditionals, lo
 
 ## How it works
 
-Your generated code runs inside a **Monty sandbox** — a lightweight Python interpreter embedded within the host Python process. The sandbox can execute pure Python (variables, loops, conditionals, function calls) but has no access to the filesystem, network, imports, or OS. When your code calls an external task, the call breaks out of the sandbox and runs in a full worker container:
+Your generated code runs inside one or more **Monty sandboxes** — lightweight Python interpreters embedded within a **worker container**. Each sandbox can execute pure Python (variables, loops, conditionals, function calls) but has no access to the filesystem, network, imports, or OS. A **bridge layer** acts as a hypervisor between the worker container and the sandboxes, handling opaque IO and routing callable tasks. When your code calls an external task, the bridge dispatches it — either as a method in the outer Python process or as a durable remote call through the Flyte controller (via the Queue Service):
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#1f2937', 'primaryTextColor':'#e5e7eb', 'primaryBorderColor':'#6b7280', 'lineColor':'#9ca3af', 'secondaryColor':'#374151', 'tertiaryColor':'#1f2937'}}}%%
 flowchart TB
-    subgraph host["Host Python Process"]
-        subgraph sandbox["Monty Sandbox — no FS, no network, no imports"]
-            A["Your code: loops, variables, conditionals"]
-            B["result = add(x, y)"]
-        end
-        subgraph io["Opaque IO — pass through only"]
-            C["File, Dir, DataFrame"]
+    subgraph worker["Worker Container"]
+        subgraph bridge["Bridge / Hypervisor"]
+            IO["Opaque IO: File, Dir, DataFrame"]
+            subgraph sandbox1["Monty Sandbox 1"]
+                A1["Your code: loops, variables, conditionals"]
+                B1["result = add(x, y)"]
+            end
+            subgraph sandbox2["Monty Sandbox 2"]
+                A2["More sandboxed code"]
+            end
         end
     end
 
-    A --> B
-    B -- "external call" --> W1
-    B -- "external call" --> W2
-    C -. "routed between tasks" .-> W1
-    C -. "routed between tasks" .-> W2
-    W1 -- "result" --> B
-    W2 -- "result" --> B
-
-    W1["Worker container: add(x, y)"]
-    W2["Worker container: fetch_data(name)"]
-
-    style sandbox fill:#1a2332,stroke:#e69812,stroke-width:2px,color:#e5e7eb
-    style host fill:#111827,stroke:#6b7280,stroke-width:1px,color:#9ca3af
-    style io fill:#1a2332,stroke:#6b7280,stroke-width:1px,color:#9ca3af
-    style A fill:#1f2937,stroke:#4b5563,color:#e5e7eb
-    style B fill:#1f2937,stroke:#e69812,color:#e69812
-    style C fill:#1f2937,stroke:#4b5563,color:#e5e7eb
-    style W1 fill:#374151,stroke:#e69812,stroke-width:1px,color:#e5e7eb
-    style W2 fill:#374151,stroke:#e69812,stroke-width:1px,color:#e5e7eb
+    A1 --> B1
+    B1 -- "callable task" --> bridge
+    bridge -- "result" --> B1
+    IO -. "routed to tasks" .-> bridge
+    bridge -- "external call" --> QS["Queue Service"]
+    QS -- "completion" --> bridge
 ```
 
-The sandbox sees external tasks as opaque function calls. When your code hits one, Monty **pauses**, the Flyte controller dispatches the task in its own container, and Monty **resumes** with the result. Your code never knows the difference — it just looks like a regular function call that returns a value.
+Each sandbox sees external tasks as opaque function calls. When your code hits one, Monty **pauses**, and the bridge layer dispatches the task — either directly in the outer Python process or as a remote durable call through the Flyte controller system (Queue Service). Once the call completes, Monty **resumes** with the result. Your code never knows the difference — it just looks like a regular function call that returns a value. Multiple Monty sandboxes can run within the same worker container, each isolated like a lightweight VM.
 
-**Opaque IO types** like `File`, `Dir`, and `DataFrame` pass through the sandbox without inspection. Your code can route them between tasks but cannot read or modify their contents.
+**Opaque IO types** like `File`, `Dir`, and `DataFrame` are managed by the bridge layer and pass through the sandbox without inspection. Your code can route them between tasks but cannot read or modify their contents.
 
 ## Example: sandboxed orchestrator
 
@@ -203,13 +192,13 @@ sum_task = make_reducer("sum")
 product_task = make_reducer("product")
 ```
 
-## Building code-mode agents
+## Building agents with programmatic tool calling
 
-The sandboxed orchestrator and `orchestrate_local()` are the foundation for building **code-mode agents** — systems where an LLM generates Python orchestration code, and the sandbox executes it with registered tools.
+The sandboxed orchestrator and `orchestrate_local()` are the foundation for building agents that use **programmatic tool calling** — systems where an LLM generates Python orchestration code, and the sandbox executes it with registered tools.
 
 Because `orchestrate_local()` accepts a plain code string and a list of tool functions, you can wire it into an LLM generate-execute-retry loop: the model writes code, the sandbox runs it, and on failure the error feeds back to the model for correction.
 
-See [Code mode](./code-mode) for the full concept, agent implementation patterns, and end-to-end examples.
+See [Programmatic tool calling for agents](./code-mode) for the full concept, agent implementation patterns, and end-to-end examples.
 
 ## Syntax restrictions
 

@@ -1,6 +1,6 @@
 ---
 title: uctl delete task-resource-attribute
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl delete task-resource-attribute

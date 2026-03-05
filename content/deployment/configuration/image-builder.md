@@ -1,7 +1,7 @@
 ---
 title: Image Builder
 weight: 2
-variants: -flyte -serverless -byoc +selfmanaged
+variants: -flyte -byoc +selfmanaged
 ---
 
 # Image Builder

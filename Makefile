@@ -18,7 +18,8 @@ TARGETS := usage help clean clean-generated base dist variant dev serve \
 	update-examples init-examples check-jupyter check-images validate-urls \
 	url-stats llm-docs update-redirects dry-run-redirects deploy-redirects \
 	check-deleted-pages check-links check-generated-content check-api-docs \
-	check-llm-bundle-notes update-api-docs
+	check-llm-bundle-notes update-api-docs \
+	check-helm-docs update-helm-docs generate-helm-docs
 
 # Guard: fail fast if the infra submodule is not initialized.
 .PHONY: _check-infra
@@ -31,6 +32,10 @@ _check-infra:
 .PHONY: $(TARGETS)
 $(TARGETS): _check-infra
 	@$(MAKE) --no-print-directory -f unionai-docs-infra/Makefile $@
+
+.PHONY: init-infra
+init-infra:
+	git submodule update --init
 
 # Submodule update helpers (not forwarded to unionai-docs-infra/Makefile).
 .PHONY: update-infra

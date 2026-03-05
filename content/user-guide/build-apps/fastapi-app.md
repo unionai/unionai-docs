@@ -1,7 +1,7 @@
 ---
 title: FastAPI app
 weight: 9
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # FastAPI app
@@ -55,6 +55,71 @@ The helper module:
 {{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/multi_file/module.py" lang=python >}}
 
 See [Multi-script apps](./multi-script-apps) for more details on building FastAPI apps with multiple files.
+
+## Local-to-remote model serving
+
+A common ML pattern: train a model with a Flyte pipeline, then serve predictions from it. During local development, the app loads the model from a local file (e.g. `model.pt` saved by your training pipeline). When deployed remotely, Flyte's `Parameter` system automatically resolves the model from the latest training run output.
+
+```python
+from contextlib import asynccontextmanager
+from pathlib import Path
+import os
+
+from fastapi import FastAPI
+import flyte
+from flyte.app import Parameter, RunOutput
+from flyte.app.extras import FastAPIAppEnvironment
+
+MODEL_PATH_ENV = "MODEL_PATH"
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Load model on startup, either local file or remote run output."""
+    model_path = Path(os.environ.get(MODEL_PATH_ENV, "model.pt"))
+    model = load_model(model_path)
+    app.state.model = model
+    yield
+
+app = FastAPI(title="MNIST Predictor", lifespan=lifespan)
+
+serving_env = FastAPIAppEnvironment(
+    name="mnist-predictor",
+    app=app,
+    parameters=[
+        # Remote: resolves model from the latest train run and sets MODEL_PATH
+        Parameter(
+            name="model",
+            value=RunOutput(task_name="ml_pipeline.pipeline", type="file", getter=(1,)),
+            download=True,
+            env_var=MODEL_PATH_ENV,
+        ),
+    ],
+    image=flyte.Image.from_debian_base(python_version=(3, 12)).with_pip_packages(
+        "fastapi", "uvicorn", "torch", "torchvision",
+    ),
+    resources=flyte.Resources(cpu=1, memory="4Gi"),
+)
+
+@app.get("/predict")
+async def predict(index: int = 0) -> dict:
+    return {"prediction": app.state.model(index)}
+
+if __name__ == "__main__":
+    # Local: skip RunOutput resolution, lifespan falls back to local model.pt
+    serving_env.parameters = []
+    local_app = flyte.with_servecontext(mode="local").serve(serving_env)
+    local_app.activate(wait=True)
+```
+
+```bash
+# Local: loads model.pt from disk
+python serve_model.py
+
+# Remote: resolves model from latest training run
+flyte deploy serve_model.py serving_env
+```
+
+The key idea: `Parameter` with `RunOutput` bridges the gap between local and remote. Locally, the app falls back to a local file. Remotely, Flyte resolves the model artifact from the latest pipeline run automatically.
 
 ## Best practices
 

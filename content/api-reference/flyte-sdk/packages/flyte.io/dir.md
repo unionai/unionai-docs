@@ -1,7 +1,7 @@
 ---
 title: Dir
-version: 2.0.1
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.3
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -235,6 +235,7 @@ validated to form a valid model.
 | [`model_validate()`](#model_validate) | Validate a pydantic model instance. |
 | [`model_validate_json()`](#model_validate_json) | Validate the given JSON data against the Pydantic model. |
 | [`model_validate_strings()`](#model_validate_strings) | Validate the given object with string data against the Pydantic model. |
+| [`new_remote()`](#new_remote) | Create a new Dir reference for a remote directory that will be written to. |
 | [`parse_file()`](#parse_file) |  |
 | [`parse_obj()`](#parse_obj) |  |
 | [`parse_raw()`](#parse_raw) |  |
@@ -1047,6 +1048,34 @@ Validate the given object with string data against the Pydantic model.
 | `context` | `Any \| None` | Extra variables to pass to the validator. |
 | `by_alias` | `bool \| None` | Whether to use the field's alias when validating against the provided input data. |
 | `by_name` | `bool \| None` | Whether to use the field's name when validating against the provided input data. |
+
+### new_remote()
+
+```python
+def new_remote(
+    dir_name: Optional[str],
+    hash: Optional[str],
+) -> Dir[T]
+```
+Create a new Dir reference for a remote directory that will be written to.
+
+Use this when you want to create a new directory and write files into it
+directly without creating a local directory first.
+
+Example::
+
+    @env.task
+    async def create() -&gt; Dir:
+        d = Dir.new_remote("output")
+        # write files into d ...
+        return d
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `dir_name` | `Optional[str]` | Optional name for the remote directory. If not set, a generated name will be used. |
+| `hash` | `Optional[str]` | Optional precomputed hash value to use for cache key computation when this Dir is used as an input to discoverable tasks. |
 
 ### parse_file()
 

@@ -1,7 +1,7 @@
 ---
 title: FlyteWebhookAppEnvironment
-version: 2.0.1
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.3
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -47,6 +47,7 @@ class FlyteWebhookAppEnvironment(
     include: List[str],
     parameters: List[Parameter],
     cluster_pool: str,
+    timeouts: Timeouts,
     image: flyte.Image,
     type: str,
     uvicorn_config: 'uvicorn.Config | None',
@@ -79,6 +80,7 @@ class FlyteWebhookAppEnvironment(
 | `include` | `List[str]` | |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | |
+| `timeouts` | `Timeouts` | |
 | `image` | `flyte.Image` | Docker image to use for the environment |
 | `type` | `str` | |
 | `uvicorn_config` | `'uvicorn.Config \| None'` | |

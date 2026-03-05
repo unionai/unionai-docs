@@ -1,7 +1,7 @@
 ---
 title: Tasks
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Tasks
