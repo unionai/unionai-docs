@@ -38,7 +38,7 @@ Install the Union CLI plugin:
 pip install flyteplugins-union
 ```
 
-This adds `role`, `policy`, `user`, and `member` subcommands to the `flyte` CLI.
+This adds `role`, `policy`, `assignment`, `user`, and `member` subcommands to the `flyte` CLI.
 
 ### Walkthrough: restrict a team to run workflows in production only
 
@@ -88,15 +88,21 @@ bindings:
 
 **Step 3 — Assign the policy to a user**
 
-Navigate to **Settings > User Management** in the Union UI, select the user, and add the "Team Prod Access" policy.
+```shell
+$ flyte create assignment --email jane@example.com --policy "Team Prod Access"
+```
 
-> [!NOTE]
-> Policy-to-user assignment is currently managed through the UI. CLI support for this is coming soon.
+You can also assign by user subject or application credentials subject:
+
+```shell
+$ flyte create assignment --user-subject user-123 --policy "Team Prod Access"
+$ flyte create assignment --creds-subject app-456 --policy "Team Prod Access"
+```
 
 #### Python SDK
 
 ```python
-from flyteplugins.union.remote import Role, Policy
+from flyteplugins.union.remote import Role, Policy, Assignment
 
 # Step 1 — Create the role
 Role.create(
@@ -123,6 +129,9 @@ Policy.create(
         },
     ],
 )
+
+# Step 3 — Assign the policy to a user
+Assignment.create(email="jane@example.com", policy="Team Prod Access")
 ```
 
 ### Updating roles and policies
@@ -195,6 +204,9 @@ Navigate to **Settings > User Management** to:
 | `flyte get policy [<name>]` | List all policies or view a specific one |
 | `flyte update policy <name>` | Edit a policy in `$EDITOR` |
 | `flyte delete policy <name>` | Delete a policy |
+| `flyte create assignment --email <email> \| --user-subject <id> \| --creds-subject <id> --policy <name>` | Assign a policy to a user or application |
+| `flyte get assignment [--user-subject <id> \| --creds-subject <id>]` | List all assignments or view a specific one |
+| `flyte delete assignment --user-subject <id> \| --creds-subject <id> --policy <name>` | Unassign a policy from a user or application |
 | `flyte get user [<subject>]` | List all users or view a specific one |
 | `flyte delete user <subject>` | Delete a user |
 | `flyte get member` | List all members (users and applications) |
