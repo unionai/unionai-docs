@@ -1,7 +1,7 @@
 ---
 title: Dataplane chart
 variants: -flyte -byoc +selfmanaged
-chart_version: 2026.2.10
+chart_version: 2026.3.3
 weight: 1
 ---
 
@@ -11,8 +11,8 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 
 | | |
 |---|---|
-| **Chart version** | 2026.2.10 |
-| **App version** | 2026.2.12 |
+| **Chart version** | 2026.3.3 |
+| **App version** | 2026.3.2 |
 | **Kubernetes version** | `>= 1.28.0-0` |
 
 ## Dependencies
@@ -75,8 +75,8 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | config.enabled_plugins.tasks | object | Tasks specific configuration [structure](https://pkg.go.dev/github.com/flyteorg/flytepropeller/pkg/controller/nodes/task/config#GetConfig) | `(see values.yaml)` |
 | config.enabled_plugins.tasks.task-plugins | object | Plugins configuration, [structure](https://pkg.go.dev/github.com/flyteorg/flytepropeller/pkg/controller/nodes/task/config#TaskPluginConfig) | `(see values.yaml)` |
 | config.enabled_plugins.tasks.task-plugins.enabled-plugins | list | [Enabled Plugins](https://pkg.go.dev/github.com/lyft/flyteplugins/go/tasks/config#Config). Enable sagemaker*, athena if you install the backend plugins | `["container","sidecar","k8s-array","echo","fast-task","connector-service"]` |
-| config.k8s | object | Kubernetes specific Flyte configuration | `(see values.yaml)` |
-| config.k8s.plugins.k8s | object | Configuration section for all K8s specific plugins [Configuration structure](https://pkg.go.dev/github.com/lyft/flyteplugins/go/tasks/pluginmachinery/flytek8s/config) | `(see values.yaml)` |
+| config.k8s | object | Kubernetes specific Flyte configuration | `{"plugins":{"k8s":{"default-cpus":"100m","default-env-vars":[],"default-memory":"100Mi"}}}` |
+| config.k8s.plugins.k8s | object | Configuration section for all K8s specific plugins [Configuration structure](https://pkg.go.dev/github.com/lyft/flyteplugins/go/tasks/pluginmachinery/flytek8s/config) | `{"default-cpus":"100m","default-env-vars":[],"default-memory":"100Mi"}` |
 | config.logger | object | Logging configuration | `{"level":4,"show-source":true}` |
 | config.operator | object | Configuration for the Union operator service | `(see values.yaml)` |
 | config.operator.apps | object | Enable app serving | `{"enabled":"{{ .Values.serving.enabled }}"}` |
@@ -96,7 +96,6 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | config.operator.collectUsages | object | Configuration for the usage reporting service. | `{"enabled":true}` |
 | config.operator.collectUsages.enabled | bool | Enable usage collection in the operator service. | `true` |
 | config.operator.dependenciesHeartbeat | object | Heartbeat check configuration. | `(see values.yaml)` |
-| config.operator.dependenciesHeartbeat.executor | object | Define the propeller health check endpoint. | `{"endpoint":"{{ include \"executor.health.url\" . }}"}` |
 | config.operator.dependenciesHeartbeat.prometheus | object | Define the prometheus health check endpoint. | `{"endpoint":"{{ include \"prometheus.health.url\" . }}"}` |
 | config.operator.dependenciesHeartbeat.propeller | object | Define the propeller health check endpoint. | `{"endpoint":"{{ include \"propeller.health.url\" . }}"}` |
 | config.operator.dependenciesHeartbeat.proxy | object | Define the operator proxy health check endpoint. | `{"endpoint":"{{ include \"proxy.health.url\" . }}"}` |
@@ -124,77 +123,86 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | dcgm-exporter | object | Dcgm exporter configuration | `(see values.yaml)` |
 | dcgm-exporter.enabled | bool | Enable or disable the dcgm exporter | `false` |
 | dcgm-exporter.serviceMonitor | object | It's common practice to taint and label  to not run dcgm exporter on all nodes, so we can use node selectors and    tolerations to ensure it only runs on GPU nodes. affinity: {} nodeSelector: {} tolerations: [] | `{"honorLabels":true}` |
-| executor | object | Executor service configuration for running fast tasks and eager workflows. | `(see values.yaml)` |
 | executor.additionalVolumeMounts | list | Appends additional volume mounts to the main container's spec. May include template values. | `[]` |
 | executor.additionalVolumes | list | Appends additional volumes to the deployment spec. May include template values. | `[]` |
-| executor.config | object | Core executor configuration. | `(see values.yaml)` |
-| executor.config.cluster | string | Cluster name for the executor. Should match .Values.clusterName. | `"{{ tpl .Values.clusterName . }}"` |
-| executor.config.evaluatorCount | int | Number of evaluator goroutines for processing workflow nodes. | `64` |
-| executor.config.maxActions | int | Maximum number of concurrent actions the executor can handle. | `2000` |
-| executor.config.organization | string | Organization name for the executor. Should match .Values.orgName. | `"{{ tpl .Values.orgName . }}"` |
-| executor.config.unionAuth | object | Authentication configuration for eager workflows. | `{"injectSecret":true,"secretName":"EAGER_API_KEY"}` |
-| executor.config.unionAuth.injectSecret | bool | Inject an API key secret into eager workflow pods. | `true` |
-| executor.config.unionAuth.secretName | string | Name of the environment variable containing the API key secret. | `"EAGER_API_KEY"` |
-| executor.config.workerName | string | Name of this executor worker instance. | `"worker1"` |
-| executor.enabled | bool | Enable or disable the executor service. | `true` |
-| executor.idl2Executor | bool | Use IDL v2 executor protocol. | `true` |
-| executor.plugins | object | Plugin configuration for the executor. | `(see values.yaml)` |
-| executor.plugins.fasttask | object | Fast task plugin configuration. Enables in-process task execution for reduced overhead. | `(see values.yaml)` |
-| executor.plugins.ioutils | object | IO utilities configuration. | `{"remoteFileOutputPaths":{"deckFilename":"report.html"}}` |
-| executor.plugins.ioutils.remoteFileOutputPaths.deckFilename | string | Filename for Flyte Deck HTML reports. | `"report.html"` |
-| executor.plugins.k8s | object | Kubernetes plugin configuration for the executor. | `{"disable-inject-owner-references":true}` |
-| executor.plugins.k8s.disable-inject-owner-references | bool | Disable injecting owner references on task pods (executor manages lifecycle independently). | `true` |
+| executor.config.cluster | string |  | `"{{ tpl .Values.clusterName . }}"` |
+| executor.config.evaluatorCount | int |  | `64` |
+| executor.config.maxActions | int |  | `2000` |
+| executor.config.organization | string |  | `"{{ tpl .Values.orgName . }}"` |
+| executor.config.unionAuth.injectSecret | bool |  | `true` |
+| executor.config.unionAuth.secretName | string |  | `"EAGER_API_KEY"` |
+| executor.config.workerName | string |  | `"worker1"` |
+| executor.enabled | bool |  | `true` |
+| executor.idl2Executor | bool |  | `false` |
+| executor.plugins.fasttask | object | Configuration section for all K8s specific plugins [Configuration structure](https://pkg.go.dev/github.com/lyft/flyteplugins/go/tasks/pluginmachinery/flytek8s/config) | `(see values.yaml)` |
+| executor.plugins.ioutils.remoteFileOutputPaths.deckFilename | string |  | `"report.html"` |
+| executor.plugins.k8s.disable-inject-owner-references | bool |  | `true` |
 | executor.podEnv | list | Appends additional environment variables to the executor container's spec. | `[]` |
-| executor.podLabels | object | Labels to apply to executor pods. | `(see values.yaml)` |
-| executor.propeller | object | Propeller node configuration overrides for the executor. | `{"node-config":{"disable-input-file-writes":true}}` |
-| executor.propeller.node-config.disable-input-file-writes | bool | Disable writing input files to disk (uses remote storage instead). | `true` |
-| executor.raw_config | object | Raw configuration to merge into the executor config. Allows arbitrary overrides. | `{}` |
-| executor.resources | object | Resource requests and limits for the executor deployment. | `{"limits":{"cpu":4,"memory":"8Gi"},"requests":{"cpu":1,"memory":"1Gi"}}` |
-| executor.selector | object | Label selector for the executor deployment. | `{"matchLabels":{"app":"executor"}}` |
-| executor.serviceAccount | object | Service account configuration for the executor. | `{"annotations":{}}` |
-| executor.serviceAccount.annotations | object | Annotations to add to the executor service account. | `{}` |
-| executor.sharedService | object | Shared service configuration for the executor gRPC/HTTP server. | `(see values.yaml)` |
-| executor.sharedService.metrics | object | Metrics configuration for the executor. | `{"scope":"executor:"}` |
-| executor.sharedService.metrics.scope | string | Prometheus metrics prefix scope. | `"executor:"` |
-| executor.sharedService.security | object | Security configuration for the executor API. | `(see values.yaml)` |
-| executor.sharedService.security.allowCors | bool | Enable CORS support. | `true` |
-| executor.sharedService.security.allowLocalhostAccess | bool | Allow localhost access without authentication. | `true` |
-| executor.sharedService.security.secure | bool | Enable TLS for the executor API. | `false` |
-| executor.sharedService.security.useAuth | bool | Require authentication for the executor API. | `false` |
-| executor.task_logs | object | Task log configuration for the executor. | `{"plugins":{"logs":{"cloudwatch-enabled":false,"kubernetes-enabled":false}}}` |
+| executor.podLabels.app | string |  | `"executor"` |
+| executor.propeller.node-config.disable-input-file-writes | bool |  | `true` |
+| executor.raw_config | object |  | `{}` |
+| executor.resources.limits.cpu | int |  | `4` |
+| executor.resources.limits.memory | string |  | `"8Gi"` |
+| executor.resources.requests.cpu | int |  | `1` |
+| executor.resources.requests.memory | string |  | `"1Gi"` |
+| executor.selector.matchLabels.app | string |  | `"executor"` |
+| executor.serviceAccount.annotations | object |  | `{}` |
+| executor.sharedService.metrics.scope | string |  | `"executor:"` |
+| executor.sharedService.security.allowCors | bool |  | `true` |
+| executor.sharedService.security.allowLocalhostAccess | bool |  | `true` |
+| executor.sharedService.security.allowedHeaders[0] | string |  | `"Content-Type"` |
+| executor.sharedService.security.allowedOrigins[0] | string |  | `"*"` |
+| executor.sharedService.security.secure | bool |  | `false` |
+| executor.sharedService.security.useAuth | bool |  | `false` |
 | executor.task_logs.plugins.logs.cloudwatch-enabled | bool | One option is to enable cloudwatch logging for EKS, update the region and log group accordingly | `false` |
-| executor.task_logs.plugins.logs.kubernetes-enabled | bool | Enable Kubernetes-native log fetching. | `false` |
-| extraObjects | list | Extra Kubernetes objects to deploy with the helm chart. Each entry is a raw Kubernetes manifest. | `[]` |
-| fluentbit | object | Configuration for fluentbit used for the persistent logging feature. FluentBit runs as a DaemonSet and ships container logs to the persisted-logs/ path in the configured object store. The fluentbit-system service account must have write access to the storage bucket. Grant access using cloud-native identity federation:   AWS (IRSA):     annotations:       eks.amazonaws.com/role-arn: "arn:aws:iam::`<ACCOUNT_ID>`:role/`<ROLE_NAME>`"   Azure (Workload Identity):     annotations:       azure.workload.identity/client-id: "`<CLIENT_ID>`"   GCP (Workload Identity):     annotations:       iam.gke.io/gcp-service-account: "`<GSA_NAME>`@`<PROJECT_ID>`.iam.gserviceaccount.com" See https://www.union.ai/docs/v1/selfmanaged/deployment/configuration/persistent-logs/ | `(see values.yaml)` |
+| executor.task_logs.plugins.logs.dynamic-log-links[0].vscode.displayName | string |  | `"VS Code Debugger"` |
+| executor.task_logs.plugins.logs.dynamic-log-links[0].vscode.linkType | string |  | `"ide"` |
+| executor.task_logs.plugins.logs.dynamic-log-links[0].vscode.templateUris[0] | string |  | `(see values.yaml)` |
+| executor.task_logs.plugins.logs.dynamic-log-links[1].wandb-execution-id.displayName | string |  | `"Weights & Biases"` |
+| executor.task_logs.plugins.logs.dynamic-log-links[1].wandb-execution-id.linkType | string |  | `"dashboard"` |
+| executor.task_logs.plugins.logs.dynamic-log-links[1].wandb-execution-id.templateUris[0] | string |  | `(see values.yaml)` |
+| executor.task_logs.plugins.logs.dynamic-log-links[2].wandb-custom-id.displayName | string |  | `"Weights & Biases"` |
+| executor.task_logs.plugins.logs.dynamic-log-links[2].wandb-custom-id.linkType | string |  | `"dashboard"` |
+| executor.task_logs.plugins.logs.dynamic-log-links[2].wandb-custom-id.templateUris[0] | string |  | `(see values.yaml)` |
+| executor.task_logs.plugins.logs.dynamic-log-links[3].comet-ml-execution-id.displayName | string |  | `"Comet"` |
+| executor.task_logs.plugins.logs.dynamic-log-links[3].comet-ml-execution-id.linkType | string |  | `"dashboard"` |
+| executor.task_logs.plugins.logs.dynamic-log-links[3].comet-ml-execution-id.templateUris | string |  | `(see values.yaml)` |
+| executor.task_logs.plugins.logs.dynamic-log-links[4].comet-ml-custom-id.displayName | string |  | `"Comet"` |
+| executor.task_logs.plugins.logs.dynamic-log-links[4].comet-ml-custom-id.linkType | string |  | `"dashboard"` |
+| executor.task_logs.plugins.logs.dynamic-log-links[4].comet-ml-custom-id.templateUris | string |  | `(see values.yaml)` |
+| executor.task_logs.plugins.logs.dynamic-log-links[5].neptune-scale-run.displayName | string |  | `"Neptune Run"` |
+| executor.task_logs.plugins.logs.dynamic-log-links[5].neptune-scale-run.linkType | string |  | `"dashboard"` |
+| executor.task_logs.plugins.logs.dynamic-log-links[5].neptune-scale-run.templateUris[0] | string |  | `"https://scale.neptune.ai/{{`{{ .taskConfig.project }}`}}/-/run/?customId={{`{{ .podName }}`}}"` |
+| executor.task_logs.plugins.logs.dynamic-log-links[6].neptune-scale-custom-id.displayName | string |  | `"Neptune Run"` |
+| executor.task_logs.plugins.logs.dynamic-log-links[6].neptune-scale-custom-id.linkType | string |  | `"dashboard"` |
+| executor.task_logs.plugins.logs.dynamic-log-links[6].neptune-scale-custom-id.templateUris[0] | string |  | `(see values.yaml)` |
+| executor.task_logs.plugins.logs.kubernetes-enabled | bool |  | `true` |
+| extraObjects | list |  | `[]` |
+| fluentbit | object | Configuration for fluentbit used for the persistent logging feature. FluentBit runs as a DaemonSet and ships container logs to the persisted-logs/ path in the configured object store. The fluentbit-system service account must have write access to the storage bucket.  Grant access using cloud-native identity federation:   AWS (IRSA):     annotations:       eks.amazonaws.com/role-arn: "arn:aws:iam::`<ACCOUNT_ID>`:role/`<ROLE_NAME>`"   Azure (Workload Identity):     annotations:       azure.workload.identity/client-id: "`<CLIENT_ID>`"   GCP (Workload Identity):     annotations:       iam.gke.io/gcp-service-account: "`<GSA_NAME>`@`<PROJECT_ID>`.iam.gserviceaccount.com"  See https://www.union.ai/docs/v1/selfmanaged/deployment/configuration/persistent-logs/ | `(see values.yaml)` |
 | flyteagent | object | Flyteagent configuration | `{"enabled":false,"plugin_config":{}}` |
-| flyteconnector | object | Flyte connector deployment configuration. Connectors provide external service integrations (e.g., Databricks, SageMaker, Snowflake) for Flyte tasks. | `(see values.yaml)` |
 | flyteconnector.additionalContainers | list | Appends additional containers to the deployment spec. May include template values. | `[]` |
 | flyteconnector.additionalEnvs | list | Appends additional envs to the deployment spec. May include template values | `[]` |
 | flyteconnector.additionalVolumeMounts | list | Appends additional volume mounts to the main container's spec. May include template values. | `[]` |
 | flyteconnector.additionalVolumes | list | Appends additional volumes to the deployment spec. May include template values. | `[]` |
 | flyteconnector.affinity | object | affinity for flyteconnector deployment | `{}` |
-| flyteconnector.autoscaling | object | Horizontal pod autoscaler configuration for flyteconnector. | `(see values.yaml)` |
-| flyteconnector.autoscaling.maxReplicas | int | Maximum number of flyteconnector replicas. | `5` |
-| flyteconnector.autoscaling.minReplicas | int | Minimum number of flyteconnector replicas. | `2` |
-| flyteconnector.autoscaling.targetCPUUtilizationPercentage | int | Target CPU utilization percentage for scaling. | `80` |
-| flyteconnector.autoscaling.targetMemoryUtilizationPercentage | int | Target memory utilization percentage for scaling. | `80` |
+| flyteconnector.autoscaling.maxReplicas | int |  | `5` |
+| flyteconnector.autoscaling.minReplicas | int |  | `2` |
+| flyteconnector.autoscaling.targetCPUUtilizationPercentage | int |  | `80` |
+| flyteconnector.autoscaling.targetMemoryUtilizationPercentage | int |  | `80` |
 | flyteconnector.configPath | string | Default glob string for searching configuration files | `"/etc/flyteconnector/config/*.yaml"` |
-| flyteconnector.enabled | bool | Enable or disable the flyteconnector deployment. | `false` |
+| flyteconnector.enabled | bool |  | `false` |
 | flyteconnector.extraArgs | object | Appends extra command line arguments to the main command | `{}` |
-| flyteconnector.image | object | Container image configuration for flyteconnector. | `(see values.yaml)` |
-| flyteconnector.image.pullPolicy | string | Docker image pull policy. | `"IfNotPresent"` |
-| flyteconnector.image.repository | string | Docker image for flyteconnector deployment. | `"ghcr.io/flyteorg/flyte-connectors"` |
-| flyteconnector.image.tag | string | Docker image tag for flyteconnector. | `"py3.13-2.0.0b50.dev3-g695bb1db3.d20260122"` |
+| flyteconnector.image.pullPolicy | string | Docker image pull policy | `"IfNotPresent"` |
+| flyteconnector.image.repository | string | Docker image for flyteconnector deployment | `"ghcr.io/flyteorg/flyte-connectors"` |
+| flyteconnector.image.tag | string |  | `"py3.13-2.0.0b50.dev3-g695bb1db3.d20260122"` |
 | flyteconnector.nodeSelector | object | nodeSelector for flyteconnector deployment | `{}` |
 | flyteconnector.podAnnotations | object | Annotations for flyteconnector pods | `{}` |
-| flyteconnector.ports | object | gRPC port configuration for flyteconnector. | `{"containerPort":8000,"name":"grpc"}` |
-| flyteconnector.ports.containerPort | int | Container port for the gRPC service. | `8000` |
-| flyteconnector.ports.name | string | Port name. | `"grpc"` |
+| flyteconnector.ports.containerPort | int |  | `8000` |
+| flyteconnector.ports.name | string |  | `"grpc"` |
 | flyteconnector.priorityClassName | string | Sets priorityClassName for datacatalog pod(s). | `""` |
-| flyteconnector.prometheusPort | object | Prometheus metrics port configuration. | `{"containerPort":9090,"name":"metric"}` |
-| flyteconnector.prometheusPort.containerPort | int | Container port for Prometheus metrics. | `9090` |
-| flyteconnector.prometheusPort.name | string | Port name. | `"metric"` |
-| flyteconnector.replicaCount | int | Replicas count for flyteconnector deployment. | `2` |
+| flyteconnector.prometheusPort.containerPort | int |  | `9090` |
+| flyteconnector.prometheusPort.name | string |  | `"metric"` |
+| flyteconnector.replicaCount | int | Replicas count for flyteconnector deployment | `2` |
 | flyteconnector.resources | object | Default resources requests and limits for flyteconnector deployment | `(see values.yaml)` |
 | flyteconnector.service | object | Service settings for flyteconnector | `{"clusterIP":"None","type":"ClusterIP"}` |
 | flyteconnector.serviceAccount | object | Configuration for service accounts for flyteconnector | `{"annotations":{},"create":true,"imagePullSecrets":[]}` |
@@ -202,49 +210,28 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | flyteconnector.serviceAccount.create | bool | Should a service account be created for flyteconnector | `true` |
 | flyteconnector.serviceAccount.imagePullSecrets | list | ImagePullSecrets to automatically assign to the service account | `[]` |
 | flyteconnector.tolerations | list | tolerations for flyteconnector deployment | `[]` |
-| flytepropeller | object | Flytepropeller configuration. Propeller is the workflow execution engine that processes registered workflows by evaluating node dependencies and launching task pods. | `(see values.yaml)` |
-| flytepropeller.additionalContainers | object | Additional sidecar containers to add to the propeller pod. | `{}` |
+| flytepropeller | object | Flytepropeller configuration | `(see values.yaml)` |
 | flytepropeller.additionalVolumeMounts | list | Appends additional volume mounts to the main container's spec. May include template values. | `[]` |
 | flytepropeller.additionalVolumes | list | Appends additional volumes to the deployment spec. May include template values. | `[]` |
-| flytepropeller.affinity | object | affinity for Flytepropeller deployment. | `{}` |
-| flytepropeller.cacheSizeMbs | int | Maximum size in MiB for the in-memory blob cache. 0 disables caching. | `0` |
-| flytepropeller.configPath | string | Default regex string for searching configuration files. | `"/etc/flyte/config/*.yaml"` |
-| flytepropeller.enabled | bool | Enable or disable the Flytepropeller deployment. | `true` |
-| flytepropeller.extraArgs | object | Extra arguments to pass to propeller. | `{}` |
-| flytepropeller.nodeName | string | nodeName constraints for Flytepropeller deployment. | `""` |
-| flytepropeller.nodeSelector | object | nodeSelector for Flytepropeller deployment. | `{}` |
-| flytepropeller.podAnnotations | object | Annotations for Flytepropeller pods. | `{}` |
-| flytepropeller.podEnv | object | Additional environment variables for propeller pods. | `{}` |
-| flytepropeller.podLabels | object | Labels for the Flytepropeller pods. | `{}` |
-| flytepropeller.priorityClassName | string | PriorityClassName for Flytepropeller pods. Set to "system-cluster-critical" to ensure propeller is scheduled even under resource pressure. | `"system-cluster-critical"` |
-| flytepropeller.replicaCount | int | Replicas count for Flytepropeller deployment. | `1` |
-| flytepropeller.resources | object | Default resources requests and limits for Flytepropeller deployment. | `{"limits":{"cpu":"3","memory":"3Gi"},"requests":{"cpu":"1","memory":"1Gi"}}` |
-| flytepropeller.secretName | string | Name of the Kubernetes secret containing authentication credentials. | `"union-secret-auth"` |
-| flytepropeller.service | object | Service configuration for propeller. | `(see values.yaml)` |
-| flytepropeller.service.additionalPorts | list | Additional ports to expose on the propeller service. | `[{"name":"fasttask","port":15605,"protocol":"TCP","targetPort":15605}]` |
-| flytepropeller.service.enabled | bool | Enable the propeller Kubernetes service. | `true` |
-| flytepropeller.serviceAccount | object | Configuration for service accounts for FlytePropeller. | `{"annotations":{},"imagePullSecrets":[]}` |
-| flytepropeller.serviceAccount.annotations | object | Annotations for ServiceAccount attached to FlytePropeller pods. | `{}` |
-| flytepropeller.serviceAccount.imagePullSecrets | list | ImagePullSecrets to automatically assign to the service account. | `[]` |
-| flytepropeller.terminationMessagePolicy | string | Override the termination message policy for propeller pods. | `""` |
-| flytepropeller.tolerations | list | tolerations for Flytepropeller deployment. | `[]` |
-| flytepropeller.topologySpreadConstraints | object | topologySpreadConstraints for Flytepropeller deployment. | `{}` |
+| flytepropeller.affinity | object | affinity for Flytepropeller deployment | `{}` |
+| flytepropeller.configPath | string | Default regex string for searching configuration files | `"/etc/flyte/config/*.yaml"` |
+| flytepropeller.extraArgs | object | extra arguments to pass to propeller. | `{}` |
+| flytepropeller.nodeName | string | nodeName constraints for Flytepropeller deployment | `""` |
+| flytepropeller.nodeSelector | object | nodeSelector for Flytepropeller deployment | `{}` |
+| flytepropeller.podAnnotations | object | Annotations for Flytepropeller pods | `{}` |
+| flytepropeller.podLabels | object | Labels for the Flytepropeller pods | `{}` |
+| flytepropeller.replicaCount | int | Replicas count for Flytepropeller deployment | `1` |
+| flytepropeller.resources | object | Default resources requests and limits for Flytepropeller deployment | `{"limits":{"cpu":"3","memory":"3Gi"},"requests":{"cpu":"1","memory":"1Gi"}}` |
+| flytepropeller.serviceAccount | object | Configuration for service accounts for FlytePropeller | `{"annotations":{},"imagePullSecrets":[]}` |
+| flytepropeller.serviceAccount.annotations | object | Annotations for ServiceAccount attached to FlytePropeller pods | `{}` |
+| flytepropeller.serviceAccount.imagePullSecrets | list | ImapgePullSecrets to automatically assign to the service account | `[]` |
+| flytepropeller.tolerations | list | tolerations for Flytepropeller deployment | `[]` |
+| flytepropeller.topologySpreadConstraints | object | topologySpreadConstraints for Flytepropeller deployment | `{}` |
 | flytepropellerwebhook | object | Configuration for the Flytepropeller webhook | `(see values.yaml)` |
 | flytepropellerwebhook.additionalVolumeMounts | list | Appends additional volume mounts to the main container's spec. May include template values. | `[]` |
 | flytepropellerwebhook.additionalVolumes | list | Appends additional volumes to the deployment spec. May include template values. | `[]` |
 | flytepropellerwebhook.affinity | object | affinity for webhook deployment | `{}` |
-| flytepropellerwebhook.certificate | object | Configuration for webhook certificates | `(see values.yaml)` |
-| flytepropellerwebhook.certificate.certManager | object | cert-manager configuration (only used when provider is "certManager") | `{"issuerRef":{}}` |
-| flytepropellerwebhook.certificate.certManager.issuerRef | object | Issuer reference for cert-manager. If not set, a self-signed issuer will be created. | `{}` |
-| flytepropellerwebhook.certificate.duration | string | Duration of the certificate (only used with certManager provider) | `"8760h"` |
-| flytepropellerwebhook.certificate.external | object | External certificate configuration (only used when provider is "external") | `{"caCert":"","tlsCrt":"","tlsKey":""}` |
-| flytepropellerwebhook.certificate.external.caCert | string | Base64-encoded CA certificate (PEM format) | `""` |
-| flytepropellerwebhook.certificate.external.tlsCrt | string | Base64-encoded TLS certificate (PEM format) | `""` |
-| flytepropellerwebhook.certificate.external.tlsKey | string | Base64-encoded TLS private key (PEM format) | `""` |
-| flytepropellerwebhook.certificate.provider | string | `flytepropeller webhook init-certs` to populate an empty secret, then the webhook uses those certs. | `"helm"` |
-| flytepropellerwebhook.certificate.renewBefore | string | Renew before duration (only used with certManager provider) | `"720h"` |
 | flytepropellerwebhook.enabled | bool | enable or disable secrets webhook | `true` |
-| flytepropellerwebhook.managedConfig | bool | Enable Helm-managed MutatingWebhookConfiguration (if false, the webhook will create its own) | `true` |
 | flytepropellerwebhook.nodeName | string | nodeName constraints for webhook deployment | `""` |
 | flytepropellerwebhook.nodeSelector | object | nodeSelector for webhook deployment | `{}` |
 | flytepropellerwebhook.podAnnotations | object | Annotations for webhook pods | `{}` |
@@ -260,232 +247,152 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | flytepropellerwebhook.serviceAccount.imagePullSecrets | list | ImagePullSecrets to automatically assign to the service account | `[]` |
 | flytepropellerwebhook.tolerations | list | tolerations for webhook deployment | `[]` |
 | flytepropellerwebhook.topologySpreadConstraints | object | topologySpreadConstraints for webhook deployment | `{}` |
-| flytepropellerwebhook.webhook | object | Configuration for the webhook MutatingWebhookConfiguration and certificates | `(see values.yaml)` |
-| flytepropellerwebhook.webhook.configurationName | string | Name of the MutatingWebhookConfiguration resource | `"union-pod-webhook-{{ tpl .Values.orgName . }}"` |
-| flytepropellerwebhook.webhook.failurePolicy | string | Failure policy for the webhook (Fail or Ignore) | `"Fail"` |
-| flytepropellerwebhook.webhook.reinvocationPolicy | string | Reinvocation policy for the webhook | `"Never"` |
-| flytepropellerwebhook.webhook.timeoutSeconds | int | Timeout in seconds for the webhook | `30` |
-| flytepropellerwebhook.webhook.webhooks | object | Webhook configurations to create | `(see values.yaml)` |
-| flytepropellerwebhook.webhook.webhooks.managedImage | object | Managed image webhook configuration (requires Union operator support) | `(see values.yaml)` |
-| flytepropellerwebhook.webhook.webhooks.managedImage.name | string | Name of the webhook | `"managed-image-webhook.union.ai"` |
-| flytepropellerwebhook.webhook.webhooks.managedImage.objectSelector | object | Object selector for the webhook (matchExpressions) | `(see values.yaml)` |
-| flytepropellerwebhook.webhook.webhooks.managedImage.path | string | Path for the webhook | `"/mutate--v1-pod/managed-image"` |
-| flytepropellerwebhook.webhook.webhooks.secrets | object | Secrets injection webhook configuration | `(see values.yaml)` |
-| flytepropellerwebhook.webhook.webhooks.secrets.name | string | Name of the webhook | `"flyte-pod-webhook.flyte.org"` |
-| flytepropellerwebhook.webhook.webhooks.secrets.objectSelector | object | Object selector for the webhook | `{"matchLabels":{"inject-flyte-secrets":"true","organization":"{{ tpl .Values.orgName . }}"}}` |
-| flytepropellerwebhook.webhook.webhooks.secrets.path | string | Path for the webhook | `"/mutate--v1-pod/secrets"` |
 | fullnameOverride | string | Override the chart fullname. | `""` |
-| global.CLIENT_ID | string | Client ID for dataplane authentication. Provided by Union team. | `""` |
-| global.CLUSTER_NAME | string | Unique cluster identifier. Format: Lowercase alphanumeric with hyphens. Example: "prod-us-east-1". Must be unique within your organization. | `""` |
-| global.FAST_REGISTRATION_BUCKET | string | S3 bucket for code uploads. Example: "my-union-fast-registration-bucket". Can be same as metadata bucket or separate. | `""` |
-| global.METADATA_BUCKET | string | S3 bucket for workflow metadata. Example: "my-union-metadata-bucket". Bucket must exist before deployment. | `""` |
-| global.ORG_NAME | string | Organization name. Format: RFC 1123 compliant (lowercase alphanumeric and hyphens). Example: "acme-corp". Provided by Union team. | `""` |
-| global.UNION_CONTROL_PLANE_HOST | string | Union control plane hostname. Format: "hostname" (no protocol prefix for standard BYOC). Example: "mycompany.unionai.cloud". Provided by Union team for BYOC deployments. | `""` |
+| global.CLIENT_ID | string |  | `""` |
+| global.CLUSTER_NAME | string |  | `""` |
+| global.FAST_REGISTRATION_BUCKET | string |  | `""` |
+| global.METADATA_BUCKET | string |  | `""` |
+| global.ORG_NAME | string |  | `""` |
+| global.UNION_CONTROL_PLANE_HOST | string |  | `""` |
 | host | string | Set the control plane host for your Union dataplane installation.  This will be provided by Union. | `"{{ .Values.global.UNION_CONTROL_PLANE_HOST }}"` |
-| image | object | Container image configuration for Union services. | `(see values.yaml)` |
-| image.flytecopilot | object | Flytecopilot sidecar image configuration. Copilot handles data I/O for task pods. | `{"pullPolicy":"IfNotPresent","repository":"cr.flyte.org/flyteorg/flytecopilot","tag":"v1.14.1"}` |
-| image.flytecopilot.pullPolicy | string | Image pull policy. | `"IfNotPresent"` |
-| image.flytecopilot.repository | string | Image repository. | `"cr.flyte.org/flyteorg/flytecopilot"` |
-| image.flytecopilot.tag | string | Image tag. | `"v1.14.1"` |
-| image.kubeStateMetrics | object | Kube-state-metrics image configuration. | `(see values.yaml)` |
-| image.kubeStateMetrics.pullPolicy | string | Image pull policy. | `"IfNotPresent"` |
-| image.kubeStateMetrics.repository | string | Image repository. | `"registry.k8s.io/kube-state-metrics/kube-state-metrics"` |
-| image.kubeStateMetrics.tag | string | Image tag. | `"v2.11.0"` |
-| image.union | object | Image repository for the operator and union services. | `{"pullPolicy":"IfNotPresent","repository":"public.ecr.aws/p0i0a9q8/unionoperator","tag":""}` |
-| image.union.pullPolicy | string | Image pull policy. | `"IfNotPresent"` |
-| image.union.repository | string | Image repository. | `"public.ecr.aws/p0i0a9q8/unionoperator"` |
-| image.union.tag | string | Image tag. Defaults to the chart appVersion if empty. | `""` |
-| imageBuilder | object | Image builder configuration for building container images from Flyte ImageSpec. | `(see values.yaml)` |
-| imageBuilder.authenticationType | string | How build-image task and operator proxy will attempt to authenticate to the container registry. Supported values: "noop" (no auth), "google" (docker-credential-gcr), "aws" (docker-credential-ecr-login), "azure" (az acr login, requires Azure Workload Identity). | `"noop"` |
-| imageBuilder.buildkit | object | BuildKit daemon configuration for container image builds. | `(see values.yaml)` |
-| imageBuilder.buildkit.additionalVolumeMounts | list | Additional volume mounts to add to the buildkit container. | `[]` |
-| imageBuilder.buildkit.additionalVolumes | list | Additional volumes to add to the buildkit pod. | `[]` |
-| imageBuilder.buildkit.autoscaling | object | Buildkit HPA configuration. | `{"enabled":false,"maxReplicas":2,"minReplicas":1,"targetCPUUtilizationPercentage":60}` |
-| imageBuilder.buildkit.autoscaling.enabled | bool | Enable HPA for buildkit. | `false` |
-| imageBuilder.buildkit.autoscaling.maxReplicas | int | Maximum number of buildkit replicas. | `2` |
-| imageBuilder.buildkit.autoscaling.minReplicas | int | Minimum number of buildkit replicas. | `1` |
-| imageBuilder.buildkit.autoscaling.targetCPUUtilizationPercentage | int | Target CPU utilization for scaling. Set lower than usual to promote faster scale out and reduce queue times for build requests. | `60` |
-| imageBuilder.buildkit.deploymentStrategy | string | Deployment strategy for buildkit deployment. | `"Recreate"` |
+| image.flytecopilot | object | flytecopilot repository and tag. | `{"pullPolicy":"IfNotPresent","repository":"cr.flyte.org/flyteorg/flytecopilot","tag":"v1.14.1"}` |
+| image.kubeStateMetrics | object | Kubestatemetrics repository and tag. | `(see values.yaml)` |
+| image.union | object | Image repository for the operator and union services | `{"pullPolicy":"IfNotPresent","repository":"public.ecr.aws/p0i0a9q8/unionoperator","tag":""}` |
+| imageBuilder.authenticationType | string | "azure" uses az acr login to authenticate to the default registry. Requires Azure Workload Identity to be enabled. | `"noop"` |
+| imageBuilder.buildkit.additionalVolumeMounts | list | Additional volume mounts to add to the buildkit container | `[]` |
+| imageBuilder.buildkit.additionalVolumes | list | Additional volumes to add to the pod | `[]` |
+| imageBuilder.buildkit.autoscaling | object | buildkit HPA configuration | `{"enabled":false,"maxReplicas":2,"minReplicas":1,"targetCPUUtilizationPercentage":60}` |
+| imageBuilder.buildkit.autoscaling.targetCPUUtilizationPercentage | int | We can adjust this as needed. | `60` |
+| imageBuilder.buildkit.deploymentStrategy | string | deployment strategy for buildkit deployment | `"Recreate"` |
 | imageBuilder.buildkit.enabled | bool | Enable buildkit service within this release. | `true` |
 | imageBuilder.buildkit.fullnameOverride | string | The name to use for the buildkit deployment, service, configmap, etc. | `""` |
-| imageBuilder.buildkit.image | object | Buildkit container image configuration. | `{"pullPolicy":"IfNotPresent","repository":"moby/buildkit","tag":"buildx-stable-1"}` |
-| imageBuilder.buildkit.image.pullPolicy | string | Image pull policy. | `"IfNotPresent"` |
-| imageBuilder.buildkit.image.repository | string | Image repository. | `"moby/buildkit"` |
-| imageBuilder.buildkit.image.tag | string | Image tag. When rootless mode is enabled, "-rootless" is appended automatically (e.g. "buildx-stable-1" becomes "buildx-stable-1-rootless") unless the tag already contains "rootless". | `"buildx-stable-1"` |
-| imageBuilder.buildkit.log | object | Logging configuration for buildkit. | `{"debug":false,"format":"text"}` |
-| imageBuilder.buildkit.log.debug | bool | Enable debug logging. | `false` |
-| imageBuilder.buildkit.log.format | string | Log format ("text" or "json"). | `"text"` |
-| imageBuilder.buildkit.nodeSelector | object | Node selector for buildkit pods. | `{}` |
-| imageBuilder.buildkit.oci | object | OCI worker configuration for buildkit. | `{"maxParallelism":0}` |
-| imageBuilder.buildkit.oci.maxParallelism | int | Maximum number of concurrent builds. 0 means unbounded. | `0` |
-| imageBuilder.buildkit.pdb | object | Pod disruption budget for buildkit. | `{"minAvailable":1}` |
-| imageBuilder.buildkit.pdb.minAvailable | int | Minimum available pods. | `1` |
-| imageBuilder.buildkit.podAnnotations | object | Annotations for buildkit pods. | `{}` |
+| imageBuilder.buildkit.image.pullPolicy | string | Pull policy | `"IfNotPresent"` |
+| imageBuilder.buildkit.image.repository | string | Image name | `"docker.io/moby/buildkit"` |
+| imageBuilder.buildkit.image.tag | e.g. "buildx-stable-1" becomes "buildx-stable-1-rootless" | unless the tag already contains "rootless". | `"buildx-stable-1"` |
+| imageBuilder.buildkit.log | object | Enable debug logging | `{"debug":false,"format":"text"}` |
+| imageBuilder.buildkit.nodeSelector | object | Node selector | `{}` |
+| imageBuilder.buildkit.oci | object | Buildkitd service configuration | `{"maxParallelism":0}` |
+| imageBuilder.buildkit.oci.maxParallelism | int | maxParalelism limits the number of concurrent builds, default is 0 (unbounded) | `0` |
+| imageBuilder.buildkit.pdb.minAvailable | int | Minimum available pods | `1` |
+| imageBuilder.buildkit.podAnnotations | object | Pod annotations | `{}` |
 | imageBuilder.buildkit.podEnv | list | Appends additional environment variables to the buildkit container's spec. | `[]` |
-| imageBuilder.buildkit.replicaCount | int | Replicas count for Buildkit deployment. | `1` |
-| imageBuilder.buildkit.resources | object | Resource requests and limits for the buildkit container. | `{"requests":{"cpu":1,"ephemeral-storage":"20Gi","memory":"1Gi"}}` |
-| imageBuilder.buildkit.rootless | bool | Run buildkit in rootless mode (non-privileged). Uses the moby/buildkit rootless image variant which bundles RootlessKit to set up user namespaces. Requires kernel >= 5.11 with unprivileged user namespace support. | `true` |
-| imageBuilder.buildkit.service | object | Service configuration for buildkit. | `{"annotations":{},"loadbalancerIp":"","port":1234,"type":"ClusterIP"}` |
-| imageBuilder.buildkit.service.annotations | object | Service annotations. | `{}` |
-| imageBuilder.buildkit.service.loadbalancerIp | string | Static IP address for load balancer (only used with LoadBalancer type). | `""` |
-| imageBuilder.buildkit.service.port | int | Service port. | `1234` |
-| imageBuilder.buildkit.service.type | string | Service type. | `"ClusterIP"` |
-| imageBuilder.buildkit.tolerations | list | Tolerations for buildkit pods. | `[]` |
-| imageBuilder.buildkitUri | string | The URI of the buildkitd service. Used for externally managed buildkitd services. Leaving empty and setting imageBuilder.buildkit.enabled to true will create a buildkitd service. E.g. "tcp://buildkitd.buildkit.svc.cluster.local:1234" | `""` |
-| imageBuilder.defaultRepository | string | The default repository to publish images to when "registry" is not specified with imagespec. The build-image task will fail unless "registry" is specified or a default repository is provided. | `""` |
-| imageBuilder.enabled | bool | Enable or disable the image builder feature. | `true` |
-| imageBuilder.targetConfigMapName | string | The config map build-image container task attempts to reference. Should not change unless coordinated with Union technical support. | `"build-image-config"` |
-| ingress | object | Ingress configuration for exposing dataplane services externally. Enable this when not using Cloudflare tunnels for service access. | `(see values.yaml)` |
-| ingress-nginx | object | Ingress-nginx subchart configuration. Disabled by default; enable if you need an ingress controller for dataplane services instead of Cloudflare tunnels. | `(see values.yaml)` |
-| ingress-nginx.enabled | bool | Enable or disable the ingress-nginx controller subchart. | `false` |
+| imageBuilder.buildkit.replicaCount | int | Replicas count for Buildkit deployment | `1` |
+| imageBuilder.buildkit.resources | object | Resource definitions | `{"requests":{"cpu":1,"ephemeral-storage":"20Gi","memory":"1Gi"}}` |
+| imageBuilder.buildkit.rootless | bool | kernel >= 5.11 with unprivileged user namespace support. | `true` |
+| imageBuilder.buildkit.service.annotations | object | Service annotations | `{}` |
+| imageBuilder.buildkit.service.loadbalancerIp | string | Static ip address for load balancer | `""` |
+| imageBuilder.buildkit.service.port | int | Service port | `1234` |
+| imageBuilder.buildkit.service.type | string | Service type | `"ClusterIP"` |
+| imageBuilder.buildkit.serviceAccount | object | Service account configuration for buildkit | `{"annotations":{},"create":true,"imagePullSecret":"","name":"union-imagebuilder"}` |
+| imageBuilder.buildkit.tolerations | list | Tolerations | `[]` |
+| imageBuilder.buildkitUri | string | E.g. "tcp://buildkitd.buildkit.svc.cluster.local:1234" | `""` |
+| imageBuilder.defaultRepository | string | Note, the build-image task will fail unless "registry" is specified or a default repository is provided. | `""` |
+| imageBuilder.enabled | bool |  | `true` |
+| imageBuilder.targetConfigMapName | string | Should not change unless coordinated with Union technical support. | `"build-image-config"` |
+| ingress-nginx.controller.admissionWebhooks.enabled | bool |  | `false` |
+| ingress-nginx.controller.allowSnippetAnnotations | bool |  | `true` |
+| ingress-nginx.controller.config.annotations-risk-level | string |  | `"Critical"` |
+| ingress-nginx.controller.config.grpc-connect-timeout | string |  | `"1200"` |
+| ingress-nginx.controller.config.grpc-read-timeout | string |  | `"604800"` |
+| ingress-nginx.controller.config.grpc-send-timeout | string |  | `"604800"` |
+| ingress-nginx.controller.ingressClassResource.controllerValue | string |  | `"union.ai/dataplane"` |
+| ingress-nginx.controller.ingressClassResource.default | bool |  | `false` |
+| ingress-nginx.controller.ingressClassResource.enabled | bool |  | `true` |
+| ingress-nginx.controller.ingressClassResource.name | string |  | `"dataplane"` |
+| ingress-nginx.enabled | bool |  | `false` |
 | ingress.dataproxy | object | Dataproxy specific ingress configuration. | `{"annotations":{},"class":"","hostOverride":"","tls":{}}` |
 | ingress.dataproxy.annotations | object | Annotations to apply to the ingress resource. | `{}` |
-| ingress.dataproxy.class | string | Ingress class name. | `""` |
-| ingress.dataproxy.hostOverride | string | Override the ingress host. Can reference Kubernetes service DNS, e.g. dataproxy-service.{{ .Release.Namespace }}.svc.cluster.local | `""` |
-| ingress.dataproxy.tls | object | Ingress TLS configuration. | `{}` |
-| ingress.enabled | bool | Enable or disable ingress resources. | `false` |
-| ingress.host | string | Default host for ingress rules. Omitted if empty. | `""` |
+| ingress.dataproxy.class | string | Ingress class name | `""` |
+| ingress.dataproxy.hostOverride | string | Ingress host | `""` |
+| ingress.dataproxy.tls | object | Ingress TLS configuration | `{}` |
+| ingress.enabled | bool |  | `false` |
+| ingress.host | string |  | `""` |
 | ingress.serving | object | Serving specific ingress configuration. | `{"annotations":{},"class":"","hostOverride":"","tls":{}}` |
 | ingress.serving.annotations | object | Annotations to apply to the ingress resource. | `{}` |
-| ingress.serving.class | string | Ingress class name. | `""` |
-| ingress.serving.hostOverride | string | (Optional) Host override for serving ingress rule. Defaults to *.apps.{{ .Values.host }}. | `""` |
-| ingress.serving.tls | object | Ingress TLS configuration. | `{}` |
-| knative-operator | object | Knative operator subchart. Required for app serving. | `{"crds":{"install":true},"enabled":false}` |
-| knative-operator.crds | object | Install Knative CRDs. | `{"install":true}` |
-| knative-operator.enabled | bool | Enable or disable the Knative operator. Must be enabled when serving.enabled is true. | `false` |
-| low_privilege | bool | Scopes the deployment, permissions and actions created into a single namespace and avoids any deployments that would  require additional permissions on the cluster. This limits the functionality though. | `false` |
-| metrics-server | object | Enable or disable the metrics-server subchart. Only needed if your cluster does not already have a metrics server. | `{"enabled":false}` |
-| monitoring | object | Global monitoring toggle. When disabled, skips creation of ServiceMonitor and related monitoring resources. | `{"enabled":true}` |
-| monitoring.enabled | bool | Enable or disable monitoring resource creation. | `true` |
+| ingress.serving.class | string | Ingress class name | `""` |
+| ingress.serving.hostOverride | Optional | Host override for serving ingress rule. Defaults to *.apps.{{ .Values.host }}. | `""` |
+| ingress.serving.tls | object | Ingress TLS configuration | `{}` |
+| knative-operator.crds.install | bool |  | `true` |
+| knative-operator.enabled | bool |  | `false` |
+| low_privilege | bool | Scopes the deployment, permissions and actions created into a single namespace | `false` |
+| metrics-server.enabled | bool |  | `false` |
+| monitoring.enabled | bool |  | `true` |
 | nameOverride | string | Override the chart name. | `""` |
-| namespace_mapping | object | Custom namespace mapping for mapping Union runs to Kubernetes namespaces. | `{}` |
-| namespaces | object | Namespace management configuration. | `{"enabled":true}` |
-| namespaces.enabled | bool | Automatically create the release namespace if it does not exist. | `true` |
-| nodeobserver | object | Node observer DaemonSet configuration. Monitors node health and critical DaemonSet availability to detect infrastructure issues affecting workflow execution. | `(see values.yaml)` |
+| namespace_mapping | object | Namespace mapping template for mapping Union runs to Kubernetes namespaces. This is the canonical source of truth. All dataplane services (propeller, clusterresourcesync, operator, executor) will inherit this value unless explicitly overridden in their service-specific config sections (config.namespace_config, config.operator.org, executor.raw_config). | `{}` |
+| namespaces.enabled | bool |  | `true` |
+| nodeobserver | object | nodeobserver contains the configuration information for the node observer service. | `(see values.yaml)` |
 | nodeobserver.additionalVolumeMounts | list | Appends additional volume mounts to the main container's spec. May include template values. | `[]` |
 | nodeobserver.additionalVolumes | list | Appends additional volumes to the daemonset spec. May include template values. | `[]` |
 | nodeobserver.affinity | object | affinity configurations for the pods associated with nodeobserver services | `{}` |
-| nodeobserver.config | object | Nodeobserver configuration. | `{"criticalDaemonSets":[]}` |
-| nodeobserver.config.criticalDaemonSets | list | List of critical DaemonSets to monitor. Nodeobserver will report nodes as unhealthy if these DaemonSets are not running. | `[]` |
-| nodeobserver.enabled | bool | Enable or disable nodeobserver. | `false` |
+| nodeobserver.enabled | bool | Enable or disable nodeobserver | `false` |
 | nodeobserver.nodeName | string | nodeName constraints for the pods associated with nodeobserver services | `""` |
 | nodeobserver.nodeSelector | object | nodeSelector constraints for the pods associated with nodeobserver services | `{}` |
 | nodeobserver.podAnnotations | object | Additional pod annotations for the nodeobserver services | `{}` |
 | nodeobserver.podEnv | list | Additional pod environment variables for the nodeobserver services | `(see values.yaml)` |
-| nodeobserver.podSecurityContext | object | Pod-level security context for the nodeobserver. | `{}` |
 | nodeobserver.resources | object | Kubernetes resource configuration for the nodeobserver service | `{"limits":{"cpu":"1","memory":"500Mi"},"requests":{"cpu":"500m","memory":"100Mi"}}` |
-| nodeobserver.securityContext | object | Container-level security context for the nodeobserver. Requires privileged access for node-level inspection. | `{"capabilities":{"add":["SYS_ADMIN"]},"privileged":true,"runAsNonRoot":false,"runAsUser":0}` |
-| nodeobserver.serviceAccount | object | Service account configuration for the nodeobserver. | `{"annotations":{},"name":""}` |
-| nodeobserver.serviceAccount.annotations | object | Annotations for the nodeobserver service account. | `{}` |
-| nodeobserver.serviceAccount.name | string | Override the service account name for the nodeobserver. | `""` |
 | nodeobserver.tolerations | list | tolerations for the pods associated with nodeobserver services | `[{"effect":"NoSchedule","operator":"Exists"}]` |
 | nodeobserver.topologySpreadConstraints | object | topologySpreadConstraints for the pods associated with nodeobserver services | `{}` |
-| objectStore | object | Union Object Store service configuration. Provides an internal API for accessing object storage. | `{"service":{"grpcPort":8089,"httpPort":8080}}` |
-| objectStore.service | object | Service port configuration. | `{"grpcPort":8089,"httpPort":8080}` |
-| objectStore.service.grpcPort | int | gRPC port for the object store service. | `8089` |
-| objectStore.service.httpPort | int | HTTP port for the object store service. | `8080` |
-| opencost | object | OpenCost subchart configuration for cost allocation and monitoring. | `(see values.yaml)` |
+| objectStore | object | Union Object Store configuration | `{"service":{"grpcPort":8089,"httpPort":8080}}` |
 | opencost.enabled | bool | Enable or disable the opencost installation. | `true` |
-| opencost.opencost | object | OpenCost application configuration. | `(see values.yaml)` |
-| operator | object | Union operator deployment configuration. The operator manages cluster lifecycle, usage reporting, heartbeat checks, and tunnel connectivity to the Union control plane. | `(see values.yaml)` |
+| opencost.fullnameOverride | string |  | `"opencost"` |
+| opencost.opencost.exporter.resources.limits.cpu | string |  | `"1000m"` |
+| opencost.opencost.exporter.resources.limits.memory | string |  | `"4Gi"` |
+| opencost.opencost.exporter.resources.requests.cpu | string |  | `"500m"` |
+| opencost.opencost.exporter.resources.requests.memory | string |  | `"1Gi"` |
+| opencost.opencost.prometheus.external.enabled | bool |  | `true` |
+| opencost.opencost.prometheus.external.url | string |  | `"http://union-operator-prometheus.{{.Release.Namespace}}.svc:80/prometheus"` |
+| opencost.opencost.prometheus.internal.enabled | bool |  | `false` |
+| opencost.opencost.ui.enabled | bool |  | `false` |
 | operator.additionalVolumeMounts | list | Appends additional volume mounts to the main container's spec. May include template values. | `[]` |
 | operator.additionalVolumes | list | Appends additional volumes to the deployment spec. May include template values. | `[]` |
-| operator.affinity | object | affinity configurations for the operator pods. | `{}` |
-| operator.autoscaling | object | Horizontal pod autoscaler configuration for the operator. | `{"enabled":false}` |
-| operator.autoscaling.enabled | bool | Enable HPA for the operator deployment. | `false` |
-| operator.enableTunnelService | bool | Enable the Cloudflare tunnel service for secure control plane connectivity. | `true` |
-| operator.imagePullSecrets | list | Image pull secrets for the operator deployment. | `[]` |
-| operator.nodeName | string | nodeName constraints for the operator pods. | `""` |
-| operator.nodeSelector | object | nodeSelector constraints for the operator pods. | `{}` |
-| operator.podAnnotations | object | Annotations for operator pods. | `{}` |
-| operator.podEnv | object | Additional environment variables for operator pods. | `{}` |
-| operator.podLabels | object | Labels for operator pods. | `{}` |
-| operator.podSecurityContext | object | Pod-level security context for the operator. | `{}` |
-| operator.priorityClassName | string | PriorityClassName for operator pods. | `""` |
-| operator.replicas | int | Number of operator replicas. | `1` |
-| operator.resources | object | Resource requests and limits for the operator deployment. | `{"limits":{"cpu":"2","memory":"3Gi"},"requests":{"cpu":"1","memory":"1Gi"}}` |
-| operator.secretName | string | Name of the Kubernetes secret containing authentication credentials. | `"union-secret-auth"` |
-| operator.securityContext | object | Container-level security context for the operator. | `{}` |
-| operator.serviceAccount | object | Service account configuration for the operator. | `{"annotations":{},"create":true,"name":"operator-system"}` |
-| operator.serviceAccount.annotations | object | Annotations for the operator service account (e.g., for cloud IAM role binding). | `{}` |
-| operator.serviceAccount.create | bool | Create a dedicated service account for the operator. | `true` |
-| operator.serviceAccount.name | string | Name of the operator service account. | `"operator-system"` |
-| operator.tolerations | list | tolerations for the operator pods. | `[]` |
-| operator.topologySpreadConstraints | object | topologySpreadConstraints for the operator pods. | `{}` |
+| operator.affinity | object | affinity configurations for the operator pods | `{}` |
+| operator.autoscaling.enabled | bool |  | `false` |
+| operator.enableTunnelService | bool |  | `true` |
+| operator.imagePullSecrets | list |  | `[]` |
+| operator.nodeName | string | nodeName constraints for the operator pods | `""` |
+| operator.nodeSelector | object | nodeSelector constraints for the operator pods | `{}` |
+| operator.podAnnotations | object |  | `{}` |
+| operator.podEnv | object |  | `{}` |
+| operator.podLabels | object |  | `{}` |
+| operator.podSecurityContext | object |  | `{}` |
+| operator.priorityClassName | string |  | `""` |
+| operator.replicas | int |  | `1` |
+| operator.resources.limits.cpu | string |  | `"2"` |
+| operator.resources.limits.memory | string |  | `"3Gi"` |
+| operator.resources.requests.cpu | string |  | `"1"` |
+| operator.resources.requests.memory | string |  | `"1Gi"` |
+| operator.secretName | string |  | `"union-secret-auth"` |
+| operator.securityContext | object |  | `{}` |
+| operator.serviceAccount.annotations | object |  | `{}` |
+| operator.serviceAccount.create | bool |  | `true` |
+| operator.serviceAccount.name | string |  | `"operator-system"` |
+| operator.tolerations | list | tolerations for the operator pods | `[]` |
+| operator.topologySpreadConstraints | object | topologySpreadConstraints for the operator pods | `{}` |
 | orgName | string | Organization name should be provided by Union. | `"{{ .Values.global.ORG_NAME }}"` |
-| prometheus | object | Prometheus configuration (kube-prometheus-stack subchart). This section configures kube-prometheus-stack for monitoring the Union dataplane. By default, most Kubernetes component monitoring is disabled to reduce resource usage. Enable specific components as needed for your observability requirements. | `(see values.yaml)` |
-| prometheus.additionalPrometheusRulesMap | object | Additional Prometheus recording or alerting rules. | `{}` |
-| prometheus.alertmanager | object | Alertmanager configuration. | `{"enabled":false}` |
-| prometheus.alertmanager.enabled | bool | Enable or disable the Alertmanager deployment. | `false` |
-| prometheus.crds | object | Prometheus Operator CRD configuration. | `{"enabled":true}` |
-| prometheus.crds.enabled | bool | Install Prometheus Operator CRDs. | `true` |
-| prometheus.defaultRules | object | Default Prometheus alerting and recording rules. | `(see values.yaml)` |
-| prometheus.defaultRules.create | bool | Create default alerting and recording rules. | `false` |
+| prometheus | object | Prometheus configuration This section configures kube-prometheus-stack for monitoring the Union dataplane. By default, most Kubernetes component monitoring is disabled to reduce resource usage. Enable specific components as needed for your observability requirements. | `(see values.yaml)` |
+| prometheus.defaultRules | object | -------------------------------------------------------------------------- Configure which Prometheus alerting and recording rules to enable. These rules provide pre-built alerts for common Kubernetes issues. See: https://github.com/prometheus-operator/kube-prometheus/tree/main/manifests | `(see values.yaml)` |
 | prometheus.defaultRules.rules | object | Disable specific rules by name disabled:   KubeAPIDown: true   KubeAPITerminatedRequests: true | `(see values.yaml)` |
 | prometheus.defaultRules.rules.kubeApiserverAvailability | bool | API Server availability alerts (e.g., KubeAPIDown, KubeAPITerminatedRequests) | `false` |
 | prometheus.defaultRules.rules.kubeApiserverBurnrate | bool | API Server burn rate alerts for SLO monitoring | `false` |
 | prometheus.defaultRules.rules.kubeApiserverHistogram | bool | API Server latency histogram recording rules | `false` |
 | prometheus.defaultRules.rules.kubeApiserverSlos | bool | API Server SLO (Service Level Objective) rules | `false` |
 | prometheus.defaultRules.rules.kubeControllerManager | bool | Uncomment to enable: SLO-based alerting for API server performance kubeApiserverSlos: true | `false` |
-| prometheus.enabled | bool | Enable or disable the kube-prometheus-stack deployment. | `true` |
-| prometheus.grafana | object | Grafana configuration for visualization dashboards. | `(see values.yaml)` |
+| prometheus.grafana | object | -------------------------------------------------------------------------- Grafana provides visualization dashboards for Prometheus metrics. Enable this section to deploy Grafana with pre-built Kubernetes dashboards. | `(see values.yaml)` |
 | prometheus.grafana.additionalDataSources | list | Additional data sources (e.g., Loki for logs) | `[]` |
 | prometheus.grafana.admin | object | Use existing secret for admin credentials (recommended for production) | `{"existingSecret":"","passwordKey":"admin-password","userKey":"admin-user"}` |
-| prometheus.grafana.adminPassword | string | Default admin password (change in production!). | `"union-dataplane"` |
-| prometheus.grafana.adminUser | string | Default admin username (change in production!). | `"admin"` |
+| prometheus.grafana.adminUser | string | Default admin credentials (change in production!) | `"admin"` |
 | prometheus.grafana.dashboardsConfigMaps | object | Custom dashboards can be configured with additional ConfigMaps Format: `<configmap-name>`: `<folder-name>` | `{}` |
-| prometheus.grafana.enabled | bool | Enable or disable the Grafana deployment. | `false` |
 | prometheus.grafana.ingress | object | Ingress configuration for external Grafana access | `{"enabled":false}` |
-| prometheus.ingress | object | Prometheus ingress configuration for external access to the Prometheus UI. | `{"annotations":{},"enabled":false,"hosts":[]}` |
-| prometheus.ingress.annotations | object | Annotations for the Prometheus ingress resource. | `{}` |
-| prometheus.ingress.enabled | bool | Enable or disable ingress for Prometheus. | `false` |
-| prometheus.ingress.hosts | list | Hosts for the Prometheus ingress resource. | `[]` |
-| prometheus.kube-state-metrics | object | Kube-state-metrics subchart configuration. Provides Kubernetes object metrics to Prometheus. | `(see values.yaml)` |
 | prometheus.kubeApiServer | object | -------------------------------------------------------------------------- Enable kubeApiServer to collect metrics from the Kubernetes API server. This provides insights into API request latencies, error rates, and throughput. Note: Requires appropriate RBAC permissions and network access to the API server. | `{"enabled":false}` |
-| prometheus.nodeExporter | object | Node exporter configuration for collecting host-level metrics. | `{"enabled":false}` |
-| prometheus.nodeExporter.enabled | bool | Enable or disable the node exporter DaemonSet. | `false` |
-| prometheus.prometheus | object | Prometheus server configuration. | `(see values.yaml)` |
-| prometheus.prometheus-node-exporter | object | Prometheus node-exporter subchart configuration. | `{"namespaceOverride":"kube-system"}` |
-| prometheus.prometheus.enabled | bool | Enable the Prometheus server. | `true` |
-| prometheus.prometheus.prometheusSpec | object | Prometheus server spec configuration. | `(see values.yaml)` |
-| prometheus.prometheus.prometheusSpec.maximumStartupDurationSeconds | int | Maximum time in seconds for Prometheus startup before it is considered failed. | `900` |
-| prometheus.prometheus.prometheusSpec.resources | object | Resource requests and limits for the Prometheus server. | `{"limits":{"cpu":"3","memory":"3500Mi"},"requests":{"cpu":"1","memory":"1Gi"}}` |
-| prometheus.prometheus.prometheusSpec.retention | string | How long to retain metrics data. | `"3d"` |
-| prometheus.prometheus.prometheusSpec.routePrefix | string | URL path prefix for the Prometheus web UI. | `"/prometheus/"` |
-| prometheus.prometheusOperator | object | Prometheus Operator configuration. | `{"fullnameOverride":"prometheus-operator"}` |
-| proxy | object | Union operator proxy configuration. The proxy serves as the dataplane's API gateway, handling data uploads/downloads, secret management, and image building requests. | `(see values.yaml)` |
+| proxy | object | Union operator proxy configuration | `(see values.yaml)` |
 | proxy.additionalVolumeMounts | list | Appends additional volume mounts to the main container's spec. May include template values. | `[]` |
 | proxy.additionalVolumes | list | Appends additional volumes to the deployment spec. May include template values. | `[]` |
-| proxy.affinity | object | affinity configurations for the proxy pods. | `{}` |
-| proxy.autoscaling | object | Horizontal pod autoscaler configuration for the proxy. | `{"enabled":false,"maxReplicas":10,"minReplicas":1,"targetCPUUtilizationPercentage":80}` |
-| proxy.autoscaling.enabled | bool | Enable HPA for the proxy deployment. | `false` |
-| proxy.autoscaling.maxReplicas | int | Maximum number of proxy replicas. | `10` |
-| proxy.autoscaling.minReplicas | int | Minimum number of proxy replicas. | `1` |
-| proxy.autoscaling.targetCPUUtilizationPercentage | int | Target CPU utilization percentage for scaling. | `80` |
-| proxy.enableTunnelService | bool | Enable the Cloudflare tunnel service for secure control plane connectivity. | `true` |
-| proxy.imagePullSecrets | list | Image pull secrets for the proxy deployment. | `[]` |
-| proxy.nodeName | string | nodeName constraint for the proxy pods. | `""` |
-| proxy.nodeSelector | object | nodeSelector constraints for the proxy pods. | `{}` |
-| proxy.podAnnotations | object | Annotations for proxy pods. | `{}` |
-| proxy.podEnv | object | Additional environment variables for proxy pods. | `{}` |
-| proxy.podLabels | object | Labels for proxy pods. | `{}` |
-| proxy.podSecurityContext | object | Pod-level security context for the proxy. | `{}` |
-| proxy.priorityClassName | string | PriorityClassName for proxy pods. | `""` |
-| proxy.replicas | int | Number of proxy replicas. | `1` |
-| proxy.resources | object | Resource requests and limits for the proxy container. | `{"limits":{"cpu":"3","memory":"3Gi"},"requests":{"cpu":"500m","memory":"500Mi"}}` |
-| proxy.secretManager | object | Secret manager configuration for the proxy. Manages user-defined secrets for workflows. | `{"enabled":true,"namespace":"","type":"K8s"}` |
-| proxy.secretManager.enabled | bool | Enable secret manager support for storing and injecting workflow secrets. | `true` |
+| proxy.affinity | object | affinity configurations for the proxy pods | `{}` |
+| proxy.nodeName | string | nodeName constraint for the proxy pods | `""` |
+| proxy.nodeSelector | object | nodeSelector constraints for the proxy pods | `{}` |
 | proxy.secretManager.namespace | string | Set the namespace for union managed secrets created through the native Kubernetes secret manager. If the namespace is not set, the release namespace will be used. | `""` |
-| proxy.secretManager.type | string | The type of secret manager to use. Supported: "K8s" (native Kubernetes secrets). | `"K8s"` |
-| proxy.secretName | string | Name of the Kubernetes secret containing authentication credentials. | `"union-secret-auth"` |
-| proxy.securityContext | object | Container-level security context for the proxy. | `{}` |
-| proxy.serviceAccount | object | Service account configuration for the proxy. | `{"annotations":{},"create":true,"name":"proxy-system"}` |
-| proxy.serviceAccount.annotations | object | Annotations for the proxy service account (e.g., for cloud IAM role binding). | `{}` |
-| proxy.serviceAccount.create | bool | Create a dedicated service account for the proxy. | `true` |
-| proxy.serviceAccount.name | string | Name of the proxy service account. | `"proxy-system"` |
-| proxy.tolerations | list | tolerations for the proxy pods. | `[]` |
-| proxy.topologySpreadConstraints | object | topologySpreadConstraints for the proxy pods. | `{}` |
-| proxy.tunnel_resources | object | Resource requests and limits for the Cloudflare tunnel sidecar container. | `{"limits":{"cpu":"3","memory":"3Gi"},"requests":{"cpu":"500m","memory":"500Mi"}}` |
+| proxy.tolerations | list | tolerations for the proxy pods | `[]` |
+| proxy.topologySpreadConstraints | object | topologySpreadConstraints for the proxy pods | `{}` |
 | resourcequota | object | Create global resource quotas for the cluster. | `{"create":false}` |
 | scheduling | object | Global kubernetes scheduling constraints that will be applied to the pods.  Application specific constraints will always take precedence. | `{"affinity":{},"nodeName":"","nodeSelector":{},"tolerations":[],"topologySpreadConstraints":{}}` |
 | scheduling.affinity | object | See https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node | `{}` |
@@ -505,9 +412,8 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | serving.metrics | bool | Enables scraping of metrics from the serving component | `true` |
 | serving.replicas | int | The number of replicas to create for all components for high availability. | `2` |
 | serving.resources | object | Resources for serving components | `(see values.yaml)` |
-| sparkoperator | object | Spark operator integration configuration. | `{"enabled":false,"plugin_config":{}}` |
-| sparkoperator.enabled | bool | Enable or disable the Spark operator integration. | `false` |
-| sparkoperator.plugin_config | object | Plugin configuration for the Spark operator. | `{}` |
+| sparkoperator.enabled | bool |  | `false` |
+| sparkoperator.plugin_config | object |  | `{}` |
 | storage | object | Object storage configuration used by all Union services. | `(see values.yaml)` |
 | storage.accessKey | string | The access key used for object storage. | `""` |
 | storage.authType | string | The authentication type.  Currently supports "accesskey" and "iam". | `"accesskey"` |
