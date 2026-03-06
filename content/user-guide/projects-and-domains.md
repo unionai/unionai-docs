@@ -28,85 +28,74 @@ Projects and domains also determine:
 
 ## Managing projects via CLI
 
-> [!NOTE]
-> Project management currently uses the `uctl` CLI. This will move to the `flyte` CLI in a future release.
-
 ### Create a project
 
 ```shell
-uctl create project \
-    --name my-project \
-    --id my-project \
-    --description "My project description"
+flyte create project --id my-project --name "My Project"
 ```
 
-The `--id` is a unique identifier used in CLI commands and configuration. The `--name` is a human-readable label. The project name must not contain whitespace.
+The `--id` is a unique identifier used in CLI commands and configuration (immutable once set). The `--name` is a human-readable display name.
 
-You can also create a project from a YAML file:
-
-```yaml
-:name: project.yaml
-
-id: "my-project"
-name: "my-project"
-description: "My project description"
-labels:
-  values:
-    team: ml-platform
-```
+You can also add a description and labels:
 
 ```shell
-uctl create project --file project.yaml
+flyte create project \
+    --id my-project \
+    --name "My Project" \
+    --description "ML platform workflows" \
+    -l team=ml-platform \
+    -l env=prod
 ```
 
-See [`uctl create project`](../api-reference/uctl-cli/uctl-create/uctl-create-project) for all options.
+Labels are specified as `-l key=value` and can be repeated.
 
 ### List projects
 
-List all projects:
+List all active projects:
 
 ```shell
-uctl get project
+flyte get project
 ```
 
-Get a specific project:
+Get details of a specific project:
 
 ```shell
-uctl get project my-project
+flyte get project my-project
 ```
 
-Filter and sort results:
+List archived projects:
 
 ```shell
-uctl get project --filter.sortBy=created_at --filter.limit=10 --filter.asc
+flyte get project --archived
 ```
-
-See [`uctl get project`](../api-reference/uctl-cli/uctl-get/uctl-get-project) for all options.
 
 ### Update a project
 
-Update the description or labels of a project:
+Update the name, description, or labels of a project:
 
 ```shell
-uctl update project -p my-project --description "Updated description" --labels team=ml-platform
+flyte update project my-project --description "Updated description"
+flyte update project my-project --name "New Display Name"
+flyte update project my-project -l team=ml -l env=staging
 ```
 
-See [`uctl update project`](../api-reference/uctl-cli/uctl-update/uctl-update-project) for all options.
+> [!NOTE]
+> Setting labels replaces all existing labels on the project.
 
 ### Archive a project
 
 Archiving a project hides it from default listings but does not delete its data:
 
 ```shell
-uctl update project -p my-project --archive
+flyte update project my-project --archive
 ```
 
-### Activate an archived project
+### Unarchive a project
 
 Restore an archived project to active status:
 
 ```shell
-uctl update project -p my-project --activate
+flyte update project my-project --unarchive
 ```
 
 ## Listing projects programmatically
@@ -137,7 +126,7 @@ project = await flyte.remote.Project.get.aio(name="my-project", org="my-org")
 ```
 
 > [!NOTE]
-> The Python SDK provides read-only access to projects. To create or modify projects, use the `uctl` CLI or the UI.
+> The Python SDK provides read-only access to projects. To create or modify projects, use the `flyte` CLI or the UI.
 
 ## Managing projects via the UI
 
