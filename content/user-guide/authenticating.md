@@ -12,6 +12,27 @@ Union supports three authentication modes to suit different environments and use
 
 For most users getting started with Union:
 
+{{< tabs "auth-quickstart" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+```python
+import flyte
+
+# Initialize with PKCE authentication (default)
+flyte.init(endpoint="dns:///your-endpoint.hosted.unionai.cloud")
+```
+
+Or, if you have a configuration file:
+
+```python
+import flyte
+
+flyte.init_from_config()
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
 1. Create a configuration file:
     ```bash
       flyte create config --endpoint https://your-endpoint.unionai.cloud
@@ -28,6 +49,9 @@ For most users getting started with Union:
    ```
 
 This will automatically open your browser to complete authentication.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Authentication modes
 
@@ -51,31 +75,11 @@ When you run any Flyte command, Union automatically:
 > [!NOTE]
 > Tokens are stored securely in your system's native keyring (e.g., Keychain Access on macOS). On systems without keyring support, see the [Token storage and keyring](#token-storage) section.
 
-#### Configuration
+#### Usage
 
-This is the default authentication type when you create a configuration from the `flyte create config` command.  The generated file has the effect of:
-
-```yaml
-admin:
-  endpoint: dns:///your-endpoint.hosted.unionai.cloud
-  authType: Pkce
-  insecure: false
-```
-
-Since the PKCE method is default, it's omitted from the generated file, as is disabling SSL.
-
-#### CLI usage
-
-Simply run any command - authentication happens automatically:
-
-```bash
-flyte get project
-flyte run app.py main
-flyte deploy app.py
-```
-
-#### Programmatic usage
-
+{{< tabs "pkce-usage" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
 ```python
 import flyte
 import flyte.remote as remote
@@ -94,11 +98,36 @@ import flyte
 flyte.init_from_config("/path/to/config.yaml")
 ```
 
-Or omitting if you just want to pick up from the default locations.
+Or omitting the path to pick up from the default locations:
 
 ```python
 flyte.init_from_config()
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+This is the default authentication type when you create a configuration from the `flyte create config` command. The generated file has the effect of:
+
+```yaml
+admin:
+  endpoint: dns:///your-endpoint.hosted.unionai.cloud
+  authType: Pkce
+  insecure: false
+```
+
+Since the PKCE method is default, it's omitted from the generated file, as is disabling SSL.
+
+Simply run any command - authentication happens automatically:
+
+```bash
+flyte get project
+flyte run app.py main
+flyte deploy app.py
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### Device flow authentication {#device-flow}
 
@@ -121,37 +150,11 @@ When you run a command, Union displays a URL and user code. You:
 
 Tokens are stored securely in your system's keyring. On systems without keyring support (common in headless Linux environments), see the [Token storage and keyring](#token-storage) section.
 
-#### Configuration
+#### Usage
 
-Create or update your config to use device flow:
-
-```bash
-flyte create config --endpoint http://your-endpoint.unionai.cloud --auth-type headless
-```
-
-Your config file will contain:
-
-```yaml
-admin:
-  authType: DeviceFlow
-  endpoint: dns:///your-endpoint.hosted.unionai.cloud
-```
-
-#### CLI usage
-
-When you run a command, you'll see:
-
-```bash
-$ flyte get app
-
-To Authenticate, navigate in a browser to the following URL:
-https://signin.hosted.unionai.cloud/activate?user_code=TKBJXFFW
-```
-
-Open that URL on any device with a browser, enter the code, and authentication completes.
-
-#### Programmatic usage
-
+{{< tabs "device-flow-usage" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
 **In Python scripts:**
 
 ```python
@@ -189,6 +192,37 @@ env = flyte.TaskEnvironment("my-project")
 def process_data(data: str) -> str:
     return f"Processed: {data}"
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+Create or update your config to use device flow:
+
+```bash
+flyte create config --endpoint http://your-endpoint.unionai.cloud --auth-type headless
+```
+
+Your config file will contain:
+
+```yaml
+admin:
+  authType: DeviceFlow
+  endpoint: dns:///your-endpoint.hosted.unionai.cloud
+```
+
+When you run a command, you'll see:
+
+```bash
+$ flyte get app
+
+To Authenticate, navigate in a browser to the following URL:
+https://signin.hosted.unionai.cloud/activate?user_code=TKBJXFFW
+```
+
+Open that URL on any device with a browser, enter the code, and authentication completes.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### API key authentication (OAuth2 app credentials) {#api-key}
 
@@ -213,36 +247,11 @@ Union encodes OAuth2 client credentials (client ID and client secret) into a sin
 > - Rotate them regularly
 > - Use different keys for different environments
 
-#### Setup
+#### Usage
 
-1. Install the Union plugin:
-
-   ```bash
-   pip install flyteplugins-union
-   ```
-
-2. Ensure the API key is there:
-
-   ```bash
-   flyte get api-key my-ci-key
-   ```
-
-3. Store this key securely (e.g., in GitHub Secrets, secret manager)
-
-#### Managing API keys
-
-List existing keys:
-```bash
-flyte get api-key
-```
-
-Delete a key:
-```bash
-flyte delete api-key my-ci-key
-```
-
-#### Programmatic usage
-
+{{< tabs "api-key-usage" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
 The Flyte SDK provides two methods for initializing with API keys:
 
 1. **Using `flyte.init_from_api_key()`** (recommended for API key authentication):
@@ -323,6 +332,38 @@ tasks = remote.Task.listall(project="flytesnacks", domain="development")
 for task in tasks:
     print(f"Task: {task.name}")
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+1. Install the Union plugin:
+
+   ```bash
+   pip install flyteplugins-union
+   ```
+
+2. Ensure the API key is there:
+
+   ```bash
+   flyte get api-key my-ci-key
+   ```
+
+3. Store this key securely (e.g., in GitHub Secrets, secret manager)
+
+**Managing API keys**
+
+List existing keys:
+```bash
+flyte get api-key
+```
+
+Delete a key:
+```bash
+flyte delete api-key my-ci-key
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 #### Using API keys with Union Apps
 
