@@ -63,7 +63,7 @@ Here's what's happening:
 
 ## Run it
 
-With your config file in place:
+Create a project directory and place your files there:
 
 ```
 .
@@ -71,6 +71,9 @@ With your config file in place:
 └── .flyte
     └── config.yaml
 ```
+
+> [!WARNING]
+> Do not run `flyte run` from your home directory. Flyte packages the current directory when running remotely, so running from `$HOME` would attempt to bundle your entire home folder. Always work from a dedicated project directory.
 
 Run the workflow:
 
