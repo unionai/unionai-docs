@@ -1,7 +1,7 @@
 ---
 title: Projects and domains
 weight: 6
-variants: -flyte +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Projects and domains
