@@ -32,7 +32,12 @@ Verify it worked:
 
 ```shell
 flyte --version
-# Flyte SDK version: 2.*.*
+```
+
+Output:
+
+```
+Flyte SDK version: 2.*.*
 ```
 
 ## Configure

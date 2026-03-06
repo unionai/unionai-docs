@@ -61,7 +61,12 @@ For details on how to run tasks locally and remotely, see [Tasks](./tasks#runnin
 After running a task remotely, click the URL in the output to see your run in the UI:
 
 ```shell
-$ flyte run my_script.py pipeline --x 5
+flyte run my_script.py pipeline --x 5
+```
+
+Output:
+
+```
 abc123xyz
 https://my-instance.example.com/v2/runs/project/my-project/domain/development/abc123xyz
 Run 'a0' completed successfully.

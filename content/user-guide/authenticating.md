@@ -213,8 +213,12 @@ admin:
 When you run a command, you'll see:
 
 ```bash
-$ flyte get app
+flyte get app
+```
 
+Output:
+
+```
 To Authenticate, navigate in a browser to the following URL:
 https://signin.hosted.unionai.cloud/activate?user_code=TKBJXFFW
 ```
