@@ -75,8 +75,6 @@ This is the command line interface for Flyte.
 | `hf-model` | [`prefetch`](#flyte-prefetch-hf-model)  |
 | `deployed-task` | [`run`](#flyte-run-deployed-task)  |
 | `tui` | [`start`](#flyte-start-tui)  |
-
-**⁺** Plugin command - see command documentation for installation instructions
 {{< /markdown >}}
 {{< markdown >}}
 | Action | On |
@@ -94,10 +92,25 @@ This is the command line interface for Flyte.
 | `start` | [`tui`](#flyte-start-tui)  |
 | `update` | [`app`](#flyte-update-app), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
-
-**⁺** Plugin command - see command documentation for installation instructions
 {{< /markdown >}}
 {{< /grid >}}
+{{< /variant >}}
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+
+## Union-specific functionality {#plugin-commands}
+
+> [!NOTE]
+> Commands marked with **⁺** are provided by the `flyteplugins-union` plugin,
+> which adds Union-specific functionality to the Flyte CLI
+> (user management, RBAC, API keys).
+> Install it with `pip install flyteplugins-union`.
+>
+> See the [flyteplugins.union API reference](../integrations/union/_index)
+> for the programmatic interface.
+
+{{< /markdown >}}
 {{< /variant >}}
 
 
@@ -213,7 +226,7 @@ Create resources in a Flyte deployment.
 {{< markdown >}}
 #### flyte create api-key
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte create api-key [OPTIONS]`**
 
@@ -243,7 +256,7 @@ Examples:
 {{< markdown >}}
 #### flyte create assignment
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte create assignment [OPTIONS]`**
 
@@ -297,7 +310,7 @@ If the file already exists, it will raise an error unless the `--force` option i
 {{< markdown >}}
 #### flyte create policy
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte create policy [OPTIONS] NAME`**
 
@@ -345,7 +358,7 @@ flyte create project --id my_project_id --name "My Project" --description "My pr
 {{< markdown >}}
 #### flyte create role
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte create role [OPTIONS] NAME`**
 
@@ -462,7 +475,7 @@ This will create a trigger that runs every day at midnight.
 {{< markdown >}}
 #### flyte create user
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte create user [OPTIONS]`**
 
@@ -493,7 +506,7 @@ Remove resources from a Flyte deployment.
 {{< markdown >}}
 #### flyte delete api-key
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte delete api-key [OPTIONS] CLIENT_ID`**
 
@@ -532,7 +545,7 @@ Delete apps from a Flyte deployment.
 {{< markdown >}}
 #### flyte delete assignment
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte delete assignment [OPTIONS]`**
 
@@ -559,7 +572,7 @@ Unassign a policy from an identity.
 {{< markdown >}}
 #### flyte delete policy
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte delete policy [OPTIONS] NAME`**
 
@@ -581,7 +594,7 @@ Delete a policy.
 {{< markdown >}}
 #### flyte delete role
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte delete role [OPTIONS] NAME`**
 
@@ -631,7 +644,7 @@ Delete a trigger. The name of the trigger is required.
 {{< markdown >}}
 #### flyte delete user
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte delete user [OPTIONS] SUBJECT`**
 
@@ -828,7 +841,7 @@ Get all actions for a run or details for a specific action.
 {{< markdown >}}
 #### flyte get api-key
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte get api-key [OPTIONS] [CLIENT_ID]`**
 
@@ -877,7 +890,7 @@ Apps are long-running services deployed on the Flyte platform.
 {{< markdown >}}
 #### flyte get assignment
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte get assignment [OPTIONS]`**
 
@@ -981,7 +994,7 @@ $ flyte get logs my_run my_action --pretty --lines 50
 {{< markdown >}}
 #### flyte get member
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte get member`**
 
@@ -997,7 +1010,7 @@ List all members (users and applications) in an organization.
 {{< markdown >}}
 #### flyte get policy
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte get policy [OPTIONS] [NAME]`**
 
@@ -1036,7 +1049,7 @@ show archived projects instead.
 {{< markdown >}}
 #### flyte get role
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte get role [OPTIONS] [NAME]`**
 
@@ -1141,7 +1154,7 @@ Get a list of all triggers, or details of a specific trigger by name.
 {{< markdown >}}
 #### flyte get user
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte get user [OPTIONS] [SUBJECT]`**
 
@@ -1507,7 +1520,7 @@ flyte update app <app_name> --activate | --deactivate [--wait] [--project <proje
 {{< markdown >}}
 #### flyte update policy
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte update policy NAME`**
 
@@ -1557,7 +1570,7 @@ flyte update project my_project --label team=ml --label env=prod
 {{< markdown >}}
 #### flyte update role
 
-> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
 **`flyte update role NAME`**
 
