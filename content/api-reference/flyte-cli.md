@@ -197,7 +197,12 @@ If you don't provide a `--value` flag, you will be prompted to enter the
 secret value in the terminal.
 
 ```bash
-$ flyte create secret my_secret
+flyte create secret my_secret
+```
+
+Output:
+
+```
 Enter secret value:
 ```
 
