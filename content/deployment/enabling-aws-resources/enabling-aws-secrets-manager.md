@@ -53,7 +53,7 @@ Do this for each secret that you create.
 
 A secret ARN looks like this:
 
-```shell
+```bash
 arn:aws:secretsmanager:<Region>:<AccountId>:secret:<SecretName>-<SixRandomCharacters>
 ```
 
@@ -106,7 +106,7 @@ We will refer to the name as `<SecretManagerPolicyName>` and the ARN as `<Secret
 > [!NOTE]
 > Alternatively, you can create the policy from the command line like this (remember to substitute the`<Region>`and`<AccountId>`appropriately):
 >
-> ```shell
+> ```bash
 > $ aws iam create-policy \
 >       --policy-name <YourPolicyName> \
 >       --policy-document \

@@ -148,8 +148,10 @@ For example, discovering environments recursively across your entire project whi
 When multiple environments are discovered, they all share the same code bundle, which is efficient for related services or components that use common dependencies:
 
 ```bash
-# All discovered environments share the same code bundle
 flyte deploy --recursive --copy-style loaded_modules ./project
 ```
+
+> [!NOTE]
+> All discovered environments share the same code bundle.
 
 For a full overview of all deployment options, see [Deploy command options](/api-reference/flyte-cli#flyte-deploy).

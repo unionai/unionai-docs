@@ -37,11 +37,15 @@ The simplest deployment pattern involves defining both your tasks and task envir
 
 ### Deployment commands
 
-```bash
-# Deploy the environment
-flyte deploy my_example.py env
+Deploy the environment:
 
-# Run the task ephemerally
+```bash
+flyte deploy my_example.py env
+```
+
+Run the task ephemerally:
+
+```bash
 flyte run my_example.py my_task --name "World"
 ```
 
@@ -255,10 +259,7 @@ lib/
 When running workflows with a package structure, specify the root directory:
 
 ```bash
-# Run first workflow
 flyte run --root-dir . lib/workflows/workflow1.py process_workflow
-
-# Run second workflow
 flyte run --root-dir . lib/workflows/workflow2.py math_workflow --n 6
 ```
 
@@ -589,12 +590,16 @@ For cases where you need to pass domain information as environment variables to 
 
 #### Usage with environment variables
 
+Set the environment variable and run:
+
 ```bash
-# Set environment and run
 export DOMAIN_NAME=production
 flyte run environment_picker.py entrypoint --n 5
+```
 
-# Or set inline
+Or set it inline:
+
+```bash
 DOMAIN_NAME=development flyte run environment_picker.py entrypoint --n 5
 ```
 
@@ -622,7 +627,6 @@ You can vary multiple aspects based on context:
 ### Usage patterns
 
 ```bash
-# CLI usage (recommended)
 flyte run environment_picker.py entrypoint --n 5
 flyte deploy environment_picker.py
 ```

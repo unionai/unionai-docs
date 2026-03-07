@@ -23,8 +23,8 @@ The hierarchy of the files and folders under `content/` directly reflect the URL
 
 Next, set up the live preview by going to the root of your local repository check-out and copy the sample configuration file to `hugo.local.toml`:
 
-```shell
-$ cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml
+```bash
+cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml
 ```
 
 This file contains the configuration for the live preview:
@@ -33,8 +33,8 @@ By default, it is set to display the `flyte` variant of the docs site along with
 
 Now you can start the live preview server by running:
 
-```shell
-$ make dev
+```bash
+make dev
 ```
 
 This will build the site and launch a local server at `http://localhost:1313`.
@@ -45,20 +45,20 @@ As you edit the content you will see the changes reflected in the live preview.
 
 To build the site for distribution, run:
 
-```shell
-$ make dist
+```bash
+make dist
 ```
 
 This will build the site locally just  as it is built by the Cloudflare CI for production.
 
 You can view the result of the build by running a local server:
 
-```shell
-$ make serve
+```bash
+make serve
 ```
 
 This will start a local server at `http://localhost:9000` and serve the contents of the `dist/` folder. You can also specify a port number:
 
-```shell
-$ make serve PORT=<nnnnn>
+```bash
+make serve PORT=<nnnnn>
 ```

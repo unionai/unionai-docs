@@ -62,7 +62,7 @@ When an action is externally aborted, the parent action that awaits it receives 
 
 To abort a specific action:
 
-```shell
+```bash
 flyte abort <run-name> <action-name>
 ```
 
