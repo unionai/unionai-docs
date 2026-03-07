@@ -218,7 +218,7 @@ flyte get app
 
 Output:
 
-```
+```bash
 To Authenticate, navigate in a browser to the following URL:
 https://signin.hosted.unionai.cloud/activate?user_code=TKBJXFFW
 ```
@@ -380,11 +380,15 @@ API keys created with `flyte create api-key` can be used to authenticate request
 
 When you create an API key using `flyte create api-key`, you can use it to invoke HTTP endpoints in your Union Apps by passing it in the `Authorization: Bearer` header:
 
-```bash
-# Create an API key
-flyte create api-key my-app-key
+Create an API key:
 
-# Use the API key to call a Union App endpoint
+```bash
+flyte create api-key my-app-key
+```
+
+Use the API key to call a Union App endpoint:
+
+```bash
 curl -H "Authorization: Bearer <your-api-key>" \
   https://little-credit-4fff1.apps.dogfood-gcp.cloud-staging.union.ai/profile
 ```
@@ -421,11 +425,15 @@ The `/profile` endpoint (or similar identity endpoints in your app) returns info
 
 You can switch authentication modes by updating your config file:
 
-```bash
-# Switch to PKCE
-flyte create config --endpoint dns:///your-endpoint.hosted.unionai.cloud
+Switch to PKCE:
 
-# Switch to device flow
+```bash
+flyte create config --endpoint dns:///your-endpoint.hosted.unionai.cloud
+```
+
+Switch to device flow:
+
+```bash
 flyte create config --endpoint dns:///your-endpoint.hosted.unionai.cloud --auth-type headless
 ```
 
@@ -471,14 +479,21 @@ This package provides an alternative keyring backend that stores credentials in 
 
 **Installation in different environments:**
 
+Standard installation:
+
 ```bash
-# Standard installation
 pip install keyrings.alt
+```
 
-# With UV
+With UV:
+
+```bash
 uv pip install keyrings.alt
+```
 
-# In a Docker container (add to your Dockerfile)
+In a Docker container (add to your Dockerfile):
+
+```dockerfile
 RUN pip install keyrings.alt
 ```
 

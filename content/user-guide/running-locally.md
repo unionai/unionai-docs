@@ -22,11 +22,15 @@ If you haven't already, install the SDK and configure local persistence as descr
 
 The `--local` flag tells Flyte to execute a task in your local Python environment rather than on a remote cluster. Add `--tui` to launch the interactive Terminal UI for real-time monitoring.
 
-```bash
-# Basic local execution
-flyte run --local my_pipeline.py my_task --arg value
+Basic local execution:
 
-# With the interactive TUI
+```bash
+flyte run --local my_pipeline.py my_task --arg value
+```
+
+With the interactive TUI:
+
+```bash
 flyte run --local --tui my_pipeline.py my_task --arg value
 ```
 

@@ -48,28 +48,10 @@ async def greet(message: str) -> str:
     return f"{message}!"
 ```
 
-### With the `flyte run` CLI command
-
-The general form of the command for running a task from a local file is:
-
-```bash
-flyte run <file_path> <task_name> <args>
-```
-
-So, to run the `greet` task defined in the `greeting.py` file, you would run:
-
-```bash
-flyte run greeting.py greet --message "Good morning!"
-```
-
-This command:
-1. **Temporarily deploys** the task environment named `greeting_env` (held by the variable `env`) that contains the `greet` task.
-2. **Executes** the `greet` function with argument `message` set to `"Good morning!"`. Note that `message` is the actual parameter name defined in the function signature.
-3. **Returns** the execution results and displays them in the terminal.
-
-### With the `flyte.run()` SDK function
-
-You can also do the same thing programmatically using the `flyte.run()` function:
+{{< tabs "ephemeral-run" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+You can run the task programmatically using the `flyte.run()` function:
 
 ```python
 # greeting.py
@@ -94,6 +76,29 @@ Now you can run the `greet` task on the backend just by executing the `greeting.
 ```bash
 python greeting.py
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+The general form of the command for running a task from a local file is:
+
+```bash
+flyte run <file_path> <task_name> <args>
+```
+
+So, to run the `greet` task defined in the `greeting.py` file, you would run:
+
+```bash
+flyte run greeting.py greet --message "Good morning!"
+```
+
+This command:
+1. **Temporarily deploys** the task environment named `greeting_env` (held by the variable `env`) that contains the `greet` task.
+2. **Executes** the `greet` function with argument `message` set to `"Good morning!"`. Note that `message` is the actual parameter name defined in the function signature.
+3. **Returns** the execution results and displays them in the terminal.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 For more details on how `flyte run` and `flyte.run()` work under the hood, see [How Run Works](./how-task-run-works).
 
@@ -102,30 +107,10 @@ For more details on how `flyte run` and `flyte.run()` work under the hood, see [
 The `flyte deploy` CLI command and the `flyte.deploy()` SDK function are used to **persistently deploy** a task environment (and all its contained tasks) to the backend.
 The tasks within the deployed environment will appear in the **Tasks list** UI on the backend and can then be executed multiple times without needing to redeploy them.
 
-### With the `flyte deploy` CLI command
-
-The general form of the command for running a task from a local file is:
-
-```bash
-flyte deploy <file_path> <task_environment_variable>
-```
-
-So, using the same `greeting.py` file as before, you can deploy the `greeting_env` task environment like this:
-
-```bash
-flyte deploy greeting.py env
-```
-
-This command deploys the task environment *assigned to the variable `env`* in the `greeting.py` file, which is the `TaskEnvironment` named `greeting_env`.
-
-Notice that you must specify the *variable* to which the `TaskEnvironment` is assigned (`env` in this case), not the name of the environment itself (`greeting_env`).
-
-Deploying a task environment deploys all tasks defined within it. Here, that means all functions decorated with `@env.task`.
-In this case there is just one: `greet()`.
-
-### With the `flyte.deploy()` SDK function
-
-You can also do the same thing programmatically using the `flyte.deploy()` function:
+{{< tabs "persistent-deploy" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+You can deploy programmatically using the `flyte.deploy()` function:
 
 ```python
 # greeting.py
@@ -149,6 +134,31 @@ Now you can deploy the `greeting_env` task environment (and therefore the `greet
 ```bash
 python greeting.py
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+The general form of the command for deploying a task environment from a local file is:
+
+```bash
+flyte deploy <file_path> <task_environment_variable>
+```
+
+So, using the same `greeting.py` file as before, you can deploy the `greeting_env` task environment like this:
+
+```bash
+flyte deploy greeting.py env
+```
+
+This command deploys the task environment *assigned to the variable `env`* in the `greeting.py` file, which is the `TaskEnvironment` named `greeting_env`.
+
+Notice that you must specify the *variable* to which the `TaskEnvironment` is assigned (`env` in this case), not the name of the environment itself (`greeting_env`).
+
+Deploying a task environment deploys all tasks defined within it. Here, that means all functions decorated with `@env.task`.
+In this case there is just one: `greet()`.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 For more details on how `flyte deploy` and `flyte.deploy()` work under the hood, see [How Deployment Works](./how-task-deployment-works).
 
@@ -156,24 +166,11 @@ For more details on how `flyte deploy` and `flyte.deploy()` work under the hood,
 
 If you have already deployed your task environment, you can run its tasks without redeploying by using the `flyte run` CLI command or the `flyte.run()` SDK function in a slightly different way. Alternatively, you can always initiate execution of a deployed task from the UI.
 
-### With the `flyte run` CLI command
-
-To run a permanently deployed task using the `flyte run` CLI command, use the special `deployed-task` keyword followed by the task reference in the format `{environment_name}.{task_name}`. For example, to run the previously deployed `greet` task from the `greeting_env` environment, you would run:
-
-```bash
-flyte run deployed-task greeting_env.greet --message "World"
-```
-
-Notice that now that the task environment is deployed, you use its name (`greeting_env`), not by the variable name to which it was assigned in source code (`env`).
-The task environment name plus the task name (`greet`) are combined with a dot (`.`) to form the full task reference: `greeting_env.greet`.
-The special `deployed-task` keyword tells the CLI that you are referring to a task that has already been deployed. In effect, it replaces the file path argument used for ephemeral runs.
-
-When executed, this command will run the already-deployed `greet` task with argument `message` set to `"World"`. You will see the result printed in the terminal. You can also, of course, observe the execution in the **Runs list** UI.
-
-### With the `flyte.run()` SDK function
-
-You can also run already-deployed tasks programmatically using the `flyte.run()` function.
-For example, to run the previously deployed `greet` task from the `greeting_env` environment, you would do:
+{{< tabs "run-deployed" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+You can run already-deployed tasks programmatically using the `flyte.run()` function.
+For example, to run the previously deployed `greet` task from the `greeting_env` environment:
 
 ```python
 # greeting.py
@@ -201,6 +198,24 @@ When you execute this script locally, it will:
 - Call `flyte.run()` with the retrieved task and its argument.
 
 For more details on how running already-deployed tasks works, see [How task Run works > SDK: Running deployed tasks](./how-task-run-works#running-deployed-tasks).
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+To run a permanently deployed task using the `flyte run` CLI command, use the special `deployed-task` keyword followed by the task reference in the format `{environment_name}.{task_name}`. For example, to run the previously deployed `greet` task from the `greeting_env` environment:
+
+```bash
+flyte run deployed-task greeting_env.greet --message "World"
+```
+
+Notice that now that the task environment is deployed, you use its name (`greeting_env`), not by the variable name to which it was assigned in source code (`env`).
+The task environment name plus the task name (`greet`) are combined with a dot (`.`) to form the full task reference: `greeting_env.greet`.
+The special `deployed-task` keyword tells the CLI that you are referring to a task that has already been deployed. In effect, it replaces the file path argument used for ephemeral runs.
+
+When executed, this command will run the already-deployed `greet` task with argument `message` set to `"World"`. You will see the result printed in the terminal. You can also, of course, observe the execution in the **Runs list** UI.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 <!--
 TODO: Add link to Flyte remote documentation when available

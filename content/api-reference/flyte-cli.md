@@ -65,20 +65,20 @@ such as the endpoint, organization, and verbosity level.
 Set endpoint and organization:
 
 ```bash
-$ flyte --endpoint <endpoint> --org <org> get project <project_name>
+flyte --endpoint <endpoint> --org <org> get project <project_name>
 ```
 
 Increase verbosity level (This is useful for debugging,
 this will show more logs and exception traces):
 
 ```bash
-$ flyte -vvv get logs <run-name>
+flyte -vvv get logs <run-name>
 ```
 
 Override the default config file:
 
 ```bash
-$ flyte --config /path/to/config.yaml run ...
+flyte --config /path/to/config.yaml run ...
 ```
 
 * [Documentation](https://www.union.ai/docs/flyte/user-guide/)
@@ -190,7 +190,7 @@ If the file already exists, it will raise an error unless the `--force` option i
 Create a new secret. The name of the secret is required. For example:
 
 ```bash
-$ flyte create secret my_secret --value my_value
+flyte create secret my_secret --value my_value
 ```
 
 If you don't provide a `--value` flag, you will be prompted to enter the
@@ -202,14 +202,14 @@ flyte create secret my_secret
 
 Output:
 
-```
+```bash
 Enter secret value:
 ```
 
 If `--from-file` is specified, the value will be read from the file instead of being provided directly:
 
 ```bash
-$ flyte create secret my_secret --from-file /path/to/secret_file
+flyte create secret my_secret --from-file /path/to/secret_file
 ```
 
 The `--type` option can be used to create specific types of secrets.
@@ -222,19 +222,19 @@ For image pull secrets, you have several options:
 
 1. Interactive mode (prompts for registry, username, password):
 ```bash
-$ flyte create secret my_secret --type image_pull
+flyte create secret my_secret --type image_pull
 ```
 
 2. With explicit credentials:
 ```bash
-$ flyte create secret my_secret --type image_pull --registry ghcr.io --username myuser
+flyte create secret my_secret --type image_pull --registry ghcr.io --username myuser
 ```
 
 3. Lastly, you can create a secret from your existing Docker installation (i.e., you've run `docker login` in
 the past) and you just want to pull from those credentials. Since you may have logged in to multiple registries,
 you can specify which registries to include. If no registries are specified, all registries are added.
 ```bash
-$ flyte create secret my_secret --type image_pull --from-docker-config --registries ghcr.io,docker.io
+flyte create secret my_secret --type image_pull --from-docker-config --registries ghcr.io,docker.io
 ```
 
 | Option | Type | Default | Description |
@@ -263,7 +263,7 @@ Create a new trigger for a task. The task name and trigger name are required.
 Example:
 
 ```bash
-$ flyte create trigger my_task my_trigger --schedule "0 0 * * *"
+flyte create trigger my_task my_trigger --schedule "0 0 * * *"
 ```
 
 This will create a trigger that runs every day at midnight.
@@ -540,11 +540,11 @@ If `--inputs-only` or `--outputs-only` is specified, it will only show the input
 Examples:
 
 ```bash
-$ flyte get io my_run
+flyte get io my_run
 ```
 
 ```bash
-$ flyte get io my_run my_action
+flyte get io my_run my_action
 ```
 
 | Option | Type | Default | Description |
@@ -567,20 +567,20 @@ Stream logs for the provided run or action.
 If only the run is provided, only the logs for the parent action will be streamed:
 
 ```bash
-$ flyte get logs my_run
+flyte get logs my_run
 ```
 
 If you want to see the logs for a specific action, you can provide the action name as well:
 
 ```bash
-$ flyte get logs my_run my_action
+flyte get logs my_run my_action
 ```
 
 By default, logs will be shown in the raw format and will scroll the terminal.
 If automatic scrolling and only tailing `--lines` number of lines is desired, use the `--pretty` flag:
 
 ```bash
-$ flyte get logs my_run my_action --pretty --lines 50
+flyte get logs my_run my_action --pretty --lines 50
 ```
 
 | Option | Type | Default | Description |
@@ -621,8 +621,8 @@ If you want to see the actions for a run, use `get action <run_name>`.
 You can filter runs by task name and optionally task version:
 
 ```bash
-$ flyte get run --task-name my_task
-$ flyte get run --task-name my_task --task-version v1.0
+flyte get run --task-name my_task
+flyte get run --task-name my_task --task-version v1.0
 ```
 
 | Option | Type | Default | Description |
@@ -709,7 +709,7 @@ Flyte storage backend. This is useful for:
 **Basic Usage:**
 
 ```bash
-$ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --hf-token-key HF_TOKEN
+flyte prefetch hf-model meta-llama/Llama-2-7b-hf --hf-token-key HF_TOKEN
 ```
 
 **With Sharding:**
@@ -727,7 +727,7 @@ args:
 Then run:
 
 ```bash
-$ flyte prefetch hf-model meta-llama/Llama-2-70b-hf \
+flyte prefetch hf-model meta-llama/Llama-2-70b-hf \
     --shard-config shard_config.yaml \
     --accelerator A100:8 \
     --hf-token-key HF_TOKEN
@@ -736,7 +736,7 @@ $ flyte prefetch hf-model meta-llama/Llama-2-70b-hf \
 **Wait for Completion:**
 
 ```bash
-$ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --wait
+flyte prefetch hf-model meta-llama/Llama-2-7b-hf --wait
 ```
 
 | Option | Type | Default | Description |

@@ -21,7 +21,7 @@ Want to try Flyte without installing anything? [Try Flyte 2 in your browser](htt
 
 Install the `flyte` package:
 
-```shell
+```bash
 pip install 'flyte[tui]'
 ```
 {{< note >}}
@@ -30,13 +30,13 @@ We also install the `tui` extra to enable the terminal user interface.
 
 Verify it worked:
 
-```shell
+```bash
 flyte --version
 ```
 
 Output:
 
-```
+```bash
 Flyte SDK version: 2.*.*
 ```
 
@@ -44,7 +44,7 @@ Flyte SDK version: 2.*.*
 
 Create a config file for local execution. Runs will be persisted locally in a SQLite database.
 
-```shell
+```bash
 flyte create config --local-persistence
 ```
 
@@ -79,7 +79,7 @@ With your config file in place:
 
 Run the workflow:
 
-```shell
+```bash
 flyte run --local hello.py main
 ```
 
@@ -89,7 +89,7 @@ This executes the workflow locally on your machine.
 
 You can see the run in the TUI by running:
 
-```shell
+```bash
 flyte start tui
 ```
 

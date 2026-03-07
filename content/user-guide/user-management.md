@@ -34,7 +34,7 @@ For fine-grained control, create custom roles and policies using the CLI or prog
 
 Install the Union CLI plugin:
 
-```shell
+```bash
 pip install flyteplugins-union
 ```
 
@@ -88,8 +88,8 @@ Assignment.create(email="jane@example.com", policy="Team Prod Access")
 
 Use `--edit` to open an interactive editor (no YAML file needed):
 
-```shell
-$ flyte create role "Production Runner" --edit
+```bash
+flyte create role "Production Runner" --edit
 ```
 
 Your `$EDITOR` opens with a template. Set the actions:
@@ -107,8 +107,8 @@ Save and close — the role is created.
 
 **Step 2 — Create the policy**
 
-```shell
-$ flyte create policy "Team Prod Access" --edit
+```bash
+flyte create policy "Team Prod Access" --edit
 ```
 
 Bind the role to a specific project and domain:
@@ -125,15 +125,15 @@ bindings:
 
 **Step 3 — Assign the policy to a user**
 
-```shell
-$ flyte create assignment --email jane@example.com --policy "Team Prod Access"
+```bash
+flyte create assignment --email jane@example.com --policy "Team Prod Access"
 ```
 
 You can also assign by user subject or application credentials subject:
 
-```shell
-$ flyte create assignment --user-subject user-123 --policy "Team Prod Access"
-$ flyte create assignment --creds-subject app-456 --policy "Team Prod Access"
+```bash
+flyte create assignment --user-subject user-123 --policy "Team Prod Access"
+flyte create assignment --creds-subject app-456 --policy "Team Prod Access"
 ```
 {{< /markdown >}}
 {{< /tab >}}
@@ -174,9 +174,9 @@ Policy.update("Team Prod Access", old_bindings=policy.bindings, new_bindings=new
 {{< markdown >}}
 `update` opens the existing definition in your editor so you can modify it in place:
 
-```shell
-$ flyte update role "Production Runner"
-$ flyte update policy "Team Prod Access"
+```bash
+flyte update role "Production Runner"
+flyte update policy "Team Prod Access"
 ```
 {{< /markdown >}}
 {{< /tab >}}
