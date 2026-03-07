@@ -166,9 +166,7 @@ See the [CLI reference](../api-reference/flyte-cli#flyte-create-config) for all 
 
 - `org`: Organization name (usually matches the first part of your endpoint URL).
 - `domain`: Environment separation (`development`, `staging`, `production`).
-- `project`: Default project for deployments. Must already exist on your instance.
-
-<!-- TODO: add link to project creation when available -->
+- `project`: Default project for deployments. Must already exist on your instance. See [Projects and domains](./projects-and-domains) for how to create projects.
 {{< /markdown >}}
 {{< /dropdown >}}
 

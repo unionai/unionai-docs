@@ -1,6 +1,6 @@
 ---
 title: Configure tasks
-weight: 9
+weight: 10
 variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true
