@@ -1,6 +1,6 @@
 ---
 title: ActionDetails
-version: 2.0.2
+version: 2.0.4
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -36,15 +36,20 @@ class ActionDetails(
 | `action_id` | `None` | Get the action ID. |
 | `attempts` | `None` | Get the number of attempts of the action. |
 | `error_info` | `None` | Get the error information if the action failed, otherwise returns None. |
+| `initializing_time` | `None` | Get the time spent in the INITIALIZING phase for the latest attempt.  Returns:     timedelta if the action went through the INITIALIZING phase, None otherwise. |
 | `is_running` | `None` | Check if the action is currently running. |
 | `metadata` | `None` | Get the metadata of the action. |
 | `name` | `None` | Get the name of the action. |
 | `phase` | `None` | Get the phase of the action.  Returns:     The current execution phase as an ActionPhase enum |
+| `phase_durations` | `None` | Get the duration spent in each phase as a dictionary.  Returns a mapping of ActionPhase to timedelta for the latest attempt. This provides an easy way to see how long was spent queued, initializing, running, etc.  Returns:     Dictionary mapping ActionPhase enum values to timedelta durations.  Example:     &gt;&gt;&gt; action = Action.get(run_name="my-run", name="my-action")     &gt;&gt;&gt; details = action.details()     &gt;&gt;&gt; durations = details.phase_durations     &gt;&gt;&gt; print(f"Queued: {durations.get(ActionPhase.QUEUED, timedelta(0)).total_seconds()}s")     &gt;&gt;&gt; print(f"Running: {durations.get(ActionPhase.RUNNING, timedelta(0)).total_seconds()}s") |
+| `queued_time` | `None` | Get the time spent in the QUEUED phase for the latest attempt.  Returns:     timedelta if the action went through the QUEUED phase, None otherwise. |
 | `raw_phase` | `None` | Get the raw phase of the action. |
 | `run_name` | `None` | Get the name of the run. |
+| `running_time` | `None` | Get the time spent in the RUNNING phase for the latest attempt.  Returns:     timedelta if the action went through the RUNNING phase, None otherwise. |
 | `runtime` | `None` | Get the runtime of the action. |
 | `status` | `None` | Get the status of the action. |
 | `task_name` | `None` | Get the name of the task. |
+| `waiting_for_resources_time` | `None` | Get the time spent in the WAITING_FOR_RESOURCES phase for the latest attempt.  Returns:     timedelta if the action went through the WAITING_FOR_RESOURCES phase, None otherwise. |
 
 ## Methods
 
@@ -53,6 +58,7 @@ class ActionDetails(
 | [`done()`](#done) | Check if the action is in a terminal state (completed or failed). |
 | [`get()`](#get) | Get a run by its ID or name. |
 | [`get_details()`](#get_details) | Get the details of the action. |
+| [`get_phase_transitions()`](#get_phase_transitions) | Get the phase transitions for a specific attempt, showing the granular breakdown. |
 | [`inputs()`](#inputs) | Return the inputs of the action. |
 | [`logs_available()`](#logs_available) | Check if logs are available for the action, optionally for a specific attempt. |
 | [`outputs()`](#outputs) | Returns the outputs of the action, returns instantly if outputs are already cached, else fetches them and. |
@@ -117,6 +123,22 @@ Get the details of the action. This is a placeholder for getting the action deta
 |-|-|-|
 | `cls` |  | |
 | `action_id` | `identifier_pb2.ActionIdentifier` | |
+
+### get_phase_transitions()
+
+```python
+def get_phase_transitions(
+    attempt: int | None,
+) -> List[PhaseTransitionInfo]
+```
+Get the phase transitions for a specific attempt, showing the granular breakdown
+of time spent in each phase (queued, initializing, running, etc.).
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `attempt` | `int \| None` | The attempt number (1-indexed). If None, uses the latest attempt. |
 
 ### inputs()
 

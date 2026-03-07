@@ -10,16 +10,16 @@ variants: +flyte +byoc +selfmanaged
 
 1. Hugo (https://gohugo.io/)
 
-```shell
-$ brew install hugo
+```bash
+brew install hugo
 ```
 
 2. A preferences override file with your configuration
 
 The tool is flexible and has multiple knobs. Please review `unionai-docs-infra/hugo.local.toml~sample`, and configure to meet your preferences.
 
-```shell
-$ cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml
+```bash
+cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml
 ```
 
 3. Make sure you review `hugo.local.toml`.

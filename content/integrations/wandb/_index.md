@@ -17,7 +17,7 @@ sidebar_expanded: false
 
 ## Installation
 
-```shell
+```bash
 pip install flyteplugins-wandb
 ```
 

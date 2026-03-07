@@ -656,8 +656,9 @@ RUN pip install flyte pandas numpy
 RUN flyte --help
 ```
 
+Build and push the image:
+
 ```bash
-# Build in CI/CD
 docker build -t myregistry.com/my-app:v1.2.3 .
 docker push myregistry.com/my-app:v1.2.3
 ```

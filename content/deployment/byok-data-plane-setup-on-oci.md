@@ -29,14 +29,14 @@ The Union architecture is described on the [Architecture](./architecture/_index)
 
 1. Add the {{< key product_name >}} Helm repo:
 
-   ```shell
+   ```bash
    helm repo add unionai https://unionai.github.io/helm-charts/
    helm repo update
    ```
 
 2. Use the `uctl selfserve provision-dataplane-resources` command to generate a new client and client secret for communicating with your Union control plane, provision authorization permissions for the app to operate on the union cluster name you have selected, generate values file to install dataplane in your Kubernetes cluster and provide follow-up instructions:
 
-   ```shell
+   ```bash
    uctl config init --host=<YOUR_UNION_CONTROL_PLANE_URL>
    uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME>  --provider oci
    ```
@@ -44,7 +44,7 @@ The Union architecture is described on the [Architecture](./architecture/_index)
    * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
      It will also generate a YAML file specific to the provider that you specify, in this case `oci`:
 
-   ```shell
+   ```bash
      -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ----------
    | ORGANIZATION | HOST                               | CLUSTER                    | CLUSTERAUTHCLIENTID                             | CLUSTERAUTHCLIENTSECRET                                          | PROVIDER |
     -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ----------
@@ -97,7 +97,7 @@ The Union architecture is described on the [Architecture](./architecture/_index)
 
 5. Once deployed you can check to see if the cluster has been successfully registered to the control plane:
 
-   ```shell
+   ```bash
    uctl get cluster
     ----------- ------- --------------- -----------
    | NAME      | ORG   | STATE         | HEALTH    |
@@ -109,7 +109,7 @@ The Union architecture is described on the [Architecture](./architecture/_index)
 
 6. You can then register and run some example workflows through your cluster to ensure that it is working correctly.
 
-   ```shell
+   ```bash
    uctl register examples --project=union-health-monitoring --domain=development
    uctl validate snacks --project=union-health-monitoring --domain=development
     ---------------------- ----------------------------------- ---------- -------------------------------- -------------- ----------- ---------------

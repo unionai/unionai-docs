@@ -1,6 +1,6 @@
 ---
 title: Advanced project
-weight: 7
+weight: 8
 variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 mermaid: true

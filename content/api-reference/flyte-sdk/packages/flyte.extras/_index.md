@@ -1,6 +1,6 @@
 ---
 title: flyte.extras
-version: 2.0.2
+version: 2.0.4
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -16,10 +16,10 @@ This package provides various utilities that make it possible to build highly cu
                   to be installed. This extra uses `flyte copilot` system to inject inputs and slurp
                   outputs from the container run.
 
-2. Time utilities: Usage of Time.now, time.sleep or asyncio.sleep bring non-determinism to a program.
-                   This module provides a few utilities that make it possible to bring determinism to
-                   workflows that need to access time related functions. This determinism persists
-                   across crashes and restarts making the process durable.
+2. DynamicBatcher / TokenBatcher: Maximize resource utilization by batching work from many concurrent
+                   producers through a single async processing function.  DynamicBatcher is the
+                   general-purpose base; TokenBatcher is a convenience subclass for token-budgeted
+                   LLM inference with reusable containers.
 
 ## Directory
 
@@ -27,71 +27,16 @@ This package provides various utilities that make it possible to build highly cu
 
 | Class | Description |
 |-|-|
+| [`BatchStats`](../flyte.extras/batchstats) | Monitoring statistics exposed by :attr:`DynamicBatcher. |
 | [`ContainerTask`](../flyte.extras/containertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
+| [`DynamicBatcher`](../flyte.extras/dynamicbatcher) | Batches records from many concurrent producers and runs them through. |
+| [`Prompt`](../flyte.extras/prompt) | Simple prompt record with built-in token estimation. |
+| [`TokenBatcher`](../flyte.extras/tokenbatcher) | Token-aware batcher for LLM inference workloads. |
 
-### Methods
+### Protocols
 
-| Method | Description |
+| Protocol | Description |
 |-|-|
-| [`durable_sleep()`](#durable_sleep) | durable_sleep enables the process to sleep for `seconds` seconds even if the process recovers from a crash. |
-| [`durable_time()`](#durable_time) | Returns the current time for every unique invocation of durable_time. |
-
-
-## Methods
-
-#### durable_sleep()
-
-
-> [!NOTE] This method can be called both synchronously or asynchronously.
-> Default invocation is sync and will block.
-> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
-> `result = await durable_sleep.aio()`.
-```python
-def durable_sleep(
-    seconds: float,
-)
-```
-durable_sleep enables the process to sleep for `seconds` seconds even if the process recovers from a crash.
-This method can be invoked multiple times. If the process crashes, the invocation of durable_sleep will behave
-like as-if the process has been sleeping since the first time this method was invoked.
-
-Examples:
-```python
-    import flyte.durable
-
-    env = flyte.TaskEnvironment("env")
-
-    @env.task
-    async def main():
-        # Do something
-        my_work()
-        # Now we need to sleep for 1 hour before proceeding.
-        await flyte.durable.sleep.aio(3600)  # Even if process crashes, it will resume and only sleep for
-                                              # 1 hour in agregate. If the scheduling takes longer, it
-                                              # will simply return immediately.
-        # thing to be done after 1 hour
-        my_work()
-```
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `seconds` | `float` | float time to sleep for |
-
-#### durable_time()
-
-
-> [!NOTE] This method can be called both synchronously or asynchronously.
-> Default invocation is sync and will block.
-> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
-> `result = await durable_time.aio()`.
-```python
-def durable_time()
-```
-Returns the current time for every unique invocation of durable_time. If the same invocation is encountered again
-the previously returned time is returned again, ensuring determinism.
-Similar to using `time.time()` just durable!
-Returns: float
-
+| [`CostEstimator`](../flyte.extras/costestimator) | Protocol for records that can estimate their own processing cost. |
+| [`TokenEstimator`](../flyte.extras/tokenestimator) | Protocol for records that can estimate their own token count. |
 

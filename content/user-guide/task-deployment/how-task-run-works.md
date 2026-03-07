@@ -20,28 +20,9 @@ Additionally, you can run deployed tasks through the Flyte/Union UI for interact
 
 The most common development pattern combines ephemeral task preparation and execution in a single command, automatically handling the temporary deployment process when needed.
 
-### CLI: Ephemeral deployment and execution
-
-```bash
-# Basic deploy + run
-flyte run my_example.py my_task --name "World"
-
-# With explicit project and domain
-flyte run --project my-project --domain development my_example.py my_task --name "World
-
-# With deployment options
-flyte run --version v1.0.0 --copy-style all my_example.py my_task --name "World"
-```
-
-**How it works:**
-1. **Environment discovery**: Flyte loads the specified Python file and identifies task environments
-2. **Ephemeral preparation**: Temporarily prepares the task environment for execution (similar to deployment but not persistent)
-3. **Task execution**: Immediately runs the specified task with provided arguments in the ephemeral environment
-4. **Result return**: Returns execution results and monitoring URL
-5. **Cleanup**: The ephemeral environment is not stored permanently in the backend
-
-### SDK: Programmatic ephemeral deployment + run
-
+{{< tabs "ephemeral-run" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
 ```python
 import flyte
 
@@ -59,6 +40,35 @@ if __name__ == "__main__":
     print(f"Result: {result}")
     print(f"Execution URL: {result.url}")
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+```bash
+flyte run my_example.py my_task --name "World"
+```
+
+With explicit project and domain:
+
+```bash
+flyte run --project my-project --domain development my_example.py my_task --name "World"
+```
+
+With deployment options:
+
+```bash
+flyte run --version v1.0.0 --copy-style all my_example.py my_task --name "World"
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+**How it works:**
+1. **Environment discovery**: Flyte loads the specified Python file and identifies task environments
+2. **Ephemeral preparation**: Temporarily prepares the task environment for execution (similar to deployment but not persistent)
+3. **Task execution**: Immediately runs the specified task with provided arguments in the ephemeral environment
+4. **Result return**: Returns execution results and monitoring URL
+5. **Cleanup**: The ephemeral environment is not stored permanently in the backend
 
 **Benefits of ephemeral deployment + run:**
 - **Development efficiency**: No separate permanent deployment step required
@@ -70,26 +80,9 @@ if __name__ == "__main__":
 
 For production workflows or when you want to use stable deployed versions, you can run tasks that have been **permanently deployed** with `flyte deploy` without triggering any deployment process.
 
-### CLI: Running deployed tasks
-
-```bash
-# Run a previously deployed task
-flyte run deployed-task my_env.my_task --name "World"
-
-# With specific project/domain
-flyte run --project prod --domain production deployed-task my_env.my_task --batch_size 1000
-```
-
-**Task reference format:** `{environment_name}.{task_name}`
-- `environment_name`: The `name` property of your `TaskEnvironment`
-- `task_name`: The function name of your task
-
->[!NOTE]
-> Recall that when you deploy a task environment with `flyte deploy`, you specify the `TaskEnvironment` using the variable to which it is assigned.
-> In contrast, once it is deployed, you refer to the environment by its `name` property.
-
-### SDK: Running deployed tasks
-
+{{< tabs "run-deployed" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
 ```python
 import flyte
 
@@ -103,6 +96,30 @@ result = flyte.run(deployed_task, name="World")
 deployed_task = flyte.remote.Task.get("my_env.my_task", auto_version="latest")
 result = flyte.run(deployed_task, name="World")
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+```bash
+flyte run deployed-task my_env.my_task --name "World"
+```
+
+With a specific project and domain:
+
+```bash
+flyte run --project prod --domain production deployed-task my_env.my_task --batch_size 1000
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+**Task reference format:** `{environment_name}.{task_name}`
+- `environment_name`: The `name` property of your `TaskEnvironment`
+- `task_name`: The function name of your task
+
+>[!NOTE]
+> When you deploy a task environment with `flyte deploy`, you specify the `TaskEnvironment` by the variable to which it is assigned.
+> Once deployed, you refer to it by its `name` property.
 
 **Benefits of running deployed tasks:**
 - **Performance**: No deployment overhead, faster execution startup
@@ -114,18 +131,9 @@ result = flyte.run(deployed_task, name="World")
 
 For development, debugging, and testing, you can run tasks locally on your machine without any backend interaction.
 
-### CLI: Local execution
-
-```bash
-# Run locally with --local flag
-flyte run --local my_example.py my_task --name "World"
-
-# Local execution with development data
-flyte run --local data_pipeline.py process_data --input_path "/local/data" --debug true
-```
-
-### SDK: Local execution
-
+{{< tabs "local-execution" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
 ```python
 import flyte
 
@@ -142,6 +150,22 @@ result = flyte.run(my_task, name="World")
 flyte.init_from_config()  # Client configured
 result = flyte.with_runcontext(mode="local").run(my_task, name="World")
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+```bash
+flyte run --local my_example.py my_task --name "World"
+```
+
+With development data:
+
+```bash
+flyte run --local data_pipeline.py process_data --input_path "/local/data" --debug true
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 **Benefits of local execution:**
 - **Rapid development**: Instant feedback without network latency

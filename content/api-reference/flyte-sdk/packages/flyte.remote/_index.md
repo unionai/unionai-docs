@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 2.0.2
+version: 2.0.4
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -28,6 +28,7 @@ Remote Entities that are accessible from the Union Server once deployed or creat
 | [`Secret`](../flyte.remote/secret) |  |
 | [`Task`](../flyte.remote/task) |  |
 | [`TaskDetails`](../flyte.remote/taskdetails) |  |
+| [`TimeFilter`](../flyte.remote/timefilter) | Filter for time-based fields (e. |
 | [`Trigger`](../flyte.remote/trigger) | Represents a trigger in the Flyte platform. |
 | [`User`](../flyte.remote/user) | Represents a user in the Flyte platform. |
 
