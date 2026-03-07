@@ -59,14 +59,14 @@ Let's call these clusters `dataplane1` and `dataplane2`. In this section, you'll
 
 1. Add the `flyteorg` Helm repo:
 
-   ```shell
+   ```bash
    $ helm repo add flyteorg https://flyteorg.github.io/flyte
    $ helm repo update
    ```
 
 2. Get the `flyte-core` Helm chart:
 
-   ```shell
+   ```bash
    $ helm fetch --untar --untardir . flyteorg/flyte-core
    $ cd flyte-core
    ```
@@ -123,7 +123,7 @@ Starting with Kubernetes 1.24, the bearer token has to be generated manually.
 
 1. Use the following manifest to create a long-lived bearer token for the `flyteadmin` Service Account in your data plane cluster:
 
-   ```shell
+   ```bash
    $ kubectl apply -f - <<EOF
      apiVersion: v1
      kind: Secret
@@ -153,7 +153,7 @@ Starting with Kubernetes 1.24, the bearer token has to be generated manually.
 
 3. Copy the bearer token of the first data plane cluster's secret to your clipboard using the following command:
 
-   ```shell
+   ```bash
    $ kubectl get secret -n flyte dataplane1-token \
              -o jsonpath='{.data.token}' | pbcopy
    ```
@@ -172,7 +172,7 @@ Starting with Kubernetes 1.24, the bearer token has to be generated manually.
    ```
 5. Obtain the corresponding certificate:
 
-   ```shell
+   ```bash
    $ kubectl get secret -n flyte dataplane1-token \
              -o jsonpath='{.data.ca\.crt}' | pbcopy
    ```
@@ -193,7 +193,7 @@ Starting with Kubernetes 1.24, the bearer token has to be generated manually.
 
 7. Connect to your control plane cluster and create the `cluster-credentials` secret:
 
-   ```shell
+   ```bash
    $ kubectl apply -f secrets.yaml
    ```
 
@@ -252,7 +252,7 @@ Starting with Kubernetes 1.24, the bearer token has to be generated manually.
 
     **AWS**
 
-    ```shell
+    ```bash
     $ helm upgrade flyte-core flyteorg/flyte-core \
            --values values-eks-controlplane.yaml --values values-override.yaml \
            --values values-eks.yaml -n flyte
@@ -260,7 +260,7 @@ Starting with Kubernetes 1.24, the bearer token has to be generated manually.
 
     **GCP**
 
-    ```shell
+    ```bash
     $ helm upgrade flyte -n flyte flyteorg/flyte-core values.yaml \
            --values values-gcp.yaml \
            --values values-controlplane.yaml \
@@ -269,13 +269,13 @@ Starting with Kubernetes 1.24, the bearer token has to be generated manually.
 
 11. Verify that all Pods in the `flyte` namespace are `Running`:
 
-    ```shell
+    ```bash
     $ kubectl get pods -n flyte
     ```
 
     Example output:
 
-    ```shell
+    ```bash
     NAME                             READY   STATUS    RESTARTS   AGE
     datacatalog-86f6b9bf64-bp2cj     1/1     Running   0          23h
     datacatalog-86f6b9bf64-fjzcp     1/1     Running   0          23h
@@ -308,19 +308,19 @@ The next step is to configure project-domain or workflow labels to schedule on a
 
 3. Update the execution cluster label of the project and domain:
 
-   ```shell
+   ```bash
    $ flytectl update execution-cluster-label --attrFile ecl.yaml
    ```
 
    Example output:
 
-   ```shell
+   ```bash
    Updated attributes from team1 project and domain development
    ```
 
 4. Execute a workflow indicating project and domain:
 
-   ```shell
+   ```bash
    $ pyflyte run --remote --project team1 --domain development example.py  training_workflow \                                                          ✔ ╱ docs-development-env 
              --hyperparameters '{"C": 0.1}'
    ```
@@ -338,7 +338,7 @@ The next step is to configure project-domain or workflow labels to schedule on a
 
 2. Update execution cluster label of the project and domain
 
-   ```shell
+   ```bash
    $ flytectl update execution-cluster-label \
               -p project1 -d development \
               example.training_workflow \
@@ -347,7 +347,7 @@ The next step is to configure project-domain or workflow labels to schedule on a
 
 3. Execute a workflow indicating project and domain:
 
-   ```shell
+   ```bash
    $ pyflyte run --remote --project team1 --domain development example.py  training_workflow \                                                          ✔ ╱ docs-development-env 
              --hyperparameters '{"C": 0.1}'
    ```
@@ -424,7 +424,7 @@ The process can be repeated for additional clusters.
 
 6. Update the Helm release in the control plane cluster:
 
-   ```shell
+   ```bash
    $ helm upgrade flyte-core-control flyteorg/flyte-core  -n flyte --values values-controlplane.yaml --values values-eks.yaml --values values-override.yaml
    ```
 
@@ -438,13 +438,13 @@ The process can be repeated for additional clusters.
 
 8. Update the cluster execution labels for the project:
 
-   ```shell
+   ```bash
    $ flytectl update execution-cluster-label --attrFile ecl-production.yaml
    ```
 
 9. Finally, submit a workflow execution that matches the label of the new cluster:
 
-   ```shell
+   ```bash
    $ pyflyte run --remote --project team1 --domain production example.py \
          training_workflow --hyperparameters '{"C": 0.1}'
    ```

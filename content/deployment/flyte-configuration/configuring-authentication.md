@@ -131,7 +131,7 @@ Select the Helm chart you used to install Flyte:
 
 1. Generate a random password to be used internally by `flytepropeller`
 2. Use the following command to hash the password:
-   ```shell
+   ```bash
    $ pip install bcrypt && python -c 'import bcrypt; import base64; print(base64.b64encode(bcrypt.hashpw("<your-random-password>".encode("utf-8"), bcrypt.gensalt(6))))'
    ```
 3. Go to your values file and locate the `auth` section and replace values accordingly:
@@ -157,8 +157,8 @@ Select the Helm chart you used to install Flyte:
 4. Save your changes
 5. Upgrade your Helm release with the new values:
 
-```shell
-$ helm upgrade <release-name> flyteorg/flyte-binary -n <your-namespace> --values <your-values-file>.yaml
+```bash
+helm upgrade <release-name> flyteorg/flyte-binary -n <your-namespace> --values <your-values-file>.yaml
 ```
 Where `<release-name>` is the name of your Helm release, typically `flyte-backend`. You can find it using `helm ls -n <your-namespace>`
 
@@ -168,7 +168,7 @@ Where `<release-name>` is the name of your Helm release, typically `flyte-backen
 
 1. Generate a random password to be used internally by `flytepropeller`
 2. Use the following command to hash the password:
-   ```shell
+   ```bash
    $ pip install bcrypt && python -c 'import bcrypt; import base64; print(base64.b64encode(bcrypt.hashpw("<your-random-password>".encode("utf-8"), bcrypt.gensalt(6))))'
    ```
    Take note of the output (only the contents inside `''`).
@@ -290,8 +290,8 @@ Where `<release-name>` is the name of your Helm release, typically `flyte-backen
    > For [multi-cluster deployments](../multi-cluster.md) you must add this Secret definition block to the `values-dataplane.yaml` file. If you are not running `flytepropeller` in the control plane cluster, you do not need to create this secret there.
 6. Save and exit your editor.
 7. Upgrade your Helm release with the new configuration:
-   ```shell
-   $ helm upgrade <release-name> flyteorg/flyte-binary -n <your-namespace> --values <your-values-file>.yaml
+   ```bash
+   helm upgrade <release-name> flyteorg/flyte-binary -n <your-namespace> --values <your-values-file>.yaml
    ```
 8. Verify that the `flytepropeller`, `flytescheduler` and `flyteadmin` Pods are restarted and running:
    ```bash
@@ -645,7 +645,7 @@ Also, `FLYTE_CREDENTIALS_CLIENT_SECRET_FROM_FILE` redirect is available as well,
 
 The following is a list of flytekit configuration values the community has used in CI, along with a brief explanation:
 
-```shell
+```bash
 # When using OAuth2 service auth, this is the username and password.
 export FLYTE_CREDENTIALS_CLIENT_ID=<client_id>
 export FLYTE_CREDENTIALS_CLIENT_SECRET=<client_secret>

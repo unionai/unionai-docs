@@ -56,7 +56,7 @@ This can be done by providing the `union` application additional permissions or 
 
 {{< key product_name >}} requires a role and service principal for the internal OpenCost subsystem.
 
-```shell
+```bash
 # Create OpenCost role to retrieve pricing data
 # Name and subscription can be changed as necessary
 az role definition create --role-definition '{

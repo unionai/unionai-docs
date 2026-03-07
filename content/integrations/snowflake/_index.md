@@ -19,7 +19,7 @@ The connector supports:
 
 ## Installation
 
-```shell
+```bash
 pip install flyteplugins-snowflake
 ```
 
