@@ -130,9 +130,9 @@ This deploys a full [kube-prometheus-stack](https://github.com/prometheus-commun
 
 ### Prometheus Operator CRDs
 
-When `monitoring.enabled: true`, the monitoring stack requires Prometheus Operator CRDs (ServiceMonitor, PodMonitor, PrometheusRule, etc.).
+The `kube-prometheus-stack` uses the Prometheus Operator, which discovers scrape targets and alerting rules through Kubernetes CRDs (ServiceMonitor, PodMonitor, PrometheusRule, etc.). If you prefer to use static scrape configs instead, see [Integrating with your own Prometheus](#integrating-with-your-own-prometheus).
 
-Install CRDs via the `dataplane-crds` chart:
+To install the CRDs, use the `dataplane-crds` chart:
 
 ```yaml
 # dataplane-crds values
