@@ -21,10 +21,19 @@ When you run or deploy workflows, you target a project and domain:
 - **CLI**: Use `--project` and `--domain` flags with `flyte run` or `flyte deploy`, or set defaults in your [configuration file](./connecting-to-a-cluster).
 - **Python SDK**: Specify `project` and `domain` in [`flyte.init`](../api-reference/flyte-sdk/packages/flyte/_index#init) or [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte/_index#init_from_config).
 
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
 Projects and domains also determine:
 
 - **Access control**: RBAC policies scope permissions to an organization, project, domain, or project-domain pair. See [User management](./user-management).
 - **Data isolation**: Storage and cache are isolated per project-domain pair.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+Projects and domains also determine data isolation. Storage and cache are isolated per project-domain pair.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Managing projects via CLI
 
