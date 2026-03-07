@@ -53,6 +53,9 @@ This will automatically open your browser to complete authentication.
 {{< /tab >}}
 {{< /tabs >}}
 
+> [!NOTE]
+> For details on creating and managing configuration files, see [Connecting to a cluster](./connecting-to-a-cluster#configuration-file).
+
 ## Authentication modes
 
 ### PKCE authentication (browser-based) {#pkce}
