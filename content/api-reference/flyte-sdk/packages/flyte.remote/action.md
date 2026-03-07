@@ -1,6 +1,6 @@
 ---
 title: Action
-version: 2.0.3
+version: 2.0.4
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -58,6 +58,7 @@ class Action(
 | [`details()`](#details) | Get the details of the action. |
 | [`done()`](#done) | Check if the action is done. |
 | [`get()`](#get) | Get a run by its ID or name. |
+| [`get_logs()`](#get_logs) | Get logs for the action as an iterator of strings. |
 | [`listall()`](#listall) | Get all actions for a given run. |
 | [`show_logs()`](#show_logs) | Display logs for the action. |
 | [`sync()`](#sync) | Sync the action with the remote server. |
@@ -127,6 +128,33 @@ Get a run by its ID or name. If both are provided, the ID will take precedence.
 | `uri` | `str \| None` | The URI of the action. |
 | `run_name` | `str \| None` | The name of the action. |
 | `name` | `str \| None` | The name of the action. |
+
+### get_logs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Action instance>.get_logs.aio()`.
+```python
+def get_logs(
+    attempt: int | None,
+    filter_system: bool,
+    show_ts: bool,
+) -> AsyncGenerator[str, None]
+```
+Get logs for the action as an iterator of strings.
+
+Can be called synchronously (returns ``Iterator[str]``) or asynchronously
+via ``.aio()`` (returns ``AsyncIterator[str]``).
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `attempt` | `int \| None` | The attempt number to retrieve logs for (defaults to latest attempt). |
+| `filter_system` | `bool` | If True, filter out system-generated log lines. |
+| `show_ts` | `bool` | If True, prefix each line with an ISO-8601 timestamp. |
 
 ### listall()
 
