@@ -35,10 +35,7 @@ The data plane supports two independent monitoring concerns:
                     │  │  │ - dcgm (GPU)   │  │           │
                     │  │  │ - envoy        │  │           │
                     │  │  └────────────────┘  │           │
-                    │  └──────────┬───────────┘           │
-                    │             │ remote_write (opt.)   │
-                    │             ▼                       │
-                    │     External TSDB / Cloud           │
+                    │  └─────────────────────-┘           │
                     │                                     │
                     │  ┌──────────────────────┐           │
                     │  │  kube-prometheus     │           │
@@ -53,7 +50,7 @@ The data plane supports two independent monitoring concerns:
 
 ## Union features Prometheus
 
-The static Prometheus instance is always deployed and pre-configured to scrape the metrics that {{< key product_name >}} requires. No Prometheus Operator or CRDs are needed.
+The static Prometheus instance is always deployed and pre-configured to scrape the metrics that {{< key product_name >}} requires. No Prometheus Operator or CRDs are needed. This instance is a platform dependency and should not be replaced or reconfigured.
 
 ### Scrape targets
 
@@ -90,8 +87,6 @@ prometheus:
       memory: "1Gi"
   serviceAccount:
     create: true
-    # Add annotations for IRSA or Workload Identity if using remote_write
-    # to a cloud-managed service (e.g. Amazon Managed Prometheus)
     annotations: {}
   priorityClassName: system-cluster-critical
   nodeSelector: {}
@@ -100,7 +95,7 @@ prometheus:
 ```
 
 > [!NOTE] Retention and storage
-> The default 3-day retention is sufficient for {{< key product_name >}} features. Increase `retention` if you query historical feature metrics directly. For long-term storage, use [remote write](#exporting-metrics-with-remote-write) to an external time-series database.
+> The default 3-day retention is sufficient for {{< key product_name >}} features. Increase `retention` if you query historical feature metrics directly.
 
 ### Internal service endpoint
 
@@ -130,7 +125,7 @@ This deploys a full [kube-prometheus-stack](https://github.com/prometheus-commun
 
 ### Prometheus Operator CRDs
 
-The `kube-prometheus-stack` uses the Prometheus Operator, which discovers scrape targets and alerting rules through Kubernetes CRDs (ServiceMonitor, PodMonitor, PrometheusRule, etc.). If you prefer to use static scrape configs instead, see [Integrating with your own Prometheus](#integrating-with-your-own-prometheus).
+The `kube-prometheus-stack` uses the Prometheus Operator, which discovers scrape targets and alerting rules through Kubernetes CRDs (ServiceMonitor, PodMonitor, PrometheusRule, etc.). If you prefer to use static scrape configs with your own Prometheus instead, see [Scraping Union services from your own Prometheus](#scraping-union-services-from-your-own-prometheus).
 
 To install the CRDs, use the `dataplane-crds` chart:
 
@@ -184,61 +179,51 @@ monitoring:
     # Configure receivers, routes, etc.
 ```
 
+The monitoring stack's Prometheus supports [remote write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) for forwarding metrics to external time-series databases (Amazon Managed Prometheus, Grafana Cloud, Thanos, etc.):
+
+```yaml
+monitoring:
+  prometheus:
+    prometheusSpec:
+      remoteWrite:
+        - url: "https://aps-workspaces.<REGION>.amazonaws.com/workspaces/<WORKSPACE_ID>/api/v1/remote_write"
+          sigv4:
+            region: <REGION>
+```
+
 For the full set of configurable values, see the [kube-prometheus-stack chart documentation](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack).
 
-## Integrating with your own Prometheus
+## Scraping Union services from your own Prometheus
 
-If you already run Prometheus in your cluster, you can scrape {{< key product_name >}} services directly without enabling the monitoring stack. All data plane services expose metrics on standard ports.
+If you already run Prometheus in your cluster, you can scrape {{< key product_name >}} data plane services for operational visibility. All services expose metrics on standard ports.
 
-### Using static scrape configs
+> [!NOTE] Union features Prometheus
+> The built-in static Prometheus handles all metrics required for {{< key product_name >}} platform features. Scraping from your own Prometheus is for additional operational visibility only -- it does not replace the built-in instance.
 
-Add the following jobs to your Prometheus configuration to collect the same metrics that {{< key product_name >}} features require:
+### Static scrape configs
+
+Add these jobs to your Prometheus configuration:
 
 ```yaml
 scrape_configs:
-  # Kube-state-metrics for pod/node resource tracking
-  - job_name: union-kube-state-metrics
-    static_configs:
-      - targets: ['union-dataplane-kube-state-metrics:8080']
-    metric_relabel_configs:
-      - source_labels: [__name__]
-        regex: "kube_pod_container_resource_(limits|requests)|kube_pod_status_phase|kube_node_(labels|status_allocatable|status_condition|status_capacity)|kube_namespace_labels|kube_pod_info|kube_node_info|kube_pod_container_status_restarts_total"
-        action: keep
-
-  # Flytepropeller execution metrics
-  - job_name: union-flytepropeller
+  # Data plane service metrics (operator, propeller, etc.)
+  - job_name: union-dataplane-services
     kubernetes_sd_configs:
-      - role: pod
+      - role: endpoints
         namespaces:
           names: [union]
-        selectors:
-          - role: pod
-            label: "app.kubernetes.io/name=flytepropeller"
     relabel_configs:
-      - source_labels: [__meta_kubernetes_pod_container_name]
-        regex: flytepropeller
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_instance]
+        regex: union-dataplane
         action: keep
-
-  # OpenCost (when cost tracking is enabled)
-  - job_name: union-opencost
-    static_configs:
-      - targets: ['union-dataplane-opencost:9003']
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        regex: debug
+        action: keep
 ```
 
-> [!NOTE] Service names
-> The target hostnames above assume a Helm release name of `union-dataplane`. Adjust the prefix if your release name differs.
+### ServiceMonitor (Prometheus Operator)
 
-### Using Prometheus Operator ServiceMonitors
-
-If you run the Prometheus Operator, you can create ServiceMonitor resources instead of static configs. First, install the Prometheus Operator CRDs via the `dataplane-crds` chart:
-
-```yaml
-# dataplane-crds values
-crds:
-  prometheusOperator: true
-```
-
-Then create ServiceMonitor resources to discover {{< key product_name >}} services. For example, to scrape all data plane services that expose a `debug` port:
+If you run the Prometheus Operator, create a ServiceMonitor instead:
 
 ```yaml
 apiVersion: monitoring.coreos.com/v1
@@ -259,82 +244,12 @@ spec:
       interval: 30s
 ```
 
-For the full list of metrics ports and paths, see the [Prometheus operator documentation on ServiceMonitor](https://prometheus-operator.dev/docs/api-reference/api/#monitoring.coreos.com/v1.ServiceMonitor).
-
-## Exporting metrics with remote write
-
-For long-term metric storage or integration with managed monitoring services, configure Prometheus [remote write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) to forward metrics to an external time-series database.
-
-### Overview
-
-Remote write allows the static Prometheus instance to push metrics to external systems while continuing to serve {{< key product_name >}} features locally. Common destinations include:
-
-- [Amazon Managed Service for Prometheus](https://docs.aws.amazon.com/prometheus/latest/userguide/what-is-Amazon-Managed-Service-Prometheus.html)
-- [Google Cloud Managed Service for Prometheus](https://cloud.google.com/stackdriver/docs/managed-prometheus)
-- [Azure Monitor managed service for Prometheus](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/prometheus-metrics-overview)
-- [Grafana Cloud](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/prometheus/)
-- Any [Prometheus remote write compatible](https://prometheus.io/docs/concepts/remote_write_spec/) endpoint (Thanos, Cortex, VictoriaMetrics, etc.)
-
-### Configuration
-
-Remote write is configured by adding a `remote_write` section to the Prometheus ConfigMap. Create a values override file:
-
-```yaml
-prometheus:
-  # Extend the static config with remote_write
-  additionalConfig: |
-    remote_write:
-      - url: "https://aps-workspaces.<REGION>.amazonaws.com/workspaces/<WORKSPACE_ID>/api/v1/remote_write"
-        sigv4:
-          region: <REGION>
-        queue_config:
-          max_samples_per_send: 1000
-          max_shards: 200
-          capacity: 2500
-```
-
-> [!WARNING] Remote write is not yet configurable via Helm values
-> The static Prometheus ConfigMap does not currently support `additionalConfig`. To add remote write, create a ConfigMap overlay or patch the rendered ConfigMap after deployment. A future chart release will add first-class support for remote write configuration.
-
-As a workaround, you can patch the ConfigMap directly:
-
-```shell
-kubectl get configmap union-operator-prometheus -n union -o yaml > prometheus-config.yaml
-# Edit prometheus-config.yaml to add remote_write under the global section
-kubectl apply -f prometheus-config.yaml
-```
-
-> [!NOTE] Prometheus will reload configuration automatically
-> The static Prometheus deployment uses a `configChecksum` annotation that triggers a rollout when the ConfigMap changes via Helm. For manual ConfigMap patches, send a reload signal: `kubectl exec -n union deploy/union-operator-prometheus -- kill -HUP 1`
-
-For detailed remote write configuration options, see the [Prometheus remote write documentation](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write).
-
-### AWS Managed Prometheus example
-
-To write to Amazon Managed Service for Prometheus (AMP), the Prometheus service account needs `aps:RemoteWrite` permissions via IRSA:
-
-```yaml
-prometheus:
-  serviceAccount:
-    annotations:
-      eks.amazonaws.com/role-arn: "arn:aws:iam::<ACCOUNT_ID>:role/<PROMETHEUS_AMP_ROLE>"
-```
-
-Then patch the ConfigMap to add:
-
-```yaml
-remote_write:
-  - url: "https://aps-workspaces.<REGION>.amazonaws.com/workspaces/<WORKSPACE_ID>/api/v1/remote_write"
-    sigv4:
-      region: <REGION>
-```
-
-See [Ingesting data with remote write for AMP](https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-onboard-ingest-metrics-remote-write.html) for IAM policy details.
+This requires the Prometheus Operator CRDs. Install them via the `dataplane-crds` chart with `crds.prometheusOperator: true`.
 
 ## Further reading
 
 - [Prometheus documentation](https://prometheus.io/docs/introduction/overview/) -- comprehensive guide to Prometheus configuration, querying, and operation
-- [Prometheus remote write configuration](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) -- all remote write options
-- [Prometheus `kubernetes_sd_config`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config) -- Kubernetes service discovery for custom scrape targets
+- [Prometheus remote write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) -- forwarding metrics to external storage
+- [Prometheus `kubernetes_sd_config`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config) -- Kubernetes service discovery for scrape targets
 - [kube-prometheus-stack chart](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) -- full monitoring stack with Grafana and alerting
 - [OpenCost documentation](https://www.opencost.io/docs/) -- cost allocation and tracking
