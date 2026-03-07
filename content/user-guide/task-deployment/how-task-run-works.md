@@ -23,13 +23,18 @@ The most common development pattern combines ephemeral task preparation and exec
 ### CLI: Ephemeral deployment and execution
 
 ```bash
-# Basic deploy + run
 flyte run my_example.py my_task --name "World"
+```
 
-# With explicit project and domain
-flyte run --project my-project --domain development my_example.py my_task --name "World
+With explicit project and domain:
 
-# With deployment options
+```bash
+flyte run --project my-project --domain development my_example.py my_task --name "World"
+```
+
+With deployment options:
+
+```bash
 flyte run --version v1.0.0 --copy-style all my_example.py my_task --name "World"
 ```
 
@@ -73,10 +78,12 @@ For production workflows or when you want to use stable deployed versions, you c
 ### CLI: Running deployed tasks
 
 ```bash
-# Run a previously deployed task
 flyte run deployed-task my_env.my_task --name "World"
+```
 
-# With specific project/domain
+With a specific project and domain:
+
+```bash
 flyte run --project prod --domain production deployed-task my_env.my_task --batch_size 1000
 ```
 
@@ -117,10 +124,12 @@ For development, debugging, and testing, you can run tasks locally on your machi
 ### CLI: Local execution
 
 ```bash
-# Run locally with --local flag
 flyte run --local my_example.py my_task --name "World"
+```
 
-# Local execution with development data
+With development data:
+
+```bash
 flyte run --local data_pipeline.py process_data --input_path "/local/data" --debug true
 ```
 

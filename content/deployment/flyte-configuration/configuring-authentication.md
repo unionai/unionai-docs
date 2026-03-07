@@ -646,23 +646,19 @@ Also, `FLYTE_CREDENTIALS_CLIENT_SECRET_FROM_FILE` redirect is available as well,
 The following is a list of flytekit configuration values the community has used in CI, along with a brief explanation:
 
 ```bash
-# When using OAuth2 service auth, this is the username and password.
 export FLYTE_CREDENTIALS_CLIENT_ID=<client_id>
 export FLYTE_CREDENTIALS_CLIENT_SECRET=<client_secret>
-
-# This tells the SDK to use basic authentication. If not set, Flytekit will assume you want to use the standard PKCE flow.
 export FLYTE_CREDENTIALS_AUTH_MODE=basic
-
-# This value should be set to conform to this
-# `header config <https://github.com/flyteorg/flyteadmin/blob/12d6aa0a419ccec81b4c8289fd172e70a2ded525/auth/config/config.go#L124-L128>`_
-# on the Admin side.
 export FLYTE_CREDENTIALS_AUTHORIZATION_METADATA_KEY=<header name>
-
-# When using basic authentication, you'll need to specify a scope to the IDP (instead of `openid`, which is
-# only for OAuth). Set that here.
 export FLYTE_CREDENTIALS_OAUTH_SCOPES=<idp defined scopes>
-
-# Set this to force Flytekit to use authentication, even if not required by Admin. This is useful as you're
-# rolling out the requirement.
 export FLYTE_PLATFORM_AUTH=True
 ```
+
+| Variable | Description |
+|----------|-------------|
+| `FLYTE_CREDENTIALS_CLIENT_ID` | OAuth2 client ID |
+| `FLYTE_CREDENTIALS_CLIENT_SECRET` | OAuth2 client secret |
+| `FLYTE_CREDENTIALS_AUTH_MODE` | Set to `basic` for basic authentication. If unset, Flytekit uses the standard PKCE flow. |
+| `FLYTE_CREDENTIALS_AUTHORIZATION_METADATA_KEY` | Header name for the authorization metadata, matching the [Admin-side config](https://github.com/flyteorg/flyteadmin/blob/12d6aa0a419ccec81b4c8289fd172e70a2ded525/auth/config/config.go#L124-L128). |
+| `FLYTE_CREDENTIALS_OAUTH_SCOPES` | IDP-defined scopes for basic auth (instead of `openid` used by OAuth). |
+| `FLYTE_PLATFORM_AUTH` | Set to `True` to force authentication even if not required by Admin. Useful during rollout. |

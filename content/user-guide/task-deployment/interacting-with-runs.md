@@ -74,11 +74,15 @@ print(run.action.phase)  # Phase of the main action
 
 ### CLI: Get run information
 
-```bash
-# Get a specific run
-flyte get run my_run_name
+Get a specific run:
 
-# List all runs
+```bash
+flyte get run my_run_name
+```
+
+List all runs:
+
+```bash
 flyte get run
 ```
 
@@ -130,11 +134,15 @@ print(action.start_time)  # Execution start time
 
 ### CLI: Get action information
 
-```bash
-# Get a specific action
-flyte get action my_run_name a0
+Get a specific action:
 
-# List all actions for a run
+```bash
+flyte get action my_run_name a0
+```
+
+List all actions for a run:
+
+```bash
 flyte get action my_run_name
 ```
 
@@ -199,11 +207,15 @@ single_output = outputs[0]
 
 ### CLI: Get inputs and outputs
 
-```bash
-# Get both inputs and outputs for a run
-flyte get io my_run_name
+Get inputs and outputs for a run:
 
-# Get inputs and outputs for a specific action
+```bash
+flyte get io my_run_name
+```
+
+Get inputs and outputs for a specific action:
+
+```bash
 flyte get io my_run_name a1
 ```
 
