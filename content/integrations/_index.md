@@ -30,11 +30,13 @@ If you need functionality that doesn't exist yet, Flyte 2's plugin system is int
 
 ## Integration categories
 
-Flyte 2 integrations generally fall into three broad categories:
+Flyte 2 integrations fall into the following categories:
 
 1. **Distributed compute**: Provision transient compute clusters to run tasks across multiple nodes, with automatic lifecycle management.
-2. **External services**: Enable Flyte to interact with third-party systems such as APIs, platforms, and SaaS services.
-3. **Connectors**: Stateless, long‑running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
+2. **Agentic AI**: Drop-in replacements for LLM provider SDKs that let agent tool calls run as Flyte tasks.
+3. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
+4. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
+5. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
 
 ## Distributed compute
 
@@ -101,7 +103,7 @@ When a task associated with a `TaskEnvironment` runs:
 Below is a complete example showing how a task gains access to a Dask cluster simply by running inside an environment configured with the Dask plugin.
 
 ```python
-from flyteintegrations.dask import Dask, WorkerGroup
+from flyteplugins.dask import Dask, WorkerGroup
 import flyte
 
 # Define the Dask cluster configuration
@@ -144,22 +146,27 @@ All distributed compute integrations follow the same mental model:
 
 This makes it easy to swap execution backends or introduce distributed compute incrementally without rewriting workflows.
 
-## External services
+## Agentic AI
 
-External service integrations allow Flyte to interact with third-party services in a structured, first-class way.
+Agentic AI integrations provide drop-in replacements for LLM provider SDKs. They let you use Flyte tasks as agent tools so that tool calls run with full Flyte observability, retries, and caching.
 
-These integrations typically handle:
+### Supported agentic AI integrations
 
-- Authentication and credentials
-- API lifecycle management
-- Standardized interfaces for task authors
+| Plugin                              | Description                                                  | Common use cases                     |
+| ----------------------------------- | ------------------------------------------------------------ | ------------------------------------ |
+| [OpenAI](./openai/_index)           | Drop-in replacement for OpenAI Agents SDK `function_tool`    | Agentic workflows with OpenAI models |
+| [Anthropic](./anthropic/_index)     | Agent loop and `function_tool` for the Anthropic Claude SDK  | Agentic workflows with Claude        |
+| [Gemini](./gemini/_index)           | Agent loop and `function_tool` for the Google Gemini SDK     | Agentic workflows with Gemini        |
 
-### Supported external integration integrations
+## Experiment tracking
 
-| Plugin                        | Description                                   | Common use cases                              |
-| ----------------------------- | --------------------------------------------- | --------------------------------------------- |
-| [OpenAI](./openai)            | Drop-in replacement for OpenAI `FunctionTool` | Agentic workflows                             |
-| [Weights and Biases](./wandb/_index) | Weights & Biases integration                  | Experiment tracking and hyperparameter tuning |
+Experiment tracking integrations let you log metrics, parameters, and artifacts to external tracking platforms during Flyte task execution.
+
+### Supported experiment tracking integrations
+
+| Plugin                               | Description                  | Common use cases                              |
+| ------------------------------------ | ---------------------------- | --------------------------------------------- |
+| [Weights and Biases](./wandb/_index) | Weights & Biases integration | Experiment tracking and hyperparameter tuning |
 
 ## Connectors
 
@@ -171,9 +178,11 @@ Connectors are designed to scale horizontally and reduce load on the core Flyte 
 
 ### Supported connectors
 
-| Connector                | Description                                 | Common use cases                         |
-| ------------------------ | ------------------------------------------- | ---------------------------------------- |
-| [Snowflake](./snowflake/_index) | Run SQL queries on Snowflake asynchronously | Data warehousing, ETL, analytics queries |
+| Connector                          | Description                                    | Common use cases                         |
+| ---------------------------------- | ---------------------------------------------- | ---------------------------------------- |
+| [Snowflake](./snowflake/_index)    | Run SQL queries on Snowflake asynchronously    | Data warehousing, ETL, analytics queries |
+| [BigQuery](./bigquery/_index)      | Run SQL queries on Google BigQuery             | Data warehousing, ETL, analytics queries |
+| [Databricks](./databricks/_index)  | Run PySpark jobs on Databricks clusters        | Large-scale data processing, Spark ETL   |
 
 ### Creating a new connector
 
@@ -382,3 +391,16 @@ if __name__ == "__main__":
         )
     )
 ```
+
+## LLM Serving
+
+LLM serving integrations let you deploy and serve large language models as Flyte apps with an OpenAI-compatible API. They handle model loading, GPU management, and autoscaling.
+
+### Supported LLM serving integrations
+
+| Plugin                                                            | Description                                           | Common use cases                     |
+| ----------------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------ |
+| [SGLang](../user-guide/build-apps/sglang-app)  | Deploy models with SGLang's high-throughput runtime   | LLM inference, model serving         |
+| [vLLM](../user-guide/build-apps/vllm-app)      | Deploy models with vLLM's PagedAttention engine       | LLM inference, model serving         |
+
+For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang app](../user-guide/build-apps/sglang-app) and [vLLM app](../user-guide/build-apps/vllm-app) pages.
