@@ -1,6 +1,6 @@
 ---
 title: Task plugins
-weight: 20
+weight: 11
 variants: +flyte +byoc +selfmanaged
 ---
 
