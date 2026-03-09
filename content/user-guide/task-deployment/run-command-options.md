@@ -24,6 +24,8 @@ The `flyte run` command provides the following options:
 | `--follow`                  | `-f`  | flag   | `false`                   | Wait and watch logs for the parent action.             |
 | `--image`                   |       | text   |                           | Image to be used in the run (format: `name=uri`).      |
 | `--no-sync-local-sys-paths` |       | flag   | `false`                   | Disable synchronization of local sys.path entries.      |
+| `--run-project`             |       | text   | *from config*             | Execute deployed task in this project (`deployed-task` only). |
+| `--run-domain`              |       | text   | *from config*             | Execute deployed task in this domain (`deployed-task` only).  |
 
 ## `--project`, `--domain`
 
@@ -40,6 +42,18 @@ Specify a target project and domain:
 ```bash
 flyte run --project my-project --domain development my_example.py my_task
 ```
+
+## `--run-project`, `--run-domain`
+
+**`flyte run --run-project <PROJECT> --run-domain <DOMAIN> deployed-task <TASK_REF>`**
+
+When using the `deployed-task` subcommand, `--run-project` and `--run-domain` specify the [project-domain pair](../projects-and-domains) in which to *execute* the task. This lets you run a deployed task in a different project or domain than the one configured in your `config.yaml`:
+
+```bash
+flyte run --run-project prod-project --run-domain production deployed-task my_env.my_task
+```
+
+If not provided, these default to the `task.project` and `task.domain` values in your configuration file. These options only apply to the `deployed-task` subcommand and are ignored for file-based runs.
 
 ## `--local`
 

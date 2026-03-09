@@ -66,6 +66,9 @@ To abort a specific action:
 flyte abort <run-name> <action-name>
 ```
 
+Use `--project` and `--domain` to target a specific [project-domain pair](../../projects-and-domains).
+For all available options, see the [CLI reference](../../api-reference/flyte-cli#flyte-abort).
+
 ### Handling external aborts
 
 When using `asyncio.gather()` with `return_exceptions=True`, externally aborted actions return an `ActionAbortedError` instead of raising it. This lets you inspect results and handle aborts on a per-action basis:
