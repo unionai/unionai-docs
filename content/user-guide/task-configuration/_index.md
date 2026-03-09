@@ -240,7 +240,7 @@ The full set of parameters available for configuring a task environment, task de
 * Can only be set at the `TaskEnvironment` level, not at the `@env.task` decorator level
   or the `task.override()` invocation level.
 
-* See [Plugins](./task-plugins).
+* See [Task plugins](./task-plugins).
 
 ### `report`
 
