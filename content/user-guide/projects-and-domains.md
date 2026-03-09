@@ -8,7 +8,7 @@ variants: +flyte +byoc +selfmanaged
 
 {{< key product_name >}} organizes work into a hierarchy of **organization**, **projects**, and **domains**.
 
-- **Organization**: Your {{< key product_name >}} instance, typically representing a company or department. Set up during onboarding and mapped to your endpoint URL (e.g., `my-org.my-company.com`). You do not create or manage organizations directly. The organization is normally determined automatically from your endpoint URL, but you can override it with the `--org` flag on any CLI command (e.g., `flyte --org my-org get project`).
+- **Organization**: Your {{< key product_name >}} instance, typically representing a company or department. Set up during onboarding and mapped to your endpoint URL (e.g., `my-org.my-company.com`). You do not create or manage organizations directly. The organization is normally determined automatically from your endpoint URL, but you can override it with the `--org` flag on any CLI command (e.g., `flyte --org my-org get project`). This is only relevant if you have a multi-organization installation.
 - **Project**: A logical grouping of related workflows, tasks, launch plans, and executions. Projects are the primary unit you create and manage.
 - **Domain**: An environment classification within each project. Three fixed domains exist: `development`, `staging`, and `production`. Domains cannot be created or deleted.
 
