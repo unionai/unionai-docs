@@ -213,6 +213,14 @@ The task environment name plus the task name (`greet`) are combined with a dot (
 The special `deployed-task` keyword tells the CLI that you are referring to a task that has already been deployed. In effect, it replaces the file path argument used for ephemeral runs.
 
 When executed, this command will run the already-deployed `greet` task with argument `message` set to `"World"`. You will see the result printed in the terminal. You can also, of course, observe the execution in the **Runs list** UI.
+
+To execute a deployed task in a different project or domain than your configured defaults, use `--run-project` and `--run-domain`:
+
+```bash
+flyte run --run-project prod-project --run-domain production deployed-task greeting_env.greet --message "World"
+```
+
+For all `flyte run` options, see [Run command options](./run-command-options).
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
