@@ -55,26 +55,27 @@ Here is an overview of all task configuration parameters available at each level
 
 | Parameter               | `TaskEnvironment`  | `@env.task` decorator      | `override` on task invocation |
 |-------------------------|--------------------|----------------------------|-------------------------------|
-| **name**                | ✅ Yes (required)  | ❌ No                      | ❌ No                         |
-| **short_name**          | ❌ No              | ✅ Yes                     | ✅ Yes                        |
-| **image**               | ✅ Yes             | ❌ No                      | ❌ No                         |
-| **resources**           | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
-| **env_vars**            | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
-| **secrets**             | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
-| **cache**               | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
-| **pod_template**        | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
-| **reusable**            | ✅ Yes             | ❌ No                      | ✅ Yes                        |
-| **depends_on**          | ✅ Yes             | ❌ No                      | ❌ No                         |
-| **description**         | ✅ Yes             | ❌ No                      | ❌ No                         |
-| **plugin_config**       | ✅ Yes             | ❌ No                      | ❌ No                         |
-| **report**              | ❌ No              | ✅ Yes                     | ❌ No                         |
-| **max_inline_io_bytes** | ❌ No              | ✅ Yes                     | ✅ Yes                        |
-| **retries**             | ❌ No              | ✅ Yes                     | ✅ Yes                        |
-| **timeout**             | ❌ No              | ✅ Yes                     | ✅ Yes                        |
-| **triggers**            | ❌ No              | ✅ Yes                     | ❌ No                         |
-| **interruptible**       | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
-| **queue**               | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
-| **docs**                | ❌ No              | ✅ Yes                     | ❌ No                         |
+| [**name**](#name)                           | ✅ Yes (required)  | ❌ No                      | ❌ No                         |
+| [**short_name**](#short_name)               | ❌ No              | ✅ Yes                     | ✅ Yes                        |
+| [**image**](#image)                         | ✅ Yes             | ❌ No                      | ❌ No                         |
+| [**resources**](#resources)                 | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
+| [**env_vars**](#env_vars)                   | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
+| [**secrets**](#secrets)                     | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
+| [**cache**](#cache)                         | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
+| [**pod_template**](#pod_template)           | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
+| [**reusable**](#reusable)                   | ✅ Yes             | ❌ No                      | ✅ Yes                        |
+| [**depends_on**](#depends_on)               | ✅ Yes             | ❌ No                      | ❌ No                         |
+| [**description**](#description)             | ✅ Yes             | ❌ No                      | ❌ No                         |
+| [**plugin_config**](#plugin_config)         | ✅ Yes             | ❌ No                      | ❌ No                         |
+| [**report**](#report)                       | ❌ No              | ✅ Yes                     | ❌ No                         |
+| [**max_inline_io_bytes**](#max_inline_io_bytes) | ❌ No          | ✅ Yes                     | ✅ Yes                        |
+| [**retries**](#retries)                     | ❌ No              | ✅ Yes                     | ✅ Yes                        |
+| [**timeout**](#timeout)                     | ❌ No              | ✅ Yes                     | ✅ Yes                        |
+| [**triggers**](#triggers)                   | ❌ No              | ✅ Yes                     | ❌ No                         |
+| [**links**](#links)                         | ❌ No              | ✅ Yes                     | ✅ Yes                        |
+| [**interruptible**](#interruptible)         | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
+| [**queue**](#queue)                         | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
+| [**docs**](#docs)                           | ❌ No              | ✅ Yes                     | ❌ No                         |
 
 ## Task configuration parameters
 
@@ -96,9 +97,7 @@ The full set of parameters available for configuring a task environment, task de
   Here, the name of the TaskEnvironment is `my_env` and the fully qualified name of the task is `my_env.my_task`.
   The `TaskEnvironment` name and fully qualified name of a task name are both fixed and cannot be overridden.
 
-<!-- TODO: Add when available
-* See [Names and descriptions](./names-and-descriptions).
--->
+* See [Additional task settings](./additional-task-settings).
 
 ### `short_name`
 
@@ -111,9 +110,7 @@ The full set of parameters available for configuring a task environment, task de
   The short name is used, for example, in parts of the UI.
   Overriding it does not change the fully qualified name of the task.
 
-<!-- TODO: Add when available
-* See [Names and descriptions](./names-and-descriptions).
--->
+* See [Additional task settings](./additional-task-settings).
 
 ### `image`
 
@@ -146,9 +143,7 @@ The full set of parameters available for configuring a task environment, task de
 * A dictionary of environment variables to be made available in the task container.
   These variables can be used to configure the task at runtime, such as setting API keys or other configuration values.
 
-<!-- TODO: Add when available
-* See [Environment variables](./env-vars).
--->
+* See [Additional task settings](./additional-task-settings#environment-variables).
 
 ### `secrets`
 
@@ -233,9 +228,7 @@ The full set of parameters available for configuring a task environment, task de
 * Can only be set at the `TaskEnvironment` level, not at the `@env.task` decorator level
   or the `task.override()` invocation level.
 
-<!--
-* See [Names and descriptions](./names-and-descriptions).
--->
+* See [Additional task settings](./additional-task-settings).
 
 ### `plugin_config`
 
@@ -247,9 +240,7 @@ The full set of parameters available for configuring a task environment, task de
 * Can only be set at the `TaskEnvironment` level, not at the `@env.task` decorator level
   or the `task.override()` invocation level.
 
-<!--
-* See [Plugin configuration](./plugin-configuration).
--->
+* See [Task plugins](./task-plugins).
 
 ### `report`
 
@@ -276,11 +267,9 @@ The full set of parameters available for configuring a task environment, task de
   Does not apply to [`flyte.io.File`, `flyte.io.Dir`](../task-programming/files-and-directories), or [`flyte.DataFrame`](../task-programming/dataclasses-and-structures) (since these are passed by reference).
 
 * Can be set at the `@env.task` decorator level and overridden at the `task.override()` invocation level.
-  If not set, the default value is `MAX_INLINE_IO_BYTES` (which is 100 MiB).
+  If not set, the default value is `MAX_INLINE_IO_BYTES` (which is 10 MiB).
 
-<!-- TODO: Add when available
-* See [Maximum inline I/O](./maximum-inline-io).
--->
+* See [Additional task settings](./additional-task-settings#inline-io-threshold).
 
 ### `retries`
 
@@ -314,6 +303,18 @@ The full set of parameters available for configuring a task environment, task de
 
 *  See [Triggers](./triggers).
 
+### `links`
+
+* Type: `Tuple[Link, ...] | Link`
+
+* A link or tuple of links to associate with the task.
+  Links appear as clickable URLs in the Flyte UI, connecting tasks to external tools like dashboards, experiment trackers, or logging systems.
+  Links should implement the [`Link`](../../api-reference/flyte-sdk/packages/flyte/link) protocol.
+
+* Can be set at the `@env.task` decorator level and overridden at the `task.override()` invocation level.
+
+* See [Links](../task-programming/links) and [Additional task settings](./additional-task-settings#links).
+
 ### `interruptible`
 
 * Type: `bool`
@@ -323,9 +324,7 @@ The full set of parameters available for configuring a task environment, task de
 
 * Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level and at the `task.override()` invocation level.
 
-<!-- TODO: Add when available
-* See [Interruptible tasks](./interruptible-tasks).
--->
+* See [Interruptible tasks and queues](./interruptible-tasks-and-queues).
 
 ### `queue`
 
@@ -339,9 +338,7 @@ The full set of parameters available for configuring a task environment, task de
 * Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level
   and at the `task.override()` invocation level.
 
-<!-- TODO: Add when available
-* See [Queues](./queues).
--->
+* See [Interruptible tasks and queues](./interruptible-tasks-and-queues#queues).
 
 ### `docs`
 
@@ -351,6 +348,4 @@ The full set of parameters available for configuring a task environment, task de
 
 * Can only be set at the `@env.task` decorator level. It cannot be overridden.
 
-<!-- TODO: Add when available
-* See [Names and descriptions](./names-and-descriptions).
--->
+* See [Additional task settings](./additional-task-settings#docs).
