@@ -30,11 +30,12 @@ If you need functionality that doesn't exist yet, Flyte 2's plugin system is int
 
 ## Integration categories
 
-Flyte 2 integrations generally fall into three broad categories:
+Flyte 2 integrations fall into the following categories:
 
 1. **Distributed compute**: Provision transient compute clusters to run tasks across multiple nodes, with automatic lifecycle management.
-2. **External services**: Enable Flyte to interact with third-party systems such as APIs, platforms, and SaaS services.
-3. **Connectors**: Stateless, long‑running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
+2. **Agentic AI**: Drop-in replacements for LLM provider SDKs that let agent tool calls run as Flyte tasks.
+3. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
+4. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
 
 ## Distributed compute
 
@@ -101,7 +102,7 @@ When a task associated with a `TaskEnvironment` runs:
 Below is a complete example showing how a task gains access to a Dask cluster simply by running inside an environment configured with the Dask plugin.
 
 ```python
-from flyteintegrations.dask import Dask, WorkerGroup
+from flyteplugins.dask import Dask, WorkerGroup
 import flyte
 
 # Define the Dask cluster configuration
@@ -144,22 +145,25 @@ All distributed compute integrations follow the same mental model:
 
 This makes it easy to swap execution backends or introduce distributed compute incrementally without rewriting workflows.
 
-## External services
+## Agentic AI
 
-External service integrations allow Flyte to interact with third-party services in a structured, first-class way.
+Agentic AI integrations provide drop-in replacements for LLM provider SDKs. They let you use Flyte tasks as agent tools so that tool calls run with full Flyte observability, retries, and caching.
 
-These integrations typically handle:
+### Supported agentic AI integrations
 
-- Authentication and credentials
-- API lifecycle management
-- Standardized interfaces for task authors
+| Plugin                        | Description                                         | Common use cases                              |
+| ----------------------------- | --------------------------------------------------- | --------------------------------------------- |
+| [OpenAI](./openai/_index)     | Drop-in replacement for OpenAI Agents SDK `function_tool` | Agentic workflows with OpenAI models          |
 
-### Supported external integration integrations
+## Experiment tracking
 
-| Plugin                        | Description                                   | Common use cases                              |
-| ----------------------------- | --------------------------------------------- | --------------------------------------------- |
-| [OpenAI](./openai)            | Drop-in replacement for OpenAI `FunctionTool` | Agentic workflows                             |
-| [Weights and Biases](./wandb/_index) | Weights & Biases integration                  | Experiment tracking and hyperparameter tuning |
+Experiment tracking integrations let you log metrics, parameters, and artifacts to external tracking platforms during Flyte task execution.
+
+### Supported experiment tracking integrations
+
+| Plugin                               | Description                  | Common use cases                              |
+| ------------------------------------ | ---------------------------- | --------------------------------------------- |
+| [Weights and Biases](./wandb/_index) | Weights & Biases integration | Experiment tracking and hyperparameter tuning |
 
 ## Connectors
 
