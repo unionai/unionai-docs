@@ -89,7 +89,7 @@ flyte run agent.py react_agent --goal "What is (12 + 8) * 3?"
 - Swap in your own tools (web search, database queries, API calls) by adding to the `TOOLS` dict
 
 > [!TIP]
-> See the [Agentic Refinement docs](https://www.union.ai/docs/v2/byoc/user-guide/advanced-project/agentic-refinement/), [Traces docs](https://www.union.ai/docs/v2/byoc/user-guide/task-programming/traces/), and [more patterns (planner, debate, etc.)](https://github.com/unionai/workshops/tree/main/tutorials/multi-agent-workflows).
+> See the [Agentic Refinement docs](../../advanced-project/agentic-refinement), [Traces docs](../../task-programming/traces), and [more patterns (planner, debate, etc.)](https://github.com/unionai/workshops/tree/main/tutorials/multi-agent-workflows).
 
 ## Plan-and-Execute with parallel fan-out (LangGraph on Union)
 
@@ -203,7 +203,7 @@ Union is framework-agnostic, so these patterns work with any LLM library. Each m
 |---------|-------------|----------------|------|
 | **ReAct** | Reason → Act → Observe loop with tool calling | Single-agent tasks with tools (API calls, search, code execution) | [multi-agent-workflows/react](https://github.com/unionai/workshops/tree/main/tutorials/multi-agent-workflows) |
 | **Plan-and-Execute** | LLM creates a plan, independent steps fan out in parallel, results are synthesized | Complex queries that decompose into parallel sub-tasks | [multi-agent-workflows/planner](https://github.com/unionai/workshops/tree/main/tutorials/multi-agent-workflows) |
-| **Evaluator-Optimizer (Reflection)** | Generate → Critique → Refine loop until quality threshold met | Content generation, code generation, any task with clear quality criteria | [Agentic Refinement docs](https://www.union.ai/docs/v2/byoc/user-guide/advanced-project/agentic-refinement/) |
+| **Evaluator-Optimizer (Reflection)** | Generate → Critique → Refine loop until quality threshold met | Content generation, code generation, any task with clear quality criteria | [Agentic Refinement docs](../../advanced-project/agentic-refinement) |
 | **Orchestrator-Workers (Manager)** | Supervisor agent delegates to specialist worker agents, reviews quality, requests revisions | Multi-agent systems where sub-tasks require different expertise | [multi-agent-workflows/manager](https://github.com/unionai/workshops/tree/main/tutorials/multi-agent-workflows) |
 | **Debate** | Multiple agents solve independently, then debate to consensus | High-stakes decisions where diverse reasoning improves accuracy | [multi-agent-workflows/debate](https://github.com/unionai/workshops/tree/main/tutorials/multi-agent-workflows) |
 | **Sequential (Prompt Chaining)** | Static pipeline of LLM calls, no dynamic routing | Predictable multi-step transformations (extract → validate → format) | [multi-agent-workflows/sequential](https://github.com/unionai/workshops/tree/main/tutorials/multi-agent-workflows) |

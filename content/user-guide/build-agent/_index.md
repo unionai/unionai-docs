@@ -23,15 +23,15 @@ Here's how Union maps to the agentic world:
 - **`@flyte.trace`**: Marks helper functions inside a task for fine-grained observability and caching. Each traced call appears as a span in the Union dashboard, with its inputs and outputs captured and checkpointed. Use this on your LLM calls, tool executions, and routing decisions to get full visibility into every turn of the agent loop.
 
 > [!TIP]
-> See the [Union Quickstart](https://www.union.ai/docs/v2/byoc/user-guide/quickstart/) for a hands-on walkthrough.
+> See the [Union Quickstart](../quickstart) for a hands-on walkthrough.
 
 ## Resources
 
-- [V2 User Guide](https://www.union.ai/docs/v2/byoc/user-guide/)
+- [V2 User Guide](../)
 - [V2 SDK (flyte-sdk)](https://github.com/flyteorg/flyte-sdk)
-- [Quickstart](https://www.union.ai/docs/v2/byoc/user-guide/quickstart/)
-- [Deploy Apps & Agent Services (FastAPI, Streamlit, vLLM)](https://www.union.ai/docs/v2/byoc/user-guide/build-apps/)
-- [Agentic Refinement (Evaluator-Optimizer pattern)](https://www.union.ai/docs/v2/byoc/user-guide/advanced-project/agentic-refinement/)
+- [Quickstart](../quickstart)
+- [Deploy Apps & Agent Services (FastAPI, Streamlit, vLLM)](../build-apps)
+- [Agentic Refinement (Evaluator-Optimizer pattern)](../advanced-project/agentic-refinement)
 - [LangGraph + Union tutorial](https://github.com/unionai/workshops/tree/main/tutorials/langgraph)
 - [Multi-agent patterns (ReAct, Planner, Debate, etc.)](https://github.com/unionai/workshops/tree/main/tutorials/multi-agent-workflows)
 - [Hands-on labs (quickstart through apps)](https://github.com/unionai/solutions-engineering/tree/main/hands_on)
