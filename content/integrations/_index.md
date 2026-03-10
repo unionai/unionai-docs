@@ -33,7 +33,7 @@ If you need functionality that doesn't exist yet, Flyte 2's plugin system is int
 Flyte 2 integrations fall into the following categories:
 
 1. **Distributed compute**: Provision transient compute clusters to run tasks across multiple nodes, with automatic lifecycle management.
-2. **Agentic AI**: Drop-in replacements for LLM provider SDKs that let agent tool calls run as Flyte tasks.
+2. **Agentic AI**: Support for various common aspects of agentic AI applications.
 3. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
 4. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
 
