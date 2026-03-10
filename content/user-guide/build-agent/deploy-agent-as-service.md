@@ -11,7 +11,7 @@ Union makes it straightforward to deploy internal apps (chatbots, dashboards, AP
 
 ## Chat agent with Gradio
 
-This example takes the ReAct agent from [Building agentic workflows](building-agents) and wraps it in a Gradio chat interface, deployed as a Union app. Users interact in the browser, and each reasoning step streams back in real time.
+This example takes the ReAct agent from [Building agentic workflows](./building-agents) and wraps it in a Gradio chat interface, deployed as a Union app. Users interact in the browser, and each reasoning step streams back in real time.
 
 ```python
 # app.py
@@ -115,10 +115,10 @@ Union assigns a URL, handles TLS, and auto-scales the app.
 
 **FastAPI endpoint:** For API-first agents, use `FastAPIAppEnvironment` to expose your agent behind a REST endpoint that other services or agents can call programmatically.
 
-**Webhook-triggered workflows:** [Deploy a FastAPI app](../../build-apps/fastapi-app) that receives webhooks and calls `flyte.run()` on a [remote task](../../task-programming/remote-tasks) to kick off longer agentic workflows as background tasks.
+**Webhook-triggered workflows:** [Deploy a FastAPI app](../build-apps/fastapi-app) that receives webhooks and calls `flyte.run()` on a [remote task](../task-programming/remote-tasks) to kick off longer agentic workflows as background tasks.
 
-**Model serving:** [Serve open-weight LLMs](../../build-apps/vllm-app) on GPUs behind an OpenAI-compatible API with `VLLMAppEnvironment` or `SGLangAppEnvironment`.
+**Model serving:** [Serve open-weight LLMs](../build-apps/vllm-app) on GPUs behind an OpenAI-compatible API with `VLLMAppEnvironment` or `SGLangAppEnvironment`.
 
 > [!TIP]
-> See [Build Apps](../../build-apps), [App usage patterns](../../build-apps/app-usage-patterns), and [Configure Apps](../../configure-apps) for more details.
+> See [Build Apps](../build-apps/_index), [App usage patterns](../build-apps/app-usage-patterns), and [Configure Apps](../configure-apps/_index) for more details.
 > For a hands-on example with a research agent Gradio UI, see [workshops/starter-examples/flyte-local-dev](https://github.com/unionai/workshops/tree/main/tutorials/starter-examples/flyte-local-dev).
