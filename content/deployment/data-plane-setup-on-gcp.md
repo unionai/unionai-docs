@@ -46,14 +46,14 @@ If you have not done so already, you will be guided to [enable the required APIs
 
 Assuming you have the [`gcloud` tool ](https://cloud.google.com/sdk/gcloud)installed locally and are logged into `<UnionDataPlaneProjectID>`, you can check the existing workflow identity pools in your project with:
 
-```shell
-$ gcloud iam workload-identity-pools list --location="global"
+```bash
+gcloud iam workload-identity-pools list --location="global"
 ```
 
 To create the workload identity pool, do:
 
-```shell
-$ gcloud iam workload-identity-pools create unionai \
+```bash
+gcloud iam workload-identity-pools create unionai \
     --location="global" \
     --description="Union AI WIF" \
     --display-name="unionai"
@@ -61,8 +61,8 @@ $ gcloud iam workload-identity-pools create unionai \
 
 To add the provider, do:
 
-```shell
-$ gcloud iam workload-identity-pools providers create-aws unionai-aws \
+```bash
+gcloud iam workload-identity-pools providers create-aws unionai-aws \
     --location="global"  \
     --workload-identity-pool="unionai" \
     --account-id="479331373192"
@@ -81,8 +81,8 @@ This file is the role definition. It is a list of the privileges that will make 
 
 Assuming you have the above file (`union-ai-admin-role.yaml`) in your current directory and substituting your project ID, do:
 
-```shell
-$ gcloud iam roles create UnionaiAdministrator \
+```bash
+gcloud iam roles create UnionaiAdministrator \
     --project=<ProjectId> \
     --file=union-ai-admin-role.yaml
 ```
@@ -104,15 +104,15 @@ _If you use a different ID (though this is not recommended) then you must inform
 
 Create the service account like this:
 
-```shell
-$ gcloud iam service-accounts create unionai-administrator \
+```bash
+gcloud iam service-accounts create unionai-administrator \
     --project <ProjectId>
 ```
 
 Bind the service account to the project and add the {{< key product_name >}} Administrator role like this (again, substituting your project ID):
 
-```shell
-$ gcloud projects add-iam-policy-binding <ProjectId> \
+```bash
+gcloud projects add-iam-policy-binding <ProjectId> \
     --member="serviceAccount:unionai-administrator@<ProjectId>.iam.gserviceaccount.com" \
     --role="projects/<ProjectId>/roles/UnionaiAdministrator"
 ```
@@ -131,8 +131,8 @@ $ gcloud projects add-iam-policy-binding <ProjectId> \
 To grant the WIP access to the service account, do the following.
 Notice that you must substitute your `<ProjectId>` and your `<ProjectNumber>`.
 
-```shell
-$ gcloud iam service-accounts add-iam-policy-binding unionai-administrator@<ProjectId>.iam.gserviceaccount.com \
+```bash
+gcloud iam service-accounts add-iam-policy-binding unionai-administrator@<ProjectId>.iam.gserviceaccount.com \
       --project=<ProjectId> \
       --role="roles/iam.workloadIdentityUser" \
       --member="principalSet://iam.googleapis.com/projects/<ProjectNumber>/locations/global/workloadIdentityPools/unionai/*"
@@ -170,24 +170,24 @@ Go to [Google Cloud API library](https://console.cloud.google.com/apis/library) 
 
 Perform the following `gcloud` commands:
 
-```shell
-$ gcloud services enable artifactregistry.googleapis.com
-$ gcloud services enable autoscaling.googleapis.com
-$ gcloud services enable cloudkms.googleapis.com
-$ gcloud services enable cloudresourcemanager.googleapis.com
-$ gcloud services enable compute.googleapis.com
-$ gcloud services enable container.googleapis.com
-$ gcloud services enable containerfilesystem.googleapis.com
-$ gcloud services enable containerregistry.googleapis.com
-$ gcloud services enable iam.googleapis.com
-$ gcloud services enable iamcredentials.googleapis.com
-$ gcloud services enable logging.googleapis.com
-$ gcloud services enable monitoring.googleapis.com
-$ gcloud services enable secretmanager.googleapis.com
-$ gcloud services enable servicenetworking.googleapis.com
-$ gcloud services enable sts.googleapis.com
-$ gcloud services enable sqladmin.googleapis.com
-$ gcloud services enable storage-api.googleapis.com
+```bash
+gcloud services enable artifactregistry.googleapis.com
+gcloud services enable autoscaling.googleapis.com
+gcloud services enable cloudkms.googleapis.com
+gcloud services enable cloudresourcemanager.googleapis.com
+gcloud services enable compute.googleapis.com
+gcloud services enable container.googleapis.com
+gcloud services enable containerfilesystem.googleapis.com
+gcloud services enable containerregistry.googleapis.com
+gcloud services enable iam.googleapis.com
+gcloud services enable iamcredentials.googleapis.com
+gcloud services enable logging.googleapis.com
+gcloud services enable monitoring.googleapis.com
+gcloud services enable secretmanager.googleapis.com
+gcloud services enable servicenetworking.googleapis.com
+gcloud services enable sts.googleapis.com
+gcloud services enable sqladmin.googleapis.com
+gcloud services enable storage-api.googleapis.com
 ```
 
 ## Setting up and managing your own VPC (optional)

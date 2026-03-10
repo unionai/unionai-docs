@@ -293,7 +293,7 @@ For development and debugging purposes, you can adjust and deploy individual tri
 
 To deploy a task with its triggers, you can either use Flyte CLI:
 
-```shell
+```bash
 flyte deploy -p <project> -d <domain> <file_with_tasks_and_triggers.py> env
 ```
 
@@ -320,13 +320,13 @@ An inactive trigger will not create runs until activated.
 This trigger won't create runs until it is explicitly activated.
 You can activate a trigger via the Flyte CLI:
 
-```shell
+```bash
 flyte update trigger custom_cron my_task_env.custom_task --activate --project <project> --domain <domain>
 ```
 
 If you want to stop your trigger from creating new runs, you can deactivate it:
 
-```shell
+```bash
 flyte update trigger custom_cron my_task_env.custom_task --deactivate --project <project> --domain <domain>
 ```
 
@@ -394,7 +394,7 @@ If you decide that you don't need a trigger anymore, you can remove the trigger 
 
 Alternatively, you can use Flyte CLI:
 
-```shell
+```bash
 flyte delete trigger custom_cron my_task_env.custom_task --project <project> --domain <domain>
 ```
 

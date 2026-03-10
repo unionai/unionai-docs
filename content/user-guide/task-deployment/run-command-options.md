@@ -24,6 +24,8 @@ The `flyte run` command provides the following options:
 | `--follow`                  | `-f`  | flag   | `false`                   | Wait and watch logs for the parent action.             |
 | `--image`                   |       | text   |                           | Image to be used in the run (format: `name=uri`).      |
 | `--no-sync-local-sys-paths` |       | flag   | `false`                   | Disable synchronization of local sys.path entries.      |
+| `--run-project`             |       | text   | *from config*             | Execute deployed task in this project (`deployed-task` only). |
+| `--run-domain`              |       | text   | *from config*             | Execute deployed task in this domain (`deployed-task` only).  |
 
 ## `--project`, `--domain`
 
@@ -32,12 +34,26 @@ The `flyte run` command provides the following options:
 You can specify `--project` and `--domain` which will override any defaults defined in your `config.yaml`:
 
 ```bash
-# Use defaults from default config.yaml
 flyte run my_example.py my_task
+```
 
-# Specify target project and domain
+Specify a target project and domain:
+
+```bash
 flyte run --project my-project --domain development my_example.py my_task
 ```
+
+## `--run-project`, `--run-domain`
+
+**`flyte run --run-project <PROJECT> --run-domain <DOMAIN> deployed-task <TASK_REF>`**
+
+When using the `deployed-task` subcommand, `--run-project` and `--run-domain` specify the [project-domain pair](../projects-and-domains) in which to *execute* the task. This lets you run a deployed task in a different project or domain than the one configured in your `config.yaml`:
+
+```bash
+flyte run --run-project prod-project --run-domain production deployed-task my_env.my_task
+```
+
+If not provided, these default to the `task.project` and `task.domain` values in your configuration file. These options only apply to the `deployed-task` subcommand and are ignored for file-based runs.
 
 ## `--local`
 
@@ -46,11 +62,13 @@ flyte run --project my-project --domain development my_example.py my_task
 The `--local` option runs tasks locally instead of submitting them to the remote Flyte backend:
 
 ```bash
-# Run task locally (default behavior when using flyte.run() without deployment)
 flyte run --local my_example.py my_task --input "test_data"
+```
 
-# Compare with remote execution
-flyte run my_example.py my_task --input "test_data"  # Runs on Flyte backend
+Compare with remote execution:
+
+```bash
+flyte run my_example.py my_task --input "test_data"
 ```
 
 ### When to use local execution
@@ -67,14 +85,21 @@ flyte run my_example.py my_task --input "test_data"  # Runs on Flyte backend
 The `--copy-style` option controls code bundling for remote execution.
 This applies to the ephemeral preparation step of the `flyte run` command and works similarly to `flyte deploy`:
 
+Smart bundling (default) — includes only imported project modules:
+
 ```bash
-# Smart bundling (default) - includes only imported project modules
 flyte run --copy-style loaded_modules my_example.py my_task
+```
 
-# Include all project files
+Include all project files:
+
+```bash
 flyte run --copy-style all my_example.py my_task
+```
 
-# No code bundling (task must be pre-deployed)
+No code bundling (task must be pre-deployed):
+
+```bash
 flyte run --copy-style none deployed_task my_deployed_task
 ```
 
@@ -90,12 +115,16 @@ flyte run --copy-style none deployed_task my_deployed_task
 
 Override the source directory for code bundling and import resolution:
 
-```bash
-# Run from monorepo root with specific root directory
-flyte run --root-dir ./services/ml ./services/ml/my_example.py my_task
+Run from a monorepo root with a specific root directory:
 
-# Handle cross-directory imports
-flyte run --root-dir .. my_example.py my_workflow  # When my_example.py imports sibling directories
+```bash
+flyte run --root-dir ./services/ml ./services/ml/my_example.py my_task
+```
+
+Handle cross-directory imports:
+
+```bash
+flyte run --root-dir .. my_example.py my_workflow
 ```
 This applies to the ephemeral preparation step of the `flyte run` command.
 It works identically to the `flyte deploy` command's `--root-dir` option.
@@ -106,11 +135,15 @@ It works identically to the `flyte deploy` command's `--root-dir` option.
 
 Override the default output location for offloaded data types (large objects, DataFrames, etc.):
 
-```bash
-# Use custom S3 location for large outputs
-flyte run --raw-data-path s3://my-bucket/custom-path/ my_example.py process_large_data
+Use a custom S3 location for large outputs:
 
-# Use local directory for development
+```bash
+flyte run --raw-data-path s3://my-bucket/custom-path/ my_example.py process_large_data
+```
+
+Use a local directory for development:
+
+```bash
 flyte run --local --raw-data-path ./output/ my_example.py my_task
 ```
 
@@ -128,10 +161,7 @@ flyte run --local --raw-data-path ./output/ my_example.py my_task
 Specify a Kubernetes service account for task execution:
 
 ```bash
-# Run with specific service account for cloud resource access
 flyte run --service-account ml-service-account my_example.py train_model
-
-# Use service account with specific permissions
 flyte run --service-account data-reader-sa my_example.py load_data
 ```
 
@@ -148,10 +178,7 @@ flyte run --service-account data-reader-sa my_example.py load_data
 Provide a custom name for the execution run:
 
 ```bash
-# Named execution for easy identification
 flyte run --name "daily-training-run-2024-12-02" my_example.py train_model
-
-# Include experiment parameters in name
 flyte run --name "experiment-lr-0.01-batch-32" my_example.py hyperparameter_sweep
 ```
 
@@ -168,10 +195,12 @@ flyte run --name "experiment-lr-0.01-batch-32" my_example.py hyperparameter_swee
 Wait and watch logs for the execution in real-time:
 
 ```bash
-# Stream logs to console and wait for completion
 flyte run --follow my_example.py long_running_task
+```
 
-# Combine with other options
+Combine with other options:
+
+```bash
 flyte run --follow --name "training-session" my_example.py train_model
 ```
 
@@ -187,14 +216,21 @@ flyte run --follow --name "training-session" my_example.py train_model
 
 Override container images during ephemeral preparation, same as the equivalent `flyte deploy` option:
 
+Override a specific named image:
+
 ```bash
-# Override specific named image
 flyte run --image gpu=ghcr.io/org/gpu:v2.1 my_example.py gpu_task
+```
 
-# Override default image
+Override the default image:
+
+```bash
 flyte run --image ghcr.io/org/custom:latest my_example.py my_task
+```
 
-# Multiple image overrides
+Multiple image overrides:
+
+```bash
 flyte run \
   --image base=ghcr.io/org/base:v1.0 \
   --image gpu=ghcr.io/org/gpu:v2.0 \
@@ -215,7 +251,6 @@ Disable synchronization of local `sys.path` entries to the remote execution envi
 Identical to the `flyte deploy` command's `--no-sync-local-sys-paths` option:
 
 ```bash
-# Disable path synchronization for clean container environment
 flyte run --no-sync-local-sys-paths my_example.py my_task
 ```
 
@@ -228,11 +263,15 @@ This advanced option works identically to the deploy command equivalent, useful 
 
 Arguments are passed directly as function parameters:
 
-```bash
-# CLI: Arguments as flags
-flyte run my_file.py my_task --name "World" --count 5 --debug true
+CLI — arguments as flags:
 
-# SDK: Arguments as function parameters
+```bash
+flyte run my_file.py my_task --name "World" --count 5 --debug true
+```
+
+SDK — arguments as function parameters:
+
+```python
 result = flyte.run(my_task, name="World", count=5, debug=True)
 ```
 

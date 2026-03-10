@@ -225,12 +225,12 @@ You can build the production version of the variant,
 which will also trigger all the safety checks as well,
 by invoking the variant build:
 
-```shell
-$ make variant VARIANT=<variant>
+```bash
+make variant VARIANT=<variant>
 ```
 
 For example:
 
-```shell
+```bash
 make variant VARIANT=byoc
 ```

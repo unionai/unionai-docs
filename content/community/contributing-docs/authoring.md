@@ -24,8 +24,8 @@ Remember that there are two production branches in the docs: `main` and `v1`.
 While editing, you can use Hugo's local live preview capabilities.
 Simply execute
 
-```shell
-$ make dev
+```bash
+make dev
 ```
 
 This will build the site and launch a local server at `http://localhost:1313`.
@@ -190,8 +190,8 @@ At the top of your.md file, add:
 
 Jupyter notebook conversion is handled automatically as part of the production build:
 
-```shell
-$ make dist
+```bash
+make dist
 ```
 
 The conversion tool is located at `unionai-docs-infra/tools/jupyter_generator`.

@@ -19,8 +19,8 @@ To install the plugin, run the following command:
 
 To install the Dask plugin, run the following command:
 
-```shell
-$ pip install flyteplugins-dask
+```bash
+pip install flyteplugins-dask
 ```
 
 The following example shows how to configure Dask in a `TaskEnvironment`. Flyte automatically provisions a Dask cluster for each task using this configuration:

@@ -56,9 +56,9 @@ This can be done by providing the `union` application additional permissions or 
 
 {{< key product_name >}} requires a role and service principal for the internal OpenCost subsystem.
 
-```shell
-# Create OpenCost role to retrieve pricing data
-# Name and subscription can be changed as necessary
+Create the OpenCost role for retrieving pricing data (name and subscription can be changed):
+
+```bash
 az role definition create --role-definition '{
   "Name": "UnionOpenCostRole",
   "Description": "Role used by OpenCost pod",
@@ -74,15 +74,11 @@ az role definition create --role-definition '{
     "/subscriptions/YOUR_SUBSCRIPTION_ID"
   ]
 }'
+```
 
-# Create OpenCost App to allow access to the API
-# This creates:
-# - Application registration
-# - Service principal
-# - Client secret
-# - Role assignment (Role created above)
-#
-# Name can change as necessary
+Create the OpenCost service principal. This creates an application registration, service principal, client secret, and role assignment:
+
+```bash
 az ad sp create-for-rbac \
   --name "UnionOpenCost" \
   --role "UnionOpenCostRole" \
