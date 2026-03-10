@@ -57,7 +57,7 @@ pip install flyteplugins-jsonl
 
 ### JsonlFile
 
-`JsonlFile` is a `File` subclass for single JSONL files. Use its async context manager to write records one at a time without loading everything into memory:
+`JsonlFile` is a `File` subclass for single JSONL files. Use its async context manager to write records incrementally without requiring the entire dataset to be loaded into memory:
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/files-and-directories/jsonl.py" fragment="write-jsonl-file" lang="python" >}}
 
