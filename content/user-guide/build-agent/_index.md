@@ -1,7 +1,7 @@
 ---
 title: Build an agent
 weight: 9
-variants: -flyte +serverless +byoc +selfmanaged
+variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
 mermaid: true
 llm_readable_bundle: true
@@ -24,19 +24,6 @@ Here's how Union maps to the agentic world:
 
 > [!TIP]
 > See the [Union Quickstart](../quickstart) for a hands-on walkthrough.
-
-## Resources
-
-- [V2 User Guide](../)
-- [V2 SDK (flyte-sdk)](https://github.com/flyteorg/flyte-sdk)
-- [Quickstart](../quickstart)
-- [Deploy Apps & Agent Services (FastAPI, Streamlit, vLLM)](../build-apps)
-- [Agentic Refinement (Evaluator-Optimizer pattern)](../advanced-project/agentic-refinement)
-- [LangGraph + Union tutorial](https://github.com/unionai/workshops/tree/main/tutorials/langgraph)
-- [Multi-agent patterns (ReAct, Planner, Debate, etc.)](https://github.com/unionai/workshops/tree/main/tutorials/multi-agent-workflows)
-- [Hands-on labs (quickstart through apps)](https://github.com/unionai/solutions-engineering/tree/main/hands_on)
-- [Flyte 2 quickstart notebook](https://github.com/unionai/workshops/tree/main/tutorials/flyte2-quickstarts)
-- [Claude Code agents for Flyte/Union](https://github.com/unionai/claude-agents-public)
 
 ## Next steps
 
