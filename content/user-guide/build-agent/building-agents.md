@@ -1,11 +1,11 @@
 ---
-title: Building agents on Union
-weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+title: Building agentic workflows on Union
+weight: 1
+variants: +serverless +byoc +selfmanaged
 mermaid: true
 ---
 
-# Building agents on Union
+# Building agentic workflows on Union
 
 Union is framework-agnostic: use any Python LLM library (OpenAI SDK, Anthropic SDK, LangChain, LiteLLM, etc.) inside your tasks. The platform provides the production infrastructure layer: sandboxed execution, parallel fan-out, durable checkpointing, and observability for every step of the agent loop.
 
@@ -18,7 +18,7 @@ Two decorators are all you need:
 
 ## ReAct pattern: Reason, Act, Observe (no framework needed)
 
-The [ReAct pattern](https://arxiv.org/abs/2210.03629) is the most common agent architecture: the LLM reasons about what to do, calls a tool, observes the result, and repeats until done. Here it is in pure Python on Union, without LangGraph or CrewAI, just the agentic loop:
+The [ReAct pattern](https://arxiv.org/abs/2210.03629) is the most common agent architecture: the LLM reasons about what to do, calls a tool, observes the result, and repeats until done. This example is implemented directly with flyte:
 
 ```
 Thought → Action → Observation → repeat until done
@@ -26,8 +26,10 @@ Thought → Action → Observation → repeat until done
 
 ```python
 # agent.py
-import json, flyte
-from dataclasses import dataclass
+import json
+from pydantic import BaseModel
+
+import flyte
 from openai import AsyncOpenAI
 
 env = flyte.TaskEnvironment(
@@ -44,6 +46,7 @@ async def reason(goal: str, history: str) -> dict:
     """LLM picks a tool or returns a final answer."""
     r = await AsyncOpenAI().chat.completions.create(
         model="gpt-4.1-nano",
+        response_format={"type": "json_object"},
         messages=[
             {"role": "system", "content":
                 f"Tools: {list(TOOLS)}. Respond JSON: "
@@ -58,8 +61,7 @@ async def act(tool: str, args: dict) -> str:
     """Execute the chosen tool."""
     return str(TOOLS[tool](**args))
 
-@dataclass
-class AgentResult:
+class AgentResult(BaseModel):
     answer: str
     steps: int
 
@@ -69,7 +71,7 @@ async def react_agent(goal: str, max_steps: int = 10) -> AgentResult:
     for step in range(1, max_steps + 1):           # the agent loop
         decision = await reason(goal, history)      # Thought
         if decision.get("done"):
-            return AgentResult(answer=decision["answer"], steps=step)
+            return AgentResult(answer=str(decision["answer"]), steps=step)
         result = await act(decision["tool"], decision["args"])  # Action
         history += f"Step {step}: {decision['thought']} -> {decision['tool']}({decision['args']}) = {result}\n"  # Observation
     return AgentResult(answer="Max steps reached", steps=max_steps)
@@ -97,7 +99,7 @@ Here's `graph.py`, a LangGraph agent with tool calling (search the web, then sum
 
 ```python
 import flyte
-from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAIe
 from langchain_core.messages import SystemMessage
 from langgraph.graph import StateGraph, MessagesState
 from langgraph.prebuilt import ToolNode
@@ -192,9 +194,6 @@ research_workflow (orchestrator)
 - **Tool calling inside each research task:** The LangGraph agent calls Tavily web search, observes results, reasons about them, and loops until it has enough information (the inner agentic loop)
 - **Observability:** `@flyte.trace` on the LangGraph nodes means every LLM call, every tool call, and every routing decision is visible as a span in the Union dashboard
 - **Durable checkpointing:** Each task's output is persisted. If `synthesize` fails, re-running skips the completed `plan` and `research` steps (with caching enabled)
-
-> [!TIP]
-> See the full runnable code (3 agents) at [workshops/tutorials/langgraph](https://github.com/unionai/workshops/tree/main/tutorials/langgraph).
 
 ## More agentic patterns
 
