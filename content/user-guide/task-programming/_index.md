@@ -1,6 +1,6 @@
 ---
 title: Build tasks
-weight: 11
+weight: 12
 variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true

@@ -1,6 +1,6 @@
 ---
 title: Authenticating
-weight: 18
+weight: 19
 variants: -flyte +byoc +selfmanaged
 ---
 
