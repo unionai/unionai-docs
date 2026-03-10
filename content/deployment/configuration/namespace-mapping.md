@@ -41,6 +41,7 @@ namespace_mapping:
 > The template uses Helm's backtick escaping for Go template delimiters. In your values file, wrap `{{ project }}` and `{{ domain }}` with backtick-escaped `{{` and `}}` delimiters as shown above.
 
 {{< variant selfmanaged >}}
+
 ## Self-hosted control plane configuration
 
 If you are running a [self-hosted deployment](../selfhosted-deployment/_index) (control plane and data plane in the same cluster), you **must** also configure namespace mapping on the control plane for V1 executions.
