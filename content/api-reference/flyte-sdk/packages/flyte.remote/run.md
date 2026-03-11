@@ -1,6 +1,6 @@
 ---
 title: Run
-version: 2.0.4
+version: 2.0.6
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -44,6 +44,7 @@ class Run(
 | [`details()`](#details) | Get the details of the run. |
 | [`done()`](#done) | Check if the run is done. |
 | [`get()`](#get) | Get the current run. |
+| [`get_debug_url()`](#get_debug_url) | Get the debug URL of the run. |
 | [`get_logs()`](#get_logs) | Get logs for the run as an iterator of strings. |
 | [`inputs()`](#inputs) | Get the inputs of the run. |
 | [`listall()`](#listall) | Get all runs for the current project and domain. |
@@ -118,6 +119,20 @@ Get the current run.
 |-|-|-|
 | `cls` |  | |
 | `name` | `str` | |
+
+### get_debug_url()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.get_debug_url.aio()`.
+```python
+def get_debug_url()
+```
+Get the debug URL of the run. Returns ``None`` if the VS Code
+Debugger log entry is not yet available in the action details.
+
 
 ### get_logs()
 

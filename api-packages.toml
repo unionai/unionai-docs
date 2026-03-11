@@ -119,6 +119,18 @@ title = "Gemini"
 name = "gemini"
 
 [[plugins]]
+package = "flyteplugins-hitl"
+plugin = "flyteplugins.hitl"
+title = "Human-in-the-Loop"
+name = "hitl"
+
+[[plugins]]
+package = "flyteplugins-jsonl"
+plugin = "flyteplugins.jsonl"
+title = "JSONL"
+name = "jsonl"
+
+[[plugins]]
 package = "flyteplugins-openai"
 plugin = "flyteplugins.openai"
 title = "OpenAI"
