@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.jsonl`](flyteplugins.jsonl) |  |
+| [`flyteplugins.hitl`](flyteplugins.hitl) | Human-in-the-Loop (HITL) plugin for Flyte. |
