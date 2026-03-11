@@ -33,7 +33,6 @@ Union.ai implements a policy-based Role-Based Access Control (RBAC) system with 
 
 RBAC policies are enforced at the service layer.
 Every API request is authenticated and authorized against the user’s role assignments before any data access occurs.
-Users have the ability to create custom policies to further refine access control.
 
 ## Organization isolation
 
@@ -46,8 +45,8 @@ Cross-organization access is explicitly denied at the service layer, providing s
 
 Union.ai enforces the principle of least privilege across all system components:
 
-* IAM roles on the compute plane are scoped to minimum required permissions
-* Two IAM roles per compute plane: admin role (for platform services) and user role (for task pods)
+* IAM roles on the data plane are scoped to minimum required permissions
+* Two IAM roles per data plane: admin role (for platform services) and user role (for task pods)
 * IAM roles are bound to Kubernetes service accounts via cloud-native workload identity federation
 * Presigned URLs grant single-object, operation-specific, time-limited access
 * Service accounts receive only the permissions needed for their specific function

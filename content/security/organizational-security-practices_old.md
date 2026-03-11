@@ -1,17 +1,16 @@
 ---
-title: Organizational & physical security practices
+title: Organizational security practices
 weight: 11
 variants: -flyte +byoc +selfmanaged
 ---
 
-# Organizational & physical security practices
+# Organizational security practices
 
-Union.ai maintains organizational security controls to protect people, facilities, and endpoint devices.
-These controls are independently verified through SOC 2 Type II audits and continuously monitored via the Vanta Trust Center (trust.union.ai).
+Union.ai maintains organizational security controls independently verified through SOC 2 Type II audits and continuously monitored via the Vanta Trust Center (trust.union.ai).
 
 ## Employee security lifecycle
 
-**Verified controls** (source: Trust Center, SOC 2 Type II audit)
+**Verified controls*** (source: Trust Center, SOC 2 Type II audit)*
 
 | Control | Description | Verification |
 | --- | --- | --- |
@@ -24,7 +23,7 @@ These controls are independently verified through SOC 2 Type II audits and conti
 | Performance evaluations | Managers complete evaluations for direct reports at least annually | Trust Center (passing) |
 | Least-privilege access | Internal systems follow least-privilege; regular access reviews conducted | SOC 2 Type II |
 
-## Governance & organizational controls
+## Governance and organizational controls
 
 | Control | Description | Verification |
 | --- | --- | --- |
@@ -34,7 +33,7 @@ These controls are independently verified through SOC 2 Type II audits and conti
 | Information security policies | Policies and procedures documented and reviewed at least annually | Trust Center (passing) |
 | Whistleblower policy | Formalized policy with anonymous communication channel for reporting violations | Trust Center (passing) |
 | Vendor management | Third-party vendors and sub-processors evaluated and monitored; sub-processor list available via Trust Center | SOC 2 Type II |
-| Business continuity | BC/DR plans aligned with SOC 2 | SOC 2 Type II |
+| Business continuity | BC/DR plans aligned with SOC 2; BYOC architecture provides natural resilience since customer data resides in customer infrastructure | SOC 2 Type II |
 
 ## Security development lifecycle
 
@@ -45,5 +44,5 @@ These controls are independently verified through SOC 2 Type II audits and conti
 * **Penetration testing:** Regular third-party security assessments
 * **Incident response:** Documented procedures aligned with SOC 2 Type II, including defined escalation paths and post-incident review
 
-> [!NOTE]
-> All controls marked as “passing” are continuously monitored via Vanta and verified through the Union.ai Trust Center at trust.union.ai. The SOC 2 Type II audit report is available upon request.
+*All controls marked as “passing” are continuously monitored via Vanta and verified through the Union.ai Trust Center at trust.union.ai.
+The SOC 2 Type II audit report is available upon request.*

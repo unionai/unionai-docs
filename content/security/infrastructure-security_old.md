@@ -8,7 +8,7 @@ variants: -flyte +byoc +selfmanaged
 
 ## Kubernetes security
 
-The compute plane runs on customer-managed Kubernetes clusters with the following security measures:
+The data plane runs on customer-managed Kubernetes clusters with the following security measures:
 
 * Workload identity federation for pod-level IAM role binding (no static credentials)
 * Kubernetes RBAC for service account permissions within the cluster
@@ -16,7 +16,7 @@ The compute plane runs on customer-managed Kubernetes clusters with the followin
 * Resource quotas and limit ranges to prevent resource abuse
 * Pod security contexts enforcing non-root execution where applicable
 
-A complete list of compute plane permissions appears in **[Appendix D](./appendix#d-kubernetes-rbac---compute-plane)**
+A complete list of data plane permissions appears in **[Appendix D](./appendix#d-kubernetes-rbac---data-plane)**
 
 ## Container security
 
@@ -30,12 +30,12 @@ Union.ai’s container security model ensures that code execution is isolated an
 
 ## IAM and workload identity
 
-Two IAM roles are provisioned per compute plane, each with narrowly scoped permissions:
+Two IAM roles are provisioned per data plane, each with narrowly scoped permissions:
 
 | Role | Permissions | Assumed By | Mechanism |
 | --- | --- | --- | --- |
-| Admin Role (`adminflyterole`) | R/W to object store buckets, secrets manager access, persisted logs read | Platform services: Executor, Object Store Service, DataProxy | Workload identity federation |
-| User Role (`userflyterole`) | R/W to object store buckets | Task pods (user workloads) | Workload identity via K8s service account annotation |
+| Admin Role (adminflyterole) | R/W to object store buckets, secrets manager access, persisted logs read | Platform services: Executor, Object Store Service, DataProxy | Workload identity federation |
+| User Role (userflyterole) | R/W to object store buckets | Task pods (user workloads) | Workload identity via K8s service account annotation |
 
 These roles use cloud-native workload identity federation (IAM Roles for Service Accounts on AWS, Workload Identity on GCP, Azure Workload Identity on Azure), eliminating the need for static credential storage.
 
