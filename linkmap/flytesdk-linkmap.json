@@ -181,6 +181,7 @@
     "flyte.init_passthrough": "/api-reference/flyte-sdk/packages/flyte/#init_passthrough",
     "flyte.map": "/api-reference/flyte-sdk/packages/flyte/#map",
     "flyte.run": "/api-reference/flyte-sdk/packages/flyte/#run",
+    "flyte.run_python_script": "/api-reference/flyte-sdk/packages/flyte/#run_python_script",
     "flyte.serve": "/api-reference/flyte-sdk/packages/flyte/#serve",
     "flyte.trace": "/api-reference/flyte-sdk/packages/flyte/#trace",
     "flyte.version": "/api-reference/flyte-sdk/packages/flyte/#version",
