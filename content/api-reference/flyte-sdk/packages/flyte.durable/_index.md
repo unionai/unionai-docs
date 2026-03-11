@@ -1,6 +1,6 @@
 ---
 title: flyte.durable
-version: 2.0.4
+version: 2.0.5
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
