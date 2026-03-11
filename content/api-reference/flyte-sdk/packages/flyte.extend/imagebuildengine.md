@@ -1,6 +1,6 @@
 ---
 title: ImageBuildEngine
-version: 2.0.4
+version: 2.0.5
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -41,6 +41,6 @@ registry to see if the manifest exists.
 | `image` | `Image` | |
 | `builder` | `ImageBuildEngine.ImageBuilderType \| None` | |
 | `dry_run` | `bool` | Tell the builder to not actually build. Different builders will have different behaviors. |
-| `force` | `bool` | Skip the existence check. Normally if the image already exists we won't build it. |
+| `force` | `bool` | Skip the existence check and force a rebuild. When using the remote builder, this also sets overwrite_cache=True on the build run. |
 | `wait` | `bool` | Wait for the build to finish. If wait is False when using the remote image builder, the function will return the build image task URL. :return: An ImageBuild object with the image URI and remote run (if applicable). |
 
