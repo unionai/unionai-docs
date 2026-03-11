@@ -6,7 +6,7 @@ variants: -flyte +byoc +selfmanaged
 
 # Multi-cloud and region support
 
-Union.ai supports compute plane deployments across multiple cloud providers and regions, ensuring that organizations can meet their specific infrastructure and regulatory requirements.
+Union.ai supports data plane deployments across multiple cloud providers and regions, ensuring that organizations can meet their specific infrastructure and regulatory requirements.
 
 ## Supported cloud providers
 
@@ -21,9 +21,9 @@ Union Implementation Services supports additional cloud providers and on-premise
 ## Supported regions
 
 Union.ai currently operates control planes in the following regions, with additional regions being added: **US West, US East, EU West, and EU Central**.
-Customers choose the region for their compute plane deployment, ensuring that all customer data remains within the selected geographic region.
+Customers choose the region for their data plane deployment, ensuring that all customer data remains within the selected geographic region.
 
 ## Consistent security across clouds
 
-Regardless of the cloud provider selected, Union.ai enforces consistent security guarantees through its architecture: the same control plane/compute plane separation, the same presigned URL model, the same tunnel-based connectivity, the same RBAC framework, and the same encryption standards.
+Regardless of the cloud provider selected, Union.ai enforces consistent security guarantees through its architecture: the same control plane/data plane separation, the same presigned URL model, the same tunnel-based connectivity, the same RBAC framework, and the same encryption standards.
 Cloud-specific implementations (IAM roles, encryption services, log aggregators) are abstracted by the platform while maintaining native integration with each provider’s security services.

@@ -25,29 +25,31 @@ Union.ai uses Vanta for continuous compliance monitoring and automated control a
 
 ## Standards compliance
 
-In addition to certifications, Union.ai complies with the following standard control frameworks through its private compute plane architecture:
+In addition to certifications, Union.ai complies with the following standard control frameworks through its private data plane architecture:
 
-| Framework | Control | Description |
-| --- | --- | --- |
-| ISO 27001 A.5.15 | Access control | Restricts access to network services and management interfaces; management endpoints not exposed to public Internet |
-| ISO 27001 A.8.20 | Network security | Segregation and protection of networks; management interfaces on dedicated, private channels |
-| ISO 27001 A.8.28 | Secure configuration | Minimizes public exposure of management plane by default |
-| ISO 27001 A.8.21 | Cryptography | TLS encryption with minimized exposure of sensitive channels |
-| ISO 27001 A.5.23 | Cloud service security | Cloud services configured securely with mitigated public exposure risks |
-| CIS v8 4.4 | Administrative access | Administrative interfaces not exposed to Internet; VPN/bastion required |
-| CIS v8 12.11 | Segment admin interfaces | Separation of administrative interfaces from public access |
-| CIS v8 13.2 | Boundary protections | Management plane endpoints behind strong network segmentation |
+| Framework | Control | Domain | Description |
+| --- | --- | --- | --- |
+| ISO 27001 | A.5.15 | Access control | Restricts access to network services and management interfaces; management endpoints not exposed to public Internet |
+| ISO 27001 | A.8.20 | Network security | Segregation and protection of networks; management interfaces on dedicated, private channels |
+| ISO 27001 | A.8.28 | Secure configuration of information systems | Minimizes public exposure of management plane by default |
+| ISO 27001 | A.8.21 | Use of cryptography | TLS encryption with minimized exposure of sensitive channels |
+| ISO 27001 | A.5.23 | Information security for use of cloud services | Cloud services configured securely with mitigated public exposure risks |
+| CIS 1.5/3.x | 3.1 | Amazon EKS public endpoint access is restricted | Explicitly recommends disabling public access to the EKS cluster endpoint or restricting it to VPC/internal access only |
+| CIS 1.5/3.x | 3.2 | Restrict access to the EKS control plane to authorized IPs | ACLing helps, but the benchmark still prioritizes private-only endpoints |
+| CIS v8 | 4.4 | Restrict administrative access | Administrative interfaces not exposed to Internet; VPN/bastion required |
+| CIS v8 | 12.11 | Segment administration interfaces | Separation of administrative interfaces from public access |
+| CIS v8 | 13.2 | Deploy DMZ / boundary protections | Management plane endpoints behind strong network segmentation |
 
 ## HIPAA compliance
 
-Union.ai is HIPAA certified, enabling healthcare and life sciences organizations to process protected health information (PHI) within their BYOC compute planes.
+Union.ai is HIPAA-certified, enabling healthcare and life sciences organizations to process protected health information (PHI) within their BYOC data planes.
 Because all customer data—including any PHI—remains exclusively in the customer’s own cloud infrastructure, Union.ai’s architecture inherently supports HIPAA’s data protection requirements.
 The control plane stores only orchestration metadata and never persists PHI.
 
 ## GDPR alignment
 
 Union.ai’s architecture inherently supports GDPR through its data residency model.
-For EU-region compute planes, all customer data remains within the European Union.
+For EU-region data planes, all customer data remains within the European Union.
 The control plane stores only orchestration metadata, and where error messages may contain user-generated content, this is documented and scoped.
 
 ## Trust Center
@@ -70,7 +72,7 @@ Union.ai operates under a shared responsibility model:
 | Responsibility Area | Union.ai | Customer |
 | --- | --- | --- |
 | Control plane security | Full ownership | N/A |
-| Compute plane infrastructure | Guidance and tooling | Provisioning and maintenance |
+| Data plane infrastructure | Guidance and tooling | Provisioning and maintenance |
 | Data encryption at rest | Default cloud encryption | Optional CMK configuration |
 | Network security (tunnel) | Tunnel management | Firewall and VPC configuration |
 | IAM roles and policies | Role templates and documentation | Role creation and binding |

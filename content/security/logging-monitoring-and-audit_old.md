@@ -8,28 +8,28 @@ variants: -flyte +byoc +selfmanaged
 
 ## Task logging
 
-Logs are collected by Fluent Bit (deployed as a DaemonSet on the compute plane) and shipped to the customer’s cloud-native log service:
+Logs are collected by Fluentbit (deployed as a DaemonSet on the data plane) and shipped to the customer’s cloud-native log service:
 
 | Cloud Provider | Log Service | Integration |
 | --- | --- | --- |
-| AWS | CloudWatch Logs | Fluent Bit → CloudWatch |
-| GCP | Cloud Logging (Stackdriver) | Fluent Bit → Cloud Logging |
-| Azure | Azure Monitor / Log Analytics | Fluent Bit → Azure Monitor |
+| AWS | CloudWatch Logs | Fluentbit → CloudWatch |
+| GCP | Cloud Logging (Stackdriver) | Fluentbit → Cloud Logging |
+| Azure | Azure Monitor / Log Analytics | Fluentbit → Azure Monitor |
 
-The compute plane log provider serves logs from two sources: live logs streamed directly from the Kubernetes API while a task is running, and persisted logs read from the cloud log aggregator after a pod terminates.
-Log data is never stored in the control plane—it is streamed from the customer’s compute plane through the Cloudflare tunnel and relayed to the client as a stateless pass-through.
+The data plane log provider serves logs from two sources: live logs streamed directly from the Kubernetes API while a task is running, and persisted logs read from the cloud log aggregator after a pod terminates.
+Log data is never stored in the control plane—it is streamed from the customer’s data plane through the Cloudflare tunnel and relayed to the client as a stateless pass-through.
 
 ## Observability metrics
 
-A per-cluster instance (Prometheus and/or ClickHouse) stores time-series observability metrics including resource utilization and cost data.
-Queries are proxied through the DataProxy service to the customer’s instance.
+A per-cluster ClickHouse instance stores time-series observability metrics including resource utilization and cost data.
+Queries are proxied through the DataProxy service to the customer’s ClickHouse instance.
 Metrics data never leaves the customer’s infrastructure.
 
 ## Audit trail
 
 Union.ai maintains comprehensive audit capabilities:
 
-* Every API request is authenticated, and the identity context is captured
+* Every API request is authenticated and the identity context is captured
 * Run and action lifecycle events are recorded with timestamps, phases, and responsible identities
 * RBAC changes and user management operations are logged
 * Secret creation and management operations are tracked (values are never logged)
