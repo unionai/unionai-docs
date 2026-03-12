@@ -7,7 +7,7 @@ variants: +flyte +byoc +selfmanaged
 # Additional task settings
 
 This page covers task configuration parameters that do not have their own dedicated page:
-naming and metadata, environment variables, and inline I/O thresholds.
+naming and metadata, default inputs, environment variables, and inline I/O thresholds.
 
 For the full list of all task configuration parameters, see [Configure tasks](./_index).
 
@@ -72,6 +72,40 @@ Use links to connect tasks to external tools like experiment trackers, monitorin
 
 Links are defined by implementing the [`Link`](../../api-reference/flyte-sdk/packages/flyte/link) protocol.
 See [Links](../task-programming/links) for full details on creating and using links.
+
+## Default inputs
+
+Task functions support Python default parameter values. When a task parameter has a default, callers can omit it and the default is used.
+
+```python
+import flyte
+
+env = flyte.TaskEnvironment(name="my_env")
+
+@env.task
+async def process(data: list, batch_size: int = 32, verbose: bool = False) -> dict:
+    # batch_size defaults to 32, verbose defaults to False
+    ...
+```
+
+When running via `flyte run`, parameters with defaults are optional:
+
+```bash
+# Uses defaults for batch_size and verbose
+flyte run my_file.py process --data '[1, 2, 3]'
+
+# Override a default
+flyte run my_file.py process --data '[1, 2, 3]' --batch-size 64
+```
+
+When invoking programmatically, Python's normal default argument rules apply:
+
+```python
+result = flyte.run(process, data=[1, 2, 3])          # batch_size=32, verbose=False
+result = flyte.run(process, data=[1, 2, 3], batch_size=64)  # override
+```
+
+Defaults are part of the task's input schema and are visible in the UI when viewing the task.
 
 ## Environment variables
 
