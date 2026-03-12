@@ -1,7 +1,7 @@
 ---
 title: vLLM app
 weight: 11
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # vLLM app
@@ -13,20 +13,20 @@ vLLM is a high-performance library for serving large language models (LLMs). Fly
 First, install the vLLM plugin:
 
 ```bash
-pip install --pre flyteplugins-vllm
+pip install flyteplugins-vllm
 ```
 
 ## Basic vLLM app
 
 Here's a simple example serving a HuggingFace model:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/vllm/basic_vllm.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/vllm/basic_vllm.py" lang=python >}}
 
 ## Using prefetched models
 
 You can use models prefetched with `flyte.prefetch`:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/vllm/vllm_with_prefetch.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/vllm/vllm_with_prefetch.py" lang=python >}}
 
 ## Model streaming
 
@@ -93,7 +93,7 @@ print(response.choices[0].message.content)
 
 For larger models, use multiple GPUs with tensor parallelism:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/vllm/vllm_multi_gpu.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/vllm/vllm_multi_gpu.py" lang=python >}}
 
 The `tensor-parallel-size` should match the number of GPUs specified in resources.
 

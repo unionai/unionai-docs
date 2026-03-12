@@ -1,7 +1,7 @@
 ---
 title: GPU-accelerated climate modeling
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
@@ -41,17 +41,17 @@ This workflow is a good example of where Flyte shines!
 
 ### Dependencies and container image
 
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="imports" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="imports" lang="python" >}}
 
 The key imports include `xarray` for multi-dimensional climate data, `flyteplugins.dask` for distributed preprocessing, and `flyte` for orchestration.
 
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="image" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="image" lang="python" >}}
 
 Climate data comes in specialized formats such as NetCDF, HDF5, and GRIB. The container image includes libraries to work with all of them, along with PyTorch for GPU computation and the ECMWF client for accessing ERA5 data.
 
 ### Simulation parameters and data structures
 
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="dataclasses" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="dataclasses" lang="python" >}}
 
 `SimulationParams` defines the core behavior of the simulation, including grid resolution, physics schemes, and ensemble size. The default configuration runs 800 ensemble members, which is sufficient to produce statistically meaningful uncertainty estimates.
 
@@ -66,7 +66,7 @@ Climate data comes in specialized formats such as NetCDF, HDF5, and GRIB. The co
 
 Different stages need different resources. Flyte's `TaskEnvironment` declares exactly what each task requires:
 
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="task-envs" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="task-envs" lang="python" >}}
 
 Here’s what each environment is responsible for:
 
@@ -82,19 +82,19 @@ Climate models need data from multiple sources. Each source has different format
 
 **Satellite imagery from NOAA GOES**
 
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="ingest-satellite" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="ingest-satellite" lang="python" >}}
 
 This task fetches cloud imagery and precipitable water products from NOAA's public S3 buckets. GOES-16 covers the Atlantic; GOES-17 covers the Pacific. The task selects the appropriate satellite based on region, fetches multiple days in parallel using `asyncio.gather`, and combines everything into a single xarray Dataset.
 
 **ERA5 reanalysis from Copernicus**
 
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="ingest-reanalysis" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="ingest-reanalysis" lang="python" >}}
 
 ERA5 provides 3D atmospheric fields such as temperature, wind, humidity at multiple pressure levels from surface to stratosphere. The ECMWF datastores client handles authentication via Flyte secrets. Each day fetches in parallel, then gets concatenated.
 
 **Surface observations from weather stations:**
 
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="ingest-station" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="ingest-station" lang="python" >}}
 
 Ground truth comes from NOAA's Integrated Surface Database. The task filters stations by geographic bounds, fetches hourly observations, and returns a Parquet file for efficient downstream processing.
 
@@ -126,13 +126,13 @@ This task connects to the Dask cluster provisioned by Flyte, loads the datasets 
 
 Now the core: running atmospheric physics on the GPU. Each ensemble member is an independent forecast with slightly perturbed initial conditions.
 
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="gpu-simulation-signature" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="gpu-simulation-signature" lang="python" >}}
 
 The task accepts a subset of ensemble members (`ensemble_start` to `ensemble_end`). This enables distributing 800 members across multiple GPUs.
 
 The physics step is the computational kernel. It runs advection (wind transport), pressure gradients, Coriolis forces, turbulent diffusion, and moisture condensation:
 
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="physics-step" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="physics-step" lang="python" >}}
 
 `@torch.compile(mode="reduce-overhead")` compiles this function into optimized CUDA kernels. Combined with mixed precision (`torch.cuda.amp.autocast`), this runs 3-4x faster than eager PyTorch.
 
@@ -146,7 +146,7 @@ Detected phenomena get logged to the metrics, which flow to the live dashboard.
 
 800 ensemble members is a lot for one GPU, so we distribute them:
 
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="distributed-ensemble" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="distributed-ensemble" lang="python" >}}
 
 The task splits the ensemble members evenly across the available GPUs, launches the simulation runs in parallel using `asyncio.gather`, and then aggregates the results. With five GPUs, each GPU runs 160 ensemble members. Flyte takes care of scheduling, so GPU tasks start automatically as soon as resources become available.
 
@@ -154,11 +154,11 @@ The task splits the ensemble members evenly across the available GPUs, launches 
 
 Everything comes together in the orchestration task:
 
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="main-workflow" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="main-workflow" lang="python" >}}
 
 `report=True` enables Flyte Reports for live monitoring.
 
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="workflow-ingestion" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="workflow-ingestion" lang="python" >}}
 
 `flyte.group("data-ingestion")` visually groups the ingestion tasks in the Flyte UI. Inside the group, three tasks launch concurrently. `asyncio.gather` waits for all three to complete before preprocessing begins.
 
@@ -174,7 +174,7 @@ Adaptive mesh refinement is the key feature here. When the simulation detects a 
 
 ### Running the pipeline
 
-{{< code file="/external/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="main" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/climate_modeling/simulation.py" fragment="main" lang="python" >}}
 
 Before running, set up ERA5 API credentials:
 

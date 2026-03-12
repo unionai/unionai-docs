@@ -1,7 +1,7 @@
 ---
 title: Installing Flyte
 weight: 2
-variants: -flyte -serverless -byoc -selfmanaged
+variants: -flyte -byoc -selfmanaged
 ---
 # Installing Flyte
 
@@ -46,9 +46,11 @@ To verify the installation you can to port forward the Kubernetes service:
 Example:
 ```bash
 kubectl -n flyte port-forward service/flyte-binary-http 8088:8088
+```
 
+```bash
 kubectl -n flyte port-forward service/flyte-binary-grpc 8089:8089
- ```
+```
 
 You should be able to navigate to `http://localhost:8088/console`.
 

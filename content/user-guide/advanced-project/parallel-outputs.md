@@ -1,7 +1,7 @@
 ---
 title: Parallel outputs
 weight: 3
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Parallel outputs
@@ -17,7 +17,7 @@ Only `generate_summary` uses `@flyte.trace` because it makes an LLM call.
 The markdown and HTML functions are simple, deterministic transformations that
 don't benefit from checkpointing:
 
-{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="format-functions" >}}
+{{< code file="/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="format-functions" >}}
 
 ### When to trace and when not to
 
@@ -30,7 +30,7 @@ re-running on retry is trivial.
 
 The `format_outputs` task runs all formatters concurrently:
 
-{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="parallel-formatting" >}}
+{{< code file="/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="parallel-formatting" >}}
 
 ### How asyncio.gather works
 
@@ -113,7 +113,7 @@ artifact storage, making it available to downstream tasks or applications.
 The batch pipeline processes multiple topics in parallel, demonstrating where
 `ReusePolicy` truly shines:
 
-{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="batch-pipeline" >}}
+{{< code file="/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="batch-pipeline" >}}
 
 ### Pipeline flow
 
@@ -128,7 +128,7 @@ With 5 topics, each making ~7 LLM calls, the reusable container pool handles
 
 To run the batch pipeline:
 
-{{< code file="/external/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="main" >}}
+{{< code file="/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="main" >}}
 
 ```bash
 uv run generate.py

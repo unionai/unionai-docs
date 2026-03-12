@@ -1,7 +1,7 @@
 ---
 title: Prefetching models
 weight: 6
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Prefetching models
@@ -23,7 +23,7 @@ Prefetching models provides several benefits:
 
 ### Using Python SDK
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=basic-prefetch lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=basic-prefetch lang=python >}}
 
 ### Using CLI
 
@@ -41,7 +41,7 @@ flyte prefetch hf-model Qwen/Qwen3-0.6B --wait
 
 Use the prefetched model in your vLLM or SGLang app:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=using-prefetched-models lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=using-prefetched-models lang=python >}}
 
 > [!TIP]
 > You can also use prefetched models as parameters to your generic `[[AppEnvironment]]`s or `FastAPIAppEnvironment`s.
@@ -50,13 +50,13 @@ Use the prefetched model in your vLLM or SGLang app:
 
 ### Custom artifact name
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=custom-artifact-name lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=custom-artifact-name lang=python >}}
 
 ### With HuggingFace token
 
 If the model requires authentication:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=hf-token lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=hf-token lang=python >}}
 
 The default value for `hf_token_key` is `HF_TOKEN`, where `HF_TOKEN` is the name of the Flyte secret containing your
 HuggingFace token. If this secret doesn't exist, you can create a secret using the [flyte create secret CLI](../task-configuration/secrets).
@@ -70,7 +70,7 @@ In some cases, the HuggingFace model may not support filestreaming, in which cas
 downloading the model weights to the task pod's disk storage first, then uploading them to your storage backend. In this
 case, you can specify custom resources for the prefetch task to override the default resources.
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=with-resources lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=with-resources lang=python >}}
 
 ## Sharding models for multi-GPU
 
@@ -78,7 +78,7 @@ case, you can specify custom resources for the prefetch task to override the def
 
 Shard a model for tensor parallelism:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=vllm-sharding lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=vllm-sharding lang=python >}}
 
 Currently, the `flyte.prefetch.hf_model` function only supports sharding models
 using the `vllm` engine. Once sharded, these models can be loaded with other
@@ -111,7 +111,7 @@ flyte prefetch hf-model meta-llama/Llama-2-70b-hf \
 
 After prefetching and sharding, serve the model in your app:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=using-sharded-models lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=using-sharded-models lang=python >}}
 
 ## CLI options
 
@@ -140,7 +140,7 @@ flyte prefetch hf-model <repo> \
 
 Here's a complete example of prefetching and using a model:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=complete-example lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=complete-example lang=python >}}
 
 ## Best practices
 

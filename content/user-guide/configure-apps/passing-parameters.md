@@ -1,7 +1,7 @@
 ---
 title: Passing parameters into app environments
 weight: 4
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Passing parameters into app environments
@@ -19,7 +19,7 @@ There are several parameter types:
 
 ## Basic parameter types
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/passing-parameters-examples.py" fragment=basic-parameter-types lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/passing-parameters-examples.py" fragment=basic-parameter-types lang=python >}}
 
 ## Delayed values
 
@@ -29,7 +29,7 @@ Delayed values are parameters whose actual values are materialized at deployment
 
 Use `RunOutput` to pass outputs from task runs as app parameters:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/passing-parameters-examples.py" fragment=runoutput-example lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/passing-parameters-examples.py" fragment=runoutput-example lang=python >}}
 
 The `type` argument is required and must be one of `string`, `file`, or `directory`.
 When the app is deployed, it will make the remote calls needed to figure out the
@@ -39,7 +39,7 @@ actual value of the parameter.
 
 Use `AppEndpoint` to pass endpoints from other apps:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/passing-parameters-examples.py" fragment=appendpoint-example lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/passing-parameters-examples.py" fragment=appendpoint-example lang=python >}}
 
 The endpoint URL will be injected as the parameter value when the app starts.
 
@@ -69,11 +69,11 @@ This is useful for:
 
 Here's a complete example showing how to use parameters in a FastAPI app:
 
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/app-inputs-fastapi-example.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/app-parameters-fastapi-example.py" lang=python >}}
 
 ## Example: Using RunOutput for model serving
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/passing-parameters-examples.py" fragment=runoutput-serving-example lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/passing-parameters-examples.py" fragment=runoutput-serving-example lang=python >}}
 
 ## Accessing parameters in your app
 

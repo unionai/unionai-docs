@@ -1,11 +1,14 @@
 ---
 title: From Flyte 1 to 2
-weight: 7
-variants: +flyte +serverless +byoc +selfmanaged
+weight: 9
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
+llm_readable_bundle: true
 ---
 
 # From Flyte 1 to 2
+
+{{< llm-bundle-note >}}
 
 Flyte 2 represents a fundamental shift in how Flyte workflows are written and executed.
 
@@ -16,10 +19,10 @@ domain-specific language (DSL).
 
 {{< tabs "flyte-2-python" >}}
 {{< tab "Sync Python" >}}
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/sync_example.py" fragment="all" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/flyte-2/sync_example.py" fragment="all" lang="python" >}}
 {{< /tab >}}
 {{< tab "Async Python" >}}
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async_example.py" fragment="all" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/flyte-2/async_example.py" fragment="all" lang="python" >}}
 {{< /tab >}}
 {{< /tabs >}}
 
@@ -51,7 +54,7 @@ Tasks are defined within environments, which encapsulate the context and resourc
 
 As in Flyte 1, Flyte 2 supports caching at the task level (via `@env.task(cache=...)`), but it further enables recovery at the finer-grained, sub-task level through a feature called tracing (via `@flyte.trace`).
 
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/trace.py" fragment="all" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/flyte-2/trace.py" fragment="all" lang="python" >}}
 
 Here `call_llm` runs in the same container as `main` and acts as an automated checkpoint with full observability in the UI.
 If the task fails due to a system error (e.g., node preemption or infrastructure failure), Flyte can recover and replay from the
@@ -71,7 +74,7 @@ Flyte 2 provides full management of the workflow lifecycle through a standardize
 
 You can also fetch and run remote (previously deployed) tasks within the course of a running workflow.
 
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/remote.py" fragment="all" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/flyte-2/remote.py" fragment="all" lang="python" >}}
 
 ## Native Notebook support
 
@@ -79,7 +82,7 @@ Author and run workflows and fetch workflow metadata (I/O and logs) directly fro
 
 ![Native Notebook](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/notebook.png)
 
-{{< variant byoc selfmanaged serverless >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 ## High performance engine
@@ -87,7 +90,7 @@ Author and run workflows and fetch workflow metadata (I/O and logs) directly fro
 When running on a Union.ai backend, Flyte 2 enables you to schedule tasks in milliseconds with reusable containers, which massively increases the throughput of containerized tasks.
 
 {{< /markdown >}}
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/reuse.py" fragment="env" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/flyte-2/reuse.py" fragment="env" lang="python" >}}
 {{< markdown >}}
 
 Coupled with multi-cluster, multi-cloud, and multi-region support, Flyte 2 on Union.ai can scale to handle even the most demanding workflows.

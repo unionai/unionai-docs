@@ -1,7 +1,7 @@
 ---
 title: Wandb
-version: 2.0.0b57
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.6
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: uctl demo
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl demo

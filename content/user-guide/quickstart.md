@@ -1,84 +1,54 @@
 ---
 title: Quickstart
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
 # Quickstart
 
-Let's get you up and running with your first workflow.
+Let's get you up and running with your first workflow on your local machine.
+
+{{< note >}}
+Want to try Flyte without installing anything? [Try Flyte 2 in your browser](https://flyte2intro.apps.demo.hosted.unionai.cloud/).
+{{< /note >}}
 
 ## What you'll need
 
 - Python 3.10+ in a virtual environment
-- Access to a {{< key product_name >}} instance (you'll need the URL of your instance)
 
 ## Install the SDK
 
-Install the `flyte` package (currently in beta, so prerelease flag required):
+Install the `flyte` package:
 
-```shell
-pip install --pre flyte
+```bash
+pip install 'flyte[tui]'
 ```
+{{< note >}}
+We also install the `tui` extra to enable the terminal user interface.
+{{< /note >}}
 
 Verify it worked:
 
-```shell
+```bash
 flyte --version
 ```
 
-## Configure your connection
+Output:
 
-{{< variant flyte >}}
-{{< markdown >}}
-
-Create a config file pointing to your Flyte instance. Replace the placeholder value with your actual endpoint:
-
-```shell
-flyte create config \
-    --endpoint <my-org.my-company.com> \
-    --domain development \
-    --project flytesnacks \
-    --builder local
+```bash
+Flyte SDK version: 2.*.*
 ```
 
-We will use the `flytesnacks` project and the `development` domain.
-These exist by default on any newly installed Flyte instance.
+## Configure
 
-### Set up local Docker
+Create a config file for local execution. Runs will be persisted locally in a SQLite database.
 
-Since Flyte OSS uses local image building, you'll need Docker running and logged into the GitHub registry:
-
-```shell
-docker login ghcr.io
+```bash
+flyte create config --local-persistence
 ```
 
-> [!NOTE]
-> The `--builder local` option means images are [built locally](./task-configuration/container-images). Union instances can use `--builder remote` instead.
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant byoc selfmanaged serverless >}}
-{{< markdown >}}
-
-Create a config file pointing to your Union instance. Replace the placeholder value with your actual endpoint:
-
-```shell
-flyte create config \
-    --endpoint <my-org.my-company.com> \
-    --domain development \
-    --project flytesnacks \
-    --builder remote
-```
-
-We will use the `flytesnacks` project and the `development` domain.
-These exist by default on any newly installed Union.ai instance.
-
-{{< /markdown >}}
-{{< /variant >}}
-
-This creates `./.flyte/config.yaml` in your current directory. See [Setting up a configuration file](./local-setup#configuration-file) for more options.
+This creates `.flyte/config.yaml` in your current directory. See [Setting up a configuration file](./connecting-to-a-cluster#configuration-file) for more options.
 
 {{< note >}}
 Run `flyte get config` to check which configuration is currently active.
@@ -88,7 +58,7 @@ Run `flyte get config` to check which configuration is currently active.
 
 Create `hello.py`:
 
-{{< code file="/external/unionai-examples/v2/user-guide/getting-started/hello.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/getting-started/hello.py" lang="python" >}}
 
 Here's what's happening:
 
@@ -98,7 +68,7 @@ Here's what's happening:
 
 ## Run it
 
-With your config file in place:
+Create a project directory and place your files there:
 
 ```
 .
@@ -107,30 +77,37 @@ With your config file in place:
     └── config.yaml
 ```
 
+> [!WARNING]
+> Do not run `flyte run` from your home directory. Flyte packages the current directory when running remotely, so running from `$HOME` would attempt to bundle your entire home folder. Always work from a dedicated project directory.
+
 Run the workflow:
 
-```shell
-flyte run hello.py main
+```bash
+flyte run --local hello.py main
 ```
 
-This packages your code and sends it to your Union/Flyte instance for execution.
+This executes the workflow locally on your machine.
 
 ## See the results
 
-You'll see output like:
+You can see the run in the TUI by running:
 
-```shell
-cg9s54pksbjsdxlz2gmc
-https://my-instance.example.com/v2/runs/project/my-project/domain/development/cg9s54pksbjsdxlz2gmc
-Run 'a0' completed successfully.
+```bash
+flyte start tui
 ```
 
-Click the link to view your run in the UI:
+The TUI will open into the explorer view
 
-![V2 UI](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/v2ui.png)
+![Explorer View](../_static/images/user-guide/quickstart/explorer-tui.png)
+
+To navigate to the run details, double-click it or press `Enter` to view the run details.
+
+![Run Details View](../_static/images/user-guide/quickstart/run-tui.png)
 
 ## Next steps
 
 Now that you've run your first workflow:
 
 - [**Core concepts**](./core-concepts/_index): Understand the core concepts of Flyte programming
+- [**Running locally**](./running-locally): Learn about the TUI, caching, and other features that work locally
+- [**Connecting to a cluster**](./connecting-to-a-cluster): Configure your environment for remote execution

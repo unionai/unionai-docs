@@ -1,7 +1,7 @@
 ---
 title: Image
-version: 2.0.0b57
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.6
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -31,6 +31,7 @@ class Image(
     name: Optional[str],
     platform: Tuple[Architecture, ...],
     python_version: Tuple[int, int],
+    extendable: bool,
     _ref_name: Optional[str],
     _layers: Tuple[Layer, ...],
     _image_registry_secret: Optional[Secret],
@@ -44,6 +45,7 @@ class Image(
 | `name` | `Optional[str]` | |
 | `platform` | `Tuple[Architecture, ...]` | |
 | `python_version` | `Tuple[int, int]` | |
+| `extendable` | `bool` | |
 | `_ref_name` | `Optional[str]` | |
 | `_layers` | `Tuple[Layer, ...]` | |
 | `_image_registry_secret` | `Optional[Secret]` | |
@@ -66,6 +68,7 @@ class Image(
 | [`from_uv_script()`](#from_uv_script) | Use this method to create a new image with the specified uv script. |
 | [`validate()`](#validate) |  |
 | [`with_apt_packages()`](#with_apt_packages) | Use this method to create a new image with the specified apt packages layered on top of the current image. |
+| [`with_code_bundle()`](#with_code_bundle) | Configure this image to automatically copy source code from root_dir. |
 | [`with_commands()`](#with_commands) | Use this method to create a new image with the specified commands layered on top of the current image. |
 | [`with_dockerignore()`](#with_dockerignore) |  |
 | [`with_env_vars()`](#with_env_vars) | Use this method to create a new image with the specified environment variables layered on top of. |
@@ -73,7 +76,7 @@ class Image(
 | [`with_pip_packages()`](#with_pip_packages) | Use this method to create a new image with the specified pip packages layered on top of the current image. |
 | [`with_poetry_project()`](#with_poetry_project) | Use this method to create a new image with the specified pyproject. |
 | [`with_requirements()`](#with_requirements) | Use this method to create a new image with the specified requirements file layered on top of the current image. |
-| [`with_source_file()`](#with_source_file) | Use this method to create a new image with the specified local file layered on top of the current image. |
+| [`with_source_file()`](#with_source_file) | Use this method to create a new image with the specified local file(s) layered on top of the current image. |
 | [`with_source_folder()`](#with_source_folder) | Use this method to create a new image with the specified local directory layered on top of the current image. |
 | [`with_uv_project()`](#with_uv_project) | Use this method to create a new image with the specified uv. |
 | [`with_workdir()`](#with_workdir) | Use this method to create a new image with the specified working directory. |
@@ -89,6 +92,7 @@ def clone(
     base_image: Optional[str],
     python_version: Optional[Tuple[int, int]],
     addl_layer: Optional[Layer],
+    extendable: Optional[bool],
 ) -> Image
 ```
 Use this method to clone the current image and change the registry and name
@@ -100,9 +104,10 @@ Use this method to clone the current image and change the registry and name
 | `registry` | `Optional[str]` | Registry to use for the image |
 | `registry_secret` | `Optional[str \| Secret]` | Secret to use to pull/push the private image. |
 | `name` | `Optional[str]` | Name of the image |
-| `base_image` | `Optional[str]` | |
+| `base_image` | `Optional[str]` | Base image to use for the image |
 | `python_version` | `Optional[Tuple[int, int]]` | Python version for the image, if not specified, will use the current Python version |
-| `addl_layer` | `Optional[Layer]` | Additional layer to add to the image. This will be added to the end of the layers. :return: |
+| `addl_layer` | `Optional[Layer]` | Additional layer to add to the image. This will be added to the end of the layers. |
+| `extendable` | `Optional[bool]` | Whether the image is extendable by other images. If True, the image can be used as a base image for other images, and additional layers can be added on top of it. If False, the image cannot be used as a base image for other images, and additional layers cannot be added on top of it. If None (default), defaults to False for safety. :return: |
 
 ### from_base()
 
@@ -255,6 +260,26 @@ Use this method to create a new image with the specified apt packages layered on
 |-|-|-|
 | `packages` | `str` | list of apt packages to install |
 | `secret_mounts` | `Optional[SecretRequest]` | list of secret mounts to use for the build process. :return: Image |
+
+### with_code_bundle()
+
+```python
+def with_code_bundle(
+    copy_style: Literal['loaded_modules', 'all'],
+    dst: str,
+) -> Image
+```
+Configure this image to automatically copy source code from root_dir
+when the runner's copy_style is "none".
+
+When the runner's copy_style is not "none", this is a no-op.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `copy_style` | `Literal['loaded_modules', 'all']` | Which files to copy into the image. "loaded_modules" copies only imported Python modules. "all" copies all files from root_dir. |
+| `dst` | `str` | Destination directory in the container. Defaults to working dir. :return: Image |
 
 ### with_commands()
 
@@ -417,18 +442,18 @@ Cannot be used in conjunction with conda
 
 ```python
 def with_source_file(
-    src: Path,
+    src: typing.Union[Path, typing.List[Path]],
     dst: str,
 ) -> Image
 ```
-Use this method to create a new image with the specified local file layered on top of the current image.
+Use this method to create a new image with the specified local file(s) layered on top of the current image.
 If dest is not specified, it will be copied to the working directory of the image
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `src` | `Path` | root folder of the source code from the build context to be copied |
+| `src` | `typing.Union[Path, typing.List[Path]]` | file or list of files from the build context to be copied |
 | `dst` | `str` | destination folder in the image :return: Image |
 
 ### with_source_folder()

@@ -1,7 +1,7 @@
 ---
 title: Apps
 weight: 4
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Apps
@@ -55,7 +55,7 @@ Let's create a minimal FastAPI app to see how this works.
 
 First, create `hello_app.py`:
 
-{{< code file="/external/unionai-examples/v2/user-guide/getting-started/serving/hello_app.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/getting-started/serving/hello_app.py" lang="python" >}}
 
 ### Understanding the code
 
@@ -68,19 +68,19 @@ First, create `hello_app.py`:
 
 With your config file in place, serve the app:
 
-```shell
+```bash
 flyte serve hello_app.py env
 ```
 
 Or run the Python file directly (which calls `flyte.serve()` in the main block):
 
-```shell
+```bash
 python hello_app.py
 ```
 
 You'll see output like:
 
-```shell
+```output
 https://my-instance.flyte.com/v2/domain/development/project/my-project/apps/hello-app
 App 'hello-app' is now serving.
 ```
@@ -100,6 +100,12 @@ Use **apps** when:
 - You're serving an API or dashboard
 - Users interact in real-time
 - You need a persistent endpoint
+
+## Common patterns
+
+**Model serving with FastAPI**: Train a model with a Flyte pipeline, then serve predictions from it. During local development, the app loads the model from a local file. When deployed remotely, Flyte's `Parameter` system automatically resolves the model from the latest training run output. See [FastAPI app](../build-apps/fastapi-app) for the full example.
+
+**Agent UI with Gradio**: Build an interactive UI that kicks off agent runs using `flyte.with_runcontext()`. A single `RUN_MODE` environment variable controls the deployment progression: fully local (rapid iteration), local UI with remote task execution (cluster compute), or fully remote (production). See [Build apps](../build-apps/_index) for details.
 
 ## Next steps
 

@@ -1,7 +1,7 @@
 ---
 title: Multi-script apps
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Multi-script apps
@@ -20,9 +20,9 @@ project/
 
 ### Example: Multi-file FastAPI app
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/multi_file/app.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/multi_file/app.py" lang=python >}}
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/multi_file/module.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/multi_file/module.py" lang=python >}}
 
 ### Automatic file discovery
 
@@ -50,13 +50,13 @@ project/
 
 ### Example: Multi-file Streamlit app
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/main.py" fragment=streamlit-app lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/streamlit/main.py" fragment=streamlit-app lang=python >}}
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/utils.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/streamlit/utils.py" lang=python >}}
 
 ### Deploying multi-file Streamlit app
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/multi_file_streamlit.py" fragment=app-env lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/streamlit/multi_file_streamlit.py" fragment=app-env lang=python >}}
 
 ## Complex multi-file example
 
@@ -80,17 +80,17 @@ project/
 
 ### Example code
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/complex_multi_file/app.py" fragment=complex-app lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/complex_multi_file/app.py" fragment=complex-app lang=python >}}
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/complex_multi_file/models/user.py" fragment=user-model lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/complex_multi_file/models/user.py" fragment=user-model lang=python >}}
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/complex_multi_file/services/auth.py" fragment=auth-service lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/complex_multi_file/services/auth.py" fragment=auth-service lang=python >}}
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/complex_multi_file/utils/helpers.py" fragment=helpers lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/complex_multi_file/utils/helpers.py" fragment=helpers lang=python >}}
 
 ### Deploying complex app
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/complex_multi_file/app.py" fragment=complex-env lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/complex_multi_file/app.py" fragment=complex-env lang=python >}}
 
 ## Best practices
 

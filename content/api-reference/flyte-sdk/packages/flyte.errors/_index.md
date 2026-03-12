@@ -1,7 +1,7 @@
 ---
 title: flyte.errors
-version: 2.0.0b57
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.6
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
 ---
@@ -31,6 +31,7 @@ unknown error.
 | [`InitializationError`](../flyte.errors/initializationerror) | This error is raised when the Union system is tried to access without being initialized. |
 | [`InlineIOMaxBytesBreached`](../flyte.errors/inlineiomaxbytesbreached) | This error is raised when the inline IO max bytes limit is breached. |
 | [`InvalidImageNameError`](../flyte.errors/invalidimagenameerror) | This error is raised when the image name is invalid. |
+| [`InvalidPackageError`](../flyte.errors/invalidpackageerror) | Raised when an invalid system package is detected during image build. |
 | [`LogsNotYetAvailableError`](../flyte.errors/logsnotyetavailableerror) | This error is raised when the logs are not yet available for a task. |
 | [`ModuleLoadError`](../flyte.errors/moduleloaderror) | This error is raised when the module cannot be loaded, either because it does not exist or because of a. |
 | [`NotInTaskContextError`](../flyte.errors/notintaskcontexterror) | This error is raised when the user tries to access the task context outside of a task. |

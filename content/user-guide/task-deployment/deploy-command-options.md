@@ -1,7 +1,7 @@
 ---
 title: Deploy command options
 weight: 6
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
@@ -33,10 +33,12 @@ The `flyte deploy` command provides extensive configuration options:
 You can specify `--project` and `--domain` which will override any defaults defined in your `config.yaml`:
 
 ```bash
-# Use defaults from default config.yaml
 flyte deploy my_example.py env
+```
 
-# Specify target project and domain
+Specify a target project and domain:
+
+```bash
 flyte deploy --project my-project --domain development my_example.py env
 ```
 
@@ -46,14 +48,22 @@ flyte deploy --project my-project --domain development my_example.py env
 
 The `--version` option controls how deployed tasks are tagged and identified in the Flyte backend:
 
+Auto-generated version (default):
+
 ```bash
-# Auto-generated version (default)
 flyte deploy my_example.py env
+```
 
-# Explicit version
+Explicit version:
+
+```bash
 flyte deploy --version v1.0.0 my_example.py env
+```
 
-# Required when using copy-style none (no code bundle to generate hash from)
+> [!NOTE]
+> An explicit version is required when using `--copy-style none`, since there is no code bundle to generate a hash from.
+
+```bash
 flyte deploy --copy-style none --version v1.0.0 my_example.py env
 ```
 
@@ -71,7 +81,6 @@ flyte deploy --copy-style none --version v1.0.0 my_example.py env
 The `--dry-run` option allows you to preview what would be deployed without actually performing the deployment:
 
 ```bash
-# Preview what would be deployed
 flyte deploy --dry-run my_example.py env
 ```
 
@@ -84,23 +93,26 @@ flyte deploy --dry-run my_example.py env
 Control which environments get discovered and deployed:
 
 **Single environment (default):**
+
 ```bash
-# Deploy specific environment variable
 flyte deploy my_example.py env
 ```
 
 **All environments in file:**
+
 ```bash
-# Deploy all TaskEnvironment objects in file
 flyte deploy --all my_example.py
 ```
 
 **Recursive directory deployment:**
-```bash
-# Deploy all environments in directory tree
-flyte deploy --recursive ./src
 
-# Combine with comprehensive bundling
+```bash
+flyte deploy --recursive ./src
+```
+
+Combine with comprehensive bundling:
+
+```bash
 flyte deploy --recursive --copy-style all ./project
 ```
 
@@ -154,26 +166,29 @@ This is particularly useful for monorepos and projects with complex directory st
 ### Common use cases
 
 **Monorepos:**
-```bash
-# Deploy service from monorepo root
-flyte deploy --root-dir ./services/ml ./services/ml/my_example.py env
+Deploy a service from the monorepo root:
 
-# Deploy from anywhere in the monorepo
+```bash
+flyte deploy --root-dir ./services/ml ./services/ml/my_example.py env
+```
+
+Deploy from anywhere in the monorepo:
+
+```bash
 cd ./docs/
 flyte deploy --root-dir ../services/ml ../services/ml/my_example.py env
 ```
 
 **Cross-directory imports:**
+When a workflow imports modules from sibling directories (e.g., `project/workflows/my_example.py` imports `project/src/utils.py`):
+
 ```bash
-# When workflow imports modules from sibling directories
-# Project structure: project/workflows/my_example.py imports project/src/utils.py
 cd project/workflows/
-flyte deploy --root-dir .. my_example.py env  # Sets root to project/
+flyte deploy --root-dir .. my_example.py env
 ```
 
 **Working directory independence:**
 ```bash
-# Deploy from any location while maintaining consistent bundling
 flyte deploy --root-dir /path/to/project /path/to/project/my_example.py env
 ```
 
@@ -196,7 +211,6 @@ my-project/
 ```
 
 ```bash
-# Deploy ML service workflows with access to shared utilities
 flyte deploy --root-dir ./my-project ./my-project/services/ml/my_example.py env
 ```
 
@@ -211,10 +225,12 @@ The `--image` option allows you to override image URIs at deployment time withou
 ### Named image mappings
 
 ```bash
-# Map specific image reference to URI
 flyte deploy --image base=ghcr.io/org/base:v1.0 my_example.py env
+```
 
-# Multiple named image mappings
+Multiple named image mappings:
+
+```bash
 flyte deploy \
   --image base=ghcr.io/org/base:v1.0 \
   --image gpu=ghcr.io/org/gpu:v2.0 \
@@ -224,7 +240,6 @@ flyte deploy \
 ### Default image mapping
 
 ```bash
-# Override default image (used when no specific image is set)
 flyte deploy --image ghcr.io/org/default:latest my_example.py env
 ```
 
@@ -243,7 +258,6 @@ flyte deploy --image ghcr.io/org/default:latest my_example.py env
 The `--ignore-load-errors` option allows the deployment process to continue even if some modules fail to load during the environment discovery phase. This is particularly useful for large projects or monorepos where certain modules may have missing dependencies or other issues that prevent them from being imported successfully.
 
 ```bash
-# Continue deployment despite module failures
 flyte deploy --recursive --ignore-load-errors ./large-project
 ```
 
@@ -262,7 +276,6 @@ The `--no-sync-local-sys-paths` option disables the automatic synchronization of
 ### When to disable path synchronization
 
 ```bash
-# Disable local sys.path sync (advanced use case)
 flyte deploy --no-sync-local-sys-paths my_example.py env
 ```
 

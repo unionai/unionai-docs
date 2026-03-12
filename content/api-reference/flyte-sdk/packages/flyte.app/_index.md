@@ -1,7 +1,7 @@
 ---
 title: flyte.app
-version: 2.0.0b57
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.6
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
 ---
@@ -23,6 +23,7 @@ sidebar_expanded: true
 | [`Port`](../flyte.app/port) |  |
 | [`RunOutput`](../flyte.app/runoutput) | Use a run's output for app parameters. |
 | [`Scaling`](../flyte.app/scaling) |  |
+| [`Timeouts`](../flyte.app/timeouts) | Timeout configuration for the application. |
 
 ### Methods
 

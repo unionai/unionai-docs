@@ -1,7 +1,7 @@
 ---
 title: Data flow
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Data flow
@@ -27,7 +27,7 @@ Flyte handles different data types with different transport mechanisms:
 These types are not copied but passed as references to storage locations:
 
 - **Files**: `flyte.io.File`
-- **Directories**: `flyte.io.Directory`
+- **Directories**: `flyte.io.Dir`
 - **Dataframes**: `flyte.io.DataFrame`, `pd.DataFrame`, `pl.DataFrame`, etc.
 
 Dataframes are automatically converted to Parquet format and read using Apache Arrow for zero-copy reads. Use `flyte.io.DataFrame` for lazy materialization to any supported type like pandas or polars. [Learn more about the Flyte Dataframe type](../../user-guide/task-programming/dataframes)

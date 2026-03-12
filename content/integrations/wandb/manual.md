@@ -1,7 +1,7 @@
 ---
 title: Manual integration
 weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
@@ -13,7 +13,7 @@ If you need more control over W&B initialization, you can use the `Wandb` and `W
 
 Add a `Wandb` link to your task to generate a link to the W&B run in the Flyte UI:
 
-{{< code file="/external/unionai-examples/v2/integrations/flyte-plugins/wandb/init_manual.py" lang=python highlight="3 15-22 31-36 44" >}}
+{{< code file="/unionai-examples/v2/integrations/flyte-plugins/wandb/init_manual.py" lang=python highlight="3 15-22 31-36 44" >}}
 
 ### With a custom run ID
 
@@ -63,7 +63,7 @@ result = await train_model.override(
 
 Use `WandbSweep` to add a link to a W&B sweep:
 
-{{< code file="/external/unionai-examples/v2/integrations/flyte-plugins/wandb/sweep_manual.py" lang=python highlight="3 25-30 43" >}}
+{{< code file="/unionai-examples/v2/integrations/flyte-plugins/wandb/sweep_manual.py" lang=python highlight="3 25-30 43" >}}
 
 The link will point to the project's sweeps page. If you have the sweep ID, you can specify it in the link:
 

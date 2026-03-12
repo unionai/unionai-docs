@@ -1,7 +1,7 @@
 ---
 title: Authentication
 weight: 1
-variants: -flyte -serverless -byoc -selfmanaged
+variants: -flyte -byoc -selfmanaged
 mermaid: true
 ---
 
@@ -131,7 +131,7 @@ Select the Helm chart you used to install Flyte:
 
 1. Generate a random password to be used internally by `flytepropeller`
 2. Use the following command to hash the password:
-   ```shell
+   ```bash
    $ pip install bcrypt && python -c 'import bcrypt; import base64; print(base64.b64encode(bcrypt.hashpw("<your-random-password>".encode("utf-8"), bcrypt.gensalt(6))))'
    ```
 3. Go to your values file and locate the `auth` section and replace values accordingly:
@@ -157,8 +157,8 @@ Select the Helm chart you used to install Flyte:
 4. Save your changes
 5. Upgrade your Helm release with the new values:
 
-```shell
-$ helm upgrade <release-name> flyteorg/flyte-binary -n <your-namespace> --values <your-values-file>.yaml
+```bash
+helm upgrade <release-name> flyteorg/flyte-binary -n <your-namespace> --values <your-values-file>.yaml
 ```
 Where `<release-name>` is the name of your Helm release, typically `flyte-backend`. You can find it using `helm ls -n <your-namespace>`
 
@@ -168,7 +168,7 @@ Where `<release-name>` is the name of your Helm release, typically `flyte-backen
 
 1. Generate a random password to be used internally by `flytepropeller`
 2. Use the following command to hash the password:
-   ```shell
+   ```bash
    $ pip install bcrypt && python -c 'import bcrypt; import base64; print(base64.b64encode(bcrypt.hashpw("<your-random-password>".encode("utf-8"), bcrypt.gensalt(6))))'
    ```
    Take note of the output (only the contents inside `''`).
@@ -290,8 +290,8 @@ Where `<release-name>` is the name of your Helm release, typically `flyte-backen
    > For [multi-cluster deployments](../multi-cluster.md) you must add this Secret definition block to the `values-dataplane.yaml` file. If you are not running `flytepropeller` in the control plane cluster, you do not need to create this secret there.
 6. Save and exit your editor.
 7. Upgrade your Helm release with the new configuration:
-   ```shell
-   $ helm upgrade <release-name> flyteorg/flyte-binary -n <your-namespace> --values <your-values-file>.yaml
+   ```bash
+   helm upgrade <release-name> flyteorg/flyte-binary -n <your-namespace> --values <your-values-file>.yaml
    ```
 8. Verify that the `flytepropeller`, `flytescheduler` and `flyteadmin` Pods are restarted and running:
    ```bash
@@ -645,24 +645,20 @@ Also, `FLYTE_CREDENTIALS_CLIENT_SECRET_FROM_FILE` redirect is available as well,
 
 The following is a list of flytekit configuration values the community has used in CI, along with a brief explanation:
 
-```shell
-# When using OAuth2 service auth, this is the username and password.
+```bash
 export FLYTE_CREDENTIALS_CLIENT_ID=<client_id>
 export FLYTE_CREDENTIALS_CLIENT_SECRET=<client_secret>
-
-# This tells the SDK to use basic authentication. If not set, Flytekit will assume you want to use the standard PKCE flow.
 export FLYTE_CREDENTIALS_AUTH_MODE=basic
-
-# This value should be set to conform to this
-# `header config <https://github.com/flyteorg/flyteadmin/blob/12d6aa0a419ccec81b4c8289fd172e70a2ded525/auth/config/config.go#L124-L128>`_
-# on the Admin side.
 export FLYTE_CREDENTIALS_AUTHORIZATION_METADATA_KEY=<header name>
-
-# When using basic authentication, you'll need to specify a scope to the IDP (instead of `openid`, which is
-# only for OAuth). Set that here.
 export FLYTE_CREDENTIALS_OAUTH_SCOPES=<idp defined scopes>
-
-# Set this to force Flytekit to use authentication, even if not required by Admin. This is useful as you're
-# rolling out the requirement.
 export FLYTE_PLATFORM_AUTH=True
 ```
+
+| Variable | Description |
+|----------|-------------|
+| `FLYTE_CREDENTIALS_CLIENT_ID` | OAuth2 client ID |
+| `FLYTE_CREDENTIALS_CLIENT_SECRET` | OAuth2 client secret |
+| `FLYTE_CREDENTIALS_AUTH_MODE` | Set to `basic` for basic authentication. If unset, Flytekit uses the standard PKCE flow. |
+| `FLYTE_CREDENTIALS_AUTHORIZATION_METADATA_KEY` | Header name for the authorization metadata, matching the [Admin-side config](https://github.com/flyteorg/flyteadmin/blob/12d6aa0a419ccec81b4c8289fd172e70a2ded525/auth/config/config.go#L124-L128). |
+| `FLYTE_CREDENTIALS_OAUTH_SCOPES` | IDP-defined scopes for basic auth (instead of `openid` used by OAuth). |
+| `FLYTE_PLATFORM_AUTH` | Set to `True` to force authentication even if not required by Admin. Useful during rollout. |

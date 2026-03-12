@@ -1,7 +1,7 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b57
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.6
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
 ---
@@ -34,8 +34,10 @@ sidebar_expanded: true
 | [`flyte.app.Port`](../packages/flyte.app/port) | |
 | [`flyte.app.RunOutput`](../packages/flyte.app/runoutput) |Use a run's output for app parameters. |
 | [`flyte.app.Scaling`](../packages/flyte.app/scaling) | |
+| [`flyte.app.Timeouts`](../packages/flyte.app/timeouts) |Timeout configuration for the application. |
 | [`flyte.app.extras.FastAPIAppEnvironment`](../packages/flyte.app.extras/fastapiappenvironment) | |
 | [`flyte.app.extras.FastAPIPassthroughAuthMiddleware`](../packages/flyte.app.extras/fastapipassthroughauthmiddleware) |FastAPI middleware that automatically sets Flyte auth metadata from request headers. |
+| [`flyte.app.extras.FlyteWebhookAppEnvironment`](../packages/flyte.app.extras/flytewebhookappenvironment) |A pre-built FastAPI app environment for common Flyte webhook operations. |
 | [`flyte.config.Config`](../packages/flyte.config/config) |This the parent configuration object and holds all the underlying configuration object types. |
 | [`flyte.connectors.AsyncConnector`](../packages/flyte.connectors/asyncconnector) |This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
 | [`flyte.connectors.AsyncConnectorExecutorMixin`](../packages/flyte.connectors/asyncconnectorexecutormixin) |This mixin class is used to run the connector task locally, and it's only used for local execution. |
@@ -54,6 +56,7 @@ sidebar_expanded: true
 | [`flyte.errors.InitializationError`](../packages/flyte.errors/initializationerror) |This error is raised when the Union system is tried to access without being initialized. |
 | [`flyte.errors.InlineIOMaxBytesBreached`](../packages/flyte.errors/inlineiomaxbytesbreached) |This error is raised when the inline IO max bytes limit is breached. |
 | [`flyte.errors.InvalidImageNameError`](../packages/flyte.errors/invalidimagenameerror) |This error is raised when the image name is invalid. |
+| [`flyte.errors.InvalidPackageError`](../packages/flyte.errors/invalidpackageerror) |Raised when an invalid system package is detected during image build. |
 | [`flyte.errors.LogsNotYetAvailableError`](../packages/flyte.errors/logsnotyetavailableerror) |This error is raised when the logs are not yet available for a task. |
 | [`flyte.errors.ModuleLoadError`](../packages/flyte.errors/moduleloaderror) |This error is raised when the module cannot be loaded, either because it does not exist or because of a. |
 | [`flyte.errors.NotInTaskContextError`](../packages/flyte.errors/notintaskcontexterror) |This error is raised when the user tries to access the task context outside of a task. |
@@ -77,11 +80,16 @@ sidebar_expanded: true
 | [`flyte.extend.AsyncFunctionTaskTemplate`](../packages/flyte.extend/asyncfunctiontasktemplate) |A task template that wraps an asynchronous functions. |
 | [`flyte.extend.ImageBuildEngine`](../packages/flyte.extend/imagebuildengine) |ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
 | [`flyte.extend.TaskTemplate`](../packages/flyte.extend/tasktemplate) |Task template is a template for a task that can be executed. |
+| [`flyte.extras.BatchStats`](../packages/flyte.extras/batchstats) |Monitoring statistics exposed by :attr:`DynamicBatcher. |
 | [`flyte.extras.ContainerTask`](../packages/flyte.extras/containertask) |This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
+| [`flyte.extras.DynamicBatcher`](../packages/flyte.extras/dynamicbatcher) |Batches records from many concurrent producers and runs them through. |
+| [`flyte.extras.Prompt`](../packages/flyte.extras/prompt) |Simple prompt record with built-in token estimation. |
+| [`flyte.extras.TokenBatcher`](../packages/flyte.extras/tokenbatcher) |Token-aware batcher for LLM inference workloads. |
 | [`flyte.git.GitStatus`](../packages/flyte.git/gitstatus) |A class representing the status of a git repository. |
 | [`flyte.io.DataFrame`](../packages/flyte.io/dataframe) |A Flyte meta DataFrame object, that wraps all other dataframe types (usually available as plugins, pandas. |
 | [`flyte.io.Dir`](../packages/flyte.io/dir) |A generic directory class representing a directory with files of a specified format. |
 | [`flyte.io.File`](../packages/flyte.io/file) |A generic file class representing a file with a specified format. |
+| [`flyte.io.HashFunction`](../packages/flyte.io/hashfunction) |A hash method that wraps a user-provided function to compute hashes. |
 | [`flyte.io.extend.DataFrameDecoder`](../packages/flyte.io.extend/dataframedecoder) | |
 | [`flyte.io.extend.DataFrameEncoder`](../packages/flyte.io.extend/dataframeencoder) | |
 | [`flyte.io.extend.DataFrameTransformerEngine`](../packages/flyte.io.extend/dataframetransformerengine) |Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
@@ -110,9 +118,14 @@ sidebar_expanded: true
 | [`flyte.remote.Secret`](../packages/flyte.remote/secret) | |
 | [`flyte.remote.Task`](../packages/flyte.remote/task) | |
 | [`flyte.remote.TaskDetails`](../packages/flyte.remote/taskdetails) | |
+| [`flyte.remote.TimeFilter`](../packages/flyte.remote/timefilter) |Filter for time-based fields (e. |
 | [`flyte.remote.Trigger`](../packages/flyte.remote/trigger) |Represents a trigger in the Flyte platform. |
 | [`flyte.remote.User`](../packages/flyte.remote/user) |Represents a user in the Flyte platform. |
 | [`flyte.report.Report`](../packages/flyte.report/report) | |
+| [`flyte.sandbox.CodeTaskTemplate`](../packages/flyte.sandbox/codetasktemplate) |A sandboxed task created from a code string rather than a decorated function. |
+| [`flyte.sandbox.ImageConfig`](../packages/flyte.sandbox/imageconfig) |Configuration for Docker image building at runtime. |
+| [`flyte.sandbox.SandboxedConfig`](../packages/flyte.sandbox/sandboxedconfig) |Configuration for a sandboxed task executed via Monty. |
+| [`flyte.sandbox.SandboxedTaskTemplate`](../packages/flyte.sandbox/sandboxedtasktemplate) |A task template that executes the function body in a Monty sandbox. |
 | [`flyte.storage.ABFS`](../packages/flyte.storage/abfs) |Any Azure Blob Storage specific configuration. |
 | [`flyte.storage.GCS`](../packages/flyte.storage/gcs) |Any GCS specific configuration. |
 | [`flyte.storage.S3`](../packages/flyte.storage/s3) |S3 specific configuration. |
@@ -131,4 +144,6 @@ sidebar_expanded: true
 | [`flyte.Link`](../packages/flyte/link) | |
 | [`flyte.extend.ImageBuilder`](../packages/flyte.extend/imagebuilder) | |
 | [`flyte.extend.ImageChecker`](../packages/flyte.extend/imagechecker) | |
+| [`flyte.extras.CostEstimator`](../packages/flyte.extras/costestimator) |Protocol for records that can estimate their own processing cost. |
+| [`flyte.extras.TokenEstimator`](../packages/flyte.extras/tokenestimator) |Protocol for records that can estimate their own token count. |
 | [`flyte.types.Renderable`](../packages/flyte.types/renderable) | |

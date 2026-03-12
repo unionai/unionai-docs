@@ -1,7 +1,7 @@
 ---
 title: Data classes and structures
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Data classes and structures
@@ -17,5 +17,5 @@ This makes them ideal for configuration objects, metadata, and smaller structure
 
 This example demonstrates how data classes and Pydantic models work together as materialized data types, showing nested structures and batch processing patterns:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/dataclasses-and-structures/example.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/dataclasses-and-structures/example.py" lang="python" >}}
 

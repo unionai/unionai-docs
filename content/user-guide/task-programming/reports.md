@@ -1,7 +1,7 @@
 ---
 title: Reports
 weight: 7
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Reports
@@ -38,7 +38,7 @@ Check (test) if implicit flush is performed at the end of the task execution.
 
 ## A simple example
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/reports/simple.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/reports/simple.py" lang="python" >}}
 
 Here we define a task `task1` that logs some HTML content to the default tab and creates a new tab named "Tab 2" where it logs additional HTML content.
 The `flush` method is called to send the report to the backend.
@@ -48,7 +48,7 @@ The `flush` method is called to send the report to the backend.
 Here is another example.
 We import the necessary modules, set up the task environment, define the main task with reporting enabled and define the data generation function:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/reports/globe_visualization.py" fragment="section-1" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/reports/globe_visualization.py" fragment="section-1" lang="python" >}}
 
 We then define the HTML content for the report:
 
@@ -69,7 +69,7 @@ def get_html_content():
 
 Finally, we run the workflow:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/reports/globe_visualization.py" fragment="section-2" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/reports/globe_visualization.py" fragment="section-2" lang="python" >}}
 
 When the workflow runs, the report will be visible in the UI:
 
@@ -90,7 +90,7 @@ You do this by calling `flyte.report.flush()` (or specifying `do_flush=True` in 
 
 First we import the necessary modules, and set up the task environment:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/reports/streaming_reports.py" fragment="section-1" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/reports/streaming_reports.py" fragment="section-1" lang="python" >}}
 
 Next we define the HTML content for the report:
 
@@ -105,7 +105,7 @@ https://github.com/unionai/unionai-examples/blob/main/v2/user-guide/task-program
 
 Finally, we define the task that renders the report (`data_processing_dashboard`), the driver task of the workflow (`main`), and the run logic:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/reports/streaming_reports.py" fragment="section-2" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/reports/streaming_reports.py" fragment="section-2" lang="python" >}}
 
 The key to the live update ability is the `while` loop that appends Javascript to the report. The Javascript calls execute on append to the document and update it.
 

@@ -1,7 +1,7 @@
 ---
 title: Tasks
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Tasks
@@ -109,7 +109,7 @@ print(result)  # "Hello, World!"
 
 Or from the command line:
 
-```shell
+```bash
 flyte run my_script.py greet --name World
 ```
 

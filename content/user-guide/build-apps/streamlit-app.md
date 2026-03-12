@@ -1,7 +1,7 @@
 ---
 title: Streamlit app
 weight: 8
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Streamlit app
@@ -12,7 +12,7 @@ Streamlit is a popular framework for building interactive web applications and d
 
 The simplest way to deploy a Streamlit app is to use the built-in Streamlit "hello" demo:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/basic_streamlit.py" fragment=app-definition lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/streamlit/basic_streamlit.py" fragment=app-definition lang=python >}}
 
 This just serves the built-in Streamlit "hello" demo.
 
@@ -23,7 +23,7 @@ Note that the command is running the file itself, and uses the `--server` flag t
 
 This is useful when you have a relatively small and simple app that you want to deploy as a single file.
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/single_file_streamlit.py" fragment=streamlit-app lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/streamlit/single_file_streamlit.py" fragment=streamlit-app lang=python >}}
 
 Note that the `if __name__ == "__main__"` block is used to both serve the `AppEnvironment` *and* run the app code via
 the `streamlit run` command using the `--server` flag.
@@ -33,7 +33,7 @@ the `streamlit run` command using the `--server` flag.
 When your streamlit application grows more complex, you may want to split your app into multiple files.
 For a multi-file Streamlit app, use the `include` parameter to bundle your app files:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/multi_file_streamlit.py" fragment=app-env lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/streamlit/multi_file_streamlit.py" fragment=app-env lang=python >}}
 
 Where your project structure looks like this:
 
@@ -46,7 +46,7 @@ project/
 
 Your `main.py` file would contain your Streamlit app code:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/main.py" fragment=streamlit-app lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/streamlit/main.py" fragment=streamlit-app lang=python >}}
 
 ## Example: Data visualization dashboard
 
@@ -54,15 +54,15 @@ Here's a complete example of a Streamlit dashboard, all in a single file.
 
 Define the streamlit app in the `main` function:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/data_visualization_dashboard.py" fragment=streamlit-app lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/streamlit/data_visualization_dashboard.py" fragment=streamlit-app lang=python >}}
 
 Define the `AppEnvironment` to serve the app:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/data_visualization_dashboard.py" fragment=app-env lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/streamlit/data_visualization_dashboard.py" fragment=app-env lang=python >}}
 
 And finally the app serving logic:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/data_visualization_dashboard.py" fragment=serve lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/streamlit/data_visualization_dashboard.py" fragment=serve lang=python >}}
 
 ## Best practices
 

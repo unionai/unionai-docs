@@ -1,7 +1,7 @@
 ---
 title: Caching
 weight: 4
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Caching
@@ -36,7 +36,7 @@ Flyte 2 supports three main cache behaviors:
 
 ### `"auto"` - Automatic versioning
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="auto" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="auto" lang="python" >}}
 
 With `behavior="auto"`, the cache version is automatically generated based on the function's source code.
 If you change the function implementation, the cache is automatically invalidated.
@@ -47,14 +47,14 @@ If you change the function implementation, the cache is automatically invalidate
 
 You can also use the direct string shorthand:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="auto-shorthand" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="auto-shorthand" lang="python" >}}
 
 ### `"override"`
 
 With `behavior="override"`, you can specify a custom cache key in the `version_override` parameter.
 Since the cache key is fixed as part of the code, it can be manually changed when you need to invalidate the cache.
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="override" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="override" lang="python" >}}
 
 - **When to use**: When you need explicit control over cache invalidation.
 - **Cache invalidation**: Manual, by changing `version_override`.
@@ -65,7 +65,7 @@ Since the cache key is fixed as part of the code, it can be manually changed whe
 To explicitly disable caching, use the `"disable"` behavior.
 **This is the default behavior.**
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="disable" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="disable" lang="python" >}}
 
 - **When to use**: Non-deterministic functions, side effects, or always-fresh data.
 - **Cache invalidation**: N/A - never cached.
@@ -73,7 +73,7 @@ To explicitly disable caching, use the `"disable"` behavior.
 
 You can also use the direct string shorthand:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="disable-shorthand" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="disable-shorthand" lang="python" >}}
 
 ## Advanced caching configuration
 
@@ -82,7 +82,7 @@ You can also use the direct string shorthand:
 Sometimes you want to cache based on some inputs but not others:
 
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="ignored" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="ignored" lang="python" >}}
 
 **This is useful for**:
 - Debug flags that don't affect computation
@@ -93,7 +93,7 @@ Sometimes you want to cache based on some inputs but not others:
 
 Cache serialization ensures that only one instance of a task runs at a time for identical inputs:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="serialize" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="serialize" lang="python" >}}
 
 **When to use serialization**:
 - Very expensive computations (model training, large data processing)
@@ -110,7 +110,7 @@ Cache serialization ensures that only one instance of a task runs at a time for 
 
 Use `salt` to vary cache keys without changing function logic:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="salt" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="salt" lang="python" >}}
 
 **`salt` is useful for**:
 - A/B testing with identical code.
@@ -125,13 +125,13 @@ For `behavior="auto"`, Flyte uses cache policies to generate version hashes.
 
 The default `FunctionBodyPolicy` generates cache versions from the function's source code:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="policy" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="policy" lang="python" >}}
 
 ### Custom cache policies
 
 You can implement custom cache policies by following the `CachePolicy` protocol:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="custom-policy" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="custom-policy" lang="python" >}}
 
 ## Caching configuration at different levels
 
@@ -143,19 +143,19 @@ You can configure caching at the `TaskEnvironment` level.
 This will set the default cache behavior for all tasks defined using that environment.
 For example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="env-level" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="env-level" lang="python" >}}
 
 ### `@env.task` decorator level
 
 By setting the cache parameter in the `@env.task` decorator, you can override the environment's default cache behavior for specific tasks:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="decorator-level" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="decorator-level" lang="python" >}}
 
 ### `task.override` level
 
 By setting the cache parameter in the `task.override` method, you can override the cache behavior for specific task invocations:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="override-level" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="override-level" lang="python" >}}
 
 ## Runtime cache control
 

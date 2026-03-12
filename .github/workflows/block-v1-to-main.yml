@@ -1,0 +1,17 @@
+name: block-v1-to-main
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  block-v1-to-main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Block v1 branch from merging into main
+        if: github.head_ref == 'v1'
+        run: |
+          echo "::error::The v1 branch cannot be merged into main."
+          exit 1
+      - name: OK
+        if: github.head_ref != 'v1'
+        run: echo "Branch check passed"

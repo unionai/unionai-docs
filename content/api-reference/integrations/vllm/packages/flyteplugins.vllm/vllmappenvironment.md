@@ -1,7 +1,7 @@
 ---
 title: VLLMAppEnvironment
-version: 2.0.0b57
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.6
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -34,6 +34,7 @@ class VLLMAppEnvironment(
     include: List[str],
     parameters: List[Parameter],
     cluster_pool: str,
+    timeouts: Timeouts,
     image: str | Image | Literal['auto'],
     type: str,
     port: int | Port,
@@ -63,6 +64,7 @@ class VLLMAppEnvironment(
 | `include` | `List[str]` | |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | The target cluster_pool where the app should be deployed. |
+| `timeouts` | `Timeouts` | |
 | `image` | `str \| Image \| Literal['auto']` | |
 | `type` | `str` | Type of app. |
 | `port` | `int \| Port` | Port application listens to. Defaults to 8000 for vLLM. |

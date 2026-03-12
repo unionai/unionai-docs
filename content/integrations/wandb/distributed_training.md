@@ -1,7 +1,7 @@
 ---
 title: Distributed training
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
@@ -20,7 +20,7 @@ The plugin:
 
 Here's a minimal single-node example that logs metrics from a distributed training task. By default (`run_mode="auto"`, `rank_scope="global"`), only rank 0 logs to W&B:
 
-{{< code file="/external/unionai-examples/v2/integrations/flyte-plugins/wandb/distributed_training_quick_start.py" lang=python highlight="4-5 15 20 25-26 32" >}}
+{{< code file="/unionai-examples/v2/integrations/flyte-plugins/wandb/distributed_training_quick_start.py" lang=python highlight="4-5 15 20 25-26 32" >}}
 
 A few things to note:
 

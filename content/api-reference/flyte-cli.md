@@ -1,15 +1,16 @@
 ---
 title: "Flyte CLI"
-version: 2.0.0b57
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.6
+variants: +flyte +byoc +selfmanaged
 layout: py_api
-weight: 1
+weight: 3
 ---
 
 # Flyte CLI
 
 This is the command line interface for Flyte.
 
+{{< variant flyte >}}
 {{< grid >}}
 {{< markdown >}}
 | Object | Action |
@@ -17,13 +18,13 @@ This is the command line interface for Flyte.
 | `action` | [`abort`](#flyte-abort-action), [`get`](#flyte-get-action)  |
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
 | `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
+| `project` | [`create`](#flyte-create-project), [`get`](#flyte-get-project), [`update`](#flyte-update-project)  |
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
-| `project` | [`get`](#flyte-get-project)  |
 | `task` | [`get`](#flyte-get-task)  |
 | `hf-model` | [`prefetch`](#flyte-prefetch-hf-model)  |
 | `deployed-task` | [`run`](#flyte-run-deployed-task)  |
@@ -34,7 +35,7 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
-| `create` | [`config`](#flyte-create-config), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
+| `create` | [`config`](#flyte-create-config), [`project`](#flyte-create-project), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
 | `delete` | [`app`](#flyte-delete-app), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
 | [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
@@ -43,10 +44,73 @@ This is the command line interface for Flyte.
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
 | `start` | [`tui`](#flyte-start-tui)  |
-| `update` | [`app`](#flyte-update-app), [`trigger`](#flyte-update-trigger)  |
+| `update` | [`app`](#flyte-update-app), [`project`](#flyte-update-project), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
 {{< /grid >}}
+{{< /variant >}}
+{{< variant byoc selfmanaged >}}
+{{< grid >}}
+{{< markdown >}}
+| Object | Action |
+| ------ | -- |
+| `action` | [`abort`](#flyte-abort-action), [`get`](#flyte-get-action)  |
+| `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
+| `api-key` | [`create⁺`](#flyte-create-api-key), [`delete⁺`](#flyte-delete-api-key), [`get⁺`](#flyte-get-api-key)  |
+| `assignment` | [`create⁺`](#flyte-create-assignment), [`delete⁺`](#flyte-delete-assignment), [`get⁺`](#flyte-get-assignment)  |
+| `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
+| `policy` | [`create⁺`](#flyte-create-policy), [`delete⁺`](#flyte-delete-policy), [`get⁺`](#flyte-get-policy), [`update⁺`](#flyte-update-policy)  |
+| `project` | [`create`](#flyte-create-project), [`get`](#flyte-get-project), [`update`](#flyte-update-project)  |
+| `role` | [`create⁺`](#flyte-create-role), [`delete⁺`](#flyte-delete-role), [`get⁺`](#flyte-get-role), [`update⁺`](#flyte-update-role)  |
+| `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
+| `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
+| `user` | [`create⁺`](#flyte-create-user), [`delete⁺`](#flyte-delete-user), [`get⁺`](#flyte-get-user)  |
+| `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
+| `docs` | [`gen`](#flyte-gen-docs)  |
+| `io` | [`get`](#flyte-get-io)  |
+| `logs` | [`get`](#flyte-get-logs)  |
+| `member` | [`get⁺`](#flyte-get-member)  |
+| `task` | [`get`](#flyte-get-task)  |
+| `hf-model` | [`prefetch`](#flyte-prefetch-hf-model)  |
+| `deployed-task` | [`run`](#flyte-run-deployed-task)  |
+| `tui` | [`start`](#flyte-start-tui)  |
+{{< /markdown >}}
+{{< markdown >}}
+| Action | On |
+| ------ | -- |
+| `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
+| [`build`](#flyte-build) | - |
+| `create` | [`api-key⁺`](#flyte-create-api-key), [`assignment⁺`](#flyte-create-assignment), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
+| `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`policy⁺`](#flyte-delete-policy), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
+| [`deploy`](#flyte-deploy) | - |
+| `gen` | [`docs`](#flyte-gen-docs)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
+| `run` | [`deployed-task`](#flyte-run-deployed-task)  |
+| [`serve`](#flyte-serve) | - |
+| `start` | [`tui`](#flyte-start-tui)  |
+| `update` | [`app`](#flyte-update-app), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
+| [`whoami`](#flyte-whoami) | - |
+{{< /markdown >}}
+{{< /grid >}}
+{{< /variant >}}
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+
+## Union-specific functionality {#plugin-commands}
+
+> [!NOTE]
+> Commands marked with **⁺** are provided by the `flyteplugins-union` plugin,
+> which adds Union-specific functionality to the Flyte CLI
+> (user management, RBAC, API keys).
+> Install it with `pip install flyteplugins-union`.
+>
+> See the [flyteplugins.union API reference](../integrations/union/_index)
+> for the programmatic interface.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 
 ## flyte
@@ -157,6 +221,64 @@ environments.
 
 Create resources in a Flyte deployment.
 
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte create api-key
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte create api-key [OPTIONS]`**
+
+Create an API key for headless authentication.
+
+This creates OAuth application credentials that can be used to authenticate
+with Union without interactive login. The generated API key should be set
+as the FLYTE_API_KEY environment variable. Oauth applications should not be
+confused with Union Apps, which are a different construct entirely.
+
+Examples:
+
+    # Create an API key named "ci-pipeline"
+    $ flyte create api-key --name ci-pipeline
+
+    # The output will include an export command like:
+    # export FLYTE_API_KEY="<base64-encoded-credentials>"
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--name` | `text` | `Sentinel.UNSET` | Name for API key |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte create assignment
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte create assignment [OPTIONS]`**
+
+Assign a policy to an identity.
+
+Exactly one of --user-subject, --creds-subject, or --email must be provided.
+
+Examples:
+
+    $ flyte --org my-org create assignment --user-subject user-123 --policy admin
+    $ flyte --org my-org create assignment --creds-subject app-456 --policy admin
+    $ flyte --org my-org create assignment --email jane@example.com --policy admin
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--user-subject` | `text` |  | User subject identifier |
+| `--creds-subject` | `text` |  | Client credentials application subject |
+| `--email` | `text` |  | User email for lookup |
+| `--policy` | `text` | `Sentinel.UNSET` | Policy name to assign |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 #### flyte create config
 
 **`flyte create config [OPTIONS]`**
@@ -182,6 +304,79 @@ If the file already exists, it will raise an error unless the `--force` option i
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte create policy
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte create policy [OPTIONS] NAME`**
+
+Create a policy.
+
+Requires --file or --edit to specify bindings for the policy.
+
+Examples:
+
+    $ flyte --org my-org create policy my-policy --edit
+    $ flyte --org my-org create policy my-policy --file policy.yaml
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--file` | `path` |  | Create policy from a YAML file |
+| `--edit` | `boolean` | `False` | Open an editor to configure the policy before creating |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+#### flyte create project
+
+**`flyte create project [OPTIONS]`**
+
+Create a new project.
+
+
+Example usage:
+
+```bash
+flyte create project --id my_project_id --name "My Project"
+flyte create project --id my_project_id --name "My Project" --description "My project" -l team=ml -l env=prod
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--id` | `text` | `Sentinel.UNSET` | Unique identifier for the project (immutable). |
+| `--name` | `text` | `Sentinel.UNSET` | Display name for the project. |
+| `--description` | `text` | `` | Description for the project. |
+| {{< multiline >}}`--label`
+`-l`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Labels as key=value pairs. Can be specified multiple times. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte create role
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte create role [OPTIONS] NAME`**
+
+Create a role.
+
+Requires --file or --edit to specify actions for the role.
+
+Examples:
+
+    $ flyte --org my-org create role my-role --edit
+    $ flyte --org my-org create role my-role --file role.yaml
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--file` | `path` |  | Create role from a YAML file |
+| `--edit` | `boolean` | `False` | Open an editor to configure the role before creating |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 #### flyte create secret
 
@@ -275,11 +470,61 @@ This will create a trigger that runs every day at midnight.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte create user
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte create user [OPTIONS]`**
+
+Create (invite) a new user.
+
+Examples:
+
+    $ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@example.com
+    $ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@example.com --policy admin
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--first-name` | `text` | `Sentinel.UNSET` | First name of the user |
+| `--last-name` | `text` | `Sentinel.UNSET` | Last name of the user |
+| `--email` | `text` | `Sentinel.UNSET` | Email address of the user |
+| `--policy` | `text` |  | Policy to assign to the user after creation |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 ### flyte delete
 
 **`flyte delete COMMAND [ARGS]...`**
 
 Remove resources from a Flyte deployment.
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte delete api-key
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte delete api-key [OPTIONS] CLIENT_ID`**
+
+Delete an API key.
+
+Examples:
+
+    # Delete an API key (with confirmation)
+    $ flyte delete api-key my-client-id
+
+    # Delete without confirmation
+    $ flyte delete api-key my-client-id --yes
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--yes` | `boolean` | `False` | Skip confirmation prompt |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 #### flyte delete app
 
@@ -294,6 +539,77 @@ Delete apps from a Flyte deployment.
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte delete assignment
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte delete assignment [OPTIONS]`**
+
+Unassign a policy from an identity.
+
+One of --user-subject or --creds-subject must be provided.
+
+Examples:
+
+    $ flyte --org my-org delete assignment --user-subject user-123 --policy admin
+    $ flyte --org my-org delete assignment --creds-subject app-456 --policy admin
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--user-subject` | `text` |  | User subject identifier |
+| `--creds-subject` | `text` |  | Client credentials application subject |
+| `--policy` | `text` | `Sentinel.UNSET` | Policy name to unassign |
+| `--yes` | `boolean` | `False` | Skip confirmation prompt |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte delete policy
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte delete policy [OPTIONS] NAME`**
+
+Delete a policy.
+
+Examples:
+
+    $ flyte --org my-org delete policy my-policy
+    $ flyte --org my-org delete policy my-policy --yes
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--yes` | `boolean` | `False` | Skip confirmation prompt |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte delete role
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte delete role [OPTIONS] NAME`**
+
+Delete a role.
+
+Examples:
+
+    $ flyte --org my-org delete role my-role
+    $ flyte --org my-org delete role my-role --yes
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--yes` | `boolean` | `False` | Skip confirmation prompt |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 #### flyte delete secret
 
@@ -322,6 +638,28 @@ Delete a trigger. The name of the trigger is required.
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte delete user
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte delete user [OPTIONS] SUBJECT`**
+
+Delete a user.
+
+Examples:
+
+    $ flyte --org my-org delete user user-subject-id
+    $ flyte --org my-org delete user user-subject-id --yes
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--yes` | `boolean` | `False` | Skip confirmation prompt |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 ### flyte deploy
 
@@ -454,6 +792,7 @@ Generate documentation.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--type` | `text` | `Sentinel.UNSET` | Type of documentation (valid: markdown) |
+| `--plugin-variants` | `text` |  | Hugo variant names for plugin commands (e.g., 'byoc selfmanaged'). When set, plugin command sections and index entries are wrapped in {{&lt; variant >}} shortcodes. Core commands appear unconditionally. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -497,6 +836,37 @@ Get all actions for a run or details for a specific action.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte get api-key
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte get api-key [OPTIONS] [CLIENT_ID]`**
+
+Get or list API keys.
+
+If CLIENT-ID is provided, gets a specific API key.
+Otherwise, lists all API keys.
+
+Examples:
+
+    # List all API keys
+    $ flyte get api-key
+
+    # List with a limit
+    $ flyte get api-key --limit 10
+
+    # Get a specific API key
+    $ flyte get api-key my-client-id
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Maximum number of keys to list |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 #### flyte get app
 
 **`flyte get app [OPTIONS] [NAME]`**
@@ -514,6 +884,32 @@ Apps are long-running services deployed on the Flyte platform.
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte get assignment
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte get assignment [OPTIONS]`**
+
+Get or list assignments.
+
+Without --user-subject or --creds-subject, lists all assignments.
+
+Examples:
+
+    $ flyte --org my-org get assignment
+    $ flyte --org my-org get assignment --user-subject user-123
+    $ flyte --org my-org get assignment --creds-subject app-456
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--user-subject` | `text` |  | User subject identifier |
+| `--creds-subject` | `text` |  | Client credentials application subject |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 #### flyte get config
 
@@ -593,15 +989,85 @@ $ flyte get logs my_run my_action --pretty --lines 50
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-#### flyte get project
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte get member
 
-**`flyte get project [NAME]`**
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
-Get a list of all projects, or details of a specific project by name.
+**`flyte get member`**
+
+List all members (users and applications) in an organization.
+
+Examples:
+
+    $ flyte --org my-org get member
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte get policy
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte get policy [OPTIONS] [NAME]`**
+
+Get or list policies.
+
+If NAME is provided, gets a specific policy. Otherwise, lists all policies.
+
+Examples:
+
+    $ flyte --org my-org get policy
+    $ flyte --org my-org get policy --limit 10
+    $ flyte --org my-org get policy my-policy
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Maximum number of policies to list |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+#### flyte get project
+
+**`flyte get project [OPTIONS] [NAME]`**
+
+Get a list of all projects, or details of a specific project by name.
+
+By default, only active (unarchived) projects are shown. Use `--archived` to
+show archived projects instead.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--archived` | `boolean` | `False` | Show archived projects instead of active ones. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte get role
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte get role [OPTIONS] [NAME]`**
+
+Get or list roles.
+
+If NAME is provided, gets a specific role. Otherwise, lists all roles.
+
+Examples:
+
+    $ flyte --org my-org get role
+    $ flyte --org my-org get role --limit 10
+    $ flyte --org my-org get role my-role
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Maximum number of roles to list |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 #### flyte get run
 
@@ -627,6 +1093,10 @@ $ flyte get run --task-name my_task --task-version v1.0
 | `--only-mine` | `boolean` | `False` | Show only runs created by the current user (you). |
 | `--task-name` | `text` |  | Filter runs by task name. |
 | `--task-version` | `text` |  | Filter runs by task version. |
+| `--created-after` | `datetime` |  | Show runs created at or after this datetime (UTC). Accepts ISO dates, 'now', 'today', or 'now - 1 day'. |
+| `--created-before` | `datetime` |  | Show runs created before this datetime (UTC). |
+| `--updated-after` | `datetime` |  | Show runs updated at or after this datetime (UTC). Accepts ISO dates, 'now', 'today', or 'now - 1 day'. |
+| `--updated-before` | `datetime` |  | Show runs updated before this datetime (UTC). |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -678,6 +1148,33 @@ Get a list of all triggers, or details of a specific trigger by name.
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte get user
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte get user [OPTIONS] [SUBJECT]`**
+
+Get or list users.
+
+If SUBJECT is provided, gets a specific user. Otherwise, lists all users.
+
+Examples:
+
+    $ flyte --org my-org get user
+    $ flyte --org my-org get user --limit 10
+    $ flyte --org my-org get user user-subject-id
+    $ flyte --org my-org get user --email jane@example.com
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Maximum number of users to list |
+| `--email` | `text` |  | Filter by email address |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 ### flyte prefetch
 
@@ -758,292 +1255,3 @@ $ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --wait
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
-
-### flyte run
-
-**`flyte run [OPTIONS] COMMAND [ARGS]...`**
-
-Run a task from a python file or deployed task.
-
-Example usage:
-
-```bash
-flyte run hello.py my_task --arg1 value1 --arg2 value2
-```
-
-Arguments to the run command are provided right after the `run` command and before the file name.
-Arguments for the task itself are provided after the task name.
-
-To run a task locally, use the `--local` flag. This will run the task in the local environment instead of the remote
-Flyte environment:
-
-```bash
-flyte run --local hello.py my_task --arg1 value1 --arg2 value2
-```
-
-You can provide image mappings with `--image` flag. This allows you to specify
-the image URI for the task environment during CLI execution without changing
-the code. Any images defined with `Image.from_ref_name("name")` will resolve to the
-corresponding URIs you specify here.
-
-```bash
-flyte run --image my_image=ghcr.io/myorg/my-image:v1.0 hello.py my_task
-```
-
-If the image name is not provided, it is regarded as a default image and will
-be used when no image is specified in TaskEnvironment:
-
-```bash
-flyte run --image ghcr.io/myorg/default-image:latest hello.py my_task
-```
-
-You can specify multiple image arguments:
-
-```bash
-flyte run --image ghcr.io/org/default:latest --image gpu=ghcr.io/org/gpu:v2.0 hello.py my_task
-```
-
-To run tasks that you've already deployed to Flyte, use the deployed-task command:
-
-```bash
-flyte run deployed-task my_env.my_task --arg1 value1 --arg2 value2
-```
-
-To run a specific version of a deployed task, use the `env.task:version` syntax:
-
-```bash
-flyte run deployed-task my_env.my_task:xyz123 --arg1 value1 --arg2 value2
-```
-
-You can specify the `--config` flag to point to a specific Flyte cluster:
-
-```bash
-flyte run --config my-config.yaml deployed-task ...
-```
-
-You can override the default configured project and domain:
-
-```bash
-flyte run --project my-project --domain development hello.py my_task
-```
-
-You can discover what deployed tasks are available by running:
-
-```bash
-flyte run deployed-task
-```
-
-Other arguments to the run command are listed below.
-
-Arguments for the task itself are provided after the task name and can be retrieved using `--help`. For example:
-
-```bash
-flyte run hello.py my_task --help
-```
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
-| {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
-| `--local` | `boolean` | `False` | Run the task locally |
-| `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
-| `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
-| `--raw-data-path` | `text` | `Sentinel.UNSET` | Override the output prefix used to store offloaded data types. e.g. s3://bucket/ |
-| `--service-account` | `text` | `Sentinel.UNSET` | Kubernetes service account. If not provided, the configured default will be used |
-| `--name` | `text` | `Sentinel.UNSET` | Name of the run. If not provided, a random name will be generated. |
-| {{< multiline >}}`--follow`
-`-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
-| `--tui` | `boolean` | `False` | Show interactive TUI for local execution (requires flyte[tui]). |
-| `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
-| `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
-| `--run-project` | `text` |  | Run the remote task in this project, only applicable when using `deployed-task` subcommand. |
-| `--run-domain` | `text` |  | Run the remote task in this domain, only applicable when using `deployed-task` subcommand. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
-
-#### flyte run deployed-task
-
-**`flyte run deployed-task [OPTIONS] COMMAND [ARGS]...`**
-
-Run remote task from the Flyte backend
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
-| {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
-
-### flyte serve
-
-**`flyte serve [OPTIONS] COMMAND [ARGS]...`**
-
-Serve an app from a Python file using flyte.serve().
-
-This command allows you to serve apps defined with `flyte.app.AppEnvironment`
-in your Python files. The serve command will deploy the app to the Flyte backend
-and start it, making it accessible via a URL.
-
-Example usage:
-
-```bash
-flyte serve examples/apps/basic_app.py app_env
-```
-
-**Local serving:** Use the `--local` flag to serve the app on localhost without
-deploying to the Flyte backend. This is useful for local development and testing:
-
-```bash
-flyte serve --local examples/apps/single_script_fastapi.py env
-```
-
-Arguments to the serve command are provided right after the `serve` command and before the file name.
-
-To follow the logs of the served app, use the `--follow` flag:
-
-```bash
-flyte serve --follow examples/apps/basic_app.py app_env
-```
-
-Note: Log streaming is not yet fully implemented and will be added in a future release.
-
-You can provide image mappings with `--image` flag. This allows you to specify
-the image URI for the app environment during CLI execution without changing
-the code. Any images defined with `Image.from_ref_name("name")` will resolve to the
-corresponding URIs you specify here.
-
-```bash
-flyte serve --image my_image=ghcr.io/myorg/my-image:v1.0 examples/apps/basic_app.py app_env
-```
-
-If the image name is not provided, it is regarded as a default image and will
-be used when no image is specified in AppEnvironment:
-
-```bash
-flyte serve --image ghcr.io/myorg/default-image:latest examples/apps/basic_app.py app_env
-```
-
-You can specify multiple image arguments:
-
-```bash
-flyte serve --image ghcr.io/org/default:latest --image gpu=ghcr.io/org/gpu:v2.0 examples/apps/basic_app.py app_env
-```
-
-You can specify the `--config` flag to point to a specific Flyte cluster:
-
-```bash
-flyte serve --config my-config.yaml examples/apps/basic_app.py app_env
-```
-
-You can override the default configured project and domain:
-
-```bash
-flyte serve --project my-project --domain development examples/apps/basic_app.py app_env
-```
-
-Other arguments to the serve command are listed below.
-
-Note: This pattern is primarily useful for serving apps defined in tasks.
-Serving deployed apps is not currently supported through this CLI command.
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
-| {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
-| `--copy-style` | `choice` | `loaded_modules` | Copy style to use when serving the app |
-| `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
-| `--service-account` | `text` | `Sentinel.UNSET` | Kubernetes service account. If not provided, the configured default will be used |
-| `--name` | `text` | `Sentinel.UNSET` | Name of the app deployment. If not provided, the app environment name will be used. |
-| {{< multiline >}}`--follow`
-`-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the app. If not provided, the CLI will exit after successfully deploying the app with a link to the UI. |
-| `--image` | `text` | `Sentinel.UNSET` | Image to be used in the serve. Format: imagename=imageuri. Can be specified multiple times. |
-| `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
-| {{< multiline >}}`--env-var`
-`-e`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Environment variable to set in the app. Format: KEY=VALUE. Can be specified multiple times. Example: --env-var LOG_LEVEL=DEBUG --env-var DATABASE_URL=postgresql://... |
-| `--local` | `boolean` | `False` | Serve the app locally on localhost instead of deploying to the Flyte backend. The app will be served on the port defined in the AppEnvironment. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
-
-### flyte start
-
-**`flyte start COMMAND [ARGS]...`**
-
-Start various Flyte services.
-
-#### flyte start tui
-
-**`flyte start tui`**
-
-Launch TUI explore mode to browse past local runs. To use the TUI install `pip install flyte[tui]`
-TUI, allows you to explore all your local runs if you have persistence enabled.
-
-Persistence can be enabled in 2 ways,
-1. By setting it in the config to record every local run
-```bash
-flyte create config --endpoint ...  --local-persistence
-```
-2. By passing it in flyte.init(local_persistence=True)
-This will record all `flyte.run` runs, that are local and are within the flyte.init being active.
-
-### flyte update
-
-**`flyte update COMMAND [ARGS]...`**
-
-Update various flyte entities.
-
-#### flyte update app
-
-**`flyte update app [OPTIONS] NAME`**
-
-Update an app by starting or stopping it.
-
-
-Example usage:
-
-```bash
-flyte update app <app_name> --activate | --deactivate [--wait] [--project <project_name>] [--domain <domain_name>]
-```
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| {{< multiline >}}`--activate`
-`--deactivate`{{< /multiline >}} | `boolean` |  | Activate or deactivate app. |
-| `--wait` | `boolean` | `False` | Wait for the app to reach the desired state. |
-| {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
-| {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
-
-#### flyte update trigger
-
-**`flyte update trigger [OPTIONS] NAME TASK_NAME`**
-
-Update a trigger.
-
-
-Example usage:
-
-```bash
-flyte update trigger <trigger_name> <task_name> --activate | --deactivate
-[--project <project_name> --domain <domain_name>]
-```
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| {{< multiline >}}`--activate`
-`--deactivate`{{< /multiline >}} | `boolean` | `Sentinel.UNSET` | Activate or deactivate the trigger. |
-| {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
-| {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
-
-### flyte whoami
-
-**`flyte whoami`**
-
-Display the current user information.

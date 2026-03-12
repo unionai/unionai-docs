@@ -1,7 +1,7 @@
 ---
 title: Basic project
-weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+weight: 7
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Basic project: RAG
@@ -28,7 +28,7 @@ using sentence-transformers, and stores them in a ChromaDB database.
 The `TaskEnvironment` defines the execution environment for all tasks in the pipeline.
 It specifies the container image, required packages, and resource allocations:
 
-{{< code file="/external/unionai-examples/v2/user-guide/basic-project/embed.py" lang="python" fragment="embedding-env" >}}
+{{< code file="/unionai-examples/v2/user-guide/basic-project/embed.py" lang="python" fragment="embedding-env" >}}
 
 The environment uses:
 - `Image.from_debian_base()` to create a container with Python 3.12
@@ -40,7 +40,7 @@ The environment uses:
 
 The `fetch_quotes` task retrieves quotes from a public API:
 
-{{< code file="/external/unionai-examples/v2/user-guide/basic-project/embed.py" lang="python" fragment="fetch-quotes" >}}
+{{< code file="/unionai-examples/v2/user-guide/basic-project/embed.py" lang="python" fragment="fetch-quotes" >}}
 
 This task demonstrates:
 - Async task definition with `async def`
@@ -51,7 +51,7 @@ This task demonstrates:
 
 The `embed_quotes` task creates vector embeddings and stores them in ChromaDB:
 
-{{< code file="/external/unionai-examples/v2/user-guide/basic-project/embed.py" lang="python" fragment="embed-quotes" >}}
+{{< code file="/unionai-examples/v2/user-guide/basic-project/embed.py" lang="python" fragment="embed-quotes" >}}
 
 Key points:
 - Uses the `all-MiniLM-L6-v2` model from sentence-transformers (runs on CPU)
@@ -63,13 +63,13 @@ Key points:
 
 The main pipeline task composes the individual tasks:
 
-{{< code file="/external/unionai-examples/v2/user-guide/basic-project/embed.py" lang="python" fragment="embedding-pipeline" >}}
+{{< code file="/unionai-examples/v2/user-guide/basic-project/embed.py" lang="python" fragment="embedding-pipeline" >}}
 
 ### Running the pipeline
 
 To run the embedding pipeline:
 
-{{< code file="/external/unionai-examples/v2/user-guide/basic-project/embed.py" lang="python" fragment="main" >}}
+{{< code file="/unionai-examples/v2/user-guide/basic-project/embed.py" lang="python" fragment="main" >}}
 
 ```bash
 uv run embed.py
@@ -90,7 +90,7 @@ using the embeddings created by the pipeline.
 
 The `AppEnvironment` defines how the application runs:
 
-{{< code file="/external/unionai-examples/v2/user-guide/basic-project/serve.py" lang="python" fragment="app-env" >}}
+{{< code file="/unionai-examples/v2/user-guide/basic-project/serve.py" lang="python" fragment="app-env" >}}
 
 Key configuration:
 - `args` specifies the command to run the Streamlit app
@@ -105,25 +105,25 @@ Key configuration:
 
 The app loads the ChromaDB database using the path from the environment variable:
 
-{{< code file="/external/unionai-examples/v2/user-guide/basic-project/app.py" lang="python" fragment="load-db" >}}
+{{< code file="/unionai-examples/v2/user-guide/basic-project/app.py" lang="python" fragment="load-db" >}}
 
 The search interface provides a text input and result count slider:
 
-{{< code file="/external/unionai-examples/v2/user-guide/basic-project/app.py" lang="python" fragment="search-ui" >}}
+{{< code file="/unionai-examples/v2/user-guide/basic-project/app.py" lang="python" fragment="search-ui" >}}
 
 When the user searches, the app encodes the query and finds similar quotes:
 
-{{< code file="/external/unionai-examples/v2/user-guide/basic-project/app.py" lang="python" fragment="search-logic" >}}
+{{< code file="/unionai-examples/v2/user-guide/basic-project/app.py" lang="python" fragment="search-logic" >}}
 
 The app also includes a random quote feature:
 
-{{< code file="/external/unionai-examples/v2/user-guide/basic-project/app.py" lang="python" fragment="random-quote" >}}
+{{< code file="/unionai-examples/v2/user-guide/basic-project/app.py" lang="python" fragment="random-quote" >}}
 
 ### Deploying the app
 
 To deploy the quote search application:
 
-{{< code file="/external/unionai-examples/v2/user-guide/basic-project/serve.py" lang="python" fragment="main" >}}
+{{< code file="/unionai-examples/v2/user-guide/basic-project/serve.py" lang="python" fragment="main" >}}
 
 ```bash
 uv run serve.py

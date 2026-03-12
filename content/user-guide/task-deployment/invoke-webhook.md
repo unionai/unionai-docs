@@ -1,7 +1,7 @@
 ---
 title: Running Tasks via Webhooks
 weight: 8
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
@@ -274,11 +274,15 @@ For a complete working example, see [`examples/apps/run_webhook.py`](https://git
 
 Once deployed, you can call your webhook using standard HTTP tools:
 
-```bash
-# Get API key for authentication
-flyte get api-key my-webhook-key
+Get your API key:
 
-# Call the webhook to run a task
+```bash
+flyte get api-key my-webhook-key
+```
+
+Call the webhook to run a task:
+
+```bash
 curl -X POST \
   -H "Authorization: Bearer <your-api-key>" \
   -H "Content-Type: application/json" \

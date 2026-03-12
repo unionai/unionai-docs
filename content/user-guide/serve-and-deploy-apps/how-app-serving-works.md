@@ -1,7 +1,7 @@
 ---
 title: How app serving works
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # How app serving works
@@ -22,13 +22,13 @@ When you serve an app, the following happens:
 
 The simplest way to serve an app:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_examples.py" fragment=basic-serve lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_examples.py" fragment=basic-serve lang=python >}}
 
 ## Overriding parameters
 
 One key advantage of serving is the ability to override parameters dynamically:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_examples.py" fragment=override-parameters lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_examples.py" fragment=override-parameters lang=python >}}
 
 This is useful for:
 - Testing different configurations
@@ -39,7 +39,7 @@ This is useful for:
 
 Use `with_servecontext()` for more control over the serving process:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_examples.py" fragment=advanced-serving lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_examples.py" fragment=advanced-serving lang=python >}}
 
 ## Using CLI
 
@@ -60,7 +60,7 @@ Where `app` is the variable name of the `AppEnvironment` object.
 - `deployment_status`: Current status of the app
 - `name`: App name
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_examples.py" fragment=return-value lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_examples.py" fragment=return-value lang=python >}}
 
 ## Best practices
 

@@ -1,0 +1,36 @@
+---
+title: Dataplane chart
+variants: -flyte -byoc +selfmanaged
+chart_version: {{ .Version }}
+weight: 1
+---
+
+{{ template "chart.description" . }}
+
+## Chart info
+
+| | |
+|---|---|
+| **Chart version** | {{ .Version }} |
+| **App version** | {{ .AppVersion }} |
+{{- if .KubeVersion }}
+| **Kubernetes version** | `{{ .KubeVersion }}` |
+{{- end }}
+
+{{- if .Dependencies }}
+
+## Dependencies
+
+{{ template "chart.requirementsTable" . }}
+{{- end }}
+
+## Values
+
+| Key | Type | Description | Default |
+|-----|------|-------------|---------|
+{{- range .Values }}
+{{- $desc := .Description }}{{ if not $desc }}{{ $desc = .AutoDescription }}{{ end }}
+{{- $def := .Default }}{{ if not $def }}{{ $def = .AutoDefault }}{{ end }}
+{{- if gt (len $def) 100 }}{{ $def = printf "`(see values.yaml)`" }}{{ end }}
+| {{ .Key }} | {{ .Type }} | {{ $desc }} | {{ $def }} |
+{{- end }}

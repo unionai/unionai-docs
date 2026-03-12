@@ -1,7 +1,7 @@
 ---
 title: TaskEnvironment
-version: 2.0.0b57
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.6
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -59,6 +59,7 @@ class TaskEnvironment(
 
 | Property | Type | Description |
 |-|-|-|
+| `sandbox` | `None` | Access the sandbox namespace for creating sandboxed tasks. |
 | `tasks` | `None` | Get all tasks defined in the environment. |
 
 ## Methods
@@ -124,6 +125,7 @@ Besides the base environment parameters, you can override kwargs like `cache`, `
 def from_task(
     name: str,
     tasks: TaskTemplate,
+    depends_on: Optional[List['Environment']],
 ) -> TaskEnvironment
 ```
 Create a TaskEnvironment from a list of tasks. All tasks should have the same image or no Image defined.
@@ -139,7 +141,8 @@ attribute of the other TaskEnvironment.
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | The name of the environment. |
-| `tasks` | `TaskTemplate` | The list of tasks to create the environment from.  :raises ValueError: If tasks are assigned to multiple environments or have different images. :return: The created TaskEnvironment. |
+| `tasks` | `TaskTemplate` | The list of tasks to create the environment from. |
+| `depends_on` | `Optional[List['Environment']]` | Optional list of environments that this environment depends on.  :raises ValueError: If tasks are assigned to multiple environments or have different images. :return: The created TaskEnvironment. |
 
 ### task()
 

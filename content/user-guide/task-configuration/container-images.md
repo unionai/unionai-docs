@@ -1,7 +1,7 @@
 ---
 title: Container images
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Container images
@@ -32,7 +32,7 @@ The `flyte.Image` object provides a fluent interface for building container imag
 
 You start building your image with on of the `from_` methods:
 
-* `[[Image.from_base()]]`: Start from a pre-built image (Note: The image should be accessible to the imagebuilder).
+* `[[Image.from_base()]]`: Start from a pre-built image (Note: The image should be accessible to the image builder).
 * `[[Image.from_debian_base()]]`: Start from a [Debian](https://www.debian.org/) based base image, that contains flyte already.
 * `[[Image.from_uv_script()]]`: Start with a new image build from a [uv script](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies), slower but easier.
 
@@ -46,7 +46,7 @@ You can then layer on additional components using the `with_` methods:
 * `[[Image.with_requirements()]]`: Specify a requirements.txt file (all packages will be installed).
 * `[[Image.with_source_file()]]`: Specify a source file to include in the image (the file will be copied).
 * `[[Image.with_source_folder()]]`: Specify a source folder to include in the image (entire folder will be copied).
-* `[[Image.with_uv_project()]]`: Use this with `pyproject.toml` or `uv.lock` based projects. 
+* `[[Image.with_uv_project()]]`: Use this with `pyproject.toml` or `uv.lock` based projects.
 * `[[Image.with_poetry_project()]]`: Create a new image with the specified `poetry.lock`
 * `[[Image.with_workdir()]]`: Specify the working directory for the image.
 
@@ -69,7 +69,7 @@ This image is itself based on the official Python Docker image (specifically `py
 Starting there, you can layer additional features onto your image.
 For example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/container-images/from_debian_base.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/container-images/from_debian_base.py" lang="python" >}}
 
 > [!NOTE]
 > The `registry` parameter is only needed if you are building the image locally. It is not required when using the Union backend `ImageBuilder`.
@@ -87,7 +87,7 @@ Another common technique for defining an image is to use [`uv` inline script met
 The `from_uv_script` method starts with the default Flyte image and adds the dependencies specified in the `uv` metadata.
 For example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/container-images/from_uv_script.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/container-images/from_uv_script.py" lang="python" >}}
 
 The advantage of this approach is that the dependencies used when running a script locally and when running it on the Flyte/Union backend are always the same (as long as you use `uv` to run your scripts locally).
 This means you can develop and test your scripts in a consistent environment, reducing the chances of encountering issues when deploying to the backend.
@@ -110,7 +110,7 @@ There are two ways that the image can be built:
 
 ### Configuring the `builder`
 
-[Earlier](../local-setup), we discussed the `image.builder` property in the `config.yaml`.
+[Earlier](../connecting-to-a-cluster), we discussed the `image.builder` property in the `config.yaml`.
 
 For Flyte OSS instances, this property must be set to `local`.
 
@@ -164,6 +164,12 @@ When `image.builder` in the `config.yaml` is set to `remote` (and you are runnin
 
 There is no set up of Docker nor any other local configuration required on your part.
 
+> [!NOTE]
+> The Flyte SDK checks whether the image builder is enabled for your cluster by verifying that the `image_build` task is deployed in the `system` project within the `production` domain.
+> If you are using custom roles and policies, ensure that users are granted the `view_flyte_inventory` action for the `production/system` project-domain pair.
+> See the [V1 user management documentation]({{< docs_home byoc v1 >}}/user-guide/administration/user-management) for more details on creating and assigning custom roles and policies (V2 user management currently works identically to V1).
+
+
 #### ImageBuilder with external registries
 
 If you are want to push the images built by `ImageBuilder` to an external registry, you can do this by setting the `registry` parameter in the `Image` object.
@@ -192,8 +198,8 @@ The value of the `registry_secret` parameter must be the name of a Flyte secret 
 
 To create an `image_pull` secret for the remote builder and the task environment, run the following command:
 
-```shell
-$ flyte create secret --type image_pull my-secret --from-file ~/.docker/config.json
+```bash
+flyte create secret --type image_pull my-secret --from-file ~/.docker/config.json
 ```
 
 The format of this secret matches the standard Kubernetes [image pull secret](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#log-in-to-docker-hub), and should look like this:

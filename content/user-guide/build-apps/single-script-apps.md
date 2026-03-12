@@ -1,7 +1,7 @@
 ---
 title: Single-script apps
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Single-script apps
@@ -19,7 +19,7 @@ All the code for your app—the application logic, the app environment configura
 
 The simplest possible app is a plain Python HTTP server using Python's built-in `http.server` module. This requires no external dependencies beyond the Flyte SDK.
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/plain_python_server.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/plain_python_server.py" lang=python >}}
 
 **Key points**
 
@@ -32,7 +32,7 @@ The simplest possible app is a plain Python HTTP server using Python's built-in 
 
 Streamlit makes it easy to build interactive web dashboards. Here's a complete single-script Streamlit app:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit_single_script.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/streamlit_single_script.py" lang=python >}}
 
 **Key points**
 
@@ -45,7 +45,7 @@ Streamlit makes it easy to build interactive web dashboards. Here's a complete s
 
 FastAPI is a modern, fast web framework for building APIs. Here's a minimal single-script FastAPI app:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi_single_script.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi_single_script.py" lang=python >}}
 
 **Key points**
 

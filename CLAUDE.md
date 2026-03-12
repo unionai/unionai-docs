@@ -1,20 +1,20 @@
-# CLAUDE.md
+# CLAUDE.md — unionai-docs / unionai-docs-infra
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance for working with the Union.ai documentation repositories. It is shared between `unionai-docs` (parent) and `unionai-docs-infra` (submodule).
 
 ## Project Overview
 
-This is a **multi-variant Hugo documentation site** for Flyte (open-source) and Union.ai products. A single source generates four documentation variants:
-- **flyte** - Open-source Flyte orchestration platform
-- **byoc** - Union Bring-Your-Own-Cloud
-- **serverless** - Union managed cloud service
-- **selfmanaged** - Union enterprise self-hosted
+Multi-variant Hugo documentation site for Flyte (open-source) and Union.ai products. A single source generates four variants:
+- **flyte** — Open-source Flyte orchestration platform
+- **byoc** — Union Bring-Your-Own-Cloud
+- **serverless** — Union managed cloud service
+- **selfmanaged** — Union enterprise self-hosted
 
 ## Essential Commands
 
 ```bash
 # Development (requires hugo.local.toml setup first)
-cp hugo.local.toml~sample hugo.local.toml  # First time only
+cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml  # First time only
 make dev                                    # Start dev server at localhost:1313
 
 # Production build
@@ -22,13 +22,12 @@ make dist                                   # Build all variants to dist/
 make serve PORT=4444                        # Serve dist/ locally
 
 # Examples submodule
-make init-examples                          # Initialize external/unionai-examples
+make init-examples                          # Initialize unionai-examples
 make update-examples                        # Update to latest
 
 # API documentation regeneration
-make -f Makefile.api.flyte-sdk              # Flyte SDK API docs
-make -f Makefile.api.plugins                # Plugin API docs
-make -f Makefile.cli.flyte                  # CLI docs
+make -f unionai-docs-infra/Makefile.api.sdk              # SDK API + CLI docs
+make -f unionai-docs-infra/Makefile.api.plugins          # Plugin API docs
 
 # Validation
 make check-images                           # Validate image references
@@ -36,76 +35,170 @@ make check-jupyter                          # Validate Jupyter notebooks
 make validate-urls                          # Check for broken URLs
 ```
 
-## Architecture
+## Repository Layout
 
-### Variant System
+The repo separates **version-specific content/config** (top level) from **shared build infrastructure** (`unionai-docs-infra/`):
 
-Pages use `variants:` frontmatter to control visibility:
+**Top level** — files that differ between `main` (v2) and `v1` branches:
+- `makefile.inc` — VERSION, VARIANTS
+- `api-packages.toml` — API package registry
+- `content/`, `data/`, `linkmap/`, `include/` — Content and generated data
+
+**`unionai-docs-infra/`** — shared build infrastructure (identical across branches):
+- `Makefile` — Real build logic (top-level Makefile forwards to this)
+- `hugo.toml`, `hugo.site.toml`, `hugo.ver.toml`, `config.{variant}.toml` — Hugo config
+- `static/` — Shared static assets (CSS, JS, images)
+- `scripts/` — Build shell scripts
+- `tools/` — Python build tools
+- `layouts/` — Hugo templates, partials, shortcodes
+- `themes/` — Hugo theme
+- `redirects.csv` — Redirect data
+
+## Hugo Configuration Chain
+
+Configs merge in order:
+1. `unionai-docs-infra/hugo.toml` — Core settings (directory remapping for layouts, etc.)
+2. `hugo.site.toml` — Site-wide settings (version-specific)
+3. `unionai-docs-infra/hugo.ver.toml` — Version definitions
+4. `unionai-docs-infra/config.{variant}.toml` — Variant-specific settings
+5. `hugo.local.toml` — Local dev overrides (not committed)
+
+## Variant System
+
+### Page-level variants
+
+Every page MUST declare which variants it appears in via frontmatter:
+
 ```yaml
-variants: +flyte +byoc +selfmanaged +serverless
+---
+title: My Page
+weight: 3
+variants: +flyte +serverless +byoc -selfmanaged
+---
 ```
 
-Variant-specific content uses shortcodes:
+- `+` includes, `-` excludes
+- All variants must be explicitly listed (no defaults)
+
+### Content-level variants
+
 ```markdown
-{{< variant flyte >}}
-Flyte-specific content here
-{{< /variant >}}
-
-{{< variant byoc serverless >}}
-Union cloud content here
+{{< variant serverless byoc >}}
+{{< markdown >}}
+This appears only in Serverless and BYOC.
+{{< /markdown >}}
 {{< /variant >}}
 ```
 
-### Key Shortcodes
-- `{{< variant ... >}}` - Variant-conditional content
-- `{{< key ... >}}` - Product name replacements
-- `{{< docs_home {variant} >}}` - Generate doc root links (required for cross-doc links)
-- `{{< tab >}}` / `{{< tabs >}}` - Tabbed content
-- `{{< note >}}` - Note boxes
+**Hugo quirk**: Inside container shortcodes, wrap Markdown content with `{{< markdown >}}`.
 
-### Hugo Configuration Chain
+### Variant keys
 
-Configs are merged in order:
-1. `hugo.toml` - Core settings
-2. `hugo.site.toml` - Site-wide settings
-3. `hugo.ver.toml` - Version definitions
-4. `config.{variant}.toml` - Variant-specific settings
-5. `hugo.local.toml` - Local dev overrides (not committed)
+For inline text that varies by variant:
 
-### Directory Structure
+```markdown
+The {{< key product_name >}} platform...
+```
 
-- `content/` - Markdown source files
-- `layouts/shortcodes/` - Custom Hugo shortcodes
-- `external/unionai-examples/` - Git submodule with tutorials
-- `tools/` - Python build tools (API generator, LLM doc builder, shortcode processor)
-- `scripts/` - Build shell scripts
-- `dist/` - Build output
+Keys defined in `hugo.site.toml` under `[params.key]`. Common keys: `product_name`, `product_full_name`, `cli`, `kit_name`, `kit_remote`, `docs_home`.
 
-### LLM Documentation Pipeline
+## Key Shortcodes
 
-The build generates `llms-full.txt` files for each variant - consolidated single-file docs optimized for LLM consumption with hierarchical link references.
+- `{{< variant ... >}}` — Variant-conditional content
+- `{{< key ... >}}` — Product name replacements
+- `{{< docs_home {variant} >}}` — Doc root links (required for cross-doc links)
+- `{{< tabs >}}` / `{{< tab >}}` — Tabbed content
+- `{{< code file="..." fragment=name lang=python >}}` — Code inclusion from external files
+- `{{< link-card >}}` — Clickable cards
+- `{{< py_class_ref class.name >}}` — Python API refs
+
+Fragments in source files:
+```python
+# {{docs-fragment name}}
+code here
+# {{/docs-fragment}}
+```
+
+Examples at: `http://localhost:1313/__docs_builder__/shortcodes/` (dev mode only)
+
+## Page Settings (Frontmatter)
+
+```yaml
+---
+title: Page Title
+weight: 3              # Lower weight = higher in nav
+variants: +flyte ...   # Variant visibility (all must be listed)
+top_menu: true         # Makes this a top tab
+sidebar_expanded: true # Expands section by default
+toc_max: 3             # Max heading level in TOC
+mermaid: true          # Enable Mermaid diagrams
+---
+```
+
+Navigation: lower `weight` = higher position. `weight: 0` or missing = alphabetical at end.
+
+## Content Authoring
+
+### Notices
+
+```markdown
+> [!NOTE] Title
+> Content here
+
+> [!WARNING] Title
+> Warning content
+```
+
+### Python example pages
+
+```yaml
+---
+layout: py_example
+example_file: /path/to/file.py
+run_command: union run --remote path/to/file.py main
+source_location: https://github.com/unionai/unionai-examples/tree/main/path
+---
+```
+
+### Jupyter notebooks
+
+```yaml
+---
+jupyter_notebook: /path/to/notebook.ipynb
+---
+```
 
 ## Development Setup
 
 1. Install Hugo >= 0.145.0: `brew install hugo`
-2. Copy config: `cp hugo.local.toml~sample hugo.local.toml`
+2. Copy config: `cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml`
 3. Run: `make dev`
 
-Development settings in `hugo.local.toml`:
-- `variant` - Active variant (flyte, byoc, serverless, selfmanaged)
-- `show_inactive` - Show content from other variants
-- `highlight_active` - Highlight active variant content
+Dev settings in `hugo.local.toml`:
+```toml
+variant = "byoc"           # Active variant
+show_inactive = true       # Show other variants grayed out
+highlight_active = true    # Highlight active variant content
+highlight_keys = true      # Show key replacements
+```
 
 ## Build Constraints
 
-- Pre-build checks block absolute URLs to union.ai/docs - use `{{< docs_home {variant} >}}` instead
+- Pre-build checks block absolute URLs to union.ai/docs — use `{{< docs_home {variant} >}}` instead
 - Hugo version must be >= 0.145.0
 - Python 3.8+ required for build tools
 
-## Content Guidelines
+## API Documentation
 
-When adding documentation:
-1. Set `variants:` frontmatter to specify which variants include the page
-2. Use `{{< variant ... >}}` blocks for variant-specific content
-3. Use `{{< key ... >}}` for product names that vary by variant
-4. Link to other docs with `{{< docs_home {variant} >}}`, not absolute URLs
+Generated from Python packages using `tools/api_generator`:
+- Build with `make -f unionai-docs-infra/Makefile.api.sdk` or `Makefile.api.plugins`
+- Respects `__all__` in packages
+- Ignores `_` prefixed items and imports (unless in `__all__`)
+
+## Redirects
+
+Managed in `unionai-docs-infra/redirects.csv`. Applied to CloudFlare by Union employee.
+
+## LLM Documentation Pipeline
+
+The build generates `llms.txt` (page index) and `llms-full.txt` (complete docs) for each variant, optimized for LLM consumption.

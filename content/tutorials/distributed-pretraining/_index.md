@@ -1,7 +1,7 @@
 ---
 title: Distributed LLM pretraining
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
@@ -51,15 +51,15 @@ Let's walk through the code. We'll start with the infrastructure setup, build th
 
 Every distributed training job needs a consistent environment across all nodes. Flyte handles this with container images:
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="imports" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="imports" lang="python" >}}
 
 The imports tell the story: `flyte` for orchestration, `flyte.report` for live dashboards, `lightning` for training loop management, and `Elastic` from Flyte's PyTorch plugin. This last one is key as it configures PyTorch's distributed launch without you writing any distributed setup code.
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="constants" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="constants" lang="python" >}}
 
 These constants define the distributed topology. We're using 1 node with 8 GPUs, but you can scale this up by changing `NUM_NODES`. The vocabulary size (50,257 tokens) and sequence length (2,048 tokens) match GPT-2's [Byte Pair Encoding (BPE) tokenizer](https://huggingface.co/learn/llm-course/en/chapter6/5).
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="image" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="image" lang="python" >}}
 
 Flyte builds this container automatically when the pipeline is run. All dependencies required for distributed training, including PyTorch, Lightning, the streaming library, and NCCL for GPU communication, are baked in. There's no Dockerfile to maintain and no "works on my machine" debugging.
 
@@ -67,7 +67,7 @@ Flyte builds this container automatically when the pipeline is run. All dependen
 
 Different parts of the pipeline need different resources. Data tokenization needs CPU and memory. Training needs GPUs. The driver just coordinates. Flyte's `TaskEnvironment` lets you declare exactly what each task needs:
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="task-envs" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="task-envs" lang="python" >}}
 
 Let's break down the training environment, since this is where most of the complexity lives:
 
@@ -81,7 +81,7 @@ The `driver_env` is intentionally lightweight, using 2 CPUs and 4 GB of memory. 
 
 Training a 1.5B model uses different hyperparameters than training a 65B model. Rather than hardcoding values, we define presets:
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="model-configs" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="model-configs" lang="python" >}}
 
 A few things to notice:
 
@@ -97,7 +97,7 @@ Now for the model itself. We're building a GPT-2 style decoder-only transformer 
 
 First, the configuration class:
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="gpt-config" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="gpt-config" lang="python" >}}
 
 The key architectural parameters:
 
@@ -108,7 +108,7 @@ The key architectural parameters:
 
 Next, we define a single transformer block:
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="gpt-block" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="gpt-block" lang="python" >}}
 
 Each block has two sub-layers: causal self-attention and a feed-forward MLP. The causal mask ensures the model can only attend to previous tokens in the sequence, so it can't "cheat" by looking at the answer. This is what makes it *autoregressive*.
 
@@ -118,13 +118,13 @@ The full `GPTModel` class (see the complete code) stacks these blocks and adds t
 
 PyTorch Lightning handles the training loop boilerplate. We wrap our model in a `LightningModule` that defines how to train it:
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="lightning-module-init" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="lightning-module-init" lang="python" >}}
 
 The `save_hyperparameters()` call is important because it stores all constructor arguments in the checkpoint. This allows the model to be reloaded later without having to manually reconstruct the original configuration.
 
 The training and validation steps implement standard causal language modeling, where the model is trained to predict the next token given all previous tokens in the sequence.
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="lightning-module-training" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="lightning-module-training" lang="python" >}}
 
 The model performs a forward pass with a causal (autoregressive) mask created internally, ensuring each token can only attend to earlier positions. To align predictions with targets, the logits and labels are shifted so that the representation at position `i` is used to predict token `i + 1`.
 
@@ -132,7 +132,7 @@ Loss is computed using cross-entropy over the shifted logits and labels. Trainin
 
 The optimizer setup is where a lot of training stability comes from:
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="lightning-module-optimizer" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="lightning-module-optimizer" lang="python" >}}
 
 Two important choices here:
 
@@ -143,7 +143,7 @@ Two important choices here:
 
 Training a 30B-parameter model for 15,000 steps can take days. Hardware failures and spot instance preemptions are inevitable, which makes checkpointing essential.
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="checkpoint-callback" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="checkpoint-callback" lang="python" >}}
 
 This callback runs every `N` training steps and uploads the checkpoint to durable storage. The key line is `File.from_local_sync()` which is a Flyte abstraction for uploading files. There are no blob store credentials to manage and no bucket paths to hardcode. Flyte automatically uses the storage backend configured for your cluster.
 
@@ -155,7 +155,7 @@ When you restart a failed run, pass the checkpoint via `resume_checkpoint` so tr
 
 Multi-day training runs need observability. Is the loss decreasing? Did training diverge? Is the learning rate schedule behaving correctly? Flyte Reports let you build live dashboards directly in the UI:
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="reporting-callback" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="reporting-callback" lang="python" >}}
 
 The `_initialize_report` method (see complete code) creates an HTML/JavaScript dashboard with interactive charts. The callback then calls `flyte.report.log()` every `N` steps to push new metrics. The charts update in real-time so you can watch your loss curve descend while training runs.
 
@@ -169,7 +169,7 @@ Training datasets are massive. SlimPajama contains 627 billion tokens and spans 
 
 Instead, we convert the data to MDS (MosaicML Data Shard) format and stream it during training:
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="data-loading-task" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="data-loading-task" lang="python" >}}
 
 This task does three things:
 
@@ -185,25 +185,25 @@ Flyte caches this task automatically. Run the pipeline twice with the same datas
 
 Now we get to the core: actually training the model across multiple GPUs. FSDP is what makes this possible for large models.
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="training-task-signature" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="training-task-signature" lang="python" >}}
 
 Notice `report=True` on the task decorator. It enables Flyte Reports for this specific task.
 
 The training task receives the prepared dataset as a `Dir` and streams data directly from storage:
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="training-task-streaming" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="training-task-streaming" lang="python" >}}
 
 `prepared_dataset.path` provides the remote storage path for the dataset. MosaicML's `StreamingDataset` automatically shards data across GPUs so that each rank sees different samples, without requiring a manual distributed sampler. The credentials are already in the environment because Flyte set them up.
 
 FSDP is where the memory magic happens. Instead of each GPU holding a full copy of the model (like Distributed Data Parallel (DDP)), FSDP shards the parameters, gradients, and optimizer states across all GPUs. Each GPU only holds 1/8th of the model. When a layer needs to run, FSDP all-gathers the full parameters, runs the computation, then discards them.
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="training-task-fsdp" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="training-task-fsdp" lang="python" >}}
 
 We wrap at the `GPTBlock` level because each transformer block becomes an FSDP unit. This balances communication overhead (more units = more all-gathers) against memory savings (smaller units = more granular sharding).
 
 One subtle detail: gradient clipping. With FSDP, gradients are sharded across ranks, so computing a global gradient norm would require an expensive all-reduce operation. Instead of norm-based clipping, we use value-based gradient clipping, which clamps each individual gradient element to a fixed range. This can be done independently on each rank with no coordination overhead and is commonly used for large-scale FSDP training.
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="training-task-trainer" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="training-task-trainer" lang="python" >}}
 
 The trainer configuration brings together all the pieces we've discussed:
 
@@ -220,7 +220,7 @@ The trainer then calls `fit()` with the model, data loaders, and optionally a ch
 
 The pipeline task orchestrates everything:
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="main-pipeline" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="main-pipeline" lang="python" >}}
 
 The flow is straightforward: load the configuration, prepare the data, and run training. Flyte automatically manages the execution graph so data preparation runs first and training waits until it completes. If data preparation is cached from a previous run, training starts immediately.
 
@@ -230,7 +230,7 @@ The gradient accumulation calculation is worth noting. We want a global batch si
 
 With everything defined, running is simple:
 
-{{< code file="/external/unionai-examples/v2/tutorials/pretraining/train.py" fragment="main" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="main" lang="python" >}}
 
 This configuration is designed for testing and demonstration. Notice `max_train_samples=5_000_000` — that's 5 million samples from a dataset with 627 billion tokens. A tiny fraction, enough to verify everything works without burning through compute.
 

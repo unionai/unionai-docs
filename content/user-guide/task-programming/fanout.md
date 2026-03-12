@@ -1,7 +1,7 @@
 ---
 title: Fanout
 weight: 13
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Fanout
@@ -9,7 +9,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 Flyte is designed to scale effortlessly, allowing you to run workflows with large fanouts.
 When you need to execute many tasks in parallel—such as processing a large dataset or running hyperparameter sweeps—Flyte provides powerful patterns to implement these operations efficiently.
 
-{{< variant byoc selfmanaged serverless >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 > [!NOTE]
 > By default fanouts in Union are limited to a maximum size.
@@ -30,19 +30,19 @@ In Flyte terminology, each individual task execution is called an "action"—thi
 
 We start by importing our required packages, defining our Flyte environment, and creating a simple task that fetches user data from a mock API.
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/fanout/fanout.py" fragment="setup" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/fanout/fanout.py" fragment="setup" lang="python" >}}
 
 ### Parallel execution
 
 Next we implement the most common fanout pattern, which is to collect task invocations and execute them in parallel using `asyncio.gather()`:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/fanout/fanout.py" fragment="parallel" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/fanout/fanout.py" fragment="parallel" lang="python" >}}
 
 ### Running the example
 
 To actually run our example, we create a main guard that intializes Flyte and runs our main driver task:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/fanout/fanout.py" fragment="run" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/fanout/fanout.py" fragment="run" lang="python" >}}
 
 ## How Flyte handles concurrency and parallelism
 

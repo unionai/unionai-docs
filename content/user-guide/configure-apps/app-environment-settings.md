@@ -1,7 +1,7 @@
 ---
 title: App environments
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # App environment settings
@@ -265,7 +265,7 @@ There are two ways to start up an app in Flyte:
 
 The server function is a Python function that runs the app. It is defined using the `@app_env.server` decorator.
 
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/fastapi-server-example.py" fragment=fastapi-app lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/fastapi-server-example.py" fragment=fastapi-app lang=python >}}
 
 The `@app_env.server` decorator allows you to define a synchronous or asynchronous function that runs the app, either
 with a server start command like `uvicorn.run`, [`HTTPServer.serve_forever`](https://docs.python.org/3/library/http.server.html), etc.
@@ -280,7 +280,7 @@ with a server start command like `uvicorn.run`, [`HTTPServer.serve_forever`](htt
 The server function is called after the app is started up, and before the app is shut down. It is defined using the `@app_env.on_startup` decorator. This is useful if you need to load any state or external connections needed to run the
 app before it starts.
 
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/fastapi-server-example.py" fragment=on-startup-decorator lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/fastapi-server-example.py" fragment=on-startup-decorator lang=python >}}
 
 #### Shutdown hook
 
@@ -288,7 +288,7 @@ The server function is called before the app instance shuts down during scale do
 `@app_env.on_shutdown` decorator. This is useful if you need to clean up any state or external connections in the
 container running the app.
 
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/fastapi-server-example.py" fragment=on-shutdown-decorator lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/fastapi-server-example.py" fragment=on-shutdown-decorator lang=python >}}
 
 ### Container command via `command` vs `args`
 
@@ -322,7 +322,7 @@ So if you specify `args`, they'll be appended after the `--` separator.
 
 When you use `args` without specifying `command`, the args are passed to the default Flyte command:
 
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/app-startup-examples.py" fragment=args-with-default-command lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/app-startup-examples.py" fragment=args-with-default-command lang=python >}}
 
 This effectively runs:
 
@@ -334,7 +334,7 @@ fserve --version ... --project ... --domain ... -- streamlit run main.py --serve
 
 When you specify a `command`, it completely replaces the default command:
 
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/app-startup-examples.py" fragment=explicit-command lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/app-startup-examples.py" fragment=explicit-command lang=python >}}
 
 This runs exactly:
 
@@ -346,13 +346,13 @@ streamlit hello --server.port 8080
 
 You can combine both, though this is less common:
 
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/app-startup-examples.py" fragment=command-with-args lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/app-startup-examples.py" fragment=command-with-args lang=python >}}
 
 #### FastAPIAppEnvironment example
 
 When using `FastAPIAppEnvironment`, the command is automatically configured to run uvicorn:
 
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/app-startup-examples.py" fragment=fastapi-auto-command lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/app-startup-examples.py" fragment=fastapi-auto-command lang=python >}}
 
 The `FastAPIAppEnvironment` automatically:
 

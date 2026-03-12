@@ -1,7 +1,7 @@
 ---
 title: Setup with AWS CDK
 weight: 1
-variants: -flyte -serverless -byoc +selfmanaged
+variants: -flyte -byoc +selfmanaged
 ---
 
 # Setup with AWS CDK

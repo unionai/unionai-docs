@@ -1,7 +1,7 @@
 ---
 title: flyte
-version: 2.0.0b57
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.6
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
 ---
@@ -66,6 +66,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`init_passthrough()`](#init_passthrough) | Initialize the Flyte system with passthrough authentication. |
 | [`map()`](#map) | Map a function over the provided arguments with concurrent execution. |
 | [`run()`](#run) | Run a task with the given parameters. |
+| [`run_python_script()`](#run_python_script) | Package and run a Python script on a remote Flyte cluster. |
 | [`serve()`](#serve) | Serve a Flyte app using an AppEnvironment. |
 | [`trace()`](#trace) | A decorator that traces function execution with timing information. |
 | [`version()`](#version) | Returns the version of the Flyte SDK. |
@@ -104,7 +105,7 @@ Create an AMD GPU device instance.
 def GPU(
     device: typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10'],
     quantity: typing.Literal[1, 2, 3, 4, 5, 6, 7, 8],
-    partition: typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType],
+    partition: typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType],
 ) -> flyte._resources.Device
 ```
 Create a GPU device instance.
@@ -114,7 +115,7 @@ Create a GPU device instance.
 |-|-|-|
 | `device` | `typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10']` | The type of GPU (e.g., "T4", "A100"). |
 | `quantity` | `typing.Literal[1, 2, 3, 4, 5, 6, 7, 8]` | The number of GPUs of this type. |
-| `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType]` | The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus). :return: Device instance. |
+| `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType]` | The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus). :return: Device instance. |
 
 #### HABANA_GAUDI()
 
@@ -183,7 +184,7 @@ Build an image. The existing async context will be used.
 |-|-|-|
 | `image` | `Image` | The image(s) to build. |
 | `dry_run` | `bool` | Tell the builder to not actually build. Different builders will have different behaviors. |
-| `force` | `bool` | Skip the existence check. Normally if the image already exists we won't build it. |
+| `force` | `bool` | Skip the existence check and force a rebuild. When using the remote builder, this also sets overwrite_cache=True on the build run. |
 | `wait` | `bool` | Wait for the build to finish. If wait is False, the function will return immediately and the build will run in the background. |
 
 #### build_images()
@@ -626,6 +627,52 @@ Run a task with the given parameters
 | `args` | `*args` | args to pass to the task |
 | `kwargs` | `**kwargs` | kwargs to pass to the task :return: Run \| Result of the task |
 
+#### run_python_script()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await run_python_script.aio()`.
+```python
+def run_python_script(
+    script: pathlib._local.Path,
+    cpu: int,
+    memory: str,
+    gpu: int,
+    gpu_type: str,
+    image: Union[Image, List[str], None],
+    timeout: int,
+    extra_args: Optional[List[str]],
+    queue: Optional[str],
+    wait: bool,
+    name: Optional[str],
+) -> Run
+```
+Package and run a Python script on a remote Flyte cluster.
+
+Uploads the script via :class:`~flyte.io.File`, passes it as a typed input
+to a Flyte task, and executes it remotely with the requested resources.
+
+Project and domain are read from the init config (set via ``flyte.init()``
+or ``flyte.init_from_config()``), consistent with ``flyte.run()``.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `script` | `pathlib._local.Path` | Path to the Python script to run. |
+| `cpu` | `int` | Number of CPUs to request (default |
+| `memory` | `str` | Memory to request, e.g. ``"16Gi"`` (default |
+| `gpu` | `int` | Number of GPUs to request (default |
+| `gpu_type` | `str` | GPU accelerator type Only used when ``gpu &gt; 0`` (default: ``"T4"``). |
+| `image` | `Union[Image, List[str], None]` | Container image to use. Accepts either  - A :class:`~flyte.Image` object for full control over the image. - A ``list[str]`` of pip package names to install on top of the default Debian base image (e.g. ``["torch", "transformers"]``). - ``None`` to use a plain Debian base image (default). |
+| `timeout` | `int` | Task timeout in seconds (default |
+| `extra_args` | `Optional[List[str]]` | Extra arguments passed to the script. |
+| `queue` | `Optional[str]` | Flyte queue / cluster override. |
+| `wait` | `bool` | If True, block until execution completes before returning. |
+| `name` | `Optional[str]` | Run name. If omitted, a random name is generated. :return: A :class:`~flyte.remote.Run` handle for the remote execution.  Example::  import flyte from pathlib import Path  flyte.init(endpoint="my-cluster.example.com")  # With a list of packages (auto-builds image) run = flyte.run_python_script( Path("train.py"), gpu=1, gpu_type="A100", memory="64Gi", image=["torch", "transformers"], ) print(run.url)  # With a custom Image object img = flyte.Image.from_debian_base(name="my-img").with_pip_packages("numpy") run = flyte.run_python_script(Path("analysis.py"), image=img) |
+
 #### serve()
 
 
@@ -713,6 +760,7 @@ def with_runcontext(
     custom_context: Dict[str, str] | None,
     cache_lookup_scope: CacheLookupScope,
     preserve_original_types: bool,
+    debug: bool,
     _tracker: Any,
 ) -> _Runner
 ```
@@ -760,6 +808,7 @@ if __name__ == "__main__":
 | `custom_context` | `Dict[str, str] \| None` | Optional global input context to pass to the task. This will be available via get_custom_context() within the task and will automatically propagate to sub-tasks. Acts as base/default values that can be overridden by context managers in the code. |
 | `cache_lookup_scope` | `CacheLookupScope` | Optional Scope to use for the run. This is used to specify the scope to use for cache lookups. If not specified, it will be set to the default scope (global unless overridden at the system level). |
 | `preserve_original_types` | `bool` | Optional If true, the type engine will preserve original types (e.g., pd.DataFrame) when guessing python types from literal types. If false (default), it will return the generic flyte.io.DataFrame. This option is automatically set to True if interactive_mode is True unless overridden explicitly by this parameter. |
+| `debug` | `bool` | Optional If true, the task will be run as a VSCode debug task, starting a code-server in the container so users can connect via the UI to interactively debug/run the task. |
 | `_tracker` | `Any` | This is an internal only parameter used by the CLI to render the TUI.  :return: runner |
 
 #### with_servecontext()

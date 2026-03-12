@@ -1,7 +1,7 @@
 ---
 title: Packages
-version: 2.0.0b57
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.6
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
 ---
@@ -27,6 +27,7 @@ sidebar_expanded: true
 | [`flyte.prefetch`](flyte.prefetch) | Prefetch utilities for Flyte. |
 | [`flyte.remote`](flyte.remote) | Remote Entities that are accessible from the Union Server once deployed or created. |
 | [`flyte.report`](flyte.report) |  |
+| [`flyte.sandbox`](flyte.sandbox) | Sandbox utilities for running isolated code inside Flyte tasks. |
 | [`flyte.storage`](flyte.storage) |  |
 | [`flyte.syncify`](flyte.syncify) | # Syncify Module. |
 | [`flyte.types`](flyte.types) | # Flyte Type System. |

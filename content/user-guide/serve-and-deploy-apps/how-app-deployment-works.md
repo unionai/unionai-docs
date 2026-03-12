@@ -1,7 +1,7 @@
 ---
 title: How app deployment works
 weight: 3
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # How app deployment works
@@ -21,7 +21,7 @@ When you deploy an app, the following happens:
 
 Deploy an app:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=basic-deploy lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=basic-deploy lang=python >}}
 
 `flyte.deploy()` returns a list of `Deployment` objects. Each `Deployment` contains a dictionary of `DeployedEnvironment` objects (one for each environment deployed, including environment dependencies). For apps, the `DeployedEnvironment` is a `DeployedAppEnvironment` which has a `deployed_app` property of type `App`.
 
@@ -34,20 +34,20 @@ Flyte automatically creates a deployment plan that includes:
 - All [app environment dependencies](../configure-apps/apps-depending-on-environments) (via `depends_on`)
 - Proper deployment order
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=deployment-plan lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=deployment-plan lang=python >}}
 
 ## Overriding App configuration at deployment time
 
 If you need to override the app configuration at deployment time, you can use the `clone_with` method to create a new
 app environment with the desired overrides.
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=clone-with lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=clone-with lang=python >}}
 
 ## Activation/deactivation
 
 Unlike serving, deployment does not automatically activate apps. You need to activate them explicitly:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=activation-deactivation lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=activation-deactivation lang=python >}}
 
 See [Activating and deactivating apps](./activating-and-deactivating-apps) for more details.
 
@@ -73,7 +73,7 @@ flyte deploy path/to/app.py app \
 
 ## Example: Full deployment configuration
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=full-deployment lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=full-deployment lang=python >}}
 
 ## Best practices
 
@@ -90,7 +90,7 @@ flyte deploy path/to/app.py app \
 
 `flyte.deploy()` returns a list of `Deployment` objects. Each `Deployment` contains a dictionary of `DeployedEnvironment` objects:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=deployment-status lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=deployment-status lang=python >}}
 
 For apps, each `DeployedAppEnvironment` includes:
 

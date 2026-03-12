@@ -1,7 +1,7 @@
 ---
 title: Authoring
 weight: 4
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Authoring
@@ -24,8 +24,8 @@ Remember that there are two production branches in the docs: `main` and `v1`.
 While editing, you can use Hugo's local live preview capabilities.
 Simply execute
 
-```shell
-$ make dev
+```bash
+make dev
 ```
 
 This will build the site and launch a local server at `http://localhost:1313`.
@@ -49,7 +49,7 @@ For example:
 ```markdown
 ---
 title: My Page
-variants: -flyte +serverless +byoc -selfmanaged
+variants: -flyte +byoc -selfmanaged
 ---
 ```
 
@@ -88,6 +88,7 @@ weight: 3
 | `sidebar_expanded` | bool | If `true` the section becomes expanded in the sidebar. Permanently.              |
 | `site_root`        | bool | If `true` indicates that the page is the site landing page                        |
 | `toc_max`          | int  | Maximum heading to incorporate in the right navigation table of contents.         |
+| `llm_readable_bundle` | bool | If `true`, generates a `section.md` bundle for this section. Requires `{{</* llm-bundle-note */>}}` shortcode. See [LLM-optimized documentation](./llm-docs). |
 
 ## Conditional Content
 
@@ -187,17 +188,15 @@ At the top of your.md file, add:
     jupyter_notebook: /path/to/your/notebook.ipynb
     ---
 
-Then run the `Makefile.jupyter` target to generate the page.
+Jupyter notebook conversion is handled automatically as part of the production build:
 
-```shell
-$ make -f Makefile.jupyter
+```bash
+make dist
 ```
 
-> [!NOTE]
-> You must `uv sync` and activate the environment in `tools/jupyter_generator` before running the
-> `Makefile.jupyter` target, or make sure all the necessary dependencies are installed for yourself.
+The conversion tool is located at `unionai-docs-infra/tools/jupyter_generator`.
 
-**Committing the change:** When the PR is pushed, a check for consistency between the notebook and its source will run. Please ensure that if you change the notebook, you re-run the `Makefile.jupyter` target to update the page.
+**Committing the change:** When the PR is pushed, a CI check verifies consistency between the notebook and its generated content. Please ensure that if you change the notebook, you run `make dist` to update the generated page.
 
 ## Mapped Keys (`{{</* key */>}}`)
 
@@ -206,7 +205,7 @@ For example, the product name changes if it is Flyte, Union BYOC, etc. For that,
 we can define a single key `product_full_name` and map it to reflect automatically,
 without the need to `if variant` around it.
 
-Please refer to [{{</* key */>}} shortcode](SHORTCODES.md#-key-) for more details.
+Please refer to [{{</* key */>}} shortcode](./shortcodes#key) for more details.
 
 ## Mermaid Graphs
 

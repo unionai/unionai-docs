@@ -1,7 +1,7 @@
 ---
 title: Including additional files
 weight: 3
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Including additional files
@@ -32,7 +32,7 @@ Use `include` when:
 
 ### Multi-file Streamlit app
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit/custom_streamlit.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/streamlit/multi_file_streamlit.py" lang=python >}}
 
 In this example:
 - `main.py` is your main Streamlit app file
@@ -41,7 +41,7 @@ In this example:
 
 ### Multi-file FastAPI app
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/multi_file/app.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/multi_file/app.py" lang=python >}}
 
 ### App with configuration files
 

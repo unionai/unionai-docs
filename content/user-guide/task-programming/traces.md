@@ -1,7 +1,7 @@
 ---
 title: Traces
 weight: 11
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Traces
@@ -25,7 +25,7 @@ Each traced function is effectively a checkpoint within its task.
 
 Here is an example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/task_vs_trace.py" fragment="all" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/traces/task_vs_trace.py" fragment="all" lang="python" >}}
 
 ## What Gets Traced
 
@@ -48,13 +48,13 @@ The trace decorator works with:
 > [!NOTE]
 > Currently tracing only works for asynchronous functions. Tracing of synchronous functions is coming soon.
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/function_types.py" fragment="all" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/traces/function_types.py" fragment="all" lang="python" >}}
 
 ## Task Orchestration Pattern
 
 The typical Flyte workflow follows this pattern:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/pattern.py" fragment="all" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/traces/pattern.py" fragment="all" lang="python" >}}
 
 **Benefits of this pattern:**
 - If `search_web` succeeds but `summarize_content` fails, resumption skips the search step
@@ -77,7 +77,7 @@ Understanding how traces work with Flyte's other execution features:
 Lets use better typing for all of these examples, we have the opportunity to make this right for our users
 -->
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/caching_vs_checkpointing.py" fragment="all" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/traces/caching_vs_checkpointing.py" fragment="all" lang="python" >}}
 
 ### Execution Flow
 
@@ -97,7 +97,7 @@ Clarify what actually happens on error vs success with traces
 Traces capture comprehensive execution information for debugging and monitoring:
 
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/error_handling.py" fragment="all" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/traces/error_handling.py" fragment="all" lang="python" >}}
 
 **What traces capture:**
 - **Execution time**: Duration of each function call
