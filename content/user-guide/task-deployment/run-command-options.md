@@ -277,14 +277,6 @@ result = flyte.run(my_task, name="World", count=5, debug=True)
 
 ## SDK options
 
-The core `flyte run` functionality is also available programmatically through the `flyte.run()` function, with extensive configuration options available via the `flyte.with_runcontext()` function:
-
-```python
-# Run context configuration
-result = flyte.with_runcontext(
-    mode="remote",              # "remote", "local"
-    copy_style="loaded_modules", # Code bundling strategy
-    version="v1.0.0",           # Ephemeral preparation version
-    dry_run=False,              # Preview mode
-).run(my_task, name="World")
-```
+The core `flyte run` functionality is also available programmatically through the `flyte.run()` function.
+For SDK-level configuration of all run parameters (storage, caching, identity, logging, and more),
+see [Run context](./run-context).
