@@ -1,6 +1,6 @@
 ---
 title: Build apps
-weight: 16
+weight: 15
 variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true

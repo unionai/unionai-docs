@@ -1,6 +1,6 @@
 ---
 title: Build an agent
-weight: 9
+weight: 17
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
 mermaid: true
