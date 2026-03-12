@@ -51,6 +51,8 @@ class Run(
 | [`outputs()`](#outputs) | Get the outputs of the run. |
 | [`show_logs()`](#show_logs) |  |
 | [`sync()`](#sync) | Sync the run with the remote server. |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions,. |
 | [`watch()`](#watch) | Watch the run for updates, updating the internal Run state with latest details. |
 
@@ -255,6 +257,28 @@ def show_logs(
 def sync()
 ```
 Sync the run with the remote server. This is a placeholder for syncing the run.
+
+
+### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
 
 
 ### wait()

@@ -44,6 +44,8 @@ class TaskDetails(
 | [`fetch()`](#fetch) |  |
 | [`get()`](#get) | Get a task by its ID or name. |
 | [`override()`](#override) | Create a new TaskDetails with overridden properties. |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
 
 
 ### fetch()
@@ -122,4 +124,26 @@ Create a new TaskDetails with overridden properties.
 | `cache` | `Optional[flyte.Cache]` | Cache configuration. |
 | `queue` | `Optional[str]` | Queue name for task execution. :return: A new TaskDetails instance with the overrides applied. |
 | `kwargs` | `**kwargs` | |
+
+### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
+
 

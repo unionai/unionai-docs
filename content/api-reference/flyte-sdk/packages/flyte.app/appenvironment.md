@@ -68,6 +68,7 @@ class AppEnvironment(
 
 | Method | Description |
 |-|-|
+| [`add_dependency()`](#add_dependency) | Add a dependency to the environment. |
 | [`clone_with()`](#clone_with) |  |
 | [`container_args()`](#container_args) |  |
 | [`container_cmd()`](#container_cmd) |  |
@@ -76,6 +77,20 @@ class AppEnvironment(
 | [`on_startup()`](#on_startup) | Decorator to define the startup function for the app environment. |
 | [`server()`](#server) | Decorator to define the server function for the app environment. |
 
+
+### add_dependency()
+
+```python
+def add_dependency(
+    env: Environment,
+)
+```
+Add a dependency to the environment.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `env` | `Environment` | |
 
 ### clone_with()
 

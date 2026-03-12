@@ -29,6 +29,8 @@ class User(
 | [`get()`](#get) | Fetches information about the currently logged in user. |
 | [`name()`](#name) | Get the name of the user. |
 | [`subject()`](#subject) | Get the subject identifier of the user. |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
 
 
 ### get()
@@ -65,5 +67,27 @@ Get the name of the user.
 def subject()
 ```
 Get the subject identifier of the user.
+
+
+### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
 
 

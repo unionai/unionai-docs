@@ -42,9 +42,27 @@ validated to form a valid model.
 
 | Method | Description |
 |-|-|
+| [`check_type()`](#check_type) |  |
+| [`get()`](#get) |  |
 | [`materialize()`](#materialize) | Returns the AppEndpoint object, the endpoint is retrieved at serving time by the fserve executable. |
 
 
+### check_type()
+
+```python
+def check_type(
+    data: typing.Any,
+) -> typing.Any
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `typing.Any` | |
+
+### get()
+
+```python
+def get()
+```
 ### materialize()
 
 ```python

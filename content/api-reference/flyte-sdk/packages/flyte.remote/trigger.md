@@ -44,6 +44,8 @@ class Trigger(
 | [`get()`](#get) | Retrieve a trigger by its name and associated task name. |
 | [`get_details()`](#get_details) | Get detailed information about this trigger. |
 | [`listall()`](#listall) | List all triggers associated with a specific task or all tasks if no task name is provided. |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`update()`](#update) | Pause a trigger by its name and associated task name. |
 
 
@@ -155,6 +157,28 @@ List all triggers associated with a specific task or all tasks if no task name i
 | `task_name` | `str \| None` | |
 | `task_version` | `str \| None` | |
 | `limit` | `int` | |
+
+### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
+
 
 ### update()
 

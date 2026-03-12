@@ -66,10 +66,25 @@ class TaskEnvironment(
 
 | Method | Description |
 |-|-|
+| [`add_dependency()`](#add_dependency) | Add a dependency to the environment. |
 | [`clone_with()`](#clone_with) | Clone the TaskEnvironment with new parameters. |
 | [`from_task()`](#from_task) | Create a TaskEnvironment from a list of tasks. |
 | [`task()`](#task) | Decorate a function to be a task. |
 
+
+### add_dependency()
+
+```python
+def add_dependency(
+    env: Environment,
+)
+```
+Add a dependency to the environment.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `env` | `Environment` | |
 
 ### clone_with()
 

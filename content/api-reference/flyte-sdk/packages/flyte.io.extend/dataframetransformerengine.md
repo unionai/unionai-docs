@@ -18,22 +18,33 @@ registering with the main type engine, you should register with this transformer
 ```python
 def DataFrameTransformerEngine()
 ```
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ## Methods
 
 | Method | Description |
 |-|-|
 | [`assert_type()`](#assert_type) |  |
 | [`encode()`](#encode) |  |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and. |
 | [`get_decoder()`](#get_decoder) |  |
 | [`get_encoder()`](#get_encoder) |  |
 | [`get_literal_type()`](#get_literal_type) | Provide a concrete implementation so that writers of custom dataframe handlers since there's nothing that. |
 | [`get_structured_dataset_type()`](#get_structured_dataset_type) |  |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
+| [`isinstance_generic()`](#isinstance_generic) |  |
 | [`iter_as()`](#iter_as) |  |
 | [`open_as()`](#open_as) |  |
 | [`register()`](#register) | Call this with any Encoder or Decoder to register it with the flytekit type system. |
 | [`register_for_protocol()`](#register_for_protocol) | See the main register function instead. |
 | [`register_renderer()`](#register_renderer) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | The only tricky thing with converting a Literal (say the output of an earlier task), to a Python value at. |
@@ -70,6 +81,34 @@ def encode(
 | `protocol` | `str` | |
 | `format` | `str` | |
 | `structured_literal_type` | `types_pb2.StructuredDatasetType` | |
+
+### from_binary_idl()
+
+```python
+def from_binary_idl(
+    binary_idl_object: Binary,
+    expected_python_type: Type[T],
+) -> Optional[T]
+```
+This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and
+ attribute access.
+
+For untyped dict, dataclass, and pydantic basemodel:
+Life Cycle (Untyped Dict as example):
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
+                  (to_literal)                             (from_binary_idl)
+
+For attribute access:
+Life Cycle:
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; resolved golang value -&gt; binary literal scalar
+     -&gt; msgpack bytes -&gt; python val
+                  (to_literal)      (propeller attribute access)     (from_binary_idl)
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 ### get_decoder()
 
@@ -146,6 +185,19 @@ Converts the Flyte LiteralType to a python object type.
 | Parameter | Type | Description |
 |-|-|-|
 | `literal_type` | `types_pb2.LiteralType` | |
+
+### isinstance_generic()
+
+```python
+def isinstance_generic(
+    obj,
+    generic_alias,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 ### iter_as()
 
@@ -237,6 +289,24 @@ def register_renderer(
 |-|-|-|
 | `python_type` | `Type` | |
 | `renderer` | `Renderable` | |
+
+### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 ### to_html()
 

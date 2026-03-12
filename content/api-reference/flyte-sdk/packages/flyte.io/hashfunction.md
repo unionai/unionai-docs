@@ -47,6 +47,7 @@ Initialize a HashFunction with a custom hash callable.
 | Method | Description |
 |-|-|
 | [`from_fn()`](#from_fn) | Create a HashFunction from a callable. |
+| [`reset()`](#reset) |  |
 | [`result()`](#result) | Return the most recently computed hash value. |
 | [`update()`](#update) | Update the hash value by applying the hash function to the given data. |
 
@@ -68,6 +69,11 @@ This is a convenience factory method for creating HashFunction instances.
 |-|-|-|
 | `fn` | `Callable[[Any], str]` | A callable that takes data of any type and returns a hash string. |
 
+### reset()
+
+```python
+def reset()
+```
 ### result()
 
 ```python
