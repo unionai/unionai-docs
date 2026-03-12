@@ -7,11 +7,11 @@ mermaid: true
 
 # Deploy an agent as a service
 
-Union makes it straightforward to deploy internal apps (chatbots, dashboards, API endpoints) behind a URL, with no separate infrastructure. This is how you turn an agent into a hosted service that your team (or other agents) can call.
+{{< key product_name >}} makes it straightforward to deploy internal apps (chatbots, dashboards, API endpoints) behind a URL, with no separate infrastructure. This is how you turn an agent into a hosted service that your team (or other agents) can call.
 
 ## Chat agent with Gradio
 
-This example takes the ReAct agent from [Building agentic workflows](./building-agents) and wraps it in a Gradio chat interface, deployed as a Union app. Users interact in the browser, and each reasoning step streams back in real time.
+This example takes the ReAct agent from [Building agentic workflows](./building-agents) and wraps it in a Gradio chat interface, deployed as a {{< key product_name >}} app. Users interact in the browser, and each reasoning step streams back in real time.
 
 ```python
 # app.py
@@ -23,7 +23,7 @@ import flyte
 from flyte.app import AppEnvironment
 from openai import AsyncOpenAI
 
-# --- ReAct agent (same pattern as the ReAct agent in Building agentic workflows on Union) ---
+# --- ReAct agent (same pattern as the ReAct agent in Building agentic workflows on {{< key product_name >}}) ---
 
 TOOLS = {"add": lambda a, b: a + b, "multiply": lambda a, b: a * b}
 
@@ -66,7 +66,7 @@ async def react_agent(message: str, history: list):
         yield output
     yield output + "\n\nMax steps reached."
 
-# --- Deploy as a Union app ---
+# --- Deploy as a {{< key product_name >}} app ---
 
 serving_env = AppEnvironment(
     name="react-agent-chat",
@@ -92,24 +92,24 @@ if __name__ == "__main__":
     flyte.serve(serving_env)
 ```
 
-Run locally, then deploy to Union with one command:
+Run locally, then deploy to {{< key product_name >}} with one command:
 
 ```bash
 # Local development
 python app.py
 
-# Deploy to Union
+# Deploy to {{< key product_name >}}
 flyte deploy app.py serving_env
 ```
 
-Union assigns a URL, handles TLS, and auto-scales the app.
+{{< key product_name >}} assigns a URL, handles TLS, and auto-scales the app.
 
 **What's happening under the hood:**
 
 - `AppEnvironment` defines the container image, secrets, resources, and port for the app
-- `@serving_env.server` marks the function that Union calls on remote deployment
+- `@serving_env.server` marks the function that {{< key product_name >}} calls on remote deployment
 - `gr.ChatInterface` with an async generator gives streaming output: users see each reasoning step appear as the agent works
-- `requires_auth=False` makes the app publicly accessible; set to `True` to require Union authentication
+- `requires_auth=False` makes the app publicly accessible; set to `True` to require {{< key product_name >}} authentication
 
 ## Other deployment patterns
 
