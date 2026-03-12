@@ -154,6 +154,7 @@ Agentic AI integrations provide drop-in replacements for LLM provider SDKs. They
 | Plugin                        | Description                                         | Common use cases                              |
 | ----------------------------- | --------------------------------------------------- | --------------------------------------------- |
 | [OpenAI](./openai/_index)     | Drop-in replacement for OpenAI Agents SDK `function_tool` | Agentic workflows with OpenAI models          |
+| [Code generation](./codegen/_index) | LLM-driven code generation with automatic testing in sandboxes | Data processing, ETL, analysis pipelines |
 
 ## Experiment tracking
 
