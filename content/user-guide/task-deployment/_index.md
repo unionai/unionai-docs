@@ -225,6 +225,14 @@ For all `flyte run` options, see [Run command options](./run-command-options).
 {{< /tab >}}
 {{< /tabs >}}
 
+## Configuring runs with `flyte.with_runcontext()`
+
+Both `flyte run` and `flyte.run()` accept a range of invocation-time parameters that control where the run executes, where outputs are stored, caching behavior, and more.
+Programmatically, these are set with `flyte.with_runcontext()` before calling `.run()`.
+Inside a running task, `flyte.ctx()` provides read access to the same context.
+
+For the full parameter reference, see [Run context](./run-context).
+
 <!--
 TODO: Add link to Flyte remote documentation when available
 For details on Flyte remote functionality, see the [Flyte remote]().
