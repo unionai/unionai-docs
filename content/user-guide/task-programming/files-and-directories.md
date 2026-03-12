@@ -42,3 +42,37 @@ Helper functions like `walk` and `open` have been added to the objects
 and do what you might expect.
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/files-and-directories/file_and_dir.py" fragment="create-and-check-dir" lang="python" >}}
+
+## JSONL files
+
+The `flyteplugins-jsonl` package extends `File` and `Dir` with JSONL-aware types: `JsonlFile` and `JsonlDir`. They add streaming record-level read and write on top of the standard file/directory capabilities, with optional zstd compression and automatic shard rotation for large datasets.
+
+```bash
+pip install flyteplugins-jsonl
+```
+
+### Setup
+
+{{< code file="/unionai-examples/v2/user-guide/task-programming/files-and-directories/jsonl.py" fragment="setup" lang="python" >}}
+
+### JsonlFile
+
+`JsonlFile` is a `File` subclass for single JSONL files. Use its async context manager to write records incrementally without requiring the entire dataset to be loaded into memory:
+
+{{< code file="/unionai-examples/v2/user-guide/task-programming/files-and-directories/jsonl.py" fragment="write-jsonl-file" lang="python" >}}
+
+Reading is equally streaming:
+
+{{< code file="/unionai-examples/v2/user-guide/task-programming/files-and-directories/jsonl.py" fragment="read-jsonl-file" lang="python" >}}
+
+Compressed files (`.jsonl.zst` / `.jsonl.zstd`) are handled transparently based on the file extension.
+
+### JsonlDir
+
+`JsonlDir` is a `Dir` subclass that shards records across multiple JSONL files. When a shard reaches the `max_bytes` threshold, a new shard is opened automatically. This keeps individual files at a manageable size even for very large datasets:
+
+{{< code file="/unionai-examples/v2/user-guide/task-programming/files-and-directories/jsonl.py" fragment="write-jsonl-dir" lang="python" >}}
+
+Reading iterates across all shards transparently:
+
+{{< code file="/unionai-examples/v2/user-guide/task-programming/files-and-directories/jsonl.py" fragment="read-jsonl-dir" lang="python" >}}

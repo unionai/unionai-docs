@@ -25,6 +25,7 @@ The task programming section covers key patterns for building effective Flyte wo
 **Execution patterns**
 - [**Fanout**](./fanout): Scale your workflows by running many tasks in parallel, perfect for processing large datasets or running hyperparameter sweeps.
 - [**Controlling parallel execution**](./controlling-parallelism): Limit concurrent task executions using semaphores or `flyte.map` concurrency for rate-limited APIs, GPU quotas, and resource-constrained workflows.
+- [**Human-in-the-loop**](./human-in-the-loop): Pause workflow execution at a checkpoint and wait for a human to provide input or approval before continuing.
 - [**Grouping actions**](./grouping-actions): Organize related task executions into logical groups for better visualization and management in the UI.
 - [**Container tasks**](./container-tasks): Run arbitrary containers in any language without the Flyte SDK installed, using Flyte's copilot sidecar for seamless data flow.
 - [**Remote tasks**](./remote-tasks): Use previously deployed tasks without importing their code or dependencies, enabling team collaboration and task reuse.
@@ -58,5 +59,6 @@ These programming patterns become essential as your workflows grow in complexity
 - Use **custom context** when you need lightweight, cross-cutting metadata to flow through your task hierarchy without becoming part of the task's logical inputs.
 - Write **unit tests** to validate your task logic and ensure type transformations work correctly before deployment.
 - Use **abort and cancel** to stop unnecessary actions when conditions change, such as early convergence in HPO or manual intervention.
+- Use **human-in-the-loop** to insert approval gates or data collection checkpoints into automated workflows.
 
 Each guide includes practical examples and best practices to help you implement these patterns effectively in your own workflows.
