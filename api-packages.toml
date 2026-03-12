@@ -89,6 +89,12 @@ default_include = "include/api.plugin.md"
 no_flatten = true  # v2: hierarchical output (separate class files per package)
 
 [[plugins]]
+package = "flyteplugins-codegen"
+plugin = "flyteplugins.codegen"
+title = "Code generation"
+name = "codegen"
+
+[[plugins]]
 package = "flyteplugins-dask"
 plugin = "flyteplugins.dask"
 title = "Dask"
