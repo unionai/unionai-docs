@@ -42,8 +42,6 @@ class RunDetails(
 | [`get_details()`](#get_details) | Get the details of the run. |
 | [`inputs()`](#inputs) | Placeholder for inputs. |
 | [`outputs()`](#outputs) | Placeholder for outputs. |
-| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
-| [`to_json()`](#to_json) | Convert the object to a JSON string. |
 
 
 ### done()
@@ -112,27 +110,5 @@ Placeholder for inputs. This can be extended to handle inputs from the run conte
 def outputs()
 ```
 Placeholder for outputs. This can be extended to handle outputs from the run context.
-
-
-### to_dict()
-
-```python
-def to_dict()
-```
-Convert the object to a JSON-serializable dictionary.
-
-Returns:
-    dict: A dictionary representation of the object.
-
-
-### to_json()
-
-```python
-def to_json()
-```
-Convert the object to a JSON string.
-
-Returns:
-    str: A JSON string representation of the object.
 
 

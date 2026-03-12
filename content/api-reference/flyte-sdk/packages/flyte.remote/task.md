@@ -36,8 +36,6 @@ Initialize a Task object.
 |-|-|
 | [`get()`](#get) | Get a task by its ID or name. |
 | [`listall()`](#listall) | Get all runs for the current project and domain. |
-| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
-| [`to_json()`](#to_json) | Convert the object to a JSON string. |
 
 
 ### get()
@@ -96,26 +94,4 @@ Get all runs for the current project and domain.
 | `domain` | `str \| None` | The domain to filter tasks by. If None, the current domain will be used. |
 | `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). |
 | `limit` | `int` | The maximum number of tasks to return. :return: An iterator of runs. |
-
-### to_dict()
-
-```python
-def to_dict()
-```
-Convert the object to a JSON-serializable dictionary.
-
-Returns:
-    dict: A dictionary representation of the object.
-
-
-### to_json()
-
-```python
-def to_json()
-```
-Convert the object to a JSON string.
-
-Returns:
-    str: A JSON string representation of the object.
-
 

@@ -1,22 +1,21 @@
 ---
-title: ShardConfig
+title: CodePlan
 version: 2.0.6
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
-# ShardConfig
+# CodePlan
 
-**Package:** `flyte.prefetch`
+**Package:** `flyteplugins.codegen`
 
-Configuration for model sharding.
-
+Structured plan for the code solution.
 
 
 ```python
-class ShardConfig(
-    engine: typing.Literal['vllm'],
-    args: *args,
+class CodePlan(
+    description: str,
+    approach: str,
 )
 ```
 Create a new model by parsing and validating input data from keyword arguments.
@@ -29,6 +28,6 @@ validated to form a valid model.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `engine` | `typing.Literal['vllm']` | The sharding engine to use (currently only "vllm" is supported). |
-| `args` | `*args` | Arguments for the sharding engine. |
+| `description` | `str` | Overall description of the solution |
+| `approach` | `str` | High-level approach and algorithm to solve the problem |
 

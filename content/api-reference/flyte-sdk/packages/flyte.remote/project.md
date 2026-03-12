@@ -30,8 +30,6 @@ class Project(
 | [`create()`](#create) | Create a new project. |
 | [`get()`](#get) | Get a project by name. |
 | [`listall()`](#listall) | List all projects. |
-| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
-| [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`unarchive()`](#unarchive) | Unarchive (activate) this project. |
 | [`update()`](#update) | Update an existing project. |
 
@@ -122,28 +120,6 @@ archived projects instead.
 | `filters` | `str \| None` | The filters to apply to the project list. |
 | `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). |
 | `archived` | `bool` | If True, list archived projects. If False (default), list active projects. :return: An iterator of projects. |
-
-### to_dict()
-
-```python
-def to_dict()
-```
-Convert the object to a JSON-serializable dictionary.
-
-Returns:
-    dict: A dictionary representation of the object.
-
-
-### to_json()
-
-```python
-def to_json()
-```
-Convert the object to a JSON string.
-
-Returns:
-    str: A JSON string representation of the object.
-
 
 ### unarchive()
 

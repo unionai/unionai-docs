@@ -62,8 +62,6 @@ class Action(
 | [`listall()`](#listall) | Get all actions for a given run. |
 | [`show_logs()`](#show_logs) | Display logs for the action. |
 | [`sync()`](#sync) | Sync the action with the remote server. |
-| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
-| [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions,. |
 | [`watch()`](#watch) | Watch the action for updates, updating the internal Action state with latest details. |
 
@@ -220,28 +218,6 @@ Display logs for the action.
 def sync()
 ```
 Sync the action with the remote server. This is a placeholder for syncing the action.
-
-
-### to_dict()
-
-```python
-def to_dict()
-```
-Convert the object to a JSON-serializable dictionary.
-
-Returns:
-    dict: A dictionary representation of the object.
-
-
-### to_json()
-
-```python
-def to_json()
-```
-Convert the object to a JSON string.
-
-Returns:
-    str: A JSON string representation of the object.
 
 
 ### wait()

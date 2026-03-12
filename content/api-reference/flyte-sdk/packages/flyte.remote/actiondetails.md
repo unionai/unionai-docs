@@ -62,8 +62,6 @@ class ActionDetails(
 | [`inputs()`](#inputs) | Return the inputs of the action. |
 | [`logs_available()`](#logs_available) | Check if logs are available for the action, optionally for a specific attempt. |
 | [`outputs()`](#outputs) | Returns the outputs of the action, returns instantly if outputs are already cached, else fetches them and. |
-| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
-| [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`watch()`](#watch) | Watch the action for updates. |
 | [`watch_updates()`](#watch_updates) | Watch for updates to the action details, yielding each update until the action is done. |
 
@@ -173,28 +171,6 @@ Returns the outputs of the action, returns instantly if outputs are already cach
 returns. If Action is not in a terminal state, raise a RuntimeError.
 
 :return: ActionOutputs
-
-
-### to_dict()
-
-```python
-def to_dict()
-```
-Convert the object to a JSON-serializable dictionary.
-
-Returns:
-    dict: A dictionary representation of the object.
-
-
-### to_json()
-
-```python
-def to_json()
-```
-Convert the object to a JSON string.
-
-Returns:
-    str: A JSON string representation of the object.
 
 
 ### watch()

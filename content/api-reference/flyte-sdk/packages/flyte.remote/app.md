@@ -44,8 +44,6 @@ class App(
 | [`is_deactivated()`](#is_deactivated) | Check if the app is currently deactivated or stopped. |
 | [`listall()`](#listall) |  |
 | [`replace()`](#replace) | Replace an existing app's that matches the given name, with a new spec and optionally labels. |
-| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
-| [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`update()`](#update) |  |
 | [`watch()`](#watch) | Watch for the app to reach activated or deactivated state. |
 
@@ -242,28 +240,6 @@ Replace an existing app's that matches the given name, with a new spec and optio
 | `labels` | `Mapping[str, str] \| None` | Optional labels for the new app |
 | `project` | `str \| None` | Optional project for the new app |
 | `domain` | `str \| None` | Optional domain for the new app :return: A new app |
-
-### to_dict()
-
-```python
-def to_dict()
-```
-Convert the object to a JSON-serializable dictionary.
-
-Returns:
-    dict: A dictionary representation of the object.
-
-
-### to_json()
-
-```python
-def to_json()
-```
-Convert the object to a JSON string.
-
-Returns:
-    str: A JSON string representation of the object.
-
 
 ### update()
 

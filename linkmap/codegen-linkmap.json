@@ -1,0 +1,20 @@
+{
+  "packages": {
+    "flyteplugins.codegen": "/api-reference/integrations/codegen/packages/flyteplugins.codegen/"
+  },
+  "identifiers": {
+    "flyteplugins.codegen.AutoCoderAgent": "/api-reference/integrations/codegen/packages/flyteplugins.codegen/autocoderagent/",
+    "AutoCoderAgent": "/api-reference/integrations/codegen/packages/flyteplugins.codegen/autocoderagent/",
+    "flyteplugins.codegen.CodeGenEvalResult": "/api-reference/integrations/codegen/packages/flyteplugins.codegen/codegenevalresult/",
+    "CodeGenEvalResult": "/api-reference/integrations/codegen/packages/flyteplugins.codegen/codegenevalresult/",
+    "flyteplugins.codegen.CodePlan": "/api-reference/integrations/codegen/packages/flyteplugins.codegen/codeplan/",
+    "CodePlan": "/api-reference/integrations/codegen/packages/flyteplugins.codegen/codeplan/",
+    "flyteplugins.codegen.CodeSolution": "/api-reference/integrations/codegen/packages/flyteplugins.codegen/codesolution/",
+    "CodeSolution": "/api-reference/integrations/codegen/packages/flyteplugins.codegen/codesolution/",
+    "flyteplugins.codegen.ErrorDiagnosis": "/api-reference/integrations/codegen/packages/flyteplugins.codegen/errordiagnosis/",
+    "ErrorDiagnosis": "/api-reference/integrations/codegen/packages/flyteplugins.codegen/errordiagnosis/",
+    "flyteplugins.codegen.ImageConfig": "/api-reference/integrations/codegen/packages/flyteplugins.codegen/imageconfig/",
+    "ImageConfig": "/api-reference/integrations/codegen/packages/flyteplugins.codegen/imageconfig/"
+  },
+  "methods": {}
+}
