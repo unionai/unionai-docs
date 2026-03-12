@@ -2,12 +2,82 @@
 title: Compute plane components reference
 weight: 12
 variants: -flyte +byoc +selfmanaged
+mermaid: true
 ---
 
 # Compute plane components reference
 
 This section provides a detailed reference for each security-relevant component running on the customer’s compute plane.
 Understanding these components is essential for enterprise security teams conducting architecture reviews.
+
+## Component architecture
+
+The diagram below shows the major components in both planes and how they communicate.
+All cross-plane traffic flows through the Cloudflare Tunnel—an outbound-only, mTLS-encrypted connection initiated from the compute plane.
+No inbound ports are opened on the customer’s cluster.
+
+```mermaid
+graph TB
+    subgraph CP["Control plane (Union.ai hosted — AWS)"]
+        Admin["Admin<br/>(UI &amp; API gateway)"]
+        QueueSvc["Queue Service<br/>(schedules TaskActions)"]
+        StateSvc["State Service<br/>(receives state transitions)"]
+        ClusterSvc["Cluster Service<br/>(cluster health &amp; DNS reconciliation)"]
+        DataProxy["DataProxy<br/>(streaming relay for logs &amp; metrics)"]
+    end
+
+    subgraph Tunnel["Cloudflare Tunnel (outbound-only, mTLS)"]
+        direction LR
+        TunnelEdge(["Cloudflare edge"])
+    end
+
+    subgraph DP["Compute plane (customer hosted — customer cloud account)"]
+        TunnelSvc["Tunnel Service<br/>(maintains outbound tunnel connection)"]
+        Executor["Executor<br/>(Kubernetes controller — runs task pods)"]
+        ObjStore["Object Store Service<br/>(presigned URL generation)"]
+        LogProvider["Log Provider<br/>(live K8s logs + cloud log aggregator)"]
+        ImageBuilder["Image Builder<br/>(Buildkit — on-cluster image builds)"]
+
+        subgraph Apps["Apps &amp; Serving"]
+            Kourier["Kourier gateway<br/>(Envoy — auth + routing)"]
+            Knative["Knative Services<br/>(app containers)"]
+        end
+
+        Executor -->|"creates/manages"| Pods["Task pods<br/>(customer workloads)"]
+        Pods -->|"read/write via IAM"| ObjBucket[("Object store<br/>(metadata + fast-reg buckets)")]
+        ObjStore -->|"signs URLs using admin IAM role"| ObjBucket
+        LogProvider -->|"live: K8s API<br/>completed: CloudWatch / Cloud Logging / Azure Monitor"| Pods
+        Kourier --> Knative
+    end
+
+    Admin -->|"ConnectRPC / HTTPS"| User(["Client<br/>(browser / CLI / SDK)"])
+    User -->|"presigned URL — direct fetch"| ObjBucket
+
+    CP <-->|"Cloudflare Tunnel"| TunnelEdge
+    TunnelEdge <-->|"outbound-initiated from compute plane"| TunnelSvc
+    TunnelSvc --- Executor
+    TunnelSvc --- ObjStore
+    TunnelSvc --- LogProvider
+    TunnelSvc --- Apps
+
+    QueueSvc -->|"TaskAction CRs"| Executor
+    Executor -->|"state transitions (ConnectRPC)"| StateSvc
+    LogProvider -->|"streamed relay — never persisted"| DataProxy
+    ClusterSvc -->|"health checks &amp; DNS"| TunnelSvc
+```
+
+**Key relationships:**
+
+| From | To | What flows |
+| --- | --- | --- |
+| Queue Service | Executor | TaskAction custom resources (orchestration instructions) |
+| Executor | State Service | Phase transitions (Queued → Running → Succeeded/Failed) |
+| Executor | Task pods | Pod lifecycle management |
+| Task pods | Object store | Task inputs/outputs via IAM role (workload identity) |
+| Object Store Service | Object store | Presigned URL generation using admin IAM role |
+| Log Provider | DataProxy | Log streams relayed in memory — never written to disk |
+| Cluster Service | Tunnel Service | Health checks and DNS record reconciliation |
+| Tunnel Service | Cloudflare edge | Single outbound-only mTLS connection covering all compute-plane services |
 
 ## Executor
 
