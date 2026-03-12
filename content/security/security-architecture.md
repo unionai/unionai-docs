@@ -97,7 +97,6 @@ For logs and observability metrics, the control plane acts as a stateless relayâ
 The data passes through the control planeâ€™s memory as a TLS encrypted stream with a termination point in the cloud.
 It is never written to disk, cached, or stored.
 
-![alt_text](images/image2.png "image_tooltip")
 
 ### Data in the UI:
 
