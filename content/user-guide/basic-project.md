@@ -1,6 +1,6 @@
 ---
 title: Basic project
-weight: 6
+weight: 7
 variants: +flyte +byoc +selfmanaged
 ---
 

@@ -68,19 +68,19 @@ First, create `hello_app.py`:
 
 With your config file in place, serve the app:
 
-```shell
+```bash
 flyte serve hello_app.py env
 ```
 
 Or run the Python file directly (which calls `flyte.serve()` in the main block):
 
-```shell
+```bash
 python hello_app.py
 ```
 
 You'll see output like:
 
-```shell
+```output
 https://my-instance.flyte.com/v2/domain/development/project/my-project/apps/hello-app
 App 'hello-app' is now serving.
 ```

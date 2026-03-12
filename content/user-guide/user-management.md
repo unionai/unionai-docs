@@ -1,6 +1,6 @@
 ---
 title: User management
-weight: 18
+weight: 19
 variants: -flyte +byoc +selfmanaged
 ---
 
@@ -34,7 +34,7 @@ For fine-grained control, create custom roles and policies using the CLI or prog
 
 Install the Union CLI plugin:
 
-```shell
+```bash
 pip install flyteplugins-union
 ```
 
@@ -45,62 +45,9 @@ This adds `role`, `policy`, `assignment`, `user`, and `member` subcommands to th
 The goal: create a role that can view and execute workflows but not register new ones,
 bind it to the production domain of a specific project, and assign it to a user.
 
-#### CLI
-
-**Step 1 — Create the role**
-
-Use `--edit` to open an interactive editor (no YAML file needed):
-
-```shell
-$ flyte create role "Production Runner" --edit
-```
-
-Your `$EDITOR` opens with a template. Set the actions:
-
-```yaml
-name: Production Runner
-description: Can view and execute workflows
-actions:
-  - view_flyte_inventory
-  - view_flyte_executions
-  - create_flyte_executions
-```
-
-Save and close — the role is created.
-
-**Step 2 — Create the policy**
-
-```shell
-$ flyte create policy "Team Prod Access" --edit
-```
-
-Bind the role to a specific project and domain:
-
-```yaml
-name: Team Prod Access
-description: Production execution access for the team
-bindings:
-  - role: Production Runner
-    resource:
-      project: my-project
-      domain: production
-```
-
-**Step 3 — Assign the policy to a user**
-
-```shell
-$ flyte create assignment --email jane@example.com --policy "Team Prod Access"
-```
-
-You can also assign by user subject or application credentials subject:
-
-```shell
-$ flyte create assignment --user-subject user-123 --policy "Team Prod Access"
-$ flyte create assignment --creds-subject app-456 --policy "Team Prod Access"
-```
-
-#### Python SDK
-
+{{< tabs "walkthrough-create" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
 ```python
 from flyteplugins.union.remote import Role, Policy, Assignment
 
@@ -133,20 +80,70 @@ Policy.create(
 # Step 3 — Assign the policy to a user
 Assignment.create(email="jane@example.com", policy="Team Prod Access")
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+**Step 1 — Create the role**
+
+Use `--edit` to open an interactive editor (no YAML file needed):
+
+```bash
+flyte create role "Production Runner" --edit
+```
+
+Your `$EDITOR` opens with a template. Set the actions:
+
+```yaml
+name: Production Runner
+description: Can view and execute workflows
+actions:
+  - view_flyte_inventory
+  - view_flyte_executions
+  - create_flyte_executions
+```
+
+Save and close — the role is created.
+
+**Step 2 — Create the policy**
+
+```bash
+flyte create policy "Team Prod Access" --edit
+```
+
+Bind the role to a specific project and domain:
+
+```yaml
+name: Team Prod Access
+description: Production execution access for the team
+bindings:
+  - role: Production Runner
+    resource:
+      project: my-project
+      domain: production
+```
+
+**Step 3 — Assign the policy to a user**
+
+```bash
+flyte create assignment --email jane@example.com --policy "Team Prod Access"
+```
+
+You can also assign by user subject or application credentials subject:
+
+```bash
+flyte create assignment --user-subject user-123 --policy "Team Prod Access"
+flyte create assignment --creds-subject app-456 --policy "Team Prod Access"
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### Updating roles and policies
 
-#### CLI
-
-`update` opens the existing definition in your editor so you can modify it in place:
-
-```shell
-$ flyte update role "Production Runner"
-$ flyte update policy "Team Prod Access"
-```
-
-#### Python SDK
-
+{{< tabs "walkthrough-update" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
 ```python
 from flyteplugins.union.remote import Role, Policy
 
@@ -171,6 +168,19 @@ new_bindings = policy.bindings + [
 ]
 Policy.update("Team Prod Access", old_bindings=policy.bindings, new_bindings=new_bindings)
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+`update` opens the existing definition in your editor so you can modify it in place:
+
+```bash
+flyte update role "Production Runner"
+flyte update policy "Team Prod Access"
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Managing users in the UI
 

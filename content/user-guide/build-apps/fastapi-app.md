@@ -111,11 +111,15 @@ if __name__ == "__main__":
     local_app.activate(wait=True)
 ```
 
-```bash
-# Local: loads model.pt from disk
-python serve_model.py
+Locally, the app loads `model.pt` from disk:
 
-# Remote: resolves model from latest training run
+```bash
+python serve_model.py
+```
+
+Remotely, Flyte resolves the model from the latest training run:
+
+```bash
 flyte deploy serve_model.py serving_env
 ```
 

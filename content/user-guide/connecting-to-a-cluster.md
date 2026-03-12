@@ -22,15 +22,18 @@ Want to try Flyte without installing anything? [Try Flyte 2 in your browser](htt
 
 Create a virtual environment and install the `flyte` package:
 
-```shell
+```bash
 uv venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+source .venv/bin/activate
 uv pip install flyte
 ```
 
+> [!NOTE]
+> On Windows, use `.venv\Scripts\activate` instead.
+
 Verify installation:
 
-```shell
+```bash
 flyte --version
 ```
 
@@ -40,7 +43,7 @@ As we did in [Quickstart](./quickstart), use `flyte create config` to create a c
 
 {{< variant byoc selfmanaged >}}
 {{< markdown >}}
-```shell
+```bash
 flyte create config \
     --endpoint my-org.my-company.com \
     --domain development \
@@ -51,7 +54,7 @@ flyte create config \
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
-```shell
+```bash
 flyte create config \
     --endpoint my-org.my-company.com \
     --domain development \
@@ -97,7 +100,7 @@ task:
 {{< variant byoc selfmanaged >}}
 {{< markdown >}}
 Create a custom config file with all available options:
-```shell
+```bash
 flyte create config \
     --endpoint my-org.my-company.com \
     --org my-org \
@@ -113,7 +116,7 @@ flyte create config \
 {{< variant flyte >}}
 {{< markdown >}}
 Create a custom config file with all available options:
-```shell
+```bash
 flyte create config \
     --endpoint my-org.my-company.com \
     --org my-org \
@@ -129,7 +132,7 @@ flyte create config \
 
 Since Flyte OSS uses local image building, you'll need Docker running and logged into the GitHub registry:
 
-```shell
+```bash
 docker login ghcr.io
 ```
 
@@ -163,9 +166,7 @@ See the [CLI reference](../api-reference/flyte-cli#flyte-create-config) for all 
 
 - `org`: Organization name (usually matches the first part of your endpoint URL).
 - `domain`: Environment separation (`development`, `staging`, `production`).
-- `project`: Default project for deployments. Must already exist on your instance.
-
-<!-- TODO: add link to project creation when available -->
+- `project`: Default project for deployments. Must already exist on your instance. See [Projects and domains](./projects-and-domains) for how to create projects.
 {{< /markdown >}}
 {{< /dropdown >}}
 
@@ -175,19 +176,28 @@ You can reference your config file explicitly or let the SDK find it automatical
 
 ### Explicit configuration
 
-**CLI**: Use `--config` or `-c`:
-
-```shell
-flyte --config my-config.yaml run hello.py main
-flyte -c my-config.yaml run hello.py main
-```
-
-**Python**: Initialize with [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte/_index#init_from_config):
+{{< tabs "explicit-config" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+Initialize with [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte/_index#init_from_config):
 
 ```python
 flyte.init_from_config("my-config.yaml")
 run = flyte.run(main)
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+Use `--config` or `-c`:
+
+```bash
+flyte --config my-config.yaml run hello.py main
+flyte -c my-config.yaml run hello.py main
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 {{< dropdown title="Configuration precedence" icon="control_knobs" >}}
 {{< markdown >}}
@@ -204,25 +214,32 @@ Without an explicit path, the SDK searches these locations in order:
 {{< /markdown >}}
 {{< /dropdown >}}
 
-**CLI:**
-```shell
-flyte run hello.py main
-```
-
-**Python:**
+{{< tabs "auto-config" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
 ```python
 flyte.init_from_config()
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+```bash
+flyte run hello.py main
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### Check current configuration
 
-```shell
+```bash
 flyte get config
 ```
 
-Output shows the active configuration:
+Output:
 
-```shell
+```bash
 CLIConfig(
     Config(
         platform=PlatformConfig(endpoint='dns:///my-org.my-company.com', scopes=[]),
@@ -237,11 +254,26 @@ CLIConfig(
 
 Skip the config file entirely by passing parameters directly.
 
-### CLI
+{{< tabs "inline-config" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+Use [`flyte.init`](../api-reference/flyte-sdk/packages/flyte/_index#init):
 
+```python
+flyte.init(
+    endpoint="dns:///my-org.my-company.com",
+    org="my-org",
+    project="my-project",
+    domain="development",
+)
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
 Some parameters go after `flyte`, others after the subcommand:
 
-```shell
+```bash
 flyte \
     --endpoint my-org.my-company.com \
     --org my-org \
@@ -253,19 +285,9 @@ flyte \
 ```
 
 See the [CLI reference](../api-reference/flyte-cli) for details.
-
-### Python
-
-Use [`flyte.init`](../api-reference/flyte-sdk/packages/flyte/_index#init):
-
-```python
-flyte.init(
-    endpoint="dns:///my-org.my-company.com",
-    org="my-org",
-    project="my-project",
-    domain="development",
-)
-```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 See related methods:
 

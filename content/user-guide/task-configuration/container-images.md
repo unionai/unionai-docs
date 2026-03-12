@@ -198,8 +198,8 @@ The value of the `registry_secret` parameter must be the name of a Flyte secret 
 
 To create an `image_pull` secret for the remote builder and the task environment, run the following command:
 
-```shell
-$ flyte create secret --type image_pull my-secret --from-file ~/.docker/config.json
+```bash
+flyte create secret --type image_pull my-secret --from-file ~/.docker/config.json
 ```
 
 The format of this secret matches the standard Kubernetes [image pull secret](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#log-in-to-docker-hub), and should look like this:

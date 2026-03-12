@@ -71,3 +71,35 @@ The `open()` call delegates to the DataFrame handler for the stored format and c
 Finally, we can define a `main` function to run the tasks defined above and a `__main__` block to execute the workflow:
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="main" lang="python" >}}
+
+## Polars DataFrames
+
+The `flyteplugins-polars` package extends Flyte's DataFrame support to `polars.DataFrame` and `polars.LazyFrame`. Install it alongside the core SDK and it registers automatically — no additional configuration required.
+
+```bash
+pip install flyteplugins-polars
+```
+
+Both types are serialized as Parquet when passed between tasks, just like other DataFrame backends.
+
+### Setup
+
+{{< code file="/unionai-examples/v2/user-guide/task-programming/dataframes/polars_dataframes.py" fragment="setup" lang="python" >}}
+
+### Eager DataFrames
+
+Use `pl.DataFrame` when you want immediate evaluation. Flyte serializes it to Parquet on output and deserializes it on input:
+
+{{< code file="/unionai-examples/v2/user-guide/task-programming/dataframes/polars_dataframes.py" fragment="polars-dataframe" lang="python" >}}
+
+### Lazy DataFrames
+
+Use `pl.LazyFrame` when you want to defer computation and let Polars optimize the full query plan before executing. Flyte handles serialization the same way as `pl.DataFrame`:
+
+{{< code file="/unionai-examples/v2/user-guide/task-programming/dataframes/polars_dataframes.py" fragment="polars-lazyframe" lang="python" >}}
+
+The `collect()` call in `aggregate_by_department` is what triggers execution of the lazy plan. The `LazyFrame` passed between tasks is serialized as Parquet at that point.
+
+### Run the example
+
+{{< code file="/unionai-examples/v2/user-guide/task-programming/dataframes/polars_dataframes.py" fragment="main" lang="python" >}}

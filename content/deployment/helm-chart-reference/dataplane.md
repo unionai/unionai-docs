@@ -1,7 +1,7 @@
 ---
 title: Dataplane chart
 variants: -flyte -byoc +selfmanaged
-chart_version: 2026.3.3
+chart_version: 2026.3.5
 weight: 1
 ---
 
@@ -11,8 +11,8 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 
 | | |
 |---|---|
-| **Chart version** | 2026.3.3 |
-| **App version** | 2026.3.2 |
+| **Chart version** | 2026.3.5 |
+| **App version** | 2026.3.4 |
 | **Kubernetes version** | `>= 1.28.0-0` |
 
 ## Dependencies
@@ -80,8 +80,7 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | config.logger | object | Logging configuration | `{"level":4,"show-source":true}` |
 | config.operator | object | Configuration for the Union operator service | `(see values.yaml)` |
 | config.operator.apps | object | Enable app serving | `{"enabled":"{{ .Values.serving.enabled }}"}` |
-| config.operator.billableUsageCollector | object | Configuration for billable usage collector. | `{"enabled":true}` |
-| config.operator.billableUsageCollector.enabled | bool | Enable billable usage collection in the operator service. | `true` |
+| config.operator.billing | object | Billing model: None, Legacy, or ResourceUsage. | `{"model":"Legacy"}` |
 | config.operator.clusterData | object | Dataplane cluster configuration. | `(see values.yaml)` |
 | config.operator.clusterData.appId | string | The client id used to authenticate to the control plane.  This will be provided by Union. | `"{{ tpl .Values.secrets.admin.clientId . }}"` |
 | config.operator.clusterData.bucketName | string | The bucket name for object storage. | `"{{ tpl .Values.storage.bucketName . }}"` |
@@ -91,8 +90,6 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | config.operator.clusterData.metadataBucketPrefix | string | The prefix for constructing object storage URLs. | `"{{ include \"storage.metadata-prefix\" . }}"` |
 | config.operator.clusterId | object | Set the cluster information for the operator service | `{"organization":"{{ tpl .Values.orgName . }}"}` |
 | config.operator.clusterId.organization | string | The organization name for the cluster.  This should match your organization name that you were provided. | `"{{ tpl .Values.orgName . }}"` |
-| config.operator.collectBillableResourceUsage | object | Configuration for billable resource usage collection. | `{"enabled":false}` |
-| config.operator.collectBillableResourceUsage.enabled | bool | Enable billable resource usage collection in the operator service. | `false` |
 | config.operator.collectUsages | object | Configuration for the usage reporting service. | `{"enabled":true}` |
 | config.operator.collectUsages.enabled | bool | Enable usage collection in the operator service. | `true` |
 | config.operator.dependenciesHeartbeat | object | Heartbeat check configuration. | `(see values.yaml)` |
