@@ -1,7 +1,7 @@
 ---
 title: Constraints and best practices
 weight: 4
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Snowflake
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
@@ -19,7 +19,7 @@ The connector supports:
 
 ## Installation
 
-```shell
+```bash
 pip install flyteplugins-snowflake
 ```
 
@@ -345,4 +345,4 @@ If you don't need query results (for example, `DDL` statements or `INSERT` queri
 
 Here's a complete workflow that uses the Snowflake connector as part of a data pipeline. The workflow creates a staging table, inserts records, queries aggregated results and processes them in a downstream task.
 
-{{< code file="/external/unionai-examples/v2/integrations/connectors/snowflake/example.py" lang=python highlight="3 5 17 20 34 37 42-45 49 53 56 67 73-75 82 85-88 90 99">}}
+{{< code file="/unionai-examples/v2/integrations/connectors/snowflake/example.py" lang=python highlight="3 5 17 20 34 37 42-45 49 53 56 67 73-75 82 85-88 90 99">}}

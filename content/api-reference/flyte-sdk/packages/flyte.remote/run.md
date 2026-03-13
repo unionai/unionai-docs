@@ -1,7 +1,7 @@
 ---
 title: Run
-version: 2.0.0b59
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.6
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -44,6 +44,8 @@ class Run(
 | [`details()`](#details) | Get the details of the run. |
 | [`done()`](#done) | Check if the run is done. |
 | [`get()`](#get) | Get the current run. |
+| [`get_debug_url()`](#get_debug_url) | Get the debug URL of the run. |
+| [`get_logs()`](#get_logs) | Get logs for the run as an iterator of strings. |
 | [`inputs()`](#inputs) | Get the inputs of the run. |
 | [`listall()`](#listall) | Get all runs for the current project and domain. |
 | [`outputs()`](#outputs) | Get the outputs of the run. |
@@ -118,6 +120,47 @@ Get the current run.
 | `cls` |  | |
 | `name` | `str` | |
 
+### get_debug_url()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.get_debug_url.aio()`.
+```python
+def get_debug_url()
+```
+Get the debug URL of the run. Returns ``None`` if the VS Code
+Debugger log entry is not yet available in the action details.
+
+
+### get_logs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.get_logs.aio()`.
+```python
+def get_logs(
+    attempt: int | None,
+    filter_system: bool,
+    show_ts: bool,
+) -> AsyncGenerator[str, None]
+```
+Get logs for the run as an iterator of strings.
+
+Can be called synchronously (returns ``Iterator[str]``) or asynchronously
+via ``.aio()`` (returns ``AsyncIterator[str]``).
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `attempt` | `int \| None` | The attempt number to retrieve logs for (defaults to latest attempt). |
+| `filter_system` | `bool` | If True, filter out system-generated log lines. |
+| `show_ts` | `bool` | If True, prefix each line with an ISO-8601 timestamp. |
+
 ### inputs()
 
 
@@ -147,6 +190,10 @@ def listall(
     created_by_subject: str | None,
     sort_by: Tuple[str, Literal['asc', 'desc']] | None,
     limit: int,
+    project: str | None,
+    domain: str | None,
+    created_at: TimeFilter | None,
+    updated_at: TimeFilter | None,
 ) -> AsyncIterator[Run]
 ```
 Get all runs for the current project and domain.
@@ -161,7 +208,11 @@ Get all runs for the current project and domain.
 | `task_version` | `str \| None` | Filter runs by task version. |
 | `created_by_subject` | `str \| None` | Filter runs by the subject that created them. (this is not username, but the subject) |
 | `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the Run list, in the format (field, order). |
-| `limit` | `int` | The maximum number of runs to return. :return: An iterator of runs. |
+| `limit` | `int` | The maximum number of runs to return. |
+| `project` | `str \| None` | The project to list runs for. Defaults to the globally configured project. |
+| `domain` | `str \| None` | The domain to list runs for. Defaults to the globally configured domain. |
+| `created_at` | `TimeFilter \| None` | Filter runs by creation time range. |
+| `updated_at` | `TimeFilter \| None` | Filter runs by last-update time range. :return: An iterator of runs. |
 
 ### outputs()
 

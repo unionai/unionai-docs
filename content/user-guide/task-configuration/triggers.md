@@ -1,7 +1,7 @@
 ---
 title: Triggers
 weight: 9
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Triggers
@@ -22,7 +22,7 @@ A trigger is created by setting the `triggers` parameter in the task decorator t
 
 Here is a simple example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="hourly" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="hourly" lang="python" >}}
 
 Here we use a predefined schedule trigger to run the `hourly_task` every hour.
 Other predefined triggers can be used similarly (see [Predefined schedule triggers](#predefined-schedule-triggers) below).
@@ -33,7 +33,7 @@ If you want full control over the trigger behavior, you can define a trigger usi
 
 The `Trigger` class allows you to define custom triggers with full control over scheduling and execution behavior. It has the following signature:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="dummy-trigger" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="dummy-trigger" lang="python">}}
 
 ### Core Parameters
 
@@ -78,7 +78,7 @@ Additional metadata, often used by infrastructure tools for compliance, monitori
 
 Here's a comprehensive example showing all parameters:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="comprehensive-trigger" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="comprehensive-trigger" lang="python">}}
 
 ## The `automation` parameter with `flyte.FixedRate`
 
@@ -86,7 +86,7 @@ You can define a fixed-rate schedule trigger by setting the `automation` paramet
 
 The `flyte.FixedRate` has the following signature:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="dummy-fixed-rate" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="dummy-fixed-rate" lang="python">}}
 
 ### Parameters
 
@@ -98,7 +98,7 @@ When to start the fixed rate schedule. If not specified, starts when the trigger
 
 ### Examples
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="fixed-rate-examples" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="fixed-rate-examples" lang="python">}}
 
 ## The `automation` parameter with `flyte.Cron`
 
@@ -106,7 +106,7 @@ You can define a Cron-based schedule trigger by setting the `automation` paramet
 
 The `flyte.Cron` has the following signature:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="dummy-cron" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="dummy-cron" lang="python">}}
 
 ### Parameters
 
@@ -118,7 +118,7 @@ The timezone for the cron expression. If not specified, it defaults to UTC. Uses
 
 ### Examples
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="cron-examples" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="cron-examples" lang="python">}}
 
 #### Cron Expressions
 
@@ -144,13 +144,13 @@ This is essential for parameterizing your automated executions and passing trigg
 
 ### Basic Usage
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="inputs-basic-usage" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="inputs-basic-usage" lang="python">}}
 
 ### Using `flyte.TriggerTime`
 
 The special `flyte.TriggerTime` value is used in the `inputs` to indicate the task parameter into which Flyte will inject the trigger execution timestamp:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="inputs-trigger-time" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="inputs-trigger-time" lang="python">}}
 
 ### Required vs optional parameters
 
@@ -188,7 +188,7 @@ def good_trigger_task(data_source: str, batch_size: int = 100) -> str:
 
 You can pass various data types through trigger inputs:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="inputs-complex" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="inputs-complex" lang="python">}}
 
 ## Predefined schedule triggers
 
@@ -197,7 +197,7 @@ These are convenient shortcuts for frequently used scheduling patterns.
 
 ### Available Predefined Triggers
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="predefined-available" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="predefined-available" lang="python">}}
 
 For reference, here's what each predefined trigger is equivalent to:
 
@@ -214,7 +214,7 @@ flyte.Trigger.monthly() == flyte.Trigger("monthly", flyte.Cron("0 0 1 * *"))
 
 All predefined trigger methods (`minutely()`, `hourly()`, `daily()`, `weekly()`, `monthly()`) accept the same set of parameters:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="predefined-parameters" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="predefined-parameters" lang="python">}}
 
 #### Core Parameters
 
@@ -267,13 +267,13 @@ If no such parameter exists, the task will still be executed without error.
 
 Optionally, you can customize the parameter name that receives the trigger execution timestamp by setting the `trigger_time_input_key` parameter (in this case the absence of this custom parameter on the task will raise an error at trigger deployment time):
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="trigger-time-input-key" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="trigger-time-input-key" lang="python">}}
 
 ## Multiple triggers per task
 
 You can attach multiple triggers to a single task by providing a list of triggers. This allows you to run the same task on different schedules or with different configurations:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="multiple-triggers" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="multiple-triggers" lang="python">}}
 
 You can mix and match trigger types, combining predefined triggers with those that use `flyte.Cron`, and `flyte.FixedRate` automations (see below for explanations of these concepts).
 
@@ -293,7 +293,7 @@ For development and debugging purposes, you can adjust and deploy individual tri
 
 To deploy a task with its triggers, you can either use Flyte CLI:
 
-```shell
+```bash
 flyte deploy -p <project> -d <domain> <file_with_tasks_and_triggers.py> env
 ```
 
@@ -315,18 +315,18 @@ By default, triggers are automatically activated upon deployment (`auto_activate
 Alternatively, you can set `auto_activate=False` to deploy inactive triggers.
 An inactive trigger will not create runs until activated.
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="auto-activate-false" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="auto-activate-false" lang="python">}}
 
 This trigger won't create runs until it is explicitly activated.
 You can activate a trigger via the Flyte CLI:
 
-```shell
+```bash
 flyte update trigger custom_cron my_task_env.custom_task --activate --project <project> --domain <domain>
 ```
 
 If you want to stop your trigger from creating new runs, you can deactivate it:
 
-```shell
+```bash
 flyte update trigger custom_cron my_task_env.custom_task --deactivate --project <project> --domain <domain>
 ```
 
@@ -352,7 +352,7 @@ If no `start_time` is specified, then the first run will be created after the sp
 
 Let's say you define a fixed rate trigger with automatic activation like this:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="no-start-time-auto-activate-true" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="no-start-time-auto-activate-true" lang="python">}}
 
 In this case, the first run will occur 60 minutes after the successful deployment of the trigger.
 So, if you deployed this trigger at 13:15, the first run will occur at 14:15 and so on thereafter.
@@ -361,7 +361,7 @@ So, if you deployed this trigger at 13:15, the first run will occur at 14:15 and
 
 On the other hand, let's say you define a fixed rate trigger without automatic activation like this:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="no-start-time-auto-activate-false" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="no-start-time-auto-activate-false" lang="python">}}
 
 Then you activate it after about 3 hours. In this case the first run will kick off 60 minutes after trigger activation.
 If you deployed the trigger at 13:15 and activated it at 16:07, the first run will occur at 17:07.
@@ -375,7 +375,7 @@ If a `start_time` is specified, the timing of the first run depends on whether t
 If a `start_time` is specified, and the trigger is active at `start_time` then the first run will occur at `start_time` and then at the specified interval thereafter.
 For example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="fixed-rate-with-start-time-while-active" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="fixed-rate-with-start-time-while-active" lang="python">}}
 
 If you deploy this trigger on October 24th, 2025, the trigger will wait until October 26th 10:00am and will create the first run at exactly 10:00am.
 
@@ -384,7 +384,7 @@ If you deploy this trigger on October 24th, 2025, the trigger will wait until Oc
 If a start time is specified, but the trigger is activated after `start_time`, then the first run will be created when the next time point occurs that aligns with the recurring trigger interval using `start_time` as the initial reference point.
 For example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="fixed-rate-with-start-time-while-inactive" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="fixed-rate-with-start-time-while-inactive" lang="python">}}
 
 If activated later than the `start_time`, say on October 28th 12:35pm for example, the first run will be created at October 28th at 1:00pm.
 
@@ -394,7 +394,7 @@ If you decide that you don't need a trigger anymore, you can remove the trigger 
 
 Alternatively, you can use Flyte CLI:
 
-```shell
+```bash
 flyte delete trigger custom_cron my_task_env.custom_task --project <project> --domain <domain>
 ```
 
@@ -404,7 +404,7 @@ flyte delete trigger custom_cron my_task_env.custom_task --project <project> --d
 
 Cron expressions are by default in UTC, but it's possible to specify custom time zones like so:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="timezone" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="timezone" lang="python">}}
 
 The above two schedules will fire 1 minute apart, at 9 AM PT and 12:01 PM ET respectively.
 
@@ -412,7 +412,7 @@ The above two schedules will fire 1 minute apart, at 9 AM PT and 12:01 PM ET res
 
 The `flyte.TriggerTime` value is always in UTC. For timezone-aware logic, convert as needed:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="trigger-time-utc" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="trigger-time-utc" lang="python">}}
 
 ### Daylight Savings Time behavior
 

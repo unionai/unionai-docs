@@ -1,7 +1,7 @@
 ---
 title: Grouping actions
 weight: 12
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Grouping actions
@@ -56,31 +56,31 @@ The key points about groups:
 
 Group related sequential operations that logically belong together:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="sequential" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="sequential" lang="python" >}}
 
 ### Parallel processing with groups
 
 Groups work well with parallel execution patterns:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="parallel" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="parallel" lang="python" >}}
 
 ### Multi-phase workflows
 
 Use groups to organize different phases of complex workflows:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="multi" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="multi" lang="python" >}}
 
 ### Nested groups
 
 Groups can be nested to create hierarchical organization:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="nested" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="nested" lang="python" >}}
 
 ### Conditional grouping
 
 Groups can be used with conditional logic:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="conditional" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="conditional" lang="python" >}}
 
 ## Key insights
 

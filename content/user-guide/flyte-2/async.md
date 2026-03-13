@@ -1,7 +1,7 @@
 ---
 title: Asynchronous model
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Asynchronous model
@@ -54,7 +54,7 @@ Python's asynchronous programming capabilities have evolved significantly:
 
 Consider this pattern for parallel data processing:
 
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async/async.py" fragment="async" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/flyte-2/async/async.py" fragment="async" lang="python" >}}
 
 In standard Python, this would provide concurrency benefits primarily for I/O-bound operations.
 In Flyte 2, the orchestrator schedules each `process_chunk` task on separate Kubernetes pods or configured plugins, achieving true parallelism for any type of work.
@@ -80,7 +80,7 @@ The Flyte platform handles the complex orchestration while you express paralleli
 Since many existing codebases use synchronous functions, Flyte 2 provides synchronous support. Under the hood, Flyte automatically "asyncifies" synchronous functions, wrapping them to participate seamlessly in the async execution model.
 You don't need to rewrite existing code, just leverage the `.aio()` method when calling sync tasks from async contexts:
 
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async/async.py" fragment="calling-sync-from-async" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/flyte-2/async/async.py" fragment="calling-sync-from-async" lang="python" >}}
 
 ### The `flyte.map` function: Familiar patterns
 
@@ -89,10 +89,10 @@ The new `flyte.map` can be used either in synchronous or asynchronous contexts, 
 
 {{< tabs "whats-new-map-function" >}}
 {{< tab "Sync Map" >}}
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async/async.py" fragment="sync-map" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/flyte-2/async/async.py" fragment="sync-map" lang="python" >}}
 {{< /tab >}}
 {{< tab "Async Map" >}}
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async/async.py" fragment="async-map" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/flyte-2/async/async.py" fragment="async-map" lang="python" >}}
 {{< /tab >}}
 {{< /tabs >}}
 

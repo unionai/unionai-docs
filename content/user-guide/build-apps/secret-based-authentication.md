@@ -1,7 +1,7 @@
 ---
 title: Secret-based authentication
 weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Secret-based authentication
@@ -31,7 +31,7 @@ flyte create secret API_KEY my-secret-api-key-12345
 
 Here's a simple FastAPI app that uses `HTTPAuthorizationCredentials` to authenticate requests using a secret stored in Flyte:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/basic_auth.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/basic_auth.py" lang=python >}}
 
 As you can see, we:
 
@@ -117,7 +117,7 @@ flyte create secret AUTH_SECRET my-llm-api-key-12345
 
 Here's how to deploy a vLLM app with API key authentication:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/vllm/vllm_with_auth.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/vllm/vllm_with_auth.py" lang=python >}}
 
 Key points:
 
@@ -141,7 +141,7 @@ flyte serve vllm_with_auth.py
 
 Here's how to deploy a SGLang app with API key authentication:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/sglang/sglang_with_auth.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/sglang/sglang_with_auth.py" lang=python >}}
 
 The configuration is similar to vLLM:
 

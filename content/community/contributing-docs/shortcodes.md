@@ -1,7 +1,7 @@
 ---
 title: Shortcodes
 weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Shortcodes
@@ -14,7 +14,7 @@ This site has special blocks that can be used to generate code for Union.
 > Note that this page is only visible locally. It does not appear in the menus or in the production build.
 >
 > If you need instructions on how to create the local environment and get the
-> `localhost:1313` server running, please refer to the [local development guide](DEVELOPER.md).
+> `localhost:1313` server running, please refer to the [local development guide](./publishing).
 
 ## How to specify a "shortcode"
 
@@ -70,7 +70,7 @@ When you are writing your content, and you want a specific part of the content t
 Example:
 
 ```markdown
-{{</* variant serverless byoc */>}}
+{{</* variant byoc selfmanaged */>}}
 {{</* markdown */>}}
 **The quick brown fox signed up for Union!**
 {{</* /markdown */>}}
@@ -142,12 +142,11 @@ While, in the BYOC, Self-managed and Serverless variants of the site it will ren
 
 > The Union.ai platform is awesome.
 
-You can add keywords and specify their value, per variant, in `hugo.toml`:
+You can add keywords and specify their value, per variant, in `hugo.site.toml`:
 
 ```toml
 [params.key.product_full_name]
 flyte = "Flyte"
-serverless = "Union Serverless"
 byoc = "Union BYOC"
 selfmanaged = "Union Self-managed"
 ```
@@ -157,7 +156,7 @@ selfmanaged = "Union Self-managed"
 | Key               | Description                           | Example Usage (Flyte → Union)                                          |
 | ----------------- | ------------------------------------- | ---------------------------------------------------------------------- |
 | default_project   | Default project name used in examples | `{{</* key default_project */>}}` → "flytesnacks" or "default"             |
-| product_full_name | Full product name                     | `{{</* key product_full_name */>}}` → "Flyte OSS" or "Union.ai Serverless" |
+| product_full_name | Full product name                     | `{{</* key product_full_name */>}}` → "Flyte OSS" or "Union.ai BYOC"       |
 | product_name      | Short product name                    | `{{</* key product_name */>}}` → "Flyte" or "Union.ai"                     |
 | product           | Lowercase product identifier          | `{{</* key product */>}}` → "flyte" or "union"                             |
 | kit_name          | SDK name                              | `{{</* key kit_name */>}}` → "Flytekit" or "Union"                         |
@@ -171,7 +170,7 @@ selfmanaged = "Union Self-managed"
 | ctl               | Lowercase control tool identifier     | `{{</* key ctl */>}}` → "flytectl" or "uctl"                               |
 | config_env        | Configuration environment variable    | `{{</* key config_env */>}}` → "FLYTECTL_CONFIG" or "UNION_CONFIG"         |
 | env_prefix        | Environment variable prefix           | `{{</* key env_prefix */>}}` → "FLYTE" or "UNION"                          |
-| docs_home         | Documentation home URL                | `{{</* key docs_home */>}}` → "/docs/flyte" or "/docs/serverless"          |
+| docs_home         | Documentation home URL                | `{{</* key docs_home */>}}` → "/docs/flyte" or "/docs/byoc"               |
 | map_func          | Map function name                     | `{{</* key map_func */>}}` → "map_task" or "map"                           |
 | logo              | Logo image filename                   | `{{</* key logo */>}}` → "flyte-logo.svg" or "union-logo.svg"              |
 | favicon           | Favicon image filename                | `{{</* key favicon */>}}` → "flyte-favicon.ico" or "union-favicon.ico"     |

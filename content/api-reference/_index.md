@@ -1,7 +1,7 @@
 ---
 title: Reference
 weight: 3
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 top_menu: true
 sidebar_expanded: true
 ---
@@ -13,7 +13,7 @@ This section provides the reference material for the Flyte SDK and CLI.
 To get started, add `flyte` to your project
 
 ```shell
-$ uv pip install --no-cache --prerelease=allow --upgrade flyte
+$ uv pip install --no-cache --upgrade flyte
 ```
 
 This will install both the Flyte SDK and CLI.

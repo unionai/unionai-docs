@@ -1,7 +1,7 @@
 ---
 title: Autoscaling apps
 weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 
@@ -29,7 +29,7 @@ scaling=flyte.app.Scaling(
 
 Here's a simple example with scaling from 0 to 1 replica:
 
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=basic-scaling lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=basic-scaling lang=python >}}
 
 This configuration:
 
@@ -43,25 +43,25 @@ This configuration:
 
 For apps that need to always be running:
 
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=always-on lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=always-on lang=python >}}
 
 #### Scale-to-zero app
 
 For apps that can scale to zero when idle:
 
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=scale-to-zero lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=scale-to-zero lang=python >}}
 
 #### High-availability app
 
 For apps that need multiple replicas for availability:
 
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=high-availability lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=high-availability lang=python >}}
 
 #### Burstable app
 
 For apps with variable load:
 
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=burstable lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=burstable lang=python >}}
 
 ### Idle TTL (Time To Live)
 

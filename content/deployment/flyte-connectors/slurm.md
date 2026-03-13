@@ -1,7 +1,7 @@
 ---
 title: SLURM connector
 weight: 17
-variants: -flyte -serverless -byoc -selfmanaged
+variants: -flyte -byoc -selfmanaged
 ---
 # Slurm connector
 
@@ -17,25 +17,25 @@ Setting up a Slurm cluster can be challenging due to the limited detail in the [
 
 #### 1. Install necessary packages
 
-```shell
+```bash
 sudo apt install munge libmunge2 libmunge-dev
 ```
 
 #### 2. Generate and verify a MUNGE credential
 
-```shell
+```bash
 munge -n | unmunge | grep STATUS
 ```
 
 > A status of `STATUS: Success(0)` is expected and the MUNGE key is stored at `/etc/munge/munge.key`. If the key is absent, run the following:
 
-```shell
+```bash
 sudo /usr/sbin/create-munge-key
 ```
 
 #### 3. Change ownership and permissions of MUNGE directories
 
-```shell
+```bash
 sudo chown -R munge: /etc/munge/ /var/log/munge/ /var/lib/munge/ /run/munge/
 sudo chmod 0700 /etc/munge/ /var/log/munge/ /var/lib/munge/
 sudo chmod 0755 /run/munge/
@@ -45,7 +45,7 @@ sudo chown -R munge: /etc/munge/munge.key
 
 #### 4. Start MUNGE
 
-```shell
+```bash
 sudo systemctl enable munge
 sudo systemctl restart munge
 ```
@@ -56,17 +56,17 @@ sudo systemctl restart munge
 
 > The *SlurmUser* must be created as needed prior to starting Slurm and must exist on all nodes in your cluster.
 
-```shell
+```bash
 sudo adduser --system --uid <uid> --group --home /var/lib/slurm slurm
 ```
 
 > A system user usually has a `uid` in the range of 0-999. Refer to [Add a system user](https://manpages.ubuntu.com/manpages/oracular/en/man8/adduser.8.html).
 
-```shell
+```bash
 cat /etc/passwd | grep <uid>
 ```
 
-```shell
+```bash
 sudo mkdir -p /var/spool/slurmctld /var/spool/slurmd /var/log/slurm
 sudo chown -R slurm: /var/spool/slurmctld /var/spool/slurmd /var/log/slurm
 ```
@@ -75,12 +75,12 @@ sudo chown -R slurm: /var/spool/slurmctld /var/spool/slurmd /var/log/slurm
 
 #### 1. Install Slurm packages
 
-```shell
+```bash
 mkdir <your-clean-dir> && cd <your-clean-dir>
 wget https://download.schedmd.com/slurm/slurm-24.05.5.tar.bz2
 ```
 
-```shell
+```bash
 sudo apt-get update
 sudo apt-get install -y build-essential fakeroot devscripts equivs
 sudo apt install -y \
@@ -101,7 +101,7 @@ debuild -b -uc -us
 
 Install the packages:
 
-```shell
+```bash
 cd ..
 sudo dpkg -i slurm-smd_24.05.5-1_amd64.deb
 sudo dpkg -i slurm-smd-client_24.05.5-1_amd64.deb
@@ -140,7 +140,7 @@ NodeName=localhost Name=gpu Type=tesla File=/dev/nvidia0
 
 #### 3. Start daemons
 
-```shell
+```bash
 sudo systemctl enable slurmctld
 sudo systemctl restart slurmctld
 sudo systemctl enable slurmd
@@ -149,13 +149,13 @@ sudo systemctl restart slurmd
 
 #### 4. Try some Slurm commands
 
-```shell
+```bash
 sinfo
 srun -N 1 hostname
 ```
 
 > If the state is `drain`, run:
-```shell
+```bash
 scontrol update nodename=<your-nodename> state=idle
 ```
 
@@ -183,19 +183,19 @@ For Python function tasks:
 
 #### 1. Install the Slurm connector on your local machine
 
-```shell
+```bash
 pip install flytekitplugins-slurm
 ```
 
 #### 2. Install the Slurm connector on the cluster
 
-```shell
+```bash
 pip install flytekitplugins-slurm
 ```
 
 #### 3. Set up SSH configuration
 
-```shell
+```bash
 ssh-keygen -t rsa -b 4096
 ssh-copy-id <username>@<fqdn-or-ip>
 ```
@@ -212,7 +212,7 @@ Host <host-alias>
 
 Sanity check:
 
-```shell
+```bash
 ssh <host-alias>
 ```
 
@@ -239,7 +239,7 @@ aws_secret_access_key = <aws-secret-access-key>
 
 Check access:
 
-```shell
+```bash
 aws s3 ls
 ```
 

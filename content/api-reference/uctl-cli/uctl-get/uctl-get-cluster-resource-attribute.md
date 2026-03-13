@@ -1,6 +1,6 @@
 ---
 title: uctl get cluster-resource-attribute
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl get cluster-resource-attribute

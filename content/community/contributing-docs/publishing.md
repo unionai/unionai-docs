@@ -1,7 +1,7 @@
 ---
 title: Publishing
 weight: 9
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Publishing
@@ -10,26 +10,26 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 1. Hugo (https://gohugo.io/)
 
-```shell
-$ brew install hugo
+```bash
+brew install hugo
 ```
 
 2. A preferences override file with your configuration
 
-The tool is flexible and has multiple knobs. Please review `hugo.local.toml~sample`, and configure to meet your preferences.
+The tool is flexible and has multiple knobs. Please review `unionai-docs-infra/hugo.local.toml~sample`, and configure to meet your preferences.
 
-```shell
-$ cp hugo.local.toml~sample hugo.local.toml
+```bash
+cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml
 ```
 
 3. Make sure you review `hugo.local.toml`.
 
 ## Managing the Tutorial Pages
 
-The tutorials are maintained in the [unionai/unionai-examples](https://github.com/unionai/unionai-examples) repository and is imported as a git submodule in the `external`
+The tutorials are maintained in the [unionai/unionai-examples](https://github.com/unionai/unionai-examples) repository and is imported as a git submodule in the `unionai-examples`
 directory.
 
-To initialize the submodule on a fresh clone of this (`docs-builder`) repo, run:
+To initialize the submodule on a fresh clone of this repository, run:
 
 ```
 $ make init-examples
@@ -47,33 +47,6 @@ $ make update-examples
 $ make dev
 ```
 
-## Building Production
-
-```
-$ make dist
-```
-
-### Testing Production Build
-
-You can run a local web server and serve the `dist/` folder. The site must behave correctly, as it would be in its official URL.
-
-To start a server:
-
-```
-$ make serve PORT=<nnnnn>
-```
-
-Example:
-
-```
-$ make server PORT=4444
-```
-
-Then you open the browser on `http://localhost:<port>` to see the content. In the example above, it would be `http://localhost:4444/`
-
-
-This will create all the variants into the `dist` folder.
-
 ## Developer Experience
 
 This will launch the site in development mode.
@@ -83,7 +56,7 @@ The changes are hot reloaded: just change in your favorite editor and it will re
 
 You can change how the development environment works by settings values in `hugo.local.toml`. The following settings are available:
 
-* `variant`          - The current variant to display. Change this in 'hugo.toml', save, and the browser will refresh automatically
+* `variant`          - The current variant to display. Change this in 'hugo.local.toml', save, and the browser will refresh automatically
                        with the new variant.
 * `show_inactive`    - If 'true', it will show all the content that did not match the variant.
                        This is useful when the page contains multiple sections that vary with the selected variant,
@@ -116,7 +89,7 @@ To highlight the content of the currently active variant (to distinguish it from
 highlight_active = true
 ```
 
-> You can create you own copy of `hugo.local.toml` by copying from `hugo.local.toml~sample` to get started.
+> You can create your own copy of `hugo.local.toml` by copying from `unionai-docs-infra/hugo.local.toml~sample` to get started.
 
 ## Troubleshootting
 

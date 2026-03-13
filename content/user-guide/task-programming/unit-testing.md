@@ -1,7 +1,7 @@
 ---
 title: Unit Testing Tasks
-weight: 14
-variants: +flyte +serverless +byoc +selfmanaged
+weight: 15
+variants: +flyte +byoc +selfmanaged
 ---
 
 Unit testing is essential for ensuring your Flyte tasks work correctly. Flyte 2.0 provides flexible testing approaches that allow you to test both your business logic and Flyte-specific features like type transformations and caching.

@@ -1,7 +1,7 @@
 ---
 title: Remote tasks
 weight: 9
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Remote tasks
@@ -712,14 +712,16 @@ Dynamic loading within tasks is also supported when you need runtime flexibility
 
 Always deploy the remote tasks before using them. Tasks that reference them can be run directly without deployment:
 
+Deploy the remote task environments first:
+
 ```bash
-# Deploy the Spark environment first
 flyte deploy spark_env/
-
-# Deploy the ML environment
 flyte deploy ml_env/
+```
 
-# Now you can run the orchestration task directly (no deployment needed)
+Then run the orchestration task directly (no deployment needed):
+
+```bash
 flyte run orchestration_env.py orchestrate_pipeline
 ```
 

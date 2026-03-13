@@ -1,7 +1,7 @@
 ---
 title: Interact with runs and actions
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 mermaid: true
 ---
@@ -57,6 +57,9 @@ Runs are created when you execute tasks using `flyte run` or `flyte.run()`. For 
 
 ### Retrieving a run
 
+{{< tabs "get-run" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
 Use `flyte.remote.Run.get()` to retrieve information about a run:
 
 ```python
@@ -71,18 +74,27 @@ run = flyte.remote.Run.get("my_run_name")
 print(run.url)        # UI URL for the run
 print(run.action.phase)  # Phase of the main action
 ```
-
-### CLI: Get run information
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+Get a specific run:
 
 ```bash
-# Get a specific run
 flyte get run my_run_name
+```
 
-# List all runs
+List all runs:
+
+```bash
 flyte get run
 ```
 
+Use `--project` and `--domain` to scope results to a specific [project-domain pair](../projects-and-domains).
 For all available options, see the [CLI reference](../../api-reference/flyte-cli#flyte-get-run).
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### Watching run progress
 
@@ -115,6 +127,9 @@ Actions represent individual task executions within a run. Each action has a uni
 
 ### Retrieving an action
 
+{{< tabs "get-action" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
 ```python
 # Get a specific action by run name and action name
 action = flyte.remote.Action.get(
@@ -127,18 +142,26 @@ print(action.phase)       # Current phase
 print(action.task_name)   # Task being executed
 print(action.start_time)  # Execution start time
 ```
-
-### CLI: Get action information
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+Get a specific action:
 
 ```bash
-# Get a specific action
 flyte get action my_run_name a0
+```
 
-# List all actions for a run
+List all actions for a run:
+
+```bash
 flyte get action my_run_name
 ```
 
 For all available options, see the [CLI reference](../../api-reference/flyte-cli#flyte-get-action).
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### Nested actions
 
@@ -168,8 +191,9 @@ print(action_details.pb2)  # Full protobuf representation
 
 ## Retrieving inputs and outputs
 
-### Programmatic access
-
+{{< tabs "get-io" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
 Both `Run` and `Action` objects provide methods to retrieve inputs and outputs:
 
 ```python
@@ -196,18 +220,26 @@ single_output = outputs[0]
 - **No outputs**: Represented as `(None,)`
 - **Availability**: Outputs are only available if the action completed successfully
 - **Type safety**: Flyte's rich type system converts data to an intermediate representation, allowing retrieval even without the original dependencies installed
-
-### CLI: Get inputs and outputs
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+Get inputs and outputs for a run:
 
 ```bash
-# Get both inputs and outputs for a run
 flyte get io my_run_name
+```
 
-# Get inputs and outputs for a specific action
+Get inputs and outputs for a specific action:
+
+```bash
 flyte get io my_run_name a1
 ```
 
 For all available options, see the [CLI reference](../../api-reference/flyte-cli#flyte-get-io).
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### Handling failures
 

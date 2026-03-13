@@ -1,7 +1,7 @@
 ---
 title: Overview
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Overview
@@ -57,7 +57,7 @@ Flyte ensures that runs can be reproduced exactly:
 Caching is configurable per task:
 
 ```python
-@env.task(cache=True)
+@env.task(cache="auto")
 async def expensive_computation(data: str) -> str:
     # This result will be cached and reused for identical inputs
     ...
@@ -89,7 +89,7 @@ Flyte handles the hard parts of distributed execution:
 Consider a data pipeline that processes thousands of files, trains a model, and deploys it:
 
 - If file processing fails on item 847, you fix the issue and resume from item 847
-- If training succeeds but deployment fails, you redeploy without retraining
+- If training succeeds, but deployment fails, you redeploy without retraining
 - If you rerun next week with the same data, cached results skip redundant computation
 - If you need to audit what happened, every step is recorded
 

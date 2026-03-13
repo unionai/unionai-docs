@@ -1,7 +1,7 @@
 ---
 title: Data plane setup on AWS
 weight: 5
-variants: -flyte -serverless +byoc -selfmanaged
+variants: -flyte +byoc -selfmanaged
 ---
 
 # Data plane setup on AWS

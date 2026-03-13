@@ -1,7 +1,7 @@
 ---
 title: Custom context
 weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Custom context
@@ -63,7 +63,7 @@ Both are legitimate and complementary. The important behavioral rules to underst
 
 Set base metadata once when starting the run:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/custom-context/run_context.py" fragment="run-context" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/custom-context/run_context.py" fragment="run-context" lang="python" >}}
 
 Output (every task sees the base keys unless overridden):
 
@@ -75,7 +75,7 @@ leaf sees: {"trace_id": "root-abc", "experiment": "v1"}
 
 Use `flyte.custom_context(...)` inside a task to override or add keys for downstream calls:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/custom-context/override_context.py" fragment="override-context" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-programming/custom-context/override_context.py" fragment="override-context" lang="python" >}}
 
 If the run was started with `{"trace_id": "root-abc"}`, this prints:
 

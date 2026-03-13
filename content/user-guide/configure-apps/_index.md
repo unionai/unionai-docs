@@ -1,7 +1,7 @@
 ---
 title: Configure apps
-weight: 12
-variants: +flyte +serverless +byoc +selfmanaged
+weight: 14
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true
 ---
@@ -32,7 +32,7 @@ There are two ways to build apps in Flyte:
 {{< tabs "hello-world-app" >}}
 {{< tab "Using fserve args" >}}
 
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/hello-world-app.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/hello-world-app.py" lang=python >}}
 
 {{< markdown >}}
 This example demonstrates:
@@ -47,7 +47,7 @@ This example demonstrates:
 
 {{< /tab >}}
 {{< tab "Using @app_env.server" >}}
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/hello-world-app-server.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/hello-world-app-server.py" lang=python >}}
 
 {{< markdown >}}
 This example demonstrates:

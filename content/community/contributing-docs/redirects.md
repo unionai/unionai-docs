@@ -1,7 +1,7 @@
 ---
 title: Redirects
 weight: 7
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Redirects
@@ -16,7 +16,7 @@ The direct files are in CSV format, with the following structure:
 - `<incoming_redirect>`: the URL without `https://`
 - `<target_url>`: the full URL (including `https://`) to send the user to
 
-Redirects are recorded in `redirects.csv` file in the root of the repository.
+Redirects are recorded in the `unionai-docs-infra/redirects.csv` file.
 
 To take effect, this file must be applied to the production environment on CloudFlare by a Union employee.
 

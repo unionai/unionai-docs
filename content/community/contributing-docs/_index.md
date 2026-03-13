@@ -1,7 +1,7 @@
 ---
 title: Contributing docs and examples
 weight: 3
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
@@ -40,6 +40,13 @@ The two versions of the docs are stored in separate branches of the GitHub repos
 * [`main` branch](https://github.com/unionai/unionai-docs) for the v2 docs.
 
 See [Versions](./versions) for more details.
+
+## Common build infrastructure
+
+The build infrastructure for the docs site (Hugo configuration, layouts, themes, build scripts, and Python tools) is maintained in a separate repository, [`unionai/unionai-docs-infra`](https://github.com/unionai/unionai-docs-infra), which is imported as a [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules) at `unionai-docs-infra/` in the `unionai-docs` repository.
+
+This means both the `main` (v2) and `v1` content branches share the same build infrastructure.
+Changes to the build system are made once in `unionai-docs-infra` and are picked up by both branches, keeping them in sync without duplicating build logic.
 
 ## Variants
 

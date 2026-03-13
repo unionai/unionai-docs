@@ -1,7 +1,7 @@
 ---
 title: Enabling AWS resources
 weight: 9
-variants: -flyte -serverless +byoc -selfmanaged
+variants: -flyte +byoc -selfmanaged
 sidebar_expanded: true
 ---
 
@@ -153,7 +153,7 @@ To set up global access, you must bind the `<CustomPolicy>` that you created abo
 > [!NOTE]
 > Alternatively, you can perform the binding from the command line like this:
 >
-> ```shell
+> ```bash
 > $ aws iam attach-role-policy \
 >  --policy-arn <CustomPolicyArn> \
 >  --role-name <UserFlyteRole>
@@ -218,14 +218,14 @@ project: <project>
 
 2.  Run the following command to override the IAM role used for {{< key product_name >}} Tasks in this Project-Domain:
 
-```shell
-$ uctl update cluster-resource-attribute --attrFile cluster_resource_attributes.yaml
+```bash
+uctl update cluster-resource-attribute --attrFile cluster_resource_attributes.yaml
 ```
 
 3.  You can verify the overrides by running:
 
-```shell
-$ uctl get cluster-resource-attribute -p <project> -d <domain>
+```bash
+uctl get cluster-resource-attribute -p <project> -d <domain>
 ```
 
 **At this point, only code in your chosen project-domain pairs will have access to the cloud resource as defined by your custom policy.**

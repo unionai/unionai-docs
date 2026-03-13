@@ -1,7 +1,7 @@
 ---
 title: PyTorch
-version: 2.0.0b59
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.3
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 

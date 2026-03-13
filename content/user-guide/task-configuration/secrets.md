@@ -1,7 +1,7 @@
 ---
 title: Secrets
 weight: 3
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Secrets
@@ -15,7 +15,7 @@ Secrets in the store can be accessed and used within your workflow tasks, withou
 
 You can create a secret using the [`flyte create secret`](../../api-reference/flyte-cli#flyte-create-secret) command like this:
 
-```shell
+```bash
 flyte create secret MY_SECRET_KEY my_secret_value
 ```
 
@@ -30,7 +30,7 @@ See [Using a literal string secret](#using-a-literal-string-secret) for how to a
 
 You can also create a secret by specifying a local file:
 
-```shell
+```bash
 flyte create secret MY_SECRET_KEY --from-file /local/path/to/my_secret_file
 ```
 
@@ -48,7 +48,7 @@ You can optionally specify either or both of the `--project` and `--domain` flag
 
 For example, to create a secret that it is only available in `my_project/development`, you would execute the following command:
 
-```shell
+```bash
 flyte create secret  --project my_project --domain development MY_SECRET_KEY my_secret_value
 ```
 
@@ -57,15 +57,15 @@ flyte create secret  --project my_project --domain development MY_SECRET_KEY my_
 You can list existing secrets with the [`flyte get secret`](../../api-reference/flyte-cli#flyte-get-secret) command.
 For example, the following command will list all secrets in the organization:
 
-```shell
-$ flyte get secret
+```bash
+flyte get secret
 ```
 
 Specifying either or both of the `--project` and `--domain` flags will list the secrets that are **only** available in that project and/or domain.
 
 For example, to list the secrets that are only available in `my_project` and domain `development`, you would run:
 
-```shell
+```bash
 flyte get secret --project my_project --domain development
 ```
 
@@ -73,7 +73,7 @@ flyte get secret --project my_project --domain development
 
 To delete a secret, use the [`flyte delete secret`](../../api-reference/flyte-cli#flyte-delete-secret) command:
 
-```shell
+```bash
 flyte delete secret MY_SECRET_KEY
 ```
 
@@ -83,7 +83,7 @@ To use a literal string secret, specify it in the `TaskEnvironment` along with t
 You can then access it using `os.getenv()` in your task code.
 For example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/secrets/secrets.py" fragment="literal" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/secrets/secrets.py" fragment="literal" lang="python" >}}
 
 ## Using a file secret
 
@@ -93,7 +93,7 @@ The file will be mounted at `/etc/flyte/secrets/<SECRET_KEY>`.
 
 For example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/secrets/secrets.py" fragment="file" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/secrets/secrets.py" fragment="file" lang="python" >}}
 
 > [!NOTE]
 > Currently, to access a file secret you must specify a `mount` parameter value of `"/etc/flyte/secrets"`.

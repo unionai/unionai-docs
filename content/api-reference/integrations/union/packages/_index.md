@@ -1,7 +1,7 @@
 ---
 title: Packages
-version: 0.1.1
-variants: +flyte +byoc +selfmanaged +serverless
+version: 0.2.1
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -9,6 +9,7 @@ layout: py_api
 
 | Package | Description |
 |-|-|
+| [`flyteplugins.union.cli`](flyteplugins.union.cli) |  |
 | [`flyteplugins.union.internal.validate.validate.validate_pb2`](flyteplugins.union.internal.validate.validate.validate_pb2) | Generated protocol buffer code. |
 | [`flyteplugins.union.internal.validate.validate.validate_pb2_grpc`](flyteplugins.union.internal.validate.validate.validate_pb2_grpc) | Client and server classes corresponding to protobuf-defined services. |
 | [`flyteplugins.union.remote`](flyteplugins.union.remote) | Union remote control plane objects. |

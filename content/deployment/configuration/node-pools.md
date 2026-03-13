@@ -1,7 +1,7 @@
 ---
 title: Node Pools
 weight: 1
-variants: -flyte -serverless -byoc +selfmanaged
+variants: -flyte -byoc +selfmanaged
 ---
 
 # Configuring Service and Worker Node Pools
@@ -16,12 +16,12 @@ worker pools to ensure that only the appropriate pods are scheduled on them.
 
 The nodes for Union services should be tainted with:
 
-```shell
+```bash
 kubectl taint nodes <node-name> union.ai/node-role=services:NoSchedule
 ```
 The nodes for execution workers should be tainted with:
 
-```shell
+```bash
 kubectl taint nodes <node-name> union.ai/node-role=worker:NoSchedule
 ```
 

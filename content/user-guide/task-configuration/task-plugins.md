@@ -1,10 +1,10 @@
 ---
-title: Plugins
-weight: 20
-variants: +flyte +serverless +byoc +selfmanaged
+title: Task plugins
+weight: 11
+variants: +flyte +byoc +selfmanaged
 ---
 
-# Task Plugins
+# Task plugins
 
 Flyte tasks are pluggable by design, allowing you to extend task execution beyond simple containers to support specialized compute frameworks and integrations.
 

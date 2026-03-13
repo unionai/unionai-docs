@@ -1,7 +1,7 @@
 ---
 title: Secrets
 weight: 11
-variants: -flyte -serverless -byoc -selfmanaged
+variants: -flyte -byoc -selfmanaged
 ---
 
 # Secrets
@@ -30,8 +30,8 @@ example, but you can also [configure different secret managers](./secrets#config
 First, we use `kubectl` to create a secret called `user-info` with a
 `user_secret` key:
 
-```shell
-$ kubectl create secret -n <project>-<domain> generic user-info --from-literal=user_secret=mysecret
+```bash
+kubectl create secret -n <project>-<domain> generic user-info --from-literal=user_secret=mysecret
 ```
 
 > [!NOTE]
@@ -117,8 +117,8 @@ as one secret in the `SecretStore`.
 For example, In Kubernetes secrets, it is possible to nest multiple keys under
 the same secret:
 
-```shell
-$ kubectl create secret generic user-info \
+```bash
+kubectl create secret generic user-info \
     --from-literal=user_secret=mysecret \
     --from-literal=username=my_username \
     --from-literal=password=my_password

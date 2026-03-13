@@ -1,7 +1,7 @@
 ---
 title: Serve and deploy apps
-weight: 14
-variants: +flyte +serverless +byoc +selfmanaged
+weight: 16
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true
 ---
@@ -34,12 +34,12 @@ Deployment is designed for production use:
 {{< tabs "serve-vs-deploy" >}}
 {{< tab "Serve" >}}
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_and_deploy_examples.py" fragment=serve-example lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_and_deploy_examples.py" fragment=serve-example lang=python >}}
 {{< /tab >}}
 
 {{< tab "Deploy" >}}
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_and_deploy_examples.py" fragment=deploy-example lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_and_deploy_examples.py" fragment=deploy-example lang=python >}}
 {{< /tab >}}
 {{< /tabs >}}
 

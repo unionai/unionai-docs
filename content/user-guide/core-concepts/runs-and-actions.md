@@ -1,7 +1,7 @@
 ---
 title: Runs and actions
 weight: 3
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Runs and actions
@@ -14,7 +14,7 @@ A **run** is the execution of a task that you directly initiate, plus all its de
 
 When you execute:
 
-```shell
+```bash
 flyte run my_script.py pipeline --x 5
 ```
 
@@ -60,8 +60,13 @@ For details on how to run tasks locally and remotely, see [Tasks](./tasks#runnin
 
 After running a task remotely, click the URL in the output to see your run in the UI:
 
-```shell
-$ flyte run my_script.py pipeline --x 5
+```bash
+flyte run my_script.py pipeline --x 5
+```
+
+Output:
+
+```bash
 abc123xyz
 https://my-instance.example.com/v2/runs/project/my-project/domain/development/abc123xyz
 Run 'a0' completed successfully.
@@ -91,8 +96,7 @@ Each box is an action. Arrows show data flow between tasks. This visualization h
 
 From the command line:
 
-```shell
-# Get details of a specific run
+```bash
 flyte get run <run-id>
 ```
 

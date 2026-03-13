@@ -1,7 +1,7 @@
 ---
 title: Sweeps
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
@@ -13,7 +13,7 @@ W&B sweeps automate hyperparameter optimization by running multiple trials with 
 
 Use `@wandb_sweep` to create a W&B sweep when the task executes:
 
-{{< code file="/external/unionai-examples/v2/integrations/flyte-plugins/wandb/sweep.py" lang=python highlight="3-9 14 16 20 32 35 47-58" >}}
+{{< code file="/unionai-examples/v2/integrations/flyte-plugins/wandb/sweep.py" lang=python highlight="3-9 14 16 20 32 35 47-58" >}}
 
 The `@wandb_sweep` decorator:
 
@@ -32,7 +32,7 @@ You can stop a running sweep from the Weights & Biases UI or from the command li
 
 Flyte's distributed execution makes it easy to run multiple sweep agents in parallel, each on its own compute resources:
 
-{{< code file="/external/unionai-examples/v2/integrations/flyte-plugins/wandb/parallel_sweep.py" lang=python highlight="51-55 59" >}}
+{{< code file="/unionai-examples/v2/integrations/flyte-plugins/wandb/parallel_sweep.py" lang=python highlight="51-55 59" >}}
 
 This pattern provides:
 

@@ -1,7 +1,7 @@
 ---
 title: Weights & Biases
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
@@ -17,7 +17,7 @@ sidebar_expanded: false
 
 ## Installation
 
-```shell
+```bash
 pip install flyteplugins-wandb
 ```
 
@@ -27,7 +27,7 @@ You also need a W&B API key. Store it as a Flyte secret so your tasks can authen
 
 Here's a minimal example that logs metrics to W&B from a Flyte task:
 
-{{< code file="/external/unionai-examples/v2/integrations/flyte-plugins/wandb/quick_start.py" lang=python highlight="3 8 10 14 17 31-33" >}}
+{{< code file="/unionai-examples/v2/integrations/flyte-plugins/wandb/quick_start.py" lang=python highlight="3 8 10 14 17 31-33" >}}
 
 This example demonstrates the core pattern:
 

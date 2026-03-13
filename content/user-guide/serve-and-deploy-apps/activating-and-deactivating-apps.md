@@ -1,7 +1,7 @@
 ---
 title: Activating and deactivating apps
 weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Activating and deactivating apps
@@ -14,37 +14,37 @@ Apps deployed with `flyte.deploy()` need to be explicitly activated before they 
 
 After deploying an app, activate it:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=activate-after-deployment lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=activate-after-deployment lang=python >}}
 
 ### Activate an app
 
 When you get an app by name, you get the current app instance:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=activate-app lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=activate-app lang=python >}}
 
 ### Check activation status
 
 Check if an app is active:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=check-activation-status lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=check-activation-status lang=python >}}
 
 ## Deactivation
 
 Deactivate an app when you no longer need it:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=deactivation lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=deactivation lang=python >}}
 
 ## Lifecycle management
 
 ### Typical deployment workflow
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=typical-deployment-workflow lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=typical-deployment-workflow lang=python >}}
 
 ### Blue-green deployment
 
 For zero-downtime deployments:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=blue-green-deployment lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=blue-green-deployment lang=python >}}
 
 ## Using CLI
 
@@ -66,6 +66,9 @@ flyte update app --deactivate my-app
 flyte get app my-app
 ```
 
+Use `--project` and `--domain` to target a specific [project-domain pair](../projects-and-domains).
+For all available options, see the [CLI reference](../../api-reference/flyte-cli).
+
 ## Best practices
 
 1. **Activate after testing**: Test deployed apps before activating
@@ -78,13 +81,13 @@ flyte get app my-app
 
 Apps served with `flyte.serve()` are automatically activated:
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=automatic-activation lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=automatic-activation lang=python >}}
 
 This is convenient for development but less suitable for production where you want explicit control over activation.
 
 ## Example: Complete deployment and activation
 
-{{< code file="/external/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=complete-example lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=complete-example lang=python >}}
 
 ## Troubleshooting
 

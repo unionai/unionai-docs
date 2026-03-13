@@ -1,0 +1,45 @@
+name: Generate Helm Docs
+
+on:
+  workflow_dispatch:
+    inputs:
+      helm_charts_ref:
+        description: 'helm-charts ref (branch, tag, or SHA)'
+        required: false
+        default: 'main'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout docs repo
+        uses: actions/checkout@v4
+
+      - name: Checkout helm-charts repo
+        uses: actions/checkout@v4
+        with:
+          repository: unionai/helm-charts
+          ref: ${{ github.event.inputs.helm_charts_ref }}
+          path: helm-charts
+
+      - name: Install helm-docs
+        run: |
+          HELM_DOCS_VERSION=1.14.2
+          curl -sSL "https://github.com/norwoodj/helm-docs/releases/download/v${HELM_DOCS_VERSION}/helm-docs_${HELM_DOCS_VERSION}_Linux_x86_64.tar.gz" \
+            | tar xz -C /usr/local/bin helm-docs
+
+      - name: Generate docs
+        run: ./unionai-docs-infra/tools/helm_generator/generate_helm_docs.sh ./helm-charts
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: 'Update Helm chart reference docs from helm-charts@${{ github.event.inputs.helm_charts_ref }}'
+          title: 'Update Helm chart reference docs'
+          body: |
+            Auto-generated from [helm-charts](https://github.com/unionai/helm-charts) ref `${{ github.event.inputs.helm_charts_ref }}`.
+
+            Triggered by @${{ github.actor }} via workflow_dispatch.
+          branch: auto/helm-docs-update
+          delete-branch: true

@@ -1,7 +1,7 @@
 ---
 title: TaskContext
-version: 2.0.0b59
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.6
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -31,6 +31,7 @@ class TaskContext(
     mode: Literal['local', 'remote', 'hybrid'],
     interactive_mode: bool,
     custom_context: Dict[str, str],
+    disable_run_cache: bool,
 )
 ```
 | Parameter | Type | Description |
@@ -50,6 +51,7 @@ class TaskContext(
 | `mode` | `Literal['local', 'remote', 'hybrid']` | |
 | `interactive_mode` | `bool` | |
 | `custom_context` | `Dict[str, str]` | Context metadata for the action. If an action receives context, it'll automatically pass it to any actions it spawns. Context will not be used for cache key computation. |
+| `disable_run_cache` | `bool` | |
 
 ## Methods
 

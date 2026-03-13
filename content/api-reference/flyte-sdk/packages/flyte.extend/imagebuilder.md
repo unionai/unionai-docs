@@ -1,7 +1,7 @@
 ---
 title: ImageBuilder
-version: 2.0.0b59
-variants: +flyte +byoc +selfmanaged +serverless
+version: 2.0.6
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -27,6 +27,7 @@ def build_image(
     image: Image,
     dry_run: bool,
     wait: bool,
+    force: bool,
 ) -> 'ImageBuild'
 ```
 | Parameter | Type | Description |
@@ -34,6 +35,7 @@ def build_image(
 | `image` | `Image` | |
 | `dry_run` | `bool` | |
 | `wait` | `bool` | |
+| `force` | `bool` | |
 
 ### get_checkers()
 

@@ -1,7 +1,7 @@
 ---
 title: Resources
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Resources
@@ -44,11 +44,11 @@ Each parameter is optional and allows you to specify different types of resource
 
 Here's a complete example of defining a TaskEnvironment with resource specifications for a machine learning training workload:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/resources/resources.py" fragment="task-env" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/resources/resources.py" fragment="task-env" lang="python" >}}
 
 ### Usage in a task-specific override
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/resources/resources.py" fragment="override" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/resources/resources.py" fragment="override" lang="python" >}}
 
 ## Resource types
 

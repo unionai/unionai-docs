@@ -1,7 +1,7 @@
 ---
 title: Apps depending on other environments
 weight: 6
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Apps depending on other environments
@@ -31,7 +31,7 @@ When you deploy `app2_env`, Flyte will:
 
 Here's a complete example where one FastAPI app calls another:
 
-{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/app_calling_app.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/app_calling_app.py" lang=python >}}
 
 When you deploy `env2`, Flyte will:
 1. Deploy `env1` first (backend-api)

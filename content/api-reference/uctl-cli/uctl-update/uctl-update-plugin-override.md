@@ -1,6 +1,6 @@
 ---
 title: uctl update plugin-override
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl update plugin-override
