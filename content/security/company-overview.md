@@ -24,5 +24,5 @@ Union.ai offers multiple deployment models to meet varying enterprise requiremen
 
 | Deployment Model | Control Plane | Compute Plane | Best For |
 | --- | --- | --- | --- |
-| BYOC (Bring Your Own Cloud) | Union.ai hosted & managed | Customer cloud account hosted, Union.ai managed | Managed operation for enterprises that require complete data sovereignty and a lower support overhead. |
+| BYOC (Bring Your Own Cloud) | Union.ai hosted & managed | Customer cloud account hosted, Union.ai managed | Managed operation for enterprises that require complete data sovereignity and a lower support overhead. |
 | Self-Managed (Hybrid) | Union.ai hosted & managed | Customer cloud account hosted and managed | Organizations requiring full infrastructure control or those with specific compliance or unique infrastructure needs. |
