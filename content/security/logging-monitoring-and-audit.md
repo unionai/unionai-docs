@@ -8,7 +8,7 @@ variants: -flyte +byoc +selfmanaged
 
 ## Task logging
 
-Logs are collected by Fluent Bit (deployed as a DaemonSet on the compute plane) and shipped to the customer’s cloud-native log service:
+Logs are collected by `fluentbit` (deployed as a `DaemonSet` on the compute plane) and shipped to the customer’s cloud-native log service:
 
 | Cloud Provider | Log Service | Integration |
 | --- | --- | --- |

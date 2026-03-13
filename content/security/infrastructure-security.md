@@ -8,7 +8,7 @@ variants: -flyte +byoc +selfmanaged
 
 ## Kubernetes security
 
-The compute plane runs on customer-managed Kubernetes clusters with the following security measures:
+The compute plane runs on customer or Union-managed Kubernetes clusters. Union supports the following security measures:
 
 * Workload identity federation for pod-level IAM role binding (no static credentials)
 * Kubernetes RBAC for service account permissions within the cluster
@@ -30,7 +30,7 @@ Union.ai’s container security model ensures that code execution is isolated an
 
 ## IAM and workload identity
 
-Two IAM roles are provisioned per compute plane, each with narrowly scoped permissions:
+On Union-managed compute planes (BYOC), two IAM roles are provisioned per compute plane, each with narrowly scoped permissions:
 
 | Role | Permissions | Assumed By | Mechanism |
 | --- | --- | --- | --- |
