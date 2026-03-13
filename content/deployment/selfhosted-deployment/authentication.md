@@ -1,0 +1,297 @@
+---
+title: Authentication
+weight: 5
+variants: -flyte -serverless -byoc +selfmanaged
+---
+
+# Authentication
+
+{{< key product_name >}} self-hosted deployments use [OpenID Connect (OIDC)](https://openid.net/specs/openid-connect-core-1_0.html) for user authentication and [OAuth 2.0](https://tools.ietf.org/html/rfc6749) for service-to-service authorization.
+
+Unlike serverless and BYOC deployments where {{< key product_name >}} manages authentication for you, **self-hosted deployments require you to create and manage OAuth applications in your own identity provider** (e.g. Okta, Microsoft Entra ID, Google Workspace, or any OIDC-compliant provider). {{< key product_name >}} does not provision or manage these applications — you are responsible for their lifecycle, credential rotation, and access policies.
+
+> [!NOTE]
+> This guide covers authentication for **self-hosted** deployments where you manage both the control plane and data plane. For **self-managed** deployments ({{< key product_name >}}-hosted control plane), authentication is handled automatically via `uctl selfserve provision-dataplane-resources` and `uctl create apikey`.
+
+## Overview
+
+Self-hosted authentication requires creating **five OAuth2 client applications** in your own identity provider. Each application serves a different authentication flow:
+
+| # | Application | Type | Grant types | Purpose |
+|---|-------------|------|-------------|---------|
+| 1 | Browser login | Confidential (web) | `authorization_code`, `refresh_token`, `client_credentials` | Console/web UI login |
+| 2 | CLI | Public (native) | `authorization_code`, `refresh_token`, `device_code` | `uctl` / `flytectl` CLI authentication via PKCE |
+| 3 | Service-to-service | Confidential (service) | `client_credentials` | Control plane inter-service communication through NGINX |
+| 4 | Operator | Confidential (service) | `client_credentials` | Data plane operator, propeller, and cluster-resource-sync authentication to control plane |
+| 5 | EAGER | Confidential (service) | `client_credentials` | Task pod authentication (EAGER_API_KEY) |
+
+## Identity provider requirements
+
+You must use an OIDC-compliant identity provider that you manage outside of {{< key product_name >}}. Any standards-compliant provider will work. {{< key product_name >}} uses [Okta](https://www.okta.com/) for its internal deployments, but you can use whichever provider your organization already uses.
+
+Your identity provider must support:
+
+1. **OpenID Connect Discovery** — `/.well-known/openid-configuration` endpoint
+2. **Authorization Code flow** — for browser and CLI login
+3. **Client Credentials flow** — for service-to-service tokens
+4. **PKCE** (Proof Key for Code Exchange) — for the CLI public client
+5. **Custom scopes** — ability to create an `all` scope (or equivalent)
+6. **Custom claims** — ability to add `sub`, `identitytype`, and `preferred_username` claims to access tokens
+
+### Authorization server setup
+
+Create a custom authorization server (or equivalent) in your identity provider with the following configuration:
+
+- **Audience**: `https://<your-domain>` (the control plane ingress domain)
+- **Default scope**: `all`
+- **Claims**:
+  - `sub` — set to the user's internal ID for user tokens, or the app's client ID for app tokens
+  - `identitytype` — set to `"user"` for identity tokens, and `"user"` or `"app"` for access tokens depending on whether the token represents a user or application
+  - `preferred_username` — set to the user's login for user tokens, or the app's client ID for app tokens (required for identity injection)
+
+## Step 1: Create OAuth2 applications
+
+### Application 1: Browser login (Confidential)
+
+Used by the web console for user authentication.
+
+| Property | Value |
+|----------|-------|
+| Type | Web (confidential client) |
+| Grant types | `authorization_code`, `refresh_token`, `client_credentials` |
+| Redirect URI | `https://<your-domain>/callback` |
+| Post-logout redirect URI | `https://<your-domain>/logout` |
+| Scopes | `openid`, `profile`, `offline_access` |
+
+Note the **Client ID** (used as `OIDC_CLIENT_ID`) and the **Client Secret** (stored in Kubernetes secrets).
+
+### Application 2: CLI (Public)
+
+Used by `uctl` and `flytectl` for CLI-based authentication with PKCE.
+
+| Property | Value |
+|----------|-------|
+| Type | Native (public client) |
+| Grant types | `authorization_code`, `refresh_token`, `device_code` |
+| Redirect URIs | `http://localhost:53593/callback`, `http://localhost:12345/callback` |
+| PKCE | Required |
+| Client authentication | None (PKCE only, no client secret) |
+
+Note the **Client ID** (used as `CLI_CLIENT_ID`).
+
+### Application 3: Service-to-service (Confidential)
+
+Used by control plane services (executions, cluster, identity, etc.) to authenticate with each other through NGINX when OIDC is enabled.
+
+| Property | Value |
+|----------|-------|
+| Type | Service (confidential client) |
+| Grant types | `client_credentials` |
+
+Note the **Client ID** (used as `INTERNAL_CLIENT_ID`) and the **Client Secret** (stored in Kubernetes secrets).
+
+### Application 4: Operator (Confidential)
+
+Used by data plane services (operator, propeller, cluster-resource-sync) to authenticate to the control plane.
+
+| Property | Value |
+|----------|-------|
+| Type | Service (confidential client) |
+| Grant types | `client_credentials` |
+
+Note the **Client ID** (used as `AUTH_CLIENT_ID` in data plane configuration) and the **Client Secret** (stored in Kubernetes secrets).
+
+### Application 5: EAGER (Confidential)
+
+Used for task pod authentication. The encoded credentials form the `EAGER_API_KEY`.
+
+| Property | Value |
+|----------|-------|
+| Type | Service (confidential client) |
+| Grant types | `client_credentials` |
+
+Note the **Client ID** and **Client Secret** — these are encoded into the EAGER_API_KEY.
+
+## Step 2: Configure control plane
+
+Add OIDC settings to your control plane overrides file:
+
+```yaml
+global:
+  OIDC_BASE_URL: "https://your-idp.example.com/oauth2/default"
+  OIDC_CLIENT_ID: "<browser-login-client-id>"         # App 1
+  CLI_CLIENT_ID: "<cli-client-id>"                      # App 2
+  INTERNAL_CLIENT_ID: "<service-to-service-client-id>"  # App 3
+  AUTH_TOKEN_URL: "https://your-idp.example.com/oauth2/default/v1/token"
+```
+
+Enable authentication in FlyteAdmin:
+
+```yaml
+flyte:
+  configmap:
+    adminServer:
+      server:
+        security:
+          useAuth: true
+```
+
+> [!NOTE]
+> Setting `useAuth: true` is required for the `/login`, `/callback`, and `/me` endpoints to register. Without this, auth endpoints will return 404.
+
+## Step 3: Create Kubernetes secrets (control plane)
+
+The control plane needs secrets for the browser login app (App 1) and the service-to-service app (App 3):
+
+```shell
+# Secret for flyteadmin (mounted at /etc/secrets/)
+kubectl create secret generic flyte-admin-secrets \
+  --from-literal=client_secret='<BROWSER_LOGIN_CLIENT_SECRET>' \
+  -n union-cp
+
+# Secret for flyte-scheduler (mounted at /etc/secrets/)
+kubectl create secret generic flyte-secret-auth \
+  --from-literal=client_secret='<BROWSER_LOGIN_CLIENT_SECRET>' \
+  -n union-cp
+
+# Add service-to-service client secret to the main secret
+kubectl create secret generic union-controlplane-secrets \
+  --from-literal=pass.txt='<DB_PASSWORD>' \
+  --from-literal=client_secret='<SERVICE_TO_SERVICE_CLIENT_SECRET>' \
+  -n union-cp --dry-run=client -o yaml | kubectl apply -f -
+```
+
+> [!NOTE]
+> For production, use External Secrets Operator or a similar tool to sync secrets from your cloud provider's secret manager (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault).
+
+## Step 4: Configure data plane
+
+Add the operator client ID to your data plane overrides file:
+
+```yaml
+global:
+  AUTH_CLIENT_ID: "<operator-client-id>"  # App 4
+```
+
+Create the data plane auth secret:
+
+```shell
+kubectl create secret generic union-secret-auth \
+  --from-literal=client_secret='<OPERATOR_CLIENT_SECRET>' \
+  -n union
+```
+
+## Step 5: Configure EAGER_API_KEY
+
+The EAGER_API_KEY is a base64-encoded string containing the EAGER app credentials. It enables task pods to authenticate to the control plane.
+
+Generate the key:
+
+```shell
+# Format: base64("<domain>:<eager-client-id>:<eager-client-secret>:")
+echo -n "<your-domain>:<eager-client-id>:<eager-client-secret>:" | base64
+```
+
+Create the Kubernetes secret in the data plane namespace:
+
+```shell
+kubectl create secret generic <eager-secret-name> \
+  --from-literal=<eager-secret-key>='<BASE64_ENCODED_EAGER_API_KEY>' \
+  -n union
+```
+
+> [!NOTE]
+> The exact secret name and key depend on your deployment's embedded K8s secret manager configuration. The secret name is typically an MD5 hash of a logical identifier. Contact {{< key product_name >}} support for the exact values for your organization.
+
+## Step 6: Deploy
+
+Deploy or upgrade both the control plane and data plane with the updated configurations:
+
+```shell
+# Upgrade control plane
+helm upgrade unionai-controlplane unionai/controlplane \
+  --namespace union-cp \
+  -f values.<cloud>.selfhosted-intracluster.yaml \
+  -f values.registry.yaml \
+  -f values.<cloud>.selfhosted-overrides.yaml \
+  --timeout 15m --wait
+
+# Upgrade data plane
+helm upgrade unionai-dataplane unionai/dataplane \
+  --namespace union \
+  -f values.<cloud>.selfhosted-intracluster.yaml \
+  -f values.<cloud>.selfhosted-overrides.yaml \
+  --timeout 10m --wait
+```
+
+## Verification
+
+```shell
+# Check flyteadmin logs for auth initialization
+kubectl logs -n union-cp deploy/flyteadmin | grep -i auth
+
+# Test the /me endpoint (should return 401 without a token)
+kubectl exec -n union-cp deploy/flyteadmin -- \
+  curl -s -o /dev/null -w "%{http_code}" \
+  https://controlplane-nginx-controller.union-cp.svc.cluster.local/me -k
+
+# Test CLI login
+uctl config init --host https://<your-domain>
+uctl get project
+
+# Check data plane operator auth
+kubectl logs -n union -l app.kubernetes.io/name=operator --tail=50 | grep -i "token\|auth"
+```
+
+## Summary of secrets
+
+| Secret name | Namespace | Keys | Source |
+|-------------|-----------|------|--------|
+| `flyte-admin-secrets` | `union-cp` | `client_secret` | Browser login app (App 1) secret |
+| `flyte-secret-auth` | `union-cp` | `client_secret` | Browser login app (App 1) secret |
+| `union-controlplane-secrets` | `union-cp` | `pass.txt`, `client_secret` | DB password, Service-to-service app (App 3) secret |
+| `union-secret-auth` | `union` | `client_secret` | Operator app (App 4) secret |
+| EAGER secret | `union` | varies | EAGER app (App 5) encoded key |
+
+## Self-hosted vs. self-managed authentication
+
+| Aspect | Self-hosted | Self-managed |
+|--------|------------|--------------|
+| OAuth app creation | Manual — create all 5 apps | Automatic — `uctl selfserve provision-dataplane-resources` creates apps 1-3 |
+| EAGER_API_KEY | Manual — encode and create secret | Automatic — `uctl create apikey` generates and provisions |
+| Control plane auth | Configure via Helm values | Managed by {{< key product_name >}} |
+| Data plane auth | Configure `AUTH_CLIENT_ID` and secret | Provisioned by `uctl selfserve` |
+
+## Troubleshooting
+
+### FlyteAdmin auth endpoints return 404
+
+Ensure `useAuth: true` is set under `flyte.configmap.adminServer.server.security`. Without this, the `/login`, `/callback`, and `/me` endpoints are not registered.
+
+### Token validation fails with "audience mismatch"
+
+The `allowedAudience` in the FlyteAdmin configuration must include `https://<your-domain>`. This should match the audience configured on your authorization server.
+
+### Data plane cannot authenticate to control plane
+
+```shell
+# Verify AUTH_CLIENT_ID is set
+kubectl get configmap -n union -o yaml | grep -i auth_client
+
+# Check that union-secret-auth exists
+kubectl get secret union-secret-auth -n union \
+  -o jsonpath='{.data.client_secret}' | base64 -d
+
+# Check operator logs
+kubectl logs -n union -l app.kubernetes.io/name=operator --tail=50 \
+  | grep -i "auth\|token\|401"
+```
+
+### CLI login fails
+
+Ensure the CLI app (App 2) redirect URIs include `http://localhost:53593/callback` and PKCE is enabled. Test with:
+
+```shell
+uctl config init --host https://<your-domain>
+uctl get project
+```
