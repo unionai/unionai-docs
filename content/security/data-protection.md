@@ -19,7 +19,7 @@ Every data type handled by the platform is classified by residency and access pa
 | Reports (HTML) | Customer Data | Customer object store | No — direct via presigned URL |
 | Task logs | Customer Data | Customer log aggregator | Relayed in-memory (not stored) |
 | Secrets | Customer Data | Customer secrets backend | Relayed during create (not stored) |
-| Observability metrics | Customer Data | Customer ClickHouse | Relayed in-memory (not stored) |
+| Observability metrics | Customer Data | Customer compute plane | Relayed in-memory (not stored) |
 | Task definitions | Orchestration Metadata | Control plane DB | Yes — metadata only |
 | Run/action metadata | Orchestration Metadata | Control plane DB | Yes |
 | User identity/RBAC | Platform Metadata | Control plane DB | Yes |
@@ -41,11 +41,11 @@ All data at rest is encrypted using cloud-provider native encryption:
 ## Encryption in transit
 
 Union.ai enforces encryption for all data in transit.
-No unencrypted communication paths exist in the platform architecture.
-All client-to-control-plane communication uses TLS 1.2 or higher.
-All control-plane-to-data-plane communication uses mutual TLS via Cloudflare Tunnel.
-All client-to-object-store communication (via presigned URLs) uses HTTPS, enforced by cloud providers.
-All internal compute plane communication uses cloud-native TLS.
+
+- All client-to-control-plane communication uses TLS 1.2 or higher.
+- All control-plane-to-data-plane communication uses mutual TLS via Cloudflare Tunnel.
+- All client-to-object-store communication (via presigned URLs) uses HTTPS, enforced by cloud providers.
+- All internal compute plane communication uses cloud-native TLS.
 
 ## Data residency and sovereignty
 
