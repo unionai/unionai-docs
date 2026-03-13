@@ -1,6 +1,6 @@
 ---
 title: BaseRuntimeError
-version: 2.0.3
+version: 2.0.6
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---

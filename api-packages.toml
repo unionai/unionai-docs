@@ -51,7 +51,7 @@
 
 [[sdks]]
 package = "flyte"
-install = "flyte[connector,aiosqlite]"
+install = "flyte[connector,aiosqlite,tui] flyteplugins-union"
 parser_package = "flyte"
 generator_name = "flytesdk"
 generator_title = "Flyte SDK"
@@ -71,7 +71,7 @@ package = "flyte"
 import = "flyte"
 include = "include/cli.flyte.md"
 output_file = "content/api-reference/flyte-cli.md"
-gen_command = "flyte gen docs --type markdown"
+gen_command = "flyte gen docs --type markdown --plugin-variants 'byoc selfmanaged'"
 
 [[clis]]
 name = "uctl"
@@ -89,10 +89,28 @@ default_include = "include/api.plugin.md"
 no_flatten = true  # v2: hierarchical output (separate class files per package)
 
 [[plugins]]
+package = "flyteplugins-codegen"
+plugin = "flyteplugins.codegen"
+title = "Code generation"
+name = "codegen"
+
+[[plugins]]
 package = "flyteplugins-dask"
 plugin = "flyteplugins.dask"
 title = "Dask"
 name = "dask"
+
+[[plugins]]
+package = "flyteplugins-hitl"
+plugin = "flyteplugins.hitl"
+title = "Human-in-the-Loop"
+name = "hitl"
+
+[[plugins]]
+package = "flyteplugins-jsonl"
+plugin = "flyteplugins.jsonl"
+title = "JSONL"
+name = "jsonl"
 
 [[plugins]]
 package = "flyteplugins-openai"

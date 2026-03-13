@@ -109,7 +109,7 @@ print(result)  # "Hello, World!"
 
 Or from the command line:
 
-```shell
+```bash
 flyte run my_script.py greet --name World
 ```
 

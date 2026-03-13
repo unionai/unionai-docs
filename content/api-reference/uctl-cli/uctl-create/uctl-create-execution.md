@@ -18,8 +18,8 @@ There are three steps to generate an execution, as outlined below:
 `get task` command:
 
 ```shell
-$ uctl get tasks -d development -p flytesnacks core.control_flow.merge_sort.merge --version v2 --execFile execution_spec.yaml
-````
+uctl get tasks -d development -p flytesnacks core.control_flow.merge_sort.merge --version v2 --execFile execution_spec.yaml
+```
 The generated file would look similar to the following:
 
 ``` yaml

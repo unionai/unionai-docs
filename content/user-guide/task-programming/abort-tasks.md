@@ -62,9 +62,12 @@ When an action is externally aborted, the parent action that awaits it receives 
 
 To abort a specific action:
 
-```shell
+```bash
 flyte abort <run-name> <action-name>
 ```
+
+Use `--project` and `--domain` to target a specific [project-domain pair](../projects-and-domains).
+For all available options, see the [CLI reference](../../api-reference/flyte-cli#flyte-abort).
 
 ### Handling external aborts
 
