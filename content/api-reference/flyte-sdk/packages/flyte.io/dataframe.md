@@ -289,17 +289,6 @@ def schema_match(
 |-|-|-|
 | `incoming` | `dict` | |
 
-### schema_match()
-
-```python
-def schema_match(
-    incoming: dict,
-) -> bool
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `incoming` | `dict` | |
-
 ### serialize_dataframe()
 
 ```python

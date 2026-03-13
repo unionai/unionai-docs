@@ -13,14 +13,14 @@ layout: py_api
 class Report(
     name: str,
     tabs: typing.Dict[str, flyte.report._report.Tab],
-    template_path: pathlib.Path,
+    template_path: pathlib._local.Path,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | |
 | `tabs` | `typing.Dict[str, flyte.report._report.Tab]` | |
-| `template_path` | `pathlib.Path` | |
+| `template_path` | `pathlib._local.Path` | |
 
 ## Methods
 

@@ -29,7 +29,7 @@ sidebar_expanded: true
 
 ```python
 def config_from_root(
-    path: pathlib.Path | str,
+    path: pathlib._local.Path | str,
 ) -> flyte.config._config.Config | None
 ```
 Get the config file from the git root directory.
@@ -40,5 +40,5 @@ By default, the config file is expected to be in `.flyte/config.yaml` in the git
 
 | Parameter | Type | Description |
 |-|-|-|
-| `path` | `pathlib.Path \| str` | Path to the config file relative to git root directory (default :return: Config object if found, None otherwise |
+| `path` | `pathlib._local.Path \| str` | Path to the config file relative to git root directory (default :return: Config object if found, None otherwise |
 
