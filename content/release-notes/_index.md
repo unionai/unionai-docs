@@ -100,24 +100,6 @@ with tempfile.TemporaryDirectory() as temp_dir:
 
 You can now configure request timeouts for Flyte applications using the new `Timeouts` dataclass. This enhancement allows you to set a `request` timeout (as an integer or `timedelta`) that determines the maximum duration a request can take within an application environment. Users can specify timeouts during environment configuration, ensuring that requests do not exceed the defined limits and can be reset using cloning methods. This feature enhances reliability by preventing excessively long execution times and provides flexibility in managing service responsiveness.
 
-### Context and Changes
-The changes made in PR #717 involve two main updates:
-1. **Standard Ignore Pattern Update**: `.git` has been added to the standard ignore patterns in the `_ignore.py` file. This modifies the behavior of code bundling by excluding `.git` directories from being included.
-   
-2. **Bundle Logic Adjustment**: In the `bundle.py` and `_deploy.py` files, logic is added to handle the `copy_style` parameter. If `copy_style` is set to "none", a `ValueError` is now raised with a message instructing not to make a code bundle. This prevents unnecessary bundling operations when no copying is required.
-
-3. **Test Additions**: Tests are added to ensure that files and directories like `.git` are ignored during the file copy process.
-
-### User-Facing Impact
-These changes directly impact users who interact with Flyte's SDK in the following ways:
-- **Improved Code Bundling**: By ignoring `.git` directories, users experience faster bundling operations and reduced artifact sizes, improving the efficiency of deployments.
-  
-- **Error Awareness**: The introduction of explicit error handling for the `copy_style` parameter clarifies user expectations and reduces confusion about bundling behaviors.
-
-### Documentation and Release Note
-
-This change is indeed user-facing as it affects how users manage their code deployments and provides clearer handling of code bundling configurations. Now let's frame a release note entry.
-
 ### :wrench: Enhanced Bundling and Error Handling
 
 You can now enjoy faster bundling operations in Flyte by ignoring `.git` directories in deployment code bundles. This update optimizes the bundling process, reducing artifact size and improving deployment efficiency. Additionally, explicit error handling for the `copy_style` parameter ensures clear guidance when bundling is unnecessary.
@@ -195,12 +177,6 @@ else:
 
 The Flyte SDK now ensures consistent cross-platform behavior for code bundling. By using POSIX-style paths for file hashing and tarball creation, tasks now behave consistently between Windows and Unix systems, preventing subtle bugs. This change ensures that users working across different OS environments can rely on consistent processing and file integrity, improving the overall development experience on Flyte.
 
-The pull request focuses on improving the robustness of the app deployment watching logic in the Flyte SDK. Specifically, it ensures that the `watch` function in `src/flyte/remote/_app.py` now handles delayed status updates more gracefully by waiting for status conditions to be present before proceeding. This prevents potential race conditions or errors when status updates are delayed.
-
-After reviewing the diff, reading the source code, and checking for related examples, the change primarily affects internal logic handling and is not directly user-facing. It doesn’t introduce new API changes, features, or behaviors that users would interact with differently.
-
-Based on the information gathered, there are **NO_USER_FACING_CHANGES** to document for this PR.
-
 ### :wrench: Improved CLI JSON Formatting
 
 You can now run CLI commands that output JSON without encountering errors caused by non-iterable object types. The `flyte` CLI smartly utilizes the `to_dict()` method when available, fixing issues where certain commands would previously fail with a `TypeError`. This enhancement improves CLI stability and user experience when dealing with complex objects.
@@ -261,23 +237,6 @@ You can now specify the addressing style for S3-compatible backends in the Flyte
 
 ## March 2026
 
-The GitHub pull request #775 focused on modifying a workflow to no longer use the `--prerelease allow` flag when running `uv` commands for building and publishing plugins. This change is reflected in the `.github/workflows/publish.yml` file. The change is part of the CI configuration and affects how pre-release plugins are handled during publishing.
-
-Now I will explore the source code of the Flyte SDK in the `./flyte-sdk-v2.0.6/` directory to further understand the context of these changes and check if there are any user-facing implications.
-The PR doesn't introduce any changes to user-facing code or functionality in the Flyte SDK. It strictly modifies a GitHub Action workflow configuration, specifically removing the `--prerelease allow` flag during the plugin build and publish process. This change ensures that non-prerelease versions of plugins are published.
-
-Since it is a modification of CI/CD processes with no direct impact on user-visible features or APIs, there are no user-facing changes to document in the Union docs. 
-
-NO_USER_FACING_CHANGES
-
-This pull request updates plugin "uv lock" files related to dependencies. The changes are mostly to the lock files, which means they handle updates to the dependency versions. This is typically an internal maintenance activity ensuring updates to dependencies do not unexpectedly change behavior. Given this context and the absence of any explanation about new features or user-facing changes, there is nothing explicitly visible to users or changing the SDK interface. 
-
-Therefore, the outcome is:
-
-```
-NO_USER_FACING_CHANGES
-```
-
 ### :wrench: Extended Idle Timeout for Panel Apps
 
 Flyte now allows longer idle times for websocket connections in panel apps. This update increases session token expiration to 3 hours, allowing users more time for interaction without disconnection. Additionally, new parameters for managing unused session lifetimes improve the overall stability and performance of long-running applications. Users can experience smoother sessions when interacting with Flyte panel applications.
@@ -308,14 +267,6 @@ async def agent_task(prompt: str):
 
 This addition bolsters Flyte's extensibility and adaptability in handling complex AI workflows.
 
-The pull request implements a new step in the CI process to check for stale lock files. It adds a check for `uv.lock` files within each `plugins/*/` directory, enhancing the entire project’s build stability but does not impact user-facing features or APIs.
-
-**Conclusion:** This change does not affect users directly through updated features or APIs.
-
-```
-NO_USER_FACING_CHANGES
-```
-
 ### :hammer: Forced Image Build Caching
 
 With this update, you can now force a rebuild of images by setting `force=True`. This skips the existence check and forces a rebuild even if the image already exists. When using the remote image builder, this also sets `overwrite_cache=True`, ensuring that the cache is overwritten during the build run. This feature is particularly useful for developers who need to ensure that the latest changes are included in every build, improving the efficiency and reliability of the build process.
@@ -326,12 +277,6 @@ import flyte
 image = flyte.Image("your_image")
 result = await flyte.build.aio(image, force=True)
 ```
-
-The pull request adds comprehensive module-level docstrings and improves class/field documentation for various plugins, which enhances the API references on the Union.ai documentation site. However, these changes are primarily internal and related to documentation updates rather than functionality that would directly impact the user experience or require users to alter their workflows or code.
-
-Therefore, the changes are internal with no user-facing impact or new features, so there are no user-facing changes worth documenting in the release notes.
-
-NO_USER_FACING_CHANGES
 
 ### :computer: LLM-Powered Code Generation
 
@@ -397,28 +342,6 @@ if __name__ == "__main__":
 
 This addition significantly enhances the developer experience, making debugging within the Flyte platform more efficient and accessible.
 
-Based on the code diff and documentation, the pull request adds a new feature that introduces support for running arbitrary Python scripts on remote Flyte clusters. This includes a command-line interface option that allows users to define and execute scripts with configurable resources such as CPU, memory, and GPU. It includes both the API and CLI for facilitating this new capability.
-
-I'll now draft the release note entry for this feature.
-
-### PR Description
-The pull request addresses an issue where the SDK would unnecessarily attempt OAuth2/PKCE authentication even when `insecure=True`, leading to unwanted keyring access and OAuth2 metadata fetches against servers that don't require authentication. The change ensures that when a plaintext channel is created with `insecure=True`, the SDK skips creating authentication interceptors entirely.
-
-### Code Changes
-- **Channel Creation Update**: The `create_channel()` function in `src/flyte/remote/_client/auth/_channel.py` now includes a conditional check for `insecure=True` to avoid setting up OAuth2/PKCE authentication interceptors.
-- **Test Enhancements**: Two new tests verify that authentication interceptors are skipped when creating an insecure channel, ensuring that unnecessary authentication operations are avoided.
-
-### Test Additions
-- Tests ensure that authentication interceptors are not created when `insecure=True`, even when an explicit `auth_type` is specified.
-
-## Impact on Users
-- **User-Facing Benefit**: Users can configure channels to skip authentication interceptors when communicating with servers that don't require it, potentially improving connection speeds and eliminating unnecessary errors related to authentication processes in specific environments.
-
-### Example Scenario
-Consider a scenario where developers work with a local development server that doesn't require authentication. With this change, setting `insecure=True` means developers won't encounter authentication overhead, making local development simpler and faster.
-
-Based on this analysis, I will draft the release note entry for this change.
-
 ### :sparkles: Improved CLI Enum Support
 
 You can now utilize enum names directly when passing parameters via the Flyte CLI, thanks to support for `EnumParamType`. Previously, only enum values were recognized, which could lead to user confusion. This improvement makes CLI interactions more intuitive, as you can use friendly enum names like `--color=GREEN` instead of requiring specific internal values. This change enhances usability and aligns with previous updates that prioritize enum names in other components of the Flyte SDK.
@@ -439,14 +362,6 @@ Flyte now supports distributed training with callback-driven evaluation. This fe
 
 The benchmark script for Flyte's large I/O operations has been refactored for enhanced flexibility and maintainability. Users can now parameterize CPU and memory allocations, making resource management more intuitive. The benchmark tests are more flexible, permitting optional execution of file and directory tests. Additionally, the HTML report generation is now robust against missing data, ensuring comprehensive results. This update allows for more efficient benchmarking within Flyte, enhancing user control over testing parameters.
 
-The PR involves increasing code coverage to ensure user-facing APIs remain consistent. It primarily adds unit tests to various components of the Flyte SDK. These tests cover `Cache`, `Environment`, and other user API components. Since these changes do not introduce new user-facing features or modifications that end users would notice during normal operations, it's essentially about enhancing internal code quality and stability.
-
-Given the nature of the changes, this does not require a user-facing release note.
-
-```
-NO_USER_FACING_CHANGES
-```
-
 ### :computer: CLI Project Management
 
 You can now create, update, and manage Flyte projects directly from the CLI. This new feature allows you to create projects with specific IDs, names, descriptions, and labels, offering a streamlined way to manage project metadata. Users can also archive or unarchive projects, providing better control over project lifecycle states.
@@ -460,22 +375,9 @@ flyte get project --archived
 
 This enhancement simplifies project management tasks and provides more flexibility in organizing and maintaining projects.
 
-The pull request primarily focuses on updates to plugins and continuous integration (CI) tests and does not introduce any user-facing changes. It concerns:
-
-- Adding missing plugins to the testing and publishing workflows.
-- Adjustments to port configurations and parameter definitions.
-- Adding the `kubernetes` dependency in the Spark plugin's development requirements.
-- Modifications to how parameters are accessed in some plugins, changing from `inputs` to `parameters`.
-
-Given these changes are related to internal tests, CI configuration, and minor development dependencies without directly affecting user interactions with the SDK, there are no user-facing changes that require documentation.
-
-NO_USER_FACING_CHANGES
-
 ### :robot: Anthropic Claude Integration
 
 With this release, you can now seamlessly integrate Flyte tasks as tools for Anthropic Claude agents. This enhancement enables Claude to leverage Flyte's task orchestration capabilities, facilitating the automation of complex workflows. Users can define tasks in Flyte and convert them into Claude tool definitions, allowing for sophisticated agent-driven operations using the new `function_tool` utility.
-
-```
 
 ### :hourglass_flowing_sand: Panel App Enhancements
 
@@ -488,10 +390,6 @@ You can now configure S3 authentication using the `AWS_CONFIG_FILE` environment 
 ### :sparkles: Improved Task Execution Reliability
 
 Flyte now automatically uses `task.aio()` for both synchronous and asynchronous tasks, ensuring consistent execution through the Flyte controller. This update removes the previous fallback to `asyncio.to_thread()` for synchronous tasks, enhancing reliability and integration within Flyte-defined contexts. You can achieve dependable task processing without altering your existing task definitions.
-
-The PR adds a job to automatically discover plugins with `tests/` directories for unit testing in the CI workflow. This change dynamically updates the testing matrix without manual edits, ensuring new plugins are included seamlessly. It's a CI enhancement, not user-facing.
-
-NO_USER_FACING_CHANGES
 
 ### :wrench: Enhanced Action Service Integration
 
