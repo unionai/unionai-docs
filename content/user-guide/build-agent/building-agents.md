@@ -1,5 +1,5 @@
 ---
-title: Building agentic workflows on {{< key product_name >}}
+title: Building agentic workflows
 weight: 1
 variants: +flyte +serverless +byoc +selfmanaged
 mermaid: true
