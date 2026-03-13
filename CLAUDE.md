@@ -2,6 +2,11 @@
 
 This file provides guidance for working with the Union.ai documentation repositories. It is shared between `unionai-docs` (parent) and `unionai-docs-infra` (submodule).
 
+## Selfmanaged & Selfhosted Context
+
+For selfhosted or selfmanaged context, refer to the Notion guide:
+https://www.notion.so/3108cc06513d81a08bb1d3b9135385f1
+
 ## Project Overview
 
 Multi-variant Hugo documentation site for Flyte (open-source) and Union.ai products. A single source generates four variants:
