@@ -6,14 +6,16 @@ variants: -flyte -serverless -byoc +selfmanaged
 
 # Authentication
 
-{{< key product_name >}} self-hosted deployments support OIDC-based authentication via an external OAuth2/OIDC-compliant identity provider. When enabled, all API calls — browser, CLI, and service-to-service — are authenticated.
+{{< key product_name >}} self-hosted deployments use [OpenID Connect (OIDC)](https://openid.net/specs/openid-connect-core-1_0.html) for user authentication and [OAuth 2.0](https://tools.ietf.org/html/rfc6749) for service-to-service authorization.
+
+Unlike serverless and BYOC deployments where {{< key product_name >}} manages authentication for you, **self-hosted deployments require you to create and manage OAuth applications in your own identity provider** (e.g. Okta, Microsoft Entra ID, Google Workspace, or any OIDC-compliant provider). {{< key product_name >}} does not provision or manage these applications — you are responsible for their lifecycle, credential rotation, and access policies.
 
 > [!NOTE]
 > This guide covers authentication for **self-hosted** deployments where you manage both the control plane and data plane. For **self-managed** deployments ({{< key product_name >}}-hosted control plane), authentication is handled automatically via `uctl selfserve provision-dataplane-resources` and `uctl create apikey`.
 
 ## Overview
 
-Self-hosted authentication requires creating **five OAuth2 client applications** in your identity provider. Each application serves a different authentication flow:
+Self-hosted authentication requires creating **five OAuth2 client applications** in your own identity provider. Each application serves a different authentication flow:
 
 | # | Application | Type | Grant types | Purpose |
 |---|-------------|------|-------------|---------|
@@ -23,7 +25,9 @@ Self-hosted authentication requires creating **five OAuth2 client applications**
 | 4 | Operator | Confidential (service) | `client_credentials` | Data plane operator, propeller, and cluster-resource-sync authentication to control plane |
 | 5 | EAGER | Confidential (service) | `client_credentials` | Task pod authentication (EAGER_API_KEY) |
 
-## OIDC provider requirements
+## Identity provider requirements
+
+You must use an OIDC-compliant identity provider that you manage outside of {{< key product_name >}}. Any standards-compliant provider will work. {{< key product_name >}} uses [Okta](https://www.okta.com/) for its internal deployments, but you can use whichever provider your organization already uses.
 
 Your identity provider must support:
 
@@ -36,7 +40,7 @@ Your identity provider must support:
 
 ### Authorization server setup
 
-Create a custom authorization server (or equivalent in your OIDC provider) with the following configuration:
+Create a custom authorization server (or equivalent) in your identity provider with the following configuration:
 
 - **Audience**: `https://<your-domain>` (the control plane ingress domain)
 - **Default scope**: `all`
