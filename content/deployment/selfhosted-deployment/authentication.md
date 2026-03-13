@@ -6,6 +6,8 @@ variants: -flyte -serverless -byoc +selfmanaged
 
 # Authentication
 
+<!-- TODO: Check if accurate -->
+
 {{< key product_name >}} self-hosted deployments use [OpenID Connect (OIDC)](https://openid.net/specs/openid-connect-core-1_0.html) for user authentication and [OAuth 2.0](https://tools.ietf.org/html/rfc6749) for service-to-service authorization.
 
 Unlike serverless and BYOC deployments where {{< key product_name >}} manages authentication for you, **self-hosted deployments require you to create and manage OAuth applications in your own identity provider** (e.g. Okta, Microsoft Entra ID, Google Workspace, or any OIDC-compliant provider). {{< key product_name >}} does not provision or manage these applications — you are responsible for their lifecycle, credential rotation, and access policies.
