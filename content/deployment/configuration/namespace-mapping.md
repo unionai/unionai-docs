@@ -40,32 +40,6 @@ namespace_mapping:
 > [!NOTE]
 > The template uses Helm's backtick escaping for Go template delimiters. In your values file, wrap `{{ project }}` and `{{ domain }}` with backtick-escaped `{{` and `}}` delimiters as shown above.
 
-{{< variant selfmanaged >}}
-
-## Self-hosted control plane configuration
-
-If you are running a [self-hosted deployment](../selfhosted-deployment/_index) (control plane and data plane in the same cluster), you **must** also configure namespace mapping on the control plane for V1 executions.
-
-> [!IMPORTANT]
-> The control plane and data plane namespace mapping templates **must match exactly**. A mismatch causes flyteadmin to assign V1 executions to namespaces that the data plane hasn't created.
-
-Add the following to your control plane Helm values:
-
-```yaml
-flyte:
-  configmap:
-    namespace_config:
-      namespace_mapping:
-        template: "myorg-{{ '{{' }} project {{ '}}' }}-{{ '{{' }} domain {{ '}}' }}"
-```
-
-> [!NOTE]
-> `namespace_config` is the flyte-core subchart template key (it renders to `namespace_config.yaml`). `namespace_mapping` is the Go config section flyteadmin reads at runtime. This path uses `toYaml` (not `tpl`), so the Go template delimiters pass through as-is — **no backtick escaping is needed**.
-
-> [!NOTE]
-> V2 executions resolve namespaces on the data plane side and do not require control plane namespace mapping configuration.
-{{< /variant >}}
-
 ## How it works
 
 Namespace mapping controls several components:
