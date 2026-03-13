@@ -8,221 +8,6 @@ sidebar_expanded: true
 
 # Release notes
 
-## February 2026
-
-### :sparkles: JSON Schema Enhancement
-
-Flyte now accurately converts Python types to JSON Schemas by leveraging Flyte's internal type system. Previously, certain types like `Literal["C", "F"]` were incorrectly mapped. Now, input schemas for Flyte tasks reflect precise JSON Schemas, improving integrations with tools like Anthropic's Claude.
-
-```python
-# Example: Converting Literal to JSON Schema correctly
-def my_func(unit: Literal["C", "F"]) -> str:
-    return unit
-
-schema = NativeInterface.from_callable(my_func).json_schema
-assert schema["properties"]["unit"] == {"type": "string", "enum": ["C", "F"]}
-```
-
-### :calculator: Panel Calculator Example
-
-A new example showcases a calculator app embedded in a Panel interface using Flyte's `AppEnvironment`, demonstrating how to build interactive web-based UIs with Flyte.
-
-### :sparkles: Spark Plugin Update
-
-The `flyteplugins-spark` dependency has been updated to `>=2.0.0`, moving away from pre-release versions.
-
-### :lock: Secure Package Specification
-
-Package version constraints like `apache-airflow<=3.0.0` are now automatically quoted in generated Dockerfiles. Previously, unquoted constraints could cause incorrect shell interpretation and build failures.
-
-### :zap: Enum Name Acceptance in CLI
-
-The Flyte CLI now accepts enum names as valid inputs. Previously, only enum values were accepted, so `--color=RED` would fail when the value was `"red"`. Both names and values are now accepted.
-
-```python
-import enum
-import flyte
-
-class Color(enum.Enum):
-    RED = "red"
-    GREEN = "green"
-    BLUE = "blue"
-
-@flyte.task
-def example_task(color: Color):
-    return f"Selected color is {color.name}"
-```
-
-### :wrench: Enhanced Pod Template Handling
-
-Pod templates are now properly maintained across task overrides. Previously, overriding certain task attributes could inadvertently discard custom pod templates. Pod specifications, labels, and annotations now persist even after renaming tasks or modifying other properties.
-
-### :zap: Stress Testing Example Added
-
-A new stress testing example demonstrates a fan-out execution pattern, creating a dynamic tree of asynchronous tasks to simulate high concurrency. You can control the number of tasks spawned at each layer and introduce variability with a jitter parameter.
-
-### :bug: Correct Serialization Field
-
-Fixed a bug in the serialization of scaling metrics: the correct field `target_value` is now used instead of `val`. This ensures proper serialization for `Scaling.Concurrency` and `Scaling.RequestRate` metrics as expected by the protobuf definitions.
-
-### :wrench: Improved Async Task Handling
-
-Async Flyte tasks now route execution through `task.aio()`, ensuring consistent invocation through Flyte's controller and correct handling of nested async tasks.
-
-### :wrench: Sync Alignment of File Upload Methods
-
-`File.from_local_sync` and `File.from_local` now handle filenames consistently when uploading to remote storage. Previously, the sync and async methods could produce different filenames for the same upload.
-
-```python
-# Example of uploading a file with consistent naming:
-import flyte
-
-with tempfile.TemporaryDirectory() as temp_dir:
-    local_path = os.path.join(temp_dir, "source.txt")
-    remote_path = os.path.join(temp_dir, "destination.txt")
-
-    # Ensure the file content
-    with open(local_path, "w") as f:
-        f.write("sample content")
-
-    # Upload the local file to a remote location
-    uploaded_file = File.from_local_sync(local_path, remote_path)
-
-    print(f"Uploaded file path: {uploaded_file.path}")
-```
-
-### :hourglass: Request Timeout Configuration
-
-You can now configure request timeouts for Flyte applications using the new `Timeouts` dataclass. Set a `request` timeout (as an integer or `timedelta`) to limit the maximum duration a request can take within an application environment.
-
-### :wrench: Enhanced Bundling and Error Handling
-
-Flyte now ignores `.git` directories in deployment code bundles, reducing artifact size and improving deployment speed. Additionally, explicit error handling for the `copy_style` parameter provides clear guidance when bundling is unnecessary.
-
-### :wrench: Dynamic Pydantic Model Creation
-
-The new `PydanticTransformer.guess_python_type` method dynamically creates Pydantic models from JSON schema metadata. This handles cases where the original Pydantic model class isn't available, enabling flexible deserialization of complex nested structures.
-
-### :busts_in_silhouette: Human-in-the-Loop Plugin
-
-The new Human-in-the-Loop (HITL) plugin enables workflows to pause and wait for human input via a web interface or programmatically. Create events that prompt for human interaction through an auto-served FastAPI app.
-
-```python
-import flyteplugins.hitl as hitl
-
-# Create event and wait for human input
-event = await hitl.new_event.aio(
-    "input_event",
-    data_type=int,
-    scope="run",
-    prompt="Enter a number"
-)
-value = await event.wait.aio()
-```
-
-### :rocket: Stateless Code Sandbox
-
-Flyte now supports running arbitrary Python code and shell commands in an isolated, stateless Docker container with the `flyte.sandbox.create()` API. Three execution modes are available: Auto-IO, Verbatim, and Command, each handling inputs and outputs differently while running code in fresh, ephemeral containers.
-
-### :wrench: Improved CLI Logging Initialization
-
-The Flyte SDK now ensures a consistent logging setup when using the CLI. Previously, CLI commands would initialize configuration multiple times, leading to duplicated log entries. Now:
-
-- Initialization occurs once per command execution.
-- `RichHandler` is enabled from the start, so all logs display in rich format.
-- The `hello.py` example script now has a default value, so it runs without arguments.
-
-```python
-@env.task
-def main(x_list: list[int] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) -> float:
-    x_len = len(x_list)
-    if x_len < 10:
-        raise ValueError(f"x_list doesn't have a larger enough sample size, found: {x_len}")
-    y_list = list(flyte.map(fn, x_list))
-    y_mean = sum(y_list) / len(y_list)
-    return y_mean
-```
-
-### :wrench: Enhanced Ignore Handling
-
-Flyte SDK now skips processing of `.gitignore` and `.flyteignore` files inside commonly ignored directories such as `.venv` or `__pycache__`, avoiding redundant file processing.
-
-### :whale: CI Image Builder
-
-A new example script automates Docker image building and pushing from CI. Configure it with your source and target image details to integrate with continuous deployment pipelines.
-
-### :wrench: TypedDict Compatibility Fix
-
-The Flyte SDK now correctly handles `TypedDict` for Python versions earlier than 3.12 by using `typing_extensions.TypedDict`.
-
-```python
-# Importing TypedDict based on Python version
-import sys
-if sys.version_info >= (3, 12):
-    from typing import TypedDict
-else:
-    from typing_extensions import TypedDict
-```
-
-### :globe_with_meridians: Cross-Platform Code Bundling
-
-The Flyte SDK now uses POSIX-style paths for file hashing and tarball creation, ensuring consistent code bundling behavior across Windows and Unix systems.
-
-### :wrench: Improved CLI JSON Formatting
-
-The `flyte` CLI now uses the `to_dict()` method when available for JSON output, fixing `TypeError` failures that occurred with certain non-iterable object types.
-
-### :wrench: Improved Pod Image Handling
-
-Flyte now consistently merges container images when using a pod template. The primary container uses `app_env.image` if no explicit image is set, with correct handling of both `"auto"` and specific image values.
-
-### :sparkles: Flyte Webhook Environment
-
-A pre-built Flyte webhook environment makes it easier to integrate with FastAPI endpoints for common Flyte operations like running tasks, managing apps, and handling triggers. This update uses `httpx` for HTTP requests and expands endpoint exports for better customization.
-
-### :repeat: Retry Interceptor for gRPC
-
-A new retry interceptor for gRPC channels allows you to define how many times a gRPC call should be retried on transient failures. Specify the number of retry attempts using the `rpc_retries` option during channel creation.
-
-### :sparkles: Orchestration Sandbox Feature
-
-Flyte 2.0 now supports dynamic orchestration within a sandbox using `flyte.sandbox.orchestrator_from_str()`. Create reusable orchestration templates directly from Python code strings without defining decorated functions — useful when code is dynamically generated from UIs or language models.
-
-### :wrench: Task Shortname Override Fix
-
-You can now override the shortname for tasks in the UI by setting the `short_name` parameter in task overrides. Previously, overridden shortnames were not reflected in the Flyte UI.
-
-### :sparkles: NVIDIA H100 GPU Support
-
-Flyte now supports NVIDIA H100 GPUs with various MIG partitions for fine-grained resource allocation.
-
-```python
-from flyte import GPU, Resources
-
-h100_mig_env = flyte.TaskEnvironment(
-    name="h100_mig",
-    resources=Resources(
-        cpu="1",
-        memory="4Gi",
-        gpu=GPU(device="H100", quantity=1, partition="1g.10gb"),
-    ),
-)
-```
-
-
-### :zap: Enhanced Error Handling in PyTorch Elastic Jobs
-
-Flyte's PyTorch integration now includes configurable NCCL timeout settings to better manage CUDA out-of-memory (OOM) situations. This prevents elastic jobs from hanging due to OOM by introducing faster failure detection and customizable restart policies. You can reduce timeout durations, enable asynchronous error handling, and activate built-in monitoring.
-
-### :wrench: Reverse Path Priority Fix
-
-The Flyte SDK's handling of `sys.path` when running tasks remotely now respects local path priority. Previously, the `entrypoint` directory could override top-level packages. This fix ensures consistent path prioritization between local development and remote execution.
-
-### :globe_with_meridians: S3 Virtual Hosted-Style Support
-
-You can now specify the addressing style for S3-compatible backends by setting the `FLYTE_AWS_S3_ADDRESSING_STYLE` environment variable to `virtual`. This constructs URLs in the format `https://<bucket>.<endpoint>/<key>`, enabling compatibility with more storage providers.
-
-
 ## March 2026
 
 ### :wrench: Extended Idle Timeout for Panel Apps
@@ -530,6 +315,221 @@ async def process_dir(d: JsonlDir):
     async for record in d.iter_records():
         print(record)
 ```
+
+
+## February 2026
+
+### :sparkles: JSON Schema Enhancement
+
+Flyte now accurately converts Python types to JSON Schemas by leveraging Flyte's internal type system. Previously, certain types like `Literal["C", "F"]` were incorrectly mapped. Now, input schemas for Flyte tasks reflect precise JSON Schemas, improving integrations with tools like Anthropic's Claude.
+
+```python
+# Example: Converting Literal to JSON Schema correctly
+def my_func(unit: Literal["C", "F"]) -> str:
+    return unit
+
+schema = NativeInterface.from_callable(my_func).json_schema
+assert schema["properties"]["unit"] == {"type": "string", "enum": ["C", "F"]}
+```
+
+### :calculator: Panel Calculator Example
+
+A new example showcases a calculator app embedded in a Panel interface using Flyte's `AppEnvironment`, demonstrating how to build interactive web-based UIs with Flyte.
+
+### :sparkles: Spark Plugin Update
+
+The `flyteplugins-spark` dependency has been updated to `>=2.0.0`, moving away from pre-release versions.
+
+### :lock: Secure Package Specification
+
+Package version constraints like `apache-airflow<=3.0.0` are now automatically quoted in generated Dockerfiles. Previously, unquoted constraints could cause incorrect shell interpretation and build failures.
+
+### :zap: Enum Name Acceptance in CLI
+
+The Flyte CLI now accepts enum names as valid inputs. Previously, only enum values were accepted, so `--color=RED` would fail when the value was `"red"`. Both names and values are now accepted.
+
+```python
+import enum
+import flyte
+
+class Color(enum.Enum):
+    RED = "red"
+    GREEN = "green"
+    BLUE = "blue"
+
+@flyte.task
+def example_task(color: Color):
+    return f"Selected color is {color.name}"
+```
+
+### :wrench: Enhanced Pod Template Handling
+
+Pod templates are now properly maintained across task overrides. Previously, overriding certain task attributes could inadvertently discard custom pod templates. Pod specifications, labels, and annotations now persist even after renaming tasks or modifying other properties.
+
+### :zap: Stress Testing Example Added
+
+A new stress testing example demonstrates a fan-out execution pattern, creating a dynamic tree of asynchronous tasks to simulate high concurrency. You can control the number of tasks spawned at each layer and introduce variability with a jitter parameter.
+
+### :bug: Correct Serialization Field
+
+Fixed a bug in the serialization of scaling metrics: the correct field `target_value` is now used instead of `val`. This ensures proper serialization for `Scaling.Concurrency` and `Scaling.RequestRate` metrics as expected by the protobuf definitions.
+
+### :wrench: Improved Async Task Handling
+
+Async Flyte tasks now route execution through `task.aio()`, ensuring consistent invocation through Flyte's controller and correct handling of nested async tasks.
+
+### :wrench: Sync Alignment of File Upload Methods
+
+`File.from_local_sync` and `File.from_local` now handle filenames consistently when uploading to remote storage. Previously, the sync and async methods could produce different filenames for the same upload.
+
+```python
+# Example of uploading a file with consistent naming:
+import flyte
+
+with tempfile.TemporaryDirectory() as temp_dir:
+    local_path = os.path.join(temp_dir, "source.txt")
+    remote_path = os.path.join(temp_dir, "destination.txt")
+
+    # Ensure the file content
+    with open(local_path, "w") as f:
+        f.write("sample content")
+
+    # Upload the local file to a remote location
+    uploaded_file = File.from_local_sync(local_path, remote_path)
+
+    print(f"Uploaded file path: {uploaded_file.path}")
+```
+
+### :hourglass: Request Timeout Configuration
+
+You can now configure request timeouts for Flyte applications using the new `Timeouts` dataclass. Set a `request` timeout (as an integer or `timedelta`) to limit the maximum duration a request can take within an application environment.
+
+### :wrench: Enhanced Bundling and Error Handling
+
+Flyte now ignores `.git` directories in deployment code bundles, reducing artifact size and improving deployment speed. Additionally, explicit error handling for the `copy_style` parameter provides clear guidance when bundling is unnecessary.
+
+### :wrench: Dynamic Pydantic Model Creation
+
+The new `PydanticTransformer.guess_python_type` method dynamically creates Pydantic models from JSON schema metadata. This handles cases where the original Pydantic model class isn't available, enabling flexible deserialization of complex nested structures.
+
+### :busts_in_silhouette: Human-in-the-Loop Plugin
+
+The new Human-in-the-Loop (HITL) plugin enables workflows to pause and wait for human input via a web interface or programmatically. Create events that prompt for human interaction through an auto-served FastAPI app.
+
+```python
+import flyteplugins.hitl as hitl
+
+# Create event and wait for human input
+event = await hitl.new_event.aio(
+    "input_event",
+    data_type=int,
+    scope="run",
+    prompt="Enter a number"
+)
+value = await event.wait.aio()
+```
+
+### :rocket: Stateless Code Sandbox
+
+Flyte now supports running arbitrary Python code and shell commands in an isolated, stateless Docker container with the `flyte.sandbox.create()` API. Three execution modes are available: Auto-IO, Verbatim, and Command, each handling inputs and outputs differently while running code in fresh, ephemeral containers.
+
+### :wrench: Improved CLI Logging Initialization
+
+The Flyte SDK now ensures a consistent logging setup when using the CLI. Previously, CLI commands would initialize configuration multiple times, leading to duplicated log entries. Now:
+
+- Initialization occurs once per command execution.
+- `RichHandler` is enabled from the start, so all logs display in rich format.
+- The `hello.py` example script now has a default value, so it runs without arguments.
+
+```python
+@env.task
+def main(x_list: list[int] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) -> float:
+    x_len = len(x_list)
+    if x_len < 10:
+        raise ValueError(f"x_list doesn't have a larger enough sample size, found: {x_len}")
+    y_list = list(flyte.map(fn, x_list))
+    y_mean = sum(y_list) / len(y_list)
+    return y_mean
+```
+
+### :wrench: Enhanced Ignore Handling
+
+Flyte SDK now skips processing of `.gitignore` and `.flyteignore` files inside commonly ignored directories such as `.venv` or `__pycache__`, avoiding redundant file processing.
+
+### :whale: CI Image Builder
+
+A new example script automates Docker image building and pushing from CI. Configure it with your source and target image details to integrate with continuous deployment pipelines.
+
+### :wrench: TypedDict Compatibility Fix
+
+The Flyte SDK now correctly handles `TypedDict` for Python versions earlier than 3.12 by using `typing_extensions.TypedDict`.
+
+```python
+# Importing TypedDict based on Python version
+import sys
+if sys.version_info >= (3, 12):
+    from typing import TypedDict
+else:
+    from typing_extensions import TypedDict
+```
+
+### :globe_with_meridians: Cross-Platform Code Bundling
+
+The Flyte SDK now uses POSIX-style paths for file hashing and tarball creation, ensuring consistent code bundling behavior across Windows and Unix systems.
+
+### :wrench: Improved CLI JSON Formatting
+
+The `flyte` CLI now uses the `to_dict()` method when available for JSON output, fixing `TypeError` failures that occurred with certain non-iterable object types.
+
+### :wrench: Improved Pod Image Handling
+
+Flyte now consistently merges container images when using a pod template. The primary container uses `app_env.image` if no explicit image is set, with correct handling of both `"auto"` and specific image values.
+
+### :sparkles: Flyte Webhook Environment
+
+A pre-built Flyte webhook environment makes it easier to integrate with FastAPI endpoints for common Flyte operations like running tasks, managing apps, and handling triggers. This update uses `httpx` for HTTP requests and expands endpoint exports for better customization.
+
+### :repeat: Retry Interceptor for gRPC
+
+A new retry interceptor for gRPC channels allows you to define how many times a gRPC call should be retried on transient failures. Specify the number of retry attempts using the `rpc_retries` option during channel creation.
+
+### :sparkles: Orchestration Sandbox Feature
+
+Flyte 2.0 now supports dynamic orchestration within a sandbox using `flyte.sandbox.orchestrator_from_str()`. Create reusable orchestration templates directly from Python code strings without defining decorated functions — useful when code is dynamically generated from UIs or language models.
+
+### :wrench: Task Shortname Override Fix
+
+You can now override the shortname for tasks in the UI by setting the `short_name` parameter in task overrides. Previously, overridden shortnames were not reflected in the Flyte UI.
+
+### :sparkles: NVIDIA H100 GPU Support
+
+Flyte now supports NVIDIA H100 GPUs with various MIG partitions for fine-grained resource allocation.
+
+```python
+from flyte import GPU, Resources
+
+h100_mig_env = flyte.TaskEnvironment(
+    name="h100_mig",
+    resources=Resources(
+        cpu="1",
+        memory="4Gi",
+        gpu=GPU(device="H100", quantity=1, partition="1g.10gb"),
+    ),
+)
+```
+
+
+### :zap: Enhanced Error Handling in PyTorch Elastic Jobs
+
+Flyte's PyTorch integration now includes configurable NCCL timeout settings to better manage CUDA out-of-memory (OOM) situations. This prevents elastic jobs from hanging due to OOM by introducing faster failure detection and customizable restart policies. You can reduce timeout durations, enable asynchronous error handling, and activate built-in monitoring.
+
+### :wrench: Reverse Path Priority Fix
+
+The Flyte SDK's handling of `sys.path` when running tasks remotely now respects local path priority. Previously, the `entrypoint` directory could override top-level packages. This fix ensures consistent path prioritization between local development and remote execution.
+
+### :globe_with_meridians: S3 Virtual Hosted-Style Support
+
+You can now specify the addressing style for S3-compatible backends by setting the `FLYTE_AWS_S3_ADDRESSING_STYLE` environment variable to `virtual`. This constructs URLs in the format `https://<bucket>.<endpoint>/<key>`, enabling compatibility with more storage providers.
 
 
 ## November 2025
