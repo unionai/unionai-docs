@@ -231,7 +231,7 @@ Panel apps now support longer idle times for websocket connections, with session
 
 ### :wrench: Plugin Variants Documentation
 
-The new `--plugin-variants` flag in `flyte gen docs` generates variant-scoped CLI documentation. Plugin-contributed CLI commands are wrapped in Hugo `{{< variant >}}` shortcodes, so core commands appear unconditionally while plugin commands are shown only in specified variants (e.g., `byoc`, `selfmanaged`).
+The new `--plugin-variants` flag in `flyte gen docs` generates variant-scoped CLI documentation. Plugin-contributed CLI commands are wrapped in Hugo `{{</* variant */>}}` shortcodes, so core commands appear unconditionally while plugin commands are shown only in specified variants (e.g., `byoc`, `selfmanaged`).
 
 ### :rocket: Google Gemini Plugin Integration
 
