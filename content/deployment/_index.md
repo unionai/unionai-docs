@@ -108,20 +108,3 @@ Installing {{< key product_name >}}
 
 {{< /grid >}}
 {{< /variant >}}
-
-{{< variant selfmanaged >}}
-{{< markdown >}}
-
-## Self-hosted deployment
-
-For complete data sovereignty, you can host both the control plane and data plane in the same Kubernetes cluster. In this model, all communication stays within your infrastructure via Kubernetes internal networking.
-
-{{< /markdown >}}
-{{< grid >}}
-
-{{< link-card target="../deployment/selfhosted-deployment" icon="server" title="Self-hosted deployment" >}}
-Deploy both control plane and data plane in your own Kubernetes cluster
-{{< /link-card >}}
-
-{{< /grid >}}
-{{< /variant >}}
