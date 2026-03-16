@@ -1,7 +1,7 @@
 ---
 title: Terraform
 weight: 2
-variants: -flyte -serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
@@ -55,5 +55,5 @@ Securely manage API keys and credentials
 ## Requirements
 
 - Terraform >= 1.0
-- Union API key (generated using the [Flyte CLI](../../api-reference/flyte-cli#flyte-create-api-key))
+- Union API key (generated using the [Flyte CLI](../../api-reference/flyte-cli#flyte-create-config))
 - Access to a Union deployment

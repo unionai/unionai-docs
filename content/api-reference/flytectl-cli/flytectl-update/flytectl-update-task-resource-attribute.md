@@ -1,6 +1,6 @@
 ---
 title: flytectl update task-resource-attribute
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 ---
 
 # flytectl update task-resource-attribute

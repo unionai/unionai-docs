@@ -1,7 +1,7 @@
 ---
 title: flytekit.clients.auth.keyring
-version: 1.16.10
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.14
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -19,6 +19,7 @@ layout: py_api
 ## flytekit.clients.auth.keyring.Credentials
 
 Stores the credentials together
+
 
 
 ```python
@@ -41,6 +42,7 @@ class Credentials(
 ## flytekit.clients.auth.keyring.KeyringStore
 
 Methods to access Keyring Store.
+
 
 
 ### Methods

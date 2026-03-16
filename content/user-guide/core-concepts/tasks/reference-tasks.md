@@ -1,7 +1,7 @@
 ---
 title: Reference tasks
 weight: 7
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Reference tasks

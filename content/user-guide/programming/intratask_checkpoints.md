@@ -1,7 +1,7 @@
 ---
 title: Intratask checkpoints
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Intratask checkpoints
@@ -126,7 +126,7 @@ pyflyte run --remote \
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant serverless byoc selfmanaged >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 ```bash
 union run --remote checkpoint.py checkpointing_example --n_iterations 10

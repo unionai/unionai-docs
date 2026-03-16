@@ -1,3 +1,0 @@
-.PHONY: all
-all:
-	./tools/jupyter_generator/gen_jupyter.sh

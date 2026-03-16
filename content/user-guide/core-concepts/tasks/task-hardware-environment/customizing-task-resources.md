@@ -1,7 +1,7 @@
 ---
 title: Customizing task resources
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Customizing task resources
@@ -62,13 +62,6 @@ The task will not be scheduled on a node that exceeds the resource profile speci
 
 ## The `accelerator` setting
 
-{{< variant serverless >}}
-{{< markdown >}}
-
-The `accelerator` setting further specifies the *type* of GPU required for the task.
-
-{{< /markdown >}}
-{{< /variant >}}
 {{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
@@ -80,7 +73,7 @@ This can be a GPU, a specific variation of a GPU, a fractional GPU, or a differe
 
 See [Accelerators](./accelerators) for more information.
 
-{{< variant byoc selfmanaged serverless >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 ## Execution defaults and resource quotas
@@ -117,17 +110,6 @@ To remedy such a failure, you should make sure that the appropriate node types a
 Go to the **Resources > Compute** dashboard to find the available node types and their resource profiles.
 
 To make changes to your cluster configuration, go to the [{{< key product_name >}} Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant serverless >}}
-{{< markdown >}}
-
-## Task resource validation
-
-If you attempt to execute a workflow with unsatisfiable resource requests, the execution will fail immediately rather than being allowed to queue forever.
-
-To remedy such a failure, you should make sure that the appropriate node types are specified in the task decorator (via the `requests`, `limits`, `accelerator`, or other parameters).
 
 {{< /markdown >}}
 {{< /variant >}}

@@ -1,7 +1,7 @@
 ---
 title: Authoring
 weight: 4
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Authoring
@@ -49,7 +49,7 @@ For example:
 ```markdown
 ---
 title: My Page
-variants: -flyte +serverless +byoc -selfmanaged
+variants: -flyte +byoc -selfmanaged
 ---
 ```
 
@@ -117,7 +117,7 @@ Or if you want a warning:
 
 There are various short codes to generate content or special components (tabs, dropdowns, etc.)
 
-Refer to [**Content Generation**](./shortcodes.md) for more information.
+Refer to [**Content Generation**](./shortcodes) for more information.
 
 ## Python Generated Content
 
@@ -187,17 +187,15 @@ At the top of your.md file, add:
     jupyter_notebook: /path/to/your/notebook.ipynb
     ---
 
-Then run the `Makefile.jupyter` target to generate the page.
+Jupyter notebook conversion is handled automatically as part of the production build:
 
 ```shell
-$ make -f Makefile.jupyter
+$ make dist
 ```
 
-> [!NOTE]
-> You must `uv sync` and activate the environment in `tools/jupyter_generator` before running the
-> `Makefile.jupyter` target, or make sure all the necessary dependencies are installed for yourself.
+The conversion tool is located at `unionai-docs-infra/tools/jupyter_generator`.
 
-**Committing the change:** When the PR is pushed, a check for consistency between the notebook and its source will run. Please ensure that if you change the notebook, you re-run the `Makefile.jupyter` target to update the page.
+**Committing the change:** When the PR is pushed, a CI check verifies consistency between the notebook and its generated content. Please ensure that if you change the notebook, you run `make dist` to update the generated page.
 
 ## Mapped Keys (`{{</* key */>}}`)
 
@@ -206,7 +204,7 @@ For example, the product name changes if it is Flyte, Union BYOC, etc. For that,
 we can define a single key `product_full_name` and map it to reflect automatically,
 without the need to `if variant` around it.
 
-Please refer to [{{</* key */>}} shortcode](SHORTCODES.md#-key-) for more details.
+Please refer to [{{</* key */>}} shortcode](./shortcodes#key) for more details.
 
 ## Mermaid Graphs
 

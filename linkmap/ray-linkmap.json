@@ -1,0 +1,26 @@
+{
+  "packages": {
+    "flytekitplugins.ray": "/api-reference/plugins/ray/packages/flytekitplugins.ray/",
+    "flytekitplugins.ray.models": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/",
+    "flytekitplugins.ray.task": "/api-reference/plugins/ray/packages/flytekitplugins.ray.task/"
+  },
+  "identifiers": {
+    "flytekitplugins.ray.models.HeadGroupSpec": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/#flytekitpluginsraymodelsheadgroupspec",
+    "HeadGroupSpec": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/#flytekitpluginsraymodelsheadgroupspec",
+    "flytekitplugins.ray.models.RayCluster": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/#flytekitpluginsraymodelsraycluster",
+    "RayCluster": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/#flytekitpluginsraymodelsraycluster",
+    "flytekitplugins.ray.models.RayJob": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/#flytekitpluginsraymodelsrayjob",
+    "RayJob": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/#flytekitpluginsraymodelsrayjob",
+    "flytekitplugins.ray.models.WorkerGroupSpec": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/#flytekitpluginsraymodelsworkergroupspec",
+    "WorkerGroupSpec": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/#flytekitpluginsraymodelsworkergroupspec",
+    "flytekitplugins.ray.task.HeadNodeConfig": "/api-reference/plugins/ray/packages/flytekitplugins.ray.task/#flytekitpluginsraytaskheadnodeconfig",
+    "HeadNodeConfig": "/api-reference/plugins/ray/packages/flytekitplugins.ray.task/#flytekitpluginsraytaskheadnodeconfig",
+    "flytekitplugins.ray.task.RayFunctionTask": "/api-reference/plugins/ray/packages/flytekitplugins.ray.task/#flytekitpluginsraytaskrayfunctiontask",
+    "RayFunctionTask": "/api-reference/plugins/ray/packages/flytekitplugins.ray.task/#flytekitpluginsraytaskrayfunctiontask",
+    "flytekitplugins.ray.task.RayJobConfig": "/api-reference/plugins/ray/packages/flytekitplugins.ray.task/#flytekitpluginsraytaskrayjobconfig",
+    "RayJobConfig": "/api-reference/plugins/ray/packages/flytekitplugins.ray.task/#flytekitpluginsraytaskrayjobconfig",
+    "flytekitplugins.ray.task.WorkerNodeConfig": "/api-reference/plugins/ray/packages/flytekitplugins.ray.task/#flytekitpluginsraytaskworkernodeconfig",
+    "WorkerNodeConfig": "/api-reference/plugins/ray/packages/flytekitplugins.ray.task/#flytekitpluginsraytaskworkernodeconfig"
+  },
+  "methods": {}
+}

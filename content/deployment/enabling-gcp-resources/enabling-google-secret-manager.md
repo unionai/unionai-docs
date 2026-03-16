@@ -1,14 +1,14 @@
 ---
 title: Enabling Google Secret Manager
 weight: 3
-variants: -flyte -serverless +byoc -selfmanaged
+variants: -flyte +byoc -selfmanaged
 ---
 
 # Enabling Google Secret Manager
 
 > [!NOTE]
 > This documentation exists for customers who must use Google Secret Manager for organizational reasons. For everyone else, we strongly recommend using the
-> [{{< key product_name >}} secrets manager](../../user-guide/development-cycle/managing-secrets) to manage secrets rather than Google Secret Manager.
+> [{{< key product_name >}} secrets manager](../../user-guide/task-configuration/secrets) to manage secrets rather than Google Secret Manager.
 
 Access to a secret stored in Secret Manager in the same GCP project as the data plane is enabled by default.
 All you need to do is:

@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.docstring
-version: 1.16.10
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.14
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -32,8 +32,8 @@ class Docstring(
 
 | Property | Type | Description |
 |-|-|-|
-| `input_descriptions` |  |  |
-| `long_description` |  |  |
-| `output_descriptions` |  |  |
-| `short_description` |  |  |
+| `input_descriptions` | `None` |  |
+| `long_description` | `None` |  |
+| `output_descriptions` | `None` |  |
+| `short_description` | `None` |  |
 

@@ -1,14 +1,14 @@
 ---
 title: Data plane setup on Azure
 weight: 5
-variants: -flyte -serverless -byoc +selfmanaged
+variants: -flyte -byoc +selfmanaged
 ---
 
 # Data plane setup on Azure
 
 {{< key product_name >}}’s modular architecture allows for great flexibility and control.
 The customer can decide how many clusters to have, their shape, and who has access to what.
-All communication is encrypted.  The Union architecture is described on the [Architecture](../architecture) page.
+All communication is encrypted.  The Union architecture is described on the [Architecture](./architecture/_index) page.
 
 ## Assumptions
 
@@ -22,7 +22,7 @@ All communication is encrypted.  The Union architecture is described on the [Arc
 ## Prerequisites
 
 * Install [Helm 3](https://helm.sh/docs/intro/install/).
-* Install [union](../api-reference/union-cli) and [uctl](../api-reference/uctl-cli).
+* Install [uctl](../api-reference/uctl-cli/_index).
 
 ## Deploy the {{< key product_name >}} operator
 

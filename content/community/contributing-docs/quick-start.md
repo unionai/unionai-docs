@@ -1,7 +1,7 @@
 ---
 title: Quick start
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Quick start
@@ -14,7 +14,7 @@ See [Hugo Installation](https://gohugo.io/getting-started/installing/).
 
 ## Clone the repository
 
-Clone the [`unionai/docs`](https://github.com/unionai/unionai-docs) repository to your local machine.
+Clone the [`unionai/unionai-docs`](https://github.com/unionai/unionai-docs) repository to your local machine.
 
 The content is located in the `content/` folder in the form of Markdown files.
 The hierarchy of the files and folders under `content/` directly reflect the URL and navigation structure of the site.

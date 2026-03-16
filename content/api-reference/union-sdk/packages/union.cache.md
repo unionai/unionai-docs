@@ -1,7 +1,7 @@
 ---
 title: union.cache
-version: 0.1.198
-variants: +byoc +selfmanaged +serverless -flyte
+version: 0.1.202
+variants: +byoc +selfmanaged -flyte
 layout: py_api
 ---
 
@@ -19,6 +19,7 @@ layout: py_api
 
 A class that implements a versioning mechanism for functions by generating
 a SHA-256 hash of the function's source code combined with a salt.
+
 
 
 ### Methods

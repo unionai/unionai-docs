@@ -1,6 +1,6 @@
 ---
 title: flytectl update execution-cluster-label
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 ---
 
 # flytectl update execution-cluster-label

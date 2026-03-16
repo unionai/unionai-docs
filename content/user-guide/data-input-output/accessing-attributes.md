@@ -1,7 +1,7 @@
 ---
 title: Accessing attributes
 weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Accessing attributes

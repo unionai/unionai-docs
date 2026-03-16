@@ -1,0 +1,41 @@
+{
+  "packages": {
+    "flytekitplugins.dbt": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt/",
+    "flytekitplugins.dbt.error": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.error/",
+    "flytekitplugins.dbt.schema": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/",
+    "flytekitplugins.dbt.task": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.task/",
+    "flytekitplugins.dbt.util": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.util/"
+  },
+  "identifiers": {
+    "flytekitplugins.dbt.error.DBTHandledError": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.error/#flytekitpluginsdbterrordbthandlederror",
+    "DBTHandledError": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.error/#flytekitpluginsdbterrordbthandlederror",
+    "flytekitplugins.dbt.error.DBTUnhandledError": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.error/#flytekitpluginsdbterrordbtunhandlederror",
+    "DBTUnhandledError": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.error/#flytekitpluginsdbterrordbtunhandlederror",
+    "flytekitplugins.dbt.schema.BaseDBTInput": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/#flytekitpluginsdbtschemabasedbtinput",
+    "BaseDBTInput": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/#flytekitpluginsdbtschemabasedbtinput",
+    "flytekitplugins.dbt.schema.BaseDBTOutput": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/#flytekitpluginsdbtschemabasedbtoutput",
+    "BaseDBTOutput": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/#flytekitpluginsdbtschemabasedbtoutput",
+    "flytekitplugins.dbt.schema.DBTFreshnessInput": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/#flytekitpluginsdbtschemadbtfreshnessinput",
+    "DBTFreshnessInput": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/#flytekitpluginsdbtschemadbtfreshnessinput",
+    "flytekitplugins.dbt.schema.DBTFreshnessOutput": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/#flytekitpluginsdbtschemadbtfreshnessoutput",
+    "DBTFreshnessOutput": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/#flytekitpluginsdbtschemadbtfreshnessoutput",
+    "flytekitplugins.dbt.schema.DBTRunInput": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/#flytekitpluginsdbtschemadbtruninput",
+    "DBTRunInput": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/#flytekitpluginsdbtschemadbtruninput",
+    "flytekitplugins.dbt.schema.DBTRunOutput": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/#flytekitpluginsdbtschemadbtrunoutput",
+    "DBTRunOutput": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/#flytekitpluginsdbtschemadbtrunoutput",
+    "flytekitplugins.dbt.schema.DBTTestInput": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/#flytekitpluginsdbtschemadbttestinput",
+    "DBTTestInput": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/#flytekitpluginsdbtschemadbttestinput",
+    "flytekitplugins.dbt.schema.DBTTestOutput": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/#flytekitpluginsdbtschemadbttestoutput",
+    "DBTTestOutput": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.schema/#flytekitpluginsdbtschemadbttestoutput",
+    "flytekitplugins.dbt.task.DBTFreshness": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.task/#flytekitpluginsdbttaskdbtfreshness",
+    "DBTFreshness": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.task/#flytekitpluginsdbttaskdbtfreshness",
+    "flytekitplugins.dbt.task.DBTRun": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.task/#flytekitpluginsdbttaskdbtrun",
+    "DBTRun": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.task/#flytekitpluginsdbttaskdbtrun",
+    "flytekitplugins.dbt.task.DBTTest": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.task/#flytekitpluginsdbttaskdbttest",
+    "DBTTest": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.task/#flytekitpluginsdbttaskdbttest"
+  },
+  "methods": {
+    "flytekitplugins.dbt.util.run_cli": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.util/#run_cli",
+    "run_cli": "/api-reference/plugins/dbt/packages/flytekitplugins.dbt.util/#run_cli"
+  }
+}

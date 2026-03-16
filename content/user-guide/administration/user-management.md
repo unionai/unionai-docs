@@ -1,7 +1,7 @@
 ---
 title: User management
 weight: 3
-variants: -flyte -serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 ---
 
 # User management
@@ -55,8 +55,8 @@ In other words:
 ## Multiple policies
 
 Users and applications are assigned to zero or more policies.
-A user or application with no policies will have no permissions but will not be [removed](#removing-a-user).
-For example, in the case of users, they will still appear on the [list of users](#managing-users-and-assigning-policies).
+A user or application with no policies will have no permissions but will not be removed.
+For example, in the case of users, they will still appear on the list of users in the [user management interface](#managing-users-in-the-ui).
 A user or application with multiple policies will have the logical union of the permission sets of those policies.
 
 > [!NOTE]
@@ -127,7 +127,7 @@ Any user or application to which this policy is assigned will be granted **Contr
 
 ### Assign the policy to a user
 
-Once the policy is created you can assign it to a user using the **User Management** interface in the UI (see [Changing assigned policies](#changing-assigned-policies) below) or using the command line:
+Once the policy is created you can assign it to a user using the [user management interface](#managing-users-in-the-ui) in the UI or using the command line:
 
 ```shell
 $ uctl append identityassignments \
@@ -148,38 +148,18 @@ $ uctl append identityassignments \
 
 The initial {{< key product_name >}} onboarding process will set up your organization with at least one **Admin** user who will have permission to invite teammates and manage their roles.
 
-## Managing users and assigning policies
+## Managing users in the UI
 
-To add and remove users and to assign and unassign roles, you have to be an **Admin**.
-As an **Admin** you should see a **Users** icon at the top-right of the UI:
+You can also manage users and their policy assignments through the {{< key product_name >}} UI.
+Navigate to **Settings > User Management** to access the user management interface.
 
-![](../../_static/images/user-guide/administration/user-management/users-button.png)
+To manage users you must have the **Admin** policy (or a custom policy that includes the `manage_permissions` action).
 
-Select this icon to display the **User Management** dialog displays the list of users:
+From the user management interface you can:
 
-![](../../_static/images/user-guide/administration/user-management/user-management.png "medium")
+* **View users**: See the list of all users and their assigned policies. You can search the list and filter by policy.
+* **Add a user**: Add a new user by specifying their name, email, and the policies to assign. The new user will receive an email invite from Okta. They should accept the invite and set up a password, at which point they can access the {{< key product_name >}} UI.
+* **Change assigned policies**: Select a user to edit their assigned policies.
+* **Remove a user**: Select a user and choose the option to remove them.
 
-Each user is listed with their assigned policies. You can search the list and filter by policy.
-
-### Adding a user
-
-To add a new user, select **ADD USER**.
-
-In the **Add User** dialog, fill in the name and email of the new user and select the policies to assign, then select either **SUBMIT** or **SUBMIT AND ADD ANOTHER USER**:
-
-![](../../_static/images/user-guide/administration/user-management/add-user.png "medium")
-
-The new user should expect to see an email invite from Okta after they have been added through this dialog.
-They should accept the invite and set up a password. At that point, they will be able to access the {{< key product_name >}} UI.
-
-### Changing assigned policies
-
-To change a user's assigned policies, go to the **User Management** dialog and select the user. The **Edit User** dialog will appear:
-
-![](../../_static/images/user-guide/administration/user-management/edit-user.png "medium")
-
-To adjust the assigned policies, simply toggle the appropriate buttons and select **SUBMIT**.
-
-### Removing a user
-
-To remove a user, in the **Edit User** dialog (above), select **REMOVE USER**.
+You can also assign policies to users from the command line using `uctl append identityassignments` (see [Assign the policy to a user](#assign-the-policy-to-a-user) above).

@@ -1,6 +1,6 @@
 ---
 title: flytectl get role
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 ---
 
 # flytectl get role

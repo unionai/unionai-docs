@@ -1,7 +1,7 @@
 ---
 title: Accelerated datasets
 weight: 4
-variants: -flyte -serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 ---
 
 # Accelerated datasets

@@ -1,7 +1,7 @@
 ---
 title: Actor examples
 weight: 2
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 ---
 
 # Actor examples
@@ -52,38 +52,6 @@ def is_even_wf(point_a: list[int]) -> list[bool]:
 
 In this example, the `actor.task`-decorated task is invoked multiple times in one workflow, and will use the same `ActorEnvironment` on each invocation:
 
-{{< variant serverless >}}
-{{< markdown >}}
-
-```python
-# plus_one.py
-
-import {{< key kit_import >}}
-
-
-actor = {{< key kit_as >}}.ActorEnvironment(
-    name="my-actor",
-    replica_count=1,
-    ttl_seconds=300,
-    requests={{< key kit_as >}}.Resources(cpu="2", mem="500Mi"),
-)
-
-
-@actor.task
-def plus_one(input: int) -> int:
-    return input + 1
-
-
-@{{< key kit_as >}}.workflow
-def wf(input: int = 0) -> int:
-    a = plus_one(input=input)
-    b = plus_one(input=a)
-    c = plus_one(input=b)
-    return plus_one(input=c)
-```
-
-{{< /markdown >}}
-{{< /variant >}}
 {{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
@@ -131,50 +99,6 @@ def wf(input: int = 0) -> int:
 Every task execution in the following example will execute in the same `ActorEnvironment`.
 You can use the same environment for multiple tasks in the same workflow and tasks across workflow definitions, using both subworkflows and launch plans:
 
-{{< variant serverless >}}
-{{< markdown >}}
-
-```python
-# multiple_tasks.py
-
-import {{< key kit_import >}}
-
-
-actor = {{< key kit_as >}}.ActorEnvironment(
-    name="my-actor",
-    replica_count=1,
-    ttl_seconds=30,
-    requests={{< key kit_as >}}.Resources(cpu="1", mem="450Mi"),
-)
-
-
-@actor.task
-def say_hello(name: str) -> str:
-    return f"hello {name}"
-
-
-@actor.task
-def scream_hello(name: str) -> str:
-    return f"HELLO {name}"
-
-
-@{{< key kit_as >}}.workflow
-def my_child_wf(name: str) -> str:
-    return scream_hello(name=name)
-
-
-my_child_wf_lp = {{< key kit_as >}}.LaunchPlan.get_default_launch_plan({{< key kit_as >}}.current_context(), my_child_wf)
-
-
-@{{< key kit_as >}}.workflow
-def my_parent_wf(name: str) -> str:
-    a = say_hello(name=name)
-    b = my_child_wf(name=a)
-    return my_child_wf_lp(name=b)
-```
-
-{{< /markdown >}}
-{{< /variant >}}
 {{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
@@ -299,69 +223,6 @@ def wf() -> tuple[str,str]:
 
 With map tasks, each task is executed within the same environment, making actors a natural fit for this pattern. If a task has an expensive operation, like model loading, caching it with `@actor_cache` can improve performance. This example shows how to cache model loading in a mapped task to avoid redundant work and save resources.
 
-{{< variant serverless >}}
-{{< markdown >}}
-
-```python
-# caching_map_task.py
-
-from functools import partial
-from pathlib import Path
-from time import sleep
-
-import {{< key kit_import >}}
-
-actor = {{< key kit_as >}}.ActorEnvironment(
-    name="my-actor",
-    replica_count=2,
-)
-
-
-class MyModel:
-    """Simple model that multiples value with model_state."""
-
-    def __init__(self, model_state: int):
-        self.model_state = model_state
-
-    def __call__(self, value: int):
-        return self.model_state * value
-
-
-@{{< key kit_as >}}.task(cache=True, cache_version="v1")
-def create_model_state() -> {{< key kit_as >}}.FlyteFile:
-    working_dir = Path({{< key kit_as >}}.current_context().working_directory)
-    model_state_path = working_dir / "model_state.txt"
-    model_state_path.write_text("4")
-    return model_state_path
-
-
-@{{< key kit_as >}}.actor_cache
-def load_model(model_state_path: {{< key kit_as >}}.FlyteFile) -> MyModel:
-    # Simulate model loading time. This can take a long time
-    # because the FlyteFile download is large, or when the
-    # model is loaded onto the GPU.
-    sleep(10)
-    with model_state_path.open("r") as f:
-        model_state = int(f.read())
-
-    return MyModel(model_state=model_state)
-
-
-@actor.task
-def inference(value: int, model_state_path: {{< key kit_as >}}.FlyteFile) -> int:
-    model = load_model(model_state_path)
-    return model(value)
-
-
-@{{< key kit_as >}}.workflow
-def run_inference(values: list[int] = list(range(20))) -> list[int]:
-    model_state = create_model_state()
-    inference_ = partial(inference, model_state_path=model_state)
-    return {{< key kit_as >}}.{{<key map_func>}}(inference_)(value=values)
-```
-
-{{< /markdown >}}
-{{< /variant >}}
 {{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
@@ -437,57 +298,6 @@ def run_inference(values: list[int] = list(range(20))) -> list[int]:
 
 Finally, we can cache custom objects by defining the `__hash__` and `__eq__` methods. These methods allow `@actor_cache` to determine if an object is the same between runs, ensuring that expensive operations are skipped if the object hasn’t changed.
 
-{{< variant serverless >}}
-{{< markdown >}}
-
-```python
-# caching_custom_object.py
-
-from time import sleep
-
-import {{< key kit_import >}}
-
-
-actor = {{< key kit_as >}}.ActorEnvironment(
-    name="my-actor",
-    replica_count=1,
-)
-
-
-class MyObj:
-    def __init__(self, state: int):
-        self.state = state
-
-    def __hash__(self):
-        return hash(self.state)
-
-    def __eq__(self, other):
-        return self.state == other.state
-
-
-@{{< key kit_as >}}.actor_cache
-def get_state(obj: MyObj) -> int:
-    sleep(2)
-    return obj.state
-
-
-@actor.task
-def construct_and_get_value(state: int) -> int:
-    obj = MyObj(state=state)
-    return get_state(obj)
-
-
-@{{< key kit_as >}}.workflow
-def wf(state: int = 2) -> int:
-    value = construct_and_get_value(state=state)
-    value = construct_and_get_value(state=value)
-    value = construct_and_get_value(state=value)
-    value = construct_and_get_value(state=value)
-    return value
-```
-
-{{< /markdown >}}
-{{< /variant >}}
 {{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 

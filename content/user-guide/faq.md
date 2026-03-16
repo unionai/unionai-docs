@@ -1,7 +1,7 @@
 ---
 title: FAQ
 weight: 10
-variants: -flyte -serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 ---
 
 # FAQ

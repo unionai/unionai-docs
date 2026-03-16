@@ -1,7 +1,7 @@
 ---
 title: Data input/output
 weight: 6
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
@@ -58,29 +58,6 @@ Here's a breakdown of these mappings:
 | `tf.keras.Model` | File | To utilize the type, install the `tensorflow` library. | Use `tf.keras.Model` andits derived types. |
 | `sklearn.base.BaseEstimator` | File | To utilize the type, install the `scikit-learn` library. | Use `sklearnbase.BaseEstimator` and its derived types. |
 | User defined types | Any | Custom transformers | The `FlytePickle` transformer is the default option, but youcan also define custom transformers. For instructions on building custom type transformers, please refer to [this section](../../architecture/extending-flyte/custom-types). |
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant serverless >}}
-{{< markdown >}}
-
-This section covers how to manage data input and output in {{< key product_name >}}.
-{{< key product_name >}} also supports all the [Data input/output features of Flyte](https://docs-builder.pages.dev/docs/flyte/user-guide/data-input-output/).
-
-
-| Section | Description |
-|----------------------------------------------------|----------------------------------------------------|
-| [`FlyteFile`](./flyte-file-and-flyte-directory) | Use `FlyteFile` to easily pass files across tasks. |
-| [`FlyteDirectory`](./flyte-file-and-flyte-directory) | Use `FlyteDirectory` to easily pass directories across tasks. |
-| [`Downloading with FlyteFile and FlyteDirectory`](./downloading-with-ff-and-fd) | Details on how files and directories or downloaded with `FlyteFile` and `FlyteDirectory`. |
-| [`StructuredDataset`](./structured-dataset) | Details on how `StructuredDataset`is used as a general dataframe type. |
-| [`Dataclass`](./dataclass) | Details on how to uses dataclasses across tasks. |
-| [`Pydantic BaseModel`](./pydantic) | Details on how to use pydantic models across tasks. |
-| [`Accessing Attributes`](./accessing-attributes) | Details on how to directly access attributes on output promises for lists, dictionaries, dataclasses, and more. |
-| [`Enums`](./enum) | Details on how use Enums across tasks. |
-| [`Pickle`](./pickle) | Details on how use pickled objects across tasks for generalized typing of complex objects. |
-| [`Pytorch`](./pytorch) | Details on how use torch tensors and models across tasks. |
-| [`Tensorflow`](./tensorflow) | Details on how use tensorflow tensors and models across tasks. |
 
 {{< /markdown >}}
 {{< /variant >}}

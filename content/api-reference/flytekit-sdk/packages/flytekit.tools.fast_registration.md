@@ -1,7 +1,7 @@
 ---
 title: flytekit.tools.fast_registration
-version: 1.16.10
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.14
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -135,6 +135,7 @@ def print_ls_tree(
 ## flytekit.tools.fast_registration.FastPackageOptions
 
 FastPackageOptions is used to set configuration options when packaging files.
+
 
 
 ```python

@@ -1,7 +1,7 @@
 ---
 title: Generating Wikipedia Embeddings
 weight: 3
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 layout: py_example
-example_file: /external/unionai-examples/v1/tutorials/wikipedia_embeddings_on_actor/wikipedia_embeddings_on_actor.py
+example_file: /unionai-examples/v1/tutorials/wikipedia_embeddings_on_actor/wikipedia_embeddings_on_actor.py
 ---

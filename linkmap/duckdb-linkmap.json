@@ -1,0 +1,22 @@
+{
+  "packages": {
+    "flytekitplugins.duckdb": "/api-reference/plugins/duckdb/packages/flytekitplugins.duckdb/",
+    "flytekitplugins.duckdb.task": "/api-reference/plugins/duckdb/packages/flytekitplugins.duckdb.task/"
+  },
+  "identifiers": {
+    "flytekitplugins.duckdb.task.DuckDBProvider": "/api-reference/plugins/duckdb/packages/flytekitplugins.duckdb.task/#flytekitpluginsduckdbtaskduckdbprovider",
+    "DuckDBProvider": "/api-reference/plugins/duckdb/packages/flytekitplugins.duckdb.task/#flytekitpluginsduckdbtaskduckdbprovider",
+    "flytekitplugins.duckdb.task.DuckDBQuery": "/api-reference/plugins/duckdb/packages/flytekitplugins.duckdb.task/#flytekitpluginsduckdbtaskduckdbquery",
+    "DuckDBQuery": "/api-reference/plugins/duckdb/packages/flytekitplugins.duckdb.task/#flytekitpluginsduckdbtaskduckdbquery",
+    "flytekitplugins.duckdb.task.MissingSecretError": "/api-reference/plugins/duckdb/packages/flytekitplugins.duckdb.task/#flytekitpluginsduckdbtaskmissingsecreterror",
+    "MissingSecretError": "/api-reference/plugins/duckdb/packages/flytekitplugins.duckdb.task/#flytekitpluginsduckdbtaskmissingsecreterror",
+    "flytekitplugins.duckdb.task.QueryOutput": "/api-reference/plugins/duckdb/packages/flytekitplugins.duckdb.task/#flytekitpluginsduckdbtaskqueryoutput",
+    "QueryOutput": "/api-reference/plugins/duckdb/packages/flytekitplugins.duckdb.task/#flytekitpluginsduckdbtaskqueryoutput"
+  },
+  "methods": {
+    "flytekitplugins.duckdb.task.connect_local": "/api-reference/plugins/duckdb/packages/flytekitplugins.duckdb.task/#connect_local",
+    "connect_local": "/api-reference/plugins/duckdb/packages/flytekitplugins.duckdb.task/#connect_local",
+    "flytekitplugins.duckdb.task.connect_motherduck": "/api-reference/plugins/duckdb/packages/flytekitplugins.duckdb.task/#connect_motherduck",
+    "connect_motherduck": "/api-reference/plugins/duckdb/packages/flytekitplugins.duckdb.task/#connect_motherduck"
+  }
+}

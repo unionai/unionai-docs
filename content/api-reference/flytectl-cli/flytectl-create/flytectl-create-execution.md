@@ -1,6 +1,6 @@
 ---
 title: flytectl create execution
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 ---
 
 # flytectl create execution

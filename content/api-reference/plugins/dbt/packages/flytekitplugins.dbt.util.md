@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.dbt.util
-version: 0.0.0+develop
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.14
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -40,7 +40,7 @@ list of str
     Logs produced by the command execution.
 
 
-| Parameter | Type |
-|-|-|
-| `cmd` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cmd` | `typing.List[str]` | |
 

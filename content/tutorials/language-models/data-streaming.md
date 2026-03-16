@@ -1,9 +1,9 @@
 ---
 title: Fine-Tune BERT on Arabic Reviews with Multi-Node Training and Data Streaming
 weight: 5
-variants: -flyte -serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 layout: py_example
-example_file: /external/unionai-examples/v1/tutorials/data_streaming/arabic_bert.py
+example_file: /unionai-examples/v1/tutorials/data_streaming/arabic_bert.py
 run_on_union_secrets:
   - wandb-api-key
 run_on_union_enforce: true

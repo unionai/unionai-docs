@@ -1,24 +1,24 @@
 ---
 title: API docs
 weight: 8
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # API docs
 
 You can import Python APIs and host them on the site. To do that you will use
-the `tools/api_generator` to parse and create the appropriate markdown.
+the `unionai-docs-infra/tools/api_generator` to parse and create the appropriate markdown.
 
-Please refer to [`api_generator/README`](https://github.com/unionai/docs/blob/main/tools/api_generator/README.md) for more details.
+Please refer to [`api_generator/README`](https://github.com/unionai/unionai-docs-infra/blob/main/tools/api_generator/README.md) for more details.
 
 ## API naming convention
 
-All the buildable APIs are at the root in the form:
+All the buildable APIs are defined in Makefiles of the form:
 
-`Makefile.api.<api_name>`
+`unionai-docs-infra/Makefile.api.<api_name>`
 
-To build it, run `make -f Makefile.api.<your_api>` and observe the setup
-requirements in the `README.md` file above.
+To build it, run `make -f unionai-docs-infra/Makefile.api.<your_api>` and observe the setup
+requirements in the `README.md` file above. Alternatively, `make update-api-docs` will regenerate all API docs.
 
 ## Package Resource Resolution
 

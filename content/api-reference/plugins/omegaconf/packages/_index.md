@@ -1,7 +1,7 @@
 ---
 title: Packages
-version: 0.0.0+develop
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.14
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -10,6 +10,3 @@ layout: py_api
 | Package | Description |
 |-|-|
 | [`flytekitplugins.omegaconf`](flytekitplugins.omegaconf) |  |
-| [`flytekitplugins.omegaconf.dictconfig_transformer`](flytekitplugins.omegaconf.dictconfig_transformer) |  |
-| [`flytekitplugins.omegaconf.listconfig_transformer`](flytekitplugins.omegaconf.listconfig_transformer) |  |
-| [`flytekitplugins.omegaconf.type_information`](flytekitplugins.omegaconf.type_information) |  |

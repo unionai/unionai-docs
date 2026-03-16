@@ -1,6 +1,6 @@
 ---
 title: uctl get identityassignment
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl get identityassignment

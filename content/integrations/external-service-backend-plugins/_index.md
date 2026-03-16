@@ -1,7 +1,7 @@
 ---
 title: External service backend plugins
 weight: 4
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -byoc -selfmanaged
 sidebar_expanded: true
 ---
 

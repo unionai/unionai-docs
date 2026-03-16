@@ -1,7 +1,7 @@
 ---
 title: Reference launch plans
 weight: 7
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Reference launch plans
