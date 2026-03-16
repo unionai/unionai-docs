@@ -60,7 +60,7 @@ When you execute the `{{< key cli >}} run` or `{{< key cli >}} register` command
 {{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
-## {{< key product_name >}} cloud image builder
+## {{< key product_name >}} cloud image builder {#cloud-image-builder}
 
 If you have specified `builder="union"` in the `ImageSpec`, {{< key product_name >}} will build the image using its `ImageBuilder` service in the cloud
 and registered the image in {{< key product_name >}}'s own container registry. From there it will be pulled and installed in the task container when it spins up.
