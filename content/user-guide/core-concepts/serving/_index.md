@@ -3,9 +3,12 @@ title: App Serving
 weight: 6
 variants: -flyte +byoc +selfmanaged
 sidebar_expanded: false
+llm_readable_bundle: true
 ---
 
 # App Serving
+
+{{< llm-bundle-note >}}
 
 {{< key product_name >}} lets you build and serve your own web apps, enabling you to build:
 

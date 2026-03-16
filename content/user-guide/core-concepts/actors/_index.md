@@ -3,9 +3,12 @@ title: Actors
 weight: 4
 variants: -flyte +byoc +selfmanaged
 sidebar_expanded: false
+llm_readable_bundle: true
 ---
 
 # Actors
+
+{{< llm-bundle-note >}}
 
 Actors allow you to reuse a container and environment between tasks, avoiding the cost of starting a new container for each task. This can be useful when you have a task that requires a lot of setup or has a long startup time.
 
