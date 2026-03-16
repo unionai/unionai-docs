@@ -126,4 +126,8 @@ Deploy the data plane with GCS and Workload Identity
 Configure OIDC/OAuth2 authentication for your deployment
 {{< /link-card >}}
 
+{{< link-card target="./image-builder" icon="package" title="Image builder" >}}
+Register the image builder for automatic container image builds
+{{< /link-card >}}
+
 {{< /grid >}}
