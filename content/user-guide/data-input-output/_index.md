@@ -3,9 +3,12 @@ title: Data input/output
 weight: 6
 variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
+llm_readable_bundle: true
 ---
 
 # Data input/output
+
+{{< llm-bundle-note >}}
 
 <!-- TODO: Double check this seciton for variant acccuracy -->
 {{< variant flyte >}}
