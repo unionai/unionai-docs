@@ -84,71 +84,7 @@ and are ideal for pasting into a prompt or adding to project context.
 
 Available bundle files:
 
-{{< variant byoc >}}
-{{< markdown >}}
-**User guide:**
-* [`Core concepts`]({{< docs_home byoc v2 >}}/user-guide/core-concepts/section.md) (~5K tokens)
-* [`Advanced project`]({{< docs_home byoc v2 >}}/user-guide/advanced-project/section.md) (~11K tokens)
-* [`From Flyte 1 to 2`]({{< docs_home byoc v2 >}}/user-guide/flyte-2/section.md) (~6K tokens)
-* [`Configure tasks`]({{< docs_home byoc v2 >}}/user-guide/task-configuration/section.md) (~30K tokens)
-* [`Build tasks`]({{< docs_home byoc v2 >}}/user-guide/task-programming/section.md) (~32K tokens)
-* [`Run and deploy tasks`]({{< docs_home byoc v2 >}}/user-guide/task-deployment/section.md) (~36K tokens)
-* [`Scale your runs`]({{< docs_home byoc v2 >}}/user-guide/run-scaling/section.md) (~9K tokens)
-* [`Configure apps`]({{< docs_home byoc v2 >}}/user-guide/configure-apps/section.md) (~18K tokens)
-* [`Build apps`]({{< docs_home byoc v2 >}}/user-guide/build-apps/section.md) (~31K tokens)
-* [`Serve and deploy apps`]({{< docs_home byoc v2 >}}/user-guide/serve-and-deploy-apps/section.md) (~26K tokens)
-
-**Reference:**
-* [`Migration from Flyte 1`]({{< docs_home byoc v2 >}}/api-reference/migration/section.md) (~11K tokens)
-
-**Integrations:**
-* [`Integrations`]({{< docs_home byoc v2 >}}/integrations/section.md) (~25K tokens)
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant flyte >}}
-{{< markdown >}}
-**User guide:**
-* [`Core concepts`]({{< docs_home flyte v2 >}}/user-guide/core-concepts/section.md) (~5K tokens)
-* [`Advanced project`]({{< docs_home flyte v2 >}}/user-guide/advanced-project/section.md) (~11K tokens)
-* [`From Flyte 1 to 2`]({{< docs_home flyte v2 >}}/user-guide/flyte-2/section.md) (~6K tokens)
-* [`Configure tasks`]({{< docs_home flyte v2 >}}/user-guide/task-configuration/section.md) (~30K tokens)
-* [`Build tasks`]({{< docs_home flyte v2 >}}/user-guide/task-programming/section.md) (~32K tokens)
-* [`Run and deploy tasks`]({{< docs_home flyte v2 >}}/user-guide/task-deployment/section.md) (~36K tokens)
-* [`Scale your runs`]({{< docs_home flyte v2 >}}/user-guide/run-scaling/section.md) (~9K tokens)
-* [`Configure apps`]({{< docs_home flyte v2 >}}/user-guide/configure-apps/section.md) (~18K tokens)
-* [`Build apps`]({{< docs_home flyte v2 >}}/user-guide/build-apps/section.md) (~31K tokens)
-* [`Serve and deploy apps`]({{< docs_home flyte v2 >}}/user-guide/serve-and-deploy-apps/section.md) (~26K tokens)
-
-**Reference:**
-* [`Migration from Flyte 1`]({{< docs_home flyte v2 >}}/api-reference/migration/section.md) (~11K tokens)
-
-**Integrations:**
-* [`Integrations`]({{< docs_home flyte v2 >}}/integrations/section.md) (~25K tokens)
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant selfmanaged >}}
-{{< markdown >}}
-**User guide:**
-* [`Core concepts`]({{< docs_home selfmanaged v2 >}}/user-guide/core-concepts/section.md) (~5K tokens)
-* [`Advanced project`]({{< docs_home selfmanaged v2 >}}/user-guide/advanced-project/section.md) (~11K tokens)
-* [`From Flyte 1 to 2`]({{< docs_home selfmanaged v2 >}}/user-guide/flyte-2/section.md) (~6K tokens)
-* [`Configure tasks`]({{< docs_home selfmanaged v2 >}}/user-guide/task-configuration/section.md) (~30K tokens)
-* [`Build tasks`]({{< docs_home selfmanaged v2 >}}/user-guide/task-programming/section.md) (~32K tokens)
-* [`Run and deploy tasks`]({{< docs_home selfmanaged v2 >}}/user-guide/task-deployment/section.md) (~36K tokens)
-* [`Scale your runs`]({{< docs_home selfmanaged v2 >}}/user-guide/run-scaling/section.md) (~9K tokens)
-* [`Configure apps`]({{< docs_home selfmanaged v2 >}}/user-guide/configure-apps/section.md) (~18K tokens)
-* [`Build apps`]({{< docs_home selfmanaged v2 >}}/user-guide/build-apps/section.md) (~31K tokens)
-* [`Serve and deploy apps`]({{< docs_home selfmanaged v2 >}}/user-guide/serve-and-deploy-apps/section.md) (~26K tokens)
-
-**Reference:**
-* [`Migration from Flyte 1`]({{< docs_home selfmanaged v2 >}}/api-reference/migration/section.md) (~11K tokens)
-
-**Integrations:**
-* [`Integrations`]({{< docs_home selfmanaged v2 >}}/integrations/section.md) (~25K tokens)
-{{< /markdown >}}
-{{< /variant >}}
+{{< llm-readable-list >}}
 
 ## Page index (`llms.txt`)
 

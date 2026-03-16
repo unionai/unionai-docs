@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.0.4
+version: 2.0.7
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 weight: 3
@@ -9,7 +9,6 @@ weight: 3
 # Flyte CLI
 
 This is the command line interface for Flyte.
-
 
 {{< variant flyte >}}
 {{< grid >}}
@@ -262,13 +261,13 @@ Examples:
 
 Assign a policy to an identity.
 
-    Exactly one of --user-subject, --creds-subject, or --email must be provided.
+Exactly one of --user-subject, --creds-subject, or --email must be provided.
 
-    Examples:
+Examples:
 
-        $ flyte --org my-org create assignment --user-subject user-123 --policy admin
-        $ flyte --org my-org create assignment --creds-subject app-456 --policy admin
-        $ flyte --org my-org create assignment --email jane@example.com --policy admin
+    $ flyte --org my-org create assignment --user-subject user-123 --policy admin
+    $ flyte --org my-org create assignment --creds-subject app-456 --policy admin
+    $ flyte --org my-org create assignment --email jane@example.com --policy admin
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -316,12 +315,12 @@ If the file already exists, it will raise an error unless the `--force` option i
 
 Create a policy.
 
-    Requires --file or --edit to specify bindings for the policy.
+Requires --file or --edit to specify bindings for the policy.
 
-    Examples:
+Examples:
 
-        $ flyte --org my-org create policy my-policy --edit
-        $ flyte --org my-org create policy my-policy --file policy.yaml
+    $ flyte --org my-org create policy my-policy --edit
+    $ flyte --org my-org create policy my-policy --file policy.yaml
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -364,12 +363,12 @@ flyte create project --id my_project_id --name "My Project" --description "My pr
 
 Create a role.
 
-    Requires --file or --edit to specify actions for the role.
+Requires --file or --edit to specify actions for the role.
 
-    Examples:
+Examples:
 
-        $ flyte --org my-org create role my-role --edit
-        $ flyte --org my-org create role my-role --file role.yaml
+    $ flyte --org my-org create role my-role --edit
+    $ flyte --org my-org create role my-role --file role.yaml
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -481,10 +480,10 @@ This will create a trigger that runs every day at midnight.
 
 Create (invite) a new user.
 
-    Examples:
+Examples:
 
-        $ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@example.com
-        $ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@example.com --policy admin
+    $ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@example.com
+    $ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@example.com --policy admin
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -551,12 +550,12 @@ Delete apps from a Flyte deployment.
 
 Unassign a policy from an identity.
 
-    One of --user-subject or --creds-subject must be provided.
+One of --user-subject or --creds-subject must be provided.
 
-    Examples:
+Examples:
 
-        $ flyte --org my-org delete assignment --user-subject user-123 --policy admin
-        $ flyte --org my-org delete assignment --creds-subject app-456 --policy admin
+    $ flyte --org my-org delete assignment --user-subject user-123 --policy admin
+    $ flyte --org my-org delete assignment --creds-subject app-456 --policy admin
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -578,10 +577,10 @@ Unassign a policy from an identity.
 
 Delete a policy.
 
-    Examples:
+Examples:
 
-        $ flyte --org my-org delete policy my-policy
-        $ flyte --org my-org delete policy my-policy --yes
+    $ flyte --org my-org delete policy my-policy
+    $ flyte --org my-org delete policy my-policy --yes
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -600,10 +599,10 @@ Delete a policy.
 
 Delete a role.
 
-    Examples:
+Examples:
 
-        $ flyte --org my-org delete role my-role
-        $ flyte --org my-org delete role my-role --yes
+    $ flyte --org my-org delete role my-role
+    $ flyte --org my-org delete role my-role --yes
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -650,10 +649,10 @@ Delete a trigger. The name of the trigger is required.
 
 Delete a user.
 
-    Examples:
+Examples:
 
-        $ flyte --org my-org delete user user-subject-id
-        $ flyte --org my-org delete user user-subject-id --yes
+    $ flyte --org my-org delete user user-subject-id
+    $ flyte --org my-org delete user user-subject-id --yes
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -896,13 +895,13 @@ Apps are long-running services deployed on the Flyte platform.
 
 Get or list assignments.
 
-    Without --user-subject or --creds-subject, lists all assignments.
+Without --user-subject or --creds-subject, lists all assignments.
 
-    Examples:
+Examples:
 
-        $ flyte --org my-org get assignment
-        $ flyte --org my-org get assignment --user-subject user-123
-        $ flyte --org my-org get assignment --creds-subject app-456
+    $ flyte --org my-org get assignment
+    $ flyte --org my-org get assignment --user-subject user-123
+    $ flyte --org my-org get assignment --creds-subject app-456
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1000,9 +999,9 @@ $ flyte get logs my_run my_action --pretty --lines 50
 
 List all members (users and applications) in an organization.
 
-    Examples:
+Examples:
 
-        $ flyte --org my-org get member
+    $ flyte --org my-org get member
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -1016,13 +1015,13 @@ List all members (users and applications) in an organization.
 
 Get or list policies.
 
-    If NAME is provided, gets a specific policy. Otherwise, lists all policies.
+If NAME is provided, gets a specific policy. Otherwise, lists all policies.
 
-    Examples:
+Examples:
 
-        $ flyte --org my-org get policy
-        $ flyte --org my-org get policy --limit 10
-        $ flyte --org my-org get policy my-policy
+    $ flyte --org my-org get policy
+    $ flyte --org my-org get policy --limit 10
+    $ flyte --org my-org get policy my-policy
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1055,13 +1054,13 @@ show archived projects instead.
 
 Get or list roles.
 
-    If NAME is provided, gets a specific role. Otherwise, lists all roles.
+If NAME is provided, gets a specific role. Otherwise, lists all roles.
 
-    Examples:
+Examples:
 
-        $ flyte --org my-org get role
-        $ flyte --org my-org get role --limit 10
-        $ flyte --org my-org get role my-role
+    $ flyte --org my-org get role
+    $ flyte --org my-org get role --limit 10
+    $ flyte --org my-org get role my-role
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1160,14 +1159,14 @@ Get a list of all triggers, or details of a specific trigger by name.
 
 Get or list users.
 
-    If SUBJECT is provided, gets a specific user. Otherwise, lists all users.
+If SUBJECT is provided, gets a specific user. Otherwise, lists all users.
 
-    Examples:
+Examples:
 
-        $ flyte --org my-org get user
-        $ flyte --org my-org get user --limit 10
-        $ flyte --org my-org get user user-subject-id
-        $ flyte --org my-org get user --email jane@example.com
+    $ flyte --org my-org get user
+    $ flyte --org my-org get user --limit 10
+    $ flyte --org my-org get user user-subject-id
+    $ flyte --org my-org get user --email jane@example.com
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1331,6 +1330,18 @@ You can discover what deployed tasks are available by running:
 flyte run deployed-task
 ```
 
+To run an arbitrary Python script on a remote cluster (without defining a task), use `python-script`:
+
+```bash
+flyte run python-script script.py --gpu 1 --gpu-type A100 --memory 64Gi
+```
+
+You can also install extra packages and wait for completion:
+
+```bash
+flyte run --follow python-script train.py --packages torch,transformers
+```
+
 Other arguments to the run command are listed below.
 
 Arguments for the task itself are provided after the task name and can be retrieved using `--help`. For example:
@@ -1358,6 +1369,7 @@ flyte run hello.py my_task --help
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
 | `--run-project` | `text` |  | Run the remote task in this project, only applicable when using `deployed-task` subcommand. |
 | `--run-domain` | `text` |  | Run the remote task in this domain, only applicable when using `deployed-task` subcommand. |
+| `--debug` | `boolean` | `False` | Run the task as a VSCode debug task. Starts a code-server in the container so you can connect via the UI to interactively debug/run the task. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte run deployed-task
@@ -1526,12 +1538,12 @@ flyte update app <app_name> --activate | --deactivate [--wait] [--project <proje
 
 Update a policy interactively.
 
-    Opens the policy in your $EDITOR as YAML. Save and close to apply changes.
-    Bindings that are added or removed will be applied to the policy.
+Opens the policy in your $EDITOR as YAML. Save and close to apply changes.
+Bindings that are added or removed will be applied to the policy.
 
-    Examples:
+Examples:
 
-        $ flyte --org my-org update policy my-policy
+    $ flyte --org my-org update policy my-policy
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1576,11 +1588,11 @@ flyte update project my_project --label team=ml --label env=prod
 
 Update a role interactively.
 
-    Opens the role in your $EDITOR as YAML. Save and close to apply changes.
+Opens the role in your $EDITOR as YAML. Save and close to apply changes.
 
-    Examples:
+Examples:
 
-        $ flyte --org my-org update role my-role
+    $ flyte --org my-org update role my-role
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1588,3 +1600,32 @@ Update a role interactively.
 {{< /markdown >}}
 {{< /variant >}}
 
+#### flyte update trigger
+
+**`flyte update trigger [OPTIONS] NAME TASK_NAME`**
+
+Update a trigger.
+
+
+Example usage:
+
+```bash
+flyte update trigger <trigger_name> <task_name> --activate | --deactivate
+[--project <project_name> --domain <domain_name>]
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`--activate`
+`--deactivate`{{< /multiline >}} | `boolean` | `Sentinel.UNSET` | Activate or deactivate the trigger. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+### flyte whoami
+
+**`flyte whoami`**
+
+Display the current user information.

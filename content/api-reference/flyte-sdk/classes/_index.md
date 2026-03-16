@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.6
+version: 2.0.7
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -59,6 +59,7 @@ sidebar_expanded: true
 | [`flyte.errors.InvalidPackageError`](../packages/flyte.errors/invalidpackageerror) |Raised when an invalid system package is detected during image build. |
 | [`flyte.errors.LogsNotYetAvailableError`](../packages/flyte.errors/logsnotyetavailableerror) |This error is raised when the logs are not yet available for a task. |
 | [`flyte.errors.ModuleLoadError`](../packages/flyte.errors/moduleloaderror) |This error is raised when the module cannot be loaded, either because it does not exist or because of a. |
+| [`flyte.errors.NonRecoverableError`](../packages/flyte.errors/nonrecoverableerror) |Raised when an error is encountered that is not recoverable. |
 | [`flyte.errors.NotInTaskContextError`](../packages/flyte.errors/notintaskcontexterror) |This error is raised when the user tries to access the task context outside of a task. |
 | [`flyte.errors.OOMError`](../packages/flyte.errors/oomerror) |This error is raised when the underlying task execution fails because of an out-of-memory error. |
 | [`flyte.errors.OnlyAsyncIOSupportedError`](../packages/flyte.errors/onlyasynciosupportederror) |This error is raised when the user tries to use sync IO in an async task. |
