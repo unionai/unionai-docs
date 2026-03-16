@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.6
+version: 2.0.7
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -647,12 +647,16 @@ def run_python_script(
     queue: Optional[str],
     wait: bool,
     name: Optional[str],
+    debug: bool,
+    output_dir: Optional[str],
 ) -> Run
 ```
 Package and run a Python script on a remote Flyte cluster.
 
-Uploads the script via :class:`~flyte.io.File`, passes it as a typed input
-to a Flyte task, and executes it remotely with the requested resources.
+Bundles the script into a Flyte code bundle and executes it remotely
+with the requested resources.  Unlike ``interactive_mode`` (which
+pickles the task), this approach uses an :class:`InternalTaskResolver`
+so the task can be properly debugged with ``debug=True``.
 
 Project and domain are read from the init config (set via ``flyte.init()``
 or ``flyte.init_from_config()``), consistent with ``flyte.run()``.
@@ -671,7 +675,9 @@ or ``flyte.init_from_config()``), consistent with ``flyte.run()``.
 | `extra_args` | `Optional[List[str]]` | Extra arguments passed to the script. |
 | `queue` | `Optional[str]` | Flyte queue / cluster override. |
 | `wait` | `bool` | If True, block until execution completes before returning. |
-| `name` | `Optional[str]` | Run name. If omitted, a random name is generated. :return: A :class:`~flyte.remote.Run` handle for the remote execution.  Example::  import flyte from pathlib import Path  flyte.init(endpoint="my-cluster.example.com")  # With a list of packages (auto-builds image) run = flyte.run_python_script( Path("train.py"), gpu=1, gpu_type="A100", memory="64Gi", image=["torch", "transformers"], ) print(run.url)  # With a custom Image object img = flyte.Image.from_debian_base(name="my-img").with_pip_packages("numpy") run = flyte.run_python_script(Path("analysis.py"), image=img) |
+| `name` | `Optional[str]` | Run name. If omitted, a random name is generated. |
+| `debug` | `bool` | If True, run the task as a VS Code debug task, starting a code-server in the container so you can connect via the UI to interactively debug/run the task. :return: A :class:`~flyte.remote.Run` handle for the remote execution.  Example::  import flyte from pathlib import Path  flyte.init(endpoint="my-cluster.example.com")  # With a list of packages (auto-builds image) run = flyte.run_python_script( Path("train.py"), gpu=1, gpu_type="A100", memory="64Gi", image=["torch", "transformers"], ) print(run.url)  # With a custom Image object img = flyte.Image.from_debian_base(name="my-img").with_pip_packages("numpy") run = flyte.run_python_script(Path("analysis.py"), image=img) |
+| `output_dir` | `Optional[str]` | |
 
 #### serve()
 

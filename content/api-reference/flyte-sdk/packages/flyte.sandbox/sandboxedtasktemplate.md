@@ -1,6 +1,6 @@
 ---
 title: SandboxedTaskTemplate
-version: 2.0.6
+version: 2.0.7
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -46,6 +46,7 @@ class SandboxedTaskTemplate(
     _call_as_synchronous: bool,
     func: F,
     plugin_config: Optional[SandboxedConfig],
+    task_resolver: Optional[Any],
 )
 ```
 | Parameter | Type | Description |
@@ -77,6 +78,7 @@ class SandboxedTaskTemplate(
 | `_call_as_synchronous` | `bool` | |
 | `func` | `F` | |
 | `plugin_config` | `Optional[SandboxedConfig]` | |
+| `task_resolver` | `Optional[Any]` | |
 
 ## Properties
 
