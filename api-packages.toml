@@ -89,6 +89,18 @@ default_include = "include/api.plugin.md"
 no_flatten = true  # v2: hierarchical output (separate class files per package)
 
 [[plugins]]
+package = "flyteplugins-anthropic"
+plugin = "flyteplugins.anthropic"
+title = "Anthropic"
+name = "anthropic"
+
+[[plugins]]
+package = "flyteplugins-bigquery"
+plugin = "flyteplugins.bigquery"
+title = "BigQuery"
+name = "bigquery"
+
+[[plugins]]
 package = "flyteplugins-codegen"
 plugin = "flyteplugins.codegen"
 title = "Code generation"
@@ -99,6 +111,18 @@ package = "flyteplugins-dask"
 plugin = "flyteplugins.dask"
 title = "Dask"
 name = "dask"
+
+[[plugins]]
+package = "flyteplugins-databricks"
+plugin = "flyteplugins.databricks"
+title = "Databricks"
+name = "databricks"
+
+[[plugins]]
+package = "flyteplugins-gemini"
+plugin = "flyteplugins.gemini"
+title = "Gemini"
+name = "gemini"
 
 [[plugins]]
 package = "flyteplugins-hitl"

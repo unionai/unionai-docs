@@ -36,6 +36,7 @@ Flyte 2 integrations fall into the following categories:
 2. **Agentic AI**: Support for various common aspects of agentic AI applications.
 3. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
 4. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
+5. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
 
 ## Distributed compute
 
@@ -151,9 +152,11 @@ Agentic AI integrations provide drop-in replacements for LLM provider SDKs. They
 
 ### Supported agentic AI integrations
 
-| Plugin                        | Description                                         | Common use cases                              |
-| ----------------------------- | --------------------------------------------------- | --------------------------------------------- |
-| [OpenAI](./openai/_index)     | Drop-in replacement for OpenAI Agents SDK `function_tool` | Agentic workflows with OpenAI models          |
+| Plugin                              | Description                                                  | Common use cases                     |
+| ----------------------------------- | ------------------------------------------------------------ | ------------------------------------ |
+| [OpenAI](./openai/_index)           | Drop-in replacement for OpenAI Agents SDK `function_tool`    | Agentic workflows with OpenAI models |
+| [Anthropic](./anthropic/_index)     | Agent loop and `function_tool` for the Anthropic Claude SDK  | Agentic workflows with Claude        |
+| [Gemini](./gemini/_index)           | Agent loop and `function_tool` for the Google Gemini SDK     | Agentic workflows with Gemini        |
 | [Code generation](./codegen/_index) | LLM-driven code generation with automatic testing in sandboxes | Data processing, ETL, analysis pipelines |
 
 ## Experiment tracking
@@ -176,9 +179,11 @@ Connectors are designed to scale horizontally and reduce load on the core Flyte 
 
 ### Supported connectors
 
-| Connector                | Description                                 | Common use cases                         |
-| ------------------------ | ------------------------------------------- | ---------------------------------------- |
-| [Snowflake](./snowflake/_index) | Run SQL queries on Snowflake asynchronously | Data warehousing, ETL, analytics queries |
+| Connector                          | Description                                    | Common use cases                         |
+| ---------------------------------- | ---------------------------------------------- | ---------------------------------------- |
+| [Snowflake](./snowflake/_index)    | Run SQL queries on Snowflake asynchronously    | Data warehousing, ETL, analytics queries |
+| [BigQuery](./bigquery/_index)      | Run SQL queries on Google BigQuery             | Data warehousing, ETL, analytics queries |
+| [Databricks](./databricks/_index)  | Run PySpark jobs on Databricks clusters        | Large-scale data processing, Spark ETL   |
 
 ### Creating a new connector
 
@@ -387,3 +392,16 @@ if __name__ == "__main__":
         )
     )
 ```
+
+## LLM Serving
+
+LLM serving integrations let you deploy and serve large language models as Flyte apps with an OpenAI-compatible API. They handle model loading, GPU management, and autoscaling.
+
+### Supported LLM serving integrations
+
+| Plugin                                                            | Description                                           | Common use cases                     |
+| ----------------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------ |
+| [SGLang](../user-guide/build-apps/sglang-app)  | Deploy models with SGLang's high-throughput runtime   | LLM inference, model serving         |
+| [vLLM](../user-guide/build-apps/vllm-app)      | Deploy models with vLLM's PagedAttention engine       | LLM inference, model serving         |
+
+For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang app](../user-guide/build-apps/sglang-app) and [vLLM app](../user-guide/build-apps/vllm-app) pages.
