@@ -10,6 +10,7 @@ weight: 3
 
 This is the command line interface for Flyte.
 
+{{< variant flyte >}}
 {{< grid >}}
 {{< markdown >}}
 | Object | Action |
@@ -47,6 +48,69 @@ This is the command line interface for Flyte.
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
 {{< /grid >}}
+{{< /variant >}}
+{{< variant byoc selfmanaged >}}
+{{< grid >}}
+{{< markdown >}}
+| Object | Action |
+| ------ | -- |
+| `action` | [`abort`](#flyte-abort-action), [`get`](#flyte-get-action)  |
+| `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
+| `api-key` | [`create⁺`](#flyte-create-api-key), [`delete⁺`](#flyte-delete-api-key), [`get⁺`](#flyte-get-api-key)  |
+| `assignment` | [`create⁺`](#flyte-create-assignment), [`delete⁺`](#flyte-delete-assignment), [`get⁺`](#flyte-get-assignment)  |
+| `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
+| `policy` | [`create⁺`](#flyte-create-policy), [`delete⁺`](#flyte-delete-policy), [`get⁺`](#flyte-get-policy), [`update⁺`](#flyte-update-policy)  |
+| `project` | [`create`](#flyte-create-project), [`get`](#flyte-get-project), [`update`](#flyte-update-project)  |
+| `role` | [`create⁺`](#flyte-create-role), [`delete⁺`](#flyte-delete-role), [`get⁺`](#flyte-get-role), [`update⁺`](#flyte-update-role)  |
+| `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
+| `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
+| `user` | [`create⁺`](#flyte-create-user), [`delete⁺`](#flyte-delete-user), [`get⁺`](#flyte-get-user)  |
+| `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
+| `docs` | [`gen`](#flyte-gen-docs)  |
+| `io` | [`get`](#flyte-get-io)  |
+| `logs` | [`get`](#flyte-get-logs)  |
+| `member` | [`get⁺`](#flyte-get-member)  |
+| `task` | [`get`](#flyte-get-task)  |
+| `hf-model` | [`prefetch`](#flyte-prefetch-hf-model)  |
+| `deployed-task` | [`run`](#flyte-run-deployed-task)  |
+| `tui` | [`start`](#flyte-start-tui)  |
+{{< /markdown >}}
+{{< markdown >}}
+| Action | On |
+| ------ | -- |
+| `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
+| [`build`](#flyte-build) | - |
+| `create` | [`api-key⁺`](#flyte-create-api-key), [`assignment⁺`](#flyte-create-assignment), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
+| `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`policy⁺`](#flyte-delete-policy), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
+| [`deploy`](#flyte-deploy) | - |
+| `gen` | [`docs`](#flyte-gen-docs)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
+| `run` | [`deployed-task`](#flyte-run-deployed-task)  |
+| [`serve`](#flyte-serve) | - |
+| `start` | [`tui`](#flyte-start-tui)  |
+| `update` | [`app`](#flyte-update-app), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
+| [`whoami`](#flyte-whoami) | - |
+{{< /markdown >}}
+{{< /grid >}}
+{{< /variant >}}
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+
+## Union-specific functionality {#plugin-commands}
+
+> [!NOTE]
+> Commands marked with **⁺** are provided by the `flyteplugins-union` plugin,
+> which adds Union-specific functionality to the Flyte CLI
+> (user management, RBAC, API keys).
+> Install it with `pip install flyteplugins-union`.
+>
+> See the [flyteplugins.union API reference](../integrations/union/_index)
+> for the programmatic interface.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 
 ## flyte
@@ -157,6 +221,64 @@ environments.
 
 Create resources in a Flyte deployment.
 
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte create api-key
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte create api-key [OPTIONS]`**
+
+Create an API key for headless authentication.
+
+This creates OAuth application credentials that can be used to authenticate
+with Union without interactive login. The generated API key should be set
+as the FLYTE_API_KEY environment variable. Oauth applications should not be
+confused with Union Apps, which are a different construct entirely.
+
+Examples:
+
+    # Create an API key named "ci-pipeline"
+    $ flyte create api-key --name ci-pipeline
+
+    # The output will include an export command like:
+    # export FLYTE_API_KEY="<base64-encoded-credentials>"
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--name` | `text` | `Sentinel.UNSET` | Name for API key |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte create assignment
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte create assignment [OPTIONS]`**
+
+Assign a policy to an identity.
+
+Exactly one of --user-subject, --creds-subject, or --email must be provided.
+
+Examples:
+
+    $ flyte --org my-org create assignment --user-subject user-123 --policy admin
+    $ flyte --org my-org create assignment --creds-subject app-456 --policy admin
+    $ flyte --org my-org create assignment --email jane@example.com --policy admin
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--user-subject` | `text` |  | User subject identifier |
+| `--creds-subject` | `text` |  | Client credentials application subject |
+| `--email` | `text` |  | User email for lookup |
+| `--policy` | `text` | `Sentinel.UNSET` | Policy name to assign |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 #### flyte create config
 
 **`flyte create config [OPTIONS]`**
@@ -183,6 +305,31 @@ If the file already exists, it will raise an error unless the `--force` option i
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte create policy
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte create policy [OPTIONS] NAME`**
+
+Create a policy.
+
+Requires --file or --edit to specify bindings for the policy.
+
+Examples:
+
+    $ flyte --org my-org create policy my-policy --edit
+    $ flyte --org my-org create policy my-policy --file policy.yaml
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--file` | `path` |  | Create policy from a YAML file |
+| `--edit` | `boolean` | `False` | Open an editor to configure the policy before creating |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 #### flyte create project
 
 **`flyte create project [OPTIONS]`**
@@ -205,6 +352,31 @@ flyte create project --id my_project_id --name "My Project" --description "My pr
 | {{< multiline >}}`--label`
 `-l`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Labels as key=value pairs. Can be specified multiple times. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte create role
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte create role [OPTIONS] NAME`**
+
+Create a role.
+
+Requires --file or --edit to specify actions for the role.
+
+Examples:
+
+    $ flyte --org my-org create role my-role --edit
+    $ flyte --org my-org create role my-role --file role.yaml
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--file` | `path` |  | Create role from a YAML file |
+| `--edit` | `boolean` | `False` | Open an editor to configure the role before creating |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 #### flyte create secret
 
@@ -298,11 +470,61 @@ This will create a trigger that runs every day at midnight.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte create user
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte create user [OPTIONS]`**
+
+Create (invite) a new user.
+
+Examples:
+
+    $ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@example.com
+    $ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@example.com --policy admin
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--first-name` | `text` | `Sentinel.UNSET` | First name of the user |
+| `--last-name` | `text` | `Sentinel.UNSET` | Last name of the user |
+| `--email` | `text` | `Sentinel.UNSET` | Email address of the user |
+| `--policy` | `text` |  | Policy to assign to the user after creation |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 ### flyte delete
 
 **`flyte delete COMMAND [ARGS]...`**
 
 Remove resources from a Flyte deployment.
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte delete api-key
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte delete api-key [OPTIONS] CLIENT_ID`**
+
+Delete an API key.
+
+Examples:
+
+    # Delete an API key (with confirmation)
+    $ flyte delete api-key my-client-id
+
+    # Delete without confirmation
+    $ flyte delete api-key my-client-id --yes
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--yes` | `boolean` | `False` | Skip confirmation prompt |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 #### flyte delete app
 
@@ -317,6 +539,77 @@ Delete apps from a Flyte deployment.
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte delete assignment
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte delete assignment [OPTIONS]`**
+
+Unassign a policy from an identity.
+
+One of --user-subject or --creds-subject must be provided.
+
+Examples:
+
+    $ flyte --org my-org delete assignment --user-subject user-123 --policy admin
+    $ flyte --org my-org delete assignment --creds-subject app-456 --policy admin
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--user-subject` | `text` |  | User subject identifier |
+| `--creds-subject` | `text` |  | Client credentials application subject |
+| `--policy` | `text` | `Sentinel.UNSET` | Policy name to unassign |
+| `--yes` | `boolean` | `False` | Skip confirmation prompt |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte delete policy
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte delete policy [OPTIONS] NAME`**
+
+Delete a policy.
+
+Examples:
+
+    $ flyte --org my-org delete policy my-policy
+    $ flyte --org my-org delete policy my-policy --yes
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--yes` | `boolean` | `False` | Skip confirmation prompt |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte delete role
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte delete role [OPTIONS] NAME`**
+
+Delete a role.
+
+Examples:
+
+    $ flyte --org my-org delete role my-role
+    $ flyte --org my-org delete role my-role --yes
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--yes` | `boolean` | `False` | Skip confirmation prompt |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 #### flyte delete secret
 
@@ -345,6 +638,28 @@ Delete a trigger. The name of the trigger is required.
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte delete user
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte delete user [OPTIONS] SUBJECT`**
+
+Delete a user.
+
+Examples:
+
+    $ flyte --org my-org delete user user-subject-id
+    $ flyte --org my-org delete user user-subject-id --yes
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--yes` | `boolean` | `False` | Skip confirmation prompt |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 ### flyte deploy
 
@@ -521,6 +836,37 @@ Get all actions for a run or details for a specific action.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte get api-key
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte get api-key [OPTIONS] [CLIENT_ID]`**
+
+Get or list API keys.
+
+If CLIENT-ID is provided, gets a specific API key.
+Otherwise, lists all API keys.
+
+Examples:
+
+    # List all API keys
+    $ flyte get api-key
+
+    # List with a limit
+    $ flyte get api-key --limit 10
+
+    # Get a specific API key
+    $ flyte get api-key my-client-id
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Maximum number of keys to list |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 #### flyte get app
 
 **`flyte get app [OPTIONS] [NAME]`**
@@ -538,6 +884,32 @@ Apps are long-running services deployed on the Flyte platform.
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte get assignment
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte get assignment [OPTIONS]`**
+
+Get or list assignments.
+
+Without --user-subject or --creds-subject, lists all assignments.
+
+Examples:
+
+    $ flyte --org my-org get assignment
+    $ flyte --org my-org get assignment --user-subject user-123
+    $ flyte --org my-org get assignment --creds-subject app-456
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--user-subject` | `text` |  | User subject identifier |
+| `--creds-subject` | `text` |  | Client credentials application subject |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 #### flyte get config
 
@@ -617,6 +989,47 @@ $ flyte get logs my_run my_action --pretty --lines 50
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte get member
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte get member`**
+
+List all members (users and applications) in an organization.
+
+Examples:
+
+    $ flyte --org my-org get member
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte get policy
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte get policy [OPTIONS] [NAME]`**
+
+Get or list policies.
+
+If NAME is provided, gets a specific policy. Otherwise, lists all policies.
+
+Examples:
+
+    $ flyte --org my-org get policy
+    $ flyte --org my-org get policy --limit 10
+    $ flyte --org my-org get policy my-policy
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Maximum number of policies to list |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 #### flyte get project
 
 **`flyte get project [OPTIONS] [NAME]`**
@@ -630,6 +1043,31 @@ show archived projects instead.
 |--------|------|---------|-------------|
 | `--archived` | `boolean` | `False` | Show archived projects instead of active ones. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte get role
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte get role [OPTIONS] [NAME]`**
+
+Get or list roles.
+
+If NAME is provided, gets a specific role. Otherwise, lists all roles.
+
+Examples:
+
+    $ flyte --org my-org get role
+    $ flyte --org my-org get role --limit 10
+    $ flyte --org my-org get role my-role
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Maximum number of roles to list |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 #### flyte get run
 
@@ -710,6 +1148,33 @@ Get a list of all triggers, or details of a specific trigger by name.
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte get user
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte get user [OPTIONS] [SUBJECT]`**
+
+Get or list users.
+
+If SUBJECT is provided, gets a specific user. Otherwise, lists all users.
+
+Examples:
+
+    $ flyte --org my-org get user
+    $ flyte --org my-org get user --limit 10
+    $ flyte --org my-org get user user-subject-id
+    $ flyte --org my-org get user --email jane@example.com
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Maximum number of users to list |
+| `--email` | `text` |  | Filter by email address |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 ### flyte prefetch
 
@@ -1063,6 +1528,29 @@ flyte update app <app_name> --activate | --deactivate [--wait] [--project <proje
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte update policy
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte update policy NAME`**
+
+Update a policy interactively.
+
+Opens the policy in your $EDITOR as YAML. Save and close to apply changes.
+Bindings that are added or removed will be applied to the policy.
+
+Examples:
+
+    $ flyte --org my-org update policy my-policy
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 #### flyte update project
 
 **`flyte update project [OPTIONS] ID`**
@@ -1089,6 +1577,28 @@ flyte update project my_project --label team=ml --label env=prod
 | {{< multiline >}}`--archive`
 `--unarchive`{{< /multiline >}} | `boolean` |  | Archive or unarchive the project. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+#### flyte update role
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte update role NAME`**
+
+Update a role interactively.
+
+Opens the role in your $EDITOR as YAML. Save and close to apply changes.
+
+Examples:
+
+    $ flyte --org my-org update role my-role
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 #### flyte update trigger
 
