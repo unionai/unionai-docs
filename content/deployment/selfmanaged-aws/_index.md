@@ -3,9 +3,12 @@ title: Data plane setup on AWS
 weight: 5
 variants: -flyte -byoc +selfmanaged
 sidebar_expanded: true
+llm_readable_bundle: true
 ---
 
 # Data plane setup on AWS
+
+{{< llm-bundle-note >}}
 
 To set up your {{< key product_name >}} data plane on Amazon Web Services (AWS), you must allow {{< key product_name >}} to provision and maintain compute resources under your AWS account.
 

@@ -4,9 +4,12 @@ weight: 2
 variants: +flyte +byoc +selfmanaged
 top_menu: true
 sidebar_expanded: true
+llm_readable_bundle: true
 ---
 
 # Tutorials
+
+{{< llm-bundle-note >}}
 
 This section contains tutorials that showcase relevant use cases and provide step-by-step instructions on how to implement various features using Flyte and Union.
 
