@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.legacy_map_task
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---

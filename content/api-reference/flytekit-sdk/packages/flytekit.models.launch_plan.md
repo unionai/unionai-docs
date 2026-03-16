@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.launch_plan
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---

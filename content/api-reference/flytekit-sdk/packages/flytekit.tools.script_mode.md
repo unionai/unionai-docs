@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.script_mode
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
