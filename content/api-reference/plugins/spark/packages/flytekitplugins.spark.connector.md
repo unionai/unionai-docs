@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.spark.connector
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -21,7 +21,9 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`get_header()`](#get_header) |  |
+| [`get_databricks_token()`](#get_databricks_token) | Get the Databricks access token with multi-tenant support. |
+| [`get_header()`](#get_header) | Get the authorization header for Databricks API calls. |
+| [`get_secret_from_k8s()`](#get_secret_from_k8s) | Read a secret from Kubernetes using the Kubernetes Python client. |
 | [`result_state_is_available()`](#result_state_is_available) |  |
 
 
@@ -31,15 +33,68 @@ layout: py_api
 |-|-|-|
 | `DATABRICKS_API_ENDPOINT` | `str` |  |
 | `DEFAULT_DATABRICKS_INSTANCE_ENV_KEY` | `str` |  |
+| `DEFAULT_DATABRICKS_SERVICE_CREDENTIAL_PROVIDER_ENV_KEY` | `str` |  |
 | `FLYTE_FAIL_ON_ERROR` | `str` |  |
 
 ## Methods
 
+#### get_databricks_token()
+
+```python
+def get_databricks_token(
+    namespace: typing.Optional[str],
+    task_template: typing.Optional[flytekit.models.task.TaskTemplate],
+    secret_name: typing.Optional[str],
+) -> str
+```
+Get the Databricks access token with multi-tenant support.
+
+Token resolution: namespace K8s secret -&gt; FLYTE_DATABRICKS_ACCESS_TOKEN env var.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `namespace` | `typing.Optional[str]` | Kubernetes namespace for workflow-specific token lookup. |
+| `task_template` | `typing.Optional[flytekit.models.task.TaskTemplate]` | Optional TaskTemplate (kept for API compatibility). |
+| `secret_name` | `typing.Optional[str]` | Custom secret name. Defaults to 'databricks-token'. |
+
 #### get_header()
 
 ```python
-def get_header()
+def get_header(
+    task_template: typing.Optional[flytekit.models.task.TaskTemplate],
+    auth_token: typing.Optional[str],
+) -> typing.Dict[str, str]
 ```
+Get the authorization header for Databricks API calls.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `task_template` | `typing.Optional[flytekit.models.task.TaskTemplate]` | TaskTemplate with workflow-specific secret requests. |
+| `auth_token` | `typing.Optional[str]` | Pre-fetched auth token to use directly. |
+
+#### get_secret_from_k8s()
+
+```python
+def get_secret_from_k8s(
+    secret_name: str,
+    secret_key: str,
+    namespace: str,
+) -> typing.Optional[str]
+```
+Read a secret from Kubernetes using the Kubernetes Python client.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `secret_name` | `str` | Name of the Kubernetes secret (e.g., "databricks-token"). |
+| `secret_key` | `str` | Key within the secret (e.g., "token"). |
+| `namespace` | `str` | Kubernetes namespace where the secret is stored. |
+
 #### result_state_is_available()
 
 ```python
@@ -80,6 +135,7 @@ def DatabricksConnector()
 def create(
     task_template: flytekit.models.task.TaskTemplate,
     inputs: typing.Optional[flytekit.models.literals.LiteralMap],
+    task_execution_metadata: typing.Optional[flytekit.models.task.TaskExecutionMetadata],
     kwargs,
 ) -> flytekitplugins.spark.connector.DatabricksJobMetadata
 ```
@@ -90,6 +146,7 @@ Return a resource meta that can be used to get the status of the task.
 |-|-|-|
 | `task_template` | `flytekit.models.task.TaskTemplate` | |
 | `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` | |
+| `task_execution_metadata` | `typing.Optional[flytekit.models.task.TaskExecutionMetadata]` | |
 | `kwargs` | `**kwargs` | |
 
 #### delete()
@@ -195,6 +252,7 @@ def DatabricksConnectorV2()
 def create(
     task_template: flytekit.models.task.TaskTemplate,
     inputs: typing.Optional[flytekit.models.literals.LiteralMap],
+    task_execution_metadata: typing.Optional[flytekit.models.task.TaskExecutionMetadata],
     kwargs,
 ) -> flytekitplugins.spark.connector.DatabricksJobMetadata
 ```
@@ -205,6 +263,7 @@ Return a resource meta that can be used to get the status of the task.
 |-|-|-|
 | `task_template` | `flytekit.models.task.TaskTemplate` | |
 | `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` | |
+| `task_execution_metadata` | `typing.Optional[flytekit.models.task.TaskExecutionMetadata]` | |
 | `kwargs` | `**kwargs` | |
 
 #### delete()
@@ -279,12 +338,14 @@ Return the metrics for the task.
 class DatabricksJobMetadata(
     databricks_instance: str,
     run_id: str,
+    auth_token: typing.Optional[str],
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `databricks_instance` | `str` | |
 | `run_id` | `str` | |
+| `auth_token` | `typing.Optional[str]` | |
 
 ### Methods
 

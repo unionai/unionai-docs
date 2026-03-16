@@ -7,7 +7,8 @@
     "flytekitplugins.spark.pyspark_transformers": "/api-reference/plugins/spark/packages/flytekitplugins.spark.pyspark_transformers/",
     "flytekitplugins.spark.schema": "/api-reference/plugins/spark/packages/flytekitplugins.spark.schema/",
     "flytekitplugins.spark.sd_transformers": "/api-reference/plugins/spark/packages/flytekitplugins.spark.sd_transformers/",
-    "flytekitplugins.spark.task": "/api-reference/plugins/spark/packages/flytekitplugins.spark.task/"
+    "flytekitplugins.spark.task": "/api-reference/plugins/spark/packages/flytekitplugins.spark.task/",
+    "flytekitplugins.spark.utils": "/api-reference/plugins/spark/packages/flytekitplugins.spark.utils/"
   },
   "identifiers": {
     "flytekitplugins.spark.connector.DatabricksConnector": "/api-reference/plugins/spark/packages/flytekitplugins.spark.connector/#flytekitpluginssparkconnectordatabricksconnector",
@@ -58,11 +59,17 @@
     "Spark": "/api-reference/plugins/spark/packages/flytekitplugins.spark.task/#flytekitpluginssparktaskspark"
   },
   "methods": {
+    "flytekitplugins.spark.connector.get_databricks_token": "/api-reference/plugins/spark/packages/flytekitplugins.spark.connector/#get_databricks_token",
+    "get_databricks_token": "/api-reference/plugins/spark/packages/flytekitplugins.spark.connector/#get_databricks_token",
     "flytekitplugins.spark.connector.get_header": "/api-reference/plugins/spark/packages/flytekitplugins.spark.connector/#get_header",
     "get_header": "/api-reference/plugins/spark/packages/flytekitplugins.spark.connector/#get_header",
+    "flytekitplugins.spark.connector.get_secret_from_k8s": "/api-reference/plugins/spark/packages/flytekitplugins.spark.connector/#get_secret_from_k8s",
+    "get_secret_from_k8s": "/api-reference/plugins/spark/packages/flytekitplugins.spark.connector/#get_secret_from_k8s",
     "flytekitplugins.spark.connector.result_state_is_available": "/api-reference/plugins/spark/packages/flytekitplugins.spark.connector/#result_state_is_available",
     "result_state_is_available": "/api-reference/plugins/spark/packages/flytekitplugins.spark.connector/#result_state_is_available",
     "flytekitplugins.spark.task.new_spark_session": "/api-reference/plugins/spark/packages/flytekitplugins.spark.task/#new_spark_session",
-    "new_spark_session": "/api-reference/plugins/spark/packages/flytekitplugins.spark.task/#new_spark_session"
+    "new_spark_session": "/api-reference/plugins/spark/packages/flytekitplugins.spark.task/#new_spark_session",
+    "flytekitplugins.spark.utils.is_serverless_config": "/api-reference/plugins/spark/packages/flytekitplugins.spark.utils/#is_serverless_config",
+    "is_serverless_config": "/api-reference/plugins/spark/packages/flytekitplugins.spark.utils/#is_serverless_config"
   }
 }

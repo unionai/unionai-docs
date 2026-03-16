@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.workflow
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -171,6 +171,7 @@ class ArrayNode(
     is_original_sub_node_interface,
     data_mode,
     bound_inputs,
+    run_all_sub_nodes: bool,
 )
 ```
 TODO: docstring
@@ -186,6 +187,7 @@ TODO: docstring
 | `is_original_sub_node_interface` |  | |
 | `data_mode` |  | |
 | `bound_inputs` |  | |
+| `run_all_sub_nodes` | `bool` | |
 
 ### Properties
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -1217,6 +1217,7 @@ class S3Config(
     backoff: datetime.timedelta,
     access_key_id: typing.Optional[str],
     secret_access_key: typing.Optional[str],
+    adressing_style: typing.Optional[str],
 )
 ```
 | Parameter | Type | Description |
@@ -1227,6 +1228,7 @@ class S3Config(
 | `backoff` | `datetime.timedelta` | |
 | `access_key_id` | `typing.Optional[str]` | |
 | `secret_access_key` | `typing.Optional[str]` | |
+| `adressing_style` | `typing.Optional[str]` | |
 
 ### Methods
 

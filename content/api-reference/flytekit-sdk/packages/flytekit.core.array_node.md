@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.array_node
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -39,6 +39,7 @@ def array_node(
     concurrency: typing.Optional[int],
     min_success_ratio: typing.Optional[float],
     min_successes: typing.Optional[int],
+    run_all_sub_nodes: bool,
 )
 ```
 ArrayNode implementation that maps over tasks and other Flyte entities
@@ -49,8 +50,9 @@ ArrayNode implementation that maps over tasks and other Flyte entities
 |-|-|-|
 | `target` | `typing.Union[flytekit.core.launch_plan.LaunchPlan, flytekit.core.task.ReferenceTask, ForwardRef('FlyteLaunchPlan')]` | The target Flyte entity to map over |
 | `concurrency` | `typing.Optional[int]` | If specified, this limits the number of mapped tasks than can run in parallel to the given batch size. If the size of the input exceeds the concurrency value, then multiple batches will be run serially until all inputs are processed. If set to 0, this means unbounded concurrency. If left unspecified, this means the array node will inherit parallelism from the workflow |
-| `min_success_ratio` | `typing.Optional[float]` | The minimum ratio of successful executions :return: A callable function that takes in keyword arguments and returns a Promise created by flyte_entity_call_handler |
+| `min_success_ratio` | `typing.Optional[float]` | The minimum ratio of successful executions |
 | `min_successes` | `typing.Optional[int]` | The minimum number of successful executions. If set, this takes precedence over min_success_ratio |
+| `run_all_sub_nodes` | `bool` | If True, all sub-nodes will run to completion even after the failure threshold is met :return: A callable function that takes in keyword arguments and returns a Promise created by flyte_entity_call_handler |
 
 ## flytekit.core.array_node.ArrayNode
 
@@ -62,6 +64,7 @@ class ArrayNode(
     min_successes: typing.Optional[int],
     min_success_ratio: typing.Optional[float],
     metadata: typing.Optional[flytekit.models.core.workflow.NodeMetadata],
+    run_all_sub_nodes: bool,
 )
 ```
 | Parameter | Type | Description |
@@ -72,6 +75,7 @@ class ArrayNode(
 | `min_successes` | `typing.Optional[int]` | The minimum number of successful executions. If set, this takes precedence over min_success_ratio |
 | `min_success_ratio` | `typing.Optional[float]` | The minimum ratio of successful executions. |
 | `metadata` | `typing.Optional[flytekit.models.core.workflow.NodeMetadata]` | The metadata for the underlying node |
+| `run_all_sub_nodes` | `bool` | If True, all sub-nodes will run to completion even after the failure threshold is met |
 
 ### Properties
 
@@ -89,6 +93,7 @@ class ArrayNode(
 | `min_successes` | `None` |  |
 | `name` | `None` |  |
 | `python_interface` | `None` |  |
+| `run_all_sub_nodes` | `None` |  |
 | `upstream_nodes` | `None` |  |
 
 ### Methods
