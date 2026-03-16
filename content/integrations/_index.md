@@ -4,9 +4,12 @@ weight: 5
 variants: +flyte +byoc +selfmanaged
 top_menu: true
 sidebar_expanded: true
+llm_readable_bundle: true
 ---
 
 # Integrations
+
+{{< llm-bundle-note >}}
 
 {{< variant flyte >}}
 {{< markdown >}}

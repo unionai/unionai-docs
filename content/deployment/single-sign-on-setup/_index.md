@@ -3,9 +3,12 @@ title: Single sign on setup
 weight: 12
 variants: -flyte +byoc -selfmanaged
 sidebar_expanded: true
+llm_readable_bundle: true
 ---
 
 # Single sign on setup
+
+{{< llm-bundle-note >}}
 
 {{< key product_name >}} authentication uses OAuth2 with Okta and supports SAML and OIDC-compliant identity providers (IdP) to configure single sign on (SSO).
 
