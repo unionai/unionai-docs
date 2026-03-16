@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.0.6
+version: 2.0.7
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -425,6 +425,10 @@ into the image.
 ```python
 def with_requirements(
     file: str | Path,
+    index_url: Optional[str],
+    extra_index_urls: Union[str, List[str], Tuple[str, ...], None],
+    pre: bool,
+    extra_args: Optional[str],
     secret_mounts: Optional[SecretRequest],
 ) -> Image
 ```
@@ -436,6 +440,10 @@ Cannot be used in conjunction with conda
 | Parameter | Type | Description |
 |-|-|-|
 | `file` | `str \| Path` | path to the requirements file, must be a .txt file |
+| `index_url` | `Optional[str]` | index url to use for pip install, default is None |
+| `extra_index_urls` | `Union[str, List[str], Tuple[str, ...], None]` | extra index urls to use for pip install, default is None |
+| `pre` | `bool` | if True, install pre-release packages, default is False |
+| `extra_args` | `Optional[str]` | extra arguments to pass to pip install, default is None |
 | `secret_mounts` | `Optional[SecretRequest]` | list of secret to mount for the build process. :return: |
 
 ### with_source_file()

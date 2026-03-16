@@ -1,6 +1,6 @@
 ---
 title: TaskEnvironment
-version: 2.0.6
+version: 2.0.7
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -161,6 +161,7 @@ def task(
     queue: Optional[str],
     triggers: Tuple[Trigger, ...] | Trigger,
     links: Tuple[Link, ...] | Link,
+    task_resolver: Any | None,
 ) -> Callable[[F], AsyncFunctionTaskTemplate[P, R, F]] | AsyncFunctionTaskTemplate[P, R, F]
 ```
 Decorate a function to be a task.
@@ -182,4 +183,5 @@ Decorate a function to be a task.
 | `queue` | `Optional[str]` | Optional queue name to use for this task. If not set, the environment's queue will be used.  :return: A TaskTemplate that can be used to deploy the task. |
 | `triggers` | `Tuple[Trigger, ...] \| Trigger` | Optional A tuple of triggers to associate with the task. This allows the task to be run on a schedule or in response to events. Triggers can be defined using the `flyte.trigger` module. |
 | `links` | `Tuple[Link, ...] \| Link` | Optional A tuple of links to associate with the task. Links can be used to provide additional context or information about the task. Links should implement the `flyte.Link` protocol |
+| `task_resolver` | `Any \| None` | |
 

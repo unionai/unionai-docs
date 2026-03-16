@@ -1,6 +1,6 @@
 ---
 title: CodeTaskTemplate
-version: 2.0.6
+version: 2.0.7
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -46,6 +46,7 @@ class CodeTaskTemplate(
     _call_as_synchronous: bool,
     func: F,
     plugin_config: Optional[SandboxedConfig],
+    task_resolver: Optional[Any],
     _user_source: str,
     _user_input_names: List[str],
     _user_functions: Dict[str, Any],
@@ -80,6 +81,7 @@ class CodeTaskTemplate(
 | `_call_as_synchronous` | `bool` | |
 | `func` | `F` | |
 | `plugin_config` | `Optional[SandboxedConfig]` | |
+| `task_resolver` | `Optional[Any]` | |
 | `_user_source` | `str` | |
 | `_user_input_names` | `List[str]` | |
 | `_user_functions` | `Dict[str, Any]` | |

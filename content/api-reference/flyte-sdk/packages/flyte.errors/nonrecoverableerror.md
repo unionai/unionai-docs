@@ -1,24 +1,26 @@
 ---
-title: ActionAbortedError
+title: NonRecoverableError
 version: 2.0.7
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
-# ActionAbortedError
+# NonRecoverableError
 
 **Package:** `flyte.errors`
 
-This error is raised when an action was aborted, externally. The parent action will raise this error.
+Raised when an error is encountered that is not recoverable. Retries are irrelevant.
 
 
 
 ```python
-class ActionAbortedError(
+class NonRecoverableError(
     message: str,
+    code: str,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `message` | `str` | |
+| `code` | `str` | |
 
