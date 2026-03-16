@@ -9,4 +9,4 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flyteplugins.anthropic.Agent`](../packages/flyteplugins.anthropic/agent) |A Claude agent configuration. |
+| [`flyteplugins.gemini.Agent`](../packages/flyteplugins.gemini/agent) |A Gemini agent configuration. |

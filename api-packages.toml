@@ -99,6 +99,8 @@ package = "flyteplugins-bigquery"
 plugin = "flyteplugins.bigquery"
 title = "BigQuery"
 name = "bigquery"
+
+[[plugins]]
 package = "flyteplugins-codegen"
 plugin = "flyteplugins.codegen"
 title = "Code generation"

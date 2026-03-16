@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.anthropic`](flyteplugins.anthropic) | Anthropic Claude plugin for Flyte. |
+| [`flyteplugins.gemini`](flyteplugins.gemini) | Google Gemini plugin for Flyte. |
