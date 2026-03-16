@@ -114,6 +114,7 @@ def map_task(
     concurrency: typing.Optional[int],
     min_successes: typing.Optional[int],
     min_success_ratio: float,
+    run_all_sub_nodes: bool,
     kwargs,
 )
 ```
@@ -128,6 +129,7 @@ or the drop in replacement ArrayNode implementation
 | `concurrency` | `typing.Optional[int]` | If specified, this limits the number of mapped tasks than can run in parallel to the given batch size. If the size of the input exceeds the concurrency value, then multiple batches will be run serially until all inputs are processed. If set to 0, this means unbounded concurrency. If left unspecified, this means the array node will inherit parallelism from the workflow |
 | `min_successes` | `typing.Optional[int]` | The minimum number of successful executions |
 | `min_success_ratio` | `float` | The minimum ratio of successful executions |
+| `run_all_sub_nodes` | `bool` | If True, all sub-nodes will run to completion even after the failure threshold is met |
 | `kwargs` | `**kwargs` | |
 
 #### task()

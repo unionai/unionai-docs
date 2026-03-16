@@ -3,9 +3,12 @@ title: Tasks
 weight: 2
 variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
+llm_readable_bundle: true
 ---
 
 # Tasks
+
+{{< llm-bundle-note >}}
 
 Tasks are the fundamental units of compute in {{< key product_name >}}.
 They are independently executable, strongly typed, and containerized building blocks that make up workflows.

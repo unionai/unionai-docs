@@ -3,9 +3,12 @@ title: Contributing docs and examples
 weight: 3
 variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
+llm_readable_bundle: true
 ---
 
 # Contributing docs and examples
+
+{{< llm-bundle-note >}}
 
 We welcome contributions to the docs and examples for both Flyte and Union.
 This section will explain how the docs site works, how to author and build it locally, and how to publish your changes.

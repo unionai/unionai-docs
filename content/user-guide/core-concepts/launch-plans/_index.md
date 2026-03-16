@@ -3,9 +3,12 @@ title: Launch plans
 weight: 3
 variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
+llm_readable_bundle: true
 ---
 
 # Launch plans
+
+{{< llm-bundle-note >}}
 
 A launch plan is a template for a workflow invocation.
 It brings together:

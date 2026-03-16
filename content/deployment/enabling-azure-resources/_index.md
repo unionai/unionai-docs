@@ -3,9 +3,12 @@ title: Enabling Azure resources
 weight: 11
 variants: -flyte +byoc -selfmanaged
 sidebar_expanded: true
+llm_readable_bundle: true
 ---
 
 # Enabling Azure resources
+
+{{< llm-bundle-note >}}
 
 Components of your {{< key product_name >}} data plane will need to connect to and communicate with other resources in your Azure cloud environment, such as Azure [Blob Storage](https://azure.microsoft.com/en-ca/products/storage/blobs/) and [Container Registry](https://azure.microsoft.com/en-us/products/container-registry).
 
