@@ -1,6 +1,6 @@
 ---
 title: Report
-version: 2.0.7
+version: 2.0.8
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -13,14 +13,14 @@ layout: py_api
 class Report(
     name: str,
     tabs: typing.Dict[str, flyte.report._report.Tab],
-    template_path: pathlib._local.Path,
+    template_path: pathlib.Path,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | |
 | `tabs` | `typing.Dict[str, flyte.report._report.Tab]` | |
-| `template_path` | `pathlib._local.Path` | |
+| `template_path` | `pathlib.Path` | |
 
 ## Methods
 

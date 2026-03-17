@@ -1,6 +1,6 @@
 ---
 title: CodeTaskTemplate
-version: 2.0.7
+version: 2.0.8
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,10 +11,10 @@ layout: py_api
 
 A sandboxed task created from a code string rather than a decorated function.
 
-Unlike ``SandboxedTaskTemplate`` (which extracts source from a Python
-function), this class accepts pre-transformed source code and an explicit
-dict of external functions.  It is constructed via :func:`flyte.sandbox.orchestrator_from_str`.
-
+    Unlike ``SandboxedTaskTemplate`` (which extracts source from a Python
+    function), this class accepts pre-transformed source code and an explicit
+    dict of external functions.  It is constructed via :func:`flyte.sandbox.orchestrator_from_str`.
+    
 
 
 ```python

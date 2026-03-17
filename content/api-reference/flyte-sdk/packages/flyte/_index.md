@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.7
+version: 2.0.8
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -636,7 +636,7 @@ Run a task with the given parameters
 > `result = await run_python_script.aio()`.
 ```python
 def run_python_script(
-    script: pathlib._local.Path,
+    script: pathlib.Path,
     cpu: int,
     memory: str,
     gpu: int,
@@ -665,7 +665,7 @@ or ``flyte.init_from_config()``), consistent with ``flyte.run()``.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `script` | `pathlib._local.Path` | Path to the Python script to run. |
+| `script` | `pathlib.Path` | Path to the Python script to run. |
 | `cpu` | `int` | Number of CPUs to request (default |
 | `memory` | `str` | Memory to request, e.g. ``"16Gi"`` (default |
 | `gpu` | `int` | Number of GPUs to request (default |
