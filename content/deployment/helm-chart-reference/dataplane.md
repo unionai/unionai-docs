@@ -1,7 +1,7 @@
 ---
 title: Dataplane chart
 variants: -flyte -byoc +selfmanaged
-chart_version: 2026.3.5
+chart_version: 2026.3.7
 weight: 1
 ---
 
@@ -11,8 +11,8 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 
 | | |
 |---|---|
-| **Chart version** | 2026.3.5 |
-| **App version** | 2026.3.4 |
+| **Chart version** | 2026.3.7 |
+| **App version** | 2026.3.6 |
 | **Kubernetes version** | `>= 1.28.0-0` |
 
 ## Dependencies
@@ -122,6 +122,7 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | dcgm-exporter.serviceMonitor | object | It's common practice to taint and label  to not run dcgm exporter on all nodes, so we can use node selectors and    tolerations to ensure it only runs on GPU nodes. affinity: {} nodeSelector: {} tolerations: [] | `{"honorLabels":true}` |
 | executor.additionalVolumeMounts | list | Appends additional volume mounts to the main container's spec. May include template values. | `[]` |
 | executor.additionalVolumes | list | Appends additional volumes to the deployment spec. May include template values. | `[]` |
+| executor.affinity | object | affinity for executor deployment | `{}` |
 | executor.config.cluster | string |  | `"{{ tpl .Values.clusterName . }}"` |
 | executor.config.evaluatorCount | int |  | `64` |
 | executor.config.maxActions | int |  | `2000` |
@@ -131,6 +132,8 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | executor.config.workerName | string |  | `"worker1"` |
 | executor.enabled | bool |  | `true` |
 | executor.idl2Executor | bool |  | `false` |
+| executor.nodeName | string | nodeName constraints for executor deployment | `""` |
+| executor.nodeSelector | object | nodeSelector for executor deployment | `{}` |
 | executor.plugins.fasttask | object | Configuration section for all K8s specific plugins [Configuration structure](https://pkg.go.dev/github.com/lyft/flyteplugins/go/tasks/pluginmachinery/flytek8s/config) | `(see values.yaml)` |
 | executor.plugins.ioutils.remoteFileOutputPaths.deckFilename | string |  | `"report.html"` |
 | executor.plugins.k8s.disable-inject-owner-references | bool |  | `true` |
@@ -174,8 +177,10 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | executor.task_logs.plugins.logs.dynamic-log-links[6].neptune-scale-custom-id.linkType | string |  | `"dashboard"` |
 | executor.task_logs.plugins.logs.dynamic-log-links[6].neptune-scale-custom-id.templateUris[0] | string |  | `(see values.yaml)` |
 | executor.task_logs.plugins.logs.kubernetes-enabled | bool |  | `true` |
+| executor.tolerations | list | tolerations for executor deployment | `[]` |
+| executor.topologySpreadConstraints | object | topologySpreadConstraints for executor deployment | `{}` |
 | extraObjects | list |  | `[]` |
-| fluentbit | object | Configuration for fluentbit used for the persistent logging feature. FluentBit runs as a DaemonSet and ships container logs to the persisted-logs/ path in the configured object store. The fluentbit-system service account must have write access to the storage bucket.  Grant access using cloud-native identity federation:   AWS (IRSA):     annotations:       eks.amazonaws.com/role-arn: "arn:aws:iam::`<ACCOUNT_ID>`:role/`<ROLE_NAME>`"   Azure (Workload Identity):     annotations:       azure.workload.identity/client-id: "`<CLIENT_ID>`"   GCP (Workload Identity):     annotations:       iam.gke.io/gcp-service-account: "`<GSA_NAME>`@`<PROJECT_ID>`.iam.gserviceaccount.com"  See the [persistent logs documentation](/deployment/configuration/persistent-logs/) | `(see values.yaml)` |
+| fluentbit | object | Configuration for fluentbit used for the persistent logging feature. FluentBit runs as a DaemonSet and ships container logs to the persisted-logs/ path in the configured object store. The fluentbit-system service account must have write access to the storage bucket. Grant access using cloud-native identity federation:   AWS (IRSA):     annotations:       eks.amazonaws.com/role-arn: "arn:aws:iam::`<ACCOUNT_ID>`:role/`<ROLE_NAME>`"   Azure (Workload Identity):     annotations:       azure.workload.identity/client-id: "`<CLIENT_ID>`"   GCP (Workload Identity):     annotations:       iam.gke.io/gcp-service-account: "`<GSA_NAME>`@`<PROJECT_ID>`.iam.gserviceaccount.com" See https://www.union.ai/docs/v1/selfmanaged/deployment/configuration/persistent-logs/ | `(see values.yaml)` |
 | flyteagent | object | Flyteagent configuration | `{"enabled":false,"plugin_config":{}}` |
 | flyteconnector.additionalContainers | list | Appends additional containers to the deployment spec. May include template values. | `[]` |
 | flyteconnector.additionalEnvs | list | Appends additional envs to the deployment spec. May include template values | `[]` |
@@ -265,7 +270,7 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | imageBuilder.buildkit.fullnameOverride | string | The name to use for the buildkit deployment, service, configmap, etc. | `""` |
 | imageBuilder.buildkit.image.pullPolicy | string | Pull policy | `"IfNotPresent"` |
 | imageBuilder.buildkit.image.repository | string | Image name | `"docker.io/moby/buildkit"` |
-| imageBuilder.buildkit.image.tag | e.g. "buildx-stable-1" becomes "buildx-stable-1-rootless" | unless the tag already contains "rootless". | `"buildx-stable-1"` |
+| imageBuilder.buildkit.image.tag | string | (e.g. "buildx-stable-1" becomes "buildx-stable-1-rootless") unless the tag already contains "rootless". | `"buildx-stable-1"` |
 | imageBuilder.buildkit.log | object | Enable debug logging | `{"debug":false,"format":"text"}` |
 | imageBuilder.buildkit.nodeSelector | object | Node selector | `{}` |
 | imageBuilder.buildkit.oci | object | Buildkitd service configuration | `{"maxParallelism":0}` |
@@ -307,7 +312,7 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | ingress.serving | object | Serving specific ingress configuration. | `{"annotations":{},"class":"","hostOverride":"","tls":{}}` |
 | ingress.serving.annotations | object | Annotations to apply to the ingress resource. | `{}` |
 | ingress.serving.class | string | Ingress class name | `""` |
-| ingress.serving.hostOverride | Optional | Host override for serving ingress rule. Defaults to *.apps.{{ .Values.host }}. | `""` |
+| ingress.serving.hostOverride | string | (Optional) Host override for serving ingress rule. Defaults to *.apps.{{ .Values.host }}. | `""` |
 | ingress.serving.tls | object | Ingress TLS configuration | `{}` |
 | knative-operator.crds.install | bool |  | `true` |
 | knative-operator.enabled | bool |  | `false` |
