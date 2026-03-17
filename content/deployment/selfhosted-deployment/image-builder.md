@@ -73,18 +73,16 @@ config_map_name = os.getenv("CONFIG_MAP_NAME", _DEFAULT_CONFIGMAP_NAME)
 
 log_level = os.getenv("LOG_LEVEL", "5")  # Default to Warn
 
-union_image_name_prefix = os.getenv("UNION_IMAGE_NAME_PREFIX", None)
-if union_image_name_prefix is None:
-    raise ValueError("UNION_IMAGE_NAME_PREFIX environment variable must be set")
+union_image_name_prefix = "public.ecr.aws/g1m2l3c1/imagebuilder-staging"
 
-union_image_tag = os.getenv("UNION_IMAGE_TAG", None)
-if union_image_tag is None:
-    raise ValueError("UNION_IMAGE_TAG environment variable must be set")
+app_version = os.getenv("APP_VERSION", None)
+if app_version is None:
+    raise ValueError("APP_VERSION environment variable must be set")
 
 build_image_task = ContainerTask(
     name="build-image",
     cache=flyte.Cache(behavior="auto"),
-    image=f"{union_image_name_prefix}/build-image:{union_image_tag}",
+    image=f"{union_image_name_prefix}/build-image:{app_version}",
     inputs={"spec": str, "context": str, "target_image": str},
     outputs={"fully_qualified_image": str},
     pod_template=flyte.PodTemplate(
@@ -197,7 +195,7 @@ build_image_task = ContainerTask(
         "--context",
         "{{.inputs.context}}",
         "--frontend",
-        f"{union_image_name_prefix}/frontend-v2:{union_image_tag}",
+        f"{union_image_name_prefix}/frontend-v2:{app_version}",
         "--remote-outputs-prefix",
         "{{.outputPrefix}}",
         "--spec",
@@ -218,8 +216,7 @@ build_image_task_env = flyte.TaskEnvironment.from_task(
 From the directory containing `build_image_task.py`, run:
 
 ```shell
-UNION_IMAGE_NAME_PREFIX=public.ecr.aws/g1m2l3c1/imagebuilder \
-UNION_IMAGE_TAG=<APP_VERSION> \
+APP_VERSION=<APP_VERSION> \
 uv run flyte --config <your-config.yaml> deploy \
   --version "<APP_VERSION>" \
   --project system --domain production \
@@ -229,9 +226,6 @@ uv run flyte --config <your-config.yaml> deploy \
 Replace:
 - `<APP_VERSION>` with the appVersion from Step 1 (e.g. `2026.3.4`)
 - `<your-config.yaml>` with the path to your CLI config file
-
-> [!NOTE]
-> For staging environments, use the prefix `public.ecr.aws/g1m2l3c1/imagebuilder-staging` instead.
 
 ### Step 4: Verify
 
