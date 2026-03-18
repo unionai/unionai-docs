@@ -1,6 +1,6 @@
 ---
 title: DynamicBatcher
-version: 2.0.7
+version: 2.0.8
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -10,19 +10,19 @@ layout: py_api
 **Package:** `flyte.extras`
 
 Batches records from many concurrent producers and runs them through
-a single async processing function, maximizing resource utilization.
+    a single async processing function, maximizing resource utilization.
 
-The batcher runs two internal loops:
+    The batcher runs two internal loops:
 
-1. **Aggregation loop** — drains the submission queue and assembles
-   cost-budgeted batches, respecting ``target_batch_cost``,
-   ``max_batch_size``, and ``batch_timeout_s``.
-2. **Processing loop** — pulls assembled batches and calls
-   ``process_fn``, resolving each record's :class:`asyncio.Future`.
+    1. **Aggregation loop** — drains the submission queue and assembles
+       cost-budgeted batches, respecting ``target_batch_cost``,
+       ``max_batch_size``, and ``batch_timeout_s``.
+    2. **Processing loop** — pulls assembled batches and calls
+       ``process_fn``, resolving each record's :class:`asyncio.Future`.
 
-Type Parameters:
-    RecordT: The input record type produced by your tasks.
-    ResultT: The per-record output type returned by ``process_fn``.
+    Type Parameters:
+        RecordT: The input record type produced by your tasks.
+        ResultT: The per-record output type returned by ``process_fn``.
 
 
 

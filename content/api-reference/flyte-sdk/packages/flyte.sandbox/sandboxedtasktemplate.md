@@ -1,6 +1,6 @@
 ---
 title: SandboxedTaskTemplate
-version: 2.0.7
+version: 2.0.8
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,10 +11,10 @@ layout: py_api
 
 A task template that executes the function body in a Monty sandbox.
 
-For pure Python functions (no external calls), Monty executes the
-entire body without pausing. For functions that call other tasks or
-durable operations, ``run_monty_async`` handles async dispatch.
-
+    For pure Python functions (no external calls), Monty executes the
+    entire body without pausing. For functions that call other tasks or
+    durable operations, ``run_monty_async`` handles async dispatch.
+    
 
 
 ```python

@@ -1,7 +1,7 @@
 [submodule "unionai-docs-infra"]
 	path = unionai-docs-infra
 	url = git@github.com:unionai/unionai-docs-infra.git
-	branch = main
+	branch = enghabu/ping-python-ver
 [submodule "unionai-examples"]
 	path = unionai-examples
 	url = git@github.com:unionai/unionai-examples.git

@@ -1,6 +1,6 @@
 ---
-title: Terraform
-weight: 2
+title: Manage Union through Terraform
+weight: 8
 variants: -flyte +byoc +selfmanaged
 sidebar_expanded: true
 llm_readable_bundle: true
