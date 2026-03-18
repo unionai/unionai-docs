@@ -1,6 +1,6 @@
 ---
 title: Project
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,6 +12,8 @@ layout: py_api
 A class representing a project in the Union API.
 
 
+
+## Parameters
 
 ```python
 class Project(
@@ -111,7 +113,7 @@ def listall(
 ```
 List all projects.
 
-By default, lists active (unarchived) projects. Set ``archived=True`` to list
+By default, lists active (unarchived) projects. Set `archived=True` to list
 archived projects instead.
 
 

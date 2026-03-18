@@ -1,0 +1,15 @@
+{
+  "packages": {
+    "flyteplugins.gemini": "/api-reference/integrations/gemini/packages/flyteplugins.gemini/"
+  },
+  "identifiers": {
+    "flyteplugins.gemini.Agent": "/api-reference/integrations/gemini/packages/flyteplugins.gemini/agent/",
+    "Agent": "/api-reference/integrations/gemini/packages/flyteplugins.gemini/agent/"
+  },
+  "methods": {
+    "flyteplugins.gemini.function_tool": "/api-reference/integrations/gemini/packages/flyteplugins.gemini/#function_tool",
+    "function_tool": "/api-reference/integrations/gemini/packages/flyteplugins.gemini/#function_tool",
+    "flyteplugins.gemini.run_agent": "/api-reference/integrations/gemini/packages/flyteplugins.gemini/#run_agent",
+    "run_agent": "/api-reference/integrations/gemini/packages/flyteplugins.gemini/#run_agent"
+  }
+}

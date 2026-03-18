@@ -1,6 +1,6 @@
 ---
 title: Scheduler
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -13,6 +13,8 @@ Configuration for the scheduler pod
 
 
 
+## Parameters
+
 ```python
 class Scheduler(
     image: typing.Optional[str],
@@ -21,6 +23,6 @@ class Scheduler(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `image` | `typing.Optional[str]` | Custom image to use. If ``None``, will use the same image the task was registered with. Optional, defaults to None. The image must have ``dask[distributed]`` installed and should have the same Python environment as the rest of the cluster (job runner pod + worker pods). |
+| `image` | `typing.Optional[str]` | Custom image to use. If `None`, will use the same image the task was registered with. Optional, defaults to None. The image must have `dask[distributed]` installed and should have the same Python environment as the rest of the cluster (job runner pod + worker pods). |
 | `resources` | `typing.Optional[flyte._resources.Resources]` | Resources to request for the scheduler pod. Optional, defaults to None. |
 

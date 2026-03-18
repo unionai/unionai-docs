@@ -65,7 +65,6 @@ flyte:
 > [!NOTE]
 > V2 executions resolve namespaces on the data plane side and do not require control plane namespace mapping configuration.
 {{< /variant >}}
-
 ## How it works
 
 Namespace mapping controls several components:

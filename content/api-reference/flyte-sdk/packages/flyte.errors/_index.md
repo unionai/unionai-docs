@@ -1,6 +1,6 @@
 ---
 title: flyte.errors
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -34,6 +34,7 @@ unknown error.
 | [`InvalidPackageError`](../flyte.errors/invalidpackageerror) | Raised when an invalid system package is detected during image build. |
 | [`LogsNotYetAvailableError`](../flyte.errors/logsnotyetavailableerror) | This error is raised when the logs are not yet available for a task. |
 | [`ModuleLoadError`](../flyte.errors/moduleloaderror) | This error is raised when the module cannot be loaded, either because it does not exist or because of a. |
+| [`NonRecoverableError`](../flyte.errors/nonrecoverableerror) | Raised when an error is encountered that is not recoverable. |
 | [`NotInTaskContextError`](../flyte.errors/notintaskcontexterror) | This error is raised when the user tries to access the task context outside of a task. |
 | [`OOMError`](../flyte.errors/oomerror) | This error is raised when the underlying task execution fails because of an out-of-memory error. |
 | [`OnlyAsyncIOSupportedError`](../flyte.errors/onlyasynciosupportederror) | This error is raised when the user tries to use sync IO in an async task. |

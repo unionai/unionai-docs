@@ -1,6 +1,6 @@
 ---
 title: ActionDetails
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,6 +12,8 @@ layout: py_api
 A class representing an action. It is used to manage the run of a task and its state on the remote Union API.
 
 
+
+## Parameters
 
 ```python
 class ActionDetails(

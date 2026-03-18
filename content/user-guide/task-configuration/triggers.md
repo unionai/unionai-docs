@@ -31,6 +31,8 @@ If you want full control over the trigger behavior, you can define a trigger usi
 
 ## `flyte.Trigger`
 
+For complete parameter documentation, see the [`Trigger`](../../api-reference/flyte-sdk/packages/flyte/trigger), [`Cron`](../../api-reference/flyte-sdk/packages/flyte/cron), and [`FixedRate`](../../api-reference/flyte-sdk/packages/flyte/fixedrate) API references.
+
 The `Trigger` class allows you to define custom triggers with full control over scheduling and execution behavior. It has the following signature:
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="dummy-trigger" lang="python">}}

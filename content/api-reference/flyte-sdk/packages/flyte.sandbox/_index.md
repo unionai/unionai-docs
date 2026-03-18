@@ -1,6 +1,6 @@
 ---
 title: flyte.sandbox
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -10,9 +10,9 @@ sidebar_expanded: true
 
 Sandbox utilities for running isolated code inside Flyte tasks.
 
-.. warning:: Experimental feature: alpha — APIs may change without notice.
+Warning: Experimental feature: alpha — APIs may change without notice.
 
-``flyte.sandbox`` provides two distinct sandboxing approaches:
+`flyte.sandbox` provides two distinct sandboxing approaches:
 
 ---
 
@@ -20,7 +20,7 @@ Sandbox utilities for running isolated code inside Flyte tasks.
     Runs pure Python *orchestration logic* (control flow, routing, aggregation)
     with zero overhead. The Monty runtime enforces strong restrictions:
     no imports, no IO, no network access, microsecond startup.  Used via
-    ``@env.sandbox.orchestrator`` or ``flyte.sandbox.orchestrator_from_str()``.
+    `@env.sandbox.orchestrator` or `flyte.sandbox.orchestrator_from_str()`.
 
     Sandboxed orchestrators are:
 
@@ -47,10 +47,10 @@ Sandbox utilities for running isolated code inside Flyte tasks.
 
 **2. Code sandbox** — arbitrary code in an isolated container
     Runs arbitrary Python scripts or shell commands inside an ephemeral Docker
-    container. The image is built on demand from declared ``packages`` and
-    ``system_packages``, executed once, then discarded. Network is blocked by
-    default (``block_network=True``), preventing outbound calls from untrusted
-    code.  Used via ``flyte.sandbox.create()``.
+    container. The image is built on demand from declared `packages` and
+    `system_packages`, executed once, then discarded. Network is blocked by
+    default (`block_network=True`), preventing outbound calls from untrusted
+    code.  Used via `flyte.sandbox.create()`.
 
     Three execution modes are supported:
 
@@ -208,18 +208,18 @@ carry over between runs.
 
 Three modes, mutually exclusive:
 
-- **Auto-IO mode** (``code`` provided, ``auto_io=True``, default): write
+- **Auto-IO mode** (`code` provided, `auto_io=True`, default): write
   just the business logic. Flyte auto-generates an argparse preamble so
   declared inputs are available as local variables, and writes declared
-  scalar outputs to ``/var/outputs/`` automatically. No boilerplate needed.
-- **Verbatim mode** (``code`` provided, ``auto_io=False``): run an
+  scalar outputs to `/var/outputs/` automatically. No boilerplate needed.
+- **Verbatim mode** (`code` provided, `auto_io=False`): run an
   arbitrary Python script as-is. CLI args for declared inputs are still
   forwarded, but the script handles all I/O itself (reading from
-  ``/var/inputs/``, writing to ``/var/outputs/&lt;name&gt;`` manually).
-- **Command mode** (``command`` provided): run any shell command directly,
+  `/var/inputs/`, writing to `/var/outputs/&lt;name&gt;` manually).
+- **Command mode** (`command` provided): run any shell command directly,
   e.g. a compiled binary or a shell pipeline.
 
-Call ``.run()`` on the returned sandbox to build the image and execute.
+Call `.run()` on the returned sandbox to build the image and execute.
 
 Example — auto-IO mode (default, no boilerplate)::
 
@@ -260,24 +260,24 @@ Example — command mode::
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `typing.Optional[str]` | Sandbox name. Derives task and image names. |
-| `code` | `typing.Optional[str]` | Python source to run (auto-IO or verbatim mode). Mutually exclusive with ``command``. - Primitive: ``int``, ``float``, ``str``, ``bool`` - Date/time: ``datetime.datetime``, ``datetime.timedelta`` - IO handles: ``flyte.io.File``   (bind-mounted at ``/var/inputs/&lt;name&gt;``; available as a path   string in auto-IO mode) - Primitive: ``int``, ``float``, ``str``, ``bool`` - Date/time: ``datetime.datetime`` (ISO-8601), ``datetime.timedelta`` - IO handles: ``flyte.io.File``   (user code must write the file to ``/var/outputs/&lt;name&gt;``) |
+| `code` | `typing.Optional[str]` | Python source to run (auto-IO or verbatim mode). Mutually exclusive with `command`. - Primitive: `int`, `float`, `str`, `bool` - Date/time: `datetime.datetime`, `datetime.timedelta` - IO handles: `flyte.io.File`   (bind-mounted at `/var/inputs/&lt;name&gt;`; available as a path   string in auto-IO mode) - Primitive: `int`, `float`, `str`, `bool` - Date/time: `datetime.datetime` (ISO-8601), `datetime.timedelta` - IO handles: `flyte.io.File`   (user code must write the file to `/var/outputs/&lt;name&gt;`) |
 | `inputs` | `typing.Optional[dict[str, type]]` | |
 | `outputs` | `typing.Optional[dict[str, type]]` | |
-| `command` | `typing.Optional[list[str]]` | Entrypoint command (command mode). Mutually exclusive with ``code``. |
-| `arguments` | `typing.Optional[list[str]]` | Arguments forwarded to ``command`` (command mode only). |
+| `command` | `typing.Optional[list[str]]` | Entrypoint command (command mode). Mutually exclusive with `code`. |
+| `arguments` | `typing.Optional[list[str]]` | Arguments forwarded to `command` (command mode only). |
 | `packages` | `typing.Optional[list[str]]` | Python packages to install via pip. |
 | `system_packages` | `typing.Optional[list[str]]` | System packages to install via apt. |
-| `additional_commands` | `typing.Optional[list[str]]` | Extra Dockerfile ``RUN`` commands. |
+| `additional_commands` | `typing.Optional[list[str]]` | Extra Dockerfile `RUN` commands. |
 | `resources` | `typing.Optional[flyte._resources.Resources]` | CPU / memory resources for the container. |
 | `image_config` | `typing.Optional[flyte.sandbox._code_sandbox.ImageConfig]` | Registry and Python version settings. |
 | `image_name` | `typing.Optional[str]` | Explicit image name, overrides the auto-generated one. |
 | `image` | `typing.Optional[str]` | Pre-built image URI. Skips the build step if provided. |
-| `auto_io` | `bool` | When ``True`` (default), Flyte wraps ``code`` with an auto-generated argparse preamble and output-writing epilogue so declared inputs are available as local variables and scalar outputs are collected automatically — no boilerplate needed. When ``False``, ``code`` is run verbatim and must handle all I/O itself. |
+| `auto_io` | `bool` | When `True` (default), Flyte wraps `code` with an auto-generated argparse preamble and output-writing epilogue so declared inputs are available as local variables and scalar outputs are collected automatically — no boilerplate needed. When `False`, `code` is run verbatim and must handle all I/O itself. |
 | `retries` | `int` | Number of task retries on failure. |
 | `timeout` | `typing.Optional[int]` | Task timeout in seconds. |
 | `env_vars` | `typing.Optional[dict[str, str]]` | Environment variables available inside the container. |
-| `secrets` | `typing.Optional[list]` | |
-| `cache` | `str` | Cache behaviour — ``"auto"``, ``"override"``, or ``"disable"``. |
+| `secrets` | `typing.Optional[list]` | Flyte `flyte.Secret` objects to mount. |
+| `cache` | `str` | Cache behaviour — `"auto"`, `"override"`, or `"disable"`. |
 
 #### orchestrate_local()
 
@@ -291,31 +291,31 @@ def orchestrate_local(
 ```
 One-shot local execution of a code string in the Monty sandbox.
 
-.. warning:: Experimental feature: alpha — APIs may change without notice.
+Warning: Experimental feature: alpha — APIs may change without notice.
 
-Sends the code + inputs to Monty and returns the result directly,
-without creating a ``TaskTemplate`` or going through the controller.
+    Sends the code + inputs to Monty and returns the result directly,
+    without creating a `TaskTemplate` or going through the controller.
 
-The **last expression** in *source* becomes the return value::
+    The **last expression** in *source* becomes the return value::
 
-    result = await sandbox.orchestrate_local(
-        "add(x, y) * 2",
-        inputs={"x": 1, "y": 2},
-        tasks=[add],
-    )
-    # → 6
+        result = await sandbox.orchestrate_local(
+            "add(x, y) * 2",
+            inputs={"x": 1, "y": 2},
+            tasks=[add],
+        )
+        # → 6
 
-Parameters
-----------
-source:
-    Python code string to execute in the sandbox.
-inputs:
-    Mapping of input names to their values.
-tasks:
-    List of external functions (tasks, durable ops) available inside the
-    sandbox. Each item's ``__name__`` is used as the key.
-timeout_ms:
-    Sandbox execution timeout in milliseconds.
+    Parameters
+    ----------
+    source:
+        Python code string to execute in the sandbox.
+    inputs:
+        Mapping of input names to their values.
+    tasks:
+        List of external functions (tasks, durable ops) available inside the
+        sandbox. Each item's `__name__` is used as the key.
+    timeout_ms:
+        Sandbox execution timeout in milliseconds.
 
 
 | Parameter | Type | Description |
@@ -342,43 +342,43 @@ def orchestrator_from_str(
 ```
 Create a reusable sandboxed task from a code string.
 
-.. warning:: Experimental feature: alpha — APIs may change without notice.
+Warning: Experimental feature: alpha — APIs may change without notice.
 
-The returned ``CodeTaskTemplate`` can be passed to ``flyte.run()``
-just like a decorated task.
+    The returned `CodeTaskTemplate` can be passed to `flyte.run()`
+    just like a decorated task.
 
-The **last expression** in *source* becomes the return value::
+    The **last expression** in *source* becomes the return value::
 
-    pipeline = sandbox.orchestrator_from_str(
-        "add(x, y) * 2",
-        inputs={"x": int, "y": int},
-        output=int,
-        tasks=[add],
-    )
-    result = flyte.run(pipeline, x=1, y=2)  # → 6
+        pipeline = sandbox.orchestrator_from_str(
+            "add(x, y) * 2",
+            inputs={"x": int, "y": int},
+            output=int,
+            tasks=[add],
+        )
+        result = flyte.run(pipeline, x=1, y=2)  # → 6
 
-Parameters
-----------
-source:
-    Python code string to execute in the sandbox.
-inputs:
-    Mapping of input names to their types.
-output:
-    The return type (default ``NoneType``).
-tasks:
-    List of external functions (tasks, durable ops) available inside the
-    sandbox. Each item's ``__name__`` is used as the key.
-name:
-    Task name (default ``"sandboxed-code"``).
-timeout_ms:
-    Sandbox execution timeout in milliseconds.
-cache:
-    Cache policy for the task.
-retries:
-    Number of retries on failure.
-image:
-    Docker image to use. If not provided, a default Debian image with
-    ``pydantic-monty`` is created automatically.
+    Parameters
+    ----------
+    source:
+        Python code string to execute in the sandbox.
+    inputs:
+        Mapping of input names to their types.
+    output:
+        The return type (default `NoneType`).
+    tasks:
+        List of external functions (tasks, durable ops) available inside the
+        sandbox. Each item's `__name__` is used as the key.
+    name:
+        Task name (default `"sandboxed-code"`).
+    timeout_ms:
+        Sandbox execution timeout in milliseconds.
+    cache:
+        Cache policy for the task.
+    retries:
+        Number of retries on failure.
+    image:
+        Docker image to use. If not provided, a default Debian image with
+        `pydantic-monty` is created automatically.
 
 
 | Parameter | Type | Description |

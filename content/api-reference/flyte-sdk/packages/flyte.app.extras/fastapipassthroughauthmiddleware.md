@@ -1,6 +1,6 @@
 ---
 title: FastAPIPassthroughAuthMiddleware
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -31,6 +31,8 @@ Thread Safety:
     authentication will not interfere with each other.
 
 
+
+## Parameters
 
 ```python
 class FastAPIPassthroughAuthMiddleware(

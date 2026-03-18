@@ -1,0 +1,14 @@
+{
+  "packages": {
+    "flyteplugins.bigquery": "/api-reference/integrations/bigquery/packages/flyteplugins.bigquery/"
+  },
+  "identifiers": {
+    "flyteplugins.bigquery.BigQueryConfig": "/api-reference/integrations/bigquery/packages/flyteplugins.bigquery/bigqueryconfig/",
+    "BigQueryConfig": "/api-reference/integrations/bigquery/packages/flyteplugins.bigquery/bigqueryconfig/",
+    "flyteplugins.bigquery.BigQueryConnector": "/api-reference/integrations/bigquery/packages/flyteplugins.bigquery/bigqueryconnector/",
+    "BigQueryConnector": "/api-reference/integrations/bigquery/packages/flyteplugins.bigquery/bigqueryconnector/",
+    "flyteplugins.bigquery.BigQueryTask": "/api-reference/integrations/bigquery/packages/flyteplugins.bigquery/bigquerytask/",
+    "BigQueryTask": "/api-reference/integrations/bigquery/packages/flyteplugins.bigquery/bigquerytask/"
+  },
+  "methods": {}
+}

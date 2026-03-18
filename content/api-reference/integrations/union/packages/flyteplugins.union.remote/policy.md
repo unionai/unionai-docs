@@ -12,6 +12,8 @@ layout: py_api
 Represents a Union RBAC Policy.
 
 
+## Parameters
+
 ```python
 class Policy(
     pb2: PolicyPb2,

@@ -1,6 +1,6 @@
 ---
 title: WandbSweep
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,6 +12,8 @@ layout: py_api
 Generates a Weights & Biases Sweep link.
 
 
+
+## Parameters
 
 ```python
 class WandbSweep(

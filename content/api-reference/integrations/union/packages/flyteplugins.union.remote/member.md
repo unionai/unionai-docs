@@ -12,6 +12,8 @@ layout: py_api
 Represents a Union organization member (user or application).
 
 
+## Parameters
+
 ```python
 class Member(
     pb2: EnrichedIdentity,

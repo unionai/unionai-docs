@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -11,29 +11,29 @@ sidebar_expanded: true
 | Class | Description |
 |-|-|
 | [`flyte.Cache`](../packages/flyte/cache) |Cache configuration for a task. |
-| [`flyte.Cron`](../packages/flyte/cron) |This class defines a Cron automation that can be associated with a Trigger in Flyte. |
+| [`flyte.Cron`](../packages/flyte/cron) |Cron-based automation schedule for use with `Trigger`. |
 | [`flyte.Device`](../packages/flyte/device) |Represents a device type, its quantity and partition if applicable. |
 | [`flyte.Environment`](../packages/flyte/environment) | |
-| [`flyte.FixedRate`](../packages/flyte/fixedrate) |This class defines a FixedRate automation that can be associated with a Trigger in Flyte. |
-| [`flyte.Image`](../packages/flyte/image) |This is a representation of Container Images, which can be used to create layered images programmatically. |
+| [`flyte.FixedRate`](../packages/flyte/fixedrate) |Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
+| [`flyte.Image`](../packages/flyte/image) |Container image specification built using a fluent, two-step pattern:. |
 | [`flyte.ImageBuild`](../packages/flyte/imagebuild) |Result of an image build operation. |
 | [`flyte.PodTemplate`](../packages/flyte/podtemplate) |Custom PodTemplate specification for a Task. |
 | [`flyte.Resources`](../packages/flyte/resources) |Resources such as CPU, Memory, and GPU that can be allocated to a task. |
 | [`flyte.RetryStrategy`](../packages/flyte/retrystrategy) |Retry strategy for the task or task environment. |
-| [`flyte.ReusePolicy`](../packages/flyte/reusepolicy) |ReusePolicy can be used to configure a task to reuse the environment. |
+| [`flyte.ReusePolicy`](../packages/flyte/reusepolicy) |Configure a task environment for container reuse across multiple task invocations. |
 | [`flyte.Secret`](../packages/flyte/secret) |Secrets are used to inject sensitive information into tasks or image build context. |
-| [`flyte.TaskEnvironment`](../packages/flyte/taskenvironment) |Environment class to define a new environment for a set of tasks. |
+| [`flyte.TaskEnvironment`](../packages/flyte/taskenvironment) |Define an execution environment for a set of tasks. |
 | [`flyte.Timeout`](../packages/flyte/timeout) |Timeout class to define a timeout for a task. |
-| [`flyte.Trigger`](../packages/flyte/trigger) |This class defines specification of a Trigger, that can be associated with any Flyte V2 task. |
+| [`flyte.Trigger`](../packages/flyte/trigger) |Specification for a scheduled trigger that can be associated with any Flyte task. |
 | [`flyte.app.AppEndpoint`](../packages/flyte.app/appendpoint) |Embed an upstream app's endpoint as an app parameter. |
-| [`flyte.app.AppEnvironment`](../packages/flyte.app/appenvironment) | |
+| [`flyte.app.AppEnvironment`](../packages/flyte.app/appenvironment) |Configure a long-running app environment for APIs, dashboards, or model servers. |
 | [`flyte.app.ConnectorEnvironment`](../packages/flyte.app/connectorenvironment) | |
 | [`flyte.app.Domain`](../packages/flyte.app/domain) |Subdomain to use for the domain. |
 | [`flyte.app.Link`](../packages/flyte.app/link) |Custom links to add to the app. |
 | [`flyte.app.Parameter`](../packages/flyte.app/parameter) |Parameter for application. |
 | [`flyte.app.Port`](../packages/flyte.app/port) | |
 | [`flyte.app.RunOutput`](../packages/flyte.app/runoutput) |Use a run's output for app parameters. |
-| [`flyte.app.Scaling`](../packages/flyte.app/scaling) | |
+| [`flyte.app.Scaling`](../packages/flyte.app/scaling) |Controls replica count and autoscaling behavior for app environments. |
 | [`flyte.app.Timeouts`](../packages/flyte.app/timeouts) |Timeout configuration for the application. |
 | [`flyte.app.extras.FastAPIAppEnvironment`](../packages/flyte.app.extras/fastapiappenvironment) | |
 | [`flyte.app.extras.FastAPIPassthroughAuthMiddleware`](../packages/flyte.app.extras/fastapipassthroughauthmiddleware) |FastAPI middleware that automatically sets Flyte auth metadata from request headers. |
@@ -59,6 +59,7 @@ sidebar_expanded: true
 | [`flyte.errors.InvalidPackageError`](../packages/flyte.errors/invalidpackageerror) |Raised when an invalid system package is detected during image build. |
 | [`flyte.errors.LogsNotYetAvailableError`](../packages/flyte.errors/logsnotyetavailableerror) |This error is raised when the logs are not yet available for a task. |
 | [`flyte.errors.ModuleLoadError`](../packages/flyte.errors/moduleloaderror) |This error is raised when the module cannot be loaded, either because it does not exist or because of a. |
+| [`flyte.errors.NonRecoverableError`](../packages/flyte.errors/nonrecoverableerror) |Raised when an error is encountered that is not recoverable. |
 | [`flyte.errors.NotInTaskContextError`](../packages/flyte.errors/notintaskcontexterror) |This error is raised when the user tries to access the task context outside of a task. |
 | [`flyte.errors.OOMError`](../packages/flyte.errors/oomerror) |This error is raised when the underlying task execution fails because of an out-of-memory error. |
 | [`flyte.errors.OnlyAsyncIOSupportedError`](../packages/flyte.errors/onlyasynciosupportederror) |This error is raised when the user tries to use sync IO in an async task. |
@@ -80,7 +81,7 @@ sidebar_expanded: true
 | [`flyte.extend.AsyncFunctionTaskTemplate`](../packages/flyte.extend/asyncfunctiontasktemplate) |A task template that wraps an asynchronous functions. |
 | [`flyte.extend.ImageBuildEngine`](../packages/flyte.extend/imagebuildengine) |ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
 | [`flyte.extend.TaskTemplate`](../packages/flyte.extend/tasktemplate) |Task template is a template for a task that can be executed. |
-| [`flyte.extras.BatchStats`](../packages/flyte.extras/batchstats) |Monitoring statistics exposed by :attr:`DynamicBatcher. |
+| [`flyte.extras.BatchStats`](../packages/flyte.extras/batchstats) |Monitoring statistics exposed by `DynamicBatcher. |
 | [`flyte.extras.ContainerTask`](../packages/flyte.extras/containertask) |This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
 | [`flyte.extras.DynamicBatcher`](../packages/flyte.extras/dynamicbatcher) |Batches records from many concurrent producers and runs them through. |
 | [`flyte.extras.Prompt`](../packages/flyte.extras/prompt) |Simple prompt record with built-in token estimation. |
@@ -140,7 +141,7 @@ sidebar_expanded: true
 | Protocol | Description |
 |-|-|
 | [`flyte.AppHandle`](../packages/flyte/apphandle) |Protocol defining the common interface between local and remote app handles. |
-| [`flyte.CachePolicy`](../packages/flyte/cachepolicy) | |
+| [`flyte.CachePolicy`](../packages/flyte/cachepolicy) |Protocol for custom cache version strategies. |
 | [`flyte.Link`](../packages/flyte/link) | |
 | [`flyte.extend.ImageBuilder`](../packages/flyte.extend/imagebuilder) | |
 | [`flyte.extend.ImageChecker`](../packages/flyte.extend/imagechecker) | |

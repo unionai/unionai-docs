@@ -1,0 +1,12 @@
+{
+  "packages": {
+    "flyteplugins.databricks": "/api-reference/integrations/databricks/packages/flyteplugins.databricks/"
+  },
+  "identifiers": {
+    "flyteplugins.databricks.Databricks": "/api-reference/integrations/databricks/packages/flyteplugins.databricks/databricks/",
+    "Databricks": "/api-reference/integrations/databricks/packages/flyteplugins.databricks/databricks/",
+    "flyteplugins.databricks.DatabricksConnector": "/api-reference/integrations/databricks/packages/flyteplugins.databricks/databricksconnector/",
+    "DatabricksConnector": "/api-reference/integrations/databricks/packages/flyteplugins.databricks/databricksconnector/"
+  },
+  "methods": {}
+}
