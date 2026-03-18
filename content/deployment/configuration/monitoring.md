@@ -198,6 +198,91 @@ monitoring:
 
 For the full set of configurable values, see the [kube-prometheus-stack chart documentation](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack).
 
+## Dashboards
+
+When `monitoring.enabled` is `true`, a pre-built Grafana dashboard is included:
+
+- **Dataplane Overview** — operator health, executor status, propeller performance, K8s API health, infrastructure metrics
+
+The dashboard is delivered as a ConfigMap with the `grafana_dashboard: "1"` label, auto-discovered by the Grafana sidecar.
+
+To add custom dashboards, create a ConfigMap with the same label in the data plane namespace:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-custom-dashboard
+  labels:
+    grafana_dashboard: "1"
+data:
+  my-dashboard.json: |
+    { ... Grafana dashboard JSON ... }
+```
+
+## Alerting
+
+### Enabling alerts
+
+Enable alerting rules in your data plane values:
+
+```yaml
+monitoring:
+  alerting:
+    enabled: true
+```
+
+This creates PrometheusRule alerting groups that Prometheus evaluates and forwards to AlertManager.
+
+### Alert rules
+
+| Alert | Severity | Fires when |
+|-------|----------|------------|
+| ServiceDown | critical | Any deployment has 0 available replicas |
+| HighRestartRate | warning | > 5 container restarts in 1 hour |
+| PropellerRoundLatencyHigh | warning | Propeller round p99 > 5s for 10 min |
+| PropellerQueueBacklog | warning | Propeller queue depth > 100 for 10 min |
+| OperatorWorkQueueErrors | warning | Work queue failure rate > 0.1/s for 10 min |
+| PropellerRoundErrors | warning | Round error rate > 10% for 10 min |
+| PropellerWfUpdateFailures | warning | etcd write failures > 0.1/s for 10 min |
+| HandlerPanic | critical | Any handler panic in the last hour |
+
+### Configuring notifications
+
+Configure AlertManager to route alerts to your notification channels:
+
+```yaml
+monitoring:
+  alertmanager:
+    enabled: true
+    config:
+      route:
+        receiver: slack
+      receivers:
+        - name: slack
+          slack_configs:
+            - api_url: "https://hooks.slack.com/services/..."
+              channel: "#alerts"
+```
+
+If you are using Grafana's built-in alerting, configure a webhook receiver to forward alerts to Grafana:
+
+```yaml
+monitoring:
+  alertmanager:
+    enabled: true
+    config:
+      route:
+        receiver: grafana
+      receivers:
+        - name: grafana
+          webhook_configs:
+            - url: "http://monitoring-grafana.<NAMESPACE>.svc.cluster.local/api/alertmanager/grafana/api/v2/alerts"
+              send_resolved: true
+```
+
+Then configure contact points in Grafana under **Alerting → Contact points**.
+
 ## Scraping Union services from your own Prometheus
 
 If you already run Prometheus in your cluster, you can scrape {{< key product_name >}} data plane services for operational visibility. All services expose metrics on standard ports.
