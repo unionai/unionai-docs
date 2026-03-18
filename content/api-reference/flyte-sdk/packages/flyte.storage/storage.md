@@ -1,6 +1,6 @@
 ---
 title: Storage
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,6 +12,8 @@ layout: py_api
 Data storage configuration that applies across any provider.
 
 
+
+## Parameters
 
 ```python
 class Storage(

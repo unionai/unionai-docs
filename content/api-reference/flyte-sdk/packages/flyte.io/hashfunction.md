@@ -1,6 +1,6 @@
 ---
 title: HashFunction
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -28,6 +28,8 @@ A hash method that wraps a user-provided function to compute hashes.
         _value: The most recently computed hash value.
     
 
+
+## Parameters
 
 ```python
 class HashFunction(

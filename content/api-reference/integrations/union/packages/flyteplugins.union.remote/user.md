@@ -12,6 +12,8 @@ layout: py_api
 Represents a Union user.
 
 
+## Parameters
+
 ```python
 class User(
     pb2: UserPb2,

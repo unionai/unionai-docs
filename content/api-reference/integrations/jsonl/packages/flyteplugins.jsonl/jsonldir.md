@@ -1,6 +1,6 @@
 ---
 title: JsonlDir
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,32 +11,34 @@ layout: py_api
 
 A directory of sharded JSONL files.
 
-Provides transparent iteration across shards on read and automatic shard
-rotation on write. Inherits all :class:`Dir` capabilities (remote storage,
-walk, download, etc.).
+    Provides transparent iteration across shards on read and automatic shard
+    rotation on write. Inherits all `Dir` capabilities (remote storage,
+    walk, download, etc.).
 
-Shard files are named ``part-00000.jsonl`` (or ``.jsonl.zst`` for
-compressed shards), zero-padded to 5 digits and sorted alphabetically
-on read. Mixed compression within a single directory is supported.
+    Shard files are named `part-00000.jsonl` (or `.jsonl.zst` for
+    compressed shards), zero-padded to 5 digits and sorted alphabetically
+    on read. Mixed compression within a single directory is supported.
 
-Example (Async read)::
+    Example (Async read)::
 
-    @env.task
-    async def process(d: JsonlDir):
-        async for record in d.iter_records():
-            print(record)
+        @env.task
+        async def process(d: JsonlDir):
+            async for record in d.iter_records():
+                print(record)
 
-Example (Async write)::
+    Example (Async write)::
 
-    @env.task
-    async def create() -&gt; JsonlDir:
-        d = JsonlDir.new_remote("output_shards")
-        async with d.writer(max_records_per_shard=1000) as w:
-            for i in range(5000):
-                await w.write({"id": i})
-        return d
+        @env.task
+        async def create() -&gt; JsonlDir:
+            d = JsonlDir.new_remote("output_shards")
+            async with d.writer(max_records_per_shard=1000) as w:
+                for i in range(5000):
+                    await w.write({"id": i})
+            return d
+    
 
 
+## Parameters
 
 ```python
 class JsonlDir(
@@ -94,8 +96,8 @@ validated to form a valid model.
 | [`schema_match()`](#schema_match) | Internal: Check if incoming schema matches Dir schema. |
 | [`walk()`](#walk) | Asynchronously walk through the directory and yield File objects. |
 | [`walk_sync()`](#walk_sync) | Synchronously walk through the directory and yield File objects. |
-| [`writer()`](#writer) | Async context manager returning a :class:`JsonlDirWriter`. |
-| [`writer_sync()`](#writer_sync) | Sync context manager returning a :class:`JsonlDirWriterSync`. |
+| [`writer()`](#writer) | Async context manager returning a `JsonlDirWriter`. |
+| [`writer_sync()`](#writer_sync) | Sync context manager returning a `JsonlDirWriterSync`. |
 
 
 ### download()
@@ -438,7 +440,7 @@ Async generator that yields Arrow RecordBatches across all shards.
 | Parameter | Type | Description |
 |-|-|-|
 | `batch_size` | `int` | Max records per RecordBatch (default 65536). |
-| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | ``"raise"`` (default), ``"skip"``, or a callable. |
+| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | `"raise"` (default), `"skip"`, or a callable. |
 
 ### iter_arrow_batches_sync()
 
@@ -455,7 +457,7 @@ Sync generator that yields Arrow RecordBatches across all shards.
 | Parameter | Type | Description |
 |-|-|-|
 | `batch_size` | `int` | Max records per RecordBatch (default 65536). |
-| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | ``"raise"`` (default), ``"skip"``, or a callable. |
+| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | `"raise"` (default), `"skip"`, or a callable. |
 
 ### iter_batches()
 
@@ -474,7 +476,7 @@ Async generator that yields lists of records in batches.
 | Parameter | Type | Description |
 |-|-|-|
 | `batch_size` | `int` | Max records per batch (default 1000). |
-| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | ``"raise"`` (default), ``"skip"``, or a callable. |
+| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | `"raise"` (default), `"skip"`, or a callable. |
 | `prefetch` | `bool` | Overlap next-shard I/O with current-shard processing. |
 | `queue_size` | `int` | Memory safety bound on the read-ahead buffer. |
 
@@ -493,7 +495,7 @@ Sync generator that yields lists of records in batches.
 | Parameter | Type | Description |
 |-|-|-|
 | `batch_size` | `int` | Max records per batch (default 1000). |
-| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | ``"raise"`` (default), ``"skip"``, or a callable. |
+| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | `"raise"` (default), `"skip"`, or a callable. |
 
 ### iter_records()
 
@@ -515,7 +517,7 @@ than one shard in memory.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | ``"raise"`` (default), ``"skip"``, or a callable ``(line_number, raw_line, exception) -&gt; None``. |
+| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | `"raise"` (default), `"skip"`, or a callable `(line_number, raw_line, exception) -&gt; None`. |
 | `prefetch` | `bool` | Overlap next-shard network I/O with current-shard processing for higher throughput. |
 | `queue_size` | `int` | Memory safety bound on the read-ahead buffer (default 8192). |
 
@@ -796,7 +798,7 @@ def writer(
     compression_level: int,
 ) -> AsyncGenerator[JsonlDirWriter, None]
 ```
-Async context manager returning a :class:`JsonlDirWriter`.
+Async context manager returning a `JsonlDirWriter`.
 
 Scans the directory for existing shards and starts writing from the
 next available index, so appending to an existing directory is safe.
@@ -805,11 +807,11 @@ next available index, so appending to an existing directory is safe.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `shard_extension` | `str` | File extension (e.g. ``.jsonl`` or ``.jsonl.zst``). |
+| `shard_extension` | `str` | File extension (e.g. `.jsonl` or `.jsonl.zst`). |
 | `max_records_per_shard` | `int \| None` | Roll after this many records (None = no limit). |
 | `max_bytes_per_shard` | `int` | Roll after this many uncompressed bytes (default 256 MB). |
 | `flush_bytes` | `int` | Buffer flush threshold in bytes (default 1 MB). |
-| `compression_level` | `int` | Zstd level (default 3, only for ``.jsonl.zst``). |
+| `compression_level` | `int` | Zstd level (default 3, only for `.jsonl.zst`). |
 
 ### writer_sync()
 
@@ -822,9 +824,9 @@ def writer_sync(
     compression_level: int,
 ) -> Generator[JsonlDirWriterSync, None, None]
 ```
-Sync context manager returning a :class:`JsonlDirWriterSync`.
+Sync context manager returning a `JsonlDirWriterSync`.
 
-See :meth:`writer` for argument descriptions.
+See `writer` for argument descriptions.
 
 
 | Parameter | Type | Description |

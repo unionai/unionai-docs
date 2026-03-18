@@ -1,6 +1,6 @@
 ---
 title: ImageConfig
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,6 +11,8 @@ layout: py_api
 
 Configuration for Docker image building at runtime.
 
+
+## Parameters
 
 ```python
 class ImageConfig(

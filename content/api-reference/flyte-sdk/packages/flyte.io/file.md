@@ -1,6 +1,6 @@
 ---
 title: File
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -147,6 +147,8 @@ async def pass_through(file: File) -> File:
 ```
 
 
+
+## Parameters
 
 ```python
 class File(
@@ -469,7 +471,7 @@ def named_remote(
 ```
 Create a File reference whose remote path is derived deterministically from *name*.
 
-Unlike :meth:`new_remote`, which generates a random path on every call, this method
+Unlike `new_remote`, which generates a random path on every call, this method
 produces the same path for the same *name* within a given task execution. This makes
 it safe across retries: the first attempt uploads to the path and subsequent retries
 resolve to the identical location without re-uploading.

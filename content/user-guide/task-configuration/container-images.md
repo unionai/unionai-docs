@@ -28,37 +28,9 @@ This works well if you have a pre-built image available in a public registry lik
 
 You can also construct an image programmatically using the `flyte.Image` object.
 
-The `flyte.Image` object provides a fluent interface for building container images with specific dependencies.
+The `flyte.Image` object provides a fluent interface for building container images: start with a `from_*` base constructor, then customize with `with_*` methods. Each method returns a new immutable `Image`.
 
-You start building your image with on of the `from_` methods:
-
-* `[[Image.from_base()]]`: Start from a pre-built image (Note: The image should be accessible to the image builder).
-* `[[Image.from_debian_base()]]`: Start from a [Debian](https://www.debian.org/) based base image, that contains flyte already.
-* `[[Image.from_uv_script()]]`: Start with a new image build from a [uv script](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies), slower but easier.
-
-You can then layer on additional components using the `with_` methods:
-
-* `[[Image.with_apt_packages()]]`: Add Debian packages to the image (e.g. apt-get ...).
-* `[[Image.with_commands()]]`: Add commands to run in the image (e.g. chmod a+x ... / curl ... / wget).
-* `[[Image.with_dockerignore()]]`: Specify a `.dockerignore` file that will be respected durin image build.
-* `[[Image.with_env_vars()]]`: Set environment variables in the image.
-* `[[Image.with_pip_packages()]]`: Add Python packages to the image (installed via uv pip install ...)
-* `[[Image.with_requirements()]]`: Specify a requirements.txt file (all packages will be installed).
-* `[[Image.with_source_file()]]`: Specify a source file to include in the image (the file will be copied).
-* `[[Image.with_source_folder()]]`: Specify a source folder to include in the image (entire folder will be copied).
-* `[[Image.with_uv_project()]]`: Use this with `pyproject.toml` or `uv.lock` based projects.
-* `[[Image.with_poetry_project()]]`: Create a new image with the specified `poetry.lock`
-* `[[Image.with_workdir()]]`: Specify the working directory for the image.
-
-You can also specify an image in one shot (with no possibility of layering) with:
-
-* `[[Image.from_dockerfile()]]`: Build the final image from a single Dockerfile. (Useful incase of an existing dockerfile).
-
-Additionally, the `Image` class provides:
-
-* `[[Image.clone()]]`: Clone an existing image. (Note: Every operation with_* always clones, every image is immutable. Clone is useful if you need to make a new named image).
-* `[[Image.validate()]]`: Validate the image configuration.
-* `[[Image.with_local_v2()]]`: Does not add a layer, instead it overrides any existing builder configuration and builds the image locally. See [Image building](#image-building) for more details.
+For a complete list of all available methods and their parameters, see the [`Image` API reference](../../api-reference/flyte-sdk/packages/flyte/image).
 
 Here are some examples of the most common patterns for building images with `flyte.Image`.
 

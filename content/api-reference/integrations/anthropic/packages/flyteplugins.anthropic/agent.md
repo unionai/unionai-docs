@@ -1,6 +1,6 @@
 ---
 title: Agent
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -19,14 +19,16 @@ A Claude agent configuration.
             identification only; not sent to the API.
         instructions: The system prompt passed to Claude on every turn.
             Describes the agent's role, tone, and constraints.
-        model: The Claude model ID to use, e.g. ``"claude-sonnet-4-20250514"``.
-        tools: List of ``FunctionTool`` instances the agent can invoke.
-            Create tools with ``function_tool()``.
+        model: The Claude model ID to use, e.g. `"claude-sonnet-4-20250514"`.
+        tools: List of `FunctionTool` instances the agent can invoke.
+            Create tools with `function_tool()`.
         max_tokens: Maximum number of tokens in each Claude response.
         max_iterations: Maximum number of tool-call / response cycles before
-            ``run_agent`` returns with a timeout message.
+            `run_agent` returns with a timeout message.
     
 
+
+## Parameters
 
 ```python
 class Agent(

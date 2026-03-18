@@ -37,6 +37,8 @@ Represents a Union API Key (OAuth Application).
     
 
 
+## Parameters
+
 ```python
 class ApiKey(
     pb2: App,

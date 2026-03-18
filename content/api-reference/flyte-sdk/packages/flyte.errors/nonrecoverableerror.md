@@ -1,6 +1,6 @@
 ---
 title: NonRecoverableError
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,6 +12,8 @@ layout: py_api
 Raised when an error is encountered that is not recoverable. Retries are irrelevant.
 
 
+
+## Parameters
 
 ```python
 class NonRecoverableError(

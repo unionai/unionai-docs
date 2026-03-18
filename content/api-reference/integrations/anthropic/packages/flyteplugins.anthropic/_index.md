@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.anthropic
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -15,9 +15,9 @@ full Flyte observability, retries, and caching.
 
 Key features:
 
-- Use any Flyte task as a Claude tool via ``function_tool``
-- Full agent loop with automatic tool dispatch via ``run_agent``
-- Configurable agent via ``Agent`` (model, system prompt, tools, iteration limits)
+- Use any Flyte task as a Claude tool via `function_tool`
+- Full agent loop with automatic tool dispatch via `run_agent`
+- Configurable agent via `Agent` (model, system prompt, tools, iteration limits)
 
 Basic usage example:
 

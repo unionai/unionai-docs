@@ -1,6 +1,6 @@
 ---
 title: UnionRpcError
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,6 +12,8 @@ layout: py_api
 This error is raised when communication with the Union server fails.
 
 
+
+## Parameters
 
 ```python
 class UnionRpcError(

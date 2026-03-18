@@ -1,6 +1,6 @@
 ---
 title: flyte.config
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -21,7 +21,7 @@ sidebar_expanded: true
 | Method | Description |
 |-|-|
 | [`auto()`](#auto) | Automatically constructs the Config Object. |
-| [`set_if_exists()`](#set_if_exists) | Given a dict ``d`` sets the key ``k`` with value of config ``v``, if the config value ``v`` is set. |
+| [`set_if_exists()`](#set_if_exists) | Given a dict `d` sets the key `k` with value of config `v`, if the config value `v` is set. |
 
 
 ## Methods
@@ -61,7 +61,7 @@ def set_if_exists(
     val: typing.Any,
 ) -> dict
 ```
-Given a dict ``d`` sets the key ``k`` with value of config ``v``, if the config value ``v`` is set
+Given a dict `d` sets the key `k` with value of config `v`, if the config value `v` is set
 and return the updated dictionary.
 
 

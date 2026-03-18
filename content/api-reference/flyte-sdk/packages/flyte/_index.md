@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -18,27 +18,27 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | Class | Description |
 |-|-|
 | [`Cache`](../flyte/cache) | Cache configuration for a task. |
-| [`Cron`](../flyte/cron) | This class defines a Cron automation that can be associated with a Trigger in Flyte. |
+| [`Cron`](../flyte/cron) | Cron-based automation schedule for use with `Trigger`. |
 | [`Device`](../flyte/device) | Represents a device type, its quantity and partition if applicable. |
 | [`Environment`](../flyte/environment) |  |
-| [`FixedRate`](../flyte/fixedrate) | This class defines a FixedRate automation that can be associated with a Trigger in Flyte. |
-| [`Image`](../flyte/image) | This is a representation of Container Images, which can be used to create layered images programmatically. |
+| [`FixedRate`](../flyte/fixedrate) | Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
+| [`Image`](../flyte/image) | Container image specification built using a fluent, two-step pattern:. |
 | [`ImageBuild`](../flyte/imagebuild) | Result of an image build operation. |
 | [`PodTemplate`](../flyte/podtemplate) | Custom PodTemplate specification for a Task. |
 | [`Resources`](../flyte/resources) | Resources such as CPU, Memory, and GPU that can be allocated to a task. |
 | [`RetryStrategy`](../flyte/retrystrategy) | Retry strategy for the task or task environment. |
-| [`ReusePolicy`](../flyte/reusepolicy) | ReusePolicy can be used to configure a task to reuse the environment. |
+| [`ReusePolicy`](../flyte/reusepolicy) | Configure a task environment for container reuse across multiple task invocations. |
 | [`Secret`](../flyte/secret) | Secrets are used to inject sensitive information into tasks or image build context. |
-| [`TaskEnvironment`](../flyte/taskenvironment) | Environment class to define a new environment for a set of tasks. |
+| [`TaskEnvironment`](../flyte/taskenvironment) | Define an execution environment for a set of tasks. |
 | [`Timeout`](../flyte/timeout) | Timeout class to define a timeout for a task. |
-| [`Trigger`](../flyte/trigger) | This class defines specification of a Trigger, that can be associated with any Flyte V2 task. |
+| [`Trigger`](../flyte/trigger) | Specification for a scheduled trigger that can be associated with any Flyte task. |
 
 ### Protocols
 
 | Protocol | Description |
 |-|-|
 | [`AppHandle`](../flyte/apphandle) | Protocol defining the common interface between local and remote app handles. |
-| [`CachePolicy`](../flyte/cachepolicy) |  |
+| [`CachePolicy`](../flyte/cachepolicy) | Protocol for custom cache version strategies. |
 | [`Link`](../flyte/link) |  |
 
 ### Methods
@@ -654,12 +654,12 @@ def run_python_script(
 Package and run a Python script on a remote Flyte cluster.
 
 Bundles the script into a Flyte code bundle and executes it remotely
-with the requested resources.  Unlike ``interactive_mode`` (which
-pickles the task), this approach uses an :class:`InternalTaskResolver`
-so the task can be properly debugged with ``debug=True``.
+with the requested resources.  Unlike `interactive_mode` (which
+pickles the task), this approach uses an `InternalTaskResolver`
+so the task can be properly debugged with `debug=True`.
 
-Project and domain are read from the init config (set via ``flyte.init()``
-or ``flyte.init_from_config()``), consistent with ``flyte.run()``.
+Project and domain are read from the init config (set via `flyte.init()`
+or `flyte.init_from_config()`), consistent with `flyte.run()`.
 
 
 
@@ -667,16 +667,16 @@ or ``flyte.init_from_config()``), consistent with ``flyte.run()``.
 |-|-|-|
 | `script` | `pathlib.Path` | Path to the Python script to run. |
 | `cpu` | `int` | Number of CPUs to request (default |
-| `memory` | `str` | Memory to request, e.g. ``"16Gi"`` (default |
+| `memory` | `str` | Memory to request, e.g. `"16Gi"` (default |
 | `gpu` | `int` | Number of GPUs to request (default |
-| `gpu_type` | `str` | GPU accelerator type Only used when ``gpu &gt; 0`` (default: ``"T4"``). |
-| `image` | `Union[Image, List[str], None]` | Container image to use. Accepts either  - A :class:`~flyte.Image` object for full control over the image. - A ``list[str]`` of pip package names to install on top of the default Debian base image (e.g. ``["torch", "transformers"]``). - ``None`` to use a plain Debian base image (default). |
+| `gpu_type` | `str` | GPU accelerator type Only used when `gpu &gt; 0` (default: `"T4"`). |
+| `image` | `Union[Image, List[str], None]` | Container image to use. Accepts either  - A `flyte.Image` object for full control over the image. - A `list[str]` of pip package names to install on top of the default Debian base image (e.g. `["torch", "transformers"]`). - `None` to use a plain Debian base image (default). |
 | `timeout` | `int` | Task timeout in seconds (default |
 | `extra_args` | `Optional[List[str]]` | Extra arguments passed to the script. |
 | `queue` | `Optional[str]` | Flyte queue / cluster override. |
 | `wait` | `bool` | If True, block until execution completes before returning. |
 | `name` | `Optional[str]` | Run name. If omitted, a random name is generated. |
-| `debug` | `bool` | If True, run the task as a VS Code debug task, starting a code-server in the container so you can connect via the UI to interactively debug/run the task. :return: A :class:`~flyte.remote.Run` handle for the remote execution.  Example::  import flyte from pathlib import Path  flyte.init(endpoint="my-cluster.example.com")  # With a list of packages (auto-builds image) run = flyte.run_python_script( Path("train.py"), gpu=1, gpu_type="A100", memory="64Gi", image=["torch", "transformers"], ) print(run.url)  # With a custom Image object img = flyte.Image.from_debian_base(name="my-img").with_pip_packages("numpy") run = flyte.run_python_script(Path("analysis.py"), image=img) |
+| `debug` | `bool` | If True, run the task as a VS Code debug task, starting a code-server in the container so you can connect via the UI to interactively debug/run the task. :return: A `flyte.remote.Run` handle for the remote execution.  Example::  import flyte from pathlib import Path  flyte.init(endpoint="my-cluster.example.com")  # With a list of packages (auto-builds image) run = flyte.run_python_script( Path("train.py"), gpu=1, gpu_type="A100", memory="64Gi", image=["torch", "transformers"], ) print(run.url)  # With a custom Image object img = flyte.Image.from_debian_base(name="my-img").with_pip_packages("numpy") run = flyte.run_python_script(Path("analysis.py"), image=img) |
 | `output_dir` | `Optional[str]` | |
 
 #### serve()
@@ -846,7 +846,7 @@ Create a serve context with custom configuration.
 This function allows you to customize how an app is served, including
 overriding environment variables, cluster pool, logging, and other deployment settings.
 
-Use ``mode="local"`` to serve the app on localhost (non-blocking) so you can
+Use `mode="local"` to serve the app on localhost (non-blocking) so you can
 immediately invoke tasks that call the app endpoint:
 
 ```python
@@ -858,7 +858,7 @@ local_app.is_active()  # wait for the server to start
 local_app.deactivate()
 ```
 
-Use ``mode="remote"`` (or omit *mode* when a Flyte client is configured) to
+Use `mode="remote"` (or omit *mode* when a Flyte client is configured) to
 deploy the app to the Flyte backend:
 
 ```python
@@ -878,7 +878,7 @@ print(f"App URL: {app.url}")
 
 | Parameter | Type | Description |
 |-|-|-|
-| `mode` | `ServeMode \| None` | "local" to run on localhost, "remote" to deploy to the Flyte backend. When ``None`` the mode is inferred from the current configuration. |
+| `mode` | `ServeMode \| None` | "local" to run on localhost, "remote" to deploy to the Flyte backend. When `None` the mode is inferred from the current configuration. |
 | `version` | `Optional[str]` | Optional version override for the app deployment |
 | `copy_style` | `CopyFiles` | |
 | `dry_run` | `bool` | |
@@ -891,9 +891,9 @@ print(f"App URL: {app.url}")
 | `log_format` | `LogFormat` | |
 | `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are considered interactive mode, while scripts are not. This is used to determine how the code bundle is created. This is used to determine if the app should be served in interactive mode or not. |
 | `copy_bundle_to` | `pathlib.Path \| None` | When dry_run is True, the bundle will be copied to this location if specified |
-| `deactivate_timeout` | `float \| None` | Timeout in seconds for waiting for the app to stop during ``deactivate(wait=True)``. Defaults to 6 s. |
-| `activate_timeout` | `float \| None` | Total timeout in seconds when polling the health-check endpoint during ``activate(wait=True)``. Defaults to 60 s. |
+| `deactivate_timeout` | `float \| None` | Timeout in seconds for waiting for the app to stop during `deactivate(wait=True)`. Defaults to 6 s. |
+| `activate_timeout` | `float \| None` | Total timeout in seconds when polling the health-check endpoint during `activate(wait=True)`. Defaults to 60 s. |
 | `health_check_timeout` | `float \| None` | Per-request timeout in seconds for each health-check HTTP request. Defaults to 2 s. |
 | `health_check_interval` | `float \| None` | Interval in seconds between consecutive health-check polls. Defaults to 1 s. |
-| `health_check_path` | `str \| None` | URL path used for the local health-check probe (e.g. ``"/healthz"``). Defaults to ``"/health"``. |
+| `health_check_path` | `str \| None` | URL path used for the local health-check probe (e.g. `"/healthz"`). Defaults to `"/health"`. |
 

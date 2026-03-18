@@ -1,6 +1,6 @@
 ---
 title: Databricks
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,12 +12,12 @@ layout: py_api
 Configuration for a Databricks task.
 
     Tasks configured with this will execute natively on Databricks as a
-    distributed PySpark job. Extends ``Spark`` with Databricks-specific
+    distributed PySpark job. Extends `Spark` with Databricks-specific
     cluster and authentication settings.
 
     Attributes:
         spark_conf: Spark configuration key-value pairs, e.g.
-            ``{"spark.executor.memory": "4g"}``.
+            `{"spark.executor.memory": "4g"}`.
         hadoop_conf: Hadoop configuration key-value pairs.
         executor_path: Path to the Python binary used for PySpark execution.
             Defaults to the interpreter path from the serialization context.
@@ -27,14 +27,16 @@ Configuration for a Databricks task.
         executor_pod: Pod template applied to the Spark executor pods.
         databricks_conf: Databricks job configuration dict compliant with
             the Databricks Jobs API v2.1 (also supports v2.0 use cases).
-            Typically includes ``new_cluster`` or ``existing_cluster_id``,
-            ``run_name``, and other job settings.
+            Typically includes `new_cluster` or `existing_cluster_id`,
+            `run_name`, and other job settings.
         databricks_instance: Domain name of your Databricks deployment,
-            e.g. ``"myorg.cloud.databricks.com"``.
+            e.g. `"myorg.cloud.databricks.com"`.
         databricks_token: Name of the Flyte secret containing the Databricks
             API token used for authentication.
     
 
+
+## Parameters
 
 ```python
 class Databricks(

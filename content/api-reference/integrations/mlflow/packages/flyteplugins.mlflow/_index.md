@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.mlflow
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -238,7 +238,7 @@ Works in two contexts:
 | `log_datasets` | `typing.Optional[bool]` | Whether to log datasets automatically. |
 | `autolog_kwargs` | `typing.Optional[dict[str, typing.Any]]` | Extra parameters passed to mlflow.autolog(). |
 | `link_host` | `typing.Optional[str]` | MLflow UI host for auto-generating task links. |
-| `link_template` | `typing.Optional[str]` | Custom URL template. Defaults to standard MLflow UI format. Available placeholders: ``{host}``, ``{experiment_id}``, ``{run_id}``. |
+| `link_template` | `typing.Optional[str]` | Custom URL template. Defaults to standard MLflow UI format. Available placeholders: `{host}`, `{experiment_id}`, `{run_id}`. |
 | `kwargs` | `**kwargs` | |
 
 #### mlflow_run()
@@ -265,15 +265,15 @@ def mlflow_run(
 Decorator to manage MLflow runs for Flyte tasks and plain functions.
 
 Handles both manual logging and autologging. For autologging, pass
-``autolog=True`` and optionally ``framework`` to select a specific
-framework (e.g. ``"sklearn"``).
+`autolog=True` and optionally `framework` to select a specific
+framework (e.g. `"sklearn"`).
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `_func` | `typing.Optional[~F]` | |
-| `run_mode` | `typing.Literal['auto', 'new', 'nested']` | "auto" (default), "new", or "nested". - "auto": reuse parent run if available, else create new. - "new": always create a new independent run. - "nested": create a new run nested under the parent via   ``mlflow.parentRunId`` tag. Works across processes/containers. |
+| `run_mode` | `typing.Literal['auto', 'new', 'nested']` | "auto" (default), "new", or "nested". - "auto": reuse parent run if available, else create new. - "new": always create a new independent run. - "nested": create a new run nested under the parent via   `mlflow.parentRunId` tag. Works across processes/containers. |
 | `tracking_uri` | `typing.Optional[str]` | MLflow tracking server URL. |
 | `experiment_name` | `typing.Optional[str]` | MLflow experiment name (exclusive with experiment_id). |
 | `experiment_id` | `typing.Optional[str]` | MLflow experiment ID (exclusive with experiment_name). |
@@ -284,7 +284,7 @@ framework (e.g. ``"sklearn"``).
 | `framework` | `typing.Optional[str]` | MLflow framework name for autolog (e.g. "sklearn", "pytorch"). |
 | `log_models` | `typing.Optional[bool]` | Whether to log models automatically (requires autolog). |
 | `log_datasets` | `typing.Optional[bool]` | Whether to log datasets automatically (requires autolog). |
-| `autolog_kwargs` | `typing.Optional[dict[str, typing.Any]]` | Extra parameters passed to ``mlflow.autolog()``. |
+| `autolog_kwargs` | `typing.Optional[dict[str, typing.Any]]` | Extra parameters passed to `mlflow.autolog()`. |
 | `rank` | `typing.Optional[int]` | Process rank for distributed training (only rank 0 logs). |
 | `kwargs` | `**kwargs` | |
 

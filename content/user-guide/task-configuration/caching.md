@@ -119,6 +119,8 @@ Use `salt` to vary cache keys without changing function logic:
 
 ## Cache policies
 
+For details on implementing custom cache policies, see the [`CachePolicy` protocol](../../api-reference/flyte-sdk/packages/flyte/cachepolicy) and [`Cache` class](../../api-reference/flyte-sdk/packages/flyte/cache) API references.
+
 For `behavior="auto"`, Flyte uses cache policies to generate version hashes.
 
 ### Function body policy (default)

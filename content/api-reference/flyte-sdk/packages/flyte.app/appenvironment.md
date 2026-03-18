@@ -1,6 +1,6 @@
 ---
 title: AppEnvironment
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -8,6 +8,23 @@ layout: py_api
 # AppEnvironment
 
 **Package:** `flyte.app`
+
+Configure a long-running app environment for APIs, dashboards, or model servers.
+
+Example:
+
+```python
+app_env = flyte.app.AppEnvironment(
+    name="my-api",
+    image=flyte.Image.from_debian_base(python="3.12").with_pip_packages("fastapi", "uvicorn"),
+    port=8080,
+    scaling=flyte.app.Scaling(replicas=(1, 3)),
+)
+```
+
+
+
+## Parameters
 
 ```python
 class AppEnvironment(
@@ -36,27 +53,27 @@ class AppEnvironment(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | Name of the app environment |
-| `depends_on` | `List[Environment]` | Environment dependencies to hint, so when you deploy the environment, the dependencies are also deployed. This is useful when you have a set of environments that depend on each other. |
+| `name` | `str` | Name of the app (required). Must be lowercase alphanumeric with hyphens. Inherited from Environment. |
+| `depends_on` | `List[Environment]` | Dependencies on other environments (deployed together). Inherited from Environment. |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | |
 | `description` | `Optional[str]` | |
-| `secrets` | `Optional[SecretRequest]` | Secrets to inject into the environment. |
-| `env_vars` | `Optional[Dict[str, str]]` | Environment variables to set for the environment. |
-| `resources` | `Optional[Resources]` | Resources to allocate for the environment. |
+| `secrets` | `Optional[SecretRequest]` | Secrets to inject. Inherited from Environment. |
+| `env_vars` | `Optional[Dict[str, str]]` | Environment variables. Inherited from Environment. |
+| `resources` | `Optional[Resources]` | Compute resources (CPU, memory, GPU). Inherited from Environment. |
 | `interruptible` | `bool` | |
-| `image` | `Union[str, Image, Literal['auto'], None]` | Docker image to use for the environment. If set to "auto", will use the default image. |
-| `type` | `Optional[str]` | Type of the environment. |
-| `port` | `int \| Port` | Port to use for the app server. |
-| `args` | `*args` | Arguments to pass to app. |
-| `command` | `Optional[Union[List[str], str]]` | Command to run in the app. |
-| `requires_auth` | `bool` | Whether the app requires authentication. |
-| `scaling` | `Scaling` | Scaling configuration for the app environment. |
-| `domain` | `Domain \| None` | Domain to use for the app. |
-| `links` | `List[Link]` | Links to other environments. |
-| `include` | `List[str]` | Files to include in the environment to run the app. |
-| `parameters` | `List[Parameter]` | Parameters to pass to the app environment. |
-| `cluster_pool` | `str` | Cluster pool to use for the app environment. |
-| `timeouts` | `Timeouts` | Timeout configuration for the app environment. |
+| `image` | `Union[str, Image, Literal['auto'], None]` | Docker image for the environment. Inherited from Environment. |
+| `type` | `Optional[str]` | App type identifier (e.g., `"streamlit"`, `"fastapi"`). When set, the platform may apply framework-specific defaults. |
+| `port` | `int \| Port` | Port for the app server. Default `8080`. Ports 8012, 8022, 8112, 9090, and 9091 are reserved and cannot be used. Can also be a `Port` object for advanced configuration. |
+| `args` | `*args` | Arguments passed to the app process. Can be a list of strings or a single string. Used for script-based apps (e.g., Streamlit's `["--server.port", "8080"]`). |
+| `command` | `Optional[Union[List[str], str]]` | Full command to run in the container. Alternative to `args` — use when you need to override the container's entrypoint entirely. |
+| `requires_auth` | `bool` | Whether the app endpoint requires authentication. Default `True`. Set to `False` for public endpoints. |
+| `scaling` | `Scaling` | `Scaling` object controlling replicas and autoscaling behavior. Default is `Scaling()` (scale-to-zero, max 1 replica). |
+| `domain` | `Domain \| None` | `Domain` object for custom domain configuration. |
+| `links` | `List[Link]` | List of `Link` objects for connecting to other environments. |
+| `include` | `List[str]` | List of additional file paths to bundle with the app (e.g., utility modules, config files, data files). |
+| `parameters` | `List[Parameter]` | List of `Parameter` objects for app inputs. Use `RunOutput` to connect app parameters to task outputs, or `AppEndpoint` to reference other app endpoints. |
+| `cluster_pool` | `str` | Cluster pool for scheduling. Default `"default"`. |
+| `timeouts` | `Timeouts` | `Timeouts` object for startup/health check timeouts. |
 
 ## Properties
 

@@ -12,6 +12,8 @@ layout: py_api
 Application client credentials for API key.
 
 
+## Parameters
+
 ```python
 class AppClientCredentials(
     endpoint: str,

@@ -1,6 +1,6 @@
 ---
 title: Spark
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -21,6 +21,8 @@ Attributes:
     executor_pod (Optional[PodTemplate]): Pod template for the executor pods.
 
 
+
+## Parameters
 
 ```python
 class Spark(
