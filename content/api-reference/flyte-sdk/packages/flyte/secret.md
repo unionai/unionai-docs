@@ -1,6 +1,6 @@
 ---
 title: Secret
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -30,6 +30,8 @@ async def my_task2():
 TODO: Add support for secret versioning (some stores) and secret groups (some stores) and mounting as files.
 
 
+
+## Parameters
 
 ```python
 class Secret(

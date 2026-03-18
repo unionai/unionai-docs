@@ -1,6 +1,6 @@
 ---
 title: RunOutput
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -45,6 +45,8 @@ run_output = RunOutput(type="file", task_name="env.my_task", task_version="xyz")
 ```
 
 
+
+## Parameters
 
 ```python
 class RunOutput(

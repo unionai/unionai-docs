@@ -1,6 +1,6 @@
 ---
 title: flyte.extras
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -27,7 +27,7 @@ This package provides various utilities that make it possible to build highly cu
 
 | Class | Description |
 |-|-|
-| [`BatchStats`](../flyte.extras/batchstats) | Monitoring statistics exposed by :attr:`DynamicBatcher. |
+| [`BatchStats`](../flyte.extras/batchstats) | Monitoring statistics exposed by `DynamicBatcher. |
 | [`ContainerTask`](../flyte.extras/containertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
 | [`DynamicBatcher`](../flyte.extras/dynamicbatcher) | Batches records from many concurrent producers and runs them through. |
 | [`Prompt`](../flyte.extras/prompt) | Simple prompt record with built-in token estimation. |

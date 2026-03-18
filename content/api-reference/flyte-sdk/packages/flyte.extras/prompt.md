@@ -1,6 +1,6 @@
 ---
 title: Prompt
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -13,12 +13,14 @@ Simple prompt record with built-in token estimation.
 
     This is a convenience type for common LLM use cases.  For richer
     prompt types (e.g. with system messages, metadata), define your own
-    dataclass implementing :class:`TokenEstimator`.
+    dataclass implementing `TokenEstimator`.
 
     Attributes:
         text: The prompt text.
     
 
+
+## Parameters
 
 ```python
 class Prompt(

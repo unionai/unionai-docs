@@ -1,6 +1,6 @@
 ---
 title: JsonlFile
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -9,15 +9,15 @@ layout: py_api
 
 **Package:** `flyteplugins.jsonl`
 
-A file type for JSONL (JSON Lines) files, backed by ``orjson`` for fast
+A file type for JSONL (JSON Lines) files, backed by `orjson` for fast
 serialisation.
 
 Provides streaming read and write methods that process one record at a time
-without loading the entire file into memory. Inherits all :class:`File`
+without loading the entire file into memory. Inherits all `File`
 capabilities (remote storage, upload/download, etc.).
 
 Supports zstd-compressed files transparently via extension detection
-(``.jsonl.zst`` / ``.jsonl.zstd``).
+(`.jsonl.zst` / `.jsonl.zstd`).
 
 Example (Async read - compressed or uncompressed):
 
@@ -51,6 +51,8 @@ def create() -> JsonlFile:
 ```
 
 
+
+## Parameters
 
 ```python
 class JsonlFile(
@@ -105,8 +107,8 @@ validated to form a valid model.
 | [`open_sync()`](#open_sync) | Synchronously open the file and return a file-like object. |
 | [`pre_init()`](#pre_init) | Internal: Pydantic validator to set default name from path. |
 | [`schema_match()`](#schema_match) | Internal: Check if incoming schema matches File schema. |
-| [`writer()`](#writer) | Async context manager returning a :class:`JsonlWriter` for streaming writes. |
-| [`writer_sync()`](#writer_sync) | Sync context manager returning a :class:`JsonlWriterSync` for streaming writes. |
+| [`writer()`](#writer) | Async context manager returning a `JsonlWriter` for streaming writes. |
+| [`writer_sync()`](#writer_sync) | Sync context manager returning a `JsonlWriterSync` for streaming writes. |
 
 
 ### download()
@@ -443,7 +445,7 @@ def named_remote(
 ```
 Create a File reference whose remote path is derived deterministically from *name*.
 
-Unlike :meth:`new_remote`, which generates a random path on every call, this method
+Unlike `new_remote`, which generates a random path on every call, this method
 produces the same path for the same *name* within a given task execution. This makes
 it safe across retries: the first attempt uploads to the path and subsequent retries
 resolve to the identical location without re-uploading.
@@ -639,16 +641,16 @@ def writer(
     compression_level: int,
 ) -> AsyncGenerator[JsonlWriter, None]
 ```
-Async context manager returning a :class:`JsonlWriter` for streaming writes.
+Async context manager returning a `JsonlWriter` for streaming writes.
 
-If the file path ends in ``.jsonl.zst``, output is zstd-compressed.
+If the file path ends in `.jsonl.zst`, output is zstd-compressed.
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `flush_bytes` | `int` | Buffer flush threshold in bytes (default 1 MB). |
-| `compression_level` | `int` | Zstd compression level (default 3). Only used for ``.jsonl.zst`` paths. Higher = smaller files, slower writes. |
+| `compression_level` | `int` | Zstd compression level (default 3). Only used for `.jsonl.zst` paths. Higher = smaller files, slower writes. |
 
 ### writer_sync()
 
@@ -658,14 +660,14 @@ def writer_sync(
     compression_level: int,
 ) -> Generator[JsonlWriterSync, None, None]
 ```
-Sync context manager returning a :class:`JsonlWriterSync` for streaming writes.
+Sync context manager returning a `JsonlWriterSync` for streaming writes.
 
-If the file path ends in ``.jsonl.zst``, output is zstd-compressed.
+If the file path ends in `.jsonl.zst`, output is zstd-compressed.
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `flush_bytes` | `int` | Buffer flush threshold in bytes (default 1 MB). |
-| `compression_level` | `int` | Zstd compression level (default 3). Only used for ``.jsonl.zst`` paths. Higher = smaller files, slower writes. |
+| `compression_level` | `int` | Zstd compression level (default 3). Only used for `.jsonl.zst` paths. Higher = smaller files, slower writes. |
 

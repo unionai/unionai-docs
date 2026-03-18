@@ -1,6 +1,6 @@
 ---
 title: DataFrame
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -25,6 +25,8 @@ The Flyte DataFrame object serves 2 main purposes:
 flyte.io.DataFrame and this is just a reference and will not materialize till you force `.all()` or `.iter()` etc
 
 
+
+## Parameters
 
 ```python
 class DataFrame(

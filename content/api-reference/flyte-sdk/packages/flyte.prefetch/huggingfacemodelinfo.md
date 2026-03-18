@@ -1,6 +1,6 @@
 ---
 title: HuggingFaceModelInfo
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,6 +12,8 @@ layout: py_api
 Information about a HuggingFace model to store.
 
 
+
+## Parameters
 
 ```python
 class HuggingFaceModelInfo(

@@ -1,6 +1,6 @@
 ---
 title: TokenBatcher
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,12 +11,12 @@ layout: py_api
 
 Token-aware batcher for LLM inference workloads.
 
-    A thin convenience wrapper around :class:`DynamicBatcher` that accepts
-    token-specific parameter names (``inference_fn``, ``token_estimator``,
-    ``target_batch_tokens``, etc.) and maps them to the base class.
+    A thin convenience wrapper around `DynamicBatcher` that accepts
+    token-specific parameter names (`inference_fn`, `token_estimator`,
+    `target_batch_tokens`, etc.) and maps them to the base class.
 
-    Also checks the :class:`TokenEstimator` protocol (``estimate_tokens()``)
-    in addition to :class:`CostEstimator` (``estimate_cost()``).
+    Also checks the `TokenEstimator` protocol (`estimate_tokens()`)
+    in addition to `CostEstimator` (`estimate_cost()`).
 
     Example::
 
@@ -28,6 +28,8 @@ Token-aware batcher for LLM inference workloads.
             result = await future
     
 
+
+## Parameters
 
 ```python
 class TokenBatcher(
@@ -67,7 +69,7 @@ class TokenBatcher(
 | Property | Type | Description |
 |-|-|-|
 | `is_running` | `None` | Whether the aggregation and processing loops are active. |
-| `stats` | `None` | Current :class:`BatchStats` snapshot. |
+| `stats` | `None` | Current `BatchStats` snapshot. |
 
 ## Methods
 
@@ -111,7 +113,7 @@ def submit(
 ```
 Submit a single record for batched inference.
 
-Accepts either ``estimated_tokens`` or ``estimated_cost``.
+Accepts either `estimated_tokens` or `estimated_cost`.
 
 
 

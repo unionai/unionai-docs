@@ -1,6 +1,6 @@
 ---
 title: Secret
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -8,6 +8,8 @@ layout: py_api
 # Secret
 
 **Package:** `flyte.remote`
+
+## Parameters
 
 ```python
 class Secret(

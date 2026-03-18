@@ -1,6 +1,6 @@
 ---
 title: Snowflake
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -8,6 +8,8 @@ layout: py_api
 # Snowflake
 
 **Package:** `flyteplugins.snowflake`
+
+## Parameters
 
 ```python
 class Snowflake(
@@ -34,10 +36,10 @@ Task to run parameterized SQL queries against Snowflake.
 | `plugin_config` | `flyteplugins.snowflake.task.SnowflakeConfig` | `SnowflakeConfig` object containing connection metadata. |
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | Name and type of inputs specified as a dictionary. |
 | `output_dataframe_type` | `typing.Optional[typing.Type]` | If some data is produced by this query, then you can specify the output dataframe type. |
-| `secret_group` | `typing.Optional[str]` | Optional group for secrets in the secret store. The environment variable name is auto-generated from ``{secret_group}_{key}``, uppercased with hyphens replaced by underscores. If omitted, the key alone is used. |
+| `secret_group` | `typing.Optional[str]` | Optional group for secrets in the secret store. The environment variable name is auto-generated from `{secret_group}_{key}`, uppercased with hyphens replaced by underscores. If omitted, the key alone is used. |
 | `snowflake_private_key` | `typing.Optional[str]` | The secret key for the Snowflake private key (key-pair auth). |
 | `snowflake_private_key_passphrase` | `typing.Optional[str]` | The secret key for the private key passphrase (if encrypted). |
-| `batch` | `bool` | When True, list inputs are expanded into a multi-row VALUES clause. The query_template should contain a single ``VALUES (%(col)s, ...)`` placeholder and each input should be a list of equal length. |
+| `batch` | `bool` | When True, list inputs are expanded into a multi-row VALUES clause. The query_template should contain a single `VALUES (%(col)s, ...)` placeholder and each input should be a list of equal length. |
 | `kwargs` | `**kwargs` | |
 
 ## Properties

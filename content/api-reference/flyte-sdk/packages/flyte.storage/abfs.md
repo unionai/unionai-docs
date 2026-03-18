@@ -1,6 +1,6 @@
 ---
 title: ABFS
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,6 +12,8 @@ layout: py_api
 Any Azure Blob Storage specific configuration.
 
 
+
+## Parameters
 
 ```python
 class ABFS(

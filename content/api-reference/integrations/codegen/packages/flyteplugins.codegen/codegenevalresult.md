@@ -1,6 +1,6 @@
 ---
 title: CodeGenEvalResult
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,6 +11,8 @@ layout: py_api
 
 Result from code generation and evaluation.
 
+
+## Parameters
 
 ```python
 class CodeGenEvalResult(
@@ -126,7 +128,7 @@ Run generated code in an isolated sandbox (one-off execution).
 
 If samples were provided during generate(), they are used as defaults.
 Override any input by passing it as a keyword argument. If no samples
-exist, all declared inputs must be provided via ``**overrides``.
+exist, all declared inputs must be provided via `**overrides`.
 
 
 

@@ -1,6 +1,6 @@
 ---
 title: Run
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -13,6 +13,8 @@ A class representing a run of a task. It is used to manage the run of a task and
 Union API.
 
 
+
+## Parameters
 
 ```python
 class Run(
@@ -130,7 +132,7 @@ Get the current run.
 ```python
 def get_debug_url()
 ```
-Get the debug URL of the run. Returns ``None`` if the VS Code
+Get the debug URL of the run. Returns `None` if the VS Code
 Debugger log entry is not yet available in the action details.
 
 
@@ -150,8 +152,8 @@ def get_logs(
 ```
 Get logs for the run as an iterator of strings.
 
-Can be called synchronously (returns ``Iterator[str]``) or asynchronously
-via ``.aio()`` (returns ``AsyncIterator[str]``).
+Can be called synchronously (returns `Iterator[str]`) or asynchronously
+via `.aio()` (returns `AsyncIterator[str]`).
 
 
 

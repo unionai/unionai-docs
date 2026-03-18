@@ -1,6 +1,6 @@
 ---
 title: ContainerTask
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -10,10 +10,12 @@ layout: py_api
 **Package:** `flyte.extras`
 
 This is an intermediate class that represents Flyte Tasks that run a container at execution time. This is the vast
-majority of tasks - the typical ``@task`` decorated tasks; for instance, all run a container. An example of
+majority of tasks - the typical `@task` decorated tasks; for instance, all run a container. An example of
 something that doesn't run a container would be something like the Athena SQL task.
 
 
+
+## Parameters
 
 ```python
 class ContainerTask(

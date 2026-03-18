@@ -1,6 +1,6 @@
 ---
 title: BaseRuntimeError
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -13,6 +13,8 @@ Base class for all Union runtime errors. These errors are raised when the underl
 because of a user error, system error or an unknown error.
 
 
+
+## Parameters
 
 ```python
 class BaseRuntimeError(

@@ -1,6 +1,6 @@
 ---
 title: flyte.durable
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -12,12 +12,12 @@ sidebar_expanded: true
 Flyte durable utilities.
 
 This module provides deterministic, crash-resilient replacements for time-related functions.
-Usage of ``time.time()``, ``time.sleep()`` or ``asyncio.sleep()`` introduces non-determinism.
+Usage of `time.time()`, `time.sleep()` or `asyncio.sleep()` introduces non-determinism.
 The utilities here persist state across crashes and restarts, making workflows durable.
 
-- :func:`sleep` - a durable replacement for ``time.sleep`` / ``asyncio.sleep``
-- :func:`time` - a durable replacement for ``time.time``
-- :func:`now` - a durable replacement for ``datetime.now``
+- `sleep` - a durable replacement for `time.sleep` / `asyncio.sleep`
+- `time` - a durable replacement for `time.time`
+- `now` - a durable replacement for `datetime.now`
 
 ## Directory
 

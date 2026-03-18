@@ -1,6 +1,6 @@
 ---
 title: ParquetToPolarsDecodingHandler
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -8,6 +8,8 @@ layout: py_api
 # ParquetToPolarsDecodingHandler
 
 **Package:** `flyteplugins.polars.df_transformer`
+
+## Parameters
 
 ```python
 def ParquetToPolarsDecodingHandler()

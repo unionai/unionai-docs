@@ -1,6 +1,6 @@
 ---
 title: Timeouts
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -16,6 +16,8 @@ Timeout configuration for the application.
             (seconds) or timedelta. Must not exceed 1 hour.
     
 
+
+## Parameters
 
 ```python
 class Timeouts(

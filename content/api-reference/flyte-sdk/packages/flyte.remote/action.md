@@ -1,6 +1,6 @@
 ---
 title: Action
-version: 2.0.8
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -26,6 +26,8 @@ From a datamodel perspective, a Run consists of actions. All actions are linearl
 &lt;/pre&gt;
 
 
+
+## Parameters
 
 ```python
 class Action(
@@ -145,8 +147,8 @@ def get_logs(
 ```
 Get logs for the action as an iterator of strings.
 
-Can be called synchronously (returns ``Iterator[str]``) or asynchronously
-via ``.aio()`` (returns ``AsyncIterator[str]``).
+Can be called synchronously (returns `Iterator[str]`) or asynchronously
+via `.aio()` (returns `AsyncIterator[str]`).
 
 
 
