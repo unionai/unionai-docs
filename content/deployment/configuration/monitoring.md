@@ -6,6 +6,11 @@ variants: -flyte -byoc +selfmanaged
 
 # Monitoring
 
+{{< variant selfhosted >}}
+> [!NOTE] Self-hosted deployments
+> If you are running a [self-hosted deployment](../selfhosted-deployment/monitoring), monitoring is pre-configured with Grafana dashboards and alerting. See the [self-hosted monitoring guide](../selfhosted-deployment/monitoring) for setup details.
+{{< /variant >}}
+
 The {{< key product_name >}} data plane deploys a static [Prometheus](https://prometheus.io/) instance that collects metrics required for platform features like cost tracking, task-level resource monitoring, and execution observability. This Prometheus instance is pre-configured and requires no additional setup.
 
 For operational monitoring of the cluster itself (node health, API server metrics, CoreDNS, etc.), the data plane chart includes an optional [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) instance that can be enabled separately.
@@ -245,6 +250,38 @@ spec:
 ```
 
 This requires the Prometheus Operator CRDs. Install them via the `dataplane-crds` chart with `crds.prometheusOperator: true`.
+
+## Independent monitoring resources
+
+{{< key product_name >}} creates ServiceMonitors, PrometheusRules, and Grafana dashboard ConfigMaps independently of the `monitoring.enabled` flag. This means you can use these resources with your own Prometheus and Grafana without deploying the full kube-prometheus-stack.
+
+These flags default to `true`:
+
+```yaml
+monitoring:
+  # Create ServiceMonitor CRDs for Union services.
+  # Your Prometheus Operator discovers these automatically.
+  serviceMonitors:
+    enabled: true
+
+  # Create PrometheusRule CRDs with recording rules.
+  # Enable monitoring.alerting.enabled for alerting rules.
+  prometheusRules:
+    enabled: true
+
+  # Create dashboard ConfigMaps discovered by Grafana sidecar.
+  # Configure label/labelValue to match your Grafana sidecar settings.
+  dashboards:
+    enabled: true
+    label: grafana_dashboard
+    labelValue: "1"
+
+  # Opt-in alerting rules (requires AlertManager).
+  alerting:
+    enabled: false
+```
+
+Set any of these to `false` to disable that resource type. These flags work whether `monitoring.enabled` is `true` or `false`.
 
 ## Further reading
 
