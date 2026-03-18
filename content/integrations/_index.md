@@ -167,6 +167,7 @@ Experiment tracking integrations let you log metrics, parameters, and artifacts 
 
 | Plugin                               | Description                  | Common use cases                              |
 | ------------------------------------ | ---------------------------- | --------------------------------------------- |
+| [MLflow](./mlflow/_index)            | MLflow experiment tracking   | Experiment tracking, autologging, model registry |
 | [Weights and Biases](./wandb/_index) | Weights & Biases integration | Experiment tracking and hyperparameter tuning |
 
 ## Connectors
