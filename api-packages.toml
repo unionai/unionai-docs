@@ -51,7 +51,7 @@
 
 [[sdks]]
 package = "flyte"
-install = "flyte[connector,aiosqlite,tui] flyteplugins-union"
+install = "flyte[connector,aiosqlite,tui]"
 parser_package = "flyte"
 generator_name = "flytesdk"
 generator_title = "Flyte SDK"
