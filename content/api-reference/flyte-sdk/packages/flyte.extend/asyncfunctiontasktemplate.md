@@ -1,6 +1,6 @@
 ---
 title: AsyncFunctionTaskTemplate
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -13,6 +13,8 @@ A task template that wraps an asynchronous functions. This is automatically crea
 is decorated with the task decorator.
 
 
+
+## Parameters
 
 ```python
 class AsyncFunctionTaskTemplate(
@@ -43,6 +45,7 @@ class AsyncFunctionTaskTemplate(
     _call_as_synchronous: bool,
     func: F,
     plugin_config: Optional[Any],
+    task_resolver: Optional[Any],
 )
 ```
 | Parameter | Type | Description |
@@ -74,6 +77,7 @@ class AsyncFunctionTaskTemplate(
 | `_call_as_synchronous` | `bool` | |
 | `func` | `F` | |
 | `plugin_config` | `Optional[Any]` | |
+| `task_resolver` | `Optional[Any]` | |
 
 ## Properties
 

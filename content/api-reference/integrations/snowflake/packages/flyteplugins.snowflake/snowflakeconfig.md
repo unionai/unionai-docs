@@ -1,6 +1,6 @@
 ---
 title: SnowflakeConfig
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -16,6 +16,8 @@ via connection_kwargs.
 See: https://docs.snowflake.com/en/developer-guide/python-connector/python-connector-api
 
 
+
+## Parameters
 
 ```python
 class SnowflakeConfig(

@@ -1,6 +1,6 @@
 ---
 title: ImageBuild
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -18,6 +18,8 @@ Attributes:
         builder. None when using the local builder.
 
 
+
+## Parameters
 
 ```python
 class ImageBuild(

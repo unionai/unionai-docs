@@ -1,6 +1,6 @@
 ---
 title: Event
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -34,6 +34,8 @@ Example:
     value = event.wait()
 
 
+
+## Parameters
 
 ```python
 class Event(

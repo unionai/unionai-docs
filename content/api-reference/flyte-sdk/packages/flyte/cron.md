@@ -1,6 +1,6 @@
 ---
 title: Cron
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -9,8 +9,21 @@ layout: py_api
 
 **Package:** `flyte`
 
-This class defines a Cron automation that can be associated with a Trigger in Flyte.
-Example usage:
+Cron-based automation schedule for use with `Trigger`.
+
+Cron expressions use the standard five-field format:
+`minute hour day-of-month month day-of-week`
+
+Common patterns:
+
+- `"0 * * * *"` — every hour (at minute 0)
+- `"0 0 * * *"` — daily at midnight
+- `"0 0 * * 1"` — weekly on Monday at midnight
+- `"0 0 1 * *"` — monthly on the 1st at midnight
+- `"*/5 * * * *"` — every 5 minutes
+
+Example:
+
 ```python
 my_trigger = flyte.Trigger(
     name="my_cron_trigger",
@@ -21,6 +34,8 @@ my_trigger = flyte.Trigger(
 
 
 
+## Parameters
+
 ```python
 class Cron(
     expression: str,
@@ -29,8 +44,8 @@ class Cron(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `expression` | `str` | String cron expression to trigger - Example |
-| `timezone` | `Timezone` | One of Timezone values. |
+| `expression` | `str` | Cron expression string (e.g., `"0 * * * *"`). |
+| `timezone` | `Timezone` | Timezone for the cron schedule (default `"UTC"`). One of the standard timezone values (e.g., `"US/Eastern"`, `"Europe/London"`). Note that DST transitions may cause skipped or duplicated runs. |
 
 ## Properties
 

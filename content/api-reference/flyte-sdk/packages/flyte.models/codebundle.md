@@ -1,6 +1,6 @@
 ---
 title: CodeBundle
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -13,6 +13,8 @@ A class representing a code bundle for a task. This is used to package the code 
 The code bundle computes the version of the code using the hash of the code.
 
 
+
+## Parameters
 
 ```python
 class CodeBundle(

@@ -18,25 +18,15 @@ If neither `TaskEnvironment` nor the task decorator specifies `resources`, the d
 
 ## Resources data class
 
-The `Resources` data class provides the following initialization parameters:
+For the full class definition, parameter types, and accepted formats, see the [`Resources` API reference](../../api-reference/flyte-sdk/packages/flyte/resources).
 
-```python
-resources = flyte.Resources(
-    cpu: Union[int, float, str, Tuple[Union[int, float, str], Union[int, float, str]], None] = None,
-    memory: Union[str, Tuple[str, str], None] = None,
-    gpu: Union[str, int, flyte.Device, None] = None,
-    disk: Union[str, None] = None,
-    shm: Union[str, Literal["auto"], None] = None
-)
-```
+The main parameters are:
 
-Each parameter is optional and allows you to specify different types of resources:
-
-- **`cpu`**: CPU allocation - can be a number, string, or tuple for request/limit ranges (e.g., `2` or `(2, 4)`).
-- **`memory`**: Memory allocation - string with units (e.g., `"4Gi"`) or tuple for ranges.
-- **`gpu`**: GPU allocation - accelerator string (e.g., `"A100:2"`), count, or `Device` (a [`GPU`](#gpu-resources), [`TPU`](#tpu-resources) or [custom `Device` object](#custom-device-specifications)).
-- **`disk`**: Ephemeral storage - string with units (e.g., `"10Gi"`).
-- **`shm`**: Shared memory - string with units or `"auto"` for automatic sizing (e.g., `"8Gi"` or `"auto"`).
+- **`cpu`**: CPU allocation — number, string (`"500m"`), or `(request, limit)` tuple.
+- **`memory`**: Memory with Kubernetes units — `"4Gi"`, or `(request, limit)` tuple.
+- **`gpu`**: GPU allocation — `"A100:2"`, integer count, or `GPU()`/`TPU()`/`Device()` for advanced config.
+- **`disk`**: Ephemeral storage — `"10Gi"`.
+- **`shm`**: Shared memory — `"1Gi"` or `"auto"`.
 
 ## Examples
 

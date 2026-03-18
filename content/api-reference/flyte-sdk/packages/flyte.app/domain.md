@@ -1,6 +1,6 @@
 ---
 title: Domain
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,6 +11,8 @@ layout: py_api
 
 Subdomain to use for the domain. If not set, the default subdomain will be used.
 
+
+## Parameters
 
 ```python
 class Domain(

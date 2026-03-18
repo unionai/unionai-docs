@@ -1,6 +1,6 @@
 ---
 title: InvalidPackageError
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,6 +11,8 @@ layout: py_api
 
 Raised when an invalid system package is detected during image build.
 
+
+## Parameters
 
 ```python
 class InvalidPackageError(

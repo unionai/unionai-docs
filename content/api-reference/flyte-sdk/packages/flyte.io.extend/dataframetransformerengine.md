@@ -1,6 +1,6 @@
 ---
 title: DataFrameTransformerEngine
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -14,6 +14,8 @@ If you are bringing a custom data frame type, or any data frame type, to flyteki
 registering with the main type engine, you should register with this transformer instead.
 
 
+
+## Parameters
 
 ```python
 def DataFrameTransformerEngine()
@@ -248,7 +250,7 @@ specify a protocol (e.g. s3, gs, etc.) field, then
 | Parameter | Type | Description |
 |-|-|-|
 | `h` | `Handlers` | The DataFrameEncoder or DataFrameDecoder you wish to register with this transformer. |
-| `default_for_type` | `bool` | If set, when a user returns from a task an instance of the dataframe the handler handles, e.g. ``return pd.DataFrame(...)``, not wrapped around the ``StructuredDataset`` object, we will use this handler's protocol and format as the default, effectively saying that this handler will be called. Note that this shouldn't be set if your handler's protocol is None, because that implies that your handler is capable of handling all the different storage protocols that flytekit's data persistence layer is aware of. In these cases, the protocol is determined by the raw output data prefix set in the active context. |
+| `default_for_type` | `bool` | If set, when a user returns from a task an instance of the dataframe the handler handles, e.g. `return pd.DataFrame(...)`, not wrapped around the `StructuredDataset` object, we will use this handler's protocol and format as the default, effectively saying that this handler will be called. Note that this shouldn't be set if your handler's protocol is None, because that implies that your handler is capable of handling all the different storage protocols that flytekit's data persistence layer is aware of. In these cases, the protocol is determined by the raw output data prefix set in the active context. |
 | `override` | `bool` | Override any previous registrations. If default_for_type is also set, this will also override the default. |
 | `default_format_for_type` | `bool` | Unlike the default_for_type arg that will set this handler's format and storage as the default, this will only set the format. Error if already set, unless override is specified. |
 | `default_storage_for_type` | `bool` | Same as above but only for the storage format. Error if already set, unless override is specified. |

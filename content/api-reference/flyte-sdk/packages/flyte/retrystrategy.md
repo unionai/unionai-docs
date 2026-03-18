@@ -1,6 +1,6 @@
 ---
 title: RetryStrategy
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -26,6 +26,8 @@ def my_task():
 ```
 
 
+
+## Parameters
 
 ```python
 class RetryStrategy(

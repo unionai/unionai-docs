@@ -1,6 +1,6 @@
 ---
 title: CodePlan
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,6 +11,8 @@ layout: py_api
 
 Structured plan for the code solution.
 
+
+## Parameters
 
 ```python
 class CodePlan(

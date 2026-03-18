@@ -1,6 +1,6 @@
 ---
 title: TaskContext
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -13,6 +13,8 @@ A context class to hold the current task executions context.
 This can be used to access various contextual parameters in the task execution by the user.
 
 
+
+## Parameters
 
 ```python
 class TaskContext(

@@ -1,6 +1,6 @@
 ---
 title: ParquetToPolarsLazyFrameDecodingHandler
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -8,6 +8,8 @@ layout: py_api
 # ParquetToPolarsLazyFrameDecodingHandler
 
 **Package:** `flyteplugins.polars.df_transformer`
+
+## Parameters
 
 ```python
 def ParquetToPolarsLazyFrameDecodingHandler()

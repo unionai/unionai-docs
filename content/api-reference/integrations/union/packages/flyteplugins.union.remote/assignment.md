@@ -12,6 +12,8 @@ layout: py_api
 Represents role/policy assignments for an identity.
 
 
+## Parameters
+
 ```python
 class Assignment(
     pb2: IdentityAssignment,

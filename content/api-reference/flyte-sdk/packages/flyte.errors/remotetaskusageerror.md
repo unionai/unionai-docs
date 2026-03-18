@@ -1,6 +1,6 @@
 ---
 title: RemoteTaskUsageError
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,6 +12,8 @@ layout: py_api
 This error is raised when the user tries to access a task that does not exist.
 
 
+
+## Parameters
 
 ```python
 class RemoteTaskUsageError(

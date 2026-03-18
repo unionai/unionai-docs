@@ -12,6 +12,8 @@ layout: py_api
 Represents a Union RBAC Role.
 
 
+## Parameters
+
 ```python
 class Role(
     pb2: RolePb2,

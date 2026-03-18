@@ -20,6 +20,8 @@ variants: +flyte +byoc +selfmanaged
 
 ## App-specific environment settings
 
+For complete parameter documentation and type signatures, see the [`AppEnvironment` API reference](../../api-reference/flyte-sdk/packages/flyte.app/appenvironment).
+
 ### `type`
 
 The `type` parameter is an optional string that identifies what kind of app this is. It's used for organizational purposes and may be used by the UI or tooling to display or filter apps.

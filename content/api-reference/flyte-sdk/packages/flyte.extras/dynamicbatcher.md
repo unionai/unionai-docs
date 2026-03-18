@@ -1,6 +1,6 @@
 ---
 title: DynamicBatcher
-version: 2.0.6
+version: 2.0.9
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -10,21 +10,23 @@ layout: py_api
 **Package:** `flyte.extras`
 
 Batches records from many concurrent producers and runs them through
-a single async processing function, maximizing resource utilization.
+    a single async processing function, maximizing resource utilization.
 
-The batcher runs two internal loops:
+    The batcher runs two internal loops:
 
-1. **Aggregation loop** — drains the submission queue and assembles
-   cost-budgeted batches, respecting ``target_batch_cost``,
-   ``max_batch_size``, and ``batch_timeout_s``.
-2. **Processing loop** — pulls assembled batches and calls
-   ``process_fn``, resolving each record's :class:`asyncio.Future`.
+    1. **Aggregation loop** — drains the submission queue and assembles
+       cost-budgeted batches, respecting `target_batch_cost`,
+       `max_batch_size`, and `batch_timeout_s`.
+    2. **Processing loop** — pulls assembled batches and calls
+       `process_fn`, resolving each record's `asyncio.Future`.
 
-Type Parameters:
-    RecordT: The input record type produced by your tasks.
-    ResultT: The per-record output type returned by ``process_fn``.
+    Type Parameters:
+        RecordT: The input record type produced by your tasks.
+        ResultT: The per-record output type returned by `process_fn`.
 
 
+
+## Parameters
 
 ```python
 class DynamicBatcher(
@@ -41,13 +43,13 @@ class DynamicBatcher(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `process_fn` | `ProcessFn[RecordT, ResultT]` | ``async def f(batch: list[RecordT]) -&gt; list[ResultT]`` Must return results in the **same order** as the input batch. |
-| `cost_estimator` | `CostEstimatorFn[RecordT] \| None` | Optional ``(RecordT) -&gt; int`` function.  When provided, it is called to estimate the cost of each submitted record. Falls back to ``record.estimate_cost()`` if the record implements :class:`CostEstimator`, then to ``default_cost``. |
+| `process_fn` | `ProcessFn[RecordT, ResultT]` | `async def f(batch: list[RecordT]) -&gt; list[ResultT]` Must return results in the **same order** as the input batch. |
+| `cost_estimator` | `CostEstimatorFn[RecordT] \| None` | Optional `(RecordT) -&gt; int` function.  When provided, it is called to estimate the cost of each submitted record. Falls back to `record.estimate_cost()` if the record implements `CostEstimator`, then to `default_cost`. |
 | `target_batch_cost` | `int` | Cost budget per batch.  The aggregator fills batches up to this limit before dispatching. |
 | `max_batch_size` | `int` | Hard cap on records per batch regardless of cost budget. |
 | `min_batch_size` | `int` | Minimum records before dispatching.  Ignored when the timeout fires or shutdown is in progress. |
 | `batch_timeout_s` | `float` | Maximum seconds to wait for a full batch.  Lower values reduce idle time but may produce smaller batches. |
-| `max_queue_size` | `int` | Bounded queue size.  When full, :meth:`submit` awaits (backpressure). |
+| `max_queue_size` | `int` | Bounded queue size.  When full, `submit` awaits (backpressure). |
 | `prefetch_batches` | `int` | Number of pre-assembled batches to buffer between the aggregation and processing loops. |
 | `default_cost` | `int` | Fallback cost when no estimator is available. ... |
 
@@ -56,7 +58,7 @@ class DynamicBatcher(
 | Property | Type | Description |
 |-|-|-|
 | `is_running` | `None` | Whether the aggregation and processing loops are active. |
-| `stats` | `None` | Current :class:`BatchStats` snapshot. |
+| `stats` | `None` | Current `BatchStats` snapshot. |
 
 ## Methods
 
@@ -99,7 +101,7 @@ def submit(
 ```
 Submit a single record for batched processing.
 
-Returns an :class:`asyncio.Future` that resolves once the batch
+Returns an `asyncio.Future` that resolves once the batch
 containing this record has been processed.
 
 
@@ -107,7 +109,7 @@ containing this record has been processed.
 | Parameter | Type | Description |
 |-|-|-|
 | `record` | `RecordT` | The input record. |
-| `estimated_cost` | `int \| None` | Optional explicit cost.  When omitted the batcher tries ``cost_estimator``, then ``record.estimate_cost()``, then ``default_cost``. |
+| `estimated_cost` | `int \| None` | Optional explicit cost.  When omitted the batcher tries `cost_estimator`, then `record.estimate_cost()`, then `default_cost`. |
 
 ### submit_batch()
 
