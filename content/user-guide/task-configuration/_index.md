@@ -55,27 +55,27 @@ Here is an overview of all task configuration parameters available at each level
 
 | Parameter               | `TaskEnvironment`  | `@env.task` decorator      | `override` on task invocation |
 |-------------------------|--------------------|----------------------------|-------------------------------|
-| [**name**](#name)                           | ✅ Yes (required)  | ❌ No                      | ❌ No                         |
-| [**short_name**](#short_name)               | ❌ No              | ✅ Yes                     | ✅ Yes                        |
-| [**image**](#image)                         | ✅ Yes             | ❌ No                      | ❌ No                         |
-| [**resources**](#resources)                 | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
-| [**env_vars**](#env_vars)                   | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
-| [**secrets**](#secrets)                     | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
-| [**cache**](#cache)                         | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
-| [**pod_template**](#pod_template)           | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
-| [**reusable**](#reusable)                   | ✅ Yes             | ❌ No                      | ✅ Yes                        |
-| [**depends_on**](#depends_on)               | ✅ Yes             | ❌ No                      | ❌ No                         |
-| [**description**](#description)             | ✅ Yes             | ❌ No                      | ❌ No                         |
-| [**plugin_config**](#plugin_config)         | ✅ Yes             | ❌ No                      | ❌ No                         |
-| [**report**](#report)                       | ❌ No              | ✅ Yes                     | ❌ No                         |
-| [**max_inline_io_bytes**](#max_inline_io_bytes) | ❌ No          | ✅ Yes                     | ✅ Yes                        |
-| [**retries**](#retries)                     | ❌ No              | ✅ Yes                     | ✅ Yes                        |
-| [**timeout**](#timeout)                     | ❌ No              | ✅ Yes                     | ✅ Yes                        |
-| [**triggers**](#triggers)                   | ❌ No              | ✅ Yes                     | ❌ No                         |
-| [**links**](#links)                         | ❌ No              | ✅ Yes                     | ✅ Yes                        |
-| [**interruptible**](#interruptible)         | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
-| [**queue**](#queue)                         | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
-| [**docs**](#docs)                           | ❌ No              | ✅ Yes                     | ❌ No                         |
+| [**name**](./additional-task-settings)                           | ✅ Yes (required)  | ❌ No                      | ❌ No                         |
+| [**short_name**](./additional-task-settings)                     | ❌ No              | ✅ Yes                     | ✅ Yes                        |
+| [**image**](./container-images)                                  | ✅ Yes             | ❌ No                      | ❌ No                         |
+| [**resources**](./resources)                                     | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
+| [**env_vars**](./additional-task-settings#environment-variables) | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
+| [**secrets**](./secrets)                                         | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
+| [**cache**](./caching)                                           | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
+| [**pod_template**](./pod-templates)                              | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
+| [**reusable**](./reusable-containers)                            | ✅ Yes             | ❌ No                      | ✅ Yes                        |
+| [**depends_on**](./multiple-environments)                        | ✅ Yes             | ❌ No                      | ❌ No                         |
+| [**description**](./additional-task-settings)                    | ✅ Yes             | ❌ No                      | ❌ No                         |
+| [**plugin_config**](./task-plugins)                              | ✅ Yes             | ❌ No                      | ❌ No                         |
+| [**report**](./additional-task-settings#report)                  | ❌ No              | ✅ Yes                     | ❌ No                         |
+| [**max_inline_io_bytes**](./additional-task-settings#inline-io-threshold) | ❌ No    | ✅ Yes                     | ✅ Yes                        |
+| [**retries**](./retries-and-timeouts)                            | ❌ No              | ✅ Yes                     | ✅ Yes                        |
+| [**timeout**](./retries-and-timeouts)                            | ❌ No              | ✅ Yes                     | ✅ Yes                        |
+| [**triggers**](./triggers)                                       | ❌ No              | ✅ Yes                     | ❌ No                         |
+| [**links**](./additional-task-settings#links)                    | ❌ No              | ✅ Yes                     | ✅ Yes                        |
+| [**interruptible**](./interruptible-tasks-and-queues)            | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
+| [**queue**](./interruptible-tasks-and-queues)                    | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
+| [**docs**](./additional-task-settings#docs)                      | ❌ No              | ✅ Yes                     | ❌ No                         |
 
 ## Task configuration parameters
 
