@@ -11,10 +11,10 @@ layout: py_api
 
 Agent for single-file Python code generation with automatic testing and iteration.
 
-    Generates a single Python script, builds a sandbox image with the required
-    dependencies, runs pytest-based tests, and iterates until tests pass.
+Generates a single Python script, builds a sandbox image with the required
+dependencies, runs pytest-based tests, and iterates until tests pass.
 
-    Uses Sandbox internally for isolated code execution.
+Uses Sandbox internally for isolated code execution.
 
 
 
