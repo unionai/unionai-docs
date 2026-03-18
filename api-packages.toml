@@ -139,7 +139,7 @@ name = "jsonl"
 [[plugins]]
 package = "flyteplugins-mlflow"
 plugin = "flyteplugins.mlflow"
-title = "MLFlow"
+title = "MLflow"
 name = "mlflow"
 
 [[plugins]]

@@ -160,6 +160,8 @@ Use `run_mode="nested"` to create a child run that appears under the parent in t
 This is the recommended pattern for hyperparameter optimization, where each trial should be tracked as a child of the parent study run:
 
 ```python{hl_lines=[1, 2, 15, "22-25"]}
+from flyteplugins.mlflow import Mlflow
+
 @mlflow_run(run_mode="nested")
 @env.task(links=[Mlflow()])
 async def run_trial(trial_number: int, n_estimators: int, max_depth: int) -> float:
