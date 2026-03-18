@@ -11,22 +11,22 @@ layout: py_api
 
 Token-aware batcher for LLM inference workloads.
 
-A thin convenience wrapper around :class:`DynamicBatcher` that accepts
-token-specific parameter names (``inference_fn``, ``token_estimator``,
-``target_batch_tokens``, etc.) and maps them to the base class.
+    A thin convenience wrapper around :class:`DynamicBatcher` that accepts
+    token-specific parameter names (``inference_fn``, ``token_estimator``,
+    ``target_batch_tokens``, etc.) and maps them to the base class.
 
-Also checks the :class:`TokenEstimator` protocol (``estimate_tokens()``)
-in addition to :class:`CostEstimator` (``estimate_cost()``).
+    Also checks the :class:`TokenEstimator` protocol (``estimate_tokens()``)
+    in addition to :class:`CostEstimator` (``estimate_cost()``).
 
-Example::
+    Example::
 
-    async def inference(batch: list[Prompt]) -&gt; list[str]:
-        ...
+        async def inference(batch: list[Prompt]) -&gt; list[str]:
+            ...
 
-    async with TokenBatcher(inference_fn=inference) as batcher:
-        future = await batcher.submit(Prompt(text="Hello"))
-        result = await future
-
+        async with TokenBatcher(inference_fn=inference) as batcher:
+            future = await batcher.submit(Prompt(text="Hello"))
+            result = await future
+    
 
 
 ```python

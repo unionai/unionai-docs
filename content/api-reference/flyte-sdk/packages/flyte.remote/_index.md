@@ -125,7 +125,7 @@ and create authentication interceptors that perform async operations.
 > `result = await upload_dir.aio()`.
 ```python
 def upload_dir(
-    dir_path: pathlib._local.Path,
+    dir_path: pathlib.Path,
     verify: bool,
     prefix: str | None,
 ) -> str
@@ -136,7 +136,7 @@ Uploads a directory to a remote location and returns the remote URI.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `dir_path` | `pathlib._local.Path` | The directory path to upload. |
+| `dir_path` | `pathlib.Path` | The directory path to upload. |
 | `verify` | `bool` | Whether to verify the certificate for HTTPS requests. :return: The remote URI of the uploaded directory. |
 | `prefix` | `str \| None` | |
 
@@ -149,7 +149,7 @@ Uploads a directory to a remote location and returns the remote URI.
 > `result = await upload_file.aio()`.
 ```python
 def upload_file(
-    fp: pathlib._local.Path,
+    fp: pathlib.Path,
     verify: bool,
     fname: str | None,
 ) -> typing.Tuple[str, str]
@@ -160,7 +160,7 @@ Uploads a file to a remote location and returns the remote URI.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `fp` | `pathlib._local.Path` | The file path to upload. |
+| `fp` | `pathlib.Path` | The file path to upload. |
 | `verify` | `bool` | Whether to verify the certificate for HTTPS requests. |
 | `fname` | `str \| None` | Optional file name for the remote path. :return: Tuple of (MD5 digest hex string, remote native URL). |
 

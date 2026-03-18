@@ -1,6 +1,6 @@
 ---
 title: Data plane setup on AWS
-weight: 5
+weight: 4
 variants: -flyte -byoc +selfmanaged
 sidebar_expanded: true
 llm_readable_bundle: true
