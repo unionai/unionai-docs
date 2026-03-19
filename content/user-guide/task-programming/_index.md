@@ -17,29 +17,29 @@ This section covers the essential programming patterns and techniques for develo
 The task programming section covers key patterns for building effective Flyte workflows:
 
 **Data handling and types**
-- [**Files and directories**](./files-and-directories): Work with large datasets using Flyte's efficient file and directory types that automatically handle data upload, storage, and transfer between tasks.
-- [**DataFrames**](./dataframes): Pass DataFrames between tasks without downloading data into memory, with support for Pandas, Polars, PyArrow, Dask, and other DataFrame backends.
-- [**Data classes and structures**](./dataclasses-and-structures): Use Python data classes and Pydantic models as task inputs and outputs to create well-structured, type-safe workflows.
-- [**Custom context**](./custom-context): Use custom context to pass metadata through your task execution hierarchy without adding parameters to every task.
+- [**Files and directories**](./data-types/files-and-directories): Work with large datasets using Flyte's efficient file and directory types that automatically handle data upload, storage, and transfer between tasks.
+- [**DataFrames**](./data-types/dataframes): Pass DataFrames between tasks without downloading data into memory, with support for Pandas, Polars, PyArrow, Dask, and other DataFrame backends.
+- [**Data classes and structures**](./data-types/dataclasses-and-structures): Use Python data classes and Pydantic models as task inputs and outputs to create well-structured, type-safe workflows.
+- [**Custom context**](./data-types/custom-context): Use custom context to pass metadata through your task execution hierarchy without adding parameters to every task.
 
 **Execution patterns**
-- [**Fanout**](./fanout): Scale your workflows by running many tasks in parallel, perfect for processing large datasets or running hyperparameter sweeps.
-- [**Controlling parallel execution**](./controlling-parallelism): Limit concurrent task executions using semaphores or `flyte.map` concurrency for rate-limited APIs, GPU quotas, and resource-constrained workflows.
-- [**Human-in-the-loop**](./human-in-the-loop): Pause workflow execution at a checkpoint and wait for a human to provide input or approval before continuing.
-- [**Grouping actions**](./grouping-actions): Organize related task executions into logical groups for better visualization and management in the UI.
-- [**Container tasks**](./container-tasks): Run arbitrary containers in any language without the Flyte SDK installed, using Flyte's copilot sidecar for seamless data flow.
-- [**Remote tasks**](./remote-tasks): Use previously deployed tasks without importing their code or dependencies, enabling team collaboration and task reuse.
+- [**Fanout**](./execution-patterns/fanout): Scale your workflows by running many tasks in parallel, perfect for processing large datasets or running hyperparameter sweeps.
+- [**Controlling parallel execution**](./execution-patterns/controlling-parallelism): Limit concurrent task executions using semaphores or `flyte.map` concurrency for rate-limited APIs, GPU quotas, and resource-constrained workflows.
+- [**Human-in-the-loop**](./execution-patterns/human-in-the-loop): Pause workflow execution at a checkpoint and wait for a human to provide input or approval before continuing.
+- [**Grouping actions**](./execution-patterns/grouping-actions): Organize related task executions into logical groups for better visualization and management in the UI.
+- [**Container tasks**](./execution-patterns/container-tasks): Run arbitrary containers in any language without the Flyte SDK installed, using Flyte's copilot sidecar for seamless data flow.
+- [**Remote tasks**](./execution-patterns/remote-tasks): Use previously deployed tasks without importing their code or dependencies, enabling team collaboration and task reuse.
 - [**Pod templates**](../task-configuration/pod-templates): Extend tasks with Kubernetes pod templates to add sidecars, volume mounts, and advanced Kubernetes configurations.
-- [**Abort and cancel actions**](./abort-tasks): Stop in-progress actions automatically, programmatically, or manually via the CLI and UI.
-- [**Other features**](./other-features): Advanced patterns like task forwarding and other specialized task execution techniques.
+- [**Abort and cancel actions**](./execution-patterns/abort-tasks): Stop in-progress actions automatically, programmatically, or manually via the CLI and UI.
+- [**Other features**](./development/other-features): Advanced patterns like task forwarding and other specialized task execution techniques.
 
 **Development and debugging**
-- [**Notebooks**](./notebooks): Write and iterate on workflows directly in Jupyter notebooks for interactive development and experimentation.
-- [**Unit testing**](./unit-testing): Test your Flyte tasks using direct invocation for business logic or `flyte.run()` for Flyte-specific features.
-- [**Links**](./links): Add clickable URLs to tasks in the Flyte UI, connecting them to external tools like experiment trackers and monitoring dashboards.
-- [**Reports**](./reports): Generate custom HTML reports during task execution to display progress, results, and visualizations in the UI.
-- [**Traces**](./traces): Add fine-grained observability to helper functions within your tasks for better debugging and resumption capabilities.
-- [**Error handling**](./error-handling): Implement robust error recovery strategies, including automatic resource scaling and graceful failure handling.
+- [**Notebooks**](./development/notebooks): Write and iterate on workflows directly in Jupyter notebooks for interactive development and experimentation.
+- [**Unit testing**](./development/unit-testing): Test your Flyte tasks using direct invocation for business logic or `flyte.run()` for Flyte-specific features.
+- [**Links**](./development/links): Add clickable URLs to tasks in the Flyte UI, connecting them to external tools like experiment trackers and monitoring dashboards.
+- [**Reports**](./development/reports): Generate custom HTML reports during task execution to display progress, results, and visualizations in the UI.
+- [**Traces**](./development/traces): Add fine-grained observability to helper functions within your tasks for better debugging and resumption capabilities.
+- [**Error handling**](./execution-patterns/error-handling): Implement robust error recovery strategies, including automatic resource scaling and graceful failure handling.
 
 ## When to use these patterns
 

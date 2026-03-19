@@ -44,7 +44,7 @@ To direct all task outputs to a specific bucket for a run:
 
 {{< code file="/unionai-examples/v2/user-guide/task-deployment/run-context/run_context.py" fragment="raw-data-path" lang="python" >}}
 
-The equivalent CLI flag is `--raw-data-path`. See [Run command options](./run-command-options#--raw-data-path) for CLI usage.
+The equivalent CLI flag is `--raw-data-path`. See [Run command options](../../../api-reference/run-command-options#--raw-data-path) for CLI usage.
 
 ### Caching
 
@@ -75,7 +75,7 @@ The equivalent CLI flag is `--raw-data-path`. See [Run command options](./run-co
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `copy_style` | `"loaded_modules"` \| `"all"` \| `"none"` | `"loaded_modules"` | Code bundling strategy. See [Run command options](./run-command-options#--copy-style). |
+| `copy_style` | `"loaded_modules"` \| `"all"` \| `"none"` | `"loaded_modules"` | Code bundling strategy. See [Run command options](../../../api-reference/run-command-options#--copy-style). |
 | `dry_run` | `bool` | `False` | Build and upload the code bundle without executing the run. |
 | `copy_bundle_to` | `Path` | `None` | When `dry_run=True`, copy the bundle to this local path. |
 | `interactive_mode` | `bool` | *auto-detected* | Override interactive mode detection (set automatically for Jupyter notebooks). |

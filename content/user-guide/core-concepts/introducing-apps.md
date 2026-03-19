@@ -118,4 +118,4 @@ You now understand the core building blocks of Flyte:
 
 Before diving deeper, check out [Key capabilities](./key-capabilities) for an overview of what Flyte can do—from parallelism and caching to LLM serving and error recovery.
 
-Then head to [Basic project](../basic-project) to build an end-to-end ML system with training tasks and a serving app.
+Then head to [Basic project](../tutorials/basic-project) to build an end-to-end ML system with training tasks and a serving app.
