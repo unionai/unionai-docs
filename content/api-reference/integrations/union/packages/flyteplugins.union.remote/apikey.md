@@ -89,6 +89,11 @@ def create(
 ```
 Create a new API key.
 
+Example:
+    api_key = ApiKey.create(name="ci-pipeline")
+    print(f"Client ID: {api_key.client_id}")
+    print(f"Client Secret: {api_key.client_secret}")
+    print(f"Encoded: {api_key.encoded_credentials}")
 
 
 | Parameter | Type | Description |
@@ -96,6 +101,17 @@ Create a new API key.
 | `cls` |  | |
 | `name` | `str` | Human-readable name for the API key |
 | `redirect_uris` | `list[str] \| None` | OAuth redirect URIs (defaults to localhost callback) |
+
+**Returns**
+
+ApiKey instance with client_secret populated
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `Exception` | If API key creation fails |
 
 ### delete()
 
@@ -112,12 +128,20 @@ def delete(
 ```
 Delete an API key.
 
+Example:
+    ApiKey.delete(client_id="old-ci-key")
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
 | `client_id` | `str` | The OAuth client ID to delete |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `Exception` | If deletion fails |
 
 ### get()
 
@@ -134,12 +158,26 @@ def get(
 ```
 Get an API key by client ID.
 
+Example:
+    key = ApiKey.get(client_id="my-client-id")
+    print(key.client_name)
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
 | `client_id` | `str` | The OAuth client ID |
+
+**Returns**
+
+ApiKey instance
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `Exception` | If API key not found |
 
 ### listall()
 
@@ -156,6 +194,12 @@ def listall(
 ```
 List all API keys.
 
+Yields:
+    ApiKey instances
+
+Example:
+    for key in ApiKey.listall(limit=10):
+        print(f"{key.client_id}: {key.client_name}")
 
 
 | Parameter | Type | Description |
@@ -170,9 +214,9 @@ def to_dict()
 ```
 Convert the object to a JSON-serializable dictionary.
 
-Returns:
-    dict: A dictionary representation of the object.
 
+
+**Returns:** dict: A dictionary representation of the object.
 
 ### to_json()
 
@@ -181,9 +225,9 @@ def to_json()
 ```
 Convert the object to a JSON string.
 
-Returns:
-    str: A JSON string representation of the object.
 
+
+**Returns:** str: A JSON string representation of the object.
 
 ### update()
 
@@ -202,6 +246,11 @@ def update(
 ```
 Update an API key.
 
+Example:
+    key = ApiKey.update(
+        client_id="my-key",
+        client_name="renamed-key"
+    )
 
 
 | Parameter | Type | Description |
@@ -210,4 +259,15 @@ Update an API key.
 | `client_id` | `str` | The OAuth client ID to update |
 | `client_name` | `str \| None` | New name for the API key |
 | `redirect_uris` | `list[str] \| None` | New redirect URIs |
+
+**Returns**
+
+Updated ApiKey instance
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `Exception` | If update fails |
 

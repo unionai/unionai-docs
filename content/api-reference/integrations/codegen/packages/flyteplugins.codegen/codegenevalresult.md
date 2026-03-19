@@ -103,7 +103,9 @@ Returns a callable wrapper that automatically provides the script file.
 | `timeout` | `typing.Optional[int]` | Timeout in seconds. Defaults to None. |
 | `env_vars` | `typing.Optional[dict[str, str]]` | Environment variables to pass to the sandbox. |
 | `secrets` | `typing.Optional[list]` | flyte.Secret objects to make available. |
-| `cache` | `str` | |
+| `cache` | `str` | CacheRequest: "auto", "override", or "disable". Defaults to "auto". |
+
+**Returns:** Callable task wrapper with the default inputs baked in. Call with your other declared inputs.
 
 ### run()
 
@@ -140,6 +142,8 @@ exist, all declared inputs must be provided via `**overrides`.
 | `timeout` | `typing.Optional[int]` | Timeout in seconds. Defaults to None. |
 | `env_vars` | `typing.Optional[dict[str, str]]` | Environment variables to pass to the sandbox. |
 | `secrets` | `typing.Optional[list]` | flyte.Secret objects to make available. |
-| `cache` | `str` | |
+| `cache` | `str` | CacheRequest: "auto", "override", or "disable". Defaults to "auto". |
 | `overrides` |  | |
+
+**Returns:** Tuple of typed outputs.
 

@@ -38,20 +38,20 @@ class ActionDetails(
 | `action_id` | `None` | Get the action ID. |
 | `attempts` | `None` | Get the number of attempts of the action. |
 | `error_info` | `None` | Get the error information if the action failed, otherwise returns None. |
-| `initializing_time` | `None` | Get the time spent in the INITIALIZING phase for the latest attempt.  Returns:     timedelta if the action went through the INITIALIZING phase, None otherwise. |
+| `initializing_time` | `None` | Get the time spent in the INITIALIZING phase for the latest attempt. |
 | `is_running` | `None` | Check if the action is currently running. |
 | `metadata` | `None` | Get the metadata of the action. |
 | `name` | `None` | Get the name of the action. |
-| `phase` | `None` | Get the phase of the action.  Returns:     The current execution phase as an ActionPhase enum |
-| `phase_durations` | `None` | Get the duration spent in each phase as a dictionary.  Returns a mapping of ActionPhase to timedelta for the latest attempt. This provides an easy way to see how long was spent queued, initializing, running, etc.  Returns:     Dictionary mapping ActionPhase enum values to timedelta durations.  Example:     &gt;&gt;&gt; action = Action.get(run_name="my-run", name="my-action")     &gt;&gt;&gt; details = action.details()     &gt;&gt;&gt; durations = details.phase_durations     &gt;&gt;&gt; print(f"Queued: {durations.get(ActionPhase.QUEUED, timedelta(0)).total_seconds()}s")     &gt;&gt;&gt; print(f"Running: {durations.get(ActionPhase.RUNNING, timedelta(0)).total_seconds()}s") |
-| `queued_time` | `None` | Get the time spent in the QUEUED phase for the latest attempt.  Returns:     timedelta if the action went through the QUEUED phase, None otherwise. |
+| `phase` | `None` | Get the phase of the action. |
+| `phase_durations` | `None` | Get the duration spent in each phase as a dictionary.  Returns a mapping of ActionPhase to timedelta for the latest attempt. This provides an easy way to see how long was spent queued, initializing, running, etc.  Example:     &gt;&gt;&gt; action = Action.get(run_name="my-run", name="my-action")     &gt;&gt;&gt; details = action.details()     &gt;&gt;&gt; durations = details.phase_durations     &gt;&gt;&gt; print(f"Queued: {durations.get(ActionPhase.QUEUED, timedelta(0)).total_seconds()}s")     &gt;&gt;&gt; print(f"Running: {durations.get(ActionPhase.RUNNING, timedelta(0)).total_seconds()}s") |
+| `queued_time` | `None` | Get the time spent in the QUEUED phase for the latest attempt. |
 | `raw_phase` | `None` | Get the raw phase of the action. |
 | `run_name` | `None` | Get the name of the run. |
-| `running_time` | `None` | Get the time spent in the RUNNING phase for the latest attempt.  Returns:     timedelta if the action went through the RUNNING phase, None otherwise. |
+| `running_time` | `None` | Get the time spent in the RUNNING phase for the latest attempt. |
 | `runtime` | `None` | Get the runtime of the action. |
 | `status` | `None` | Get the status of the action. |
 | `task_name` | `None` | Get the name of the task. |
-| `waiting_for_resources_time` | `None` | Get the time spent in the WAITING_FOR_RESOURCES phase for the latest attempt.  Returns:     timedelta if the action went through the WAITING_FOR_RESOURCES phase, None otherwise. |
+| `waiting_for_resources_time` | `None` | Get the time spent in the WAITING_FOR_RESOURCES phase for the latest attempt. |
 
 ## Methods
 
@@ -136,11 +136,22 @@ def get_phase_transitions(
 Get the phase transitions for a specific attempt, showing the granular breakdown
 of time spent in each phase (queued, initializing, running, etc.).
 
+Example:
+    >>> action = Action.get(run_name="my-run", name="my-action")
+    >>> details = action.details()
+    >>> transitions = details.get_phase_transitions()
+    >>> for t in transitions:
+    ...     print(f"{t.phase}: {t.duration.total_seconds()}s")
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `attempt` | `int \| None` | The attempt number (1-indexed). If None, uses the latest attempt. |
+
+**Returns**
+
+List of PhaseTransitionInfo objects, one for each phase the action went through.
+
 
 ### inputs()
 
@@ -174,8 +185,9 @@ def outputs()
 Returns the outputs of the action, returns instantly if outputs are already cached, else fetches them and
 returns. If Action is not in a terminal state, raise a RuntimeError.
 
-:return: ActionOutputs
 
+
+**Returns:** ActionOutputs
 
 ### to_dict()
 
@@ -184,9 +196,9 @@ def to_dict()
 ```
 Convert the object to a JSON-serializable dictionary.
 
-Returns:
-    dict: A dictionary representation of the object.
 
+
+**Returns:** dict: A dictionary representation of the object.
 
 ### to_json()
 
@@ -195,9 +207,9 @@ def to_json()
 ```
 Convert the object to a JSON string.
 
-Returns:
-    str: A JSON string representation of the object.
 
+
+**Returns:** str: A JSON string representation of the object.
 
 ### watch()
 

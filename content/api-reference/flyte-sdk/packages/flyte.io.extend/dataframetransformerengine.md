@@ -229,7 +229,9 @@ def open_as(
 |-|-|-|
 | `sd` | `literals_pb2.StructuredDataset` | |
 | `df_type` | `Type[DF]` | |
-| `updated_metadata` | `literals_pb2.StructuredDatasetMetadata` | New metadata type, since it might be different from the metadata in the literal. :return: dataframe. It could be pandas dataframe or arrow table, etc. |
+| `updated_metadata` | `literals_pb2.StructuredDatasetMetadata` | New metadata type, since it might be different from the metadata in the literal. |
+
+**Returns:** dataframe. It could be pandas dataframe or arrow table, etc.
 
 ### register()
 

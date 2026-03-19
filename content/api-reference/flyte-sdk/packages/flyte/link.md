@@ -46,5 +46,7 @@ Link can have template variables that are replaced by the backend.
 | `parent_action_name` | `str` | The name of the parent action. |
 | `action_name` | `str` | The name of the action. |
 | `pod_name` | `str` | The name of the pod. |
-| `kwargs` | `**kwargs` | Additional keyword arguments. :return: The generated link. |
+| `kwargs` | `**kwargs` | Additional keyword arguments. |
+
+**Returns:** The generated link.
 

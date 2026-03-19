@@ -113,6 +113,8 @@ Creates a Cron trigger that runs daily at midnight.
 | `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
 | `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
 
+**Returns:** Trigger: A trigger that runs daily at midnight.
+
 ### hourly()
 
 ```python
@@ -147,6 +149,8 @@ Creates a Cron trigger that runs every hour.
 | `queue` | `str \| None` | Optional queue to run the trigger in. |
 | `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
 | `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
+
+**Returns:** Trigger: A trigger that runs every hour, on the hour.
 
 ### minutely()
 
@@ -183,6 +187,8 @@ Creates a Cron trigger that runs every minute.
 | `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
 | `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
 
+**Returns:** Trigger: A trigger that runs every minute.
+
 ### monthly()
 
 ```python
@@ -218,6 +224,8 @@ Creates a Cron trigger that runs monthly on the 1st at midnight.
 | `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
 | `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
 
+**Returns:** Trigger: A trigger that runs monthly on the 1st at midnight.
+
 ### weekly()
 
 ```python
@@ -252,4 +260,6 @@ Creates a Cron trigger that runs weekly on Sundays at midnight.
 | `queue` | `str \| None` | Optional queue to run the trigger in. |
 | `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
 | `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
+
+**Returns:** Trigger: A trigger that runs weekly on Sundays at midnight.
 

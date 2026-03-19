@@ -142,6 +142,10 @@ def from_existing_remote(
 ```
 Create a DataFrame reference from an existing remote dataframe.
 
+Example:
+    ```python
+    df = DataFrame.from_existing_remote("s3://bucket/data.parquet", format="parquet")
+    ```
 
 
 | Parameter | Type | Description |

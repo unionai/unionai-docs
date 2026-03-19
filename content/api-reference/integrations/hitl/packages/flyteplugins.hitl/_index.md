@@ -90,6 +90,19 @@ Create a new human-in-the-loop event.
 
 This is a convenience function that wraps Event.create().
 
+Example:
+    # Async usage
+    event = await new_event.aio(
+        "approval_event",
+        data_type=bool,
+        scope="run",
+        prompt="Do you approve this action?",
+    )
+    approved = await event.wait.aio()
+
+    # Sync usage
+    event = new_event("value_event", data_type=int, scope="run", prompt="Enter a number")
+    value = event.wait()
 
 
 | Parameter | Type | Description |
@@ -98,6 +111,11 @@ This is a convenience function that wraps Event.create().
 | `data_type` | `Type[T]` | The expected type of the input (int, float, str, bool) |
 | `scope` | `EventScope` | The scope of the event. Currently only "run" is supported. |
 | `prompt` | `str` | The prompt to display to the human |
-| `timeout_seconds` | `int` | |
-| `poll_interval_seconds` | `int` | |
+| `timeout_seconds` | `int` | Maximum time to wait for human input (default: 1 hour) |
+| `poll_interval_seconds` | `int` | How often to check for a response (default: 5 seconds) |
+
+**Returns**
+
+An Event object that can be used to wait for the human input
+
 
