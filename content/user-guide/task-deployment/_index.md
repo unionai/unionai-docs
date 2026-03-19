@@ -220,7 +220,7 @@ To execute a deployed task in a different project or domain than your configured
 flyte run --run-project prod-project --run-domain production deployed-task greeting_env.greet --message "World"
 ```
 
-For all `flyte run` options, see [Run command options](./run-command-options).
+For all `flyte run` options, see [Run command options](../../api-reference/run-command-options).
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}

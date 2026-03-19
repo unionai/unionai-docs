@@ -106,7 +106,7 @@ It results in the fastest deployment times but requires more complex image manag
 ### `--root-dir` option
 
 By default, Flyte uses your current working directory as the root for code bundling.
-You can override this with `--root-dir` to specify a different base directory - particularly useful for monorepos or when deploying from subdirectories. This affects all copy styles: `loaded_modules` will look for imported modules relative to the root directory, `all` will walk the directory tree starting from the root, and the root directory setting works with any copy style. See the [Deploy command options](./deploy-command-options#--root-dir) for detailed usage examples.
+You can override this with `--root-dir` to specify a different base directory - particularly useful for monorepos or when deploying from subdirectories. This affects all copy styles: `loaded_modules` will look for imported modules relative to the root directory, `all` will walk the directory tree starting from the root, and the root directory setting works with any copy style. See the [Deploy command options](../../../api-reference/deploy-command-options#--root-dir) for detailed usage examples.
 
 After the code bundle is created (if applicable), it is uploaded to a cloud storage location (like S3 or GCS) accessible by your Flyte backend. It is now ready to be run.
 
@@ -117,7 +117,7 @@ The build process varies based on your configuration and backend type:
 
 ### Local image building
 
-When `image.builder` is set to `local` in [your `config.yaml`](../connecting-to-a-cluster), images are built on your local machine using Docker. This approach:
+When `image.builder` is set to `local` in [your `config.yaml`](../getting-started/connecting-to-a-cluster), images are built on your local machine using Docker. This approach:
 - Requires Docker to be installed and running on your development machine
 - Uses Docker BuildKit to build images from generated Dockerfiles or your custom Dockerfile
 - Pushes built images to the container registry specified in your `Image` configuration
@@ -125,7 +125,7 @@ When `image.builder` is set to `local` in [your `config.yaml`](../connecting-to-
 
 ### Remote image building
 
-When `image.builder` is set to `remote` in [your `config.yaml`](../connecting-to-a-cluster), images are built on cloud infrastructure. This approach:
+When `image.builder` is set to `remote` in [your `config.yaml`](../getting-started/connecting-to-a-cluster), images are built on cloud infrastructure. This approach:
 - Builds images using Union's ImageBuilder service (currently only available for Union backends, not OSS Flyte)
 - Requires no local Docker installation or configuration
 - Can push to Union's internal registry or external registries you specify
