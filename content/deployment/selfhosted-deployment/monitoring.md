@@ -98,9 +98,11 @@ To use a different label, set `monitoring.dashboards.label` and `monitoring.dash
 
 ## Alerting
 
-### Enabling alerts
+{{< key product_name >}} includes two layers of alerting that you can enable independently.
 
-Enable alerting rules in your data plane values:
+### Operational alerts
+
+Operational alerts detect basic infrastructure failures — services that are down, containers that are crashlooping, or code panics. Enable them in your values:
 
 ```yaml
 monitoring:
@@ -108,35 +110,66 @@ monitoring:
     enabled: true
 ```
 
-AlertManager forwards alerts to Grafana's built-in alerting system. Alerts appear in Grafana under **Alerting → Alert rules**.
+| Alert | Severity | Fires when |
+|-------|----------|------------|
+| ServiceDown | critical | Any deployment has 0 available replicas for 5 min |
+| HighRestartRate | warning | A container restarts more than 5 times in 1 hour |
+| HandlerPanic | critical | Any service handler panic in the last hour |
 
-### Alert rules
+These alerts fire on both the controlplane and dataplane.
+
+### SLO-based alerts
+
+SLO alerts track error budget consumption and latency against configurable targets. These are provided as recommended starting points — adjust the targets and thresholds to match your operational requirements.
+
+```yaml
+monitoring:
+  slos:
+    enabled: true
+    alerting:
+      enabled: true
+    targets:
+      availability: 0.999   # 99.9% — adjust to your requirements
+      latencyP99: 5          # seconds — adjust to your requirements
+```
 
 | Alert | Severity | Fires when |
 |-------|----------|------------|
-| ServiceDown | critical | Any deployment has 0 available replicas |
-| HighRestartRate | warning | > 5 container restarts in 1 hour |
-| HighConnectErrorRate (CP) | warning | Connect RPC error rate > 5% for 10 min |
-| IngressHighLatency (CP) | warning | Ingress p99 latency > 5s for 10 min |
-| Ingress5xxRate (CP) | warning | Ingress 5xx rate > 1% for 5 min |
-| ExecutionsDBErrors (CP) | warning | Postgres errors > 0.1/s for 10 min |
-| QueueDispatcherBacklog (CP) | warning | Dispatcher backlog > 100 for 15 min |
-| PropellerRoundLatencyHigh (DP) | warning | Propeller round p99 > 5s for 10 min |
-| PropellerQueueBacklog (DP) | warning | Propeller queue depth > 100 for 10 min |
-| OperatorWorkQueueErrors (DP) | warning | Work queue failure rate > 0.1/s for 10 min |
-| PropellerRoundErrors (DP) | warning | Round error rate > 10% for 10 min |
-| PropellerWfUpdateFailures (DP) | warning | etcd write failures > 0.1/s for 10 min |
-| HandlerPanic (CP + DP) | critical | Any handler panic in the last hour |
+| HighErrorBudgetBurn | warning | Error budget more than 50% consumed |
+| ErrorBudgetExhausted | critical | Error budget fully consumed |
+| LatencySLOBreach | warning | p99 latency exceeding target for 10 min |
+
+> [!NOTE]
+> The default SLO targets (99.9% availability, 5s p99 latency) are starting points. Every deployment has different traffic patterns and performance characteristics. Review the SLO dashboard panels after enabling to understand your baseline, then tune the targets to values that are meaningful for your environment.
+
+### Viewing alerts
+
+Alerts are visible in Grafana under **Alerting → Alert rules**. Grafana discovers alerts from AlertManager automatically via the Alertmanager datasource.
 
 ### Configuring notifications
 
-To receive alert notifications (Slack, PagerDuty, email, etc.):
+By default, alerts are evaluated and visible in Grafana but do not send notifications. To receive notifications when alerts fire:
 
 1. Open Grafana at `https://<your-domain>/grafana`
 2. Navigate to **Alerting → Contact points**
 3. Click **Add contact point**
-4. Select your notification channel and configure it
+4. Select your notification channel (Slack, PagerDuty, email, etc.) and configure it
 5. Under **Alerting → Notification policies**, route alerts to your contact point
+
+Alternatively, configure AlertManager receivers directly in your Helm values:
+
+```yaml
+monitoring:
+  alertmanager:
+    config:
+      route:
+        receiver: my-slack
+      receivers:
+        - name: my-slack
+          slack_configs:
+            - api_url: "https://hooks.slack.com/services/..."
+              channel: "#alerts"
+```
 
 ## Independent monitoring resources
 
