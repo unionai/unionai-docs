@@ -222,9 +222,11 @@ data:
 
 ## Alerting
 
-### Enabling alerts
+{{< key product_name >}} includes two layers of alerting that you can enable independently.
 
-Enable alerting rules in your data plane values:
+### Operational alerts
+
+Operational alerts detect basic infrastructure failures. Enable them in your data plane values:
 
 ```yaml
 monitoring:
@@ -232,24 +234,39 @@ monitoring:
     enabled: true
 ```
 
-This creates PrometheusRule alerting groups that Prometheus evaluates and forwards to AlertManager.
+| Alert | Severity | Fires when |
+|-------|----------|------------|
+| ServiceDown | critical | Any deployment has 0 available replicas for 5 min |
+| HighRestartRate | warning | A container restarts more than 5 times in 1 hour |
+| HandlerPanic | critical | Any service handler panic in the last hour |
 
-### Alert rules
+### SLO-based alerts
+
+SLO alerts track error budget consumption and latency against configurable targets. These are provided as recommended starting points — adjust the targets and thresholds to match your operational requirements.
+
+```yaml
+monitoring:
+  slos:
+    enabled: true
+    alerting:
+      enabled: true
+    targets:
+      availability: 0.999   # 99.9% — adjust to your requirements
+      latencyP99: 5          # seconds — adjust to your requirements
+```
 
 | Alert | Severity | Fires when |
 |-------|----------|------------|
-| ServiceDown | critical | Any deployment has 0 available replicas |
-| HighRestartRate | warning | > 5 container restarts in 1 hour |
-| PropellerRoundLatencyHigh | warning | Propeller round p99 > 5s for 10 min |
-| PropellerQueueBacklog | warning | Propeller queue depth > 100 for 10 min |
-| OperatorWorkQueueErrors | warning | Work queue failure rate > 0.1/s for 10 min |
-| PropellerRoundErrors | warning | Round error rate > 10% for 10 min |
-| PropellerWfUpdateFailures | warning | etcd write failures > 0.1/s for 10 min |
-| HandlerPanic | critical | Any handler panic in the last hour |
+| HighErrorBudgetBurn | warning | Error budget more than 50% consumed |
+| ErrorBudgetExhausted | critical | Error budget fully consumed |
+| PropellerLatencySLOBreach | warning | Propeller p99 latency exceeding target for 10 min |
+
+> [!NOTE]
+> The default SLO targets (99.9% availability, 5s p99 latency) are starting points. Every deployment has different traffic patterns and performance characteristics. Review the SLO dashboard panels after enabling to understand your baseline, then tune the targets to values that are meaningful for your environment.
 
 ### Configuring notifications
 
-Configure AlertManager to route alerts to your notification channels:
+By default, alerts are evaluated but do not send notifications. To receive notifications, configure AlertManager with a receiver:
 
 ```yaml
 monitoring:
@@ -257,31 +274,15 @@ monitoring:
     enabled: true
     config:
       route:
-        receiver: slack
+        receiver: my-slack
       receivers:
-        - name: slack
+        - name: my-slack
           slack_configs:
             - api_url: "https://hooks.slack.com/services/..."
               channel: "#alerts"
 ```
 
-If you are using Grafana's built-in alerting, configure a webhook receiver to forward alerts to Grafana:
-
-```yaml
-monitoring:
-  alertmanager:
-    enabled: true
-    config:
-      route:
-        receiver: grafana
-      receivers:
-        - name: grafana
-          webhook_configs:
-            - url: "http://monitoring-grafana.<NAMESPACE>.svc.cluster.local/api/alertmanager/grafana/api/v2/alerts"
-              send_resolved: true
-```
-
-Then configure contact points in Grafana under **Alerting → Contact points**.
+If you have Grafana enabled, alerts are also visible under **Alerting → Alert rules** via the Alertmanager datasource.
 
 ## Scraping Union services from your own Prometheus
 
