@@ -63,7 +63,7 @@ def train(data: list) -> dict:
 ### `report`
 
 The `report` parameter on `@env.task` controls whether an HTML report is generated for the task.
-See [Reports](../task-programming/reports) for details.
+See [Reports](../development/reports) for details.
 
 ### `links`
 
@@ -71,7 +71,7 @@ The `links` parameter on `@env.task` (and `override()`) attaches clickable URLs 
 Use links to connect tasks to external tools like experiment trackers, monitoring dashboards, or logging systems.
 
 Links are defined by implementing the [`Link`](../../api-reference/flyte-sdk/packages/flyte/link) protocol.
-See [Links](../task-programming/links) for full details on creating and using links.
+See [Links](../development/links) for full details on creating and using links.
 
 ## Default inputs
 
@@ -145,8 +145,8 @@ Data exceeding this threshold raises an `InlineIOMaxBytesBreached` error.
 
 The default value is 10 MiB (`10 * 1024 * 1024` bytes).
 
-This setting does **not** affect [`flyte.io.File`, `flyte.io.Dir`](../task-programming/files-and-directories),
-or [`flyte.DataFrame`](../task-programming/dataclasses-and-structures),
+This setting does **not** affect [`flyte.io.File`, `flyte.io.Dir`](../data-types/files-and-directories),
+or [`flyte.DataFrame`](../data-types/dataclasses-and-structures),
 which are always offloaded to object storage regardless of size.
 
 ```python

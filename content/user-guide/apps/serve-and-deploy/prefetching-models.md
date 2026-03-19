@@ -59,7 +59,7 @@ If the model requires authentication:
 {{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=hf-token lang=python >}}
 
 The default value for `hf_token_key` is `HF_TOKEN`, where `HF_TOKEN` is the name of the Flyte secret containing your
-HuggingFace token. If this secret doesn't exist, you can create a secret using the [flyte create secret CLI](../task-configuration/secrets).
+HuggingFace token. If this secret doesn't exist, you can create a secret using the [flyte create secret CLI](../tasks/configuring/secrets).
 
 ### With resources
 

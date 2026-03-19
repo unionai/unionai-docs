@@ -137,7 +137,7 @@ docker login ghcr.io
 ```
 
 > [!NOTE]
-> The `--builder local` option means images are [built locally](./task-configuration/container-images). Union instances can use `--builder remote` instead.
+> The `--builder local` option means images are [built locally](../tasks/configuring/container-images). Union instances can use `--builder remote` instead.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -160,7 +160,7 @@ See the [CLI reference](../api-reference/flyte-cli#flyte-create-config) for all 
 
 - `builder`: How container images are built.
   - `remote` (Union): Images built on Union's infrastructure.
-  - `local` (Flyte OSS): Images built on your machine. Requires Docker. See [Image building](./task-configuration/container-images#image-building).
+  - `local` (Flyte OSS): Images built on your machine. Requires Docker. See [Image building](../tasks/configuring/container-images#image-building).
 
 **`task`** — Default settings for task execution.
 

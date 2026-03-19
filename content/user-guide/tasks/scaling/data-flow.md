@@ -30,7 +30,7 @@ These types are not copied but passed as references to storage locations:
 - **Directories**: `flyte.io.Dir`
 - **Dataframes**: `flyte.io.DataFrame`, `pd.DataFrame`, `pl.DataFrame`, etc.
 
-Dataframes are automatically converted to Parquet format and read using Apache Arrow for zero-copy reads. Use `flyte.io.DataFrame` for lazy materialization to any supported type like pandas or polars. [Learn more about the Flyte Dataframe type](../../user-guide/task-programming/dataframes)
+Dataframes are automatically converted to Parquet format and read using Apache Arrow for zero-copy reads. Use `flyte.io.DataFrame` for lazy materialization to any supported type like pandas or polars. [Learn more about the Flyte Dataframe type](../data-types/dataframes)
 
 ### Passed by value (inline I/O)
 
@@ -114,11 +114,11 @@ Control caching behavior using `flyte.with_runcontext`:
 - **Scope**: Set `cache_lookup_scope` to `"global"` or `"project/domain"`.
 - **Disable cache**: Set `overwrite_cache=True` to force re-execution.
 
-For more details on caching configuration, see [Caching](../task-configuration/caching).
+For more details on caching configuration, see [Caching](../configuring/caching).
 
 ## Traces and data flow
 
-When using [traces](../task-programming/traces), the data flow behavior is different:
+When using [traces](../development/traces), the data flow behavior is different:
 
 1. **Full execution first**: The trace is fully executed before inputs and outputs are recorded.
 2. **Checkpoint behavior**: Recording happens like a checkpoint at the end of trace execution.

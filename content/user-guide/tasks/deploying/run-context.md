@@ -37,7 +37,7 @@ All parameters are optional. Unset parameters inherit from the configuration fil
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `raw_data_path` | `str` | *from config* | Storage prefix for offloaded data types ([Files](../task-programming/files-and-directories), [Dirs](../task-programming/files-and-directories), [DataFrames](../task-programming/dataframes), checkpoints). Accepts `s3://`, `gs://`, or local paths. |
+| `raw_data_path` | `str` | *from config* | Storage prefix for offloaded data types ([Files](../data-types/files-and-directories), [Dirs](../data-types/files-and-directories), [DataFrames](../data-types/dataframes), checkpoints). Accepts `s3://`, `gs://`, or local paths. |
 | `run_base_dir` | `str` | *auto-generated* | Base directory for run metadata passed between tasks. Distinct from `raw_data_path`. |
 
 To direct all task outputs to a specific bucket for a run:
@@ -85,7 +85,7 @@ The equivalent CLI flag is `--raw-data-path`. See [Run command options](../../..
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `custom_context` | `Dict[str, str]` | `None` | Metadata propagated through the entire task hierarchy. Readable inside any task via `flyte.ctx().custom_context`. See [Custom context](../task-programming/custom-context). |
+| `custom_context` | `Dict[str, str]` | `None` | Metadata propagated through the entire task hierarchy. Readable inside any task via `flyte.ctx().custom_context`. See [Custom context](../data-types/custom-context). |
 
 ---
 

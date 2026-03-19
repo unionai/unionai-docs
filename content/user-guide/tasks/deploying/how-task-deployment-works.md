@@ -77,7 +77,7 @@ deployment = flyte.deploy(viz_env, version="v2.0.0")
 deployment = flyte.deploy(data_env, ml_env, viz_env, version="v2.0.0")
 ```
 
-For detailed information about working with multiple environments, see [Multiple Environments](../task-configuration/multiple-environments).
+For detailed information about working with multiple environments, see [Multiple Environments](../configuring/multiple-environments).
 
 ## 4. Code bundle creation and upload
 
@@ -112,7 +112,7 @@ After the code bundle is created (if applicable), it is uploaded to a cloud stor
 
 ## 5. Image building
 
-If your `TaskEnvironment` specifies [custom images](../task-configuration/container-images), Flyte builds and pushes container images before deploying tasks.
+If your `TaskEnvironment` specifies [custom images](../configuring/container-images), Flyte builds and pushes container images before deploying tasks.
 The build process varies based on your configuration and backend type:
 
 ### Local image building

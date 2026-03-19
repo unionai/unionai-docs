@@ -26,7 +26,7 @@ Because the **default bucket contains the metadata store**, it must be treated a
 | **UI and APIs** | Execution list or detail views may show errors or "resource not found." Output previews may fail to load. |
 | **Execution engine** | In-flight or downstream tasks that depend on a node's output can fail. Retry state may be lost. |
 | **Caching** | Pointers to cached outputs may be lost, resulting in cache misses; tasks may re-run or fail. |
-| **Traces** | [Trace](../../user-guide/task-programming/traces) checkpoint data (used by `@flyte.trace` for fine-grained recovery from system failures) may be lost, preventing resume-from-checkpoint. |
+| **Traces** | [Trace](../../user-guide/tasks/development/traces) checkpoint data (used by `@flyte.trace` for fine-grained recovery from system failures) may be lost, preventing resume-from-checkpoint. |
 | **Data** | Raw blobs may still exist, but without metadata the system has no pointers to them. That data becomes **orphaned**. Downstream tasks that consume outputs by reference will fail at runtime. |
 | **Operations** | Audit trails and the record of what ran, when, and with what outputs are lost. |
 

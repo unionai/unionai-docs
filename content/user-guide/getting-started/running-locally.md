@@ -34,7 +34,7 @@ With the interactive TUI:
 flyte run --local --tui my_pipeline.py my_task --arg value
 ```
 
-You can also run tasks programmatically using the Python SDK with `flyte.run()`. See [Run and deploy tasks](./task-deployment/_index) for details.
+You can also run tasks programmatically using the Python SDK with `flyte.run()`. See [Run and deploy tasks](../tasks/deploying/_index) for details.
 
 Drop `--local` to run on a remote cluster when one is configured:
 
@@ -86,12 +86,12 @@ Most Flyte features work in both local and remote execution. The table below sum
 
 | Feature | Local behavior | Details |
 |---------|---------------|---------|
-| **Caching** | Outputs stored in local SQLite, keyed on task name and inputs. Same inputs = instant results. | [Caching](./task-configuration/caching) |
-| **Tracing** | `@flyte.trace` functions appear as child nodes in the TUI with their own timing, inputs, and outputs. | [Traces](./task-programming/traces) |
-| **Reports** | HTML files saved locally. TUI shows the file path. | [Reports](./task-programming/reports) |
+| **Caching** | Outputs stored in local SQLite, keyed on task name and inputs. Same inputs = instant results. | [Caching](../tasks/configuring/caching) |
+| **Tracing** | `@flyte.trace` functions appear as child nodes in the TUI with their own timing, inputs, and outputs. | [Traces](../tasks/development/traces) |
+| **Reports** | HTML files saved locally. TUI shows the file path. | [Reports](../tasks/development/reports) |
 | **Serving** | Run apps locally with `python serve.py` or `flyte.with_servecontext(mode="local")`. | [Serve and deploy apps](./serve-and-deploy-apps/_index) |
 | **Plugins** | Same decorators and APIs as remote. Secrets come from environment variables. | [Integrations](../integrations/_index) |
-| **Secrets** | Read from `.env` files or environment variables. No `flyte create secret` needed. | [Secrets](./task-configuration/secrets) |
+| **Secrets** | Read from `.env` files or environment variables. No `flyte create secret` needed. | [Secrets](../tasks/configuring/secrets) |
 
 ---
 

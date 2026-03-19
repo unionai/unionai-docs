@@ -26,7 +26,7 @@ If `task_1` in environment `env_1` calls a `task_2` in environment `env_2`, then
 2. The image used in the `TaskEnvironment` of `env_1` must include all dependencies of the module containing the `task_2` (unless `task_2` is invoked as a remote task).
 
 <!-- TODO: Link to remote tasks when that page is live
-2. The image used in the `TaskEnvironment` of `env_1` must include all dependencies of the module containing the `task_2` (unless [`task_2` is invoked as a remote task](../task-programming/remote-tasks)).
+2. The image used in the `TaskEnvironment` of `env_1` must include all dependencies of the module containing the `task_2` (unless [`task_2` is invoked as a remote task](../execution-patterns/remote-tasks)).
 -->
 
 ### Task `depends_on` constraints
@@ -52,7 +52,7 @@ This is necessary because of the way task invocation works in Flyte:
 To avoid this requirement, you can invoke a task in another environment _remotely_.
 
 <!-- TODO: Link to remote tasks when that page is live
-To avoid this requirement, you can [invoke a task in another environment _remotely_](../task-programming/remote-tasks).
+To avoid this requirement, you can [invoke a task in another environment _remotely_](../execution-patterns/remote-tasks).
 -->
 
 ## Example
@@ -121,7 +121,7 @@ Here we call, in turn, the `run_msa` and `run_fold` tasks.
 Since we call them directly rather than as remote tasks, we had to ensure that `main_image` includes all dependencies needed by both tasks.
 
 <!-- TODO: Link to remote tasks when that page is live
-Note that we call them directly, not as [remote tasks](../task-programming/remote-tasks), which is why we had to ensure that `main_image` includes all dependencies needed by both tasks.
+Note that we call them directly, not as [remote tasks](../execution-patterns/remote-tasks), which is why we had to ensure that `main_image` includes all dependencies needed by both tasks.
 -->
 
 The final piece of the puzzle is the `if __name__ == "__main__":` block that allows us to run the `main` task on the configured Flyte backend:

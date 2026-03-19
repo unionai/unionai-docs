@@ -170,7 +170,7 @@ async with TokenBatcher(
 
 ## Combining with reusable containers
 
-`DynamicBatcher` on its own improves utilization within a single task. When combined with [reusable containers](../task-configuration/reusable-containers), it becomes significantly more powerful:
+`DynamicBatcher` on its own improves utilization within a single task. When combined with [reusable containers](../configuring/reusable-containers), it becomes significantly more powerful:
 
 - **Amortized model loading** — the model is loaded once per container and reused across many task invocations, avoiding repeated download and initialization costs
 - **Cross-task batching** — with `ReusePolicy(concurrency=N)`, multiple task invocations run concurrently on the same replica, all feeding records into the **same shared batcher**. This means the GPU always has a full queue of work.
