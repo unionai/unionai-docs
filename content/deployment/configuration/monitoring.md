@@ -3,13 +3,13 @@ title: Monitoring
 weight: 5
 variants: -flyte -byoc +selfmanaged
 ---
-
 # Monitoring
 
 {{< variant selfhosted >}}
+
 > [!NOTE] Self-hosted deployments
 > If you are running a [self-hosted deployment](../selfhosted-deployment/monitoring), monitoring is pre-configured with Grafana dashboards and alerting. See the [self-hosted monitoring guide](../selfhosted-deployment/monitoring) for setup details.
-{{< /variant >}}
+> {{< /variant >}}
 
 The {{< key product_name >}} data plane deploys a static [Prometheus](https://prometheus.io/) instance that collects metrics required for platform features like cost tracking, task-level resource monitoring, and execution observability. This Prometheus instance is pre-configured and requires no additional setup.
 
@@ -19,14 +19,14 @@ For operational monitoring of the cluster itself (node health, API server metric
 
 The data plane supports two independent monitoring concerns:
 
-| Concern | What it monitors | How it's deployed | Configurable |
-|---------|-----------------|-------------------|--------------|
-| **Union features** | Task execution metrics, cost tracking, GPU utilization, container resources | Static Prometheus with pre-built scrape config | Retention, resources, scheduling |
-| **Cluster health** (optional) | Kubernetes components, node health, alerting, Grafana dashboards | `kube-prometheus-stack` via `monitoring.enabled` | Full kube-prometheus-stack values |
+| Concern                             | What it monitors                                                            | How it's deployed                                    | Configurable                      |
+| ----------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------- | --------------------------------- |
+| **Union features**            | Task execution metrics, cost tracking, GPU utilization, container resources | Static Prometheus with pre-built scrape config       | Retention, resources, scheduling  |
+| **Cluster health** (optional) | Kubernetes components, node health, alerting, Grafana dashboards            | `kube-prometheus-stack` via `monitoring.enabled` | Full kube-prometheus-stack values |
 
 ```
                     ┌─────────────────────────────────────┐
-                    │          Data Plane Cluster          │
+                    │          Data Plane Cluster         │
                     │                                     │
                     │  ┌──────────────────────┐           │
                     │  │  Static Prometheus   │           │
@@ -61,14 +61,14 @@ The static Prometheus instance is always deployed and pre-configured to scrape t
 
 The following targets are scraped automatically:
 
-| Job | Target | Metrics collected |
-|-----|--------|------------------|
-| `kube-state-metrics` | Pod/node resource requests, limits, status, capacity | Cost calculations, resource tracking |
-| `kubernetes-cadvisor` | Container CPU and memory usage via kubelet | Task-level resource monitoring |
-| `flytepropeller` | Execution round info, fast task duration | Execution observability |
-| `opencost` | Node hourly cost rates (CPU, RAM, GPU) | Cost tracking |
-| `gpu-metrics` | DCGM exporter metrics (when `dcgm-exporter.enabled`) | GPU utilization |
-| `serving-envoy` | Envoy upstream request counts and latency (when `serving.enabled`) | Inference serving metrics |
+| Job                     | Target                                                               | Metrics collected                    |
+| ----------------------- | -------------------------------------------------------------------- | ------------------------------------ |
+| `kube-state-metrics`  | Pod/node resource requests, limits, status, capacity                 | Cost calculations, resource tracking |
+| `kubernetes-cadvisor` | Container CPU and memory usage via kubelet                           | Task-level resource monitoring       |
+| `flytepropeller`      | Execution round info, fast task duration                             | Execution observability              |
+| `opencost`            | Node hourly cost rates (CPU, RAM, GPU)                               | Cost tracking                        |
+| `gpu-metrics`         | DCGM exporter metrics (when `dcgm-exporter.enabled`)               | GPU utilization                      |
+| `serving-envoy`       | Envoy upstream request counts and latency (when `serving.enabled`) | Inference serving metrics            |
 
 ### Configuration
 
@@ -220,6 +220,30 @@ data:
     { ... Grafana dashboard JSON ... }
 ```
 
+## Service Level Objectives (SLOs)
+
+The SLO dashboard row provides at-a-glance visibility into dataplane health using four key indicators.
+
+| SLO                              | What it represents                                                                                                  |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Service Availability**   | Are all deployments running their desired replica count? Measures infrastructure health.                            |
+| **Execution Success Rate** | Are task executions completing without errors? Combines V1 propeller round success and V2 executor task completion. |
+| **Latency**                | Propeller round p99 — the worst-case time to process one workflow reconciliation.                                  |
+| **Error Budget**           | How much room is left before the availability target is breached? Derived from execution success rate vs target.    |
+
+To enable SLO recording rules and error budget tracking:
+
+```yaml
+monitoring:
+  slos:
+    enabled: true
+    targets:
+      availability: 0.999   # 99.9% — adjust to your requirements
+      latencyP99: 5          # seconds — adjust to your requirements
+```
+
+These are recommended starting points — tune the targets based on your traffic patterns and performance baseline.
+
 ## Alerting
 
 {{< key product_name >}} includes two layers of alerting that you can enable independently.
@@ -234,11 +258,11 @@ monitoring:
     enabled: true
 ```
 
-| Alert | Severity | Fires when |
-|-------|----------|------------|
-| ServiceDown | critical | Any deployment has 0 available replicas for 5 min |
-| HighRestartRate | warning | A container restarts more than 5 times in 1 hour |
-| HandlerPanic | critical | Any service handler panic in the last hour |
+| Alert           | Severity | Fires when                                        |
+| --------------- | -------- | ------------------------------------------------- |
+| ServiceDown     | critical | Any deployment has 0 available replicas for 5 min |
+| HighRestartRate | warning  | A container restarts more than 5 times in 1 hour  |
+| HandlerPanic    | critical | Any service handler panic in the last hour        |
 
 ### SLO-based alerts
 
@@ -255,11 +279,11 @@ monitoring:
       latencyP99: 5          # seconds — adjust to your requirements
 ```
 
-| Alert | Severity | Fires when |
-|-------|----------|------------|
-| HighErrorBudgetBurn | warning | Error budget more than 50% consumed |
-| ErrorBudgetExhausted | critical | Error budget fully consumed |
-| PropellerLatencySLOBreach | warning | Propeller p99 latency exceeding target for 10 min |
+| Alert                     | Severity | Fires when                                        |
+| ------------------------- | -------- | ------------------------------------------------- |
+| HighErrorBudgetBurn       | warning  | Error budget more than 50% consumed               |
+| ErrorBudgetExhausted      | critical | Error budget fully consumed                       |
+| PropellerLatencySLOBreach | warning  | Propeller p99 latency exceeding target for 10 min |
 
 > [!NOTE]
 > The default SLO targets (99.9% availability, 5s p99 latency) are starting points. Every deployment has different traffic patterns and performance characteristics. Review the SLO dashboard panels after enabling to understand your baseline, then tune the targets to values that are meaningful for your environment.
