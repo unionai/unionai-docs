@@ -3,6 +3,7 @@ title: Platform deployment
 weight: 4
 variants: -flyte +byoc +selfmanaged
 top_menu: true
+tier2_band: true
 mermaid: true
 sidebar_expanded: true
 ---
