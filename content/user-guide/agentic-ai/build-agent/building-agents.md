@@ -89,7 +89,7 @@ flyte run agent.py react_agent --goal "What is (12 + 8) * 3?"
 - Swap in your own tools (web search, database queries, API calls) by adding to the `TOOLS` dict
 
 > [!TIP]
-> See the [Agentic Refinement docs](../advanced-project/agentic-refinement), [Traces docs](../task-programming/traces), and [more patterns (planner, debate, etc.)](https://github.com/unionai/workshops/tree/main/tutorials/multi-agent-workflows).
+> See the [Agentic Refinement docs](../advanced-project/agentic-refinement), [Traces docs](../tasks/development/traces), and [more patterns (planner, debate, etc.)](https://github.com/unionai/workshops/tree/main/tutorials/multi-agent-workflows).
 
 ## Plan-and-Execute with parallel fan-out (LangGraph on {{< key product_name >}})
 

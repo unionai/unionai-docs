@@ -1,6 +1,6 @@
 ---
-title: Development
-weight: 3
+title: Data types
+weight: 2
 variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---

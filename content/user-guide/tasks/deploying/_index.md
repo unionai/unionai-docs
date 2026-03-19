@@ -1,6 +1,6 @@
 ---
 title: Run and deploy tasks
-weight: 12
+weight: 5
 variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true

@@ -1,6 +1,6 @@
 ---
 title: Execution patterns
-weight: 2
+weight: 3
 variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---

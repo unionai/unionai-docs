@@ -13,7 +13,7 @@ llm_readable_bundle: true
 Components of your {{< key product_name >}} compute plane will need to connect to and communicate with other resources in your cloud environment such as [Cloud Storage](./enabling-google-cloud-storage), [Artifact Registry](./enabling-google-artifact-registry), [BigQuery](./enabling-bigquery), and so forth.
 
 > [!NOTE] Secret management
-> We strongly recommend using the [{{< key product_name >}} secrets manager](../../user-guide/task-configuration/secrets) to manage secrets rather than Google Secret Manager. If your organization must use Google Secret Manager, however, see [Enabling Google Secret Manager](./enabling-google-secret-manager).
+> We strongly recommend using the [{{< key product_name >}} secrets manager](../../user-guide/tasks/configuring/secrets) to manage secrets rather than Google Secret Manager. If your organization must use Google Secret Manager, however, see [Enabling Google Secret Manager](./enabling-google-secret-manager).
 
 As much as possible, access to the resources you need will be pre-configured by the {{< key product_name >}} team when they set up your compute plane.
 For example, if you want your task code to have access to a specific Cloud Storage bucket or BigQuery, this can be pre-configured.

@@ -7,14 +7,14 @@ sidebar_expanded: true
 
 # Work with local data
 
-When running Flyte tasks that take inputs like DataFrames, files, or directories, data is passed between actions through the configured blob store. For details on how data flows through your workflows, see [data flow](../run-scaling/data-flow).
+When running Flyte tasks that take inputs like DataFrames, files, or directories, data is passed between actions through the configured blob store. For details on how data flows through your workflows, see [data flow](../scaling/data-flow).
 
 Flyte provides several built-in types for handling data:
 - `flyte.io.DataFrame` for tabular data
 - `flyte.io.File` for individual files
 - `flyte.io.Dir` for directories
 
-You can also create custom type extensions for specialized data types. See [custom types](../task-programming/handling-custom-types) for details.
+You can also create custom type extensions for specialized data types. See [custom types](../data-types/handling-custom-types) for details.
 
 ## Local execution
 

@@ -10,7 +10,7 @@ Flyte 2 provides intelligent **task output caching** that automatically avoids r
 
 > [!NOTE]
 > Caching works at the task level and caches complete task outputs.
-> For function-level checkpointing and resumption *within tasks*, see [Traces](../task-programming/traces).
+> For function-level checkpointing and resumption *within tasks*, see [Traces](../development/traces).
 
 ## Overview
 

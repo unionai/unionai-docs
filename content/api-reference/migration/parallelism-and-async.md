@@ -246,4 +246,4 @@ async def main(x: int) -> str:
 {{< /note >}}
 
 For full details on async patterns, see [Asynchronous model](../../user-guide/flyte-2/async).
-For full details on parallel fanout, see [Fanout](../../user-guide/task-programming/fanout).
+For full details on parallel fanout, see [Fanout](../../user-guide/tasks/execution-patterns/fanout).

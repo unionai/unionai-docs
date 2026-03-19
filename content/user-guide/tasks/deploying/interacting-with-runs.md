@@ -20,7 +20,7 @@ Instead, they are simply a result of the task being invoked in a specific way:
 * User with `flyte run`
 * User via the UI
 * Other code calling `flyte.run()`
-* [Trigger](../task-configuration/triggers)
+* [Trigger](../configuring/triggers)
 
 When a task is invoked in one of these ways, it creates a run to represent the execution of that task and all its nested tasks, considered together.
 Each task execution within that run is represented by an **action**.
@@ -53,7 +53,7 @@ Unlike Flyte 1, there is no explicit `@workflow` construct in Flyte 2; instead, 
 
 ## Working with runs
 
-Runs are created when you execute tasks using `flyte run` or `flyte.run()`. For details on running tasks, see [how task run works](./how-task-run-works). To learn about running previously deployed remote tasks, see [remote tasks](../task-programming/remote-tasks).
+Runs are created when you execute tasks using `flyte run` or `flyte.run()`. For details on running tasks, see [how task run works](./how-task-run-works). To learn about running previously deployed remote tasks, see [remote tasks](../execution-patterns/remote-tasks).
 
 ### Retrieving a run
 
@@ -265,7 +265,7 @@ if action.phase == flyte.models.ActionPhase.FAILED:
 
 ## Understanding data storage
 
-Flyte handles different types of data differently, as explained in [data flow](../run-scaling/data-flow):
+Flyte handles different types of data differently, as explained in [data flow](../scaling/data-flow):
 
 - **Parameterized data** (primitives, small objects): Returned directly in inputs/outputs
 - **Large data** (files, directories, DataFrames, models): Stored in cloud storage (S3, GCS, Azure Blob Storage)
@@ -490,4 +490,4 @@ For complete CLI documentation and all available options, see the [Flyte CLI ref
 - `flyte.storage.GCS` - Google Cloud Storage configuration
 - `flyte.storage.ABFS` - Azure Blob Storage configuration
 
-For more details on data flow and storage, see [data flow](../run-scaling/data-flow).
+For more details on data flow and storage, see [data flow](../scaling/data-flow).

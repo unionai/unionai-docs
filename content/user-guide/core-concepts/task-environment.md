@@ -72,7 +72,7 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-See [Container images](../task-configuration/container-images) for detailed image configuration options.
+See [Container images](../tasks/configuring/container-images) for detailed image configuration options.
 
 ## Multiple tasks, one environment
 

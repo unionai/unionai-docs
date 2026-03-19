@@ -12,9 +12,9 @@ variants: +flyte +byoc +selfmanaged
 
 `[[AppEnvironment]]`s share many configuration options with `[[TaskEnvironment]]`s:
 
-- **Images**: See [Container images](../task-configuration/container-images/) for details on creating and using container images
-- **Resources**: See [Resources](../task-configuration/resources/) for CPU, memory, GPU, and storage configuration
-- **Secrets**: See [Secrets](../task-configuration/secrets/) for injecting secrets into your app
+- **Images**: See [Container images](../tasks/configuring/container-images/) for details on creating and using container images
+- **Resources**: See [Resources](../tasks/configuring/resources/) for CPU, memory, GPU, and storage configuration
+- **Secrets**: See [Secrets](../tasks/configuring/secrets/) for injecting secrets into your app
 - **Environment variables**: Set via the `env_vars` parameter (same as tasks)
 - **Cluster pools**: Specify via the `cluster_pool` parameter
 
@@ -364,4 +364,4 @@ The `FastAPIAppEnvironment` automatically:
 
 ## Shared settings
 
-For more details on shared settings like images, resources, and secrets, refer to the [task configuration](../task-configuration/_index) documentation.
+For more details on shared settings like images, resources, and secrets, refer to the [task configuration](../tasks/configuring/_index) documentation.

@@ -24,9 +24,9 @@ Performance optimization focuses on two key dimensions:
 
 **Recommended approach**:
 - Use tasks for orchestration and parallelism
-- Use [traces](../task-programming/traces) for fine-grained checkpointing
+- Use [traces](../development/traces) for fine-grained checkpointing
 - Model parallelism using `asyncio` and use things methods like `asyncio.as_completed` or `asyncio.gather` to join the parallelism
-- Leverage [reusable containers](../task-configuration/reusable-containers) with concurrency to eliminate startup overhead and optimize resource utilization
+- Leverage [reusable containers](../configuring/reusable-containers) with concurrency to eliminate startup overhead and optimize resource utilization
 
 ### Throughput
 
@@ -92,7 +92,7 @@ For a detailed walkthrough of task execution, see [Life of a run](./life-of-a-ru
 
 ### 1. Use reusable containers for concurrency
 
-[Reusable containers](../task-configuration/reusable-containers) eliminate the container creation overhead (`t`) and enable concurrent task execution:
+[Reusable containers](../configuring/reusable-containers) eliminate the container creation overhead (`t`) and enable concurrent task execution:
 
 ```python
 import flyte
@@ -166,7 +166,7 @@ async def process_large_dataset(dataset: list[dict]) -> list[dict]:
 
 ### 3. Use traces for lightweight operations
 
-[Traces](../task-programming/traces) provide fine-grained checkpointing with minimal overhead:
+[Traces](../development/traces) provide fine-grained checkpointing with minimal overhead:
 
 ```python
 @flyte.trace
@@ -270,7 +270,7 @@ See [Data flow](./data-flow) for details on data types and transport.
 
 ### 6. Leverage caching
 
-Enable [caching](../task-configuration/caching) to avoid redundant computation:
+Enable [caching](../configuring/caching) to avoid redundant computation:
 
 ```python
 @env.task(cache="auto")
@@ -292,7 +292,7 @@ async def expensive_computation(input_data: dict) -> dict:
 
 ### 7. Parallelize with `flyte.map`
 
-Use [`flyte.map`](../task-programming/fanout) for data-parallel workloads:
+Use [`flyte.map`](../execution-patterns/fanout) for data-parallel workloads:
 
 ```python
 @env.task
