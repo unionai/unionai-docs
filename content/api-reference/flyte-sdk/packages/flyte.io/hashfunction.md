@@ -65,11 +65,18 @@ Create a HashFunction from a callable.
 
 This is a convenience factory method for creating HashFunction instances.
 
+Example:
+    >>> hash_fn = HashFunction.from_fn(lambda x: hashlib.sha256(x).hexdigest())
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `fn` | `Callable[[Any], str]` | A callable that takes data of any type and returns a hash string. |
+
+**Returns**
+
+A new HashFunction instance wrapping the provided callable.
+
 
 ### reset()
 
@@ -83,9 +90,9 @@ def result()
 ```
 Return the most recently computed hash value.
 
-Returns:
-    The hash string from the last call to update().
 
+
+**Returns:** The hash string from the last call to update().
 
 ### update()
 

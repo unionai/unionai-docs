@@ -39,3 +39,5 @@ Open an editor and retry or save to file on failure.
 | `console` |  | Rich console for output. |
 | `noun` | `str` | Name of the resource for messages (e.g. "role", "policy"). |
 
+**Returns:** The result of apply_fn on success, or None if cancelled.
+

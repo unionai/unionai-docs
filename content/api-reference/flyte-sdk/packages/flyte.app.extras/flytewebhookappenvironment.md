@@ -25,6 +25,99 @@ This environment provides a ready-to-use FastAPI application with endpoints for:
 
 All endpoints use FastAPIPassthroughAuthMiddleware for authentication.
 
+Example:
+    Basic usage (all endpoints enabled):
+
+    ```python
+    import flyte
+    from flyte.app.extras import FlyteWebhookAppEnvironment
+
+    webhook_env = FlyteWebhookAppEnvironment(
+        name="my-webhook",
+        image=flyte.Image.from_debian_base().with_pip_packages("fastapi", "uvicorn"),
+        resources=flyte.Resources(cpu=1, memory="512Mi"),
+    )
+
+    # Deploy the webhook
+    flyte.serve(webhook_env)
+    ```
+
+    With endpoint group filtering:
+
+    ```python
+    from flyte.app.extras import FlyteWebhookAppEnvironment
+
+    # Only enable core, task, and run endpoint groups
+    webhook_env = FlyteWebhookAppEnvironment(
+        name="task-runner-webhook",
+        endpoint_groups=["core", "task", "run"],
+    )
+    ```
+
+    With individual endpoint filtering:
+
+    ```python
+    from flyte.app.extras import FlyteWebhookAppEnvironment
+
+    # Only enable specific endpoints
+    webhook_env = FlyteWebhookAppEnvironment(
+        name="minimal-webhook",
+        endpoints=["health", "run_task", "get_run"],
+    )
+    ```
+
+    Combining endpoint groups and individual endpoints:
+
+    ```python
+    from flyte.app.extras import FlyteWebhookAppEnvironment
+
+    # Enable core group plus specific additional endpoints
+    webhook_env = FlyteWebhookAppEnvironment(
+        name="custom-webhook",
+        endpoint_groups=["core"],
+        endpoints=["run_task", "get_run"],
+    )
+    ```
+
+    With task allow-listing:
+
+    ```python
+    from flyte.app.extras import FlyteWebhookAppEnvironment
+
+    # Only allow specific tasks
+    webhook_env = FlyteWebhookAppEnvironment(
+        name="restricted-webhook",
+        endpoint_groups=["core", "task", "run"],
+        task_allowlist=["production/my-project/allowed-task", "my-other-task"],
+    )
+    ```
+
+    With app allow-listing:
+
+    ```python
+    from flyte.app.extras import FlyteWebhookAppEnvironment
+
+    # Only allow specific apps
+    webhook_env = FlyteWebhookAppEnvironment(
+        name="app-manager-webhook",
+        endpoint_groups=["core", "app"],
+        app_allowlist=["my-app", "another-app"],
+    )
+    ```
+
+    With trigger allow-listing:
+
+    ```python
+    from flyte.app.extras import FlyteWebhookAppEnvironment
+
+    # Only allow specific triggers
+    webhook_env = FlyteWebhookAppEnvironment(
+        name="trigger-manager-webhook",
+        endpoint_groups=["core", "trigger"],
+        trigger_allowlist=["my-task/my-trigger", "another-trigger"],
+    )
+    ```
+
 
 
 ## Parameters
@@ -75,7 +168,7 @@ class FlyteWebhookAppEnvironment(
 | `port` | `int \| Port` | |
 | `args` | `*args` | |
 | `command` | `Optional[Union[List[str], str]]` | |
-| `requires_auth` | `bool` | |
+| `requires_auth` | `bool` | Whether the app requires authentication (default: True) |
 | `scaling` | `Scaling` | Scaling configuration for the app environment |
 | `domain` | `Domain \| None` | |
 | `links` | `List[Link]` | |

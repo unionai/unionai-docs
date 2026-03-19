@@ -61,10 +61,14 @@ type. This simplifies this function's interface as a lot of data that could be s
 the
 # TODO: Do we need to add a flag to indicate if it was wrapped by the transformer or by the user?
 
+  DataFrame wrapper class used as input to this function - that is the user facing Python class.
+  This function needs to return the IDL DataFrame.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `dataframe` | `DataFrame` | This is a DataFrame wrapper object. See more info above. |
-| `structured_dataset_type` | `types_pb2.StructuredDatasetType` | This the DataFrameType, as found in the LiteralType of the interface of the task that invoked this encoding call. It is passed along to encoders so that authors of encoders can include it in the returned literals.DataFrame. See the IDL for more information on why this literal in particular carries the type information along with it. If the encoder doesn't supply it, it will also be filled in after the encoder runs by the transformer engine. :return: This function should return a DataFrame literal object. Do not confuse this with the DataFrame wrapper class used as input to this function - that is the user facing Python class. This function needs to return the IDL DataFrame. |
+| `structured_dataset_type` | `types_pb2.StructuredDatasetType` | This the DataFrameType, as found in the LiteralType of the interface of the task that invoked this encoding call. It is passed along to encoders so that authors of encoders can include it in the returned literals.DataFrame. See the IDL for more information on why this literal in particular carries the type information along with it. If the encoder doesn't supply it, it will also be filled in after the encoder runs by the transformer engine. |
+
+**Returns:** This function should return a DataFrame literal object. Do not confuse this with the
 

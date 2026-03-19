@@ -157,7 +157,15 @@ attribute of the other TaskEnvironment.
 |-|-|-|
 | `name` | `str` | The name of the environment. |
 | `tasks` | `TaskTemplate` | The list of tasks to create the environment from. |
-| `depends_on` | `Optional[List['Environment']]` | Optional list of environments that this environment depends on.  :raises ValueError: If tasks are assigned to multiple environments or have different images. :return: The created TaskEnvironment. |
+| `depends_on` | `Optional[List['Environment']]` | Optional list of environments that this environment depends on. |
+
+**Returns:** The created TaskEnvironment.
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `ValueError` | If tasks are assigned to multiple environments or have different images. |
 
 ### task()
 
@@ -195,8 +203,10 @@ Decorate a function to be a task.
 | `report` | `bool` | Optional Whether to generate the html report for the task, defaults to False. |
 | `interruptible` | `bool \| None` | Optional Whether the task is interruptible, defaults to environment setting. |
 | `max_inline_io_bytes` | `int` | Maximum allowed size (in bytes) for all inputs and outputs passed directly to the task (e.g., primitives, strings, dicts). Does not apply to files, directories, or dataframes. |
-| `queue` | `Optional[str]` | Optional queue name to use for this task. If not set, the environment's queue will be used.  :return: A TaskTemplate that can be used to deploy the task. |
+| `queue` | `Optional[str]` | Optional queue name to use for this task. If not set, the environment's queue will be used. |
 | `triggers` | `Tuple[Trigger, ...] \| Trigger` | Optional A tuple of triggers to associate with the task. This allows the task to be run on a schedule or in response to events. Triggers can be defined using the `flyte.trigger` module. |
 | `links` | `Tuple[Link, ...] \| Link` | Optional A tuple of links to associate with the task. Links can be used to provide additional context or information about the task. Links should implement the `flyte.Link` protocol |
 | `task_resolver` | `Any \| None` | |
+
+**Returns:** A TaskTemplate that can be used to deploy the task.
 

@@ -55,7 +55,9 @@ Build a git URL for the given path.
 | Parameter | Type | Description |
 |-|-|-|
 | `path` | `pathlib.Path \| str` | Path to a file |
-| `line_number` | `int` | Line number of the code file :return: Path relative to repo_dir |
+| `line_number` | `int` | Line number of the code file |
+
+**Returns:** Path relative to repo_dir
 
 ### from_current_repo()
 
@@ -66,6 +68,7 @@ Discover git information from the current repository.
 
 If Git is not installed or .git does not exist, returns GitStatus with is_valid=False.
 
-:return: GitStatus instance with discovered git information
 
+
+**Returns:** GitStatus instance with discovered git information
 

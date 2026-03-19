@@ -65,9 +65,10 @@ def get_device()
 ```
 Get the accelerator string for the task.
 
-:return: If GPUs are requested, return a tuple of the device name, and potentially a partition string.
          Default cloud provider labels typically use the following values: `1g.5gb`, `2g.10gb`, etc.
 
+
+**Returns:** If GPUs are requested, return a tuple of the device name, and potentially a partition string.
 
 ### get_shared_memory()
 
@@ -76,6 +77,7 @@ def get_shared_memory()
 ```
 Get the shared memory string for the task.
 
-:return: The shared memory string.
 
+
+**Returns:** The shared memory string.
 

@@ -69,8 +69,9 @@ class TaskContext(
 def is_in_cluster()
 ```
 Check if the task is running in a cluster.
-:return: bool
 
+
+**Returns:** bool
 
 ### replace()
 
