@@ -434,37 +434,4 @@ The following example defines sandboxes in all three modes, creates helper tasks
 
 ## API reference
 
-### `flyte.sandbox.create()`
-
-| Parameter             | Type              | Description                                                |
-| --------------------- | ----------------- | ---------------------------------------------------------- |
-| `name`                | `str`             | Sandbox name. Derives task and image names.                |
-| `code`                | `str`             | Python source to run. Mutually exclusive with `command`.   |
-| `inputs`              | `dict[str, type]` | Input type declarations.                                   |
-| `outputs`             | `dict[str, type]` | Output type declarations.                                  |
-| `command`             | `list[str]`       | Shell command to run. Mutually exclusive with `code`.      |
-| `arguments`           | `list[str]`       | Arguments forwarded to `command`.                          |
-| `packages`            | `list[str]`       | Python packages to install via pip.                        |
-| `system_packages`     | `list[str]`       | System packages to install via apt.                        |
-| `additional_commands` | `list[str]`       | Extra Dockerfile `RUN` commands.                           |
-| `resources`           | `flyte.Resources` | CPU and memory limits. Default: 1 CPU, 1Gi memory.         |
-| `image_config`        | `ImageConfig`     | Registry and Python version settings.                      |
-| `image_name`          | `str`             | Explicit image name (overrides auto-generated).            |
-| `image`               | `str`             | Pre-built image URI (skips build).                         |
-| `auto_io`             | `bool`            | Auto-generate I/O wiring. Default: `True`.                 |
-| `retries`             | `int`             | Number of retries on failure. Default: `0`.                |
-| `timeout`             | `int`             | Timeout in seconds.                                        |
-| `env_vars`            | `dict[str, str]`  | Environment variables for the container.                   |
-| `secrets`             | `list[Secret]`    | Flyte secrets to mount.                                    |
-| `cache`               | `str`             | `"auto"`, `"override"`, or `"disable"`. Default: `"auto"`. |
-
-### Sandbox methods
-
-| Method                            | Description                                                       |
-| --------------------------------- | ----------------------------------------------------------------- |
-| `sandbox.run(**kwargs)`           | Build the image and execute synchronously. Returns typed outputs. |
-| `await sandbox.run.aio(**kwargs)` | Async version of `run()`.                                         |
-| `sandbox.as_task()`               | Build the image and return a deployable `ContainerTask`.          |
-| `await sandbox.as_task.aio()`     | Async version of `as_task()`.                                     |
-
-Both `run()` and `as_task()` accept an optional `image` parameter to provide a pre-built image URI, skipping the build step.
+For full parameter details and method signatures, see the [`flyte.sandbox` API reference](../../../api-reference/flyte-sdk/packages/flyte.sandbox/_index#create).
