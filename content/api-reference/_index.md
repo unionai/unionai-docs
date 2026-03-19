@@ -3,6 +3,7 @@ title: Reference
 weight: 3
 variants: +flyte +byoc +selfmanaged
 top_menu: true
+tier2_band: true
 sidebar_expanded: true
 ---
 

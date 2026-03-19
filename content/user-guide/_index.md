@@ -3,6 +3,7 @@ title: User guide
 weight: 1
 variants: +flyte +byoc +selfmanaged
 top_menu: true
+tier2_band: true
 site_root: true
 sidebar_expanded: true
 ---
