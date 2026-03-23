@@ -7,7 +7,7 @@ mermaid: true
 
 # Compute and control plane components reference
 
-This section provides a detailed reference for each security-relevant component running on the compute plane and/or control plane .
+This section provides a detailed reference for each security-relevant component running on the compute plane and/or control plane.
 Understanding these components is essential for enterprise security teams conducting architecture reviews.
 
 ## Component architecture
