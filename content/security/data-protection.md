@@ -41,6 +41,7 @@ All data at rest is encrypted using cloud-provider native encryption:
 ## Encryption in transit
 
 Union.ai enforces encryption for all data in transit.
+No unencrypted communication paths exist in the platform architecture.
 
 - All client-to-control-plane communication uses TLS 1.2 or higher.
 - All control-plane-to-data-plane communication uses mutual TLS via Cloudflare Tunnel.
