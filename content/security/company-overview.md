@@ -7,7 +7,7 @@ variants: -flyte +byoc +selfmanaged
 # Company overview
 
 Union.ai was founded to enable enterprises to build, deploy, and govern reliable AI/ML workflows at scale.
-The platform is built on Flyte, a widely-adopted open-source workflow orchestration system originally developed at Lyft and now trusted by organizations including Spotify, LinkedIn, Freenome, and Lyft.
+The platform is built on Flyte, a widely-adopted open-source workflow orchestration system originally developed at Lyft and now trusted by organizations including Spotify, LinkedIn, Freenome, Artera, and Lyft.
 
 ## Platform capabilities
 
@@ -20,9 +20,4 @@ The platform is built on Flyte, a widely-adopted open-source workflow orchestrat
 
 ## Deployment models
 
-Union.ai offers multiple deployment models to meet varying enterprise requirements:
-
-| Deployment Model | Control Plane | Compute Plane | Best For |
-| --- | --- | --- | --- |
-| BYOC (Bring Your Own Cloud) | Union.ai hosted & managed | Customer cloud account hosted, Union.ai managed | Managed operation for enterprises that require complete data sovereignity and a lower support overhead. |
-| Self-Managed (Hybrid) | Union.ai hosted & managed | Customer cloud account hosted and managed | Organizations requiring full infrastructure control or those with specific compliance or unique infrastructure needs. |
+Union.ai offers multiple deployment models to meet varying enterprise requirements. The main body of this document addresses the security concerns of our self-managed deployment. The differences in security concerns that arise in a BYOC deployment are catalogued in [Appendix F](./appendix#f-deployment-concerns-for-union-managed-bring-your-own-cloud-byoc-deployments).

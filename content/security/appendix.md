@@ -94,6 +94,32 @@ variants: -flyte +byoc +selfmanaged
 
 ## F: Deployment concerns for Union-managed Bring Your Own Cloud (BYOC) deployments
 
+This appendix applies only to BYOC deployments where Union.ai manages the customer's compute plane Kubernetes cluster. It does not apply to Self-Managed deployments.
+
+### BYOC vs. Self-Managed comparison
+
+| Aspect | Self-Managed | BYOC |
+| --- | --- | --- |
+| Compute plane operator | Customer | Union.ai |
+| K8s cluster management | Customer | Union.ai (via PrivateLink/PSC) |
+| K8s API exposure | Customer-controlled | Private only (never public Internet) |
+| Union.ai infrastructure access | None (tunnel only) | K8s cluster management only |
+| Data/secrets/logs access | None | None |
+| Upgrade responsibility | Customer | Union.ai |
+| Monitoring responsibility | Customer | Union.ai + customer |
+
+### BYOC deployment: summary of differences
+
+The following is a consolidated list of how BYOC deployments differ from Self-Managed deployments, organized by Security Brief section. In a Self-Managed deployment, Union.ai has zero access to the customer's compute plane and the customer manages all infrastructure independently. The callouts below describe what changes in BYOC.
+
+| Section | BYOC difference |
+| --- | --- |
+| Network Architecture | Union.ai maintains a private management connection to the customer's K8s cluster via PrivateLink/PSC for cluster management operations. The K8s API endpoint is never exposed to the public Internet. |
+| Human Access | Union.ai personnel have authenticated K8s cluster management access (upgrades, provisioning, monitoring). They cannot access object stores, secrets, registries, or log aggregators. JIT access controls are being implemented. |
+| Secrets Management | BYOC deployments default to a cloud-native secrets backend (AWS Secrets Manager, GCP Secret Manager, or Azure Key Vault). |
+| Availability | Union.ai is responsible for compute plane cluster availability (K8s version, node pools, autoscaler, monitoring). Customer retains responsibility for underlying cloud account availability. |
+| Third-Party Dependencies | Union.ai assumes operational responsibility for cluster-level dependencies and their risk mitigation. |
+
 ### Private cluster management
 
 Union strongly recommends against exposing Kubernetes clusters to the public Internet.

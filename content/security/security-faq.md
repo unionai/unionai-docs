@@ -13,9 +13,9 @@ All customer data—including task inputs/outputs, code, logs, secrets, containe
 
 ### Can Union.ai access my data?
 
-Union.ai does not have persistent access to your data.
-The control plane does not possess your cloud IAM credentials.
-Data access is mediated through presigned URLs (generated on your compute plane using your IAM credentials) or through the Cloudflare tunnel as a stateless relay.
+**Self-Managed deployments:** In Self-Managed, Union.ai has no access to your compute plane at all. The Cloudflare tunnel is the only connection, and it is outbound-only from your cluster.
+
+**BYOC deployments:** In BYOC, Union.ai has K8s cluster management access but cannot access your object stores, secrets, or log aggregators. Data access is mediated through presigned URLs generated on your compute plane.
 
 ### What happens if the Union.ai control plane is compromised?
 
@@ -42,10 +42,7 @@ Secret values are consumable only by task pods at runtime, eliminating API-based
 
 ### How does Union.ai handle multi-tenancy?
 
-Every database record is scoped by organization.
-Cross-organization access is denied at the service layer.
-Each customer’s compute plane is completely isolated in their own cloud account.
-Within an organization, RBAC controls access at the project and role level.
+Union.ai enforces tenant isolation at multiple layers. In the control plane database, every record uses org as part of its primary key or unique index; all queries are gated by the authenticated org context before SQL execution, and cross-org access is explicitly denied at the service layer. Each customer’s compute plane runs in a physically separate Kubernetes cluster within the customer’s own cloud account, with no shared compute infrastructure between tenants. Within an organization, RBAC controls access at the project and domain level, and Kubernetes namespaces enforce resource-level isolation. These controls are within scope of the SOC 2 Type II audit.
 
 ### What compliance certifications does Union.ai hold?
 

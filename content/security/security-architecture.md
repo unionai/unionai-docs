@@ -46,6 +46,9 @@ All customer data resides here, including:
 
 Network security is enforced through multiple layers:
 
+> [!NOTE] BYOC
+> In BYOC deployments, Union.ai additionally maintains a private management connection to the customer's Kubernetes cluster via cloud-native private connectivity (AWS PrivateLink, GCP Private Service Connect, or Azure Private Link). This connection is used exclusively for cluster management operations (upgrades, provisioning, health monitoring) and does not carry customer data. The Kubernetes API endpoint is never exposed to the public Internet. See [Appendix F](./appendix#f-deployment-concerns-for-union-managed-bring-your-own-cloud-byoc-deployments) for details.
+
 ### Cloudflare tunnel (outbound-only)
 
 The compute plane connects to the control plane via a Cloudflare Tunnel—an outbound-only encrypted connection initiated from the customer’s cluster.
@@ -91,6 +94,16 @@ For task inputs, outputs, code bundles, and reports, the control plane generates
 The client fetches data directly from the customer’s object store—the data never transits the control plane.
 Presigned URLs are single-object scope, operation-specific (GET or PUT), time-limited (default 1 hour maximum), and transport-encrypted at every hop.
 
+Union.ai applies several controls:
+
+* **TTL enforcement** — URLs expire after a configurable window (default 1 hour, configurable shorter)
+* **Single-object scope** — each URL grants access to exactly one object, not a bucket or prefix
+* **Operation specificity** — each URL is locked to a single operation (GET or PUT)
+* **Transport encryption** — URLs are transmitted only over TLS-encrypted channels
+* **No URL logging** — presigned URLs are not persisted in control plane logs or databases
+
+Organizations with stricter requirements can configure shorter TTLs. The presigned URL model was chosen because it eliminates the need for the control plane to hold persistent cloud IAM credentials, which would represent a larger and more persistent attack surface than time-limited bearer URLs.
+
 ### Streaming relay pattern
 
 For logs and observability metrics, the control plane acts as a stateless relay—streaming data from the compute plane through the Cloudflare tunnel to the client in real time.
@@ -98,10 +111,3 @@ The data passes through the control plane’s memory as a TLS encrypted stream w
 It is never written to disk, cached, or stored.
 
 
-### Data in the UI:
-
-* TODO: Need a table that clarifies how data shows up in UI
-
-### Data in the API / CLI:
-
-* TODO: Need a table that clarifies how data shows up
