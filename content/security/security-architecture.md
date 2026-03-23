@@ -46,8 +46,11 @@ All customer data resides here, including:
 
 Network security is enforced through multiple layers:
 
-> [!NOTE] BYOC
-> In BYOC deployments, Union.ai additionally maintains a private management connection to the customer's Kubernetes cluster via cloud-native private connectivity (AWS PrivateLink, GCP Private Service Connect, or Azure Private Link). This connection is used exclusively for cluster management operations (upgrades, provisioning, health monitoring) and does not carry customer data. The Kubernetes API endpoint is never exposed to the public Internet. See [Appendix F](./appendix#f-deployment-concerns-for-union-managed-bring-your-own-cloud-byoc-deployments) for details.
+{{< variant byoc >}}
+{{< markdown >}}
+Union.ai additionally maintains a private management connection to the customer's Kubernetes cluster via cloud-native private connectivity (AWS PrivateLink, GCP Private Service Connect, or Azure Private Link). This connection is used exclusively for cluster management operations (upgrades, provisioning, health monitoring) and does not carry customer data. The Kubernetes API endpoint is never exposed to the public Internet. See [Appendix F](./appendix#f-deployment-concerns-for-union-managed-bring-your-own-cloud-byoc-deployments) for details.
+{{< /markdown >}}
+{{< /variant >}}
 
 ### Cloudflare tunnel (outbound-only)
 

@@ -92,9 +92,9 @@ variants: -flyte +byoc +selfmanaged
 | Compute Plane | `flytepropeller-webhook-system` | Mutating admission webhook that injects secrets into task pods at creation time | union | `adminflyterole` (compute plane admin) | FlytePropeller Webhook | No direct S3 access (handles secrets injection only) |
 | Compute Plane | `clusterresource-template` (per-namespace) | Executes user workflow tasks; reads inputs, writes outputs to S3 | Per-workspace namespace | `userflyterole` (compute plane user) | Task Pods (user workloads) | R/W to metadata bucket for task inputs/outputs, code bundles, artifacts |
 
+{{< variant byoc >}}
+{{< markdown >}}
 ## F: Deployment concerns for Union-managed Bring Your Own Cloud (BYOC) deployments
-
-This appendix applies only to BYOC deployments where Union.ai manages the customer's compute plane Kubernetes cluster. It does not apply to Self-Managed deployments.
 
 ### BYOC vs. Self-Managed comparison
 
@@ -132,6 +132,8 @@ To manage customer EKS/GKE clusters without public endpoint exposure, Union leve
 | Azure | Azure Private Link | Private, secure connection to AKS management nodes without Internet exposure |
 
 This approach ensures that the Kubernetes management plane is never exposed to the public Internet, preventing unauthorized access, data breaches, and DDoS attacks while satisfying ISO 27001 A.5.15 (access control), CIS v8 4.4 (restrict administrative access), and CIS v8 12.11 (segment administration interfaces) requirements.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Contact and resources
 

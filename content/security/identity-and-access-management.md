@@ -71,8 +71,11 @@ When Union.ai personnel access a customer's tenant, they can view orchestration 
 
 All access by Union.ai personnel to customer tenants is authenticated and logged. API requests include the identity of the caller, the operation performed, and a timestamp.
 
-> [!NOTE] BYOC
-> In BYOC deployments, Union.ai support and engineering personnel have authenticated access to the customer's Kubernetes cluster for operational purposes: cluster upgrades, node pool provisioning, helm chart updates, health monitoring, and troubleshooting. This access is via cloud-native private connectivity (PrivateLink/PSC) and is scoped to K8s cluster management. Union.ai personnel cannot access customer object stores, secrets backends, container registries, or log aggregators directly. All cluster management actions are logged. Union.ai is implementing just-in-time access controls to replace persistent support access with time-bound, customer-authorized grants.
+{{< variant byoc >}}
+{{< markdown >}}
+Union.ai support and engineering personnel have authenticated access to the customer's Kubernetes cluster for operational purposes: cluster upgrades, node pool provisioning, helm chart updates, health monitoring, and troubleshooting. This access is via cloud-native private connectivity (PrivateLink/PSC) and is scoped to K8s cluster management. Union.ai personnel cannot access customer object stores, secrets backends, container registries, or log aggregators directly. All cluster management actions are logged. Union.ai is implementing just-in-time access controls to replace persistent support access with time-bound, customer-authorized grants.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Least privilege principle
 

@@ -20,4 +20,13 @@ The platform is built on Flyte, a widely-adopted open-source workflow orchestrat
 
 ## Deployment models
 
-Union.ai offers multiple deployment models to meet varying enterprise requirements. The main body of this document addresses the security concerns of our self-managed deployment. The differences in security concerns that arise in a BYOC deployment are catalogued in [Appendix F](./appendix#f-deployment-concerns-for-union-managed-bring-your-own-cloud-byoc-deployments).
+{{< variant selfmanaged >}}
+{{< markdown >}}
+Union.ai offers multiple deployment models to meet varying enterprise requirements. This document addresses the security concerns of the self-managed deployment, where the customer operates their compute plane independently.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant byoc >}}
+{{< markdown >}}
+Union.ai offers multiple deployment models to meet varying enterprise requirements. This document addresses the security concerns of the BYOC (Bring Your Own Cloud) deployment, where Union.ai manages the Kubernetes cluster in the customer's cloud account.
+{{< /markdown >}}
+{{< /variant >}}
