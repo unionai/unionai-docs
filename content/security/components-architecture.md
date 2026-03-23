@@ -75,7 +75,7 @@ graph TB
 | Executor | Task pods | Pod lifecycle management |
 | Task pods | Object store | Task inputs/outputs via IAM role (workload identity) |
 | Object Store Service | Object store | Presigned URL generation using admin IAM role |
-| Log Provider | DataProxy | Log streams relayed in memory — optionally persisted on customer storage|
+| Log Provider | DataProxy | Log streams relayed in memory — optionally persisted on customer storage |
 | Cluster Service | Tunnel Service | Health checks and DNS record reconciliation |
 | Tunnel Service | Cloudflare edge | Single outbound-only mTLS connection covering all compute-plane services |
 
