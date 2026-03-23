@@ -90,9 +90,9 @@ Union.ai implements two primary data access patterns, both designed to keep cust
 
 ### Presigned URL pattern
 
-For task inputs, outputs, code bundles, and reports, the control plane generates time-limited presigned URLs.
+For task inputs, outputs, code bundles, and reports, the control plane proxies signing requests to the compute plane, which generates time-limited presigned URLs using customer-managed credentials.
 The client fetches data directly from the customer’s object store—the data never transits the control plane.
-Presigned URLs are single-object scope, operation-specific (GET or PUT), time-limited (default 1 hour maximum), and transport-encrypted at every hop.
+Presigned URLs generated on the compute plane are single-object scope, operation-specific (GET or PUT), time-limited (default 1 hour maximum), and transport-encrypted at every hop.
 
 Union.ai applies several controls:
 
