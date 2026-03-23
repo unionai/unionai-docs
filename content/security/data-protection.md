@@ -13,7 +13,7 @@ Every data type handled by the platform is classified by residency and access pa
 
 | Data Type | Classification | Residency | Transits Control Plane? |
 | --- | --- | --- | --- |
-| Task inputs/outputs | Customer Data | Customer object store | Relayed in-memory (not stored) |
+| Task inputs/outputs | Customer Data | Customer object store | No — direct via presigned URL |
 | Code bundles | Customer Data | Customer object store | No — direct via presigned URL |
 | Container images | Customer Data | Customer registry | No — stays in customer infra |
 | Reports (HTML) | Customer Data | Customer object store | No — direct via presigned URL |
