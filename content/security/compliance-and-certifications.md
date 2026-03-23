@@ -41,7 +41,7 @@ In addition to certifications, Union.ai complies with the following standard con
 
 ## HIPAA compliance
 
-Union.ai is HIPAA certified, enabling healthcare and life sciences organizations to process protected health information (PHI) within their BYOC compute planes.
+Union.ai is designed to support HIPAA compliance requirements, enabling healthcare and life sciences organizations to process protected health information (PHI) within their BYOC compute planes.
 Because all customer data—including any PHI—remains exclusively in the customer’s own cloud infrastructure, Union.ai’s architecture inherently supports HIPAA’s data protection requirements.
 The control plane stores only orchestration metadata and never persists PHI.
 
