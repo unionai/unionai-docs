@@ -13,7 +13,7 @@ The platform is built on Flyte, a widely-adopted open-source workflow orchestrat
 
 * **Workflow orchestration:** Strongly-typed, reproducible workflows for ML training, data processing, and model deployment pipelines
 * **Enterprise governance:** Role-based access control, audit trails, and compliance-ready deployment models
-* **Kubernetes native:** Union AI's architecture integrates natively with Kubernetes, the industry-standard container orchestration system.
+* **Kubernetes native:** Union.ai's architecture integrates natively with Kubernetes, the industry-standard container orchestration system.
 * **Multi-cloud support:** Deploy compute planes on AWS, GCP, or Azure with consistent security guarantees
 * **Observability:** Built-in metrics, logging, and cost tracking for full pipeline visibility
 * **Agentic workflows:** Support for complex, multistep automated workflows and applications with guardrails
