@@ -59,7 +59,7 @@ Union.ai’s architecture provides strong data residency guarantees:
 
 ### Control plane
 
-* Union.ai hosts your control plane in these supported regions: US West, US East, EU West-1 (London), EU West-2 (Ireland), EU Central, with more being added
+* Union.ai hosts your control plane in these supported regions: US West, US East, EU West-1 (Ireland), EU West-2 (London), EU Central, with more being added
 * No customer data is replicated to or cached in Union.ai infrastructure. See [Data classification](#data-classification) for more detail on data classification and handling.
 
 For organizations operating under GDPR or other data residency regulations, Union.ai’s EU-region compute planes ensure all customer data remains within the European Union.
