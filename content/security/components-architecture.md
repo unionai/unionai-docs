@@ -99,6 +99,7 @@ At no point does the Executor communicate directly with external services outsid
 - All endpoints require authentication by default, with optional per-app anonymous access.
 - Union's RBAC controls which users can deploy and access apps per project, and resource quotas constrain consumption.
 - The load balancer, serving infrastructure, and app containers all run within the customer's cluster, maintaining the same data residency guarantees as workflow execution.
+- In BYOC deployments, Union.ai manages the [serving infrastructure lifecycle](./byoc-differences#infrastructure-management).
 
 ## Object store service
 

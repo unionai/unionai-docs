@@ -13,9 +13,10 @@ All customer data—including task inputs/outputs, code, logs, secrets, containe
 
 ### Can Union.ai access my data?
 
-**Self-Managed deployments:** In Self-Managed, Union.ai has no access to your compute plane at all. The Cloudflare tunnel is the only connection, and it is outbound-only from your cluster.
+Union.ai has no access to your compute plane at all. The Cloudflare tunnel is the only connection, and it is outbound-only from your cluster.
 
-**BYOC deployments:** In BYOC, Union.ai has K8s cluster management access but cannot access your object stores, secrets, or log aggregators. Data access is mediated through presigned URLs generated on your compute plane.
+> [!NOTE]
+> In BYOC deployments, Union.ai has K8s cluster management access but cannot access your data. See [BYOC deployment differences: Human access](./byoc-differences#human-access-to-customer-environments).
 
 ### What happens if the Union.ai control plane is compromised?
 

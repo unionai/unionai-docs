@@ -8,7 +8,10 @@ variants: -flyte +byoc +selfmanaged
 
 ## Kubernetes security
 
-The compute plane runs on customer or Union-managed Kubernetes clusters. Union supports the following security measures:
+The compute plane runs on customer-managed Kubernetes clusters. Union supports the following security measures:
+
+> [!NOTE]
+> In BYOC deployments, Union.ai manages the K8s cluster. See [BYOC deployment differences: Infrastructure management](./byoc-differences#infrastructure-management).
 
 * Workload identity federation for pod-level IAM role binding (no static credentials)
 * Kubernetes RBAC for service account permissions within the cluster
@@ -30,7 +33,7 @@ Union.ai’s container security model ensures that code execution is isolated an
 
 ## IAM and workload identity
 
-On Union-managed compute planes (BYOC), two IAM roles are provisioned per compute plane, each with narrowly scoped permissions:
+Two IAM roles are provisioned per compute plane, each with narrowly scoped permissions. In BYOC deployments, [Union.ai provisions these roles](./byoc-differences#iam-role-provisioning); in self-managed, the customer provisions them.
 
 | Role | Permissions | Assumed By | Mechanism |
 | --- | --- | --- | --- |
@@ -62,8 +65,7 @@ The Union.ai control plane runs on AWS with multi-AZ redundancy, managed Postgre
 
 Because the compute plane runs entirely within the customer's Kubernetes cluster, in-flight workflows continue executing even if the control plane becomes temporarily unavailable. The Executor, which manages pod lifecycle, operates as a Kubernetes controller on the customer's cluster and does not require real-time connectivity to the control plane to continue running pods that have already been scheduled. State transitions will be reconciled when connectivity is restored. However, new workflow submissions and scheduling operations require control plane availability.
 
-> [!NOTE] BYOC
-> In BYOC deployments, Union.ai is responsible for compute plane cluster availability, including Kubernetes version management, node pool health, autoscaler configuration, and monitoring stack uptime. The customer retains responsibility for their cloud account's underlying availability (VPC, IAM, object storage SLAs). Union.ai's operational SLA for BYOC cluster management is defined in the customer contract.
+The customer is solely responsible for compute plane availability, including Kubernetes cluster operations, node pool management, upgrades, and monitoring. Union.ai's availability commitment covers only the control plane. In-flight workflows continue executing independently during control plane outages.
 
-> [!NOTE] Self-Managed
-> In Self-Managed deployments, the customer is solely responsible for compute plane availability, including Kubernetes cluster operations, node pool management, upgrades, and monitoring. Union.ai's availability commitment covers only the control plane. In-flight workflows continue executing independently during control plane outages.
+> [!NOTE]
+> In BYOC deployments, availability responsibilities shift — Union.ai manages compute plane cluster availability. See [BYOC deployment differences: Availability and resilience](./byoc-differences#availability-and-resilience).

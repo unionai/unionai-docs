@@ -61,18 +61,21 @@ Union.ai maintains controls governing how its personnel interact with customer e
 
 ### Current access model
 
-Union.ai support and engineering personnel may access a customer's Union.ai tenant (the control plane UI and API for that organization) for the purposes of onboarding, troubleshooting, and operational support. This access is authenticated through the same OIDC/SSO mechanisms as customer users and is subject to RBAC policies. Personnel access the customer's tenant, not the customer's compute plane infrastructure directly. Union.ai personnel do not have IAM credentials for the customer's cloud account and cannot directly access the customer's object stores, secrets backends, container registries, or Kubernetes clusters.
+Union.ai support and engineering personnel may access a customer's Union.ai tenant (the control plane UI and API for that organization) for the purposes of onboarding, troubleshooting, and operational support. This access is authenticated through the same OIDC/SSO mechanisms as customer users and is subject to RBAC policies. Personnel access the customer's tenant, not the customer's compute plane infrastructure directly. Union.ai personnel do not have IAM credentials for the customer's cloud account and cannot directly access the customer's object stores, secrets backends, or container registries.
+
+> [!NOTE]
+> In BYOC deployments, Union.ai personnel additionally have K8s cluster management access. See [BYOC deployment differences: Human access](./byoc-differences#human-access-to-customer-environments) for details.
 
 ### Access scope and limitations
 
-When Union.ai personnel access a customer's tenant, they can view orchestration metadata (workflow definitions, run status, scheduling configuration), view logs relayed through the tunnel (but cannot access the customer's log aggregator directly), and perform administrative operations (cluster configuration, namespace provisioning) as authorized by the customer's RBAC policy. Personnel cannot read secret values (the API is write-only for values), cannot access raw data in the customer's object stores (presigned URLs are generated per-request and are not retained), and cannot access the customer's cloud account or IAM roles.
+When Union.ai personnel access a customer's tenant, they can view orchestration metadata (workflow definitions, run status, scheduling configuration), view logs relayed through the tunnel (but cannot access the customer's log aggregator directly), and perform administrative operations (cluster configuration, namespace provisioning) as authorized by the customer's RBAC policy. Personnel cannot read secret values (the API is write-only for values), cannot access raw data in the customer's object stores (presigned URLs are generated per-request and are not retained), and cannot access the customer's cloud account or IAM roles. In BYOC deployments, administrative operations [extend to direct K8s cluster management](./byoc-differences#human-access-to-customer-environments).
 
 ### Audit trail
 
 All access by Union.ai personnel to customer tenants is authenticated and logged. API requests include the identity of the caller, the operation performed, and a timestamp.
 
-> [!NOTE] BYOC
-> In BYOC deployments, Union.ai support and engineering personnel have authenticated access to the customer's Kubernetes cluster for operational purposes: cluster upgrades, node pool provisioning, helm chart updates, health monitoring, and troubleshooting. This access is via cloud-native private connectivity (PrivateLink/PSC) and is scoped to K8s cluster management. Union.ai personnel cannot access customer object stores, secrets backends, container registries, or log aggregators directly. All cluster management actions are logged. Union.ai is implementing just-in-time access controls to replace persistent support access with time-bound, customer-authorized grants.
+> [!NOTE]
+> In BYOC deployments, Union.ai personnel have additional K8s cluster access for operational management. See [BYOC deployment differences: Human access](./byoc-differences#human-access-to-customer-environments) for full details.
 
 ## Least privilege principle
 

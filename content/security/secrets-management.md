@@ -22,8 +22,8 @@ The compute plane supports four configurable secrets backends:
 In all cases, secrets are stored within the customer’s infrastructure.
 The choice of backend is a deployment configuration on the compute plane operator.
 
-> [!NOTE] BYOC
-> BYOC deployments default to a cloud-native secrets backend (AWS Secrets Manager, GCP Secret Manager, or Azure Key Vault) for managed integration with the provisioning workflow.
+> [!NOTE]
+> In BYOC deployments, the default secrets backend differs. See [BYOC deployment differences: Secrets management](./byoc-differences#secrets-management).
 
 ## Secret lifecycle
 

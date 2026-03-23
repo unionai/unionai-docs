@@ -19,7 +19,7 @@ Union.ai’s security model is built on several core principles:
 * **Outbound only connectivity:** The Cloudflare Tunnel connecting the control plane to the compute plane is outbound-only from the customer’s network, requiring no inbound firewall rules. All communication uses mutual TLS (mTLS) and is authenticated using the customer's Auth / SSO.
 * **Compliance:** Union.ai is SOC 2 Type II certified for Security, Availability, and Integrity, with practices aligned to ISO 27001 and GDPR standards. Union is designed to meet HIPAA compliance requirements for handling Protected Health Information (PHI) and maintains CIS 1.4 AWS certification while pursuing CIS 3.0 certification (in progress). The Union.ai trust portal can be found at [trust.union.ai](https://trust.union.ai)
 * **Defense in depth:** Multiple layers of encryption, authentication, authorization, and network segmentation protect data throughout its lifecycle.
-* **Human / operational isolation:** For self-managed deployments, Union.ai personnel access customer UI only through authenticated, RBAC-controlled channels. Personnel do not have IAM credentials for customer cloud accounts and cannot directly access customer data stores, secrets, or compute infrastructure.
+* **Human / operational isolation:** Union.ai personnel access the customer's control plane UI only through authenticated, RBAC-controlled channels. Personnel do not have IAM credentials for customer cloud accounts and cannot directly access customer data stores, secrets, or compute infrastructure. In BYOC deployments, Union.ai additionally has [K8s cluster management access](./byoc-differences#human-access-to-customer-environments).
 
 > [!NOTE] Deployment models
 > Union.ai offers two deployment models, both sharing the same control plane / compute plane architecture and security controls described in this document.
@@ -28,4 +28,4 @@ Union.ai’s security model is built on several core principles:
 >
 > In **BYOC** deployments, Union.ai manages the Kubernetes cluster in the customer’s cloud account via private connectivity (PrivateLink/PSC), handling upgrades, monitoring, and provisioning while maintaining strict separation from customer data, secrets, and logs.
 >
-> The core security architecture—encryption, RBAC, tenant isolation, presigned URL data access, and audit logging—is identical across both models. Sections where operational responsibilities differ are noted inline. [Appendix F](./appendix#f-deployment-concerns-for-union-managed-bring-your-own-cloud-byoc-deployments) provides a detailed comparison.
+> The core security architecture—encryption, RBAC, tenant isolation, presigned URL data access, and audit logging—is identical across both models. Sections where operational responsibilities differ are noted inline. [BYOC deployment differences](./byoc-differences) provides a detailed comparison.
