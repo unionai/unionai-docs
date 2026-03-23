@@ -12,12 +12,12 @@ Union.ai maintains a rigorous certification program validated by independent thi
 Full details at the [Union.ai Trust Center](https://trust.union.ai/).
 
 | Standard | Certification | Status |
-| --- | --- | --- | --- |
+| --- | --- | --- |
 | SOC 2 Type II | Security, Availability, Integrity | Certified |
 | SOC 2 Type I | Security, Availability, Integrity |  Certified |
 | HIPAA | Health data privacy and security |  Compliant* |
 | CIS 1.4 AWS | Restricted access benchmark |  Certified |
-| CIS 3.0 | Security benchmark | In progress | In progress |
+| CIS 3.0 | Security benchmark | In progress |
 
 - * Union is designed to meet HIPAA compliance requirements for handling Protected Health Information (PHI).ß
 - The SOC 2 Type II audit was conducted over a 12-week period and is available upon request.
