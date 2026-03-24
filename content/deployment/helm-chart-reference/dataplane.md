@@ -1,7 +1,7 @@
 ---
 title: Dataplane chart
 variants: -flyte -byoc +selfmanaged
-chart_version: 2026.3.9
+chart_version: 2026.3.10
 weight: 1
 ---
 
@@ -11,8 +11,8 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 
 | | |
 |---|---|
-| **Chart version** | 2026.3.9 |
-| **App version** | 2026.3.6 |
+| **Chart version** | 2026.3.10 |
+| **App version** | 2026.3.7 |
 | **Kubernetes version** | `>= 1.28.0-0` |
 
 ## Dependencies
@@ -358,6 +358,10 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | monitoring.prometheusOperator.enabled | bool |  | `true` |
 | monitoring.prometheusRules.enabled | bool |  | `true` |
 | monitoring.serviceMonitors.enabled | bool |  | `true` |
+| monitoring.slos.alerting.enabled | bool |  | `false` |
+| monitoring.slos.enabled | bool |  | `false` |
+| monitoring.slos.targets.availability | float |  | `0.999` |
+| monitoring.slos.targets.latencyP99 | int |  | `5` |
 | nameOverride | string | Override the chart name. | `""` |
 | namespace_mapping | object | Namespace mapping template for mapping Union runs to Kubernetes namespaces. This is the canonical source of truth. All dataplane services (propeller, clusterresourcesync, operator, executor) will inherit this value unless explicitly overridden in their service-specific config sections (config.namespace_config, config.operator.org, executor.raw_config). | `{}` |
 | namespaces.enabled | bool |  | `true` |
