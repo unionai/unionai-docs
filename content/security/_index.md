@@ -21,11 +21,12 @@ Union.ai’s security model is built on several core principles:
 * **Defense in depth:** Multiple layers of encryption, authentication, authorization, and network segmentation protect data throughout its lifecycle.
 * **Human / operational isolation:** Union.ai personnel access the customer's control plane UI only through authenticated, RBAC-controlled channels. Personnel do not have IAM credentials for customer cloud accounts and cannot directly access customer data stores, secrets, or compute infrastructure. In BYOC deployments, Union.ai additionally has [K8s cluster management access](./byoc-differences#human-access-to-customer-environments).
 
-> [!NOTE] Deployment models
-> Union.ai offers two deployment models, both sharing the same control plane / compute plane architecture and security controls described in this document.
->
-> In **Self-Managed** deployments, the customer operates their compute plane independently; Union.ai has zero access to the customer’s infrastructure, with the Cloudflare tunnel as the only connection.
->
-> In **BYOC** deployments, Union.ai manages the Kubernetes cluster in the customer’s cloud account via private connectivity (PrivateLink/PSC), handling upgrades, monitoring, and provisioning while maintaining strict separation from customer data, secrets, and logs.
->
-> The core security architecture—encryption, RBAC, tenant isolation, presigned URL data access, and audit logging—is identical across both models. Sections where operational responsibilities differ are noted inline. [BYOC deployment differences](./byoc-differences) provides a detailed comparison.
+## Deployment models
+
+Union.ai offers two deployment models, both sharing the same control plane / compute plane architecture and security controls described in this document.
+
+In **Self-Managed** deployments, the customer operates their compute plane independently; Union.ai has zero access to the customer’s infrastructure, with the Cloudflare tunnel as the only connection.
+
+In **BYOC** deployments, Union.ai manages the Kubernetes cluster in the customer’s cloud account via private connectivity (PrivateLink/PSC), handling upgrades, monitoring, and provisioning while maintaining strict separation from customer data, secrets, and logs.
+
+The core security architecture—encryption, RBAC, tenant isolation, presigned URL data access, and audit logging—is identical across both models. Sections where operational responsibilities differ are noted inline. [BYOC deployment differences](./byoc-differences) provides a detailed comparison.
