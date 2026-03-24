@@ -6,10 +6,10 @@ variants: -flyte +byoc -selfmanaged
 
 # Enabling Azure Blob Storage
 
-For {{< key product_name >}} customers whose data plane is in Azure, we walk through setting up access to your own Azure Blob Storage container.
+For {{< key product_name >}} customers whose compute plane is in Azure, we walk through setting up access to your own Azure Blob Storage container.
 
 > [!NOTE] Azure Blob Storage in the {{< key product_name >}} environment
-> Your data plane is set up with a Kubernetes cluster and other resources.
+> Your compute plane is set up with a Kubernetes cluster and other resources.
 > Among these are a number of Azure Storage containers used internally by the {{< key product_name >}} operator running in the cluster (see [Platform architecture](../platform-architecture)) to store things like workflow metadata.
 >
 > **These are not the Azure Blob Storage containers we are talking about in this section.**
@@ -18,7 +18,7 @@ For {{< key product_name >}} customers whose data plane is in Azure, we walk thr
 
 ## Providing permissions to Azure Blob Storage container
 
-{{< key product_name >}} data plane tasks employ Azure Workload Identity Federation to access Azure resources using an Azure user-assigned identity. Access to Azure Blob Storage containers requires updating permissions to permit this {{< key product_name >}}-managed user-assigned identity.
+{{< key product_name >}} compute plane tasks employ Azure Workload Identity Federation to access Azure resources using an Azure user-assigned identity. Access to Azure Blob Storage containers requires updating permissions to permit this {{< key product_name >}}-managed user-assigned identity.
 
 ### {{< key product_name >}}-managed permissions
 
@@ -43,4 +43,4 @@ The simplest, most flexible approach is to provide {{< key product_name >}} the 
 Managing permissions directly is required if it is not desirable to grant role assigning permissions to {{< key product_name >}}. [Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)) assigning the `Storage Blob Data Contributor` role to the `userflyterole` user assigned identity scoped the blob storage container.
 
 > [!NOTE] {{< key product_name >}} managed user-assigned identities
-> Refer to [Azure portal&#39;s user assigned managed identitites](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) if assistance is required identifying the `userflyterole` user assigned managed identity within the same resource group as the {{< key product_name >}} data plane.
+> Refer to [Azure portal&#39;s user assigned managed identitites](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) if assistance is required identifying the `userflyterole` user assigned managed identity within the same resource group as the {{< key product_name >}} compute plane.

@@ -44,7 +44,7 @@ Union.ai enforces encryption for all data in transit.
 No unencrypted communication paths exist in the platform architecture.
 
 - All client-to-control-plane communication uses TLS 1.2 or higher.
-- All control-plane-to-data-plane communication uses mutual TLS via Cloudflare Tunnel.
+- All control-plane-to-compute-plane communication uses mutual TLS via Cloudflare Tunnel.
 - All client-to-object-store communication (via presigned URLs) uses HTTPS, enforced by cloud providers.
 - All internal compute plane communication uses cloud-native TLS.
 

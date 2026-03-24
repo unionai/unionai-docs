@@ -1,12 +1,12 @@
 ---
-title: Data plane setup on AWS
+title: Compute plane setup on AWS
 weight: 5
 variants: -flyte +byoc -selfmanaged
 ---
 
-# Data plane setup on AWS
+# Compute plane setup on AWS
 
-To set up your data plane on Amazon Web Services (AWS) you must allow {{< key product_name >}} to provision and maintain compute resources under your AWS account.
+To set up your compute plane on Amazon Web Services (AWS) you must allow {{< key product_name >}} to provision and maintain compute resources under your AWS account.
 You will need to set up an IAM role for {{< key product_name >}} to use that has sufficient permissions to do this provisioning.
 Setting the permissions can be done either through CloudFormation or the AWS console.
 
@@ -76,7 +76,7 @@ To perform the update on your system, copy the template URL and follow the direc
 
 ### Update your CloudFormation template
 
-1. Log in to the AWS web console and navigate to **CloudFormation** for the region within which your data plane is deployed.
+1. Log in to the AWS web console and navigate to **CloudFormation** for the region within which your compute plane is deployed.
 2. Select the `UnionCloudAccess` stack.
 3. Select **Stack Actions > Create change set for current stack**.
 4. Select **Replace current template**.
@@ -701,7 +701,7 @@ The VPC should be configured with the following characteristics.
     - Ensure the service names include the region that contains the aforementioned availability zones.
     - Ensure the subnet IDs are configured to include all the aforementioned availability zones.
     - Ensure the security groups allow all traffic from within the VPC.
-    - Enable [Private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html#private-dns-s3) to support out of the box compatibility with data plane services.
+    - Enable [Private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html#private-dns-s3) to support out of the box compatibility with compute plane services.
 
 Once your VPC is set up, you will need to provide the {{< key product_name >}} team with the following information:
 

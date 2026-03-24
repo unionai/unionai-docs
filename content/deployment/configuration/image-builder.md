@@ -120,7 +120,7 @@ Similarly, the `operator-proxy` requires the following permissions
 
 #### AWS Cross Account access
 
-Access to repositories that do not exist in the same AWS account as the data plane requires additional ECR resource-based permissions. An ECR policy like the following is required if the configured `defaultRepository` or `ImageSpec`'s `registry` exists in an AWS account different from the dataplane's.
+Access to repositories that do not exist in the same AWS account as the compute plane requires additional ECR resource-based permissions. An ECR policy like the following is required if the configured `defaultRepository` or `ImageSpec`'s `registry` exists in an AWS account different from the dataplane's.
 
 ```json
 {
@@ -197,7 +197,7 @@ It is necessary to configure the GCP user service account with `iam.serviceAccou
 
 #### GCP Cross Project access
 
-Access to registries that do not exist in the same GCP project as the data plane requires additional GCP permissions.
+Access to registries that do not exist in the same GCP project as the compute plane requires additional GCP permissions.
 
 * Configure the user "role" service account with the `Artifact Registry Writer`.
 * Configure the GCP worker node and union-operator-proxy service accounts with the `Artifact Registry Reader` role.

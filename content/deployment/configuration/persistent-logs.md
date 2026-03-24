@@ -6,7 +6,7 @@ variants: -flyte -byoc +selfmanaged
 
 # Persistent logs
 
-Persistent logging is enabled by default. The data plane deploys [FluentBit](https://fluentbit.io/) as a DaemonSet that collects container logs from every node and writes them to the `persisted-logs/` path in the object store configured for your data plane.
+Persistent logging is enabled by default. The compute plane deploys [FluentBit](https://fluentbit.io/) as a DaemonSet that collects container logs from every node and writes them to the `persisted-logs/` path in the object store configured for your compute plane.
 
 FluentBit runs under the `fluentbit-system` Kubernetes service account. This service account must have write access to the storage bucket so FluentBit can push logs. The sections below describe how to grant that access on each cloud provider.
 
@@ -39,7 +39,7 @@ Create an IAM policy that allows writing to your metadata S3 bucket:
 }
 ```
 
-Replace `<BUCKET_NAME>` with the name of your data plane metadata bucket.
+Replace `<BUCKET_NAME>` with the name of your compute plane metadata bucket.
 
 ### 2. Create an IAM role with a trust policy
 
@@ -70,7 +70,7 @@ Replace:
 
 - `<ACCOUNT_ID>` with your AWS account ID
 - `<OIDC_PROVIDER>` with your EKS cluster's OIDC provider (e.g. `oidc.eks.us-east-1.amazonaws.com/id/EXAMPLE`)
-- `<NAMESPACE>` with the namespace where the data plane is installed (default: `union`)
+- `<NAMESPACE>` with the namespace where the compute plane is installed (default: `union`)
 
 You can retrieve the OIDC provider URL with:
 
@@ -83,7 +83,7 @@ Attach the IAM policy from step 1 to this role.
 
 ### 3. Configure the Helm values
 
-Set the IRSA annotation on the FluentBit service account in your data plane Helm values:
+Set the IRSA annotation on the FluentBit service account in your compute plane Helm values:
 
 ```yaml
 fluentbit:
@@ -133,7 +133,7 @@ Replace:
 
 - `<RESOURCE_GROUP>` with your Azure resource group
 - `<AKS_OIDC_ISSUER_URL>` with the OIDC issuer URL of your AKS cluster
-- `<NAMESPACE>` with the namespace where the data plane is installed (default: `union`)
+- `<NAMESPACE>` with the namespace where the compute plane is installed (default: `union`)
 
 You can retrieve the OIDC issuer URL with:
 
@@ -155,7 +155,7 @@ az role assignment create \
 
 ### 4. Configure the Azure Helm values
 
-Set the Workload Identity annotation on the FluentBit service account in your data plane Helm values:
+Set the Workload Identity annotation on the FluentBit service account in your compute plane Helm values:
 
 ```yaml
 fluentbit:
@@ -165,7 +165,7 @@ fluentbit:
       azure.workload.identity/client-id: "<CLIENT_ID>"
 ```
 
-You must also ensure the FluentBit pods have the Workload Identity label. If you have already set `additionalPodLabels` for your data plane, confirm the following label is present:
+You must also ensure the FluentBit pods have the Workload Identity label. If you have already set `additionalPodLabels` for your compute plane, confirm the following label is present:
 
 ```yaml
 additionalPodLabels:
@@ -214,12 +214,12 @@ gcloud iam service-accounts add-iam-policy-binding \
 Replace:
 
 - `<PROJECT_ID>` with your GCP project ID
-- `<BUCKET_NAME>` with the name of your data plane metadata bucket
-- `<NAMESPACE>` with the namespace where the data plane is installed (default: `union`)
+- `<BUCKET_NAME>` with the name of your compute plane metadata bucket
+- `<NAMESPACE>` with the namespace where the compute plane is installed (default: `union`)
 
 ### 4. Configure the GCP Helm values
 
-Set the Workload Identity annotation on the FluentBit service account in your data plane Helm values:
+Set the Workload Identity annotation on the FluentBit service account in your compute plane Helm values:
 
 ```yaml
 fluentbit:
