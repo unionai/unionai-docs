@@ -28,7 +28,7 @@ The template uses Go template syntax with two variables:
 > [!WARNING]
 > Changing namespace mapping after workflows have run will cause existing data in old namespaces to become inaccessible. Plan your namespace mapping before initial deployment.
 
-## Data plane configuration
+## Compute plane configuration
 
 Set the `namespace_mapping` value at the top level of your dataplane Helm values. This single value cascades to all services that need it: clusterresourcesync, propeller, operator, and executor.
 

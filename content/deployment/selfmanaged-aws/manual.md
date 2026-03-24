@@ -63,10 +63,10 @@ All communication is encrypted.  The Union architecture is described on the [Arc
 
    Step 3: Ensure S3 bucket & IAM roles are configured; set role ARN(s) in values
 
-   Step 4: Install the data plane CRDs
+   Step 4: Install the compute plane CRDs
      helm upgrade --install unionai-dataplane-crds charts/dataplane-crds
 
-   Step 5: Install the data plane
+   Step 5: Install the compute plane
      helm upgrade --install unionai-dataplane charts/dataplane \
        --namespace union \
        --values <ORGNAME>-values.yaml
