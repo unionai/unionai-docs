@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -833,6 +833,7 @@ def with_runcontext(
     reset_root_logger: bool,
     disable_run_cache: bool,
     queue: Optional[str],
+    notifications: Notification | Tuple[Notification, ...] | None,
     custom_context: Dict[str, str] | None,
     cache_lookup_scope: CacheLookupScope,
     preserve_original_types: bool,
@@ -845,6 +846,9 @@ Launch a new run with the given parameters as the context.
 Example:
 ```python
 import flyte
+import flyte.notify as notify
+from flyte.models import ActionPhase
+
 env = flyte.TaskEnvironment("example")
 
 @env.task
@@ -852,7 +856,14 @@ async def example_task(x: int, y: str) -> str:
     return f"{x} {y}"
 
 if __name__ == "__main__":
-    flyte.with_runcontext(name="example_run_id").run(example_task, 1, y="hello")
+    flyte.with_runcontext(
+        name="example_run_id",
+        notifications=notify.Slack(
+            on_phase=ActionPhase.FAILED,
+            webhook_url="https://hooks.slack.com/services/YOUR/WEBHOOK/URL",
+            message="Task failed: {run.error}",
+        ),
+    ).run(example_task, 1, y="hello")
 ```
 
 
@@ -881,6 +892,7 @@ if __name__ == "__main__":
 | `reset_root_logger` | `bool` | If true, the root logger will be preserved and not modified by Flyte. |
 | `disable_run_cache` | `bool` | Optional If true, the run cache will be disabled. This is useful for testing purposes. |
 | `queue` | `Optional[str]` | Optional The queue to use for the run. This is used to specify the cluster to use for the run. |
+| `notifications` | `Notification \| Tuple[Notification, ...] \| None` | Optional Notification(s) to send when the run reaches specific execution phases. Accepts a single notification or a tuple of notifications. Supports Email, Slack, Teams, and Webhook types. See `flyte.notify` for available notification types and template variables. |
 | `custom_context` | `Dict[str, str] \| None` | Optional global input context to pass to the task. This will be available via get_custom_context() within the task and will automatically propagate to sub-tasks. Acts as base/default values that can be overridden by context managers in the code. |
 | `cache_lookup_scope` | `CacheLookupScope` | Optional Scope to use for the run. This is used to specify the scope to use for cache lookups. If not specified, it will be set to the default scope (global unless overridden at the system level). |
 | `preserve_original_types` | `bool` | Optional If true, the type engine will preserve original types (e.g., pd.DataFrame) when guessing python types from literal types. If false (default), it will return the generic flyte.io.DataFrame. This option is automatically set to True if interactive_mode is True unless overridden explicitly by this parameter. |

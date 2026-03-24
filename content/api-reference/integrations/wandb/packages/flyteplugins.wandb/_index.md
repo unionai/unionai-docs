@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.wandb
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -486,6 +486,7 @@ Returns `None` if not within a `wandb_sweep` context.
 def wandb_config(
     project: typing.Optional[str],
     entity: typing.Optional[str],
+    host: typing.Optional[str],
     id: typing.Optional[str],
     name: typing.Optional[str],
     tags: typing.Optional[list[str]],
@@ -510,6 +511,7 @@ This function works in two contexts:
 |-|-|-|
 | `project` | `typing.Optional[str]` | W&B project name |
 | `entity` | `typing.Optional[str]` | W&B entity (team or username) |
+| `host` | `typing.Optional[str]` | Base W&B host URL (e.g., "https://wandb.ai" or a self-hosted instance) |
 | `id` | `typing.Optional[str]` | Unique run id (auto-generated if not provided) |
 | `name` | `typing.Optional[str]` | Human-readable run name |
 | `tags` | `typing.Optional[list[str]]` | List of tags for organizing runs |

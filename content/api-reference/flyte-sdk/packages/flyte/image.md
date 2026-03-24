@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -61,6 +61,7 @@ class Image(
     platform: Tuple[Architecture, ...],
     python_version: Tuple[int, int],
     extendable: bool,
+    _is_flyte_default: bool,
     _ref_name: Optional[str],
     _layers: Tuple[Layer, ...],
     _image_registry_secret: Optional[Secret],
@@ -75,6 +76,7 @@ class Image(
 | `platform` | `Tuple[Architecture, ...]` | |
 | `python_version` | `Tuple[int, int]` | |
 | `extendable` | `bool` | |
+| `_is_flyte_default` | `bool` | |
 | `_ref_name` | `Optional[str]` | |
 | `_layers` | `Tuple[Layer, ...]` | |
 | `_image_registry_secret` | `Optional[Secret]` | |
@@ -102,6 +104,7 @@ class Image(
 | [`with_dockerignore()`](#with_dockerignore) |  |
 | [`with_env_vars()`](#with_env_vars) | Use this method to create a new image with the specified environment variables layered on top of. |
 | [`with_local_v2()`](#with_local_v2) | Use this method to create a new image with the local v2 builder. |
+| [`with_local_v2_plugins()`](#with_local_v2_plugins) | Use this method to create a new image with the local v2 builder. |
 | [`with_pip_packages()`](#with_pip_packages) | Use this method to create a new image with the specified pip packages layered on top of the current image. |
 | [`with_poetry_project()`](#with_poetry_project) | Use this method to create a new image with the specified pyproject. |
 | [`with_requirements()`](#with_requirements) | Use this method to create a new image with the specified requirements file layered on top of the current image. |
@@ -377,6 +380,24 @@ Use this method to create a new image with the local v2 builder
 This will override any existing builder
 
 
+
+**Returns:** Image
+
+### with_local_v2_plugins()
+
+```python
+def with_local_v2_plugins(
+    plugins: str | list[str] | None,
+) -> Image
+```
+Use this method to create a new image with the local v2 builder
+This will override any existing builder
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `plugins` | `str \| list[str] \| None` | plugin name or list of plugin names to install, default is None, e.g. flyteplugins-hitl, flyteplugins-vllm, flyteplugins-sglang, etc. |
 
 **Returns:** Image
 
