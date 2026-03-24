@@ -1,14 +1,14 @@
 {
   "packages": {
     "flytekitplugins.airflow": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow/",
-    "flytekitplugins.airflow.connector": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.connector/",
+    "flytekitplugins.airflow.agent": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.agent/",
     "flytekitplugins.airflow.task": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.task/"
   },
   "identifiers": {
-    "flytekitplugins.airflow.connector.AirflowConnector": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.connector/#flytekitpluginsairflowconnectorairflowconnector",
-    "AirflowConnector": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.connector/#flytekitpluginsairflowconnectorairflowconnector",
-    "flytekitplugins.airflow.connector.AirflowMetadata": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.connector/#flytekitpluginsairflowconnectorairflowmetadata",
-    "AirflowMetadata": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.connector/#flytekitpluginsairflowconnectorairflowmetadata",
+    "flytekitplugins.airflow.agent.AirflowAgent": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.agent/#flytekitpluginsairflowagentairflowagent",
+    "AirflowAgent": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.agent/#flytekitpluginsairflowagentairflowagent",
+    "flytekitplugins.airflow.agent.AirflowMetadata": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.agent/#flytekitpluginsairflowagentairflowmetadata",
+    "AirflowMetadata": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.agent/#flytekitpluginsairflowagentairflowmetadata",
     "flytekitplugins.airflow.task.AirflowContainerTask": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.task/#flytekitpluginsairflowtaskairflowcontainertask",
     "AirflowContainerTask": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.task/#flytekitpluginsairflowtaskairflowcontainertask",
     "flytekitplugins.airflow.task.AirflowObj": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.task/#flytekitpluginsairflowtaskairflowobj",
@@ -19,7 +19,7 @@
     "AirflowTaskResolver": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.task/#flytekitpluginsairflowtaskairflowtaskresolver"
   },
   "methods": {
-    "flytekitplugins.airflow.connector.get_log_links": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.connector/#get_log_links",
-    "get_log_links": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.connector/#get_log_links"
+    "flytekitplugins.airflow.agent.get_log_links": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.agent/#get_log_links",
+    "get_log_links": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.agent/#get_log_links"
   }
 }

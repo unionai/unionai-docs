@@ -1,6 +1,6 @@
 ---
 title: flytekit.extend.backend.base_connector
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -35,6 +35,8 @@ Connector Service
 will look up the connector based on the task type. Every task type can only have one connector.
 
 
+
+### Parameters
 
 ```python
 class AsyncConnectorBase(
@@ -198,6 +200,8 @@ def execute(
 
 ## flytekit.extend.backend.base_connector.ConnectorBase
 
+### Parameters
+
 ```python
 class ConnectorBase(
     task_type_name: str,
@@ -310,6 +314,8 @@ Attributes
 
 
 
+### Parameters
+
 ```python
 class Resource(
     phase: google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper,
@@ -361,6 +367,8 @@ This is the metadata for the job. For example, the id of the job.
 
 
 
+### Parameters
+
 ```python
 def ResourceMeta()
 ```
@@ -406,6 +414,8 @@ Connector Service
 will look up the connector based on the task type. Every task type can only have one connector.
 
 
+
+### Parameters
 
 ```python
 class SyncConnectorBase(
@@ -482,6 +492,8 @@ def execute(
 | `kwargs` | `**kwargs` | |
 
 ## flytekit.extend.backend.base_connector.TaskCategory
+
+### Parameters
 
 ```python
 class TaskCategory(

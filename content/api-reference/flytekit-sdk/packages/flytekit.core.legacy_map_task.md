@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.legacy_map_task
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -112,6 +112,8 @@ A MapPythonTask defines a {{&lt; py_class_ref flytekit.PythonTask &gt;}} which s
 an inner {{&lt; py_class_ref flytekit.PythonFunctionTask &gt;}} across a range of inputs in parallel.
 
 
+
+### Parameters
 
 ```python
 class MapPythonTask(
@@ -519,6 +521,8 @@ But, at runtime this information is lost. To reconstruct this, we use MapTaskRes
 and then at runtime reconstructs the interface with this knowledge
 
 
+
+### Parameters
 
 ```python
 class MapTaskResolver(

@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.comet_ml
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -39,6 +39,6 @@ Comet plugin.
 | `workspace` | `str` | Attach an experiment to a project that belongs to this workspace. (Required) |
 | `secret` | `typing.Union[flytekit.models.security.Secret, typing.Callable]` | Secret with your `COMET_API_KEY` or a callable that returns the API key. The callable takes no arguments and returns a string. (Required) |
 | `experiment_key` | `typing.Optional[str]` | Experiment key. |
-| `host` | `str` | |
+| `host` | `str` | URL to your Comet service. Defaults to "https://www.comet.com" |
 | `login_kwargs` | `dict` | |
 

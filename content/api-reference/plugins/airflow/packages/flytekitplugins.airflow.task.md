@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.airflow.task
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.14.3
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -30,9 +30,11 @@ This python container task is used to wrap an Airflow task. It is used to run an
 The airflow task module, name and parameters are stored in the task config.
 
 Some of the Airflow operators are not deferrable, For example, BeamRunJavaPipelineOperator, BeamRunPythonPipelineOperator.
-These tasks don't have an async method to get the job status, so cannot be used in the Flyte connector. We run these tasks in a container.
+These tasks don't have an async method to get the job status, so cannot be used in the Flyte agent. We run these tasks in a container.
 
 
+
+### Parameters
 
 ```python
 class AirflowContainerTask(
@@ -470,6 +472,8 @@ parameters: {"task_id": "id", "filepath": "/tmp/1234"}
 
 
 
+### Parameters
+
 ```python
 class AirflowObj(
     module: str,
@@ -485,12 +489,12 @@ class AirflowObj(
 
 ## flytekitplugins.airflow.task.AirflowTask
 
-This python task is used to wrap an Airflow task.
-It is used to run an Airflow task in Flyte connector.
-The airflow task module, name and parameters are stored in the task config.
-We run the Airflow task in the connector.
+This python task is used to wrap an Airflow task. It is used to run an Airflow task in Flyte agent.
+The airflow task module, name and parameters are stored in the task config. We run the Airflow task in the agent.
 
 
+
+### Parameters
 
 ```python
 class AirflowTask(
@@ -839,6 +843,8 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 This class is used to resolve an Airflow task. It will load an airflow task in the container.
 
 
+
+### Parameters
 
 ```python
 class AirflowTaskResolver(

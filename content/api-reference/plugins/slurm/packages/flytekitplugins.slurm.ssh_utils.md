@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.slurm.ssh_utils
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -53,6 +53,12 @@ Get an existing SSH connection or create a new one if needed.
 | `ssh_config` | `typing.Dict[str, typing.Union[str, typing.List[str], typing.Tuple[str, ...]]]` | SSH configuration dictionary, including host and username. |
 | `slurm_cluster_to_ssh_conn` | `typing.Dict[flytekitplugins.slurm.ssh_utils.SlurmCluster, asyncssh.connection.SSHClientConnection]` | A mapping of SlurmCluster to existing SSHClientConnection objects. |
 
+**Returns**
+
+Tuple[SlurmCluster, SSHClientConnection]:
+    A tuple containing (SlurmCluster, SSHClientConnection). If no connection
+    for the given SlurmCluster exists, a new one is created and cached.
+
 #### ssh_connect()
 
 ```python
@@ -67,6 +73,17 @@ Make an SSH client connection.
 | Parameter | Type | Description |
 |-|-|-|
 | `ssh_config` | `typing.Dict[str, typing.Any]` | Options of SSH client connection defined in SSHConfig. |
+
+**Returns**
+
+SSHClientConnection: An SSH client connection object.
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `ValueError` | If both FLYTE_SLURM_PRIVATE_KEY secret and ssh_config['private_key'] are missing. |
 
 ## flytekitplugins.slurm.ssh_utils.SSHConfig
 
@@ -85,6 +102,8 @@ A customized version of SSHClientConnectionOptions, tailored to specific needs.
             client public key authentication is mandatory.
     
 
+
+### Parameters
 
 ```python
 class SSHConfig(
@@ -132,6 +151,8 @@ A Slurm cluster instance is defined by a pair of (Slurm host, username).
         username (Optional[str]): The username to authenticate as on the server.
     
 
+
+### Parameters
 
 ```python
 class SlurmCluster(

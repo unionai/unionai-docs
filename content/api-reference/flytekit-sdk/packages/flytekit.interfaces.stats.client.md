@@ -1,6 +1,6 @@
 ---
 title: flytekit.interfaces.stats.client
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -63,6 +63,8 @@ def get_stats(
 
 A dummy client for statsd.
 
+
+### Parameters
 
 ```python
 class DummyStatsClient(
@@ -231,6 +233,8 @@ newer_client.incr('bad') # Metric name = a.subsystem.bad
 
 
 
+### Parameters
+
 ```python
 class ScopeableStatsProxy(
     client,
@@ -267,6 +271,8 @@ def get_stats(
 def pipeline()
 ```
 ## flytekit.interfaces.stats.client.StatsClientProxy
+
+### Parameters
 
 ```python
 class StatsClientProxy(

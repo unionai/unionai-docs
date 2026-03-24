@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.repo
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -37,7 +37,7 @@ layout: py_api
 ```python
 def find_common_root(
     pkgs_or_mods: typing.Union[typing.Tuple[str], typing.List[str]],
-) -> pathlib._local.Path
+) -> pathlib.Path
 ```
 Given an arbitrary list of folders and files, this function will use the script mode function to walk up
 the filesystem to find the first folder without an init file. If all the folders and files resolve to
@@ -47,13 +47,15 @@ the same root folder, then that Path is returned. Otherwise an error is raised.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `pkgs_or_mods` | `typing.Union[typing.Tuple[str], typing.List[str]]` | :return: The common detected root path, the output of _find_project_root |
+| `pkgs_or_mods` | `typing.Union[typing.Tuple[str], typing.List[str]]` | |
+
+**Returns:** The common detected root path, the output of _find_project_root
 
 #### list_packages_and_modules()
 
 ```python
 def list_packages_and_modules(
-    project_root: pathlib._local.Path,
+    project_root: pathlib.Path,
     pkgs_or_mods: typing.List[str],
 ) -> typing.List[str]
 ```
@@ -64,8 +66,10 @@ relative to the given project_root.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `project_root` | `pathlib._local.Path` | |
-| `pkgs_or_mods` | `typing.List[str]` | :return: List of packages/modules, dot delineated. |
+| `project_root` | `pathlib.Path` | |
+| `pkgs_or_mods` | `typing.List[str]` | |
+
+**Returns:** List of packages/modules, dot delineated.
 
 #### package()
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.errors
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -17,6 +17,8 @@ layout: py_api
 | [`ErrorDocument`](.././flytekit.models.core.errors#flytekitmodelscoreerrorserrordocument) |  |
 
 ## flytekit.models.core.errors.ContainerError
+
+### Parameters
 
 ```python
 class ContainerError(
@@ -41,10 +43,10 @@ class ContainerError(
 
 | Property | Type | Description |
 |-|-|-|
-| `code` | `None` | :rtype: Text |
+| `code` | `None` |  |
 | `is_empty` | `None` |  |
-| `kind` | `None` | :rtype: int |
-| `message` | `None` | :rtype: Text |
+| `kind` | `None` |  |
+| `message` | `None` |  |
 | `origin` | `None` | The origin of the error, an enum value from ExecutionError.ErrorKind |
 | `timestamp` | `None` | The timestamp of the error, as number of seconds and nanos since Epoch |
 | `worker` | `None` | The worker name where the error originated |
@@ -55,8 +57,8 @@ class ContainerError(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -70,6 +72,8 @@ def from_flyte_idl(
 |-|-|-|
 | `proto` |  | |
 
+**Returns:** ContainerError
+
 #### serialize_to_string()
 
 ```python
@@ -80,18 +84,18 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.errors_pb2.ContainerError
-
+**Returns:** flyteidl.core.errors_pb2.ContainerError
 
 ## flytekit.models.core.errors.ErrorDocument
+
+### Parameters
 
 ```python
 class ErrorDocument(
@@ -106,7 +110,7 @@ class ErrorDocument(
 
 | Property | Type | Description |
 |-|-|-|
-| `error` | `None` | :rtype: ContainerError |
+| `error` | `None` |  |
 | `is_empty` | `None` |  |
 
 ### Methods
@@ -115,8 +119,8 @@ class ErrorDocument(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -130,6 +134,8 @@ def from_flyte_idl(
 |-|-|-|
 | `proto` |  | |
 
+**Returns:** ErrorDocument
+
 #### serialize_to_string()
 
 ```python
@@ -140,14 +146,12 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.errors_pb2.ErrorDocument
-
+**Returns:** flyteidl.core.errors_pb2.ErrorDocument
 

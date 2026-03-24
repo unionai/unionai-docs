@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.bigquery.connector
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.13
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -23,6 +23,8 @@ layout: py_api
 | `pythonTypeToBigQueryType` | `dict` |  |
 
 ## flytekitplugins.bigquery.connector.BigQueryConnector
+
+### Parameters
 
 ```python
 def BigQueryConnector()
@@ -130,6 +132,8 @@ Return the metrics for the task.
 | `kwargs` | `**kwargs` | |
 
 ## flytekitplugins.bigquery.connector.BigQueryMetadata
+
+### Parameters
 
 ```python
 class BigQueryMetadata(

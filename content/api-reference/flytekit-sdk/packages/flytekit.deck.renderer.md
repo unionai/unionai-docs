@@ -1,6 +1,6 @@
 ---
 title: flytekit.deck.renderer
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -86,6 +86,8 @@ PythonDependencyDeck is a deck that contains information about packages installe
 
 
 
+### Parameters
+
 ```python
 class PythonDependencyRenderer(
     title: str,
@@ -140,6 +142,8 @@ Convert Python source code to HTML, and return HTML as a unicode string.
 
 
 
+### Parameters
+
 ```python
 class SourceCodeRenderer(
     title: str,
@@ -173,11 +177,15 @@ This method applies a colorful style and replaces the color "#fff0f0" with "#fff
 |-|-|-|
 | `source_code` | `str` | The Python source code to be converted. |
 
+**Returns:** str: The resulting HTML as a string, including CSS and highlighted source code.
+
 ## flytekit.deck.renderer.TopFrameRenderer
 
 Render a DataFrame as an HTML table.
 
 
+
+### Parameters
 
 ```python
 class TopFrameRenderer(

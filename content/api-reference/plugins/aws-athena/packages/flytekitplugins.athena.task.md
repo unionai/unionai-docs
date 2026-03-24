@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.athena.task
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -22,6 +22,8 @@ AthenaConfig should be used to configure a Athena Task.
 
 
 
+### Parameters
+
 ```python
 class AthenaConfig(
     database: typing.Optional[str],
@@ -40,6 +42,8 @@ class AthenaConfig(
 This is the simplest form of a Athena Task, that can be used even for tasks that do not produce any output.
 
 
+
+### Parameters
 
 ```python
 class AthenaTask(

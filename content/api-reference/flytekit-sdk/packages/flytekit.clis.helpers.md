@@ -1,6 +1,6 @@
 ---
 title: flytekit.clis.helpers
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -80,6 +80,8 @@ original string value
 |-|-|-|
 | `input_arguments` |  | |
 
+**Returns:** dict[Text, Text]
+
 #### str2bool()
 
 ```python
@@ -93,4 +95,6 @@ bool('False') is True in Python, so we need to do some string parsing.  Use the 
 | Parameter | Type | Description |
 |-|-|-|
 | `str` |  | |
+
+**Returns:** bool
 

@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.hive.task
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -25,6 +25,8 @@ Note: A separate story is in progress to dynamically alter configuration for an 
 
 
 
+### Parameters
+
 ```python
 class HiveConfig(
     cluster_label: str,
@@ -37,6 +39,8 @@ class HiveConfig(
 | `tags` | `typing.Optional[typing.List[str]]` | Any tags that should be associated with the remote execution request. |
 
 ## flytekitplugins.hive.task.HiveSelectTask
+
+### Parameters
 
 ```python
 class HiveSelectTask(
@@ -412,6 +416,8 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 This is the simplest form of a Hive Task, that can be used even for tasks that do not produce any output.
 
 
+
+### Parameters
 
 ```python
 class HiveTask(

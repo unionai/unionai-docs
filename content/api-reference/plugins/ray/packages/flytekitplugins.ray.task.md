@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.ray.task
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -19,6 +19,8 @@ layout: py_api
 | [`WorkerNodeConfig`](.././flytekitplugins.ray.task#flytekitpluginsraytaskworkernodeconfig) |  |
 
 ## flytekitplugins.ray.task.HeadNodeConfig
+
+### Parameters
 
 ```python
 class HeadNodeConfig(
@@ -40,6 +42,8 @@ class HeadNodeConfig(
 Actual Plugin that transforms the local python code for execution within Ray job.
 
 
+
+### Parameters
 
 ```python
 class RayFunctionTask(
@@ -511,6 +515,8 @@ task resolver. It can be useful to override the task resolver for specific cases
 
 ## flytekitplugins.ray.task.RayJobConfig
 
+### Parameters
+
 ```python
 class RayJobConfig(
     worker_node_config: typing.List[flytekitplugins.ray.task.WorkerNodeConfig],
@@ -533,6 +539,8 @@ class RayJobConfig(
 | `ttl_seconds_after_finished` | `typing.Optional[int]` | |
 
 ## flytekitplugins.ray.task.WorkerNodeConfig
+
+### Parameters
 
 ```python
 class WorkerNodeConfig(

@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.file
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -27,6 +27,8 @@ Example:
 TAR_GZ = Annotated[str, FileExt("tar.gz")]
 
 
+
+### Parameters
 
 ```python
 class FileExt(

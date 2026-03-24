@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration.file
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -86,7 +86,9 @@ Reads the contents of the file if passed a path. Otherwise, returns None.
 | Parameter | Type | Description |
 |-|-|-|
 | `filename` | `typing.Optional[str]` | The file path to load |
-| `encoding` |  | The encoding to use when reading the file. :return: The contents of the file as a string or None. |
+| `encoding` |  | The encoding to use when reading the file. |
+
+**Returns:** The contents of the file as a string or None.
 
 #### set_if_exists()
 
@@ -117,6 +119,8 @@ Legacy means the INI style config files. YAML support is for the flytectl config
 when flytectl starts a sandbox
 
 
+
+### Parameters
 
 ```python
 class ConfigEntry(
@@ -156,9 +160,11 @@ The constructor for ConfigFile currently does not allow specification of both th
 
 | Parameter | Type | Description |
 |-|-|-|
-| `cfg` | `typing.Optional[ConfigFile]` | :return: |
+| `cfg` | `typing.Optional[ConfigFile]` | |
 
 ## flytekit.configuration.file.ConfigFile
+
+### Parameters
 
 ```python
 class ConfigFile(
@@ -202,6 +208,8 @@ def get(
 Creates a record for the config entry. contains
 
 
+### Parameters
+
 ```python
 class LegacyConfigEntry(
     section: str,
@@ -238,7 +246,6 @@ def read_from_env(
 ```
 Reads the config entry from environment variable, the structure of the env var is current
 ``FLYTE_{SECTION}_{OPTION}`` all upper cased. We will change this in the future.
-:return:
 
 
 | Parameter | Type | Description |
@@ -262,6 +269,8 @@ def read_from_file(
 
 Creates a record for the config entry.
 
+
+### Parameters
 
 ```python
 class YamlConfigEntry(

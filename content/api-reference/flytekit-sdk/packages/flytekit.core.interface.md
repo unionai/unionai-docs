@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.interface
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -136,7 +136,9 @@ Deals with mixed styles of return value descriptions used in docstrings. If the 
 | Parameter | Type | Description |
 |-|-|-|
 | `output_descriptions` | `Dict[str, str]` | Dict of output variable names mapping to output description |
-| `outputs` | `Dict[str, Type]` | Interface outputs :return: Dict of output variable names mapping to shared output description |
+| `outputs` | `Dict[str, Type]` | Interface outputs |
+
+**Returns:** Dict of output variable names mapping to shared output description
 
 #### repr_kv()
 
@@ -310,6 +312,8 @@ def verify_outputs_artifact_bindings(
 A Python native interface object, like inspect.signature but simpler.
 
 
+
+### Parameters
 
 ```python
 class Interface(

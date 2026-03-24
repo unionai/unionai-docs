@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.openai.chatgpt.connector
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -23,6 +23,8 @@ layout: py_api
 | `TIMEOUT_SECONDS` | `int` |  |
 
 ## flytekitplugins.openai.chatgpt.connector.ChatGPTConnector
+
+### Parameters
 
 ```python
 def ChatGPTConnector()

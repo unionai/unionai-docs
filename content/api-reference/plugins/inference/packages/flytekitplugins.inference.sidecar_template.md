@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.inference.sidecar_template
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -16,6 +16,8 @@ layout: py_api
 | [`ModelInferenceTemplate`](.././flytekitplugins.inference.sidecar_template#flytekitpluginsinferencesidecar_templatemodelinferencetemplate) |  |
 
 ## flytekitplugins.inference.sidecar_template.ModelInferenceTemplate
+
+### Parameters
 
 ```python
 class ModelInferenceTemplate(

@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.dask.models
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -23,6 +23,8 @@ Configuration for the custom dask job to run
 
 
 
+### Parameters
+
 ```python
 class DaskJob(
     scheduler: flytekitplugins.dask.models.Scheduler,
@@ -39,16 +41,16 @@ class DaskJob(
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` | `None` |  |
-| `scheduler` | `None` | :return: Configuration for the scheduler pod |
-| `workers` | `None` | :return: Configuration of the default worker group |
+| `scheduler` | `None` |  |
+| `workers` | `None` |  |
 
 ### Methods
 
 | Method | Description |
 |-|-|
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :return: The dask job serialized to protobuf. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### serialize_to_string()
@@ -61,22 +63,22 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:return: The dask job serialized to protobuf
-
+**Returns:** The dask job serialized to protobuf
 
 ## flytekitplugins.dask.models.Scheduler
 
 Configuration for the scheduler pod
 
 
+
+### Parameters
 
 ```python
 class Scheduler(
@@ -93,17 +95,17 @@ class Scheduler(
 
 | Property | Type | Description |
 |-|-|-|
-| `image` | `None` | :return: The optional image for the scheduler pod |
+| `image` | `None` |  |
 | `is_empty` | `None` |  |
-| `resources` | `None` | :return: Optional resources for the scheduler pod |
+| `resources` | `None` |  |
 
 ### Methods
 
 | Method | Description |
 |-|-|
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :return: The scheduler spec serialized to protobuf. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### serialize_to_string()
@@ -116,22 +118,22 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:return: The scheduler spec serialized to protobuf
-
+**Returns:** The scheduler spec serialized to protobuf
 
 ## flytekitplugins.dask.models.WorkerGroup
 
 Configuration for a dask worker group
 
 
+
+### Parameters
 
 ```python
 class WorkerGroup(
@@ -150,18 +152,18 @@ class WorkerGroup(
 
 | Property | Type | Description |
 |-|-|-|
-| `image` | `None` | :return: The optional image to use for the worker pods |
+| `image` | `None` |  |
 | `is_empty` | `None` |  |
-| `number_of_workers` | `None` | :return: Optional number of workers for the worker group |
-| `resources` | `None` | :return: Optional resources to use for the worker pods |
+| `number_of_workers` | `None` |  |
+| `resources` | `None` |  |
 
 ### Methods
 
 | Method | Description |
 |-|-|
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :return: The dask cluster serialized to protobuf. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### serialize_to_string()
@@ -174,14 +176,12 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:return: The dask cluster serialized to protobuf
-
+**Returns:** The dask cluster serialized to protobuf
 

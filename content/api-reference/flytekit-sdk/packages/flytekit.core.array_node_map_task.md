@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.array_node_map_task
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -39,6 +39,7 @@ def array_node_map_task(
     task_function: flytekit.core.python_function_task.PythonFunctionTask,
     concurrency: typing.Optional[int],
     min_success_ratio: float,
+    run_all_sub_nodes: bool,
     kwargs,
 )
 ```
@@ -55,6 +56,7 @@ Map task that uses the ``ArrayNode`` construct..
 | `task_function` | `flytekit.core.python_function_task.PythonFunctionTask` | This argument is implicitly passed and represents the repeatable function |
 | `concurrency` | `typing.Optional[int]` | If specified, this limits the number of mapped tasks than can run in parallel to the given batch size. If the size of the input exceeds the concurrency value, then multiple batches will be run serially until all inputs are processed. If set to 0, this means unbounded concurrency. If left unspecified, this means the array node will inherit parallelism from the workflow |
 | `min_success_ratio` | `float` | If specified, this determines the minimum fraction of total jobs which can complete successfully before terminating this task and marking it successful. |
+| `run_all_sub_nodes` | `bool` | If True, all sub-nodes will run to completion even after the failure threshold is met. |
 | `kwargs` | `**kwargs` | |
 
 #### map_task()
@@ -65,6 +67,7 @@ def map_task(
     concurrency: typing.Optional[int],
     min_successes: typing.Optional[int],
     min_success_ratio: float,
+    run_all_sub_nodes: bool,
     kwargs,
 )
 ```
@@ -79,9 +82,12 @@ or the drop in replacement ArrayNode implementation
 | `concurrency` | `typing.Optional[int]` | If specified, this limits the number of mapped tasks than can run in parallel to the given batch size. If the size of the input exceeds the concurrency value, then multiple batches will be run serially until all inputs are processed. If set to 0, this means unbounded concurrency. If left unspecified, this means the array node will inherit parallelism from the workflow |
 | `min_successes` | `typing.Optional[int]` | The minimum number of successful executions |
 | `min_success_ratio` | `float` | The minimum ratio of successful executions |
+| `run_all_sub_nodes` | `bool` | If True, all sub-nodes will run to completion even after the failure threshold is met |
 | `kwargs` | `**kwargs` | |
 
 ## flytekit.core.array_node_map_task.ArrayNodeMapTask
+
+### Parameters
 
 ```python
 class ArrayNodeMapTask(
@@ -91,6 +97,7 @@ class ArrayNodeMapTask(
     min_success_ratio: typing.Optional[float],
     bound_inputs: typing.Optional[typing.Set[str]],
     bound_inputs_values: typing.Optional[typing.Dict[str, typing.Any]],
+    run_all_sub_nodes: bool,
     kwargs,
 )
 ```
@@ -102,6 +109,7 @@ class ArrayNodeMapTask(
 | `min_success_ratio` | `typing.Optional[float]` | The minimum ratio of successful executions |
 | `bound_inputs` | `typing.Optional[typing.Set[str]]` | The set of inputs that should be bound to the map task |
 | `bound_inputs_values` | `typing.Optional[typing.Dict[str, typing.Any]]` | Inputs that are bound to the array node and will not be mapped over |
+| `run_all_sub_nodes` | `bool` | If True, all sub-nodes will run to completion even after the failure threshold is met |
 | `kwargs` | `**kwargs` | Additional keyword arguments to pass to the base class |
 
 ### Properties
@@ -127,6 +135,7 @@ class ArrayNodeMapTask(
 | `name` | `None` |  |
 | `python_function_task` | `None` |  |
 | `python_interface` | `None` | Returns this task's python interface. |
+| `run_all_sub_nodes` | `None` |  |
 | `security_context` | `None` |  |
 | `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
 | `task_type` | `None` |  |
@@ -494,6 +503,8 @@ But, at runtime this information is lost. To reconstruct this, we use ArrayNodeM
 and then at runtime reconstructs the interface with this knowledge
 
 
+
+### Parameters
 
 ```python
 class ArrayNodeMapTaskResolver(

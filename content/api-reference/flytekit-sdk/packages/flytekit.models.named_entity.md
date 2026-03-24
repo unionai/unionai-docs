@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.named_entity
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -19,6 +19,8 @@ layout: py_api
 
 ## flytekit.models.named_entity.NamedEntityIdentifier
 
+### Parameters
+
 ```python
 class NamedEntityIdentifier(
     project,
@@ -36,10 +38,10 @@ class NamedEntityIdentifier(
 
 | Property | Type | Description |
 |-|-|-|
-| `domain` | `None` | :rtype: Text |
+| `domain` | `None` |  |
 | `is_empty` | `None` |  |
-| `name` | `None` | :rtype: Text |
-| `project` | `None` | :rtype: Text |
+| `name` | `None` |  |
+| `project` | `None` |  |
 
 ### Methods
 
@@ -47,8 +49,8 @@ class NamedEntityIdentifier(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -62,6 +64,8 @@ def from_flyte_idl(
 |-|-|-|
 | `p` |  | |
 
+**Returns:** Identifier
+
 #### serialize_to_string()
 
 ```python
@@ -72,18 +76,18 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.common_pb2.NamedEntityIdentifier
-
+**Returns:** flyteidl.admin.common_pb2.NamedEntityIdentifier
 
 ## flytekit.models.named_entity.NamedEntityMetadata
+
+### Parameters
 
 ```python
 class NamedEntityMetadata(
@@ -100,9 +104,9 @@ class NamedEntityMetadata(
 
 | Property | Type | Description |
 |-|-|-|
-| `description` | `None` | :rtype: Text |
+| `description` | `None` |  |
 | `is_empty` | `None` |  |
-| `state` | `None` | enum value from NamedEntityState :rtype: int |
+| `state` | `None` | enum value from NamedEntityState |
 
 ### Methods
 
@@ -110,8 +114,8 @@ class NamedEntityMetadata(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -125,6 +129,8 @@ def from_flyte_idl(
 |-|-|-|
 | `p` |  | |
 
+**Returns:** Identifier
+
 #### serialize_to_string()
 
 ```python
@@ -135,16 +141,14 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.common_pb2.NamedEntityMetadata
-
+**Returns:** flyteidl.admin.common_pb2.NamedEntityMetadata
 
 ## flytekit.models.named_entity.NamedEntityState
 
@@ -165,4 +169,6 @@ def enum_to_string(
 | Parameter | Type | Description |
 |-|-|-|
 | `val` |  | |
+
+**Returns:** Text
 

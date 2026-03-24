@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -26,11 +26,14 @@ layout: py_api
 | [`flytekit.clients.raw`](flytekit.clients.raw) |  |
 | [`flytekit.clis.helpers`](flytekit.clis.helpers) |  |
 | [`flytekit.clis.sdk_in_container.backfill`](flytekit.clis.sdk_in_container.backfill) |  |
+| [`flytekit.clis.sdk_in_container.build`](flytekit.clis.sdk_in_container.build) |  |
 | [`flytekit.clis.sdk_in_container.constants`](flytekit.clis.sdk_in_container.constants) |  |
 | [`flytekit.clis.sdk_in_container.executions`](flytekit.clis.sdk_in_container.executions) |  |
 | [`flytekit.clis.sdk_in_container.helpers`](flytekit.clis.sdk_in_container.helpers) |  |
 | [`flytekit.clis.sdk_in_container.metrics`](flytekit.clis.sdk_in_container.metrics) |  |
 | [`flytekit.clis.sdk_in_container.package`](flytekit.clis.sdk_in_container.package) |  |
+| [`flytekit.clis.sdk_in_container.pyflyte`](flytekit.clis.sdk_in_container.pyflyte) |  |
+| [`flytekit.clis.sdk_in_container.run`](flytekit.clis.sdk_in_container.run) |  |
 | [`flytekit.clis.sdk_in_container.serialize`](flytekit.clis.sdk_in_container.serialize) |  |
 | [`flytekit.clis.sdk_in_container.serve`](flytekit.clis.sdk_in_container.serve) |  |
 | [`flytekit.clis.sdk_in_container.utils`](flytekit.clis.sdk_in_container.utils) |  |

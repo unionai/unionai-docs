@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.checkpointer
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -30,7 +30,7 @@ scripts
 | [`prev_exists()`](#prev_exists) |  |
 | [`read()`](#read) | This should only be used if there is a singular checkpoint file written. |
 | [`restore()`](#restore) | Given a path, if a previous checkpoint exists, will be downloaded to this path. |
-| [`save()`](#save) |  |
+| [`save()`](#save) | Usage: If you have a io. |
 | [`write()`](#write) | This will overwrite the checkpoint. |
 
 
@@ -52,8 +52,8 @@ found, this will raise a ValueError
 
 ```python
 def restore(
-    path: typing.Union[pathlib._local.Path, str],
-) -> typing.Optional[pathlib._local.Path]
+    path: typing.Union[pathlib.Path, str],
+) -> typing.Optional[pathlib.Path]
 ```
 Given a path, if a previous checkpoint exists, will be downloaded to this path.
 If download is successful the downloaded path is returned
@@ -65,18 +65,26 @@ If download is successful the downloaded path is returned
 
 | Parameter | Type | Description |
 |-|-|-|
-| `path` | `typing.Union[pathlib._local.Path, str]` | |
+| `path` | `typing.Union[pathlib.Path, str]` | |
 
 #### save()
 
 ```python
 def save(
-    cp: typing.Union[pathlib._local.Path, str, _io.BufferedReader],
+    cp: typing.Union[pathlib.Path, str, _io.BufferedReader],
 )
 ```
+Usage: If you have a io.BufferedReader then the following should work
+
+```python
+with input_file.open(mode="rb") as b:
+    checkpointer.save(b)
+```
+
+
 | Parameter | Type | Description |
 |-|-|-|
-| `cp` | `typing.Union[pathlib._local.Path, str, _io.BufferedReader]` | Checkpoint file (path, str path or a io.BufferedReader) |
+| `cp` | `typing.Union[pathlib.Path, str, _io.BufferedReader]` | Checkpoint file (path, str path or a io.BufferedReader) |
 
 #### write()
 
@@ -102,6 +110,8 @@ TODO: Implement an async checkpoint system
 
 
 
+### Parameters
+
 ```python
 class SyncCheckpoint(
     checkpoint_dest: str,
@@ -120,7 +130,7 @@ class SyncCheckpoint(
 | [`prev_exists()`](#prev_exists) |  |
 | [`read()`](#read) | This should only be used if there is a singular checkpoint file written. |
 | [`restore()`](#restore) | Given a path, if a previous checkpoint exists, will be downloaded to this path. |
-| [`save()`](#save) |  |
+| [`save()`](#save) | Usage: If you have a io. |
 | [`write()`](#write) | This will overwrite the checkpoint. |
 
 
@@ -142,8 +152,8 @@ found, this will raise a ValueError
 
 ```python
 def restore(
-    path: typing.Union[pathlib._local.Path, str, NoneType],
-) -> typing.Optional[pathlib._local.Path]
+    path: typing.Union[pathlib.Path, str, NoneType],
+) -> typing.Optional[pathlib.Path]
 ```
 Given a path, if a previous checkpoint exists, will be downloaded to this path.
 If download is successful the downloaded path is returned
@@ -155,18 +165,26 @@ If download is successful the downloaded path is returned
 
 | Parameter | Type | Description |
 |-|-|-|
-| `path` | `typing.Union[pathlib._local.Path, str, NoneType]` | |
+| `path` | `typing.Union[pathlib.Path, str, NoneType]` | |
 
 #### save()
 
 ```python
 def save(
-    cp: typing.Union[pathlib._local.Path, str, _io.BufferedReader],
+    cp: typing.Union[pathlib.Path, str, _io.BufferedReader],
 )
 ```
+Usage: If you have a io.BufferedReader then the following should work
+
+```python
+with input_file.open(mode="rb") as b:
+    checkpointer.save(b)
+```
+
+
 | Parameter | Type | Description |
 |-|-|-|
-| `cp` | `typing.Union[pathlib._local.Path, str, _io.BufferedReader]` | Checkpoint file (path, str path or a io.BufferedReader) |
+| `cp` | `typing.Union[pathlib.Path, str, _io.BufferedReader]` | Checkpoint file (path, str path or a io.BufferedReader) |
 
 #### write()
 

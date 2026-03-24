@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.context_manager
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -53,15 +53,9 @@ values are
 Compilation state is used during the compilation of a workflow or task. It stores the nodes that were
 created when walking through the workflow graph.
 
-Attributes:
-    prefix (str): This is because we may one day want to be able to have subworkflows inside other workflows. If
-        users choose to not specify their node names, then we can end up with multiple "n0"s. This prefix allows
-        us to give those nested nodes a distinct name, as well as properly identify them in the workflow.
-    mode (int): refer to `flytekit.extend.ExecutionState.Mode`
-    task_resolver (Optional[TaskResolverMixin]): Please see `flytekit.extend.TaskResolverMixin`
-    nodes (Optional[List]): Stores currently compiled nodes so far.
 
 
+### Parameters
 
 ```python
 class CompilationState(
@@ -73,10 +67,10 @@ class CompilationState(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `prefix` | `str` | |
-| `mode` | `int` | |
-| `task_resolver` | `Optional[TaskResolverMixin]` | |
-| `nodes` | `List` | |
+| `prefix` | `str` | This is because we may one day want to be able to have subworkflows inside other workflows. If users choose to not specify their node names, then we can end up with multiple "n0"s. This prefix allows us to give those nested nodes a distinct name, as well as properly identify them in the workflow. |
+| `mode` | `int` | refer to `flytekit.extend.ExecutionState.Mode` |
+| `task_resolver` | `Optional[TaskResolverMixin]` | Please see `flytekit.extend.TaskResolverMixin` |
+| `nodes` | `List` | Stores currently compiled nodes so far. |
 
 ### Methods
 
@@ -139,6 +133,8 @@ This object provides the following objections
 Please do not confuse this object with the `flytekit.FlyteContext` object.
 
 
+
+### Parameters
 
 ```python
 class ExecutionParameters(
@@ -266,16 +262,9 @@ execute.
 Some required things during execution deal with temporary directories, ExecutionParameters that are passed to the
 user etc.
 
-Attributes:
-    mode (ExecutionState.Mode): Defines the context in which the task is executed (local, hosted, etc).
-    working_dir (os.PathLike): Specifies the remote, external directory where inputs, outputs and other protobufs
-        are uploaded
-    engine_dir (os.PathLike):
-    branch_eval_mode Optional[BranchEvalMode]: Used to determine whether a branch node should execute.
-    user_space_params Optional[ExecutionParameters]: Provides run-time, user-centric context such as a statsd
-        handler, a logging handler, the current execution id and a working directory.
 
 
+### Parameters
 
 ```python
 class ExecutionState(
@@ -288,8 +277,8 @@ class ExecutionState(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `working_dir` | `Union[os.PathLike, str]` | |
-| `mode` | `Optional[ExecutionState.Mode]` | |
+| `working_dir` | `Union[os.PathLike, str]` | Specifies the remote, external directory where inputs, outputs and other protobufs are uploaded |
+| `mode` | `Optional[ExecutionState.Mode]` | Defines the context in which the task is executed (local, hosted, etc). |
 | `engine_dir` | `Optional[Union[os.PathLike, str]]` | |
 | `branch_eval_mode` | `Optional[BranchEvalMode]` | |
 | `user_space_params` | `Optional[ExecutionParameters]` | |
@@ -361,6 +350,8 @@ Even though this object as a ``current_context`` function on it, it should not b
 Please do not confuse this object with the `flytekit.ExecutionParameters` object.
 
 
+
+### Parameters
 
 ```python
 class FlyteContext(
@@ -705,6 +696,8 @@ This is a global Object that tracks various tasks and workflows that are declare
 
 ## flytekit.core.context_manager.OutputMetadata
 
+### Parameters
+
 ```python
 class OutputMetadata(
     artifact: 'Artifact',
@@ -724,11 +717,9 @@ class OutputMetadata(
 
 This class is for the users to set arbitrary metadata on output literals.
 
-Attributes:
-    output_metadata Optional[TaskOutputMetadata]: is a sparse dictionary of metadata that the user wants to attach
-        to each output of a task. The key is the output value (object) and the value is an OutputMetadata object.
 
 
+### Parameters
 
 ```python
 class OutputMetadataTracker(
@@ -798,6 +789,8 @@ The resolution order is
 All configuration values can always be overridden by injecting an environment variable
 
 
+
+### Parameters
 
 ```python
 class SecretsManager(

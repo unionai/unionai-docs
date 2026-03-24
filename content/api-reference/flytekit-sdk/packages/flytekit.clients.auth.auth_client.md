@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.auth_client
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -25,6 +25,8 @@ Authorization client that stores the credentials in keyring and uses oauth2 stan
 credentials. NOTE: This will open an web browser to retrieve the credentials.
 
 
+
+### Parameters
 
 ```python
 class AuthorizationClient(
@@ -98,6 +100,8 @@ def refresh_access_token(
 
 ## flytekit.clients.auth.auth_client.AuthorizationCode
 
+### Parameters
+
 ```python
 class AuthorizationCode(
     code,
@@ -122,6 +126,8 @@ This class can be used to control the rendering of the page on login successful 
 
 
 
+### Parameters
+
 ```python
 class EndpointMetadata(
     endpoint: str,
@@ -141,6 +147,8 @@ A simple wrapper around BaseHTTPServer.BaseHTTPRequestHandler that handles a cal
 authorization token.
 
 
+
+### Parameters
 
 ```python
 class OAuthCallbackHandler(
@@ -473,6 +481,8 @@ A simple wrapper around the BaseHTTPServer.HTTPServer implementation that binds 
 authorization code callbacks.
 
 
+
+### Parameters
 
 ```python
 class OAuthHTTPServer(

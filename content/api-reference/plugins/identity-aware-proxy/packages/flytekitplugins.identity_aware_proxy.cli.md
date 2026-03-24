@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.identity_aware_proxy.cli
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -86,6 +86,8 @@ The auth flow is described in https://cloud.google.com/iap/docs/authentication-h
 Automatically opens a browser window for login.
 
 
+
+### Parameters
 
 ```python
 class GCPIdentityAwareProxyAuthenticator(

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.security
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -20,6 +20,8 @@ layout: py_api
 | [`SecurityContext`](.././flytekit.models.security#flytekitmodelssecuritysecuritycontext) | This is a higher level wrapper object that for the most part users shouldn't have to worry about. |
 
 ## flytekit.models.security.Identity
+
+### Parameters
 
 ```python
 class Identity(
@@ -48,7 +50,7 @@ class Identity(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
@@ -73,8 +75,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
@@ -82,6 +83,8 @@ def short_string()
 def to_flyte_idl()
 ```
 ## flytekit.models.security.OAuth2Client
+
+### Parameters
 
 ```python
 class OAuth2Client(
@@ -106,7 +109,7 @@ class OAuth2Client(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
@@ -131,8 +134,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
@@ -140,6 +142,8 @@ def short_string()
 def to_flyte_idl()
 ```
 ## flytekit.models.security.OAuth2TokenRequest
+
+### Parameters
 
 ```python
 class OAuth2TokenRequest(
@@ -170,7 +174,7 @@ class OAuth2TokenRequest(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
@@ -195,8 +199,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
@@ -208,6 +211,8 @@ def to_flyte_idl()
 See :std:ref:`cookbook:secrets` for usage examples.
 
 
+
+### Parameters
 
 ```python
 class Secret(
@@ -238,7 +243,7 @@ class Secret(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
@@ -263,8 +268,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
@@ -277,6 +281,8 @@ This is a higher level wrapper object that for the most part users shouldn't hav
 be able to just use {{&lt; py_class_ref flytekit.Secret &gt;}} instead.
 
 
+
+### Parameters
 
 ```python
 class SecurityContext(
@@ -303,7 +309,7 @@ class SecurityContext(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
@@ -328,8 +334,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 

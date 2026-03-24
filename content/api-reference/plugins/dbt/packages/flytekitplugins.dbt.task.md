@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.dbt.task
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -39,6 +39,8 @@ Execute DBT Freshness CLI command
         Task name.
     
 
+
+### Parameters
 
 ```python
 class DBTFreshness(
@@ -530,6 +532,8 @@ name : str
 
 
 
+### Parameters
+
 ```python
 class DBTRun(
     name: str,
@@ -998,6 +1002,8 @@ Execute DBT Test CLI command
         Task name.
     
 
+
+### Parameters
 
 ```python
 class DBTTest(

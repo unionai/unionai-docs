@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.envd.image_builder
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -96,6 +96,8 @@ Build the docker image and push it to the registry.
 |-|-|-|
 | `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | image spec of the task. |
 
+**Returns:** fully_qualified_image_name: Fully qualified image name. If None, then `image_spec.image_name()` is used.
+
 #### should_build()
 
 ```python
@@ -110,4 +112,15 @@ Whether or not the builder should build the ImageSpec.
 | Parameter | Type | Description |
 |-|-|-|
 | `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | image spec of the task. |
+
+**Returns**
+
+True if the image should be built, otherwise it returns False.
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `RuntimeError` | If FLYTE_IMG_FAST_FAIL is set to True and ImageSpec fails to check if the image exists due to a permission issue or other reason. |
 

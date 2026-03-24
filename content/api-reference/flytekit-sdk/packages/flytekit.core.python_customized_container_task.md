@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.python_customized_container_task
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -43,6 +43,8 @@ Keep in mind that the total size of the ``TaskTemplate`` still needs to be small
 frequently by the Flyte engine.
 
 
+
+### Parameters
 
 ```python
 class PythonCustomizedContainerTask(
@@ -441,6 +443,8 @@ This resolver differs in that,
 Also, ``get_all_tasks`` will always return an empty list, at least for now.
 
 
+
+### Parameters
 
 ```python
 def TaskTemplateResolver()

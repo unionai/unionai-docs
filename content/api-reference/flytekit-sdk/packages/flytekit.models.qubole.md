@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.qubole
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -22,6 +22,8 @@ See ``plugins/flytekit-kf-pytorch/flytekitplugins/kfpytorch/models.py`` as an ex
 | [`QuboleHiveJob`](.././flytekit.models.qubole#flytekitmodelsqubolequbolehivejob) |  |
 
 ## flytekit.models.qubole.HiveQuery
+
+### Parameters
 
 ```python
 class HiveQuery(
@@ -45,9 +47,9 @@ Initializes a new HiveQuery.
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` | `None` |  |
-| `query` | `None` | The query string. :rtype: str |
-| `retry_count` | `None` | :rtype: int |
-| `timeout_sec` | `None` | :rtype: int |
+| `query` | `None` | The query string. |
+| `retry_count` | `None` |  |
+| `timeout_sec` | `None` |  |
 
 ### Methods
 
@@ -55,8 +57,8 @@ Initializes a new HiveQuery.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _qubole. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -70,6 +72,8 @@ def from_flyte_idl(
 |-|-|-|
 | `pb2_object` |  | |
 
+**Returns:** HiveQuery
+
 #### serialize_to_string()
 
 ```python
@@ -80,18 +84,18 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: _qubole.HiveQuery
-
+**Returns:** _qubole.HiveQuery
 
 ## flytekit.models.qubole.HiveQueryCollection
+
+### Parameters
 
 ```python
 class HiveQueryCollection(
@@ -111,7 +115,7 @@ Initializes a new HiveQueryCollection.
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` | `None` |  |
-| `queries` | `None` | :rtype: list[HiveQuery] |
+| `queries` | `None` |  |
 
 ### Methods
 
@@ -119,8 +123,8 @@ Initializes a new HiveQueryCollection.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _qubole. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -134,6 +138,8 @@ def from_flyte_idl(
 |-|-|-|
 | `pb2_object` |  | |
 
+**Returns:** HiveQueryCollection
+
 #### serialize_to_string()
 
 ```python
@@ -144,18 +150,18 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: _qubole.HiveQueryCollection
-
+**Returns:** _qubole.HiveQueryCollection
 
 ## flytekit.models.qubole.QuboleHiveJob
+
+### Parameters
 
 ```python
 class QuboleHiveJob(
@@ -180,11 +186,11 @@ Initializes a HiveJob.
 
 | Property | Type | Description |
 |-|-|-|
-| `cluster_label` | `None` | The cluster label where the query should be executed :rtype: Text |
+| `cluster_label` | `None` | The cluster label where the query should be executed |
 | `is_empty` | `None` |  |
-| `query` | `None` | The query to be executed :rtype: HiveQuery |
-| `query_collection` | `None` | The queries to be executed :rtype: HiveQueryCollection |
-| `tags` | `None` | User tags for the queries :rtype: list[Text] |
+| `query` | `None` | The query to be executed |
+| `query_collection` | `None` | The queries to be executed |
+| `tags` | `None` | User tags for the queries |
 
 ### Methods
 
@@ -192,8 +198,8 @@ Initializes a HiveJob.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _qubole. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -207,6 +213,8 @@ def from_flyte_idl(
 |-|-|-|
 | `p` |  | |
 
+**Returns:** QuboleHiveJob
+
 #### serialize_to_string()
 
 ```python
@@ -217,14 +225,12 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: _qubole.QuboleHiveJob
-
+**Returns:** _qubole.QuboleHiveJob
 

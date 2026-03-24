@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.resources
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -67,7 +67,9 @@ Convert flytekit ``Resources`` objects to a Resources model
 | Parameter | Type | Description |
 |-|-|-|
 | `requests` | `typing.Optional[flytekit.core.resources.Resources]` | Resource requests. Optional, defaults to ``None`` |
-| `limits` | `typing.Optional[flytekit.core.resources.Resources]` | Resource limits. Optional, defaults to ``None`` :return: The given resources as requests and limits |
+| `limits` | `typing.Optional[flytekit.core.resources.Resources]` | Resource limits. Optional, defaults to ``None`` |
+
+**Returns:** The given resources as requests and limits
 
 #### pod_spec_from_resources()
 
@@ -87,6 +89,8 @@ def pod_spec_from_resources(
 | `k8s_gpu_resource_key` | `str` | |
 
 ## flytekit.core.resources.ResourceSpec
+
+### Parameters
 
 ```python
 class ResourceSpec(
@@ -196,6 +200,8 @@ Please see the :std:ref:`User Guide &lt;cookbook:customizing task resources&gt;`
 Also refer to the [`K8s conventions.`](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes)
 
 
+
+### Parameters
 
 ```python
 class Resources(

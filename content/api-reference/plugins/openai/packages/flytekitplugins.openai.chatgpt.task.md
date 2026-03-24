@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.openai.chatgpt.task
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -21,6 +21,8 @@ This is the simplest form of a ChatGPT Task, you can define the model and the in
 
 
 
+### Parameters
+
 ```python
 class ChatGPTTask(
     name: str,
@@ -32,8 +34,8 @@ class ChatGPTTask(
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | Name of this task, should be unique in the project |
-| `chatgpt_config` | `typing.Dict[str, typing.Any]` | |
-| `openai_organization` | `typing.Optional[str]` | |
+| `chatgpt_config` | `typing.Dict[str, typing.Any]` | ChatGPT job configuration. Config structure can be found here. https://platform.openai.com/docs/api-reference/completions/create |
+| `openai_organization` | `typing.Optional[str]` | OpenAI Organization. String can be found here. https://platform.openai.com/docs/api-reference/organization-optional |
 | `kwargs` | `**kwargs` | |
 
 ### Properties

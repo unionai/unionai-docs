@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.inference.nim.serve
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -17,6 +17,8 @@ layout: py_api
 | [`NIMSecrets`](.././flytekitplugins.inference.nim.serve#flytekitpluginsinferencenimservenimsecrets) |  |
 
 ## flytekitplugins.inference.nim.serve.NIM
+
+### Parameters
 
 ```python
 class NIM(
@@ -73,6 +75,8 @@ Initialize NIM class for managing a Kubernetes pod template.
 def setup_nim_pod_template()
 ```
 ## flytekitplugins.inference.nim.serve.NIMSecrets
+
+### Parameters
 
 ```python
 class NIMSecrets(

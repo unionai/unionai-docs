@@ -1,6 +1,6 @@
 ---
 title: flytekit.utils.dict_formatter
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -48,7 +48,9 @@ then the result will be {"EndpointConfigName": "my-endpoint-config"}.
 | `service` | `str` | The AWS service to use |
 | `original_dict` | `typing.Any` | The dictionary to update (in place) |
 | `update_dict` | `typing.Dict[str, typing.Any]` | The dictionary to use for updating |
-| `idempotence_token` | `typing.Optional[str]` | Hash of config -- this is to ensure the execution ID is deterministic :return: The updated dictionary |
+| `idempotence_token` | `typing.Optional[str]` | Hash of config -- this is to ensure the execution ID is deterministic |
+
+**Returns:** The updated dictionary
 
 #### get_nested_value()
 

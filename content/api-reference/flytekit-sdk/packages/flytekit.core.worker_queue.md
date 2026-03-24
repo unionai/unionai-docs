@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.worker_queue
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -43,6 +43,8 @@ Executions that should be kicked off will be kicked off, and ones that are runni
 in a loop similar to a controller loop in a k8s operator.
 
 
+
+### Parameters
 
 ```python
 class Controller(
@@ -192,6 +194,8 @@ Render the callstack as a deck presentation to be shown after eager workflow exe
 
 ## flytekit.core.worker_queue.Update
 
+### Parameters
+
 ```python
 class Update(
     work_item: WorkItem,
@@ -215,6 +219,8 @@ This is a class to keep track of what the user requested. Since it captures the 
 to run the entity with, an arbitrary map, can't make this frozen.
 
 
+
+### Parameters
 
 ```python
 class WorkItem(

@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -36,6 +36,17 @@ layout: py_api
 | [`flytekit.clients.grpc_utils.default_metadata_interceptor.DefaultMetadataInterceptor`](../packages/flytekit.clients.grpc_utils.default_metadata_interceptor#flytekitclientsgrpc_utilsdefault_metadata_interceptordefaultmetadatainterceptor) | |
 | [`flytekit.clients.grpc_utils.wrap_exception_interceptor.RetryExceptionWrapperInterceptor`](../packages/flytekit.clients.grpc_utils.wrap_exception_interceptor#flytekitclientsgrpc_utilswrap_exception_interceptorretryexceptionwrapperinterceptor) | |
 | [`flytekit.clients.raw.RawSynchronousFlyteClient`](../packages/flytekit.clients.raw#flytekitclientsrawrawsynchronousflyteclient) |This is a thin synchronous wrapper around the auto-generated GRPC stubs for communicating with the admin service. |
+| [`flytekit.clis.sdk_in_container.build.BuildCommand`](../packages/flytekit.clis.sdk_in_container.build#flytekitclissdk_in_containerbuildbuildcommand) |A click command group for building a image for flyte workflows & tasks in a file. |
+| [`flytekit.clis.sdk_in_container.build.BuildParams`](../packages/flytekit.clis.sdk_in_container.build#flytekitclissdk_in_containerbuildbuildparams) | |
+| [`flytekit.clis.sdk_in_container.build.BuildWorkflowCommand`](../packages/flytekit.clis.sdk_in_container.build#flytekitclissdk_in_containerbuildbuildworkflowcommand) |click multicommand at the python file layer, subcommands should be all the workflows in the file. |
+| [`flytekit.clis.sdk_in_container.run.DynamicEntityLaunchCommand`](../packages/flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrundynamicentitylaunchcommand) |This is a dynamic command that is created for each launch plan. |
+| [`flytekit.clis.sdk_in_container.run.Entities`](../packages/flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunentities) |NamedTuple to group all entities in a file. |
+| [`flytekit.clis.sdk_in_container.run.RemoteEntityGroup`](../packages/flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunremoteentitygroup) |click multicommand that retrieves launchplans from a remote flyte instance and executes them. |
+| [`flytekit.clis.sdk_in_container.run.RunCommand`](../packages/flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunruncommand) |A click command group for registering and executing flyte workflows & tasks in a file. |
+| [`flytekit.clis.sdk_in_container.run.RunLevelComputedParams`](../packages/flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunrunlevelcomputedparams) |This class is used to store the computed parameters that are used to run a workflow / task / launchplan. |
+| [`flytekit.clis.sdk_in_container.run.RunLevelParams`](../packages/flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunrunlevelparams) |This class is used to store the parameters that are used to run a workflow / task / launchplan. |
+| [`flytekit.clis.sdk_in_container.run.WorkflowCommand`](../packages/flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunworkflowcommand) |click multicommand at the python file layer, subcommands should be all the workflows in the file. |
+| [`flytekit.clis.sdk_in_container.run.YamlFileReadingCommand`](../packages/flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunyamlfilereadingcommand) | |
 | [`flytekit.clis.sdk_in_container.serialize.SerializationMode`](../packages/flytekit.clis.sdk_in_container.serialize#flytekitclissdk_in_containerserializeserializationmode) | |
 | [`flytekit.clis.sdk_in_container.utils.ErrorHandlingCommand`](../packages/flytekit.clis.sdk_in_container.utils#flytekitclissdk_in_containerutilserrorhandlingcommand) |Helper class that wraps the invoke method of a click command to catch exceptions and print them in a nice way. |
 | [`flytekit.clis.sdk_in_container.utils.PyFlyteParams`](../packages/flytekit.clis.sdk_in_container.utils#flytekitclissdk_in_containerutilspyflyteparams) | |

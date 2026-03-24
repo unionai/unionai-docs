@@ -19,6 +19,8 @@ Module for fsspec implementations.
 
 ## union.filesystems.AsyncUnionFS
 
+### Parameters
+
 ```python
 class AsyncUnionFS(
     logger: logging.Logger,
@@ -1804,6 +1806,8 @@ encoding, errors, newline: same as `open`.
 | `kwargs` | `**kwargs` | |
 
 ## union.filesystems.AsyncUnionMetaFS
+
+### Parameters
 
 ```python
 class AsyncUnionMetaFS(

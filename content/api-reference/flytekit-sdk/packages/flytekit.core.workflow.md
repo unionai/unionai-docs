@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.workflow
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -764,6 +764,8 @@ deal in function-workflows because names tend to not be necessary.
 
 
 
+### Parameters
+
 ```python
 class ImperativeWorkflow(
     name: str,
@@ -1007,6 +1009,8 @@ This Python object represents a workflow  defined by a function and decorated wi
 
 
 
+### Parameters
+
 ```python
 class PythonFunctionWorkflow(
     workflow_function: Callable,
@@ -1197,6 +1201,8 @@ object will not initiate a network call to Admin, which is why the user is asked
 If at registration time the interface provided causes an issue with compilation, an error will be returned.
 
 
+
+### Parameters
 
 ```python
 class ReferenceWorkflow(
@@ -1396,6 +1402,8 @@ Please see the implementation of the dispatch_execute function in the real task.
 
 ## flytekit.core.workflow.WorkflowBase
 
+### Parameters
+
 ```python
 class WorkflowBase(
     name: str,
@@ -1501,6 +1509,8 @@ workflow execution will immediately enter a failed state if a component node fai
 
 ## flytekit.core.workflow.WorkflowMetadata
 
+### Parameters
+
 ```python
 class WorkflowMetadata(
     on_failure: WorkflowFailurePolicy,
@@ -1529,6 +1539,8 @@ WorkflowMetadataDefaults class represents the defaults that are handed down to a
 WorkflowMetadata represents metadata about the workflow itself.
 
 
+
+### Parameters
 
 ```python
 class WorkflowMetadataDefaults(

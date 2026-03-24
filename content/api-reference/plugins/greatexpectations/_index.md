@@ -1,7 +1,7 @@
 ---
 title: Great Expectations
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.7.1
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 

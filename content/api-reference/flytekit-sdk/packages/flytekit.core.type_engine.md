@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.type_engine
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -222,6 +222,8 @@ Raises ValueError also if the transformer found for the raw type doesn't have a 
 
 ## flytekit.core.type_engine.AsyncTypeTransformer
 
+### Parameters
+
 ```python
 class AsyncTypeTransformer(
     name: str,
@@ -256,6 +258,7 @@ class AsyncTypeTransformer(
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -352,7 +355,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -401,6 +403,24 @@ def isinstance_generic(
 |-|-|-|
 | `obj` |  | |
 | `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_html()
 
@@ -479,6 +499,8 @@ and so forth. Similarly, for outputs, in this case flytekit is going to upload t
 
 
 
+### Parameters
+
 ```python
 class BatchSize(
     val: int,
@@ -499,6 +521,8 @@ class BatchSize(
 Handler for BinaryIO
 
 
+
+### Parameters
 
 ```python
 def BinaryIOTransformer()
@@ -522,6 +546,7 @@ def BinaryIOTransformer()
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -577,7 +602,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -626,6 +650,24 @@ def isinstance_generic(
 |-|-|-|
 | `obj` |  | |
 | `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_html()
 
@@ -741,6 +783,8 @@ Output will look like
 
 
 
+### Parameters
+
 ```python
 def DataclassTransformer()
 ```
@@ -762,6 +806,7 @@ def DataclassTransformer()
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_literal_type()`](#get_literal_type) | Extracts the Literal type definition for a Dataclass and returns a type Struct. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_generic_literal()`](#to_generic_literal) | Serializes a dataclass or dictionary to a Flyte literal, handling both JSON and MessagePack formats. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
@@ -818,7 +863,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -854,6 +898,24 @@ def isinstance_generic(
 |-|-|-|
 | `obj` |  | |
 | `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_generic_literal()
 
@@ -943,6 +1005,8 @@ transforms an untyped dictionary to a Binary Scalar Literal with a Struct Litera
 
 
 
+### Parameters
+
 ```python
 def DictTransformer()
 ```
@@ -971,6 +1035,7 @@ def DictTransformer()
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`is_pickle()`](#is_pickle) |  |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -1121,7 +1186,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -1181,6 +1245,24 @@ def isinstance_generic(
 |-|-|-|
 | `obj` |  | |
 | `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_html()
 
@@ -1247,6 +1329,8 @@ Enables converting a python type enum.Enum to LiteralType.EnumType
 
 
 
+### Parameters
+
 ```python
 def EnumTransformer()
 ```
@@ -1269,6 +1353,7 @@ def EnumTransformer()
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -1324,7 +1409,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -1373,6 +1457,24 @@ def isinstance_generic(
 |-|-|-|
 | `obj` |  | |
 | `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_html()
 
@@ -1439,6 +1541,8 @@ Transformer that handles a univariate typing.List[T]
 
 
 
+### Parameters
+
 ```python
 def ListTransformer()
 ```
@@ -1465,6 +1569,7 @@ def ListTransformer()
 | [`get_sub_type_or_none()`](#get_sub_type_or_none) | Return the generic Type T of the List, or None if the generic type cannot be inferred. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -1561,7 +1666,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -1639,6 +1743,24 @@ def isinstance_generic(
 | `obj` |  | |
 | `generic_alias` |  | |
 
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
+
 #### to_html()
 
 ```python
@@ -1700,6 +1822,8 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 
 ## flytekit.core.type_engine.LiteralTypeTransformer
 
+### Parameters
+
 ```python
 def LiteralTypeTransformer()
 ```
@@ -1723,6 +1847,7 @@ def LiteralTypeTransformer()
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -1778,7 +1903,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -1838,6 +1962,24 @@ def isinstance_generic(
 |-|-|-|
 | `obj` |  | |
 | `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_html()
 
@@ -1905,6 +2047,8 @@ where you might be working with LiteralMaps. This object allows the caller to sp
 correspond to an element of the map.
 
 
+
+### Parameters
 
 ```python
 class LiteralsResolver(
@@ -2006,7 +2150,9 @@ future calls will return the cached value instead.
 | Parameter | Type | Description |
 |-|-|-|
 | `attr` | `str` | |
-| `as_type` | `Optional[typing.Type]` | :return: Python native value from the LiteralMap |
+| `as_type` | `Optional[typing.Type]` | |
+
+**Returns:** Python native value from the LiteralMap
 
 #### get_literal()
 
@@ -2086,7 +2232,7 @@ def update(
 )
 ```
 D.update([E, ]**F) -&gt; None.  Update D from mapping/iterable E and F.
-If E present and has a .keys() method, does:     for k in E.keys(): D[k] = E[k]
+If E present and has a .keys() method, does:     for k in E: D[k] = E[k]
 If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v
 In either case, this is followed by: for k, v in F.items(): D[k] = v
 
@@ -2117,6 +2263,8 @@ D.values() -&gt; an object providing a view on D's values
 
 ## flytekit.core.type_engine.ProtobufTransformer
 
+### Parameters
+
 ```python
 def ProtobufTransformer()
 ```
@@ -2139,6 +2287,7 @@ def ProtobufTransformer()
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`tag()`](#tag) |  |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Convert the protobuf struct to literal. |
@@ -2195,7 +2344,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -2244,6 +2392,24 @@ def isinstance_generic(
 |-|-|-|
 | `obj` |  | |
 | `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### tag()
 
@@ -2331,6 +2497,8 @@ Restricted types are not allowed to be used as inputs or outputs of tasks and wo
 
 
 
+### Parameters
+
 ```python
 class RestrictedTypeTransformer(
     name: str,
@@ -2361,6 +2529,7 @@ class RestrictedTypeTransformer(
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -2416,7 +2585,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -2465,6 +2633,24 @@ def isinstance_generic(
 |-|-|-|
 | `obj` |  | |
 | `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_html()
 
@@ -2531,6 +2717,8 @@ A Simple implementation of a type transformer that uses simple lambdas to transf
 
 
 
+### Parameters
+
 ```python
 class SimpleTransformer(
     name: str,
@@ -2568,6 +2756,7 @@ class SimpleTransformer(
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -2623,7 +2812,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -2672,6 +2860,24 @@ def isinstance_generic(
 |-|-|-|
 | `obj` |  | |
 | `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_html()
 
@@ -2738,6 +2944,8 @@ Handler for TextIO
 
 
 
+### Parameters
+
 ```python
 def TextIOTransformer()
 ```
@@ -2760,6 +2968,7 @@ def TextIOTransformer()
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -2815,7 +3024,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -2864,6 +3072,24 @@ def isinstance_generic(
 |-|-|-|
 | `obj` |  | |
 | `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_html()
 
@@ -3273,6 +3499,8 @@ Base transformer type that should be implemented for every python native type th
 
 
 
+### Parameters
+
 ```python
 class TypeTransformer(
     name: str,
@@ -3305,6 +3533,7 @@ class TypeTransformer(
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -3360,7 +3589,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -3409,6 +3637,24 @@ def isinstance_generic(
 |-|-|-|
 | `obj` |  | |
 | `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_html()
 
@@ -3477,6 +3723,8 @@ Transformer that handles a typing.Union[T1, T2, ...]
 
 
 
+### Parameters
+
 ```python
 def UnionTransformer()
 ```
@@ -3503,6 +3751,7 @@ def UnionTransformer()
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`is_optional_type()`](#is_optional_type) |  |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -3599,7 +3848,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -3673,6 +3921,24 @@ def isinstance_generic(
 |-|-|-|
 | `obj` |  | |
 | `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_html()
 

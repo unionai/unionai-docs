@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.openai.batch.connector
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -24,6 +24,8 @@ layout: py_api
 | `OPENAI_API_KEY` | `str` |  |
 
 ## flytekitplugins.openai.batch.connector.BatchEndpointConnector
+
+### Parameters
 
 ```python
 def BatchEndpointConnector()
@@ -131,6 +133,8 @@ Return the metrics for the task.
 | `kwargs` | `**kwargs` | |
 
 ## flytekitplugins.openai.batch.connector.BatchEndpointMetadata
+
+### Parameters
 
 ```python
 class BatchEndpointMetadata(

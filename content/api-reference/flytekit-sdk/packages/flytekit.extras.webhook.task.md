@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.webhook.task
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -89,6 +89,8 @@ TODO Coming soon secrets support
 
 
 
+### Parameters
+
 ```python
 class WebhookTask(
     name: str,
@@ -115,6 +117,12 @@ class WebhookTask(
 | `show_url` | `bool` | If True, the URL of the request will be logged in the UI as the output of the task. |
 | `description` | `typing.Optional[str]` | Description of the task. |
 | `timeout` | `typing.Union[int, datetime.timedelta]` | The timeout for the request (connection and read). Default is 10 seconds. If an int is provided, it is considered as seconds. |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `ValueError` | if the method is not 'POST' or 'GET'. |
 
 ### Properties
 

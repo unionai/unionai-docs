@@ -1,6 +1,6 @@
 ---
 title: flytekit.loggers
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -47,7 +47,9 @@ Converts a verbosity level from the CLI to a logging level.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `verbosity` | `int` | verbosity level from the CLI :return: logging level |
+| `verbosity` | `int` | verbosity level from the CLI |
+
+**Returns:** logging level
 
 #### initialize_global_loggers()
 

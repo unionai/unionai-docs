@@ -34,6 +34,8 @@ Note that Python fields will be missing when retrieved from the service.
 
 
 
+### Parameters
+
 ```python
 class Artifact(
     args,
@@ -299,6 +301,8 @@ that's exposed to the user.
 
 ## union.artifacts.DataCard
 
+### Parameters
+
 ```python
 class DataCard(
     text: str,
@@ -308,7 +312,7 @@ class DataCard(
 | Parameter | Type | Description |
 |-|-|-|
 | `text` | `str` | DataCard contents. |
-| `card_type` | `CardType` |  |
+| `card_type` | `CardType` | |
 
 ### Methods
 
@@ -344,6 +348,8 @@ def serialize_to_string(
 
 ## union.artifacts.ModelCard
 
+### Parameters
+
 ```python
 class ModelCard(
     text: str,
@@ -353,7 +359,7 @@ class ModelCard(
 | Parameter | Type | Description |
 |-|-|-|
 | `text` | `str` | ModelCard contents. |
-| `card_type` | `CardType` |  |
+| `card_type` | `CardType` | |
 
 ### Methods
 
@@ -392,6 +398,8 @@ def serialize_to_string(
 Event used to link upstream and downstream workflows together.
 
 
+
+### Parameters
 
 ```python
 class OnArtifact(

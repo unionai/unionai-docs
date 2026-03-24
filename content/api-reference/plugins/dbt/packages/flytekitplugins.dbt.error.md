@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.dbt.error
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -36,6 +36,8 @@ logs : list of str
 
 
 
+### Parameters
+
 ```python
 class DBTHandledError(
     message: str,
@@ -66,6 +68,8 @@ logs : list of str
     Logs produced by the command execution.
 
 
+
+### Parameters
 
 ```python
 class DBTUnhandledError(

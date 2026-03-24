@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth_helper
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -114,7 +114,9 @@ get_channel(cfg=PlatformConfig(insecure=False,...), credentials=...)
 | Parameter | Type | Description |
 |-|-|-|
 | `cfg` | `flytekit.configuration.PlatformConfig` | PlatformConfig |
-| `kwargs` | `**kwargs` | Optional arguments to be passed to channel method. Refer to usage example above :return: grpc.Channel (secure / insecure) |
+| `kwargs` | `**kwargs` | Optional arguments to be passed to channel method. Refer to usage example above |
+
+**Returns:** grpc.Channel (secure / insecure)
 
 #### get_proxy_authenticator()
 
@@ -158,7 +160,9 @@ perform an Oauth2.0 Auth flow
 | Parameter | Type | Description |
 |-|-|-|
 | `cfg` | `flytekit.configuration.PlatformConfig` | PlatformConfig |
-| `in_channel` | `grpc.Channel` | grpc.Channel Precreated channel :return: grpc.Channel. New composite channel |
+| `in_channel` | `grpc.Channel` | grpc.Channel Precreated channel |
+
+**Returns:** grpc.Channel. New composite channel
 
 #### upgrade_channel_to_proxy_authenticated()
 
@@ -176,7 +180,9 @@ channel that uses Interceptor to perform authentication with a proxy in front of
 | Parameter | Type | Description |
 |-|-|-|
 | `cfg` | `flytekit.configuration.PlatformConfig` | PlatformConfig |
-| `in_channel` | `grpc.Channel` | grpc.Channel Precreated channel :return: grpc.Channel. New composite channel |
+| `in_channel` | `grpc.Channel` | grpc.Channel Precreated channel |
+
+**Returns:** grpc.Channel. New composite channel
 
 #### upgrade_session_to_proxy_authenticated()
 
@@ -194,7 +200,9 @@ perform authentication with a proxy in front of Flyte
 | Parameter | Type | Description |
 |-|-|-|
 | `cfg` | `flytekit.configuration.PlatformConfig` | PlatformConfig |
-| `session` | `requests.sessions.Session` | requests.Session Precreated session :return: requests.Session. New session with custom HTTPAdapter mounted |
+| `session` | `requests.sessions.Session` | requests.Session Precreated session |
+
+**Returns:** requests.Session. New session with custom HTTPAdapter mounted
 
 #### wrap_exceptions_channel()
 
@@ -215,13 +223,17 @@ exceptions and raise Exception from the Family flytekit.exceptions
 | Parameter | Type | Description |
 |-|-|-|
 | `cfg` | `flytekit.configuration.PlatformConfig` | PlatformConfig |
-| `in_channel` | `grpc.Channel` | grpc.Channel :return: grpc.Channel |
+| `in_channel` | `grpc.Channel` | grpc.Channel |
+
+**Returns:** grpc.Channel
 
 ## flytekit.clients.auth_helper.AuthenticationHTTPAdapter
 
 A custom HTTPAdapter that adds authentication headers to requests of a session.
 
 
+
+### Parameters
 
 ```python
 class AuthenticationHTTPAdapter(
@@ -329,13 +341,19 @@ example, if one wishes to use a custom :py:class:`ssl.SSLContext` one
 must both set ``"ssl_context"`` and based on what else they require,
 alter the other keys to ensure the desired behaviour.
 
+:type request:
+    :class:`~requests.models.PreparedRequest`
+:returns:
+    A tuple of two dictionaries. The first is the "host parameters"
+    portion of the Pool Key including scheme, hostname, and port. The
+    second is a dictionary of SSLContext related parameters.
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `request` |  | The PreparedReqest being sent over the connection. :type request: :class:`~requests.models.PreparedRequest` |
+| `request` |  | The PreparedReqest being sent over the connection. |
 | `verify` |  | Either a boolean, in which case it controls whether we verify the server's TLS certificate, or a string, in which case it must be a path to a CA bundle to use. |
-| `cert` |  | Any user-provided SSL certificate for client authentication (a.k.a., mTLS). This may be a string (i.e., just the path to a file which holds both certificate and key) or a tuple of length 2 with the certificate file path and key file path. :returns: A tuple of two dictionaries. The first is the "host parameters" portion of the Pool Key including scheme, hostname, and port. The second is a dictionary of SSLContext related parameters. |
+| `cert` |  | Any user-provided SSL certificate for client authentication (a.k.a., mTLS). This may be a string (i.e., just the path to a file which holds both certificate and key) or a tuple of length 2 with the certificate file path and key file path. |
 
 #### build_response()
 
@@ -355,7 +373,9 @@ for use when subclassing the
 | Parameter | Type | Description |
 |-|-|-|
 | `req` |  | The |
-| `resp` |  | The urllib3 response object. :rtype: requests.Response |
+| `resp` |  | The urllib3 response object. |
+
+**Returns:** requests.Response
 
 #### cert_verify()
 
@@ -411,7 +431,9 @@ called from user code, and is only exposed for use when subclassing the
 | Parameter | Type | Description |
 |-|-|-|
 | `url` |  | The URL to connect to. |
-| `proxies` |  | A Requests-style dictionary of proxies used on this request. :rtype: urllib3.ConnectionPool |
+| `proxies` |  | A Requests-style dictionary of proxies used on this request. |
+
+**Returns:** urllib3.ConnectionPool
 
 #### get_connection_with_tls_context()
 
@@ -427,6 +449,7 @@ Returns a urllib3 connection for the given request and TLS settings.
 This should not be called from user code, and is only exposed for use
 when subclassing the :class:`HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;`.
 
+    urllib3.ConnectionPool
 
 
 | Parameter | Type | Description |
@@ -434,7 +457,7 @@ when subclassing the :class:`HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;`.
 | `request` |  | The :class:`PreparedRequest &lt;PreparedRequest&gt;` object to be sent over the connection. |
 | `verify` |  | Either a boolean, in which case it controls whether we verify the server's TLS certificate, or a string, in which case it must be a path to a CA bundle to use. |
 | `proxies` |  | The proxies dictionary to apply to the request. |
-| `cert` |  | Any user-provided SSL certificate to be used for client authentication (a.k.a., mTLS). :rtype: urllib3.ConnectionPool |
+| `cert` |  | Any user-provided SSL certificate to be used for client authentication (a.k.a., mTLS). |
 
 #### init_poolmanager()
 
@@ -481,7 +504,9 @@ when subclassing the
 
 | Parameter | Type | Description |
 |-|-|-|
-| `proxy` |  | The url of the proxy being used for this request. :rtype: dict |
+| `proxy` |  | The url of the proxy being used for this request. |
+
+**Returns:** dict
 
 #### proxy_manager_for()
 
@@ -497,12 +522,15 @@ This method should not be called from user code, and is only
 exposed for use when subclassing the
 :class:`HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;`.
 
+:returns: ProxyManager
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `proxy` |  | The proxy to return a urllib3 ProxyManager for. |
-| `proxy_kwargs` |  | Extra keyword arguments used to configure the Proxy Manager. :returns: ProxyManager :rtype: urllib3.ProxyManager |
+| `proxy_kwargs` |  | Extra keyword arguments used to configure the Proxy Manager. |
+
+**Returns:** urllib3.ProxyManager
 
 #### request_url()
 
@@ -526,7 +554,9 @@ when subclassing the
 | Parameter | Type | Description |
 |-|-|-|
 | `request` |  | The |
-| `proxies` |  | A dictionary of schemes or schemes and hosts to proxy URLs. :rtype: str |
+| `proxies` |  | A dictionary of schemes or schemes and hosts to proxy URLs. |
+
+**Returns:** str
 
 #### send()
 
@@ -543,15 +573,19 @@ If the response returns a 401 status code, refreshes the credentials and retries
 
 | Parameter | Type | Description |
 |-|-|-|
-| `request` |  | The request object to send. :return: The response object. |
+| `request` |  | The request object to send. |
 | `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
+
+**Returns:** The response object.
 
 ## flytekit.clients.auth_helper.RemoteClientConfigStore
 
 This class implements the ClientConfigStore that is served by the Flyte Server, that implements AuthMetadataService
 
 
+
+### Parameters
 
 ```python
 class RemoteClientConfigStore(

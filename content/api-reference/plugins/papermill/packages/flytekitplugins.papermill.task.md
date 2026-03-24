@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.papermill.task
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -52,6 +52,8 @@ Loads a FlyteDirectory from a file.
 |-|-|-|
 | `path` | `str` | path to the file |
 
+**Returns:** T: the python value of the literal
+
 #### load_flytefile()
 
 ```python
@@ -66,6 +68,8 @@ Loads a FlyteFile from a file.
 | Parameter | Type | Description |
 |-|-|-|
 | `path` | `str` | path to the file |
+
+**Returns:** T: the python value of the literal
 
 #### load_python_val_from_file()
 
@@ -87,6 +91,8 @@ reusing the parameters cell for local development.
 | `path` | `str` | path to the file |
 | `dtype` | `~T` | the type of the literal |
 
+**Returns:** T: the python value of the literal
+
 #### load_structureddataset()
 
 ```python
@@ -101,6 +107,8 @@ Loads a StructuredDataset from a file.
 | Parameter | Type | Description |
 |-|-|-|
 | `path` | `str` | path to the file |
+
+**Returns:** T: the python value of the literal
 
 #### record_outputs()
 
@@ -132,6 +140,8 @@ Save a python value to a local file as a Flyte literal.
 | Parameter | Type | Description |
 |-|-|-|
 | `input` | `typing.Any` | the python value |
+
+**Returns:** str: the path to the file
 
 ## flytekitplugins.papermill.task.NotebookTask
 
@@ -214,6 +224,8 @@ The Task produces 2 implicit outputs.
     Most output types are supported as long as FlyteFile etc is used.
 
 
+
+### Parameters
 
 ```python
 class NotebookTask(

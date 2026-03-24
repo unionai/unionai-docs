@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.user
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -36,6 +36,8 @@ layout: py_api
 
 ## flytekit.exceptions.user.FlyteAssertion
 
+### Parameters
+
 ```python
 class FlyteAssertion(
     args,
@@ -54,6 +56,8 @@ class FlyteAssertion(
 | `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteAuthenticationException
+
+### Parameters
 
 ```python
 class FlyteAuthenticationException(
@@ -74,6 +78,8 @@ class FlyteAuthenticationException(
 
 ## flytekit.exceptions.user.FlyteCompilationException
 
+### Parameters
+
 ```python
 class FlyteCompilationException(
     fn: typing.Callable,
@@ -93,6 +99,8 @@ class FlyteCompilationException(
 
 ## flytekit.exceptions.user.FlyteDataNotFoundException
 
+### Parameters
+
 ```python
 class FlyteDataNotFoundException(
     path: str,
@@ -109,6 +117,8 @@ class FlyteDataNotFoundException(
 | `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteDisapprovalException
+
+### Parameters
 
 ```python
 class FlyteDisapprovalException(
@@ -129,6 +139,8 @@ class FlyteDisapprovalException(
 
 ## flytekit.exceptions.user.FlyteEntityAlreadyExistsException
 
+### Parameters
+
 ```python
 class FlyteEntityAlreadyExistsException(
     args,
@@ -147,6 +159,8 @@ class FlyteEntityAlreadyExistsException(
 | `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteEntityNotExistException
+
+### Parameters
 
 ```python
 class FlyteEntityNotExistException(
@@ -167,6 +181,8 @@ class FlyteEntityNotExistException(
 
 ## flytekit.exceptions.user.FlyteEntityNotFoundException
 
+### Parameters
+
 ```python
 class FlyteEntityNotFoundException(
     module_name: str,
@@ -185,6 +201,8 @@ class FlyteEntityNotFoundException(
 | `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteFailureNodeInputMismatchException
+
+### Parameters
 
 ```python
 class FlyteFailureNodeInputMismatchException(
@@ -205,6 +223,8 @@ class FlyteFailureNodeInputMismatchException(
 
 ## flytekit.exceptions.user.FlyteInvalidInputException
 
+### Parameters
+
 ```python
 class FlyteInvalidInputException(
     request: typing.Any,
@@ -221,6 +241,8 @@ class FlyteInvalidInputException(
 | `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteMissingReturnValueException
+
+### Parameters
 
 ```python
 class FlyteMissingReturnValueException(
@@ -241,6 +263,8 @@ class FlyteMissingReturnValueException(
 
 ## flytekit.exceptions.user.FlyteMissingTypeException
 
+### Parameters
+
 ```python
 class FlyteMissingTypeException(
     fn: typing.Callable,
@@ -259,6 +283,8 @@ class FlyteMissingTypeException(
 | `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlytePromiseAttributeResolveException
+
+### Parameters
 
 ```python
 class FlytePromiseAttributeResolveException(
@@ -279,6 +305,8 @@ class FlytePromiseAttributeResolveException(
 
 ## flytekit.exceptions.user.FlyteRecoverableException
 
+### Parameters
+
 ```python
 class FlyteRecoverableException(
     args,
@@ -298,6 +326,8 @@ class FlyteRecoverableException(
 
 ## flytekit.exceptions.user.FlyteTimeout
 
+### Parameters
+
 ```python
 class FlyteTimeout(
     args,
@@ -316,6 +346,8 @@ class FlyteTimeout(
 | `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteTypeException
+
+### Parameters
 
 ```python
 class FlyteTypeException(
@@ -340,6 +372,8 @@ class FlyteTypeException(
 
 ## flytekit.exceptions.user.FlyteUserException
 
+### Parameters
+
 ```python
 class FlyteUserException(
     args,
@@ -358,6 +392,8 @@ class FlyteUserException(
 | `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteUserRuntimeException
+
+### Parameters
 
 ```python
 class FlyteUserRuntimeException(
@@ -383,6 +419,8 @@ FlyteUserRuntimeException is thrown when a user code raises an exception.
 
 ## flytekit.exceptions.user.FlyteValidationException
 
+### Parameters
+
 ```python
 class FlyteValidationException(
     args,
@@ -401,6 +439,8 @@ class FlyteValidationException(
 | `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteValueException
+
+### Parameters
 
 ```python
 class FlyteValueException(

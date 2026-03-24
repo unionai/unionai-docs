@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.helpers
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -45,6 +45,8 @@ This returns a generator for node executions.
 | `sort_by` |  | |
 | `unique_parent_id` |  | |
 
+**Returns:** Iterator[flytekit.models.node_execution.NodeExecution]
+
 #### iterate_task_executions()
 
 ```python
@@ -66,4 +68,6 @@ This returns a generator for task executions, given a node execution identifier
 | `limit` |  | |
 | `filters` |  | |
 | `sort_by` |  | |
+
+**Returns:** Iterator[flytekit.models.admin.task_execution.TaskExecution]
 

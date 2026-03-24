@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.schema.types
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -54,6 +54,8 @@ def generate_ordered_files(
 | `n` | `int` | |
 
 ## flytekit.types.schema.types.FlyteSchema
+
+### Parameters
 
 ```python
 class FlyteSchema(
@@ -198,6 +200,8 @@ def to_json(
 
 ## flytekit.types.schema.types.FlyteSchemaTransformer
 
+### Parameters
+
 ```python
 def FlyteSchemaTransformer()
 ```
@@ -223,6 +227,7 @@ def FlyteSchemaTransformer()
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -319,7 +324,6 @@ class DC:
 def wf(dc: DC):
     t_fs(dc.fs)
 
-Note:
 - The deserialization is the same as put a flyte schema in a dataclass, which will deserialize by the mashumaro's API.
 
 Related PR:
@@ -355,7 +359,6 @@ class DC:
 def wf(dc: DC):
     t_fs(dc.fs)
 
-Note:
 - The deserialization is the same as put a flyte schema in a dataclass, which will deserialize by the mashumaro's API.
 
 Related PR:
@@ -408,6 +411,24 @@ def isinstance_generic(
 |-|-|-|
 | `obj` |  | |
 | `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_html()
 
@@ -470,6 +491,8 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 
 ## flytekit.types.schema.types.LocalIOSchemaReader
 
+### Parameters
+
 ```python
 class LocalIOSchemaReader(
     from_path: str,
@@ -521,6 +544,8 @@ def iter(
 | `kwargs` | `**kwargs` | |
 
 ## flytekit.types.schema.types.LocalIOSchemaWriter
+
+### Parameters
 
 ```python
 class LocalIOSchemaWriter(
@@ -612,6 +637,8 @@ Currently only parquet is supported
 
 ## flytekit.types.schema.types.SchemaHandler
 
+### Parameters
+
 ```python
 class SchemaHandler(
     name: str,
@@ -637,6 +664,8 @@ Base SchemaReader to handle any readers (that can manage their own IO or otherwi
 Use the simplified base LocalIOSchemaReader for non distributed dataframes
 
 
+
+### Parameters
 
 ```python
 class SchemaReader(
@@ -689,6 +718,8 @@ def iter(
 | `kwargs` | `**kwargs` | |
 
 ## flytekit.types.schema.types.SchemaWriter
+
+### Parameters
 
 ```python
 class SchemaWriter(

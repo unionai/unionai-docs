@@ -1,6 +1,6 @@
 ---
 title: flytekit.extend.backend.connector_service
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

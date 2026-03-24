@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.snowflake.connector
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -62,6 +62,8 @@ def get_connection(
 def get_private_key()
 ```
 ## flytekitplugins.snowflake.connector.SnowflakeConnector
+
+### Parameters
 
 ```python
 def SnowflakeConnector()
@@ -169,6 +171,8 @@ Return the metrics for the task.
 | `kwargs` | `**kwargs` | |
 
 ## flytekitplugins.snowflake.connector.SnowflakeJobMetadata
+
+### Parameters
 
 ```python
 class SnowflakeJobMetadata(

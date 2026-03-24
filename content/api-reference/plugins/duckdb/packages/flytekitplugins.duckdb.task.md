@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.duckdb.task
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -58,6 +58,8 @@ Connect to MotherDuck.
 ## flytekitplugins.duckdb.task.DuckDBProvider
 
 ## flytekitplugins.duckdb.task.DuckDBQuery
+
+### Parameters
 
 ```python
 class DuckDBQuery(

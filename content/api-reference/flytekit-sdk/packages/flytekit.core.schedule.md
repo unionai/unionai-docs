@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.schedule
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -43,6 +43,8 @@ See the :std:ref:`User Guide &lt;cookbook:cron schedules&gt;` for further exampl
 
 
 
+### Parameters
+
 ```python
 class CronSchedule(
     cron_expression: typing.Optional[str],
@@ -62,11 +64,11 @@ class CronSchedule(
 
 | Property | Type | Description |
 |-|-|-|
-| `cron_expression` | `None` | :rtype: Text |
-| `cron_schedule` | `None` | :rtype: Schedule.CronSchedule |
+| `cron_expression` | `None` |  |
+| `cron_schedule` | `None` |  |
 | `is_empty` | `None` |  |
 | `kickoff_time_input_arg` | `None` |  |
-| `rate` | `None` | :rtype: Schedule.FixedRate |
+| `rate` | `None` |  |
 | `schedule_expression` | `None` |  |
 
 ### Methods
@@ -75,8 +77,8 @@ class CronSchedule(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -90,6 +92,8 @@ def from_flyte_idl(
 |-|-|-|
 | `pb2_object` |  | |
 
+**Returns:** Schedule
+
 #### serialize_to_string()
 
 ```python
@@ -100,16 +104,14 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.schedule_pb2.Schedule
-
+**Returns:** flyteidl.admin.schedule_pb2.Schedule
 
 ## flytekit.core.schedule.FixedRate
 
@@ -124,6 +126,8 @@ FixedRate(duration=timedelta(minutes=10))
 See the :std:ref:`fixed rate intervals` chapter in the cookbook for additional usage examples.
 
 
+
+### Parameters
 
 ```python
 class FixedRate(
@@ -140,11 +144,11 @@ class FixedRate(
 
 | Property | Type | Description |
 |-|-|-|
-| `cron_expression` | `None` | :rtype: Text |
-| `cron_schedule` | `None` | :rtype: Schedule.CronSchedule |
+| `cron_expression` | `None` |  |
+| `cron_schedule` | `None` |  |
 | `is_empty` | `None` |  |
 | `kickoff_time_input_arg` | `None` |  |
-| `rate` | `None` | :rtype: Schedule.FixedRate |
+| `rate` | `None` |  |
 | `schedule_expression` | `None` |  |
 
 ### Methods
@@ -153,8 +157,8 @@ class FixedRate(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -168,6 +172,8 @@ def from_flyte_idl(
 |-|-|-|
 | `pb2_object` |  | |
 
+**Returns:** Schedule
+
 #### serialize_to_string()
 
 ```python
@@ -178,16 +184,14 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.schedule_pb2.Schedule
-
+**Returns:** flyteidl.admin.schedule_pb2.Schedule
 
 ## flytekit.core.schedule.LaunchPlanTriggerBase
 
@@ -215,6 +219,8 @@ def to_flyte_idl(
 | `kwargs` | `**kwargs` | |
 
 ## flytekit.core.schedule.OnSchedule
+
+### Parameters
 
 ```python
 class OnSchedule(

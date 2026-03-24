@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.file.file
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -38,6 +38,8 @@ layout: py_api
 def noop()
 ```
 ## flytekit.types.file.file.FlyteFile
+
+### Parameters
 
 ```python
 class FlyteFile(
@@ -199,13 +201,16 @@ def copy_file(ff: FlyteFile) -> FlyteFile:
     return new_file
 ```
 
+:type mode: str
+:type cache_type: str, optional
+:type cache_options: Dict[str, Any], optional
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `mode` | `str` | Open mode. For example :type mode: str |
-| `cache_type` | `typing.Optional[str]` | Specifies the cache type. Possible values are "blockcache", "bytes", "mmap", "readahead", "first", or "background". This is especially useful for large file reads. See https://filesystem-spec.readthedocs.io/en/latest/api.html#readbuffering. :type cache_type: str, optional |
-| `cache_options` | `typing.Optional[typing.Dict[str, typing.Any]]` | A Dict corresponding to the parameters for the chosen cache_type. Refer to fsspec caching options above. :type cache_options: Dict[str, Any], optional |
+| `mode` | `str` | Open mode. For example |
+| `cache_type` | `typing.Optional[str]` | Specifies the cache type. Possible values are "blockcache", "bytes", "mmap", "readahead", "first", or "background". This is especially useful for large file reads. See https://filesystem-spec.readthedocs.io/en/latest/api.html#readbuffering. |
+| `cache_options` | `typing.Optional[typing.Dict[str, typing.Any]]` | A Dict corresponding to the parameters for the chosen cache_type. Refer to fsspec caching options above. |
 
 #### serialize_flyte_file()
 
@@ -231,6 +236,8 @@ def to_json(
 | `to_dict_kwargs` | `typing.Any` | |
 
 ## flytekit.types.file.file.FlyteFilePathTransformer
+
+### Parameters
 
 ```python
 def FlyteFilePathTransformer()
@@ -260,6 +267,7 @@ def FlyteFilePathTransformer()
 | [`get_mime_type_from_extension()`](#get_mime_type_from_extension) |  |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -357,7 +365,6 @@ Example Code:
     def wf(dc: DC):
         t_ff(dc.ff)
 
-Note:
 - The deserialization is the same as put a flyte file in a dataclass, which will deserialize by the mashumaro's API.
 
 Related PR:
@@ -393,7 +400,6 @@ class DC:
 def wf(dc: DC):
     t_ff(dc.ff)
 
-Note:
 - The deserialization is the same as put a flyte file in a dataclass, which will deserialize by the mashumaro's API.
 
 Related PR:
@@ -480,6 +486,24 @@ def isinstance_generic(
 | `obj` |  | |
 | `generic_alias` |  | |
 
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
+
 #### to_html()
 
 ```python
@@ -556,5 +580,11 @@ it logs a debug message and returns. If the actual file does not exist, it retur
 | Parameter | Type | Description |
 |-|-|-|
 | `python_type` | `typing.Type[FlyteFile]` | The expected type of the file |
-| `source_path` | `typing.Union[str, os.PathLike]` | The path to the file to validate :raises ValueError: If the real type of the file is not the same as the expected python_type |
+| `source_path` | `typing.Union[str, os.PathLike]` | The path to the file to validate |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `ValueError` | If the real type of the file is not the same as the expected python_type |
 

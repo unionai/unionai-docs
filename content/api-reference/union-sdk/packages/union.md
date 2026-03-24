@@ -114,6 +114,7 @@ def map_task(
     concurrency: typing.Optional[int],
     min_successes: typing.Optional[int],
     min_success_ratio: float,
+    run_all_sub_nodes: bool,
     kwargs,
 )
 ```
@@ -128,6 +129,7 @@ or the drop in replacement ArrayNode implementation
 | `concurrency` | `typing.Optional[int]` | If specified, this limits the number of mapped tasks than can run in parallel to the given batch size. If the size of the input exceeds the concurrency value, then multiple batches will be run serially until all inputs are processed. If set to 0, this means unbounded concurrency. If left unspecified, this means the array node will inherit parallelism from the workflow |
 | `min_successes` | `typing.Optional[int]` | The minimum number of successful executions |
 | `min_success_ratio` | `float` | The minimum ratio of successful executions |
+| `run_all_sub_nodes` | `bool` | If True, all sub-nodes will run to completion even after the failure threshold is met |
 | `kwargs` | `**kwargs` | |
 
 #### task()
@@ -191,13 +193,23 @@ def my_task(x: int, y: typing.Dict[str, str]) -> str:
 ```
 Please see some cookbook :std:ref:`task examples &lt;cookbook:tasks&gt;` for additional information.
 
+:deprecated param cache_serialize: (deprecated - please use Cache) Boolean that indicates if identical (ie. same inputs)
+      instances of this task should be executed in serial when caching is enabled. This means that given multiple
+      concurrent executions over identical inputs, only a single instance executes and the rest wait to reuse the
+      cached results. This parameter does nothing without also setting the cache parameter.
+:deprecated param cache_version: (deprecated - please use Cache) Cache version to use. Changes to the task signature will
+       automatically trigger a cache miss, but you can always manually update this field as well to force a cache
+       miss. You should also manually bump this version if the function body/business logic has changed, but the
+       signature hasn't.
+:deprecated param cache_ignore_input_vars: (deprecated - please use Cache) Input variables that should not be included when
+       calculating hash for cache.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `_task_function` | `Optional[Callable[P, FuncOut]]` | This argument is implicitly passed and represents the decorated function |
 | `task_config` | `Optional[T]` | This argument provides configuration for a specific task types. Please refer to the plugins documentation for the right object to use. |
-| `cache` | `Union[bool, Cache]` | Boolean or Cache that indicates how caching is configured. :deprecated param cache_serialize: (deprecated - please use Cache) Boolean that indicates if identical (ie. same inputs) instances of this task should be executed in serial when caching is enabled. This means that given multiple concurrent executions over identical inputs, only a single instance executes and the rest wait to reuse the cached results. This parameter does nothing without also setting the cache parameter. :deprecated param cache_version: (deprecated - please use Cache) Cache version to use. Changes to the task signature will automatically trigger a cache miss, but you can always manually update this field as well to force a cache miss. You should also manually bump this version if the function body/business logic has changed, but the signature hasn't. :deprecated param cache_ignore_input_vars: (deprecated - please use Cache) Input variables that should not be included when calculating hash for cache. |
+| `cache` | `Union[bool, Cache]` | Boolean or Cache that indicates how caching is configured. |
 | `retries` | `int` | Number of times to retry this task during a workflow execution. |
 | `interruptible` | `Optional[bool]` | [Optional] Boolean that indicates that this task can be interrupted and/or scheduled on nodes with lower QoS guarantees. This will directly reduce the `$`/`execution cost` associated, at the cost of performance penalties due to potential interruptions. Requires additional Flyte platform level configuration. If no value is provided, the task will inherit this attribute from its workflow, as follows: No values set for interruptible at the task or workflow level - task is not interruptible Task has interruptible=True, but workflow has no value set - task is interruptible Workflow has interruptible=True, but task has no value set - task is interruptible Workflow has interruptible=False, but task has interruptible=True - task is interruptible Workflow has interruptible=True, but task has interruptible=False - task is not interruptible |
 | `deprecated` | `str` | A string that can be used to provide a warning message for deprecated task. Absence / empty str indicates that the task is active and not deprecated |
@@ -799,6 +811,8 @@ ActorEnvironment class.
 
 
 
+### Parameters
+
 ```python
 class ActorEnvironment(
     name: str,
@@ -850,6 +864,8 @@ remote.execute(wf, inputs={"a": df_artifact})
 Note that Python fields will be missing when retrieved from the service.
 
 
+
+### Parameters
 
 ```python
 class Artifact(
@@ -1118,7 +1134,15 @@ that's exposed to the user.
 
 Cache configuration for a task.
 
+:type version: Optional[str]
+:type serialize: bool
+:type ignored_inputs: Union[Tuple[str, ...], str]
+:type salt: str
+:type policies: Optional[Union[List[CachePolicy], CachePolicy]]
 
+
+
+### Parameters
 
 ```python
 class Cache(
@@ -1131,11 +1155,11 @@ class Cache(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `version` | `typing.Optional[str]` | The version of the task. If not provided, the version will be generated based on the cache policies. :type version: Optional[str] |
-| `serialize` | `bool` | Boolean that indicates if identical (ie. same inputs) instances of this task should be executed in serial when caching is enabled. This means that given multiple concurrent executions over identical inputs, only a single instance executes and the rest wait to reuse the cached results. :type serialize: bool |
-| `ignored_inputs` | `typing.Union[typing.Tuple[str, ...], str]` | A tuple of input names to ignore when generating the version hash. :type ignored_inputs: Union[Tuple[str, ...], str] |
-| `salt` | `str` | A salt used in the hash generation. :type salt: str |
-| `policies` | `typing.Union[typing.List[flytekit.core.cache.CachePolicy], flytekit.core.cache.CachePolicy, NoneType]` | A list of cache policies to generate the version hash. :type policies: Optional[Union[List[CachePolicy], CachePolicy]] |
+| `version` | `typing.Optional[str]` | The version of the task. If not provided, the version will be generated based on the cache policies. |
+| `serialize` | `bool` | Boolean that indicates if identical (ie. same inputs) instances of this task should be executed in serial when caching is enabled. This means that given multiple concurrent executions over identical inputs, only a single instance executes and the rest wait to reuse the cached results. |
+| `ignored_inputs` | `typing.Union[typing.Tuple[str, ...], str]` | A tuple of input names to ignore when generating the version hash. |
+| `salt` | `str` | A salt used in the hash generation. |
+| `policies` | `typing.Union[typing.List[flytekit.core.cache.CachePolicy], flytekit.core.cache.CachePolicy, NoneType]` | A list of cache policies to generate the version hash. |
 
 ### Methods
 
@@ -1193,6 +1217,8 @@ majority of tasks - the typical ``@task`` decorated tasks for instance all run a
 something that doesn't run a container would be something like the Athena SQL task.
 
 
+
+### Parameters
 
 ```python
 class ContainerTask(
@@ -1593,6 +1619,8 @@ def t2() -> Annotated[pd.DataFrame, TopFrameRenderer(10)]:
 
 
 
+### Parameters
+
 ```python
 class Deck(
     name: str,
@@ -1638,6 +1666,8 @@ def append(
 def publish()
 ```
 ## union.FlyteDirectory
+
+### Parameters
 
 ```python
 class FlyteDirectory(
@@ -1716,14 +1746,12 @@ Example:
 
 ```python
 def deserialize_flyte_dir(
-    args,
-    kwargs,
-)
+    info,
+) -> FlyteDirectory
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `info` |  | |
 
 #### download()
 
@@ -1871,12 +1899,13 @@ This is used if you explicitly have a folder somewhere that you want to create f
 If you want to write a whole folder, you can let your task return a FlyteDirectory object,
 and let flytekit handle the uploading.
 
+:return FlyteDirectory: A new FlyteDirectory object that points to a remote location.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `stem` | `typing.Optional[str]` | A stem to append to the path as the final prefix "directory". |
-| `alt` | `typing.Optional[str]` | An alternate first member of the prefix to use instead of the default. :return FlyteDirectory: A new FlyteDirectory object that points to a remote location. |
+| `alt` | `typing.Optional[str]` | An alternate first member of the prefix to use instead of the default. |
 
 #### schema()
 
@@ -1908,16 +1937,8 @@ def schema(
 #### serialize_flyte_dir()
 
 ```python
-def serialize_flyte_dir(
-    args,
-    kwargs,
-)
+def serialize_flyte_dir()
 ```
-| Parameter | Type | Description |
-|-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
-
 #### to_dict()
 
 ```python
@@ -1957,6 +1978,8 @@ def to_json(
 | `kw` |  | |
 
 ## union.FlyteFile
+
+### Parameters
 
 ```python
 class FlyteFile(
@@ -2007,14 +2030,12 @@ FlyteFile's init method.
 
 ```python
 def deserialize_flyte_file(
-    args,
-    kwargs,
-)
+    info,
+) -> 'FlyteFile'
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `info` |  | |
 
 #### download()
 
@@ -2120,27 +2141,22 @@ def copy_file(ff: FlyteFile) -> FlyteFile:
     return new_file
 ```
 
+:type mode: str
+:type cache_type: str, optional
+:type cache_options: Dict[str, Any], optional
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `mode` | `str` | Open mode. For example :type mode: str |
-| `cache_type` | `typing.Optional[str]` | Specifies the cache type. Possible values are "blockcache", "bytes", "mmap", "readahead", "first", or "background". This is especially useful for large file reads. See https://filesystem-spec.readthedocs.io/en/latest/api.html#readbuffering. :type cache_type: str, optional |
-| `cache_options` | `typing.Optional[typing.Dict[str, typing.Any]]` | A Dict corresponding to the parameters for the chosen cache_type. Refer to fsspec caching options above. :type cache_options: Dict[str, Any], optional |
+| `mode` | `str` | Open mode. For example |
+| `cache_type` | `typing.Optional[str]` | Specifies the cache type. Possible values are "blockcache", "bytes", "mmap", "readahead", "first", or "background". This is especially useful for large file reads. See https://filesystem-spec.readthedocs.io/en/latest/api.html#readbuffering. |
+| `cache_options` | `typing.Optional[typing.Dict[str, typing.Any]]` | A Dict corresponding to the parameters for the chosen cache_type. Refer to fsspec caching options above. |
 
 #### serialize_flyte_file()
 
 ```python
-def serialize_flyte_file(
-    args,
-    kwargs,
-)
+def serialize_flyte_file()
 ```
-| Parameter | Type | Description |
-|-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
-
 #### to_dict()
 
 ```python
@@ -2163,53 +2179,9 @@ def to_json(
 
 This class is used to specify the docker image that will be used to run the task.
 
-Attributes:
-    name (str): Name of the image.
-    python_version (str): Python version of the image. Use default python in the base image if None.
-    builder (Optional[str]): Type of plugin to build the image. Use envd by default.
-    source_root (Optional[str]): Source root of the image.
-    env (Optional[Dict[str, str]]): Environment variables of the image.
-    registry (Optional[str]): Registry of the image.
-    packages (Optional[List[str]]): List of python packages to install.
-    conda_packages (Optional[List[str]]): List of conda packages to install.
-    conda_channels (Optional[List[str]]): List of conda channels.
-    requirements (Optional[str]): Path to the requirements.txt file.
-    apt_packages (Optional[List[str]]): List of apt packages to install.
-    cuda (Optional[str]): Version of cuda to install.
-    cudnn (Optional[str]): Version of cudnn to install.
-    base_image (Optional[Union[str, 'ImageSpec']]): Base image of the image.
-    platform (Optional[str]): Specify the target platforms for the build output (for example, windows/amd64 or linux/amd64,darwin/arm64).
-    pip_index (Optional[str]): Specify the custom pip index url.
-    pip_extra_index_url (Optional[List[str]]): Specify one or more pip index urls as a list.
-    pip_secret_mounts (Optional[List[Tuple[str, str]]]): Specify a list of tuples to mount secret for pip install. Each tuple should contain the path to
-        the secret file and the mount path. For example, [(".gitconfig", "/etc/gitconfig")]. This is experimental and
-        the interface may change in the future. Configuring this should not change the built image.
-    pip_extra_args (Optional[str]): Specify one or more extra pip install arguments as a space-delimited string.
-    registry_config (Optional[str]): Specify the path to a JSON registry config file.
-    entrypoint (Optional[List[str]]): List of strings to overwrite the entrypoint of the base image with, set to [] to remove the entrypoint.
-    commands (Optional[List[str]]): Command to run during the building process.
-    tag_format (Optional[str]): Custom string format for image tag. The ImageSpec hash passed in as `spec_hash`. For example,
-        to add a "dev" suffix to the image tag, set `tag_format="{spec_hash}-dev"`.
-    source_copy_mode (Optional[CopyFileDetection]): This option allows the user to specify which source files to copy from the local host, into the image.
-        Not setting this option means to use the default flytekit behavior. The default behavior is:
-            - if fast register is used, source files are not copied into the image (because they're already copied
-              into the fast register tar layer).
-            - if fast register is not used, then the LOADED_MODULES (aka 'auto') option is used to copy loaded
-              Python files into the image.
-        If the option is set by the user, then that option is of course used.
-    copy (Optional[List[str]]): List of files/directories to copy to /root. e.g. ["src/file1.txt", "src/file2.txt"].
-    python_exec (Optional[str]): Python executable to use for install packages.
-    runtime_packages (Optional[List[str]]): List of packages to be installed during runtime. `runtime_packages` requires `pip` to be installed
-        in your base image.
-            - If you are using an ImageSpec as your base image, please include `pip` into your packages:
-              `ImageSpec(..., packages=["pip"])`.
-            - If you want to install runtime packages into a fixed base_image and not use an image builder, you can
-              use `builder="noop"`: `ImageSpec(base_image="ghcr.io/name/my-custom-image", builder="noop").with_runtime_packages(["numpy"])`.
-    builder_options (Optional[Dict[str, Any]]): Additional options for the builder. This is a dictionary that will be passed to the builder.
-        The options are builder-specific and may not be supported by all builders.
-    builder_config (Optional[typing.Dict[str, typing.Any]]): Custom builder images configuration, such as uv and micromamba images.
 
 
+### Parameters
 
 ```python
 class ImageSpec(
@@ -2246,41 +2218,41 @@ class ImageSpec(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | |
-| `python_version` | `str` | |
-| `builder` | `typing.Optional[str]` | |
-| `source_root` | `typing.Optional[str]` | |
-| `env` | `typing.Optional[typing.Dict[str, str]]` | |
-| `registry` | `typing.Optional[str]` | |
-| `packages` | `typing.Optional[typing.List[str]]` | |
-| `conda_packages` | `typing.Optional[typing.List[str]]` | |
-| `conda_channels` | `typing.Optional[typing.List[str]]` | |
-| `requirements` | `typing.Optional[str]` | |
-| `apt_packages` | `typing.Optional[typing.List[str]]` | |
-| `cuda` | `typing.Optional[str]` | |
-| `cudnn` | `typing.Optional[str]` | |
-| `base_image` | `typing.Union[str, ForwardRef('ImageSpec'), NoneType]` | |
-| `platform` | `typing.Optional[str]` | |
-| `pip_index` | `typing.Optional[str]` | |
-| `pip_extra_index_url` | `typing.Optional[typing.List[str]]` | |
-| `pip_secret_mounts` | `typing.Optional[typing.List[typing.Tuple[str, str]]]` | |
-| `pip_extra_args` | `typing.Optional[str]` | |
-| `registry_config` | `typing.Optional[str]` | |
-| `entrypoint` | `typing.Optional[typing.List[str]]` | |
-| `commands` | `typing.Optional[typing.List[str]]` | |
-| `tag_format` | `typing.Optional[str]` | |
-| `source_copy_mode` | `typing.Optional[flytekit.constants.CopyFileDetection]` | |
-| `copy` | `typing.Optional[typing.List[str]]` | |
-| `python_exec` | `typing.Optional[str]` | |
-| `runtime_packages` | `typing.Optional[typing.List[str]]` | |
-| `builder_options` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
-| `builder_config` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
+| `name` | `str` | Name of the image. |
+| `python_version` | `str` | Python version of the image. Use default python in the base image if None. |
+| `builder` | `typing.Optional[str]` | Type of plugin to build the image. Use envd by default. |
+| `source_root` | `typing.Optional[str]` | Source root of the image. |
+| `env` | `typing.Optional[typing.Dict[str, str]]` | Environment variables of the image. |
+| `registry` | `typing.Optional[str]` | Registry of the image. |
+| `packages` | `typing.Optional[typing.List[str]]` | List of python packages to install. |
+| `conda_packages` | `typing.Optional[typing.List[str]]` | List of conda packages to install. |
+| `conda_channels` | `typing.Optional[typing.List[str]]` | List of conda channels. |
+| `requirements` | `typing.Optional[str]` | Path to the requirements.txt file. |
+| `apt_packages` | `typing.Optional[typing.List[str]]` | List of apt packages to install. |
+| `cuda` | `typing.Optional[str]` | Version of cuda to install. |
+| `cudnn` | `typing.Optional[str]` | Version of cudnn to install. |
+| `base_image` | `typing.Union[str, ForwardRef('ImageSpec'), NoneType]` | Base image of the image. |
+| `platform` | `typing.Optional[str]` | Specify the target platforms for the build output (for example, windows/amd64 or linux/amd64,darwin/arm64). |
+| `pip_index` | `typing.Optional[str]` | Specify the custom pip index url. |
+| `pip_extra_index_url` | `typing.Optional[typing.List[str]]` | Specify one or more pip index urls as a list. |
+| `pip_secret_mounts` | `typing.Optional[typing.List[typing.Tuple[str, str]]]` | Specify a list of tuples to mount secret for pip install. Each tuple should contain the path to the secret file and the mount path. For example, [(".gitconfig", "/etc/gitconfig")]. This is experimental and the interface may change in the future. Configuring this should not change the built image. |
+| `pip_extra_args` | `typing.Optional[str]` | Specify one or more extra pip install arguments as a space-delimited string. |
+| `registry_config` | `typing.Optional[str]` | Specify the path to a JSON registry config file. |
+| `entrypoint` | `typing.Optional[typing.List[str]]` | List of strings to overwrite the entrypoint of the base image with, set to [] to remove the entrypoint. |
+| `commands` | `typing.Optional[typing.List[str]]` | Command to run during the building process. |
+| `tag_format` | `typing.Optional[str]` | Custom string format for image tag. The ImageSpec hash passed in as `spec_hash`. For example, to add a "dev" suffix to the image tag, set `tag_format="{spec_hash}-dev"`. |
+| `source_copy_mode` | `typing.Optional[flytekit.constants.CopyFileDetection]` | This option allows the user to specify which source files to copy from the local host, into the image. Not setting this option means to use the default flytekit behavior. The default behavior is:     - if fast register is used, source files are not copied into the image (because they're already copied       into the fast register tar layer).     - if fast register is not used, then the LOADED_MODULES (aka 'auto') option is used to copy loaded       Python files into the image. If the option is set by the user, then that option is of course used. |
+| `copy` | `typing.Optional[typing.List[str]]` | List of files/directories to copy to /root. e.g. ["src/file1.txt", "src/file2.txt"]. |
+| `python_exec` | `typing.Optional[str]` | Python executable to use for install packages. |
+| `runtime_packages` | `typing.Optional[typing.List[str]]` | List of packages to be installed during runtime. `runtime_packages` requires `pip` to be installed in your base image.     - If you are using an ImageSpec as your base image, please include `pip` into your packages:       `ImageSpec(..., packages=["pip"])`.     - If you want to install runtime packages into a fixed base_image and not use an image builder, you can       use `builder="noop"`: `ImageSpec(base_image="ghcr.io/name/my-custom-image", builder="noop").with_runtime_packages(["numpy"])`. |
+| `builder_options` | `typing.Optional[typing.Dict[str, typing.Any]]` | Additional options for the builder. This is a dictionary that will be passed to the builder. The options are builder-specific and may not be supported by all builders. |
+| `builder_config` | `typing.Optional[typing.Dict[str, typing.Any]]` | Custom builder images configuration, such as uv and micromamba images. |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `id` | `None` | Calculate a unique hash as the ID for the ImageSpec, and it will be used to 1. Identify the imageSpec in the ImageConfig in the serialization context. 2. Check if the current container image in the pod is built from this image spec in `is_container()`.  ImageConfig: - deduced abc: flyteorg/flytekit:123 - deduced xyz: flyteorg/flytekit:456  The result of this property also depends on whether or not update_image_spec_copy_handling was called.  :return: a unique identifier of the ImageSpec |
+| `id` | `None` | Calculate a unique hash as the ID for the ImageSpec, and it will be used to 1. Identify the imageSpec in the ImageConfig in the serialization context. 2. Check if the current container image in the pod is built from this image spec in `is_container()`.  ImageConfig: - deduced abc: flyteorg/flytekit:123 - deduced xyz: flyteorg/flytekit:456  The result of this property also depends on whether or not update_image_spec_copy_handling was called. |
 | `tag` | `None` | Calculate a hash from the image spec. The hash will be the tag of the image. We will also read the content of the requirement file and the source root to calculate the hash. Therefore, it will generate different hash if new dependencies are added or the source code is changed.  Keep in mind the fields source_root and copy may be changed by update_image_spec_copy_handling, so when you call this property in relation to that function matter will change the output. |
 
 ### Methods
@@ -2348,8 +2320,9 @@ Full image name with tag.
 def is_container()
 ```
 Check if the current container image in the pod is built from current image spec.
-:return: True if the current container image in the pod is built from current image spec, False otherwise.
 
+
+**Returns:** True if the current container image in the pod is built from current image spec, False otherwise.
 
 #### with_apt_packages()
 
@@ -2470,6 +2443,8 @@ Then use as follows:
 
 
 
+
+### Parameters
 
 ```python
 class LaunchPlan(
@@ -2697,6 +2672,8 @@ cached version is returned
 Custom PodTemplate specification for a Task.
 
 
+### Parameters
+
 ```python
 class PodTemplate(
     pod_spec: typing.Optional[ForwardRef('V1PodSpec')],
@@ -2750,6 +2727,8 @@ Please see the :std:ref:`User Guide &lt;cookbook:customizing task resources&gt;`
 Also refer to the [`K8s conventions.`](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes)
 
 
+
+### Parameters
 
 ```python
 class Resources(
@@ -2828,6 +2807,8 @@ See :std:ref:`cookbook:secrets` for usage examples.
 
 
 
+### Parameters
+
 ```python
 class Secret(
     group: typing.Optional[str],
@@ -2857,7 +2838,7 @@ class Secret(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
@@ -2882,8 +2863,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
@@ -2896,6 +2876,8 @@ This is the user facing StructuredDataset class. Please don't confuse it with th
 class (that is just a model, a Python class representation of the protobuf).
 
 
+
+### Parameters
 
 ```python
 class StructuredDataset(
@@ -2957,14 +2939,12 @@ def columns()
 
 ```python
 def deserialize_structured_dataset(
-    args,
-    kwargs,
-)
+    info,
+) -> StructuredDataset
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `info` |  | |
 
 #### from_dict()
 
@@ -3013,16 +2993,8 @@ def open(
 #### serialize_structured_dataset()
 
 ```python
-def serialize_structured_dataset(
-    args,
-    kwargs,
-)
+def serialize_structured_dataset()
 ```
-| Parameter | Type | Description |
-|-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
-
 #### set_literal()
 
 ```python
@@ -3060,6 +3032,8 @@ def to_json(
 | `to_dict_kwargs` | `typing.Any` | |
 
 ## union.UnionRemote
+
+### Parameters
 
 ```python
 class UnionRemote(
@@ -3250,7 +3224,9 @@ Create an artifact in FlyteAdmin.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `artifact` | `Artifact` | The artifact to create. :return: The artifact as persisted in the service. |
+| `artifact` | `Artifact` | The artifact to create. |
+
+**Returns:** The artifact as persisted in the service.
 
 #### deactivate_launchplan()
 
@@ -3282,8 +3258,10 @@ Deploy an application.
 | Parameter | Type | Description |
 |-|-|-|
 | `app` | `App` | Application to deploy. |
-| `project` | `Optional[str]` | Domain name. If None, uses default_domain. :return: The App IDL for the deployed application. |
+| `project` | `Optional[str]` | Domain name. If None, uses default_domain. |
 | `domain` | `Optional[str]` | |
+
+**Returns:** The App IDL for the deployed application.
 
 #### download()
 
@@ -3418,7 +3396,9 @@ Execute a locally defined `LaunchPlan`.
 | `tags` | `typing.Optional[typing.List[str]]` | Tags to be passed into the execution. |
 | `cluster_pool` | `typing.Optional[str]` | Specify cluster pool on which newly created execution should be placed. |
 | `execution_cluster_label` | `typing.Optional[str]` | Specify label of cluster(s) on which newly created execution should be placed. |
-| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs  :return: FlyteWorkflowExecution object |
+| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs |
+
+**Returns:** FlyteWorkflowExecution object
 
 #### execute_local_task()
 
@@ -3467,7 +3447,9 @@ Execute a @task-decorated function or TaskTemplate task.
 | `cluster_pool` | `typing.Optional[str]` | Specify cluster pool on which newly created execution should be placed. |
 | `execution_cluster_label` | `typing.Optional[str]` | Specify label of cluster(s) on which newly created execution should be placed. |
 | `options` | `typing.Optional[Options]` | Options to customize the execution. |
-| `serialization_settings` | `typing.Optional[SerializationSettings]` | If the task needs to be registered, this can be passed in.  :return: FlyteWorkflowExecution object. |
+| `serialization_settings` | `typing.Optional[SerializationSettings]` | If the task needs to be registered, this can be passed in. |
+
+**Returns:** FlyteWorkflowExecution object.
 
 #### execute_local_workflow()
 
@@ -3516,7 +3498,9 @@ Execute an @workflow decorated function.
 | `tags` | `typing.Optional[typing.List[str]]` | Tags to set for the execution |
 | `cluster_pool` | `typing.Optional[str]` | Specify cluster pool on which newly created execution should be placed |
 | `execution_cluster_label` | `typing.Optional[str]` | Specify label of cluster(s) on which newly created execution should be placed |
-| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs to be registered  :return: FlyteWorkflowExecution object |
+| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs to be registered |
+
+**Returns:** FlyteWorkflowExecution object
 
 #### execute_reference_launch_plan()
 
@@ -3738,7 +3722,9 @@ Packages the given paths into an installable zip and returns the md5_bytes and t
 | `root` | `os.PathLike` | path to the root of the package system that should be uploaded |
 | `deref_symlinks` | `bool` | if symlinks should be dereferenced. Defaults to True |
 | `output` | `str` | output path. Optional, will default to a tempdir |
-| `options` | `typing.Optional[FastPackageOptions]` | additional options to customize fast_package behavior :return: md5_bytes, url |
+| `options` | `typing.Optional[FastPackageOptions]` | additional options to customize fast_package behavior |
+
+**Returns:** md5_bytes, url
 
 #### fast_register_workflow()
 
@@ -3762,7 +3748,7 @@ Use this method to register a workflow with zip mode.
 | `version` | `typing.Optional[str]` | version for the entity to be registered as |
 | `default_launch_plan` | `typing.Optional[bool]` | This should be true if a default launch plan should be created for the workflow |
 | `options` | `typing.Optional[Options]` | Additional execution options that can be configured for the default launchplan |
-| `fast_package_options` | `typing.Optional[FastPackageOptions]` | Options to customize copying behavior :return: |
+| `fast_package_options` | `typing.Optional[FastPackageOptions]` | Options to customize copying behavior |
 
 #### fetch_active_launchplan()
 
@@ -3793,13 +3779,21 @@ def fetch_execution(
 ```
 Fetch a workflow execution entity from flyte admin.
 
+:returns: :class:`~flytekit.remote.workflow_execution.FlyteWorkflowExecution`
+
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `project` | `str` | fetch entity from this project. If None, uses the default_project attribute. |
 | `domain` | `str` | fetch entity from this domain. If None, uses the default_domain attribute. |
-| `name` | `str` | fetch entity with matching name. :returns: :class:`~flytekit.remote.workflow_execution.FlyteWorkflowExecution`  :raises: FlyteAssertion if name is None |
+| `name` | `str` | fetch entity with matching name. |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | FlyteAssertion if name is None |
 
 #### fetch_launch_plan()
 
@@ -3813,6 +3807,8 @@ def fetch_launch_plan(
 ```
 Fetch a launchplan entity from flyte admin.
 
+:returns: :class:`~flytekit.remote.launch_plan.FlyteLaunchPlan`
+
 
 
 | Parameter | Type | Description |
@@ -3820,7 +3816,13 @@ Fetch a launchplan entity from flyte admin.
 | `project` | `str` | fetch entity from this project. If None, uses the default_project attribute. |
 | `domain` | `str` | fetch entity from this domain. If None, uses the default_domain attribute. |
 | `name` | `str` | fetch entity with matching name. |
-| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. :returns: :class:`~flytekit.remote.launch_plan.FlyteLaunchPlan`  :raises: FlyteAssertion if name is None |
+| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | FlyteAssertion if name is None |
 
 #### fetch_task()
 
@@ -3834,6 +3836,8 @@ def fetch_task(
 ```
 Fetch a task entity from flyte admin.
 
+:returns: :class:`~flytekit.remote.tasks.task.FlyteTask`
+
 
 
 | Parameter | Type | Description |
@@ -3841,7 +3845,13 @@ Fetch a task entity from flyte admin.
 | `project` | `str` | fetch entity from this project. If None, uses the default_project attribute. |
 | `domain` | `str` | fetch entity from this domain. If None, uses the default_domain attribute. |
 | `name` | `str` | fetch entity with matching name. |
-| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. :returns: :class:`~flytekit.remote.tasks.task.FlyteTask`  :raises: FlyteAssertion if name is None |
+| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | FlyteAssertion if name is None |
 
 #### fetch_task_lazy()
 
@@ -3881,7 +3891,13 @@ Fetch a workflow entity from flyte admin.
 | `project` | `str` | fetch entity from this project. If None, uses the default_project attribute. |
 | `domain` | `str` | fetch entity from this domain. If None, uses the default_domain attribute. |
 | `name` | `str` | fetch entity with matching name. |
-| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. :raises: FlyteAssertion if name is None |
+| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | FlyteAssertion if name is None |
 
 #### fetch_workflow_lazy()
 
@@ -4004,7 +4020,6 @@ def generate_console_http_domain()
 ```
 This should generate the domain where console is hosted.
 
-:return:
 
 
 #### generate_console_url()
@@ -4062,7 +4077,9 @@ Get the specified artifact.
 | `artifact_key` | `typing.Optional[art_id.ArtifactKey]` | An artifact key. |
 | `artifact_id` | `typing.Optional[art_id.ArtifactID]` | The artifact ID. |
 | `query` | `typing.Optional[typing.Union[art_id.ArtifactQuery, ArtifactQuery]]` | An artifact query. |
-| `get_details` | `bool` | A bool to indicate whether or not to return artifact details. :return: The artifact as persisted in the service. |
+| `get_details` | `bool` | A bool to indicate whether or not to return artifact details. |
+
+**Returns:** The artifact as persisted in the service.
 
 #### get_domains()
 
@@ -4132,6 +4149,7 @@ In the last case, the workflow is created, registered and executed.
 The `parallel` flag can be used to generate a workflow where all launchplans can be run in parallel. Default
 is that execute backfill is run sequentially
 
+    case return a FlyteWorkflowExecution
 
 
 | Parameter | Type | Description |
@@ -4148,7 +4166,9 @@ is that execute backfill is run sequentially
 | `execute` | `bool` | bool Register and execute the wwkflow. |
 | `parallel` | `bool` | if the backfill should be run in parallel. False (default) will run each bacfill sequentially. |
 | `failure_policy` | `typing.Optional[WorkflowFailurePolicy]` | WorkflowFailurePolicy (optional) to be used for the newly created workflow. This can control failure behavior - whether to continue on failure or stop immediately on failure |
-| `overwrite_cache` | `typing.Optional[bool]` | if True, will overwrite the cache. :return: In case of dry-run, return WorkflowBase, else if no_execute return FlyteWorkflow else in the default case return a FlyteWorkflowExecution |
+| `overwrite_cache` | `typing.Optional[bool]` | if True, will overwrite the cache. |
+
+**Returns:** In case of dry-run, return WorkflowBase, else if no_execute return FlyteWorkflow else in the default
 
 #### list_projects()
 
@@ -4161,6 +4181,7 @@ def list_projects(
 ```
 Lists registered projects from flyte admin.
 
+:returns: typing.List[flytekit.models.project.Project]
 
 
 | Parameter | Type | Description |
@@ -4168,6 +4189,12 @@ Lists registered projects from flyte admin.
 | `limit` | `typing.Optional[int]` | [Optional[int]] The maximum number of entries to return. |
 | `filters` | `typing.Optional[typing.List[filter_models.Filter]]` | |
 | `sort_by` | `typing.Optional[admin_common_models.Sort]` | |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `grpc.RpcError` |  |
 
 #### list_signals()
 
@@ -4229,7 +4256,9 @@ WorkflowBase, Task, LaunchPlan then use other methods. This should be used only 
 | `version` | `str` | Version to be registered |
 | `create_default_launchplan` | `bool` | boolean that indicates if a default launch plan should be created |
 | `options` | `Options` | Options to be used if registering a default launch plan |
-| `og_entity` | `FlyteLocalEntity` | Pass in the original workflow (flytekit type) if create_default_launchplan is true :return: Identifier of the created entity |
+| `og_entity` | `FlyteLocalEntity` | Pass in the original workflow (flytekit type) if create_default_launchplan is true |
+
+**Returns:** Identifier of the created entity
 
 #### recent_executions()
 
@@ -4313,7 +4342,7 @@ Use this method to register a workflow via script mode.
 | `module_name` | `typing.Optional[str]` | the name of the module |
 | `envs` | `typing.Optional[typing.Dict[str, str]]` | Environment variables to be passed to the serialization |
 | `default_resources` | `typing.Optional[ResourceSpec]` | Default resources to be passed to the serialization. These override the resource spec for any tasks that have no statically defined resource requests and limits. |
-| `fast_package_options` | `typing.Optional[FastPackageOptions]` | Options to customize copy_all behavior, ignored when copy_all is False. :return: |
+| `fast_package_options` | `typing.Optional[FastPackageOptions]` | Options to customize copy_all behavior, ignored when copy_all is False. |
 
 #### register_task()
 
@@ -4333,7 +4362,7 @@ For any conflicting parameters method arguments are regarded as overrides
 |-|-|-|
 | `entity` | `PythonTask` | PythonTask can be either @task or a instance of a Task class |
 | `serialization_settings` | `typing.Optional[SerializationSettings]` | Settings that will be used to override various serialization parameters. |
-| `version` | `typing.Optional[str]` | version that will be used to register. If not specified will default to using the serialization settings default :return: |
+| `version` | `typing.Optional[str]` | version that will be used to register. If not specified will default to using the serialization settings default |
 
 #### register_workflow()
 
@@ -4355,7 +4384,7 @@ Use this method to register a workflow.
 | `serialization_settings` | `typing.Optional[SerializationSettings]` | The serialization settings to be used |
 | `version` | `typing.Optional[str]` | version for the entity to be registered as |
 | `default_launch_plan` | `typing.Optional[bool]` | This should be true if a default launch plan should be created for the workflow |
-| `options` | `typing.Optional[Options]` | Additional execution options that can be configured for the default launchplan :return: |
+| `options` | `typing.Optional[Options]` | Additional execution options that can be configured for the default launchplan |
 
 #### reject()
 
@@ -4471,8 +4500,10 @@ Stop an application.
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | Name of application to stop. |
-| `project` | `Optional[str]` | Domain name. If None, uses default_domain. :return: The App IDL for the stopped application. |
+| `project` | `Optional[str]` | Domain name. If None, uses default_domain. |
 | `domain` | `Optional[str]` | |
+
+**Returns:** The App IDL for the stopped application.
 
 #### stream_execution_events()
 
@@ -4501,6 +4532,8 @@ will be redelivered in a subsequent transmission.
 | `include_task_executions` | `bool` | Whether to include task execution events |
 | `include_node_executions` | `bool` | Whether to include node execution events |
 
+**Returns:** An async generator that yields execution events of the specified types
+
 #### sync()
 
 ```python
@@ -4519,7 +4552,9 @@ so that we don't break people.
 |-|-|-|
 | `execution` | `FlyteWorkflowExecution` | |
 | `entity_definition` | `typing.Union[FlyteWorkflow, FlyteTask]` | |
-| `sync_nodes` | `bool` | By default sync will fetch data on all underlying node executions (recursively, so subworkflows and launch plans will also get picked up). Set this to False in order to prevent that (which will make this call faster). :return: Returns the same execution object, but with additional information pulled in. |
+| `sync_nodes` | `bool` | By default sync will fetch data on all underlying node executions (recursively, so subworkflows and launch plans will also get picked up). Set this to False in order to prevent that (which will make this call faster). |
+
+**Returns:** Returns the same execution object, but with additional information pulled in.
 
 #### sync_execution()
 
@@ -4624,7 +4659,9 @@ Function will use remote's client to hash and then upload the file using Admin's
 | `to_upload` | `pathlib.Path` | Must be a single file |
 | `project` | `typing.Optional[str]` | Project to upload under, if not supplied will use the remote's default |
 | `domain` | `typing.Optional[str]` | Domain to upload under, if not specified will use the remote's default |
-| `filename_root` | `typing.Optional[str]` | If provided will be used as the root of the filename. If not, Admin will use a hash :return: The uploaded location. |
+| `filename_root` | `typing.Optional[str]` | If provided will be used as the root of the filename. If not, Admin will use a hash |
+
+**Returns:** The uploaded location.
 
 #### wait()
 
@@ -4654,7 +4691,11 @@ Parameters used for version hash generation.
 param func: The function to generate a version for. This is an optional parameter and can be any callable
              that matches the specified parameter and return types.
 :type func: Optional[Callable[P, FuncOut]]
+:type container_image: Optional[Union[str, ImageSpec]]
 
+
+
+### Parameters
 
 ```python
 class VersionParameters(
@@ -4667,7 +4708,7 @@ class VersionParameters(
 | Parameter | Type | Description |
 |-|-|-|
 | `func` | `typing.Callable[~P, ~FuncOut]` | |
-| `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, NoneType]` | The container image to generate a version for. This can be a string representing the image name or an ImageSpec object. :type container_image: Optional[Union[str, ImageSpec]] |
+| `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, NoneType]` | The container image to generate a version for. This can be a string representing the image name or an ImageSpec object. |
 | `pod_template` | `typing.Optional[flytekit.core.pod_template.PodTemplate]` | |
 | `pod_template_name` | `typing.Optional[str]` | |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.remote_fs
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -48,6 +48,8 @@ def get_flyte_fs(
 Want this to behave mostly just like the HTTP file system.
 
 
+
+### Parameters
 
 ```python
 class FlyteFS(
@@ -1925,6 +1927,8 @@ Given a flyte uri, return the remote path if it exists or was created in current
 | `flyte_uri` | `str` | |
 
 ## flytekit.remote.remote_fs.HttpFileWriter
+
+### Parameters
 
 ```python
 class HttpFileWriter(

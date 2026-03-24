@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.grpc_utils.auth_interceptor
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -21,6 +21,8 @@ This Interceptor can be used to automatically add Auth Metadata for every call -
 is needed.
 
 
+
+### Parameters
 
 ```python
 class AuthUnaryInterceptor(

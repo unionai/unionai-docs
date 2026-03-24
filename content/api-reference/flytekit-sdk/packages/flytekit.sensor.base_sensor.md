@@ -1,6 +1,6 @@
 ---
 title: flytekit.sensor.base_sensor
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -35,6 +35,8 @@ condition to be met. When the condition is met, the sensor will complete. Sensor
 connector and not by the Flyte engine.
 
 
+
+### Parameters
 
 ```python
 class BaseSensor(
@@ -432,6 +434,8 @@ Serialize the sensor config to a dictionary.
 
 
 ## flytekit.sensor.base_sensor.SensorMetadata
+
+### Parameters
 
 ```python
 class SensorMetadata(

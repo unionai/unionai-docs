@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.metrics
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -65,6 +65,8 @@ def print_span(
 
 ## flytekit.remote.metrics.FlyteExecutionSpan
 
+### Parameters
+
 ```python
 class FlyteExecutionSpan(
     span: flyteidl.core.metrics_pb2.Span,
@@ -88,7 +90,7 @@ class FlyteExecutionSpan(
 | [`explain()`](#explain) |  |
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
@@ -123,8 +125,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 

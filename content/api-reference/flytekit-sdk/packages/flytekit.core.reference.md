@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.reference
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -65,5 +65,5 @@ ref_entity = get_reference_entity(
 | `name` | `str` | The name of the registered entity |
 | `version` | `str` | The version the entity you're looking for has been registered with. |
 | `inputs` | `Dict[str, Type]` | An ordered dictionary of input names as strings to their Python types. |
-| `outputs` | `Dict[str, Type]` | An ordered dictionary of output names as strings to their Python types. :return: |
+| `outputs` | `Dict[str, Type]` | An ordered dictionary of output names as strings to their Python types. |
 

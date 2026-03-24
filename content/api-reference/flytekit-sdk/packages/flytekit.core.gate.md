@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.gate
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -54,7 +54,7 @@ objects are created. This shouldn't be a problem as long as the objects are iden
 |-|-|-|
 | `upstream_item` | `Union[Tuple[Promise], Promise, VoidPromise]` | This should be the output, one output, of a previous task, that you want to gate execution on. This is the value that you want a human to check before moving on. |
 | `name` | `str` | The name of the gate node. |
-| `timeout` | `datetime.timedelta` | How long to wait before Flyte fails the workflow. :return: |
+| `timeout` | `datetime.timedelta` | How long to wait before Flyte fails the workflow. |
 
 #### sleep()
 
@@ -69,7 +69,7 @@ Create a sleep Gate object.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `duration` | `datetime.timedelta` | How long to sleep for :return: |
+| `duration` | `datetime.timedelta` | How long to sleep for |
 
 #### wait_for_input()
 
@@ -93,7 +93,7 @@ objects are created. This shouldn't be a problem as long as the objects are iden
 |-|-|-|
 | `name` | `str` | The name of the gate node. |
 | `timeout` | `datetime.timedelta` | How long to wait for before Flyte fails the workflow. |
-| `expected_type` | `typing.Type` | What is the type that the user will be inputting? :return: |
+| `expected_type` | `typing.Type` | What is the type that the user will be inputting? |
 
 ## flytekit.core.gate.Gate
 
@@ -102,6 +102,8 @@ A gate is a type of node that behaves like a task, but instead of running code, 
 for user input to proceed or wait for a timer to complete running.
 
 
+
+### Parameters
 
 ```python
 class Gate(

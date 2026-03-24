@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.ignore
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -31,14 +31,16 @@ layout: py_api
 Uses docker-py's PatternMatcher to check whether a path is ignored.
 
 
+### Parameters
+
 ```python
 class DockerIgnore(
-    root: pathlib._local.Path,
+    root: pathlib.Path,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `root` | `pathlib._local.Path` | |
+| `root` | `pathlib.Path` | |
 
 ### Methods
 
@@ -75,14 +77,16 @@ def tar_filter(
 Uses a .flyteignore file to determine ignored files.
 
 
+### Parameters
+
 ```python
 class FlyteIgnore(
-    root: pathlib._local.Path,
+    root: pathlib.Path,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `root` | `pathlib._local.Path` | |
+| `root` | `pathlib.Path` | |
 
 ### Methods
 
@@ -119,14 +123,16 @@ def tar_filter(
 Uses git cli (if available) to list all ignored files and compare with those.
 
 
+### Parameters
+
 ```python
 class GitIgnore(
-    root: pathlib._local.Path,
+    root: pathlib.Path,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `root` | `pathlib._local.Path` | |
+| `root` | `pathlib.Path` | |
 
 ### Methods
 
@@ -162,6 +168,8 @@ def tar_filter(
 
 Base for Ignores, implements core logic. Children have to implement _is_ignored
 
+
+### Parameters
 
 ```python
 class Ignore(
@@ -205,8 +213,10 @@ def tar_filter(
 ## flytekit.tools.ignore.IgnoreGroup
 
 Groups multiple Ignores and checks a path against them. A file is ignored if any
-Ignore considers it ignored.
+    Ignore considers it ignored.
 
+
+### Parameters
 
 ```python
 class IgnoreGroup(
@@ -258,18 +268,20 @@ def tar_filter(
 ## flytekit.tools.ignore.StandardIgnore
 
 Retains the standard ignore functionality that previously existed. Could in theory
-by fed with custom ignore patterns from cli.
+    by fed with custom ignore patterns from cli.
 
+
+### Parameters
 
 ```python
 class StandardIgnore(
-    root: pathlib._local.Path,
+    root: pathlib.Path,
     patterns: typing.Optional[typing.List[str]],
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `root` | `pathlib._local.Path` | |
+| `root` | `pathlib.Path` | |
 | `patterns` | `typing.Optional[typing.List[str]]` | |
 
 ### Methods

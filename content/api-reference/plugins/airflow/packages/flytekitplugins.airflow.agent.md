@@ -1,11 +1,11 @@
 ---
-title: flytekitplugins.airflow.connector
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+title: flytekitplugins.airflow.agent
+version: 1.14.3
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
-# flytekitplugins.airflow.connector
+# flytekitplugins.airflow.agent
 
 ## Directory
 
@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AirflowConnector`](.././flytekitplugins.airflow.connector#flytekitpluginsairflowconnectorairflowconnector) | It is used to run Airflow tasks. |
-| [`AirflowMetadata`](.././flytekitplugins.airflow.connector#flytekitpluginsairflowconnectorairflowmetadata) | This class is used to store the Airflow task configuration. |
+| [`AirflowAgent`](.././flytekitplugins.airflow.agent#flytekitpluginsairflowagentairflowagent) | It is used to run Airflow tasks. |
+| [`AirflowMetadata`](.././flytekitplugins.airflow.agent#flytekitpluginsairflowagentairflowmetadata) | This class is used to store the Airflow task configuration. |
 
 ### Methods
 
@@ -38,14 +38,13 @@ def get_log_links(
 | `airflow_operator` | `airflow.models.baseoperator.BaseOperator` | |
 | `airflow_trigger` | `typing.Optional[airflow.triggers.base.BaseTrigger]` | |
 
-## flytekitplugins.airflow.connector.AirflowConnector
+## flytekitplugins.airflow.agent.AirflowAgent
 
-It is used to run Airflow tasks.
-It is registered as an connector in the Connector Registry.
+It is used to run Airflow tasks. It is registered as an agent in the AgentRegistry.
 There are three kinds of Airflow tasks: AirflowOperator, AirflowSensor, and AirflowHook.
 
 Sensor is always invoked in get method. Calling get method to check if the certain condition is met.
-For example, FileSensor is used to check if the file exists. If file doesn't exist, connector returns
+For example, FileSensor is used to check if the file exists. If file doesn't exist, agent returns
 RUNNING status, otherwise, it returns SUCCEEDED status.
 
 Hook is a high-level interface to an external platform that lets you quickly and easily talk to
@@ -61,8 +60,10 @@ Note: some of the operators are not deferrable. For example, BeamRunJavaPipeline
 
 
 
+### Parameters
+
 ```python
-def AirflowConnector()
+def AirflowAgent()
 ```
 ### Properties
 
@@ -89,7 +90,7 @@ def create(
     task_template: flytekit.models.task.TaskTemplate,
     inputs: typing.Optional[flytekit.models.literals.LiteralMap],
     kwargs,
-) -> flytekitplugins.airflow.connector.AirflowMetadata
+) -> flytekitplugins.airflow.agent.AirflowMetadata
 ```
 Return a resource meta that can be used to get the status of the task.
 
@@ -104,7 +105,7 @@ Return a resource meta that can be used to get the status of the task.
 
 ```python
 def delete(
-    resource_meta: flytekitplugins.airflow.connector.AirflowMetadata,
+    resource_meta: flytekitplugins.airflow.agent.AirflowMetadata,
     kwargs,
 )
 ```
@@ -113,14 +114,14 @@ Delete the task. This call should be idempotent. It should raise an error if fai
 
 | Parameter | Type | Description |
 |-|-|-|
-| `resource_meta` | `flytekitplugins.airflow.connector.AirflowMetadata` | |
+| `resource_meta` | `flytekitplugins.airflow.agent.AirflowMetadata` | |
 | `kwargs` | `**kwargs` | |
 
 #### get()
 
 ```python
 def get(
-    resource_meta: flytekitplugins.airflow.connector.AirflowMetadata,
+    resource_meta: flytekitplugins.airflow.agent.AirflowMetadata,
     kwargs,
 ) -> flytekit.extend.backend.base_connector.Resource
 ```
@@ -131,7 +132,7 @@ and the propeller will write the structured dataset to the blob store.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `resource_meta` | `flytekitplugins.airflow.connector.AirflowMetadata` | |
+| `resource_meta` | `flytekitplugins.airflow.agent.AirflowMetadata` | |
 | `kwargs` | `**kwargs` | |
 
 #### get_logs()
@@ -166,11 +167,13 @@ Return the metrics for the task.
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
 | `kwargs` | `**kwargs` | |
 
-## flytekitplugins.airflow.connector.AirflowMetadata
+## flytekitplugins.airflow.agent.AirflowMetadata
 
 This class is used to store the Airflow task configuration. It is serialized and returned to FlytePropeller.
 
 
+
+### Parameters
 
 ```python
 class AirflowMetadata(

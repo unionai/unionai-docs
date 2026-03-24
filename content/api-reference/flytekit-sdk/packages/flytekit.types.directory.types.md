@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.directory.types
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -49,6 +49,8 @@ IDL literal/type of Multipart Blob. Please see the FlyteDirectory comments for a
 
 
 
+### Parameters
+
 ```python
 def FlyteDirToMultipartBlobTransformer()
 ```
@@ -75,6 +77,7 @@ def FlyteDirToMultipartBlobTransformer()
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -171,7 +174,6 @@ class DC:
 def wf(dc: DC):
     t_fd(dc.fd)
 
-Note:
 - The deserialization is the same as put a flyte directory in a dataclass, which will deserialize by the mashumaro's API.
 
 Related PR:
@@ -207,7 +209,6 @@ class DC:
 def wf(dc: DC):
     t_fd(dc.fd)
 
-Note:
 - The deserialization is the same as put a flyte directory in a dataclass, which will deserialize by the mashumaro's API.
 
 Related PR:
@@ -272,6 +273,24 @@ def isinstance_generic(
 | `obj` |  | |
 | `generic_alias` |  | |
 
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
+
 #### to_html()
 
 ```python
@@ -332,6 +351,8 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 | `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 ## flytekit.types.directory.types.FlyteDirectory
+
+### Parameters
 
 ```python
 class FlyteDirectory(
@@ -563,12 +584,13 @@ This is used if you explicitly have a folder somewhere that you want to create f
 If you want to write a whole folder, you can let your task return a FlyteDirectory object,
 and let flytekit handle the uploading.
 
+:return FlyteDirectory: A new FlyteDirectory object that points to a remote location.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `stem` | `typing.Optional[str]` | A stem to append to the path as the final prefix "directory". |
-| `alt` | `typing.Optional[str]` | An alternate first member of the prefix to use instead of the default. :return FlyteDirectory: A new FlyteDirectory object that points to a remote location. |
+| `alt` | `typing.Optional[str]` | An alternate first member of the prefix to use instead of the default. |
 
 #### schema()
 

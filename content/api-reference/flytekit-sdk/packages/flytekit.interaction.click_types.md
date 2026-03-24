@@ -1,6 +1,6 @@
 ---
 title: flytekit.interaction.click_types
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -146,6 +146,8 @@ Click callback to parse resource strings like 'cpu=1,mem=2Gi' into a Resources o
 
 ## flytekit.interaction.click_types.DateTimeType
 
+### Parameters
+
 ```python
 def DateTimeType()
 ```
@@ -197,8 +199,8 @@ descriptive message.
 ```python
 def fail(
     message: str,
-    param: Parameter | None,
-    ctx: Context | None,
+    param: typing.Optional[ForwardRef('Parameter')],
+    ctx: typing.Optional[ForwardRef('Context')],
 ) -> t.NoReturn
 ```
 Helper method to fail with an invalid value message.
@@ -207,16 +209,15 @@ Helper method to fail with an invalid value message.
 | Parameter | Type | Description |
 |-|-|-|
 | `message` | `str` | |
-| `param` | `Parameter \| None` | |
-| `ctx` | `Context \| None` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
 ```python
 def get_metavar(
     param: Parameter,
-    ctx: Context,
-) -> str | None
+) -> str
 ```
 Returns the metavar default for this param if it provides one.
 
@@ -224,15 +225,13 @@ Returns the metavar default for this param if it provides one.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context` | |
 
 #### get_missing_message()
 
 ```python
 def get_missing_message(
     param: Parameter,
-    ctx: Context | None,
-) -> str | None
+) -> typing.Optional[str]
 ```
 Optionally might return extra information about a missing
 parameter.
@@ -243,7 +242,6 @@ parameter.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context \| None` | |
 
 #### shell_complete()
 
@@ -252,7 +250,7 @@ def shell_complete(
     ctx: Context,
     param: Parameter,
     incomplete: str,
-) -> list[CompletionItem]
+) -> typing.List[ForwardRef('CompletionItem')]
 ```
 Return a list of
 :class:`~click.shell_completion.CompletionItem` objects for the
@@ -273,7 +271,7 @@ completions as well.
 ```python
 def split_envvar_value(
     rv: str,
-) -> cabc.Sequence[str]
+) -> typing.Sequence[str]
 ```
 Given a value from an environment variable this splits it up
 into small chunks depending on the defined envvar list splitter.
@@ -351,8 +349,8 @@ descriptive message.
 ```python
 def fail(
     message: str,
-    param: Parameter | None,
-    ctx: Context | None,
+    param: typing.Optional[ForwardRef('Parameter')],
+    ctx: typing.Optional[ForwardRef('Context')],
 ) -> t.NoReturn
 ```
 Helper method to fail with an invalid value message.
@@ -361,16 +359,15 @@ Helper method to fail with an invalid value message.
 | Parameter | Type | Description |
 |-|-|-|
 | `message` | `str` | |
-| `param` | `Parameter \| None` | |
-| `ctx` | `Context \| None` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
 ```python
 def get_metavar(
     param: Parameter,
-    ctx: Context,
-) -> str | None
+) -> typing.Optional[str]
 ```
 Returns the metavar default for this param if it provides one.
 
@@ -378,15 +375,13 @@ Returns the metavar default for this param if it provides one.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context` | |
 
 #### get_missing_message()
 
 ```python
 def get_missing_message(
     param: Parameter,
-    ctx: Context | None,
-) -> str | None
+) -> typing.Optional[str]
 ```
 Optionally might return extra information about a missing
 parameter.
@@ -397,7 +392,6 @@ parameter.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context \| None` | |
 
 #### shell_complete()
 
@@ -406,7 +400,7 @@ def shell_complete(
     ctx: Context,
     param: Parameter,
     incomplete: str,
-) -> list[CompletionItem]
+) -> typing.List[ForwardRef('CompletionItem')]
 ```
 Return a list of
 :class:`~click.shell_completion.CompletionItem` objects for the
@@ -427,7 +421,7 @@ completions as well.
 ```python
 def split_envvar_value(
     rv: str,
-) -> cabc.Sequence[str]
+) -> typing.Sequence[str]
 ```
 Given a value from an environment variable this splits it up
 into small chunks depending on the defined envvar list splitter.
@@ -505,8 +499,8 @@ descriptive message.
 ```python
 def fail(
     message: str,
-    param: Parameter | None,
-    ctx: Context | None,
+    param: typing.Optional[ForwardRef('Parameter')],
+    ctx: typing.Optional[ForwardRef('Context')],
 ) -> t.NoReturn
 ```
 Helper method to fail with an invalid value message.
@@ -515,16 +509,15 @@ Helper method to fail with an invalid value message.
 | Parameter | Type | Description |
 |-|-|-|
 | `message` | `str` | |
-| `param` | `Parameter \| None` | |
-| `ctx` | `Context \| None` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
 ```python
 def get_metavar(
     param: Parameter,
-    ctx: Context,
-) -> str | None
+) -> typing.Optional[str]
 ```
 Returns the metavar default for this param if it provides one.
 
@@ -532,15 +525,13 @@ Returns the metavar default for this param if it provides one.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context` | |
 
 #### get_missing_message()
 
 ```python
 def get_missing_message(
     param: Parameter,
-    ctx: Context | None,
-) -> str | None
+) -> typing.Optional[str]
 ```
 Optionally might return extra information about a missing
 parameter.
@@ -551,7 +542,6 @@ parameter.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context \| None` | |
 
 #### shell_complete()
 
@@ -560,7 +550,7 @@ def shell_complete(
     ctx: Context,
     param: Parameter,
     incomplete: str,
-) -> list[CompletionItem]
+) -> typing.List[ForwardRef('CompletionItem')]
 ```
 Return a list of
 :class:`~click.shell_completion.CompletionItem` objects for the
@@ -581,7 +571,7 @@ completions as well.
 ```python
 def split_envvar_value(
     rv: str,
-) -> cabc.Sequence[str]
+) -> typing.Sequence[str]
 ```
 Given a value from an environment variable this splits it up
 into small chunks depending on the defined envvar list splitter.
@@ -611,6 +601,8 @@ CLI structure.
 
 ## flytekit.interaction.click_types.EnumParamType
 
+### Parameters
+
 ```python
 class EnumParamType(
     enum_type: typing.Type[enum.Enum],
@@ -624,12 +616,10 @@ class EnumParamType(
 
 | Method | Description |
 |-|-|
-| [`convert()`](#convert) | For a given value from the parser, normalize it and find its. |
+| [`convert()`](#convert) | Convert the value to the correct type. |
 | [`fail()`](#fail) | Helper method to fail with an invalid value message. |
-| [`get_invalid_choice_message()`](#get_invalid_choice_message) | Get the error message when the given choice is invalid. |
 | [`get_metavar()`](#get_metavar) | Returns the metavar default for this param if it provides one. |
-| [`get_missing_message()`](#get_missing_message) | Message shown when no choice is passed. |
-| [`normalize_choice()`](#normalize_choice) | Normalize a choice value, used to map a passed string to a choice. |
+| [`get_missing_message()`](#get_missing_message) | Optionally might return extra information about a missing. |
 | [`shell_complete()`](#shell_complete) | Complete choices that start with the incomplete value. |
 | [`split_envvar_value()`](#split_envvar_value) | Given a value from an environment variable this splits it up. |
 | [`to_info_dict()`](#to_info_dict) | Gather information that could be useful for a tool generating. |
@@ -644,24 +634,34 @@ def convert(
     ctx: typing.Optional[click.core.Context],
 ) -> <enum 'Enum'>
 ```
-For a given value from the parser, normalize it and find its
-matching normalized value in the list of choices. Then return the
-matched "original" choice.
+Convert the value to the correct type. This is not called if
+the value is ``None`` (the missing value).
+
+This must accept string values from the command line, as well as
+values that are already the correct type. It may also convert
+other compatible types.
+
+The ``param`` and ``ctx`` arguments may be ``None`` in certain
+situations, such as when converting prompt input.
+
+If the value cannot be converted, call :meth:`fail` with a
+descriptive message.
+
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `value` | `typing.Any` | |
-| `param` | `typing.Optional[click.core.Parameter]` | |
-| `ctx` | `typing.Optional[click.core.Context]` | |
+| `value` | `typing.Any` | The value to convert. |
+| `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
+| `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
 
 #### fail()
 
 ```python
 def fail(
     message: str,
-    param: Parameter | None,
-    ctx: Context | None,
+    param: typing.Optional[ForwardRef('Parameter')],
+    ctx: typing.Optional[ForwardRef('Context')],
 ) -> t.NoReturn
 ```
 Helper method to fail with an invalid value message.
@@ -670,33 +670,15 @@ Helper method to fail with an invalid value message.
 | Parameter | Type | Description |
 |-|-|-|
 | `message` | `str` | |
-| `param` | `Parameter \| None` | |
-| `ctx` | `Context \| None` | |
-
-#### get_invalid_choice_message()
-
-```python
-def get_invalid_choice_message(
-    value: t.Any,
-    ctx: Context | None,
-) -> str
-```
-Get the error message when the given choice is invalid.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `value` | `t.Any` | The invalid value.  .. versionadded:: 8.2 |
-| `ctx` | `Context \| None` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
 ```python
 def get_metavar(
     param: Parameter,
-    ctx: Context,
-) -> str | None
+) -> str
 ```
 Returns the metavar default for this param if it provides one.
 
@@ -704,47 +686,23 @@ Returns the metavar default for this param if it provides one.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context` | |
 
 #### get_missing_message()
 
 ```python
 def get_missing_message(
     param: Parameter,
-    ctx: Context | None,
 ) -> str
 ```
-Message shown when no choice is passed.
+Optionally might return extra information about a missing
+parameter.
 
-.. versionchanged:: 8.2.0 Added ``ctx`` argument.
+.. versionadded:: 2.0
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context \| None` | |
-
-#### normalize_choice()
-
-```python
-def normalize_choice(
-    choice: ParamTypeValue,
-    ctx: Context | None,
-) -> str
-```
-Normalize a choice value, used to map a passed string to a choice.
-Each choice must have a unique normalized value.
-
-By default uses :meth:`Context.token_normalize_func` and if not case
-sensitive, convert it to a casefolded value.
-
-.. versionadded:: 8.2.0
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `choice` | `ParamTypeValue` | |
-| `ctx` | `Context \| None` | |
 
 #### shell_complete()
 
@@ -753,7 +711,7 @@ def shell_complete(
     ctx: Context,
     param: Parameter,
     incomplete: str,
-) -> list[CompletionItem]
+) -> typing.List[ForwardRef('CompletionItem')]
 ```
 Complete choices that start with the incomplete value.
 
@@ -770,7 +728,7 @@ Complete choices that start with the incomplete value.
 ```python
 def split_envvar_value(
     rv: str,
-) -> cabc.Sequence[str]
+) -> typing.Sequence[str]
 ```
 Given a value from an environment variable this splits it up
 into small chunks depending on the defined envvar list splitter.
@@ -848,8 +806,8 @@ descriptive message.
 ```python
 def fail(
     message: str,
-    param: Parameter | None,
-    ctx: Context | None,
+    param: typing.Optional[ForwardRef('Parameter')],
+    ctx: typing.Optional[ForwardRef('Context')],
 ) -> t.NoReturn
 ```
 Helper method to fail with an invalid value message.
@@ -858,16 +816,15 @@ Helper method to fail with an invalid value message.
 | Parameter | Type | Description |
 |-|-|-|
 | `message` | `str` | |
-| `param` | `Parameter \| None` | |
-| `ctx` | `Context \| None` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
 ```python
 def get_metavar(
     param: Parameter,
-    ctx: Context,
-) -> str | None
+) -> typing.Optional[str]
 ```
 Returns the metavar default for this param if it provides one.
 
@@ -875,15 +832,13 @@ Returns the metavar default for this param if it provides one.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context` | |
 
 #### get_missing_message()
 
 ```python
 def get_missing_message(
     param: Parameter,
-    ctx: Context | None,
-) -> str | None
+) -> typing.Optional[str]
 ```
 Optionally might return extra information about a missing
 parameter.
@@ -894,7 +849,6 @@ parameter.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context \| None` | |
 
 #### shell_complete()
 
@@ -903,7 +857,7 @@ def shell_complete(
     ctx: Context,
     param: Parameter,
     incomplete: str,
-) -> list[CompletionItem]
+) -> typing.List[ForwardRef('CompletionItem')]
 ```
 Return a list of
 :class:`~click.shell_completion.CompletionItem` objects for the
@@ -924,7 +878,7 @@ completions as well.
 ```python
 def split_envvar_value(
     rv: str,
-) -> cabc.Sequence[str]
+) -> typing.Sequence[str]
 ```
 Given a value from an environment variable this splits it up
 into small chunks depending on the defined envvar list splitter.
@@ -953,6 +907,8 @@ CLI structure.
 
 
 ## flytekit.interaction.click_types.FlyteLiteralConverter
+
+### Parameters
 
 ```python
 class FlyteLiteralConverter(
@@ -1056,8 +1012,8 @@ descriptive message.
 ```python
 def fail(
     message: str,
-    param: Parameter | None,
-    ctx: Context | None,
+    param: typing.Optional[ForwardRef('Parameter')],
+    ctx: typing.Optional[ForwardRef('Context')],
 ) -> t.NoReturn
 ```
 Helper method to fail with an invalid value message.
@@ -1066,16 +1022,15 @@ Helper method to fail with an invalid value message.
 | Parameter | Type | Description |
 |-|-|-|
 | `message` | `str` | |
-| `param` | `Parameter \| None` | |
-| `ctx` | `Context \| None` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
 ```python
 def get_metavar(
     param: Parameter,
-    ctx: Context,
-) -> str | None
+) -> typing.Optional[str]
 ```
 Returns the metavar default for this param if it provides one.
 
@@ -1083,15 +1038,13 @@ Returns the metavar default for this param if it provides one.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context` | |
 
 #### get_missing_message()
 
 ```python
 def get_missing_message(
     param: Parameter,
-    ctx: Context | None,
-) -> str | None
+) -> typing.Optional[str]
 ```
 Optionally might return extra information about a missing
 parameter.
@@ -1102,7 +1055,6 @@ parameter.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context \| None` | |
 
 #### shell_complete()
 
@@ -1111,7 +1063,7 @@ def shell_complete(
     ctx: Context,
     param: Parameter,
     incomplete: str,
-) -> list[CompletionItem]
+) -> typing.List[ForwardRef('CompletionItem')]
 ```
 Return a list of
 :class:`~click.shell_completion.CompletionItem` objects for the
@@ -1132,7 +1084,7 @@ completions as well.
 ```python
 def split_envvar_value(
     rv: str,
-) -> cabc.Sequence[str]
+) -> typing.Sequence[str]
 ```
 Given a value from an environment variable this splits it up
 into small chunks depending on the defined envvar list splitter.
@@ -1161,6 +1113,8 @@ CLI structure.
 
 
 ## flytekit.interaction.click_types.JsonParamType
+
+### Parameters
 
 ```python
 class JsonParamType(
@@ -1219,8 +1173,8 @@ descriptive message.
 ```python
 def fail(
     message: str,
-    param: Parameter | None,
-    ctx: Context | None,
+    param: typing.Optional[ForwardRef('Parameter')],
+    ctx: typing.Optional[ForwardRef('Context')],
 ) -> t.NoReturn
 ```
 Helper method to fail with an invalid value message.
@@ -1229,16 +1183,15 @@ Helper method to fail with an invalid value message.
 | Parameter | Type | Description |
 |-|-|-|
 | `message` | `str` | |
-| `param` | `Parameter \| None` | |
-| `ctx` | `Context \| None` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
 ```python
 def get_metavar(
     param: Parameter,
-    ctx: Context,
-) -> str | None
+) -> typing.Optional[str]
 ```
 Returns the metavar default for this param if it provides one.
 
@@ -1246,15 +1199,13 @@ Returns the metavar default for this param if it provides one.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context` | |
 
 #### get_missing_message()
 
 ```python
 def get_missing_message(
     param: Parameter,
-    ctx: Context | None,
-) -> str | None
+) -> typing.Optional[str]
 ```
 Optionally might return extra information about a missing
 parameter.
@@ -1265,7 +1216,6 @@ parameter.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context \| None` | |
 
 #### shell_complete()
 
@@ -1274,7 +1224,7 @@ def shell_complete(
     ctx: Context,
     param: Parameter,
     incomplete: str,
-) -> list[CompletionItem]
+) -> typing.List[ForwardRef('CompletionItem')]
 ```
 Return a list of
 :class:`~click.shell_completion.CompletionItem` objects for the
@@ -1295,7 +1245,7 @@ completions as well.
 ```python
 def split_envvar_value(
     rv: str,
-) -> cabc.Sequence[str]
+) -> typing.Sequence[str]
 ```
 Given a value from an environment variable this splits it up
 into small chunks depending on the defined envvar list splitter.
@@ -1373,8 +1323,8 @@ descriptive message.
 ```python
 def fail(
     message: str,
-    param: Parameter | None,
-    ctx: Context | None,
+    param: typing.Optional[ForwardRef('Parameter')],
+    ctx: typing.Optional[ForwardRef('Context')],
 ) -> t.NoReturn
 ```
 Helper method to fail with an invalid value message.
@@ -1383,15 +1333,15 @@ Helper method to fail with an invalid value message.
 | Parameter | Type | Description |
 |-|-|-|
 | `message` | `str` | |
-| `param` | `Parameter \| None` | |
-| `ctx` | `Context \| None` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
 ```python
 def get_metavar(
     param: click.core.Parameter,
-    ctx: click.core.Context,
+    args,
 ) -> typing.Optional[str]
 ```
 Returns the metavar default for this param if it provides one.
@@ -1400,15 +1350,14 @@ Returns the metavar default for this param if it provides one.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `click.core.Parameter` | |
-| `ctx` | `click.core.Context` | |
+| `args` | `*args` | |
 
 #### get_missing_message()
 
 ```python
 def get_missing_message(
     param: Parameter,
-    ctx: Context | None,
-) -> str | None
+) -> typing.Optional[str]
 ```
 Optionally might return extra information about a missing
 parameter.
@@ -1419,7 +1368,6 @@ parameter.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context \| None` | |
 
 #### shell_complete()
 
@@ -1428,7 +1376,7 @@ def shell_complete(
     ctx: Context,
     param: Parameter,
     incomplete: str,
-) -> list[CompletionItem]
+) -> typing.List[ForwardRef('CompletionItem')]
 ```
 Return a list of
 :class:`~click.shell_completion.CompletionItem` objects for the
@@ -1449,7 +1397,7 @@ completions as well.
 ```python
 def split_envvar_value(
     rv: str,
-) -> cabc.Sequence[str]
+) -> typing.Sequence[str]
 ```
 Given a value from an environment variable this splits it up
 into small chunks depending on the defined envvar list splitter.
@@ -1531,8 +1479,8 @@ descriptive message.
 ```python
 def fail(
     message: str,
-    param: Parameter | None,
-    ctx: Context | None,
+    param: typing.Optional[ForwardRef('Parameter')],
+    ctx: typing.Optional[ForwardRef('Context')],
 ) -> t.NoReturn
 ```
 Helper method to fail with an invalid value message.
@@ -1541,16 +1489,15 @@ Helper method to fail with an invalid value message.
 | Parameter | Type | Description |
 |-|-|-|
 | `message` | `str` | |
-| `param` | `Parameter \| None` | |
-| `ctx` | `Context \| None` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
 ```python
 def get_metavar(
     param: Parameter,
-    ctx: Context,
-) -> str | None
+) -> typing.Optional[str]
 ```
 Returns the metavar default for this param if it provides one.
 
@@ -1558,15 +1505,13 @@ Returns the metavar default for this param if it provides one.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context` | |
 
 #### get_missing_message()
 
 ```python
 def get_missing_message(
     param: Parameter,
-    ctx: Context | None,
-) -> str | None
+) -> typing.Optional[str]
 ```
 Optionally might return extra information about a missing
 parameter.
@@ -1577,7 +1522,6 @@ parameter.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context \| None` | |
 
 #### shell_complete()
 
@@ -1586,7 +1530,7 @@ def shell_complete(
     ctx: Context,
     param: Parameter,
     incomplete: str,
-) -> list[CompletionItem]
+) -> typing.List[ForwardRef('CompletionItem')]
 ```
 Return a list of
 :class:`~click.shell_completion.CompletionItem` objects for the
@@ -1607,7 +1551,7 @@ completions as well.
 ```python
 def split_envvar_value(
     rv: str,
-) -> cabc.Sequence[str]
+) -> typing.Sequence[str]
 ```
 Given a value from an environment variable this splits it up
 into small chunks depending on the defined envvar list splitter.
@@ -1640,6 +1584,8 @@ CLI structure.
 A composite type that allows for multiple types to be specified. This is used for union types.
 
 
+
+### Parameters
 
 ```python
 class UnionParamType(
@@ -1693,8 +1639,8 @@ Also could we just determine the click types from the python types
 ```python
 def fail(
     message: str,
-    param: Parameter | None,
-    ctx: Context | None,
+    param: typing.Optional[ForwardRef('Parameter')],
+    ctx: typing.Optional[ForwardRef('Context')],
 ) -> t.NoReturn
 ```
 Helper method to fail with an invalid value message.
@@ -1703,16 +1649,15 @@ Helper method to fail with an invalid value message.
 | Parameter | Type | Description |
 |-|-|-|
 | `message` | `str` | |
-| `param` | `Parameter \| None` | |
-| `ctx` | `Context \| None` | |
+| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
+| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
 
 #### get_metavar()
 
 ```python
 def get_metavar(
     param: Parameter,
-    ctx: Context,
-) -> str | None
+) -> typing.Optional[str]
 ```
 Returns the metavar default for this param if it provides one.
 
@@ -1720,15 +1665,13 @@ Returns the metavar default for this param if it provides one.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context` | |
 
 #### get_missing_message()
 
 ```python
 def get_missing_message(
     param: Parameter,
-    ctx: Context | None,
-) -> str | None
+) -> typing.Optional[str]
 ```
 Optionally might return extra information about a missing
 parameter.
@@ -1739,7 +1682,6 @@ parameter.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `Parameter` | |
-| `ctx` | `Context \| None` | |
 
 #### shell_complete()
 
@@ -1748,7 +1690,7 @@ def shell_complete(
     ctx: Context,
     param: Parameter,
     incomplete: str,
-) -> list[CompletionItem]
+) -> typing.List[ForwardRef('CompletionItem')]
 ```
 Return a list of
 :class:`~click.shell_completion.CompletionItem` objects for the
@@ -1769,7 +1711,7 @@ completions as well.
 ```python
 def split_envvar_value(
     rv: str,
-) -> cabc.Sequence[str]
+) -> typing.Sequence[str]
 ```
 Given a value from an environment variable this splits it up
 into small chunks depending on the defined envvar list splitter.

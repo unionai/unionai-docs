@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.sqlite3.task
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -54,6 +54,8 @@ The path to a static sqlite3 compatible database file can be
 
 
 
+### Parameters
+
 ```python
 class SQLite3Config(
     uri: str,
@@ -98,6 +100,8 @@ See the :ref:`integrations guide &lt;cookbook:integrations_sql_sqlite3&gt;` for 
 the base class {{&lt; py_class_ref flytekit.extend.PythonCustomizedContainerTask &gt;}} as well.
 
 
+
+### Parameters
 
 ```python
 class SQLite3Task(
@@ -499,6 +503,8 @@ def serialize_to_model(
 
 ## flytekit.extras.sqlite3.task.SQLite3TaskExecutor
 
+### Parameters
+
 ```python
 class SQLite3TaskExecutor(
     args,
@@ -543,7 +549,9 @@ that wasn't serialized into the template.
 | Parameter | Type | Description |
 |-|-|-|
 | `tt` | `flytekit.models.task.TaskTemplate` | This is the template, the serialized form of the task. |
-| `kwargs` | `**kwargs` | These are the Python native input values to the task. :return: Python native output values from the task. |
+| `kwargs` | `**kwargs` | These are the Python native input values to the task. |
+
+**Returns:** Python native output values from the task.
 
 #### find_lhs()
 

@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.onnxscikitlearn.schema
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -54,6 +54,8 @@ def to_onnx(
 | `config` |  | |
 
 ## flytekitplugins.onnxscikitlearn.schema.ScikitLearn2ONNX
+
+### Parameters
 
 ```python
 class ScikitLearn2ONNX(
@@ -179,6 +181,8 @@ def to_json(
 ScikitLearn2ONNXConfig is the config used during the scikitlearn to ONNX conversion.
 
 
+
+### Parameters
 
 ```python
 class ScikitLearn2ONNXConfig(
@@ -327,6 +331,8 @@ def to_json(
 
 ## flytekitplugins.onnxscikitlearn.schema.ScikitLearn2ONNXTransformer
 
+### Parameters
+
 ```python
 def ScikitLearn2ONNXTransformer()
 ```
@@ -349,6 +355,7 @@ def ScikitLearn2ONNXTransformer()
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -404,7 +411,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -453,6 +459,24 @@ def isinstance_generic(
 |-|-|-|
 | `obj` |  | |
 | `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_html()
 

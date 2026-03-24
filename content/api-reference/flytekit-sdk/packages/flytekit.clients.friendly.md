@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.friendly
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -36,6 +36,8 @@ SynchronousFlyteClient("your.domain:port", insecure=True)
 
 
 
+### Parameters
+
 ```python
 class SynchronousFlyteClient(
     cfg: PlatformConfig,
@@ -55,7 +57,7 @@ Initializes a gRPC channel to the given Flyte Admin service.
 
 | Property | Type | Description |
 |-|-|-|
-| `raw` | `None` | Gives access to the raw client :rtype: flytekit.clients.raw.RawSynchronousFlyteClient |
+| `raw` | `None` | Gives access to the raw client |
 | `url` | `None` |  |
 
 ### Methods
@@ -103,7 +105,7 @@ Initializes a gRPC channel to the given Flyte Admin service.
 | [`list_workflows_paginated()`](#list_workflows_paginated) | This returns a page of workflow meta-information for workflows in a given project and domain. |
 | [`recover_execution()`](#recover_execution) | Recreates a previously-run workflow execution that will only start executing from the last known failure point. |
 | [`register_project()`](#register_project) | Registers a project. |
-| [`relaunch_execution()`](#relaunch_execution) |  |
+| [`relaunch_execution()`](#relaunch_execution) | :returns: The unique identifier for the new execution. |
 | [`set_signal()`](#set_signal) | This sets a signal. |
 | [`terminate_execution()`](#terminate_execution) |  |
 | [`update_launch_plan()`](#update_launch_plan) | Updates a launch plan. |
@@ -148,6 +150,7 @@ def create_execution(
 )
 ```
 This will create an execution for the given execution spec.
+:returns: The unique identifier for the execution.
 
 
 | Parameter | Type | Description |
@@ -157,6 +160,8 @@ This will create an execution for the given execution spec.
 | `name` |  | |
 | `execution_spec` |  | |
 | `inputs` |  | |
+
+**Returns:** flytekit.models.core.identifier.WorkflowExecutionIdentifier
 
 #### create_launch_plan()
 
@@ -174,12 +179,21 @@ retrieved via the client or viewed via the UI or command-line interfaces.
     the database must match the existing definition exactly.  This also means that as long as the request
     remains identical, calling this method multiple times will result in success.
 
+    launch plan is found, this exception is raised.  The client might choose to ignore this exception because
+    the identical launch plan is already registered.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `launch_plan_identifer` |  | |
 | `launch_plan_spec` |  | |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `flytekit.common.exceptions.user.FlyteEntityAlreadyExistsException` | If an identical version of the |
+| `grpc.RpcError` |  |
 
 #### create_task()
 
@@ -197,12 +211,21 @@ retrieved via the client or viewed via the UI or command-line interfaces.
   the database must match the existing definition exactly. Furthermore, as long as the request
   remains identical, calling this method multiple times will result in success.
 
+    task is found, this exception is raised.  The client might choose to ignore this exception because the
+    identical task is already registered.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `task_identifer` |  | |
 | `task_spec` |  | |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `flytekit.common.exceptions.user.FlyteEntityAlreadyExistsException` | If an identical version of the |
+| `grpc.RpcError` |  |
 
 #### create_upload_location()
 
@@ -217,6 +240,8 @@ Get a signed url to be used during fast registration
 | Parameter | Type | Description |
 |-|-|-|
 | `create_upload_location_request` | `_dataproxy_pb2.CreateUploadLocationRequest` | |
+
+**Returns:** flyteidl.service.dataproxy_pb2.CreateUploadLocationResponse
 
 #### create_workflow()
 
@@ -234,12 +259,21 @@ retrieved via the client or viewed via the UI or command-line interfaces.
     the database must match the existing definition exactly. Furthermore, as long as the request
     remains identical, calling this method multiple times will result in success.
 
+    workflow is found, this exception is raised.  The client might choose to ignore this exception because the
+    identical workflow is already registered.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `workflow_identifier` |  | |
 | `workflow_spec` |  | |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `flytekit.common.exceptions.user.FlyteEntityAlreadyExistsException` | If an identical version of the |
+| `grpc.RpcError` |  |
 
 #### get_active_launch_plan()
 
@@ -257,6 +291,8 @@ error if no active launch plan exists.
 |-|-|-|
 | `identifier` |  | |
 
+**Returns:** flytekit.models.launch_plan.LaunchPlan
+
 #### get_control_plane_version()
 
 ```python
@@ -267,9 +303,9 @@ Retrieve the Control Plane version from Flyteadmin.
 This method calls Flyteadmin's GetVersion API to obtain the current version information of the control plane.
 The retrieved version can be used to enable or disable specific features based on the Flyteadmin version.
 
-Returns:
-    str: The version string of the control plane.
 
+
+**Returns:** str: The version string of the control plane.
 
 #### get_data()
 
@@ -289,8 +325,9 @@ def get_domains()
 ```
 This returns a list of domains.
 
-:rtype: list[flytekit.models.Domain]
 
+
+**Returns:** list[flytekit.models.Domain]
 
 #### get_download_artifact_signed_url()
 
@@ -315,7 +352,9 @@ Get a signed url for an artifact.
 | `domain` | `str` | Name of the domain the resource belongs to |
 | `name` | `str` | User or system provided value for the resource |
 | `artifact_type` | `google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper` | ArtifactType of the artifact requested |
-| `expires_in` | `datetime.timedelta` | If provided this defines a requested expiration duration for the generated url :rtype: flyteidl.service.dataproxy_pb2.CreateDownloadLinkResponse |
+| `expires_in` | `datetime.timedelta` | If provided this defines a requested expiration duration for the generated url |
+
+**Returns:** flyteidl.service.dataproxy_pb2.CreateDownloadLinkResponse
 
 #### get_download_signed_url()
 
@@ -341,6 +380,8 @@ def get_execution(
 |-|-|-|
 | `id` |  | |
 
+**Returns:** flytekit.models.execution.Execution
+
 #### get_execution_data()
 
 ```python
@@ -355,6 +396,8 @@ Returns signed URLs to LiteralMap blobs for an execution's inputs and outputs (w
 | Parameter | Type | Description |
 |-|-|-|
 | `id` |  | |
+
+**Returns:** flytekit.models.execution.WorkflowExecutionGetDataResponse
 
 #### get_execution_metrics()
 
@@ -373,6 +416,8 @@ Returns metrics partitioning and categorizing the workflow execution time-series
 | `id` |  | |
 | `depth` |  | |
 
+**Returns:** flyteidl.admin.execution_pb2.WorkflowExecutionGetMetricsResponse
+
 #### get_node_execution()
 
 ```python
@@ -383,6 +428,8 @@ def get_node_execution(
 | Parameter | Type | Description |
 |-|-|-|
 | `node_execution_identifier` |  | |
+
+**Returns:** flytekit.models.node_execution.NodeExecution
 
 #### get_node_execution_data()
 
@@ -428,6 +475,8 @@ def get_task_execution(
 |-|-|-|
 | `id` |  | |
 
+**Returns:** flytekit.models.admin.task_execution.TaskExecution
+
 #### get_task_execution_data()
 
 ```python
@@ -442,6 +491,8 @@ Returns signed URLs to LiteralMap blobs for a node execution's inputs and output
 | Parameter | Type | Description |
 |-|-|-|
 | `task_execution_identifier` |  | |
+
+**Returns:** flytekit.models.execution.NodeExecutionGetDataResponse
 
 #### get_upload_signed_url()
 
@@ -468,7 +519,9 @@ Get a signed url to be used during fast registration
 | `filename` | `typing.Optional[str]` | If provided this specifies a desired suffix for the generated location |
 | `expires_in` | `typing.Optional[datetime.timedelta]` | If provided this defines a requested expiration duration for the generated url |
 | `filename_root` | `typing.Optional[str]` | If provided will be used as the root of the filename.  If not, Admin will use a hash This option is useful when uploading a series of files that you want to be grouped together. |
-| `add_content_md5_metadata` | `bool` | If true, the content md5 will be added to the metadata in signed URL :rtype: flyteidl.service.dataproxy_pb2.CreateUploadLocationResponse |
+| `add_content_md5_metadata` | `bool` | If true, the content md5 will be added to the metadata in signed URL |
+
+**Returns:** flyteidl.service.dataproxy_pb2.CreateUploadLocationResponse
 
 #### get_workflow_attributes()
 
@@ -522,6 +575,14 @@ domain.
 | `token` |  | |
 | `sort_by` |  | |
 
+**Returns:** list[flytekit.models.launch_plan.LaunchPlan], str
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | TODO |
+
 #### list_executions_paginated()
 
 ```python
@@ -555,6 +616,14 @@ This returns a page of executions in a given project and domain.
 | `filters` |  | |
 | `sort_by` |  | |
 
+**Returns:** (list[flytekit.models.execution.Execution], Text)
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | TODO |
+
 #### list_launch_plan_ids_paginated()
 
 ```python
@@ -587,6 +656,14 @@ specified.
 | `token` |  | |
 | `sort_by` |  | |
 
+**Returns:** list[flytekit.models.common.NamedEntityIdentifier], Text
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | TODO |
+
 #### list_launch_plans_paginated()
 
 ```python
@@ -618,6 +695,14 @@ specifying a name will limit the results to only workflows with that name in the
 | `token` |  | |
 | `filters` |  | |
 | `sort_by` |  | |
+
+**Returns:** list[flytekit.models.launch_plan.LaunchPlan], str
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | TODO |
 
 #### list_matchable_attributes()
 
@@ -656,7 +741,9 @@ Get node executions associated with a given workflow execution.
 | `token` | `typing.Optional[str]` | If specified, this specifies where in the rows of results to skip before reading. If you previously retrieved a page response with token="foo" and you want the next page, specify ``token="foo"``. |
 | `filters` | `typing.List[flytekit.models.filters.Filter]` | |
 | `sort_by` | `flytekit.models.admin.common.Sort` | |
-| `unique_parent_id` | `str` | If specified, returns the node executions for the ``unique_parent_id`` node id. :rtype: list[flytekit.models.node_execution.NodeExecution], Text |
+| `unique_parent_id` | `str` | If specified, returns the node executions for the ``unique_parent_id`` node id. |
+
+**Returns:** list[flytekit.models.node_execution.NodeExecution], Text
 
 #### list_node_executions_for_task_paginated()
 
@@ -680,6 +767,8 @@ This returns nodes spawned by a specific task execution.  This is generally from
 | `filters` |  | |
 | `sort_by` |  | |
 
+**Returns:** list[flytekit.models.node_execution.NodeExecution], Text
+
 #### list_node_executions_paginated()
 
 ```python
@@ -690,6 +779,8 @@ def list_node_executions_paginated(
 | Parameter | Type | Description |
 |-|-|-|
 | `node_execution_list_request` |  | |
+
+**Returns:** flyteidl.admin.node_execution_pb2.NodeExecutionList
 
 #### list_projects()
 
@@ -704,6 +795,8 @@ This will return a list of the projects registered with the Flyte Admin Service
 | Parameter | Type | Description |
 |-|-|-|
 | `project_list_request` | `typing.Optional[ProjectListRequest]` | |
+
+**Returns:** flyteidl.admin.project_pb2.Projects
 
 #### list_projects_paginated()
 
@@ -733,6 +826,14 @@ This returns a page of projects.
 | `token` |  | |
 | `filters` |  | |
 | `sort_by` |  | |
+
+**Returns:** (list[flytekit.models.Project], Text)
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `grpc.RpcError` |  |
 
 #### list_signals()
 
@@ -767,6 +868,8 @@ def list_task_executions_paginated(
 | `filters` |  | |
 | `sort_by` |  | |
 
+**Returns:** (list[flytekit.models.admin.task_execution.TaskExecution], Text)
+
 #### list_task_ids_paginated()
 
 ```python
@@ -798,6 +901,14 @@ specified.
 | `limit` |  | |
 | `token` |  | |
 | `sort_by` |  | |
+
+**Returns:** list[flytekit.models.common.NamedEntityIdentifier], Text
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | TODO |
 
 #### list_tasks_paginated()
 
@@ -831,6 +942,14 @@ specifying a name will limit the results to only tasks with that name in the giv
 | `filters` |  | |
 | `sort_by` |  | |
 
+**Returns:** list[flytekit.models.task.Task], Text
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | TODO |
+
 #### list_workflow_ids_paginated()
 
 ```python
@@ -862,6 +981,14 @@ specified.
 | `limit` |  | |
 | `token` |  | |
 | `sort_by` |  | |
+
+**Returns:** list[flytekit.models.common.NamedEntityIdentifier], Text
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | TODO |
 
 #### list_workflows_paginated()
 
@@ -895,6 +1022,14 @@ specifying a name will limit the results to only workflows with that name in the
 | `filters` |  | |
 | `sort_by` |  | |
 
+**Returns:** list[flytekit.models.admin.workflow.Workflow], Text
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | TODO |
+
 #### recover_execution()
 
 ```python
@@ -911,6 +1046,8 @@ Recreates a previously-run workflow execution that will only start executing fro
 | `id` |  | |
 | `name` | `str` | |
 
+**Returns:** flytekit.models.core.identifier.WorkflowExecutionIdentifier
+
 #### register_project()
 
 ```python
@@ -925,6 +1062,8 @@ Registers a project.
 |-|-|-|
 | `project` |  | |
 
+**Returns:** flyteidl.admin.project_pb2.ProjectRegisterResponse
+
 #### relaunch_execution()
 
 ```python
@@ -933,10 +1072,15 @@ def relaunch_execution(
     name,
 )
 ```
+:returns: The unique identifier for the new execution.
+
+
 | Parameter | Type | Description |
 |-|-|-|
 | `id` |  | |
 | `name` |  | |
+
+**Returns:** flytekit.models.core.identifier.WorkflowExecutionIdentifier
 
 #### set_signal()
 
@@ -1018,6 +1162,8 @@ Update an existing project specified by id.
 | Parameter | Type | Description |
 |-|-|-|
 | `project` |  | |
+
+**Returns:** flyteidl.admin.project_pb2.ProjectUpdateResponse
 
 #### update_project_domain_attributes()
 

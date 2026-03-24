@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.remote_callable
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -16,6 +16,8 @@ layout: py_api
 | [`RemoteEntity`](.././flytekit.remote.remote_callable#flytekitremoteremote_callableremoteentity) |  |
 
 ## flytekit.remote.remote_callable.RemoteEntity
+
+### Parameters
 
 ```python
 class RemoteEntity(

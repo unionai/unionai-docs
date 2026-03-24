@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.data_persistence
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -107,6 +107,8 @@ durable store.
 
 
 
+### Parameters
+
 ```python
 class FileAccessProvider(
     local_sandbox_dir: typing.Union[str, os.PathLike],
@@ -208,7 +210,7 @@ we don't use the true local proxy if the remote path is a file://
 
 ```python
 def async_put_raw_data(
-    lpath: typing.Union[str, os.PathLike, pathlib._local.Path, bytes, _io.BufferedReader, _io.BytesIO, _io.StringIO],
+    lpath: typing.Union[str, os.PathLike, pathlib.Path, bytes, _io.BufferedReader, _io.BytesIO, _io.StringIO],
     upload_prefix: typing.Optional[str],
     file_name: typing.Optional[str],
     read_chunk_size_bytes: int,
@@ -233,13 +235,15 @@ Writes to:
 
 | Parameter | Type | Description |
 |-|-|-|
-| `lpath` | `typing.Union[str, os.PathLike, pathlib._local.Path, bytes, _io.BufferedReader, _io.BytesIO, _io.StringIO]` | A file-like object or a string path |
+| `lpath` | `typing.Union[str, os.PathLike, pathlib.Path, bytes, _io.BufferedReader, _io.BytesIO, _io.StringIO]` | A file-like object or a string path |
 | `upload_prefix` | `typing.Optional[str]` | A prefix to add to the path, see above for usage, can be an "". If None then a random string will be generated |
 | `file_name` | `typing.Optional[str]` | A file name to add to the path. If None, then the file name will be the tail of the path if lpath is a file, or a random string if lpath is a buffer |
 | `read_chunk_size_bytes` | `int` | If lpath is a buffer, this is the chunk size to read from it |
 | `encoding` | `str` | If lpath is a io.StringIO, this is the encoding to use to encode it to binary. |
 | `skip_raw_data_prefix` | `bool` | If True, the raw data prefix will not be prepended to the upload_prefix |
-| `kwargs` | `**kwargs` | Additional kwargs are passed into the fsspec put() call or the open() call :return: Returns the final path data was written to. |
+| `kwargs` | `**kwargs` | Additional kwargs are passed into the fsspec put() call or the open() call |
+
+**Returns:** Returns the final path data was written to.
 
 #### download()
 
@@ -312,7 +316,9 @@ s3://my-alt-bucket/default-prefix-part/my-stem
 |-|-|-|
 | `fs` | `typing.Optional[fsspec.spec.AbstractFileSystem]` | The filesystem to use. If None, the context's raw output filesystem is used. |
 | `alt` | `typing.Optional[str]` | An alternate first member of the prefix to use instead of the default. |
-| `stem` | `typing.Optional[str]` | A stem to append to the path. :return: The new path. |
+| `stem` | `typing.Optional[str]` | A stem to append to the path. |
+
+**Returns:** The new path.
 
 #### get()
 
@@ -501,7 +507,7 @@ we don't use the true local proxy if the remote path is a file://
 
 ```python
 def put_raw_data(
-    lpath: typing.Union[str, os.PathLike, pathlib._local.Path, bytes, _io.BufferedReader, _io.BytesIO, _io.StringIO],
+    lpath: typing.Union[str, os.PathLike, pathlib.Path, bytes, _io.BufferedReader, _io.BytesIO, _io.StringIO],
     upload_prefix: typing.Optional[str],
     file_name: typing.Optional[str],
     read_chunk_size_bytes: int,
@@ -526,13 +532,15 @@ Writes to:
 
 | Parameter | Type | Description |
 |-|-|-|
-| `lpath` | `typing.Union[str, os.PathLike, pathlib._local.Path, bytes, _io.BufferedReader, _io.BytesIO, _io.StringIO]` | A file-like object or a string path |
+| `lpath` | `typing.Union[str, os.PathLike, pathlib.Path, bytes, _io.BufferedReader, _io.BytesIO, _io.StringIO]` | A file-like object or a string path |
 | `upload_prefix` | `typing.Optional[str]` | A prefix to add to the path, see above for usage, can be an "". If None then a random string will be generated |
 | `file_name` | `typing.Optional[str]` | A file name to add to the path. If None, then the file name will be the tail of the path if lpath is a file, or a random string if lpath is a buffer |
 | `read_chunk_size_bytes` | `int` | If lpath is a buffer, this is the chunk size to read from it |
 | `encoding` | `str` | If lpath is a io.StringIO, this is the encoding to use to encode it to binary. |
 | `skip_raw_data_prefix` | `bool` | If True, the raw data prefix will not be prepended to the upload_prefix |
-| `kwargs` | `**kwargs` | Additional kwargs are passed into the fsspec put() call or the open() call :return: Returns the final path data was written to. |
+| `kwargs` | `**kwargs` | Additional kwargs are passed into the fsspec put() call or the open() call |
+
+**Returns:** Returns the final path data was written to.
 
 #### recursive_paths()
 

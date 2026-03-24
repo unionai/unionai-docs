@@ -1,7 +1,7 @@
 ---
 title: Packages
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.14.3
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -9,5 +9,5 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.airflow.connector`](flytekitplugins.airflow.connector) |  |
+| [`flytekitplugins.airflow.agent`](flytekitplugins.airflow.agent) |  |
 | [`flytekitplugins.airflow.task`](flytekitplugins.airflow.task) |  |

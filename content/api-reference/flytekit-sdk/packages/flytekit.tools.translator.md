@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.translator
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -49,7 +49,7 @@ that will pull out the serialized tasks, workflows, and launch plans. This funct
 
 | Parameter | Type | Description |
 |-|-|-|
-| `serialized` | `collections.OrderedDict` | This should be the filled in OrderedDict used in the get_serializable function above. :return: |
+| `serialized` | `collections.OrderedDict` | This should be the filled in OrderedDict used in the get_serializable function above. |
 
 #### get_command_prefix_for_fast_execute()
 
@@ -92,6 +92,7 @@ register these, they need to be converted into objects that Flyte Admin understa
 this function currently translates to the layer above (e.g. SdkTask) - this will be changed to the IDL objects
 directly in the future).
 
+  is also returned.
 
 
 | Parameter | Type | Description |
@@ -99,7 +100,9 @@ directly in the future).
 | `entity_mapping` | `collections.OrderedDict` | This is an ordered dict that will be mutated in place. The reason this argument exists is because there is a natural ordering to the entities at registration time. That is, underlying tasks have to be registered before the workflows that use them. The recursive search done by this function and the functions above form a natural topological sort, finding the dependent entities and adding them to this parameter before the parent entity this function is called with. |
 | `settings` | `flytekit.configuration.SerializationSettings` | used to pick up project/domain/name - to be deprecated. |
 | `entity` | `typing.Union[flytekit.core.base_task.PythonTask, flytekit.core.condition.BranchNode, flytekit.core.node.Node, flytekit.core.launch_plan.LaunchPlan, flytekit.core.workflow.WorkflowBase, flytekit.core.workflow.ReferenceWorkflow, flytekit.core.task.ReferenceTask, flytekit.core.launch_plan.ReferenceLaunchPlan, flytekit.core.reference_entity.ReferenceEntity, flytekit.core.array_node.ArrayNode]` | The local flyte entity to try to convert (along with its dependencies) |
-| `options` | `typing.Optional[flytekit.core.options.Options]` | Optionally pass in a set of options that can be used to add additional metadata for Launchplans :return: The resulting control plane entity, in addition to being added to the mutable entity_mapping parameter is also returned. |
+| `options` | `typing.Optional[flytekit.core.options.Options]` | Optionally pass in a set of options that can be used to add additional metadata for Launchplans |
+
+**Returns:** The resulting control plane entity, in addition to being added to the mutable entity_mapping parameter
 
 #### get_serializable_array_node()
 
@@ -200,7 +203,7 @@ def get_serializable_launch_plan(
 | `entity_mapping` | `collections.OrderedDict` | |
 | `settings` | `flytekit.configuration.SerializationSettings` | |
 | `entity` | `flytekit.core.launch_plan.LaunchPlan` | |
-| `recurse_downstream` | `bool` | This boolean indicate is wf for the entity should also be recursed to :return: |
+| `recurse_downstream` | `bool` | This boolean indicate is wf for the entity should also be recursed to |
 | `options` | `typing.Optional[flytekit.core.options.Options]` | |
 
 #### get_serializable_node()

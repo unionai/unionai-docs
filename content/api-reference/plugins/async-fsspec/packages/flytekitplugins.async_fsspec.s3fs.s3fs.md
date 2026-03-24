@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.async_fsspec.s3fs.s3fs
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -28,6 +28,8 @@ layout: py_api
 | `SINGLE_OBJECT_UPLOAD_LIMIT` | `int` |  |
 
 ## flytekitplugins.async_fsspec.s3fs.s3fs.AsyncS3FileSystem
+
+### Parameters
 
 ```python
 class AsyncS3FileSystem(

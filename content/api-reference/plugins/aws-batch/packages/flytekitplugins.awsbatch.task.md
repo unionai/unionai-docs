@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.awsbatch.task
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -23,6 +23,8 @@ natively onto AWS batch service.
 Refer to AWS SubmitJobInput for more detail: https://docs.aws.amazon.com/sdk-for-go/api/service/batch/#SubmitJobInput
 
 
+
+### Parameters
 
 ```python
 class AWSBatchConfig(
@@ -150,6 +152,8 @@ def to_json(
 Actual Plugin that transforms the local python code for execution within AWS batch job
 
 
+
+### Parameters
 
 ```python
 class AWSBatchFunctionTask(

@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.whylogs
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.12
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -69,6 +69,8 @@ Transforms whylogs Dataset Profile Views to and from a Schema (typed/untyped)
 
 
 
+### Parameters
+
 ```python
 def WhylogsDatasetProfileTransformer()
 ```
@@ -91,6 +93,7 @@ def WhylogsDatasetProfileTransformer()
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -146,7 +149,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -195,6 +197,24 @@ def isinstance_generic(
 |-|-|-|
 | `obj` |  | |
 | `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_html()
 
@@ -281,10 +301,13 @@ def to_html(
 This static method will profile the input data and then generate an HTML report
 with the Summary Drift calculations for all the dataframe's columns
 
+:type: pandas.DataFrame
+
+:type target_data: pandas.DataFrame
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `reference_data` | `pandas.DataFrame` | The DataFrame that will be the reference for the drift report :type: pandas.DataFrame |
-| `target_data` | `pandas.DataFrame` | The data to compare against and create the Summary Drift report :type target_data: pandas.DataFrame |
+| `reference_data` | `pandas.DataFrame` | The DataFrame that will be the reference for the drift report |
+| `target_data` | `pandas.DataFrame` | The data to compare against and create the Summary Drift report |
 

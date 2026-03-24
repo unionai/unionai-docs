@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.tracker
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -43,7 +43,9 @@ Returns the task-name, absolute module and the string name of the callable.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `f` | `typing.Union[typing.Callable, flytekit.core.tracker.TrackedInstance]` | A task or any other callable :return: [name to use: str, module_name: str, function_name: str, full_path: str] |
+| `f` | `typing.Union[typing.Callable, flytekit.core.tracker.TrackedInstance]` | A task or any other callable |
+
+**Returns:** [name to use: str, module_name: str, function_name: str, full_path: str]
 
 #### get_full_module_path()
 
@@ -203,6 +205,8 @@ This functionality has two use-cases currently,
   find them at task execution time.
 
 
+
+### Parameters
 
 ```python
 class TrackedInstance(

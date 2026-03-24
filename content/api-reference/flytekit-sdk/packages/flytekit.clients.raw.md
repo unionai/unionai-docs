@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.raw
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -29,6 +29,8 @@ SynchronousFlyteClient(PlatformConfig(endpoint="a.b.com", insecure=True))
 ```
 
 
+
+### Parameters
 
 ```python
 class RawSynchronousFlyteClient(
@@ -139,6 +141,8 @@ This will create an execution for the given execution spec.
 |-|-|-|
 | `create_execution_request` |  | |
 
+**Returns:** flyteidl.admin.execution_pb2.ExecutionCreateResponse
+
 #### create_launch_plan()
 
 ```python
@@ -154,11 +158,22 @@ retrieved via the client or viewed via the UI or command-line interfaces.
     the database must match the existing definition exactly.  This also means that as long as the request
     remains identical, calling this method multiple times will result in success.
 
+    launch plan is found, this exception is raised.  The client might choose to ignore this exception because
+    the identical launch plan is already registered.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `launch_plan_create_request` |  | |
+
+**Returns:** flyteidl.admin.launch_plan_pb2.LaunchPlanCreateResponse
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `flytekit.common.exceptions.user.FlyteEntityAlreadyExistsException` | If an identical version of the |
+| `grpc.RpcError` |  |
 
 #### create_task()
 
@@ -175,11 +190,22 @@ retrieved via the client or viewed via the UI or command-line interfaces.
     the database must match the existing definition exactly. This also means that as long as the request
     remains identical, calling this method multiple times will result in success.
 
+    is found, this exception is raised.  The client might choose to ignore this exception because the identical
+    task is already registered.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `task_create_request` |  | |
+
+**Returns:** flyteidl.admin.task_pb2.TaskCreateResponse
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `flytekit.common.exceptions.user.FlyteEntityAlreadyExistsException` | If an identical version of the task |
+| `grpc.RpcError` |  |
 
 #### create_upload_location()
 
@@ -194,6 +220,8 @@ Get a signed url to be used during fast registration
 | Parameter | Type | Description |
 |-|-|-|
 | `create_upload_location_request` | `_dataproxy_pb2.CreateUploadLocationRequest` | |
+
+**Returns:** flyteidl.service.dataproxy_pb2.CreateUploadLocationResponse
 
 #### create_workflow()
 
@@ -210,11 +238,22 @@ retrieved via the client or viewed via the UI or command-line interfaces.
     the database must match the existing definition exactly.  This also means that as long as the request
     remains identical, calling this method multiple times will result in success.
 
+    workflow is found, this exception is raised.  The client might choose to ignore this exception because the
+    identical workflow is already registered.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `workflow_create_request` |  | |
+
+**Returns:** flyteidl.admin.workflow_pb2.WorkflowCreateResponse
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `flytekit.common.exceptions.user.FlyteEntityAlreadyExistsException` | If an identical version of the |
+| `grpc.RpcError` |  |
 
 #### get_active_launch_plan()
 
@@ -231,6 +270,8 @@ Retrieves a launch plan entity.
 |-|-|-|
 | `active_launch_plan_request` |  | |
 
+**Returns:** flyteidl.admin.launch_plan_pb2.LaunchPlan
+
 #### get_domains()
 
 ```python
@@ -238,6 +279,8 @@ def get_domains()
 ```
 This will return a list of domains registered with the Flyte Admin Service
 
+
+**Returns:** flyteidl.admin.project_pb2.GetDomainsResponse
 
 #### get_execution()
 
@@ -254,6 +297,8 @@ Returns an execution of a workflow entity.
 |-|-|-|
 | `get_object_request` |  | |
 
+**Returns:** flyteidl.admin.execution_pb2.Execution
+
 #### get_execution_data()
 
 ```python
@@ -268,6 +313,8 @@ Returns signed URLs to LiteralMap blobs for an execution's inputs and outputs (w
 | Parameter | Type | Description |
 |-|-|-|
 | `get_execution_data_request` |  | |
+
+**Returns:** flyteidl.admin.execution_pb2.WorkflowExecutionGetDataResponse
 
 #### get_execution_metrics()
 
@@ -284,6 +331,8 @@ Returns metrics partitioning and categorizing the workflow execution time-series
 |-|-|-|
 | `get_execution_metrics_request` |  | |
 
+**Returns:** flyteidl.admin.execution_pb2.WorkflowExecutionGetMetricsResponse
+
 #### get_launch_plan()
 
 ```python
@@ -299,6 +348,8 @@ Retrieves a launch plan entity.
 |-|-|-|
 | `object_get_request` |  | |
 
+**Returns:** flyteidl.admin.launch_plan_pb2.LaunchPlan
+
 #### get_node_execution()
 
 ```python
@@ -309,6 +360,8 @@ def get_node_execution(
 | Parameter | Type | Description |
 |-|-|-|
 | `node_execution_request` |  | |
+
+**Returns:** flyteidl.admin.node_execution_pb2.NodeExecution
 
 #### get_node_execution_data()
 
@@ -325,6 +378,8 @@ Returns signed URLs to LiteralMap blobs for a node execution's inputs and output
 |-|-|-|
 | `get_node_execution_data_request` |  | |
 
+**Returns:** flyteidl.admin.node_execution_pb2.NodeExecutionGetDataResponse
+
 #### get_project_domain_attributes()
 
 ```python
@@ -338,6 +393,8 @@ This fetches the attributes for a project and domain registered with the Flyte A
 | Parameter | Type | Description |
 |-|-|-|
 | `project_domain_attributes_get_request` |  | |
+
+**Returns:** flyteidl.admin.ProjectDomainAttributesGetResponse
 
 #### get_task()
 
@@ -354,6 +411,14 @@ This returns a single task for a given identifier.
 |-|-|-|
 | `get_object_request` |  | |
 
+**Returns:** flyteidl.admin.task_pb2.Task
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | TODO |
+
 #### get_task_execution()
 
 ```python
@@ -364,6 +429,8 @@ def get_task_execution(
 | Parameter | Type | Description |
 |-|-|-|
 | `task_execution_request` |  | |
+
+**Returns:** flyteidl.admin.task_execution_pb2.TaskExecution
 
 #### get_task_execution_data()
 
@@ -380,6 +447,8 @@ Returns signed URLs to LiteralMap blobs for a task execution's inputs and output
 |-|-|-|
 | `get_task_execution_data_request` |  | |
 
+**Returns:** flyteidl.admin.task_execution_pb2.TaskExecutionGetDataResponse
+
 #### get_workflow()
 
 ```python
@@ -395,6 +464,14 @@ This returns a single workflow for a given identifier.
 |-|-|-|
 | `get_object_request` |  | |
 
+**Returns:** flyteidl.admin.workflow_pb2.Workflow
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | TODO |
+
 #### get_workflow_attributes()
 
 ```python
@@ -408,6 +485,8 @@ This fetches the attributes for a project, domain, and workflow registered with 
 | Parameter | Type | Description |
 |-|-|-|
 | `workflow_attributes_get_request` |  | |
+
+**Returns:** flyteidl.admin.WorkflowAttributesGetResponse
 
 #### list_active_launch_plans_paginated()
 
@@ -424,6 +503,8 @@ Lists Active Launch Plans for a given (project, domain)
 |-|-|-|
 | `active_launch_plan_list_request` |  | |
 
+**Returns:** flyteidl.admin.launch_plan_pb2.LaunchPlanList
+
 #### list_executions_paginated()
 
 ```python
@@ -438,6 +519,8 @@ Lists the executions for a given identifier.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_list_request` |  | |
+
+**Returns:** flyteidl.admin.execution_pb2.ExecutionList
 
 #### list_launch_plan_ids_paginated()
 
@@ -454,6 +537,8 @@ Lists launch plan named identifiers for a given project and domain.
 |-|-|-|
 | `identifier_list_request` |  | |
 
+**Returns:** flyteidl.admin.common_pb2.NamedEntityIdentifierList
+
 #### list_launch_plans_paginated()
 
 ```python
@@ -469,6 +554,8 @@ Lists Launch Plans for a given Identifier (project, domain, name)
 |-|-|-|
 | `resource_list_request` |  | |
 
+**Returns:** flyteidl.admin.launch_plan_pb2.LaunchPlanList
+
 #### list_matchable_attributes()
 
 ```python
@@ -483,6 +570,8 @@ This fetches the attributes for a specific resource type registered with the Fly
 |-|-|-|
 | `matchable_attributes_list_request` |  | |
 
+**Returns:** flyteidl.admin.ListMatchableAttributesResponse
+
 #### list_node_executions_for_task_paginated()
 
 ```python
@@ -494,6 +583,8 @@ def list_node_executions_for_task_paginated(
 |-|-|-|
 | `node_execution_for_task_list_request` |  | |
 
+**Returns:** flyteidl.admin.node_execution_pb2.NodeExecutionList
+
 #### list_node_executions_paginated()
 
 ```python
@@ -504,6 +595,8 @@ def list_node_executions_paginated(
 | Parameter | Type | Description |
 |-|-|-|
 | `node_execution_list_request` |  | |
+
+**Returns:** flyteidl.admin.node_execution_pb2.NodeExecutionList
 
 #### list_projects()
 
@@ -518,6 +611,8 @@ This will return a list of the projects registered with the Flyte Admin Service
 | Parameter | Type | Description |
 |-|-|-|
 | `project_list_request` | `typing.Optional[ProjectListRequest]` | |
+
+**Returns:** flyteidl.admin.project_pb2.Projects
 
 #### list_signals()
 
@@ -543,6 +638,8 @@ def list_task_executions_paginated(
 | Parameter | Type | Description |
 |-|-|-|
 | `task_execution_list_request` |  | |
+
+**Returns:** flyteidl.admin.task_execution_pb2.TaskExecutionList
 
 #### list_task_ids_paginated()
 
@@ -571,6 +668,14 @@ specified.
 |-|-|-|
 | `identifier_list_request` |  | |
 
+**Returns:** flyteidl.admin.common_pb2.NamedEntityIdentifierList
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | TODO |
+
 #### list_tasks_paginated()
 
 ```python
@@ -594,6 +699,14 @@ specifying a name will limit the results to only tasks with that name in the giv
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_list_request` |  | |
+
+**Returns:** flyteidl.admin.task_pb2.TaskList
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | TODO |
 
 #### list_workflow_ids_paginated()
 
@@ -622,6 +735,14 @@ specified.
 |-|-|-|
 | `identifier_list_request` |  | |
 
+**Returns:** flyteidl.admin.common_pb2.NamedEntityIdentifierList
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | TODO |
+
 #### list_workflows_paginated()
 
 ```python
@@ -646,6 +767,14 @@ specifying a name will limit the results to only workflows with that name in the
 |-|-|-|
 | `resource_list_request` |  | |
 
+**Returns:** flyteidl.admin.workflow_pb2.WorkflowList
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | TODO |
+
 #### recover_execution()
 
 ```python
@@ -659,6 +788,8 @@ This will recreate an execution with the same spec as the one belonging to the g
 | Parameter | Type | Description |
 |-|-|-|
 | `recover_execution_request` |  | |
+
+**Returns:** flyteidl.admin.execution_pb2.ExecutionRecoverResponse
 
 #### register_project()
 
@@ -674,6 +805,8 @@ Registers a project along with a set of domains.
 |-|-|-|
 | `project_register_request` |  | |
 
+**Returns:** flyteidl.admin.project_pb2.ProjectRegisterResponse
+
 #### relaunch_execution()
 
 ```python
@@ -684,6 +817,8 @@ def relaunch_execution(
 | Parameter | Type | Description |
 |-|-|-|
 | `relaunch_execution_request` |  | |
+
+**Returns:** flyteidl.admin.execution_pb2.ExecutionCreateResponse
 
 #### set_signal()
 
@@ -710,6 +845,8 @@ def terminate_execution(
 |-|-|-|
 | `terminate_execution_request` |  | |
 
+**Returns:** flyteidl.admin.execution_pb2.TerminateExecutionResponse
+
 #### update_launch_plan()
 
 ```python
@@ -726,6 +863,8 @@ switched between ACTIVE and INACTIVE.
 |-|-|-|
 | `update_request` |  | |
 
+**Returns:** flyteidl.admin.launch_plan_pb2.LaunchPlanUpdateResponse
+
 #### update_named_entity()
 
 ```python
@@ -736,6 +875,8 @@ def update_named_entity(
 | Parameter | Type | Description |
 |-|-|-|
 | `update_named_entity_request` |  | |
+
+**Returns:** flyteidl.admin.common_pb2.NamedEntityUpdateResponse
 
 #### update_project()
 
@@ -751,6 +892,8 @@ Update an existing project specified by id.
 |-|-|-|
 | `project` |  | |
 
+**Returns:** flyteidl.admin.project_pb2.ProjectUpdateResponse
+
 #### update_project_domain_attributes()
 
 ```python
@@ -765,6 +908,8 @@ This updates the attributes for a project and domain registered with the Flyte A
 |-|-|-|
 | `project_domain_attributes_update_request` |  | |
 
+**Returns:** flyteidl.admin.ProjectDomainAttributesUpdateResponse
+
 #### update_workflow_attributes()
 
 ```python
@@ -778,6 +923,8 @@ This updates the attributes for a project, domain, and workflow registered with 
 | Parameter | Type | Description |
 |-|-|-|
 | `workflow_attributes_update_request` |  | |
+
+**Returns:** flyteidl.admin.WorkflowAttributesUpdateResponse
 
 #### with_root_certificate()
 

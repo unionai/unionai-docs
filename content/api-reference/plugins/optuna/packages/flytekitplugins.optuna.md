@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.optuna
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -48,6 +48,8 @@ def optimize(
 | `study` | `typing.Optional[optuna.study.study.Study]` | |
 
 ## flytekitplugins.optuna.Optimizer
+
+### Parameters
 
 ```python
 class Optimizer(

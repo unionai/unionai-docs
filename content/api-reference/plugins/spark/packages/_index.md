@@ -1,7 +1,7 @@
 ---
 title: Packages
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -16,3 +16,4 @@ layout: py_api
 | [`flytekitplugins.spark.schema`](flytekitplugins.spark.schema) |  |
 | [`flytekitplugins.spark.sd_transformers`](flytekitplugins.spark.sd_transformers) |  |
 | [`flytekitplugins.spark.task`](flytekitplugins.spark.task) |  |
+| [`flytekitplugins.spark.utils`](flytekitplugins.spark.utils) |  |

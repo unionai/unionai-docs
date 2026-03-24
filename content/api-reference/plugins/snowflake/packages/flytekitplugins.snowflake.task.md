@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.snowflake.task
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -30,6 +30,8 @@ SELECT
 
 
 
+### Parameters
+
 ```python
 class SnowflakeConfig(
     user: str,
@@ -52,6 +54,8 @@ class SnowflakeConfig(
 This is the simplest form of a Snowflake Task, that can be used even for tasks that do not produce any output.
 
 
+
+### Parameters
 
 ```python
 class SnowflakeTask(

@@ -15,7 +15,7 @@
 
 [[sdks]]
 package = "flytekit"
-install = "flytekit pandas numpy scikit-learn torch tensorflow keras pydantic sqlalchemy pyarrow prometheus-client 'httpx<1' snowflake-connector-python google-cloud-bigquery google-cloud-bigquery-storage"
+install = "flytekit pandas numpy scikit-learn torch tensorflow keras pydantic sqlalchemy pyarrow prometheus-client 'httpx<1' snowflake-connector-python google-cloud-bigquery google-cloud-bigquery-storage 'apache-airflow>=2.8,<3'"
 parser_package = "flytekit"
 generator_name = "flytekit"
 generator_title = "Flytekit SDK"
@@ -292,7 +292,7 @@ name = "wandb"
 
 [[plugins]]
 package = "flytekitplugins-whylogs"
-install = "flytekitplugins-whylogs pandas"
+install = "flytekitplugins-whylogs"
 plugin = "flytekitplugins.whylogs"
 title = "whylogs"
 name = "whylogs"

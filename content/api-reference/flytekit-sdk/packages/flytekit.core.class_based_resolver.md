@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.class_based_resolver
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -21,6 +21,8 @@ Stores tasks inside a class variable. The class must be inherited from at the po
 loading process basically relies on the same sequence of things happening.
 
 
+
+### Parameters
 
 ```python
 class ClassStorageTaskResolver(

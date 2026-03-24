@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.shim_task
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -45,6 +45,8 @@ This class also implements the ``dispatch_execute`` and ``execute`` functions to
 that the ``entrypoint.py`` can execute, even though this class doesn't inherit from ``PythonTask``.
 
 
+
+### Parameters
 
 ```python
 class ExecutableTemplateShimTask(
@@ -144,6 +146,8 @@ This function is a stub, just here to keep dispatch_execute compatibility betwee
 
 ## flytekit.core.shim_task.ShimTaskExecutor
 
+### Parameters
+
 ```python
 class ShimTaskExecutor(
     args,
@@ -188,7 +192,9 @@ that wasn't serialized into the template.
 | Parameter | Type | Description |
 |-|-|-|
 | `tt` | `_task_model.TaskTemplate` | This is the template, the serialized form of the task. |
-| `kwargs` | `**kwargs` | These are the Python native input values to the task. :return: Python native output values from the task. |
+| `kwargs` | `**kwargs` | These are the Python native input values to the task. |
+
+**Returns:** Python native output values from the task.
 
 #### find_lhs()
 

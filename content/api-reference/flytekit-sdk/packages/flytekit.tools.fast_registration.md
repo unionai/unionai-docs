@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.fast_registration
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -23,7 +23,7 @@ layout: py_api
 | [`compute_digest()`](#compute_digest) | Walks the entirety of the source dir to compute a deterministic md5 hex digest of the dir contents. |
 | [`download_distribution()`](#download_distribution) | Downloads a remote code distribution and overwrites any local files. |
 | [`fast_package()`](#fast_package) | Takes a source directory and packages everything not covered by common ignores into a tarball. |
-| [`get_additional_distribution_loc()`](#get_additional_distribution_loc) |  |
+| [`get_additional_distribution_loc()`](#get_additional_distribution_loc) | :return Text:. |
 | [`print_ls_tree()`](#print_ls_tree) |  |
 
 
@@ -62,6 +62,7 @@ def compute_digest(
 ) -> str
 ```
 Walks the entirety of the source dir to compute a deterministic md5 hex digest of the dir contents.
+:return Text:
 
 
 | Parameter | Type | Description |
@@ -97,6 +98,7 @@ def fast_package(
 ```
 Takes a source directory and packages everything not covered by common ignores into a tarball
 named after a hexdigest of the included files.
+:return os.PathLike:
 
 
 | Parameter | Type | Description |
@@ -104,7 +106,7 @@ named after a hexdigest of the included files.
 | `source` | `os.PathLike` | |
 | `output_dir` | `os.PathLike` | |
 | `deref_symlinks` | `bool` | |
-| `options` | `Optional[FastPackageOptions]` | The CopyFileDetection option set to None :return os.PathLike: |
+| `options` | `Optional[FastPackageOptions]` | The CopyFileDetection option set to None |
 
 #### get_additional_distribution_loc()
 
@@ -114,6 +116,9 @@ def get_additional_distribution_loc(
     identifier: str,
 ) -> str
 ```
+:return Text:
+
+
 | Parameter | Type | Description |
 |-|-|-|
 | `remote_location` | `str` | |
@@ -137,6 +142,8 @@ def print_ls_tree(
 FastPackageOptions is used to set configuration options when packaging files.
 
 
+
+### Parameters
 
 ```python
 class FastPackageOptions(

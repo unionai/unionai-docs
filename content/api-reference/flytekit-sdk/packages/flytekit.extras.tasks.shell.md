@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.tasks.shell
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -64,12 +64,26 @@ shell commands from within a python task.
 | `command` | `typing.Union[typing.List[str], str]` | The command to be executed as a list of strings. |
 | `kwargs` | `**kwargs` | |
 
+**Returns**
+
+ProcessResult: Structure containing output of the command.
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `Exception` | If the command execution fails, this exception is raised with details about the command, return code, and stderr output. |
+| `Exception` | If the executable is not found, this exception is raised with guidance on specifying a container image in the task definition when using custom dependencies. |
+
 ## flytekit.extras.tasks.shell.AttrDict
 
 Convert a dictionary to an attribute style lookup. Do not use this in regular places, this is used for
 namespacing inputs and outputs
 
 
+
+### Parameters
 
 ```python
 class AttrDict(
@@ -83,6 +97,8 @@ class AttrDict(
 | `kwargs` | `**kwargs` | |
 
 ## flytekit.extras.tasks.shell.OutputLocation
+
+### Parameters
 
 ```python
 class OutputLocation(
@@ -101,7 +117,14 @@ class OutputLocation(
 
 Stores a process return code, standard output and standard error.
 
+    Args:
+        returncode: int The sub-process return code
+        output: str The sub-process standard output string
+        error: str The sub-process standard error string
+    
 
+
+### Parameters
 
 ```python
 class ProcessResult(
@@ -112,11 +135,13 @@ class ProcessResult(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `returncode` | `int` | int The sub-process return code |
-| `output` | `str` | str The sub-process standard output string |
-| `error` | `str` | str The sub-process standard error string |
+| `returncode` | `int` | |
+| `output` | `str` | |
+| `error` | `str` | |
 
 ## flytekit.extras.tasks.shell.RawShellTask
+
+### Parameters
 
 ```python
 class RawShellTask(
@@ -591,6 +616,8 @@ task resolver. It can be useful to override the task resolver for specific cases
 | `resolver` | `TaskResolverMixin` | |
 
 ## flytekit.extras.tasks.shell.ShellTask
+
+### Parameters
 
 ```python
 class ShellTask(

@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.entities
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -28,6 +28,8 @@ The goal is to enable easy access, manipulation of these entities.
 | [`FlyteWorkflowNode`](.././flytekit.remote.entities#flytekitremoteentitiesflyteworkflownode) | A class encapsulating a workflow that a Flyte node needs to execute. |
 
 ## flytekit.remote.entities.FlyteArrayNode
+
+### Parameters
 
 ```python
 class FlyteArrayNode(
@@ -62,7 +64,7 @@ TODO: docstring
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`promote_from_model()`](#promote_from_model) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
@@ -100,8 +102,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
@@ -109,6 +110,8 @@ def short_string()
 def to_flyte_idl()
 ```
 ## flytekit.remote.entities.FlyteBranchNode
+
+### Parameters
 
 ```python
 class FlyteBranchNode(
@@ -128,7 +131,7 @@ runtime based on a series of conditions that get evaluated on various parameters
 
 | Property | Type | Description |
 |-|-|-|
-| `if_else` | `None` | :rtype: IfElseBlock |
+| `if_else` | `None` |  |
 | `is_empty` | `None` |  |
 
 ### Methods
@@ -138,8 +141,8 @@ runtime based on a series of conditions that get evaluated on various parameters
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`promote_from_model()`](#promote_from_model) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -182,18 +185,18 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.workflow_pb2.BranchNode
-
+**Returns:** flyteidl.core.workflow_pb2.BranchNode
 
 ## flytekit.remote.entities.FlyteGateNode
+
+### Parameters
 
 ```python
 class FlyteGateNode(
@@ -225,7 +228,7 @@ class FlyteGateNode(
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`promote_from_model()`](#promote_from_model) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
@@ -261,8 +264,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
@@ -273,6 +275,8 @@ def to_flyte_idl()
 
 A class encapsulating a remote Flyte launch plan.
 
+
+### Parameters
 
 ```python
 class FlyteLaunchPlan(
@@ -291,27 +295,27 @@ class FlyteLaunchPlan(
 
 | Property | Type | Description |
 |-|-|-|
-| `annotations` | `None` | The annotations to execute the workflow with :rtype: flytekit.models.common.Annotations |
-| `auth_role` | `None` | The authorization method with which to execute the workflow. :rtype: flytekit.models.common.AuthRole |
-| `concurrency_policy` | `None` | Concurrency settings for the launch plan. :rtype: flytekit.models.concurrency.ConcurrencyPolicy |
-| `default_inputs` | `None` | Input values to be passed for the execution :rtype: flytekit.models.interface.ParameterMap |
-| `entity_metadata` | `None` | :rtype: LaunchPlanMetadata |
+| `annotations` | `None` | The annotations to execute the workflow with |
+| `auth_role` | `None` | The authorization method with which to execute the workflow. |
+| `concurrency_policy` | `None` | Concurrency settings for the launch plan. |
+| `default_inputs` | `None` | Input values to be passed for the execution |
+| `entity_metadata` | `None` |  |
 | `entity_type_text` | `None` |  |
-| `fixed_inputs` | `None` | Fixed, non-overridable inputs for the Launch Plan :rtype: flytekit.models.literals.LiteralMap |
+| `fixed_inputs` | `None` | Fixed, non-overridable inputs for the Launch Plan |
 | `flyte_workflow` | `None` |  |
 | `id` | `None` |  |
 | `interface` | `None` | The interface is not technically part of the admin.LaunchPlanSpec in the IDL, however the workflow ID is, and from the workflow ID, fetch will fill in the interface. This is nice because then you can __call__ the= object and get a node. |
 | `is_empty` | `None` |  |
 | `is_scheduled` | `None` |  |
-| `labels` | `None` | The labels to execute the workflow with :rtype: flytekit.models.common.Labels |
+| `labels` | `None` | The labels to execute the workflow with |
 | `max_parallelism` | `None` |  |
 | `name` | `None` |  |
 | `overwrite_cache` | `None` |  |
 | `python_interface` | `None` |  |
-| `raw_output_data_config` | `None` | Where to store offloaded data like Blobs and Schemas :rtype: flytekit.models.common.RawOutputDataConfig |
+| `raw_output_data_config` | `None` | Where to store offloaded data like Blobs and Schemas |
 | `resource_type` | `None` |  |
 | `security_context` | `None` |  |
-| `workflow_id` | `None` | Unique identifier for the workflow in question :rtype: flytekit.models.core.identifier.Identifier |
+| `workflow_id` | `None` | Unique identifier for the workflow in question |
 
 ### Methods
 
@@ -325,8 +329,8 @@ class FlyteLaunchPlan(
 | [`local_execution_mode()`](#local_execution_mode) |  |
 | [`promote_from_model()`](#promote_from_model) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### compile()
@@ -374,6 +378,8 @@ def from_flyte_idl(
 |-|-|-|
 | `pb2` |  | |
 
+**Returns:** LaunchPlanSpec
+
 #### local_execute()
 
 ```python
@@ -415,21 +421,21 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.launch_plan_pb2.LaunchPlanSpec
-
+**Returns:** flyteidl.admin.launch_plan_pb2.LaunchPlanSpec
 
 ## flytekit.remote.entities.FlyteNode
 
 A class encapsulating a remote Flyte node.
 
+
+### Parameters
 
 ```python
 class FlyteNode(
@@ -461,19 +467,19 @@ class FlyteNode(
 | Property | Type | Description |
 |-|-|-|
 | `array_node` | `None` |  |
-| `branch_node` | `None` | [Optional] Information about the branch node to evaluate in this node.  :rtype: BranchNode |
+| `branch_node` | `None` | [Optional] Information about the branch node to evaluate in this node. |
 | `flyte_entity` | `None` |  |
 | `gate_node` | `None` |  |
-| `id` | `None` | A workflow-level unique identifier that identifies this node in the workflow. "inputs" and "outputs" are reserved node ids that cannot be used by other nodes.  :rtype: Text |
-| `inputs` | `None` | Specifies how to bind the underlying interface's inputs.  All required inputs specified in the underlying interface must be fulfilled.  :rtype: list[flytekit.models.literals.Binding] |
+| `id` | `None` | A workflow-level unique identifier that identifies this node in the workflow. "inputs" and "outputs" are reserved node ids that cannot be used by other nodes. |
+| `inputs` | `None` | Specifies how to bind the underlying interface's inputs.  All required inputs specified in the underlying interface must be fulfilled. |
 | `is_empty` | `None` |  |
-| `metadata` | `None` | Extra metadata about the node.  :rtype: NodeMetadata |
-| `output_aliases` | `None` | [Optional] A node can define aliases for a subset of its outputs. This is particularly useful if different nodes need to conform to the same interface (e.g. all branches in a branch node). Downstream nodes must refer to this node's outputs using the alias if one is specified.  :rtype: list[Alias] |
-| `target` | `None` | :rtype: T |
-| `task_node` | `None` | [Optional] Information about the Task to execute in this node.  :rtype: TaskNode |
-| `upstream_node_ids` | `None` | [Optional] Specifies execution dependency for this node ensuring it will only get scheduled to run after all its upstream nodes have completed. This node will have an implicit dependency on any node that appears in inputs field.  :rtype: list[Text] |
+| `metadata` | `None` | Extra metadata about the node. |
+| `output_aliases` | `None` | [Optional] A node can define aliases for a subset of its outputs. This is particularly useful if different nodes need to conform to the same interface (e.g. all branches in a branch node). Downstream nodes must refer to this node's outputs using the alias if one is specified. |
+| `target` | `None` |  |
+| `task_node` | `None` | [Optional] Information about the Task to execute in this node. |
+| `upstream_node_ids` | `None` | [Optional] Specifies execution dependency for this node ensuring it will only get scheduled to run after all its upstream nodes have completed. This node will have an implicit dependency on any node that appears in inputs field. |
 | `upstream_nodes` | `None` |  |
-| `workflow_node` | `None` | [Optional] Information about the Workflow to execute in this mode.  :rtype: WorkflowNode |
+| `workflow_node` | `None` | [Optional] Information about the Workflow to execute in this mode. |
 
 ### Methods
 
@@ -482,8 +488,8 @@ class FlyteNode(
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`promote_from_model()`](#promote_from_model) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -496,6 +502,8 @@ def from_flyte_idl(
 | Parameter | Type | Description |
 |-|-|-|
 | `pb2_object` |  | |
+
+**Returns:** Node
 
 #### promote_from_model()
 
@@ -526,21 +534,21 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.workflow_pb2.Node
-
+**Returns:** flyteidl.core.workflow_pb2.Node
 
 ## flytekit.remote.entities.FlyteTask
 
 A class encapsulating a remote Flyte task.
 
+
+### Parameters
 
 ```python
 class FlyteTask(
@@ -579,17 +587,17 @@ class FlyteTask(
 
 | Property | Type | Description |
 |-|-|-|
-| `config` | `None` | Arbitrary dictionary containing metadata for parsing and handling custom plugins.  :rtype: dict[Text, T] |
-| `container` | `None` | If not None, the target of execution should be a container.  :rtype: Container |
-| `custom` | `None` | Arbitrary dictionary containing metadata for custom plugins.  :rtype: dict[Text, T] |
-| `docs` | `None` | :rtype: Description entity for the task |
+| `config` | `None` | Arbitrary dictionary containing metadata for parsing and handling custom plugins. |
+| `container` | `None` | If not None, the target of execution should be a container. |
+| `custom` | `None` | Arbitrary dictionary containing metadata for custom plugins. |
+| `docs` | `None` |  |
 | `entity_type_text` | `None` |  |
 | `extended_resources` | `None` |  |
-| `id` | `None` | This is generated by the system and uniquely identifies the task.  :rtype: flytekit.models.core.identifier.Identifier |
-| `interface` | `None` | The interface definition for this task.  :rtype: flytekit.models.interface.TypedInterface |
+| `id` | `None` | This is generated by the system and uniquely identifies the task. |
+| `interface` | `None` | The interface definition for this task. |
 | `is_empty` | `None` |  |
 | `k8s_pod` | `None` |  |
-| `metadata` | `None` | This contains information needed at runtime to determine behavior such as whether or not outputs are discoverable, timeouts, and retries.  :rtype: TaskMetadata |
+| `metadata` | `None` | This contains information needed at runtime to determine behavior such as whether or not outputs are discoverable, timeouts, and retries. |
 | `name` | `None` |  |
 | `python_interface` | `None` |  |
 | `resource_type` | `None` |  |
@@ -597,8 +605,8 @@ class FlyteTask(
 | `should_register` | `None` |  |
 | `sql` | `None` |  |
 | `task_type_version` | `None` |  |
-| `template` | `None` | :rtype: TaskTemplate |
-| `type` | `None` | This is used to identify additional extensions for use by Propeller or SDK.  :rtype: Text |
+| `template` | `None` |  |
+| `type` | `None` | This is used to identify additional extensions for use by Propeller or SDK. |
 
 ### Methods
 
@@ -612,8 +620,8 @@ class FlyteTask(
 | [`local_execution_mode()`](#local_execution_mode) |  |
 | [`promote_from_model()`](#promote_from_model) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### compile()
@@ -660,6 +668,8 @@ def from_flyte_idl(
 | Parameter | Type | Description |
 |-|-|-|
 | `pb2_object` |  | |
+
+**Returns:** TaskSpec
 
 #### local_execute()
 
@@ -700,21 +710,21 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.tasks_pb2.TaskSpec
-
+**Returns:** flyteidl.admin.tasks_pb2.TaskSpec
 
 ## flytekit.remote.entities.FlyteTaskNode
 
 A class encapsulating a task that a Flyte node needs to execute.
 
+
+### Parameters
 
 ```python
 class FlyteTaskNode(
@@ -747,8 +757,8 @@ This code should be updated when more options are available.
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`promote_from_model()`](#promote_from_model) | Takes the idl wrapper for a TaskNode,. |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -761,6 +771,8 @@ def from_flyte_idl(
 | Parameter | Type | Description |
 |-|-|-|
 | `pb2_object` |  | |
+
+**Returns:** TaskNode
 
 #### promote_from_model()
 
@@ -787,21 +799,21 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.workflow_pb2.TaskNode
-
+**Returns:** flyteidl.core.workflow_pb2.TaskNode
 
 ## flytekit.remote.entities.FlyteWorkflow
 
 A class encapsulating a remote Flyte workflow.
 
+
+### Parameters
 
 ```python
 class FlyteWorkflow(
@@ -836,7 +848,7 @@ class FlyteWorkflow(
 
 | Property | Type | Description |
 |-|-|-|
-| `docs` | `None` | :rtype: Description entity for the workflow |
+| `docs` | `None` |  |
 | `entity_type_text` | `None` |  |
 | `failure_node` | `None` | Node failure_node: A catch-all node. This node is executed whenever the execution engine determines the workflow has failed. The interface of this node must match the Workflow interface with an additional input named "error" of type pb.lyft.flyte.core.Error. |
 | `flyte_nodes` | `None` |  |
@@ -846,15 +858,15 @@ class FlyteWorkflow(
 | `interface` | `None` | Defines a strongly typed interface for the Workflow (inputs, outputs). This can include some optional parameters. |
 | `is_empty` | `None` |  |
 | `metadata` | `None` | This contains information on how to run the workflow. |
-| `metadata_defaults` | `None` | This contains information on how to run the workflow. :rtype: WorkflowMetadataDefaults |
+| `metadata_defaults` | `None` | This contains information on how to run the workflow. |
 | `name` | `None` |  |
 | `nodes` | `None` | A list of nodes. In addition, "globals" is a special reserved node id that can be used to consume workflow inputs |
 | `outputs` | `None` | A list of output bindings that specify how to construct workflow outputs. Bindings can pull node outputs or specify literals. All workflow outputs specified in the interface field must be bound in order for the workflow to be validated. A workflow has an implicit dependency on all of its nodes to execute successfully in order to bind final outputs. |
 | `python_interface` | `None` |  |
 | `resource_type` | `None` |  |
 | `should_register` | `None` |  |
-| `sub_workflows` | `None` | :rtype: list[flytekit.models.core.workflow.WorkflowTemplate] |
-| `template` | `None` | :rtype: flytekit.models.core.workflow.WorkflowTemplate |
+| `sub_workflows` | `None` |  |
+| `template` | `None` |  |
 
 ### Methods
 
@@ -870,8 +882,8 @@ class FlyteWorkflow(
 | [`promote_from_closure()`](#promote_from_closure) | Extracts out the relevant portions of a FlyteWorkflow from a closure from the control plane. |
 | [`promote_from_model()`](#promote_from_model) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### compile()
@@ -917,7 +929,9 @@ def from_flyte_idl(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `pb2_object` |  | flyteidl.admin.workflow_pb2.WorkflowSpec :rtype: WorkflowSpec |
+| `pb2_object` |  | flyteidl.admin.workflow_pb2.WorkflowSpec |
+
+**Returns:** WorkflowSpec
 
 #### get_non_system_nodes()
 
@@ -992,21 +1006,21 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.workflow_pb2.WorkflowSpec
-
+**Returns:** flyteidl.admin.workflow_pb2.WorkflowSpec
 
 ## flytekit.remote.entities.FlyteWorkflowNode
 
 A class encapsulating a workflow that a Flyte node needs to execute.
 
+
+### Parameters
 
 ```python
 class FlyteWorkflowNode(
@@ -1031,8 +1045,8 @@ Refers to a the workflow the node is to execute. One of the references must be s
 | `flyte_workflow` | `None` |  |
 | `is_empty` | `None` |  |
 | `launchplan_ref` | `None` | A globally unique identifier for the launch plan, which should map to Admin. |
-| `reference` | `None` | :rtype: flytekit.models.core.identifier.Identifier |
-| `sub_workflow_ref` | `None` | [Optional] Reference to a subworkflow, that should be defined with the compiler context.  :rtype: flytekit.models.core.identifier.Identifier |
+| `reference` | `None` |  |
+| `sub_workflow_ref` | `None` | [Optional] Reference to a subworkflow, that should be defined with the compiler context. |
 
 ### Methods
 
@@ -1041,8 +1055,8 @@ Refers to a the workflow the node is to execute. One of the references must be s
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`promote_from_model()`](#promote_from_model) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -1055,6 +1069,8 @@ def from_flyte_idl(
 | Parameter | Type | Description |
 |-|-|-|
 | `pb2_object` |  | |
+
+**Returns:** WorkflowNode
 
 #### promote_from_model()
 
@@ -1085,14 +1101,12 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.workflow_pb2.WorkflowNode
-
+**Returns:** flyteidl.core.workflow_pb2.WorkflowNode
 

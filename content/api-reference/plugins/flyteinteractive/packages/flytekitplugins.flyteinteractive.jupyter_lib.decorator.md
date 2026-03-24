@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.flyteinteractive.jupyter_lib.decorator
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -76,6 +76,8 @@ Create an example notebook with markdown and code cells that show instructions t
 | `notebook_dir` | `str` | Local path to write the example notebook to |
 
 ## flytekitplugins.flyteinteractive.jupyter_lib.decorator.jupyter
+
+### Parameters
 
 ```python
 class jupyter(

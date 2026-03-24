@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.dbt.schema
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -44,6 +44,8 @@ flags : dict
     Dictionary containing CLI flags to be added to the ``dbt run`` command (default=False).
 
 
+
+### Parameters
 
 ```python
 class BaseDBTInput(
@@ -203,6 +205,8 @@ exit_code : int
 
 
 
+### Parameters
+
 ```python
 class BaseDBTOutput(
     command: str,
@@ -336,6 +340,8 @@ exclude : List[str]
     List of model to be excluded (default : None).
 
 
+
+### Parameters
 
 ```python
 class DBTFreshnessInput(
@@ -497,6 +503,8 @@ raw_sources : str
 
 
 
+### Parameters
+
 ```python
 class DBTFreshnessOutput(
     command: str,
@@ -632,6 +640,8 @@ exclude : List[str]
     List of model to be excluded (default=None).
 
 
+
+### Parameters
 
 ```python
 class DBTRunInput(
@@ -795,6 +805,8 @@ raw_manifest : str
 
 
 
+### Parameters
+
 ```python
 class DBTRunOutput(
     command: str,
@@ -932,6 +944,8 @@ exclude : List[str]
     List of model to be excluded (default : None).
 
 
+
+### Parameters
 
 ```python
 class DBTTestInput(
@@ -1094,6 +1108,8 @@ raw_manifest : str
     Raw value of DBT's ``manifest.json``.
 
 
+
+### Parameters
 
 ```python
 class DBTTestOutput(

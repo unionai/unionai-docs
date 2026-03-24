@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.inference.ollama.serve
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -22,6 +22,8 @@ Represents the configuration for a model used in a Kubernetes pod template.
 
 
 
+### Parameters
+
 ```python
 class Model(
     name: str,
@@ -38,6 +40,8 @@ class Model(
 | `modelfile` | `typing.Optional[str]` | The actual model file as a JSON-serializable string. This represents the file content. Default is `None` if not applicable. |
 
 ## flytekitplugins.inference.ollama.serve.Ollama
+
+### Parameters
 
 ```python
 class Ollama(

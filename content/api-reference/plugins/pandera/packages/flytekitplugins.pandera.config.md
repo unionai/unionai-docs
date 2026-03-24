@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.pandera.config
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -17,6 +17,8 @@ Pandera validation configuration.
 | [`ValidationConfig`](.././flytekitplugins.pandera.config#flytekitpluginspanderaconfigvalidationconfig) |  |
 
 ## flytekitplugins.pandera.config.ValidationConfig
+
+### Parameters
 
 ```python
 class ValidationConfig(

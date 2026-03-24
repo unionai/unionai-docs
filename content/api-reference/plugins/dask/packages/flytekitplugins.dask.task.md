@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.dask.task
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -24,6 +24,8 @@ Configuration for the dask task
 
 
 
+### Parameters
+
 ```python
 class Dask(
     scheduler: flytekitplugins.dask.task.Scheduler,
@@ -40,6 +42,8 @@ class Dask(
 Actual Plugin that transforms the local python code for execution within a dask cluster
 
 
+
+### Parameters
 
 ```python
 class DaskTask(
@@ -282,7 +286,9 @@ Serialize the `dask` task config into a dict.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` | Current serialization settings :return: Dictionary representation of the dask task config. |
+| `settings` | `flytekit.configuration.SerializationSettings` | Current serialization settings |
+
+**Returns:** Dictionary representation of the dask task config.
 
 #### get_default_command()
 
@@ -516,6 +522,8 @@ Configuration for the scheduler pod
 
 
 
+### Parameters
+
 ```python
 class Scheduler(
     image: typing.Optional[str],
@@ -534,6 +542,8 @@ class Scheduler(
 Configuration for a group of dask worker pods
 
 
+
+### Parameters
 
 ```python
 class WorkerGroup(

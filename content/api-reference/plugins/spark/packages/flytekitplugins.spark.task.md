@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.spark.task
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -59,6 +59,8 @@ Deprecated. Use DatabricksV2 instead.
 
 
 
+### Parameters
+
 ```python
 class Databricks(
     spark_conf: typing.Optional[typing.Dict[str, str]],
@@ -85,9 +87,106 @@ class Databricks(
 ## flytekitplugins.spark.task.DatabricksV2
 
 Use this to configure a Databricks task. Task's marked with this will automatically execute
-natively onto databricks platform as a distributed execution of spark
+natively onto databricks platform as a distributed execution of spark.
+
+Supports both classic compute (clusters) and serverless compute.
+
+Compute Modes:
+    The connector auto-detects the compute mode based on the databricks_conf contents:
+
+    1. Classic Compute (existing cluster):
+        Provide `existing_cluster_id` in databricks_conf.
+
+    2. Classic Compute (new cluster):
+        Provide `new_cluster` configuration in databricks_conf.
+
+    3. Serverless Compute (pre-configured environment):
+        Provide `environment_key` referencing a pre-configured environment in Databricks.
+        Do not include `existing_cluster_id` or `new_cluster`.
+
+    4. Serverless Compute (inline environment spec):
+        Provide `environments` array with environment specifications.
+        Optionally include `environment_key` to specify which environment to use.
+        Do not include `existing_cluster_id` or `new_cluster`.
+
+Example - Classic Compute with new cluster::
+
+    DatabricksV2(
+        databricks_conf={
+            "run_name": "my-spark-job",
+            "new_cluster": {
+                "spark_version": "13.3.x-scala2.12",
+                "node_type_id": "m5.xlarge",
+                "num_workers": 2,
+            },
+        },
+        databricks_instance="my-workspace.cloud.databricks.com",
+    )
+
+Example - Serverless Compute with pre-configured environment::
+
+    DatabricksV2(
+        databricks_conf={
+            "run_name": "my-serverless-job",
+            "environment_key": "my-preconfigured-env",
+        },
+        databricks_instance="my-workspace.cloud.databricks.com",
+    )
+
+Example - Serverless Compute with inline environment spec::
+
+    DatabricksV2(
+        databricks_conf={
+            "run_name": "my-serverless-job",
+            "environment_key": "default",
+            "environments": [{
+                "environment_key": "default",
+                "spec": {
+                    "client": "1",
+                    "dependencies": ["pandas==2.0.0", "numpy==1.24.0"],
+                }
+            }],
+        },
+        databricks_instance="my-workspace.cloud.databricks.com",
+    )
+
+Serverless Entrypoint:
+    Both classic and serverless use the same ``flytetools`` repo for their entrypoints.
+    Classic uses ``flytekitplugins/databricks/entrypoint.py`` and serverless uses
+    ``flytekitplugins/databricks/entrypoint_serverless.py``. No additional configuration needed.
+
+    To override the default, provide ``git_source`` and ``python_file`` in ``databricks_conf``.
+
+AWS Credentials for Serverless:
+    Databricks serverless does not provide AWS credentials via instance metadata.
+    To access S3 (for Flyte data), configure a Databricks Service Credential.
+
+    The provider name is resolved in this order:
+    1. ``databricks_service_credential_provider`` in the task config (per-task override)
+    2. ``FLYTE_DATABRICKS_SERVICE_CREDENTIAL_PROVIDER`` environment variable on the connector (default for all tasks)
+
+    The entrypoint will use this to obtain AWS credentials via:
+    dbutils.credentials.getServiceCredentialsProvider(provider_name)
+
+Notebook Support:
+    To run a Databricks notebook instead of a Python file, set `notebook_path`.
+    Parameters can be passed via `notebook_base_parameters`.
+
+    Example - Running a notebook::
+
+        DatabricksV2(
+            databricks_conf={
+                "run_name": "my-notebook-job",
+                "new_cluster": {...},
+            },
+            databricks_instance="my-workspace.cloud.databricks.com",
+            notebook_path="/Users/user@example.com/my-notebook",
+            notebook_base_parameters={"param1": "value1"},
+        )
 
 
+
+### Parameters
 
 ```python
 class DatabricksV2(
@@ -99,6 +198,10 @@ class DatabricksV2(
     executor_pod: typing.Optional[flytekit.core.pod_template.PodTemplate],
     databricks_conf: typing.Optional[typing.Dict[str, typing.Union[str, dict]]],
     databricks_instance: typing.Optional[str],
+    databricks_service_credential_provider: typing.Optional[str],
+    databricks_token_secret: typing.Optional[str],
+    notebook_path: typing.Optional[str],
+    notebook_base_parameters: typing.Optional[typing.Dict[str, str]],
 )
 ```
 | Parameter | Type | Description |
@@ -109,14 +212,28 @@ class DatabricksV2(
 | `applications_path` | `typing.Optional[str]` | |
 | `driver_pod` | `typing.Optional[flytekit.core.pod_template.PodTemplate]` | |
 | `executor_pod` | `typing.Optional[flytekit.core.pod_template.PodTemplate]` | |
-| `databricks_conf` | `typing.Optional[typing.Dict[str, typing.Union[str, dict]]]` | Databricks job configuration compliant with API version 2.1, supporting 2.0 use cases. |
+| `databricks_conf` | `typing.Optional[typing.Dict[str, typing.Union[str, dict]]]` | Databricks job configuration compliant with API version 2.1, supporting 2.0 use cases. For the configuration structure, visit: https://docs.databricks.com/dev-tools/api/2.0/jobs.html#request-structure For updates in API 2.1, refer to: https://docs.databricks.com/en/workflows/jobs/jobs-api-updates.html |
 | `databricks_instance` | `typing.Optional[str]` | Domain name of your deployment. Use the form &lt;account&gt;.cloud.databricks.com. |
+| `databricks_service_credential_provider` | `typing.Optional[str]` | Provider name for Databricks Service Credentials for S3 access. Falls back to FLYTE_DATABRICKS_SERVICE_CREDENTIAL_PROVIDER env var. |
+| `databricks_token_secret` | `typing.Optional[str]` | Custom name for the K8s secret containing the Databricks token. Defaults to 'databricks-token' if not specified. |
+| `notebook_path` | `typing.Optional[str]` | Path to Databricks notebook (e.g., "/Users/user@example.com/notebook"). |
+| `notebook_base_parameters` | `typing.Optional[typing.Dict[str, str]]` | Parameters to pass to the notebook. |
+
+> [!NOTE]
+> Serverless compute has certain limitations compared to classic compute:
+> - Only Python and SQL are supported (no Scala or R)
+> - Only Spark Connect APIs are supported (no RDD APIs)
+> - Must use Unity Catalog for external data sources
+> - No support for compute-scoped init scripts or libraries
+> For full details, see: https://docs.databricks.com/en/compute/serverless/limitations.html
 
 ## flytekitplugins.spark.task.PysparkFunctionTask
 
 Actual Plugin that transforms the local python code for execution within a spark context
 
 
+
+### Parameters
 
 ```python
 class PysparkFunctionTask(
@@ -624,15 +741,9 @@ Convert the podTemplate to K8sPod
 Use this to configure a SparkContext for a your task. Task's marked with this will automatically execute
 natively onto K8s as a distributed execution of spark
 
-Attributes:
-    spark_conf (Optional[Dict[str, str]]): Spark configuration dictionary.
-    hadoop_conf (Optional[Dict[str, str]]): Hadoop configuration dictionary.
-    executor_path (Optional[str]): Path to the Python binary for PySpark execution.
-    applications_path (Optional[str]): Path to the main application file.
-    driver_pod (Optional[PodTemplate]): The pod template for the Spark driver pod.
-    executor_pod (Optional[PodTemplate]): The pod template for the Spark executor pod.
 
 
+### Parameters
 
 ```python
 class Spark(
@@ -646,10 +757,10 @@ class Spark(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `spark_conf` | `typing.Optional[typing.Dict[str, str]]` | |
-| `hadoop_conf` | `typing.Optional[typing.Dict[str, str]]` | |
-| `executor_path` | `typing.Optional[str]` | |
-| `applications_path` | `typing.Optional[str]` | |
-| `driver_pod` | `typing.Optional[flytekit.core.pod_template.PodTemplate]` | |
-| `executor_pod` | `typing.Optional[flytekit.core.pod_template.PodTemplate]` | |
+| `spark_conf` | `typing.Optional[typing.Dict[str, str]]` | Spark configuration dictionary. |
+| `hadoop_conf` | `typing.Optional[typing.Dict[str, str]]` | Hadoop configuration dictionary. |
+| `executor_path` | `typing.Optional[str]` | Path to the Python binary for PySpark execution. |
+| `applications_path` | `typing.Optional[str]` | Path to the main application file. |
+| `driver_pod` | `typing.Optional[flytekit.core.pod_template.PodTemplate]` | The pod template for the Spark driver pod. |
+| `executor_pod` | `typing.Optional[flytekit.core.pod_template.PodTemplate]` | The pod template for the Spark executor pod. |
 

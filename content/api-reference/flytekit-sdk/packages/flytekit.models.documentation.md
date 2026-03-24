@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.documentation
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -24,6 +24,8 @@ by clients, such as the console or command line tools with in-tact
 formatting.
 
 
+
+### Parameters
 
 ```python
 class Description(
@@ -52,7 +54,7 @@ class Description(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
@@ -77,8 +79,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
@@ -90,6 +91,8 @@ def to_flyte_idl()
 DescriptionEntity contains detailed description for the task/workflow/launch plan.
 Documentation could provide insight into the algorithms, business use case, etc.
 
+
+### Parameters
 
 ```python
 class Documentation(
@@ -116,7 +119,7 @@ class Documentation(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
@@ -141,8 +144,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
@@ -154,6 +156,8 @@ def to_flyte_idl()
 Link to source code used to define this task or workflow.
 
 
+
+### Parameters
 
 ```python
 class SourceCode(
@@ -176,7 +180,7 @@ class SourceCode(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
@@ -201,8 +205,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.artifact
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -53,6 +53,8 @@ Control creation parameters at task/workflow execution time ::
         ...
 
 
+
+### Parameters
 
 ```python
 class Artifact(
@@ -197,6 +199,8 @@ having a pointer to the main artifact.
 
 
 
+### Parameters
+
 ```python
 class ArtifactIDSpecification(
     a: Artifact,
@@ -233,6 +237,8 @@ def bind_partitions(
 def to_partial_artifact_id()
 ```
 ## flytekit.core.artifact.ArtifactQuery
+
+### Parameters
 
 ```python
 class ArtifactQuery(
@@ -432,6 +438,8 @@ If there's a good reason to use a metaclass in the future we can, but a simple i
 
 ## flytekit.core.artifact.Partition
 
+### Parameters
+
 ```python
 class Partition(
     value: Optional[art_id.LabelValue],
@@ -444,6 +452,8 @@ class Partition(
 | `name` | `str` | |
 
 ## flytekit.core.artifact.Partitions
+
+### Parameters
 
 ```python
 class Partitions(
@@ -553,6 +563,8 @@ def time_partition_to_idl(
 | `kwargs` | `**kwargs` | |
 
 ## flytekit.core.artifact.TimePartition
+
+### Parameters
 
 ```python
 class TimePartition(

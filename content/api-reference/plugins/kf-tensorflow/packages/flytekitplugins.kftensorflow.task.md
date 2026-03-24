@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.kftensorflow.task
-version: 1.16.14
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.15
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
@@ -29,6 +29,8 @@ Kubernetes. It leverages [`TF Job`](https://github.com/kubeflow/tf-operator) Plu
 
 ## flytekitplugins.kftensorflow.task.Chief
 
+### Parameters
+
 ```python
 class Chief(
     image: typing.Optional[str],
@@ -54,6 +56,8 @@ CleanPodPolicy describes how to deal with pods when the job is finished.
 
 ## flytekitplugins.kftensorflow.task.Evaluator
 
+### Parameters
+
 ```python
 class Evaluator(
     image: typing.Optional[str],
@@ -72,6 +76,8 @@ class Evaluator(
 | `restart_policy` | `typing.Optional[flytekitplugins.kftensorflow.task.RestartPolicy]` | |
 
 ## flytekitplugins.kftensorflow.task.PS
+
+### Parameters
 
 ```python
 class PS(
@@ -102,6 +108,8 @@ RunPolicy describes a set of policies to apply to the execution of a Kubeflow jo
 
 
 
+### Parameters
+
 ```python
 class RunPolicy(
     clean_pod_policy: <enum 'CleanPodPolicy'>,
@@ -123,6 +131,8 @@ Plugin that submits a TFJob (see https://github.com/kubeflow/tf-operator)
     defined by the code within the _task_function to k8s cluster.
 
 
+
+### Parameters
 
 ```python
 class TensorflowFunctionTask(
@@ -599,6 +609,8 @@ to run distributed TensorFlow training on Kubernetes.
 
 
 
+### Parameters
+
 ```python
 class TfJob(
     chief: flytekitplugins.kftensorflow.task.Chief,
@@ -625,6 +637,8 @@ class TfJob(
 | `num_evaluator_replicas` | `typing.Optional[int]` | |
 
 ## flytekitplugins.kftensorflow.task.Worker
+
+### Parameters
 
 ```python
 class Worker(

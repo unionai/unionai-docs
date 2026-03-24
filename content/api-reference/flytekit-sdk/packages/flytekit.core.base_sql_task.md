@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.base_sql_task
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -30,6 +30,8 @@ and `flytekitplugins.athena.task.AthenaTask` for examples of how to use it as a 
    :noindex:
 
 
+
+### Parameters
 
 ```python
 class SQLTask(

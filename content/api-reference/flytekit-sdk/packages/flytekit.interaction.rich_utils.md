@@ -1,6 +1,6 @@
 ---
 title: flytekit.interaction.rich_utils
-version: 1.16.14
+version: 1.16.15
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -16,6 +16,8 @@ layout: py_api
 | [`RichCallback`](.././flytekit.interaction.rich_utils#flytekitinteractionrich_utilsrichcallback) |  |
 
 ## flytekit.interaction.rich_utils.RichCallback
+
+### Parameters
 
 ```python
 class RichCallback(
