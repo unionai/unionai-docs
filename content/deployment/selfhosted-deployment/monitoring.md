@@ -265,7 +265,7 @@ Authentication is handled by the same ingress auth gate as other controlplane se
 
 ### Remote write
 
-Forward metrics to an external time-series database (Amazon Managed Prometheus, Grafana Cloud, Thanos):
+Forward metrics to an external time-series database (Amazon Managed Prometheus, Grafana Cloud, Thanos) while keeping the full local Prometheus:
 
 ```yaml
 monitoring:
@@ -276,6 +276,8 @@ monitoring:
           sigv4:
             region: <REGION>
 ```
+
+This runs Prometheus in fan-out mode — metrics are stored locally and forwarded to the remote backend. Recording rules, alerting, and Grafana all continue to work against the local Prometheus.
 
 ### Using your own Prometheus
 
@@ -319,3 +321,61 @@ scrape_configs:
         regex: debug
         action: keep
 ```
+
+## Managed Prometheus examples
+
+The following examples show how to replace the local Prometheus with a managed Prometheus service for durable storage and scalable query. In each case, Prometheus runs in **agent mode** — it only scrapes and forwards metrics, with no local TSDB.
+
+### Amazon Managed Prometheus (AMP)
+
+For AWS deployments where a single Prometheus instance may not scale with high-burst workloads, switch to PrometheusAgent mode with AMP as the backend.
+
+```yaml
+monitoring:
+  prometheus:
+    enabled: true
+    agentMode: true
+    serviceAccount:
+      create: true
+      annotations:
+        eks.amazonaws.com/role-arn: "<PROMETHEUS_IRSA_ROLE_ARN>"
+    prometheusSpec:
+      remoteWrite:
+        - url: "https://aps-workspaces.<REGION>.amazonaws.com/workspaces/<ID>/api/v1/remote_write"
+          sigv4:
+            region: <REGION>
+          queueConfig:
+            maxSamplesPerSend: 1000
+            maxShards: 200
+            capacity: 2500
+  alertmanager:
+    enabled: false
+  grafana:
+    sidecar:
+      datasources:
+        defaultDatasourceEnabled: false
+    serviceAccount:
+      create: true
+      annotations:
+        eks.amazonaws.com/role-arn: "<GRAFANA_IRSA_ROLE_ARN>"
+    grafana.ini:
+      auth:
+        sigv4_auth_enabled: true
+    additionalDataSources:
+      - name: AMP
+        type: prometheus
+        url: "https://aps-workspaces.<REGION>.amazonaws.com/workspaces/<ID>/"
+        access: proxy
+        isDefault: true
+        jsonData:
+          sigV4Auth: true
+          sigV4Region: <REGION>
+          httpMethod: POST
+```
+
+This requires two IRSA roles:
+- **Prometheus write**: `aps:RemoteWrite` permission on the AMP workspace
+- **Grafana read**: `aps:QueryMetrics`, `aps:GetMetricMetadata`, `aps:GetSeries`, `aps:GetLabels` permissions on the AMP workspace
+
+> [!NOTE]
+> PrometheusAgent cannot evaluate recording or alerting rules. PrometheusRule CRDs are deployed but inert in agent mode. Dashboard panels that rely on raw metrics (Health, Ingress, Connect, Infrastructure rows) work normally. SLO panels that depend on recording rules (`union:cp:slo:*`, `union:dp:slo:*`) will show no data unless you configure [AMP Ruler](https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-ruler.html) to evaluate those rules server-side. The PrometheusRule template files in the Helm charts (`templates/monitoring/prometheusrule.yaml`) contain the rule definitions in standard Prometheus format and can be uploaded directly to AMP Ruler.
