@@ -66,7 +66,7 @@ Both ``flyteadmin`` and ``flytepropeller`` are instrumented to expose metrics. T
 * **User-facing dashboard**: Can be used to investigate performance and characteristics of workflow and task executions. It's published under ID [22146](https://grafana.com/grafana/dashboards/22146-flyte-user-dashboard-via-prometheus/) in the Grafana marketplace.
 
 * **System Dashboards**: Dashboards that are useful for the system maintainer to investigate the status and performance of their Flyte deployments. These are further divided into:
-    * Data plane (``flytepropeller``) - [21719](https://grafana.com/grafana/dashboards/21719-flyte-propeller-dashboard-via-prometheus/): Execution engine status and performance.
+    * Compute plane (``flytepropeller``) - [21719](https://grafana.com/grafana/dashboards/21719-flyte-propeller-dashboard-via-prometheus/): Execution engine status and performance.
     * Control plane (``flyteadmin``) - [21720](https://grafana.com/grafana/dashboards/21720-flyteadmin-dashboard-via-prometheus/): API-level monitoring.
 
 The corresponding JSON files for each dashboard are also located in the ``flyte`` repository at [deployment/stats/prometheus](https://github.com/flyteorg/flyte/tree/master/deployment/stats/prometheus).

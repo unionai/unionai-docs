@@ -1,18 +1,18 @@
 ---
-title: Data plane setup on GCP
+title: Compute plane setup on GCP
 weight: 6
 variants: -flyte +byoc -selfmanaged
 ---
 
-# Data plane setup on GCP
+# Compute plane setup on GCP
 
-To set up your data plane on Google Cloud Platform (GCP) you must allow {{< key product_name >}} to provision and maintain compute resources under your GCP account.
+To set up your compute plane on Google Cloud Platform (GCP) you must allow {{< key product_name >}} to provision and maintain compute resources under your GCP account.
 To do this you will need to provision a service account with sufficient permissions to perform these tasks.
 
 ## Select or create a project
 
 The first step is to select an existing project or create a new one.
-This is where {{< key product_name >}} will provision all resources for your data plane.
+This is where {{< key product_name >}} will provision all resources for your compute plane.
 Below, we use the placeholder `<ProjectID>` for the project ID.
 The actual ID can be whatever you choose.
 In addition, you will need the project number associated with your project.
@@ -21,13 +21,13 @@ The project number is visible on your project's [welcome page](https://console.c
 
 ## Ensure billing is linked
 
-Before your data plane can be deployed, you need to make sure that a billing account is linked to your project:
+Before your compute plane can be deployed, you need to make sure that a billing account is linked to your project:
 Go to the [billing page](https://console.cloud.google.com/billing/linkedaccount) of your `<ProjectId>` project and confirm that a billing account is linked.
 
 ## Create a workload identity pool and provider
 
-Though your data plane will be in your project in GCP, the {{< key product_name >}} control plane is still run in AWS.
-To allow the control plane to interact with your data plane you must create a _workload identity pool_ and add {{< key product_name >}}'s AWS account as a workload provider.
+Though your compute plane will be in your project in GCP, the {{< key product_name >}} control plane is still run in AWS.
+To allow the control plane to interact with your compute plane you must create a _workload identity pool_ and add {{< key product_name >}}'s AWS account as a workload provider.
 For more details see the Google Cloud guide for [setting up workload identity federation](https://cloud.google.com/iam/docs/configuring-workload-identity-federation).
 
 ### In the GCP web console
@@ -70,7 +70,7 @@ gcloud iam workload-identity-pools providers create-aws unionai-aws \
 
 ## Create a role for {{< key product_name >}} admin
 
-To ensure that the {{< key product_name >}} team has all the privileges needed to deploy the data plane, _but no more than strictly necessary_, you will need to create a custom role that the {{< key product_name >}} service account will assume.
+To ensure that the {{< key product_name >}} team has all the privileges needed to deploy the compute plane, _but no more than strictly necessary_, you will need to create a custom role that the {{< key product_name >}} service account will assume.
 
 To avoid having to manually select each separate required privilege we recommend that you perform this step on the command-line with `gcloud`.
 
@@ -195,7 +195,7 @@ gcloud services enable storage-api.googleapis.com
 If you decide to manage your own VPC instead of leaving it to {{< key product_name >}}, then you will need to set it up yourself.
 The VPC should be configured with the following characteristics:
 
-* We recommend using a VPC that resides in the same project as the {{< key product_name >}} Data Plane Kubernetes cluster. If you want to use a [shared VPC](https://cloud.google.com/vpc/docs/shared-vpc), contact {{< key product_name >}} support.
+* We recommend using a VPC that resides in the same project as the {{< key product_name >}} Compute Plane Kubernetes cluster. If you want to use a [shared VPC](https://cloud.google.com/vpc/docs/shared-vpc), contact {{< key product_name >}} support.
 * Create a single VPC subnet with:
   * A primary IPv4 range with /18 CIDR mask. This is used for cluster node IP addresses.
   * A secondary range with /15 CIDR mask. This is used for Kubernetes Pod IP addresses. We recommend associating the name with pods, e.g. `gke-pods`.

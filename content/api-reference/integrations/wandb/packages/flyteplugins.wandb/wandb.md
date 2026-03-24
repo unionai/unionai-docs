@@ -1,6 +1,6 @@
 ---
 title: Wandb
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -32,8 +32,8 @@ class Wandb(
 |-|-|-|
 | `host` | `str` | Base W&B host URL |
 | `project` | `typing.Optional[str]` | W&B project name (overrides context config if provided) |
-| `entity` | `typing.Optional[str]` | W&B entity/team name (overrides context config if provided) - "auto" (default): Use parent's run if available, otherwise create new - "new": Always creates a new wandb run with a unique ID - "shared": Always shares the parent's run ID In distributed training context (single-node): - "auto" (default): Only rank 0 logs. - "shared": All ranks log to a single shared W&B run. - "new": Each rank gets its own W&B run (grouped in W&B UI). Multi-node: behavior depends on `rank_scope`. |
-| `run_mode` | `typing.Literal['auto', 'new', 'shared']` | |
+| `entity` | `typing.Optional[str]` | W&B entity/team name (overrides context config if provided) |
+| `run_mode` | `typing.Literal['auto', 'new', 'shared']` | Determines the link behavior: - "auto" (default): Use parent's run if available, otherwise create new - "new": Always creates a new wandb run with a unique ID - "shared": Always shares the parent's run ID In distributed training context (single-node): - "auto" (default): Only rank 0 logs. - "shared": All ranks log to a single shared W&B run. - "new": Each rank gets its own W&B run (grouped in W&B UI). Multi-node: behavior depends on `rank_scope`. |
 | `rank_scope` | `typing.Literal['global', 'worker']` | Flyte-specific rank scope - "global" or "worker". Controls which ranks log in distributed training. run_mode="auto": - "global" (default): Only global rank 0 logs (1 run total). - "worker": Local rank 0 of each worker logs (1 run per worker). run_mode="shared": - "global": All ranks log to a single shared W&B run. - "worker": Ranks per worker log to a single shared W&B run (1 run per worker). run_mode="new": - "global": Each rank gets its own W&B run (1 run total). - "worker": Each rank gets its own W&B run grouped per worker -&gt; N runs. |
 | `id` | `typing.Optional[str]` | Optional W&B run ID (overrides context config if provided) |
 | `name` | `str` | Link name in the Flyte UI |
@@ -74,5 +74,7 @@ Link can have template variables that are replaced by the backend.
 | `parent_action_name` | `str` | The name of the parent action. |
 | `action_name` | `str` | The name of the action. |
 | `pod_name` | `str` | The name of the pod. |
-| `kwargs` | `**kwargs` | Additional keyword arguments. :return: The generated link. |
+| `kwargs` | `**kwargs` | Additional keyword arguments. |
+
+**Returns:** The generated link.
 

@@ -1,6 +1,6 @@
 ---
 title: flyte.git
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -40,5 +40,7 @@ By default, the config file is expected to be in `.flyte/config.yaml` in the git
 
 | Parameter | Type | Description |
 |-|-|-|
-| `path` | `pathlib.Path \| str` | Path to the config file relative to git root directory (default :return: Config object if found, None otherwise |
+| `path` | `pathlib.Path \| str` | Path to the config file relative to git root directory (default |
+
+**Returns:** Config object if found, None otherwise
 

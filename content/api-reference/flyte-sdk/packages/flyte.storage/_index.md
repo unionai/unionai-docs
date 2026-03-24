@@ -1,6 +1,6 @@
 ---
 title: flyte.storage
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -27,7 +27,7 @@ sidebar_expanded: true
 | [`exists_sync()`](#exists_sync) |  |
 | [`get()`](#get) |  |
 | [`get_configured_fsspec_kwargs()`](#get_configured_fsspec_kwargs) |  |
-| [`get_random_local_directory()`](#get_random_local_directory) | :return: a random directory. |
+| [`get_random_local_directory()`](#get_random_local_directory) |  |
 | [`get_random_local_path()`](#get_random_local_path) | Use file_path_or_file_name, when you want a random directory, but want to preserve the leaf file name. |
 | [`get_stream()`](#get_stream) | Get a stream of data from a remote location. |
 | [`get_underlying_filesystem()`](#get_underlying_filesystem) |  |
@@ -55,7 +55,9 @@ Check if a path exists.
 | Parameter | Type | Description |
 |-|-|-|
 | `path` | `str` | Path to be checked. |
-| `kwargs` | `**kwargs` | Additional arguments to be passed to the underlying filesystem. :return: True if the path exists, False otherwise. |
+| `kwargs` | `**kwargs` | Additional arguments to be passed to the underlying filesystem. |
+
+**Returns:** True if the path exists, False otherwise.
 
 #### exists_sync()
 
@@ -105,9 +107,7 @@ def get_configured_fsspec_kwargs(
 ```python
 def get_random_local_directory()
 ```
-:return: a random directory
-:rtype: pathlib.Path
-
+**Returns:** pathlib.Path
 
 #### get_random_local_path()
 
@@ -146,8 +146,10 @@ async for chunk in storage.get_stream(path="s3://my_bucket/my_file.txt"):
 | Parameter | Type | Description |
 |-|-|-|
 | `path` | `str` | Path to the remote location where the data will be downloaded. |
-| `chunk_size` |  | Size of each chunk to be read from the file. :return: An async iterator that yields chunks of bytes. |
+| `chunk_size` |  | Size of each chunk to be read from the file. |
 | `kwargs` | `**kwargs` | Additional arguments to be passed to the underlying filesystem. |
+
+**Returns:** An async iterator that yields chunks of bytes.
 
 #### get_underlying_filesystem()
 
@@ -264,5 +266,7 @@ storage.put_stream(iter([b'hello']), to_path="s3://my_bucket/my_file.txt")
 | `data_iterable` | `typing.AsyncIterable[bytes] \| bytes` | Iterable of bytes to be streamed. |
 | `name` | `str \| None` | Name of the file to be created. If not provided, a random name will be generated. |
 | `to_path` | `str \| None` | Path to the remote location where the data will be stored. |
-| `kwargs` | `**kwargs` | Additional arguments to be passed to the underlying filesystem. :rtype: str :return: The path to the remote location where the data was stored. |
+| `kwargs` | `**kwargs` | Additional arguments to be passed to the underlying filesystem. |
+
+**Returns:** The path to the remote location where the data was stored.
 

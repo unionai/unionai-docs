@@ -1,6 +1,6 @@
 ---
 title: Run
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -114,13 +114,14 @@ def get(
 ```
 Get the current run.
 
-:return: The current run.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
 | `name` | `str` | |
+
+**Returns:** The current run.
 
 ### get_debug_url()
 
@@ -214,7 +215,9 @@ Get all runs for the current project and domain.
 | `project` | `str \| None` | The project to list runs for. Defaults to the globally configured project. |
 | `domain` | `str \| None` | The domain to list runs for. Defaults to the globally configured domain. |
 | `created_at` | `TimeFilter \| None` | Filter runs by creation time range. |
-| `updated_at` | `TimeFilter \| None` | Filter runs by last-update time range. :return: An iterator of runs. |
+| `updated_at` | `TimeFilter \| None` | Filter runs by last-update time range. |
+
+**Returns:** An iterator of runs.
 
 ### outputs()
 
@@ -268,9 +271,9 @@ def to_dict()
 ```
 Convert the object to a JSON-serializable dictionary.
 
-Returns:
-    dict: A dictionary representation of the object.
 
+
+**Returns:** dict: A dictionary representation of the object.
 
 ### to_json()
 
@@ -279,9 +282,9 @@ def to_json()
 ```
 Convert the object to a JSON string.
 
-Returns:
-    str: A JSON string representation of the object.
 
+
+**Returns:** str: A JSON string representation of the object.
 
 ### wait()
 

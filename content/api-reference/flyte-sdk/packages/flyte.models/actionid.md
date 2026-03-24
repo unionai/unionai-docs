@@ -1,6 +1,6 @@
 ---
 title: ActionID
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -93,10 +93,11 @@ Generate a unique ID string for this action in the format:
 
 This is optimized for performance assuming all fields are available.
 
-:return: A unique ID string
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `salt` | `str \| None` | |
+
+**Returns:** A unique ID string
 

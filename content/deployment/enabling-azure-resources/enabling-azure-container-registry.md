@@ -6,7 +6,7 @@ variants: -flyte +byoc -selfmanaged
 
 # Enabling Azure Container Registry (ACR)
 
-ACR can be used to store container images within Azure and accessed within your Azure-based Data Plane.
+ACR can be used to store container images within Azure and accessed within your Azure-based Compute Plane.
 
 {{< key product_name >}} leverages Azure Kubernetes Service (AKS) managed identities to authenticate with ACR.
 
@@ -18,11 +18,11 @@ Refer to [Azure documentation for more details](https://learn.microsoft.com/en-u
 
 ACR instances that allow anonymous (I.E., public) access doesn't require additional configuration. Otherwise, the underlying AKS cluster must be granted permissions to pull from the container registry.
 
-Private ACR for {{< key product_name >}} images is only supported for ACRs within the same tenant as the {{< key product_name >}} data plane. Refer to [Azure documentation](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-cli) for creating Container Registries.
+Private ACR for {{< key product_name >}} images is only supported for ACRs within the same tenant as the {{< key product_name >}} compute plane. Refer to [Azure documentation](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-cli) for creating Container Registries.
 
 ### Creating a {{< key product_name >}}-managed container registry
 
-Upon request, {{< key product_name >}} can create a container registry within your data plane.
+Upon request, {{< key product_name >}} can create a container registry within your compute plane.
 
 By default this {{< key product_name >}}-managed ACR instance:
 
@@ -42,7 +42,7 @@ Upon request, {{< key product_name >}} can:
 
 ## Enable access to ACR in a different subscription within the same Azure tenant
 
-{{< key product_name >}} data plane resources will require permissions to pull images from your container registry.
+{{< key product_name >}} compute plane resources will require permissions to pull images from your container registry.
 
 ### Allow {{< key product_name >}} to manage permissions
 

@@ -1,6 +1,6 @@
 ---
 title: NativeInterface
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -97,7 +97,9 @@ Create a new NativeInterface from the given types. This is used to create a nati
 |-|-|-|
 | `inputs` | `Dict[str, Tuple[Type, Type[_has_default] \| Type[inspect._empty]]]` | A dictionary of input names and their types and a value indicating if they have a default value. |
 | `outputs` | `Dict[str, Type]` | A dictionary of output names and their types. |
-| `default_inputs` | `Optional[Dict[str, literals_pb2.Literal]]` | Optional dictionary of default inputs for remote tasks. :return: A NativeInterface object with the given inputs and outputs. |
+| `default_inputs` | `Optional[Dict[str, literals_pb2.Literal]]` | Optional dictionary of default inputs for remote tasks. |
+
+**Returns:** A NativeInterface object with the given inputs and outputs.
 
 ### get_input_types()
 
@@ -131,6 +133,7 @@ def required_inputs()
 ```
 Get the names of the required inputs for the task. This is used to determine which inputs are required for the
 task execution.
-:return: A list of required input names.
 
+
+**Returns:** A list of required input names.
 

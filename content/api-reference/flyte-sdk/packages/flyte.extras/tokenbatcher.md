@@ -1,6 +1,6 @@
 ---
 title: TokenBatcher
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -88,9 +88,13 @@ def start()
 ```
 Start the aggregation and processing loops.
 
-Raises:
-    RuntimeError: If the batcher is already running.
 
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `RuntimeError` | If the batcher is already running. |
 
 ### stop()
 
@@ -123,6 +127,11 @@ Accepts either `estimated_tokens` or `estimated_cost`.
 | `estimated_tokens` | `int \| None` | Optional explicit token count. |
 | `estimated_cost` | `int \| None` | Optional explicit cost (base class parameter). |
 
+**Returns**
+
+A future whose result is the corresponding entry from the list
+returned by the inference function.
+
 ### submit_batch()
 
 ```python
@@ -139,4 +148,6 @@ Convenience: submit multiple records and return their futures.
 |-|-|-|
 | `records` | `Sequence[RecordT]` | Iterable of input records. |
 | `estimated_cost` | `Sequence[int] \| None` | Optional per-record cost estimates.  Length must match *records* when provided. |
+
+**Returns:** List of futures, one per record.
 

@@ -73,6 +73,8 @@ Exactly one of user_subject, creds_subject, or email must be provided.
 | `email` | `str \| None` | User email for lookup. |
 | `policy` | `str` | Policy name to assign. |
 
+**Returns:** Assignment for the identity after the policy is assigned.
+
 ### get()
 
 
@@ -126,9 +128,9 @@ def to_dict()
 ```
 Convert the object to a JSON-serializable dictionary.
 
-Returns:
-    dict: A dictionary representation of the object.
 
+
+**Returns:** dict: A dictionary representation of the object.
 
 ### to_json()
 
@@ -137,9 +139,9 @@ def to_json()
 ```
 Convert the object to a JSON string.
 
-Returns:
-    str: A JSON string representation of the object.
 
+
+**Returns:** str: A JSON string representation of the object.
 
 ### unassign()
 

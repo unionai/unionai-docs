@@ -1,6 +1,6 @@
 ---
 title: TaskContext
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -69,8 +69,9 @@ class TaskContext(
 def is_in_cluster()
 ```
 Check if the task is running in a cluster.
-:return: bool
 
+
+**Returns:** bool
 
 ### replace()
 

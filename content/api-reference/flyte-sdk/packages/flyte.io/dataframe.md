@@ -1,6 +1,6 @@
 ---
 title: DataFrame
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -142,6 +142,10 @@ def from_existing_remote(
 ```
 Create a DataFrame reference from an existing remote dataframe.
 
+Example:
+    ```python
+    df = DataFrame.from_existing_remote("s3://bucket/data.parquet", format="parquet")
+    ```
 
 
 | Parameter | Type | Description |

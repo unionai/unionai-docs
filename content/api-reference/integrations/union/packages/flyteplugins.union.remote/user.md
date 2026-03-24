@@ -70,6 +70,8 @@ Create (invite) a new user.
 | `last_name` | `str` | The user's last name. |
 | `email` | `str` | The user's email address. |
 
+**Returns:** User instance for the newly created user.
+
 ### delete()
 
 
@@ -143,9 +145,9 @@ def to_dict()
 ```
 Convert the object to a JSON-serializable dictionary.
 
-Returns:
-    dict: A dictionary representation of the object.
 
+
+**Returns:** dict: A dictionary representation of the object.
 
 ### to_json()
 
@@ -154,7 +156,7 @@ def to_json()
 ```
 Convert the object to a JSON string.
 
-Returns:
-    str: A JSON string representation of the object.
 
+
+**Returns:** str: A JSON string representation of the object.
 

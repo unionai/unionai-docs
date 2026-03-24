@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.anthropic
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -87,6 +87,15 @@ types are represented correctly.
 For @flyte.trace decorated functions, the tracing context is preserved
 automatically since functools.wraps maintains the original function's metadata.
 
+Example:
+    ```python
+    @env.task
+    async def get_weather(city: str) -> str:
+        '''Get the current weather for a city.'''
+        return f"Weather in {city}: sunny"
+
+    tool = function_tool(get_weather)
+    ```
 
 
 | Parameter | Type | Description |
@@ -94,6 +103,11 @@ automatically since functools.wraps maintains the original function's metadata.
 | `func` | `typing.Union[flyte._task.AsyncFunctionTaskTemplate, typing.Callable, NoneType]` | The function or Flyte task to convert. |
 | `name` | `str \| None` | Optional custom name for the tool. Defaults to the function name. |
 | `description` | `str \| None` | Optional custom description. Defaults to the function's docstring. |
+
+**Returns**
+
+A FunctionTool instance that can be used with run_agent().
+
 
 #### run_agent()
 
@@ -115,6 +129,13 @@ This function creates a Claude conversation loop that can use tools
 to accomplish tasks. It handles the back-and-forth of tool calls
 and responses until the agent produces a final text response.
 
+Example:
+    ```python
+    result = await run_agent(
+        prompt="What's the weather in SF?",
+        tools=[function_tool(get_weather)],
+    )
+    ```
 
 
 | Parameter | Type | Description |
@@ -127,4 +148,9 @@ and responses until the agent produces a final text response.
 | `max_tokens` | `int` | Maximum tokens in the response. |
 | `max_iterations` | `int` | Maximum number of tool call iterations. |
 | `api_key` | `str \| None` | Anthropic API key. Defaults to ANTHROPIC_API_KEY env var. |
+
+**Returns**
+
+The final text response from the agent.
+
 

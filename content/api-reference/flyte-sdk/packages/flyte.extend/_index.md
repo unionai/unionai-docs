@@ -1,6 +1,6 @@
 ---
 title: flyte.extend
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -56,7 +56,9 @@ Downloads the code bundle if it is not already downloaded.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `code_bundle` | `flyte.models.CodeBundle` | The code bundle to download. :return: The code bundle with the downloaded path. |
+| `code_bundle` | `flyte.models.CodeBundle` | The code bundle to download. |
+
+**Returns:** The code bundle with the downloaded path.
 
 #### get_proto_resources()
 
@@ -71,7 +73,9 @@ Get main resources IDL representation from the resources object
 
 | Parameter | Type | Description |
 |-|-|-|
-| `resources` | `flyte._resources.Resources \| None` | User facing Resources object containing potentially both requests and limits :return: The given resources as requests and limits |
+| `resources` | `flyte._resources.Resources \| None` | User facing Resources object containing potentially both requests and limits |
+
+**Returns:** The given resources as requests and limits
 
 #### is_initialized()
 
@@ -80,8 +84,9 @@ def is_initialized()
 ```
 Check if the system has been initialized.
 
-:return: True if initialized, False otherwise
 
+
+**Returns:** True if initialized, False otherwise
 
 #### pod_spec_from_resources()
 

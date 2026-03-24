@@ -1,12 +1,12 @@
 ---
-title: Data plane setup on Azure
+title: Compute plane setup on Azure
 weight: 7
 variants: -flyte +byoc -selfmanaged
 ---
 
-# Data plane setup on Azure
+# Compute plane setup on Azure
 
-To set up your data plane on Azure, you must allow {{< key product_name >}} to provision and maintain compute resources under your Azure subscription. To do this, you will need to provision an Azure app registration with sufficient permissions to an Azure subscription.
+To set up your compute plane on Azure, you must allow {{< key product_name >}} to provision and maintain compute resources under your Azure subscription. To do this, you will need to provision an Azure app registration with sufficient permissions to an Azure subscription.
 
 ## Selecting Azure tenant and subscription
 
@@ -128,7 +128,7 @@ This configuration will provide the {{< key product_name >}} application with th
 
 ### Required VNet properties
 
-We recommend using a VNet within the same Azure tenant as your {{< key product_name >}} data plane. It should be configured with the following characteristics:
+We recommend using a VNet within the same Azure tenant as your {{< key product_name >}} compute plane. It should be configured with the following characteristics:
 
 - A single subnet with an address prefix with `/19` CIDR mask. This is used for Kubernetes nodes.
 - One to five subnets with an address prefix with `/14` to `/18` CIDR mask. This is used for Kubernetes pods. `/14` is preferable to mitigate IP exhaustion. It is common to start with one subnet for initial clusters and add more subnets as workloads scale.

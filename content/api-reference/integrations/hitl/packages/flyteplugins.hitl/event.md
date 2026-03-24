@@ -1,6 +1,6 @@
 ---
 title: Event
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -104,6 +104,19 @@ This method creates an event that waits for human input via the FastAPI app.
 The app is automatically served if not already running. All infrastructure
 details are abstracted away - you just get an event to wait on.
 
+Example:
+    # Async usage
+    event = await Event.create.aio(
+        "approval_event",
+        scope="run",
+        prompt="Do you approve this action?",
+        data_type=bool,
+    )
+    approved = await event.wait.aio()
+
+    # Sync usage
+    event = Event.create("value_event", scope="run", prompt="Enter a number", data_type=int)
+    value = event.wait()
 
 
 | Parameter | Type | Description |
@@ -113,8 +126,13 @@ details are abstracted away - you just get an event to wait on.
 | `data_type` | `Type[T]` | The expected type of the input (int, float, str, bool) |
 | `scope` | `EventScope` | The scope of the event. Currently only "run" is supported. |
 | `prompt` | `str` | The prompt to display to the human |
-| `timeout_seconds` | `int` | |
-| `poll_interval_seconds` | `int` | |
+| `timeout_seconds` | `int` | Maximum time to wait for human input (default: 1 hour) |
+| `poll_interval_seconds` | `int` | How often to check for a response (default: 5 seconds) |
+
+**Returns**
+
+An Event object that can be used to wait for the human input
+
 
 ### wait()
 
@@ -132,10 +150,16 @@ This method polls object storage for a response using durable sleep,
 making it crash-resilient. If the task crashes and restarts, it will
 resume polling from where it left off.
 
-Returns:
-    The value provided by the human, converted to the event's data_type
 
-Raises:
-    TimeoutError: If no response is received within the timeout
 
+**Returns**
+
+The value provided by the human, converted to the event's data_type
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `TimeoutError` | If no response is received within the timeout |
 

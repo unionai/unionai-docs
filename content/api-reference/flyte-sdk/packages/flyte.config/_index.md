@@ -1,6 +1,6 @@
 ---
 title: flyte.config
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -50,7 +50,9 @@ Automatically constructs the Config Object. The order of precedence is as follow
 
 | Parameter | Type | Description |
 |-|-|-|
-| `config_file` | `typing.Union[str, pathlib.Path, ConfigFile, None]` | file path to read the config from, if not specified default locations are searched :return: Config |
+| `config_file` | `typing.Union[str, pathlib.Path, ConfigFile, None]` | file path to read the config from, if not specified default locations are searched |
+
+**Returns:** Config
 
 #### set_if_exists()
 

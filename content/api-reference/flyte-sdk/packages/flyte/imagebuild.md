@@ -1,6 +1,6 @@
 ---
 title: ImageBuild
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -10,12 +10,6 @@ layout: py_api
 **Package:** `flyte`
 
 Result of an image build operation.
-
-Attributes:
-    uri: The fully qualified image URI. None if the build was started asynchronously
-        and hasn't completed yet.
-    remote_run: The Run object that kicked off an image build job when using the remote
-        builder. None when using the local builder.
 
 
 
@@ -29,6 +23,6 @@ class ImageBuild(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `uri` | `str \| None` | |
-| `remote_run` | `Optional['remote.Run']` | |
+| `uri` | `str \| None` | The fully qualified image URI. None if the build was started asynchronously and hasn't completed yet. |
+| `remote_run` | `Optional['remote.Run']` | The Run object that kicked off an image build job when using the remote builder. None when using the local builder. |
 

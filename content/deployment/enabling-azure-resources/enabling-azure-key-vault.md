@@ -17,12 +17,12 @@ The {{< key product_name >}}-managed `userflyterole` identity must be granted pe
 
 ## Providing permissions to Azure Key Vault
 
-{{< key product_name >}} data plane tasks employ Azure Workload Identity Federation to access Azure resources using an Azure user-assigned identity. Access to Azure Key Vault containers requires updating permissions to permit this {{< key product_name >}}-managed user-assigned identity.
+{{< key product_name >}} compute plane tasks employ Azure Workload Identity Federation to access Azure resources using an Azure user-assigned identity. Access to Azure Key Vault containers requires updating permissions to permit this {{< key product_name >}}-managed user-assigned identity.
 
 [Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) assigning the `Key Vault Secrets User` role to the `userflyterole` user-assigned identity. Make sure it is scoped to the Azure Key Vault Secret.
 
 > [!NOTE] {{< key product_name >}} managed user-assigned identities
-> Refer to [Azure portal's user assigned managed identitites](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) if assistance is required identifying the `userflyterole` user-assigned identity within the {{< key product_name >}} data plane resource group.
+> Refer to [Azure portal's user assigned managed identitites](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) if assistance is required identifying the `userflyterole` user-assigned identity within the {{< key product_name >}} compute plane resource group.
 
 ## Accessing the secret within {{< key product_name >}}
 
