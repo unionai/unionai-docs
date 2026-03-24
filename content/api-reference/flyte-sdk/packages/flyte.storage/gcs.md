@@ -1,6 +1,6 @@
 ---
 title: GCS
-version: 2.0.9
+version: 2.0.10
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -21,7 +21,6 @@ class GCS(
     backoff: datetime.timedelta,
     enable_debug: bool,
     attach_execution_metadata: bool,
-    gsutil_parallelism: bool,
 )
 ```
 | Parameter | Type | Description |
@@ -30,7 +29,6 @@ class GCS(
 | `backoff` | `datetime.timedelta` | |
 | `enable_debug` | `bool` | |
 | `attach_execution_metadata` | `bool` | |
-| `gsutil_parallelism` | `bool` | |
 
 ## Methods
 
