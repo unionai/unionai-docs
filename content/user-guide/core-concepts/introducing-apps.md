@@ -103,9 +103,9 @@ Use **apps** when:
 
 ## Common patterns
 
-**Model serving with FastAPI**: Train a model with a Flyte pipeline, then serve predictions from it. During local development, the app loads the model from a local file. When deployed remotely, Flyte's `Parameter` system automatically resolves the model from the latest training run output. See [FastAPI app](../build-apps/fastapi-app) for the full example.
+**Model serving with FastAPI**: Train a model with a Flyte pipeline, then serve predictions from it. During local development, the app loads the model from a local file. When deployed remotely, Flyte's `Parameter` system automatically resolves the model from the latest training run output. See [FastAPI app](../apps/build/fastapi-app) for the full example.
 
-**Agent UI with Gradio**: Build an interactive UI that kicks off agent runs using `flyte.with_runcontext()`. A single `RUN_MODE` environment variable controls the deployment progression: fully local (rapid iteration), local UI with remote task execution (cluster compute), or fully remote (production). See [Build apps](../build-apps/_index) for details.
+**Agent UI with Gradio**: Build an interactive UI that kicks off agent runs using `flyte.with_runcontext()`. A single `RUN_MODE` environment variable controls the deployment progression: fully local (rapid iteration), local UI with remote task execution (cluster compute), or fully remote (production). See [Build apps](../apps/build/_index) for details.
 
 ## Next steps
 
@@ -118,4 +118,4 @@ You now understand the core building blocks of Flyte:
 
 Before diving deeper, check out [Key capabilities](./key-capabilities) for an overview of what Flyte can do—from parallelism and caching to LLM serving and error recovery.
 
-Then head to [Basic project](../basic-project) to build an end-to-end ML system with training tasks and a serving app.
+Then head to [Basic project](../tutorials/basic-project) to build an end-to-end ML system with training tasks and a serving app.

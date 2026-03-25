@@ -41,7 +41,7 @@ Supported types include:
 - Files: `flyte.File`, `flyte.Directory`
 - Custom: dataclasses, Pydantic models
 
-See [Data classes and structures](../task-programming/dataclasses-and-structures) for complex types.
+See [Data classes and structures](../tasks/data-types/dataclasses-and-structures) for complex types.
 
 ## Tasks calling tasks
 

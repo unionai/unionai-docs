@@ -659,7 +659,7 @@ Now, you can debug multi-node distributed computations on Ray directly.
 ![Debugging Ray Head Node](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/release-notes/2025-10_ray_head_debug.gif)
 
 ### :zap: Triggers and audit history
-[Triggers](../user-guide/task-configuration/triggers) let you templatize and set schedules for your workflows, similar to Launch Plans in Flyte 1.0.
+[Triggers](../user-guide/tasks/configuring/triggers) let you templatize and set schedules for your workflows, similar to Launch Plans in Flyte 1.0.
 
 ```python
 @env.task(triggers=flyte.Trigger.hourly())  # Every hour

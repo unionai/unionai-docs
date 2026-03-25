@@ -10,7 +10,7 @@ llm_readable_bundle: true
 
 {{< llm-bundle-note >}}
 
-Now that you've completed the [Quickstart](../quickstart), let's explore Flyte's core concepts through working examples.
+Now that you've completed the [Quickstart](../getting-started/quickstart), let's explore Flyte's core concepts through working examples.
 
 By the end of this section, you'll understand:
 
