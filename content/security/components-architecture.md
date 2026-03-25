@@ -1,11 +1,11 @@
 ---
-title: Component architecture
-weight: 12
+title: Compute and control plane components
+weight: 11
 variants: -flyte +byoc +selfmanaged
 mermaid: true
 ---
 
-# Compute and control plane components reference
+# Compute and control plane components
 
 This section provides a detailed reference for each security-relevant component running on the compute plane and/or control plane.
 Understanding these components is essential for enterprise security teams conducting architecture reviews.
@@ -104,10 +104,10 @@ At no point does the Executor communicate directly with external services outsid
 ## Object store service
 
 The Object Store Service runs on the compute plane and provides the signing capabilities that enable the presigned URL security model.
-Its key operations include:  
-- `CreateSignedURL` (generates presigned URLs using the customer’s IAM credentials via the admin role). 
-- `CreateUploadLocation` (generates presigned `PUT` URLs for fast registration with `Content-MD5` integrity verification)  
-- `Presign` (generic presigning for arbitrary object store keys)  
+Its key operations include:
+- `CreateSignedURL` (generates presigned URLs using the customer’s IAM credentials via the admin role).
+- `CreateUploadLocation` (generates presigned `PUT` URLs for fast registration with `Content-MD5` integrity verification)
+- `Presign` (generic presigning for arbitrary object store keys)
 - `Get`/`Put` (direct object store read/write used internally by platform services).
 
 Two object store buckets are provisioned per compute plane cluster: a metadata bucket for task inputs, outputs, reports, and intermediate data, and a "fast-registration" bucket for code bundles uploaded during task registration.

@@ -1,6 +1,6 @@
 ---
 title: BYOC deployment differences
-weight: 14
+weight: 13
 variants: -flyte +byoc +selfmanaged
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: Presigned URL data types
-weight: 16
+weight: 15
 variants: -flyte +byoc +selfmanaged
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: Security architecture
-weight: 2
+weight: 1
 variants: -flyte +byoc +selfmanaged
 ---
 

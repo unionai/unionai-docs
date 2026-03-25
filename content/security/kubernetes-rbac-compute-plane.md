@@ -1,10 +1,10 @@
 ---
-title: "Kubernetes RBAC: compute plane"
-weight: 18
+title: "Kubernetes RBAC: Compute plane"
+weight: 17
 variants: -flyte +byoc +selfmanaged
 ---
 
-# Kubernetes RBAC: compute plane
+# Kubernetes RBAC: Compute plane
 
 ## Union core services (compute plane)
 

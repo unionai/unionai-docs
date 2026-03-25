@@ -1,6 +1,6 @@
 ---
 title: Identity and access management
-weight: 4
+weight: 3
 variants: -flyte +byoc +selfmanaged
 ---
 

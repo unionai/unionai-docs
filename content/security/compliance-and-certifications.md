@@ -1,6 +1,6 @@
 ---
 title: Compliance and certifications
-weight: 8
+weight: 7
 variants: -flyte +byoc +selfmanaged
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: Secrets management
-weight: 5
+weight: 4
 variants: -flyte +byoc +selfmanaged
 ---
 

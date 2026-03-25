@@ -1,10 +1,10 @@
 ---
-title: "Kubernetes RBAC: control plane"
-weight: 17
+title: "Kubernetes RBAC: Control plane"
+weight: 16
 variants: -flyte +byoc +selfmanaged
 ---
 
-# Kubernetes RBAC: control plane
+# Kubernetes RBAC: Control plane
 
 **All roles are ClusterRole**
 

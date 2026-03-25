@@ -1,6 +1,6 @@
 ---
 title: Data residency summary
-weight: 15
+weight: 14
 variants: -flyte +byoc +selfmanaged
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: AWS IAM roles
-weight: 19
+weight: 18
 variants: -flyte +byoc +selfmanaged
 ---
 

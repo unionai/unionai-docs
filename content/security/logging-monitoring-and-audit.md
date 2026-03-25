@@ -1,6 +1,6 @@
 ---
 title: Logging, monitoring, and audit
-weight: 7
+weight: 6
 variants: -flyte +byoc +selfmanaged
 ---
 

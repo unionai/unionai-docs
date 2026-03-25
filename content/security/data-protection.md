@@ -1,6 +1,6 @@
 ---
 title: Data protection
-weight: 3
+weight: 2
 variants: -flyte +byoc +selfmanaged
 ---
 

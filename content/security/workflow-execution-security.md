@@ -1,6 +1,6 @@
 ---
 title: Workflow execution security
-weight: 9
+weight: 8
 variants: -flyte +byoc +selfmanaged
 ---
 
