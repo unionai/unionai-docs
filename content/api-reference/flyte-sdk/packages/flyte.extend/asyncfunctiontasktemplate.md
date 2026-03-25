@@ -1,6 +1,6 @@
 ---
 title: AsyncFunctionTaskTemplate
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,7 +11,6 @@ layout: py_api
 
 A task template that wraps an asynchronous functions. This is automatically created when an asynchronous function
 is decorated with the task decorator.
-
 
 
 ## Parameters
@@ -116,7 +115,6 @@ The aio function allows executing "sync" tasks, in an async context. This helps 
 tasks to be used within an asyncio parent task.
 This function will also re-raise exceptions from the underlying task.
 
-Example:
 ```python
 @env.task
 def my_legacy_task(x: int) -> int:

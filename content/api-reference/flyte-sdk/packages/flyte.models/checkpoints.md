@@ -1,6 +1,6 @@
 ---
 title: Checkpoints
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -10,7 +10,6 @@ layout: py_api
 **Package:** `flyte.models`
 
 A class representing the checkpoints for a task. This is used to store the checkpoints for the task execution.
-
 
 
 ## Parameters

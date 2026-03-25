@@ -1,6 +1,6 @@
 ---
 title: CodeTaskTemplate
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,10 +11,9 @@ layout: py_api
 
 A sandboxed task created from a code string rather than a decorated function.
 
-    Unlike `SandboxedTaskTemplate` (which extracts source from a Python
-    function), this class accepts pre-transformed source code and an explicit
-    dict of external functions.  It is constructed via `flyte.sandbox.orchestrator_from_str`.
-    
+Unlike `SandboxedTaskTemplate` (which extracts source from a Python
+function), this class accepts pre-transformed source code and an explicit
+dict of external functions.  It is constructed via `flyte.sandbox.orchestrator_from_str`.
 
 
 ## Parameters
@@ -125,7 +124,6 @@ The aio function allows executing "sync" tasks, in an async context. This helps 
 tasks to be used within an asyncio parent task.
 This function will also re-raise exceptions from the underlying task.
 
-Example:
 ```python
 @env.task
 def my_legacy_task(x: int) -> int:

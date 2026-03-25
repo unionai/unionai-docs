@@ -1,6 +1,6 @@
 ---
 title: TokenEstimator
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,19 +11,10 @@ layout: py_api
 
 Protocol for records that can estimate their own token count.
 
-    Implement this on your record type and the `TokenBatcher` will
-    call it automatically when no explicit `estimated_tokens` is passed
-    to `TokenBatcher.submit`.
+Implement this on your record type and the `TokenBatcher` will
+call it automatically when no explicit `estimated_tokens` is passed
+to `TokenBatcher.submit`.
 
-    Example::
-
-        @dataclass
-        class Prompt:
-            text: str
-
-            def estimate_tokens(self) -&gt; int:
-                return len(self.text) // 4 + 1
-    
 
 
 ```python

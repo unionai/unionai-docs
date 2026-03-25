@@ -1,6 +1,6 @@
 ---
 title: Dir
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -370,8 +370,6 @@ Create a Dir reference from an existing remote directory.
 
 Use this when you want to reference a directory that already exists in remote storage without uploading it.
 
-Example:
-
 ```python
 @env.task
 async def process_existing_directory() -> int:
@@ -681,14 +679,6 @@ Create a new Dir reference for a remote directory that will be written to.
 
 Use this when you want to create a new directory and write files into it
 directly without creating a local directory first.
-
-Example::
-
-    @env.task
-    async def create() -&gt; Dir:
-        d = Dir.new_remote("output")
-        # write files into d ...
-        return d
 
 
 

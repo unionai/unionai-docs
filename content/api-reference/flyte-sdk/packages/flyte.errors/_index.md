@@ -1,6 +1,6 @@
 ---
 title: flyte.errors
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -8,12 +8,10 @@ sidebar_expanded: true
 
 # flyte.errors
 
-
 Exceptions raised by Union.
 
 These errors are raised when the underlying task execution fails, either because of a user error, system error or an
 unknown error.
-
 ## Directory
 
 ### Errors

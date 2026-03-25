@@ -1,6 +1,6 @@
 ---
 title: FastAPIPassthroughAuthMiddleware
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -24,7 +24,6 @@ Thread Safety:
     This middleware is async-safe and properly isolates auth metadata per request
     using Python's contextvars. Multiple concurrent requests with different
     authentication will not interfere with each other.
-
 
 
 ## Parameters
@@ -118,15 +117,6 @@ def extract_custom_header(
 ```
 Create a header extractor for a custom header name.
 
-Example::
-
-    # Create extractor for X-API-Key header
-    api_key_extractor = extract_custom_header("x-api-key")
-
-    app.add_middleware(
-        FastAPIAuthMiddleware,
-        header_extractors=[api_key_extractor],
-    )
 
 
 | Parameter | Type | Description |

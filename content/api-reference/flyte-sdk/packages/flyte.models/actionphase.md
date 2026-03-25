@@ -1,6 +1,6 @@
 ---
 title: ActionPhase
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -22,22 +22,6 @@ Actions progress through different phases during their lifecycle:
 - Timed out: Action exceeded its timeout limit
 
 This enum can be used for filtering runs and checking execution status.
-
-Example:
-    &gt;&gt;&gt; from flyte.models import ActionPhase
-    &gt;&gt;&gt; from flyte.remote import Run
-    &gt;&gt;&gt;
-    &gt;&gt;&gt; # Filter runs by phase
-    &gt;&gt;&gt; runs = Run.listall(in_phase=(ActionPhase.SUCCEEDED, ActionPhase.FAILED))
-    &gt;&gt;&gt;
-    &gt;&gt;&gt; # Check if a run succeeded
-    &gt;&gt;&gt; run = Run.get("my-run")
-    &gt;&gt;&gt; if run.phase == ActionPhase.SUCCEEDED:
-    ...     print("Success!")
-    &gt;&gt;&gt;
-    &gt;&gt;&gt; # Check if phase is terminal
-    &gt;&gt;&gt; if run.phase.is_terminal:
-    ...     print("Run completed")
 
 
 
