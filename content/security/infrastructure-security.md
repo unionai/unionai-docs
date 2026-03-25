@@ -19,7 +19,7 @@ The compute plane runs on customer-managed Kubernetes clusters. Union supports t
 * Resource quotas and limit ranges to prevent resource abuse
 * Pod security contexts enforcing non-root execution where applicable
 
-A complete list of compute plane permissions appears in **[Appendix D](./appendix#d-kubernetes-rbac---compute-plane)**
+A complete list of compute plane permissions appears in **[Kubernetes RBAC: compute plane](./kubernetes-rbac-compute-plane)**
 
 ## Container security
 

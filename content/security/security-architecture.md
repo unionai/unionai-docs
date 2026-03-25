@@ -22,7 +22,7 @@ The control plane never stores customer data payloads.
 It stores only references (URIs) to data in the customer’s object store, no data.
 When data must be surfaced to a client, the control plane either proxies a signing request to generate a presigned URL or relays a data stream from the compute plane without persisting it.
 
-**See comprehensive list of control plane roles and permissions in [Appendix C](./appendix#c-kubernetes-rbac---control-plane).**
+**See comprehensive list of control plane roles and permissions in [Kubernetes RBAC: control plane](./kubernetes-rbac-control-plane).**
 
 ### Compute plane (customer hosted)
 
@@ -40,7 +40,7 @@ All customer data resides here, including:
 | Reports (HTML) | Object Store (S3/GCS/Azure Blob) | Accessed by the browser via presigned URL |
 | Cluster events | K8s API (ephemeral) | Live from K8s API |
 
-**See comprehensive list of compute plane roles and permissions in [Appendix D](./appendix#d-kubernetes-rbac---compute-plane).**
+**See comprehensive list of compute plane roles and permissions in [Kubernetes RBAC: compute plane](./kubernetes-rbac-compute-plane).**
 
 ## Network architecture
 
