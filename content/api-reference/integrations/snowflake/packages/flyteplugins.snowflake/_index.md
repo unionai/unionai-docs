@@ -1,12 +1,11 @@
 ---
 title: flyteplugins.snowflake
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
 # flyteplugins.snowflake
-
 
 Key features:
 
@@ -50,7 +49,6 @@ if __name__ == "__main__":
 
     print(run.url)
 ```
-
 ## Directory
 
 ### Classes

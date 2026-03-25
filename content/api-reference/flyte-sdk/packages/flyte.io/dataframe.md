@@ -1,6 +1,6 @@
 ---
 title: DataFrame
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -23,7 +23,6 @@ The Flyte DataFrame object serves 2 main purposes:
  can accept a flyte.io.DataFrame, which can be converted to any dataframe.
 2. Allows for non materialized access to DataFrame objects. So, for example you can accept any dataframe as a
 flyte.io.DataFrame and this is just a reference and will not materialize till you force `.all()` or `.iter()` etc
-
 
 
 ## Parameters
@@ -142,10 +141,6 @@ def from_existing_remote(
 ```
 Create a DataFrame reference from an existing remote dataframe.
 
-Example:
-    ```python
-    df = DataFrame.from_existing_remote("s3://bucket/data.parquet", format="parquet")
-    ```
 
 
 | Parameter | Type | Description |

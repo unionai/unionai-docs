@@ -1,6 +1,6 @@
 ---
 title: Trigger
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -18,8 +18,6 @@ can be associated with multiple tasks.
 Predefined convenience constructors are available: `Trigger.hourly()`,
 `Trigger.daily()`, `Trigger.weekly()`, `Trigger.monthly()`, and
 `Trigger.minutely()`.
-
-Example:
 
 ```python
 my_trigger = flyte.Trigger(

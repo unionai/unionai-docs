@@ -1,6 +1,6 @@
 ---
 title: flyte.prefetch
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -8,12 +8,10 @@ sidebar_expanded: true
 
 # flyte.prefetch
 
-
 Prefetch utilities for Flyte.
 
 This module provides functionality to prefetch various artifacts from remote registries,
 such as HuggingFace models.
-
 ## Directory
 
 ### Classes

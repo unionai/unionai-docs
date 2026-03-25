@@ -1,6 +1,6 @@
 ---
 title: AppEnvironment
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -10,8 +10,6 @@ layout: py_api
 **Package:** `flyte.app`
 
 Configure a long-running app environment for APIs, dashboards, or model servers.
-
-Example:
 
 ```python
 app_env = flyte.app.AppEnvironment(

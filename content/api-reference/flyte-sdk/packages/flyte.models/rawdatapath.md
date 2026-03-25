@@ -1,6 +1,6 @@
 ---
 title: RawDataPath
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,7 +11,6 @@ layout: py_api
 
 A class representing the raw data path for a task. This is used to store the raw data for the task execution and
 also get mutations on the path.
-
 
 
 ## Parameters

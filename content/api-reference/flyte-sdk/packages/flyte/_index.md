@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -8,9 +8,7 @@ sidebar_expanded: true
 
 # flyte
 
-
 Flyte SDK for authoring compound AI applications, services and workflows.
-
 ## Directory
 
 ### Classes
@@ -188,7 +186,6 @@ def build(
 ```
 Build an image. The existing async context will be used.
 
-Example:
 ```
 import flyte
 image = flyte.Image("example_image")
@@ -277,7 +274,6 @@ def custom_context(
 ```
 Synchronous context manager to set input context for tasks spawned within this block.
 
-Example:
 ```python
 import flyte
 
@@ -340,7 +336,6 @@ context metadata that was passed to the action.
 
 Context will automatically propagate to sub-actions.
 
-Example:
 ```python
 import flyte
 
@@ -366,7 +361,6 @@ def group(
 ```
 Create a new group with the given name. The method is intended to be used as a context manager.
 
-Example:
 ```python
 @task
 async def my_task():
@@ -702,26 +696,6 @@ Project and domain are read from the init config (set via `flyte.init()`
 or `flyte.init_from_config()`), consistent with `flyte.run()`.
 
 
-Example::
-
-    import flyte
-    from pathlib import Path
-
-    flyte.init(endpoint="my-cluster.example.com")
-
-    # With a list of packages (auto-builds image)
-    run = flyte.run_python_script(
-        Path("train.py"),
-        gpu=1,
-        gpu_type="A100",
-        memory="64Gi",
-        image=["torch", "transformers"],
-    )
-    print(run.url)
-
-    # With a custom Image object
-    img = flyte.Image.from_debian_base(name="my-img").with_pip_packages("numpy")
-    run = flyte.run_python_script(Path("analysis.py"), image=img)
 
 
 | Parameter | Type | Description |
@@ -759,7 +733,6 @@ Serve a Flyte app using an AppEnvironment.
 This is the simple, direct way to serve an app. For more control over
 deployment settings (env vars, cluster pool, etc.), use with_servecontext().
 
-Example:
 ```python
 import flyte
 from flyte.app.extras import FastAPIAppEnvironment
@@ -843,7 +816,6 @@ def with_runcontext(
 ```
 Launch a new run with the given parameters as the context.
 
-Example:
 ```python
 import flyte
 import flyte.notify as notify

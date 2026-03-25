@@ -1,13 +1,12 @@
 ---
 title: flyte.types
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
 ---
 
 # flyte.types
-
 
 # Flyte Type System
 
@@ -27,7 +26,6 @@ The type system includes:
 It is always possible to bypass the type system and use the `FlytePickle` type to serialize any python object
  into a pickle format. The pickle format is not human-readable, but can be passed between flyte tasks that are
  written in python. The Pickled objects cannot be represented in the UI, and may be in-efficient for large datasets.
-
 ## Directory
 
 ### Classes

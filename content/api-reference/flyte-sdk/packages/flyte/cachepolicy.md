@@ -1,6 +1,6 @@
 ---
 title: CachePolicy
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -24,7 +24,6 @@ class GitHashPolicy:
         git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()
         return hashlib.sha256(f"{salt}{git_hash}".encode()).hexdigest()
 ```
-
 
 
 ```python

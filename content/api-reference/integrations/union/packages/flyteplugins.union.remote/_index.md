@@ -29,7 +29,6 @@ Example:
 
     # Delete an API key
     ApiKey.delete(client_id="my-client-id")
-
 ## Directory
 
 ### Classes

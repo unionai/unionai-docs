@@ -1,6 +1,6 @@
 ---
 title: Notification
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,8 +11,7 @@ layout: py_api
 
 Base notification class.
 
-    All notification types must specify phases when they should trigger.
-    
+All notification types must specify phases when they should trigger.
 
 
 ## Parameters

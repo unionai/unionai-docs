@@ -1,6 +1,6 @@
 ---
 title: Event
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -18,20 +18,6 @@ This class encapsulates the entire HITL functionality:
 
 The app is automatically served when the Event is created via `Event.create()`.
 All infrastructure details (AppEnvironment, deployment) are abstracted away.
-
-Example:
-    # Create an event (serves the app) and wait for input
-    event = await Event.create.aio(
-        "proceed_event",
-        scope="run",
-        prompt="What should I add to x?",
-        data_type=int,
-    )
-    result = await event.wait.aio()
-
-    # Or synchronously
-    event = Event.create("my_event", scope="run", prompt="Enter value", data_type=str)
-    value = event.wait()
 
 
 
@@ -104,19 +90,6 @@ This method creates an event that waits for human input via the FastAPI app.
 The app is automatically served if not already running. All infrastructure
 details are abstracted away - you just get an event to wait on.
 
-Example:
-    # Async usage
-    event = await Event.create.aio(
-        "approval_event",
-        scope="run",
-        prompt="Do you approve this action?",
-        data_type=bool,
-    )
-    approved = await event.wait.aio()
-
-    # Sync usage
-    event = Event.create("value_event", scope="run", prompt="Enter a number", data_type=int)
-    value = event.wait()
 
 
 | Parameter | Type | Description |

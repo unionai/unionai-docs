@@ -1,6 +1,6 @@
 ---
 title: Mlflow
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,21 +11,20 @@ layout: py_api
 
 MLflow UI link for Flyte tasks.
 
-    Resolves the link URL from one of two sources (in priority order):
+Resolves the link URL from one of two sources (in priority order):
 
-    1. **Explicit link** — set at definition or override time::
+1. **Explicit link** — set at definition or override time::
 
-           @env.task(links=[Mlflow(link="https://mlflow.example.com/...")])
+       @env.task(links=[Mlflow(link="https://mlflow.example.com/...")])
 
-           task.override(links=[Mlflow(link="https://...")])()
+       task.override(links=[Mlflow(link="https://...")])()
 
-    2. **Context link** — auto-generated from `link_host` (and optional
-       `link_template`) set via `mlflow_config()`. Propagates to child
-       tasks that share or nest under the parent's run. Cleared when a task
-       creates an independent run (`run_mode="new"`). For nested runs
-       (`run_mode="nested"`), the parent link is kept and the link name
-       is automatically set to "MLflow (parent)".
-    
+2. **Context link** — auto-generated from `link_host` (and optional
+   `link_template`) set via `mlflow_config()`. Propagates to child
+   tasks that share or nest under the parent's run. Cleared when a task
+   creates an independent run (`run_mode="new"`). For nested runs
+   (`run_mode="nested"`), the parent link is kept and the link name
+   is automatically set to "MLflow (parent)".
 
 
 ## Parameters

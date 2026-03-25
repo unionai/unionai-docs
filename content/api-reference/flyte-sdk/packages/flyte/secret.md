@@ -1,6 +1,6 @@
 ---
 title: Secret
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -15,7 +15,6 @@ Secrets can be mounted as environment variables or files.
 secret stores to organize secrets. The as_env_var is an optional parameter that can be used to specify the
 name of the environment variable that the secret should be mounted as.
 
-Example:
 ```python
 @task(secrets="my-secret")
 async def my_task():

@@ -11,30 +11,10 @@ layout: py_api
 
 Represents a Union API Key (OAuth Application).
 
-    API Keys in Union are OAuth 2.0 applications that can be used for
-    headless authentication. They support client credentials flow for
-    machine-to-machine authentication.
+API Keys in Union are OAuth 2.0 applications that can be used for
+headless authentication. They support client credentials flow for
+machine-to-machine authentication.
 
-    Attributes:
-        pb2: The underlying protobuf App message
-        organization: The organization this API key belongs to (for serverless)
-        encoded_credentials: Base64-encoded credentials for UNION_API_KEY env var
-
-    Example:
-        # Create a new API key
-        api_key = ApiKey.create(name="ci-pipeline")
-        print(f"export FLYTE_API_KEY="{api_key.encoded_credentials}"")
-
-        # List all API keys
-        for key in ApiKey.listall():
-            print(f"{key.client_id}: {key.client_name}")
-
-        # Get a specific API key
-        key = ApiKey.get(client_id="my-client-id")
-
-        # Delete an API key
-        ApiKey.delete(client_id="my-client-id")
-    
 
 
 ## Parameters
@@ -48,9 +28,9 @@ class ApiKey(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `pb2` | `App` | |
-| `organization` | `str \| None` | |
-| `encoded_credentials` | `str \| None` | |
+| `pb2` | `App` | The underlying protobuf App message |
+| `organization` | `str \| None` | The organization this API key belongs to (for serverless) |
+| `encoded_credentials` | `str \| None` | Base64-encoded credentials for UNION_API_KEY env var |
 
 ## Properties
 
@@ -89,11 +69,6 @@ def create(
 ```
 Create a new API key.
 
-Example:
-    api_key = ApiKey.create(name="ci-pipeline")
-    print(f"Client ID: {api_key.client_id}")
-    print(f"Client Secret: {api_key.client_secret}")
-    print(f"Encoded: {api_key.encoded_credentials}")
 
 
 | Parameter | Type | Description |
@@ -128,8 +103,6 @@ def delete(
 ```
 Delete an API key.
 
-Example:
-    ApiKey.delete(client_id="old-ci-key")
 
 
 | Parameter | Type | Description |
@@ -158,9 +131,6 @@ def get(
 ```
 Get an API key by client ID.
 
-Example:
-    key = ApiKey.get(client_id="my-client-id")
-    print(key.client_name)
 
 
 | Parameter | Type | Description |
@@ -197,9 +167,6 @@ List all API keys.
 Yields:
     ApiKey instances
 
-Example:
-    for key in ApiKey.listall(limit=10):
-        print(f"{key.client_id}: {key.client_name}")
 
 
 | Parameter | Type | Description |
@@ -246,11 +213,6 @@ def update(
 ```
 Update an API key.
 
-Example:
-    key = ApiKey.update(
-        client_id="my-key",
-        client_name="renamed-key"
-    )
 
 
 | Parameter | Type | Description |

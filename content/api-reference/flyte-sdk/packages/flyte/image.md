@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -13,8 +13,6 @@ Container image specification built using a fluent, two-step pattern:
 
 1. Create a base image with a `from_*` constructor
 2. Customize with `with_*` methods (each returns a new `Image`)
-
-Example:
 
 ```python
 image = (
@@ -47,7 +45,6 @@ image = (
 - `with_workdir()` — Set the working directory
 - `with_dockerignore()` — Add a .dockerignore
 - `with_local_v2()` — Configure for local v2 execution
-
 
 
 ## Parameters
@@ -245,7 +242,6 @@ It uses the header of the script to determine the python version, dependencies t
 The script must be a valid uv script, otherwise an error will be raised.
 
 Usually the header of the script will look like this:
-Example:
 ```python
 #!/usr/bin/env -S uv run --script
 # /// script
@@ -416,7 +412,6 @@ def with_pip_packages(
 Use this method to create a new image with the specified pip packages layered on top of the current image
 Cannot be used in conjunction with conda
 
-Example:
 ```python
 @flyte.task(image=(flyte.Image.from_debian_base().with_pip_packages("requests", "numpy")))
 def my_task(x: int) -> int:
@@ -427,7 +422,6 @@ def my_task(x: int) -> int:
 To mount secrets during the build process to download private packages, you can use the `secret_mounts`.
 In the below example, "GITHUB_PAT" will be mounted as env var "GITHUB_PAT",
  and "apt-secret" will be mounted at /etc/apt/apt-secret.
-Example:
 ```python
 private_package = "git+https://$GITHUB_PAT@github.com/flyteorg/flytex.git@2e20a2acebfc3877d84af643fdd768edea41d533"
 @flyte.task(
