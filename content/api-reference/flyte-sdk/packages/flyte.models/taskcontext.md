@@ -1,6 +1,6 @@
 ---
 title: TaskContext
-version: 2.0.10
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -34,6 +34,7 @@ class TaskContext(
     interactive_mode: bool,
     custom_context: Dict[str, str],
     disable_run_cache: bool,
+    in_driver_literal_conversion: bool,
 )
 ```
 | Parameter | Type | Description |
@@ -54,6 +55,7 @@ class TaskContext(
 | `interactive_mode` | `bool` | |
 | `custom_context` | `Dict[str, str]` | Context metadata for the action. If an action receives context, it'll automatically pass it to any actions it spawns. Context will not be used for cache key computation. |
 | `disable_run_cache` | `bool` | |
+| `in_driver_literal_conversion` | `bool` | Set by the runtime during nested-task literal marshalling; type transformers may use it to skip duplicate side effects (e.g. report tabs) outside true task-body I/O. |
 
 ## Methods
 
