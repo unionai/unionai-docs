@@ -241,6 +241,63 @@ You should see `build-image` listed.
 
 When you upgrade your self-hosted deployment to a new appVersion, repeat the registration steps with the new version. The SDK always uses the latest registered version.
 
+## Restricted network environments
+
+If your buildkit pods do not have egress to public container registries or the internet (e.g. due to network policies, firewall rules, or air-gapped infrastructure), additional configuration is required.
+
+### Container image access
+
+The image builder needs to pull three images during a build:
+
+| Image | Purpose | Default source |
+|-------|---------|---------------|
+| `frontend-v2` | Buildkit gateway frontend | `public.ecr.aws/...` (Union) |
+| `build-image` | Build task executor | `public.ecr.aws/...` (Union) |
+| Base image (e.g. `python:3.12-slim`) | User's base image | Docker Hub or custom registry |
+
+If buildkit cannot reach public registries, you must mirror these images to an internal registry that buildkit can access. Update the `union_image_name_prefix` in your `build_image_task.py` to point to your internal registry, and use `Image.from_base()` with an image URI from your internal registry.
+
+> [!NOTE]
+> Starting with version `2026.3.7`, the `uv` package manager binary is baked into the `frontend-v2` image. Previous versions pulled `ghcr.io/astral-sh/uv` as a separate image during builds, which required additional mirroring.
+
+### Python version constraints
+
+When using a custom base image via `Image.from_base()`, the Python version in your base image must match the Python version in your image specification. The image builder does not download Python interpreters from the internet — it uses only the Python already installed in the base image.
+
+If there is a version mismatch, the build will fail with:
+
+```
+error: No interpreter found for Python 3.13 in managed installations or search path
+hint: A managed Python download is available for Python 3.13, but Python downloads are set to 'never'
+```
+
+To resolve this, ensure your `python_version` matches what is installed in your base image:
+
+```python
+# Base image has Python 3.12 installed
+image = Image.from_base("your-registry.example.com/python:3.12-slim")
+```
+
+### AWS VPC endpoints
+
+For AWS deployments where pods cannot reach public endpoints, configure VPC interface endpoints for ECR so that buildkit can push and pull images through private network paths:
+
+- `com.amazonaws.<region>.ecr.api` — ECR API (authentication, image metadata)
+- `com.amazonaws.<region>.ecr.dkr` — ECR Docker registry (image push/pull)
+- `com.amazonaws.<region>.s3` — S3 Gateway endpoint (ECR stores image layers in S3)
+
+The ECR interface endpoints must have private DNS enabled and a security group that allows inbound traffic from the VPC CIDR blocks (including any secondary CIDRs used by EKS pod networking).
+
+### Package index access
+
+The image builder runs `pip install` or `uv pip install` to install Python packages during builds. If your buildkit pods cannot reach `pypi.org`, you must configure a private package index. You can do this by including a `pip.conf` or setting the `PIP_INDEX_URL` environment variable in your base image:
+
+```dockerfile
+# In your custom base image Dockerfile
+ENV PIP_INDEX_URL=https://your-artifactory.example.com/api/pypi/pypi-remote/simple
+ENV PIP_TRUSTED_HOST=your-artifactory.example.com
+```
+
 ## Troubleshooting
 
 ### "remote image builder is not enabled"
