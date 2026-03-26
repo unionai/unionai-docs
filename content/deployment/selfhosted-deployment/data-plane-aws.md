@@ -15,7 +15,7 @@ This guide covers deploying the {{< key product_name >}} data plane in the same 
 
 In addition to the [general prerequisites](./_index#prerequisites):
 
-1. **{{< key product_name >}} control plane** deployed in the same cluster (namespace `union-cp`)
+1. **{{< key product_name >}} control plane** deployed in the same cluster
 2. **S3 buckets** for data plane metadata storage
 3. **IAM roles** configured with [IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) for backend and worker service accounts
 4. **Network connectivity** between data plane and control plane namespaces
@@ -26,7 +26,7 @@ In addition to the [general prerequisites](./_index#prerequisites):
 
 ```shell
 helm upgrade --install unionai-dataplane-crds unionai/dataplane-crds \
-  --namespace union \
+  --namespace <dataplane-namespace> \
   --create-namespace
 ```
 
@@ -47,9 +47,9 @@ global:
   AWS_REGION: "us-east-1"
   BACKEND_IAM_ROLE_ARN: "arn:aws:iam::123456789012:role/union-backend"
   WORKER_IAM_ROLE_ARN: "arn:aws:iam::123456789012:role/union-worker"
-  CONTROLPLANE_INTRA_CLUSTER_HOST: "controlplane-nginx-controller.union-cp.svc.cluster.local"
-  QUEUE_SERVICE_HOST: "queue.union-cp.svc.cluster.local:80"
-  CACHESERVICE_ENDPOINT: "cacheservice.union-cp.svc.cluster.local:89"
+  CONTROLPLANE_INTRA_CLUSTER_HOST: "<controlplane-ingress>.<controlplane-namespace>.svc.cluster.local"
+  QUEUE_SERVICE_HOST: "<queue-service>.<controlplane-namespace>.svc.cluster.local:80"
+  CACHESERVICE_ENDPOINT: "<cacheservice>.<controlplane-namespace>.svc.cluster.local:89"
 ```
 
 If authentication is enabled on the control plane, also set `AUTH_CLIENT_ID`. See the [Authentication](./authentication) guide.
@@ -58,7 +58,7 @@ If authentication is enabled on the control plane, also set `AUTH_CLIENT_ID`. Se
 
 ```shell
 helm upgrade --install unionai-dataplane unionai/dataplane \
-  --namespace union \
+  --namespace <dataplane-namespace> \
   --create-namespace \
   -f values.aws.selfhosted-intracluster.yaml \
   -f values.aws.selfhosted-overrides.yaml \
@@ -75,14 +75,14 @@ helm upgrade --install unionai-dataplane unionai/dataplane \
 
 ```shell
 # Check that data plane pods are running
-kubectl get pods -n union
+kubectl get pods -n <dataplane-namespace>
 
 # Verify connectivity to control plane
-kubectl logs -n union -l app.kubernetes.io/name=operator --tail=50 | grep "connection"
+kubectl logs -n <dataplane-namespace> -l app.kubernetes.io/name=operator --tail=50 | grep "connection"
 
 # Check service DNS resolution
-kubectl exec -n union deploy/unionai-dataplane-operator -- \
-  nslookup controlplane-nginx-controller.union-cp.svc.cluster.local
+kubectl exec -n <dataplane-namespace> deploy/unionai-dataplane-operator -- \
+  nslookup <controlplane-ingress>.<controlplane-namespace>.svc.cluster.local
 ```
 
 ## Key differences from self-managed deployment
@@ -101,23 +101,23 @@ kubectl exec -n union deploy/unionai-dataplane-operator -- \
 
 ```shell
 # Check DNS resolution from data plane namespace
-kubectl run -n union test-dns --image=busybox --rm -it -- \
-  nslookup controlplane-nginx-controller.union-cp.svc.cluster.local
+kubectl run -n <dataplane-namespace> test-dns --image=busybox --rm -it -- \
+  nslookup <controlplane-ingress>.<controlplane-namespace>.svc.cluster.local
 
 # Verify the service exists
-kubectl get svc -n union-cp | grep nginx-controller
+kubectl get svc -n <controlplane-namespace> | grep nginx-controller
 ```
 
 ### Connection refused errors
 
 ```shell
 # Verify control plane services are running
-kubectl get svc -n union-cp
-kubectl get pods -n union-cp
+kubectl get svc -n <controlplane-namespace>
+kubectl get pods -n <controlplane-namespace>
 
 # Check network policies
-kubectl get networkpolicies -n union
-kubectl get networkpolicies -n union-cp
+kubectl get networkpolicies -n <dataplane-namespace>
+kubectl get networkpolicies -n <controlplane-namespace>
 ```
 
 ### Certificate verification errors
