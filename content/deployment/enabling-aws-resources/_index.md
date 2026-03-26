@@ -10,12 +10,12 @@ llm_readable_bundle: true
 
 {{< llm-bundle-note >}}
 
-Components of your {{< key product_name >}} compute plane will need to connect to and communicate with other resources in your cloud environment such as [AWS S3 storage](./enabling-aws-s3), [AWS Elastic Container Registry](./enabling-aws-ecr), and so forth.
+Components of your {{< key product_name >}} data plane will need to connect to and communicate with other resources in your cloud environment such as [AWS S3 storage](./enabling-aws-s3), [AWS Elastic Container Registry](./enabling-aws-ecr), and so forth.
 
 > [!NOTE] Secret management
 > We strongly recommend using the [{{< key product_name >}} secrets manager](../../user-guide/task-configuration/secrets) to manage secrets rather than AWS Secrets Manager. If your organization must use AWS Secrets Manager, however, see [Enabling AWS Secrets Manager](./enabling-aws-secrets-manager).
 
-As much as possible, access to the resources you need will be pre-configured by the {{< key product_name >}} team when they set up your compute plane.
+As much as possible, access to the resources you need will be pre-configured by the {{< key product_name >}} team when they set up your data plane.
 For example, if you want your task code to have access to a specific S3 bucket or database, this can be pre-configured.
 **You just have to inform the team of your specific requirements before the setup process begins**.
 
@@ -31,10 +31,10 @@ You can always contact the {{< key product_name >}} team for help enabling addit
 Broadly speaking, there are two categories of access that you are likely to have to deal with:
 
 * **Infrastructure access**:
-  Enabling access to a resource for your compute plane infrastructure.
-  The most common case occurs when you are using [AWS Elastic Container Registry (ECR)](./enabling-aws-ecr) for your task container images, and it resides in an AWS account other than the one containing your compute plane.
-  In that case, some configuration is required to enable the {{< key product_name >}} operator on your compute plane to pull images from the registry when registering your workflows and tasks.
-  **If you are using an ECR instance within the same AWS account as your compute plane, then access is enabled by default and no further configuration is needed.**
+  Enabling access to a resource for your data plane infrastructure.
+  The most common case occurs when you are using [AWS Elastic Container Registry (ECR)](./enabling-aws-ecr) for your task container images, and it resides in an AWS account other than the one containing your data plane.
+  In that case, some configuration is required to enable the {{< key product_name >}} operator on your data plane to pull images from the registry when registering your workflows and tasks.
+  **If you are using an ECR instance within the same AWS account as your data plane, then access is enabled by default and no further configuration is needed.**
 * **Task code access**:
   Enabling access to a resource for your task code.
   For example, your task code might need to access [AWS S3 storage](./enabling-aws-s3) or [AWS Secrets Manager](./enabling-aws-secrets-manager) at runtime.
@@ -42,16 +42,16 @@ Broadly speaking, there are two categories of access that you are likely to have
 
 ## Infrastructure-level access
 
-The only infrastructure-level access issue you are likely to encounter is around access to an AWS Elastic Container Registry (ECR) _in an AWS account other than the one in which your compute plane resides_.
+The only infrastructure-level access issue you are likely to encounter is around access to an AWS Elastic Container Registry (ECR) _in an AWS account other than the one in which your data plane resides_.
 
-**If your task container images are stored in an AWS Elastic Container Registry in the same AWS account as your compute plane, then access is already enabled. You do not have to do anything.**
+**If your task container images are stored in an AWS Elastic Container Registry in the same AWS account as your data plane, then access is already enabled. You do not have to do anything.**
 
-If your task container images reside in an ECR instance in **another AWS account** you will need configure that ECR instance to allow access from your compute plane.
+If your task container images reside in an ECR instance in **another AWS account** you will need configure that ECR instance to allow access from your data plane.
 See [Enabling AWS ECR](./enabling-aws-ecr) for details.
 
 ## Task code access
 
-When your task code runs, it executes within a pod in the Kubernetes cluster in your compute plane.
+When your task code runs, it executes within a pod in the Kubernetes cluster in your data plane.
 To enable your task code to access cloud resources you must grant the appropriate permissions to a role that is attached to the Kubernetes cluster.
 
 There are two main options for setting this up:
@@ -73,7 +73,7 @@ Global access is recommended for most use cases since it is simpler, but if you 
 
 ## Background
 
-As you know, your workflows and tasks run in a Kubernetes cluster within your compute plane.
+As you know, your workflows and tasks run in a Kubernetes cluster within your data plane.
 Within that cluster, the Kubernetes pods allocated to run your task code are organized as follows:
 
 * The set of task pods is partitioned into namespaces where each namespace corresponds to a project-domain pair.
@@ -82,7 +82,7 @@ Within that cluster, the Kubernetes pods allocated to run your task code are org
 * By default, all project-domain namespaces are bound to a common IAM role which we will refer to as `<UserFlyteRole>`.
   Its actual name differs from organization to organization. **The actual name will have the form `<YourOrgPrefix>-userflyterole`**.
 * The role `<UserFlyteRole>` has an attached policy called `userflyterole`.
-  This policy contains all the permissions granted to your task code when your compute plane was set up.
+  This policy contains all the permissions granted to your task code when your data plane was set up.
   If you requested permissions for resources specific to your organization at set up time, they will have been added here.
 
 > [!NOTE] `<UserFlyteRole>` vs `userflyterole`
@@ -90,7 +90,7 @@ Within that cluster, the Kubernetes pods allocated to run your task code are org
 > As mentioned the actual name of this role in your system will be of the form `<YourOrgPrefix>-userflyterole.`
 >
 > By default, this role has an attached IAM policy called `userflyterole`.
-> This is the literal name used in all AWS-based compute planes.
+> This is the literal name used in all AWS-based data planes.
 >
 > **Be aware of the difference and don't get these two things confused!**
 

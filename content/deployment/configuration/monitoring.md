@@ -6,13 +6,13 @@ variants: -flyte -byoc +selfmanaged
 
 # Monitoring
 
-The {{< key product_name >}} compute plane deploys a static [Prometheus](https://prometheus.io/) instance that collects metrics required for platform features like cost tracking, task-level resource monitoring, and execution observability. This Prometheus instance is pre-configured and requires no additional setup.
+The {{< key product_name >}} data plane deploys a static [Prometheus](https://prometheus.io/) instance that collects metrics required for platform features like cost tracking, task-level resource monitoring, and execution observability. This Prometheus instance is pre-configured and requires no additional setup.
 
-For operational monitoring of the cluster itself (node health, API server metrics, CoreDNS, etc.), the compute plane chart includes an optional [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) instance that can be enabled separately.
+For operational monitoring of the cluster itself (node health, API server metrics, CoreDNS, etc.), the data plane chart includes an optional [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) instance that can be enabled separately.
 
 ## Architecture overview
 
-The compute plane supports two independent monitoring concerns:
+The data plane supports two independent monitoring concerns:
 
 | Concern | What it monitors | How it's deployed | Configurable |
 |---------|-----------------|-------------------|--------------|
@@ -21,7 +21,7 @@ The compute plane supports two independent monitoring concerns:
 
 ```
                     ┌─────────────────────────────────────┐
-                    │          Compute Plane Cluster          │
+                    │          Data Plane Cluster          │
                     │                                     │
                     │  ┌──────────────────────┐           │
                     │  │  Static Prometheus   │           │
@@ -67,7 +67,7 @@ The following targets are scraped automatically:
 
 ### Configuration
 
-The static Prometheus instance is configured under the `prometheus` key in your compute plane values:
+The static Prometheus instance is configured under the `prometheus` key in your data plane values:
 
 ```yaml
 prometheus:
@@ -99,7 +99,7 @@ prometheus:
 
 ### Internal service endpoint
 
-Other compute plane components reach Prometheus at:
+Other data plane components reach Prometheus at:
 
 ```
 http://union-operator-prometheus.<NAMESPACE>.svc:80/prometheus
@@ -136,7 +136,7 @@ crds:
   prometheusOperator: true  # Install Prometheus Operator CRDs
 ```
 
-Then install or upgrade the CRDs chart before the compute plane chart:
+Then install or upgrade the CRDs chart before the data plane chart:
 
 ```shell
 helm upgrade --install union-dataplane-crds unionai/dataplane-crds \
@@ -145,7 +145,7 @@ helm upgrade --install union-dataplane-crds unionai/dataplane-crds \
 ```
 
 > [!NOTE] CRD installation order
-> CRDs must be installed before the compute plane chart. The `dataplane-crds` chart should be deployed first, and the monitoring stack's own CRD installation is disabled (`monitoring.crds.enabled: false`) to avoid conflicts.
+> CRDs must be installed before the data plane chart. The `dataplane-crds` chart should be deployed first, and the monitoring stack's own CRD installation is disabled (`monitoring.crds.enabled: false`) to avoid conflicts.
 
 ### Customizing the monitoring stack
 
@@ -195,7 +195,7 @@ For the full set of configurable values, see the [kube-prometheus-stack chart do
 
 ## Scraping Union services from your own Prometheus
 
-If you already run Prometheus in your cluster, you can scrape {{< key product_name >}} compute plane services for operational visibility. All services expose metrics on standard ports.
+If you already run Prometheus in your cluster, you can scrape {{< key product_name >}} data plane services for operational visibility. All services expose metrics on standard ports.
 
 > [!NOTE] Union features Prometheus
 > The built-in static Prometheus handles all metrics required for {{< key product_name >}} platform features. Scraping from your own Prometheus is for additional operational visibility only -- it does not replace the built-in instance.
@@ -206,7 +206,7 @@ Add these jobs to your Prometheus configuration:
 
 ```yaml
 scrape_configs:
-  # Compute plane service metrics (operator, propeller, etc.)
+  # Data plane service metrics (operator, propeller, etc.)
   - job_name: union-dataplane-services
     kubernetes_sd_configs:
       - role: endpoints

@@ -1,12 +1,12 @@
 ---
-title: "Kubernetes RBAC: Compute plane"
+title: "Kubernetes RBAC: Data plane"
 weight: 17
 variants: -flyte +byoc +selfmanaged
 ---
 
-# Kubernetes RBAC: Compute plane
+# Kubernetes RBAC: Data plane
 
-## Union core services (compute plane)
+## Union core services (data plane)
 
 | Role Name | Purpose | Kind | API Groups | Scope | Resources | Verbs |
 | --- | --- | --- | --- | --- | --- | --- |

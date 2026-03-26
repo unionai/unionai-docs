@@ -9,11 +9,11 @@ variants: -flyte +byoc -selfmanaged
 {{< variant byoc >}}
 {{< markdown >}}
 
-Data retention polices allow you to control what data is stored in your compute plane and for how long.
+Data retention polices allow you to control what data is stored in your data plane and for how long.
 This allows you to reduce costs by ensuring that you only keep data that you actually need.
 
-Each compute plane has its own {{< key product_name >}}-internal object store (an AWS S3 bucket, GCS bucket or ABS container) that is used to store data used in the execution of workflows.
-As a {{< key product_name >}} administrator, you can specify retention policies for this data when setting up your compute plane.
+Each data plane has its own {{< key product_name >}}-internal object store (an AWS S3 bucket, GCS bucket or ABS container) that is used to store data used in the execution of workflows.
+As a {{< key product_name >}} administrator, you can specify retention policies for this data when setting up your data plane.
 The policies are specified in discussion with the {{< key product_name >}} team when you set up your {{< key product_name >}} instance.
 They are not adjustable through the UI or CLI.
 
@@ -22,8 +22,8 @@ They are not adjustable through the UI or CLI.
 {{< variant selfmanaged >}}
 {{< markdown >}}
 
-Each compute plane uses an object store (an AWS S3 bucket, GCS bucket or ABS container) that is used to store data used in the execution of workflows.
-As a {{< key product_name >}} administrator, you can specify retention policies for this data when setting up your compute plane.
+Each data plane uses an object store (an AWS S3 bucket, GCS bucket or ABS container) that is used to store data used in the execution of workflows.
+As a {{< key product_name >}} administrator, you can specify retention policies for this data when setting up your data plane.
 
 {{< /markdown >}}
 {{< /variant >}}

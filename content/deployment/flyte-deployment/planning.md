@@ -13,7 +13,7 @@ A Flyte cluster is composed of 3 logical planes as described in the table:
 |---|---|---|
 | User plane  | Tools to interact with the API  | `flytekit`, `flytectl`, and `pyflyte`  |
 | Control plane  | Processes incoming requests, implements core logic, maintains metadata and resource inventory.  | `flyteadmin`, `datacatalog`, and `flytescheduler`.  |
-| Compute plane  | It fulfills execution requests, including instantiating plugins/connectors.  | `flytepropeller`, `clusterresourcessync`   |
+| Data plane  | It fulfills execution requests, including instantiating plugins/connectors.  | `flytepropeller`, `clusterresourcessync`   |
 
 # External dependencies
 Regardless of the deployment path you choose, Flyte relies on a few elements to operate.

@@ -1,12 +1,12 @@
 ---
-title: Configuring your compute plane
+title: Configuring your data plane
 weight: 3
 variants: -flyte +byoc -selfmanaged
 ---
 
-# Configuring your compute plane
+# Configuring your data plane
 
-After you set up your compute plane account(s), the next step is to specify the infrastructure you want to deploy.
+After you set up your data plane account(s), the next step is to specify the infrastructure you want to deploy.
 You will need to send the following details to the {{< key product_name >}} team:
 
 * Which [cloud provider](#cloud-provider) will you use?
@@ -202,7 +202,7 @@ Values provided by you are in single quotes (').
 
 ## After deployment
 
-Once {{< key product_name >}} has configured and deployed your cluster(s), you will be able to see your compute plane setup in **Usage > Compute**.
+Once {{< key product_name >}} has configured and deployed your cluster(s), you will be able to see your data plane setup in **Usage > Compute**.
 
 ## Adjusting your configuration
 

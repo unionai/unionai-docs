@@ -7,7 +7,7 @@ variants: +flyte +byoc +selfmanaged
 # Secrets
 
 Flyte secrets enable you to securely store and manage sensitive information, such as API keys, passwords, and other credentials.
-Secrets reside in a secret store on the compute plane of your Union/Flyte backend.
+Secrets reside in a secret store on the data plane of your Union/Flyte backend.
 You can create, list, and delete secrets in the store using the Flyte CLI or SDK.
 Secrets in the store can be accessed and used within your workflow tasks, without exposing any cleartext values in your code.
 

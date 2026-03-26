@@ -10,13 +10,13 @@ variants: -flyte +byoc -selfmanaged
 > This documentation exists for customers who must use Google Secret Manager for organizational reasons. For everyone else, we strongly recommend using the
 > [{{< key product_name >}} secrets manager](../../user-guide/task-configuration/secrets) to manage secrets rather than Google Secret Manager.
 
-Access to a secret stored in Secret Manager in the same GCP project as the compute plane is enabled by default.
+Access to a secret stored in Secret Manager in the same GCP project as the data plane is enabled by default.
 All you need to do is:
 
 * Create your secrets in Secret Manager.
 * Retrieve your secrets from within your task code.
 
-To access a secret stored in Secret Manager in a GCP project _other than the one that holds your compute plane_ requires one additional step:
+To access a secret stored in Secret Manager in a GCP project _other than the one that holds your data plane_ requires one additional step:
 Granting the `<UserFlyteGSA>` (see [Enabling GCP resources](.)) access to top the secret in the other projects.
 
 ## Create your secrets
@@ -40,15 +40,15 @@ Clicking on it will bring us to the **Secret details** page:
 The secret has three important identifiers:
 
 * The **GCP secret name**, in this case `example-secret`.
-  You will need this if you are accessing a secret in the same project as your compute plane.
+  You will need this if you are accessing a secret in the same project as your data plane.
 * The **GCP secret path**, in this case `projects/956281974034/secrets/example-secret`.
-  You will need this if you are accessing a secret in a different project from your compute plane project.
+  You will need this if you are accessing a secret in a different project from your data plane project.
 * The **GCP secret version**, in this case `1`.
   This is required for both same- and cross-project cases.
 
 ## Same-project secrets
 
-If your secret is stored in the Secret Manager of the same project as your compute plane then the `<UserFlyteGSA>` will have access to it out-of-the-box.
+If your secret is stored in the Secret Manager of the same project as your data plane then the `<UserFlyteGSA>` will have access to it out-of-the-box.
 No further configuration is necessary.
 
 To use a same-project GCP secret in your task code, do the following:
@@ -84,9 +84,9 @@ def t1():
 
 ## Cross-project secrets
 
-If your secret is stored in the Secret Manager of a project other than the one containing your compute plane, then you will first need to grant the `<UserFlyteGSA>` permission to access it:
+If your secret is stored in the Secret Manager of a project other than the one containing your data plane, then you will first need to grant the `<UserFlyteGSA>` permission to access it:
 
-* Find the **email identifier** of the `<UserFlyteGSA>` in your compute plane GCP project (see [Enabling GCP resources](.) for details).
+* Find the **email identifier** of the `<UserFlyteGSA>` in your data plane GCP project (see [Enabling GCP resources](.) for details).
 * Go to **Security > Secret Manager** in the GCP project that contains your secret.
 * Select the secret that you want to access and select **GRANT ACCESS**.
 * In the subsequent panel, under **Add principals**, paste in the email identifier of the `<UserFlyteGSA>` that you found above.

@@ -11,7 +11,7 @@ description: Implications of object storage retention or lifecycle policies on t
 
 ## How {{< key product_name >}} uses the default bucket
 
-The platform uses a **default object store bucket** in the compute plane for two distinct purposes:
+The platform uses a **default object store bucket** in the data plane for two distinct purposes:
 
 1. **Metadata store** — References, execution state, and pointers to task outputs. The control plane and UI use this metadata to schedule workflows, resolve task dependencies, display execution history, and resolve output locations. This data is required for the correct operation of the platform.
 
@@ -32,7 +32,7 @@ Because the **default bucket contains the metadata store**, it must be treated a
 
 ## Retention on a separate raw-data location
 
-If you separate raw data from metadata, you can apply retention policies **only to the raw data location** while keeping metadata durable. This is the only supported approach for applying retention. You can do this either by configuring separate buckets using `configuration.storage.metadataContainer` and `configuration.storage.userDataContainer` in the [compute plane chart](https://github.com/unionai/helm-charts/blob/master/charts/dataplane/values.yaml), or by using a metadata prefix within the same bucket (see [Customizing the metadata path](#customizing-the-metadata-path) below).
+If you separate raw data from metadata, you can apply retention policies **only to the raw data location** while keeping metadata durable. This is the only supported approach for applying retention. You can do this either by configuring separate buckets using `configuration.storage.metadataContainer` and `configuration.storage.userDataContainer` in the [data plane chart](https://github.com/unionai/helm-charts/blob/master/charts/dataplane/values.yaml), or by using a metadata prefix within the same bucket (see [Customizing the metadata path](#customizing-the-metadata-path) below).
 
 Be aware of the trade-offs:
 
@@ -44,6 +44,6 @@ Data correctness is not silently violated, but the benefits of caching and trace
 
 ## Customizing the metadata path
 
-You can control where metadata is stored within the bucket via the **`config.core.propeller.metadata-prefix`** setting (e.g. `metadata/propeller` in the [compute plane chart values](https://github.com/unionai/helm-charts/blob/master/charts/dataplane/values.yaml)). This lets you design lifecycle rules that **exclude** the metadata prefix (for example, in S3 lifecycle rules, apply expiration only to prefixes that do not include the metadata path) so that only non-metadata paths are subject to retention.
+You can control where metadata is stored within the bucket via the **`config.core.propeller.metadata-prefix`** setting (e.g. `metadata/propeller` in the [data plane chart values](https://github.com/unionai/helm-charts/blob/master/charts/dataplane/values.yaml)). This lets you design lifecycle rules that **exclude** the metadata prefix (for example, in S3 lifecycle rules, apply expiration only to prefixes that do not include the metadata path) so that only non-metadata paths are subject to retention.
 
 Confirm the exact prefix and bucket layout for your deployment from the chart configuration, and validate any retention rules in a non-production environment before applying them broadly.

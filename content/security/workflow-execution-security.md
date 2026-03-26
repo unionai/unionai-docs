@@ -17,14 +17,14 @@ This section traces the security controls applied at each stage of a workflow’
 ## Run creation and execution
 
 * Input data is serialized and uploaded to the customer’s object store; only the input URI is stored in the control plane
-* The control plane enqueues the action to the compute plane via the Cloudflare tunnel
-* The Executor (a Kubernetes controller on the compute plane) creates a pod that reads inputs from the customer’s object store and writes outputs back to it
+* The control plane enqueues the action to the data plane via the Cloudflare tunnel
+* The Executor (a Kubernetes controller on the data plane) creates a pod that reads inputs from the customer’s object store and writes outputs back to it
 * Secrets are injected into pods from the customer’s secrets backend—they never traverse the control plane during runtime
 
 ## Result retrieval
 
 * Outputs, reports, and code bundles are accessed via presigned URLs—the data flows directly from the customer’s object store to the client
-* Logs are streamed from the compute plane through the Cloudflare tunnel as a stateless relay
+* Logs are streamed from the data plane through the Cloudflare tunnel as a stateless relay
 * Metadata (run status, phase, errors) is served from the control plane database
 
 ## Data flow summary
