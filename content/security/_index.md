@@ -1,6 +1,6 @@
 ---
 title: Security
-weight: 8
+weight: 6
 variants: -flyte +byoc +selfmanaged
 top_menu: true
 sidebar_expanded: true
