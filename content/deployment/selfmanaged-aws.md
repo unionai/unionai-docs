@@ -1,14 +1,14 @@
 ---
-title: Manual setup on AWS
-weight: 1
+title: Data plane setup on AWS
+weight: 4
 variants: -flyte -byoc +selfmanaged
 ---
 
-# Manual setup on AWS
+# Data plane setup on AWS
 
 {{< key product_name >}}'s modular architecture allows for great flexibility and control.
 The customer can decide how many clusters to have, their shape, and who has access to what.
-All communication is encrypted.  The Union architecture is described on the [Architecture](../architecture/_index) page.
+All communication is encrypted.  The Union architecture is described on the [Architecture](./architecture/_index) page.
 
 ## S3
 
@@ -22,7 +22,7 @@ You can also choose to use a single bucket.
 
 ### Data Retention
 
-Union recommends using Lifecycle Policy on these buckets to manage storage costs. See [Data retention policy](../configuration/data-retention) for more information.
+Union recommends using Lifecycle Policy on these buckets to manage storage costs. See [Data retention policy](./configuration/data-retention) for more information.
 
 ## IAM
 
@@ -146,7 +146,7 @@ Union supports Autoscaling and the use of spot (interruptible) instances.
 ## Prerequisites
 
 * Install [Helm 3](https://helm.sh/docs/intro/install/).
-* Install [uctl](../../api-reference/uctl-cli/_index).
+* Install [uctl](../api-reference/uctl-cli/_index).
 
 ## Deploy the {{< key product_name >}} operator
 
@@ -165,49 +165,15 @@ Union supports Autoscaling and the use of spot (interruptible) instances.
    ```
 
    * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
-     It will also generate a YAML file specific to the provider that you specify, in this case `aws`:
+     It will also generate a YAML file specific to the provider that you specify, in this case `aws`.
 
-   ```bash
-    -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ----------
-   | ORGANIZATION | HOST                               | CLUSTER                    | CLUSTERAUTHCLIENTID                             | CLUSTERAUTHCLIENTSECRET                                          | PROVIDER |
-    -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ----------
-   | xxxxxxxxxxx  | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxx    |
-    -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ----------
-   1 rows
+   * Save the secret that is displayed. Union does not store the credentials; rerunning the same command can be used to retrieve the secret later.
 
-   ✅ Generated <ORGNAME>-values.yaml
-   ======================================================================
-   Installation Instructions
-   ======================================================================
+3. Update the generated values file with your infrastructure details:
 
-   Step 1: Setup the infrastucture on AWS. Our team can share terrform scripts to help with this.
-
-   Step 2: Clone and navigate to helm-charts repository
-     git clone https://github.com/unionai/helm-charts && cd helm-charts
-
-   Step 3: Ensure S3 bucket & IAM roles are configured; set role ARN(s) in values
-
-   Step 4: Install the data plane CRDs
-     helm upgrade --install unionai-dataplane-crds charts/dataplane-crds
-
-   Step 5: Install the data plane
-     helm upgrade --install unionai-dataplane charts/dataplane \
-       --namespace union \
-       --values <ORGNAME>-values.yaml
-
-   Step 6: Verify installation
-     kubectl get pods -n union
-
-   Step 7: Once you have your dataplane up and running, create API keys for your organization. If you have already just call the same command again to propogate the keys to new cluster:
-     uctl create apikey --keyName EAGER_API_KEY --org <your-org-name>
-
-   Step 8: You can now trigger v2 executions on this dataplane.
-   ```
-   * Save the secret that is displayed. Union does not store the credentials, rerunning the same command can be used to show same secret later which stream through the OAuth Apps provider.
-   * Create the `EAGER_API_KEY` as instructed in Step 7 of the command output. This step is required for every dataplane you plan to use for v2 executions.
-
-3. Update the values file correctly:
-   Set the `union-system` service account annotation with the IAM role ARN created in the [IAM](#iam) section above.
+   - Set `storage.bucketName` and `storage.fastRegistrationBucketName` to your S3 bucket name(s).
+   - Set `storage.region` to the AWS region of your bucket(s).
+   - Replace all occurrences of `<UNION_FLYTE_ROLE_ARN>` with the ARN of the IAM role created in the [IAM](#iam) section (e.g. `arn:aws:iam::<account_id>:role/union-system-role`). This appears in `additionalServiceAccountAnnotations`, `userRoleAnnotationValue`, and `fluentbit.serviceAccount.annotations`.
 
 4. Optionally configure the resource `limits` and `requests` for the different services.
    By default, these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.
