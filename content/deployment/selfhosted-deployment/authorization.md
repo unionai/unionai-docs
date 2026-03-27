@@ -303,25 +303,29 @@ def decode_jwt_payload(token: str) -> dict | None:
 class AuthorizerServicer(authorizer_pb2_grpc.AuthorizerServiceServicer):
 
     def Authorize(self, request, context):
-        # --- 1. Extract identity from the proto request (recommended) ---
+        # --- 1. Extract identity from the proto request ---
         # The platform always sends ExternalIdentity with subject + token.
         # Every request is authenticated before reaching authorization, so
-        # the token is always present.
+        # both fields are always populated.
         ext_id = request.identity.external_identity
         subject = ext_id.subject
-        token = ext_id.token
+        proto_token = ext_id.token  # Raw JWT from the proto field
 
-        # --- 2. Extract token from gRPC metadata (alternative) ---
+        # --- 2. Extract token from gRPC metadata ---
         # The same JWT is also forwarded in the "authorization" metadata
-        # header as "Bearer <token>". Use whichever source fits your
-        # architecture — both carry the same token.
+        # header as "Bearer <token>". Both channels carry the same token —
+        # use whichever fits your architecture.
+        #   - proto_token: ready to use (no prefix to strip)
+        #   - metadata_token: standard HTTP authorization header format
         metadata = dict(context.invocation_metadata())
-        auth_header = metadata.get("authorization", "")  # "Bearer <jwt>"
+        auth_header = metadata.get("authorization", "")
+        metadata_token = auth_header[7:] if auth_header.lower().startswith("bearer ") else ""
 
         # --- 3. Decode JWT claims ---
-        # The token is pre-validated upstream. Decode to read claims like
-        # sub, identitytype, email, groups, preferred_username, iss, aud, exp.
-        claims = decode_jwt_payload(token)
+        # The token is pre-validated upstream — no signature verification
+        # needed. Decode to read claims: sub, identitytype, email, groups,
+        # preferred_username, iss, aud, exp.
+        claims = decode_jwt_payload(proto_token)
 
         # --- 4. Extract the action and resource ---
         action = request.action
