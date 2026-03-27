@@ -59,9 +59,9 @@ Each controlplane service forwards `Authorize()` calls and the configured backen
 
 | Mode | Backend | Best for | Enforcement | Configuration |
 |------|---------|----------|-------------|---------------|
-| **Noop** | None | Development, small teams | All requests allowed | Default, no config needed |
-| **Union** | {{< key product_name >}} RBAC | Production deployments | {{< key product_name >}}-managed policies | Built-in, enable via config |
-| **External** | Customer-provided gRPC server | Organizations with existing RBAC systems | Customer-defined policies | Requires external server |
+| **Noop** | None | Isolated or high-trust environments | All requests allowed | Default, no config needed |
+| **Union** | {{< key product_name >}} RBAC | Production deployments wanting well-tuned, out-of-the-box authorization fully integrated with the {{< key product_name >}} console | {{< key product_name >}}-managed policies | Built-in, enable via config |
+| **External** | Customer-provided gRPC server | Organizations with existing RBAC/policy systems | Customer-defined policies | Requires external server |
 
 ### Noop (default)
 
@@ -196,7 +196,7 @@ Your server must handle the following authorization actions:
 
 ### Service account permissions
 
-Your external authorization server must grant appropriate permissions to the internal platform service accounts (OAuth Apps 3–5 from [Authentication]({{< relref "authentication" >}})). Without these, internal platform operations will fail.
+Your external authorization server **must** grant appropriate permissions to the internal platform service accounts (OAuth Apps 3–5 from [Authentication]({{< relref "authentication" >}})). **Without these, internal platform operations will fail.**
 
 | OAuth App | # | Subject (`sub` claim) | Required permissions |
 |-----------|---|----------------------|----------------------|
