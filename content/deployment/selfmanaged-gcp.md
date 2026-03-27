@@ -1,10 +1,10 @@
 ---
-title: Compute plane setup on GCP
+title: Data plane setup on GCP
 weight: 4
 variants: -flyte -byoc +selfmanaged
 ---
 
-# Compute plane setup on GKE (GCP)
+# Data plane setup on GKE (GCP)
 
 {{< key product_name >}}’s modular architecture allows for great flexibility and control.
 The customer can decide how many clusters to have, their shape, and who has access to what.
@@ -65,10 +65,10 @@ The Union architecture is described on the [Architecture](./architecture/_index)
 
    Step 3: Configure your S3-compatible storage endpoint & credentials in the values file
 
-   Step 4: Install the compute plane CRDs
+   Step 4: Install the data plane CRDs
      helm upgrade --install unionai-dataplane-crds charts/dataplane-crds
 
-   Step 5: Install the compute plane
+   Step 5: Install the data plane
      helm upgrade --install unionai-dataplane charts/dataplane \
        --namespace union \
        --values <ORGNAME>-values.yaml

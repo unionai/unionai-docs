@@ -1,6 +1,6 @@
 ---
 title: Identity and access management
-weight: 4
+weight: 3
 variants: -flyte +byoc +selfmanaged
 ---
 
@@ -43,17 +43,17 @@ Union.ai enforces tenant isolation at multiple architectural layers to ensure th
 
 Every record in the control plane PostgreSQL database is scoped by organization (org). The org identifier is part of the primary key or unique index on all tenant-scoped tables, including actions, tasks, runs, executions, and RBAC bindings. All database queries are gated by the org context extracted from the caller's authenticated token at the service layer, before any SQL is executed. This ensures that a query can only return records belonging to the caller's organization. Cross-organization access is explicitly denied: there is no API or internal path that permits querying across org boundaries. While Union.ai does not currently use PostgreSQL row-level security (RLS) policies, the application-layer enforcement is uniform and independently verifiable through the SOC 2 Type II audit.
 
-### Compute plane isolation
+### Data plane isolation
 
-Each customer's compute plane runs in a dedicated Kubernetes cluster within the customer's own cloud account. There is no shared compute infrastructure between customers. Customer workloads, data, secrets, container images, and logs are physically isolated in separate cloud accounts with separate IAM boundaries. No other customer's workloads can execute on or access another customer's cluster.
+Each customer's data plane runs in a dedicated Kubernetes cluster within the customer's own cloud account. There is no shared compute infrastructure between customers. Customer workloads, data, secrets, container images, and logs are physically isolated in separate cloud accounts with separate IAM boundaries. No other customer's workloads can execute on or access another customer's cluster.
 
 ### Control plane service isolation
 
-Within the control plane, all service-to-service calls carry the authenticated org context. The identity service extracts org membership from the OIDC token, and this context is propagated through every downstream service call via request headers. Kubernetes namespaces on the compute plane are provisioned per-project within each org, providing namespace-level resource isolation (resource quotas, RBAC bindings, network policies) even within a single customer's cluster.
+Within the control plane, all service-to-service calls carry the authenticated org context. The identity service extracts org membership from the OIDC token, and this context is propagated through every downstream service call via request headers. Kubernetes namespaces on the data plane are provisioned per-project within each org, providing namespace-level resource isolation (resource quotas, RBAC bindings, network policies) even within a single customer's cluster.
 
 ### Isolation verification
 
-Tenant isolation controls are covered by Union.ai's SOC 2 Type II audit scope. The combination of org-scoped primary keys, service-layer query gating, and physically separate compute planes provides defense-in-depth against cross-tenant data access.
+Tenant isolation controls are covered by Union.ai's SOC 2 Type II audit scope. The combination of org-scoped primary keys, service-layer query gating, and physically separate data planes provides defense-in-depth against cross-tenant data access.
 
 ## Human access to customer environments
 
@@ -61,7 +61,7 @@ Union.ai maintains controls governing how its personnel interact with customer e
 
 ### Current access model
 
-Union.ai support and engineering personnel may access a customer's Union.ai tenant (the control plane UI and API for that organization) for the purposes of onboarding, troubleshooting, and operational support. This access is authenticated through the same OIDC/SSO mechanisms as customer users and is subject to RBAC policies. Personnel access the customer's tenant, not the customer's compute plane infrastructure directly. Union.ai personnel do not have IAM credentials for the customer's cloud account and cannot directly access the customer's object stores, secrets backends, or container registries.
+Union.ai support and engineering personnel may access a customer's Union.ai tenant (the control plane UI and API for that organization) for the purposes of onboarding, troubleshooting, and operational support. This access is authenticated through the same OIDC/SSO mechanisms as customer users and is subject to RBAC policies. Personnel access the customer's tenant, not the customer's data plane infrastructure directly. Union.ai personnel do not have IAM credentials for the customer's cloud account and cannot directly access the customer's object stores, secrets backends, or container registries.
 
 > [!NOTE]
 > In BYOC deployments, Union.ai personnel additionally have K8s cluster management access. See [BYOC deployment differences: Human access](./byoc-differences#human-access-to-customer-environments) for details.
@@ -81,8 +81,8 @@ All access by Union.ai personnel to customer tenants is authenticated and logged
 
 Union.ai enforces the principle of least privilege across all system components:
 
-* IAM roles on the compute plane are scoped to minimum required permissions
-* Two IAM roles per compute plane: admin role (for platform services) and user role (for task pods)
+* IAM roles on the data plane are scoped to minimum required permissions
+* Two IAM roles per data plane: admin role (for platform services) and user role (for task pods)
 * IAM roles are bound to Kubernetes service accounts via cloud-native workload identity federation
 * Presigned URLs grant single-object, operation-specific, time-limited access
 * Service accounts receive only the permissions needed for their specific function

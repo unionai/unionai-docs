@@ -1,12 +1,12 @@
 ---
 title: BYOC deployment differences
-weight: 14
+weight: 13
 variants: -flyte +byoc +selfmanaged
 ---
 
 # BYOC deployment differences
 
-Union.ai's BYOC (Bring Your Own Cloud) deployment shares the same control plane / compute plane architecture, encryption, RBAC, tenant isolation, and audit logging as the self-managed deployment. The key difference is that **Union.ai manages the Kubernetes cluster** in the customer's cloud account, rather than the customer managing it independently.
+Union.ai's BYOC (Bring Your Own Cloud) deployment shares the same control plane / data plane architecture, encryption, RBAC, tenant isolation, and audit logging as the self-managed deployment. The key difference is that **Union.ai manages the Kubernetes cluster** in the customer's cloud account, rather than the customer managing it independently.
 
 This page consolidates all security-relevant differences between BYOC and self-managed deployments.
 
@@ -14,7 +14,7 @@ This page consolidates all security-relevant differences between BYOC and self-m
 
 | Aspect | Self-Managed | BYOC |
 | --- | --- | --- |
-| Compute plane operator | Customer | Union.ai |
+| Data plane operator | Customer | Union.ai |
 | K8s cluster management | Customer | Union.ai (via PrivateLink/PSC) |
 | K8s API exposure | Customer-controlled | Private only (never public Internet) |
 | Union.ai infrastructure access | None (Cloudflare tunnel only) | K8s cluster management only |
@@ -44,7 +44,7 @@ This satisfies ISO 27001 A.5.15 (access control), CIS v8 4.4 (restrict administr
 
 ## Human access to customer environments
 
-In self-managed deployments, Union.ai personnel access only the customer's control plane tenant. They have zero access to the customer's compute plane infrastructure.
+In self-managed deployments, Union.ai personnel access only the customer's control plane tenant. They have zero access to the customer's data plane infrastructure.
 
 In BYOC deployments, Union.ai support and engineering personnel additionally have **authenticated access to the customer's Kubernetes cluster** for operational purposes:
 
@@ -92,24 +92,24 @@ The customer retains responsibility for their cloud account's underlying infrast
 
 The same two IAM roles (`adminflyterole` and `userflyterole`) exist in both models. In self-managed, the customer provisions them using Union.ai's documentation and templates. In BYOC, Union.ai provisions these roles as part of cluster setup.
 
-### Compute plane patching
+### Data plane patching
 
-In self-managed, the customer is responsible for all compute plane patching (K8s version, platform components, monitoring stack). In BYOC, Union.ai manages compute plane updates, including Kubernetes version, helm charts, and platform components. The control plane is updated independently in both models.
+In self-managed, the customer is responsible for all data plane patching (K8s version, platform components, monitoring stack). In BYOC, Union.ai manages data plane updates, including Kubernetes version, helm charts, and platform components. The control plane is updated independently in both models.
 
 ## Availability and resilience
 
 Control plane availability is identical across both models (AWS multi-AZ, managed PostgreSQL with automated failover, SOC 2 Type II coverage).
 
-The difference is in compute plane availability:
+The difference is in data plane availability:
 
-* **Self-managed:** The customer is solely responsible for compute plane availability, including Kubernetes cluster operations, node pool management, upgrades, and monitoring. Union.ai's availability commitment covers only the control plane.
-* **BYOC:** Union.ai is responsible for compute plane cluster availability, including Kubernetes version management, node pool health, autoscaler configuration, and monitoring stack uptime. The customer retains responsibility for their cloud account's underlying availability (VPC, IAM, object storage SLAs). Union.ai's operational SLA for BYOC cluster management is defined in the customer contract.
+* **Self-managed:** The customer is solely responsible for data plane availability, including Kubernetes cluster operations, node pool management, upgrades, and monitoring. Union.ai's availability commitment covers only the control plane.
+* **BYOC:** Union.ai is responsible for data plane cluster availability, including Kubernetes version management, node pool health, autoscaler configuration, and monitoring stack uptime. The customer retains responsibility for their cloud account's underlying availability (VPC, IAM, object storage SLAs). Union.ai's operational SLA for BYOC cluster management is defined in the customer contract.
 
 In both models, in-flight workflows continue executing during control plane outages. The operational difference is that in BYOC, Union.ai's monitoring detects control plane connectivity issues; in self-managed, the customer must detect these independently.
 
 ## Third-party dependency risk
 
-In self-managed, the customer owns all compute plane dependencies. Union.ai's dependency risk scope is limited to the control plane and Cloudflare tunnel.
+In self-managed, the customer owns all data plane dependencies. Union.ai's dependency risk scope is limited to the control plane and Cloudflare tunnel.
 
 In BYOC, Union.ai assumes operational responsibility for cluster-level dependencies and their associated risk mitigation:
 
@@ -122,12 +122,12 @@ Union.ai's vendor management program, covered under the SOC 2 Type II audit, inc
 
 ## Shared responsibility model
 
-The shared responsibility model shifts in BYOC for compute plane operations:
+The shared responsibility model shifts in BYOC for data plane operations:
 
 | Responsibility Area | Self-Managed | BYOC |
 | --- | --- | --- |
 | Control plane security | Union.ai | Union.ai |
-| Compute plane K8s cluster | Customer | Union.ai |
+| Data plane K8s cluster | Customer | Union.ai |
 | Cloud account (VPC, IAM) | Customer | Customer |
 | Data encryption at rest | Customer (CMK optional) | Customer (CMK optional) |
 | Network security (tunnel) | Union.ai (tunnel) + Customer (firewall/VPC) | Union.ai (tunnel + PrivateLink) + Customer (VPC) |

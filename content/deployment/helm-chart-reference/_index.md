@@ -12,5 +12,5 @@ llm_readable_bundle: true
 
 A full list of Helm values available for configuration can be found here:
 
-* [Compute plane chart](./dataplane)
+* [Data plane chart](./dataplane)
 * [Knative Operator chart (for serving)](./knative-operator)

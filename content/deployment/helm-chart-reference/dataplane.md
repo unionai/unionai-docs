@@ -1,7 +1,7 @@
 ---
 title: Dataplane chart
 variants: -flyte -byoc +selfmanaged
-chart_version: 2026.3.9
+chart_version: 2026.3.11
 weight: 1
 ---
 
@@ -11,8 +11,8 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 
 | | |
 |---|---|
-| **Chart version** | 2026.3.9 |
-| **App version** | 2026.3.6 |
+| **Chart version** | 2026.3.11 |
+| **App version** | 2026.3.8 |
 | **Kubernetes version** | `>= 1.28.0-0` |
 
 ## Dependencies
@@ -38,6 +38,7 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | additionalPodSpec | object | Define additional PodSpec values for all of the Union pods. | `{}` |
 | clusterName | string | Cluster name should be shared with Union for proper functionality. | `"{{ .Values.global.CLUSTER_NAME }}"` |
 | clusterresourcesync | object | clusterresourcesync contains the configuration information for the syncresources service. | `(see values.yaml)` |
+| clusterresourcesync.additionalTemplates | list | Additional cluster resource templates to create per project namespace. Use this instead of overriding `templates` to avoid accidentally removing the default namespace, service account, and resource quota templates. Each entry has a `key` (filename stem) and `value` (Kubernetes manifest). | `[]` |
 | clusterresourcesync.additionalVolumeMounts | list | Appends additional volume mounts to the main container's spec. May include template values. | `[]` |
 | clusterresourcesync.additionalVolumes | list | Appends additional volumes to the deployment spec. May include template values. | `[]` |
 | clusterresourcesync.affinity | object | affinity configurations for the syncresources pods | `{}` |
@@ -180,7 +181,7 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | executor.tolerations | list | tolerations for executor deployment | `[]` |
 | executor.topologySpreadConstraints | object | topologySpreadConstraints for executor deployment | `{}` |
 | extraObjects | list |  | `[]` |
-| fluentbit | object | Configuration for fluentbit used for the persistent logging feature. FluentBit runs as a DaemonSet and ships container logs to the persisted-logs/ path in the configured object store. The fluentbit-system service account must have write access to the storage bucket. Grant access using cloud-native identity federation:   AWS (IRSA):     annotations:       eks.amazonaws.com/role-arn: "arn:aws:iam::`<ACCOUNT_ID>`:role/`<ROLE_NAME>`"   Azure (Workload Identity):     annotations:       azure.workload.identity/client-id: "`<CLIENT_ID>`"   GCP (Workload Identity):     annotations:       iam.gke.io/gcp-service-account: "`<GSA_NAME>`@`<PROJECT_ID>`.iam.gserviceaccount.com" See https://www.union.ai/docs/v1/selfmanaged/deployment/configuration/persistent-logs/ | `(see values.yaml)` |
+| fluentbit | object | Configuration for fluentbit used for the persistent logging feature. FluentBit runs as a DaemonSet and ships container logs to the persisted-logs/ path in the configured object store. The fluentbit-system service account must have write access to the storage bucket.  Grant access using cloud-native identity federation:   AWS (IRSA):     annotations:       eks.amazonaws.com/role-arn: "arn:aws:iam::`<ACCOUNT_ID>`:role/`<ROLE_NAME>`"   Azure (Workload Identity):     annotations:       azure.workload.identity/client-id: "`<CLIENT_ID>`"   GCP (Workload Identity):     annotations:       iam.gke.io/gcp-service-account: "`<GSA_NAME>`@`<PROJECT_ID>`.iam.gserviceaccount.com"  See https://www.union.ai/docs/v1/selfmanaged/deployment/configuration/persistent-logs/ | `(see values.yaml)` |
 | flyteagent | object | Flyteagent configuration | `{"enabled":false,"plugin_config":{}}` |
 | flyteconnector.additionalContainers | list | Appends additional containers to the deployment spec. May include template values. | `[]` |
 | flyteconnector.additionalEnvs | list | Appends additional envs to the deployment spec. May include template values | `[]` |
@@ -270,7 +271,7 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | imageBuilder.buildkit.fullnameOverride | string | The name to use for the buildkit deployment, service, configmap, etc. | `""` |
 | imageBuilder.buildkit.image.pullPolicy | string | Pull policy | `"IfNotPresent"` |
 | imageBuilder.buildkit.image.repository | string | Image name | `"docker.io/moby/buildkit"` |
-| imageBuilder.buildkit.image.tag | string | (e.g. "buildx-stable-1" becomes "buildx-stable-1-rootless") unless the tag already contains "rootless". | `"buildx-stable-1"` |
+| imageBuilder.buildkit.image.tag | e.g. "buildx-stable-1" becomes "buildx-stable-1-rootless" | unless the tag already contains "rootless". | `"buildx-stable-1"` |
 | imageBuilder.buildkit.log | object | Enable debug logging | `{"debug":false,"format":"text"}` |
 | imageBuilder.buildkit.nodeSelector | object | Node selector | `{}` |
 | imageBuilder.buildkit.oci | object | Buildkitd service configuration | `{"maxParallelism":0}` |
@@ -312,7 +313,7 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | ingress.serving | object | Serving specific ingress configuration. | `{"annotations":{},"class":"","hostOverride":"","tls":{}}` |
 | ingress.serving.annotations | object | Annotations to apply to the ingress resource. | `{}` |
 | ingress.serving.class | string | Ingress class name | `""` |
-| ingress.serving.hostOverride | string | (Optional) Host override for serving ingress rule. Defaults to *.apps.{{ .Values.host }}. | `""` |
+| ingress.serving.hostOverride | Optional | Host override for serving ingress rule. Defaults to *.apps.{{ .Values.host }}. | `""` |
 | ingress.serving.tls | object | Ingress TLS configuration | `{}` |
 | knative-operator.crds.install | bool |  | `true` |
 | knative-operator.enabled | bool |  | `false` |
@@ -358,6 +359,10 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | monitoring.prometheusOperator.enabled | bool |  | `true` |
 | monitoring.prometheusRules.enabled | bool |  | `true` |
 | monitoring.serviceMonitors.enabled | bool |  | `true` |
+| monitoring.slos.alerting.enabled | bool |  | `false` |
+| monitoring.slos.enabled | bool |  | `false` |
+| monitoring.slos.targets.availability | float |  | `0.999` |
+| monitoring.slos.targets.latencyP99 | int |  | `5` |
 | nameOverride | string | Override the chart name. | `""` |
 | namespace_mapping | object | Namespace mapping template for mapping Union runs to Kubernetes namespaces. This is the canonical source of truth. All dataplane services (propeller, clusterresourcesync, operator, executor) will inherit this value unless explicitly overridden in their service-specific config sections (config.namespace_config, config.operator.org, executor.raw_config). | `{}` |
 | namespaces.enabled | bool |  | `true` |

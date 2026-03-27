@@ -15,7 +15,7 @@ To enable your code to access secrets from AWS Secrets Manager you will need to
 * Make sure AWS Secrets Manager is enabled.
 * Create your secrets in AWS Secrets Manager.
 * Create an AWS policy granting access to your secrets.
-* Bind that policy to the User Flyte Role in your {{< key product_name >}} compute plane.
+* Bind that policy to the User Flyte Role in your {{< key product_name >}} data plane.
 * Retrieve your secrets from within your workflow code.
 
 ## Ensure that AWS Secrets Manager is enabled
@@ -26,8 +26,8 @@ Contact the {{< key product_name >}} team if you are unsure.
 ## Create your secrets
 
 > [!NOTE]
-> Secrets must be defined within the same region as your {{< key product_name >}} compute plane.
-> For example, if your {{< key product_name >}} compute plane is located in `us-west-2`, ensure that the secrets are also in `us-west-2`.
+> Secrets must be defined within the same region as your {{< key product_name >}} data plane.
+> For example, if your {{< key product_name >}} data plane is located in `us-west-2`, ensure that the secrets are also in `us-west-2`.
 
 Create your secrets in **AWS Secrets Manager** (see the [AWS documentation](https://docs.aws.amazon.com/secretsmanager/latest/userguide/create_secret.html) for details):
 
@@ -124,7 +124,7 @@ We will refer to the name as `<SecretManagerPolicyName>` and the ARN as `<Secret
 
 ## Bind the policy to the User Flyte Role
 
-To grant your code the permissions defined in the policy above, you must bind that policy to the `<UserFlyteRole>` used in your {{< key product_name >}} compute plane.
+To grant your code the permissions defined in the policy above, you must bind that policy to the `<UserFlyteRole>` used in your {{< key product_name >}} data plane.
 The precise name of this role differs by organization.
 You will need this name as well as the ARN of the policy (`<SecretManagerPolicyArn>`, above) to perform the binding.
 See [here](.) for directions. Once the binding is done, your secrets are now accessible from within your Flyte code.

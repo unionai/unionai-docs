@@ -1,17 +1,17 @@
 ---
 title: Security architecture
-weight: 2
+weight: 1
 variants: -flyte +byoc +selfmanaged
 ---
 
 # Security architecture
 
-Union.ai’s security architecture is founded on the principle of strict separation between orchestration (control plane) and execution (compute plane).
+Union.ai’s security architecture is founded on the principle of strict separation between orchestration (control plane) and execution (data plane).
 This architectural decision ensures that customer data remains within the customer’s own cloud infrastructure at all times.
 
-## Control plane / compute plane separation
+## Control plane / data plane separation
 
-The control plane and compute plane serve fundamentally different purposes and handle different types of data:
+The control plane and data plane serve fundamentally different purposes and handle different types of data:
 
 ### Control plane (Union.ai hosted)
 
@@ -20,13 +20,13 @@ It runs within Union.ai’s AWS account and stores only orchestration metadata i
 This metadata includes task definitions (image references, resource requirements, typed interfaces), run and action metadata (identifiers, phase, timestamps, error information), user identity and RBAC records, cluster configuration and health records, and trigger/schedule definitions.
 The control plane never stores customer data payloads.
 It stores only references (URIs) to data in the customer’s object store, no data.
-When data must be surfaced to a client, the control plane either proxies a signing request to generate a presigned URL or relays a data stream from the compute plane without persisting it.
+When data must be surfaced to a client, the control plane either proxies a signing request to generate a presigned URL or relays a data stream from the data plane without persisting it.
 
-**See comprehensive list of control plane roles and permissions in [Appendix C](./appendix#c-kubernetes-rbac---control-plane).**
+**See comprehensive list of control plane roles and permissions in [Kubernetes RBAC: control plane](./kubernetes-rbac-control-plane).**
 
-### Compute plane (customer hosted)
+### Data plane (customer hosted)
 
-The compute plane runs inside the customer’s own cloud account on their own Kubernetes cluster.
+The data plane runs inside the customer’s own cloud account on their own Kubernetes cluster.
 All customer data resides here, including:
 
 | Data Type | Storage Technology | Access Pattern |
@@ -40,7 +40,7 @@ All customer data resides here, including:
 | Reports (HTML) | Object Store (S3/GCS/Azure Blob) | Accessed by the browser via presigned URL |
 | Cluster events | K8s API (ephemeral) | Live from K8s API |
 
-**See comprehensive list of compute plane roles and permissions in [Appendix D](./appendix#d-kubernetes-rbac---compute-plane).**
+**See comprehensive list of data plane roles and permissions in [Kubernetes RBAC: data plane](./kubernetes-rbac-data-plane).**
 
 ## Network architecture
 
@@ -51,17 +51,17 @@ Network security is enforced through multiple layers:
 
 ### Cloudflare tunnel (outbound-only)
 
-The compute plane connects to the control plane via a Cloudflare Tunnel—an outbound-only encrypted connection initiated from the customer’s cluster.
+The data plane connects to the control plane via a Cloudflare Tunnel—an outbound-only encrypted connection initiated from the customer’s cluster.
 This architecture provides several critical security benefits:
 
 * No inbound firewall rules are required on the customer’s network
 * All traffic through the tunnel uses mutual TLS (mTLS) encryption
 * The Tunnel Service performs periodic health checks and state reconciliation
-* Connection is initiated outward to Cloudflare’s edge network, from the compute plane, which then connects to the control plane
+* Connection is initiated outward to Cloudflare’s edge network, from the data plane, which then connects to the control plane
 
 ### Control plane tunnel (outbound only)
 
-The compute plane reaches out to the control plane to establish a bidirectional, encrypted and authenticated, outbound-only tunnel.
+The data plane reaches out to the control plane to establish a bidirectional, encrypted and authenticated, outbound-only tunnel.
 Union.ai operates regional control plane endpoints:
 
 | Area | Region | Endpoint |
@@ -79,7 +79,7 @@ In locked-down environments, networking teams can limit egress access to publish
 | Communication Path | Protocol | Encryption |
 | --- | --- | --- |
 | Client → Control Plane | ConnectRPC (gRPC-Web) over HTTPS | TLS 1.2+ |
-| Control Plane ↔ Compute Plane | Cloudflare Tunnel (outbound-initiated) | mTLS |
+| Control Plane ↔ Data Plane | Cloudflare Tunnel (outbound-initiated) | mTLS |
 | Client → Object Store (presigned URL) | HTTPS | TLS 1.2+ (cloud provider enforced) |
 | Fluent Bit → Log Aggregator | Cloud provider SDK | TLS (cloud-native) |
 | Task Pods → Object Store | Cloud provider SDK | TLS (cloud-native) |
@@ -93,9 +93,9 @@ Union.ai implements two primary data access patterns, both designed to keep cust
 
 ### Presigned URL pattern
 
-For task inputs, outputs, code bundles, and reports, the control plane proxies signing requests to the compute plane, which generates time-limited presigned URLs using customer-managed credentials.
+For task inputs, outputs, code bundles, and reports, the control plane proxies signing requests to the data plane, which generates time-limited presigned URLs using customer-managed credentials.
 The client fetches data directly from the customer’s object store—the data never transits the control plane.
-Presigned URLs generated on the compute plane are single-object scope, operation-specific (GET or PUT), time-limited (default 1 hour maximum), and transport-encrypted at every hop.
+Presigned URLs generated on the data plane are single-object scope, operation-specific (GET or PUT), time-limited (default 1 hour maximum), and transport-encrypted at every hop.
 
 Union.ai applies several controls:
 
@@ -109,7 +109,7 @@ Organizations with stricter requirements can configure shorter TTLs. The presign
 
 ### Streaming relay pattern
 
-For logs and observability metrics, the control plane acts as a stateless relay—streaming data from the compute plane through the Cloudflare tunnel to the client in real time.
+For logs and observability metrics, the control plane acts as a stateless relay—streaming data from the data plane through the Cloudflare tunnel to the client in real time.
 The data passes through the control plane’s memory as a TLS encrypted stream with a termination point in the cloud.
 It is never written to disk, cached, or stored.
 

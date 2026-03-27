@@ -41,9 +41,9 @@ in the [Configuring Node Pools](./configuration/node-pools) section.
 
 ## S3
 
-Each compute plane uses an object store (an AWS S3 bucket, GCS bucket or ABS container) that is used to store data used in the execution of workflows.
-As a {{< key product_name >}} administrator, you can specify retention policies for this data when setting up your compute plane 
-(learn more [about the different types of data categories](./configuration/data-retention) stored by the compute plane.)
+Each data plane uses an object store (an AWS S3 bucket, GCS bucket or ABS container) that is used to store data used in the execution of workflows.
+As a {{< key product_name >}} administrator, you can specify retention policies for this data when setting up your data plane 
+(learn more [about the different types of data categories](./configuration/data-retention) stored by the data plane.)
 
 Union recommends the use of two S3 buckets:
 
@@ -60,7 +60,7 @@ Union recommends using Lifecycle Policy on these buckets to manage the storage c
 
 You will need to enable access to your S3 buckets from the cluster.
 
-1. Update the EKS Node IAM role for your cluster to allow the compute plane nodes to use your S3 buckets.
+1. Update the EKS Node IAM role for your cluster to allow the data plane nodes to use your S3 buckets.
    This can be done by creating and attaching a new IAM policy which enables access to your S3 buckets.
    Use `union-flyte-worker` as the name of the new policy.
    The permissions for the policy will be:
