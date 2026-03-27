@@ -207,37 +207,20 @@ Your external authorization server must grant appropriate permissions to the int
 > [!WARNING]
 > If the operator service account (App 4) is not granted `MANAGE_CLUSTER`, the dataplane will be unable to register with the controlplane or send heartbeats. If the EAGER service account (App 5) is not granted execution permissions, task pods will fail to launch child tasks or register workflow artifacts.
 
-**Example:** If your external server uses a static subject-to-role mapping, the configuration might look like:
-
-```yaml
-subjects:
-  # Human users
-  "user@example.com": Admin
-
-  # Internal platform service accounts — use the OAuth app client IDs
-  # from your identity provider. These are the same client IDs configured
-  # in the authentication step.
-  "<INTERNAL_CLIENT_ID>": PlatformAdmin      # App 3: internal platform identity
-  "<AUTH_CLIENT_ID>": ClusterOperator         # App 4: dataplane operator
-  "<EAGER_CLIENT_ID>": RuntimeService         # App 5: task execution
-```
-
-Your implementation may use different role names or a different permission model entirely — the requirement is that these subjects are granted the listed actions.
-
 ### Configuring service accounts
 
 The three internal OAuth apps must be registered in your external server's permission mapping. Their `sub` claims are the OAuth **client IDs** from your identity provider — the same values configured during [authentication setup]({{< relref "authentication" >}}).
 
 To find the client IDs for your deployment, check the controlplane Helm values:
 
-| OAuth App | # | Helm global variable | Role / permissions needed |
-|-----------|---|---------------------|---------------------------|
+| OAuth App | # | Helm global variable | Required permissions |
+|-----------|---|---------------------|----------------------|
 | Service-to-service | 3 | `INTERNAL_CLIENT_ID` | All actions (platform admin) |
 | Operator | 4 | `AUTH_CLIENT_ID` | `MANAGE_CLUSTER`, `VIEW_FLYTE_INVENTORY`, `VIEW_FLYTE_EXECUTIONS`, `CREATE_FLYTE_EXECUTIONS` |
 | EAGER | 5 | (EAGER app client ID) | `VIEW_FLYTE_INVENTORY`, `VIEW_FLYTE_EXECUTIONS`, `REGISTER_FLYTE_INVENTORY`, `CREATE_FLYTE_EXECUTIONS`, `EDIT_EXECUTION_RELATED_ATTRIBUTES`, `EDIT_CLUSTER_RELATED_ATTRIBUTES` |
 
 > [!WARNING]
-> If the operator service account (App 4) is not granted `MANAGE_CLUSTER`, the dataplane will be unable to register with the controlplane or send heartbeats. If the EAGER service account (App 5) is not granted execution permissions, task pods will fail to launch child tasks or register workflow artifacts.
+> The platform does **not** bypass external authorization for its own service accounts. Your server must explicitly grant them the required permissions. If the operator (App 4) is denied `MANAGE_CLUSTER`, the dataplane cannot register or heartbeat. If EAGER (App 5) is denied execution permissions, task pods cannot launch child tasks.
 
 ### Reference implementation
 
@@ -248,34 +231,36 @@ The following is a complete Python example of an external authorization server. 
 ```yaml
 port: 50051
 
-subjects:
-  # Human users — map by the 'sub' claim from your identity provider
-  "user@example.com": Admin
-  "developer@example.com": Develop
-
-  # Internal platform service accounts — REQUIRED for platform operation.
-  # Use the OAuth app client IDs from your identity provider (the same
-  # values configured in authentication setup).
-  "<INTERNAL_CLIENT_ID>": Admin             # App 3: service-to-service
-  "<AUTH_CLIENT_ID>": _ClusterManager       # App 4: dataplane operator
-  "<EAGER_CLIENT_ID>": _RuntimeService      # App 5: task execution
-
-  # Default role for unknown subjects (optional — omit to deny unknowns)
-  # "*": Report
+# Internal platform service accounts — REQUIRED.
+# Use the OAuth app client IDs from your identity provider (the same
+# values configured during authentication setup). The server grants
+# each the minimum permissions needed for the platform to function.
+service_accounts:
+  internal: "<INTERNAL_CLIENT_ID>"   # App 3: service-to-service (all actions)
+  operator: "<AUTH_CLIENT_ID>"       # App 4: dataplane operator (cluster mgmt)
+  eager: "<EAGER_CLIENT_ID>"         # App 5: task execution (register + launch)
 ```
 
-**server.py** — extracting identity, token, and request fields:
+**server.py** — identity extraction and service account authorization:
 
 ```python
 #!/usr/bin/env python3
-"""Example: extracting identity and token from Union's Authorize() RPC."""
+"""External authorization server for Union selfhosted deployments.
 
+Demonstrates how to:
+1. Extract identity and token from the Authorize() request
+2. Grant required permissions to internal platform service accounts
+3. Delegate human user authorization to your own logic
+"""
+
+import argparse
 import base64
 import json
 import logging
 from concurrent import futures
 
 import grpc
+import yaml
 
 from gen.authorizer import authorizer_pb2_grpc, payload_pb2
 from gen.common import authorization_pb2
@@ -287,6 +272,32 @@ ACTION_NAMES = {
     v.number: v.name
     for v in authorization_pb2.DESCRIPTOR.enum_types_by_name["Action"].values
     if v.number != 0
+}
+
+# Minimum permissions each internal service account needs.
+# These are non-negotiable — without them the platform breaks.
+INTERNAL_SERVICE_ACCOUNT_PERMISSIONS = {
+    # App 3 (INTERNAL_CLIENT_ID): the platform's own identity.
+    # Used for all internal service-to-service communication.
+    "internal": set(ACTION_NAMES.keys()),  # all actions
+    # App 4 (AUTH_CLIENT_ID): dataplane operator.
+    # Registers clusters, sends heartbeats, reads inventory.
+    "operator": {
+        authorization_pb2.ACTION_MANAGE_CLUSTER,
+        authorization_pb2.ACTION_VIEW_FLYTE_INVENTORY,
+        authorization_pb2.ACTION_VIEW_FLYTE_EXECUTIONS,
+        authorization_pb2.ACTION_CREATE_FLYTE_EXECUTIONS,
+    },
+    # App 5 (EAGER client ID): task execution runtime.
+    # Launches child tasks, registers workflows on behalf of users.
+    "eager": {
+        authorization_pb2.ACTION_VIEW_FLYTE_INVENTORY,
+        authorization_pb2.ACTION_VIEW_FLYTE_EXECUTIONS,
+        authorization_pb2.ACTION_REGISTER_FLYTE_INVENTORY,
+        authorization_pb2.ACTION_CREATE_FLYTE_EXECUTIONS,
+        authorization_pb2.ACTION_EDIT_EXECUTION_RELATED_ATTRIBUTES,
+        authorization_pb2.ACTION_EDIT_CLUSTER_RELATED_ATTRIBUTES,
+    },
 }
 
 
@@ -301,6 +312,16 @@ def decode_jwt_payload(token: str) -> dict | None:
 
 
 class AuthorizerServicer(authorizer_pb2_grpc.AuthorizerServiceServicer):
+
+    def __init__(self, config: dict):
+        # Map internal service account client IDs → their permission sets.
+        # These come from config.yaml and match the OAuth app client IDs
+        # configured during authentication setup.
+        self.service_accounts: dict[str, set[int]] = {}
+        for key, client_id in config.get("service_accounts", {}).items():
+            perms = INTERNAL_SERVICE_ACCOUNT_PERMISSIONS.get(key)
+            if perms and client_id:
+                self.service_accounts[client_id] = perms
 
     def Authorize(self, request, context):
         # --- 1. Extract identity from the proto request ---
@@ -346,7 +367,27 @@ class AuthorizerServicer(authorizer_pb2_grpc.AuthorizerServiceServicer):
         else:
             resource_desc = organization
 
-        # --- 5. Log what was received ---
+        # --- 5. Authorize internal service accounts ---
+        # The platform does NOT bypass external authorization for its own
+        # service accounts. Your server MUST grant them the required
+        # permissions or the platform will stop functioning.
+        if subject in self.service_accounts:
+            allowed = action in self.service_accounts[subject]
+            log.info(
+                "%s sub=%s (service-account) action=%s resource=%s",
+                "ALLOWED" if allowed else "DENIED", subject, action_name, resource_desc,
+            )
+            return payload_pb2.AuthorizeResponse(allowed=allowed)
+
+        # --- 6. Authorize human users ---
+        # Replace this with your own authorization logic (OPA, Cedar,
+        # internal RBAC, policy engine, token exchange, etc.)
+        # Available data:
+        #   - subject: the user's identity (from 'sub' claim)
+        #   - claims: decoded JWT with sub, email, groups, identitytype, etc.
+        #   - proto_token / metadata_token: raw JWT for downstream use
+        #   - action: the Action enum value being requested
+        #   - resource: the target resource (project, domain, cluster, org)
         log.info("subject=%s action=%s resource=%s", subject, action_name, resource_desc)
         if claims:
             log.info(
@@ -355,23 +396,26 @@ class AuthorizerServicer(authorizer_pb2_grpc.AuthorizerServiceServicer):
                 claims.get("iss"), claims.get("exp"),
             )
 
-        # --- 6. Make your authorization decision ---
-        # Replace this with your own authorization logic (OPA, Cedar,
-        # internal RBAC, policy engine, etc.)
         allowed = True  # TODO: implement your authorization logic
-
         return payload_pb2.AuthorizeResponse(allowed=allowed)
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", default="config.yaml")
+    args = parser.parse_args()
+    with open(args.config) as f:
+        config = yaml.safe_load(f)
+
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=4))
     authorizer_pb2_grpc.add_AuthorizerServiceServicer_to_server(
-        AuthorizerServicer(), server
+        AuthorizerServicer(config), server
     )
-    server.add_insecure_port("[::]:50051")
+    port = config.get("port", 50051)
+    server.add_insecure_port(f"[::]:{port}")
     server.start()
-    log.info("External AuthZ server listening on port 50051")
+    log.info("External AuthZ server listening on port %d", port)
     server.wait_for_termination()
 ```
 
