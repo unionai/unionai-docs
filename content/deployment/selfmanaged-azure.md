@@ -85,16 +85,15 @@ All communication is encrypted.  The Union architecture is described on the [Arc
    * Create the `EAGER_API_KEY` as instructed in Step 7 of the command output. This step is required for every dataplane you plan to use for V2 executions.
 
 3. Update the values file correctly:
-   For example, `<UNION_FLYTE_ROLE_ARN>` is the ARN of the new IAM role created in the [AWS Cluster Recommendations](./cluster-recommendations#iam)
+   Configure Azure Blob Storage and Workload Identity settings as indicated in the [AKS Cluster Recommendations](./cluster-recommendations#aks) section.
 
 4. Optionally configure the resource `limits` and `requests` for the different services.
    By default, these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.
 
-   * `clusterresourcesync.resources`
-   * `flytepropeller.resources`
-   * `flytepropellerwebhook.resources`
    * `operator.resources`
+   * `executor.resources`
    * `proxy.resources`
+   * `flytepropellerwebhook.resources`
 
 5. Once deployed you can check to see if the cluster has been successfully registered to the control plane:
 
