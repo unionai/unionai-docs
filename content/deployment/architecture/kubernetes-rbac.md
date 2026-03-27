@@ -10,7 +10,7 @@ variants: -flyte -byoc +selfmanaged
 
 By default, all data plane components share a single Kubernetes service account: `union-system`. This service account is configured through the `commonServiceAccount` Helm value and is used by the operator, executor, proxy, webhook, and FluentBit.
 
-Users can disable the common service account and configure per-component service accounts instead. When `commonServiceAccount` is disabled, each component falls back to its own service account (for example, `operator-system` for the operator, `fluentbit-system` for FluentBit). Refer to the [dataplane Helm chart reference](../../helm-chart-reference/dataplane) for the full set of per-component service account values.
+Users can disable the common service account and configure per-component service accounts instead. When `commonServiceAccount` is disabled, each component falls back to its own service account (for example, `operator-system` for the operator, `fluentbit-system` for FluentBit). Refer to the [dataplane Helm chart reference](../helm-chart-reference/dataplane) for the full set of per-component service account values.
 
 See the [dataplane helm charts](https://github.com/unionai/helm-charts/tree/main/charts/dataplane) for the full set of Roles and ClusterRoles.
 
