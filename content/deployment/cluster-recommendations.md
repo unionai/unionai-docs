@@ -91,14 +91,13 @@ You will need to create an IAM role for the `union-system` service account and g
                "Condition": {
                    "StringEquals": {
                        "$oidc_provider:aud": "sts.amazonaws.com",
-                       "$oidc_provider:sub": "system:serviceaccount:union:union-system"
+                       "$oidc_provider:sub": "system:serviceaccount:<NAMESPACE>:union-system"
                    }
                }
            }
        ]
    }
-   ```
-   where `$account_id` is your AWS account ID and `$oidc_provider` is the OIDC provider you created above.
+   
 
    You can obtain the OIDC provider value using the AWS CLI:
 
@@ -192,14 +191,14 @@ Create a Google Service Account and bind it to the `union-system` Kubernetes ser
 gcloud iam service-accounts add-iam-policy-binding \
   <GSA_NAME>@<PROJECT_ID>.iam.gserviceaccount.com \
   --role roles/iam.workloadIdentityUser \
-  --member "serviceAccount:<PROJECT_ID>.svc.id.goog[union/union-system]"
+  --member "serviceAccount:<PROJECT_ID>.svc.id.goog[<NAMESPACE>/union-system]"
 ```
 
 Grant the following roles to the Google Service Account:
 
 - `roles/storage.objectAdmin` on the GCS bucket(s) used for workflow data
 - `roles/artifactregistry.writer` on the Artifact Registry repository (if Image Builder is enabled)
-- `iam.serviceAccounts.signBlob` at the project level (required for Image Builder authentication)
+- `roles/iam.serviceAccountTokenCreator` at the project level (includes `iam.serviceAccounts.signBlob`, required for Image Builder authentication)
 
 Annotate the `union-system` service account with the Google Service Account email in your Helm values:
 
