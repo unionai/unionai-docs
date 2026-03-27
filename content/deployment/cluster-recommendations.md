@@ -97,7 +97,7 @@ You will need to create an IAM role for the `union-system` service account and g
            }
        ]
    }
-   
+   ```
 
    You can obtain the OIDC provider value using the AWS CLI:
 
