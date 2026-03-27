@@ -10,6 +10,10 @@ variants: -flyte -byoc +selfmanaged
 The customer can decide how many clusters to have, their shape, and who has access to what.
 All communication is encrypted.  The Union architecture is described on the [Architecture](./architecture/_index) page.
 
+## Azure Container Registry
+
+Create an [Azure Container Registry](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal) for Image Builder to push and pull container images. Note the registry login server (e.g. `<REGISTRY_NAME>.azurecr.io`) — you will reference it when configuring Workload Identity permissions below.
+
 ## Workload Identity
 
 Union recommends using [Microsoft Entra Workload ID](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) to securely access Azure resources.

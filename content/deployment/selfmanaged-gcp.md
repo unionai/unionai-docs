@@ -18,6 +18,10 @@ Union recommends the use of two buckets (metadata and fast registration), though
 
 See [Data retention policy](./configuration/data-retention) for information on managing storage costs with lifecycle policies.
 
+## Artifact Registry
+
+Create an [Artifact Registry Docker repository](https://cloud.google.com/artifact-registry/docs/docker/store-docker-container-images#create) for Image Builder to push and pull container images. Note the repository path (e.g. `<REGION>-docker.pkg.dev/<PROJECT_ID>/<REPOSITORY>`) — you will reference it when configuring Workload Identity permissions below.
+
 ## Workload Identity
 
 Union recommends using [GKE Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) to securely access GCP resources.

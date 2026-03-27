@@ -24,6 +24,10 @@ You can also choose to use a single bucket.
 
 Union recommends using Lifecycle Policy on these buckets to manage storage costs. See [Data retention policy](./configuration/data-retention) for more information.
 
+## ECR
+
+Create an [ECR private repository](https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-create.html) for Image Builder to push and pull container images. Note the repository URI (e.g. `<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/<REPOSITORY>`) — you will reference it when configuring IAM permissions below.
+
 ## IAM
 
 Create an IAM role for the `union-system` service account and grant it access to your S3 buckets and ECR.
