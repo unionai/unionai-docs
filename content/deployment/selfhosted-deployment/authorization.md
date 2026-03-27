@@ -224,18 +224,165 @@ subjects:
 
 Your implementation may use different role names or a different permission model entirely — the requirement is that these subjects are granted the listed actions.
 
+### Configuring service accounts
+
+The three internal OAuth apps must be registered in your external server's permission mapping. Their `sub` claims are the OAuth **client IDs** from your identity provider — the same values configured during [authentication setup]({{< relref "authentication" >}}).
+
+To find the client IDs for your deployment, check the controlplane Helm values:
+
+| OAuth App | # | Helm global variable | Role / permissions needed |
+|-----------|---|---------------------|---------------------------|
+| Service-to-service | 3 | `INTERNAL_CLIENT_ID` | All actions (platform admin) |
+| Operator | 4 | `AUTH_CLIENT_ID` | `MANAGE_CLUSTER`, `VIEW_FLYTE_INVENTORY`, `VIEW_FLYTE_EXECUTIONS`, `CREATE_FLYTE_EXECUTIONS` |
+| EAGER | 5 | (EAGER app client ID) | `VIEW_FLYTE_INVENTORY`, `VIEW_FLYTE_EXECUTIONS`, `REGISTER_FLYTE_INVENTORY`, `CREATE_FLYTE_EXECUTIONS`, `EDIT_EXECUTION_RELATED_ATTRIBUTES`, `EDIT_CLUSTER_RELATED_ATTRIBUTES` |
+
+> [!WARNING]
+> If the operator service account (App 4) is not granted `MANAGE_CLUSTER`, the dataplane will be unable to register with the controlplane or send heartbeats. If the EAGER service account (App 5) is not granted execution permissions, task pods will fail to launch child tasks or register workflow artifacts.
+
 ### Reference implementation
 
-A reference implementation is available as an example for testing and development. Contact {{< key product_name >}} support for access. It demonstrates:
+The following is a complete Python example of an external authorization server. It uses a static YAML config to map subjects to roles, and roles to permitted actions.
 
-- Extracting identity from `AuthorizeRequest.identity.external_identity` (subject + token)
-- Reading the raw OIDC token from both the protobuf field and forwarded `authorization` metadata header
-- Decoding JWT claims without signature verification (tokens are pre-validated by the platform)
-- Static subject → role → action permission mapping
-- Logging identity resolution and authorization decisions
+**config.yaml** — subject-to-role mapping:
+
+```yaml
+port: 50051
+
+subjects:
+  # Human users — map by the 'sub' claim from your identity provider
+  "user@example.com": Admin
+  "developer@example.com": Develop
+
+  # Internal platform service accounts — REQUIRED for platform operation.
+  # Use the OAuth app client IDs from your identity provider (the same
+  # values configured in authentication setup).
+  "<INTERNAL_CLIENT_ID>": Admin             # App 3: service-to-service
+  "<AUTH_CLIENT_ID>": _ClusterManager       # App 4: dataplane operator
+  "<EAGER_CLIENT_ID>": _RuntimeService      # App 5: task execution
+
+  # Default role for unknown subjects (optional — omit to deny unknowns)
+  # "*": Report
+```
+
+**server.py** — extracting identity, token, and request fields:
+
+```python
+#!/usr/bin/env python3
+"""Example: extracting identity and token from Union's Authorize() RPC."""
+
+import base64
+import json
+import logging
+from concurrent import futures
+
+import grpc
+
+from gen.authorizer import authorizer_pb2_grpc, payload_pb2
+from gen.common import authorization_pb2
+
+log = logging.getLogger("authz")
+
+# Action enum → name for logging
+ACTION_NAMES = {
+    v.number: v.name
+    for v in authorization_pb2.DESCRIPTOR.enum_types_by_name["Action"].values
+    if v.number != 0
+}
+
+
+def decode_jwt_payload(token: str) -> dict | None:
+    """Base64-decode the JWT payload (no signature verification needed —
+    the token is pre-validated by the platform)."""
+    parts = token.split(".")
+    if len(parts) != 3:
+        return None
+    payload = parts[1] + "=" * ((-len(parts[1])) % 4)
+    return json.loads(base64.urlsafe_b64decode(payload))
+
+
+class AuthorizerServicer(authorizer_pb2_grpc.AuthorizerServiceServicer):
+
+    def Authorize(self, request, context):
+        # --- 1. Extract identity from the proto request (recommended) ---
+        # The platform always sends ExternalIdentity with subject + token.
+        subject = ""
+        token = None
+        identity = request.identity
+        if identity.HasField("external_identity"):
+            subject = identity.external_identity.subject
+            token = identity.external_identity.token or None
+
+        # --- 2. Extract token from gRPC metadata (alternative) ---
+        # The raw JWT is also forwarded in the "authorization" metadata header.
+        # Use whichever source fits your architecture.
+        metadata = dict(context.invocation_metadata())
+        auth_header = metadata.get("authorization", "")
+        if auth_header.lower().startswith("bearer ") and not token:
+            token = auth_header[7:]
+
+        # --- 3. Decode JWT claims ---
+        # The token is pre-validated upstream. Decode to read claims like
+        # sub, identitytype, email, groups, preferred_username, iss, aud, exp.
+        claims = decode_jwt_payload(token) if token else None
+
+        # --- 4. Extract the action and resource ---
+        action = request.action
+        action_name = ACTION_NAMES.get(action, str(action))
+        organization = request.organization
+
+        # Resource is a oneof: project, domain, organization, or cluster
+        resource = request.resource
+        resource_desc = ""
+        if resource.HasField("project"):
+            p = resource.project
+            domain = p.domain.name if p.HasField("domain") else "?"
+            resource_desc = f"{organization}/{domain}/{p.name}"
+        elif resource.HasField("domain"):
+            resource_desc = f"{organization}/{resource.domain.name}"
+        elif resource.HasField("cluster"):
+            resource_desc = f"{organization}/{resource.cluster.name}"
+        else:
+            resource_desc = organization
+
+        # --- 5. Log what was received ---
+        log.info("subject=%s action=%s resource=%s", subject, action_name, resource_desc)
+        if claims:
+            log.info(
+                "  JWT: sub=%s type=%s iss=%s exp=%s",
+                claims.get("sub"), claims.get("identitytype"),
+                claims.get("iss"), claims.get("exp"),
+            )
+
+        # --- 6. Make your authorization decision ---
+        # Replace this with your own authorization logic (OPA, Cedar,
+        # internal RBAC, policy engine, etc.)
+        allowed = True  # TODO: implement your authorization logic
+
+        return payload_pb2.AuthorizeResponse(allowed=allowed)
+
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=4))
+    authorizer_pb2_grpc.add_AuthorizerServiceServicer_to_server(
+        AuthorizerServicer(), server
+    )
+    server.add_insecure_port("[::]:50051")
+    server.start()
+    log.info("External AuthZ server listening on port 50051")
+    server.wait_for_termination()
+```
+
+**Proto definitions:** The server requires generated Python code from Union's authorization protobuf definitions. Contact {{< key product_name >}} support for access to the `.proto` files, or use [buf](https://buf.build) to generate them:
+
+```shell
+pip install grpcio grpcio-tools protobuf pyyaml
+buf generate  # using buf.gen.yaml pointing to Union's IDL
+python server.py --config config.yaml
+```
 
 > [!NOTE]
-> The reference implementation is intended for testing and development. Production implementations should integrate with your organization's identity and policy management systems.
+> This reference implementation is intended for testing and development. Production implementations should integrate with your organization's identity and policy management systems.
 
 ## Observability
 
