@@ -53,6 +53,15 @@ In low-privilege mode, the chart automatically:
 - **Access Pattern**: Read-only (`list`, `watch`) to numerous resources across multiple API groups
 - **Scope**: Comprehensive — covers core resources, workloads, networking, storage, and authentication
 
+##### `prometheus-operator`
+- **Access**: Full control (`*`) over Prometheus monitoring resources
+- **Key Permissions**:
+  - Complete access to monitoring.coreos.com API group resources
+  - Full access to statefulsets, configmaps, secrets
+  - Pod management (list, delete)
+  - Service/endpoint management
+  - Read-only for nodes, namespaces, ingresses
+
 ##### `union-operator-prometheus`
 - **Access**: Read-only access to metrics sources
 - **Resources**: nodes, services, endpoints, pods, endpointslices, ingresses
