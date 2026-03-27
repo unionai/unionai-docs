@@ -86,7 +86,7 @@ The Union architecture is described on the [Architecture](./architecture/_index)
   * Create the `EAGER_API_KEY` as instructed in Step 7 of the command output. This step is required for every dataplane you plan to use for V2 executions.
 
 3.  Update the values file correctly:
-    For example, `<UNION_FLYTE_ROLE_ARN>` is the ARN of the new IAM role created in the [AWS Cluster Recommendations](./cluster-recommendations#iam)
+    For example, if using AWS, set `<UNION_FLYTE_ROLE_ARN>` to the ARN of the IAM role created during [AWS setup](./selfmanaged-aws/manual#iam).
 
 4. Optionally configure the resource `limits` and `requests` for the different services.
    By default, these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.

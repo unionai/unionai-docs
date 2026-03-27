@@ -14,12 +14,45 @@ The Union architecture is described on the [Architecture](./architecture/_index)
 > [!NOTE] These instructions cover installing Union.ai in an on-premise Kubernetes cluster.
 > If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./selfmanaged-aws/_index), [Azure](./selfmanaged-azure), [OCI](./selfmanaged-oci).
 
+## GCS
+
+Each data plane uses a GCS bucket to store data used in workflow execution.
+Union recommends the use of two buckets (metadata and fast registration), though a single bucket is also supported.
+
+See [Data retention policy](./configuration/data-retention) for information on managing storage costs with lifecycle policies.
+
+## Workload Identity
+
+Union recommends using [GKE Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) to securely access GCP resources.
+
+Create a Google Service Account and bind it to the `union-system` Kubernetes service account:
+
+```bash
+gcloud iam service-accounts add-iam-policy-binding \
+  <GSA_NAME>@<PROJECT_ID>.iam.gserviceaccount.com \
+  --role roles/iam.workloadIdentityUser \
+  --member "serviceAccount:<PROJECT_ID>.svc.id.goog[<NAMESPACE>/union-system]"
+```
+
+Grant the following roles to the Google Service Account:
+
+- `roles/storage.objectAdmin` on the GCS bucket(s) used for workflow data
+- `roles/artifactregistry.writer` on the Artifact Registry repository used by Image Builder
+- `roles/iam.serviceAccountTokenCreator` at the project level (includes `iam.serviceAccounts.signBlob`, required for Image Builder authentication)
+
+Annotate the `union-system` service account with the Google Service Account email in your Helm values:
+
+```yaml
+commonServiceAccount:
+  annotations:
+    iam.gke.io/gcp-service-account: "<GSA_NAME>@<PROJECT_ID>.iam.gserviceaccount.com"
+```
+
 ## Assumptions
 
 * You have a {{< key product_name >}} organization, and you know the control plane URL for your organization. (e.g. https://your-org-name.us-east-2.unionai.cloud).
 * You have a Kubernetes cluster, running one of the most recent three minor Kubernetes versions. [Learn more](https://kubernetes.io/releases/version-skew-policy/).
-* A GCS Bucket and Google Service Accounts that has access to
-* Existing Kubernetes Service Accounts with access to the bucket or permissions to create Service Account bindings
+* You have configured GCS bucket(s) and Workload Identity as described above.
 
 ## Prerequisites
 
@@ -86,7 +119,7 @@ The Union architecture is described on the [Architecture](./architecture/_index)
   * Create the `EAGER_API_KEY` as instructed in Step 7 of the command output. This step is required for every dataplane you plan to use for V2 executions.
 
 3.  Update the values file correctly:
-    Configure GCS storage and Workload Identity settings as indicated in the [GKE Cluster Recommendations](./cluster-recommendations#gke) section.
+    Configure GCS storage and Workload Identity settings as described in the [Workload Identity](#workload-identity) section above.
 
 4. Optionally configure the resource `limits` and `requests` for the different services.
    By default, these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.

@@ -10,14 +10,138 @@ variants: -flyte -byoc +selfmanaged
 The customer can decide how many clusters to have, their shape, and who has access to what.
 All communication is encrypted.  The Union architecture is described on the [Architecture](../architecture/_index) page.
 
+## S3
+
+Each data plane uses S3 buckets to store data used in workflow execution.
+Union recommends the use of two S3 buckets:
+
+1. **Metadata bucket**: contains workflow execution data such as task inputs and outputs.
+2. **Fast registration bucket**: contains local code artifacts copied into the Flyte task container at runtime when using `union register` or `union run --remote --copy-all`.
+
+You can also choose to use a single bucket.
+
+### Data Retention
+
+Union recommends using Lifecycle Policy on these buckets to manage storage costs. See [Data retention policy](../configuration/data-retention) for more information.
+
+## IAM
+
+Create an IAM role for the `union-system` service account and grant it access to your S3 buckets and ECR.
+
+1. Create an [IAM OIDC provider for your EKS cluster](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html#_create_oidc_provider_eksctl).
+
+2. Create a new IAM role named `union-system-role`. This role will be assumed by the `union-system` Kubernetes service account via [IAM Roles for Service Accounts (IRSA)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html).
+
+   The Trust Policy for this role will be:
+
+   ```json
+   {
+       "Version": "2012-10-17",
+       "Statement": [
+           {
+               "Effect": "Allow",
+               "Principal": {
+                   "Federated": "arn:aws:iam::$account_id:oidc-provider/$oidc_provider"
+               },
+               "Action": "sts:AssumeRoleWithWebIdentity",
+               "Condition": {
+                   "StringEquals": {
+                       "$oidc_provider:aud": "sts.amazonaws.com",
+                       "$oidc_provider:sub": "system:serviceaccount:<NAMESPACE>:union-system"
+                   }
+               }
+           }
+       ]
+   }
+   ```
+
+   You can obtain the OIDC provider value using the AWS CLI:
+
+   ```bash
+   aws eks describe-cluster --region $cloud_region --name $cluster_name --query "cluster.identity.oidc.issuer" --output text
+   ```
+
+3. Create and attach an IAM policy to this role granting S3 access:
+
+   ```json
+   {
+       "Version": "2012-10-17",
+       "Statement": [
+           {
+               "Sid": "S3BucketAccess",
+               "Effect": "Allow",
+               "Action": [
+                   "s3:DeleteObject*",
+                   "s3:GetObject*",
+                   "s3:ListBucket",
+                   "s3:PutObject*"
+               ],
+               "Resource": [
+                   "arn:aws:s3:::<bucket-name>",
+                   "arn:aws:s3:::<bucket-name>/*"
+               ]
+           }
+       ]
+   }
+   ```
+
+4. Attach ECR permissions to the same role for Image Builder:
+
+   ```json
+   {
+       "Version": "2012-10-17",
+       "Statement": [
+           {
+               "Sid": "ECRAuth",
+               "Effect": "Allow",
+               "Action": [
+                   "ecr:GetAuthorizationToken"
+               ],
+               "Resource": "*"
+           },
+           {
+               "Sid": "ECRReadWrite",
+               "Effect": "Allow",
+               "Action": [
+                   "ecr:BatchCheckLayerAvailability",
+                   "ecr:BatchGetImage",
+                   "ecr:GetDownloadUrlForLayer",
+                   "ecr:DescribeImages",
+                   "ecr:PutImage",
+                   "ecr:InitiateLayerUpload",
+                   "ecr:UploadLayerPart",
+                   "ecr:CompleteLayerUpload"
+               ],
+               "Resource": "arn:aws:ecr:<AWS_REGION>:<AWS_ACCOUNT_ID>:repository/<REPOSITORY>"
+           }
+       ]
+   }
+   ```
+
+5. Annotate the `union-system` service account with the role ARN in your Helm values:
+
+   ```yaml
+   commonServiceAccount:
+     annotations:
+       eks.amazonaws.com/role-arn: "arn:aws:iam::<account_id>:role/union-system-role"
+   ```
+
+## EKS configuration
+
+Union recommends installing the following EKS add-ons:
+  - CoreDNS
+  - Amazon VPC CNI
+  - Kube-proxy
+
+Union supports Autoscaling and the use of spot (interruptible) instances.
+
 ## Assumptions
 
 * You have a {{< key product_name >}} organization, and you know the control plane URL for your organization.
 * You have a cluster name provided by or coordinated with Union.
 * You have a Kubernetes cluster, running one of the most recent three minor K8s versions.
   [Learn more](https://kubernetes.io/releases/version-skew-policy/)
-* You have configured an S3 bucket.
-* You have an IAM Role, Trust Policy and OIDC provider configured as indicated in the [AWS Cluster Recommendations](../cluster-recommendations#iam) section.
+* You have configured S3 bucket(s) and IAM role as described above.
 
 ## Prerequisites
 
@@ -83,7 +207,7 @@ All communication is encrypted.  The Union architecture is described on the [Arc
    * Create the `EAGER_API_KEY` as instructed in Step 7 of the command output. This step is required for every dataplane you plan to use for v2 executions.
 
 3. Update the values file correctly:
-   For example, set the `union-system` service account annotation with the IAM role ARN created in the [AWS Cluster Recommendations](../cluster-recommendations#iam) section.
+   Set the `union-system` service account annotation with the IAM role ARN created in the [IAM](#iam) section above.
 
 4. Optionally configure the resource `limits` and `requests` for the different services.
    By default, these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.
