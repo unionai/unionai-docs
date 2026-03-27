@@ -1,7 +1,7 @@
 ---
 title: Dataplane chart
 variants: -flyte -byoc +selfmanaged
-chart_version: 2026.3.10
+chart_version: 2026.3.11
 weight: 1
 ---
 
@@ -11,8 +11,8 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 
 | | |
 |---|---|
-| **Chart version** | 2026.3.10 |
-| **App version** | 2026.3.7 |
+| **Chart version** | 2026.3.11 |
+| **App version** | 2026.3.8 |
 | **Kubernetes version** | `>= 1.28.0-0` |
 
 ## Dependencies
@@ -38,6 +38,7 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | additionalPodSpec | object | Define additional PodSpec values for all of the Union pods. | `{}` |
 | clusterName | string | Cluster name should be shared with Union for proper functionality. | `"{{ .Values.global.CLUSTER_NAME }}"` |
 | clusterresourcesync | object | clusterresourcesync contains the configuration information for the syncresources service. | `(see values.yaml)` |
+| clusterresourcesync.additionalTemplates | list | Additional cluster resource templates to create per project namespace. Use this instead of overriding `templates` to avoid accidentally removing the default namespace, service account, and resource quota templates. Each entry has a `key` (filename stem) and `value` (Kubernetes manifest). | `[]` |
 | clusterresourcesync.additionalVolumeMounts | list | Appends additional volume mounts to the main container's spec. May include template values. | `[]` |
 | clusterresourcesync.additionalVolumes | list | Appends additional volumes to the deployment spec. May include template values. | `[]` |
 | clusterresourcesync.affinity | object | affinity configurations for the syncresources pods | `{}` |
