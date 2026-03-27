@@ -177,10 +177,12 @@ services:
             # maxRetries: 0
 
           # gRPC metadata keys forwarded to the external server.
-          # Default: ["authorization", "flyte-authorization"]
+          # These defaults ensure the raw OIDC token reaches
+          # the external server on all auth flows.
           forwardHeaders:
             - authorization
             - flyte-authorization
+            - x-user-token
 
           # Allow requests when the external server is unreachable.
           # If false (default), deny on error.
@@ -205,7 +207,7 @@ service AuthorizerService {
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `identity` | `Identity` | The caller — one of `user_id` (subject), `application_id` (subject), or `external_identity` (subject + raw OIDC token) |
+| `identity` | `Identity` | The caller — an `external_identity` containing the subject string and the raw OIDC token (when available) |
 | `action` | `Action` enum | The operation being requested |
 | `resource` | `Resource` | The target resource (organization, domain, project, or cluster) |
 | `organization` | `string` | The organization identifier |
@@ -220,12 +222,19 @@ service AuthorizerService {
 
 The caller's identity is resolved and forwarded to your server through two channels:
 
-1. **`AuthorizeRequest.identity` protobuf field** (recommended) — a structured identity containing `user_id.subject`, `application_id.subject`, or `external_identity.subject` + `external_identity.token`. This is the primary source of identity and is always populated when identity can be resolved.
+1. **`AuthorizeRequest.identity` protobuf field** (recommended) — always an `external_identity` containing:
+   - `subject`: the caller's identity (resolved from `X-User-Subject` for browser/CLI requests, or from the JWT `sub` claim for service-to-service requests)
+   - `token`: the raw OIDC/JWT token (when available)
 
-2. **gRPC metadata headers** (`authorization` / `flyte-authorization`) — forwarded to your server if configured in `forwardHeaders`. Contains the raw JWT/OIDC token. Your server can decode the JWT payload to read claims (`sub`, `identitytype`, `email`, `groups`, etc.) without signature verification — the token has already been validated upstream.
+   This provides a consistent interface regardless of how the caller authenticated.
+
+2. **gRPC metadata headers** — forwarded to your server based on the `forwardHeaders` configuration. By default, `authorization` and `flyte-authorization` are forwarded. These contain the raw JWT/OIDC token. Your server can decode the JWT payload to read claims (`sub`, `identitytype`, `email`, `groups`, etc.) without signature verification — the token has already been validated upstream.
 
 > [!NOTE]
-> For browser and CLI requests, identity is resolved from the authentication layer's headers (`X-User-Subject`, `X-User-Claim-Identitytype`). For service-to-service requests, identity is resolved from the JWT token in gRPC metadata.
+> **Token availability by auth flow:**
+> - **SDK/CLI (PKCE):** The token arrives via the `authorization` header and is available in both the protobuf `identity.token` field and forwarded metadata.
+> - **Browser (cookie-based):** The token is extracted from the encrypted session cookie by the `/me` auth subrequest and forwarded via the `X-User-Token` header. The authorizer normalizes it to the standard `authorization` header before calling the external server, so your server sees a consistent interface on all paths.
+> - **Service-to-service:** The token arrives via the `authorization` or `flyte-authorization` header.
 
 ### Actions
 
@@ -281,8 +290,9 @@ Your implementation may use different role names or a different permission model
 
 A reference implementation is available as an example for testing and development. Contact {{< key product_name >}} support for access. It demonstrates:
 
-- Extracting identity from the `AuthorizeRequest.identity` protobuf field
-- Falling back to forwarded JWT metadata headers
+- Extracting identity from `AuthorizeRequest.identity.external_identity` (subject + token)
+- Reading the raw OIDC token from both the protobuf field and forwarded `authorization` metadata header
+- Decoding JWT claims without signature verification (tokens are pre-validated by the platform)
 - Static subject → role → action permission mapping
 - Logging identity resolution and authorization decisions
 
