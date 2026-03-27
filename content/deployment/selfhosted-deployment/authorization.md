@@ -305,25 +305,23 @@ class AuthorizerServicer(authorizer_pb2_grpc.AuthorizerServiceServicer):
     def Authorize(self, request, context):
         # --- 1. Extract identity from the proto request (recommended) ---
         # The platform always sends ExternalIdentity with subject + token.
-        subject = ""
-        token = None
-        identity = request.identity
-        if identity.HasField("external_identity"):
-            subject = identity.external_identity.subject
-            token = identity.external_identity.token or None
+        # Every request is authenticated before reaching authorization, so
+        # the token is always present.
+        ext_id = request.identity.external_identity
+        subject = ext_id.subject
+        token = ext_id.token
 
         # --- 2. Extract token from gRPC metadata (alternative) ---
-        # The raw JWT is also forwarded in the "authorization" metadata header.
-        # Use whichever source fits your architecture.
+        # The same JWT is also forwarded in the "authorization" metadata
+        # header as "Bearer <token>". Use whichever source fits your
+        # architecture — both carry the same token.
         metadata = dict(context.invocation_metadata())
-        auth_header = metadata.get("authorization", "")
-        if auth_header.lower().startswith("bearer ") and not token:
-            token = auth_header[7:]
+        auth_header = metadata.get("authorization", "")  # "Bearer <jwt>"
 
         # --- 3. Decode JWT claims ---
         # The token is pre-validated upstream. Decode to read claims like
         # sub, identitytype, email, groups, preferred_username, iss, aud, exp.
-        claims = decode_jwt_payload(token) if token else None
+        claims = decode_jwt_payload(token)
 
         # --- 4. Extract the action and resource ---
         action = request.action
