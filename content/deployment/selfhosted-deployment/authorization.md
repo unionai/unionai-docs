@@ -120,78 +120,16 @@ Delegates authorization decisions to a customer-provided gRPC server. The extern
 
 ## Configuration
 
-Authorization mode is configured in the controlplane Helm values under `services.authorizer.configMap.authorizer`.
+Authorization mode is set in the controlplane Helm values. Contact {{< key product_name >}} support for the specific values for your deployment — the exact Helm paths depend on the deployment topology. The key configuration fields are:
 
-### Noop
+- **`type`** — `"Noop"` (default), `"UserClouds"` (Union built-in RBAC), or `"External"` (customer-provided server)
+- **`externalClient.grpcConfig.host`** — gRPC target for your external server (External mode only). Uses standard gRPC name resolution (`dns:///`, `unix:///`, etc.)
+- **`externalClient.grpcConfig.insecure`** — `true` for plaintext, `false` for TLS
+- **`externalClient.failOpen`** — `true` to allow requests when the external server is unreachable (default: `false`)
 
-No configuration required — this is the default:
+## External authorization server contract
 
-```yaml
-services:
-  authorizer:
-    configMap:
-      authorizer:
-        type: "Noop"
-```
-
-### Union (built-in RBAC)
-
-Enable {{< key product_name >}}'s built-in RBAC:
-
-```yaml
-services:
-  authorizer:
-    configMap:
-      authorizer:
-        type: "UserClouds"  # Legacy name — activates Union's built-in RBAC
-```
-
-The `userCloudsClient` defaults are pre-configured in the chart. In most cases you only need to change the `type` field.
-
-### External
-
-Configure the authorization backend to proxy to your external gRPC server:
-
-```yaml
-services:
-  authorizer:
-    configMap:
-      authorizer:
-        type: "External"
-        externalClient:
-          grpcConfig:
-            # gRPC target for your external authorization server.
-            # Uses standard gRPC name resolution (dns:///, unix:///, etc).
-            host: "dns:///your-authz-server.namespace.svc.cluster.local:50051"
-
-            # Connect without TLS (plaintext). Set to false for TLS connections.
-            insecure: true
-
-            # Skip server certificate verification (TLS only). Do NOT use in production.
-            # insecureSkipVerify: false
-
-            # Timeout per gRPC call (default: "5s").
-            # perRetryTimeout: "5s"
-
-            # Max retries. 0 = fail fast, no retries (default: 0).
-            # maxRetries: 0
-
-          # gRPC metadata keys forwarded to the external server.
-          # These defaults ensure the raw OIDC token reaches
-          # the external server on all auth flows.
-          forwardHeaders:
-            - authorization
-            - flyte-authorization
-            - x-user-token
-
-          # Allow requests when the external server is unreachable.
-          # If false (default), deny on error.
-          failOpen: false
-```
-
-## External authorization server requirements
-
-This section applies only to **External** mode. Your authorization server must meet the following requirements.
+This section applies only to **External** mode and defines what your authorization server must implement.
 
 ### gRPC contract
 
@@ -228,7 +166,7 @@ The caller's identity is resolved and forwarded to your server through two chann
 
    This provides a consistent interface regardless of how the caller authenticated.
 
-2. **gRPC metadata headers** — forwarded to your server based on the `forwardHeaders` configuration. By default, `authorization` and `flyte-authorization` are forwarded. These contain the raw JWT/OIDC token. Your server can decode the JWT payload to read claims (`sub`, `identitytype`, `email`, `groups`, etc.) without signature verification — the token has already been validated upstream.
+2. **gRPC metadata headers** — the raw JWT/OIDC token is forwarded to your server in the `authorization` metadata header (as `Bearer <token>`). Your server can decode the JWT payload to read claims (`sub`, `identitytype`, `email`, `groups`, etc.) without signature verification — the token has already been validated upstream by the platform.
 
 > [!NOTE]
 > **Token availability by auth flow:**
