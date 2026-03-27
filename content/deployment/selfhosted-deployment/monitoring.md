@@ -2,6 +2,7 @@
 title: Monitoring
 weight: 8
 variants: -flyte -serverless -byoc +selfmanaged
+mermaid: true
 ---
 # Monitoring
 
@@ -13,49 +14,43 @@ variants: -flyte -serverless -byoc +selfmanaged
 
 In a self-hosted deployment, the controlplane and dataplane share a single Kubernetes cluster. The controlplane namespace runs Prometheus, Grafana, and AlertManager. Prometheus scrapes metrics from services in both namespaces.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│                      Kubernetes Cluster                      │
-│                                                              │
-│  controlplane namespace               dataplane namespace    │
-│  ┌─────────────────────┐              ┌────────────────────┐ │
-│  │  Prometheus         │── scrapes ──▶│  Union Operator    │ │
-│  │  Grafana            │              │  Executor (V2)     │ │
-│  │  AlertManager       │              │  Propeller (V1)    │ │
-│  │                     │              │                    │ │
-│  │  FlyteAdmin         │              │  ServiceMonitor    │ │
-│  │  Executions         │              │  PrometheusRule    │ │
-│  │  Queue              │              │  Dashboard CM      │ │
-│  │  Cluster            │              └────────────────────┘ │
-│  │  Authorizer         │                                     │
-│  │  ...                │              ┌────────────────────┐ │
-│  └─────────────────────┘              │  Static Prometheus │ │
-│                                       │  (Union features)  │ │
-│                                       └────────────────────┘ │
-└──────────────────────────────────────────────────────────────┘
+```mermaid
+graph LR
+    subgraph cluster["Kubernetes Cluster"]
+        subgraph cp["Controlplane Namespace"]
+            prom["Prometheus\nGrafana\nAlertManager"]
+            cpsvc["CP Services\nServiceMonitor\nPrometheusRule\nDashboard CM"]
+        end
+
+        subgraph dp["Dataplane Namespace"]
+            dpsvc["Operator\nExecutor\nPropeller"]
+            dpmon["ServiceMonitor\nPrometheusRule\nDashboard CM"]
+            static["Static Prometheus\n(Union features)"]
+        end
+
+        prom -- scrapes --> dpsvc
+        prom -- scrapes --> cpsvc
+    end
 ```
 
 ### Separate controlplane and dataplane clusters
 
 When the controlplane and dataplane run in separate clusters, each cluster can run its own monitoring stack independently. The dataplane chart includes the same Prometheus, Grafana, and alerting capabilities.
 
-```
-┌──────────────────────────┐      ┌──────────────────────────┐
-│   Controlplane Cluster   │      │    Dataplane Cluster     │
-│                          │      │                          │
-│  ┌─────────────────────┐ │      │ ┌──────────────────────┐ │
-│  │  Prometheus         │ │      │ │  Prometheus          │ │
-│  │  Grafana            │ │      │ │  Grafana             │ │
-│  │  AlertManager       │ │      │ │  AlertManager        │ │
-│  │                     │ │      │ │                      │ │
-│  │  CP Services        │ │      │ │  Union Operator      │ │
-│  │  ServiceMonitor     │ │      │ │  Executor (V2)       │ │
-│  │  PrometheusRule     │ │      │ │  Propeller (V1)      │ │
-│  │  Dashboard CM       │ │      │ │  ServiceMonitor      │ │
-│  └─────────────────────┘ │      │ │  PrometheusRule      │ │
-│                          │      │ │  Dashboard CM        │ │
-│                          │      │ └──────────────────────┘ │
-└──────────────────────────┘      └──────────────────────────┘
+```mermaid
+graph LR
+    subgraph cpcluster["Controlplane Cluster"]
+        cpprom["Prometheus\nGrafana\nAlertManager"]
+        cpstuff["CP Services\nServiceMonitor\nPrometheusRule\nDashboard CM"]
+    end
+
+    subgraph dpcluster["Dataplane Cluster"]
+        dpprom["Prometheus\nGrafana\nAlertManager"]
+        dpstuff["Operator · Executor · Propeller\nServiceMonitor\nPrometheusRule\nDashboard CM"]
+    end
+
+    cpprom -- scrapes --> cpstuff
+    dpprom -- scrapes --> dpstuff
 ```
 
 ## Dashboards
