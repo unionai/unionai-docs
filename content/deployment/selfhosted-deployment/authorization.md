@@ -61,7 +61,7 @@ Each controlplane service forwards `Authorize()` calls and the configured backen
 |------|---------|----------|-------------|---------------|
 | **Noop** | None | Isolated or high-trust environments | All requests allowed | Default, no config needed |
 | **Union** | {{< key product_name >}} RBAC | Out-of-the-box RBAC, fully integrated with the {{< key product_name >}} console | {{< key product_name >}}-managed policies | Built-in, enable via config |
-| **External** | Customer-provided gRPC server | Organizations with existing RBAC/policy systems | Customer-defined policies | Requires external server |
+| **External** | BYO gRPC server | Organizations with existing RBAC/policy systems | Your own policies | Requires external server |
 
 ### Noop (default)
 
@@ -98,7 +98,7 @@ No authorization enforcement — all authenticated requests are allowed. This is
 
 ### External
 
-Delegates authorization decisions to a customer-provided gRPC server. The external server receives the caller's identity, the requested action, and the target resource, and returns an allow/deny decision.
+Delegates authorization decisions to a BYO (bring-your-own) gRPC server. The external server receives the caller's identity, the requested action, and the target resource, and returns an allow/deny decision.
 
 > [!WARNING]
 > The external authorization server is called on **every API request**. Its latency directly impacts platform response times. Ensure your server can handle the request volume with low latency (<10ms p99 recommended).
@@ -113,7 +113,7 @@ Delegates authorization decisions to a customer-provided gRPC server. The extern
 - Requires building, deploying, and operating an external authorization server
 - The external server is on the critical path — its reliability and performance directly impact platform availability
 - Higher operational burden than Union mode — you own the server's uptime, scaling, and policy management
-- {{< key product_name >}} owns the authorization routing layer; the customer owns the external backend
+- {{< key product_name >}} owns the authorization routing layer; you own the external backend
 
 > [!NOTE]
 > A **fail-open** option (`failOpen: true`) allows requests when the external server is unreachable. This trades security for availability — use with caution in production.
@@ -122,7 +122,7 @@ Delegates authorization decisions to a customer-provided gRPC server. The extern
 
 Authorization mode is set in the controlplane Helm values. Contact {{< key product_name >}} support for the specific values for your deployment — the exact Helm paths depend on the deployment topology. The key configuration fields are:
 
-- **`type`** — `"Noop"` (default), `"UserClouds"` (Union built-in RBAC), or `"External"` (customer-provided server)
+- **`type`** — `"Noop"` (default), `"UserClouds"` (Union built-in RBAC), or `"External"` (BYO server)
 - **`externalClient.grpcConfig.host`** — gRPC target for your external server (External mode only). Uses standard gRPC name resolution (`dns:///`, `unix:///`, etc.)
 - **`externalClient.grpcConfig.insecure`** — `true` for plaintext, `false` for TLS
 - **`externalClient.failOpen`** — `true` to allow requests when the external server is unreachable (default: `false`)
