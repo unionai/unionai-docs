@@ -1,7 +1,7 @@
 ---
 title: Resources
 weight: 2
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Resources

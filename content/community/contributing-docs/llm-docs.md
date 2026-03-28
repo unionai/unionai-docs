@@ -1,7 +1,7 @@
 ---
 title: LLM-optimized documentation
 weight: 8
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # LLM-optimized documentation
@@ -49,7 +49,7 @@ To produce a `section.md` bundle for a documentation section:
    ---
    title: Configure tasks
    weight: 8
-   variants: +flyte +byoc +selfmanaged
+   variants: +flyte +union
    llm_readable_bundle: true
    ---
    ```

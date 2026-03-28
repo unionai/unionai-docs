@@ -1,7 +1,7 @@
 ---
 title: Deployment patterns
 weight: 9
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: true
 ---
 

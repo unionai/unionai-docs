@@ -1,7 +1,7 @@
 ---
 title: Release notes
 weight: 8
-variants: +byoc +selfmanaged -flyte
+variants: +union -flyte
 top_menu: true
 sidebar_expanded: true
 ---

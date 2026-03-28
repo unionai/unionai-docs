@@ -1,7 +1,7 @@
 ---
 title: Key capabilities
 weight: 5
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Key capabilities
@@ -18,7 +18,7 @@ Configure how and where your code runs.
 - **Resource specification**: Request specific CPU, memory, GPU, and storage for your tasks
   → [Resources](../task-configuration/resources)
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 - **Reusable containers**: Eliminate container startup overhead with pooled, warm containers for millisecond-level task scheduling
   → [Reusable containers](../task-configuration/reusable-containers)
@@ -29,7 +29,7 @@ Configure how and where your code runs.
 
 Get your code running remotely.
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 - **Cloud image building**: Build container images remotely without needing local Docker
   → [Container images](../task-configuration/container-images)

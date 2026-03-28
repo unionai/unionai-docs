@@ -1,7 +1,7 @@
 ---
 title: Triggers and dynamic workflows
 weight: 7
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Triggers and dynamic workflows

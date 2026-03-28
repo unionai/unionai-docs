@@ -1,6 +1,6 @@
 ---
 title: Hyperlinks to Docs
-variants: -flyte -byoc -selfmanaged
+variants: -flyte -union
 ---
 
 # Automatic Code Documentation Linkage

@@ -1,7 +1,7 @@
 ---
 title: SGLang app
 weight: 12
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # SGLang app

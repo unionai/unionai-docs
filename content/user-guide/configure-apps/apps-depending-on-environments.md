@@ -1,7 +1,7 @@
 ---
 title: Apps depending on other environments
 weight: 6
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Apps depending on other environments

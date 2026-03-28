@@ -1,7 +1,7 @@
 ---
 title: flyte
-version: 2.0.11
-variants: +flyte +byoc +selfmanaged
+version: 2.0.12.dev22+g879ad6de4
+variants: +flyte +union
 layout: py_api
 sidebar_expanded: true
 ---
@@ -765,7 +765,7 @@ def trace(
 ) -> typing.Callable[..., ~T]
 ```
 A decorator that traces function execution with timing information.
-Works with regular functions, async functions, and async generators/iterators.
+Works with regular functions, sync generators, async functions, and async generators/iterators.
 
 
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: uctl get project
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl get project
