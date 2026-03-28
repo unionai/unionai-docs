@@ -1,7 +1,7 @@
 ---
 title: Controlling parallel execution
 weight: 14
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Controlling parallel execution

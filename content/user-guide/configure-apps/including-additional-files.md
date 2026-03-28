@@ -1,7 +1,7 @@
 ---
 title: Including additional files
 weight: 3
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Including additional files

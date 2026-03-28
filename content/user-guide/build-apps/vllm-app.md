@@ -1,7 +1,7 @@
 ---
 title: vLLM app
 weight: 11
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # vLLM app

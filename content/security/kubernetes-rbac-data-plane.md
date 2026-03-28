@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes RBAC: Data plane"
 weight: 17
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Kubernetes RBAC: Data plane

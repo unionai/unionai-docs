@@ -1,7 +1,7 @@
 ---
 title: Migration
 weight: 3
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Migration from Flyte 1 to Flyte 2

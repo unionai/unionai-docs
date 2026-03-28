@@ -1,7 +1,7 @@
 ---
 title: Scale your runs
 weight: 13
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: false
 llm_readable_bundle: true
 ---

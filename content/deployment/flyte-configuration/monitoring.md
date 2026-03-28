@@ -1,7 +1,7 @@
 ---
 title: Monitoring
 weight: 2
-variants: -flyte -byoc -selfmanaged
+variants: -flyte -union
 ---
 
 # Monitoring a Flyte deployment

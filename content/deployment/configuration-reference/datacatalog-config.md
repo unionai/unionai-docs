@@ -1,7 +1,7 @@
 ---
 title: Datacatalog configuration
 weight: 1
-variants: -flyte -byoc -selfmanaged
+variants: -flyte -union
 ---
 
 # Flyte Datacatalog Configuration

@@ -1,7 +1,7 @@
 ---
 title: Versions
 weight: 3
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Versions

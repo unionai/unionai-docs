@@ -1,7 +1,7 @@
 ---
 title: AWS Athena plugin
 weight: 2
-variants: -flyte -byoc -selfmanaged
+variants: -flyte -union
 ---
 
 # Athena Plugin

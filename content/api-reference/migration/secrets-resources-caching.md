@@ -1,7 +1,7 @@
 ---
 title: Secrets, resources, and caching
 weight: 5
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Secrets, resources, and caching

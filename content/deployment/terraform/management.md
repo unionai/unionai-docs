@@ -1,7 +1,7 @@
 ---
 title: Resource Management
 weight: 2
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Managing Union Resources with Terraform

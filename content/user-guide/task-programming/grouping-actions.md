@@ -1,7 +1,7 @@
 ---
 title: Grouping actions
 weight: 12
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Grouping actions
