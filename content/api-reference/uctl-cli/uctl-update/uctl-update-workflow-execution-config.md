@@ -1,6 +1,6 @@
 ---
 title: uctl update workflow-execution-config
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl update workflow-execution-config

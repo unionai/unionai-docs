@@ -1,7 +1,7 @@
 ---
 title: Philosophy and imports
 weight: 1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Philosophy and imports

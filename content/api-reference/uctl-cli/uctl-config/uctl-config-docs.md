@@ -1,6 +1,6 @@
 ---
 title: uctl config docs
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl config docs

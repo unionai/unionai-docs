@@ -1,7 +1,7 @@
 ---
 title: Other features
 weight: 15
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 This section covers advanced programming patterns and techniques for working with Flyte tasks.

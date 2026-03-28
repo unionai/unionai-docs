@@ -1,7 +1,7 @@
 ---
 title: flyteplugins.union.internal.validate.validate.validate_pb2_grpc
 version: 0.2.1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 layout: py_api
 ---
 

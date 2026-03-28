@@ -1,7 +1,7 @@
 ---
 title: App usage patterns
 weight: 3
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # App usage patterns

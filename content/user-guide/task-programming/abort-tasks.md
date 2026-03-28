@@ -1,7 +1,7 @@
 ---
 title: Abort and cancel actions
 weight: 6
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Abort and cancel actions

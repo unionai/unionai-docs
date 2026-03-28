@@ -1,7 +1,7 @@
 ---
 title: Agent tools
 weight: 1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: true
 ---
 

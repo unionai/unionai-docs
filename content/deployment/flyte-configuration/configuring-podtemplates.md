@@ -1,7 +1,7 @@
 ---
 title: Using Pod Templates
 weight: 5
-variants: -flyte -byoc -selfmanaged
+variants: -flyte -union
 mermaid: true
 ---
 

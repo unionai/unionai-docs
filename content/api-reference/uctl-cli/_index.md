@@ -1,7 +1,7 @@
 ---
 title: Uctl CLI
 weight: 6
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 sidebar_expanded: true
 ---
 
@@ -87,7 +87,7 @@ To download the binary manually, see the [`uctl` releases page](https://github.c
 
 ## Configuration
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 To create a configuration file that contains your Union connection information, run the following command, replacing `<union-host-url>` with the URL of your Union instance:
@@ -116,7 +116,7 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 * `--config <path-to-config>` flag
@@ -201,7 +201,7 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 
 ## Commands
 
-{{< variant byoc >}}
+{{< variant union >}}
 {{< markdown >}}
 * `uctl apply {uctl-apply/index}` is used for updating various Union/Flyte resources, including cluster configs.
 * `uctl config {uctl-config/index}` runs various config commands.

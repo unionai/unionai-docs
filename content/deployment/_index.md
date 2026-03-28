@@ -1,7 +1,7 @@
 ---
 title: Platform deployment
 weight: 5
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 top_menu: true
 mermaid: true
 sidebar_expanded: true
@@ -18,25 +18,6 @@ The **control plane** does not have access to the code, data, images, or logs in
 If you choose a **Self-managed deployment**, your data isolation is further enhanced by the fact that you manage your data plane entirely on your own, without providing any access to Union.ai customer support.
 
 If you choose a **BYOC deployment**, Union.ai manages the Kubernetes cluster in your data plane for you. The data isolation of the control vs. data plane is still enforced - for example, Union.ai has no access to your object storage or logs. However, Union.ai customer support will have some access to your cluster, though strictly for upgrades, provisioning, and other actions related to maintaining cluster health.
-{{< variant byoc >}}
-{{< markdown >}}
-
-> [!NOTE]
-> These are the BYOC docs. You can switch to the Union.ai Self-managed docs with the product selector above.
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant selfmanaged >}}
-{{< markdown >}}
-
-> [!NOTE]
-> These are the Self-managed docs. You can switch to the Union.ai BYOC docs with the product selector above.
-
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant byoc >}}
-{{< markdown >}}
 
 ## BYOC deployment
 
@@ -46,11 +27,6 @@ The BYOC deployment offers a fully "serverless in your cloud", turnkey solution 
 
 * The **control plane**, as with all Union.ai deployment options, resides in the Union.ai AWS account and is administered by Union.ai. However, as mentioned, data separation is maintained between the data plane and the control plane, with no control plane access to the code, input/output, images or logs in the data plane.
 
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant selfmanaged >}}
-{{< markdown >}}
-
 ## Self-managed deployment
 
 The Self-managed deployment allows you to manage the data plane yourself on cloud infrastructure that you control and maintain:
@@ -58,12 +34,6 @@ The Self-managed deployment allows you to manage the data plane yourself on clou
 * The **data plane** resides in your cloud provider account and is managed by you. Your team will handle deployment, monitoring, Kubernetes upgrades, and all other operational aspects of the platform. You do not need to provide any permissions to the Union.ai system to create a data plane. Self-managed deployment supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), Microsoft Azure and Oracle Compute Infrastructure (OCI).
 
 * The **control plane**, as with all Union.ai deployment options, resides in the Union.ai Amazon Web Services (AWS) account and is administered by Union.ai. However, as mentioned, data separation is maintained between the data plane and the control plane, with no control plane access to the code, input/output, images or logs in the data plane.
-
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant byoc selfmanaged >}}
-{{< markdown >}}
 
 ## Data plane
 
@@ -95,16 +65,3 @@ The control plane has access to:
 * Names of tasks and other deployed entities
 * Pointers to object storage locations in the data plane (but not any user data)
 * Union.ai IDP
-
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant selfmanaged >}}
-{{< grid >}}
-
-{{< link-card target="../deployment/cluster-recommendations" icon="box" title="Installation" >}}
-Installing {{< key product_name >}}
-{{< /link-card >}}
-
-{{< /grid >}}
-{{< /variant >}}

@@ -1,6 +1,6 @@
 ---
 title: uctl config discover
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl config discover

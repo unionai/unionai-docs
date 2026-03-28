@@ -1,7 +1,7 @@
 ---
 title: AppClientCredentials
 version: 0.2.1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 layout: py_api
 ---
 

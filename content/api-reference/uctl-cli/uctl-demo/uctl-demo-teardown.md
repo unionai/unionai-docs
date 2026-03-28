@@ -1,6 +1,6 @@
 ---
 title: uctl demo teardown
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl demo teardown

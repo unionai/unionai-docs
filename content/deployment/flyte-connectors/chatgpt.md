@@ -1,7 +1,7 @@
 ---
 title: ChatGPT connector
 weight: 10
-variants: -flyte -byoc -selfmanaged
+variants: -flyte -union
 ---
 
 # ChatGPT connector

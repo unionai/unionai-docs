@@ -1,7 +1,7 @@
 ---
 title: Infrastructure security
 weight: 5
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Infrastructure security

@@ -1,7 +1,7 @@
 ---
 title: PrimaryContainerNotFoundError
 version: 2.0.11
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 layout: py_api
 ---
 
