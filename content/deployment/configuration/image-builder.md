@@ -28,6 +28,17 @@ env = flyte.TaskEnvironment(
 
 * The image building process runs in the target run's project and domain. Any image push secrets needed to push images to the registry will need to be accessible from the project & domain where the build happens.
 
+## Build backends
+
+Image Builder supports two build backends:
+
+| Backend | Helm configuration | Description |
+|---------|-------------------|-------------|
+| **BuildKit** (default) | `imageBuilder.buildkit.enabled: true` | Runs a BuildKit daemon in the cluster for building images |
+| **Depot** | `imageBuilder.buildkit.enabled: false` | Uses Depot's hosted build service for faster builds |
+
+When BuildKit is disabled and no custom `buildkitUri` is set, the chart automatically configures Depot as the build backend. In single-namespace mode, a task PodTemplate with the Depot token imagePullSecret is created automatically.
+
 ## Configuration
 
 Image Builder is configured directly through Helm values.
@@ -51,7 +62,7 @@ imageBuilder:
   # -- Note, the build-image task will fail unless "registry" is specified or a default repository is provided.
   defaultRepository: ""
 
-  # -- How build-image task and operator proxy will attempt to authenticate against the default #    repository.
+  # -- How build-image task and operator proxy will attempt to authenticate against the default repository.
   # -- Supported values are "noop", "google", "aws", "azure"
   # -- "noop" no authentication is attempted
   # -- "google" uses docker-credential-gcr to authenticate to the default registry
@@ -62,6 +73,7 @@ imageBuilder:
   buildkit:
 
     # -- Enable buildkit service within this release.
+    # -- Set to false to use Depot instead.
     enabled: true
 
     # Configuring Union managed buildkitd Kubernetes resources.

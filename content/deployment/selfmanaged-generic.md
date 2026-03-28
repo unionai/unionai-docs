@@ -12,7 +12,7 @@ All communication is encrypted.
 The Union architecture is described on the [Architecture](./architecture/_index) page.
 
 > [!NOTE] These instructions cover installing Union.ai in an on-premise Kubernetes cluster.
-> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./selfmanaged-aws/_index), [Azure](./selfmanaged-azure), [OCI](./selfmanaged-oci).
+> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./selfmanaged-aws), [Azure](./selfmanaged-azure), [OCI](./selfmanaged-oci).
 
 ## Assumptions
 
@@ -43,50 +43,17 @@ The Union architecture is described on the [Architecture](./architecture/_index)
    ```
 
    * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
-     It will also generate a YAML file specific to the provider that you specify, in this case `metal`, meaning "bare metal", or generic:
+     It will also generate a YAML file specific to the provider that you specify, in this case `metal` (bare metal / generic).
 
-   ```bash
-    -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ----------
-   | ORGANIZATION | HOST                               | CLUSTER                    | CLUSTERAUTHCLIENTID                             | CLUSTERAUTHCLIENTSECRET                                          | PROVIDER |
-    -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ----------
-   | xxxxxxxxxxx  | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxx    |
-    -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ----------
-   1 rows
+   * Save the secret that is displayed. Union does not store the credentials; rerunning the same command can be used to retrieve the secret later.
 
-   ✅ Generated <ORGNAME>-values.yaml
-   ======================================================================
-   Installation Instructions
-   ======================================================================
+3. Update the generated values file with your S3-compatible storage details:
 
-   Step 1: Prepare your Kubernetes cluster.
-
-   Step 2: Clone and navigate to helm-charts repository
-     git clone https://github.com/unionai/helm-charts && cd helm-charts
-
-   Step 3: Configure your S3-compatible storage endpoint & credentials in the values file
-
-   Step 4: Install the data plane CRDs
-     helm upgrade --install unionai-dataplane-crds charts/dataplane-crds
-
-   Step 5: Install the data plane
-     helm upgrade --install unionai-dataplane charts/dataplane \
-       --namespace union \
-       --values <ORGNAME>-values.yaml
-
-   Step 6: Verify installation
-     kubectl get pods -n union
-
-   Step 7: Once you have your dataplane up and running, create API keys for your organization. If you have already just call the same command again to propogate the keys to new cluster:
-     uctl create apikey --keyName EAGER_API_KEY --org <your-org-name>
-
-   Step 8: You can now trigger v2 executions on this dataplane.
-   ```
-
-  * Save the secret that is displayed. Union does not store the credentials, rerunning the same command can be used to show same secret later which stream through the OAuth Apps provider.
-  * Create the `EAGER_API_KEY` as instructed in Step 7 of the command output. This step is required for every dataplane you plan to use for V2 executions.
-
-3.  Update the values file correctly:
-    For example, `<UNION_FLYTE_ROLE_ARN>` is the ARN of the new IAM role created in the [AWS Cluster Recommendations](./cluster-recommendations#iam)
+   - Set `storage.endpoint` to your S3-compatible storage endpoint (e.g. your MinIO URL).
+   - Set `storage.accessKey` and `storage.secretKey` to your storage credentials.
+   - Set `storage.bucketName` and `storage.fastRegistrationBucketName` to your bucket name(s).
+   - Set `storage.region` to the region of your storage provider.
+   - The same credentials are also needed in `fluentbit.env` for log shipping.
 
 4. Optionally configure the resource `limits` and `requests` for the different services.
    By default, these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.

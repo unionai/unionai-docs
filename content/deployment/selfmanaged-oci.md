@@ -42,49 +42,11 @@ The Union architecture is described on the [Architecture](./architecture/_index)
    ```
 
    * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
-     It will also generate a YAML file specific to the provider that you specify, in this case `oci`:
+     It will also generate a YAML file specific to the provider that you specify, in this case `oci`.
 
-   ```bash
-     -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ----------
-   | ORGANIZATION | HOST                               | CLUSTER                    | CLUSTERAUTHCLIENTID                             | CLUSTERAUTHCLIENTSECRET                                          | PROVIDER |
-    -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ----------
-   | xxxxxxxxxxx  | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxx    |
-    -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ----------
-   1 rows
+   * Save the secret that is displayed. Union does not store the credentials; rerunning the same command can be used to retrieve the secret later.
 
-   ✅ Generated <ORGNAME>-values.yaml
-   ======================================================================
-   Installation Instructions
-   ======================================================================
-
-   Step 1: Setup the infrastucture on OCI. Our team can share terrform scripts to help with this.
-
-   Step 2: Clone and navigate to helm-charts repository
-     git clone https://github.com/unionai/helm-charts && cd helm-charts
-
-   Step 3: Ensure storage bucket & Access keys are configured; in values
-
-   Step 4: Install the data plane CRDs
-     helm upgrade --install unionai-dataplane-crds charts/dataplane-crds
-
-   Step 5: Install the data plane
-     helm upgrade --install unionai-dataplane charts/dataplane \
-       --namespace union \
-       --values <ORGNAME>-values.yaml
-
-   Step 6: Verify installation
-     kubectl get pods -n union
-
-   Step 7: Once you have your dataplane up and running, create API keys for your organization. If you have already just call the same command again to propogate the keys to new cluster:
-     uctl create apikey --keyName EAGER_API_KEY --org <your-org-name>
-
-   Step 8: You can now trigger v2 executions on this dataplane.
-   ```
-   * Save the secret that is displayed. Union does not store the credentials, rerunning the same command can be used to show same secret later which stream through the Oauth Apps provider.
-   * Create the `EAGER_API_KEY` as instructed in Step 7 of the command output. This step is required for every dataplane you plan to use for V2 executions.
-
-3.  Update the values file correctly:
-    For example, `<UNION_FLYTE_ROLE_ARN>` is the ARN of the new IAM role created in the [AWS Cluster Recommendations](./cluster-recommendations#iam)
+3. Update the generated values file with your OCI storage and access key details.
 
 4. Optionally configure the resource `limits` and `requests` for the different services.
    By default, these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.

@@ -16,15 +16,25 @@ The data plane supports two independent monitoring concerns:
 
 | Concern | What it monitors | How it's deployed | Configurable |
 |---------|-----------------|-------------------|--------------|
-| **Union features** | Task execution metrics, cost tracking, GPU utilization, container resources | Static Prometheus with pre-built scrape config | Retention, resources, scheduling |
+| **Union features** | Task execution metrics, cost tracking, GPU utilization, container resources | Prometheus with pre-built scrape config (`prometheus` or `prometheus-simple`) | Retention, resources, scheduling |
 | **Cluster health** (optional) | Kubernetes components, node health, alerting, Grafana dashboards | `kube-prometheus-stack` via `monitoring.enabled` | Full kube-prometheus-stack values |
+
+The chart offers two Prometheus deployment options for Union features:
+
+| Option | Helm key | CRDs required | Cluster-wide RBAC | Best for |
+|--------|----------|--------------|-------------------|----------|
+| **Static Prometheus** (default) | `prometheus` | No | Yes | Standard deployments |
+| **Prometheus Simple** | `prometheus-simple` | No | No | Low-privilege / single-namespace deployments |
+
+> [!NOTE] Mutual exclusivity
+> `prometheus` and `prometheus-simple` cannot be enabled at the same time. The chart will fail validation if both are enabled.
 
 ```
                     ┌─────────────────────────────────────┐
                     │          Data Plane Cluster          │
                     │                                     │
                     │  ┌──────────────────────┐           │
-                    │  │  Static Prometheus   │           │
+                    │  │  Prometheus          │           │
                     │  │  (Union features)    │           │
                     │  │  ┌────────────────┐  │           │
                     │  │  │ Scrape targets │  │           │
@@ -106,6 +116,37 @@ http://union-operator-prometheus.<NAMESPACE>.svc:80/prometheus
 ```
 
 OpenCost is pre-configured to use this endpoint. You do not need to change it unless you rename the Helm release.
+
+## Prometheus Simple (low-privilege mode)
+
+For deployments that cannot use cluster-wide RBAC (e.g., single-namespace or low-privilege mode), enable `prometheus-simple` instead of the default static Prometheus:
+
+```yaml
+prometheus:
+  enabled: false
+prometheus-simple:
+  enabled: true
+  rbac:
+    create: false  # Namespace-scoped Role is created by the dataplane chart
+  kube-state-metrics:
+    enabled: true
+    rbac:
+      useClusterRole: false
+    releaseNamespace: true
+```
+
+This deploys a standalone Prometheus instance with namespace-scoped RBAC. The dataplane chart creates the necessary Role and RoleBinding automatically.
+
+> [!NOTE] Node-level metrics
+> In low-privilege mode, kube-state-metrics only watches the release namespace. Pod-level metrics (`kube_pod_*`, `kube_pod_container_*`) are available, but node-level metrics (`kube_node_*`) are not, since nodes are cluster-scoped resources.
+
+### Recording rules
+
+The chart includes pre-built recording rules for cost tracking and execution observability (GPU allocation, execution metadata, workspace metrics). These rules are:
+
+- Embedded in a `PrometheusRule` when using `kube-prometheus-stack`
+- Embedded in a ConfigMap when using `prometheus-simple`
+- Only enabled when `cost.enabled: true` and the deployment is not in low-privilege mode
 
 ## Enabling cluster health monitoring
 

@@ -29,6 +29,19 @@ support multiple availability zones or other network segmentation requirements.
 
 In short, you should aim to have at least 1 IP address available for each task you expect to run concurrently.
 
+## Service accounts
+
+The {{< key product_name >}} data plane uses a single Kubernetes service account, `union-system`, shared by all platform components (operator, executor, webhook, proxy, and FluentBit). This service account needs cloud provider credentials to access:
+
+- **Object storage** (S3, GCS, or Azure Blob Storage) — read/write workflow execution data (task inputs/outputs, fast registration artifacts).
+- **Container registry** (ECR, Artifact Registry, or ACR) — pull task container images; push images when Image Builder is enabled.
+
+See the cloud-specific setup pages for details on configuring this service account:
+[AWS](./selfmanaged-aws), [GCP](./selfmanaged-gcp), [Azure](./selfmanaged-azure).
+
+> [!NOTE] Common service account
+> In previous versions, each component had its own service account. The consolidated `union-system` service account simplifies IAM configuration — you only need to bind cloud permissions to a single identity.
+
 # Performance Recommendations
 
 ## Node Pools
@@ -36,164 +49,3 @@ In short, you should aim to have at least 1 IP address available for each task y
 It is recommended but not required to use separate node pools for the Union services and the Union worker pods.  This allows you to
 guard against resource contention between Union services and other tasks running in your cluster.  You can find additional information
 in the [Configuring Node Pools](./configuration/node-pools) section.
-
-# AWS
-
-## S3
-
-Each data plane uses an object store (an AWS S3 bucket, GCS bucket or ABS container) that is used to store data used in the execution of workflows.
-As a {{< key product_name >}} administrator, you can specify retention policies for this data when setting up your data plane 
-(learn more [about the different types of data categories](./configuration/data-retention) stored by the data plane.)
-
-Union recommends the use of two S3 buckets:
-
-1. metadata bucket: contains workflow execution data such as Task inputs and outputs, etc
-2. fast registration bucket: contain local code artifacts that will be copied into the Flyte task container at runtime when using `union register` or `union run --remote --copy-all`.
-
-Note: You can choose to use a single bucket in your dataplane
-
-### Data Retention
-
-Union recommends using Lifecycle Policy on these buckets to manage the storage costs. See [Data retention policy](./configuration/data-retention) for more information.
-
-## IAM
-
-You will need to enable access to your S3 buckets from the cluster.
-
-1. Update the EKS Node IAM role for your cluster to allow the data plane nodes to use your S3 buckets.
-   This can be done by creating and attaching a new IAM policy which enables access to your S3 buckets.
-   Use `union-flyte-worker` as the name of the new policy.
-   The permissions for the policy will be:
-
-   ```json
-   {
-       "Version": "2012-10-17",
-       "Statement": [
-           {
-               "Sid": "Statement1",
-               "Effect": "Allow",
-               "Action": [
-                   "s3:DeleteObject*",
-                   "s3:GetObject*",
-                   "s3:ListBucket",
-                   "s3:PutObject*"
-               ],
-               "Resource": [
-                   "arn:aws:s3:::<bucket-name>",
-                   "arn:aws:s3:::<bucket-name>/*"
-               ]
-           }
-       ]
-   }
-   ```
-
-2. Attach this policy to your node group IAM role
-3. Create an [IAM OIDC provider for your EKS cluster](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html#_create_oidc_provider_eksctl).
-4. Create a new role named `union-flyte-role` to enable applications in a Pod’s containers to make API requests to AWS services using AWS Identity and Access Management (IAM) permissions.
-
-   The Trust Policy for this role will be:
-
-   ```json
-   {
-       "Version": "2012-10-17",
-       "Statement": [
-           {
-               "Effect": "Allow",
-               "Principal": {
-                   "Federated": "arn:aws:iam::$account_id:oidc-provider/$oidc_provider"
-               },
-               "Action": "sts:AssumeRoleWithWebIdentity",
-               "Condition": {
-                   "StringLike": {
-                       "$oidc_provider:aud": "sts.amazonaws.com",
-                       "$oidc_provider:sub": "system:serviceaccount:*:*"
-                   }
-               }
-           }
-       ]
-   }
-   ```
-   where `$account_id` is your AWS account ID and `$oidc_provider` is the OIDC provider you created above.
-
-   You can obtain these values using the AWS CLI:
-
-   ```bash
-   aws eks describe-cluster --region $cloud_region --name $cluster_name --query "cluster.identity.oidc.issuer" --output text
-   ```
-
-5. Attach the `union-flyte-worker` policy created above to this new role.
-
-## EKS configuration
-
-Union recommends installing the following EKS add-ons:
-  - CoreDNS
-  - Amazon VPC CNI
-  - Kube-proxy
-
-Union supports Autoscaling and the use of spot (interruptible) instances.
-
-# AKS
-
-## Secure access
-
-Union recommends using [Microsoft Entra Workload ID](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) to securely access Azure resources.
-
-Ensure your AKS cluster is [enabled as OIDC Issuer](https://learn.microsoft.com/en-us/azure/aks/use-oidc-issuer).
-
-Create a User Assigned Managed Identity with Federated Credentials that map to the following Kubernetes Service Accounts:
-
-**Subject Identifier**
-
-- `system:serviceaccount:<NAMESPACE>:flytepropeller-system`
-- `system:serviceaccount:<NAMESPACE>:flytepropeller-webhook-system`
-- `system:serviceaccount:<NAMESPACE>:operator-system`
-- `system:serviceaccount:<NAMESPACE>:proxy-system`
-- `system:serviceaccount:<NAMESPACE>:executor`
-
-Where `<NAMESPACE>` is where you plan to install the Union operator (`union` by default)
-
-Assign the `Storage Blob Data Owner` role to this Identity at the Storage Account level.
-
-### Workers
-
-This is the Identity that the Pods created for each execution will use to access Azure resources. Those Pods use the `default` K8s Service Account on each project-domain namespace, unless otherwise specified.
-
-Create a User Assigned Managed Identity with Federated Credentials that map to the `default` K8s Service Account:
-
-**Subject Identifier**
-
-- `system:serviceaccount:development:default`
-- `system:serviceaccount:staging:default`
-- `system:serviceaccount:production:default`
-
-Assign the `Storage Blob Data Owner` role to this Identity at the Storage Account level.
-
-## Azure Key Vault
-Union ships with an embedded secrets manager. Alternatively, you can enable Union to consume secrets from Azure Key Vault adding the following to your Helm values file:
-
-```yaml
-config:
-
-  ## Optional integration with Azure Key Vault secrets manager
-  core:
-    webhook:
-      embeddedSecretManagerConfig:
-        enabled: true
-        type: Azure
-        azureConfig:
-          vaultURI: ""https://kv-myorg-prod.vault.azure.net/" #full key vault URI
-      secretManagerTypes:
-        - Azure
-        - Embedded
-
-```
-## Node pools
-
-By default, the Union installation request the following resources:
-
-|          | CPU (vCPUs)| Memory (GiB) |
-|----------|------------|--------------|
-| Requests |          14|          27.1|
-| Limits   |          17|            32|
-
-For GPU access, Union injects tolerations and label selectors to execution Pods.
