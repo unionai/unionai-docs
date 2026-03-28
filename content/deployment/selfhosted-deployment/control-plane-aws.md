@@ -37,16 +37,16 @@ helm repo update
 
 ### Step 2: Create registry image pull secret
 
-Create the registry secret in the `union-cp` namespace:
+Create the registry secret in the control plane namespace:
 
 ```shell
-kubectl create namespace union-cp
+kubectl create namespace <controlplane-namespace>
 
 kubectl create secret docker-registry union-registry-secret \
   --docker-server="registry.unionai.cloud" \
   --docker-username="<REGISTRY_USERNAME>" \
   --docker-password="<REGISTRY_PASSWORD>" \
-  -n union-cp
+  -n <controlplane-namespace>
 ```
 
 > [!NOTE]
@@ -65,12 +65,12 @@ gRPC requires TLS for HTTP/2 with NGINX. You can use self-signed certificates fo
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -keyout controlplane-tls.key \
   -out controlplane-tls.crt \
-  -subj "/CN=controlplane-nginx-controller.union-cp.svc.cluster.local"
+  -subj "/CN=<controlplane-ingress>.<controlplane-namespace>.svc.cluster.local"
 
 kubectl create secret tls controlplane-tls-cert \
   --key controlplane-tls.key \
   --cert controlplane-tls.crt \
-  -n union-cp
+  -n <controlplane-namespace>
 ```
 
 {{< /tab >}}
@@ -84,14 +84,14 @@ For production deployments, use cert-manager with a self-signed `ClusterIssuer` 
 ### Step 4: Create database password secret
 
 ```shell
-kubectl create secret generic union-controlplane-secrets \
+kubectl create secret generic <controlplane-secrets> \
   --from-literal=pass.txt='<YOUR_DB_PASSWORD>' \
-  -n union-cp
+  -n <controlplane-namespace>
 ```
 
 > [!NOTE]
-> The secret name `union-controlplane-secrets` is required and should not be changed.
 > The secret must contain a key named `pass.txt` with the database password.
+> The default secret name is set in your Helm values.
 
 ### Step 5: Download values files
 
@@ -122,7 +122,7 @@ To enable authentication, add the OIDC configuration to this file. See the [Auth
 
 ```shell
 helm upgrade --install unionai-controlplane unionai/controlplane \
-  --namespace union-cp \
+  --namespace <controlplane-namespace> \
   --create-namespace \
   -f values.aws.selfhosted-intracluster.yaml \
   -f values.registry.yaml \
@@ -141,20 +141,23 @@ helm upgrade --install unionai-controlplane unionai/controlplane \
 
 ```shell
 # Check pod status
-kubectl get pods -n union-cp
+kubectl get pods -n <controlplane-namespace>
 
 # Verify services are running
-kubectl get svc -n union-cp
+kubectl get svc -n <controlplane-namespace>
 
-# Check flyteadmin logs
-kubectl logs -n union-cp deploy/flyteadmin --tail=50
+# Check admin service logs
+kubectl logs -n <controlplane-namespace> deploy/<admin-service> --tail=50
 
 # Test internal connectivity
-kubectl exec -n union-cp deploy/flyteadmin -- \
-  curl -k https://controlplane-nginx-controller.union-cp.svc.cluster.local
+kubectl exec -n <controlplane-namespace> deploy/<admin-service> -- \
+  curl -k https://<controlplane-ingress>.<controlplane-namespace>.svc.cluster.local
 ```
 
 All pods should be in `Running` state and internal connectivity should succeed.
+
+> [!NOTE]
+> Replace `<controlplane-namespace>` with your Helm release namespace (the namespace you used during `helm install`). Replace `<admin-service>` and `<controlplane-ingress>` with the actual deployment names from `kubectl get deploy -n <controlplane-namespace>`.
 
 ## Key configuration
 
@@ -173,22 +176,22 @@ Configure the namespace and name of the Kubernetes TLS secret:
 
 ```yaml
 global:
-  TLS_SECRET_NAMESPACE: "union-cp"
+  TLS_SECRET_NAMESPACE: "<controlplane-namespace>"
   TLS_SECRET_NAME: "controlplane-tls-cert"
 
 ingress-nginx:
   controller:
     extraArgs:
-      default-ssl-certificate: "union-cp/controlplane-tls-cert"
+      default-ssl-certificate: "<controlplane-namespace>/controlplane-tls-cert"
 ```
 
 ### Service discovery
 
 Control plane services discover each other via Kubernetes DNS:
 
-- **Flyteadmin**: `flyteadmin.union-cp.svc.cluster.local:81`
-- **NGINX Ingress**: `controlplane-nginx-controller.union-cp.svc.cluster.local`
-- **Data plane** (for dataproxy): `dataplane-nginx-controller.union.svc.cluster.local`
+- **Admin service**: `<admin-service>.<controlplane-namespace>.svc.cluster.local:81`
+- **NGINX Ingress**: `<controlplane-ingress>.<controlplane-namespace>.svc.cluster.local`
+- **Data plane** (for dataproxy): `<dataplane-ingress>.<dataplane-namespace>.svc.cluster.local`
 
 ## Next steps
 
@@ -200,29 +203,29 @@ Control plane services discover each other via Kubernetes DNS:
 ### Control plane pods not starting
 
 ```shell
-kubectl describe pod -n union-cp <pod-name>
+kubectl describe pod -n <controlplane-namespace> <pod-name>
 kubectl top nodes
-kubectl get secret -n union-cp
+kubectl get secret -n <controlplane-namespace>
 ```
 
 ### TLS/Certificate errors
 
 ```shell
-kubectl get secret controlplane-tls-cert -n union-cp
-kubectl get secret controlplane-tls-cert -n union-cp \
+kubectl get secret controlplane-tls-cert -n <controlplane-namespace>
+kubectl get secret controlplane-tls-cert -n <controlplane-namespace> \
   -o jsonpath='{.data.tls\.crt}' | base64 -d | openssl x509 -text -noout
-kubectl logs -n union-cp deploy/controlplane-nginx-controller
+kubectl logs -n <controlplane-namespace> deploy/<controlplane-ingress>
 ```
 
 ### Database connection failures
 
 ```shell
 # Verify credentials
-kubectl get secret union-controlplane-secrets -n union-cp \
+kubectl get secret <controlplane-secrets> -n <controlplane-namespace> \
   -o jsonpath='{.data.pass\.txt}' | base64 -d
 
 # Test connectivity
-kubectl run -n union-cp test-db --image=postgres:14 --rm -it -- \
+kubectl run -n <controlplane-namespace> test-db --image=postgres:14 --rm -it -- \
   psql -h <DB_HOST> -U <DB_USER> -d <DB_NAME>
 ```
 
@@ -230,13 +233,13 @@ kubectl run -n union-cp test-db --image=postgres:14 --rm -it -- \
 
 ```shell
 # Verify service endpoints
-kubectl get svc -n union-cp | grep -E 'flyteadmin|nginx-controller'
+kubectl get svc -n <controlplane-namespace> | grep -E 'admin\|nginx-controller'
 
 # Test DNS resolution from data plane namespace
-kubectl run -n union test-dns --image=busybox --rm -it -- \
-  nslookup controlplane-nginx-controller.union-cp.svc.cluster.local
+kubectl run -n <dataplane-namespace> test-dns --image=busybox --rm -it -- \
+  nslookup <controlplane-ingress>.<controlplane-namespace>.svc.cluster.local
 
 # Check network policies
-kubectl get networkpolicies -n union-cp
-kubectl get networkpolicies -n union
+kubectl get networkpolicies -n <controlplane-namespace>
+kubectl get networkpolicies -n <dataplane-namespace>
 ```

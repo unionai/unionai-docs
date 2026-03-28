@@ -20,7 +20,7 @@ This guide covers deploying the {{< key product_name >}} data plane in the same 
 
 In addition to the [general prerequisites](./_index#prerequisites):
 
-1. **{{< key product_name >}} control plane** deployed in the same cluster (namespace `union-cp`)
+1. **{{< key product_name >}} control plane** deployed in the same cluster
 2. **GCS buckets** for data plane metadata storage
 3. **GCP service accounts** configured with [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) for backend and worker service accounts
 4. **Network connectivity** between data plane and control plane namespaces
@@ -31,7 +31,7 @@ In addition to the [general prerequisites](./_index#prerequisites):
 
 ```shell
 helm upgrade --install unionai-dataplane-crds unionai/dataplane-crds \
-  --namespace union \
+  --namespace <dataplane-namespace> \
   --create-namespace
 ```
 
@@ -53,9 +53,9 @@ global:
   GOOGLE_PROJECT_ID: "my-gcp-project"
   BACKEND_IAM_ROLE_ARN: "union-backend@my-project.iam.gserviceaccount.com"
   WORKER_IAM_ROLE_ARN: "union-worker@my-project.iam.gserviceaccount.com"
-  CONTROLPLANE_INTRA_CLUSTER_HOST: "controlplane-nginx-controller.union-cp.svc.cluster.local"
-  QUEUE_SERVICE_HOST: "queue.union-cp.svc.cluster.local:80"
-  CACHESERVICE_ENDPOINT: "cacheservice.union-cp.svc.cluster.local:89"
+  CONTROLPLANE_INTRA_CLUSTER_HOST: "<controlplane-ingress>.<controlplane-namespace>.svc.cluster.local"
+  QUEUE_SERVICE_HOST: "<queue-service>.<controlplane-namespace>.svc.cluster.local:80"
+  CACHESERVICE_ENDPOINT: "<cacheservice>.<controlplane-namespace>.svc.cluster.local:89"
 ```
 
 If authentication is enabled on the control plane, also set `AUTH_CLIENT_ID`. See the [Authentication](./authentication) guide.
@@ -64,7 +64,7 @@ If authentication is enabled on the control plane, also set `AUTH_CLIENT_ID`. Se
 
 ```shell
 helm upgrade --install unionai-dataplane unionai/dataplane \
-  --namespace union \
+  --namespace <dataplane-namespace> \
   --create-namespace \
   -f values.gcp.selfhosted-intracluster.yaml \
   -f values.gcp.selfhosted-overrides.yaml \
@@ -81,14 +81,14 @@ helm upgrade --install unionai-dataplane unionai/dataplane \
 
 ```shell
 # Check that data plane pods are running
-kubectl get pods -n union
+kubectl get pods -n <dataplane-namespace>
 
 # Verify connectivity to control plane
-kubectl logs -n union -l app.kubernetes.io/name=operator --tail=50 | grep "connection"
+kubectl logs -n <dataplane-namespace> -l app.kubernetes.io/name=operator --tail=50 | grep "connection"
 
 # Check service DNS resolution
-kubectl exec -n union deploy/unionai-dataplane-operator -- \
-  nslookup controlplane-nginx-controller.union-cp.svc.cluster.local
+kubectl exec -n <dataplane-namespace> deploy/unionai-dataplane-operator -- \
+  nslookup <controlplane-ingress>.<controlplane-namespace>.svc.cluster.local
 ```
 
 ## Key differences from self-managed deployment
@@ -107,37 +107,37 @@ kubectl exec -n union deploy/unionai-dataplane-operator -- \
 
 ```shell
 # Check DNS resolution from data plane namespace
-kubectl run -n union test-dns --image=busybox --rm -it -- \
-  nslookup controlplane-nginx-controller.union-cp.svc.cluster.local
+kubectl run -n <dataplane-namespace> test-dns --image=busybox --rm -it -- \
+  nslookup <controlplane-ingress>.<controlplane-namespace>.svc.cluster.local
 
 # Verify the service exists
-kubectl get svc -n union-cp | grep nginx-controller
+kubectl get svc -n <controlplane-namespace> | grep nginx-controller
 ```
 
 ### Connection refused errors
 
 ```shell
 # Verify control plane services are running
-kubectl get svc -n union-cp
-kubectl get pods -n union-cp
+kubectl get svc -n <controlplane-namespace>
+kubectl get pods -n <controlplane-namespace>
 
 # Check network policies
-kubectl get networkpolicies -n union
-kubectl get networkpolicies -n union-cp
+kubectl get networkpolicies -n <dataplane-namespace>
+kubectl get networkpolicies -n <controlplane-namespace>
 ```
 
 ### Workload Identity issues
 
 ```shell
 # Verify service account annotations
-kubectl get sa -n union -o yaml | grep iam.gke.io/gcp-service-account
+kubectl get sa -n <dataplane-namespace> -o yaml | grep iam.gke.io/gcp-service-account
 
 # Check IAM bindings
 gcloud iam service-accounts get-iam-policy <BACKEND_SERVICE_ACCOUNT_EMAIL>
 gcloud iam service-accounts get-iam-policy <WORKER_SERVICE_ACCOUNT_EMAIL>
 
 # Verify pod can authenticate
-kubectl exec -n union deploy/unionai-dataplane-operator -- \
+kubectl exec -n <dataplane-namespace> deploy/unionai-dataplane-operator -- \
   curl -H "Metadata-Flavor: Google" \
   http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email
 ```

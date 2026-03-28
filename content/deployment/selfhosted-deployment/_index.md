@@ -35,18 +35,18 @@ In a self-hosted intra-cluster deployment, the control plane and data plane comm
 ```mermaid
 graph TB
     subgraph cluster["Kubernetes Cluster"]
-        subgraph cp["Namespace: union-cp (Control Plane)"]
+        subgraph cp["Controlplane Namespace"]
             cpingress["NGINX Ingress\n(TLS/HTTP2)\nClusterIP"]
-            flyteadmin["Flyteadmin"]
+            admin["Admin"]
             identity["Identity"]
-            executions["Executions"]
+            services["Services"]
 
-            cpingress --> flyteadmin
+            cpingress --> admin
             cpingress --> identity
-            cpingress --> executions
+            cpingress --> services
         end
 
-        subgraph dp["Namespace: union (Data Plane)"]
+        subgraph dp["Dataplane Namespace"]
             dpingress["NGINX Ingress\nClusterIP"]
             operator["Operator"]
             propeller["Propeller"]
@@ -65,10 +65,10 @@ graph TB
         dpingress -.->|"Internal DNS"| cpingress
         cpingress -.->|"Internal DNS"| dpingress
 
-        flyteadmin --> db
+        admin --> db
         identity --> db
-        executions --> db
-        flyteadmin --> storage
+        services --> db
+        admin --> storage
         operator --> storage
     end
 ```
@@ -124,6 +124,10 @@ Deploy the data plane with GCS and Workload Identity
 
 {{< link-card target="./authentication" icon="lock" title="Authentication" >}}
 Configure OIDC/OAuth2 authentication for your deployment
+{{< /link-card >}}
+
+{{< link-card target="./authorization" icon="shield" title="Authorization" >}}
+Configure authorization mode (Noop, External, or Union built-in RBAC)
 {{< /link-card >}}
 
 {{< link-card target="./image-builder" icon="package" title="Image builder" >}}

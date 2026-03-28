@@ -127,7 +127,7 @@ global:
   AUTH_TOKEN_URL: "https://your-idp.example.com/oauth2/default/v1/token"
 ```
 
-Enable authentication in FlyteAdmin:
+Enable authentication in the admin service:
 
 ```yaml
 flyte:
@@ -146,21 +146,23 @@ flyte:
 The control plane needs secrets for the browser login app (App 1) and the service-to-service app (App 3):
 
 ```shell
-# Secret for flyteadmin (mounted at /etc/secrets/)
+# Secret for admin service (mounted at /etc/secrets/)
+# Note: "flyte-admin-secrets" is the default name expected by the Helm chart
 kubectl create secret generic flyte-admin-secrets \
   --from-literal=client_secret='<BROWSER_LOGIN_CLIENT_SECRET>' \
-  -n union-cp
+  -n <controlplane-namespace>
 
-# Secret for flyte-scheduler (mounted at /etc/secrets/)
+# Secret for scheduler (mounted at /etc/secrets/)
+# Note: "flyte-secret-auth" is the default name expected by the Helm chart
 kubectl create secret generic flyte-secret-auth \
   --from-literal=client_secret='<BROWSER_LOGIN_CLIENT_SECRET>' \
-  -n union-cp
+  -n <controlplane-namespace>
 
-# Add service-to-service client secret to the main secret
-kubectl create secret generic union-controlplane-secrets \
+# Add service-to-service client secret to the controlplane secrets
+kubectl create secret generic <controlplane-secrets> \
   --from-literal=pass.txt='<DB_PASSWORD>' \
   --from-literal=client_secret='<SERVICE_TO_SERVICE_CLIENT_SECRET>' \
-  -n union-cp --dry-run=client -o yaml | kubectl apply -f -
+  -n <controlplane-namespace> --dry-run=client -o yaml | kubectl apply -f -
 ```
 
 > [!NOTE]
@@ -180,7 +182,7 @@ Create the data plane auth secret:
 ```shell
 kubectl create secret generic union-secret-auth \
   --from-literal=client_secret='<OPERATOR_CLIENT_SECRET>' \
-  -n union
+  -n <dataplane-namespace>
 ```
 
 ## Step 5: Configure EAGER_API_KEY
@@ -199,7 +201,7 @@ Create the Kubernetes secret in the data plane namespace:
 ```shell
 kubectl create secret generic <eager-secret-name> \
   --from-literal=<eager-secret-key>='<BASE64_ENCODED_EAGER_API_KEY>' \
-  -n union
+  -n <dataplane-namespace>
 ```
 
 > [!NOTE]
@@ -212,7 +214,7 @@ Deploy or upgrade both the control plane and data plane with the updated configu
 ```shell
 # Upgrade control plane
 helm upgrade unionai-controlplane unionai/controlplane \
-  --namespace union-cp \
+  --namespace <controlplane-namespace> \
   -f values.<cloud>.selfhosted-intracluster.yaml \
   -f values.registry.yaml \
   -f values.<cloud>.selfhosted-overrides.yaml \
@@ -220,7 +222,7 @@ helm upgrade unionai-controlplane unionai/controlplane \
 
 # Upgrade data plane
 helm upgrade unionai-dataplane unionai/dataplane \
-  --namespace union \
+  --namespace <dataplane-namespace> \
   -f values.<cloud>.selfhosted-intracluster.yaml \
   -f values.<cloud>.selfhosted-overrides.yaml \
   --timeout 10m --wait
@@ -229,31 +231,31 @@ helm upgrade unionai-dataplane unionai/dataplane \
 ## Verification
 
 ```shell
-# Check flyteadmin logs for auth initialization
-kubectl logs -n union-cp deploy/flyteadmin | grep -i auth
+# Check admin service logs for auth initialization
+kubectl logs -n <controlplane-namespace> deploy/<admin-service> | grep -i auth
 
 # Test the /me endpoint (should return 401 without a token)
-kubectl exec -n union-cp deploy/flyteadmin -- \
+kubectl exec -n <controlplane-namespace> deploy/<admin-service> -- \
   curl -s -o /dev/null -w "%{http_code}" \
-  https://controlplane-nginx-controller.union-cp.svc.cluster.local/me -k
+  https://<controlplane-ingress>.<controlplane-namespace>.svc.cluster.local/me -k
 
 # Test CLI login
 uctl config init --host https://<your-domain>
 uctl get project
 
 # Check data plane operator auth
-kubectl logs -n union -l app.kubernetes.io/name=operator --tail=50 | grep -i "token\|auth"
+kubectl logs -n <dataplane-namespace> -l app.kubernetes.io/name=operator --tail=50 | grep -i "token\|auth"
 ```
 
 ## Summary of secrets
 
 | Secret name | Namespace | Keys | Source |
 |-------------|-----------|------|--------|
-| `flyte-admin-secrets` | `union-cp` | `client_secret` | Browser login app (App 1) secret |
-| `flyte-secret-auth` | `union-cp` | `client_secret` | Browser login app (App 1) secret |
-| `union-controlplane-secrets` | `union-cp` | `pass.txt`, `client_secret` | DB password, Service-to-service app (App 3) secret |
-| `union-secret-auth` | `union` | `client_secret` | Operator app (App 4) secret |
-| EAGER secret | `union` | varies | EAGER app (App 5) encoded key |
+| `flyte-admin-secrets` (Helm chart default) | `<controlplane-namespace>` | `client_secret` | Browser login app (App 1) secret |
+| `flyte-secret-auth` (Helm chart default) | `<controlplane-namespace>` | `client_secret` | Browser login app (App 1) secret |
+| `<controlplane-secrets>` | `<controlplane-namespace>` | `pass.txt`, `client_secret` | DB password, Service-to-service app (App 3) secret |
+| `union-secret-auth` | `<dataplane-namespace>` | `client_secret` | Operator app (App 4) secret |
+| EAGER secret | `<dataplane-namespace>` | varies | EAGER app (App 5) encoded key |
 
 ## Self-hosted vs. self-managed authentication
 
@@ -266,26 +268,26 @@ kubectl logs -n union -l app.kubernetes.io/name=operator --tail=50 | grep -i "to
 
 ## Troubleshooting
 
-### FlyteAdmin auth endpoints return 404
+### Admin service auth endpoints return 404
 
 Ensure `useAuth: true` is set under `flyte.configmap.adminServer.server.security`. Without this, the `/login`, `/callback`, and `/me` endpoints are not registered.
 
 ### Token validation fails with "audience mismatch"
 
-The `allowedAudience` in the FlyteAdmin configuration must include `https://<your-domain>`. This should match the audience configured on your authorization server.
+The `allowedAudience` in the admin service configuration must include `https://<your-domain>`. This should match the audience configured on your authorization server.
 
 ### Data plane cannot authenticate to control plane
 
 ```shell
 # Verify AUTH_CLIENT_ID is set
-kubectl get configmap -n union -o yaml | grep -i auth_client
+kubectl get configmap -n <dataplane-namespace> -o yaml | grep -i auth_client
 
 # Check that union-secret-auth exists
-kubectl get secret union-secret-auth -n union \
+kubectl get secret union-secret-auth -n <dataplane-namespace> \
   -o jsonpath='{.data.client_secret}' | base64 -d
 
 # Check operator logs
-kubectl logs -n union -l app.kubernetes.io/name=operator --tail=50 \
+kubectl logs -n <dataplane-namespace> -l app.kubernetes.io/name=operator --tail=50 \
   | grep -i "auth\|token\|401"
 ```
 
