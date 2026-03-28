@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.0.11
+version: 2.0.12.dev22+g879ad6de4
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -800,7 +800,7 @@ Generate documentation.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--type` | `text` | `Sentinel.UNSET` | Type of documentation (valid: markdown) |
-| `--plugin-variants` | `text` |  | Hugo variant names for plugin commands (e.g., 'byoc selfmanaged'). When set, plugin command sections and index entries are wrapped in {{&lt; variant >}} shortcodes. Core commands appear unconditionally. |
+| `--plugin-variants` | `text` |  | Hugo variant names for plugin commands (e.g., 'union'). When set, plugin command sections and index entries are wrapped in {{&lt; variant >}} shortcodes. Core commands appear unconditionally. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`

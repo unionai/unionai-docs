@@ -1,7 +1,7 @@
 ---
 title: User
 version: 0.2.1
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
