@@ -1,6 +1,6 @@
 ---
 title: AsyncFunctionTaskTemplate
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,7 +11,6 @@ layout: py_api
 
 A task template that wraps an asynchronous functions. This is automatically created when an asynchronous function
 is decorated with the task decorator.
-
 
 
 ## Parameters
@@ -116,7 +115,6 @@ The aio function allows executing "sync" tasks, in an async context. This helps 
 tasks to be used within an asyncio parent task.
 This function will also re-raise exceptions from the underlying task.
 
-Example:
 ```python
 @env.task
 def my_legacy_task(x: int) -> int:
@@ -134,7 +132,7 @@ async def my_new_parent_task(n: int) -> List[int]:
 | Parameter | Type | Description |
 |-|-|-|
 | `args` | `*args` | |
-| `kwargs` | `**kwargs` | :return: |
+| `kwargs` | `**kwargs` | |
 
 ### config()
 
@@ -231,7 +229,7 @@ when not in a Flyte task execution context.  See the implementation below for an
 | Parameter | Type | Description |
 |-|-|-|
 | `args` | `*args` | |
-| `kwargs` | `**kwargs` | :return: |
+| `kwargs` | `**kwargs` | |
 
 ### override()
 
@@ -273,7 +271,9 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `queue` | `Optional[str]` | Optional override for the queue to use for the task. |
 | `interruptible` | `Optional[bool]` | Optional override for the interruptible policy for the task. |
 | `links` | `Tuple[Link, ...]` | Optional override for the Links associated with the task. |
-| `kwargs` | `**kwargs` | Additional keyword arguments for further overrides. Some fields like name, image, docs, and interface cannot be overridden.  :return: A new TaskTemplate instance with the overridden parameters. |
+| `kwargs` | `**kwargs` | Additional keyword arguments for further overrides. Some fields like name, image, docs, and interface cannot be overridden. |
+
+**Returns:** A new TaskTemplate instance with the overridden parameters.
 
 ### post()
 

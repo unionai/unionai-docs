@@ -1,6 +1,6 @@
 ---
 title: flyte.report
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -36,8 +36,9 @@ def current_report()
 ```
 Get the current report. This is a dummy report if not in a task context.
 
-:return: The current report.
 
+
+**Returns:** The current report.
 
 #### flush()
 
@@ -67,7 +68,9 @@ Get a tab by name. If the tab does not exist, create it.
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | The name of the tab. |
-| `create_if_missing` | `bool` | Whether to create the tab if it does not exist. :return: The tab. |
+| `create_if_missing` | `bool` | Whether to create the tab if it does not exist. |
+
+**Returns:** The tab.
 
 #### log()
 
@@ -107,11 +110,12 @@ def replace(
 ```
 Get the report. Replaces the content of the main tab.
 
-:return: The report.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `content` | `str` | |
 | `do_flush` | `bool` | |
+
+**Returns:** The report.
 

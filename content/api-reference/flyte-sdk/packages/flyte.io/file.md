@@ -1,6 +1,6 @@
 ---
 title: File
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -238,6 +238,8 @@ async def download_to_path(f: File) -> str:
 |-|-|-|
 | `local_path` | `Optional[Union[str, Path]]` | The local path to download the file to. If None, a temporary directory will be used and a path will be generated. |
 
+**Returns:** The absolute path to the downloaded file
+
 ### download_sync()
 
 ```python
@@ -275,6 +277,8 @@ def download_to_path_sync(f: File) -> str:
 |-|-|-|
 | `local_path` | `Optional[Union[str, Path]]` | The local path to download the file to. If None, a temporary directory will be used and a path will be generated. |
 
+**Returns:** The absolute path to the downloaded file
+
 ### exists()
 
 ```python
@@ -293,9 +297,9 @@ async def check_file(f: File) -> bool:
     return False
 ```
 
-Returns:
-    True if the file exists, False otherwise
 
+
+**Returns:** True if the file exists, False otherwise
 
 ### exists_sync()
 
@@ -317,9 +321,9 @@ def check_file_sync(f: File) -> bool:
     return False
 ```
 
-Returns:
-    True if the file exists, False otherwise
 
+
+**Returns:** True if the file exists, False otherwise
 
 ### from_existing_remote()
 
@@ -332,8 +336,6 @@ def from_existing_remote(
 Create a File reference from an existing remote file.
 
 Use this when you want to reference a file that already exists in remote storage without uploading it.
-
-Example:
 
 ```python
 @env.task
@@ -351,6 +353,8 @@ async def process_existing_file() -> str:
 | `remote_path` | `str` | The remote path to the existing file |
 | `file_cache_key` | `Optional[str]` | Optional hash value to use for cache key computation. If not specified, the cache key will be computed based on the file's attributes (path, name, format). |
 
+**Returns:** A new File instance pointing to the existing remote file
+
 ### from_local()
 
 ```python
@@ -362,41 +366,51 @@ def from_local(
 ```
 Asynchronously create a new File object from a local file by uploading it to remote storage.
 
-Use this in async tasks when you have a local file that needs to be uploaded to remote storage.
+        Use this in async tasks when you have a local file that needs to be uploaded to remote storage.
 
-Example (Async):
+        Example (Async):
 
-```python
-@env.task
-async def upload_local_file() -> File:
-    # Create a local file
-    async with aiofiles.open("/tmp/data.csv", "w") as f:
-        await f.write("col1,col2
+        ```python
+        @env.task
+        async def upload_local_file() -> File:
+            # Create a local file
+            async with aiofiles.open("/tmp/data.csv", "w") as f:
+                await f.write("col1,col2
+1,2
+3,4
+")
 
+            # Upload to remote storage
+            remote_file = await File.from_local("/tmp/data.csv")
+            return remote_file
+        ```
 
+        Example (With specific destination):
 
+        ```python
+        @env.task
+        async def upload_to_specific_path() -> File:
+            remote_file = await File.from_local("/tmp/data.csv", "s3://my-bucket/data.csv")
+            return remote_file
+        ```
 
-    # Upload to remote storage
-    remote_file = await File.from_local("/tmp/data.csv")
-    return remote_file
-```
+        Args:
+            local_path: Path to the local file
+            remote_destination: Optional remote path to store the file. If None, a path will be automatically generated.
+            hash_method: Optional HashMethod or string to use for cache key computation. If a string is provided,
+                        it will be used as a precomputed cache key. If a HashMethod is provided, it will compute
+                        the hash during upload. If not specified, the cache key will be based on file attributes.
 
-Example (With specific destination):
-
-```python
-@env.task
-async def upload_to_specific_path() -> File:
-    remote_file = await File.from_local("/tmp/data.csv", "s3://my-bucket/data.csv")
-    return remote_file
-```
-
+        Returns:
+            A new File instance pointing to the uploaded remote file
+        
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `local_path` | `Union[str, Path]` | Path to the local file |
-| `remote_destination` | `Optional[str]` | Optional remote path to store the file. If None, a path will be automatically generated. |
-| `hash_method` | `Optional[HashMethod \| str]` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will compute the hash during upload. If not specified, the cache key will be based on file attributes. |
+| `local_path` | `Union[str, Path]` | |
+| `remote_destination` | `Optional[str]` | |
+| `hash_method` | `Optional[HashMethod \| str]` | |
 
 ### from_local_sync()
 
@@ -409,41 +423,51 @@ def from_local_sync(
 ```
 Synchronously create a new File object from a local file by uploading it to remote storage.
 
-Use this in non-async tasks when you have a local file that needs to be uploaded to remote storage.
+        Use this in non-async tasks when you have a local file that needs to be uploaded to remote storage.
 
-Example (Sync):
+        Example (Sync):
 
-```python
-@env.task
-def upload_local_file_sync() -> File:
-    # Create a local file
-    with open("/tmp/data.csv", "w") as f:
-        f.write("col1,col2
+        ```python
+        @env.task
+        def upload_local_file_sync() -> File:
+            # Create a local file
+            with open("/tmp/data.csv", "w") as f:
+                f.write("col1,col2
+1,2
+3,4
+")
 
+            # Upload to remote storage
+            remote_file = File.from_local_sync("/tmp/data.csv")
+            return remote_file
+        ```
 
+        Example (With specific destination):
 
+        ```python
+        @env.task
+        def upload_to_specific_path() -> File:
+            remote_file = File.from_local_sync("/tmp/data.csv", "s3://my-bucket/data.csv")
+            return remote_file
+        ```
 
-    # Upload to remote storage
-    remote_file = File.from_local_sync("/tmp/data.csv")
-    return remote_file
-```
+        Args:
+            local_path: Path to the local file
+            remote_destination: Optional remote path to store the file. If None, a path will be automatically generated.
+            hash_method: Optional HashMethod or string to use for cache key computation. If a string is provided,
+                        it will be used as a precomputed cache key. If a HashMethod is provided, it will compute
+                        the hash during upload. If not specified, the cache key will be based on file attributes.
 
-Example (With specific destination):
-
-```python
-@env.task
-def upload_to_specific_path() -> File:
-    remote_file = File.from_local_sync("/tmp/data.csv", "s3://my-bucket/data.csv")
-    return remote_file
-```
-
+        Returns:
+            A new File instance pointing to the uploaded remote file
+        
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `local_path` | `Union[str, Path]` | Path to the local file |
-| `remote_destination` | `Optional[str]` | Optional remote path to store the file. If None, a path will be automatically generated. |
-| `hash_method` | `Optional[HashMethod \| str]` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will compute the hash during upload. If not specified, the cache key will be based on file attributes. |
+| `local_path` | `Union[str, Path]` | |
+| `remote_destination` | `Optional[str]` | |
+| `hash_method` | `Optional[HashMethod \| str]` | |
 
 ### model_post_init()
 
@@ -489,6 +513,8 @@ If extraction fails, the function falls back to the run base directory alone.
 |-|-|-|
 | `name` | `str` | Plain filename (e.g., "data.csv"). Must not contain path separators. |
 
+**Returns:** A `File` instance whose path is stable across retries.
+
 ### new_remote()
 
 ```python
@@ -519,6 +545,8 @@ async def create_csv() -> File:
 |-|-|-|
 | `file_name` | `Optional[str]` | Optional string specifying a remote file name. If not set, a generated file name will be returned. |
 | `hash_method` | `Optional[HashMethod \| str]` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will be used to compute the hash as data is written. |
+
+**Returns:** A new File instance with a generated remote path
 
 ### open()
 
@@ -576,12 +604,14 @@ async def stream_read(f: File) -> str:
 
 | Parameter | Type | Description |
 |-|-|-|
-| `mode` | `str` | |
+| `mode` | `str` | The mode to open the file in (default: 'rb'). Common modes: 'rb' (read binary), 'wb' (write binary), 'rt' (read text), 'wt' (write text) |
 | `block_size` | `Optional[int]` | Size of blocks for reading in bytes. Useful for streaming large files. |
 | `cache_type` | `str` | Caching mechanism to use ('readahead', 'mmap', 'bytes', 'none') |
 | `cache_options` | `Optional[dict]` | Dictionary of options for the cache |
 | `compression` | `Optional[str]` | Compression format or None for auto-detection |
 | `kwargs` | `**kwargs` | |
+
+**Returns:** An async file-like object that can be used with async read/write operations
 
 ### open_sync()
 
@@ -624,12 +654,14 @@ def write_file_sync() -> File:
 
 | Parameter | Type | Description |
 |-|-|-|
-| `mode` | `str` | |
+| `mode` | `str` | The mode to open the file in (default: 'rb'). Common modes: 'rb' (read binary), 'wb' (write binary), 'rt' (read text), 'wt' (write text) |
 | `block_size` | `Optional[int]` | Size of blocks for reading in bytes. Useful for streaming large files. |
 | `cache_type` | `str` | Caching mechanism to use ('readahead', 'mmap', 'bytes', 'none') |
 | `cache_options` | `Optional[dict]` | Dictionary of options for the cache |
 | `compression` | `Optional[str]` | Compression format or None for auto-detection |
 | `kwargs` | `**kwargs` | |
+
+**Returns:** A file-like object that can be used with standard read/write operations
 
 ### pre_init()
 

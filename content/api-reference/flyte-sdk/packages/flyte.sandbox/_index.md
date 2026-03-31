@@ -1,6 +1,6 @@
 ---
 title: flyte.sandbox
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -28,7 +28,7 @@ Warning: Experimental feature: alpha — APIs may change without notice.
     - **Microsecond startup**: No container spin-up — runs in the same process
     - **Multiplexable**: Many orchestrators run safely on the same Python process
 
-    Example::
+    Example:
 
         env = flyte.TaskEnvironment(name="my-env")
 
@@ -48,9 +48,7 @@ Warning: Experimental feature: alpha — APIs may change without notice.
 **2. Code sandbox** — arbitrary code in an isolated container
     Runs arbitrary Python scripts or shell commands inside an ephemeral Docker
     container. The image is built on demand from declared `packages` and
-    `system_packages`, executed once, then discarded. Network is blocked by
-    default (`block_network=True`), preventing outbound calls from untrusted
-    code.  Used via `flyte.sandbox.create()`.
+    `system_packages`, executed once, then discarded. Used via `flyte.sandbox.create()`.
 
     Three execution modes are supported:
 
@@ -145,7 +143,6 @@ Warning: Experimental feature: alpha — APIs may change without notice.
     scalar outputs are captured automatically.
     • Additional Python dependencies can be specified via the
     `packages` argument.
-
 ## Directory
 
 ### Classes
@@ -260,9 +257,9 @@ Example — command mode::
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `typing.Optional[str]` | Sandbox name. Derives task and image names. |
-| `code` | `typing.Optional[str]` | Python source to run (auto-IO or verbatim mode). Mutually exclusive with `command`. - Primitive: `int`, `float`, `str`, `bool` - Date/time: `datetime.datetime`, `datetime.timedelta` - IO handles: `flyte.io.File`   (bind-mounted at `/var/inputs/&lt;name&gt;`; available as a path   string in auto-IO mode) - Primitive: `int`, `float`, `str`, `bool` - Date/time: `datetime.datetime` (ISO-8601), `datetime.timedelta` - IO handles: `flyte.io.File`   (user code must write the file to `/var/outputs/&lt;name&gt;`) |
-| `inputs` | `typing.Optional[dict[str, type]]` | |
-| `outputs` | `typing.Optional[dict[str, type]]` | |
+| `code` | `typing.Optional[str]` | Python source to run (auto-IO or verbatim mode). Mutually exclusive with `command`. |
+| `inputs` | `typing.Optional[dict[str, type]]` | Input type declarations. Supported types: - Primitive: `int`, `float`, `str`, `bool` - Date/time: `datetime.datetime`, `datetime.timedelta` - IO handles: `flyte.io.File`   (bind-mounted at `/var/inputs/&lt;name&gt;`; available as a path   string in auto-IO mode) |
+| `outputs` | `typing.Optional[dict[str, type]]` | Output type declarations. Supported types: - Primitive: `int`, `float`, `str`, `bool` - Date/time: `datetime.datetime` (ISO-8601), `datetime.timedelta` - IO handles: `flyte.io.File`   (user code must write the file to `/var/outputs/&lt;name&gt;`) |
 | `command` | `typing.Optional[list[str]]` | Entrypoint command (command mode). Mutually exclusive with `code`. |
 | `arguments` | `typing.Optional[list[str]]` | Arguments forwarded to `command` (command mode only). |
 | `packages` | `typing.Optional[list[str]]` | Python packages to install via pip. |
@@ -278,6 +275,8 @@ Example — command mode::
 | `env_vars` | `typing.Optional[dict[str, str]]` | Environment variables available inside the container. |
 | `secrets` | `typing.Optional[list]` | Flyte `flyte.Secret` objects to mount. |
 | `cache` | `str` | Cache behaviour — `"auto"`, `"override"`, or `"disable"`. |
+
+**Returns:** Configured sandbox ready to `.run()`.
 
 #### orchestrate_local()
 

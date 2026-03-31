@@ -1,6 +1,6 @@
 ---
 title: TypeEngine
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -13,7 +13,6 @@ Core Extensible TypeEngine of Flytekit. This should be used to extend the capabi
 Users can implement their own TypeTransformers and register them with the TypeEngine. This will allow special
  handling
 of user objects
-
 
 
 ## Methods

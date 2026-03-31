@@ -1,12 +1,11 @@
 ---
 title: flyteplugins.mlflow
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
 # flyteplugins.mlflow
-
 
 ## Key features:
 
@@ -151,7 +150,6 @@ async def my_task(): ...
 @env.task
 async def my_task(): ...
 ```
-
 ## Directory
 
 ### Classes
@@ -190,9 +188,9 @@ Get the current MLflow run if within a `@mlflow_run` decorated task or trace.
 The run is started when the `@mlflow_run` decorator enters.
 Returns None if not within an `mlflow_run` context.
 
-Returns:
-    `mlflow.ActiveRun` | `None`: The current MLflow active run or None.
 
+
+**Returns:** `mlflow.ActiveRun` | `None`: The current MLflow active run or None.
 
 #### mlflow_config()
 
@@ -268,6 +266,13 @@ Handles both manual logging and autologging. For autologging, pass
 `autolog=True` and optionally `framework` to select a specific
 framework (e.g. `"sklearn"`).
 
+Decorator Order:
+    @mlflow_run must be the outermost decorator::
+
+        @mlflow_run
+        @env.task
+        async def my_task():
+            ...
 
 
 | Parameter | Type | Description |

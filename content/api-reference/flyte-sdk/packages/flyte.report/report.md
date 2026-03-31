@@ -1,6 +1,6 @@
 ---
 title: Report
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -39,8 +39,9 @@ def get_final_report()
 ```
 Get the final report as a string.
 
-:return: The final report.
 
+
+**Returns:** The final report.
 
 ### get_tab()
 
@@ -57,5 +58,7 @@ Get a tab by name. If the tab does not exist, create it.
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | The name of the tab. |
-| `create_if_missing` | `bool` | Whether to create the tab if it does not exist. :return: The tab. |
+| `create_if_missing` | `bool` | Whether to create the tab if it does not exist. |
+
+**Returns:** The tab.
 

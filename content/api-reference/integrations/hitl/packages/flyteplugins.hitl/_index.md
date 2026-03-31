@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.hitl
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -45,7 +45,6 @@ async def main() -> int:
 - Programmatic API for automated input
 - Support for int, float, str, and bool data types
 - Crash-resilient polling with object storage
-
 ## Directory
 
 ### Classes
@@ -98,6 +97,11 @@ This is a convenience function that wraps Event.create().
 | `data_type` | `Type[T]` | The expected type of the input (int, float, str, bool) |
 | `scope` | `EventScope` | The scope of the event. Currently only "run" is supported. |
 | `prompt` | `str` | The prompt to display to the human |
-| `timeout_seconds` | `int` | |
-| `poll_interval_seconds` | `int` | |
+| `timeout_seconds` | `int` | Maximum time to wait for human input (default: 1 hour) |
+| `poll_interval_seconds` | `int` | How often to check for a response (default: 5 seconds) |
+
+**Returns**
+
+An Event object that can be used to wait for the human input
+
 

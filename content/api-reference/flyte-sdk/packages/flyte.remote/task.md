@@ -1,6 +1,6 @@
 ---
 title: Task
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -97,7 +97,9 @@ Get all runs for the current project and domain.
 | `project` | `str \| None` | The project to filter tasks by. If None, the current project will be used. |
 | `domain` | `str \| None` | The domain to filter tasks by. If None, the current domain will be used. |
 | `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). |
-| `limit` | `int` | The maximum number of tasks to return. :return: An iterator of runs. |
+| `limit` | `int` | The maximum number of tasks to return. |
+
+**Returns:** An iterator of runs.
 
 ### to_dict()
 
@@ -106,9 +108,9 @@ def to_dict()
 ```
 Convert the object to a JSON-serializable dictionary.
 
-Returns:
-    dict: A dictionary representation of the object.
 
+
+**Returns:** dict: A dictionary representation of the object.
 
 ### to_json()
 
@@ -117,7 +119,7 @@ def to_json()
 ```
 Convert the object to a JSON string.
 
-Returns:
-    str: A JSON string representation of the object.
 
+
+**Returns:** str: A JSON string representation of the object.
 

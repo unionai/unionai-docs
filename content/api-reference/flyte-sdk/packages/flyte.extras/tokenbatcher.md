@@ -1,6 +1,6 @@
 ---
 title: TokenBatcher
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,22 +11,13 @@ layout: py_api
 
 Token-aware batcher for LLM inference workloads.
 
-    A thin convenience wrapper around `DynamicBatcher` that accepts
-    token-specific parameter names (`inference_fn`, `token_estimator`,
-    `target_batch_tokens`, etc.) and maps them to the base class.
+A thin convenience wrapper around `DynamicBatcher` that accepts
+token-specific parameter names (`inference_fn`, `token_estimator`,
+`target_batch_tokens`, etc.) and maps them to the base class.
 
-    Also checks the `TokenEstimator` protocol (`estimate_tokens()`)
-    in addition to `CostEstimator` (`estimate_cost()`).
+Also checks the `TokenEstimator` protocol (`estimate_tokens()`)
+in addition to `CostEstimator` (`estimate_cost()`).
 
-    Example::
-
-        async def inference(batch: list[Prompt]) -&gt; list[str]:
-            ...
-
-        async with TokenBatcher(inference_fn=inference) as batcher:
-            future = await batcher.submit(Prompt(text="Hello"))
-            result = await future
-    
 
 
 ## Parameters
@@ -88,9 +79,13 @@ def start()
 ```
 Start the aggregation and processing loops.
 
-Raises:
-    RuntimeError: If the batcher is already running.
 
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `RuntimeError` | If the batcher is already running. |
 
 ### stop()
 
@@ -123,6 +118,11 @@ Accepts either `estimated_tokens` or `estimated_cost`.
 | `estimated_tokens` | `int \| None` | Optional explicit token count. |
 | `estimated_cost` | `int \| None` | Optional explicit cost (base class parameter). |
 
+**Returns**
+
+A future whose result is the corresponding entry from the list
+returned by the inference function.
+
 ### submit_batch()
 
 ```python
@@ -139,4 +139,6 @@ Convenience: submit multiple records and return their futures.
 |-|-|-|
 | `records` | `Sequence[RecordT]` | Iterable of input records. |
 | `estimated_cost` | `Sequence[int] \| None` | Optional per-record cost estimates.  Length must match *records* when provided. |
+
+**Returns:** List of futures, one per record.
 

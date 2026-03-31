@@ -1,6 +1,6 @@
 ---
 title: Config
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -15,7 +15,6 @@ this object holds all the config necessary to
 1. Interactive session with Flyte backend
 2. Some parts are required for Serialization, for example Platform Config is not required
 3. Runtime of a task
-
 
 
 ## Parameters
@@ -61,7 +60,9 @@ Automatically constructs the Config Object. The order of precedence is as follow
 
 | Parameter | Type | Description |
 |-|-|-|
-| `config_file` | `typing.Union[str, pathlib.Path, ConfigFile, None]` | file path to read the config from, if not specified default locations are searched :return: Config |
+| `config_file` | `typing.Union[str, pathlib.Path, ConfigFile, None]` | file path to read the config from, if not specified default locations are searched |
+
+**Returns:** Config
 
 ### with_params()
 

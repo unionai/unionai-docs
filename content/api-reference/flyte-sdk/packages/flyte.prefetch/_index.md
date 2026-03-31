@@ -1,6 +1,6 @@
 ---
 title: flyte.prefetch
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -8,12 +8,10 @@ sidebar_expanded: true
 
 # flyte.prefetch
 
-
 Prefetch utilities for Flyte.
 
 This module provides functionality to prefetch various artifacts from remote registries,
 such as HuggingFace models.
-
 ## Directory
 
 ### Classes
@@ -108,5 +106,7 @@ run.wait()
 | `shard_config` | `ShardConfig \| None` | Optional configuration for model sharding with vLLM. |
 | `hf_token_key` | `str` | Name of the secret containing the HuggingFace token. Default |
 | `resources` | `Resources` | |
-| `force` | `int` | Force re-prefetch. Increment to force a new prefetch. Default  :return: A Run object representing the prefetch task execution. |
+| `force` | `int` | Force re-prefetch. Increment to force a new prefetch. Default |
+
+**Returns:** A Run object representing the prefetch task execution.
 

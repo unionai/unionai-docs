@@ -1,6 +1,6 @@
 ---
 title: FastAPIPassthroughAuthMiddleware
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -20,16 +20,10 @@ The middleware is highly configurable:
 - Specific paths can be excluded from auth requirements
 - Auth can be optional or required
 
-Attributes:
-    app: The FastAPI application (this is a mandatory framework parameter)
-    header_extractors: List of functions to extract headers from requests
-    excluded_paths: Set of URL paths that bypass auth extraction
-
 Thread Safety:
     This middleware is async-safe and properly isolates auth metadata per request
     using Python's contextvars. Multiple concurrent requests with different
     authentication will not interfere with each other.
-
 
 
 ## Parameters
@@ -47,9 +41,9 @@ Initialize the Flyte authentication middleware.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `app` |  | The FastAPI/Starlette application |
-| `header_extractors` | `list[HeaderExtractor] \| None` | List of functions to extract headers. Each function takes a Request and returns (key, value) tuple or None. Defaults to [extract_authorization_header, extract_cookie_header]. |
-| `excluded_paths` | `set[str] \| None` | Set of URL paths to exclude from auth extraction. Requests to these paths proceed without setting auth context. |
+| `app` |  | The FastAPI application (this is a mandatory framework parameter) |
+| `header_extractors` | `list[HeaderExtractor] \| None` | List of functions to extract headers from requests |
+| `excluded_paths` | `set[str] \| None` | Set of URL paths that bypass auth extraction |
 
 ## Methods
 
@@ -78,6 +72,8 @@ Process each request, extracting auth headers and setting Flyte context.
 | `request` | `'Request'` | The incoming HTTP request |
 | `call_next` |  | The next middleware or route handler to call |
 
+**Returns:** The HTTP response from the handler
+
 ### extract_authorization_header()
 
 ```python
@@ -92,6 +88,8 @@ Extract the Authorization header from the request.
 | Parameter | Type | Description |
 |-|-|-|
 | `request` | `'Request'` | The FastAPI/Starlette request object |
+
+**Returns:** Tuple of ("authorization", header_value) if present, None otherwise
 
 ### extract_cookie_header()
 
@@ -108,6 +106,8 @@ Extract the Cookie header from the request.
 |-|-|-|
 | `request` | `'Request'` | The FastAPI/Starlette request object |
 
+**Returns:** Tuple of ("cookie", header_value) if present, None otherwise
+
 ### extract_custom_header()
 
 ```python
@@ -122,4 +122,9 @@ Create a header extractor for a custom header name.
 | Parameter | Type | Description |
 |-|-|-|
 | `header_name` | `str` | The name of the header to extract (case-insensitive) |
+
+**Returns**
+
+A header extractor function that extracts the specified header
+
 

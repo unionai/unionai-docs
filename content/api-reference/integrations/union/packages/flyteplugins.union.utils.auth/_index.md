@@ -40,6 +40,8 @@ Encode app credentials as a base64 string for use as UNION_API_KEY.
 |-|-|-|
 | `app_credentials` | `flyteplugins.union.utils.auth.AppClientCredentials` | The application credentials to encode |
 
+**Returns:** Base64-encoded credential string
+
 #### is_serverless_endpoint()
 
 ```python

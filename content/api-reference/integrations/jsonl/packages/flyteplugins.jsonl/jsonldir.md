@@ -1,6 +1,6 @@
 ---
 title: JsonlDir
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,31 +11,30 @@ layout: py_api
 
 A directory of sharded JSONL files.
 
-    Provides transparent iteration across shards on read and automatic shard
-    rotation on write. Inherits all `Dir` capabilities (remote storage,
-    walk, download, etc.).
+Provides transparent iteration across shards on read and automatic shard
+rotation on write. Inherits all `Dir` capabilities (remote storage,
+walk, download, etc.).
 
-    Shard files are named `part-00000.jsonl` (or `.jsonl.zst` for
-    compressed shards), zero-padded to 5 digits and sorted alphabetically
-    on read. Mixed compression within a single directory is supported.
+Shard files are named `part-00000.jsonl` (or `.jsonl.zst` for
+compressed shards), zero-padded to 5 digits and sorted alphabetically
+on read. Mixed compression within a single directory is supported.
 
-    Example (Async read)::
+Example (Async read)::
 
-        @env.task
-        async def process(d: JsonlDir):
-            async for record in d.iter_records():
-                print(record)
+    @env.task
+    async def process(d: JsonlDir):
+        async for record in d.iter_records():
+            print(record)
 
-    Example (Async write)::
+Example (Async write)::
 
-        @env.task
-        async def create() -&gt; JsonlDir:
-            d = JsonlDir.new_remote("output_shards")
-            async with d.writer(max_records_per_shard=1000) as w:
-                for i in range(5000):
-                    await w.write({"id": i})
-            return d
-    
+    @env.task
+    async def create() -&gt; JsonlDir:
+        d = JsonlDir.new_remote("output_shards")
+        async with d.writer(max_records_per_shard=1000) as w:
+            for i in range(5000):
+                await w.write({"id": i})
+        return d
 
 
 ## Parameters
@@ -136,6 +135,8 @@ async def download_to_path(d: Dir) -> str:
 |-|-|-|
 | `local_path` | `Optional[Union[str, Path]]` | The local path to download the directory to. If None, a temporary directory will be used and a path will be generated. |
 
+**Returns:** The absolute path to the downloaded directory
+
 ### download_sync()
 
 ```python
@@ -171,15 +172,14 @@ def download_to_path_sync(d: Dir) -> str:
 |-|-|-|
 | `local_path` | `Optional[Union[str, Path]]` | The local path to download the directory to. If None, a temporary directory will be used and a path will be generated. |
 
+**Returns:** The absolute path to the downloaded directory
+
 ### exists()
 
 ```python
 def exists()
 ```
 Asynchronously check if the directory exists.
-
-Returns:
-    True if the directory exists, False otherwise
 
 Example (Async):
 
@@ -193,6 +193,11 @@ async def check_directory(d: Dir) -> bool:
 ```
 
 
+**Returns**
+
+True if the directory exists, False otherwise
+
+
 ### exists_sync()
 
 ```python
@@ -201,9 +206,6 @@ def exists_sync()
 Synchronously check if the directory exists.
 
 Use this in non-async tasks or when you need synchronous directory existence checking.
-
-Returns:
-    True if the directory exists, False otherwise
 
 Example (Sync):
 
@@ -217,6 +219,11 @@ def check_directory_sync(d: Dir) -> bool:
 ```
 
 
+**Returns**
+
+True if the directory exists, False otherwise
+
+
 ### from_existing_remote()
 
 ```python
@@ -228,8 +235,6 @@ def from_existing_remote(
 Create a Dir reference from an existing remote directory.
 
 Use this when you want to reference a directory that already exists in remote storage without uploading it.
-
-Example:
 
 ```python
 @env.task
@@ -255,6 +260,8 @@ async def process_with_cache_key() -> int:
 |-|-|-|
 | `remote_path` | `str` | The remote path to the existing directory |
 | `dir_cache_key` | `Optional[str]` | Optional hash value to use for cache key computation. If not specified, the cache key will be computed based on the directory's attributes. |
+
+**Returns:** A new Dir instance pointing to the existing remote directory
 
 ### from_local()
 
@@ -311,6 +318,8 @@ async def upload_with_cache_key() -> Dir:
 | `dir_cache_key` | `Optional[str]` | Optional precomputed hash value to use for cache key computation when this Dir is used as an input to discoverable tasks. If not specified, the cache key will be based on directory attributes. |
 | `batch_size` | `Optional[int]` | Optional concurrency limit for uploading files. If not specified, the default value is determined by the FLYTE_IO_BATCH_SIZE environment variable (default: 32). |
 
+**Returns:** A new Dir instance pointing to the uploaded directory
+
 ### from_local_sync()
 
 ```python
@@ -365,6 +374,8 @@ def upload_with_cache_key_sync() -> Dir:
 | `remote_destination` | `Optional[str]` | Optional remote path to store the directory. If None, a path will be automatically generated. |
 | `dir_cache_key` | `Optional[str]` | Optional precomputed hash value to use for cache key computation when this Dir is used as an input to discoverable tasks. If not specified, the cache key will be based on directory attributes. |
 
+**Returns:** A new Dir instance pointing to the uploaded directory
+
 ### get_file()
 
 ```python
@@ -395,6 +406,8 @@ async def read_specific_file(d: Dir) -> str:
 |-|-|-|
 | `file_name` | `str` | The name of the file to get |
 
+**Returns:** A File instance if the file exists, None otherwise
+
 ### get_file_sync()
 
 ```python
@@ -424,6 +437,8 @@ def read_specific_file_sync(d: Dir) -> str:
 | Parameter | Type | Description |
 |-|-|-|
 | `file_name` | `str` | The name of the file to get |
+
+**Returns:** A File instance if the file exists, None otherwise
 
 ### iter_arrow_batches()
 
@@ -544,9 +559,6 @@ Asynchronously get a list of all files in the directory (non-recursive).
 
 Use this when you need a list of all files in the top-level directory at once.
 
-Returns:
-    A list of File objects for files in the top-level directory
-
 Example (Async):
 
 ```python
@@ -571,6 +583,11 @@ async def process_all_files(d: Dir) -> list[str]:
 ```
 
 
+**Returns**
+
+A list of File objects for files in the top-level directory
+
+
 ### list_files_sync()
 
 ```python
@@ -579,9 +596,6 @@ def list_files_sync()
 Synchronously get a list of all files in the directory (non-recursive).
 
 Use this in non-async tasks when you need a list of all files in the top-level directory at once.
-
-Returns:
-    A list of File objects for files in the top-level directory
 
 Example (Sync):
 
@@ -605,6 +619,11 @@ def process_all_files_sync(d: Dir) -> list[str]:
             contents.append(content.decode("utf-8"))
     return contents
 ```
+
+
+**Returns**
+
+A list of File objects for files in the top-level directory
 
 
 ### model_post_init()
@@ -637,20 +656,14 @@ Create a new Dir reference for a remote directory that will be written to.
 Use this when you want to create a new directory and write files into it
 directly without creating a local directory first.
 
-Example::
-
-    @env.task
-    async def create() -&gt; Dir:
-        d = Dir.new_remote("output")
-        # write files into d ...
-        return d
-
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `dir_name` | `Optional[str]` | Optional name for the remote directory. If not set, a generated name will be used. |
 | `hash` | `Optional[str]` | Optional precomputed hash value to use for cache key computation when this Dir is used as an input to discoverable tasks. |
+
+**Returns:** A new Dir instance with a generated remote path.
 
 ### pre_init()
 
@@ -726,6 +739,8 @@ async def list_files_max_depth(d: Dir) -> list[str]:
     return file_names
 ```
 
+Yields:
+    File objects for each file found in the directory
 
 
 | Parameter | Type | Description |
@@ -779,6 +794,8 @@ def list_files_limited(d: Dir) -> list[str]:
     return file_names
 ```
 
+Yields:
+    File objects for each file found in the directory
 
 
 | Parameter | Type | Description |

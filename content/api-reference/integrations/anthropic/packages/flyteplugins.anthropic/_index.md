@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.anthropic
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -47,7 +47,6 @@ async def run_weather_agent(question: str) -> str:
         model="claude-sonnet-4-20250514",
     )
 ```
-
 ## Directory
 
 ### Classes
@@ -95,6 +94,11 @@ automatically since functools.wraps maintains the original function's metadata.
 | `name` | `str \| None` | Optional custom name for the tool. Defaults to the function name. |
 | `description` | `str \| None` | Optional custom description. Defaults to the function's docstring. |
 
+**Returns**
+
+A FunctionTool instance that can be used with run_agent().
+
+
 #### run_agent()
 
 ```python
@@ -127,4 +131,9 @@ and responses until the agent produces a final text response.
 | `max_tokens` | `int` | Maximum tokens in the response. |
 | `max_iterations` | `int` | Maximum number of tool call iterations. |
 | `api_key` | `str \| None` | Anthropic API key. Defaults to ANTHROPIC_API_KEY env var. |
+
+**Returns**
+
+The final text response from the agent.
+
 

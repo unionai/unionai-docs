@@ -1,7 +1,7 @@
 ---
 title: Dataplane chart
 variants: -flyte -byoc +selfmanaged
-chart_version: 2026.3.7
+chart_version: 2026.3.11
 weight: 1
 ---
 
@@ -11,8 +11,8 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 
 | | |
 |---|---|
-| **Chart version** | 2026.3.7 |
-| **App version** | 2026.3.6 |
+| **Chart version** | 2026.3.11 |
+| **App version** | 2026.3.8 |
 | **Kubernetes version** | `>= 1.28.0-0` |
 
 ## Dependencies
@@ -24,7 +24,8 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | https://kubernetes.github.io/ingress-nginx | ingress-nginx | 4.12.3 |
 | https://nvidia.github.io/dcgm-exporter/helm-charts | dcgm-exporter | 4.7.1 |
 | https://opencost.github.io/opencost-helm-chart | opencost | 1.42.0 |
-| https://prometheus-community.github.io/helm-charts | prometheus(kube-prometheus-stack) | 72.9.1 |
+| https://prometheus-community.github.io/helm-charts | monitoring(kube-prometheus-stack) | 80.8.0 |
+| https://prometheus-community.github.io/helm-charts | kube-state-metrics | 5.30.1 |
 | https://unionai.github.io/helm-charts | knative-operator(knative-operator) | 2025.5.0 |
 
 ## Values
@@ -37,6 +38,7 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | additionalPodSpec | object | Define additional PodSpec values for all of the Union pods. | `{}` |
 | clusterName | string | Cluster name should be shared with Union for proper functionality. | `"{{ .Values.global.CLUSTER_NAME }}"` |
 | clusterresourcesync | object | clusterresourcesync contains the configuration information for the syncresources service. | `(see values.yaml)` |
+| clusterresourcesync.additionalTemplates | list | Additional cluster resource templates to create per project namespace. Use this instead of overriding `templates` to avoid accidentally removing the default namespace, service account, and resource quota templates. Each entry has a `key` (filename stem) and `value` (Kubernetes manifest). | `[]` |
 | clusterresourcesync.additionalVolumeMounts | list | Appends additional volume mounts to the main container's spec. May include template values. | `[]` |
 | clusterresourcesync.additionalVolumes | list | Appends additional volumes to the deployment spec. May include template values. | `[]` |
 | clusterresourcesync.affinity | object | affinity configurations for the syncresources pods | `{}` |
@@ -119,7 +121,7 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | databricks | object | Databricks integration configuration | `{"enabled":false,"plugin_config":{}}` |
 | dcgm-exporter | object | Dcgm exporter configuration | `(see values.yaml)` |
 | dcgm-exporter.enabled | bool | Enable or disable the dcgm exporter | `false` |
-| dcgm-exporter.serviceMonitor | object | It's common practice to taint and label  to not run dcgm exporter on all nodes, so we can use node selectors and    tolerations to ensure it only runs on GPU nodes. affinity: {} nodeSelector: {} tolerations: [] | `{"honorLabels":true}` |
+| dcgm-exporter.serviceMonitor | object | It's common practice to taint and label  to not run dcgm exporter on all nodes, so we can use node selectors and    tolerations to ensure it only runs on GPU nodes. affinity: {} nodeSelector: {} tolerations: [] | `{"enabled":false}` |
 | executor.additionalVolumeMounts | list | Appends additional volume mounts to the main container's spec. May include template values. | `[]` |
 | executor.additionalVolumes | list | Appends additional volumes to the deployment spec. May include template values. | `[]` |
 | executor.affinity | object | affinity for executor deployment | `{}` |
@@ -145,7 +147,6 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | executor.resources.limits.memory | string |  | `"8Gi"` |
 | executor.resources.requests.cpu | int |  | `1` |
 | executor.resources.requests.memory | string |  | `"1Gi"` |
-| executor.selector.matchLabels.app | string |  | `"executor"` |
 | executor.serviceAccount.annotations | object |  | `{}` |
 | executor.sharedService.metrics.scope | string |  | `"executor:"` |
 | executor.sharedService.security.allowCors | bool |  | `true` |
@@ -180,7 +181,7 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | executor.tolerations | list | tolerations for executor deployment | `[]` |
 | executor.topologySpreadConstraints | object | topologySpreadConstraints for executor deployment | `{}` |
 | extraObjects | list |  | `[]` |
-| fluentbit | object | Configuration for fluentbit used for the persistent logging feature. FluentBit runs as a DaemonSet and ships container logs to the persisted-logs/ path in the configured object store. The fluentbit-system service account must have write access to the storage bucket. Grant access using cloud-native identity federation:   AWS (IRSA):     annotations:       eks.amazonaws.com/role-arn: "arn:aws:iam::`<ACCOUNT_ID>`:role/`<ROLE_NAME>`"   Azure (Workload Identity):     annotations:       azure.workload.identity/client-id: "`<CLIENT_ID>`"   GCP (Workload Identity):     annotations:       iam.gke.io/gcp-service-account: "`<GSA_NAME>`@`<PROJECT_ID>`.iam.gserviceaccount.com" See https://www.union.ai/docs/v1/selfmanaged/deployment/configuration/persistent-logs/ | `(see values.yaml)` |
+| fluentbit | object | Configuration for fluentbit used for the persistent logging feature. FluentBit runs as a DaemonSet and ships container logs to the persisted-logs/ path in the configured object store. The fluentbit-system service account must have write access to the storage bucket.  Grant access using cloud-native identity federation:   AWS (IRSA):     annotations:       eks.amazonaws.com/role-arn: "arn:aws:iam::`<ACCOUNT_ID>`:role/`<ROLE_NAME>`"   Azure (Workload Identity):     annotations:       azure.workload.identity/client-id: "`<CLIENT_ID>`"   GCP (Workload Identity):     annotations:       iam.gke.io/gcp-service-account: "`<GSA_NAME>`@`<PROJECT_ID>`.iam.gserviceaccount.com"  See https://www.union.ai/docs/v1/selfmanaged/deployment/configuration/persistent-logs/ | `(see values.yaml)` |
 | flyteagent | object | Flyteagent configuration | `{"enabled":false,"plugin_config":{}}` |
 | flyteconnector.additionalContainers | list | Appends additional containers to the deployment spec. May include template values. | `[]` |
 | flyteconnector.additionalEnvs | list | Appends additional envs to the deployment spec. May include template values | `[]` |
@@ -270,7 +271,7 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | imageBuilder.buildkit.fullnameOverride | string | The name to use for the buildkit deployment, service, configmap, etc. | `""` |
 | imageBuilder.buildkit.image.pullPolicy | string | Pull policy | `"IfNotPresent"` |
 | imageBuilder.buildkit.image.repository | string | Image name | `"docker.io/moby/buildkit"` |
-| imageBuilder.buildkit.image.tag | string | (e.g. "buildx-stable-1" becomes "buildx-stable-1-rootless") unless the tag already contains "rootless". | `"buildx-stable-1"` |
+| imageBuilder.buildkit.image.tag | e.g. "buildx-stable-1" becomes "buildx-stable-1-rootless" | unless the tag already contains "rootless". | `"buildx-stable-1"` |
 | imageBuilder.buildkit.log | object | Enable debug logging | `{"debug":false,"format":"text"}` |
 | imageBuilder.buildkit.nodeSelector | object | Node selector | `{}` |
 | imageBuilder.buildkit.oci | object | Buildkitd service configuration | `{"maxParallelism":0}` |
@@ -312,13 +313,56 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | ingress.serving | object | Serving specific ingress configuration. | `{"annotations":{},"class":"","hostOverride":"","tls":{}}` |
 | ingress.serving.annotations | object | Annotations to apply to the ingress resource. | `{}` |
 | ingress.serving.class | string | Ingress class name | `""` |
-| ingress.serving.hostOverride | string | (Optional) Host override for serving ingress rule. Defaults to *.apps.{{ .Values.host }}. | `""` |
+| ingress.serving.hostOverride | Optional | Host override for serving ingress rule. Defaults to *.apps.{{ .Values.host }}. | `""` |
 | ingress.serving.tls | object | Ingress TLS configuration | `{}` |
 | knative-operator.crds.install | bool |  | `true` |
 | knative-operator.enabled | bool |  | `false` |
+| kube-state-metrics | object | Standalone kube-state-metrics for Union features (cost tracking, pod resource metrics). Metric filtering is handled in the Prometheus static scrape config. | `{}` |
 | low_privilege | bool | Scopes the deployment, permissions and actions created into a single namespace | `false` |
 | metrics-server.enabled | bool |  | `false` |
-| monitoring.enabled | bool |  | `true` |
+| monitoring.alerting.enabled | bool |  | `false` |
+| monitoring.alertmanager.enabled | bool |  | `false` |
+| monitoring.coreDns.enabled | bool |  | `true` |
+| monitoring.crds.enabled | bool |  | `false` |
+| monitoring.dashboards.enabled | bool |  | `true` |
+| monitoring.dashboards.label | string |  | `"grafana_dashboard"` |
+| monitoring.dashboards.labelValue | string |  | `"1"` |
+| monitoring.defaultRules.create | bool |  | `true` |
+| monitoring.enabled | bool |  | `false` |
+| monitoring.fullnameOverride | string |  | `"monitoring"` |
+| monitoring.grafana.adminPassword | string |  | `"admin"` |
+| monitoring.grafana.enabled | bool |  | `true` |
+| monitoring.grafana.fullNameOverride | string |  | `"monitoring-grafana"` |
+| monitoring.kube-state-metrics.fullnameOverride | string |  | `"monitoring-kube-state-metrics"` |
+| monitoring.kube-state-metrics.nameOverride | string |  | `"monitoring-kube-state-metrics"` |
+| monitoring.kubeApiServer.enabled | bool |  | `true` |
+| monitoring.kubeControllerManager.enabled | bool |  | `true` |
+| monitoring.kubeEtcd.enabled | bool |  | `true` |
+| monitoring.kubeProxy.enabled | bool |  | `true` |
+| monitoring.kubeScheduler.enabled | bool |  | `true` |
+| monitoring.kubeStateMetrics.enabled | bool |  | `true` |
+| monitoring.kubelet.enabled | bool |  | `true` |
+| monitoring.nameOverride | string |  | `"monitoring"` |
+| monitoring.nodeExporter.enabled | bool |  | `true` |
+| monitoring.prometheus.agentMode | bool |  | `false` |
+| monitoring.prometheus.enabled | bool |  | `true` |
+| monitoring.prometheus.prometheusSpec.maximumStartupDurationSeconds | int |  | `600` |
+| monitoring.prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues | bool |  | `false` |
+| monitoring.prometheus.prometheusSpec.resources.limits.cpu | string |  | `"2"` |
+| monitoring.prometheus.prometheusSpec.resources.limits.memory | string |  | `"4Gi"` |
+| monitoring.prometheus.prometheusSpec.resources.requests.cpu | string |  | `"500m"` |
+| monitoring.prometheus.prometheusSpec.resources.requests.memory | string |  | `"1Gi"` |
+| monitoring.prometheus.prometheusSpec.retention | string |  | `"7d"` |
+| monitoring.prometheus.prometheusSpec.ruleSelectorNilUsesHelmValues | bool |  | `false` |
+| monitoring.prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues | bool |  | `false` |
+| monitoring.prometheus.service.port | int |  | `80` |
+| monitoring.prometheusOperator.enabled | bool |  | `true` |
+| monitoring.prometheusRules.enabled | bool |  | `true` |
+| monitoring.serviceMonitors.enabled | bool |  | `true` |
+| monitoring.slos.alerting.enabled | bool |  | `false` |
+| monitoring.slos.enabled | bool |  | `false` |
+| monitoring.slos.targets.availability | float |  | `0.999` |
+| monitoring.slos.targets.latencyP99 | int |  | `5` |
 | nameOverride | string | Override the chart name. | `""` |
 | namespace_mapping | object | Namespace mapping template for mapping Union runs to Kubernetes namespaces. This is the canonical source of truth. All dataplane services (propeller, clusterresourcesync, operator, executor) will inherit this value unless explicitly overridden in their service-specific config sections (config.namespace_config, config.operator.org, executor.raw_config). | `{}` |
 | namespaces.enabled | bool |  | `true` |
@@ -336,11 +380,11 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | nodeobserver.topologySpreadConstraints | object | topologySpreadConstraints for the pods associated with nodeobserver services | `{}` |
 | objectStore | object | Union Object Store configuration | `{"service":{"grpcPort":8089,"httpPort":8080}}` |
 | opencost.enabled | bool | Enable or disable the opencost installation. | `true` |
-| opencost.fullnameOverride | string |  | `"opencost"` |
 | opencost.opencost.exporter.resources.limits.cpu | string |  | `"1000m"` |
 | opencost.opencost.exporter.resources.limits.memory | string |  | `"4Gi"` |
 | opencost.opencost.exporter.resources.requests.cpu | string |  | `"500m"` |
 | opencost.opencost.exporter.resources.requests.memory | string |  | `"1Gi"` |
+| opencost.opencost.metrics.serviceMonitor.enabled | bool |  | `false` |
 | opencost.opencost.prometheus.external.enabled | bool |  | `true` |
 | opencost.opencost.prometheus.external.url | string |  | `"http://union-operator-prometheus.{{.Release.Namespace}}.svc:80/prometheus"` |
 | opencost.opencost.prometheus.internal.enabled | bool |  | `false` |
@@ -371,21 +415,15 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 | operator.tolerations | list | tolerations for the operator pods | `[]` |
 | operator.topologySpreadConstraints | object | topologySpreadConstraints for the operator pods | `{}` |
 | orgName | string | Organization name should be provided by Union. | `"{{ .Values.global.ORG_NAME }}"` |
-| prometheus | object | Prometheus configuration This section configures kube-prometheus-stack for monitoring the Union dataplane. By default, most Kubernetes component monitoring is disabled to reduce resource usage. Enable specific components as needed for your observability requirements. | `(see values.yaml)` |
-| prometheus.defaultRules | object | -------------------------------------------------------------------------- Configure which Prometheus alerting and recording rules to enable. These rules provide pre-built alerts for common Kubernetes issues. See: https://github.com/prometheus-operator/kube-prometheus/tree/main/manifests | `(see values.yaml)` |
-| prometheus.defaultRules.rules | object | Disable specific rules by name disabled:   KubeAPIDown: true   KubeAPITerminatedRequests: true | `(see values.yaml)` |
-| prometheus.defaultRules.rules.kubeApiserverAvailability | bool | API Server availability alerts (e.g., KubeAPIDown, KubeAPITerminatedRequests) | `false` |
-| prometheus.defaultRules.rules.kubeApiserverBurnrate | bool | API Server burn rate alerts for SLO monitoring | `false` |
-| prometheus.defaultRules.rules.kubeApiserverHistogram | bool | API Server latency histogram recording rules | `false` |
-| prometheus.defaultRules.rules.kubeApiserverSlos | bool | API Server SLO (Service Level Objective) rules | `false` |
-| prometheus.defaultRules.rules.kubeControllerManager | bool | Uncomment to enable: SLO-based alerting for API server performance kubeApiserverSlos: true | `false` |
-| prometheus.grafana | object | -------------------------------------------------------------------------- Grafana provides visualization dashboards for Prometheus metrics. Enable this section to deploy Grafana with pre-built Kubernetes dashboards. | `(see values.yaml)` |
-| prometheus.grafana.additionalDataSources | list | Additional data sources (e.g., Loki for logs) | `[]` |
-| prometheus.grafana.admin | object | Use existing secret for admin credentials (recommended for production) | `{"existingSecret":"","passwordKey":"admin-password","userKey":"admin-user"}` |
-| prometheus.grafana.adminUser | string | Default admin credentials (change in production!) | `"admin"` |
-| prometheus.grafana.dashboardsConfigMaps | object | Custom dashboards can be configured with additional ConfigMaps Format: `<configmap-name>`: `<folder-name>` | `{}` |
-| prometheus.grafana.ingress | object | Ingress configuration for external Grafana access | `{"enabled":false}` |
-| prometheus.kubeApiServer | object | -------------------------------------------------------------------------- Enable kubeApiServer to collect metrics from the Kubernetes API server. This provides insights into API request latencies, error rates, and throughput. Note: Requires appropriate RBAC permissions and network access to the API server. | `{"enabled":false}` |
+| prometheus | object | Union features Prometheus configuration. Deploys a static Prometheus instance (no Prometheus Operator required) for Union features like cost tracking and task-level monitoring. | `(see values.yaml)` |
+| prometheus.affinity | object | Affinity rules for the Prometheus pod. | `{}` |
+| prometheus.nodeSelector | object | Node selector for the Prometheus pod. | `{}` |
+| prometheus.priorityClassName | string | Priority class for the Prometheus pod. | `"system-cluster-critical"` |
+| prometheus.resources | object | Resource limits and requests. | `{"limits":{"cpu":"3","memory":"3500Mi"},"requests":{"cpu":"1","memory":"1Gi"}}` |
+| prometheus.retention | string | Data retention period. | `"3d"` |
+| prometheus.routePrefix | string | Route prefix for Prometheus web UI and API. | `"/prometheus/"` |
+| prometheus.serviceAccount | object | Service account configuration. | `{"annotations":{},"create":true}` |
+| prometheus.tolerations | list | Tolerations for the Prometheus pod. | `[]` |
 | proxy | object | Union operator proxy configuration | `(see values.yaml)` |
 | proxy.additionalVolumeMounts | list | Appends additional volume mounts to the main container's spec. May include template values. | `[]` |
 | proxy.additionalVolumes | list | Appends additional volumes to the deployment spec. May include template values. | `[]` |

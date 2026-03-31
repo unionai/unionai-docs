@@ -1,6 +1,6 @@
 ---
 title: Resources
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,8 +12,6 @@ layout: py_api
 Resources such as CPU, Memory, and GPU that can be allocated to a task.
 
 Set via `TaskEnvironment(resources=...)` or `task.override(resources=...)`.
-
-Examples:
 
 ```python
 # Simple: 1 CPU, 1 GiB memory, 1 T4 GPU
@@ -65,9 +63,10 @@ def get_device()
 ```
 Get the accelerator string for the task.
 
-:return: If GPUs are requested, return a tuple of the device name, and potentially a partition string.
          Default cloud provider labels typically use the following values: `1g.5gb`, `2g.10gb`, etc.
 
+
+**Returns:** If GPUs are requested, return a tuple of the device name, and potentially a partition string.
 
 ### get_shared_memory()
 
@@ -76,6 +75,7 @@ def get_shared_memory()
 ```
 Get the shared memory string for the task.
 
-:return: The shared memory string.
 
+
+**Returns:** The shared memory string.
 

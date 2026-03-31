@@ -1,6 +1,6 @@
 ---
 title: DynamicBatcher
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -10,19 +10,19 @@ layout: py_api
 **Package:** `flyte.extras`
 
 Batches records from many concurrent producers and runs them through
-    a single async processing function, maximizing resource utilization.
+a single async processing function, maximizing resource utilization.
 
-    The batcher runs two internal loops:
+The batcher runs two internal loops:
 
-    1. **Aggregation loop** — drains the submission queue and assembles
-       cost-budgeted batches, respecting `target_batch_cost`,
-       `max_batch_size`, and `batch_timeout_s`.
-    2. **Processing loop** — pulls assembled batches and calls
-       `process_fn`, resolving each record's `asyncio.Future`.
+1. **Aggregation loop** — drains the submission queue and assembles
+   cost-budgeted batches, respecting `target_batch_cost`,
+   `max_batch_size`, and `batch_timeout_s`.
+2. **Processing loop** — pulls assembled batches and calls
+   `process_fn`, resolving each record's `asyncio.Future`.
 
-    Type Parameters:
-        RecordT: The input record type produced by your tasks.
-        ResultT: The per-record output type returned by `process_fn`.
+Type Parameters:
+    RecordT: The input record type produced by your tasks.
+    ResultT: The per-record output type returned by `process_fn`.
 
 
 
@@ -51,7 +51,7 @@ class DynamicBatcher(
 | `batch_timeout_s` | `float` | Maximum seconds to wait for a full batch.  Lower values reduce idle time but may produce smaller batches. |
 | `max_queue_size` | `int` | Bounded queue size.  When full, `submit` awaits (backpressure). |
 | `prefetch_batches` | `int` | Number of pre-assembled batches to buffer between the aggregation and processing loops. |
-| `default_cost` | `int` | Fallback cost when no estimator is available. ... |
+| `default_cost` | `int` | Fallback cost when no estimator is available. |
 
 ## Properties
 
@@ -77,9 +77,13 @@ def start()
 ```
 Start the aggregation and processing loops.
 
-Raises:
-    RuntimeError: If the batcher is already running.
 
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `RuntimeError` | If the batcher is already running. |
 
 ### stop()
 
@@ -111,6 +115,22 @@ containing this record has been processed.
 | `record` | `RecordT` | The input record. |
 | `estimated_cost` | `int \| None` | Optional explicit cost.  When omitted the batcher tries `cost_estimator`, then `record.estimate_cost()`, then `default_cost`. |
 
+**Returns**
+
+A future whose result is the corresponding entry from the list
+returned by `process_fn`.
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `RuntimeError` | If the batcher is not running. |
+
+> [!NOTE]
+> If the internal queue is full this coroutine awaits until space
+> is available, providing natural backpressure to fast producers.
+
 ### submit_batch()
 
 ```python
@@ -127,4 +147,6 @@ Convenience: submit multiple records and return their futures.
 |-|-|-|
 | `records` | `Sequence[RecordT]` | Iterable of input records. |
 | `estimated_cost` | `Sequence[int] \| None` | Optional per-record cost estimates.  Length must match *records* when provided. |
+
+**Returns:** List of futures, one per record.
 
