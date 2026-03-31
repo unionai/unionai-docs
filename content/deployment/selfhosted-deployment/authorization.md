@@ -187,39 +187,7 @@ The raw JWT/OIDC token is forwarded to your server in the `authorization` metada
 | Internal background workers (App 3) | ❌ No token | Background tasks (e.g., execution claim workers) operate with identity headers only |
 
 > [!WARNING]
-> **Not every request carries a token.** Internal platform background processes (e.g., execution claim workers, cache sync) make authorization calls using the service-to-service identity (App 3) but without a token in the gRPC metadata. Your server must handle this case — see [Two-path authorization model](#two-path-authorization-model) below.
-
-### Two-path authorization model
-
-Your external server should implement two distinct authorization paths based on whether the caller is a platform service account or a human user:
-
-```mermaid
-graph TD
-    A["Authorize() request"] --> B{"subject in<br/>known app IDs?"}
-    B -->|Yes| C["App path:<br/>authorize by role config"]
-    B -->|No| D{"token in<br/>metadata?"}
-    D -->|Yes| E["User path:<br/>validate token, authorize"]
-    D -->|No| F["DENY<br/>(no token for user)"]
-    E --> G{"token sub<br/>== identity sub?"}
-    G -->|Yes| H["Authorize by<br/>your policies"]
-    G -->|No| I["DENY<br/>(subject mismatch)"]
-```
-
-#### App path (service accounts)
-
-Platform service accounts (Apps 3, 4, 5) are identified by matching the request `subject` against your configured list of OAuth client IDs. These calls:
-
-- **Do not always carry a token** in gRPC metadata — background workers operate with identity headers only
-- Should be authorized **by subject and role configuration**, not by token inspection
-- Have fixed, known permission requirements (see [Service account permissions](#service-account-permissions))
-
-#### User path (human users)
-
-Human user requests always carry a valid OIDC token. Your server should:
-
-1. **Require the `authorization` header** — deny if no token is present
-2. **Validate that the token's `sub` claim matches** the proto identity subject — deny on mismatch
-3. **Apply your authorization policies** using the decoded JWT claims (`sub`, `email`, `groups`, etc.) and/or exchange the token with your internal identity system
+> **Not every request carries a token.** Internal platform background processes (e.g., execution claim workers, cache sync) make authorization calls using the service-to-service identity (App 3) but without a token in the gRPC metadata. Your server must handle requests where the subject is present in the proto identity but no token is in the metadata headers. See [Service account permissions](#service-account-permissions) for the specific subjects and permissions required.
 
 ### Actions
 
@@ -271,11 +239,10 @@ To find the client IDs for your deployment, check the controlplane Helm values:
 
 ### Reference implementation
 
-The following is a complete Python example of an external authorization server implementing the [two-path authorization model](#two-path-authorization-model). It demonstrates:
+The following is a complete Python example of an external authorization server. It demonstrates a recommended pattern with two authorization paths:
 
-1. Distinguishing app (service account) vs user identity by subject matching
-2. Granting required permissions to platform service accounts without requiring a token
-3. Requiring and validating OIDC tokens for human user requests
+1. **App path** — platform service accounts (Apps 3, 4, 5) are identified by matching the subject against known OAuth client IDs and authorized by configured permissions. No token inspection is required — background workers may not carry a token in metadata.
+2. **User path** — human users are required to have a valid `authorization` header. The token's `sub` claim is validated against the proto identity subject before applying authorization policies.
 
 **config.yaml** — subject-to-role mapping:
 
