@@ -279,7 +279,7 @@ az identity federated-credential create \
   --identity-name $BACKEND_IDENTITY_NAME \
   --resource-group $RESOURCE_GROUP \
   --issuer $AKS_OIDC_ISSUER \
-  --subject "system:serviceaccount:${DATAPLANE_NAMESPACE}:union" \
+  --subject "system:serviceaccount:${DATAPLANE_NAMESPACE}:union-system" \
   --audiences api://AzureADTokenExchange
 ```
 
