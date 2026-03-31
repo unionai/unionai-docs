@@ -145,7 +145,7 @@ service AuthorizerService {
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `identity` | `Identity` | The caller — an `external_identity` containing the subject string and the raw OIDC token (when available) |
+| `identity` | `Identity` | The caller — a `user_id` or `application_id` containing the subject string (see [Identity resolution](#identity-resolution)) |
 | `action` | `Action` enum | The operation being requested |
 | `resource` | `Resource` | The target resource (organization, domain, project, or cluster) |
 | `organization` | `string` | The organization identifier |
@@ -158,21 +158,68 @@ service AuthorizerService {
 
 ### Identity resolution
 
-The caller's identity is resolved and forwarded to your server through two channels:
+The caller's identity arrives through two channels. Your server should use both:
 
-1. **`AuthorizeRequest.identity` protobuf field** (recommended) — always an `external_identity` containing:
-   - `subject`: the caller's identity (resolved from `X-User-Subject` for browser/CLI requests, or from the JWT `sub` claim for service-to-service requests)
-   - `token`: the raw OIDC/JWT token (when available)
+#### Proto identity (`AuthorizeRequest.identity`)
 
-   This provides a consistent interface regardless of how the caller authenticated.
+The `identity` field contains the caller's subject. The proto type depends on whether the `identitytype` custom claim is configured in your identity provider:
 
-2. **gRPC metadata headers** — the raw JWT/OIDC token is forwarded to your server in the `authorization` metadata header (as `Bearer <token>`). Your server can decode the JWT payload to read claims (`sub`, `identitytype`, `email`, `groups`, etc.) without signature verification — the token has already been validated upstream by the platform.
+| IdP claim configured | Proto type | Subject source |
+|---------------------|------------|----------------|
+| `identitytype: "user"` | `user_id` | JWT `sub` claim (user's internal ID) |
+| `identitytype: "app"` | `application_id` | JWT `sub` claim (OAuth client ID) |
+| Not configured | `user_id` (default) | JWT `sub` claim |
 
 > [!NOTE]
-> **Token availability by auth flow:**
-> - **SDK/CLI (PKCE):** The token arrives via the `authorization` header and is available in both the protobuf `identity.token` field and forwarded metadata.
-> - **Browser (cookie-based):** The token is extracted from the encrypted session cookie by the `/me` auth subrequest and forwarded via the `X-User-Token` header. The authorizer normalizes it to the standard `authorization` header before calling the external server, so your server sees a consistent interface on all paths.
-> - **Service-to-service:** The token arrives via the `authorization` or `flyte-authorization` header.
+> The `identitytype` claim is **optional for External mode**. If your IdP doesn't include it, all identities arrive as `user_id` regardless of whether the caller is a human user or a service account. Your server should **not rely on the proto type** to distinguish users from apps — instead, match the `subject` against your known service account client IDs (see [Two-path authorization model](#two-path-authorization-model) below).
+
+#### Token forwarding (gRPC metadata)
+
+The raw JWT/OIDC token is forwarded to your server in the `authorization` metadata header (as `Bearer <token>`). Your server can decode the JWT payload to read claims (`sub`, `identitytype`, `email`, `groups`, etc.) without signature verification — the token has already been validated upstream by the platform.
+
+**Token availability by request path:**
+
+| Request path | Token in metadata | Notes |
+|-------------|------------------|-------|
+| SDK/CLI (PKCE) → any service | ✅ `authorization: Bearer <token>` | User's access token |
+| Browser → any service | ✅ `authorization: Bearer <token>` | Extracted from session cookie, normalized |
+| Service-to-service (Apps 3, 4, 5) direct calls | ✅ `authorization: Bearer <token>` | Service account's client credentials token |
+| Internal background workers (App 3) | ❌ No token | Background tasks (e.g., execution claim workers) operate with identity headers only |
+
+> [!WARNING]
+> **Not every request carries a token.** Internal platform background processes (e.g., execution claim workers, cache sync) make authorization calls using the service-to-service identity (App 3) but without a token in the gRPC metadata. Your server must handle this case — see [Two-path authorization model](#two-path-authorization-model) below.
+
+### Two-path authorization model
+
+Your external server should implement two distinct authorization paths based on whether the caller is a platform service account or a human user:
+
+```mermaid
+graph TD
+    A["Authorize() request"] --> B{"subject in<br/>known app IDs?"}
+    B -->|Yes| C["App path:<br/>authorize by role config"]
+    B -->|No| D{"token in<br/>metadata?"}
+    D -->|Yes| E["User path:<br/>validate token, authorize"]
+    D -->|No| F["DENY<br/>(no token for user)"]
+    E --> G{"token sub<br/>== identity sub?"}
+    G -->|Yes| H["Authorize by<br/>your policies"]
+    G -->|No| I["DENY<br/>(subject mismatch)"]
+```
+
+#### App path (service accounts)
+
+Platform service accounts (Apps 3, 4, 5) are identified by matching the request `subject` against your configured list of OAuth client IDs. These calls:
+
+- **Do not always carry a token** in gRPC metadata — background workers operate with identity headers only
+- Should be authorized **by subject and role configuration**, not by token inspection
+- Have fixed, known permission requirements (see [Service account permissions](#service-account-permissions))
+
+#### User path (human users)
+
+Human user requests always carry a valid OIDC token. Your server should:
+
+1. **Require the `authorization` header** — deny if no token is present
+2. **Validate that the token's `sub` claim matches** the proto identity subject — deny on mismatch
+3. **Apply your authorization policies** using the decoded JWT claims (`sub`, `email`, `groups`, etc.) and/or exchange the token with your internal identity system
 
 ### Actions
 
@@ -224,7 +271,11 @@ To find the client IDs for your deployment, check the controlplane Helm values:
 
 ### Reference implementation
 
-The following is a complete Python example of an external authorization server. It uses a static YAML config to map subjects to roles, and roles to permitted actions.
+The following is a complete Python example of an external authorization server implementing the [two-path authorization model](#two-path-authorization-model). It demonstrates:
+
+1. Distinguishing app (service account) vs user identity by subject matching
+2. Granting required permissions to platform service accounts without requiring a token
+3. Requiring and validating OIDC tokens for human user requests
 
 **config.yaml** — subject-to-role mapping:
 
@@ -235,22 +286,25 @@ port: 50051
 # Use the OAuth app client IDs from your identity provider (the same
 # values configured during authentication setup). The server grants
 # each the minimum permissions needed for the platform to function.
+#
+# These are authorized by subject match alone — no token required.
+# Background workers (claim processors, cache sync) call Authorize()
+# with identity headers but without a token in gRPC metadata.
 service_accounts:
   internal: "<INTERNAL_CLIENT_ID>"   # App 3: service-to-service (all actions)
   operator: "<AUTH_CLIENT_ID>"       # App 4: dataplane operator (cluster mgmt)
   eager: "<EAGER_CLIENT_ID>"         # App 5: task execution (register + launch)
 ```
 
-**server.py** — identity extraction and service account authorization:
+**server.py** — two-path authorization with app/user separation:
 
 ```python
 #!/usr/bin/env python3
 """External authorization server for Union selfhosted deployments.
 
-Demonstrates how to:
-1. Extract identity and token from the Authorize() request
-2. Grant required permissions to internal platform service accounts
-3. Delegate human user authorization to your own logic
+Implements the two-path authorization model:
+  - App path: platform service accounts authorized by subject config (no token)
+  - User path: human users require valid OIDC token with matching sub claim
 """
 
 import argparse
@@ -278,7 +332,9 @@ ACTION_NAMES = {
 # These are non-negotiable — without them the platform breaks.
 INTERNAL_SERVICE_ACCOUNT_PERMISSIONS = {
     # App 3 (INTERNAL_CLIENT_ID): the platform's own identity.
-    # Used for all internal service-to-service communication.
+    # Used for all internal service-to-service communication, including
+    # background workers (claim processors, cache sync) that operate
+    # without a token in gRPC metadata.
     "internal": set(ACTION_NAMES.keys()),  # all actions
     # App 4 (AUTH_CLIENT_ID): dataplane operator.
     # Registers clusters, sends heartbeats, reads inventory.
@@ -311,12 +367,26 @@ def decode_jwt_payload(token: str) -> dict | None:
     return json.loads(base64.urlsafe_b64decode(payload))
 
 
+def extract_token_from_metadata(context) -> tuple[str | None, dict | None]:
+    """Extract the bearer token and decoded claims from gRPC metadata."""
+    metadata = dict(context.invocation_metadata())
+    for header in ("authorization", "flyte-authorization"):
+        value = metadata.get(header, "")
+        lower = value.lower()
+        if lower.startswith("bearer "):
+            token = value[7:]
+        elif lower.startswith("idtoken "):
+            token = value[8:]
+        else:
+            continue
+        return token, decode_jwt_payload(token)
+    return None, None
+
+
 class AuthorizerServicer(authorizer_pb2_grpc.AuthorizerServiceServicer):
 
     def __init__(self, config: dict):
         # Map internal service account client IDs → their permission sets.
-        # These come from config.yaml and match the OAuth app client IDs
-        # configured during authentication setup.
         self.service_accounts: dict[str, set[int]] = {}
         for key, client_id in config.get("service_accounts", {}).items():
             perms = INTERNAL_SERVICE_ACCOUNT_PERMISSIONS.get(key)
@@ -324,38 +394,22 @@ class AuthorizerServicer(authorizer_pb2_grpc.AuthorizerServiceServicer):
                 self.service_accounts[client_id] = perms
 
     def Authorize(self, request, context):
-        # --- 1. Extract identity from the proto request ---
-        # The platform always sends ExternalIdentity with subject + token.
-        # Every request is authenticated before reaching authorization, so
-        # both fields are always populated.
-        ext_id = request.identity.external_identity
-        subject = ext_id.subject
-        proto_token = ext_id.token  # Raw JWT from the proto field
+        # --- 1. Extract identity from proto ---
+        # The proto type (user_id vs application_id) depends on whether the
+        # IdP includes an "identitytype" custom claim. Do NOT rely on the
+        # proto type to distinguish users from apps — use subject matching.
+        identity = request.identity
+        subject = ""
+        if identity.HasField("user_id"):
+            subject = identity.user_id.subject
+        elif identity.HasField("application_id"):
+            subject = identity.application_id.subject
 
-        # --- 2. Extract token from gRPC metadata ---
-        # The same JWT is also forwarded in the "authorization" metadata
-        # header as "Bearer <token>". Both channels carry the same token —
-        # use whichever fits your architecture.
-        #   - proto_token: ready to use (no prefix to strip)
-        #   - metadata_token: standard HTTP authorization header format
-        metadata = dict(context.invocation_metadata())
-        auth_header = metadata.get("authorization", "")
-        metadata_token = auth_header[7:] if auth_header.lower().startswith("bearer ") else ""
-
-        # --- 3. Decode JWT claims ---
-        # The token is pre-validated upstream — no signature verification
-        # needed. Decode to read claims: sub, identitytype, email, groups,
-        # preferred_username, iss, aud, exp.
-        claims = decode_jwt_payload(proto_token)
-
-        # --- 4. Extract the action and resource ---
+        # --- 2. Extract action and resource ---
         action = request.action
         action_name = ACTION_NAMES.get(action, str(action))
         organization = request.organization
-
-        # Resource is a oneof: project, domain, organization, or cluster
         resource = request.resource
-        resource_desc = ""
         if resource.HasField("project"):
             p = resource.project
             domain = p.domain.name if p.HasField("domain") else "?"
@@ -367,35 +421,52 @@ class AuthorizerServicer(authorizer_pb2_grpc.AuthorizerServiceServicer):
         else:
             resource_desc = organization
 
-        # --- 5. Authorize internal service accounts ---
-        # The platform does NOT bypass external authorization for its own
-        # service accounts. Your server MUST grant them the required
-        # permissions or the platform will stop functioning.
+        # --- 3. APP PATH: authorize service accounts by subject config ---
+        # Platform service accounts don't always carry a token (background
+        # workers operate with identity headers only). Authorize by matching
+        # the subject against known client IDs.
         if subject in self.service_accounts:
             allowed = action in self.service_accounts[subject]
             log.info(
-                "%s sub=%s (service-account) action=%s resource=%s",
-                "ALLOWED" if allowed else "DENIED", subject, action_name, resource_desc,
+                "%s sub=%s type=app action=%s resource=%s",
+                "ALLOWED" if allowed else "DENIED",
+                subject, action_name, resource_desc,
             )
             return payload_pb2.AuthorizeResponse(allowed=allowed)
 
-        # --- 6. Authorize human users ---
+        # --- 4. USER PATH: require token and validate sub match ---
+        token, claims = extract_token_from_metadata(context)
+
+        # Hard fail: no token for a non-app identity
+        if not token or not claims:
+            log.error(
+                "DENIED sub=%s type=user action=%s reason=no_authorization_header",
+                subject, action_name,
+            )
+            return payload_pb2.AuthorizeResponse(allowed=False)
+
+        # Hard fail: token sub doesn't match proto identity sub
+        token_sub = claims.get("sub", "")
+        if token_sub != subject:
+            log.error(
+                "DENIED sub=%s type=user action=%s reason=subject_mismatch token_sub=%s",
+                subject, action_name, token_sub,
+            )
+            return payload_pb2.AuthorizeResponse(allowed=False)
+
+        # --- 5. Authorize the user ---
         # Replace this with your own authorization logic (OPA, Cedar,
         # internal RBAC, policy engine, token exchange, etc.)
         # Available data:
-        #   - subject: the user's identity (from 'sub' claim)
-        #   - claims: decoded JWT with sub, email, groups, identitytype, etc.
-        #   - proto_token / metadata_token: raw JWT for downstream use
+        #   - subject: the user's identity (from JWT 'sub' claim)
+        #   - claims: decoded JWT with sub, email, groups, etc.
+        #   - token: raw JWT for downstream use (e.g. token exchange)
         #   - action: the Action enum value being requested
         #   - resource: the target resource (project, domain, cluster, org)
-        log.info("subject=%s action=%s resource=%s", subject, action_name, resource_desc)
-        if claims:
-            log.info(
-                "  JWT: sub=%s type=%s iss=%s exp=%s",
-                claims.get("sub"), claims.get("identitytype"),
-                claims.get("iss"), claims.get("exp"),
-            )
-
+        log.info(
+            "ALLOWED sub=%s type=user action=%s resource=%s iss=%s",
+            subject, action_name, resource_desc, claims.get("iss", "n/a"),
+        )
         allowed = True  # TODO: implement your authorization logic
         return payload_pb2.AuthorizeResponse(allowed=allowed)
 
@@ -409,13 +480,16 @@ if __name__ == "__main__":
         config = yaml.safe_load(f)
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=4))
-    authorizer_pb2_grpc.add_AuthorizerServiceServicer_to_server(
-        AuthorizerServicer(config), server
-    )
+    servicer = AuthorizerServicer(config)
+    authorizer_pb2_grpc.add_AuthorizerServiceServicer_to_server(servicer, server)
     port = config.get("port", 50051)
     server.add_insecure_port(f"[::]:{port}")
     server.start()
     log.info("External AuthZ server listening on port %d", port)
+    log.info(
+        "Registered %d service accounts (app path, no token required)",
+        len(servicer.service_accounts),
+    )
     server.wait_for_termination()
 ```
 
