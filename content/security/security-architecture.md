@@ -46,6 +46,8 @@ All customer data resides here, including:
 
 Network security is enforced through multiple layers:
 
+![Network security](../_static/images/security/network-security.png)
+
 > [!NOTE]
 > In BYOC deployments, Union.ai additionally maintains a private management connection to the customer's K8s cluster. See [BYOC deployment differences: Network architecture](./byoc-differences#network-architecture) for details.
 
@@ -113,4 +115,20 @@ For logs and observability metrics, the control plane acts as a stateless relay�
 The data passes through the control plane’s memory as a TLS encrypted stream with a termination point in the cloud.
 It is never written to disk, cached, or stored.
 
+### Execution flow diagram
 
+![Execution flow](../_static/images/security/execution-flow.png)
+
+### Data in the UI
+
+| Field | What is it? | Where is it stored? | How is it retrieved? |
+| --- | --- | --- | --- |
+| Task names | Python function and module names | Control Plane | CP API |
+| Users’ names | First and last names of users on the platform | IDP | Cached in memory in CP, otherwise retrieved directly from IDP |
+| Inputs/Outputs | Primitive inputs/outputs returned by tasks (e.g. return 5) | Dataplane’s S3 bucket | Cloudflare Tunnel |
+| Logs | Runtime logs written by the task code/SDK | Dataplane K8s for live logs, dataplane S3/Cloudwatch/Stackdriver for persistent logs | Cloudflare Tunnel |
+| K8s Events | Pod autoscaling events explaining whether a node is found or the cluster needs to scale up… etc. | Dataplane K8s | Cloudflare Tunnel |
+| Report | Reports produced by the task code in HTML | Dataplane’s S3 bucket | A signed URL is generated through the tunnel, then the browser renders it in iframe |
+| Code explorer | Code bundled when the task was kicked off, that contains the task code and surrounding dependencies/functions it calls| Dataplane’s S3 bucket | A signed URL is generated through the tunnel, then JS in the browser downloads and unzips the bundle to render |
+| Timeline timestamps | Showing when did a task start, when it moved from queued to running to completed | Control Plane | CP API |
+| Errors | Showing the failure message written into stderr or raised exceptions for a task attempt | Control Plane | CP API |
