@@ -44,7 +44,7 @@ Set these once at the top of your terminal session. All `az` commands below refe
 SUBSCRIPTION_ID="<your-subscription-id>"        # az account show --query id
 TENANT_ID="<your-tenant-id>"          # az account show --query tenantId
 RESOURCE_GROUP="<your-resource-group-name>"
-LOCATION="eastus". #Regions list https://learn.microsoft.com/en-us/azure/reliability/regions-list?tabs=all#azure-regions-list-1
+LOCATION="eastus" #Regions list https://learn.microsoft.com/en-us/azure/reliability/regions-list?tabs=all#azure-regions-list-1
 CLUSTER_NAME="<cluster-name>"
 # you can pick a cluster name 
 ORG_NAME="<your-union-org-name>"       # provided by Union
@@ -55,7 +55,7 @@ METADATA_CONTAINER="union-metadata"
 
 # --- Identities ---
 BACKEND_IDENTITY_NAME="union-backend"
-WORKER_IDENTITY_NAME="union-worker"
+WORKER_IDENTITY_NAME="union-executions"
 
 
 # --- Log Analytics ---
@@ -279,13 +279,28 @@ az identity federated-credential create \
   --identity-name $BACKEND_IDENTITY_NAME \
   --resource-group $RESOURCE_GROUP \
   --issuer $AKS_OIDC_ISSUER \
-  --subject "system:serviceaccount:${DATAPLANE_NAMESPACE}:union-system" \
+  --subject "system:serviceaccount:${DATAPLANE_NAMESPACE}:union" \
   --audiences api://AzureADTokenExchange
 ```
 
 **Worker identity (task execution pods):**
 
-Task pods run under the `default` service account in each project domain namespace, created
+Task pods run under the `default` service account in the same namespace where the Union chart was deployed. This is known as the `single namespace mode` and is the default behavior.
+
+Create the corresponding Federated Identity:
+
+```
+az identity federated-credential create \
+--name "union-worker-single-ns" \
+--identity-name $WORKER_IDENTITY_NAME \
+--resource-group $RESOURCE_GROUP \
+--issuer $AKS_OIDC_ISSUER \
+>   --subject "system:serviceaccount:${DATAPLANE_NAMESPACE}:default" \
+>   --audiences api://AzureADTokenExchange
+
+```
+
+each project domain namespace, created
 automatically by `clusterresourcesync`. Each namespace needs its own federated credential.
 
 ```bash
@@ -300,8 +315,9 @@ for ns in development staging production; do
 done
 ```
 
-> **Single-namespace mode:** If you deployed the chart with `namespaces.enabled: false`,
-> all workloads run in the same namespace as the Helm release (default: `union`). In that
+> **Single-namespace mode:** If you deployed the chart with `namespaces.enabled: true`,
+> workloads will run on namespaces, corresponding
+>(default: `union`). In that
 > case, create a single federated credential for the `default` SA in that namespace instead:
 >
 > ```bash
@@ -343,7 +359,7 @@ WORKER_PRINCIPAL_ID=$(az identity show \
 az role assignment create \
   --assignee-object-id $BACKEND_PRINCIPAL_ID \
   --assignee-principal-type ServicePrincipal \
-  --role "Storage Blob Data Contributor" \
+  --role "Storage Blob Data Owner" \
   --scope "${STORAGE_RESOURCE_ID}/blobServices/default/containers/${METADATA_CONTAINER}"
 
 
@@ -351,7 +367,7 @@ az role assignment create \
 az role assignment create \
   --assignee-object-id $WORKER_PRINCIPAL_ID \
   --assignee-principal-type ServicePrincipal \
-  --role "Storage Blob Data Contributor" \
+  --role "Storage Blob Data Owner" \
   --scope "${STORAGE_RESOURCE_ID}/blobServices/default/containers/${METADATA_CONTAINER}"
 ```
 
@@ -395,35 +411,6 @@ directly to `AZURE_KEY_VAULT_URI` in the chart values
 
 > **Reference:** [Key Vault RBAC](https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide)
 
----
-
-## 9. Log Analytics Workspace
-
-**Why Union needs this:** Union routes task execution logs to Log Analytics and builds
-deep-link URLs into the Union UI so users can click through to their task logs directly
-from the execution view.
-
-**Important:** Union constructs the workspace resource ID using a fixed naming convention:
-`union-<org-name>`, where `org-name` is the same `ORG_NAME` you'll use in the Helm values. 
-
-```bash
-az monitor log-analytics workspace create \
-  --resource-group $RESOURCE_GROUP \
-  --workspace-name "union-${ORG_NAME}" \
-  --location $LOCATION
-```
-
-**Verify the full resource ID matches the pattern Union expects:**
-```bash
-az monitor log-analytics workspace show \
-  --resource-group $RESOURCE_GROUP \
-  --workspace-name "union-${ORG_NAME}" \
-  --query id
-# Expected:
-# /subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.OperationalInsights/workspaces/union-<org-name>
-```
-
-> **Reference:** [Log Analytics workspaces](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/log-analytics-workspace-overview)
 
 ---
 
