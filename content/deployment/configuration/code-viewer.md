@@ -33,7 +33,7 @@ To support this feature securely, your bucket must allow CORS access from Union.
         ],
         "AllowedMethods": [
             "GET",
-            "HEAD",
+            "HEAD"
         ],
         "AllowedOrigins": [
             "https://*.unionai.cloud"
