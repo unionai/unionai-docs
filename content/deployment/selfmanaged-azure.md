@@ -10,6 +10,54 @@ variants: -flyte -byoc +selfmanaged
 The customer can decide how many clusters to have, their shape, and who has access to what.
 All communication is encrypted.  The Union architecture is described on the [Architecture](./architecture/_index) page.
 
+## AKS Cluster
+
+You need an AKS cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](./cluster-recommendations) for networking and node pool guidance.
+
+If you don't already have a cluster, create one with the Azure CLI:
+
+```bash
+export RESOURCE_GROUP=union-rg
+export REGION=eastus2
+export CLUSTER_NAME=union-dataplane
+
+az aks create \
+  --resource-group ${RESOURCE_GROUP} \
+  --name ${CLUSTER_NAME} \
+  --location ${REGION} \
+  --kubernetes-version 1.31 \
+  --node-count 3 \
+  --node-vm-size Standard_D4s_v3 \
+  --enable-oidc-issuer \
+  --enable-workload-identity \
+  --generate-ssh-keys
+```
+
+> [!NOTE] The `--enable-oidc-issuer` and `--enable-workload-identity` flags are required for [Workload Identity](#workload-identity) below.
+
+Get the OIDC issuer URL (you will need it when creating federated credentials):
+
+```bash
+export AKS_OIDC_ISSUER=$(az aks show \
+  --resource-group ${RESOURCE_GROUP} \
+  --name ${CLUSTER_NAME} \
+  --query "oidcIssuerProfile.issuerUrl" \
+  --output tsv)
+```
+
+Union supports autoscaling and the use of spot (interruptible) instances.
+
+### Resource Requirements
+
+By default, the Union installation requests the following resources:
+
+|          | CPU (vCPUs)| Memory (GiB) |
+|----------|------------|--------------|
+| Requests |          14|          27.1|
+| Limits   |          17|            32|
+
+For GPU access, Union injects tolerations and label selectors to execution Pods.
+
 ## Azure Blob Storage
 
 Each data plane uses Azure Blob Storage containers to store data used in workflow execution.
@@ -20,7 +68,27 @@ Union recommends the use of two containers within a Storage Account:
 
 You can also choose to use a single container.
 
-Create an [Azure Storage Account](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-create) with Blob containers for your data plane.
+Create the Storage Account and containers:
+
+```bash
+export STORAGE_ACCOUNT=uniondataplane   # must be globally unique, lowercase alphanumeric
+export SUBSCRIPTION_ID=$(az account show --query id --output tsv)
+
+az storage account create \
+  --name ${STORAGE_ACCOUNT} \
+  --resource-group ${RESOURCE_GROUP} \
+  --location ${REGION} \
+  --sku Standard_LRS \
+  --kind StorageV2
+
+az storage container create \
+  --name metadata \
+  --account-name ${STORAGE_ACCOUNT}
+
+az storage container create \
+  --name fast-reg \
+  --account-name ${STORAGE_ACCOUNT}
+```
 
 ### CORS Configuration
 
@@ -34,7 +102,7 @@ az storage cors add \
   --allowed-headers "*" \
   --exposed-headers "ETag" \
   --max-age 3600 \
-  --account-name <STORAGE_ACCOUNT_NAME>
+  --account-name ${STORAGE_ACCOUNT}
 ```
 
 For more details, see the [Azure Storage CORS documentation](https://learn.microsoft.com/en-us/rest/api/storageservices/cross-origin-resource-sharing--cors--support-for-the-azure-storage-services).
@@ -45,48 +113,139 @@ Union recommends using lifecycle management policies on your Storage Account to 
 
 ## Azure Container Registry
 
-Create an [Azure Container Registry](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal) for Image Builder to push and pull container images. Note the registry login server (e.g. `<REGISTRY_NAME>.azurecr.io`) — you will reference it when configuring Workload Identity permissions below.
+Create an Azure Container Registry for Image Builder to push and pull container images:
+
+```bash
+export ACR_NAME=uniondataplane   # must be globally unique, lowercase alphanumeric
+
+az acr create \
+  --name ${ACR_NAME} \
+  --resource-group ${RESOURCE_GROUP} \
+  --location ${REGION} \
+  --sku Basic
+```
+
+Note the registry login server (e.g. `${ACR_NAME}.azurecr.io`) -- you will reference it when configuring Workload Identity permissions below.
 
 ## Workload Identity
 
-Union recommends using [Microsoft Entra Workload ID](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) to securely access Azure resources.
+Union uses [Microsoft Entra Workload ID](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) to securely access Azure resources.
 
-Ensure your AKS cluster is [enabled as OIDC Issuer](https://learn.microsoft.com/en-us/azure/aks/use-oidc-issuer).
+### 1. Create the platform identity
 
-Create a User Assigned Managed Identity with a Federated Credential that maps to the `union-system` Kubernetes service account:
+Create a User Assigned Managed Identity for the Union platform services:
 
-**Subject Identifier**
+```bash
+export UNION_NAMESPACE=union   # namespace where you will install the Union operator
 
-- `system:serviceaccount:<NAMESPACE>:union-system`
+az identity create \
+  --name union-system-identity \
+  --resource-group ${RESOURCE_GROUP} \
+  --location ${REGION}
 
-Where `<NAMESPACE>` is where you plan to install the Union operator (`union` by default).
+export SYSTEM_IDENTITY_CLIENT_ID=$(az identity show \
+  --name union-system-identity \
+  --resource-group ${RESOURCE_GROUP} \
+  --query clientId \
+  --output tsv)
 
-Assign the following roles to this Identity:
+export SYSTEM_IDENTITY_PRINCIPAL_ID=$(az identity show \
+  --name union-system-identity \
+  --resource-group ${RESOURCE_GROUP} \
+  --query principalId \
+  --output tsv)
+```
 
-- `Storage Blob Data Owner` at the Storage Account level
-- `AcrPush` on the Azure Container Registry used by Image Builder
+### 2. Create the federated credential for the platform identity
 
-Annotate the `union-system` service account with the managed identity client ID in your Helm values:
+Create a federated credential that maps to the `union-system` Kubernetes service account:
+
+```bash
+az identity federated-credential create \
+  --name union-system-fedcred \
+  --identity-name union-system-identity \
+  --resource-group ${RESOURCE_GROUP} \
+  --issuer ${AKS_OIDC_ISSUER} \
+  --subject system:serviceaccount:${UNION_NAMESPACE}:union-system \
+  --audiences api://AzureADTokenExchange
+```
+
+### 3. Assign roles to the platform identity
+
+Grant `Storage Blob Data Owner` on the Storage Account and `AcrPush` on the Container Registry:
+
+```bash
+az role assignment create \
+  --assignee-object-id ${SYSTEM_IDENTITY_PRINCIPAL_ID} \
+  --assignee-principal-type ServicePrincipal \
+  --role "Storage Blob Data Owner" \
+  --scope /subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Storage/storageAccounts/${STORAGE_ACCOUNT}
+
+az role assignment create \
+  --assignee-object-id ${SYSTEM_IDENTITY_PRINCIPAL_ID} \
+  --assignee-principal-type ServicePrincipal \
+  --role "AcrPush" \
+  --scope /subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.ContainerRegistry/registries/${ACR_NAME}
+```
+
+### 4. Configure the service account annotation
+
+In your Helm values, annotate the `union-system` service account with the managed identity client ID:
 
 ```yaml
 commonServiceAccount:
   annotations:
-    azure.workload.identity/client-id: "<MANAGED_IDENTITY_CLIENT_ID>"
+    azure.workload.identity/client-id: "<SYSTEM_IDENTITY_CLIENT_ID>"
 ```
 
 ### Workers
 
-This is the Identity that the Pods created for each execution will use to access Azure resources. Those Pods use the `default` K8s Service Account on each project-domain namespace, unless otherwise specified.
+This is the identity that the Pods created for each execution will use to access Azure resources. Those Pods use the `default` Kubernetes service account on each project-domain namespace, unless otherwise specified.
 
-Create a User Assigned Managed Identity with Federated Credentials that map to the `default` K8s Service Account:
+Create a User Assigned Managed Identity for worker pods:
 
-**Subject Identifier**
+```bash
+az identity create \
+  --name union-worker-identity \
+  --resource-group ${RESOURCE_GROUP} \
+  --location ${REGION}
 
-- `system:serviceaccount:development:default`
-- `system:serviceaccount:staging:default`
-- `system:serviceaccount:production:default`
+export WORKER_IDENTITY_CLIENT_ID=$(az identity show \
+  --name union-worker-identity \
+  --resource-group ${RESOURCE_GROUP} \
+  --query clientId \
+  --output tsv)
 
-Assign the `Storage Blob Data Owner` role to this Identity at the Storage Account level.
+export WORKER_IDENTITY_PRINCIPAL_ID=$(az identity show \
+  --name union-worker-identity \
+  --resource-group ${RESOURCE_GROUP} \
+  --query principalId \
+  --output tsv)
+```
+
+Create federated credentials for each project-domain namespace:
+
+```bash
+for NS in development staging production; do
+  az identity federated-credential create \
+    --name union-worker-fedcred-${NS} \
+    --identity-name union-worker-identity \
+    --resource-group ${RESOURCE_GROUP} \
+    --issuer ${AKS_OIDC_ISSUER} \
+    --subject system:serviceaccount:${NS}:default \
+    --audiences api://AzureADTokenExchange
+done
+```
+
+Assign the `Storage Blob Data Owner` role to the worker identity:
+
+```bash
+az role assignment create \
+  --assignee-object-id ${WORKER_IDENTITY_PRINCIPAL_ID} \
+  --assignee-principal-type ServicePrincipal \
+  --role "Storage Blob Data Owner" \
+  --scope /subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Storage/storageAccounts/${STORAGE_ACCOUNT}
+```
 
 ## Azure Key Vault (optional)
 
@@ -109,22 +268,11 @@ config:
 
 ```
 
-## AKS Configuration
-
-By default, the Union installation requests the following resources:
-
-|          | CPU (vCPUs)| Memory (GiB) |
-|----------|------------|--------------|
-| Requests |          14|          27.1|
-| Limits   |          17|            32|
-
-For GPU access, Union injects tolerations and label selectors to execution Pods.
-
 ## Assumptions
 
 * You have a {{< key product_name >}} organization, and you know the control plane URL for your organization.
 * You have a cluster name provided by or coordinated with Union.
-* You have a Kubernetes cluster, running one of the most recent three minor K8s versions.
+* You have an AKS cluster with OIDC issuer and Workload Identity enabled, running one of the most recent three minor K8s versions.
   [Learn more](https://kubernetes.io/releases/version-skew-policy/).
 * You have configured a Storage Account, Container Registry, and Workload Identity as described above.
 

@@ -8,8 +8,32 @@ variants: -flyte -byoc +selfmanaged
 
 {{< key product_name >}}'s modular architecture allows for great flexibility and control.
 The customer can decide how many clusters to have, their shape, and who has access to what.
-All communication is encrypted.
-The Union architecture is described on the [Architecture](./architecture/_index) page.
+All communication is encrypted.  The Union architecture is described on the [Architecture](./architecture/_index) page.
+
+## OKE Cluster
+
+You need an OKE cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](./cluster-recommendations) for networking and node pool guidance.
+
+If you don't already have a cluster, create one via the [OCI Console](https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengcreatingclusterusingoke.htm) or the OCI CLI:
+
+```bash
+export COMPARTMENT_ID=<YOUR_COMPARTMENT_OCID>
+export REGION=<YOUR_OCI_REGION>              # e.g. us-ashburn-1
+export VCN_ID=<YOUR_VCN_OCID>
+export SUBNET_ID=<YOUR_KUBERNETES_API_SUBNET_OCID>
+
+oci ce cluster create \
+  --compartment-id ${COMPARTMENT_ID} \
+  --name union-dataplane \
+  --kubernetes-version v1.31.1 \
+  --vcn-id ${VCN_ID} \
+  --endpoint-subnet-id ${SUBNET_ID} \
+  --region ${REGION}
+```
+
+> [!NOTE] The OKE cluster creation requires a pre-existing VCN and subnet. See the [OCI networking documentation](https://docs.oracle.com/en-us/iaas/Content/ContEng/Concepts/contengnetworkconfigexample.htm) for details on setting up the required network resources.
+
+Union supports Autoscaling and the use of preemptible instances.
 
 ## Object Storage
 
@@ -21,7 +45,21 @@ Union recommends the use of two buckets:
 
 You can also choose to use a single bucket.
 
-Create your bucket(s) in the [OCI Console](https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/managingbuckets_topic-To_create_a_bucket.htm) or via the OCI CLI.
+Create the buckets:
+
+```bash
+export BUCKET_PREFIX=union-dataplane   # choose a unique prefix within your tenancy
+
+oci os bucket create \
+  --compartment-id ${COMPARTMENT_ID} \
+  --name ${BUCKET_PREFIX}-metadata \
+  --region ${REGION}
+
+oci os bucket create \
+  --compartment-id ${COMPARTMENT_ID} \
+  --name ${BUCKET_PREFIX}-fast-reg \
+  --region ${REGION}
+```
 
 ### CORS Configuration
 
@@ -41,7 +79,16 @@ Union recommends using lifecycle policies on these buckets to manage storage cos
 
 ## Container Registry
 
-Create an [OCI Container Registry (OCIR)](https://docs.oracle.com/en-us/iaas/Content/Registry/Concepts/registryoverview.htm) repository for Image Builder to push and pull container images. Note the repository path (e.g. `<REGION>.ocir.io/<TENANCY_NAMESPACE>/<REPOSITORY>`) — you will reference it when configuring access below.
+Create an [OCI Container Registry (OCIR)](https://docs.oracle.com/en-us/iaas/Content/Registry/Concepts/registryoverview.htm) repository for Image Builder to push and pull container images:
+
+```bash
+oci artifacts container-repository create \
+  --compartment-id ${COMPARTMENT_ID} \
+  --display-name union-dataplane/imagebuilder \
+  --is-public false
+```
+
+Note the repository path (e.g. `${REGION}.ocir.io/<TENANCY_NAMESPACE>/union-dataplane/imagebuilder`) — you will reference it when configuring access below.
 
 ## Identity & Access
 
@@ -51,35 +98,58 @@ Union services and workflow task pods need access to your Object Storage buckets
 
 Use [Instance Principals](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/callingservicesfrominstances.htm) so that pods running on OKE nodes inherit permissions automatically.
 
-1. Create a [Dynamic Group](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingdynamicgroups.htm) matching your OKE worker nodes:
+#### 1. Create a Dynamic Group
 
-   ```
-   ALL {instance.compartment.id = '<COMPARTMENT_OCID>'}
-   ```
+Create a [Dynamic Group](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingdynamicgroups.htm) matching your OKE worker nodes:
 
-2. Create IAM policies granting the dynamic group access to Object Storage and OCIR:
+```bash
+oci iam dynamic-group create \
+  --compartment-id ${COMPARTMENT_ID} \
+  --name union-dataplane-nodes \
+  --description "OKE worker nodes for Union data plane" \
+  --matching-rule "ALL {instance.compartment.id = '${COMPARTMENT_ID}'}"
+```
 
-   ```
-   Allow dynamic-group <DYNAMIC_GROUP_NAME> to manage objects in compartment <COMPARTMENT_NAME> where target.bucket.name='<BUCKET_NAME>'
-   Allow dynamic-group <DYNAMIC_GROUP_NAME> to manage repos in compartment <COMPARTMENT_NAME>
-   ```
+#### 2. Create IAM policies
+
+Grant the dynamic group access to Object Storage and OCIR:
+
+```bash
+oci iam policy create \
+  --compartment-id ${COMPARTMENT_ID} \
+  --name union-dataplane-policy \
+  --description "Allow Union data plane access to Object Storage and OCIR" \
+  --statements \
+  '["Allow dynamic-group union-dataplane-nodes to manage objects in compartment id '"${COMPARTMENT_ID}"' where target.bucket.name='"'"''"${BUCKET_PREFIX}"'-metadata'"'"'",
+    "Allow dynamic-group union-dataplane-nodes to manage objects in compartment id '"${COMPARTMENT_ID}"' where target.bucket.name='"'"''"${BUCKET_PREFIX}"'-fast-reg'"'"'",
+    "Allow dynamic-group union-dataplane-nodes to manage repos in compartment id '"${COMPARTMENT_ID}"'"]'
+```
 
 ### Option B: Static Credentials
 
 If Instance Principals are not available, you can use S3-compatible access keys:
 
-1. Generate a [Customer Secret Key](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingcredentials.htm#s3) for S3 Compatibility API access.
-2. You will configure these credentials in the generated values file during deployment (see step 3 below).
+#### 1. Generate a Customer Secret Key
 
-## OKE Configuration
+Create a [Customer Secret Key](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingcredentials.htm#s3) for S3 Compatibility API access:
 
-Union recommends configuring your OKE cluster as indicated in [Cluster Recommendations](./cluster-recommendations).
+```bash
+export USER_OCID=<YOUR_USER_OCID>
+
+oci iam customer-secret-key create \
+  --user-id ${USER_OCID} \
+  --display-name union-dataplane-s3-compat
+```
+
+> [!NOTE] The command output contains the secret key value. Save it immediately — it cannot be retrieved again.
+
+You will configure these credentials in the generated values file during deployment (see step 3 below).
 
 ## Assumptions
 
 * You have a {{< key product_name >}} organization, and you know the control plane URL for your organization.
 * You have a cluster name provided by or coordinated with Union.
-* You have a Kubernetes cluster, running one of the most recent three minor Kubernetes versions.
+* You have an OKE cluster running one of the most recent three minor Kubernetes versions.
   [Learn more](https://kubernetes.io/releases/version-skew-policy/)
 * You have configured Object Storage bucket(s), Container Registry, and IAM access as described above.
 
