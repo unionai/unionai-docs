@@ -57,7 +57,22 @@ The Union architecture is described on the [Architecture](./architecture/_index)
    * `operator.resources`
    * `proxy.resources`
 
-5. Once deployed you can check to see if the cluster has been successfully registered to the control plane:
+5. Install the data plane Helm chart:
+
+   ```bash
+   helm upgrade --install union unionai/dataplane \
+     -f <GENERATED_VALUES_FILE> \
+     --namespace union \
+     --create-namespace
+   ```
+
+6. Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:
+
+   ```bash
+   uctl create apikey --keyName EAGER_API_KEY --org <YOUR_ORG_NAME>
+   ```
+
+7. Once deployed you can check to see if the cluster has been successfully registered to the control plane:
 
    ```bash
    uctl get cluster
@@ -69,7 +84,7 @@ The Union architecture is described on the [Architecture](./architecture/_index)
    1 rows
    ```
 
-6. You can then register and run some example workflows through your cluster to ensure that it is working correctly.
+8. You can then register and run some example workflows through your cluster to ensure that it is working correctly.
 
    ```bash
    uctl register examples --project=union-health-monitoring --domain=development

@@ -25,5 +25,12 @@ __pycache__/
 .python-version
 uv.lock
 
+# E2E test artifacts
+scripts/.debug/
+scripts/.e2e-workspace/
+scripts/.e2e-keys/
+
 # AI assistant
 .claude/
+
+**/.flyte

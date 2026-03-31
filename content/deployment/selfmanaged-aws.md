@@ -50,14 +50,19 @@ Create an IAM role for the `union-system` service account and grant it access to
                "Action": "sts:AssumeRoleWithWebIdentity",
                "Condition": {
                    "StringEquals": {
-                       "$oidc_provider:aud": "sts.amazonaws.com",
-                       "$oidc_provider:sub": "system:serviceaccount:<NAMESPACE>:union-system"
+                       "$oidc_provider:aud": "sts.amazonaws.com"
+                   },
+                   "StringLike": {
+                       "$oidc_provider:sub": "system:serviceaccount:*"
                    }
                }
            }
        ]
    }
    ```
+
+   > [!NOTE] Why `system:serviceaccount:*`?
+   > Union platform services run in the data plane namespace (e.g. `union`), but workflow task pods run in per-project namespaces (e.g. `union-health-monitoring-development`). Both need to assume this role to access S3 and ECR.
 
    You can obtain the OIDC provider value using the AWS CLI:
 
@@ -187,7 +192,22 @@ Union supports Autoscaling and the use of spot (interruptible) instances.
    * `proxy.resources`
    * `flytepropellerwebhook.resources`
 
-5. Once deployed you can check to see if the cluster has been successfully registered to the control plane:
+5. Install the data plane Helm chart:
+
+   ```bash
+   helm upgrade --install union unionai/dataplane \
+     -f <GENERATED_VALUES_FILE> \
+     --namespace union \
+     --create-namespace
+   ```
+
+6. Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:
+
+   ```bash
+   uctl create apikey --keyName EAGER_API_KEY --org <YOUR_ORG_NAME>
+   ```
+
+7. Once deployed you can check to see if the cluster has been successfully registered to the control plane:
 
    ```bash
    uctl get cluster
@@ -199,7 +219,7 @@ Union supports Autoscaling and the use of spot (interruptible) instances.
    1 rows
    ```
 
-6. You can then register and run some example workflows through your cluster to ensure that it is working correctly.
+8. You can then register and run some example workflows through your cluster to ensure that it is working correctly.
 
    ```bash
    uctl register examples --project=union-health-monitoring --domain=development
