@@ -1,6 +1,6 @@
 ---
 title: Prepare the Azure environment
-weight: 1
+weight: 2
 variants: -flyte -byoc +selfmanaged
 ---
 
@@ -8,8 +8,7 @@ variants: -flyte -byoc +selfmanaged
 
 This guide walks through the Azure infrastructure required before deploying the Union
 dataplane on AKS. Each section explains **what** you need and **why Union needs it**, with
-az CLI commands you can run directly from [Azure Cloud Shell](https://shell.azure.com) —
-no local tooling required.
+`az` CLI commands you can run directly.
 
 > **Deployment model**: This guide covers **Self Managed (BYOK)** — you run only the
 > dataplane chart; Union hosts the control plane. If you are running both charts yourself
@@ -32,24 +31,23 @@ Work through these in order. Each item links to its section below.
 - [ ] [Two user-assigned managed identities](#5-managed-identities)
 - [ ] [Federated credentials for Workload Identity](#6-workload-identity-and-federated-credentials)
 - [ ] [Role assignments for managed identities](#7-role-assignments)
-- [ ] [Azure Key Vault](#8-azure-key-vault)
-- [ ] [Log Analytics workspace](#9-log-analytics-workspace)
-- [ ] [Helm and chart access](#10-helm-setup)
-
+- [ ] [Log Analytics workspace](#8-log-analytics-workspace)
 ---
 
 ## Variables Used in This Guide
 
-Set these once at the top of your Cloud Shell session. All az commands below reference them.
+Set these once at the top of your terminal session. All `az` commands below reference them.
+> Most of these resources don't exist yet, you're picking the names or options you want to use for this environment
 
 ```bash
 # --- Your environment ---
 SUBSCRIPTION_ID="<your-subscription-id>"        # az account show --query id
-TENANT_ID="<your-tenant-id>"                    # az account show --query tenantId
-RESOURCE_GROUP="rg-union-prod-eastus"
+TENANT_ID="<your-tenant-id>"          # az account show --query tenantId
+RESOURCE_GROUP="<your-resource-group-name>"
 LOCATION="eastus". #Regions list https://learn.microsoft.com/en-us/azure/reliability/regions-list?tabs=all#azure-regions-list-1
-CLUSTER_NAME="aks-union-prod"
-ORG_NAME="<your-union-org-name>"                # provided by Union
+CLUSTER_NAME="<cluster-name>"
+# you can pick a cluster name 
+ORG_NAME="<your-union-org-name>"       # provided by Union
 
 # --- Storage ---
 STORAGE_ACCOUNT="union${ORG_NAME//-/}prod"      # 3-24 lowercase alphanumeric
@@ -59,8 +57,6 @@ METADATA_CONTAINER="union-metadata"
 BACKEND_IDENTITY_NAME="union-backend"
 WORKER_IDENTITY_NAME="union-worker"
 
-# --- Key Vault ---
-KEY_VAULT_NAME="kv-union-${ORG_NAME}-prod"
 
 # --- Log Analytics ---
 LOG_ANALYTICS_WORKSPACE="union-${ORG_NAME}"    # Union expects this exact naming convention
@@ -76,7 +72,6 @@ DATAPLANE_NAMESPACE="union"
 
 **Why Union needs this:** All Union infrastructure lives in a dedicated resource group for access control and cost tracking.
 
-<!-- TODO: add az commands after testing -->
 ```bash
 # Set active subscription
 az account set --subscription $SUBSCRIPTION_ID
@@ -85,11 +80,6 @@ az account set --subscription $SUBSCRIPTION_ID
 az group create \
   --name $RESOURCE_GROUP \
   --location $LOCATION
-```
-
-**Verify:**
-```bash
-az group show --name $RESOURCE_GROUP --query "{name:name, location:location, state:properties.provisioningState}"
 ```
 
 ---
@@ -106,7 +96,6 @@ az group show --name $RESOURCE_GROUP --query "{name:name, location:location, sta
 
 Without Workload Identity, the dataplane cannot authenticate to Azure Blob Storage or Key Vault.
 
-<!-- TODO: validate exact flags against PR #210 during testing -->
 ```bash
 az aks create \
   --resource-group $RESOURCE_GROUP \
@@ -152,7 +141,7 @@ The system pool was created with the cluster above. Recommended minimum: `Standa
 ### CPU worker node pool
 
 ```bash
-# TODO: validate sizing recommendations during testing
+
 az aks nodepool add \
   --resource-group $RESOURCE_GROUP \
   --cluster-name $CLUSTER_NAME \
@@ -355,21 +344,16 @@ az role assignment create \
   --assignee-object-id $BACKEND_PRINCIPAL_ID \
   --assignee-principal-type ServicePrincipal \
   --role "Storage Blob Data Contributor" \
-  --scope $STORAGE_RESOURCE_ID
+  --scope "${STORAGE_RESOURCE_ID}/blobServices/default/containers/${METADATA_CONTAINER}"
+
 
 # Worker identity: read/write artifacts
 az role assignment create \
   --assignee-object-id $WORKER_PRINCIPAL_ID \
   --assignee-principal-type ServicePrincipal \
   --role "Storage Blob Data Contributor" \
-  --scope $STORAGE_RESOURCE_ID
+  --scope "${STORAGE_RESOURCE_ID}/blobServices/default/containers/${METADATA_CONTAINER}"
 ```
-
-> **Tip:** If you prefer least-privilege, scope the role assignment to the container level
-> rather than the storage account:
-> ```bash
-> --scope "${STORAGE_RESOURCE_ID}/blobServices/default/containers/${METADATA_CONTAINER}"
-> ```
 
 ---
 
@@ -442,3 +426,5 @@ az monitor log-analytics workspace show \
 > **Reference:** [Log Analytics workspaces](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/log-analytics-workspace-overview)
 
 ---
+
+With all the required configurations completed, you can [proceed to install Union](./installation.md)
