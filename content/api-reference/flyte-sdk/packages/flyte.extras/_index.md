@@ -1,13 +1,12 @@
 ---
 title: flyte.extras
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
 ---
 
 # flyte.extras
-
 
 Flyte extras package.
 This package provides various utilities that make it possible to build highly customized workflows.
@@ -20,7 +19,6 @@ This package provides various utilities that make it possible to build highly cu
                    producers through a single async processing function.  DynamicBatcher is the
                    general-purpose base; TokenBatcher is a convenience subclass for token-budgeted
                    LLM inference with reusable containers.
-
 ## Directory
 
 ### Classes

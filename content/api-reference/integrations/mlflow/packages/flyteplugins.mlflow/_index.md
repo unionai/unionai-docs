@@ -1,12 +1,11 @@
 ---
 title: flyteplugins.mlflow
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
 # flyteplugins.mlflow
-
 
 ## Key features:
 
@@ -151,7 +150,6 @@ async def my_task(): ...
 @env.task
 async def my_task(): ...
 ```
-
 ## Directory
 
 ### Classes

@@ -1,6 +1,6 @@
 ---
 title: TaskEnvironment
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -18,8 +18,6 @@ Task configuration in Flyte has three levels (most general to most specific):
 3. **task.override()** — overrides at invocation time
 
 For shared parameters, the more specific level overrides the more general one.
-
-Example:
 
 ```python
 env = flyte.TaskEnvironment(

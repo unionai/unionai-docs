@@ -1,6 +1,6 @@
 ---
 title: flyte.sandbox
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -28,7 +28,7 @@ Warning: Experimental feature: alpha — APIs may change without notice.
     - **Microsecond startup**: No container spin-up — runs in the same process
     - **Multiplexable**: Many orchestrators run safely on the same Python process
 
-    Example::
+    Example:
 
         env = flyte.TaskEnvironment(name="my-env")
 
@@ -48,9 +48,7 @@ Warning: Experimental feature: alpha — APIs may change without notice.
 **2. Code sandbox** — arbitrary code in an isolated container
     Runs arbitrary Python scripts or shell commands inside an ephemeral Docker
     container. The image is built on demand from declared `packages` and
-    `system_packages`, executed once, then discarded. Network is blocked by
-    default (`block_network=True`), preventing outbound calls from untrusted
-    code.  Used via `flyte.sandbox.create()`.
+    `system_packages`, executed once, then discarded. Used via `flyte.sandbox.create()`.
 
     Three execution modes are supported:
 
@@ -145,7 +143,6 @@ Warning: Experimental feature: alpha — APIs may change without notice.
     scalar outputs are captured automatically.
     • Additional Python dependencies can be specified via the
     `packages` argument.
-
 ## Directory
 
 ### Classes

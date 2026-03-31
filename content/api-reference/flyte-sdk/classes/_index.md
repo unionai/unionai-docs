@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -104,6 +104,13 @@ sidebar_expanded: true
 | [`flyte.models.RawDataPath`](../packages/flyte.models/rawdatapath) |A class representing the raw data path for a task. |
 | [`flyte.models.SerializationContext`](../packages/flyte.models/serializationcontext) |This object holds serialization time contextual information, that can be used when serializing the task and. |
 | [`flyte.models.TaskContext`](../packages/flyte.models/taskcontext) |A context class to hold the current task executions context. |
+| [`flyte.notify.Email`](../packages/flyte.notify/email) |Send email notifications. |
+| [`flyte.notify.NamedDelivery`](../packages/flyte.notify/nameddelivery) |Use a pre-configured delivery channel by name. |
+| [`flyte.notify.NamedRule`](../packages/flyte.notify/namedrule) |Reference a pre-defined notification rule by name. |
+| [`flyte.notify.Notification`](../packages/flyte.notify/notification) |Base notification class. |
+| [`flyte.notify.Slack`](../packages/flyte.notify/slack) |Send Slack notifications with optional Block Kit formatting. |
+| [`flyte.notify.Teams`](../packages/flyte.notify/teams) |Send Microsoft Teams notifications with optional Adaptive Cards. |
+| [`flyte.notify.Webhook`](../packages/flyte.notify/webhook) |Send custom HTTP webhook notifications (most flexible option). |
 | [`flyte.prefetch.HuggingFaceModelInfo`](../packages/flyte.prefetch/huggingfacemodelinfo) |Information about a HuggingFace model to store. |
 | [`flyte.prefetch.ShardConfig`](../packages/flyte.prefetch/shardconfig) |Configuration for model sharding. |
 | [`flyte.prefetch.StoredModelInfo`](../packages/flyte.prefetch/storedmodelinfo) |Information about a stored model. |

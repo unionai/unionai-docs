@@ -1,6 +1,6 @@
 ---
 title: Platform deployment
-weight: 4
+weight: 5
 variants: -flyte +byoc +selfmanaged
 top_menu: true
 mermaid: true

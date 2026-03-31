@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.databricks
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -55,7 +55,6 @@ def process_data(input_path: str) -> int:
     df = spark.read.parquet(input_path)
     return df.count()
 ```
-
 ## Directory
 
 ### Classes

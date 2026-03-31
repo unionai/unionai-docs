@@ -1,6 +1,6 @@
 ---
 title: flyte.extend
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -32,6 +32,7 @@ sidebar_expanded: true
 | [`download_code_bundle()`](#download_code_bundle) | Downloads the code bundle if it is not already downloaded. |
 | [`get_proto_resources()`](#get_proto_resources) | Get main resources IDL representation from the resources object. |
 | [`is_initialized()`](#is_initialized) | Check if the system has been initialized. |
+| [`lazy_module()`](#lazy_module) | This function is used to lazily import modules. |
 | [`pod_spec_from_resources()`](#pod_spec_from_resources) |  |
 
 
@@ -87,6 +88,24 @@ Check if the system has been initialized.
 
 
 **Returns:** True if initialized, False otherwise
+
+#### lazy_module()
+
+```python
+def lazy_module(
+    fullname,
+)
+```
+This function is used to lazily import modules.  It is used in the following way:
+.. code-block:: python
+    from flytekit.lazy_import import lazy_module
+    sklearn = lazy_module("sklearn")
+    sklearn.svm.SVC()
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `fullname` |  | |
 
 #### pod_spec_from_resources()
 

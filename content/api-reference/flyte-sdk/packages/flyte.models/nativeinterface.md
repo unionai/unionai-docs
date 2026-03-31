@@ -1,6 +1,6 @@
 ---
 title: NativeInterface
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,7 +11,6 @@ layout: py_api
 
 A class representing the native interface for a task. This is used to interact with the task and its execution
 context.
-
 
 
 ## Parameters

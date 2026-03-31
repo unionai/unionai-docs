@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -8,9 +8,7 @@ sidebar_expanded: true
 
 # flyte.remote
 
-
 Remote Entities that are accessible from the Union Server once deployed or created.
-
 ## Directory
 
 ### Classes
@@ -55,7 +53,6 @@ This context manager allows you to pass contextualized auth metadata downstream 
 
 This is only useful if flyte.init_passthrough() has been called.
 
-Example:
 ```python
 
 flyte.init_passthrough("my-endpoint")

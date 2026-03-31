@@ -1,6 +1,6 @@
 ---
 title: JsonlDir
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,31 +11,30 @@ layout: py_api
 
 A directory of sharded JSONL files.
 
-    Provides transparent iteration across shards on read and automatic shard
-    rotation on write. Inherits all `Dir` capabilities (remote storage,
-    walk, download, etc.).
+Provides transparent iteration across shards on read and automatic shard
+rotation on write. Inherits all `Dir` capabilities (remote storage,
+walk, download, etc.).
 
-    Shard files are named `part-00000.jsonl` (or `.jsonl.zst` for
-    compressed shards), zero-padded to 5 digits and sorted alphabetically
-    on read. Mixed compression within a single directory is supported.
+Shard files are named `part-00000.jsonl` (or `.jsonl.zst` for
+compressed shards), zero-padded to 5 digits and sorted alphabetically
+on read. Mixed compression within a single directory is supported.
 
-    Example (Async read)::
+Example (Async read)::
 
-        @env.task
-        async def process(d: JsonlDir):
-            async for record in d.iter_records():
-                print(record)
+    @env.task
+    async def process(d: JsonlDir):
+        async for record in d.iter_records():
+            print(record)
 
-    Example (Async write)::
+Example (Async write)::
 
-        @env.task
-        async def create() -&gt; JsonlDir:
-            d = JsonlDir.new_remote("output_shards")
-            async with d.writer(max_records_per_shard=1000) as w:
-                for i in range(5000):
-                    await w.write({"id": i})
-            return d
-    
+    @env.task
+    async def create() -&gt; JsonlDir:
+        d = JsonlDir.new_remote("output_shards")
+        async with d.writer(max_records_per_shard=1000) as w:
+            for i in range(5000):
+                await w.write({"id": i})
+        return d
 
 
 ## Parameters
@@ -236,8 +235,6 @@ def from_existing_remote(
 Create a Dir reference from an existing remote directory.
 
 Use this when you want to reference a directory that already exists in remote storage without uploading it.
-
-Example:
 
 ```python
 @env.task
@@ -658,14 +655,6 @@ Create a new Dir reference for a remote directory that will be written to.
 
 Use this when you want to create a new directory and write files into it
 directly without creating a local directory first.
-
-Example::
-
-    @env.task
-    async def create() -&gt; Dir:
-        d = Dir.new_remote("output")
-        # write files into d ...
-        return d
 
 
 

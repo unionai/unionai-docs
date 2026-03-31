@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 weight: 3
@@ -22,6 +22,7 @@ This is the command line interface for Flyte.
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
+| `demo` | [`delete`](#flyte-delete-demo), [`start`](#flyte-start-demo)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
@@ -36,14 +37,14 @@ This is the command line interface for Flyte.
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
 | `create` | [`config`](#flyte-create-config), [`project`](#flyte-create-project), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
-| `delete` | [`app`](#flyte-delete-app), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
+| `delete` | [`app`](#flyte-delete-app), [`demo`](#flyte-delete-demo), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
 | [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
 | `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
-| `start` | [`tui`](#flyte-start-tui)  |
+| `start` | [`demo`](#flyte-start-demo), [`tui`](#flyte-start-tui)  |
 | `update` | [`app`](#flyte-update-app), [`project`](#flyte-update-project), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
@@ -66,6 +67,7 @@ This is the command line interface for Flyte.
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `user` | [`create⁺`](#flyte-create-user), [`delete⁺`](#flyte-delete-user), [`get⁺`](#flyte-get-user)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
+| `demo` | [`delete`](#flyte-delete-demo), [`start`](#flyte-start-demo)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
@@ -81,14 +83,14 @@ This is the command line interface for Flyte.
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
 | `create` | [`api-key⁺`](#flyte-create-api-key), [`assignment⁺`](#flyte-create-assignment), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
-| `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`policy⁺`](#flyte-delete-policy), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
+| `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`demo`](#flyte-delete-demo), [`policy⁺`](#flyte-delete-policy), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
 | [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
 | `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
-| `start` | [`tui`](#flyte-start-tui)  |
+| `start` | [`demo`](#flyte-start-demo), [`tui`](#flyte-start-tui)  |
 | `update` | [`app`](#flyte-update-app), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
@@ -566,6 +568,12 @@ Unassign a policy from an identity.
 | `--help` | `boolean` | `False` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
+
+#### flyte delete demo
+
+**`flyte delete demo`**
+
+Stop and remove the local Flyte demo cluster container.
 
 {{< variant byoc selfmanaged >}}
 {{< markdown >}}
@@ -1482,6 +1490,18 @@ Serving deployed apps is not currently supported through this CLI command.
 **`flyte start COMMAND [ARGS]...`**
 
 Start various Flyte services.
+
+#### flyte start demo
+
+**`flyte start demo [OPTIONS]`**
+
+Start a local Flyte demo cluster.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--image` | `text` | `ghcr.io/flyteorg/flyte-sandbox-v2:nightly` | Docker image to use for the demo cluster. |
+| `--dev` | `boolean` | `False` | Enable dev mode inside the demo cluster (sets FLYTE_DEV=True). |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte start tui
 

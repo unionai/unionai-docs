@@ -1,6 +1,6 @@
 ---
 title: ReusePolicy
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -19,8 +19,6 @@ Total concurrent capacity is `max_replicas * concurrency`. For example,
 `ReusePolicy(replicas=(1, 3), concurrency=2)` supports up to 6 concurrent tasks.
 
 Caution: The environment is shared across invocations — manage memory and resources carefully.
-
-Example:
 
 ```python
 env = flyte.TaskEnvironment(

@@ -1,6 +1,6 @@
 ---
 title: Trigger
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -18,8 +18,6 @@ can be associated with multiple tasks.
 Predefined convenience constructors are available: `Trigger.hourly()`,
 `Trigger.daily()`, `Trigger.weekly()`, `Trigger.monthly()`, and
 `Trigger.minutely()`.
-
-Example:
 
 ```python
 my_trigger = flyte.Trigger(
@@ -51,6 +49,7 @@ class Trigger(
     queue: str | None,
     labels: Mapping[str, str] | None,
     annotations: Mapping[str, str] | None,
+    notifications: NamedRule | Notification | Tuple[Notification, ...] | None,
 )
 ```
 | Parameter | Type | Description |
@@ -66,6 +65,7 @@ class Trigger(
 | `queue` | `str \| None` | Queue name for triggered runs (overrides the task's configured value). |
 | `labels` | `Mapping[str, str] \| None` | Kubernetes labels to attach to triggered runs. |
 | `annotations` | `Mapping[str, str] \| None` | Kubernetes annotations to attach to triggered runs. |
+| `notifications` | `NamedRule \| Notification \| Tuple[Notification, ...] \| None` | |
 
 ## Methods
 

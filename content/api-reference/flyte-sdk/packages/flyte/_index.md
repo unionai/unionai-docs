@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -8,9 +8,7 @@ sidebar_expanded: true
 
 # flyte
 
-
 Flyte SDK for authoring compound AI applications, services and workflows.
-
 ## Directory
 
 ### Classes
@@ -188,7 +186,6 @@ def build(
 ```
 Build an image. The existing async context will be used.
 
-Example:
 ```
 import flyte
 image = flyte.Image("example_image")
@@ -277,7 +274,6 @@ def custom_context(
 ```
 Synchronous context manager to set input context for tasks spawned within this block.
 
-Example:
 ```python
 import flyte
 
@@ -340,7 +336,6 @@ context metadata that was passed to the action.
 
 Context will automatically propagate to sub-actions.
 
-Example:
 ```python
 import flyte
 
@@ -366,7 +361,6 @@ def group(
 ```
 Create a new group with the given name. The method is intended to be used as a context manager.
 
-Example:
 ```python
 @task
 async def my_task():
@@ -702,26 +696,6 @@ Project and domain are read from the init config (set via `flyte.init()`
 or `flyte.init_from_config()`), consistent with `flyte.run()`.
 
 
-Example::
-
-    import flyte
-    from pathlib import Path
-
-    flyte.init(endpoint="my-cluster.example.com")
-
-    # With a list of packages (auto-builds image)
-    run = flyte.run_python_script(
-        Path("train.py"),
-        gpu=1,
-        gpu_type="A100",
-        memory="64Gi",
-        image=["torch", "transformers"],
-    )
-    print(run.url)
-
-    # With a custom Image object
-    img = flyte.Image.from_debian_base(name="my-img").with_pip_packages("numpy")
-    run = flyte.run_python_script(Path("analysis.py"), image=img)
 
 
 | Parameter | Type | Description |
@@ -759,7 +733,6 @@ Serve a Flyte app using an AppEnvironment.
 This is the simple, direct way to serve an app. For more control over
 deployment settings (env vars, cluster pool, etc.), use with_servecontext().
 
-Example:
 ```python
 import flyte
 from flyte.app.extras import FastAPIAppEnvironment
@@ -833,6 +806,7 @@ def with_runcontext(
     reset_root_logger: bool,
     disable_run_cache: bool,
     queue: Optional[str],
+    notifications: Notification | Tuple[Notification, ...] | None,
     custom_context: Dict[str, str] | None,
     cache_lookup_scope: CacheLookupScope,
     preserve_original_types: bool,
@@ -842,9 +816,11 @@ def with_runcontext(
 ```
 Launch a new run with the given parameters as the context.
 
-Example:
 ```python
 import flyte
+import flyte.notify as notify
+from flyte.models import ActionPhase
+
 env = flyte.TaskEnvironment("example")
 
 @env.task
@@ -852,7 +828,14 @@ async def example_task(x: int, y: str) -> str:
     return f"{x} {y}"
 
 if __name__ == "__main__":
-    flyte.with_runcontext(name="example_run_id").run(example_task, 1, y="hello")
+    flyte.with_runcontext(
+        name="example_run_id",
+        notifications=notify.Slack(
+            on_phase=ActionPhase.FAILED,
+            webhook_url="https://hooks.slack.com/services/YOUR/WEBHOOK/URL",
+            message="Task failed: {run.error}",
+        ),
+    ).run(example_task, 1, y="hello")
 ```
 
 
@@ -881,6 +864,7 @@ if __name__ == "__main__":
 | `reset_root_logger` | `bool` | If true, the root logger will be preserved and not modified by Flyte. |
 | `disable_run_cache` | `bool` | Optional If true, the run cache will be disabled. This is useful for testing purposes. |
 | `queue` | `Optional[str]` | Optional The queue to use for the run. This is used to specify the cluster to use for the run. |
+| `notifications` | `Notification \| Tuple[Notification, ...] \| None` | Optional Notification(s) to send when the run reaches specific execution phases. Accepts a single notification or a tuple of notifications. Supports Email, Slack, Teams, and Webhook types. See `flyte.notify` for available notification types and template variables. |
 | `custom_context` | `Dict[str, str] \| None` | Optional global input context to pass to the task. This will be available via get_custom_context() within the task and will automatically propagate to sub-tasks. Acts as base/default values that can be overridden by context managers in the code. |
 | `cache_lookup_scope` | `CacheLookupScope` | Optional Scope to use for the run. This is used to specify the scope to use for cache lookups. If not specified, it will be set to the default scope (global unless overridden at the system level). |
 | `preserve_original_types` | `bool` | Optional If true, the type engine will preserve original types (e.g., pd.DataFrame) when guessing python types from literal types. If false (default), it will return the generic flyte.io.DataFrame. This option is automatically set to True if interactive_mode is True unless overridden explicitly by this parameter. |

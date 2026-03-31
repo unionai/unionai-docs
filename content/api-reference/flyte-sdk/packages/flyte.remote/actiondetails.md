@@ -1,6 +1,6 @@
 ---
 title: ActionDetails
-version: 2.0.9
+version: 2.0.11
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -10,7 +10,6 @@ layout: py_api
 **Package:** `flyte.remote`
 
 A class representing an action. It is used to manage the run of a task and its state on the remote Union API.
-
 
 
 ## Parameters
@@ -43,7 +42,7 @@ class ActionDetails(
 | `metadata` | `None` | Get the metadata of the action. |
 | `name` | `None` | Get the name of the action. |
 | `phase` | `None` | Get the phase of the action. |
-| `phase_durations` | `None` | Get the duration spent in each phase as a dictionary.  Returns a mapping of ActionPhase to timedelta for the latest attempt. This provides an easy way to see how long was spent queued, initializing, running, etc.  Example:     &gt;&gt;&gt; action = Action.get(run_name="my-run", name="my-action")     &gt;&gt;&gt; details = action.details()     &gt;&gt;&gt; durations = details.phase_durations     &gt;&gt;&gt; print(f"Queued: {durations.get(ActionPhase.QUEUED, timedelta(0)).total_seconds()}s")     &gt;&gt;&gt; print(f"Running: {durations.get(ActionPhase.RUNNING, timedelta(0)).total_seconds()}s") |
+| `phase_durations` | `None` | Get the duration spent in each phase as a dictionary.  Returns a mapping of ActionPhase to timedelta for the latest attempt. This provides an easy way to see how long was spent queued, initializing, running, etc. |
 | `queued_time` | `None` | Get the time spent in the QUEUED phase for the latest attempt. |
 | `raw_phase` | `None` | Get the raw phase of the action. |
 | `run_name` | `None` | Get the name of the run. |
@@ -136,12 +135,6 @@ def get_phase_transitions(
 Get the phase transitions for a specific attempt, showing the granular breakdown
 of time spent in each phase (queued, initializing, running, etc.).
 
-Example:
-    >>> action = Action.get(run_name="my-run", name="my-action")
-    >>> details = action.details()
-    >>> transitions = details.get_phase_transitions()
-    >>> for t in transitions:
-    ...     print(f"{t.phase}: {t.duration.total_seconds()}s")
 
 
 | Parameter | Type | Description |
