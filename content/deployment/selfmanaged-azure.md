@@ -6,9 +6,42 @@ variants: -flyte -byoc +selfmanaged
 
 # Data plane setup on Azure
 
-{{< key product_name >}}’s modular architecture allows for great flexibility and control.
+{{< key product_name >}}'s modular architecture allows for great flexibility and control.
 The customer can decide how many clusters to have, their shape, and who has access to what.
 All communication is encrypted.  The Union architecture is described on the [Architecture](./architecture/_index) page.
+
+## Azure Blob Storage
+
+Each data plane uses Azure Blob Storage containers to store data used in workflow execution.
+Union recommends the use of two containers within a Storage Account:
+
+1. **Metadata container**: contains workflow execution data such as task inputs and outputs.
+2. **Fast registration container**: contains local code artifacts copied into the Flyte task container at runtime when using `union register` or `union run --remote --copy-all`.
+
+You can also choose to use a single container.
+
+Create an [Azure Storage Account](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-create) with Blob containers for your data plane.
+
+### CORS Configuration
+
+To enable the [Code Viewer](./configuration/code-viewer) in the Union UI, configure a CORS rule on your Storage Account. This allows the UI to securely fetch code bundles directly from blob storage:
+
+```bash
+az storage cors add \
+  --services b \
+  --methods GET HEAD \
+  --origins "https://*.unionai.cloud" \
+  --allowed-headers "*" \
+  --exposed-headers "ETag" \
+  --max-age 3600 \
+  --account-name <STORAGE_ACCOUNT_NAME>
+```
+
+For more details, see the [Azure Storage CORS documentation](https://learn.microsoft.com/en-us/rest/api/storageservices/cross-origin-resource-sharing--cors--support-for-the-azure-storage-services).
+
+### Data Retention
+
+Union recommends using lifecycle management policies on your Storage Account to manage storage costs. See [Data retention policy](./configuration/data-retention) for more information.
 
 ## Azure Container Registry
 
@@ -55,7 +88,7 @@ Create a User Assigned Managed Identity with Federated Credentials that map to t
 
 Assign the `Storage Blob Data Owner` role to this Identity at the Storage Account level.
 
-## Azure Key Vault
+## Azure Key Vault (optional)
 
 Union ships with an embedded secrets manager. Alternatively, you can enable Union to consume secrets from Azure Key Vault adding the following to your Helm values file:
 
@@ -76,7 +109,7 @@ config:
 
 ```
 
-## Node pools
+## AKS Configuration
 
 By default, the Union installation requests the following resources:
 
@@ -93,7 +126,7 @@ For GPU access, Union injects tolerations and label selectors to execution Pods.
 * You have a cluster name provided by or coordinated with Union.
 * You have a Kubernetes cluster, running one of the most recent three minor K8s versions.
   [Learn more](https://kubernetes.io/releases/version-skew-policy/).
-* You have configured a storage account and Workload Identity as described above.
+* You have configured a Storage Account, Container Registry, and Workload Identity as described above.
 
 ## Prerequisites
 

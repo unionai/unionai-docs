@@ -13,8 +13,38 @@ The Union architecture is described on the [Architecture](./architecture/_index)
 
 ## GCS
 
-Each data plane uses a GCS bucket to store data used in workflow execution.
-Union recommends the use of two buckets (metadata and fast registration), though a single bucket is also supported.
+Each data plane uses GCS buckets to store data used in workflow execution.
+Union recommends the use of two buckets:
+
+1. **Metadata bucket**: contains workflow execution data such as task inputs and outputs.
+2. **Fast registration bucket**: contains local code artifacts copied into the Flyte task container at runtime when using `union register` or `union run --remote --copy-all`.
+
+You can also choose to use a single bucket.
+
+### CORS Configuration
+
+To enable the [Code Viewer](./configuration/code-viewer) in the Union UI, configure a CORS policy on your fast registration bucket (or your single bucket if using one):
+
+1. Create a `cors.json` file:
+
+   ```json
+   [
+       {
+           "origin": ["https://*.unionai.cloud"],
+           "method": ["HEAD", "GET"],
+           "responseHeader": ["ETag"],
+           "maxAgeSeconds": 3600
+       }
+   ]
+   ```
+
+2. Apply the CORS configuration:
+
+   ```bash
+   gcloud storage buckets update gs://<BUCKET_NAME> --cors-file=cors.json
+   ```
+
+### Data Retention
 
 See [Data retention policy](./configuration/data-retention) for information on managing storage costs with lifecycle policies.
 
@@ -51,9 +81,10 @@ commonServiceAccount:
 
 ## Assumptions
 
-* You have a {{< key product_name >}} organization, and you know the control plane URL for your organization. (e.g. https://your-org-name.us-east-2.unionai.cloud).
+* You have a {{< key product_name >}} organization, and you know the control plane URL for your organization (e.g. `https://your-org-name.us-east-2.unionai.cloud`).
+* You have a cluster name provided by or coordinated with Union.
 * You have a Kubernetes cluster, running one of the most recent three minor Kubernetes versions. [Learn more](https://kubernetes.io/releases/version-skew-policy/).
-* You have configured GCS bucket(s) and Workload Identity as described above.
+* You have configured GCS bucket(s), Artifact Registry, and Workload Identity as described above.
 
 ## Prerequisites
 

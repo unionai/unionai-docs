@@ -6,20 +6,87 @@ variants: -flyte -byoc +selfmanaged
 
 # Data plane setup on generic Kubernetes
 
-{{< key product_name >}}’s modular architecture allows for great flexibility and control.
+{{< key product_name >}}'s modular architecture allows for great flexibility and control.
 The customer can decide how many clusters to have, their shape, and who has access to what.
 All communication is encrypted.
 The Union architecture is described on the [Architecture](./architecture/_index) page.
 
 > [!NOTE] These instructions cover installing Union.ai in an on-premise Kubernetes cluster.
-> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./selfmanaged-aws), [Azure](./selfmanaged-azure), [OCI](./selfmanaged-oci).
+> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./selfmanaged-aws), [GCP](./selfmanaged-gcp), [Azure](./selfmanaged-azure), [OCI](./selfmanaged-oci).
+
+## Object Storage
+
+Each data plane uses S3-compatible object storage (such as [MinIO](https://min.io)) to store data used in workflow execution.
+Union recommends the use of two buckets:
+
+1. **Metadata bucket**: contains workflow execution data such as task inputs and outputs.
+2. **Fast registration bucket**: contains local code artifacts copied into the Flyte task container at runtime when using `union register` or `union run --remote --copy-all`.
+
+You can also choose to use a single bucket.
+
+### CORS Configuration
+
+To enable the [Code Viewer](./configuration/code-viewer) in the Union UI, configure a CORS policy on your bucket(s). This allows the UI to securely fetch code bundles directly from storage.
+
+The required CORS rule:
+
+- **Allowed Origins:** `https://*.unionai.cloud`
+- **Allowed Methods:** `GET`, `HEAD`
+- **Allowed Headers:** `*`
+- **Expose Headers:** `ETag`
+- **Max Age Seconds:** `3600`
+
+For MinIO, you can set this via `mc`:
+
+```bash
+cat > /tmp/cors.json <<'EOF'
+{
+  "CORSRules": [
+    {
+      "AllowedOrigins": ["https://*.unionai.cloud"],
+      "AllowedMethods": ["GET", "HEAD"],
+      "AllowedHeaders": ["*"],
+      "ExposeHeaders": ["ETag"],
+      "MaxAgeSeconds": 3600
+    }
+  ]
+}
+EOF
+mc anonymous set-json /tmp/cors.json myminio/<BUCKET_NAME>
+```
+
+Consult your object storage provider's documentation for the equivalent configuration.
+
+### Data Retention
+
+Union recommends using lifecycle policies on these buckets to manage storage costs. See [Data retention policy](./configuration/data-retention) for more information.
+
+## Container Registry
+
+You need a container registry accessible from your cluster for Image Builder to push and pull container images. Options include:
+
+- A private [Docker Registry](https://docs.docker.com/registry/)
+- [Harbor](https://goharbor.io/)
+- Any OCI-compliant registry
+
+Note the registry URL (e.g. `registry.example.com/union`) — you will configure it in your Helm values.
+
+## Identity & Access
+
+On generic Kubernetes, Union authenticates to object storage using static credentials (access key and secret key). These are configured in the generated values file during deployment.
+
+Ensure the credentials you provide have read/write access to your storage bucket(s) and push/pull access to your container registry.
+
+> [!NOTE] Worker pod authentication
+> Worker pods (task executions) use the same storage credentials as the platform services. The credentials are injected into per-project namespaces via the cluster resource sync mechanism.
 
 ## Assumptions
 
-* You have a {{< key product_name >}} organization, and you know the control plane URL for your organization. (e.g. https://your-org-name.us-east-2.unionai.cloud).
+* You have a {{< key product_name >}} organization, and you know the control plane URL for your organization (e.g. `https://your-org-name.us-east-2.unionai.cloud`).
 * You have a cluster name provided by or coordinated with Union.
 * You have a Kubernetes cluster, running one of the most recent three minor Kubernetes versions. [Learn more](https://kubernetes.io/releases/version-skew-policy/).
-* Object storage provided by a vendor or an S3 compatible platform (such as [Minio](https://min.io)).
+* Object storage provided by a vendor or an S3-compatible platform (such as [MinIO](https://min.io)), with CORS configured as described above.
+* A container registry accessible from your cluster.
 
 ## Prerequisites
 
@@ -47,7 +114,7 @@ The Union architecture is described on the [Architecture](./architecture/_index)
 
    * Save the secret that is displayed. Union does not store the credentials; rerunning the same command can be used to retrieve the secret later.
 
-3. Update the generated values file with your S3-compatible storage details:
+3. Update the generated values file with your infrastructure details:
 
    - Set `storage.endpoint` to your S3-compatible storage endpoint (e.g. your MinIO URL).
    - Set `storage.accessKey` and `storage.secretKey` to your storage credentials.
@@ -58,11 +125,10 @@ The Union architecture is described on the [Architecture](./architecture/_index)
 4. Optionally configure the resource `limits` and `requests` for the different services.
    By default, these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.
 
-   * `clusterresourcesync.resources`
-   * `flytepropeller.resources`
-   * `flytepropellerwebhook.resources`
    * `operator.resources`
+   * `executor.resources`
    * `proxy.resources`
+   * `flytepropellerwebhook.resources`
 
 5. Install the data plane Helm chart:
 

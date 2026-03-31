@@ -20,6 +20,39 @@ Union recommends the use of two S3 buckets:
 
 You can also choose to use a single bucket.
 
+### CORS Configuration
+
+To enable the [Code Viewer](./configuration/code-viewer) in the Union UI, configure a CORS policy on your fast registration bucket (or your single bucket if using one). This allows the UI to securely fetch code bundles directly from S3:
+
+```json
+[
+    {
+        "AllowedHeaders": [
+            "*"
+        ],
+        "AllowedMethods": [
+            "GET",
+            "HEAD"
+        ],
+        "AllowedOrigins": [
+            "https://*.unionai.cloud"
+        ],
+        "ExposeHeaders": [
+            "ETag"
+        ],
+        "MaxAgeSeconds": 3600
+    }
+]
+```
+
+You can apply this via the AWS CLI:
+
+```bash
+aws s3api put-bucket-cors --bucket <BUCKET_NAME> --cors-configuration file://cors.json
+```
+
+Or through the S3 Console under **Permissions > Cross-origin resource sharing (CORS)**.
+
 ### Data Retention
 
 Union recommends using Lifecycle Policy on these buckets to manage storage costs. See [Data retention policy](./configuration/data-retention) for more information.

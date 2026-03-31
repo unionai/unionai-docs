@@ -574,15 +574,28 @@ def create_eks_cluster(cfg: Config, state: InfraState) -> InfraState:
     return state
 
 
+_S3_CORS_CONFIG = json.dumps({
+    "CORSRules": [
+        {
+            "AllowedHeaders": ["*"],
+            "AllowedMethods": ["GET", "HEAD"],
+            "AllowedOrigins": ["https://*.unionai.cloud"],
+            "ExposeHeaders": ["ETag"],
+            "MaxAgeSeconds": 3600,
+        }
+    ]
+})
+
+
 @env.task
 def create_s3_buckets(cfg: Config, state: InfraState) -> InfraState:
-    """Create S3 metadata and fast-registration buckets."""
+    """Create S3 metadata and fast-registration buckets with CORS for Code Viewer."""
     for bucket, attr in [
         (cfg.s3_metadata_bucket, "s3_metadata_created"),
         (cfg.s3_fast_reg_bucket, "s3_fast_reg_created"),
     ]:
         if _sh_ok(f"aws s3api head-bucket --bucket {bucket}"):
-            print(f"Bucket {bucket} already exists, skipping.")
+            print(f"Bucket {bucket} already exists, skipping creation.")
         else:
             loc = (
                 ""
@@ -594,7 +607,13 @@ def create_s3_buckets(cfg: Config, state: InfraState) -> InfraState:
                 f"--region {cfg.aws_region} {loc}"
             )
             setattr(state, attr, True)
-        print(f"  Bucket ready: {bucket}")
+
+        # Apply CORS policy for Code Viewer (idempotent)
+        _sh(
+            f"aws s3api put-bucket-cors --bucket {bucket} "
+            f"--cors-configuration '{_S3_CORS_CONFIG}'"
+        )
+        print(f"  Bucket ready (with CORS): {bucket}")
     return state
 
 
