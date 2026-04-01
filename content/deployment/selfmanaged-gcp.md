@@ -16,6 +16,17 @@ You need a GKE cluster running one of the most recent three minor Kubernetes ver
 
 If you don't already have a cluster, create one with `gcloud`:
 
+First, enable the required APIs:
+
+```bash
+gcloud services enable container.googleapis.com --project ${PROJECT_ID}
+```
+
+> [!NOTE] If the project has no default VPC network, create one before proceeding:
+> ```bash
+> gcloud compute networks create default --project ${PROJECT_ID} --subnet-mode=auto
+> ```
+
 ```bash
 export PROJECT_ID=my-project            # your GCP project ID
 export REGION=us-central1
@@ -47,6 +58,23 @@ gcloud container clusters describe ${CLUSTER_NAME} \
 ```
 
 Union supports Autoscaling and the use of preemptible (spot) instances.
+
+### BuildKit node pool
+
+Image Builder (BuildKit) requires 4 CPUs and 50Gi ephemeral storage, which can exceed what's allocatable on a standard `e2-standard-4` node when other pods are running. Add a dedicated node pool with a larger machine type and boot disk:
+
+```bash
+gcloud container node-pools create buildkit-pool \
+  --cluster ${CLUSTER_NAME} \
+  --region ${REGION} \
+  --project ${PROJECT_ID} \
+  --machine-type e2-standard-8 \
+  --disk-size 200GB \
+  --num-nodes 0 \
+  --enable-autoscaling \
+  --min-nodes 0 \
+  --max-nodes 2
+```
 
 ## GCS
 
@@ -132,7 +160,7 @@ gcloud iam service-accounts create ${GSA_NAME} \
 
 ### 2. Bind the GSA to the Kubernetes service account
 
-Allow the `union-system` Kubernetes service account (and workflow task pods in any namespace) to impersonate the Google Service Account:
+Bind both the `union-system` and `union` Kubernetes service accounts in the `union` namespace to impersonate the Google Service Account:
 
 ```bash
 gcloud iam service-accounts add-iam-policy-binding \
@@ -140,10 +168,16 @@ gcloud iam service-accounts add-iam-policy-binding \
   --project ${PROJECT_ID} \
   --role roles/iam.workloadIdentityUser \
   --member "serviceAccount:${PROJECT_ID}.svc.id.goog[union/union-system]"
+
+gcloud iam service-accounts add-iam-policy-binding \
+  ${GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com \
+  --project ${PROJECT_ID} \
+  --role roles/iam.workloadIdentityUser \
+  --member "serviceAccount:${PROJECT_ID}.svc.id.goog[union/union]"
 ```
 
-> [!NOTE] Why bind to `union/union-system`?
-> Union platform services run in the `union` namespace. Workflow task pods in per-project namespaces (e.g. `union-health-monitoring-development`) use the same GSA via Workload Identity federation configured in the Helm values.
+> [!NOTE] Why bind both `union/union-system` and `union/union`?
+> Union platform services run under `union-system`, while task pods in the `union` namespace run under the `union` service account. Both need Workload Identity access to GCS.
 
 ### 3. Grant GCS access
 
@@ -166,6 +200,18 @@ gcloud storage buckets add-iam-policy-binding gs://${BUCKET_PREFIX}-fast-reg \
   --role roles/storage.objectAdmin
 ```
 
+Also grant `legacyBucketReader` on each bucket. This is required for `storage.buckets.get` access, which the operator needs to verify the bucket exists at startup:
+
+```bash
+gcloud storage buckets add-iam-policy-binding gs://${BUCKET_PREFIX}-metadata \
+  --member "serviceAccount:${GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
+  --role roles/storage.legacyBucketReader
+
+gcloud storage buckets add-iam-policy-binding gs://${BUCKET_PREFIX}-fast-reg \
+  --member "serviceAccount:${GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
+  --role roles/storage.legacyBucketReader
+```
+
 ### 4. Grant Artifact Registry access
 
 ```bash
@@ -186,15 +232,7 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
   --role roles/iam.serviceAccountTokenCreator
 ```
 
-### 6. Configure the service account annotation
-
-In your Helm values, annotate the `union-system` service account with the Google Service Account email:
-
-```yaml
-commonServiceAccount:
-  annotations:
-    iam.gke.io/gcp-service-account: "<GSA_NAME>@<PROJECT_ID>.iam.gserviceaccount.com"
-```
+> [!NOTE] If prompted to specify a condition, select **None**. This role applies project-wide and does not require a condition. The prompt appears because the policy already contains other conditional bindings.
 
 ## Assumptions
 
@@ -235,6 +273,13 @@ commonServiceAccount:
    - Set `storage.bucketName` and `storage.fastRegistrationBucketName` to your GCS bucket name(s).
    - Set `storage.gcp.projectId` to your GCP project ID.
    - Replace all occurrences of `<GCP_SERVICE_ACCOUNT>` with the Google Service Account email created in the [Workload Identity](#workload-identity) section (e.g. `union-system@my-project.iam.gserviceaccount.com`). This appears in `additionalServiceAccountAnnotations`, `userRoleAnnotationValue`, and `fluentbit.serviceAccount.annotations`.
+   - Annotate the `union-system` Kubernetes service account with the Google Service Account email so that Workload Identity is active for Union platform pods:
+
+     ```yaml
+     commonServiceAccount:
+       annotations:
+         iam.gke.io/gcp-service-account: "union-system@<PROJECT_ID>.iam.gserviceaccount.com"
+     ```
 
 4. Optionally configure the resource `limits` and `requests` for the different services.
    By default, these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.
