@@ -1,6 +1,6 @@
 ---
 title: flyte.notify
-version: 2.0.11
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
