@@ -5,6 +5,7 @@ variants: -flyte +union
 top_menu: true
 mermaid: true
 sidebar_expanded: true
+tier2_band: true
 ---
 
 # Platform deployment
