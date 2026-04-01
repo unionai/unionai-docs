@@ -1,7 +1,7 @@
 ---
 title: Classes
 version: 0.2.1
-variants: +flyte +byoc +selfmanaged +union
+variants: +flyte +union
 layout: py_api
 ---
 
