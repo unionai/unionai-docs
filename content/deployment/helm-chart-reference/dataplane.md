@@ -1,7 +1,7 @@
 ---
 title: Dataplane chart
 variants: -flyte -byoc +selfmanaged
-chart_version: 2026.3.11
+chart_version: 2026.3.12
 weight: 1
 ---
 
@@ -11,8 +11,8 @@ Deploys the Union dataplane components to onboard a kubernetes cluster to the Un
 
 | | |
 |---|---|
-| **Chart version** | 2026.3.11 |
-| **App version** | 2026.3.8 |
+| **Chart version** | 2026.3.12 |
+| **App version** | 2026.3.9 |
 | **Kubernetes version** | `>= 1.28.0-0` |
 
 ## Dependencies
