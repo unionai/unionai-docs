@@ -11,7 +11,7 @@ variants: -flyte -union
 | ---------------------------------------- |
 | [{{< docs_home union v2 >}}/user-guide]({{< docs_home union v2 >}}/user-guide) |
 | [{{< docs_home flyte v2 >}}/user-guide]({{< docs_home flyte v2 >}}/user-guide) |
-| [{{< docs_home union v2 >}}/user-guide]({{< docs_home union v2 >}}/user-guide) |
+| [{{< docs_home union v2 >}}/user-guide#section]({{< docs_home union v2 >}}/user-guide#section) |
 
 ## External URL
 
