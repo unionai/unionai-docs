@@ -1,7 +1,7 @@
 ---
 title: flyteplugins.union.cli
-version: 0.2.1
-variants: +flyte +union
+version: 0.2.2
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 

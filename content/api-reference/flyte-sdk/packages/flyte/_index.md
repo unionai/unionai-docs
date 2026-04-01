@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.12.dev22+g879ad6de4
+version: 2.1.2.dev2+g62f55b516
 variants: +flyte +union
 layout: py_api
 sidebar_expanded: true
@@ -895,6 +895,7 @@ def with_servecontext(
     health_check_timeout: float | None,
     health_check_interval: float | None,
     health_check_path: str | None,
+    raw_data_path: str | None,
 ) -> _Serve
 ```
 Create a serve context with custom configuration.
@@ -951,7 +952,8 @@ print(f"App URL: {app.url}")
 | `activate_timeout` | `float \| None` | Total timeout in seconds when polling the health-check endpoint during `activate(wait=True)`. Defaults to 60 s. |
 | `health_check_timeout` | `float \| None` | Per-request timeout in seconds for each health-check HTTP request. Defaults to 2 s. |
 | `health_check_interval` | `float \| None` | Interval in seconds between consecutive health-check polls. Defaults to 1 s. |
-| `health_check_path` | `str \| None` | URL path used for the local health-check probe (e.g. `"/healthz"`). Defaults to `"/health"`. |
+| `health_check_path` | `str \| None` | URL path used for the local health-check probe (e.g. ``"/healthz"``). Defaults to ``"/health"``. |
+| `raw_data_path` | `str \| None` | Raw data path for the app. For local serving, sets ctx().raw_data_path so apps can read it. Defaults to ``/tmp/flyte/raw_data`` when mode is local. For remote serving, the backend provides this via the container command. |
 
 **Returns**
 

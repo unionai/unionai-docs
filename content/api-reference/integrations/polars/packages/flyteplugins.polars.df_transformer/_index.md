@@ -1,7 +1,7 @@
 ---
 title: flyteplugins.polars.df_transformer
-version: 2.0.12.dev22+g879ad6de4
-variants: +flyte +union
+version: 2.1.2.dev2+g62f55b516
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
