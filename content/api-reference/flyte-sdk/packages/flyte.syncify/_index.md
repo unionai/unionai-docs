@@ -1,13 +1,12 @@
 ---
 title: flyte.syncify
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
 ---
 
 # flyte.syncify
-
 
 # Syncify Module
 This module provides the `syncify` decorator and the `Syncify` class.
@@ -17,7 +16,7 @@ This is useful for integrating async code into synchronous contexts.
 Every asynchronous function or method wrapped with `syncify` can be called synchronously using the
 parenthesis `()` operator, or asynchronously using the `.aio()` method.
 
-Example::
+Example:
 
 ```python
 from flyte.syncify import syncify
@@ -52,12 +51,11 @@ syncer = Syncify("my_syncer")
 The Syncify class wraps asynchronous functions, classmethods, instance methods, and static methods to
  provide a synchronous interface. The wrapped methods are always executed in the context of a background loop,
  whether they are called synchronously or asynchronously. This allows for seamless integration of async code, as
- certain async libraries capture the event loop. An example is grpc.aio, which captures the event loop.
- In such a case, the Syncify class ensures that the async function is executed in the context of the background loop.
+ certain async libraries capture the event loop. In such a case, the Syncify class ensures that the async
+ function is executed in the context of the background loop.
 
-To use it correctly with grpc.aio, you should wrap every grpc.aio channel creation, and client invocation
-with the same `Syncify` instance. This ensures that the async code runs in the correct event loop context.
-
+To use it correctly, you should wrap every async client creation and invocation with the same `Syncify`
+instance. This ensures that the async code runs in the correct event loop context.
 ## Directory
 
 ### Classes

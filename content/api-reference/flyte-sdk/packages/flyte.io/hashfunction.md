@@ -1,6 +1,6 @@
 ---
 title: HashFunction
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -15,19 +15,9 @@ This class allows you to define custom hashing logic by providing a callable
 that takes data and returns a hash string. It implements the HashMethod protocol,
 making it compatible with Flyte's hashing infrastructure.
 
-Example:
-    &gt;&gt;&gt; def my_hash(data: bytes) -&gt; str:
-    ...     return hashlib.md5(data).hexdigest()
-    &gt;&gt;&gt; hash_fn = HashFunction.from_fn(my_hash)
-    &gt;&gt;&gt; hash_fn.update(b"hello")
-    &gt;&gt;&gt; hash_fn.result()
-    '5d41402abc4b2a76b9719d911017c592'
-
-Attributes:
-    _fn: The callable that computes the hash from input data.
-    _value: The most recently computed hash value.
 
 
+## Parameters
 
 ```python
 class HashFunction(
@@ -40,7 +30,7 @@ Initialize a HashFunction with a custom hash callable.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `fn` | `Callable[[Any], str]` | A callable that takes data of any type and returns a hash string. |
+| `fn` | `Callable[[Any], str]` | |
 
 ## Methods
 
@@ -69,6 +59,11 @@ This is a convenience factory method for creating HashFunction instances.
 |-|-|-|
 | `fn` | `Callable[[Any], str]` | A callable that takes data of any type and returns a hash string. |
 
+**Returns**
+
+A new HashFunction instance wrapping the provided callable.
+
+
 ### reset()
 
 ```python
@@ -81,9 +76,9 @@ def result()
 ```
 Return the most recently computed hash value.
 
-Returns:
-    The hash string from the last call to update().
 
+
+**Returns:** The hash string from the last call to update().
 
 ### update()
 

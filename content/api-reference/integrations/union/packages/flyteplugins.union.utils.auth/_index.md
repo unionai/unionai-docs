@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.union.utils.auth
-version: 0.2.1
+version: 0.2.2
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -39,6 +39,8 @@ Encode app credentials as a base64 string for use as UNION_API_KEY.
 | Parameter | Type | Description |
 |-|-|-|
 | `app_credentials` | `flyteplugins.union.utils.auth.AppClientCredentials` | The application credentials to encode |
+
+**Returns:** Base64-encoded credential string
 
 #### is_serverless_endpoint()
 

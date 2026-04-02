@@ -1,6 +1,6 @@
 ---
 title: AppClientCredentials
-version: 0.2.1
+version: 0.2.2
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,6 +11,8 @@ layout: py_api
 
 Application client credentials for API key.
 
+
+## Parameters
 
 ```python
 class AppClientCredentials(

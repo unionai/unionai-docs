@@ -1,6 +1,6 @@
 ---
 title: GitStatus
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -13,12 +13,14 @@ A class representing the status of a git repository.
 
 
 
+## Parameters
+
 ```python
 class GitStatus(
     is_valid: bool,
     is_tree_clean: bool,
     remote_url: str,
-    repo_dir: pathlib._local.Path,
+    repo_dir: pathlib.Path,
     commit_sha: str,
 )
 ```
@@ -27,7 +29,7 @@ class GitStatus(
 | `is_valid` | `bool` | Whether git repository is valid |
 | `is_tree_clean` | `bool` | Whether working tree is clean |
 | `remote_url` | `str` | Remote URL in HTTPS format |
-| `repo_dir` | `pathlib._local.Path` | Repository root directory |
+| `repo_dir` | `pathlib.Path` | Repository root directory |
 | `commit_sha` | `str` | Current commit SHA |
 
 ## Methods
@@ -42,7 +44,7 @@ class GitStatus(
 
 ```python
 def build_url(
-    path: pathlib._local.Path | str,
+    path: pathlib.Path | str,
     line_number: int,
 ) -> str
 ```
@@ -52,8 +54,10 @@ Build a git URL for the given path.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `path` | `pathlib._local.Path \| str` | Path to a file |
-| `line_number` | `int` | Line number of the code file :return: Path relative to repo_dir |
+| `path` | `pathlib.Path \| str` | Path to a file |
+| `line_number` | `int` | Line number of the code file |
+
+**Returns:** Path relative to repo_dir
 
 ### from_current_repo()
 
@@ -64,6 +68,7 @@ Discover git information from the current repository.
 
 If Git is not installed or .git does not exist, returns GitStatus with is_valid=False.
 
-:return: GitStatus instance with discovered git information
 
+
+**Returns:** GitStatus instance with discovered git information
 

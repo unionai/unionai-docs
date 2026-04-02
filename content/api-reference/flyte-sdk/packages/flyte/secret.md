@@ -1,6 +1,6 @@
 ---
 title: Secret
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -15,7 +15,6 @@ Secrets can be mounted as environment variables or files.
 secret stores to organize secrets. The as_env_var is an optional parameter that can be used to specify the
 name of the environment variable that the secret should be mounted as.
 
-Example:
 ```python
 @task(secrets="my-secret")
 async def my_task():
@@ -31,11 +30,13 @@ TODO: Add support for secret versioning (some stores) and secret groups (some st
 
 
 
+## Parameters
+
 ```python
 class Secret(
     key: str,
     group: typing.Optional[str],
-    mount: pathlib._local.Path | None,
+    mount: pathlib.Path | None,
     as_env_var: typing.Optional[str],
 )
 ```
@@ -43,7 +44,7 @@ class Secret(
 |-|-|-|
 | `key` | `str` | The name of the secret in the secret store. |
 | `group` | `typing.Optional[str]` | The group of the secret in the secret store. |
-| `mount` | `pathlib._local.Path \| None` | For now, the only supported mount path is "/etc/flyte/secrets". TODO: support arbitrary mount paths. Today only "/etc/flyte/secrets" is supported |
+| `mount` | `pathlib.Path \| None` | For now, the only supported mount path is "/etc/flyte/secrets". TODO: support arbitrary mount paths. Today only "/etc/flyte/secrets" is supported |
 | `as_env_var` | `typing.Optional[str]` | The name of the environment variable that the secret should be mounted as. |
 
 ## Methods

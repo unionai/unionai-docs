@@ -1,6 +1,6 @@
 ---
 title: Role
-version: 0.2.1
+version: 0.2.2
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,6 +11,8 @@ layout: py_api
 
 Represents a Union RBAC Role.
 
+
+## Parameters
 
 ```python
 class Role(
@@ -139,9 +141,9 @@ def to_dict()
 ```
 Convert the object to a JSON-serializable dictionary.
 
-Returns:
-    dict: A dictionary representation of the object.
 
+
+**Returns:** dict: A dictionary representation of the object.
 
 ### to_json()
 
@@ -150,9 +152,9 @@ def to_json()
 ```
 Convert the object to a JSON string.
 
-Returns:
-    str: A JSON string representation of the object.
 
+
+**Returns:** str: A JSON string representation of the object.
 
 ### update()
 

@@ -1,6 +1,6 @@
 ---
 title: ActionID
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,6 +12,7 @@ layout: py_api
 A class representing the ID of an Action, nested within a Run. This is used to identify a specific action on a task.
 
 
+## Parameters
 
 ```python
 class ActionID(
@@ -91,10 +92,11 @@ Generate a unique ID string for this action in the format:
 
 This is optimized for performance assuming all fields are available.
 
-:return: A unique ID string
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `salt` | `str \| None` | |
+
+**Returns:** A unique ID string
 

@@ -1,6 +1,6 @@
 ---
 title: TypeEngine
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -15,7 +15,6 @@ Users can implement their own TypeTransformers and register them with the TypeEn
 of user objects
 
 
-
 ## Methods
 
 | Method | Description |
@@ -23,18 +22,18 @@ of user objects
 | [`dict_to_literal_map()`](#dict_to_literal_map) | Given a dictionary mapping string keys to python values and a dictionary containing guessed types for such. |
 | [`get_available_transformers()`](#get_available_transformers) | Returns all python types for which transformers are available. |
 | [`get_transformer()`](#get_transformer) | Implements a recursive search for the transformer. |
-| [`guess_python_type()`](#guess_python_type) | Transforms a flyte-specific ``LiteralType`` to a regular python value. |
-| [`guess_python_types()`](#guess_python_types) | Transforms a list of flyte-specific ``VariableEntry`` objects to a dictionary of regular python values. |
+| [`guess_python_type()`](#guess_python_type) | Transforms a flyte-specific `LiteralType` to a regular python value. |
+| [`guess_python_types()`](#guess_python_types) | Transforms a list of flyte-specific `VariableEntry` objects to a dictionary of regular python values. |
 | [`lazy_import_transformers()`](#lazy_import_transformers) | Only load the transformers if needed. |
-| [`literal_map_to_kwargs()`](#literal_map_to_kwargs) | Given a ``LiteralMap`` (usually an input into a task - intermediate), convert to kwargs for the task. |
-| [`named_tuple_to_variable_map()`](#named_tuple_to_variable_map) | Converts a python-native ``NamedTuple`` to a flyte-specific VariableMap of named literals. |
+| [`literal_map_to_kwargs()`](#literal_map_to_kwargs) | Given a `LiteralMap` (usually an input into a task - intermediate), convert to kwargs for the task. |
+| [`named_tuple_to_variable_map()`](#named_tuple_to_variable_map) | Converts a python-native `NamedTuple` to a flyte-specific VariableMap of named literals. |
 | [`register()`](#register) | This should be used for all types that respond with the right type annotation when you use type(. |
 | [`register_additional_type()`](#register_additional_type) |  |
 | [`register_restricted_type()`](#register_restricted_type) |  |
 | [`to_html()`](#to_html) |  |
 | [`to_literal()`](#to_literal) |  |
 | [`to_literal_checks()`](#to_literal_checks) |  |
-| [`to_literal_type()`](#to_literal_type) | Converts a python type into a flyte specific ``LiteralType``. |
+| [`to_literal_type()`](#to_literal_type) | Converts a python type into a flyte specific `LiteralType`. |
 | [`to_python_value()`](#to_python_value) | Converts a Literal value with an expected python type into a python value. |
 | [`unwrap_offloaded_literal()`](#unwrap_offloaded_literal) |  |
 
@@ -86,7 +85,7 @@ def guess_python_type(
     flyte_type: LiteralType,
 ) -> Type[T]
 ```
-Transforms a flyte-specific ``LiteralType`` to a regular python value.
+Transforms a flyte-specific `LiteralType` to a regular python value.
 
 
 | Parameter | Type | Description |
@@ -100,7 +99,7 @@ def guess_python_types(
     flyte_variable_list: typing.List[interface_pb2.VariableEntry],
 ) -> typing.Dict[str, Type[Any]]
 ```
-Transforms a list of flyte-specific ``VariableEntry`` objects to a dictionary of regular python values.
+Transforms a list of flyte-specific `VariableEntry` objects to a dictionary of regular python values.
 
 
 | Parameter | Type | Description |
@@ -124,7 +123,7 @@ def literal_map_to_kwargs(
     literal_types: typing.Optional[typing.Dict[str, interface_pb2.Variable]],
 ) -> typing.Dict[str, typing.Any]
 ```
-Given a ``LiteralMap`` (usually an input into a task - intermediate), convert to kwargs for the task
+Given a `LiteralMap` (usually an input into a task - intermediate), convert to kwargs for the task
 
 
 | Parameter | Type | Description |
@@ -140,7 +139,7 @@ def named_tuple_to_variable_map(
     t: typing.NamedTuple,
 ) -> interface_pb2.VariableMap
 ```
-Converts a python-native ``NamedTuple`` to a flyte-specific VariableMap of named literals.
+Converts a python-native `NamedTuple` to a flyte-specific VariableMap of named literals.
 
 
 | Parameter | Type | Description |
@@ -241,7 +240,7 @@ def to_literal_type(
     python_type: Type[T],
 ) -> LiteralType
 ```
-Converts a python type into a flyte specific ``LiteralType``
+Converts a python type into a flyte specific `LiteralType`
 
 
 | Parameter | Type | Description |

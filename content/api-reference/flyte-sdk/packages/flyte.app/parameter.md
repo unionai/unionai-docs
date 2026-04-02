@@ -1,6 +1,6 @@
 ---
 title: Parameter
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,6 +12,8 @@ layout: py_api
 Parameter for application.
 
 
+
+## Parameters
 
 ```python
 class Parameter(

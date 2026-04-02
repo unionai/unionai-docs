@@ -1,6 +1,6 @@
 ---
 title: RunOutput
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -17,8 +17,6 @@ a run, given by a specific run name, or a task name and version. If
 If `task_auto_version == 'current'`, the version will be derived from the callee
 app or task context. To get the latest task run for ephemeral task runs, set
 `task_version` and `task_auto_version` should both be set to `None` (which is the default).
-
-Examples:
 
 Get the output of a specific run:
 
@@ -45,6 +43,7 @@ run_output = RunOutput(type="file", task_name="env.my_task", task_version="xyz")
 ```
 
 
+## Parameters
 
 ```python
 class RunOutput(

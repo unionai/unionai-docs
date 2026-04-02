@@ -1,6 +1,6 @@
 ---
 title: Report
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -9,18 +9,20 @@ layout: py_api
 
 **Package:** `flyte.report`
 
+## Parameters
+
 ```python
 class Report(
     name: str,
     tabs: typing.Dict[str, flyte.report._report.Tab],
-    template_path: pathlib._local.Path,
+    template_path: pathlib.Path,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | |
 | `tabs` | `typing.Dict[str, flyte.report._report.Tab]` | |
-| `template_path` | `pathlib._local.Path` | |
+| `template_path` | `pathlib.Path` | |
 
 ## Methods
 
@@ -37,8 +39,9 @@ def get_final_report()
 ```
 Get the final report as a string.
 
-:return: The final report.
 
+
+**Returns:** The final report.
 
 ### get_tab()
 
@@ -55,5 +58,7 @@ Get a tab by name. If the tab does not exist, create it.
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | The name of the tab. |
-| `create_if_missing` | `bool` | Whether to create the tab if it does not exist. :return: The tab. |
+| `create_if_missing` | `bool` | Whether to create the tab if it does not exist. |
+
+**Returns:** The tab.
 

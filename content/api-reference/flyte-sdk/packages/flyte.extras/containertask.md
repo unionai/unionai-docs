@@ -1,6 +1,6 @@
 ---
 title: ContainerTask
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -10,10 +10,12 @@ layout: py_api
 **Package:** `flyte.extras`
 
 This is an intermediate class that represents Flyte Tasks that run a container at execution time. This is the vast
-majority of tasks - the typical ``@task`` decorated tasks; for instance, all run a container. An example of
+majority of tasks - the typical `@task` decorated tasks; for instance, all run a container. An example of
 something that doesn't run a container would be something like the Athena SQL task.
 
 
+
+## Parameters
 
 ```python
 class ContainerTask(
@@ -23,11 +25,10 @@ class ContainerTask(
     inputs: typing.Optional[typing.Dict[str, typing.Type]],
     arguments: typing.Optional[typing.List[str]],
     outputs: typing.Optional[typing.Dict[str, typing.Type]],
-    input_data_dir: str | pathlib._local.Path,
-    output_data_dir: str | pathlib._local.Path,
+    input_data_dir: str | pathlib.Path,
+    output_data_dir: str | pathlib.Path,
     metadata_format: typing.Literal['JSON', 'YAML', 'PROTO'],
     local_logs: bool,
-    block_network: bool,
     kwargs,
 )
 ```
@@ -39,11 +40,10 @@ class ContainerTask(
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | The inputs to the task. This is a dictionary of input names to types. |
 | `arguments` | `typing.Optional[typing.List[str]]` | The arguments to pass to the command. This is a list of strings. |
 | `outputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | The outputs of the task. This is a dictionary of output names to types. |
-| `input_data_dir` | `str \| pathlib._local.Path` | The directory where the input data is stored. This is a string or a Path object. |
-| `output_data_dir` | `str \| pathlib._local.Path` | The directory where the output data is stored. This is a string or a Path object. |
+| `input_data_dir` | `str \| pathlib.Path` | The directory where the input data is stored. This is a string or a Path object. |
+| `output_data_dir` | `str \| pathlib.Path` | The directory where the output data is stored. This is a string or a Path object. |
 | `metadata_format` | `typing.Literal['JSON', 'YAML', 'PROTO']` | The format of the output file. This can be "JSON", "YAML", or "PROTO". |
 | `local_logs` | `bool` | If True, logs will be printed to the console in the local execution. |
-| `block_network` | `bool` | |
 | `kwargs` | `**kwargs` | |
 
 ## Properties
@@ -58,7 +58,7 @@ class ContainerTask(
 | Method | Description |
 |-|-|
 | [`aio()`](#aio) | The aio function allows executing "sync" tasks, in an async context. |
-| [`config()`](#config) | Return the configuration for the container task, including network settings. |
+| [`config()`](#config) | Returns additional configuration for the task. |
 | [`container_args()`](#container_args) | Returns the container args for the task. |
 | [`custom_config()`](#custom_config) | Returns additional configuration for the task. |
 | [`data_loading_config()`](#data_loading_config) | This configuration allows executing raw containers in Flyte using the Flyte CoPilot system. |
@@ -82,7 +82,6 @@ The aio function allows executing "sync" tasks, in an async context. This helps 
 tasks to be used within an asyncio parent task.
 This function will also re-raise exceptions from the underlying task.
 
-Example:
 ```python
 @env.task
 def my_legacy_task(x: int) -> int:
@@ -100,22 +99,22 @@ async def my_new_parent_task(n: int) -> List[int]:
 | Parameter | Type | Description |
 |-|-|-|
 | `args` | `*args` | |
-| `kwargs` | `**kwargs` | :return: |
+| `kwargs` | `**kwargs` | |
 
 ### config()
 
 ```python
 def config(
-    sctx: flyte.models.SerializationContext,
-) -> typing.Dict[str, str]
+    sctx: SerializationContext,
+) -> Dict[str, str]
 ```
-Return the configuration for the container task, including network settings.
-This is for remote execution.
+Returns additional configuration for the task. This is a set of key-value pairs that can be used to
+configure the task execution environment at runtime. This is usually used by plugins.
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `sctx` | `flyte.models.SerializationContext` | |
+| `sctx` | `SerializationContext` | |
 
 ### container_args()
 
@@ -194,7 +193,7 @@ when not in a Flyte task execution context.  See the implementation below for an
 | Parameter | Type | Description |
 |-|-|-|
 | `args` | `*args` | |
-| `kwargs` | `**kwargs` | :return: |
+| `kwargs` | `**kwargs` | |
 
 ### override()
 
@@ -236,7 +235,9 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `queue` | `Optional[str]` | Optional override for the queue to use for the task. |
 | `interruptible` | `Optional[bool]` | Optional override for the interruptible policy for the task. |
 | `links` | `Tuple[Link, ...]` | Optional override for the Links associated with the task. |
-| `kwargs` | `**kwargs` | Additional keyword arguments for further overrides. Some fields like name, image, docs, and interface cannot be overridden.  :return: A new TaskTemplate instance with the overridden parameters. |
+| `kwargs` | `**kwargs` | Additional keyword arguments for further overrides. Some fields like name, image, docs, and interface cannot be overridden. |
+
+**Returns:** A new TaskTemplate instance with the overridden parameters.
 
 ### post()
 

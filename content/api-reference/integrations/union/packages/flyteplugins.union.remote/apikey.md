@@ -1,6 +1,6 @@
 ---
 title: ApiKey
-version: 0.2.1
+version: 0.2.2
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,31 +11,13 @@ layout: py_api
 
 Represents a Union API Key (OAuth Application).
 
-    API Keys in Union are OAuth 2.0 applications that can be used for
-    headless authentication. They support client credentials flow for
-    machine-to-machine authentication.
+API Keys in Union are OAuth 2.0 applications that can be used for
+headless authentication. They support client credentials flow for
+machine-to-machine authentication.
 
-    Attributes:
-        pb2: The underlying protobuf App message
-        organization: The organization this API key belongs to (for serverless)
-        encoded_credentials: Base64-encoded credentials for UNION_API_KEY env var
 
-    Example:
-        # Create a new API key
-        api_key = ApiKey.create(name="ci-pipeline")
-        print(f"export FLYTE_API_KEY="{api_key.encoded_credentials}"")
 
-        # List all API keys
-        for key in ApiKey.listall():
-            print(f"{key.client_id}: {key.client_name}")
-
-        # Get a specific API key
-        key = ApiKey.get(client_id="my-client-id")
-
-        # Delete an API key
-        ApiKey.delete(client_id="my-client-id")
-    
-
+## Parameters
 
 ```python
 class ApiKey(
@@ -46,9 +28,9 @@ class ApiKey(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `pb2` | `App` | |
-| `organization` | `str \| None` | |
-| `encoded_credentials` | `str \| None` | |
+| `pb2` | `App` | The underlying protobuf App message |
+| `organization` | `str \| None` | The organization this API key belongs to (for serverless) |
+| `encoded_credentials` | `str \| None` | Base64-encoded credentials for UNION_API_KEY env var |
 
 ## Properties
 
@@ -95,6 +77,17 @@ Create a new API key.
 | `name` | `str` | Human-readable name for the API key |
 | `redirect_uris` | `list[str] \| None` | OAuth redirect URIs (defaults to localhost callback) |
 
+**Returns**
+
+ApiKey instance with client_secret populated
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `Exception` | If API key creation fails |
+
 ### delete()
 
 
@@ -116,6 +109,12 @@ Delete an API key.
 |-|-|-|
 | `cls` |  | |
 | `client_id` | `str` | The OAuth client ID to delete |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `Exception` | If deletion fails |
 
 ### get()
 
@@ -139,6 +138,17 @@ Get an API key by client ID.
 | `cls` |  | |
 | `client_id` | `str` | The OAuth client ID |
 
+**Returns**
+
+ApiKey instance
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `Exception` | If API key not found |
+
 ### listall()
 
 
@@ -154,6 +164,9 @@ def listall(
 ```
 List all API keys.
 
+Yields:
+    ApiKey instances
+
 
 
 | Parameter | Type | Description |
@@ -168,9 +181,9 @@ def to_dict()
 ```
 Convert the object to a JSON-serializable dictionary.
 
-Returns:
-    dict: A dictionary representation of the object.
 
+
+**Returns:** dict: A dictionary representation of the object.
 
 ### to_json()
 
@@ -179,9 +192,9 @@ def to_json()
 ```
 Convert the object to a JSON string.
 
-Returns:
-    str: A JSON string representation of the object.
 
+
+**Returns:** str: A JSON string representation of the object.
 
 ### update()
 
@@ -208,4 +221,15 @@ Update an API key.
 | `client_id` | `str` | The OAuth client ID to update |
 | `client_name` | `str \| None` | New name for the API key |
 | `redirect_uris` | `list[str] \| None` | New redirect URIs |
+
+**Returns**
+
+Updated ApiKey instance
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `Exception` | If update fails |
 

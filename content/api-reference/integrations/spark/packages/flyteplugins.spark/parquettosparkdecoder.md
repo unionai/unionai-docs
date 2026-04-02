@@ -1,6 +1,6 @@
 ---
 title: ParquetToSparkDecoder
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -8,6 +8,8 @@ layout: py_api
 # ParquetToSparkDecoder
 
 **Package:** `flyteplugins.spark`
+
+## Parameters
 
 ```python
 def ParquetToSparkDecoder()
@@ -45,10 +47,13 @@ def decode(
 This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal
 value into a Python instance.
 
+    of those dataframes.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `flyte_value` | `flyteidl2.core.literals_pb2.StructuredDataset` | This will be a Flyte IDL DataFrame Literal - do not confuse this with the DataFrame class defined also in this module. |
-| `current_task_metadata` | `flyteidl2.core.literals_pb2.StructuredDatasetMetadata` | Metadata object containing the type (and columns if any) for the currently executing task. This type may have more or less information than the type information bundled inside the incoming flyte_value. :return: This function can either return an instance of the dataframe that this decoder handles, or an iterator of those dataframes. |
+| `current_task_metadata` | `flyteidl2.core.literals_pb2.StructuredDatasetMetadata` | Metadata object containing the type (and columns if any) for the currently executing task. This type may have more or less information than the type information bundled inside the incoming flyte_value. |
+
+**Returns:** This function can either return an instance of the dataframe that this decoder handles, or an iterator
 

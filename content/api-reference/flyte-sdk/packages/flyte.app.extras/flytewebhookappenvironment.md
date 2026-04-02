@@ -1,6 +1,6 @@
 ---
 title: FlyteWebhookAppEnvironment
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -26,6 +26,8 @@ This environment provides a ready-to-use FastAPI application with endpoints for:
 All endpoints use FastAPIPassthroughAuthMiddleware for authentication.
 
 
+
+## Parameters
 
 ```python
 class FlyteWebhookAppEnvironment(
@@ -73,7 +75,7 @@ class FlyteWebhookAppEnvironment(
 | `port` | `int \| Port` | |
 | `args` | `*args` | |
 | `command` | `Optional[Union[List[str], str]]` | |
-| `requires_auth` | `bool` | |
+| `requires_auth` | `bool` | Whether the app requires authentication (default: True) |
 | `scaling` | `Scaling` | Scaling configuration for the app environment |
 | `domain` | `Domain \| None` | |
 | `links` | `List[Link]` | |

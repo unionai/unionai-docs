@@ -1,6 +1,6 @@
 ---
 title: Project
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,6 +12,7 @@ layout: py_api
 A class representing a project in the Union API.
 
 
+## Parameters
 
 ```python
 class Project(
@@ -111,7 +112,7 @@ def listall(
 ```
 List all projects.
 
-By default, lists active (unarchived) projects. Set ``archived=True`` to list
+By default, lists active (unarchived) projects. Set `archived=True` to list
 archived projects instead.
 
 
@@ -121,7 +122,9 @@ archived projects instead.
 | `cls` |  | |
 | `filters` | `str \| None` | The filters to apply to the project list. |
 | `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). |
-| `archived` | `bool` | If True, list archived projects. If False (default), list active projects. :return: An iterator of projects. |
+| `archived` | `bool` | If True, list archived projects. If False (default), list active projects. |
+
+**Returns:** An iterator of projects.
 
 ### to_dict()
 
@@ -130,9 +133,9 @@ def to_dict()
 ```
 Convert the object to a JSON-serializable dictionary.
 
-Returns:
-    dict: A dictionary representation of the object.
 
+
+**Returns:** dict: A dictionary representation of the object.
 
 ### to_json()
 
@@ -141,9 +144,9 @@ def to_json()
 ```
 Convert the object to a JSON string.
 
-Returns:
-    str: A JSON string representation of the object.
 
+
+**Returns:** str: A JSON string representation of the object.
 
 ### unarchive()
 

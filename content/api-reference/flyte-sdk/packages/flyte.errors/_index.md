@@ -1,6 +1,6 @@
 ---
 title: flyte.errors
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -8,12 +8,10 @@ sidebar_expanded: true
 
 # flyte.errors
 
-
 Exceptions raised by Union.
 
 These errors are raised when the underlying task execution fails, either because of a user error, system error or an
 unknown error.
-
 ## Directory
 
 ### Errors
@@ -58,20 +56,20 @@ unknown error.
 
 | Method | Description |
 |-|-|
-| [`silence_grpc_polling_error()`](#silence_grpc_polling_error) | Suppress specific gRPC polling errors in the event loop. |
+| [`silence_polling_error()`](#silence_polling_error) | Suppress specific polling errors in the event loop. |
 
 
 ## Methods
 
-#### silence_grpc_polling_error()
+#### silence_polling_error()
 
 ```python
-def silence_grpc_polling_error(
+def silence_polling_error(
     loop,
     context,
 )
 ```
-Suppress specific gRPC polling errors in the event loop.
+Suppress specific polling errors in the event loop.
 
 
 | Parameter | Type | Description |

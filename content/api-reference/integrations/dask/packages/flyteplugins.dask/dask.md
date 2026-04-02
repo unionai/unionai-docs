@@ -1,6 +1,6 @@
 ---
 title: Dask
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -13,6 +13,8 @@ Configuration for the dask task
 
 
 
+## Parameters
+
 ```python
 class Dask(
     scheduler: flyteplugins.dask.task.Scheduler,
@@ -21,6 +23,6 @@ class Dask(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `scheduler` | `flyteplugins.dask.task.Scheduler` | Configuration for the scheduler pod. Optional, defaults to ``Scheduler()``. |
-| `workers` | `flyteplugins.dask.task.WorkerGroup` | Configuration for the pods of the default worker group. Optional, defaults to ``WorkerGroup()``. |
+| `scheduler` | `flyteplugins.dask.task.Scheduler` | Configuration for the scheduler pod. Optional, defaults to `Scheduler()`. |
+| `workers` | `flyteplugins.dask.task.WorkerGroup` | Configuration for the pods of the default worker group. Optional, defaults to `WorkerGroup()`. |
 

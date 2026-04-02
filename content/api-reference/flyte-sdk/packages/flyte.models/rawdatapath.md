@@ -1,6 +1,6 @@
 ---
 title: RawDataPath
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -13,6 +13,7 @@ A class representing the raw data path for a task. This is used to store the raw
 also get mutations on the path.
 
 
+## Parameters
 
 ```python
 class RawDataPath(
@@ -41,12 +42,13 @@ def from_local_folder(
 ) -> RawDataPath
 ```
 Create a new context attribute object, with local path given. Will be created if it doesn't exist.
-:return: Path to the temporary directory
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `local_folder` | `str \| pathlib.Path \| None` | |
+
+**Returns:** Path to the temporary directory
 
 ### get_random_remote_path()
 
@@ -61,5 +63,5 @@ Returns a random path for uploading a file/directory to. This file/folder will n
 
 | Parameter | Type | Description |
 |-|-|-|
-| `file_name` | `Optional[str]` | If given, will be joined after a randomly generated portion. :return: |
+| `file_name` | `Optional[str]` | If given, will be joined after a randomly generated portion. |
 

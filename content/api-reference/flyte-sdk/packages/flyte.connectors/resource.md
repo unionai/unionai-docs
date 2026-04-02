@@ -1,6 +1,6 @@
 ---
 title: Resource
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -25,6 +25,7 @@ Attributes
         The custom info of the job. For example, the job config.
 
 
+## Parameters
 
 ```python
 class Resource(

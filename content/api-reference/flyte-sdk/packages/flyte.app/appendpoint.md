@@ -1,6 +1,6 @@
 ---
 title: AppEndpoint
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -16,6 +16,7 @@ an upstream app, given by a specific app name. This gives the app access to
 the upstream app's endpoint as a public or private url.
 
 
+## Parameters
 
 ```python
 class AppEndpoint(

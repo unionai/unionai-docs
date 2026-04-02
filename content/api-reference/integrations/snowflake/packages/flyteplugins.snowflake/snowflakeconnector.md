@@ -1,6 +1,6 @@
 ---
 title: SnowflakeConnector
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -43,6 +43,8 @@ Submit a query to Snowflake asynchronously.
 | `snowflake_private_key_passphrase` | `typing.Optional[str]` | The passphrase for the private key set as a Flyte secret, if any. |
 | `kwargs` | `**kwargs` | |
 
+**Returns:** A SnowflakeJobMetadata object containing the query ID and link to the query dashboard.
+
 ### delete()
 
 ```python
@@ -84,6 +86,8 @@ Poll the status of a Snowflake query.
 | `snowflake_private_key` | `typing.Optional[str]` | The private key content set as a Flyte secret. |
 | `snowflake_private_key_passphrase` | `typing.Optional[str]` | The passphrase for the private key set as a Flyte secret, if any. |
 | `kwargs` | `**kwargs` | |
+
+**Returns:** A Resource object containing the query results and a link to the query dashboard.
 
 ### get_logs()
 

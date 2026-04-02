@@ -1,6 +1,6 @@
 ---
 title: RayJobConfig
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -8,6 +8,8 @@ layout: py_api
 # RayJobConfig
 
 **Package:** `flyteplugins.ray`
+
+## Parameters
 
 ```python
 class RayJobConfig(

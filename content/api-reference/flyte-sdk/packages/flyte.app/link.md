@@ -1,6 +1,6 @@
 ---
 title: Link
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,6 +11,8 @@ layout: py_api
 
 Custom links to add to the app
 
+
+## Parameters
 
 ```python
 class Link(

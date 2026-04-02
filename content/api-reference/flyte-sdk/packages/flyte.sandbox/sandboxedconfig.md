@@ -1,6 +1,6 @@
 ---
 title: SandboxedConfig
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,6 +11,8 @@ layout: py_api
 
 Configuration for a sandboxed task executed via Monty.
 
+
+## Parameters
 
 ```python
 class SandboxedConfig(

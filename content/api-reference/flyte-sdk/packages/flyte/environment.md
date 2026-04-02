@@ -1,6 +1,6 @@
 ---
 title: Environment
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -8,6 +8,8 @@ layout: py_api
 # Environment
 
 **Package:** `flyte`
+
+## Parameters
 
 ```python
 class Environment(

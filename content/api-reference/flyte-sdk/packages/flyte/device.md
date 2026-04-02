@@ -1,6 +1,6 @@
 ---
 title: Device
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -15,6 +15,7 @@ param quantity: The number of devices of this type.
 param partition: The partition of the device (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus).
 
 
+## Parameters
 
 ```python
 class Device(

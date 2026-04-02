@@ -51,7 +51,7 @@
 
 [[sdks]]
 package = "flyte"
-install = "flyte[connector,aiosqlite,tui] flyteplugins-union"
+install = "flyte[connector,aiosqlite,tui]"
 parser_package = "flyte"
 generator_name = "flytesdk"
 generator_title = "Flyte SDK"
@@ -135,6 +135,12 @@ package = "flyteplugins-jsonl"
 plugin = "flyteplugins.jsonl"
 title = "JSONL"
 name = "jsonl"
+
+[[plugins]]
+package = "flyteplugins-mlflow"
+plugin = "flyteplugins.mlflow"
+title = "MLflow"
+name = "mlflow"
 
 [[plugins]]
 package = "flyteplugins-openai"

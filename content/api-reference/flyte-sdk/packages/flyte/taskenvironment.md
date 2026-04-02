@@ -1,6 +1,6 @@
 ---
 title: TaskEnvironment
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -9,11 +9,22 @@ layout: py_api
 
 **Package:** `flyte`
 
-Environment class to define a new environment for a set of tasks.
+Define an execution environment for a set of tasks.
 
-Example usage:
+Task configuration in Flyte has three levels (most general to most specific):
+
+1. **TaskEnvironment** — sets defaults for all tasks in the environment
+2. **@env.task decorator** — overrides per-task settings
+3. **task.override()** — overrides at invocation time
+
+For shared parameters, the more specific level overrides the more general one.
+
 ```python
-env = flyte.TaskEnvironment(name="my_env", image="my_image", resources=Resources(cpu="1", memory="1Gi"))
+env = flyte.TaskEnvironment(
+    name="my_env",
+    image=flyte.Image.from_debian_base(python="3.12").with_pip_packages("pandas"),
+    resources=flyte.Resources(cpu="1", memory="1Gi"),
+)
 
 @env.task
 async def my_task():
@@ -21,6 +32,8 @@ async def my_task():
 ```
 
 
+
+## Parameters
 
 ```python
 class TaskEnvironment(
@@ -41,19 +54,19 @@ class TaskEnvironment(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | Name of the environment |
-| `depends_on` | `List[Environment]` | Environment dependencies to hint, so when you deploy the environment, the dependencies are also deployed. This is useful when you have a set of environments that depend on each other. |
-| `pod_template` | `Optional[Union[str, PodTemplate]]` | Optional pod template to use for tasks in this environment. If not set, the default pod template will be used. |
-| `description` | `Optional[str]` | |
-| `secrets` | `Optional[SecretRequest]` | Secrets to inject into the environment. |
-| `env_vars` | `Optional[Dict[str, str]]` | Environment variables to set for the environment. |
-| `resources` | `Optional[Resources]` | Resources to allocate for the environment. |
-| `interruptible` | `bool` | |
-| `image` | `Union[str, Image, Literal['auto'], None]` | Docker image to use for the environment. If set to "auto", will use the default image. |
-| `cache` | `CacheRequest` | Cache policy for the environment. |
-| `reusable` | `ReusePolicy \| None` | Reuse policy for the environment, if set, a python process may be reused for multiple tasks. |
-| `plugin_config` | `Optional[Any]` | Optional plugin configuration for custom task types. If set, all tasks in this environment will use the specified plugin configuration. |
-| `queue` | `Optional[str]` | Optional queue name to use for tasks in this environment. If not set, the default queue will be used. |
+| `name` | `str` | Name of the environment (required). Must be snake_case or kebab-case. TaskEnvironment level only. |
+| `depends_on` | `List[Environment]` | List of other environments this one depends on. Used at deploy time to ensure dependencies are also deployed. TaskEnvironment level only. |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` | Kubernetes pod template for advanced configuration (sidecars, volumes, etc.). Also settable in `@env.task` and `task.override`. |
+| `description` | `Optional[str]` | Human-readable description (max 255 characters). TaskEnvironment level only. |
+| `secrets` | `Optional[SecretRequest]` | Secrets to inject. Overridable via `task.override(secrets=...)` when not using reusable containers. |
+| `env_vars` | `Optional[Dict[str, str]]` | Environment variables as `dict[str, str]`. Overridable via `task.override(env_vars=...)` when not using reusable containers. |
+| `resources` | `Optional[Resources]` | Compute resources (CPU, memory, GPU, disk). Overridable via `task.override(resources=...)` when not using reusable containers. |
+| `interruptible` | `bool` | Whether tasks can run on spot/preemptible instances. Also settable in `@env.task` and `task.override`. |
+| `image` | `Union[str, Image, Literal['auto'], None]` | Docker image for the environment. Can be a string (image URI), an `Image` object, or `"auto"` to use the default image. TaskEnvironment level only. |
+| `cache` | `CacheRequest` | Cache policy — `"auto"`, `"override"`, `"disable"`, or a `Cache` object. Also settable in `@env.task(cache=...)` and `task.override(cache=...)`. |
+| `reusable` | `ReusePolicy \| None` | `ReusePolicy` for container reuse. Also overridable via `task.override(reusable=...)`. |
+| `plugin_config` | `Optional[Any]` | Plugin configuration for custom task types (e.g., Ray, Spark). Cannot be combined with `reusable`. TaskEnvironment level only. |
+| `queue` | `Optional[str]` | Queue name for scheduling. Also settable in `@env.task` and `task.override`. |
 
 ## Properties
 
@@ -142,7 +155,15 @@ attribute of the other TaskEnvironment.
 |-|-|-|
 | `name` | `str` | The name of the environment. |
 | `tasks` | `TaskTemplate` | The list of tasks to create the environment from. |
-| `depends_on` | `Optional[List['Environment']]` | Optional list of environments that this environment depends on.  :raises ValueError: If tasks are assigned to multiple environments or have different images. :return: The created TaskEnvironment. |
+| `depends_on` | `Optional[List['Environment']]` | Optional list of environments that this environment depends on. |
+
+**Returns:** The created TaskEnvironment.
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `ValueError` | If tasks are assigned to multiple environments or have different images. |
 
 ### task()
 
@@ -180,8 +201,10 @@ Decorate a function to be a task.
 | `report` | `bool` | Optional Whether to generate the html report for the task, defaults to False. |
 | `interruptible` | `bool \| None` | Optional Whether the task is interruptible, defaults to environment setting. |
 | `max_inline_io_bytes` | `int` | Maximum allowed size (in bytes) for all inputs and outputs passed directly to the task (e.g., primitives, strings, dicts). Does not apply to files, directories, or dataframes. |
-| `queue` | `Optional[str]` | Optional queue name to use for this task. If not set, the environment's queue will be used.  :return: A TaskTemplate that can be used to deploy the task. |
+| `queue` | `Optional[str]` | Optional queue name to use for this task. If not set, the environment's queue will be used. |
 | `triggers` | `Tuple[Trigger, ...] \| Trigger` | Optional A tuple of triggers to associate with the task. This allows the task to be run on a schedule or in response to events. Triggers can be defined using the `flyte.trigger` module. |
 | `links` | `Tuple[Link, ...] \| Link` | Optional A tuple of links to associate with the task. Links can be used to provide additional context or information about the task. Links should implement the `flyte.Link` protocol |
 | `task_resolver` | `Any \| None` | |
+
+**Returns:** A TaskTemplate that can be used to deploy the task.
 

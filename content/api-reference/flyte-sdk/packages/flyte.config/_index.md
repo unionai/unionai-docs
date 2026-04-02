@@ -1,6 +1,6 @@
 ---
 title: flyte.config
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
@@ -21,7 +21,7 @@ sidebar_expanded: true
 | Method | Description |
 |-|-|
 | [`auto()`](#auto) | Automatically constructs the Config Object. |
-| [`set_if_exists()`](#set_if_exists) | Given a dict ``d`` sets the key ``k`` with value of config ``v``, if the config value ``v`` is set. |
+| [`set_if_exists()`](#set_if_exists) | Given a dict `d` sets the key `k` with value of config `v`, if the config value `v` is set. |
 
 
 ## Methods
@@ -50,7 +50,9 @@ Automatically constructs the Config Object. The order of precedence is as follow
 
 | Parameter | Type | Description |
 |-|-|-|
-| `config_file` | `typing.Union[str, pathlib.Path, ConfigFile, None]` | file path to read the config from, if not specified default locations are searched :return: Config |
+| `config_file` | `typing.Union[str, pathlib.Path, ConfigFile, None]` | file path to read the config from, if not specified default locations are searched |
+
+**Returns:** Config
 
 #### set_if_exists()
 
@@ -61,7 +63,7 @@ def set_if_exists(
     val: typing.Any,
 ) -> dict
 ```
-Given a dict ``d`` sets the key ``k`` with value of config ``v``, if the config value ``v`` is set
+Given a dict `d` sets the key `k` with value of config `v`, if the config value `v` is set
 and return the updated dictionary.
 
 

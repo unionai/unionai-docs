@@ -1,6 +1,6 @@
 ---
 title: TaskContext
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -13,6 +13,8 @@ A context class to hold the current task executions context.
 This can be used to access various contextual parameters in the task execution by the user.
 
 
+
+## Parameters
 
 ```python
 class TaskContext(
@@ -32,6 +34,7 @@ class TaskContext(
     interactive_mode: bool,
     custom_context: Dict[str, str],
     disable_run_cache: bool,
+    in_driver_literal_conversion: bool,
 )
 ```
 | Parameter | Type | Description |
@@ -52,6 +55,7 @@ class TaskContext(
 | `interactive_mode` | `bool` | |
 | `custom_context` | `Dict[str, str]` | Context metadata for the action. If an action receives context, it'll automatically pass it to any actions it spawns. Context will not be used for cache key computation. |
 | `disable_run_cache` | `bool` | |
+| `in_driver_literal_conversion` | `bool` | Set by the runtime during nested-task literal marshalling; type transformers may use it to skip duplicate side effects (e.g. report tabs) outside true task-body I/O. |
 
 ## Methods
 
@@ -67,8 +71,9 @@ class TaskContext(
 def is_in_cluster()
 ```
 Check if the task is running in a cluster.
-:return: bool
 
+
+**Returns:** bool
 
 ### replace()
 

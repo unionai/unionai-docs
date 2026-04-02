@@ -1,6 +1,6 @@
 ---
 title: Action
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -26,6 +26,7 @@ From a datamodel perspective, a Run consists of actions. All actions are linearl
 &lt;/pre&gt;
 
 
+## Parameters
 
 ```python
 class Action(
@@ -44,7 +45,7 @@ class Action(
 |-|-|-|
 | `action_id` | `None` | Get the action ID. |
 | `name` | `None` | Get the name of the action. |
-| `phase` | `None` | Get the phase of the action.  Returns:     The current execution phase as an ActionPhase enum |
+| `phase` | `None` | Get the phase of the action. |
 | `raw_phase` | `None` | Get the raw phase of the action. |
 | `run_name` | `None` | Get the name of the run. |
 | `start_time` | `None` | Get the start time of the action. |
@@ -145,8 +146,8 @@ def get_logs(
 ```
 Get logs for the action as an iterator of strings.
 
-Can be called synchronously (returns ``Iterator[str]``) or asynchronously
-via ``.aio()`` (returns ``AsyncIterator[str]``).
+Can be called synchronously (returns `Iterator[str]`) or asynchronously
+via `.aio()` (returns `AsyncIterator[str]`).
 
 
 
@@ -184,7 +185,9 @@ Get all actions for a given run.
 | `in_phase` | `Tuple[ActionPhase \| str, ...] \| None` | Filter actions by one or more phases. |
 | `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). |
 | `created_at` | `TimeFilter \| None` | Filter actions by creation time range. |
-| `updated_at` | `TimeFilter \| None` | Filter actions by last-update time range. :return: An iterator of actions. |
+| `updated_at` | `TimeFilter \| None` | Filter actions by last-update time range. |
+
+**Returns:** An iterator of actions.
 
 ### show_logs()
 
@@ -229,9 +232,9 @@ def to_dict()
 ```
 Convert the object to a JSON-serializable dictionary.
 
-Returns:
-    dict: A dictionary representation of the object.
 
+
+**Returns:** dict: A dictionary representation of the object.
 
 ### to_json()
 
@@ -240,9 +243,9 @@ def to_json()
 ```
 Convert the object to a JSON string.
 
-Returns:
-    str: A JSON string representation of the object.
 
+
+**Returns:** str: A JSON string representation of the object.
 
 ### wait()
 

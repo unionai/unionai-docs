@@ -1,6 +1,6 @@
 ---
 title: Timeout
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -22,6 +22,8 @@ async def my_task():
     pass
 ```
 
+
+## Parameters
 
 ```python
 class Timeout(

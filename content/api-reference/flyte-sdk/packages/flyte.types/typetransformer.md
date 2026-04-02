@@ -1,6 +1,6 @@
 ---
 title: TypeTransformer
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,6 +12,7 @@ layout: py_api
 Base transformer type that should be implemented for every python native type that can be handled by flytekit
 
 
+## Parameters
 
 ```python
 class TypeTransformer(

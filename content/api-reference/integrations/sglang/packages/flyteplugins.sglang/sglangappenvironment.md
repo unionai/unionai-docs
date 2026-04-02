@@ -1,6 +1,6 @@
 ---
 title: SGLangAppEnvironment
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -14,6 +14,8 @@ App environment backed by SGLang for serving large language models.
 This environment sets up an SGLang server with the specified model and configuration.
 
 
+
+## Parameters
 
 ```python
 class SGLangAppEnvironment(

@@ -1,6 +1,6 @@
 ---
 title: Secret
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -8,6 +8,8 @@ layout: py_api
 # Secret
 
 **Package:** `flyte.remote`
+
+## Parameters
 
 ```python
 class Secret(
@@ -105,7 +107,9 @@ Retrieve a secret by name.
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
-| `name` | `str` | The name of the secret to retrieve. :return: A Secret object. |
+| `name` | `str` | The name of the secret to retrieve. |
+
+**Returns:** A Secret object.
 
 ### listall()
 
@@ -127,7 +131,9 @@ List all secrets in the current project and domain.
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
-| `limit` | `int` | Maximum number of secrets to return per page. :return: An async iterator of Secret objects. |
+| `limit` | `int` | Maximum number of secrets to return per page. |
+
+**Returns:** An async iterator of Secret objects.
 
 ### to_dict()
 
@@ -136,9 +142,9 @@ def to_dict()
 ```
 Convert the object to a JSON-serializable dictionary.
 
-Returns:
-    dict: A dictionary representation of the object.
 
+
+**Returns:** dict: A dictionary representation of the object.
 
 ### to_json()
 
@@ -147,7 +153,7 @@ def to_json()
 ```
 Convert the object to a JSON string.
 
-Returns:
-    str: A JSON string representation of the object.
 
+
+**Returns:** str: A JSON string representation of the object.
 

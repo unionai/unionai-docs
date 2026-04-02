@@ -1,6 +1,6 @@
 ---
 title: App
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -8,6 +8,8 @@ layout: py_api
 # App
 
 **Package:** `flyte.remote`
+
+## Parameters
 
 ```python
 class App(
@@ -22,7 +24,7 @@ class App(
 
 | Property | Type | Description |
 |-|-|-|
-| `deployment_status` | `None` | Get the deployment status of the app Returns: |
+| `deployment_status` | `None` | Get the deployment status of the app |
 | `desired_state` | `None` | Get the desired state of the app. |
 | `endpoint` | `None` | Get the public endpoint URL of the app. |
 | `name` | `None` | Get the name of the app. |
@@ -172,7 +174,9 @@ Get an app by name.
 | `cls` |  | |
 | `name` | `str` | The name of the app. |
 | `project` | `str \| None` | The project of the app. |
-| `domain` | `str \| None` | The domain of the app. :return: The app remote object. |
+| `domain` | `str \| None` | The domain of the app. |
+
+**Returns:** The app remote object.
 
 ### is_active()
 
@@ -241,7 +245,9 @@ Replace an existing app's that matches the given name, with a new spec and optio
 | `reason` | `str` | |
 | `labels` | `Mapping[str, str] \| None` | Optional labels for the new app |
 | `project` | `str \| None` | Optional project for the new app |
-| `domain` | `str \| None` | Optional domain for the new app :return: A new app |
+| `domain` | `str \| None` | Optional domain for the new app |
+
+**Returns:** A new app
 
 ### to_dict()
 
@@ -250,9 +256,9 @@ def to_dict()
 ```
 Convert the object to a JSON-serializable dictionary.
 
-Returns:
-    dict: A dictionary representation of the object.
 
+
+**Returns:** dict: A dictionary representation of the object.
 
 ### to_json()
 
@@ -261,9 +267,9 @@ def to_json()
 ```
 Convert the object to a JSON string.
 
-Returns:
-    str: A JSON string representation of the object.
 
+
+**Returns:** str: A JSON string representation of the object.
 
 ### update()
 

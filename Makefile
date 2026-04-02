@@ -7,6 +7,7 @@ include makefile.inc
 export REPO_ROOT := $(CURDIR)
 export VERSION
 export VARIANTS
+export DEFAULT_VARIANT
 
 PORT ?= 9000
 export PORT
@@ -42,5 +43,13 @@ init-infra:
 update-infra:
 	git submodule update --remote unionai-docs-infra
 	@echo "unionai-docs-infra/ updated to latest. Review and commit the change."
+
+.PHONY: submodule
+submodule:
+	git submodule init && git submodule update
+
+.PHONY: update_submodule
+update_submodule:
+	git submodule update --init --recursive --remote
 
 .DEFAULT_GOAL := usage

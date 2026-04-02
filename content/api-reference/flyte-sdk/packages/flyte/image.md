@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -9,19 +9,45 @@ layout: py_api
 
 **Package:** `flyte`
 
-This is a representation of Container Images, which can be used to create layered images programmatically.
+Container image specification built using a fluent, two-step pattern:
 
-Use by first calling one of the base constructor methods. These all begin with `from` or `default_`
-The image can then be amended with additional layers using the various `with_*` methods.
+1. Create a base image with a `from_*` constructor
+2. Customize with `with_*` methods (each returns a new `Image`)
 
-Invariant for this class: The construction of Image objects must be doable everywhere. That is, if a
-  user has a custom image that is not accessible, calling .with_source_file on a file that doesn't exist, the
-  instantiation of the object itself must still go through. Further, the .identifier property of the image must
-  also still go through. This is because it may have been already built somewhere else.
-  Use validate() functions to check each layer for actual errors. These are invoked at actual
-  build time. See self.id for more information
+```python
+image = (
+    flyte.Image.from_debian_base(python="3.12")
+    .with_pip_packages("pandas", "scikit-learn")
+    .with_apt_packages("curl", "git")
+)
+```
+
+**Base constructors** (`from_*`):
+
+- `from_debian_base()` — Debian-based image with a specified Python version
+- `from_base()` — Any base image by name (e.g., `"python:3.12-slim"`)
+- `from_uv_script()` — Image from a `uv`-compatible script with inline dependencies
+- `from_dockerfile()` — Image from a custom Dockerfile
+- `from_ref_name()` — Reference to a pre-built image by name
+
+**Customization methods** (`with_*`):
+
+- `with_pip_packages()` — Add pip packages
+- `with_apt_packages()` — Add system packages via apt-get
+- `with_commands()` — Run arbitrary shell commands
+- `with_env_vars()` — Set environment variables
+- `with_requirements()` — Install from a requirements.txt file
+- `with_uv_project()` — Install from a uv/pyproject.toml project
+- `with_poetry_project()` — Install from a Poetry project
+- `with_source_folder()` — Include a source directory
+- `with_source_file()` — Include a single source file
+- `with_code_bundle()` — Include a code bundle
+- `with_workdir()` — Set the working directory
+- `with_dockerignore()` — Add a .dockerignore
+- `with_local_v2()` — Configure for local v2 execution
 
 
+## Parameters
 
 ```python
 class Image(
@@ -32,6 +58,7 @@ class Image(
     platform: Tuple[Architecture, ...],
     python_version: Tuple[int, int],
     extendable: bool,
+    _is_flyte_default: bool,
     _ref_name: Optional[str],
     _layers: Tuple[Layer, ...],
     _image_registry_secret: Optional[Secret],
@@ -46,6 +73,7 @@ class Image(
 | `platform` | `Tuple[Architecture, ...]` | |
 | `python_version` | `Tuple[int, int]` | |
 | `extendable` | `bool` | |
+| `_is_flyte_default` | `bool` | |
 | `_ref_name` | `Optional[str]` | |
 | `_layers` | `Tuple[Layer, ...]` | |
 | `_image_registry_secret` | `Optional[Secret]` | |
@@ -73,6 +101,7 @@ class Image(
 | [`with_dockerignore()`](#with_dockerignore) |  |
 | [`with_env_vars()`](#with_env_vars) | Use this method to create a new image with the specified environment variables layered on top of. |
 | [`with_local_v2()`](#with_local_v2) | Use this method to create a new image with the local v2 builder. |
+| [`with_local_v2_plugins()`](#with_local_v2_plugins) | Use this method to create a new image with the local v2 builder. |
 | [`with_pip_packages()`](#with_pip_packages) | Use this method to create a new image with the specified pip packages layered on top of the current image. |
 | [`with_poetry_project()`](#with_poetry_project) | Use this method to create a new image with the specified pyproject. |
 | [`with_requirements()`](#with_requirements) | Use this method to create a new image with the specified requirements file layered on top of the current image. |
@@ -107,7 +136,7 @@ Use this method to clone the current image and change the registry and name
 | `base_image` | `Optional[str]` | Base image to use for the image |
 | `python_version` | `Optional[Tuple[int, int]]` | Python version for the image, if not specified, will use the current Python version |
 | `addl_layer` | `Optional[Layer]` | Additional layer to add to the image. This will be added to the end of the layers. |
-| `extendable` | `Optional[bool]` | Whether the image is extendable by other images. If True, the image can be used as a base image for other images, and additional layers can be added on top of it. If False, the image cannot be used as a base image for other images, and additional layers cannot be added on top of it. If None (default), defaults to False for safety. :return: |
+| `extendable` | `Optional[bool]` | Whether the image is extendable by other images. If True, the image can be used as a base image for other images, and additional layers can be added on top of it. If False, the image cannot be used as a base image for other images, and additional layers cannot be added on top of it. If None (default), defaults to False for safety. |
 
 ### from_base()
 
@@ -122,7 +151,7 @@ Use this method to start with a pre-built base image. This image must already ex
 
 | Parameter | Type | Description |
 |-|-|-|
-| `image_uri` | `str` | The full URI of the image, in the format &lt;registry&gt;/&lt;name&gt; :return: |
+| `image_uri` | `str` | The full URI of the image, in the format &lt;registry&gt;/&lt;name&gt; |
 
 ### from_debian_base()
 
@@ -150,7 +179,9 @@ Default images are multi-arch amd/arm64
 | `registry` | `Optional[str]` | Registry to use for the image |
 | `registry_secret` | `Optional[str \| Secret]` | Secret to use to pull/push the private image. |
 | `name` | `Optional[str]` | Name of the image if you want to override the default name |
-| `platform` | `Optional[Tuple[Architecture, ...]]` | Platform to use for the image, default is linux/amd64, use tuple for multiple values Example: ("linux/amd64", "linux/arm64")  :return: Image |
+| `platform` | `Optional[Tuple[Architecture, ...]]` | Platform to use for the image, default is linux/amd64, use tuple for multiple values Example: ("linux/amd64", "linux/arm64") |
+
+**Returns:** Image
 
 ### from_dockerfile()
 
@@ -176,7 +207,7 @@ context for the builder will be the directory where the dockerfile is located.
 | `file` | `Path` | path to the dockerfile |
 | `registry` | `str` | registry to use for the image |
 | `name` | `str` | name of the image |
-| `platform` | `Union[Architecture, Tuple[Architecture, ...], None]` | architecture to use for the image, default is linux/amd64, use tuple for multiple values Example: ("linux/amd64", "linux/arm64")  :return: |
+| `platform` | `Union[Architecture, Tuple[Architecture, ...], None]` | architecture to use for the image, default is linux/amd64, use tuple for multiple values Example: ("linux/amd64", "linux/arm64") |
 
 ### from_ref_name()
 
@@ -211,7 +242,6 @@ It uses the header of the script to determine the python version, dependencies t
 The script must be a valid uv script, otherwise an error will be raised.
 
 Usually the header of the script will look like this:
-Example:
 ```python
 #!/usr/bin/env -S uv run --script
 # /// script
@@ -222,6 +252,7 @@ Example:
 
 For more information on the uv script format, see the documentation:
 [UV: Declaring script dependencies](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies)
+
 
 
 
@@ -238,6 +269,8 @@ For more information on the uv script format, see the documentation:
 | `extra_args` | `Optional[str]` | extra arguments to pass to pip install, default is None |
 | `platform` | `Optional[Tuple[Architecture, ...]]` | architecture to use for the image, default is linux/amd64, use tuple for multiple values |
 | `secret_mounts` | `Optional[SecretRequest]` | |
+
+**Returns:** Image
 
 ### validate()
 
@@ -259,7 +292,9 @@ Use this method to create a new image with the specified apt packages layered on
 | Parameter | Type | Description |
 |-|-|-|
 | `packages` | `str` | list of apt packages to install |
-| `secret_mounts` | `Optional[SecretRequest]` | list of secret mounts to use for the build process. :return: Image |
+| `secret_mounts` | `Optional[SecretRequest]` | list of secret mounts to use for the build process. |
+
+**Returns:** Image
 
 ### with_code_bundle()
 
@@ -279,7 +314,9 @@ When the runner's copy_style is not "none", this is a no-op.
 | Parameter | Type | Description |
 |-|-|-|
 | `copy_style` | `Literal['loaded_modules', 'all']` | Which files to copy into the image. "loaded_modules" copies only imported Python modules. "all" copies all files from root_dir. |
-| `dst` | `str` | Destination directory in the container. Defaults to working dir. :return: Image |
+| `dst` | `str` | Destination directory in the container. Defaults to working dir. |
+
+**Returns:** Image
 
 ### with_commands()
 
@@ -297,7 +334,9 @@ Be sure not to use RUN in your command.
 | Parameter | Type | Description |
 |-|-|-|
 | `commands` | `List[str]` | list of commands to run |
-| `secret_mounts` | `Optional[SecretRequest]` | list of secret mounts to use for the build process. :return: Image |
+| `secret_mounts` | `Optional[SecretRequest]` | list of secret mounts to use for the build process. |
+
+**Returns:** Image
 
 ### with_dockerignore()
 
@@ -324,7 +363,9 @@ the current image. Cannot be used in conjunction with conda
 
 | Parameter | Type | Description |
 |-|-|-|
-| `env_vars` | `Dict[str, str]` | dictionary of environment variables to set :return: Image |
+| `env_vars` | `Dict[str, str]` | dictionary of environment variables to set |
+
+**Returns:** Image
 
 ### with_local_v2()
 
@@ -334,8 +375,27 @@ def with_local_v2()
 Use this method to create a new image with the local v2 builder
 This will override any existing builder
 
-:return: Image
 
+
+**Returns:** Image
+
+### with_local_v2_plugins()
+
+```python
+def with_local_v2_plugins(
+    plugins: str | list[str] | None,
+) -> Image
+```
+Use this method to create a new image with the local v2 builder
+This will override any existing builder
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `plugins` | `str \| list[str] \| None` | plugin name or list of plugin names to install, default is None, e.g. flyteplugins-hitl, flyteplugins-vllm, flyteplugins-sglang, etc. |
+
+**Returns:** Image
 
 ### with_pip_packages()
 
@@ -352,7 +412,6 @@ def with_pip_packages(
 Use this method to create a new image with the specified pip packages layered on top of the current image
 Cannot be used in conjunction with conda
 
-Example:
 ```python
 @flyte.task(image=(flyte.Image.from_debian_base().with_pip_packages("requests", "numpy")))
 def my_task(x: int) -> int:
@@ -363,7 +422,6 @@ def my_task(x: int) -> int:
 To mount secrets during the build process to download private packages, you can use the `secret_mounts`.
 In the below example, "GITHUB_PAT" will be mounted as env var "GITHUB_PAT",
  and "apt-secret" will be mounted at /etc/apt/apt-secret.
-Example:
 ```python
 private_package = "git+https://$GITHUB_PAT@github.com/flyteorg/flytex.git@2e20a2acebfc3877d84af643fdd768edea41d533"
 @flyte.task(
@@ -386,7 +444,9 @@ def my_task(x: int) -> int:
 | `extra_index_urls` | `Union[str, List[str], Tuple[str, ...], None]` | extra index urls to use for pip install, default is None |
 | `pre` | `bool` | whether to allow pre-release versions, default is False |
 | `extra_args` | `Optional[str]` | extra arguments to pass to pip install, default is None |
-| `secret_mounts` | `Optional[SecretRequest]` | list of secret to mount for the build process. :return: Image |
+| `secret_mounts` | `Optional[SecretRequest]` | list of secret to mount for the build process. |
+
+**Returns:** Image
 
 ### with_poetry_project()
 
@@ -418,7 +478,9 @@ into the image.
 | `poetry_lock` | `Path \| None` | Path to the poetry.lock file. If not specified, the default is the file named 'poetry.lock' in the same directory as `pyproject_file` (pyproject.parent / "poetry.lock"). |
 | `extra_args` | `Optional[str]` | Extra arguments to pass through to the package installer/resolver, default is None. |
 | `secret_mounts` | `Optional[SecretRequest]` | Secrets to make available during dependency resolution/build (e.g., private indexes). |
-| `project_install_mode` | `typing.Literal['dependencies_only', 'install_project']` | whether to install the project as a package or only dependencies, default is "dependencies_only" :return: Image |
+| `project_install_mode` | `typing.Literal['dependencies_only', 'install_project']` | whether to install the project as a package or only dependencies, default is "dependencies_only" |
+
+**Returns:** Image
 
 ### with_requirements()
 
@@ -444,7 +506,7 @@ Cannot be used in conjunction with conda
 | `extra_index_urls` | `Union[str, List[str], Tuple[str, ...], None]` | extra index urls to use for pip install, default is None |
 | `pre` | `bool` | if True, install pre-release packages, default is False |
 | `extra_args` | `Optional[str]` | extra arguments to pass to pip install, default is None |
-| `secret_mounts` | `Optional[SecretRequest]` | list of secret to mount for the build process. :return: |
+| `secret_mounts` | `Optional[SecretRequest]` | list of secret to mount for the build process. |
 
 ### with_source_file()
 
@@ -462,7 +524,9 @@ If dest is not specified, it will be copied to the working directory of the imag
 | Parameter | Type | Description |
 |-|-|-|
 | `src` | `typing.Union[Path, typing.List[Path]]` | file or list of files from the build context to be copied |
-| `dst` | `str` | destination folder in the image :return: Image |
+| `dst` | `str` | destination folder in the image |
+
+**Returns:** Image
 
 ### with_source_folder()
 
@@ -482,7 +546,9 @@ If dest is not specified, it will be copied to the working directory of the imag
 |-|-|-|
 | `src` | `Path` | root folder of the source code from the build context to be copied |
 | `dst` | `str` | destination folder in the image |
-| `copy_contents_only` | `bool` | If True, will copy the contents of the source folder to the destination folder, instead of the folder itself. Default is False. :return: Image |
+| `copy_contents_only` | `bool` | If True, will copy the contents of the source folder to the destination folder, instead of the folder itself. Default is False. |
+
+**Returns:** Image
 
 ### with_uv_project()
 
@@ -518,7 +584,9 @@ If `project_install_mode` is "install_project", it will also copy directory
 | `pre` | `bool` | whether to allow pre-release versions, default is False |
 | `extra_args` | `Optional[str]` | extra arguments to pass to pip install, default is None |
 | `secret_mounts` | `Optional[SecretRequest]` | list of secret mounts to use for the build process. |
-| `project_install_mode` | `typing.Literal['dependencies_only', 'install_project']` | whether to install the project as a package or only dependencies, default is "dependencies_only" :return: Image |
+| `project_install_mode` | `typing.Literal['dependencies_only', 'install_project']` | whether to install the project as a package or only dependencies, default is "dependencies_only" |
+
+**Returns:** Image
 
 ### with_workdir()
 
@@ -534,5 +602,5 @@ This will override any existing working directory
 
 | Parameter | Type | Description |
 |-|-|-|
-| `workdir` | `str` | working directory to use :return: |
+| `workdir` | `str` | working directory to use |
 

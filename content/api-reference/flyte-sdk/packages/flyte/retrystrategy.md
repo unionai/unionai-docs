@@ -1,6 +1,6 @@
 ---
 title: RetryStrategy
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,7 +11,6 @@ layout: py_api
 
 Retry strategy for the task or task environment. Retry strategy is optional or can be a simple number of retries.
 
-Example:
 - This will retry the task 5 times.
 ```
 @task(retries=5)
@@ -26,6 +25,8 @@ def my_task():
 ```
 
 
+
+## Parameters
 
 ```python
 class RetryStrategy(

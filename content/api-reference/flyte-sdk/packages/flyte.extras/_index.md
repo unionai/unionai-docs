@@ -1,13 +1,12 @@
 ---
 title: flyte.extras
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 sidebar_expanded: true
 ---
 
 # flyte.extras
-
 
 Flyte extras package.
 This package provides various utilities that make it possible to build highly customized workflows.
@@ -20,14 +19,13 @@ This package provides various utilities that make it possible to build highly cu
                    producers through a single async processing function.  DynamicBatcher is the
                    general-purpose base; TokenBatcher is a convenience subclass for token-budgeted
                    LLM inference with reusable containers.
-
 ## Directory
 
 ### Classes
 
 | Class | Description |
 |-|-|
-| [`BatchStats`](../flyte.extras/batchstats) | Monitoring statistics exposed by :attr:`DynamicBatcher. |
+| [`BatchStats`](../flyte.extras/batchstats) | Monitoring statistics exposed by `DynamicBatcher. |
 | [`ContainerTask`](../flyte.extras/containertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
 | [`DynamicBatcher`](../flyte.extras/dynamicbatcher) | Batches records from many concurrent producers and runs them through. |
 | [`Prompt`](../flyte.extras/prompt) | Simple prompt record with built-in token estimation. |

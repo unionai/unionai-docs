@@ -1,6 +1,6 @@
 ---
 title: InitializationError
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,6 +12,7 @@ layout: py_api
 This error is raised when the Union system is tried to access without being initialized.
 
 
+## Parameters
 
 ```python
 class InitializationError(

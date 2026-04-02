@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.union.cli
-version: 0.2.1
+version: 0.2.2
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -38,4 +38,6 @@ Open an editor and retry or save to file on failure.
 | `apply_fn` |  | Callable that takes the edited YAML string and applies it. Should raise on failure. |
 | `console` |  | Rich console for output. |
 | `noun` | `str` | Name of the resource for messages (e.g. "role", "policy"). |
+
+**Returns:** The result of apply_fn on success, or None if cancelled.
 

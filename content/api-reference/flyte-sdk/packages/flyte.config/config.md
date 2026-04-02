@@ -1,6 +1,6 @@
 ---
 title: Config
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -17,6 +17,7 @@ this object holds all the config necessary to
 3. Runtime of a task
 
 
+## Parameters
 
 ```python
 class Config(
@@ -59,7 +60,9 @@ Automatically constructs the Config Object. The order of precedence is as follow
 
 | Parameter | Type | Description |
 |-|-|-|
-| `config_file` | `typing.Union[str, pathlib.Path, ConfigFile, None]` | file path to read the config from, if not specified default locations are searched :return: Config |
+| `config_file` | `typing.Union[str, pathlib.Path, ConfigFile, None]` | file path to read the config from, if not specified default locations are searched |
+
+**Returns:** Config
 
 ### with_params()
 

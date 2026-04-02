@@ -1,6 +1,6 @@
 ---
 title: Timeouts
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -11,11 +11,9 @@ layout: py_api
 
 Timeout configuration for the application.
 
-Attributes:
-    request: Timeout for requests to the application. Can be an int
-        (seconds) or timedelta. Must not exceed 1 hour.
 
 
+## Parameters
 
 ```python
 class Timeouts(
@@ -24,5 +22,5 @@ class Timeouts(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `request` | `int \| datetime.timedelta \| None` | |
+| `request` | `int \| datetime.timedelta \| None` | Timeout for requests to the application. Can be an int (seconds) or timedelta. Must not exceed 1 hour. |
 

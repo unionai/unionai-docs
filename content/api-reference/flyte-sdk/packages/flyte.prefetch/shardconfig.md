@@ -1,6 +1,6 @@
 ---
 title: ShardConfig
-version: 2.0.7
+version: 2.1.0
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -12,6 +12,8 @@ layout: py_api
 Configuration for model sharding.
 
 
+
+## Parameters
 
 ```python
 class ShardConfig(
