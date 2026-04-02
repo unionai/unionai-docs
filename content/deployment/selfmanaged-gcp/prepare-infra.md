@@ -1,18 +1,16 @@
 ---
-title: Data plane setup on GCP
-weight: 4
+title: Prepare infrastructure
+weight: 1
 variants: -flyte -byoc +selfmanaged
 ---
 
-# Data plane setup on GKE (GCP)
+# Prepare infrastructure
 
-{{< key product_name >}}'s modular architecture allows for great flexibility and control.
-The customer can decide how many clusters to have, their shape, and who has access to what.
-All communication is encrypted.  The Union architecture is described on the [Architecture](./architecture/_index) page.
+This page walks you through creating the GCP resources needed for a Union data plane. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-gcp/deploy-dataplane).
 
 ## GKE Cluster
 
-You need a GKE cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](./cluster-recommendations) for networking and node pool guidance.
+You need a GKE cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
 
 If you don't already have a cluster, create one with `gcloud`:
 
@@ -102,7 +100,7 @@ gcloud storage buckets create gs://${BUCKET_PREFIX}-fast-reg \
 
 ### CORS Configuration
 
-To enable the [Code Viewer](./configuration/code-viewer) in the Union UI, configure a CORS policy on your buckets. This allows the UI to securely fetch code bundles directly from GCS.
+To enable the [Code Viewer](../configuration/code-viewer) in the Union UI, configure a CORS policy on your buckets. This allows the UI to securely fetch code bundles directly from GCS.
 
 Save the following as `cors.json`:
 
@@ -126,7 +124,7 @@ gcloud storage buckets update gs://${BUCKET_PREFIX}-fast-reg --cors-file=cors.js
 
 ### Data Retention
 
-Union recommends using Lifecycle Policy on these buckets to manage storage costs. See [Data retention policy](./configuration/data-retention) for more information.
+Union recommends using Lifecycle Policy on these buckets to manage storage costs. See [Data retention policy](../configuration/data-retention) for more information.
 
 ## Artifact Registry
 

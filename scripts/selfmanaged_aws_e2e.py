@@ -217,12 +217,15 @@ class Config:
 
     # EKS
     eks_k8s_version: str = "1.31"
-    eks_node_type: str = "m5.xlarge"
+    eks_node_type: str = "m5.2xlarge"
     eks_node_count: int = 3
 
     # Helm
     helm_namespace: str = "union"
     helm_release_name: str = "union"
+    helm_chart_repo: str = "https://github.com/unionai/helm-charts.git"
+    helm_chart_branch: str = "enghabu/sane-defaults"  # git branch; empty = use published release
+    helm_chart_path: str = "charts/dataplane"  # path inside the repo
 
     # Timeouts (seconds)
     cluster_healthy_timeout: int = 300
@@ -474,10 +477,6 @@ def provision_dataplane(cfg: Config) -> InfraState:
 
     state = InfraState()
 
-    # Helm repo
-    _sh("helm repo add unionai https://unionai.github.io/helm-charts/", check=False)
-    _sh("helm repo update")
-
     # Run uctl in a temp directory so generated files don't clobber anything
     import glob
     import tempfile
@@ -485,9 +484,15 @@ def provision_dataplane(cfg: Config) -> InfraState:
     work_dir = tempfile.mkdtemp(prefix="union-e2e-provision-")
     print(f"  Provisioning in temp dir: {work_dir}")
 
+    # config init may open a browser for OAuth — run without capturing so it
+    # can interact with the terminal.
+    _sh(
+        f"cd {work_dir} && uctl config init --host={cfg.control_plane_url}",
+        capture=False,
+    )
+
     output = _sh(
         f"cd {work_dir} && "
-        f"uctl config init --host={cfg.control_plane_url} && "
         f"uctl selfserve provision-dataplane-resources "
         f"--clusterName {cfg.cluster_name} --provider aws"
     )
@@ -788,9 +793,25 @@ def patch_and_install(cfg: Config, state: InfraState) -> InfraState:
     print(f"  storage.region = {cfg.aws_region}")
     print(f"  role-arn = {state.iam_role_arn}")
 
+    # Resolve chart reference: local clone from branch, or published repo
+    if cfg.helm_chart_branch:
+        import tempfile as _tmpmod
+
+        helm_clone_dir = _tmpmod.mkdtemp(prefix="union-e2e-helm-")
+        _sh(
+            f"git clone --depth 1 --branch {cfg.helm_chart_branch} "
+            f"{cfg.helm_chart_repo} {helm_clone_dir}"
+        )
+        chart_ref = f"{helm_clone_dir}/{cfg.helm_chart_path}"
+        _sh(f"helm dependency update {chart_ref}", check=False)
+    else:
+        _sh("helm repo add unionai https://unionai.github.io/helm-charts/", check=False)
+        _sh("helm repo update")
+        chart_ref = "unionai/dataplane"
+
     # Helm install (upgrade --install for idempotency)
     _sh(
-        f"helm upgrade --install {cfg.helm_release_name} unionai/dataplane "
+        f"helm upgrade --install {cfg.helm_release_name} {chart_ref} "
         f'-f "{f}" '
         f"-n {cfg.helm_namespace} --create-namespace --wait --timeout 10m"
     )
@@ -912,6 +933,18 @@ def run_example_workflow(cfg: Config) -> bool:
 @env.task
 def teardown(cfg: Config, state: InfraState) -> str:
     """Tear down all created resources in reverse order."""
+    print("\n--- Teardown state ---")
+    print(f"  eks_created:          {state.eks_created}  (cluster: {cfg.eks_cluster_name})")
+    print(f"  s3_metadata_created:  {state.s3_metadata_created}  (bucket: {cfg.s3_metadata_bucket})")
+    print(f"  s3_fast_reg_created:  {state.s3_fast_reg_created}  (bucket: {cfg.s3_fast_reg_bucket})")
+    print(f"  ecr_created:          {state.ecr_created}  (repo: {cfg.ecr_repo_name})")
+    print(f"  iam_role_created:     {state.iam_role_created}  (role: {cfg.iam_role_name})")
+    print(f"  iam_role_arn:         {state.iam_role_arn}")
+    print(f"  helm_release:         {cfg.helm_release_name} (ns: {cfg.helm_namespace})")
+    print(f"  values_file_path:     {state.values_file_path}")
+    print(f"  skip_teardown:        {cfg.skip_teardown}")
+    print("---")
+
     if cfg.skip_teardown:
         print("skip_teardown=True — leaving all resources in place.")
         return "skipped"
@@ -927,7 +960,7 @@ def teardown(cfg: Config, state: InfraState) -> str:
             errors.append("Helm uninstall failed")
 
     # IAM cleanup
-    if state.iam_role_arn:
+    if _sh_ok(f"aws iam get-role --role-name {cfg.iam_role_name}"):
         print(f"Cleaning up IAM role {cfg.iam_role_name}...")
 
         # Detach policies
@@ -956,31 +989,39 @@ def teardown(cfg: Config, state: InfraState) -> str:
             _sh(f"aws iam delete-policy --policy-arn {policy_arn}", check=False)
 
     # ECR
-    if state.ecr_created:
+    if _sh_ok(
+        f"aws ecr describe-repositories --repository-names {cfg.ecr_repo_name} "
+        f"--region {cfg.aws_region}"
+    ):
         print(f"Deleting ECR repository {cfg.ecr_repo_name}...")
         _sh(
             f"aws ecr delete-repository --repository-name {cfg.ecr_repo_name} "
             f"--region {cfg.aws_region} --force",
             check=False,
         )
+    else:
+        print(f"ECR repo {cfg.ecr_repo_name} not found, skipping.")
 
     # S3
-    for bucket, created in [
-        (cfg.s3_metadata_bucket, state.s3_metadata_created),
-        (cfg.s3_fast_reg_bucket, state.s3_fast_reg_created),
-    ]:
-        if created:
+    for bucket in [cfg.s3_metadata_bucket, cfg.s3_fast_reg_bucket]:
+        if _sh_ok(f"aws s3api head-bucket --bucket {bucket}"):
             print(f"Deleting S3 bucket {bucket}...")
             _sh(f"aws s3 rb s3://{bucket} --force --region {cfg.aws_region}", check=False)
+        else:
+            print(f"S3 bucket {bucket} not found, skipping.")
 
     # EKS cluster
-    if state.eks_created:
+    if _sh_ok(
+        f"aws eks describe-cluster --name {cfg.eks_cluster_name} --region {cfg.aws_region}"
+    ):
         print(f"Deleting EKS cluster {cfg.eks_cluster_name} (takes ~10-15 min)...")
         _sh(
             f"eksctl delete cluster --name {cfg.eks_cluster_name} "
             f"--region {cfg.aws_region} --wait",
             check=False,
         )
+    else:
+        print(f"EKS cluster {cfg.eks_cluster_name} not found, skipping.")
 
     if errors:
         return f"teardown completed with errors: {'; '.join(errors)}"
