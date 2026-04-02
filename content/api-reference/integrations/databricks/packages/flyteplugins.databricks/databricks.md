@@ -1,6 +1,6 @@
 ---
 title: Databricks
-version: 2.1.3.dev1+ge23e739d5
+version: 2.1.2
 variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
