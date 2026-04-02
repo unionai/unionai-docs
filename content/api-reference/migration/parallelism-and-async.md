@@ -245,5 +245,5 @@ async def main(x: int) -> str:
 `await` means "wait for this to finish before continuing." Sequential `await` calls behave the same as sequential task calls in Flyte 1 workflows.
 {{< /note >}}
 
-For full details on async patterns, see [Asynchronous model](../../user-guide/flyte-2/async).
-For full details on parallel fanout, see [Fanout](../../user-guide/task-programming/fanout).
+For full details on async patterns, see [Asynchronous model](../../../user-guide/flyte-2/async).
+For full details on parallel fanout, see [Fanout](../../../user-guide/task-programming/fanout).
