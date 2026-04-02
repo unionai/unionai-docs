@@ -29,6 +29,7 @@ Union.ai has no access to your cluster, providing the highest level of data isol
 
 After initial setup, configure platform features on your cluster:
 
+- [Authentication](./configuration/authentication)
 - [Image builder](./configuration/image-builder)
 - [Multi-cluster](./configuration/multi-cluster)
 - [Node pools](./configuration/node-pools)
