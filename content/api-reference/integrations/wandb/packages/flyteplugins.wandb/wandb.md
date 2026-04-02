@@ -1,7 +1,7 @@
 ---
 title: Wandb
-version: 2.1.0
-variants: +flyte +byoc +selfmanaged
+version: 2.1.2
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
