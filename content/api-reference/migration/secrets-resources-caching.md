@@ -1,7 +1,7 @@
 ---
 title: Secrets, resources, and caching
 weight: 5
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Secrets, resources, and caching
@@ -106,7 +106,7 @@ flyte get secret
 flyte delete secret MY_SECRET_KEY
 ```
 
-For full details on secrets, see [Secrets](../../user-guide/task-configuration/secrets).
+For full details on secrets, see [Secrets](../../../user-guide/task-configuration/secrets).
 
 ## Resources
 
@@ -214,7 +214,7 @@ env = flyte.TaskEnvironment(
 | `ephemeral_storage="10Gi"` | `disk="10Gi"` | Renamed |
 | N/A | `shm="auto"` | New: shared memory |
 
-For full details on resources, see [Resources](../../user-guide/task-configuration/resources).
+For full details on resources, see [Resources](../../../user-guide/task-configuration/resources).
 
 ## Caching
 
@@ -283,4 +283,4 @@ def advanced_cached_task(x: int, debug: bool = False) -> int:
 | `"override"` | Always execute and overwrite cache |
 | `"disable"` | No caching (default for TaskEnvironment) |
 
-For full details on caching, see [Caching](../../user-guide/task-configuration/caching).
+For full details on caching, see [Caching](../../../user-guide/task-configuration/caching).

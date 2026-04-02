@@ -1,7 +1,7 @@
 ---
 title: Configuration and CLI
 weight: 3
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Configuration and CLI
@@ -233,4 +233,4 @@ flyte deploy [OPTIONS] <file> [ENV_NAME]
   --image [NAME=]URI                       # Image override
 ```
 
-For full CLI reference, see [Flyte CLI](../flyte-cli).
+For full CLI reference, see [Flyte CLI](../../flyte-cli).

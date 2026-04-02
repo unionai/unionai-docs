@@ -1,6 +1,6 @@
 ---
 title: uctl get echo
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl get echo

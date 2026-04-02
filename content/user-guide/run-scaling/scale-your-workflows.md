@@ -1,7 +1,7 @@
 ---
 title: Scale your workflows
 weight: 3
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Scale your workflows

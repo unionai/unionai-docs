@@ -1,7 +1,7 @@
 ---
 title: Organizational and physical security practices
 weight: 10
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Organizational \and physical security practices

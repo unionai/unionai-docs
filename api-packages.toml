@@ -61,7 +61,7 @@ version_file = "content/api-reference/flyte-sdk/_index.md"
 weight = 4
 expanded = true
 no_flatten = true
-variants = "+flyte +byoc +selfmanaged"
+variants = "+flyte +union"
 
 # === CLIs ===
 
@@ -71,7 +71,7 @@ package = "flyte"
 import = "flyte"
 include = "include/cli.flyte.md"
 output_file = "content/api-reference/flyte-cli.md"
-gen_command = "flyte gen docs --type markdown --plugin-variants 'byoc selfmanaged'"
+gen_command = "flyte gen docs --type markdown --plugin-variants 'union'"
 
 [[clis]]
 name = "uctl"

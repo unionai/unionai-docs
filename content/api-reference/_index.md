@@ -1,7 +1,7 @@
 ---
 title: Reference
 weight: 3
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 top_menu: true
 sidebar_expanded: true
 ---

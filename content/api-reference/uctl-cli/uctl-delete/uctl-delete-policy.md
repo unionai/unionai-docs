@@ -1,6 +1,6 @@
 ---
 title: uctl delete policy
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl delete policy

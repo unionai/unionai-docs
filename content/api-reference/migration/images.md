@@ -1,7 +1,7 @@
 ---
 title: Container images
 weight: 2
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Container images
@@ -172,4 +172,4 @@ image = Image.from_debian_base(
 | `builder` | Config file or `flyte.init()` | Global setting |
 | `platform` | `platform` (in constructor) | Tuple: `("linux/amd64", "linux/arm64")` |
 
-For full details on container images in Flyte 2, see [Container images](../../user-guide/task-configuration/container-images).
+For full details on container images in Flyte 2, see [Container images](../../../user-guide/task-configuration/container-images).

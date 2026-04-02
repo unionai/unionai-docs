@@ -1,7 +1,7 @@
 ---
 title: Batching strategies
 weight: 2
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 jupyter_notebook: /unionai-examples/v2/tutorials/batching_patterns/batch_processing.ipynb
 content_hash: 287985ba9806b8a841dcd5da16c40d931e83bd4f35be77345910946ea550a0e8
 ---

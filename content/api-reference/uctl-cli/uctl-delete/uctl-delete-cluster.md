@@ -1,6 +1,6 @@
 ---
 title: uctl delete cluster
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl delete cluster

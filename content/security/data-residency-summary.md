@@ -1,7 +1,7 @@
 ---
 title: Data residency summary
 weight: 14
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Data residency summary

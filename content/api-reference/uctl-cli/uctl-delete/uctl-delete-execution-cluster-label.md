@@ -1,6 +1,6 @@
 ---
 title: uctl delete execution-cluster-label
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl delete execution-cluster-label

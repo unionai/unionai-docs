@@ -1,7 +1,7 @@
 ---
 title: Text-to-SQL
 weight: 1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: true
 ---
 
@@ -35,7 +35,7 @@ The Flyte task returns both the path to the database and the generated table met
 
 {{< code file="/unionai-examples/v2/tutorials/text_to_sql/data_ingestion.py" fragment=table_info lang=python >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 
 With Union artifacts (coming soon!), you'll be able to persist the ingested SQLite database as an artifact. This removes the need to rerun data ingestion in every pipeline.
 
@@ -128,7 +128,7 @@ Each generated SQL query runs against the database, and another LLM double-check
 
 Even with automated checks, human review remains critical. Since this dataset serves as the ground truth, mislabeled pairs can distort evaluation. For production use, always invest in human-in-the-loop review.
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 
 Support for human-in-the-loop pipelines is coming soon in Flyte 2!
 
