@@ -774,6 +774,7 @@ def patch_and_install(cfg: Config, state: InfraState) -> InfraState:
     assert os.path.exists(f), f"Values file not found: {f}"
 
     # Patch with yq
+    _sh(f'yq -i \'.global.AWS_ACCOUNT_ID = "{cfg.aws_account_id}"\' "{f}"')
     _sh(f'yq -i \'.storage.bucketName = "{cfg.s3_metadata_bucket}"\' "{f}"')
     _sh(f'yq -i \'.storage.fastRegistrationBucketName = "{cfg.s3_fast_reg_bucket}"\' "{f}"')
     _sh(f'yq -i \'.storage.region = "{cfg.aws_region}"\' "{f}"')

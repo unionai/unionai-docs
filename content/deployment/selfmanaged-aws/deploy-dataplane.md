@@ -44,6 +44,7 @@ If you have not yet set up the required AWS resources (EKS cluster, S3, ECR, IAM
 
 3. Update the generated values file with your infrastructure details:
 
+   - Set `global.AWS_ACCOUNT_ID` to your AWS account ID (e.g. `123456789012`). You can retrieve it with `aws sts get-caller-identity --query Account --output text`.
    - Set `storage.bucketName` and `storage.fastRegistrationBucketName` to your S3 bucket name(s).
    - Set `storage.region` to the AWS region of your bucket(s).
    - Replace all occurrences of `<UNION_FLYTE_ROLE_ARN>` with the ARN of the IAM role created in the [IAM](../selfmanaged-aws/prepare-infra#iam) section (e.g. `arn:aws:iam::<account_id>:role/union-system-role`). This appears in `additionalServiceAccountAnnotations`, `userRoleAnnotationValue`, and `fluentbit.serviceAccount.annotations`.
