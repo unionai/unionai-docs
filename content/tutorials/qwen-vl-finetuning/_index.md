@@ -1,7 +1,7 @@
 ---
 title: Fine-tuning a vision-language model with a frozen backbone
 weight: 1
-variants: +flyte +byoc +serverless +selfmanaged
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
