@@ -35,6 +35,10 @@ Build an agentic workflow for deep research with multi-step reasoning and evalua
 Pretrain large language models at scale with PyTorch Lightning, FSDP, and H200 GPUs, featuring streaming data and real-time metrics.
 {{< /link-card >}}
 
+{{< link-card target="qwen-vl-finetuning" title="Fine-tuning a VLM with a frozen backbone" >}}
+Adapt Qwen2.5-VL to occluded image classification by training a 10K-parameter adapter with multi-node DeepSpeed, automatic recovery, and live training dashboards.
+{{< /link-card >}}
+
 {{< link-card target="hpo" title="Hyperparameter optimization" >}}
 Run large-scale HPO experiments with zero manual tracking, deterministic results, and automatic recovery.
 {{< /link-card >}}
