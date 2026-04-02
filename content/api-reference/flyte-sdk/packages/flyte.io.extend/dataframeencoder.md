@@ -1,6 +1,6 @@
 ---
 title: DataFrameEncoder
-version: 2.1.0
+version: 2.1.2
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
