@@ -1,7 +1,7 @@
 ---
 title: AWS Sagemaker plugin
 weight: 4
-variants: -flyte -byoc -selfmanaged
+variants: -flyte -union
 ---
 
 # Sagemaker Plugin Setup

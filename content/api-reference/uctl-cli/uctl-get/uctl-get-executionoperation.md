@@ -1,6 +1,6 @@
 ---
 title: uctl get executionoperation
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl get executionoperation

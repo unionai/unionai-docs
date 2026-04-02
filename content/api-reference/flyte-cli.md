@@ -1,7 +1,7 @@
 ---
 title: "Flyte CLI"
 version: 2.1.2
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 layout: py_api
 weight: 3
 ---
@@ -50,7 +50,7 @@ This is the command line interface for Flyte.
 {{< /markdown >}}
 {{< /grid >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< grid >}}
 {{< markdown >}}
 | Object | Action |
@@ -98,7 +98,7 @@ This is the command line interface for Flyte.
 {{< /grid >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ## Union-specific functionality {#plugin-commands}
@@ -224,7 +224,7 @@ environments.
 
 Create resources in a Flyte deployment.
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte create api-key
 
@@ -254,7 +254,7 @@ Examples:
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte create assignment
 
@@ -308,7 +308,7 @@ If the file already exists, it will raise an error unless the `--force` option i
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte create policy
 
@@ -356,7 +356,7 @@ flyte create project --id my_project_id --name "My Project" --description "My pr
 `-l`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Labels as key=value pairs. Can be specified multiple times. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte create role
 
@@ -473,7 +473,7 @@ This will create a trigger that runs every day at midnight.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte create user
 
@@ -504,7 +504,7 @@ Create (invite) a new user.
 
 Remove resources from a Flyte deployment.
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte delete api-key
 
@@ -543,7 +543,7 @@ Delete apps from a Flyte deployment.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte delete assignment
 
@@ -576,7 +576,7 @@ Unassign a policy from an identity.
 
 Stop and remove the local Flyte demo cluster container.
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte delete policy
 
@@ -598,7 +598,7 @@ Delete a policy.
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte delete role
 
@@ -648,7 +648,7 @@ Delete a trigger. The name of the trigger is required.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte delete user
 
@@ -801,7 +801,7 @@ Generate documentation.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--type` | `text` | `Sentinel.UNSET` | Type of documentation (valid: markdown) |
-| `--plugin-variants` | `text` |  | Hugo variant names for plugin commands (e.g., 'byoc selfmanaged'). When set, plugin command sections and index entries are wrapped in {{&lt; variant >}} shortcodes. Core commands appear unconditionally. |
+| `--plugin-variants` | `text` |  | Hugo variant names for plugin commands (e.g., 'union'). When set, plugin command sections and index entries are wrapped in {{&lt; variant >}} shortcodes. Core commands appear unconditionally. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -845,7 +845,7 @@ Get all actions for a run or details for a specific action.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte get api-key
 
@@ -894,7 +894,7 @@ Apps are long-running services deployed on the Flyte platform.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte get assignment
 
@@ -920,7 +920,7 @@ Get or list assignments.
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte get cluster
 
@@ -1023,7 +1023,7 @@ $ flyte get logs my_run my_action --pretty --lines 50
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte get member
 
@@ -1039,7 +1039,7 @@ List all members (users and applications) in an organization.
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte get policy
 
@@ -1078,7 +1078,7 @@ show archived projects instead.
 | `--archived` | `boolean` | `False` | Show archived projects instead of active ones. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte get role
 
@@ -1183,7 +1183,7 @@ Get a list of all triggers, or details of a specific trigger by name.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte get user
 
@@ -1574,7 +1574,7 @@ flyte update app <app_name> --activate | --deactivate [--wait] [--project <proje
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte update policy
 
@@ -1624,7 +1624,7 @@ flyte update project my_project --label team=ml --label env=prod
 `--unarchive`{{< /multiline >}} | `boolean` |  | Archive or unarchive the project. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte update role
 

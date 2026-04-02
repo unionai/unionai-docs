@@ -1,6 +1,6 @@
 ---
 title: uctl get execution-queue-attribute
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl get execution-queue-attribute

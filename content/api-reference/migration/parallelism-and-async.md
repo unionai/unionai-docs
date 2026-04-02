@@ -1,7 +1,7 @@
 ---
 title: Parallelism and async
 weight: 6
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Parallelism and async

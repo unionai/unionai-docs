@@ -1,7 +1,7 @@
 ---
 title: Error handling
 weight: 10
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Error handling

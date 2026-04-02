@@ -1,7 +1,7 @@
 ---
 title: Examples and common gotchas
 weight: 8
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Examples and common gotchas

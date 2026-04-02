@@ -1,7 +1,7 @@
 ---
 title: Considerations
 weight: 4
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Considerations

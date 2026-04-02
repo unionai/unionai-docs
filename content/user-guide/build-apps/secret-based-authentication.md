@@ -1,7 +1,7 @@
 ---
 title: Secret-based authentication
 weight: 5
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Secret-based authentication

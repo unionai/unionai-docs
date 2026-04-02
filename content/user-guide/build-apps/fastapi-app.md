@@ -1,7 +1,7 @@
 ---
 title: FastAPI app
 weight: 9
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # FastAPI app

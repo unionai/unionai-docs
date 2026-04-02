@@ -1,7 +1,7 @@
 ---
 title: Deep research
 weight: 2
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: true
 ---
 

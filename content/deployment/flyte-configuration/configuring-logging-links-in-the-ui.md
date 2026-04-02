@@ -1,7 +1,7 @@
 ---
 title: Logging links in the UI
 weight: 3
-variants: -flyte -byoc -selfmanaged
+variants: -flyte -union
 ---
 
 # Configuring logging links in the UI

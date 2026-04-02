@@ -1,7 +1,7 @@
 ---
 title: Security
 weight: 6
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 top_menu: true
 sidebar_expanded: true
 ---

@@ -1,7 +1,7 @@
 ---
 title: Raw Container Tasks
 weight: 6
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 Container tasks are one of Flyte's superpowers. They allow you to execute tasks using any container image without requiring the Flyte SDK to be installed in that container. This means you can run code written in any language, execute shell scripts, or even use pre-built containers pulled directly from the internet while still maintaining Flyte's data orchestration capabilities.

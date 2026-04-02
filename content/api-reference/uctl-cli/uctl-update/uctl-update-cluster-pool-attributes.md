@@ -1,6 +1,6 @@
 ---
 title: uctl update cluster-pool-attributes
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl update cluster-pool-attributes

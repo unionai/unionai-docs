@@ -1,6 +1,6 @@
 ---
 title: Integrations
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 weight: 5
 sidebar_expanded: true
 ---

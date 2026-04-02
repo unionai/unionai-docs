@@ -1,6 +1,6 @@
 ---
 title: uctl create clusterpoolassignment
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl create clusterpoolassignment

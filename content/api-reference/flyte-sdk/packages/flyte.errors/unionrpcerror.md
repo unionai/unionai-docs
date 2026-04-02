@@ -1,7 +1,7 @@
 ---
 title: UnionRpcError
 version: 2.1.2
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 layout: py_api
 ---
 
