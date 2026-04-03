@@ -1,25 +1,25 @@
 ---
 title: Deploy the dataplane
 weight: 2
-variants: -flyte -byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Deploy the dataplane
 
-If you have not yet set up the required OCI resources (OKE cluster, Object Storage, Container Registry, IAM access), see [Prepare infrastructure](../selfmanaged-oci/prepare-infra) first.
+If you have not yet set up the required GCP resources (GKE cluster, GCS, Artifact Registry, Workload Identity), see [Prepare infrastructure](../selfmanaged-gcp/prepare-infra) first.
 
 ## Assumptions
 
-* You have a {{< key product_name >}} organization, and you know the control plane URL for your organization.
+* You have a {{< key product_name >}} organization, and you know the control plane URL for your organization (e.g. `https://your-org-name.us-east-2.unionai.cloud`).
 * You have a cluster name provided by or coordinated with Union.
-* You have an OKE cluster running one of the most recent three minor Kubernetes versions.
+* You have a GKE cluster with Workload Identity enabled, running one of the most recent three minor Kubernetes versions.
   [Learn more](https://kubernetes.io/releases/version-skew-policy/)
-* You have configured Object Storage bucket(s), Container Registry, and IAM access as described in [Prepare infrastructure](../selfmanaged-oci/prepare-infra).
+* You have configured GCS bucket(s), Artifact Registry, and Workload Identity as described in [Prepare infrastructure](../selfmanaged-gcp/prepare-infra).
 
 ## Prerequisites
 
 * Install [Helm 3](https://helm.sh/docs/intro/install/).
-* Install [uctl](../../api-reference/uctl-cli/_index).
+* Install [uctl](../../../api-reference/uctl-cli/_index).
 
 ## Deploy the {{< key product_name >}} operator
 
@@ -30,23 +30,23 @@ If you have not yet set up the required OCI resources (OKE cluster, Object Stora
    helm repo update
    ```
 
-2. Use the `uctl selfserve provision-dataplane-resources` command to generate a new client and client secret for communicating with your Union control plane, provision authorization permissions for the app to operate on the union cluster name you have selected, generate values file to install dataplane in your Kubernetes cluster and provide follow-up instructions:
+2. Use the `uctl selfserve provision-dataplane-resources` command to generate a new client and client secret for communicating with your Union control plane, provision authorization permissions for the app to operate on the Union cluster name you have selected, generate values file to install dataplane in your Kubernetes cluster and provide follow-up instructions:
 
    ```bash
    uctl config init --host=<YOUR_UNION_CONTROL_PLANE_URL>
-   uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME>  --provider oci
+   uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME>  --provider gcp
    ```
 
    * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
-     It will also generate a YAML file specific to the provider that you specify, in this case `oci`.
+     It will also generate a YAML file specific to the provider that you specify, in this case `gcp`.
 
    * Save the secret that is displayed. Union does not store the credentials; rerunning the same command can be used to retrieve the secret later.
 
 3. Update the generated values file with your infrastructure details:
 
-   - Set `storage.bucketName` and `storage.fastRegistrationBucketName` to your Object Storage bucket name(s).
-   - Set `storage.region` to your OCI region.
-   - If using static credentials (Option B), set `storage.accessKey` and `storage.secretKey` to your S3 Compatibility API credentials.
+   - Set `storage.bucketName` and `storage.fastRegistrationBucketName` to your GCS bucket name(s).
+   - Set `storage.gcp.projectId` to your GCP project ID.
+   - Replace all occurrences of `<GCP_SERVICE_ACCOUNT>` with the Google Service Account email created in the [Workload Identity](../selfmanaged-gcp/prepare-infra#workload-identity) section (e.g. `union-system@my-project.iam.gserviceaccount.com`). This appears in `additionalServiceAccountAnnotations`, `userRoleAnnotationValue`, and `fluentbit.serviceAccount.annotations`.
 
 4. Optionally configure the resource `limits` and `requests` for the different services.
    By default, these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.

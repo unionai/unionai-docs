@@ -1,7 +1,7 @@
 ---
 title: Prepare infrastructure
 weight: 1
-variants: -flyte -byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Prepare infrastructure
@@ -243,7 +243,7 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
 ## Prerequisites
 
 * Install [Helm 3](https://helm.sh/docs/intro/install/).
-* Install [uctl](../api-reference/uctl-cli/_index).
+* Install [uctl](../../../api-reference/uctl-cli/_index).
 
 ## Deploy the {{< key product_name >}} operator
 

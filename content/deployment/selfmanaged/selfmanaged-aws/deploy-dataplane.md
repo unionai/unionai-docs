@@ -1,7 +1,7 @@
 ---
 title: Deploy the dataplane
 weight: 2
-variants: -flyte -byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Deploy the dataplane
@@ -19,7 +19,7 @@ If you have not yet set up the required AWS resources (EKS cluster, S3, ECR, IAM
 ## Prerequisites
 
 * Install [Helm 3](https://helm.sh/docs/intro/install/).
-* Install [uctl](../../api-reference/uctl-cli/_index).
+* Install [uctl](../../../api-reference/uctl-cli/_index).
 
 ## Deploy the {{< key product_name >}} operator
 

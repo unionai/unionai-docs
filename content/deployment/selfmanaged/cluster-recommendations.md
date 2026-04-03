@@ -37,7 +37,7 @@ The {{< key product_name >}} data plane uses a single Kubernetes service account
 - **Container registry** (ECR, Artifact Registry, or ACR) — pull task container images; push images when Image Builder is enabled.
 
 See the cloud-specific setup pages for details on configuring this service account:
-[AWS](./selfmanaged-aws), [GCP](./selfmanaged-gcp), [Azure](./selfmanaged-azure).
+[AWS](./selfmanaged-aws/_index), [GCP](./selfmanaged-gcp/_index), [Azure](./selfmanaged-azure/_index).
 
 > [!NOTE] Common service account
 > In previous versions, each component had its own service account. The consolidated `union-system` service account simplifies IAM configuration — you only need to bind cloud permissions to a single identity.

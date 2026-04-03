@@ -1,7 +1,7 @@
 ---
 title: Prepare infrastructure
 weight: 1
-variants: -flyte -byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Prepare infrastructure

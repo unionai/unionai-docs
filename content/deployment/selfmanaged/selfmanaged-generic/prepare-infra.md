@@ -1,14 +1,14 @@
 ---
 title: Prepare infrastructure
 weight: 1
-variants: -flyte -byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Prepare infrastructure
 
 This page walks you through creating the resources needed for a Union data plane on generic (on-premise) Kubernetes. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-generic/deploy-dataplane).
 
-> [!NOTE] If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](../selfmanaged-aws), [GCP](../selfmanaged-gcp), [Azure](../selfmanaged-azure), [OCI](../selfmanaged-oci).
+> [!NOTE] If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](../selfmanaged-aws/_index), [GCP](../selfmanaged-gcp/_index), [Azure](../selfmanaged-azure/_index), [OCI](../selfmanaged-oci/_index).
 
 ## Kubernetes Cluster
 
