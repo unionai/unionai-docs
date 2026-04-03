@@ -38,7 +38,7 @@ Your identity provider must support:
 3. **Client Credentials flow** — for service-to-service tokens
 4. **PKCE** (Proof Key for Code Exchange) — for the CLI public client
 5. **Custom scopes** — ability to create an `all` scope (or equivalent)
-6. **Custom claims** — ability to add `sub`, `identitytype`, and `preferred_username` claims to access tokens
+6. **Custom claims** — ability to add claims to access tokens (see [JWT claim requirements](#jwt-claim-requirements) below)
 
 ### Authorization server setup
 
@@ -46,10 +46,19 @@ Create a custom authorization server (or equivalent) in your identity provider w
 
 - **Audience**: `https://<your-domain>` (the control plane ingress domain)
 - **Default scope**: `all`
-- **Claims**:
-  - `sub` — set to the user's internal ID for user tokens, or the app's client ID for app tokens
-  - `identitytype` — set to `"user"` for identity tokens, and `"user"` or `"app"` for access tokens depending on whether the token represents a user or application
-  - `preferred_username` — set to the user's login for user tokens, or the app's client ID for app tokens (required for identity injection)
+
+#### JWT claim requirements
+
+The following claims must be present in **all** access tokens issued by your identity provider — for both user tokens (authorization code flow) and app tokens (client credentials flow):
+
+| Claim | Required | Description |
+|-------|----------|-------------|
+| `sub` | **Yes** | The subject identifier. For user tokens, set to the user's internal ID. For app tokens (client credentials), set to the application's client ID. This claim is used to identify the caller across all Union services. |
+| `identitytype` | **Yes** (for authorization) | Set to `"user"` for user tokens, `"app"` for app tokens. Required when using Union RBAC authorization. If your IdP cannot add custom claims, see [Authorization]({{< relref "authorization" >}}) for the `useExternalIdentity` alternative. |
+| `preferred_username` | Recommended | Set to the user's login/email for user tokens, or the app's client ID for app tokens. Used for identity injection (displaying who launched a workflow). |
+
+> [!WARNING]
+> The `sub` claim is **critical** for all OAuth applications, including service-to-service (App 3), operator (App 4), and EAGER (App 5). If your IdP does not include `sub` in client credentials tokens, service-to-service authentication will fail with `x-user-subject header not found`. Verify that all five applications produce tokens with a `sub` claim before deploying.
 
 ## Step 1: Create OAuth2 applications
 

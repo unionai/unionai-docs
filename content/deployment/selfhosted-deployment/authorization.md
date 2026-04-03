@@ -145,7 +145,7 @@ service AuthorizerService {
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `identity` | `Identity` | The caller — an `external_identity` containing the subject string and the raw OIDC token (when available) |
+| `identity` | `Identity` | The caller's identity — contains the subject string (see [Identity resolution](#identity-resolution)) |
 | `action` | `Action` enum | The operation being requested |
 | `resource` | `Resource` | The target resource (organization, domain, project, or cluster) |
 | `organization` | `string` | The organization identifier |
@@ -158,21 +158,36 @@ service AuthorizerService {
 
 ### Identity resolution
 
-The caller's identity is resolved and forwarded to your server through two channels:
+The caller's identity arrives through two channels:
 
-1. **`AuthorizeRequest.identity` protobuf field** (recommended) — always an `external_identity` containing:
-   - `subject`: the caller's identity (resolved from `X-User-Subject` for browser/CLI requests, or from the JWT `sub` claim for service-to-service requests)
-   - `token`: the raw OIDC/JWT token (when available)
+#### Subject (`AuthorizeRequest.identity`)
 
-   This provides a consistent interface regardless of how the caller authenticated.
+The `identity` field contains the caller's subject (the JWT `sub` claim). The proto type depends on your identity provider's configuration:
 
-2. **gRPC metadata headers** — the raw JWT/OIDC token is forwarded to your server in the `authorization` metadata header (as `Bearer <token>`). Your server can decode the JWT payload to read claims (`sub`, `identitytype`, `email`, `groups`, etc.) without signature verification — the token has already been validated upstream by the platform.
+| Scenario | Proto type | When |
+|----------|-----------|------|
+| IdP without `identitytype` custom claim | `external_identity` | Default for selfhosted with non-Okta IdPs (Apple IdMS, Entra ID, etc.) |
+| IdP with `identitytype: "user"` | `user_id` | When Okta or equivalent configures the custom claim |
+| IdP with `identitytype: "app"` | `application_id` | OAuth app credentials with the custom claim |
 
 > [!NOTE]
-> **Token availability by auth flow:**
-> - **SDK/CLI (PKCE):** The token arrives via the `authorization` header and is available in both the protobuf `identity.token` field and forwarded metadata.
-> - **Browser (cookie-based):** The token is extracted from the encrypted session cookie by the `/me` auth subrequest and forwarded via the `X-User-Token` header. The authorizer normalizes it to the standard `authorization` header before calling the external server, so your server sees a consistent interface on all paths.
-> - **Service-to-service:** The token arrives via the `authorization` or `flyte-authorization` header.
+> The `identitytype` custom claim is **not required** for External authorization. Most selfhosted deployments will see `external_identity` for all callers. Your server should extract the subject from whichever proto type arrives and use it to look up the caller's role — do not rely on the proto type to distinguish users from apps. Instead, match the subject against known service account client IDs (see [Service account permissions](#service-account-permissions)).
+
+#### Token (gRPC metadata)
+
+The raw JWT/OIDC token is forwarded in the `authorization` gRPC metadata header (as `Bearer <token>`). Your server can decode the JWT payload to read claims (`sub`, `email`, `groups`, etc.) without signature verification — the token has already been validated upstream by the platform.
+
+**Token availability by request path:**
+
+| Request path | Token available | Notes |
+|-------------|----------------|-------|
+| SDK/CLI (PKCE) | Yes | User's access token in `authorization` header |
+| Browser (cookie-based) | Yes | Extracted from session cookie, normalized to `authorization` header |
+| Service-to-service (Apps 3, 4, 5) | Yes | Client credentials token |
+| Internal background workers | No | Background tasks operate with identity headers only |
+
+> [!WARNING]
+> **Not every request carries a token.** Internal platform background processes (e.g., execution claim workers) make authorization calls with a subject in the proto identity but no token in gRPC metadata. Your server must handle requests where the subject is present but no `authorization` header exists. See [Service account permissions](#service-account-permissions) for the specific subjects and permissions required.
 
 ### Actions
 
@@ -324,29 +339,33 @@ class AuthorizerServicer(authorizer_pb2_grpc.AuthorizerServiceServicer):
                 self.service_accounts[client_id] = perms
 
     def Authorize(self, request, context):
-        # --- 1. Extract identity from the proto request ---
-        # The platform always sends ExternalIdentity with subject + token.
-        # Every request is authenticated before reaching authorization, so
-        # both fields are always populated.
-        ext_id = request.identity.external_identity
-        subject = ext_id.subject
-        proto_token = ext_id.token  # Raw JWT from the proto field
+        # --- 1. Extract subject from the proto identity ---
+        # The proto type varies by IdP configuration:
+        #   - external_identity: IdP without identitytype claim (most selfhosted)
+        #   - user_id: IdP with identitytype="user"
+        #   - application_id: IdP with identitytype="app"
+        # Extract the subject from whichever type arrives.
+        identity = request.identity
+        subject = ""
+        if identity.HasField("external_identity"):
+            subject = identity.external_identity.subject
+        elif identity.HasField("user_id"):
+            subject = identity.user_id.subject
+        elif identity.HasField("application_id"):
+            subject = identity.application_id.subject
 
         # --- 2. Extract token from gRPC metadata ---
-        # The same JWT is also forwarded in the "authorization" metadata
-        # header as "Bearer <token>". Both channels carry the same token —
-        # use whichever fits your architecture.
-        #   - proto_token: ready to use (no prefix to strip)
-        #   - metadata_token: standard HTTP authorization header format
+        # The JWT is forwarded in the "authorization" metadata header.
+        # Not every request carries a token — internal background workers
+        # may call Authorize() without one.
         metadata = dict(context.invocation_metadata())
         auth_header = metadata.get("authorization", "")
-        metadata_token = auth_header[7:] if auth_header.lower().startswith("bearer ") else ""
+        token = auth_header[7:] if auth_header.lower().startswith("bearer ") else ""
 
-        # --- 3. Decode JWT claims ---
+        # --- 3. Decode JWT claims (if token available) ---
         # The token is pre-validated upstream — no signature verification
-        # needed. Decode to read claims: sub, identitytype, email, groups,
-        # preferred_username, iss, aud, exp.
-        claims = decode_jwt_payload(proto_token)
+        # needed. Decode to read claims: sub, email, groups, etc.
+        claims = decode_jwt_payload(token) if token else None
 
         # --- 4. Extract the action and resource ---
         action = request.action
@@ -385,7 +404,7 @@ class AuthorizerServicer(authorizer_pb2_grpc.AuthorizerServiceServicer):
         # Available data:
         #   - subject: the user's identity (from 'sub' claim)
         #   - claims: decoded JWT with sub, email, groups, identitytype, etc.
-        #   - proto_token / metadata_token: raw JWT for downstream use
+        #   - token: raw JWT for downstream use (may be empty for background workers)
         #   - action: the Action enum value being requested
         #   - resource: the target resource (project, domain, cluster, org)
         log.info("subject=%s action=%s resource=%s", subject, action_name, resource_desc)
