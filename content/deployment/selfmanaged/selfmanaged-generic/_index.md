@@ -8,7 +8,7 @@ sidebar_expanded: true
 # Data plane setup on generic Kubernetes
 
 {{< key product_name >}}'s modular architecture allows for great flexibility and control.
-The customer can decide how many clusters to have, their shape, and who has access to what.
+You can decide how many clusters to have, their shape, and who has access to what.
 All communication is encrypted.  The Union architecture is described on the [Architecture](../architecture/_index) page.
 
 > [!NOTE] These instructions cover installing Union.ai in an on-premise Kubernetes cluster.

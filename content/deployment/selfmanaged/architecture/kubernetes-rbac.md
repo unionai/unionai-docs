@@ -6,6 +6,10 @@ variants: -flyte +union
 
 # Kubernetes Access Controls
 
+Union's data plane runs entirely within your Kubernetes cluster. This page documents the Kubernetes RBAC configuration
+applied by the https://github.com/unionai/helm-charts/tree/main/charts/dataplane — including service account configuration, 
+namespace-scoped Roles, and cluster-wide ClusterRoles for each component.
+
 ## Service account
 
 By default, all data plane components share a single Kubernetes service account: `union-system`. This service account is configured through the `commonServiceAccount` Helm value and is used by the operator, executor, proxy, webhook, and FluentBit.
@@ -23,10 +27,15 @@ The data plane supports two RBAC modes:
 | **Standard** (default) | ClusterRoles + namespace Roles | Multi-namespace deployments, full feature set |
 | **Low-privilege** (`low_privilege: true`) | Namespace-scoped Roles only | Single-namespace deployments, restricted environments |
 
+Choose low-privilege mode when your cluster policies prohibit ClusterRoles (e.g. OPA Gatekeeper, Kyverno), when Union is
+a tenant on a shared cluster, or when compliance requires minimizing blast radius to a single namespace. The tradeoff is
+that multi-namespace workflow execution, automatic namespace provisioning (ClusterResourceSync), cluster-wide monitoring,
+and usage collection are disabled.
+
 In low-privilege mode, the chart automatically:
 - Replaces ClusterRoles with namespace-scoped Roles
 - Limits resource sync, executor, and monitoring to the release namespace
-- Disables features that require cluster-wide access (ClusterResourceSync, OpenCost)
+- Disables features that require cluster-wide access (e.g. ClusterResourceSync and OpenCost. Both require cluster-wide access to function — OpenCost to aggregate spend across all namespaces, and ClusterResourceSync to propagate configs and RBAC into user namespaces.)
 
 ## Namespace-scoped Roles
 

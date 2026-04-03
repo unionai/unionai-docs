@@ -31,7 +31,7 @@ The chart offers two Prometheus deployment options for Union features:
 
 ```
                     ┌─────────────────────────────────────┐
-                    │          Data Plane Cluster          │
+                    │          Data Plane Cluster         │
                     │                                     │
                     │  ┌──────────────────────┐           │
                     │  │  Prometheus          │           │

@@ -38,6 +38,7 @@ Image Builder supports two build backends:
 | **Depot** | `imageBuilder.buildkit.enabled: false` | Uses Depot's hosted build service for faster builds |
 
 When BuildKit is disabled and no custom `buildkitUri` is set, the chart automatically configures Depot as the build backend. In single-namespace mode, a task PodTemplate with the Depot token imagePullSecret is created automatically.
+[Depot](https://depot.dev/) is a remote, persistent BuildKit builder service, while [BuildKit](https://docs.docker.com/build/buildkit/) is the underlying container image builder engine developed by Moby/Docker.
 
 ## Configuration
 

@@ -50,15 +50,7 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
    - Replace `<SERVICE_CLIENT_ID>` in `additionalServiceAccountAnnotations` with the Managed Identity client ID for the `union-system` service account (from the [Workload Identity](../selfmanaged-azure/prepare-infra#workload-identity) section).
    - Replace `<WORKER_CLIENT_ID>` in `userRoleAnnotationValue` with the Managed Identity client ID for worker pods (from the [Workers](../selfmanaged-azure/prepare-infra#workers) section).
 
-4. Optionally configure the resource `limits` and `requests` for the different services.
-   By default, these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.
-
-   * `operator.resources`
-   * `executor.resources`
-   * `proxy.resources`
-   * `flytepropellerwebhook.resources`
-
-5. Install the data plane Helm chart:
+4. Install the data plane Helm chart:
 
    ```bash
    helm upgrade --install union unionai/dataplane \
@@ -67,13 +59,13 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
      --create-namespace
    ```
 
-6. Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:
+5. Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:
 
    ```bash
    uctl create apikey --keyName EAGER_API_KEY --org <YOUR_ORG_NAME>
    ```
 
-7. Once deployed you can check to see if the cluster has been successfully registered to the control plane:
+6. Once deployed you can check to see if the cluster has been successfully registered to the control plane:
 
    ```bash
    uctl get cluster
@@ -85,7 +77,7 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
    1 rows
    ```
 
-8. You can then register and run some example workflows through your cluster to ensure that it is working correctly.
+7. You can then register and run some example workflows through your cluster to ensure that it is working correctly.
 
    ```bash
    uctl register examples --project=union-health-monitoring --domain=development
