@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.spark.schema
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -25,6 +25,7 @@ layout: py_api
 Implements how Classic SparkDataFrame should be read using the ``open`` method of FlyteSchema
 
 
+### Parameters
 
 ```python
 class ClassicSparkDataFrameSchemaReader(
@@ -81,6 +82,7 @@ def iter(
 Implements how Classic SparkDataFrame should be written using ``open`` method of FlyteSchema
 
 
+### Parameters
 
 ```python
 class ClassicSparkDataFrameSchemaWriter(
@@ -127,6 +129,7 @@ def write(
 Transforms Classic Spark DataFrame's to and from a Schema (typed/untyped)
 
 
+### Parameters
 
 ```python
 def ClassicSparkDataFrameTransformer()
@@ -206,7 +209,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -338,6 +340,7 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 Implements how SparkDataFrame should be read using the ``open`` method of FlyteSchema
 
 
+### Parameters
 
 ```python
 class SparkDataFrameSchemaReader(
@@ -394,6 +397,7 @@ def iter(
 Implements how SparkDataFrame should be written to using ``open`` method of FlyteSchema
 
 
+### Parameters
 
 ```python
 class SparkDataFrameSchemaWriter(
@@ -440,6 +444,7 @@ def write(
 Transforms Spark DataFrame's to and from a Schema (typed/untyped)
 
 
+### Parameters
 
 ```python
 def SparkDataFrameTransformer()
@@ -519,7 +524,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.annotation
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -36,7 +36,7 @@ def x(a: typing.Annotated[int, FlyteAnnotation({"foo": {"bar": 1}})]):
 ```
 
 
-
+### Parameters
 
 ```python
 class FlyteAnnotation(

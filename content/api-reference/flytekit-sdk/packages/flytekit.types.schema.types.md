@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.schema.types
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -54,6 +54,8 @@ def generate_ordered_files(
 | `n` | `int` | |
 
 ## flytekit.types.schema.types.FlyteSchema
+
+### Parameters
 
 ```python
 class FlyteSchema(
@@ -198,6 +200,8 @@ def to_json(
 
 ## flytekit.types.schema.types.FlyteSchemaTransformer
 
+### Parameters
+
 ```python
 def FlyteSchemaTransformer()
 ```
@@ -320,7 +324,6 @@ class DC:
 def wf(dc: DC):
     t_fs(dc.fs)
 
-Note:
 - The deserialization is the same as put a flyte schema in a dataclass, which will deserialize by the mashumaro's API.
 
 Related PR:
@@ -356,7 +359,6 @@ class DC:
 def wf(dc: DC):
     t_fs(dc.fs)
 
-Note:
 - The deserialization is the same as put a flyte schema in a dataclass, which will deserialize by the mashumaro's API.
 
 Related PR:
@@ -489,6 +491,8 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 
 ## flytekit.types.schema.types.LocalIOSchemaReader
 
+### Parameters
+
 ```python
 class LocalIOSchemaReader(
     from_path: str,
@@ -541,6 +545,8 @@ def iter(
 
 ## flytekit.types.schema.types.LocalIOSchemaWriter
 
+### Parameters
+
 ```python
 class LocalIOSchemaWriter(
     to_local_path: str,
@@ -588,7 +594,6 @@ to allow direct support for that type in FlyteSchema.
 e.g. of possible supported types are Pandas.DataFrame, Spark.DataFrame, Vaex.DataFrame, etc.
 
 
-
 ### Methods
 
 | Method | Description |
@@ -628,8 +633,9 @@ Represents the schema storage format (at rest).
 Currently only parquet is supported
 
 
-
 ## flytekit.types.schema.types.SchemaHandler
+
+### Parameters
 
 ```python
 class SchemaHandler(
@@ -656,6 +662,7 @@ Base SchemaReader to handle any readers (that can manage their own IO or otherwi
 Use the simplified base LocalIOSchemaReader for non distributed dataframes
 
 
+### Parameters
 
 ```python
 class SchemaReader(
@@ -708,6 +715,8 @@ def iter(
 | `kwargs` | `**kwargs` | |
 
 ## flytekit.types.schema.types.SchemaWriter
+
+### Parameters
 
 ```python
 class SchemaWriter(

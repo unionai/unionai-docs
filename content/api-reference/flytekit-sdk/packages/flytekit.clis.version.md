@@ -1,6 +1,6 @@
 ---
 title: flytekit.clis.version
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---

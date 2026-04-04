@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.sqlalchemy.task
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -29,6 +29,8 @@ Database can be found:
 
 
 
+### Parameters
+
 ```python
 class SQLAlchemyConfig(
     uri: str,
@@ -39,7 +41,7 @@ class SQLAlchemyConfig(
 | Parameter | Type | Description |
 |-|-|-|
 | `uri` | `str` | default sqlalchemy connector |
-| `connect_args` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
+| `connect_args` | `typing.Optional[typing.Dict[str, typing.Any]]` | sqlalchemy kwarg overrides -- ex: host |
 | `secret_connect_args` | `typing.Optional[typing.Dict[str, flytekit.models.security.Secret]]` | flyte secrets loaded into sqlalchemy connect args -- ex: {"password": flytekit.models.security.Secret(name=SECRET_NAME, group=SECRET_GROUP)} |
 
 ### Methods
@@ -96,6 +98,7 @@ def get_version_suffix()
 Makes it possible to run client side SQLAlchemy queries that optionally return a FlyteSchema object
 
 
+### Parameters
 
 ```python
 class SQLAlchemyTask(
@@ -497,6 +500,8 @@ def serialize_to_model(
 
 ## flytekitplugins.sqlalchemy.task.SQLAlchemyTaskExecutor
 
+### Parameters
+
 ```python
 class SQLAlchemyTaskExecutor(
     args,
@@ -541,7 +546,9 @@ that wasn't serialized into the template.
 | Parameter | Type | Description |
 |-|-|-|
 | `tt` | `flytekit.models.task.TaskTemplate` | This is the template, the serialized form of the task. |
-| `kwargs` | `**kwargs` | These are the Python native input values to the task. :return: Python native output values from the task. |
+| `kwargs` | `**kwargs` | These are the Python native input values to the task. |
+
+**Returns:** Python native output values from the task.
 
 #### find_lhs()
 

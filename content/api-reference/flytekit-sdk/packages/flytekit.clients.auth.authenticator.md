@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.authenticator
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -27,6 +27,7 @@ layout: py_api
 Base authenticator for all authentication flows
 
 
+### Parameters
 
 ```python
 class Authenticator(
@@ -74,6 +75,7 @@ def refresh_credentials()
 Client Configuration that is needed by the authenticator
 
 
+### Parameters
 
 ```python
 class ClientConfig(
@@ -103,7 +105,6 @@ class ClientConfig(
 Client Config store retrieve client config. this can be done in multiple ways
 
 
-
 ### Methods
 
 | Method | Description |
@@ -121,6 +122,7 @@ def get_client_config()
 This Authenticator uses ClientId and ClientSecret to authenticate
 
 
+### Parameters
 
 ```python
 class ClientCredentialsAuthenticator(
@@ -184,6 +186,7 @@ the credentials for basic auth must be present from wherever this code is runnin
 This Authenticator retrieves access_token using the provided command
 
 
+### Parameters
 
 ```python
 class CommandAuthenticator(
@@ -233,6 +236,7 @@ Examples described
 - https://auth0.com/docs/get-started/authentication-and-authorization-flow/device-authorization-flow#device-flow
 
 
+### Parameters
 
 ```python
 class DeviceCodeAuthenticator(
@@ -292,6 +296,7 @@ contain ["offline", "all"] - as OIDC scopes are ungrantable in Auth0 customer AP
 for in the POST request during the token caching process.
 
 
+### Parameters
 
 ```python
 class PKCEAuthenticator(
@@ -340,6 +345,8 @@ def get_credentials()
 def refresh_credentials()
 ```
 ## flytekit.clients.auth.authenticator.StaticClientConfigStore
+
+### Parameters
 
 ```python
 class StaticClientConfigStore(

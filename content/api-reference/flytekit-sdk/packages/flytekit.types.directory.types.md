@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.directory.types
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -47,7 +47,7 @@ IDL literal/type of Multipart Blob. Please see the FlyteDirectory comments for a
    a remote reference.
 
 
-
+### Parameters
 
 ```python
 def FlyteDirToMultipartBlobTransformer()
@@ -172,7 +172,6 @@ class DC:
 def wf(dc: DC):
     t_fd(dc.fd)
 
-Note:
 - The deserialization is the same as put a flyte directory in a dataclass, which will deserialize by the mashumaro's API.
 
 Related PR:
@@ -208,7 +207,6 @@ class DC:
 def wf(dc: DC):
     t_fd(dc.fd)
 
-Note:
 - The deserialization is the same as put a flyte directory in a dataclass, which will deserialize by the mashumaro's API.
 
 Related PR:
@@ -352,6 +350,8 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 
 ## flytekit.types.directory.types.FlyteDirectory
 
+### Parameters
+
 ```python
 class FlyteDirectory(
     path: typing.Union[str, os.PathLike],
@@ -408,15 +408,6 @@ def crawl(
 Crawl returns a generator of all files prefixed by any sub-folders under the given "FlyteDirectory".
 if details=True is passed, then it will return a dictionary as specified by fsspec.
 
-Example:
-
-    >>> list(fd.crawl())
-    [("/base", "file1"), ("/base", "dir1/file1"), ("/base", "dir2/file1"), ("/base", "dir1/dir/file1")]
-
-    >>> list(x.crawl(detail=True))
-    [('/tmp/test', {'my-dir/ab.py': {'name': '/tmp/test/my-dir/ab.py', 'size': 0, 'type': 'file',
-     'created': 1677720780.2318847, 'islink': False, 'mode': 33188, 'uid': 501, 'gid': 0,
-      'mtime': 1677720780.2317934, 'ino': 1694329, 'nlink': 1}})]
 
 
 | Parameter | Type | Description |
@@ -582,12 +573,13 @@ This is used if you explicitly have a folder somewhere that you want to create f
 If you want to write a whole folder, you can let your task return a FlyteDirectory object,
 and let flytekit handle the uploading.
 
+:return FlyteDirectory: A new FlyteDirectory object that points to a remote location.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `stem` | `typing.Optional[str]` | A stem to append to the path as the final prefix "directory". |
-| `alt` | `typing.Optional[str]` | An alternate first member of the prefix to use instead of the default. :return FlyteDirectory: A new FlyteDirectory object that points to a remote location. |
+| `alt` | `typing.Optional[str]` | An alternate first member of the prefix to use instead of the default. |
 
 #### schema()
 

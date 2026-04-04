@@ -1,6 +1,6 @@
 ---
 title: flytekit.clis.sdk_in_container.helpers
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -49,7 +49,9 @@ NB: This function will by default mutate the click Context.obj dictionary, addin
 | `project` | `str` | default project for the remote instance |
 | `domain` | `str` | default domain |
 | `save` | `bool` | If false, will not mutate the context.obj dict |
-| `data_upload_location` | `typing.Optional[str]` | if specified, will set the data upload location for the remote instance :return: FlyteRemote instance |
+| `data_upload_location` | `typing.Optional[str]` | if specified, will set the data upload location for the remote instance |
+
+**Returns:** FlyteRemote instance
 
 #### parse_copy()
 

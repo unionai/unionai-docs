@@ -1,6 +1,6 @@
 ---
 title: flytekit.extend.backend.base_connector
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -35,6 +35,7 @@ Connector Service
 will look up the connector based on the task type. Every task type can only have one connector.
 
 
+### Parameters
 
 ```python
 class AsyncConnectorBase(
@@ -161,7 +162,6 @@ Task should inherit from this class if the task can be run in the connector.
 Asynchronous tasks are tasks that take a long time to complete, such as running a query.
 
 
-
 ### Methods
 
 | Method | Description |
@@ -198,6 +198,8 @@ def execute(
 
 ## flytekit.extend.backend.base_connector.ConnectorBase
 
+### Parameters
+
 ```python
 class ConnectorBase(
     task_type_name: str,
@@ -222,7 +224,6 @@ class ConnectorBase(
 This is the registry for all connectors.
 The connector service will look up the connector registry based on the task type.
 The connector metadata service will look up the connector metadata based on the connector name.
-
 
 
 ### Methods
@@ -309,6 +310,7 @@ Attributes
         The custom info of the job. For example, the job config.
 
 
+### Parameters
 
 ```python
 class Resource(
@@ -360,6 +362,7 @@ normal model class that inherits from FlyteIdlEntity
 This is the metadata for the job. For example, the id of the job.
 
 
+### Parameters
 
 ```python
 def ResourceMeta()
@@ -406,6 +409,7 @@ Connector Service
 will look up the connector based on the task type. Every task type can only have one connector.
 
 
+### Parameters
 
 ```python
 class SyncConnectorBase(
@@ -462,7 +466,6 @@ Synchronous tasks run quickly and can return their results instantly.
 Sending a prompt to ChatGPT and getting a response, or retrieving some metadata from a backend system.
 
 
-
 ### Methods
 
 | Method | Description |
@@ -482,6 +485,8 @@ def execute(
 | `kwargs` | `**kwargs` | |
 
 ## flytekit.extend.backend.base_connector.TaskCategory
+
+### Parameters
 
 ```python
 class TaskCategory(

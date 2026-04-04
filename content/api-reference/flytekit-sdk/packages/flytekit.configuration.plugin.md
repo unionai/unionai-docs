@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration.plugin
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -25,7 +25,6 @@ or in pyproject.toml:
 [project.entry-points."flytekit.configuration.plugin"]
 my_plugin = "my_module:MyCustomPlugin"
 ```
-
 ## Directory
 
 ### Classes

@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.scopes
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -84,6 +84,8 @@ to the user.
 
 ## flytekit.exceptions.scopes.FlyteScopedException
 
+### Parameters
+
 ```python
 class FlyteScopedException(
     context,
@@ -109,14 +111,16 @@ class FlyteScopedException(
 
 | Property | Type | Description |
 |-|-|-|
-| `error_code` | `None` | :rtype: Text |
-| `kind` | `None` | :rtype: int |
+| `error_code` | `None` |  |
+| `kind` | `None` |  |
 | `traceback` | `None` |  |
 | `type` | `None` |  |
 | `value` | `None` |  |
 | `verbose_message` | `None` |  |
 
 ## flytekit.exceptions.scopes.FlyteScopedSystemException
+
+### Parameters
 
 ```python
 class FlyteScopedSystemException(
@@ -137,14 +141,16 @@ class FlyteScopedSystemException(
 
 | Property | Type | Description |
 |-|-|-|
-| `error_code` | `None` | :rtype: Text |
-| `kind` | `None` | :rtype: int |
+| `error_code` | `None` |  |
+| `kind` | `None` |  |
 | `traceback` | `None` |  |
 | `type` | `None` |  |
 | `value` | `None` |  |
-| `verbose_message` | `None` | :rtype: Text |
+| `verbose_message` | `None` |  |
 
 ## flytekit.exceptions.scopes.FlyteScopedUserException
+
+### Parameters
 
 ```python
 class FlyteScopedUserException(
@@ -165,10 +171,10 @@ class FlyteScopedUserException(
 
 | Property | Type | Description |
 |-|-|-|
-| `error_code` | `None` | :rtype: Text |
-| `kind` | `None` | :rtype: int |
+| `error_code` | `None` |  |
+| `kind` | `None` |  |
 | `traceback` | `None` |  |
 | `type` | `None` |  |
 | `value` | `None` |  |
-| `verbose_message` | `None` | :rtype: Text |
+| `verbose_message` | `None` |  |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.bin.entrypoint
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -46,7 +46,9 @@ If a flyte exception is passed, use its timestamp, otherwise, use the current ti
 
 | Parameter | Type | Description |
 |-|-|-|
-| `e` | `typing.Optional[Exception]` | Exception that has occurred. Optional. :return: Timestamp to be reported in ContainerError |
+| `e` | `typing.Optional[Exception]` | Exception that has occurred. Optional. |
+
+**Returns:** Timestamp to be reported in ContainerError
 
 #### get_one_of()
 
@@ -61,7 +63,9 @@ some settings reference multiple environment variables for legacy reasons.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | List of environment variables to look for. :return: The first defined value in the environment, or an empty string if nothing is found. |
+| `args` | `*args` | List of environment variables to look for. |
+
+**Returns:** The first defined value in the environment, or an empty string if nothing is found.
 
 #### get_traceback_str()
 
@@ -113,5 +117,5 @@ def setup_execution(
 | `checkpoint_path` | `typing.Optional[str]` | |
 | `prev_checkpoint` | `typing.Optional[str]` | |
 | `dynamic_addl_distro` | `typing.Optional[str]` | Works in concert with the other dynamic arg. If present, indicates that if a dynamic task were to run, it should set fast serialize to true and use these values in FastSerializationSettings |
-| `dynamic_dest_dir` | `typing.Optional[str]` | See above. :return: |
+| `dynamic_dest_dir` | `typing.Optional[str]` | See above. |
 

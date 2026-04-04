@@ -1,6 +1,6 @@
 ---
 title: flytekit.deck.renderer
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -36,7 +36,6 @@ layout: py_api
 ## flytekit.deck.renderer.ArrowRenderer
 
 Render an Arrow dataframe as an HTML table.
-
 
 
 ### Methods
@@ -85,6 +84,7 @@ def to_html(
 PythonDependencyDeck is a deck that contains information about packages installed via pip.
 
 
+### Parameters
 
 ```python
 class PythonDependencyRenderer(
@@ -139,6 +139,7 @@ Returns: An HTML document as a string.
 Convert Python source code to HTML, and return HTML as a unicode string.
 
 
+### Parameters
 
 ```python
 class SourceCodeRenderer(
@@ -173,11 +174,14 @@ This method applies a colorful style and replaces the color "#fff0f0" with "#fff
 |-|-|-|
 | `source_code` | `str` | The Python source code to be converted. |
 
+**Returns:** str: The resulting HTML as a string, including CSS and highlighted source code.
+
 ## flytekit.deck.renderer.TopFrameRenderer
 
 Render a DataFrame as an HTML table.
 
 
+### Parameters
 
 ```python
 class TopFrameRenderer(

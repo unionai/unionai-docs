@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.whylogs
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.12
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -44,7 +44,6 @@ Each Constraints object (builder.build() in the former example) can have as many
 desired. If you want to learn more, check out our docs and examples at https://whylogs.readthedocs.io/
 
 
-
 ### Methods
 
 | Method | Description |
@@ -68,6 +67,7 @@ def to_html(
 Transforms whylogs Dataset Profile Views to and from a Schema (typed/untyped)
 
 
+### Parameters
 
 ```python
 def WhylogsDatasetProfileTransformer()
@@ -147,7 +147,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -281,7 +280,6 @@ is the reference and the other one is the target data, meaning that this is what
 the report will compare it against.
 
 
-
 ### Methods
 
 | Method | Description |
@@ -300,10 +298,13 @@ def to_html(
 This static method will profile the input data and then generate an HTML report
 with the Summary Drift calculations for all the dataframe's columns
 
+:type: pandas.DataFrame
+
+:type target_data: pandas.DataFrame
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `reference_data` | `pandas.DataFrame` | The DataFrame that will be the reference for the drift report :type: pandas.DataFrame |
-| `target_data` | `pandas.DataFrame` | The data to compare against and create the Summary Drift report :type target_data: pandas.DataFrame |
+| `reference_data` | `pandas.DataFrame` | The DataFrame that will be the reference for the drift report |
+| `target_data` | `pandas.DataFrame` | The data to compare against and create the Summary Drift report |
 

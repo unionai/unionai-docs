@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -36,6 +36,17 @@ layout: py_api
 | [`flytekit.clients.grpc_utils.default_metadata_interceptor.DefaultMetadataInterceptor`](../packages/flytekit.clients.grpc_utils.default_metadata_interceptor#flytekitclientsgrpc_utilsdefault_metadata_interceptordefaultmetadatainterceptor) | |
 | [`flytekit.clients.grpc_utils.wrap_exception_interceptor.RetryExceptionWrapperInterceptor`](../packages/flytekit.clients.grpc_utils.wrap_exception_interceptor#flytekitclientsgrpc_utilswrap_exception_interceptorretryexceptionwrapperinterceptor) | |
 | [`flytekit.clients.raw.RawSynchronousFlyteClient`](../packages/flytekit.clients.raw#flytekitclientsrawrawsynchronousflyteclient) |This is a thin synchronous wrapper around the auto-generated GRPC stubs for communicating with the admin service. |
+| [`flytekit.clis.sdk_in_container.build.BuildCommand`](../packages/flytekit.clis.sdk_in_container.build#flytekitclissdk_in_containerbuildbuildcommand) |A click command group for building a image for flyte workflows & tasks in a file. |
+| [`flytekit.clis.sdk_in_container.build.BuildParams`](../packages/flytekit.clis.sdk_in_container.build#flytekitclissdk_in_containerbuildbuildparams) | |
+| [`flytekit.clis.sdk_in_container.build.BuildWorkflowCommand`](../packages/flytekit.clis.sdk_in_container.build#flytekitclissdk_in_containerbuildbuildworkflowcommand) |click multicommand at the python file layer, subcommands should be all the workflows in the file. |
+| [`flytekit.clis.sdk_in_container.run.DynamicEntityLaunchCommand`](../packages/flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrundynamicentitylaunchcommand) |This is a dynamic command that is created for each launch plan. |
+| [`flytekit.clis.sdk_in_container.run.Entities`](../packages/flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunentities) |NamedTuple to group all entities in a file. |
+| [`flytekit.clis.sdk_in_container.run.RemoteEntityGroup`](../packages/flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunremoteentitygroup) |click multicommand that retrieves launchplans from a remote flyte instance and executes them. |
+| [`flytekit.clis.sdk_in_container.run.RunCommand`](../packages/flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunruncommand) |A click command group for registering and executing flyte workflows & tasks in a file. |
+| [`flytekit.clis.sdk_in_container.run.RunLevelComputedParams`](../packages/flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunrunlevelcomputedparams) |This class is used to store the computed parameters that are used to run a workflow / task / launchplan. |
+| [`flytekit.clis.sdk_in_container.run.RunLevelParams`](../packages/flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunrunlevelparams) |This class is used to store the parameters that are used to run a workflow / task / launchplan. |
+| [`flytekit.clis.sdk_in_container.run.WorkflowCommand`](../packages/flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunworkflowcommand) |click multicommand at the python file layer, subcommands should be all the workflows in the file. |
+| [`flytekit.clis.sdk_in_container.run.YamlFileReadingCommand`](../packages/flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunyamlfilereadingcommand) | |
 | [`flytekit.clis.sdk_in_container.serialize.SerializationMode`](../packages/flytekit.clis.sdk_in_container.serialize#flytekitclissdk_in_containerserializeserializationmode) | |
 | [`flytekit.clis.sdk_in_container.utils.ErrorHandlingCommand`](../packages/flytekit.clis.sdk_in_container.utils#flytekitclissdk_in_containerutilserrorhandlingcommand) |Helper class that wraps the invoke method of a click command to catch exceptions and print them in a nice way. |
 | [`flytekit.clis.sdk_in_container.utils.PyFlyteParams`](../packages/flytekit.clis.sdk_in_container.utils#flytekitclissdk_in_containerutilspyflyteparams) | |
@@ -272,11 +283,6 @@ layout: py_api
 | [`flytekit.extras.accelerators.MultiInstanceGPUAccelerator`](../packages/flytekit.extras.accelerators#flytekitextrasacceleratorsmultiinstancegpuaccelerator) |Base class for all multi-instance GPU accelerator types. |
 | [`flytekit.extras.cloud_pickle_resolver.ExperimentalNaiveCloudPickleResolver`](../packages/flytekit.extras.cloud_pickle_resolver#flytekitextrascloud_pickle_resolverexperimentalnaivecloudpickleresolver) |Please do not use this resolver, basically ever. |
 | [`flytekit.extras.pydantic_transformer.transformer.PydanticTransformer`](../packages/flytekit.extras.pydantic_transformer.transformer#flytekitextraspydantic_transformertransformerpydantictransformer) | |
-| [`flytekit.extras.pytorch.checkpoint.PyTorchCheckpoint`](../packages/flytekit.extras.pytorch.checkpoint#flytekitextraspytorchcheckpointpytorchcheckpoint) |This class is helpful to save a checkpoint. |
-| [`flytekit.extras.pytorch.checkpoint.PyTorchCheckpointTransformer`](../packages/flytekit.extras.pytorch.checkpoint#flytekitextraspytorchcheckpointpytorchcheckpointtransformer) |TypeTransformer that supports serializing and deserializing checkpoint. |
-| [`flytekit.extras.pytorch.native.PyTorchModuleTransformer`](../packages/flytekit.extras.pytorch.native#flytekitextraspytorchnativepytorchmoduletransformer) | |
-| [`flytekit.extras.pytorch.native.PyTorchTensorTransformer`](../packages/flytekit.extras.pytorch.native#flytekitextraspytorchnativepytorchtensortransformer) | |
-| [`flytekit.extras.pytorch.native.PyTorchTypeTransformer`](../packages/flytekit.extras.pytorch.native#flytekitextraspytorchnativepytorchtypetransformer) | |
 | [`flytekit.extras.sklearn.native.SklearnEstimatorTransformer`](../packages/flytekit.extras.sklearn.native#flytekitextrassklearnnativesklearnestimatortransformer) | |
 | [`flytekit.extras.sklearn.native.SklearnTypeTransformer`](../packages/flytekit.extras.sklearn.native#flytekitextrassklearnnativesklearntypetransformer) | |
 | [`flytekit.extras.sqlite3.task.SQLite3Config`](../packages/flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3config) |Use this configuration to configure if sqlite3 files that should be loaded by the task. |
@@ -287,10 +293,6 @@ layout: py_api
 | [`flytekit.extras.tasks.shell.ProcessResult`](../packages/flytekit.extras.tasks.shell#flytekitextrastasksshellprocessresult) |Stores a process return code, standard output and standard error. |
 | [`flytekit.extras.tasks.shell.RawShellTask`](../packages/flytekit.extras.tasks.shell#flytekitextrastasksshellrawshelltask) | |
 | [`flytekit.extras.tasks.shell.ShellTask`](../packages/flytekit.extras.tasks.shell#flytekitextrastasksshellshelltask) | |
-| [`flytekit.extras.tensorflow.model.TensorFlowModelTransformer`](../packages/flytekit.extras.tensorflow.model#flytekitextrastensorflowmodeltensorflowmodeltransformer) | |
-| [`flytekit.extras.tensorflow.record.TFRecordDatasetConfig`](../packages/flytekit.extras.tensorflow.record#flytekitextrastensorflowrecordtfrecorddatasetconfig) |TFRecordDatasetConfig can be used while creating tf. |
-| [`flytekit.extras.tensorflow.record.TensorFlowRecordFileTransformer`](../packages/flytekit.extras.tensorflow.record#flytekitextrastensorflowrecordtensorflowrecordfiletransformer) |TypeTransformer that supports serialising and deserialising to and from TFRecord file. |
-| [`flytekit.extras.tensorflow.record.TensorFlowRecordsDirTransformer`](../packages/flytekit.extras.tensorflow.record#flytekitextrastensorflowrecordtensorflowrecordsdirtransformer) |TypeTransformer that supports serialising and deserialising to and from TFRecord directory. |
 | [`flytekit.extras.webhook.WebhookConnector`](../packages/flytekit.extras.webhook#flytekitextraswebhookwebhookconnector) |WebhookConnector is responsible for handling webhook tasks. |
 | [`flytekit.extras.webhook.WebhookTask`](../packages/flytekit.extras.webhook#flytekitextraswebhookwebhooktask) |The WebhookTask is used to invoke a webhook. |
 | [`flytekit.extras.webhook.connector.WebhookConnector`](../packages/flytekit.extras.webhook.connector#flytekitextraswebhookconnectorwebhookconnector) |WebhookConnector is responsible for handling webhook tasks. |
@@ -540,6 +542,7 @@ layout: py_api
 | [`flytekit.types.file.FileExt`](../packages/flytekit.types.file#flytekittypesfilefileext) |Used for annotating file extension types of FlyteFile. |
 | [`flytekit.types.file.file.FlyteFile`](../packages/flytekit.types.file.file#flytekittypesfilefileflytefile) | |
 | [`flytekit.types.file.file.FlyteFilePathTransformer`](../packages/flytekit.types.file.file#flytekittypesfilefileflytefilepathtransformer) | |
+| [`flytekit.types.file.image.PILImageTransformer`](../packages/flytekit.types.file.image#flytekittypesfileimagepilimagetransformer) |TypeTransformer that supports PIL. |
 | [`flytekit.types.iterator.iterator.FlyteIterator`](../packages/flytekit.types.iterator.iterator#flytekittypesiteratoriteratorflyteiterator) | |
 | [`flytekit.types.iterator.iterator.IteratorTransformer`](../packages/flytekit.types.iterator.iterator#flytekittypesiteratoriteratoriteratortransformer) | |
 | [`flytekit.types.iterator.json_iterator.JSONIterator`](../packages/flytekit.types.iterator.json_iterator#flytekittypesiteratorjson_iteratorjsoniterator) | |
@@ -592,5 +595,4 @@ layout: py_api
 | [`flytekit.core.promise.SupportsNodeCreation`](../packages/flytekit.core.promise#flytekitcorepromisesupportsnodecreation) | |
 | [`flytekit.core.schedule.LaunchPlanTriggerBase`](../packages/flytekit.core.schedule#flytekitcoreschedulelaunchplantriggerbase) | |
 | [`flytekit.deck.renderer.Renderable`](../packages/flytekit.deck.renderer#flytekitdeckrendererrenderable) | |
-| [`flytekit.extras.pytorch.checkpoint.IsDataclass`](../packages/flytekit.extras.pytorch.checkpoint#flytekitextraspytorchcheckpointisdataclass) | |
 | [`flytekit.sensor.base_sensor.SensorConfig`](../packages/flytekit.sensor.base_sensor#flytekitsensorbase_sensorsensorconfig) | |

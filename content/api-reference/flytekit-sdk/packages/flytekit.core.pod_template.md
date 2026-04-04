@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.pod_template
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -46,6 +46,8 @@ def serialize_pod_template(
 
 Custom PodTemplate specification for a Task.
 
+
+### Parameters
 
 ```python
 class PodTemplate(

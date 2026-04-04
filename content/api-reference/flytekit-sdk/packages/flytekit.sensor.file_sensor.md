@@ -1,6 +1,6 @@
 ---
 title: flytekit.sensor.file_sensor
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -16,6 +16,8 @@ layout: py_api
 | [`FileSensor`](.././flytekit.sensor.file_sensor#flytekitsensorfile_sensorfilesensor) |  |
 
 ## flytekit.sensor.file_sensor.FileSensor
+
+### Parameters
 
 ```python
 class FileSensor(

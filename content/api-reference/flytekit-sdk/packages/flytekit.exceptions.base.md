@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.base
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -17,6 +17,8 @@ layout: py_api
 | [`FlyteRecoverableException`](.././flytekit.exceptions.base#flytekitexceptionsbaseflyterecoverableexception) |  |
 
 ## flytekit.exceptions.base.FlyteException
+
+### Parameters
 
 ```python
 class FlyteException(
@@ -36,6 +38,8 @@ class FlyteException(
 | `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.base.FlyteRecoverableException
+
+### Parameters
 
 ```python
 class FlyteRecoverableException(

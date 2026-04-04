@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.container_task
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -28,6 +28,7 @@ majority of tasks - the typical ``@task`` decorated tasks for instance all run a
 something that doesn't run a container would be something like the Athena SQL task.
 
 
+### Parameters
 
 ```python
 class ContainerTask(
@@ -52,9 +53,24 @@ class ContainerTask(
     kwargs,
 )
 ```
+task_type (str): defines a unique task-type for every new extension. If a backend plugin is required then
+    this has to be done in-concert with the backend plugin identifier
+name (str): A unique name for the task instantiation. This is unique for every instance of task.
+task_config (T): Configuration for the task. This is used to configure the specific plugin that handles this
+    task
+interface (Optional[Interface]): A python native typed interface ``(inputs) -&gt; outputs`` that declares the
+    signature of the task
+environment (Optional[Dict[str, str]]): Any environment variables that should be supplied during the
+    execution of the task. Supplied as a dictionary of key/value pairs
+disable_deck (bool): (deprecated) If true, this task will not output deck html file
+enable_deck (bool): If true, this task will output deck html file
+deck_fields (Tuple[DeckField]): Tuple of decks to be
+    generated for this task. Valid values can be selected from fields of ``flytekit.deck.DeckField`` enum
+
+
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | A unique name for the task instantiation. This is unique for every instance of task. |
+| `name` | `str` | |
 | `image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec]` | |
 | `command` | `typing.List[str]` | |
 | `inputs` | `typing.Optional[typing.OrderedDict[str, typing.Type]]` | |

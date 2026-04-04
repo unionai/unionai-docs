@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.reference_entity
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -26,6 +26,8 @@ layout: py_api
 A reference object containing metadata that points to a remote launch plan.
 
 
+### Parameters
+
 ```python
 class LaunchPlanReference(
     project: str,
@@ -50,6 +52,8 @@ class LaunchPlanReference(
 
 ## flytekit.core.reference_entity.Reference
 
+### Parameters
+
 ```python
 class Reference(
     project: str,
@@ -73,6 +77,8 @@ class Reference(
 | `resource_type` | `None` |  |
 
 ## flytekit.core.reference_entity.ReferenceEntity
+
+### Parameters
 
 ```python
 class ReferenceEntity(
@@ -179,6 +185,8 @@ Please see the implementation of the dispatch_execute function in the real task.
 
 ## flytekit.core.reference_entity.ReferenceSpec
 
+### Parameters
+
 ```python
 class ReferenceSpec(
     template: flytekit.core.reference_entity.ReferenceTemplate,
@@ -192,9 +200,11 @@ class ReferenceSpec(
 
 | Property | Type | Description |
 |-|-|-|
-| `template` | `None` | :rtype: ReferenceTemplate |
+| `template` | `None` |  |
 
 ## flytekit.core.reference_entity.ReferenceTemplate
+
+### Parameters
 
 ```python
 class ReferenceTemplate(
@@ -216,13 +226,15 @@ workflows or dynamic tasks.
 
 | Property | Type | Description |
 |-|-|-|
-| `id` | `None` | User-specified information that uniquely identifies this reference. :rtype: flytekit.models.core.identifier.Identifier |
-| `resource_type` | `None` | The type of reference. :rtype: flytekit.models.core.identifier.ResourceType |
+| `id` | `None` | User-specified information that uniquely identifies this reference. |
+| `resource_type` | `None` | The type of reference. |
 
 ## flytekit.core.reference_entity.TaskReference
 
 A reference object containing metadata that points to a remote task.
 
+
+### Parameters
 
 ```python
 class TaskReference(
@@ -250,6 +262,8 @@ class TaskReference(
 
 A reference object containing metadata that points to a remote workflow.
 
+
+### Parameters
 
 ```python
 class WorkflowReference(

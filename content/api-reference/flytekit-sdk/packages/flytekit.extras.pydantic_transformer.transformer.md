@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.pydantic_transformer.transformer
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -25,6 +25,8 @@ layout: py_api
 | `SERIALIZATION_FORMAT` | `str` |  |
 
 ## flytekit.extras.pydantic_transformer.transformer.PydanticTransformer
+
+### Parameters
 
 ```python
 def PydanticTransformer()
@@ -105,7 +107,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 

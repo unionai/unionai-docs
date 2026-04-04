@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.async_fsspec.s3fs.s3fs
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -28,6 +28,8 @@ layout: py_api
 | `SINGLE_OBJECT_UPLOAD_LIMIT` | `int` |  |
 
 ## flytekitplugins.async_fsspec.s3fs.s3fs.AsyncS3FileSystem
+
+### Parameters
 
 ```python
 class AsyncS3FileSystem(
@@ -688,7 +690,8 @@ withdirs: bool
     when used by glob, but users usually only want files.
 prefix: str
     Only return files that match ``^{path}/{prefix}`` (if there is an
-    exact match ``filename == {path}/{prefix}``, it also will be included)
+    exact match ``filename == {path}/{prefix}``, it also will be included).
+    Can be combined with ``withdirs`` and ``maxdepth``.
 
 
 | Parameter | Type | Description |

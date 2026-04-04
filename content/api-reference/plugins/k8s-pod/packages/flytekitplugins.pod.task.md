@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.pod.task
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -30,6 +30,8 @@ To use pod tasks: (1) Define a pod spec, and (2) Specify the primary container n
 
 
 
+### Parameters
+
 ```python
 class Pod(
     pod_spec: kubernetes.client.models.v1_pod_spec.V1PodSpec,
@@ -46,6 +48,8 @@ class Pod(
 | `annotations` | `typing.Optional[typing.Dict[str, str]]` | |
 
 ## flytekitplugins.pod.task.PodFunctionTask
+
+### Parameters
 
 ```python
 class PodFunctionTask(

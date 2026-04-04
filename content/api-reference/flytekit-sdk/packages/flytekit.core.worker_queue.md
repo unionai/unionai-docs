@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.worker_queue
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -43,6 +43,7 @@ Executions that should be kicked off will be kicked off, and ones that are runni
 in a loop similar to a controller loop in a k8s operator.
 
 
+### Parameters
 
 ```python
 class Controller(
@@ -144,9 +145,9 @@ kicking off this execution.
 def get_signal_handler()
 ```
 TODO: At some point, this loop would be ideally managed by the loop manager, and the signal handler should
-  gracefully initiate shutdown of all loops, calling .cancel() on all tasks, allowing each loop to clean up,
-  starting with the deepest loop/thread first and working up.
-  https://github.com/flyteorg/flyte/issues/6068
+gracefully initiate shutdown of all loops, calling .cancel() on all tasks, allowing each loop to clean up,
+starting with the deepest loop/thread first and working up.
+https://github.com/flyteorg/flyte/issues/6068
 
 
 #### launch_execution()
@@ -192,6 +193,8 @@ Render the callstack as a deck presentation to be shown after eager workflow exe
 
 ## flytekit.core.worker_queue.Update
 
+### Parameters
+
 ```python
 class Update(
     work_item: WorkItem,
@@ -215,6 +218,7 @@ This is a class to keep track of what the user requested. Since it captures the 
 to run the entity with, an arbitrary map, can't make this frozen.
 
 
+### Parameters
 
 ```python
 class WorkItem(

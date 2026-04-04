@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration.default_images
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -25,7 +25,6 @@ layout: py_api
 ## flytekit.configuration.default_images.DefaultImages
 
 We may want to load the default images from remote - maybe s3 location etc?
-
 
 
 ### Methods

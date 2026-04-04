@@ -1,6 +1,6 @@
 ---
 title: flytekit.image_spec.noop_builder
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -43,6 +43,8 @@ Build the docker image and push it to the registry.
 |-|-|-|
 | `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | image spec of the task. |
 
+**Returns:** fully_qualified_image_name: Fully qualified image name. If None, then `image_spec.image_name()` is used.
+
 #### should_build()
 
 ```python
@@ -59,4 +61,6 @@ or existing images. Therefore, should_build should always return True.
 | Parameter | Type | Description |
 |-|-|-|
 | `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | Image specification |
+
+**Returns:** bool: Always returns True
 

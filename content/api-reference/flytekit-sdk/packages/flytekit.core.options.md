@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.options
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -23,6 +23,8 @@ buckets. Or you may want labels or annotations to be different. This object is u
 in a Flyte backend, and also when registering launch plans.
 
 
+
+### Parameters
 
 ```python
 class Options(

@@ -1,12 +1,11 @@
 ---
 title: flytekit.configuration
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
 # flytekit.configuration
-
 
 # Configuration
 
@@ -114,8 +113,6 @@ Users typically shouldn't be concerned with these configurations, as they are ty
 - **S3Config**: Amazon S3 specific configuration.
 - **GCSConfig**: Google Cloud Storage specific configuration.
 - **DataConfig**: Configuration for data access.
-
-
 ## Directory
 
 ### Classes
@@ -160,6 +157,7 @@ Users typically shouldn't be concerned with these configurations, as they are ty
 Any Azure Blob Storage specific configuration.
 
 
+### Parameters
 
 ```python
 class AzureBlobStorageConfig(
@@ -205,14 +203,9 @@ this object holds all the config necessary to
 2. Some parts are required for Serialization, for example Platform Config is not required
 3. Runtime of a task
 
-Attributes:
-    platform (PlatformConfig): Settings to connect to a Flyte backend.
-    secrets (SecretsConfig): Configuration for secrets management.
-    stats (StatsConfig): Configuration for statsd metrics.
-    data_config (DataConfig): Data storage configuration.
-    local_sandbox_path (str): Path for local sandbox runs.
 
 
+### Parameters
 
 ```python
 class Config(
@@ -225,11 +218,11 @@ class Config(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `platform` | `PlatformConfig` | |
-| `secrets` | `SecretsConfig` | |
-| `stats` | `StatsConfig` | |
-| `data_config` | `DataConfig` | |
-| `local_sandbox_path` | `str` | |
+| `platform` | `PlatformConfig` | Settings to connect to a Flyte backend. |
+| `secrets` | `SecretsConfig` | Configuration for secrets management. |
+| `stats` | `StatsConfig` | Configuration for statsd metrics. |
+| `data_config` | `DataConfig` | Data storage configuration. |
+| `local_sandbox_path` | `str` | Path for local sandbox runs. |
 
 ### Methods
 
@@ -257,7 +250,9 @@ Automatically constructs the Config Object. The order of precedence is as follow
 
 | Parameter | Type | Description |
 |-|-|-|
-| `config_file` | `typing.Union[str, ConfigFile, None]` | file path to read the config from, if not specified default locations are searched :return: Config |
+| `config_file` | `typing.Union[str, ConfigFile, None]` | file path to read the config from, if not specified default locations are searched |
+
+**Returns:** Config
 
 #### for_endpoint()
 
@@ -282,7 +277,9 @@ refer to fsspec documentation
 | `endpoint` | `str` | -&gt; Endpoint where Flyte admin is available |
 | `insecure` | `bool` | -&gt; if the connection should be insecure, default is secure (SSL ON) |
 | `data_config` | `typing.Optional[DataConfig]` | -&gt; Data config, if using specialized connection params like minio etc |
-| `config_file` | `typing.Union[str, ConfigFile]` | -&gt; Optional config file in the flytekit config format. :return: Config |
+| `config_file` | `typing.Union[str, ConfigFile]` | -&gt; Optional config file in the flytekit config format. |
+
+**Returns:** Config
 
 #### for_sandbox()
 
@@ -291,8 +288,9 @@ def for_sandbox()
 ```
 Constructs a new Config object specifically to connect to :std:ref:`deployment-deployment-sandbox`.
 If you are using a hosted Sandbox like environment, then you may need to use port-forward or ingress urls
-:return: Config
 
+
+**Returns:** Config
 
 #### with_params()
 
@@ -320,6 +318,7 @@ Flyte sandbox environment we store the access key id and secret.
 All DataPersistence plugins are passed all DataConfig and the plugin should correctly use the right config
 
 
+### Parameters
 
 ```python
 class DataConfig(
@@ -360,6 +359,7 @@ This object carries information about the path of the entrypoint command that wi
 This is where `pyflyte-execute` code can be found. This is useful for cases like pyspark execution.
 
 
+### Parameters
 
 ```python
 class EntrypointSettings(
@@ -485,6 +485,7 @@ def to_json(
 This object hold information about settings necessary to serialize an object so that it can be fast-registered.
 
 
+### Parameters
 
 ```python
 class FastSerializationSettings(
@@ -614,6 +615,7 @@ def to_json(
 Any GCS specific configuration.
 
 
+### Parameters
 
 ```python
 class GCSConfig(
@@ -647,6 +649,7 @@ def auto(
 Data storage configuration that applies across any provider.
 
 
+### Parameters
 
 ```python
 class GenericPersistenceConfig(
@@ -679,17 +682,9 @@ def auto(
 
 Image is a structured wrapper for task container images used in object serialization.
 
-Attributes:
-    name (str): A user-provided name to identify this image.
-    fqn (str): Fully qualified image name. This consists of
-        #. a registry location
-        #. a username
-        #. a repository name
-        For example: `hostname/username/reponame`
-    tag (str): Optional tag used to specify which version of an image to pull
-    digest (str): Optional digest used to specify which version of an image to pull
 
 
+### Parameters
 
 ```python
 class Image(
@@ -701,10 +696,10 @@ class Image(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | |
-| `fqn` | `str` | |
-| `tag` | `Optional[str]` | |
-| `digest` | `Optional[str]` | |
+| `name` | `str` | A user-provided name to identify this image. |
+| `fqn` | `str` | Fully qualified image name. This consists of #. a registry location #. a username #. a repository name For example: `hostname/username/reponame` |
+| `tag` | `Optional[str]` | Optional tag used to specify which version of an image to pull |
+| `digest` | `Optional[str]` | Optional digest used to specify which version of an image to pull |
 
 ### Properties
 
@@ -782,7 +777,9 @@ the latest commit.
 |-|-|-|
 | `name` | `str` | |
 | `image_identifier` | `str` | Either the full image identifier string e.g. somedocker.com/myimage or a path to a file containing a `ImageSpec`. |
-| `allow_no_tag_or_digest` | `bool` | :rtype: Image |
+| `allow_no_tag_or_digest` | `bool` | |
+
+**Returns:** Image
 
 #### schema()
 
@@ -857,11 +854,9 @@ For example, ImageConfig.auto(img_name=""ghcr.io/flyteorg/flytecookbook:v1.0.0""
 ImageConfig holds available images which can be used at registration time. A default image can be specified
 along with optional additional images. Each image in the config must have a unique name.
 
-Attributes:
-    default_image (Optional[Image]): The default image to be used as a container for task serialization.
-    images (List[Image]): Optional, additional images which can be used in task container definitions.
 
 
+### Parameters
 
 ```python
 class ImageConfig(
@@ -871,8 +866,8 @@ class ImageConfig(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `default_image` | `Optional[Image]` | |
-| `images` | `Optional[List[Image]]` | |
+| `default_image` | `Optional[Image]` | The default image to be used as a container for task serialization. |
+| `images` | `Optional[List[Image]]` | Optional, additional images which can be used in task container definitions. |
 
 ### Methods
 
@@ -908,7 +903,7 @@ base of this repo). To pick those up, see the auto_default_image function..
 | Parameter | Type | Description |
 |-|-|-|
 | `config_file` | `typing.Union[str, ConfigFile, None]` | |
-| `img_name` | `Optional[str]` | :return: |
+| `img_name` | `Optional[str]` | |
 
 #### auto_default_image()
 
@@ -964,19 +959,18 @@ def from_images(
 )
 ```
 Allows you to programmatically create an ImageConfig. Usually only the default_image is required, unless
-your workflow uses multiple images
+    your workflow uses multiple images
 
-```python
-ImageConfig.from_dict(
-    "ghcr.io/flyteorg/flytecookbook:v1.0.0",
-    {
-        "spark": "ghcr.io/flyteorg/myspark:...",
-        "other": "...",
-    }
-)
-```
+    ```python
+    ImageConfig.from_dict(
+        "ghcr.io/flyteorg/flytecookbook:v1.0.0",
+        {
+            "spark": "ghcr.io/flyteorg/myspark:...",
+            "other": "...",
+        }
+    )
+    ```
 
-urn:
 
 
 | Parameter | Type | Description |
@@ -1090,13 +1084,14 @@ CLI
 |-|-|-|
 | `_` | `typing.Any` | click argument, ignored here. |
 | `param` | `str` | the click argument, here should be "image" |
-| `values` | `tuple` | user-supplied images :return: |
+| `values` | `tuple` | user-supplied images |
 
 ## flytekit.configuration.LocalConfig
 
 Any configuration specific to local runs.
 
 
+### Parameters
 
 ```python
 class LocalConfig(
@@ -1132,6 +1127,8 @@ def auto(
 This object contains the settings to talk to a Flyte backend (the DNS location of your Admin server basically).
 
 
+
+### Parameters
 
 ```python
 class PlatformConfig(
@@ -1188,7 +1185,7 @@ Reads from Config file, and overrides from Environment variables. Refer to Confi
 
 | Parameter | Type | Description |
 |-|-|-|
-| `config_file` | `typing.Optional[typing.Union[str, ConfigFile]]` | :return: |
+| `config_file` | `typing.Optional[typing.Union[str, ConfigFile]]` | |
 
 #### for_endpoint()
 
@@ -1208,6 +1205,7 @@ def for_endpoint(
 S3 specific configuration
 
 
+### Parameters
 
 ```python
 class S3Config(
@@ -1249,13 +1247,17 @@ Automatically configure
 
 | Parameter | Type | Description |
 |-|-|-|
-| `config_file` | `typing.Union[str, ConfigFile]` | :return: Config |
+| `config_file` | `typing.Union[str, ConfigFile]` | |
+
+**Returns:** Config
 
 ## flytekit.configuration.SecretsConfig
 
 Configuration for secrets.
 
 
+
+### Parameters
 
 ```python
 class SecretsConfig(
@@ -1289,34 +1291,16 @@ Reads from environment variable or from config file
 
 | Parameter | Type | Description |
 |-|-|-|
-| `config_file` | `typing.Union[str, ConfigFile]` | :return: |
+| `config_file` | `typing.Union[str, ConfigFile]` | |
 
 ## flytekit.configuration.SerializationSettings
 
 These settings are provided while serializing a workflow and task, before registration. This is required to get
 runtime information at serialization time, as well as some defaults.
 
-Attributes:
-    project (str): The project (if any) with which to register entities under.
-    domain (str): The domain (if any) with which to register entities under.
-    version (str): The version (if any) with which to register entities under.
-    image_config (ImageConfig): The image config used to define task container images.
-    env (Optional[Dict[str, str]]): Environment variables injected into task container definitions.
-    default_resources (Optional[ResourceSpec]): The resources to request for the task - this is useful
-        if users need to override the default resource spec of an entity at registration time.
-    flytekit_virtualenv_root (Optional[str]):  During out of container serialize the absolute path of the flytekit
-        virtualenv at serialization time won't match the in-container value at execution time. This optional value
-        is used to provide the in-container virtualenv path
-    python_interpreter (Optional[str]): The python executable to use. This is used for spark tasks in out of
-        container execution.
-    entrypoint_settings (Optional[EntrypointSettings]): Information about the command, path and version of the
-        entrypoint program.
-    fast_serialization_settings (Optional[FastSerializationSettings]): If the code is being serialized so that it
-        can be fast registered (and thus omit building a Docker image) this object contains additional parameters
-        for serialization.
-    source_root (Optional[str]): The root directory of the source code.
 
 
+### Parameters
 
 ```python
 class SerializationSettings(
@@ -1335,24 +1319,24 @@ class SerializationSettings(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `image_config` | `ImageConfig` | |
-| `project` | `typing.Optional[str]` | |
-| `domain` | `typing.Optional[str]` | |
-| `version` | `typing.Optional[str]` | |
-| `env` | `Optional[Dict[str, str]]` | |
-| `default_resources` | `Optional[ResourceSpec]` | |
+| `image_config` | `ImageConfig` | The image config used to define task container images. |
+| `project` | `typing.Optional[str]` | The project (if any) with which to register entities under. |
+| `domain` | `typing.Optional[str]` | The domain (if any) with which to register entities under. |
+| `version` | `typing.Optional[str]` | The version (if any) with which to register entities under. |
+| `env` | `Optional[Dict[str, str]]` | Environment variables injected into task container definitions. |
+| `default_resources` | `Optional[ResourceSpec]` | The resources to request for the task - this is useful if users need to override the default resource spec of an entity at registration time. |
 | `git_repo` | `Optional[str]` | |
-| `python_interpreter` | `str` | |
-| `flytekit_virtualenv_root` | `Optional[str]` | |
-| `fast_serialization_settings` | `Optional[FastSerializationSettings]` | |
-| `source_root` | `Optional[str]` | |
+| `python_interpreter` | `str` | The python executable to use. This is used for spark tasks in out of container execution. |
+| `flytekit_virtualenv_root` | `Optional[str]` | During out of container serialize the absolute path of the flytekit virtualenv at serialization time won't match the in-container value at execution time. This optional value is used to provide the in-container virtualenv path |
+| `fast_serialization_settings` | `Optional[FastSerializationSettings]` | If the code is being serialized so that it can be fast registered (and thus omit building a Docker image) this object contains additional parameters for serialization. |
+| `source_root` | `Optional[str]` | The root directory of the source code. |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `entrypoint_settings` | `None` |  |
-| `serialized_context` | `None` | :return: returns the serialization context as a base64encoded, gzip compressed, json strinnn |
+| `serialized_context` | `None` |  |
 
 ### Methods
 
@@ -1555,14 +1539,17 @@ def with_serialized_context()
 Use this method to create a new SerializationSettings that has an environment variable set with the SerializedContext
 This is useful in transporting SerializedContext to serialized and registered tasks.
 The setting will be available in the `env` field with the key `SERIALIZED_CONTEXT_ENV_VAR`
-:return: A newly constructed SerializationSettings, or self, if it already has the serializationSettings
 
+
+**Returns:** A newly constructed SerializationSettings, or self, if it already has the serializationSettings
 
 ## flytekit.configuration.StatsConfig
 
 Configuration for sending statsd.
 
 
+
+### Parameters
 
 ```python
 class StatsConfig(
@@ -1598,13 +1585,14 @@ Reads from environment variable, followed by ConfigFile provided
 
 | Parameter | Type | Description |
 |-|-|-|
-| `config_file` | `typing.Union[str, ConfigFile]` | :return: |
+| `config_file` | `typing.Union[str, ConfigFile]` | |
 
 ## flytekit.configuration.TaskConfig
 
 Any Project/Domain/Org configuration.
 
 
+### Parameters
 
 ```python
 class TaskConfig(

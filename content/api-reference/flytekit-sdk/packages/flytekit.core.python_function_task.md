@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.python_function_task
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -35,6 +35,7 @@ This is the base task for eager tasks, as well as normal async tasks
 Really only need to override the call function.
 
 
+### Parameters
 
 ```python
 class AsyncPythonFunctionTask(
@@ -542,7 +543,7 @@ But basically, Python becomes propeller, and every task invocation, creates a st
 the form of an execution rather than on the actual memory stack.
 
 
-
+### Parameters
 
 ```python
 class EagerAsyncPythonFunctionTask(
@@ -1108,6 +1109,8 @@ task resolver. It can be useful to override the task resolver for specific cases
 
 ## flytekit.core.python_function_task.EagerFailureHandlerTask
 
+### Parameters
+
 ```python
 class EagerFailureHandlerTask(
     name: str,
@@ -1619,6 +1622,7 @@ In the above code, the name of the function, the module, and the interface (inpu
 auto detected.
 
 
+### Parameters
 
 ```python
 class PythonFunctionTask(
@@ -2114,7 +2118,7 @@ x(a=5) # depending on the interface of the defined task
 ```
 
 
-
+### Parameters
 
 ```python
 class PythonInstanceTask(

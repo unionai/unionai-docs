@@ -193,13 +193,23 @@ def my_task(x: int, y: typing.Dict[str, str]) -> str:
 ```
 Please see some cookbook :std:ref:`task examples &lt;cookbook:tasks&gt;` for additional information.
 
+:deprecated param cache_serialize: (deprecated - please use Cache) Boolean that indicates if identical (ie. same inputs)
+      instances of this task should be executed in serial when caching is enabled. This means that given multiple
+      concurrent executions over identical inputs, only a single instance executes and the rest wait to reuse the
+      cached results. This parameter does nothing without also setting the cache parameter.
+:deprecated param cache_version: (deprecated - please use Cache) Cache version to use. Changes to the task signature will
+       automatically trigger a cache miss, but you can always manually update this field as well to force a cache
+       miss. You should also manually bump this version if the function body/business logic has changed, but the
+       signature hasn't.
+:deprecated param cache_ignore_input_vars: (deprecated - please use Cache) Input variables that should not be included when
+       calculating hash for cache.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `_task_function` | `Optional[Callable[P, FuncOut]]` | This argument is implicitly passed and represents the decorated function |
 | `task_config` | `Optional[T]` | This argument provides configuration for a specific task types. Please refer to the plugins documentation for the right object to use. |
-| `cache` | `Union[bool, Cache]` | Boolean or Cache that indicates how caching is configured. :deprecated param cache_serialize: (deprecated - please use Cache) Boolean that indicates if identical (ie. same inputs) instances of this task should be executed in serial when caching is enabled. This means that given multiple concurrent executions over identical inputs, only a single instance executes and the rest wait to reuse the cached results. This parameter does nothing without also setting the cache parameter. :deprecated param cache_version: (deprecated - please use Cache) Cache version to use. Changes to the task signature will automatically trigger a cache miss, but you can always manually update this field as well to force a cache miss. You should also manually bump this version if the function body/business logic has changed, but the signature hasn't. :deprecated param cache_ignore_input_vars: (deprecated - please use Cache) Input variables that should not be included when calculating hash for cache. |
+| `cache` | `Union[bool, Cache]` | Boolean or Cache that indicates how caching is configured. |
 | `retries` | `int` | Number of times to retry this task during a workflow execution. |
 | `interruptible` | `Optional[bool]` | [Optional] Boolean that indicates that this task can be interrupted and/or scheduled on nodes with lower QoS guarantees. This will directly reduce the `$`/`execution cost` associated, at the cost of performance penalties due to potential interruptions. Requires additional Flyte platform level configuration. If no value is provided, the task will inherit this attribute from its workflow, as follows: No values set for interruptible at the task or workflow level - task is not interruptible Task has interruptible=True, but workflow has no value set - task is interruptible Workflow has interruptible=True, but task has no value set - task is interruptible Workflow has interruptible=False, but task has interruptible=True - task is interruptible Workflow has interruptible=True, but task has interruptible=False - task is not interruptible |
 | `deprecated` | `str` | A string that can be used to provide a warning message for deprecated task. Absence / empty str indicates that the task is active and not deprecated |
@@ -240,548 +250,548 @@ def workflow(
 ) -> Union[Callable[P, FuncOut], Callable[[Callable[P, FuncOut]], PythonFunctionWorkflow], PythonFunctionWorkflow]
 ```
 This decorator declares a function to be a Flyte workflow. Workflows are declarative entities that construct a DAG
-of tasks using the data flow between tasks.
-
-Unlike a task, the function body of a workflow is evaluated at serialization-time (aka compile-time). This is
-because while we can determine the entire structure of a task by looking at the function's signature, workflows need
-to run through the function itself because the body of the function is what expresses the workflow structure. It's
-also important to note that, local execution notwithstanding, it is not evaluated again when the workflow runs on
-Flyte.
-That is, workflows should not call non-Flyte entities since they are only run once (again, this is with respect to
-the platform, local runs notwithstanding).
-
-Example:
-
-&lt;!--
-.. literalinclude:: ../../../tests/flytekit/unit/core/test_workflows.py
---&gt;
-
-```python
-import os
-import sys
-import typing
-from collections import OrderedDict
-from unittest.mock import patch
-
-import pytest
-from typing_extensions import Annotated  # type: ignore
-
-import flytekit.configuration
-from flytekit import FlyteContextManager, StructuredDataset, kwtypes
-from flytekit.configuration import Image, ImageConfig
-from flytekit.core import context_manager
-from flytekit.core.condition import conditional
-from flytekit.core.task import task
-from flytekit.core.workflow import WorkflowFailurePolicy, WorkflowMetadata, WorkflowMetadataDefaults, workflow
-from flytekit.exceptions.user import FlyteValidationException, FlyteValueException, FlyteMissingReturnValueException
-from flytekit.tools.translator import get_serializable
-from flytekit.types.error.error import FlyteError
-
-default_img = Image(name="default", fqn="test", tag="tag")
-serialization_settings = flytekit.configuration.SerializationSettings(
-    project="project",
-    domain="domain",
-    version="version",
-    env=None,
-    image_config=ImageConfig(default_image=default_img, images=[default_img]),
-)
-
-def test_metadata_values():
-    with pytest.raises(FlyteValidationException):
-        WorkflowMetadata(on_failure=0)
-
-    wm = WorkflowMetadata(on_failure=WorkflowFailurePolicy.FAIL_IMMEDIATELY)
-    assert wm.on_failure == WorkflowFailurePolicy.FAIL_IMMEDIATELY
-
-
-def test_default_metadata_values():
-    with pytest.raises(FlyteValidationException):
-        WorkflowMetadataDefaults(3)
-
-    wm = WorkflowMetadataDefaults(interruptible=False)
-    assert wm.interruptible is False
-
-
-def test_workflow_values():
-    @task
-    def t1(a: int) -> typing.NamedTuple("OutputsBC", [("t1_int_output", int), ("c", str)]):
-        a = a + 2
-        return a, "world-" + str(a)
-
-    @workflow(interruptible=True, failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
-    def wf(a: int) -> typing.Tuple[str, str]:
-        x, y = t1(a=a)
-        _, v = t1(a=x)
-        return y, v
-
-    wf_spec = get_serializable(OrderedDict(), serialization_settings, wf)
-    assert wf_spec.template.metadata_defaults.interruptible
-    assert wf_spec.template.metadata.on_failure == 1
-
-def test_default_values():
-    @task
-    def t() -> bool:
-        return True
-
-    @task
-    def f() -> bool:
-        return False
-
-    @workflow
-    def wf(a: bool = True) -> bool:
-        return conditional("bool").if_(a.is_true()).then(t()).else_().then(f())  # type: ignore
-
-    assert wf() is True
-    assert wf(a=False) is False
-
-
-def test_list_output_wf():
-    @task
-    def t1(a: int) -> int:
-        a = a + 5
-        return a
-
-    @workflow
-    def list_output_wf() -> typing.List[int]:
-        v = []
-        for i in range(2):
-            v.append(t1(a=i))
-        return v
-
-    x = list_output_wf()
-    assert x == [5, 6]
-
-
-def test_sub_wf_single_named_tuple():
-    nt = typing.NamedTuple("SingleNamedOutput", [("named1", int)])
-
-    @task
-    def t1(a: int) -> nt:
-        a = a + 2
-        return nt(a)
-
-    @workflow
-    def subwf(a: int) -> nt:
-        return t1(a=a)
-
-    @workflow
-    def wf(b: int) -> nt:
-        out = subwf(a=b)
-        return t1(a=out.named1)
-
-    x = wf(b=3)
-    assert x == (7,)
-
-
-def test_sub_wf_multi_named_tuple():
-    nt = typing.NamedTuple("Multi", [("named1", int), ("named2", int)])
-
-    @task
-    def t1(a: int) -> nt:
-        a = a + 2
-        return nt(a, a)
-
-    @workflow
-    def subwf(a: int) -> nt:
-        return t1(a=a)
-
-    @workflow
-    def wf(b: int) -> nt:
-        out = subwf(a=b)
-        return t1(a=out.named1)
-
-    x = wf(b=3)
-    assert x == (7, 7)
-
-
-def test_sub_wf_varying_types():
-    @task
-    def t1l(
-        a: typing.List[typing.Dict[str, typing.List[int]]],
-        b: typing.Dict[str, typing.List[int]],
-        c: typing.Union[typing.List[typing.Dict[str, typing.List[int]]], typing.Dict[str, typing.List[int]], int],
-        d: int,
-    ) -> str:
-        xx = ",".join([f"{k}:{v}" for d in a for k, v in d.items()])
-        yy = ",".join([f"{k}: {i}" for k, v in b.items() for i in v])
-        if isinstance(c, list):
-            zz = ",".join([f"{k}:{v}" for d in c for k, v in d.items()])
-        elif isinstance(c, dict):
-            zz = ",".join([f"{k}: {i}" for k, v in c.items() for i in v])
-        else:
-            zz = str(c)
-        return f"First: {xx} Second: {yy} Third: {zz} Int: {d}"
-
-    @task
-    def get_int() -> int:
-        return 1
-
-    @workflow
-    def subwf(
-        a: typing.List[typing.Dict[str, typing.List[int]]],
-        b: typing.Dict[str, typing.List[int]],
-        c: typing.Union[typing.List[typing.Dict[str, typing.List[int]]], typing.Dict[str, typing.List[int]]],
-        d: int,
-    ) -> str:
-        return t1l(a=a, b=b, c=c, d=d)
-
-    @workflow
-    def wf() -> str:
-        ds = [
-            {"first_map_a": [42], "first_map_b": [get_int(), 2]},
-            {
-                "second_map_c": [33],
-                "second_map_d": [9, 99],
-            },
-        ]
-        ll = {
-            "ll_1": [get_int(), get_int(), get_int()],
-            "ll_2": [4, 5, 6],
-        }
-        out = subwf(a=ds, b=ll, c=ds, d=get_int())
-        return out
-
-    wf.compile()
-    x = wf()
-    expected = (
-        "First: first_map_a:[42],first_map_b:[1, 2],second_map_c:[33],second_map_d:[9, 99] "
-        "Second: ll_1: 1,ll_1: 1,ll_1: 1,ll_2: 4,ll_2: 5,ll_2: 6 "
-        "Third: first_map_a:[42],first_map_b:[1, 2],second_map_c:[33],second_map_d:[9, 99] "
-        "Int: 1"
-    )
-    assert x == expected
-    wf_spec = get_serializable(OrderedDict(), serialization_settings, wf)
-    assert set(wf_spec.template.nodes[5].upstream_node_ids) == {"n2", "n1", "n0", "n4", "n3"}
-
-    @workflow
-    def wf() -> str:
-        ds = [
-            {"first_map_a": [42], "first_map_b": [get_int(), 2]},
-            {
-                "second_map_c": [33],
-                "second_map_d": [9, 99],
-            },
-        ]
-        ll = {
-            "ll_1": [get_int(), get_int(), get_int()],
-            "ll_2": [4, 5, 6],
-        }
-        out = subwf(a=ds, b=ll, c=ll, d=get_int())
-        return out
-
-    x = wf()
-    expected = (
-        "First: first_map_a:[42],first_map_b:[1, 2],second_map_c:[33],second_map_d:[9, 99] "
-        "Second: ll_1: 1,ll_1: 1,ll_1: 1,ll_2: 4,ll_2: 5,ll_2: 6 "
-        "Third: ll_1: 1,ll_1: 1,ll_1: 1,ll_2: 4,ll_2: 5,ll_2: 6 "
-        "Int: 1"
-    )
-    assert x == expected
-
-
-def test_unexpected_outputs():
-    @task
-    def t1(a: int) -> int:
-        a = a + 5
-        return a
-
-    @workflow
-    def no_outputs_wf():
-        return t1(a=3)
-
-    # Should raise an exception because the workflow returns something when it shouldn't
-    with pytest.raises(FlyteValueException):
-        no_outputs_wf()
-
-@pytest.mark.skipif(sys.version_info < (3, 10, 10), reason="inspect module does not work correctly with Python <3.10.10. https://github.com/python/cpython/issues/102647#issuecomment-1466868212")
-def test_missing_return_value():
-    @task
-    def t1(a: int) -> int:
-        a = a + 5
-        return a
-
-    # Should raise an exception because it doesn't return something when it should
-    with pytest.raises(FlyteMissingReturnValueException):
-
-        @workflow
-        def one_output_wf() -> int:  # type: ignore
-            t1(a=3)
-
-        one_output_wf()
-
-
-def test_custom_wrapper():
-    def our_task(
-            _task_function: typing.Optional[typing.Callable] = None,
-            **kwargs,
-    ):
-        def wrapped(_func: typing.Callable):
-            return task(_task_function=_func)
-
-        if _task_function:
-            return wrapped(_task_function)
-        else:
-            return wrapped
-
-    @our_task(
-        foo={
-            "bar1": lambda x: print(x),
-            "bar2": lambda x: print(x),
-        },
-    )
-    def missing_func_body() -> str:
-        return "foo"
-
-
-def test_wf_no_output():
-    @task
-    def t1(a: int) -> int:
-        a = a + 5
-        return a
-
-    @workflow
-    def no_outputs_wf():
-        t1(a=3)
-
-    assert no_outputs_wf() is None
-
-
-def test_wf_nested_comp(exec_prefix):
-    @task
-    def t1(a: int) -> int:
-        a = a + 5
-        return a
-
-    @workflow
-    def outer() -> typing.Tuple[int, int]:
-        # You should not do this. This is just here for testing.
-        @workflow
-        def wf2() -> int:
-            return t1(a=5)
-
-        return t1(a=3), wf2()
-
-    assert (8, 10) == outer()
-    entity_mapping = OrderedDict()
-
-    model_wf = get_serializable(entity_mapping, serialization_settings, outer)
-
-    assert len(model_wf.template.interface.outputs) == 2
-    assert len(model_wf.template.nodes) == 2
-    assert model_wf.template.nodes[1].workflow_node is not None
-
-    sub_wf = model_wf.sub_workflows[0]
-    assert len(sub_wf.nodes) == 1
-    assert sub_wf.nodes[0].id == "n0"
-    assert sub_wf.nodes[0].task_node.reference_id.name == f"{exec_prefix}tests.flytekit.unit.core.test_workflows.t1"
-
-
-@task
-def add_5(a: int) -> int:
-    a = a + 5
-    return a
-
-
-@workflow
-def simple_wf() -> int:
-    return add_5(a=1)
-
-@workflow
-def my_wf_example(a: int) -> typing.Tuple[int, int]:
-    '''example
-
-    Workflows can have inputs and return outputs of simple or complex types.
-
-    '''
-
-    x = add_5(a=a)
-
-    # You can use outputs of a previous task as inputs to other nodes.
-    z = add_5(a=x)
-
-    # You can call other workflows from within this workflow
-    d = simple_wf()
-
-    # You can add conditions that can run on primitive types and execute different branches
-    e = conditional("bool").if_(a == 5).then(add_5(a=d)).else_().then(add_5(a=z))
-
-    # Outputs of the workflow have to be outputs returned by prior nodes.
-    # No outputs and single or multiple outputs are supported
-    return x, e
-
-    def test_workflow_lhs():
-    assert my_wf_example._lhs == "my_wf_example"
-
-
-def test_all_node_types():
-    assert my_wf_example(a=1) == (6, 16)
-    entity_mapping = OrderedDict()
-
-    model_wf = get_serializable(entity_mapping, serialization_settings, my_wf_example)
-
-    assert len(model_wf.template.interface.outputs) == 2
-    assert len(model_wf.template.nodes) == 4
-    assert model_wf.template.nodes[2].workflow_node is not None
-
-    sub_wf = model_wf.sub_workflows[0]
-    assert len(sub_wf.nodes) == 1
-    assert sub_wf.nodes[0].id == "n0"
-    assert sub_wf.nodes[0].task_node.reference_id.name == "tests.flytekit.unit.core.test_workflows.add_5"
-
-
-def test_wf_docstring():
-    model_wf = get_serializable(OrderedDict(), serialization_settings, my_wf_example)
-
-    assert len(model_wf.template.interface.outputs) == 2
-    assert model_wf.template.interface.outputs["o0"].description == "outputs"
-    assert model_wf.template.interface.outputs["o1"].description == "outputs"
-    assert len(model_wf.template.interface.inputs) == 1
-    assert model_wf.template.interface.inputs["a"].description == "input a"
-
-
-@pytest.mark.skipif("pandas" not in sys.modules, reason="Pandas is not installed.")
-def test_structured_dataset_wf():
-    import pandas as pd
-    from pandas.testing import assert_frame_equal
-
-    from flytekit.types.schema import FlyteSchema
-
-    superset_cols = kwtypes(Name=str, Age=int, Height=int)
-    subset_cols = kwtypes(Name=str)
-    superset_df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22], "Height": [160, 178]})
-    subset_df = pd.DataFrame({"Name": ["Tom", "Joseph"]})
-
-    @task
-    def t1() -> Annotated[pd.DataFrame, superset_cols]:
-        return superset_df
-
-    @task
-    def t2(df: Annotated[pd.DataFrame, subset_cols]) -> Annotated[pd.DataFrame, subset_cols]:
-        return df
-
-    @task
-    def t3(df: FlyteSchema[superset_cols]) -> FlyteSchema[superset_cols]:
-        return df
-
-    @task
-    def t4() -> FlyteSchema[superset_cols]:
-        return superset_df
-
-    @task
-    def t5(sd: Annotated[StructuredDataset, subset_cols]) -> Annotated[pd.DataFrame, subset_cols]:
-        return sd.open(pd.DataFrame).all()
-
-    @workflow
-    def sd_wf() -> Annotated[pd.DataFrame, subset_cols]:
-        # StructuredDataset -> StructuredDataset
-        df = t1()
-        return t2(df=df)
-
-    @workflow
-    def sd_to_schema_wf() -> pd.DataFrame:
-        # StructuredDataset -> schema
-        df = t1()
-        return t3(df=df)
-
-    @workflow
-    def schema_to_sd_wf() -> typing.Tuple[pd.DataFrame, pd.DataFrame]:
-        # schema -> StructuredDataset
-        df = t4()
-        return t2(df=df), t5(sd=df)  # type: ignore
-
-    assert_frame_equal(sd_wf(), subset_df)
-    assert_frame_equal(sd_to_schema_wf(), superset_df)
-    assert_frame_equal(schema_to_sd_wf()[0], subset_df)
-    assert_frame_equal(schema_to_sd_wf()[1], subset_df)
-
-
-@pytest.mark.skipif("pandas" not in sys.modules, reason="Pandas is not installed.")
-def test_compile_wf_at_compile_time():
-    import pandas as pd
-
-    from flytekit.types.schema import FlyteSchema
-
-    superset_cols = kwtypes(Name=str, Age=int, Height=int)
-    superset_df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22], "Height": [160, 178]})
-
-    ctx = FlyteContextManager.current_context()
-    with FlyteContextManager.with_context(
-        ctx.with_execution_state(
-            ctx.new_execution_state().with_params(mode=context_manager.ExecutionState.Mode.TASK_EXECUTION)
-        )
-    ):
-
-        @task
-        def t4() -> FlyteSchema[superset_cols]:
-            return superset_df
-
-        @workflow
-        def wf():
-            t4()
-
-        assert ctx.compilation_state is None
-
-
-@pytest.mark.parametrize(
-    "error_message", [
-        "Fail!",
-        None,
-        "",
-        ("big", "boom!")
-    ]
-)
-@patch("builtins.print")
-def test_failure_node_local_execution(mock_print, error_message, exec_prefix):
-    @task
-    def clean_up(name: str, err: typing.Optional[FlyteError] = None):
-        print(f"Deleting cluster {name} due to {err}")
-        print("This is err:", str(err))
-
-    @task
-    def create_cluster(name: str):
-        print(f"Creating cluster: {name}")
-
-    @task
-    def delete_cluster(name: str, err: typing.Optional[FlyteError] = None):
-        print(f"Deleting cluster {name}")
-        print(err)
-
-    @task
-    def t1(a: int, b: str):
-        print(f"{a} {b}")
-        raise ValueError(error_message)
-
-    @workflow(on_failure=clean_up)
-    def wf(name: str = "flyteorg"):
-        c = create_cluster(name=name)
-        t = t1(a=1, b="2")
-        d = delete_cluster(name=name)
-        c >> t >> d
-
-    with pytest.raises(ValueError):
-        wf()
-
-    # Adjusted the error message to match the one in the failure
-    expected_error_message = str(
-        FlyteError(message=f"Error encountered while executing '{exec_prefix}tests.flytekit.unit.core.test_workflows.t1':
-rror_message}", failed_node_id="fn0")
-    )
-
-    assert mock_print.call_count > 0
-
-    mock_print.assert_any_call("Creating cluster: flyteorg")
-    mock_print.assert_any_call("1 2")
-    mock_print.assert_any_call(f"Deleting cluster flyteorg due to {expected_error_message}")
-    mock_print.assert_any_call("This is err:", expected_error_message)
-```
-
-
-Again, users should keep in mind that even though the body of the function looks like regular Python, it is
-actually not. When flytekit scans the workflow function, the objects being passed around between the tasks are not
-your typical Python values. So even though you may have a task ``t1() -&gt; int``, when ``a = t1()`` is called, ``a``
-will not be an integer so if you try to ``range(a)`` you'll get an error.
-
-Please see the :ref:`user guide &lt;cookbook:workflow&gt;` for more usage examples.
+  of tasks using the data flow between tasks.
+
+  Unlike a task, the function body of a workflow is evaluated at serialization-time (aka compile-time). This is
+  because while we can determine the entire structure of a task by looking at the function's signature, workflows need
+  to run through the function itself because the body of the function is what expresses the workflow structure. It's
+  also important to note that, local execution notwithstanding, it is not evaluated again when the workflow runs on
+  Flyte.
+  That is, workflows should not call non-Flyte entities since they are only run once (again, this is with respect to
+  the platform, local runs notwithstanding).
+
+  Example:
+
+  &lt;!--
+  .. literalinclude:: ../../../tests/flytekit/unit/core/test_workflows.py
+  --&gt;
+
+  ```python
+  import os
+  import sys
+  import typing
+  from collections import OrderedDict
+  from unittest.mock import patch
+
+  import pytest
+  from typing_extensions import Annotated  # type: ignore
+
+  import flytekit.configuration
+  from flytekit import FlyteContextManager, StructuredDataset, kwtypes
+  from flytekit.configuration import Image, ImageConfig
+  from flytekit.core import context_manager
+  from flytekit.core.condition import conditional
+  from flytekit.core.task import task
+  from flytekit.core.workflow import WorkflowFailurePolicy, WorkflowMetadata, WorkflowMetadataDefaults, workflow
+  from flytekit.exceptions.user import FlyteValidationException, FlyteValueException, FlyteMissingReturnValueException
+  from flytekit.tools.translator import get_serializable
+  from flytekit.types.error.error import FlyteError
+
+  default_img = Image(name="default", fqn="test", tag="tag")
+  serialization_settings = flytekit.configuration.SerializationSettings(
+      project="project",
+      domain="domain",
+      version="version",
+      env=None,
+      image_config=ImageConfig(default_image=default_img, images=[default_img]),
+  )
+
+  def test_metadata_values():
+      with pytest.raises(FlyteValidationException):
+          WorkflowMetadata(on_failure=0)
+
+      wm = WorkflowMetadata(on_failure=WorkflowFailurePolicy.FAIL_IMMEDIATELY)
+      assert wm.on_failure == WorkflowFailurePolicy.FAIL_IMMEDIATELY
+
+
+  def test_default_metadata_values():
+      with pytest.raises(FlyteValidationException):
+          WorkflowMetadataDefaults(3)
+
+      wm = WorkflowMetadataDefaults(interruptible=False)
+      assert wm.interruptible is False
+
+
+  def test_workflow_values():
+      @task
+      def t1(a: int) -> typing.NamedTuple("OutputsBC", [("t1_int_output", int), ("c", str)]):
+          a = a + 2
+          return a, "world-" + str(a)
+
+      @workflow(interruptible=True, failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
+      def wf(a: int) -> typing.Tuple[str, str]:
+          x, y = t1(a=a)
+          _, v = t1(a=x)
+          return y, v
+
+      wf_spec = get_serializable(OrderedDict(), serialization_settings, wf)
+      assert wf_spec.template.metadata_defaults.interruptible
+      assert wf_spec.template.metadata.on_failure == 1
+
+  def test_default_values():
+      @task
+      def t() -> bool:
+          return True
+
+      @task
+      def f() -> bool:
+          return False
+
+      @workflow
+      def wf(a: bool = True) -> bool:
+          return conditional("bool").if_(a.is_true()).then(t()).else_().then(f())  # type: ignore
+
+      assert wf() is True
+      assert wf(a=False) is False
+
+
+  def test_list_output_wf():
+      @task
+      def t1(a: int) -> int:
+          a = a + 5
+          return a
+
+      @workflow
+      def list_output_wf() -> typing.List[int]:
+          v = []
+          for i in range(2):
+              v.append(t1(a=i))
+          return v
+
+      x = list_output_wf()
+      assert x == [5, 6]
+
+
+  def test_sub_wf_single_named_tuple():
+      nt = typing.NamedTuple("SingleNamedOutput", [("named1", int)])
+
+      @task
+      def t1(a: int) -> nt:
+          a = a + 2
+          return nt(a)
+
+      @workflow
+      def subwf(a: int) -> nt:
+          return t1(a=a)
+
+      @workflow
+      def wf(b: int) -> nt:
+          out = subwf(a=b)
+          return t1(a=out.named1)
+
+      x = wf(b=3)
+      assert x == (7,)
+
+
+  def test_sub_wf_multi_named_tuple():
+      nt = typing.NamedTuple("Multi", [("named1", int), ("named2", int)])
+
+      @task
+      def t1(a: int) -> nt:
+          a = a + 2
+          return nt(a, a)
+
+      @workflow
+      def subwf(a: int) -> nt:
+          return t1(a=a)
+
+      @workflow
+      def wf(b: int) -> nt:
+          out = subwf(a=b)
+          return t1(a=out.named1)
+
+      x = wf(b=3)
+      assert x == (7, 7)
+
+
+  def test_sub_wf_varying_types():
+      @task
+      def t1l(
+          a: typing.List[typing.Dict[str, typing.List[int]]],
+          b: typing.Dict[str, typing.List[int]],
+          c: typing.Union[typing.List[typing.Dict[str, typing.List[int]]], typing.Dict[str, typing.List[int]], int],
+          d: int,
+      ) -> str:
+          xx = ",".join([f"{k}:{v}" for d in a for k, v in d.items()])
+          yy = ",".join([f"{k}: {i}" for k, v in b.items() for i in v])
+          if isinstance(c, list):
+              zz = ",".join([f"{k}:{v}" for d in c for k, v in d.items()])
+          elif isinstance(c, dict):
+              zz = ",".join([f"{k}: {i}" for k, v in c.items() for i in v])
+          else:
+              zz = str(c)
+          return f"First: {xx} Second: {yy} Third: {zz} Int: {d}"
+
+      @task
+      def get_int() -> int:
+          return 1
+
+      @workflow
+      def subwf(
+          a: typing.List[typing.Dict[str, typing.List[int]]],
+          b: typing.Dict[str, typing.List[int]],
+          c: typing.Union[typing.List[typing.Dict[str, typing.List[int]]], typing.Dict[str, typing.List[int]]],
+          d: int,
+      ) -> str:
+          return t1l(a=a, b=b, c=c, d=d)
+
+      @workflow
+      def wf() -> str:
+          ds = [
+              {"first_map_a": [42], "first_map_b": [get_int(), 2]},
+              {
+                  "second_map_c": [33],
+                  "second_map_d": [9, 99],
+              },
+          ]
+          ll = {
+              "ll_1": [get_int(), get_int(), get_int()],
+              "ll_2": [4, 5, 6],
+          }
+          out = subwf(a=ds, b=ll, c=ds, d=get_int())
+          return out
+
+      wf.compile()
+      x = wf()
+      expected = (
+          "First: first_map_a:[42],first_map_b:[1, 2],second_map_c:[33],second_map_d:[9, 99] "
+          "Second: ll_1: 1,ll_1: 1,ll_1: 1,ll_2: 4,ll_2: 5,ll_2: 6 "
+          "Third: first_map_a:[42],first_map_b:[1, 2],second_map_c:[33],second_map_d:[9, 99] "
+          "Int: 1"
+      )
+      assert x == expected
+      wf_spec = get_serializable(OrderedDict(), serialization_settings, wf)
+      assert set(wf_spec.template.nodes[5].upstream_node_ids) == {"n2", "n1", "n0", "n4", "n3"}
+
+      @workflow
+      def wf() -> str:
+          ds = [
+              {"first_map_a": [42], "first_map_b": [get_int(), 2]},
+              {
+                  "second_map_c": [33],
+                  "second_map_d": [9, 99],
+              },
+          ]
+          ll = {
+              "ll_1": [get_int(), get_int(), get_int()],
+              "ll_2": [4, 5, 6],
+          }
+          out = subwf(a=ds, b=ll, c=ll, d=get_int())
+          return out
+
+      x = wf()
+      expected = (
+          "First: first_map_a:[42],first_map_b:[1, 2],second_map_c:[33],second_map_d:[9, 99] "
+          "Second: ll_1: 1,ll_1: 1,ll_1: 1,ll_2: 4,ll_2: 5,ll_2: 6 "
+          "Third: ll_1: 1,ll_1: 1,ll_1: 1,ll_2: 4,ll_2: 5,ll_2: 6 "
+          "Int: 1"
+      )
+      assert x == expected
+
+
+  def test_unexpected_outputs():
+      @task
+      def t1(a: int) -> int:
+          a = a + 5
+          return a
+
+      @workflow
+      def no_outputs_wf():
+          return t1(a=3)
+
+      # Should raise an exception because the workflow returns something when it shouldn't
+      with pytest.raises(FlyteValueException):
+          no_outputs_wf()
+
+  @pytest.mark.skipif(sys.version_info < (3, 10, 10), reason="inspect module does not work correctly with Python <3.10.10. https://github.com/python/cpython/issues/102647#issuecomment-1466868212")
+  def test_missing_return_value():
+      @task
+      def t1(a: int) -> int:
+          a = a + 5
+          return a
+
+      # Should raise an exception because it doesn't return something when it should
+      with pytest.raises(FlyteMissingReturnValueException):
+
+          @workflow
+          def one_output_wf() -> int:  # type: ignore
+              t1(a=3)
+
+          one_output_wf()
+
+
+  def test_custom_wrapper():
+      def our_task(
+              _task_function: typing.Optional[typing.Callable] = None,
+              **kwargs,
+      ):
+          def wrapped(_func: typing.Callable):
+              return task(_task_function=_func)
+
+          if _task_function:
+              return wrapped(_task_function)
+          else:
+              return wrapped
+
+      @our_task(
+          foo={
+              "bar1": lambda x: print(x),
+              "bar2": lambda x: print(x),
+          },
+      )
+      def missing_func_body() -> str:
+          return "foo"
+
+
+  def test_wf_no_output():
+      @task
+      def t1(a: int) -> int:
+          a = a + 5
+          return a
+
+      @workflow
+      def no_outputs_wf():
+          t1(a=3)
+
+      assert no_outputs_wf() is None
+
+
+  def test_wf_nested_comp(exec_prefix):
+      @task
+      def t1(a: int) -> int:
+          a = a + 5
+          return a
+
+      @workflow
+      def outer() -> typing.Tuple[int, int]:
+          # You should not do this. This is just here for testing.
+          @workflow
+          def wf2() -> int:
+              return t1(a=5)
+
+          return t1(a=3), wf2()
+
+      assert (8, 10) == outer()
+      entity_mapping = OrderedDict()
+
+      model_wf = get_serializable(entity_mapping, serialization_settings, outer)
+
+      assert len(model_wf.template.interface.outputs) == 2
+      assert len(model_wf.template.nodes) == 2
+      assert model_wf.template.nodes[1].workflow_node is not None
+
+      sub_wf = model_wf.sub_workflows[0]
+      assert len(sub_wf.nodes) == 1
+      assert sub_wf.nodes[0].id == "n0"
+      assert sub_wf.nodes[0].task_node.reference_id.name == f"{exec_prefix}tests.flytekit.unit.core.test_workflows.t1"
+
+
+  @task
+  def add_5(a: int) -> int:
+      a = a + 5
+      return a
+
+
+  @workflow
+  def simple_wf() -> int:
+      return add_5(a=1)
+
+  @workflow
+  def my_wf_example(a: int) -> typing.Tuple[int, int]:
+      '''example
+
+      Workflows can have inputs and return outputs of simple or complex types.
+
+      '''
+
+      x = add_5(a=a)
+
+      # You can use outputs of a previous task as inputs to other nodes.
+      z = add_5(a=x)
+
+      # You can call other workflows from within this workflow
+      d = simple_wf()
+
+      # You can add conditions that can run on primitive types and execute different branches
+      e = conditional("bool").if_(a == 5).then(add_5(a=d)).else_().then(add_5(a=z))
+
+      # Outputs of the workflow have to be outputs returned by prior nodes.
+      # No outputs and single or multiple outputs are supported
+      return x, e
+
+      def test_workflow_lhs():
+      assert my_wf_example._lhs == "my_wf_example"
+
+
+  def test_all_node_types():
+      assert my_wf_example(a=1) == (6, 16)
+      entity_mapping = OrderedDict()
+
+      model_wf = get_serializable(entity_mapping, serialization_settings, my_wf_example)
+
+      assert len(model_wf.template.interface.outputs) == 2
+      assert len(model_wf.template.nodes) == 4
+      assert model_wf.template.nodes[2].workflow_node is not None
+
+      sub_wf = model_wf.sub_workflows[0]
+      assert len(sub_wf.nodes) == 1
+      assert sub_wf.nodes[0].id == "n0"
+      assert sub_wf.nodes[0].task_node.reference_id.name == "tests.flytekit.unit.core.test_workflows.add_5"
+
+
+  def test_wf_docstring():
+      model_wf = get_serializable(OrderedDict(), serialization_settings, my_wf_example)
+
+      assert len(model_wf.template.interface.outputs) == 2
+      assert model_wf.template.interface.outputs["o0"].description == "outputs"
+      assert model_wf.template.interface.outputs["o1"].description == "outputs"
+      assert len(model_wf.template.interface.inputs) == 1
+      assert model_wf.template.interface.inputs["a"].description == "input a"
+
+
+  @pytest.mark.skipif("pandas" not in sys.modules, reason="Pandas is not installed.")
+  def test_structured_dataset_wf():
+      import pandas as pd
+      from pandas.testing import assert_frame_equal
+
+      from flytekit.types.schema import FlyteSchema
+
+      superset_cols = kwtypes(Name=str, Age=int, Height=int)
+      subset_cols = kwtypes(Name=str)
+      superset_df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22], "Height": [160, 178]})
+      subset_df = pd.DataFrame({"Name": ["Tom", "Joseph"]})
+
+      @task
+      def t1() -> Annotated[pd.DataFrame, superset_cols]:
+          return superset_df
+
+      @task
+      def t2(df: Annotated[pd.DataFrame, subset_cols]) -> Annotated[pd.DataFrame, subset_cols]:
+          return df
+
+      @task
+      def t3(df: FlyteSchema[superset_cols]) -> FlyteSchema[superset_cols]:
+          return df
+
+      @task
+      def t4() -> FlyteSchema[superset_cols]:
+          return superset_df
+
+      @task
+      def t5(sd: Annotated[StructuredDataset, subset_cols]) -> Annotated[pd.DataFrame, subset_cols]:
+          return sd.open(pd.DataFrame).all()
+
+      @workflow
+      def sd_wf() -> Annotated[pd.DataFrame, subset_cols]:
+          # StructuredDataset -> StructuredDataset
+          df = t1()
+          return t2(df=df)
+
+      @workflow
+      def sd_to_schema_wf() -> pd.DataFrame:
+          # StructuredDataset -> schema
+          df = t1()
+          return t3(df=df)
+
+      @workflow
+      def schema_to_sd_wf() -> typing.Tuple[pd.DataFrame, pd.DataFrame]:
+          # schema -> StructuredDataset
+          df = t4()
+          return t2(df=df), t5(sd=df)  # type: ignore
+
+      assert_frame_equal(sd_wf(), subset_df)
+      assert_frame_equal(sd_to_schema_wf(), superset_df)
+      assert_frame_equal(schema_to_sd_wf()[0], subset_df)
+      assert_frame_equal(schema_to_sd_wf()[1], subset_df)
+
+
+  @pytest.mark.skipif("pandas" not in sys.modules, reason="Pandas is not installed.")
+  def test_compile_wf_at_compile_time():
+      import pandas as pd
+
+      from flytekit.types.schema import FlyteSchema
+
+      superset_cols = kwtypes(Name=str, Age=int, Height=int)
+      superset_df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22], "Height": [160, 178]})
+
+      ctx = FlyteContextManager.current_context()
+      with FlyteContextManager.with_context(
+          ctx.with_execution_state(
+              ctx.new_execution_state().with_params(mode=context_manager.ExecutionState.Mode.TASK_EXECUTION)
+          )
+      ):
+
+          @task
+          def t4() -> FlyteSchema[superset_cols]:
+              return superset_df
+
+          @workflow
+          def wf():
+              t4()
+
+          assert ctx.compilation_state is None
+
+
+  @pytest.mark.parametrize(
+      "error_message", [
+          "Fail!",
+          None,
+          "",
+          ("big", "boom!")
+      ]
+  )
+  @patch("builtins.print")
+  def test_failure_node_local_execution(mock_print, error_message, exec_prefix):
+      @task
+      def clean_up(name: str, err: typing.Optional[FlyteError] = None):
+          print(f"Deleting cluster {name} due to {err}")
+          print("This is err:", str(err))
+
+      @task
+      def create_cluster(name: str):
+          print(f"Creating cluster: {name}")
+
+      @task
+      def delete_cluster(name: str, err: typing.Optional[FlyteError] = None):
+          print(f"Deleting cluster {name}")
+          print(err)
+
+      @task
+      def t1(a: int, b: str):
+          print(f"{a} {b}")
+          raise ValueError(error_message)
+
+      @workflow(on_failure=clean_up)
+      def wf(name: str = "flyteorg"):
+          c = create_cluster(name=name)
+          t = t1(a=1, b="2")
+          d = delete_cluster(name=name)
+          c >> t >> d
+
+      with pytest.raises(ValueError):
+          wf()
+
+      # Adjusted the error message to match the one in the failure
+      expected_error_message = str(
+          FlyteError(message=f"Error encountered while executing '{exec_prefix}tests.flytekit.unit.core.test_workflows.t1':
+{error_message}", failed_node_id="fn0")
+      )
+
+      assert mock_print.call_count > 0
+
+      mock_print.assert_any_call("Creating cluster: flyteorg")
+      mock_print.assert_any_call("1 2")
+      mock_print.assert_any_call(f"Deleting cluster flyteorg due to {expected_error_message}")
+      mock_print.assert_any_call("This is err:", expected_error_message)
+  ```
+
+
+  Again, users should keep in mind that even though the body of the function looks like regular Python, it is
+  actually not. When flytekit scans the workflow function, the objects being passed around between the tasks are not
+  your typical Python values. So even though you may have a task ``t1() -&gt; int``, when ``a = t1()`` is called, ``a``
+  will not be an integer so if you try to ``range(a)`` you'll get an error.
+
+  Please see the :ref:`user guide &lt;cookbook:workflow&gt;` for more usage examples.
 
 
 
@@ -800,6 +810,8 @@ Please see the :ref:`user guide &lt;cookbook:workflow&gt;` for more usage exampl
 ActorEnvironment class.
 
 
+
+### Parameters
 
 ```python
 class ActorEnvironment(
@@ -852,6 +864,7 @@ remote.execute(wf, inputs={"a": df_artifact})
 Note that Python fields will be missing when retrieved from the service.
 
 
+### Parameters
 
 ```python
 class Artifact(
@@ -1120,7 +1133,14 @@ that's exposed to the user.
 
 Cache configuration for a task.
 
+:type version: Optional[str]
+:type serialize: bool
+:type ignored_inputs: Union[Tuple[str, ...], str]
+:type salt: str
+:type policies: Optional[Union[List[CachePolicy], CachePolicy]]
 
+
+### Parameters
 
 ```python
 class Cache(
@@ -1133,11 +1153,11 @@ class Cache(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `version` | `typing.Optional[str]` | The version of the task. If not provided, the version will be generated based on the cache policies. :type version: Optional[str] |
-| `serialize` | `bool` | Boolean that indicates if identical (ie. same inputs) instances of this task should be executed in serial when caching is enabled. This means that given multiple concurrent executions over identical inputs, only a single instance executes and the rest wait to reuse the cached results. :type serialize: bool |
-| `ignored_inputs` | `typing.Union[typing.Tuple[str, ...], str]` | A tuple of input names to ignore when generating the version hash. :type ignored_inputs: Union[Tuple[str, ...], str] |
-| `salt` | `str` | A salt used in the hash generation. :type salt: str |
-| `policies` | `typing.Union[typing.List[flytekit.core.cache.CachePolicy], flytekit.core.cache.CachePolicy, NoneType]` | A list of cache policies to generate the version hash. :type policies: Optional[Union[List[CachePolicy], CachePolicy]] |
+| `version` | `typing.Optional[str]` | The version of the task. If not provided, the version will be generated based on the cache policies. |
+| `serialize` | `bool` | Boolean that indicates if identical (ie. same inputs) instances of this task should be executed in serial when caching is enabled. This means that given multiple concurrent executions over identical inputs, only a single instance executes and the rest wait to reuse the cached results. |
+| `ignored_inputs` | `typing.Union[typing.Tuple[str, ...], str]` | A tuple of input names to ignore when generating the version hash. |
+| `salt` | `str` | A salt used in the hash generation. |
+| `policies` | `typing.Union[typing.List[flytekit.core.cache.CachePolicy], flytekit.core.cache.CachePolicy, NoneType]` | A list of cache policies to generate the version hash. |
 
 ### Methods
 
@@ -1195,6 +1215,7 @@ majority of tasks - the typical ``@task`` decorated tasks for instance all run a
 something that doesn't run a container would be something like the Athena SQL task.
 
 
+### Parameters
 
 ```python
 class ContainerTask(
@@ -1219,9 +1240,24 @@ class ContainerTask(
     kwargs,
 )
 ```
+task_type (str): defines a unique task-type for every new extension. If a backend plugin is required then
+    this has to be done in-concert with the backend plugin identifier
+name (str): A unique name for the task instantiation. This is unique for every instance of task.
+task_config (T): Configuration for the task. This is used to configure the specific plugin that handles this
+    task
+interface (Optional[Interface]): A python native typed interface ``(inputs) -&gt; outputs`` that declares the
+    signature of the task
+environment (Optional[Dict[str, str]]): Any environment variables that should be supplied during the
+    execution of the task. Supplied as a dictionary of key/value pairs
+disable_deck (bool): (deprecated) If true, this task will not output deck html file
+enable_deck (bool): If true, this task will output deck html file
+deck_fields (Tuple[DeckField]): Tuple of decks to be
+    generated for this task. Valid values can be selected from fields of ``flytekit.deck.DeckField`` enum
+
+
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | A unique name for the task instantiation. This is unique for every instance of task. |
+| `name` | `str` | |
 | `image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec]` | |
 | `command` | `typing.List[str]` | |
 | `inputs` | `typing.Optional[typing.OrderedDict[str, typing.Type]]` | |
@@ -1594,6 +1630,7 @@ def t2() -> Annotated[pd.DataFrame, TopFrameRenderer(10)]:
 ```
 
 
+### Parameters
 
 ```python
 class Deck(
@@ -1640,6 +1677,8 @@ def append(
 def publish()
 ```
 ## union.FlyteDirectory
+
+### Parameters
 
 ```python
 class FlyteDirectory(
@@ -1697,15 +1736,6 @@ def crawl(
 Crawl returns a generator of all files prefixed by any sub-folders under the given "FlyteDirectory".
 if details=True is passed, then it will return a dictionary as specified by fsspec.
 
-Example:
-
-    >>> list(fd.crawl())
-    [("/base", "file1"), ("/base", "dir1/file1"), ("/base", "dir2/file1"), ("/base", "dir1/dir/file1")]
-
-    >>> list(x.crawl(detail=True))
-    [('/tmp/test', {'my-dir/ab.py': {'name': '/tmp/test/my-dir/ab.py', 'size': 0, 'type': 'file',
-     'created': 1677720780.2318847, 'islink': False, 'mode': 33188, 'uid': 501, 'gid': 0,
-      'mtime': 1677720780.2317934, 'ino': 1694329, 'nlink': 1}})]
 
 
 | Parameter | Type | Description |
@@ -1718,14 +1748,12 @@ Example:
 
 ```python
 def deserialize_flyte_dir(
-    args,
-    kwargs,
-)
+    info,
+) -> FlyteDirectory
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `info` |  | |
 
 #### download()
 
@@ -1873,12 +1901,13 @@ This is used if you explicitly have a folder somewhere that you want to create f
 If you want to write a whole folder, you can let your task return a FlyteDirectory object,
 and let flytekit handle the uploading.
 
+:return FlyteDirectory: A new FlyteDirectory object that points to a remote location.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `stem` | `typing.Optional[str]` | A stem to append to the path as the final prefix "directory". |
-| `alt` | `typing.Optional[str]` | An alternate first member of the prefix to use instead of the default. :return FlyteDirectory: A new FlyteDirectory object that points to a remote location. |
+| `alt` | `typing.Optional[str]` | An alternate first member of the prefix to use instead of the default. |
 
 #### schema()
 
@@ -1910,16 +1939,8 @@ def schema(
 #### serialize_flyte_dir()
 
 ```python
-def serialize_flyte_dir(
-    args,
-    kwargs,
-)
+def serialize_flyte_dir()
 ```
-| Parameter | Type | Description |
-|-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
-
 #### to_dict()
 
 ```python
@@ -1959,6 +1980,8 @@ def to_json(
 | `kw` |  | |
 
 ## union.FlyteFile
+
+### Parameters
 
 ```python
 class FlyteFile(
@@ -2009,14 +2032,12 @@ FlyteFile's init method.
 
 ```python
 def deserialize_flyte_file(
-    args,
-    kwargs,
-)
+    info,
+) -> 'FlyteFile'
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `info` |  | |
 
 #### download()
 
@@ -2122,27 +2143,22 @@ def copy_file(ff: FlyteFile) -> FlyteFile:
     return new_file
 ```
 
+:type mode: str
+:type cache_type: str, optional
+:type cache_options: Dict[str, Any], optional
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `mode` | `str` | Open mode. For example :type mode: str |
-| `cache_type` | `typing.Optional[str]` | Specifies the cache type. Possible values are "blockcache", "bytes", "mmap", "readahead", "first", or "background". This is especially useful for large file reads. See https://filesystem-spec.readthedocs.io/en/latest/api.html#readbuffering. :type cache_type: str, optional |
-| `cache_options` | `typing.Optional[typing.Dict[str, typing.Any]]` | A Dict corresponding to the parameters for the chosen cache_type. Refer to fsspec caching options above. :type cache_options: Dict[str, Any], optional |
+| `mode` | `str` | Open mode. For example |
+| `cache_type` | `typing.Optional[str]` | Specifies the cache type. Possible values are "blockcache", "bytes", "mmap", "readahead", "first", or "background". This is especially useful for large file reads. See https://filesystem-spec.readthedocs.io/en/latest/api.html#readbuffering. |
+| `cache_options` | `typing.Optional[typing.Dict[str, typing.Any]]` | A Dict corresponding to the parameters for the chosen cache_type. Refer to fsspec caching options above. |
 
 #### serialize_flyte_file()
 
 ```python
-def serialize_flyte_file(
-    args,
-    kwargs,
-)
+def serialize_flyte_file()
 ```
-| Parameter | Type | Description |
-|-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
-
 #### to_dict()
 
 ```python
@@ -2165,53 +2181,9 @@ def to_json(
 
 This class is used to specify the docker image that will be used to run the task.
 
-Attributes:
-    name (str): Name of the image.
-    python_version (str): Python version of the image. Use default python in the base image if None.
-    builder (Optional[str]): Type of plugin to build the image. Use envd by default.
-    source_root (Optional[str]): Source root of the image.
-    env (Optional[Dict[str, str]]): Environment variables of the image.
-    registry (Optional[str]): Registry of the image.
-    packages (Optional[List[str]]): List of python packages to install.
-    conda_packages (Optional[List[str]]): List of conda packages to install.
-    conda_channels (Optional[List[str]]): List of conda channels.
-    requirements (Optional[str]): Path to the requirements.txt file.
-    apt_packages (Optional[List[str]]): List of apt packages to install.
-    cuda (Optional[str]): Version of cuda to install.
-    cudnn (Optional[str]): Version of cudnn to install.
-    base_image (Optional[Union[str, 'ImageSpec']]): Base image of the image.
-    platform (Optional[str]): Specify the target platforms for the build output (for example, windows/amd64 or linux/amd64,darwin/arm64).
-    pip_index (Optional[str]): Specify the custom pip index url.
-    pip_extra_index_url (Optional[List[str]]): Specify one or more pip index urls as a list.
-    pip_secret_mounts (Optional[List[Tuple[str, str]]]): Specify a list of tuples to mount secret for pip install. Each tuple should contain the path to
-        the secret file and the mount path. For example, [(".gitconfig", "/etc/gitconfig")]. This is experimental and
-        the interface may change in the future. Configuring this should not change the built image.
-    pip_extra_args (Optional[str]): Specify one or more extra pip install arguments as a space-delimited string.
-    registry_config (Optional[str]): Specify the path to a JSON registry config file.
-    entrypoint (Optional[List[str]]): List of strings to overwrite the entrypoint of the base image with, set to [] to remove the entrypoint.
-    commands (Optional[List[str]]): Command to run during the building process.
-    tag_format (Optional[str]): Custom string format for image tag. The ImageSpec hash passed in as `spec_hash`. For example,
-        to add a "dev" suffix to the image tag, set `tag_format="{spec_hash}-dev"`.
-    source_copy_mode (Optional[CopyFileDetection]): This option allows the user to specify which source files to copy from the local host, into the image.
-        Not setting this option means to use the default flytekit behavior. The default behavior is:
-            - if fast register is used, source files are not copied into the image (because they're already copied
-              into the fast register tar layer).
-            - if fast register is not used, then the LOADED_MODULES (aka 'auto') option is used to copy loaded
-              Python files into the image.
-        If the option is set by the user, then that option is of course used.
-    copy (Optional[List[str]]): List of files/directories to copy to /root. e.g. ["src/file1.txt", "src/file2.txt"].
-    python_exec (Optional[str]): Python executable to use for install packages.
-    runtime_packages (Optional[List[str]]): List of packages to be installed during runtime. `runtime_packages` requires `pip` to be installed
-        in your base image.
-            - If you are using an ImageSpec as your base image, please include `pip` into your packages:
-              `ImageSpec(..., packages=["pip"])`.
-            - If you want to install runtime packages into a fixed base_image and not use an image builder, you can
-              use `builder="noop"`: `ImageSpec(base_image="ghcr.io/name/my-custom-image", builder="noop").with_runtime_packages(["numpy"])`.
-    builder_options (Optional[Dict[str, Any]]): Additional options for the builder. This is a dictionary that will be passed to the builder.
-        The options are builder-specific and may not be supported by all builders.
-    builder_config (Optional[typing.Dict[str, typing.Any]]): Custom builder images configuration, such as uv and micromamba images.
 
 
+### Parameters
 
 ```python
 class ImageSpec(
@@ -2248,41 +2220,41 @@ class ImageSpec(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | |
-| `python_version` | `str` | |
-| `builder` | `typing.Optional[str]` | |
-| `source_root` | `typing.Optional[str]` | |
-| `env` | `typing.Optional[typing.Dict[str, str]]` | |
-| `registry` | `typing.Optional[str]` | |
-| `packages` | `typing.Optional[typing.List[str]]` | |
-| `conda_packages` | `typing.Optional[typing.List[str]]` | |
-| `conda_channels` | `typing.Optional[typing.List[str]]` | |
-| `requirements` | `typing.Optional[str]` | |
-| `apt_packages` | `typing.Optional[typing.List[str]]` | |
-| `cuda` | `typing.Optional[str]` | |
-| `cudnn` | `typing.Optional[str]` | |
-| `base_image` | `typing.Union[str, ForwardRef('ImageSpec'), NoneType]` | |
-| `platform` | `typing.Optional[str]` | |
-| `pip_index` | `typing.Optional[str]` | |
-| `pip_extra_index_url` | `typing.Optional[typing.List[str]]` | |
-| `pip_secret_mounts` | `typing.Optional[typing.List[typing.Tuple[str, str]]]` | |
-| `pip_extra_args` | `typing.Optional[str]` | |
-| `registry_config` | `typing.Optional[str]` | |
-| `entrypoint` | `typing.Optional[typing.List[str]]` | |
-| `commands` | `typing.Optional[typing.List[str]]` | |
-| `tag_format` | `typing.Optional[str]` | |
-| `source_copy_mode` | `typing.Optional[flytekit.constants.CopyFileDetection]` | |
-| `copy` | `typing.Optional[typing.List[str]]` | |
-| `python_exec` | `typing.Optional[str]` | |
-| `runtime_packages` | `typing.Optional[typing.List[str]]` | |
-| `builder_options` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
-| `builder_config` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
+| `name` | `str` | Name of the image. |
+| `python_version` | `str` | Python version of the image. Use default python in the base image if None. |
+| `builder` | `typing.Optional[str]` | Type of plugin to build the image. Use envd by default. |
+| `source_root` | `typing.Optional[str]` | Source root of the image. |
+| `env` | `typing.Optional[typing.Dict[str, str]]` | Environment variables of the image. |
+| `registry` | `typing.Optional[str]` | Registry of the image. |
+| `packages` | `typing.Optional[typing.List[str]]` | List of python packages to install. |
+| `conda_packages` | `typing.Optional[typing.List[str]]` | List of conda packages to install. |
+| `conda_channels` | `typing.Optional[typing.List[str]]` | List of conda channels. |
+| `requirements` | `typing.Optional[str]` | Path to the requirements.txt file. |
+| `apt_packages` | `typing.Optional[typing.List[str]]` | List of apt packages to install. |
+| `cuda` | `typing.Optional[str]` | Version of cuda to install. |
+| `cudnn` | `typing.Optional[str]` | Version of cudnn to install. |
+| `base_image` | `typing.Union[str, ForwardRef('ImageSpec'), NoneType]` | Base image of the image. |
+| `platform` | `typing.Optional[str]` | Specify the target platforms for the build output (for example, windows/amd64 or linux/amd64,darwin/arm64). |
+| `pip_index` | `typing.Optional[str]` | Specify the custom pip index url. |
+| `pip_extra_index_url` | `typing.Optional[typing.List[str]]` | Specify one or more pip index urls as a list. |
+| `pip_secret_mounts` | `typing.Optional[typing.List[typing.Tuple[str, str]]]` | Specify a list of tuples to mount secret for pip install. Each tuple should contain the path to the secret file and the mount path. For example, [(".gitconfig", "/etc/gitconfig")]. This is experimental and the interface may change in the future. Configuring this should not change the built image. |
+| `pip_extra_args` | `typing.Optional[str]` | Specify one or more extra pip install arguments as a space-delimited string. |
+| `registry_config` | `typing.Optional[str]` | Specify the path to a JSON registry config file. |
+| `entrypoint` | `typing.Optional[typing.List[str]]` | List of strings to overwrite the entrypoint of the base image with, set to [] to remove the entrypoint. |
+| `commands` | `typing.Optional[typing.List[str]]` | Command to run during the building process. |
+| `tag_format` | `typing.Optional[str]` | Custom string format for image tag. The ImageSpec hash passed in as `spec_hash`. For example, to add a "dev" suffix to the image tag, set `tag_format="{spec_hash}-dev"`. |
+| `source_copy_mode` | `typing.Optional[flytekit.constants.CopyFileDetection]` | This option allows the user to specify which source files to copy from the local host, into the image. Not setting this option means to use the default flytekit behavior. The default behavior is:     - if fast register is used, source files are not copied into the image (because they're already copied       into the fast register tar layer).     - if fast register is not used, then the LOADED_MODULES (aka 'auto') option is used to copy loaded       Python files into the image. If the option is set by the user, then that option is of course used. |
+| `copy` | `typing.Optional[typing.List[str]]` | List of files/directories to copy to /root. e.g. ["src/file1.txt", "src/file2.txt"]. |
+| `python_exec` | `typing.Optional[str]` | Python executable to use for install packages. |
+| `runtime_packages` | `typing.Optional[typing.List[str]]` | List of packages to be installed during runtime. `runtime_packages` requires `pip` to be installed in your base image.     - If you are using an ImageSpec as your base image, please include `pip` into your packages:       `ImageSpec(..., packages=["pip"])`.     - If you want to install runtime packages into a fixed base_image and not use an image builder, you can       use `builder="noop"`: `ImageSpec(base_image="ghcr.io/name/my-custom-image", builder="noop").with_runtime_packages(["numpy"])`. |
+| `builder_options` | `typing.Optional[typing.Dict[str, typing.Any]]` | Additional options for the builder. This is a dictionary that will be passed to the builder. The options are builder-specific and may not be supported by all builders. |
+| `builder_config` | `typing.Optional[typing.Dict[str, typing.Any]]` | Custom builder images configuration, such as uv and micromamba images. |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `id` | `None` | Calculate a unique hash as the ID for the ImageSpec, and it will be used to 1. Identify the imageSpec in the ImageConfig in the serialization context. 2. Check if the current container image in the pod is built from this image spec in `is_container()`.  ImageConfig: - deduced abc: flyteorg/flytekit:123 - deduced xyz: flyteorg/flytekit:456  The result of this property also depends on whether or not update_image_spec_copy_handling was called.  :return: a unique identifier of the ImageSpec |
+| `id` | `None` | Calculate a unique hash as the ID for the ImageSpec, and it will be used to 1. Identify the imageSpec in the ImageConfig in the serialization context. 2. Check if the current container image in the pod is built from this image spec in `is_container()`.  ImageConfig: - deduced abc: flyteorg/flytekit:123 - deduced xyz: flyteorg/flytekit:456  The result of this property also depends on whether or not update_image_spec_copy_handling was called. |
 | `tag` | `None` | Calculate a hash from the image spec. The hash will be the tag of the image. We will also read the content of the requirement file and the source root to calculate the hash. Therefore, it will generate different hash if new dependencies are added or the source code is changed.  Keep in mind the fields source_root and copy may be changed by update_image_spec_copy_handling, so when you call this property in relation to that function matter will change the output. |
 
 ### Methods
@@ -2350,8 +2322,9 @@ Full image name with tag.
 def is_container()
 ```
 Check if the current container image in the pod is built from current image spec.
-:return: True if the current container image in the pod is built from current image spec, False otherwise.
 
+
+**Returns:** True if the current container image in the pod is built from current image spec, False otherwise.
 
 #### with_apt_packages()
 
@@ -2471,7 +2444,7 @@ from flytekit.models.common import Annotations, AuthRole, Labels, RawOutputDataC
 Then use as follows:
 
 
-
+### Parameters
 
 ```python
 class LaunchPlan(
@@ -2699,6 +2672,8 @@ cached version is returned
 Custom PodTemplate specification for a Task.
 
 
+### Parameters
+
 ```python
 class PodTemplate(
     pod_spec: typing.Optional[ForwardRef('V1PodSpec')],
@@ -2752,6 +2727,7 @@ Please see the :std:ref:`User Guide &lt;cookbook:customizing task resources&gt;`
 Also refer to the [`K8s conventions.`](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes)
 
 
+### Parameters
 
 ```python
 class Resources(
@@ -2830,6 +2806,8 @@ See :std:ref:`cookbook:secrets` for usage examples.
 
 
 
+### Parameters
+
 ```python
 class Secret(
     group: typing.Optional[str],
@@ -2859,7 +2837,7 @@ class Secret(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
@@ -2884,8 +2862,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
@@ -2898,6 +2875,7 @@ This is the user facing StructuredDataset class. Please don't confuse it with th
 class (that is just a model, a Python class representation of the protobuf).
 
 
+### Parameters
 
 ```python
 class StructuredDataset(
@@ -2959,14 +2937,12 @@ def columns()
 
 ```python
 def deserialize_structured_dataset(
-    args,
-    kwargs,
-)
+    info,
+) -> StructuredDataset
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `info` |  | |
 
 #### from_dict()
 
@@ -3015,16 +2991,8 @@ def open(
 #### serialize_structured_dataset()
 
 ```python
-def serialize_structured_dataset(
-    args,
-    kwargs,
-)
+def serialize_structured_dataset()
 ```
-| Parameter | Type | Description |
-|-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
-
 #### set_literal()
 
 ```python
@@ -3062,6 +3030,8 @@ def to_json(
 | `to_dict_kwargs` | `typing.Any` | |
 
 ## union.UnionRemote
+
+### Parameters
 
 ```python
 class UnionRemote(
@@ -3252,7 +3222,9 @@ Create an artifact in FlyteAdmin.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `artifact` | `Artifact` | The artifact to create. :return: The artifact as persisted in the service. |
+| `artifact` | `Artifact` | The artifact to create. |
+
+**Returns:** The artifact as persisted in the service.
 
 #### deactivate_launchplan()
 
@@ -3284,8 +3256,10 @@ Deploy an application.
 | Parameter | Type | Description |
 |-|-|-|
 | `app` | `App` | Application to deploy. |
-| `project` | `Optional[str]` | Domain name. If None, uses default_domain. :return: The App IDL for the deployed application. |
+| `project` | `Optional[str]` | Domain name. If None, uses default_domain. |
 | `domain` | `Optional[str]` | |
+
+**Returns:** The App IDL for the deployed application.
 
 #### download()
 
@@ -3420,7 +3394,9 @@ Execute a locally defined `LaunchPlan`.
 | `tags` | `typing.Optional[typing.List[str]]` | Tags to be passed into the execution. |
 | `cluster_pool` | `typing.Optional[str]` | Specify cluster pool on which newly created execution should be placed. |
 | `execution_cluster_label` | `typing.Optional[str]` | Specify label of cluster(s) on which newly created execution should be placed. |
-| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs  :return: FlyteWorkflowExecution object |
+| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs |
+
+**Returns:** FlyteWorkflowExecution object
 
 #### execute_local_task()
 
@@ -3469,7 +3445,9 @@ Execute a @task-decorated function or TaskTemplate task.
 | `cluster_pool` | `typing.Optional[str]` | Specify cluster pool on which newly created execution should be placed. |
 | `execution_cluster_label` | `typing.Optional[str]` | Specify label of cluster(s) on which newly created execution should be placed. |
 | `options` | `typing.Optional[Options]` | Options to customize the execution. |
-| `serialization_settings` | `typing.Optional[SerializationSettings]` | If the task needs to be registered, this can be passed in.  :return: FlyteWorkflowExecution object. |
+| `serialization_settings` | `typing.Optional[SerializationSettings]` | If the task needs to be registered, this can be passed in. |
+
+**Returns:** FlyteWorkflowExecution object.
 
 #### execute_local_workflow()
 
@@ -3518,7 +3496,9 @@ Execute an @workflow decorated function.
 | `tags` | `typing.Optional[typing.List[str]]` | Tags to set for the execution |
 | `cluster_pool` | `typing.Optional[str]` | Specify cluster pool on which newly created execution should be placed |
 | `execution_cluster_label` | `typing.Optional[str]` | Specify label of cluster(s) on which newly created execution should be placed |
-| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs to be registered  :return: FlyteWorkflowExecution object |
+| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs to be registered |
+
+**Returns:** FlyteWorkflowExecution object
 
 #### execute_reference_launch_plan()
 
@@ -3740,7 +3720,9 @@ Packages the given paths into an installable zip and returns the md5_bytes and t
 | `root` | `os.PathLike` | path to the root of the package system that should be uploaded |
 | `deref_symlinks` | `bool` | if symlinks should be dereferenced. Defaults to True |
 | `output` | `str` | output path. Optional, will default to a tempdir |
-| `options` | `typing.Optional[FastPackageOptions]` | additional options to customize fast_package behavior :return: md5_bytes, url |
+| `options` | `typing.Optional[FastPackageOptions]` | additional options to customize fast_package behavior |
+
+**Returns:** md5_bytes, url
 
 #### fast_register_workflow()
 
@@ -3764,7 +3746,7 @@ Use this method to register a workflow with zip mode.
 | `version` | `typing.Optional[str]` | version for the entity to be registered as |
 | `default_launch_plan` | `typing.Optional[bool]` | This should be true if a default launch plan should be created for the workflow |
 | `options` | `typing.Optional[Options]` | Additional execution options that can be configured for the default launchplan |
-| `fast_package_options` | `typing.Optional[FastPackageOptions]` | Options to customize copying behavior :return: |
+| `fast_package_options` | `typing.Optional[FastPackageOptions]` | Options to customize copying behavior |
 
 #### fetch_active_launchplan()
 
@@ -3795,13 +3777,21 @@ def fetch_execution(
 ```
 Fetch a workflow execution entity from flyte admin.
 
+:returns: :class:`~flytekit.remote.workflow_execution.FlyteWorkflowExecution`
+
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `project` | `str` | fetch entity from this project. If None, uses the default_project attribute. |
 | `domain` | `str` | fetch entity from this domain. If None, uses the default_domain attribute. |
-| `name` | `str` | fetch entity with matching name. :returns: :class:`~flytekit.remote.workflow_execution.FlyteWorkflowExecution`  :raises: FlyteAssertion if name is None |
+| `name` | `str` | fetch entity with matching name. |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | FlyteAssertion if name is None |
 
 #### fetch_launch_plan()
 
@@ -3815,6 +3805,8 @@ def fetch_launch_plan(
 ```
 Fetch a launchplan entity from flyte admin.
 
+:returns: :class:`~flytekit.remote.launch_plan.FlyteLaunchPlan`
+
 
 
 | Parameter | Type | Description |
@@ -3822,7 +3814,13 @@ Fetch a launchplan entity from flyte admin.
 | `project` | `str` | fetch entity from this project. If None, uses the default_project attribute. |
 | `domain` | `str` | fetch entity from this domain. If None, uses the default_domain attribute. |
 | `name` | `str` | fetch entity with matching name. |
-| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. :returns: :class:`~flytekit.remote.launch_plan.FlyteLaunchPlan`  :raises: FlyteAssertion if name is None |
+| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | FlyteAssertion if name is None |
 
 #### fetch_task()
 
@@ -3836,6 +3834,8 @@ def fetch_task(
 ```
 Fetch a task entity from flyte admin.
 
+:returns: :class:`~flytekit.remote.tasks.task.FlyteTask`
+
 
 
 | Parameter | Type | Description |
@@ -3843,7 +3843,13 @@ Fetch a task entity from flyte admin.
 | `project` | `str` | fetch entity from this project. If None, uses the default_project attribute. |
 | `domain` | `str` | fetch entity from this domain. If None, uses the default_domain attribute. |
 | `name` | `str` | fetch entity with matching name. |
-| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. :returns: :class:`~flytekit.remote.tasks.task.FlyteTask`  :raises: FlyteAssertion if name is None |
+| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | FlyteAssertion if name is None |
 
 #### fetch_task_lazy()
 
@@ -3883,7 +3889,13 @@ Fetch a workflow entity from flyte admin.
 | `project` | `str` | fetch entity from this project. If None, uses the default_project attribute. |
 | `domain` | `str` | fetch entity from this domain. If None, uses the default_domain attribute. |
 | `name` | `str` | fetch entity with matching name. |
-| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. :raises: FlyteAssertion if name is None |
+| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | FlyteAssertion if name is None |
 
 #### fetch_workflow_lazy()
 
@@ -4006,7 +4018,6 @@ def generate_console_http_domain()
 ```
 This should generate the domain where console is hosted.
 
-:return:
 
 
 #### generate_console_url()
@@ -4064,7 +4075,9 @@ Get the specified artifact.
 | `artifact_key` | `typing.Optional[art_id.ArtifactKey]` | An artifact key. |
 | `artifact_id` | `typing.Optional[art_id.ArtifactID]` | The artifact ID. |
 | `query` | `typing.Optional[typing.Union[art_id.ArtifactQuery, ArtifactQuery]]` | An artifact query. |
-| `get_details` | `bool` | A bool to indicate whether or not to return artifact details. :return: The artifact as persisted in the service. |
+| `get_details` | `bool` | A bool to indicate whether or not to return artifact details. |
+
+**Returns:** The artifact as persisted in the service.
 
 #### get_domains()
 
@@ -4134,6 +4147,7 @@ In the last case, the workflow is created, registered and executed.
 The `parallel` flag can be used to generate a workflow where all launchplans can be run in parallel. Default
 is that execute backfill is run sequentially
 
+    case return a FlyteWorkflowExecution
 
 
 | Parameter | Type | Description |
@@ -4150,7 +4164,9 @@ is that execute backfill is run sequentially
 | `execute` | `bool` | bool Register and execute the wwkflow. |
 | `parallel` | `bool` | if the backfill should be run in parallel. False (default) will run each bacfill sequentially. |
 | `failure_policy` | `typing.Optional[WorkflowFailurePolicy]` | WorkflowFailurePolicy (optional) to be used for the newly created workflow. This can control failure behavior - whether to continue on failure or stop immediately on failure |
-| `overwrite_cache` | `typing.Optional[bool]` | if True, will overwrite the cache. :return: In case of dry-run, return WorkflowBase, else if no_execute return FlyteWorkflow else in the default case return a FlyteWorkflowExecution |
+| `overwrite_cache` | `typing.Optional[bool]` | if True, will overwrite the cache. |
+
+**Returns:** In case of dry-run, return WorkflowBase, else if no_execute return FlyteWorkflow else in the default
 
 #### list_projects()
 
@@ -4163,6 +4179,7 @@ def list_projects(
 ```
 Lists registered projects from flyte admin.
 
+:returns: typing.List[flytekit.models.project.Project]
 
 
 | Parameter | Type | Description |
@@ -4170,6 +4187,12 @@ Lists registered projects from flyte admin.
 | `limit` | `typing.Optional[int]` | [Optional[int]] The maximum number of entries to return. |
 | `filters` | `typing.Optional[typing.List[filter_models.Filter]]` | |
 | `sort_by` | `typing.Optional[admin_common_models.Sort]` | |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `grpc.RpcError` |  |
 
 #### list_signals()
 
@@ -4231,7 +4254,9 @@ WorkflowBase, Task, LaunchPlan then use other methods. This should be used only 
 | `version` | `str` | Version to be registered |
 | `create_default_launchplan` | `bool` | boolean that indicates if a default launch plan should be created |
 | `options` | `Options` | Options to be used if registering a default launch plan |
-| `og_entity` | `FlyteLocalEntity` | Pass in the original workflow (flytekit type) if create_default_launchplan is true :return: Identifier of the created entity |
+| `og_entity` | `FlyteLocalEntity` | Pass in the original workflow (flytekit type) if create_default_launchplan is true |
+
+**Returns:** Identifier of the created entity
 
 #### recent_executions()
 
@@ -4315,7 +4340,7 @@ Use this method to register a workflow via script mode.
 | `module_name` | `typing.Optional[str]` | the name of the module |
 | `envs` | `typing.Optional[typing.Dict[str, str]]` | Environment variables to be passed to the serialization |
 | `default_resources` | `typing.Optional[ResourceSpec]` | Default resources to be passed to the serialization. These override the resource spec for any tasks that have no statically defined resource requests and limits. |
-| `fast_package_options` | `typing.Optional[FastPackageOptions]` | Options to customize copy_all behavior, ignored when copy_all is False. :return: |
+| `fast_package_options` | `typing.Optional[FastPackageOptions]` | Options to customize copy_all behavior, ignored when copy_all is False. |
 
 #### register_task()
 
@@ -4335,7 +4360,7 @@ For any conflicting parameters method arguments are regarded as overrides
 |-|-|-|
 | `entity` | `PythonTask` | PythonTask can be either @task or a instance of a Task class |
 | `serialization_settings` | `typing.Optional[SerializationSettings]` | Settings that will be used to override various serialization parameters. |
-| `version` | `typing.Optional[str]` | version that will be used to register. If not specified will default to using the serialization settings default :return: |
+| `version` | `typing.Optional[str]` | version that will be used to register. If not specified will default to using the serialization settings default |
 
 #### register_workflow()
 
@@ -4357,7 +4382,7 @@ Use this method to register a workflow.
 | `serialization_settings` | `typing.Optional[SerializationSettings]` | The serialization settings to be used |
 | `version` | `typing.Optional[str]` | version for the entity to be registered as |
 | `default_launch_plan` | `typing.Optional[bool]` | This should be true if a default launch plan should be created for the workflow |
-| `options` | `typing.Optional[Options]` | Additional execution options that can be configured for the default launchplan :return: |
+| `options` | `typing.Optional[Options]` | Additional execution options that can be configured for the default launchplan |
 
 #### reject()
 
@@ -4473,8 +4498,10 @@ Stop an application.
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | Name of application to stop. |
-| `project` | `Optional[str]` | Domain name. If None, uses default_domain. :return: The App IDL for the stopped application. |
+| `project` | `Optional[str]` | Domain name. If None, uses default_domain. |
 | `domain` | `Optional[str]` | |
+
+**Returns:** The App IDL for the stopped application.
 
 #### stream_execution_events()
 
@@ -4503,6 +4530,8 @@ will be redelivered in a subsequent transmission.
 | `include_task_executions` | `bool` | Whether to include task execution events |
 | `include_node_executions` | `bool` | Whether to include node execution events |
 
+**Returns:** An async generator that yields execution events of the specified types
+
 #### sync()
 
 ```python
@@ -4521,7 +4550,9 @@ so that we don't break people.
 |-|-|-|
 | `execution` | `FlyteWorkflowExecution` | |
 | `entity_definition` | `typing.Union[FlyteWorkflow, FlyteTask]` | |
-| `sync_nodes` | `bool` | By default sync will fetch data on all underlying node executions (recursively, so subworkflows and launch plans will also get picked up). Set this to False in order to prevent that (which will make this call faster). :return: Returns the same execution object, but with additional information pulled in. |
+| `sync_nodes` | `bool` | By default sync will fetch data on all underlying node executions (recursively, so subworkflows and launch plans will also get picked up). Set this to False in order to prevent that (which will make this call faster). |
+
+**Returns:** Returns the same execution object, but with additional information pulled in.
 
 #### sync_execution()
 
@@ -4626,7 +4657,9 @@ Function will use remote's client to hash and then upload the file using Admin's
 | `to_upload` | `pathlib.Path` | Must be a single file |
 | `project` | `typing.Optional[str]` | Project to upload under, if not supplied will use the remote's default |
 | `domain` | `typing.Optional[str]` | Domain to upload under, if not specified will use the remote's default |
-| `filename_root` | `typing.Optional[str]` | If provided will be used as the root of the filename. If not, Admin will use a hash :return: The uploaded location. |
+| `filename_root` | `typing.Optional[str]` | If provided will be used as the root of the filename. If not, Admin will use a hash |
+
+**Returns:** The uploaded location.
 
 #### wait()
 
@@ -4656,7 +4689,10 @@ Parameters used for version hash generation.
 param func: The function to generate a version for. This is an optional parameter and can be any callable
              that matches the specified parameter and return types.
 :type func: Optional[Callable[P, FuncOut]]
+:type container_image: Optional[Union[str, ImageSpec]]
 
+
+### Parameters
 
 ```python
 class VersionParameters(
@@ -4669,7 +4705,7 @@ class VersionParameters(
 | Parameter | Type | Description |
 |-|-|-|
 | `func` | `typing.Callable[~P, ~FuncOut]` | |
-| `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, NoneType]` | The container image to generate a version for. This can be a string representing the image name or an ImageSpec object. :type container_image: Optional[Union[str, ImageSpec]] |
+| `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, NoneType]` | The container image to generate a version for. This can be a string representing the image name or an ImageSpec object. |
 | `pod_template` | `typing.Optional[flytekit.core.pod_template.PodTemplate]` | |
 | `pod_template_name` | `typing.Optional[str]` | |
 

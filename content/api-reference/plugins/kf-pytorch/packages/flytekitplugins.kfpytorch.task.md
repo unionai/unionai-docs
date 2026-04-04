@@ -1,16 +1,14 @@
 ---
 title: flytekitplugins.kfpytorch.task
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
 # flytekitplugins.kfpytorch.task
 
-
 This Plugin adds the capability of running distributed pytorch training to Flyte using backend plugins, natively on
 Kubernetes. It leverages [`Pytorch Job`](https://github.com/kubeflow/pytorch-operator) Plugin from kubeflow.
-
 ## Directory
 
 ### Classes
@@ -72,10 +70,14 @@ start method `spawn`.
 | `checkpoint_src` | `str` | Location where the new checkpoint should be copied to. |
 | `kwargs` | `**kwargs` | |
 
+**Returns**
+
+ElasticWorkerResult: A named tuple containing the return value of the task function and a list of
+    flytekit Deck objects created in the worker process.
+
 ## flytekitplugins.kfpytorch.task.CleanPodPolicy
 
 CleanPodPolicy describes how to deal with pods when the job is finished.
-
 
 
 ## flytekitplugins.kfpytorch.task.Elastic
@@ -93,6 +95,8 @@ To change `OMP_NUM_THREADS`, specify it in the environment dict of the flytekit 
 
 
 
+### Parameters
+
 ```python
 class Elastic(
     nnodes: typing.Union[int, str],
@@ -107,22 +111,18 @@ class Elastic(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `nnodes` | `typing.Union[int, str]` | |
+| `nnodes` | `typing.Union[int, str]` | Number of nodes, or the range of nodes in form &lt;minimum_nodes&gt;:&lt;maximum_nodes&gt;. |
 | `nproc_per_node` | `int` | Number of workers per node. |
 | `start_method` | `str` | Multiprocessing start method to use when creating workers. |
 | `monitor_interval` | `int` | Interval, in seconds, to monitor the state of workers. |
-| `max_restarts` | `int` | Maximum number of worker group restarts before failing. See `torch.distributed.launcher.api.LaunchConfig` and `torch.distributed.elastic.rendezvous.dynamic_rendezvous.create_handler`. Default timeouts are set to 15 minutes to account for the fact that some workers might start faster than others: Some pods might be assigned to a running node which might have the image in its cache while other workers might require a node scale up and image pull. |
-| `rdzv_configs` | `typing.Dict[str, typing.Any]` | |
+| `max_restarts` | `int` | Maximum number of worker group restarts before failing. |
+| `rdzv_configs` | `typing.Dict[str, typing.Any]` | Additional rendezvous configs to pass to torch elastic, e.g. `{"timeout": 1200, "join_timeout": 900}`. See `torch.distributed.launcher.api.LaunchConfig` and `torch.distributed.elastic.rendezvous.dynamic_rendezvous.create_handler`. Default timeouts are set to 15 minutes to account for the fact that some workers might start faster than others: Some pods might be assigned to a running node which might have the image in its cache while other workers might require a node scale up and image pull. |
 | `increase_shared_mem` | `bool` | [DEPRECATED] This argument is deprecated. Use `@task(shared_memory=...)` instead. PyTorch uses shared memory to share data between processes. If torch multiprocessing is used (e.g. for multi-processed data loaders) the default shared memory segment size that the container runs with might not be enough and and one might have to increase the shared memory size. This option configures the task's pod template to mount an `emptyDir` volume with medium `Memory` to to `/dev/shm`. The shared memory size upper limit is the sum of the memory limits of the containers in the pod. |
 | `run_policy` | `typing.Optional[flytekitplugins.kfpytorch.task.RunPolicy]` | Configuration for the run policy. |
 
 ## flytekitplugins.kfpytorch.task.ElasticWorkerResult
 
 A named tuple representing the result of a torch elastic worker process.
-
-Attributes:
-    return_value (Any): The value returned by the task function in the worker process.
-    decks (list[flytekit.Deck]): A list of flytekit Deck objects created in the worker process.
 
 
 
@@ -131,6 +131,7 @@ Attributes:
 Configuration for master replica group. Master should always have 1 replica, so we don't need a `replicas` field
 
 
+### Parameters
 
 ```python
 class Master(
@@ -157,6 +158,8 @@ resources inherited from task function decoration.
 
 
 
+### Parameters
+
 ```python
 class PyTorch(
     master: flytekitplugins.kfpytorch.task.Master,
@@ -180,6 +183,7 @@ Plugin that submits a PyTorchJob (see https://github.com/kubeflow/pytorch-operat
     defined by the code within the _task_function to k8s cluster.
 
 
+### Parameters
 
 ```python
 class PyTorchFunctionTask(
@@ -655,6 +659,7 @@ Plugin for distributed training with torch elastic/torchrun (see
 https://pytorch.org/docs/stable/elastic/run.html).
 
 
+### Parameters
 
 ```python
 class PytorchElasticFunctionTask(
@@ -1130,11 +1135,12 @@ task resolver. It can be useful to override the task resolver for specific cases
 RestartPolicy describes how the replicas should be restarted
 
 
-
 ## flytekitplugins.kfpytorch.task.RunPolicy
 
 RunPolicy describes some policy to apply to the execution of a kubeflow job.
 
+
+### Parameters
 
 ```python
 class RunPolicy(
@@ -1152,6 +1158,8 @@ class RunPolicy(
 | `backoff_limit` | `typing.Optional[int]` | Number of retries before marking this job as failed. |
 
 ## flytekitplugins.kfpytorch.task.Worker
+
+### Parameters
 
 ```python
 class Worker(

@@ -45,6 +45,8 @@ ActorEnvironment class.
 
 
 
+### Parameters
+
 ```python
 class ActorEnvironment(
     name: str,
@@ -82,6 +84,8 @@ class ActorEnvironment(
 | `version` | `None` |  |
 
 ## union.actor.ActorTask
+
+### Parameters
 
 ```python
 class ActorTask(
@@ -345,7 +349,9 @@ Serialize the `ActorTask` config into a dict.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `settings` | `SerializationSettings` | Current serialization settings :return: Dictionary representation of the dask task config. |
+| `settings` | `SerializationSettings` | Current serialization settings |
+
+**Returns:** Dictionary representation of the dask task config.
 
 #### get_default_command()
 

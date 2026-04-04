@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.launch_plan
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -22,6 +22,8 @@ layout: py_api
 
 ## flytekit.models.launch_plan.Auth
 
+### Parameters
+
 ```python
 class Auth(
     assumable_iam_role,
@@ -41,9 +43,9 @@ At most one of assumable_iam_role or kubernetes_service_account can be set.
 
 | Property | Type | Description |
 |-|-|-|
-| `assumable_iam_role` | `None` | The IAM role to execute the workflow with :rtype: Text |
+| `assumable_iam_role` | `None` | The IAM role to execute the workflow with |
 | `is_empty` | `None` |  |
-| `kubernetes_service_account` | `None` | The kubernetes service account to execute the workflow with :rtype: Text |
+| `kubernetes_service_account` | `None` | The kubernetes service account to execute the workflow with |
 
 ### Methods
 
@@ -51,8 +53,8 @@ At most one of assumable_iam_role or kubernetes_service_account can be set.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -66,6 +68,8 @@ def from_flyte_idl(
 |-|-|-|
 | `pb2_object` |  | |
 
+**Returns:** Auth
+
 #### serialize_to_string()
 
 ```python
@@ -76,18 +80,18 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.launch_plan_pb2.Auth
-
+**Returns:** flyteidl.admin.launch_plan_pb2.Auth
 
 ## flytekit.models.launch_plan.LaunchPlan
+
+### Parameters
 
 ```python
 class LaunchPlan(
@@ -108,11 +112,11 @@ class LaunchPlan(
 
 | Property | Type | Description |
 |-|-|-|
-| `closure` | `None` | :rtype: LaunchPlanClosure |
-| `id` | `None` | :rtype: flytekit.models.core.identifier.Identifier |
+| `closure` | `None` |  |
+| `id` | `None` |  |
 | `is_empty` | `None` |  |
 | `should_auto_activate` | `None` |  |
-| `spec` | `None` | :rtype: LaunchPlanSpec |
+| `spec` | `None` |  |
 
 ### Methods
 
@@ -120,8 +124,8 @@ class LaunchPlan(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -135,6 +139,8 @@ def from_flyte_idl(
 |-|-|-|
 | `pb2_object` |  | |
 
+**Returns:** LaunchPlan
+
 #### serialize_to_string()
 
 ```python
@@ -145,18 +151,18 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.launch_plan_pb2.LaunchPlan
-
+**Returns:** flyteidl.admin.launch_plan_pb2.LaunchPlan
 
 ## flytekit.models.launch_plan.LaunchPlanClosure
+
+### Parameters
 
 ```python
 class LaunchPlanClosure(
@@ -175,10 +181,10 @@ class LaunchPlanClosure(
 
 | Property | Type | Description |
 |-|-|-|
-| `expected_inputs` | `None` | :rtype: flytekit.models.interface.ParameterMap |
-| `expected_outputs` | `None` | :rtype: flytekit.models.interface.VariableMap |
+| `expected_inputs` | `None` |  |
+| `expected_outputs` | `None` |  |
 | `is_empty` | `None` |  |
-| `state` | `None` | :rtype: LaunchPlanState |
+| `state` | `None` |  |
 
 ### Methods
 
@@ -186,8 +192,8 @@ class LaunchPlanClosure(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -201,6 +207,8 @@ def from_flyte_idl(
 |-|-|-|
 | `pb2_object` |  | |
 
+**Returns:** LaunchPlanClosure
+
 #### serialize_to_string()
 
 ```python
@@ -211,18 +219,18 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.launch_plan_pb2.LaunchPlanClosure
-
+**Returns:** flyteidl.admin.launch_plan_pb2.LaunchPlanClosure
 
 ## flytekit.models.launch_plan.LaunchPlanMetadata
+
+### Parameters
 
 ```python
 class LaunchPlanMetadata(
@@ -243,8 +251,8 @@ class LaunchPlanMetadata(
 |-|-|-|
 | `is_empty` | `None` |  |
 | `launch_conditions` | `None` |  |
-| `notifications` | `None` | List of notifications based on Execution status transitions :rtype: list[flytekit.models.common.Notification] |
-| `schedule` | `None` | Schedule to execute the Launch Plan :rtype: flytekit.models.schedule.Schedule |
+| `notifications` | `None` | List of notifications based on Execution status transitions |
+| `schedule` | `None` | Schedule to execute the Launch Plan |
 
 ### Methods
 
@@ -252,7 +260,7 @@ class LaunchPlanMetadata(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) | List of notifications based on Execution status transitions. |
 
 
@@ -267,6 +275,8 @@ def from_flyte_idl(
 |-|-|-|
 | `pb2_object` |  | |
 
+**Returns:** LaunchPlanMetadata
+
 #### serialize_to_string()
 
 ```python
@@ -277,8 +287,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
@@ -286,10 +295,13 @@ def short_string()
 def to_flyte_idl()
 ```
 List of notifications based on Execution status transitions
-:rtype: flyteidl.admin.launch_plan_pb2.LaunchPlanMetadata
 
+
+**Returns:** flyteidl.admin.launch_plan_pb2.LaunchPlanMetadata
 
 ## flytekit.models.launch_plan.LaunchPlanSpec
+
+### Parameters
 
 ```python
 class LaunchPlanSpec(
@@ -330,19 +342,19 @@ The spec for a Launch Plan.
 
 | Property | Type | Description |
 |-|-|-|
-| `annotations` | `None` | The annotations to execute the workflow with :rtype: flytekit.models.common.Annotations |
-| `auth_role` | `None` | The authorization method with which to execute the workflow. :rtype: flytekit.models.common.AuthRole |
-| `concurrency_policy` | `None` | Concurrency settings for the launch plan. :rtype: flytekit.models.concurrency.ConcurrencyPolicy |
-| `default_inputs` | `None` | Input values to be passed for the execution :rtype: flytekit.models.interface.ParameterMap |
-| `entity_metadata` | `None` | :rtype: LaunchPlanMetadata |
-| `fixed_inputs` | `None` | Fixed, non-overridable inputs for the Launch Plan :rtype: flytekit.models.literals.LiteralMap |
+| `annotations` | `None` | The annotations to execute the workflow with |
+| `auth_role` | `None` | The authorization method with which to execute the workflow. |
+| `concurrency_policy` | `None` | Concurrency settings for the launch plan. |
+| `default_inputs` | `None` | Input values to be passed for the execution |
+| `entity_metadata` | `None` |  |
+| `fixed_inputs` | `None` | Fixed, non-overridable inputs for the Launch Plan |
 | `is_empty` | `None` |  |
-| `labels` | `None` | The labels to execute the workflow with :rtype: flytekit.models.common.Labels |
+| `labels` | `None` | The labels to execute the workflow with |
 | `max_parallelism` | `None` |  |
 | `overwrite_cache` | `None` |  |
-| `raw_output_data_config` | `None` | Where to store offloaded data like Blobs and Schemas :rtype: flytekit.models.common.RawOutputDataConfig |
+| `raw_output_data_config` | `None` | Where to store offloaded data like Blobs and Schemas |
 | `security_context` | `None` |  |
-| `workflow_id` | `None` | Unique identifier for the workflow in question :rtype: flytekit.models.core.identifier.Identifier |
+| `workflow_id` | `None` | Unique identifier for the workflow in question |
 
 ### Methods
 
@@ -350,8 +362,8 @@ The spec for a Launch Plan.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -365,6 +377,8 @@ def from_flyte_idl(
 |-|-|-|
 | `pb2` |  | |
 
+**Returns:** LaunchPlanSpec
+
 #### serialize_to_string()
 
 ```python
@@ -375,16 +389,14 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.launch_plan_pb2.LaunchPlanSpec
-
+**Returns:** flyteidl.admin.launch_plan_pb2.LaunchPlanSpec
 
 ## flytekit.models.launch_plan.LaunchPlanState
 
@@ -405,4 +417,6 @@ def enum_to_string(
 | Parameter | Type | Description |
 |-|-|-|
 | `val` |  | |
+
+**Returns:** Text
 
