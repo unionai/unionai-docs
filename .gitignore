@@ -28,6 +28,8 @@ uv.lock
 # E2E test artifacts
 scripts/.debug/
 scripts/.e2e-workspace/
+scripts/e2e-workspace/
+scripts/e2e_workspace/
 scripts/.e2e-keys/
 
 # AI assistant
