@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.array_node_map_task
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -86,6 +86,8 @@ or the drop in replacement ArrayNode implementation
 | `kwargs` | `**kwargs` | |
 
 ## flytekit.core.array_node_map_task.ArrayNodeMapTask
+
+### Parameters
 
 ```python
 class ArrayNodeMapTask(
@@ -501,6 +503,7 @@ But, at runtime this information is lost. To reconstruct this, we use ArrayNodeM
 and then at runtime reconstructs the interface with this knowledge
 
 
+### Parameters
 
 ```python
 class ArrayNodeMapTaskResolver(

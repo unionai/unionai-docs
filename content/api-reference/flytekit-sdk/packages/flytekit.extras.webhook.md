@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.webhook
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -24,6 +24,8 @@ This connector sends HTTP requests based on the task template and inputs provide
 and processes the responses to determine the success or failure of the task.
 
 
+
+### Parameters
 
 ```python
 class WebhookConnector(
@@ -75,7 +77,6 @@ The WebhookTask is used to invoke a webhook. The webhook can be invoked with a P
 
 All the parameters can be formatted using python format strings.
 
-Example:
 ```python
 simple_get = WebhookTask(
 name="simple-get",
@@ -130,6 +131,8 @@ TODO Coming soon secrets support
 
 
 
+### Parameters
+
 ```python
 class WebhookTask(
     name: str,
@@ -156,6 +159,12 @@ class WebhookTask(
 | `show_url` | `bool` | If True, the URL of the request will be logged in the UI as the output of the task. |
 | `description` | `typing.Optional[str]` | Description of the task. |
 | `timeout` | `typing.Union[int, datetime.timedelta]` | The timeout for the request (connection and read). Default is 10 seconds. If an int is provided, it is considered as seconds. |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `ValueError` | if the method is not 'POST' or 'GET'. |
 
 ### Properties
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.utils.rate_limiter
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -19,6 +19,8 @@ layout: py_api
 
 Rate limiter that allows up to a certain number of requests per minute.
 
+
+### Parameters
 
 ```python
 class RateLimiter(

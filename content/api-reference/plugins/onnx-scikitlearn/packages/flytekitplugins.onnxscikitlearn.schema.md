@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.onnxscikitlearn.schema
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -54,6 +54,8 @@ def to_onnx(
 | `config` |  | |
 
 ## flytekitplugins.onnxscikitlearn.schema.ScikitLearn2ONNX
+
+### Parameters
 
 ```python
 class ScikitLearn2ONNX(
@@ -179,6 +181,8 @@ def to_json(
 ScikitLearn2ONNXConfig is the config used during the scikitlearn to ONNX conversion.
 
 
+
+### Parameters
 
 ```python
 class ScikitLearn2ONNXConfig(
@@ -327,6 +331,8 @@ def to_json(
 
 ## flytekitplugins.onnxscikitlearn.schema.ScikitLearn2ONNXTransformer
 
+### Parameters
+
 ```python
 def ScikitLearn2ONNXTransformer()
 ```
@@ -405,7 +411,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 

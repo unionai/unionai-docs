@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.openai.batch.task
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -23,6 +23,8 @@ layout: py_api
 | [`UploadJSONLFileTask`](.././flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskuploadjsonlfiletask) |  |
 
 ## flytekitplugins.openai.batch.task.BatchEndpointTask
+
+### Parameters
 
 ```python
 class BatchEndpointTask(
@@ -368,6 +370,8 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 
 ## flytekitplugins.openai.batch.task.BatchResult
 
+### Parameters
+
 ```python
 class BatchResult(
     output_file: typing.Optional[flytekit.types.file.file.FlyteFile.__class_getitem__.<locals>._SpecificFormatClass],
@@ -437,6 +441,8 @@ def to_json(
 
 ## flytekitplugins.openai.batch.task.DownloadJSONFilesExecutor
 
+### Parameters
+
 ```python
 class DownloadJSONFilesExecutor(
     args,
@@ -481,7 +487,9 @@ that wasn't serialized into the template.
 | Parameter | Type | Description |
 |-|-|-|
 | `tt` | `flytekit.models.task.TaskTemplate` | This is the template, the serialized form of the task. |
-| `kwargs` | `**kwargs` | These are the Python native input values to the task. :return: Python native output values from the task. |
+| `kwargs` | `**kwargs` | These are the Python native input values to the task. |
+
+**Returns:** Python native output values from the task.
 
 #### find_lhs()
 
@@ -489,6 +497,8 @@ that wasn't serialized into the template.
 def find_lhs()
 ```
 ## flytekitplugins.openai.batch.task.DownloadJSONFilesTask
+
+### Parameters
 
 ```python
 class DownloadJSONFilesTask(
@@ -852,6 +862,8 @@ def serialize_to_model(
 
 ## flytekitplugins.openai.batch.task.OpenAIFileConfig
 
+### Parameters
+
 ```python
 class OpenAIFileConfig(
     secret: flytekit.models.security.Secret,
@@ -902,6 +914,8 @@ def get_version_suffix()
 ```
 ## flytekitplugins.openai.batch.task.UploadJSONLFileExecutor
 
+### Parameters
+
 ```python
 class UploadJSONLFileExecutor(
     args,
@@ -946,7 +960,9 @@ that wasn't serialized into the template.
 | Parameter | Type | Description |
 |-|-|-|
 | `tt` | `flytekit.models.task.TaskTemplate` | This is the template, the serialized form of the task. |
-| `kwargs` | `**kwargs` | These are the Python native input values to the task. :return: Python native output values from the task. |
+| `kwargs` | `**kwargs` | These are the Python native input values to the task. |
+
+**Returns:** Python native output values from the task.
 
 #### find_lhs()
 
@@ -954,6 +970,8 @@ that wasn't serialized into the template.
 def find_lhs()
 ```
 ## flytekitplugins.openai.batch.task.UploadJSONLFileTask
+
+### Parameters
 
 ```python
 class UploadJSONLFileTask(

@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.bigquery.task
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.13
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -21,6 +21,7 @@ layout: py_api
 BigQueryConfig should be used to configure a BigQuery Task.
 
 
+### Parameters
 
 ```python
 class BigQueryConfig(
@@ -40,6 +41,7 @@ class BigQueryConfig(
 This is the simplest form of a BigQuery Task, that can be used even for tasks that do not produce any output.
 
 
+### Parameters
 
 ```python
 class BigQueryTask(

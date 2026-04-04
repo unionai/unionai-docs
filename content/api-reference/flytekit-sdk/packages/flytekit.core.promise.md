@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.promise
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -140,7 +140,9 @@ workflow using regular python interpreter and generate nodes and promises whenev
 | `overridden_interface` | `Optional[Interface]` | utilize this interface instead of the one provided by the entity. This is useful for ArrayNode as there's a mismatch between the underlying interface and inputs |
 | `add_node_to_compilation_state` | `bool` | bool that enables for nodes to be created but not linked to the workflow. This is useful when creating nodes nested under other nodes such as ArrayNode |
 | `node_id` | `str` | str if provided, this will be used as the node id. |
-| `kwargs` | `**kwargs` | Dict[str, Any] default inputs passed from the user to this entity. Can be promises. :return:  Optional[Union[Tuple[Promise], Promise, VoidPromise]] |
+| `kwargs` | `**kwargs` | Dict[str, Any] default inputs passed from the user to this entity. Can be promises. |
+
+**Returns:** Optional[Union[Tuple[Promise], Promise, VoidPromise]]
 
 #### create_and_link_node_from_remote()
 
@@ -174,7 +176,9 @@ interface, so all comparisons need to happen using the Literals.
 | `node_id` | `str` | str if provided, this will be used as the node id. |
 | `_inputs_not_allowed` | `Optional[Set[str]]` | Set of all variable names that should not be provided when using this entity. Useful for Launchplans with `fixed` inputs |
 | `_ignorable_inputs` | `Optional[Set[str]]` | Set of all variable names that are optional, but if provided will be overridden. Useful for launchplans with `default` inputs |
-| `kwargs` | `**kwargs` | Dict[str, Any] default inputs passed from the user to this entity. Can be promises. :return:  Optional[Union[Tuple[Promise], Promise, VoidPromise]] |
+| `kwargs` | `**kwargs` | Dict[str, Any] default inputs passed from the user to this entity. Can be promises. |
+
+**Returns:** Optional[Union[Tuple[Promise], Promise, VoidPromise]]
 
 #### create_native_named_tuple()
 
@@ -400,6 +404,7 @@ ComparisonExpression refers to an expression of the form (lhs operator rhs), whe
 and operator can be any comparison expression like &lt;, &gt;, &lt;=, &gt;=, ==, !=
 
 
+### Parameters
 
 ```python
 class ComparisonExpression(
@@ -445,6 +450,7 @@ A conjunctionExpression evaluates to True or False depending on the logical oper
 each of the expressions A & B
 
 
+### Parameters
 
 ```python
 class ConjunctionExpression(
@@ -538,6 +544,8 @@ def local_execution_mode()
 ```
 ## flytekit.core.promise.NodeOutput
 
+### Parameters
+
 ```python
 class NodeOutput(
     node: Node,
@@ -555,11 +563,11 @@ class NodeOutput(
 
 | Property | Type | Description |
 |-|-|-|
-| `attr_path` | `None` | The attribute path the promise will be resolved with. :rtype: list[union[str, int]] |
+| `attr_path` | `None` | The attribute path the promise will be resolved with. |
 | `is_empty` | `None` |  |
 | `node` | `None` | Return Node object. |
-| `node_id` | `None` | Override the underlying node_id property to refer to the Node's id. This is to make sure that overriding node IDs from with_overrides gets serialized correctly. :rtype: Text |
-| `var` | `None` | Variable name must refer to an output variable for the node. :rtype: Text |
+| `node_id` | `None` | Override the underlying node_id property to refer to the Node's id. This is to make sure that overriding node IDs from with_overrides gets serialized correctly. |
+| `var` | `None` | Variable name must refer to an output variable for the node. |
 
 ### Methods
 
@@ -568,8 +576,8 @@ class NodeOutput(
 | [`deepcopy()`](#deepcopy) |  |
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 | [`with_attr()`](#with_attr) |  |
 
 
@@ -589,6 +597,8 @@ def from_flyte_idl(
 |-|-|-|
 | `pb2_object` |  | |
 
+**Returns:** OutputReference
+
 #### serialize_to_string()
 
 ```python
@@ -599,16 +609,14 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.types.OutputReference
-
+**Returns:** flyteidl.core.types.OutputReference
 
 #### with_attr()
 
@@ -641,6 +649,7 @@ This object is a wrapper and exists for three main reasons. Let's assume we're d
 #. Assorted handling for conditionals.
 
 
+### Parameters
 
 ```python
 class Promise(
@@ -659,7 +668,7 @@ class Promise(
 
 | Property | Type | Description |
 |-|-|-|
-| `attr_path` | `None` | The attribute path the promise will be resolved with. :rtype: List[Union[str, int]] |
+| `attr_path` | `None` | The attribute path the promise will be resolved with. |
 | `is_ready` | `None` | Returns if the Promise is READY (is not a reference and the val is actually ready)  Usage ::     p = Promise(...)    ...    if p.is_ready():         print(p.val)    else:         print(p.ref) |
 | `ref` | `None` | If the promise is NOT READY / Incomplete, then it maps to the origin node that owns the promise |
 | `val` | `None` | If the promise is ready then this holds the actual evaluate value in Flyte's type system |
@@ -793,6 +802,7 @@ This object is returned for tasks that do not return any outputs (declared inter
 VoidPromise cannot be interacted with and does not allow comparisons or any operations
 
 
+### Parameters
 
 ```python
 class VoidPromise(

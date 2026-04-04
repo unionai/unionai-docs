@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.mmcloud.connector
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -17,6 +17,8 @@ layout: py_api
 | [`MMCloudMetadata`](.././flytekitplugins.mmcloud.connector#flytekitpluginsmmcloudconnectormmcloudmetadata) |  |
 
 ## flytekitplugins.mmcloud.connector.MMCloudConnector
+
+### Parameters
 
 ```python
 def MMCloudConnector()
@@ -131,6 +133,8 @@ Return the metrics for the task.
 | `kwargs` | `**kwargs` | |
 
 ## flytekitplugins.mmcloud.connector.MMCloudMetadata
+
+### Parameters
 
 ```python
 class MMCloudMetadata(

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.annotation
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -20,6 +20,8 @@ layout: py_api
 Python class representation of the flyteidl TypeAnnotation message.
 
 
+### Parameters
+
 ```python
 class TypeAnnotation(
     annotations: typing.Dict[str, typing.Any],
@@ -33,7 +35,7 @@ class TypeAnnotation(
 
 | Property | Type | Description |
 |-|-|-|
-| `annotations` | `None` | :rtype: dict[str, Any] |
+| `annotations` | `None` |  |
 
 ### Methods
 
@@ -41,7 +43,7 @@ class TypeAnnotation(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`merge_annotations()`](#merge_annotations) | Merges two annotations together. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -54,6 +56,8 @@ def from_flyte_idl(
 | Parameter | Type | Description |
 |-|-|-|
 | `proto` |  | |
+
+**Returns:** TypeAnnotation
 
 #### merge_annotations()
 
@@ -72,11 +76,12 @@ will be used.
 | `annotation` | `TypeAnnotation` | |
 | `other_annotation` | `TypeAnnotation` | |
 
+**Returns:** TypeAnnotation
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.types_pb2.TypeAnnotation
-
+**Returns:** flyteidl.core.types_pb2.TypeAnnotation
 

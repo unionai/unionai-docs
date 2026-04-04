@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.python_auto_container
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -57,7 +57,7 @@ Resolve the image to the real image name that should be used for registration.
 | Parameter | Type | Description |
 |-|-|-|
 | `img` | `Optional[Union[str, ImageSpec]]` | Configured image or image spec |
-| `cfg` | `ImageConfig` | Registration configuration :return: |
+| `cfg` | `ImageConfig` | Registration configuration |
 
 #### update_image_spec_copy_handling()
 
@@ -86,6 +86,7 @@ from where. (or to where but that is hard-coded)
 This resolved is used when the task is defined in a notebook. It is used to load the task from the notebook.
 
 
+### Parameters
 
 ```python
 class DefaultNotebookTaskResolver(
@@ -185,6 +186,7 @@ Overridable function that can optionally return a custom name for a given task
 Please see the notes in the TaskResolverMixin as it describes this default behavior.
 
 
+### Parameters
 
 ```python
 class DefaultTaskResolver(
@@ -283,11 +285,9 @@ Overridable function that can optionally return a custom name for a given task
 
 Represents the structure of the pickled object stored in the .pkl file for interactive mode.
 
-Attributes:
-    metadata: Metadata about the pickled entities including Python version
-    entities: Dictionary mapping entity names to their PythonAutoContainerTask instances
 
 
+### Parameters
 
 ```python
 class PickledEntity(
@@ -297,17 +297,16 @@ class PickledEntity(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `metadata` | `PickledEntityMetadata` | |
-| `entities` | `Dict[str, PythonAutoContainerTask]` | |
+| `metadata` | `PickledEntityMetadata` | Metadata about the pickled entities including Python version |
+| `entities` | `Dict[str, PythonAutoContainerTask]` | Dictionary mapping entity names to their PythonAutoContainerTask instances |
 
 ## flytekit.core.python_auto_container.PickledEntityMetadata
 
 Metadata for a pickled entity containing version information.
 
-Attributes:
-    python_version: The Python version string (e.g. "3.12.0") used to create the pickle
 
 
+### Parameters
 
 ```python
 class PickledEntityMetadata(
@@ -316,7 +315,7 @@ class PickledEntityMetadata(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `python_version` | `str` | |
+| `python_version` | `str` | The Python version string (e.g. "3.12.0") used to create the pickle |
 
 ## flytekit.core.python_auto_container.PythonAutoContainerTask
 
@@ -327,6 +326,7 @@ This base will auto configure the image and image version to be used for all its
 If you are looking to extend, you might prefer to use ``PythonFunctionTask`` or ``PythonInstanceTask``
 
 
+### Parameters
 
 ```python
 class PythonAutoContainerTask(

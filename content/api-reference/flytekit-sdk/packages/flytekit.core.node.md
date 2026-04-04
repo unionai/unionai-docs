@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.node
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -63,6 +63,7 @@ This class will hold all the things necessary to make an SdkNode but we won't ma
 ID, which from the registration step
 
 
+### Parameters
 
 ```python
 class Node(

@@ -1,6 +1,6 @@
 ---
 title: flytekit.interactive.vscode_lib.decorator
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -61,6 +61,8 @@ Download a file from a given URL using fsspec.
 |-|-|-|
 | `url` |  | The URL of the file to download. |
 | `target_dir` | `typing.Optional[str]` | The directory where the file should be saved. Defaults to current directory. |
+
+**Returns:** str: The path to the downloaded file.
 
 #### download_vscode()
 
@@ -124,6 +126,17 @@ supports AMD64 and ARM64 architectures.
 |-|-|-|
 | `code_server_info_dict` | `dict` | A dictionary containing code server information. The keys should be the architecture type ('amd64' or 'arm64') and the values should be the corresponding code server information. |
 
+**Returns**
+
+str: The code server information corresponding to the system's architecture.
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `ValueError` | If the system's architecture is not AMD64 or ARM64. |
+
 #### get_installed_extensions()
 
 ```python
@@ -131,9 +144,9 @@ def get_installed_extensions()
 ```
 Get the list of installed extensions.
 
-Returns:
-    List[str]: The list of installed extensions.
 
+
+**Returns:** List[str]: The list of installed extensions.
 
 #### is_extension_installed()
 
@@ -188,6 +201,8 @@ Generate a Python script for users to resume the task.
 | `pid` | `int` | |
 
 ## flytekit.interactive.vscode_lib.decorator.vscode
+
+### Parameters
 
 ```python
 class vscode(

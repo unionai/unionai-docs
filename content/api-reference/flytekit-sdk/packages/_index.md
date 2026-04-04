@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -26,11 +26,14 @@ layout: py_api
 | [`flytekit.clients.raw`](flytekit.clients.raw) |  |
 | [`flytekit.clis.helpers`](flytekit.clis.helpers) |  |
 | [`flytekit.clis.sdk_in_container.backfill`](flytekit.clis.sdk_in_container.backfill) |  |
+| [`flytekit.clis.sdk_in_container.build`](flytekit.clis.sdk_in_container.build) |  |
 | [`flytekit.clis.sdk_in_container.constants`](flytekit.clis.sdk_in_container.constants) |  |
 | [`flytekit.clis.sdk_in_container.executions`](flytekit.clis.sdk_in_container.executions) |  |
 | [`flytekit.clis.sdk_in_container.helpers`](flytekit.clis.sdk_in_container.helpers) |  |
 | [`flytekit.clis.sdk_in_container.metrics`](flytekit.clis.sdk_in_container.metrics) |  |
 | [`flytekit.clis.sdk_in_container.package`](flytekit.clis.sdk_in_container.package) |  |
+| [`flytekit.clis.sdk_in_container.pyflyte`](flytekit.clis.sdk_in_container.pyflyte) |  |
+| [`flytekit.clis.sdk_in_container.run`](flytekit.clis.sdk_in_container.run) |  |
 | [`flytekit.clis.sdk_in_container.serialize`](flytekit.clis.sdk_in_container.serialize) |  |
 | [`flytekit.clis.sdk_in_container.serve`](flytekit.clis.sdk_in_container.serve) |  |
 | [`flytekit.clis.sdk_in_container.utils`](flytekit.clis.sdk_in_container.utils) |  |
@@ -106,13 +109,9 @@ layout: py_api
 | [`flytekit.extras.accelerators`](flytekit.extras.accelerators) | ## Specifying Accelerators. |
 | [`flytekit.extras.cloud_pickle_resolver`](flytekit.extras.cloud_pickle_resolver) |  |
 | [`flytekit.extras.pydantic_transformer.transformer`](flytekit.extras.pydantic_transformer.transformer) |  |
-| [`flytekit.extras.pytorch.checkpoint`](flytekit.extras.pytorch.checkpoint) |  |
-| [`flytekit.extras.pytorch.native`](flytekit.extras.pytorch.native) |  |
 | [`flytekit.extras.sklearn.native`](flytekit.extras.sklearn.native) |  |
 | [`flytekit.extras.sqlite3.task`](flytekit.extras.sqlite3.task) |  |
 | [`flytekit.extras.tasks.shell`](flytekit.extras.tasks.shell) |  |
-| [`flytekit.extras.tensorflow.model`](flytekit.extras.tensorflow.model) |  |
-| [`flytekit.extras.tensorflow.record`](flytekit.extras.tensorflow.record) |  |
 | [`flytekit.extras.webhook`](flytekit.extras.webhook) |  |
 | [`flytekit.extras.webhook.connector`](flytekit.extras.webhook.connector) |  |
 | [`flytekit.extras.webhook.constants`](flytekit.extras.webhook.constants) |  |
@@ -198,6 +197,7 @@ layout: py_api
 | [`flytekit.types.error.error`](flytekit.types.error.error) |  |
 | [`flytekit.types.file`](flytekit.types.file) | This module provides functionality related to FlyteFile. |
 | [`flytekit.types.file.file`](flytekit.types.file.file) |  |
+| [`flytekit.types.file.image`](flytekit.types.file.image) |  |
 | [`flytekit.types.iterator.iterator`](flytekit.types.iterator.iterator) |  |
 | [`flytekit.types.iterator.json_iterator`](flytekit.types.iterator.json_iterator) |  |
 | [`flytekit.types.numpy.ndarray`](flytekit.types.numpy.ndarray) |  |

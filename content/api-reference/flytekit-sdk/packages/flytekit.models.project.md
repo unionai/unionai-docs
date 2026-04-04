@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.project
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -16,6 +16,8 @@ layout: py_api
 | [`Project`](.././flytekit.models.project#flytekitmodelsprojectproject) |  |
 
 ## flytekit.models.project.Project
+
+### Parameters
 
 ```python
 class Project(
@@ -41,11 +43,11 @@ platform.
 
 | Property | Type | Description |
 |-|-|-|
-| `description` | `None` | A concise description for this project. :rtype: Text |
-| `id` | `None` | A globally unique identifier associated with this project :rtype: Text |
+| `description` | `None` | A concise description for this project. |
+| `id` | `None` | A globally unique identifier associated with this project |
 | `is_empty` | `None` |  |
-| `name` | `None` | A human-readable name for this project. :rtype: Text |
-| `state` | `None` | The state of this project. :rtype: int |
+| `name` | `None` | A human-readable name for this project. |
+| `state` | `None` | The state of this project. |
 
 ### Methods
 
@@ -55,8 +57,8 @@ platform.
 | [`archived_project()`](#archived_project) |  |
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### active_project()
@@ -92,6 +94,8 @@ def from_flyte_idl(
 |-|-|-|
 | `pb2_object` |  | |
 
+**Returns:** Project
+
 #### serialize_to_string()
 
 ```python
@@ -102,14 +106,12 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.project_pb2.Project
-
+**Returns:** flyteidl.admin.project_pb2.Project
 

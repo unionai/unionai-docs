@@ -1,6 +1,6 @@
 ---
 title: flytekit.interactive.utils
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -59,6 +59,8 @@ Read task input data from inputs.pb for a specific task function and convert it 
 | `task_name` |  | The name of the task function within the module. |
 | `context_working_dir` |  | The directory path where the input file and module file are located. |
 
+**Returns:** dict: A dictionary containing the task inputs, converted into Python types and structures.
+
 #### load_module_from_path()
 
 ```python
@@ -75,4 +77,15 @@ Imports a Python module from a specified file path.
 |-|-|-|
 | `module_name` |  | The name you want to assign to the imported module. |
 | `path` |  | The file system path to the Python file (.py) that contains the module you want to import. |
+
+**Returns**
+
+module: The imported module.
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `ImportError` | If the module cannot be loaded from the provided path, an ImportError is raised. |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.docstring
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -16,6 +16,8 @@ layout: py_api
 | [`Docstring`](.././flytekit.core.docstring#flytekitcoredocstringdocstring) |  |
 
 ## flytekit.core.docstring.Docstring
+
+### Parameters
 
 ```python
 class Docstring(

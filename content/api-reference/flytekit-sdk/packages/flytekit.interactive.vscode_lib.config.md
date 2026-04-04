@@ -1,6 +1,6 @@
 ---
 title: flytekit.interactive.vscode_lib.config
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -28,6 +28,8 @@ layout: py_api
 VscodeConfig is the config contains default URLs of the VSCode server and extension remote paths.
 
 
+
+### Parameters
 
 ```python
 class VscodeConfig(

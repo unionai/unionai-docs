@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.checkpointer
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -22,7 +22,6 @@ Base class for Checkpoint system. Checkpoint system allows reading and writing c
 scripts
 
 
-
 ### Methods
 
 | Method | Description |
@@ -30,7 +29,7 @@ scripts
 | [`prev_exists()`](#prev_exists) |  |
 | [`read()`](#read) | This should only be used if there is a singular checkpoint file written. |
 | [`restore()`](#restore) | Given a path, if a previous checkpoint exists, will be downloaded to this path. |
-| [`save()`](#save) |  |
+| [`save()`](#save) | Usage: If you have a io. |
 | [`write()`](#write) | This will overwrite the checkpoint. |
 
 
@@ -52,8 +51,8 @@ found, this will raise a ValueError
 
 ```python
 def restore(
-    path: typing.Union[pathlib._local.Path, str],
-) -> typing.Optional[pathlib._local.Path]
+    path: typing.Union[pathlib.Path, str],
+) -> typing.Optional[pathlib.Path]
 ```
 Given a path, if a previous checkpoint exists, will be downloaded to this path.
 If download is successful the downloaded path is returned
@@ -65,18 +64,26 @@ If download is successful the downloaded path is returned
 
 | Parameter | Type | Description |
 |-|-|-|
-| `path` | `typing.Union[pathlib._local.Path, str]` | |
+| `path` | `typing.Union[pathlib.Path, str]` | |
 
 #### save()
 
 ```python
 def save(
-    cp: typing.Union[pathlib._local.Path, str, _io.BufferedReader],
+    cp: typing.Union[pathlib.Path, str, _io.BufferedReader],
 )
 ```
+Usage: If you have a io.BufferedReader then the following should work
+
+```python
+with input_file.open(mode="rb") as b:
+    checkpointer.save(b)
+```
+
+
 | Parameter | Type | Description |
 |-|-|-|
-| `cp` | `typing.Union[pathlib._local.Path, str, _io.BufferedReader]` | Checkpoint file (path, str path or a io.BufferedReader) |
+| `cp` | `typing.Union[pathlib.Path, str, _io.BufferedReader]` | Checkpoint file (path, str path or a io.BufferedReader) |
 
 #### write()
 
@@ -101,6 +108,7 @@ It will also synchronously download / restore previous checkpoints, when restore
 TODO: Implement an async checkpoint system
 
 
+### Parameters
 
 ```python
 class SyncCheckpoint(
@@ -108,10 +116,14 @@ class SyncCheckpoint(
     checkpoint_src: typing.Optional[str],
 )
 ```
+checkpoint_src: If a previous checkpoint should exist, this path should be set to the folder that contains the checkpoint information
+checkpoint_dest: Location where the new checkpoint should be copied to
+
+
 | Parameter | Type | Description |
 |-|-|-|
-| `checkpoint_dest` | `str` | Location where the new checkpoint should be copied to |
-| `checkpoint_src` | `typing.Optional[str]` | If a previous checkpoint should exist, this path should be set to the folder that contains the checkpoint information |
+| `checkpoint_dest` | `str` | |
+| `checkpoint_src` | `typing.Optional[str]` | |
 
 ### Methods
 
@@ -120,7 +132,7 @@ class SyncCheckpoint(
 | [`prev_exists()`](#prev_exists) |  |
 | [`read()`](#read) | This should only be used if there is a singular checkpoint file written. |
 | [`restore()`](#restore) | Given a path, if a previous checkpoint exists, will be downloaded to this path. |
-| [`save()`](#save) |  |
+| [`save()`](#save) | Usage: If you have a io. |
 | [`write()`](#write) | This will overwrite the checkpoint. |
 
 
@@ -142,8 +154,8 @@ found, this will raise a ValueError
 
 ```python
 def restore(
-    path: typing.Union[pathlib._local.Path, str, NoneType],
-) -> typing.Optional[pathlib._local.Path]
+    path: typing.Union[pathlib.Path, str, NoneType],
+) -> typing.Optional[pathlib.Path]
 ```
 Given a path, if a previous checkpoint exists, will be downloaded to this path.
 If download is successful the downloaded path is returned
@@ -155,18 +167,26 @@ If download is successful the downloaded path is returned
 
 | Parameter | Type | Description |
 |-|-|-|
-| `path` | `typing.Union[pathlib._local.Path, str, NoneType]` | |
+| `path` | `typing.Union[pathlib.Path, str, NoneType]` | |
 
 #### save()
 
 ```python
 def save(
-    cp: typing.Union[pathlib._local.Path, str, _io.BufferedReader],
+    cp: typing.Union[pathlib.Path, str, _io.BufferedReader],
 )
 ```
+Usage: If you have a io.BufferedReader then the following should work
+
+```python
+with input_file.open(mode="rb") as b:
+    checkpointer.save(b)
+```
+
+
 | Parameter | Type | Description |
 |-|-|-|
-| `cp` | `typing.Union[pathlib._local.Path, str, _io.BufferedReader]` | Checkpoint file (path, str path or a io.BufferedReader) |
+| `cp` | `typing.Union[pathlib.Path, str, _io.BufferedReader]` | Checkpoint file (path, str path or a io.BufferedReader) |
 
 #### write()
 

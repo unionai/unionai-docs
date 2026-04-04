@@ -1,6 +1,6 @@
 ---
 title: flytekit.interfaces.stats.taggable
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -19,7 +19,7 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`get_stats()`](#get_stats) | :rtype: TaggableStats. |
+| [`get_stats()`](#get_stats) |  |
 
 
 ## Methods
@@ -33,16 +33,17 @@ def get_stats(
     tags: typing.Dict[str, str],
 ) -> flytekit.interfaces.stats.taggable.TaggableStats
 ```
-:rtype: TaggableStats
-
-
 | Parameter | Type | Description |
 |-|-|-|
 | `cfg` | `flytekit.configuration.StatsConfig` | |
 | `prefix` | `str` | |
 | `tags` | `typing.Dict[str, str]` | |
 
+**Returns:** TaggableStats
+
 ## flytekit.interfaces.stats.taggable.TaggableStats
+
+### Parameters
 
 ```python
 class TaggableStats(

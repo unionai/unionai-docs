@@ -15,7 +15,9 @@
 
 [[sdks]]
 package = "flytekit"
-install = "flytekit pandas numpy scikit-learn torch tensorflow keras pydantic sqlalchemy pyarrow prometheus-client 'httpx<1' snowflake-connector-python google-cloud-bigquery google-cloud-bigquery-storage"
+# Omit torch/tensorflow/keras: they are not needed to import flytekit for API scanning, and TensorFlow
+# init can deadlock on some macOS/CI hosts when the parser walks flytekit.extras.tensorflow.
+install = "flytekit pandas numpy scikit-learn pydantic sqlalchemy 'pyarrow>=12,<21' pyyaml prometheus-client 'httpx<1' snowflake-connector-python google-cloud-bigquery google-cloud-bigquery-storage"
 parser_package = "flytekit"
 generator_name = "flytekit"
 generator_title = "Flytekit SDK"
@@ -63,6 +65,10 @@ no_flatten = false  # v1: flat output (single .md per package) to match publishe
 
 [[plugins]]
 package = "flytekitplugins-airflow"
+# Constrain Airflow 2.x so uv does not resolve to 1.10.x (broken on Python 3.12: stdlib `imp` removed).
+# Pin plugin >=1.16 so it stays aligned with the flytekit line above (avoid stale 1.14.x resolution).
+# Floor Airflow at 2.11 so the resolver does not pick 2.7.x (pulls pendulum 2.1.x, broken on Python 3.12).
+install = "apache-airflow>=2.11.0,<3 flytekitplugins-airflow>=1.16.16"
 plugin = "flytekitplugins.airflow"
 title = "Apache Airflow"
 name = "airflow"

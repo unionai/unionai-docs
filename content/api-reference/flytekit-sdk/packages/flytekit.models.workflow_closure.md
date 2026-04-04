@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.workflow_closure
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -16,6 +16,8 @@ layout: py_api
 | [`WorkflowClosure`](.././flytekit.models.workflow_closure#flytekitmodelsworkflow_closureworkflowclosure) |  |
 
 ## flytekit.models.workflow_closure.WorkflowClosure
+
+### Parameters
 
 ```python
 class WorkflowClosure(
@@ -33,8 +35,8 @@ class WorkflowClosure(
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` | `None` |  |
-| `tasks` | `None` | :rtype: list[flytekit.models.task.TaskTemplate] |
-| `workflow` | `None` | :rtype: flytekit.models.core.workflow.WorkflowTemplate |
+| `tasks` | `None` |  |
+| `workflow` | `None` |  |
 
 ### Methods
 
@@ -42,8 +44,8 @@ class WorkflowClosure(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -57,6 +59,8 @@ def from_flyte_idl(
 |-|-|-|
 | `pb2_object` |  | |
 
+**Returns:** WorkflowClosure
+
 #### serialize_to_string()
 
 ```python
@@ -67,14 +71,12 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.workflow_closure_pb2.WorkflowClosure
-
+**Returns:** flyteidl.core.workflow_closure_pb2.WorkflowClosure
 

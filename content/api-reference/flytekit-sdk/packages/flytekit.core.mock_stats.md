@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.mock_stats
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -16,6 +16,8 @@ layout: py_api
 | [`MockStats`](.././flytekit.core.mock_stats#flytekitcoremock_statsmockstats) |  |
 
 ## flytekit.core.mock_stats.MockStats
+
+### Parameters
 
 ```python
 class MockStats(

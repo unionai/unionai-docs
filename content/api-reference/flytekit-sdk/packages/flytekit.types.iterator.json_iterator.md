@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.iterator.json_iterator
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -18,6 +18,8 @@ layout: py_api
 
 ## flytekit.types.iterator.json_iterator.JSONIterator
 
+### Parameters
+
 ```python
 class JSONIterator(
     reader: jsonlines.jsonlines.Reader,
@@ -32,6 +34,7 @@ class JSONIterator(
 A JSON iterator that handles conversion between an iterator/generator and a JSONL file.
 
 
+### Parameters
 
 ```python
 def JSONIteratorTransformer()
@@ -154,7 +157,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 

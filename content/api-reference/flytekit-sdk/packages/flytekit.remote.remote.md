@@ -1,17 +1,15 @@
 ---
 title: flytekit.remote.remote
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
 # flytekit.remote.remote
 
-
 This module provides the ``FlyteRemote`` object, which is the end-user's main starting point for interacting
 with a Flyte backend in an interactive and programmatic way. This of this experience as kind of like the web UI
 but in Python object form.
-
 ## Directory
 
 ### Classes
@@ -42,6 +40,7 @@ The term 'remote' is synonymous with 'backend' or 'deployment' and refers to a h
 Flyte platform, which comes with a Flyte Admin server on some known URI.
 
 
+### Parameters
 
 ```python
 class FlyteRemote(
@@ -339,7 +338,9 @@ Execute a locally defined `LaunchPlan`.
 | `tags` | `typing.Optional[typing.List[str]]` | Tags to be passed into the execution. |
 | `cluster_pool` | `typing.Optional[str]` | Specify cluster pool on which newly created execution should be placed. |
 | `execution_cluster_label` | `typing.Optional[str]` | Specify label of cluster(s) on which newly created execution should be placed. |
-| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs  :return: FlyteWorkflowExecution object |
+| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs |
+
+**Returns:** FlyteWorkflowExecution object
 
 #### execute_local_task()
 
@@ -388,7 +389,9 @@ Execute a @task-decorated function or TaskTemplate task.
 | `cluster_pool` | `typing.Optional[str]` | Specify cluster pool on which newly created execution should be placed. |
 | `execution_cluster_label` | `typing.Optional[str]` | Specify label of cluster(s) on which newly created execution should be placed. |
 | `options` | `typing.Optional[Options]` | Options to customize the execution. |
-| `serialization_settings` | `typing.Optional[SerializationSettings]` | If the task needs to be registered, this can be passed in.  :return: FlyteWorkflowExecution object. |
+| `serialization_settings` | `typing.Optional[SerializationSettings]` | If the task needs to be registered, this can be passed in. |
+
+**Returns:** FlyteWorkflowExecution object.
 
 #### execute_local_workflow()
 
@@ -437,7 +440,9 @@ Execute an @workflow decorated function.
 | `tags` | `typing.Optional[typing.List[str]]` | Tags to set for the execution |
 | `cluster_pool` | `typing.Optional[str]` | Specify cluster pool on which newly created execution should be placed |
 | `execution_cluster_label` | `typing.Optional[str]` | Specify label of cluster(s) on which newly created execution should be placed |
-| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs to be registered  :return: FlyteWorkflowExecution object |
+| `serialization_settings` | `typing.Optional[SerializationSettings]` | Optionally provide serialization settings, in case the entity being run needs to be registered |
+
+**Returns:** FlyteWorkflowExecution object
 
 #### execute_reference_launch_plan()
 
@@ -659,7 +664,9 @@ Packages the given paths into an installable zip and returns the md5_bytes and t
 | `root` | `os.PathLike` | path to the root of the package system that should be uploaded |
 | `deref_symlinks` | `bool` | if symlinks should be dereferenced. Defaults to True |
 | `output` | `str` | output path. Optional, will default to a tempdir |
-| `options` | `typing.Optional[FastPackageOptions]` | additional options to customize fast_package behavior :return: md5_bytes, url |
+| `options` | `typing.Optional[FastPackageOptions]` | additional options to customize fast_package behavior |
+
+**Returns:** md5_bytes, url
 
 #### fast_register_workflow()
 
@@ -683,7 +690,7 @@ Use this method to register a workflow with zip mode.
 | `version` | `typing.Optional[str]` | version for the entity to be registered as |
 | `default_launch_plan` | `typing.Optional[bool]` | This should be true if a default launch plan should be created for the workflow |
 | `options` | `typing.Optional[Options]` | Additional execution options that can be configured for the default launchplan |
-| `fast_package_options` | `typing.Optional[FastPackageOptions]` | Options to customize copying behavior :return: |
+| `fast_package_options` | `typing.Optional[FastPackageOptions]` | Options to customize copying behavior |
 
 #### fetch_active_launchplan()
 
@@ -714,13 +721,21 @@ def fetch_execution(
 ```
 Fetch a workflow execution entity from flyte admin.
 
+:returns: :class:`~flytekit.remote.workflow_execution.FlyteWorkflowExecution`
+
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `project` | `str` | fetch entity from this project. If None, uses the default_project attribute. |
 | `domain` | `str` | fetch entity from this domain. If None, uses the default_domain attribute. |
-| `name` | `str` | fetch entity with matching name. :returns: :class:`~flytekit.remote.workflow_execution.FlyteWorkflowExecution`  :raises: FlyteAssertion if name is None |
+| `name` | `str` | fetch entity with matching name. |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | FlyteAssertion if name is None |
 
 #### fetch_launch_plan()
 
@@ -734,6 +749,8 @@ def fetch_launch_plan(
 ```
 Fetch a launchplan entity from flyte admin.
 
+:returns: :class:`~flytekit.remote.launch_plan.FlyteLaunchPlan`
+
 
 
 | Parameter | Type | Description |
@@ -741,7 +758,13 @@ Fetch a launchplan entity from flyte admin.
 | `project` | `str` | fetch entity from this project. If None, uses the default_project attribute. |
 | `domain` | `str` | fetch entity from this domain. If None, uses the default_domain attribute. |
 | `name` | `str` | fetch entity with matching name. |
-| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. :returns: :class:`~flytekit.remote.launch_plan.FlyteLaunchPlan`  :raises: FlyteAssertion if name is None |
+| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | FlyteAssertion if name is None |
 
 #### fetch_task()
 
@@ -755,6 +778,8 @@ def fetch_task(
 ```
 Fetch a task entity from flyte admin.
 
+:returns: :class:`~flytekit.remote.tasks.task.FlyteTask`
+
 
 
 | Parameter | Type | Description |
@@ -762,7 +787,13 @@ Fetch a task entity from flyte admin.
 | `project` | `str` | fetch entity from this project. If None, uses the default_project attribute. |
 | `domain` | `str` | fetch entity from this domain. If None, uses the default_domain attribute. |
 | `name` | `str` | fetch entity with matching name. |
-| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. :returns: :class:`~flytekit.remote.tasks.task.FlyteTask`  :raises: FlyteAssertion if name is None |
+| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | FlyteAssertion if name is None |
 
 #### fetch_task_lazy()
 
@@ -802,7 +833,13 @@ Fetch a workflow entity from flyte admin.
 | `project` | `str` | fetch entity from this project. If None, uses the default_project attribute. |
 | `domain` | `str` | fetch entity from this domain. If None, uses the default_domain attribute. |
 | `name` | `str` | fetch entity with matching name. |
-| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. :raises: FlyteAssertion if name is None |
+| `version` | `str` | fetch entity with matching version. If None, gets the latest version of the entity. |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+|  | FlyteAssertion if name is None |
 
 #### fetch_workflow_lazy()
 
@@ -903,7 +940,6 @@ def generate_console_http_domain()
 ```
 This should generate the domain where console is hosted.
 
-:return:
 
 
 #### generate_console_url()
@@ -1005,6 +1041,7 @@ In the last case, the workflow is created, registered and executed.
 The `parallel` flag can be used to generate a workflow where all launchplans can be run in parallel. Default
 is that execute backfill is run sequentially
 
+    case return a FlyteWorkflowExecution
 
 
 | Parameter | Type | Description |
@@ -1021,7 +1058,9 @@ is that execute backfill is run sequentially
 | `execute` | `bool` | bool Register and execute the wwkflow. |
 | `parallel` | `bool` | if the backfill should be run in parallel. False (default) will run each bacfill sequentially. |
 | `failure_policy` | `typing.Optional[WorkflowFailurePolicy]` | WorkflowFailurePolicy (optional) to be used for the newly created workflow. This can control failure behavior - whether to continue on failure or stop immediately on failure |
-| `overwrite_cache` | `typing.Optional[bool]` | if True, will overwrite the cache. :return: In case of dry-run, return WorkflowBase, else if no_execute return FlyteWorkflow else in the default case return a FlyteWorkflowExecution |
+| `overwrite_cache` | `typing.Optional[bool]` | if True, will overwrite the cache. |
+
+**Returns:** In case of dry-run, return WorkflowBase, else if no_execute return FlyteWorkflow else in the default
 
 #### list_projects()
 
@@ -1034,6 +1073,7 @@ def list_projects(
 ```
 Lists registered projects from flyte admin.
 
+:returns: typing.List[flytekit.models.project.Project]
 
 
 | Parameter | Type | Description |
@@ -1041,6 +1081,12 @@ Lists registered projects from flyte admin.
 | `limit` | `typing.Optional[int]` | [Optional[int]] The maximum number of entries to return. |
 | `filters` | `typing.Optional[typing.List[filter_models.Filter]]` | |
 | `sort_by` | `typing.Optional[admin_common_models.Sort]` | |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `grpc.RpcError` |  |
 
 #### list_signals()
 
@@ -1102,7 +1148,9 @@ WorkflowBase, Task, LaunchPlan then use other methods. This should be used only 
 | `version` | `str` | Version to be registered |
 | `create_default_launchplan` | `bool` | boolean that indicates if a default launch plan should be created |
 | `options` | `Options` | Options to be used if registering a default launch plan |
-| `og_entity` | `FlyteLocalEntity` | Pass in the original workflow (flytekit type) if create_default_launchplan is true :return: Identifier of the created entity |
+| `og_entity` | `FlyteLocalEntity` | Pass in the original workflow (flytekit type) if create_default_launchplan is true |
+
+**Returns:** Identifier of the created entity
 
 #### recent_executions()
 
@@ -1186,7 +1234,7 @@ Use this method to register a workflow via script mode.
 | `module_name` | `typing.Optional[str]` | the name of the module |
 | `envs` | `typing.Optional[typing.Dict[str, str]]` | Environment variables to be passed to the serialization |
 | `default_resources` | `typing.Optional[ResourceSpec]` | Default resources to be passed to the serialization. These override the resource spec for any tasks that have no statically defined resource requests and limits. |
-| `fast_package_options` | `typing.Optional[FastPackageOptions]` | Options to customize copy_all behavior, ignored when copy_all is False. :return: |
+| `fast_package_options` | `typing.Optional[FastPackageOptions]` | Options to customize copy_all behavior, ignored when copy_all is False. |
 
 #### register_task()
 
@@ -1206,7 +1254,7 @@ For any conflicting parameters method arguments are regarded as overrides
 |-|-|-|
 | `entity` | `PythonTask` | PythonTask can be either @task or a instance of a Task class |
 | `serialization_settings` | `typing.Optional[SerializationSettings]` | Settings that will be used to override various serialization parameters. |
-| `version` | `typing.Optional[str]` | version that will be used to register. If not specified will default to using the serialization settings default :return: |
+| `version` | `typing.Optional[str]` | version that will be used to register. If not specified will default to using the serialization settings default |
 
 #### register_workflow()
 
@@ -1228,7 +1276,7 @@ Use this method to register a workflow.
 | `serialization_settings` | `typing.Optional[SerializationSettings]` | The serialization settings to be used |
 | `version` | `typing.Optional[str]` | version for the entity to be registered as |
 | `default_launch_plan` | `typing.Optional[bool]` | This should be true if a default launch plan should be created for the workflow |
-| `options` | `typing.Optional[Options]` | Additional execution options that can be configured for the default launchplan :return: |
+| `options` | `typing.Optional[Options]` | Additional execution options that can be configured for the default launchplan |
 
 #### reject()
 
@@ -1319,7 +1367,9 @@ so that we don't break people.
 |-|-|-|
 | `execution` | `FlyteWorkflowExecution` | |
 | `entity_definition` | `typing.Union[FlyteWorkflow, FlyteTask]` | |
-| `sync_nodes` | `bool` | By default sync will fetch data on all underlying node executions (recursively, so subworkflows and launch plans will also get picked up). Set this to False in order to prevent that (which will make this call faster). :return: Returns the same execution object, but with additional information pulled in. |
+| `sync_nodes` | `bool` | By default sync will fetch data on all underlying node executions (recursively, so subworkflows and launch plans will also get picked up). Set this to False in order to prevent that (which will make this call faster). |
+
+**Returns:** Returns the same execution object, but with additional information pulled in.
 
 #### sync_execution()
 
@@ -1424,7 +1474,9 @@ Function will use remote's client to hash and then upload the file using Admin's
 | `to_upload` | `pathlib.Path` | Must be a single file |
 | `project` | `typing.Optional[str]` | Project to upload under, if not supplied will use the remote's default |
 | `domain` | `typing.Optional[str]` | Domain to upload under, if not specified will use the remote's default |
-| `filename_root` | `typing.Optional[str]` | If provided will be used as the root of the filename. If not, Admin will use a hash :return: The uploaded location. |
+| `filename_root` | `typing.Optional[str]` | If provided will be used as the root of the filename. If not, Admin will use a hash |
+
+**Returns:** The uploaded location.
 
 #### wait()
 
@@ -1452,8 +1504,9 @@ Wait for an execution to finish.
 RegistrationSkipped error is raised when trying to register an entity that is not registrable.
 
 
-
 ## flytekit.remote.remote.ResolvedIdentifiers
+
+### Parameters
 
 ```python
 class ResolvedIdentifiers(

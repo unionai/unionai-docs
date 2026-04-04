@@ -1,12 +1,11 @@
 ---
 title: flytekit
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
 # flytekit
-
 
 This package contains all of the most common abstractions you'll need to write Flyte workflows and extend Flytekit.
 
@@ -106,8 +105,6 @@ Scheduling
 - Scalar
 - LiteralType
 - BlobType
-
-
 ## Directory
 
 ### Methods

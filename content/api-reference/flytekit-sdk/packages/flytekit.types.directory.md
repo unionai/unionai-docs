@@ -1,12 +1,11 @@
 ---
 title: flytekit.types.directory
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
 # flytekit.types.directory
-
 
 Similar to {{< py_class_ref flytekit.types.file.FlyteFile >}} there are some 'preformatted' directory types.
 
@@ -15,8 +14,6 @@ Similar to {{< py_class_ref flytekit.types.file.FlyteFile >}} there are some 'pr
 | {{< py_class_ref FlyteDirectory >}} | {{< py_class_docsum FlyteDirectory >}} |
 | {{< py_class_ref TensorboardLogs >}} | {{< py_class_docsum TensorboardLogs >}} |
 | {{< py_class_ref TFRecordsDirectory >}} | {{< py_class_docsum TFRecordsDirectory >}} |
-
-
 ## Directory
 
 ### Variables

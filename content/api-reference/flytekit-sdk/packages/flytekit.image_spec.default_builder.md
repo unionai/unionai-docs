@@ -1,6 +1,6 @@
 ---
 title: flytekit.image_spec.default_builder
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -41,7 +41,7 @@ layout: py_api
 ```python
 def create_docker_context(
     image_spec: flytekit.image_spec.image_spec.ImageSpec,
-    tmp_dir: pathlib._local.Path,
+    tmp_dir: pathlib.Path,
 )
 ```
 Populate tmp_dir with Dockerfile as specified by the `image_spec`.
@@ -50,7 +50,7 @@ Populate tmp_dir with Dockerfile as specified by the `image_spec`.
 | Parameter | Type | Description |
 |-|-|-|
 | `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | |
-| `tmp_dir` | `pathlib._local.Path` | |
+| `tmp_dir` | `pathlib.Path` | |
 
 #### get_flytekit_for_pypi()
 
@@ -65,13 +65,13 @@ Get flytekit version on PyPI.
 ```python
 def prepare_poetry_lock_command(
     image_spec: flytekit.image_spec.image_spec.ImageSpec,
-    tmp_dir: pathlib._local.Path,
+    tmp_dir: pathlib.Path,
 ) -> typing.Tuple[string.Template, typing.List[str]]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | |
-| `tmp_dir` | `pathlib._local.Path` | |
+| `tmp_dir` | `pathlib.Path` | |
 
 #### prepare_python_executable()
 
@@ -89,26 +89,26 @@ def prepare_python_executable(
 ```python
 def prepare_python_install(
     image_spec: flytekit.image_spec.image_spec.ImageSpec,
-    tmp_dir: pathlib._local.Path,
+    tmp_dir: pathlib.Path,
 ) -> str
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | |
-| `tmp_dir` | `pathlib._local.Path` | |
+| `tmp_dir` | `pathlib.Path` | |
 
 #### prepare_uv_lock_command()
 
 ```python
 def prepare_uv_lock_command(
     image_spec: flytekit.image_spec.image_spec.ImageSpec,
-    tmp_dir: pathlib._local.Path,
+    tmp_dir: pathlib.Path,
 ) -> typing.Tuple[string.Template, typing.List[str]]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | |
-| `tmp_dir` | `pathlib._local.Path` | |
+| `tmp_dir` | `pathlib.Path` | |
 
 ## flytekit.image_spec.default_builder.DefaultImageBuilder
 
@@ -138,6 +138,8 @@ Build the docker image and push it to the registry.
 |-|-|-|
 | `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | image spec of the task. |
 
+**Returns:** fully_qualified_image_name: Fully qualified image name. If None, then `image_spec.image_name()` is used.
+
 #### should_build()
 
 ```python
@@ -152,4 +154,15 @@ Whether or not the builder should build the ImageSpec.
 | Parameter | Type | Description |
 |-|-|-|
 | `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | image spec of the task. |
+
+**Returns**
+
+True if the image should be built, otherwise it returns False.
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `RuntimeError` | If FLYTE_IMG_FAST_FAIL is set to True and ImageSpec fails to check if the image exists due to a permission issue or other reason. |
 

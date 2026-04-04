@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.event
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -17,6 +17,8 @@ layout: py_api
 
 ## flytekit.models.event.TaskExecutionMetadata
 
+### Parameters
+
 ```python
 class TaskExecutionMetadata(
     external_resources,
@@ -30,7 +32,7 @@ class TaskExecutionMetadata(
 
 | Property | Type | Description |
 |-|-|-|
-| `external_resources` | `None` | :rtype: google.protobuf.internal.containers.RepeatedCompositeFieldContainer |
+| `external_resources` | `None` |  |
 | `is_empty` | `None` |  |
 
 ### Methods
@@ -39,8 +41,8 @@ class TaskExecutionMetadata(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -54,6 +56,8 @@ def from_flyte_idl(
 |-|-|-|
 | `proto` |  | |
 
+**Returns:** TaskExecutionMetadata
+
 #### serialize_to_string()
 
 ```python
@@ -64,14 +68,12 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.event.TaskExecutionMetadata
-
+**Returns:** flyteidl.event.TaskExecutionMetadata
 

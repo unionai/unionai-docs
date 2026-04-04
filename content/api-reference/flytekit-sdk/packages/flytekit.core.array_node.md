@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.array_node
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -44,6 +44,7 @@ def array_node(
 ```
 ArrayNode implementation that maps over tasks and other Flyte entities
 
+    flyte_entity_call_handler
 
 
 | Parameter | Type | Description |
@@ -52,9 +53,13 @@ ArrayNode implementation that maps over tasks and other Flyte entities
 | `concurrency` | `typing.Optional[int]` | If specified, this limits the number of mapped tasks than can run in parallel to the given batch size. If the size of the input exceeds the concurrency value, then multiple batches will be run serially until all inputs are processed. If set to 0, this means unbounded concurrency. If left unspecified, this means the array node will inherit parallelism from the workflow |
 | `min_success_ratio` | `typing.Optional[float]` | The minimum ratio of successful executions |
 | `min_successes` | `typing.Optional[int]` | The minimum number of successful executions. If set, this takes precedence over min_success_ratio |
-| `run_all_sub_nodes` | `bool` | If True, all sub-nodes will run to completion even after the failure threshold is met :return: A callable function that takes in keyword arguments and returns a Promise created by flyte_entity_call_handler |
+| `run_all_sub_nodes` | `bool` | If True, all sub-nodes will run to completion even after the failure threshold is met |
+
+**Returns:** A callable function that takes in keyword arguments and returns a Promise created by
 
 ## flytekit.core.array_node.ArrayNode
+
+### Parameters
 
 ```python
 class ArrayNode(

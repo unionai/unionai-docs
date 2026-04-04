@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.spark.models
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -17,6 +17,8 @@ layout: py_api
 | [`SparkType`](.././flytekitplugins.spark.models#flytekitpluginssparkmodelssparktype) |  |
 
 ## flytekitplugins.spark.models.SparkJob
+
+### Parameters
 
 ```python
 class SparkJob(
@@ -53,17 +55,17 @@ This defines a SparkJob target.  It will execute the appropriate SparkJob.
 
 | Property | Type | Description |
 |-|-|-|
-| `application_file` | `None` | The main application file to execute :rtype: Text |
-| `databricks_conf` | `None` | databricks_conf: Databricks job configuration. Config structure can be found here. https://docs.databricks.com/dev-tools/api/2.0/jobs.html#request-structure :rtype: dict[Text, dict[Text, Text]] |
-| `databricks_instance` | `None` | Domain name of your deployment. Use the form &lt;account&gt;.cloud.databricks.com. :rtype: str |
-| `driver_pod` | `None` | Additional pod specs for driver pod. :rtype: K8sPod |
-| `executor_path` | `None` | The python executable to use :rtype: Text |
-| `executor_pod` | `None` | Additional pod specs for the worker node pods. :rtype: K8sPod |
-| `hadoop_conf` | `None` | A definition of key-value pairs for hadoop config for the job. rtype: dict[Text, Text] |
+| `application_file` | `None` | The main application file to execute |
+| `databricks_conf` | `None` | databricks_conf: Databricks job configuration. Config structure can be found here. https://docs.databricks.com/dev-tools/api/2.0/jobs.html#request-structure |
+| `databricks_instance` | `None` | Domain name of your deployment. Use the form &lt;account&gt;.cloud.databricks.com. |
+| `driver_pod` | `None` | Additional pod specs for driver pod. |
+| `executor_path` | `None` | The python executable to use |
+| `executor_pod` | `None` | Additional pod specs for the worker node pods. |
+| `hadoop_conf` | `None` | A definition of key-value pairs for hadoop config for the job. |
 | `is_empty` | `None` |  |
-| `main_class` | `None` | The main class to execute :rtype: Text |
-| `spark_conf` | `None` | A definition of key-value pairs for spark config for the job.  :rtype: dict[Text, Text] |
-| `spark_type` | `None` | Spark Job Type :rtype: Text |
+| `main_class` | `None` | The main class to execute |
+| `spark_conf` | `None` | A definition of key-value pairs for spark config for the job. |
+| `spark_type` | `None` | Spark Job Type |
 
 ### Methods
 
@@ -71,8 +73,8 @@ This defines a SparkJob target.  It will execute the appropriate SparkJob.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 | [`with_overrides()`](#with_overrides) |  |
 
 
@@ -87,6 +89,8 @@ def from_flyte_idl(
 |-|-|-|
 | `pb2_object` |  | |
 
+**Returns:** SparkJob
+
 #### serialize_to_string()
 
 ```python
@@ -97,16 +101,14 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.plugins.spark_pb2.SparkJob
-
+**Returns:** flyteidl.plugins.spark_pb2.SparkJob
 
 #### with_overrides()
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.catalog
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -17,6 +17,8 @@ layout: py_api
 | [`CatalogMetadata`](.././flytekit.models.core.catalog#flytekitmodelscorecatalogcatalogmetadata) |  |
 
 ## flytekit.models.core.catalog.CatalogArtifactTag
+
+### Parameters
 
 ```python
 class CatalogArtifactTag(
@@ -43,7 +45,7 @@ class CatalogArtifactTag(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
@@ -68,8 +70,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
@@ -77,6 +78,8 @@ def short_string()
 def to_flyte_idl()
 ```
 ## flytekit.models.core.catalog.CatalogMetadata
+
+### Parameters
 
 ```python
 class CatalogMetadata(
@@ -107,7 +110,7 @@ class CatalogMetadata(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
@@ -132,8 +135,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 

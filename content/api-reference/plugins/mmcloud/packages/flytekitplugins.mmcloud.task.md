@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.mmcloud.task
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -21,6 +21,7 @@ layout: py_api
 Configures MMCloudTask. Tasks specified with MMCloudConfig will be executed using Memory Machine Cloud.
 
 
+### Parameters
 
 ```python
 class MMCloudConfig(
@@ -32,6 +33,8 @@ class MMCloudConfig(
 | `submit_extra` | `str` | |
 
 ## flytekitplugins.mmcloud.task.MMCloudTask
+
+### Parameters
 
 ```python
 class MMCloudTask(

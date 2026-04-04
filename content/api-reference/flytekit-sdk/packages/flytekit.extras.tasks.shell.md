@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.tasks.shell
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -64,12 +64,25 @@ shell commands from within a python task.
 | `command` | `typing.Union[typing.List[str], str]` | The command to be executed as a list of strings. |
 | `kwargs` | `**kwargs` | |
 
+**Returns**
+
+ProcessResult: Structure containing output of the command.
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `Exception` | If the command execution fails, this exception is raised with details about the command, return code, and stderr output. |
+| `Exception` | If the executable is not found, this exception is raised with guidance on specifying a container image in the task definition when using custom dependencies. |
+
 ## flytekit.extras.tasks.shell.AttrDict
 
 Convert a dictionary to an attribute style lookup. Do not use this in regular places, this is used for
 namespacing inputs and outputs
 
 
+### Parameters
 
 ```python
 class AttrDict(
@@ -83,6 +96,8 @@ class AttrDict(
 | `kwargs` | `**kwargs` | |
 
 ## flytekit.extras.tasks.shell.OutputLocation
+
+### Parameters
 
 ```python
 class OutputLocation(
@@ -103,6 +118,8 @@ Stores a process return code, standard output and standard error.
 
 
 
+### Parameters
+
 ```python
 class ProcessResult(
     returncode: int,
@@ -117,6 +134,8 @@ class ProcessResult(
 | `error` | `str` | str The sub-process standard error string |
 
 ## flytekit.extras.tasks.shell.RawShellTask
+
+### Parameters
 
 ```python
 class RawShellTask(
@@ -592,6 +611,8 @@ task resolver. It can be useful to override the task resolver for specific cases
 
 ## flytekit.extras.tasks.shell.ShellTask
 
+### Parameters
+
 ```python
 class ShellTask(
     name: str,
@@ -605,16 +626,28 @@ class ShellTask(
     kwargs,
 )
 ```
+name: str Name of the Task. Should be unique in the project
+debug: bool Print the generated script and other debugging information
+script: The actual script specified as a string
+script_file: A path to the file that contains the script (Only script or script_file) can be provided
+task_config: Configuration for the task, can be either a Pod (or coming soon, BatchJob) config
+shell: Shell to use to run the script
+inputs: A Dictionary of input names to types
+output_locs: A list of {{&lt; py_class_ref OutputLocations &gt;}}
+**kwargs: Other arguments that can be passed to
+    {{&lt; py_class_ref flytekit.core.python_function_task.PythonInstanceTask &gt;}}
+
+
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | str Name of the Task. Should be unique in the project |
-| `debug` | `bool` | bool Print the generated script and other debugging information |
-| `script` | `typing.Optional[str]` | The actual script specified as a string |
-| `script_file` | `typing.Optional[str]` | A path to the file that contains the script (Only script or script_file) can be provided |
-| `task_config` | `~T` | Configuration for the task, can be either a Pod (or coming soon, BatchJob) config |
-| `shell` | `str` | Shell to use to run the script |
-| `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | A Dictionary of input names to types |
-| `output_locs` | `typing.Optional[typing.List[flytekit.extras.tasks.shell.OutputLocation]]` | A list of {{&lt; py_class_ref OutputLocations &gt;}} |
+| `name` | `str` | |
+| `debug` | `bool` | |
+| `script` | `typing.Optional[str]` | |
+| `script_file` | `typing.Optional[str]` | |
+| `task_config` | `~T` | |
+| `shell` | `str` | |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
+| `output_locs` | `typing.Optional[typing.List[flytekit.extras.tasks.shell.OutputLocation]]` | |
 | `kwargs` | `**kwargs` | |
 
 ### Properties

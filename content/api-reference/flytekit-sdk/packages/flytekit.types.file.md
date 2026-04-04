@@ -1,15 +1,13 @@
 ---
 title: flytekit.types.file
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
 # flytekit.types.file
 
-
 This module provides functionality related to FlyteFile
-
 ## Directory
 
 ### Classes
@@ -23,10 +21,10 @@ This module provides functionality related to FlyteFile
 Used for annotating file extension types of FlyteFile.
 This is useful for extensions that have periods in them, e.g., "tar.gz".
 
-Example:
 TAR_GZ = Annotated[str, FileExt("tar.gz")]
 
 
+### Parameters
 
 ```python
 class FileExt(

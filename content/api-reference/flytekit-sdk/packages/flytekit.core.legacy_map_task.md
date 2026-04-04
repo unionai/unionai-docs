@@ -1,16 +1,14 @@
 ---
 title: flytekit.core.legacy_map_task
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
 # flytekit.core.legacy_map_task
 
-
 Flytekit map tasks specify how to run a single task across a list of inputs. Map tasks themselves are constructed with
 a reference task as well as run-time parameters that limit execution concurrency and failure tolerations.
-
 ## Directory
 
 ### Classes
@@ -112,6 +110,7 @@ A MapPythonTask defines a {{&lt; py_class_ref flytekit.PythonTask &gt;}} which s
 an inner {{&lt; py_class_ref flytekit.PythonFunctionTask &gt;}} across a range of inputs in parallel.
 
 
+### Parameters
 
 ```python
 class MapPythonTask(
@@ -519,6 +518,7 @@ But, at runtime this information is lost. To reconstruct this, we use MapTaskRes
 and then at runtime reconstructs the interface with this knowledge
 
 
+### Parameters
 
 ```python
 class MapTaskResolver(

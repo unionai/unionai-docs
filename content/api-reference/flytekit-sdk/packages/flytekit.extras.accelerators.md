@@ -1,12 +1,11 @@
 ---
 title: flytekit.extras.accelerators
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
 # flytekit.extras.accelerators
-
 
 ## Specifying Accelerators
 
@@ -67,8 +66,6 @@ from flytekit.extras.accelerators import A100
 def my_task() -> None:
     ...
 ```
-
-
 ## Directory
 
 ### Classes
@@ -109,7 +106,6 @@ def my_task() -> None:
 Base class for all accelerator types. This class is not meant to be instantiated directly.
 
 
-
 ### Methods
 
 | Method | Description |
@@ -129,6 +125,7 @@ it is recommended to use one of the pre-defined constants below, as name has to 
 configured on the cluster.
 
 
+### Parameters
 
 ```python
 class GPUAccelerator(
@@ -156,7 +153,6 @@ def to_flyte_idl()
 Base class for all multi-instance GPU accelerator types. It is recommended to use one of the pre-defined constants
 below, as name has to match the name of the device configured on the cluster.
 For example, to specify a 10GB partition of an A100 GPU, use ``A100.partition_2g_10gb``.
-
 
 
 ### Properties

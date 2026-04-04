@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.artifact
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -53,6 +53,7 @@ Control creation parameters at task/workflow execution time ::
         ...
 
 
+### Parameters
 
 ```python
 class Artifact(
@@ -196,6 +197,7 @@ doesn't make sense to carry the full Artifact object around. This object should 
 having a pointer to the main artifact.
 
 
+### Parameters
 
 ```python
 class ArtifactIDSpecification(
@@ -233,6 +235,8 @@ def bind_partitions(
 def to_partial_artifact_id()
 ```
 ## flytekit.core.artifact.ArtifactQuery
+
+### Parameters
 
 ```python
 class ArtifactQuery(
@@ -318,7 +322,6 @@ def to_flyte_idl(
 ## flytekit.core.artifact.ArtifactSerializationHandler
 
 This protocol defines the interface for serializing artifact-related entities down to Flyte IDL.
-
 
 
 ```python
@@ -429,8 +432,9 @@ Used for invoking an Artifact to bind partition keys to input values.
 If there's a good reason to use a metaclass in the future we can, but a simple instance suffices for now
 
 
-
 ## flytekit.core.artifact.Partition
+
+### Parameters
 
 ```python
 class Partition(
@@ -444,6 +448,8 @@ class Partition(
 | `name` | `str` | |
 
 ## flytekit.core.artifact.Partitions
+
+### Parameters
 
 ```python
 class Partitions(
@@ -553,6 +559,8 @@ def time_partition_to_idl(
 | `kwargs` | `**kwargs` | |
 
 ## flytekit.core.artifact.TimePartition
+
+### Parameters
 
 ```python
 class TimePartition(

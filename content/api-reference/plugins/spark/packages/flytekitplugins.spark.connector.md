@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.spark.connector
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -59,6 +59,17 @@ Token resolution: namespace K8s secret -&gt; FLYTE_DATABRICKS_ACCESS_TOKEN env v
 | `task_template` | `typing.Optional[flytekit.models.task.TaskTemplate]` | Optional TaskTemplate (kept for API compatibility). |
 | `secret_name` | `typing.Optional[str]` | Custom secret name. Defaults to 'databricks-token'. |
 
+**Returns**
+
+str: The Databricks access token.
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `ValueError` | If no token is found from any source. |
+
 #### get_header()
 
 ```python
@@ -75,6 +86,8 @@ Get the authorization header for Databricks API calls.
 |-|-|-|
 | `task_template` | `typing.Optional[flytekit.models.task.TaskTemplate]` | TaskTemplate with workflow-specific secret requests. |
 | `auth_token` | `typing.Optional[str]` | Pre-fetched auth token to use directly. |
+
+**Returns:** typing.Dict[str, str]: Authorization and content-type headers.
 
 #### get_secret_from_k8s()
 
@@ -95,6 +108,8 @@ Read a secret from Kubernetes using the Kubernetes Python client.
 | `secret_key` | `str` | Key within the secret (e.g., "token"). |
 | `namespace` | `str` | Kubernetes namespace where the secret is stored. |
 
+**Returns:** Optional[str]: The secret value as a string, or None if not found.
+
 #### result_state_is_available()
 
 ```python
@@ -107,6 +122,8 @@ def result_state_is_available(
 | `life_cycle_state` | `str` | |
 
 ## flytekitplugins.spark.connector.DatabricksConnector
+
+### Parameters
 
 ```python
 def DatabricksConnector()
@@ -224,6 +241,7 @@ spark -&gt; k8s spark plugin
 databricks -&gt; databricks connector
 
 
+### Parameters
 
 ```python
 def DatabricksConnectorV2()
@@ -333,6 +351,8 @@ Return the metrics for the task.
 | `kwargs` | `**kwargs` | |
 
 ## flytekitplugins.spark.connector.DatabricksJobMetadata
+
+### Parameters
 
 ```python
 class DatabricksJobMetadata(

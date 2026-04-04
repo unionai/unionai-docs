@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.snowflake.task
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -29,6 +29,7 @@ SELECT
     CURRENT_WAREHOUSE() AS "Warehouse";
 
 
+### Parameters
 
 ```python
 class SnowflakeConfig(
@@ -52,6 +53,7 @@ class SnowflakeConfig(
 This is the simplest form of a Snowflake Task, that can be used even for tasks that do not produce any output.
 
 
+### Parameters
 
 ```python
 class SnowflakeTask(

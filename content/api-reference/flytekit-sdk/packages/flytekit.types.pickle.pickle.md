@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.pickle.pickle
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -26,7 +26,6 @@ layout: py_api
 
 This type is only used by flytekit internally. User should not use this type.
 Any type that flyte can't recognize will become FlytePickle
-
 
 
 ### Methods
@@ -68,6 +67,8 @@ def to_pickle(
 | `python_val` | `typing.Any` | |
 
 ## flytekit.types.pickle.pickle.FlytePickleTransformer
+
+### Parameters
 
 ```python
 def FlytePickleTransformer()
@@ -190,7 +191,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 

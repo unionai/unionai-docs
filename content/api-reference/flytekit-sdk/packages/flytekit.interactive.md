@@ -1,15 +1,13 @@
 ---
 title: flytekit.interactive
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
 # flytekit.interactive
 
-
 This module provides functionality related to Flytekit Interactive
-
 ## Directory
 
 ### Variables

@@ -1,12 +1,11 @@
 ---
 title: flytekitplugins.wandb
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
 # flytekitplugins.wandb
-
 
 .. currentmodule:: flytekitplugins.wandb
 
@@ -17,7 +16,6 @@ This package contains things that are useful when extending Flytekit.
    :toctree: generated/
 
    wandb_init
-
 ## Directory
 
 ### Classes
@@ -27,6 +25,8 @@ This package contains things that are useful when extending Flytekit.
 | [`wandb_init`](.././flytekitplugins.wandb#flytekitpluginswandbwandb_init) |  |
 
 ## flytekitplugins.wandb.wandb_init
+
+### Parameters
 
 ```python
 class wandb_init(
@@ -50,8 +50,8 @@ Weights and Biases plugin.
 | `entity` | `typing.Optional[str]` | An entity is a username or team name where you're sending runs. (Required) |
 | `secret` | `typing.Union[flytekit.models.security.Secret, typing.Callable, NoneType]` | Secret with your `WANDB_API_KEY` or a callable that returns the API key. The callable takes no arguments and returns a string. (Required) |
 | `id` | `typing.Optional[str]` | A unique id for this wandb run. |
-| `host` | `str` | |
-| `api_host` | `str` | |
+| `host` | `str` | URL to your wandb service. The default is "https://wandb.ai". |
+| `api_host` | `str` | URL to your API Host, The default is "https://api.wandb.ai". |
 | `init_kwargs` | `dict` | |
 
 ### Methods

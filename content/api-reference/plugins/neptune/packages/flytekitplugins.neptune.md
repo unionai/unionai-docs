@@ -1,12 +1,11 @@
 ---
 title: flytekitplugins.neptune
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
 # flytekitplugins.neptune
-
 
 .. currentmodule:: flytekitplugins.neptune
 
@@ -17,7 +16,6 @@ This package contains things that are useful when extending Flytekit.
    :toctree: generated/
 
    neptune_scale_run
-
 ## Directory
 
 ### Methods
@@ -51,4 +49,6 @@ Neptune Scale Plugin.
 | `run_id` | `typing.Optional[str]` | A unique id for this Neptune run. If not provided, Neptune will generate its own id. |
 | `experiment_name` | `typing.Optional[str]` | If provided, the run will be logged as an experiment with this name. |
 | `init_run_kwargs` | `dict` | |
+
+**Returns:** Callable[..., _neptune_scale_run_class]: A callable that returns a wrapped Neptune Scale run instance.
 

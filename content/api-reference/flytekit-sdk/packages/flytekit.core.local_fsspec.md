@@ -1,11 +1,12 @@
 ---
 title: flytekit.core.local_fsspec
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
 # flytekit.core.local_fsspec
+
 
 ## Directory
 
@@ -20,6 +21,7 @@ layout: py_api
 This class doesn't do anything except override the separator so that it works on windows
 
 
+### Parameters
 
 ```python
 class FlyteLocalFileSystem(
