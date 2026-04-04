@@ -390,24 +390,38 @@ def patch_and_install(cfg: Config, state: InfraState) -> InfraState:
     assert os.path.exists(f), f"Values file not found: {f}"
 
     # AWS-specific yq patches
+    # Global values
     _sh(f'yq -i \'.global.AWS_ACCOUNT_ID = "{cfg.aws_account_id}"\' "{f}"')
+    _sh(f'yq -i \'.global.METADATA_BUCKET = "{cfg.s3_metadata_bucket}"\' "{f}"')
+    _sh(f'yq -i \'.global.FAST_REGISTRATION_BUCKET = "{cfg.s3_fast_reg_bucket}"\' "{f}"')
+    _sh(f'yq -i \'.global.BACKEND_IAM_ROLE_ARN = "{state.iam_role_arn}"\' "{f}"')
+    _sh(f'yq -i \'.global.WORKER_IAM_ROLE_ARN = "{state.iam_role_arn}"\' "{f}"')
+
+    # Storage — also set directly since the uctl-generated values file may override
+    # the chart templates with hardcoded placeholders
     _sh(f'yq -i \'.storage.bucketName = "{cfg.s3_metadata_bucket}"\' "{f}"')
     _sh(f'yq -i \'.storage.fastRegistrationBucketName = "{cfg.s3_fast_reg_bucket}"\' "{f}"')
     _sh(f'yq -i \'.storage.region = "{cfg.aws_region}"\' "{f}"')
 
-    # Replace role ARN placeholder
+    # Replace any remaining placeholders from uctl-generated values
     _sh(f"sed -i.bak 's|<UNION_FLYTE_ROLE_ARN>|{state.iam_role_arn}|g' \"{f}\"")
     _sh(f'rm -f "{f}.bak"')
 
+    # Service account annotation
     _sh(
         f'yq -i \'.commonServiceAccount.annotations."eks.amazonaws.com/role-arn" = '
         f'"{state.iam_role_arn}"\' "{f}"'
     )
 
+    # Image Builder — ECR repo name
+    _sh(f'yq -i \'.imageBuilder.registryName = "{cfg.ecr_repo_name}"\' "{f}"')
+
     print(f"Values file patched: {f}")
-    print(f"  storage.bucketName = {cfg.s3_metadata_bucket}")
+    print(f"  global.METADATA_BUCKET = {cfg.s3_metadata_bucket}")
+    print(f"  global.FAST_REGISTRATION_BUCKET = {cfg.s3_fast_reg_bucket}")
+    print(f"  global.BACKEND_IAM_ROLE_ARN = {state.iam_role_arn}")
     print(f"  storage.region = {cfg.aws_region}")
-    print(f"  role-arn = {state.iam_role_arn}")
+    print(f"  imageBuilder.registryName = {cfg.ecr_repo_name}")
 
     chart_ref = resolve_chart_ref(cfg)
     helm_install(cfg, f, chart_ref)

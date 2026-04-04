@@ -44,10 +44,15 @@ If you have not yet set up the required AWS resources (EKS cluster, S3, ECR, IAM
 
 3. Update the generated values file with your infrastructure details:
 
-   - Set `global.AWS_ACCOUNT_ID` to your AWS account ID (e.g. `123456789012`). You can retrieve it with `aws sts get-caller-identity --query Account --output text`.
-   - Set `storage.bucketName` and `storage.fastRegistrationBucketName` to your S3 bucket name(s).
-   - Set `storage.region` to the AWS region of your bucket(s).
-   - Replace all occurrences of `<UNION_FLYTE_ROLE_ARN>` with the ARN of the IAM role created in the [IAM](../selfmanaged-aws/prepare-infra#iam) section (e.g. `arn:aws:iam::<account_id>:role/union-system-role`). This appears in `additionalServiceAccountAnnotations`, `userRoleAnnotationValue`, and `fluentbit.serviceAccount.annotations`.
+   Using the [environment variables](../selfmanaged-aws/prepare-infra#environment-variables) from the prepare infrastructure step:
+
+   - Set `global.AWS_ACCOUNT_ID` to your AWS account ID. You can retrieve it with `aws sts get-caller-identity --query Account --output text`.
+   - Set `global.METADATA_BUCKET` to `${BUCKET_PREFIX}-metadata`.
+   - Set `global.FAST_REGISTRATION_BUCKET` to `${BUCKET_PREFIX}-fast-reg`.
+   - Set `global.BACKEND_IAM_ROLE_ARN` to `arn:aws:iam::<AWS_ACCOUNT_ID>:role/${IAM_ROLE_NAME}`.
+   - Set `global.WORKER_IAM_ROLE_ARN` to the same value (or a separate role if you use distinct worker permissions).
+   - Set `storage.region` to `${AWS_REGION}`.
+   - Set `imageBuilder.registryName` to `${ECR_REPO_NAME}` (defaults to `union-dataplane`; the chart auto-generates the full ECR URL from the account ID and region).
 
 4. Install the data plane Helm chart:
 

@@ -8,6 +8,19 @@ variants: -flyte +union
 
 This page walks you through creating the GCP resources needed for a Union data plane. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-gcp/deploy-dataplane).
 
+## Environment variables
+
+Set these variables before running the commands below. Customize the names if you are deploying multiple data planes in the same GCP project.
+
+```bash
+export PROJECT_ID=my-project            # your GCP project ID
+export REGION=us-central1               # GCP region for all resources
+export CLUSTER_NAME=union-dataplane     # GKE cluster name
+export BUCKET_PREFIX=union-dataplane    # prefix for GCS buckets (must be globally unique)
+export AR_REPOSITORY=union-dataplane    # Artifact Registry repository name
+export GSA_NAME=union-system            # Google Service Account name
+```
+
 ## GKE Cluster
 
 You need a GKE cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
@@ -26,10 +39,6 @@ gcloud services enable container.googleapis.com --project ${PROJECT_ID}
 > ```
 
 ```bash
-export PROJECT_ID=my-project            # your GCP project ID
-export REGION=us-central1
-export CLUSTER_NAME=union-dataplane
-
 gcloud container clusters create ${CLUSTER_NAME} \
   --project ${PROJECT_ID} \
   --region ${REGION} \
@@ -87,8 +96,6 @@ You can also choose to use a single bucket.
 Create the buckets:
 
 ```bash
-export BUCKET_PREFIX=union-dataplane   # choose a globally unique prefix
-
 gcloud storage buckets create gs://${BUCKET_PREFIX}-metadata \
   --project ${PROJECT_ID} \
   --location ${REGION}
@@ -131,8 +138,6 @@ Union recommends using Lifecycle Policy on these buckets to manage storage costs
 Create an [Artifact Registry Docker repository](https://cloud.google.com/artifact-registry/docs/docker/store-docker-container-images#create) for Image Builder to push and pull container images:
 
 ```bash
-export AR_REPOSITORY=union-dataplane
-
 gcloud artifacts repositories create ${AR_REPOSITORY} \
   --project ${PROJECT_ID} \
   --location ${REGION} \
@@ -149,8 +154,6 @@ Union recommends using [GKE Workload Identity](https://cloud.google.com/kubernet
 ### 1. Create a Google Service Account
 
 ```bash
-export GSA_NAME=union-system
-
 gcloud iam service-accounts create ${GSA_NAME} \
   --project ${PROJECT_ID} \
   --display-name "Union data plane service account"

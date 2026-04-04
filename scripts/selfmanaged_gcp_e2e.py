@@ -69,35 +69,33 @@ from selfmanaged_common import (
 class Config(BaseConfig):
     """GCP-specific knobs for the E2E test."""
 
-    # GCP
-    gcp_project_id: str = ""  # auto-detected if empty
-    gcp_region: str = "us-central1"
+    # Matches docs: PROJECT_ID, REGION
+    project_id: str = ""  # auto-detected if empty
+    region: str = "us-central1"
 
-    # GKE
-    gke_machine_type: str = "e2-standard-4"
-    gke_num_nodes: int = 1
+    # GKE — docs: CLUSTER_NAME, machine-type, num-nodes
+    machine_type: str = "e2-standard-4"
+    num_nodes: int = 1
 
     # Derived names (computed in __post_init__)
-    gke_cluster_name: str = ""
-    gcs_metadata_bucket: str = ""
-    gcs_fast_reg_bucket: str = ""
+    # Docs: CLUSTER_NAME, BUCKET_PREFIX, AR_REPOSITORY, GSA_NAME
+    cluster_name_gke: str = ""   # the actual GKE cluster name
+    bucket_prefix: str = ""
     ar_repository: str = ""
     gsa_name: str = ""
 
     def __post_init__(self):
         super().__post_init__()
-        if not self.gcp_project_id:
-            self.gcp_project_id = _sh(
+        if not self.project_id:
+            self.project_id = _sh(
                 "gcloud config get-value project"
             ).strip()
 
         cn = self.cluster_name
-        if not self.gke_cluster_name:
-            self.gke_cluster_name = f"union-e2e-{cn}"
-        if not self.gcs_metadata_bucket:
-            self.gcs_metadata_bucket = f"union-e2e-{cn}-metadata"
-        if not self.gcs_fast_reg_bucket:
-            self.gcs_fast_reg_bucket = f"union-e2e-{cn}-fast-reg"
+        if not self.cluster_name_gke:
+            self.cluster_name_gke = f"union-e2e-{cn}"
+        if not self.bucket_prefix:
+            self.bucket_prefix = f"union-e2e-{cn}"
         if not self.ar_repository:
             self.ar_repository = f"union-e2e-{cn}"
         if not self.gsa_name:
@@ -179,7 +177,7 @@ def _activate_gcp_credentials(cfg: Config) -> None:
             f.write(key_json)
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = key_path
         _sh(f"gcloud auth activate-service-account --key-file={key_path}")
-        _sh(f"gcloud config set project {cfg.gcp_project_id}")
+        _sh(f"gcloud config set project {cfg.project_id}")
 
 
 # =============================================================================
@@ -201,29 +199,29 @@ _GCS_CORS_CONFIG = json.dumps([
 def create_gke_cluster(cfg: Config, state: InfraState) -> InfraState:
     """Create a GKE cluster with Workload Identity enabled."""
     # Enable required APIs
-    _sh(f"gcloud services enable container.googleapis.com --project {cfg.gcp_project_id}", check=False)
+    _sh(f"gcloud services enable container.googleapis.com --project {cfg.project_id}", check=False)
 
     if _sh_ok(
-        f"gcloud container clusters describe {cfg.gke_cluster_name} "
-        f"--region {cfg.gcp_region} --project {cfg.gcp_project_id}"
+        f"gcloud container clusters describe {cfg.cluster_name_gke} "
+        f"--region {cfg.region} --project {cfg.project_id}"
     ):
-        print(f"GKE cluster {cfg.gke_cluster_name} already exists, skipping.")
+        print(f"GKE cluster {cfg.cluster_name_gke} already exists, skipping.")
     else:
         _sh(
-            f"gcloud container clusters create {cfg.gke_cluster_name} "
-            f"--project {cfg.gcp_project_id} "
-            f"--region {cfg.gcp_region} "
+            f"gcloud container clusters create {cfg.cluster_name_gke} "
+            f"--project {cfg.project_id} "
+            f"--region {cfg.region} "
             f"--release-channel regular "
-            f"--machine-type {cfg.gke_machine_type} "
-            f"--num-nodes {cfg.gke_num_nodes} "
-            f"--workload-pool {cfg.gcp_project_id}.svc.id.goog"
+            f"--machine-type {cfg.machine_type} "
+            f"--num-nodes {cfg.num_nodes} "
+            f"--workload-pool {cfg.project_id}.svc.id.goog"
         )
         # Add a buildkit node pool for Image Builder (needs 4 CPUs, 50Gi ephemeral)
         _sh(
             f"gcloud container node-pools create buildkit-pool "
-            f"--cluster {cfg.gke_cluster_name} "
-            f"--region {cfg.gcp_region} "
-            f"--project {cfg.gcp_project_id} "
+            f"--cluster {cfg.cluster_name_gke} "
+            f"--region {cfg.region} "
+            f"--project {cfg.project_id} "
             f"--machine-type e2-standard-8 "
             f"--disk-size 200GB "
             f"--num-nodes 0 "
@@ -233,8 +231,8 @@ def create_gke_cluster(cfg: Config, state: InfraState) -> InfraState:
 
     # Always update kubeconfig
     _sh(
-        f"gcloud container clusters get-credentials {cfg.gke_cluster_name} "
-        f"--region {cfg.gcp_region} --project {cfg.gcp_project_id}"
+        f"gcloud container clusters get-credentials {cfg.cluster_name_gke} "
+        f"--region {cfg.region} --project {cfg.project_id}"
     )
     return state
 
@@ -243,16 +241,16 @@ def create_gke_cluster(cfg: Config, state: InfraState) -> InfraState:
 def create_gcs_buckets(cfg: Config, state: InfraState) -> InfraState:
     """Create GCS metadata and fast-registration buckets with CORS."""
     for bucket, attr in [
-        (cfg.gcs_metadata_bucket, "gcs_metadata_created"),
-        (cfg.gcs_fast_reg_bucket, "gcs_fast_reg_created"),
+        (f"{cfg.bucket_prefix}-metadata", "gcs_metadata_created"),
+        (f"{cfg.bucket_prefix}-fast-reg", "gcs_fast_reg_created"),
     ]:
-        if _sh_ok(f"gcloud storage buckets describe gs://{bucket} --project {cfg.gcp_project_id}"):
+        if _sh_ok(f"gcloud storage buckets describe gs://{bucket} --project {cfg.project_id}"):
             print(f"Bucket gs://{bucket} already exists, skipping creation.")
         else:
             _sh(
                 f"gcloud storage buckets create gs://{bucket} "
-                f"--project {cfg.gcp_project_id} "
-                f"--location {cfg.gcp_region}"
+                f"--project {cfg.project_id} "
+                f"--location {cfg.region}"
             )
             setattr(state, attr, True)
 
@@ -271,14 +269,14 @@ def create_ar_repo(cfg: Config, state: InfraState) -> InfraState:
     """Create an Artifact Registry Docker repository for Image Builder."""
     if _sh_ok(
         f"gcloud artifacts repositories describe {cfg.ar_repository} "
-        f"--project {cfg.gcp_project_id} --location {cfg.gcp_region}"
+        f"--project {cfg.project_id} --location {cfg.region}"
     ):
         print(f"Artifact Registry repo {cfg.ar_repository} already exists, skipping.")
     else:
         _sh(
             f"gcloud artifacts repositories create {cfg.ar_repository} "
-            f"--project {cfg.gcp_project_id} "
-            f"--location {cfg.gcp_region} "
+            f"--project {cfg.project_id} "
+            f"--location {cfg.region} "
             f"--repository-format docker "
             f'--description "Union Image Builder repository"'
         )
@@ -289,18 +287,18 @@ def create_ar_repo(cfg: Config, state: InfraState) -> InfraState:
 @env.task
 def create_workload_identity(cfg: Config, state: InfraState) -> InfraState:
     """Create GSA, bind to KSA, grant GCS/AR/token-creator access."""
-    gsa_email = f"{cfg.gsa_name}@{cfg.gcp_project_id}.iam.gserviceaccount.com"
+    gsa_email = f"{cfg.gsa_name}@{cfg.project_id}.iam.gserviceaccount.com"
     state.gsa_email = gsa_email
 
     # 1. Create GSA
     if _sh_ok(
-        f"gcloud iam service-accounts describe {gsa_email} --project {cfg.gcp_project_id}"
+        f"gcloud iam service-accounts describe {gsa_email} --project {cfg.project_id}"
     ):
         print(f"GSA {gsa_email} already exists, skipping creation.")
     else:
         _sh(
             f"gcloud iam service-accounts create {cfg.gsa_name} "
-            f"--project {cfg.gcp_project_id} "
+            f"--project {cfg.project_id} "
             f'--display-name "Union data plane service account"'
         )
         state.gsa_created = True
@@ -309,17 +307,17 @@ def create_workload_identity(cfg: Config, state: InfraState) -> InfraState:
 
     # 2. Bind KSA to GSA (both union-system and union service accounts)
     for ksa in ["union-system", "union"]:
-        wi_member = f"serviceAccount:{cfg.gcp_project_id}.svc.id.goog[{cfg.helm_namespace}/{ksa}]"
+        wi_member = f"serviceAccount:{cfg.project_id}.svc.id.goog[{cfg.helm_namespace}/{ksa}]"
         _sh(
             f"gcloud iam service-accounts add-iam-policy-binding {gsa_email} "
-            f"--project {cfg.gcp_project_id} "
+            f"--project {cfg.project_id} "
             f"--role roles/iam.workloadIdentityUser "
             f'--member "{wi_member}"',
             check=False,
         )
 
     # 3. Grant GCS access (objectAdmin + legacyBucketReader on each bucket)
-    for bucket in [cfg.gcs_metadata_bucket, cfg.gcs_fast_reg_bucket]:
+    for bucket in [f"{cfg.bucket_prefix}-metadata", f"{cfg.bucket_prefix}-fast-reg"]:
         for role in ["roles/storage.objectAdmin", "roles/storage.legacyBucketReader"]:
             _sh(
                 f"gcloud storage buckets add-iam-policy-binding gs://{bucket} "
@@ -330,8 +328,8 @@ def create_workload_identity(cfg: Config, state: InfraState) -> InfraState:
     # 4. Grant Artifact Registry access
     _sh(
         f"gcloud artifacts repositories add-iam-policy-binding {cfg.ar_repository} "
-        f"--project {cfg.gcp_project_id} "
-        f"--location {cfg.gcp_region} "
+        f"--project {cfg.project_id} "
+        f"--location {cfg.region} "
         f"--member {member} "
         f"--role roles/artifactregistry.writer",
         check=False,
@@ -339,7 +337,7 @@ def create_workload_identity(cfg: Config, state: InfraState) -> InfraState:
 
     # 5. Grant token creator access (required for Image Builder)
     _sh(
-        f"gcloud projects add-iam-policy-binding {cfg.gcp_project_id} "
+        f"gcloud projects add-iam-policy-binding {cfg.project_id} "
         f"--member {member} "
         f"--role roles/iam.serviceAccountTokenCreator",
         check=False,
@@ -360,25 +358,43 @@ def patch_and_install(cfg: Config, state: InfraState) -> InfraState:
     f = state.values_file_path
     assert os.path.exists(f), f"Values file not found: {f}"
 
-    # GCP-specific yq patches
-    _sh(f'yq -i \'.storage.bucketName = "{cfg.gcs_metadata_bucket}"\' "{f}"')
-    _sh(f'yq -i \'.storage.fastRegistrationBucketName = "{cfg.gcs_fast_reg_bucket}"\' "{f}"')
-    _sh(f'yq -i \'.storage.gcp.projectId = "{cfg.gcp_project_id}"\' "{f}"')
+    metadata_bucket = f"{cfg.bucket_prefix}-metadata"
+    fast_reg_bucket = f"{cfg.bucket_prefix}-fast-reg"
 
-    # Replace <GCP_SERVICE_ACCOUNT> placeholder with actual GSA email
+    # Global values
+    _sh(f'yq -i \'.global.METADATA_BUCKET = "{metadata_bucket}"\' "{f}"')
+    _sh(f'yq -i \'.global.FAST_REGISTRATION_BUCKET = "{fast_reg_bucket}"\' "{f}"')
+    _sh(f'yq -i \'.global.BACKEND_IAM_ROLE_ARN = "{state.gsa_email}"\' "{f}"')
+    _sh(f'yq -i \'.global.WORKER_IAM_ROLE_ARN = "{state.gsa_email}"\' "{f}"')
+
+    # Storage — also set directly since the uctl-generated values file may override
+    # the chart templates with hardcoded placeholders
+    _sh(f'yq -i \'.storage.bucketName = "{metadata_bucket}"\' "{f}"')
+    _sh(f'yq -i \'.storage.fastRegistrationBucketName = "{fast_reg_bucket}"\' "{f}"')
+    _sh(f'yq -i \'.storage.region = "{cfg.region}"\' "{f}"')
+    _sh(f'yq -i \'.storage.gcp.projectId = "{cfg.project_id}"\' "{f}"')
+
+    # Replace any remaining placeholders from uctl-generated values
+    _sh(f"sed -i.bak 's|<GCP_BUCKET_NAME>|{metadata_bucket}|g' \"{f}\"")
     _sh(f"sed -i.bak 's|<GCP_SERVICE_ACCOUNT>|{state.gsa_email}|g' \"{f}\"")
+    _sh(f"sed -i.bak 's|<UNION_FLYTE_ROLE_ARN>|{state.gsa_email}|g' \"{f}\"")
     _sh(f'rm -f "{f}.bak"')
 
-    # Also set via yq for fields that may not use the placeholder
+    # Service account annotation
     _sh(
         f'yq -i \'.commonServiceAccount.annotations."iam.gke.io/gcp-service-account" = '
         f'"{state.gsa_email}"\' "{f}"'
     )
 
+    # Image Builder — Artifact Registry repo name
+    _sh(f'yq -i \'.imageBuilder.registryName = "{cfg.ar_repository}"\' "{f}"')
+
     print(f"Values file patched: {f}")
-    print(f"  storage.bucketName = {cfg.gcs_metadata_bucket}")
-    print(f"  storage.gcp.projectId = {cfg.gcp_project_id}")
-    print(f"  gsa = {state.gsa_email}")
+    print(f"  global.METADATA_BUCKET = {metadata_bucket}")
+    print(f"  global.FAST_REGISTRATION_BUCKET = {fast_reg_bucket}")
+    print(f"  global.BACKEND_IAM_ROLE_ARN = {state.gsa_email}")
+    print(f"  storage.gcp.projectId = {cfg.project_id}")
+    print(f"  imageBuilder.registryName = {cfg.ar_repository}")
 
     chart_ref = resolve_chart_ref(cfg)
     helm_install(cfg, f, chart_ref)
@@ -396,12 +412,14 @@ def patch_and_install(cfg: Config, state: InfraState) -> InfraState:
 @env.task
 def teardown(cfg: Config, state: InfraState) -> str:
     """Tear down all created resources in reverse order."""
-    gsa_email = state.gsa_email or f"{cfg.gsa_name}@{cfg.gcp_project_id}.iam.gserviceaccount.com"
+    gsa_email = state.gsa_email or f"{cfg.gsa_name}@{cfg.project_id}.iam.gserviceaccount.com"
 
     print("\n--- Teardown state ---")
-    print(f"  gke_created:          {state.gke_created}  (cluster: {cfg.gke_cluster_name})")
-    print(f"  gcs_metadata_created: {state.gcs_metadata_created}  (bucket: {cfg.gcs_metadata_bucket})")
-    print(f"  gcs_fast_reg_created: {state.gcs_fast_reg_created}  (bucket: {cfg.gcs_fast_reg_bucket})")
+    print(f"  gke_created:          {state.gke_created}  (cluster: {cfg.cluster_name_gke})")
+    metadata_bucket = f"{cfg.bucket_prefix}-metadata"
+    fast_reg_bucket = f"{cfg.bucket_prefix}-fast-reg"
+    print(f"  gcs_metadata_created: {state.gcs_metadata_created}  (bucket: {metadata_bucket})")
+    print(f"  gcs_fast_reg_created: {state.gcs_fast_reg_created}  (bucket: {fast_reg_bucket})")
     print(f"  ar_created:           {state.ar_created}  (repo: {cfg.ar_repository})")
     print(f"  gsa_created:          {state.gsa_created}  (gsa: {gsa_email})")
     print(f"  helm_release:         {cfg.helm_release_name} (ns: {cfg.helm_namespace})")
@@ -417,13 +435,13 @@ def teardown(cfg: Config, state: InfraState) -> str:
 
     # Remove project-level IAM bindings
     _sh(
-        f"gcloud projects remove-iam-policy-binding {cfg.gcp_project_id} "
+        f"gcloud projects remove-iam-policy-binding {cfg.project_id} "
         f"--member {member} --role roles/iam.serviceAccountTokenCreator",
         check=False,
     )
 
     # Remove bucket IAM bindings
-    for bucket in [cfg.gcs_metadata_bucket, cfg.gcs_fast_reg_bucket]:
+    for bucket in [f"{cfg.bucket_prefix}-metadata", f"{cfg.bucket_prefix}-fast-reg"]:
         for role in ["roles/storage.objectAdmin", "roles/storage.legacyBucketReader"]:
             _sh(
                 f"gcloud storage buckets remove-iam-policy-binding gs://{bucket} "
@@ -434,31 +452,31 @@ def teardown(cfg: Config, state: InfraState) -> str:
     # Remove AR IAM binding
     _sh(
         f"gcloud artifacts repositories remove-iam-policy-binding {cfg.ar_repository} "
-        f"--project {cfg.gcp_project_id} --location {cfg.gcp_region} "
+        f"--project {cfg.project_id} --location {cfg.region} "
         f"--member {member} --role roles/artifactregistry.writer",
         check=False,
     )
 
     # Delete GSA
-    if _sh_ok(f"gcloud iam service-accounts describe {gsa_email} --project {cfg.gcp_project_id}"):
+    if _sh_ok(f"gcloud iam service-accounts describe {gsa_email} --project {cfg.project_id}"):
         print(f"Deleting GSA {gsa_email}...")
-        _sh(f"gcloud iam service-accounts delete {gsa_email} --project {cfg.gcp_project_id} --quiet", check=False)
+        _sh(f"gcloud iam service-accounts delete {gsa_email} --project {cfg.project_id} --quiet", check=False)
 
     # Delete AR repo
     if _sh_ok(
         f"gcloud artifacts repositories describe {cfg.ar_repository} "
-        f"--project {cfg.gcp_project_id} --location {cfg.gcp_region}"
+        f"--project {cfg.project_id} --location {cfg.region}"
     ):
         print(f"Deleting Artifact Registry repo {cfg.ar_repository}...")
         _sh(
             f"gcloud artifacts repositories delete {cfg.ar_repository} "
-            f"--project {cfg.gcp_project_id} --location {cfg.gcp_region} --quiet",
+            f"--project {cfg.project_id} --location {cfg.region} --quiet",
             check=False,
         )
 
     # Delete GCS buckets
-    for bucket in [cfg.gcs_metadata_bucket, cfg.gcs_fast_reg_bucket]:
-        if _sh_ok(f"gcloud storage buckets describe gs://{bucket} --project {cfg.gcp_project_id}"):
+    for bucket in [f"{cfg.bucket_prefix}-metadata", f"{cfg.bucket_prefix}-fast-reg"]:
+        if _sh_ok(f"gcloud storage buckets describe gs://{bucket} --project {cfg.project_id}"):
             print(f"Deleting GCS bucket gs://{bucket}...")
             _sh(f"gcloud storage rm -r gs://{bucket}", check=False)
         else:
@@ -466,17 +484,17 @@ def teardown(cfg: Config, state: InfraState) -> str:
 
     # Delete GKE cluster
     if _sh_ok(
-        f"gcloud container clusters describe {cfg.gke_cluster_name} "
-        f"--region {cfg.gcp_region} --project {cfg.gcp_project_id}"
+        f"gcloud container clusters describe {cfg.cluster_name_gke} "
+        f"--region {cfg.region} --project {cfg.project_id}"
     ):
-        print(f"Deleting GKE cluster {cfg.gke_cluster_name} (takes ~5-10 min)...")
+        print(f"Deleting GKE cluster {cfg.cluster_name_gke} (takes ~5-10 min)...")
         _sh(
-            f"gcloud container clusters delete {cfg.gke_cluster_name} "
-            f"--project {cfg.gcp_project_id} --region {cfg.gcp_region} --quiet",
+            f"gcloud container clusters delete {cfg.cluster_name_gke} "
+            f"--project {cfg.project_id} --region {cfg.region} --quiet",
             check=False,
         )
     else:
-        print(f"GKE cluster {cfg.gke_cluster_name} not found, skipping.")
+        print(f"GKE cluster {cfg.cluster_name_gke} not found, skipping.")
 
     if errors:
         return f"teardown completed with errors: {'; '.join(errors)}"
@@ -492,8 +510,8 @@ def teardown(cfg: Config, state: InfraState) -> str:
 def setup_infra(
     control_plane_url: str = "",
     cluster_name: str = "",
-    gcp_project_id: str = "",
-    gcp_region: str = "us-central1",
+    project_id: str = "",
+    region: str = "us-central1",
     skip_teardown: bool = True,
     encrypted_credentials: str = "",
 ) -> InfraState:
@@ -501,8 +519,8 @@ def setup_infra(
     cfg = Config(
         control_plane_url=control_plane_url,
         cluster_name=cluster_name,
-        gcp_project_id=gcp_project_id,
-        gcp_region=gcp_region,
+        project_id=project_id,
+        region=region,
         skip_teardown=skip_teardown,
         encrypted_credentials=encrypted_credentials,
     )
@@ -520,24 +538,24 @@ def setup_infra(
 def deploy(
     control_plane_url: str = "",
     cluster_name: str = "",
-    gcp_project_id: str = "",
-    gcp_region: str = "us-central1",
+    project_id: str = "",
+    region: str = "us-central1",
     encrypted_credentials: str = "",
 ) -> InfraState:
     """Phase 1+2+3: Provision, create infra, and deploy Helm chart."""
     cfg = Config(
         control_plane_url=control_plane_url,
         cluster_name=cluster_name,
-        gcp_project_id=gcp_project_id,
-        gcp_region=gcp_region,
+        project_id=project_id,
+        region=region,
         encrypted_credentials=encrypted_credentials,
     )
     _activate_gcp_credentials(cfg)
     state = setup_infra(
         control_plane_url=control_plane_url,
         cluster_name=cluster_name,
-        gcp_project_id=gcp_project_id,
-        gcp_region=gcp_region,
+        project_id=project_id,
+        region=region,
     )
     state = patch_and_install(cfg, state)
     return state
@@ -567,8 +585,8 @@ def verify(
 def e2e_test(
     control_plane_url: str = "",
     cluster_name: str = "",
-    gcp_project_id: str = "",
-    gcp_region: str = "us-central1",
+    project_id: str = "",
+    region: str = "us-central1",
     skip_teardown: bool = False,
     encrypted_credentials: str = "",
 ) -> str:
@@ -576,8 +594,8 @@ def e2e_test(
     cfg = Config(
         control_plane_url=control_plane_url,
         cluster_name=cluster_name,
-        gcp_project_id=gcp_project_id,
-        gcp_region=gcp_region,
+        project_id=project_id,
+        region=region,
         skip_teardown=skip_teardown,
         encrypted_credentials=encrypted_credentials,
     )
@@ -643,8 +661,8 @@ def setup_keys() -> str:
 def launch(
     control_plane_url: str = "",
     cluster_name: str = "",
-    gcp_project_id: str = "",
-    gcp_region: str = "us-central1",
+    project_id: str = "",
+    region: str = "us-central1",
     skip_teardown: bool = False,
 ) -> str:
     """Encrypt local credentials and launch e2e_test remotely."""
@@ -656,8 +674,8 @@ def launch(
         e2e_test,
         control_plane_url=control_plane_url,
         cluster_name=cluster_name,
-        gcp_project_id=gcp_project_id,
-        gcp_region=gcp_region,
+        project_id=project_id,
+        region=region,
         skip_teardown=skip_teardown,
         encrypted_credentials=encrypted,
     )

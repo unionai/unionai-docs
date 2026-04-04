@@ -44,9 +44,15 @@ If you have not yet set up the required GCP resources (GKE cluster, GCS, Artifac
 
 3. Update the generated values file with your infrastructure details:
 
-   - Set `storage.bucketName` and `storage.fastRegistrationBucketName` to your GCS bucket name(s).
-   - Set `storage.gcp.projectId` to your GCP project ID.
-   - Replace all occurrences of `<GCP_SERVICE_ACCOUNT>` with the Google Service Account email created in the [Workload Identity](../selfmanaged-gcp/prepare-infra#workload-identity) section (e.g. `union-system@my-project.iam.gserviceaccount.com`). This appears in `additionalServiceAccountAnnotations`, `userRoleAnnotationValue`, and `fluentbit.serviceAccount.annotations`.
+   Using the [environment variables](../selfmanaged-gcp/prepare-infra#environment-variables) from the prepare infrastructure step:
+
+   - Set `global.METADATA_BUCKET` to `${BUCKET_PREFIX}-metadata`.
+   - Set `global.FAST_REGISTRATION_BUCKET` to `${BUCKET_PREFIX}-fast-reg`.
+   - Set `global.BACKEND_IAM_ROLE_ARN` to `${GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com`.
+   - Set `global.WORKER_IAM_ROLE_ARN` to the same value (or a separate GSA if you use distinct worker permissions).
+   - Set `storage.region` to `${REGION}`.
+   - Set `storage.gcp.projectId` to `${PROJECT_ID}`.
+   - Set `imageBuilder.registryName` to `${AR_REPOSITORY}` (defaults to `union-dataplane`; the chart auto-generates the full Artifact Registry URL from the project ID and region).
 
 4. Install the data plane Helm chart:
 

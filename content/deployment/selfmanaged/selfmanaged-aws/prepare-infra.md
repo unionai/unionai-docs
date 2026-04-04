@@ -8,6 +8,18 @@ variants: -flyte +union
 
 This page walks you through creating the AWS resources needed for a Union data plane. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-aws/deploy-dataplane).
 
+## Environment variables
+
+Set these variables before running the commands below. Customize the names if you are deploying multiple data planes in the same AWS account.
+
+```bash
+export AWS_REGION=us-east-2                          # AWS region for all resources
+export CLUSTER_NAME=union-dataplane                  # EKS cluster name
+export BUCKET_PREFIX=union-dataplane                 # prefix for S3 buckets (must be globally unique)
+export ECR_REPO_NAME=${ECR_REPO_NAME}    # ECR repository name
+export IAM_ROLE_NAME=union-system-role               # IAM role name
+```
+
 ## EKS Cluster
 
 You need an EKS cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
@@ -16,7 +28,7 @@ If you don't already have a cluster, create one with `eksctl`:
 
 ```bash
 eksctl create cluster \
-  --name union-dataplane \
+  --name ${CLUSTER_NAME} \
   --region us-east-2 \
   --version 1.31 \
   --node-type m5.xlarge \
@@ -35,7 +47,7 @@ The following EKS add-ons are required and come pre-installed on managed cluster
 If you created your cluster through other means, verify they are installed:
 
 ```bash
-aws eks list-addons --cluster-name union-dataplane --region ${AWS_REGION}
+aws eks list-addons --cluster-name ${CLUSTER_NAME} --region ${AWS_REGION}
 ```
 
 Union supports Autoscaling and the use of spot (interruptible) instances.
@@ -53,9 +65,6 @@ You can also choose to use a single bucket.
 Create the buckets:
 
 ```bash
-export BUCKET_PREFIX=union-dataplane   # choose a globally unique prefix
-export AWS_REGION=us-east-2
-
 aws s3api create-bucket \
   --bucket ${BUCKET_PREFIX}-metadata \
   --region ${AWS_REGION} \
@@ -106,12 +115,12 @@ Create an [ECR private repository](https://docs.aws.amazon.com/AmazonECR/latest/
 
 ```bash
 aws ecr create-repository \
-  --repository-name union-dataplane/imagebuilder \
+  --repository-name ${ECR_REPO_NAME} \
   --region ${AWS_REGION} \
   --image-scanning-configuration scanOnPush=true
 ```
 
-Note the repository URI from the output (e.g. `<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/union-dataplane/imagebuilder`) — you will reference it when configuring IAM permissions below.
+Note the repository URI from the output (e.g. `<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/${ECR_REPO_NAME}`) — you will reference it when configuring IAM permissions below.
 
 ## IAM
 
@@ -122,7 +131,7 @@ Create an IAM role that both the Union platform services and workflow task pods 
 If you created your cluster with `--with-oidc` above, this is already done. Otherwise, create an [IAM OIDC provider for your EKS cluster](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html#_create_oidc_provider_eksctl):
 
 ```bash
-eksctl utils associate-iam-oidc-provider --cluster union-dataplane --region ${AWS_REGION} --approve
+eksctl utils associate-iam-oidc-provider --cluster ${CLUSTER_NAME} --region ${AWS_REGION} --approve
 ```
 
 Get the OIDC provider URL (you'll need it for the trust policy):
@@ -130,7 +139,7 @@ Get the OIDC provider URL (you'll need it for the trust policy):
 ```bash
 export OIDC_PROVIDER=$(aws eks describe-cluster \
   --region ${AWS_REGION} \
-  --name union-dataplane \
+  --name ${CLUSTER_NAME} \
   --query "cluster.identity.oidc.issuer" \
   --output text | sed 's|https://||')
 
@@ -173,7 +182,7 @@ Substitute your values and create the role:
 envsubst < trust-policy.json > /tmp/trust-policy.json
 
 aws iam create-role \
-  --role-name union-system-role \
+  --role-name ${IAM_ROLE_NAME} \
   --assume-role-policy-document file:///tmp/trust-policy.json
 ```
 
@@ -207,7 +216,7 @@ Save as `s3-policy.json` (replace `<BUCKET_PREFIX>` with your actual prefix):
 
 ```bash
 aws iam put-role-policy \
-  --role-name union-system-role \
+  --role-name ${IAM_ROLE_NAME} \
   --policy-name union-s3-access \
   --policy-document file://s3-policy.json
 ```
@@ -249,7 +258,7 @@ Save as `ecr-policy.json` (replace `<AWS_REGION>`, `<AWS_ACCOUNT_ID>`, and `<REP
 
 ```bash
 aws iam put-role-policy \
-  --role-name union-system-role \
+  --role-name ${IAM_ROLE_NAME} \
   --policy-name union-ecr-access \
   --policy-document file://ecr-policy.json
 ```
@@ -261,5 +270,5 @@ In your Helm values, annotate the `union-system` service account with the role A
 ```yaml
 commonServiceAccount:
   annotations:
-    eks.amazonaws.com/role-arn: "arn:aws:iam::<AWS_ACCOUNT_ID>:role/union-system-role"
+    eks.amazonaws.com/role-arn: "arn:aws:iam::<AWS_ACCOUNT_ID>:role/${IAM_ROLE_NAME}"
 ```
