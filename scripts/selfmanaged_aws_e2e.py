@@ -56,6 +56,7 @@ from selfmanaged_common import (
     helm_uninstall,
     provision_dataplane,
     resolve_chart_ref,
+    E2EResult,
     run_example_workflow,
     setup_keys_impl,
     run_verification_tests,
@@ -605,7 +606,7 @@ def e2e_test(
     aws_region: str = "us-east-2",
     skip_teardown: bool = False,
     encrypted_credentials: str = "",
-) -> str:
+) -> E2EResult:
     """Full E2E: setup, deploy, verify, teardown."""
     cfg = Config(
         control_plane_url=control_plane_url,
@@ -622,6 +623,7 @@ def e2e_test(
         time.strftime("%Y%m%d-%H%M%S"),
     )
 
+    e2e = E2EResult()
     state = InfraState(debug_dir=debug_dir)
     try:
         print("\n--- Phase 1: Interactive / Credential Setup ---")
@@ -640,23 +642,25 @@ def e2e_test(
 
         print("\n--- Phase 4: Verification ---")
         wait_for_healthy(cfg)
-        run_name = run_example_workflow(cfg)
-        if run_name:
-            run_verification_tests(cfg, run_name)
+        e2e.example_run_name = run_example_workflow(cfg)
+        if e2e.example_run_name:
+            e2e.test_results = run_verification_tests(cfg, e2e.example_run_name)
 
+        e2e.overall = "PASSED"
         print("\n=== E2E test PASSED ===")
-        result = "PASSED"
 
     except Exception as e:
         print(f"\n=== E2E test FAILED: {e} ===")
         collect_debug_dumps(cfg, debug_dir)
-        result = f"FAILED: {e}"
+        e2e.overall = "FAILED"
+        e2e.error = str(e)[:500]
         if not cfg.skip_teardown:
             teardown(cfg, state)
         raise
 
-    teardown_result = teardown(cfg, state)
-    return f"{result} | {teardown_result}"
+    e2e.teardown_result = teardown(cfg, state)
+    print(e2e.summary())
+    return e2e
 
 
 # =============================================================================

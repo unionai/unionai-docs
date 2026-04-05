@@ -708,6 +708,50 @@ class TestResult:
     error: str = ""
 
 
+@dataclass
+class E2EResult:
+    """Full result of an E2E test run."""
+    overall: str = ""  # "PASSED" or "FAILED"
+    error: str = ""  # top-level error message if failed
+    example_run_name: str = ""
+    teardown_result: str = ""
+    test_results: list[TestResult] = None
+
+    def __post_init__(self):
+        if self.test_results is None:
+            self.test_results = []
+
+    @property
+    def passed(self) -> bool:
+        return self.overall == "PASSED"
+
+    @property
+    def tests_passed(self) -> int:
+        return sum(1 for t in self.test_results if t.passed)
+
+    @property
+    def tests_total(self) -> int:
+        return len(self.test_results)
+
+    def summary(self) -> str:
+        lines = [f"E2E Result: {self.overall}"]
+        if self.error:
+            lines.append(f"  Error: {self.error}")
+        if self.example_run_name:
+            lines.append(f"  Example run: {self.example_run_name}")
+        if self.test_results:
+            lines.append(f"  Verification: {self.tests_passed}/{self.tests_total} passed")
+            for t in self.test_results:
+                status = "PASSED" if t.passed else "FAILED"
+                line = f"    {t.name:<40} {status}"
+                if t.error:
+                    line += f"  {t.error[:80]}"
+                lines.append(line)
+        if self.teardown_result:
+            lines.append(f"  Teardown: {self.teardown_result}")
+        return "\n".join(lines)
+
+
 def run_verification_tests(cfg: BaseConfig, run_name: str) -> list[TestResult]:
     """Run all post-workflow verification tests and return results."""
     tests = [
