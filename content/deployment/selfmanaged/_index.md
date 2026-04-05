@@ -19,11 +19,11 @@ Union.ai has no access to your cluster, providing the highest level of data isol
 1. Review the [architecture](./architecture/_index) to understand the control plane, data plane operators, and security model.
 2. Check the [cluster recommendations](./cluster-recommendations) for Kubernetes version, networking, and IP planning requirements.
 3. Set up your data plane on your cloud provider:
-   - [Generic Kubernetes](./selfmanaged-generic) (on-premise or any S3-compatible environment)
+   - [Generic Kubernetes](./selfmanaged-generic/_index) (on-premise or any S3-compatible environment)
    - [AWS](./selfmanaged-aws/_index)
-   - [GCP](./selfmanaged-gcp)
-   - [Azure](./selfmanaged-azure)
-   - [OCI](./selfmanaged-oci)
+   - [GCP](./selfmanaged-gcp/_index)
+   - [Azure](./selfmanaged-azure/_index)
+   - [OCI](./selfmanaged-oci/_index)
 
 ## Configuration
 
