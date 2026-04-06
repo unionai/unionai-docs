@@ -33,7 +33,6 @@ variants: +flyte -union
 - [server](#section-server)
 - [storage](#section-storage)
 - [task_resources](#section-task_resources)
-- [task_type_whitelist](#section-task_type_whitelist)
 - [tasks](#section-tasks)
 
 ## Section: admin

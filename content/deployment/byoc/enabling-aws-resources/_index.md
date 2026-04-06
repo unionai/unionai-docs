@@ -13,7 +13,7 @@ llm_readable_bundle: true
 Components of your {{< key product_name >}} data plane will need to connect to and communicate with other resources in your cloud environment such as [AWS S3 storage](./enabling-aws-s3), [AWS Elastic Container Registry](./enabling-aws-ecr), and so forth.
 
 > [!NOTE] Secret management
-> We strongly recommend using the [{{< key product_name >}} secrets manager](../../user-guide/task-configuration/secrets) to manage secrets rather than AWS Secrets Manager. If your organization must use AWS Secrets Manager, however, see [Enabling AWS Secrets Manager](./enabling-aws-secrets-manager).
+> We strongly recommend using the [{{< key product_name >}} secrets manager](../../../user-guide/development-cycle/managing-secrets) to manage secrets rather than AWS Secrets Manager. If your organization must use AWS Secrets Manager, however, see [Enabling AWS Secrets Manager](./enabling-aws-secrets-manager).
 
 As much as possible, access to the resources you need will be pre-configured by the {{< key product_name >}} team when they set up your data plane.
 For example, if you want your task code to have access to a specific S3 bucket or database, this can be pre-configured.

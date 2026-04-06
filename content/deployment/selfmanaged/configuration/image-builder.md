@@ -6,14 +6,14 @@ variants: -flyte +union
 
 # Image Builder
 
-Union Image Builder supports the ability to build container images within the dataplane. This enables the use of the `remote` builder type for any defined [Container Image](../../user-guide/task-configuration/container-images).
+Union Image Builder supports the ability to build container images within the dataplane. This enables the use of the `remote` builder type for any defined [Container Image](../../../user-guide/core-concepts/tasks/task-software-environment/image-spec).
 
 Configure the use of remote image builder:
 ```bash
 flyte create config --builder=remote --endpoint...
 ```
 
-Write custom [container images](../../user-guide/task-configuration/container-images):
+Write custom [container images](../../../user-guide/core-concepts/tasks/task-software-environment/image-spec):
 ```python
 env = flyte.TaskEnvironment(
     name="hello_v2",
@@ -222,7 +222,7 @@ flyte create secret --type image_pull --from-docker-config --registries ghcr.io 
 ```
 
 > This secret will be available to all projects and domains in your tenant. [Learn more about Union Secrets](./union-secrets)
-> Check alternative ways to create image pull secrets in the [API reference](../../api-reference/flyte-cli#flyte-create-secret)
+> Check alternative ways to create image pull secrets in the [API reference](../../../api-reference/union-cli#secret)
 
 3. Reference this secret in the Image object:
 

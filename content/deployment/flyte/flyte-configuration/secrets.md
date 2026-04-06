@@ -21,7 +21,7 @@ running container.
 
 - Install [kubectl](https://kubernetes.io/docs/tasks/tools/).
 - Have access to a Flyte cluster, for e.g. with `flytectl demo start` as
-  described [here](../../user-guide/development-cycle/running-in-a-local-cluster).
+  described [here](../../../user-guide/development-cycle/running-in-a-local-cluster).
 
 The first step to using secrets in Flyte is to create one on the backend.
 By default, Flyte uses the K8s-native secrets manager, which we'll use in this
@@ -221,11 +221,11 @@ if __name__ == "__main__":
 ## Using secrets in task templates
 
 For task types that connect to a remote database, you'll need to specify
-secret request as well. For example, for [`flytekitplugins.sqlalchemy.task.SQLAlchemyTask`](../../api-reference/plugins/sqlalchemy/packages/flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemytask)
+secret request as well. For example, for [`flytekitplugins.sqlalchemy.task.SQLAlchemyTask`](../../../api-reference/plugins/sqlalchemy/packages/flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemytask)
 you need to:
 
 1. Specify the `secret_requests` argument.
-2. Configure the  [`flytekitplugins.sqlalchemy.task.SQLAlchemyTask`](../../api-reference/plugins/sqlalchemy/packages/flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemytask) to
+2. Configure the  [`flytekitplugins.sqlalchemy.task.SQLAlchemyTask`](../../../api-reference/plugins/sqlalchemy/packages/flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemytask) to
    declare which secret maps onto which connection argument.
 
 ```python
@@ -297,7 +297,7 @@ The webhook is included in all overlays in the Flytekit repo. The deployment fil
 ## Secret discovery
 
 Flyte identifies secrets using a secret group and a secret key, which can
-be accessed by [`flytekit.current_context`](../../api-reference/flytekit-sdk/packages/flytekit#current_context) in the task function
+be accessed by [`flytekit.current_context`](../../../api-reference/flytekit-sdk/packages/flytekit#current_context) in the task function
 body, as shown in the code examples above.
 
 Flytekit relies on the following environment variables to load secrets (defined [here](https://github.com/flyteorg/flytekit/blob/9d313429c577a919ec0ad4cd397a5db356a1df0d/flytekit/configuration/internal.py#L141-L159)). When running tasks and workflows locally you should make sure to store your secrets accordingly or to modify these:

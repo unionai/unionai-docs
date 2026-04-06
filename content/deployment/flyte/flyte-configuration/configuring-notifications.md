@@ -12,9 +12,9 @@ The content of these notifications is configurable at the platform level.
 
 ## Usage
 
-The [`Email`](../../api-reference/flytekit-sdk/packages/flytekit.core.notification#flytekitcorenotificationemail),
-[`PagerDuty`](../../api-reference/flytekit-sdk/packages/flytekit.core.notification#flytekitcorenotificationpagerduty), or
-[`Slack`](../../api-reference/flytekit-sdk/packages/flytekit.core.notification#flytekitcorenotificationslack)
+The [`Email`](../../../api-reference/flytekit-sdk/packages/flytekit.core.notification#flytekitcorenotificationemail),
+[`PagerDuty`](../../../api-reference/flytekit-sdk/packages/flytekit.core.notification#flytekitcorenotificationpagerduty), or
+[`Slack`](../../../api-reference/flytekit-sdk/packages/flytekit.core.notification#flytekitcorenotificationslack)
 objects are used in the construction of a `LaunchPlan` to configure a notification when a workflow reaches a specified
 [terminal workflow execution phase](https://github.com/flyteorg/flytekit/blob/b6f806d2fa493eb78f9c2d964989b5a5a94a44ed/flytekit/core/notification.py#L26-L31).
 For example:

@@ -29,7 +29,7 @@ In BYOC deployments, there are two kinds of nodes running in your cluster:
 
 * **Default nodes** guarantee the basic operation of the data plane and are always running. Example services that run on these nodes include autoscaling, monitoring services, the Union operator, and more.
 
-* **Worker nodes** are responsible for executing your workloads. You have full control over the configuration of your [worker nodes](../configuring-your-data-plane#worker-node-groups). When worker nodes are not in use, they automatically scale down to the configured minimum (the default is zero).
+* **Worker nodes** are responsible for executing your workloads. You have full control over the configuration of your [worker nodes](../../byoc/configuring-your-data-plane#worker-node-groups). When worker nodes are not in use, they automatically scale down to the configured minimum (the default is zero).
 
 In self-managed deployments, worker nodes are responsible for executing your workloads. You have full control over the configuration of your worker nodes. When worker nodes are not in use, they automatically scale down to the configured minimum.
 

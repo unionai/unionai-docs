@@ -66,7 +66,7 @@ Each cluster has its own internal object store that is used to store data used i
 This includes task input-output metadata, task input-output raw data, Flyte Decks data, and fast registration data.
 For each cluster, you can choose to enable a data retention policy that defines a maximum time for this data to be stored, after which it will be automatically deleted.
 Alternatively, you can set this to `unlimited` to disable automatic data deletion.
-See [Data retention policy](./data-retention-policy) for more details.
+See [Data retention policy](../data-retention-policy) for more details.
 
 ## Worker node groups
 
