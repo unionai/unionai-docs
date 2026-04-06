@@ -201,7 +201,7 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 
 ## Commands
 
-{{< variant union-merged >}}
+{{< variant union >}}
 {{< markdown >}}
 * `uctl apply {uctl-apply/index}` is used for updating various Union/Flyte resources, including cluster configs.
 * `uctl config {uctl-config/index}` runs various config commands.

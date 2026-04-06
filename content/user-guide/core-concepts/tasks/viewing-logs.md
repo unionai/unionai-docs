@@ -21,7 +21,7 @@ Also, if you configure the Kubernetes dashboard, the Flyte console will display 
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant union-merged >}}
+{{< variant union >}}
 
 {{< markdown >}}
 

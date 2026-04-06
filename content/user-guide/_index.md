@@ -23,10 +23,10 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant union-merged >}}
+{{< variant union >}}
 {{< markdown >}}
 
-# {{< key product_name >}} BYOC
+# {{< key product_name >}}
 
 {{< key product_name >}} empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience. With {{< key product_name >}} your team can:
 
@@ -37,29 +37,8 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 > [!NOTE]
 > {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v1 >}}).
 >
-> {{< key product_name >}} BYOC (Bring Your Own Cloud) provides [all the features of Flyte, plus much more](./introduction#-key-product_name--byoc)
-> in an environment where you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
->
-> You can switch to another product version with the selector above.
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant union-merged >}}
-{{< markdown >}}
-
-# {{< key product_name >}} Self-managed
-
-{{< key product_name >}} empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience. With {{< key product_name >}} your team can:
-
-* Run complex AI workloads with performance, scale, and efficiency.
-* Achieve millisecond-level execution times with reusable containers.
-* Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale, or compliance.
-
-> [!NOTE]
-> {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v1 >}}).
->
-> {{< key product_name >}} Self-managed provides [all the features of Flyte, plus much more](./introduction#-key-product_name--self-managed)
-> while letting you keep your data and workflow code on your infrastructure and under your own management.
+> {{< key product_name >}} provides [all the features of Flyte, plus much more](./introduction),
+> available as a fully managed BYOC (Bring Your Own Cloud) service or as a self-managed deployment on your own infrastructure.
 >
 > You can switch to another product version with the selector above.
 

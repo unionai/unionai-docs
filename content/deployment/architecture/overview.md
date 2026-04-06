@@ -18,32 +18,20 @@ The control plane:
   * Is responsible for placing executions onto data plane clusters and performing other cluster control and management functions.
 
 ## Data plane
-{{< variant union-merged >}}
-{{< markdown >}}
-All your workflow and task executions are performed in the data plane, which runs within your AWS or GCP account. The data plane's clusters are provisioned and managed by the control plane through a resident Union operator with minimal required permissions.
-{{< /markdown >}}
-{{< /variant >}}
+
+All your workflow and task executions are performed in the data plane, which runs within your cloud account. In BYOC deployments, the data plane's clusters are provisioned and managed by the control plane through a resident Union operator with minimal required permissions. In self-managed deployments, you provision and manage the data plane yourself.
 
 {{< key product_name >}} operates one control plane for each supported region, which supports all data planes within that region. You can choose the region in which to locate your data plane. Currently, {{< key product_name >}} supports the `us-west`, `us-east`, `eu-west`, and `eu-central` regions, and more are being added.
 
 ### Data plane nodes
-{{< variant union-merged >}}
-{{< markdown >}}
-Once the data plane is deployed in your AWS or GCP account, there are different kinds of nodes with different responsibilities running in your cluster. In {{< key product_name >}}, we distinguish between default nodes and worker nodes.
 
-Default nodes guarantee the basic operation of the data plane and are always running. Example services that run on these nodes include autoscaling (worker nodes), monitoring services, union operator, and many more.
+In BYOC deployments, there are two kinds of nodes running in your cluster:
 
-Worker nodes are responsible for executing your workloads. You have full control over the configuration of your [worker nodes](../configuring-your-data-plane#worker-node-groups).
+* **Default nodes** guarantee the basic operation of the data plane and are always running. Example services that run on these nodes include autoscaling, monitoring services, the Union operator, and more.
 
-When worker nodes are not in use, they automatically scale down to the configured minimum. (The default is zero.)
-{{< /markdown >}}
-{{< /variant >}}
+* **Worker nodes** are responsible for executing your workloads. You have full control over the configuration of your [worker nodes](../configuring-your-data-plane#worker-node-groups). When worker nodes are not in use, they automatically scale down to the configured minimum (the default is zero).
 
-{{< variant union-merged >}}
-{{< markdown >}}
-Worker nodes are responsible for executing your workloads. You have full control over the configuration of your worker nodes. When worker nodes are not in use, they automatically scale down to the configured minimum.
-{{< /markdown >}}
-{{< /variant >}}
+In self-managed deployments, worker nodes are responsible for executing your workloads. You have full control over the configuration of your worker nodes. When worker nodes are not in use, they automatically scale down to the configured minimum.
 
 ## {{< key product_name >}} operator
 

@@ -128,7 +128,7 @@ This dashboard displays information about configured node pools in the organizat
 
 ![Resources compute](../../_static/images/user-guide/administration/resources/resources-compute.png)
 
-{{< variant union-merged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ### Configuring Resource Quotas

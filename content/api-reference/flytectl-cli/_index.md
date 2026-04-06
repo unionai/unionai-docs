@@ -279,7 +279,7 @@ By default, the `{{< key ctl >}}` CLI will use the configuration file at `~/.{{<
 
 ## Commands
 
-{{< variant union-merged >}}
+{{< variant union >}}
 {{< markdown >}}
 * `{{< key ctl >}} apply {{{< key ctl >}}-apply/index}` is used for updating various Union/Flyte resources, including cluster configs.
 * `{{< key ctl >}} config {{{< key ctl >}}-config/index}` runs various config commands.
