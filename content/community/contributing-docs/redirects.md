@@ -29,8 +29,8 @@ For redirects from the old `docs.union.ai` site to the new `www.union.ai/docs` s
 |
 |-|-|
 | Request URL | `https://docs.union.ai/administration` |
-| Target URL | `{{< docs_home byoc v1 >}}/user-guide/administration` |
-| Redirect Entry | `docs.union.ai/administration,{{< docs_home byoc v1 >}}/user-guide/administration,302,TRUE,FALSE,TRUE,TRUE` |
+| Target URL | `{{< docs_home union v1 >}}/user-guide/administration` |
+| Redirect Entry | `docs.union.ai/administration,{{< docs_home union v1 >}}/user-guide/administration,302,TRUE,FALSE,TRUE,TRUE` |
 
 ## `docs.flyte.org` redirects
 

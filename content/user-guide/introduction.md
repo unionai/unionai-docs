@@ -31,7 +31,7 @@ To set up a local cluster on your own machine, go to [Getting started](../user-g
 
 For production use, you will need to [deploy and manage Flyte on your own cloud infrastructure](../deployment/_index).
 
-If you prefer a managed solution, have a look at [Union.ai BYOC (Bring Your Own Cloud)]({{< docs_home byoc v1 >}}).
+If you prefer a managed solution, have a look at [Union.ai BYOC (Bring Your Own Cloud)]({{< docs_home union v1 >}}).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -43,7 +43,7 @@ If you prefer a managed solution, have a look at [Union.ai BYOC (Bring Your Own 
 {{< key product_name >}} builds on [Flyte](https://flyte.org), the open-source standard for orchestrating AI workflows.
 It offers all the features of Flyte while adding more capability to scale, control costs and serve models.
 
-There are three deployment options for {{< key product_name >}}: **Serverless**, **BYOC** (Bring Your Own Cloud), and **Self-managed**.
+There are two deployment options for {{< key product_name >}}: **BYOC** (Bring Your Own Cloud) and **Self-managed**.
 
 ## Flyte
 
@@ -67,13 +67,9 @@ You can try out Flyte's technology:
 
 For production use, you have to [deploy and manage Flyte on your own cloud infrastructure](../deployment).
 
-## {{< key product_name >}} BYOC
+## {{< key product_name >}}
 
-[{{< key product_name >}} BYOC]({{< docs_home byoc v1 >}}) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
-
-{{< key product_name >}} BYOC provides:
-
-* **All the features of Flyte**
+{{< key product_name >}} provides all the features of Flyte, plus:
 
 * Accelerators and GPUs (including fractional GPUs)
 * Managed Ray and Spark
@@ -81,18 +77,13 @@ For production use, you have to [deploy and manage Flyte on your own cloud infra
 * Single sign-on (SSO)
 * SOC-2 Type 2 compliance
 
-## {{< key product_name >}} Self-managed
+### BYOC (Bring Your Own Cloud)
 
-[{{< key product_name >}} Self-managed]({{< docs_home selfmanaged v1 >}}) lets you keep full control of your data, code, and infrastructure.
+[{{< key product_name >}} BYOC]({{< docs_home union v1 >}}) lets you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management. Union.ai manages the data plane's Kubernetes cluster in your cloud account.
 
-{{< key product_name >}} Self-managed provides:
+### Self-managed
 
-* **All the features of Flyte**
-
-* **All the features of {{< key product_name >}} BYOC**
-
-The only difference between {{< key product_name >}} BYOC and {{< key product_name >}} Self-managed is that
-with Self-managed you are responsible for the system infrastructure, either partially or fully, according to which option you choose:
+[{{< key product_name >}} Self-managed]({{< docs_home union v1 >}}) lets you keep full control of your data, code, and infrastructure. You are responsible for the system infrastructure, either partially or fully:
 
 * Deploy and manage your data plane yourself on your infrastructure while Union.ai manages the control plane on our infrastructure.
 
