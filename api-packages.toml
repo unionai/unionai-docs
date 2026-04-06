@@ -84,60 +84,70 @@ package = "flytekitplugins-athena"
 plugin = "flytekitplugins.athena"
 title = "AWS Athena"
 name = "aws-athena"
+frozen = true
 
 [[plugins]]
 package = "flytekitplugins-awsbatch"
 plugin = "flytekitplugins.awsbatch"
 title = "AWS Batch"
 name = "aws-batch"
+frozen = true
 
 [[plugins]]
 package = "flytekitplugins-bigquery"
 plugin = "flytekitplugins.bigquery"
 title = "BigQuery"
 name = "bigquery"
+frozen = true
 
 [[plugins]]
 package = "flytekitplugins-comet-ml"
 plugin = "flytekitplugins.comet_ml"
 title = "Comet ML"
 name = "comet-ml"
+frozen = true
 
 [[plugins]]
 package = "flytekitplugins-dask"
 plugin = "flytekitplugins.dask"
 title = "Dask"
 name = "dask"
+frozen = true
 
 [[plugins]]
 package = "flytekitplugins-dbt"
 plugin = "flytekitplugins.dbt"
 title = "DBT"
 name = "dbt"
+frozen = true
 
 [[plugins]]
 package = "flytekitplugins-duckdb"
 plugin = "flytekitplugins.duckdb"
 title = "DuckDB"
 name = "duckdb"
+frozen = true
 
 [[plugins]]
 package = "flytekitplugins-envd"
 plugin = "flytekitplugins.envd"
 title = "Envd"
 name = "envd"
+frozen = true
 
 [[plugins]]
 package = "flytekitplugins-flyteinteractive"
 plugin = "flytekitplugins.flyteinteractive"
 title = "Flyte Interactive"
 name = "flyteinteractive"
+frozen = true
 
 [[plugins]]
 package = "flytekitplugins-great-expectations"
 plugin = "flytekitplugins.great_expectations"
 title = "Great Expectations"
 name = "greatexpectations"
+frozen = true
 
 [[plugins]]
 package = "flytekitplugins-hive"
@@ -198,6 +208,7 @@ package = "flytekitplugins-mlflow"
 plugin = "flytekitplugins.mlflow"
 title = "MLflow"
 name = "mlflow"
+frozen = true
 
 [[plugins]]
 package = "flytekitplugins-mmcloud"
@@ -302,3 +313,4 @@ install = "flytekitplugins-whylogs pandas"
 plugin = "flytekitplugins.whylogs"
 title = "whylogs"
 name = "whylogs"
+frozen = true
