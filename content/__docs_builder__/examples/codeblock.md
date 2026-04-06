@@ -1,6 +1,6 @@
 ---
 title: Code Blocks
-variants: -flyte -byoc -selfmanaged
+variants: -flyte -union
 ---
 
 # Code Blocks

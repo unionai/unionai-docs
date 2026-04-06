@@ -1,7 +1,7 @@
 ---
 title: Multi-cloud and region support
 weight: 9
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Multi-cloud and region support

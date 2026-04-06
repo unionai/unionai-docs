@@ -1,7 +1,7 @@
 ---
 title: Platform events
 weight: 8
-variants: -flyte -byoc -selfmanaged
+variants: -flyte -union
 ---
 
 # Platform Events

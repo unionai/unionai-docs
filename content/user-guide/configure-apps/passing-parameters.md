@@ -1,7 +1,7 @@
 ---
 title: Passing parameters into app environments
 weight: 4
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Passing parameters into app environments

@@ -1,7 +1,7 @@
 ---
 title: flyteplugins.union.remote
-version: 0.2.1
-variants: +flyte +byoc +selfmanaged
+version: 0.2.2
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -37,6 +37,7 @@ Example:
 |-|-|
 | [`ApiKey`](../flyteplugins.union.remote/apikey) | Represents a Union API Key (OAuth Application). |
 | [`Assignment`](../flyteplugins.union.remote/assignment) | Represents role/policy assignments for an identity. |
+| [`Cluster`](../flyteplugins.union.remote/cluster) | Represents a Union cluster. |
 | [`Member`](../flyteplugins.union.remote/member) | Represents a Union organization member (user or application). |
 | [`Policy`](../flyteplugins.union.remote/policy) | Represents a Union RBAC Policy. |
 | [`Role`](../flyteplugins.union.remote/role) | Represents a Union RBAC Role. |

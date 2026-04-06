@@ -1,7 +1,7 @@
 ---
 title: ActionDetails
-version: 2.0.11
-variants: +flyte +byoc +selfmanaged
+version: 2.1.2
+variants: +flyte +union
 layout: py_api
 ---
 

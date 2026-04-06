@@ -1,7 +1,7 @@
 ---
 title: Planning your deployment
 weight: 1
-variants: -flyte -byoc -selfmanaged
+variants: -flyte -union
 ---
 
 # Components of a Flyte deployment

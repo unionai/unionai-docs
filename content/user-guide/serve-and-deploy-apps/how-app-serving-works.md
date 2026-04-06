@@ -1,7 +1,7 @@
 ---
 title: How app serving works
 weight: 1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # How app serving works

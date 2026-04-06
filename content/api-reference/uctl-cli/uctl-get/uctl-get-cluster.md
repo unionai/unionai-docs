@@ -1,6 +1,6 @@
 ---
 title: uctl get cluster
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl get cluster

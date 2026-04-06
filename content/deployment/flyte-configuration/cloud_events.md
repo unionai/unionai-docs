@@ -1,7 +1,7 @@
 ---
 title: Cloud events
 weight: 6
-variants: -flyte -byoc -selfmanaged
+variants: -flyte -union
 mermaid: true
 ---
 
