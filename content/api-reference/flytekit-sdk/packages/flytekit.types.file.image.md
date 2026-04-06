@@ -1,11 +1,11 @@
 ---
-title: flytekit.extras.pytorch.checkpoint
-version: 1.16.15
+title: flytekit.types.file.image
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 
-# flytekit.extras.pytorch.checkpoint
+# flytekit.types.file.image
 
 ## Directory
 
@@ -13,157 +13,23 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`PyTorchCheckpoint`](.././flytekit.extras.pytorch.checkpoint#flytekitextraspytorchcheckpointpytorchcheckpoint) | This class is helpful to save a checkpoint. |
-| [`PyTorchCheckpointTransformer`](.././flytekit.extras.pytorch.checkpoint#flytekitextraspytorchcheckpointpytorchcheckpointtransformer) | TypeTransformer that supports serializing and deserializing checkpoint. |
+| [`PILImageTransformer`](.././flytekit.types.file.image#flytekittypesfileimagepilimagetransformer) | TypeTransformer that supports PIL. |
 
-### Protocols
+### Variables
 
-| Protocol | Description |
-|-|-|
-| [`IsDataclass`](.././flytekit.extras.pytorch.checkpoint#flytekitextraspytorchcheckpointisdataclass) |  |
-
-## flytekit.extras.pytorch.checkpoint.IsDataclass
-
-```python
-protocol IsDataclass()
-```
-## flytekit.extras.pytorch.checkpoint.PyTorchCheckpoint
-
-This class is helpful to save a checkpoint.
-
-
-
-```python
-class PyTorchCheckpoint(
-    module: typing.Optional[torch.nn.modules.module.Module],
-    hyperparameters: typing.Union[typing.Dict[str, typing.Any], NamedTuple, flytekit.extras.pytorch.checkpoint.IsDataclass, NoneType],
-    optimizer: typing.Optional[torch.optim.optimizer.Optimizer],
-)
-```
-| Parameter | Type | Description |
+| Property | Type | Description |
 |-|-|-|
-| `module` | `typing.Optional[torch.nn.modules.module.Module]` | |
-| `hyperparameters` | `typing.Union[typing.Dict[str, typing.Any], NamedTuple, flytekit.extras.pytorch.checkpoint.IsDataclass, NoneType]` | |
-| `optimizer` | `typing.Optional[torch.optim.optimizer.Optimizer]` | |
+| `T` | `TypeVar` |  |
 
-### Methods
+## flytekit.types.file.image.PILImageTransformer
 
-| Method | Description |
-|-|-|
-| [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
-| [`schema()`](#schema) |  |
-| [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
+TypeTransformer that supports PIL.Image as a native type.
 
 
-#### from_dict()
+### Parameters
 
 ```python
-def from_dict(
-    kvs: typing.Union[dict, list, str, int, float, bool, NoneType],
-    infer_missing,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
-| `infer_missing` |  | |
-
-#### from_json()
-
-```python
-def from_json(
-    s: typing.Union[str, bytes, bytearray],
-    parse_float,
-    parse_int,
-    parse_constant,
-    infer_missing,
-    kw,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` | |
-| `parse_float` |  | |
-| `parse_int` |  | |
-| `parse_constant` |  | |
-| `infer_missing` |  | |
-| `kw` |  | |
-
-#### schema()
-
-```python
-def schema(
-    infer_missing: bool,
-    only,
-    exclude,
-    many: bool,
-    context,
-    load_only,
-    dump_only,
-    partial: bool,
-    unknown,
-) -> SchemaType[A]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `infer_missing` | `bool` | |
-| `only` |  | |
-| `exclude` |  | |
-| `many` | `bool` | |
-| `context` |  | |
-| `load_only` |  | |
-| `dump_only` |  | |
-| `partial` | `bool` | |
-| `unknown` |  | |
-
-#### to_dict()
-
-```python
-def to_dict(
-    encode_json,
-) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encode_json` |  | |
-
-#### to_json()
-
-```python
-def to_json(
-    skipkeys: bool,
-    ensure_ascii: bool,
-    check_circular: bool,
-    allow_nan: bool,
-    indent: typing.Union[int, str, NoneType],
-    separators: typing.Tuple[str, str],
-    default: typing.Callable,
-    sort_keys: bool,
-    kw,
-) -> str
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `skipkeys` | `bool` | |
-| `ensure_ascii` | `bool` | |
-| `check_circular` | `bool` | |
-| `allow_nan` | `bool` | |
-| `indent` | `typing.Union[int, str, NoneType]` | |
-| `separators` | `typing.Tuple[str, str]` | |
-| `default` | `typing.Callable` | |
-| `sort_keys` | `bool` | |
-| `kw` |  | |
-
-## flytekit.extras.pytorch.checkpoint.PyTorchCheckpointTransformer
-
-TypeTransformer that supports serializing and deserializing checkpoint.
-
-
-
-```python
-def PyTorchCheckpointTransformer()
+def PILImageTransformer()
 ```
 ### Properties
 
@@ -240,7 +106,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -253,7 +118,7 @@ Note:
 
 ```python
 def get_literal_type(
-    t: typing.Type[flytekit.extras.pytorch.checkpoint.PyTorchCheckpoint],
+    t: typing.Type[~T],
 ) -> flytekit.models.types.LiteralType
 ```
 Converts the python type to a Flyte LiteralType
@@ -261,14 +126,14 @@ Converts the python type to a Flyte LiteralType
 
 | Parameter | Type | Description |
 |-|-|-|
-| `t` | `typing.Type[flytekit.extras.pytorch.checkpoint.PyTorchCheckpoint]` | |
+| `t` | `typing.Type[~T]` | |
 
 #### guess_python_type()
 
 ```python
 def guess_python_type(
     literal_type: flytekit.models.types.LiteralType,
-) -> typing.Type[flytekit.extras.pytorch.checkpoint.PyTorchCheckpoint]
+) -> typing.Type[~T]
 ```
 Converts the Flyte LiteralType to a python object type.
 
@@ -312,9 +177,9 @@ False by default — override if needed.
 
 ```python
 def to_html(
-    ctx: FlyteContext,
-    python_val: T,
-    expected_python_type: Type[T],
+    ctx: flytekit.core.context_manager.FlyteContext,
+    python_val: PIL.Image.Image,
+    expected_python_type: typing.Type[~T],
 ) -> str
 ```
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
@@ -322,17 +187,17 @@ Converts any python val (dataframe, int, float) to a html string, and it will be
 
 | Parameter | Type | Description |
 |-|-|-|
-| `ctx` | `FlyteContext` | |
-| `python_val` | `T` | |
-| `expected_python_type` | `Type[T]` | |
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `python_val` | `PIL.Image.Image` | |
+| `expected_python_type` | `typing.Type[~T]` | |
 
 #### to_literal()
 
 ```python
 def to_literal(
     ctx: flytekit.core.context_manager.FlyteContext,
-    python_val: flytekit.extras.pytorch.checkpoint.PyTorchCheckpoint,
-    python_type: typing.Type[flytekit.extras.pytorch.checkpoint.PyTorchCheckpoint],
+    python_val: PIL.Image.Image,
+    python_type: typing.Type[~T],
     expected: flytekit.models.types.LiteralType,
 ) -> flytekit.models.literals.Literal
 ```
@@ -345,8 +210,8 @@ what was the mismatch
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
-| `python_val` | `flytekit.extras.pytorch.checkpoint.PyTorchCheckpoint` | The actual value to be transformed |
-| `python_type` | `typing.Type[flytekit.extras.pytorch.checkpoint.PyTorchCheckpoint]` | The assumed type of the value (this matches the declared type on the function) |
+| `python_val` | `PIL.Image.Image` | The actual value to be transformed |
+| `python_type` | `typing.Type[~T]` | The assumed type of the value (this matches the declared type on the function) |
 | `expected` | `flytekit.models.types.LiteralType` | Expected Literal Type |
 
 #### to_python_value()
@@ -355,8 +220,8 @@ what was the mismatch
 def to_python_value(
     ctx: flytekit.core.context_manager.FlyteContext,
     lv: flytekit.models.literals.Literal,
-    expected_python_type: typing.Type[flytekit.extras.pytorch.checkpoint.PyTorchCheckpoint],
-) -> flytekit.extras.pytorch.checkpoint.PyTorchCheckpoint
+    expected_python_type: typing.Type[~T],
+) -> PIL.Image.Image
 ```
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
@@ -365,5 +230,5 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | FlyteContext |
 | `lv` | `flytekit.models.literals.Literal` | The received literal Value |
-| `expected_python_type` | `typing.Type[flytekit.extras.pytorch.checkpoint.PyTorchCheckpoint]` | Expected native python type that should be returned |
+| `expected_python_type` | `typing.Type[~T]` | Expected native python type that should be returned |
 

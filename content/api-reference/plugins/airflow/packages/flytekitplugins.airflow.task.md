@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.airflow.task
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -33,6 +33,7 @@ Some of the Airflow operators are not deferrable, For example, BeamRunJavaPipeli
 These tasks don't have an async method to get the job status, so cannot be used in the Flyte connector. We run these tasks in a container.
 
 
+### Parameters
 
 ```python
 class AirflowContainerTask(
@@ -469,6 +470,7 @@ name: FileSensor
 parameters: {"task_id": "id", "filepath": "/tmp/1234"}
 
 
+### Parameters
 
 ```python
 class AirflowObj(
@@ -491,6 +493,7 @@ The airflow task module, name and parameters are stored in the task config.
 We run the Airflow task in the connector.
 
 
+### Parameters
 
 ```python
 class AirflowTask(
@@ -839,6 +842,7 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 This class is used to resolve an Airflow task. It will load an airflow task in the container.
 
 
+### Parameters
 
 ```python
 class AirflowTaskResolver(

@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.node_creation
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---

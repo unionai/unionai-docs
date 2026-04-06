@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.backfill
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -64,5 +64,7 @@ wf = create_backfill_workflow(start_date, start_date, for_lp=lp) # start and end
 | `parallel` | `bool` | if the backfill should be run in parallel. False (default) will run each bacfill sequentially |
 | `per_node_timeout` | `datetime.timedelta` | timedelta Timeout to use per node |
 | `per_node_retries` | `int` | int Retries to user per node |
-| `failure_policy` | `typing.Optional[flytekit.core.workflow.WorkflowFailurePolicy]` | WorkflowFailurePolicy Failure policy to use for the backfill workflow :return: WorkflowBase, datetime datetime -&gt; New generated workflow, datetime for first instance of backfill, datetime for last instance of backfill |
+| `failure_policy` | `typing.Optional[flytekit.core.workflow.WorkflowFailurePolicy]` | WorkflowFailurePolicy Failure policy to use for the backfill workflow |
+
+**Returns:** WorkflowBase, datetime datetime -&gt; New generated workflow, datetime for first instance of backfill, datetime for last instance of backfill
 

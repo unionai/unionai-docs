@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.types
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -21,6 +21,7 @@ layout: py_api
 This type represents offloaded data and is typically used for things like files.
 
 
+### Parameters
 
 ```python
 class BlobType(
@@ -37,8 +38,8 @@ class BlobType(
 
 | Property | Type | Description |
 |-|-|-|
-| `dimensionality` | `None` | An integer from BlobType.BlobDimensionality enum :rtype: int |
-| `format` | `None` | A string describing the format of the underlying blob data. :rtype: Text |
+| `dimensionality` | `None` | An integer from BlobType.BlobDimensionality enum |
+| `format` | `None` | A string describing the format of the underlying blob data. |
 | `is_empty` | `None` |  |
 
 ### Methods
@@ -47,8 +48,8 @@ class BlobType(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -62,6 +63,8 @@ def from_flyte_idl(
 |-|-|-|
 | `proto` |  | |
 
+**Returns:** BlobType
+
 #### serialize_to_string()
 
 ```python
@@ -72,22 +75,21 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.types_pb2.BlobType
-
+**Returns:** flyteidl.core.types_pb2.BlobType
 
 ## flytekit.models.core.types.EnumType
 
 Models _types_pb2.EnumType
 
 
+### Parameters
 
 ```python
 class EnumType(
@@ -111,7 +113,7 @@ class EnumType(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
@@ -136,8 +138,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 

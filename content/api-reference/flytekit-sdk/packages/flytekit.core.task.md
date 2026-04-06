@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.task
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -51,7 +51,9 @@ Decorates the task with additional functionality if necessary.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `fn` | `Callable[P, Any]` | python function to decorate. :return: a decorated python function. |
+| `fn` | `Callable[P, Any]` | python function to decorate. |
+
+**Returns:** a decorated python function.
 
 #### eager()
 
@@ -153,7 +155,6 @@ A reference task is a pointer to a task that already exists on your Flyte instal
 object will not initiate a network call to Admin, which is why the user is asked to provide the expected interface.
 If at registration time the interface provided causes an issue with compilation, an error will be returned.
 
-Example:
 &lt;!--
 .. literalinclude:: ../../../tests/flytekit/unit/core/test_references.py
    :pyobject: ref_t1
@@ -243,13 +244,23 @@ def my_task(x: int, y: typing.Dict[str, str]) -> str:
 ```
 Please see some cookbook :std:ref:`task examples &lt;cookbook:tasks&gt;` for additional information.
 
+:deprecated param cache_serialize: (deprecated - please use Cache) Boolean that indicates if identical (ie. same inputs)
+      instances of this task should be executed in serial when caching is enabled. This means that given multiple
+      concurrent executions over identical inputs, only a single instance executes and the rest wait to reuse the
+      cached results. This parameter does nothing without also setting the cache parameter.
+:deprecated param cache_version: (deprecated - please use Cache) Cache version to use. Changes to the task signature will
+       automatically trigger a cache miss, but you can always manually update this field as well to force a cache
+       miss. You should also manually bump this version if the function body/business logic has changed, but the
+       signature hasn't.
+:deprecated param cache_ignore_input_vars: (deprecated - please use Cache) Input variables that should not be included when
+       calculating hash for cache.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `_task_function` | `Optional[Callable[P, FuncOut]]` | This argument is implicitly passed and represents the decorated function |
 | `task_config` | `Optional[T]` | This argument provides configuration for a specific task types. Please refer to the plugins documentation for the right object to use. |
-| `cache` | `Union[bool, Cache]` | Boolean or Cache that indicates how caching is configured. :deprecated param cache_serialize: (deprecated - please use Cache) Boolean that indicates if identical (ie. same inputs) instances of this task should be executed in serial when caching is enabled. This means that given multiple concurrent executions over identical inputs, only a single instance executes and the rest wait to reuse the cached results. This parameter does nothing without also setting the cache parameter. :deprecated param cache_version: (deprecated - please use Cache) Cache version to use. Changes to the task signature will automatically trigger a cache miss, but you can always manually update this field as well to force a cache miss. You should also manually bump this version if the function body/business logic has changed, but the signature hasn't. :deprecated param cache_ignore_input_vars: (deprecated - please use Cache) Input variables that should not be included when calculating hash for cache. |
+| `cache` | `Union[bool, Cache]` | Boolean or Cache that indicates how caching is configured. |
 | `retries` | `int` | Number of times to retry this task during a workflow execution. |
 | `interruptible` | `Optional[bool]` | [Optional] Boolean that indicates that this task can be interrupted and/or scheduled on nodes with lower QoS guarantees. This will directly reduce the `$`/`execution cost` associated, at the cost of performance penalties due to potential interruptions. Requires additional Flyte platform level configuration. If no value is provided, the task will inherit this attribute from its workflow, as follows: No values set for interruptible at the task or workflow level - task is not interruptible Task has interruptible=True, but workflow has no value set - task is interruptible Workflow has interruptible=True, but task has no value set - task is interruptible Workflow has interruptible=False, but task has interruptible=True - task is interruptible Workflow has interruptible=True, but task has interruptible=False - task is not interruptible |
 | `deprecated` | `str` | A string that can be used to provide a warning message for deprecated task. Absence / empty str indicates that the task is active and not deprecated |
@@ -277,6 +288,8 @@ Please see some cookbook :std:ref:`task examples &lt;cookbook:tasks&gt;` for add
 | `kwargs` | `**kwargs` | |
 
 ## flytekit.core.task.Echo
+
+### Parameters
 
 ```python
 class Echo(
@@ -628,6 +641,7 @@ signature of the function will be. The signature should also match the signature
 as stored by Flyte Admin, if not, workflows using this will break upon compilation.
 
 
+### Parameters
 
 ```python
 class ReferenceTask(
@@ -639,11 +653,26 @@ class ReferenceTask(
     outputs: Dict[str, Type],
 )
 ```
+task_type (str): defines a unique task-type for every new extension. If a backend plugin is required then
+    this has to be done in-concert with the backend plugin identifier
+name (str): A unique name for the task instantiation. This is unique for every instance of task.
+task_config (T): Configuration for the task. This is used to configure the specific plugin that handles this
+    task
+interface (Optional[Interface]): A python native typed interface ``(inputs) -&gt; outputs`` that declares the
+    signature of the task
+environment (Optional[Dict[str, str]]): Any environment variables that should be supplied during the
+    execution of the task. Supplied as a dictionary of key/value pairs
+disable_deck (bool): (deprecated) If true, this task will not output deck html file
+enable_deck (bool): If true, this task will output deck html file
+deck_fields (Tuple[DeckField]): Tuple of decks to be
+    generated for this task. Valid values can be selected from fields of ``flytekit.deck.DeckField`` enum
+
+
 | Parameter | Type | Description |
 |-|-|-|
 | `project` | `str` | |
 | `domain` | `str` | |
-| `name` | `str` | A unique name for the task instantiation. This is unique for every instance of task. |
+| `name` | `str` | |
 | `version` | `str` | |
 | `inputs` | `Dict[str, type]` | |
 | `outputs` | `Dict[str, Type]` | |
@@ -993,7 +1022,6 @@ information related to which database to query.
 
 The `plugin_object_type` can be used to customize execution behavior and task serialization properties in tandem
 with the `task_config`.
-
 
 
 ### Methods

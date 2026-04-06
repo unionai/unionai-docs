@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.launch_plan
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -84,7 +84,7 @@ from flytekit.models.common import Annotations, AuthRole, Labels, RawOutputDataC
 Then use as follows:
 
 
-
+### Parameters
 
 ```python
 class LaunchPlan(
@@ -314,6 +314,7 @@ object will not initiate a network call to Admin, which is why the user is asked
 If at registration time the interface provided causes an issue with compilation, an error will be returned.
 
 
+### Parameters
 
 ```python
 class ReferenceLaunchPlan(

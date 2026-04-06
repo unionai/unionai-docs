@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.token_client
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -22,7 +22,7 @@ layout: py_api
 |-|-|
 | [`get_basic_authorization_header()`](#get_basic_authorization_header) | This function transforms the client id and the client secret into a header that conforms with http basic auth. |
 | [`get_device_code()`](#get_device_code) | Retrieves the device Authentication code that can be done to authenticate the request using a browser on a. |
-| [`get_token()`](#get_token) | :rtype: (Text,Text,Int) The first element is the access token retrieved from the IDP, the second is the refresh token. |
+| [`get_token()`](#get_token) | retrieved from the IDP, the third is the expiration in seconds. |
 | [`poll_token_endpoint()`](#poll_token_endpoint) |  |
 
 
@@ -53,7 +53,9 @@ first URL encoded to escape illegal characters.
 | Parameter | Type | Description |
 |-|-|-|
 | `client_id` | `str` | str |
-| `client_secret` | `str` | str :rtype: str |
+| `client_secret` | `str` | str |
+
+**Returns:** str
 
 #### get_device_code()
 
@@ -99,7 +101,6 @@ def get_token(
     refresh_token: typing.Optional[str],
 ) -> typing.Tuple[str, str, int]
 ```
-:rtype: (Text,Text,Int) The first element is the access token retrieved from the IDP, the second is the refresh token
 retrieved from the IDP, the third is the expiration in seconds
 
 
@@ -116,6 +117,8 @@ retrieved from the IDP, the third is the expiration in seconds
 | `verify` | `typing.Union[bool, str, NoneType]` | |
 | `session` | `typing.Optional[requests.sessions.Session]` | |
 | `refresh_token` | `typing.Optional[str]` | |
+
+**Returns:** (Text,Text,Int) The first element is the access token retrieved from the IDP, the second is the refresh token
 
 #### poll_token_endpoint()
 
@@ -150,6 +153,7 @@ Response from device auth flow endpoint
      'interval': 5}
 
 
+### Parameters
 
 ```python
 class DeviceCodeResponse(
@@ -187,6 +191,8 @@ def from_json_response(
 | `j` | `typing.Dict` | |
 
 ## flytekit.clients.auth.token_client.GrantType
+
+### Parameters
 
 ```python
 class GrantType(

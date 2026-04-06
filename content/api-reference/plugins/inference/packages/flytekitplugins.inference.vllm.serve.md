@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.inference.vllm.serve
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -18,6 +18,8 @@ layout: py_api
 
 ## flytekitplugins.inference.vllm.serve.HFSecret
 
+### Parameters
+
 ```python
 class HFSecret(
     secrets_prefix: str,
@@ -32,6 +34,8 @@ class HFSecret(
 | `hf_token_group` | `typing.Optional[str]` | The group name for the HuggingFace token. |
 
 ## flytekitplugins.inference.vllm.serve.VLLM
+
+### Parameters
 
 ```python
 class VLLM(

@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.interface
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -16,6 +16,8 @@ layout: py_api
 | [`TypedInterface`](.././flytekit.remote.interface#flytekitremoteinterfacetypedinterface) |  |
 
 ## flytekit.remote.interface.TypedInterface
+
+### Parameters
 
 ```python
 class TypedInterface(
@@ -48,7 +50,7 @@ outputs are represented directly as Python dicts, rather than going through the 
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`promote_from_model()`](#promote_from_model) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 | [`transform_interface_to_list()`](#transform_interface_to_list) | Takes a single task interface and interpolates it to an array interface - to allow performing distributed. |
 
@@ -75,6 +77,8 @@ def promote_from_model(
 |-|-|-|
 | `model` |  | |
 
+**Returns:** TypedInterface
+
 #### serialize_to_string()
 
 ```python
@@ -85,8 +89,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 

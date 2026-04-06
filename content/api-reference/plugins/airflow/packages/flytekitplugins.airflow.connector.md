@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.airflow.connector
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -60,6 +60,7 @@ Note: some of the operators are not deferrable. For example, BeamRunJavaPipeline
  In this case, those operators will be converted to AirflowContainerTask and executed in the pod.
 
 
+### Parameters
 
 ```python
 def AirflowConnector()
@@ -171,6 +172,7 @@ Return the metrics for the task.
 This class is used to store the Airflow task configuration. It is serialized and returned to FlytePropeller.
 
 
+### Parameters
 
 ```python
 class AirflowMetadata(

@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.type_engine
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -222,6 +222,8 @@ Raises ValueError also if the transformer found for the raw type doesn't have a 
 
 ## flytekit.core.type_engine.AsyncTypeTransformer
 
+### Parameters
+
 ```python
 class AsyncTypeTransformer(
     name: str,
@@ -353,7 +355,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -497,6 +498,7 @@ and so forth. Similarly, for outputs, in this case flytekit is going to upload t
 100.
 
 
+### Parameters
 
 ```python
 class BatchSize(
@@ -518,6 +520,7 @@ class BatchSize(
 Handler for BinaryIO
 
 
+### Parameters
 
 ```python
 def BinaryIOTransformer()
@@ -597,7 +600,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -777,7 +779,7 @@ Output will look like
 &gt; The schema support is experimental and is useful for auto-completing in the UI/CLI
 
 
-
+### Parameters
 
 ```python
 def DataclassTransformer()
@@ -857,7 +859,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -999,6 +1000,7 @@ Transformer that transforms an univariate dictionary Dict[str, T] to a Literal M
 transforms an untyped dictionary to a Binary Scalar Literal with a Struct Literal Type.
 
 
+### Parameters
 
 ```python
 def DictTransformer()
@@ -1179,7 +1181,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -1322,6 +1323,7 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 Enables converting a python type enum.Enum to LiteralType.EnumType
 
 
+### Parameters
 
 ```python
 def EnumTransformer()
@@ -1401,7 +1403,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -1533,6 +1534,7 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 Transformer that handles a univariate typing.List[T]
 
 
+### Parameters
 
 ```python
 def ListTransformer()
@@ -1657,7 +1659,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -1814,6 +1815,8 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 
 ## flytekit.core.type_engine.LiteralTypeTransformer
 
+### Parameters
+
 ```python
 def LiteralTypeTransformer()
 ```
@@ -1893,7 +1896,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -2038,6 +2040,7 @@ where you might be working with LiteralMaps. This object allows the caller to sp
 correspond to an element of the map.
 
 
+### Parameters
 
 ```python
 class LiteralsResolver(
@@ -2139,7 +2142,9 @@ future calls will return the cached value instead.
 | Parameter | Type | Description |
 |-|-|-|
 | `attr` | `str` | |
-| `as_type` | `Optional[typing.Type]` | :return: Python native value from the LiteralMap |
+| `as_type` | `Optional[typing.Type]` | |
+
+**Returns:** Python native value from the LiteralMap
 
 #### get_literal()
 
@@ -2219,7 +2224,7 @@ def update(
 )
 ```
 D.update([E, ]**F) -&gt; None.  Update D from mapping/iterable E and F.
-If E present and has a .keys() method, does:     for k in E.keys(): D[k] = E[k]
+If E present and has a .keys() method, does:     for k in E: D[k] = E[k]
 If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v
 In either case, this is followed by: for k, v in F.items(): D[k] = v
 
@@ -2249,6 +2254,8 @@ D.values() -&gt; an object providing a view on D's values
 
 
 ## flytekit.core.type_engine.ProtobufTransformer
+
+### Parameters
 
 ```python
 def ProtobufTransformer()
@@ -2329,7 +2336,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -2482,6 +2488,7 @@ Types registered with the RestrictedTypeTransformer are not allowed to be conver
 Restricted types are not allowed to be used as inputs or outputs of tasks and workflows.
 
 
+### Parameters
 
 ```python
 class RestrictedTypeTransformer(
@@ -2569,7 +2576,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -2701,6 +2707,7 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 A Simple implementation of a type transformer that uses simple lambdas to transform and reduces boilerplate
 
 
+### Parameters
 
 ```python
 class SimpleTransformer(
@@ -2795,7 +2802,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -2927,6 +2933,7 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 Handler for TextIO
 
 
+### Parameters
 
 ```python
 def TextIOTransformer()
@@ -3006,7 +3013,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -3138,7 +3144,6 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 Core Extensible TypeEngine of Flytekit. This should be used to extend the capabilities of FlyteKits type system.
 Users can implement their own TypeTransformers and register them with the TypeEngine. This will allow special handling
 of user objects
-
 
 
 ### Methods
@@ -3481,6 +3486,7 @@ def unwrap_offloaded_literal(
 Base transformer type that should be implemented for every python native type that can be handled by flytekit
 
 
+### Parameters
 
 ```python
 class TypeTransformer(
@@ -3570,7 +3576,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -3704,6 +3709,7 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 Transformer that handles a typing.Union[T1, T2, ...]
 
 
+### Parameters
 
 ```python
 def UnionTransformer()
@@ -3828,7 +3834,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 

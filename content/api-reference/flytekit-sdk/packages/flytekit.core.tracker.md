@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.tracker
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -43,7 +43,9 @@ Returns the task-name, absolute module and the string name of the callable.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `f` | `typing.Union[typing.Callable, flytekit.core.tracker.TrackedInstance]` | A task or any other callable :return: [name to use: str, module_name: str, function_name: str, full_path: str] |
+| `f` | `typing.Union[typing.Callable, flytekit.core.tracker.TrackedInstance]` | A task or any other callable |
+
+**Returns:** [name to use: str, module_name: str, function_name: str, full_path: str]
 
 #### get_full_module_path()
 
@@ -190,7 +192,6 @@ caused the instance to be created. This is useful because it means that we can t
 variable that the instance was assigned to.
 
 
-
 ## flytekit.core.tracker.TrackedInstance
 
 Please see the notes for the metaclass above first.
@@ -203,6 +204,7 @@ This functionality has two use-cases currently,
   find them at task execution time.
 
 
+### Parameters
 
 ```python
 class TrackedInstance(

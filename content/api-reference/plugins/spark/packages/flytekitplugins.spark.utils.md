@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.spark.utils
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -35,4 +35,6 @@ without any cluster config (``existing_cluster_id`` or ``new_cluster``).
 | Parameter | Type | Description |
 |-|-|-|
 | `databricks_conf` | `dict` | The databricks job configuration dict. |
+
+**Returns:** bool: True if the configuration targets serverless compute.
 

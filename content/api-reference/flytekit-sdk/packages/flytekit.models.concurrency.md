@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.concurrency
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -36,11 +36,14 @@ def enum_to_string(
 |-|-|-|
 | `val` |  | |
 
+**Returns:** Text
+
 ## flytekit.models.concurrency.ConcurrencyPolicy
 
 Defines the concurrency policy for a launch plan.
 
 
+### Parameters
 
 ```python
 class ConcurrencyPolicy(
@@ -67,8 +70,8 @@ class ConcurrencyPolicy(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -82,6 +85,8 @@ def from_flyte_idl(
 |-|-|-|
 | `pb2_object` | `flyteidl.admin.launch_plan_pb2.ConcurrencyPolicy` | |
 
+**Returns:** ConcurrencyPolicy
+
 #### serialize_to_string()
 
 ```python
@@ -92,14 +97,12 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.launch_plan_pb2.ConcurrencyPolicy
-
+**Returns:** flyteidl.admin.launch_plan_pb2.ConcurrencyPolicy
 

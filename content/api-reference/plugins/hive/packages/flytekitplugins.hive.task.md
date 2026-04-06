@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.hive.task
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -25,6 +25,8 @@ Note: A separate story is in progress to dynamically alter configuration for an 
 
 
 
+### Parameters
+
 ```python
 class HiveConfig(
     cluster_label: str,
@@ -38,6 +40,8 @@ class HiveConfig(
 
 ## flytekitplugins.hive.task.HiveSelectTask
 
+### Parameters
+
 ```python
 class HiveSelectTask(
     name: str,
@@ -49,14 +53,19 @@ class HiveSelectTask(
     kwargs,
 )
 ```
+select_query: Singular query that returns a Tabular dataset
+stage_query: optional query that should be executed before the actual ``select_query``. This can usually
+    be used for setting memory or the an alternate execution engine like [`tez`](https://tez.apache.org)
+
+
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | |
-| `select_query` | `str` | Singular query that returns a Tabular dataset |
+| `select_query` | `str` | |
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
 | `output_schema_type` | `typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]]` | |
 | `config` | `typing.Optional[flytekitplugins.hive.task.HiveConfig]` | |
-| `stage_query` | `typing.Optional[str]` | optional query that should be executed before the actual ``select_query``. This can usually be used for setting memory or the an alternate execution engine like [`tez`](https://tez.apache.org) |
+| `stage_query` | `typing.Optional[str]` | |
 | `kwargs` | `**kwargs` | |
 
 ### Properties
@@ -412,6 +421,7 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 This is the simplest form of a Hive Task, that can be used even for tasks that do not produce any output.
 
 
+### Parameters
 
 ```python
 class HiveTask(
@@ -423,13 +433,22 @@ class HiveTask(
     kwargs,
 )
 ```
+name: Name of this task, should be unique in the project
+config: Type HiveConfig object
+inputs: Name and type of inputs specified as an ordered dictionary
+query_template: The actual query to run. We use Flyte's Golang templating format for Query templating.
+                Refer to the templating documentation
+output_schema_type: If some data is produced by this query, then you can specify the output schema type
+**kwargs: All other args required by Parent type - SQLTask
+
+
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | Name of this task, should be unique in the project |
-| `query_template` | `str` | The actual query to run. We use Flyte's Golang templating format for Query templating. Refer to the templating documentation |
+| `name` | `str` | |
+| `query_template` | `str` | |
 | `task_config` | `typing.Optional[flytekitplugins.hive.task.HiveConfig]` | |
-| `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | Name and type of inputs specified as an ordered dictionary |
-| `output_schema_type` | `typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]]` | If some data is produced by this query, then you can specify the output schema type |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
+| `output_schema_type` | `typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]]` | |
 | `kwargs` | `**kwargs` | |
 
 ### Properties

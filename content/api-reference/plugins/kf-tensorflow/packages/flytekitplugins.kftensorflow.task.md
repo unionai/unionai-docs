@@ -1,16 +1,14 @@
 ---
 title: flytekitplugins.kftensorflow.task
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
 # flytekitplugins.kftensorflow.task
 
-
 This Plugin adds the capability of running distributed tensorflow training to Flyte using backend plugins, natively on
 Kubernetes. It leverages [`TF Job`](https://github.com/kubeflow/tf-operator) Plugin from kubeflow.
-
 ## Directory
 
 ### Classes
@@ -28,6 +26,8 @@ Kubernetes. It leverages [`TF Job`](https://github.com/kubeflow/tf-operator) Plu
 | [`Worker`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskworker) |  |
 
 ## flytekitplugins.kftensorflow.task.Chief
+
+### Parameters
 
 ```python
 class Chief(
@@ -51,8 +51,9 @@ class Chief(
 CleanPodPolicy describes how to deal with pods when the job is finished.
 
 
-
 ## flytekitplugins.kftensorflow.task.Evaluator
+
+### Parameters
 
 ```python
 class Evaluator(
@@ -72,6 +73,8 @@ class Evaluator(
 | `restart_policy` | `typing.Optional[flytekitplugins.kftensorflow.task.RestartPolicy]` | |
 
 ## flytekitplugins.kftensorflow.task.PS
+
+### Parameters
 
 ```python
 class PS(
@@ -95,12 +98,13 @@ class PS(
 RestartPolicy describes how the replicas should be restarted
 
 
-
 ## flytekitplugins.kftensorflow.task.RunPolicy
 
 RunPolicy describes a set of policies to apply to the execution of a Kubeflow job.
 
 
+
+### Parameters
 
 ```python
 class RunPolicy(
@@ -123,6 +127,7 @@ Plugin that submits a TFJob (see https://github.com/kubeflow/tf-operator)
     defined by the code within the _task_function to k8s cluster.
 
 
+### Parameters
 
 ```python
 class TensorflowFunctionTask(
@@ -599,6 +604,8 @@ to run distributed TensorFlow training on Kubernetes.
 
 
 
+### Parameters
+
 ```python
 class TfJob(
     chief: flytekitplugins.kftensorflow.task.Chief,
@@ -625,6 +632,8 @@ class TfJob(
 | `num_evaluator_replicas` | `typing.Optional[int]` | |
 
 ## flytekitplugins.kftensorflow.task.Worker
+
+### Parameters
 
 ```python
 class Worker(

@@ -1,6 +1,6 @@
 ---
 title: flytekit.utils.asyn
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -16,7 +16,6 @@ async def async_add(a: int, b: int) -> int:
     return a + b
 
 result = run_sync(async_add, a=10, b=12)
-
 ## Directory
 
 ### Variables

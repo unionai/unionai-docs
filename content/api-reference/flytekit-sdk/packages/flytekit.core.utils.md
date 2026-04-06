@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.utils
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -72,7 +72,9 @@ Convert a string to a boolean. This is useful for parsing environment variables.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `value` | `typing.Optional[str]` | The string to convert to a boolean :return: the boolean value |
+| `value` | `typing.Optional[str]` | The string to convert to a boolean |
+
+**Returns:** the boolean value
 
 #### write_proto_to_file()
 
@@ -92,6 +94,7 @@ def write_proto_to_file(
 Creates a posix safe tempdir which is auto deleted once out of scope
 
 
+### Parameters
 
 ```python
 class AutoDeletingTempDir(
@@ -110,7 +113,7 @@ class AutoDeletingTempDir(
 
 | Property | Type | Description |
 |-|-|-|
-| `name` | `None` | :rtype: Text |
+| `name` | `None` |  |
 
 ### Methods
 
@@ -143,8 +146,9 @@ def get_named_tempfile(
 def list_dir()
 ```
 The list of absolute filepaths for all immediate sub-paths
-:rtype: list[Text]
 
+
+**Returns:** list[Text]
 
 ## flytekit.core.utils.ClassDecorator
 
@@ -152,6 +156,7 @@ Abstract class for class decorators.
 We can attach config on the decorator class and use it in the upper level.
 
 
+### Parameters
 
 ```python
 class ClassDecorator(
@@ -202,6 +207,8 @@ Get the config of the decorator.
 
 ## flytekit.core.utils.Directory
 
+### Parameters
+
 ```python
 class Directory(
     path,
@@ -215,7 +222,7 @@ class Directory(
 
 | Property | Type | Description |
 |-|-|-|
-| `name` | `None` | :rtype: Text |
+| `name` | `None` |  |
 
 ### Methods
 
@@ -230,8 +237,9 @@ class Directory(
 def list_dir()
 ```
 The list of absolute filepaths for all immediate sub-paths
-:rtype: list[Text]
 
+
+**Returns:** list[Text]
 
 ## flytekit.core.utils.timeit
 
@@ -245,6 +253,7 @@ with timeit("Wrapped code block description"):
     # your code
 
 
+### Parameters
 
 ```python
 class timeit(

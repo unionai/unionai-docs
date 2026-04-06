@@ -31,6 +31,8 @@ App backed by FastAPI.
 
 
 
+### Parameters
+
 ```python
 class SGLangApp(
     name: str,
@@ -43,7 +45,7 @@ class SGLangApp(
     command: typing.Union[typing.List[str], str, NoneType],
     min_replicas: int,
     max_replicas: int,
-    scaledown_after: typing.Union[datetime.timedelta, int, NoneType],
+    scaledown_after: typing.Union[int, datetime.timedelta, NoneType],
     scaling_metric: typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType],
     include: typing.List[str],
     inputs: typing.List[union.app._models.Input],
@@ -60,7 +62,7 @@ class SGLangApp(
     custom_domain: typing.Optional[str],
     links: typing.List[union.app._models.Link],
     shared_memory: typing.Union[typing.Literal[True], str, NoneType],
-    request_timeout: typing.Union[datetime.timedelta, int, NoneType],
+    request_timeout: typing.Union[int, datetime.timedelta, NoneType],
     extra_args: typing.Union[str, typing.List[str]],
     model: typing.Union[str, flytekit.core.artifact.ArtifactQuery],
     model_id: str,
@@ -79,7 +81,7 @@ class SGLangApp(
 | `command` | `typing.Union[typing.List[str], str, NoneType]` | Command to start application. |
 | `min_replicas` | `int` | Minimum number of replicas (ignore if autoscaling is set). |
 | `max_replicas` | `int` | Maximum number of replicas (ignore if autoscaling is set). |
-| `scaledown_after` | `typing.Union[datetime.timedelta, int, NoneType]` | Time to wait before scaling down a replica after it has been idle. |
+| `scaledown_after` | `typing.Union[int, datetime.timedelta, NoneType]` | Time to wait before scaling down a replica after it has been idle. |
 | `scaling_metric` | `typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType]` | Autoscale based on a parameter, e.g. request rate or concurrency (others may be added in the future). |
 | `include` | `typing.List[str]` | Files to include for your application. |
 | `inputs` | `typing.List[union.app._models.Input]` | Inputs for the application. |
@@ -96,7 +98,7 @@ class SGLangApp(
 | `custom_domain` | `typing.Optional[str]` | Custom full domain for your app. |
 | `links` | `typing.List[union.app._models.Link]` | |
 | `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` | |
-| `request_timeout` | `typing.Union[datetime.timedelta, int, NoneType]` | |
+| `request_timeout` | `typing.Union[int, datetime.timedelta, NoneType]` | |
 | `extra_args` | `typing.Union[str, typing.List[str]]` | Extra args to pass to `python -m sglang.launch_server`. See https://docs.sglang.ai/backend/server_arguments.html for details. |
 | `model` | `typing.Union[str, flytekit.core.artifact.ArtifactQuery]` | Artifact URI for model. - If `str`, it should start with `flyte://`. - Use `ArtifactQuery` to dynamically query an artifact. |
 | `model_id` | `str` | model id that is exposed by vllm. |
@@ -125,17 +127,20 @@ def query_endpoint(
 ```
 Query for endpoint.
 
+:returns: Object representing a URL query.
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `public` | `bool` | Whether to return the public or internal endpoint. :returns: Object representing a URL query. |
+| `public` | `bool` | Whether to return the public or internal endpoint. |
 
 ## union.app.llm.VLLMApp
 
 App backed by FastAPI.
 
 
+
+### Parameters
 
 ```python
 class VLLMApp(
@@ -149,7 +154,7 @@ class VLLMApp(
     command: typing.Union[typing.List[str], str, NoneType],
     min_replicas: int,
     max_replicas: int,
-    scaledown_after: typing.Union[datetime.timedelta, int, NoneType],
+    scaledown_after: typing.Union[int, datetime.timedelta, NoneType],
     scaling_metric: typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType],
     include: typing.List[str],
     inputs: typing.List[union.app._models.Input],
@@ -166,7 +171,7 @@ class VLLMApp(
     custom_domain: typing.Optional[str],
     links: typing.List[union.app._models.Link],
     shared_memory: typing.Union[typing.Literal[True], str, NoneType],
-    request_timeout: typing.Union[datetime.timedelta, int, NoneType],
+    request_timeout: typing.Union[int, datetime.timedelta, NoneType],
     extra_args: typing.Union[str, typing.List[str]],
     model: typing.Union[str, flytekit.core.artifact.ArtifactQuery],
     model_id: str,
@@ -185,7 +190,7 @@ class VLLMApp(
 | `command` | `typing.Union[typing.List[str], str, NoneType]` | Command to start application. |
 | `min_replicas` | `int` | Minimum number of replicas (ignore if autoscaling is set). |
 | `max_replicas` | `int` | Maximum number of replicas (ignore if autoscaling is set). |
-| `scaledown_after` | `typing.Union[datetime.timedelta, int, NoneType]` | Time to wait before scaling down a replica after it has been idle. |
+| `scaledown_after` | `typing.Union[int, datetime.timedelta, NoneType]` | Time to wait before scaling down a replica after it has been idle. |
 | `scaling_metric` | `typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType]` | Autoscale based on a parameter, e.g. request rate or concurrency (others may be added in the future). |
 | `include` | `typing.List[str]` | Files to include for your application. |
 | `inputs` | `typing.List[union.app._models.Input]` | Inputs for the application. |
@@ -202,7 +207,7 @@ class VLLMApp(
 | `custom_domain` | `typing.Optional[str]` | Custom full domain for your app. |
 | `links` | `typing.List[union.app._models.Link]` | |
 | `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` | If True, then shared memory will be attached to the container where the size is equal to the allocated memory. If str, then the shared memory is set to that size. |
-| `request_timeout` | `typing.Union[datetime.timedelta, int, NoneType]` | |
+| `request_timeout` | `typing.Union[int, datetime.timedelta, NoneType]` | |
 | `extra_args` | `typing.Union[str, typing.List[str]]` | Extra args to pass to `vllm serve`. See https://docs.vllm.ai/en/stable/serving/engine_args.html or run `vllm serve --help` for details. |
 | `model` | `typing.Union[str, flytekit.core.artifact.ArtifactQuery]` | Artifact URI for model. - If `str`, it should start with `flyte://`. - Use `ArtifactQuery` to dynamically query an artifact. |
 | `model_id` | `str` | model id that is exposed by vllm. |
@@ -231,9 +236,10 @@ def query_endpoint(
 ```
 Query for endpoint.
 
+:returns: Object representing a URL query.
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `public` | `bool` | Whether to return the public or internal endpoint. :returns: Object representing a URL query. |
+| `public` | `bool` | Whether to return the public or internal endpoint. |
 

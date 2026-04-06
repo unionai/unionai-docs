@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.domain
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -21,6 +21,8 @@ Domains are fixed and unique at the global level, and provide an abstraction to 
 
 
 
+### Parameters
+
 ```python
 class Domain(
     id,
@@ -36,9 +38,9 @@ class Domain(
 
 | Property | Type | Description |
 |-|-|-|
-| `id` | `None` | A globally unique identifier associated with this domain. :rtype: Text |
+| `id` | `None` | A globally unique identifier associated with this domain. |
 | `is_empty` | `None` |  |
-| `name` | `None` | A human-readable name for this domain. :rtype: Text |
+| `name` | `None` | A human-readable name for this domain. |
 
 ### Methods
 
@@ -46,8 +48,8 @@ class Domain(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -61,6 +63,8 @@ def from_flyte_idl(
 |-|-|-|
 | `pb2_object` |  | |
 
+**Returns:** Domain
+
 #### serialize_to_string()
 
 ```python
@@ -71,14 +75,12 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.project_pb2.Domain
-
+**Returns:** flyteidl.admin.project_pb2.Domain
 

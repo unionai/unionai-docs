@@ -21,7 +21,6 @@ A class that implements a versioning mechanism for functions by generating
 a SHA-256 hash of the function's source code combined with a salt.
 
 
-
 ### Methods
 
 | Method | Description |
@@ -45,5 +44,7 @@ combined with a salt.
 | Parameter | Type | Description |
 |-|-|-|
 | `salt` | `str` | A string that is used to salt the hash. |
-| `params` | `flytekit.core.cache.VersionParameters` | VersionParameters object that contains the parameters (e.g. function, ImageSpec, etc.) that are used to generate the version.  :return: A string that represents the version of the function. |
+| `params` | `flytekit.core.cache.VersionParameters` | VersionParameters object that contains the parameters (e.g. function, ImageSpec, etc.) that are used to generate the version. |
+
+**Returns:** A string that represents the version of the function.
 

@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.spark.pyspark_transformers
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -16,6 +16,8 @@ layout: py_api
 | [`PySparkPipelineModelTransformer`](.././flytekitplugins.spark.pyspark_transformers#flytekitpluginssparkpyspark_transformerspysparkpipelinemodeltransformer) |  |
 
 ## flytekitplugins.spark.pyspark_transformers.PySparkPipelineModelTransformer
+
+### Parameters
 
 ```python
 def PySparkPipelineModelTransformer()
@@ -95,7 +97,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 

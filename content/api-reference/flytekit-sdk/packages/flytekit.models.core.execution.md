@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.execution
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -21,6 +21,8 @@ layout: py_api
 
 ## flytekit.models.core.execution.ExecutionError
 
+### Parameters
+
 ```python
 class ExecutionError(
     code: str,
@@ -40,11 +42,11 @@ class ExecutionError(
 
 | Property | Type | Description |
 |-|-|-|
-| `code` | `None` | :rtype: Text |
-| `error_uri` | `None` | :rtype: Text |
+| `code` | `None` |  |
+| `error_uri` | `None` |  |
 | `is_empty` | `None` |  |
 | `kind` | `None` | Enum value from ErrorKind |
-| `message` | `None` | :rtype: Text |
+| `message` | `None` |  |
 
 ### Methods
 
@@ -52,8 +54,8 @@ class ExecutionError(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -67,6 +69,8 @@ def from_flyte_idl(
 |-|-|-|
 | `p` |  | |
 
+**Returns:** ExecutionError
+
 #### serialize_to_string()
 
 ```python
@@ -77,16 +81,14 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.execution_pb2.ExecutionError
-
+**Returns:** flyteidl.core.execution_pb2.ExecutionError
 
 ## flytekit.models.core.execution.NodeExecutionPhase
 
@@ -106,7 +108,9 @@ def enum_to_string(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `int_value` |  | :rtype: Text |
+| `int_value` |  | |
+
+**Returns:** Text
 
 ## flytekit.models.core.execution.TaskExecutionPhase
 
@@ -126,9 +130,13 @@ def enum_to_string(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `int_value` |  | :rtype: Text |
+| `int_value` |  | |
+
+**Returns:** Text
 
 ## flytekit.models.core.execution.TaskLog
+
+### Parameters
 
 ```python
 class TaskLog(
@@ -150,10 +158,10 @@ class TaskLog(
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` | `None` |  |
-| `message_format` | `None` | Enum value from TaskLog.MessageFormat :rtype: MessageFormat |
-| `name` | `None` | :rtype: Text |
-| `ttl` | `None` | :rtype: datetime.timedelta |
-| `uri` | `None` | :rtype: Text |
+| `message_format` | `None` | Enum value from TaskLog.MessageFormat |
+| `name` | `None` |  |
+| `ttl` | `None` |  |
+| `uri` | `None` |  |
 
 ### Methods
 
@@ -161,8 +169,8 @@ class TaskLog(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -176,6 +184,8 @@ def from_flyte_idl(
 |-|-|-|
 | `p` |  | |
 
+**Returns:** TaskLog
+
 #### serialize_to_string()
 
 ```python
@@ -186,22 +196,19 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.execution_pb2.TaskLog
-
+**Returns:** flyteidl.core.execution_pb2.TaskLog
 
 ## flytekit.models.core.execution.WorkflowExecutionPhase
 
 This class holds enum values used for setting notifications. See {{&lt; py_class_ref flytekit.Email &gt;}}
 for sample usage.
-
 
 
 ### Methods
@@ -220,5 +227,7 @@ def enum_to_string(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `int_value` |  | :rtype: Text |
+| `int_value` |  | |
+
+**Returns:** Text
 

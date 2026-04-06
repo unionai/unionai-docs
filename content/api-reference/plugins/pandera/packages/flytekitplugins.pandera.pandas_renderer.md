@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.pandera.pandas_renderer
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -32,6 +32,8 @@ layout: py_api
 
 ## flytekitplugins.pandera.pandas_renderer.PandasReport
 
+### Parameters
+
 ```python
 class PandasReport(
     summary: pandas.DataFrame,
@@ -48,6 +50,8 @@ class PandasReport(
 | `data_error_df` | `typing.Optional[pandas.DataFrame]` | |
 
 ## flytekitplugins.pandera.pandas_renderer.PandasReportRenderer
+
+### Parameters
 
 ```python
 class PandasReportRenderer(

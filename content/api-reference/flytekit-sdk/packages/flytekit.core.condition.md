@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.condition
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -104,6 +104,8 @@ https://github.com/pwwang/python-varname/issues/28, this is not currently suppor
 | `node_id` | `str` | |
 | `var` | `str` | |
 
+**Returns:** The generated unique id of the variable.
+
 #### merge_promises()
 
 ```python
@@ -198,6 +200,8 @@ def transform_to_operand(
 
 ## flytekit.core.condition.BranchNode
 
+### Parameters
+
 ```python
 class BranchNode(
     name: str,
@@ -216,6 +220,8 @@ class BranchNode(
 | `name` | `None` |  |
 
 ## flytekit.core.condition.Case
+
+### Parameters
 
 ```python
 class Case(
@@ -271,6 +277,8 @@ def then(
 
 ## flytekit.core.condition.Condition
 
+### Parameters
+
 ```python
 class Condition(
     cs: ConditionalSection,
@@ -320,6 +328,7 @@ v =  conditional("fractions").if_((my_input > 0.1) & (my_input < 1.0)).then(...)
 ```
 
 
+### Parameters
 
 ```python
 class ConditionalSection(
@@ -394,6 +403,8 @@ At the start of an execution of every branch this method should be called.
 | `last_case` | `bool` | -&gt; a boolean that indicates if this is the last branch in the ifelseblock |
 
 ## flytekit.core.condition.LocalExecutedConditionalSection
+
+### Parameters
 
 ```python
 class LocalExecutedConditionalSection(
@@ -476,6 +487,7 @@ This ConditionalSection is used for nested conditionals, when the branch has bee
 This ensures that the branch is not evaluated and thus the local tasks are not executed.
 
 
+### Parameters
 
 ```python
 class SkippedConditionalSection(

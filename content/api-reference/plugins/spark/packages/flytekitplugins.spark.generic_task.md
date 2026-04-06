@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.spark.generic_task
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -17,6 +17,8 @@ layout: py_api
 | [`GenericSparkTask`](.././flytekitplugins.spark.generic_task#flytekitpluginssparkgeneric_taskgenericsparktask) |  |
 
 ## flytekitplugins.spark.generic_task.GenericSparkConf
+
+### Parameters
 
 ```python
 class GenericSparkConf(
@@ -34,6 +36,8 @@ class GenericSparkConf(
 | `hadoop_conf` | `typing.Optional[typing.Dict[str, str]]` | |
 
 ## flytekitplugins.spark.generic_task.GenericSparkTask
+
+### Parameters
 
 ```python
 class GenericSparkTask(

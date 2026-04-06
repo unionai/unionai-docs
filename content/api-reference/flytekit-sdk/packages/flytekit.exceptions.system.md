@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.system
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -26,6 +26,8 @@ layout: py_api
 
 ## flytekit.exceptions.system.FlyteAgentNotFound
 
+### Parameters
+
 ```python
 class FlyteAgentNotFound(
     args,
@@ -44,6 +46,8 @@ class FlyteAgentNotFound(
 | `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteConnectorNotFound
+
+### Parameters
 
 ```python
 class FlyteConnectorNotFound(
@@ -64,6 +68,8 @@ class FlyteConnectorNotFound(
 
 ## flytekit.exceptions.system.FlyteDownloadDataException
 
+### Parameters
+
 ```python
 class FlyteDownloadDataException(
     args,
@@ -82,6 +88,8 @@ class FlyteDownloadDataException(
 | `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteEntrypointNotLoadable
+
+### Parameters
 
 ```python
 class FlyteEntrypointNotLoadable(
@@ -103,6 +111,8 @@ class FlyteEntrypointNotLoadable(
 | `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteNonRecoverableSystemException
+
+### Parameters
 
 ```python
 class FlyteNonRecoverableSystemException(
@@ -126,6 +136,8 @@ FlyteNonRecoverableSystemException is thrown when a system code raises an except
 
 ## flytekit.exceptions.system.FlyteNotImplementedException
 
+### Parameters
+
 ```python
 class FlyteNotImplementedException(
     args,
@@ -144,6 +156,8 @@ class FlyteNotImplementedException(
 | `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteSystemAssertion
+
+### Parameters
 
 ```python
 class FlyteSystemAssertion(
@@ -164,6 +178,8 @@ class FlyteSystemAssertion(
 
 ## flytekit.exceptions.system.FlyteSystemException
 
+### Parameters
+
 ```python
 class FlyteSystemException(
     args,
@@ -183,6 +199,8 @@ class FlyteSystemException(
 
 ## flytekit.exceptions.system.FlyteSystemUnavailableException
 
+### Parameters
+
 ```python
 class FlyteSystemUnavailableException(
     args,
@@ -201,6 +219,8 @@ class FlyteSystemUnavailableException(
 | `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteUploadDataException
+
+### Parameters
 
 ```python
 class FlyteUploadDataException(

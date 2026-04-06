@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.schema.types_pandas
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -23,6 +23,7 @@ layout: py_api
 Transforms a pd.DataFrame to Schema without column types.
 
 
+### Parameters
 
 ```python
 def PandasDataFrameTransformer()
@@ -145,7 +146,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -274,6 +274,8 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 
 ## flytekit.types.schema.types_pandas.PandasSchemaReader
 
+### Parameters
+
 ```python
 class PandasSchemaReader(
     local_dir: str,
@@ -325,6 +327,8 @@ def iter(
 | `kwargs` | `**kwargs` | |
 
 ## flytekit.types.schema.types_pandas.PandasSchemaWriter
+
+### Parameters
 
 ```python
 class PandasSchemaWriter(

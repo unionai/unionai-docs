@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.local_cache
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -24,7 +24,6 @@ layout: py_api
 ## flytekit.core.local_cache.LocalTaskCache
 
 This class implements a persistent store able to cache the result of local task executions.
-
 
 
 ### Methods

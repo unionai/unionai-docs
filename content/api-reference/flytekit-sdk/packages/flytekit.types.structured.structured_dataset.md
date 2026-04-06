@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.structured.structured_dataset
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -78,11 +78,17 @@ If no instances of a given type are found, then None will be returned.
 
 If we add more things, we should put all the returned items in a dataclass instead of just a tuple.
 
+    the original type,
+    optional OrderedDict of columns,
+    optional str for the format,
+    optional pyarrow Schema
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `t` | `typing.Any` | The incoming type which may or may not be Annotated :return: Tuple representing the original type, optional OrderedDict of columns, optional str for the format, optional pyarrow Schema |
+| `t` | `typing.Any` | The incoming type which may or may not be Annotated |
+
+**Returns:** Tuple representing
 
 #### flatten_dict()
 
@@ -110,6 +116,7 @@ This is the user facing StructuredDataset class. Please don't confuse it with th
 class (that is just a model, a Python class representation of the protobuf).
 
 
+### Parameters
 
 ```python
 class StructuredDataset(
@@ -265,6 +272,8 @@ def to_json(
 
 ## flytekit.types.structured.structured_dataset.StructuredDatasetDecoder
 
+### Parameters
+
 ```python
 class StructuredDatasetDecoder(
     python_type: Type[DF],
@@ -314,15 +323,20 @@ def decode(
 This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal
 value into a Python instance.
 
+  of those dataframes.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
 | `flyte_value` | `literals.StructuredDataset` | This will be a Flyte IDL StructuredDataset Literal - do not confuse this with the StructuredDataset class defined also in this module. |
-| `current_task_metadata` | `StructuredDatasetMetadata` | Metadata object containing the type (and columns if any) for the currently executing task. This type may have more or less information than the type information bundled inside the incoming flyte_value. :return: This function can either return an instance of the dataframe that this decoder handles, or an iterator of those dataframes. |
+| `current_task_metadata` | `StructuredDatasetMetadata` | Metadata object containing the type (and columns if any) for the currently executing task. This type may have more or less information than the type information bundled inside the incoming flyte_value. |
+
+**Returns:** This function can either return an instance of the dataframe that this decoder handles, or an iterator
 
 ## flytekit.types.structured.structured_dataset.StructuredDatasetEncoder
+
+### Parameters
 
 ```python
 class StructuredDatasetEncoder(
@@ -375,13 +389,17 @@ type. This simplifies this function's interface as a lot of data that could be s
 the
 # TODO: Do we need to add a flag to indicate if it was wrapped by the transformer or by the user?
 
+  StructuredDataset wrapper class used as input to this function - that is the user facing Python class.
+  This function needs to return the IDL StructuredDataset.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `FlyteContext` | |
 | `structured_dataset` | `StructuredDataset` | This is a StructuredDataset wrapper object. See more info above. |
-| `structured_dataset_type` | `StructuredDatasetType` | This the StructuredDatasetType, as found in the LiteralType of the interface of the task that invoked this encoding call. It is passed along to encoders so that authors of encoders can include it in the returned literals.StructuredDataset. See the IDL for more information on why this literal in particular carries the type information along with it. If the encoder doesn't supply it, it will also be filled in after the encoder runs by the transformer engine. :return: This function should return a StructuredDataset literal object. Do not confuse this with the StructuredDataset wrapper class used as input to this function - that is the user facing Python class. This function needs to return the IDL StructuredDataset. |
+| `structured_dataset_type` | `StructuredDatasetType` | This the StructuredDatasetType, as found in the LiteralType of the interface of the task that invoked this encoding call. It is passed along to encoders so that authors of encoders can include it in the returned literals.StructuredDataset. See the IDL for more information on why this literal in particular carries the type information along with it. If the encoder doesn't supply it, it will also be filled in after the encoder runs by the transformer engine. |
+
+**Returns:** This function should return a StructuredDataset literal object. Do not confuse this with the
 
 ## flytekit.types.structured.structured_dataset.StructuredDatasetTransformerEngine
 
@@ -390,6 +408,7 @@ If you are bringing a custom data frame type, or any data frame type, to flyteki
 registering with the main type engine, you should register with this transformer instead.
 
 
+### Parameters
 
 ```python
 def StructuredDatasetTransformerEngine()
@@ -569,7 +588,6 @@ class DC:
 def wf(dc: DC):
     t_sd(dc.sd)
 
-Note:
 - The deserialization is the same as put a structured dataset in a dataclass, which will deserialize by the mashumaro's API.
 
 Related PR:
@@ -605,7 +623,6 @@ class DC:
 def wf(dc: DC):
     t_sd(dc.sd)
 
-Note:
 - The deserialization is the same as put a structured dataset in a dataclass, which will deserialize by the mashumaro's API.
 
 Related PR:
@@ -724,7 +741,9 @@ def open_as(
 | `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
 | `sd` | `literals.StructuredDataset` | |
 | `df_type` | `Type[DF]` | |
-| `updated_metadata` | `StructuredDatasetMetadata` | New metadata type, since it might be different from the metadata in the literal. :return: dataframe. It could be pandas dataframe or arrow table, etc. |
+| `updated_metadata` | `StructuredDatasetMetadata` | New metadata type, since it might be different from the metadata in the literal. |
+
+**Returns:** dataframe. It could be pandas dataframe or arrow table, etc.
 
 #### register()
 

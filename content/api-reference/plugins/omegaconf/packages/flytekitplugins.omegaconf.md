@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.omegaconf
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -69,6 +69,5 @@ underlying dataclass is returned.
 
 Note: We define a single shared config across all transformers as recursive calls should refer to the same config
 Note: The latter requires the use of structured configs.
-
 
 

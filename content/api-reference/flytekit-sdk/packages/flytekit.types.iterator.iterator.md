@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.iterator.iterator
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -24,6 +24,8 @@ layout: py_api
 
 ## flytekit.types.iterator.iterator.FlyteIterator
 
+### Parameters
+
 ```python
 class FlyteIterator(
     ctx: flytekit.core.context_manager.FlyteContext,
@@ -40,6 +42,8 @@ class FlyteIterator(
 | `length` | `int` | |
 
 ## flytekit.types.iterator.iterator.IteratorTransformer
+
+### Parameters
 
 ```python
 def IteratorTransformer()
@@ -119,7 +123,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 

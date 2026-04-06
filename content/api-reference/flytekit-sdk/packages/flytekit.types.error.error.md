@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.error.error
-version: 1.16.15
+version: 1.16.16
 variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
@@ -27,6 +27,7 @@ layout: py_api
 Enables converting a python type FlyteError to LiteralType.Error
 
 
+### Parameters
 
 ```python
 def ErrorTransformer()
@@ -106,7 +107,6 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
@@ -239,6 +239,7 @@ Special Task type that will be used in the failure node. Propeller will pass thi
 have to add an input with this type to the failure task.
 
 
+### Parameters
 
 ```python
 class FlyteError(

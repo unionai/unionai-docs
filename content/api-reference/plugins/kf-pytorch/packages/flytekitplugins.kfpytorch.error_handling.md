@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.kfpytorch.error_handling
-version: 1.16.15
-variants: +flyte +byoc +selfmanaged
+version: 1.16.16
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -40,9 +40,13 @@ the string `FlyteRecoverableException` - which would not detect exceptions inher
 that the exception is recoverable. The file is created in the directory where the default
 torch elastic error file is written.
 
-Raises:
-    ValueError: If the environment variable `TORCHELASTIC_ERROR_FILE` is not set.
 
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `ValueError` | If the environment variable `TORCHELASTIC_ERROR_FILE` is not set. |
 
 #### is_recoverable_worker_error()
 
@@ -61,4 +65,6 @@ a file named `recoverable_error`.
 | Parameter | Type | Description |
 |-|-|-|
 | `failure` |  | The error in the worker process. |
+
+**Returns:** bool: True if the error is recoverable, False otherwise.
 
