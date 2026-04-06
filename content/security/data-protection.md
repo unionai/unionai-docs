@@ -56,6 +56,9 @@ Every data type handled by the platform is classified by residency and access pa
 
 ## Zero-trust data guarantees
 
+{{< tabs >}}
+{{< tab "Zero-trust (current)" >}}
+{{< markdown >}}
 Union.ai's zero-trust architecture ensures that no customer data, operational metadata, or logs ever transit through the control plane.
 This guarantee applies to all data retrieval and visualization operations:
 
@@ -69,6 +72,14 @@ The control plane handles only orchestration metadata: task definitions, run/act
 
 This zero-trust guarantee is contractual.
 See [Deployment models and security tiers](./deployment-models) for details on the Default and Enterprise 1 configurations.
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Previous architecture" >}}
+{{< markdown >}}
+This section did not exist in the previous architecture.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Encryption at rest
 

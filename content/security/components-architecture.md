@@ -179,6 +179,9 @@ The Tunnel Service is responsible for initiating and maintaining both outbound-o
 
 ## DataProxy
 
+{{< tabs >}}
+{{< tab "Zero-trust (current)" >}}
+{{< markdown >}}
 DataProxy runs on the data plane and serves as the single point through which all non-orchestration data reaches the client.
 It handles:
 - **Presigned URL generation** -- delegates to the Object Store Service, which signs URLs locally using the customer's IAM credentials.
@@ -190,3 +193,11 @@ It handles:
 All DataProxy traffic reaches the data plane via the Direct-to-DataPlane tunnel.
 The Envoy router in the Kourier gateway authenticates every request and enforces RBAC before forwarding to DataProxy.
 The control plane never sees or relays any of this data.
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Previous architecture" >}}
+{{< markdown >}}
+This section did not exist in the previous architecture. DataProxy previously ran on the control plane, where it acted as a stateless relay for logs and metrics and proxied presigned URL generation requests to the data plane.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}

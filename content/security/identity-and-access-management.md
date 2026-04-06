@@ -71,11 +71,33 @@ Union.ai operates a zero-trust architecture in which data visualization (logs, i
 
 ### Default deployment
 
+{{< tabs >}}
+{{< tab "Zero-trust (current)" >}}
+{{< markdown >}}
 In the default deployment, all data visualization traffic flows through the Direct-to-DataPlane tunnel from the customer's data plane directly to the client. Union.ai personnel accessing a customer's tenant see only orchestration metadata (workflow definitions, run status, scheduling configuration). Customer data (logs, inputs/outputs, metrics, reports) is served from the data plane and does not transit the control plane, so it is not visible to Union.ai personnel through the control plane UI.
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Previous architecture" >}}
+{{< markdown >}}
+This section did not exist in the previous architecture. Union.ai personnel could view logs relayed through the control plane tunnel.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### Enterprise 1: VPN-restricted access
 
+{{< tabs >}}
+{{< tab "Zero-trust (current)" >}}
+{{< markdown >}}
 For organizations requiring the highest assurance, the Enterprise 1 configuration restricts all data visualization to users connected to the organization's corporate VPN. A customer-managed load balancer within the VPC replaces the Cloudflare-terminated Direct-to-DataPlane tunnel. No Union.ai employee can ever see customer data under this configuration. Union.ai's RBAC and SSO continue to function. See [Deployment models and security tiers](./deployment-models) for configuration details.
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Previous architecture" >}}
+{{< markdown >}}
+This section did not exist in the previous architecture.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### Access scope and limitations
 

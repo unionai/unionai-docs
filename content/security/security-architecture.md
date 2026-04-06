@@ -14,6 +14,9 @@ This architectural decision ensures that customer data remains within the custom
 
 ## Zero-trust data isolation
 
+{{< tabs >}}
+{{< tab "Zero-trust (current)" >}}
+{{< markdown >}}
 Union.ai enforces a zero-trust data isolation model: **no customer data, metadata, or logs ever transit through the Union.ai control plane**.
 
 This guarantee is achieved through two architectural decisions:
@@ -31,6 +34,14 @@ Union.ai offers two deployment tiers for the Direct-to-DataPlane tunnel:
 See [Deployment models](./deployment-models) for full details on each tier.
 
 This zero-trust data isolation is a contractual guarantee, not merely an implementation detail.
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Previous architecture" >}}
+{{< markdown >}}
+This section did not exist in the previous architecture.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Control plane / data plane separation
 
@@ -102,6 +113,9 @@ In locked-down environments, networking teams can limit egress access to publish
 
 ### Direct-to-DataPlane tunnel (outbound only)
 
+{{< tabs >}}
+{{< tab "Zero-trust (current)" >}}
+{{< markdown >}}
 The Direct-to-DataPlane tunnel provides a separate, dedicated path for all data access between clients and the data plane.
 This tunnel is distinct from the control plane tunnel and carries all customer data, logs, metrics, and presigned URL traffic.
 
@@ -111,6 +125,14 @@ In the Default deployment tier, this tunnel uses Cloudflare's edge network. An E
 > Specific Envoy authentication mechanism details (JWT validation, token exchange flow) to be documented.
 
 In the Enterprise deployment tier, the customer provisions their own VPN-routable load balancer, replacing the Cloudflare dependency for data access while maintaining the same Envoy-based authentication and RBAC enforcement on the data plane.
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Previous architecture" >}}
+{{< markdown >}}
+This section did not exist in the previous architecture. All tunnel traffic flowed through a single Cloudflare Tunnel shared between orchestration and data relay.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### Communication paths
 
@@ -149,6 +171,9 @@ Organizations with stricter requirements can configure shorter TTLs. The presign
 
 ### Direct data serving pattern
 
+{{< tabs >}}
+{{< tab "Zero-trust (current)" >}}
+{{< markdown >}}
 For logs, observability metrics, and Kubernetes events, the data plane serves data directly to the client through the Direct-to-DataPlane tunnel. An Envoy router on the data plane authenticates each request and enforces RBAC checks before returning data. The data is never relayed through, cached in, or written to disk on the control plane.
 
 This pattern replaces the previous streaming relay architecture. Data now flows:
@@ -157,11 +182,30 @@ This pattern replaces the previous streaming relay architecture. Data now flows:
 2. Envoy router on the data plane validates the request and checks RBAC permissions
 3. Data plane service retrieves the data (from the log aggregator, Prometheus, or K8s API)
 4. Data is returned directly to the client through the tunnel
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Previous architecture" >}}
+{{< markdown >}}
+For logs and observability metrics, the control plane acted as a stateless relay — streaming data from the data plane through the Cloudflare tunnel to the client in real time. The data passed through the control plane's memory as a TLS encrypted stream. It was never written to disk, cached, or stored.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### SDK direct upload (planned)
 
+{{< tabs >}}
+{{< tab "Zero-trust (current)" >}}
+{{< markdown >}}
 > [!NOTE] Information needed
 > SDK direct upload for task inputs is planned. In this pattern, the SDK retrieves a signed URL directly from the data plane and uploads input data to the customer's object store without involving the control plane. Specific timeline and implementation details to be documented.
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Previous architecture" >}}
+{{< markdown >}}
+This section did not exist in the previous architecture. Input data was uploaded through the control plane.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### Execution flow diagram
 
