@@ -10,7 +10,7 @@ weight: 3
 
 This is the command line interface for Flyte.
 
-{{< variant flyte >}}
+{{< variant byoc flyte selfmanaged >}}
 {{< grid >}}
 {{< markdown >}}
 | Object | Action |
@@ -801,7 +801,7 @@ Generate documentation.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--type` | `text` | `Sentinel.UNSET` | Type of documentation (valid: markdown) |
-| `--plugin-variants` | `text` |  | Hugo variant names for plugin commands (e.g., 'union'). When set, plugin command sections and index entries are wrapped in {{&lt; variant >}} shortcodes. Core commands appear unconditionally. |
+| `--plugin-variants` | `text` |  | Hugo variant names for plugin commands (e.g., 'byoc selfmanaged'). When set, plugin command sections and index entries are wrapped in {{&lt; variant >}} shortcodes. Core commands appear unconditionally. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
