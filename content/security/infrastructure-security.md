@@ -37,14 +37,15 @@ Two IAM roles are provisioned per data plane, each with narrowly scoped permissi
 
 | Role | Permissions | Assumed By | Mechanism |
 | --- | --- | --- | --- |
-| Admin Role (`adminflyterole`) | R/W to object store buckets, secrets manager access, persisted logs read | Platform services: Executor, Object Store Service, DataProxy | Workload identity federation |
+| Admin Role (`adminflyterole`) | R/W to object store buckets, secrets manager access, persisted logs read | Platform services: Executor, Object Store Service, DataProxy (all on data plane) | Workload identity federation |
 | User Role (`userflyterole`) | R/W to object store buckets | Task pods (user workloads) | Workload identity via K8s service account annotation |
 
 These roles use cloud-native workload identity federation (IAM Roles for Service Accounts on AWS, Workload Identity on GCP, Azure Workload Identity on Azure), eliminating the need for static credential storage.
 
 ## Control plane infrastructure
 
-The Union.ai control plane is hosted on AWS with enterprise-grade infrastructure security:
+The Union.ai control plane is hosted on AWS with enterprise-grade infrastructure security.
+Under the zero-trust architecture, the control plane handles only orchestration metadata — the DataProxy service has been relocated to the data plane, reducing the control plane's attack surface.
 
 * Managed PostgreSQL (AWS RDS) with AES-256 encryption at rest
 * Network isolation via VPC with restricted security groups

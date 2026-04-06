@@ -25,5 +25,6 @@ Customers choose the region for their data plane deployment, ensuring that all c
 
 ## Consistent security across clouds
 
-Regardless of the cloud provider selected, Union.ai enforces consistent security guarantees through its architecture: the same control plane/data plane separation, the same presigned URL model, the same tunnel-based connectivity, the same RBAC framework, and the same encryption standards.
+Regardless of the cloud provider selected, Union.ai enforces consistent security guarantees through its architecture: the same control plane/data plane separation, the same zero-trust data isolation (no customer data transits the control plane), the same presigned URL model, the same Direct-to-DataPlane tunnel connectivity, the same RBAC framework, and the same encryption standards.
+The [Default and Enterprise 1 security tiers](./deployment-models) are available across all supported cloud providers.
 Cloud-specific implementations (IAM roles, encryption services, log aggregators) are abstracted by the platform while maintaining native integration with each provider’s security services.

@@ -1,6 +1,6 @@
 ---
 title: Data residency summary
-weight: 14
+weight: 16
 variants: -flyte +union
 ---
 
@@ -15,8 +15,11 @@ variants: -flyte +union
 | Code bundles | Customer object store | Presigned URL | No — direct client ↔ object store |
 | Reports (HTML) | Customer object store | Presigned URL | No — direct client ↔ object store |
 | Container images | Customer container registry | Pulled by K8s | No — stays in customer infra |
-| Task logs | Customer log aggregator | Streamed via tunnel | Relayed in-memory (not stored) |
-| Secrets | Customer secrets backend | Injected at runtime | Relayed during create (not stored) |
-| Observability metrics | Customer ClickHouse | Proxied via DataProxy | Relayed in-memory (not stored) |
+| Task logs | Customer log aggregator | Direct-to-DataPlane tunnel | No — served directly from data plane |
+| Secrets | Customer secrets backend | Injected at runtime | Relayed during create (not stored)* |
+| Observability metrics | Customer ClickHouse | Direct-to-DataPlane tunnel | No — served directly from data plane |
 | User identity / RBAC | Control plane DB | ConnectRPC | Yes |
 | Cluster state | Control plane DB | Internal | Yes |
+
+> [!NOTE] Information needed
+> *The zero-trust architecture eliminates all data transit through the control plane for visualization and retrieval. Whether the secret creation relay is also changing under the zero-trust model has not yet been confirmed.

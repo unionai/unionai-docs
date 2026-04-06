@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes RBAC: Control plane"
-weight: 16
+weight: 18
 variants: -flyte +union
 ---
 
@@ -17,7 +17,7 @@ variants: -flyte +union
 | `console-clusterrole` | Read-only access for Union Console UI to display namespaces, workflows, and pod logs | ""(core) `flyte.lyft.com` | `namespaces flyteworkflows pods pods/log` | `get list watch` |
 | `authorizer-clusterrole` | Authorizer service reads namespaces for authorization decisions | ""(core) | `namespaces` | `get list watch` |
 | `cluster-clusterrole` | Cluster management service monitors cluster state for health and capacity | ""(core) `apps` | `namespaces nodes replicasets deployments` | `get list watch` |
-| `dataproxy-clusterrole` | DataProxy service reads secrets for presigned URL generation and data relay configuration | ""(core) | `secrets` | `get list watch` |
+| `dataproxy-clusterrole` | **Relocated to data plane under zero-trust architecture.** Previously handled presigned URL generation and data relay on the control plane. See [Kubernetes RBAC: data plane](./kubernetes-rbac-data-plane). | — | — | — |
 | `executions-clusterrole` | Executions service reads workflow state for execution management and status tracking | ""(core) `flyte.lyft.com` | `namespaces configmaps flyteworkflows` | `get list watch` |
 | `queue-clusterrole` | Queue service reads namespaces for task queue routing | ""(core) | `namespaces` | `get list watch` |
 | `run-scheduler-clusterrole` | Run Scheduler reads namespaces to determine scheduling scope for workflows | ""(core) | `namespaces` | `get list watch` |

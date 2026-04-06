@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes RBAC: Data plane"
-weight: 17
+weight: 19
 variants: -flyte +union
 ---
 
@@ -19,6 +19,9 @@ variants: -flyte +union
 | `proxy-system-secret` | Manages proxy service secrets within the union namespace for tunnel authentication and configuration | Role | "*" | union namespace | `secrets` | `get list create update delete` |
 | `operator-system` (ns) | Operator manages its own secrets and deployments within the union namespace | Role | "*" | union namespace | `secrets deployments` | `get list watch create update` |
 | `union-operator-admission` | Webhook admission controller reads/creates TLS secrets for webhook serving certificates | Role | ""(core) | union namespace | `secrets` | `get create` |
+
+> [!NOTE] Information needed
+> Under the zero-trust architecture, the DataProxy service has been relocated from the control plane to the data plane. The exact Kubernetes RBAC roles and permissions for DataProxy running on the data plane are not yet documented. This table will be updated when the DataProxy DP RBAC specification is available.
 
 ## Observability and monitoring
 

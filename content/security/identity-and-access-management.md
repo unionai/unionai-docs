@@ -16,7 +16,7 @@ Union.ai supports three authentication methods to accommodate different usage pa
 | API Keys | Human user (delegated) | Static bearer token | CI/CD scripts, simple automation |
 | Service Accounts | Application identity | OAuth2 client_id + client_secret → short-lived token | Production pipelines, multi-service systems |
 
-API keys are issued per user and inherit the user’s RBAC permissions.
+API keys are issued per user and inherit the user's RBAC permissions.
 They can be created and revoked via the UI or CLI.
 Service accounts are provisioned through the Identity Service, creating OAuth2 applications with distinct, auditable identities independent of any human user.
 
@@ -32,7 +32,7 @@ Union.ai implements a policy-based Role-Based Access Control (RBAC) system with 
 | Custom Policies | Custom policies bind roles (built-in or custom) to resources scoped at org-wide, domain, or project+domain level using composable YAML bindings via `uctl` | Giving contributor access to a specific project's development and staging domains, but only viewer access in production |
 
 RBAC policies are enforced at the service layer.
-Every API request is authenticated and authorized against the user’s role assignments before any data access occurs.
+Every API request is authenticated and authorized against the user's role assignments before any data access occurs.
 Users have the ability to create custom policies to further refine access control.
 
 ## Organization isolation
@@ -59,16 +59,24 @@ Tenant isolation controls are covered by Union.ai's SOC 2 Type II audit scope. T
 
 Union.ai maintains controls governing how its personnel interact with customer environments.
 
-### Current access model
+### Access model
 
-Union.ai support and engineering personnel may access a customer's Union.ai tenant (the control plane UI and API for that organization) for the purposes of onboarding, troubleshooting, and operational support. This access is authenticated through the same OIDC/SSO mechanisms as customer users and is subject to RBAC policies. Personnel access the customer's tenant, not the customer's data plane infrastructure directly. Union.ai personnel do not have IAM credentials for the customer's cloud account and cannot directly access the customer's object stores, secrets backends, or container registries.
+Union.ai operates a zero-trust architecture in which data visualization (logs, inputs/outputs, metrics) is served directly from the customer's data plane via the Direct-to-DataPlane tunnel. Union.ai personnel who access a customer's tenant can view orchestration metadata but cannot see customer data, because customer data is never routed through the control plane. Personnel access is authenticated through the same OIDC/SSO mechanisms as customer users and is subject to RBAC policies. Personnel access the customer's tenant, not the customer's data plane infrastructure directly. Union.ai personnel do not have IAM credentials for the customer's cloud account and cannot directly access the customer's object stores, secrets backends, or container registries.
 
 > [!NOTE]
 > In BYOC deployments, Union.ai personnel additionally have K8s cluster management access. See [BYOC deployment differences: Human access](./byoc-differences#human-access-to-customer-environments) for details.
 
+### Default deployment
+
+In the default deployment, all data visualization traffic flows through the Direct-to-DataPlane tunnel from the customer's data plane directly to the client. Union.ai personnel accessing a customer's tenant see only orchestration metadata (workflow definitions, run status, scheduling configuration). Customer data (logs, inputs/outputs, metrics, reports) is served from the data plane and does not transit the control plane, so it is not visible to Union.ai personnel through the control plane UI.
+
+### Enterprise 1: VPN-restricted access
+
+For organizations requiring the highest assurance, the Enterprise 1 configuration restricts all data visualization to users connected to the organization's corporate VPN. A customer-managed load balancer within the VPC replaces the Cloudflare-terminated Direct-to-DataPlane tunnel. No Union.ai employee can ever see customer data under this configuration. Union.ai's RBAC and SSO continue to function. See [Deployment models and security tiers](./deployment-models) for configuration details.
+
 ### Access scope and limitations
 
-When Union.ai personnel access a customer's tenant, they can view orchestration metadata (workflow definitions, run status, scheduling configuration), view logs relayed through the tunnel (but cannot access the customer's log aggregator directly), and perform administrative operations (cluster configuration, namespace provisioning) as authorized by the customer's RBAC policy. Personnel cannot read secret values (the API is write-only for values), cannot access raw data in the customer's object stores (presigned URLs are generated per-request and are not retained), and cannot access the customer's cloud account or IAM roles. In BYOC deployments, administrative operations [extend to direct K8s cluster management](./byoc-differences#human-access-to-customer-environments).
+When Union.ai personnel access a customer's tenant, they can view orchestration metadata (workflow definitions, run status, scheduling configuration) and perform administrative operations (cluster configuration, namespace provisioning) as authorized by the customer's RBAC policy. Personnel cannot see customer data in the UI (data is served from the data plane, not the control plane), cannot read secret values (the API is write-only for values), cannot access raw data in the customer's object stores (presigned URLs are generated per-request and are not retained), and cannot access the customer's cloud account or IAM roles. In BYOC deployments, administrative operations [extend to direct K8s cluster management](./byoc-differences#human-access-to-customer-environments).
 
 ### Audit trail
 

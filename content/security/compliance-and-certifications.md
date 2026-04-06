@@ -43,12 +43,14 @@ In addition to certifications, Union.ai complies with the following standard con
 
 Union.ai is designed to support HIPAA compliance requirements, enabling healthcare and life sciences organizations to process protected health information (PHI) within their data planes.
 Because all customer data—including any PHI—remains exclusively in the customer’s own cloud infrastructure, Union.ai’s architecture inherently supports HIPAA’s data protection requirements.
+Under the zero-trust architecture, no customer data — including PHI — ever transits the control plane, providing absolute assurance for HIPAA compliance.
 The control plane stores only orchestration metadata and never persists PHI.
 
 ## GDPR alignment
 
 Union.ai’s architecture inherently supports GDPR through its data residency model.
 For EU-region data planes, all customer data remains within the European Union.
+Under the zero-trust architecture, no customer data ever transits the control plane, strengthening GDPR compliance by ensuring data never leaves the customer’s chosen region even temporarily.
 The control plane stores only orchestration metadata, and where error messages may contain user-generated content, this is documented and scoped.
 
 ## Trust Center
@@ -75,6 +77,7 @@ Union.ai operates under a shared responsibility model:
 | Data encryption at rest | Default cloud encryption | Optional CMK configuration |
 | Network security (tunnel) | Tunnel management | Firewall and VPC configuration |
 | IAM roles and policies | Role templates and documentation | Role creation and binding |
+| Data visualization/retrieval | Direct-to-DataPlane tunnel infrastructure | VPN/LB configuration (Enterprise 1 only) |
 | Secrets management | API and relay infrastructure | Backend selection and secret values |
 | Application-level access control | RBAC framework | Role assignment and policy |
 | Compliance documentation | SOC 2 report, Trust Center | Customer-specific attestations |

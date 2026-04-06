@@ -1,6 +1,6 @@
 ---
 title: BYOC deployment differences
-weight: 13
+weight: 21
 variants: -flyte +union
 ---
 

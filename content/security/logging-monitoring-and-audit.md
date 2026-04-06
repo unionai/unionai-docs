@@ -8,7 +8,7 @@ variants: -flyte +union
 
 ## Task logging
 
-Logs are collected by `fluentbit` (deployed as a `DaemonSet` on the data plane) and shipped to the customer’s cloud-native log service:
+Logs are collected by `fluentbit` (deployed as a `DaemonSet` on the data plane) and shipped to the customer's cloud-native log service:
 
 | Cloud Provider | Log Service | Integration |
 | --- | --- | --- |
@@ -17,13 +17,16 @@ Logs are collected by `fluentbit` (deployed as a `DaemonSet` on the data plane) 
 | Azure | Azure Monitor / Log Analytics | Fluent Bit → Azure Monitor |
 
 The data plane log provider serves logs from two sources: live logs streamed directly from the Kubernetes API while a task is running, and persisted logs read from the cloud log aggregator after a pod terminates.
-Log data is never stored in the control plane—it is streamed from the customer’s data plane through the Cloudflare tunnel and relayed to the client as a stateless pass-through.
+Under the zero-trust architecture, log data is served directly from the customer's data plane to the client via the [Direct-to-DataPlane tunnel](./network-security#direct-to-dataplane-tunnel). Logs never transit the control plane. The DataProxy service, running on the data plane, handles log retrieval requests authenticated by the Envoy router.
 
 ## Observability metrics
 
 A per-cluster instance (Prometheus and/or ClickHouse) stores time-series observability metrics including resource utilization and cost data.
-Queries are proxied through the DataProxy service to the customer’s instance.
-Metrics data never leaves the customer’s infrastructure. In BYOC deployments, Union.ai [deploys and manages the monitoring stack](./byoc-differences#infrastructure-management).
+The DataProxy service, running on the data plane, serves metric queries directly to clients via the [Direct-to-DataPlane tunnel](./network-security#direct-to-dataplane-tunnel).
+Metrics data never leaves the customer's infrastructure and never transits the control plane. In BYOC deployments, Union.ai [deploys and manages the monitoring stack](./byoc-differences#infrastructure-management).
+
+> [!NOTE] Information needed
+> The zero-trust architecture transitions observability to a push-based model where the data plane pushes metrics rather than the control plane pulling them. The exact mechanism and implementation status are not yet documented.
 
 ## Audit trail
 
@@ -40,4 +43,4 @@ Union.ai maintains comprehensive audit capabilities:
 
 Union.ai maintains documented incident response procedures aligned with SOC 2 Type II requirements.
 These include defined escalation paths, communication protocols, containment procedures, and post-incident review processes.
-The control plane’s stateless handling of customer data limits the potential impact of any control plane incident.
+Under the zero-trust architecture, the control plane handles no customer data at all, further limiting the potential impact of any control plane incident to orchestration metadata only.
