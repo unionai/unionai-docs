@@ -84,8 +84,12 @@ The control plane has access to:
 {{< variant union >}}
 {{< grid >}}
 
-{{< link-card target="../deployment/cluster-recommendations" icon="box" title="Installation" >}}
-Installing {{< key product_name >}}
+{{< link-card target="./byoc/_index" icon="cloud" title="BYOC deployment" >}}
+Union.ai manages infrastructure in your cloud account
+{{< /link-card >}}
+
+{{< link-card target="./selfmanaged/_index" icon="box" title="Self-managed deployment" >}}
+You manage infrastructure on your own cloud account
 {{< /link-card >}}
 
 {{< /grid >}}
