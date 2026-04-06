@@ -6,11 +6,17 @@ variants: -flyte +union
 
 # Data protection
 
+> [!TIP] Updated for zero-trust architecture
+> This page has been updated to reflect the zero-trust security architecture. Tabbed comparisons below highlight key changes.
+
 ## Data classification
 
 Union.ai maintains a rigorous data classification framework.
 Every data type handled by the platform is classified by residency and access pattern:
 
+{{< tabs >}}
+{{< tab "Zero-trust (current)" >}}
+{{< markdown >}}
 | Data Type | Classification | Residency | Transits Control Plane? |
 | --- | --- | --- | --- |
 | Task inputs/outputs | Customer Data | Customer object store | No — direct via presigned URL |
@@ -24,6 +30,26 @@ Every data type handled by the platform is classified by residency and access pa
 | Run/action metadata | Orchestration Metadata | Control plane DB | Yes |
 | User identity/RBAC | Platform Metadata | Control plane DB | Yes |
 | Cluster records | Platform Metadata | Control plane DB | Yes |
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Previous architecture" >}}
+{{< markdown >}}
+| Data Type | Classification | Residency | Transits Control Plane? |
+| --- | --- | --- | --- |
+| Task inputs/outputs | Customer Data | Customer object store | No — direct via presigned URL |
+| Code bundles | Customer Data | Customer object store | No — direct via presigned URL |
+| Container images | Customer Data | Customer registry | No — stays in customer infra |
+| Reports (HTML) | Customer Data | Customer object store | No — direct via presigned URL |
+| Task logs | Customer Data | Customer log aggregator | Relayed in-memory (not stored) |
+| Secrets | Customer Data | Customer secrets backend | Relayed during create (not stored) |
+| Observability metrics | Customer Data | Customer data plane | Relayed in-memory (not stored) |
+| Task definitions | Orchestration Metadata | Control plane DB | Yes — metadata only |
+| Run/action metadata | Orchestration Metadata | Control plane DB | Yes |
+| User identity/RBAC | Platform Metadata | Control plane DB | Yes |
+| Cluster records | Platform Metadata | Control plane DB | Yes |
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 > [!NOTE] Information needed
 > The zero-trust architecture eliminates all data transit through the control plane for visualization and retrieval. Whether the secret creation relay is also being changed is not yet confirmed.

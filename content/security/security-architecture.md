@@ -6,6 +6,9 @@ variants: -flyte +union
 
 # Security architecture
 
+> [!TIP] Updated for zero-trust architecture
+> This page has been substantially revised to reflect the zero-trust security architecture. Tabbed comparisons below highlight key changes.
+
 Union.ai's security architecture is founded on the principle of strict separation between orchestration (control plane) and execution (data plane).
 This architectural decision ensures that customer data remains within the customer's own cloud infrastructure at all times.
 
@@ -169,6 +172,9 @@ This pattern replaces the previous streaming relay architecture. Data now flows:
 
 ### Data in the UI
 
+{{< tabs >}}
+{{< tab "Zero-trust (current)" >}}
+{{< markdown >}}
 | Field | What is it? | Where is it stored? | How is it retrieved? |
 | --- | --- | --- | --- |
 | Task names | Python function and module names | Control Plane | CP API |
@@ -181,3 +187,21 @@ This pattern replaces the previous streaming relay architecture. Data now flows:
 | Timeline timestamps | Showing when a task started, when it moved from queued to running to completed | Control Plane | CP API |
 | Errors | Showing the failure message written into stderr or raised exceptions for a task attempt | Control Plane | CP API |
 | Observability metrics | Prometheus metrics for task and workflow performance | Data plane Prometheus | Direct-to-DataPlane tunnel (served directly from data plane) |
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Previous architecture" >}}
+{{< markdown >}}
+| Field | What is it? | Where is it stored? | How is it retrieved? |
+| --- | --- | --- | --- |
+| Task names | Python function and module names | Control Plane | CP API |
+| Users' names | First and last names of users on the platform | IDP | Cached in memory in CP, otherwise retrieved directly from IDP |
+| Inputs/Outputs | Primitive inputs/outputs returned by tasks (e.g. return 5) | Dataplane's S3 bucket | Cloudflare Tunnel |
+| Logs | Runtime logs written by the task code/SDK | Dataplane K8s for live logs, dataplane S3/Cloudwatch/Stackdriver for persistent logs | Cloudflare Tunnel |
+| K8s Events | Pod autoscaling events explaining whether a node is found or the cluster needs to scale up… etc. | Dataplane K8s | Cloudflare Tunnel |
+| Report | Reports produced by the task code in HTML | Dataplane's S3 bucket | A signed URL is generated through the tunnel, then the browser renders it in iframe |
+| Code explorer | Code bundled when the task was kicked off, that contains the task code and surrounding dependencies/functions it calls| Dataplane's S3 bucket | A signed URL is generated through the tunnel, then JS in the browser downloads and unzips the bundle to render |
+| Timeline timestamps | Showing when did a task start, when it moved from queued to running to completed | Control Plane | CP API |
+| Errors | Showing the failure message written into stderr or raised exceptions for a task attempt | Control Plane | CP API |
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}

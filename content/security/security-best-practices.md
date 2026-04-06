@@ -6,6 +6,9 @@ variants: -flyte +union
 
 # Security best practices
 
+> [!TIP] New in zero-trust architecture
+> This page was introduced as part of the zero-trust security architecture.
+
 This page provides recommendations for hardening your Union.ai deployment beyond the platform defaults.
 
 ## Recommended security configuration

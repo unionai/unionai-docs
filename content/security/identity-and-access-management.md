@@ -6,6 +6,9 @@ variants: -flyte +union
 
 # Identity and access management
 
+> [!TIP] Updated for zero-trust architecture
+> The human access model has been updated to reflect the Default and Enterprise 1 security tiers.
+
 ## Authentication
 
 Union.ai supports three authentication methods to accommodate different usage patterns:

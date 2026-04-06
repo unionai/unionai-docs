@@ -6,6 +6,9 @@ variants: -flyte +union
 
 # Deployment models and security tiers
 
+> [!TIP] New in zero-trust architecture
+> This page was introduced as part of the zero-trust security architecture.
+
 ## Overview
 
 Union.ai deployments have two independent dimensions:

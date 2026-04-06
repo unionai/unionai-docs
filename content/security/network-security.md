@@ -6,6 +6,9 @@ variants: -flyte +union
 
 # Network security and connectivity
 
+> [!TIP] New in zero-trust architecture
+> This page was introduced as part of the zero-trust security architecture.
+
 This page provides a detailed reference for Union.ai's network security architecture, covering all tunnels, communication paths, and connectivity options.
 
 ## Network architecture overview

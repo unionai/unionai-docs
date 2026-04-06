@@ -7,6 +7,9 @@ mermaid: true
 
 # Compute and control plane components
 
+> [!TIP] Updated for zero-trust architecture
+> This page has been substantially revised. DataProxy has moved from the control plane to the data plane, and the tunnel architecture now distinguishes between the control plane tunnel and the Direct-to-DataPlane tunnel.
+
 This section provides a detailed reference for each security-relevant component running on the data plane and/or control plane.
 Understanding these components is essential for enterprise security teams conducting architecture reviews.
 
