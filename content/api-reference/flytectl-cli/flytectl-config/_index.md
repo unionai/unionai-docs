@@ -1,6 +1,6 @@
 ---
 title: flytectl config
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl config

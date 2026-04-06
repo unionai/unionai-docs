@@ -1,7 +1,7 @@
 ---
 title: Enabling AWS ECR
 weight: 2
-variants: -flyte +byoc -selfmanaged
+variants: -flyte +union
 ---
 
 # Enabling AWS ECR

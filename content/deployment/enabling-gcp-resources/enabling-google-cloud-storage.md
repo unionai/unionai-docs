@@ -1,7 +1,7 @@
 ---
 title: Enabling Google Cloud Storage
 weight: 1
-variants: -flyte +byoc -selfmanaged
+variants: -flyte +union
 ---
 
 # Enabling Google Cloud Storage

@@ -1,6 +1,6 @@
 ---
 title: flytectl demo reload
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl demo reload

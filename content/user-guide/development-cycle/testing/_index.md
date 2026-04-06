@@ -1,7 +1,7 @@
 ---
 title: Testing
 weight: 19
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 sidebar_expanded: false
 ---
 

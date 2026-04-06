@@ -1,6 +1,6 @@
 ---
 title: flytectl delete clusterconfig
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl delete clusterconfig

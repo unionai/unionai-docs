@@ -1,7 +1,7 @@
 ---
 title: Overview
 weight: 1
-variants: -flyte -byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Overview
@@ -18,7 +18,7 @@ The control plane:
   * Is responsible for placing executions onto data plane clusters and performing other cluster control and management functions.
 
 ## Data plane
-{{< variant byoc >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 All your workflow and task executions are performed in the data plane, which runs within your AWS or GCP account. The data plane's clusters are provisioned and managed by the control plane through a resident Union operator with minimal required permissions.
 {{< /markdown >}}
@@ -27,7 +27,7 @@ All your workflow and task executions are performed in the data plane, which run
 {{< key product_name >}} operates one control plane for each supported region, which supports all data planes within that region. You can choose the region in which to locate your data plane. Currently, {{< key product_name >}} supports the `us-west`, `us-east`, `eu-west`, and `eu-central` regions, and more are being added.
 
 ### Data plane nodes
-{{< variant byoc >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 Once the data plane is deployed in your AWS or GCP account, there are different kinds of nodes with different responsibilities running in your cluster. In {{< key product_name >}}, we distinguish between default nodes and worker nodes.
 
@@ -39,7 +39,7 @@ When worker nodes are not in use, they automatically scale down to the configure
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant selfmanaged >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 Worker nodes are responsible for executing your workloads. You have full control over the configuration of your worker nodes. When worker nodes are not in use, they automatically scale down to the configured minimum.
 {{< /markdown >}}

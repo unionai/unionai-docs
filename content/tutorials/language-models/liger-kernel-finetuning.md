@@ -1,7 +1,7 @@
 ---
 title: Benchmarking LLM training with the Liger Kernel
 weight: 5
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 layout: py_example
 example_file: /unionai-examples/v1/tutorials/liger_kernel_finetuning/liger_kernel_finetuning.py
 resources:

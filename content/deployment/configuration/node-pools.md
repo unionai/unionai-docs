@@ -1,7 +1,7 @@
 ---
 title: Node Pools
 weight: 1
-variants: -flyte -byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Configuring Service and Worker Node Pools

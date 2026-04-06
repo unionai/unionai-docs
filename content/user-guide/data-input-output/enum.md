@@ -1,7 +1,7 @@
 ---
 title: Enum type
 weight: 7
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Enum type

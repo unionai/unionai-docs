@@ -1,6 +1,6 @@
 ---
 title: flytectl get clusterconfigs
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl get clusterconfigs

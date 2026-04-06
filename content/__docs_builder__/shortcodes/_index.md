@@ -1,6 +1,6 @@
 ---
 title: Shortcode Examples
-variants: -flyte -byoc -selfmanaged
+variants: -flyte -union
 ---
 
 # Shortcode Examples {.docs-builder .shortcodes}

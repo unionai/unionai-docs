@@ -1,7 +1,7 @@
 ---
 title: Authoring
 weight: 4
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Authoring
@@ -49,7 +49,7 @@ For example:
 ```markdown
 ---
 title: My Page
-variants: -flyte +byoc -selfmanaged
+variants: -flyte +union
 ---
 ```
 

@@ -1,7 +1,7 @@
 ---
 title: Pickle type
 weight: 8
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Pickle type

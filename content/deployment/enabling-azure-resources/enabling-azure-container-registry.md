@@ -1,7 +1,7 @@
 ---
 title: Enabling Azure Container Registry (ACR)
 weight: 2
-variants: -flyte +byoc -selfmanaged
+variants: -flyte +union
 ---
 
 # Enabling Azure Container Registry (ACR)

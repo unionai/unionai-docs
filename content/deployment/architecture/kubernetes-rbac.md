@@ -1,7 +1,7 @@
 ---
 title: Kubernetes Access Controls
 weight: 4
-variants: -flyte -byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Kubernetes Access Controls

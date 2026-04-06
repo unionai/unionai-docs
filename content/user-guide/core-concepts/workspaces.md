@@ -1,7 +1,7 @@
 ---
 title: Workspaces
 weight: 8
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Workspaces
@@ -280,7 +280,7 @@ You can also set the resources for your workspace:
 ![Resources](../../_static/images/user-guide/core-concepts/workspaces/setting-resources.png)
 
 
-{{< variant byoc >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 
 These resources must be compatible with the resources available to your BYOC
@@ -332,7 +332,7 @@ task execution details page:
 
 ![Task Execution](../../_static/images/user-guide/core-concepts/workspaces/customize-container-image-get-uri.png)
 
-{{< variant byoc >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 
 You can specify:

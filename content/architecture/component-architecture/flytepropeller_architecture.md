@@ -1,7 +1,7 @@
 ---
 title: FlytePropeller architecture
 weight: 1
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # FlytePropeller architecture

@@ -1,6 +1,6 @@
 ---
 title: flytectl get policy
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl get policy

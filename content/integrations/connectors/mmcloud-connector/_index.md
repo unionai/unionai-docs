@@ -1,7 +1,7 @@
 ---
 title: Memory Machine Cloud connector
 weight: 1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: false
 ---
 
@@ -28,7 +28,7 @@ For an example query, see [Memory Machine Cloud connector example usage](./mmclo
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 For an example query, see [Memory Machine Cloud connector example usage](./mmcloud-connector-example-usage-union)

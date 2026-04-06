@@ -1,7 +1,7 @@
 ---
 title: Enabling AWS Secrets Manager
 weight: 3
-variants: -flyte +byoc -selfmanaged
+variants: -flyte +union
 ---
 
 # Enabling AWS Secrets Manager

@@ -1,7 +1,7 @@
 ---
 title: Mapping over launch plans
 weight: 8
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 {{< variant flyte >}}

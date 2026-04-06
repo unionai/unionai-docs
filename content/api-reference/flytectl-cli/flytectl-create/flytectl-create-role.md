@@ -1,6 +1,6 @@
 ---
 title: flytectl create role
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl create role

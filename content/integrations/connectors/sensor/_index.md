@@ -1,7 +1,7 @@
 ---
 title: Sensor connectror
 weight: 1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: false
 ---
 
@@ -16,7 +16,7 @@ For an example query, see [Sensor connector example usage](./file-sensor-example
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 For an example query, see [Sensor connector example usage](./file-sensor-example-union)

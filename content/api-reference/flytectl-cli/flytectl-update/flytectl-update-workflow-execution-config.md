@@ -1,6 +1,6 @@
 ---
 title: flytectl update workflow-execution-config
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl update workflow-execution-config

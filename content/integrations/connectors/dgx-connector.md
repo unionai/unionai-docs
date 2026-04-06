@@ -1,7 +1,7 @@
 ---
 title: DGX connector
 weight: 7
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # DGX connector

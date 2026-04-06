@@ -1,7 +1,7 @@
 ---
 title: Streaming execution events
 weight: 21
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Streaming execution events

@@ -1,6 +1,6 @@
 ---
 title: flytectl delete clusterpoolassignment
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl delete clusterpoolassignment

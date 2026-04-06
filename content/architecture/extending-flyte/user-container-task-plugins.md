@@ -1,7 +1,7 @@
 ---
 title:  User container task plugins
 weight: 3
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # User container task plugins

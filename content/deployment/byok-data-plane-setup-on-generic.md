@@ -1,7 +1,7 @@
 ---
 title: Data plane setup on generic Kubernetes
 weight: 3
-variants: -flyte -byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Data plane setup on generic Kubernetes

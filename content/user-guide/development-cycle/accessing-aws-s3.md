@@ -1,7 +1,7 @@
 ---
 title: Accessing AWS S3 buckets
 weight: 14
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Accessing AWS S3 buckets

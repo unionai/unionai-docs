@@ -1,7 +1,7 @@
 ---
 title: Named outputs
 weight: 9
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Named outputs

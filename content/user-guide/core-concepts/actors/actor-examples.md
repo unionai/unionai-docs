@@ -1,7 +1,7 @@
 ---
 title: Actor examples
 weight: 2
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Actor examples
@@ -52,7 +52,7 @@ def is_even_wf(point_a: list[int]) -> list[bool]:
 
 In this example, the `actor.task`-decorated task is invoked multiple times in one workflow, and will use the same `ActorEnvironment` on each invocation:
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 ```python
@@ -99,7 +99,7 @@ def wf(input: int = 0) -> int:
 Every task execution in the following example will execute in the same `ActorEnvironment`.
 You can use the same environment for multiple tasks in the same workflow and tasks across workflow definitions, using both subworkflows and launch plans:
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 ```python
@@ -223,7 +223,7 @@ def wf() -> tuple[str,str]:
 
 With map tasks, each task is executed within the same environment, making actors a natural fit for this pattern. If a task has an expensive operation, like model loading, caching it with `@actor_cache` can improve performance. This example shows how to cache model loading in a mapped task to avoid redundant work and save resources.
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 ```python
@@ -298,7 +298,7 @@ def run_inference(values: list[int] = list(range(20))) -> list[int]:
 
 Finally, we can cache custom objects by defining the `__hash__` and `__eq__` methods. These methods allow `@actor_cache` to determine if an object is the same between runs, ensuring that expensive operations are skipped if the object hasn’t changed.
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 ```python

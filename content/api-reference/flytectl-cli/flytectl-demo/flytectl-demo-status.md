@@ -1,6 +1,6 @@
 ---
 title: flytectl demo status
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl demo status

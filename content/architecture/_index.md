@@ -1,7 +1,7 @@
 ---
 title: Architecture
 weight: 6
-variants: +flyte -byoc +selfmanaged
+variants: +flyte +union
 top_menu: true
 sidebar_expanded: true
 ---
@@ -10,7 +10,7 @@ sidebar_expanded: true
 
 This section covers the architecture of the {{< key product_name >}} system.
 
-{{< variant selfmanaged >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 
 Union’s modular architecture allows for great flexibility and control. The customer can decide how many clusters to have, their shape, and who has access to what. All communication is encrypted.

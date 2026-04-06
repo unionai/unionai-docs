@@ -1,7 +1,7 @@
 ---
 title: StructuredDataset
 weight: 11
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # StructuredDataset

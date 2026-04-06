@@ -1,7 +1,7 @@
 ---
 title: Google OpenID Connect
 weight: 2
-variants: -flyte +byoc -selfmanaged
+variants: -flyte +union
 ---
 
 # Google OpenID Connect

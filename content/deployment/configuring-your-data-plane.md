@@ -1,7 +1,7 @@
 ---
 title: Configuring your data plane
 weight: 3
-variants: -flyte +byoc -selfmanaged
+variants: -flyte +union
 ---
 
 # Configuring your data plane

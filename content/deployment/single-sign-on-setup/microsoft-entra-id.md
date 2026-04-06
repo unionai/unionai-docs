@@ -1,7 +1,7 @@
 ---
 title: Microsoft Entra ID (formerly Azure AD)
 weight: 3
-variants: -flyte +byoc -selfmanaged
+variants: -flyte +union
 ---
 
 # Microsoft Entra ID (formerly Azure AD)

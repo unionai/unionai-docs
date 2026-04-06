@@ -1,7 +1,7 @@
 ---
 title: Simple Papermill Notebook
 weight: 1
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 jupyter_notebook: /unionai-examples/v1/flyte-integrations/flytekit-plugins/papermill_plugin/papermill_plugin/nb_simple.ipynb
 content_hash: f6cc2c37eb72ea746faa0fe9d36897daa4254b447f12b814dcbf6a3b2a375907
 ---

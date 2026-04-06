@@ -1,6 +1,6 @@
 ---
 title: flytectl get execution-cluster-label
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl get execution-cluster-label

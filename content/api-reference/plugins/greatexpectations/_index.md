@@ -1,7 +1,7 @@
 ---
 title: Great Expectations
 version: 1.7.1
-variants: +flyte +byoc +selfmanaged +union
+variants: +flyte +union
 layout: py_api
 ---
 

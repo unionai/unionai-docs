@@ -1,7 +1,7 @@
 ---
 title: User guide
 weight: 1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 top_menu: true
 site_root: true
 sidebar_expanded: true
@@ -23,7 +23,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 
 # {{< key product_name >}} BYOC
@@ -44,7 +44,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant selfmanaged >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 
 # {{< key product_name >}} Self-managed
@@ -75,7 +75,7 @@ Flyte is the leading open-source Kubernetes-native workflow orchestrator.
 {{< /link-card >}}
 
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 
 {{< link-card target="introduction" icon="lightbulb" title="Introduction" >}}
 {{< key product_name >}} builds on the leading open-source workflow orchestrator, Flyte, to provide a powerful, scalable, and flexible platform for AI applications.
@@ -103,7 +103,7 @@ Manage the input and output of data in your {{< key product_name >}} workflow.
 Learn about {{< key product_name >}}-specific programming constructs.
 {{< /link-card >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 
 {{< link-card target="administration" icon="person-add" title="Administration" >}}
 {{< key product_full_name >}} administrators can manage users, projects, and resources.

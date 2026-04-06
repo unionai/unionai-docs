@@ -1,7 +1,7 @@
 ---
 title: Backend plugins
 weight: 4
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # Backend plugins

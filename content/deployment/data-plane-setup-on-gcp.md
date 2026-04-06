@@ -1,7 +1,7 @@
 ---
 title: Data plane setup on GCP
 weight: 6
-variants: -flyte +byoc -selfmanaged
+variants: -flyte +union
 ---
 
 # Data plane setup on GCP

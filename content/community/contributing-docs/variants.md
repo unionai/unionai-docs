@@ -1,7 +1,7 @@
 ---
 title: Variants
 weight: 2
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Variants
@@ -38,7 +38,7 @@ For example, if you look at the Markdown source for [this page (the page you are
 ---
 title: Platform overview
 weight: 1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 ```
 
@@ -160,7 +160,7 @@ This Markdown source is rendered as:
 >
 > {{< /markdown >}}
 > {{< /variant >}}
-> {{< variant byoc selfmanaged >}}
+> {{< variant union >}}
 > {{< markdown >}}
 >
 > **This text is only visible in the `byoc` and `selfmanaged` variants.**

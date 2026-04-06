@@ -1,6 +1,6 @@
 ---
 title: flytectl create execution
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl create execution

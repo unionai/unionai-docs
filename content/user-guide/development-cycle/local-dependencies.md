@@ -1,7 +1,7 @@
 ---
 title: Local dependencies
 weight: 6
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Local dependencies

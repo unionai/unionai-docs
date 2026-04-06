@@ -1,7 +1,7 @@
 ---
 title: Helm Values
 weight: 1
-variants: -flyte -byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Helm Values

@@ -1,7 +1,7 @@
 ---
 title: Platform deployment
 weight: 4
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 top_menu: true
 mermaid: true
 sidebar_expanded: true
@@ -18,7 +18,7 @@ The **control plane** does not have access to the code, data, images, or logs in
 If you choose a **Self-managed deployment**, your data isolation is further enhanced by the fact that you manage your data plane entirely on your own, without providing any access to Union.ai customer support.
 
 If you choose a **BYOC deployment**, Union.ai manages the Kubernetes cluster in your data plane for you. The data isolation of the control vs. data plane is still enforced - for example, Union.ai has no access to your object storage or logs. However, Union.ai customer support will have some access to your cluster, though strictly for upgrades, provisioning, and other actions related to maintaining cluster health.
-{{< variant byoc >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 
 > [!NOTE]
@@ -26,7 +26,7 @@ If you choose a **BYOC deployment**, Union.ai manages the Kubernetes cluster in 
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant selfmanaged >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 
 > [!NOTE]
@@ -35,7 +35,7 @@ If you choose a **BYOC deployment**, Union.ai manages the Kubernetes cluster in 
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 
 ## BYOC deployment
@@ -48,7 +48,7 @@ The BYOC deployment offers a fully "serverless in your cloud", turnkey solution 
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant selfmanaged >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 
 ## Self-managed deployment
@@ -62,7 +62,7 @@ The Self-managed deployment allows you to manage the data plane yourself on clou
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ## Data plane
@@ -99,7 +99,7 @@ The control plane has access to:
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant selfmanaged >}}
+{{< variant union-merged >}}
 {{< grid >}}
 
 {{< link-card target="../deployment/cluster-recommendations" icon="box" title="Installation" >}}

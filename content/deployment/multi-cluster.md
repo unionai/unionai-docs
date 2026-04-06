@@ -1,7 +1,7 @@
 ---
 title: Multi-cluster and multi-cloud
 weight: 4
-variants: -flyte +byoc -selfmanaged
+variants: -flyte +union
 ---
 
 # Multi-cluster and multi-cloud

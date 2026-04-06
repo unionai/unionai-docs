@@ -1,6 +1,6 @@
 ---
 title: LLM-optimized documentation
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 weight: 1
 ---
 
@@ -31,7 +31,7 @@ Every page on this site has a parallel LLM-optimized version in clean Markdown,
 accessible at the same URL path with `/page.md` appended and via the "**This page**" link in the "**LLM-optimized**" section of the right sidebar.
 For example, this page is at:
 
-{{< variant byoc >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 * [`{{< docs_home byoc v1 >}}/api-reference/flyte-context/`](.)
 {{< /markdown >}}
@@ -43,7 +43,7 @@ For example, this page is at:
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant selfmanaged >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 * [`{{< docs_home selfmanaged v1 >}}/api-reference/flyte-context/`](.)
 {{< /markdown >}}
@@ -51,7 +51,7 @@ For example, this page is at:
 
 and its LLM-optimized version is at:
 
-{{< variant byoc >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 * [`{{< docs_home byoc v1 >}}/api-reference/flyte-context/page.md`](page.md)
 {{< /markdown >}}
@@ -63,7 +63,7 @@ and its LLM-optimized version is at:
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant selfmanaged >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 * [`{{< docs_home selfmanaged v1 >}}/api-reference/flyte-context/page.md`](page.md)
 {{< /markdown >}}
@@ -99,7 +99,7 @@ Make sure you append the index into a file that is **loaded into context by defa
 Adding it as a skill or tool is less effective because the agent must decide to load it
 rather than having the information always available.
 
-{{< variant byoc >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 * [`llms.txt`](https://www.union.ai/docs/v1/byoc/llms.txt)
 {{< /markdown >}}
@@ -111,7 +111,7 @@ rather than having the information always available.
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant selfmanaged >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 * [`llms.txt`](https://www.union.ai/docs/v1/selfmanaged/llms.txt)
 {{< /markdown >}}
@@ -127,7 +127,7 @@ The `llms-full.txt` file contains the entire {{< key product_name >}} version 1.
 This file is very large and is not suitable for direct inclusion in an LLM context window,
 but it may be useful for RAG-based tools.
 
-{{< variant byoc >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 * [`llms-full.txt`](https://www.union.ai/docs/v1/byoc/llms-full.txt)
 {{< /markdown >}}
@@ -139,7 +139,7 @@ but it may be useful for RAG-based tools.
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant selfmanaged >}}
+{{< variant union-merged >}}
 {{< markdown >}}
 * [`llms-full.txt`](https://www.union.ai/docs/v1/selfmanaged/llms-full.txt)
 {{< /markdown >}}

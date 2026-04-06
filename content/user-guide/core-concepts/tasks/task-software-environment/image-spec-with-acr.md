@@ -1,7 +1,7 @@
 ---
 title: ImageSpec with ACR
 weight: 4
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # ImageSpec with ACR

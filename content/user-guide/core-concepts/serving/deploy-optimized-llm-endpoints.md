@@ -1,7 +1,7 @@
 ---
 title: Deploy Optimized LLM Endpoints with vLLM and SGLang
 weight: 5
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Deploy Optimized LLM Endpoints with vLLM and SGLang

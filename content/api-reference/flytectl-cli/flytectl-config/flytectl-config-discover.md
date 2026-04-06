@@ -1,6 +1,6 @@
 ---
 title: flytectl config discover
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl config discover

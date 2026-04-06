@@ -1,7 +1,7 @@
 ---
 title: Actors
 weight: 4
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 sidebar_expanded: false
 llm_readable_bundle: true
 ---
@@ -16,7 +16,7 @@ To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/
 
 ### `ActorEnvironment` parameters
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 * **container_image:** The container image to use for the task. This container must have the `{{< key kit >}}` python package installed, so this must be updated from the default (i.e. `cr.flyte.org/flyteorg/flytekit:py3.11-latest`).
 {{< /markdown >}}
@@ -30,7 +30,7 @@ To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/
 
 The following example shows how to create a basic `ActorEnvironment` and use it for one task:
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 ```python
@@ -90,7 +90,7 @@ The `@actor_cache` decorator provides a powerful mechanism to cache the results 
 
 Below is a simplified example showcasing the use of `@actor_cache` for caching repetitive tasks. This dummy example demonstrates caching model that is loaded by the `load_model` task.
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 ```python

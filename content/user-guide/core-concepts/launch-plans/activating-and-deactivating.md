@@ -1,7 +1,7 @@
 ---
 title: Activating and deactivating
 weight: 5
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Activating and deactivating
@@ -57,7 +57,7 @@ A confirmation modal will appear, allowing you to deactivate the launch plan and
 > The UI does not support deactivating launch plans that do not have schedules attached.
 > You can deactivate them with `uctl` or `{{< key kit_remote >}}`.
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 ## Activating and deactivating a launch plan on the command line with `uctl`

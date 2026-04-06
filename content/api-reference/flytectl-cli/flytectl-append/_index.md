@@ -1,6 +1,6 @@
 ---
 title: flytectl append
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl append

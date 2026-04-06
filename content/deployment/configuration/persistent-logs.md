@@ -1,7 +1,7 @@
 ---
 title: Persistent logs
 weight: 4
-variants: -flyte -byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Persistent logs

@@ -1,6 +1,6 @@
 ---
 title: flytectl get clusterpool
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl get clusterpool

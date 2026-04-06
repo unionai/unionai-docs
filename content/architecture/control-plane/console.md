@@ -1,7 +1,7 @@
 ---
 title: FlyteConsole
 weight: 4
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # FlyteConsole

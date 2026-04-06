@@ -1,14 +1,14 @@
 ---
 title: Setting up a production project
 weight: 5
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Setting up a production project
 
 In {{< key product_name >}}, your work is organized in a hierarchy with the following structure:
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 * **Organization**: Your {{< key product_name >}} instance, accessible at a specific URL like `{{< key product >}}.my-company.com`.
@@ -55,7 +55,7 @@ $ flytectl create project \
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 You can create a new project in the {{< key product_name >}} UI by clicking on the project breadcrumb at the top left and selecting **All projects**:

@@ -1,7 +1,7 @@
 ---
 title: ONNX TensorFlow
 layout: plugin
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 metadata:
   title: ONNX TensorFlow
   title_expanded: Flytekit ONNX TensorFlow Plugin

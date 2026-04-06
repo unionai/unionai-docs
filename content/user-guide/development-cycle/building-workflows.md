@@ -1,7 +1,7 @@
 ---
 title: Building workflows
 weight: 4
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Building workflows

@@ -1,6 +1,6 @@
 ---
 title: flytectl update workflow-meta
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl update workflow-meta

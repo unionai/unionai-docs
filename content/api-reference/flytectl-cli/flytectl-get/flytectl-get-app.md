@@ -1,6 +1,6 @@
 ---
 title: flytectl get app
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl get app

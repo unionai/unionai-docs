@@ -1,6 +1,6 @@
 ---
 title: flytectl demo teardown
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl demo teardown

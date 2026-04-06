@@ -1,7 +1,7 @@
 ---
 title: Map tasks
 weight: 1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 ## Map tasks

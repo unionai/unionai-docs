@@ -1,6 +1,6 @@
 ---
 title: flytectl get project
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl get project

@@ -1,6 +1,6 @@
 ---
 title: flytectl register
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl register

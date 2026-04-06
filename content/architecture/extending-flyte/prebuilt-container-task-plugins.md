@@ -1,7 +1,7 @@
 ---
 title: Prebuilt container task plugins
 weight: 2
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # Prebuilt container task plugins

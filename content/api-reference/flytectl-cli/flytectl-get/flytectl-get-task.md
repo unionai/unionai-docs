@@ -1,6 +1,6 @@
 ---
 title: flytectl get task
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl get task

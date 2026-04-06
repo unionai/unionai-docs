@@ -1,7 +1,7 @@
 ---
 title: Plugins setup
 weight: 16
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 sidebar_expanded: true
 llm_readable_bundle: true
 ---

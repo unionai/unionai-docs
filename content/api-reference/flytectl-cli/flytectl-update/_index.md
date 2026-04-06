@@ -1,6 +1,6 @@
 ---
 title: flytectl update
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl update

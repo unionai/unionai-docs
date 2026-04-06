@@ -1,7 +1,7 @@
 ---
 title: SLURM connector
 weight: 17
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 # Slurm connector
 

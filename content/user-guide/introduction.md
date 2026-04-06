@@ -1,7 +1,7 @@
 ---
 title: Introduction
 weight: 2
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Introduction
@@ -35,7 +35,7 @@ If you prefer a managed solution, have a look at [Union.ai BYOC (Bring Your Own 
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 {{< key product_name >}} unifies your AI development on a single end-to-end platform, bringing together data, models and compute with workflows of execution on a single pane of glass.

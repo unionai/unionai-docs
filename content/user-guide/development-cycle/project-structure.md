@@ -1,7 +1,7 @@
 ---
 title: Project structure
 weight: 2
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Project structure

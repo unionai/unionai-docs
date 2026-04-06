@@ -1,7 +1,7 @@
 ---
 title: Creating a RAG App with LanceDB and Google Gemini
 weight: 3
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 layout: py_example
 example_file: /unionai-examples/v1/tutorials/vector_store_lance_db/vector_store_lance_db.py
 ---

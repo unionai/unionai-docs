@@ -1,7 +1,7 @@
 ---
 title: Reference launch plans
 weight: 7
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Reference launch plans

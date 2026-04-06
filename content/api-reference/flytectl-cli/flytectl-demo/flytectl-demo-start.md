@@ -1,6 +1,6 @@
 ---
 title: flytectl demo start
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl demo start

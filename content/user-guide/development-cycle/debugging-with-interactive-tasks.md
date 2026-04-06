@@ -1,7 +1,7 @@
 ---
 title: Debugging with interactive tasks
 weight: 11
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Debugging with interactive tasks
@@ -42,7 +42,7 @@ flytekit
 flytekitplugins-flyteinteractive
 ```
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 ### example.py
@@ -75,7 +75,7 @@ def wf(name: str = "world") -> str:
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 ## Register and run the workflow
@@ -165,7 +165,7 @@ Available extensions differ from official VSCode for legal reasons and are hoste
 Python and Jupyter extensions are installed by default.
 Additional extensions can be added by defining a configuration object and passing it to the `@vscode` decorator, as shown below:
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 ### example-extensions.py
@@ -211,7 +211,7 @@ Idleness is monitored via a heartbeat file.
 
 The `max_idle_seconds` parameter can be used to set the maximum number of seconds the VSCode server can be idle before it is terminated.
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 ### example-manage-resources.py
@@ -250,7 +250,7 @@ Interactive tasks also allow the registration of functions to be executed both b
 This can be used for tasks requiring setup or cleanup.
 
 
-{{< variant flyte byoc selfmanaged >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 ### example-pre-post-hooks.py
@@ -296,7 +296,7 @@ This is done by setting the `run_task_first` parameter to `True`.
 
 
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 ### example-run-task-first.py
