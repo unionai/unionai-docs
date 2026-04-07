@@ -3,7 +3,7 @@ title: Platform deployment
 weight: 4
 variants: +flyte +union
 top_menu: true
-secondary_topnav: "+union -flyte"
+secondary_topnav: -flyte +union
 mermaid: true
 sidebar_expanded: true
 ---
