@@ -25,7 +25,7 @@ You can choose to customize these settings along increasing levels of specificit
 - Project, Domain, and Workflow name
 - Project, Domain, Workflow name and Launch plan name
 
-See [Project and domains](../../../user-guide/development-cycle/projects-and-domains) for general information about those concepts.
+See [Project and domains](../../user-guide/development-cycle/projects-and-domains) for general information about those concepts.
 
 The following section will show you how to configure the settings along these dimensions.
 

@@ -20,7 +20,7 @@ To use the flytekit batch plugin simply run the following:
 ]
 ### Configuring the backend to get AWS Batch working
 
-[Follow this guide to setting up the AWS Batch Plugin](../../../deployment/flyte/flyte-plugins/batch)
+[Follow this guide to setting up the AWS Batch Plugin](../../../deployment/flyte-plugins/batch)
 
 ### Quick Start
 

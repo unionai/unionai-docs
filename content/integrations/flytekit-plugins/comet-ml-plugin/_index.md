@@ -16,7 +16,7 @@ $ pip install flytekitplugins-comet-ml
 ```
 
 Comet requires an API key to authenticate with their platform. In the above example, a secret is created using
-[Flyte's Secrets manager](../../../deployment/flyte/flyte-configuration/secrets).
+[Flyte's Secrets manager](../../../deployment/flyte-configuration/secrets).
 
 To enable linking from the Flyte side panel to Comet.ml, add the following to Flyte's configuration:
 
