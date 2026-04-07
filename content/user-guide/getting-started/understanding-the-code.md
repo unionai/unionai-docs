@@ -1,7 +1,7 @@
 ---
 title: Understanding the code
 weight: 4
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Understanding the code
@@ -58,7 +58,7 @@ def hello_world_wf(name: str = "world") -> str:
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ```python
@@ -113,7 +113,7 @@ Here we have the simplest possible `ImageSpec` object, which specifies:
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 * The `builder` to use to build the image.

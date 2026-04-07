@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.bigquery.connector
 version: 1.16.13
-variants: +flyte +byoc +selfmanaged +union
+variants: +flyte +union
 layout: py_api
 ---
 

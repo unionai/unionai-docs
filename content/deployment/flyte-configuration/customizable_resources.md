@@ -1,7 +1,7 @@
 ---
 title: Customizing resources
 weight: 7
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # Customizing project, domain, and workflow resources with flytectl

@@ -1,7 +1,7 @@
 ---
 title: BigQuery connector
 weight: 1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: false
 ---
 
@@ -22,7 +22,7 @@ For an example query, see [BigQuery connector example usage](./bigquery-connecto
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 For an example query, see [BigQuery connector example usage](./bigquery-connector-example-usage-union)

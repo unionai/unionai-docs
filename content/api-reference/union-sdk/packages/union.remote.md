@@ -1,7 +1,7 @@
 ---
 title: union.remote
 version: 0.1.202
-variants: +byoc +selfmanaged -flyte
+variants: -flyte +union
 layout: py_api
 ---
 

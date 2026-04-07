@@ -1,7 +1,7 @@
 ---
 title: Cost allocation
 weight: 2
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Cost allocation

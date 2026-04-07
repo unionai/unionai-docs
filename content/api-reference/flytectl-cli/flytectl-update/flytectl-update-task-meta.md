@@ -1,6 +1,6 @@
 ---
 title: flytectl update task-meta
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl update task-meta

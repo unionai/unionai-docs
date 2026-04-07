@@ -1,6 +1,6 @@
 ---
 title: flytectl create project
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl create project

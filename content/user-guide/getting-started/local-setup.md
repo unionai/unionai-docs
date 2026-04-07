@@ -1,7 +1,7 @@
 ---
 title: Local setup
 weight: 2
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Local setup
@@ -184,7 +184,7 @@ The local Flyte cluster will be available at `localhost:30080`.
 > [!NOTE] Try Flyte technology through {{< key product_name >}} Serverless
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ## Configure the connection to your cluster
@@ -193,7 +193,7 @@ Next, you need to create a configuration file that contains your {{< key product
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ```shell
@@ -212,7 +212,7 @@ See [Running in a local cluster](../development-cycle/running-in-a-local-cluster
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 By default, the {{< key cli_name >}} CLI will look for a configuration file at `~/.union/config.yaml`. (See [{{< key cli_name >}} CLI](../../api-reference/union-cli) for more details.)
@@ -280,7 +280,7 @@ $ {{< key cli >}} info
 
 You should get a response like this:
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ```shell

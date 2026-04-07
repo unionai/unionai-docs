@@ -1,7 +1,7 @@
 ---
 title: CI/CD deployment
 weight: 17
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # CI/CD deployment
@@ -38,7 +38,7 @@ In GitHub, from the repository page:
 
 Create the CI/CD workflow file. For GitHub Actions, you might add `example-project/.github/workflows/deploy.yaml` similar to:
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 ```yaml
 name: Deploy

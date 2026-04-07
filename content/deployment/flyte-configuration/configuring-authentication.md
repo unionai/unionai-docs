@@ -1,7 +1,7 @@
 ---
 title: Authentication
 weight: 1
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 mermaid: true
 ---
 
@@ -287,7 +287,7 @@ Where `<release-name>` is the name of your Helm release, typically `flyte-backen
        clientSecret: "<your-random-password>"
        clientId: flytepropeller
    ```
-   > For [multi-cluster deployments](../multi-cluster.md) you must add this Secret definition block to the `values-dataplane.yaml` file. If you are not running `flytepropeller` in the control plane cluster, you do not need to create this secret there.
+   > For [multi-cluster deployments](../flyte-deployment/multicluster) you must add this Secret definition block to the `values-dataplane.yaml` file. If you are not running `flytepropeller` in the control plane cluster, you do not need to create this secret there.
 6. Save and exit your editor.
 7. Upgrade your Helm release with the new configuration:
    ```shell

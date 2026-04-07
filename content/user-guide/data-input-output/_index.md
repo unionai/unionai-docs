@@ -1,7 +1,7 @@
 ---
 title: Data input/output
 weight: 6
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: true
 llm_readable_bundle: true
 ---
@@ -64,7 +64,7 @@ Here's a breakdown of these mappings:
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 This section covers how to manage data input and output in {{< key product_name >}}.

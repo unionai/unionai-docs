@@ -1,7 +1,7 @@
 ---
 title: flytekit.types.structured.basic_dfs
 version: 1.16.16
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 layout: py_api
 ---
 

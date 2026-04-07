@@ -1,6 +1,6 @@
 ---
 title: flytectl apply
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl apply

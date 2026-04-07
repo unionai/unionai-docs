@@ -1,7 +1,7 @@
 ---
 title: Caching
 weight: 8
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Caching
@@ -98,7 +98,7 @@ This applies even if the cached node is invoked externally through the UI or CLI
 The [Cache]() object takes the following parameters:
 <!-- TODO: Add link to API -->
 
-{{< variant byoc >}}
+{{< variant union >}}
 
 {{< markdown >}}
 * `version` (`Optional[str]`): Part of the cache key.
@@ -127,7 +127,7 @@ The [Cache]() object takes the following parameters:
 * `ignored_inputs` (`Union[Tuple[str, ...], str]`): Input variables that should not be included when calculating the hash for the cache.
   If not set, no inputs are ignored.
 
-{{< variant byoc >}}
+{{< variant union >}}
 
 {{< markdown >}}
 * `policies` (`Optional[Union[List[CachePolicy], CachePolicy]]`): A list of [CachePolicy]() objects used for automatic version generation.
@@ -151,7 +151,7 @@ The [Cache]() object takes the following parameters:
 {{< /variant >}}
 * `salt` (`str`): A [salt](<https://en.wikipedia.org/wiki/salt_(cryptography)>) used in the hash generation. A salt is a random value that is combined with the input values before hashing.
 
-{{< variant byoc >}}
+{{< variant union >}}
 
 {{< markdown >}}
 ## Enabling caching with the default configuration
@@ -241,7 +241,7 @@ execution = remote.execute(wf, inputs={"name": "Kermit"}, overwrite_cache=True)
 ```
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 ```python
 from flytekit.configuration import Config
@@ -266,7 +266,7 @@ The **key** is composed of:
 
 * **Project:** A task run under one project cannot use the cached task execution from another project which would cause inadvertent results between project teams that could result in data corruption.
 * **Domain:** To separate test, staging, and production data, task executions are not shared across these environments.
-{{< variant byoc >}}
+{{< variant union >}}
 {{< markdown >}}
 * **Cache Version:** The cache version is either explicitly set using the `version` parameter in the `Cache` object or automatically set by a cache policy (see [Automatic version generation](#automatic-version-generation)).
   If the version changes (either explicitly or automatically), the cache entry is invalidated.
@@ -310,7 +310,7 @@ However, if you change the version back to `1.0`, you will get a "cache hit" aga
 
 If used, the `version` parameter must be explicitly changed in order to invalidate the cache.
 
-{{< variant byoc >}}
+{{< variant union >}}
 {{< markdown >}}
 
 If not used, then a cache policy may be specified to generate the version, or you can rely on the default cache policy.
@@ -333,7 +333,7 @@ When a node's behavior does change though, you can bump `version` to invalidate 
 If you modify the signature of a node by adding, removing, or editing input parameters or output return types, {{< key product_name >}} invalidates the cache entries for that node.
 During the next execution, {{< key product_name >}} executes the process again and caches the outputs as new values stored under an updated key.
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 ### Caching when running locally

@@ -1,6 +1,6 @@
 ---
 title: flytectl delete policy
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl delete policy

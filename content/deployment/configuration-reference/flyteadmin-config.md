@@ -1,7 +1,7 @@
 ---
 title: FlyteAdmin configuration
 weight: 2
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # Flyte Admin Configuration
@@ -33,7 +33,6 @@ variants: +flyte -byoc -selfmanaged
 - [server](#section-server)
 - [storage](#section-storage)
 - [task_resources](#section-task_resources)
-- [task_type_whitelist](#section-task_type_whitelist)
 - [tasks](#section-tasks)
 
 ## Section: admin

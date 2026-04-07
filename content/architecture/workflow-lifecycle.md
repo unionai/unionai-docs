@@ -1,7 +1,7 @@
 ---
 title: Workflow lifecycle
 weight: 8
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # Workflow lifecycle

@@ -1,7 +1,7 @@
 ---
 title: Secrets
 weight: 11
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # Secrets

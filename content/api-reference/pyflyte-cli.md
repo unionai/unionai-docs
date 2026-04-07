@@ -1,7 +1,7 @@
 ---
 title: Pyflyte CLI
 weight: 3
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # {{< key cli_name >}} CLI
@@ -21,7 +21,7 @@ This will install the `{{< key cli >}}` CLI globally on your system [as a `uv` t
 
 ## Configure the `{{< key cli >}}` CLI
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 To configure the `{{< key cli >}}` CLI to connect to you {{< key product_name >}}  BYOC or Self-managed instance, run the following command:
@@ -61,7 +61,7 @@ The `{{< key cli >}}` CLI will check for configuration files as follows:
 
 First, if a `--config` option is used, it will use the specified config file.
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 Second, the config files pointed to by the following environment variables (in this order):
@@ -82,7 +82,7 @@ Second, the config file pointed to by the `FLYTECTL_CONFIG` environment variable
 
 Third, the following hard-coded locations (in this order):
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 Third, the following hard-coded locations (in this order):

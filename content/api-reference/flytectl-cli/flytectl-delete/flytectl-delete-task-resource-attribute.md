@@ -1,6 +1,6 @@
 ---
 title: flytectl delete task-resource-attribute
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl delete task-resource-attribute

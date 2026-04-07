@@ -1,7 +1,7 @@
 ---
 title: Terraform
-weight: 2
-variants: -flyte +byoc +selfmanaged
+weight: 3
+variants: -flyte +union
 sidebar_expanded: true
 llm_readable_bundle: true
 ---

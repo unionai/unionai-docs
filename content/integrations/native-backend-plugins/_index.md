@@ -1,7 +1,7 @@
 ---
 title: Native backend plugins
 weight: 3
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 sidebar_expanded: true
 ---
 

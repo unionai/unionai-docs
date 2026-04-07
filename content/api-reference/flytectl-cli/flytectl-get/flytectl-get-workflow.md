@@ -1,6 +1,6 @@
 ---
 title: flytectl get workflow
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl get workflow

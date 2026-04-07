@@ -1,7 +1,7 @@
 ---
 title: Architecture
 weight: 6
-variants: +flyte -byoc +selfmanaged
+variants: +flyte +union
 top_menu: true
 sidebar_expanded: true
 ---
@@ -10,7 +10,7 @@ sidebar_expanded: true
 
 This section covers the architecture of the {{< key product_name >}} system.
 
-{{< variant selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 Union’s modular architecture allows for great flexibility and control. The customer can decide how many clusters to have, their shape, and who has access to what. All communication is encrypted.
@@ -19,17 +19,17 @@ Union’s modular architecture allows for great flexibility and control. The cus
 
 ## Control plane
 
-The control plane is responsible for coordinating work across one or more Data Planes.
+The control plane is responsible for coordinating work across one or more data planes.
 
 ## Data plane
 
-All your workflow and task executions are performed in the data plane, which runs within your public, private, or hybrid clouds. The data plane’s clusters are provisioned and managed by the control plane through a resident Union operator with minimal required permissions.
+All your workflow and task executions are performed in the data plane, which runs within your public, private, or hybrid clouds. In BYOC deployments, the data plane’s clusters are provisioned and managed by the control plane through a resident Union operator with minimal required permissions. In self-managed deployments, you provision and manage the data plane yourself.
 
 ### Worker nodes
 
 Worker nodes are responsible for executing your workloads. You have full control over the configuration of your worker nodes.
 
-When worker nodes are not in use, they automatically scale down to the configured minimum. (we scale to zero.)
+When worker nodes are not in use, they automatically scale down to the configured minimum (scaling to zero).
 
 {{< /markdown >}}
 {{< /variant >}}

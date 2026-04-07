@@ -1,7 +1,7 @@
 ---
 title: Pydantic BaseModel
 weight: 9
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Pydantic BaseModel
@@ -40,7 +40,7 @@ to store `int` types, Protobuf's `struct` converts them to `float`, forcing user
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 > [!NOTE]
@@ -183,7 +183,7 @@ $ pyflyte run \
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 To trigger a task that accepts a dataclass as an input with `{{< key cli >}} run`, you can provide a JSON file as an input:

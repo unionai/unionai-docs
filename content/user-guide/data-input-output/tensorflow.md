@@ -1,7 +1,7 @@
 ---
 title: TensorFlow types
 weight: 12
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # TensorFlow types

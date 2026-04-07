@@ -1,7 +1,7 @@
 ---
 title: Workflow timeline
 weight: 4
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 mermaid: true
 ---
 

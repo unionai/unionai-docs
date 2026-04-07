@@ -1,6 +1,6 @@
 ---
 title: uctl get task
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl get task

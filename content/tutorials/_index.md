@@ -1,7 +1,7 @@
 ---
 title: Tutorials
 weight: 2
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 top_menu: true
 sidebar_expanded: true
 llm_readable_bundle: true
@@ -14,7 +14,7 @@ llm_readable_bundle: true
 This section provides tutorials that walk you through the process of building AI/ML applications on {{< key product_name >}}.
 The example applications range from training XGBoost models in tabular datasets to fine-tuning large language models for text generation tasks.
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< grid >}}
 
 {{< link-card target="language-models/sentiment-classifier" icon="" title="Sentiment Classification with DistilBERT" >}}
@@ -78,7 +78,7 @@ Leverage {{< key product_name >}} to productionize NVIDIA blueprint workflows.
 Build a contextual RAG workflow for enterprise use.
 {{< /link-card >}}
 
-{{< variant byoc >}}
+{{< variant union >}}
 {{< link-card target="serving/nim-on-actor" icon="" title="Near-Real-Time Inference with NVIDIA NIM" >}}
 Serve NVIDIA NIM-supported language models, powered by {{< key product_name >}} actors.
 {{< /link-card >}}
@@ -92,19 +92,19 @@ Power your RAG app with {{< key product_name >}} Serving.
 Serve models and run background jobs like data ingestion — all within {{< key product_name >}} using {{< key product_name >}} Serving and {{< key product_name >}} Workflows.
 {{< /link-card >}}
 
-{{< variant byoc >}}
+{{< variant union >}}
 {{< link-card target="language-models/data-streaming" icon="" title="Fine-Tune BERT on Arabic Reviews with Multi-Node Training and Data Streaming" >}}
 Fine-tune a BERT model on a sizable Arabic review dataset using PyTorch Lightning and the streaming library on a multi-node setup.
 {{< /link-card >}}
 {{< /variant >}}
 
-{{< variant byoc >}}
+{{< variant union >}}
 {{< link-card target="serving/arize" icon="" title="Trace and Evaluate Models and RAG Apps with Arize" >}}
 Integrate Arize with your LLMs or RAG applications to trace model activity and evaluate performance in near-real-time.
 {{< /link-card >}}
 {{< /variant >}}
 
-{{< variant byoc >}}
+{{< variant union >}}
 {{< link-card target="serving/weave" icon="" title="Add Tracing and Guardrails to an Airbnb RAG App with Weave" >}}
 Deploy a self-hosted LLM and RAG app with observability and guardrails powered by Weave.
 {{< /link-card >}}

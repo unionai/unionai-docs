@@ -1,7 +1,7 @@
 ---
 title: Supermarket regression notebook
 weight: 1
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 jupyter_notebook: /unionai-examples/v1/flyte-tutorials/exploratory_data_analysis/exploratory_data_analysis/supermarket_regression.ipynb
 content_hash: 33f3516212efb81c7e6c1a046936238cfe031ab6843f163b872ce68e13118567
 ---

@@ -1,7 +1,7 @@
 ---
 title: Task parameters
 weight: 3
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Task parameters

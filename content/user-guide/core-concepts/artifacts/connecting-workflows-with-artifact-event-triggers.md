@@ -1,7 +1,7 @@
 ---
 title: Connecting workflows with artifact event triggers
 weight: 4
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Connecting workflows with artifact event triggers
@@ -10,7 +10,7 @@ In the following example, we define an upstream workflow and a downstream workfl
 
 ## Imports
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 > [!NOTE]
 > To use the example code on this page, you will need to add your `registry` to the `pandas_image` ImageSpec block.

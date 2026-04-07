@@ -1,6 +1,6 @@
 ---
 title: flytectl delete cluster
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl delete cluster

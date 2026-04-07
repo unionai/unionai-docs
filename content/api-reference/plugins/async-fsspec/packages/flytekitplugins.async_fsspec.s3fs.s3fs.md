@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.async_fsspec.s3fs.s3fs
 version: 1.16.16
-variants: +flyte +byoc +selfmanaged +union
+variants: +flyte +union
 layout: py_api
 ---
 

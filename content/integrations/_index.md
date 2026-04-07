@@ -1,7 +1,7 @@
 ---
 title: Integrations
 weight: 5
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 top_menu: true
 sidebar_expanded: true
 llm_readable_bundle: true
@@ -21,7 +21,7 @@ Flyte is designed to be highly extensible and can be customized in multiple ways
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 Union supports integration with a variety of third-party services and systems.

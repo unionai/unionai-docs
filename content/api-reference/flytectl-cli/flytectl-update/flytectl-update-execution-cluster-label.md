@@ -1,6 +1,6 @@
 ---
 title: flytectl update execution-cluster-label
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl update execution-cluster-label

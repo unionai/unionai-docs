@@ -1,6 +1,6 @@
 ---
 title: flytectl update task-resource-attribute
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl update task-resource-attribute

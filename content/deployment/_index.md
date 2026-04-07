@@ -1,13 +1,17 @@
 ---
 title: Platform deployment
 weight: 4
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 top_menu: true
+secondary_topnav: -flyte +union
 mermaid: true
 sidebar_expanded: true
 ---
 
 # Platform deployment
+
+{{< variant union >}}
+{{< markdown >}}
 
 The Union.ai platform uses a split-plane model with separate control and data planes.
 
@@ -17,53 +21,27 @@ The **control plane** does not have access to the code, data, images, or logs in
 
 If you choose a **Self-managed deployment**, your data isolation is further enhanced by the fact that you manage your data plane entirely on your own, without providing any access to Union.ai customer support.
 
-If you choose a **BYOC deployment**, Union.ai manages the Kubernetes cluster in your data plane for you. The data isolation of the control vs. data plane is still enforced - for example, Union.ai has no access to your object storage or logs. However, Union.ai customer support will have some access to your cluster, though strictly for upgrades, provisioning, and other actions related to maintaining cluster health.
-{{< variant byoc >}}
-{{< markdown >}}
+If you choose a **BYOC deployment**, Union.ai manages the Kubernetes cluster in your data plane for you. The data isolation of the control vs. data plane is still enforced — for example, Union.ai has no access to your object storage or logs. However, Union.ai customer support will have some access to your cluster, though strictly for upgrades, provisioning, and other actions related to maintaining cluster health.
 
-> [!NOTE]
-> These are the BYOC docs. You can switch to the Union.ai Self-managed docs with the product selector above.
+## Deployment options
 
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant selfmanaged >}}
-{{< markdown >}}
+Union.ai offers two deployment models:
 
-> [!NOTE]
-> These are the Self-managed docs. You can switch to the Union.ai BYOC docs with the product selector above.
-
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant byoc >}}
-{{< markdown >}}
-
-## BYOC deployment
+### BYOC (Bring Your Own Cloud)
 
 The BYOC deployment offers a fully "serverless in your cloud", turnkey solution where all infrastructure management is offloaded to Union.ai:
 
-* The **data plane** resides in your cloud provider account but is managed by Union.ai, who will handle deployment, monitoring, Kubernetes upgrades, and all other operational aspects of the platform. BYOC deployment supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), and Microsoft Azure.
+* The **data plane** resides in your cloud provider account but is managed by Union.ai, who handle deployment, monitoring, Kubernetes upgrades, and all other operational aspects of the platform. BYOC supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), and Microsoft Azure.
 
-* The **control plane**, as with all Union.ai deployment options, resides in the Union.ai AWS account and is administered by Union.ai. However, as mentioned, data separation is maintained between the data plane and the control plane, with no control plane access to the code, input/output, images or logs in the data plane.
+* The **control plane** resides in the Union.ai AWS account and is administered by Union.ai. Data separation is maintained between the data plane and the control plane, with no control plane access to the code, input/output, images or logs in the data plane.
 
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant selfmanaged >}}
-{{< markdown >}}
-
-## Self-managed deployment
+### Self-managed
 
 The Self-managed deployment allows you to manage the data plane yourself on cloud infrastructure that you control and maintain:
 
-* The **data plane** resides in your cloud provider account and is managed by you. Your team will handle deployment, monitoring, Kubernetes upgrades, and all other operational aspects of the platform. You do not need to provide any permissions to the Union.ai system to create a data plane. Self-managed deployment supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), Microsoft Azure and Oracle Compute Infrastructure (OCI).
+* The **data plane** resides in your cloud provider account and is managed by you. Your team handles deployment, monitoring, Kubernetes upgrades, and all other operational aspects of the platform. You do not need to provide any permissions to Union.ai. Self-managed supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), Microsoft Azure, and Oracle Compute Infrastructure (OCI).
 
-* The **control plane**, as with all Union.ai deployment options, resides in the Union.ai Amazon Web Services (AWS) account and is administered by Union.ai. However, as mentioned, data separation is maintained between the data plane and the control plane, with no control plane access to the code, input/output, images or logs in the data plane.
-
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant byoc selfmanaged >}}
-{{< markdown >}}
+* The **control plane** resides in the Union.ai AWS account and is administered by Union.ai. As with BYOC, data separation is maintained between the data plane and the control plane.
 
 ## Data plane
 
@@ -99,12 +77,18 @@ The control plane has access to:
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant selfmanaged >}}
-{{< grid >}}
+{{< variant flyte >}}
+{{< markdown >}}
 
-{{< link-card target="../deployment/cluster-recommendations" icon="box" title="Installation" >}}
-Installing {{< key product_name >}}
-{{< /link-card >}}
+Flyte is an open-source workflow orchestration platform that you deploy and manage on your own infrastructure. This section covers planning, installing, configuring, and operating a Flyte backend.
 
-{{< /grid >}}
+The sections below cover the full scope of running Flyte in production:
+
+* [**Flyte deployment**](./flyte-deployment/_index) — Planning and installing Flyte on Kubernetes (single-cluster or multi-cluster setups).
+* [**Flyte configuration**](./flyte-configuration/_index) — Configuring authentication, secrets, notifications, monitoring, GPUs, pod templates, and other runtime settings.
+* [**Flyte connectors**](./flyte-connectors/_index) — Integrating with external services such as Airflow, BigQuery, Databricks, Snowflake, and more.
+* [**Flyte plugins**](./flyte-plugins/_index) — Native backend plugins for Kubernetes operators, Spark, Athena, SageMaker, and other compute backends.
+* [**Configuration reference**](./configuration-reference/_index) — Full reference for FlyteAdmin, FlytePropeller, DataCatalog, and Scheduler config files.
+
+{{< /markdown >}}
 {{< /variant >}}

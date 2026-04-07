@@ -1,7 +1,7 @@
 ---
 title: Troubeshooting
 weight: 5
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # Troubleshooting guide

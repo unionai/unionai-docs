@@ -1,7 +1,7 @@
 ---
 title: Registration
 weight: 1
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # Registration

@@ -1,7 +1,7 @@
 ---
 title: Subworkflows and sub-launch plans
 weight: 2
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Subworkflows and sub-launch plans

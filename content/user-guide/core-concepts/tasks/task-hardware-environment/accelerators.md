@@ -1,12 +1,12 @@
 ---
 title: Accelerators
 weight: 2
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Accelerators
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 > [!NOTE] _Accelerators_ and _Accelerated datasets_ are entirely different things
@@ -90,7 +90,7 @@ Note that in order for a specific accelerator to be available in your Flyte inst
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 If using the constants, you can import them directly from the module, e.g.:

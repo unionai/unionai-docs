@@ -1,7 +1,7 @@
 ---
 title: Remote examples
 weight: 1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # {{< key kit_remote >}} examples
@@ -64,7 +64,7 @@ The output is also be available via the UI, in the **Outputs** tab of the `creat
 
 ![Outputs](../../../_static/images/user-guide/development-cycle/union-remote/outputs.png)
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 The steps above demonstrates the simplest way of registering and running a workflow with `{{< key kit_remote >}}`.
 For more options and details see [Reference > {{< key kit_remote >}}](../../../api-reference/union-sdk/packages/union.remote).

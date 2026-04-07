@@ -1,6 +1,6 @@
 ---
 title: flytectl get workflow-execution-config
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl get workflow-execution-config

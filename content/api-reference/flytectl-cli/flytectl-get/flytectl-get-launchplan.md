@@ -1,6 +1,6 @@
 ---
 title: flytectl get launchplan
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl get launchplan

@@ -1,7 +1,7 @@
 ---
 title: Deploy Custom Flyte Connectors
 weight: 6
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Deploying Custom Flyte Connectors

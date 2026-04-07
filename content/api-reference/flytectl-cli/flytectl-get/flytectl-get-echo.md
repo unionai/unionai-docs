@@ -1,6 +1,6 @@
 ---
 title: flytectl get echo
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl get echo

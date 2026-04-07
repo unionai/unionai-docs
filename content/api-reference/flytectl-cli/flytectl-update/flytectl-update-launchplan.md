@@ -1,6 +1,6 @@
 ---
 title: flytectl update launchplan
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl update launchplan

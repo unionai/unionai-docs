@@ -1,7 +1,7 @@
 ---
 title: Managing API keys
 weight: 13
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Managing API keys

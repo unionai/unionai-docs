@@ -1,7 +1,7 @@
 ---
 title: Installing Flyte
 weight: 2
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 # Installing Flyte
 

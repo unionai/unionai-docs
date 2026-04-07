@@ -1,6 +1,6 @@
 ---
 title: Serving
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 weight: 1
 sidebar_expanded: true
 ---

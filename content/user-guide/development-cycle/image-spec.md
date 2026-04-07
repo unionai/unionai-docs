@@ -1,7 +1,7 @@
 ---
 title: ImageSpec
 weight: 7
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # ImageSpec
@@ -20,7 +20,7 @@ For example::
 import {{< key kit_import >}}
 
 image_spec = union.ImageSpec(
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
     builder="union",
 {{< /variant >}}
     name="say-hello-image",
@@ -39,7 +39,7 @@ def hello_world_wf(name: str = "world") -> str:
 
 Here, the `ImageSpec` class is used to specify the container image to be used for the `say_hello` task.
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 * The `builder` parameter specifies how the image should be built. The value `union` means that the image will be built using {{< key product_name >}}'s built-in cloud builder.
   In some cases you may want to build the image locally on your machine and push it to a container registry. In that case, you would remove the `builder` parameter
   (or set it to `envd`) and add a `registry` parameter with the URL of the registry to push the image to. See below for more details.
@@ -57,7 +57,7 @@ Here, the `ImageSpec` class is used to specify the container image to be used fo
 When you execute the `{{< key cli >}} run` or `{{< key cli >}} register` command, {{< key product_name >}} will build the container image defined in `ImageSpec` block
 (as well as registering the tasks and workflows defined in your code).
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ## {{< key product_name >}} cloud image builder {#cloud-image-builder}

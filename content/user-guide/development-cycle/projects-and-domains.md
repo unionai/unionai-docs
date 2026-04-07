@@ -1,7 +1,7 @@
 ---
 title: Projects and domains
 weight: 3
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Projects and domains
@@ -11,7 +11,7 @@ Projects and domains are the principle organizational categories into which you 
 Projects define groups of task, workflows, launch plans and other entities that share a functional purpose.
 Domains represent distinct steps through which the entities in a project transition as they proceed through the development cycle.
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 By default, {{< key product_name >}} provides three domains: `development`, `staging`, and `production`.

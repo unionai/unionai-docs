@@ -1,7 +1,7 @@
 ---
 title: Flytectl CLI
 weight: 4
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 sidebar_expanded: true
 ---
 
@@ -17,7 +17,7 @@ It also includes much of the functionality of the [`{{< key cli >}}` CLI](../uni
 
 ## Installation
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< tabs >}}
 {{< tab "macOS" >}}
 {{< markdown >}}
@@ -157,7 +157,7 @@ To download the binary manually, see the [`flytectl` releases page](https://gith
 
 ## Configuration
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 To create a configuration file that contains your Union connection information, run the following command, replacing `<union-host-url>` with the URL of your Union instance:
@@ -186,7 +186,7 @@ By default, the `{{< key ctl >}}` CLI will use the configuration file at `~/.{{<
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 * `--config <path-to-config>` flag
@@ -197,7 +197,7 @@ By default, the `{{< key ctl >}}` CLI will use the configuration file at `~/.{{<
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 * `--config <path-to-config>` flag
@@ -279,7 +279,7 @@ By default, the `{{< key ctl >}}` CLI will use the configuration file at `~/.{{<
 
 ## Commands
 
-{{< variant byoc >}}
+{{< variant union >}}
 {{< markdown >}}
 * `{{< key ctl >}} apply {{{< key ctl >}}-apply/index}` is used for updating various Union/Flyte resources, including cluster configs.
 * `{{< key ctl >}} config {{{< key ctl >}}-config/index}` runs various config commands.

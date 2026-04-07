@@ -1,7 +1,7 @@
 ---
 title: Roadmap
 weight: 4
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # Roadmap

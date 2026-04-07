@@ -2,7 +2,7 @@
 title: Getting started
 weight: 3
 sidebar_expanded: true
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 llm_readable_bundle: true
 ---
 
@@ -13,7 +13,7 @@ llm_readable_bundle: true
 This section gives you a quick introduction to writing and running {{< key product_name >}} workflows.
 
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ## Gather your credentials

@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.perian_job.task
 version: 0.0.0+develop
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 layout: py_api
 ---
 

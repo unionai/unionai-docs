@@ -33,3 +33,12 @@ section\.md
 api-reference/flytectl-cli/
 api-reference/pyflyte-cli\.md
 api-reference/union-cli\.md
+
+# Links inside variant-conditional blocks on deployment index — flyte subdir
+# links are inside a {{< variant flyte >}} block, so they only render in flyte
+# even though the page itself is +flyte +union
+deployment/_index\.md:\./flyte-deployment/_index
+deployment/_index\.md:\./flyte-configuration/_index
+deployment/_index\.md:\./flyte-connectors/_index
+deployment/_index\.md:\./flyte-plugins/_index
+deployment/_index\.md:\./configuration-reference/_index

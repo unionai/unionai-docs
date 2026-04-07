@@ -1,7 +1,7 @@
 ---
 title: FAQ
 weight: 10
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # FAQ

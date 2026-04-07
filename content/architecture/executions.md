@@ -1,7 +1,7 @@
 ---
 title: Executions
 weight: 2
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # Executions

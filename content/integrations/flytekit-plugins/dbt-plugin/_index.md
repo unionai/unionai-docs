@@ -1,7 +1,7 @@
 ---
 title: DBT
 weight: 1
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 sidebar_expanded: false
 ---
 

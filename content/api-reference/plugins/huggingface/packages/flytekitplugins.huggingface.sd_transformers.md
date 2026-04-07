@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.huggingface.sd_transformers
 version: 1.16.16
-variants: +flyte +byoc +selfmanaged +union
+variants: +flyte +union
 layout: py_api
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: flytectl config validate
-variants: +flyte -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl config validate

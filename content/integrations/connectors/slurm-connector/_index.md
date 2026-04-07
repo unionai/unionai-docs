@@ -1,7 +1,7 @@
 ---
 title: Slurm connector
 weight: 1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: false
 ---
 
@@ -24,7 +24,7 @@ For an example query, see [Slurm connector example usage](./slurm-connector-exam
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 For an example query, see [Slurm connector example usage](./slurm-connector-example-usage-union)

@@ -1,7 +1,7 @@
 ---
 title: Serving custom code
 weight: 1
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Serving custom code
