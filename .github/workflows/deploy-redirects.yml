@@ -3,7 +3,7 @@ name: Deploy Redirects
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, v1]
     paths: ['unionai-docs-infra']
 
 jobs:
@@ -20,6 +20,7 @@ jobs:
       - name: Check if redirects.csv changed
         id: check-redirects
         run: |
+          set -euo pipefail
           # For workflow_dispatch, always deploy
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -35,6 +36,12 @@ jobs:
             echo "No submodule ref change detected, skipping."
             exit 0
           fi
+          # The submodule was checked out with submodules: true and only fetched
+          # the latest pointer. Fetch both refs explicitly so we can diff between
+          # them. Without this, the diff fails with "fatal: bad object" because
+          # OLD_REF isn't in the local clone.
+          echo "Fetching submodule commits $OLD_REF and $NEW_REF..."
+          git -C unionai-docs-infra fetch --depth=1 origin "$OLD_REF" "$NEW_REF"
           if git -C unionai-docs-infra diff --name-only "$OLD_REF" "$NEW_REF" | grep -q "^redirects.csv$"; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
             echo "redirects.csv changed, proceeding with deploy."
