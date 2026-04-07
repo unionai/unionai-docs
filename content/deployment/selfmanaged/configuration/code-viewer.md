@@ -8,7 +8,7 @@ variants: -flyte +union
 
 The Union UI allows you to view the exact code that executed a specific task. Union securely transfers the [code bundle](../../../user-guide/development-cycle/running-your-code) directly to your browser without routing it through the control plane.
 
-![Code Viewer](../../_static/images/deployment/configuration/code-viewer/demo.png)
+![Code Viewer](../../../_static/images/deployment/configuration/code-viewer/demo.png)
 
 ## Enable CORS policy on your fast registration bucket
 
@@ -23,7 +23,7 @@ To support this feature securely, your bucket must allow CORS access from Union.
 3. Select your fast registration bucket. By default, this is the same as the metadata bucket configured during initial deployment.
 4. Click the **Permissions** tab and scroll to **Cross-origin resource sharing (CORS)**.
 5. Click **Edit** and enter the following policy:
-![S3 CORS Policy](../../_static/images/deployment/configuration/code-viewer/s3.png)
+![S3 CORS Policy](../../../_static/images/deployment/configuration/code-viewer/s3.png)
 
 ```
 [
