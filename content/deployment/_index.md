@@ -84,11 +84,11 @@ Flyte is an open-source workflow orchestration platform that you deploy and mana
 
 The sections below cover the full scope of running Flyte in production:
 
-* **Flyte deployment** — Planning and installing Flyte on Kubernetes (single-cluster or multi-cluster setups).
-* **Flyte configuration** — Configuring authentication, secrets, notifications, monitoring, GPUs, pod templates, and other runtime settings.
-* **Flyte connectors** — Integrating with external services such as Airflow, BigQuery, Databricks, Snowflake, and more.
-* **Flyte plugins** — Native backend plugins for Kubernetes operators, Spark, Athena, SageMaker, and other compute backends.
-* **Configuration reference** — Full reference for FlyteAdmin, FlytePropeller, DataCatalog, and Scheduler config files.
+* [**Flyte deployment**](./flyte-deployment/_index) — Planning and installing Flyte on Kubernetes (single-cluster or multi-cluster setups).
+* [**Flyte configuration**](./flyte-configuration/_index) — Configuring authentication, secrets, notifications, monitoring, GPUs, pod templates, and other runtime settings.
+* [**Flyte connectors**](./flyte-connectors/_index) — Integrating with external services such as Airflow, BigQuery, Databricks, Snowflake, and more.
+* [**Flyte plugins**](./flyte-plugins/_index) — Native backend plugins for Kubernetes operators, Spark, Athena, SageMaker, and other compute backends.
+* [**Configuration reference**](./configuration-reference/_index) — Full reference for FlyteAdmin, FlytePropeller, DataCatalog, and Scheduler config files.
 
 {{< /markdown >}}
 {{< /variant >}}
