@@ -3,19 +3,14 @@ title: Data plane setup on AWS
 weight: 4
 variants: -flyte +union
 sidebar_expanded: true
-llm_readable_bundle: true
 ---
 
 # Data plane setup on AWS
 
-{{< llm-bundle-note >}}
+{{< key product_name >}}'s modular architecture allows for great flexibility and control.
+You can decide how many clusters to have, their shape, and who has access to what.
+All communication is encrypted.  The Union architecture is described on the [Architecture](../architecture/_index) page.
 
-To set up your {{< key product_name >}} data plane on Amazon Web Services (AWS), you provision and manage the compute resources in your own AWS account.
+If you already have an EKS cluster, S3 buckets, ECR repository, and IAM role configured, skip directly to [Deploy the dataplane](./deploy-dataplane).
 
-{{< grid >}}
-
-{{< link-card target="./manual" icon="zap" title="Manual setup" >}}
-Set up the data plane manually using AWS CloudFormation or the AWS console
-{{< /link-card >}}
-
-{{< /grid >}}
+Otherwise, start with [Prepare infrastructure](./prepare-infra) to set up the required AWS resources.

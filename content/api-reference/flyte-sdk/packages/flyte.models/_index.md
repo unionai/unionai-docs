@@ -1,6 +1,6 @@
 ---
 title: flyte.models
-version: 2.1.2
+version: 2.1.5
 variants: +flyte +union
 layout: py_api
 sidebar_expanded: true
@@ -16,7 +16,7 @@ sidebar_expanded: true
 |-|-|
 | [`ActionID`](../flyte.models/actionid) | A class representing the ID of an Action, nested within a Run. |
 | [`ActionPhase`](../flyte.models/actionphase) | Represents the execution phase of a Flyte action (run). |
-| [`Checkpoints`](../flyte.models/checkpoints) | A class representing the checkpoints for a task. |
+| [`CheckpointPaths`](../flyte.models/checkpointpaths) | Paths the platform provides for this task's checkpoint output and optional previous-attempt input. |
 | [`CodeBundle`](../flyte.models/codebundle) | A class representing a code bundle for a task. |
 | [`GroupData`](../flyte.models/groupdata) |  |
 | [`NativeInterface`](../flyte.models/nativeinterface) | A class representing the native interface for a task. |

@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.1.2
+version: 2.1.5
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -22,7 +22,7 @@ This is the command line interface for Flyte.
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
-| `demo` | [`delete`](#flyte-delete-demo), [`start`](#flyte-start-demo)  |
+| `demo` | [`delete`](#flyte-delete-demo), [`start`](#flyte-start-demo), [`stop`](#flyte-stop-demo)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
@@ -45,6 +45,7 @@ This is the command line interface for Flyte.
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
 | `start` | [`demo`](#flyte-start-demo), [`tui`](#flyte-start-tui)  |
+| `stop` | [`demo`](#flyte-stop-demo)  |
 | `update` | [`app`](#flyte-update-app), [`project`](#flyte-update-project), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
@@ -67,7 +68,7 @@ This is the command line interface for Flyte.
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `user` | [`create⁺`](#flyte-create-user), [`delete⁺`](#flyte-delete-user), [`get⁺`](#flyte-get-user)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
-| `demo` | [`delete`](#flyte-delete-demo), [`start`](#flyte-start-demo)  |
+| `demo` | [`delete`](#flyte-delete-demo), [`start`](#flyte-start-demo), [`stop`](#flyte-stop-demo)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `cluster` | [`get⁺`](#flyte-get-cluster)  |
 | `io` | [`get`](#flyte-get-io)  |
@@ -92,6 +93,7 @@ This is the command line interface for Flyte.
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
 | `start` | [`demo`](#flyte-start-demo), [`tui`](#flyte-start-tui)  |
+| `stop` | [`demo`](#flyte-stop-demo)  |
 | `update` | [`app`](#flyte-update-app), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
@@ -572,9 +574,14 @@ Unassign a policy from an identity.
 
 #### flyte delete demo
 
-**`flyte delete demo`**
+**`flyte delete demo [OPTIONS]`**
 
 Stop and remove the local Flyte demo cluster container.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--volume` | `boolean` | `False` | Also delete the Docker volume used for persistent storage. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -1543,6 +1550,18 @@ flyte create config --endpoint ...  --local-persistence
 ```
 2. By passing it in flyte.init(local_persistence=True)
 This will record all `flyte.run` runs, that are local and are within the flyte.init being active.
+
+### flyte stop
+
+**`flyte stop COMMAND [ARGS]...`**
+
+Stop various Flyte services.
+
+#### flyte stop demo
+
+**`flyte stop demo`**
+
+Pause the local Flyte demo cluster without removing it.
 
 ### flyte update
 

@@ -1,6 +1,6 @@
 ---
 title: DataFrame
-version: 2.1.2
+version: 2.1.5
 variants: +flyte +union
 layout: py_api
 ---

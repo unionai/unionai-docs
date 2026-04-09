@@ -1,6 +1,6 @@
 ---
 title: TaskContext
-version: 2.1.2
+version: 2.1.5
 variants: +flyte +union
 layout: py_api
 ---
@@ -26,7 +26,7 @@ class TaskContext(
     run_base_dir: str,
     report: Report,
     group_data: GroupData | None,
-    checkpoints: Checkpoints | None,
+    checkpoint_paths: CheckpointPaths | None,
     code_bundle: CodeBundle | None,
     compiled_image_cache: ImageCache | None,
     data: Dict[str, Any],
@@ -47,7 +47,7 @@ class TaskContext(
 | `run_base_dir` | `str` | |
 | `report` | `Report` | |
 | `group_data` | `GroupData \| None` | |
-| `checkpoints` | `Checkpoints \| None` | |
+| `checkpoint_paths` | `CheckpointPaths \| None` | |
 | `code_bundle` | `CodeBundle \| None` | |
 | `compiled_image_cache` | `ImageCache \| None` | |
 | `data` | `Dict[str, Any]` | |
@@ -56,6 +56,13 @@ class TaskContext(
 | `custom_context` | `Dict[str, str]` | Context metadata for the action. If an action receives context, it'll automatically pass it to any actions it spawns. Context will not be used for cache key computation. |
 | `disable_run_cache` | `bool` | |
 | `in_driver_literal_conversion` | `bool` | Set by the runtime during nested-task literal marshalling; type transformers may use it to skip duplicate side effects (e.g. report tabs) outside true task-body I/O. |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `attempt_number` | `None` | Get the attempt number for the current task. |
+| `checkpoint` | `None` | Task checkpoint helper for the runtime `checkpoint_path` / `prev_checkpoint` prefixes.  Returns a lazily constructed `flyte.Checkpoint` cached on `flyte.models.TaskContext.data`, or `None` when no checkpoint output prefix is configured. In async tasks use `flyte.Checkpoint.load` and `flyte.Checkpoint.save`; in sync tasks use `flyte.Checkpoint.load_sync` and `flyte.Checkpoint.save_sync`. For a **single raw blob**, pass `bytes` to save; after a successful load, the blob is at `checkpoint.path / "payload"` when the remote object is not a tarball. |
 
 ## Methods
 
