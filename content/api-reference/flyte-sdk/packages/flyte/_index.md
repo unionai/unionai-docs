@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.1.2
+version: 2.1.5
 variants: +flyte +union
 layout: py_api
 sidebar_expanded: true
@@ -15,7 +15,9 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 
 | Class | Description |
 |-|-|
+| [`BaseCheckpoint`](../flyte/basecheckpoint) | Base type for task checkpoint helpers. |
 | [`Cache`](../flyte/cache) | Cache configuration for a task. |
+| [`Checkpoint`](../flyte/checkpoint) | Checkpoint helper using `flyte. |
 | [`Cron`](../flyte/cron) | Cron-based automation schedule for use with `Trigger`. |
 | [`Device`](../flyte/device) | Represents a device type, its quantity and partition if applicable. |
 | [`Environment`](../flyte/environment) |  |
@@ -62,6 +64,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`init_from_config()`](#init_from_config) | Initialize the Flyte system using a configuration file or Config object. |
 | [`init_in_cluster()`](#init_in_cluster) |  |
 | [`init_passthrough()`](#init_passthrough) | Initialize the Flyte system with passthrough authentication. |
+| [`latest_checkpoint()`](#latest_checkpoint) | Return the file under *root* matching *glob_pattern* with the largest ``key(path)``, or ``None``. |
 | [`map()`](#map) | Map a function over the provided arguments with concurrent execution. |
 | [`run()`](#run) | Run a task with the given parameters. |
 | [`run_python_script()`](#run_python_script) | Package and run a Python script on a remote Flyte cluster. |
@@ -233,6 +236,9 @@ def ctx()
 ```
 Returns flyte.models.TaskContext if within a task context, else None
 Note: Only use this in task code and not module level.
+
+Use :attr:`flyte.models.TaskContext.checkpoint` for durable task checkpointing
+(object-store prefixes from the runtime).
 
 
 #### current_domain()
@@ -605,6 +611,31 @@ The endpoint is automatically configured from the environment if in a flyte clus
 | `insecure` | `bool` | Whether to use an insecure channel |
 
 **Returns:** Dictionary of remote kwargs used for initialization
+
+#### latest_checkpoint()
+
+```python
+def latest_checkpoint(
+    root: pathlib.Path,
+    glob_pattern: str,
+    key: Callable[[pathlib.Path], Any] | None,
+) -> pathlib.Path | None
+```
+Return the file under *root* matching *glob_pattern* with the largest ``key(path)``, or ``None``.
+
+By default *key* is ``lambda p: p.stat().st_mtime`` (newest modification time wins). Pass *key* to
+rank matches another way (e.g. parse a step from the filename).
+
+For example, the Lightning framework would use ``**/last.ckpt`` under the tree restored by
+`flyte.Checkpoint.load_sync` / `flyte.Checkpoint.load`. Pass a different *glob_pattern* for other
+layouts (e.g. ``"**/*.ckpt"``).
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `root` | `pathlib.Path` | |
+| `glob_pattern` | `str` | |
+| `key` | `Callable[[pathlib.Path], Any] \| None` | |
 
 #### map()
 

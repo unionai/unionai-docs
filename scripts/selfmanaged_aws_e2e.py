@@ -34,12 +34,16 @@ Usage (remote — credentials encrypted with RSA envelope):
 from __future__ import annotations
 
 import json
+import logging
 import os
 import time
 from dataclasses import dataclass
 from pathlib import Path
 
 import flyte
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)-7s %(name)s - %(message)s")
+logger = logging.getLogger("flyte.e2e.aws")
 
 from selfmanaged_common import (
     BaseConfig,
@@ -193,7 +197,7 @@ def create_eks_cluster(cfg: Config, state: InfraState) -> InfraState:
     if _sh_ok(
         f"aws eks describe-cluster --name {cfg.eks_cluster_name} --region {cfg.aws_region}"
     ):
-        print(f"EKS cluster {cfg.eks_cluster_name} already exists, skipping.")
+        logger.info(f"EKS cluster {cfg.eks_cluster_name} already exists, waiting for it to be active...")
     else:
         _sh(
             f"eksctl create cluster "
@@ -204,11 +208,15 @@ def create_eks_cluster(cfg: Config, state: InfraState) -> InfraState:
             f"--nodes {cfg.eks_node_count} "
             f"--with-oidc --managed"
         )
-        _sh(
-            f"aws eks wait cluster-active "
-            f"--name {cfg.eks_cluster_name} --region {cfg.aws_region}"
-        )
         state.eks_created = True
+
+    # Wait for cluster to be ACTIVE (handles CREATING state from interrupted runs)
+    _sh(
+        f"aws eks wait cluster-active "
+        f"--name {cfg.eks_cluster_name} --region {cfg.aws_region}"
+    )
+
+    state.eks_created = True
 
     # Always update kubeconfig
     _sh(
@@ -226,7 +234,7 @@ def create_s3_buckets(cfg: Config, state: InfraState) -> InfraState:
         (cfg.s3_fast_reg_bucket, "s3_fast_reg_created"),
     ]:
         if _sh_ok(f"aws s3api head-bucket --bucket {bucket}"):
-            print(f"Bucket {bucket} already exists, skipping creation.")
+            logger.info(f"Bucket {bucket} already exists, skipping creation.")
         else:
             loc = (
                 ""
@@ -243,7 +251,7 @@ def create_s3_buckets(cfg: Config, state: InfraState) -> InfraState:
             f"aws s3api put-bucket-cors --bucket {bucket} "
             f"--cors-configuration '{_S3_CORS_CONFIG}'"
         )
-        print(f"  Bucket ready (with CORS): {bucket}")
+        logger.info(f"  Bucket ready (with CORS): {bucket}")
     return state
 
 
@@ -254,7 +262,7 @@ def create_ecr_repo(cfg: Config, state: InfraState) -> InfraState:
         f"aws ecr describe-repositories --repository-names {cfg.ecr_repo_name} "
         f"--region {cfg.aws_region}"
     ):
-        print(f"ECR repo {cfg.ecr_repo_name} already exists, skipping.")
+        logger.info(f"ECR repo {cfg.ecr_repo_name} already exists, skipping.")
     else:
         _sh(
             f"aws ecr create-repository --repository-name {cfg.ecr_repo_name} "
@@ -300,7 +308,7 @@ def create_iam_role(cfg: Config, state: InfraState) -> InfraState:
     )
 
     if _sh_ok(f"aws iam get-role --role-name {cfg.iam_role_name}"):
-        print(f"IAM role {cfg.iam_role_name} already exists, updating trust policy...")
+        logger.info(f"IAM role {cfg.iam_role_name} already exists, updating trust policy...")
         _sh(
             f"aws iam update-assume-role-policy --role-name {cfg.iam_role_name} "
             f"--policy-document '{trust_policy}'"
@@ -364,7 +372,7 @@ def create_iam_role(cfg: Config, state: InfraState) -> InfraState:
     )
     _ensure_policy_attached(cfg.iam_role_name, cfg.iam_ecr_policy_name, ecr_policy, cfg.aws_account_id)
 
-    print(f"IAM role ready: {role_arn}")
+    logger.info(f"IAM role ready: {role_arn}")
     return state
 
 
@@ -417,12 +425,12 @@ def patch_and_install(cfg: Config, state: InfraState) -> InfraState:
     # Image Builder — ECR repo name
     _sh(f'yq -i \'.imageBuilder.registryName = "{cfg.ecr_repo_name}"\' "{f}"')
 
-    print(f"Values file patched: {f}")
-    print(f"  global.METADATA_BUCKET = {cfg.s3_metadata_bucket}")
-    print(f"  global.FAST_REGISTRATION_BUCKET = {cfg.s3_fast_reg_bucket}")
-    print(f"  global.BACKEND_IAM_ROLE_ARN = {state.iam_role_arn}")
-    print(f"  storage.region = {cfg.aws_region}")
-    print(f"  imageBuilder.registryName = {cfg.ecr_repo_name}")
+    logger.info(f"Values file patched: {f}")
+    logger.info(f"  global.METADATA_BUCKET = {cfg.s3_metadata_bucket}")
+    logger.info(f"  global.FAST_REGISTRATION_BUCKET = {cfg.s3_fast_reg_bucket}")
+    logger.info(f"  global.BACKEND_IAM_ROLE_ARN = {state.iam_role_arn}")
+    logger.info(f"  storage.region = {cfg.aws_region}")
+    logger.info(f"  imageBuilder.registryName = {cfg.ecr_repo_name}")
 
     chart_ref = resolve_chart_ref(cfg)
     helm_install(cfg, f, chart_ref)
@@ -440,27 +448,27 @@ def patch_and_install(cfg: Config, state: InfraState) -> InfraState:
 @env.task
 def teardown(cfg: Config, state: InfraState) -> str:
     """Tear down all created resources in reverse order."""
-    print("\n--- Teardown state ---")
-    print(f"  eks_created:          {state.eks_created}  (cluster: {cfg.eks_cluster_name})")
-    print(f"  s3_metadata_created:  {state.s3_metadata_created}  (bucket: {cfg.s3_metadata_bucket})")
-    print(f"  s3_fast_reg_created:  {state.s3_fast_reg_created}  (bucket: {cfg.s3_fast_reg_bucket})")
-    print(f"  ecr_created:          {state.ecr_created}  (repo: {cfg.ecr_repo_name})")
-    print(f"  iam_role_created:     {state.iam_role_created}  (role: {cfg.iam_role_name})")
-    print(f"  iam_role_arn:         {state.iam_role_arn}")
-    print(f"  helm_release:         {cfg.helm_release_name} (ns: {cfg.helm_namespace})")
-    print(f"  values_file_path:     {state.values_file_path}")
-    print(f"  skip_teardown:        {cfg.skip_teardown}")
-    print("---")
+    logger.info("\n--- Teardown state ---")
+    logger.info(f"  eks_created:          {state.eks_created}  (cluster: {cfg.eks_cluster_name})")
+    logger.info(f"  s3_metadata_created:  {state.s3_metadata_created}  (bucket: {cfg.s3_metadata_bucket})")
+    logger.info(f"  s3_fast_reg_created:  {state.s3_fast_reg_created}  (bucket: {cfg.s3_fast_reg_bucket})")
+    logger.info(f"  ecr_created:          {state.ecr_created}  (repo: {cfg.ecr_repo_name})")
+    logger.info(f"  iam_role_created:     {state.iam_role_created}  (role: {cfg.iam_role_name})")
+    logger.info(f"  iam_role_arn:         {state.iam_role_arn}")
+    logger.info(f"  helm_release:         {cfg.helm_release_name} (ns: {cfg.helm_namespace})")
+    logger.info(f"  values_file_path:     {state.values_file_path}")
+    logger.info(f"  skip_teardown:        {cfg.skip_teardown}")
+    logger.info("---")
 
     if cfg.skip_teardown:
-        print("skip_teardown=True — leaving all resources in place.")
+        logger.info("skip_teardown=True — leaving all resources in place.")
         return "skipped"
 
     errors = helm_uninstall(cfg)
 
     # IAM cleanup
     if _sh_ok(f"aws iam get-role --role-name {cfg.iam_role_name}"):
-        print(f"Cleaning up IAM role {cfg.iam_role_name}...")
+        logger.info(f"Cleaning up IAM role {cfg.iam_role_name}...")
 
         policies_output = _sh(
             f"aws iam list-attached-role-policies --role-name {cfg.iam_role_name} "
@@ -489,35 +497,35 @@ def teardown(cfg: Config, state: InfraState) -> str:
         f"aws ecr describe-repositories --repository-names {cfg.ecr_repo_name} "
         f"--region {cfg.aws_region}"
     ):
-        print(f"Deleting ECR repository {cfg.ecr_repo_name}...")
+        logger.info(f"Deleting ECR repository {cfg.ecr_repo_name}...")
         _sh(
             f"aws ecr delete-repository --repository-name {cfg.ecr_repo_name} "
             f"--region {cfg.aws_region} --force",
             check=False,
         )
     else:
-        print(f"ECR repo {cfg.ecr_repo_name} not found, skipping.")
+        logger.info(f"ECR repo {cfg.ecr_repo_name} not found, skipping.")
 
     # S3
     for bucket in [cfg.s3_metadata_bucket, cfg.s3_fast_reg_bucket]:
         if _sh_ok(f"aws s3api head-bucket --bucket {bucket}"):
-            print(f"Deleting S3 bucket {bucket}...")
+            logger.info(f"Deleting S3 bucket {bucket}...")
             _sh(f"aws s3 rb s3://{bucket} --force --region {cfg.aws_region}", check=False)
         else:
-            print(f"S3 bucket {bucket} not found, skipping.")
+            logger.info(f"S3 bucket {bucket} not found, skipping.")
 
     # EKS cluster
     if _sh_ok(
         f"aws eks describe-cluster --name {cfg.eks_cluster_name} --region {cfg.aws_region}"
     ):
-        print(f"Deleting EKS cluster {cfg.eks_cluster_name} (takes ~10-15 min)...")
+        logger.info(f"Deleting EKS cluster {cfg.eks_cluster_name} (takes ~10-15 min)...")
         _sh(
             f"eksctl delete cluster --name {cfg.eks_cluster_name} "
             f"--region {cfg.aws_region} --wait",
             check=False,
         )
     else:
-        print(f"EKS cluster {cfg.eks_cluster_name} not found, skipping.")
+        logger.info(f"EKS cluster {cfg.eks_cluster_name} not found, skipping.")
 
     if errors:
         return f"teardown completed with errors: {'; '.join(errors)}"
@@ -606,14 +614,19 @@ def e2e_test(
     aws_region: str = "us-east-2",
     skip_teardown: bool = False,
     encrypted_credentials: str = "",
+    helm_values_override: str = "",
 ) -> E2EResult:
-    """Full E2E: setup, deploy, verify, teardown."""
+    """Full E2E: setup, deploy, verify, teardown.
+
+    Pass helm_values_override="values-legacy.yaml" to test with legacy defaults.
+    """
     cfg = Config(
         control_plane_url=control_plane_url,
         cluster_name=cluster_name,
         aws_region=aws_region,
         skip_teardown=skip_teardown,
         encrypted_credentials=encrypted_credentials,
+        helm_values_override=helm_values_override,
     )
     decrypt_and_export_credentials(cfg.encrypted_credentials)
 
@@ -626,31 +639,31 @@ def e2e_test(
     e2e = E2EResult()
     state = InfraState(debug_dir=debug_dir)
     try:
-        print("\n--- Phase 1: Interactive / Credential Setup ---")
+        logger.info("\n--- Phase 1: Interactive / Credential Setup ---")
         base_state = provision_dataplane(cfg, provider="aws")
         state.values_file_path = base_state.values_file_path
         state.debug_dir = debug_dir
 
-        print("\n--- Phase 2: Infrastructure Setup ---")
+        logger.info("\n--- Phase 2: Infrastructure Setup ---")
         state = create_eks_cluster(cfg, state)
         state = create_s3_buckets(cfg, state)
         state = create_ecr_repo(cfg, state)
         state = create_iam_role(cfg, state)
 
-        print("\n--- Phase 3: Dataplane Deployment ---")
+        logger.info("\n--- Phase 3: Dataplane Deployment ---")
         state = patch_and_install(cfg, state)
 
-        print("\n--- Phase 4: Verification ---")
+        logger.info("\n--- Phase 4: Verification ---")
         wait_for_healthy(cfg)
         e2e.example_run_name = run_example_workflow(cfg)
         if e2e.example_run_name:
             e2e.test_results = run_verification_tests(cfg, e2e.example_run_name)
 
         e2e.overall = "PASSED"
-        print("\n=== E2E test PASSED ===")
+        logger.info("\n=== E2E test PASSED ===")
 
     except Exception as e:
-        print(f"\n=== E2E test FAILED: {e} ===")
+        logger.info(f"\n=== E2E test FAILED: {e} ===")
         collect_debug_dumps(cfg, debug_dir)
         e2e.overall = "FAILED"
         e2e.error = str(e)[:500]
@@ -659,7 +672,7 @@ def e2e_test(
         raise
 
     e2e.teardown_result = teardown(cfg, state)
-    print(e2e.summary())
+    logger.info(e2e.summary())
     return e2e
 
 
@@ -684,7 +697,7 @@ def launch(
     skip_teardown: bool = False,
 ) -> str:
     """Encrypt local credentials and launch e2e_test remotely."""
-    print("Encrypting local credentials...")
+    logger.info("Encrypting local credentials...")
     encrypted = _encrypt_local_credentials()
 
     flyte.init_from_config()
@@ -696,6 +709,6 @@ def launch(
         skip_teardown=skip_teardown,
         encrypted_credentials=encrypted,
     )
-    print(f"Launched remote run: {run.name}")
-    print(f"  URL: {run.url}")
+    logger.info(f"Launched remote run: {run.name}")
+    logger.info(f"  URL: {run.url}")
     return run.url

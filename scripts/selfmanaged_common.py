@@ -10,11 +10,18 @@ from __future__ import annotations
 
 import base64
 import json
+import logging
 import os
 import subprocess
 import time
 from dataclasses import dataclass
 from pathlib import Path
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)-7s %(name)s - %(message)s",
+)
+logger = logging.getLogger("flyte.e2e")
 
 # =============================================================================
 # Constants
@@ -50,6 +57,7 @@ class BaseConfig:
     helm_chart_repo: str = "https://github.com/unionai/helm-charts.git"
     helm_chart_branch: str = "enghabu/sane-defaults"  # git branch; empty = use published release
     helm_chart_path: str = "charts/dataplane"  # path inside the repo
+    helm_values_override: str = ""  # extra values file (e.g. "values-legacy.yaml" from the chart)
 
     # Timeouts (seconds)
     cluster_healthy_timeout: int = 300
@@ -92,7 +100,7 @@ class BaseInfraState:
 
 def _sh(cmd: str, check: bool = True, capture: bool = True) -> str:
     """Run a shell command, return stdout."""
-    print(f"  $ {cmd}")
+    logger.info(f"  $ {cmd}")
     result = subprocess.run(
         cmd,
         shell=True,
@@ -100,9 +108,9 @@ def _sh(cmd: str, check: bool = True, capture: bool = True) -> str:
         text=True,
     )
     if capture and result.stdout:
-        print(result.stdout.rstrip())
+        logger.info(result.stdout.rstrip())
     if capture and result.stderr:
-        print(result.stderr.rstrip())
+        logger.warning(result.stderr.rstrip())
     if check and result.returncode != 0:
         raise RuntimeError(
             f"Command failed (exit {result.returncode}): {cmd}\n{result.stderr}"
@@ -143,9 +151,9 @@ def _generate_key_pair() -> None:
         )
     )
     _PRIVATE_KEY_PATH.chmod(0o600)
-    print(f"Generated key pair in {_KEYS_DIR}/")
-    print(f"  Public key:  {_PUBLIC_KEY_PATH}")
-    print(f"  Private key: {_PRIVATE_KEY_PATH}")
+    logger.info(f"Generated key pair in {_KEYS_DIR}/")
+    logger.info(f"  Public key:  {_PUBLIC_KEY_PATH}")
+    logger.info(f"  Private key: {_PRIVATE_KEY_PATH}")
 
 
 def _encrypt(plaintext: str) -> str:
@@ -210,12 +218,12 @@ def decrypt_and_export_credentials(encrypted_credentials: str) -> None:
     for secret_path in candidates:
         if secret_path.exists():
             private_key_pem = secret_path.read_bytes()
-            print(f"  Found private key at {secret_path}")
+            logger.info(f"  Found private key at {secret_path}")
             break
 
     if private_key_pem is None and os.environ.get(_FLYTE_SECRET_NAME):
         private_key_pem = os.environ[_FLYTE_SECRET_NAME].encode()
-        print(f"  Found private key in ${_FLYTE_SECRET_NAME} env var")
+        logger.info(f"  Found private key in ${_FLYTE_SECRET_NAME} env var")
 
     if private_key_pem is None:
         secrets_dir = Path("/etc/flyte/secrets")
@@ -230,7 +238,7 @@ def decrypt_and_export_credentials(encrypted_credentials: str) -> None:
     for env_var, encrypted_value in creds.items():
         if encrypted_value:
             os.environ[env_var] = _decrypt(encrypted_value, private_key_pem)
-            print(f"  Decrypted {env_var} ({len(os.environ[env_var])} chars)")
+            logger.info(f"  Decrypted {env_var} ({len(os.environ[env_var])} chars)")
 
 
 def encrypt_env_vars(env_vars: dict[str, str], required: list[str]) -> str:
@@ -249,7 +257,7 @@ def encrypt_env_vars(env_vars: dict[str, str], required: list[str]) -> str:
     for key, value in env_vars.items():
         if value:
             encrypted[key] = _encrypt(value)
-            print(f"  Encrypted {key} ({len(value)} chars -> {len(encrypted[key])} chars)")
+            logger.info(f"  Encrypted {key} ({len(value)} chars -> {len(encrypted[key])} chars)")
         else:
             encrypted[key] = ""
 
@@ -268,11 +276,11 @@ def encrypt_env_vars(env_vars: dict[str, str], required: list[str]) -> str:
 def collect_debug_dumps(cfg: BaseConfig, debug_dir: str) -> str:
     """Dump cluster state for debugging. Returns the debug directory path."""
     if not _sh_ok("kubectl cluster-info"):
-        print("WARNING: No cluster access — skipping debug dump.")
+        logger.warning("No cluster access — skipping debug dump.")
         return debug_dir
 
     os.makedirs(debug_dir, exist_ok=True)
-    print(f"Collecting debug dumps to {debug_dir}...")
+    logger.info(f"Collecting debug dumps to {debug_dir}...")
 
     _dump_cmd("kubectl get pods -A -o wide", f"{debug_dir}/pods-all.txt")
     _dump_cmd(
@@ -325,7 +333,7 @@ def collect_debug_dumps(cfg: BaseConfig, debug_dir: str) -> str:
                 f"{pod_dir}/init-{container}.log",
             )
 
-    print(f"Debug dumps written to {debug_dir}")
+    logger.info(f"Debug dumps written to {debug_dir}")
     return debug_dir
 
 
@@ -398,7 +406,7 @@ def provision_dataplane(cfg: BaseConfig, provider: str) -> BaseInfraState:
     state = BaseInfraState()
 
     work_dir = tempfile.mkdtemp(prefix="union-e2e-provision-")
-    print(f"  Provisioning in temp dir: {work_dir}")
+    logger.info(f"  Provisioning in temp dir: {work_dir}")
 
     # config init may open a browser for OAuth — run without capturing so it
     # can interact with the terminal.
@@ -444,7 +452,7 @@ def provision_dataplane(cfg: BaseConfig, provider: str) -> BaseInfraState:
     shutil.copy2(values_file, dest)
 
     state.values_file_path = os.path.abspath(dest)
-    print(f"Generated values file: {state.values_file_path}")
+    logger.info(f"Generated values file: {state.values_file_path}")
 
     # Parse org name from the uctl output table
     if not cfg.org_name:
@@ -453,7 +461,7 @@ def provision_dataplane(cfg: BaseConfig, provider: str) -> BaseInfraState:
                 fields = [f.strip() for f in line.split("|")]
                 if len(fields) >= 3 and fields[1]:
                     cfg.org_name = fields[1]
-                    print(f"  Parsed org name: {cfg.org_name}")
+                    logger.info(f"  Parsed org name: {cfg.org_name}")
                     break
 
     return state
@@ -485,26 +493,41 @@ def resolve_chart_ref(cfg: BaseConfig) -> str:
 
 def helm_install(cfg: BaseConfig, values_file: str, chart_ref: str) -> None:
     """Run helm upgrade --install and create EAGER_API_KEY."""
+    # If helm_values_override is a relative path and the chart was cloned locally,
+    # resolve it relative to the chart directory.
+    override_flag = ""
+    if cfg.helm_values_override:
+        override_path = cfg.helm_values_override
+        if not os.path.isabs(override_path) and "/" not in override_path:
+            # Might be a file inside the chart (e.g. "values-legacy.yaml")
+            candidate = os.path.join(chart_ref, override_path) if os.path.isdir(chart_ref) else ""
+            if candidate and os.path.exists(candidate):
+                override_path = candidate
+        override_flag = f'-f "{override_path}" '
+        logger.info(f"  Using values override: {override_path}")
+
     _sh(
         f"helm upgrade --install {cfg.helm_release_name} {chart_ref} "
+        f"{override_flag}"
         f'-f "{values_file}" '
-        f"-n {cfg.helm_namespace} --create-namespace --wait --timeout 10m"
+        f"-n {cfg.helm_namespace} --create-namespace --wait --timeout 10m "
+        f"--force-conflicts"
     )
-    print("Helm chart installed.")
+    logger.info("Helm chart installed.")
 
     org_flag = f"--org {cfg.org_name}" if cfg.org_name else ""
     _sh(
         f"uctl create apikey --keyName EAGER_API_KEY {org_flag}",
         check=False,
     )
-    print("EAGER_API_KEY created/propagated.")
+    logger.info("EAGER_API_KEY created/propagated.")
 
 
 def helm_uninstall(cfg: BaseConfig) -> list[str]:
     """Uninstall Helm release. Returns list of errors (empty = success)."""
     errors: list[str] = []
     if _sh_ok(f"helm status {cfg.helm_release_name} -n {cfg.helm_namespace}"):
-        print(f"Uninstalling Helm release {cfg.helm_release_name}...")
+        logger.info(f"Uninstalling Helm release {cfg.helm_release_name}...")
         if not _sh_ok(
             f"helm uninstall {cfg.helm_release_name} -n {cfg.helm_namespace} --wait --timeout 5m"
         ):
@@ -543,7 +566,7 @@ def create_test_project_and_route(cfg: BaseConfig) -> None:
         check=False,  # may already exist
     )
     os.unlink(cp_file.name)
-    print(f"Cluster pool '{pool_name}' created/verified.")
+    logger.info(f"Cluster pool '{pool_name}' created/verified.")
 
     # Assign this cluster to the pool
     _sh(
@@ -551,7 +574,7 @@ def create_test_project_and_route(cfg: BaseConfig) -> None:
         f"--poolName {pool_name} --clusterName {cfg.cluster_name} {org_flag}",
         check=False,  # may already be assigned
     )
-    print(f"Cluster '{cfg.cluster_name}' assigned to pool '{pool_name}'.")
+    logger.info(f"Cluster '{cfg.cluster_name}' assigned to pool '{pool_name}'.")
 
     # 2. Create project (idempotent — uctl returns success if it already exists)
     _sh(
@@ -562,7 +585,7 @@ def create_test_project_and_route(cfg: BaseConfig) -> None:
         f"{org_flag}",
         check=False,
     )
-    print(f"Project '{cfg.test_project}' created/verified.")
+    logger.info(f"Project '{cfg.test_project}' created/verified.")
 
     # 3. Route the project to the cluster pool for all domains
     for domain in ["development", "staging", "production"]:
@@ -580,7 +603,7 @@ def create_test_project_and_route(cfg: BaseConfig) -> None:
             check=False,
         )
         os.unlink(attr_file.name)
-    print(f"Cluster pool attributes set: {cfg.test_project} -> {pool_name}")
+    logger.info(f"Cluster pool attributes set: {cfg.test_project} -> {pool_name}")
 
 
 # =============================================================================
@@ -602,9 +625,9 @@ def wait_for_healthy(cfg: BaseConfig) -> bool:
                 state_val = fields[3]
                 health_val = fields[4]
                 if state_val == "STATE_ENABLED" and health_val == "HEALTHY":
-                    print(f"Cluster {cfg.cluster_name} is ENABLED and HEALTHY.")
+                    logger.info(f"Cluster {cfg.cluster_name} is ENABLED and HEALTHY.")
                     return True
-                print(f"  state={state_val} health={health_val}, waiting...")
+                logger.info(f"  state={state_val} health={health_val}, waiting...")
         time.sleep(15)
 
     raise RuntimeError(
@@ -612,44 +635,66 @@ def wait_for_healthy(cfg: BaseConfig) -> bool:
     )
 
 
+def _clean_workspace(name: str) -> str:
+    """Create (or recreate) a clean workspace directory, removing stale .pyc files."""
+    import shutil
+
+    workspace = os.path.join(os.path.dirname(__file__), "e2e_workspace", name)
+    if os.path.exists(workspace):
+        shutil.rmtree(workspace)
+    os.makedirs(workspace, exist_ok=True)
+    return workspace
+
+
 def run_example_workflow(cfg: BaseConfig) -> str:
-    """Run the hello.py example from flyte-sdk and verify it succeeds.
+    """Run a simple workflow with a unique input to avoid cache hits.
 
     Returns the run name on success.
     """
-    workspace = os.path.join(os.path.dirname(__file__), ".e2e-workspace")
-    os.makedirs(workspace, exist_ok=True)
+    import uuid
 
-    sdk_dir = os.path.join(workspace, "flyte-sdk")
-    if os.path.isdir(sdk_dir):
-        print("flyte-sdk already cloned, pulling latest...")
-        _sh(f"cd {sdk_dir} && git pull --ff-only", check=False)
-    else:
-        _sh(
-            f"git clone --depth 1 --filter=blob:none --sparse "
-            f"https://github.com/flyteorg/flyte-sdk.git {sdk_dir}"
-        )
-        _sh(f"cd {sdk_dir} && git sparse-checkout set examples")
+    workspace = _clean_workspace("hello_test")
 
-    example = os.path.join(sdk_dir, "examples", "basics", "hello.py")
-    if not os.path.exists(example):
-        raise RuntimeError(f"Example not found: {example}")
+    # Generate a script with a unique nonce input so cache never matches
+    nonce = str(uuid.uuid4())
+    script_path = os.path.join(workspace, "hello_e2e.py")
+    with open(script_path, "w") as f:
+        f.write('''\
+import logging
+import flyte
 
-    print(f"Running example: {example}")
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("flyte.e2e.hello")
+
+env = flyte.TaskEnvironment(name="hello-e2e", cache="disable")
+
+@env.task
+async def say_hello(nonce: str) -> str:
+    logger.info(f"Hello from e2e test! nonce={nonce}")
+    return f"hello-{nonce}"
+
+@env.task
+async def main(nonce: str) -> str:
+    result = await say_hello(nonce=nonce)
+    logger.info(f"Workflow completed: {result}")
+    return result
+''')
+
+    logger.info(f"Running hello workflow (nonce={nonce})")
     run_result = subprocess.run(
-        f"cd {workspace} && flyte run "
+        f"flyte run "
         f"--project {cfg.test_project} "
         f"--domain development "
         f"--follow "
-        f"{example} main",
+        f"{script_path} main --nonce {nonce}",
         shell=True,
         capture_output=True,
         text=True,
     )
 
-    print(run_result.stdout)
+    logger.info(run_result.stdout)
     if run_result.stderr:
-        print(run_result.stderr)
+        logger.info(run_result.stderr)
 
     # flyte run --follow may exit 0 even when the workflow fails (it successfully
     # streamed the failure). Check both the exit code and the output for failure.
@@ -668,7 +713,7 @@ def run_example_workflow(cfg: BaseConfig) -> str:
     workflow_failed = any(ind in ansi_clean for ind in failure_indicators)
 
     if run_result.returncode != 0 or workflow_failed:
-        print(f"WARNING: flyte run exited with code {run_result.returncode} (workflow_failed={workflow_failed})")
+        logger.warning(f"flyte run exited with code {run_result.returncode} (workflow_failed={workflow_failed})")
         raise RuntimeError(
             f"Example workflow failed (exit code {run_result.returncode}).\n"
             f"stdout: {run_result.stdout[-500:] if run_result.stdout else '(empty)'}\n"
@@ -684,7 +729,7 @@ def run_example_workflow(cfg: BaseConfig) -> str:
     match = re.search(r"Created Run:\s+([a-z0-9]+)", ansi_clean)
     if match:
         run_name = match.group(1)
-    print(f"Example workflow SUCCEEDED (run: {run_name})")
+    logger.info(f"Example workflow SUCCEEDED (run: {run_name})")
     return run_name
 
 
@@ -761,6 +806,7 @@ def run_verification_tests(cfg: BaseConfig, run_name: str) -> list[TestResult]:
         ("Remote Image Builder", verify_image_builder),
         ("Image Cache (No Rebuild)", verify_image_cache),
         ("Reusable Containers", verify_reusable_containers),
+        ("App Deployment", verify_app_deployment),
     ]
     results: list[TestResult] = []
     for test_name, test_fn in tests:
@@ -770,22 +816,22 @@ def run_verification_tests(cfg: BaseConfig, run_name: str) -> list[TestResult]:
             result.passed = True
         except Exception as e:
             result.error = str(e)[:200]
-            print(f"  TEST FAILED: {test_name}: {result.error}")
+            logger.info(f"  TEST FAILED: {test_name}: {result.error}")
         results.append(result)
 
     # Print summary table
-    print("\n" + "=" * 70)
-    print(f"  {'Test':<40} {'Result':<10} {'Error'}")
-    print("-" * 70)
+    logger.info("\n" + "=" * 70)
+    logger.info(f"  {'Test':<40} {'Result':<10} {'Error'}")
+    logger.info("-" * 70)
     for r in results:
         status = "PASSED" if r.passed else "FAILED"
         error_msg = "" if r.passed else r.error[:60]
-        print(f"  {r.name:<40} {status:<10} {error_msg}")
-    print("=" * 70)
+        logger.info(f"  {r.name:<40} {status:<10} {error_msg}")
+    logger.info("=" * 70)
 
     passed = sum(1 for r in results if r.passed)
     total = len(results)
-    print(f"  {passed}/{total} tests passed\n")
+    logger.info(f"  {passed}/{total} tests passed\n")
 
     failed = [r for r in results if not r.passed]
     if failed:
@@ -809,34 +855,34 @@ def _wait_for_run_metadata(cfg: BaseConfig, run_name: str, domain: str = "develo
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
         combined = (result.stdout or "") + (result.stderr or "")
         if result.returncode == 0 and "NOT FOUND" not in combined and "NOT_FOUND" not in combined:
-            print(f"  Run metadata ready (attempt {attempt + 1})")
+            logger.info(f"  Run metadata ready (attempt {attempt + 1})")
             return
         wait = 5 * (attempt + 1)
-        print(f"  Run metadata not ready yet, waiting {wait}s (attempt {attempt + 1}/6)...")
+        logger.info(f"  Run metadata not ready yet, waiting {wait}s (attempt {attempt + 1}/6)...")
         time.sleep(wait)
     # Don't fail here — let the caller decide
 
 
 def verify_logs(cfg: BaseConfig, run_name: str) -> None:
     """Live & Persistent Logs test: get logs, delete pods, get logs again."""
-    print(f"\n--- Test: Live & Persistent Logs (run={run_name}) ---")
+    logger.info(f"\n--- Test: Live & Persistent Logs (run={run_name}) ---")
     domain = "development"
 
     # Wait for run metadata to be available
     _wait_for_run_metadata(cfg, run_name, domain)
 
     # 1. Get logs while pods are still around
-    print("Getting logs (live)...")
+    logger.info("Getting logs (live)...")
     output1 = _sh(
         f"flyte get logs {run_name} --project {cfg.test_project} --domain {domain}",
         check=False,
     )
     if not output1.strip() or "NOT FOUND" in output1 or "NOT_FOUND" in output1:
         raise RuntimeError(f"No logs returned for run {run_name} (live)")
-    print("  Live logs: OK")
+    logger.info("  Live logs: OK")
 
     # 2. Delete the pods for this run
-    print("Deleting run pods...")
+    logger.info("Deleting run pods...")
     pods = _sh(
         f"kubectl get pods -n {cfg.test_project}-{domain} "
         f"-l execution-id={run_name} --no-headers -o custom-columns=NAME:.metadata.name",
@@ -850,20 +896,20 @@ def verify_logs(cfg: BaseConfig, run_name: str) -> None:
     time.sleep(10)
 
     # 3. Get logs again — should still work (persistent logs via fluentbit/S3)
-    print("Getting logs (persistent, after pod deletion)...")
+    logger.info("Getting logs (persistent, after pod deletion)...")
     output2 = _sh(
         f"flyte get logs {run_name} --project {cfg.test_project} --domain {domain}",
         check=False,
     )
     if not output2.strip():
         raise RuntimeError(f"No logs returned for run {run_name} after pod deletion (persistent logs missing)")
-    print("  Persistent logs: OK")
-    print("--- Live & Persistent Logs: PASSED ---")
+    logger.info("  Persistent logs: OK")
+    logger.info("--- Live & Persistent Logs: PASSED ---")
 
 
 def verify_io(cfg: BaseConfig, run_name: str) -> None:
     """Inputs/Outputs test: verify flyte get io returns data."""
-    print(f"\n--- Test: Inputs/Outputs (run={run_name}) ---")
+    logger.info(f"\n--- Test: Inputs/Outputs (run={run_name}) ---")
     domain = "development"
 
     output = _sh(
@@ -872,8 +918,8 @@ def verify_io(cfg: BaseConfig, run_name: str) -> None:
     )
     if not output.strip():
         raise RuntimeError(f"No I/O data returned for run {run_name}")
-    print(f"  I/O data returned ({len(output)} chars)")
-    print("--- Inputs/Outputs: PASSED ---")
+    logger.info(f"  I/O data returned ({len(output)} chars)")
+    logger.info("--- Inputs/Outputs: PASSED ---")
 
 
 def verify_code_bundle_cors(cfg: BaseConfig, run_name: str) -> None:
@@ -887,7 +933,7 @@ def verify_code_bundle_cors(cfg: BaseConfig, run_name: str) -> None:
     import urllib.parse
     import urllib.request
 
-    print(f"\n--- Test: Code Bundle Download & CORS (run={run_name}) ---")
+    logger.info(f"\n--- Test: Code Bundle Download & CORS (run={run_name}) ---")
     domain = "development"
 
     # 1. Get access token from keyring
@@ -904,7 +950,7 @@ def verify_code_bundle_cors(cfg: BaseConfig, run_name: str) -> None:
             f"No access token found in keyring for '{cp_host}'. "
             "Run 'flyte config init' or 'uctl config init' to authenticate."
         )
-    print(f"  Access token: found ({len(token)} chars)")
+    logger.info(f"  Access token: found ({len(token)} chars)")
 
     # 2. Get the first task action name for this run
     action_name = "a0"
@@ -949,47 +995,36 @@ def verify_code_bundle_cors(cfg: BaseConfig, run_name: str) -> None:
     if not signed_urls:
         raise RuntimeError(f"No presigned URLs returned: {json.dumps(resp_body)[:500]}")
     signed_url = signed_urls[0]
-    print(f"  Presigned URL obtained ({len(signed_url)} chars)")
+    logger.info(f"  Presigned URL obtained ({len(signed_url)} chars)")
 
     # 4. HEAD request with Origin header to verify CORS
     cors_origin = cp_base
-    print(f"  Using cors_origin ({cp_base})")
-    head_req = urllib.request.Request(
+    # 4. GET the file with Origin header — verifies both download and CORS
+    logger.info(f"  Using cors_origin ({cors_origin})")
+    get_req = urllib.request.Request(
         signed_url,
-        headers={
-            "Origin": cors_origin,
-            "Access-Control-Request-Method": "POST",
-            "Access-Control-Request-Headers": "Content-Type,Authorization"
-        },
-        method="HEAD",
+        headers={"Origin": cors_origin},
+        method="GET",
     )
     try:
-        with urllib.request.urlopen(head_req) as resp:
+        with urllib.request.urlopen(get_req) as resp:
+            data = resp.read()
             cors_header = resp.getheader("Access-Control-Allow-Origin", "")
-            content_length = resp.getheader("Content-Length", "0")
+            content_length = resp.getheader("Content-Length", str(len(data)))
     except urllib.error.HTTPError as e:
-        raise RuntimeError(f"HEAD on presigned URL failed ({e.code})")
+        raise RuntimeError(f"GET on presigned URL failed ({e.code})")
 
-    print(f"  HEAD response: Content-Length={content_length}, CORS={cors_header}")
+    logger.info(f"  GET response: {len(data)} bytes, CORS={cors_header}")
+    if len(data) == 0:
+        raise RuntimeError("Code bundle is empty")
     if not cors_header:
         raise RuntimeError(
             f"No Access-Control-Allow-Origin header on presigned URL. "
             f"CORS may not be configured on the storage bucket."
         )
-    print(f"  CORS header: {cors_header} — OK")
+    logger.info(f"  CORS header: {cors_header} — OK")
 
-    # 5. GET to verify the file is actually downloadable
-    get_req = urllib.request.Request(signed_url, method="GET")
-    try:
-        with urllib.request.urlopen(get_req) as resp:
-            data = resp.read()
-    except urllib.error.HTTPError as e:
-        raise RuntimeError(f"GET on presigned URL failed ({e.code})")
-    print(f"  Downloaded code bundle: {len(data)} bytes")
-    if len(data) == 0:
-        raise RuntimeError("Code bundle is empty")
-
-    print("--- Code Bundle Download & CORS: PASSED ---")
+    logger.info("--- Code Bundle Download & CORS: PASSED ---")
 
 
 # =============================================================================
@@ -997,22 +1032,34 @@ def verify_code_bundle_cors(cfg: BaseConfig, run_name: str) -> None:
 # =============================================================================
 
 
-def _run_flyte_script(cfg: BaseConfig, script_path: str, entrypoint: str = "main") -> str:
-    """Run a flyte script remotely and return the run name. Raises on failure."""
+def _run_flyte_script(
+    cfg: BaseConfig, script_path: str, entrypoint: str = "main", timeout: int = 600,
+) -> str:
+    """Run a flyte script remotely and return the run name. Raises on failure.
+
+    Args:
+        timeout: Maximum seconds to wait for the run to complete (default 10 min).
+    """
     import re
 
-    result = subprocess.run(
-        f"flyte run "
-        f"--project {cfg.test_project} "
-        f"--domain development "
-        f"--follow "
-        f"{script_path} {entrypoint}",
-        shell=True,
-        capture_output=True,
-        text=True,
-    )
+    try:
+        result = subprocess.run(
+            f"flyte run "
+            f"--project {cfg.test_project} "
+            f"--domain development "
+            f"--follow "
+            f"{script_path} {entrypoint}",
+            shell=True,
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+        )
+    except subprocess.TimeoutExpired as e:
+        combined = (e.stdout or b"").decode(errors="replace") + (e.stderr or b"").decode(errors="replace")
+        logger.info(combined[:5000])
+        raise RuntimeError(f"Script timed out after {timeout}s:\n{combined[-500:]}")
     combined = (result.stdout or "") + (result.stderr or "")
-    print(combined[:5000])
+    logger.info(combined[:5000])
 
     ansi_clean = re.sub(r"\x1b\[[0-9;]*m", "", combined)
     # flyte run --follow exits 0 even on workflow failure. Detect failures from output.
@@ -1036,12 +1083,11 @@ def _run_flyte_script(cfg: BaseConfig, script_path: str, entrypoint: str = "main
 
 def verify_image_builder(cfg: BaseConfig, _run_name: str) -> None:
     """Remote Image Builder test: trigger a fresh image build by including a unique file."""
-    print("\n--- Test: Remote Image Builder ---")
+    logger.info("\n--- Test: Remote Image Builder ---")
     import uuid
 
     # Use a path without dots — Python treats dotted dirs as relative imports
-    workspace = os.path.join(os.path.dirname(__file__), "e2e_workspace", "image_builder_test")
-    os.makedirs(workspace, exist_ok=True)
+    workspace = _clean_workspace("image_builder_test")
 
     # Write a file with a random string so the image hash changes every run
     unique_marker = str(uuid.uuid4())
@@ -1053,8 +1099,12 @@ def verify_image_builder(cfg: BaseConfig, _run_name: str) -> None:
     script_path = os.path.join(workspace, "image_build_test.py")
     with open(script_path, "w") as f:
         f.write(f'''\
+import logging
 from pathlib import Path
 import flyte
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("flyte.e2e.image_build")
 
 image = (
     flyte.Image.from_debian_base()
@@ -1062,60 +1112,78 @@ image = (
     .with_source_file(Path("{marker_file}"))
 )
 
-env = flyte.TaskEnvironment(name="image-builder-e2e", image=image)
+env = flyte.TaskEnvironment(name="image-builder-e2e", image=image, cache="disable")
 
 @env.task
-async def main() -> str:
+async def main(nonce: str) -> str:
     marker = Path("build_marker.txt").read_text()
+    logger.info(f"Built with marker: {{marker}}, nonce: {{nonce}}")
     return f"Built with marker: {{marker}}"
 ''')
 
-    print(f"  Marker: {unique_marker}")
-    print("  Running with unique source file (should trigger image build)...")
-    run_name = _run_flyte_script(cfg, script_path)
+    logger.info(f"  Marker: {unique_marker}")
+    logger.info("  Running with unique source file (should trigger image build)...")
+    run_name = _run_flyte_script(cfg, script_path, entrypoint=f"main --nonce {unique_marker}")
 
     if not run_name:
         raise RuntimeError("Could not parse run name from image builder test")
-    print(f"  Image build test run: {run_name}")
-    print("--- Remote Image Builder: PASSED ---")
+    logger.info(f"  Image build test run: {run_name}")
+    logger.info("--- Remote Image Builder: PASSED ---")
 
 
 def verify_image_cache(cfg: BaseConfig, _run_name: str) -> None:
     """Image Cache test: run the same image twice, second should skip build."""
-    print("\n--- Test: Image Cache (No Rebuild) ---")
+    logger.info("\n--- Test: Image Cache (No Rebuild) ---")
+
+    import uuid
 
     workspace = os.path.join(os.path.dirname(__file__), "e2e_workspace", "image_cache_test")
-    os.makedirs(workspace, exist_ok=True)
+    workspace = _clean_workspace("image_cache_test")
 
-    # Write a deterministic script (no random marker = same hash every time)
+    # Write a script with an image hash that is stable within this E2E run (so run 2
+    # hits the image cache from run 1), but different across E2E setups (so stale
+    # build cache from a torn-down cluster doesn't interfere). We embed the cluster
+    # name as an env var in the image — this changes the image hash per cluster.
     script_path = os.path.join(workspace, "image_cache_test.py")
     with open(script_path, "w") as f:
-        f.write('''\
+        f.write(f'''\
+import logging
 import flyte
 
-image = flyte.Image.from_debian_base().with_pip_packages("requests==2.32.3")
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("flyte.e2e.image_cache")
 
-env = flyte.TaskEnvironment(name="image-cache-e2e", image=image)
+image = (
+    flyte.Image.from_debian_base()
+    .with_pip_packages("requests==2.32.3")
+    .with_env_vars({{"E2E_CLUSTER": "{cfg.cluster_name}"}})
+)
+
+env = flyte.TaskEnvironment(name="image-cache-e2e", image=image, cache="disable")
 
 @env.task
-async def main() -> str:
+async def main(nonce: str) -> str:
     import requests
-    return f"requests version: {requests.__version__}"
+    logger.info(f"requests version: {{requests.__version__}}, nonce: {{nonce}}")
+    return f"requests version: {{requests.__version__}}"
 ''')
 
-    # First run — may or may not build
-    print("  Run 1 (may build)...")
-    run1 = _run_flyte_script(cfg, script_path)
-    print(f"  Run 1 completed: {run1}")
+    nonce1 = str(uuid.uuid4())
+    nonce2 = str(uuid.uuid4())
 
-    # Second run — should detect existing image and skip build
-    print("  Run 2 (should skip build)...")
+    # First run — may or may not build the image
+    logger.info("  Run 1 (may build)...")
+    run1 = _run_flyte_script(cfg, script_path, entrypoint=f"main --nonce {nonce1}")
+    logger.info(f"  Run 1 completed: {run1}")
+
+    # Second run — same image, different nonce. Image should be cached.
+    logger.info("  Run 2 (should skip build)...")
     result2 = subprocess.run(
         f"flyte run "
         f"--project {cfg.test_project} "
         f"--domain development "
         f"--follow "
-        f"{script_path} main",
+        f"{script_path} main --nonce {nonce2}",
         shell=True,
         capture_output=True,
         text=True,
@@ -1124,26 +1192,30 @@ async def main() -> str:
 
     combined2 = (result2.stdout or "") + (result2.stderr or "")
     ansi_clean2 = re.sub(r"\x1b\[[0-9;]*m", "", combined2)
-    print(combined2[:2000])
+    logger.info(ansi_clean2[:5000])
 
     # Check that the second run skipped the build
     if "already exists, skipping build" in ansi_clean2:
-        print("  Image cache hit confirmed: 'already exists, skipping build'")
+        logger.info("  Image cache hit confirmed: 'already exists, skipping build'")
     elif "Building" not in ansi_clean2:
-        print("  No build step detected (image was cached)")
+        logger.info("  No build step detected (image was cached)")
     else:
-        print("  WARNING: Second run may have rebuilt the image (check output above)")
+        logger.info("  WARNING: Second run may have rebuilt the image (check output above)")
 
-    workflow_failed = "FAILED" in ansi_clean2 or "exited unsuccessfully" in ansi_clean2
-    if result2.returncode != 0 or workflow_failed:
-        raise RuntimeError(f"Second run failed (exit {result2.returncode})")
+    failure_indicators = [
+        "FAILED", "exited unsuccessfully", "Traceback (most recent call last)",
+        "Filtered traceback (most recent call last)", "RuntimeError:",
+        "TypeError:", "ActionPhase.FAILED",
+    ]
+    if result2.returncode != 0 or any(ind in ansi_clean2 for ind in failure_indicators):
+        raise RuntimeError(f"Second run failed (exit {result2.returncode}):\n{ansi_clean2[-500:]}")
 
-    print("--- Image Cache (No Rebuild): PASSED ---")
+    logger.info("--- Image Cache (No Rebuild): PASSED ---")
 
 
 def verify_reusable_containers(cfg: BaseConfig, _run_name: str) -> None:
     """Reusable Containers test: run the reusable example from flyte-sdk."""
-    print("\n--- Test: Reusable Containers ---")
+    logger.info("\n--- Test: Reusable Containers ---")
 
     workspace = os.path.join(os.path.dirname(__file__), ".e2e-workspace")
     sdk_dir = os.path.join(workspace, "flyte-sdk")
@@ -1158,18 +1230,201 @@ def verify_reusable_containers(cfg: BaseConfig, _run_name: str) -> None:
     # Copy to a clean path without dots to avoid Python import issues
     import shutil
 
-    clean_dir = os.path.join(os.path.dirname(__file__), "e2e_workspace", "reuse_test")
-    os.makedirs(clean_dir, exist_ok=True)
+    clean_dir = _clean_workspace("reuse_test")
     clean_path = os.path.join(clean_dir, "reusable.py")
     shutil.copy2(reuse_src, clean_path)
 
-    print(f"  Running: {clean_path}")
-    run_name = _run_flyte_script(cfg, clean_path, entrypoint="main --n 5")
+    logger.info(f"  Running: {clean_path}")
+    import random
+    n = random.randint(3, 10)
+    run_name = _run_flyte_script(cfg, clean_path, entrypoint=f"main --n {n}")
 
     if not run_name:
         raise RuntimeError("Could not parse run name from reusable containers test")
-    print(f"  Reusable containers run: {run_name}")
-    print("--- Reusable Containers: PASSED ---")
+    logger.info(f"  Reusable containers run: {run_name}")
+    logger.info("--- Reusable Containers: PASSED ---")
+
+
+def verify_app_deployment(cfg: BaseConfig, _run_name: str) -> None:
+    """App Deployment test: deploy a FastAPI app, verify internal + public endpoints."""
+    logger.info("\n--- Test: App Deployment ---")
+    import re
+    import urllib.request
+
+    workspace = _clean_workspace("app_deploy_test")
+
+    # Write a script that deploys a FastAPI app, tests it internally, and prints the public URL
+    script_path = os.path.join(workspace, "app_deploy_test.py")
+    with open(script_path, "w") as f:
+        f.write('''\
+import logging
+import typing
+import fastapi
+import flyte
+import flyte.app.extras
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("flyte.e2e.app_deploy")
+
+app = fastapi.FastAPI()
+
+@app.get("/")
+async def root() -> str:
+    return "e2e-app-ok"
+
+@app.get("/health")
+async def health() -> dict:
+    return {"status": "healthy", "source": "e2e-test"}
+
+app_env = flyte.app.extras.FastAPIAppEnvironment(
+    name="e2e-app-deploy",
+    app=app,
+    image=flyte.Image.from_debian_base().with_pip_packages("fastapi", "uvicorn", "httpx"),
+    resources=flyte.Resources(cpu=1, memory="512Mi"),
+    requires_auth=False,
+)
+
+task_env = flyte.TaskEnvironment(
+    name="e2e-app-deploy-tester",
+    image=flyte.Image.from_debian_base().with_pip_packages("fastapi", "uvicorn", "httpx"),
+    resources=flyte.Resources(cpu=1, memory="512Mi"),
+    depends_on=[app_env],
+)
+
+class AppDeployResult(typing.NamedTuple):
+    internal_url: str
+    public_url: str
+
+@task_env.task
+async def main() -> AppDeployResult:
+    import httpx
+
+    await flyte.init_in_cluster.aio()
+    deployed = flyte.serve(app_env)
+    internal_url = app_env.endpoint
+    public_url = deployed.endpoint
+    logger.info(f"internal url: {internal_url}. public url: {public_url}")
+
+    try:
+        # Test internal endpoints
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(f"{internal_url}/")
+            assert resp.status_code == 200, f"Root endpoint [{internal_url}] returned {resp.status_code}: {resp.text}"
+            logger.info(f"GET / -> {resp.status_code}")
+            assert "e2e-app-ok" in resp.text, f"Unexpected response: {resp.text}"
+
+            resp = await client.get(f"{internal_url}/health")
+            assert resp.status_code == 200, f"Health endpoint [{internal_url}/health] returned {resp.status_code}: {resp.text}"
+            body = resp.json()
+            assert body.get("status") == "healthy", f"Unexpected health response: {body}"
+            logger.info(f"GET /health -> {resp.status_code}")
+    finally:
+        # Always deactivate the app, whether tests pass or fail
+        logger.info("Deactivating app...")
+        deployed.deactivate(wait=True)
+        logger.info("App deactivated.")
+
+    return AppDeployResult(internal_url=internal_url, public_url=public_url)
+''')
+
+    logger.info("  Deploying FastAPI app and testing internal endpoints (timeout: 180s)...")
+    try:
+        result = subprocess.run(
+            f"flyte run "
+            f"--project {cfg.test_project} "
+            f"--domain development "
+            f"--follow "
+            f"{script_path} main",
+            shell=True,
+            capture_output=True,
+            text=True,
+            timeout=180,
+        )
+    except subprocess.TimeoutExpired as e:
+        combined = (e.stdout or b"").decode(errors="replace") + (e.stderr or b"").decode(errors="replace")
+        ansi_clean = re.sub(r"\x1b\[[0-9;]*m", "", combined)
+        logger.info(ansi_clean[:5000])
+        raise RuntimeError(f"App deployment timed out after 180s:\n{ansi_clean[-500:]}")
+    combined = (result.stdout or "") + (result.stderr or "")
+    ansi_clean = re.sub(r"\x1b\[[0-9;]*m", "", combined)
+    logger.info(ansi_clean[:5000])
+
+    failure_indicators = [
+        "FAILED", "exited unsuccessfully", "Traceback (most recent call last)",
+        "Filtered traceback (most recent call last)", "RuntimeError:",
+        "TypeError:", "ActionPhase.FAILED",
+    ]
+    if result.returncode != 0 or any(ind in ansi_clean for ind in failure_indicators):
+        raise RuntimeError(f"App deployment failed:\n{ansi_clean[-500:]}")
+
+    run_match = re.search(r"Created Run:\s+([a-z0-9]+)", ansi_clean)
+    run_name = run_match.group(1) if run_match else ""
+    logger.info(f"  Internal endpoints verified (run: {run_name})")
+
+    # Get the public URL from the task output via flyte get io
+    # The task returns AppDeployResult(internal_url=..., public_url=...)
+    public_url = ""
+    if run_name:
+        _wait_for_run_metadata(cfg, run_name)
+        io_output = _sh(
+            f"flyte get io {run_name} --project {cfg.test_project} --domain development",
+            check=False,
+        )
+        io_clean = re.sub(r"\x1b\[[0-9;]*m", "", io_output)
+        # Look for the public_url field in the output
+        url_match = re.search(r"public_url['\"]?\s*[:=]\s*['\"]?(https?://\S+)", io_clean)
+        if url_match:
+            public_url = url_match.group(1).rstrip("'\")")
+        # Fallback: look for any https URL that looks like an app endpoint
+        if not public_url:
+            url_match = re.search(r"(https?://\S+/apps/\S+)", io_clean)
+            if url_match:
+                public_url = url_match.group(1).rstrip("'\")")
+
+    if not public_url:
+        logger.info("  WARNING: Could not parse public URL — skipping external verification")
+        logger.info("--- App Deployment: PASSED (internal only) ---")
+        return
+
+    logger.info(f"  Public URL: {public_url}")
+
+    # Test the public URL from outside the cluster (requires auth)
+    try:
+        import keyring
+    except ImportError:
+        _sh("pip install keyring", check=False)
+        import keyring
+
+    cp_host = cfg.control_plane_url.replace("https://", "").replace("http://", "").rstrip("/")
+    token = keyring.get_password(cp_host, "access_token")
+
+    if not token:
+        logger.info("  WARNING: No auth token — skipping public URL verification")
+        logger.info("--- App Deployment: PASSED (internal only) ---")
+        return
+
+    logger.info("  Testing public URL from outside the cluster...")
+    req = urllib.request.Request(
+        public_url,
+        headers={"Authorization": f"Bearer {token}"},
+        method="GET",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            body = resp.read().decode()
+            status = resp.status
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"Public URL returned {e.code}: {e.read().decode()[:200]}")
+    except Exception as e:
+        raise RuntimeError(f"Public URL request failed: {e}")
+
+    if status != 200:
+        raise RuntimeError(f"Public URL returned status {status}")
+    if "e2e-app-ok" not in body:
+        raise RuntimeError(f"Public URL unexpected response: {body[:200]}")
+
+    logger.info(f"  Public URL responded: {status} OK")
+    logger.info("--- App Deployment: PASSED (internal + public) ---")
 
 
 # =============================================================================
@@ -1184,13 +1439,13 @@ def setup_keys_impl() -> str:
 
     _generate_key_pair()
 
-    print(f"\nPushing private key as Flyte secret '{_FLYTE_SECRET_NAME}'...")
+    logger.info(f"\nPushing private key as Flyte secret '{_FLYTE_SECRET_NAME}'...")
     flyte.init_from_config()
     remote.Secret.create(
         name=_FLYTE_SECRET_NAME,
         value=_PRIVATE_KEY_PATH.read_bytes(),
         type="regular",
     )
-    print(f"Secret '{_FLYTE_SECRET_NAME}' created.")
+    logger.info(f"Secret '{_FLYTE_SECRET_NAME}' created.")
 
     return f"Key pair in {_KEYS_DIR}/, secret '{_FLYTE_SECRET_NAME}' created."

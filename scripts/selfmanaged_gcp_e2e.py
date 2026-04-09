@@ -30,6 +30,7 @@ Usage (remote — credentials encrypted with RSA envelope):
 from __future__ import annotations
 
 import json
+import logging
 import os
 import tempfile
 import time
@@ -37,6 +38,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import flyte
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)-7s %(name)s - %(message)s")
+logger = logging.getLogger("flyte.e2e.gcp")
 
 from selfmanaged_common import (
     BaseConfig,
@@ -206,7 +210,7 @@ def create_gke_cluster(cfg: Config, state: InfraState) -> InfraState:
         f"gcloud container clusters describe {cfg.cluster_name_gke} "
         f"--region {cfg.region} --project {cfg.project_id}"
     ):
-        print(f"GKE cluster {cfg.cluster_name_gke} already exists, skipping.")
+        logger.info(f"GKE cluster {cfg.cluster_name_gke} already exists, skipping.")
     else:
         _sh(
             f"gcloud container clusters create {cfg.cluster_name_gke} "
@@ -246,7 +250,7 @@ def create_gcs_buckets(cfg: Config, state: InfraState) -> InfraState:
         (f"{cfg.bucket_prefix}-fast-reg", "gcs_fast_reg_created"),
     ]:
         if _sh_ok(f"gcloud storage buckets describe gs://{bucket} --project {cfg.project_id}"):
-            print(f"Bucket gs://{bucket} already exists, skipping creation.")
+            logger.info(f"Bucket gs://{bucket} already exists, skipping creation.")
         else:
             _sh(
                 f"gcloud storage buckets create gs://{bucket} "
@@ -261,7 +265,7 @@ def create_gcs_buckets(cfg: Config, state: InfraState) -> InfraState:
         cors_file.close()
         _sh(f"gcloud storage buckets update gs://{bucket} --cors-file={cors_file.name}")
         os.unlink(cors_file.name)
-        print(f"  Bucket ready (with CORS): gs://{bucket}")
+        logger.info(f"  Bucket ready (with CORS): gs://{bucket}")
     return state
 
 
@@ -272,7 +276,7 @@ def create_ar_repo(cfg: Config, state: InfraState) -> InfraState:
         f"gcloud artifacts repositories describe {cfg.ar_repository} "
         f"--project {cfg.project_id} --location {cfg.region}"
     ):
-        print(f"Artifact Registry repo {cfg.ar_repository} already exists, skipping.")
+        logger.info(f"Artifact Registry repo {cfg.ar_repository} already exists, skipping.")
     else:
         _sh(
             f"gcloud artifacts repositories create {cfg.ar_repository} "
@@ -295,7 +299,7 @@ def create_workload_identity(cfg: Config, state: InfraState) -> InfraState:
     if _sh_ok(
         f"gcloud iam service-accounts describe {gsa_email} --project {cfg.project_id}"
     ):
-        print(f"GSA {gsa_email} already exists, skipping creation.")
+        logger.info(f"GSA {gsa_email} already exists, skipping creation.")
     else:
         _sh(
             f"gcloud iam service-accounts create {cfg.gsa_name} "
@@ -344,7 +348,7 @@ def create_workload_identity(cfg: Config, state: InfraState) -> InfraState:
         check=False,
     )
 
-    print(f"Workload Identity ready: {gsa_email}")
+    logger.info(f"Workload Identity ready: {gsa_email}")
     return state
 
 
@@ -390,12 +394,12 @@ def patch_and_install(cfg: Config, state: InfraState) -> InfraState:
     # Image Builder — Artifact Registry repo name
     _sh(f'yq -i \'.imageBuilder.registryName = "{cfg.ar_repository}"\' "{f}"')
 
-    print(f"Values file patched: {f}")
-    print(f"  global.METADATA_BUCKET = {metadata_bucket}")
-    print(f"  global.FAST_REGISTRATION_BUCKET = {fast_reg_bucket}")
-    print(f"  global.BACKEND_IAM_ROLE_ARN = {state.gsa_email}")
-    print(f"  storage.gcp.projectId = {cfg.project_id}")
-    print(f"  imageBuilder.registryName = {cfg.ar_repository}")
+    logger.info(f"Values file patched: {f}")
+    logger.info(f"  global.METADATA_BUCKET = {metadata_bucket}")
+    logger.info(f"  global.FAST_REGISTRATION_BUCKET = {fast_reg_bucket}")
+    logger.info(f"  global.BACKEND_IAM_ROLE_ARN = {state.gsa_email}")
+    logger.info(f"  storage.gcp.projectId = {cfg.project_id}")
+    logger.info(f"  imageBuilder.registryName = {cfg.ar_repository}")
 
     chart_ref = resolve_chart_ref(cfg)
     helm_install(cfg, f, chart_ref)
@@ -415,20 +419,20 @@ def teardown(cfg: Config, state: InfraState) -> str:
     """Tear down all created resources in reverse order."""
     gsa_email = state.gsa_email or f"{cfg.gsa_name}@{cfg.project_id}.iam.gserviceaccount.com"
 
-    print("\n--- Teardown state ---")
-    print(f"  gke_created:          {state.gke_created}  (cluster: {cfg.cluster_name_gke})")
+    logger.info("\n--- Teardown state ---")
+    logger.info(f"  gke_created:          {state.gke_created}  (cluster: {cfg.cluster_name_gke})")
     metadata_bucket = f"{cfg.bucket_prefix}-metadata"
     fast_reg_bucket = f"{cfg.bucket_prefix}-fast-reg"
-    print(f"  gcs_metadata_created: {state.gcs_metadata_created}  (bucket: {metadata_bucket})")
-    print(f"  gcs_fast_reg_created: {state.gcs_fast_reg_created}  (bucket: {fast_reg_bucket})")
-    print(f"  ar_created:           {state.ar_created}  (repo: {cfg.ar_repository})")
-    print(f"  gsa_created:          {state.gsa_created}  (gsa: {gsa_email})")
-    print(f"  helm_release:         {cfg.helm_release_name} (ns: {cfg.helm_namespace})")
-    print(f"  skip_teardown:        {cfg.skip_teardown}")
-    print("---")
+    logger.info(f"  gcs_metadata_created: {state.gcs_metadata_created}  (bucket: {metadata_bucket})")
+    logger.info(f"  gcs_fast_reg_created: {state.gcs_fast_reg_created}  (bucket: {fast_reg_bucket})")
+    logger.info(f"  ar_created:           {state.ar_created}  (repo: {cfg.ar_repository})")
+    logger.info(f"  gsa_created:          {state.gsa_created}  (gsa: {gsa_email})")
+    logger.info(f"  helm_release:         {cfg.helm_release_name} (ns: {cfg.helm_namespace})")
+    logger.info(f"  skip_teardown:        {cfg.skip_teardown}")
+    logger.info("---")
 
     if cfg.skip_teardown:
-        print("skip_teardown=True — leaving all resources in place.")
+        logger.info("skip_teardown=True — leaving all resources in place.")
         return "skipped"
 
     errors = helm_uninstall(cfg)
@@ -460,7 +464,7 @@ def teardown(cfg: Config, state: InfraState) -> str:
 
     # Delete GSA
     if _sh_ok(f"gcloud iam service-accounts describe {gsa_email} --project {cfg.project_id}"):
-        print(f"Deleting GSA {gsa_email}...")
+        logger.info(f"Deleting GSA {gsa_email}...")
         _sh(f"gcloud iam service-accounts delete {gsa_email} --project {cfg.project_id} --quiet", check=False)
 
     # Delete AR repo
@@ -468,7 +472,7 @@ def teardown(cfg: Config, state: InfraState) -> str:
         f"gcloud artifacts repositories describe {cfg.ar_repository} "
         f"--project {cfg.project_id} --location {cfg.region}"
     ):
-        print(f"Deleting Artifact Registry repo {cfg.ar_repository}...")
+        logger.info(f"Deleting Artifact Registry repo {cfg.ar_repository}...")
         _sh(
             f"gcloud artifacts repositories delete {cfg.ar_repository} "
             f"--project {cfg.project_id} --location {cfg.region} --quiet",
@@ -478,24 +482,24 @@ def teardown(cfg: Config, state: InfraState) -> str:
     # Delete GCS buckets
     for bucket in [f"{cfg.bucket_prefix}-metadata", f"{cfg.bucket_prefix}-fast-reg"]:
         if _sh_ok(f"gcloud storage buckets describe gs://{bucket} --project {cfg.project_id}"):
-            print(f"Deleting GCS bucket gs://{bucket}...")
+            logger.info(f"Deleting GCS bucket gs://{bucket}...")
             _sh(f"gcloud storage rm -r gs://{bucket}", check=False)
         else:
-            print(f"GCS bucket gs://{bucket} not found, skipping.")
+            logger.info(f"GCS bucket gs://{bucket} not found, skipping.")
 
     # Delete GKE cluster
     if _sh_ok(
         f"gcloud container clusters describe {cfg.cluster_name_gke} "
         f"--region {cfg.region} --project {cfg.project_id}"
     ):
-        print(f"Deleting GKE cluster {cfg.cluster_name_gke} (takes ~5-10 min)...")
+        logger.info(f"Deleting GKE cluster {cfg.cluster_name_gke} (takes ~5-10 min)...")
         _sh(
             f"gcloud container clusters delete {cfg.cluster_name_gke} "
             f"--project {cfg.project_id} --region {cfg.region} --quiet",
             check=False,
         )
     else:
-        print(f"GKE cluster {cfg.cluster_name_gke} not found, skipping.")
+        logger.info(f"GKE cluster {cfg.cluster_name_gke} not found, skipping.")
 
     if errors:
         return f"teardown completed with errors: {'; '.join(errors)}"
@@ -590,8 +594,12 @@ def e2e_test(
     region: str = "us-central1",
     skip_teardown: bool = False,
     encrypted_credentials: str = "",
+    helm_values_override: str = "",
 ) -> E2EResult:
-    """Full E2E: setup, deploy, verify, teardown."""
+    """Full E2E: setup, deploy, verify, teardown.
+
+    Pass helm_values_override="values-legacy.yaml" to test with legacy defaults.
+    """
     cfg = Config(
         control_plane_url=control_plane_url,
         cluster_name=cluster_name,
@@ -599,6 +607,7 @@ def e2e_test(
         region=region,
         skip_teardown=skip_teardown,
         encrypted_credentials=encrypted_credentials,
+        helm_values_override=helm_values_override,
     )
     _activate_gcp_credentials(cfg)
 
@@ -611,31 +620,31 @@ def e2e_test(
     e2e = E2EResult()
     state = InfraState(debug_dir=debug_dir)
     try:
-        print("\n--- Phase 1: Interactive / Credential Setup ---")
+        logger.info("\n--- Phase 1: Interactive / Credential Setup ---")
         base_state = provision_dataplane(cfg, provider="gcp")
         state.values_file_path = base_state.values_file_path
         state.debug_dir = debug_dir
 
-        print("\n--- Phase 2: Infrastructure Setup ---")
+        logger.info("\n--- Phase 2: Infrastructure Setup ---")
         state = create_gke_cluster(cfg, state)
         state = create_gcs_buckets(cfg, state)
         state = create_ar_repo(cfg, state)
         state = create_workload_identity(cfg, state)
 
-        print("\n--- Phase 3: Dataplane Deployment ---")
+        logger.info("\n--- Phase 3: Dataplane Deployment ---")
         state = patch_and_install(cfg, state)
 
-        print("\n--- Phase 4: Verification ---")
+        logger.info("\n--- Phase 4: Verification ---")
         wait_for_healthy(cfg)
         e2e.example_run_name = run_example_workflow(cfg)
         if e2e.example_run_name:
             e2e.test_results = run_verification_tests(cfg, e2e.example_run_name)
 
         e2e.overall = "PASSED"
-        print("\n=== E2E test PASSED ===")
+        logger.info("\n=== E2E test PASSED ===")
 
     except Exception as e:
-        print(f"\n=== E2E test FAILED: {e} ===")
+        logger.info(f"\n=== E2E test FAILED: {e} ===")
         collect_debug_dumps(cfg, debug_dir)
         e2e.overall = "FAILED"
         e2e.error = str(e)[:500]
@@ -644,7 +653,7 @@ def e2e_test(
         raise
 
     e2e.teardown_result = teardown(cfg, state)
-    print(e2e.summary())
+    logger.info(e2e.summary())
     return e2e
 
 
@@ -670,7 +679,7 @@ def launch(
     skip_teardown: bool = False,
 ) -> str:
     """Encrypt local credentials and launch e2e_test remotely."""
-    print("Encrypting local credentials...")
+    logger.info("Encrypting local credentials...")
     encrypted = _encrypt_local_credentials()
 
     flyte.init_from_config()
@@ -683,6 +692,6 @@ def launch(
         skip_teardown=skip_teardown,
         encrypted_credentials=encrypted,
     )
-    print(f"Launched remote run: {run.name}")
-    print(f"  URL: {run.url}")
+    logger.info(f"Launched remote run: {run.name}")
+    logger.info(f"  URL: {run.url}")
     return run.url

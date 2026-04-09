@@ -1,6 +1,6 @@
 ---
 title: Event
-version: 2.1.2
+version: 2.1.5
 variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
@@ -68,14 +68,8 @@ class Event(
 
 ### create()
 
-
-> [!NOTE] This method can be called both synchronously or asynchronously.
-> Default invocation is sync and will block.
-> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
-> `result = await Event.create.aio()`.
 ```python
 def create(
-    cls,
     name: str,
     data_type: Type[T],
     scope: EventScope,
@@ -94,7 +88,6 @@ details are abstracted away - you just get an event to wait on.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `cls` |  | |
 | `name` | `str` | A descriptive name for the event (used in logs and UI) |
 | `data_type` | `Type[T]` | The expected type of the input (int, float, str, bool) |
 | `scope` | `EventScope` | The scope of the event. Currently only "run" is supported. |
