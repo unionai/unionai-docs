@@ -51,7 +51,10 @@ If you have not yet set up the required AWS resources (EKS cluster, S3, ECR, IAM
    - Set `global.FAST_REGISTRATION_BUCKET` to `${BUCKET_PREFIX}-fast-reg`.
    - Set `global.BACKEND_IAM_ROLE_ARN` to `arn:aws:iam::${AWS_ACCOUNT_ID}:role/${IAM_ROLE_NAME}` (where `AWS_ACCOUNT_ID` is your 12-digit account ID).
    - Set `global.WORKER_IAM_ROLE_ARN` to the same value (or a separate role if you use distinct worker permissions).
+   - Set `storage.bucketName` to `${BUCKET_PREFIX}-metadata`.
+   - Set `storage.fastRegistrationBucketName` to `${BUCKET_PREFIX}-fast-reg`.
    - Set `storage.region` to `${AWS_REGION}`.
+   - Set `commonServiceAccount.annotations."eks.amazonaws.com/role-arn"` to `arn:aws:iam::${AWS_ACCOUNT_ID}:role/${IAM_ROLE_NAME}`.
    - Set `imageBuilder.registryName` to `${ECR_REPO_NAME}` (defaults to `union-dataplane`; the chart auto-generates the full ECR URL from the account ID and region).
 
 4. Install the data plane Helm chart:
@@ -60,7 +63,8 @@ If you have not yet set up the required AWS resources (EKS cluster, S3, ECR, IAM
    helm upgrade --install union unionai/dataplane \
      -f <GENERATED_VALUES_FILE> \
      --namespace union \
-     --create-namespace
+     --create-namespace \
+     --force-conflicts
    ```
 
 5. Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:

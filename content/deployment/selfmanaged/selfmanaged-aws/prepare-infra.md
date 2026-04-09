@@ -31,7 +31,7 @@ eksctl create cluster \
   --name ${CLUSTER_NAME} \
   --region us-east-2 \
   --version 1.31 \
-  --node-type m5.xlarge \
+  --node-type m5.2xlarge \
   --nodes 3 \
   --with-oidc \
   --managed

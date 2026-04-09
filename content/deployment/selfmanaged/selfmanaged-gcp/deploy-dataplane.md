@@ -50,8 +50,11 @@ If you have not yet set up the required GCP resources (GKE cluster, GCS, Artifac
    - Set `global.FAST_REGISTRATION_BUCKET` to `${BUCKET_PREFIX}-fast-reg`.
    - Set `global.BACKEND_IAM_ROLE_ARN` to `${GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com`.
    - Set `global.WORKER_IAM_ROLE_ARN` to the same value (or a separate GSA if you use distinct worker permissions).
+   - Set `storage.bucketName` to `${BUCKET_PREFIX}-metadata`.
+   - Set `storage.fastRegistrationBucketName` to `${BUCKET_PREFIX}-fast-reg`.
    - Set `storage.region` to `${REGION}`.
    - Set `storage.gcp.projectId` to `${PROJECT_ID}`.
+   - Set `commonServiceAccount.annotations."iam.gke.io/gcp-service-account"` to `${GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com`.
    - Set `imageBuilder.registryName` to `${AR_REPOSITORY}` (defaults to `union-dataplane`; the chart auto-generates the full Artifact Registry URL from the project ID and region).
 
 4. Install the data plane Helm chart:
@@ -60,7 +63,8 @@ If you have not yet set up the required GCP resources (GKE cluster, GCS, Artifac
    helm upgrade --install union unionai/dataplane \
      -f <GENERATED_VALUES_FILE> \
      --namespace union \
-     --create-namespace
+     --create-namespace \
+     --force-conflicts
    ```
 
 5. Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:

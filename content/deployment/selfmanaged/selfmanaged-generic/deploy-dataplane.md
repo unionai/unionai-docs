@@ -56,7 +56,8 @@ If you have not yet set up the required resources (Kubernetes cluster, object st
    helm upgrade --install union unionai/dataplane \
      -f <GENERATED_VALUES_FILE> \
      --namespace union \
-     --create-namespace
+     --create-namespace \
+     --force-conflicts
    ```
 
 5. Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:
