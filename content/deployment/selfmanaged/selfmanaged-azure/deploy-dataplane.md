@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Deploy the dataplane
 
-If you have not yet set up the required Azure resources (AKS cluster, Storage Account, Container Registry, Workload Identity), see [Prepare infrastructure](../selfmanaged-azure/prepare-infra) first.
+If you have not yet set up the required Azure resources (AKS cluster, Storage Account, Managed Identities, Workload Identity), see [Prepare infrastructure](../selfmanaged-azure/prepare-infra) first.
 
 ## Assumptions
 
@@ -14,7 +14,7 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
 * You have a cluster name provided by or coordinated with Union.
 * You have an AKS cluster with OIDC issuer and Workload Identity enabled, running one of the most recent three minor K8s versions.
   [Learn more](https://kubernetes.io/releases/version-skew-policy/).
-* You have configured a Storage Account, Container Registry, and Workload Identity as described in [Prepare infrastructure](../selfmanaged-azure/prepare-infra).
+* You have configured a Storage Account, Managed Identities, and Workload Identity as described in [Prepare infrastructure](../selfmanaged-azure/prepare-infra).
 
 ## Prerequisites
 
@@ -38,17 +38,23 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
    ```
 
    * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
-     It will also generate a YAML file specific to the provider that you specify, in this case `azure`.
+     It will also generate a YAML file `<org>-values.yaml` specific to the provider that you specify, in this case `azure`.
 
    * Save the secret that is displayed. Union does not store the credentials; rerunning the same command can be used to retrieve the secret later.
 
 3. Update the generated values file with your infrastructure details:
 
-   - Set `azure.tenantId`, `azure.subscriptionId`, and `azure.resourceGroupName` to your Azure environment values.
-   - Set `storage.custom.container` to your Azure Storage container name.
-   - Set `storage.custom.stow.config.account` to your Storage Account name and `storage.custom.stow.config.key` to the Storage Account key.
-   - Replace `<SERVICE_CLIENT_ID>` in `additionalServiceAccountAnnotations` with the Managed Identity client ID for the `union-system` service account (from the [Workload Identity](../selfmanaged-azure/prepare-infra#workload-identity) section).
-   - Replace `<WORKER_CLIENT_ID>` in `userRoleAnnotationValue` with the Managed Identity client ID for worker pods (from the [Workers](../selfmanaged-azure/prepare-infra#workers) section).
+   Using the [environment variables](../selfmanaged-azure/prepare-infra#environment-variables) from the prepare infrastructure step:
+
+   - Set `global.BACKEND_IAM_ROLE_ARN` to `${BACKEND_CLIENT_ID}` (the backend managed identity client ID).
+   - Set `global.WORKER_IAM_ROLE_ARN` to `${WORKER_CLIENT_ID}` (the worker managed identity client ID).
+   - Set `global.METADATA_BUCKET` to `${METADATA_CONTAINER}`.
+   - Set `storage.custom.stow.config.account` to `${STORAGE_ACCOUNT}`.
+   - Set `storage.region` to `${LOCATION}`.
+   - Set `commonServiceAccount.annotations."azure.workload.identity/client-id"` to `${BACKEND_CLIENT_ID}`.
+
+   If using Azure Key Vault (optional):
+   - Set `AZURE_KEY_VAULT_URI` to `https://${KEY_VAULT_NAME}.vault.azure.net/`.
 
 4. Install the data plane Helm chart:
 

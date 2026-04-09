@@ -6,262 +6,297 @@ variants: -flyte +union
 
 # Prepare infrastructure
 
-This page walks you through creating the Azure resources needed for a Union data plane. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-azure/deploy-dataplane).
+This page walks you through the Azure infrastructure required before deploying the Union dataplane on AKS. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-azure/deploy-dataplane).
 
-## AKS Cluster
+> [!NOTE] **Deployment model**: This guide covers **Self Managed** — you run only the dataplane chart; Union hosts the control plane.
+
+## Environment variables
+
+Set these once at the top of your terminal session. All commands below reference them. Customize the names if you are deploying multiple data planes in the same subscription.
+
+```bash
+# --- Your environment ---
+export SUBSCRIPTION_ID=$(az account show --query id --output tsv)
+export TENANT_ID=$(az account show --query tenantId --output tsv)
+export RESOURCE_GROUP=union-rg
+export LOCATION=eastus2
+export CLUSTER_NAME=union-dataplane
+export ORG_NAME=<your-union-org-name>       # provided by Union
+
+# --- Storage ---
+export STORAGE_ACCOUNT=uniondataplane       # 3-24 lowercase alphanumeric, globally unique
+export METADATA_CONTAINER=union-metadata
+
+# --- Identities ---
+export BACKEND_IDENTITY_NAME=union-backend
+export WORKER_IDENTITY_NAME=union-executions
+
+# --- AKS namespace (do not change) ---
+export DATAPLANE_NAMESPACE=union
+```
+
+## 1. Subscription and Resource Group
+
+All Union infrastructure lives in a dedicated resource group for access control and cost tracking.
+
+```bash
+az account set --subscription $SUBSCRIPTION_ID
+
+az group create \
+  --name $RESOURCE_GROUP \
+  --location $LOCATION
+```
+
+## 2. AKS Cluster
 
 You need an AKS cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
 
-If you don't already have a cluster, create one with the Azure CLI:
+Three specific add-ons are required:
+
+| Add-on | Why |
+|--------|-----|
+| `--enable-oidc-issuer` | Enables the OIDC token issuer AKS needs for Workload Identity |
+| `--enable-workload-identity` | Allows pods to assume Azure Managed Identities without credentials |
+| `--enable-managed-identity` | AKS control plane uses a managed identity (not service principal) |
 
 ```bash
-export RESOURCE_GROUP=union-rg
-export REGION=eastus2
-export CLUSTER_NAME=union-dataplane
-
 az aks create \
-  --resource-group ${RESOURCE_GROUP} \
-  --name ${CLUSTER_NAME} \
-  --location ${REGION} \
-  --kubernetes-version 1.31 \
-  --node-count 3 \
-  --node-vm-size Standard_D4s_v3 \
+  --resource-group $RESOURCE_GROUP \
+  --name $CLUSTER_NAME \
+  --location $LOCATION \
   --enable-oidc-issuer \
   --enable-workload-identity \
-  --generate-ssh-keys
+  --enable-managed-identity \
+  --node-count 2 \
+  --node-vm-size Standard_D4s_v3
 ```
 
-> [!NOTE] The `--enable-oidc-issuer` and `--enable-workload-identity` flags are required for [Workload Identity](#workload-identity) below.
-
-Get the OIDC issuer URL (you will need it when creating federated credentials):
+Save the OIDC issuer URL — you will need it when creating federated credentials:
 
 ```bash
 export AKS_OIDC_ISSUER=$(az aks show \
-  --resource-group ${RESOURCE_GROUP} \
-  --name ${CLUSTER_NAME} \
+  --resource-group $RESOURCE_GROUP \
+  --name $CLUSTER_NAME \
   --query "oidcIssuerProfile.issuerUrl" \
   --output tsv)
 ```
 
-Union supports autoscaling and the use of spot (interruptible) instances.
-
-### Resource Requirements
-
-By default, the Union installation requests the following resources:
-
-|          | CPU (vCPUs)| Memory (GiB) |
-|----------|------------|--------------|
-| Requests |          14|          27.1|
-| Limits   |          17|            32|
-
-For GPU access, Union injects tolerations and label selectors to execution Pods.
-
-## Azure Blob Storage
-
-Each data plane uses Azure Blob Storage containers to store data used in workflow execution.
-Union recommends the use of two containers within a Storage Account:
-
-1. **Metadata container**: contains workflow execution data such as task inputs and outputs.
-2. **Fast registration container**: contains local code artifacts copied into the Flyte task container at runtime when using `flyte deploy` or `flyte run --copy-style all`.
-
-You can also choose to use a single container.
-
-Create the Storage Account and containers:
+Get cluster credentials:
 
 ```bash
-export STORAGE_ACCOUNT=uniondataplane   # must be globally unique, lowercase alphanumeric
-export SUBSCRIPTION_ID=$(az account show --query id --output tsv)
+az aks get-credentials \
+  --resource-group $RESOURCE_GROUP \
+  --name $CLUSTER_NAME
+```
 
+## 3. Node Pools
+
+Union workloads run on dedicated node pools. Separating system, worker, and GPU nodes allows independent scaling and keeps system pods stable.
+
+### System node pool
+
+The system pool was created with the cluster above. Recommended minimum: `Standard_D4s_v3` (4 vCPU / 16 GB) x 2 nodes.
+
+### CPU worker node pool
+
+```bash
+az aks nodepool add \
+  --resource-group $RESOURCE_GROUP \
+  --cluster-name $CLUSTER_NAME \
+  --name workers \
+  --node-count 2 \
+  --node-vm-size Standard_B8as_v2 \
+  --labels union.ai/node-role=worker
+```
+
+### GPU node pool (optional)
+
+```bash
+az aks nodepool add \
+  --resource-group $RESOURCE_GROUP \
+  --cluster-name $CLUSTER_NAME \
+  --name gpuworkers \
+  --node-count 1 \
+  --node-vm-size Standard_NC6s_v3 \
+  --node-taints sku=gpu:NoSchedule \
+  --labels union.ai/node-role=worker
+```
+
+> [!NOTE] **Spot VMs**: Union supports interruptible workloads on Azure Spot. Spot nodes are identified by the label `kubernetes.azure.com/scalesetpriority: spot`, which AKS sets automatically when `--priority Spot` is used.
+
+## 4. Storage Account and Container
+
+Union stores workflow metadata and code bundle artifacts in Azure Blob Storage. The storage account **must have Data Lake Storage Gen2 enabled** (`--enable-hierarchical-namespace`) — Union uses the `abfs://` protocol which requires this.
+
+```bash
 az storage account create \
-  --name ${STORAGE_ACCOUNT} \
-  --resource-group ${RESOURCE_GROUP} \
-  --location ${REGION} \
+  --name $STORAGE_ACCOUNT \
+  --resource-group $RESOURCE_GROUP \
+  --location $LOCATION \
   --sku Standard_LRS \
-  --kind StorageV2
+  --kind StorageV2 \
+  --enable-hierarchical-namespace true \
+  --allow-blob-public-access false
 
 az storage container create \
-  --name metadata \
-  --account-name ${STORAGE_ACCOUNT}
-
-az storage container create \
-  --name fast-reg \
-  --account-name ${STORAGE_ACCOUNT}
+  --name $METADATA_CONTAINER \
+  --account-name $STORAGE_ACCOUNT
 ```
 
 ### CORS Configuration
 
-To enable the [Code Viewer](../configuration/code-viewer) in the Union UI, configure a CORS rule on your Storage Account. This allows the UI to securely fetch code bundles directly from blob storage:
+To enable the [Code Viewer](../configuration/code-viewer) in the Union UI, configure a CORS rule on your Storage Account:
 
 ```bash
 az storage cors add \
   --services b \
   --methods GET HEAD \
-  --origins "https://*.unionai.cloud" \
+  --origins "https://*.unionai.cloud" "https://*.union.ai" \
   --allowed-headers "*" \
   --exposed-headers "ETag" \
   --max-age 3600 \
-  --account-name ${STORAGE_ACCOUNT}
+  --account-name $STORAGE_ACCOUNT
 ```
-
-For more details, see the [Azure Storage CORS documentation](https://learn.microsoft.com/en-us/rest/api/storageservices/cross-origin-resource-sharing--cors--support-for-the-azure-storage-services).
 
 ### Data Retention
 
 Union recommends using lifecycle management policies on your Storage Account to manage storage costs. See [Data retention policy](../configuration/data-retention) for more information.
 
-## Azure Container Registry
+## 5. Managed Identities
 
-Create an Azure Container Registry for Image Builder to push and pull container images:
+Union separates infrastructure-level access from workload-level access using two identities:
 
-```bash
-export ACR_NAME=uniondataplane   # must be globally unique, lowercase alphanumeric
-
-az acr create \
-  --name ${ACR_NAME} \
-  --resource-group ${RESOURCE_GROUP} \
-  --location ${REGION} \
-  --sku Basic
-```
-
-Note the registry login server (e.g. `${ACR_NAME}.azurecr.io`) -- you will reference it when configuring Workload Identity permissions below.
-
-## Workload Identity
-
-Union uses [Microsoft Entra Workload ID](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) to securely access Azure resources.
-
-### 1. Create the platform identity
-
-Create a User Assigned Managed Identity for the Union platform services:
+| Identity | Used by | Needs access to |
+|----------|---------|-----------------|
+| `union-backend` | Operator, propeller, clusterresourcesync | Storage account, Key Vault |
+| `union-executions` | Task execution pods (user workloads) | Storage account + any customer Azure services |
 
 ```bash
-export UNION_NAMESPACE=union   # namespace where you will install the Union operator
-
+# Backend identity (for Union system components)
 az identity create \
-  --name union-system-identity \
-  --resource-group ${RESOURCE_GROUP} \
-  --location ${REGION}
+  --name $BACKEND_IDENTITY_NAME \
+  --resource-group $RESOURCE_GROUP
 
-export SYSTEM_IDENTITY_CLIENT_ID=$(az identity show \
-  --name union-system-identity \
-  --resource-group ${RESOURCE_GROUP} \
-  --query clientId \
-  --output tsv)
+# Worker identity (for task pods)
+az identity create \
+  --name $WORKER_IDENTITY_NAME \
+  --resource-group $RESOURCE_GROUP
 
-export SYSTEM_IDENTITY_PRINCIPAL_ID=$(az identity show \
-  --name union-system-identity \
-  --resource-group ${RESOURCE_GROUP} \
-  --query principalId \
-  --output tsv)
+# Save client IDs and principal IDs
+export BACKEND_CLIENT_ID=$(az identity show \
+  --name $BACKEND_IDENTITY_NAME \
+  --resource-group $RESOURCE_GROUP \
+  --query clientId --output tsv)
+
+export BACKEND_PRINCIPAL_ID=$(az identity show \
+  --name $BACKEND_IDENTITY_NAME \
+  --resource-group $RESOURCE_GROUP \
+  --query principalId --output tsv)
+
+export WORKER_CLIENT_ID=$(az identity show \
+  --name $WORKER_IDENTITY_NAME \
+  --resource-group $RESOURCE_GROUP \
+  --query clientId --output tsv)
+
+export WORKER_PRINCIPAL_ID=$(az identity show \
+  --name $WORKER_IDENTITY_NAME \
+  --resource-group $RESOURCE_GROUP \
+  --query principalId --output tsv)
 ```
 
-### 2. Create the federated credential for the platform identity
+## 6. Workload Identity and Federated Credentials
 
-Create a federated credential that maps to the `union-system` Kubernetes service account:
+Azure Workload Identity lets Kubernetes pods authenticate to Azure services using a projected service account token — no credentials stored in secrets.
+
+### Backend identity (Union system components)
 
 ```bash
 az identity federated-credential create \
-  --name union-system-fedcred \
-  --identity-name union-system-identity \
-  --resource-group ${RESOURCE_GROUP} \
-  --issuer ${AKS_OIDC_ISSUER} \
-  --subject system:serviceaccount:${UNION_NAMESPACE}:union-system \
+  --name "union-backend-federated" \
+  --identity-name $BACKEND_IDENTITY_NAME \
+  --resource-group $RESOURCE_GROUP \
+  --issuer $AKS_OIDC_ISSUER \
+  --subject "system:serviceaccount:${DATAPLANE_NAMESPACE}:union-system" \
   --audiences api://AzureADTokenExchange
 ```
 
-### 3. Assign roles to the platform identity
+### Worker identity (task execution pods)
 
-Grant `Storage Blob Data Owner` on the Storage Account and `AcrPush` on the Container Registry:
-
-```bash
-az role assignment create \
-  --assignee-object-id ${SYSTEM_IDENTITY_PRINCIPAL_ID} \
-  --assignee-principal-type ServicePrincipal \
-  --role "Storage Blob Data Owner" \
-  --scope /subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Storage/storageAccounts/${STORAGE_ACCOUNT}
-
-az role assignment create \
-  --assignee-object-id ${SYSTEM_IDENTITY_PRINCIPAL_ID} \
-  --assignee-principal-type ServicePrincipal \
-  --role "AcrPush" \
-  --scope /subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.ContainerRegistry/registries/${ACR_NAME}
-```
-
-### 4. Configure the service account annotation
-
-In your Helm values, annotate the `union-system` service account with the managed identity client ID:
-
-```yaml
-commonServiceAccount:
-  annotations:
-    azure.workload.identity/client-id: "<SYSTEM_IDENTITY_CLIENT_ID>"
-```
-
-### Workers
-
-This is the identity that the Pods created for each execution will use to access Azure resources. Those Pods use the `default` Kubernetes service account on each project-domain namespace, unless otherwise specified.
-
-Create a User Assigned Managed Identity for worker pods:
+Task pods run under the `default` service account. In single-namespace mode (the default with `low_privilege: true`), create one federated credential for the release namespace:
 
 ```bash
-az identity create \
-  --name union-worker-identity \
-  --resource-group ${RESOURCE_GROUP} \
-  --location ${REGION}
-
-export WORKER_IDENTITY_CLIENT_ID=$(az identity show \
-  --name union-worker-identity \
-  --resource-group ${RESOURCE_GROUP} \
-  --query clientId \
-  --output tsv)
-
-export WORKER_IDENTITY_PRINCIPAL_ID=$(az identity show \
-  --name union-worker-identity \
-  --resource-group ${RESOURCE_GROUP} \
-  --query principalId \
-  --output tsv)
+az identity federated-credential create \
+  --name "union-worker-single-ns" \
+  --identity-name $WORKER_IDENTITY_NAME \
+  --resource-group $RESOURCE_GROUP \
+  --issuer $AKS_OIDC_ISSUER \
+  --subject "system:serviceaccount:${DATAPLANE_NAMESPACE}:default" \
+  --audiences api://AzureADTokenExchange
 ```
 
-Create federated credentials for each project-domain namespace:
+If using multi-namespace mode (`low_privilege: false`), also create credentials for each project-domain namespace:
 
 ```bash
-for NS in development staging production; do
+for ns in development staging production; do
   az identity federated-credential create \
-    --name union-worker-fedcred-${NS} \
-    --identity-name union-worker-identity \
-    --resource-group ${RESOURCE_GROUP} \
-    --issuer ${AKS_OIDC_ISSUER} \
-    --subject system:serviceaccount:${NS}:default \
+    --name "union-worker-${ns}" \
+    --identity-name $WORKER_IDENTITY_NAME \
+    --resource-group $RESOURCE_GROUP \
+    --issuer $AKS_OIDC_ISSUER \
+    --subject "system:serviceaccount:${ns}:default" \
     --audiences api://AzureADTokenExchange
 done
 ```
 
-Assign the `Storage Blob Data Owner` role to the worker identity:
+## 7. Role Assignments
+
+The managed identities need explicit RBAC permissions on the storage account.
 
 ```bash
+STORAGE_RESOURCE_ID=$(az storage account show \
+  --name $STORAGE_ACCOUNT \
+  --resource-group $RESOURCE_GROUP \
+  --query id --output tsv)
+
+# Backend identity: read/write workflow metadata
 az role assignment create \
-  --assignee-object-id ${WORKER_IDENTITY_PRINCIPAL_ID} \
+  --assignee-object-id $BACKEND_PRINCIPAL_ID \
   --assignee-principal-type ServicePrincipal \
   --role "Storage Blob Data Owner" \
-  --scope /subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Storage/storageAccounts/${STORAGE_ACCOUNT}
+  --scope "${STORAGE_RESOURCE_ID}/blobServices/default/containers/${METADATA_CONTAINER}"
+
+# Worker identity: read/write artifacts
+az role assignment create \
+  --assignee-object-id $WORKER_PRINCIPAL_ID \
+  --assignee-principal-type ServicePrincipal \
+  --role "Storage Blob Data Owner" \
+  --scope "${STORAGE_RESOURCE_ID}/blobServices/default/containers/${METADATA_CONTAINER}"
 ```
 
-## Azure Key Vault (optional)
+## 8. Azure Key Vault (optional)
 
-Union ships with an embedded secrets manager. Alternatively, you can enable Union to consume secrets from Azure Key Vault adding the following to your Helm values file:
+Union provides an embedded secrets management backend. If your organization needs to integrate with Azure Key Vault, create a vault and grant the backend identity access:
 
-```yaml
-config:
+```bash
+export KEY_VAULT_NAME=union-${ORG_NAME}
 
-  ## Optional integration with Azure Key Vault secrets manager
-  core:
-    webhook:
-      embeddedSecretManagerConfig:
-        enabled: true
-        type: Azure
-        azureConfig:
-          vaultURI: ""https://kv-myorg-prod.vault.azure.net/" #full key vault URI
-      secretManagerTypes:
-        - Azure
-        - Embedded
+az keyvault create \
+  --name $KEY_VAULT_NAME \
+  --resource-group $RESOURCE_GROUP \
+  --location $LOCATION \
+  --enable-rbac-authorization true
 
+KEY_VAULT_RESOURCE_ID=$(az keyvault show \
+  --name $KEY_VAULT_NAME \
+  --query id --output tsv)
+
+az role assignment create \
+  --assignee-object-id $BACKEND_PRINCIPAL_ID \
+  --assignee-principal-type ServicePrincipal \
+  --role "Key Vault Secrets Officer" \
+  --scope $KEY_VAULT_RESOURCE_ID
 ```
+
+The Key Vault URI (`https://${KEY_VAULT_NAME}.vault.azure.net/`) maps to `AZURE_KEY_VAULT_URI` in the chart values.
+
+Once your infrastructure is ready, proceed to [Deploy the dataplane](../selfmanaged-azure/deploy-dataplane).
