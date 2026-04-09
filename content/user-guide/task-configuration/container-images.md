@@ -1,7 +1,7 @@
 ---
 title: Container images
 weight: 1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Container images
@@ -139,7 +139,7 @@ There is no set up of Docker nor any other local configuration required on your 
 > [!NOTE]
 > The Flyte SDK checks whether the image builder is enabled for your cluster by verifying that the `image_build` task is deployed in the `system` project within the `production` domain.
 > If you are using custom roles and policies, ensure that users are granted the `view_flyte_inventory` action for the `production/system` project-domain pair.
-> See the [V1 user management documentation]({{< docs_home byoc v1 >}}/user-guide/administration/user-management) for more details on creating and assigning custom roles and policies (V2 user management currently works identically to V1).
+> See the [V1 user management documentation]({{< docs_home union v1 >}}/user-guide/administration/user-management) for more details on creating and assigning custom roles and policies (V2 user management currently works identically to V1).
 
 
 #### ImageBuilder with external registries

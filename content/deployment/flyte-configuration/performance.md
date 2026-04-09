@@ -1,7 +1,7 @@
 ---
 title: Optimizing performance
 weight: 10
-variants: -flyte -byoc -selfmanaged
+variants: -flyte -union
 ---
 
 # Optimizing Performance

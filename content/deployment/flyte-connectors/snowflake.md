@@ -1,7 +1,7 @@
 ---
 title: Snowflake connector
 weight: 18
-variants: -flyte -byoc -selfmanaged
+variants: -flyte -union
 ---
 # Snowflake connector
 

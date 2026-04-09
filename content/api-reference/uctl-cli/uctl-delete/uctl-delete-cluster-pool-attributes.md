@@ -1,6 +1,6 @@
 ---
 title: uctl delete cluster-pool-attributes
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl delete cluster-pool-attributes

@@ -1,7 +1,7 @@
 ---
 title: Security overview
 weight: 12
-variants: -flyte -byoc -selfmanaged
+variants: -flyte -union
 ---
 
 # Security Overview

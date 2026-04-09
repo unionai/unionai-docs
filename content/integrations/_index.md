@@ -1,7 +1,7 @@
 ---
 title: Integrations
 weight: 4
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 top_menu: true
 sidebar_expanded: true
 llm_readable_bundle: true

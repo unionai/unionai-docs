@@ -1,7 +1,7 @@
 ---
 title: Interruptible tasks and queues
 weight: 10
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Interruptible tasks and queues

@@ -1,7 +1,7 @@
 ---
 title: Asynchronous model
 weight: 2
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Asynchronous model

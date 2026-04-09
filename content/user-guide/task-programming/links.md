@@ -1,7 +1,7 @@
 ---
 title: Links
 weight: 7
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Links

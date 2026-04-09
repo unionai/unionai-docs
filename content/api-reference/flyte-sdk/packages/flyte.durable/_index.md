@@ -1,7 +1,7 @@
 ---
 title: flyte.durable
-version: 2.0.11
-variants: +flyte +byoc +selfmanaged
+version: 2.1.5
+variants: +flyte +union
 layout: py_api
 sidebar_expanded: true
 ---
@@ -73,7 +73,7 @@ like as-if the process has been sleeping since the first time this method was in
         my_work()
         # Now we need to sleep for 1 hour before proceeding.
         await flyte.durable.sleep.aio(3600)  # Even if process crashes, it will resume and only sleep for
-                                              # 1 hour in agregate. If the scheduling takes longer, it
+                                              # 1 hour in aggregate. If the scheduling takes longer, it
                                               # will simply return immediately.
         # thing to be done after 1 hour
         my_work()

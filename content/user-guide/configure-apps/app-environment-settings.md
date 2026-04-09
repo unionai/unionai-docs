@@ -1,7 +1,7 @@
 ---
 title: App environments
 weight: 1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # App environment settings

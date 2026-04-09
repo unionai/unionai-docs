@@ -1,7 +1,7 @@
 ---
 title: Run context
 weight: 10
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Run context

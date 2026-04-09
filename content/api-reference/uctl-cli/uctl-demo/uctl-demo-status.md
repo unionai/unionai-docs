@@ -1,6 +1,6 @@
 ---
 title: uctl demo status
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl demo status

@@ -1,7 +1,7 @@
 ---
 title: Resource Management
 weight: 2
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Managing Union Resources with Terraform
@@ -62,7 +62,7 @@ export UNIONAI_API_KEY="your-api-key"
 Create an API key using the Flyte CLI:
 
 ```bash
-union create api-key admin --name "terraform-api-key"
+flyte create api-key --name "terraform-api-key"
 ```
 
 For more information on creating API keys, see the [Flyte CLI documentation](../../api-reference/flyte-cli#flyte-create-config).

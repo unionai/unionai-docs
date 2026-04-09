@@ -1,13 +1,37 @@
 ---
 title: ConnectorEnvironment
-version: 2.0.11
-variants: +flyte +byoc +selfmanaged
+version: 2.1.5
+variants: +flyte +union
 layout: py_api
 ---
 
 # ConnectorEnvironment
 
 **Package:** `flyte.app`
+
+Configure a connector environment for custom Flyte connectors.
+
+Example — single-file connector:
+
+```python
+connector = flyte.app.ConnectorEnvironment(
+    name="my-connector",
+    image=image,
+    include=["my_connector.py"],
+)
+```
+
+Example — connector inside a package:
+
+```python
+connector = flyte.app.ConnectorEnvironment(
+    name="my-connector",
+    image=image,
+    include=["my_connector"],
+)
+```
+
+
 
 ## Parameters
 
@@ -55,7 +79,7 @@ class ConnectorEnvironment(
 | `scaling` | `Scaling` | |
 | `domain` | `Domain \| None` | |
 | `links` | `List[Link]` | |
-| `include` | `List[str]` | |
+| `include` | `List[str]` | List of file paths to connector modules. Each path is converted to a Python module name and passed to the connector process via ``--modules``. For example, ``"my_connector/connector.py"`` becomes module ``"my_connector.connector"``. |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | |
 | `timeouts` | `Timeouts` | |

@@ -1,7 +1,7 @@
 ---
 title: Image
-version: 2.0.11
-variants: +flyte +byoc +selfmanaged
+version: 2.1.5
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -187,7 +187,7 @@ Default images are multi-arch amd/arm64
 
 ```python
 def from_dockerfile(
-    file: Path,
+    file: Union[Path, str],
     registry: str,
     name: str,
     platform: Union[Architecture, Tuple[Architecture, ...], None],
@@ -204,7 +204,7 @@ context for the builder will be the directory where the dockerfile is located.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `file` | `Path` | path to the dockerfile |
+| `file` | `Union[Path, str]` | path to the dockerfile |
 | `registry` | `str` | registry to use for the image |
 | `name` | `str` | name of the image |
 | `platform` | `Union[Architecture, Tuple[Architecture, ...], None]` | architecture to use for the image, default is linux/amd64, use tuple for multiple values Example: ("linux/amd64", "linux/arm64") |

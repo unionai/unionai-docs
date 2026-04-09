@@ -1,7 +1,7 @@
 ---
 title: flyte.errors
-version: 2.0.11
-variants: +flyte +byoc +selfmanaged
+version: 2.1.5
+variants: +flyte +union
 layout: py_api
 sidebar_expanded: true
 ---
@@ -56,20 +56,20 @@ unknown error.
 
 | Method | Description |
 |-|-|
-| [`silence_grpc_polling_error()`](#silence_grpc_polling_error) | Suppress specific gRPC polling errors in the event loop. |
+| [`silence_polling_error()`](#silence_polling_error) | Suppress specific polling errors in the event loop. |
 
 
 ## Methods
 
-#### silence_grpc_polling_error()
+#### silence_polling_error()
 
 ```python
-def silence_grpc_polling_error(
+def silence_polling_error(
     loop,
     context,
 )
 ```
-Suppress specific gRPC polling errors in the event loop.
+Suppress specific polling errors in the event loop.
 
 
 | Parameter | Type | Description |

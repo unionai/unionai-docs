@@ -1,7 +1,7 @@
 ---
 title: "Flyte CLI"
-version: 2.0.11
-variants: +flyte +byoc +selfmanaged
+version: 2.1.5
+variants: +flyte +union
 layout: py_api
 weight: 3
 ---
@@ -22,7 +22,7 @@ This is the command line interface for Flyte.
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
-| `demo` | [`delete`](#flyte-delete-demo), [`start`](#flyte-start-demo)  |
+| `demo` | [`delete`](#flyte-delete-demo), [`start`](#flyte-start-demo), [`stop`](#flyte-stop-demo)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
@@ -45,12 +45,13 @@ This is the command line interface for Flyte.
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
 | `start` | [`demo`](#flyte-start-demo), [`tui`](#flyte-start-tui)  |
+| `stop` | [`demo`](#flyte-stop-demo)  |
 | `update` | [`app`](#flyte-update-app), [`project`](#flyte-update-project), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
 {{< /grid >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< grid >}}
 {{< markdown >}}
 | Object | Action |
@@ -67,8 +68,9 @@ This is the command line interface for Flyte.
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `user` | [`create⁺`](#flyte-create-user), [`delete⁺`](#flyte-delete-user), [`get⁺`](#flyte-get-user)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
-| `demo` | [`delete`](#flyte-delete-demo), [`start`](#flyte-start-demo)  |
+| `demo` | [`delete`](#flyte-delete-demo), [`start`](#flyte-start-demo), [`stop`](#flyte-stop-demo)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
+| `cluster` | [`get⁺`](#flyte-get-cluster)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
 | `member` | [`get⁺`](#flyte-get-member)  |
@@ -86,18 +88,19 @@ This is the command line interface for Flyte.
 | `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`demo`](#flyte-delete-demo), [`policy⁺`](#flyte-delete-policy), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
 | [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
 | `start` | [`demo`](#flyte-start-demo), [`tui`](#flyte-start-tui)  |
+| `stop` | [`demo`](#flyte-stop-demo)  |
 | `update` | [`app`](#flyte-update-app), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
 {{< /grid >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ## Union-specific functionality {#plugin-commands}
@@ -223,7 +226,7 @@ environments.
 
 Create resources in a Flyte deployment.
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte create api-key
 
@@ -253,7 +256,7 @@ Examples:
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte create assignment
 
@@ -307,7 +310,7 @@ If the file already exists, it will raise an error unless the `--force` option i
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte create policy
 
@@ -355,7 +358,7 @@ flyte create project --id my_project_id --name "My Project" --description "My pr
 `-l`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Labels as key=value pairs. Can be specified multiple times. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte create role
 
@@ -472,7 +475,7 @@ This will create a trigger that runs every day at midnight.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte create user
 
@@ -503,7 +506,7 @@ Create (invite) a new user.
 
 Remove resources from a Flyte deployment.
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte delete api-key
 
@@ -542,7 +545,7 @@ Delete apps from a Flyte deployment.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte delete assignment
 
@@ -571,11 +574,16 @@ Unassign a policy from an identity.
 
 #### flyte delete demo
 
-**`flyte delete demo`**
+**`flyte delete demo [OPTIONS]`**
 
 Stop and remove the local Flyte demo cluster container.
 
-{{< variant byoc selfmanaged >}}
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--volume` | `boolean` | `False` | Also delete the Docker volume used for persistent storage. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant union >}}
 {{< markdown >}}
 #### flyte delete policy
 
@@ -597,7 +605,7 @@ Delete a policy.
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte delete role
 
@@ -647,7 +655,7 @@ Delete a trigger. The name of the trigger is required.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte delete user
 
@@ -800,7 +808,7 @@ Generate documentation.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--type` | `text` | `Sentinel.UNSET` | Type of documentation (valid: markdown) |
-| `--plugin-variants` | `text` |  | Hugo variant names for plugin commands (e.g., 'byoc selfmanaged'). When set, plugin command sections and index entries are wrapped in {{&lt; variant >}} shortcodes. Core commands appear unconditionally. |
+| `--plugin-variants` | `text` |  | Hugo variant names for plugin commands (e.g., 'union'). When set, plugin command sections and index entries are wrapped in {{&lt; variant >}} shortcodes. Core commands appear unconditionally. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -844,7 +852,7 @@ Get all actions for a run or details for a specific action.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte get api-key
 
@@ -893,7 +901,7 @@ Apps are long-running services deployed on the Flyte platform.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte get assignment
 
@@ -915,6 +923,31 @@ Get or list assignments.
 |--------|------|---------|-------------|
 | `--user-subject` | `text` |  | User subject identifier |
 | `--creds-subject` | `text` |  | Client credentials application subject |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte get cluster
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte get cluster [OPTIONS] [NAME]`**
+
+Get a cluster or list all clusters.
+
+    If NAME is provided, fetch that specific cluster. Otherwise list all clusters.
+
+    Examples:
+
+        $ flyte --org my-org get cluster
+
+        $ flyte --org my-org get cluster my-cluster
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Maximum number of clusters to return. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
@@ -997,7 +1030,7 @@ $ flyte get logs my_run my_action --pretty --lines 50
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte get member
 
@@ -1013,7 +1046,7 @@ List all members (users and applications) in an organization.
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte get policy
 
@@ -1052,7 +1085,7 @@ show archived projects instead.
 | `--archived` | `boolean` | `False` | Show archived projects instead of active ones. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte get role
 
@@ -1157,7 +1190,7 @@ Get a list of all triggers, or details of a specific trigger by name.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte get user
 
@@ -1518,6 +1551,18 @@ flyte create config --endpoint ...  --local-persistence
 2. By passing it in flyte.init(local_persistence=True)
 This will record all `flyte.run` runs, that are local and are within the flyte.init being active.
 
+### flyte stop
+
+**`flyte stop COMMAND [ARGS]...`**
+
+Stop various Flyte services.
+
+#### flyte stop demo
+
+**`flyte stop demo`**
+
+Pause the local Flyte demo cluster without removing it.
+
 ### flyte update
 
 **`flyte update COMMAND [ARGS]...`**
@@ -1548,7 +1593,7 @@ flyte update app <app_name> --activate | --deactivate [--wait] [--project <proje
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte update policy
 
@@ -1598,7 +1643,7 @@ flyte update project my_project --label team=ml --label env=prod
 `--unarchive`{{< /multiline >}} | `boolean` |  | Archive or unarchive the project. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 #### flyte update role
 

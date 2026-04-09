@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes RBAC: Control plane"
 weight: 16
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Kubernetes RBAC: Control plane

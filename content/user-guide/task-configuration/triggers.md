@@ -1,7 +1,7 @@
 ---
 title: Triggers
 weight: 9
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Triggers

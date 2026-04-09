@@ -1,6 +1,6 @@
 ---
 title: uctl create clusterpool
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl create clusterpool

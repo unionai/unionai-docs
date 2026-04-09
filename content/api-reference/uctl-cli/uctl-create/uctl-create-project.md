@@ -1,6 +1,6 @@
 ---
 title: uctl create project
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl create project

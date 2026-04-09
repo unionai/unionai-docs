@@ -1,7 +1,7 @@
 ---
 title: flyte.app.extras
-version: 2.0.11
-variants: +flyte +byoc +selfmanaged
+version: 2.1.5
+variants: +flyte +union
 layout: py_api
 sidebar_expanded: true
 ---

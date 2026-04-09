@@ -1,7 +1,7 @@
 ---
 title: Grouping actions
 weight: 12
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Grouping actions
@@ -69,12 +69,6 @@ Groups work well with parallel execution patterns:
 Use groups to organize different phases of complex workflows:
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="multi" lang="python" >}}
-
-### Nested groups
-
-Groups can be nested to create hierarchical organization:
-
-{{< code file="/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="nested" lang="python" >}}
 
 ### Conditional grouping
 

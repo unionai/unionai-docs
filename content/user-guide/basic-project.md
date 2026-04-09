@@ -1,7 +1,7 @@
 ---
 title: Basic project
 weight: 7
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Basic project: RAG
