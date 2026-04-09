@@ -77,15 +77,4 @@ If you have not yet set up the required resources (Kubernetes cluster, object st
    1 rows
    ```
 
-7. You can then register and run some example workflows through your cluster to ensure that it is working correctly.
-
-   ```bash
-   uctl register examples --project=union-health-monitoring --domain=development
-   uctl validate snacks --project=union-health-monitoring --domain=development
-    ---------------------- ----------------------------------- ---------- -------------------------------- -------------- ----------- ---------------
-   | NAME                 | LAUNCH PLAN NAME                  | VERSION  | STARTED AT                     | ELAPSED TIME | RESULT    | ERROR MESSAGE |
-    ---------------------- ----------------------------------- ---------- -------------------------------- -------------- ----------- ---------------
-   | alskkhcd6wx5m6cqjlwm | basics.hello_world.hello_world_wf | v0.3.341 | 2025-05-09T18:30:02.968183352Z | 4.452440953s | SUCCEEDED |               |
-    ---------------------- ----------------------------------- ---------- -------------------------------- -------------- ----------- ---------------
-   1 rows
-   ```
+7. Follow the [Quickstart](../../../user-guide/quickstart) to run your first workflow and verify your cluster is working correctly.
