@@ -48,7 +48,7 @@ As a {{< key product_name >}} administrator, you can specify retention policies 
 Union recommends the use of two S3 buckets:
 
 1. metadata bucket: contains workflow execution data such as Task inputs and outputs, etc
-2. fast registration bucket: contain local code artifacts that will be copied into the Flyte task container at runtime when using `union register` or `union run --remote --copy-all`.
+2. fast registration bucket: contain local code artifacts that will be copied into the Flyte task container at runtime when using `flyte deploy` or `flyte run --copy-style all`.
 
 Note: You can choose to use a single bucket in your dataplane
 
