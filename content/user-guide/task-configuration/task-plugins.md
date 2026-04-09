@@ -91,6 +91,10 @@ When this task runs, Flyte will:
 2. Execute your task code in the Ray cluster
 3. Tear down the cluster after completion
 
+> [!TIP]
+> You can dynamically override Ray worker resources (e.g. GPU counts) at task invocation time
+> using `task.override(plugin_config=...)`. See the [Ray resource override example](https://github.com/unionai/flyte-sdk/tree/main/examples/plugins/ray_override_test.py) for a working pattern.
+
 ### Using Plugins on Union
 
 Most compute plugins are enabled by default on Union or can be enabled upon request. Contact your Account Manager to confirm plugin availability or request specific plugins for your deployment.

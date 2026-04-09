@@ -230,3 +230,5 @@ To resume a failed or interrupted run, uncomment the `resume_training_artifacts`
 **Training keeps failing.** Add `retries=3` to the `@training_env.task` decorator. With the recovery callback uploading checkpoints after every validation epoch, Flyte automatically restarts training from the last checkpoint on transient failures. Spot instance preemptions and most hardware hiccups become non-events.
 
 **Scaling to more nodes.** Increase `NUM_NODES` in `config.py`. The Elastic plugin, DeepSpeed strategy, and gradient accumulation calculation all adapt automatically. The recovery system is unchanged as each run still gets its own recovery URI.
+
+**Using LlamaFactory for fine-tuning.** If you prefer [LlamaFactory](https://github.com/hiyouga/LLaMA-Factory) over a custom training loop, see the [LlamaFactory fine-tuning example](https://github.com/unionai/flyte-sdk/tree/main/examples/genai/llamafactory_finetune.py) for running LlamaFactory jobs on Union.
