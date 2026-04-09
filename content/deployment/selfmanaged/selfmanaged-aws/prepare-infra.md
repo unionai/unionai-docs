@@ -58,7 +58,7 @@ Each data plane uses S3 buckets to store data used in workflow execution.
 Union recommends the use of two S3 buckets:
 
 1. **Metadata bucket**: contains workflow execution data such as task inputs and outputs.
-2. **Code bundle/Fast registration bucket**: contains local code artifacts copied into the Flyte task container at runtime when using `union register` or `union run --remote --copy-all`.
+2. **Code bundle/Fast registration bucket**: contains local code artifacts copied into the Flyte task container at runtime when using `flyte deploy` or `flyte run --copy-style all`.
 
 You can also choose to use a single bucket.
 

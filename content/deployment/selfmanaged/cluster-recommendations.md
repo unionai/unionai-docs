@@ -79,3 +79,12 @@ See the cloud-specific setup pages for details on configuring this service accou
 It is recommended but not required to use separate node pools for the Union services and the Union worker pods.  This allows you to
 guard against resource contention between Union services and other tasks running in your cluster.  You can find additional information
 in the [Configuring Node Pools](./configuration/node-pools) section.
+
+By default, the Union installation request the following resources:
+
+|          | CPU (vCPUs)| Memory (GiB) |
+|----------|------------|--------------|
+| Requests |          14|          27.1|
+| Limits   |          17|            32|
+
+For GPU access, Union injects tolerations and label selectors to execution Pods.
