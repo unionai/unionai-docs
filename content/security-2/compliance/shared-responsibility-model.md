@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Shared responsibility model
 
-Union.ai operates under a shared responsibility model. The allocation of responsibilities differs between Self-Managed and BYOC deployment models.
+Union.ai operates under a shared responsibility model that differs between self-managed and BYOC deployments.
 
 ## Self-managed deployments
 
@@ -36,5 +36,3 @@ In BYOC, responsibilities shift for data plane operations:
 | Secrets management | Customer (backend selection + values) | Union.ai (default backend) + Customer (values) |
 | Application-level access control | Customer (role assignment) | Customer (role assignment) |
 | Compliance documentation | Union.ai (SOC 2, Trust Center) + Customer | Union.ai (SOC 2, Trust Center) + Customer |
-
-For a comprehensive comparison of BYOC and self-managed differences, see [Deployment models and BYOC differences](../architecture/deployment-models).

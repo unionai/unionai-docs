@@ -6,15 +6,13 @@ variants: -flyte +union
 
 # Data flow architecture
 
-Union.ai implements two primary data access patterns, both designed to keep customer data out of the control plane.
+Union.ai implements two data access patterns, both designed to keep customer data out of the control plane.
 
 ## Presigned URL pattern
 
-For task inputs, outputs, code bundles, and reports, the control plane proxies signing requests to the data plane, which generates time-limited presigned URLs using customer-managed credentials.
-The client fetches data directly from the customer's object store -- the data never transits the control plane.
-Presigned URLs generated on the data plane are single-object scope, operation-specific (GET or PUT), time-limited (default 1 hour maximum), and transport-encrypted at every hop.
+For task inputs, outputs, code bundles, and reports, the control plane proxies signing requests to the data plane, which generates time-limited presigned URLs using customer-managed credentials. The client fetches data directly from the customer's object store -- the data never transits the control plane.
 
-Union.ai applies several controls:
+Controls applied to presigned URLs:
 
 * **TTL enforcement** -- URLs expire after a configurable window (default 1 hour, configurable shorter)
 * **Single-object scope** -- each URL grants access to exactly one object, not a bucket or prefix
@@ -22,7 +20,9 @@ Union.ai applies several controls:
 * **Transport encryption** -- URLs are transmitted only over TLS-encrypted channels
 * **No URL logging** -- presigned URLs are not persisted in control plane logs or databases
 
-Organizations with stricter requirements can configure shorter TTLs. The presigned URL model was chosen because it eliminates the need for the control plane to hold persistent cloud IAM credentials, which would represent a larger and more persistent attack surface than time-limited bearer URLs.
+This model eliminates the need for the control plane to hold persistent cloud IAM credentials.
+
+Because presigned URLs are bearer tokens (possession alone grants access), Union.ai recommends treating them with the same care as short-lived credentials and configuring the shortest practical TTL.
 
 ### Presigned URL data types
 
@@ -35,9 +35,7 @@ Organizations with stricter requirements can configure shorter TTLs. The presign
 
 ## Streaming relay pattern
 
-For logs and observability metrics, the control plane acts as a stateless relay -- streaming data from the data plane through the Cloudflare tunnel to the client in real time.
-The data passes through the control plane's memory as a TLS encrypted stream with a termination point in the cloud.
-It is never written to disk, cached, or stored.
+For logs and observability metrics, the control plane acts as a stateless relay -- streaming data from the data plane through the Cloudflare tunnel to the client in real time. The data passes through the control plane's memory as a TLS encrypted stream. It is never written to disk, cached, or stored.
 
 ## Execution flow diagram
 

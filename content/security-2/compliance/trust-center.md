@@ -6,23 +6,15 @@ variants: -flyte +union
 
 # Trust Center
 
-Union.ai maintains a public Trust Center at [trust.union.ai](https://trust.union.ai) (powered by Vanta), providing real-time transparency into the company's security controls, compliance status, and security practices.
+Union.ai maintains a public Trust Center at [trust.union.ai](https://trust.union.ai) (powered by Vanta) with real-time transparency into security controls, compliance status, and security practices.
 
 ## What the Trust Center provides
 
-* Up-to-date information on certifications
+* Up-to-date certification information
 * Downloadable resources (SOC 2 reports upon request)
-* Over 70 verified security controls organized across five categories
+* Over 70 verified security controls across five categories
 
-## Control categories
-
-| Control Category | Controls | Key Controls Include |
-| --- | --- | --- |
-| Infrastructure Security | 17 controls | Encryption key access restricted, unique account authentication enforced, production application/database/OS/network access restricted, intrusion detection, log management, network segmentation, firewalls reviewed and utilized, network hardening standards |
-| Organizational Security | 13 controls | Asset disposal procedures, production inventory, portable media encryption, anti-malware, code of conduct, confidentiality agreements, password policy, MDM, security awareness training |
-| Product Security | 5 controls | Data encryption at rest, control self-assessments, penetration testing, data transmission encryption, vulnerability/system monitoring |
-| Internal Security Procedures | 35 controls | BC/DR plans established and tested, cybersecurity insurance, change management, SDLC, incident response tested, risk assessments, vendor management, board oversight, whistleblower policy |
-| Data and Privacy | 3 controls | Data retention procedures, customer data deleted upon leaving, data classification policy |
+For the full controls breakdown, see [SOC 2 Type II verified controls](./soc2#verified-controls).
 
 ## Access
 

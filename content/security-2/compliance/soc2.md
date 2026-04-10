@@ -10,13 +10,13 @@ Union.ai is SOC 2 Type II certified for Security, Availability, and Processing I
 
 ## Audit scope
 
-The SOC 2 Type II audit was conducted over a 12-week period and covers:
+The 12-week audit covers:
 
-* **Security:** Protection against unauthorized access to systems and data
-* **Availability:** System availability commitments and disaster recovery capabilities
+* **Security:** Protection against unauthorized access
+* **Availability:** System availability and disaster recovery
 * **Processing Integrity:** Complete, valid, accurate, and timely data processing
 
-The audit scope includes:
+Scope includes:
 
 * Control plane infrastructure and operations
 * Tenant isolation controls (org-scoped primary keys, service-layer query gating)
@@ -27,7 +27,7 @@ The audit scope includes:
 
 ## Verified controls
 
-Union.ai maintains over 70 verified security controls organized across five categories, continuously monitored via Vanta:
+Union.ai maintains over 70 verified security controls across five categories, continuously monitored via Vanta:
 
 | Control Category | Controls | Key Controls Include |
 | --- | --- | --- |

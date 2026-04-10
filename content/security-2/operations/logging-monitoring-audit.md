@@ -27,7 +27,7 @@ Metrics data never leaves the customer's infrastructure. In BYOC deployments, Un
 
 ## Audit trail
 
-Union.ai maintains comprehensive audit capabilities:
+Audit capabilities include:
 
 * Every API request is authenticated, and the identity context is captured
 * Run and action lifecycle events are recorded with timestamps, phases, and responsible identities

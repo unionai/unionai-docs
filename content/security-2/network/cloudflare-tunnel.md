@@ -10,7 +10,7 @@ The data plane connects to the control plane via a Cloudflare Tunnel -- an outbo
 
 ## How it works
 
-The Tunnel Service on the data plane initiates and maintains an outbound-only encrypted connection to Cloudflare's edge network, which then connects to the Union.ai control plane. This architecture provides:
+The Tunnel Service on the data plane initiates an outbound-only encrypted connection to Cloudflare's edge network, which connects to the Union.ai control plane:
 
 * **Outbound-only connection** -- no inbound firewall rules required on the customer's network
 * **Mutual TLS (mTLS) encryption** -- all traffic through the tunnel is encrypted and both ends are authenticated
@@ -32,7 +32,7 @@ Union.ai operates regional control plane endpoints:
 
 ## Egress CIDR configuration
 
-In locked-down environments, networking teams can limit egress access to published Cloudflare CIDR blocks, and further restrict to specific regions in coordination with the Union networking team.
+In locked-down environments, networking teams can limit egress access to published Cloudflare CIDR blocks, and further restrict to specific regions in coordination with the Union networking team. For the required IPs, ports, and domains, see [Tunnel with firewall](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/configure-tunnels/tunnel-with-firewall/) in the Cloudflare documentation.
 
 ## What flows through the tunnel
 

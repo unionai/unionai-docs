@@ -33,14 +33,8 @@ BYOC has an additional communication path not present in self-managed deployment
 | --- | --- | --- |
 | Union.ai -> Customer K8s API | PrivateLink / PSC | TLS (private connectivity) |
 
-## Standards compliance
-
-This private connectivity architecture satisfies:
-
-* **ISO 27001 A.5.15** -- access control: restricts access to network services and management interfaces
-* **CIS v8 4.4** -- restrict administrative access: administrative interfaces not exposed to Internet
-* **CIS v8 12.11** -- segment administration interfaces: separation of administrative interfaces from public access
+This architecture satisfies ISO 27001 and CIS controls for restricting administrative access. See [Standards compliance](../compliance/standards-compliance).
 
 ## Self-managed comparison
 
-In self-managed deployments, this private management connection does not exist. Union.ai has zero access to the customer's data plane infrastructure -- the Cloudflare Tunnel is the only connection between the control plane and data plane.
+In self-managed deployments, this private management connection does not exist. The Cloudflare Tunnel is the only connection between the control plane and data plane.

@@ -10,7 +10,9 @@ Union.ai enforces tenant isolation at multiple architectural layers to ensure th
 
 ## Database-layer isolation
 
-Every record in the control plane PostgreSQL database is scoped by organization (org). The org identifier is part of the primary key or unique index on all tenant-scoped tables, including actions, tasks, runs, executions, and RBAC bindings. All database queries are gated by the org context extracted from the caller's authenticated token at the service layer, before any SQL is executed. This ensures that a query can only return records belonging to the caller's organization. Cross-organization access is explicitly denied: there is no API or internal path that permits querying across org boundaries. While Union.ai does not currently use PostgreSQL row-level security (RLS) policies, the application-layer enforcement is uniform and independently verifiable through the SOC 2 Type II audit.
+Every record in the control plane PostgreSQL database is scoped by organization (org). The org identifier is part of the primary key or unique index on all tenant-scoped tables (actions, tasks, runs, executions, RBAC bindings). All database queries are gated by the org context extracted from the caller's authenticated token at the service layer, before any SQL is executed. A query can only return records belonging to the caller's organization.
+
+Cross-organization access is explicitly denied: there is no API or internal path that permits querying across org boundaries. Union.ai does not currently use PostgreSQL row-level security (RLS) policies, but the application-layer enforcement is uniform and independently verifiable through the SOC 2 Type II audit.
 
 ## Data plane isolation
 
