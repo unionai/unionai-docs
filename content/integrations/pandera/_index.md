@@ -131,6 +131,8 @@ Include the plugin in your task image. The exact setup depends on your dataframe
 {{< tabs >}}
 {{< tab "pandas" >}}
 
+{{< markdown >}}
+
 ```python
 import flyte
 
@@ -145,8 +147,12 @@ env = flyte.TaskEnvironment(
 )
 ```
 
+{{< /markdown >}}
+
 {{< /tab >}}
 {{< tab "Polars" >}}
+
+{{< markdown >}}
 
 ```python
 import flyte
@@ -164,8 +170,12 @@ env = flyte.TaskEnvironment(
 )
 ```
 
+{{< /markdown >}}
+
 {{< /tab >}}
 {{< tab "PySpark SQL" >}}
+
+{{< markdown >}}
 
 ```python
 import flyte
@@ -196,6 +206,8 @@ env = flyte.TaskEnvironment(
 )
 ```
 
+{{< /markdown >}}
+
 {{< /tab >}}
 {{< /tabs >}}
 
@@ -221,14 +233,20 @@ async def consume_lazy(
 
 ## Examples
 
-### pandas
+{{< tabs >}}
+{{< tab "pandas" >}}
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/pandera/pandas_schema.py" lang="python" >}}
 
-### Polars
+{{< /tab >}}
+{{< tab "Polars" >}}
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/pandera/polars_schema.py" lang="python" >}}
 
-### PySpark SQL
+{{< /tab >}}
+{{< tab "PySpark SQL" >}}
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/pandera/pyspark_sql_schema.py" lang="python" >}}
+
+{{< /tab >}}
+{{< /tabs >}}
