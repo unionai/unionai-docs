@@ -138,7 +138,7 @@ import flyte
 
 img = flyte.Image.from_debian_base(
     python_version=(3, 12),
-).with_local_v2_plugins("flyteplugins-pandera")
+).with_pip_packages("flyteplugins-pandera")
 
 env = flyte.TaskEnvironment(
     "pandera_pandas",
@@ -159,8 +159,7 @@ import flyte
 
 img = (
     flyte.Image.from_debian_base(python_version=(3, 12))
-    .with_pip_packages("flyteplugins-polars==2.0.9", "pandera[polars]")
-    .with_local_v2_plugins("flyteplugins-pandera")
+    .with_pip_packages("flyteplugins-polars", "pandera[polars]")
 )
 
 env = flyte.TaskEnvironment(
@@ -184,8 +183,7 @@ from flyteplugins.spark.task import Spark
 image = (
     flyte.Image.from_base("apache/spark-py:v3.4.0")
     .clone(name="pandera-pyspark-sql", python_version=(3, 10), extendable=True)
-    .with_pip_packages("flyteplugins-spark==2.0.9", "pandera[pyspark]")
-    .with_local_v2_plugins(["flyteplugins-spark", "flyteplugins-pandera"])
+    .with_pip_packages("flyteplugins-spark", "pandera[pyspark]")
 )
 
 spark_conf = Spark(
