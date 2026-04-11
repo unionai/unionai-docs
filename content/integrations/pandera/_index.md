@@ -129,7 +129,7 @@ to accept best-effort data while still enforcing strict output contracts.
 Include the plugin in your task image. The exact setup depends on your dataframe backend:
 
 {{< tabs >}}
-{{< tab "pandas" >}}
+{{< tab "Pandas" >}}
 
 {{< markdown >}}
 
