@@ -1,6 +1,6 @@
 ---
 title: Fanout
-weight: 13
+weight: 15
 variants: +flyte +union
 ---
 
