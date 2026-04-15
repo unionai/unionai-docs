@@ -1,6 +1,6 @@
 ---
 title: File
-version: 2.1.5
+version: 2.1.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -192,7 +192,7 @@ validated to form a valid model.
 | [`from_existing_remote()`](#from_existing_remote) | Create a File reference from an existing remote file. |
 | [`from_local()`](#from_local) | Asynchronously create a new File object from a local file by uploading it to remote storage. |
 | [`from_local_sync()`](#from_local_sync) | Synchronously create a new File object from a local file by uploading it to remote storage. |
-| [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialise private attributes. |
+| [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialize private attributes. |
 | [`named_remote()`](#named_remote) | Create a File reference whose remote path is derived deterministically from *name*. |
 | [`new_remote()`](#new_remote) | Create a new File reference for a remote file that will be written to. |
 | [`open()`](#open) | Asynchronously open the file and return a file-like object. |
@@ -476,7 +476,7 @@ def model_post_init(
     context: Any,
 )
 ```
-This function is meant to behave like a BaseModel method to initialise private attributes.
+This function is meant to behave like a BaseModel method to initialize private attributes.
 
 It takes context as an argument since that's what pydantic-core passes when calling it.
 
