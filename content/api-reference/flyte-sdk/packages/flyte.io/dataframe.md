@@ -1,6 +1,6 @@
 ---
 title: DataFrame
-version: 2.1.5
+version: 2.1.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -71,7 +71,7 @@ validated to form a valid model.
 | [`from_local()`](#from_local) | This method is useful to upload the dataframe eagerly and get the actual DataFrame. |
 | [`from_local_sync()`](#from_local_sync) | This method is useful to upload the dataframe eagerly and get the actual DataFrame. |
 | [`iter()`](#iter) |  |
-| [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialise private attributes. |
+| [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialize private attributes. |
 | [`open()`](#open) | Load the handler if needed. |
 | [`schema_match()`](#schema_match) |  |
 | [`serialize_dataframe()`](#serialize_dataframe) |  |
@@ -249,7 +249,7 @@ def model_post_init(
     context: Any,
 )
 ```
-This function is meant to behave like a BaseModel method to initialise private attributes.
+This function is meant to behave like a BaseModel method to initialize private attributes.
 
 It takes context as an argument since that's what pydantic-core passes when calling it.
 

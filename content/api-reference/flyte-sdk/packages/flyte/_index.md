@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.1.5
+version: 2.1.7
 variants: +flyte +union
 layout: py_api
 sidebar_expanded: true
@@ -20,7 +20,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`Checkpoint`](../flyte/checkpoint) | Checkpoint helper using `flyte. |
 | [`Cron`](../flyte/cron) | Cron-based automation schedule for use with `Trigger`. |
 | [`Device`](../flyte/device) | Represents a device type, its quantity and partition if applicable. |
-| [`Environment`](../flyte/environment) |  |
+| [`Environment`](../flyte/environment) | Base class for execution environments, shared by `TaskEnvironment` and. |
 | [`FixedRate`](../flyte/fixedrate) | Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
 | [`Image`](../flyte/image) | Container image specification built using a fluent, two-step pattern:. |
 | [`ImageBuild`](../flyte/imagebuild) | Result of an image build operation. |
@@ -412,6 +412,7 @@ def init(
     auth_client_config: ClientConfig | None,
     rpc_retries: int,
     http_proxy_url: str | None,
+    disable_keyring: bool,
     storage: Storage | None,
     batch_size: int,
     image_builder: ImageBuildEngine.ImageBuilderType,
@@ -450,6 +451,7 @@ remote API methods are called. Thread-safe implementation.
 | `auth_client_config` | `ClientConfig \| None` | Optional client configuration for authentication |
 | `rpc_retries` | `int` | [optional] int Number of times to retry the platform calls |
 | `http_proxy_url` | `str \| None` | [optional] HTTP Proxy to be used for OAuth requests |
+| `disable_keyring` | `bool` | |
 | `storage` | `Storage \| None` | Optional blob store (S3, GCS, Azure) configuration if needed to access (i.e. using Minio) |
 | `batch_size` | `int` | Optional batch size for operations that use listings, defaults to 1000, so limit larger than batch_size will be split into multiple requests. |
 | `image_builder` | `ImageBuildEngine.ImageBuilderType` | Optional image builder configuration, if not provided, the default image builder will be used. |
