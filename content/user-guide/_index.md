@@ -10,7 +10,7 @@ sidebar_expanded: true
 {{< variant flyte >}}
 {{< markdown >}}
 
-# Flyte
+# Flyte OSS
 
 Flyte is a free and open source platform that provides a full suite of powerful features for orchestrating AI workflows.
 Flyte empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
