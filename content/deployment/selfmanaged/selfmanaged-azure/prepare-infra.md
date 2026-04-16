@@ -262,15 +262,13 @@ STORAGE_RESOURCE_ID=$(az storage account show \
 az role assignment create \
   --assignee-object-id $BACKEND_PRINCIPAL_ID \
   --assignee-principal-type ServicePrincipal \
-  --role "Storage Blob Data Owner" \
-  --scope "${STORAGE_RESOURCE_ID}/blobServices/default/containers/${METADATA_CONTAINER}"
+  --role "Storage Blob Data Owner" 
 
 # Worker identity: read/write artifacts
 az role assignment create \
   --assignee-object-id $WORKER_PRINCIPAL_ID \
   --assignee-principal-type ServicePrincipal \
-  --role "Storage Blob Data Owner" \
-  --scope "${STORAGE_RESOURCE_ID}/blobServices/default/containers/${METADATA_CONTAINER}"
+  --role "Storage Blob Data Owner"
 ```
 
 ## 8. Azure Key Vault (optional)
