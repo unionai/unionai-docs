@@ -1,7 +1,7 @@
 ---
 title: flytekit.remote.interface
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -17,6 +17,8 @@ layout: py_api
 
 ## flytekit.remote.interface.TypedInterface
 
+### Parameters
+
 ```python
 class TypedInterface(
     inputs,
@@ -28,10 +30,18 @@ outputs are represented directly as Python dicts, rather than going through the 
 
 
 
-| Parameter | Type |
-|-|-|
-| `inputs` |  |
-| `outputs` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `inputs` |  | |
+| `outputs` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `inputs` | `None` |  |
+| `is_empty` | `None` |  |
+| `outputs` | `None` |  |
 
 ### Methods
 
@@ -40,10 +50,9 @@ outputs are represented directly as Python dicts, rather than going through the 
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`promote_from_model()`](#promote_from_model) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 | [`transform_interface_to_list()`](#transform_interface_to_list) | Takes a single task interface and interpolates it to an array interface - to allow performing distributed. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -53,20 +62,22 @@ def from_flyte_idl(
     proto: flyteidl.core.interface_pb2.TypedInterface,
 ) -> TypedInterface
 ```
-| Parameter | Type |
-|-|-|
-| `proto` | `flyteidl.core.interface_pb2.TypedInterface` |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` | `flyteidl.core.interface_pb2.TypedInterface` | |
 
 #### promote_from_model()
 
 ```python
 def promote_from_model(
     model,
-) -> e: TypedInterface
+)
 ```
-| Parameter | Type |
-|-|-|
-| `model` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `model` |  | |
+
+**Returns:** TypedInterface
 
 #### serialize_to_string()
 
@@ -78,8 +89,7 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
@@ -98,24 +108,8 @@ Takes a single task interface and interpolates it to an array interface - to all
 python map like functions
 
 
-| Parameter | Type |
-|-|-|
-| `bound_inputs` | `typing.Set[str]` |
-| `excluded_inputs` | `typing.Set[str]` |
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `inputs` |  |  |
-| `is_empty` |  |  |
-| `outputs` |  |  |
+| `bound_inputs` | `typing.Set[str]` | fixed inputs that should not be updated to a list and will be maintained as is |
+| `excluded_inputs` | `typing.Set[str]` | inputs that should be excluded from the new interface |
 

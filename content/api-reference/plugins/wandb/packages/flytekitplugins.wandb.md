@@ -1,12 +1,11 @@
 ---
 title: flytekitplugins.wandb
-version: 0.0.0+develop
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
 # flytekitplugins.wandb
-
 
 .. currentmodule:: flytekitplugins.wandb
 
@@ -17,20 +16,17 @@ This package contains things that are useful when extending Flytekit.
    :toctree: generated/
 
    wandb_init
-
 ## Directory
 
 ### Classes
 
 | Class | Description |
 |-|-|
-| [`wandb_init`](.././flytekitplugins.wandb#flytekitpluginswandbwandb_init) | Abstract class for class decorators. |
+| [`wandb_init`](.././flytekitplugins.wandb#flytekitpluginswandbwandb_init) |  |
 
 ## flytekitplugins.wandb.wandb_init
 
-Abstract class for class decorators.
-We can attach config on the decorator class and use it in the upper level.
-
+### Parameters
 
 ```python
 class wandb_init(
@@ -47,16 +43,16 @@ class wandb_init(
 Weights and Biases plugin.
 
 
-| Parameter | Type |
-|-|-|
-| `task_function` | `typing.Optional[typing.Callable]` |
-| `project` | `typing.Optional[str]` |
-| `entity` | `typing.Optional[str]` |
-| `secret` | `typing.Union[flytekit.models.security.Secret, typing.Callable, NoneType]` |
-| `id` | `typing.Optional[str]` |
-| `host` | `str` |
-| `api_host` | `str` |
-| `init_kwargs` | `dict` |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_function` | `typing.Optional[typing.Callable]` | The user function to be decorated. Defaults to None. |
+| `project` | `typing.Optional[str]` | The name of the project where you're sending the new run. (Required) |
+| `entity` | `typing.Optional[str]` | An entity is a username or team name where you're sending runs. (Required) |
+| `secret` | `typing.Union[flytekit.models.security.Secret, typing.Callable, NoneType]` | Secret with your `WANDB_API_KEY` or a callable that returns the API key. The callable takes no arguments and returns a string. (Required) |
+| `id` | `typing.Optional[str]` | A unique id for this wandb run. |
+| `host` | `str` | URL to your wandb service. The default is "https://wandb.ai". |
+| `api_host` | `str` | URL to your API Host, The default is "https://api.wandb.ai". |
+| `init_kwargs` | `dict` | |
 
 ### Methods
 
@@ -77,10 +73,10 @@ def execute(
 This method will be called when the decorated function is called.
 
 
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### get_extra_config()
 

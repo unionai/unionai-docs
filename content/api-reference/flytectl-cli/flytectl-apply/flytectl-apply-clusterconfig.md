@@ -1,6 +1,6 @@
 ---
 title: flytectl apply clusterconfig
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl apply clusterconfig

@@ -1,7 +1,7 @@
 ---
 title: flytekit.exceptions.base
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -13,13 +13,12 @@ layout: py_api
 
 | Exception | Description |
 |-|-|
-| [`FlyteException`](.././flytekit.exceptions.base#flytekitexceptionsbaseflyteexception) | Common base class for all non-exit exceptions. |
-| [`FlyteRecoverableException`](.././flytekit.exceptions.base#flytekitexceptionsbaseflyterecoverableexception) | Common base class for all non-exit exceptions. |
+| [`FlyteException`](.././flytekit.exceptions.base#flytekitexceptionsbaseflyteexception) |  |
+| [`FlyteRecoverableException`](.././flytekit.exceptions.base#flytekitexceptionsbaseflyterecoverableexception) |  |
 
 ## flytekit.exceptions.base.FlyteException
 
-Common base class for all non-exit exceptions.
-
+### Parameters
 
 ```python
 class FlyteException(
@@ -27,22 +26,20 @@ class FlyteException(
     timestamp: typing.Optional[float],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `timestamp` | `typing.Optional[float]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.base.FlyteRecoverableException
 
-Common base class for all non-exit exceptions.
-
+### Parameters
 
 ```python
 class FlyteRecoverableException(
@@ -50,15 +47,14 @@ class FlyteRecoverableException(
     timestamp: typing.Optional[float],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `timestamp` | `typing.Optional[float]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 

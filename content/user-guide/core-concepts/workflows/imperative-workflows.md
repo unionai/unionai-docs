@@ -1,7 +1,7 @@
 ---
 title: Imperative workflows
 weight: 5
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Imperative workflows

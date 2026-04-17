@@ -1,6 +1,6 @@
 ---
 title: flytectl get cluster
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl get cluster

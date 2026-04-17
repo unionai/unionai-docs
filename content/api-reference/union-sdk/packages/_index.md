@@ -1,7 +1,7 @@
 ---
 title: Packages
-version: 0.1.191
-variants: +byoc +selfmanaged +serverless -flyte
+version: 0.1.202
+variants: -flyte +union
 layout: py_api
 ---
 

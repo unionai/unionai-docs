@@ -1,7 +1,7 @@
 ---
 title: Connectors
 weight: 1
-variants: +flyte -serverless +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: true
 ---
 
@@ -38,7 +38,7 @@ This section covers all currently available connectors:
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 * [Airflow connector](./airflow-connector/_index)
@@ -96,7 +96,7 @@ To test your connector locally, create a class for the connector task that inher
 
 For testing examples, see the [BigQuery connector](./bigquery-connector#local-testing) and [Databricks connector](./databricks-connector#local-testing) documentation.
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ## Enabling a connector in your {{< key product_name >}} deployment

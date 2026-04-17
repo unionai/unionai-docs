@@ -1,11 +1,14 @@
 ---
 title: Component Architecture
 weight: 9
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 sidebar_expanded: true
+llm_readable_bundle: true
 ---
 
 # Component Architecture
+
+{{< llm-bundle-note >}}
 
 This document aims to demystify how Flyte's major components ``Flyteidl``, ``Flytekit``, ``Flytectl``, ``FlyteConsole``, ``FlyteAdmin``, ``FlytePropeller``, and ``FlytePlugins`` fit together at a high level.
 

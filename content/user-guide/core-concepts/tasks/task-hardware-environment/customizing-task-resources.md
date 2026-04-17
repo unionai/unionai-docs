@@ -1,7 +1,7 @@
 ---
 title: Customizing task resources
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Customizing task resources
@@ -41,7 +41,7 @@ The `requests` and `limits` settings each takes a [`Resource`]() object, which i
 
 Note that CPU and GPU allocations can be specified either as whole numbers or in millicores (`m`). For example, `cpu="2500m"` means two and a half CPU cores and `gpu="3000m"`, meaning three GPU cores.
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 The type of ephemeral storage used depends on the node type and configuration you request from the {{< key product_name >}} team. By default, all nodes will use network-attached storage for ephemeral storage. However, if a node type has attached NVMe SSD storage, you can request that the {{< key product_name >}} team configure your cluster to use the attached NVMe as ephemeral storage for that node type.
@@ -62,14 +62,7 @@ The task will not be scheduled on a node that exceeds the resource profile speci
 
 ## The `accelerator` setting
 
-{{< variant serverless >}}
-{{< markdown >}}
-
-The `accelerator` setting further specifies the *type* of GPU required for the task.
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 The `accelerator` setting further specifies the *type* of specialized hardware required for the task.
@@ -80,7 +73,7 @@ This can be a GPU, a specific variation of a GPU, a fractional GPU, or a differe
 
 See [Accelerators](./accelerators) for more information.
 
-{{< variant byoc selfmanaged serverless >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ## Execution defaults and resource quotas
@@ -102,7 +95,7 @@ This will open a dialog:
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ## Task resource validation
@@ -117,17 +110,6 @@ To remedy such a failure, you should make sure that the appropriate node types a
 Go to the **Resources > Compute** dashboard to find the available node types and their resource profiles.
 
 To make changes to your cluster configuration, go to the [{{< key product_name >}} Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant serverless >}}
-{{< markdown >}}
-
-## Task resource validation
-
-If you attempt to execute a workflow with unsatisfiable resource requests, the execution will fail immediately rather than being allowed to queue forever.
-
-To remedy such a failure, you should make sure that the appropriate node types are specified in the task decorator (via the `requests`, `limits`, `accelerator`, or other parameters).
 
 {{< /markdown >}}
 {{< /variant >}}

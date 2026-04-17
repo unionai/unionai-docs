@@ -1,7 +1,7 @@
 ---
 title: Workspaces
 weight: 8
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Workspaces
@@ -279,33 +279,14 @@ You can also set the resources for your workspace:
 
 ![Resources](../../_static/images/user-guide/core-concepts/workspaces/setting-resources.png)
 
-{{< variant serverless >}}
+
+{{< variant union >}}
 {{< markdown >}}
 
-These resources must be compatible with the resource limits available to you
-on your Union.ai serverless account. Go the top-level dashboard to view your
-execution settings:
+These resources must be compatible with the resources available on your
+Union cluster. Find the details of your cluster in the top-level dashboard:
 
-![Execution Settings](../../_static/images/user-guide/core-concepts/workspaces/serverless-execution-settings.png)
-
-For the `GPU` field, you can choose one of the following values:
-
-* `nvidia-tesla-t4`
-* `nvidia-tesla-l4`
-* `nvidia-tesla-a100`
-
-Learn more about the available accelerators [here](./tasks/task-hardware-environment/accelerators).
-
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant byoc >}}
-{{< markdown >}}
-
-These resources must be compatible with the resources available to your BYOC
-cluster. Find the details of your BYOC cluster in the top-level dashboard:
-
-![BYOC Compute Resources](../../_static/images/user-guide/core-concepts/workspaces/byoc-compute-resources.png)
+![Cluster Compute Resources](../../_static/images/user-guide/core-concepts/workspaces/byoc-compute-resources.png)
 
 You can choose [the GPU accelerator](./tasks/task-hardware-environment/accelerators) that corresponds to your available instance types. In the screen shot above, the accelerator
 value is `nvidia-tesla-v100`.
@@ -351,7 +332,7 @@ task execution details page:
 
 ![Task Execution](../../_static/images/user-guide/core-concepts/workspaces/customize-container-image-get-uri.png)
 
-{{< variant byoc >}}
+{{< variant union >}}
 {{< markdown >}}
 
 You can specify:

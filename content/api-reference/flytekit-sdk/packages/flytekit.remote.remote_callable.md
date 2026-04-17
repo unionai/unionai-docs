@@ -1,7 +1,7 @@
 ---
 title: flytekit.remote.remote_callable
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -13,13 +13,11 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`RemoteEntity`](.././flytekit.remote.remote_callable#flytekitremoteremote_callableremoteentity) | Helper class that provides a standard way to create an ABC using. |
+| [`RemoteEntity`](.././flytekit.remote.remote_callable#flytekitremoteremote_callableremoteentity) |  |
 
 ## flytekit.remote.remote_callable.RemoteEntity
 
-Helper class that provides a standard way to create an ABC using
-inheritance.
-
+### Parameters
 
 ```python
 class RemoteEntity(
@@ -27,10 +25,18 @@ class RemoteEntity(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `id` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` |  |
 
 ### Methods
 
@@ -52,11 +58,11 @@ def compile(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### construct_node_metadata()
 
@@ -73,9 +79,9 @@ def execute(
     kwargs,
 ) -> typing.Any
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### local_execute()
 
@@ -85,21 +91,13 @@ def local_execute(
     kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
 ```python
 def local_execution_mode()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `id` |  |  |
-| `name` |  |  |
-| `python_interface` |  |  |
-

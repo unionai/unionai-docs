@@ -1,7 +1,7 @@
 ---
 title: Classes
-version: 0.0.0+develop
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -12,4 +12,4 @@ layout: py_api
 | [`flytekitplugins.pandera.config.ValidationConfig`](../packages/flytekitplugins.pandera.config#flytekitpluginspanderaconfigvalidationconfig) | |
 | [`flytekitplugins.pandera.pandas_renderer.PandasReport`](../packages/flytekitplugins.pandera.pandas_renderer#flytekitpluginspanderapandas_rendererpandasreport) | |
 | [`flytekitplugins.pandera.pandas_renderer.PandasReportRenderer`](../packages/flytekitplugins.pandera.pandas_renderer#flytekitpluginspanderapandas_rendererpandasreportrenderer) | |
-| [`flytekitplugins.pandera.pandas_transformer.PanderaPandasTransformer`](../packages/flytekitplugins.pandera.pandas_transformer#flytekitpluginspanderapandas_transformerpanderapandastransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`flytekitplugins.pandera.pandas_transformer.PanderaPandasTransformer`](../packages/flytekitplugins.pandera.pandas_transformer#flytekitpluginspanderapandas_transformerpanderapandastransformer) | |

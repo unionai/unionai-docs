@@ -1,7 +1,7 @@
 ---
 title: flytekit.tools.ignore
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -31,14 +31,16 @@ layout: py_api
 Uses docker-py's PatternMatcher to check whether a path is ignored.
 
 
+### Parameters
+
 ```python
 class DockerIgnore(
-    root: pathlib._local.Path,
+    root: pathlib.Path,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `root` | `pathlib._local.Path` |
+| Parameter | Type | Description |
+|-|-|-|
+| `root` | `pathlib.Path` | |
 
 ### Methods
 
@@ -55,9 +57,9 @@ def is_ignored(
     path: str,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
 
 #### tar_filter()
 
@@ -66,23 +68,25 @@ def tar_filter(
     tarinfo: tarfile.TarInfo,
 ) -> typing.Optional[tarfile.TarInfo]
 ```
-| Parameter | Type |
-|-|-|
-| `tarinfo` | `tarfile.TarInfo` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tarinfo` | `tarfile.TarInfo` | |
 
 ## flytekit.tools.ignore.FlyteIgnore
 
 Uses a .flyteignore file to determine ignored files.
 
 
+### Parameters
+
 ```python
 class FlyteIgnore(
-    root: pathlib._local.Path,
+    root: pathlib.Path,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `root` | `pathlib._local.Path` |
+| Parameter | Type | Description |
+|-|-|-|
+| `root` | `pathlib.Path` | |
 
 ### Methods
 
@@ -99,9 +103,9 @@ def is_ignored(
     path: str,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
 
 #### tar_filter()
 
@@ -110,23 +114,25 @@ def tar_filter(
     tarinfo: tarfile.TarInfo,
 ) -> typing.Optional[tarfile.TarInfo]
 ```
-| Parameter | Type |
-|-|-|
-| `tarinfo` | `tarfile.TarInfo` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tarinfo` | `tarfile.TarInfo` | |
 
 ## flytekit.tools.ignore.GitIgnore
 
 Uses git cli (if available) to list all ignored files and compare with those.
 
 
+### Parameters
+
 ```python
 class GitIgnore(
-    root: pathlib._local.Path,
+    root: pathlib.Path,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `root` | `pathlib._local.Path` |
+| Parameter | Type | Description |
+|-|-|-|
+| `root` | `pathlib.Path` | |
 
 ### Methods
 
@@ -143,9 +149,9 @@ def is_ignored(
     path: str,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
 
 #### tar_filter()
 
@@ -154,23 +160,25 @@ def tar_filter(
     tarinfo: tarfile.TarInfo,
 ) -> typing.Optional[tarfile.TarInfo]
 ```
-| Parameter | Type |
-|-|-|
-| `tarinfo` | `tarfile.TarInfo` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tarinfo` | `tarfile.TarInfo` | |
 
 ## flytekit.tools.ignore.Ignore
 
 Base for Ignores, implements core logic. Children have to implement _is_ignored
 
 
+### Parameters
+
 ```python
 class Ignore(
     root: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `root` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `root` | `str` | |
 
 ### Methods
 
@@ -187,9 +195,9 @@ def is_ignored(
     path: str,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
 
 #### tar_filter()
 
@@ -198,9 +206,9 @@ def tar_filter(
     tarinfo: tarfile.TarInfo,
 ) -> typing.Optional[tarfile.TarInfo]
 ```
-| Parameter | Type |
-|-|-|
-| `tarinfo` | `tarfile.TarInfo` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tarinfo` | `tarfile.TarInfo` | |
 
 ## flytekit.tools.ignore.IgnoreGroup
 
@@ -208,16 +216,18 @@ Groups multiple Ignores and checks a path against them. A file is ignored if any
 Ignore considers it ignored.
 
 
+### Parameters
+
 ```python
 class IgnoreGroup(
     root: str,
     ignores: typing.List[typing.Type[flytekit.tools.ignore.Ignore]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `root` | `str` |
-| `ignores` | `typing.List[typing.Type[flytekit.tools.ignore.Ignore]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `root` | `str` | |
+| `ignores` | `typing.List[typing.Type[flytekit.tools.ignore.Ignore]]` | |
 
 ### Methods
 
@@ -235,9 +245,9 @@ def is_ignored(
     path: str,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
 
 #### list_ignored()
 
@@ -251,9 +261,9 @@ def tar_filter(
     tarinfo: tarfile.TarInfo,
 ) -> typing.Optional[tarfile.TarInfo]
 ```
-| Parameter | Type |
-|-|-|
-| `tarinfo` | `tarfile.TarInfo` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tarinfo` | `tarfile.TarInfo` | |
 
 ## flytekit.tools.ignore.StandardIgnore
 
@@ -261,16 +271,18 @@ Retains the standard ignore functionality that previously existed. Could in theo
 by fed with custom ignore patterns from cli.
 
 
+### Parameters
+
 ```python
 class StandardIgnore(
-    root: pathlib._local.Path,
+    root: pathlib.Path,
     patterns: typing.Optional[typing.List[str]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `root` | `pathlib._local.Path` |
-| `patterns` | `typing.Optional[typing.List[str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `root` | `pathlib.Path` | |
+| `patterns` | `typing.Optional[typing.List[str]]` | |
 
 ### Methods
 
@@ -287,9 +299,9 @@ def is_ignored(
     path: str,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
 
 #### tar_filter()
 
@@ -298,7 +310,7 @@ def tar_filter(
     tarinfo: tarfile.TarInfo,
 ) -> typing.Optional[tarfile.TarInfo]
 ```
-| Parameter | Type |
-|-|-|
-| `tarinfo` | `tarfile.TarInfo` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tarinfo` | `tarfile.TarInfo` | |
 

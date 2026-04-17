@@ -1,7 +1,7 @@
 ---
 title: Modin
 layout: plugin
-variants: +flyte -byoc -selfmanaged -serverless
+variants: +flyte -union
 metadata:
   title: Modin
   title_expanded: Flytekit Modin Plugin

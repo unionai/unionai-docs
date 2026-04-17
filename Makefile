@@ -1,55 +1,54 @@
+# Thin delegator — forwards all targets to unionai-docs-infra/Makefile.
+# Version-specific variables live in makefile.inc (this directory).
+# Shared build logic lives in unionai-docs-infra/Makefile.
+
 include makefile.inc
 
-PREFIX := $(if $(VERSION),docs/$(VERSION),docs)
-PORT := 9000
-BUILD := $(shell date +%s)
+export REPO_ROOT := $(CURDIR)
+export VERSION
+export VARIANTS
+export DEFAULT_VARIANT
 
-.PHONY: all dist variant dev update-examples sync-examples
+PORT ?= 9000
+export PORT
 
-all: usage
+# Forward all known targets to unionai-docs-infra/Makefile.
+# These must be listed explicitly because Make's % pattern rule won't match
+# targets that correspond to existing files/directories (e.g., dist/).
+TARGETS := usage help clean clean-generated base dist variant dev serve \
+	update-examples init-examples check-jupyter check-images validate-urls \
+	url-stats llm-docs update-redirects dry-run-redirects deploy-redirects \
+	check-deleted-pages check-links check-generated-content check-api-docs \
+	check-llm-bundle-notes update-api-docs check-helm-docs update-helm-docs
 
-usage:
-	@./scripts/make_usage.sh
+# Guard: fail fast if the infra submodule is not initialized.
+.PHONY: _check-infra
+_check-infra:
+	@if [ ! -f unionai-docs-infra/Makefile ]; then \
+		echo "ERROR: unionai-docs-infra/ submodule not initialized. Run: git submodule update --init"; \
+		exit 1; \
+	fi
 
-base:
-	@if ! ./scripts/pre-build-checks.sh; then exit 1; fi
-	@if ! ./scripts/pre-flight.sh; then exit 1; fi
-	rm -rf dist
-	mkdir -p dist
-	mkdir -p dist/docs
-	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/index.html
-	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/docs/index.html
-	#cp -R static/* dist/${PREFIX}/
+.PHONY: $(TARGETS)
+$(TARGETS): _check-infra
+	@$(MAKE) --no-print-directory -f unionai-docs-infra/Makefile $@
 
-dist: base
-	make variant VARIANT=flyte
-	make variant VARIANT=serverless
-	make variant VARIANT=byoc
-	make variant VARIANT=selfmanaged
-
-variant:
-	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
-	@VERSION=${VERSION} ./scripts/run_hugo.sh --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
-	@VERSION=${VERSION} VARIANT=${VARIANT} PREFIX=${PREFIX} BUILD=${BUILD} ./scripts/gen_404.sh
-
-dev:
-	@if ! ./scripts/pre-flight.sh; then exit 1; fi
-	@if ! ./scripts/dev-pre-flight.sh; then exit 1; fi
-	rm -rf public
-	hugo server --config hugo.toml,hugo.site.toml,hugo.ver.toml,hugo.dev.toml,hugo.local.toml
-
-serve:
-	@if [ ! -d dist ]; then "echo Run `make dist` first"; exit 1; fi
-	@PORT=${PORT} LAUNCH=${LAUNCH} ./scripts/serve.sh
-
-update-examples:
-	git submodule update --remote
-
-init-examples:
+.PHONY: init-infra
+init-infra:
 	git submodule update --init
 
-check-jupyter:
-	./tools/jupyter_generator/check_jupyter.sh
+# Submodule update helpers (not forwarded to unionai-docs-infra/Makefile).
+.PHONY: update-infra
+update-infra:
+	git submodule update --remote unionai-docs-infra
+	@echo "unionai-docs-infra/ updated to latest. Review and commit the change."
 
-check-images:
-	./scripts/check_images.sh
+.PHONY: submodule
+submodule:
+	git submodule init && git submodule update
+
+.PHONY: update_submodule
+update_submodule:
+	git submodule update --init --recursive --remote
+
+.DEFAULT_GOAL := usage

@@ -1,7 +1,7 @@
 ---
 title: Flytectl CLI
 weight: 4
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 sidebar_expanded: true
 ---
 
@@ -17,7 +17,7 @@ It also includes much of the functionality of the [`{{< key cli >}}` CLI](../uni
 
 ## Installation
 
-{{< variant serverless byoc selfmanaged >}}
+{{< variant union >}}
 {{< tabs >}}
 {{< tab "macOS" >}}
 {{< markdown >}}
@@ -157,19 +157,7 @@ To download the binary manually, see the [`flytectl` releases page](https://gith
 
 ## Configuration
 
-{{< variant serverless >}}
-{{< markdown >}}
-
-`uctl` will automatically connect to Union Serverless. You do not need to create a configuration file.
-
-> [!WARNING]
-> If you have previously used Union, you may have existing configuration files that will interfere with command line access to Union Serverless.
->
-> To avoid connection errors, remove any configuration files in the `~/.unionai/` or `~/.union/` directories and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG`.
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 To create a configuration file that contains your Union connection information, run the following command, replacing `<union-host-url>` with the URL of your Union instance:
@@ -198,7 +186,7 @@ By default, the `{{< key ctl >}}` CLI will use the configuration file at `~/.{{<
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 * `--config <path-to-config>` flag
@@ -209,7 +197,7 @@ By default, the `{{< key ctl >}}` CLI will use the configuration file at `~/.{{<
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 * `--config <path-to-config>` flag
@@ -291,7 +279,7 @@ By default, the `{{< key ctl >}}` CLI will use the configuration file at `~/.{{<
 
 ## Commands
 
-{{< variant byoc >}}
+{{< variant union >}}
 {{< markdown >}}
 * `{{< key ctl >}} apply {{{< key ctl >}}-apply/index}` is used for updating various Union/Flyte resources, including cluster configs.
 * `{{< key ctl >}} config {{{< key ctl >}}-config/index}` runs various config commands.

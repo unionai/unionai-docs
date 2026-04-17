@@ -1,7 +1,7 @@
 ---
 title: flytekit.clients.helpers
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -28,20 +28,24 @@ def iterate_node_executions(
     task_execution_identifier,
     limit,
     filters,
+    sort_by,
     unique_parent_id,
-) -> e: Iterator[flytekit.models.node_execution.NodeExecution]
+)
 ```
 This returns a generator for node executions.
 
 
-| Parameter | Type |
-|-|-|
-| `client` |  |
-| `workflow_execution_identifier` |  |
-| `task_execution_identifier` |  |
-| `limit` |  |
-| `filters` |  |
-| `unique_parent_id` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `client` |  | |
+| `workflow_execution_identifier` |  | |
+| `task_execution_identifier` |  | |
+| `limit` |  | |
+| `filters` |  | |
+| `sort_by` |  | |
+| `unique_parent_id` |  | |
+
+**Returns:** Iterator[flytekit.models.node_execution.NodeExecution]
 
 #### iterate_task_executions()
 
@@ -51,15 +55,19 @@ def iterate_task_executions(
     node_execution_identifier,
     limit,
     filters,
-) -> e: Iterator[flytekit.models.admin.task_execution.TaskExecution]
+    sort_by,
+)
 ```
 This returns a generator for task executions, given a node execution identifier
 
 
-| Parameter | Type |
-|-|-|
-| `client` |  |
-| `node_execution_identifier` |  |
-| `limit` |  |
-| `filters` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `client` |  | |
+| `node_execution_identifier` |  | |
+| `limit` |  | |
+| `filters` |  | |
+| `sort_by` |  | |
+
+**Returns:** Iterator[flytekit.models.admin.task_execution.TaskExecution]
 

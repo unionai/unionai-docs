@@ -1,6 +1,6 @@
 ---
 title: flytectl create clusterpoolassignment
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl create clusterpoolassignment

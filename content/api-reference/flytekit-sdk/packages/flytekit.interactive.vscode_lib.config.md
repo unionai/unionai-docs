@@ -1,7 +1,7 @@
 ---
 title: flytekit.interactive.vscode_lib.config
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -29,6 +29,8 @@ VscodeConfig is the config contains default URLs of the VSCode server and extens
 
 
 
+### Parameters
+
 ```python
 class VscodeConfig(
     code_server_remote_paths: typing.Optional[typing.Dict[str, str]],
@@ -36,11 +38,11 @@ class VscodeConfig(
     extension_remote_paths: typing.Optional[typing.List[str]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code_server_remote_paths` | `typing.Optional[typing.Dict[str, str]]` |
-| `code_server_dir_names` | `typing.Optional[typing.Dict[str, str]]` |
-| `extension_remote_paths` | `typing.Optional[typing.List[str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code_server_remote_paths` | `typing.Optional[typing.Dict[str, str]]` | The URL of the code-server tarball. |
+| `code_server_dir_names` | `typing.Optional[typing.Dict[str, str]]` | The name of the code-server directory. |
+| `extension_remote_paths` | `typing.Optional[typing.List[str]]` | The URLs of the VSCode extensions. You can find all available extensions at https://open-vsx.org/. |
 
 ### Methods
 
@@ -59,7 +61,7 @@ def add_extensions(
 Add additional extensions to the extension_remote_paths list.
 
 
-| Parameter | Type |
-|-|-|
-| `extensions` | `typing.Union[str, typing.List[str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `extensions` | `typing.Union[str, typing.List[str]]` | |
 

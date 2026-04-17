@@ -1,6 +1,6 @@
 ---
 title: uctl delete execution
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl delete execution

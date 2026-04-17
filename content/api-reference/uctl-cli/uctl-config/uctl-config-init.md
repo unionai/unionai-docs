@@ -1,6 +1,6 @@
 ---
 title: uctl config init
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl config init

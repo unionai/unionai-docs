@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.docstring
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -17,23 +17,25 @@ layout: py_api
 
 ## flytekit.core.docstring.Docstring
 
+### Parameters
+
 ```python
 class Docstring(
     docstring: typing.Optional[str],
     callable_: typing.Optional[typing.Callable],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `docstring` | `typing.Optional[str]` |
-| `callable_` | `typing.Optional[typing.Callable]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `docstring` | `typing.Optional[str]` | |
+| `callable_` | `typing.Optional[typing.Callable]` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `input_descriptions` |  |  |
-| `long_description` |  |  |
-| `output_descriptions` |  |  |
-| `short_description` |  |  |
+| `input_descriptions` | `None` |  |
+| `long_description` | `None` |  |
+| `output_descriptions` | `None` |  |
+| `short_description` | `None` |  |
 

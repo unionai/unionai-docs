@@ -1,6 +1,6 @@
 ---
 title: flytectl delete execution-queue-attribute
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl delete execution-queue-attribute

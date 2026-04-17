@@ -1,30 +1,20 @@
 ---
 title: flytekit.core.context_manager
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
 # flytekit.core.context_manager
 
-
-
-.. autoclass:: flytekit.core.context_manager::ExecutionState.Mode
-   :noindex:
-.. autoclass:: flytekit.core.context_manager::ExecutionState.Mode.TASK_EXECUTION
-   :noindex:
-.. autoclass:: flytekit.core.context_manager::ExecutionState.Mode.LOCAL_WORKFLOW_EXECUTION
-   :noindex:
-.. autoclass:: flytekit.core.context_manager::ExecutionState.Mode.LOCAL_TASK_EXECUTION
-   :noindex:
-
-
+These classes provide functionality related context management.
 ## Directory
 
 ### Classes
 
 | Class | Description |
 |-|-|
+| [`BranchEvalMode`](.././flytekit.core.context_manager#flytekitcorecontext_managerbranchevalmode) | This is a 3-way class, with the None value meaning that we are not within a conditional context. |
 | [`CompilationState`](.././flytekit.core.context_manager#flytekitcorecontext_managercompilationstate) | Compilation state is used during the compilation of a workflow or task. |
 | [`ExecutionParameters`](.././flytekit.core.context_manager#flytekitcorecontext_managerexecutionparameters) | This is a run-time user-centric context object that is accessible to every @task method. |
 | [`ExecutionState`](.././flytekit.core.context_manager#flytekitcorecontext_managerexecutionstate) | This is the context that is active when executing a task or a local workflow. |
@@ -34,6 +24,11 @@ layout: py_api
 | [`OutputMetadata`](.././flytekit.core.context_manager#flytekitcorecontext_manageroutputmetadata) |  |
 | [`OutputMetadataTracker`](.././flytekit.core.context_manager#flytekitcorecontext_manageroutputmetadatatracker) | This class is for the users to set arbitrary metadata on output literals. |
 | [`SecretsManager`](.././flytekit.core.context_manager#flytekitcorecontext_managersecretsmanager) | This provides a secrets resolution logic at runtime. |
+
+### Protocols
+
+| Protocol | Description |
+|-|-|
 | [`SerializableToString`](.././flytekit.core.context_manager#flytekitcorecontext_managerserializabletostring) | This protocol is used by the Artifact create_from function. |
 
 ### Variables
@@ -42,19 +37,22 @@ layout: py_api
 |-|-|-|
 | `flyte_context_Var` | `ContextVar` |  |
 
+## flytekit.core.context_manager.BranchEvalMode
+
+This is a 3-way class, with the None value meaning that we are not within a conditional context. The other two
+values are
+* Active - This means that the next ``then`` should run
+* Skipped - The next ``then`` should not run
+
+
 ## flytekit.core.context_manager.CompilationState
 
 Compilation state is used during the compilation of a workflow or task. It stores the nodes that were
 created when walking through the workflow graph.
 
-Attributes:
-    prefix (str): This is because we may one day want to be able to have subworkflows inside other workflows. If
-        users choose to not specify their node names, then we can end up with multiple "n0"s. This prefix allows
-        us to give those nested nodes a distinct name, as well as properly identify them in the workflow.
-    mode (int): refer to `flytekit.extend.ExecutionState.Mode`
-    task_resolver (Optional[TaskResolverMixin]): Please see `flytekit.extend.TaskResolverMixin`
-    nodes (Optional[List]): Stores currently compiled nodes so far.
 
+
+### Parameters
 
 ```python
 class CompilationState(
@@ -64,12 +62,12 @@ class CompilationState(
     nodes: List,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `prefix` | `str` |
-| `mode` | `int` |
-| `task_resolver` | `Optional[TaskResolverMixin]` |
-| `nodes` | `List` |
+| Parameter | Type | Description |
+|-|-|-|
+| `prefix` | `str` | This is because we may one day want to be able to have subworkflows inside other workflows. If users choose to not specify their node names, then we can end up with multiple "n0"s. This prefix allows us to give those nested nodes a distinct name, as well as properly identify them in the workflow. |
+| `mode` | `int` | refer to `flytekit.extend.ExecutionState.Mode` |
+| `task_resolver` | `Optional[TaskResolverMixin]` | Please see `flytekit.extend.TaskResolverMixin` |
+| `nodes` | `List` | Stores currently compiled nodes so far. |
 
 ### Methods
 
@@ -86,9 +84,9 @@ def add_node(
     n: Node,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `n` | `Node` |
+| Parameter | Type | Description |
+|-|-|-|
+| `n` | `Node` | |
 
 #### with_params()
 
@@ -107,12 +105,12 @@ Usage:
     s.with_params("p", nodes=[])
 
 
-| Parameter | Type |
-|-|-|
-| `prefix` | `str` |
-| `mode` | `Optional[int]` |
-| `resolver` | `Optional[TaskResolverMixin]` |
-| `nodes` | `Optional[List]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `prefix` | `str` | |
+| `mode` | `Optional[int]` | |
+| `resolver` | `Optional[TaskResolverMixin]` | |
+| `nodes` | `Optional[List]` | |
 
 ## flytekit.core.context_manager.ExecutionParameters
 
@@ -132,6 +130,8 @@ This object provides the following objections
 Please do not confuse this object with the `flytekit.FlyteContext` object.
 
 
+### Parameters
+
 ```python
 class ExecutionParameters(
     execution_date,
@@ -148,20 +148,47 @@ class ExecutionParameters(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `execution_date` |  |
-| `tmp_dir` |  |
-| `stats` |  |
-| `execution_id` | `typing.Optional[_identifier.WorkflowExecutionIdentifier]` |
-| `logging` |  |
-| `raw_output_prefix` |  |
-| `output_metadata_prefix` |  |
-| `checkpoint` |  |
-| `decks` |  |
-| `task_id` | `typing.Optional[_identifier.Identifier]` |
-| `enable_deck` | `bool` |
-| `kwargs` | ``**kwargs`` |
+execution_date: Date when the execution is running
+tmp_dir: temporary directory for the execution
+stats: handle to emit stats
+execution_id: Identifier for the execution
+logging: handle to logging
+checkpoint: Checkpoint Handle to the configured checkpoint system
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `execution_date` |  | |
+| `tmp_dir` |  | |
+| `stats` |  | |
+| `execution_id` | `typing.Optional[_identifier.WorkflowExecutionIdentifier]` | |
+| `logging` |  | |
+| `raw_output_prefix` |  | |
+| `output_metadata_prefix` |  | |
+| `checkpoint` |  | |
+| `decks` |  | |
+| `task_id` | `typing.Optional[_identifier.Identifier]` | |
+| `enable_deck` | `bool` | |
+| `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `checkpoint` | `None` |  |
+| `decks` | `None` | A list of decks of the tasks, and it will be rendered to a html at the end of the task execution. |
+| `default_deck` | `None` |  |
+| `enable_deck` | `None` | Returns whether deck is enabled or not |
+| `execution_date` | `None` | This is a datetime representing the time at which a workflow was started.  This is consistent across all tasks executed in a workflow or sub-workflow.  &gt; [!NOTE] &gt; Do NOT use this execution_date to drive any production logic.  It might be useful as a tag for data to help     in debugging. |
+| `execution_id` | `None` | This is the identifier of the workflow execution within the underlying engine.  It will be consistent across all task executions in a workflow or sub-workflow execution.  &gt; [!NOTE] &gt; Do NOT use this execution_id to drive any production logic.  This execution ID should only be used as a tag     on output data to link back to the workflow run that created it. |
+| `logging` | `None` | A handle to a useful logging object. TODO: Usage examples |
+| `output_metadata_prefix` | `None` |  |
+| `raw_output_prefix` | `None` |  |
+| `secrets` | `None` |  |
+| `stats` | `None` | A handle to a special statsd object that provides usefully tagged stats. TODO: Usage examples and better comments |
+| `task_id` | `None` | At production run-time, this will be generated by reading environment variables that are set by the backend. |
+| `timeline_deck` | `None` |  |
+| `working_directory` | `None` | A handle to a special working directory for easily producing temporary files. TODO: Usage examples |
 
 ### Methods
 
@@ -190,9 +217,9 @@ def get(
 Returns task specific context if present else raise an error. The returned context will match the key
 
 
-| Parameter | Type |
-|-|-|
-| `key` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `key` | `str` | |
 
 #### has_attr()
 
@@ -201,9 +228,9 @@ def has_attr(
     attr_name: str,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `attr_name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `attr_name` | `str` | |
 
 #### new_builder()
 
@@ -212,9 +239,9 @@ def new_builder(
     current: Optional[ExecutionParameters],
 ) -> Builder
 ```
-| Parameter | Type |
-|-|-|
-| `current` | `Optional[ExecutionParameters]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `current` | `Optional[ExecutionParameters]` | |
 
 #### with_enable_deck()
 
@@ -223,56 +250,15 @@ def with_enable_deck(
     enable_deck: bool,
 ) -> Builder
 ```
-| Parameter | Type |
-|-|-|
-| `enable_deck` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `enable_deck` | `bool` | |
 
 #### with_task_sandbox()
 
 ```python
 def with_task_sandbox()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `checkpoint` |  |  |
-| `decks` |  | {{< multiline >}}A list of decks of the tasks, and it will be rendered to a html at the end of the task execution.
-{{< /multiline >}} |
-| `default_deck` |  |  |
-| `enable_deck` |  | {{< multiline >}}Returns whether deck is enabled or not
-{{< /multiline >}} |
-| `execution_date` |  | {{< multiline >}}This is a datetime representing the time at which a workflow was started.  This is consistent across all tasks
-executed in a workflow or sub-workflow.
-
-> [!NOTE]
-> Do NOT use this execution_date to drive any production logic.  It might be useful as a tag for data to help
-    in debugging.
-{{< /multiline >}} |
-| `execution_id` |  | {{< multiline >}}This is the identifier of the workflow execution within the underlying engine.  It will be consistent across all
-task executions in a workflow or sub-workflow execution.
-
-> [!NOTE]
-> Do NOT use this execution_id to drive any production logic.  This execution ID should only be used as a tag
-    on output data to link back to the workflow run that created it.
-{{< /multiline >}} |
-| `logging` |  | {{< multiline >}}A handle to a useful logging object.
-TODO: Usage examples
-{{< /multiline >}} |
-| `output_metadata_prefix` |  |  |
-| `raw_output_prefix` |  |  |
-| `secrets` |  |  |
-| `stats` |  | {{< multiline >}}A handle to a special statsd object that provides usefully tagged stats.
-TODO: Usage examples and better comments
-{{< /multiline >}} |
-| `task_id` |  | {{< multiline >}}At production run-time, this will be generated by reading environment variables that are set
-by the backend.
-{{< /multiline >}} |
-| `timeline_deck` |  |  |
-| `working_directory` |  | {{< multiline >}}A handle to a special working directory for easily producing temporary files.
-TODO: Usage examples
-{{< /multiline >}} |
-
 ## flytekit.core.context_manager.ExecutionState
 
 This is the context that is active when executing a task or a local workflow. This carries the necessary state to
@@ -280,15 +266,9 @@ execute.
 Some required things during execution deal with temporary directories, ExecutionParameters that are passed to the
 user etc.
 
-Attributes:
-    mode (ExecutionState.Mode): Defines the context in which the task is executed (local, hosted, etc).
-    working_dir (os.PathLike): Specifies the remote, external directory where inputs, outputs and other protobufs
-        are uploaded
-    engine_dir (os.PathLike):
-    branch_eval_mode Optional[BranchEvalMode]: Used to determine whether a branch node should execute.
-    user_space_params Optional[ExecutionParameters]: Provides run-time, user-centric context such as a statsd
-        handler, a logging handler, the current execution id and a working directory.
 
+
+### Parameters
 
 ```python
 class ExecutionState(
@@ -299,13 +279,13 @@ class ExecutionState(
     user_space_params: Optional[ExecutionParameters],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `working_dir` | `Union[os.PathLike, str]` |
-| `mode` | `Optional[ExecutionState.Mode]` |
-| `engine_dir` | `Optional[Union[os.PathLike, str]]` |
-| `branch_eval_mode` | `Optional[BranchEvalMode]` |
-| `user_space_params` | `Optional[ExecutionParameters]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `working_dir` | `Union[os.PathLike, str]` | Specifies the remote, external directory where inputs, outputs and other protobufs are uploaded |
+| `mode` | `Optional[ExecutionState.Mode]` | Defines the context in which the task is executed (local, hosted, etc). |
+| `engine_dir` | `Optional[Union[os.PathLike, str]]` | |
+| `branch_eval_mode` | `Optional[BranchEvalMode]` | |
+| `user_space_params` | `Optional[ExecutionParameters]` | |
 
 ### Methods
 
@@ -354,13 +334,13 @@ def with_params(
 Produces a copy of the current execution state and overrides the copy's parameters with passed parameter values.
 
 
-| Parameter | Type |
-|-|-|
-| `working_dir` | `Optional[os.PathLike]` |
-| `mode` | `Optional[Mode]` |
-| `engine_dir` | `Optional[os.PathLike]` |
-| `branch_eval_mode` | `Optional[BranchEvalMode]` |
-| `user_space_params` | `Optional[ExecutionParameters]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `working_dir` | `Optional[os.PathLike]` | |
+| `mode` | `Optional[Mode]` | |
+| `engine_dir` | `Optional[os.PathLike]` | |
+| `branch_eval_mode` | `Optional[BranchEvalMode]` | |
+| `user_space_params` | `Optional[ExecutionParameters]` | |
 
 ## flytekit.core.context_manager.FlyteContext
 
@@ -373,6 +353,8 @@ Even though this object as a ``current_context`` function on it, it should not b
 
 Please do not confuse this object with the `flytekit.ExecutionParameters` object.
 
+
+### Parameters
 
 ```python
 class FlyteContext(
@@ -388,18 +370,24 @@ class FlyteContext(
     worker_queue: Optional[Controller],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `file_access` | `FileAccessProvider` |
-| `level` | `int` |
-| `flyte_client` | `Optional['friendly_client.SynchronousFlyteClient']` |
-| `compilation_state` | `Optional[CompilationState]` |
-| `execution_state` | `Optional[ExecutionState]` |
-| `serialization_settings` | `Optional[SerializationSettings]` |
-| `in_a_condition` | `bool` |
-| `origin_stackframe` | `Optional[traceback.FrameSummary]` |
-| `output_metadata_tracker` | `Optional[OutputMetadataTracker]` |
-| `worker_queue` | `Optional[Controller]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `file_access` | `FileAccessProvider` | |
+| `level` | `int` | |
+| `flyte_client` | `Optional['friendly_client.SynchronousFlyteClient']` | |
+| `compilation_state` | `Optional[CompilationState]` | |
+| `execution_state` | `Optional[ExecutionState]` | |
+| `serialization_settings` | `Optional[SerializationSettings]` | |
+| `in_a_condition` | `bool` | |
+| `origin_stackframe` | `Optional[traceback.FrameSummary]` | |
+| `output_metadata_tracker` | `Optional[OutputMetadataTracker]` | |
+| `worker_queue` | `Optional[Controller]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `user_space_params` | `None` |  |
 
 ### Methods
 
@@ -432,7 +420,7 @@ This method exists only to maintain backwards compatibility. Please use
 ``FlyteContextManager.current_context()`` instead.
 
 Users of flytekit should be wary not to confuse the object returned from this function
-with {{< py_func_ref flytekit.current_context >}}
+with {{&lt; py_func_ref flytekit.current_context &gt;}}
 
 
 #### enter_conditional_section()
@@ -485,9 +473,9 @@ Creates and returns a default compilation state. For most of the code this shoul
 of compilation, otherwise the code should always uses - with_compilation_state
 
 
-| Parameter | Type |
-|-|-|
-| `prefix` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `prefix` | `str` | |
 
 #### new_execution_state()
 
@@ -500,9 +488,9 @@ Creates and returns a new default execution state. This should be used at the en
 in all other cases it is preferable to use with_execution_state
 
 
-| Parameter | Type |
-|-|-|
-| `working_dir` | `Optional[os.PathLike]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `working_dir` | `Optional[os.PathLike]` | |
 
 #### set_stackframe()
 
@@ -511,9 +499,9 @@ def set_stackframe(
     s: traceback.FrameSummary,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `traceback.FrameSummary` |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `traceback.FrameSummary` | |
 
 #### with_client()
 
@@ -522,9 +510,9 @@ def with_client(
     c: SynchronousFlyteClient,
 ) -> Builder
 ```
-| Parameter | Type |
-|-|-|
-| `c` | `SynchronousFlyteClient` |
+| Parameter | Type | Description |
+|-|-|-|
+| `c` | `SynchronousFlyteClient` | |
 
 #### with_compilation_state()
 
@@ -533,9 +521,9 @@ def with_compilation_state(
     c: CompilationState,
 ) -> Builder
 ```
-| Parameter | Type |
-|-|-|
-| `c` | `CompilationState` |
+| Parameter | Type | Description |
+|-|-|-|
+| `c` | `CompilationState` | |
 
 #### with_execution_state()
 
@@ -544,9 +532,9 @@ def with_execution_state(
     es: ExecutionState,
 ) -> Builder
 ```
-| Parameter | Type |
-|-|-|
-| `es` | `ExecutionState` |
+| Parameter | Type | Description |
+|-|-|-|
+| `es` | `ExecutionState` | |
 
 #### with_file_access()
 
@@ -555,9 +543,9 @@ def with_file_access(
     fa: FileAccessProvider,
 ) -> Builder
 ```
-| Parameter | Type |
-|-|-|
-| `fa` | `FileAccessProvider` |
+| Parameter | Type | Description |
+|-|-|-|
+| `fa` | `FileAccessProvider` | |
 
 #### with_new_compilation_state()
 
@@ -571,9 +559,9 @@ def with_output_metadata_tracker(
     t: OutputMetadataTracker,
 ) -> Builder
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `OutputMetadataTracker` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `OutputMetadataTracker` | |
 
 #### with_serialization_settings()
 
@@ -582,9 +570,9 @@ def with_serialization_settings(
     ss: SerializationSettings,
 ) -> Builder
 ```
-| Parameter | Type |
-|-|-|
-| `ss` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ss` | `SerializationSettings` | |
 
 #### with_worker_queue()
 
@@ -593,15 +581,9 @@ def with_worker_queue(
     wq: Controller,
 ) -> Builder
 ```
-| Parameter | Type |
-|-|-|
-| `wq` | `Controller` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `user_space_params` |  |  |
+| `wq` | `Controller` | |
 
 ## flytekit.core.context_manager.FlyteContextManager
 
@@ -645,9 +627,9 @@ def add_signal_handler(
     handler: typing.Callable[[int, FrameType], typing.Any],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `handler` | `typing.Callable[[int, FrameType], typing.Any]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `handler` | `typing.Callable[[int, FrameType], typing.Any]` | |
 
 #### current_context()
 
@@ -661,9 +643,9 @@ def get_origin_stackframe(
     limit,
 ) -> traceback.FrameSummary
 ```
-| Parameter | Type |
-|-|-|
-| `limit` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `limit` |  | |
 
 #### initialize()
 
@@ -686,10 +668,10 @@ def push_context(
     f: Optional[traceback.FrameSummary],
 ) -> FlyteContext
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `f` | `Optional[traceback.FrameSummary]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `f` | `Optional[traceback.FrameSummary]` | |
 
 #### size()
 
@@ -703,9 +685,9 @@ def with_context(
     b: FlyteContext.Builder,
 ) -> Generator[FlyteContext, None, None]
 ```
-| Parameter | Type |
-|-|-|
-| `b` | `FlyteContext.Builder` |
+| Parameter | Type | Description |
+|-|-|-|
+| `b` | `FlyteContext.Builder` | |
 
 ## flytekit.core.context_manager.FlyteEntities
 
@@ -715,6 +697,8 @@ This is a global Object that tracks various tasks and workflows that are declare
 
 ## flytekit.core.context_manager.OutputMetadata
 
+### Parameters
+
 ```python
 class OutputMetadata(
     artifact: 'Artifact',
@@ -723,30 +707,29 @@ class OutputMetadata(
     additional_items: Optional[typing.List[SerializableToString]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `artifact` | `'Artifact'` |
-| `dynamic_partitions` | `Optional[typing.Dict[str, str]]` |
-| `time_partition` | `Optional[datetime]` |
-| `additional_items` | `Optional[typing.List[SerializableToString]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `artifact` | `'Artifact'` | |
+| `dynamic_partitions` | `Optional[typing.Dict[str, str]]` | |
+| `time_partition` | `Optional[datetime]` | |
+| `additional_items` | `Optional[typing.List[SerializableToString]]` | |
 
 ## flytekit.core.context_manager.OutputMetadataTracker
 
 This class is for the users to set arbitrary metadata on output literals.
 
-Attributes:
-    output_metadata Optional[TaskOutputMetadata]: is a sparse dictionary of metadata that the user wants to attach
-        to each output of a task. The key is the output value (object) and the value is an OutputMetadata object.
 
+
+### Parameters
 
 ```python
 class OutputMetadataTracker(
     output_metadata: typing.Dict[typing.Any, OutputMetadata],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `output_metadata` | `typing.Dict[typing.Any, OutputMetadata]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `output_metadata` | `typing.Dict[typing.Any, OutputMetadata]` | |
 
 ### Methods
 
@@ -765,10 +748,10 @@ def add(
     metadata: OutputMetadata,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` | `typing.Any` |
-| `metadata` | `OutputMetadata` |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` | `typing.Any` | |
+| `metadata` | `OutputMetadata` | |
 
 #### get()
 
@@ -777,9 +760,9 @@ def get(
     obj: typing.Any,
 ) -> Optional[OutputMetadata]
 ```
-| Parameter | Type |
-|-|-|
-| `obj` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` | `typing.Any` | |
 
 #### with_params()
 
@@ -791,9 +774,9 @@ def with_params(
 Produces a copy of the current object and set new things
 
 
-| Parameter | Type |
-|-|-|
-| `output_metadata` | `Optional[TaskOutputMetadata]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `output_metadata` | `Optional[TaskOutputMetadata]` | |
 
 ## flytekit.core.context_manager.SecretsManager
 
@@ -802,19 +785,21 @@ The resolution order is
   - Try env var first. The env var should have the configuration.SECRETS_ENV_PREFIX. The env var will be all upper
      cased
   - If not then try the file where the name matches lower case
-    ``configuration.SECRETS_DEFAULT_DIR/<group>/configuration.SECRETS_FILE_PREFIX<key>``
+    ``configuration.SECRETS_DEFAULT_DIR/&lt;group&gt;/configuration.SECRETS_FILE_PREFIX&lt;key&gt;``
 
 All configuration values can always be overridden by injecting an environment variable
 
+
+### Parameters
 
 ```python
 class SecretsManager(
     secrets_cfg: typing.Optional[SecretsConfig],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `secrets_cfg` | `typing.Optional[SecretsConfig]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `secrets_cfg` | `typing.Optional[SecretsConfig]` | |
 
 ### Methods
 
@@ -835,16 +820,16 @@ def get(
     encode_mode: str,
 ) -> str
 ```
-Retrieves a secret using the resolution order -> Env followed by file. If not found raises a ValueError
+Retrieves a secret using the resolution order -&gt; Env followed by file. If not found raises a ValueError
 param encode_mode, defines the mode to open files, it can either be "r" to read file, or "rb" to read binary file
 
 
-| Parameter | Type |
-|-|-|
-| `group` | `Optional[str]` |
-| `key` | `Optional[str]` |
-| `group_version` | `Optional[str]` |
-| `encode_mode` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `group` | `Optional[str]` | |
+| `key` | `Optional[str]` | |
+| `group_version` | `Optional[str]` | |
+| `encode_mode` | `str` | |
 
 #### get_secrets_env_var()
 
@@ -858,11 +843,11 @@ def get_secrets_env_var(
 Returns a string that matches the ENV Variable to look for the secrets
 
 
-| Parameter | Type |
-|-|-|
-| `group` | `Optional[str]` |
-| `key` | `Optional[str]` |
-| `group_version` | `Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `group` | `Optional[str]` | |
+| `key` | `Optional[str]` | |
+| `group_version` | `Optional[str]` | |
 
 #### get_secrets_file()
 
@@ -876,11 +861,11 @@ def get_secrets_file(
 Returns a path that matches the file to look for the secrets
 
 
-| Parameter | Type |
-|-|-|
-| `group` | `Optional[str]` |
-| `key` | `Optional[str]` |
-| `group_version` | `Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `group` | `Optional[str]` | |
+| `key` | `Optional[str]` | |
+| `group_version` | `Optional[str]` | |
 
 ## flytekit.core.context_manager.SerializableToString
 
@@ -889,16 +874,8 @@ and then added to a literal's metadata.
 
 
 ```python
-class SerializableToString(
-    args,
-    kwargs,
-)
+protocol SerializableToString()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 ### Methods
 
 | Method | Description |
@@ -914,8 +891,8 @@ def serialize_to_string(
     variable_name: str,
 ) -> typing.Tuple[str, str]
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `variable_name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `variable_name` | `str` | |
 

@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.identity_aware_proxy.cli
-version: 0.0.0+develop
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -43,11 +43,11 @@ def get_gcp_secret_manager_secret(
 Retrieve secret from GCP secret manager.
 
 
-| Parameter | Type |
-|-|-|
-| `project_id` | `str` |
-| `secret_id` | `str` |
-| `version` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project_id` | `str` | |
+| `secret_id` | `str` | |
+| `version` | `typing.Optional[str]` | |
 
 #### get_service_account_id_token()
 
@@ -72,10 +72,10 @@ See https://google.aip.dev/auth/4110.
 
 
 
-| Parameter | Type |
-|-|-|
-| `audience` | `str` |
-| `service_account_email` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `audience` | `str` | The audience that this ID token is intended for. |
+| `service_account_email` | `str` | The email address of the service account. |
 
 ## flytekitplugins.identity_aware_proxy.cli.GCPIdentityAwareProxyAuthenticator
 
@@ -85,6 +85,8 @@ The auth flow is described in https://cloud.google.com/iap/docs/authentication-h
 
 Automatically opens a browser window for login.
 
+
+### Parameters
 
 ```python
 class GCPIdentityAwareProxyAuthenticator(
@@ -97,12 +99,12 @@ class GCPIdentityAwareProxyAuthenticator(
 Initialize with default creds from KeyStore using the audience name.
 
 
-| Parameter | Type |
-|-|-|
-| `audience` | `str` |
-| `client_id` | `str` |
-| `client_secret` | `str` |
-| `verify` | `typing.Union[bool, str, NoneType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `audience` | `str` | |
+| `client_id` | `str` | |
+| `client_secret` | `str` | |
+| `verify` | `typing.Union[bool, str, NoneType]` | |
 
 ### Methods
 

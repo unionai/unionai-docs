@@ -1,7 +1,7 @@
 ---
 title: flytekit.models.core.identifier
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -22,6 +22,8 @@ layout: py_api
 
 ## flytekit.models.core.identifier.Identifier
 
+### Parameters
+
 ```python
 class Identifier(
     resource_type,
@@ -31,13 +33,24 @@ class Identifier(
     version,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `resource_type` |  |
-| `project` |  |
-| `domain` |  |
-| `name` |  |
-| `version` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `resource_type` |  | |
+| `project` |  | |
+| `domain` |  | |
+| `name` |  | |
+| `version` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `domain` | `None` |  |
+| `is_empty` | `None` |  |
+| `name` | `None` |  |
+| `project` | `None` |  |
+| `resource_type` | `None` | enum value from ResourceType |
+| `version` | `None` |  |
 
 ### Methods
 
@@ -46,9 +59,8 @@ class Identifier(
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`resource_type_name()`](#resource_type_name) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -56,11 +68,13 @@ class Identifier(
 ```python
 def from_flyte_idl(
     p,
-) -> e: Identifier
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
+
+**Returns:** Identifier
 
 #### resource_type_name()
 
@@ -77,43 +91,18 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.identifier_pb2.Identifier
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `domain` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `name` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `project` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `resource_type` |  | {{< multiline >}}enum value from ResourceType
-:rtype: int
-{{< /multiline >}} |
-| `version` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
+**Returns:** flyteidl.core.identifier_pb2.Identifier
 
 ## flytekit.models.core.identifier.NodeExecutionIdentifier
+
+### Parameters
 
 ```python
 class NodeExecutionIdentifier(
@@ -121,10 +110,18 @@ class NodeExecutionIdentifier(
     execution_id,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `node_id` |  |
-| `execution_id` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `node_id` |  | |
+| `execution_id` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `execution_id` | `None` |  |
+| `is_empty` | `None` |  |
+| `node_id` | `None` |  |
 
 ### Methods
 
@@ -132,9 +129,8 @@ class NodeExecutionIdentifier(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -142,11 +138,13 @@ class NodeExecutionIdentifier(
 ```python
 def from_flyte_idl(
     p,
-) -> e: NodeExecutionIdentifier
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
+
+**Returns:** NodeExecutionIdentifier
 
 #### serialize_to_string()
 
@@ -158,38 +156,20 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.identifier_pb2.NodeExecutionIdentifier
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `execution_id` |  | {{< multiline >}}:rtype: WorkflowExecutionIdentifier
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `node_id` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
+**Returns:** flyteidl.core.identifier_pb2.NodeExecutionIdentifier
 
 ## flytekit.models.core.identifier.ResourceType
 
 ## flytekit.models.core.identifier.SignalIdentifier
+
+### Parameters
 
 ```python
 class SignalIdentifier(
@@ -197,10 +177,18 @@ class SignalIdentifier(
     execution_id: flytekit.models.core.identifier.WorkflowExecutionIdentifier,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `signal_id` | `str` |
-| `execution_id` | `flytekit.models.core.identifier.WorkflowExecutionIdentifier` |
+| Parameter | Type | Description |
+|-|-|-|
+| `signal_id` | `str` | User provided name for the gate node. |
+| `execution_id` | `flytekit.models.core.identifier.WorkflowExecutionIdentifier` | The workflow execution id this signal is for. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `execution_id` | `None` |  |
+| `is_empty` | `None` |  |
+| `signal_id` | `None` |  |
 
 ### Methods
 
@@ -208,9 +196,8 @@ class SignalIdentifier(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -220,9 +207,9 @@ def from_flyte_idl(
     proto: flyteidl.core.identifier_pb2.SignalIdentifier,
 ) -> SignalIdentifier
 ```
-| Parameter | Type |
-|-|-|
-| `proto` | `flyteidl.core.identifier_pb2.SignalIdentifier` |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` | `flyteidl.core.identifier_pb2.SignalIdentifier` | |
 
 #### serialize_to_string()
 
@@ -234,31 +221,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `execution_id` |  |  |
-| `is_empty` |  |  |
-| `signal_id` |  |  |
-
 ## flytekit.models.core.identifier.TaskExecutionIdentifier
+
+### Parameters
 
 ```python
 class TaskExecutionIdentifier(
@@ -267,11 +239,20 @@ class TaskExecutionIdentifier(
     retry_attempt,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `task_id` |  |
-| `node_execution_id` |  |
-| `retry_attempt` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_id` |  | |
+| `node_execution_id` |  | |
+| `retry_attempt` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `node_execution_id` | `None` |  |
+| `retry_attempt` | `None` |  |
+| `task_id` | `None` |  |
 
 ### Methods
 
@@ -279,9 +260,8 @@ class TaskExecutionIdentifier(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -289,11 +269,13 @@ class TaskExecutionIdentifier(
 ```python
 def from_flyte_idl(
     proto,
-) -> e: TaskExecutionIdentifier
+)
 ```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` |  | |
+
+**Returns:** TaskExecutionIdentifier
 
 #### serialize_to_string()
 
@@ -305,38 +287,18 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.identifier_pb2.TaskExecutionIdentifier
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `node_execution_id` |  | {{< multiline >}}:rtype: NodeExecutionIdentifier
-{{< /multiline >}} |
-| `retry_attempt` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `task_id` |  | {{< multiline >}}:rtype: Identifier
-{{< /multiline >}} |
+**Returns:** flyteidl.core.identifier_pb2.TaskExecutionIdentifier
 
 ## flytekit.models.core.identifier.WorkflowExecutionIdentifier
+
+### Parameters
 
 ```python
 class WorkflowExecutionIdentifier(
@@ -345,11 +307,20 @@ class WorkflowExecutionIdentifier(
     name,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project` |  |
-| `domain` |  |
-| `name` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` |  | |
+| `domain` |  | |
+| `name` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `domain` | `None` |  |
+| `is_empty` | `None` |  |
+| `name` | `None` |  |
+| `project` | `None` |  |
 
 ### Methods
 
@@ -357,9 +328,8 @@ class WorkflowExecutionIdentifier(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -367,11 +337,13 @@ class WorkflowExecutionIdentifier(
 ```python
 def from_flyte_idl(
     p,
-) -> e: WorkflowExecutionIdentifier
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
+
+**Returns:** WorkflowExecutionIdentifier
 
 #### serialize_to_string()
 
@@ -383,34 +355,12 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.identifier_pb2.WorkflowExecutionIdentifier
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `domain` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `name` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `project` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
+**Returns:** flyteidl.core.identifier_pb2.WorkflowExecutionIdentifier
 

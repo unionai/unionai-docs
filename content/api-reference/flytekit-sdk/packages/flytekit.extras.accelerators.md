@@ -1,12 +1,11 @@
 ---
 title: flytekit.extras.accelerators
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
 # flytekit.extras.accelerators
-
 
 ## Specifying Accelerators
 
@@ -67,8 +66,6 @@ from flytekit.extras.accelerators import A100
 def my_task() -> None:
     ...
 ```
-
-
 ## Directory
 
 ### Classes
@@ -86,13 +83,17 @@ def my_task() -> None:
 | `A100` | `_A100` |  |
 | `A100_80GB` | `_A100_80GB` |  |
 | `A10G` | `GPUAccelerator` |  |
+| `H100` | `GPUAccelerator` |  |
+| `H200` | `GPUAccelerator` |  |
 | `K80` | `GPUAccelerator` |  |
 | `L4` | `GPUAccelerator` |  |
+| `L40S` | `GPUAccelerator` |  |
 | `L4_VWS` | `GPUAccelerator` |  |
 | `M60` | `GPUAccelerator` |  |
 | `MIG` | `TypeVar` |  |
 | `P100` | `GPUAccelerator` |  |
 | `P4` | `GPUAccelerator` |  |
+| `RTX_PRO_6000` | `GPUAccelerator` |  |
 | `T` | `TypeVar` |  |
 | `T4` | `GPUAccelerator` |  |
 | `V100` | `GPUAccelerator` |  |
@@ -124,14 +125,16 @@ it is recommended to use one of the pre-defined constants below, as name has to 
 configured on the cluster.
 
 
+### Parameters
+
 ```python
 class GPUAccelerator(
     device: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `device` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `device` | `str` | |
 
 ### Methods
 
@@ -152,6 +155,12 @@ below, as name has to match the name of the device configured on the cluster.
 For example, to specify a 10GB partition of an A100 GPU, use ``A100.partition_2g_10gb``.
 
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `unpartitioned` | `None` |  |
+
 ### Methods
 
 | Method | Description |
@@ -167,18 +176,12 @@ def partitioned(
     partition_size: str,
 ) -> ~MIG
 ```
-| Parameter | Type |
-|-|-|
-| `partition_size` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `partition_size` | `str` | |
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `unpartitioned` |  |  |
-

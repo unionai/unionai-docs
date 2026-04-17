@@ -1,18 +1,11 @@
 ---
 title: Local setup
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Local setup
 
-{{< variant serverless >}}
-{{< markdown >}}
-
-In [Getting started](./_index) we showed you how to run your first workflow right in the {{< key product_name >}} interface, in the browser.
-
-{{< /markdown >}}
-{{< /variant >}}
 
 In this section we will set up your local environment so that you can start building and deploying {{< key product_name >}} workflows from your local machine.
 
@@ -156,7 +149,7 @@ To install `flytectl` on Windows, use `curl` , or download the binary manually.
 
 **curl**
 
-To use `curl`, in a Linux shell (such as [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)), set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
+To use `curl`, in a Linux shell (such as [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)), set `BINDIR` to the install location (it defaults to `./bin`) and run the following command(note that [jq](https://jqlang.org/) needs to be installed to run this script):
 
 ```shell
 $ curl -sL https://ctl.flyte.org/install | sudo bash -s -- -b /usr/local/bin
@@ -189,15 +182,9 @@ that contains the connection information to connect `pyflyte` (and `flytectl`) t
 The local Flyte cluster will be available at `localhost:30080`.
 
 > [!NOTE] Try Flyte technology through {{< key product_name >}} Serverless
-> Alternatively, you can try using Flyte technology through {{< key product_name >}} Serverless.
-> With {{< key product_name >}} Serverless you do not need to install a local cluster and can start
-> experimenting immediately on a full cloud deployment.
-> You can even use the Workspaces in-browser IDE to quickly iterate on code.
-> See [{{< key product_name >}} Serverless > Getting started]({{< docs_home serverless v1 >}}/user-guide/getting-started) for more details.
-
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged serverless >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ## Configure the connection to your cluster
@@ -206,24 +193,7 @@ Next, you need to create a configuration file that contains your {{< key product
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant serverless >}}
-{{< markdown >}}
-
-```shell
-$ {{< key cli >}} create login --serverless
-```
-
-This will create the `~/.union/config.yaml` with the configuration information to connect to {{< key product_name >}} Serverless.
-
-> [!NOTE] These directions apply to {{< key product_name >}} Serverless
-> To configure a connection to your {{< key product_name >}} instance in {{< key product_name >}} BYOC, see the
-> [BYOC version of this page]({{< docs_home byoc v1 >}}/user-guide/getting-started/local-setup#configure-the-connection-to-your-cluster).
-> To configure a connection to your {{< key product_name >}} instance in {{< key product_name >}} Self-managed, see the
-> [Self-managed version of this page]({{< docs_home selfmanaged v1 >}}/user-guide/getting-started/local-setup#configure-the-connection-to-your-cluster).
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ```shell
@@ -236,15 +206,13 @@ This will create the `~/.union/config.yaml` with the configuration information t
 
 > [!NOTE]
 > These directions apply to {{< key product_name >}} BYOC and Self-managed, where you connect to your own dedicated {{< key product_name >}} instance.
-> To configure a connection to {{< key product_name >}} Serverless, see the
-> [Serverless version of this page]({{< docs_home serverless v1 >}}/user-guide/getting-started/local-setup#configure-the-connection-to-your-cluster).
 
 See [Running in a local cluster](../development-cycle/running-in-a-local-cluster) for more details on the format of the `yaml` file.
 <!-- TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content -->
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant serverless byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 By default, the {{< key cli_name >}} CLI will look for a configuration file at `~/.union/config.yaml`. (See [{{< key cli_name >}} CLI](../../api-reference/union-cli) for more details.)
@@ -312,7 +280,7 @@ $ {{< key cli >}} info
 
 You should get a response like this:
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ```shell
@@ -330,25 +298,6 @@ $ {{< key cli >}} info
 ```
 
 For more details on connection configuration see [Authentication](../development-cycle/authentication).
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant serverless >}}
-{{< markdown >}}
-
-```shell
-$ {{< key cli >}} info
-╭────────────────────────────────────────────────────────── {{< key product_name >}} CLI Info ─────────────────────────────────────────────────────────────╮
-│                                                                                                                                       │
-│ {{< key cli >}} is the CLI to interact with {{< key product_name >}}. Use the CLI to register, create and track task and workflow executions locally and remotely. │
-│                                                                                                                                       │
-│ {{< key product_name >}} Version    : 0.1.132                                                                                                            │
-│ Flytekit Version : 1.14.3                                                                                                             │
-│ {{< key product_name >}} Endpoint   : serverless-1.us-east-2.s.union.ai                                                                                  │
-│ Config Source    : <path-to-config> file                                                                                              │
-│                                                                                                                                       │
-╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-```
 
 {{< /markdown >}}
 {{< /variant >}}

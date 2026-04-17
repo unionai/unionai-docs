@@ -1,0 +1,15 @@
+{
+  "packages": {
+    "flytekitplugins.huggingface": "/api-reference/plugins/huggingface/packages/flytekitplugins.huggingface/",
+    "flytekitplugins.huggingface.sd_transformers": "/api-reference/plugins/huggingface/packages/flytekitplugins.huggingface.sd_transformers/"
+  },
+  "identifiers": {
+    "flytekitplugins.huggingface.sd_transformers.HuggingFaceDatasetRenderer": "/api-reference/plugins/huggingface/packages/flytekitplugins.huggingface.sd_transformers/#flytekitpluginshuggingfacesd_transformershuggingfacedatasetrenderer",
+    "HuggingFaceDatasetRenderer": "/api-reference/plugins/huggingface/packages/flytekitplugins.huggingface.sd_transformers/#flytekitpluginshuggingfacesd_transformershuggingfacedatasetrenderer",
+    "flytekitplugins.huggingface.sd_transformers.HuggingFaceDatasetToParquetEncodingHandler": "/api-reference/plugins/huggingface/packages/flytekitplugins.huggingface.sd_transformers/#flytekitpluginshuggingfacesd_transformershuggingfacedatasettoparquetencodinghandler",
+    "HuggingFaceDatasetToParquetEncodingHandler": "/api-reference/plugins/huggingface/packages/flytekitplugins.huggingface.sd_transformers/#flytekitpluginshuggingfacesd_transformershuggingfacedatasettoparquetencodinghandler",
+    "flytekitplugins.huggingface.sd_transformers.ParquetToHuggingFaceDatasetDecodingHandler": "/api-reference/plugins/huggingface/packages/flytekitplugins.huggingface.sd_transformers/#flytekitpluginshuggingfacesd_transformersparquettohuggingfacedatasetdecodinghandler",
+    "ParquetToHuggingFaceDatasetDecodingHandler": "/api-reference/plugins/huggingface/packages/flytekitplugins.huggingface.sd_transformers/#flytekitpluginshuggingfacesd_transformersparquettohuggingfacedatasetdecodinghandler"
+  },
+  "methods": {}
+}

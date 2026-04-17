@@ -1,6 +1,6 @@
 ---
 title: uctl create policy
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl create policy

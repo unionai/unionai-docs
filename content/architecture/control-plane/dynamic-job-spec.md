@@ -1,7 +1,7 @@
 ---
 title: Dynamic Job Spec
 weight: 5
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # Dynamic Job Spec

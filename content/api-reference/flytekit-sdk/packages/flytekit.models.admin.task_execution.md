@@ -1,7 +1,7 @@
 ---
 title: flytekit.models.admin.task_execution
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -18,6 +18,8 @@ layout: py_api
 
 ## flytekit.models.admin.task_execution.TaskExecution
 
+### Parameters
+
 ```python
 class TaskExecution(
     id,
@@ -26,12 +28,22 @@ class TaskExecution(
     is_parent,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `input_uri` |  |
-| `closure` |  |
-| `is_parent` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `input_uri` |  | |
+| `closure` |  | |
+| `is_parent` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `closure` | `None` |  |
+| `id` | `None` |  |
+| `input_uri` | `None` |  |
+| `is_empty` | `None` |  |
+| `is_parent` | `None` |  |
 
 ### Methods
 
@@ -39,9 +51,8 @@ class TaskExecution(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -49,11 +60,13 @@ class TaskExecution(
 ```python
 def from_flyte_idl(
     proto,
-) -> e: TaskExecution
+)
 ```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` |  | |
+
+**Returns:** TaskExecution
 
 #### serialize_to_string()
 
@@ -65,40 +78,18 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.task_execution_pb2.TaskExecution
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `closure` |  | {{< multiline >}}:rtype: TaskExecutionClosure
-{{< /multiline >}} |
-| `id` |  | {{< multiline >}}:rtype: flytekit.models.core.identifier.TaskExecutionIdentifier
-{{< /multiline >}} |
-| `input_uri` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `is_parent` |  | {{< multiline >}}:rtype: bool
-{{< /multiline >}} |
+**Returns:** flyteidl.admin.task_execution_pb2.TaskExecution
 
 ## flytekit.models.admin.task_execution.TaskExecutionClosure
+
+### Parameters
 
 ```python
 class TaskExecutionClosure(
@@ -113,17 +104,32 @@ class TaskExecutionClosure(
     metadata,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `phase` |  |
-| `logs` |  |
-| `started_at` |  |
-| `duration` |  |
-| `created_at` |  |
-| `updated_at` |  |
-| `output_uri` |  |
-| `error` |  |
-| `metadata` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `phase` |  | |
+| `logs` |  | |
+| `started_at` |  | |
+| `duration` |  | |
+| `created_at` |  | |
+| `updated_at` |  | |
+| `output_uri` |  | |
+| `error` |  | |
+| `metadata` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `created_at` | `None` |  |
+| `duration` | `None` |  |
+| `error` | `None` |  |
+| `is_empty` | `None` |  |
+| `logs` | `None` |  |
+| `metadata` | `None` |  |
+| `output_uri` | `None` |  |
+| `phase` | `None` | Enum value from flytekit.models.core.execution.TaskExecutionPhase |
+| `started_at` | `None` |  |
+| `updated_at` | `None` |  |
 
 ### Methods
 
@@ -131,9 +137,8 @@ class TaskExecutionClosure(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -141,11 +146,13 @@ class TaskExecutionClosure(
 ```python
 def from_flyte_idl(
     p,
-) -> e: TaskExecutionClosure
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
+
+**Returns:** TaskExecutionClosure
 
 #### serialize_to_string()
 
@@ -157,47 +164,12 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.task_execution_pb2.TaskExecutionClosure
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `created_at` |  | {{< multiline >}}:rtype: datetime.datetime
-{{< /multiline >}} |
-| `duration` |  | {{< multiline >}}:rtype: datetime.timedelta
-{{< /multiline >}} |
-| `error` |  | {{< multiline >}}:rtype: flytekit.models.core.execution.ExecutionError
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `logs` |  | {{< multiline >}}:rtype: list[flytekit.models.core.execution.TaskLog]
-{{< /multiline >}} |
-| `metadata` |  | {{< multiline >}}:rtype: flytekit.models.event.TaskExecutionMetadata
-{{< /multiline >}} |
-| `output_uri` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `phase` |  | {{< multiline >}}Enum value from flytekit.models.core.execution.TaskExecutionPhase
-:rtype: flytekit.models.core.execution.TaskExecutionPhase
-{{< /multiline >}} |
-| `started_at` |  | {{< multiline >}}:rtype: datetime.datetime
-{{< /multiline >}} |
-| `updated_at` |  | {{< multiline >}}:rtype: datetime.datetime
-{{< /multiline >}} |
+**Returns:** flyteidl.admin.task_execution_pb2.TaskExecutionClosure
 

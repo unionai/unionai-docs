@@ -1,7 +1,7 @@
 ---
 title: Reddit Slack Bot
 weight: 2
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 layout: py_example
-example_file: /external/unionai-examples/v1/tutorials/reddit_slack_bot/reddit_slack_bot.py
+example_file: /unionai-examples/v1/tutorials/reddit_slack_bot/reddit_slack_bot.py
 ---

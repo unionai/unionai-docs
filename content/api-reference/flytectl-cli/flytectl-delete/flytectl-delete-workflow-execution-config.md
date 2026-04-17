@@ -1,6 +1,6 @@
 ---
 title: flytectl delete workflow-execution-config
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl delete workflow-execution-config

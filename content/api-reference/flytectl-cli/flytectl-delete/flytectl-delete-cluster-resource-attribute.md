@@ -1,6 +1,6 @@
 ---
 title: flytectl delete cluster-resource-attribute
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl delete cluster-resource-attribute

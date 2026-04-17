@@ -1,7 +1,7 @@
 ---
 title: union.cache
-version: 0.1.191
-variants: +byoc +selfmanaged +serverless -flyte
+version: 0.1.202
+variants: -flyte +union
 layout: py_api
 ---
 
@@ -41,8 +41,10 @@ combined with a salt.
 
 
 
-| Parameter | Type |
-|-|-|
-| `salt` | `str` |
-| `params` | `flytekit.core.cache.VersionParameters` |
+| Parameter | Type | Description |
+|-|-|-|
+| `salt` | `str` | A string that is used to salt the hash. |
+| `params` | `flytekit.core.cache.VersionParameters` | VersionParameters object that contains the parameters (e.g. function, ImageSpec, etc.) that are used to generate the version. |
+
+**Returns:** A string that represents the version of the function.
 

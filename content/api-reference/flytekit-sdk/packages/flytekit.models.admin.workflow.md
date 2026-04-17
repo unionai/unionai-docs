@@ -1,7 +1,7 @@
 ---
 title: flytekit.models.admin.workflow
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -19,16 +19,29 @@ layout: py_api
 
 ## flytekit.models.admin.workflow.Workflow
 
+### Parameters
+
 ```python
 class Workflow(
     id,
     closure,
+    short_description,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `closure` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `closure` |  | |
+| `short_description` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `closure` | `None` |  |
+| `id` | `None` |  |
+| `is_empty` | `None` |  |
+| `short_description` | `None` |  |
 
 ### Methods
 
@@ -36,9 +49,8 @@ class Workflow(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -46,11 +58,13 @@ class Workflow(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> n: Workflow
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
+
+**Returns:** Workflow
 
 #### serialize_to_string()
 
@@ -62,45 +76,34 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.workflow_pb2.Workflow
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `closure` |  | {{< multiline >}}:rtype: WorkflowClosure
-{{< /multiline >}} |
-| `id` |  | {{< multiline >}}:rtype: flytekit.models.core.identifier.Identifier
-{{< /multiline >}} |
-| `is_empty` |  |  |
+**Returns:** flyteidl.admin.workflow_pb2.Workflow
 
 ## flytekit.models.admin.workflow.WorkflowClosure
+
+### Parameters
 
 ```python
 class WorkflowClosure(
     compiled_workflow,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `compiled_workflow` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `compiled_workflow` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `compiled_workflow` | `None` |  |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -108,9 +111,8 @@ class WorkflowClosure(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -118,11 +120,13 @@ class WorkflowClosure(
 ```python
 def from_flyte_idl(
     p,
-) -> e: WorkflowClosure
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
+
+**Returns:** WorkflowClosure
 
 #### serialize_to_string()
 
@@ -134,34 +138,18 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.workflow_pb2.WorkflowClosure
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `compiled_workflow` |  | {{< multiline >}}:rtype: flytekit.models.core.compiler.CompiledWorkflowClosure
-{{< /multiline >}} |
-| `is_empty` |  |  |
+**Returns:** flyteidl.admin.workflow_pb2.WorkflowClosure
 
 ## flytekit.models.admin.workflow.WorkflowSpec
+
+### Parameters
 
 ```python
 class WorkflowSpec(
@@ -173,11 +161,20 @@ class WorkflowSpec(
 This object fully encapsulates the specification of a workflow
 
 
-| Parameter | Type |
-|-|-|
-| `template` | `flytekit.models.core.workflow.WorkflowTemplate` |
-| `sub_workflows` | `typing.List[flytekit.models.core.workflow.WorkflowTemplate]` |
-| `docs` | `typing.Optional[flytekit.models.documentation.Documentation]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `template` | `flytekit.models.core.workflow.WorkflowTemplate` | |
+| `sub_workflows` | `typing.List[flytekit.models.core.workflow.WorkflowTemplate]` | |
+| `docs` | `typing.Optional[flytekit.models.documentation.Documentation]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `docs` | `None` |  |
+| `is_empty` | `None` |  |
+| `sub_workflows` | `None` |  |
+| `template` | `None` |  |
 
 ### Methods
 
@@ -185,9 +182,8 @@ This object fully encapsulates the specification of a workflow
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -195,11 +191,13 @@ This object fully encapsulates the specification of a workflow
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: WorkflowSpec
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | flyteidl.admin.workflow_pb2.WorkflowSpec |
+
+**Returns:** WorkflowSpec
 
 #### serialize_to_string()
 
@@ -211,34 +209,12 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.workflow_pb2.WorkflowSpec
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `docs` |  | {{< multiline >}}:rtype: Description entity for the workflow
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `sub_workflows` |  | {{< multiline >}}:rtype: list[flytekit.models.core.workflow.WorkflowTemplate]
-{{< /multiline >}} |
-| `template` |  | {{< multiline >}}:rtype: flytekit.models.core.workflow.WorkflowTemplate
-{{< /multiline >}} |
+**Returns:** flyteidl.admin.workflow_pb2.WorkflowSpec
 

@@ -1,6 +1,6 @@
 ---
 title: uctl update execution-cluster-label
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl update execution-cluster-label

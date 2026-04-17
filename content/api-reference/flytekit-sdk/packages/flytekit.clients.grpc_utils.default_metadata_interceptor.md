@@ -1,7 +1,7 @@
 ---
 title: flytekit.clients.grpc_utils.default_metadata_interceptor
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -13,12 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`DefaultMetadataInterceptor`](.././flytekit.clients.grpc_utils.default_metadata_interceptor#flytekitclientsgrpc_utilsdefault_metadata_interceptordefaultmetadatainterceptor) | Affords intercepting unary-unary invocations. |
+| [`DefaultMetadataInterceptor`](.././flytekit.clients.grpc_utils.default_metadata_interceptor#flytekitclientsgrpc_utilsdefault_metadata_interceptordefaultmetadatainterceptor) |  |
 
 ## flytekit.clients.grpc_utils.default_metadata_interceptor.DefaultMetadataInterceptor
-
-Affords intercepting unary-unary invocations.
-
 
 ### Methods
 
@@ -40,11 +37,11 @@ def intercept_unary_stream(
 Handles a stream call and inject default metadata
 
 
-| Parameter | Type |
-|-|-|
-| `continuation` | `typing.Callable` |
-| `client_call_details` | `grpc.ClientCallDetails` |
-| `request` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `continuation` | `typing.Callable` | |
+| `client_call_details` | `grpc.ClientCallDetails` | |
+| `request` | `typing.Any` | |
 
 #### intercept_unary_unary()
 
@@ -58,9 +55,9 @@ def intercept_unary_unary(
 Intercepts unary calls and inject default metadata
 
 
-| Parameter | Type |
-|-|-|
-| `continuation` | `typing.Callable` |
-| `client_call_details` | `grpc.ClientCallDetails` |
-| `request` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `continuation` | `typing.Callable` | |
+| `client_call_details` | `grpc.ClientCallDetails` | |
+| `request` | `typing.Any` | |
 

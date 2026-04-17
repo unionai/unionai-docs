@@ -1,7 +1,7 @@
 ---
 title: Authentication
 weight: 1
-variants: -flyte -serverless +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Authentication
@@ -112,7 +112,7 @@ By default, the {{< key cli_name >}} CLI looks for configuration files in `~/.{{
 
 ## Troubleshooting Authentication Issues
 
-{{< variant byoc selfmanaged serverless >}}
+{{< variant union >}}
 {{< markdown >}}
 - Old configuration files causing conflicts? Remove the deprecated directory from `~/.unionai/`.
 {{< /markdown >}}

@@ -1,7 +1,7 @@
 ---
 title: EDA and feature engineering in Jupyter notebook and modeling in a Flyte task
 weight: 1
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 layout: py_example
-example_file: /external/unionai-examples/v1/flyte-tutorials/exploratory_data_analysis/exploratory_data_analysis/notebook_and_task.py
+example_file: /unionai-examples/v1/flyte-tutorials/exploratory_data_analysis/exploratory_data_analysis/notebook_and_task.py
 ---

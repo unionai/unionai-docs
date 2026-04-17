@@ -1,11 +1,14 @@
 ---
 title: Core concepts
 weight: 4
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: true
+llm_readable_bundle: true
 ---
 
 # Core concepts
+
+{{< llm-bundle-note >}}
 
 {{< key product_name >}} is a platform for building and orchestrating the execution of interconnected software processes across machines in a computer cluster.
 In {{< key product_name >}} terminology, the software processes are called *tasks* and the overall organization of connections between tasks is called a *workflow*.

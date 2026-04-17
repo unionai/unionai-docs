@@ -1,6 +1,6 @@
 ---
 title: flytectl get task-resource-attribute
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl get task-resource-attribute

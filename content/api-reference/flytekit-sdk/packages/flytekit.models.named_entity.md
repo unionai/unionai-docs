@@ -1,7 +1,7 @@
 ---
 title: flytekit.models.named_entity
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -19,6 +19,8 @@ layout: py_api
 
 ## flytekit.models.named_entity.NamedEntityIdentifier
 
+### Parameters
+
 ```python
 class NamedEntityIdentifier(
     project,
@@ -26,11 +28,20 @@ class NamedEntityIdentifier(
     name,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project` |  |
-| `domain` |  |
-| `name` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` |  | |
+| `domain` |  | |
+| `name` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `domain` | `None` |  |
+| `is_empty` | `None` |  |
+| `name` | `None` |  |
+| `project` | `None` |  |
 
 ### Methods
 
@@ -38,9 +49,8 @@ class NamedEntityIdentifier(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -48,11 +58,13 @@ class NamedEntityIdentifier(
 ```python
 def from_flyte_idl(
     p,
-) -> e: Identifier
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
+
+**Returns:** Identifier
 
 #### serialize_to_string()
 
@@ -64,38 +76,18 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.common_pb2.NamedEntityIdentifier
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `domain` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `name` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `project` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
+**Returns:** flyteidl.admin.common_pb2.NamedEntityIdentifier
 
 ## flytekit.models.named_entity.NamedEntityMetadata
+
+### Parameters
 
 ```python
 class NamedEntityMetadata(
@@ -103,10 +95,18 @@ class NamedEntityMetadata(
     state,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `description` |  |
-| `state` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `description` |  | |
+| `state` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `description` | `None` |  |
+| `is_empty` | `None` |  |
+| `state` | `None` | enum value from NamedEntityState |
 
 ### Methods
 
@@ -114,9 +114,8 @@ class NamedEntityMetadata(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -124,11 +123,13 @@ class NamedEntityMetadata(
 ```python
 def from_flyte_idl(
     p,
-) -> e: Identifier
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
+
+**Returns:** Identifier
 
 #### serialize_to_string()
 
@@ -140,35 +141,14 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.common_pb2.NamedEntityMetadata
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `description` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `state` |  | {{< multiline >}}enum value from NamedEntityState
-:rtype: int
-{{< /multiline >}} |
+**Returns:** flyteidl.admin.common_pb2.NamedEntityMetadata
 
 ## flytekit.models.named_entity.NamedEntityState
 
@@ -184,9 +164,11 @@ def verbose_string()
 ```python
 def enum_to_string(
     val,
-) -> e: Text
+)
 ```
-| Parameter | Type |
-|-|-|
-| `val` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `val` |  | |
+
+**Returns:** Text
 

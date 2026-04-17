@@ -1,7 +1,7 @@
 ---
 title: Packages
-version: 0.0.0+develop
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -9,6 +9,6 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.mmcloud.agent`](flytekitplugins.mmcloud.agent) |  |
+| [`flytekitplugins.mmcloud.connector`](flytekitplugins.mmcloud.connector) |  |
 | [`flytekitplugins.mmcloud.task`](flytekitplugins.mmcloud.task) |  |
 | [`flytekitplugins.mmcloud.utils`](flytekitplugins.mmcloud.utils) |  |

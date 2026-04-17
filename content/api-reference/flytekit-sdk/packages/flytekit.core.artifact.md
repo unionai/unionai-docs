@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.artifact
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -16,13 +16,18 @@ layout: py_api
 | [`Artifact`](.././flytekit.core.artifact#flytekitcoreartifactartifact) | An Artifact is effectively just a metadata layer on top of data that exists in Flyte. |
 | [`ArtifactIDSpecification`](.././flytekit.core.artifact#flytekitcoreartifactartifactidspecification) | This is a special object that helps specify how Artifacts are to be created. |
 | [`ArtifactQuery`](.././flytekit.core.artifact#flytekitcoreartifactartifactquery) |  |
-| [`ArtifactSerializationHandler`](.././flytekit.core.artifact#flytekitcoreartifactartifactserializationhandler) | This protocol defines the interface for serializing artifact-related entities down to Flyte IDL. |
-| [`DefaultArtifactSerializationHandler`](.././flytekit.core.artifact#flytekitcoreartifactdefaultartifactserializationhandler) | This protocol defines the interface for serializing artifact-related entities down to Flyte IDL. |
+| [`DefaultArtifactSerializationHandler`](.././flytekit.core.artifact#flytekitcoreartifactdefaultartifactserializationhandler) |  |
 | [`InputsBase`](.././flytekit.core.artifact#flytekitcoreartifactinputsbase) | A class to provide better partition semantics. |
 | [`Partition`](.././flytekit.core.artifact#flytekitcoreartifactpartition) |  |
 | [`Partitions`](.././flytekit.core.artifact#flytekitcoreartifactpartitions) |  |
 | [`Serializer`](.././flytekit.core.artifact#flytekitcoreartifactserializer) |  |
 | [`TimePartition`](.././flytekit.core.artifact#flytekitcoreartifacttimepartition) |  |
+
+### Protocols
+
+| Protocol | Description |
+|-|-|
+| [`ArtifactSerializationHandler`](.././flytekit.core.artifact#flytekitcoreartifactartifactserializationhandler) | This protocol defines the interface for serializing artifact-related entities down to Flyte IDL. |
 
 ### Variables
 
@@ -44,9 +49,11 @@ and the manner (i.e. name, partitions) in which they are created.
 Control creation parameters at task/workflow execution time ::
 
     @task
-    def t1() -> Annotated[nn.Module, Artifact(name="my.artifact.name")]:
+    def t1() -&gt; Annotated[nn.Module, Artifact(name="my.artifact.name")]:
         ...
 
+
+### Parameters
 
 ```python
 class Artifact(
@@ -61,17 +68,25 @@ class Artifact(
     partitions: Optional[Union[Partitions, typing.Dict[str, str]]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project` | `Optional[str]` |
-| `domain` | `Optional[str]` |
-| `name` | `Optional[str]` |
-| `version` | `Optional[str]` |
-| `time_partitioned` | `bool` |
-| `time_partition` | `Optional[TimePartition]` |
-| `time_partition_granularity` | `Optional[Granularity]` |
-| `partition_keys` | `Optional[typing.List[str]]` |
-| `partitions` | `Optional[Union[Partitions, typing.Dict[str, str]]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `Optional[str]` | Should not be directly user provided, the project/domain will come from the project/domain of the execution that produced the output. These values will be filled in automatically when retrieving however. |
+| `domain` | `Optional[str]` | See above. |
+| `name` | `Optional[str]` | The name of the Artifact. This should be user provided. |
+| `version` | `Optional[str]` | Version of the Artifact, typically the execution ID, plus some additional entropy. Not user provided. |
+| `time_partitioned` | `bool` | Whether or not this Artifact will have a time partition. |
+| `time_partition` | `Optional[TimePartition]` | If you want to manually pass in the full TimePartition object |
+| `time_partition_granularity` | `Optional[Granularity]` | If you don't want to manually pass in the full TimePartition object, but want to control the granularity when one is automatically created for you. Note that consistency checking is limited while in alpha. |
+| `partition_keys` | `Optional[typing.List[str]]` | This is a list of keys that will be used to partition the Artifact. These are not the values. Values are set via a () on the artifact and will end up in the partition_values field. |
+| `partitions` | `Optional[Union[Partitions, typing.Dict[str, str]]]` | This is a dictionary of partition keys to values. |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `concrete_artifact_id` | `None` |  |
+| `partitions` | `None` |  |
+| `time_partition` | `None` |  |
 
 ### Methods
 
@@ -89,7 +104,7 @@ class Artifact(
 def create_from(
     o: O,
     card: Optional[SerializableToString],
-    args: `*args`,
+    args: *args,
     kwargs,
 ) -> O
 ```
@@ -103,7 +118,7 @@ done so.
     EstError = Artifact(name="estimation_error", partition_keys=["dataset"], time_partitioned=True)
 
     @task
-    def t1() -> Annotated[pd.DataFrame, Pricing], Annotated[float, EstError]:
+    def t1() -&gt; Annotated[pd.DataFrame, Pricing], Annotated[float, EstError]:
         df = get_pricing_results()
         dt = get_time()
         return Pricing.create_from(df, region="dubai"),             EstError.create_from(msq_error, dataset="train", time_partition=dt)
@@ -111,17 +126,17 @@ done so.
 You can mix and match with the input syntax as well.
 
     @task
-    def my_task() -> Annotated[pd.DataFrame, RideCountData(region=Inputs.region)]:
+    def my_task() -&gt; Annotated[pd.DataFrame, RideCountData(region=Inputs.region)]:
         ...
         return RideCountData.create_from(df, time_partition=datetime.datetime.now())
 
 
-| Parameter | Type |
-|-|-|
-| `o` | `O` |
-| `card` | `Optional[SerializableToString]` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `o` | `O` | |
+| `card` | `Optional[SerializableToString]` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### embed_as_query()
 
@@ -137,12 +152,12 @@ This should only be called in the context of a Trigger. The type of query this r
 query() function. This type of query is used to reference the triggering artifact, rather than running a query.
 
 
-| Parameter | Type |
-|-|-|
-| `partition` | `Optional[str]` |
-| `bind_to_time_partition` | `Optional[bool]` |
-| `expr` | `Optional[str]` |
-| `op` | `Optional[Op]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `partition` | `Optional[str]` | Can embed a time partition |
+| `bind_to_time_partition` | `Optional[bool]` | Set to true if you want to bind to a time partition |
+| `expr` | `Optional[str]` | Only valid if there's a time partition. |
+| `op` | `Optional[Op]` | If expr is given, then op is what to do with it. |
 
 #### query()
 
@@ -155,13 +170,13 @@ def query(
     kwargs,
 ) -> ArtifactQuery
 ```
-| Parameter | Type |
-|-|-|
-| `project` | `Optional[str]` |
-| `domain` | `Optional[str]` |
-| `time_partition` | `Optional[Union[datetime.datetime, TimePartition, art_id.InputBindingData]]` |
-| `partitions` | `Optional[Union[typing.Dict[str, str], Partitions]]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `Optional[str]` | |
+| `domain` | `Optional[str]` | |
+| `time_partition` | `Optional[Union[datetime.datetime, TimePartition, art_id.InputBindingData]]` | |
+| `partitions` | `Optional[Union[typing.Dict[str, str], Partitions]]` | |
+| `kwargs` | `**kwargs` | |
 
 #### to_id_idl()
 
@@ -173,14 +188,6 @@ This is here instead of translator because it's in the interface, a relatively s
 that's exposed to the user.
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `concrete_artifact_id` |  |  |
-| `partitions` |  |  |
-| `time_partition` |  |  |
-
 ## flytekit.core.artifact.ArtifactIDSpecification
 
 This is a special object that helps specify how Artifacts are to be created. See the comment in the
@@ -190,14 +197,16 @@ doesn't make sense to carry the full Artifact object around. This object should 
 having a pointer to the main artifact.
 
 
+### Parameters
+
 ```python
 class ArtifactIDSpecification(
     a: Artifact,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `a` | `Artifact` |
+| Parameter | Type | Description |
+|-|-|-|
+| `a` | `Artifact` | |
 
 ### Methods
 
@@ -215,10 +224,10 @@ def bind_partitions(
     kwargs,
 ) -> ArtifactIDSpecification
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### to_partial_artifact_id()
 
@@ -226,6 +235,8 @@ def bind_partitions(
 def to_partial_artifact_id()
 ```
 ## flytekit.core.artifact.ArtifactQuery
+
+### Parameters
 
 ```python
 class ArtifactQuery(
@@ -238,15 +249,21 @@ class ArtifactQuery(
     tag: Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `artifact` | `Artifact` |
-| `name` | `str` |
-| `project` | `Optional[str]` |
-| `domain` | `Optional[str]` |
-| `time_partition` | `Optional[TimePartition]` |
-| `partitions` | `Optional[Partitions]` |
-| `tag` | `Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `artifact` | `Artifact` | |
+| `name` | `str` | |
+| `project` | `Optional[str]` | |
+| `domain` | `Optional[str]` | |
+| `time_partition` | `Optional[TimePartition]` | |
+| `partitions` | `Optional[Partitions]` | |
+| `tag` | `Optional[str]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `bound` | `None` |  |
 
 ### Methods
 
@@ -265,9 +282,9 @@ def get_partition_str(
     kwargs,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### get_str()
 
@@ -276,9 +293,9 @@ def get_str(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### get_time_partition_str()
 
@@ -287,9 +304,9 @@ def get_time_partition_str(
     kwargs,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### to_flyte_idl()
 
@@ -298,15 +315,9 @@ def to_flyte_idl(
     kwargs,
 ) -> art_id.ArtifactQuery
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `bound` |  |  |
+| `kwargs` | `**kwargs` | |
 
 ## flytekit.core.artifact.ArtifactSerializationHandler
 
@@ -314,16 +325,8 @@ This protocol defines the interface for serializing artifact-related entities do
 
 
 ```python
-class ArtifactSerializationHandler(
-    args,
-    kwargs,
-)
+protocol ArtifactSerializationHandler()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 ### Methods
 
 | Method | Description |
@@ -341,10 +344,10 @@ def artifact_query_to_idl(
     kwargs,
 ) -> art_id.ArtifactQuery
 ```
-| Parameter | Type |
-|-|-|
-| `aq` | `ArtifactQuery` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `aq` | `ArtifactQuery` | |
+| `kwargs` | `**kwargs` | |
 
 #### partitions_to_idl()
 
@@ -354,10 +357,10 @@ def partitions_to_idl(
     kwargs,
 ) -> Optional[art_id.Partitions]
 ```
-| Parameter | Type |
-|-|-|
-| `p` | `Optional[Partitions]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` | `Optional[Partitions]` | |
+| `kwargs` | `**kwargs` | |
 
 #### time_partition_to_idl()
 
@@ -367,16 +370,13 @@ def time_partition_to_idl(
     kwargs,
 ) -> Optional[art_id.TimePartition]
 ```
-| Parameter | Type |
-|-|-|
-| `tp` | `Optional[TimePartition]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tp` | `Optional[TimePartition]` | |
+| `kwargs` | `**kwargs` | |
 
 ## flytekit.core.artifact.DefaultArtifactSerializationHandler
 
-This protocol defines the interface for serializing artifact-related entities down to Flyte IDL.
-
-
 ### Methods
 
 | Method | Description |
@@ -394,10 +394,10 @@ def artifact_query_to_idl(
     kwargs,
 ) -> art_id.ArtifactQuery
 ```
-| Parameter | Type |
-|-|-|
-| `aq` | `ArtifactQuery` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `aq` | `ArtifactQuery` | |
+| `kwargs` | `**kwargs` | |
 
 #### partitions_to_idl()
 
@@ -407,10 +407,10 @@ def partitions_to_idl(
     kwargs,
 ) -> Optional[art_id.Partitions]
 ```
-| Parameter | Type |
-|-|-|
-| `p` | `Optional[Partitions]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` | `Optional[Partitions]` | |
+| `kwargs` | `**kwargs` | |
 
 #### time_partition_to_idl()
 
@@ -420,10 +420,10 @@ def time_partition_to_idl(
     kwargs,
 ) -> Optional[art_id.TimePartition]
 ```
-| Parameter | Type |
-|-|-|
-| `tp` | `Optional[TimePartition]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tp` | `Optional[TimePartition]` | |
+| `kwargs` | `**kwargs` | |
 
 ## flytekit.core.artifact.InputsBase
 
@@ -434,27 +434,37 @@ If there's a good reason to use a metaclass in the future we can, but a simple i
 
 ## flytekit.core.artifact.Partition
 
+### Parameters
+
 ```python
 class Partition(
     value: Optional[art_id.LabelValue],
     name: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `value` | `Optional[art_id.LabelValue]` |
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `Optional[art_id.LabelValue]` | |
+| `name` | `str` | |
 
 ## flytekit.core.artifact.Partitions
+
+### Parameters
 
 ```python
 class Partitions(
     partitions: Optional[typing.Mapping[str, Union[str, art_id.InputBindingData, Partition]]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `partitions` | `Optional[typing.Mapping[str, Union[str, art_id.InputBindingData, Partition]]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `partitions` | `Optional[typing.Mapping[str, Union[str, art_id.InputBindingData, Partition]]]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `partitions` | `None` |  |
 
 ### Methods
 
@@ -471,9 +481,9 @@ def set_reference_artifact(
     artifact: Artifact,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `artifact` | `Artifact` |
+| Parameter | Type | Description |
+|-|-|-|
+| `artifact` | `Artifact` | |
 
 #### to_flyte_idl()
 
@@ -482,15 +492,9 @@ def to_flyte_idl(
     kwargs,
 ) -> Optional[art_id.Partitions]
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `partitions` |  |  |
+| `kwargs` | `**kwargs` | |
 
 ## flytekit.core.artifact.Serializer
 
@@ -512,10 +516,10 @@ def artifact_query_to_idl(
     kwargs,
 ) -> art_id.ArtifactQuery
 ```
-| Parameter | Type |
-|-|-|
-| `aq` | `ArtifactQuery` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `aq` | `ArtifactQuery` | |
+| `kwargs` | `**kwargs` | |
 
 #### partitions_to_idl()
 
@@ -525,10 +529,10 @@ def partitions_to_idl(
     kwargs,
 ) -> Optional[art_id.Partitions]
 ```
-| Parameter | Type |
-|-|-|
-| `p` | `Optional[Partitions]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` | `Optional[Partitions]` | |
+| `kwargs` | `**kwargs` | |
 
 #### register_serializer()
 
@@ -537,9 +541,9 @@ def register_serializer(
     serializer: ArtifactSerializationHandler,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `serializer` | `ArtifactSerializationHandler` |
+| Parameter | Type | Description |
+|-|-|-|
+| `serializer` | `ArtifactSerializationHandler` | |
 
 #### time_partition_to_idl()
 
@@ -549,12 +553,14 @@ def time_partition_to_idl(
     kwargs,
 ) -> Optional[art_id.TimePartition]
 ```
-| Parameter | Type |
-|-|-|
-| `tp` | `TimePartition` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tp` | `TimePartition` | |
+| `kwargs` | `**kwargs` | |
 
 ## flytekit.core.artifact.TimePartition
+
+### Parameters
 
 ```python
 class TimePartition(
@@ -564,12 +570,12 @@ class TimePartition(
     granularity: Granularity,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `value` | `Union[art_id.LabelValue, art_id.InputBindingData, str, datetime.datetime, None]` |
-| `op` | `Optional[Op]` |
-| `other` | `Optional[timedelta]` |
-| `granularity` | `Granularity` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `Union[art_id.LabelValue, art_id.InputBindingData, str, datetime.datetime, None]` | |
+| `op` | `Optional[Op]` | |
+| `other` | `Optional[timedelta]` | |
+| `granularity` | `Granularity` | |
 
 ### Methods
 
@@ -585,7 +591,7 @@ def to_flyte_idl(
     kwargs,
 ) -> Optional[art_id.TimePartition]
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 

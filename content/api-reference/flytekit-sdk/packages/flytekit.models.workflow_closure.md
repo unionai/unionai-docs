@@ -1,7 +1,7 @@
 ---
 title: flytekit.models.workflow_closure
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -17,16 +17,26 @@ layout: py_api
 
 ## flytekit.models.workflow_closure.WorkflowClosure
 
+### Parameters
+
 ```python
 class WorkflowClosure(
     workflow,
     tasks,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `workflow` |  |
-| `tasks` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `workflow` |  | |
+| `tasks` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `tasks` | `None` |  |
+| `workflow` | `None` |  |
 
 ### Methods
 
@@ -34,9 +44,8 @@ class WorkflowClosure(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -44,11 +53,13 @@ class WorkflowClosure(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: WorkflowClosure
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
+
+**Returns:** WorkflowClosure
 
 #### serialize_to_string()
 
@@ -60,32 +71,12 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.workflow_closure_pb2.WorkflowClosure
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `tasks` |  | {{< multiline >}}:rtype: list[flytekit.models.task.TaskTemplate]
-{{< /multiline >}} |
-| `workflow` |  | {{< multiline >}}:rtype: flytekit.models.core.workflow.WorkflowTemplate
-{{< /multiline >}} |
+**Returns:** flyteidl.core.workflow_closure_pb2.WorkflowClosure
 

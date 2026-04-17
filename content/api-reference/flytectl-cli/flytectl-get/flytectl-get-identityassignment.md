@@ -1,6 +1,6 @@
 ---
 title: flytectl get identityassignment
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl get identityassignment

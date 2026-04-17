@@ -1,7 +1,7 @@
 ---
 title: flytekit.clients.auth.authenticator
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -20,12 +20,14 @@ layout: py_api
 | [`CommandAuthenticator`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorcommandauthenticator) | This Authenticator retrieves access_token using the provided command. |
 | [`DeviceCodeAuthenticator`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatordevicecodeauthenticator) | This Authenticator implements the Device Code authorization flow useful for headless user authentication. |
 | [`PKCEAuthenticator`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorpkceauthenticator) | This Authenticator encapsulates the entire PKCE flow and automatically opens a browser window for login. |
-| [`StaticClientConfigStore`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorstaticclientconfigstore) | Client Config store retrieve client config. |
+| [`StaticClientConfigStore`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorstaticclientconfigstore) |  |
 
 ## flytekit.clients.auth.authenticator.Authenticator
 
 Base authenticator for all authentication flows
 
+
+### Parameters
 
 ```python
 class Authenticator(
@@ -36,13 +38,13 @@ class Authenticator(
     verify: typing.Union[bool, str, NoneType],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `header_key` | `str` |
-| `credentials` | `flytekit.clients.auth.keyring.Credentials` |
-| `http_proxy_url` | `typing.Optional[str]` |
-| `verify` | `typing.Union[bool, str, NoneType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
+| `header_key` | `str` | |
+| `credentials` | `flytekit.clients.auth.keyring.Credentials` | |
+| `http_proxy_url` | `typing.Optional[str]` | |
+| `verify` | `typing.Union[bool, str, NoneType]` | |
 
 ### Methods
 
@@ -73,6 +75,8 @@ def refresh_credentials()
 Client Configuration that is needed by the authenticator
 
 
+### Parameters
+
 ```python
 class ClientConfig(
     token_endpoint: str,
@@ -85,16 +89,16 @@ class ClientConfig(
     audience: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `token_endpoint` | `str` |
-| `authorization_endpoint` | `str` |
-| `redirect_uri` | `str` |
-| `client_id` | `str` |
-| `device_authorization_endpoint` | `typing.Optional[str]` |
-| `scopes` | `typing.List[str]` |
-| `header_key` | `str` |
-| `audience` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `token_endpoint` | `str` | |
+| `authorization_endpoint` | `str` | |
+| `redirect_uri` | `str` | |
+| `client_id` | `str` | |
+| `device_authorization_endpoint` | `typing.Optional[str]` | |
+| `scopes` | `typing.List[str]` | |
+| `header_key` | `str` | |
+| `audience` | `typing.Optional[str]` | |
 
 ## flytekit.clients.auth.authenticator.ClientConfigStore
 
@@ -118,6 +122,8 @@ def get_client_config()
 This Authenticator uses ClientId and ClientSecret to authenticate
 
 
+### Parameters
+
 ```python
 class ClientCredentialsAuthenticator(
     endpoint: str,
@@ -132,18 +138,18 @@ class ClientCredentialsAuthenticator(
     session: typing.Optional[requests.sessions.Session],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `client_id` | `str` |
-| `client_secret` | `str` |
-| `cfg_store` | `flytekit.clients.auth.authenticator.ClientConfigStore` |
-| `header_key` | `typing.Optional[str]` |
-| `scopes` | `typing.Optional[typing.List[str]]` |
-| `http_proxy_url` | `typing.Optional[str]` |
-| `verify` | `typing.Union[bool, str, NoneType]` |
-| `audience` | `typing.Optional[str]` |
-| `session` | `typing.Optional[requests.sessions.Session]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
+| `client_id` | `str` | |
+| `client_secret` | `str` | |
+| `cfg_store` | `flytekit.clients.auth.authenticator.ClientConfigStore` | |
+| `header_key` | `typing.Optional[str]` | |
+| `scopes` | `typing.Optional[typing.List[str]]` | |
+| `http_proxy_url` | `typing.Optional[str]` | |
+| `verify` | `typing.Union[bool, str, NoneType]` | |
+| `audience` | `typing.Optional[str]` | |
+| `session` | `typing.Optional[requests.sessions.Session]` | |
 
 ### Methods
 
@@ -180,16 +186,18 @@ the credentials for basic auth must be present from wherever this code is runnin
 This Authenticator retrieves access_token using the provided command
 
 
+### Parameters
+
 ```python
 class CommandAuthenticator(
     command: typing.List[str],
     header_key: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `command` | `typing.List[str]` |
-| `header_key` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `command` | `typing.List[str]` | |
+| `header_key` | `str` | |
 
 ### Methods
 
@@ -228,6 +236,8 @@ Examples described
 - https://auth0.com/docs/get-started/authentication-and-authorization-flow/device-authorization-flow#device-flow
 
 
+### Parameters
+
 ```python
 class DeviceCodeAuthenticator(
     endpoint: str,
@@ -240,16 +250,16 @@ class DeviceCodeAuthenticator(
     session: typing.Optional[requests.sessions.Session],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `cfg_store` | `flytekit.clients.auth.authenticator.ClientConfigStore` |
-| `header_key` | `typing.Optional[str]` |
-| `audience` | `typing.Optional[str]` |
-| `scopes` | `typing.Optional[typing.List[str]]` |
-| `http_proxy_url` | `typing.Optional[str]` |
-| `verify` | `typing.Union[bool, str, NoneType]` |
-| `session` | `typing.Optional[requests.sessions.Session]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
+| `cfg_store` | `flytekit.clients.auth.authenticator.ClientConfigStore` | |
+| `header_key` | `typing.Optional[str]` | |
+| `audience` | `typing.Optional[str]` | |
+| `scopes` | `typing.Optional[typing.List[str]]` | |
+| `http_proxy_url` | `typing.Optional[str]` | |
+| `verify` | `typing.Union[bool, str, NoneType]` | |
+| `session` | `typing.Optional[requests.sessions.Session]` | |
 
 ### Methods
 
@@ -286,6 +296,8 @@ contain ["offline", "all"] - as OIDC scopes are ungrantable in Auth0 customer AP
 for in the POST request during the token caching process.
 
 
+### Parameters
+
 ```python
 class PKCEAuthenticator(
     endpoint: str,
@@ -299,14 +311,14 @@ class PKCEAuthenticator(
 Initialize with default creds from KeyStore using the endpoint name
 
 
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `cfg_store` | `flytekit.clients.auth.authenticator.ClientConfigStore` |
-| `scopes` | `typing.Optional[typing.List[str]]` |
-| `header_key` | `typing.Optional[str]` |
-| `verify` | `typing.Union[bool, str, NoneType]` |
-| `session` | `typing.Optional[requests.sessions.Session]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
+| `cfg_store` | `flytekit.clients.auth.authenticator.ClientConfigStore` | |
+| `scopes` | `typing.Optional[typing.List[str]]` | |
+| `header_key` | `typing.Optional[str]` | |
+| `verify` | `typing.Union[bool, str, NoneType]` | |
+| `session` | `typing.Optional[requests.sessions.Session]` | |
 
 ### Methods
 
@@ -334,17 +346,16 @@ def refresh_credentials()
 ```
 ## flytekit.clients.auth.authenticator.StaticClientConfigStore
 
-Client Config store retrieve client config. this can be done in multiple ways
-
+### Parameters
 
 ```python
 class StaticClientConfigStore(
     cfg: flytekit.clients.auth.authenticator.ClientConfig,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cfg` | `flytekit.clients.auth.authenticator.ClientConfig` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `flytekit.clients.auth.authenticator.ClientConfig` | |
 
 ### Methods
 

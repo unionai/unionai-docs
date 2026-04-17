@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.ray.models
-version: 0.0.0+develop
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -20,26 +20,35 @@ layout: py_api
 
 ## flytekitplugins.ray.models.HeadGroupSpec
 
+### Parameters
+
 ```python
 class HeadGroupSpec(
     ray_start_params: typing.Optional[typing.Dict[str, str]],
     k8s_pod: typing.Optional[flytekit.models.task.K8sPod],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `ray_start_params` | `typing.Optional[typing.Dict[str, str]]` |
-| `k8s_pod` | `typing.Optional[flytekit.models.task.K8sPod]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ray_start_params` | `typing.Optional[typing.Dict[str, str]]` | |
+| `k8s_pod` | `typing.Optional[flytekit.models.task.K8sPod]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `k8s_pod` | `None` | Additional pod specs for the head node pod. |
+| `ray_start_params` | `None` | The ray start params of head node group. |
 
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -47,11 +56,13 @@ class HeadGroupSpec(
 ```python
 def from_flyte_idl(
     proto,
-) -> e: HeadGroupSpec
+)
 ```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` |  | |
+
+**Returns:** HeadGroupSpec
 
 #### serialize_to_string()
 
@@ -63,41 +74,21 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.plugins._ray_pb2.HeadGroupSpec
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `k8s_pod` |  | {{< multiline >}}Additional pod specs for the head node pod.
-:rtype: K8sPod
-{{< /multiline >}} |
-| `ray_start_params` |  | {{< multiline >}}The ray start params of head node group.
-:rtype: typing.Dict[str, str]
-{{< /multiline >}} |
+**Returns:** flyteidl.plugins._ray_pb2.HeadGroupSpec
 
 ## flytekitplugins.ray.models.RayCluster
 
 Define RayCluster spec that will be used by KubeRay to launch the cluster.
 
+
+### Parameters
 
 ```python
 class RayCluster(
@@ -106,21 +97,29 @@ class RayCluster(
     enable_autoscaling: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `worker_group_spec` | `typing.List[flytekitplugins.ray.models.WorkerGroupSpec]` |
-| `head_group_spec` | `typing.Optional[flytekitplugins.ray.models.HeadGroupSpec]` |
-| `enable_autoscaling` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `worker_group_spec` | `typing.List[flytekitplugins.ray.models.WorkerGroupSpec]` | |
+| `head_group_spec` | `typing.Optional[flytekitplugins.ray.models.HeadGroupSpec]` | |
+| `enable_autoscaling` | `bool` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `enable_autoscaling` | `None` | Whether to enable autoscaling. |
+| `head_group_spec` | `None` | The head group configuration. |
+| `is_empty` | `None` |  |
+| `worker_group_spec` | `None` | The worker group configurations. |
 
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -128,11 +127,13 @@ class RayCluster(
 ```python
 def from_flyte_idl(
     proto,
-) -> e: RayCluster
+)
 ```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` |  | |
+
+**Returns:** RayCluster
 
 #### serialize_to_string()
 
@@ -144,44 +145,21 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.plugins._ray_pb2.RayCluster
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `enable_autoscaling` |  | {{< multiline >}}Whether to enable autoscaling.
-:rtype: bool
-{{< /multiline >}} |
-| `head_group_spec` |  | {{< multiline >}}The head group configuration.
-:rtype: HeadGroupSpec
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `worker_group_spec` |  | {{< multiline >}}The worker group configurations.
-:rtype: typing.List[WorkerGroupSpec]
-{{< /multiline >}} |
+**Returns:** flyteidl.plugins._ray_pb2.RayCluster
 
 ## flytekitplugins.ray.models.RayJob
 
 Models _ray_pb2.RayJob
 
+
+### Parameters
 
 ```python
 class RayJob(
@@ -192,13 +170,24 @@ class RayJob(
     shutdown_after_job_finishes: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `ray_cluster` | `flytekitplugins.ray.models.RayCluster` |
-| `runtime_env` | `typing.Optional[str]` |
-| `runtime_env_yaml` | `typing.Optional[str]` |
-| `ttl_seconds_after_finished` | `typing.Optional[int]` |
-| `shutdown_after_job_finishes` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ray_cluster` | `flytekitplugins.ray.models.RayCluster` | |
+| `runtime_env` | `typing.Optional[str]` | |
+| `runtime_env_yaml` | `typing.Optional[str]` | |
+| `ttl_seconds_after_finished` | `typing.Optional[int]` | |
+| `shutdown_after_job_finishes` | `bool` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `ray_cluster` | `None` |  |
+| `runtime_env` | `None` |  |
+| `runtime_env_yaml` | `None` |  |
+| `shutdown_after_job_finishes` | `None` |  |
+| `ttl_seconds_after_finished` | `None` |  |
 
 ### Methods
 
@@ -206,9 +195,8 @@ class RayJob(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -218,9 +206,9 @@ def from_flyte_idl(
     proto: flyteidl.plugins.ray_pb2.RayJob,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `proto` | `flyteidl.plugins.ray_pb2.RayJob` |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` | `flyteidl.plugins.ray_pb2.RayJob` | |
 
 #### serialize_to_string()
 
@@ -232,34 +220,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `ray_cluster` |  |  |
-| `runtime_env` |  |  |
-| `runtime_env_yaml` |  |  |
-| `shutdown_after_job_finishes` |  |  |
-| `ttl_seconds_after_finished` |  |  |
-
 ## flytekitplugins.ray.models.WorkerGroupSpec
+
+### Parameters
 
 ```python
 class WorkerGroupSpec(
@@ -271,24 +241,35 @@ class WorkerGroupSpec(
     k8s_pod: typing.Optional[flytekit.models.task.K8sPod],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `group_name` | `str` |
-| `replicas` | `int` |
-| `min_replicas` | `typing.Optional[int]` |
-| `max_replicas` | `typing.Optional[int]` |
-| `ray_start_params` | `typing.Optional[typing.Dict[str, str]]` |
-| `k8s_pod` | `typing.Optional[flytekit.models.task.K8sPod]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `group_name` | `str` | |
+| `replicas` | `int` | |
+| `min_replicas` | `typing.Optional[int]` | |
+| `max_replicas` | `typing.Optional[int]` | |
+| `ray_start_params` | `typing.Optional[typing.Dict[str, str]]` | |
+| `k8s_pod` | `typing.Optional[flytekit.models.task.K8sPod]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `group_name` | `None` | Group name of the current worker group. |
+| `is_empty` | `None` |  |
+| `k8s_pod` | `None` | Additional pod specs for the worker node pods. |
+| `max_replicas` | `None` | Max replicas of the worker group. |
+| `min_replicas` | `None` | Min replicas of the worker group. |
+| `ray_start_params` | `None` | The ray start params of worker node group. |
+| `replicas` | `None` | Desired replicas of the worker group. |
 
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -296,11 +277,13 @@ class WorkerGroupSpec(
 ```python
 def from_flyte_idl(
     proto,
-) -> e: WorkerGroupSpec
+)
 ```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` |  | |
+
+**Returns:** WorkerGroupSpec
 
 #### serialize_to_string()
 
@@ -312,46 +295,12 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.plugins._ray_pb2.WorkerGroupSpec
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `group_name` |  | {{< multiline >}}Group name of the current worker group.
-:rtype: str
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `k8s_pod` |  | {{< multiline >}}Additional pod specs for the worker node pods.
-:rtype: K8sPod
-{{< /multiline >}} |
-| `max_replicas` |  | {{< multiline >}}Max replicas of the worker group.
-:rtype: int
-{{< /multiline >}} |
-| `min_replicas` |  | {{< multiline >}}Min replicas of the worker group.
-:rtype: int
-{{< /multiline >}} |
-| `ray_start_params` |  | {{< multiline >}}The ray start params of worker node group.
-:rtype: typing.Dict[str, str]
-{{< /multiline >}} |
-| `replicas` |  | {{< multiline >}}Desired replicas of the worker group.
-:rtype: int
-{{< /multiline >}} |
+**Returns:** flyteidl.plugins._ray_pb2.WorkerGroupSpec
 

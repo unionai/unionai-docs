@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.condition
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -17,7 +17,7 @@ layout: py_api
 | [`Case`](.././flytekit.core.condition#flytekitcoreconditioncase) |  |
 | [`Condition`](.././flytekit.core.condition#flytekitcoreconditioncondition) |  |
 | [`ConditionalSection`](.././flytekit.core.condition#flytekitcoreconditionconditionalsection) | ConditionalSection is used to denote a condition within a Workflow. |
-| [`LocalExecutedConditionalSection`](.././flytekit.core.condition#flytekitcoreconditionlocalexecutedconditionalsection) | ConditionalSection is used to denote a condition within a Workflow. |
+| [`LocalExecutedConditionalSection`](.././flytekit.core.condition#flytekitcoreconditionlocalexecutedconditionalsection) |  |
 | [`SkippedConditionalSection`](.././flytekit.core.condition#flytekitcoreconditionskippedconditionalsection) | This ConditionalSection is used for nested conditionals, when the branch has been evaluated to false. |
 
 ### Methods
@@ -75,9 +75,9 @@ conditional("fractions")
 ```
 
 
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
 
 #### create_branch_node_promise_var()
 
@@ -85,7 +85,7 @@ conditional("fractions")
 def create_branch_node_promise_var(
     node_id: str,
     var: str,
-) -> n: The generated unique id of the variable.
+) -> str
 ```
 Generates a globally (wf-level) unique id for a variable.
 
@@ -99,21 +99,23 @@ https://github.com/pwwang/python-varname/issues/28, this is not currently suppor
 
 
 
-| Parameter | Type |
-|-|-|
-| `node_id` | `str` |
-| `var` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `node_id` | `str` | |
+| `var` | `str` | |
+
+**Returns:** The generated unique id of the variable.
 
 #### merge_promises()
 
 ```python
 def merge_promises(
-    args: `*args`,
+    args: *args,
 ) -> typing.List[Promise]
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
 
 #### to_branch_node()
 
@@ -123,10 +125,10 @@ def to_branch_node(
     cs: ConditionalSection,
 ) -> Tuple[BranchNode, typing.List[Promise]]
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `cs` | `ConditionalSection` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `cs` | `ConditionalSection` | |
 
 #### to_case_block()
 
@@ -135,9 +137,9 @@ def to_case_block(
     c: Case,
 ) -> Tuple[Union[_core_wf.IfBlock], typing.List[Promise]]
 ```
-| Parameter | Type |
-|-|-|
-| `c` | `Case` |
+| Parameter | Type | Description |
+|-|-|-|
+| `c` | `Case` | |
 
 #### to_ifelse_block()
 
@@ -147,10 +149,10 @@ def to_ifelse_block(
     cs: ConditionalSection,
 ) -> Tuple[_core_wf.IfElseBlock, typing.List[Binding]]
 ```
-| Parameter | Type |
-|-|-|
-| `node_id` | `str` |
-| `cs` | `ConditionalSection` |
+| Parameter | Type | Description |
+|-|-|-|
+| `node_id` | `str` | |
+| `cs` | `ConditionalSection` | |
 
 #### transform_to_boolexpr()
 
@@ -159,9 +161,9 @@ def transform_to_boolexpr(
     expr: Union[ComparisonExpression, ConjunctionExpression],
 ) -> Tuple[_core_cond.BooleanExpression, typing.List[Promise]]
 ```
-| Parameter | Type |
-|-|-|
-| `expr` | `Union[ComparisonExpression, ConjunctionExpression]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `expr` | `Union[ComparisonExpression, ConjunctionExpression]` | |
 
 #### transform_to_comp_expr()
 
@@ -170,9 +172,9 @@ def transform_to_comp_expr(
     expr: ComparisonExpression,
 ) -> Tuple[_core_cond.ComparisonExpression, typing.List[Promise]]
 ```
-| Parameter | Type |
-|-|-|
-| `expr` | `ComparisonExpression` |
+| Parameter | Type | Description |
+|-|-|-|
+| `expr` | `ComparisonExpression` | |
 
 #### transform_to_conj_expr()
 
@@ -181,9 +183,9 @@ def transform_to_conj_expr(
     expr: ConjunctionExpression,
 ) -> Tuple[_core_cond.ConjunctionExpression, typing.List[Promise]]
 ```
-| Parameter | Type |
-|-|-|
-| `expr` | `ConjunctionExpression` |
+| Parameter | Type | Description |
+|-|-|-|
+| `expr` | `ConjunctionExpression` | |
 
 #### transform_to_operand()
 
@@ -192,11 +194,13 @@ def transform_to_operand(
     v: Union[Promise, Literal],
 ) -> Tuple[_core_cond.Operand, Optional[Promise]]
 ```
-| Parameter | Type |
-|-|-|
-| `v` | `Union[Promise, Literal]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `v` | `Union[Promise, Literal]` | |
 
 ## flytekit.core.condition.BranchNode
+
+### Parameters
 
 ```python
 class BranchNode(
@@ -204,18 +208,20 @@ class BranchNode(
     ifelse_block: _core_wf.IfElseBlock,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `ifelse_block` | `_core_wf.IfElseBlock` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `ifelse_block` | `_core_wf.IfElseBlock` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `name` |  |  |
+| `name` | `None` |  |
 
 ## flytekit.core.condition.Case
+
+### Parameters
 
 ```python
 class Case(
@@ -224,11 +230,20 @@ class Case(
     stmt: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cs` | `ConditionalSection` |
-| `expr` | `Optional[Union[ComparisonExpression, ConjunctionExpression]]` |
-| `stmt` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cs` | `ConditionalSection` | |
+| `expr` | `Optional[Union[ComparisonExpression, ConjunctionExpression]]` | |
+| `stmt` | `str` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `err` | `None` |  |
+| `expr` | `None` |  |
+| `output_node` | `None` |  |
+| `output_promise` | `None` |  |
 
 ### Methods
 
@@ -245,9 +260,9 @@ def fail(
     err: str,
 ) -> Promise
 ```
-| Parameter | Type |
-|-|-|
-| `err` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `err` | `str` | |
 
 #### then()
 
@@ -256,29 +271,22 @@ def then(
     p: Union[Promise, Tuple[Promise]],
 ) -> Optional[Union[Condition, Promise, Tuple[Promise], VoidPromise]]
 ```
-| Parameter | Type |
-|-|-|
-| `p` | `Union[Promise, Tuple[Promise]]` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `err` |  |  |
-| `expr` |  |  |
-| `output_node` |  |  |
-| `output_promise` |  |  |
+| `p` | `Union[Promise, Tuple[Promise]]` | |
 
 ## flytekit.core.condition.Condition
+
+### Parameters
 
 ```python
 class Condition(
     cs: ConditionalSection,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cs` | `ConditionalSection` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cs` | `ConditionalSection` | |
 
 ### Methods
 
@@ -295,9 +303,9 @@ def elif_(
     expr: Union[ComparisonExpression, ConjunctionExpression],
 ) -> Case
 ```
-| Parameter | Type |
-|-|-|
-| `expr` | `Union[ComparisonExpression, ConjunctionExpression]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `expr` | `Union[ComparisonExpression, ConjunctionExpression]` | |
 
 #### else_()
 
@@ -310,8 +318,8 @@ ConditionalSection is used to denote a condition within a Workflow. This default
 for Compilation mode. It is advised to derive the class and re-implement the `start_branch` and `end_branch` methods
 to override the compilation behavior
 
-> [!NOTE]
-> Conditions can only be used within a workflow context.
+&gt; [!NOTE]
+&gt; Conditions can only be used within a workflow context.
 
 Usage:
 
@@ -320,14 +328,23 @@ v =  conditional("fractions").if_((my_input > 0.1) & (my_input < 1.0)).then(...)
 ```
 
 
+### Parameters
+
 ```python
 class ConditionalSection(
     name: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cases` | `None` |  |
+| `name` | `None` |  |
 
 ### Methods
 
@@ -365,9 +382,9 @@ def if_(
     expr: Union[ComparisonExpression, ConjunctionExpression],
 ) -> Case
 ```
-| Parameter | Type |
-|-|-|
-| `expr` | `Union[ComparisonExpression, ConjunctionExpression]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `expr` | `Union[ComparisonExpression, ConjunctionExpression]` | |
 
 #### start_branch()
 
@@ -380,42 +397,30 @@ def start_branch(
 At the start of an execution of every branch this method should be called.
 
 
-| Parameter | Type |
-|-|-|
-| `c` | `Case` |
-| `last_case` | `bool` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `cases` |  |  |
-| `name` |  |  |
+| `c` | `Case` | -&gt; the case that represents this branch |
+| `last_case` | `bool` | -&gt; a boolean that indicates if this is the last branch in the ifelseblock |
 
 ## flytekit.core.condition.LocalExecutedConditionalSection
 
-ConditionalSection is used to denote a condition within a Workflow. This default conditional section only works
-for Compilation mode. It is advised to derive the class and re-implement the `start_branch` and `end_branch` methods
-to override the compilation behavior
-
-> [!NOTE]
-> Conditions can only be used within a workflow context.
-
-Usage:
-
-```python
-v =  conditional("fractions").if_((my_input > 0.1) & (my_input < 1.0)).then(...)...
-```
-
+### Parameters
 
 ```python
 class LocalExecutedConditionalSection(
     name: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cases` | `None` |  |
+| `name` | `None` |  |
 
 ### Methods
 
@@ -456,9 +461,9 @@ def if_(
     expr: Union[ComparisonExpression, ConjunctionExpression],
 ) -> Case
 ```
-| Parameter | Type |
-|-|-|
-| `expr` | `Union[ComparisonExpression, ConjunctionExpression]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `expr` | `Union[ComparisonExpression, ConjunctionExpression]` | |
 
 #### start_branch()
 
@@ -471,17 +476,10 @@ def start_branch(
 At the start of an execution of every branch this method should be called.
 
 
-| Parameter | Type |
-|-|-|
-| `c` | `Case` |
-| `last_case` | `bool` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `cases` |  |  |
-| `name` |  |  |
+| `c` | `Case` | -&gt; the case that represents this branch |
+| `last_case` | `bool` | -&gt; a boolean that indicates if this is the last branch in the ifelseblock |
 
 ## flytekit.core.condition.SkippedConditionalSection
 
@@ -489,14 +487,23 @@ This ConditionalSection is used for nested conditionals, when the branch has bee
 This ensures that the branch is not evaluated and thus the local tasks are not executed.
 
 
+### Parameters
+
 ```python
 class SkippedConditionalSection(
     name: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cases` | `None` |  |
+| `name` | `None` |  |
 
 ### Methods
 
@@ -532,9 +539,9 @@ def if_(
     expr: Union[ComparisonExpression, ConjunctionExpression],
 ) -> Case
 ```
-| Parameter | Type |
-|-|-|
-| `expr` | `Union[ComparisonExpression, ConjunctionExpression]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `expr` | `Union[ComparisonExpression, ConjunctionExpression]` | |
 
 #### start_branch()
 
@@ -547,15 +554,8 @@ def start_branch(
 At the start of an execution of every branch this method should be called.
 
 
-| Parameter | Type |
-|-|-|
-| `c` | `Case` |
-| `last_case` | `bool` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `cases` |  |  |
-| `name` |  |  |
+| `c` | `Case` | -&gt; the case that represents this branch |
+| `last_case` | `bool` | -&gt; a boolean that indicates if this is the last branch in the ifelseblock |
 

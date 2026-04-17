@@ -1,7 +1,7 @@
 ---
 title: flytekit.clis.sdk_in_container.serve
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -25,7 +25,7 @@ def print_metadata(
     name: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
 

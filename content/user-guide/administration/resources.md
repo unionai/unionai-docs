@@ -1,7 +1,7 @@
 ---
 title: Resources
 weight: 1
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Resources
@@ -128,7 +128,7 @@ This dashboard displays information about configured node pools in the organizat
 
 ![Resources compute](../../_static/images/user-guide/administration/resources/resources-compute.png)
 
-{{< variant byoc >}}
+{{< variant union >}}
 {{< markdown >}}
 
 ### Configuring Resource Quotas

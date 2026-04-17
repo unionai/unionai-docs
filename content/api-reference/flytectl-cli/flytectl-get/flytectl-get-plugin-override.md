@@ -1,6 +1,6 @@
 ---
 title: flytectl get plugin-override
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl get plugin-override

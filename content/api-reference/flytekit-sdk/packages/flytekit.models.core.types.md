@@ -1,7 +1,7 @@
 ---
 title: flytekit.models.core.types
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -21,16 +21,26 @@ layout: py_api
 This type represents offloaded data and is typically used for things like files.
 
 
+### Parameters
+
 ```python
 class BlobType(
     format,
     dimensionality,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `format` |  |
-| `dimensionality` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `format` |  | |
+| `dimensionality` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `dimensionality` | `None` | An integer from BlobType.BlobDimensionality enum |
+| `format` | `None` | A string describing the format of the underlying blob data. |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -38,9 +48,8 @@ class BlobType(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -48,11 +57,13 @@ class BlobType(
 ```python
 def from_flyte_idl(
     proto,
-) -> e: BlobType
+)
 ```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` |  | |
+
+**Returns:** BlobType
 
 #### serialize_to_string()
 
@@ -64,50 +75,37 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.core.types_pb2.BlobType
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `dimensionality` |  | {{< multiline >}}An integer from BlobType.BlobDimensionality enum
-:rtype: int
-{{< /multiline >}} |
-| `format` |  | {{< multiline >}}A string describing the format of the underlying blob data.
-:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
+**Returns:** flyteidl.core.types_pb2.BlobType
 
 ## flytekit.models.core.types.EnumType
 
 Models _types_pb2.EnumType
 
 
+### Parameters
+
 ```python
 class EnumType(
     values: typing.List[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `values` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `values` | `typing.List[str]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `values` | `None` |  |
 
 ### Methods
 
@@ -115,9 +113,8 @@ class EnumType(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -127,9 +124,9 @@ def from_flyte_idl(
     proto: _types_pb2.EnumType,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `proto` | `_types_pb2.EnumType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` | `_types_pb2.EnumType` | |
 
 #### serialize_to_string()
 
@@ -141,26 +138,10 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `values` |  |  |
-

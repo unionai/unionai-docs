@@ -1,16 +1,14 @@
 ---
 title: flytekit.models.qubole
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
 # flytekit.models.qubole
 
-
 This is a deprecated module. Model files for plugins should go alongside the microlib.
 See ``plugins/flytekit-kf-pytorch/flytekitplugins/kfpytorch/models.py`` as an example.
-
 ## Directory
 
 ### Classes
@@ -23,6 +21,8 @@ See ``plugins/flytekit-kf-pytorch/flytekitplugins/kfpytorch/models.py`` as an ex
 
 ## flytekit.models.qubole.HiveQuery
 
+### Parameters
+
 ```python
 class HiveQuery(
     query,
@@ -34,11 +34,20 @@ Initializes a new HiveQuery.
 
 
 
-| Parameter | Type |
-|-|-|
-| `query` |  |
-| `timeout_sec` |  |
-| `retry_count` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `query` |  | |
+| `timeout_sec` |  | |
+| `retry_count` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `query` | `None` | The query string. |
+| `retry_count` | `None` |  |
+| `timeout_sec` | `None` |  |
 
 ### Methods
 
@@ -46,9 +55,8 @@ Initializes a new HiveQuery.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _qubole. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -56,11 +64,13 @@ Initializes a new HiveQuery.
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> n: HiveQuery
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
+
+**Returns:** HiveQuery
 
 #### serialize_to_string()
 
@@ -72,39 +82,18 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: _qubole.HiveQuery
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `query` |  | {{< multiline >}}The query string.
-:rtype: str
-{{< /multiline >}} |
-| `retry_count` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `timeout_sec` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
+**Returns:** _qubole.HiveQuery
 
 ## flytekit.models.qubole.HiveQueryCollection
+
+### Parameters
 
 ```python
 class HiveQueryCollection(
@@ -115,9 +104,16 @@ Initializes a new HiveQueryCollection.
 
 
 
-| Parameter | Type |
-|-|-|
-| `queries` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `queries` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
+| `queries` | `None` |  |
 
 ### Methods
 
@@ -125,9 +121,8 @@ Initializes a new HiveQueryCollection.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _qubole. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -135,11 +130,13 @@ Initializes a new HiveQueryCollection.
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: HiveQueryCollection
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
+
+**Returns:** HiveQueryCollection
 
 #### serialize_to_string()
 
@@ -151,34 +148,18 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: _qubole.HiveQueryCollection
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `queries` |  | {{< multiline >}}:rtype: list[HiveQuery]
-{{< /multiline >}} |
+**Returns:** _qubole.HiveQueryCollection
 
 ## flytekit.models.qubole.QuboleHiveJob
+
+### Parameters
 
 ```python
 class QuboleHiveJob(
@@ -192,12 +173,22 @@ Initializes a HiveJob.
 
 
 
-| Parameter | Type |
-|-|-|
-| `query` |  |
-| `cluster_label` |  |
-| `tags` |  |
-| `query_collection` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `query` |  | |
+| `cluster_label` |  | |
+| `tags` |  | |
+| `query_collection` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cluster_label` | `None` | The cluster label where the query should be executed |
+| `is_empty` | `None` |  |
+| `query` | `None` | The query to be executed |
+| `query_collection` | `None` | The queries to be executed |
+| `tags` | `None` | User tags for the queries |
 
 ### Methods
 
@@ -205,9 +196,8 @@ Initializes a HiveJob.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _qubole. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -215,11 +205,13 @@ Initializes a HiveJob.
 ```python
 def from_flyte_idl(
     p,
-) -> e: QuboleHiveJob
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
+
+**Returns:** QuboleHiveJob
 
 #### serialize_to_string()
 
@@ -231,40 +223,12 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: _qubole.QuboleHiveJob
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `cluster_label` |  | {{< multiline >}}The cluster label where the query should be executed
-:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `query` |  | {{< multiline >}}The query to be executed
-:rtype: HiveQuery
-{{< /multiline >}} |
-| `query_collection` |  | {{< multiline >}}The queries to be executed
-:rtype: HiveQueryCollection
-{{< /multiline >}} |
-| `tags` |  | {{< multiline >}}User tags for the queries
-:rtype: list[Text]
-{{< /multiline >}} |
+**Returns:** _qubole.QuboleHiveJob
 

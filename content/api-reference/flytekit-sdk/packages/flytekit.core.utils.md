@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.utils
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -43,9 +43,9 @@ def has_return_statement(
     func: typing.Callable,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `func` | `typing.Callable` |
+| Parameter | Type | Description |
+|-|-|-|
+| `func` | `typing.Callable` | |
 
 #### load_proto_from_file()
 
@@ -55,24 +55,26 @@ def load_proto_from_file(
     path,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_type` |  |
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_type` |  | |
+| `path` |  | |
 
 #### str2bool()
 
 ```python
 def str2bool(
     value: typing.Optional[str],
-) -> n: the boolean value
+) -> bool
 ```
 Convert a string to a boolean. This is useful for parsing environment variables.
 
 
-| Parameter | Type |
-|-|-|
-| `value` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `typing.Optional[str]` | The string to convert to a boolean |
+
+**Returns:** the boolean value
 
 #### write_proto_to_file()
 
@@ -82,15 +84,17 @@ def write_proto_to_file(
     path,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` |  | |
+| `path` |  | |
 
 ## flytekit.core.utils.AutoDeletingTempDir
 
 Creates a posix safe tempdir which is auto deleted once out of scope
 
+
+### Parameters
 
 ```python
 class AutoDeletingTempDir(
@@ -99,11 +103,17 @@ class AutoDeletingTempDir(
     cleanup,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `working_dir_prefix` |  |
-| `tmp_dir` |  |
-| `cleanup` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `working_dir_prefix` |  | |
+| `tmp_dir` |  | |
+| `cleanup` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` |  |
 
 ### Methods
 
@@ -126,9 +136,9 @@ def get_named_tempfile(
     name,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` |  | |
 
 #### list_dir()
 
@@ -136,21 +146,17 @@ def get_named_tempfile(
 def list_dir()
 ```
 The list of absolute filepaths for all immediate sub-paths
-:rtype: list[Text]
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `name` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
+**Returns:** list[Text]
 
 ## flytekit.core.utils.ClassDecorator
 
 Abstract class for class decorators.
 We can attach config on the decorator class and use it in the upper level.
 
+
+### Parameters
 
 ```python
 class ClassDecorator(
@@ -162,10 +168,10 @@ If the decorator is called with arguments, func will be None.
 If the decorator is called without arguments, func will be function to be decorated.
 
 
-| Parameter | Type |
-|-|-|
-| `task_function` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_function` |  | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -186,10 +192,10 @@ def execute(
 This method will be called when the decorated function is called.
 
 
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### get_extra_config()
 
@@ -201,14 +207,22 @@ Get the config of the decorator.
 
 ## flytekit.core.utils.Directory
 
+### Parameters
+
 ```python
 class Directory(
     path,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` |  |
 
 ### Methods
 
@@ -223,15 +237,9 @@ class Directory(
 def list_dir()
 ```
 The list of absolute filepaths for all immediate sub-paths
-:rtype: list[Text]
 
 
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `name` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
+**Returns:** list[Text]
 
 ## flytekit.core.utils.timeit
 
@@ -245,12 +253,14 @@ with timeit("Wrapped code block description"):
     # your code
 
 
+### Parameters
+
 ```python
 class timeit(
     name: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | A string that describes the wrapped code block or function being executed. |
 

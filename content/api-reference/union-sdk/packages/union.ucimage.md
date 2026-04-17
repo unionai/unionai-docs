@@ -1,7 +1,7 @@
 ---
 title: union.ucimage
-version: 0.1.191
-variants: +byoc +selfmanaged +serverless -flyte
+version: 0.1.202
+variants: -flyte +union
 layout: py_api
 ---
 
@@ -38,9 +38,9 @@ def build_image(
 Build image using UnionAI.
 
 
-| Parameter | Type |
-|-|-|
-| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | |
 
 #### should_build()
 
@@ -52,7 +52,7 @@ def should_build(
 Check whether the image should be built.
 
 
-| Parameter | Type |
-|-|-|
-| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | |
 

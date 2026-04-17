@@ -1,7 +1,7 @@
 ---
 title: flytekit.configuration.plugin
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -25,7 +25,6 @@ or in pyproject.toml:
 [project.entry-points."flytekit.configuration.plugin"]
 my_plugin = "my_module:MyCustomPlugin"
 ```
-
 ## Directory
 
 ### Classes
@@ -33,7 +32,12 @@ my_plugin = "my_module:MyCustomPlugin"
 | Class | Description |
 |-|-|
 | [`FlytekitPlugin`](.././flytekit.configuration.plugin#flytekitconfigurationpluginflytekitplugin) |  |
-| [`FlytekitPluginProtocol`](.././flytekit.configuration.plugin#flytekitconfigurationpluginflytekitpluginprotocol) | Base class for protocol classes. |
+
+### Protocols
+
+| Protocol | Description |
+|-|-|
+| [`FlytekitPluginProtocol`](.././flytekit.configuration.plugin#flytekitconfigurationpluginflytekitpluginprotocol) |  |
 
 ### Methods
 
@@ -76,9 +80,9 @@ def configure_pyflyte_cli(
 Configure pyflyte's CLI.
 
 
-| Parameter | Type |
-|-|-|
-| `main` | `click.core.Group` |
+| Parameter | Type | Description |
+|-|-|-|
+| `main` | `click.core.Group` | |
 
 #### get_auth_success_html()
 
@@ -90,9 +94,9 @@ def get_auth_success_html(
 Get default success html. Return None to use flytekit's default success html.
 
 
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
 
 #### get_default_cache_policies()
 
@@ -123,12 +127,12 @@ def get_remote(
 Get FlyteRemote object for CLI session.
 
 
-| Parameter | Type |
-|-|-|
-| `config` | `typing.Optional[str]` |
-| `project` | `str` |
-| `domain` | `str` |
-| `data_upload_location` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config` | `typing.Optional[str]` | |
+| `project` | `str` | |
+| `domain` | `str` | |
+| `data_upload_location` | `typing.Optional[str]` | |
 
 #### secret_requires_group()
 
@@ -140,49 +144,9 @@ Return True if secrets require group entry during registration time.
 
 ## flytekit.configuration.plugin.FlytekitPluginProtocol
 
-Base class for protocol classes.
-
-Protocol classes are defined as::
-
-    class Proto(Protocol):
-        def meth(self) -> int:
-            ...
-
-Such classes are primarily used with static type checkers that recognize
-structural subtyping (static duck-typing).
-
-For example::
-
-    class C:
-        def meth(self) -> int:
-            return 0
-
-    def func(x: Proto) -> int:
-        return x.meth()
-
-    func(C())  # Passes static type check
-
-See PEP 544 for details. Protocol classes decorated with
-@typing.runtime_checkable act as simple-minded runtime protocols that check
-only the presence of given attributes, ignoring their type signatures.
-Protocol classes can be generic, they are defined as::
-
-    class GenProto[T](Protocol):
-        def meth(self) -> T:
-            ...
-
-
 ```python
-class FlytekitPluginProtocol(
-    args,
-    kwargs,
-)
+protocol FlytekitPluginProtocol()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 ### Methods
 
 | Method | Description |
@@ -205,9 +169,9 @@ def configure_pyflyte_cli(
 Configure pyflyte's CLI.
 
 
-| Parameter | Type |
-|-|-|
-| `main` | `click.core.Group` |
+| Parameter | Type | Description |
+|-|-|-|
+| `main` | `click.core.Group` | |
 
 #### get_auth_success_html()
 
@@ -219,9 +183,9 @@ def get_auth_success_html(
 Get default success html for auth. Return None to use flytekit's default success html.
 
 
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
 
 #### get_default_cache_policies()
 
@@ -252,12 +216,12 @@ def get_remote(
 Get FlyteRemote object for CLI session.
 
 
-| Parameter | Type |
-|-|-|
-| `config` | `typing.Optional[str]` |
-| `project` | `str` |
-| `domain` | `str` |
-| `data_upload_location` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config` | `typing.Optional[str]` | |
+| `project` | `str` | |
+| `domain` | `str` | |
+| `data_upload_location` | `typing.Optional[str]` | |
 
 #### secret_requires_group()
 

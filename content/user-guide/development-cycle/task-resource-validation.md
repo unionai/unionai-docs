@@ -1,7 +1,7 @@
 ---
 title: Task resource validation
 weight: 15
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Task resource validation

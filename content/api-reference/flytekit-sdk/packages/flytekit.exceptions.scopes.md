@@ -1,7 +1,7 @@
 ---
 title: flytekit.exceptions.scopes
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -13,9 +13,9 @@ layout: py_api
 
 | Exception | Description |
 |-|-|
-| [`FlyteScopedException`](.././flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopedexception) | Common base class for all non-exit exceptions. |
-| [`FlyteScopedSystemException`](.././flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopedsystemexception) | Common base class for all non-exit exceptions. |
-| [`FlyteScopedUserException`](.././flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopeduserexception) | Common base class for all non-exit exceptions. |
+| [`FlyteScopedException`](.././flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopedexception) |  |
+| [`FlyteScopedSystemException`](.././flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopedsystemexception) |  |
+| [`FlyteScopedUserException`](.././flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopeduserexception) |  |
 
 ### Methods
 
@@ -50,11 +50,11 @@ user -- allowing them to know if they should take action themselves or pass on t
 We will dispatch metrics and such appropriately.
 
 
-| Parameter | Type |
-|-|-|
-| `wrapped` |  |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `wrapped` |  | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### user_entry_point()
 
@@ -76,16 +76,15 @@ we create here will only be handled within our system code so we don't need to w
 to the user.
 
 
-| Parameter | Type |
-|-|-|
-| `wrapped` |  |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `wrapped` |  | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ## flytekit.exceptions.scopes.FlyteScopedException
 
-Common base class for all non-exit exceptions.
-
+### Parameters
 
 ```python
 class FlyteScopedException(
@@ -98,33 +97,30 @@ class FlyteScopedException(
     kind,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `context` |  |
-| `exc_type` |  |
-| `exc_value` |  |
-| `exc_tb` |  |
-| `top_trim` |  |
-| `bottom_trim` |  |
-| `kind` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `context` |  | |
+| `exc_type` |  | |
+| `exc_value` |  | |
+| `exc_tb` |  | |
+| `top_trim` |  | |
+| `bottom_trim` |  | |
+| `kind` |  | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `error_code` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `kind` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `traceback` |  |  |
-| `type` |  |  |
-| `value` |  |  |
-| `verbose_message` |  |  |
+| `error_code` | `None` |  |
+| `kind` | `None` |  |
+| `traceback` | `None` |  |
+| `type` | `None` |  |
+| `value` | `None` |  |
+| `verbose_message` | `None` |  |
 
 ## flytekit.exceptions.scopes.FlyteScopedSystemException
 
-Common base class for all non-exit exceptions.
-
+### Parameters
 
 ```python
 class FlyteScopedSystemException(
@@ -134,31 +130,27 @@ class FlyteScopedSystemException(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `exc_type` |  |
-| `exc_value` |  |
-| `exc_tb` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `exc_type` |  | |
+| `exc_value` |  | |
+| `exc_tb` |  | |
+| `kwargs` | `**kwargs` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `error_code` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `kind` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `traceback` |  |  |
-| `type` |  |  |
-| `value` |  |  |
-| `verbose_message` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
+| `error_code` | `None` |  |
+| `kind` | `None` |  |
+| `traceback` | `None` |  |
+| `type` | `None` |  |
+| `value` | `None` |  |
+| `verbose_message` | `None` |  |
 
 ## flytekit.exceptions.scopes.FlyteScopedUserException
 
-Common base class for all non-exit exceptions.
-
+### Parameters
 
 ```python
 class FlyteScopedUserException(
@@ -168,24 +160,21 @@ class FlyteScopedUserException(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `exc_type` |  |
-| `exc_value` |  |
-| `exc_tb` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `exc_type` |  | |
+| `exc_value` |  | |
+| `exc_tb` |  | |
+| `kwargs` | `**kwargs` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `error_code` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `kind` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `traceback` |  |  |
-| `type` |  |  |
-| `value` |  |  |
-| `verbose_message` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
+| `error_code` | `None` |  |
+| `kind` | `None` |  |
+| `traceback` | `None` |  |
+| `type` | `None` |  |
+| `value` | `None` |  |
+| `verbose_message` | `None` |  |
 

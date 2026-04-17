@@ -1,7 +1,7 @@
 ---
 title: Building a Contextual RAG Workflow with Together AI
 weight: 10
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Building a Contextual RAG Workflow with Together AI

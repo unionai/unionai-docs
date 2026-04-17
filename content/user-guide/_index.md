@@ -1,7 +1,7 @@
 ---
 title: User guide
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 top_menu: true
 site_root: true
 sidebar_expanded: true
@@ -10,7 +10,7 @@ sidebar_expanded: true
 {{< variant flyte >}}
 {{< markdown >}}
 
-# Flyte
+# Flyte OSS
 
 Flyte is a free and open source platform that provides a full suite of powerful features for orchestrating AI workflows.
 Flyte empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
@@ -23,10 +23,10 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant serverless >}}
+{{< variant union >}}
 {{< markdown >}}
 
-# {{< key product_name >}} Serverless
+# {{< key product_name >}}
 
 {{< key product_name >}} empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience. With {{< key product_name >}} your team can:
 
@@ -37,52 +37,8 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 > [!NOTE]
 > {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v1 >}}).
 >
-> {{< key product_name >}} Serverless provides [all the features of Flyte, plus much more](./introduction#-key-product_name--serverless)
-> all in a turn-key, fully-managed, cloud environment.
-> There is zero infrastructure to deal with, and you pay only for the resources you use.
-> Your data and workflow code is stored safely and securely in the Union.ai cloud infrastructure.
->
-> You can switch to another product version with the selector above.
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant byoc >}}
-{{< markdown >}}
-
-# {{< key product_name >}} BYOC
-
-{{< key product_name >}} empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience. With {{< key product_name >}} your team can:
-
-* Run complex AI workloads with performance, scale, and efficiency.
-* Achieve millisecond-level execution times with reusable containers.
-* Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale, or compliance.
-
-> [!NOTE]
-> {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v1 >}}).
->
-> {{< key product_name >}} BYOC (Bring Your Own Cloud) provides [all the features of Flyte, plus much more](./introduction#-key-product_name--byoc)
-> in an environment where you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
->
-> You can switch to another product version with the selector above.
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant selfmanaged >}}
-{{< markdown >}}
-
-# {{< key product_name >}} Self-managed
-
-{{< key product_name >}} empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience. With {{< key product_name >}} your team can:
-
-* Run complex AI workloads with performance, scale, and efficiency.
-* Achieve millisecond-level execution times with reusable containers.
-* Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale, or compliance.
-
-> [!NOTE]
-> {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v1 >}}).
->
-> {{< key product_name >}} Self-managed provides [all the features of Flyte, plus much more](./introduction#-key-product_name--self-managed)
-> while letting you keep your data and workflow code on your infrastructure and under your own management.
+> {{< key product_name >}} provides [all the features of Flyte, plus much more](./introduction),
+> available as a fully managed BYOC (Bring Your Own Cloud) service or as a self-managed deployment on your own infrastructure.
 >
 > You can switch to another product version with the selector above.
 
@@ -98,7 +54,7 @@ Flyte is the leading open-source Kubernetes-native workflow orchestrator.
 {{< /link-card >}}
 
 {{< /variant >}}
-{{< variant serverless byoc selfmanaged >}}
+{{< variant union >}}
 
 {{< link-card target="introduction" icon="lightbulb" title="Introduction" >}}
 {{< key product_name >}} builds on the leading open-source workflow orchestrator, Flyte, to provide a powerful, scalable, and flexible platform for AI applications.
@@ -126,7 +82,7 @@ Manage the input and output of data in your {{< key product_name >}} workflow.
 Learn about {{< key product_name >}}-specific programming constructs.
 {{< /link-card >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 
 {{< link-card target="administration" icon="person-add" title="Administration" >}}
 {{< key product_full_name >}} administrators can manage users, projects, and resources.

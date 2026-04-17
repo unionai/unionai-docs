@@ -1,7 +1,7 @@
 ---
 title: Packages
-version: 0.0.0+develop
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -9,9 +9,11 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.spark.agent`](flytekitplugins.spark.agent) |  |
+| [`flytekitplugins.spark.connector`](flytekitplugins.spark.connector) |  |
+| [`flytekitplugins.spark.generic_task`](flytekitplugins.spark.generic_task) |  |
 | [`flytekitplugins.spark.models`](flytekitplugins.spark.models) |  |
 | [`flytekitplugins.spark.pyspark_transformers`](flytekitplugins.spark.pyspark_transformers) |  |
 | [`flytekitplugins.spark.schema`](flytekitplugins.spark.schema) |  |
 | [`flytekitplugins.spark.sd_transformers`](flytekitplugins.spark.sd_transformers) |  |
 | [`flytekitplugins.spark.task`](flytekitplugins.spark.task) |  |
+| [`flytekitplugins.spark.utils`](flytekitplugins.spark.utils) |  |

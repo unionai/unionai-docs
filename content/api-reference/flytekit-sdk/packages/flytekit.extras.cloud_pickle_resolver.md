@@ -1,7 +1,7 @@
 ---
 title: flytekit.extras.cloud_pickle_resolver
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -32,16 +32,26 @@ TODO: Replace this with a version that will upload the data to S3 or some other 
   and will download the data upon ``load_task``. This will require additional changes to Admin however.
 
 
+### Parameters
+
 ```python
 class ExperimentalNaiveCloudPickleResolver(
     args,
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `instantiated_in` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
 
 ### Methods
 
@@ -78,9 +88,9 @@ def load_task(
 Given the set of identifier keys, should return one Python Task or raise an error if not found
 
 
-| Parameter | Type |
-|-|-|
-| `loader_args` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `loader_args` | `typing.List[str]` | |
 
 #### loader_args()
 
@@ -93,10 +103,10 @@ def loader_args(
 Return a list of strings that can help identify the parameter Task
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
-| `t` | `flytekit.core.python_auto_container.PythonAutoContainerTask` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
+| `t` | `flytekit.core.python_auto_container.PythonAutoContainerTask` | |
 
 #### name()
 
@@ -113,15 +123,7 @@ def task_name(
 Overridable function that can optionally return a custom name for a given task
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `flytekit.core.base_task.Task` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `instantiated_in` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
+| `t` | `flytekit.core.base_task.Task` | |
 

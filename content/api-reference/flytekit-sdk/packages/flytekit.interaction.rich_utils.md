@@ -1,7 +1,7 @@
 ---
 title: flytekit.interaction.rich_utils
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -13,28 +13,11 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`RichCallback`](.././flytekit.interaction.rich_utils#flytekitinteractionrich_utilsrichcallback) | Base class and interface for callback mechanism. |
+| [`RichCallback`](.././flytekit.interaction.rich_utils#flytekitinteractionrich_utilsrichcallback) |  |
 
 ## flytekit.interaction.rich_utils.RichCallback
 
-Base class and interface for callback mechanism
-
-This class can be used directly for monitoring file transfers by
-providing ``callback=Callback(hooks=...)`` (see the ``hooks`` argument,
-below), or subclassed for more specialised behaviour.
-
-Parameters
-----------
-size: int (optional)
-    Nominal quantity for the value that corresponds to a complete
-    transfer, e.g., total number of tiles or total number of
-    bytes
-value: int (0)
-    Starting internal counter value
-hooks: dict or None
-    A dict of named functions to be called on each update. The signature
-    of these must be ``f(size, value, **kwargs)``
-
+### Parameters
 
 ```python
 class RichCallback(
@@ -42,10 +25,10 @@ class RichCallback(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `rich_kwargs` | `typing.Optional[typing.Dict]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `rich_kwargs` | `typing.Optional[typing.Dict]` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -80,9 +63,9 @@ Parameters
 value: int
 
 
-| Parameter | Type |
-|-|-|
-| `value` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` |  | |
 
 #### as_callback()
 
@@ -98,9 +81,9 @@ For the special value of ``None``, return the global instance of
 ``callback=DEFAULT_CALLBACK`` directly in a method signature.
 
 
-| Parameter | Type |
-|-|-|
-| `maybe_callback` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `maybe_callback` |  | |
 
 #### branch()
 
@@ -131,11 +114,11 @@ Returns
 -------
 
 
-| Parameter | Type |
-|-|-|
-| `path_1` |  |
-| `path_2` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path_1` |  | |
+| `path_2` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### branch_coro()
 
@@ -147,9 +130,9 @@ def branch_coro(
 Wraps a coroutine, and pass a new child callback to it.
 
 
-| Parameter | Type |
-|-|-|
-| `fn` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `fn` |  | |
 
 #### branched()
 
@@ -188,11 +171,11 @@ callback: Callback
     A callback instance to be passed to the child method
 
 
-| Parameter | Type |
-|-|-|
-| `path_1` |  |
-| `path_2` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path_1` |  | |
+| `path_2` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### call()
 
@@ -213,10 +196,10 @@ hook_name: str or None
 kwargs: passed on to (all) hook(s)
 
 
-| Parameter | Type |
-|-|-|
-| `hook_name` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `hook_name` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### close()
 
@@ -234,10 +217,10 @@ def no_op(
     __,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `_` |  |
-| `__` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `_` |  | |
+| `__` |  | |
 
 #### relative_update()
 
@@ -255,9 +238,9 @@ Parameters
 inc: int
 
 
-| Parameter | Type |
-|-|-|
-| `inc` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `inc` |  | |
 
 #### set_size()
 
@@ -276,9 +259,9 @@ Parameters
 size: int
 
 
-| Parameter | Type |
-|-|-|
-| `size` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `size` |  | |
 
 #### wrap()
 
@@ -295,7 +278,7 @@ iterable: Iterable
     The iterable that is being wrapped
 
 
-| Parameter | Type |
-|-|-|
-| `iterable` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `iterable` |  | |
 

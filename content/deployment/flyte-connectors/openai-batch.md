@@ -1,7 +1,7 @@
 ---
 title: OpenAI Batch connector
 weight: 14
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # OpenAI Batch Connector

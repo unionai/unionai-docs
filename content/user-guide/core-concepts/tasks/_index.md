@@ -1,11 +1,14 @@
 ---
 title: Tasks
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: false
+llm_readable_bundle: true
 ---
 
 # Tasks
+
+{{< llm-bundle-note >}}
 
 Tasks are the fundamental units of compute in {{< key product_name >}}.
 They are independently executable, strongly typed, and containerized building blocks that make up workflows.
@@ -31,18 +34,10 @@ The {{< key product_name >}} type system is also used for caching, data lineage 
 
 While (most) tasks are locally executable, when a task is deployed to {{< key product_name >}} as part of the registration process it is containerized and run in its own independent Kubernetes pod.
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 This allows tasks to have their own independent set of [software dependencies](./task-software-environment/_index) and [hardware requirements](./task-hardware-environment/_index).
-For example, a task that requires a GPU can be deployed to {{< key product_name >}} with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant serverless >}}
-{{< markdown >}}
-
-This allows tasks to have their own independent set of [software dependencies](../../core-concepts/image-spec) and [hardware requirements](./task-hardware-environment/_index).
 For example, a task that requires a GPU can be deployed to {{< key product_name >}} with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 
 {{< /markdown >}}
@@ -68,7 +63,7 @@ When deciding if a unit of execution is suitable to be encapsulated as a task, c
 
 For details on task caching, see [Caching](../caching).
 
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 ## Workflows can contain many types of tasks
 

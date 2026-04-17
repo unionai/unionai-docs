@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.tracker
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -36,14 +36,16 @@ layout: py_api
 ```python
 def extract_task_module(
     f: typing.Union[typing.Callable, flytekit.core.tracker.TrackedInstance],
-) -> n: [name to use: str, module_name: str, function_name: str, full_path: str]
+) -> typing.Tuple[str, str, str, str]
 ```
 Returns the task-name, absolute module and the string name of the callable.
 
 
-| Parameter | Type |
-|-|-|
-| `f` | `typing.Union[typing.Callable, flytekit.core.tracker.TrackedInstance]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `f` | `typing.Union[typing.Callable, flytekit.core.tracker.TrackedInstance]` | A task or any other callable |
+
+**Returns:** [name to use: str, module_name: str, function_name: str, full_path: str]
 
 #### get_full_module_path()
 
@@ -53,10 +55,10 @@ def get_full_module_path(
     mod_name: str,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `mod` | `module` |
-| `mod_name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `mod` | `module` | |
+| `mod_name` | `str` | |
 
 #### import_module_from_file()
 
@@ -66,10 +68,10 @@ def import_module_from_file(
     file,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `module_name` |  |
-| `file` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `module_name` |  | |
+| `file` |  | |
 
 #### is_functools_wrapped_module_level()
 
@@ -117,9 +119,9 @@ wrapped function. Since ``define_inner_wrapped_fn`` doesn't update the __qualnam
 function's __qualname__ won't match its __name__.
 
 
-| Parameter | Type |
-|-|-|
-| `func` | `typing.Callable` |
+| Parameter | Type | Description |
+|-|-|-|
+| `func` | `typing.Callable` | |
 
 #### is_ipython_or_pickle_exists()
 
@@ -147,7 +149,7 @@ def isnested(
 ```
 Returns true if a function is local to another function and is not accessible through a module
 
-This would essentially be any function with a `.<local>.` (defined within a function) e.g.
+This would essentially be any function with a `.&lt;local&gt;.` (defined within a function) e.g.
 
 ```python
 def foo():
@@ -159,9 +161,9 @@ def foo():
 In the above example `foo_inner` is the local function or a nested function.
 
 
-| Parameter | Type |
-|-|-|
-| `func` | `typing.Callable` |
+| Parameter | Type | Description |
+|-|-|-|
+| `func` | `typing.Callable` | |
 
 #### istestfunction()
 
@@ -176,9 +178,9 @@ A test module has to have `test_` as the prefix or `_test` as the suffix.
 False in all other cases.
 
 
-| Parameter | Type |
-|-|-|
-| `func` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `func` |  | |
 
 ## flytekit.core.tracker.InstanceTrackingMeta
 
@@ -196,11 +198,13 @@ Please see the notes for the metaclass above first.
 
 This functionality has two use-cases currently,
 * Keep track of naming for non-function ``PythonAutoContainerTasks``.  That is, things like the
-  {{< py_class_ref flytekit.extras.sqlite3.task.SQLite3Task >}} task.
-* Task resolvers, because task resolvers are instances of {{< py_class_ref flytekit.core.python_auto_container.TaskResolverMixin >}}
+  {{&lt; py_class_ref flytekit.extras.sqlite3.task.SQLite3Task &gt;}} task.
+* Task resolvers, because task resolvers are instances of {{&lt; py_class_ref flytekit.core.python_auto_container.TaskResolverMixin &gt;}}
   classes, not the classes themselves, which means we need to look on the left hand side of them to see how to
   find them at task execution time.
 
+
+### Parameters
 
 ```python
 class TrackedInstance(
@@ -208,10 +212,18 @@ class TrackedInstance(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `instantiated_in` | `None` |  |
+| `lhs` | `None` |  |
+| `location` | `None` |  |
 
 ### Methods
 
@@ -225,11 +237,3 @@ class TrackedInstance(
 ```python
 def find_lhs()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `instantiated_in` |  |  |
-| `lhs` |  |  |
-| `location` |  |  |
-

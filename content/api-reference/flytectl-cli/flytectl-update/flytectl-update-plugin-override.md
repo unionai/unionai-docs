@@ -1,6 +1,6 @@
 ---
 title: flytectl update plugin-override
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl update plugin-override

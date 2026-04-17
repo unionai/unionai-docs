@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.worker_queue
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -14,6 +14,7 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`Controller`](.././flytekit.core.worker_queue#flytekitcoreworker_queuecontroller) | This controller object is responsible for kicking off and monitoring executions against a Flyte Admin endpoint. |
+| [`ItemStatus`](.././flytekit.core.worker_queue#flytekitcoreworker_queueitemstatus) |  |
 | [`Update`](.././flytekit.core.worker_queue#flytekitcoreworker_queueupdate) |  |
 | [`WorkItem`](.././flytekit.core.worker_queue#flytekitcoreworker_queueworkitem) | This is a class to keep track of what the user requested. |
 
@@ -42,6 +43,8 @@ Executions that should be kicked off will be kicked off, and ones that are runni
 in a loop similar to a controller loop in a k8s operator.
 
 
+### Parameters
+
 ```python
 class Controller(
     remote: FlyteRemote,
@@ -51,13 +54,13 @@ class Controller(
     exec_prefix: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `remote` | `FlyteRemote` |
-| `ss` | `SerializationSettings` |
-| `tag` | `str` |
-| `root_tag` | `str` |
-| `exec_prefix` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `remote` | `FlyteRemote` | |
+| `ss` | `SerializationSettings` | |
+| `tag` | `str` | |
+| `root_tag` | `str` | |
+| `exec_prefix` | `str` | |
 
 ### Methods
 
@@ -85,10 +88,10 @@ def add(
 Add an entity along with the requested inputs to be submitted to Admin for running and return a future
 
 
-| Parameter | Type |
-|-|-|
-| `entity` | `RunnableEntity` |
-| `input_kwargs` | `dict[str, typing.Any]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `entity` | `RunnableEntity` | |
+| `input_kwargs` | `dict[str, typing.Any]` | |
 
 #### for_sandbox()
 
@@ -97,9 +100,9 @@ def for_sandbox(
     exec_prefix: typing.Optional[str],
 ) -> Controller
 ```
-| Parameter | Type |
-|-|-|
-| `exec_prefix` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `exec_prefix` | `typing.Optional[str]` | |
 
 #### get_env()
 
@@ -121,11 +124,11 @@ def get_execution_name(
 Make a deterministic name
 
 
-| Parameter | Type |
-|-|-|
-| `entity` | `RunnableEntity` |
-| `idx` | `int` |
-| `input_kwargs` | `dict[str, typing.Any]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `entity` | `RunnableEntity` | |
+| `idx` | `int` | |
+| `input_kwargs` | `dict[str, typing.Any]` | |
 
 #### get_labels()
 
@@ -142,9 +145,9 @@ kicking off this execution.
 def get_signal_handler()
 ```
 TODO: At some point, this loop would be ideally managed by the loop manager, and the signal handler should
-  gracefully initiate shutdown of all loops, calling .cancel() on all tasks, allowing each loop to clean up,
-  starting with the deepest loop/thread first and working up.
-  https://github.com/flyteorg/flyte/issues/6068
+gracefully initiate shutdown of all loops, calling .cancel() on all tasks, allowing each loop to clean up,
+starting with the deepest loop/thread first and working up.
+https://github.com/flyteorg/flyte/issues/6068
 
 
 #### launch_execution()
@@ -158,10 +161,10 @@ def launch_execution(
 This function launches executions.
 
 
-| Parameter | Type |
-|-|-|
-| `wi` | `WorkItem` |
-| `idx` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `wi` | `WorkItem` | |
+| `idx` | `int` | |
 
 #### reconcile_one()
 
@@ -174,9 +177,9 @@ This is responsible for processing one work item. Will launch, update, set error
 Any errors are captured in the update object.
 
 
-| Parameter | Type |
-|-|-|
-| `update` | `Update` |
+| Parameter | Type | Description |
+|-|-|-|
+| `update` | `Update` | |
 
 #### render_html()
 
@@ -186,7 +189,11 @@ def render_html()
 Render the callstack as a deck presentation to be shown after eager workflow execution.
 
 
+## flytekit.core.worker_queue.ItemStatus
+
 ## flytekit.core.worker_queue.Update
+
+### Parameters
 
 ```python
 class Update(
@@ -197,19 +204,21 @@ class Update(
     error: typing.Optional[BaseException],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `work_item` | `WorkItem` |
-| `idx` | `int` |
-| `status` | `typing.Optional[ItemStatus]` |
-| `wf_exec` | `typing.Optional[FlyteWorkflowExecution]` |
-| `error` | `typing.Optional[BaseException]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `work_item` | `WorkItem` | |
+| `idx` | `int` | |
+| `status` | `typing.Optional[ItemStatus]` | |
+| `wf_exec` | `typing.Optional[FlyteWorkflowExecution]` | |
+| `error` | `typing.Optional[BaseException]` | |
 
 ## flytekit.core.worker_queue.WorkItem
 
 This is a class to keep track of what the user requested. Since it captures the arguments that the user wants
 to run the entity with, an arbitrary map, can't make this frozen.
 
+
+### Parameters
 
 ```python
 class WorkItem(
@@ -223,20 +232,20 @@ class WorkItem(
     uuid: typing.Optional[uuid.UUID],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `entity` | `RunnableEntity` |
-| `input_kwargs` | `dict[str, typing.Any]` |
-| `result` | `typing.Any` |
-| `error` | `typing.Optional[BaseException]` |
-| `status` | `ItemStatus` |
-| `wf_exec` | `typing.Optional[FlyteWorkflowExecution]` |
-| `python_interface` | `typing.Optional[Interface]` |
-| `uuid` | `typing.Optional[uuid.UUID]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `entity` | `RunnableEntity` | |
+| `input_kwargs` | `dict[str, typing.Any]` | |
+| `result` | `typing.Any` | |
+| `error` | `typing.Optional[BaseException]` | |
+| `status` | `ItemStatus` | |
+| `wf_exec` | `typing.Optional[FlyteWorkflowExecution]` | |
+| `python_interface` | `typing.Optional[Interface]` | |
+| `uuid` | `typing.Optional[uuid.UUID]` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `is_in_terminal_state` |  |  |
+| `is_in_terminal_state` | `None` |  |
 

@@ -1,6 +1,6 @@
 ---
 title: flytectl delete execution
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl delete execution

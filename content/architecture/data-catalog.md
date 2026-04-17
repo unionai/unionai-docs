@@ -1,7 +1,7 @@
 ---
 title: Data catalog
 weight: 6
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # Data catalog

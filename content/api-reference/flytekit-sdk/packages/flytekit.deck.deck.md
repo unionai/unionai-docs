@@ -1,7 +1,7 @@
 ---
 title: flytekit.deck.deck
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -14,6 +14,7 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`Deck`](.././flytekit.deck.deck#flytekitdeckdeckdeck) | Deck enable users to get customizable and default visibility into their tasks. |
+| [`DeckField`](.././flytekit.deck.deck#flytekitdeckdeckdeckfield) | DeckField is used to specify the fields that will be rendered in the deck. |
 | [`TimeLineDeck`](.././flytekit.deck.deck#flytekitdeckdecktimelinedeck) | The TimeLineDeck class is designed to render the execution time of each part of a task. |
 
 ### Methods
@@ -40,9 +41,9 @@ def generate_time_table(
     data: dict,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `data` | `dict` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `dict` | |
 
 #### get_deck_template()
 
@@ -87,6 +88,8 @@ def t2() -> Annotated[pd.DataFrame, TopFrameRenderer(10)]:
 ```
 
 
+### Parameters
+
 ```python
 class Deck(
     name: str,
@@ -94,11 +97,18 @@ class Deck(
     auto_add_to_deck: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `html` | `typing.Optional[str]` |
-| `auto_add_to_deck` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `html` | `typing.Optional[str]` | |
+| `auto_add_to_deck` | `bool` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `html` | `None` |  |
+| `name` | `None` |  |
 
 ### Methods
 
@@ -115,21 +125,32 @@ def append(
     html: str,
 ) -> Deck
 ```
-| Parameter | Type |
-|-|-|
-| `html` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `html` | `str` | |
 
 #### publish()
 
 ```python
 def publish()
 ```
-### Properties
+## flytekit.deck.deck.DeckField
 
-| Property | Type | Description |
+DeckField is used to specify the fields that will be rendered in the deck.
+
+
+### Parameters
+
+```python
+class DeckField(
+    args,
+    kwds,
+)
+```
+| Parameter | Type | Description |
 |-|-|-|
-| `html` |  |  |
-| `name` |  |  |
+| `args` | `*args` | |
+| `kwds` |  | |
 
 ## flytekit.deck.deck.TimeLineDeck
 
@@ -139,6 +160,8 @@ This approach is taken because rendering a timeline graph with partial data woul
 Instead, the complete data set is used to create a comprehensive visualization of the execution time of each part of the task.
 
 
+### Parameters
+
 ```python
 class TimeLineDeck(
     name: str,
@@ -146,11 +169,18 @@ class TimeLineDeck(
     auto_add_to_deck: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `html` | `typing.Optional[str]` |
-| `auto_add_to_deck` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `html` | `typing.Optional[str]` | |
+| `auto_add_to_deck` | `bool` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `html` | `None` |  |
+| `name` | `None` |  |
 
 ### Methods
 
@@ -168,9 +198,9 @@ def append(
     html: str,
 ) -> Deck
 ```
-| Parameter | Type |
-|-|-|
-| `html` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `html` | `str` | |
 
 #### append_time_info()
 
@@ -179,19 +209,12 @@ def append_time_info(
     info: dict,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `info` | `dict` |
+| Parameter | Type | Description |
+|-|-|-|
+| `info` | `dict` | |
 
 #### publish()
 
 ```python
 def publish()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `html` |  |  |
-| `name` |  |  |
-

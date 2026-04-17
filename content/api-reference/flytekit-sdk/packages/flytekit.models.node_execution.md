@@ -1,7 +1,7 @@
 ---
 title: flytekit.models.node_execution
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -21,16 +21,26 @@ layout: py_api
 
 ## flytekit.models.node_execution.DynamicWorkflowNodeMetadata
 
+### Parameters
+
 ```python
 class DynamicWorkflowNodeMetadata(
     id: flytekit.models.core.identifier.Identifier,
     compiled_workflow: flytekit.models.core.compiler.CompiledWorkflowClosure,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` | `flytekit.models.core.identifier.Identifier` |
-| `compiled_workflow` | `flytekit.models.core.compiler.CompiledWorkflowClosure` |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` | `flytekit.models.core.identifier.Identifier` | |
+| `compiled_workflow` | `flytekit.models.core.compiler.CompiledWorkflowClosure` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `compiled_workflow` | `None` |  |
+| `id` | `None` |  |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -38,9 +48,8 @@ class DynamicWorkflowNodeMetadata(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -50,9 +59,9 @@ def from_flyte_idl(
     p: flyteidl.admin.node_execution_pb2.DynamicWorkflowNodeMetadata,
 ) -> DynamicWorkflowNodeMetadata
 ```
-| Parameter | Type |
-|-|-|
-| `p` | `flyteidl.admin.node_execution_pb2.DynamicWorkflowNodeMetadata` |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` | `flyteidl.admin.node_execution_pb2.DynamicWorkflowNodeMetadata` | |
 
 #### serialize_to_string()
 
@@ -64,31 +73,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `compiled_workflow` |  |  |
-| `id` |  |  |
-| `is_empty` |  |  |
-
 ## flytekit.models.node_execution.NodeExecution
+
+### Parameters
 
 ```python
 class NodeExecution(
@@ -98,12 +92,22 @@ class NodeExecution(
     metadata: flyteidl.admin.node_execution_pb2.NodeExecutionMetaData,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `input_uri` |  |
-| `closure` |  |
-| `metadata` | `flyteidl.admin.node_execution_pb2.NodeExecutionMetaData` |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `input_uri` |  | |
+| `closure` |  | |
+| `metadata` | `flyteidl.admin.node_execution_pb2.NodeExecutionMetaData` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `closure` | `None` |  |
+| `id` | `None` |  |
+| `input_uri` | `None` |  |
+| `is_empty` | `None` |  |
+| `metadata` | `None` |  |
 
 ### Methods
 
@@ -111,9 +115,8 @@ class NodeExecution(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -123,9 +126,9 @@ def from_flyte_idl(
     p: flyteidl.admin.node_execution_pb2.NodeExecution,
 ) -> NodeExecution
 ```
-| Parameter | Type |
-|-|-|
-| `p` | `flyteidl.admin.node_execution_pb2.NodeExecution` |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` | `flyteidl.admin.node_execution_pb2.NodeExecution` | |
 
 #### serialize_to_string()
 
@@ -137,36 +140,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `closure` |  | {{< multiline >}}:rtype: NodeExecutionClosure
-{{< /multiline >}} |
-| `id` |  | {{< multiline >}}:rtype: flytekit.models.core.identifier.NodeExecutionIdentifier
-{{< /multiline >}} |
-| `input_uri` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `metadata` |  |  |
-
 ## flytekit.models.node_execution.NodeExecutionClosure
+
+### Parameters
 
 ```python
 class NodeExecutionClosure(
@@ -182,18 +165,35 @@ class NodeExecutionClosure(
     updated_at: typing.Optional[datetime.datetime],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `phase` |  |
-| `started_at` |  |
-| `duration` |  |
-| `output_uri` |  |
-| `deck_uri` |  |
-| `error` |  |
-| `workflow_node_metadata` | `typing.Optional[flytekit.models.node_execution.WorkflowNodeMetadata]` |
-| `task_node_metadata` | `typing.Optional[flytekit.models.node_execution.TaskNodeMetadata]` |
-| `created_at` | `typing.Optional[datetime.datetime]` |
-| `updated_at` | `typing.Optional[datetime.datetime]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `phase` |  | |
+| `started_at` |  | |
+| `duration` |  | |
+| `output_uri` |  | |
+| `deck_uri` |  | |
+| `error` |  | |
+| `workflow_node_metadata` | `typing.Optional[flytekit.models.node_execution.WorkflowNodeMetadata]` | |
+| `task_node_metadata` | `typing.Optional[flytekit.models.node_execution.TaskNodeMetadata]` | |
+| `created_at` | `typing.Optional[datetime.datetime]` | |
+| `updated_at` | `typing.Optional[datetime.datetime]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `created_at` | `None` |  |
+| `deck_uri` | `None` |  |
+| `duration` | `None` |  |
+| `error` | `None` |  |
+| `is_empty` | `None` |  |
+| `output_uri` | `None` |  |
+| `phase` | `None` |  |
+| `started_at` | `None` |  |
+| `target_metadata` | `None` |  |
+| `task_node_metadata` | `None` |  |
+| `updated_at` | `None` |  |
+| `workflow_node_metadata` | `None` |  |
 
 ### Methods
 
@@ -201,9 +201,8 @@ class NodeExecutionClosure(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### from_flyte_idl()
@@ -211,11 +210,13 @@ class NodeExecutionClosure(
 ```python
 def from_flyte_idl(
     p,
-) -> e: NodeExecutionClosure
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
+
+**Returns:** NodeExecutionClosure
 
 #### serialize_to_string()
 
@@ -227,49 +228,18 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.node_execution_pb2.NodeExecutionClosure
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `created_at` |  |  |
-| `deck_uri` |  | {{< multiline >}}:rtype: str
-{{< /multiline >}} |
-| `duration` |  | {{< multiline >}}:rtype: datetime.timedelta
-{{< /multiline >}} |
-| `error` |  | {{< multiline >}}:rtype: flytekit.models.core.execution.ExecutionError
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `output_uri` |  | {{< multiline >}}:rtype: Text
-{{< /multiline >}} |
-| `phase` |  | {{< multiline >}}:rtype: int
-{{< /multiline >}} |
-| `started_at` |  | {{< multiline >}}:rtype: datetime.datetime
-{{< /multiline >}} |
-| `target_metadata` |  |  |
-| `task_node_metadata` |  |  |
-| `updated_at` |  |  |
-| `workflow_node_metadata` |  |  |
+**Returns:** flyteidl.admin.node_execution_pb2.NodeExecutionClosure
 
 ## flytekit.models.node_execution.TaskNodeMetadata
+
+### Parameters
 
 ```python
 class TaskNodeMetadata(
@@ -277,10 +247,18 @@ class TaskNodeMetadata(
     catalog_key: flytekit.models.core.catalog.CatalogMetadata,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cache_status` | `int` |
-| `catalog_key` | `flytekit.models.core.catalog.CatalogMetadata` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cache_status` | `int` | |
+| `catalog_key` | `flytekit.models.core.catalog.CatalogMetadata` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cache_status` | `None` |  |
+| `catalog_key` | `None` |  |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -288,9 +266,8 @@ class TaskNodeMetadata(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -300,9 +277,9 @@ def from_flyte_idl(
     p: flyteidl.admin.node_execution_pb2.TaskNodeMetadata,
 ) -> TaskNodeMetadata
 ```
-| Parameter | Type |
-|-|-|
-| `p` | `flyteidl.admin.node_execution_pb2.TaskNodeMetadata` |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` | `flyteidl.admin.node_execution_pb2.TaskNodeMetadata` | |
 
 #### serialize_to_string()
 
@@ -314,40 +291,32 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `cache_status` |  |  |
-| `catalog_key` |  |  |
-| `is_empty` |  |  |
-
 ## flytekit.models.node_execution.WorkflowNodeMetadata
+
+### Parameters
 
 ```python
 class WorkflowNodeMetadata(
     execution_id: flytekit.models.core.identifier.WorkflowExecutionIdentifier,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `execution_id` | `flytekit.models.core.identifier.WorkflowExecutionIdentifier` |
+| Parameter | Type | Description |
+|-|-|-|
+| `execution_id` | `flytekit.models.core.identifier.WorkflowExecutionIdentifier` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `execution_id` | `None` |  |
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -355,9 +324,8 @@ class WorkflowNodeMetadata(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -367,9 +335,9 @@ def from_flyte_idl(
     p: flyteidl.admin.node_execution_pb2.WorkflowNodeMetadata,
 ) -> WorkflowNodeMetadata
 ```
-| Parameter | Type |
-|-|-|
-| `p` | `flyteidl.admin.node_execution_pb2.WorkflowNodeMetadata` |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` | `flyteidl.admin.node_execution_pb2.WorkflowNodeMetadata` | |
 
 #### serialize_to_string()
 
@@ -381,26 +349,10 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `execution_id` |  |  |
-| `is_empty` |  |  |
-

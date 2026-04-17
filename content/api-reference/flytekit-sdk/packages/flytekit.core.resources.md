@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.resources
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -47,10 +47,10 @@ Convert public extended resources to idl.
 
 
 
-| Parameter | Type |
-|-|-|
-| `accelerator` | `typing.Optional[flytekit.extras.accelerators.BaseAccelerator]` |
-| `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `accelerator` | `typing.Optional[flytekit.extras.accelerators.BaseAccelerator]` | The accelerator to use for this task. |
+| `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` | If True, then shared memory will be attached to the container where the size is equal to the allocated memory. If str, then the shared memory is set to that size. |
 
 #### convert_resources_to_resource_model()
 
@@ -58,16 +58,18 @@ Convert public extended resources to idl.
 def convert_resources_to_resource_model(
     requests: typing.Optional[flytekit.core.resources.Resources],
     limits: typing.Optional[flytekit.core.resources.Resources],
-) -> n: The given resources as requests and limits
+) -> flytekit.models.task.Resources
 ```
 Convert flytekit ``Resources`` objects to a Resources model
 
 
 
-| Parameter | Type |
-|-|-|
-| `requests` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `limits` | `typing.Optional[flytekit.core.resources.Resources]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `requests` | `typing.Optional[flytekit.core.resources.Resources]` | Resource requests. Optional, defaults to ``None`` |
+| `limits` | `typing.Optional[flytekit.core.resources.Resources]` | Resource limits. Optional, defaults to ``None`` |
+
+**Returns:** The given resources as requests and limits
 
 #### pod_spec_from_resources()
 
@@ -79,14 +81,16 @@ def pod_spec_from_resources(
     k8s_gpu_resource_key: str,
 ) -> V1PodSpec
 ```
-| Parameter | Type |
-|-|-|
-| `primary_container_name` | `typing.Optional[str]` |
-| `requests` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `limits` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `k8s_gpu_resource_key` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `primary_container_name` | `typing.Optional[str]` | |
+| `requests` | `typing.Optional[flytekit.core.resources.Resources]` | |
+| `limits` | `typing.Optional[flytekit.core.resources.Resources]` | |
+| `k8s_gpu_resource_key` | `str` | |
 
 ## flytekit.core.resources.ResourceSpec
+
+### Parameters
 
 ```python
 class ResourceSpec(
@@ -94,10 +98,10 @@ class ResourceSpec(
     limits: flytekit.core.resources.Resources,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `requests` | `flytekit.core.resources.Resources` |
-| `limits` | `flytekit.core.resources.Resources` |
+| Parameter | Type | Description |
+|-|-|-|
+| `requests` | `flytekit.core.resources.Resources` | |
+| `limits` | `flytekit.core.resources.Resources` | |
 
 ### Methods
 
@@ -118,10 +122,10 @@ def from_dict(
     dialect,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `d` |  |
-| `dialect` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `d` |  | |
+| `dialect` |  | |
 
 #### from_json()
 
@@ -132,11 +136,11 @@ def from_json(
     from_dict_kwargs: typing.Any,
 ) -> ~T
 ```
-| Parameter | Type |
-|-|-|
-| `data` | `typing.Union[str, bytes, bytearray]` |
-| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` |
-| `from_dict_kwargs` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `typing.Union[str, bytes, bytearray]` | |
+| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` | |
+| `from_dict_kwargs` | `typing.Any` | |
 
 #### from_multiple_resource()
 
@@ -148,9 +152,9 @@ def from_multiple_resource(
 Convert Resources that represent both a requests and limits into a ResourceSpec.
 
 
-| Parameter | Type |
-|-|-|
-| `resource` | `flytekit.core.resources.Resources` |
+| Parameter | Type | Description |
+|-|-|-|
+| `resource` | `flytekit.core.resources.Resources` | |
 
 #### to_dict()
 
@@ -165,10 +169,10 @@ def to_json(
     to_dict_kwargs: typing.Any,
 ) -> typing.Union[str, bytes, bytearray]
 ```
-| Parameter | Type |
-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` |
-| `to_dict_kwargs` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` | |
+| `to_dict_kwargs` | `typing.Any` | |
 
 ## flytekit.core.resources.Resources
 
@@ -189,12 +193,14 @@ second value is the limit. If the value is a single value, then both the request
 set to that value. For example, the `Resource(cpu=("1", "2"), mem=1024)` will set the cpu request to 1, cpu limit to 2,
 mem limit and request to 1024.
 
-> [!NOTE]
-> Persistent storage is not currently supported on the Flyte backend.
+&gt; [!NOTE]
+&gt; Persistent storage is not currently supported on the Flyte backend.
 
-Please see the :std:ref:`User Guide <cookbook:customizing task resources>` for detailed examples.
+Please see the :std:ref:`User Guide &lt;cookbook:customizing task resources&gt;` for detailed examples.
 Also refer to the [`K8s conventions.`](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes)
 
+
+### Parameters
 
 ```python
 class Resources(
@@ -204,12 +210,12 @@ class Resources(
     ephemeral_storage: typing.Union[str, int, NoneType],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cpu` | `typing.Union[str, int, float, list, tuple, NoneType]` |
-| `mem` | `typing.Union[str, int, list, tuple, NoneType]` |
-| `gpu` | `typing.Union[str, int, list, tuple, NoneType]` |
-| `ephemeral_storage` | `typing.Union[str, int, NoneType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cpu` | `typing.Union[str, int, float, list, tuple, NoneType]` | |
+| `mem` | `typing.Union[str, int, list, tuple, NoneType]` | |
+| `gpu` | `typing.Union[str, int, list, tuple, NoneType]` | |
+| `ephemeral_storage` | `typing.Union[str, int, NoneType]` | |
 
 ### Methods
 
@@ -229,10 +235,10 @@ def from_dict(
     dialect,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `d` |  |
-| `dialect` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `d` |  | |
+| `dialect` |  | |
 
 #### from_json()
 
@@ -243,11 +249,11 @@ def from_json(
     from_dict_kwargs: typing.Any,
 ) -> ~T
 ```
-| Parameter | Type |
-|-|-|
-| `data` | `typing.Union[str, bytes, bytearray]` |
-| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` |
-| `from_dict_kwargs` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `typing.Union[str, bytes, bytearray]` | |
+| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` | |
+| `from_dict_kwargs` | `typing.Any` | |
 
 #### to_dict()
 
@@ -262,8 +268,8 @@ def to_json(
     to_dict_kwargs: typing.Any,
 ) -> typing.Union[str, bytes, bytearray]
 ```
-| Parameter | Type |
-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` |
-| `to_dict_kwargs` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` | |
+| `to_dict_kwargs` | `typing.Any` | |
 

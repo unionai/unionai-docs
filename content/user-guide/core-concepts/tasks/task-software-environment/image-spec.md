@@ -1,7 +1,7 @@
 ---
 title: Local image building
 weight: 1
-variants: +flyte -serverless +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Local image building
@@ -76,7 +76,7 @@ Additionally, you will need to ensure that the specific image, once pushed to th
 In this example, we use GitHub's `ghcr.io` container registry.
 See [Working with the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) for more information.
 
-{{< variant byoc selfmanaged serverless >}}
+{{< variant union >}}
 {{< markdown >}}
 
 * For an example using Amazon ECR see [ImageSpec with ECR](./image-spec-with-ecr).

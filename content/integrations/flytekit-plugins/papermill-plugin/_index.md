@@ -1,7 +1,7 @@
 ---
 title: Papermill
 weight: 1
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 sidebar_expanded: false
 ---
 

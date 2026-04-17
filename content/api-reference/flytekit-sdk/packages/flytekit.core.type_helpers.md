@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.type_helpers
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -34,7 +34,7 @@ def load_type_from_tag(
 Loads python type from tag
 
 
-| Parameter | Type |
-|-|-|
-| `tag` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tag` | `str` | |
 

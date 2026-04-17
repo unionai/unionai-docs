@@ -1,7 +1,7 @@
 ---
 title: flytekit.interactive.utils
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -36,9 +36,9 @@ def execute_command(
 Execute a command in the shell.
 
 
-| Parameter | Type |
-|-|-|
-| `cmd` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `cmd` |  | |
 
 #### get_task_inputs()
 
@@ -53,11 +53,13 @@ Read task input data from inputs.pb for a specific task function and convert it 
 
 
 
-| Parameter | Type |
-|-|-|
-| `task_module_name` |  |
-| `task_name` |  |
-| `context_working_dir` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_module_name` |  | The name of the Python module containing the task function. |
+| `task_name` |  | The name of the task function within the module. |
+| `context_working_dir` |  | The directory path where the input file and module file are located. |
+
+**Returns:** dict: A dictionary containing the task inputs, converted into Python types and structures.
 
 #### load_module_from_path()
 
@@ -71,8 +73,19 @@ Imports a Python module from a specified file path.
 
 
 
-| Parameter | Type |
+| Parameter | Type | Description |
+|-|-|-|
+| `module_name` |  | The name you want to assign to the imported module. |
+| `path` |  | The file system path to the Python file (.py) that contains the module you want to import. |
+
+**Returns**
+
+module: The imported module.
+
+
+**Raises**
+
+| Exception | Description |
 |-|-|
-| `module_name` |  |
-| `path` |  |
+| `ImportError` | If the module cannot be loaded from the provided path, an ImportError is raised. |
 

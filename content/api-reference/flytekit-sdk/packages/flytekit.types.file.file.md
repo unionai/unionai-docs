@@ -1,7 +1,7 @@
 ---
 title: flytekit.types.file.file
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -14,7 +14,7 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`FlyteFile`](.././flytekit.types.file.file#flytekittypesfilefileflytefile) |  |
-| [`FlyteFilePathTransformer`](.././flytekit.types.file.file#flytekittypesfilefileflytefilepathtransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`FlyteFilePathTransformer`](.././flytekit.types.file.file#flytekittypesfilefileflytefilepathtransformer) |  |
 
 ### Methods
 
@@ -39,6 +39,8 @@ def noop()
 ```
 ## flytekit.types.file.file.FlyteFile
 
+### Parameters
+
 ```python
 class FlyteFile(
     path: typing.Union[str, os.PathLike],
@@ -51,12 +53,20 @@ FlyteFile's init method.
 
 
 
-| Parameter | Type |
-|-|-|
-| `path` | `typing.Union[str, os.PathLike]` |
-| `downloader` | `typing.Callable` |
-| `remote_path` | `typing.Optional[typing.Union[os.PathLike, str, bool]]` |
-| `metadata` | `typing.Optional[dict[str, str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `typing.Union[str, os.PathLike]` | The source path that users are expected to call open() on. |
+| `downloader` | `typing.Callable` | Optional function that can be passed that used to delay downloading of the actual fil until a user actually calls open(). |
+| `remote_path` | `typing.Optional[typing.Union[os.PathLike, str, bool]]` | If the user wants to return something and also specify where it should be uploaded to. Alternatively, if the user wants to specify a remote path for a file that's already in the blob store, the path should point to the location and remote_path should be set to False. |
+| `metadata` | `typing.Optional[dict[str, str]]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `downloaded` | `None` |  |
+| `remote_path` | `None` |  |
+| `remote_source` | `None` | If this is an input to a task, and the original path is an ``s3`` bucket, Flytekit downloads the file for the user. In case the user wants access to the original path, it will be here. |
 
 ### Methods
 
@@ -80,14 +90,12 @@ FlyteFile's init method.
 
 ```python
 def deserialize_flyte_file(
-    args,
-    kwargs,
-)
+    info,
+) -> 'FlyteFile'
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `info` |  | |
 
 #### download()
 
@@ -107,10 +115,10 @@ def from_dict(
     dialect,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `d` |  |
-| `dialect` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `d` |  | |
+| `dialect` |  | |
 
 #### from_json()
 
@@ -121,11 +129,11 @@ def from_json(
     from_dict_kwargs: typing.Any,
 ) -> ~T
 ```
-| Parameter | Type |
-|-|-|
-| `data` | `typing.Union[str, bytes, bytearray]` |
-| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` |
-| `from_dict_kwargs` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `typing.Union[str, bytes, bytearray]` | |
+| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` | |
+| `from_dict_kwargs` | `typing.Any` | |
 
 #### from_source()
 
@@ -137,9 +145,9 @@ def from_source(
 Create a new FlyteFile object with the remote source set to the input
 
 
-| Parameter | Type |
-|-|-|
-| `source` | `str \| os.PathLike` |
+| Parameter | Type | Description |
+|-|-|-|
+| `source` | `str \| os.PathLike` | |
 
 #### new()
 
@@ -151,9 +159,9 @@ def new(
 Create a new FlyteFile object in the current Flyte working directory
 
 
-| Parameter | Type |
-|-|-|
-| `filename` | `str \| os.PathLike` |
+| Parameter | Type | Description |
+|-|-|-|
+| `filename` | `str \| os.PathLike` | |
 
 #### new_remote_file()
 
@@ -167,10 +175,10 @@ Create a new FlyteFile object with a remote path.
 
 
 
-| Parameter | Type |
-|-|-|
-| `name` | `typing.Optional[str]` |
-| `alt` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `typing.Optional[str]` | If you want to specify a different name for the file, you can specify it here. |
+| `alt` | `typing.Optional[str]` | If you want to specify a different prefix head than the default one, you can specify it here. |
 
 #### open()
 
@@ -193,27 +201,22 @@ def copy_file(ff: FlyteFile) -> FlyteFile:
     return new_file
 ```
 
+:type mode: str
+:type cache_type: str, optional
+:type cache_options: Dict[str, Any], optional
 
 
-| Parameter | Type |
-|-|-|
-| `mode` | `str` |
-| `cache_type` | `typing.Optional[str]` |
-| `cache_options` | `typing.Optional[typing.Dict[str, typing.Any]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `mode` | `str` | Open mode. For example |
+| `cache_type` | `typing.Optional[str]` | Specifies the cache type. Possible values are "blockcache", "bytes", "mmap", "readahead", "first", or "background". This is especially useful for large file reads. See https://filesystem-spec.readthedocs.io/en/latest/api.html#readbuffering. |
+| `cache_options` | `typing.Optional[typing.Dict[str, typing.Any]]` | A Dict corresponding to the parameters for the chosen cache_type. Refer to fsspec caching options above. |
 
 #### serialize_flyte_file()
 
 ```python
-def serialize_flyte_file(
-    args,
-    kwargs,
-)
+def serialize_flyte_file()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 #### to_dict()
 
 ```python
@@ -227,29 +230,27 @@ def to_json(
     to_dict_kwargs: typing.Any,
 ) -> typing.Union[str, bytes, bytearray]
 ```
-| Parameter | Type |
-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` |
-| `to_dict_kwargs` | `typing.Any` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `downloaded` |  |  |
-| `remote_path` |  |  |
-| `remote_source` |  | {{< multiline >}}If this is an input to a task, and the original path is an ``s3`` bucket, Flytekit downloads the
-file for the user. In case the user wants access to the original path, it will be here.
-{{< /multiline >}} |
+| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` | |
+| `to_dict_kwargs` | `typing.Any` | |
 
 ## flytekit.types.file.file.FlyteFilePathTransformer
 
-Base transformer type that should be implemented for every python native type that can be handled by flytekit
-
+### Parameters
 
 ```python
 def FlyteFilePathTransformer()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ### Methods
 
 | Method | Description |
@@ -266,6 +267,7 @@ def FlyteFilePathTransformer()
 | [`get_mime_type_from_extension()`](#get_mime_type_from_extension) |  |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -280,10 +282,10 @@ def assert_type(
     v: typing.Union[FlyteFile, os.PathLike, str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `typing.Union[typing.Type[FlyteFile], os.PathLike]` |
-| `v` | `typing.Union[FlyteFile, os.PathLike, str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.Union[typing.Type[FlyteFile], os.PathLike]` | |
+| `v` | `typing.Union[FlyteFile, os.PathLike, str]` | |
 
 #### async_to_literal()
 
@@ -301,12 +303,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.Union[FlyteFile, os.PathLike, str]` |
-| `python_type` | `typing.Type[FlyteFile]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `typing.Union[FlyteFile, os.PathLike, str]` | The actual value to be transformed |
+| `python_type` | `typing.Type[FlyteFile]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### async_to_python_value()
 
@@ -320,11 +322,11 @@ def async_to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `typing.Union[typing.Type[FlyteFile], os.PathLike]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `typing.Union[typing.Type[FlyteFile], os.PathLike]` | Expected native python type that should be returned |
 
 #### dict_to_flyte_file()
 
@@ -334,10 +336,10 @@ def dict_to_flyte_file(
     expected_python_type: typing.Union[typing.Type[FlyteFile], os.PathLike],
 ) -> FlyteFile
 ```
-| Parameter | Type |
-|-|-|
-| `dict_obj` | `typing.Dict[str, str]` |
-| `expected_python_type` | `typing.Union[typing.Type[FlyteFile], os.PathLike]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dict_obj` | `typing.Dict[str, str]` | |
+| `expected_python_type` | `typing.Union[typing.Type[FlyteFile], os.PathLike]` | |
 
 #### from_binary_idl()
 
@@ -350,7 +352,7 @@ def from_binary_idl(
 If the input is from flytekit, the Life Cycle will be as follows:
 
 Life Cycle:
-binary IDL                 -> resolved binary         -> bytes                   -> expected Python object
+binary IDL                 -&gt; resolved binary         -&gt; bytes                   -&gt; expected Python object
 (flytekit customized          (propeller processing)     (flytekit binary IDL)      (flytekit customized
 serialization)                                                                       deserialization)
 
@@ -363,7 +365,6 @@ Example Code:
     def wf(dc: DC):
         t_ff(dc.ff)
 
-Note:
 - The deserialization is the same as put a flyte file in a dataclass, which will deserialize by the mashumaro's API.
 
 Related PR:
@@ -371,10 +372,10 @@ Related PR:
 - Link: https://github.com/flyteorg/flytekit/pull/2554
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `typing.Union[typing.Type[FlyteFile], os.PathLike]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `typing.Union[typing.Type[FlyteFile], os.PathLike]` | |
 
 #### from_generic_idl()
 
@@ -387,7 +388,7 @@ def from_generic_idl(
 If the input is from Flyte Console, the Life Cycle will be as follows:
 
 Life Cycle:
-json str            -> protobuf struct         -> resolved protobuf struct   -> expected Python object
+json str            -&gt; protobuf struct         -&gt; resolved protobuf struct   -&gt; expected Python object
 (console user input)   (console output)           (propeller)                   (flytekit customized deserialization)
 
 Example Code:
@@ -399,7 +400,6 @@ class DC:
 def wf(dc: DC):
     t_ff(dc.ff)
 
-Note:
 - The deserialization is the same as put a flyte file in a dataclass, which will deserialize by the mashumaro's API.
 
 Related PR:
@@ -407,10 +407,10 @@ Related PR:
 - Link: https://github.com/flyteorg/flytekit/pull/2554
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `typing.Union[typing.Type[FlyteFile], os.PathLike]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `typing.Union[typing.Type[FlyteFile], os.PathLike]` | |
 
 #### get_additional_headers()
 
@@ -419,9 +419,9 @@ def get_additional_headers(
     source_path: str | os.PathLike,
 ) -> typing.Dict[str, str]
 ```
-| Parameter | Type |
-|-|-|
-| `source_path` | `str \| os.PathLike` |
+| Parameter | Type | Description |
+|-|-|-|
+| `source_path` | `str \| os.PathLike` | |
 
 #### get_format()
 
@@ -430,9 +430,9 @@ def get_format(
     t: typing.Union[typing.Type[FlyteFile], os.PathLike],
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `typing.Union[typing.Type[FlyteFile], os.PathLike]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.Union[typing.Type[FlyteFile], os.PathLike]` | |
 
 #### get_literal_type()
 
@@ -444,9 +444,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `typing.Union[typing.Type[FlyteFile], os.PathLike]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.Union[typing.Type[FlyteFile], os.PathLike]` | |
 
 #### get_mime_type_from_extension()
 
@@ -455,9 +455,9 @@ def get_mime_type_from_extension(
     extension: str,
 ) -> typing.Union[str, typing.Sequence[str]]
 ```
-| Parameter | Type |
-|-|-|
-| `extension` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `extension` | `str` | |
 
 #### guess_python_type()
 
@@ -469,9 +469,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -481,10 +481,28 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_html()
 
@@ -498,11 +516,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -520,12 +538,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.Any` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `typing.Any` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -539,11 +557,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 #### validate_file_type()
 
@@ -559,19 +577,14 @@ it logs a debug message and returns. If the actual file does not exist, it retur
 
 
 
-| Parameter | Type |
-|-|-|
-| `python_type` | `typing.Type[FlyteFile]` |
-| `source_path` | `typing.Union[str, os.PathLike]` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
+| `python_type` | `typing.Type[FlyteFile]` | The expected type of the file |
+| `source_path` | `typing.Union[str, os.PathLike]` | The path to the file to validate |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `ValueError` | If the real type of the file is not the same as the expected python_type |
 

@@ -1,7 +1,7 @@
 ---
 title: FlyteFile and FlyteDirectory
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 
@@ -357,7 +357,7 @@ if __name__ == "__main__":
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 In {{< key product_name >}}, each task runs in its own container. This means that a file or directory created locally in one task will not automatically be available in other tasks.
@@ -455,27 +455,12 @@ def workflow():
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant serverless >}}
-{{< markdown >}}
 
-> [!NOTE] Upload location
-> With {{< key product_name >}} Serverless, the remote location to which `FlyteFile` and `FlyteDirectory` upload container-local files is always a randomly generated (universally unique) location in {{< key product_name >}}'s internal object store. It cannot be changed.
->
-> With {{< key product_name >}} BYOC, the upload location is configurable.
-> See [FlyteFile and FlyteDirectory > Changing the data upload location](../data-input-output/flyte-file-and-flyte-directory#changing-the-data-upload-location).
-
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 ## Changing the data upload location
 
-> [!NOTE] Upload location
-> With {{< key product_name >}} Serverless, the remote location to which `FlyteFile` and `FlyteDirectory` upload container-local
-> files is always a randomly generated (universally unique) location in {{< key product_name >}}'s internal object store. It cannot be changed.
->
 > With {{< key product_name >}} BYOC, the upload location is configurable.
 
 By default, {{< key product_name >}} uploads local files or directories to the default **raw data store** ({{< key product_name >}}'s dedicated internal object store).

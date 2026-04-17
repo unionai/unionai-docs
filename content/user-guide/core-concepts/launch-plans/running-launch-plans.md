@@ -1,7 +1,7 @@
 ---
 title: Running launch plans
 weight: 6
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Running launch plans
@@ -34,7 +34,6 @@ $ uctl create execution \
 
 See [Uctl CLI](../../../api-reference/uctl-cli) for more details.
 
-<!-- TODO: adjust Remote code for serverless vs everything else -->
 ## Running a launch plan in Python with `{{< key kit_remote >}}`
 
 The following code executes a launch plan using `{{< key kit_remote >}}`:

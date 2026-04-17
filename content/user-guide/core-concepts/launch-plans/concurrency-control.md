@@ -1,7 +1,7 @@
 ---
 title: Concurrency control
 weight: 10
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Concurrency control

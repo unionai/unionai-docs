@@ -1,6 +1,6 @@
 ---
 title: flytectl delete app
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl delete app

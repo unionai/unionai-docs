@@ -1,7 +1,7 @@
 ---
 title: Actors and regular tasks
 weight: 1
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Actors and regular tasks

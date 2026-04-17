@@ -1,6 +1,6 @@
 ---
 title: uctl apply clusterpoolconfig
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl apply clusterpoolconfig

@@ -1,7 +1,7 @@
 ---
 title: flytekit.remote.metrics
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -33,9 +33,9 @@ def aggregate_reference_span(
     span,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `span` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `span` |  | |
 
 #### aggregate_spans()
 
@@ -44,9 +44,9 @@ def aggregate_spans(
     spans,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `spans` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `spans` |  | |
 
 #### print_span()
 
@@ -57,22 +57,30 @@ def print_span(
     identifier,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `span` |  |
-| `indent` |  |
-| `identifier` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `span` |  | |
+| `indent` |  | |
+| `identifier` |  | |
 
 ## flytekit.remote.metrics.FlyteExecutionSpan
+
+### Parameters
 
 ```python
 class FlyteExecutionSpan(
     span: flyteidl.core.metrics_pb2.Span,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `span` | `flyteidl.core.metrics_pb2.Span` |
+| Parameter | Type | Description |
+|-|-|-|
+| `span` | `flyteidl.core.metrics_pb2.Span` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -82,9 +90,8 @@ class FlyteExecutionSpan(
 | [`explain()`](#explain) |  |
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### dump()
@@ -104,9 +111,9 @@ def from_flyte_idl(
     pb,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb` |  | |
 
 #### serialize_to_string()
 
@@ -118,25 +125,10 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-

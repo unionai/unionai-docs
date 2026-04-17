@@ -1,7 +1,7 @@
 ---
 title: flytekit.types.error.error
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -27,9 +27,20 @@ layout: py_api
 Enables converting a python type FlyteError to LiteralType.Error
 
 
+### Parameters
+
 ```python
 def ErrorTransformer()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ### Methods
 
 | Method | Description |
@@ -40,6 +51,7 @@ def ErrorTransformer()
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -53,10 +65,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
+| `v` | `T` | |
 
 #### from_binary_idl()
 
@@ -70,19 +82,19 @@ This function primarily handles deserialization for untyped dicts, dataclasses, 
 
 For untyped dict, dataclass, and pydantic basemodel:
 Life Cycle (Untyped Dict as example):
-    python val -> msgpack bytes -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                             (from_binary_idl)
 
 For attribute access:
 Life Cycle:
-    python val -> msgpack bytes -> binary literal scalar -> resolved golang value -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; resolved golang value -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -95,14 +107,13 @@ def from_generic_idl(
 TODO: Support all Flyte Types.
 This is for dataclass attribute access from input created from the Flyte Console.
 
-Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_literal_type()
 
@@ -114,9 +125,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `typing.Type[~T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.Type[~T]` | |
 
 #### guess_python_type()
 
@@ -128,9 +139,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `flytekit.models.types.LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `flytekit.models.types.LiteralType` | |
 
 #### isinstance_generic()
 
@@ -140,10 +151,28 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_html()
 
@@ -157,11 +186,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -179,12 +208,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `python_val` | `flytekit.types.error.error.FlyteError` |
-| `python_type` | `typing.Type[~T]` |
-| `expected` | `flytekit.models.types.LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `flytekit.types.error.error.FlyteError` | The actual value to be transformed |
+| `python_type` | `typing.Type[~T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `flytekit.models.types.LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -198,22 +227,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `lv` | `flytekit.models.literals.Literal` |
-| `expected_python_type` | `typing.Type[~T]` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | FlyteContext |
+| `lv` | `flytekit.models.literals.Literal` | The received literal Value |
+| `expected_python_type` | `typing.Type[~T]` | Expected native python type that should be returned |
 
 ## flytekit.types.error.error.FlyteError
 
@@ -221,16 +239,18 @@ Special Task type that will be used in the failure node. Propeller will pass thi
 have to add an input with this type to the failure task.
 
 
+### Parameters
+
 ```python
 class FlyteError(
     message: str,
     failed_node_id: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
-| `failed_node_id` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
+| `failed_node_id` | `str` | |
 
 ### Methods
 
@@ -250,10 +270,10 @@ def from_dict(
     dialect,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `d` |  |
-| `dialect` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `d` |  | |
+| `dialect` |  | |
 
 #### from_json()
 
@@ -264,11 +284,11 @@ def from_json(
     from_dict_kwargs: typing.Any,
 ) -> ~T
 ```
-| Parameter | Type |
-|-|-|
-| `data` | `typing.Union[str, bytes, bytearray]` |
-| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` |
-| `from_dict_kwargs` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `typing.Union[str, bytes, bytearray]` | |
+| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` | |
+| `from_dict_kwargs` | `typing.Any` | |
 
 #### to_dict()
 
@@ -283,8 +303,8 @@ def to_json(
     to_dict_kwargs: typing.Any,
 ) -> typing.Union[str, bytes, bytearray]
 ```
-| Parameter | Type |
-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` |
-| `to_dict_kwargs` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` | |
+| `to_dict_kwargs` | `typing.Any` | |
 

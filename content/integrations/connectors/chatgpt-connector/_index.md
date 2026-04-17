@@ -1,7 +1,7 @@
 ---
 title: ChatGPT connector
 weight: 1
-variants: +flyte -serverless +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: false
 ---
 
@@ -24,7 +24,7 @@ For an example query, see [ChatGPT connector example usage](./chatgpt-connector-
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 For an example query, see [ChatGPT connector example usage](./chatgpt-connector-example-usage-union)

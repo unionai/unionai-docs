@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.options
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -24,6 +24,8 @@ in a Flyte backend, and also when registering launch plans.
 
 
 
+### Parameters
+
 ```python
 class Options(
     labels: typing.Optional[flytekit.models.common.Labels],
@@ -36,16 +38,16 @@ class Options(
     overwrite_cache: typing.Optional[bool],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `labels` | `typing.Optional[flytekit.models.common.Labels]` |
-| `annotations` | `typing.Optional[flytekit.models.common.Annotations]` |
-| `raw_output_data_config` | `typing.Optional[flytekit.models.common.RawOutputDataConfig]` |
-| `security_context` | `typing.Optional[flytekit.models.security.SecurityContext]` |
-| `max_parallelism` | `typing.Optional[int]` |
-| `notifications` | `typing.Optional[typing.List[flytekit.models.common.Notification]]` |
-| `disable_notifications` | `typing.Optional[bool]` |
-| `overwrite_cache` | `typing.Optional[bool]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `labels` | `typing.Optional[flytekit.models.common.Labels]` | Custom labels to be applied to the execution resource |
+| `annotations` | `typing.Optional[flytekit.models.common.Annotations]` | Custom annotations to be applied to the execution resource |
+| `raw_output_data_config` | `typing.Optional[flytekit.models.common.RawOutputDataConfig]` | Optional location of offloaded data for things like S3, etc. remote prefix for storage location of the form ``s3://&lt;bucket&gt;/key...`` or ``gcs://...`` or ``file://...``. If not specified will use the platform configured default. This is where the data for offloaded types is stored. |
+| `security_context` | `typing.Optional[flytekit.models.security.SecurityContext]` | Indicates security context for permissions triggered with this launch plan |
+| `max_parallelism` | `typing.Optional[int]` | Controls the maximum number of tasknodes that can be run in parallel for the entire workflow. |
+| `notifications` | `typing.Optional[typing.List[flytekit.models.common.Notification]]` | List of notifications for this execution. |
+| `disable_notifications` | `typing.Optional[bool]` | This should be set to true if all notifications are intended to be disabled for this execution. |
+| `overwrite_cache` | `typing.Optional[bool]` | |
 
 ### Methods
 
@@ -62,8 +64,8 @@ def default_from(
     raw_data_prefix: typing.Optional[str],
 ) -> Options
 ```
-| Parameter | Type |
-|-|-|
-| `k8s_service_account` | `typing.Optional[str]` |
-| `raw_data_prefix` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k8s_service_account` | `typing.Optional[str]` | |
+| `raw_data_prefix` | `typing.Optional[str]` | |
 

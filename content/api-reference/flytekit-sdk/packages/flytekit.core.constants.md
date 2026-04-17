@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.constants
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -30,6 +30,7 @@ layout: py_api
 | `MESSAGEPACK` | `str` |  |
 | `OUTPUT_FILE_NAME` | `str` |  |
 | `REQUIREMENTS_FILE_NAME` | `str` |  |
+| `RUNTIME_PACKAGES_ENV_NAME` | `str` |  |
 | `SERIALIZATION_FORMAT` | `str` |  |
 | `SHARED_MEMORY_MOUNT_NAME` | `str` |  |
 | `SHARED_MEMORY_MOUNT_PATH` | `str` |  |

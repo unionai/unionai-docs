@@ -1,9 +1,9 @@
 ---
 title: Add Tracing and Guardrails to an Airbnb RAG App with Weave
 weight: 5
-variants: -flyte -serverless +byoc +selfmanaged
+variants: -flyte +union
 layout: py_example
-example_file: /external/unionai-examples/v1/tutorials/weave/rag_app.py
+example_file: /unionai-examples/v1/tutorials/weave/rag_app.py
 run_on_union_secrets:
   - weaviate-url
   - weaviate-api-key

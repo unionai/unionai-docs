@@ -1,7 +1,7 @@
 ---
 title: flytekit.types.schema.types
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -14,13 +14,15 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`FlyteSchema`](.././flytekit.types.schema.types#flytekittypesschematypesflyteschema) |  |
-| [`FlyteSchemaTransformer`](.././flytekit.types.schema.types#flytekittypesschematypesflyteschematransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
-| [`LocalIOSchemaReader`](.././flytekit.types.schema.types#flytekittypesschematypeslocalioschemareader) | Base SchemaReader to handle any readers (that can manage their own IO or otherwise). |
-| [`LocalIOSchemaWriter`](.././flytekit.types.schema.types#flytekittypesschematypeslocalioschemawriter) | Abstract base class for generic types. |
+| [`FlyteSchemaTransformer`](.././flytekit.types.schema.types#flytekittypesschematypesflyteschematransformer) |  |
+| [`LocalIOSchemaReader`](.././flytekit.types.schema.types#flytekittypesschematypeslocalioschemareader) |  |
+| [`LocalIOSchemaWriter`](.././flytekit.types.schema.types#flytekittypesschematypeslocalioschemawriter) |  |
 | [`SchemaEngine`](.././flytekit.types.schema.types#flytekittypesschematypesschemaengine) | This is the core Engine that handles all schema sub-systems. |
+| [`SchemaFormat`](.././flytekit.types.schema.types#flytekittypesschematypesschemaformat) | Represents the schema storage format (at rest). |
 | [`SchemaHandler`](.././flytekit.types.schema.types#flytekittypesschematypesschemahandler) |  |
+| [`SchemaOpenMode`](.././flytekit.types.schema.types#flytekittypesschematypesschemaopenmode) |  |
 | [`SchemaReader`](.././flytekit.types.schema.types#flytekittypesschematypesschemareader) | Base SchemaReader to handle any readers (that can manage their own IO or otherwise). |
-| [`SchemaWriter`](.././flytekit.types.schema.types#flytekittypesschematypesschemawriter) | Abstract base class for generic types. |
+| [`SchemaWriter`](.././flytekit.types.schema.types#flytekittypesschematypesschemawriter) |  |
 
 ### Methods
 
@@ -46,12 +48,14 @@ def generate_ordered_files(
     n: int,
 ) -> typing.Generator[str, None, None]
 ```
-| Parameter | Type |
-|-|-|
-| `directory` | `os.PathLike` |
-| `n` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `directory` | `os.PathLike` | |
+| `n` | `int` | |
 
 ## flytekit.types.schema.types.FlyteSchema
+
+### Parameters
 
 ```python
 class FlyteSchema(
@@ -61,12 +65,19 @@ class FlyteSchema(
     downloader: typing.Optional[typing.Callable],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `local_path` | `typing.Optional[str]` |
-| `remote_path` | `typing.Optional[str]` |
-| `supported_mode` | `SchemaOpenMode` |
-| `downloader` | `typing.Optional[typing.Callable]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_path` | `typing.Optional[str]` | |
+| `remote_path` | `typing.Optional[str]` | |
+| `supported_mode` | `SchemaOpenMode` | |
+| `downloader` | `typing.Optional[typing.Callable]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `local_path` | `None` |  |
+| `supported_mode` | `None` |  |
 
 ### Methods
 
@@ -104,14 +115,12 @@ def columns()
 
 ```python
 def deserialize_flyte_schema(
-    args,
-    kwargs,
-)
+    info,
+) -> FlyteSchema
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `info` |  | |
 
 #### format()
 
@@ -126,10 +135,10 @@ def from_dict(
     dialect,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `d` |  |
-| `dialect` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `d` |  | |
+| `dialect` |  | |
 
 #### from_json()
 
@@ -140,11 +149,11 @@ def from_json(
     from_dict_kwargs: typing.Any,
 ) -> ~T
 ```
-| Parameter | Type |
-|-|-|
-| `data` | `typing.Union[str, bytes, bytearray]` |
-| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` |
-| `from_dict_kwargs` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `typing.Union[str, bytes, bytearray]` | |
+| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` | |
+| `from_dict_kwargs` | `typing.Any` | |
 
 #### open()
 
@@ -161,24 +170,16 @@ if the object was created in write-mode, a read is allowed.
 
 
 
-| Parameter | Type |
-|-|-|
-| `dataframe_fmt` | `typing.Optional[type]` |
-| `override_mode` | `typing.Optional[SchemaOpenMode]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dataframe_fmt` | `typing.Optional[type]` | Type of the dataframe for example pandas.DataFrame etc |
+| `override_mode` | `typing.Optional[SchemaOpenMode]` | overrides the default mode (Read, Write) SchemaOpenMode.READ, SchemaOpenMode.Write So if you have written to a schema and want to re-open it for reading, you can use this mode. A ReadOnly Schema object cannot be opened in write mode. |
 
 #### serialize_flyte_schema()
 
 ```python
-def serialize_flyte_schema(
-    args,
-    kwargs,
-)
+def serialize_flyte_schema()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 #### to_dict()
 
 ```python
@@ -192,26 +193,27 @@ def to_json(
     to_dict_kwargs: typing.Any,
 ) -> typing.Union[str, bytes, bytearray]
 ```
-| Parameter | Type |
-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` |
-| `to_dict_kwargs` | `typing.Any` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `local_path` |  |  |
-| `supported_mode` |  |  |
+| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` | |
+| `to_dict_kwargs` | `typing.Any` | |
 
 ## flytekit.types.schema.types.FlyteSchemaTransformer
 
-Base transformer type that should be implemented for every python native type that can be handled by flytekit
-
+### Parameters
 
 ```python
 def FlyteSchemaTransformer()
 ```
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_async` | `None` |  |
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ### Methods
 
 | Method | Description |
@@ -225,6 +227,7 @@ def FlyteSchemaTransformer()
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
+| [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`to_python_value()`](#to_python_value) | Converts the given Literal to a Python Type. |
@@ -238,10 +241,10 @@ def assert_type(
     v: typing.Any,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[FlyteSchema]` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[FlyteSchema]` | |
+| `v` | `typing.Any` | |
 
 #### async_to_literal()
 
@@ -259,12 +262,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `FlyteSchema` |
-| `python_type` | `Type[FlyteSchema]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `FlyteSchema` | The actual value to be transformed |
+| `python_type` | `Type[FlyteSchema]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### async_to_python_value()
 
@@ -278,11 +281,11 @@ def async_to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[FlyteSchema]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[FlyteSchema]` | Expected native python type that should be returned |
 
 #### dict_to_flyte_schema()
 
@@ -292,10 +295,10 @@ def dict_to_flyte_schema(
     expected_python_type: Type[FlyteSchema],
 ) -> FlyteSchema
 ```
-| Parameter | Type |
-|-|-|
-| `dict_obj` | `typing.Dict[str, str]` |
-| `expected_python_type` | `Type[FlyteSchema]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dict_obj` | `typing.Dict[str, str]` | |
+| `expected_python_type` | `Type[FlyteSchema]` | |
 
 #### from_binary_idl()
 
@@ -308,7 +311,7 @@ def from_binary_idl(
 If the input is from flytekit, the Life Cycle will be as follows:
 
 Life Cycle:
-binary IDL                 -> resolved binary         -> bytes                   -> expected Python object
+binary IDL                 -&gt; resolved binary         -&gt; bytes                   -&gt; expected Python object
 (flytekit customized          (propeller processing)     (flytekit binary IDL)      (flytekit customized
 serialization)                                                                       deserialization)
 
@@ -321,7 +324,6 @@ class DC:
 def wf(dc: DC):
     t_fs(dc.fs)
 
-Note:
 - The deserialization is the same as put a flyte schema in a dataclass, which will deserialize by the mashumaro's API.
 
 Related PR:
@@ -329,10 +331,10 @@ Related PR:
 - Link: https://github.com/flyteorg/flytekit/pull/2554
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[FlyteSchema]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[FlyteSchema]` | |
 
 #### from_generic_idl()
 
@@ -345,7 +347,7 @@ def from_generic_idl(
 If the input is from Flyte Console, the Life Cycle will be as follows:
 
 Life Cycle:
-json str            -> protobuf struct         -> resolved protobuf struct   -> expected Python object
+json str            -&gt; protobuf struct         -&gt; resolved protobuf struct   -&gt; expected Python object
 (console user input)   (console output)           (propeller)                   (flytekit customized deserialization)
 
 Example Code:
@@ -357,7 +359,6 @@ class DC:
 def wf(dc: DC):
     t_fs(dc.fs)
 
-Note:
 - The deserialization is the same as put a flyte schema in a dataclass, which will deserialize by the mashumaro's API.
 
 Related PR:
@@ -365,10 +366,10 @@ Related PR:
 - Link: https://github.com/flyteorg/flytekit/pull/2554
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[FlyteSchema]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[FlyteSchema]` | |
 
 #### get_literal_type()
 
@@ -380,9 +381,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Type[FlyteSchema]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[FlyteSchema]` | |
 
 #### guess_python_type()
 
@@ -394,9 +395,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -406,10 +407,28 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
+
+#### schema_match()
+
+```python
+def schema_match(
+    schema: dict,
+) -> bool
+```
+Check if a JSON schema fragment matches this transformer's python_type.
+
+For BaseModel subclasses, automatically compares the schema's title, type, and
+required fields against the type's own JSON schema. For other types, returns
+False by default — override if needed.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `schema` | `dict` | |
 
 #### to_html()
 
@@ -423,11 +442,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -445,12 +464,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.Any` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `typing.Any` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -464,28 +483,15 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `is_async` |  |  |
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 ## flytekit.types.schema.types.LocalIOSchemaReader
 
-Base SchemaReader to handle any readers (that can manage their own IO or otherwise)
-Use the simplified base LocalIOSchemaReader for non distributed dataframes
-
+### Parameters
 
 ```python
 class LocalIOSchemaReader(
@@ -494,11 +500,18 @@ class LocalIOSchemaReader(
     fmt: SchemaFormat,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `from_path` | `str` |
-| `cols` | `typing.Optional[typing.Dict[str, type]]` |
-| `fmt` | `SchemaFormat` |
+| Parameter | Type | Description |
+|-|-|-|
+| `from_path` | `str` | |
+| `cols` | `typing.Optional[typing.Dict[str, type]]` | |
+| `fmt` | `SchemaFormat` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `column_names` | `None` |  |
+| `from_path` | `None` |  |
 
 ### Methods
 
@@ -515,9 +528,9 @@ def all(
     kwargs,
 ) -> T
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### iter()
 
@@ -526,41 +539,13 @@ def iter(
     kwargs,
 ) -> typing.Generator[T, None, None]
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `column_names` |  |  |
-| `from_path` |  |  |
+| `kwargs` | `**kwargs` | |
 
 ## flytekit.types.schema.types.LocalIOSchemaWriter
 
-Abstract base class for generic types.
-
-On Python 3.12 and newer, generic classes implicitly inherit from
-Generic when they declare a parameter list after the class's name::
-
-    class Mapping[KT, VT]:
-        def __getitem__(self, key: KT) -> VT:
-            ...
-        # Etc.
-
-On older versions of Python, however, generic classes have to
-explicitly inherit from Generic.
-
-After a class has been declared to be generic, it can then be used as
-follows::
-
-    def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:
-        try:
-            return mapping[key]
-        except KeyError:
-            return default
-
+### Parameters
 
 ```python
 class LocalIOSchemaWriter(
@@ -569,11 +554,18 @@ class LocalIOSchemaWriter(
     fmt: SchemaFormat,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `to_local_path` | `str` |
-| `cols` | `typing.Optional[typing.Dict[str, type]]` |
-| `fmt` | `SchemaFormat` |
+| Parameter | Type | Description |
+|-|-|-|
+| `to_local_path` | `str` | |
+| `cols` | `typing.Optional[typing.Dict[str, type]]` | |
+| `fmt` | `SchemaFormat` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `column_names` | `None` |  |
+| `to_path` | `None` |  |
 
 ### Methods
 
@@ -590,17 +582,10 @@ def write(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `dfs` |  |
-| `kwargs` | ``**kwargs`` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `column_names` |  |  |
-| `to_path` |  |  |
+| `dfs` |  | |
+| `kwargs` | `**kwargs` | |
 
 ## flytekit.types.schema.types.SchemaEngine
 
@@ -624,9 +609,9 @@ def get_handler(
     t: Type,
 ) -> SchemaHandler
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type` | |
 
 #### register_handler()
 
@@ -638,11 +623,19 @@ def register_handler(
 Register a new handler that can create a SchemaReader and SchemaWriter for the expected type.
 
 
-| Parameter | Type |
-|-|-|
-| `h` | `SchemaHandler` |
+| Parameter | Type | Description |
+|-|-|-|
+| `h` | `SchemaHandler` | |
+
+## flytekit.types.schema.types.SchemaFormat
+
+Represents the schema storage format (at rest).
+Currently only parquet is supported
+
 
 ## flytekit.types.schema.types.SchemaHandler
+
+### Parameters
 
 ```python
 class SchemaHandler(
@@ -653,19 +646,23 @@ class SchemaHandler(
     handles_remote_io: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `object_type` | `Type` |
-| `reader` | `Type[SchemaReader]` |
-| `writer` | `Type[SchemaWriter]` |
-| `handles_remote_io` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `object_type` | `Type` | |
+| `reader` | `Type[SchemaReader]` | |
+| `writer` | `Type[SchemaWriter]` | |
+| `handles_remote_io` | `bool` | |
+
+## flytekit.types.schema.types.SchemaOpenMode
 
 ## flytekit.types.schema.types.SchemaReader
 
 Base SchemaReader to handle any readers (that can manage their own IO or otherwise)
 Use the simplified base LocalIOSchemaReader for non distributed dataframes
 
+
+### Parameters
 
 ```python
 class SchemaReader(
@@ -674,11 +671,18 @@ class SchemaReader(
     fmt: SchemaFormat,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `from_path` | `str` |
-| `cols` | `typing.Optional[typing.Dict[str, type]]` |
-| `fmt` | `SchemaFormat` |
+| Parameter | Type | Description |
+|-|-|-|
+| `from_path` | `str` | |
+| `cols` | `typing.Optional[typing.Dict[str, type]]` | |
+| `fmt` | `SchemaFormat` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `column_names` | `None` |  |
+| `from_path` | `None` |  |
 
 ### Methods
 
@@ -695,9 +699,9 @@ def all(
     kwargs,
 ) -> T
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### iter()
 
@@ -706,41 +710,13 @@ def iter(
     kwargs,
 ) -> typing.Generator[T, None, None]
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `column_names` |  |  |
-| `from_path` |  |  |
+| `kwargs` | `**kwargs` | |
 
 ## flytekit.types.schema.types.SchemaWriter
 
-Abstract base class for generic types.
-
-On Python 3.12 and newer, generic classes implicitly inherit from
-Generic when they declare a parameter list after the class's name::
-
-    class Mapping[KT, VT]:
-        def __getitem__(self, key: KT) -> VT:
-            ...
-        # Etc.
-
-On older versions of Python, however, generic classes have to
-explicitly inherit from Generic.
-
-After a class has been declared to be generic, it can then be used as
-follows::
-
-    def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:
-        try:
-            return mapping[key]
-        except KeyError:
-            return default
-
+### Parameters
 
 ```python
 class SchemaWriter(
@@ -749,11 +725,18 @@ class SchemaWriter(
     fmt: SchemaFormat,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `to_path` | `str` |
-| `cols` | `typing.Optional[typing.Dict[str, type]]` |
-| `fmt` | `SchemaFormat` |
+| Parameter | Type | Description |
+|-|-|-|
+| `to_path` | `str` | |
+| `cols` | `typing.Optional[typing.Dict[str, type]]` | |
+| `fmt` | `SchemaFormat` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `column_names` | `None` |  |
+| `to_path` | `None` |  |
 
 ### Methods
 
@@ -770,15 +753,8 @@ def write(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `dfs` |  |
-| `kwargs` | ``**kwargs`` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `column_names` |  |  |
-| `to_path` |  |  |
+| `dfs` |  | |
+| `kwargs` | `**kwargs` | |
 

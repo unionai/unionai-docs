@@ -1,7 +1,7 @@
 ---
 title: flytekit.interfaces.stats.client
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -15,7 +15,7 @@ layout: py_api
 |-|-|
 | [`DummyStatsClient`](.././flytekit.interfaces.stats.client#flytekitinterfacesstatsclientdummystatsclient) | A dummy client for statsd. |
 | [`ScopeableStatsProxy`](.././flytekit.interfaces.stats.client#flytekitinterfacesstatsclientscopeablestatsproxy) | A Proxy object for an underlying statsd client. |
-| [`StatsClientProxy`](.././flytekit.interfaces.stats.client#flytekitinterfacesstatsclientstatsclientproxy) | A Proxy object for an underlying statsd client. |
+| [`StatsClientProxy`](.././flytekit.interfaces.stats.client#flytekitinterfacesstatsclientstatsclientproxy) |  |
 
 ### Methods
 
@@ -41,10 +41,10 @@ def get_base_stats(
     prefix: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cfg` | `flytekit.configuration.StatsConfig` |
-| `prefix` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `flytekit.configuration.StatsConfig` | |
+| `prefix` | `str` | |
 
 #### get_stats()
 
@@ -54,15 +54,17 @@ def get_stats(
     prefix: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cfg` | `flytekit.configuration.StatsConfig` |
-| `prefix` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `flytekit.configuration.StatsConfig` | |
+| `prefix` | `str` | |
 
 ## flytekit.interfaces.stats.client.DummyStatsClient
 
 A dummy client for statsd.
 
+
+### Parameters
 
 ```python
 class DummyStatsClient(
@@ -76,13 +78,13 @@ class DummyStatsClient(
 Create a new client.
 
 
-| Parameter | Type |
-|-|-|
-| `host` |  |
-| `port` |  |
-| `prefix` |  |
-| `maxudpsize` |  |
-| `ipv6` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `host` |  | |
+| `port` |  | |
+| `prefix` |  | |
+| `maxudpsize` |  | |
+| `ipv6` |  | |
 
 ### Methods
 
@@ -118,11 +120,11 @@ def decr(
 Decrement a stat by `count`.
 
 
-| Parameter | Type |
-|-|-|
-| `stat` |  |
-| `count` |  |
-| `rate` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `stat` |  | |
+| `count` |  | |
+| `rate` |  | |
 
 #### gauge()
 
@@ -137,12 +139,12 @@ def gauge(
 Set a gauge value.
 
 
-| Parameter | Type |
-|-|-|
-| `stat` |  |
-| `value` |  |
-| `rate` |  |
-| `delta` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `stat` |  | |
+| `value` |  | |
+| `rate` |  | |
+| `delta` |  | |
 
 #### incr()
 
@@ -156,11 +158,11 @@ def incr(
 Increment a stat by `count`.
 
 
-| Parameter | Type |
-|-|-|
-| `stat` |  |
-| `count` |  |
-| `rate` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `stat` |  | |
+| `count` |  | |
+| `rate` |  | |
 
 #### pipeline()
 
@@ -179,11 +181,11 @@ def set(
 Set a set value.
 
 
-| Parameter | Type |
-|-|-|
-| `stat` |  |
-| `value` |  |
-| `rate` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `stat` |  | |
+| `value` |  | |
+| `rate` |  | |
 
 #### timer()
 
@@ -193,10 +195,10 @@ def timer(
     rate,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `stat` |  |
-| `rate` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `stat` |  | |
+| `rate` |  | |
 
 #### timing()
 
@@ -212,11 +214,11 @@ Send new timing information.
 `delta` can be either a number of milliseconds or a timedelta.
 
 
-| Parameter | Type |
-|-|-|
-| `stat` |  |
-| `delta` |  |
-| `rate` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `stat` |  | |
+| `delta` |  | |
+| `rate` |  | |
 
 ## flytekit.interfaces.stats.client.ScopeableStatsProxy
 
@@ -230,16 +232,18 @@ newer_client = new_client.get_stats('subsystem')
 newer_client.incr('bad') # Metric name = a.subsystem.bad
 
 
+### Parameters
+
 ```python
 class ScopeableStatsProxy(
     client,
     prefix,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `client` |  |
-| `prefix` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `client` |  | |
+| `prefix` |  | |
 
 ### Methods
 
@@ -256,9 +260,9 @@ def get_stats(
     name,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` |  | |
 
 #### pipeline()
 
@@ -267,15 +271,7 @@ def pipeline()
 ```
 ## flytekit.interfaces.stats.client.StatsClientProxy
 
-A Proxy object for an underlying statsd client.
-Adds a new call, scope(prefix), which returns a new proxy to the same
-client which will prefix all calls to underlying methods with the scoped prefix:
-new_client = client.get_stats('a')
-new_client.incr('b') # Metric name = a.b
-This can be nested:
-newer_client = new_client.get_stats('subsystem')
-newer_client.incr('bad') # Metric name = a.subsystem.bad
-
+### Parameters
 
 ```python
 class StatsClientProxy(
@@ -283,10 +279,10 @@ class StatsClientProxy(
     prefix,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `client` |  |
-| `prefix` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `client` |  | |
+| `prefix` |  | |
 
 ### Methods
 
@@ -303,9 +299,9 @@ def get_stats(
     name,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` |  | |
 
 #### pipeline()
 

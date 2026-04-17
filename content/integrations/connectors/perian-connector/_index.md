@@ -1,7 +1,7 @@
 ---
 title: Perian connector
 weight: 1
-variants: +flyte -serverless +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: false
 ---
 
@@ -21,7 +21,7 @@ For an example, see [Perian connector example usage](./example)
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 For an example, see [Perian connector example usage](./example-union)

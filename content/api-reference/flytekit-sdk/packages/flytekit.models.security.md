@@ -1,7 +1,7 @@
 ---
 title: flytekit.models.security
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -21,6 +21,8 @@ layout: py_api
 
 ## flytekit.models.security.Identity
 
+### Parameters
+
 ```python
 class Identity(
     iam_role: typing.Optional[str],
@@ -29,12 +31,18 @@ class Identity(
     execution_identity: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `iam_role` | `typing.Optional[str]` |
-| `k8s_service_account` | `typing.Optional[str]` |
-| `oauth2_client` | `typing.Optional[flytekit.models.security.OAuth2Client]` |
-| `execution_identity` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `iam_role` | `typing.Optional[str]` | |
+| `k8s_service_account` | `typing.Optional[str]` | |
+| `oauth2_client` | `typing.Optional[flytekit.models.security.OAuth2Client]` | |
+| `execution_identity` | `typing.Optional[str]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -42,9 +50,8 @@ class Identity(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -54,9 +61,9 @@ def from_flyte_idl(
     pb2_object: flyteidl.core.security_pb2.Identity,
 ) -> Identity
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` | `flyteidl.core.security_pb2.Identity` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` | `flyteidl.core.security_pb2.Identity` | |
 
 #### serialize_to_string()
 
@@ -68,29 +75,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-
 ## flytekit.models.security.OAuth2Client
+
+### Parameters
 
 ```python
 class OAuth2Client(
@@ -98,10 +92,16 @@ class OAuth2Client(
     client_secret: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `client_id` | `str` |
-| `client_secret` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `client_id` | `str` | |
+| `client_secret` | `str` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -109,9 +109,8 @@ class OAuth2Client(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -121,9 +120,9 @@ def from_flyte_idl(
     pb2_object: flyteidl.core.security_pb2.OAuth2Client,
 ) -> OAuth2Client
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` | `flyteidl.core.security_pb2.OAuth2Client` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` | `flyteidl.core.security_pb2.OAuth2Client` | |
 
 #### serialize_to_string()
 
@@ -135,29 +134,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-
 ## flytekit.models.security.OAuth2TokenRequest
+
+### Parameters
 
 ```python
 class OAuth2TokenRequest(
@@ -168,13 +154,19 @@ class OAuth2TokenRequest(
     type_: <enum 'Type'>,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `client` | `flytekit.models.security.OAuth2Client` |
-| `idp_discovery_endpoint` | `typing.Optional[str]` |
-| `token_endpoint` | `typing.Optional[str]` |
-| `type_` | `<enum 'Type'>` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `client` | `flytekit.models.security.OAuth2Client` | |
+| `idp_discovery_endpoint` | `typing.Optional[str]` | |
+| `token_endpoint` | `typing.Optional[str]` | |
+| `type_` | `<enum 'Type'>` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -182,9 +174,8 @@ class OAuth2TokenRequest(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -194,9 +185,9 @@ def from_flyte_idl(
     pb2_object: flyteidl.core.security_pb2.OAuth2TokenRequest,
 ) -> OAuth2TokenRequest
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` | `flyteidl.core.security_pb2.OAuth2TokenRequest` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` | `flyteidl.core.security_pb2.OAuth2TokenRequest` | |
 
 #### serialize_to_string()
 
@@ -208,33 +199,20 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-
 ## flytekit.models.security.Secret
 
 See :std:ref:`cookbook:secrets` for usage examples.
 
 
+
+### Parameters
 
 ```python
 class Secret(
@@ -245,13 +223,19 @@ class Secret(
     env_var: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `group` | `typing.Optional[str]` |
-| `key` | `typing.Optional[str]` |
-| `group_version` | `typing.Optional[str]` |
-| `mount_requirement` | `<enum 'MountType'>` |
-| `env_var` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `group` | `typing.Optional[str]` | |
+| `key` | `typing.Optional[str]` | |
+| `group_version` | `typing.Optional[str]` | |
+| `mount_requirement` | `<enum 'MountType'>` | |
+| `env_var` | `typing.Optional[str]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -259,9 +243,8 @@ class Secret(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -271,9 +254,9 @@ def from_flyte_idl(
     pb2_object: flyteidl.core.security_pb2.Secret,
 ) -> Secret
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` | `flyteidl.core.security_pb2.Secret` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` | `flyteidl.core.security_pb2.Secret` | |
 
 #### serialize_to_string()
 
@@ -285,33 +268,20 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-
 ## flytekit.models.security.SecurityContext
 
 This is a higher level wrapper object that for the most part users shouldn't have to worry about. You should
-be able to just use {{< py_class_ref flytekit.Secret >}} instead.
+be able to just use {{&lt; py_class_ref flytekit.Secret &gt;}} instead.
 
+
+### Parameters
 
 ```python
 class SecurityContext(
@@ -320,11 +290,17 @@ class SecurityContext(
     tokens: typing.Optional[typing.List[flytekit.models.security.OAuth2TokenRequest]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `run_as` | `typing.Optional[flytekit.models.security.Identity]` |
-| `secrets` | `typing.Optional[typing.List[flytekit.models.security.Secret]]` |
-| `tokens` | `typing.Optional[typing.List[flytekit.models.security.OAuth2TokenRequest]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `run_as` | `typing.Optional[flytekit.models.security.Identity]` | |
+| `secrets` | `typing.Optional[typing.List[flytekit.models.security.Secret]]` | |
+| `tokens` | `typing.Optional[typing.List[flytekit.models.security.OAuth2TokenRequest]]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `is_empty` | `None` |  |
 
 ### Methods
 
@@ -332,9 +308,8 @@ class SecurityContext(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -344,9 +319,9 @@ def from_flyte_idl(
     pb2_object: flyteidl.core.security_pb2.SecurityContext,
 ) -> SecurityContext
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` | `flyteidl.core.security_pb2.SecurityContext` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` | `flyteidl.core.security_pb2.SecurityContext` | |
 
 #### serialize_to_string()
 
@@ -358,25 +333,10 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-

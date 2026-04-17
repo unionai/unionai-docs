@@ -1,6 +1,6 @@
 ---
 title: flytectl create app
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl create app

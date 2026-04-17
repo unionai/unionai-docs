@@ -1,7 +1,7 @@
 ---
 title: flytekit.interfaces.stats.taggable
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -13,13 +13,13 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`TaggableStats`](.././flytekit.interfaces.stats.taggable#flytekitinterfacesstatstaggabletaggablestats) | A Proxy object for an underlying statsd client. |
+| [`TaggableStats`](.././flytekit.interfaces.stats.taggable#flytekitinterfacesstatstaggabletaggablestats) |  |
 
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`get_stats()`](#get_stats) | :rtype: TaggableStats. |
+| [`get_stats()`](#get_stats) |  |
 
 
 ## Methods
@@ -31,28 +31,19 @@ def get_stats(
     cfg: flytekit.configuration.StatsConfig,
     prefix: str,
     tags: typing.Dict[str, str],
-) -> e: TaggableStats
+) -> flytekit.interfaces.stats.taggable.TaggableStats
 ```
-:rtype: TaggableStats
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `flytekit.configuration.StatsConfig` | |
+| `prefix` | `str` | |
+| `tags` | `typing.Dict[str, str]` | |
 
-
-| Parameter | Type |
-|-|-|
-| `cfg` | `flytekit.configuration.StatsConfig` |
-| `prefix` | `str` |
-| `tags` | `typing.Dict[str, str]` |
+**Returns:** TaggableStats
 
 ## flytekit.interfaces.stats.taggable.TaggableStats
 
-A Proxy object for an underlying statsd client.
-Adds a new call, scope(prefix), which returns a new proxy to the same
-client which will prefix all calls to underlying methods with the scoped prefix:
-new_client = client.get_stats('a')
-new_client.incr('b') # Metric name = a.b
-This can be nested:
-newer_client = new_client.get_stats('subsystem')
-newer_client.incr('bad') # Metric name = a.subsystem.bad
-
+### Parameters
 
 ```python
 class TaggableStats(
@@ -63,13 +54,19 @@ class TaggableStats(
     tags,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `client` |  |
-| `full_prefix` |  |
-| `cfg` | `flytekit.configuration.StatsConfig` |
-| `prefix` |  |
-| `tags` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `client` |  | |
+| `full_prefix` |  | |
+| `cfg` | `flytekit.configuration.StatsConfig` | |
+| `prefix` |  | |
+| `tags` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `full_prefix` | `None` |  |
 
 ### Methods
 
@@ -93,9 +90,9 @@ def extend_tags(
     tags,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `tags` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `tags` |  | |
 
 #### get_stats()
 
@@ -105,19 +102,13 @@ def get_stats(
     copy_tags,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` |  |
-| `copy_tags` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` |  | |
+| `copy_tags` |  | |
 
 #### pipeline()
 
 ```python
 def pipeline()
 ```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `full_prefix` |  |  |
-

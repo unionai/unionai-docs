@@ -1,7 +1,7 @@
 ---
 title: Flytekit plugins
 weight: 2
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 sidebar_expanded: true
 ---
 

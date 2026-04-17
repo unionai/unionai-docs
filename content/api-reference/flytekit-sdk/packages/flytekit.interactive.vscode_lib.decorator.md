@@ -1,7 +1,7 @@
 ---
 title: flytekit.interactive.vscode_lib.decorator
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`vscode`](.././flytekit.interactive.vscode_lib.decorator#flytekitinteractivevscode_libdecoratorvscode) | Abstract class for class decorators. |
+| [`vscode`](.././flytekit.interactive.vscode_lib.decorator#flytekitinteractivevscode_libdecoratorvscode) |  |
 
 ### Methods
 
@@ -57,10 +57,12 @@ Download a file from a given URL using fsspec.
 
 
 
-| Parameter | Type |
-|-|-|
-| `url` |  |
-| `target_dir` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `url` |  | The URL of the file to download. |
+| `target_dir` | `typing.Optional[str]` | The directory where the file should be saved. Defaults to current directory. |
+
+**Returns:** str: The path to the downloaded file.
 
 #### download_vscode()
 
@@ -73,9 +75,9 @@ Download vscode server and extension from remote to local and add the directory 
 
 
 
-| Parameter | Type |
-|-|-|
-| `config` | `flytekit.interactive.vscode_lib.config.VscodeConfig` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config` | `flytekit.interactive.vscode_lib.config.VscodeConfig` | VSCode config contains default URLs of the VSCode server and extension remote paths. |
 
 #### exit_handler()
 
@@ -96,14 +98,14 @@ def exit_handler(
 
 
 
-| Parameter | Type |
-|-|-|
-| `child_process` | `multiprocessing.context.Process` |
-| `task_function` |  |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-| `max_idle_seconds` | `int` |
-| `post_execute` | `typing.Optional[typing.Callable]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `child_process` | `multiprocessing.context.Process` | The process to be terminated. |
+| `task_function` |  | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
+| `max_idle_seconds` | `int` | The duration in seconds to live after no activity detected. |
+| `post_execute` | `typing.Optional[typing.Callable]` | The function to be executed before the vscode is self-terminated. |
 
 #### get_code_server_info()
 
@@ -120,9 +122,20 @@ supports AMD64 and ARM64 architectures.
 
 
 
-| Parameter | Type |
+| Parameter | Type | Description |
+|-|-|-|
+| `code_server_info_dict` | `dict` | A dictionary containing code server information. The keys should be the architecture type ('amd64' or 'arm64') and the values should be the corresponding code server information. |
+
+**Returns**
+
+str: The code server information corresponding to the system's architecture.
+
+
+**Raises**
+
+| Exception | Description |
 |-|-|
-| `code_server_info_dict` | `dict` |
+| `ValueError` | If the system's architecture is not AMD64 or ARM64. |
 
 #### get_installed_extensions()
 
@@ -131,9 +144,9 @@ def get_installed_extensions()
 ```
 Get the list of installed extensions.
 
-Returns:
-    List[str]: The list of installed extensions.
 
+
+**Returns:** List[str]: The list of installed extensions.
 
 #### is_extension_installed()
 
@@ -143,10 +156,10 @@ def is_extension_installed(
     installed_extensions: typing.List[str],
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `extension` | `str` |
-| `installed_extensions` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `extension` | `str` | |
+| `installed_extensions` | `typing.List[str]` | |
 
 #### prepare_interactive_python()
 
@@ -161,9 +174,9 @@ def prepare_interactive_python(
 
 
 
-| Parameter | Type |
-|-|-|
-| `task_function` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_function` |  | User's task function. |
 
 #### prepare_launch_json()
 
@@ -183,15 +196,13 @@ def prepare_resume_task_python(
 Generate a Python script for users to resume the task.
 
 
-| Parameter | Type |
-|-|-|
-| `pid` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pid` | `int` | |
 
 ## flytekit.interactive.vscode_lib.decorator.vscode
 
-Abstract class for class decorators.
-We can attach config on the decorator class and use it in the upper level.
-
+### Parameters
 
 ```python
 class vscode(
@@ -216,16 +227,16 @@ vscode decorator modifies a container to run a VSCode server:
 
 
 
-| Parameter | Type |
-|-|-|
-| `task_function` | `typing.Optional[typing.Callable]` |
-| `max_idle_seconds` | `typing.Optional[int]` |
-| `port` | `int` |
-| `enable` | `bool` |
-| `run_task_first` | `bool` |
-| `pre_execute` | `typing.Optional[typing.Callable]` |
-| `post_execute` | `typing.Optional[typing.Callable]` |
-| `config` | `typing.Optional[flytekit.interactive.vscode_lib.config.VscodeConfig]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_function` | `typing.Optional[typing.Callable]` | The user function to be decorated. Defaults to None. |
+| `max_idle_seconds` | `typing.Optional[int]` | The duration in seconds to live after no activity detected. |
+| `port` | `int` | The port to be used by the VSCode server. Defaults to 8080. |
+| `enable` | `bool` | Whether to enable the VSCode decorator. Defaults to True. |
+| `run_task_first` | `bool` | Executes the user's task first when True. Launches the VSCode server only if the user's task fails. Defaults to False. |
+| `pre_execute` | `typing.Optional[typing.Callable]` | The function to be executed before the vscode setup function. |
+| `post_execute` | `typing.Optional[typing.Callable]` | The function to be executed before the vscode is self-terminated. |
+| `config` | `typing.Optional[flytekit.interactive.vscode_lib.config.VscodeConfig]` | VSCode config contains default URLs of the VSCode server and extension remote paths. |
 
 ### Methods
 
@@ -246,10 +257,10 @@ def execute(
 This method will be called when the decorated function is called.
 
 
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### get_extra_config()
 

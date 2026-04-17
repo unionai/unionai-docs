@@ -1,7 +1,7 @@
 ---
 title: flytekit.image_spec.default_builder
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -27,6 +27,13 @@ layout: py_api
 | [`prepare_uv_lock_command()`](#prepare_uv_lock_command) |  |
 
 
+### Variables
+
+| Property | Type | Description |
+|-|-|-|
+| `DEFAULT_MICROMAMBA_IMAGE` | `str` |  |
+| `DEFAULT_UV_IMAGE` | `str` |  |
+
 ## Methods
 
 #### create_docker_context()
@@ -34,16 +41,16 @@ layout: py_api
 ```python
 def create_docker_context(
     image_spec: flytekit.image_spec.image_spec.ImageSpec,
-    tmp_dir: pathlib._local.Path,
+    tmp_dir: pathlib.Path,
 )
 ```
 Populate tmp_dir with Dockerfile as specified by the `image_spec`.
 
 
-| Parameter | Type |
-|-|-|
-| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` |
-| `tmp_dir` | `pathlib._local.Path` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | |
+| `tmp_dir` | `pathlib.Path` | |
 
 #### get_flytekit_for_pypi()
 
@@ -58,13 +65,13 @@ Get flytekit version on PyPI.
 ```python
 def prepare_poetry_lock_command(
     image_spec: flytekit.image_spec.image_spec.ImageSpec,
-    tmp_dir: pathlib._local.Path,
+    tmp_dir: pathlib.Path,
 ) -> typing.Tuple[string.Template, typing.List[str]]
 ```
-| Parameter | Type |
-|-|-|
-| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` |
-| `tmp_dir` | `pathlib._local.Path` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | |
+| `tmp_dir` | `pathlib.Path` | |
 
 #### prepare_python_executable()
 
@@ -73,35 +80,35 @@ def prepare_python_executable(
     image_spec: flytekit.image_spec.image_spec.ImageSpec,
 ) -> flytekit.image_spec.default_builder._PythonInstallTemplate
 ```
-| Parameter | Type |
-|-|-|
-| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | |
 
 #### prepare_python_install()
 
 ```python
 def prepare_python_install(
     image_spec: flytekit.image_spec.image_spec.ImageSpec,
-    tmp_dir: pathlib._local.Path,
+    tmp_dir: pathlib.Path,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` |
-| `tmp_dir` | `pathlib._local.Path` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | |
+| `tmp_dir` | `pathlib.Path` | |
 
 #### prepare_uv_lock_command()
 
 ```python
 def prepare_uv_lock_command(
     image_spec: flytekit.image_spec.image_spec.ImageSpec,
-    tmp_dir: pathlib._local.Path,
+    tmp_dir: pathlib.Path,
 ) -> typing.Tuple[string.Template, typing.List[str]]
 ```
-| Parameter | Type |
-|-|-|
-| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` |
-| `tmp_dir` | `pathlib._local.Path` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | |
+| `tmp_dir` | `pathlib.Path` | |
 
 ## flytekit.image_spec.default_builder.DefaultImageBuilder
 
@@ -127,9 +134,11 @@ Build the docker image and push it to the registry.
 
 
 
-| Parameter | Type |
-|-|-|
-| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | image spec of the task. |
+
+**Returns:** fully_qualified_image_name: Fully qualified image name. If None, then `image_spec.image_name()` is used.
 
 #### should_build()
 
@@ -142,7 +151,18 @@ Whether or not the builder should build the ImageSpec.
 
 
 
-| Parameter | Type |
+| Parameter | Type | Description |
+|-|-|-|
+| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` | image spec of the task. |
+
+**Returns**
+
+True if the image should be built, otherwise it returns False.
+
+
+**Raises**
+
+| Exception | Description |
 |-|-|
-| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` |
+| `RuntimeError` | If FLYTE_IMG_FAST_FAIL is set to True and ImageSpec fails to check if the image exists due to a permission issue or other reason. |
 

@@ -1,7 +1,7 @@
 ---
 title: Task input and output
 weight: 3
-variants: +flyte -serverless +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Task input and output

@@ -1,6 +1,6 @@
 ---
 title: flytectl update cluster-pool-attributes
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl update cluster-pool-attributes

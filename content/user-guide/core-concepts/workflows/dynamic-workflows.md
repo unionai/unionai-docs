@@ -1,7 +1,7 @@
 ---
 title: Dynamic workflows
 weight: 3
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Dynamic workflows

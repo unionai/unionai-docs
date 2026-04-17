@@ -1,6 +1,6 @@
 ---
 title: flytectl get project
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl get project

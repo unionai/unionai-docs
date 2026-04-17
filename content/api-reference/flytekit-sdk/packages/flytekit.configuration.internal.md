@@ -1,7 +1,7 @@
 ---
 title: flytekit.configuration.internal
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -56,12 +56,12 @@ my_image1=docker.io/flyte:tag
 # Note that the tag is optional. If not specified it will be the default version identifier specified
 my_image2=docker.io/flyte
 
-:returns a dictionary of name: image<fqn+version> Version is optional
+:returns a dictionary of name: image&lt;fqn+version&gt; Version is optional
 
 
-| Parameter | Type |
-|-|-|
-| `cfg` | `typing.Optional[flytekit.configuration.file.ConfigFile]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `typing.Optional[flytekit.configuration.file.ConfigFile]` | |
 
 ## flytekit.configuration.internal.Local
 

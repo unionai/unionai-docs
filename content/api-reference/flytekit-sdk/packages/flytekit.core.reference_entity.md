@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.reference_entity
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -26,6 +26,8 @@ layout: py_api
 A reference object containing metadata that points to a remote launch plan.
 
 
+### Parameters
+
 ```python
 class LaunchPlanReference(
     project: str,
@@ -34,21 +36,23 @@ class LaunchPlanReference(
     version: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project` | `str` |
-| `domain` | `str` |
-| `name` | `str` |
-| `version` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `str` | |
+| `domain` | `str` | |
+| `name` | `str` | |
+| `version` | `str` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `id` |  |  |
-| `resource_type` |  |  |
+| `id` | `None` |  |
+| `resource_type` | `None` |  |
 
 ## flytekit.core.reference_entity.Reference
+
+### Parameters
 
 ```python
 class Reference(
@@ -58,21 +62,23 @@ class Reference(
     version: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project` | `str` |
-| `domain` | `str` |
-| `name` | `str` |
-| `version` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `str` | |
+| `domain` | `str` | |
+| `name` | `str` | |
+| `version` | `str` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `id` |  |  |
-| `resource_type` |  |  |
+| `id` | `None` |  |
+| `resource_type` | `None` |  |
 
 ## flytekit.core.reference_entity.ReferenceEntity
+
+### Parameters
 
 ```python
 class ReferenceEntity(
@@ -81,11 +87,21 @@ class ReferenceEntity(
     outputs: typing.Dict[str, typing.Type],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `reference` | `typing.Union[flytekit.core.reference_entity.WorkflowReference, flytekit.core.reference_entity.TaskReference, flytekit.core.reference_entity.LaunchPlanReference]` |
-| `inputs` | `typing.Dict[str, typing.Type]` |
-| `outputs` | `typing.Dict[str, typing.Type]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `reference` | `typing.Union[flytekit.core.reference_entity.WorkflowReference, flytekit.core.reference_entity.TaskReference, flytekit.core.reference_entity.LaunchPlanReference]` | |
+| `inputs` | `typing.Dict[str, typing.Type]` | |
+| `outputs` | `typing.Dict[str, typing.Type]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `id` | `None` |  |
+| `interface` | `None` |  |
+| `name` | `None` |  |
+| `python_interface` | `None` |  |
+| `reference` | `None` |  |
 
 ### Methods
 
@@ -108,11 +124,11 @@ def compile(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### construct_node_metadata()
 
@@ -126,9 +142,9 @@ def execute(
     kwargs,
 ) -> typing.Any
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### local_execute()
 
@@ -141,10 +157,10 @@ def local_execute(
 Please see the local_execute comments in the main task.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -162,40 +178,33 @@ def unwrap_literal_map_and_execute(
 Please see the implementation of the dispatch_execute function in the real task.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `id` |  |  |
-| `interface` |  |  |
-| `name` |  |  |
-| `python_interface` |  |  |
-| `reference` |  |  |
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
 ## flytekit.core.reference_entity.ReferenceSpec
+
+### Parameters
 
 ```python
 class ReferenceSpec(
     template: flytekit.core.reference_entity.ReferenceTemplate,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `template` | `flytekit.core.reference_entity.ReferenceTemplate` |
+| Parameter | Type | Description |
+|-|-|-|
+| `template` | `flytekit.core.reference_entity.ReferenceTemplate` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `template` |  | {{< multiline >}}:rtype: ReferenceTemplate
-{{< /multiline >}} |
+| `template` | `None` |  |
 
 ## flytekit.core.reference_entity.ReferenceTemplate
+
+### Parameters
 
 ```python
 class ReferenceTemplate(
@@ -208,26 +217,24 @@ workflows or dynamic tasks.
 
 
 
-| Parameter | Type |
-|-|-|
-| `id` | `flytekit.models.core.identifier.Identifier` |
-| `resource_type` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` | `flytekit.models.core.identifier.Identifier` | |
+| `resource_type` | `int` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `id` |  | {{< multiline >}}User-specified information that uniquely identifies this reference.
-:rtype: flytekit.models.core.identifier.Identifier
-{{< /multiline >}} |
-| `resource_type` |  | {{< multiline >}}The type of reference.
-:rtype: flytekit.models.core.identifier.ResourceType
-{{< /multiline >}} |
+| `id` | `None` | User-specified information that uniquely identifies this reference. |
+| `resource_type` | `None` | The type of reference. |
 
 ## flytekit.core.reference_entity.TaskReference
 
 A reference object containing metadata that points to a remote task.
 
+
+### Parameters
 
 ```python
 class TaskReference(
@@ -237,24 +244,26 @@ class TaskReference(
     version: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project` | `str` |
-| `domain` | `str` |
-| `name` | `str` |
-| `version` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `str` | |
+| `domain` | `str` | |
+| `name` | `str` | |
+| `version` | `str` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `id` |  |  |
-| `resource_type` |  |  |
+| `id` | `None` |  |
+| `resource_type` | `None` |  |
 
 ## flytekit.core.reference_entity.WorkflowReference
 
 A reference object containing metadata that points to a remote workflow.
 
+
+### Parameters
 
 ```python
 class WorkflowReference(
@@ -264,17 +273,17 @@ class WorkflowReference(
     version: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project` | `str` |
-| `domain` | `str` |
-| `name` | `str` |
-| `version` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `str` | |
+| `domain` | `str` | |
+| `name` | `str` | |
+| `version` | `str` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `id` |  |  |
-| `resource_type` |  |  |
+| `id` | `None` |  |
+| `resource_type` | `None` |  |
 

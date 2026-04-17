@@ -1,6 +1,6 @@
 ---
 title: uctl apply clusterconfig
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl apply clusterconfig

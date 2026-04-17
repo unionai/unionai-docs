@@ -1,7 +1,7 @@
 ---
 title: MMCloud connector
 weight: 13
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # MMCloud Connector
@@ -29,7 +29,7 @@ By the end of this step, you should have deployed an MMCloud OpCenter.
     flytectl demo start
     ```
 
-    Or install Flyte using the [flyte-binary helm chart](deployment-deployment-cloud-simple).
+    Or install Flyte using the [flyte-binary helm chart](../flyte-deployment/installing).
 
 ### flyte-core
 

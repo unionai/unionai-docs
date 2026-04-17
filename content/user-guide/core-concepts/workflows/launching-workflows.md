@@ -1,7 +1,7 @@
 ---
 title: Launching workflows
 weight: 6
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Launching workflows
@@ -34,7 +34,7 @@ Along the left side the following sections are available:
     If set and **enabled** then `interruptible=True` is used for this execution.
     If set and **disabled** then `interruptible=False` is used for this execution.
     See [Interruptible instances](../tasks/task-hardware-environment/interruptible-instances)
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
   * **Service account**: The service account to use for this execution. If not specified, the default is used.
 {{< /markdown >}}
@@ -42,7 +42,7 @@ Along the left side the following sections are available:
 * **Environment variables**: Environment variables that will be available to tasks in this workflow execution.
 * **Labels**: Labels to apply to the execution resource.
 * **Notifications**: [Notifications](../launch-plans/notifications) configured for this workflow execution.
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 * **Debug**: The workflow execution details for debugging purposes.
 {{< /markdown >}}

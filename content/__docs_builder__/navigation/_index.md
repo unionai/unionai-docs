@@ -1,6 +1,6 @@
 ---
 title: Navigation Tests
-variants: -flyte -serverless -byoc -selfmanaged
+variants: -flyte -union
 ---
 
 # Navigation Tests

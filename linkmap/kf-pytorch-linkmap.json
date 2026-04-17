@@ -1,0 +1,40 @@
+{
+  "packages": {
+    "flytekitplugins.kfpytorch": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch/",
+    "flytekitplugins.kfpytorch.error_handling": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.error_handling/",
+    "flytekitplugins.kfpytorch.pod_template": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.pod_template/",
+    "flytekitplugins.kfpytorch.task": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/"
+  },
+  "identifiers": {
+    "flytekitplugins.kfpytorch.task.CleanPodPolicy": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskcleanpodpolicy",
+    "CleanPodPolicy": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskcleanpodpolicy",
+    "flytekitplugins.kfpytorch.task.Elastic": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskelastic",
+    "Elastic": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskelastic",
+    "flytekitplugins.kfpytorch.task.ElasticWorkerResult": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskelasticworkerresult",
+    "ElasticWorkerResult": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskelasticworkerresult",
+    "flytekitplugins.kfpytorch.task.Master": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskmaster",
+    "Master": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskmaster",
+    "flytekitplugins.kfpytorch.task.PyTorch": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskpytorch",
+    "PyTorch": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskpytorch",
+    "flytekitplugins.kfpytorch.task.PyTorchFunctionTask": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskpytorchfunctiontask",
+    "PyTorchFunctionTask": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskpytorchfunctiontask",
+    "flytekitplugins.kfpytorch.task.PytorchElasticFunctionTask": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskpytorchelasticfunctiontask",
+    "PytorchElasticFunctionTask": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskpytorchelasticfunctiontask",
+    "flytekitplugins.kfpytorch.task.RestartPolicy": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskrestartpolicy",
+    "RestartPolicy": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskrestartpolicy",
+    "flytekitplugins.kfpytorch.task.RunPolicy": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskrunpolicy",
+    "RunPolicy": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskrunpolicy",
+    "flytekitplugins.kfpytorch.task.Worker": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskworker",
+    "Worker": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#flytekitpluginskfpytorchtaskworker"
+  },
+  "methods": {
+    "flytekitplugins.kfpytorch.error_handling.create_recoverable_error_file": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.error_handling/#create_recoverable_error_file",
+    "create_recoverable_error_file": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.error_handling/#create_recoverable_error_file",
+    "flytekitplugins.kfpytorch.error_handling.is_recoverable_worker_error": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.error_handling/#is_recoverable_worker_error",
+    "is_recoverable_worker_error": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.error_handling/#is_recoverable_worker_error",
+    "flytekitplugins.kfpytorch.pod_template.add_shared_mem_volume_to_pod_template": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.pod_template/#add_shared_mem_volume_to_pod_template",
+    "add_shared_mem_volume_to_pod_template": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.pod_template/#add_shared_mem_volume_to_pod_template",
+    "flytekitplugins.kfpytorch.task.spawn_helper": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#spawn_helper",
+    "spawn_helper": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#spawn_helper"
+  }
+}

@@ -1,82 +1,12 @@
 ---
 title: Accelerators
 weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Accelerators
 
-{{< variant serverless >}}
-{{< markdown >}}
-
-{{< key product_name >}} allows you to specify [requests and limits](./customizing-task-resources) for the number of GPUs available for a given task.
-However, in some cases, you may want to be more specific about the type of GPU to be used.
-
-You can use the `accelerator` parameter to specify specific GPU types.
-
-{{< key product_name >}} Serverless comes with three GPU types available:
-
-* [NVIDIA T4 Tensor Core GPU](#nvidia-t4-tensor-core-gpu)
-* [NVIDIA L4 Tensor Core GPU](#nvidia-l4-tensor-core-gpu)
-* [NVIDIA A100 GPU](#nvidia-a100-gpu)
-
-Pricing for these GPUs can found on the [{{< key product_name >}} Pricing page](https://www.union.ai/pricing#:~:text=*Serverless%20compute%20pricing).
-
-## NVIDIA T4 Tensor Core GPU
-
-The **NVIDIA T4 Tensor Core GPU** is the default.
-To use it for a task, specify the number of GPUs required in the `limits` parameter:
-
-```python
-@{{< key kit_as >}}.task(
-    limits=Resources(gpu="1")
-)
-def my_task():
-    ...
-```
-
-Or, you can explicitly specify the `accelerator` parameter as follows:
-
-```python
-@{{< key kit_as >}}.task(
-    limits=Resources(gpu="1"),
-    accelerator=GPUAccelerator("nvidia-tesla-t4")
-)
-def my_task():
-    ...
-```
-
-## NVIDIA L4 Tensor Core GPU
-
-To use the **NVIDIA L4 Tensor Core GPU** for a task, you must specify the number of GPUs required in the `limits` parameter, and also specify the `accelerator` parameter as follows:
-
-```python
-from flytekit.extras.accelerators import L4
-
-@{{< key kit_as >}}.task(
-    requests=Resources(gpu="1"),
-    accelerator=L4,
-)
-def my_task():
-    ...
-```
-
-## NVIDIA A100 GPU
-
-To use the **NVIDIA A100 GPU** for a task you must specify the number of GPUs required in the `limits` parameter, and also specify the `accelerator` parameter as follows:
-
-```python
-@{{< key kit_as >}}.task(
-    requests=Resources(gpu="1"),
-    accelerator=GPUAccelerator("nvidia-tesla-a100"),
-)
-def my_task():
-    ...
-```
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 > [!NOTE] _Accelerators_ and _Accelerated datasets_ are entirely different things
@@ -160,7 +90,7 @@ Note that in order for a specific accelerator to be available in your Flyte inst
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged flyte >}}
+{{< variant flyte union >}}
 {{< markdown >}}
 
 If using the constants, you can import them directly from the module, e.g.:

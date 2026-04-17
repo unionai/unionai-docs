@@ -1,6 +1,6 @@
 ---
 title: flytectl demo
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl demo

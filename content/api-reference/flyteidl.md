@@ -1,6 +1,6 @@
 ---
 title: Flyteidl
-variants: -byoc -selfmanaged -serverless +flyte
+variants: +flyte -union
 weight: 5
 ---
 

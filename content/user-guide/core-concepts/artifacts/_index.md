@@ -1,11 +1,14 @@
 ---
 title: Artifacts
 weight: 5
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 sidebar_expanded: false
+llm_readable_bundle: true
 ---
 
 # Artifacts
+
+{{< llm-bundle-note >}}
 
 {{< key product_name >}} produces many intermediate outputs when running tasks and workflows. These outputs are stored internally in {{< key product_name >}} and are accessible through the relevant executions, but are not usually directly accessible to users.
 

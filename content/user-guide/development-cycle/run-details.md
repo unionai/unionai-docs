@@ -1,7 +1,7 @@
 ---
 title: Run details
 weight: 10
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Run details

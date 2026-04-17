@@ -1,7 +1,7 @@
 ---
 title: Dolt
 layout: plugin
-variants: +flyte -byoc -selfmanaged -serverless
+variants: +flyte -union
 metadata:
   title: Dolt
   title_expanded: Flytekit Dolt Plugin

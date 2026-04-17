@@ -1,6 +1,6 @@
 ---
 title: flytectl config init
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # flytectl config init

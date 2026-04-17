@@ -1,7 +1,7 @@
 ---
 title: flytekit.exceptions.eager
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -19,7 +19,7 @@ layout: py_api
 
 Raised when a node in an eager workflow encounters an error.
 
-This exception should be used in an {{< py_func_ref `@eager <flytekit.core.task.eager>` >}} workflow function to
+This exception should be used in an {{&lt; py_func_ref `@eager &lt;flytekit.core.task.eager&gt;` &gt;}} workflow function to
 catch exceptions that are raised by tasks or subworkflows.
 
 ```python

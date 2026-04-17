@@ -1,6 +1,6 @@
 ---
 title: uctl delete clusterpoolassignment
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl delete clusterpoolassignment

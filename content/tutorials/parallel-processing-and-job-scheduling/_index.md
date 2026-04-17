@@ -1,7 +1,7 @@
 ---
 title: Parallel Processing and Job Scheduling
 weight: 1
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 sidebar_expanded: true
 ---
 

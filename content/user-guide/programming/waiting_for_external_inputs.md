@@ -1,7 +1,7 @@
 ---
 title: Waiting for external inputs
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Waiting for external inputs

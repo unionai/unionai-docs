@@ -1,7 +1,7 @@
 ---
 title: Packages
-version: 0.0.0+develop
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -10,4 +10,3 @@ layout: py_api
 | Package | Description |
 |-|-|
 | [`flytekitplugins.memray`](flytekitplugins.memray) |  |
-| [`flytekitplugins.memray.profiling`](flytekitplugins.memray.profiling) |  |

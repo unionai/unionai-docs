@@ -1,7 +1,7 @@
 ---
 title: Snowflake connector
 weight: 1
-variants: +flyte -serverless +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: false
 ---
 
@@ -27,7 +27,7 @@ For an example query, see [Snowflake connector example usage](./snowflake-connec
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 For an example query, see [Snowflake connector example usage](./snowflake-connector-example-usage-union)

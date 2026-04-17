@@ -1,7 +1,7 @@
 ---
 title: API Key Authentication with FastAPI
 weight: 3
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # API Key Authentication with FastAPI

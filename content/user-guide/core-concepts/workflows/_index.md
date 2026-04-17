@@ -1,11 +1,14 @@
 ---
 title: Workflows
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: false
+llm_readable_bundle: true
 ---
 
 # Workflows
+
+{{< llm-bundle-note >}}
 
 So far in our discussion of workflows, we have focused on top-level workflows decorated with `@{{< key kit_as >}}.workflow`.
 These are, in fact, more accurately termed [standard workflows](./standard-workflows) to differentiate them from the other types of workflows that exist in {{< key product_name >}}: [subworkflows](./subworkflows-and-sub-launch-plans), [dynamic workflows](./dynamic-workflows), and [imperative workflows](./imperative-workflows).

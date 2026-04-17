@@ -1,6 +1,6 @@
 ---
 title: Navigation Tests (Test 1)
-variants: -flyte -serverless -byoc -selfmanaged
+variants: -flyte -union
 ---
 
 # Navigation Tests
@@ -9,10 +9,9 @@ variants: -flyte -serverless -byoc -selfmanaged
 
 | Link                                     |
 | ---------------------------------------- |
-| [{{< docs_home byoc v1 >}}/user-guide]({{< docs_home byoc v1 >}}/user-guide) |
+| [{{< docs_home union v1 >}}/user-guide]({{< docs_home union v1 >}}/user-guide) |
 | [{{< docs_home flyte v1 >}}/user-guide]({{< docs_home flyte v1 >}}/user-guide) |
-| [{{< docs_home selfmanaged v1 >}}/user-guide]({{< docs_home selfmanaged v1 >}}/user-guide) |
-| [{{< docs_home serverless v1 >}}/user-guide]({{< docs_home serverless v1 >}}/user-guide) |
+| [{{< docs_home union v1 >}}/user-guide]({{< docs_home union v1 >}}/user-guide) |
 
 ## External URL
 

@@ -1,7 +1,7 @@
 ---
 title: Workflow state transitions
 weight: 3
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 mermaid: true
 ---
 

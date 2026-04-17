@@ -1,7 +1,7 @@
 ---
 title: flytekit.deck.renderer
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -16,9 +16,14 @@ layout: py_api
 | [`ArrowRenderer`](.././flytekit.deck.renderer#flytekitdeckrendererarrowrenderer) | Render an Arrow dataframe as an HTML table. |
 | [`MarkdownRenderer`](.././flytekit.deck.renderer#flytekitdeckrenderermarkdownrenderer) | Convert a markdown string to HTML and return HTML as a unicode string. |
 | [`PythonDependencyRenderer`](.././flytekit.deck.renderer#flytekitdeckrendererpythondependencyrenderer) | PythonDependencyDeck is a deck that contains information about packages installed via pip. |
-| [`Renderable`](.././flytekit.deck.renderer#flytekitdeckrendererrenderable) | Base class for protocol classes. |
 | [`SourceCodeRenderer`](.././flytekit.deck.renderer#flytekitdeckrenderersourcecoderenderer) | Convert Python source code to HTML, and return HTML as a unicode string. |
 | [`TopFrameRenderer`](.././flytekit.deck.renderer#flytekitdeckrenderertopframerenderer) | Render a DataFrame as an HTML table. |
+
+### Protocols
+
+| Protocol | Description |
+|-|-|
+| [`Renderable`](.././flytekit.deck.renderer#flytekitdeckrendererrenderable) |  |
 
 ### Variables
 
@@ -47,9 +52,9 @@ def to_html(
     df: pyarrow.Table,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `df` | `pyarrow.Table` |
+| Parameter | Type | Description |
+|-|-|-|
+| `df` | `pyarrow.Table` | |
 
 ## flytekit.deck.renderer.MarkdownRenderer
 
@@ -70,23 +75,25 @@ def to_html(
     text: str,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `text` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `text` | `str` | |
 
 ## flytekit.deck.renderer.PythonDependencyRenderer
 
 PythonDependencyDeck is a deck that contains information about packages installed via pip.
 
 
+### Parameters
+
 ```python
 class PythonDependencyRenderer(
     title: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `title` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `title` | `str` | |
 
 ### Methods
 
@@ -102,49 +109,9 @@ def to_html()
 ```
 ## flytekit.deck.renderer.Renderable
 
-Base class for protocol classes.
-
-Protocol classes are defined as::
-
-    class Proto(Protocol):
-        def meth(self) -> int:
-            ...
-
-Such classes are primarily used with static type checkers that recognize
-structural subtyping (static duck-typing).
-
-For example::
-
-    class C:
-        def meth(self) -> int:
-            return 0
-
-    def func(x: Proto) -> int:
-        return x.meth()
-
-    func(C())  # Passes static type check
-
-See PEP 544 for details. Protocol classes decorated with
-@typing.runtime_checkable act as simple-minded runtime protocols that check
-only the presence of given attributes, ignoring their type signatures.
-Protocol classes can be generic, they are defined as::
-
-    class GenProto[T](Protocol):
-        def meth(self) -> T:
-            ...
-
-
 ```python
-class Renderable(
-    args,
-    kwargs,
-)
+protocol Renderable()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 ### Methods
 
 | Method | Description |
@@ -163,23 +130,25 @@ Convert an object(markdown, pandas.dataframe) to HTML and return HTML as a unico
 Returns: An HTML document as a string.
 
 
-| Parameter | Type |
-|-|-|
-| `python_value` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_value` | `typing.Any` | |
 
 ## flytekit.deck.renderer.SourceCodeRenderer
 
 Convert Python source code to HTML, and return HTML as a unicode string.
 
 
+### Parameters
+
 ```python
 class SourceCodeRenderer(
     title: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `title` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `title` | `str` | |
 
 ### Methods
 
@@ -201,14 +170,18 @@ This method applies a colorful style and replaces the color "#fff0f0" with "#fff
 
 
 
-| Parameter | Type |
-|-|-|
-| `source_code` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `source_code` | `str` | The Python source code to be converted. |
+
+**Returns:** str: The resulting HTML as a string, including CSS and highlighted source code.
 
 ## flytekit.deck.renderer.TopFrameRenderer
 
 Render a DataFrame as an HTML table.
 
+
+### Parameters
 
 ```python
 class TopFrameRenderer(
@@ -216,10 +189,10 @@ class TopFrameRenderer(
     max_cols: int,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `max_rows` | `int` |
-| `max_cols` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `max_rows` | `int` | |
+| `max_cols` | `int` | |
 
 ### Methods
 
@@ -235,7 +208,7 @@ def to_html(
     df: pandas.DataFrame,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `df` | `pandas.DataFrame` |
+| Parameter | Type | Description |
+|-|-|-|
+| `df` | `pandas.DataFrame` | |
 

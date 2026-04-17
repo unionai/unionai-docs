@@ -1,7 +1,7 @@
 ---
 title: Reactive workflows
 weight: 9
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # Reactive workflows

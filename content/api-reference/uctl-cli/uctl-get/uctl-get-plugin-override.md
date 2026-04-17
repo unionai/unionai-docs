@@ -1,6 +1,6 @@
 ---
 title: uctl get plugin-override
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl get plugin-override

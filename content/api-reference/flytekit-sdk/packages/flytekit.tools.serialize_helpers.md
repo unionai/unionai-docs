@@ -1,7 +1,7 @@
 ---
 title: flytekit.tools.serialize_helpers
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -31,10 +31,10 @@ Returns all entities that can be serialized and should be sent over to Flyte bac
 that are not known to Admin
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `options` | `typing.Optional[flytekit.core.options.Options]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `options` | `typing.Optional[flytekit.core.options.Options]` | |
 
 #### persist_registrable_entities()
 
@@ -56,8 +56,8 @@ These can be inspected by calling (in the launch plan case) ::
     flyte-cli parse-proto -f filename.pb -p flyteidl.admin.launch_plan_pb2.LaunchPlan
 
 
-| Parameter | Type |
-|-|-|
-| `entities` | `typing.List[typing.Union[flytekit.models.task.TaskSpec, flytekit.models.launch_plan.LaunchPlan, flytekit.models.admin.workflow.WorkflowSpec, flytekit.models.core.workflow.Node, flytekit.models.core.workflow.BranchNode, flytekit.models.core.workflow.ArrayNode]]` |
-| `folder` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `entities` | `typing.List[typing.Union[flytekit.models.task.TaskSpec, flytekit.models.launch_plan.LaunchPlan, flytekit.models.admin.workflow.WorkflowSpec, flytekit.models.core.workflow.Node, flytekit.models.core.workflow.BranchNode, flytekit.models.core.workflow.ArrayNode]]` | |
+| `folder` | `str` | |
 

@@ -1,7 +1,7 @@
 ---
 title: flytekit.models.project
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -17,6 +17,8 @@ layout: py_api
 
 ## flytekit.models.project.Project
 
+### Parameters
+
 ```python
 class Project(
     id,
@@ -30,12 +32,22 @@ platform.
 
 
 
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `name` |  |
-| `description` |  |
-| `state` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `name` |  | |
+| `description` |  | |
+| `state` |  | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `description` | `None` | A concise description for this project. |
+| `id` | `None` | A globally unique identifier associated with this project |
+| `is_empty` | `None` |  |
+| `name` | `None` | A human-readable name for this project. |
+| `state` | `None` | The state of this project. |
 
 ### Methods
 
@@ -45,9 +57,8 @@ platform.
 | [`archived_project()`](#archived_project) |  |
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | :rtype: Text. |
-| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
 
 
 #### active_project()
@@ -57,9 +68,9 @@ def active_project(
     id,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
 
 #### archived_project()
 
@@ -68,20 +79,22 @@ def archived_project(
     id,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
 
 #### from_flyte_idl()
 
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: Project
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
+
+**Returns:** Project
 
 #### serialize_to_string()
 
@@ -93,40 +106,12 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
-:rtype: Text
-
+**Returns:** Text
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
-:rtype: flyteidl.admin.project_pb2.Project
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `description` |  | {{< multiline >}}A concise description for this project.
-:rtype: Text
-{{< /multiline >}} |
-| `id` |  | {{< multiline >}}A globally unique identifier associated with this project
-:rtype: Text
-{{< /multiline >}} |
-| `is_empty` |  |  |
-| `name` |  | {{< multiline >}}A human-readable name for this project.
-:rtype: Text
-{{< /multiline >}} |
-| `state` |  | {{< multiline >}}The state of this project.
-:rtype: int
-{{< /multiline >}} |
+**Returns:** flyteidl.admin.project_pb2.Project
 

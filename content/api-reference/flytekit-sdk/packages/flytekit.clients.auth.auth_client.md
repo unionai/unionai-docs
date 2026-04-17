@@ -1,7 +1,7 @@
 ---
 title: flytekit.clients.auth.auth_client
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -25,6 +25,8 @@ Authorization client that stores the credentials in keyring and uses oauth2 stan
 credentials. NOTE: This will open an web browser to retrieve the credentials.
 
 
+### Parameters
+
 ```python
 class AuthorizationClient(
     endpoint: str,
@@ -47,22 +49,22 @@ Create new AuthorizationClient
 
 
 
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `auth_endpoint` | `str` |
-| `token_endpoint` | `str` |
-| `audience` | `typing.Optional[str]` |
-| `scopes` | `typing.Optional[typing.List[str]]` |
-| `client_id` | `typing.Optional[str]` |
-| `redirect_uri` | `typing.Optional[str]` |
-| `endpoint_metadata` | `typing.Optional[EndpointMetadata]` |
-| `verify` | `typing.Optional[typing.Union[bool, str]]` |
-| `session` | `typing.Optional[requests.Session]` |
-| `request_auth_code_params` | `typing.Optional[typing.Dict[str, str]]` |
-| `request_access_token_params` | `typing.Optional[typing.Dict[str, str]]` |
-| `refresh_access_token_params` | `typing.Optional[typing.Dict[str, str]]` |
-| `add_request_auth_code_params_to_request_access_token_params` | `typing.Optional[bool]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | str endpoint to connect to |
+| `auth_endpoint` | `str` | str endpoint where auth metadata can be found |
+| `token_endpoint` | `str` | str endpoint to retrieve token from |
+| `audience` | `typing.Optional[str]` | Audience parameter for Auth0 |
+| `scopes` | `typing.Optional[typing.List[str]]` | list[str] oauth2 scopes |
+| `client_id` | `typing.Optional[str]` | oauth2 client id |
+| `redirect_uri` | `typing.Optional[str]` | oauth2 redirect uri |
+| `endpoint_metadata` | `typing.Optional[EndpointMetadata]` | EndpointMetadata object to control the rendering of the page on login successful or failure |
+| `verify` | `typing.Optional[typing.Union[bool, str]]` | Either a boolean, in which case it controls whether we verify the server's TLS certificate, or a string, in which case it must be a path to a CA bundle to use. Defaults to ``True``. When set to ``False``, requests will accept any TLS certificate presented by the server, and will ignore hostname mismatches and/or expired certificates, which will make your application vulnerable to man-in-the-middle (MitM) attacks. Setting verify to ``False`` may be useful during local development or testing. |
+| `session` | `typing.Optional[requests.Session]` | A custom requests.Session object to use for making HTTP requests. If not provided, a new Session object will be created. |
+| `request_auth_code_params` | `typing.Optional[typing.Dict[str, str]]` | dict of parameters to add to login uri opened in the browser |
+| `request_access_token_params` | `typing.Optional[typing.Dict[str, str]]` | dict of parameters to add when exchanging the auth code for the access token |
+| `refresh_access_token_params` | `typing.Optional[typing.Dict[str, str]]` | dict of parameters to add when refreshing the access token |
+| `add_request_auth_code_params_to_request_access_token_params` | `typing.Optional[bool]` | Whether to add the `request_auth_code_params` to the parameters sent when exchanging the auth code for the access token. Defaults to False. Required e.g. for the PKCE flow with flyteadmin. Not required for e.g. the standard OAuth2 flow on GCP. |
 
 ### Methods
 
@@ -91,11 +93,13 @@ def refresh_access_token(
     credentials: Credentials,
 ) -> Credentials
 ```
-| Parameter | Type |
-|-|-|
-| `credentials` | `Credentials` |
+| Parameter | Type | Description |
+|-|-|-|
+| `credentials` | `Credentials` | |
 
 ## flytekit.clients.auth.auth_client.AuthorizationCode
+
+### Parameters
 
 ```python
 class AuthorizationCode(
@@ -103,22 +107,24 @@ class AuthorizationCode(
     state,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` |  |
-| `state` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` |  | |
+| `state` |  | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `code` |  |  |
-| `state` |  |  |
+| `code` | `None` |  |
+| `state` | `None` |  |
 
 ## flytekit.clients.auth.auth_client.EndpointMetadata
 
 This class can be used to control the rendering of the page on login successful or failure
 
+
+### Parameters
 
 ```python
 class EndpointMetadata(
@@ -127,17 +133,19 @@ class EndpointMetadata(
     failure_html: typing.Optional[bytes],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `success_html` | `typing.Optional[bytes]` |
-| `failure_html` | `typing.Optional[bytes]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
+| `success_html` | `typing.Optional[bytes]` | |
+| `failure_html` | `typing.Optional[bytes]` | |
 
 ## flytekit.clients.auth.auth_client.OAuthCallbackHandler
 
 A simple wrapper around BaseHTTPServer.BaseHTTPRequestHandler that handles a callback URL that accepts an
 authorization token.
 
+
+### Parameters
 
 ```python
 class OAuthCallbackHandler(
@@ -146,11 +154,11 @@ class OAuthCallbackHandler(
     server,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `request` |  |
-| `client_address` |  |
-| `server` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `request` |  | |
+| `client_address` |  | |
+| `server` |  | |
 
 ### Methods
 
@@ -197,9 +205,9 @@ def date_time_string(
 Return the current date and time formatted for a message header.
 
 
-| Parameter | Type |
-|-|-|
-| `timestamp` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `timestamp` |  | |
 
 #### do_GET()
 
@@ -257,9 +265,9 @@ def handle_login(
     data: dict,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `data` | `dict` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `dict` | |
 
 #### handle_one_request()
 
@@ -299,10 +307,10 @@ Arguments are the same as for log_message().
 XXX This should go to the separate error log.
 
 
-| Parameter | Type |
-|-|-|
-| `format` |  |
-| `args` | ``*args`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `format` |  | |
+| `args` | `*args` | |
 
 #### log_message()
 
@@ -330,10 +338,10 @@ Unicode control characters are replaced with escaped hex
 before writing the output to stderr.
 
 
-| Parameter | Type |
-|-|-|
-| `format` |  |
-| `args` | ``*args`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `format` |  | |
+| `args` | `*args` | |
 
 #### log_request()
 
@@ -348,10 +356,10 @@ Log an accepted request.
 This is called by send_response().
 
 
-| Parameter | Type |
-|-|-|
-| `code` |  |
-| `size` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` |  | |
+| `size` |  | |
 
 #### parse_request()
 
@@ -393,11 +401,11 @@ output has been generated), logs the error, and finally sends
 a piece of HTML explaining the error to the user.
 
 
-| Parameter | Type |
-|-|-|
-| `code` |  |
-| `message` |  |
-| `explain` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` |  | |
+| `message` |  | |
+| `explain` |  | |
 
 #### send_header()
 
@@ -410,10 +418,10 @@ def send_header(
 Send a MIME header to the headers buffer.
 
 
-| Parameter | Type |
-|-|-|
-| `keyword` |  |
-| `value` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `keyword` |  | |
+| `value` |  | |
 
 #### send_response()
 
@@ -430,10 +438,10 @@ Also send two standard headers with the server software
 version and the current date.
 
 
-| Parameter | Type |
-|-|-|
-| `code` |  |
-| `message` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` |  | |
+| `message` |  | |
 
 #### send_response_only()
 
@@ -446,10 +454,10 @@ def send_response_only(
 Send the response header only.
 
 
-| Parameter | Type |
-|-|-|
-| `code` |  |
-| `message` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` |  | |
+| `message` |  | |
 
 #### setup()
 
@@ -470,6 +478,8 @@ A simple wrapper around the BaseHTTPServer.HTTPServer implementation that binds 
 authorization code callbacks.
 
 
+### Parameters
+
 ```python
 class OAuthHTTPServer(
     server_address: typing.Tuple[str, int],
@@ -483,14 +493,21 @@ class OAuthHTTPServer(
 Constructor.  May be extended, do not override.
 
 
-| Parameter | Type |
-|-|-|
-| `server_address` | `typing.Tuple[str, int]` |
-| `remote_metadata` | `EndpointMetadata` |
-| `request_handler_class` | `typing.Type[_BaseHTTPServer.BaseHTTPRequestHandler]` |
-| `bind_and_activate` | `bool` |
-| `redirect_path` | `str` |
-| `queue` | `Queue` |
+| Parameter | Type | Description |
+|-|-|-|
+| `server_address` | `typing.Tuple[str, int]` | |
+| `remote_metadata` | `EndpointMetadata` | |
+| `request_handler_class` | `typing.Type[_BaseHTTPServer.BaseHTTPRequestHandler]` | |
+| `bind_and_activate` | `bool` | |
+| `redirect_path` | `str` | |
+| `queue` | `Queue` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `redirect_path` | `None` |  |
+| `remote_metadata` | `None` |  |
 
 ### Methods
 
@@ -525,9 +542,9 @@ def close_request(
 Called to clean up an individual request.
 
 
-| Parameter | Type |
-|-|-|
-| `request` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `request` |  | |
 
 #### fileno()
 
@@ -550,10 +567,10 @@ def finish_request(
 Finish one request by instantiating RequestHandlerClass.
 
 
-| Parameter | Type |
-|-|-|
-| `request` |  |
-| `client_address` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `request` |  | |
+| `client_address` |  | |
 
 #### get_request()
 
@@ -572,9 +589,9 @@ def handle_authorization_code(
     auth_code: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `auth_code` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `auth_code` | `str` | |
 
 #### handle_error()
 
@@ -589,10 +606,10 @@ Handle an error gracefully.  May be overridden.
 The default is to print a traceback and continue.
 
 
-| Parameter | Type |
-|-|-|
-| `request` |  |
-| `client_address` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `request` |  | |
+| `client_address` |  | |
 
 #### handle_request()
 
@@ -606,9 +623,9 @@ Handle one request, possibly blocking.
 Respects self.timeout.
 
 
-| Parameter | Type |
-|-|-|
-| `queue` | `Queue` |
+| Parameter | Type | Description |
+|-|-|-|
+| `queue` | `Queue` | |
 
 #### handle_timeout()
 
@@ -633,10 +650,10 @@ Call finish_request.
 Overridden by ForkingMixIn and ThreadingMixIn.
 
 
-| Parameter | Type |
-|-|-|
-| `request` |  |
-| `client_address` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `request` |  | |
+| `client_address` |  | |
 
 #### serve_forever()
 
@@ -652,9 +669,9 @@ self.timeout. If you need to do periodic tasks, do them in
 another thread.
 
 
-| Parameter | Type |
-|-|-|
-| `poll_interval` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `poll_interval` |  | |
 
 #### server_activate()
 
@@ -717,9 +734,9 @@ def shutdown_request(
 Called to shutdown and close an individual request.
 
 
-| Parameter | Type |
-|-|-|
-| `request` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `request` |  | |
 
 #### verify_request()
 
@@ -734,15 +751,8 @@ Verify the request.  May be overridden.
 Return True if we should proceed with this request.
 
 
-| Parameter | Type |
-|-|-|
-| `request` |  |
-| `client_address` |  |
-
-### Properties
-
-| Property | Type | Description |
+| Parameter | Type | Description |
 |-|-|-|
-| `redirect_path` |  |  |
-| `remote_metadata` |  |  |
+| `request` |  | |
+| `client_address` |  | |
 

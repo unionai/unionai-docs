@@ -1,7 +1,7 @@
 ---
 title: uctl
 weight: 1
-variants: -flyte +serverless +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl

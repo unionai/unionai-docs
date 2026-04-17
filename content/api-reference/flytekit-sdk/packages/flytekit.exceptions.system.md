@@ -1,7 +1,7 @@
 ---
 title: flytekit.exceptions.system
-version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +selfmanaged +serverless
+version: 1.16.16
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -13,21 +13,20 @@ layout: py_api
 
 | Exception | Description |
 |-|-|
-| [`FlyteAgentNotFound`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteagentnotfound) | Assertion failed. |
-| [`FlyteConnectorNotFound`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteconnectornotfound) | Assertion failed. |
-| [`FlyteDownloadDataException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytedownloaddataexception) | Common base class for all non-exit exceptions. |
-| [`FlyteEntrypointNotLoadable`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteentrypointnotloadable) | Common base class for all non-exit exceptions. |
-| [`FlyteNonRecoverableSystemException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytenonrecoverablesystemexception) | Common base class for all non-exit exceptions. |
-| [`FlyteNotImplementedException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytenotimplementedexception) | Method or function hasn't been implemented yet. |
-| [`FlyteSystemAssertion`](.././flytekit.exceptions.system#flytekitexceptionssystemflytesystemassertion) | Assertion failed. |
-| [`FlyteSystemException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytesystemexception) | Common base class for all non-exit exceptions. |
-| [`FlyteSystemUnavailableException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytesystemunavailableexception) | Common base class for all non-exit exceptions. |
-| [`FlyteUploadDataException`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteuploaddataexception) | Common base class for all non-exit exceptions. |
+| [`FlyteAgentNotFound`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteagentnotfound) |  |
+| [`FlyteConnectorNotFound`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteconnectornotfound) |  |
+| [`FlyteDownloadDataException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytedownloaddataexception) |  |
+| [`FlyteEntrypointNotLoadable`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteentrypointnotloadable) |  |
+| [`FlyteNonRecoverableSystemException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytenonrecoverablesystemexception) |  |
+| [`FlyteNotImplementedException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytenotimplementedexception) |  |
+| [`FlyteSystemAssertion`](.././flytekit.exceptions.system#flytekitexceptionssystemflytesystemassertion) |  |
+| [`FlyteSystemException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytesystemexception) |  |
+| [`FlyteSystemUnavailableException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytesystemunavailableexception) |  |
+| [`FlyteUploadDataException`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteuploaddataexception) |  |
 
 ## flytekit.exceptions.system.FlyteAgentNotFound
 
-Assertion failed.
-
+### Parameters
 
 ```python
 class FlyteAgentNotFound(
@@ -35,22 +34,20 @@ class FlyteAgentNotFound(
     timestamp: typing.Optional[float],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `timestamp` | `typing.Optional[float]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteConnectorNotFound
 
-Assertion failed.
-
+### Parameters
 
 ```python
 class FlyteConnectorNotFound(
@@ -58,22 +55,20 @@ class FlyteConnectorNotFound(
     timestamp: typing.Optional[float],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `timestamp` | `typing.Optional[float]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteDownloadDataException
 
-Common base class for all non-exit exceptions.
-
+### Parameters
 
 ```python
 class FlyteDownloadDataException(
@@ -81,22 +76,20 @@ class FlyteDownloadDataException(
     timestamp: typing.Optional[float],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `timestamp` | `typing.Optional[float]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteEntrypointNotLoadable
 
-Common base class for all non-exit exceptions.
-
+### Parameters
 
 ```python
 class FlyteEntrypointNotLoadable(
@@ -105,23 +98,21 @@ class FlyteEntrypointNotLoadable(
     additional_msg,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `task_module` |  |
-| `task_name` |  |
-| `additional_msg` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_module` |  | |
+| `task_name` |  | |
+| `additional_msg` |  | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteNonRecoverableSystemException
 
-Common base class for all non-exit exceptions.
-
+### Parameters
 
 ```python
 class FlyteNonRecoverableSystemException(
@@ -132,22 +123,20 @@ FlyteNonRecoverableSystemException is thrown when a system code raises an except
 
 
 
-| Parameter | Type |
-|-|-|
-| `exc_value` | `Exception` |
+| Parameter | Type | Description |
+|-|-|-|
+| `exc_value` | `Exception` | The exception that was raised from system code. |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
-| `value` |  |  |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `value` | `None` |  |
 
 ## flytekit.exceptions.system.FlyteNotImplementedException
 
-Method or function hasn't been implemented yet.
-
+### Parameters
 
 ```python
 class FlyteNotImplementedException(
@@ -155,22 +144,20 @@ class FlyteNotImplementedException(
     timestamp: typing.Optional[float],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `timestamp` | `typing.Optional[float]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteSystemAssertion
 
-Assertion failed.
-
+### Parameters
 
 ```python
 class FlyteSystemAssertion(
@@ -178,22 +165,20 @@ class FlyteSystemAssertion(
     timestamp: typing.Optional[float],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `timestamp` | `typing.Optional[float]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteSystemException
 
-Common base class for all non-exit exceptions.
-
+### Parameters
 
 ```python
 class FlyteSystemException(
@@ -201,22 +186,20 @@ class FlyteSystemException(
     timestamp: typing.Optional[float],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `timestamp` | `typing.Optional[float]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteSystemUnavailableException
 
-Common base class for all non-exit exceptions.
-
+### Parameters
 
 ```python
 class FlyteSystemUnavailableException(
@@ -224,22 +207,20 @@ class FlyteSystemUnavailableException(
     timestamp: typing.Optional[float],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `timestamp` | `typing.Optional[float]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteUploadDataException
 
-Common base class for all non-exit exceptions.
-
+### Parameters
 
 ```python
 class FlyteUploadDataException(
@@ -247,15 +228,14 @@ class FlyteUploadDataException(
     timestamp: typing.Optional[float],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `timestamp` | `typing.Optional[float]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
+| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
 

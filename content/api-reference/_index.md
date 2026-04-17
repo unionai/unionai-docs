@@ -1,16 +1,16 @@
 ---
-title: API reference
+title: Reference
 weight: 3
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 top_menu: true
 sidebar_expanded: true
 ---
 
-# API reference
+# Reference
 
 This section provides the reference material for all {{< key product_name >}} APIs, SDKs and CLIs.
 
-{{< variant serverless byoc selfmanaged >}}
+{{< variant union >}}
 {{< markdown >}}
 
 To get started, add `union` to your project

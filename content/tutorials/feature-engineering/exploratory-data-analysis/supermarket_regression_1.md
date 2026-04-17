@@ -1,7 +1,7 @@
 ---
 title: Supermarket regression 1 notebook
 weight: 1
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 
 # Supermarket Regression 2 Notebook

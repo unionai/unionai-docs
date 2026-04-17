@@ -1,7 +1,7 @@
 ---
 title: Sagemaker inference connector
 weight: 15
-variants: +flyte -serverless -byoc -selfmanaged
+variants: +flyte -union
 ---
 # SageMaker Inference Connector
 
