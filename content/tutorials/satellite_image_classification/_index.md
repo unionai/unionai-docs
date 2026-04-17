@@ -7,7 +7,7 @@ sidebar_expanded: true
 
 # Satellite Image Classification with EfficientNet
 
-![Satellite Image](placeholder/satellite_image.png)
+![Satellite Image](../../_static/images/tutorials/satellite_image_classification/satellite_image.png)
 
 ## Background
 
@@ -76,9 +76,6 @@ With cache="auto" training results are cached based on the input data and config
 
 This task reads the metrics.json produced by training and renders interactive Plotly charts - validation accuracy and train/val loss curves - directly in the Union UI. The report=True flag tells Union to render the task output as a rich report panel. A dashed vertical line marks the Phase 1 → Phase 2 transition, making it easy to see how much the backbone fine-tuning contributes.
 
-![Validation Accuracy](placeholder/validation_accuracy.png)
-
-![Loss](placeholder/loss.png)
 
 ### Task 4: Orchestration (pipeline_env)
 
@@ -98,6 +95,12 @@ After the pipeline completes:
 
 Union UI: a report panel with interactive accuracy and loss curves, phase transition marker, and full task logs for each stage
 
-Weights & Biases: a complete experiment run with per-step metrics, learning rate schedule, and t-SNE visualizations of the model's learned embeddings at configurable epoch intervals. Every few epochs, a t-SNE plot of the validation set embeddings is logged, showing how the model's feature representations evolve over training — classes that start as an overlapping cloud gradually pull apart into tight, well-separated clusters as the backbone learns satellite-specific features
+![Validation Accuracy](../../_static/images/tutorials/satellite_image_classification/validation_accuracy.png)
+
+![Loss](../../_static/images/tutorials/satellite_image_classification/loss.png)
+
+Weights & Biases: a complete experiment run with validation metrics like loss and accuracy, train loss, and t-SNE visualizations of the model's learned embeddings at configurable epoch intervals. Every few epochs, a t-SNE plot of the validation set embeddings is logged, showing how the model's feature representations evolve over training — classes that start as an overlapping cloud gradually pull apart into tight, well-separated clusters as the backbone learns satellite-specific features
+
+![t-SNE Visualization](../../_static/images/tutorials/satellite_image_classification/tsne.gif)
 
 Model checkpoints: Lightning's ModelCheckpoint saves the top 3 best-performing checkpoints by validation accuracy, named best-{epoch}-{val_acc}.ckpt. These are standard PyTorch Lightning checkpoints that can be loaded directly for inference.
