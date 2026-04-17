@@ -54,8 +54,7 @@ The inputs of `clean_up` must exactly match the workflow’s inputs.
 Additionally, the `err` parameter will be populated with the error message encountered during execution.
 
 > [!WARNING]
-> Make sure the input parameter is called `err`
-> Any other name for this input will not come with the error message.
+> Make sure the input parameter is called `err`. Any other name for this input will not come with the error message.
 
 ```python
 @{{< key kit_as >}}.workflow
