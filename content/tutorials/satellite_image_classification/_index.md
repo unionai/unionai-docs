@@ -93,14 +93,14 @@ The W&B project and entity are wired in at submission time. Union handles spinni
 
 After the pipeline completes:
 
-Union UI: a report panel with interactive accuracy and loss curves, phase transition marker, and full task logs for each stage
+- Union UI: a report panel with interactive accuracy and loss curves, phase transition marker, and full task logs for each stage.
 
-![Validation Accuracy](../../_static/images/tutorials/satellite_image_classification/validation_accuracy.png)
+  ![Validation Accuracy](../../_static/images/tutorials/satellite_image_classification/validation_accuracy.png)
 
-![Loss](../../_static/images/tutorials/satellite_image_classification/loss.png)
+  ![Loss](../../_static/images/tutorials/satellite_image_classification/loss.png)
 
-Weights & Biases: a complete experiment run with validation metrics like loss and accuracy, train loss, and t-SNE visualizations of the model's learned embeddings at configurable epoch intervals. Every few epochs, a t-SNE plot of the validation set embeddings is logged, showing how the model's feature representations evolve over training — classes that start as an overlapping cloud gradually pull apart into tight, well-separated clusters as the backbone learns satellite-specific features
+- Weights & Biases: a complete experiment run with validation metrics like loss and accuracy, train loss, and t-SNE visualizations of the model's learned embeddings at configurable epoch intervals. Every few epochs, a t-SNE plot of the validation set embeddings is logged, showing how the model's feature representations evolve over training — classes that start as an overlapping cloud gradually pull apart into tight, well-separated clusters as the backbone learns satellite-specific features.
 
-![t-SNE Visualization](../../_static/images/tutorials/satellite_image_classification/tsne.gif)
+  ![t-SNE Visualization](../../_static/images/tutorials/satellite_image_classification/tsne.gif)
 
-Model checkpoints: Lightning's ModelCheckpoint saves the top 3 best-performing checkpoints by validation accuracy, named best-{epoch}-{val_acc}.ckpt. These are standard PyTorch Lightning checkpoints that can be loaded directly for inference.
+- Model checkpoints: Lightning's ModelCheckpoint saves the top 3 best-performing checkpoints by validation accuracy, named best-{epoch}-{val_acc}.ckpt. These are standard PyTorch Lightning checkpoints that can be loaded directly for inference.
