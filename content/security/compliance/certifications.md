@@ -4,6 +4,8 @@ weight: 1
 variants: -flyte +union
 ---
 
+# Certifications and Trust Center
+
 ## Certifications overview
 
 Union.ai maintains the following certifications and compliance standards, validated by independent third-party auditors with continuous compliance monitoring via Vanta.

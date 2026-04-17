@@ -4,6 +4,8 @@ weight: 5
 variants: -flyte +union
 ---
 
+# Workflow data flow
+
 This page traces the security-relevant data movements at each stage of the workflow lifecycle: registration, execution, and result retrieval. At every stage, customer data remains in the customer's infrastructure while only metadata passes through the control plane.
 
 ## Task registration

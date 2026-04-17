@@ -4,6 +4,8 @@ weight: 1
 variants: -flyte +union
 ---
 
+# Data classification and residency
+
 ## Data classification
 
 Every data type in the Union.ai platform is classified by its residency and access pattern. This classification determines where data is stored and how it is accessed.

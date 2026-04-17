@@ -4,6 +4,8 @@ weight: 1
 variants: -flyte +union
 ---
 
+# Two-plane separation
+
 Union.ai's architecture is divided into two distinct planes: a **control plane** hosted by Union.ai on AWS, and a **data plane** that runs on the customer's own Kubernetes cluster within their cloud account. This separation is the foundational security property of the system.
 
 The control plane handles workflow orchestration, user management, and the web interface. It stores only the metadata required for these functions -- task definitions, execution state, scheduling information, and user records. The control plane never stores customer data payloads. When it references data, it stores only URIs pointing to objects in the customer's object store, never the data itself.

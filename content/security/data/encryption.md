@@ -4,6 +4,8 @@ weight: 3
 variants: -flyte +union
 ---
 
+# Encryption
+
 Union.ai encrypts all data at rest and in transit across every storage and communication path in the platform.
 
 ## Encryption at rest

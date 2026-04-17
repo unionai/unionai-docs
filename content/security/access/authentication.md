@@ -4,6 +4,8 @@ weight: 1
 variants: -flyte +union
 ---
 
+# Authentication
+
 ## Authentication methods
 
 Union.ai supports three authentication methods, each designed for a different use case.

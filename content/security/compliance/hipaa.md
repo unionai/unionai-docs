@@ -4,6 +4,8 @@ weight: 2
 variants: -flyte +union
 ---
 
+# HIPAA compliance
+
 Union.ai supports HIPAA compliance for organizations processing protected health information (PHI). All customer data, including PHI, remains in the customer's own cloud infrastructure. PHI is stored and processed only in the customer's data plane -- object store, secrets backend, container registry, and log aggregator. The control plane stores only orchestration metadata and never persists PHI.
 
 All data is encrypted at rest and in transit. RBAC policies restrict access to authorized users. All API requests are authenticated and logged with identity, operation, and timestamp. These guarantees apply equally to self-managed and BYOC deployments.

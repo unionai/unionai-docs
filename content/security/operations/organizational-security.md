@@ -4,6 +4,8 @@ weight: 4
 variants: -flyte +union
 ---
 
+# Organizational security
+
 ## Employee security lifecycle
 
 Union.ai conducts background checks for all employees with production system access, verified through the SOC 2 audit. Security awareness training is required within 30 days of hire and annually, monitored via Vanta. Confidentiality agreements are signed by all employees and contractors. A code of conduct is acknowledged by all personnel, with violations subject to disciplinary action.

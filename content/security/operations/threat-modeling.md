@@ -4,6 +4,8 @@ weight: 3
 variants: -flyte +union
 ---
 
+# Threat modeling
+
 ## Control plane compromise
 
 A control plane compromise exposes orchestration metadata only. An attacker would not obtain customer data payloads, secret values, code bundles, container images, or log content. The attacker could not initiate connections to customer data planes because the tunnel is outbound-only from the customer's network. Presigned URLs are generated on the data plane, so the attacker could not generate data access URLs. See [Two-plane separation](../architecture/two-plane-separation) and [Network architecture](../architecture/network) for details on how these properties are enforced.

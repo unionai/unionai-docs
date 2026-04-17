@@ -4,6 +4,8 @@ weight: 2
 variants: -flyte +union
 ---
 
+# Control plane
+
 The control plane is the Union.ai-hosted component that orchestrates workflow execution, manages user access, and provides the web interface. It runs on AWS infrastructure managed by Union.ai and is covered by Union.ai's SOC 2 Type II certification.
 
 ## What it stores

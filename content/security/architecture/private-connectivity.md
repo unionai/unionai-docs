@@ -4,6 +4,8 @@ weight: 5
 variants: -flyte +union
 ---
 
+# Private connectivity (BYOC)
+
 In the BYOC deployment model, Union.ai maintains a private management connection to the customer's Kubernetes cluster. This connection uses the cloud provider's native private connectivity service: AWS PrivateLink, GCP Private Service Connect, or Azure Private Link, depending on the customer's cloud platform.
 
 This private connection is used exclusively for cluster management operations: Kubernetes version upgrades, node pool provisioning and scaling, Helm chart deployments and updates, and health monitoring. It provides Union.ai with the access needed to manage the Kubernetes cluster without exposing the K8s API to the public internet.

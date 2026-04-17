@@ -4,6 +4,8 @@ weight: 5
 variants: -flyte +union
 ---
 
+# Shared responsibility model
+
 ## Self-managed
 
 In self-managed deployments, the customer owns and operates the data plane infrastructure, while Union.ai manages the control plane. The following table defines the responsibility boundary.

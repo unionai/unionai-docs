@@ -4,6 +4,8 @@ weight: 4
 variants: -flyte +union
 ---
 
+# Network architecture
+
 The network architecture reinforces the [two-plane separation](./two-plane-separation) with an outbound-only connectivity model. The data plane initiates all connections to the control plane -- there are no inbound firewall rules, no VPN tunnels, and no listening services on the customer's network that Union.ai can reach.
 
 ## Outbound-only model

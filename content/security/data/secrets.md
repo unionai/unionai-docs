@@ -4,6 +4,8 @@ weight: 4
 variants: -flyte +union
 ---
 
+# Secrets management
+
 Union.ai's secrets management system stores secret values exclusively within the customer's infrastructure, with a write-only API design that eliminates an entire class of exfiltration attacks.
 
 ## Core design

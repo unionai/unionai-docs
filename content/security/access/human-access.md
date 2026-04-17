@@ -4,6 +4,8 @@ weight: 4
 variants: -flyte +union
 ---
 
+# Human access controls
+
 ## Self-managed
 
 In self-managed deployments, Union.ai personnel access only the control plane tenant. They have zero access to data plane infrastructure. This access uses the same OIDC/SSO mechanisms and RBAC policies as customer users.

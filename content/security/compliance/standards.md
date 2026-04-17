@@ -4,6 +4,8 @@ weight: 4
 variants: -flyte +union
 ---
 
+# Standards compliance
+
 Union.ai complies with ISO 27001 and CIS control frameworks through its private data plane architecture. The private connectivity model described in [Private connectivity](../architecture/private-connectivity) directly addresses the management interface controls required by both frameworks.
 
 | Framework | Control | Description |

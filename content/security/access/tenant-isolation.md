@@ -4,6 +4,8 @@ weight: 3
 variants: -flyte +union
 ---
 
+# Tenant isolation
+
 ## Database-layer isolation
 
 Every record in the control plane PostgreSQL database is scoped by organization. The org identifier is part of the primary key or unique index on all tenant-scoped tables. All database queries are gated by the org context extracted from the caller's authenticated token at the service layer, before any SQL is executed. Cross-org access is explicitly denied -- there is no API or internal path that permits querying across org boundaries.

@@ -5,6 +5,8 @@ variants: -flyte +union
 mermaid: true
 ---
 
+# Data plane
+
 The data plane runs entirely within the customer's cloud account on a Kubernetes cluster. It is where all computation occurs and where all customer data resides. In the self-managed model, the customer operates the data plane independently. In the BYOC model, Union.ai manages the Kubernetes cluster on the customer's behalf, but it still runs in the customer's cloud account. See [Deployment models](./deployment-models) for the differences.
 
 ## Components

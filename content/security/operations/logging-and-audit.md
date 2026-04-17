@@ -4,6 +4,8 @@ weight: 1
 variants: -flyte +union
 ---
 
+# Logging and audit
+
 ## Task logging
 
 Logs are collected by Fluent Bit (deployed as a DaemonSet on the data plane) and shipped to the customer's cloud-native log service: CloudWatch Logs (AWS), Cloud Logging (GCP), or Azure Monitor (Azure). Live logs are streamed directly from the Kubernetes API while a task is running. Persisted logs are read from the cloud log aggregator after a pod terminates.
