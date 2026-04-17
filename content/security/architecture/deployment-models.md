@@ -1,90 +1,93 @@
 ---
-title: Deployment models and BYOC differences
-weight: 5
+title: Deployment models
+weight: 6
 variants: -flyte +union
 ---
 
-# Deployment models and BYOC differences
+Union.ai supports two deployment models: **self-managed** and **BYOC** (Bring Your Own Cloud). Both models share the same fundamental [two-plane separation](./two-plane-separation) -- the control plane is hosted by Union.ai, and the data plane runs in the customer's cloud account. They differ in who operates the data plane's Kubernetes cluster.
 
-Union.ai offers two deployment models that share the same control plane/data plane architecture, encryption, RBAC, tenant isolation, and audit logging. The difference: in BYOC, **Union.ai manages the Kubernetes cluster** in the customer's cloud account.
+## Common properties
 
-## Overview
+Regardless of deployment model, both self-managed and BYOC share the same core security properties:
 
-| Aspect | Self-Managed | BYOC |
-| --- | --- | --- |
-| Data plane operator | Customer | Union.ai |
-| K8s cluster management | Customer | Union.ai (via PrivateLink/PSC) |
-| K8s API exposure | Customer-controlled | Private only (never public Internet) |
-| Union.ai infrastructure access | None (Cloudflare tunnel only) | K8s cluster management only |
-| Data/secrets/logs access by Union.ai | None | None |
-| Upgrade responsibility | Customer | Union.ai |
-| Monitoring responsibility | Customer | Union.ai + customer |
+- The same control plane / data plane architecture described in [Two-plane separation](./two-plane-separation)
+- Encryption in transit (TLS 1.2+) and at rest (AES-256) for all data
+- RBAC for user and service account authorization
+- Tenant isolation via Kubernetes namespaces and IAM scoping
+- Audit logging of administrative and user actions
+- Outbound-only [network connectivity](./network) via Cloudflare Tunnel
 
-## Network architecture
+The key difference is operational: in BYOC, Union.ai manages the Kubernetes cluster within the customer's cloud account. In self-managed, the customer operates the cluster entirely on their own.
 
-In addition to the Cloudflare Tunnel (identical in both models), BYOC deployments use a **private management connection** to the customer's Kubernetes cluster. See [Private connectivity (BYOC)](../network/private-connectivity).
+## Self-managed
 
-## Human access to customer environments
+In the self-managed model, the customer operates the data plane independently. Union.ai has zero access to the data plane infrastructure. The only connection between the control plane and the data plane is the Cloudflare Tunnel, initiated outbound by the data plane.
 
-In self-managed deployments, Union.ai personnel access only the control plane tenant. They have zero access to data plane infrastructure.
+The customer provisions all IAM roles, configures network policies, manages Kubernetes versions and upgrades, and handles all patching of data plane components. The customer is solely responsible for data plane availability, security hardening, and compliance of the data plane infrastructure.
 
-In BYOC, personnel additionally have authenticated K8s cluster access for operational purposes (upgrades, provisioning, monitoring). This access is scoped to cluster management -- personnel still cannot access customer data, secrets, or logs.
+This model provides maximum isolation and control. It is appropriate for organizations that have the Kubernetes operational expertise to manage the cluster and prefer to eliminate any third-party access to their infrastructure.
 
-For complete details, see [Human access controls](../auth/human-access-controls).
+## BYOC
 
-## Secrets management
+In the BYOC model, Union.ai manages the Kubernetes cluster within the customer's cloud account. The cluster runs in the customer's VPC, uses the customer's IAM roles, and stores data in the customer's object store -- but Union.ai handles the operational burden of running the cluster.
 
-The default secrets backend differs by deployment model:
+The Kubernetes API endpoint is private-only, accessible through [PrivateLink, Private Service Connect, or Azure Private Link](./private-connectivity). Union.ai accesses the cluster exclusively through this private connection for management operations.
 
-* **Self-managed:** Kubernetes Secrets (K8s etcd)
-* **BYOC:** Cloud-native secrets backend (AWS Secrets Manager, GCP Secret Manager, or Azure Key Vault)
+Union.ai manages:
 
-All four backends remain available in both models. Security properties (write-only API, runtime-only consumption, in-memory relay) are identical. See [Secrets backends](../secrets/secrets-backends).
+- Kubernetes cluster provisioning and lifecycle
+- Kubernetes version upgrades
+- Node pool configuration and scaling
+- Helm chart deployments and updates for Union.ai components
+- The monitoring stack (Prometheus, Grafana, Fluent Bit)
+- Serving infrastructure (Kourier, Knative, Union Operator)
+- Data plane component patching and updates
 
-## Infrastructure management
+The customer retains ownership and control of:
 
-In self-managed deployments, the customer manages their own Kubernetes clusters.
+- The cloud account and its IAM policies
+- VPC configuration and network architecture
+- Object storage buckets and their access policies
+- Any additional infrastructure outside the managed cluster
 
-In BYOC, Union.ai manages the cluster in the customer's cloud account:
-
-* Cluster provisioning and configuration
-* Kubernetes version management and upgrades
-* Node pool health and autoscaler configuration
-* Helm chart updates for platform components
-* Monitoring stack deployment and maintenance (Prometheus, Grafana, Fluent Bit)
-* Serving infrastructure lifecycle (Kourier gateway, Knative, Union Operator)
-
-The customer retains responsibility for their cloud account's underlying infrastructure (VPC, IAM policies, object storage configuration).
-
-### IAM role provisioning
-
-The same two IAM roles (`adminflyterole` and `userflyterole`) exist in both models. In self-managed, the customer provisions them. In BYOC, Union.ai provisions them during cluster setup.
-
-### Data plane patching
-
-In self-managed, the customer handles all data plane patching. In BYOC, Union.ai manages Kubernetes version, helm charts, and platform component updates. The control plane is updated independently in both models.
+Union.ai is responsible for the availability and security of the managed Kubernetes cluster. The customer is responsible for the availability and security of the surrounding cloud account infrastructure (VPC, IAM, object storage). Union.ai assumes the cluster-level third-party dependency risk -- if a Kubernetes vulnerability requires patching, Union.ai handles it.
 
 ## Availability and resilience
 
-Control plane availability is identical (AWS multi-AZ, managed PostgreSQL with automated failover, SOC 2 Type II coverage).
+The control plane runs on AWS with multi-AZ redundancy and automated failover. Availability is covered by Union.ai's SOC 2 Type II certification, and specific SLA commitments are defined in customer contracts.
 
-Data plane availability differs:
+A critical resilience property of the architecture is that **in-flight workflows continue running during control plane outages**. The Executor is a Kubernetes controller -- once a task pod is created, it runs independently of the control plane. If the tunnel connection drops or the control plane becomes unavailable, running task pods are unaffected. When connectivity is restored, the Executor reconciles state with the control plane, and the execution history is updated. New workflow submissions require control plane availability, but existing work is not interrupted.
 
-* **Self-managed:** Customer is solely responsible for data plane availability. Union.ai's availability commitment covers only the control plane.
-* **BYOC:** Union.ai is responsible for cluster availability (K8s version, node pool health, autoscaler, monitoring stack). The customer retains responsibility for cloud account availability (VPC, IAM, object storage SLAs). Union.ai's operational SLA is defined in the customer contract.
+For data plane availability, the responsibility depends on the deployment model. In the self-managed model, the customer is solely responsible for data plane availability. In the BYOC model, Union.ai is responsible for the availability of the managed Kubernetes cluster, while the customer remains responsible for the underlying cloud account resources.
 
-In both models, in-flight workflows continue executing during control plane outages. In BYOC, Union.ai monitoring detects connectivity issues; in self-managed, the customer detects these independently.
+## Verification
 
-## Third-party dependency risk
+### Availability and resilience (Medium)
 
-In self-managed, the customer owns all data plane dependencies. In BYOC, Union.ai assumes responsibility for cluster-level dependencies (Kubernetes, Helm charts, monitoring stack, serving infrastructure).
+**Reviewer focus:** Confirm that in-flight workflows survive control plane connectivity loss and that state reconciles upon reconnection.
 
-Union.ai's vendor management program, covered under SOC 2 Type II, includes periodic evaluation of these dependencies. See [Vulnerability management](../operations/vulnerability-management).
+**How to verify:**
 
-## Shared responsibility model
+1. Start a long-running workflow (e.g., a task with a `sleep` of several minutes).
 
-For the full responsibility breakdown by deployment model, see [Shared responsibility model](../compliance/shared-responsibility-model).
+2. Simulate a control plane outage by disconnecting the tunnel. The simplest approach is to scale down the Tunnel Service:
 
-## HIPAA and compliance
+   ```bash
+   kubectl scale deployment <tunnel-deployment> -n union --replicas=0
+   ```
 
-Union.ai's HIPAA support applies equally to both deployment models. All customer data -- including any PHI -- remains in the customer's cloud infrastructure regardless of who manages the K8s cluster. The control plane stores only orchestration metadata.
+3. Verify that task pods continue running:
+
+   ```bash
+   kubectl get pods -n <execution-namespace>
+   ```
+
+   The task pods should remain in `Running` state and continue their work.
+
+4. Restore connectivity:
+
+   ```bash
+   kubectl scale deployment <tunnel-deployment> -n union --replicas=1
+   ```
+
+5. Check the Union.ai UI or query the API to confirm that the execution state reconciled correctly -- the execution should show as completed (or progressed) with accurate timestamps, not as failed or lost.

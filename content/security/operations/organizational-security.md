@@ -1,48 +1,33 @@
 ---
-title: Organizational and physical security practices
-weight: 3
+title: Organizational security
+weight: 4
 variants: -flyte +union
 ---
 
-# Organizational and physical security practices
-
-Union.ai maintains organizational security controls independently verified through SOC 2 Type II audits and continuously monitored via the Vanta Trust Center (trust.union.ai).
-
 ## Employee security lifecycle
 
-**Verified controls** (source: Trust Center, SOC 2 Type II audit)
+Union.ai conducts background checks for all employees with production system access, verified through the SOC 2 audit. Security awareness training is required within 30 days of hire and annually, monitored via Vanta. Confidentiality agreements are signed by all employees and contractors. A code of conduct is acknowledged by all personnel, with violations subject to disciplinary action.
 
-| Control | Description | Verification |
-| --- | --- | --- |
-| Background checks | All employees with access to production systems undergo background checks prior to onboarding | SOC 2 Type II |
-| Security awareness training | Required within 30 days of hire and annually thereafter for all employees | Trust Center (passing) |
-| Confidentiality agreements | Signed by all employees and contractors during onboarding | Trust Center (passing) |
-| Code of conduct | Acknowledged by all employees and contractors; violations subject to disciplinary action | Trust Center (passing) |
-| Access provisioning | Documented procedures for granting, modifying, and revoking user access | Trust Center (passing) |
-| Termination checklists | Access revoked for terminated employees via formal checklist process | Trust Center (passing) |
-| Performance evaluations | Managers complete evaluations for direct reports at least annually | Trust Center (passing) |
-| Least-privilege access | Internal systems follow least-privilege; regular access reviews conducted | SOC 2 Type II |
+Access management follows documented procedures for provisioning, modification, and revocation. Termination checklists ensure complete access revocation when employees depart. Annual performance evaluations are conducted. Least-privilege access to internal systems is enforced with regular access reviews.
 
-## Governance & organizational controls
+## Governance
 
-| Control | Description | Verification |
-| --- | --- | --- |
-| Defined security roles | Formal roles and responsibilities for design, implementation, and monitoring of security controls | Trust Center (passing) |
-| Organizational structure | Documented org chart with reporting relationships | Trust Center (passing) |
-| Board-level oversight | Board or relevant subcommittee briefed by senior management on security and risk at least annually | Trust Center (passing) |
-| Information security policies | Policies and procedures documented and reviewed at least annually | Trust Center (passing) |
-| Whistleblower policy | Formalized policy with anonymous communication channel for reporting violations | Trust Center (passing) |
-| Vendor management | Third-party vendors and sub-processors evaluated and monitored; sub-processor list available via Trust Center | SOC 2 Type II |
-| Business continuity | BC/DR plans aligned with SOC 2 | SOC 2 Type II |
+Formal security roles and responsibilities are defined with a documented organizational structure and reporting relationships. Board-level oversight is maintained -- senior management briefs the board on security and risk at least annually.
+
+Information security policies are documented and reviewed at least annually. A whistleblower policy provides an anonymous communication channel for reporting concerns. Third-party vendors are evaluated and monitored through the vendor management program, and the sub-processor list is available via the [Trust Center](https://trust.union.ai). Business continuity and disaster recovery plans are aligned with SOC 2 requirements.
 
 ## Security development lifecycle
 
-* **Secure coding:** Guidelines enforced through mandatory code review processes
-* **Automated security testing:** Integrated into CI/CD pipelines
-* **Dependency scanning:** Vulnerability scanning and management for all software dependencies
-* **Infrastructure-as-code:** Version-controlled security configurations
-* **Penetration testing:** Regular third-party security assessments
-* **Incident response:** Documented procedures aligned with SOC 2 Type II, including defined escalation paths and post-incident review
+Secure coding guidelines are enforced through mandatory code review. Automated security testing is integrated into CI/CD pipelines. Dependency scanning and vulnerability management cover all software components. Infrastructure-as-code with version-controlled security configurations ensures that infrastructure changes are auditable and reproducible.
 
-> [!NOTE]
-> All controls marked as "passing" are continuously monitored via Vanta and verified through the Union.ai Trust Center at trust.union.ai. The SOC 2 Type II audit report is available upon request.
+Regular third-party penetration testing validates the effectiveness of security controls. Documented incident response procedures include escalation paths and post-incident review.
+
+## Verification
+
+### Organizational security (Medium)
+
+**Reviewer focus:** Confirm that organizational security practices are documented and independently verified.
+
+**How to verify:**
+
+These are organizational practices verified through the SOC 2 Type II audit and [Trust Center](https://trust.union.ai) continuous monitoring. This is audit-only verification -- these practices cannot be demonstrated through product features.
