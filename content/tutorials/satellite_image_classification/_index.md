@@ -40,7 +40,7 @@ Phase 2: Fine-tuning (unfrozen backbone). The backbone is unfrozen and added to 
 
 The transition happens automatically inside a PhaseChangeCallback:
 
-{{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/train.py" fragment="phase_change_callback" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/training.py" fragment="phase_change_callback" lang="python" >}}
 
 This two-phase strategy consistently reaches >95% validation accuracy on EuroSAT within 17 total epochs.
 
@@ -52,7 +52,7 @@ The pipeline has four components, each with its own environment defined in confi
 
 ### Task 1: Data Download (dataset_env)
 
-{{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/data.py" fragment="data_download" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/run.py" fragment="data_download" lang="python" >}}
 
 This task downloads the raw EuroSAT JPEG files via torchvision and packages them as a flyte.io.Dir. It runs on a lightweight CPU container (2 cores, 2 GB RAM) - no GPU needed. With cache="auto", the result is stored and reused on every subsequent run. You pay for the download exactly once.
 
@@ -60,7 +60,7 @@ No preprocessing happens here. Raw images are passed directly to training so tha
 
 ### Task 2: GPU Training (training_env)
 
-{{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/train.py" fragment="gpu_training" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/run.py" fragment="gpu_training" lang="python" >}}
 
 This task runs on a T4 GPU with 32 GB RAM. It receives the dataset Dir from Task 1, downloads it locally, then runs the two-phase training loop using PyTorch Lightning.
 
@@ -70,22 +70,29 @@ With cache="auto" training results are cached based on the input data and config
 
 @wandb_init - the flyteplugins-wandb integration initializes a W&B run automatically and makes it available via get_wandb_run(). This means every training run automatically logs metrics, learning rate curves, and t-SNE visualizations of the learned feature space to your W&B project.
 
-{{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/train.py" fragment="wandb_logging" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/training.py" fragment="wandb_logging" lang="python" >}}
 
 ### Task 3: Report Generation (report_env)
 
 This task reads the metrics.json produced by training and renders interactive Plotly charts - validation accuracy and train/val loss curves - directly in the Union UI. The report=True flag tells Union to render the task output as a rich report panel. A dashed vertical line marks the Phase 1 → Phase 2 transition, making it easy to see how much the backbone fine-tuning contributes.
 
+{{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/run.py" fragment="report_generator" lang="python" >}}
+
 
 ### Task 4: Orchestration (pipeline_env)
 
 The pipeline task is a lightweight orchestrator. It has no heavy dependencies of its own, just enough to call the three tasks above in sequence. depends_on ensures the container image is built after all its dependencies are resolved. The async/await pattern means each task handoff is non-blocking: Union manages scheduling, retries, and data movement between tasks transparently.
+{{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/run.py" fragment="Orchestration" lang="python" >}}
 
 ## Running the Pipeline
 
 Submit the pipeline with a single command from the project directory:
 
-{{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/main.py" fragment="run_pipeline" lang="python" >}}
+```bash
+uv run run.py
+```
+This calls:
+{{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/run.py" fragment="run_pipeline" lang="python" >}}
 
 The W&B project and entity are wired in at submission time. Union handles spinning up the right containers, routing data between tasks, and surfacing results in the UI.
 
