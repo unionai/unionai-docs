@@ -1,7 +1,7 @@
 ---
 title: Multiple environments
 weight: 7
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Multiple environments

@@ -1,17 +1,13 @@
 ---
 title: flyte.notify
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +union
->>>>>>> origin/main
 layout: py_api
 sidebar_expanded: true
 ---
 
 # flyte.notify
+
 
 Task Notifications API for Flyte 2.0
 
@@ -69,6 +65,7 @@ Template Variables:
     - {run.url}: URL to run details page
     - {project}: Flyte project name
     - {domain}: Flyte domain name
+
 ## Directory
 
 ### Classes

@@ -1,6 +1,6 @@
 ---
 title: uctl delete clusterconfig
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl delete clusterconfig

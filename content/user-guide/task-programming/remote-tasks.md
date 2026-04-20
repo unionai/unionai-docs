@@ -1,7 +1,7 @@
 ---
 title: Remote tasks
 weight: 9
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Remote tasks

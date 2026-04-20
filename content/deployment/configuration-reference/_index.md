@@ -1,6 +1,6 @@
 ---
 title: Configuration reference
-variants: -flyte -union
+variants: -flyte -byoc -selfmanaged
 weight: 17
 sidebar_expanded: true
 llm_readable_bundle: true

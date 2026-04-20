@@ -1,12 +1,7 @@
 ---
 title: HashFunction
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +union
->>>>>>> origin/main
 layout: py_api
 ---
 
@@ -16,10 +11,22 @@ layout: py_api
 
 A hash method that wraps a user-provided function to compute hashes.
 
-This class allows you to define custom hashing logic by providing a callable
-that takes data and returns a hash string. It implements the HashMethod protocol,
-making it compatible with Flyte's hashing infrastructure.
+    This class allows you to define custom hashing logic by providing a callable
+    that takes data and returns a hash string. It implements the HashMethod protocol,
+    making it compatible with Flyte's hashing infrastructure.
 
+    Example:
+        &gt;&gt;&gt; def my_hash(data: bytes) -&gt; str:
+        ...     return hashlib.md5(data).hexdigest()
+        &gt;&gt;&gt; hash_fn = HashFunction.from_fn(my_hash)
+        &gt;&gt;&gt; hash_fn.update(b"hello")
+        &gt;&gt;&gt; hash_fn.result()
+        '5d41402abc4b2a76b9719d911017c592'
+
+    Attributes:
+        _fn: The callable that computes the hash from input data.
+        _value: The most recently computed hash value.
+    
 
 
 ## Parameters
@@ -35,7 +42,7 @@ Initialize a HashFunction with a custom hash callable.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `fn` | `Callable[[Any], str]` | |
+| `fn` | `Callable[[Any], str]` | A callable that takes data of any type and returns a hash string. |
 
 ## Methods
 
@@ -58,6 +65,8 @@ Create a HashFunction from a callable.
 
 This is a convenience factory method for creating HashFunction instances.
 
+Example:
+    >>> hash_fn = HashFunction.from_fn(lambda x: hashlib.sha256(x).hexdigest())
 
 
 | Parameter | Type | Description |

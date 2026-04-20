@@ -1,7 +1,7 @@
 ---
 title: Activating and deactivating apps
 weight: 5
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Activating and deactivating apps

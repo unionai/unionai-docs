@@ -1,7 +1,7 @@
 ---
 title: Task plugins
 weight: 11
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Task plugins

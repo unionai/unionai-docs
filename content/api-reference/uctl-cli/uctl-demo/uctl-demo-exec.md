@@ -1,6 +1,6 @@
 ---
 title: uctl demo exec
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl demo exec

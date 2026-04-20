@@ -1,7 +1,7 @@
 ---
 title: Joining the community
 weight: 1
-variants: +flyte -union
+variants: +flyte -byoc -selfmanaged
 ---
 
 # Joining the community

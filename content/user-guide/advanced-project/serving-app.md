@@ -1,7 +1,7 @@
 ---
 title: Serving app
 weight: 4
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Serving app

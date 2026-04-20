@@ -1,7 +1,7 @@
 ---
 title: Workflow sandboxing
 weight: 2
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true
 mermaid: true

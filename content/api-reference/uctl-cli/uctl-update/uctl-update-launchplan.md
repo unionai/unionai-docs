@@ -1,6 +1,6 @@
 ---
 title: uctl update launchplan
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl update launchplan

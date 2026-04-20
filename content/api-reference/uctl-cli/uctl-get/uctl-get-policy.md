@@ -1,6 +1,6 @@
 ---
 title: uctl get policy
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl get policy

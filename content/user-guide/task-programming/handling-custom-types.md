@@ -1,7 +1,7 @@
 ---
 title: Custom types
 weight: 4
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---
 

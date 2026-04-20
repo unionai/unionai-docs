@@ -1,7 +1,7 @@
 ---
 title: AWS Batch plugin
 weight: 3
-variants: -flyte -union
+variants: -flyte -byoc -selfmanaged
 ---
 
 # AWS Batch

@@ -1,12 +1,7 @@
 ---
 title: Trigger
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +union
->>>>>>> origin/main
 layout: py_api
 ---
 
@@ -23,6 +18,8 @@ can be associated with multiple tasks.
 Predefined convenience constructors are available: `Trigger.hourly()`,
 `Trigger.daily()`, `Trigger.weekly()`, `Trigger.monthly()`, and
 `Trigger.minutely()`.
+
+Example:
 
 ```python
 my_trigger = flyte.Trigger(
@@ -55,7 +52,6 @@ class Trigger(
     labels: Mapping[str, str] | None,
     annotations: Mapping[str, str] | None,
     notifications: NamedRule | Notification | Tuple[Notification, ...] | None,
-    custom_context: Mapping[str, str] | None,
 )
 ```
 | Parameter | Type | Description |
@@ -72,7 +68,6 @@ class Trigger(
 | `labels` | `Mapping[str, str] \| None` | Kubernetes labels to attach to triggered runs. |
 | `annotations` | `Mapping[str, str] \| None` | Kubernetes annotations to attach to triggered runs. |
 | `notifications` | `NamedRule \| Notification \| Tuple[Notification, ...] \| None` | |
-| `custom_context` | `Mapping[str, str] \| None` | Metadata propagated through the entire task hierarchy of triggered runs. Readable inside any task via ``flyte.ctx().custom_context``. |
 
 ## Methods
 
@@ -100,7 +95,6 @@ def daily(
     queue: str | None,
     labels: Mapping[str, str] | None,
     annotations: Mapping[str, str] | None,
-    custom_context: Mapping[str, str] | None,
 ) -> Trigger
 ```
 Creates a Cron trigger that runs daily at midnight.
@@ -120,7 +114,6 @@ Creates a Cron trigger that runs daily at midnight.
 | `queue` | `str \| None` | Optional queue to run the trigger in. |
 | `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
 | `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
-| `custom_context` | `Mapping[str, str] \| None` | Optional context metadata propagated to triggered runs. |
 
 **Returns:** Trigger: A trigger that runs daily at midnight.
 
@@ -139,7 +132,6 @@ def hourly(
     queue: str | None,
     labels: Mapping[str, str] | None,
     annotations: Mapping[str, str] | None,
-    custom_context: Mapping[str, str] | None,
 ) -> Trigger
 ```
 Creates a Cron trigger that runs every hour.
@@ -159,7 +151,6 @@ Creates a Cron trigger that runs every hour.
 | `queue` | `str \| None` | Optional queue to run the trigger in. |
 | `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
 | `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
-| `custom_context` | `Mapping[str, str] \| None` | Optional context metadata propagated to triggered runs. |
 
 **Returns:** Trigger: A trigger that runs every hour, on the hour.
 
@@ -178,7 +169,6 @@ def minutely(
     queue: str | None,
     labels: Mapping[str, str] | None,
     annotations: Mapping[str, str] | None,
-    custom_context: Mapping[str, str] | None,
 ) -> Trigger
 ```
 Creates a Cron trigger that runs every minute.
@@ -198,7 +188,6 @@ Creates a Cron trigger that runs every minute.
 | `queue` | `str \| None` | Optional queue to run the trigger in. |
 | `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
 | `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
-| `custom_context` | `Mapping[str, str] \| None` | Optional context metadata propagated to triggered runs. |
 
 **Returns:** Trigger: A trigger that runs every minute.
 
@@ -217,7 +206,6 @@ def monthly(
     queue: str | None,
     labels: Mapping[str, str] | None,
     annotations: Mapping[str, str] | None,
-    custom_context: Mapping[str, str] | None,
 ) -> Trigger
 ```
 Creates a Cron trigger that runs monthly on the 1st at midnight.
@@ -237,7 +225,6 @@ Creates a Cron trigger that runs monthly on the 1st at midnight.
 | `queue` | `str \| None` | Optional queue to run the trigger in. |
 | `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
 | `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
-| `custom_context` | `Mapping[str, str] \| None` | Optional context metadata propagated to triggered runs. |
 
 **Returns:** Trigger: A trigger that runs monthly on the 1st at midnight.
 
@@ -256,7 +243,6 @@ def weekly(
     queue: str | None,
     labels: Mapping[str, str] | None,
     annotations: Mapping[str, str] | None,
-    custom_context: Mapping[str, str] | None,
 ) -> Trigger
 ```
 Creates a Cron trigger that runs weekly on Sundays at midnight.
@@ -276,7 +262,6 @@ Creates a Cron trigger that runs weekly on Sundays at midnight.
 | `queue` | `str \| None` | Optional queue to run the trigger in. |
 | `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
 | `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
-| `custom_context` | `Mapping[str, str] \| None` | Optional context metadata propagated to triggered runs. |
 
 **Returns:** Trigger: A trigger that runs weekly on Sundays at midnight.
 

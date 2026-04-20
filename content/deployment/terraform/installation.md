@@ -1,7 +1,7 @@
 ---
 title: Installation
 weight: 1
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # Installing the Union Terraform Provider

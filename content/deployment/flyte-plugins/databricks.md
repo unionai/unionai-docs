@@ -1,7 +1,7 @@
 ---
 title: Databricks plugin
 weight: 6
-variants: -flyte -union
+variants: -flyte -byoc -selfmanaged
 ---
 
 # Databricks Plugin

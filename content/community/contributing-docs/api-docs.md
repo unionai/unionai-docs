@@ -1,7 +1,7 @@
 ---
 title: API docs
 weight: 8
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # API docs

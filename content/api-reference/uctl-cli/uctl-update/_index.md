@@ -1,6 +1,6 @@
 ---
 title: uctl update
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl update

@@ -1,6 +1,6 @@
 ---
 title: uctl get launchplan
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl get launchplan

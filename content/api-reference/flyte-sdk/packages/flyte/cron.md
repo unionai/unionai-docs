@@ -1,12 +1,7 @@
 ---
 title: Cron
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +union
->>>>>>> origin/main
 layout: py_api
 ---
 
@@ -26,6 +21,8 @@ Common patterns:
 - `"0 0 * * 1"` — weekly on Monday at midnight
 - `"0 0 1 * *"` — monthly on the 1st at midnight
 - `"*/5 * * * *"` — every 5 minutes
+
+Example:
 
 ```python
 my_trigger = flyte.Trigger(

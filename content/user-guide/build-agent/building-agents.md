@@ -1,7 +1,7 @@
 ---
 title: Building agentic workflows
 weight: 1
-variants: +flyte +serverless +union
+variants: +flyte +serverless +byoc +selfmanaged
 mermaid: true
 ---
 

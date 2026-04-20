@@ -1,12 +1,7 @@
 ---
 title: flyteplugins.hitl
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +byoc +selfmanaged +union
->>>>>>> origin/main
 layout: py_api
 ---
 
@@ -50,6 +45,7 @@ async def main() -> int:
 - Programmatic API for automated input
 - Support for int, float, str, and bool data types
 - Crash-resilient polling with object storage
+
 ## Directory
 
 ### Classes
@@ -94,6 +90,19 @@ Create a new human-in-the-loop event.
 
 This is a convenience function that wraps Event.create().
 
+Example:
+    # Async usage
+    event = await new_event.aio(
+        "approval_event",
+        data_type=bool,
+        scope="run",
+        prompt="Do you approve this action?",
+    )
+    approved = await event.wait.aio()
+
+    # Sync usage
+    event = new_event("value_event", data_type=int, scope="run", prompt="Enter a number")
+    value = event.wait()
 
 
 | Parameter | Type | Description |

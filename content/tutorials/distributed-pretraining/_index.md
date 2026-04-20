@@ -1,7 +1,7 @@
 ---
 title: Distributed LLM pretraining
 weight: 1
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---
 

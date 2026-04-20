@@ -1,6 +1,6 @@
 ---
 title: uctl get clusterpool
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl get clusterpool

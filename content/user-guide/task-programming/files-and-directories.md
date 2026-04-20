@@ -1,7 +1,7 @@
 ---
 title: Files and directories
 weight: 1
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Files and directories

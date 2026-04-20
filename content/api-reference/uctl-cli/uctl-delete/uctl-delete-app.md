@@ -1,6 +1,6 @@
 ---
 title: uctl delete app
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl delete app

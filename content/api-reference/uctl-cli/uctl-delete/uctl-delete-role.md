@@ -1,6 +1,6 @@
 ---
 title: uctl delete role
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl delete role

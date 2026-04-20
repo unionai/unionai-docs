@@ -1,6 +1,6 @@
 ---
 title: uctl get app
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl get app

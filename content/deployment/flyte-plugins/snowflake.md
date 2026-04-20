@@ -1,7 +1,7 @@
 ---
 title: Snowflake plugin
 weight: 7
-variants: -flyte -union
+variants: -flyte -byoc -selfmanaged
 ---
 
 # Snowflake Plugin

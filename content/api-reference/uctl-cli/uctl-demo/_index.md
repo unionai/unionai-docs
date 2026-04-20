@@ -1,6 +1,6 @@
 ---
 title: uctl demo
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl demo

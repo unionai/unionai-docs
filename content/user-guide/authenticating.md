@@ -1,7 +1,7 @@
 ---
 title: Authenticating
 weight: 19
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # Authenticating with Union

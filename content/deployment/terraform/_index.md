@@ -1,7 +1,7 @@
 ---
 title: Manage Union through Terraform
 weight: 8
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 sidebar_expanded: true
 llm_readable_bundle: true
 ---

@@ -1,7 +1,7 @@
 ---
 title: FlytePropeller configuration
 weight: 3
-variants: -flyte -union
+variants: -flyte -byoc -selfmanaged
 ---
 
 # Flyte Propeller Configuration

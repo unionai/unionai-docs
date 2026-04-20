@@ -1,10 +1,10 @@
 ---
-title: Organizational and physical security practices
-weight: 10
-variants: -flyte +union
+title: Organizational & physical security practices
+weight: 11
+variants: -flyte +byoc +selfmanaged
 ---
 
-# Organizational \and physical security practices
+# Organizational & physical security practices
 
 Union.ai maintains organizational security controls to protect people, facilities, and endpoint devices.
 These controls are independently verified through SOC 2 Type II audits and continuously monitored via the Vanta Trust Center (trust.union.ai).

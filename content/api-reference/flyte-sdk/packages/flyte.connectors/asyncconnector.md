@@ -1,12 +1,7 @@
 ---
 title: AsyncConnector
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +union
->>>>>>> origin/main
 layout: py_api
 ---
 
@@ -20,6 +15,7 @@ The executor will communicate with the connector service to create tasks, get th
 
 All the connectors should be registered in the ConnectorRegistry.
 Connector Service will look up the connector based on the task type and version.
+
 
 
 ## Methods

@@ -1,7 +1,7 @@
 ---
 title: Snowflake
 weight: 1
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 ---
 

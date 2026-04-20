@@ -1,7 +1,7 @@
 ---
 title: Role
-version: 0.2.2
-variants: +flyte +byoc +selfmanaged +union
+version: 0.2.1
+variants: +flyte +byoc +selfmanaged
 layout: py_api
 ---
 

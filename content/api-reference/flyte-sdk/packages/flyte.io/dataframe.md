@@ -1,12 +1,7 @@
 ---
 title: DataFrame
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +union
->>>>>>> origin/main
 layout: py_api
 ---
 
@@ -28,6 +23,7 @@ The Flyte DataFrame object serves 2 main purposes:
  can accept a flyte.io.DataFrame, which can be converted to any dataframe.
 2. Allows for non materialized access to DataFrame objects. So, for example you can accept any dataframe as a
 flyte.io.DataFrame and this is just a reference and will not materialize till you force `.all()` or `.iter()` etc
+
 
 
 ## Parameters
@@ -76,7 +72,7 @@ validated to form a valid model.
 | [`from_local()`](#from_local) | This method is useful to upload the dataframe eagerly and get the actual DataFrame. |
 | [`from_local_sync()`](#from_local_sync) | This method is useful to upload the dataframe eagerly and get the actual DataFrame. |
 | [`iter()`](#iter) |  |
-| [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialize private attributes. |
+| [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialise private attributes. |
 | [`open()`](#open) | Load the handler if needed. |
 | [`schema_match()`](#schema_match) |  |
 | [`serialize_dataframe()`](#serialize_dataframe) |  |
@@ -146,6 +142,10 @@ def from_existing_remote(
 ```
 Create a DataFrame reference from an existing remote dataframe.
 
+Example:
+    ```python
+    df = DataFrame.from_existing_remote("s3://bucket/data.parquet", format="parquet")
+    ```
 
 
 | Parameter | Type | Description |
@@ -254,7 +254,7 @@ def model_post_init(
     context: Any,
 )
 ```
-This function is meant to behave like a BaseModel method to initialize private attributes.
+This function is meant to behave like a BaseModel method to initialise private attributes.
 
 It takes context as an argument since that's what pydantic-core passes when calling it.
 

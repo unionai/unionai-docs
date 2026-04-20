@@ -1,16 +1,12 @@
 ---
 title: flyteplugins.wandb
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +byoc +selfmanaged +union
->>>>>>> origin/main
 layout: py_api
 ---
 
 # flyteplugins.wandb
+
 
 ## Key features:
 
@@ -229,6 +225,7 @@ Decorator order: `@wandb_init` or `@wandb_sweep` must be the outermost decorator
 async def my_task():
     ...
 ```
+
 ## Directory
 
 ### Classes

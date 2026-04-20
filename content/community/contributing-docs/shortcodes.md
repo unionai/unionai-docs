@@ -1,7 +1,7 @@
 ---
 title: Shortcodes
 weight: 5
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Shortcodes

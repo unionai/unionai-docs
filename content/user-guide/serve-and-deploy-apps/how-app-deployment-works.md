@@ -1,7 +1,7 @@
 ---
 title: How app deployment works
 weight: 3
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # How app deployment works

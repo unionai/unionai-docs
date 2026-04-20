@@ -1,7 +1,7 @@
 ---
 title: Build apps
 weight: 15
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 llm_readable_bundle: true
 ---
@@ -33,4 +33,3 @@ Flyte supports various types of apps:
 - [**FastAPI app**](./fastapi-app): Create REST APIs and backend services
 - [**vLLM app**](./vllm-app): Serve large language models with vLLM
 - [**SGLang app**](./sglang-app): Serve LLMs with SGLang for structured generation
-- [**Flyte webhook**](./flyte-webhook): Pre-built webhook for common Flyte operations

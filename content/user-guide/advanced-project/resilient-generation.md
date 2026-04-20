@@ -1,7 +1,7 @@
 ---
 title: Resilient generation
 weight: 1
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Resilient generation

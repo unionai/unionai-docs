@@ -1,7 +1,7 @@
 ---
 title: Resource Management
 weight: 2
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # Managing Union Resources with Terraform
@@ -62,7 +62,7 @@ export UNIONAI_API_KEY="your-api-key"
 Create an API key using the Flyte CLI:
 
 ```bash
-flyte create api-key --name "terraform-api-key"
+union create api-key admin --name "terraform-api-key"
 ```
 
 For more information on creating API keys, see the [Flyte CLI documentation](../../api-reference/flyte-cli#flyte-create-config).
@@ -225,9 +225,9 @@ data "unionai_application" "existing" {
 }
 ```
 
-### Data Plane Information
+### Compute Plane Information
 
-Query information about the data plane:
+Query information about the compute plane:
 
 ```hcl
 data "unionai_dataplane" "current" {
@@ -245,13 +245,13 @@ data "unionai_controlplane" "current" {
 }
 ```
 
-### Data Plane Listings
+### Compute Plane Listings
 
-List all available data planes:
+List all available compute planes:
 
 ```hcl
 data "unionai_dataplanes" "all" {
-  # Returns list of all data planes
+  # Returns list of all compute planes
 }
 ```
 

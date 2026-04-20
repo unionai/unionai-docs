@@ -1,6 +1,6 @@
 ---
 title: uctl create role
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl create role

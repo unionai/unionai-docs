@@ -1,7 +1,7 @@
 ---
 title: How task deployment works
 weight: 5
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---
 

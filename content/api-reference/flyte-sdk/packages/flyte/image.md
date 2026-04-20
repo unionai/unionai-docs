@@ -1,12 +1,7 @@
 ---
 title: Image
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +union
->>>>>>> origin/main
 layout: py_api
 ---
 
@@ -18,6 +13,8 @@ Container image specification built using a fluent, two-step pattern:
 
 1. Create a base image with a `from_*` constructor
 2. Customize with `with_*` methods (each returns a new `Image`)
+
+Example:
 
 ```python
 image = (
@@ -52,6 +49,7 @@ image = (
 - `with_local_v2()` — Configure for local v2 execution
 
 
+
 ## Parameters
 
 ```python
@@ -63,7 +61,7 @@ class Image(
     platform: Tuple[Architecture, ...],
     python_version: Tuple[int, int],
     extendable: bool,
-    _is_cloned: bool,
+    _is_flyte_default: bool,
     _ref_name: Optional[str],
     _layers: Tuple[Layer, ...],
     _image_registry_secret: Optional[Secret],
@@ -78,7 +76,7 @@ class Image(
 | `platform` | `Tuple[Architecture, ...]` | |
 | `python_version` | `Tuple[int, int]` | |
 | `extendable` | `bool` | |
-| `_is_cloned` | `bool` | |
+| `_is_flyte_default` | `bool` | |
 | `_ref_name` | `Optional[str]` | |
 | `_layers` | `Tuple[Layer, ...]` | |
 | `_image_registry_secret` | `Optional[Secret]` | |
@@ -93,7 +91,7 @@ class Image(
 
 | Method | Description |
 |-|-|
-| [`clone()`](#clone) | Clone an existing image, optionally with a new name or registry. |
+| [`clone()`](#clone) | Use this method to clone the current image and change the registry and name. |
 | [`from_base()`](#from_base) | Use this method to start with a pre-built base image. |
 | [`from_debian_base()`](#from_debian_base) | Use this method to start using the default base image, built from this library's base Dockerfile. |
 | [`from_dockerfile()`](#from_dockerfile) | Use this method to create a new image with the specified dockerfile. |
@@ -129,11 +127,7 @@ def clone(
     extendable: Optional[bool],
 ) -> Image
 ```
-Clone an existing image, optionally with a new name or registry.
-
-All `with_*` methods already produce a new immutable `Image`; use
-`clone()` when you need an independent copy with a different name,
-registry, or other base properties.
+Use this method to clone the current image and change the registry and name
 
 
 
@@ -196,7 +190,7 @@ Default images are multi-arch amd/arm64
 
 ```python
 def from_dockerfile(
-    file: Union[Path, str],
+    file: Path,
     registry: str,
     name: str,
     platform: Union[Architecture, Tuple[Architecture, ...], None],
@@ -213,7 +207,7 @@ context for the builder will be the directory where the dockerfile is located.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `file` | `Union[Path, str]` | path to the dockerfile |
+| `file` | `Path` | path to the dockerfile |
 | `registry` | `str` | registry to use for the image |
 | `name` | `str` | name of the image |
 | `platform` | `Union[Architecture, Tuple[Architecture, ...], None]` | architecture to use for the image, default is linux/amd64, use tuple for multiple values Example: ("linux/amd64", "linux/arm64") |
@@ -251,6 +245,7 @@ It uses the header of the script to determine the python version, dependencies t
 The script must be a valid uv script, otherwise an error will be raised.
 
 Usually the header of the script will look like this:
+Example:
 ```python
 #!/usr/bin/env -S uv run --script
 # /// script
@@ -421,6 +416,7 @@ def with_pip_packages(
 Use this method to create a new image with the specified pip packages layered on top of the current image
 Cannot be used in conjunction with conda
 
+Example:
 ```python
 @flyte.task(image=(flyte.Image.from_debian_base().with_pip_packages("requests", "numpy")))
 def my_task(x: int) -> int:
@@ -431,6 +427,7 @@ def my_task(x: int) -> int:
 To mount secrets during the build process to download private packages, you can use the `secret_mounts`.
 In the below example, "GITHUB_PAT" will be mounted as env var "GITHUB_PAT",
  and "apt-secret" will be mounted at /etc/apt/apt-secret.
+Example:
 ```python
 private_package = "git+https://$GITHUB_PAT@github.com/flyteorg/flytex.git@2e20a2acebfc3877d84af643fdd768edea41d533"
 @flyte.task(

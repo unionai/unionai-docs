@@ -1,12 +1,7 @@
 ---
 title: NamedRule
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +union
->>>>>>> origin/main
 layout: py_api
 ---
 
@@ -16,10 +11,28 @@ layout: py_api
 
 Reference a pre-defined notification rule by name.
 
-Use this when your Flyte admin has configured a named notification rule
-that you want to apply to your runs. Named rules define both the phases
-to monitor and the delivery channels to use.
+    Use this when your Flyte admin has configured a named notification rule
+    that you want to apply to your runs. Named rules define both the phases
+    to monitor and the delivery channels to use.
 
+    Example:
+        ```python
+        # As a trigger notification
+        flyte.Trigger(
+            name="hourly",
+            automation=flyte.Cron("0 * * * *"),
+            notifications=flyte.notify.NamedRule("oncall-alerts"),
+        )
+
+        # In with_runcontext
+        flyte.with_runcontext(
+            notifications=flyte.notify.NamedRule("oncall-alerts"),
+        ).run(my_task, x=1)
+        ```
+
+    Args:
+        name: The name of the pre-defined rule (scoped to project/domain).
+    
 
 
 ## Parameters
@@ -31,5 +44,5 @@ class NamedRule(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | The name of the pre-defined rule (scoped to project/domain). |
+| `name` | `str` | |
 

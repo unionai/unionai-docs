@@ -1,7 +1,7 @@
 ---
 title: Variants
 weight: 2
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Variants
@@ -13,12 +13,13 @@ There are separate mechanisms for:
 * Conditional rendering of content within a page based on the selected variant using an if-then-like construct.
 * Rendering keywords as variables that change based on the selected variant.
 
-Currently, the docs site supports two variants:
+Currently, the docs site supports three variants:
 
 - **Flyte OSS**: The open-source Flyte project.
-- **Union**: The Union.ai commercial product, available as BYOC (Bring Your Own Cloud) or Self-managed.
+- **BYOC**: The Union.ai product that is hosted on the customer's infrastructure but managed by Union AI.
+- **Self-managed**: The Union.ai product that is hosted and managed by the customer.
 
-Each variant is referenced in the page logic using its respective code name: `flyte` or `union`.
+Each variant is referenced in the page logic using its respective code name: `flyte`, `byoc`, or `selfmanaged`.
 
 The available set of variants are defined in the `config.<code_name>.toml` files in the `unionai-docs-infra/` directory.
 
@@ -37,25 +38,25 @@ For example, if you look at the Markdown source for [this page (the page you are
 ---
 title: Platform overview
 weight: 1
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 ```
 
 The `variants` field has the value:
 
-`+flyte +union`
+`+flyte +byoc +selfmanaged`
 
 The `+` indicates that the page is available for the specified variant.
-In this case, the page is available for both variants.
+In this case, the page is available for all three variants.
 If you wanted to make the page available for only the `flyte` variant, you would change the `variants` field to:
 
-`+flyte -union`
+`+flyte -byoc -selfmanaged`
 
 In [live preview mode](./authoring#live-preview) with the `show_inactive` flag enabled, you will see all pages in the navigation tree, with the ones unavailable for the current variant grayed out.
 
 As you can see, the `variants` field expects a space-separated list of keywords:
 
-* The code names for the current variants are `flyte` and `union`.
+* The code names for the current variants are `flyte`, `byoc`, and `selfmanaged`.
 * All supported variants must be included explicitly in every `variants` field with a leading `+` or `-`. There is no default behavior.
 * The supported variants are configured in the `unionai-docs-infra/` directory in the files named `config.<variant>.toml`.
 
@@ -80,9 +81,9 @@ Note that the variant construct can only directly contain other shortcode constr
 In the most common case, you will want to use the `{{</* markdown */>}}` shortcode  (which can contain Markdown) inside the `{{</* variant */>}}` shortcode to render Markdown content, like this:
 
 ```markdown
-{{</* variant union */>}}
+{{</* variant byoc selfmanaged */>}}
 {{</* markdown */>}}
-This content is only visible in the `union` variant.
+This content is only visible in the `byoc` and `selfmanaged` variants.
 {{</* /markdown */>}}
 {{</* button-link text="Contact Us" target="https://union.ai/contact" */>}}
 {{</* /variant */>}}
@@ -111,10 +112,11 @@ For example the `product_name` used above is defined in that file as
 ```toml
 [params.key.product_name]
 flyte = "Flyte"
-union = "Union.ai"
+byoc = "Union.ai"
+selfmanaged = "Union.ai"
 ```
 
-Meaning that in any content that appears in the `flyte` variant of the site `{{</* key product_name */>}}` shortcode will be replaced with `Flyte`, and in any content that appears in the `union` variant, it will be replaced with `Union.ai`.
+Meaning that in any content that appears in the `flyte` variant of the site `{{</* key product_name */>}}` shortcode will be replaced with `Flyte`, and in any content that appears in the `byoc` or `selfmanaged` variants, it will be replaced with `Union.ai`.
 
 
 For more details on the `{{</* key */>}}` shortcode, see the [Shortcodes > `key`](./shortcodes#key)
@@ -133,10 +135,10 @@ Here is full example. If you look at the Markdown source for [this page (the pag
 >
 > {{</* /markdown */>}}
 > {{</* /variant */>}}
-> {{</* variant union */>}}
+> {{</* variant byoc selfmanaged */>}}
 > {{</* markdown */>}}
 >
-> **This text is only visible in the `union` variant.**
+> **This text is only visible in the `byoc` and `selfmanaged` variants.**
 >
 > {{</* /markdown */>}}
 > {{</* /variant */>}}
@@ -158,10 +160,10 @@ This Markdown source is rendered as:
 >
 > {{< /markdown >}}
 > {{< /variant >}}
-> {{< variant union >}}
+> {{< variant byoc selfmanaged >}}
 > {{< markdown >}}
 >
-> **This text is only visible in the `union` variant.**
+> **This text is only visible in the `byoc` and `selfmanaged` variants.**
 >
 > {{< /markdown >}}
 > {{< /variant >}}
@@ -230,5 +232,5 @@ make variant VARIANT=<variant>
 For example:
 
 ```bash
-make variant VARIANT=union
+make variant VARIANT=byoc
 ```

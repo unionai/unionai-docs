@@ -1,6 +1,6 @@
 ---
 title: uctl create app
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl create app

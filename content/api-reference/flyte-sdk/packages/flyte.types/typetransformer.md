@@ -1,12 +1,7 @@
 ---
 title: TypeTransformer
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +union
->>>>>>> origin/main
 layout: py_api
 ---
 
@@ -15,6 +10,7 @@ layout: py_api
 **Package:** `flyte.types`
 
 Base transformer type that should be implemented for every python native type that can be handled by flytekit
+
 
 
 ## Parameters

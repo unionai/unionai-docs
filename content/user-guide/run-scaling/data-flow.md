@@ -1,7 +1,7 @@
 ---
 title: Data flow
 weight: 1
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Data flow

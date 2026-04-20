@@ -1,7 +1,7 @@
 ---
 title: Automatic prompt engineering
 weight: 2
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
@@ -67,7 +67,7 @@ Then we define a Flyte `trace` to call the model. Unlike a task, a trace runs wi
 
 {{< code file="/unionai-examples/v2/tutorials/auto_prompt_engineering/optimizer.py" fragment=call_model lang=python >}}
 
-{{< variant union >}}
+{{< variant byoc selfmanaged >}}
 
 You can also host your own models on Union. For example, we deploy <code>gpt-oss-20b</code> using vLLM.
 

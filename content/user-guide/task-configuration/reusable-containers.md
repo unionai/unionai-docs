@@ -1,7 +1,7 @@
 ---
 title: Reusable containers
 weight: 5
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Reusable containers
@@ -15,11 +15,11 @@ This approach reduces start up overhead and improves resource efficiency.
 
 > [!NOTE]
 > The reusable container feature is only available when running your Flyte code on a Union backend.
-> See [one of the Union.ai product variants of this page]({{< docs_home union v2 >}}/user-guide/reusable-containers) for details.
+> See [one of the Union.ai product variants of this page]({{< docs_home byoc v2 >}}/user-guide/reusable-containers) for details.
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant union >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 > [!NOTE]

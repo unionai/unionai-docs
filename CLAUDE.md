@@ -9,15 +9,17 @@ https://www.notion.so/3108cc06513d81a08bb1d3b9135385f1
 
 ## Project Overview
 
-Multi-variant Hugo documentation site for Flyte (open-source) and Union.ai products. A single source generates two variants:
+Multi-variant Hugo documentation site for Flyte (open-source) and Union.ai products. A single source generates four variants:
 - **flyte** — Open-source Flyte orchestration platform
-- **union** — Union.ai commercial product (covers both BYOC and Self-managed deployments)
+- **byoc** — Union Bring-Your-Own-Cloud
+- **serverless** — Union managed cloud service
+- **selfmanaged** — Union enterprise self-hosted
 
 ## Essential Commands
 
 ```bash
 # Development (requires hugo.local.toml setup first)
-cp hugo.local.toml~sample hugo.local.toml  # First time only
+cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml  # First time only
 make dev                                    # Start dev server at localhost:1313
 
 # Production build
@@ -76,7 +78,7 @@ Every page MUST declare which variants it appears in via frontmatter:
 ---
 title: My Page
 weight: 3
-variants: +flyte +union
+variants: +flyte +serverless +byoc -selfmanaged
 ---
 ```
 
@@ -86,9 +88,9 @@ variants: +flyte +union
 ### Content-level variants
 
 ```markdown
-{{< variant union >}}
+{{< variant serverless byoc >}}
 {{< markdown >}}
-This appears only in the Union variant.
+This appears only in Serverless and BYOC.
 {{< /markdown >}}
 {{< /variant >}}
 ```
@@ -174,12 +176,12 @@ jupyter_notebook: /path/to/notebook.ipynb
 ## Development Setup
 
 1. Install Hugo >= 0.145.0: `brew install hugo`
-2. Copy config: `cp hugo.local.toml~sample hugo.local.toml`
+2. Copy config: `cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml`
 3. Run: `make dev`
 
 Dev settings in `hugo.local.toml`:
 ```toml
-variant = "union"          # Active variant
+variant = "byoc"           # Active variant
 show_inactive = true       # Show other variants grayed out
 highlight_active = true    # Highlight active variant content
 highlight_keys = true      # Show key replacements

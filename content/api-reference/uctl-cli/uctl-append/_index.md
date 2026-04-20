@@ -1,6 +1,6 @@
 ---
 title: uctl append
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl append

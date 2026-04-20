@@ -1,7 +1,7 @@
 ---
 title: Running locally
 weight: 4
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Running locally

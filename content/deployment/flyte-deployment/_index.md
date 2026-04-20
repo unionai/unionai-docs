@@ -1,6 +1,6 @@
 ---
 title: Flyte deployment
-variants: -flyte -union
+variants: -flyte -byoc -selfmanaged
 weight: 13
 sidebar_expanded: true
 llm_readable_bundle: true

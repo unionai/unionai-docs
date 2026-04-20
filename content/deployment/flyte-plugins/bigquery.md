@@ -1,7 +1,7 @@
 ---
 title: BigQuery plugin
 weight: 5
-variants: -flyte -union
+variants: -flyte -byoc -selfmanaged
 ---
 
 # Google BigQuery Plugin

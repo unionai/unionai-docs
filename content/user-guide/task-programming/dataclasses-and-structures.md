@@ -1,7 +1,7 @@
 ---
 title: Data classes and structures
 weight: 2
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Data classes and structures

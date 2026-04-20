@@ -1,7 +1,7 @@
 ---
 title: Fanout
 weight: 13
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Fanout
@@ -9,7 +9,7 @@ variants: +flyte +union
 Flyte is designed to scale effortlessly, allowing you to run workflows with large fanouts.
 When you need to execute many tasks in parallel—such as processing a large dataset or running hyperparameter sweeps—Flyte provides powerful patterns to implement these operations efficiently.
 
-{{< variant union >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 > [!NOTE]
 > By default fanouts in Union are limited to a maximum size.

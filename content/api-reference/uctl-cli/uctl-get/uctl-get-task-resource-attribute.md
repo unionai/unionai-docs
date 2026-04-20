@@ -1,6 +1,6 @@
 ---
 title: uctl get task-resource-attribute
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl get task-resource-attribute

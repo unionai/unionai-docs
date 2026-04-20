@@ -1,7 +1,7 @@
 ---
 title: Single-script apps
 weight: 1
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Single-script apps

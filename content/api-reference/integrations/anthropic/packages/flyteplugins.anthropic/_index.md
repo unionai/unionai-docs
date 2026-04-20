@@ -1,12 +1,7 @@
 ---
 title: flyteplugins.anthropic
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +byoc +selfmanaged +union
->>>>>>> origin/main
 layout: py_api
 ---
 
@@ -52,6 +47,7 @@ async def run_weather_agent(question: str) -> str:
         model="claude-sonnet-4-20250514",
     )
 ```
+
 ## Directory
 
 ### Classes
@@ -91,6 +87,15 @@ types are represented correctly.
 For @flyte.trace decorated functions, the tracing context is preserved
 automatically since functools.wraps maintains the original function's metadata.
 
+Example:
+    ```python
+    @env.task
+    async def get_weather(city: str) -> str:
+        '''Get the current weather for a city.'''
+        return f"Weather in {city}: sunny"
+
+    tool = function_tool(get_weather)
+    ```
 
 
 | Parameter | Type | Description |
@@ -124,6 +129,13 @@ This function creates a Claude conversation loop that can use tools
 to accomplish tasks. It handles the back-and-forth of tool calls
 and responses until the agent produces a final text response.
 
+Example:
+    ```python
+    result = await run_agent(
+        prompt="What's the weather in SF?",
+        tools=[function_tool(get_weather)],
+    )
+    ```
 
 
 | Parameter | Type | Description |

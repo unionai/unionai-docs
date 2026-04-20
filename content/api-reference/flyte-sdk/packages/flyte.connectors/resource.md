@@ -1,12 +1,7 @@
 ---
 title: Resource
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +union
->>>>>>> origin/main
 layout: py_api
 ---
 
@@ -28,6 +23,7 @@ Attributes
         The outputs of the job. If return python native types, the agent will convert them to flyte literals.
     custom_info : Optional[typing.Dict[str, Any]]
         The custom info of the job. For example, the job config.
+
 
 
 ## Parameters

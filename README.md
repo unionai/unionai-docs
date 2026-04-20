@@ -22,7 +22,7 @@ git clone --recurse-submodules https://github.com/unionai/unionai-docs.git
 cd unionai-docs
 
 # Set up local config
-cp hugo.local.toml~sample hugo.local.toml
+cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml
 
 # Start dev server at localhost:1313
 make dev

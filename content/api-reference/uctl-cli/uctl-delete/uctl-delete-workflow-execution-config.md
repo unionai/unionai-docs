@@ -1,6 +1,6 @@
 ---
 title: uctl delete workflow-execution-config
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl delete workflow-execution-config

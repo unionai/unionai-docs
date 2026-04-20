@@ -1,6 +1,6 @@
 ---
 title: uctl get cluster-pool-attributes
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl get cluster-pool-attributes

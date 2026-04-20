@@ -1,7 +1,7 @@
 ---
 title: Autoscaling apps
 weight: 5
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 

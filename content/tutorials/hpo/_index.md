@@ -1,7 +1,7 @@
 ---
 title: Hyperparameter optimization
 weight: 10
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
@@ -75,7 +75,7 @@ We define a Flyte task environment called `driver`, which encapsulates metadata,
 
 This environment specifies that the tasks will run with 1 CPU and 250Mi of memory, the image is built using the current script (`__file__`), and caching is enabled.
 
-{{< variant union >}}
+{{< variant byoc selfmanaged >}}
 
 <p>
   You can configure the Flyte task environment to reuse containers across multiple executions by setting the

@@ -1,7 +1,7 @@
 ---
 title: Notebooks
 weight: 8
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Notebooks

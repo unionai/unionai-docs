@@ -1,6 +1,6 @@
 ---
 title: uctl apply clusterconfigid
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl apply clusterconfigid

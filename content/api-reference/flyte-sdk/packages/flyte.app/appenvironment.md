@@ -1,12 +1,7 @@
 ---
 title: AppEnvironment
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +union
->>>>>>> origin/main
 layout: py_api
 ---
 
@@ -15,6 +10,8 @@ layout: py_api
 **Package:** `flyte.app`
 
 Configure a long-running app environment for APIs, dashboards, or model servers.
+
+Example:
 
 ```python
 app_env = flyte.app.AppEnvironment(
@@ -88,7 +85,7 @@ class AppEnvironment(
 
 | Method | Description |
 |-|-|
-| [`add_dependency()`](#add_dependency) | Add one or more environment dependencies so they are deployed together. |
+| [`add_dependency()`](#add_dependency) | Add a dependency to the environment. |
 | [`clone_with()`](#clone_with) |  |
 | [`container_args()`](#container_args) |  |
 | [`container_cmd()`](#container_cmd) |  |
@@ -105,21 +102,12 @@ def add_dependency(
     env: Environment,
 )
 ```
-Add one or more environment dependencies so they are deployed together.
-
-When you deploy this environment, any environments added via
-`add_dependency` will also be deployed. This is an alternative to
-passing `depends_on=[...]` at construction time, useful when the
-dependency is defined after the environment is created.
-
-Duplicate dependencies are silently ignored. An environment cannot
-depend on itself.
-
+Add a dependency to the environment.
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `env` | `Environment` | One or more `Environment` instances to add as dependencies. |
+| `env` | `Environment` | |
 
 ### clone_with()
 

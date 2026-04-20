@@ -1,7 +1,7 @@
 ---
 title: BigQuery connector
 weight: 9
-variants: -flyte -union
+variants: -flyte -byoc -selfmanaged
 ---
 # Google BigQuery connector
 

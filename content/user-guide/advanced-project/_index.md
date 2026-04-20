@@ -1,7 +1,7 @@
 ---
 title: Advanced project
 weight: 8
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 mermaid: true
 llm_readable_bundle: true

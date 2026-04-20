@@ -1,7 +1,7 @@
 ---
 title: Contributing docs and examples
 weight: 3
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: true
 llm_readable_bundle: true
 ---

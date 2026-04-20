@@ -1,7 +1,7 @@
 ---
 title: Streamlit app
 weight: 8
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Streamlit app

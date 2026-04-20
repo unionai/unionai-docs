@@ -1,6 +1,6 @@
 ---
 title: uctl delete cluster-resource-attribute
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl delete cluster-resource-attribute

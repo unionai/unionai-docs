@@ -1,7 +1,7 @@
 ---
 title: Code generation
 weight: 2
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 sidebar_expanded: false
 mermaid: true
 ---
@@ -10,7 +10,7 @@ mermaid: true
 
 The code generation plugin turns natural-language prompts into tested, production-ready Python code.
 
-You describe what the code should do, along with sample data, schema definitions, constraints, and typed inputs/outputs, and the plugin handles the rest: generating code, writing tests, building an isolated [code sandbox]({{< docs_home union v2 >}}/user-guide/sandboxing/code-sandboxing) with the right dependencies, running the tests, diagnosing failures, and iterating until everything passes. The result is a validated script you can execute against real data or deploy as a reusable Flyte task.
+You describe what the code should do, along with sample data, schema definitions, constraints, and typed inputs/outputs, and the plugin handles the rest: generating code, writing tests, building an isolated [code sandbox]({{< docs_home byoc v2 >}}/user-guide/sandboxing/code-sandboxing) with the right dependencies, running the tests, diagnosing failures, and iterating until everything passes. The result is a validated script you can execute against real data or deploy as a reusable Flyte task.
 
 ## Installation
 

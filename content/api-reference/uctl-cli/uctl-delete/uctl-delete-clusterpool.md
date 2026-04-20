@@ -1,6 +1,6 @@
 ---
 title: uctl delete clusterpool
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl delete clusterpool

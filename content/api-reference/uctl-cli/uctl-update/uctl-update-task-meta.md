@@ -1,6 +1,6 @@
 ---
 title: uctl update task-meta
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl update task-meta

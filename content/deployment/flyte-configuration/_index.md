@@ -1,6 +1,6 @@
 ---
 title: Platform configuration
-variants: -flyte -union
+variants: -flyte -byoc -selfmanaged
 weight: 14
 sidebar_expanded: true
 llm_readable_bundle: true

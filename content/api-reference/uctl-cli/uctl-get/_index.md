@@ -1,6 +1,6 @@
 ---
 title: uctl get
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl get

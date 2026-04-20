@@ -1,12 +1,7 @@
 ---
 title: Config
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +union
->>>>>>> origin/main
 layout: py_api
 ---
 
@@ -20,6 +15,7 @@ this object holds all the config necessary to
 1. Interactive session with Flyte backend
 2. Some parts are required for Serialization, for example Platform Config is not required
 3. Runtime of a task
+
 
 
 ## Parameters

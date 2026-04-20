@@ -1,6 +1,6 @@
 ---
 title: uctl register
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl register

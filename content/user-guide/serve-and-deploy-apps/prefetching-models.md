@@ -1,7 +1,7 @@
 ---
 title: Prefetching models
 weight: 6
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Prefetching models

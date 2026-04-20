@@ -1,6 +1,6 @@
 ---
 title: Page 2
-variants: -flyte -union
+variants: -flyte -byoc -selfmanaged
 ---
 
 # Page 2

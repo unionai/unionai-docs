@@ -1,12 +1,7 @@
 ---
 title: CostEstimator
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +union
->>>>>>> origin/main
 layout: py_api
 ---
 
@@ -16,10 +11,19 @@ layout: py_api
 
 Protocol for records that can estimate their own processing cost.
 
-Implement this on your record type and the batcher will call it
-automatically when no explicit `estimated_cost` is passed to
-`DynamicBatcher.submit`.
+    Implement this on your record type and the batcher will call it
+    automatically when no explicit `estimated_cost` is passed to
+    `DynamicBatcher.submit`.
 
+    Example::
+
+        @dataclass
+        class ApiRequest:
+            payload: str
+
+            def estimate_cost(self) -&gt; int:
+                return len(self.payload)
+    
 
 
 ```python

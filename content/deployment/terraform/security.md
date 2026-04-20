@@ -1,7 +1,7 @@
 ---
 title: Security Best Practices
 weight: 3
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # Security Best Practices

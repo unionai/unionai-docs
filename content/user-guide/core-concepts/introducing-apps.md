@@ -1,7 +1,7 @@
 ---
 title: Apps
 weight: 4
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Apps

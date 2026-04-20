@@ -1,7 +1,7 @@
 ---
 title: Access to GPUs
 weight: 4
-variants: -flyte -union
+variants: -flyte -byoc -selfmanaged
 ---
 
 # Configuring Access to GPUs

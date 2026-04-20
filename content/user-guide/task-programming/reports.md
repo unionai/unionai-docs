@@ -1,7 +1,7 @@
 ---
 title: Reports
 weight: 7
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Reports

@@ -1,6 +1,6 @@
 ---
 title: uctl config validate
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl config validate

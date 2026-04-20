@@ -1,12 +1,7 @@
 ---
 title: Classes & Protocols
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +union
->>>>>>> origin/main
 layout: py_api
 sidebar_expanded: true
 ---
@@ -15,12 +10,10 @@ sidebar_expanded: true
 
 | Class | Description |
 |-|-|
-| [`flyte.BaseCheckpoint`](../packages/flyte/basecheckpoint) |Base type for task checkpoint helpers. |
 | [`flyte.Cache`](../packages/flyte/cache) |Cache configuration for a task. |
-| [`flyte.Checkpoint`](../packages/flyte/checkpoint) |Checkpoint helper using `flyte. |
 | [`flyte.Cron`](../packages/flyte/cron) |Cron-based automation schedule for use with `Trigger`. |
 | [`flyte.Device`](../packages/flyte/device) |Represents a device type, its quantity and partition if applicable. |
-| [`flyte.Environment`](../packages/flyte/environment) |Base class for execution environments, shared by `TaskEnvironment` and. |
+| [`flyte.Environment`](../packages/flyte/environment) | |
 | [`flyte.FixedRate`](../packages/flyte/fixedrate) |Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
 | [`flyte.Image`](../packages/flyte/image) |Container image specification built using a fluent, two-step pattern:. |
 | [`flyte.ImageBuild`](../packages/flyte/imagebuild) |Result of an image build operation. |
@@ -34,7 +27,7 @@ sidebar_expanded: true
 | [`flyte.Trigger`](../packages/flyte/trigger) |Specification for a scheduled trigger that can be associated with any Flyte task. |
 | [`flyte.app.AppEndpoint`](../packages/flyte.app/appendpoint) |Embed an upstream app's endpoint as an app parameter. |
 | [`flyte.app.AppEnvironment`](../packages/flyte.app/appenvironment) |Configure a long-running app environment for APIs, dashboards, or model servers. |
-| [`flyte.app.ConnectorEnvironment`](../packages/flyte.app/connectorenvironment) |Configure a connector environment for custom Flyte connectors. |
+| [`flyte.app.ConnectorEnvironment`](../packages/flyte.app/connectorenvironment) | |
 | [`flyte.app.Domain`](../packages/flyte.app/domain) |Subdomain to use for the domain. |
 | [`flyte.app.Link`](../packages/flyte.app/link) |Custom links to add to the app. |
 | [`flyte.app.Parameter`](../packages/flyte.app/parameter) |Parameter for application. |
@@ -103,7 +96,7 @@ sidebar_expanded: true
 | [`flyte.io.extend.DataFrameTransformerEngine`](../packages/flyte.io.extend/dataframetransformerengine) |Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
 | [`flyte.models.ActionID`](../packages/flyte.models/actionid) |A class representing the ID of an Action, nested within a Run. |
 | [`flyte.models.ActionPhase`](../packages/flyte.models/actionphase) |Represents the execution phase of a Flyte action (run). |
-| [`flyte.models.CheckpointPaths`](../packages/flyte.models/checkpointpaths) |Paths the platform provides for this task's checkpoint output and optional previous-attempt input. |
+| [`flyte.models.Checkpoints`](../packages/flyte.models/checkpoints) |A class representing the checkpoints for a task. |
 | [`flyte.models.CodeBundle`](../packages/flyte.models/codebundle) |A class representing a code bundle for a task. |
 | [`flyte.models.GroupData`](../packages/flyte.models/groupdata) | |
 | [`flyte.models.NativeInterface`](../packages/flyte.models/nativeinterface) |A class representing the native interface for a task. |

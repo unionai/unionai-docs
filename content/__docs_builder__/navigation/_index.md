@@ -1,6 +1,6 @@
 ---
 title: Navigation Tests
-variants: -flyte -union
+variants: -flyte -byoc -selfmanaged
 ---
 
 # Navigation Tests

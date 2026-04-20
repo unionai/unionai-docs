@@ -1,12 +1,7 @@
 ---
 title: BigQueryTask
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +byoc +selfmanaged +union
->>>>>>> origin/main
 layout: py_api
 ---
 
@@ -77,6 +72,7 @@ The aio function allows executing "sync" tasks, in an async context. This helps 
 tasks to be used within an asyncio parent task.
 This function will also re-raise exceptions from the underlying task.
 
+Example:
 ```python
 @env.task
 def my_legacy_task(x: int) -> int:

@@ -1,7 +1,7 @@
 ---
 title: Life of a run
 weight: 2
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 mermaid: true
 ---
 
@@ -18,7 +18,7 @@ When you execute `flyte.run()`, the system goes through several phases:
 3. **Code bundling**: Package your Python code
 4. **Upload**: Transfer the code bundle to object storage
 5. **Run creation**: Submit the run to the backend
-6. **Task execution**: Execute the task in the data plane
+6. **Task execution**: Execute the task in the compute plane
 7. **State management**: Track and persist execution state
 
 ## Phase 1: Code analysis and preparation
@@ -72,7 +72,7 @@ For more details on code packaging, see [Packaging](../task-deployment/packaging
 Once the code bundle is created:
 
 1. **Request signed URL**: The SDK sends the bundle checksum and target path to the Control Plane.
-2. **Control Plane obtains URL**: The Control Plane calls the Data Plane to obtain a signed URL for that checksum and path.
+2. **Control Plane obtains URL**: The Control Plane calls the Compute Plane to obtain a signed URL for that checksum and path.
 3. **Direct upload**: The signed URL is returned to the SDK, which uploads the code bundle directly to the object store.
 
 ## Phase 5: Run creation and queuing
@@ -81,14 +81,14 @@ The `CreateRun` API is invoked:
 
 1. **Copy inputs**: Input data is copied to the object store.
 2. **En-queue a run**: The run is queued into the Union Control Plane.
-3. **Hand off to executor**: Union Control Plane hands the task to the Executor Service in your data plane.
+3. **Hand off to executor**: Union Control Plane hands the task to the Executor Service in your compute plane.
 4. **Create action**: The parent task action (called `a0`) is created.
 
-## Phase 6: Task execution in data plane
+## Phase 6: Task execution in compute plane
 
 ### Container startup
 
-1. **Container starts**: The task container starts in your data plane.
+1. **Container starts**: The task container starts in your compute plane.
 2. **Download code bundle**: The Flyte runtime downloads the code bundle from object storage.
 3. **Inflate task**: The task is inflated from the code bundle.
 4. **Download inputs**: Inline inputs are downloaded from the object store.
@@ -109,7 +109,7 @@ If the task invokes other tasks:
 sequenceDiagram
     participant Client as SDK/Client
     participant Control as Control Plane<br/>(Queue Service)
-    participant Data as Data Plane<br/>(Executor)
+    participant Data as Compute Plane<br/>(Executor)
     participant ObjStore as Object Store
     participant Container as Task Container
 

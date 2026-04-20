@@ -1,6 +1,6 @@
 ---
 title: uctl delete plugin-override
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl delete plugin-override

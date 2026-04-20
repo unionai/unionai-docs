@@ -1,6 +1,6 @@
 ---
 title: Test 2A
-variants: -flyte -union
+variants: -flyte -byoc -selfmanaged
 ---
 
 # Test 2A

@@ -1,12 +1,7 @@
 ---
 title: Event
-<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
-=======
-version: 2.1.7
-variants: +flyte +byoc +selfmanaged +union
->>>>>>> origin/main
 layout: py_api
 ---
 
@@ -23,6 +18,20 @@ This class encapsulates the entire HITL functionality:
 
 The app is automatically served when the Event is created via `Event.create()`.
 All infrastructure details (AppEnvironment, deployment) are abstracted away.
+
+Example:
+    # Create an event (serves the app) and wait for input
+    event = await Event.create.aio(
+        "proceed_event",
+        scope="run",
+        prompt="What should I add to x?",
+        data_type=int,
+    )
+    result = await event.wait.aio()
+
+    # Or synchronously
+    event = Event.create("my_event", scope="run", prompt="Enter value", data_type=str)
+    value = event.wait()
 
 
 
@@ -73,8 +82,14 @@ class Event(
 
 ### create()
 
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Event.create.aio()`.
 ```python
 def create(
+    cls,
     name: str,
     data_type: Type[T],
     scope: EventScope,
@@ -89,10 +104,24 @@ This method creates an event that waits for human input via the FastAPI app.
 The app is automatically served if not already running. All infrastructure
 details are abstracted away - you just get an event to wait on.
 
+Example:
+    # Async usage
+    event = await Event.create.aio(
+        "approval_event",
+        scope="run",
+        prompt="Do you approve this action?",
+        data_type=bool,
+    )
+    approved = await event.wait.aio()
+
+    # Sync usage
+    event = Event.create("value_event", scope="run", prompt="Enter a number", data_type=int)
+    value = event.wait()
 
 
 | Parameter | Type | Description |
 |-|-|-|
+| `cls` |  | |
 | `name` | `str` | A descriptive name for the event (used in logs and UI) |
 | `data_type` | `Type[T]` | The expected type of the input (int, float, str, bool) |
 | `scope` | `EventScope` | The scope of the event. Currently only "run" is supported. |

@@ -1,7 +1,7 @@
 ---
 title: Connecting to a cluster
 weight: 5
-variants: +flyte +union
+variants: +flyte +byoc +selfmanaged
 ---
 
 # Connecting to a cluster
@@ -41,7 +41,7 @@ flyte --version
 
 As we did in [Quickstart](./quickstart), use `flyte create config` to create a configuration file:
 
-{{< variant union >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 ```bash
 flyte create config \
@@ -66,7 +66,7 @@ flyte create config \
 
 This creates `./.flyte/config.yaml`:
 
-{{< variant union >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 ```yaml
 admin:
@@ -97,7 +97,7 @@ task:
 
 {{< dropdown title="Full example with all options" icon="bento" >}}
 
-{{< variant union >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 Create a custom config file with all available options:
 ```bash

@@ -1,7 +1,7 @@
 ---
 title: Deploy an agent as a service
 weight: 2
-variants: +flyte +serverless +union
+variants: +flyte +serverless +byoc +selfmanaged
 mermaid: true
 ---
 

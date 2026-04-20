@@ -1,7 +1,7 @@
 ---
 title: API playground
 weight: 13
-variants: -flyte -union
+variants: -flyte -byoc -selfmanaged
 ---
 
 # Flyte API Playground: Swagger

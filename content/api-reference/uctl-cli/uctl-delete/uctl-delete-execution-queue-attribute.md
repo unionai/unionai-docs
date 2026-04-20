@@ -1,6 +1,6 @@
 ---
 title: uctl delete execution-queue-attribute
-variants: -flyte +union
+variants: -flyte +byoc +selfmanaged
 ---
 
 # uctl delete execution-queue-attribute
