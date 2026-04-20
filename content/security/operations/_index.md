@@ -1,6 +1,6 @@
 ---
 title: Operations
-weight: 5
+weight: 4
 variants: -flyte +union
 sidebar_expanded: true
 ---

@@ -1,6 +1,6 @@
 ---
 title: Compliance
-weight: 4
+weight: 5
 variants: -flyte +union
 sidebar_expanded: true
 ---
