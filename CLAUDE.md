@@ -9,17 +9,15 @@ https://www.notion.so/3108cc06513d81a08bb1d3b9135385f1
 
 ## Project Overview
 
-Multi-variant Hugo documentation site for Flyte (open-source) and Union.ai products. A single source generates four variants:
+Multi-variant Hugo documentation site for Flyte (open-source) and Union.ai products. A single source generates two variants:
 - **flyte** — Open-source Flyte orchestration platform
-- **byoc** — Union Bring-Your-Own-Cloud
-- **serverless** — Union managed cloud service
-- **selfmanaged** — Union enterprise self-hosted
+- **union** — Union.ai commercial product (covers both BYOC and Self-managed deployments)
 
 ## Essential Commands
 
 ```bash
 # Development (requires hugo.local.toml setup first)
-cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml  # First time only
+cp hugo.local.toml~sample hugo.local.toml  # First time only
 make dev                                    # Start dev server at localhost:1313
 
 # Production build
@@ -78,7 +76,7 @@ Every page MUST declare which variants it appears in via frontmatter:
 ---
 title: My Page
 weight: 3
-variants: +flyte +serverless +byoc -selfmanaged
+variants: +flyte +union
 ---
 ```
 
@@ -88,9 +86,9 @@ variants: +flyte +serverless +byoc -selfmanaged
 ### Content-level variants
 
 ```markdown
-{{< variant serverless byoc >}}
+{{< variant union >}}
 {{< markdown >}}
-This appears only in Serverless and BYOC.
+This appears only in the Union variant.
 {{< /markdown >}}
 {{< /variant >}}
 ```
@@ -176,12 +174,12 @@ jupyter_notebook: /path/to/notebook.ipynb
 ## Development Setup
 
 1. Install Hugo >= 0.145.0: `brew install hugo`
-2. Copy config: `cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml`
+2. Copy config: `cp hugo.local.toml~sample hugo.local.toml`
 3. Run: `make dev`
 
 Dev settings in `hugo.local.toml`:
 ```toml
-variant = "byoc"           # Active variant
+variant = "union"          # Active variant
 show_inactive = true       # Show other variants grayed out
 highlight_active = true    # Highlight active variant content
 highlight_keys = true      # Show key replacements

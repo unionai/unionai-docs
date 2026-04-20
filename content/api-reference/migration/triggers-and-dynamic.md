@@ -1,7 +1,7 @@
 ---
 title: Triggers and dynamic workflows
 weight: 7
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Triggers and dynamic workflows
@@ -113,7 +113,7 @@ flyte deploy my_module.py my_env
 # Otherwise, activate manually via UI or API
 ```
 
-For full details on triggers, see [Triggers](../../user-guide/task-configuration/triggers).
+For full details on triggers, see [Triggers](../../../user-guide/task-configuration/triggers).
 
 ## Dynamic workflows
 

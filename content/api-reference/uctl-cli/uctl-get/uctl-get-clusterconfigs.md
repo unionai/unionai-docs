@@ -1,6 +1,6 @@
 ---
 title: uctl get clusterconfigs
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl get clusterconfigs

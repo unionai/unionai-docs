@@ -1,7 +1,7 @@
 ---
 title: Scale your workflows
 weight: 3
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Scale your workflows
@@ -82,7 +82,7 @@ If task runtime is comparable to or less than overhead, consider:
 
 To optimize performance, understand how tasks flow through the system:
 
-1. **Control plane to compute plane**: Tasks flow from the control plane (Run Service, Queue Service) to the compute plane (Executor Service).
+1. **Control plane to data plane**: Tasks flow from the control plane (Run Service, Queue Service) to the data plane (Executor Service).
 2. **Data movement**: Data moves between tasks through object storage. See [Data flow](./data-flow) for details.
 3. **State replication**: Queue Service reliably replicates state back to Run Service for visualization. The Run Service may be slightly behind actual execution.
 

@@ -7,6 +7,7 @@ include makefile.inc
 export REPO_ROOT := $(CURDIR)
 export VERSION
 export VARIANTS
+export DEFAULT_VARIANT
 
 PORT ?= 9000
 export PORT

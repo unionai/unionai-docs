@@ -1,6 +1,6 @@
 ---
 title: uctl get workflow
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl get workflow

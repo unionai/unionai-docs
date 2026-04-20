@@ -1,7 +1,12 @@
 ---
 title: Syncify
+<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
+=======
+version: 2.1.7
+variants: +flyte +union
+>>>>>>> origin/main
 layout: py_api
 ---
 
@@ -12,8 +17,6 @@ layout: py_api
 A decorator to convert asynchronous functions or methods into synchronous ones.
 
 This is useful for integrating async code into synchronous contexts.
-
-Example::
 
 ```python
 syncer = Syncify()
@@ -33,8 +36,6 @@ async def main():
     result = await async_function.aio("World")
     print(result)
 ```
-
-
 
 
 ## Parameters

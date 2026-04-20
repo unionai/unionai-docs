@@ -1,7 +1,7 @@
 ---
 title: Retries and timeouts
 weight: 8
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Retries and timeouts

@@ -1,7 +1,7 @@
 ---
 title: Build tasks
 weight: 11
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: false
 llm_readable_bundle: true
 ---

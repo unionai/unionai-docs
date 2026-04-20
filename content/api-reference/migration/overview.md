@@ -1,7 +1,7 @@
 ---
 title: Philosophy and imports
 weight: 1
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Philosophy and imports
@@ -32,8 +32,8 @@ variants: +flyte +byoc +selfmanaged
 - **`Trigger`**: Task-based scheduling (replaces LaunchPlan schedules).
 - **Pure Python workflows**: Full Python flexibility in orchestration logic.
 
-For more on the pure Python model, see [Pure Python](../../user-guide/flyte-2/pure-python).
-For more on the async model, see [Asynchronous model](../../user-guide/flyte-2/async).
+For more on the pure Python model, see [Pure Python](../../../user-guide/flyte-2/pure-python).
+For more on the async model, see [Asynchronous model](../../../user-guide/flyte-2/async).
 
 ## Package imports
 

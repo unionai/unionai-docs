@@ -1,7 +1,7 @@
 ---
 title: Data protection
-weight: 3
-variants: -flyte +byoc +selfmanaged
+weight: 2
+variants: -flyte +union
 ---
 
 # Data protection
@@ -19,7 +19,7 @@ Every data type handled by the platform is classified by residency and access pa
 | Reports (HTML) | Customer Data | Customer object store | No — direct via presigned URL |
 | Task logs | Customer Data | Customer log aggregator | Relayed in-memory (not stored) |
 | Secrets | Customer Data | Customer secrets backend | Relayed during create (not stored) |
-| Observability metrics | Customer Data | Customer compute plane | Relayed in-memory (not stored) |
+| Observability metrics | Customer Data | Customer data plane | Relayed in-memory (not stored) |
 | Task definitions | Orchestration Metadata | Control plane DB | Yes — metadata only |
 | Run/action metadata | Orchestration Metadata | Control plane DB | Yes |
 | User identity/RBAC | Platform Metadata | Control plane DB | Yes |
@@ -44,22 +44,22 @@ Union.ai enforces encryption for all data in transit.
 No unencrypted communication paths exist in the platform architecture.
 
 - All client-to-control-plane communication uses TLS 1.2 or higher.
-- All control-plane-to-compute-plane communication uses mutual TLS via Cloudflare Tunnel.
+- All control-plane-to-data-plane communication uses mutual TLS via Cloudflare Tunnel.
 - All client-to-object-store communication (via presigned URLs) uses HTTPS, enforced by cloud providers.
-- All internal compute plane communication uses cloud-native TLS.
+- All internal data plane communication uses cloud-native TLS.
 
 ## Data residency and sovereignty
 
 Union.ai’s architecture provides strong data residency guarantees:
 
-### Compute plane
+### Data plane
 
 * All customer data resides in the customer’s own cloud account and region
-* Customers choose the region for their compute plane deployment
+* Customers choose the region for their data plane deployment
 
 ### Control plane
 
 * Union.ai hosts your control plane in these supported regions: US West, US East, EU West-1 (Ireland), EU West-2 (London), EU Central, with more being added
 * No customer data is replicated to or cached in Union.ai infrastructure. See [Data classification](#data-classification) for more detail on data classification and handling.
 
-For organizations operating under GDPR or other data residency regulations, Union.ai’s EU-region compute planes ensure all customer data remains within the European Union.
+For organizations operating under GDPR or other data residency regulations, Union.ai’s EU-region data planes ensure all customer data remains within the European Union.

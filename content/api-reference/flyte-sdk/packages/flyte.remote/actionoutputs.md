@@ -1,7 +1,12 @@
 ---
 title: ActionOutputs
+<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
+=======
+version: 2.1.7
+variants: +flyte +union
+>>>>>>> origin/main
 layout: py_api
 ---
 
@@ -32,7 +37,6 @@ Output:
 ```bash
 {"o0": "val1", "o1": "val2", ...}
 ```
-
 
 
 ## Parameters

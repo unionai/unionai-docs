@@ -1,7 +1,7 @@
 ---
 title: Additional task settings
 weight: 12
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Additional task settings

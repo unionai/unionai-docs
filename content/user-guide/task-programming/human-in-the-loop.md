@@ -1,7 +1,7 @@
 ---
 title: Human-in-the-loop
 weight: 15
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 ---
 
 # Human-in-the-loop

@@ -1,7 +1,12 @@
 ---
 title: FlytePickle
+<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
+=======
+version: 2.1.7
+variants: +flyte +union
+>>>>>>> origin/main
 layout: py_api
 ---
 
@@ -11,7 +16,6 @@ layout: py_api
 
 This type is only used by flytekit internally. User should not use this type.
 Any type that flyte can't recognize will become FlytePickle
-
 
 
 ## Methods

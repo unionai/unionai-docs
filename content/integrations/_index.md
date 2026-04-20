@@ -1,7 +1,7 @@
 ---
 title: Integrations
 weight: 4
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 top_menu: true
 sidebar_expanded: true
 llm_readable_bundle: true
@@ -35,8 +35,9 @@ Flyte 2 integrations fall into the following categories:
 1. **Distributed compute**: Provision transient compute clusters to run tasks across multiple nodes, with automatic lifecycle management.
 2. **Agentic AI**: Support for various common aspects of agentic AI applications.
 3. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
-4. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
-5. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
+4. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
+5. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
+6. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
 
 ## Distributed compute
 
@@ -169,6 +170,16 @@ Experiment tracking integrations let you log metrics, parameters, and artifacts 
 | ------------------------------------ | ---------------------------- | --------------------------------------------- |
 | [MLflow](./mlflow/_index)            | MLflow experiment tracking   | Experiment tracking, autologging, model registry |
 | [Weights and Biases](./wandb/_index) | Weights & Biases integration | Experiment tracking and hyperparameter tuning |
+
+## Data validation
+
+Data validation integrations enforce schema contracts on the dataframes flowing between tasks. They validate data at task boundaries, catch type and constraint violations early, and produce HTML reports visible in the Flyte UI.
+
+### Supported data validation integrations
+
+| Plugin                         | Description                                         | Common use cases                                          |
+| ------------------------------ | --------------------------------------------------- | --------------------------------------------------------- |
+| [Pandera](./pandera/_index)    | Validates dataframes with pandera `DataFrameModel` schemas | Schema enforcement, data quality checks, validation reports |
 
 ## Connectors
 

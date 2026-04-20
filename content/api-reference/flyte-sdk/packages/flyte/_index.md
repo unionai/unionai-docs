@@ -1,26 +1,31 @@
 ---
 title: flyte
+<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
+=======
+version: 2.1.7
+variants: +flyte +union
+>>>>>>> origin/main
 layout: py_api
 sidebar_expanded: true
 ---
 
 # flyte
 
-
 Flyte SDK for authoring compound AI applications, services and workflows.
-
 ## Directory
 
 ### Classes
 
 | Class | Description |
 |-|-|
+| [`BaseCheckpoint`](../flyte/basecheckpoint) | Base type for task checkpoint helpers. |
 | [`Cache`](../flyte/cache) | Cache configuration for a task. |
+| [`Checkpoint`](../flyte/checkpoint) | Checkpoint helper using `flyte. |
 | [`Cron`](../flyte/cron) | Cron-based automation schedule for use with `Trigger`. |
 | [`Device`](../flyte/device) | Represents a device type, its quantity and partition if applicable. |
-| [`Environment`](../flyte/environment) |  |
+| [`Environment`](../flyte/environment) | Base class for execution environments, shared by `TaskEnvironment` and. |
 | [`FixedRate`](../flyte/fixedrate) | Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
 | [`Image`](../flyte/image) | Container image specification built using a fluent, two-step pattern:. |
 | [`ImageBuild`](../flyte/imagebuild) | Result of an image build operation. |
@@ -64,6 +69,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`init_from_config()`](#init_from_config) | Initialize the Flyte system using a configuration file or Config object. |
 | [`init_in_cluster()`](#init_in_cluster) |  |
 | [`init_passthrough()`](#init_passthrough) | Initialize the Flyte system with passthrough authentication. |
+| [`latest_checkpoint()`](#latest_checkpoint) | Return the file under *root* matching *glob_pattern* with the largest ``key(path)``, or ``None``. |
 | [`map()`](#map) | Map a function over the provided arguments with concurrent execution. |
 | [`run()`](#run) | Run a task with the given parameters. |
 | [`run_python_script()`](#run_python_script) | Package and run a Python script on a remote Flyte cluster. |
@@ -188,7 +194,6 @@ def build(
 ```
 Build an image. The existing async context will be used.
 
-Example:
 ```
 import flyte
 image = flyte.Image("example_image")
@@ -237,6 +242,9 @@ def ctx()
 Returns flyte.models.TaskContext if within a task context, else None
 Note: Only use this in task code and not module level.
 
+Use :attr:`flyte.models.TaskContext.checkpoint` for durable task checkpointing
+(object-store prefixes from the runtime).
+
 
 #### current_domain()
 
@@ -277,7 +285,6 @@ def custom_context(
 ```
 Synchronous context manager to set input context for tasks spawned within this block.
 
-Example:
 ```python
 import flyte
 
@@ -340,7 +347,6 @@ context metadata that was passed to the action.
 
 Context will automatically propagate to sub-actions.
 
-Example:
 ```python
 import flyte
 
@@ -366,7 +372,6 @@ def group(
 ```
 Create a new group with the given name. The method is intended to be used as a context manager.
 
-Example:
 ```python
 @task
 async def my_task():
@@ -412,6 +417,7 @@ def init(
     auth_client_config: ClientConfig | None,
     rpc_retries: int,
     http_proxy_url: str | None,
+    disable_keyring: bool,
     storage: Storage | None,
     batch_size: int,
     image_builder: ImageBuildEngine.ImageBuilderType,
@@ -450,6 +456,7 @@ remote API methods are called. Thread-safe implementation.
 | `auth_client_config` | `ClientConfig \| None` | Optional client configuration for authentication |
 | `rpc_retries` | `int` | [optional] int Number of times to retry the platform calls |
 | `http_proxy_url` | `str \| None` | [optional] HTTP Proxy to be used for OAuth requests |
+| `disable_keyring` | `bool` | |
 | `storage` | `Storage \| None` | Optional blob store (S3, GCS, Azure) configuration if needed to access (i.e. using Minio) |
 | `batch_size` | `int` | Optional batch size for operations that use listings, defaults to 1000, so limit larger than batch_size will be split into multiple requests. |
 | `image_builder` | `ImageBuildEngine.ImageBuilderType` | Optional image builder configuration, if not provided, the default image builder will be used. |
@@ -612,6 +619,31 @@ The endpoint is automatically configured from the environment if in a flyte clus
 
 **Returns:** Dictionary of remote kwargs used for initialization
 
+#### latest_checkpoint()
+
+```python
+def latest_checkpoint(
+    root: pathlib.Path,
+    glob_pattern: str,
+    key: Callable[[pathlib.Path], Any] | None,
+) -> pathlib.Path | None
+```
+Return the file under *root* matching *glob_pattern* with the largest ``key(path)``, or ``None``.
+
+By default *key* is ``lambda p: p.stat().st_mtime`` (newest modification time wins). Pass *key* to
+rank matches another way (e.g. parse a step from the filename).
+
+For example, the Lightning framework would use ``**/last.ckpt`` under the tree restored by
+`flyte.Checkpoint.load_sync` / `flyte.Checkpoint.load`. Pass a different *glob_pattern* for other
+layouts (e.g. ``"**/*.ckpt"``).
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `root` | `pathlib.Path` | |
+| `glob_pattern` | `str` | |
+| `key` | `Callable[[pathlib.Path], Any] \| None` | |
+
 #### map()
 
 
@@ -702,26 +734,6 @@ Project and domain are read from the init config (set via `flyte.init()`
 or `flyte.init_from_config()`), consistent with `flyte.run()`.
 
 
-Example::
-
-    import flyte
-    from pathlib import Path
-
-    flyte.init(endpoint="my-cluster.example.com")
-
-    # With a list of packages (auto-builds image)
-    run = flyte.run_python_script(
-        Path("train.py"),
-        gpu=1,
-        gpu_type="A100",
-        memory="64Gi",
-        image=["torch", "transformers"],
-    )
-    print(run.url)
-
-    # With a custom Image object
-    img = flyte.Image.from_debian_base(name="my-img").with_pip_packages("numpy")
-    run = flyte.run_python_script(Path("analysis.py"), image=img)
 
 
 | Parameter | Type | Description |
@@ -759,7 +771,6 @@ Serve a Flyte app using an AppEnvironment.
 This is the simple, direct way to serve an app. For more control over
 deployment settings (env vars, cluster pool, etc.), use with_servecontext().
 
-Example:
 ```python
 import flyte
 from flyte.app.extras import FastAPIAppEnvironment
@@ -792,7 +803,7 @@ def trace(
 ) -> typing.Callable[..., ~T]
 ```
 A decorator that traces function execution with timing information.
-Works with regular functions, async functions, and async generators/iterators.
+Works with regular functions, sync generators, async functions, and async generators/iterators.
 
 
 | Parameter | Type | Description |
@@ -843,7 +854,6 @@ def with_runcontext(
 ```
 Launch a new run with the given parameters as the context.
 
-Example:
 ```python
 import flyte
 import flyte.notify as notify
@@ -923,6 +933,7 @@ def with_servecontext(
     health_check_timeout: float | None,
     health_check_interval: float | None,
     health_check_path: str | None,
+    raw_data_path: str | None,
 ) -> _Serve
 ```
 Create a serve context with custom configuration.
@@ -979,7 +990,8 @@ print(f"App URL: {app.url}")
 | `activate_timeout` | `float \| None` | Total timeout in seconds when polling the health-check endpoint during `activate(wait=True)`. Defaults to 60 s. |
 | `health_check_timeout` | `float \| None` | Per-request timeout in seconds for each health-check HTTP request. Defaults to 2 s. |
 | `health_check_interval` | `float \| None` | Interval in seconds between consecutive health-check polls. Defaults to 1 s. |
-| `health_check_path` | `str \| None` | URL path used for the local health-check probe (e.g. `"/healthz"`). Defaults to `"/health"`. |
+| `health_check_path` | `str \| None` | URL path used for the local health-check probe (e.g. ``"/healthz"``). Defaults to ``"/health"``. |
+| `raw_data_path` | `str \| None` | Raw data path for the app. For local serving, sets ctx().raw_data_path so apps can read it. Defaults to ``/tmp/flyte/raw_data`` when mode is local. For remote serving, the backend provides this via the container command. |
 
 **Returns**
 

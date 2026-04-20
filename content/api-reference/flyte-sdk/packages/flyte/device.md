@@ -1,7 +1,12 @@
 ---
 title: Device
+<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
+=======
+version: 2.1.7
+variants: +flyte +union
+>>>>>>> origin/main
 layout: py_api
 ---
 
@@ -13,7 +18,6 @@ Represents a device type, its quantity and partition if applicable.
 param device: The type of device (e.g., "T4", "A100").
 param quantity: The number of devices of this type.
 param partition: The partition of the device (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus).
-
 
 
 ## Parameters

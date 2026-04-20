@@ -1,7 +1,12 @@
 ---
 title: FixedRate
+<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
+=======
+version: 2.1.7
+variants: +flyte +union
+>>>>>>> origin/main
 layout: py_api
 ---
 
@@ -13,8 +18,6 @@ Fixed-rate (interval-based) automation schedule for use with `Trigger`.
 
 Unlike `Cron`, which runs at specific clock times, `FixedRate` runs at a
 consistent interval regardless of clock time.
-
-Example:
 
 ```python
 my_trigger = flyte.Trigger(

@@ -1,20 +1,22 @@
 ---
 title: flyte.io
+<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
+=======
+version: 2.1.7
+variants: +flyte +union
+>>>>>>> origin/main
 layout: py_api
 sidebar_expanded: true
 ---
 
 # flyte.io
 
-
 ## IO data types
 
 This package contains additional data types beyond the primitive data types in python to abstract data flow
 of large datasets in Union.
-
-
 ## Directory
 
 ### Classes

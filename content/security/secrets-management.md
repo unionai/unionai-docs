@@ -1,7 +1,7 @@
 ---
 title: Secrets management
-weight: 5
-variants: -flyte +byoc +selfmanaged
+weight: 4
+variants: -flyte +union
 ---
 
 # Secrets management
@@ -10,7 +10,7 @@ Union.ai provides enterprise-grade secrets management with a security-first desi
 
 ## Secrets architecture
 
-The compute plane supports four configurable secrets backends:
+The data plane supports four configurable secrets backends:
 
 | Backend | Storage Location | Default? |
 | --- | --- | --- |
@@ -20,7 +20,7 @@ The compute plane supports four configurable secrets backends:
 | Azure Key Vault | Azure-managed service | Optional |
 
 In all cases, secrets are stored within the customer’s infrastructure.
-The choice of backend is a deployment configuration on the compute plane operator.
+The choice of backend is a deployment configuration on the data plane operator.
 
 > [!NOTE]
 > In BYOC deployments, the default secrets backend differs. See [BYOC deployment differences: Secrets management](./byoc-differences#secrets-management).
@@ -29,13 +29,13 @@ The choice of backend is a deployment configuration on the compute plane operato
 
 ### Creation
 
-When a user creates a secret via the UI or CLI, the request is relayed through the Cloudflare tunnel to the compute plane’s secrets backend.
+When a user creates a secret via the UI or CLI, the request is relayed through the Cloudflare tunnel to the data plane’s secrets backend.
 The secret value transits the control plane in-memory during this relay but is never written to disk or database on the control plane.
 
 ### Consumption
 
 When a task pod is created, the Executor configures it to mount the requested secrets from the secrets backend (as environment variables or files).
-The secret value is read by the compute plane’s secrets backend and injected into the pod—it never leaves the customer’s infrastructure during this process.
+The secret value is read by the data plane’s secrets backend and injected into the pod—it never leaves the customer’s infrastructure during this process.
 
 ### Write-only API
 

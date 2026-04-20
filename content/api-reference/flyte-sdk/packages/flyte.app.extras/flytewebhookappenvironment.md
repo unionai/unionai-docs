@@ -1,7 +1,12 @@
 ---
 title: FlyteWebhookAppEnvironment
+<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
+=======
+version: 2.1.7
+variants: +flyte +union
+>>>>>>> origin/main
 layout: py_api
 ---
 
@@ -24,99 +29,6 @@ This environment provides a ready-to-use FastAPI application with endpoints for:
 - Prefetching HuggingFace models (run, status, I/O, abort)
 
 All endpoints use FastAPIPassthroughAuthMiddleware for authentication.
-
-Example:
-    Basic usage (all endpoints enabled):
-
-    ```python
-    import flyte
-    from flyte.app.extras import FlyteWebhookAppEnvironment
-
-    webhook_env = FlyteWebhookAppEnvironment(
-        name="my-webhook",
-        image=flyte.Image.from_debian_base().with_pip_packages("fastapi", "uvicorn"),
-        resources=flyte.Resources(cpu=1, memory="512Mi"),
-    )
-
-    # Deploy the webhook
-    flyte.serve(webhook_env)
-    ```
-
-    With endpoint group filtering:
-
-    ```python
-    from flyte.app.extras import FlyteWebhookAppEnvironment
-
-    # Only enable core, task, and run endpoint groups
-    webhook_env = FlyteWebhookAppEnvironment(
-        name="task-runner-webhook",
-        endpoint_groups=["core", "task", "run"],
-    )
-    ```
-
-    With individual endpoint filtering:
-
-    ```python
-    from flyte.app.extras import FlyteWebhookAppEnvironment
-
-    # Only enable specific endpoints
-    webhook_env = FlyteWebhookAppEnvironment(
-        name="minimal-webhook",
-        endpoints=["health", "run_task", "get_run"],
-    )
-    ```
-
-    Combining endpoint groups and individual endpoints:
-
-    ```python
-    from flyte.app.extras import FlyteWebhookAppEnvironment
-
-    # Enable core group plus specific additional endpoints
-    webhook_env = FlyteWebhookAppEnvironment(
-        name="custom-webhook",
-        endpoint_groups=["core"],
-        endpoints=["run_task", "get_run"],
-    )
-    ```
-
-    With task allow-listing:
-
-    ```python
-    from flyte.app.extras import FlyteWebhookAppEnvironment
-
-    # Only allow specific tasks
-    webhook_env = FlyteWebhookAppEnvironment(
-        name="restricted-webhook",
-        endpoint_groups=["core", "task", "run"],
-        task_allowlist=["production/my-project/allowed-task", "my-other-task"],
-    )
-    ```
-
-    With app allow-listing:
-
-    ```python
-    from flyte.app.extras import FlyteWebhookAppEnvironment
-
-    # Only allow specific apps
-    webhook_env = FlyteWebhookAppEnvironment(
-        name="app-manager-webhook",
-        endpoint_groups=["core", "app"],
-        app_allowlist=["my-app", "another-app"],
-    )
-    ```
-
-    With trigger allow-listing:
-
-    ```python
-    from flyte.app.extras import FlyteWebhookAppEnvironment
-
-    # Only allow specific triggers
-    webhook_env = FlyteWebhookAppEnvironment(
-        name="trigger-manager-webhook",
-        endpoint_groups=["core", "trigger"],
-        trigger_allowlist=["my-task/my-trigger", "another-trigger"],
-    )
-    ```
 
 
 
@@ -197,7 +109,7 @@ class FlyteWebhookAppEnvironment(
 
 | Method | Description |
 |-|-|
-| [`add_dependency()`](#add_dependency) | Add a dependency to the environment. |
+| [`add_dependency()`](#add_dependency) | Add one or more environment dependencies so they are deployed together. |
 | [`clone_with()`](#clone_with) |  |
 | [`container_args()`](#container_args) |  |
 | [`container_cmd()`](#container_cmd) |  |
@@ -215,12 +127,21 @@ def add_dependency(
     env: Environment,
 )
 ```
-Add a dependency to the environment.
+Add one or more environment dependencies so they are deployed together.
+
+When you deploy this environment, any environments added via
+`add_dependency` will also be deployed. This is an alternative to
+passing `depends_on=[...]` at construction time, useful when the
+dependency is defined after the environment is created.
+
+Duplicate dependencies are silently ignored. An environment cannot
+depend on itself.
+
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `env` | `Environment` | |
+| `env` | `Environment` | One or more `Environment` instances to add as dependencies. |
 
 ### clone_with()
 

@@ -1,7 +1,12 @@
 ---
 title: Resources
+<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
+=======
+version: 2.1.7
+variants: +flyte +union
+>>>>>>> origin/main
 layout: py_api
 ---
 
@@ -12,8 +17,6 @@ layout: py_api
 Resources such as CPU, Memory, and GPU that can be allocated to a task.
 
 Set via `TaskEnvironment(resources=...)` or `task.override(resources=...)`.
-
-Examples:
 
 ```python
 # Simple: 1 CPU, 1 GiB memory, 1 T4 GPU

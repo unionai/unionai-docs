@@ -1,7 +1,7 @@
 ---
 title: Run command options
 weight: 4
-variants: +flyte +byoc +selfmanaged
+variants: +flyte +union
 sidebar_expanded: true
 ---
 

@@ -1,14 +1,14 @@
 ---
 title: Infrastructure security
-weight: 6
-variants: -flyte +byoc +selfmanaged
+weight: 5
+variants: -flyte +union
 ---
 
 # Infrastructure security
 
 ## Kubernetes security
 
-The compute plane runs on customer-managed Kubernetes clusters. Union supports the following security measures:
+The data plane runs on customer-managed Kubernetes clusters. Union supports the following security measures:
 
 > [!NOTE]
 > In BYOC deployments, Union.ai manages the K8s cluster. See [BYOC deployment differences: Infrastructure management](./byoc-differences#infrastructure-management).
@@ -19,7 +19,7 @@ The compute plane runs on customer-managed Kubernetes clusters. Union supports t
 * Resource quotas and limit ranges to prevent resource abuse
 * Pod security contexts enforcing non-root execution where applicable
 
-A complete list of compute plane permissions appears in **[Appendix D](./appendix#d-kubernetes-rbac---compute-plane)**
+A complete list of data plane permissions appears in **[Kubernetes RBAC: data plane](./kubernetes-rbac-data-plane)**
 
 ## Container security
 
@@ -33,7 +33,7 @@ Union.ai’s container security model ensures that code execution is isolated an
 
 ## IAM and workload identity
 
-Two IAM roles are provisioned per compute plane, each with narrowly scoped permissions. In BYOC deployments, [Union.ai provisions these roles](./byoc-differences#iam-role-provisioning); in self-managed, the customer provisions them.
+Two IAM roles are provisioned per data plane, each with narrowly scoped permissions. In BYOC deployments, [Union.ai provisions these roles](./byoc-differences#iam-role-provisioning); in self-managed, the customer provisions them.
 
 | Role | Permissions | Assumed By | Mechanism |
 | --- | --- | --- | --- |
@@ -55,17 +55,17 @@ The Union.ai control plane is hosted on AWS with enterprise-grade infrastructure
 
 ## Availability, response time, and resilience
 
-Union.ai's architecture separates the availability characteristics of the control plane and compute plane, providing resilience even during partial outages.
+Union.ai's architecture separates the availability characteristics of the control plane and data plane, providing resilience even during partial outages.
 
 ### Control plane availability
 
 The Union.ai control plane runs on AWS with multi-AZ redundancy, managed PostgreSQL (RDS) with automated failover, and continuous monitoring. Union.ai's SOC 2 Type II audit covers availability as a trust service criterion. The control plane is designed for high availability, with automated recovery and health monitoring. Specific SLA targets are defined in customer contracts and are available upon request.
 
-### Compute plane resilience during control plane outages
+### Data plane resilience during control plane outages
 
-Because the compute plane runs entirely within the customer's Kubernetes cluster, in-flight workflows continue executing even if the control plane becomes temporarily unavailable. The Executor, which manages pod lifecycle, operates as a Kubernetes controller on the customer's cluster and does not require real-time connectivity to the control plane to continue running pods that have already been scheduled. State transitions will be reconciled when connectivity is restored. However, new workflow submissions and scheduling operations require control plane availability.
+Because the data plane runs entirely within the customer's Kubernetes cluster, in-flight workflows continue executing even if the control plane becomes temporarily unavailable. The Executor, which manages pod lifecycle, operates as a Kubernetes controller on the customer's cluster and does not require real-time connectivity to the control plane to continue running pods that have already been scheduled. State transitions will be reconciled when connectivity is restored. However, new workflow submissions and scheduling operations require control plane availability.
 
-The customer is solely responsible for compute plane availability, including Kubernetes cluster operations, node pool management, upgrades, and monitoring. Union.ai's availability commitment covers only the control plane. In-flight workflows continue executing independently during control plane outages.
+The customer is solely responsible for data plane availability, including Kubernetes cluster operations, node pool management, upgrades, and monitoring. Union.ai's availability commitment covers only the control plane. In-flight workflows continue executing independently during control plane outages.
 
 > [!NOTE]
-> In BYOC deployments, availability responsibilities shift — Union.ai manages compute plane cluster availability. See [BYOC deployment differences: Availability and resilience](./byoc-differences#availability-and-resilience).
+> In BYOC deployments, availability responsibilities shift — Union.ai manages data plane cluster availability. See [BYOC deployment differences: Availability and resilience](./byoc-differences#availability-and-resilience).

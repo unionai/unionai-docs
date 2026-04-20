@@ -1,7 +1,12 @@
 ---
 title: ConnectorRegistry
+<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
+=======
+version: 2.1.7
+variants: +flyte +union
+>>>>>>> origin/main
 layout: py_api
 ---
 
@@ -11,7 +16,6 @@ layout: py_api
 
 This is the registry for all connectors.
 The connector service will look up the connector registry based on the task type and version.
-
 
 
 ## Methods

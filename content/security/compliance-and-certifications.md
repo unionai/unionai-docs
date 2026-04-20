@@ -1,7 +1,7 @@
 ---
 title: Compliance and certifications
-weight: 8
-variants: -flyte +byoc +selfmanaged
+weight: 7
+variants: -flyte +union
 ---
 
 # Compliance and certifications
@@ -26,7 +26,7 @@ Key areas covered include protection against unauthorized access (Security), sys
 
 ## Standards compliance
 
-In addition to certifications, Union.ai complies with the following standard control frameworks through its private compute plane architecture:
+In addition to certifications, Union.ai complies with the following standard control frameworks through its private data plane architecture:
 
 | Framework | Control | Description |
 | --- | --- | --- |
@@ -41,14 +41,14 @@ In addition to certifications, Union.ai complies with the following standard con
 
 ## HIPAA compliance
 
-Union.ai is designed to support HIPAA compliance requirements, enabling healthcare and life sciences organizations to process protected health information (PHI) within their compute planes.
+Union.ai is designed to support HIPAA compliance requirements, enabling healthcare and life sciences organizations to process protected health information (PHI) within their data planes.
 Because all customer data—including any PHI—remains exclusively in the customer’s own cloud infrastructure, Union.ai’s architecture inherently supports HIPAA’s data protection requirements.
 The control plane stores only orchestration metadata and never persists PHI.
 
 ## GDPR alignment
 
 Union.ai’s architecture inherently supports GDPR through its data residency model.
-For EU-region compute planes, all customer data remains within the European Union.
+For EU-region data planes, all customer data remains within the European Union.
 The control plane stores only orchestration metadata, and where error messages may contain user-generated content, this is documented and scoped.
 
 ## Trust Center
@@ -71,7 +71,7 @@ Union.ai operates under a shared responsibility model:
 | Responsibility Area | Union.ai | Customer |
 | --- | --- | --- |
 | Control plane security | Full ownership | N/A |
-| Compute plane infrastructure | Guidance and tooling | Provisioning and maintenance |
+| Data plane infrastructure | Guidance and tooling | Provisioning and maintenance |
 | Data encryption at rest | Default cloud encryption | Optional CMK configuration |
 | Network security (tunnel) | Tunnel management | Firewall and VPC configuration |
 | IAM roles and policies | Role templates and documentation | Role creation and binding |
@@ -80,4 +80,4 @@ Union.ai operates under a shared responsibility model:
 | Compliance documentation | SOC 2 report, Trust Center | Customer-specific attestations |
 
 > [!NOTE]
-> In BYOC deployments, shared responsibilities shift for compute plane infrastructure and IAM roles. See [BYOC deployment differences: Shared responsibility model](./byoc-differences#shared-responsibility-model).
+> In BYOC deployments, shared responsibilities shift for data plane infrastructure and IAM roles. See [BYOC deployment differences: Shared responsibility model](./byoc-differences#shared-responsibility-model).

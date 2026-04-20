@@ -1,6 +1,6 @@
 ---
 title: uctl demo reload
-variants: -flyte +byoc +selfmanaged
+variants: -flyte +union
 ---
 
 # uctl demo reload

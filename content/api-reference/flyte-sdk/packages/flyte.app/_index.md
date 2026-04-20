@@ -1,7 +1,12 @@
 ---
 title: flyte.app
+<<<<<<< HEAD
 version: 2.0.11
 variants: +flyte +byoc +selfmanaged
+=======
+version: 2.1.7
+variants: +flyte +union
+>>>>>>> origin/main
 layout: py_api
 sidebar_expanded: true
 ---
@@ -16,7 +21,7 @@ sidebar_expanded: true
 |-|-|
 | [`AppEndpoint`](../flyte.app/appendpoint) | Embed an upstream app's endpoint as an app parameter. |
 | [`AppEnvironment`](../flyte.app/appenvironment) | Configure a long-running app environment for APIs, dashboards, or model servers. |
-| [`ConnectorEnvironment`](../flyte.app/connectorenvironment) |  |
+| [`ConnectorEnvironment`](../flyte.app/connectorenvironment) | Configure a connector environment for custom Flyte connectors. |
 | [`Domain`](../flyte.app/domain) | Subdomain to use for the domain. |
 | [`Link`](../flyte.app/link) | Custom links to add to the app. |
 | [`Parameter`](../flyte.app/parameter) | Parameter for application. |
