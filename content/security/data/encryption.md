@@ -59,7 +59,7 @@ The following table summarizes the encryption state for each data category acros
 
 ## Verification
 
-### Encryption at rest (High)
+### Encryption at rest
 
 **Reviewer focus:** Confirm that all storage backends are encrypted and verify key management configuration.
 
@@ -89,7 +89,7 @@ The following table summarizes the encryption state for each data category acros
 
 This verification is fully self-service.
 
-### Encryption in transit (High)
+### Encryption in transit
 
 **Reviewer focus:** Confirm that all communication paths use TLS and that no plaintext channels exist.
 

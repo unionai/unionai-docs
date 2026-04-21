@@ -26,7 +26,7 @@ For details on the data flow patterns that apply across all clouds, see [Data fl
 
 ## Verification
 
-### Multi-cloud support (Medium)
+### Multi-cloud support
 
 **Reviewer focus:** Confirm that the services listed for each cloud provider are accurate.
 

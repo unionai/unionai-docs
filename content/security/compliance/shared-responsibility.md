@@ -37,7 +37,7 @@ For details on how the deployment model affects security controls, see [Deployme
 
 ## Verification
 
-### Shared responsibility model (High)
+### Shared responsibility model
 
 **Reviewer focus:** Confirm that the responsibility boundaries are clearly defined and that the BYOC model correctly reflects the shifted responsibilities.
 

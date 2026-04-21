@@ -22,7 +22,7 @@ Every API request is authenticated with the identity context captured. Run and a
 
 ## Verification
 
-### Task logging (High)
+### Task logging
 
 **Reviewer focus:** Confirm that task logs are stored in the customer's cloud log service and that the control plane does not persist log data.
 
@@ -46,7 +46,7 @@ Every API request is authenticated with the identity context captured. Run and a
 
 Self-service verification using existing features.
 
-### Audit trail (Critical)
+### Audit trail
 
 **Reviewer focus:** Confirm that all operations are logged with identity, operation, and timestamp, and that the audit trail is complete and queryable.
 

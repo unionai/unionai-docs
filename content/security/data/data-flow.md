@@ -98,7 +98,7 @@ For details on the underlying network architecture, see [Two-plane separation](.
 
 ## Verification
 
-### Presigned URLs (Critical)
+### Presigned URLs
 
 **Reviewer focus:** Confirm that presigned URLs point to the customer's object store, expire as documented, and are scoped to a single object.
 
@@ -110,7 +110,7 @@ For details on the underlying network architecture, see [Two-plane separation](.
 4. Copy the presigned URL and wait 1 hour. Paste it into the browser -- it should return a 403 (TTL expired).
 5. Modify the object key in the URL and retry immediately -- it should return a 403 (signature invalid, confirming single-object scope).
 
-### Streaming relay (High)
+### Streaming relay
 
 **Reviewer focus:** Confirm that logs and metrics streamed through the control plane are not persisted.
 
@@ -130,7 +130,7 @@ Proving non-persistence is inherently difficult. The best available evidence:
 
 3. (Advanced) Compare log content flowing through the tunnel against control plane state before and after streaming. There should be no delta in stored data.
 
-### UI data sources (High)
+### UI data sources
 
 **Reviewer focus:** Confirm that the UI retrieves customer data exclusively through presigned URLs or tunnel relays, not from the control plane.
 

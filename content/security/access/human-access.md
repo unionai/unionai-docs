@@ -26,7 +26,7 @@ All access by Union.ai personnel is authenticated and logged with caller identit
 
 ## Verification
 
-### Human access controls (Critical)
+### Human access controls
 
 **Reviewer focus:** Confirm that Union.ai personnel access is appropriately scoped for each deployment model and that no path exists to access customer data or secrets.
 

@@ -14,7 +14,7 @@ For details on how data residency is enforced architecturally, see [Two-plane se
 
 ## Verification
 
-### GDPR alignment (Critical for EU, Low otherwise)
+### GDPR alignment
 
 **Reviewer focus:** Confirm that all customer data remains within the EU for EU-region deployments and that the control plane does not store data payloads.
 

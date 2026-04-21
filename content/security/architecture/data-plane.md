@@ -71,7 +71,7 @@ RBAC controls govern which users and service accounts can deploy applications an
 
 ## Verification
 
-### Components (Medium-High)
+### Components
 
 **Reviewer focus:** Confirm that the described components are running in the customer's cluster and match the documented architecture.
 
@@ -94,7 +94,7 @@ RBAC controls govern which users and service accounts can deploy applications an
 
    Verify the container image, service account, and resource configuration match expectations.
 
-### Kubernetes security (High)
+### Kubernetes security
 
 **Reviewer focus:** Confirm that Kubernetes RBAC, network policies, resource quotas, and pod security contexts are in place and correctly scoped.
 
@@ -126,7 +126,7 @@ RBAC controls govern which users and service accounts can deploy applications an
 
    Confirm `runAsNonRoot: true` or equivalent non-root settings on platform pods.
 
-### Container security (High)
+### Container security
 
 **Reviewer focus:** Confirm that image builds execute entirely within the customer's infrastructure and that built images never leave the customer's registry.
 
@@ -151,7 +151,7 @@ RBAC controls govern which users and service accounts can deploy applications an
 
    (Or the equivalent `gcloud` / `az` command for GCP/Azure.)
 
-### IAM and workload identity (Critical)
+### IAM and workload identity
 
 **Reviewer focus:** Confirm that the two IAM roles exist with the documented permissions, that workload identity federation is in use, and that no static credentials are present.
 

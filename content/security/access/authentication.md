@@ -26,7 +26,7 @@ Union.ai uses OAuth2 with Okta as its identity provider, supporting any OIDC or 
 
 ## Verification
 
-### SSO and credential lifecycle (High)
+### SSO and credential lifecycle
 
 **Reviewer focus:** Confirm that SSO redirects to the customer's IdP, that MFA is enforced when configured, and that API keys and service accounts can be created, used, and revoked.
 

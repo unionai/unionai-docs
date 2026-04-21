@@ -43,7 +43,7 @@ For details on how secrets flow during workflow execution, see [Workflow data fl
 
 ## Verification
 
-### Write-only API (Critical)
+### Write-only API
 
 **Reviewer focus:** Confirm that no API endpoint returns secret values and that the write-only design holds.
 
@@ -73,7 +73,7 @@ For details on how secrets flow during workflow execution, see [Workflow data fl
 
 This verification is fully self-service and works immediately.
 
-### Secret lifecycle (High)
+### Secret lifecycle
 
 **Reviewer focus:** Confirm that secret values transit the control plane only in-memory during creation and are consumed entirely within the data plane at runtime.
 

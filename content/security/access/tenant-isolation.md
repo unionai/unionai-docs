@@ -29,7 +29,7 @@ Tenant isolation controls are covered by the SOC 2 Type II audit scope. The comb
 
 ## Verification
 
-### Tenant isolation (Critical)
+### Tenant isolation
 
 **Reviewer focus:** Confirm that customers cannot access other tenants' data through any path, and that the isolation model is architecturally enforced rather than relying solely on application logic.
 

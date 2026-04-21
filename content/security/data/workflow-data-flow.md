@@ -38,9 +38,9 @@ For details on the two data flow patterns, see [Data flow](./data-flow).
 
 ## Verification
 
-### End-to-end data flow (Critical)
+### End-to-end data flow
 
-**Reviewer focus:** Confirm that customer data stays in the customer's infrastructure at every stage of the workflow lifecycle. This is the most important verification in this section -- it demonstrates the entire data separation model in action.
+**Reviewer focus:** Confirm the data separation model at every stage: bulk data stays in the customer's infrastructure (presigned URLs), inline data transits the control plane transiently (not persisted), and task definitions stored in the control plane contain only expected fields.
 
 **How to verify:**
 
@@ -72,14 +72,14 @@ The pod description should show volumes mounted from customer S3, secrets from t
 
 **Step 3 -- Retrieval:**
 
-Open browser developer tools (Network tab) and view the task's outputs in the Union.ai UI. Output requests should use presigned URLs pointing to the customer's S3/GCS/Azure Blob endpoint. Separately, confirm that the control plane returns only metadata:
+Open browser developer tools (Network tab) and view the task's outputs in the Union.ai UI. Binary output artifacts (files, DataFrames) should be fetched via presigned URLs pointing to the customer's S3/GCS/Azure Blob endpoint. Structured outputs (protobuf literals) are fetched via the inline proxy through the control plane. Separately, confirm that the control plane API returns metadata and URI references:
 
 ```bash
 uctl get execution <execution-id> -o json
 ```
 
-The response should contain phase, timestamps, and URIs -- no inline data content.
+The response should contain phase, timestamps, URIs, and task definition fields. Bulk data content should not appear inline.
 
 **Step 4 -- Negative proof:**
 
-Search control plane audit logs for the recognizable data string used in the workflow -- it should not appear. If VPC Flow Logs are enabled, data-sized transfers should flow only to/from the customer's object store, not to Union.ai IP ranges.
+Search control plane audit logs for the recognizable data string used in the workflow -- it should not appear. If VPC Flow Logs are enabled, bulk data transfers should flow directly between task pods and the customer's object store. Structured task I/O (up to 10-20 MiB) and log streams will transit the Cloudflare Tunnel as documented in [Data flow](./data-flow).

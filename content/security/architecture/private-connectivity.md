@@ -18,7 +18,7 @@ For details on the self-managed alternative -- where no private management conne
 
 ## Verification
 
-### Private management connection (High)
+### Private management connection
 
 **Reviewer focus:** Confirm that the Kubernetes API endpoint is accessible only via the private connectivity service and is not exposed to the public internet.
 

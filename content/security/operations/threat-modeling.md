@@ -20,7 +20,7 @@ A leaked presigned URL exposes a single object for a maximum of one hour (defaul
 
 ## Verification
 
-### Threat scenarios (High)
+### Threat scenarios
 
 **Reviewer focus:** Confirm that the impact of each threat scenario is limited by the architectural properties described above.
 
@@ -28,7 +28,7 @@ A leaked presigned URL exposes a single object for a maximum of one hour (defaul
 
 These scenarios are validated by demonstrations from other sections:
 
-- **Control plane compromise:** The data classification and workflow data flow verifications in [Two-plane separation](../architecture/two-plane-separation) prove that the control plane holds no customer data.
+- **Control plane compromise:** The data classification and workflow data flow verifications in [Two-plane separation](../architecture/two-plane-separation) demonstrate the blast radius limits described above -- bulk data is inaccessible, inline data is transient, and task definitions are enumerated.
 - **Presigned URL leakage:** The presigned URL verification in [Data plane](../architecture/data-plane) proves TTL and scope limits.
 - **Tunnel interception:** The network architecture verifications in [Network architecture](../architecture/network) prove encryption.
 

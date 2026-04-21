@@ -62,13 +62,13 @@ The control plane consists of several services, each responsible for a specific 
 
 ## Verification
 
-### What it stores (Critical)
+### What it stores
 
 **Reviewer focus:** Confirm that the control plane databases contain orchestration metadata and task definitions as described above, but no bulk customer data payloads. Verify that task definitions do not contain unintended sensitive content beyond the fields documented here.
 
 **How to verify:**
 
-1. The metadata schema is derived from the open-source Flyte protobuf definitions in the [flyte-sdk repository](https://github.com/flyteorg/flyte-sdk). Review the protobuf schemas to confirm that execution and task metadata messages contain only identifiers, phase enums, timestamps, URIs, and typed interface definitions -- no arbitrary data payload fields.
+1. The task definition schema is derived from the open-source Flyte protobuf definitions in the [flyte-sdk repository](https://github.com/flyteorg/flyte-sdk). Review the `TaskTemplate` and `RunSpec` protobuf schemas and compare them to the field enumeration table above to confirm that the fields stored match the documented classifications.
 
 2. Query the control plane API for a completed execution:
 
@@ -76,11 +76,17 @@ The control plane consists of several services, each responsible for a specific 
    uctl get execution <execution-id> -o json
    ```
 
-   Inspect the full JSON response. Fields should include `id`, `spec`, `closure` (containing `phase`, `startedAt`, `duration`, `outputs` as a URI reference), and similar metadata. No field should contain inline data content.
+   The response should contain identifiers, phase, timestamps, URIs, and error information. Bulk data content (file contents, DataFrame payloads) should not appear inline -- only URI references to the customer's object store.
 
-3. For additional confidence, run a workflow that processes sensitive test data and repeat the above query. Confirm that the sensitive content does not appear anywhere in the API response.
+3. Query a task definition and inspect the fields present:
 
-### Infrastructure (Medium)
+   ```bash
+   uctl get task <task-name> -o json
+   ```
+
+   The response will include task definition fields (container spec, typed interface, resource requirements). Check whether environment variables, default input values, or other potentially sensitive fields from the table above are present, and confirm they match what you expect for that task.
+
+### Infrastructure
 
 **Reviewer focus:** Confirm that the control plane infrastructure meets stated security and availability properties.
 

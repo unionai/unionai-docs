@@ -26,7 +26,7 @@ Regular third-party penetration testing validates the effectiveness of security 
 
 ## Verification
 
-### Organizational security (Medium)
+### Organizational security
 
 **Reviewer focus:** Confirm that organizational security practices are documented and independently verified.
 

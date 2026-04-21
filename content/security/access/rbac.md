@@ -32,7 +32,7 @@ Union.ai enforces least privilege across all components. IAM roles on the data p
 
 ## Verification
 
-### RBAC enforcement (Critical)
+### RBAC enforcement
 
 **Reviewer focus:** Confirm that each role enforces the expected permissions and that custom policies correctly scope access to specific projects and domains.
 

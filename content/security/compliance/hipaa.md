@@ -14,7 +14,7 @@ The architectural separation between control plane and data plane described in [
 
 ## Verification
 
-### HIPAA compliance (Critical for healthcare, Low otherwise)
+### HIPAA compliance
 
 **Reviewer focus:** Confirm that PHI remains exclusively in the customer's infrastructure and that appropriate safeguards are in place.
 

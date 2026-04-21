@@ -64,7 +64,7 @@ For data plane availability, the responsibility depends on the deployment model.
 
 ## Verification
 
-### Availability and resilience (Medium)
+### Availability and resilience
 
 **Reviewer focus:** Confirm that in-flight workflows survive control plane connectivity loss and that state reconciles upon reconnection.
 

@@ -33,9 +33,9 @@ For details on the architectural separation that enforces these residency guaran
 
 ## Verification
 
-### Data classification (Critical)
+### Data classification
 
-**Reviewer focus:** Confirm that each data type resides where the classification table claims, and that no customer data payloads appear in the control plane.
+**Reviewer focus:** Confirm that each data type resides where the classification table claims. Verify that bulk data is in the customer's infrastructure, and that task definitions in the control plane contain only expected fields.
 
 **How to verify:**
 
@@ -71,23 +71,23 @@ Run a workflow with recognizable data (e.g., a known string or file), then verif
    aws secretsmanager list-secrets --region <region>
    ```
 
-6. **Task spec metadata** -- confirm it contains only metadata, stored in the control plane:
+6. **Task definition** -- confirm it contains the expected fields, stored in the control plane:
 
    ```bash
    uctl get task <task-name> -o json
    ```
 
-   The response should contain resource requirements, typed interfaces, and container image references -- no data content.
+   The response will contain resource requirements, typed interfaces, container image references, and potentially sensitive fields (environment variables, default values, etc.) as documented in [Control plane](../architecture/control-plane). Bulk data content should not appear inline.
 
-7. **Run metadata** -- confirm it contains only metadata, stored in the control plane:
+7. **Run metadata** -- confirm it contains metadata and URI references, stored in the control plane:
 
    ```bash
    uctl get execution <execution-id> -o json
    ```
 
-   The response should contain phase, timestamps, URIs, and error messages -- no data content.
+   The response should contain phase, timestamps, URIs, error messages, and task definition fields. Bulk data content should not appear inline.
 
-### Data residency (Critical -- especially for EU/regulated deployments)
+### Data residency
 
 **Reviewer focus:** Confirm that all data plane resources reside in the customer's chosen region and that no customer data is stored outside that region.
 

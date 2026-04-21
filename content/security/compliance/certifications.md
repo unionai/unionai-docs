@@ -42,7 +42,7 @@ Union.ai maintains a public Trust Center at [trust.union.ai](https://trust.union
 
 ## Verification
 
-### Certifications (High)
+### Certifications
 
 **Reviewer focus:** Confirm that certifications are current and that the Trust Center provides real-time visibility into control status.
 

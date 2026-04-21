@@ -23,7 +23,7 @@ Union.ai also holds CIS 1.4 AWS certification and is pursuing CIS 3.0.
 
 ## Verification
 
-### Standards compliance (Medium)
+### Standards compliance
 
 **Reviewer focus:** Confirm that the private connectivity architecture satisfies the referenced ISO 27001 and CIS controls.
 

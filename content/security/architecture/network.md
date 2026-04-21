@@ -70,7 +70,7 @@ For details on the BYOC private management connection, see [Private connectivity
 
 ## Verification
 
-### Outbound-only model (Critical)
+### Outbound-only model
 
 **Reviewer focus:** Confirm that no inbound firewall rules or listening services exist on the customer's network for Union.ai traffic, and that all connections are outbound-initiated.
 
@@ -96,7 +96,7 @@ For details on the BYOC private management connection, see [Private connectivity
 
 4. (Optional) Run a port scan from an external host against the data plane nodes to confirm no Union.ai-related services are reachable.
 
-### Cloudflare Tunnel (Critical)
+### Cloudflare Tunnel
 
 **Reviewer focus:** Confirm that bulk data (files, DataFrames, code bundles) bypasses the tunnel via presigned URLs, and that structured task I/O and log streams transit the tunnel as documented above (encrypted in transit, not persisted).
 
@@ -108,15 +108,15 @@ For details on the BYOC private management connection, see [Private connectivity
    kubectl logs <tunnel-pod> -n union
    ```
 
-   Logs should show health checks, connection establishment, and small message exchanges -- not large data transfers.
+   Logs should show health checks, connection establishment, and message exchanges.
 
-2. Analyze VPC Flow Logs for traffic volume through the tunnel. Compare the volume of tunnel traffic (to Cloudflare IPs) against the volume of object store traffic (to S3/GCS/Azure Blob endpoints). Tunnel traffic should be orders of magnitude smaller.
+2. Analyze VPC Flow Logs for traffic patterns. Bulk data transfers (files, DataFrames, code bundles) should flow directly between task pods and the customer's object store endpoints (S3/GCS/Azure Blob), not through Cloudflare IPs. Structured task I/O (up to 10-20 MiB per request) and log streams will flow through the tunnel as documented.
 
-3. Trace the open-source Executor code to confirm that data operations use presigned URLs (direct to object store) rather than the tunnel connection.
+3. Use browser developer tools (Network tab) in the Union.ai UI to confirm that binary output artifacts are fetched via presigned URLs (resolving to the customer's storage domain), while structured outputs are fetched via the control plane API.
 
-4. (Highest-value demo) Request or build a tunnel audit mode that logs all messages crossing the tunnel with their sizes and types. This would provide definitive evidence that only metadata-sized orchestration messages traverse the tunnel.
+4. (Advanced) Request or build a tunnel audit mode that logs all messages crossing the tunnel with their sizes and types. This would provide definitive evidence of the traffic composition documented above.
 
-### Egress configuration (High)
+### Egress configuration
 
 **Reviewer focus:** Confirm that egress can be restricted to Cloudflare CIDR blocks without breaking functionality.
 

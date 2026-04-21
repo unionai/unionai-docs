@@ -20,7 +20,7 @@ For details on what each plane contains and how they communicate, see [Control p
 
 ## Verification
 
-### Data residency (Critical)
+### Data residency
 
 **Reviewer focus:** Confirm that bulk customer data resides in the customer's cloud account, that inline data transiting the control plane is not persisted, and that task definitions stored in the control plane databases do not contain unintended sensitive content.
 
@@ -36,14 +36,14 @@ For details on what each plane contains and how they communicate, see [Control p
 
    The output artifacts should appear here, in the customer's own object store.
 
-3. Query the control plane API and confirm it returns only metadata:
+3. Query the control plane API and confirm that execution responses contain metadata and URI references, not inline data payloads:
 
    ```bash
    uctl get execution <execution-id> -o json
    ```
 
-   The response should contain URIs, phase information, timestamps, and error messages -- but no data content. Look for `s3://` or `gs://` references rather than inline data.
+   The response should contain URIs (`s3://` or `gs://` references), phase information, timestamps, and error messages. Task definition fields (env vars, default values, resource specs) will be present -- these are stored in the control plane as documented in [Control plane](./control-plane).
 
-4. Open the Union.ai UI, navigate to the execution, and use browser developer tools (Network tab) to inspect requests when viewing outputs. Presigned URL requests should resolve to the customer's S3/GCS/Azure Blob endpoint, not to a Union.ai domain.
+4. Open the Union.ai UI, navigate to the execution, and use browser developer tools (Network tab) to inspect requests when viewing outputs. Binary output artifacts (files, DataFrames) should be fetched via presigned URLs resolving to the customer's S3/GCS/Azure Blob endpoint. Structured outputs (protobuf literals) are fetched via the inline proxy pattern through the control plane.
 
-5. (Advanced) Enable VPC Flow Logs in the customer's cloud account and analyze traffic during workflow execution. Data-sized transfers should flow between task pods and the customer's object store. There should be no data-sized transfers to Union.ai IP ranges -- only small metadata-sized traffic over the Cloudflare Tunnel.
+5. (Advanced) Enable VPC Flow Logs in the customer's cloud account and analyze traffic during workflow execution. Bulk data transfers (files, DataFrames, code bundles) should flow directly between task pods and the customer's object store via presigned URLs. Structured task I/O (up to 10-20 MiB per request) and log streams will transit the Cloudflare Tunnel to the control plane.
