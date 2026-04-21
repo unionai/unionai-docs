@@ -18,7 +18,7 @@ The following table summarizes how Union.ai's architectural decisions translate 
 | Control plane stores no bulk customer data payloads | Minimizes blast radius of control plane compromise |
 
 > [!NOTE]
-> **Audit finding (ref #3, #7):** "Stores no customer data" needs qualification. The control plane does not store bulk data payloads, but TaskSpec and RunSpec blobs in its databases contain environment variables, default values, SQL statements, K8s pod specs, and plugin configuration. In v2, these are stored on every run submission. Structured task I/O and log streams also transit control plane memory transiently. See the architecture section annotations for details.
+> **Audit finding (ref #3, #7):** "Stores no customer data" needs qualification. The control plane does not store bulk data payloads, but TaskSpec and RunSpec blobs in its databases contain environment variables, default values, SQL statements, K8s pod specs, and plugin configuration. These are stored on every run submission. Structured task I/O and log streams also transit control plane memory transiently. See the architecture section annotations for details.
 | Outbound-only tunnel | No inbound attack surface on customer network |
 | Presigned URLs for data access | No persistent data access credentials |
 | Write-only secrets API | Cannot exfiltrate secrets via API |
