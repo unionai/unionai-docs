@@ -55,7 +55,7 @@ The Union.ai web console displays information from multiple sources. The followi
 Fields sourced from the control plane contain only orchestration metadata. Fields sourced from the data plane contain customer data and are accessed either through presigned URLs or the streaming relay -- in both cases, the data flows directly between the client and the customer's infrastructure.
 
 > [!NOTE]
-> **Audit finding (ref #3, #7):** "Fields sourced from the control plane contain only orchestration metadata" -- task definition closures stored in the control plane contain potentially sensitive fields (env vars, default values, SQL statements). Also, "Inputs/outputs" in the table above are proxied through control plane memory via `GetActionData`, not fetched directly by the client. The "Errors" row correctly shows these come from the control plane, but error messages can contain customer data from Python tracebacks.
+> **Audit finding (ref #3, #7):** "Fields sourced from the control plane contain only orchestration metadata" -- TaskSpec blobs stored in the control plane databases contain potentially sensitive fields (env vars, default values, SQL statements, K8s pod specs, plugin configuration). Also, "Inputs/outputs" in the table above are proxied through control plane memory via `GetActionData`, not fetched directly by the client. The "Errors" row correctly shows these come from the control plane, but error messages can contain customer data from Python tracebacks.
 
 For details on the underlying network architecture, see [Two-plane separation](../architecture/two-plane-separation).
 

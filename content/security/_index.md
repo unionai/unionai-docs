@@ -18,7 +18,7 @@ This section provides a comprehensive overview of Union.ai's security architectu
 **[Data](./data/_index)**
 * Bulk customer data objects like files, directories, DataFrames, code bundles, container images, and inter-task artifacts are stored in the customer's data plane and never enter the control plane. These objects are uploaded and downloaded directly via presigned URLs.
 * Smaller inline data objects like structured task inputs and outputs, secret values during creation, and execution log streams transit control plane memory transiently during request processing but are not persisted, cached, or logged there.
-* The control plane database stores metadata required for orchestration, including task function names and fields such as environment variables and default input values.
+* The control plane database stores metadata required for orchestration, including task function names and fields such as environment variables and default input values. This data is always encrypted at rest.
 
 **[Access](./access/_index)**
 * Authentication via OIDC/SSO, API keys, and service accounts. Role-based access control enforces least privilege. Tenants are isolated at the database layer. Union.ai personnel cannot access customer data or secrets.
