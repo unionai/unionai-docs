@@ -10,11 +10,23 @@ Union.ai's architecture is divided into two distinct planes: a **control plane**
 
 The control plane handles workflow orchestration, user management, and the web interface. It stores only the metadata required for these functions -- task definitions, execution state, scheduling information, and user records. The control plane never stores customer data payloads. When it references data, it stores only URIs pointing to objects in the customer's object store, never the data itself.
 
+> [!WARNING]
+> **Audit finding (ref #7, #11):** "The control plane never stores customer data payloads" needs qualification. While execution inputs/outputs are stored as URI references, task definition closures stored in the control plane database contain environment variables, default input literal values, SQL query statements, K8s pod specs, and arbitrary plugin configuration -- fields that can contain sensitive customer data. Launch plan specs also contain default literal values. Error messages from task executions (up to 4KB) are persisted in the control plane via the events system.
+
 The data plane is where all computation and data handling occurs. It runs entirely within the customer's cloud account on infrastructure the customer controls (or, in the BYOC model, infrastructure that Union.ai manages on the customer's behalf within the customer's account). All customer data -- inputs, outputs, intermediate artifacts, logs, and model weights -- resides in the data plane.
+
+> [!WARNING]
+> **Audit finding (ref #3, #4, #5):** "All customer data resides in the data plane" is true for data at rest but incomplete. Structured task inputs transit control plane memory on every run submission via `UploadInputs` (up to 10 MB). Structured task inputs AND outputs transit control plane memory on every retrieval via `GetActionData` (up to 20 MiB). Secret values transit control plane memory during Create/Update operations. Execution log streams pass through control plane memory unredacted. In all these cases the data is transient (not persisted, not logged, not cached) and encrypted in transit, but it does exist in Union.ai process memory during request processing.
 
 When data must be surfaced to a client (for example, when a user views task outputs in the UI), the control plane either proxies a signing request to generate a presigned URL or relays a data stream without persisting it. In both cases, the actual data travels directly between the client and the customer's object store. The control plane acts as a broker, not a data store.
 
+> [!NOTE]
+> **Audit finding (ref #3):** "The actual data travels directly between the client and the customer's object store" is true for binary artifacts (files, directories, DataFrames, code bundles) which use the signed URL path. However, structured task I/O (protobuf literals) is proxied through control plane memory via `UploadInputs` and `GetActionData` -- the data does not travel directly in those cases. The distinction is by data type, not by size.
+
 This separation means that even in the event of a full control plane compromise, customer data payloads remain in the customer's cloud account, protected by the customer's own IAM policies and network controls. The control plane simply does not have the data to leak.
+
+> [!WARNING]
+> **Audit finding (ref #3, #7):** "The control plane simply does not have the data to leak" overstates the separation. A compromised control plane could intercept structured task I/O during `UploadInputs`/`GetActionData` processing, secret values during Create/Update relay, and log streams during streaming. Additionally, the control plane database contains task definition closures with potentially sensitive fields (env vars, default values, SQL statements). A full CP compromise would expose this data. The blast radius is limited by: transient residence (no persistence of I/O data), size caps (10-20 MiB), and the fact that binary artifacts (files, DataFrames, code bundles) genuinely bypass the CP via signed URLs.
 
 For details on what each plane contains and how they communicate, see [Control plane](./control-plane), [Data plane](./data-plane), and [Network architecture](./network).
 
@@ -23,6 +35,9 @@ For details on what each plane contains and how they communicate, see [Control p
 ### Data residency (Critical)
 
 **Reviewer focus:** Confirm that customer data resides exclusively in the customer's cloud account and that the control plane holds only metadata references.
+
+> [!NOTE]
+> **Audit finding (ref #3, #7):** This verification step should also check for data that transits the control plane transiently (structured I/O via `UploadInputs`/`GetActionData`) and for potentially sensitive content in task definition closures stored in the control plane database (environment variables, default values, SQL statements).
 
 **How to verify:**
 

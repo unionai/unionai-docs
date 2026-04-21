@@ -22,6 +22,9 @@ Union Implementation Services supports additional cloud providers and on-premise
 
 Regardless of cloud provider, Union.ai enforces the same security model: control plane / data plane separation, the presigned URL pattern for data access, Cloudflare Tunnel-based connectivity between planes, RBAC-based access control, and encryption at rest and in transit. Cloud-specific implementations -- IAM roles, encryption services, log aggregators, and secrets managers -- are abstracted by the platform while maintaining native integration with each provider's security services. A workflow running on AWS receives the same separation guarantees as one running on GCP or Azure; only the underlying cloud primitives differ.
 
+> [!NOTE]
+> **Audit finding (ref #3, #4, #5):** "The presigned URL pattern for data access" applies to binary artifacts (files, directories, DataFrames, code bundles). Structured task I/O, secret values (on create/update), and log streams transit control plane memory regardless of cloud provider. These transit behaviors are consistent across all clouds. Data residency at rest is maintained within the customer's chosen cloud and region.
+
 For details on the data flow patterns that apply across all clouds, see [Data flow](./data-flow). For encryption specifics by storage type, see [Encryption](./encryption). For secrets backend options, see [Secrets management](./secrets).
 
 ## Verification

@@ -10,6 +10,9 @@ variants: -flyte +union
 
 Every record in the control plane PostgreSQL database is scoped by organization. The org identifier is part of the primary key or unique index on all tenant-scoped tables. All database queries are gated by the org context extracted from the caller's authenticated token at the service layer, before any SQL is executed. Cross-org access is explicitly denied -- there is no API or internal path that permits querying across org boundaries.
 
+> [!WARNING]
+> **Audit finding (ref #1, #2):** "There is no API or internal path that permits querying across org boundaries" has identified exceptions. The audit found: (1) A CRITICAL vulnerability where the `HttpReverseProxyWrapper` (`http_proxy.go:79`) allows an org name from a request to override the authenticated identity's organization without authorization validation (acknowledged TODO in the codebase). This affects Prometheus/ClickHouse proxy routes. (2) The `IntraServiceProxyRequestAuthorizer` for these routes is a no-op that unconditionally returns success. (3) Several services (secret service, image service) allow org override from the request body, relying on the AuthZClient to deny cross-org access rather than using the standard `ResolveAuthorizationOrg` check. Positive findings: the primary org identity is derived from the request hostname subdomain (not user-supplied), `ResolveAuthorizationOrg` blocks cross-org calls by default, and unknown services get default-deny.
+
 Union.ai does not currently use PostgreSQL row-level security (RLS) policies, but the application-layer enforcement is uniform and independently verifiable through the SOC 2 Type II audit.
 
 ## Data plane isolation

@@ -17,7 +17,13 @@ The data plane consists of several components, each handling a specific aspect o
 
 **Object Store Service** handles presigned URL signing for secure data access. It supports several operations: `CreateSignedURL` for generating time-limited download URLs, `CreateUploadLocation` for generating upload URLs with Content-MD5 integrity verification, `Presign` for general-purpose URL signing, and `Get`/`Put` for direct object operations. All data access from clients goes through presigned URLs, ensuring the control plane never handles data payloads directly.
 
+> [!WARNING]
+> **Audit finding (ref #3):** "All data access from clients goes through presigned URLs" is not accurate. The `Get`/`Put` operations listed above are used internally by `UploadInputs` and `GetActionData`, where the full data payload is proxied through the control plane's DataProxy. Only binary artifacts (files, directories, DataFrames, code bundles) use the presigned URL path. Structured task I/O (protobuf literals) is always proxied through control plane memory.
+
 **Log Provider** serves task logs through two channels. For running tasks, it streams live logs from the Kubernetes API. For completed tasks, it retrieves logs from the cloud provider's log aggregator (CloudWatch, Cloud Logging, or Azure Monitor). Logs include structured metadata (task identifiers, timestamps, log levels) and are streamed through the DataProxy relay without being persisted in the control plane.
+
+> [!NOTE]
+> **Audit finding (ref #5, #6):** While logs are not persisted in the control plane, they do transit control plane memory as a streaming proxy. There is no content filtering or redaction at any layer -- secrets, PII, stack traces, or any sensitive data that applications write to stdout/stderr flows through control plane memory unmodified.
 
 **Image Builder** uses Buildkit running on the customer's Kubernetes cluster to build container images from user-submitted `Image` specifications. Source code and built images never leave the customer's infrastructure. Base images are pulled from customer-configured registries, and built images are pushed to the customer's container registry (ECR, GCR, or ACR).
 

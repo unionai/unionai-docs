@@ -8,6 +8,9 @@ variants: -flyte +union
 
 Union.ai's secrets management system stores secret values exclusively within the customer's infrastructure, with a write-only API design that eliminates an entire class of exfiltration attacks.
 
+> [!NOTE]
+> **Audit finding (ref #4):** "Stores secret values exclusively within the customer's infrastructure" is correct for data at rest. However, secret values transit control plane memory during Create and Update operations, when the value is relayed through DataProxy to the data plane's secrets backend. The value is not persisted, logged, or cached in the control plane, but it does exist transiently in Union.ai process memory. Get/List/Delete operations never expose secret values (validated).
+
 ## Core design
 
 Secret values are stored exclusively within the customer's infrastructure. The secrets API is write-only by design -- there is no API to read back secret values. The `GetSecret` RPC returns only the secret's metadata (name, scope, creation time, cluster presence status) -- never the value itself. This means that even if an attacker compromises a user account or the control plane API, they cannot retrieve secret values through the API. The value simply is not available through any API endpoint.
@@ -26,6 +29,9 @@ All four backends are available regardless of deployment model. The choice of ba
 ## Secret lifecycle
 
 **Creation:** When a user creates a secret via the UI or CLI, the request is relayed through the Cloudflare Tunnel to the data plane's secrets backend. The secret value transits the control plane in-memory during this relay but is never written to disk or database on the control plane. Once the relay completes, no trace of the value remains in the control plane.
+
+> [!NOTE]
+> **Audit finding (ref #4, #12):** This description is accurate. The audit confirmed: secret values are not logged (only identifiers are logged), not persisted, and encrypted in transit (TLS + mTLS + Cloudflare tunnel). Residual risks: (1) Go's garbage collector does not zero memory after deallocation -- plaintext persists in heap until GC. (2) One error path in `http_request.go:24` could leak the value if protobuf marshaling fails (extremely unlikely). (3) For multi-cluster orgs, the value remains in memory throughout sequential iteration over all clusters.
 
 **Consumption:** When a task pod is created, the Executor configures it to mount the requested secrets from the backend as environment variables or files. The value is read by the data plane's secrets backend and injected into the pod -- it never leaves the customer's infrastructure during this process. The control plane is not involved in secret consumption at runtime.
 

@@ -10,6 +10,9 @@ Union.ai's architecture inherently supports GDPR through its data residency mode
 
 The control plane stores only orchestration metadata -- no customer data payloads. Customer data resides exclusively in the customer's own cloud account and region. Where error messages may contain user-generated content, this is documented and scoped.
 
+> [!WARNING]
+> **Audit finding (ref #3, #4, #5):** For GDPR data residency analysis, note that structured task I/O, secret values (on create/update), and log streams transit control plane memory. If the control plane region differs from the data plane region, this data transiently crosses region boundaries during request processing. When both planes are in EU regions (EU West-1, EU West-2, or EU Central), transit stays within the EU. Task definition closures in the CP database also contain potentially sensitive fields (env vars, default values, SQL statements) -- these reside in the control plane's region.
+
 For details on how data residency is enforced architecturally, see [Two-plane separation](../architecture/two-plane-separation) and [Data plane](../architecture/data-plane).
 
 ## Verification

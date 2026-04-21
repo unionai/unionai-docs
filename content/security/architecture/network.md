@@ -22,6 +22,9 @@ The connection between the data plane and the control plane uses a Cloudflare Tu
 
 All traffic through the tunnel is encrypted. The connection is documented as using mTLS, though the accuracy report notes it may use TLS with token-based authentication rather than mutual certificate authentication. In either case, the connection is encrypted end-to-end and authenticated.
 
+> [!NOTE]
+> **Audit finding:** The audit confirmed the transport is well-layered: TLS with mutual authentication (X.509 client certificates) + Cloudflare Access service tokens + Cloudflare Tunnel encryption. Tunnel token rotation is implicit (on operator polling), with no explicit rotation schedule (ref #13).
+
 The Tunnel Service in the data plane maintains this connection with health checks and heartbeats, and automatically reconnects if the connection drops. State reconciliation occurs upon reconnection, so no data is lost during brief connectivity interruptions.
 
 The tunnel carries only orchestration traffic:
@@ -34,6 +37,9 @@ The tunnel carries only orchestration traffic:
 - **Secret creation requests** -- forwarded in memory, not persisted in the control plane
 
 The tunnel does **not** carry customer data payloads. Data transfers between clients and the object store occur directly via presigned URLs, bypassing the tunnel entirely.
+
+> [!WARNING]
+> **Audit finding (ref #3, #4, #5):** "The tunnel does not carry customer data payloads" is incorrect. The tunnel carries: structured task inputs on every run submission (`UploadInputs`, up to 10 MB), structured task inputs and outputs on every retrieval (`GetActionData`, up to 20 MiB), secret values during create/update operations, and execution log streams. Only binary artifacts (files, directories, DataFrames, code bundles) use presigned URLs and bypass the tunnel. The tunnel traffic list above should add "Structured task I/O" and clarify that log streams and secret creation requests carry customer data content, not just metadata.
 
 ## Regional endpoints
 
@@ -97,6 +103,9 @@ For details on the BYOC private management connection, see [Private connectivity
 ### Cloudflare Tunnel (Critical)
 
 **Reviewer focus:** Confirm that the tunnel carries only metadata-sized orchestration traffic and not customer data payloads. This is the highest-value verification to perform.
+
+> [!NOTE]
+> **Audit finding (ref #3):** This verification guidance should be revised. The tunnel does carry structured task I/O (up to 10-20 MiB per request), so tunnel traffic will not be exclusively "metadata-sized." The verification should instead confirm that bulk data (files, DataFrames, code bundles) bypasses the tunnel via presigned URLs, while acknowledging that structured I/O and log streams transit through it.
 
 **How to verify:**
 

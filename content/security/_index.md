@@ -16,6 +16,9 @@ This section provides a comprehensive overview of Union.ai's security architectu
 
 **[Data](./data/_index).** All customer data, including task inputs, task outputs, code, logs, secrets, and container images, reside only on the customer's data plane. The control plane stores only the metadata required for orchestration.
 
+> [!WARNING]
+> **Audit finding (ref #3, #4, #5, #7):** Both claims need qualification. Structured task I/O, secret values (on create/update), and log streams transit control plane memory transiently. Task definition closures in the CP database contain potentially sensitive fields (env vars, default values, SQL statements). See the Data and Architecture sections for detailed annotations.
+
 **[Access](./access/_index).** Authentication via OIDC/SSO, API keys, and service accounts. Role-based access control enforces least privilege. Tenants are isolated at the database layer. Union.ai personnel cannot access customer data or secrets.
 
 **[Compliance](./compliance/_index).** SOC 2 Type II certified for Security, Availability, and Processing Integrity. Practices aligned to ISO 27001 and CIS benchmarks. Designed to meet HIPAA requirements. Public Trust Center at [trust.union.ai](https://trust.union.ai).

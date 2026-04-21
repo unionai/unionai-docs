@@ -12,6 +12,9 @@ Logs are collected by Fluent Bit (deployed as a DaemonSet on the data plane) and
 
 Log data is never stored in the control plane -- it is streamed as a stateless pass-through relay. Log lines include structured metadata: timestamp, message content, and originator classification. For details on how log data flows through the system, see [Two-plane separation](../architecture/two-plane-separation).
 
+> [!WARNING]
+> **Audit finding (ref #5, #6):** While log data is not persisted in the control plane, it does transit control plane process memory during streaming. There is no content filtering or redaction at any layer of the log pipeline -- secrets, PII, stack traces, or any sensitive data that user code writes to stdout/stderr flows through control plane memory unmodified. Persisted logs (fetched from CloudWatch/Stackdriver/Azure Monitor for completed executions) also transit the control plane via the same streaming proxy path.
+
 ## Observability metrics
 
 A per-cluster instance (Prometheus and/or ClickHouse) stores time-series observability metrics including resource utilization and cost data. Queries are proxied through the DataProxy service to the customer's instance. Metrics data never leaves the customer's infrastructure. In BYOC deployments, Union.ai deploys and manages the monitoring stack.

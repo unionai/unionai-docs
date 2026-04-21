@@ -22,6 +22,9 @@ When accessing a customer's tenant, Union.ai personnel CAN: view orchestration m
 
 Personnel CANNOT: read secret values (the API is write-only), access raw data in customer object stores (presigned URLs are per-request and not retained), access the customer's cloud account or IAM roles, or access customer object stores, secrets backends, container registries, or log aggregators.
 
+> [!NOTE]
+> **Audit finding (ref #3, #5):** These access restrictions are validated for data at rest. However, Union.ai personnel with control plane infrastructure access could potentially observe data that transits control plane memory during request processing (structured task I/O, log streams, secret values during create/update). This is inherent to any pass-through proxy architecture and is mitigated by the transient nature of the data (not persisted, not logged, not cached).
+
 All access by Union.ai personnel is authenticated and logged with caller identity, operation performed, and timestamp.
 
 ## Verification

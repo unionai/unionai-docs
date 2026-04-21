@@ -9,6 +9,9 @@ sidebar_expanded: true
 
 Union.ai protects customer data through a strict classification framework, strong residency guarantees, and cloud-native encryption. All customer data is encrypted both at rest and in transit. The platform uses two distinct data access patterns -- presigned URLs and streaming relays -- both designed to keep customer data out of the control plane.
 
+> [!WARNING]
+> **Audit finding (ref #3, #4, #5):** "Both designed to keep customer data out of the control plane" is incomplete. A third data access pattern exists: structured task I/O (protobuf literals) is proxied through control plane memory via `UploadInputs` and `GetActionData`. Secret values also transit control plane memory during Create/Update. This data is transient (not persisted), but it does enter the control plane.
+
 This section covers:
 
 * [Classification and residency](./classification-and-residency): How data is classified, where it resides, and multi-cloud region support.
