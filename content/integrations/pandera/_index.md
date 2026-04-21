@@ -33,23 +33,35 @@ Install the plugin with the pandera extras for your dataframe backend:
 {{< tabs >}}
 {{< tab "pandas" >}}
 
+{{< markdown >}}
+
 ```bash
 pip install flyteplugins-pandera 'pandera[pandas]'
 ```
 
+{{< /markdown >}}
+
 {{< /tab >}}
 {{< tab "Polars" >}}
+
+{{< markdown >}}
 
 ```bash
 pip install flyteplugins-pandera flyteplugins-polars 'pandera[polars]'
 ```
 
+{{< /markdown >}}
+
 {{< /tab >}}
 {{< tab "PySpark SQL" >}}
+
+{{< markdown >}}
 
 ```bash
 pip install flyteplugins-pandera flyteplugins-spark 'pandera[pyspark]'
 ```
+
+{{< /markdown >}}
 
 {{< /tab >}}
 {{< /tabs >}}
