@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.1.5
+version: 2.1.7
 variants: +flyte +union
 layout: py_api
 sidebar_expanded: true
@@ -15,7 +15,7 @@ sidebar_expanded: true
 | [`flyte.Checkpoint`](../packages/flyte/checkpoint) |Checkpoint helper using `flyte. |
 | [`flyte.Cron`](../packages/flyte/cron) |Cron-based automation schedule for use with `Trigger`. |
 | [`flyte.Device`](../packages/flyte/device) |Represents a device type, its quantity and partition if applicable. |
-| [`flyte.Environment`](../packages/flyte/environment) | |
+| [`flyte.Environment`](../packages/flyte/environment) |Base class for execution environments, shared by `TaskEnvironment` and. |
 | [`flyte.FixedRate`](../packages/flyte/fixedrate) |Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
 | [`flyte.Image`](../packages/flyte/image) |Container image specification built using a fluent, two-step pattern:. |
 | [`flyte.ImageBuild`](../packages/flyte/imagebuild) |Result of an image build operation. |
