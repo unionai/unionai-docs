@@ -1,15 +1,13 @@
 ---
-title: Compliance
+title: Compliance and governance
 weight: 5
 variants: -flyte +union
 sidebar_expanded: true
 ---
 
-# Compliance
+# Compliance and governance
 
-Union.ai maintains industry-recognized certifications and aligns its security practices with established frameworks. The platform's architecture (with strict data residency, tenant isolation, and control plane / data plane separation) inherently supports compliance requirements across regulated industries.
-
-This section is primarily a reference that links to authoritative documentation (the Trust Center, SOC 2 reports, and customer contracts) rather than a place where detailed compliance claims are made. The facts about certifications and compliance status are stated here; the supporting evidence is available through the referenced sources.
+Union.ai maintains industry-recognized certifications and aligns its security practices with established frameworks. The platform's architecture (with strict data residency, tenant isolation, and control plane / data plane separation) inherently supports compliance requirements across regulated industries. This section covers certifications, regulatory alignment, organizational security practices, and vulnerability management.
 
 This section covers:
 
@@ -18,3 +16,5 @@ This section covers:
 * [GDPR alignment](./gdpr): Data residency and the EU-region deployment model.
 * [Standards compliance](./standards): ISO 27001 and CIS benchmark control mappings.
 * [Shared responsibility model](./shared-responsibility): Responsibility allocation for self-managed and BYOC deployments.
+* [Organizational security](./organizational-security): Employee security lifecycle, governance controls, and the security development lifecycle.
+* [Vulnerability management](./vulnerability-management): Vulnerability assessment, patch management, incident response, and third-party dependency risk.

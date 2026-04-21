@@ -11,6 +11,19 @@ Union.ai's security is built on a foundational architectural principle: separati
 
 The network architecture reinforces this separation with an outbound-only connectivity model that eliminates the need for inbound firewall rules on the customer's network.
 
+The following table summarizes how these architectural decisions translate into concrete security benefits:
+
+| Decision | Benefit |
+| --- | --- |
+| Bulk customer data never enters control plane | Minimizes blast radius of control plane compromise |
+| Inline data transits CP memory only transiently | Not persisted, cached, or logged |
+| Outbound-only tunnel | No inbound attack surface on customer network |
+| Presigned URLs for data access | No persistent data access credentials |
+| Write-only secrets API | Cannot exfiltrate secrets via API |
+| Workload identity federation | No static credentials on data plane |
+| Per-org database scoping | Enforces tenant isolation at data layer |
+| Cloud-native encryption | Leverages provider-managed encryption |
+
 This section covers:
 
 * [Two-plane separation](./two-plane-separation): The foundational security architecture.

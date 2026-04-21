@@ -1,11 +1,11 @@
 ---
-title: Data
+title: Data protection
 weight: 2
 variants: -flyte +union
 sidebar_expanded: true
 ---
 
-# Data
+# Data protection
 
 Union.ai protects customer data through a classification framework, residency guarantees, and cloud-native encryption. All customer data is encrypted both at rest and in transit. The platform uses three data access patterns: presigned URLs for bulk data (files, DataFrames, code bundles) that bypass the control plane entirely, an inline proxy for structured task I/O and secret values (transits control plane memory encrypted in transit, plaintext in memory, not persisted), and streaming relays for logs and metrics (transits control plane memory, not persisted).
 
@@ -17,3 +17,4 @@ This section covers:
 * [Secrets management](./secrets): Write-only API design, backends, and secret lifecycle.
 * [Workflow data flow](./workflow-data-flow): Security controls at each stage of the workflow lifecycle.
 * [Multi-cloud support](./multi-cloud): Supported cloud providers and consistent security guarantees.
+* [Logging and audit](./logging-and-audit): Task logging, observability metrics, and audit trails.
