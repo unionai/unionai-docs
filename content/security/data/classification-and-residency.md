@@ -10,12 +10,12 @@ variants: -flyte +union
 
 Every data type in the Union.ai platform is classified by its residency and access pattern. This classification determines where data is stored and how it is accessed.
 
-| Classification | Data types | Where it is stored | How it is accessed |
-|---|---|---|---|
-| Bulk Customer Data | Files, directories, DataFrames, code bundles, container images, reports | Customer infrastructure (encrypted at rest) | Presigned URLs (never enters control plane) |
-| Inline Customer Data | Structured task inputs/outputs (protobuf literals), secret values (during creation), execution log streams | Customer infrastructure (at rest); transits control plane memory (not persisted) | Inline proxy or streaming relay (encrypted in transit, plaintext in CP memory) |
-| Orchestration Metadata | Task definitions (including env vars, default values, SQL, pod specs), run/action metadata (phase, timestamps, errors), trigger specs | Control plane databases (encrypted at rest) | Control plane API (encrypted in transit) |
-| Platform Metadata | User identity/RBAC records, cluster records | Control plane databases (encrypted at rest) | Control plane API (encrypted in transit) |
+| Classification | Data types | At rest | In transit | Enters CP memory? |
+|---|---|---|---|---|
+| Bulk Customer Data | Files, directories, DataFrames, code bundles, container images, reports | Customer infrastructure (S3 SSE / GCS / Azure SSE) | HTTPS via presigned URL | **No** -- never enters control plane |
+| Inline Customer Data | Structured task inputs/outputs, secret values (during creation), execution log streams | Customer infrastructure (S3 SSE / GCS / Azure SSE; cloud secret managers) | TLS (client→CP) + TLS+mTLS+tunnel (CP→DP) | **Yes** -- plaintext in memory, not persisted/cached/logged |
+| Orchestration Metadata | Task definitions (including env vars, default values, SQL, pod specs), run/action state, error messages, trigger specs | Control plane databases (PostgreSQL AES-256/KMS; Cassandra) | TLS (API) + TLS+mTLS+tunnel (events) | **Yes** -- read from DB into memory for API responses |
+| Platform Metadata | User identity/RBAC records, cluster records | Control plane databases (PostgreSQL AES-256/KMS) | TLS (API) | **Yes** -- read from DB into memory for API responses |
 
 **Bulk customer data** -- files, directories, DataFrames, code bundles, container images, and reports -- is stored exclusively in the customer's infrastructure and never enters the control plane. These objects are accessed via presigned URLs.
 

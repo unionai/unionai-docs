@@ -34,6 +34,29 @@ No unencrypted communication paths exist in the platform. The combination of TLS
 
 For details on the tunnel architecture, see [Two-plane separation](../architecture/two-plane-separation).
 
+## Data protection summary
+
+The following table summarizes the encryption state for each data category across all phases:
+
+| Data category | In transit | At rest | Enters CP memory? | Persisted in CP? |
+|---|---|---|---|---|
+| **Files, directories, DataFrames** | HTTPS (presigned URL) | S3 SSE / GCS / Azure SSE | No | No |
+| **Code bundles** | HTTPS (presigned URL) | S3 SSE / GCS / Azure SSE | No | No |
+| **Container images** | HTTPS (registry pull) | ECR/GCR/ACR encryption | No | No |
+| **Inter-task I/O** (in-cluster) | Cloud SDK TLS | S3 SSE / GCS / Azure SSE | No | No |
+| **Structured task inputs** (run submission) | TLS + TLS/mTLS/tunnel | S3 SSE / GCS / Azure SSE | Yes (plaintext, transient) | No |
+| **Structured task I/O** (retrieval) | TLS + TLS/mTLS/tunnel | S3 SSE / GCS / Azure SSE | Yes (plaintext, transient) | No |
+| **Secret values** (create/update) | TLS + TLS/mTLS/tunnel | ASM/GCP SM/AKV/etcd encryption | Yes (plaintext, transient) | No |
+| **Secret values** (get/list/delete) | TLS | ASM/GCP SM/AKV/etcd encryption | No (metadata only) | No |
+| **Secret values** (runtime injection) | Linkerd mTLS / K8s API | Secret backend encryption | No (data plane only) | No |
+| **Execution logs** (streaming) | TLS + TLS/mTLS/tunnel | CloudWatch/Stackdriver/Azure Monitor | Yes (plaintext, transient) | No |
+| **Task definitions** (TaskSpec) | TLS | PostgreSQL AES-256/KMS | Yes (read from DB) | **Yes** (encrypted at rest) |
+| **Run/trigger specs** | TLS | PostgreSQL AES-256/KMS | Yes (read from DB) | **Yes** (encrypted at rest) |
+| **Error messages** | TLS/mTLS/tunnel | Cassandra (storage-level) | Yes (read from DB) | **Yes** |
+| **Execution metadata** (phase, timestamps) | TLS/mTLS/tunnel | PostgreSQL AES-256/KMS + Cassandra | Yes (read from DB) | **Yes** (encrypted at rest) |
+
+"Transient" means the data exists in process memory only for the duration of a single request and is not written to disk, cache, or logs. For details on each data flow pattern, see [Data flow](./data-flow).
+
 ## Verification
 
 ### Encryption at rest (High)

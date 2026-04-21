@@ -6,17 +6,52 @@ variants: -flyte +union
 
 # Data flow
 
-Union.ai uses three distinct patterns to move data between the data plane and clients: presigned URLs for bulk data, an inline proxy for structured task I/O, and streaming relays for live data.
+Union.ai uses three distinct patterns to move data between the data plane and clients: presigned URLs for bulk data, an inline proxy for structured task I/O, and streaming relays for live data. All three patterns encrypt data in transit. The patterns differ in whether data enters control plane memory.
+
+```
+Presigned URL pattern (bulk data — never enters control plane):
+  SDK/UI ──HTTPS──→ Object Store (direct, encrypted at rest)
+
+Inline proxy pattern (structured I/O — transits control plane):
+  SDK/UI ──TLS──→ DataProxy ──(plaintext in memory)──→ ──TLS+mTLS+tunnel──→ Operator → Object Store (encrypted at rest)
+
+Streaming relay pattern (logs — transits control plane):
+  DP ──TLS+mTLS+tunnel──→ DataProxy ──(plaintext in memory)──→ ──TLS──→ Client
+```
 
 ## Presigned URL pattern
 
 For bulk data -- files (`flyte.io.File`), directories (`flyte.io.Dir`), DataFrames, code bundles, and reports -- the control plane proxies signing requests to the data plane, which generates time-limited presigned URLs using customer-managed IAM credentials. The client then uploads or downloads data directly to the customer's object store. The data content never enters the control plane; only the signing metadata passes through. This model eliminates the need for the control plane to hold persistent cloud IAM credentials.
+
+| Phase | Encrypted? | Details |
+|-------|------------|---------|
+| Client → Object Store | **Yes** | HTTPS via presigned URL, direct to customer storage |
+| At rest | **Yes** | S3 SSE / GCS encryption / Azure SSE |
+| Control plane involvement | **None** | CP generates/relays the signed URL only; data content never enters CP |
 
 ## Inline proxy pattern
 
 For structured task inputs and outputs (protobuf literals -- ints, strings, lists, dicts, and small serialized objects), the control plane acts as a proxy. On run submission, the SDK sends structured inputs to the control plane via `UploadInputs` (up to 10 MB), which proxies the full payload through its memory to the data plane object store via the Cloudflare Tunnel. On result retrieval, `GetActionData` fetches both inputs and outputs from the data plane object store through the control plane (up to 20 MiB). The data is encrypted in transit (TLS on both sides), exists as plaintext in control plane memory for the duration of each request, and is not persisted, cached, or logged. The same pattern applies to secret values during create/update operations, which are relayed through the control plane to the data plane's secrets backend.
 
 The distinction between presigned URLs and the inline proxy is by data type, not by size: binary artifacts always use presigned URLs; structured protobuf literals always use the inline proxy.
+
+**Encryption at each phase (run submission via `UploadInputs`):**
+
+| Phase | Encrypted? | Details |
+|-------|------------|---------|
+| Client → Control Plane | **Yes** | TLS 1.2+ (ConnectRPC). Wire format: protobuf binary |
+| In Control Plane (DataProxy) | **Plaintext in memory** | Deserialized protobuf, hashed for cache key, then re-serialized. Not persisted, cached, or logged |
+| Control Plane → Data Plane | **Yes** | TLS + mTLS + Cloudflare Tunnel. Wire format: protobuf JSON |
+| At rest (data plane object store) | **Yes** | S3 SSE / GCS encryption / Azure SSE |
+
+**Encryption at each phase (result retrieval via `GetActionData`):**
+
+| Phase | Encrypted? | Details |
+|-------|------------|---------|
+| At rest (data plane object store) | **Yes** | S3 SSE / GCS encryption / Azure SSE |
+| Data Plane → Control Plane | **Yes** | TLS + mTLS + Cloudflare Tunnel |
+| In Control Plane (DataProxy) | **Plaintext in memory** | Full inputs and outputs deserialized. Not persisted, cached, or logged |
+| Control Plane → Client | **Yes** | TLS 1.2+ (ConnectRPC) |
 
 The following controls are applied to every presigned URL:
 
@@ -31,6 +66,14 @@ Because presigned URLs are bearer tokens -- possession alone grants access -- Un
 ## Streaming relay pattern
 
 For logs and observability metrics, the control plane acts as a stateless relay. It streams data from the data plane through the Cloudflare Tunnel to the client in real time. The data passes through the control plane's memory as plaintext (encrypted in transit on both network hops) but is never written to disk, cached, or stored. Once the stream completes, no trace of the data remains in the control plane. There is no content filtering or redaction in the log streaming pipeline -- any sensitive data (secrets, PII, credentials) that user code writes to stdout/stderr will flow through control plane memory unmodified.
+
+| Phase | Encrypted? | Details |
+|-------|------------|---------|
+| Data plane log source → DP operator | **Yes** | Linkerd mTLS (pod-to-pod) or cloud SDK TLS (CloudWatch/Stackdriver/Azure Monitor) |
+| Data Plane → Control Plane | **Yes** | TLS + mTLS + Cloudflare Tunnel. Wire format: protobuf streaming |
+| In Control Plane (DataProxy) | **Plaintext in memory** | Each log message deserialized for byte counting. Not persisted, cached, or logged. No content filtering |
+| Control Plane → Client | **Yes** | TLS 1.2+ (ConnectRPC streaming) |
+| At rest (data plane log backend) | **Yes** | CloudWatch (AES-256/KMS), Cloud Logging (Google-managed), Azure Monitor (Microsoft-managed) |
 
 ## Data in the UI
 

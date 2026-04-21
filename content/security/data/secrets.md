@@ -27,6 +27,14 @@ All four backends are available regardless of deployment model. The choice of ba
 
 **Creation:** When a user creates a secret via the UI or CLI, the value is sent to the control plane over TLS, relayed through the Cloudflare Tunnel (encrypted) to the data plane's secrets backend, and stored encrypted at rest in the customer's secret manager (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or K8s Secrets). The value exists as plaintext in control plane memory only during this relay -- it is never written to disk, database, cache, or logs on the control plane. Only the secret identifier is logged. Once the relay completes, no trace of the value remains in the control plane (though Go's garbage collector does not zero deallocated memory, so the plaintext may persist in heap until reused).
 
+| Phase | Encrypted? | Details |
+|-------|------------|---------|
+| Client → Control Plane | **Yes** | TLS 1.2+ (ConnectRPC). Wire format: protobuf binary |
+| In Control Plane (DataProxy) | **Plaintext in memory** | Deserialized Go struct. Not persisted, cached, or logged |
+| Control Plane → Data Plane | **Yes** | TLS + mTLS + Cloudflare Tunnel. Wire format: protobuf JSON |
+| In Data Plane (operator) | **Plaintext in memory** | Briefly held before writing to secret backend |
+| At rest (secret backend) | **Yes** | AWS Secrets Manager (AES-256/KMS), GCP Secret Manager (Google-managed or CMEK), Azure Key Vault (HSM-backed), or K8s etcd encryption |
+
 **Consumption:** When a task pod is created, the Executor configures it to mount the requested secrets from the backend as environment variables or files. The value is read by the data plane's secrets backend and injected into the pod -- it never leaves the customer's infrastructure during this process. The control plane is not involved in secret consumption at runtime.
 
 **Scoping:** Secrets can be scoped at organization, project, or domain level. Only task pods running within the appropriate scope can access the corresponding secrets. This ensures that teams working in different projects cannot access each other's secrets, even within the same data plane cluster.

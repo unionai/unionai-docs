@@ -14,7 +14,23 @@ The control plane uses three databases (PostgreSQL + 2x Cassandra/Scylla) to sto
 
 **Orchestration metadata** (stored as database columns): task, run, action, and trigger identifiers (including task function names and run names), action state (phase, timestamps, cluster assignment), user identity (who created and deployed each run), and scheduling configuration. This is pure operational data.
 
-**Task and run definitions** (stored as serialized protobuf blobs): each run submission includes a full TaskSpec containing the task's container image, command, typed interface, resource requirements, and security context. These blobs also include fields that may contain customer-sensitive information: environment variables, default input literal values, SQL query statements, Kubernetes pod specs, arbitrary plugin configuration, config key-value pairs, and OAuth2 client IDs. RunSpec blobs carry additional environment variables, security context, labels, and annotations. Trigger specs carry default input values for scheduled runs. A full TaskSpec is stored on every run submission, content-addressed by digest. All data in PostgreSQL is encrypted at rest (AWS RDS AES-256/KMS).
+**Task and run definitions** (stored as serialized protobuf blobs): each run submission includes a full TaskSpec containing the task's container image, command, typed interface, resource requirements, and security context. A full TaskSpec is stored on every run submission, content-addressed by digest. RunSpec blobs carry environment variables, security context, labels, and annotations. Trigger specs carry default input values for scheduled runs. All data in PostgreSQL is encrypted at rest (AWS RDS AES-256/KMS).
+
+The following table enumerates the fields inside TaskSpec blobs. Reviewers can verify these against the open-source protobuf definitions in the [flyte-sdk repository](https://github.com/flyteorg/flyte-sdk).
+
+| Field | Classification |
+|-------|----------------|
+| Input/output parameter names and types | Structural metadata |
+| Container image URL, command, args | Structural metadata |
+| Secret group/key references (not values) | Structural metadata |
+| IAM role ARNs, K8s service account names | Structural metadata |
+| **Environment variables** | **Potentially sensitive** |
+| **Default input literal values** | **Potentially sensitive** |
+| **SQL query statements** | **Potentially sensitive** |
+| **Full Kubernetes pod spec** (arbitrary JSON) | **Potentially sensitive** |
+| **Plugin configuration** (arbitrary JSON) | **Potentially sensitive** |
+| **Config key-value pairs** | **Potentially sensitive** |
+| **OAuth2 client IDs and IDP endpoints** | **Potentially sensitive** |
 
 **Error and event information**: error messages from task executions (which may contain customer data from Python tracebacks) and Kubernetes event messages are persisted via the events system. Plugin state (opaque bytes specific to the executor plugin) is stored per action attempt.
 
