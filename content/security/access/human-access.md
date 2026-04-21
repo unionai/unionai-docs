@@ -14,7 +14,15 @@ In self-managed deployments, Union.ai personnel access only the control plane te
 
 In BYOC deployments, Union.ai personnel additionally have authenticated Kubernetes cluster access for operational purposes: upgrades, node pool provisioning, helm chart updates, health monitoring, and troubleshooting. This access uses cloud-native private connectivity (PrivateLink/PSC) and is scoped to Kubernetes cluster management. All cluster management actions are logged.
 
-Union.ai is implementing just-in-time (JIT) access controls to replace persistent support access with time-bound, customer-authorized grants.
+## Customer-side support access (optional)
+
+Separately from BYOC Kubernetes cluster management, Union.ai offers an optional support service where customers can grant Union.ai staff access to the customer's own view of the system. This is available for both self-managed and BYOC deployments.
+
+When requested, Union.ai support personnel are granted access through the same RBAC framework used by the customer's own users. The customer creates a role binding for Union.ai staff, scoped to the specific projects, domains, and permission level appropriate for the troubleshooting engagement. This access can be time-limited so that it expires automatically after the support engagement concludes.
+
+This service is entirely optional. Customers must explicitly request it and configure the RBAC grants themselves. Union.ai staff cannot self-provision this access. The access is subject to the same authentication (OIDC/SSO), authorization (RBAC policies), and audit logging as any other user in the customer's organization.
+
+This is distinct from BYOC Kubernetes cluster management access (described above), which is infrastructure-level access for platform operations. Customer-side support access operates at the application level: viewing runs, inspecting logs, diagnosing task failures, and reviewing configuration. It does not grant Kubernetes cluster access, IAM role access, or direct access to the customer's cloud account.
 
 ## Access scope
 
@@ -49,3 +57,17 @@ BYOC:
 3. Write-only secrets: even when logged into the customer's tenant, personnel cannot read secret values.
 
 4. Presigned URLs are per-request and ephemeral. The underlying data is fetched from the customer's S3/GCS/Azure Blob, not from any Union.ai storage.
+
+Customer-side support access:
+
+1. Confirm that no Union.ai support user exists in the customer's tenant unless explicitly provisioned by the customer.
+
+2. If support access has been granted, verify the RBAC binding:
+
+   ```bash
+   uctl get policy
+   ```
+
+   The Union.ai support user should appear with the scoped role and time limit configured by the customer.
+
+3. After the time limit expires, repeat the query. The binding should no longer be active.
