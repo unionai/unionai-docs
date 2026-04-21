@@ -13,7 +13,7 @@ Union.ai provides three user-assignable roles with progressively broader permiss
 | Role | Capabilities |
 |---|---|
 | Admin | Full access: manage users, clusters, secrets, projects, all runs |
-| Contributor | Create/abort runs, register tasks, manage secrets within assigned projects |
+| Contributor | Create/abort runs, deploy tasks, manage secrets within assigned projects |
 | Viewer | Read-only: runs, actions, logs, reports |
 
 Additional internal system roles exist for platform operations but are not user-visible or user-assignable.

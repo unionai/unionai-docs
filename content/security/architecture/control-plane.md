@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Control plane
 
-The control plane is the Union.ai-hosted component that orchestrates workflow execution, manages user access, and provides the web interface. It runs on AWS infrastructure managed by Union.ai and is covered by Union.ai's SOC 2 Type II certification.
+The control plane is the Union.ai-hosted component that orchestrates task execution, manages user access, and provides the web interface. It runs on AWS infrastructure managed by Union.ai and is covered by Union.ai's SOC 2 Type II certification.
 
 ## What it stores
 
@@ -52,9 +52,9 @@ The control plane consists of several services, each responsible for a specific 
 
 **Admin** serves as the UI and API gateway. It handles user-facing requests from both the web console and CLI tools, enforces authentication and authorization, and exposes the ConnectRPC (gRPC-Web) API.
 
-**Queue Service** is responsible for scheduling TaskActions. When a workflow execution reaches a point where a task must run, the Queue Service determines the target data plane cluster and creates the appropriate TaskAction custom resource.
+**Queue Service** is responsible for scheduling TaskActions. When a run requires a task to execute, the Queue Service determines the target data plane cluster and creates the appropriate TaskAction.
 
-**State Service** receives state transitions from data plane Executors. As tasks start, succeed, fail, or retry, the State Service records these transitions and updates the execution graph.
+**Actions Service** receives state transitions from data plane Executors. As tasks start, succeed, fail, or retry, the Actions Service records these transitions and updates the run state.
 
 **Cluster Service** maintains cluster health information and handles DNS reconciliation. It monitors the status of registered data plane clusters and ensures that routing information remains current.
 

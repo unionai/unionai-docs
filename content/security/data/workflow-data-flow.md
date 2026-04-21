@@ -8,15 +8,11 @@ variants: -flyte +union
 
 This page traces the security-relevant data movements at each stage of the workflow lifecycle: registration, execution, and result retrieval. Bulk data (files, DataFrames, code bundles, container images) stays in the customer's infrastructure at every stage. Smaller inline data (structured task inputs/outputs, secret values during creation, log streams) transits control plane memory during request processing but is not persisted there.
 
-## Task registration
+## Task deployment and run creation
 
-The SDK serializes the task specification -- container image reference, resource requirements, and typed interface -- into a protobuf message and sends it to the control plane. The code bundle is uploaded directly to the customer's object store via a presigned PUT URL. The code never touches the control plane. Only the specification metadata, including the object store URI pointing to the code bundle, is stored in the control plane database.
+When a run is created, the SDK serializes the full task specification (container image, resource requirements, typed interface, and all configuration) and sends it inline to the control plane along with the structured task inputs. The code bundle is uploaded directly to the customer's object store via a presigned PUT URL -- code never touches the control plane. The task specification is stored in the control plane databases (see [Control plane](../architecture/control-plane) for the full field enumeration).
 
-For details on the presigned URL mechanism, see [Data flow](./data-flow).
-
-## Run creation and execution
-
-When a run is created, the SDK sends structured task inputs to the control plane via `UploadInputs` (up to 10 MB). The control plane proxies the full input payload through its memory (encrypted in transit, plaintext in memory, not persisted) to the data plane object store via the Cloudflare Tunnel. Binary input artifacts (files, directories, DataFrames) are uploaded directly to the customer's object store via presigned URLs, bypassing the control plane. The control plane stores only the input URI, then enqueues the action to the data plane.
+The SDK sends structured task inputs to the control plane via `UploadInputs` (up to 10 MB). The control plane proxies the full input payload through its memory (encrypted in transit, plaintext in memory, not persisted) to the data plane object store via the Cloudflare Tunnel. Binary input artifacts (files, directories, DataFrames) are uploaded directly to the customer's object store via presigned URLs, bypassing the control plane. The control plane stores only the input URI, then enqueues the action to the data plane.
 
 The Executor on the data plane creates a pod that reads inputs from and writes outputs back to the customer's object store. During workflow execution, inter-task I/O flows directly between task pods and the object store via IAM, with no control plane involvement. Secrets required by the task are injected into pods from the customer's secrets backend at runtime -- secret values do not traverse the control plane during execution. (Secret values do traverse the control plane during initial secret creation and updates, when the value is relayed through DataProxy to the data plane's secrets backend -- see [Secrets management](./secrets).) The control plane receives phase transitions, status updates, and error messages from the Executor. Error messages may contain customer data from Python tracebacks.
 
@@ -44,7 +40,7 @@ For details on the two data flow patterns, see [Data flow](./data-flow).
 
 **How to verify:**
 
-**Step 1 -- Registration:**
+**Step 1 -- Deployment and code bundle:**
 
 Run a workflow and observe where the code bundle is stored:
 

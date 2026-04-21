@@ -11,7 +11,7 @@ The data plane runs entirely within the customer's cloud account on a Kubernetes
 
 ## Components
 
-The data plane consists of several components, each handling a specific aspect of workflow execution and data management.
+The data plane consists of several components, each handling a specific aspect of task execution and data management.
 
 **Executor** is a Kubernetes controller that watches for TaskAction custom resources created by the control plane's Queue Service. When a TaskAction appears, the Executor reconciles its lifecycle: creating task pods, monitoring their status, and reporting state transitions back to the control plane via ConnectRPC. The Executor operates as a standard Kubernetes controller -- if connectivity to the control plane is lost, in-flight pods continue running and state reconciles when the connection is restored.
 
