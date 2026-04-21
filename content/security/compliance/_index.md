@@ -7,7 +7,7 @@ sidebar_expanded: true
 
 # Compliance
 
-Union.ai maintains industry-recognized certifications and aligns its security practices with established frameworks. The platform's architecture -- with strict data residency, tenant isolation, and control plane / data plane separation -- inherently supports compliance requirements across regulated industries.
+Union.ai maintains industry-recognized certifications and aligns its security practices with established frameworks. The platform's architecture (with strict data residency, tenant isolation, and control plane / data plane separation) inherently supports compliance requirements across regulated industries.
 
 This section is primarily a reference that links to authoritative documentation (the Trust Center, SOC 2 reports, and customer contracts) rather than a place where detailed compliance claims are made. The facts about certifications and compliance status are stated here; the supporting evidence is available through the referenced sources.
 

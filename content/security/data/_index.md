@@ -7,7 +7,7 @@ sidebar_expanded: true
 
 # Data
 
-Union.ai protects customer data through a classification framework, residency guarantees, and cloud-native encryption. All customer data is encrypted both at rest and in transit. The platform uses three data access patterns: presigned URLs for bulk data (files, DataFrames, code bundles -- bypasses the control plane entirely), an inline proxy for structured task I/O and secret values (transits control plane memory encrypted in transit, plaintext in memory, not persisted), and streaming relays for logs and metrics (transits control plane memory, not persisted).
+Union.ai protects customer data through a classification framework, residency guarantees, and cloud-native encryption. All customer data is encrypted both at rest and in transit. The platform uses three data access patterns: presigned URLs for bulk data (files, DataFrames, code bundles) that bypass the control plane entirely, an inline proxy for structured task I/O and secret values (transits control plane memory encrypted in transit, plaintext in memory, not persisted), and streaming relays for logs and metrics (transits control plane memory, not persisted).
 
 This section covers:
 

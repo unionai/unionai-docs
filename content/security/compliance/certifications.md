@@ -52,4 +52,4 @@ Union.ai maintains a public Trust Center at [trust.union.ai](https://trust.union
 
 2. Request the SOC 2 Type II report and walk through the control categories relevant to specific security questions.
 
-This is audit-only verification -- certifications are validated by independent third-party auditors.
+This is audit-only verification. Certifications are validated by independent third-party auditors.

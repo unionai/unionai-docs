@@ -6,19 +6,19 @@ variants: -flyte +union
 
 # Network architecture
 
-The network architecture reinforces the [two-plane separation](./two-plane-separation) with an outbound-only connectivity model. The data plane initiates all connections to the control plane -- there are no inbound firewall rules, no VPN tunnels, and no listening services on the customer's network that Union.ai can reach.
+The network architecture reinforces the [two-plane separation](./two-plane-separation) with an outbound-only connectivity model. The data plane initiates all connections to the control plane. There are no inbound firewall rules, no VPN tunnels, and no listening services on the customer's network that Union.ai can reach.
 
 ## Outbound-only model
 
 All network connections between the data plane and the control plane are initiated by the data plane. The customer's network requires only standard outbound HTTPS access to Cloudflare edge nodes. No inbound firewall rules, port forwarding, or VPN configuration is needed.
 
-This model eliminates the inbound attack surface entirely. There are no listening services on the customer's network for an attacker to discover through port scanning or exploit through service vulnerabilities. The customer's network perimeter remains unaffected by the Union.ai integration. Firewall management is simplified to permitting outbound HTTPS -- a rule that most enterprise networks already allow.
+This model eliminates the inbound attack surface entirely. There are no listening services on the customer's network for an attacker to discover through port scanning or exploit through service vulnerabilities. The customer's network perimeter remains unaffected by the Union.ai integration. Firewall management is simplified to permitting outbound HTTPS, a rule that most enterprise networks already allow.
 
 The trust model is customer-initiated: the data plane decides when and whether to connect, and the customer can sever the connection at any time by blocking outbound traffic or shutting down the Tunnel Service.
 
 ## Cloudflare Tunnel
 
-The connection between the data plane and the control plane uses a Cloudflare Tunnel -- an outbound-only encrypted connection from the customer's cluster to the Cloudflare edge network, which then routes to the Union.ai control plane.
+The connection between the data plane and the control plane uses a Cloudflare Tunnel, an outbound-only encrypted connection from the customer's cluster to the Cloudflare edge network, which then routes to the Union.ai control plane.
 
 All traffic through the tunnel is encrypted using a layered transport: TLS with mutual authentication (X.509 client certificates), Cloudflare Access service tokens for application-layer authentication, and Cloudflare Tunnel encryption for the network path. Tunnel tokens are managed via operator polling and rotate implicitly when the control plane issues updated values.
 
@@ -26,16 +26,16 @@ The Tunnel Service in the data plane maintains this connection with health check
 
 The tunnel carries the following traffic, all encrypted in transit:
 
-- **Orchestration instructions** -- TaskAction definitions from the control plane to the data plane
-- **State transitions** -- execution phase updates from the data plane to the control plane
-- **Structured task inputs** -- serialized protobuf task inputs proxied to the data plane object store on run submission (up to 10 MB per request, plaintext in DataProxy memory during transit, not persisted)
-- **Structured task inputs and outputs** -- fetched from the data plane object store on result retrieval (up to 20 MiB per request, plaintext in DataProxy memory, not persisted)
-- **Log streams** -- execution log content streamed through the DataProxy relay as plaintext in memory, not persisted or filtered
-- **Secret values** -- secret values during create/update operations, relayed through DataProxy as plaintext in memory to the data plane secret manager, not persisted in the control plane
-- **Presigned URL signing requests** -- metadata-only requests brokered to generate time-limited data access URLs
-- **Health checks** -- bidirectional health and liveness signals
+- **Orchestration instructions**: TaskAction definitions from the control plane to the data plane
+- **State transitions**: execution phase updates from the data plane to the control plane
+- **Structured task inputs**: serialized protobuf task inputs proxied to the data plane object store on run submission (up to 10 MB per request, plaintext in DataProxy memory during transit, not persisted)
+- **Structured task inputs and outputs**: fetched from the data plane object store on result retrieval (up to 20 MiB per request, plaintext in DataProxy memory, not persisted)
+- **Log streams**: execution log content streamed through the DataProxy relay as plaintext in memory, not persisted or filtered
+- **Secret values**: secret values during create/update operations, relayed through DataProxy as plaintext in memory to the data plane secret manager, not persisted in the control plane
+- **Presigned URL signing requests**: metadata-only requests brokered to generate time-limited data access URLs
+- **Health checks**: bidirectional health and liveness signals
 
-Bulk customer data -- files, directories, DataFrames, code bundles, and container images -- does **not** traverse the tunnel. These objects are transferred directly between clients and the customer's object store via presigned URLs, bypassing the control plane entirely.
+Bulk customer data (files, directories, DataFrames, code bundles, and container images) does **not** traverse the tunnel. These objects are transferred directly between clients and the customer's object store via presigned URLs, bypassing the control plane entirely.
 
 ## Regional endpoints
 
@@ -90,7 +90,7 @@ For details on the BYOC private management connection, see [Private connectivity
    kubectl get svc -n union
    ```
 
-   Services should be `ClusterIP` type or, if `LoadBalancer`, should serve only Apps & Serving endpoints -- not control plane connectivity.
+   Services should be `ClusterIP` type or, if `LoadBalancer`, should serve only Apps & Serving endpoints, not control plane connectivity.
 
 3. Review VPC Flow Logs to confirm that connections to Cloudflare are outbound-initiated. All flows to Cloudflare IP ranges should show the data plane node as the source.
 

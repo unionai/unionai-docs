@@ -32,7 +32,7 @@ All access by Union.ai personnel is authenticated and logged with caller identit
 
 **How to verify:**
 
-Self-managed: Union.ai has no IAM roles, no VPN, no SSH keys, and no kubectl access to the customer's cluster. The tunnel is outbound-only FROM the customer -- Union.ai cannot initiate connections TO the customer's infrastructure.
+Self-managed: Union.ai has no IAM roles, no VPN, no SSH keys, and no kubectl access to the customer's cluster. The tunnel is outbound-only FROM the customer. Union.ai cannot initiate connections TO the customer's infrastructure.
 
 BYOC:
 
@@ -48,4 +48,4 @@ BYOC:
 
 3. Write-only secrets: even when logged into the customer's tenant, personnel cannot read secret values.
 
-4. Presigned URLs are per-request and ephemeral -- the underlying data is fetched from the customer's S3/GCS/Azure Blob, not from any Union.ai storage.
+4. Presigned URLs are per-request and ephemeral. The underlying data is fetched from the customer's S3/GCS/Azure Blob, not from any Union.ai storage.

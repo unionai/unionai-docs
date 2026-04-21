@@ -22,7 +22,7 @@ Service accounts are provisioned through the Identity Service, creating OAuth2 a
 
 ## Single sign-on
 
-Union.ai uses OAuth2 with Okta as its identity provider, supporting any OIDC or SAML 2.0 compliant provider (Google Workspace, Microsoft Entra ID, Okta, others). SSO provides centralized identity management where the user lifecycle is managed in the customer's IdP. MFA enforcement is delegated to the customer's IdP -- the customer's existing MFA policies apply without additional configuration. Session management is inherited from the IdP configuration, and all authentication events are logged with caller identity.
+Union.ai uses OAuth2 with Okta as its identity provider, supporting any OIDC or SAML 2.0 compliant provider (Google Workspace, Microsoft Entra ID, Okta, others). SSO provides centralized identity management where the user lifecycle is managed in the customer's IdP. MFA enforcement is delegated to the customer's IdP, so the customer's existing MFA policies apply without additional configuration. Session management is inherited from the IdP configuration, and all authentication events are logged with caller identity.
 
 ## Verification
 
@@ -32,7 +32,7 @@ Union.ai uses OAuth2 with Okta as its identity provider, supporting any OIDC or 
 
 **How to verify:**
 
-1. SSO: Log in -- the browser redirects to the customer's IdP, and a MFA prompt appears if configured.
+1. SSO: Log in. The browser redirects to the customer's IdP, and a MFA prompt appears if configured.
 
 2. API key: Create a key, use it in a script, then revoke it:
 

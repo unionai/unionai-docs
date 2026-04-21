@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Deployment models
 
-Union.ai supports two deployment models: **self-managed** and **BYOC** (Bring Your Own Cloud). Both models share the same fundamental [two-plane separation](./two-plane-separation) -- the control plane is hosted by Union.ai, and the data plane runs in the customer's cloud account. They differ in who operates the data plane's Kubernetes cluster.
+Union.ai supports two deployment models: **self-managed** and **BYOC** (Bring Your Own Cloud). Both models share the same fundamental [two-plane separation](./two-plane-separation): the control plane is hosted by Union.ai, and the data plane runs in the customer's cloud account. They differ in who operates the data plane's Kubernetes cluster.
 
 ## Common properties
 
@@ -31,7 +31,7 @@ This model provides maximum isolation and control. It is appropriate for organiz
 
 ## BYOC
 
-In the BYOC model, Union.ai manages the Kubernetes cluster within the customer's cloud account. The cluster runs in the customer's VPC, uses the customer's IAM roles, and stores data in the customer's object store -- but Union.ai handles the operational burden of running the cluster.
+In the BYOC model, Union.ai manages the Kubernetes cluster within the customer's cloud account. The cluster runs in the customer's VPC, uses the customer's IAM roles, and stores data in the customer's object store, but Union.ai handles the operational burden of running the cluster.
 
 The Kubernetes API endpoint is private-only, accessible through [PrivateLink, Private Service Connect, or Azure Private Link](./private-connectivity). Union.ai accesses the cluster exclusively through this private connection for management operations.
 
@@ -52,13 +52,13 @@ The customer retains ownership and control of:
 - Object storage buckets and their access policies
 - Any additional infrastructure outside the managed cluster
 
-Union.ai is responsible for the availability and security of the managed Kubernetes cluster. The customer is responsible for the availability and security of the surrounding cloud account infrastructure (VPC, IAM, object storage). Union.ai assumes the cluster-level third-party dependency risk -- if a Kubernetes vulnerability requires patching, Union.ai handles it.
+Union.ai is responsible for the availability and security of the managed Kubernetes cluster. The customer is responsible for the availability and security of the surrounding cloud account infrastructure (VPC, IAM, object storage). Union.ai assumes the cluster-level third-party dependency risk: if a Kubernetes vulnerability requires patching, Union.ai handles it.
 
 ## Availability and resilience
 
 The control plane runs on AWS with multi-AZ redundancy and automated failover. Availability is covered by Union.ai's SOC 2 Type II certification, and specific SLA commitments are defined in customer contracts.
 
-A critical resilience property of the architecture is that **in-flight workflows continue running during control plane outages**. The Executor is a Kubernetes controller -- once a task pod is created, it runs independently of the control plane. If the tunnel connection drops or the control plane becomes unavailable, running task pods are unaffected. When connectivity is restored, the Executor reconciles state with the control plane, and the execution history is updated. New workflow submissions require control plane availability, but existing work is not interrupted.
+A critical resilience property of the architecture is that **in-flight workflows continue running during control plane outages**. The Executor is a Kubernetes controller: once a task pod is created, it runs independently of the control plane. If the tunnel connection drops or the control plane becomes unavailable, running task pods are unaffected. When connectivity is restored, the Executor reconciles state with the control plane, and the execution history is updated. New workflow submissions require control plane availability, but existing work is not interrupted.
 
 For data plane availability, the responsibility depends on the deployment model. In the self-managed model, the customer is solely responsible for data plane availability. In the BYOC model, Union.ai is responsible for the availability of the managed Kubernetes cluster, while the customer remains responsible for the underlying cloud account resources.
 
@@ -92,4 +92,4 @@ For data plane availability, the responsibility depends on the deployment model.
    kubectl scale deployment <tunnel-deployment> -n union --replicas=1
    ```
 
-5. Check the Union.ai UI or query the API to confirm that the execution state reconciled correctly -- the execution should show as completed (or progressed) with accurate timestamps, not as failed or lost.
+5. Check the Union.ai UI or query the API to confirm that the execution state reconciled correctly. The execution should show as completed (or progressed) with accurate timestamps, not as failed or lost.

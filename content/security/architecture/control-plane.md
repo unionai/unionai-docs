@@ -14,7 +14,9 @@ The control plane uses three databases (PostgreSQL + 2x Cassandra/Scylla) to sto
 
 **Orchestration metadata** (stored as database columns): task, run, action, and trigger identifiers (including task function names and run names), action state (phase, timestamps, cluster assignment), user identity (who created and deployed each run), and scheduling configuration. This is pure operational data.
 
-**Task and run definitions** (stored as serialized protobuf blobs): each run submission includes a full TaskSpec containing the task's container image, command, typed interface, resource requirements, and security context. A full TaskSpec is stored on every run submission, content-addressed by digest. RunSpec blobs carry environment variables, security context, labels, and annotations. Trigger specs carry default input values for scheduled runs. All data in PostgreSQL is encrypted at rest (AWS RDS AES-256/KMS).
+**Task and run definitions** (stored as serialized protobuf blobs): each run submission includes a full TaskSpec containing the task's container image, command, typed interface, resource requirements, and security context. A full TaskSpec is stored on every run submission, content-addressed by digest. RunSpec blobs carry environment variables, security context, labels, and annotations. Trigger specs carry default input values for scheduled runs.
+
+**All the above data is encrypted at rest (AWS RDS AES-256/KMS)**.
 
 The following table enumerates the fields inside TaskSpec blobs. Reviewers can verify these against the open-source protobuf definitions in the [flyte-sdk repository](https://github.com/flyteorg/flyte-sdk).
 
@@ -76,7 +78,7 @@ The control plane consists of several services, each responsible for a specific 
    uctl get execution <execution-id> -o json
    ```
 
-   The response should contain identifiers, phase, timestamps, URIs, and error information. Bulk data content (file contents, DataFrame payloads) should not appear inline -- only URI references to the customer's object store.
+   The response should contain identifiers, phase, timestamps, URIs, and error information. Bulk data content (file contents, DataFrame payloads) should not appear inline; only URI references to the customer's object store should be present.
 
 3. Query a task definition and inspect the fields present:
 

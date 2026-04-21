@@ -13,11 +13,11 @@ The data plane runs entirely within the customer's cloud account on a Kubernetes
 
 The data plane consists of several components, each handling a specific aspect of task execution and data management.
 
-**Executor** is a Kubernetes controller that watches for TaskAction custom resources created by the control plane's Queue Service. When a TaskAction appears, the Executor reconciles its lifecycle: creating task pods, monitoring their status, and reporting state transitions back to the control plane via ConnectRPC. The Executor operates as a standard Kubernetes controller -- if connectivity to the control plane is lost, in-flight pods continue running and state reconciles when the connection is restored.
+**Executor** is a Kubernetes controller that watches for TaskAction custom resources created by the control plane's Queue Service. When a TaskAction appears, the Executor reconciles its lifecycle: creating task pods, monitoring their status, and reporting state transitions back to the control plane via ConnectRPC. The Executor operates as a standard Kubernetes controller. If connectivity to the control plane is lost, in-flight pods continue running and state reconciles when the connection is restored.
 
-**Object Store Service** handles data access operations on the customer's object store. It supports presigned URL signing (`CreateSignedURL`, `CreateUploadLocation`, `Presign`) for bulk data -- files, directories, DataFrames, code bundles, and reports -- which clients upload and download directly without data entering the control plane. It also supports `Get`/`Put` operations used internally by the control plane's DataProxy for structured task I/O (`UploadInputs`, `GetActionData`), where the full protobuf payload (up to 10-20 MiB) is proxied through control plane memory, encrypted in transit, and not persisted.
+**Object Store Service** handles data access operations on the customer's object store. It supports presigned URL signing (`CreateSignedURL`, `CreateUploadLocation`, `Presign`) for bulk data (files, directories, DataFrames, code bundles, and reports), which clients upload and download directly without data entering the control plane. It also supports `Get`/`Put` operations used internally by the control plane's DataProxy for structured task I/O (`UploadInputs`, `GetActionData`), where the full protobuf payload (up to 10-20 MiB) is proxied through control plane memory, encrypted in transit, and not persisted.
 
-**Log Provider** serves task logs through two channels. For running tasks, it streams live logs from the Kubernetes API. For completed tasks, it retrieves logs from the cloud provider's log aggregator (CloudWatch, Cloud Logging, or Azure Monitor). Logs are streamed through the DataProxy relay, encrypted in transit, as plaintext in control plane memory, without being persisted. There is no content filtering or redaction -- any sensitive data (secrets, PII, stack traces) that applications write to stdout/stderr flows through control plane memory unmodified.
+**Log Provider** serves task logs through two channels. For running tasks, it streams live logs from the Kubernetes API. For completed tasks, it retrieves logs from the cloud provider's log aggregator (CloudWatch, Cloud Logging, or Azure Monitor). Logs are streamed through the DataProxy relay, encrypted in transit, as plaintext in control plane memory, without being persisted. There is no content filtering or redaction. Any sensitive data (secrets, PII, stack traces) that applications write to stdout/stderr flows through control plane memory unmodified.
 
 **Image Builder** uses Buildkit running on the customer's Kubernetes cluster to build container images from user-submitted `Image` specifications. Source code and built images never leave the customer's infrastructure. Base images are pulled from customer-configured registries, and built images are pushed to the customer's container registry (ECR, GCR, or ACR).
 
@@ -27,7 +27,7 @@ The data plane consists of several components, each handling a specific aspect o
 
 ## Object store layout
 
-Each data plane cluster uses two object store buckets: a **metadata bucket** for execution metadata and a **fast-registration bucket** for rapid code deployment artifacts. Within these buckets, objects are organized by namespace: `org/project/domain/run-name/action-name/`. This layout provides natural namespace isolation -- IAM policies and bucket policies can scope access to specific organizational boundaries.
+Each data plane cluster uses two object store buckets: a **metadata bucket** for execution metadata and a **fast-registration bucket** for rapid code deployment artifacts. Within these buckets, objects are organized by namespace: `org/project/domain/run-name/action-name/`. This layout provides natural namespace isolation: IAM policies and bucket policies can scope access to specific organizational boundaries.
 
 ## Kubernetes security
 
@@ -45,7 +45,7 @@ The data plane enforces several layers of Kubernetes security to protect workloa
 
 ## Container security
 
-The Image Builder runs Buildkit on the customer's Kubernetes cluster. When a user defines an `Image` specification, the build executes entirely within the customer's infrastructure. Source code is uploaded to the customer's object store via presigned URL and fetched by the builder -- it never transits through the control plane. Built images are pushed directly to the customer's container registry (ECR, GCR, or ACR).
+The Image Builder runs Buildkit on the customer's Kubernetes cluster. When a user defines an `Image` specification, the build executes entirely within the customer's infrastructure. Source code is uploaded to the customer's object store via presigned URL and fetched by the builder. It never transits through the control plane. Built images are pushed directly to the customer's container registry (ECR, GCR, or ACR).
 
 Base images are pulled from registries configured by the customer, allowing the use of hardened or pre-approved base images. Customers can apply their own image tagging conventions, vulnerability scanning policies, and registry access controls.
 
@@ -57,17 +57,17 @@ The data plane uses two IAM roles to separate platform-level and user-level acce
 
 **adminflyterole** is used by platform services (Executor, Object Store Service, Log Provider). It has read/write access to the object store buckets, access to the secrets manager for retrieving user-defined secrets, and read access to persisted logs. This role is bound to platform service accounts via workload identity federation.
 
-**userflyterole** is used by task pods -- the containers running user code. It has read/write access to the object store buckets for reading inputs and writing outputs. It does not have access to the secrets manager or platform-level resources.
+**userflyterole** is used by task pods (the containers running user code). It has read/write access to the object store buckets for reading inputs and writing outputs. It does not have access to the secrets manager or platform-level resources.
 
 Both roles use cloud-native workload identity federation: IRSA (IAM Roles for Service Accounts) on AWS, Workload Identity on GCP, and Azure Workload Identity on Azure. No static credentials are created, stored, or rotated. The Kubernetes service account annotations bind each pod to the appropriate IAM role automatically.
 
 ## Apps & Serving security
 
-App and serving traffic flows entirely within the customer's infrastructure -- no application code, data, or serving requests pass through the control plane.
+App and serving traffic flows entirely within the customer's infrastructure. No application code, data, or serving requests pass through the control plane.
 
 Inbound traffic reaches the serving endpoints through Cloudflare, which provides DDoS protection, before routing to the Kourier ingress gateway running in the customer's cluster. Authentication is enforced by default on all endpoints: browser-based access uses SSO, and programmatic access uses API keys. Individual endpoints can be configured for anonymous access when required (for example, public-facing model endpoints).
 
-RBAC controls govern which users and service accounts can deploy applications and access specific endpoints, scoped per project. All serving infrastructure -- Knative, Kourier, and the Union Operator -- runs within the customer's Kubernetes cluster. In the BYOC model, Union.ai manages the lifecycle of this serving infrastructure (upgrades, scaling, configuration), but the infrastructure itself resides in the customer's account.
+RBAC controls govern which users and service accounts can deploy applications and access specific endpoints, scoped per project. All serving infrastructure (Knative, Kourier, and the Union Operator) runs within the customer's Kubernetes cluster. In the BYOC model, Union.ai manages the lifecycle of this serving infrastructure (upgrades, scaling, configuration), but the infrastructure itself resides in the customer's account.
 
 ## Verification
 

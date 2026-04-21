@@ -21,7 +21,7 @@ Streaming relay pattern (logs — transits control plane):
 
 ## Presigned URL pattern
 
-For bulk data -- files (`flyte.io.File`), directories (`flyte.io.Dir`), DataFrames, code bundles, and reports -- the control plane proxies signing requests to the data plane, which generates time-limited presigned URLs using customer-managed IAM credentials. The client then uploads or downloads data directly to the customer's object store. The data content never enters the control plane; only the signing metadata passes through. This model eliminates the need for the control plane to hold persistent cloud IAM credentials.
+For bulk data (files (`flyte.io.File`), directories (`flyte.io.Dir`), DataFrames, code bundles, and reports), the control plane proxies signing requests to the data plane, which generates time-limited presigned URLs using customer-managed IAM credentials. The client then uploads or downloads data directly to the customer's object store. The data content never enters the control plane; only the signing metadata passes through. This model eliminates the need for the control plane to hold persistent cloud IAM credentials.
 
 | Phase | Encrypted? | Details |
 |-------|------------|---------|
@@ -31,7 +31,7 @@ For bulk data -- files (`flyte.io.File`), directories (`flyte.io.Dir`), DataFram
 
 ## Inline proxy pattern
 
-For structured task inputs and outputs (protobuf literals -- ints, strings, lists, dicts, and small serialized objects), the control plane acts as a proxy. On run submission, the SDK sends structured inputs to the control plane via `UploadInputs` (up to 10 MB), which proxies the full payload through its memory to the data plane object store via the Cloudflare Tunnel. On result retrieval, `GetActionData` fetches both inputs and outputs from the data plane object store through the control plane (up to 20 MiB). The data is encrypted in transit (TLS on both sides), exists as plaintext in control plane memory for the duration of each request, and is not persisted, cached, or logged. The same pattern applies to secret values during create/update operations, which are relayed through the control plane to the data plane's secrets backend.
+For structured task inputs and outputs (protobuf literals such as ints, strings, lists, dicts, and small serialized objects), the control plane acts as a proxy. On run submission, the SDK sends structured inputs to the control plane via `UploadInputs` (up to 10 MB), which proxies the full payload through its memory to the data plane object store via the Cloudflare Tunnel. On result retrieval, `GetActionData` fetches both inputs and outputs from the data plane object store through the control plane (up to 20 MiB). The data is encrypted in transit (TLS on both sides), exists as plaintext in control plane memory for the duration of each request, and is not persisted, cached, or logged. The same pattern applies to secret values during create/update operations, which are relayed through the control plane to the data plane's secrets backend.
 
 The distinction between presigned URLs and the inline proxy is by data type, not by size: binary artifacts always use presigned URLs; structured protobuf literals always use the inline proxy.
 
@@ -55,17 +55,17 @@ The distinction between presigned URLs and the inline proxy is by data type, not
 
 The following controls are applied to every presigned URL:
 
-- **TTL enforcement** -- each URL expires after a default of 1 hour, configurable to shorter durations.
-- **Single-object scope** -- each URL grants access to exactly one object.
-- **Operation specificity** -- each URL is locked to a single operation (GET or PUT).
-- **Transport encryption** -- URLs are transmitted only over TLS.
-- **No URL logging** -- presigned URLs are not persisted in control plane logs or databases.
+- **TTL enforcement**: each URL expires after a default of 1 hour, configurable to shorter durations.
+- **Single-object scope**: each URL grants access to exactly one object.
+- **Operation specificity**: each URL is locked to a single operation (GET or PUT).
+- **Transport encryption**: URLs are transmitted only over TLS.
+- **No URL logging**: presigned URLs are not persisted in control plane logs or databases.
 
-Because presigned URLs are bearer tokens -- possession alone grants access -- Union.ai recommends treating them with the same care as short-lived credentials and configuring the shortest practical TTL for your use case.
+Because presigned URLs are bearer tokens (possession alone grants access), Union.ai recommends treating them with the same care as short-lived credentials and configuring the shortest practical TTL for your use case.
 
 ## Streaming relay pattern
 
-For logs and observability metrics, the control plane acts as a stateless relay. It streams data from the data plane through the Cloudflare Tunnel to the client in real time. The data passes through the control plane's memory as plaintext (encrypted in transit on both network hops) but is never written to disk, cached, or stored. Once the stream completes, no trace of the data remains in the control plane. There is no content filtering or redaction in the log streaming pipeline -- any sensitive data (secrets, PII, credentials) that user code writes to stdout/stderr will flow through control plane memory unmodified.
+For logs and observability metrics, the control plane acts as a stateless relay. It streams data from the data plane through the Cloudflare Tunnel to the client in real time. The data passes through the control plane's memory as plaintext (encrypted in transit on both network hops) but is never written to disk, cached, or stored. Once the stream completes, no trace of the data remains in the control plane. There is no content filtering or redaction in the log streaming pipeline. Any sensitive data (secrets, PII, credentials) that user code writes to stdout/stderr will flow through control plane memory unmodified.
 
 | Phase | Encrypted? | Details |
 |-------|------------|---------|
@@ -92,7 +92,7 @@ The Union.ai web console displays information from multiple sources. The followi
 | Timeline timestamps | Control Plane | CP API |
 | Errors | Control Plane | CP API |
 
-Fields sourced from the control plane include orchestration metadata and task definitions (which may contain potentially sensitive fields such as environment variables and default values -- see [Control plane](../architecture/control-plane) for details). Structured inputs/outputs are proxied through control plane memory via the inline proxy pattern before reaching the client. Fields sourced directly from the data plane via presigned URLs (reports, code bundles) bypass the control plane entirely. Error messages served from the control plane database may contain customer data from Python tracebacks.
+Fields sourced from the control plane include orchestration metadata and task definitions, which may contain potentially sensitive fields such as environment variables and default values (see [Control plane](../architecture/control-plane) for details). Structured inputs/outputs are proxied through control plane memory via the inline proxy pattern before reaching the client. Fields sourced directly from the data plane via presigned URLs (reports, code bundles) bypass the control plane entirely. Error messages served from the control plane database may contain customer data from Python tracebacks.
 
 For details on the underlying network architecture, see [Two-plane separation](../architecture/two-plane-separation).
 
@@ -107,8 +107,8 @@ For details on the underlying network architecture, see [Two-plane separation](.
 1. Open the Union.ai UI and navigate to a completed task's outputs.
 2. Open browser developer tools (Network tab) and observe the request when viewing output data.
 3. The presigned URL should resolve to the customer's S3/GCS/Azure Blob domain (not a Union.ai domain), contain an expiry parameter, and reference a single object key.
-4. Copy the presigned URL and wait 1 hour. Paste it into the browser -- it should return a 403 (TTL expired).
-5. Modify the object key in the URL and retry immediately -- it should return a 403 (signature invalid, confirming single-object scope).
+4. Copy the presigned URL and wait 1 hour. Paste it into the browser. It should return a 403 (TTL expired).
+5. Modify the object key in the URL and retry immediately. It should return a 403 (signature invalid, confirming single-object scope).
 
 ### Streaming relay
 

@@ -55,7 +55,7 @@ Union.ai enforces least privilege across all components. IAM roles on the data p
    uctl create run --project A ...  # Expect success
    ```
 
-4. Create a custom policy scoping a user to project X, development domain only. Attempt to access the production domain -- expect denied.
+4. Create a custom policy scoping a user to project X, development domain only. Attempt to access the production domain. Expect denied.
 
 5. Display all active policy bindings:
 
@@ -63,6 +63,6 @@ Union.ai enforces least privilege across all components. IAM roles on the data p
    uctl get policy
    ```
 
-6. For Union.ai employee access: the customer creates a RBAC policy for Union.ai support -- scoped, viewer only, and time-limited.
+6. For Union.ai employee access: the customer creates a RBAC policy for Union.ai support, scoped to viewer only and time-limited.
 
 All verification steps are self-service using existing features.

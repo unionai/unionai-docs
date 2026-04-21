@@ -10,7 +10,7 @@ Union.ai's secrets management system stores secret values at rest exclusively wi
 
 ## Core design
 
-Secret values are stored exclusively within the customer's infrastructure. The secrets API is write-only by design -- there is no API to read back secret values. The `GetSecret` RPC returns only the secret's metadata (name, scope, creation time, cluster presence status) -- never the value itself. This means that even if an attacker compromises a user account or the control plane API, they cannot retrieve secret values through the API. The value simply is not available through any API endpoint.
+Secret values are stored exclusively within the customer's infrastructure. The secrets API is write-only by design: there is no API to read back secret values. The `GetSecret` RPC returns only the secret's metadata (name, scope, creation time, cluster presence status), never the value itself. This means that even if an attacker compromises a user account or the control plane API, they cannot retrieve secret values through the API. The value simply is not available through any API endpoint.
 
 ## Backends
 
@@ -25,7 +25,7 @@ All four backends are available regardless of deployment model. The choice of ba
 
 ## Secret lifecycle
 
-**Creation:** When a user creates a secret via the UI or CLI, the value is sent to the control plane over TLS, relayed through the Cloudflare Tunnel (encrypted) to the data plane's secrets backend, and stored encrypted at rest in the customer's secret manager (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or K8s Secrets). The value exists as plaintext in control plane memory only during this relay -- it is never written to disk, database, cache, or logs on the control plane. Only the secret identifier is logged. Once the relay completes, no trace of the value remains in the control plane (though Go's garbage collector does not zero deallocated memory, so the plaintext may persist in heap until reused).
+**Creation:** When a user creates a secret via the UI or CLI, the value is sent to the control plane over TLS, relayed through the Cloudflare Tunnel (encrypted) to the data plane's secrets backend, and stored encrypted at rest in the customer's secret manager (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or K8s Secrets). The value exists as plaintext in control plane memory only during this relay and is never written to disk, database, cache, or logs on the control plane. Only the secret identifier is logged. Once the relay completes, no trace of the value remains in the control plane (though Go's garbage collector does not zero deallocated memory, so the plaintext may persist in heap until reused).
 
 | Phase | Encrypted? | Details |
 |-------|------------|---------|
@@ -35,7 +35,7 @@ All four backends are available regardless of deployment model. The choice of ba
 | In Data Plane (operator) | **Plaintext in memory** | Briefly held before writing to secret backend |
 | At rest (secret backend) | **Yes** | AWS Secrets Manager (AES-256/KMS), GCP Secret Manager (Google-managed or CMEK), Azure Key Vault (HSM-backed), or K8s etcd encryption |
 
-**Consumption:** When a task pod is created, the Executor configures it to mount the requested secrets from the backend as environment variables or files. The value is read by the data plane's secrets backend and injected into the pod -- it never leaves the customer's infrastructure during this process. The control plane is not involved in secret consumption at runtime.
+**Consumption:** When a task pod is created, the Executor configures it to mount the requested secrets from the backend as environment variables or files. The value is read by the data plane's secrets backend and injected into the pod. It never leaves the customer's infrastructure during this process. The control plane is not involved in secret consumption at runtime.
 
 **Scoping:** Secrets can be scoped at organization, project, or domain level. Only task pods running within the appropriate scope can access the corresponding secrets. This ensures that teams working in different projects cannot access each other's secrets, even within the same data plane cluster.
 
@@ -63,11 +63,11 @@ For details on how secrets flow during workflow execution, see [Workflow data fl
 
    The output should show name, scope, creation time, and cluster status. There should be **no value field** in the response.
 
-3. Try every API endpoint that touches secrets -- none should return the value.
+3. Try every API endpoint that touches secrets. None should return the value.
 
-4. Check the protobuf definition in the open-source Flyte repository -- `GetSecretResponse` has no value field. The write-only design is enforced at the protocol level.
+4. Check the protobuf definition in the open-source Flyte repository. `GetSecretResponse` has no value field. The write-only design is enforced at the protocol level.
 
-5. Verify the secret exists in the customer's secrets backend by checking the cloud secrets manager console directly -- the value should be present there.
+5. Verify the secret exists in the customer's secrets backend by checking the cloud secrets manager console directly. The value should be present there.
 
 6. For comparison: some competing platforms document that workspace admins can read secrets via API. Union.ai's API structurally cannot return secret values, regardless of the caller's privilege level.
 
@@ -95,4 +95,4 @@ This verification is fully self-service and works immediately.
 
   The pod should show secrets mounted from the customer's backend (e.g., AWS Secrets Manager volume mounts or environment variable references).
 
-- **Scoping:** Create a secret in project A, then run a task in project B that attempts to access it -- the task should fail. Run the same task in project A -- it should succeed.
+- **Scoping:** Create a secret in project A, then run a task in project B that attempts to access it. The task should fail. Run the same task in project A, and it should succeed.

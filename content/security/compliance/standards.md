@@ -29,7 +29,7 @@ Union.ai also holds CIS 1.4 AWS certification and is pursuing CIS 3.0.
 
 **How to verify:**
 
-1. The private connectivity architecture described in [Private connectivity](../architecture/private-connectivity) IS the demonstration of these controls -- management interfaces are not exposed to the public Internet.
+1. The private connectivity architecture described in [Private connectivity](../architecture/private-connectivity) IS the demonstration of these controls: management interfaces are not exposed to the public Internet.
 
 2. The [Trust Center](https://trust.union.ai) covers continuous monitoring of compliance status.
 

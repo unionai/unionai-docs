@@ -12,7 +12,7 @@ In self-managed deployments, the customer owns and operates the data plane infra
 
 | Area | Union.ai | Customer |
 |---|---|---|
-| Control plane security | Full ownership | -- |
+| Control plane security | Full ownership | N/A |
 | Data plane infrastructure | Guidance and tooling | Provisioning and maintenance |
 | Data encryption at rest | Default cloud encryption | Optional CMK configuration |
 | Network security (tunnel) | Tunnel management | Firewall and VPC configuration |

@@ -47,4 +47,4 @@ Tenant isolation controls are covered by the SOC 2 Type II audit scope. The comb
 
 3. The SOC 2 Type II audit specifically covers tenant isolation controls.
 
-4. The Protobuf definitions and SDK code are open source -- the org context enforcement path can be traced through the codebase.
+4. The Protobuf definitions and SDK code are open source, so the org context enforcement path can be traced through the codebase.
