@@ -10,10 +10,7 @@ variants: -flyte +union
 
 Logs are collected by Fluent Bit (deployed as a DaemonSet on the data plane) and shipped to the customer's cloud-native log service: CloudWatch Logs (AWS), Cloud Logging (GCP), or Azure Monitor (Azure). Live logs are streamed directly from the Kubernetes API while a task is running. Persisted logs are read from the cloud log aggregator after a pod terminates.
 
-Log data is never stored in the control plane -- it is streamed as a stateless pass-through relay. Log lines include structured metadata: timestamp, message content, and originator classification. For details on how log data flows through the system, see [Two-plane separation](../architecture/two-plane-separation).
-
-> [!WARNING]
-> **Audit finding (ref #5, #6):** While log data is not persisted in the control plane, it does transit control plane process memory during streaming. There is no content filtering or redaction at any layer of the log pipeline -- secrets, PII, stack traces, or any sensitive data that user code writes to stdout/stderr flows through control plane memory unmodified. Persisted logs (fetched from CloudWatch/Stackdriver/Azure Monitor for completed executions) also transit the control plane via the same streaming proxy path.
+Log data is not persisted in the control plane -- it is streamed as a stateless pass-through relay, encrypted in transit on both network hops (client-to-CP and DP-to-CP), and exists as plaintext in control plane memory only during each streaming request. Persisted logs (fetched from CloudWatch, Stackdriver, or Azure Monitor for completed executions) also transit the control plane via the same streaming proxy path. There is no content filtering or redaction at any layer of the log pipeline -- any sensitive data (secrets, PII, stack traces) that user code writes to stdout/stderr flows through control plane memory unmodified. Log lines include structured metadata: timestamp, message content, and originator classification. For details on how log data flows through the system, see [Two-plane separation](../architecture/two-plane-separation).
 
 ## Observability metrics
 

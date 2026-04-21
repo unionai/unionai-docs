@@ -10,31 +10,24 @@ variants: -flyte +union
 
 Every data type in the Union.ai platform is classified by its residency and access pattern. This classification determines where data is stored and how it is accessed.
 
-| Classification | Data types | Residency |
-|---|---|---|
-| Customer Data | Task inputs/outputs, code bundles, container images, reports, task logs, secrets, observability metrics | Customer infrastructure (at rest); some categories transit control plane memory transiently |
-| Orchestration Metadata | Task definitions (specs), run/action metadata (phase, timestamps, errors) | Control plane DB |
-| Platform Metadata | User identity/RBAC records, cluster records | Control plane DB |
+| Classification | Data types | Where it is stored | How it is accessed |
+|---|---|---|---|
+| Bulk Customer Data | Files, directories, DataFrames, code bundles, container images, reports | Customer infrastructure (encrypted at rest) | Presigned URLs (never enters control plane) |
+| Inline Customer Data | Structured task inputs/outputs (protobuf literals), secret values (during creation), execution log streams | Customer infrastructure (at rest); transits control plane memory (not persisted) | Inline proxy or streaming relay (encrypted in transit, plaintext in CP memory) |
+| Orchestration Metadata | Task definitions (including env vars, default values, SQL, pod specs), run/action metadata (phase, timestamps, errors), trigger specs | Control plane databases (encrypted at rest) | Control plane API (encrypted in transit) |
+| Platform Metadata | User identity/RBAC records, cluster records | Control plane databases (encrypted at rest) | Control plane API (encrypted in transit) |
 
-Customer data -- the artifacts produced and consumed by workflows -- resides exclusively in the customer's own infrastructure. This includes everything a task reads, writes, or depends on at runtime: inputs and outputs in object storage, code bundles, container images in the customer's registry, log output, secrets, and observability metrics. The control plane never stores customer data payloads. Orchestration metadata and platform metadata are stored in the control plane database, but these contain only the structural and operational information needed to coordinate workflow execution -- task specifications, phase transitions, timestamps, error messages, user records, and cluster configuration. No customer data content appears in either metadata category.
+**Bulk customer data** -- files, directories, DataFrames, code bundles, container images, and reports -- is stored exclusively in the customer's infrastructure and never enters the control plane. These objects are accessed via presigned URLs.
 
-> [!WARNING]
-> **Audit finding (ref #3, #4, #5, #7, #11):** This paragraph needs significant revision. Three issues:
->
-> 1. **Transit**: Customer data does not "reside exclusively" in customer infrastructure. Structured task I/O transits control plane memory on run submission (`UploadInputs`, up to 10 MB) and result retrieval (`GetActionData`, up to 20 MiB). Secret values transit on create/update. Log streams pass through unredacted. This data is transient (not persisted) but exists in Union.ai process memory.
->
-> 2. **Storage**: "No customer data content appears in either metadata category" is incorrect. The control plane databases (PostgreSQL + 2x Cassandra) store task/run/action/trigger identifiers (including task function names, run names), user identity, and execution state as explicit columns. TaskSpec blobs stored across all three databases contain environment variables, default input literal values, SQL statements, K8s pod specs, arbitrary plugin data, config key-value pairs, and OAuth2 client IDs. RunSpec blobs contain additional env vars and security context. Trigger specs contain default literal values. Error messages and Kubernetes event messages are also stored. The full TaskSpec is stored on every run submission. PostgreSQL data is encrypted at rest (AWS RDS AES-256/KMS); Cassandra encryption depends on managed service configuration.
->
-> 3. **Recommended taxonomy**: Introduce three categories: "resides in" (persisted to durable storage), "passes through" (transient in-memory during request processing), and "never touches" (flows directly between client and customer infrastructure). See the audit report for the complete classification table.
+**Inline customer data** -- structured task inputs and outputs, secret values during creation/update, and execution log streams -- is stored at rest in the customer's infrastructure but transits control plane memory during request processing. This data is encrypted in transit (TLS + Cloudflare Tunnel), exists as plaintext in control plane memory only for the duration of each request, and is not persisted, cached, or logged in the control plane.
+
+**Orchestration metadata** is stored in the control plane databases (encrypted at rest). This includes task definitions, which contain structural information (container image references, typed interfaces) and fields that may be customer-sensitive: environment variables, default input literal values, SQL query statements, Kubernetes pod specs, plugin configuration, and config key-value pairs. Error messages from task executions (which may contain data from Python tracebacks) are also stored. A full task definition (TaskSpec) is stored on every run submission.
 
 ## Data residency
 
 All customer data resides in the customer's own cloud account and region. The customer chooses the region for their data plane deployment, and all data plane resources -- object storage, container registry, secrets backend, log aggregator, and compute -- are provisioned within that region.
 
-The control plane is available in the following regions: US West (us-west-2), US East (us-east-2), EU West-1 (Ireland), EU West-2 (London), and EU Central (eu-central-1). No customer data is replicated to or cached in Union.ai infrastructure at any point during the workflow lifecycle. For customers deploying in EU regions, this architecture ensures that all customer data remains within the EU, supporting GDPR data residency requirements.
-
-> [!WARNING]
-> **Audit finding (ref #3, #4, #5):** "No customer data is replicated to or cached in Union.ai infrastructure" is true for persistent storage. However, structured task I/O, secret values (on create/update), and log streams transit control plane memory regardless of data plane region. If the control plane is in a different region than the data plane, this data transiently crosses region boundaries. For EU-deployed data planes using an EU control plane region, this transit stays within the EU. The GDPR implications should be evaluated based on the specific control plane region in use.
+The control plane is available in the following regions: US West (us-west-2), US East (us-east-2), EU West-1 (Ireland), EU West-2 (London), and EU Central (eu-central-1). No bulk customer data is replicated to or cached in Union.ai infrastructure. Inline data (structured task I/O, secret values during creation, log streams) transits control plane memory during request processing but is not persisted. This transit occurs through the control plane region, so customers should select a control plane region consistent with their data residency requirements. For EU-deployed data planes using an EU control plane region, all data -- both at rest and in transit -- stays within the EU, supporting GDPR data residency requirements.
 
 For details on the architectural separation that enforces these residency guarantees, see [Two-plane separation](../architecture/two-plane-separation).
 

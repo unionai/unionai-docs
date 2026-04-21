@@ -20,10 +20,7 @@ Union.ai is implementing just-in-time (JIT) access controls to replace persisten
 
 When accessing a customer's tenant, Union.ai personnel CAN: view orchestration metadata, view logs relayed through the tunnel, perform administrative operations as authorized by the customer's RBAC policy, and (in BYOC) manage the Kubernetes cluster.
 
-Personnel CANNOT: read secret values (the API is write-only), access raw data in customer object stores (presigned URLs are per-request and not retained), access the customer's cloud account or IAM roles, or access customer object stores, secrets backends, container registries, or log aggregators.
-
-> [!NOTE]
-> **Audit finding (ref #3, #5):** These access restrictions are validated for data at rest. However, Union.ai personnel with control plane infrastructure access could potentially observe data that transits control plane memory during request processing (structured task I/O, log streams, secret values during create/update). This is inherent to any pass-through proxy architecture and is mitigated by the transient nature of the data (not persisted, not logged, not cached).
+Personnel CANNOT: read secret values (the API is write-only), access bulk data in customer object stores (presigned URLs are per-request and not retained), access the customer's cloud account or IAM roles, or access customer object stores, secrets backends, container registries, or log aggregators. Personnel with control plane infrastructure access could in principle observe inline data transiting control plane memory during request processing (structured task I/O, log streams, secret values during create/update), but this data is transient (not persisted, not logged, not cached) and is inherent to any pass-through proxy architecture.
 
 All access by Union.ai personnel is authenticated and logged with caller identity, operation performed, and timestamp.
 

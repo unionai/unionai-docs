@@ -10,20 +10,19 @@ The control plane is the Union.ai-hosted component that orchestrates workflow ex
 
 ## What it stores
 
-The control plane stores only the metadata required for orchestration. This includes task definitions (container image references, resource requirements, and typed interfaces), run and action metadata (identifiers, phase transitions, timestamps, and error information), user identity and RBAC records, cluster configuration and health records, and trigger and schedule definitions.
+The control plane uses three databases (PostgreSQL + 2x Cassandra/Scylla) to store the information required for orchestration. This information falls into three categories:
 
-> [!WARNING]
-> **Audit finding (ref #7, #7a, #11):** "Only the metadata required for orchestration" understates what the control plane stores. The control plane uses three databases (PostgreSQL + 2x Cassandra/Scylla). They store as explicit columns: task/run/action/trigger identifiers (including **task function names** and **run names**), action state (phase, timestamps, cluster), and user identity (`created_by`, `deployed_by`). TaskSpec blobs are stored as serialized protobuf containing not just container image references and typed interfaces, but also: environment variables (`Container.env`), default input literal values (`default_inputs`), SQL query statements (`Sql.statement`), full Kubernetes pod specs (`K8sPod.pod_spec`), arbitrary plugin data (`TaskTemplate.custom`), arbitrary config key-value pairs (`TaskTemplate.config`), and OAuth2 client IDs/IDP endpoints. RunSpec blobs contain additional env vars and security context. Trigger specs contain default literal values. Error messages and K8s event messages are persisted via the events system. Plugin state (opaque bytes) is stored per action attempt. The full TaskSpec is sent inline on every run — these fields are stored on every run submission. PostgreSQL data is encrypted at rest (AWS RDS AES-256/KMS); Cassandra encryption depends on managed service configuration.
+**Orchestration metadata** (stored as database columns): task, run, action, and trigger identifiers (including task function names and run names), action state (phase, timestamps, cluster assignment), user identity (who created and deployed each run), and scheduling configuration. This is pure operational data.
 
-The control plane does **not** store customer data payloads. When it needs to reference data, it stores URIs pointing to objects in the customer's object store (for example, `s3://customer-bucket/org/project/domain/run/action/output.pb`). The data itself never transits through or resides in the control plane.
+**Task and run definitions** (stored as serialized protobuf blobs): each run submission includes a full TaskSpec containing the task's container image, command, typed interface, resource requirements, and security context. These blobs also include fields that may contain customer-sensitive information: environment variables, default input literal values, SQL query statements, Kubernetes pod specs, arbitrary plugin configuration, config key-value pairs, and OAuth2 client IDs. RunSpec blobs carry additional environment variables, security context, labels, and annotations. Trigger specs carry default input values for scheduled runs. A full TaskSpec is stored on every run submission, content-addressed by digest. All data in PostgreSQL is encrypted at rest (AWS RDS AES-256/KMS).
 
-> [!WARNING]
-> **Audit finding (ref #3, #4, #5):** "The data itself never transits through or resides in the control plane" is incorrect. Structured task inputs transit control plane memory on every run submission (`UploadInputs`, up to 10 MB). Structured task inputs AND outputs transit control plane memory on every retrieval (`GetActionData`, up to 20 MiB). Secret values transit control plane memory during Create/Update. Execution logs stream through control plane memory unredacted. This data is transient (not persisted, not logged, not cached), but it does transit and temporarily reside in control plane process memory.
+**Error and event information**: error messages from task executions (which may contain customer data from Python tracebacks) and Kubernetes event messages are persisted via the events system. Plugin state (opaque bytes specific to the executor plugin) is stored per action attempt.
 
-This metadata-only design limits the blast radius of any control plane security incident. Even with full access to the control plane database, an attacker would obtain only workflow structure and scheduling information -- not the data those workflows process.
+The control plane does **not** store bulk customer data payloads (files, directories, DataFrames, code bundles, container images, or inter-task artifacts). When it references such data, it stores only URIs pointing to objects in the customer's object store (for example, `s3://customer-bucket/org/project/domain/run/action/output.pb`).
 
-> [!NOTE]
-> **Audit finding (ref #7):** An attacker with full database access would also obtain TaskSpec blobs containing environment variables, default input values, SQL statements, K8s pod specs, plugin configuration, OAuth2 client IDs, and error messages -- which may include sensitive customer data beyond "workflow structure and scheduling information." A full TaskSpec is stored for every run.
+Certain inline data does transit control plane memory during request processing: structured task inputs on every run submission (`UploadInputs`, up to 10 MB), structured task inputs and outputs on every retrieval (`GetActionData`, up to 20 MiB), secret values during create/update, and execution log streams. This data is encrypted in transit, exists in memory only for the request duration, and is not persisted, cached, or logged.
+
+With full access to the control plane databases, an attacker would obtain task definitions (including the potentially sensitive fields listed above), error messages, and execution metadata. They would not obtain bulk data payloads, which reside in the customer's object store. The blast radius is further limited by the transient nature of inline data (not persisted) and the write-only design of the secrets API (values cannot be read back).
 
 ## Infrastructure
 
@@ -43,16 +42,13 @@ The control plane consists of several services, each responsible for a specific 
 
 **Cluster Service** maintains cluster health information and handles DNS reconciliation. It monitors the status of registered data plane clusters and ensures that routing information remains current.
 
-**DataProxy** provides a streaming relay for logs and metrics. When a user views live logs in the UI, DataProxy streams them from the data plane without persisting the content. It also handles presigned URL signing requests, brokering access to data in the customer's object store.
-
-> [!WARNING]
-> **Audit finding (ref #3, #5, #6):** DataProxy does more than streaming relay and signed URL brokering. It also handles `UploadInputs` (proxying full structured task inputs to the data plane object store) and `GetActionData` (fetching full task inputs and outputs from the data plane object store). In both cases, the full data payload transits DataProxy's memory. Additionally, log streams pass through without any content filtering or redaction -- secrets, PII, or any data written to stdout/stderr by user code flows through unmodified.
+**DataProxy** is the control plane's data-handling gateway. It serves several functions: proxying structured task inputs to the data plane object store on run submission (`UploadInputs`), fetching structured task inputs and outputs on retrieval (`GetActionData`), streaming execution logs from the data plane to clients, and brokering presigned URL signing requests for bulk data access. For `UploadInputs` and `GetActionData`, the full data payload (up to 10-20 MiB) transits DataProxy's memory as plaintext, encrypted in transit on both sides. Log streams pass through without content filtering or redaction. In all cases, the data is not persisted, cached, or logged by DataProxy.
 
 ## Verification
 
 ### What it stores (Critical)
 
-**Reviewer focus:** Confirm that the control plane database contains only orchestration metadata and no customer data payloads.
+**Reviewer focus:** Confirm that the control plane databases contain orchestration metadata and task definitions as described above, but no bulk customer data payloads. Verify that task definitions do not contain unintended sensitive content beyond the fields documented here.
 
 **How to verify:**
 

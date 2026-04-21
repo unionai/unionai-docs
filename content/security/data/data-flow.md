@@ -6,17 +6,17 @@ variants: -flyte +union
 
 # Data flow
 
-Union.ai uses two distinct patterns to move data between the data plane and clients: presigned URLs for stored objects and streaming relays for live data. Both patterns are designed to keep customer data out of the control plane.
-
-> [!WARNING]
-> **Audit finding (ref #3):** There is a third data flow pattern not described here: structured task I/O (protobuf literals -- ints, strings, lists, dicts, small serialized objects) is proxied through control plane memory via `UploadInputs` (on every run submission, up to 10 MB) and `GetActionData` (on every result retrieval, up to 20 MiB). Only binary artifacts (files, directories, DataFrames, code bundles) use the presigned URL path. The distinction is by data type, not by size. This third pattern should be documented as a separate section.
+Union.ai uses three distinct patterns to move data between the data plane and clients: presigned URLs for bulk data, an inline proxy for structured task I/O, and streaming relays for live data.
 
 ## Presigned URL pattern
 
-For task inputs, outputs, code bundles, and reports, the control plane proxies signing requests to the data plane, which generates time-limited presigned URLs using customer-managed IAM credentials. The client then fetches or uploads data directly to the customer's object store -- the data never transits the control plane. This model eliminates the need for the control plane to hold persistent cloud IAM credentials.
+For bulk data -- files (`flyte.io.File`), directories (`flyte.io.Dir`), DataFrames, code bundles, and reports -- the control plane proxies signing requests to the data plane, which generates time-limited presigned URLs using customer-managed IAM credentials. The client then uploads or downloads data directly to the customer's object store. The data content never enters the control plane; only the signing metadata passes through. This model eliminates the need for the control plane to hold persistent cloud IAM credentials.
 
-> [!WARNING]
-> **Audit finding (ref #3):** "The data never transits the control plane" is true for the presigned URL path (binary artifacts like files, directories, DataFrames, code bundles, and reports). However, structured task inputs are uploaded through `UploadInputs` (which proxies the full payload through control plane memory), and structured task inputs+outputs are retrieved through `GetActionData` (same proxying pattern). The presigned URL pattern does not apply to structured task I/O.
+## Inline proxy pattern
+
+For structured task inputs and outputs (protobuf literals -- ints, strings, lists, dicts, and small serialized objects), the control plane acts as a proxy. On run submission, the SDK sends structured inputs to the control plane via `UploadInputs` (up to 10 MB), which proxies the full payload through its memory to the data plane object store via the Cloudflare Tunnel. On result retrieval, `GetActionData` fetches both inputs and outputs from the data plane object store through the control plane (up to 20 MiB). The data is encrypted in transit (TLS on both sides), exists as plaintext in control plane memory for the duration of each request, and is not persisted, cached, or logged. The same pattern applies to secret values during create/update operations, which are relayed through the control plane to the data plane's secrets backend.
+
+The distinction between presigned URLs and the inline proxy is by data type, not by size: binary artifacts always use presigned URLs; structured protobuf literals always use the inline proxy.
 
 The following controls are applied to every presigned URL:
 
@@ -30,10 +30,7 @@ Because presigned URLs are bearer tokens -- possession alone grants access -- Un
 
 ## Streaming relay pattern
 
-For logs and observability metrics, the control plane acts as a stateless relay. It streams data from the data plane through the Cloudflare Tunnel to the client in real time. The data passes through the control plane's memory as a TLS-encrypted stream but is never written to disk, cached, or stored. Once the stream completes, no trace of the data remains in the control plane.
-
-> [!NOTE]
-> **Audit finding (ref #6):** This description accurately characterizes the streaming relay as non-persisting. However, note that there is no content filtering or redaction in the log streaming pipeline. Any sensitive data (secrets, PII, credentials) that user code writes to stdout/stderr will flow through control plane memory unmodified.
+For logs and observability metrics, the control plane acts as a stateless relay. It streams data from the data plane through the Cloudflare Tunnel to the client in real time. The data passes through the control plane's memory as plaintext (encrypted in transit on both network hops) but is never written to disk, cached, or stored. Once the stream completes, no trace of the data remains in the control plane. There is no content filtering or redaction in the log streaming pipeline -- any sensitive data (secrets, PII, credentials) that user code writes to stdout/stderr will flow through control plane memory unmodified.
 
 ## Data in the UI
 
@@ -52,10 +49,7 @@ The Union.ai web console displays information from multiple sources. The followi
 | Timeline timestamps | Control Plane | CP API |
 | Errors | Control Plane | CP API |
 
-Fields sourced from the control plane contain only orchestration metadata. Fields sourced from the data plane contain customer data and are accessed either through presigned URLs or the streaming relay -- in both cases, the data flows directly between the client and the customer's infrastructure.
-
-> [!NOTE]
-> **Audit finding (ref #3, #7):** "Fields sourced from the control plane contain only orchestration metadata" -- TaskSpec blobs stored in the control plane databases contain potentially sensitive fields (env vars, default values, SQL statements, K8s pod specs, plugin configuration). Also, "Inputs/outputs" in the table above are proxied through control plane memory via `GetActionData`, not fetched directly by the client. The "Errors" row correctly shows these come from the control plane, but error messages can contain customer data from Python tracebacks.
+Fields sourced from the control plane include orchestration metadata and task definitions (which may contain potentially sensitive fields such as environment variables and default values -- see [Control plane](../architecture/control-plane) for details). Structured inputs/outputs are proxied through control plane memory via the inline proxy pattern before reaching the client. Fields sourced directly from the data plane via presigned URLs (reports, code bundles) bypass the control plane entirely. Error messages served from the control plane database may contain customer data from Python tracebacks.
 
 For details on the underlying network architecture, see [Two-plane separation](../architecture/two-plane-separation).
 

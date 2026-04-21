@@ -6,10 +6,7 @@ variants: -flyte +union
 
 # Encryption
 
-Union.ai encrypts all data at rest and in transit across every storage and communication path in the platform.
-
-> [!NOTE]
-> **Audit finding:** Transit encryption is validated: TLS + mTLS + Cloudflare tunnel for all cross-plane communication. At-rest encryption is delegated to cloud provider services (S3 SSE, GCS encryption, Azure SSE, AWS RDS AES-256) rather than implemented by Union.ai directly -- this is standard practice and correctly described in the table below.
+Union.ai encrypts all data at rest and in transit across every storage and communication path in the platform. Transit encryption uses TLS + mTLS + Cloudflare Tunnel for all cross-plane communication. At-rest encryption is provided by cloud provider services (S3 SSE, GCS encryption, Azure SSE, AWS RDS AES-256). Data that transits control plane memory (structured task I/O, secret values during creation, log streams) is encrypted on every network hop but exists as plaintext in process memory during request handling -- this is standard for any service that processes data.
 
 ## Encryption at rest
 
@@ -33,10 +30,7 @@ All communication paths in the Union.ai platform are encrypted using TLS:
 - **Client to object store** -- presigned URLs always use HTTPS, enforced by the cloud provider.
 - **Internal data plane communication** -- uses cloud-native TLS for inter-service traffic.
 
-No unencrypted communication paths exist in the platform. The combination of TLS at the edge, mutual TLS through the tunnel, and HTTPS for presigned URLs ensures end-to-end encryption for all data in transit.
-
-> [!NOTE]
-> **Audit finding (ref #8):** One concern: if debug logging is enabled in the control plane, the `CopySafeHeadersAndCookies` function (`headers.go:70-84`) logs authentication credential values (Cloudflare service tokens, OAuth access/refresh tokens, ID tokens, CSRF tokens) in plaintext. Data content is not logged even at debug level, but credential exposure through debug logs is a risk.
+No unencrypted communication paths exist in the platform. The combination of TLS at the edge, mutual TLS through the tunnel, and HTTPS for presigned URLs ensures end-to-end encryption for all data in transit. Data content is never logged at any log level. (Note: if debug logging is enabled in the control plane, authentication credentials -- not data content -- may be logged in plaintext by the header-propagation utility.)
 
 For details on the tunnel architecture, see [Two-plane separation](../architecture/two-plane-separation).
 

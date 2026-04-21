@@ -7,10 +7,7 @@ sidebar_expanded: true
 
 # Architecture
 
-Union.ai's security is built on a foundational architectural principle: strict separation between the Union.ai-hosted control plane and the customer-hosted data plane. This separation ensures that all customer data remains within the customer's own cloud infrastructure while the control plane handles only orchestration metadata.
-
-> [!WARNING]
-> **Audit finding (ref #3, #4, #5, #7):** The claim that "all customer data remains within the customer's own cloud infrastructure" and that the control plane handles "only orchestration metadata" needs qualification. The audit found that structured task inputs/outputs (up to 10 MB per submission, 20 MiB per retrieval), secret values during Create/Update operations, and execution log streams all transit control plane memory transiently. Additionally, TaskSpec and RunSpec blobs stored in the control plane databases (PostgreSQL and Cassandra) contain environment variables, default input values, SQL statements, K8s pod specs, and arbitrary plugin configuration. The full TaskSpec is sent inline on every run submission, so these fields are persisted on every run.
+Union.ai's security is built on a foundational architectural principle: separation between the Union.ai-hosted control plane and the customer-hosted data plane. Bulk customer data such as files, directories, DataFrames, code bundles, container images, and inter-task artifacts are stored exclusively in the customer's infrastructure and never enter the control plane. Smaller inline data items such as structured task inputs/outputs, secret values during creation, and execution log streams transit control plane memory transiently as plaintext but are not persisted there. The control plane databases store orchestration metadata and task definitions, which include fields such as environment variables and default input values. This information is encrypted at rest.
 
 The network architecture reinforces this separation with an outbound-only connectivity model that eliminates the need for inbound firewall rules on the customer's network.
 

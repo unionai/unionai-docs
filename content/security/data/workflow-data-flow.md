@@ -6,10 +6,7 @@ variants: -flyte +union
 
 # Workflow data flow
 
-This page traces the security-relevant data movements at each stage of the workflow lifecycle: registration, execution, and result retrieval. At every stage, customer data remains in the customer's infrastructure while only metadata passes through the control plane.
-
-> [!WARNING]
-> **Audit finding (ref #3, #4, #5):** "Only metadata passes through the control plane" is not accurate. Structured task inputs pass through control plane memory on run submission. Structured task inputs and outputs pass through on retrieval. Secret values pass through on create/update. Execution logs stream through unredacted. See the detailed findings below for each stage.
+This page traces the security-relevant data movements at each stage of the workflow lifecycle: registration, execution, and result retrieval. Bulk data (files, DataFrames, code bundles, container images) stays in the customer's infrastructure at every stage. Smaller inline data (structured task inputs/outputs, secret values during creation, log streams) transits control plane memory during request processing but is not persisted there.
 
 ## Task registration
 
@@ -19,15 +16,9 @@ For details on the presigned URL mechanism, see [Data flow](./data-flow).
 
 ## Run creation and execution
 
-When a run is created, the SDK serializes input data and uploads it to the customer's object store. Only the input URI is stored in the control plane. The control plane then enqueues the action to the data plane via the Cloudflare Tunnel.
+When a run is created, the SDK sends structured task inputs to the control plane via `UploadInputs` (up to 10 MB). The control plane proxies the full input payload through its memory (encrypted in transit, plaintext in memory, not persisted) to the data plane object store via the Cloudflare Tunnel. Binary input artifacts (files, directories, DataFrames) are uploaded directly to the customer's object store via presigned URLs, bypassing the control plane. The control plane stores only the input URI, then enqueues the action to the data plane.
 
-> [!WARNING]
-> **Audit finding (ref #3):** "The SDK serializes input data and uploads it to the customer's object store" is incorrect. The SDK sends structured task inputs to the control plane via `UploadInputs`. The control plane then proxies the full input payload through its memory to the data plane object store via the Cloudflare Tunnel. The inputs do not go directly from the SDK to the object store. Only binary artifacts (files, directories, DataFrames) are uploaded directly via presigned URLs. In-cluster inter-task I/O during workflow execution does go directly to the object store via IAM, bypassing the control plane.
-
-The Executor on the data plane creates a pod that reads inputs from and writes outputs back to the customer's object store. Secrets required by the task are injected into pods from the customer's secrets backend -- they never traverse the control plane during runtime. The control plane receives only phase transitions and status updates (started, succeeded, failed, retrying) from the Executor, not the data being processed.
-
-> [!NOTE]
-> **Audit finding (ref #4):** "Secrets never traverse the control plane during runtime" is correct -- secret consumption at runtime is entirely within the data plane. However, secret values do traverse the control plane during initial secret creation and updates, when the value is relayed through DataProxy to the data plane's secrets backend. The control plane also receives error messages (up to 4KB) from the Executor, which can contain customer data from Python tracebacks.
+The Executor on the data plane creates a pod that reads inputs from and writes outputs back to the customer's object store. During workflow execution, inter-task I/O flows directly between task pods and the object store via IAM, with no control plane involvement. Secrets required by the task are injected into pods from the customer's secrets backend at runtime -- secret values do not traverse the control plane during execution. (Secret values do traverse the control plane during initial secret creation and updates, when the value is relayed through DataProxy to the data plane's secrets backend -- see [Secrets management](./secrets).) The control plane receives phase transitions, status updates, and error messages from the Executor. Error messages may contain customer data from Python tracebacks.
 
 For details on secrets injection, see [Secrets management](./secrets).
 
@@ -35,12 +26,11 @@ For details on secrets injection, see [Secrets management](./secrets).
 
 Once a run completes, its results are accessible through three channels, each with different data flow characteristics:
 
-**Outputs, reports, and code bundles** are accessed via presigned URLs. The data flows directly from the customer's object store to the client -- it does not pass through the control plane.
+**Binary outputs, reports, and code bundles** are accessed via presigned URLs. The data flows directly from the customer's object store to the client -- it does not pass through the control plane.
 
-> [!WARNING]
-> **Audit finding (ref #3):** This is true for reports, code bundles, and binary output artifacts (files, directories, DataFrames) which use presigned URLs. However, structured task outputs (protobuf literals) are retrieved via `GetActionData`, where the full output payload passes through control plane memory before being returned to the client.
+**Structured outputs** (protobuf literals) are retrieved via `GetActionData`, which fetches the full output payload from the data plane object store through the control plane (encrypted in transit, plaintext in control plane memory during the request, not persisted). Both structured inputs and outputs are returned together, up to 20 MiB total.
 
-**Logs** are streamed from the data plane through the Cloudflare Tunnel as a stateless relay. The control plane forwards the stream without persisting any content.
+**Logs** are streamed from the data plane through the Cloudflare Tunnel as a stateless relay. The control plane forwards the stream as plaintext in memory (encrypted in transit) without persisting or filtering the content.
 
 **Metadata** -- run status, phase transitions, timestamps, and error messages -- is served directly from the control plane database.
 

@@ -8,25 +8,13 @@ variants: -flyte +union
 
 Union.ai's architecture is divided into two distinct planes: a **control plane** hosted by Union.ai on AWS, and a **data plane** that runs on the customer's own Kubernetes cluster within their cloud account. This separation is the foundational security property of the system.
 
-The control plane handles workflow orchestration, user management, and the web interface. It stores only the metadata required for these functions -- task definitions, execution state, scheduling information, and user records. The control plane never stores customer data payloads. When it references data, it stores only URIs pointing to objects in the customer's object store, never the data itself.
+The control plane handles workflow orchestration, user management, and the web interface. It stores orchestration metadata -- task definitions, execution state, scheduling information, and user records -- encrypted at rest in its databases. Task definitions include structural information (container image references, typed interfaces) and fields that may be customer-sensitive (environment variables, default input values, SQL statements, Kubernetes pod specs, and plugin configuration). When the control plane references bulk data (inputs, outputs, artifacts), it stores only URIs pointing to objects in the customer's object store.
 
-> [!WARNING]
-> **Audit finding (ref #7, #11):** "The control plane never stores customer data payloads" needs qualification. The control plane databases store task/run/action/trigger identifiers (including task function names, run names), user identity, and execution state as explicit columns. TaskSpec blobs stored across three databases (PostgreSQL + 2x Cassandra) contain environment variables, default input literal values, SQL query statements, K8s pod specs, arbitrary plugin configuration, and config key-value pairs. RunSpec blobs contain additional env vars and security context. Trigger specs contain default literal values for scheduled runs. Error messages from task executions and Kubernetes event messages are persisted via the events system. The full TaskSpec is sent inline on every run — these fields transit and are stored on every run submission. PostgreSQL data is encrypted at rest (AWS RDS AES-256/KMS); Cassandra encryption depends on the managed service configuration.
+The data plane is where all computation and data handling occurs. It runs entirely within the customer's cloud account on infrastructure the customer controls (or, in the BYOC model, infrastructure that Union.ai manages on the customer's behalf within the customer's account). All bulk customer data -- files, directories, DataFrames, code bundles, container images, and inter-task artifacts -- is stored exclusively in the data plane and never enters the control plane. These objects are uploaded and downloaded directly via presigned URLs.
 
-The data plane is where all computation and data handling occurs. It runs entirely within the customer's cloud account on infrastructure the customer controls (or, in the BYOC model, infrastructure that Union.ai manages on the customer's behalf within the customer's account). All customer data -- inputs, outputs, intermediate artifacts, logs, and model weights -- resides in the data plane.
+Certain smaller inline data transits control plane memory during request processing: structured task inputs and outputs (protobuf literals, up to 10-20 MiB), secret values during creation and update, and execution log streams. This data is encrypted in transit (TLS + Cloudflare Tunnel), exists in control plane memory only for the duration of each request, and is not persisted, cached, or logged there. The control plane acts as a pass-through proxy for this data, not a store.
 
-> [!WARNING]
-> **Audit finding (ref #3, #4, #5):** "All customer data resides in the data plane" is true for data at rest but incomplete. Structured task inputs transit control plane memory on every run submission via `UploadInputs` (up to 10 MB). Structured task inputs AND outputs transit control plane memory on every retrieval via `GetActionData` (up to 20 MiB). Secret values transit control plane memory during Create/Update operations. Execution log streams pass through control plane memory unredacted. In all these cases the data is transient (not persisted, not logged, not cached) and encrypted in transit, but it does exist in Union.ai process memory during request processing.
-
-When data must be surfaced to a client (for example, when a user views task outputs in the UI), the control plane either proxies a signing request to generate a presigned URL or relays a data stream without persisting it. In both cases, the actual data travels directly between the client and the customer's object store. The control plane acts as a broker, not a data store.
-
-> [!NOTE]
-> **Audit finding (ref #3):** "The actual data travels directly between the client and the customer's object store" is true for binary artifacts (files, directories, DataFrames, code bundles) which use the signed URL path. However, structured task I/O (protobuf literals) is proxied through control plane memory via `UploadInputs` and `GetActionData` -- the data does not travel directly in those cases. The distinction is by data type, not by size.
-
-This separation means that even in the event of a full control plane compromise, customer data payloads remain in the customer's cloud account, protected by the customer's own IAM policies and network controls. The control plane simply does not have the data to leak.
-
-> [!WARNING]
-> **Audit finding (ref #3, #7):** "The control plane simply does not have the data to leak" overstates the separation. A compromised control plane could intercept structured task I/O during `UploadInputs`/`GetActionData` processing, secret values during Create/Update relay, and log streams during streaming. Additionally, the control plane databases contain TaskSpec and RunSpec blobs with potentially sensitive fields (env vars, default values, SQL statements, K8s pod specs, plugin configuration). The full TaskSpec is stored on every run submission. A full CP compromise would expose this data. The blast radius is limited by: transient residence (no persistence of I/O data), size caps (10-20 MiB), and the fact that binary artifacts (files, DataFrames, code bundles) genuinely bypass the CP via signed URLs.
+This separation limits the blast radius of a control plane security incident. Bulk data (files, DataFrames, code bundles, container images) is inaccessible from the control plane -- it resides entirely in the customer's cloud account, protected by the customer's IAM policies. A compromised control plane could expose: task definitions stored in its databases (including the potentially sensitive fields listed above), inline data transiting memory during active requests (bounded by size caps and request duration), and log stream content. It could not access bulk data, since presigned URLs are generated on the data plane.
 
 For details on what each plane contains and how they communicate, see [Control plane](./control-plane), [Data plane](./data-plane), and [Network architecture](./network).
 
@@ -34,10 +22,7 @@ For details on what each plane contains and how they communicate, see [Control p
 
 ### Data residency (Critical)
 
-**Reviewer focus:** Confirm that customer data resides exclusively in the customer's cloud account and that the control plane holds only metadata references.
-
-> [!NOTE]
-> **Audit finding (ref #3, #7):** This verification step should also check for data that transits the control plane transiently (structured I/O via `UploadInputs`/`GetActionData`) and for potentially sensitive content in TaskSpec blobs stored in the control plane databases (environment variables, default values, SQL statements, K8s pod specs).
+**Reviewer focus:** Confirm that bulk customer data resides in the customer's cloud account, that inline data transiting the control plane is not persisted, and that task definitions stored in the control plane databases do not contain unintended sensitive content.
 
 **How to verify:**
 

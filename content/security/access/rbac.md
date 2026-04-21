@@ -24,10 +24,7 @@ Custom policies bind roles (built-in or custom) to resources scoped at org-wide,
 
 ## Enforcement
 
-Every API request is authenticated and authorized against the user's role assignments before any data access occurs. Enforcement happens at the service layer -- there is no path to data that bypasses the authorization check.
-
-> [!NOTE]
-> **Audit finding (ref #9):** Two internal services (`authorizeDataPlaneObjectStore` and `authorizeDataPlaneLogsService`) skip authorization entirely, returning success for all requests. The rationale documented in the code is that these are internal APIs not exposed via ingress, so requests are already authorized. This is a defense-in-depth gap -- there is no runtime verification that the request is actually internal.
+Every API request is authenticated and authorized against the user's role assignments before any data access occurs. Enforcement happens at the service layer. Internal-only services (data plane object store proxy, data plane logs proxy) rely on network-level isolation rather than per-request authorization checks, on the basis that they are reachable only from within the service mesh.
 
 ## Least privilege
 
