@@ -12,9 +12,9 @@ This section provides a comprehensive overview of Union.ai's security architectu
 
 ## Overview
 
-**[Architecture](./architecture/_index).** The system is divided into a control plane (hosted by Union.ai) and a data plane (on the customer's infrastructure), connected by an outbound-only Cloudflare Tunnel. The control plane stores only orchestration metadata. No inbound firewall rules are required on the customer's network.
+**[Architecture](./architecture/_index).** The system is divided into a control plane hosted by Union.ai and a data plane hosted on the customer's infrastructure. The two planes are connected solely by Cloudflare Tunnel that is outbound-only from the customer data plane. No inbound firewall rules are required on the customer's network.
 
-**[Data](./data/_index).** Customer data -- task inputs, outputs, code, logs, secrets, and container images -- never leaves the customer's cloud account. All data is encrypted at rest and in transit. The secrets API is write-only by design.
+**[Data](./data/_index).** All customer data, including task inputs, task outputs, code, logs, secrets, and container images, reside only on the customer's data plane. The control plane stores only the metadata required for orchestration.
 
 **[Access](./access/_index).** Authentication via OIDC/SSO, API keys, and service accounts. Role-based access control enforces least privilege. Tenants are isolated at the database layer. Union.ai personnel cannot access customer data or secrets.
 
