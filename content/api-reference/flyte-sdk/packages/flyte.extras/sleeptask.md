@@ -1,22 +1,18 @@
 ---
-title: AsyncFunctionTaskTemplate
+title: SleepTask
 version: 2.1.9
 variants: +flyte +union
 layout: py_api
 ---
 
-# AsyncFunctionTaskTemplate
+# SleepTask
 
-**Package:** `flyte.extend`
-
-A task template that wraps an asynchronous functions. This is automatically created when an asynchronous function
-is decorated with the task decorator.
-
+**Package:** `flyte.extras`
 
 ## Parameters
 
 ```python
-class AsyncFunctionTaskTemplate(
+class SleepTask(
     name: str,
     interface: NativeInterface,
     short_name: str,
@@ -44,7 +40,7 @@ class AsyncFunctionTaskTemplate(
     links: Tuple[Link, ...],
     _call_as_synchronous: bool,
     func: F,
-    plugin_config: Optional[Any],
+    plugin_config: Sleep,
     task_resolver: Optional[Any],
 )
 ```
@@ -77,7 +73,7 @@ class AsyncFunctionTaskTemplate(
 | `links` | `Tuple[Link, ...]` | |
 | `_call_as_synchronous` | `bool` | |
 | `func` | `F` | |
-| `plugin_config` | `Optional[Any]` | |
+| `plugin_config` | `Sleep` | |
 | `task_resolver` | `Optional[Any]` | |
 
 ## Properties

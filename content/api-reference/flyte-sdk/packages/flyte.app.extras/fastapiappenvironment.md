@@ -1,6 +1,6 @@
 ---
 title: FastAPIAppEnvironment
-version: 2.1.7
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -22,6 +22,7 @@ class FastAPIAppEnvironment(
     resources: Optional[Resources],
     interruptible: bool,
     image: Union[str, Image, Literal['auto'], None],
+    include: Tuple[str, ...],
     port: int | Port,
     args: *args,
     command: Optional[Union[List[str], str]],
@@ -29,7 +30,6 @@ class FastAPIAppEnvironment(
     scaling: Scaling,
     domain: Domain | None,
     links: List[Link],
-    include: List[str],
     parameters: List[Parameter],
     cluster_pool: str,
     timeouts: Timeouts,
@@ -50,6 +50,7 @@ class FastAPIAppEnvironment(
 | `resources` | `Optional[Resources]` | |
 | `interruptible` | `bool` | |
 | `image` | `Union[str, Image, Literal['auto'], None]` | |
+| `include` | `Tuple[str, ...]` | |
 | `port` | `int \| Port` | |
 | `args` | `*args` | |
 | `command` | `Optional[Union[List[str], str]]` | |
@@ -57,7 +58,6 @@ class FastAPIAppEnvironment(
 | `scaling` | `Scaling` | |
 | `domain` | `Domain \| None` | |
 | `links` | `List[Link]` | |
-| `include` | `List[str]` | |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | |
 | `timeouts` | `Timeouts` | |

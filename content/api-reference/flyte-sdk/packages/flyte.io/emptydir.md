@@ -1,46 +1,40 @@
 ---
-title: JsonlDir
+title: EmptyDir
 version: 2.1.9
-variants: +flyte +byoc +selfmanaged +union
+variants: +flyte +union
 layout: py_api
 ---
 
-# JsonlDir
+# EmptyDir
 
-**Package:** `flyteplugins.jsonl`
+**Package:** `flyte.io`
 
-A directory of sharded JSONL files.
+A sentinel :class:`Dir` representing 'no directory was produced'.
 
-Provides transparent iteration across shards on read and automatic shard
-rotation on write. Inherits all `Dir` capabilities (remote storage,
-walk, download, etc.).
-
-Shard files are named `part-00000.jsonl` (or `.jsonl.zst` for
-compressed shards), zero-padded to 5 digits and sorted alphabetically
-on read. Mixed compression within a single directory is supported.
-
-Example (Async read)::
+Use this as a return value when a task may or may not produce an output directory,
+e.g. ``flyte.run_python_script`` when the user did not request ``output_dir``::
 
     @env.task
-    async def process(d: JsonlDir):
-        async for record in d.iter_records():
-            print(record)
+    async def maybe_produce_dir(...) -&gt; Output:
+        if user_wants_dir:
+            return Output(output_dir=await Dir.from_local(path))
+        return Output(output_dir=EmptyDir())
 
-Example (Async write)::
+On the receiving side, the value comes back as a plain ``Dir`` with
+:attr:`Dir.is_empty` set to ``True`` (the deserializer doesn't preserve the
+``EmptyDir`` subclass identity, but the sentinel path round-trips). Callers should
+branch on ``dir.is_empty`` rather than ``isinstance(dir, EmptyDir)``.
 
-    @env.task
-    async def create() -&gt; JsonlDir:
-        d = JsonlDir.new_remote("output_shards")
-        async with d.writer(max_records_per_shard=1000) as w:
-            for i in range(5000):
-                await w.write({"id": i})
-        return d
+This exists because ``Optional[Dir]`` cannot round-trip through Flyte's
+``DataclassTransformer`` — mashumaro strips the ``Optional`` and calls
+``Dir._deserialize(None)`` which fails. ``EmptyDir`` keeps the field type as
+plain ``Dir`` so the round-trip works.
 
 
 ## Parameters
 
 ```python
-class JsonlDir(
+class EmptyDir(
     path: str,
     name: typing.Optional[str],
     format: str,
@@ -83,12 +77,6 @@ validated to form a valid model.
 | [`from_local_sync()`](#from_local_sync) | Synchronously create a new Dir by uploading a local directory to remote storage. |
 | [`get_file()`](#get_file) | Asynchronously get a specific file from the directory by name. |
 | [`get_file_sync()`](#get_file_sync) | Synchronously get a specific file from the directory by name. |
-| [`iter_arrow_batches()`](#iter_arrow_batches) | Async generator that yields Arrow RecordBatches across all shards. |
-| [`iter_arrow_batches_sync()`](#iter_arrow_batches_sync) | Sync generator that yields Arrow RecordBatches across all shards. |
-| [`iter_batches()`](#iter_batches) | Async generator that yields lists of records in batches. |
-| [`iter_batches_sync()`](#iter_batches_sync) | Sync generator that yields lists of records in batches. |
-| [`iter_records()`](#iter_records) | Async generator that yields records from all shards in sorted order. |
-| [`iter_records_sync()`](#iter_records_sync) | Sync generator that yields records from all shards in sorted order. |
 | [`list_files()`](#list_files) | Asynchronously get a list of all files in the directory (non-recursive). |
 | [`list_files_sync()`](#list_files_sync) | Synchronously get a list of all files in the directory (non-recursive). |
 | [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialize private attributes. |
@@ -97,8 +85,6 @@ validated to form a valid model.
 | [`schema_match()`](#schema_match) | Internal: Check if incoming schema matches Dir schema. |
 | [`walk()`](#walk) | Asynchronously walk through the directory and yield File objects. |
 | [`walk_sync()`](#walk_sync) | Synchronously walk through the directory and yield File objects. |
-| [`writer()`](#writer) | Async context manager returning a `JsonlDirWriter`. |
-| [`writer_sync()`](#writer_sync) | Sync context manager returning a `JsonlDirWriterSync`. |
 
 
 ### download()
@@ -454,116 +440,6 @@ def read_specific_file_sync(d: Dir) -> str:
 
 **Returns:** A File instance if the file exists, None otherwise
 
-### iter_arrow_batches()
-
-```python
-def iter_arrow_batches(
-    batch_size: int,
-    on_error: Literal['raise', 'skip'] | ErrorHandler,
-) -> AsyncGenerator[Any, None]
-```
-Async generator that yields Arrow RecordBatches across all shards.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `batch_size` | `int` | Max records per RecordBatch (default 65536). |
-| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | `"raise"` (default), `"skip"`, or a callable. |
-
-### iter_arrow_batches_sync()
-
-```python
-def iter_arrow_batches_sync(
-    batch_size: int,
-    on_error: Literal['raise', 'skip'] | ErrorHandler,
-) -> Generator[Any, None, None]
-```
-Sync generator that yields Arrow RecordBatches across all shards.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `batch_size` | `int` | Max records per RecordBatch (default 65536). |
-| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | `"raise"` (default), `"skip"`, or a callable. |
-
-### iter_batches()
-
-```python
-def iter_batches(
-    batch_size: int,
-    on_error: Literal['raise', 'skip'] | ErrorHandler,
-    prefetch: bool,
-    queue_size: int,
-) -> AsyncGenerator[list[dict[str, Any]], None]
-```
-Async generator that yields lists of records in batches.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `batch_size` | `int` | Max records per batch (default 1000). |
-| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | `"raise"` (default), `"skip"`, or a callable. |
-| `prefetch` | `bool` | Overlap next-shard I/O with current-shard processing. |
-| `queue_size` | `int` | Memory safety bound on the read-ahead buffer. |
-
-### iter_batches_sync()
-
-```python
-def iter_batches_sync(
-    batch_size: int,
-    on_error: Literal['raise', 'skip'] | ErrorHandler,
-) -> Generator[list[dict[str, Any]], None, None]
-```
-Sync generator that yields lists of records in batches.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `batch_size` | `int` | Max records per batch (default 1000). |
-| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | `"raise"` (default), `"skip"`, or a callable. |
-
-### iter_records()
-
-```python
-def iter_records(
-    on_error: Literal['raise', 'skip'] | ErrorHandler,
-    prefetch: bool,
-    queue_size: int,
-) -> AsyncGenerator[dict[str, Any], None]
-```
-Async generator that yields records from all shards in sorted order.
-
-When *prefetch* is True (default), the next shard is read into a
-bounded queue concurrently while the current shard is being yielded.
-This overlaps network I/O with processing without buffering more
-than one shard in memory.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | `"raise"` (default), `"skip"`, or a callable `(line_number, raw_line, exception) -&gt; None`. |
-| `prefetch` | `bool` | Overlap next-shard network I/O with current-shard processing for higher throughput. |
-| `queue_size` | `int` | Memory safety bound on the read-ahead buffer (default 8192). |
-
-### iter_records_sync()
-
-```python
-def iter_records_sync(
-    on_error: Literal['raise', 'skip'] | ErrorHandler,
-) -> Generator[dict[str, Any], None, None]
-```
-Sync generator that yields records from all shards in sorted order.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | |
-
 ### list_files()
 
 ```python
@@ -817,54 +693,4 @@ Yields:
 | `recursive` | `bool` | If True, recursively walk subdirectories. If False, only list files in the top-level directory. |
 | `file_pattern` | `str` | Glob pattern to filter files (e.g., "*.txt", "*.csv"). Default is "*" (all files). |
 | `max_depth` | `Optional[int]` | Maximum depth for recursive walking. If None, walk through all subdirectories. |
-
-### writer()
-
-```python
-def writer(
-    shard_extension: str,
-    max_records_per_shard: int | None,
-    max_bytes_per_shard: int,
-    flush_bytes: int,
-    compression_level: int,
-) -> AsyncGenerator[JsonlDirWriter, None]
-```
-Async context manager returning a `JsonlDirWriter`.
-
-Scans the directory for existing shards and starts writing from the
-next available index, so appending to an existing directory is safe.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `shard_extension` | `str` | File extension (e.g. `.jsonl` or `.jsonl.zst`). |
-| `max_records_per_shard` | `int \| None` | Roll after this many records (None = no limit). |
-| `max_bytes_per_shard` | `int` | Roll after this many uncompressed bytes (default 256 MB). |
-| `flush_bytes` | `int` | Buffer flush threshold in bytes (default 1 MB). |
-| `compression_level` | `int` | Zstd level (default 3, only for `.jsonl.zst`). |
-
-### writer_sync()
-
-```python
-def writer_sync(
-    shard_extension: str,
-    max_records_per_shard: int | None,
-    max_bytes_per_shard: int,
-    flush_bytes: int,
-    compression_level: int,
-) -> Generator[JsonlDirWriterSync, None, None]
-```
-Sync context manager returning a `JsonlDirWriterSync`.
-
-See `writer` for argument descriptions.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `shard_extension` | `str` | |
-| `max_records_per_shard` | `int \| None` | |
-| `max_bytes_per_shard` | `int` | |
-| `flush_bytes` | `int` | |
-| `compression_level` | `int` | |
 

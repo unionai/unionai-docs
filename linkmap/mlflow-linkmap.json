@@ -1,19 +1,5 @@
 {
-  "packages": {
-    "flyteplugins.mlflow": "/api-reference/integrations/mlflow/packages/flyteplugins.mlflow/"
-  },
-  "identifiers": {
-    "flyteplugins.mlflow.Mlflow": "/api-reference/integrations/mlflow/packages/flyteplugins.mlflow/mlflow/",
-    "Mlflow": "/api-reference/integrations/mlflow/packages/flyteplugins.mlflow/mlflow/"
-  },
-  "methods": {
-    "flyteplugins.mlflow.get_mlflow_context": "/api-reference/integrations/mlflow/packages/flyteplugins.mlflow/#get_mlflow_context",
-    "get_mlflow_context": "/api-reference/integrations/mlflow/packages/flyteplugins.mlflow/#get_mlflow_context",
-    "flyteplugins.mlflow.get_mlflow_run": "/api-reference/integrations/mlflow/packages/flyteplugins.mlflow/#get_mlflow_run",
-    "get_mlflow_run": "/api-reference/integrations/mlflow/packages/flyteplugins.mlflow/#get_mlflow_run",
-    "flyteplugins.mlflow.mlflow_config": "/api-reference/integrations/mlflow/packages/flyteplugins.mlflow/#mlflow_config",
-    "mlflow_config": "/api-reference/integrations/mlflow/packages/flyteplugins.mlflow/#mlflow_config",
-    "flyteplugins.mlflow.mlflow_run": "/api-reference/integrations/mlflow/packages/flyteplugins.mlflow/#mlflow_run",
-    "mlflow_run": "/api-reference/integrations/mlflow/packages/flyteplugins.mlflow/#mlflow_run"
-  }
+  "packages": {},
+  "identifiers": {},
+  "methods": {}
 }

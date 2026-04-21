@@ -1,6 +1,6 @@
 ---
 title: TaskEnvironment
-version: 2.1.7
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -75,6 +75,7 @@ class TaskEnvironment(
     resources: Optional[Resources],
     interruptible: bool,
     image: Union[str, Image, Literal['auto'], None],
+    include: Tuple[str, ...],
     cache: CacheRequest,
     reusable: ReusePolicy | None,
     plugin_config: Optional[Any],
@@ -92,6 +93,7 @@ class TaskEnvironment(
 | `resources` | `Optional[Resources]` | Compute resources (CPU, memory, GPU, disk). Overridable via `task.override(resources=...)` when not using reusable containers. |
 | `interruptible` | `bool` | Whether tasks can run on spot/preemptible instances. Also settable in `@env.task` and `task.override`. |
 | `image` | `Union[str, Image, Literal['auto'], None]` | Docker image for the environment. Can be a string (image URI), an `Image` object, or `"auto"` to use the default image. TaskEnvironment level only. |
+| `include` | `Tuple[str, ...]` | |
 | `cache` | `CacheRequest` | Cache policy — `"auto"`, `"override"`, `"disable"`, or a `Cache` object. Also settable in `@env.task(cache=...)` and `task.override(cache=...)`. |
 | `reusable` | `ReusePolicy \| None` | `ReusePolicy` for container reuse. Also overridable via `task.override(reusable=...)`. Note: when `reusable` is set on the environment, overriding `resources`, `env_vars`, or `secrets` in `task.override()` requires passing `reusable="off"` in the same call. Additionally, `secrets` cannot be overridden at the `@env.task` decorator level when the environment has `reusable` set. |
 | `plugin_config` | `Optional[Any]` | Plugin configuration for custom task types (e.g., Ray, Spark). Cannot be combined with `reusable`. TaskEnvironment level only. |
@@ -149,6 +151,7 @@ def clone_with(
     depends_on: Optional[List[Environment]],
     description: Optional[str],
     interruptible: Optional[bool],
+    include: Optional[Tuple[str, ...]],
     kwargs: **kwargs,
 ) -> TaskEnvironment
 ```
@@ -185,6 +188,7 @@ original environment.
 | `depends_on` | `Optional[List[Environment]]` | Override deployment dependencies. |
 | `description` | `Optional[str]` | Override the description. |
 | `interruptible` | `Optional[bool]` | Override the interruptible setting. |
+| `include` | `Optional[Tuple[str, ...]]` | |
 | `kwargs` | `**kwargs` | Additional `TaskEnvironment`-specific overrides (e.g., `cache`, `reusable`, `plugin_config`). |
 
 ### from_task()
@@ -238,6 +242,7 @@ def task(
     triggers: Tuple[Trigger, ...] | Trigger,
     links: Tuple[Link, ...] | Link,
     task_resolver: Any | None,
+    entrypoint: bool,
 ) -> Callable[[F], AsyncFunctionTaskTemplate[P, R, F]] | AsyncFunctionTaskTemplate[P, R, F]
 ```
 Decorate a function to be a task.
@@ -259,7 +264,8 @@ Decorate a function to be a task.
 | `queue` | `Optional[str]` | Optional queue name to use for this task. If not set, the environment's queue will be used. |
 | `triggers` | `Tuple[Trigger, ...] \| Trigger` | Optional A tuple of triggers to associate with the task. This allows the task to be run on a schedule or in response to events. Triggers can be defined using the `flyte.trigger` module. |
 | `links` | `Tuple[Link, ...] \| Link` | Optional A tuple of links to associate with the task. Links can be used to provide additional context or information about the task. Links should implement the `flyte.Link` protocol |
-| `task_resolver` | `Any \| None` | |
+| `task_resolver` | `Any \| None` | Optional TaskResolver protocol to load tasks using custom policy. |
+| `entrypoint` | `bool` | Optionally mark a task as an entrypoint task, defaults to False. This serves as a hint to the UI. |
 
 **Returns:** A TaskTemplate that can be used to deploy the task.
 
