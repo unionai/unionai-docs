@@ -62,6 +62,7 @@ flyte run --project my-proj --domain development python-script ...
 | `--timeout` | `3600` | Task timeout in seconds. The subprocess is killed 60 s before this. |
 | `--extra-args` | *(none)* | Comma-separated values passed to the script as `sys.argv`. |
 | `--output-dir` | *(none)* | Directory path *inside the container* to upload as the task's output after the script finishes. |
+| `--include-files` | *(none)* | Path or glob (relative to the script's directory) to bundle alongside the script. Repeat the flag to pass multiple entries. |
 | `--queue` | *(config)* | Flyte queue / cluster override. |
 
 ## Handling dependencies
@@ -159,19 +160,31 @@ reopening the log stream.
 
 ## Bundling: what gets uploaded
 
-The CLI bundles **every `.py` file in the directory containing your
-script** and uploads it as a code bundle. Any sibling module can be
-imported:
+By default the CLI only bundles the script you pointed at. If your
+script imports sibling modules or reads local config/data files, list
+them with `--include-files` (repeat the flag for multiple entries):
+
+```bash
+flyte run python-script train.py \
+    --include-files "*.py" \
+    --include-files "configs/settings.yaml"
+```
+
+Entries are paths or globs resolved relative to the script's directory;
+absolute paths are passed through unchanged. Given:
 
 ```
 my_job/
-  train.py       # flyte run python-script my_job/train.py
+  train.py       # flyte run python-script my_job/train.py --include-files "*.py"
   data_utils.py  # importable as: from data_utils import ...
   model.py       # importable as: from model import ...
 ```
 
-Subdirectories, data files, configs, and other non-`.py` assets are
-**not** bundled. If you need them, bake them into a custom image with
+the glob `"*.py"` picks up both sibling modules and makes them
+importable inside the container.
+
+For anything more elaborate (transitive package trees, large data
+assets, system dependencies), bake the files into a custom image with
 `--image`, or switch to a regular `@env.task` workflow.
 
 ## Python API
@@ -193,6 +206,7 @@ run = flyte.run_python_script(
     image=["torch", "transformers"],  # list = pip packages on base image
     output_dir="output",
     extra_args=["--epochs", "10"],
+    include_files=["*.py", "configs/settings.yaml"],
 )
 print(run.url)
 ```
