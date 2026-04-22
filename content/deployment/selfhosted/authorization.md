@@ -83,12 +83,15 @@ No authorization enforcement — all authenticated requests are allowed. This is
 {{< key product_name >}}'s built-in authorization engine, **embedded in the controlplane Helm chart**. It deploys automatically when enabled, with no separate chart installation required. Provides role-based access control with predefined roles (Admin, Contributor, Viewer) and policy-based fine-grained permissions.
 
 > [!NOTE]
-> The Helm config value `type: "UserClouds"` is a legacy name from an earlier implementation. It activates {{< key product_name >}}'s built-in authorization engine. This will be renamed to `type: "Union"` in a future release.
+> The Helm config accepts both `type: "Union"` (preferred) and `type: "UserClouds"` (legacy name). Both activate the same built-in authorization engine. Use `"Union"` for new deployments.
 
 **When to use:**
 - Production deployments wanting out-of-the-box RBAC with no additional infrastructure
 - Organizations that need role management through the {{< key product_name >}} console
 - Teams wanting a performant, battle-tested authorization backend with low operational burden
+
+> [!WARNING]
+> **Union mode requires identity type claim resolution.** Your IdP must emit a claim that the platform can map to distinguish user tokens from application tokens (e.g., Okta's `identitytype` or Entra ID's `idtyp`). If your IdP cannot provide this, either set `global.USE_EXTERNAL_IDENTITY: true` or use **External** authorization mode instead. See [Identity type claim requirements]({{< relref "authentication#identity-type-claim-requirements" >}}) in the authentication guide.
 
 **Trade-offs:**
 - Built-in role management (Admin, Contributor, Viewer) with full RBAC — assign users and groups to roles with resource-level granularity
@@ -209,7 +212,10 @@ Your external authorization server **must** grant appropriate permissions to the
 
 ### Configuring service accounts
 
-The three internal OAuth apps must be registered in your external server's permission mapping. Their `sub` claims are the OAuth **client IDs** from your identity provider — the same values configured during [authentication setup]({{< relref "authentication" >}}).
+The three internal OAuth apps must be registered in your external server's permission mapping. Their `sub` claims identify the calling application — use the values configured during [authentication setup]({{< relref "authentication" >}}).
+
+> [!NOTE]
+> **Provider-specific subject values:** For Okta, the `sub` claim in client_credentials tokens equals the app's **Client ID**. For Entra ID, the `sub` claim equals the app's **Service Principal Object ID** (found in Entra ID > Enterprise Applications). If you configured `subjectClaimNames` with a fallback chain, the resolved subject may come from a different claim (e.g., `client_id` as fallback).
 
 To find the client IDs for your deployment, check the controlplane Helm values:
 
