@@ -36,6 +36,20 @@ The Self-managed deployment allows you to manage the data plane yourself on clou
 
 * The **control plane**, as with all Union.ai deployment options, resides in the Union.ai Amazon Web Services (AWS) account and is administered by Union.ai. However, as mentioned, data separation is maintained between the data plane and the control plane, with no control plane access to the code, input/output, images or logs in the data plane.
 
+## Self-hosted deployment
+
+For complete data sovereignty, you can host both the control plane and data plane in the same Kubernetes cluster. In this model, all communication stays within your infrastructure via Kubernetes internal networking.
+
+Self-hosted deployment is distinct from Self-managed deployment: in a self-hosted deployment, you manage both the control plane and the data plane, whereas in a self-managed deployment, Union.ai hosts the control plane and you manage the data plane.
+
+{{< grid >}}
+
+{{< link-card target="./selfhosted/_index" icon="server" title="Self-hosted deployment" >}}
+Deploy both control plane and data plane in your own Kubernetes cluster
+{{< /link-card >}}
+
+{{< /grid >}}
+
 ## Data plane
 
 The data plane runs in your cloud account and VPC. It is composed of the required services to run and monitor workflows:
