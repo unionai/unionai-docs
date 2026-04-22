@@ -1,6 +1,6 @@
 ---
 title: JsonlDir
-version: 2.1.5
+version: 2.1.7
 variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
@@ -89,7 +89,7 @@ validated to form a valid model.
 | [`iter_records_sync()`](#iter_records_sync) | Sync generator that yields records from all shards in sorted order. |
 | [`list_files()`](#list_files) | Asynchronously get a list of all files in the directory (non-recursive). |
 | [`list_files_sync()`](#list_files_sync) | Synchronously get a list of all files in the directory (non-recursive). |
-| [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialise private attributes. |
+| [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialize private attributes. |
 | [`new_remote()`](#new_remote) | Create a new Dir reference for a remote directory that will be written to. |
 | [`pre_init()`](#pre_init) | Internal: Pydantic validator to set default name from path. |
 | [`schema_match()`](#schema_match) | Internal: Check if incoming schema matches Dir schema. |
@@ -633,7 +633,7 @@ def model_post_init(
     context: Any,
 )
 ```
-This function is meant to behave like a BaseModel method to initialise private attributes.
+This function is meant to behave like a BaseModel method to initialize private attributes.
 
 It takes context as an argument since that's what pydantic-core passes when calling it.
 
