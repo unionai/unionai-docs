@@ -1,6 +1,6 @@
 ---
 title: TaskEnvironment
-version: 2.1.5
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -31,6 +31,35 @@ async def my_task():
     pass
 ```
 
+**Parameter interaction across configuration levels:**
+
+| Parameter | `TaskEnvironment` | `@env.task` | `task.override()` |
+|-----------|:-----------------:|:-----------:|:-----------------:|
+| `name` | Yes (required) | — | — |
+| `image` | Yes | — | — |
+| `depends_on` | Yes | — | — |
+| `description` | Yes | — | — |
+| `plugin_config` | Yes | — | — |
+| `resources` | Yes | — | Yes* |
+| `env_vars` | Yes | — | Yes* |
+| `secrets` | Yes | — | Yes* |
+| `cache` | Yes | Yes | Yes |
+| `pod_template` | Yes | Yes | Yes |
+| `reusable` | Yes | — | Yes |
+| `interruptible` | Yes | Yes | Yes |
+| `queue` | Yes | Yes | Yes |
+| `short_name` | — | Yes | Yes |
+| `retries` | — | Yes | Yes |
+| `timeout` | — | Yes | Yes |
+| `max_inline_io_bytes` | — | Yes | Yes |
+| `links` | — | Yes | Yes |
+| `report` | — | Yes | — |
+| `triggers` | — | Yes | — |
+| `docs` | — | Yes | — |
+
+*When `reusable` is set, `resources`, `env_vars`, and `secrets` can only
+be overridden via `task.override()` with `reusable="off"` in the same call.
+
 
 
 ## Parameters
@@ -46,6 +75,7 @@ class TaskEnvironment(
     resources: Optional[Resources],
     interruptible: bool,
     image: Union[str, Image, Literal['auto'], None],
+    include: Tuple[str, ...],
     cache: CacheRequest,
     reusable: ReusePolicy | None,
     plugin_config: Optional[Any],
@@ -54,7 +84,7 @@ class TaskEnvironment(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | Name of the environment (required). Must be snake_case or kebab-case. TaskEnvironment level only. |
+| `name` | `str` | Name of the environment (required). Must be snake_case or kebab-case. TaskEnvironment level only. The fully-qualified name of each task is `&lt;env_name&gt;.&lt;function_name&gt;` (e.g., environment `"my_env"` containing function `my_task` produces FQN `"my_env.my_task"`). Neither component is overridable. |
 | `depends_on` | `List[Environment]` | List of other environments this one depends on. Used at deploy time to ensure dependencies are also deployed. TaskEnvironment level only. |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | Kubernetes pod template for advanced configuration (sidecars, volumes, etc.). Also settable in `@env.task` and `task.override`. |
 | `description` | `Optional[str]` | Human-readable description (max 255 characters). TaskEnvironment level only. |
@@ -63,10 +93,11 @@ class TaskEnvironment(
 | `resources` | `Optional[Resources]` | Compute resources (CPU, memory, GPU, disk). Overridable via `task.override(resources=...)` when not using reusable containers. |
 | `interruptible` | `bool` | Whether tasks can run on spot/preemptible instances. Also settable in `@env.task` and `task.override`. |
 | `image` | `Union[str, Image, Literal['auto'], None]` | Docker image for the environment. Can be a string (image URI), an `Image` object, or `"auto"` to use the default image. TaskEnvironment level only. |
+| `include` | `Tuple[str, ...]` | |
 | `cache` | `CacheRequest` | Cache policy — `"auto"`, `"override"`, `"disable"`, or a `Cache` object. Also settable in `@env.task(cache=...)` and `task.override(cache=...)`. |
-| `reusable` | `ReusePolicy \| None` | `ReusePolicy` for container reuse. Also overridable via `task.override(reusable=...)`. |
+| `reusable` | `ReusePolicy \| None` | `ReusePolicy` for container reuse. Also overridable via `task.override(reusable=...)`. Note: when `reusable` is set on the environment, overriding `resources`, `env_vars`, or `secrets` in `task.override()` requires passing `reusable="off"` in the same call. Additionally, `secrets` cannot be overridden at the `@env.task` decorator level when the environment has `reusable` set. |
 | `plugin_config` | `Optional[Any]` | Plugin configuration for custom task types (e.g., Ray, Spark). Cannot be combined with `reusable`. TaskEnvironment level only. |
-| `queue` | `Optional[str]` | Queue name for scheduling. Also settable in `@env.task` and `task.override`. |
+| `queue` | `Optional[str]` | Queue name for scheduling. Queues identify specific partitions of your compute infrastructure (e.g., a particular cluster in a multi-cluster deployment) and are configured as part of your Flyte/Union deployment. Also settable in `@env.task` and `task.override`. |
 
 ## Properties
 
@@ -79,8 +110,8 @@ class TaskEnvironment(
 
 | Method | Description |
 |-|-|
-| [`add_dependency()`](#add_dependency) | Add a dependency to the environment. |
-| [`clone_with()`](#clone_with) | Clone the TaskEnvironment with new parameters. |
+| [`add_dependency()`](#add_dependency) | Add one or more environment dependencies so they are deployed together. |
+| [`clone_with()`](#clone_with) | Create a new `TaskEnvironment` that shares most settings with this one. |
 | [`from_task()`](#from_task) | Create a TaskEnvironment from a list of tasks. |
 | [`task()`](#task) | Decorate a function to be a task. |
 
@@ -92,12 +123,21 @@ def add_dependency(
     env: Environment,
 )
 ```
-Add a dependency to the environment.
+Add one or more environment dependencies so they are deployed together.
+
+When you deploy this environment, any environments added via
+`add_dependency` will also be deployed. This is an alternative to
+passing `depends_on=[...]` at construction time, useful when the
+dependency is defined after the environment is created.
+
+Duplicate dependencies are silently ignored. An environment cannot
+depend on itself.
+
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `env` | `Environment` | |
+| `env` | `Environment` | One or more `Environment` instances to add as dependencies. |
 
 ### clone_with()
 
@@ -111,26 +151,45 @@ def clone_with(
     depends_on: Optional[List[Environment]],
     description: Optional[str],
     interruptible: Optional[bool],
+    include: Optional[Tuple[str, ...]],
     kwargs: **kwargs,
 ) -> TaskEnvironment
 ```
-Clone the TaskEnvironment with new parameters.
+Create a new `TaskEnvironment` that shares most settings with this one
+but differs in name and selected overrides.
 
-Besides the base environment parameters, you can override kwargs like `cache`, `reusable`, etc.
+Use `clone_with` when you need several environments that share a common
+base configuration (image, resources, secrets, etc.) but vary in one or
+two settings, avoiding repetition.
+
+```python
+gpu_env = flyte.TaskEnvironment(
+    name="gpu_env",
+    image=my_image,
+    resources=flyte.Resources(gpu="A100:1", memory="16Gi"),
+)
+
+# Same image and resources, different name and cache policy
+gpu_env_cached = gpu_env.clone_with("gpu_env_cached", cache="auto")
+```
+
+Any parameter not explicitly passed inherits the value from the
+original environment.
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | The name of the environment. |
-| `image` | `Optional[Union[str, Image, Literal['auto']]]` | The image to use for the environment. |
-| `resources` | `Optional[Resources]` | The resources to allocate for the environment. |
-| `env_vars` | `Optional[Dict[str, str]]` | The environment variables to set for the environment. |
-| `secrets` | `Optional[SecretRequest]` | The secrets to inject into the environment. |
-| `depends_on` | `Optional[List[Environment]]` | The environment dependencies to hint, so when you deploy the environment, the dependencies are also deployed. This is useful when you have a set of environments that depend on each other. |
-| `description` | `Optional[str]` | The description of the environment. |
-| `interruptible` | `Optional[bool]` | Whether the environment is interruptible and can be scheduled on spot/preemptible instances. |
-| `kwargs` | `**kwargs` | Additional parameters to override the environment (e.g., cache, reusable, plugin_config). |
+| `name` | `str` | Name for the new environment (required). |
+| `image` | `Optional[Union[str, Image, Literal['auto']]]` | Override the container image. |
+| `resources` | `Optional[Resources]` | Override compute resources. |
+| `env_vars` | `Optional[Dict[str, str]]` | Override environment variables. |
+| `secrets` | `Optional[SecretRequest]` | Override secrets. |
+| `depends_on` | `Optional[List[Environment]]` | Override deployment dependencies. |
+| `description` | `Optional[str]` | Override the description. |
+| `interruptible` | `Optional[bool]` | Override the interruptible setting. |
+| `include` | `Optional[Tuple[str, ...]]` | |
+| `kwargs` | `**kwargs` | Additional `TaskEnvironment`-specific overrides (e.g., `cache`, `reusable`, `plugin_config`). |
 
 ### from_task()
 
@@ -183,6 +242,7 @@ def task(
     triggers: Tuple[Trigger, ...] | Trigger,
     links: Tuple[Link, ...] | Link,
     task_resolver: Any | None,
+    entrypoint: bool,
 ) -> Callable[[F], AsyncFunctionTaskTemplate[P, R, F]] | AsyncFunctionTaskTemplate[P, R, F]
 ```
 Decorate a function to be a task.
@@ -192,19 +252,20 @@ Decorate a function to be a task.
 | Parameter | Type | Description |
 |-|-|-|
 | `_func` | `F \| None` | Optional The function to decorate. If not provided, the decorator will return a callable that accepts a function to be decorated. |
-| `short_name` | `Optional[str]` | Optional A friendly name for the task (defaults to the function name) |
+| `short_name` | `Optional[str]` | Optional friendly name for the task or action, used in parts of the UI (defaults to the function name). Overriding `short_name` does not change the task's fully-qualified name. |
 | `cache` | `CacheRequest \| None` | Optional The cache policy for the task, defaults to auto, which will cache the results of the task. |
-| `retries` | `Union[int, RetryStrategy]` | Optional The number of retries for the task, defaults to 0, which means no retries. |
-| `timeout` | `Union[timedelta, int]` | Optional The timeout for the task. |
+| `retries` | `Union[int, RetryStrategy]` | Number of retries (`int`) or a `RetryStrategy` object that defines retry behavior. Defaults to `0` (no retries). |
+| `timeout` | `Union[timedelta, int]` | Task timeout, as a `timedelta` object or an integer number of seconds. `0` means no timeout. |
 | `docs` | `Optional[Documentation]` | Optional The documentation for the task, if not provided the function docstring will be used. |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | Optional The pod template for the task, if not provided the default pod template will be used. |
 | `report` | `bool` | Optional Whether to generate the html report for the task, defaults to False. |
 | `interruptible` | `bool \| None` | Optional Whether the task is interruptible, defaults to environment setting. |
-| `max_inline_io_bytes` | `int` | Maximum allowed size (in bytes) for all inputs and outputs passed directly to the task (e.g., primitives, strings, dicts). Does not apply to files, directories, or dataframes. |
+| `max_inline_io_bytes` | `int` | Maximum allowed size (in bytes) for all inputs and outputs passed directly to the task (e.g., primitives, strings, dicts). Does not apply to files, directories, or dataframes. Default is 10 MiB. |
 | `queue` | `Optional[str]` | Optional queue name to use for this task. If not set, the environment's queue will be used. |
 | `triggers` | `Tuple[Trigger, ...] \| Trigger` | Optional A tuple of triggers to associate with the task. This allows the task to be run on a schedule or in response to events. Triggers can be defined using the `flyte.trigger` module. |
 | `links` | `Tuple[Link, ...] \| Link` | Optional A tuple of links to associate with the task. Links can be used to provide additional context or information about the task. Links should implement the `flyte.Link` protocol |
-| `task_resolver` | `Any \| None` | |
+| `task_resolver` | `Any \| None` | Optional TaskResolver protocol to load tasks using custom policy. |
+| `entrypoint` | `bool` | Optionally mark a task as an entrypoint task, defaults to False. This serves as a hint to the UI. |
 
 **Returns:** A TaskTemplate that can be used to deploy the task.
 

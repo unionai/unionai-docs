@@ -1,6 +1,6 @@
 ---
 title: AutoCoderAgent
-version: 2.1.5
+version: 2.1.9
 variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
@@ -41,6 +41,7 @@ class AutoCoderAgent(
     cache: str,
     backend: typing.Literal['litellm', 'claude'],
     agent_max_turns: int,
+    block_network: bool,
 )
 ```
 | Parameter | Type | Description |
@@ -64,6 +65,7 @@ class AutoCoderAgent(
 | `cache` | `str` | CacheRequest for sandboxes: "auto", "override", or "disable". Defaults to "auto". |
 | `backend` | `typing.Literal['litellm', 'claude']` | Execution backend: "litellm" (default) or "claude". |
 | `agent_max_turns` | `int` | Maximum agent turns when backend="claude". Defaults to 50. |
+| `block_network` | `bool` | Block all outbound network access in sandboxes. Defaults to False. |
 
 ## Methods
 

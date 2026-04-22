@@ -360,8 +360,20 @@ def create_workload_identity(cfg: Config, state: InfraState) -> InfraState:
 @env.task
 def patch_and_install(cfg: Config, state: InfraState) -> InfraState:
     """Patch the generated values file and install the Helm chart."""
-    f = state.values_file_path
-    assert os.path.exists(f), f"Values file not found: {f}"
+    # Materialize the YAML content carried in state to a local temp file so
+    # yq and helm can operate on it. This is what lets this task run in a
+    # different container than provision_dataplane.
+    assert state.values_file_content, "state.values_file_content is empty"
+
+    import tempfile
+
+    tmp = tempfile.NamedTemporaryFile(
+        mode="w", suffix=".yaml", delete=False, prefix="union-e2e-values-",
+    )
+    tmp.write(state.values_file_content)
+    tmp.close()
+    f = tmp.name
+    logger.info(f"  Wrote values file: {f}")
 
     metadata_bucket = f"{cfg.bucket_prefix}-metadata"
     fast_reg_bucket = f"{cfg.bucket_prefix}-fast-reg"
@@ -531,7 +543,7 @@ def setup_infra(
     )
     _activate_gcp_credentials(cfg)
     base_state = provision_dataplane(cfg, provider="gcp")
-    state = InfraState(values_file_path=base_state.values_file_path)
+    state = InfraState(values_file_content=base_state.values_file_content)
     state = create_gke_cluster(cfg, state)
     state = create_gcs_buckets(cfg, state)
     state = create_ar_repo(cfg, state)
@@ -622,7 +634,7 @@ def e2e_test(
     try:
         logger.info("\n--- Phase 1: Interactive / Credential Setup ---")
         base_state = provision_dataplane(cfg, provider="gcp")
-        state.values_file_path = base_state.values_file_path
+        state.values_file_content = base_state.values_file_content
         state.debug_dir = debug_dir
 
         logger.info("\n--- Phase 2: Infrastructure Setup ---")

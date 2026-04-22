@@ -1,6 +1,6 @@
 ---
 title: flyte.io
-version: 2.1.5
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 sidebar_expanded: true
@@ -20,6 +20,7 @@ of large datasets in Union.
 |-|-|
 | [`DataFrame`](../flyte.io/dataframe) | A Flyte meta DataFrame object, that wraps all other dataframe types (usually available as plugins, pandas. |
 | [`Dir`](../flyte.io/dir) | A generic directory class representing a directory with files of a specified format. |
+| [`EmptyDir`](../flyte.io/emptydir) | A sentinel :class:`Dir` representing 'no directory was produced'. |
 | [`File`](../flyte.io/file) | A generic file class representing a file with a specified format. |
 | [`HashFunction`](../flyte.io/hashfunction) | A hash method that wraps a user-provided function to compute hashes. |
 

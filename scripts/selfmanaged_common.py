@@ -87,9 +87,15 @@ class BaseConfig:
 
 @dataclass
 class BaseInfraState:
-    """Fields shared across all cloud providers."""
+    """Fields shared across all cloud providers.
 
-    values_file_path: str = ""
+    values_file_content carries the YAML text produced by
+    `uctl selfserve provision-dataplane-resources` so downstream tasks don't
+    rely on the generating task's local filesystem. Writing it to a temp file
+    is the responsibility of the consumer (helm install, yq patching).
+    """
+
+    values_file_content: str = ""
     debug_dir: str = ""
 
 
@@ -363,7 +369,11 @@ def base_image():
         .with_apt_packages(
             "curl", "ca-certificates", "git", "jq", "unzip", "gnupg", "lsb-release",
         )
-        .with_pip_packages("cryptography")
+        # flyte + flyteplugins-union give us Python access to the control plane
+        # (ApiKey, Cluster, Project) so we can avoid shelling out to uctl for
+        # those operations. uctl is still installed below for the few
+        # selfserve/clusterpool commands we haven't ported yet.
+        .with_pip_packages("cryptography", "flyte", "flyteplugins-union")
         .with_commands([
             # Helm
             f"curl -fsSL https://get.helm.sh/helm-v{_HELM_VERSION}-linux-amd64.tar.gz"
@@ -392,10 +402,14 @@ def base_image():
 
 
 def provision_dataplane(cfg: BaseConfig, provider: str) -> BaseInfraState:
-    """Run uctl selfserve provision-dataplane-resources.
+    """Run `uctl selfserve provision-dataplane-resources`.
 
-    Returns a BaseInfraState with values_file_path set.
-    Also populates cfg.org_name as a side effect.
+    TODO: once flyteplugins-union exposes a Dataplane/Selfserve API that can
+    generate this values YAML via gRPC, drop the uctl subprocess. For now we
+    shell out; the generated YAML is read from disk and returned as content so
+    downstream tasks do not depend on this container's filesystem.
+
+    Side effects: may also populate cfg.org_name from the uctl output table.
     """
     assert cfg.control_plane_url, "control_plane_url is required"
     assert cfg.cluster_name, "cluster_name is required"
@@ -408,8 +422,9 @@ def provision_dataplane(cfg: BaseConfig, provider: str) -> BaseInfraState:
     work_dir = tempfile.mkdtemp(prefix="union-e2e-provision-")
     logger.info(f"  Provisioning in temp dir: {work_dir}")
 
-    # config init may open a browser for OAuth — run without capturing so it
-    # can interact with the terminal.
+    # config init may open a browser for OAuth when running locally. In a
+    # Flyte task container, UNION_API_KEY should already be set (via
+    # decrypt_and_export_credentials), so uctl can pick it up non-interactively.
     _sh(
         f"cd {work_dir} && uctl config init --host={cfg.control_plane_url}",
         capture=False,
@@ -443,16 +458,24 @@ def provision_dataplane(cfg: BaseConfig, provider: str) -> BaseInfraState:
             f"Could not find generated values file in {work_dir}. uctl output:\n{output}"
         )
 
-    # Copy to the e2e workspace for persistence across reruns
-    import shutil
+    # Read content into state so downstream tasks (possibly in different
+    # containers) don't depend on this container's filesystem.
+    with open(values_file) as _f:
+        state.values_file_content = _f.read()
+    logger.info(f"Generated values file: {values_file} ({len(state.values_file_content)} chars)")
 
-    workspace = os.path.join(os.path.dirname(__file__), ".e2e-workspace")
-    os.makedirs(workspace, exist_ok=True)
-    dest = os.path.join(workspace, os.path.basename(values_file))
-    shutil.copy2(values_file, dest)
+    # Also persist a copy to the workspace for local debugging / reruns. This
+    # is best-effort; remote tasks may not have a writable workspace dir.
+    try:
+        import shutil
 
-    state.values_file_path = os.path.abspath(dest)
-    logger.info(f"Generated values file: {state.values_file_path}")
+        workspace = os.path.join(os.path.dirname(__file__), ".e2e-workspace")
+        os.makedirs(workspace, exist_ok=True)
+        dest = os.path.join(workspace, os.path.basename(values_file))
+        shutil.copy2(values_file, dest)
+        logger.info(f"  Copied to workspace: {dest}")
+    except Exception as e:
+        logger.info(f"  Skipped workspace copy: {e}")
 
     # Parse org name from the uctl output table
     if not cfg.org_name:
@@ -492,7 +515,12 @@ def resolve_chart_ref(cfg: BaseConfig) -> str:
 
 
 def helm_install(cfg: BaseConfig, values_file: str, chart_ref: str) -> None:
-    """Run helm upgrade --install and create EAGER_API_KEY."""
+    """Run helm upgrade --install and create EAGER_API_KEY.
+
+    values_file is a path on the current container's filesystem (helm needs a
+    real file). Callers that carry YAML content via state should write a temp
+    file before invoking this.
+    """
     # If helm_values_override is a relative path and the chart was cloned locally,
     # resolve it relative to the chart directory.
     override_flag = ""
@@ -515,12 +543,17 @@ def helm_install(cfg: BaseConfig, values_file: str, chart_ref: str) -> None:
     )
     logger.info("Helm chart installed.")
 
-    org_flag = f"--org {cfg.org_name}" if cfg.org_name else ""
-    _sh(
-        f"uctl create apikey --keyName EAGER_API_KEY {org_flag}",
-        check=False,
-    )
-    logger.info("EAGER_API_KEY created/propagated.")
+    # Replaces: `uctl create apikey --keyName EAGER_API_KEY`.
+    # ApiKey.create talks to the control plane directly; no uctl config state
+    # required. Org is taken from the initialized flyte client.
+    from flyteplugins.union.remote import ApiKey
+
+    try:
+        ApiKey.create(name="EAGER_API_KEY")
+        logger.info("EAGER_API_KEY created.")
+    except Exception as e:
+        # Typically AlreadyExists on reruns — safe to proceed.
+        logger.info(f"EAGER_API_KEY not created (likely exists): {e}")
 
 
 def helm_uninstall(cfg: BaseConfig) -> list[str]:
@@ -545,49 +578,53 @@ def create_test_project_and_route(cfg: BaseConfig) -> None:
 
     The project name matches the cluster name so reruns are idempotent.
     This ensures test executions land on the specific cluster we just deployed.
+
+    NOTE: cluster-pool-attributes (project/domain → pool routing) does not yet
+    have a Python API in flyteplugins-union, so that step still shells out to
+    uctl. Everything else is Python/gRPC-native. When the attributes API
+    lands, drop the uctl call below and the need for uctl auth state in this
+    task body disappears entirely.
     """
+    from flyte.remote import Project
+    from flyteplugins.union.remote import ClusterPool
+
+    pool_name = cfg.cluster_name  # one pool per cluster, named after it
+
+    # 1. Create a cluster pool with this cluster as a member (idempotent).
+    try:
+        ClusterPool.create(name=pool_name, member_clusters=[cfg.cluster_name])
+        logger.info(f"Cluster pool '{pool_name}' created with member '{cfg.cluster_name}'.")
+    except Exception as e:
+        # Pool already exists — ensure this cluster is in it.
+        logger.info(f"Cluster pool '{pool_name}' not created (likely exists): {e}")
+        try:
+            ClusterPool.add_cluster(name=pool_name, cluster_name=cfg.cluster_name)
+            logger.info(f"Cluster '{cfg.cluster_name}' added to pool '{pool_name}'.")
+        except Exception as e2:
+            # Already a member — safe.
+            logger.info(f"Cluster '{cfg.cluster_name}' not added to pool (likely already a member): {e2}")
+
+    # 2. Create project via flyte.remote (no uctl needed).
+    try:
+        Project.create(
+            id=cfg.test_project,
+            name=cfg.test_project,
+            description=f"E2E test project for cluster {cfg.cluster_name}",
+        )
+        logger.info(f"Project '{cfg.test_project}' created.")
+    except Exception as e:
+        # AlreadyExists on reruns — safe.
+        logger.info(f"Project '{cfg.test_project}' not created (likely exists): {e}")
+
+    # 3. Route the project to the cluster pool for all domains.
+    # TODO: replace with flyteplugins.union.remote.ClusterPoolAttributes (or
+    # equivalent) when a Python API exists; this is the last uctl dependency
+    # in this function. uctl must be configured in this container
+    # (UNION_API_KEY env var or `uctl config init` run earlier in the same
+    # task body) for the subprocess call to succeed.
     import tempfile
 
     org_flag = f"--org {cfg.org_name}" if cfg.org_name else ""
-    pool_name = cfg.cluster_name  # one pool per cluster, named after it
-
-    # 1. Create a cluster pool (idempotent)
-    cp_file = tempfile.NamedTemporaryFile(
-        mode="w", suffix=".yaml", delete=False, prefix="clusterpool-",
-    )
-    cp_file.write(
-        f"clusterPool:\n"
-        f"  id:\n"
-        f"    name: {pool_name}\n"
-    )
-    cp_file.close()
-    _sh(
-        f"uctl create clusterpool --clusterPoolSpecFile {cp_file.name} {org_flag}",
-        check=False,  # may already exist
-    )
-    os.unlink(cp_file.name)
-    logger.info(f"Cluster pool '{pool_name}' created/verified.")
-
-    # Assign this cluster to the pool
-    _sh(
-        f"uctl create clusterpoolassignment "
-        f"--poolName {pool_name} --clusterName {cfg.cluster_name} {org_flag}",
-        check=False,  # may already be assigned
-    )
-    logger.info(f"Cluster '{cfg.cluster_name}' assigned to pool '{pool_name}'.")
-
-    # 2. Create project (idempotent — uctl returns success if it already exists)
-    _sh(
-        f"uctl create project "
-        f"--name {cfg.test_project} "
-        f"--id {cfg.test_project} "
-        f'--description "E2E test project for cluster {cfg.cluster_name}" '
-        f"{org_flag}",
-        check=False,
-    )
-    logger.info(f"Project '{cfg.test_project}' created/verified.")
-
-    # 3. Route the project to the cluster pool for all domains
     for domain in ["development", "staging", "production"]:
         attr_file = tempfile.NamedTemporaryFile(
             mode="w", suffix=".yaml", delete=False, prefix=f"cpa-{domain}-",
@@ -612,22 +649,28 @@ def create_test_project_and_route(cfg: BaseConfig) -> None:
 
 
 def wait_for_healthy(cfg: BaseConfig) -> bool:
-    """Poll uctl get cluster until the cluster is ENABLED and HEALTHY."""
-    deadline = time.time() + cfg.cluster_healthy_timeout
+    """Poll the control plane until the cluster is enabled and healthy."""
+    from flyteplugins.union.remote import Cluster
 
+    deadline = time.time() + cfg.cluster_healthy_timeout
     while time.time() < deadline:
-        output = _sh("uctl get cluster", check=False)
-        for line in output.splitlines():
-            if cfg.cluster_name not in line:
-                continue
-            fields = [f.strip() for f in line.split("|")]
-            if len(fields) >= 5:
-                state_val = fields[3]
-                health_val = fields[4]
-                if state_val == "STATE_ENABLED" and health_val == "HEALTHY":
-                    logger.info(f"Cluster {cfg.cluster_name} is ENABLED and HEALTHY.")
-                    return True
-                logger.info(f"  state={state_val} health={health_val}, waiting...")
+        try:
+            cluster = Cluster.get(name=cfg.cluster_name)
+        except Exception as e:
+            # Cluster may not yet be registered with the control plane — keep polling.
+            logger.info(f"  Cluster lookup failed ({e}); waiting...")
+            time.sleep(15)
+            continue
+
+        if cluster.state == "enabled" and cluster.health == "healthy":
+            logger.info(f"Cluster {cfg.cluster_name} is enabled and healthy.")
+            # Opportunistically remember the org so later calls that need it
+            # (e.g. _detect_org_name) don't have to re-fetch.
+            if not cfg.org_name and cluster.organization:
+                cfg.org_name = cluster.organization
+            return True
+
+        logger.info(f"  state={cluster.state} health={cluster.health}, waiting...")
         time.sleep(15)
 
     raise RuntimeError(
@@ -734,14 +777,17 @@ async def main(nonce: str) -> str:
 
 
 def _detect_org_name(cfg: BaseConfig) -> str:
-    """Detect org name from uctl get cluster output."""
-    output = _sh("uctl get cluster", check=False)
-    for line in output.splitlines():
-        if cfg.cluster_name in line and "|" in line:
-            fields = [f.strip() for f in line.split("|")]
-            if len(fields) >= 3 and fields[2]:
-                cfg.org_name = fields[2]
-                return fields[2]
+    """Fetch the cluster's org from the control plane and cache it on cfg."""
+    from flyteplugins.union.remote import Cluster
+
+    try:
+        cluster = Cluster.get(name=cfg.cluster_name)
+    except Exception as e:
+        logger.info(f"  Cluster.get failed in _detect_org_name: {e}")
+        return ""
+    if cluster.organization:
+        cfg.org_name = cluster.organization
+        return cluster.organization
     return ""
 
 

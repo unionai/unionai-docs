@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.1.5
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 sidebar_expanded: true
@@ -15,7 +15,7 @@ sidebar_expanded: true
 | [`flyte.Checkpoint`](../packages/flyte/checkpoint) |Checkpoint helper using `flyte. |
 | [`flyte.Cron`](../packages/flyte/cron) |Cron-based automation schedule for use with `Trigger`. |
 | [`flyte.Device`](../packages/flyte/device) |Represents a device type, its quantity and partition if applicable. |
-| [`flyte.Environment`](../packages/flyte/environment) | |
+| [`flyte.Environment`](../packages/flyte/environment) |Base class for execution environments, shared by `TaskEnvironment` and. |
 | [`flyte.FixedRate`](../packages/flyte/fixedrate) |Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
 | [`flyte.Image`](../packages/flyte/image) |Container image specification built using a fluent, two-step pattern:. |
 | [`flyte.ImageBuild`](../packages/flyte/imagebuild) |Result of an image build operation. |
@@ -87,10 +87,13 @@ sidebar_expanded: true
 | [`flyte.extras.ContainerTask`](../packages/flyte.extras/containertask) |This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
 | [`flyte.extras.DynamicBatcher`](../packages/flyte.extras/dynamicbatcher) |Batches records from many concurrent producers and runs them through. |
 | [`flyte.extras.Prompt`](../packages/flyte.extras/prompt) |Simple prompt record with built-in token estimation. |
+| [`flyte.extras.Sleep`](../packages/flyte.extras/sleep) |Route a task to the backend `core-sleep` plugin. |
+| [`flyte.extras.SleepTask`](../packages/flyte.extras/sleeptask) | |
 | [`flyte.extras.TokenBatcher`](../packages/flyte.extras/tokenbatcher) |Token-aware batcher for LLM inference workloads. |
 | [`flyte.git.GitStatus`](../packages/flyte.git/gitstatus) |A class representing the status of a git repository. |
 | [`flyte.io.DataFrame`](../packages/flyte.io/dataframe) |A Flyte meta DataFrame object, that wraps all other dataframe types (usually available as plugins, pandas. |
 | [`flyte.io.Dir`](../packages/flyte.io/dir) |A generic directory class representing a directory with files of a specified format. |
+| [`flyte.io.EmptyDir`](../packages/flyte.io/emptydir) |A sentinel :class:`Dir` representing 'no directory was produced'. |
 | [`flyte.io.File`](../packages/flyte.io/file) |A generic file class representing a file with a specified format. |
 | [`flyte.io.HashFunction`](../packages/flyte.io/hashfunction) |A hash method that wraps a user-provided function to compute hashes. |
 | [`flyte.io.extend.DataFrameDecoder`](../packages/flyte.io.extend/dataframedecoder) | |

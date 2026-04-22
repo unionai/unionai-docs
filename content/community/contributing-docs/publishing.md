@@ -16,10 +16,10 @@ brew install hugo
 
 2. A preferences override file with your configuration
 
-The tool is flexible and has multiple knobs. Please review `unionai-docs-infra/hugo.local.toml~sample`, and configure to meet your preferences.
+The tool is flexible and has multiple knobs. Please review `hugo.local.toml~sample`, and configure to meet your preferences.
 
 ```bash
-cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml
+cp hugo.local.toml~sample hugo.local.toml
 ```
 
 3. Make sure you review `hugo.local.toml`.
@@ -89,7 +89,7 @@ To highlight the content of the currently active variant (to distinguish it from
 highlight_active = true
 ```
 
-> You can create your own copy of `hugo.local.toml` by copying from `unionai-docs-infra/hugo.local.toml~sample` to get started.
+> You can create your own copy of `hugo.local.toml` by copying from `hugo.local.toml~sample` to get started.
 
 ## Troubleshootting
 
