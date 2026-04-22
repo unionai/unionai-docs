@@ -2,7 +2,7 @@
 title: Satellite Image Classification with EfficientNet
 weight: 2
 variants: +flyte +union
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Satellite Image Classification with EfficientNet
@@ -13,10 +13,10 @@ sidebar_expanded: true
 
 Remote sensing has transformed how we monitor our planet. From tracking deforestation to detecting urban sprawl, satellite imagery provides a bird's-eye view of land use change at global scale. But training a model that can reliably classify that imagery - across 10 distinct land-use categories, at production quality - requires more than just a good model. It requires a pipeline that handles data, compute, caching, experiment tracking, and reporting as first-class concerns.
 
-In this post, we walk through a complete satellite image classification pipeline built on Union, using EfficientNet-B0, a two-phase training strategy, and Weights & Biases for experiment tracking.
+This tutorial walks through a complete satellite image classification pipeline built on {{< key product_name >}}, using EfficientNet-B0, a two-phase training strategy, and Weights & Biases for experiment tracking.
 
 > [!NOTE]
-> Full code available [here](https://github.com/unionai/unionai-examples/v2/tutorials/satellite_image_classification).
+> Full code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/satellite_image_classification).
 
 ## Dataset
 
@@ -82,7 +82,7 @@ This task reads the metrics.json produced by training and renders interactive Pl
 ### Task 4: Orchestration (pipeline_env)
 
 The pipeline task is a lightweight orchestrator. It has no heavy dependencies of its own, just enough to call the three tasks above in sequence. depends_on ensures the container image is built after all its dependencies are resolved. The async/await pattern means each task handoff is non-blocking: Union manages scheduling, retries, and data movement between tasks transparently.
-{{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/run.py" fragment="Orchestration" lang="python" >}}
+{{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/run.py" fragment="orchestration" lang="python" >}}
 
 ## Running the Pipeline
 
