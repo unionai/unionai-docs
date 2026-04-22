@@ -151,3 +151,29 @@ jobs:
         --domain "$FLYTE_DOMAIN" \
         --root-dir src --recursive src/workspace_app/tasks
   ```
+
+### Splitting build from deploy
+
+`flyte deploy` builds any missing images before it registers tasks. If you'd rather treat image builds as a separate CI concern — for clearer logs, independent retry, or parallel builds per env — run `flyte build` first and let deploy reuse the result:
+
+```yaml
+- name: Build etl image
+  env:
+    FLYTE_API_KEY: ${{ secrets.FLYTE_API_KEY }}
+  run: |
+    uv run flyte build \
+      --copy-style none --root-dir src \
+      src/workspace_app/tasks/etl_tasks.py etl_env
+
+- name: Deploy etl_env
+  env:
+    FLYTE_API_KEY: ${{ secrets.FLYTE_API_KEY }}
+  run: |
+    uv run flyte deploy \
+      --copy-style none \
+      --version ${{ github.sha }} \
+      --project "$FLYTE_PROJECT" --domain "$FLYTE_DOMAIN" \
+      --root-dir src src/workspace_app/tasks/etl_tasks.py etl_env
+```
+
+Image tags are content hashes of the `flyte.Image` definition: `flyte build` pushes `<registry>:flyte-<hash>`, and `flyte deploy` computes the same hash, sees the image already in the registry, and skips rebuilding. `--copy-style` must match between the two commands — otherwise the hashes diverge and deploy will build again.
