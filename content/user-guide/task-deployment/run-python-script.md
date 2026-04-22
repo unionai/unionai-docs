@@ -151,8 +151,8 @@ with open("output/result.csv", "w") as f:
     f.write("col1,col2\n1,2\n")
 ```
 
-The uploaded directory appears in the run's outputs panel as an S3
-URI. Browse or download it from the UI.
+The uploaded directory appears in the run's outputs panel as a blob
+store URI (for example, an S3 URI). Browse or download it from the UI.
 
 `stdout` (with `stderr` merged) is also available on the task output
 as a ~80-line tail, so you can peek at the end-of-run output without
