@@ -130,7 +130,8 @@ name, count, *flags = sys.argv[1:]
 
 For structured inputs (JSON payloads, files), either inline the data
 as a single `--extra-args` value that your script parses, or have the
-script download from an S3 path it knows about.
+script download from an object storage URI it knows about (for example,
+an S3 URI).
 
 ### Capturing outputs
 
