@@ -130,6 +130,9 @@ Your IdP must emit a claim that maps to the `identitytype` concept, with values 
 > [!WARNING]
 > The `sub` claim value must be **stable and unique** per principal. If your IdP returns different `sub` values for the same user across token refreshes, authorization and ownership tracking will break.
 
+> [!WARNING]
+> The `sub` claim is critical for **all** OAuth applications, including service-to-service (App 3), operator (App 4), and EAGER (App 5). If your IdP does not include `sub` in client credentials tokens, service-to-service authentication will fail with `x-user-subject header not found`. Verify that all five applications produce tokens with a `sub` claim before deploying.
+
 **Your IdP must emit a `sub` claim in all access tokens.** If your IdP's client_credentials tokens use a different claim for the caller identity (or omit `sub` entirely), configure `subjectClaimNames` to specify a fallback chain:
 
 ```yaml
