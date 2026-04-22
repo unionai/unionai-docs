@@ -395,8 +395,20 @@ def _ensure_policy_attached(role_name: str, policy_name: str, policy_doc: str, a
 @env.task
 def patch_and_install(cfg: Config, state: InfraState) -> InfraState:
     """Patch the generated values file and install the Helm chart."""
-    f = state.values_file_path
-    assert os.path.exists(f), f"Values file not found: {f}"
+    # Materialize the YAML content carried in state to a local temp file so
+    # yq and helm can operate on it. This is what lets this task run in a
+    # different container than provision_dataplane.
+    assert state.values_file_content, "state.values_file_content is empty"
+
+    import tempfile
+
+    tmp = tempfile.NamedTemporaryFile(
+        mode="w", suffix=".yaml", delete=False, prefix="union-e2e-values-",
+    )
+    tmp.write(state.values_file_content)
+    tmp.close()
+    f = tmp.name
+    logger.info(f"  Wrote values file: {f}")
 
     # AWS-specific yq patches
     # Global values
@@ -456,7 +468,7 @@ def teardown(cfg: Config, state: InfraState) -> str:
     logger.info(f"  iam_role_created:     {state.iam_role_created}  (role: {cfg.iam_role_name})")
     logger.info(f"  iam_role_arn:         {state.iam_role_arn}")
     logger.info(f"  helm_release:         {cfg.helm_release_name} (ns: {cfg.helm_namespace})")
-    logger.info(f"  values_file_path:     {state.values_file_path}")
+    logger.info(f"  values_file_content:  {len(state.values_file_content)} chars")
     logger.info(f"  skip_teardown:        {cfg.skip_teardown}")
     logger.info("---")
 
@@ -555,7 +567,7 @@ def setup_infra(
     )
     decrypt_and_export_credentials(cfg.encrypted_credentials)
     base_state = provision_dataplane(cfg, provider="aws")
-    state = InfraState(values_file_path=base_state.values_file_path)
+    state = InfraState(values_file_content=base_state.values_file_content)
     state = create_eks_cluster(cfg, state)
     state = create_s3_buckets(cfg, state)
     state = create_ecr_repo(cfg, state)
@@ -641,7 +653,7 @@ def e2e_test(
     try:
         logger.info("\n--- Phase 1: Interactive / Credential Setup ---")
         base_state = provision_dataplane(cfg, provider="aws")
-        state.values_file_path = base_state.values_file_path
+        state.values_file_content = base_state.values_file_content
         state.debug_dir = debug_dir
 
         logger.info("\n--- Phase 2: Infrastructure Setup ---")
