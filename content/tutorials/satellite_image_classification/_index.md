@@ -56,7 +56,7 @@ The pipeline has four components, each with its own environment defined in confi
 
 This task downloads the raw EuroSAT JPEG files via torchvision and packages them as a flyte.io.Dir. It runs on a lightweight CPU container (2 cores, 2 GB RAM) - no GPU needed. With cache="auto", the result is stored and reused on every subsequent run. You pay for the download exactly once.
 
-No preprocessing happens here. Raw images are passed directly to training so that all transforms - resize, normalize, augment. This happens per-batch with the full training context, giving the model properly prepared 224×224 input from the original pixels.
+No preprocessing happens here. Raw images are passed directly to training so that all transforms - resize, normalization, and augmentation - happen per-batch with the full training context, giving the model properly prepared 224×224 input from the original pixels.
 
 ### Task 2: GPU Training (training_env)
 
