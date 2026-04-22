@@ -16,7 +16,7 @@ Remote sensing has transformed how we monitor our planet. From tracking deforest
 In this post, we walk through a complete satellite image classification pipeline built on Union, using EfficientNet-B0, a two-phase training strategy, and Weights & Biases for experiment tracking.
 
 > [!NOTE]
-> Full code available [here](https://github.com/unionai/unionai-examples/v2/tutorials/satellite_image_classification.
+> Full code available [here](https://github.com/unionai/unionai-examples/v2/tutorials/satellite_image_classification).
 
 ## Dataset
 
