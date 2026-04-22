@@ -1,6 +1,6 @@
 ---
 title: Remote tasks
-weight: 9
+weight: 11
 variants: +flyte +union
 ---
 
