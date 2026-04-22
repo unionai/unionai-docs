@@ -198,7 +198,7 @@ env = flyte.TaskEnvironment(
 At bundling time, Flyte resolves each entry, unions it with whatever the `copy_style` discovered, and ships everything in the same tarball. The files land in the container at the same path they occupy in your project, so the task can read them with a normal relative path:
 
 ```python
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import flyte
@@ -216,7 +216,7 @@ async def generate_template_report() -> str:
     template = template_path.read_text()
     body = template.format(
         title="Hello",
-        generated_at=datetime.utcnow().isoformat(timespec="seconds") + "Z",
+        generated_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
     )
     flyte.report.get_tab("Main").log(body)
     await flyte.report.flush.aio()
@@ -236,7 +236,7 @@ async def generate_template_report() -> str:
 
 Good fits:
 
-- **HTML templates** rendered into reports (see the [reports examples](https://github.com/unionai/flyte-sdk/tree/main/examples/reports) in the SDK).
+- **HTML templates** rendered into reports (see the [reports examples](https://github.com/flyteorg/flyte-sdk/tree/main/examples/reports) in the SDK).
 - **Small configuration files** — YAML, JSON, TOML — that the task reads at runtime.
 - **SQL files, prompt templates, or other text assets** versioned alongside the task.
 - **Small reference data files** (a few MB of lookup tables, fixtures, etc.).

@@ -18,7 +18,7 @@ Mark a task as an entrypoint when:
 - **You want it to be discoverable** in the UI's entrypoint view or via filtered CLI queries.
 - **You are sharing tasks with team members** and want the "start here" tasks to stand out from internal helpers.
 
-Conversely, don't mark a task as an entrypoint if it only exists as a subtask of a larger workflow, or if it's a utility helper not intended to be invoked on its own.
+Conversely, don't mark a task as an entrypoint if it only exists as a subtask called by another task, or if it's a utility helper not intended to be invoked on its own.
 
 > [!NOTE]
 > Entrypoints and [triggers](../task-configuration/triggers) solve related but distinct problems. A **trigger** automates *when* a task runs (on a schedule, on an event). An **entrypoint** declares *which* tasks are meant to be run at all. A task can be both — a scheduled entrypoint is simply a named starting point that also runs on a cron.
