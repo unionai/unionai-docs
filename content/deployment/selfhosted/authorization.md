@@ -99,6 +99,92 @@ No authorization enforcement — all authenticated requests are allowed. This is
 - Uses the controlplane database for policy storage — no separate database required
 - This is the same authorization engine used by {{< key product_name >}}'s managed deployments
 
+#### Enabling Union mode
+
+Set the authorizer type in your controlplane Helm values:
+
+```yaml
+services:
+  authorizer:
+    configMap:
+      authorizer:
+        type: "Union"    # or "UserClouds" (legacy name, same engine)
+```
+
+No additional infrastructure is needed — the authorization engine is embedded in the controlplane chart and deploys automatically.
+
+#### Bootstrap configuration
+
+When Union mode starts for the first time, it bootstraps the authorization database with:
+- An **organization** (your deployment's org ID)
+- **Domains** (development, staging, production)
+- **Service accounts** with their roles
+- **Admin users** who can manage RBAC via the console
+
+Configure bootstrap in your Helm values:
+
+```yaml
+services:
+  authorizer:
+    configMap:
+      authorizer:
+        type: "Union"
+        bootstrap:
+          organization: "<your-org-id>"
+          domains:
+            - development
+            - staging
+            - production
+          serviceAccounts:
+            - clientId: "<service-to-service-subject>"   # App 3 — sub claim value
+              name: "service-to-service"
+              role: "Admin"
+            - clientId: "<operator-subject>"              # App 4 — sub claim value
+              name: "operator"
+              role: "Admin"
+            - clientId: "<eager-subject>"                 # App 5 — sub claim value
+              name: "eager"
+              role: "Admin"
+          adminUsers:
+            - "<admin-email-or-subject>"
+```
+
+> [!WARNING]
+> The `clientId` field in `serviceAccounts` must match the **resolved `sub` claim value** from your IdP's client_credentials tokens — not necessarily the OAuth Client ID. For Okta, `sub` equals the Client ID. For Entra ID, `sub` equals the **Service Principal Object ID**. See [Subject claim requirements]({{< relref "authentication#subject-claim-requirements" >}}) in the authentication guide.
+
+> [!NOTE]
+> **All three service accounts (Apps 3, 4, 5) must be bootstrapped with Admin role.** Without this, internal platform operations will fail:
+> - **App 3** (service-to-service): Internal controlplane service communication
+> - **App 4** (operator): Dataplane registration, heartbeats, cluster management
+> - **App 5** (EAGER): Task pod execution, workflow registration
+
+#### Trusted identity claims
+
+The controlplane must know which callers are trusted internal services. This is configured via `trustedIdentityClaims` in the Helm values:
+
+```yaml
+configMap:
+  union:
+    connection:
+      trustedIdentityClaims:
+        enabled: true
+        externalIdentityClaim: ""           # The subject value of the internal S2S client
+        externalIdentityTypeClaim: "app"    # Identity type for internal services
+```
+
+The `externalIdentityClaim` is typically set via the `INTERNAL_SUBJECT_ID` global (defaults to `INTERNAL_CLIENT_ID`). This tells the controlplane: "tokens with this `sub` claim are from our internal S2S service and should be trusted for inter-service communication."
+
+#### Recommended migration path
+
+1. **Start with Noop** — deploy with `type: "Noop"` to verify authentication works end-to-end without authorization enforcement
+2. **Verify all five OAuth apps** — ensure browser login, CLI, and service-to-service authentication all work
+3. **Configure bootstrap** — set `serviceAccounts` with the correct subject values for your IdP, and `adminUsers` with your initial admin
+4. **Switch to Union** — change `type: "Union"` and redeploy. The authorizer will bootstrap on first start
+5. **Assign roles** — use the {{< key product_name >}} console to assign roles to additional users
+
+> [!NOTE]
+> If you switch from Noop to Union and internal services start failing with permission errors, check the authorizer logs for denied subjects. The most common cause is `clientId` in `serviceAccounts` not matching the actual `sub` claim value from your IdP.
+
 ### External
 
 Delegates authorization decisions to a BYO (bring-your-own) gRPC server. The external server receives the caller's identity, the requested action, and the target resource, and returns an allow/deny decision.
@@ -123,12 +209,15 @@ Delegates authorization decisions to a BYO (bring-your-own) gRPC server. The ext
 
 ## Configuration
 
-Authorization mode is set in the controlplane Helm values. Contact {{< key product_name >}} support for the specific values for your deployment — the exact Helm paths depend on the deployment topology. The key configuration fields are:
+Authorization mode is set in the controlplane Helm values under `services.authorizer.configMap.authorizer`. The key configuration fields are:
 
-- **`type`** — `"Noop"` (default), `"UserClouds"` (Union built-in RBAC), or `"External"` (BYO server)
+- **`type`** — `"Noop"` (default), `"Union"` or `"UserClouds"` (built-in RBAC), or `"External"` (BYO server)
+- **`bootstrap`** — initial service accounts, admin users, and organization (Union mode only)
 - **`externalClient.grpcConfig.host`** — gRPC target for your external server (External mode only). Uses standard gRPC name resolution (`dns:///`, `unix:///`, etc.)
 - **`externalClient.grpcConfig.insecure`** — `true` for plaintext, `false` for TLS
 - **`externalClient.failOpen`** — `true` to allow requests when the external server is unreachable (default: `false`)
+
+See [Enabling Union mode](#enabling-union-mode) or [External authorization server contract](#external-authorization-server-contract) below for mode-specific configuration.
 
 ## External authorization server contract
 
