@@ -1,6 +1,6 @@
 ---
 title: flyte.sandbox
-version: 2.1.7
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 sidebar_expanded: true
@@ -55,6 +55,10 @@ Warning: Experimental feature: alpha — APIs may change without notice.
     - Code mode — provide Python source that runs with automatic input/output wiring.
     - Verbatim mode — run a script that manages its own I/O via /var/inputs and /var/outputs.
     - Command mode — execute an arbitrary command or entrypoint.
+
+    Network access is allowed by default. Pass `block_network=True` to block all
+    outbound access — locally via Docker `network_mode=none`, on-cluster via a
+    `NetworkPolicy`.
 
     Examples
     --------
@@ -195,6 +199,7 @@ def create(
     env_vars: typing.Optional[dict[str, str]],
     secrets: typing.Optional[list],
     cache: str,
+    block_network: bool,
 ) -> flyte.sandbox._code_sandbox._Sandbox
 ```
 Create a stateless Python code sandbox.
@@ -275,6 +280,7 @@ Example — command mode::
 | `env_vars` | `typing.Optional[dict[str, str]]` | Environment variables available inside the container. |
 | `secrets` | `typing.Optional[list]` | Flyte `flyte.Secret` objects to mount. |
 | `cache` | `str` | Cache behaviour — `"auto"`, `"override"`, or `"disable"`. |
+| `block_network` | `bool` | When `True`, blocks all outbound network access — locally via Docker ``network_mode=none``, on-cluster via a NetworkPolicy. Defaults to `False`. |
 
 **Returns:** Configured sandbox ready to `.run()`.
 

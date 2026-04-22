@@ -1,6 +1,6 @@
 ---
 title: CodeTaskTemplate
-version: 2.1.7
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,6 +39,7 @@ class CodeTaskTemplate(
     report: bool,
     queue: Optional[str],
     debuggable: bool,
+    entrypoint: bool,
     parent_env: Optional[weakref.ReferenceType[TaskEnvironment]],
     parent_env_name: Optional[str],
     max_inline_io_bytes: int,
@@ -74,6 +75,7 @@ class CodeTaskTemplate(
 | `report` | `bool` | |
 | `queue` | `Optional[str]` | |
 | `debuggable` | `bool` | |
+| `entrypoint` | `bool` | |
 | `parent_env` | `Optional[weakref.ReferenceType[TaskEnvironment]]` | |
 | `parent_env_name` | `Optional[str]` | |
 | `max_inline_io_bytes` | `int` | |
@@ -253,6 +255,7 @@ def override(
     pod_template: Optional[Union[str, PodTemplate]],
     queue: Optional[str],
     interruptible: Optional[bool],
+    entrypoint: Optional[bool],
     links: Tuple[Link, ...],
     kwargs: **kwargs,
 ) -> TaskTemplate
@@ -276,6 +279,7 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | Optional override for the pod template to use for the task. |
 | `queue` | `Optional[str]` | Optional override for the queue to use for the task. |
 | `interruptible` | `Optional[bool]` | Optional override for the interruptible policy for the task. |
+| `entrypoint` | `Optional[bool]` | Optional override for the entrypoint flag for the task. |
 | `links` | `Tuple[Link, ...]` | Optional override for the Links associated with the task. |
 | `kwargs` | `**kwargs` | Additional keyword arguments for further overrides. Some fields like name, image, docs, and interface cannot be overridden. |
 
