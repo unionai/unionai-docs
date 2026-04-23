@@ -107,6 +107,7 @@ Some parameters go after `flyte`, others after the subcommand:
 flyte \
     --endpoint localhost:30080 \
     --insecure \
+    --builder local \
     run \
     --domain development \
     --project flytesnacks \
