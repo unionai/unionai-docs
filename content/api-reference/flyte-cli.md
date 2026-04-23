@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.1.7
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -22,7 +22,7 @@ This is the command line interface for Flyte.
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
-| `demo` | [`delete`](#flyte-delete-demo), [`start`](#flyte-start-demo), [`stop`](#flyte-stop-demo)  |
+| `devbox` | [`delete`](#flyte-delete-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
@@ -37,15 +37,15 @@ This is the command line interface for Flyte.
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
 | `create` | [`config`](#flyte-create-config), [`project`](#flyte-create-project), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
-| `delete` | [`app`](#flyte-delete-app), [`demo`](#flyte-delete-demo), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
+| `delete` | [`app`](#flyte-delete-app), [`devbox`](#flyte-delete-devbox), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
 | [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
 | `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
-| `start` | [`demo`](#flyte-start-demo), [`tui`](#flyte-start-tui)  |
-| `stop` | [`demo`](#flyte-stop-demo)  |
+| `start` | [`devbox`](#flyte-start-devbox), [`tui`](#flyte-start-tui)  |
+| `stop` | [`devbox`](#flyte-stop-devbox)  |
 | `update` | [`app`](#flyte-update-app), [`project`](#flyte-update-project), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
@@ -68,7 +68,7 @@ This is the command line interface for Flyte.
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `user` | [`create⁺`](#flyte-create-user), [`delete⁺`](#flyte-delete-user), [`get⁺`](#flyte-get-user)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
-| `demo` | [`delete`](#flyte-delete-demo), [`start`](#flyte-start-demo), [`stop`](#flyte-stop-demo)  |
+| `devbox` | [`delete`](#flyte-delete-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `cluster` | [`get⁺`](#flyte-get-cluster)  |
 | `io` | [`get`](#flyte-get-io)  |
@@ -85,15 +85,15 @@ This is the command line interface for Flyte.
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
 | `create` | [`api-key⁺`](#flyte-create-api-key), [`assignment⁺`](#flyte-create-assignment), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
-| `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`demo`](#flyte-delete-demo), [`policy⁺`](#flyte-delete-policy), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
+| `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`devbox`](#flyte-delete-devbox), [`policy⁺`](#flyte-delete-policy), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
 | [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
 | `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
-| `start` | [`demo`](#flyte-start-demo), [`tui`](#flyte-start-tui)  |
-| `stop` | [`demo`](#flyte-stop-demo)  |
+| `start` | [`devbox`](#flyte-start-devbox), [`tui`](#flyte-start-tui)  |
+| `stop` | [`devbox`](#flyte-stop-devbox)  |
 | `update` | [`app`](#flyte-update-app), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
@@ -572,11 +572,11 @@ Unassign a policy from an identity.
 {{< /markdown >}}
 {{< /variant >}}
 
-#### flyte delete demo
+#### flyte delete devbox
 
-**`flyte delete demo [OPTIONS]`**
+**`flyte delete devbox [OPTIONS]`**
 
-Stop and remove the local Flyte demo cluster container.
+Stop and remove the local Flyte devbox cluster container.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1169,6 +1169,7 @@ Currently, both `name` and `version` are required to get a specific task.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Limit the number of tasks to fetch. |
+| `--entrypoint` | `boolean` | `False` | Show only entrypoint tasks. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -1411,6 +1412,8 @@ flyte run hello.py my_task --help
 | `--run-project` | `text` |  | Run the remote task in this project, only applicable when using `deployed-task` subcommand. |
 | `--run-domain` | `text` |  | Run the remote task in this domain, only applicable when using `deployed-task` subcommand. |
 | `--debug` | `boolean` | `False` | Run the task as a VSCode debug task. Starts a code-server in the container so you can connect via the UI to interactively debug/run the task. |
+| {{< multiline >}}`--env`
+`-e`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Environment variable to set on the run context. Format: KEY=VALUE. Can be specified multiple times, e.g. `-e LOG_LEVEL=debug -e FOO=bar`. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte run deployed-task
@@ -1524,16 +1527,17 @@ Serving deployed apps is not currently supported through this CLI command.
 
 Start various Flyte services.
 
-#### flyte start demo
+#### flyte start devbox
 
-**`flyte start demo [OPTIONS]`**
+**`flyte start devbox [OPTIONS]`**
 
-Start a local Flyte demo cluster.
+Start a local Flyte devbox cluster.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--image` | `text` | `ghcr.io/flyteorg/flyte-sandbox-v2:nightly` | Docker image to use for the demo cluster. |
-| `--dev` | `boolean` | `False` | Enable dev mode inside the demo cluster (sets FLYTE_DEV=True). |
+| `--image` | `text` |  | Docker image to use for the devbox cluster. |
+| `--dev` | `boolean` | `False` | Enable dev mode inside the devbox cluster (sets FLYTE_DEV=True). |
+| `--gpu` | `boolean` | `False` | Pass host GPUs into the devbox container (adds --gpus all to docker run). Requires an NVIDIA-enabled host. Defaults --image to a GPU-capable image if --image is not explicitly set. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte start tui
@@ -1557,11 +1561,11 @@ This will record all `flyte.run` runs, that are local and are within the flyte.i
 
 Stop various Flyte services.
 
-#### flyte stop demo
+#### flyte stop devbox
 
-**`flyte stop demo`**
+**`flyte stop devbox`**
 
-Pause the local Flyte demo cluster without removing it.
+Pause the local Flyte devbox cluster without removing it.
 
 ### flyte update
 

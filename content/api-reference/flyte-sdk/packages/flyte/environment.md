@@ -1,6 +1,6 @@
 ---
 title: Environment
-version: 2.1.7
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -31,6 +31,7 @@ class Environment(
     resources: Optional[Resources],
     interruptible: bool,
     image: Union[str, Image, Literal['auto'], None],
+    include: Tuple[str, ...],
 )
 ```
 | Parameter | Type | Description |
@@ -44,6 +45,7 @@ class Environment(
 | `resources` | `Optional[Resources]` | Compute resources (CPU, memory, GPU, disk) via a `Resources` object. |
 | `interruptible` | `bool` | Whether the environment can be scheduled on spot/preemptible instances. |
 | `image` | `Union[str, Image, Literal['auto'], None]` | Docker image for the environment. Can be a string (image URI), an `Image` object, or `"auto"` to use the default image. |
+| `include` | `Tuple[str, ...]` | Extra files to bundle with the environment's code (e.g., HTML templates, config files, non-Python assets). Paths may be relative (resolved against the directory of the file where the environment is instantiated), absolute, directories (recursively included), or glob patterns. Files listed here are bundled **in addition to** the default ``copy_style`` discovery (``loaded_modules`` or ``all``), not in place of it. |
 
 ## Methods
 

@@ -1,6 +1,6 @@
 ---
 title: ImageConfig
-version: 2.1.7
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 ---

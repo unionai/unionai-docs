@@ -1,6 +1,6 @@
 ---
 title: AppEnvironment
-version: 2.1.7
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -35,6 +35,7 @@ class AppEnvironment(
     resources: Optional[Resources],
     interruptible: bool,
     image: Union[str, Image, Literal['auto'], None],
+    include: Tuple[str, ...],
     type: Optional[str],
     port: int | Port,
     args: *args,
@@ -43,7 +44,6 @@ class AppEnvironment(
     scaling: Scaling,
     domain: Domain | None,
     links: List[Link],
-    include: List[str],
     parameters: List[Parameter],
     cluster_pool: str,
     timeouts: Timeouts,
@@ -60,6 +60,7 @@ class AppEnvironment(
 | `resources` | `Optional[Resources]` | Compute resources (CPU, memory, GPU). Inherited from Environment. |
 | `interruptible` | `bool` | |
 | `image` | `Union[str, Image, Literal['auto'], None]` | Docker image for the environment. Inherited from Environment. |
+| `include` | `Tuple[str, ...]` | |
 | `type` | `Optional[str]` | App type identifier (e.g., `"streamlit"`, `"fastapi"`). When set, the platform may apply framework-specific defaults. |
 | `port` | `int \| Port` | Port for the app server. Default `8080`. Ports 8012, 8022, 8112, 9090, and 9091 are reserved and cannot be used. Can also be a `Port` object for advanced configuration. |
 | `args` | `*args` | Arguments passed to the app process. Can be a list of strings or a single string. Used for script-based apps (e.g., Streamlit's `["--server.port", "8080"]`). |
@@ -68,7 +69,6 @@ class AppEnvironment(
 | `scaling` | `Scaling` | `Scaling` object controlling replicas and autoscaling behavior. Default is `Scaling()` (scale-to-zero, max 1 replica). |
 | `domain` | `Domain \| None` | `Domain` object for custom domain configuration. |
 | `links` | `List[Link]` | List of `Link` objects for connecting to other environments. |
-| `include` | `List[str]` | List of additional file paths to bundle with the app (e.g., utility modules, config files, data files). |
 | `parameters` | `List[Parameter]` | List of `Parameter` objects for app inputs. Use `RunOutput` to connect app parameters to task outputs, or `AppEndpoint` to reference other app endpoints. |
 | `cluster_pool` | `str` | Cluster pool for scheduling. Default `"default"`. |
 | `timeouts` | `Timeouts` | `Timeouts` object for startup/health check timeouts. |
