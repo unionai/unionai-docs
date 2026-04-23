@@ -60,7 +60,7 @@ This creates `.flyte/config.yaml` configured to talk to your local devbox cluste
 
 ## Run a workflow on the devbox
 
-Using the same `hello.py` from the [Quickstart](./quickstart):
+Using the same `hello.py` from the [Quickstart](../quickstart):
 
 {{< code file="/unionai-examples/v2/user-guide/getting-started/hello.py" lang="python" >}}
 
@@ -94,4 +94,4 @@ flyte delete devbox  # add the --volume flag to delete the Docker volume
 
 ## Next steps
 
-When you're ready to run on a remote Flyte cluster, see [Connecting to a cluster](./connecting-to-a-cluster) to configure the CLI and SDK.
+When you're ready to run on a remote Flyte cluster, see [Running on a remote cluster](./running-remote) to configure the CLI and SDK.
