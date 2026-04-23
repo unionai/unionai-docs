@@ -28,7 +28,7 @@ It's a well-structured dataset - balanced, clearly labeled - which makes it idea
 
 ## Model
 
-We use EfficientNet-B0 from `timm`, pretrained on ImageNet. EfficientNet was designed to scale depth, width, and resolution jointly using a compound coefficient, giving strong accuracy with a relatively small parameter count (~5.3M). The ImageNet pretraining means the backbone already understands edges, textures, and shapes - features that transfer well to satellite imagery.
+We use EfficientNet-B0 from `timm` (the PyTorch Image Models library), pretrained on ImageNet. EfficientNet was designed to scale depth, width, and resolution jointly using a compound coefficient, giving strong accuracy with a relatively small parameter count (~5.3M). The ImageNet pretraining means the backbone already understands edges, textures, and shapes - features that transfer well to satellite imagery.
 
 ## Two-Phase Training
 
