@@ -58,7 +58,8 @@ What you see:
 
 ### Exploring past runs
 
-Flyte persists the inputs and outputs of every task run locally, so you can always go back and inspect what a task received and produced. Launch the TUI on its own to browse past runs, compare inputs and outputs, and review reports:
+If you created a config file via `flyte create config --local-persistence`, Flyte
+persists the inputs and outputs of every task run locally, so you can always go back and inspect what a task received and produced. Launch the TUI on its own to browse past runs, compare inputs and outputs, and review reports:
 
 ```bash
 flyte start tui
@@ -101,5 +102,19 @@ The [`TaskEnvironment`](../core-concepts/task-environment) is the bridge. Locall
 
 ## Next steps
 
+{{< variant flyte >}}
+{{< markdown >}}
+
+- [**Running the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test containerized execution before deploying remotely.
+
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+
 - [**Running the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test containerized execution before deploying remotely.
 - [**Running on a remote cluster**](./running-remote): Configure the CLI and SDK to run on a remote Flyte cluster.
+
+{{< /markdown >}}
+{{< /variant >}}

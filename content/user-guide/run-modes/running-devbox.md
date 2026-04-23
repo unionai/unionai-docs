@@ -21,12 +21,6 @@ If you haven't already, install the `flyte` package:
 pip install flyte
 ```
 
-Verify it worked:
-
-```bash
-flyte --version
-```
-
 ## Start the devbox
 
 Launch the local cluster:
@@ -86,6 +80,46 @@ When you're done, shut down the cluster:
 flyte stop devbox
 ```
 
+## Inline configuration
+
+Skip the config file entirely by passing parameters directly.
+
+{{< tabs "inline-config" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+Use [`flyte.init`](../../api-reference/flyte-sdk/packages/flyte/_index#init):
+
+```python
+flyte.init(
+    endpoint="localhost:30080",
+    project="flytesnacks",
+    domain="development",
+    insecure=True,
+)
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+Some parameters go after `flyte`, others after the subcommand:
+
+```bash
+flyte \
+    --endpoint localhost:30080 \
+    --insecure \
+    run \
+    --domain development \
+    --project flytesnacks \
+    hello.py \
+    main
+```
+
+See the [CLI reference](../../api-reference/flyte-cli) for details.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+
 ## Delete the devbox
 
 ```bash
@@ -94,4 +128,20 @@ flyte delete devbox  # add the --volume flag to delete the Docker volume
 
 ## Next steps
 
+{{< variant flyte >}}
+{{< markdown >}}
+
+With your environment fully configured, you're ready to build:
+
+- [**Core concepts**](../core-concepts/_index): Understand `TaskEnvironment`s, tasks, runs, and actions through working examples.
+
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+
 When you're ready to run on a remote Flyte cluster, see [Running on a remote cluster](./running-remote) to configure the CLI and SDK.
+
+{{< /markdown >}}
+{{< /variant >}}
