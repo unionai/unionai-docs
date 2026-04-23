@@ -38,7 +38,7 @@ Phase 1: Feature Extraction (frozen backbone). The EfficientNet backbone is froz
 
 Phase 2: Fine-tuning (unfrozen backbone). The backbone is unfrozen and added to the optimizer with a 10× lower learning rate than the head (phase2_lr × 0.1). A fresh cosine annealing schedule is initialized over the remaining steps, so the learning rate doesn't arrive near-zero from Phase 1's schedule before Phase 2 even begins. This lets the backbone adapt to satellite-specific features while preserving the general representations it learned on ImageNet.
 
-The transition happens automatically inside a PhaseChangeCallback:
+The transition happens automatically inside a `PhaseChangeCallback`:
 
 {{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/training.py" fragment="phase_change_callback" lang="python" >}}
 
@@ -48,13 +48,13 @@ This two-phase strategy consistently reaches >95% validation accuracy on EuroSAT
 
 Training a model is only part of the story. The real challenge is building a system that is reproducible, cost-efficient, and easy to iterate on. That's where Union's TaskEnvironment model shines: each stage of the pipeline runs in the right compute environment, and results are cached so you never pay for work you've already done.
 
-The pipeline has four components, each with its own environment defined in config.py.
+The pipeline has four components, each with its own environment defined in `config.py`.
 
 ### Task 1: Data Download (dataset_env)
 
 {{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/run.py" fragment="data_download" lang="python" >}}
 
-This task downloads the raw EuroSAT JPEG files via torchvision and packages them as a flyte.io.Dir. It runs on a lightweight CPU container (2 cores, 2 GB RAM) - no GPU needed. With cache="auto", the result is stored and reused on every subsequent run. You pay for the download exactly once.
+This task downloads the raw EuroSAT JPEG files via torchvision and packages them as a `flyte.io.Dir`. It runs on a lightweight CPU container (2 cores, 2 GB RAM) - no GPU needed. With `cache="auto"`, the result is stored and reused on every subsequent run. You pay for the download exactly once.
 
 No preprocessing happens here. Raw images are passed directly to training so that all transforms - resize, normalization, and augmentation - happen per-batch with the full training context, giving the model properly prepared 224×224 input from the original pixels.
 
@@ -62,26 +62,26 @@ No preprocessing happens here. Raw images are passed directly to training so tha
 
 {{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/run.py" fragment="gpu_training" lang="python" >}}
 
-This task runs on a T4 GPU with 32 GB RAM. It receives the dataset Dir from Task 1, downloads it locally, then runs the two-phase training loop using PyTorch Lightning.
+This task runs on a T4 GPU with 32 GB RAM. It receives the dataset `Dir` from Task 1, downloads it locally, then runs the two-phase training loop using PyTorch Lightning.
 
 Two things worth noting:
 
-With cache="auto" training results are cached based on the input data and config. If you rerun the pipeline with the same dataset and hyperparameters, Union skips training entirely and returns the cached metrics. This makes hyperparameter search much cheaper: only configurations you haven't tried before actually execute.
+With `cache="auto"`, training results are cached based on the input data and config. If you rerun the pipeline with the same dataset and hyperparameters, Union skips training entirely and returns the cached metrics. This makes hyperparameter search much cheaper: only configurations you haven't tried before actually execute.
 
-@wandb_init - the flyteplugins-wandb integration initializes a W&B run automatically and makes it available via get_wandb_run(). This means every training run automatically logs metrics, learning rate curves, and t-SNE visualizations of the learned feature space to your W&B project.
+`@wandb_init` - the `flyteplugins-wandb` integration initializes a W&B run automatically and makes it available via `get_wandb_run()`. This means every training run automatically logs metrics, learning rate curves, and t-SNE visualizations of the learned feature space to your W&B project.
 
 {{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/training.py" fragment="wandb_logging" lang="python" >}}
 
 ### Task 3: Report Generation (report_env)
 
-This task reads the metrics.json produced by training and renders interactive Plotly charts - validation accuracy and train/val loss curves - directly in the Union UI. The report=True flag tells Union to render the task output as a rich report panel. A dashed vertical line marks the Phase 1 → Phase 2 transition, making it easy to see how much the backbone fine-tuning contributes.
+This task reads the `metrics.json` produced by training and renders interactive Plotly charts - validation accuracy and train/val loss curves - directly in the Union UI. The `report=True` flag tells Union to render the task output as a rich report panel. A dashed vertical line marks the Phase 1 → Phase 2 transition, making it easy to see how much the backbone fine-tuning contributes.
 
 {{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/run.py" fragment="report_generator" lang="python" >}}
 
 
 ### Task 4: Orchestration (pipeline_env)
 
-The pipeline task is a lightweight orchestrator. It has no heavy dependencies of its own, just enough to call the three tasks above in sequence. depends_on ensures the container image is built after all its dependencies are resolved. The async/await pattern means each task handoff is non-blocking: Union manages scheduling, retries, and data movement between tasks transparently.
+The pipeline task is a lightweight orchestrator. It has no heavy dependencies of its own, just enough to call the three tasks above in sequence. `depends_on` ensures the container image is built after all its dependencies are resolved. The `async`/`await` pattern means each task handoff is non-blocking: Union manages scheduling, retries, and data movement between tasks transparently.
 {{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/run.py" fragment="orchestration" lang="python" >}}
 
 ## Running the Pipeline
@@ -110,4 +110,4 @@ After the pipeline completes:
 
   ![t-SNE Visualization](../../_static/images/tutorials/satellite_image_classification/tsne.gif)
 
-- Model checkpoints: Lightning's ModelCheckpoint saves the top 3 best-performing checkpoints by validation accuracy, named best-{epoch}-{val_acc}.ckpt. These are standard PyTorch Lightning checkpoints that can be loaded directly for inference.
+- Model checkpoints: Lightning's `ModelCheckpoint` saves the top 3 best-performing checkpoints by validation accuracy, named `best-{epoch}-{val_acc}.ckpt`. These are standard PyTorch Lightning checkpoints that can be loaded directly for inference.
