@@ -52,7 +52,7 @@ Add the string to your CI system's secret store. However it's configured, the se
 - Be masked in logs (most CI systems do this automatically for secrets).
 - Be scoped to the branches/environments that actually deploy — typically `main` or a release branch, not every feature branch or fork PR.
 
-When `FLYTE_API_KEY` is present in the environment at deploy time, the SDK automatically uses it for `ClientSecret` auth, overriding any auth mode configured in `config.yaml`.
+When `FLYTE_API_KEY` is present in the environment at deploy time, the `flyte` CLI uses it for `ClientSecret` auth, overriding any auth mode configured in `config.yaml`.
 
 ### Key scope and rotation
 
