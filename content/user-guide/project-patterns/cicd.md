@@ -64,7 +64,7 @@ Two files drive `flyte deploy` behavior in CI: `pyproject.toml` (or `uv.lock`) f
 
 ### `config.yaml`
 
-Check this into the repo. It supplies everything `FLYTE_API_KEY` doesn't — `org`, `project`, `domain`, and the image builder setting:
+Check this into the repo. It supplies the project, domain, and image builder settings — the things the API key doesn't carry:
 
 ```yaml
 admin:
@@ -72,12 +72,9 @@ admin:
 image:
   builder: remote
 task:
-  org: <your-org>
   project: <default-project>
   domain: development
 ```
-
-`FLYTE_API_KEY` overrides only the **auth fields** (endpoint, client_id, client_secret, `auth_mode`). Everything else — `org`, `task.project`, `task.domain`, `image.builder` — can come from `config.yaml`.
 
 ## The GitHub Actions workflow
 
