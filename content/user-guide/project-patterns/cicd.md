@@ -132,7 +132,7 @@ jobs:
 
 ### Key flag choices
 
-- **`--copy-style none`** — bakes source into the image as part of the build layer. Combined with `.with_code_bundle()` on your `flyte.Image` (see [Monorepo with uv](./monorepo-with-uv#with_code_bundle-one-image-for-dev-and-prod)), this resolves to a `COPY` instruction so the image is fully self-contained. This is the production path: one immutable artifact per commit, no runtime code bundle download.
+- **`--copy-style none`** — bakes source into the image as part of the build layer. Combined with `.with_code_bundle()` on your `flyte.Image` (see [Monorepo with uv](./monorepo-with-uv)), this resolves to a `COPY` instruction so the image is fully self-contained. This is the production path: one immutable artifact per commit, no runtime code bundle download.
 - **`--version ${{ github.sha }}`** — makes deploys idempotent and traceable. Re-running the same commit produces the same version identifier; tasks already registered at that version are no-ops.
 - **Path argument points at the task file, not `envs.py`.** `flyte deploy` only imports the file you give it, so tasks decorated with `@env.task` in separate files won't register unless you point at (or transitively import) those files. Pointing at `etl_tasks.py` pulls in `envs.py` via its import chain and runs the `@etl_env.task` decorators. As an alternative, you can point at a directory and pass `--recursive` to load every task module under it in one command — for a `src/` layout project, also pass `--root-dir src` so shared modules like `envs.py` resolve to a single import path instead of being loaded twice:
 
