@@ -1,14 +1,14 @@
 ---
 title: CI/CD deployments
 weight: 3
-variants: +flyte +union
+variants: -flyte +union
 ---
 
 # CI/CD deployments
 
 This guide walks through deploying a Flyte project from CI. It uses GitHub Actions as the reference implementation, but the building blocks — an API key secret, `flyte deploy`, and a commit-pinned version — translate to GitLab CI, Buildkite, CircleCI, or any runner that can run a Python script.
 
-The examples below assume the project layout and image definitions from the [Monorepo with uv](../monorepo-with-uv) pattern — that guide covers how to structure `pyproject.toml`, `envs.py`, and task modules in a way that makes the `flyte deploy` commands shown here work cleanly.
+The examples below assume the project layout and image definitions from the [Monorepo with uv](./monorepo-with-uv) pattern — that guide covers how to structure `pyproject.toml`, `envs.py`, and task modules in a way that makes the `flyte deploy` commands shown here work cleanly.
 
 ## What CI needs to do
 
