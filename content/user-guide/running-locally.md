@@ -115,4 +115,5 @@ The [`TaskEnvironment`](./core-concepts/task-environment) is the bridge. Locally
 
 ## Next steps
 
-When you're ready to run on a remote Flyte cluster, see [Connecting to a cluster](./connecting-to-a-cluster) to configure the CLI and SDK.
+- [**Running the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test containerized execution before deploying remotely.
+- [**Connecting to a cluster**](./connecting-to-a-cluster): Configure the CLI and SDK to run on a remote Flyte cluster.
