@@ -48,7 +48,17 @@ Create a config file for local execution. Runs will be persisted locally in a SQ
 flyte create config --local-persistence
 ```
 
-This creates `.flyte/config.yaml` in your current directory. See [Setting up a configuration file](./run-modes/running-remote#configuration-file) for more options.
+This creates `.flyte/config.yaml` in your current directory.
+{{< variant flyte >}}
+{{< markdown >}}
+See [Setting up a configuration file](./run-modes/running-devbox#configure) for more options when connecting to a cluster.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
+See [Setting up a configuration file](./run-modes/running-remote#configuration-file) for more options.
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< note >}}
 Run `flyte get config` to check which configuration is currently active.

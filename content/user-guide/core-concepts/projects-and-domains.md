@@ -18,7 +18,16 @@ Every project contains all three domains, creating **project-domain pairs** like
 
 When you run or deploy workflows, you target a project and domain:
 
+{{< variant flyte >}}
+{{< markdown >}}
+- **CLI**: Use `--project` and `--domain` flags with `flyte run` or `flyte deploy`, or set defaults in your [configuration file](../run-modes/running-devbox#configure).
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
 - **CLI**: Use `--project` and `--domain` flags with `flyte run` or `flyte deploy`, or set defaults in your [configuration file](../run-modes/running-remote).
+{{< /markdown >}}
+{{< /variant >}}
 - **Python SDK**: Specify `project` and `domain` in [`flyte.init`](../../api-reference/flyte-sdk/packages/flyte/_index#init) or [`flyte.init_from_config`](../../api-reference/flyte-sdk/packages/flyte/_index#init_from_config).
 
 {{< variant union >}}
