@@ -1,6 +1,6 @@
 ---
 title: Human-in-the-loop
-weight: 17
+weight: 15
 variants: +flyte +union
 ---
 

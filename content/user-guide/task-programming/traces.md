@@ -1,6 +1,6 @@
 ---
 title: Traces
-weight: 13
+weight: 11
 variants: +flyte +union
 ---
 

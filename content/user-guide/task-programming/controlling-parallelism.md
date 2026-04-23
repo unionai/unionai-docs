@@ -1,6 +1,6 @@
 ---
 title: Controlling parallel execution
-weight: 16
+weight: 14
 variants: +flyte +union
 ---
 

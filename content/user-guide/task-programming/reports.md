@@ -1,6 +1,6 @@
 ---
 title: Reports
-weight: 9
+weight: 7
 variants: +flyte +union
 ---
 

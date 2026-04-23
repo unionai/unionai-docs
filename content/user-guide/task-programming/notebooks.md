@@ -1,6 +1,6 @@
 ---
 title: Notebooks
-weight: 10
+weight: 8
 variants: +flyte +union
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: Other features
-weight: 19
+weight: 15
 variants: +flyte +union
 ---
 

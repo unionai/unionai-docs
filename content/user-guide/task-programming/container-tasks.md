@@ -1,6 +1,6 @@
 ---
 title: Raw Container Tasks
-weight: 7
+weight: 6
 variants: +flyte +union
 ---
 

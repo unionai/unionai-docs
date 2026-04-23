@@ -1,6 +1,6 @@
 ---
 title: Grouping actions
-weight: 14
+weight: 12
 variants: +flyte +union
 ---
 
