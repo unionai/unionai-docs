@@ -49,54 +49,34 @@ Here is an example of how these levels work together, showing each level with al
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/task_config.py" fragment="config-levels" lang="python" >}}
 
-### Parameter interaction
-
-Here is an overview of all task configuration parameters available at each level and how they interact:
-
-| Parameter               | `TaskEnvironment`  | `@env.task` decorator      | `override` on task invocation |
-|-------------------------|--------------------|----------------------------|-------------------------------|
-| [**name**](./additional-task-settings)                           | ✅ Yes (required)  | ❌ No                      | ❌ No                         |
-| [**short_name**](./additional-task-settings)                     | ❌ No              | ✅ Yes                     | ✅ Yes                        |
-| [**image**](./container-images)                                  | ✅ Yes             | ❌ No                      | ❌ No                         |
-| [**resources**](./resources)                                     | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
-| [**env_vars**](./additional-task-settings#environment-variables) | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
-| [**secrets**](./secrets)                                         | ✅ Yes             | ❌ No                      | ✅ Yes (if not `reusable`)    |
-| [**cache**](./caching)                                           | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
-| [**pod_template**](./pod-templates)                              | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
-| [**reusable**](./reusable-containers)                            | ✅ Yes             | ❌ No                      | ✅ Yes                        |
-| [**depends_on**](./multiple-environments)                        | ✅ Yes             | ❌ No                      | ❌ No                         |
-| [**description**](./additional-task-settings)                    | ✅ Yes             | ❌ No                      | ❌ No                         |
-| [**plugin_config**](./task-plugins)                              | ✅ Yes             | ❌ No                      | ❌ No                         |
-| [**report**](./additional-task-settings#report)                  | ❌ No              | ✅ Yes                     | ❌ No                         |
-| [**max_inline_io_bytes**](./additional-task-settings#inline-io-threshold) | ❌ No    | ✅ Yes                     | ✅ Yes                        |
-| [**retries**](./retries-and-timeouts)                            | ❌ No              | ✅ Yes                     | ✅ Yes                        |
-| [**timeout**](./retries-and-timeouts)                            | ❌ No              | ✅ Yes                     | ✅ Yes                        |
-| [**triggers**](./triggers)                                       | ❌ No              | ✅ Yes                     | ❌ No                         |
-| [**links**](./additional-task-settings#links)                    | ❌ No              | ✅ Yes                     | ✅ Yes                        |
-| [**interruptible**](./interruptible-tasks-and-queues)            | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
-| [**queue**](./interruptible-tasks-and-queues)                    | ✅ Yes             | ✅ Yes                     | ✅ Yes                        |
-| [**docs**](./additional-task-settings#docs)                      | ❌ No              | ✅ Yes                     | ❌ No                         |
-
 ## Task configuration parameters
 
-Each parameter is documented in detail on its dedicated page or in the API reference. For full type signatures and constraints, see the [`TaskEnvironment` API reference](../../api-reference/flyte-sdk/packages/flyte/taskenvironment).
+Each parameter is documented in detail on its dedicated page in this section.
+For the complete parameter interaction matrix showing which parameters can be set at which level, and for full type signatures and constraints, see the [`TaskEnvironment` API reference](../../api-reference/flyte-sdk/packages/flyte/taskenvironment).
 
-| Parameter | Details |
-|-----------|---------|
-| **name**, **short_name**, **description**, **docs** | [Additional task settings](./additional-task-settings) |
-| **image** | [Container images](./container-images) &bull; [`Image` API ref](../../api-reference/flyte-sdk/packages/flyte/image) |
-| **resources** | [Resources](./resources) &bull; [`Resources` API ref](../../api-reference/flyte-sdk/packages/flyte/resources) |
-| **env_vars** | [Additional task settings](./additional-task-settings#environment-variables) |
-| **secrets** | [Secrets](./secrets) &bull; [`Secret` API ref](../../api-reference/flyte-sdk/packages/flyte/secret) |
-| **cache** | [Caching](./caching) &bull; [`Cache` API ref](../../api-reference/flyte-sdk/packages/flyte/cache) |
-| **pod_template** | [Pod templates](./pod-templates) &bull; [`PodTemplate` API ref](../../api-reference/flyte-sdk/packages/flyte/podtemplate) |
-| **reusable** | [Reusable containers](./reusable-containers) &bull; [`ReusePolicy` API ref](../../api-reference/flyte-sdk/packages/flyte/reusepolicy) |
-| **depends_on** | [Multiple environments](./multiple-environments) |
-| **plugin_config** | [Task plugins](./task-plugins) |
-| **report** | [Additional task settings](./additional-task-settings#report) |
-| **max_inline_io_bytes** | [Additional task settings](./additional-task-settings#inline-io-threshold) |
-| **retries**, **timeout** | [Retries and timeouts](./retries-and-timeouts) &bull; [`RetryStrategy`](../../api-reference/flyte-sdk/packages/flyte/retrystrategy), [`Timeout`](../../api-reference/flyte-sdk/packages/flyte/timeout) API refs |
-| **triggers** | [Triggers](./triggers) &bull; [`Trigger` API ref](../../api-reference/flyte-sdk/packages/flyte/trigger) |
-| **links** | [Additional task settings](./additional-task-settings#links) |
-| **interruptible**, **queue** | [Interruptible tasks and queues](./interruptible-tasks-and-queues) |
+| Parameter | Set at | Details |
+|-----------|--------|---------|
+| **name** | `TaskEnvironment` only | [Additional task settings](./additional-task-settings) &bull; [`TaskEnvironment` API ref](../../api-reference/flyte-sdk/packages/flyte/taskenvironment) |
+| **image** | `TaskEnvironment` only | [Container images](./container-images) &bull; [`Image` API ref](../../api-reference/flyte-sdk/packages/flyte/image) |
+| **depends_on** | `TaskEnvironment` only | [Multiple environments](./multiple-environments) |
+| **description** | `TaskEnvironment` only | [Additional task settings](./additional-task-settings) |
+| **plugin_config** | `TaskEnvironment` only | [Task plugins](./task-plugins) |
+| **resources** | `TaskEnvironment`, `override`\* | [Resources](./resources) &bull; [`Resources` API ref](../../api-reference/flyte-sdk/packages/flyte/resources) |
+| **env_vars** | `TaskEnvironment`, `override`\* | [Additional task settings](./additional-task-settings#environment-variables) |
+| **secrets** | `TaskEnvironment`, `override`\* | [Secrets](./secrets) &bull; [`Secret` API ref](../../api-reference/flyte-sdk/packages/flyte/secret) |
+| **cache** | All three levels | [Caching](./caching) &bull; [`Cache` API ref](../../api-reference/flyte-sdk/packages/flyte/cache) |
+| **pod_template** | All three levels | [Pod templates](./pod-templates) &bull; [`PodTemplate` API ref](../../api-reference/flyte-sdk/packages/flyte/podtemplate) |
+| **reusable** | `TaskEnvironment`, `override` | [Reusable containers](./reusable-containers) &bull; [`ReusePolicy` API ref](../../api-reference/flyte-sdk/packages/flyte/reusepolicy) |
+| **interruptible** | All three levels | [Interruptible tasks and queues](./interruptible-tasks-and-queues) |
+| **queue** | All three levels | [Interruptible tasks and queues](./interruptible-tasks-and-queues) |
+| **short_name** | `@env.task`, `override` | [Additional task settings](./additional-task-settings) |
+| **retries** | `@env.task`, `override` | [Retries and timeouts](./retries-and-timeouts) &bull; [`RetryStrategy` API ref](../../api-reference/flyte-sdk/packages/flyte/retrystrategy) |
+| **timeout** | `@env.task`, `override` | [Retries and timeouts](./retries-and-timeouts) &bull; [`Timeout` API ref](../../api-reference/flyte-sdk/packages/flyte/timeout) |
+| **max_inline_io_bytes** | `@env.task`, `override` | [Additional task settings](./additional-task-settings#inline-io-threshold) |
+| **links** | `@env.task`, `override` | [Additional task settings](./additional-task-settings#links) |
+| **report** | `@env.task` only | [Additional task settings](./additional-task-settings#report) |
+| **triggers** | `@env.task` only | [Triggers](./triggers) &bull; [`Trigger` API ref](../../api-reference/flyte-sdk/packages/flyte/trigger) |
+| **docs** | `@env.task` only | [Additional task settings](./additional-task-settings#docs) |
+
+\*When `reusable` is set, `resources`, `env_vars`, and `secrets` can only be overridden via `task.override()` with `reusable="off"` in the same call.
 
