@@ -35,6 +35,8 @@ Launch the local cluster:
 flyte start devbox
 ```
 
+![Devbox start](../../_static/images/user-guide/run-modes/flyte-start-devbox.png)
+
 This pulls the necessary containers and starts a local Flyte instance. Once ready, the Flyte UI is available at `http://localhost:30080`.
 
 {{< note >}}
@@ -74,6 +76,8 @@ Without the `--local` flag, the workflow runs on the devbox cluster rather than 
 
 Open `http://localhost:30080` to see your workflow execution in the Flyte UI. You can inspect task inputs, outputs, logs, and execution timelines.
 
+![Devbox UI](../../_static/images/user-guide/run-modes/flyte-ui-devbox.png)
+
 ## Stop the devbox
 
 When you're done, shut down the cluster:
@@ -82,15 +86,11 @@ When you're done, shut down the cluster:
 flyte stop devbox
 ```
 
-## Local vs devbox vs remote
+## Delete the devbox
 
-| Aspect | Local (`--local`) | Devbox | Remote cluster |
-|--------|-------------------|--------|----------------|
-| **Execution** | In-process Python | Containerized, local Docker | Containerized, cloud |
-| **Docker required** | No | Yes | No (remote build) |
-| **Flyte UI** | No | Yes (`localhost:30080`) | Yes |
-| **Container images** | Ignored | Built locally | Built locally or remotely |
-| **Parallelism** | Sequential | Cluster-level | Cluster-level |
+```bash
+flyte delete devbox  # add the --volume flag to delete the Docker volume
+```
 
 ## Next steps
 

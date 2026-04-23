@@ -8,15 +8,9 @@ variants: +flyte +union
 
 Flyte runs locally with no cluster or Docker needed. Install the SDK, write tasks, and run them on your machine. When you're ready to scale, drop the `--local` flag and the same code runs on a remote cluster with GPUs.
 
-![TUI agent run](../_static/images/user-guide/local/tui_agent_run.png)
-
----
-
 ## Getting started
 
 If you haven't already, install the SDK and configure local persistence as described in the [Quickstart](./quickstart).
-
----
 
 ## Running tasks locally
 
@@ -25,34 +19,26 @@ The `--local` flag tells Flyte to execute a task in your local Python environmen
 Basic local execution:
 
 ```bash
-flyte run --local my_pipeline.py my_task --arg value
+flyte run --local hello.py main
 ```
 
 With the interactive TUI:
 
 ```bash
-flyte run --local --tui my_pipeline.py my_task --arg value
+flyte run --local --tui hello.py main
 ```
 
 You can also run tasks programmatically using the Python SDK with `flyte.run()`. See [Run and deploy tasks](./task-deployment/_index) for details.
-
-Drop `--local` to run on a remote cluster when one is configured:
-
-```bash
-flyte run my_pipeline.py my_task --arg value
-```
-
----
 
 ## Terminal UI
 
 The TUI is an interactive split-screen dashboard. Task tree on the left, details and logs on the right.
 
 ```bash
-flyte run --local --tui my_pipeline.py pipeline --epochs 5
+flyte run --local hello.py main
 ```
 
-![TUI agent run](../_static/images/user-guide/local/tui_agent_run.png)
+![TUI agent run](../../_static/images/user-guide/quickstart/run-tui.png)
 
 What you see:
 
@@ -95,11 +81,11 @@ Most Flyte features work in both local and remote execution. The table below sum
 
 ---
 
-## Local to remote
+## Local to devbox/remote
 
 The same code runs in both environments. Here's what changes:
 
-| Aspect | Local | Remote |
+| Aspect | Local | Devbox/Remote |
 |--------|-------|--------|
 | **Run pipeline** | `flyte run --local` | `flyte run` |
 | **TUI** | `--tui` flag | Dashboard in Flyte UI |
