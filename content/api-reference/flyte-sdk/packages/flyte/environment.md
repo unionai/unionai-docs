@@ -1,6 +1,6 @@
 ---
 title: Environment
-version: 2.1.5
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -8,6 +8,15 @@ layout: py_api
 # Environment
 
 **Package:** `flyte`
+
+Base class for execution environments, shared by `TaskEnvironment` and
+`AppEnvironment`. Defines common infrastructure settings such as container
+image, compute resources, secrets, and deployment dependencies.
+
+You typically don't instantiate `Environment` directly — use
+`TaskEnvironment` for tasks or `AppEnvironment` for long-running apps.
+
+
 
 ## Parameters
 
@@ -22,25 +31,27 @@ class Environment(
     resources: Optional[Resources],
     interruptible: bool,
     image: Union[str, Image, Literal['auto'], None],
+    include: Tuple[str, ...],
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | Name of the environment |
-| `depends_on` | `List[Environment]` | Environment dependencies to hint, so when you deploy the environment, the dependencies are also deployed. This is useful when you have a set of environments that depend on each other. |
-| `pod_template` | `Optional[Union[str, PodTemplate]]` | Pod template to use for the environment. |
-| `description` | `Optional[str]` | Description of the environment. |
+| `name` | `str` | Name of the environment (required). Must be snake_case or kebab-case. |
+| `depends_on` | `List[Environment]` | List of other environments to deploy alongside this one. |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` | Kubernetes pod template as a string reference to a named template or a `PodTemplate` object. |
+| `description` | `Optional[str]` | Human-readable description (max 255 characters). |
 | `secrets` | `Optional[SecretRequest]` | Secrets to inject into the environment. |
-| `env_vars` | `Optional[Dict[str, str]]` | Environment variables to set for the environment. |
-| `resources` | `Optional[Resources]` | Resources to allocate for the environment. |
-| `interruptible` | `bool` | Whether the environment is interruptible and can be scheduled on spot/preemptible instances |
-| `image` | `Union[str, Image, Literal['auto'], None]` | Docker image to use for the environment. If set to "auto", will use the default image. |
+| `env_vars` | `Optional[Dict[str, str]]` | Environment variables as `dict[str, str]`. |
+| `resources` | `Optional[Resources]` | Compute resources (CPU, memory, GPU, disk) via a `Resources` object. |
+| `interruptible` | `bool` | Whether the environment can be scheduled on spot/preemptible instances. |
+| `image` | `Union[str, Image, Literal['auto'], None]` | Docker image for the environment. Can be a string (image URI), an `Image` object, or `"auto"` to use the default image. |
+| `include` | `Tuple[str, ...]` | Extra files to bundle with the environment's code (e.g., HTML templates, config files, non-Python assets). Paths may be relative (resolved against the directory of the file where the environment is instantiated), absolute, directories (recursively included), or glob patterns. Files listed here are bundled **in addition to** the default ``copy_style`` discovery (``loaded_modules`` or ``all``), not in place of it. |
 
 ## Methods
 
 | Method | Description |
 |-|-|
-| [`add_dependency()`](#add_dependency) | Add a dependency to the environment. |
+| [`add_dependency()`](#add_dependency) | Add one or more environment dependencies so they are deployed together. |
 | [`clone_with()`](#clone_with) |  |
 
 
@@ -51,12 +62,21 @@ def add_dependency(
     env: Environment,
 )
 ```
-Add a dependency to the environment.
+Add one or more environment dependencies so they are deployed together.
+
+When you deploy this environment, any environments added via
+`add_dependency` will also be deployed. This is an alternative to
+passing `depends_on=[...]` at construction time, useful when the
+dependency is defined after the environment is created.
+
+Duplicate dependencies are silently ignored. An environment cannot
+depend on itself.
+
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `env` | `Environment` | |
+| `env` | `Environment` | One or more `Environment` instances to add as dependencies. |
 
 ### clone_with()
 

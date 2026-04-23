@@ -1,6 +1,6 @@
 ---
 title: TraceDoesNotAllowNestedTasksError
-version: 2.1.5
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 ---

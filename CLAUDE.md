@@ -17,7 +17,7 @@ Multi-variant Hugo documentation site for Flyte (open-source) and Union.ai produ
 
 ```bash
 # Development (requires hugo.local.toml setup first)
-cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml  # First time only
+cp hugo.local.toml~sample hugo.local.toml  # First time only
 make dev                                    # Start dev server at localhost:1313
 
 # Production build
@@ -174,7 +174,7 @@ jupyter_notebook: /path/to/notebook.ipynb
 ## Development Setup
 
 1. Install Hugo >= 0.145.0: `brew install hugo`
-2. Copy config: `cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml`
+2. Copy config: `cp hugo.local.toml~sample hugo.local.toml`
 3. Run: `make dev`
 
 Dev settings in `hugo.local.toml`:

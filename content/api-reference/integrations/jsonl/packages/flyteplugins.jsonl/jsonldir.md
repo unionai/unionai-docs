@@ -1,6 +1,6 @@
 ---
 title: JsonlDir
-version: 2.1.5
+version: 2.1.9
 variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
@@ -66,6 +66,7 @@ validated to form a valid model.
 
 | Property | Type | Description |
 |-|-|-|
+| `is_empty` | `None` | True when this is a sentinel ``Dir`` produced by :class:`EmptyDir`/``Dir.empty()`` — i.e. the task didn't actually produce a directory. Use this to branch on whether the upstream task emitted real data without dealing with ``Optional[Dir]`` (which the type engine cannot round-trip correctly through ``SerializableType``). |
 | `lazy_uploader` | `None` |  |
 
 ## Methods
@@ -74,6 +75,7 @@ validated to form a valid model.
 |-|-|
 | [`download()`](#download) | Asynchronously download the entire directory to a local path. |
 | [`download_sync()`](#download_sync) | Synchronously download the entire directory to a local path. |
+| [`empty()`](#empty) | Return a sentinel ``Dir`` representing 'no directory was produced'. |
 | [`exists()`](#exists) | Asynchronously check if the directory exists. |
 | [`exists_sync()`](#exists_sync) | Synchronously check if the directory exists. |
 | [`from_existing_remote()`](#from_existing_remote) | Create a Dir reference from an existing remote directory. |
@@ -89,7 +91,7 @@ validated to form a valid model.
 | [`iter_records_sync()`](#iter_records_sync) | Sync generator that yields records from all shards in sorted order. |
 | [`list_files()`](#list_files) | Asynchronously get a list of all files in the directory (non-recursive). |
 | [`list_files_sync()`](#list_files_sync) | Synchronously get a list of all files in the directory (non-recursive). |
-| [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialise private attributes. |
+| [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialize private attributes. |
 | [`new_remote()`](#new_remote) | Create a new Dir reference for a remote directory that will be written to. |
 | [`pre_init()`](#pre_init) | Internal: Pydantic validator to set default name from path. |
 | [`schema_match()`](#schema_match) | Internal: Check if incoming schema matches Dir schema. |
@@ -173,6 +175,18 @@ def download_to_path_sync(d: Dir) -> str:
 | `local_path` | `Optional[Union[str, Path]]` | The local path to download the directory to. If None, a temporary directory will be used and a path will be generated. |
 
 **Returns:** The absolute path to the downloaded directory
+
+### empty()
+
+```python
+def empty()
+```
+Return a sentinel ``Dir`` representing 'no directory was produced'.
+
+Use as the return value when a task may or may not produce an output directory; the
+caller can check :attr:`Dir.is_empty` to detect the sentinel. Round-trips cleanly
+through Flyte serialization (unlike ``Optional[Dir]``).
+
 
 ### exists()
 
@@ -633,7 +647,7 @@ def model_post_init(
     context: Any,
 )
 ```
-This function is meant to behave like a BaseModel method to initialise private attributes.
+This function is meant to behave like a BaseModel method to initialize private attributes.
 
 It takes context as an argument since that's what pydantic-core passes when calling it.
 

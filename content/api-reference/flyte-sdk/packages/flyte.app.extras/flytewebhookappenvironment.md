@@ -1,6 +1,6 @@
 ---
 title: FlyteWebhookAppEnvironment
-version: 2.1.5
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,6 +39,7 @@ class FlyteWebhookAppEnvironment(
     env_vars: Optional[Dict[str, str]],
     resources: Optional[Resources],
     interruptible: bool,
+    include: Tuple[str, ...],
     port: int | Port,
     args: *args,
     command: Optional[Union[List[str], str]],
@@ -46,7 +47,6 @@ class FlyteWebhookAppEnvironment(
     scaling: Scaling,
     domain: Domain | None,
     links: List[Link],
-    include: List[str],
     parameters: List[Parameter],
     cluster_pool: str,
     timeouts: Timeouts,
@@ -72,6 +72,7 @@ class FlyteWebhookAppEnvironment(
 | `env_vars` | `Optional[Dict[str, str]]` | |
 | `resources` | `Optional[Resources]` | Resources to allocate for the environment |
 | `interruptible` | `bool` | |
+| `include` | `Tuple[str, ...]` | |
 | `port` | `int \| Port` | |
 | `args` | `*args` | |
 | `command` | `Optional[Union[List[str], str]]` | |
@@ -79,7 +80,6 @@ class FlyteWebhookAppEnvironment(
 | `scaling` | `Scaling` | Scaling configuration for the app environment |
 | `domain` | `Domain \| None` | |
 | `links` | `List[Link]` | |
-| `include` | `List[str]` | |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | |
 | `timeouts` | `Timeouts` | |
@@ -104,7 +104,7 @@ class FlyteWebhookAppEnvironment(
 
 | Method | Description |
 |-|-|
-| [`add_dependency()`](#add_dependency) | Add a dependency to the environment. |
+| [`add_dependency()`](#add_dependency) | Add one or more environment dependencies so they are deployed together. |
 | [`clone_with()`](#clone_with) |  |
 | [`container_args()`](#container_args) |  |
 | [`container_cmd()`](#container_cmd) |  |
@@ -122,12 +122,21 @@ def add_dependency(
     env: Environment,
 )
 ```
-Add a dependency to the environment.
+Add one or more environment dependencies so they are deployed together.
+
+When you deploy this environment, any environments added via
+`add_dependency` will also be deployed. This is an alternative to
+passing `depends_on=[...]` at construction time, useful when the
+dependency is defined after the environment is created.
+
+Duplicate dependencies are silently ignored. An environment cannot
+depend on itself.
+
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `env` | `Environment` | |
+| `env` | `Environment` | One or more `Environment` instances to add as dependencies. |
 
 ### clone_with()
 

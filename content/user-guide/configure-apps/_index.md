@@ -1,6 +1,6 @@
 ---
 title: Configure apps
-weight: 14
+weight: 15
 variants: +flyte +union
 sidebar_expanded: false
 llm_readable_bundle: true

@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.1.5
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -58,7 +58,7 @@ class Image(
     platform: Tuple[Architecture, ...],
     python_version: Tuple[int, int],
     extendable: bool,
-    _is_flyte_default: bool,
+    _is_cloned: bool,
     _ref_name: Optional[str],
     _layers: Tuple[Layer, ...],
     _image_registry_secret: Optional[Secret],
@@ -73,7 +73,7 @@ class Image(
 | `platform` | `Tuple[Architecture, ...]` | |
 | `python_version` | `Tuple[int, int]` | |
 | `extendable` | `bool` | |
-| `_is_flyte_default` | `bool` | |
+| `_is_cloned` | `bool` | |
 | `_ref_name` | `Optional[str]` | |
 | `_layers` | `Tuple[Layer, ...]` | |
 | `_image_registry_secret` | `Optional[Secret]` | |
@@ -88,7 +88,7 @@ class Image(
 
 | Method | Description |
 |-|-|
-| [`clone()`](#clone) | Use this method to clone the current image and change the registry and name. |
+| [`clone()`](#clone) | Clone an existing image, optionally with a new name or registry. |
 | [`from_base()`](#from_base) | Use this method to start with a pre-built base image. |
 | [`from_debian_base()`](#from_debian_base) | Use this method to start using the default base image, built from this library's base Dockerfile. |
 | [`from_dockerfile()`](#from_dockerfile) | Use this method to create a new image with the specified dockerfile. |
@@ -124,7 +124,11 @@ def clone(
     extendable: Optional[bool],
 ) -> Image
 ```
-Use this method to clone the current image and change the registry and name
+Clone an existing image, optionally with a new name or registry.
+
+All `with_*` methods already produce a new immutable `Image`; use
+`clone()` when you need an independent copy with a different name,
+registry, or other base properties.
 
 
 

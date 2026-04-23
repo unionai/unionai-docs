@@ -1,6 +1,6 @@
 ---
 title: Task
-version: 2.1.5
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -28,6 +28,7 @@ Initialize a Task object.
 
 | Property | Type | Description |
 |-|-|-|
+| `entrypoint` | `None` | Whether this task is marked as an entrypoint. Not populated in listing responses; fetch ``TaskDetails`` to read the authoritative value from the task template. |
 | `name` | `None` | The name of the task. |
 | `url` | `None` | Get the console URL for viewing the task. |
 | `version` | `None` | The version of the task. |
@@ -83,6 +84,7 @@ def listall(
     domain: str | None,
     sort_by: Tuple[str, Literal['asc', 'desc']] | None,
     limit: int,
+    entrypoint: bool | None,
 ) -> Union[AsyncIterator[Task], Iterator[Task]]
 ```
 Get all runs for the current project and domain.
@@ -98,6 +100,7 @@ Get all runs for the current project and domain.
 | `domain` | `str \| None` | The domain to filter tasks by. If None, the current domain will be used. |
 | `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). |
 | `limit` | `int` | The maximum number of tasks to return. |
+| `entrypoint` | `bool \| None` | If True, only entrypoint tasks will be returned. |
 
 **Returns:** An iterator of runs.
 
