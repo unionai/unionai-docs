@@ -66,7 +66,7 @@ flyte update app --deactivate my-app
 flyte get app my-app
 ```
 
-Use `--project` and `--domain` to target a specific [project-domain pair](../projects-and-domains).
+Use `--project` and `--domain` to target a specific [project-domain pair](../core-concepts/projects-and-domains).
 For all available options, see the [CLI reference](../../api-reference/flyte-cli).
 
 ## Best practices

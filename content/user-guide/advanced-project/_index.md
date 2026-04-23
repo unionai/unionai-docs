@@ -97,8 +97,6 @@ flyte secret create openai-api-key
 3. **[Parallel outputs](./parallel-outputs)**: Generate multiple formats concurrently
 4. **[Serving app](./serving-app)**: Deploy an interactive UI for report generation
 
-[Resilient generation]()
-
 ## Key takeaways
 
 1. **Reusable environments for batch processing**: `ReusePolicy` keeps containers warm,
