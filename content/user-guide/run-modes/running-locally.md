@@ -10,7 +10,7 @@ Flyte runs locally with no cluster or Docker needed. Install the SDK, write task
 
 ## Getting started
 
-If you haven't already, install the SDK and configure local persistence as described in the [Quickstart](./quickstart).
+If you haven't already, install the SDK and configure local persistence as described in the [Quickstart](../quickstart).
 
 ## Running tasks locally
 
@@ -28,7 +28,7 @@ With the interactive TUI:
 flyte run --local --tui hello.py main
 ```
 
-You can also run tasks programmatically using the Python SDK with `flyte.run()`. See [Run and deploy tasks](./task-deployment/_index) for details.
+You can also run tasks programmatically using the Python SDK with `flyte.run()`. See [Run and deploy tasks](../task-deployment/_index) for details.
 
 ## Terminal UI
 
@@ -72,12 +72,12 @@ Most Flyte features work in both local and remote execution. The table below sum
 
 | Feature | Local behavior | Details |
 |---------|---------------|---------|
-| **Caching** | Outputs stored in local SQLite, keyed on task name and inputs. Same inputs = instant results. | [Caching](./task-configuration/caching) |
-| **Tracing** | `@flyte.trace` functions appear as child nodes in the TUI with their own timing, inputs, and outputs. | [Traces](./task-programming/traces) |
-| **Reports** | HTML files saved locally. TUI shows the file path. | [Reports](./task-programming/reports) |
-| **Serving** | Run apps locally with `python serve.py` or `flyte.with_servecontext(mode="local")`. | [Serve and deploy apps](./serve-and-deploy-apps/_index) |
-| **Plugins** | Same decorators and APIs as remote. Secrets come from environment variables. | [Integrations](../integrations/_index) |
-| **Secrets** | Read from `.env` files or environment variables. No `flyte create secret` needed. | [Secrets](./task-configuration/secrets) |
+| **Caching** | Outputs stored in local SQLite, keyed on task name and inputs. Same inputs = instant results. | [Caching](../task-configuration/caching) |
+| **Tracing** | `@flyte.trace` functions appear as child nodes in the TUI with their own timing, inputs, and outputs. | [Traces](../task-programming/traces) |
+| **Reports** | HTML files saved locally. TUI shows the file path. | [Reports](../task-programming/reports) |
+| **Serving** | Run apps locally with `python serve.py` or `flyte.with_servecontext(mode="local")`. | [Serve and deploy apps](../serve-and-deploy-apps/_index) |
+| **Plugins** | Same decorators and APIs as remote. Secrets come from environment variables. | [Integrations](../../api-reference/integrations/_index) |
+| **Secrets** | Read from `.env` files or environment variables. No `flyte create secret` needed. | [Secrets](../task-configuration/secrets) |
 
 ---
 
@@ -95,7 +95,7 @@ The same code runs in both environments. Here's what changes:
 | **Secrets** | `.env` / environment variables | `flyte create secret` / `flyte.Secret` |
 | **Compute** | Your CPU/GPU | `Resources(cpu=2, memory="4Gi", gpu=1)` |
 
-The [`TaskEnvironment`](./core-concepts/task-environment) is the bridge. Locally, image and resource settings are ignored. On the cluster, Flyte builds containers and allocates compute from the same definition.
+The [`TaskEnvironment`](../core-concepts/task-environment) is the bridge. Locally, image and resource settings are ignored. On the cluster, Flyte builds containers and allocates compute from the same definition.
 
 ---
 
