@@ -48,7 +48,7 @@ Create a config file for local execution. Runs will be persisted locally in a SQ
 flyte create config --local-persistence
 ```
 
-This creates `.flyte/config.yaml` in your current directory. See [Setting up a configuration file](./connecting-to-a-cluster#configuration-file) for more options.
+This creates `.flyte/config.yaml` in your current directory. See [Setting up a configuration file](./run-modes/running-remote#configuration-file) for more options.
 
 {{< note >}}
 Run `flyte get config` to check which configuration is currently active.
@@ -109,5 +109,5 @@ To navigate to the run details, double-click it or press `Enter` to view the run
 Now that you've run your first workflow:
 
 - [**Core concepts**](./core-concepts/_index): Understand the core concepts of Flyte programming
-- [**Running locally**](./running-locally): Learn about the TUI, caching, and other features that work locally
-- [**Connecting to a cluster**](./connecting-to-a-cluster): Configure your environment for remote execution
+- [**Running locally**](./run-modes/running-locally): Learn about the TUI, caching, and other features that work locally
+- [**Running on a remote cluster**](./run-modes/running-remote): Configure your environment for remote execution

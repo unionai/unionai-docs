@@ -82,7 +82,7 @@ There are two ways that the image can be built:
 
 ### Configuring the `builder`
 
-[Earlier](../connecting-to-a-cluster), we discussed the `image.builder` property in the `config.yaml`.
+[Earlier](../run-modes/running-remote), we discussed the `image.builder` property in the `config.yaml`.
 
 For Flyte OSS instances, this property must be set to `local`.
 
