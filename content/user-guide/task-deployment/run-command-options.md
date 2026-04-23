@@ -47,7 +47,7 @@ flyte run --project my-project --domain development my_example.py my_task
 
 **`flyte run --run-project <PROJECT> --run-domain <DOMAIN> deployed-task <TASK_REF>`**
 
-When using the `deployed-task` subcommand, `--run-project` and `--run-domain` specify the [project-domain pair](../projects-and-domains) in which to *execute* the task. This lets you run a deployed task in a different project or domain than the one configured in your `config.yaml`:
+When using the `deployed-task` subcommand, `--run-project` and `--run-domain` specify the [project-domain pair](../core-concepts/projects-and-domains) in which to *execute* the task. This lets you run a deployed task in a different project or domain than the one configured in your `config.yaml`:
 
 ```bash
 flyte run --run-project prod-project --run-domain production deployed-task my_env.my_task
