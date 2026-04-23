@@ -1,7 +1,7 @@
 ---
 title: Running on a remote cluster
 weight: 6
-variants: +union
+variants: +union -flyte
 ---
 
 # Running on a remote cluster
