@@ -579,30 +579,42 @@ def create_test_project_and_route(cfg: BaseConfig) -> None:
     The project name matches the cluster name so reruns are idempotent.
     This ensures test executions land on the specific cluster we just deployed.
 
-    NOTE: cluster-pool-attributes (project/domain → pool routing) does not yet
-    have a Python API in flyteplugins-union, so that step still shells out to
-    uctl. Everything else is Python/gRPC-native. When the attributes API
-    lands, drop the uctl call below and the need for uctl auth state in this
-    task body disappears entirely.
+    NOTE: cluster-pool / cluster-pool-assignment / cluster-pool-attributes
+    still shell out to uctl. Only Project has a usable Python API today;
+    when the pool APIs land in flyteplugins-union, port them in and the need
+    for uctl auth state in this task body disappears entirely.
     """
+    import tempfile
+
     from flyte.remote import Project
-    from flyteplugins.union.remote import ClusterPool
 
     pool_name = cfg.cluster_name  # one pool per cluster, named after it
+    org_flag = f"--org {cfg.org_name}" if cfg.org_name else ""
 
-    # 1. Create a cluster pool with this cluster as a member (idempotent).
-    try:
-        ClusterPool.create(name=pool_name, member_clusters=[cfg.cluster_name])
-        logger.info(f"Cluster pool '{pool_name}' created with member '{cfg.cluster_name}'.")
-    except Exception as e:
-        # Pool already exists — ensure this cluster is in it.
-        logger.info(f"Cluster pool '{pool_name}' not created (likely exists): {e}")
-        try:
-            ClusterPool.add_cluster(name=pool_name, cluster_name=cfg.cluster_name)
-            logger.info(f"Cluster '{cfg.cluster_name}' added to pool '{pool_name}'.")
-        except Exception as e2:
-            # Already a member — safe.
-            logger.info(f"Cluster '{cfg.cluster_name}' not added to pool (likely already a member): {e2}")
+    # 1. Create a cluster pool (idempotent)
+    cp_file = tempfile.NamedTemporaryFile(
+        mode="w", suffix=".yaml", delete=False, prefix="clusterpool-",
+    )
+    cp_file.write(
+        f"clusterPool:\n"
+        f"  id:\n"
+        f"    name: {pool_name}\n"
+    )
+    cp_file.close()
+    _sh(
+        f"uctl create clusterpool --clusterPoolSpecFile {cp_file.name} {org_flag}",
+        check=False,  # may already exist
+    )
+    os.unlink(cp_file.name)
+    logger.info(f"Cluster pool '{pool_name}' created/verified.")
+
+    # Assign this cluster to the pool
+    _sh(
+        f"uctl create clusterpoolassignment "
+        f"--poolName {pool_name} --clusterName {cfg.cluster_name} {org_flag}",
+        check=False,  # may already be assigned
+    )
+    logger.info(f"Cluster '{cfg.cluster_name}' assigned to pool '{pool_name}'.")
 
     # 2. Create project via flyte.remote (no uctl needed).
     try:
@@ -616,15 +628,7 @@ def create_test_project_and_route(cfg: BaseConfig) -> None:
         # AlreadyExists on reruns — safe.
         logger.info(f"Project '{cfg.test_project}' not created (likely exists): {e}")
 
-    # 3. Route the project to the cluster pool for all domains.
-    # TODO: replace with flyteplugins.union.remote.ClusterPoolAttributes (or
-    # equivalent) when a Python API exists; this is the last uctl dependency
-    # in this function. uctl must be configured in this container
-    # (UNION_API_KEY env var or `uctl config init` run earlier in the same
-    # task body) for the subprocess call to succeed.
-    import tempfile
-
-    org_flag = f"--org {cfg.org_name}" if cfg.org_name else ""
+    # 3. Route the project to the cluster pool for all domains (uctl).
     for domain in ["development", "staging", "production"]:
         attr_file = tempfile.NamedTemporaryFile(
             mode="w", suffix=".yaml", delete=False, prefix=f"cpa-{domain}-",
