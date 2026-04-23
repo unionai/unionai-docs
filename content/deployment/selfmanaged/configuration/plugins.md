@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Compute plugins
 
-{{< key product_name >}} supports distributed computing plugins that extend the platform with specialized workloads like [Dask](../../../../integrations/dask/_index) and [Ray](../../../../integrations/ray/_index). These plugins require their respective Kubernetes operators to be installed on your data plane cluster, along with Helm configuration to enable the plugin and configure log and dashboard links.
+{{< key product_name >}} supports distributed computing plugins that extend the platform with specialized workloads like [Dask](../../../integrations/dask/_index) and [Ray](../../../integrations/ray/_index). These plugins require their respective Kubernetes operators to be installed on your data plane cluster, along with Helm configuration to enable the plugin and configure log and dashboard links.
 
 ## Dask
 
