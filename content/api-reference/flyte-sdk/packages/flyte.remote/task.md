@@ -1,6 +1,6 @@
 ---
 title: Task
-version: 2.1.10.dev6+ga8f3f9bfa
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -38,7 +38,7 @@ Initialize a Task object.
 | Method | Description |
 |-|-|
 | [`get()`](#get) | Get a task by its ID or name. |
-| [`listall()`](#listall) | Get all tasks for the current project and domain. |
+| [`listall()`](#listall) | Get all runs for the current project and domain. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 
@@ -87,7 +87,7 @@ def listall(
     entrypoint: bool | None,
 ) -> Union[AsyncIterator[Task], Iterator[Task]]
 ```
-Get all tasks for the current project and domain.
+Get all runs for the current project and domain.
 
 
 
@@ -102,7 +102,7 @@ Get all tasks for the current project and domain.
 | `limit` | `int` | The maximum number of tasks to return. |
 | `entrypoint` | `bool \| None` | If True, only entrypoint tasks will be returned. |
 
-**Returns:** An iterator of tasks.
+**Returns:** An iterator of runs.
 
 ### to_dict()
 

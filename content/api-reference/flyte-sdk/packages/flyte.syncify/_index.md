@@ -1,6 +1,6 @@
 ---
 title: flyte.syncify
-version: 2.1.10.dev6+ga8f3f9bfa
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 sidebar_expanded: true
