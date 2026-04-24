@@ -34,5 +34,6 @@ scripts/.e2e-keys/
 
 # AI assistant
 .claude/
+.codex/
 
 **/.flyte
