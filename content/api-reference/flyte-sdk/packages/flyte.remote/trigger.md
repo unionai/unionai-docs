@@ -29,12 +29,12 @@ class Trigger(
 
 | Property | Type | Description |
 |-|-|-|
-| `automation_spec` | `None` | Get the automation specification for the trigger. |
-| `id` | `None` | Get the unique identifier for the trigger. |
-| `is_active` | `None` | Check if the trigger is currently active. |
-| `name` | `None` | Get the name of the trigger. |
-| `task_name` | `None` | Get the name of the task associated with this trigger. |
-| `url` | `None` | Get the console URL for viewing the trigger. |
+| `automation_spec` | `common_pb2.TriggerAutomationSpec` | Get the automation specification for the trigger. |
+| `id` | `identifier_pb2.TriggerIdentifier` | Get the unique identifier for the trigger. |
+| `is_active` | `bool` | Check if the trigger is currently active. |
+| `name` | `str` | Get the name of the trigger. |
+| `task_name` | `str` | Get the name of the task associated with this trigger. |
+| `url` | `str` | Get the console URL for viewing the trigger. |
 
 ## Methods
 

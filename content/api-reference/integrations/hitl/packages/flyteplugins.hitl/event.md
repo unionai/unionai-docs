@@ -54,9 +54,9 @@ class Event(
 
 | Property | Type | Description |
 |-|-|-|
-| `api_url` | `None` | API endpoint for programmatic submission. |
-| `endpoint` | `None` | Base endpoint of the HITL app. |
-| `form_url` | `None` | URL where humans can submit input for this event. |
+| `api_url` | `str` | API endpoint for programmatic submission. |
+| `endpoint` | `str` | Base endpoint of the HITL app. |
+| `form_url` | `str` | URL where humans can submit input for this event. |
 
 ## Methods
 

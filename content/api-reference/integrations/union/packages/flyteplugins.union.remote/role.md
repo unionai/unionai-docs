@@ -27,11 +27,11 @@ class Role(
 
 | Property | Type | Description |
 |-|-|-|
-| `actions` | `None` |  |
-| `description` | `None` |  |
-| `name` | `None` |  |
-| `organization` | `None` |  |
-| `role_type` | `None` |  |
+| `actions` | `list[str]` |  |
+| `description` | `str` |  |
+| `name` | `str` |  |
+| `organization` | `str` |  |
+| `role_type` | `str` |  |
 
 ## Methods
 

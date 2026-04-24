@@ -42,5 +42,5 @@ class BatchStats(
 
 | Property | Type | Description |
 |-|-|-|
-| `utilization` | `None` | Fraction of wall-clock time spent processing (0.0-1.0). |
+| `utilization` | `float` | Fraction of wall-clock time spent processing (0.0-1.0). |
 
