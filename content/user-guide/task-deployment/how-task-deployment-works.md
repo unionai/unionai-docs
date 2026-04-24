@@ -117,7 +117,16 @@ The build process varies based on your configuration and backend type:
 
 ### Local image building
 
-When `image.builder` is set to `local` in [your `config.yaml`](../connecting-to-a-cluster), images are built on your local machine using Docker. This approach:
+{{< variant flyte >}}
+{{< markdown >}}
+When `image.builder` is set to `local` in [your `config.yaml`](../run-modes/running-devbox#configure), images are built on your local machine using Docker. This approach:
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
+When `image.builder` is set to `local` in [your `config.yaml`](../run-modes/running-remote), images are built on your local machine using Docker. This approach:
+{{< /markdown >}}
+{{< /variant >}}
 - Requires Docker to be installed and running on your development machine
 - Uses Docker BuildKit to build images from generated Dockerfiles or your custom Dockerfile
 - Pushes built images to the container registry specified in your `Image` configuration
@@ -125,7 +134,16 @@ When `image.builder` is set to `local` in [your `config.yaml`](../connecting-to-
 
 ### Remote image building
 
-When `image.builder` is set to `remote` in [your `config.yaml`](../connecting-to-a-cluster), images are built on cloud infrastructure. This approach:
+{{< variant flyte >}}
+{{< markdown >}}
+When `image.builder` is set to `remote` in your `config.yaml`, images are built on cloud infrastructure. This approach:
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
+When `image.builder` is set to `remote` in [your `config.yaml`](../run-modes/running-remote), images are built on cloud infrastructure. This approach:
+{{< /markdown >}}
+{{< /variant >}}
 - Builds images using Union's ImageBuilder service (currently only available for Union backends, not OSS Flyte)
 - Requires no local Docker installation or configuration
 - Can push to Union's internal registry or external registries you specify

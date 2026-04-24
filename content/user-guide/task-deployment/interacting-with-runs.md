@@ -90,7 +90,7 @@ List all runs:
 flyte get run
 ```
 
-Use `--project` and `--domain` to scope results to a specific [project-domain pair](../projects-and-domains).
+Use `--project` and `--domain` to scope results to a specific [project-domain pair](../core-concepts/projects-and-domains).
 For all available options, see the [CLI reference](../../api-reference/flyte-cli#flyte-get-run).
 {{< /markdown >}}
 {{< /tab >}}
