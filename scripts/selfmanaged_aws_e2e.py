@@ -615,10 +615,12 @@ def e2e_test(
     skip_teardown: bool = False,
     encrypted_credentials: str = "",
     helm_values_override: str = "",
+    dataplane_image_sha: str = "",
 ) -> E2EResult:
     """Full E2E: setup, deploy, verify, teardown.
 
     Pass helm_values_override="values-legacy.yaml" to test with legacy defaults.
+    Pass dataplane_image_sha=<sha> to override the dataplane image tag.
     """
     cfg = Config(
         control_plane_url=control_plane_url,
@@ -627,6 +629,7 @@ def e2e_test(
         skip_teardown=skip_teardown,
         encrypted_credentials=encrypted_credentials,
         helm_values_override=helm_values_override,
+        dataplane_image_sha=dataplane_image_sha,
     )
     decrypt_and_export_credentials(cfg.encrypted_credentials)
 
@@ -695,6 +698,7 @@ def launch(
     cluster_name: str = "",
     aws_region: str = "us-east-2",
     skip_teardown: bool = False,
+    dataplane_image_sha: str = "",
 ) -> str:
     """Encrypt local credentials and launch e2e_test remotely."""
     logger.info("Encrypting local credentials...")
@@ -708,6 +712,7 @@ def launch(
         aws_region=aws_region,
         skip_teardown=skip_teardown,
         encrypted_credentials=encrypted,
+        dataplane_image_sha=dataplane_image_sha,
     )
     logger.info(f"Launched remote run: {run.name}")
     logger.info(f"  URL: {run.url}")

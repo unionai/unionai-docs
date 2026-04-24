@@ -55,9 +55,10 @@ class BaseConfig:
     helm_namespace: str = "union"
     helm_release_name: str = "union"
     helm_chart_repo: str = "https://github.com/unionai/helm-charts.git"
-    helm_chart_branch: str = "enghabu/sane-defaults"  # git branch; empty = use published release
+    helm_chart_branch: str = ""  # git branch; empty = use published release
     helm_chart_path: str = "charts/dataplane"  # path inside the repo
     helm_values_override: str = ""  # extra values file (e.g. "values-legacy.yaml" from the chart)
+    dataplane_image_sha: str = ""  # if set, passed as --set global.image.tag=<sha>
 
     # Timeouts (seconds)
     cluster_healthy_timeout: int = 300
@@ -506,12 +507,18 @@ def helm_install(cfg: BaseConfig, values_file: str, chart_ref: str) -> None:
         override_flag = f'-f "{override_path}" '
         logger.info(f"  Using values override: {override_path}")
 
+    image_tag_flag = ""
+    if cfg.dataplane_image_sha:
+        image_tag_flag = f"--set global.image.tag={cfg.dataplane_image_sha} "
+        logger.info(f"  Overriding dataplane image tag: {cfg.dataplane_image_sha}")
+
     _sh(
         f"helm upgrade --install {cfg.helm_release_name} {chart_ref} "
         f"{override_flag}"
+        f"{image_tag_flag}"
         f'-f "{values_file}" '
         f"-n {cfg.helm_namespace} --create-namespace --wait --timeout 10m "
-        f"--force-conflicts"
+        f"--force-conflicts --take-ownership"
     )
     logger.info("Helm chart installed.")
 

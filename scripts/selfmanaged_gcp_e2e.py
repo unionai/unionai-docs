@@ -229,8 +229,8 @@ def create_gke_cluster(cfg: Config, state: InfraState) -> InfraState:
             f"--project {cfg.project_id} "
             f"--machine-type e2-standard-8 "
             f"--disk-size 200GB "
-            f"--num-nodes 0 "
-            f"--enable-autoscaling --min-nodes 0 --max-nodes 2"
+            f"--num-nodes 1 "
+            f"--enable-autoscaling --min-nodes 1 --max-nodes 2"
         )
         state.gke_created = True
 
@@ -595,10 +595,12 @@ def e2e_test(
     skip_teardown: bool = False,
     encrypted_credentials: str = "",
     helm_values_override: str = "",
+    dataplane_image_sha: str = "",
 ) -> E2EResult:
     """Full E2E: setup, deploy, verify, teardown.
 
     Pass helm_values_override="values-legacy.yaml" to test with legacy defaults.
+    Pass dataplane_image_sha=<sha> to override the dataplane image tag.
     """
     cfg = Config(
         control_plane_url=control_plane_url,
@@ -608,6 +610,7 @@ def e2e_test(
         skip_teardown=skip_teardown,
         encrypted_credentials=encrypted_credentials,
         helm_values_override=helm_values_override,
+        dataplane_image_sha=dataplane_image_sha,
     )
     _activate_gcp_credentials(cfg)
 
@@ -677,6 +680,7 @@ def launch(
     project_id: str = "",
     region: str = "us-central1",
     skip_teardown: bool = False,
+    dataplane_image_sha: str = "",
 ) -> str:
     """Encrypt local credentials and launch e2e_test remotely."""
     logger.info("Encrypting local credentials...")
@@ -691,7 +695,9 @@ def launch(
         region=region,
         skip_teardown=skip_teardown,
         encrypted_credentials=encrypted,
+        dataplane_image_sha=dataplane_image_sha,
     )
     logger.info(f"Launched remote run: {run.name}")
     logger.info(f"  URL: {run.url}")
     return run.url
+
