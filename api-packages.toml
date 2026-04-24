@@ -17,7 +17,9 @@
 package = "flytekit"
 # Omit torch/tensorflow/keras: they are not needed to import flytekit for API scanning, and TensorFlow
 # init can deadlock on some macOS/CI hosts when the parser walks flytekit.extras.tensorflow.
-install = "flytekit pandas numpy scikit-learn pydantic sqlalchemy 'pyarrow>=12,<21' pyyaml prometheus-client 'httpx<1' snowflake-connector-python google-cloud-bigquery google-cloud-bigquery-storage"
+# pillow IS required — flytekit/types/file/image.py does top-level `import PIL.Image`, so omitting
+# it silently drops PILImageTransformer from the generated docs.
+install = "flytekit pandas numpy scikit-learn pydantic sqlalchemy 'pyarrow>=12,<21' pyyaml prometheus-client 'httpx<1' snowflake-connector-python google-cloud-bigquery google-cloud-bigquery-storage pillow"
 parser_package = "flytekit"
 generator_name = "flytekit"
 generator_title = "Flytekit SDK"
