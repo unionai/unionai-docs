@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -197,7 +197,6 @@ layout: py_api
 | [`flytekit.types.error.error`](flytekit.types.error.error) |  |
 | [`flytekit.types.file`](flytekit.types.file) | This module provides functionality related to FlyteFile. |
 | [`flytekit.types.file.file`](flytekit.types.file.file) |  |
-| [`flytekit.types.file.image`](flytekit.types.file.image) |  |
 | [`flytekit.types.iterator.iterator`](flytekit.types.iterator.iterator) |  |
 | [`flytekit.types.iterator.json_iterator`](flytekit.types.iterator.json_iterator) |  |
 | [`flytekit.types.numpy.ndarray`](flytekit.types.numpy.ndarray) |  |

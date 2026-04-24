@@ -2498,6 +2498,7 @@ class LaunchPlan(
 | `overwrite_cache` | `None` |  |
 | `parameters` | `None` |  |
 | `python_interface` | `None` |  |
+| `raw_fixed_inputs` | `None` |  |
 | `raw_output_data_config` | `None` |  |
 | `saved_inputs` | `None` |  |
 | `schedule` | `None` |  |

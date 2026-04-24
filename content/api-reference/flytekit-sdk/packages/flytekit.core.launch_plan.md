@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.launch_plan
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -138,6 +138,7 @@ class LaunchPlan(
 | `overwrite_cache` | `None` |  |
 | `parameters` | `None` |  |
 | `python_interface` | `None` |  |
+| `raw_fixed_inputs` | `None` |  |
 | `raw_output_data_config` | `None` |  |
 | `saved_inputs` | `None` |  |
 | `schedule` | `None` |  |
@@ -351,6 +352,7 @@ class ReferenceLaunchPlan(
 | `overwrite_cache` | `None` |  |
 | `parameters` | `None` |  |
 | `python_interface` | `None` |  |
+| `raw_fixed_inputs` | `None` |  |
 | `raw_output_data_config` | `None` |  |
 | `reference` | `None` |  |
 | `saved_inputs` | `None` |  |

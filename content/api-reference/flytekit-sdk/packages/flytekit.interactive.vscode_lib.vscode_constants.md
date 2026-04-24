@@ -1,6 +1,6 @@
 ---
 title: flytekit.interactive.vscode_lib.vscode_constants
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
