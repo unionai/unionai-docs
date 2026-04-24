@@ -131,7 +131,7 @@ services:
       authorizer:
         type: "Union"
         bootstrap:
-          organization: "<your-org-id>"
+          organization: "{{ .Values.global.UNION_ORG }}"
           domains:
             - development
             - staging
