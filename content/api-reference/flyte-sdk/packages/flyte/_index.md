@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.1.7
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 sidebar_expanded: true
@@ -451,7 +451,7 @@ remote API methods are called. Thread-safe implementation.
 | `auth_client_config` | `ClientConfig \| None` | Optional client configuration for authentication |
 | `rpc_retries` | `int` | [optional] int Number of times to retry the platform calls |
 | `http_proxy_url` | `str \| None` | [optional] HTTP Proxy to be used for OAuth requests |
-| `disable_keyring` | `bool` | |
+| `disable_keyring` | `bool` | Disable storage of tokens in local keyring. |
 | `storage` | `Storage \| None` | Optional blob store (S3, GCS, Azure) configuration if needed to access (i.e. using Minio) |
 | `batch_size` | `int` | Optional batch size for operations that use listings, defaults to 1000, so limit larger than batch_size will be split into multiple requests. |
 | `image_builder` | `ImageBuildEngine.ImageBuilderType` | Optional image builder configuration, if not provided, the default image builder will be used. |
@@ -708,15 +708,15 @@ def run_python_script(
     memory: str,
     gpu: int,
     gpu_type: str,
-    image: Union[Image, List[str], None],
+    image: 'Union[Image, List[str], None]',
     timeout: int,
-    extra_args: Optional[List[str]],
-    queue: Optional[str],
+    extra_args: 'Optional[List[str]]',
+    queue: 'Optional[str]',
     wait: bool,
-    name: Optional[str],
+    name: 'Optional[str]',
     debug: bool,
-    output_dir: Optional[str],
-) -> Run
+    output_dir: 'Optional[str]',
+) -> 'Run'
 ```
 Package and run a Python script on a remote Flyte cluster.
 
@@ -738,14 +738,14 @@ or `flyte.init_from_config()`), consistent with `flyte.run()`.
 | `memory` | `str` | Memory to request, e.g. `"16Gi"` (default |
 | `gpu` | `int` | Number of GPUs to request (default |
 | `gpu_type` | `str` | GPU accelerator type Only used when `gpu &gt; 0` (default: `"T4"`). |
-| `image` | `Union[Image, List[str], None]` | Container image to use. Accepts either  - A `flyte.Image` object for full control over the image. - A `list[str]` of pip package names to install on top of the default Debian base image (e.g. `["torch", "transformers"]`). - `None` to use a plain Debian base image (default). |
+| `image` | `'Union[Image, List[str], None]'` | Container image to use. Accepts either  - A `flyte.Image` object for full control over the image. - A `list[str]` of pip package names to install on top of the default Debian base image (e.g. `["torch", "transformers"]`). - `None` to use a plain Debian base image (default). |
 | `timeout` | `int` | Task timeout in seconds (default |
-| `extra_args` | `Optional[List[str]]` | Extra arguments passed to the script. |
-| `queue` | `Optional[str]` | Flyte queue / cluster override. |
+| `extra_args` | `'Optional[List[str]]'` | Extra arguments passed to the script. |
+| `queue` | `'Optional[str]'` | Flyte queue / cluster override. |
 | `wait` | `bool` | If True, block until execution completes before returning. |
-| `name` | `Optional[str]` | Run name. If omitted, a random name is generated. |
+| `name` | `'Optional[str]'` | Run name. If omitted, a random name is generated. |
 | `debug` | `bool` | If True, run the task as a VS Code debug task, starting a code-server in the container so you can connect via the UI to interactively debug/run the task. |
-| `output_dir` | `Optional[str]` | |
+| `output_dir` | `'Optional[str]'` | |
 
 **Returns:** A `flyte.remote.Run` handle for the remote execution.
 

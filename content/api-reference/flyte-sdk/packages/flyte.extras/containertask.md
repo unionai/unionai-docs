@@ -1,6 +1,6 @@
 ---
 title: ContainerTask
-version: 2.1.7
+version: 2.1.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -29,6 +29,7 @@ class ContainerTask(
     output_data_dir: str | pathlib.Path,
     metadata_format: typing.Literal['JSON', 'YAML', 'PROTO'],
     local_logs: bool,
+    block_network: bool,
     kwargs,
 )
 ```
@@ -44,6 +45,7 @@ class ContainerTask(
 | `output_data_dir` | `str \| pathlib.Path` | The directory where the output data is stored. This is a string or a Path object. |
 | `metadata_format` | `typing.Literal['JSON', 'YAML', 'PROTO']` | The format of the output file. This can be "JSON", "YAML", or "PROTO". |
 | `local_logs` | `bool` | If True, logs will be printed to the console in the local execution. |
+| `block_network` | `bool` | If True, blocks all outbound network access. Locally this sets Docker ``network_mode=none``. On-cluster it applies the pod template ``sandboxed-pod-template``. Defaults to False. |
 | `kwargs` | `**kwargs` | |
 
 ## Properties
@@ -211,6 +213,7 @@ def override(
     pod_template: Optional[Union[str, PodTemplate]],
     queue: Optional[str],
     interruptible: Optional[bool],
+    entrypoint: Optional[bool],
     links: Tuple[Link, ...],
     kwargs: **kwargs,
 ) -> TaskTemplate
@@ -234,6 +237,7 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | Optional override for the pod template to use for the task. |
 | `queue` | `Optional[str]` | Optional override for the queue to use for the task. |
 | `interruptible` | `Optional[bool]` | Optional override for the interruptible policy for the task. |
+| `entrypoint` | `Optional[bool]` | Optional override for the entrypoint flag for the task. |
 | `links` | `Tuple[Link, ...]` | Optional override for the Links associated with the task. |
 | `kwargs` | `**kwargs` | Additional keyword arguments for further overrides. Some fields like name, image, docs, and interface cannot be overridden. |
 

@@ -253,24 +253,17 @@ done
 The managed identities need explicit RBAC permissions on the storage account.
 
 ```bash
-STORAGE_RESOURCE_ID=$(az storage account show \
-  --name $STORAGE_ACCOUNT \
-  --resource-group $RESOURCE_GROUP \
-  --query id --output tsv)
-
 # Backend identity: read/write workflow metadata
 az role assignment create \
   --assignee-object-id $BACKEND_PRINCIPAL_ID \
   --assignee-principal-type ServicePrincipal \
-  --role "Storage Blob Data Owner" \
-  --scope "${STORAGE_RESOURCE_ID}/blobServices/default/containers/${METADATA_CONTAINER}"
+  --role "Storage Blob Data Contributor" 
 
 # Worker identity: read/write artifacts
 az role assignment create \
   --assignee-object-id $WORKER_PRINCIPAL_ID \
   --assignee-principal-type ServicePrincipal \
-  --role "Storage Blob Data Owner" \
-  --scope "${STORAGE_RESOURCE_ID}/blobServices/default/containers/${METADATA_CONTAINER}"
+  --role "Storage Blob Data Contributor"
 ```
 
 ## 8. Azure Key Vault (optional)
