@@ -61,7 +61,7 @@ The Union SDK provides the Python API for building Union workflows and apps.
 
 The big difference of this site, compared to other documentation sites, is that we generate multiple "flavors" of the documentation that are slightly different from each other. We are calling these "variants."
 
-When you are writing your content, and you want a specific part of the content to be conditional to a flavor, say "BYOC", you surround that with `variant`.
+When you are writing your content, and you want a specific part of the content to be conditional to a flavor, say "Union", you surround that with `variant`.
 
 >[!NOTE]
 > `variant` is a container, so inside you will specify what you are wrapping.
@@ -70,7 +70,7 @@ When you are writing your content, and you want a specific part of the content t
 Example:
 
 ```markdown
-{{</* variant byoc selfmanaged */>}}
+{{</* variant union */>}}
 {{</* markdown */>}}
 **The quick brown fox signed up for Union!**
 {{</* /markdown */>}}
@@ -138,7 +138,7 @@ In the Flyte variant of the site this will render as:
 
 > The Flyte platform is awesome.
 
-While, in the BYOC, Self-managed and Serverless variants of the site it will render as:
+While, in the Union variant of the site it will render as:
 
 > The Union.ai platform is awesome.
 
@@ -147,8 +147,7 @@ You can add keywords and specify their value, per variant, in `hugo.site.toml`:
 ```toml
 [params.key.product_full_name]
 flyte = "Flyte"
-byoc = "Union BYOC"
-selfmanaged = "Union Self-managed"
+union = "Union.ai"
 ```
 
 #### List of available keys
@@ -156,7 +155,7 @@ selfmanaged = "Union Self-managed"
 | Key               | Description                           | Example Usage (Flyte → Union)                                          |
 | ----------------- | ------------------------------------- | ---------------------------------------------------------------------- |
 | default_project   | Default project name used in examples | `{{</* key default_project */>}}` → "flytesnacks" or "default"             |
-| product_full_name | Full product name                     | `{{</* key product_full_name */>}}` → "Flyte OSS" or "Union.ai BYOC"       |
+| product_full_name | Full product name                     | `{{</* key product_full_name */>}}` → "Flyte OSS" or "Union.ai"            |
 | product_name      | Short product name                    | `{{</* key product_name */>}}` → "Flyte" or "Union.ai"                     |
 | product           | Lowercase product identifier          | `{{</* key product */>}}` → "flyte" or "union"                             |
 | kit_name          | SDK name                              | `{{</* key kit_name */>}}` → "Flytekit" or "Union"                         |
@@ -170,7 +169,7 @@ selfmanaged = "Union Self-managed"
 | ctl               | Lowercase control tool identifier     | `{{</* key ctl */>}}` → "flytectl" or "uctl"                               |
 | config_env        | Configuration environment variable    | `{{</* key config_env */>}}` → "FLYTECTL_CONFIG" or "UNION_CONFIG"         |
 | env_prefix        | Environment variable prefix           | `{{</* key env_prefix */>}}` → "FLYTE" or "UNION"                          |
-| docs_home         | Documentation home URL                | `{{</* key docs_home */>}}` → "/docs/flyte" or "/docs/byoc"               |
+| docs_home         | Documentation home URL                | `{{</* key docs_home */>}}` → "/docs/flyte" or "/docs/union"              |
 | map_func          | Map function name                     | `{{</* key map_func */>}}` → "map_task" or "map"                           |
 | logo              | Logo image filename                   | `{{</* key logo */>}}` → "flyte-logo.svg" or "union-logo.svg"              |
 | favicon           | Favicon image filename                | `{{</* key favicon */>}}` → "flyte-favicon.ico" or "union-favicon.ico"     |
