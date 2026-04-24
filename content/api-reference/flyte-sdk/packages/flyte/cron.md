@@ -49,5 +49,5 @@ class Cron(
 
 | Property | Type | Description |
 |-|-|-|
-| `timezone_expression` | `None` |  |
+| `timezone_expression` | `str` |  |
 

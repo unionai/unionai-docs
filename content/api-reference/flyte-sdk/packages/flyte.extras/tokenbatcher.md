@@ -59,8 +59,8 @@ class TokenBatcher(
 
 | Property | Type | Description |
 |-|-|-|
-| `is_running` | `None` | Whether the aggregation and processing loops are active. |
-| `stats` | `None` | Current `BatchStats` snapshot. |
+| `is_running` | `bool` | Whether the aggregation and processing loops are active. |
+| `stats` | `BatchStats` | Current `BatchStats` snapshot. |
 
 ## Methods
 

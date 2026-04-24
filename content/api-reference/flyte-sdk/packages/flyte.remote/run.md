@@ -32,10 +32,10 @@ class Run(
 
 | Property | Type | Description |
 |-|-|-|
-| `name` | `None` | Get the name of the run. |
-| `phase` | `None` | Get the phase of the run. |
-| `raw_phase` | `None` | Get the raw phase of the run. |
-| `url` | `None` | Get the URL of the run. |
+| `name` | `str` | Get the name of the run. |
+| `phase` | `str` | Get the phase of the run. |
+| `raw_phase` | `phase_pb2.ActionPhase` | Get the raw phase of the run. |
+| `url` | `str` | Get the URL of the run. |
 
 ## Methods
 

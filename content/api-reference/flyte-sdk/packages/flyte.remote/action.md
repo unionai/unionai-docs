@@ -43,13 +43,13 @@ class Action(
 
 | Property | Type | Description |
 |-|-|-|
-| `action_id` | `None` | Get the action ID. |
-| `name` | `None` | Get the name of the action. |
-| `phase` | `None` | Get the phase of the action. |
-| `raw_phase` | `None` | Get the raw phase of the action. |
-| `run_name` | `None` | Get the name of the run. |
-| `start_time` | `None` | Get the start time of the action. |
-| `task_name` | `None` | Get the name of the task. |
+| `action_id` | `identifier_pb2.ActionIdentifier` | Get the action ID. |
+| `name` | `str` | Get the name of the action. |
+| `phase` | `ActionPhase` | Get the phase of the action. |
+| `raw_phase` | `phase_pb2.ActionPhase` | Get the raw phase of the action. |
+| `run_name` | `str` | Get the name of the run. |
+| `start_time` | `datetime` | Get the start time of the action. |
+| `task_name` | `str \| None` | Get the name of the task. |
 
 ## Methods
 

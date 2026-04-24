@@ -22,9 +22,9 @@ protocol AppHandle()
 
 | Property | Type | Description |
 |-|-|-|
-| `endpoint` | `None` |  |
-| `name` | `None` |  |
-| `url` | `None` |  |
+| `endpoint` | `str` |  |
+| `name` | `str` |  |
+| `url` | `str` |  |
 
 ## Methods
 

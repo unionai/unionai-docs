@@ -40,8 +40,8 @@ To be used to query BigQuery Tables.
 
 | Property | Type | Description |
 |-|-|-|
-| `native_interface` | `None` |  |
-| `source_file` | `None` |  |
+| `native_interface` | `NativeInterface` |  |
+| `source_file` | `Optional[str]` |  |
 
 ## Methods
 
