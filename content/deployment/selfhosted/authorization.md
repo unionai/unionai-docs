@@ -118,8 +118,9 @@ No additional infrastructure is needed — the authorization engine is embedded 
 When Union mode starts for the first time, it bootstraps the authorization database with:
 - An **organization** (your deployment's org ID)
 - **Domains** (development, staging, production)
+- **Projects** to pre-create (optional)
 - **Service accounts** with their roles
-- **Admin users** who can manage RBAC via the console
+- **Admin users** (name + subject) who can manage RBAC via the console
 
 Configure bootstrap in your Helm values:
 
@@ -135,6 +136,8 @@ services:
             - development
             - staging
             - production
+          projects:
+            - "<project-name>"               # Projects to bootstrap (e.g. "union-health-monitoring")
           serviceAccounts:
             - clientId: "<service-to-service-subject>"   # App 3 — sub claim value
               name: "service-to-service"
@@ -146,7 +149,8 @@ services:
               name: "eager"
               role: "Admin"
           adminUsers:
-            - "<admin-email-or-subject>"
+            - name: "<admin-email>"
+              subject: "<admin-sub-claim>"   # The user's sub claim value from your IdP
 ```
 
 > [!WARNING]
