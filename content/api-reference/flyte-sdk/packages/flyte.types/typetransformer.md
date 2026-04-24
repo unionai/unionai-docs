@@ -1,6 +1,6 @@
 ---
 title: TypeTransformer
-version: 2.1.9
+version: 2.1.10.dev6+ga8f3f9bfa
 variants: +flyte +union
 layout: py_api
 ---
@@ -32,8 +32,8 @@ class TypeTransformer(
 | Property | Type | Description |
 |-|-|-|
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ## Methods
 

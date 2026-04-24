@@ -1,6 +1,6 @@
 ---
 title: Task
-version: 2.1.9
+version: 2.1.10.dev6+ga8f3f9bfa
 variants: +flyte +union
 layout: py_api
 ---
@@ -28,17 +28,17 @@ Initialize a Task object.
 
 | Property | Type | Description |
 |-|-|-|
-| `entrypoint` | `None` | Whether this task is marked as an entrypoint. Not populated in listing responses; fetch ``TaskDetails`` to read the authoritative value from the task template. |
-| `name` | `None` | The name of the task. |
-| `url` | `None` | Get the console URL for viewing the task. |
-| `version` | `None` | The version of the task. |
+| `entrypoint` | `bool` | Whether this task is marked as an entrypoint. Not populated in listing responses; fetch ``TaskDetails`` to read the authoritative value from the task template. |
+| `name` | `str` | The name of the task. |
+| `url` | `str` | Get the console URL for viewing the task. |
+| `version` | `str` | The version of the task. |
 
 ## Methods
 
 | Method | Description |
 |-|-|
 | [`get()`](#get) | Get a task by its ID or name. |
-| [`listall()`](#listall) | Get all runs for the current project and domain. |
+| [`listall()`](#listall) | Get all tasks for the current project and domain. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 
@@ -87,7 +87,7 @@ def listall(
     entrypoint: bool | None,
 ) -> Union[AsyncIterator[Task], Iterator[Task]]
 ```
-Get all runs for the current project and domain.
+Get all tasks for the current project and domain.
 
 
 
@@ -102,7 +102,7 @@ Get all runs for the current project and domain.
 | `limit` | `int` | The maximum number of tasks to return. |
 | `entrypoint` | `bool \| None` | If True, only entrypoint tasks will be returned. |
 
-**Returns:** An iterator of runs.
+**Returns:** An iterator of tasks.
 
 ### to_dict()
 

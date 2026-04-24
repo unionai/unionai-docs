@@ -1,6 +1,6 @@
 ---
 title: NativeInterface
-version: 2.1.9
+version: 2.1.10.dev6+ga8f3f9bfa
 variants: +flyte +union
 layout: py_api
 ---
@@ -34,7 +34,7 @@ class NativeInterface(
 
 | Property | Type | Description |
 |-|-|-|
-| `json_schema` | `None` | Convert task inputs to a JSON schema dict.  Uses the Flyte type engine to produce a LiteralType for each input, then converts to JSON schema. |
+| `json_schema` | `Dict[str, Any]` | Convert task inputs to a JSON schema dict.  Uses the Flyte type engine to produce a LiteralType for each input, then converts to JSON schema. |
 
 ## Methods
 

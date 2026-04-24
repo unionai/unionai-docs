@@ -1,6 +1,6 @@
 ---
 title: ReusePolicy
-version: 2.1.9
+version: 2.1.10.dev6+ga8f3f9bfa
 variants: +flyte +union
 layout: py_api
 ---
@@ -50,8 +50,8 @@ class ReusePolicy(
 
 | Property | Type | Description |
 |-|-|-|
-| `max_replicas` | `None` | Returns the maximum number of replicas. |
-| `min_replicas` | `None` | Returns the minimum number of replicas. |
+| `max_replicas` | `int` | Returns the maximum number of replicas. |
+| `min_replicas` | `int` | Returns the minimum number of replicas. |
 
 ## Methods
 

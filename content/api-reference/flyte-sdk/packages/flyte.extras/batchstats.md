@@ -1,6 +1,6 @@
 ---
 title: BatchStats
-version: 2.1.9
+version: 2.1.10.dev6+ga8f3f9bfa
 variants: +flyte +union
 layout: py_api
 ---
@@ -42,5 +42,5 @@ class BatchStats(
 
 | Property | Type | Description |
 |-|-|-|
-| `utilization` | `None` | Fraction of wall-clock time spent processing (0.0-1.0). |
+| `utilization` | `float` | Fraction of wall-clock time spent processing (0.0-1.0). |
 

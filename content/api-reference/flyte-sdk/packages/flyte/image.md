@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.1.9
+version: 2.1.10.dev6+ga8f3f9bfa
 variants: +flyte +union
 layout: py_api
 ---
@@ -82,7 +82,7 @@ class Image(
 
 | Property | Type | Description |
 |-|-|-|
-| `uri` | `None` | Returns the URI of the image in the format &lt;registry&gt;/&lt;name&gt;:&lt;tag&gt; |
+| `uri` | `str` | Returns the URI of the image in the format &lt;registry&gt;/&lt;name&gt;:&lt;tag&gt; |
 
 ## Methods
 
