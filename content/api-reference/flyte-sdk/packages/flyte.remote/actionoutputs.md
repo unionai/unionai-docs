@@ -53,7 +53,7 @@ class ActionOutputs(
 
 | Property | Type | Description |
 |-|-|-|
-| `named_outputs` | `None` |  |
+| `named_outputs` | `dict[str, Any]` |  |
 
 ## Methods
 

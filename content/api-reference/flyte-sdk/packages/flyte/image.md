@@ -82,7 +82,7 @@ class Image(
 
 | Property | Type | Description |
 |-|-|-|
-| `uri` | `None` | Returns the URI of the image in the format &lt;registry&gt;/&lt;name&gt;:&lt;tag&gt; |
+| `uri` | `str` | Returns the URI of the image in the format &lt;registry&gt;/&lt;name&gt;:&lt;tag&gt; |
 
 ## Methods
 

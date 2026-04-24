@@ -1,6 +1,6 @@
 ---
 title: Key capabilities
-weight: 5
+weight: 6
 variants: +flyte +union
 ---
 

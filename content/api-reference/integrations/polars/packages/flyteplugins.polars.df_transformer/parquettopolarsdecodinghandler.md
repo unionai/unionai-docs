@@ -25,9 +25,9 @@ and we have to get a Python value out of it. For the other way, see the DataFram
 
 | Property | Type | Description |
 |-|-|-|
-| `protocol` | `None` |  |
-| `python_type` | `None` |  |
-| `supported_format` | `None` |  |
+| `protocol` | `Optional[str]` |  |
+| `python_type` | `Type[DF]` |  |
+| `supported_format` | `str` |  |
 
 ## Methods
 

@@ -27,10 +27,10 @@ class User(
 
 | Property | Type | Description |
 |-|-|-|
-| `email` | `None` |  |
-| `first_name` | `None` |  |
-| `last_name` | `None` |  |
-| `subject` | `None` |  |
+| `email` | `str` |  |
+| `first_name` | `str` |  |
+| `last_name` | `str` |  |
+| `subject` | `str` |  |
 
 ## Methods
 

@@ -17,7 +17,7 @@ Base type for task checkpoint helpers. Subclasses load prior checkpoint data fro
 
 | Property | Type | Description |
 |-|-|-|
-| `path` | `None` | Local directory for reading and writing checkpoint files (your format). |
+| `path` | `pathlib.Path` | Local directory for reading and writing checkpoint files (your format). |
 
 ## Methods
 

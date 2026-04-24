@@ -103,8 +103,8 @@ class TaskEnvironment(
 
 | Property | Type | Description |
 |-|-|-|
-| `sandbox` | `None` | Access the sandbox namespace for creating sandboxed tasks. |
-| `tasks` | `None` | Get all tasks defined in the environment. |
+| `sandbox` | `_SandboxNamespace` | Access the sandbox namespace for creating sandboxed tasks. |
+| `tasks` | `Dict[str, TaskTemplate]` | Get all tasks defined in the environment. |
 
 ## Methods
 

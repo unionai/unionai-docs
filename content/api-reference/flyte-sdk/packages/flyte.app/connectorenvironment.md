@@ -88,7 +88,7 @@ class ConnectorEnvironment(
 
 | Property | Type | Description |
 |-|-|-|
-| `endpoint` | `None` |  |
+| `endpoint` | `str` |  |
 
 ## Methods
 

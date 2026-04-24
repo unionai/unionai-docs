@@ -27,11 +27,11 @@ class Member(
 
 | Property | Type | Description |
 |-|-|-|
-| `identity_type` | `None` |  |
-| `is_application` | `None` |  |
-| `is_user` | `None` |  |
-| `name` | `None` |  |
-| `subject` | `None` |  |
+| `identity_type` | `str` |  |
+| `is_application` | `bool` |  |
+| `is_user` | `bool` |  |
+| `name` | `str` |  |
+| `subject` | `str` |  |
 
 ## Methods
 
