@@ -31,23 +31,120 @@ You must use an OIDC-compliant identity provider that you manage outside of {{< 
 
 Your identity provider must support:
 
-1. **OpenID Connect Discovery** — `/.well-known/openid-configuration` endpoint
+1. **OpenID Connect Discovery** — `/.well-known/openid-configuration` or `/.well-known/oauth-authorization-server` endpoint
 2. **Authorization Code flow** — for browser and CLI login
 3. **Client Credentials flow** — for service-to-service tokens
 4. **PKCE** (Proof Key for Code Exchange) — for the CLI public client
 5. **Custom scopes** — ability to create an `all` scope (or equivalent)
-6. **Custom claims** — ability to add `sub`, `identitytype`, and `preferred_username` claims to access tokens
+6. **Custom claims** — ability to emit `sub` and `preferred_username` claims in access tokens. An identity type claim (`identitytype` or equivalent) is recommended for authorization.
 
 ### Authorization server setup
 
-Create a custom authorization server (or equivalent) in your identity provider with the following configuration:
+Create a custom authorization server (or equivalent) in your identity provider. The setup differs by provider:
+
+{{< tabs >}}
+{{< tab "Okta" >}}
+{{< markdown >}}
+Create a **Custom Authorization Server** in Okta:
 
 - **Audience**: `https://<your-domain>` (the control plane ingress domain)
 - **Default scope**: `all`
-- **Claims**:
-  - `sub` — set to the user's internal ID for user tokens, or the app's client ID for app tokens
-  - `identitytype` — set to `"user"` for identity tokens, and `"user"` or `"app"` for access tokens depending on whether the token represents a user or application
-  - `preferred_username` — set to the user's login for user tokens, or the app's client ID for app tokens (required for identity injection)
+- **Metadata URL**: `.well-known/oauth-authorization-server` (Okta-specific, not the standard `openid-configuration`)
+- **Claims** (add as access token claims):
+  - `sub` — Okta populates this natively. For client_credentials tokens, `sub` equals the app's Client ID.
+  - `identitytype` — set to `"user"` for user tokens, `"app"` for client_credentials tokens
+  - `preferred_username` — set to the user's login for user tokens, or the app's Client ID for app tokens
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Entra ID" >}}
+{{< markdown >}}
+Register an **App Registration** in Microsoft Entra ID:
+
+- **App ID URI**: `api://<app-name>` (this becomes the audience)
+- **Metadata URL**: `.well-known/openid-configuration` (standard OIDC)
+- **Scopes**: The `/.default` scope is used automatically for client_credentials and CLI flows. No custom scopes are required — browser login uses standard OIDC scopes only.
+- **Claims** — configure via the app manifest's `optionalClaims`:
+  - `sub` — Entra populates this natively. For client_credentials tokens, `sub` equals the **Service Principal Object ID** (not the Client ID).
+  - `idtyp` — add as an optional access token claim **on the browser login app registration (App 1)**, since it is the resource server. Emits `"app"` for client_credentials tokens (maps to the `identitytype` concept).
+  - `preferred_username` — included by default for user tokens
+
+> [!WARNING]
+> Entra ID uses `sub` = Service Principal Object ID for client_credentials tokens, not the Client ID. When configuring trusted identities for service-to-service auth, use the SP Object ID (found in Enterprise Applications, not App Registrations).
+
+> [!NOTE]
+> Entra ID scope usage by flow:
+> - **Browser login** (authorization_code): standard OIDC scopes only (`profile`, `openid`, `offline_access`) — the IdP returns a plain ID token
+> - **CLI** (authorization_code + PKCE): `api://<app-name>/.default`
+> - **Service-to-service** (client_credentials): `api://<app-name>/.default`
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Generic OIDC" >}}
+{{< markdown >}}
+For other OIDC providers (Keycloak, Authentik, Auth0, etc.):
+
+- **Audience**: `https://<your-domain>` or a custom resource identifier
+- **Metadata URL**: Usually `.well-known/openid-configuration`
+- **Scopes**: Create an `all` scope (or use your provider's default scope)
+- **Claims**: Ensure access tokens include:
+  - `sub` — a stable identifier for the authenticated principal
+  - `preferred_username` — display name for identity injection
+  - An identity type claim is optional but recommended for authorization
+
+If your IdP cannot emit an `identitytype` claim, see the [identity type claim requirements](#identity-type-claim-requirements) section below.
+
+If your IdP's client_credentials tokens omit the `sub` claim, configure `subjectClaimNames` to specify a fallback chain (e.g., `["sub", "client_id", "azp"]`).
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+### Identity type claim requirements
+
+{{< key product_name >}} uses an identity type claim to distinguish human users from service applications. This distinction is **required for Union (built-in RBAC) authorization** and affects how access control decisions are made.
+
+Your IdP must emit a claim that maps to the `identitytype` concept, with values that distinguish user tokens from application tokens. The claim name and values are configurable:
+
+| Provider | Claim name | User value | App value | Configuration |
+|----------|-----------|------------|-----------|---------------|
+| Okta | `identitytype` | `"user"` | `"app"` | Custom access token claim on authorization server |
+| Entra ID | `idtyp` | (not emitted) | `"app"` | Enable via optional claims in app manifest. Map with `identityTypeClaimsForApps: {idtyp: ["app"]}` |
+| Generic | varies | varies | varies | Configure `identityTypeClaimsForApps` to map your claim name and values |
+
+> [!WARNING]
+> **Union authorization mode requires identity type resolution.** If your IdP cannot emit any claim that distinguishes users from applications, you must either:
+> 1. Set `global.USE_EXTERNAL_IDENTITY: true` — the platform will infer identity type from the authentication context (e.g., whether the token was issued via authorization_code or client_credentials flow). This works for basic cases but may not cover all scenarios.
+> 2. Use **External authorization mode** instead of Union mode — your external authorization server can determine identity type from the JWT payload, `sub` claim, or any other token attribute directly, without relying on the platform's identity type resolution.
+>
+> Without identity type resolution, Union authorization cannot distinguish user requests from service account requests, which may result in incorrect access control decisions.
+
+### Subject claim requirements
+
+{{< key product_name >}} uses the JWT `sub` claim as the **primary identifier** for all callers — users and service accounts alike. This value is used for:
+
+- **Authorization decisions** — matching callers to roles and permissions
+- **Trusted identity validation** — verifying internal service-to-service callers
+- **Audit logging** — recording who performed each action
+- **Resource ownership** — the "Owned By" relationship in the console
+
+> [!WARNING]
+> The `sub` claim value must be **stable and unique** per principal. If your IdP returns different `sub` values for the same user across token refreshes, authorization and ownership tracking will break.
+
+**Your IdP must emit a `sub` claim in all access tokens.** If your IdP's client_credentials tokens use a different claim for the caller identity (or omit `sub` entirely), configure `subjectClaimNames` to specify a fallback chain:
+
+```yaml
+# In flyte.configmap.adminServer.auth.appAuth.externalAuthServer:
+subjectClaimNames:
+  - sub          # Standard OIDC subject (tried first)
+  - client_id    # OAuth2 client ID (common fallback)
+  - azp          # Authorized party (alternative)
+```
+
+The platform tries each claim in order and uses the first non-empty value as the caller's identity.
+
+> [!NOTE]
+> **Provider-specific `sub` values:**
+> - **Okta**: `sub` equals the Client ID for client_credentials tokens and the user's Okta ID for user tokens.
+> - **Entra ID**: `sub` equals the **Service Principal Object ID** for client_credentials tokens (not the Client ID). Find this in Entra ID > Enterprise Applications > your app > Object ID.
+> - When configuring trusted identities for internal services (e.g., `INTERNAL_SUBJECT_ID`), use the value that your IdP places in the `sub` claim — not necessarily the Client ID.
 
 ## Step 1: Create OAuth2 applications
 
@@ -114,19 +211,22 @@ Note the **Client ID** and **Client Secret** — these are encoded into the EAGE
 
 ## Step 2: Configure control plane
 
-Add OIDC settings to your control plane overrides file:
+Authentication is configured in the `flyte.configmap.adminServer.auth` block in your control plane Helm values. This block defines how the admin service validates tokens, which clients are trusted, and how browser login works.
+
+You also need to set a few global variables for service-to-service authentication:
 
 ```yaml
 global:
-  OIDC_BASE_URL: "https://your-idp.example.com/oauth2/default"
-  OIDC_CLIENT_ID: "<browser-login-client-id>"         # App 1
-  CLI_CLIENT_ID: "<cli-client-id>"                      # App 2
   INTERNAL_CLIENT_ID: "<service-to-service-client-id>"  # App 3
-  AUTH_TOKEN_URL: "https://your-idp.example.com/oauth2/default/v1/token"
+  AUTH_TOKEN_URL: "<token-endpoint-url>"                 # OAuth2 token endpoint
+  OIDC_S2S_SCOPE: ""                                    # Leave empty for Okta, set to "api://<app>/.default" for Entra ID
 ```
 
-Enable authentication in the admin service:
+Then configure the auth block. Select your identity provider below:
 
+{{< tabs >}}
+{{< tab "Okta" >}}
+{{< markdown >}}
 ```yaml
 flyte:
   configmap:
@@ -134,10 +234,159 @@ flyte:
       server:
         security:
           useAuth: true
+      auth:
+        appAuth:
+          authServerType: External
+          externalAuthServer:
+            baseUrl: "https://dev-123456.okta.com/oauth2/default"
+            metadataUrl: ".well-known/oauth-authorization-server"
+            allowedAudience:
+              - "https://<your-domain>"
+          thirdPartyConfig:
+            flyteClient:
+              clientId: "<cli-client-id>"           # App 2
+              redirectUri: "http://localhost:53593/callback"
+              scopes:
+                - all
+        userAuth:
+          openId:
+            baseUrl: "https://dev-123456.okta.com/oauth2/default"
+            clientId: "<browser-login-client-id>"   # App 1
+            scopes:
+              - profile
+              - openid
+              - offline_access
+          cookieSetting:
+            sameSitePolicy: LaxMode
+            domain: "<your-domain>"
+```
+
+Set globals:
+```yaml
+global:
+  INTERNAL_CLIENT_ID: "<service-to-service-client-id>"
+  AUTH_TOKEN_URL: "https://dev-123456.okta.com/oauth2/default/v1/token"
+  OIDC_S2S_SCOPE: ""   # Okta defaults to "all"
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Entra ID" >}}
+{{< markdown >}}
+```yaml
+flyte:
+  configmap:
+    adminServer:
+      server:
+        security:
+          useAuth: true
+      auth:
+        appAuth:
+          authServerType: External
+          externalAuthServer:
+            baseUrl: "https://login.microsoftonline.com/<tenant-id>/v2.0"
+            metadataUrl: ".well-known/openid-configuration"
+            allowedAudience:
+              - "api://<app-name>"
+              - "<browser-login-client-id>"    # App 1 Client ID
+          identityTypeClaimsForApps:
+            idtyp:
+              - app
+          thirdPartyConfig:
+            flyteClient:
+              clientId: "<cli-client-id>"           # App 2
+              redirectUri: "http://localhost:53593/callback"
+              scopes:
+                - "api://<app-name>/.default"
+              audience: "api://<app-name>"
+        userAuth:
+          openId:
+            baseUrl: "https://login.microsoftonline.com/<tenant-id>/v2.0"
+            clientId: "<browser-login-client-id>"   # App 1
+            scopes:
+              - profile
+              - openid
+              - offline_access
+          cookieSetting:
+            sameSitePolicy: LaxMode
+            domain: "<your-domain>"
+          idpQueryParameter: "idp"
+```
+
+> [!WARNING]
+> After creating service apps (Apps 3-5), you must **grant admin consent** for their App Role assignments in the Azure portal (**Enterprise Applications > your app > Permissions > Grant admin consent**) or via `az ad app permission admin-consent`. Without admin consent, client_credentials token requests will fail.
+
+Set globals:
+```yaml
+global:
+  INTERNAL_CLIENT_ID: "<service-to-service-client-id>"
+  AUTH_TOKEN_URL: "https://login.microsoftonline.com/<tenant-id>/oauth2/v2.0/token"
+  OIDC_S2S_SCOPE: "api://<app-name>/.default"
 ```
 
 > [!NOTE]
+> `INTERNAL_SUBJECT_ID` defaults to `INTERNAL_CLIENT_ID` for backward compatibility. For Entra ID, where the token `sub` claim is the Service Principal Object ID (not the Client ID), set `INTERNAL_SUBJECT_ID` to the SP Object ID. Find this in **Entra ID > Enterprise Applications > your app > Object ID**.
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Generic OIDC" >}}
+{{< markdown >}}
+```yaml
+flyte:
+  configmap:
+    adminServer:
+      server:
+        security:
+          useAuth: true
+      auth:
+        appAuth:
+          authServerType: External
+          externalAuthServer:
+            baseUrl: "<issuer-url>"
+            metadataUrl: ".well-known/openid-configuration"
+            allowedAudience:
+              - "<audience>"
+          thirdPartyConfig:
+            flyteClient:
+              clientId: "<cli-client-id>"           # App 2
+              redirectUri: "http://localhost:53593/callback"
+              scopes:
+                - all
+        userAuth:
+          openId:
+            baseUrl: "<issuer-url>"
+            clientId: "<browser-login-client-id>"   # App 1
+            scopes:
+              - profile
+              - openid
+              - offline_access
+          cookieSetting:
+            sameSitePolicy: LaxMode
+            domain: "<your-domain>"
+```
+
+Set globals:
+```yaml
+global:
+  INTERNAL_CLIENT_ID: "<service-to-service-client-id>"
+  AUTH_TOKEN_URL: "<issuer-url>/token"      # Your IdP's token endpoint
+  OIDC_S2S_SCOPE: ""                        # Set if your IdP requires a specific scope for client_credentials
+```
+
+If your IdP's client_credentials tokens don't include a `sub` claim, add:
+```yaml
+            subjectClaimNames:
+              - sub
+              - client_id
+              - azp
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+> [!NOTE]
 > Setting `useAuth: true` is required for the `/login`, `/callback`, and `/me` endpoints to register. Without this, auth endpoints will return 404.
+
+> [!NOTE]
+> **Deprecated globals:** `OIDC_BASE_URL`, `OIDC_CLIENT_ID`, and `CLI_CLIENT_ID` are deprecated but still functional. New deployments should use the `auth` block directly as shown above. Existing deployments using these globals will continue to work.
 
 ## Step 3: Create Kubernetes secrets (control plane)
 
@@ -297,3 +546,11 @@ Ensure the CLI app (App 2) redirect URIs include `http://localhost:53593/callbac
 uctl config init --host https://<your-domain>
 uctl get project
 ```
+
+### Entra ID: `AADSTS1002012` invalid_scope for service-to-service
+
+Client_credentials flows in Entra ID require the `/.default` scope. Ensure `OIDC_S2S_SCOPE` is set to `api://<app-name>/.default` in your globals.
+
+### Subject not found in token
+
+If flyteadmin logs show `subject claim not found`, your IdP's client_credentials tokens may not include a `sub` claim. Configure `subjectClaimNames` in the auth block to specify a fallback chain (e.g., `["sub", "client_id"]`).
