@@ -65,7 +65,7 @@ Register an **App Registration** in Microsoft Entra ID:
 - **Scopes**: The `/.default` scope is used automatically for client_credentials and CLI flows. No custom scopes are required — browser login uses standard OIDC scopes only.
 - **Claims** — configure via the app manifest's `optionalClaims`:
   - `sub` — Entra populates this natively. For client_credentials tokens, `sub` equals the **Service Principal Object ID** (not the Client ID).
-  - `idtyp` — add as an optional access token claim. Emits `"app"` for client_credentials tokens (maps to the `identitytype` concept).
+  - `idtyp` — add as an optional access token claim **on the browser login app registration (App 1)**, since it is the resource server. Emits `"app"` for client_credentials tokens (maps to the `identitytype` concept).
   - `preferred_username` — included by default for user tokens
 
 > [!WARNING]
@@ -287,15 +287,10 @@ flyte:
             metadataUrl: ".well-known/openid-configuration"
             allowedAudience:
               - "api://<app-name>"
-            # Entra client_credentials tokens use SP Object ID as sub, not client_id.
-            # Configure fallback chain:
-            subjectClaimNames:
-              - sub
-              - client_id
-            # Map Entra's idtyp claim to internal identitytype:
-            identityTypeClaimsForApps:
-              idtyp:
-                - app
+              - "<browser-login-client-id>"    # App 1 Client ID
+          identityTypeClaimsForApps:
+            idtyp:
+              - app
           thirdPartyConfig:
             flyteClient:
               clientId: "<cli-client-id>"           # App 2
@@ -314,7 +309,11 @@ flyte:
           cookieSetting:
             sameSitePolicy: LaxMode
             domain: "<your-domain>"
+          idpQueryParameter: "idp"
 ```
+
+> [!WARNING]
+> After creating service apps (Apps 3-5), you must **grant admin consent** for their App Role assignments in the Azure portal (**Enterprise Applications > your app > Permissions > Grant admin consent**) or via `az ad app permission admin-consent`. Without admin consent, client_credentials token requests will fail.
 
 Set globals:
 ```yaml
