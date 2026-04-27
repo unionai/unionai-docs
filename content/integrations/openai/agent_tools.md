@@ -2,7 +2,6 @@
 title: Agent tools
 weight: 1
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # Agent tools
