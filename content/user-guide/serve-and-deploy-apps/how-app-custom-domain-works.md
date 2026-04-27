@@ -1,6 +1,6 @@
 ---
-title: How app serving works
-weight: 1
+title: How app custom domains work
+weight: 2
 variants: +flyte +union
 ---
 
