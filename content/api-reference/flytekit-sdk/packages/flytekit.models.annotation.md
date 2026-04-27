@@ -35,7 +35,7 @@ class TypeAnnotation(
 
 | Property | Type | Description |
 |-|-|-|
-| `annotations` | `None` |  |
+| `annotations` | `typing.Dict[str, typing.Any]` |  |
 
 ### Methods
 

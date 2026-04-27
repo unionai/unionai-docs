@@ -159,7 +159,7 @@ For example, to specify a 10GB partition of an A100 GPU, use ``A100.partition_2g
 
 | Property | Type | Description |
 |-|-|-|
-| `unpartitioned` | `None` |  |
+| `unpartitioned` | `~MIG` |  |
 
 ### Methods
 

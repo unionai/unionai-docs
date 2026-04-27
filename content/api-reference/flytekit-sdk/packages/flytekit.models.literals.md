@@ -557,8 +557,8 @@ This IDL message represents a literal value in the Flyte ecosystem.
 | `hash` | `None` | If not None, this value holds a hash that represents the literal for caching purposes. |
 | `is_empty` | `None` |  |
 | `map` | `None` | If not None, this value holds a map of Literal values which can be further unpacked. |
-| `metadata` | `None` | This value holds metadata about the literal. |
-| `offloaded_metadata` | `None` | This value holds metadata about the offloaded literal. |
+| `metadata` | `typing.Optional[typing.Dict[str, str]]` | This value holds metadata about the literal. |
+| `offloaded_metadata` | `typing.Optional[flytekit.models.literals.LiteralOffloadedMetadata]` | This value holds metadata about the offloaded literal. |
 | `scalar` | `None` | If not None, this value holds a scalar value which can be further unpacked. |
 | `value` | `None` | Returns one of the scalar, collection, or map properties based on which one is set. |
 
@@ -837,13 +837,13 @@ This object proxies the primitives supported by the Flyte IDL system.  Only one 
 
 | Property | Type | Description |
 |-|-|-|
-| `boolean` | `None` |  |
-| `datetime` | `None` |  |
-| `duration` | `None` |  |
-| `float_value` | `None` |  |
-| `integer` | `None` |  |
+| `boolean` | `typing.Optional[bool]` |  |
+| `datetime` | `typing.Optional[datetime.datetime]` |  |
+| `duration` | `typing.Optional[datetime.timedelta]` |  |
+| `float_value` | `typing.Optional[float]` |  |
+| `integer` | `typing.Optional[int]` |  |
 | `is_empty` | `None` |  |
-| `string_value` | `None` |  |
+| `string_value` | `typing.Optional[str]` |  |
 | `value` | `None` | This returns whichever field is set. |
 
 ### Methods
@@ -995,7 +995,7 @@ Scalar wrapper around Flyte types.  Only one can be specified.
 | `none_type` | `None` |  |
 | `primitive` | `None` |  |
 | `schema` | `None` |  |
-| `structured_dataset` | `None` |  |
+| `structured_dataset` | `flytekit.models.literals.StructuredDataset` |  |
 | `union` | `None` |  |
 | `value` | `None` | Returns whichever value is set |
 
@@ -1133,8 +1133,8 @@ A strongly typed schema that defines the interface of data retrieved from the un
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` | `None` |  |
-| `metadata` | `None` |  |
-| `uri` | `None` |  |
+| `metadata` | `typing.Optional[flytekit.models.literals.StructuredDatasetMetadata]` |  |
+| `uri` | `str` |  |
 
 ### Methods
 
@@ -1192,7 +1192,7 @@ class StructuredDatasetMetadata(
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` | `None` |  |
-| `structured_dataset_type` | `None` |  |
+| `structured_dataset_type` | `flytekit.models.types.StructuredDatasetType` |  |
 
 ### Methods
 

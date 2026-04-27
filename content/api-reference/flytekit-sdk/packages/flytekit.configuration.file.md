@@ -181,8 +181,8 @@ Load the config from this location
 
 | Property | Type | Description |
 |-|-|-|
-| `legacy_config` | `None` |  |
-| `yaml_config` | `None` |  |
+| `legacy_config` | `configparser.ConfigParser` |  |
+| `yaml_config` | `typing.Dict[str, typing.Any]` |  |
 
 ### Methods
 

@@ -48,10 +48,10 @@ class LazyEntity(
 
 | Property | Type | Description |
 |-|-|-|
-| `entity` | `None` | If not already fetched / available, then the entity will be force fetched. |
-| `id` | `None` |  |
-| `name` | `None` |  |
-| `python_interface` | `None` |  |
+| `entity` | `~T` | If not already fetched / available, then the entity will be force fetched. |
+| `id` | `flytekit.models.core.identifier.Identifier` |  |
+| `name` | `str` |  |
+| `python_interface` | `typing.Optional[ForwardRef('Interface')]` |  |
 
 ### Methods
 

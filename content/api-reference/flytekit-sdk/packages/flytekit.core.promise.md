@@ -423,9 +423,9 @@ class ComparisonExpression(
 
 | Property | Type | Description |
 |-|-|-|
-| `lhs` | `None` |  |
-| `op` | `None` |  |
-| `rhs` | `None` |  |
+| `lhs` | `Union['Promise', _literals_models.Literal]` |  |
+| `op` | `ComparisonOps` |  |
+| `rhs` | `Union['Promise', _literals_models.Literal]` |  |
 
 ### Methods
 
@@ -469,9 +469,9 @@ class ConjunctionExpression(
 
 | Property | Type | Description |
 |-|-|-|
-| `lhs` | `None` |  |
-| `op` | `None` |  |
-| `rhs` | `None` |  |
+| `lhs` | `Union[ComparisonExpression, 'ConjunctionExpression']` |  |
+| `op` | `ConjunctionOps` |  |
+| `rhs` | `Union[ComparisonExpression, 'ConjunctionExpression']` |  |
 
 ### Methods
 
@@ -496,8 +496,8 @@ protocol HasFlyteInterface()
 
 | Property | Type | Description |
 |-|-|-|
-| `interface` | `None` |  |
-| `name` | `None` |  |
+| `interface` | `_interface_models.TypedInterface` |  |
+| `name` | `str` |  |
 
 ### Methods
 
@@ -563,9 +563,9 @@ class NodeOutput(
 
 | Property | Type | Description |
 |-|-|-|
-| `attr_path` | `None` | The attribute path the promise will be resolved with. |
+| `attr_path` | `typing.List[typing.Union[str, int]]` | The attribute path the promise will be resolved with. |
 | `is_empty` | `None` |  |
-| `node` | `None` | Return Node object. |
+| `node` | `Node` | Return Node object. |
 | `node_id` | `None` | Override the underlying node_id property to refer to the Node's id. This is to make sure that overriding node IDs from with_overrides gets serialized correctly. |
 | `var` | `None` | Variable name must refer to an output variable for the node. |
 
@@ -668,11 +668,11 @@ class Promise(
 
 | Property | Type | Description |
 |-|-|-|
-| `attr_path` | `None` | The attribute path the promise will be resolved with. |
-| `is_ready` | `None` | Returns if the Promise is READY (is not a reference and the val is actually ready)  Usage ::     p = Promise(...)    ...    if p.is_ready():         print(p.val)    else:         print(p.ref) |
-| `ref` | `None` | If the promise is NOT READY / Incomplete, then it maps to the origin node that owns the promise |
-| `val` | `None` | If the promise is ready then this holds the actual evaluate value in Flyte's type system |
-| `var` | `None` | Name of the variable bound with this promise |
+| `attr_path` | `List[Union[str, int]]` | The attribute path the promise will be resolved with. |
+| `is_ready` | `bool` | Returns if the Promise is READY (is not a reference and the val is actually ready)  Usage ::     p = Promise(...)    ...    if p.is_ready():         print(p.val)    else:         print(p.ref) |
+| `ref` | `NodeOutput` | If the promise is NOT READY / Incomplete, then it maps to the origin node that owns the promise |
+| `val` | `_literals_models.Literal` | If the promise is ready then this holds the actual evaluate value in Flyte's type system |
+| `var` | `str` | Name of the variable bound with this promise |
 
 ### Methods
 
@@ -781,8 +781,8 @@ protocol SupportsNodeCreation()
 
 | Property | Type | Description |
 |-|-|-|
-| `name` | `None` |  |
-| `python_interface` | `None` |  |
+| `name` | `str` |  |
+| `python_interface` | `flyte_interface.Interface` |  |
 
 ### Methods
 
@@ -819,7 +819,7 @@ class VoidPromise(
 
 | Property | Type | Description |
 |-|-|-|
-| `ref` | `None` |  |
+| `ref` | `Optional[NodeOutput]` |  |
 | `task_name` | `None` |  |
 
 ### Methods

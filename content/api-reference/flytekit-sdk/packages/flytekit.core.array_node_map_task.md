@@ -116,30 +116,30 @@ class ArrayNodeMapTask(
 
 | Property | Type | Description |
 |-|-|-|
-| `bound_inputs` | `None` |  |
-| `concurrency` | `None` |  |
-| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
-| `disable_deck` | `None` | If true, this task will not output deck html file |
-| `docs` | `None` |  |
-| `enable_deck` | `None` | If true, this task will output deck html file |
-| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
-| `execution_mode` | `None` |  |
-| `instantiated_in` | `None` |  |
-| `interface` | `None` |  |
-| `is_original_sub_node_interface` | `None` |  |
+| `bound_inputs` | `typing.Set[str]` |  |
+| `concurrency` | `typing.Optional[int]` |  |
+| `deck_fields` | `typing.List[flytekit.deck.deck.DeckField]` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `bool` | If true, this task will not output deck html file |
+| `docs` | `flytekit.models.documentation.Documentation` |  |
+| `enable_deck` | `bool` | If true, this task will output deck html file |
+| `environment` | `typing.Dict[str, str]` | Any environment variables that supplied during the execution of the task. |
+| `execution_mode` | `google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper` |  |
+| `instantiated_in` | `str` |  |
+| `interface` | `flytekit.models.interface.TypedInterface` |  |
+| `is_original_sub_node_interface` | `bool` |  |
 | `lhs` | `None` |  |
-| `location` | `None` |  |
-| `metadata` | `None` |  |
-| `min_success_ratio` | `None` |  |
-| `min_successes` | `None` |  |
-| `name` | `None` |  |
-| `python_function_task` | `None` |  |
+| `location` | `str` |  |
+| `metadata` | `flytekit.core.base_task.TaskMetadata` |  |
+| `min_success_ratio` | `typing.Optional[float]` |  |
+| `min_successes` | `typing.Optional[int]` |  |
+| `name` | `str` |  |
+| `python_function_task` | `typing.Union[flytekit.core.python_function_task.PythonFunctionTask, flytekit.core.python_function_task.PythonInstanceTask]` |  |
 | `python_interface` | `None` | Returns this task's python interface. |
-| `run_all_sub_nodes` | `None` |  |
-| `security_context` | `None` |  |
-| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
-| `task_type` | `None` |  |
-| `task_type_version` | `None` |  |
+| `run_all_sub_nodes` | `bool` |  |
+| `security_context` | `flytekit.models.security.SecurityContext` |  |
+| `task_config` | `typing.Optional[~T]` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_type` | `str` |  |
+| `task_type_version` | `int` |  |
 
 ### Methods
 
@@ -520,9 +520,9 @@ class ArrayNodeMapTaskResolver(
 
 | Property | Type | Description |
 |-|-|-|
-| `instantiated_in` | `None` |  |
+| `instantiated_in` | `str` |  |
 | `lhs` | `None` |  |
-| `location` | `None` |  |
+| `location` | `str` |  |
 
 ### Methods
 

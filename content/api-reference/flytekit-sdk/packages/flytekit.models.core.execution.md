@@ -45,7 +45,7 @@ class ExecutionError(
 | `code` | `None` |  |
 | `error_uri` | `None` |  |
 | `is_empty` | `None` |  |
-| `kind` | `None` | Enum value from ErrorKind |
+| `kind` | `int` | Enum value from ErrorKind |
 | `message` | `None` |  |
 
 ### Methods

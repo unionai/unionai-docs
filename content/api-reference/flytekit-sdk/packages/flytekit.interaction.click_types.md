@@ -929,7 +929,7 @@ class FlyteLiteralConverter(
 
 | Property | Type | Description |
 |-|-|-|
-| `click_type` | `None` |  |
+| `click_type` | `click.types.ParamType` |  |
 
 ### Methods
 
@@ -1598,7 +1598,7 @@ class UnionParamType(
 
 | Property | Type | Description |
 |-|-|-|
-| `name` | `None` |  |
+| `name` | `str` |  |
 
 ### Methods
 

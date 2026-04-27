@@ -137,9 +137,9 @@ class StructuredDataset(
 
 | Property | Type | Description |
 |-|-|-|
-| `dataframe` | `None` |  |
-| `literal` | `None` |  |
-| `metadata` | `None` |  |
+| `dataframe` | `Optional[DF]` |  |
+| `literal` | `Optional[literals.StructuredDataset]` |  |
+| `metadata` | `Optional[StructuredDatasetMetadata]` |  |
 
 ### Methods
 
@@ -300,9 +300,9 @@ and we have to get a Python value out of it. For the other way, see the Structur
 
 | Property | Type | Description |
 |-|-|-|
-| `protocol` | `None` |  |
-| `python_type` | `None` |  |
-| `supported_format` | `None` |  |
+| `protocol` | `Optional[str]` |  |
+| `python_type` | `Type[DF]` |  |
+| `supported_format` | `str` |  |
 
 ### Methods
 
@@ -363,9 +363,9 @@ the StructuredDatasetEncoder
 
 | Property | Type | Description |
 |-|-|-|
-| `protocol` | `None` |  |
-| `python_type` | `None` |  |
-| `supported_format` | `None` |  |
+| `protocol` | `Optional[str]` |  |
+| `python_type` | `Type[T]` |  |
+| `supported_format` | `str` |  |
 
 ### Methods
 
@@ -417,10 +417,10 @@ def StructuredDatasetTransformerEngine()
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 

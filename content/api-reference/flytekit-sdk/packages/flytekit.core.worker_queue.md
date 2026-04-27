@@ -247,5 +247,5 @@ class WorkItem(
 
 | Property | Type | Description |
 |-|-|-|
-| `is_in_terminal_state` | `None` |  |
+| `is_in_terminal_state` | `bool` |  |
 

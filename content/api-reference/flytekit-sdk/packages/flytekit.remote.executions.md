@@ -41,19 +41,19 @@ class FlyteNodeExecution(
 | Property | Type | Description |
 |-|-|-|
 | `closure` | `None` |  |
-| `error` | `None` | If execution is in progress, raise an exception. Otherwise, return None if no error was present upon reaching completion. |
-| `executions` | `None` |  |
+| `error` | `core_execution_models.ExecutionError` | If execution is in progress, raise an exception. Otherwise, return None if no error was present upon reaching completion. |
+| `executions` | `List[Union[FlyteTaskExecution, FlyteWorkflowExecution]]` |  |
 | `id` | `None` |  |
 | `input_uri` | `None` |  |
-| `inputs` | `None` |  |
-| `interface` | `None` | Return the interface of the task or subworkflow associated with this node execution. |
-| `is_done` | `None` | Whether or not the execution is complete. |
+| `inputs` | `Optional[LiteralsResolver]` |  |
+| `interface` | `'flytekit.remote.interface.TypedInterface'` | Return the interface of the task or subworkflow associated with this node execution. |
+| `is_done` | `bool` | Whether or not the execution is complete. |
 | `is_empty` | `None` |  |
-| `metadata` | `None` |  |
-| `outputs` | `None` |  |
-| `subworkflow_node_executions` | `None` | This returns underlying node executions in instances where the current node execution is a parent node. This happens when it's either a static or dynamic subworkflow. |
-| `task_executions` | `None` |  |
-| `workflow_executions` | `None` |  |
+| `metadata` | `flyteidl.admin.node_execution_pb2.NodeExecutionMetaData` |  |
+| `outputs` | `Optional[LiteralsResolver]` |  |
+| `subworkflow_node_executions` | `Dict[str, FlyteNodeExecution]` | This returns underlying node executions in instances where the current node execution is a parent node. This happens when it's either a static or dynamic subworkflow. |
+| `task_executions` | `List[FlyteTaskExecution]` |  |
+| `workflow_executions` | `List[FlyteWorkflowExecution]` |  |
 
 ### Methods
 
@@ -128,15 +128,15 @@ class FlyteTaskExecution(
 | Property | Type | Description |
 |-|-|-|
 | `closure` | `None` |  |
-| `error` | `None` | If execution is in progress, raise an exception. Otherwise, return None if no error was present upon reaching completion. |
+| `error` | `Optional[core_execution_models.ExecutionError]` | If execution is in progress, raise an exception. Otherwise, return None if no error was present upon reaching completion. |
 | `id` | `None` |  |
 | `input_uri` | `None` |  |
-| `inputs` | `None` |  |
-| `is_done` | `None` | Whether or not the execution is complete. |
+| `inputs` | `Optional[LiteralsResolver]` |  |
+| `is_done` | `bool` | Whether or not the execution is complete. |
 | `is_empty` | `None` |  |
 | `is_parent` | `None` |  |
-| `outputs` | `None` |  |
-| `task` | `None` |  |
+| `outputs` | `Optional[LiteralsResolver]` |  |
+| `task` | `Optional[FlyteTask]` |  |
 
 ### Methods
 
@@ -219,16 +219,16 @@ class FlyteWorkflowExecution(
 | Property | Type | Description |
 |-|-|-|
 | `closure` | `None` |  |
-| `error` | `None` | If execution is in progress, raise an exception.  Otherwise, return None if no error was present upon reaching completion. |
-| `execution_url` | `None` |  |
-| `flyte_workflow` | `None` |  |
-| `id` | `None` |  |
-| `inputs` | `None` |  |
-| `is_done` | `None` | Whether or not the execution is complete. |
+| `error` | `core_execution_models.ExecutionError` | If execution is in progress, raise an exception.  Otherwise, return None if no error was present upon reaching completion. |
+| `execution_url` | `Optional[str]` |  |
+| `flyte_workflow` | `Optional[FlyteWorkflow]` |  |
+| `id` | `_identifier.WorkflowExecutionIdentifier` |  |
+| `inputs` | `Optional[LiteralsResolver]` |  |
+| `is_done` | `bool` | Whether or not the execution is complete. |
 | `is_empty` | `None` |  |
-| `is_successful` | `None` | Whether or not the execution is successful. |
-| `node_executions` | `None` | Get a dictionary of node executions that are a part of this workflow execution. |
-| `outputs` | `None` |  |
+| `is_successful` | `bool` | Whether or not the execution is successful. |
+| `node_executions` | `Dict[str, FlyteNodeExecution]` | Get a dictionary of node executions that are a part of this workflow execution. |
+| `outputs` | `Optional[LiteralsResolver]` |  |
 | `spec` | `None` |  |
 
 ### Methods
@@ -343,8 +343,8 @@ class RemoteExecutionBase(
 
 | Property | Type | Description |
 |-|-|-|
-| `error` | `None` |  |
-| `inputs` | `None` |  |
-| `is_done` | `None` |  |
-| `outputs` | `None` |  |
+| `error` | `core_execution_models.ExecutionError` |  |
+| `inputs` | `Optional[LiteralsResolver]` |  |
+| `is_done` | `bool` |  |
+| `outputs` | `Optional[LiteralsResolver]` |  |
 

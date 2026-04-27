@@ -107,8 +107,8 @@ class Deck(
 
 | Property | Type | Description |
 |-|-|-|
-| `html` | `None` |  |
-| `name` | `None` |  |
+| `html` | `str` |  |
+| `name` | `str` |  |
 
 ### Methods
 
@@ -179,8 +179,8 @@ class TimeLineDeck(
 
 | Property | Type | Description |
 |-|-|-|
-| `html` | `None` |  |
-| `name` | `None` |  |
+| `html` | `str` |  |
+| `name` | `str` |  |
 
 ### Methods
 

@@ -43,7 +43,7 @@ class FlyteAgentNotFound(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteConnectorNotFound
 
@@ -64,7 +64,7 @@ class FlyteConnectorNotFound(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteDownloadDataException
 
@@ -85,7 +85,7 @@ class FlyteDownloadDataException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteEntrypointNotLoadable
 
@@ -108,7 +108,7 @@ class FlyteEntrypointNotLoadable(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteNonRecoverableSystemException
 
@@ -131,7 +131,7 @@ FlyteNonRecoverableSystemException is thrown when a system code raises an except
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 | `value` | `None` |  |
 
 ## flytekit.exceptions.system.FlyteNotImplementedException
@@ -153,7 +153,7 @@ class FlyteNotImplementedException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteSystemAssertion
 
@@ -174,7 +174,7 @@ class FlyteSystemAssertion(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteSystemException
 
@@ -195,7 +195,7 @@ class FlyteSystemException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteSystemUnavailableException
 
@@ -216,7 +216,7 @@ class FlyteSystemUnavailableException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.system.FlyteUploadDataException
 
@@ -237,5 +237,5 @@ class FlyteUploadDataException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 

@@ -38,8 +38,8 @@ class DynamicWorkflowNodeMetadata(
 
 | Property | Type | Description |
 |-|-|-|
-| `compiled_workflow` | `None` |  |
-| `id` | `None` |  |
+| `compiled_workflow` | `flytekit.models.core.compiler.CompiledWorkflowClosure` |  |
+| `id` | `flytekit.models.core.identifier.Identifier` |  |
 | `is_empty` | `None` |  |
 
 ### Methods
@@ -107,7 +107,7 @@ class NodeExecution(
 | `id` | `None` |  |
 | `input_uri` | `None` |  |
 | `is_empty` | `None` |  |
-| `metadata` | `None` |  |
+| `metadata` | `flyteidl.admin.node_execution_pb2.NodeExecutionMetaData` |  |
 
 ### Methods
 
@@ -182,7 +182,7 @@ class NodeExecutionClosure(
 
 | Property | Type | Description |
 |-|-|-|
-| `created_at` | `None` |  |
+| `created_at` | `typing.Optional[datetime.datetime]` |  |
 | `deck_uri` | `None` |  |
 | `duration` | `None` |  |
 | `error` | `None` |  |
@@ -190,10 +190,10 @@ class NodeExecutionClosure(
 | `output_uri` | `None` |  |
 | `phase` | `None` |  |
 | `started_at` | `None` |  |
-| `target_metadata` | `None` |  |
-| `task_node_metadata` | `None` |  |
-| `updated_at` | `None` |  |
-| `workflow_node_metadata` | `None` |  |
+| `target_metadata` | `typing.Union[flytekit.models.node_execution.WorkflowNodeMetadata, flytekit.models.node_execution.TaskNodeMetadata]` |  |
+| `task_node_metadata` | `typing.Optional[flytekit.models.node_execution.TaskNodeMetadata]` |  |
+| `updated_at` | `typing.Optional[datetime.datetime]` |  |
+| `workflow_node_metadata` | `typing.Optional[flytekit.models.node_execution.WorkflowNodeMetadata]` |  |
 
 ### Methods
 
@@ -256,8 +256,8 @@ class TaskNodeMetadata(
 
 | Property | Type | Description |
 |-|-|-|
-| `cache_status` | `None` |  |
-| `catalog_key` | `None` |  |
+| `cache_status` | `int` |  |
+| `catalog_key` | `flytekit.models.core.catalog.CatalogMetadata` |  |
 | `is_empty` | `None` |  |
 
 ### Methods
@@ -315,7 +315,7 @@ class WorkflowNodeMetadata(
 
 | Property | Type | Description |
 |-|-|-|
-| `execution_id` | `None` |  |
+| `execution_id` | `flytekit.models.core.identifier.WorkflowExecutionIdentifier` |  |
 | `is_empty` | `None` |  |
 
 ### Methods

@@ -34,9 +34,9 @@ class RemoteEntity(
 
 | Property | Type | Description |
 |-|-|-|
-| `id` | `None` |  |
-| `name` | `None` |  |
-| `python_interface` | `None` |  |
+| `id` | `flytekit.models.core.identifier.Identifier` |  |
+| `name` | `str` |  |
+| `python_interface` | `typing.Optional[ForwardRef('Interface')]` |  |
 
 ### Methods
 

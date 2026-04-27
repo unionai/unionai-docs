@@ -240,10 +240,10 @@ class Case(
 
 | Property | Type | Description |
 |-|-|-|
-| `err` | `None` |  |
-| `expr` | `None` |  |
-| `output_node` | `None` |  |
-| `output_promise` | `None` |  |
+| `err` | `Optional[str]` |  |
+| `expr` | `Optional[Union[ComparisonExpression, ConjunctionExpression]]` |  |
+| `output_node` | `Optional[Node]` |  |
+| `output_promise` | `Optional[Union[Tuple[Promise], Promise]]` |  |
 
 ### Methods
 
@@ -343,8 +343,8 @@ class ConditionalSection(
 
 | Property | Type | Description |
 |-|-|-|
-| `cases` | `None` |  |
-| `name` | `None` |  |
+| `cases` | `typing.List[Case]` |  |
+| `name` | `str` |  |
 
 ### Methods
 
@@ -419,8 +419,8 @@ class LocalExecutedConditionalSection(
 
 | Property | Type | Description |
 |-|-|-|
-| `cases` | `None` |  |
-| `name` | `None` |  |
+| `cases` | `typing.List[Case]` |  |
+| `name` | `str` |  |
 
 ### Methods
 
@@ -502,8 +502,8 @@ class SkippedConditionalSection(
 
 | Property | Type | Description |
 |-|-|-|
-| `cases` | `None` |  |
-| `name` | `None` |  |
+| `cases` | `typing.List[Case]` |  |
+| `name` | `str` |  |
 
 ### Methods
 

@@ -105,7 +105,7 @@ class EnumType(
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` | `None` |  |
-| `values` | `None` |  |
+| `values` | `typing.List[str]` |  |
 
 ### Methods
 

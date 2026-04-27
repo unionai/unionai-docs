@@ -52,7 +52,7 @@ class WebhookConnector(
 
 | Property | Type | Description |
 |-|-|-|
-| `task_category` | `None` | task category that the connector supports |
+| `task_category` | `flytekit.extend.backend.base_connector.TaskCategory` | task category that the connector supports |
 
 ### Methods
 

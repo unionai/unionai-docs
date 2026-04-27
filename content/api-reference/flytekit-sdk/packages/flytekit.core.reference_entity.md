@@ -47,8 +47,8 @@ class LaunchPlanReference(
 
 | Property | Type | Description |
 |-|-|-|
-| `id` | `None` |  |
-| `resource_type` | `None` |  |
+| `id` | `flytekit.models.core.identifier.Identifier` |  |
+| `resource_type` | `int` |  |
 
 ## flytekit.core.reference_entity.Reference
 
@@ -73,8 +73,8 @@ class Reference(
 
 | Property | Type | Description |
 |-|-|-|
-| `id` | `None` |  |
-| `resource_type` | `None` |  |
+| `id` | `flytekit.models.core.identifier.Identifier` |  |
+| `resource_type` | `int` |  |
 
 ## flytekit.core.reference_entity.ReferenceEntity
 
@@ -97,11 +97,11 @@ class ReferenceEntity(
 
 | Property | Type | Description |
 |-|-|-|
-| `id` | `None` |  |
-| `interface` | `None` |  |
+| `id` | `flytekit.models.core.identifier.Identifier` |  |
+| `interface` | `flytekit.models.interface.TypedInterface` |  |
 | `name` | `None` |  |
-| `python_interface` | `None` |  |
-| `reference` | `None` |  |
+| `python_interface` | `flytekit.core.interface.Interface` |  |
+| `reference` | `flytekit.core.reference_entity.Reference` |  |
 
 ### Methods
 
@@ -200,7 +200,7 @@ class ReferenceSpec(
 
 | Property | Type | Description |
 |-|-|-|
-| `template` | `None` |  |
+| `template` | `flytekit.core.reference_entity.ReferenceTemplate` |  |
 
 ## flytekit.core.reference_entity.ReferenceTemplate
 
@@ -226,8 +226,8 @@ workflows or dynamic tasks.
 
 | Property | Type | Description |
 |-|-|-|
-| `id` | `None` | User-specified information that uniquely identifies this reference. |
-| `resource_type` | `None` | The type of reference. |
+| `id` | `flytekit.models.core.identifier.Identifier` | User-specified information that uniquely identifies this reference. |
+| `resource_type` | `int` | The type of reference. |
 
 ## flytekit.core.reference_entity.TaskReference
 
@@ -255,8 +255,8 @@ class TaskReference(
 
 | Property | Type | Description |
 |-|-|-|
-| `id` | `None` |  |
-| `resource_type` | `None` |  |
+| `id` | `flytekit.models.core.identifier.Identifier` |  |
+| `resource_type` | `int` |  |
 
 ## flytekit.core.reference_entity.WorkflowReference
 
@@ -284,6 +284,6 @@ class WorkflowReference(
 
 | Property | Type | Description |
 |-|-|-|
-| `id` | `None` |  |
-| `resource_type` | `None` |  |
+| `id` | `flytekit.models.core.identifier.Identifier` |  |
+| `resource_type` | `int` |  |
 

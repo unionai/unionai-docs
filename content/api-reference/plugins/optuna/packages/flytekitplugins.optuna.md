@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.optuna
 version: 1.16.19
-variants: +flyte +byoc +selfmanaged +union
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -72,7 +72,7 @@ class Optimizer(
 
 | Property | Type | Description |
 |-|-|-|
-| `is_imperative` | `None` |  |
+| `is_imperative` | `bool` |  |
 
 ### Methods
 

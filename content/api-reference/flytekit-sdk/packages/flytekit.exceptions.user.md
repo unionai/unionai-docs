@@ -53,7 +53,7 @@ class FlyteAssertion(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteAuthenticationException
 
@@ -74,7 +74,7 @@ class FlyteAuthenticationException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteCompilationException
 
@@ -95,7 +95,7 @@ class FlyteCompilationException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteDataNotFoundException
 
@@ -114,7 +114,7 @@ class FlyteDataNotFoundException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteDisapprovalException
 
@@ -135,7 +135,7 @@ class FlyteDisapprovalException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteEntityAlreadyExistsException
 
@@ -156,7 +156,7 @@ class FlyteEntityAlreadyExistsException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteEntityNotExistException
 
@@ -177,7 +177,7 @@ class FlyteEntityNotExistException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteEntityNotFoundException
 
@@ -198,7 +198,7 @@ class FlyteEntityNotFoundException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteFailureNodeInputMismatchException
 
@@ -219,7 +219,7 @@ class FlyteFailureNodeInputMismatchException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteInvalidInputException
 
@@ -238,7 +238,7 @@ class FlyteInvalidInputException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteMissingReturnValueException
 
@@ -259,7 +259,7 @@ class FlyteMissingReturnValueException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteMissingTypeException
 
@@ -280,7 +280,7 @@ class FlyteMissingTypeException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlytePromiseAttributeResolveException
 
@@ -301,7 +301,7 @@ class FlytePromiseAttributeResolveException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteRecoverableException
 
@@ -322,7 +322,7 @@ class FlyteRecoverableException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteTimeout
 
@@ -343,7 +343,7 @@ class FlyteTimeout(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteTypeException
 
@@ -368,7 +368,7 @@ class FlyteTypeException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteUserException
 
@@ -389,7 +389,7 @@ class FlyteUserException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteUserRuntimeException
 
@@ -414,7 +414,7 @@ FlyteUserRuntimeException is thrown when a user code raises an exception.
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 | `value` | `None` |  |
 
 ## flytekit.exceptions.user.FlyteValidationException
@@ -436,7 +436,7 @@ class FlyteValidationException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.user.FlyteValueException
 
@@ -457,5 +457,5 @@ class FlyteValueException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 

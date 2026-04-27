@@ -48,12 +48,12 @@ Declares an input parameter.  A parameter is used as input to a launch plan and 
 
 | Property | Type | Description |
 |-|-|-|
-| `artifact_id` | `None` |  |
-| `artifact_query` | `None` |  |
+| `artifact_id` | `typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactID]` |  |
+| `artifact_query` | `typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactQuery]` |  |
 | `behavior` | `None` |  |
 | `default` | `None` | This is the default literal value that will be applied for this parameter if not user specified. |
 | `is_empty` | `None` |  |
-| `required` | `None` | If True, this parameter must be specified.  There cannot be a default value. |
+| `required` | `bool` | If True, this parameter must be specified.  There cannot be a default value. |
 | `var` | `None` | The variable definition for this input parameter. |
 
 ### Methods
@@ -187,9 +187,9 @@ outputs are represented directly as Python dicts, rather than going through the 
 
 | Property | Type | Description |
 |-|-|-|
-| `inputs` | `None` |  |
+| `inputs` | `typing.Dict[str, flytekit.models.interface.Variable]` |  |
 | `is_empty` | `None` |  |
-| `outputs` | `None` |  |
+| `outputs` | `typing.Dict[str, flytekit.models.interface.Variable]` |  |
 
 ### Methods
 
@@ -270,8 +270,8 @@ class Variable(
 
 | Property | Type | Description |
 |-|-|-|
-| `artifact_partial_id` | `None` |  |
-| `artifact_tag` | `None` |  |
+| `artifact_partial_id` | `typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactID]` |  |
+| `artifact_tag` | `typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactTag]` |  |
 | `description` | `None` | This is a help string that can provide context for what this variable means in relation to a task or workflow. |
 | `is_empty` | `None` |  |
 | `type` | `None` | This describes the type of value that must be provided to satisfy this variable. |

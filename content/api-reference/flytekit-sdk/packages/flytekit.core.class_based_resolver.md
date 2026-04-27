@@ -38,9 +38,9 @@ class ClassStorageTaskResolver(
 
 | Property | Type | Description |
 |-|-|-|
-| `instantiated_in` | `None` |  |
+| `instantiated_in` | `str` |  |
 | `lhs` | `None` |  |
-| `location` | `None` |  |
+| `location` | `str` |  |
 
 ### Methods
 

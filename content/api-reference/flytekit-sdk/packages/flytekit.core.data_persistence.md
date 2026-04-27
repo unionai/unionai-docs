@@ -130,11 +130,11 @@ data_config:
 
 | Property | Type | Description |
 |-|-|-|
-| `data_config` | `None` |  |
-| `local_access` | `None` |  |
-| `local_sandbox_dir` | `None` | This is a context based temp dir. |
-| `raw_output_fs` | `None` | Returns a file system corresponding to the provided raw output prefix |
-| `raw_output_prefix` | `None` |  |
+| `data_config` | `flytekit.configuration.DataConfig` |  |
+| `local_access` | `fsspec.spec.AbstractFileSystem` |  |
+| `local_sandbox_dir` | `os.PathLike` | This is a context based temp dir. |
+| `raw_output_fs` | `fsspec.spec.AbstractFileSystem` | Returns a file system corresponding to the provided raw output prefix |
+| `raw_output_prefix` | `str` |  |
 
 ### Methods
 

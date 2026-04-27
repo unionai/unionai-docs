@@ -36,7 +36,7 @@ class AuthUnaryInterceptor(
 
 | Property | Type | Description |
 |-|-|-|
-| `authenticator` | `None` |  |
+| `authenticator` | `flytekit.clients.auth.authenticator.Authenticator` |  |
 
 ### Methods
 

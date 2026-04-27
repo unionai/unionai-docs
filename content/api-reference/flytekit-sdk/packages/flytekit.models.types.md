@@ -41,9 +41,9 @@ class Error(
 
 | Property | Type | Description |
 |-|-|-|
-| `failed_node_id` | `None` |  |
+| `failed_node_id` | `str` |  |
 | `is_empty` | `None` |  |
-| `message` | `None` |  |
+| `message` | `str` |  |
 
 ### Methods
 
@@ -126,18 +126,18 @@ This is a oneof message, only one of the kwargs may be set, representing one of 
 
 | Property | Type | Description |
 |-|-|-|
-| `annotation` | `None` |  |
-| `blob` | `None` |  |
-| `collection_type` | `None` | The collection value type |
-| `enum_type` | `None` |  |
+| `annotation` | `flytekit.models.annotation.TypeAnnotation` |  |
+| `blob` | `flytekit.models.core.types.BlobType` |  |
+| `collection_type` | `LiteralType` | The collection value type |
+| `enum_type` | `flytekit.models.core.types.EnumType` |  |
 | `is_empty` | `None` |  |
-| `map_value_type` | `None` | The Value for a dictionary. Key is always string |
+| `map_value_type` | `LiteralType` | The Value for a dictionary. Key is always string |
 | `metadata` | `None` |  |
-| `schema` | `None` |  |
-| `simple` | `None` |  |
-| `structure` | `None` |  |
-| `structured_dataset_type` | `None` |  |
-| `union_type` | `None` |  |
+| `schema` | `flytekit.models.types.SchemaType` |  |
+| `simple` | `flytekit.models.types.SimpleType` |  |
+| `structure` | `flytekit.models.types.TypeStructure` |  |
+| `structured_dataset_type` | `flytekit.models.types.StructuredDatasetType` |  |
+| `union_type` | `flytekit.models.types.UnionType` |  |
 
 ### Methods
 
@@ -207,7 +207,7 @@ A reference to an output produced by a node. The type can be retrieved -and vali
 
 | Property | Type | Description |
 |-|-|-|
-| `attr_path` | `None` | The attribute path the promise will be resolved with. |
+| `attr_path` | `typing.List[typing.Union[str, int]]` | The attribute path the promise will be resolved with. |
 | `is_empty` | `None` |  |
 | `node_id` | `None` | Node id must exist at the graph layer. |
 | `var` | `None` | Variable name must refer to an output variable for the node. |
@@ -341,10 +341,10 @@ class StructuredDatasetType(
 
 | Property | Type | Description |
 |-|-|-|
-| `columns` | `None` |  |
-| `external_schema_bytes` | `None` |  |
-| `external_schema_type` | `None` |  |
-| `format` | `None` |  |
+| `columns` | `typing.List[flytekit.models.types.StructuredDatasetType.DatasetColumn]` |  |
+| `external_schema_bytes` | `bytes` |  |
+| `external_schema_type` | `str` |  |
+| `format` | `str` |  |
 | `is_empty` | `None` |  |
 
 ### Methods
@@ -407,9 +407,9 @@ class TypeStructure(
 
 | Property | Type | Description |
 |-|-|-|
-| `dataclass_type` | `None` |  |
+| `dataclass_type` | `typing.Dict[str, ForwardRef('LiteralType')]` |  |
 | `is_empty` | `None` |  |
-| `tag` | `None` |  |
+| `tag` | `str` |  |
 
 ### Methods
 
@@ -470,7 +470,7 @@ class UnionType(
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` | `None` |  |
-| `variants` | `None` |  |
+| `variants` | `typing.List[ForwardRef('LiteralType')]` |  |
 
 ### Methods
 

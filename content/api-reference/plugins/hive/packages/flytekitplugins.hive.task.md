@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.hive.task
 version: 1.16.19
-variants: +flyte +byoc +selfmanaged +union
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -72,26 +72,26 @@ stage_query: optional query that should be executed before the actual ``select_q
 
 | Property | Type | Description |
 |-|-|-|
-| `cluster_label` | `None` |  |
-| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
-| `disable_deck` | `None` | If true, this task will not output deck html file |
-| `docs` | `None` |  |
-| `enable_deck` | `None` | If true, this task will output deck html file |
-| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
-| `instantiated_in` | `None` |  |
-| `interface` | `None` |  |
+| `cluster_label` | `str` |  |
+| `deck_fields` | `typing.List[flytekit.deck.deck.DeckField]` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `bool` | If true, this task will not output deck html file |
+| `docs` | `flytekit.models.documentation.Documentation` |  |
+| `enable_deck` | `bool` | If true, this task will output deck html file |
+| `environment` | `typing.Dict[str, str]` | Any environment variables that supplied during the execution of the task. |
+| `instantiated_in` | `str` |  |
+| `interface` | `flytekit.models.interface.TypedInterface` |  |
 | `lhs` | `None` |  |
-| `location` | `None` |  |
-| `metadata` | `None` |  |
-| `name` | `None` |  |
-| `output_schema_type` | `None` |  |
-| `python_interface` | `None` | Returns this task's python interface. |
-| `query_template` | `None` |  |
-| `security_context` | `None` |  |
-| `tags` | `None` |  |
-| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
-| `task_type` | `None` |  |
-| `task_type_version` | `None` |  |
+| `location` | `str` |  |
+| `metadata` | `flytekit.core.base_task.TaskMetadata` |  |
+| `name` | `str` |  |
+| `output_schema_type` | `typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]]` |  |
+| `python_interface` | `flytekit.core.interface.Interface` | Returns this task's python interface. |
+| `query_template` | `str` |  |
+| `security_context` | `flytekit.models.security.SecurityContext` |  |
+| `tags` | `typing.List[str]` |  |
+| `task_config` | `typing.Optional[~T]` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_type` | `str` |  |
+| `task_type_version` | `int` |  |
 
 ### Methods
 
@@ -455,26 +455,26 @@ output_schema_type: If some data is produced by this query, then you can specify
 
 | Property | Type | Description |
 |-|-|-|
-| `cluster_label` | `None` |  |
-| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
-| `disable_deck` | `None` | If true, this task will not output deck html file |
-| `docs` | `None` |  |
-| `enable_deck` | `None` | If true, this task will output deck html file |
-| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
-| `instantiated_in` | `None` |  |
-| `interface` | `None` |  |
+| `cluster_label` | `str` |  |
+| `deck_fields` | `typing.List[flytekit.deck.deck.DeckField]` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `bool` | If true, this task will not output deck html file |
+| `docs` | `flytekit.models.documentation.Documentation` |  |
+| `enable_deck` | `bool` | If true, this task will output deck html file |
+| `environment` | `typing.Dict[str, str]` | Any environment variables that supplied during the execution of the task. |
+| `instantiated_in` | `str` |  |
+| `interface` | `flytekit.models.interface.TypedInterface` |  |
 | `lhs` | `None` |  |
-| `location` | `None` |  |
-| `metadata` | `None` |  |
-| `name` | `None` |  |
-| `output_schema_type` | `None` |  |
-| `python_interface` | `None` | Returns this task's python interface. |
-| `query_template` | `None` |  |
-| `security_context` | `None` |  |
-| `tags` | `None` |  |
-| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
-| `task_type` | `None` |  |
-| `task_type_version` | `None` |  |
+| `location` | `str` |  |
+| `metadata` | `flytekit.core.base_task.TaskMetadata` |  |
+| `name` | `str` |  |
+| `output_schema_type` | `typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]]` |  |
+| `python_interface` | `flytekit.core.interface.Interface` | Returns this task's python interface. |
+| `query_template` | `str` |  |
+| `security_context` | `flytekit.models.security.SecurityContext` |  |
+| `tags` | `typing.List[str]` |  |
+| `task_config` | `typing.Optional[~T]` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_type` | `str` |  |
+| `task_type_version` | `int` |  |
 
 ### Methods
 

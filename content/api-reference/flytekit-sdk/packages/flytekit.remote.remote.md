@@ -71,13 +71,13 @@ Initialize a FlyteRemote object.
 
 | Property | Type | Description |
 |-|-|-|
-| `client` | `None` | Return a SynchronousFlyteClient for additional operations. |
-| `config` | `None` | Image config. |
-| `context` | `None` |  |
-| `default_domain` | `None` | Default project to use when fetching or executing flyte entities. |
-| `default_project` | `None` | Default project to use when fetching or executing flyte entities. |
-| `file_access` | `None` | File access provider to use for offloading non-literal inputs/outputs. |
-| `interactive_mode_enabled` | `None` | If set to True, the FlyteRemote will pickle the task/workflow. |
+| `client` | `SynchronousFlyteClient` | Return a SynchronousFlyteClient for additional operations. |
+| `config` | `Config` | Image config. |
+| `context` | `FlyteContext` |  |
+| `default_domain` | `str` | Default project to use when fetching or executing flyte entities. |
+| `default_project` | `str` | Default project to use when fetching or executing flyte entities. |
+| `file_access` | `FileAccessProvider` | File access provider to use for offloading non-literal inputs/outputs. |
+| `interactive_mode_enabled` | `bool` | If set to True, the FlyteRemote will pickle the task/workflow. |
 
 ### Methods
 

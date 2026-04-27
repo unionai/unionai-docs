@@ -125,11 +125,11 @@ class Gate(
 
 | Property | Type | Description |
 |-|-|-|
-| `input_type` | `None` |  |
-| `literal_type` | `None` |  |
-| `name` | `None` |  |
-| `python_interface` | `None` | This will not be valid during local execution Part of SupportsNodeCreation interface |
-| `sleep_duration` | `None` |  |
+| `input_type` | `typing.Optional[typing.Type]` |  |
+| `literal_type` | `typing.Optional[LiteralType]` |  |
+| `name` | `str` |  |
+| `python_interface` | `flyte_interface.Interface` | This will not be valid during local execution Part of SupportsNodeCreation interface |
+| `sleep_duration` | `typing.Optional[datetime.timedelta]` |  |
 
 ### Methods
 

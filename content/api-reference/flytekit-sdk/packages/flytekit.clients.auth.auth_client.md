@@ -506,8 +506,8 @@ Constructor.  May be extended, do not override.
 
 | Property | Type | Description |
 |-|-|-|
-| `redirect_path` | `None` |  |
-| `remote_metadata` | `None` |  |
+| `redirect_path` | `str` |  |
+| `remote_metadata` | `EndpointMetadata` |  |
 
 ### Methods
 

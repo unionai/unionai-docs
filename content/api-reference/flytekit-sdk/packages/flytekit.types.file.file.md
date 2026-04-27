@@ -64,9 +64,9 @@ FlyteFile's init method.
 
 | Property | Type | Description |
 |-|-|-|
-| `downloaded` | `None` |  |
-| `remote_path` | `None` |  |
-| `remote_source` | `None` | If this is an input to a task, and the original path is an ``s3`` bucket, Flytekit downloads the file for the user. In case the user wants access to the original path, it will be here. |
+| `downloaded` | `bool` |  |
+| `remote_path` | `typing.Optional[os.PathLike]` |  |
+| `remote_source` | `str` | If this is an input to a task, and the original path is an ``s3`` bucket, Flytekit downloads the file for the user. In case the user wants access to the original path, it will be here. |
 
 ### Methods
 
@@ -246,10 +246,10 @@ def FlyteFilePathTransformer()
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 

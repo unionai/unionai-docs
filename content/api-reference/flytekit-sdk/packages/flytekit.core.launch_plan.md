@@ -127,25 +127,25 @@ class LaunchPlan(
 
 | Property | Type | Description |
 |-|-|-|
-| `annotations` | `None` |  |
-| `concurrency` | `None` |  |
-| `fixed_inputs` | `None` |  |
-| `interface` | `None` |  |
-| `labels` | `None` |  |
-| `max_parallelism` | `None` |  |
-| `name` | `None` |  |
-| `notifications` | `None` |  |
-| `overwrite_cache` | `None` |  |
-| `parameters` | `None` |  |
-| `python_interface` | `None` |  |
-| `raw_fixed_inputs` | `None` |  |
-| `raw_output_data_config` | `None` |  |
-| `saved_inputs` | `None` |  |
-| `schedule` | `None` |  |
-| `security_context` | `None` |  |
-| `should_auto_activate` | `None` |  |
-| `trigger` | `None` |  |
-| `workflow` | `None` |  |
+| `annotations` | `Optional[_common_models.Annotations]` |  |
+| `concurrency` | `Optional[ConcurrencyPolicy]` |  |
+| `fixed_inputs` | `_literal_models.LiteralMap` |  |
+| `interface` | `_interface_models.TypedInterface` |  |
+| `labels` | `Optional[_common_models.Labels]` |  |
+| `max_parallelism` | `Optional[int]` |  |
+| `name` | `str` |  |
+| `notifications` | `List[_common_models.Notification]` |  |
+| `overwrite_cache` | `Optional[bool]` |  |
+| `parameters` | `_interface_models.ParameterMap` |  |
+| `python_interface` | `Interface` |  |
+| `raw_fixed_inputs` | `Dict[str, Any]` |  |
+| `raw_output_data_config` | `Optional[_common_models.RawOutputDataConfig]` |  |
+| `saved_inputs` | `Dict[str, Any]` |  |
+| `schedule` | `Optional[_schedule_model.Schedule]` |  |
+| `security_context` | `Optional[security.SecurityContext]` |  |
+| `should_auto_activate` | `bool` |  |
+| `trigger` | `Optional[LaunchPlanTriggerBase]` |  |
+| `workflow` | `_annotated_workflow.WorkflowBase` |  |
 
 ### Methods
 
@@ -340,27 +340,27 @@ class ReferenceLaunchPlan(
 
 | Property | Type | Description |
 |-|-|-|
-| `annotations` | `None` |  |
-| `concurrency` | `None` |  |
-| `fixed_inputs` | `None` |  |
-| `id` | `None` |  |
-| `interface` | `None` |  |
-| `labels` | `None` |  |
-| `max_parallelism` | `None` |  |
+| `annotations` | `Optional[_common_models.Annotations]` |  |
+| `concurrency` | `Optional[ConcurrencyPolicy]` |  |
+| `fixed_inputs` | `_literal_models.LiteralMap` |  |
+| `id` | `flytekit.models.core.identifier.Identifier` |  |
+| `interface` | `flytekit.models.interface.TypedInterface` |  |
+| `labels` | `Optional[_common_models.Labels]` |  |
+| `max_parallelism` | `Optional[int]` |  |
 | `name` | `None` |  |
-| `notifications` | `None` |  |
-| `overwrite_cache` | `None` |  |
-| `parameters` | `None` |  |
-| `python_interface` | `None` |  |
-| `raw_fixed_inputs` | `None` |  |
-| `raw_output_data_config` | `None` |  |
-| `reference` | `None` |  |
-| `saved_inputs` | `None` |  |
-| `schedule` | `None` |  |
-| `security_context` | `None` |  |
-| `should_auto_activate` | `None` |  |
-| `trigger` | `None` |  |
-| `workflow` | `None` |  |
+| `notifications` | `List[_common_models.Notification]` |  |
+| `overwrite_cache` | `Optional[bool]` |  |
+| `parameters` | `_interface_models.ParameterMap` |  |
+| `python_interface` | `flytekit.core.interface.Interface` |  |
+| `raw_fixed_inputs` | `Dict[str, Any]` |  |
+| `raw_output_data_config` | `Optional[_common_models.RawOutputDataConfig]` |  |
+| `reference` | `flytekit.core.reference_entity.Reference` |  |
+| `saved_inputs` | `Dict[str, Any]` |  |
+| `schedule` | `Optional[_schedule_model.Schedule]` |  |
+| `security_context` | `Optional[security.SecurityContext]` |  |
+| `should_auto_activate` | `bool` |  |
+| `trigger` | `Optional[LaunchPlanTriggerBase]` |  |
+| `workflow` | `_annotated_workflow.WorkflowBase` |  |
 
 ### Methods
 

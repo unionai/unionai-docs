@@ -780,20 +780,20 @@ class ImperativeWorkflow(
 
 | Property | Type | Description |
 |-|-|-|
-| `compilation_state` | `None` | Compilation is done a bit at a time, one task or other entity call at a time. This is why this workflow class has to keep track of its own compilation state. |
-| `default_options` | `None` |  |
+| `compilation_state` | `CompilationState` | Compilation is done a bit at a time, one task or other entity call at a time. This is why this workflow class has to keep track of its own compilation state. |
+| `default_options` | `Optional[Options]` |  |
 | `docs` | `None` |  |
-| `failure_node` | `None` |  |
-| `inputs` | `None` | This holds the input promises to the workflow. The nodes in these Promise objects should always point to the global start node. |
-| `interface` | `None` |  |
-| `name` | `None` |  |
-| `nodes` | `None` |  |
-| `on_failure` | `None` |  |
-| `output_bindings` | `None` |  |
-| `python_interface` | `None` |  |
-| `short_name` | `None` |  |
-| `workflow_metadata` | `None` |  |
-| `workflow_metadata_defaults` | `None` |  |
+| `failure_node` | `Optional[Node]` |  |
+| `inputs` | `Dict[str, Promise]` | This holds the input promises to the workflow. The nodes in these Promise objects should always point to the global start node. |
+| `interface` | `_interface_models.TypedInterface` |  |
+| `name` | `str` |  |
+| `nodes` | `List[Node]` |  |
+| `on_failure` | `Optional[Union[WorkflowBase, Task]]` |  |
+| `output_bindings` | `List[_literal_models.Binding]` |  |
+| `python_interface` | `Interface` |  |
+| `short_name` | `str` |  |
+| `workflow_metadata` | `WorkflowMetadata` |  |
+| `workflow_metadata_defaults` | `WorkflowMetadataDefaults` |  |
 
 ### Methods
 
@@ -1034,22 +1034,22 @@ class PythonFunctionWorkflow(
 
 | Property | Type | Description |
 |-|-|-|
-| `default_options` | `None` |  |
+| `default_options` | `Optional[Options]` |  |
 | `docs` | `None` |  |
-| `failure_node` | `None` |  |
+| `failure_node` | `Optional[Node]` |  |
 | `function` | `None` |  |
-| `instantiated_in` | `None` |  |
-| `interface` | `None` |  |
+| `instantiated_in` | `str` |  |
+| `interface` | `_interface_models.TypedInterface` |  |
 | `lhs` | `None` |  |
-| `location` | `None` |  |
-| `name` | `None` |  |
-| `nodes` | `None` |  |
-| `on_failure` | `None` |  |
-| `output_bindings` | `None` |  |
-| `python_interface` | `None` |  |
-| `short_name` | `None` |  |
-| `workflow_metadata` | `None` |  |
-| `workflow_metadata_defaults` | `None` |  |
+| `location` | `str` |  |
+| `name` | `str` |  |
+| `nodes` | `List[Node]` |  |
+| `on_failure` | `Optional[Union[WorkflowBase, Task]]` |  |
+| `output_bindings` | `List[_literal_models.Binding]` |  |
+| `python_interface` | `Interface` |  |
+| `short_name` | `str` |  |
+| `workflow_metadata` | `WorkflowMetadata` |  |
+| `workflow_metadata_defaults` | `WorkflowMetadataDefaults` |  |
 
 ### Methods
 
@@ -1222,24 +1222,24 @@ class ReferenceWorkflow(
 
 | Property | Type | Description |
 |-|-|-|
-| `default_options` | `None` |  |
+| `default_options` | `Optional[Options]` |  |
 | `docs` | `None` |  |
-| `failure_node` | `None` |  |
+| `failure_node` | `Optional[Node]` |  |
 | `function` | `None` |  |
-| `id` | `None` |  |
-| `instantiated_in` | `None` |  |
-| `interface` | `None` |  |
+| `id` | `flytekit.models.core.identifier.Identifier` |  |
+| `instantiated_in` | `str` |  |
+| `interface` | `flytekit.models.interface.TypedInterface` |  |
 | `lhs` | `None` |  |
-| `location` | `None` |  |
+| `location` | `str` |  |
 | `name` | `None` |  |
-| `nodes` | `None` |  |
-| `on_failure` | `None` |  |
-| `output_bindings` | `None` |  |
-| `python_interface` | `None` |  |
-| `reference` | `None` |  |
-| `short_name` | `None` |  |
-| `workflow_metadata` | `None` |  |
-| `workflow_metadata_defaults` | `None` |  |
+| `nodes` | `List[Node]` |  |
+| `on_failure` | `Optional[Union[WorkflowBase, Task]]` |  |
+| `output_bindings` | `List[_literal_models.Binding]` |  |
+| `python_interface` | `flytekit.core.interface.Interface` |  |
+| `reference` | `flytekit.core.reference_entity.Reference` |  |
+| `short_name` | `str` |  |
+| `workflow_metadata` | `WorkflowMetadata` |  |
+| `workflow_metadata_defaults` | `WorkflowMetadataDefaults` |  |
 
 ### Methods
 
@@ -1426,18 +1426,18 @@ class WorkflowBase(
 
 | Property | Type | Description |
 |-|-|-|
-| `default_options` | `None` |  |
+| `default_options` | `Optional[Options]` |  |
 | `docs` | `None` |  |
-| `failure_node` | `None` |  |
-| `interface` | `None` |  |
-| `name` | `None` |  |
-| `nodes` | `None` |  |
-| `on_failure` | `None` |  |
-| `output_bindings` | `None` |  |
-| `python_interface` | `None` |  |
-| `short_name` | `None` |  |
-| `workflow_metadata` | `None` |  |
-| `workflow_metadata_defaults` | `None` |  |
+| `failure_node` | `Optional[Node]` |  |
+| `interface` | `_interface_models.TypedInterface` |  |
+| `name` | `str` |  |
+| `nodes` | `List[Node]` |  |
+| `on_failure` | `Optional[Union[WorkflowBase, Task]]` |  |
+| `output_bindings` | `List[_literal_models.Binding]` |  |
+| `python_interface` | `Interface` |  |
+| `short_name` | `str` |  |
+| `workflow_metadata` | `WorkflowMetadata` |  |
+| `workflow_metadata_defaults` | `WorkflowMetadataDefaults` |  |
 
 ### Methods
 

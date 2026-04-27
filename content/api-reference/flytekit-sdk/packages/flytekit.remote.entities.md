@@ -51,9 +51,9 @@ TODO: docstring
 
 | Property | Type | Description |
 |-|-|-|
-| `flyte_node` | `None` |  |
+| `flyte_node` | `FlyteNode` |  |
 | `is_empty` | `None` |  |
-| `node` | `None` |  |
+| `node` | `Node` |  |
 
 ### Methods
 
@@ -129,7 +129,7 @@ runtime based on a series of conditions that get evaluated on various parameters
 
 | Property | Type | Description |
 |-|-|-|
-| `if_else` | `None` |  |
+| `if_else` | `flytekit.models.core.workflow.IfElseBlock` |  |
 | `is_empty` | `None` |  |
 
 ### Methods
@@ -213,11 +213,11 @@ class FlyteGateNode(
 
 | Property | Type | Description |
 |-|-|-|
-| `approve` | `None` |  |
-| `condition` | `None` |  |
+| `approve` | `typing.Optional[flytekit.models.core.workflow.ApproveCondition]` |  |
+| `condition` | `typing.Union[flytekit.models.core.workflow.SignalCondition, flytekit.models.core.workflow.SleepCondition, flytekit.models.core.workflow.ApproveCondition]` |  |
 | `is_empty` | `None` |  |
-| `signal` | `None` |  |
-| `sleep` | `None` |  |
+| `signal` | `typing.Optional[flytekit.models.core.workflow.SignalCondition]` |  |
+| `sleep` | `typing.Optional[flytekit.models.core.workflow.SignalCondition]` |  |
 
 ### Methods
 
@@ -293,27 +293,27 @@ class FlyteLaunchPlan(
 
 | Property | Type | Description |
 |-|-|-|
-| `annotations` | `None` | The annotations to execute the workflow with |
+| `annotations` | `flytekit.models.common.Annotations` | The annotations to execute the workflow with |
 | `auth_role` | `None` | The authorization method with which to execute the workflow. |
-| `concurrency_policy` | `None` | Concurrency settings for the launch plan. |
+| `concurrency_policy` | `typing.Optional[flytekit.models.concurrency.ConcurrencyPolicy]` | Concurrency settings for the launch plan. |
 | `default_inputs` | `None` | Input values to be passed for the execution |
 | `entity_metadata` | `None` |  |
-| `entity_type_text` | `None` |  |
+| `entity_type_text` | `str` |  |
 | `fixed_inputs` | `None` | Fixed, non-overridable inputs for the Launch Plan |
-| `flyte_workflow` | `None` |  |
-| `id` | `None` |  |
-| `interface` | `None` | The interface is not technically part of the admin.LaunchPlanSpec in the IDL, however the workflow ID is, and from the workflow ID, fetch will fill in the interface. This is nice because then you can __call__ the= object and get a node. |
+| `flyte_workflow` | `Optional[FlyteWorkflow]` |  |
+| `id` | `id_models.Identifier` |  |
+| `interface` | `Optional[_interface.TypedInterface]` | The interface is not technically part of the admin.LaunchPlanSpec in the IDL, however the workflow ID is, and from the workflow ID, fetch will fill in the interface. This is nice because then you can __call__ the= object and get a node. |
 | `is_empty` | `None` |  |
-| `is_scheduled` | `None` |  |
-| `labels` | `None` | The labels to execute the workflow with |
-| `max_parallelism` | `None` |  |
-| `name` | `None` |  |
-| `overwrite_cache` | `None` |  |
-| `python_interface` | `None` |  |
+| `is_scheduled` | `bool` |  |
+| `labels` | `flytekit.models.common.Labels` | The labels to execute the workflow with |
+| `max_parallelism` | `typing.Optional[int]` |  |
+| `name` | `str` |  |
+| `overwrite_cache` | `typing.Optional[bool]` |  |
+| `python_interface` | `typing.Optional[ForwardRef('Interface')]` |  |
 | `raw_output_data_config` | `None` | Where to store offloaded data like Blobs and Schemas |
-| `resource_type` | `None` |  |
-| `security_context` | `None` |  |
-| `workflow_id` | `None` | Unique identifier for the workflow in question |
+| `resource_type` | `id_models.ResourceType` |  |
+| `security_context` | `typing.Optional[flytekit.models.security.SecurityContext]` |  |
+| `workflow_id` | `id_models.Identifier` | Unique identifier for the workflow in question |
 
 ### Methods
 
@@ -464,19 +464,19 @@ class FlyteNode(
 
 | Property | Type | Description |
 |-|-|-|
-| `array_node` | `None` |  |
+| `array_node` | `typing.Optional[flytekit.models.core.workflow.ArrayNode]` |  |
 | `branch_node` | `None` | [Optional] Information about the branch node to evaluate in this node. |
-| `flyte_entity` | `None` |  |
-| `gate_node` | `None` |  |
+| `flyte_entity` | `Union[FlyteTask, FlyteWorkflow, FlyteLaunchPlan, FlyteBranchNode, FlyteArrayNode]` |  |
+| `gate_node` | `typing.Optional[flytekit.models.core.workflow.GateNode]` |  |
 | `id` | `None` | A workflow-level unique identifier that identifies this node in the workflow. "inputs" and "outputs" are reserved node ids that cannot be used by other nodes. |
 | `inputs` | `None` | Specifies how to bind the underlying interface's inputs.  All required inputs specified in the underlying interface must be fulfilled. |
 | `is_empty` | `None` |  |
 | `metadata` | `None` | Extra metadata about the node. |
 | `output_aliases` | `None` | [Optional] A node can define aliases for a subset of its outputs. This is particularly useful if different nodes need to conform to the same interface (e.g. all branches in a branch node). Downstream nodes must refer to this node's outputs using the alias if one is specified. |
 | `target` | `None` |  |
-| `task_node` | `None` | [Optional] Information about the Task to execute in this node. |
-| `upstream_node_ids` | `None` | [Optional] Specifies execution dependency for this node ensuring it will only get scheduled to run after all its upstream nodes have completed. This node will have an implicit dependency on any node that appears in inputs field. |
-| `upstream_nodes` | `None` |  |
+| `task_node` | `Optional[FlyteTaskNode]` | [Optional] Information about the Task to execute in this node. |
+| `upstream_node_ids` | `List[str]` | [Optional] Specifies execution dependency for this node ensuring it will only get scheduled to run after all its upstream nodes have completed. This node will have an implicit dependency on any node that appears in inputs field. |
+| `upstream_nodes` | `List[FlyteNode]` |  |
 | `workflow_node` | `None` | [Optional] Information about the Workflow to execute in this mode. |
 
 ### Methods
@@ -589,18 +589,18 @@ class FlyteTask(
 | `container` | `None` | If not None, the target of execution should be a container. |
 | `custom` | `None` | Arbitrary dictionary containing metadata for custom plugins. |
 | `docs` | `None` |  |
-| `entity_type_text` | `None` |  |
+| `entity_type_text` | `str` |  |
 | `extended_resources` | `None` |  |
 | `id` | `None` | This is generated by the system and uniquely identifies the task. |
 | `interface` | `None` | The interface definition for this task. |
 | `is_empty` | `None` |  |
 | `k8s_pod` | `None` |  |
 | `metadata` | `None` | This contains information needed at runtime to determine behavior such as whether or not outputs are discoverable, timeouts, and retries. |
-| `name` | `None` |  |
-| `python_interface` | `None` |  |
-| `resource_type` | `None` |  |
+| `name` | `str` |  |
+| `python_interface` | `typing.Optional[ForwardRef('Interface')]` |  |
+| `resource_type` | `_identifier_model.ResourceType` |  |
 | `security_context` | `None` |  |
-| `should_register` | `None` |  |
+| `should_register` | `bool` |  |
 | `sql` | `None` |  |
 | `task_type_version` | `None` |  |
 | `template` | `None` |  |
@@ -743,10 +743,10 @@ This code should be updated when more options are available.
 
 | Property | Type | Description |
 |-|-|-|
-| `flyte_task` | `None` |  |
+| `flyte_task` | `FlyteTask` |  |
 | `is_empty` | `None` |  |
-| `overrides` | `None` |  |
-| `reference_id` | `None` | A globally unique identifier for the task. |
+| `overrides` | `flytekit.models.core.workflow.TaskNodeOverrides` |  |
+| `reference_id` | `id_models.Identifier` | A globally unique identifier for the task. |
 
 ### Methods
 
@@ -847,22 +847,22 @@ class FlyteWorkflow(
 | Property | Type | Description |
 |-|-|-|
 | `docs` | `None` |  |
-| `entity_type_text` | `None` |  |
-| `failure_node` | `None` | Node failure_node: A catch-all node. This node is executed whenever the execution engine determines the workflow has failed. The interface of this node must match the Workflow interface with an additional input named "error" of type pb.lyft.flyte.core.Error. |
-| `flyte_nodes` | `None` |  |
-| `flyte_sub_workflows` | `None` |  |
-| `flyte_tasks` | `None` |  |
-| `id` | `None` | This is an autogenerated id by the system. The id is globally unique across Flyte. |
-| `interface` | `None` | Defines a strongly typed interface for the Workflow (inputs, outputs). This can include some optional parameters. |
+| `entity_type_text` | `str` |  |
+| `failure_node` | `Node` | Node failure_node: A catch-all node. This node is executed whenever the execution engine determines the workflow has failed. The interface of this node must match the Workflow interface with an additional input named "error" of type pb.lyft.flyte.core.Error. |
+| `flyte_nodes` | `List[FlyteNode]` |  |
+| `flyte_sub_workflows` | `List[FlyteWorkflow]` |  |
+| `flyte_tasks` | `Optional[List[FlyteTask]]` |  |
+| `id` | `Identifier` | This is an autogenerated id by the system. The id is globally unique across Flyte. |
+| `interface` | `TypedInterface` | Defines a strongly typed interface for the Workflow (inputs, outputs). This can include some optional parameters. |
 | `is_empty` | `None` |  |
-| `metadata` | `None` | This contains information on how to run the workflow. |
-| `metadata_defaults` | `None` | This contains information on how to run the workflow. |
-| `name` | `None` |  |
-| `nodes` | `None` | A list of nodes. In addition, "globals" is a special reserved node id that can be used to consume workflow inputs |
-| `outputs` | `None` | A list of output bindings that specify how to construct workflow outputs. Bindings can pull node outputs or specify literals. All workflow outputs specified in the interface field must be bound in order for the workflow to be validated. A workflow has an implicit dependency on all of its nodes to execute successfully in order to bind final outputs. |
-| `python_interface` | `None` |  |
+| `metadata` | `WorkflowMetadata` | This contains information on how to run the workflow. |
+| `metadata_defaults` | `WorkflowMetadataDefaults` | This contains information on how to run the workflow. |
+| `name` | `str` |  |
+| `nodes` | `List[Node]` | A list of nodes. In addition, "globals" is a special reserved node id that can be used to consume workflow inputs |
+| `outputs` | `List[Binding]` | A list of output bindings that specify how to construct workflow outputs. Bindings can pull node outputs or specify literals. All workflow outputs specified in the interface field must be bound in order for the workflow to be validated. A workflow has an implicit dependency on all of its nodes to execute successfully in order to bind final outputs. |
+| `python_interface` | `typing.Optional[ForwardRef('Interface')]` |  |
 | `resource_type` | `None` |  |
-| `should_register` | `None` |  |
+| `should_register` | `bool` |  |
 | `sub_workflows` | `None` |  |
 | `template` | `None` |  |
 
@@ -1039,10 +1039,10 @@ Refers to a the workflow the node is to execute. One of the references must be s
 
 | Property | Type | Description |
 |-|-|-|
-| `flyte_launch_plan` | `None` |  |
-| `flyte_workflow` | `None` |  |
+| `flyte_launch_plan` | `FlyteLaunchPlan` |  |
+| `flyte_workflow` | `FlyteWorkflow` |  |
 | `is_empty` | `None` |  |
-| `launchplan_ref` | `None` | A globally unique identifier for the launch plan, which should map to Admin. |
+| `launchplan_ref` | `id_models.Identifier` | A globally unique identifier for the launch plan, which should map to Admin. |
 | `reference` | `None` |  |
 | `sub_workflow_ref` | `None` | [Optional] Reference to a subworkflow, that should be defined with the compiler context. |
 

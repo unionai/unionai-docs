@@ -245,7 +245,7 @@ class Envs(
 
 | Property | Type | Description |
 |-|-|-|
-| `envs` | `None` |  |
+| `envs` | `typing.Dict[str, str]` |  |
 | `is_empty` | `None` |  |
 
 ### Methods

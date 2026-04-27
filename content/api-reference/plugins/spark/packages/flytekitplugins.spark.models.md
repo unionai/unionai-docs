@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.spark.models
 version: 1.16.19
-variants: +flyte +byoc +selfmanaged +union
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -56,11 +56,11 @@ This defines a SparkJob target.  It will execute the appropriate SparkJob.
 | Property | Type | Description |
 |-|-|-|
 | `application_file` | `None` | The main application file to execute |
-| `databricks_conf` | `None` | databricks_conf: Databricks job configuration. Config structure can be found here. https://docs.databricks.com/dev-tools/api/2.0/jobs.html#request-structure |
-| `databricks_instance` | `None` | Domain name of your deployment. Use the form &lt;account&gt;.cloud.databricks.com. |
-| `driver_pod` | `None` | Additional pod specs for driver pod. |
+| `databricks_conf` | `typing.Dict[str, typing.Dict]` | databricks_conf: Databricks job configuration. Config structure can be found here. https://docs.databricks.com/dev-tools/api/2.0/jobs.html#request-structure |
+| `databricks_instance` | `str` | Domain name of your deployment. Use the form &lt;account&gt;.cloud.databricks.com. |
+| `driver_pod` | `flytekit.models.task.K8sPod` | Additional pod specs for driver pod. |
 | `executor_path` | `None` | The python executable to use |
-| `executor_pod` | `None` | Additional pod specs for the worker node pods. |
+| `executor_pod` | `flytekit.models.task.K8sPod` | Additional pod specs for the worker node pods. |
 | `hadoop_conf` | `None` | A definition of key-value pairs for hadoop config for the job. |
 | `is_empty` | `None` |  |
 | `main_class` | `None` | The main class to execute |

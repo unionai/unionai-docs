@@ -86,14 +86,14 @@ class Node(
 
 | Property | Type | Description |
 |-|-|-|
-| `bindings` | `None` |  |
-| `flyte_entity` | `None` |  |
-| `id` | `None` |  |
-| `metadata` | `None` |  |
-| `name` | `None` |  |
+| `bindings` | `List[_literal_models.Binding]` |  |
+| `flyte_entity` | `Any` |  |
+| `id` | `str` |  |
+| `metadata` | `_workflow_model.NodeMetadata` |  |
+| `name` | `str` |  |
 | `outputs` | `None` |  |
-| `run_entity` | `None` |  |
-| `upstream_nodes` | `None` |  |
+| `run_entity` | `Any` |  |
+| `upstream_nodes` | `List[Node]` |  |
 
 ### Methods
 

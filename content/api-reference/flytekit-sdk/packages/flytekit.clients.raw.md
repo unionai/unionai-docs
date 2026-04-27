@@ -50,7 +50,7 @@ Initializes a gRPC channel to the given Flyte Admin service.
 
 | Property | Type | Description |
 |-|-|-|
-| `url` | `None` |  |
+| `url` | `str` |  |
 
 ### Methods
 

@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.huggingface.sd_transformers
 version: 1.16.19
-variants: +flyte +byoc +selfmanaged +union
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -65,9 +65,9 @@ the StructuredDatasetEncoder
 
 | Property | Type | Description |
 |-|-|-|
-| `protocol` | `None` |  |
-| `python_type` | `None` |  |
-| `supported_format` | `None` |  |
+| `protocol` | `Optional[str]` |  |
+| `python_type` | `Type[T]` |  |
+| `supported_format` | `str` |  |
 
 ### Methods
 
@@ -121,9 +121,9 @@ and we have to get a Python value out of it. For the other way, see the Structur
 
 | Property | Type | Description |
 |-|-|-|
-| `protocol` | `None` |  |
-| `python_type` | `None` |  |
-| `supported_format` | `None` |  |
+| `protocol` | `Optional[str]` |  |
+| `python_type` | `Type[DF]` |  |
+| `supported_format` | `str` |  |
 
 ### Methods
 

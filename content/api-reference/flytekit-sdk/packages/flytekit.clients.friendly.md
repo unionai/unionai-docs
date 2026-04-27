@@ -56,7 +56,7 @@ Initializes a gRPC channel to the given Flyte Admin service.
 | Property | Type | Description |
 |-|-|-|
 | `raw` | `None` | Gives access to the raw client |
-| `url` | `None` |  |
+| `url` | `str` |  |
 
 ### Methods
 
