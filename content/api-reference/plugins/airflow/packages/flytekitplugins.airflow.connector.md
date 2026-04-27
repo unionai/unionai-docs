@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.airflow.connector
-version: 1.16.16
-variants: +flyte +union
+version: 1.16.19
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -69,8 +69,8 @@ def AirflowConnector()
 
 | Property | Type | Description |
 |-|-|-|
-| `metadata_type` | `None` |  |
-| `task_category` | `None` | task category that the connector supports |
+| `metadata_type` | `flytekit.extend.backend.base_connector.ResourceMeta` |  |
+| `task_category` | `flytekit.extend.backend.base_connector.TaskCategory` | task category that the connector supports |
 
 ### Methods
 

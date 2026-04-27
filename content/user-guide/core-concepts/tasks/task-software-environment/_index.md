@@ -2,7 +2,6 @@
 title: Task software environment
 weight: 6
 variants: +flyte +union
-sidebar_expanded: false
 ---
 
 # Task software environment

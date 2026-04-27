@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.launch_plan
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -115,7 +115,7 @@ class LaunchPlan(
 | `closure` | `None` |  |
 | `id` | `None` |  |
 | `is_empty` | `None` |  |
-| `should_auto_activate` | `None` |  |
+| `should_auto_activate` | `bool` |  |
 | `spec` | `None` |  |
 
 ### Methods
@@ -342,18 +342,18 @@ The spec for a Launch Plan.
 
 | Property | Type | Description |
 |-|-|-|
-| `annotations` | `None` | The annotations to execute the workflow with |
+| `annotations` | `flytekit.models.common.Annotations` | The annotations to execute the workflow with |
 | `auth_role` | `None` | The authorization method with which to execute the workflow. |
-| `concurrency_policy` | `None` | Concurrency settings for the launch plan. |
+| `concurrency_policy` | `typing.Optional[flytekit.models.concurrency.ConcurrencyPolicy]` | Concurrency settings for the launch plan. |
 | `default_inputs` | `None` | Input values to be passed for the execution |
 | `entity_metadata` | `None` |  |
 | `fixed_inputs` | `None` | Fixed, non-overridable inputs for the Launch Plan |
 | `is_empty` | `None` |  |
-| `labels` | `None` | The labels to execute the workflow with |
-| `max_parallelism` | `None` |  |
-| `overwrite_cache` | `None` |  |
+| `labels` | `flytekit.models.common.Labels` | The labels to execute the workflow with |
+| `max_parallelism` | `typing.Optional[int]` |  |
+| `overwrite_cache` | `typing.Optional[bool]` |  |
 | `raw_output_data_config` | `None` | Where to store offloaded data like Blobs and Schemas |
-| `security_context` | `None` |  |
+| `security_context` | `typing.Optional[flytekit.models.security.SecurityContext]` |  |
 | `workflow_id` | `None` | Unique identifier for the workflow in question |
 
 ### Methods

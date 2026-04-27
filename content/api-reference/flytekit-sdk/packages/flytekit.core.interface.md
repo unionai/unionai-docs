@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.interface
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -333,14 +333,14 @@ class Interface(
 
 | Property | Type | Description |
 |-|-|-|
-| `default_inputs_as_kwargs` | `None` |  |
-| `docstring` | `None` |  |
-| `inputs` | `None` |  |
-| `inputs_with_defaults` | `None` |  |
-| `output_names` | `None` |  |
-| `output_tuple` | `None` |  |
-| `output_tuple_name` | `None` |  |
-| `outputs` | `None` |  |
+| `default_inputs_as_kwargs` | `Dict[str, Any]` |  |
+| `docstring` | `Optional[Docstring]` |  |
+| `inputs` | `Dict[str, type]` |  |
+| `inputs_with_defaults` | `Dict[str, Tuple[Type, Any]]` |  |
+| `output_names` | `Optional[List[str]]` |  |
+| `output_tuple` | `Type[collections.namedtuple]` |  |
+| `output_tuple_name` | `Optional[str]` |  |
+| `outputs` | `typing.Dict[str, type]` |  |
 
 ### Methods
 

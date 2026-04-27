@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration.file
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -181,8 +181,8 @@ Load the config from this location
 
 | Property | Type | Description |
 |-|-|-|
-| `legacy_config` | `None` |  |
-| `yaml_config` | `None` |  |
+| `legacy_config` | `configparser.ConfigParser` |  |
+| `yaml_config` | `typing.Dict[str, typing.Any]` |  |
 
 ### Methods
 

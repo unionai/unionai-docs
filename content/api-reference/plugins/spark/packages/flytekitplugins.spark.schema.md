@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.spark.schema
-version: 1.16.16
-variants: +flyte +union
+version: 1.16.19
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -44,8 +44,8 @@ class ClassicSparkDataFrameSchemaReader(
 
 | Property | Type | Description |
 |-|-|-|
-| `column_names` | `None` |  |
-| `from_path` | `None` |  |
+| `column_names` | `typing.Optional[typing.List[str]]` |  |
+| `from_path` | `str` |  |
 
 ### Methods
 
@@ -101,8 +101,8 @@ class ClassicSparkDataFrameSchemaWriter(
 
 | Property | Type | Description |
 |-|-|-|
-| `column_names` | `None` |  |
-| `to_path` | `None` |  |
+| `column_names` | `typing.Optional[typing.List[str]]` |  |
+| `to_path` | `str` |  |
 
 ### Methods
 
@@ -138,10 +138,10 @@ def ClassicSparkDataFrameTransformer()
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 
@@ -359,8 +359,8 @@ class SparkDataFrameSchemaReader(
 
 | Property | Type | Description |
 |-|-|-|
-| `column_names` | `None` |  |
-| `from_path` | `None` |  |
+| `column_names` | `typing.Optional[typing.List[str]]` |  |
+| `from_path` | `str` |  |
 
 ### Methods
 
@@ -416,8 +416,8 @@ class SparkDataFrameSchemaWriter(
 
 | Property | Type | Description |
 |-|-|-|
-| `column_names` | `None` |  |
-| `to_path` | `None` |  |
+| `column_names` | `typing.Optional[typing.List[str]]` |  |
+| `to_path` | `str` |  |
 
 ### Methods
 
@@ -453,10 +453,10 @@ def SparkDataFrameTransformer()
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 

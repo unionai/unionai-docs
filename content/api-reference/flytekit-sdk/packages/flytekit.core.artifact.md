@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.artifact
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -84,9 +84,9 @@ class Artifact(
 
 | Property | Type | Description |
 |-|-|-|
-| `concrete_artifact_id` | `None` |  |
-| `partitions` | `None` |  |
-| `time_partition` | `None` |  |
+| `concrete_artifact_id` | `art_id.ArtifactID` |  |
+| `partitions` | `Optional[Partitions]` |  |
+| `time_partition` | `TimePartition` |  |
 
 ### Methods
 
@@ -263,7 +263,7 @@ class ArtifactQuery(
 
 | Property | Type | Description |
 |-|-|-|
-| `bound` | `None` |  |
+| `bound` | `bool` |  |
 
 ### Methods
 
@@ -464,7 +464,7 @@ class Partitions(
 
 | Property | Type | Description |
 |-|-|-|
-| `partitions` | `None` |  |
+| `partitions` | `Optional[typing.Dict[str, Partition]]` |  |
 
 ### Methods
 

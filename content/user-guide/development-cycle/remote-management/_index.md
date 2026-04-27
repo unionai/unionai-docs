@@ -2,7 +2,6 @@
 title: Remote management
 weight: 19
 variants: +flyte +union
-sidebar_expanded: false
 ---
 
 # {{< key kit_remote >}}

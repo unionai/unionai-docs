@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.docstring
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -34,8 +34,8 @@ class Docstring(
 
 | Property | Type | Description |
 |-|-|-|
-| `input_descriptions` | `None` |  |
-| `long_description` | `None` |  |
-| `output_descriptions` | `None` |  |
-| `short_description` | `None` |  |
+| `input_descriptions` | `typing.Dict[str, str]` |  |
+| `long_description` | `typing.Optional[str]` |  |
+| `output_descriptions` | `typing.Dict[str, str]` |  |
+| `short_description` | `typing.Optional[str]` |  |
 

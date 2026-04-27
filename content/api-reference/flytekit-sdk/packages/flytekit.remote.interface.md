@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.interface
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,9 +39,9 @@ outputs are represented directly as Python dicts, rather than going through the 
 
 | Property | Type | Description |
 |-|-|-|
-| `inputs` | `None` |  |
+| `inputs` | `typing.Dict[str, flytekit.models.interface.Variable]` |  |
 | `is_empty` | `None` |  |
-| `outputs` | `None` |  |
+| `outputs` | `typing.Dict[str, flytekit.models.interface.Variable]` |  |
 
 ### Methods
 

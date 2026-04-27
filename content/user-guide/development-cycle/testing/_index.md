@@ -2,7 +2,6 @@
 title: Testing
 weight: 19
 variants: +flyte -union
-sidebar_expanded: false
 ---
 
 # Testing

@@ -2,7 +2,6 @@
 title: AWS Athena
 weight: 1
 variants: +flyte -union
-sidebar_expanded: false
 ---
 
 # AWS Athena

@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.ray.models
-version: 1.16.16
-variants: +flyte +union
+version: 1.16.19
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -107,10 +107,10 @@ class RayCluster(
 
 | Property | Type | Description |
 |-|-|-|
-| `enable_autoscaling` | `None` | Whether to enable autoscaling. |
-| `head_group_spec` | `None` | The head group configuration. |
+| `enable_autoscaling` | `bool` | Whether to enable autoscaling. |
+| `head_group_spec` | `flytekitplugins.ray.models.HeadGroupSpec` | The head group configuration. |
 | `is_empty` | `None` |  |
-| `worker_group_spec` | `None` | The worker group configurations. |
+| `worker_group_spec` | `typing.List[flytekitplugins.ray.models.WorkerGroupSpec]` | The worker group configurations. |
 
 ### Methods
 
@@ -183,11 +183,11 @@ class RayJob(
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` | `None` |  |
-| `ray_cluster` | `None` |  |
-| `runtime_env` | `None` |  |
-| `runtime_env_yaml` | `None` |  |
-| `shutdown_after_job_finishes` | `None` |  |
-| `ttl_seconds_after_finished` | `None` |  |
+| `ray_cluster` | `flytekitplugins.ray.models.RayCluster` |  |
+| `runtime_env` | `typing.Optional[str]` |  |
+| `runtime_env_yaml` | `typing.Optional[str]` |  |
+| `shutdown_after_job_finishes` | `bool` |  |
+| `ttl_seconds_after_finished` | `typing.Optional[int]` |  |
 
 ### Methods
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.worker_queue
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -247,5 +247,5 @@ class WorkItem(
 
 | Property | Type | Description |
 |-|-|-|
-| `is_in_terminal_state` | `None` |  |
+| `is_in_terminal_state` | `bool` |  |
 

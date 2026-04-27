@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.array_node
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -86,20 +86,20 @@ class ArrayNode(
 
 | Property | Type | Description |
 |-|-|-|
-| `bindings` | `None` |  |
-| `bound_inputs` | `None` |  |
-| `concurrency` | `None` |  |
-| `data_mode` | `None` |  |
-| `execution_mode` | `None` |  |
-| `flyte_entity` | `None` |  |
-| `interface` | `None` |  |
-| `is_original_sub_node_interface` | `None` |  |
-| `min_success_ratio` | `None` |  |
-| `min_successes` | `None` |  |
-| `name` | `None` |  |
-| `python_interface` | `None` |  |
-| `run_all_sub_nodes` | `None` |  |
-| `upstream_nodes` | `None` |  |
+| `bindings` | `typing.List[flytekit.models.literals.Binding]` |  |
+| `bound_inputs` | `typing.Set[str]` |  |
+| `concurrency` | `typing.Optional[int]` |  |
+| `data_mode` | `google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper` |  |
+| `execution_mode` | `google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper` |  |
+| `flyte_entity` | `typing.Any` |  |
+| `interface` | `flytekit.models.interface.TypedInterface` |  |
+| `is_original_sub_node_interface` | `bool` |  |
+| `min_success_ratio` | `typing.Optional[float]` |  |
+| `min_successes` | `typing.Optional[int]` |  |
+| `name` | `str` |  |
+| `python_interface` | `flytekit.core.interface.Interface` |  |
+| `run_all_sub_nodes` | `bool` |  |
+| `upstream_nodes` | `typing.List[flytekit.core.node.Node]` |  |
 
 ### Methods
 

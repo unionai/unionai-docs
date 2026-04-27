@@ -1,6 +1,6 @@
 ---
 title: flytekit.interaction.click_types
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -929,7 +929,7 @@ class FlyteLiteralConverter(
 
 | Property | Type | Description |
 |-|-|-|
-| `click_type` | `None` |  |
+| `click_type` | `click.types.ParamType` |  |
 
 ### Methods
 
@@ -1598,7 +1598,7 @@ class UnionParamType(
 
 | Property | Type | Description |
 |-|-|-|
-| `name` | `None` |  |
+| `name` | `str` |  |
 
 ### Methods
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.deck.deck
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -107,8 +107,8 @@ class Deck(
 
 | Property | Type | Description |
 |-|-|-|
-| `html` | `None` |  |
-| `name` | `None` |  |
+| `html` | `str` |  |
+| `name` | `str` |  |
 
 ### Methods
 
@@ -179,8 +179,8 @@ class TimeLineDeck(
 
 | Property | Type | Description |
 |-|-|-|
-| `html` | `None` |  |
-| `name` | `None` |  |
+| `html` | `str` |  |
+| `name` | `str` |  |
 
 ### Methods
 

@@ -2,7 +2,6 @@
 title: Retrieval Augmented Generation
 weight: 1
 variants: -flyte +union
-sidebar_expanded: true
 ---
 
 # Retrieval Augmented Generation

@@ -2,7 +2,6 @@
 title: Parallel Processing and Job Scheduling
 weight: 1
 variants: -flyte +union
-sidebar_expanded: true
 ---
 
 # Parallel Processing and Job Scheduling

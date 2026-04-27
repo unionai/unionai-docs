@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.reference
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---

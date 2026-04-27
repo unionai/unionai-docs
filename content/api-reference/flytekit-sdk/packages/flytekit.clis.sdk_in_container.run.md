@@ -1,6 +1,6 @@
 ---
 title: flytekit.clis.sdk_in_container.run
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -214,8 +214,8 @@ Create Rich Command instance.
 
 | Property | Type | Description |
 |-|-|-|
-| `console` | `None` | Rich Console.  This is a separate instance from the help formatter that allows full control of the console configuration.  See `rich_config` decorator for how to apply the settings. |
-| `help_config` | `None` | Rich Help Configuration. |
+| `console` | `Optional['Console']` | Rich Console.  This is a separate instance from the help formatter that allows full control of the console configuration.  See `rich_config` decorator for how to apply the settings. |
+| `help_config` | `Optional[RichHelpConfiguration]` | Rich Help Configuration. |
 
 ### Methods
 
@@ -670,8 +670,8 @@ Create RichGroup instance.
 
 | Property | Type | Description |
 |-|-|-|
-| `console` | `None` | Rich Console.  This is a separate instance from the help formatter that allows full control of the console configuration.  See `rich_config` decorator for how to apply the settings. |
-| `help_config` | `None` | Rich Help Configuration. |
+| `console` | `Optional['Console']` | Rich Console.  This is a separate instance from the help formatter that allows full control of the console configuration.  See `rich_config` decorator for how to apply the settings. |
+| `help_config` | `Optional[RichHelpConfiguration]` | Rich Help Configuration. |
 
 ### Methods
 
@@ -1279,8 +1279,8 @@ Create RichGroup instance.
 
 | Property | Type | Description |
 |-|-|-|
-| `console` | `None` | Rich Console.  This is a separate instance from the help formatter that allows full control of the console configuration.  See `rich_config` decorator for how to apply the settings. |
-| `help_config` | `None` | Rich Help Configuration. |
+| `console` | `Optional['Console']` | Rich Console.  This is a separate instance from the help formatter that allows full control of the console configuration.  See `rich_config` decorator for how to apply the settings. |
+| `help_config` | `Optional[RichHelpConfiguration]` | Rich Help Configuration. |
 
 ### Methods
 
@@ -1966,7 +1966,7 @@ class RunLevelParams(
 
 | Property | Type | Description |
 |-|-|-|
-| `is_remote` | `None` |  |
+| `is_remote` | `bool` |  |
 
 ### Methods
 
@@ -2028,8 +2028,8 @@ Create RichGroup instance.
 
 | Property | Type | Description |
 |-|-|-|
-| `console` | `None` | Rich Console.  This is a separate instance from the help formatter that allows full control of the console configuration.  See `rich_config` decorator for how to apply the settings. |
-| `help_config` | `None` | Rich Help Configuration. |
+| `console` | `Optional['Console']` | Rich Console.  This is a separate instance from the help formatter that allows full control of the console configuration.  See `rich_config` decorator for how to apply the settings. |
+| `help_config` | `Optional[RichHelpConfiguration]` | Rich Help Configuration. |
 
 ### Methods
 
@@ -2639,8 +2639,8 @@ Create Rich Command instance.
 
 | Property | Type | Description |
 |-|-|-|
-| `console` | `None` | Rich Console.  This is a separate instance from the help formatter that allows full control of the console configuration.  See `rich_config` decorator for how to apply the settings. |
-| `help_config` | `None` | Rich Help Configuration. |
+| `console` | `Optional['Console']` | Rich Console.  This is a separate instance from the help formatter that allows full control of the console configuration.  See `rich_config` decorator for how to apply the settings. |
+| `help_config` | `Optional[RichHelpConfiguration]` | Rich Help Configuration. |
 
 ### Methods
 

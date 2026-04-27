@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.openai.chatgpt.connector
-version: 1.16.16
-variants: +flyte +union
+version: 1.16.19
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -33,7 +33,7 @@ def ChatGPTConnector()
 
 | Property | Type | Description |
 |-|-|-|
-| `task_category` | `None` | task category that the connector supports |
+| `task_category` | `flytekit.extend.backend.base_connector.TaskCategory` | task category that the connector supports |
 
 ### Methods
 

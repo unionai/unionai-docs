@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.auth_client
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -506,8 +506,8 @@ Constructor.  May be extended, do not override.
 
 | Property | Type | Description |
 |-|-|-|
-| `redirect_path` | `None` |  |
-| `remote_metadata` | `None` |  |
+| `redirect_path` | `str` |  |
+| `remote_metadata` | `EndpointMetadata` |  |
 
 ### Methods
 

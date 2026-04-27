@@ -2,7 +2,6 @@
 title: Artifacts
 weight: 5
 variants: -flyte +union
-sidebar_expanded: false
 llm_readable_bundle: true
 ---
 

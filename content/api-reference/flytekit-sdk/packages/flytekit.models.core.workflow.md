@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.workflow
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -122,7 +122,7 @@ Represents a dependency on an signal from a user.
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` | `None` |  |
-| `signal_id` | `None` |  |
+| `signal_id` | `str` |  |
 
 ### Methods
 
@@ -199,7 +199,7 @@ TODO: docstring
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` | `None` |  |
-| `node` | `None` |  |
+| `node` | `Node` |  |
 
 ### Methods
 
@@ -261,7 +261,7 @@ runtime based on a series of conditions that get evaluated on various parameters
 
 | Property | Type | Description |
 |-|-|-|
-| `if_else` | `None` |  |
+| `if_else` | `flytekit.models.core.workflow.IfElseBlock` |  |
 | `is_empty` | `None` |  |
 
 ### Methods
@@ -325,11 +325,11 @@ class GateNode(
 
 | Property | Type | Description |
 |-|-|-|
-| `approve` | `None` |  |
-| `condition` | `None` |  |
+| `approve` | `typing.Optional[flytekit.models.core.workflow.ApproveCondition]` |  |
+| `condition` | `typing.Union[flytekit.models.core.workflow.SignalCondition, flytekit.models.core.workflow.SleepCondition, flytekit.models.core.workflow.ApproveCondition]` |  |
 | `is_empty` | `None` |  |
-| `signal` | `None` |  |
-| `sleep` | `None` |  |
+| `signal` | `typing.Optional[flytekit.models.core.workflow.SignalCondition]` |  |
+| `sleep` | `typing.Optional[flytekit.models.core.workflow.SignalCondition]` |  |
 
 ### Methods
 
@@ -550,9 +550,9 @@ a Workflow or a branch node.  One of the nodes must be specified.
 
 | Property | Type | Description |
 |-|-|-|
-| `array_node` | `None` |  |
+| `array_node` | `typing.Optional[flytekit.models.core.workflow.ArrayNode]` |  |
 | `branch_node` | `None` | [Optional] Information about the branch node to evaluate in this node. |
-| `gate_node` | `None` |  |
+| `gate_node` | `typing.Optional[flytekit.models.core.workflow.GateNode]` |  |
 | `id` | `None` | A workflow-level unique identifier that identifies this node in the workflow. "inputs" and "outputs" are reserved node ids that cannot be used by other nodes. |
 | `inputs` | `None` | Specifies how to bind the underlying interface's inputs.  All required inputs specified in the underlying interface must be fulfilled. |
 | `is_empty` | `None` |  |
@@ -638,10 +638,10 @@ Defines extra information about the Node.
 
 | Property | Type | Description |
 |-|-|-|
-| `cache_serializable` | `None` |  |
-| `cache_version` | `None` |  |
-| `cacheable` | `None` |  |
-| `interruptible` | `None` |  |
+| `cache_serializable` | `typing.Optional[bool]` |  |
+| `cache_version` | `typing.Optional[str]` |  |
+| `cacheable` | `typing.Optional[bool]` |  |
+| `interruptible` | `typing.Optional[bool]` |  |
 | `is_empty` | `None` |  |
 | `name` | `None` |  |
 | `retries` | `None` |  |
@@ -713,9 +713,9 @@ Represents a dependency on an signal from a user.
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` | `None` |  |
-| `output_variable_name` | `None` |  |
-| `signal_id` | `None` |  |
-| `type` | `None` |  |
+| `output_variable_name` | `str` |  |
+| `signal_id` | `str` |  |
+| `type` | `flytekit.models.types.LiteralType` |  |
 
 ### Methods
 
@@ -775,7 +775,7 @@ A sleep condition.
 
 | Property | Type | Description |
 |-|-|-|
-| `duration` | `None` |  |
+| `duration` | `datetime.timedelta` |  |
 | `is_empty` | `None` |  |
 
 ### Methods
@@ -842,7 +842,7 @@ This code should be updated when more options are available.
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` | `None` |  |
-| `overrides` | `None` |  |
+| `overrides` | `flytekit.models.core.workflow.TaskNodeOverrides` |  |
 | `reference_id` | `None` | A globally unique identifier for the task. This should map to the identifier in Flyte Admin. |
 
 ### Methods
@@ -910,11 +910,11 @@ class TaskNodeOverrides(
 
 | Property | Type | Description |
 |-|-|-|
-| `container_image` | `None` |  |
-| `extended_resources` | `None` |  |
+| `container_image` | `typing.Optional[str]` |  |
+| `extended_resources` | `flyteidl.core.tasks_pb2.ExtendedResources` |  |
 | `is_empty` | `None` |  |
-| `pod_template` | `None` |  |
-| `resources` | `None` |  |
+| `pod_template` | `typing.Optional[flytekit.core.pod_template.PodTemplate]` |  |
+| `resources` | `flytekit.models.task.Resources` |  |
 
 ### Methods
 
@@ -1109,7 +1109,7 @@ Refers to a the workflow the node is to execute. One of the references must be s
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` | `None` |  |
-| `launchplan_ref` | `None` | [Optional] A globally unique identifier for the launch plan.  Should map to Admin. |
+| `launchplan_ref` | `flytekit.models.core.identifier.Identifier` | [Optional] A globally unique identifier for the launch plan.  Should map to Admin. |
 | `reference` | `None` |  |
 | `sub_workflow_ref` | `None` | [Optional] Reference to a subworkflow, that should be defined with the compiler context. |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.task
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -130,7 +130,7 @@ the given configurations.
 | `command` | `None` | A list of 'words' for the command.  i.e. ['aws', 's3', 'ls'] |
 | `config` | `None` | A definition of key-value pairs for configuration.  Currently, only str-&gt;str is     supported. |
 | `data_loading_config` | `None` |  |
-| `env` | `None` | A definition of key-value pairs for environment variables.  Currently, only str-&gt;str is     supported. |
+| `env` | `typing.Dict[str, str]` | A definition of key-value pairs for environment variables.  Currently, only str-&gt;str is     supported. |
 | `image` | `None` | The fully-qualified identifier for the image. |
 | `is_empty` | `None` |  |
 | `resources` | `None` | A definition of requisite compute resources. |
@@ -340,9 +340,9 @@ This defines additional metadata for building a kubernetes pod.
 
 | Property | Type | Description |
 |-|-|-|
-| `annotations` | `None` |  |
+| `annotations` | `typing.Dict[str, str]` |  |
 | `is_empty` | `None` |  |
-| `labels` | `None` |  |
+| `labels` | `typing.Dict[str, str]` |  |
 
 ### Methods
 
@@ -408,11 +408,11 @@ This defines a kubernetes pod target.  It will build the pod target during task 
 
 | Property | Type | Description |
 |-|-|-|
-| `data_config` | `None` |  |
+| `data_config` | `typing.Optional[flytekit.models.task.DataLoadingConfig]` |  |
 | `is_empty` | `None` |  |
-| `metadata` | `None` |  |
-| `pod_spec` | `None` |  |
-| `primary_container_name` | `None` |  |
+| `metadata` | `flytekit.models.task.K8sObjectMetadata` |  |
+| `pod_spec` | `typing.Dict[str, typing.Any]` |  |
+| `primary_container_name` | `typing.Optional[str]` |  |
 
 ### Methods
 
@@ -625,9 +625,9 @@ This defines a kubernetes pod target. It will build the pod target during task e
 
 | Property | Type | Description |
 |-|-|-|
-| `dialect` | `None` |  |
+| `dialect` | `int` |  |
 | `is_empty` | `None` |  |
-| `statement` | `None` |  |
+| `statement` | `str` |  |
 
 ### Methods
 
@@ -932,11 +932,11 @@ and retries.
 | `deprecated_error_message` | `None` | This string can be used to mark the task as deprecated.  Consumers of the task will receive deprecation warnings. |
 | `discoverable` | `None` | Whether or not the outputs of this task should be cached for discovery. |
 | `discovery_version` | `None` | This is the version used to create a logical version for data in the cache. This is only used when `discoverable` is true.  Data is considered discoverable if: the inputs to a given task are the same and the discovery_version is also the same. |
-| `generates_deck` | `None` | Whether the task will generate a Deck. |
+| `generates_deck` | `bool` | Whether the task will generate a Deck. |
 | `interruptible` | `None` | Whether or not the task is interruptible. |
 | `is_eager` | `None` |  |
 | `is_empty` | `None` |  |
-| `k8s_object_metadata` | `None` | Kubernetes metadata for the task. |
+| `k8s_object_metadata` | `typing.Optional[ForwardRef('K8sObjectMetadata')]` | Kubernetes metadata for the task. |
 | `pod_template_name` | `None` | The name of the existing PodTemplate resource which will be used in this task. |
 | `retries` | `None` | Retry strategy for this task.  0 retries means only try once. |
 | `runtime` | `None` | Metadata describing the runtime environment for this task. |
