@@ -2,7 +2,6 @@
 title: Project patterns
 weight: 13
 variants: +flyte +union
-sidebar_expanded: false
 ---
 
 # Project patterns

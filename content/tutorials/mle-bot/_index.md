@@ -2,7 +2,6 @@
 title: MLE Bot
 weight: 1
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # MLE Bot: an autonomous ML engineer
