@@ -2,7 +2,6 @@
 title: Workflows
 weight: 1
 variants: +flyte +union
-sidebar_expanded: false
 llm_readable_bundle: true
 ---
 

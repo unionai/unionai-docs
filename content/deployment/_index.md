@@ -5,7 +5,6 @@ variants: +flyte +union
 top_menu: true
 secondary_topnav: -flyte +union
 mermaid: true
-sidebar_expanded: true
 ---
 
 # Platform deployment

@@ -2,7 +2,6 @@
 title: Flytectl CLI
 weight: 4
 variants: +flyte -union
-sidebar_expanded: true
 ---
 
 # {{< key ctl_name >}} CLI

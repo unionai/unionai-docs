@@ -2,7 +2,6 @@
 title: Single sign on setup
 weight: 12
 variants: -flyte +union
-sidebar_expanded: true
 llm_readable_bundle: true
 ---
 

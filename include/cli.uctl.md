@@ -1,7 +1,7 @@
 ---
 title: Uctl CLI
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 toc_max: 2
 ---
 

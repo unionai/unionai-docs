@@ -1,7 +1,7 @@
 ---
 title: Flytectl CLI
 weight: 0
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte +union
 toc_max: 2
 ---
 
