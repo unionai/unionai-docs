@@ -328,7 +328,5 @@ When `ACTION_PHASE_SUCCEEDED` appears in the output, this sample workflow comple
 
 For more information, see the following resources:
 
-- [Union.ai documentation](https://docs.union.ai/)
-- [Flyte documentation](https://docs.flyte.org/)
 - [CoreWeave AI Object Storage](https://docs.coreweave.com/products/storage/object-storage)
 - [Create a CKS cluster](https://docs.coreweave.com/products/cks/clusters/create)
