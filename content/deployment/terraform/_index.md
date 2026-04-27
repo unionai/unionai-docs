@@ -2,7 +2,6 @@
 title: Terraform
 weight: 3
 variants: -flyte +union
-sidebar_expanded: true
 llm_readable_bundle: true
 ---
 

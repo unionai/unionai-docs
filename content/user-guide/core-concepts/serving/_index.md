@@ -2,7 +2,6 @@
 title: App Serving
 weight: 6
 variants: -flyte +union
-sidebar_expanded: false
 llm_readable_bundle: true
 ---
 

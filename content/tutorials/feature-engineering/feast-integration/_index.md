@@ -2,7 +2,6 @@
 title: Feast integration
 weight: 1
 variants: +flyte -union
-sidebar_expanded: false
 ---
 
 # Feast Integration

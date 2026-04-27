@@ -2,7 +2,6 @@
 title: Deprecated integrations
 weight: 6
 variants: +flyte -union
-sidebar_expanded: true
 ---
 
 # Deprecated integrations

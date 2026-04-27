@@ -2,7 +2,6 @@
 title: Memory Machine Cloud connector
 weight: 1
 variants: +flyte +union
-sidebar_expanded: false
 ---
 
 # Memory Machine Cloud connector

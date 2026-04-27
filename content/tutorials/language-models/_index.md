@@ -2,7 +2,6 @@
 title: Language Models
 weight: 1
 variants: -flyte +union
-sidebar_expanded: true
 ---
 
 # Language Models

@@ -3,7 +3,6 @@ title: Reference
 weight: 3
 variants: +flyte +union
 top_menu: true
-sidebar_expanded: true
 ---
 
 # Reference

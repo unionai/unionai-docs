@@ -2,7 +2,6 @@
 title: Weights and Biases
 weight: 1
 variants: +flyte -union
-sidebar_expanded: false
 ---
 
 # Weights and Biases
