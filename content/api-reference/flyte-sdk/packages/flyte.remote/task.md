@@ -28,10 +28,10 @@ Initialize a Task object.
 
 | Property | Type | Description |
 |-|-|-|
-| `entrypoint` | `None` | Whether this task is marked as an entrypoint. Not populated in listing responses; fetch ``TaskDetails`` to read the authoritative value from the task template. |
-| `name` | `None` | The name of the task. |
-| `url` | `None` | Get the console URL for viewing the task. |
-| `version` | `None` | The version of the task. |
+| `entrypoint` | `bool` | Whether this task is marked as an entrypoint. Not populated in listing responses; fetch ``TaskDetails`` to read the authoritative value from the task template. |
+| `name` | `str` | The name of the task. |
+| `url` | `str` | Get the console URL for viewing the task. |
+| `version` | `str` | The version of the task. |
 
 ## Methods
 

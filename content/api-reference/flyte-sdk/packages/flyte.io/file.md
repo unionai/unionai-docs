@@ -179,7 +179,7 @@ validated to form a valid model.
 
 | Property | Type | Description |
 |-|-|-|
-| `lazy_uploader` | `None` |  |
+| `lazy_uploader` | `Callable[[], Coroutine[Any, Any, tuple[str \| None, str]]] \| None` |  |
 
 ## Methods
 

@@ -50,8 +50,8 @@ class ReusePolicy(
 
 | Property | Type | Description |
 |-|-|-|
-| `max_replicas` | `None` | Returns the maximum number of replicas. |
-| `min_replicas` | `None` | Returns the minimum number of replicas. |
+| `max_replicas` | `int` | Returns the maximum number of replicas. |
+| `min_replicas` | `int` | Returns the minimum number of replicas. |
 
 ## Methods
 

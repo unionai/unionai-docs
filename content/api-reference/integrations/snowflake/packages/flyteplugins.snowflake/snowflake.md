@@ -47,8 +47,8 @@ Note: For password authentication or other auth methods, pass them via `connecti
 
 | Property | Type | Description |
 |-|-|-|
-| `native_interface` | `None` |  |
-| `source_file` | `None` |  |
+| `native_interface` | `NativeInterface` |  |
+| `source_file` | `Optional[str]` |  |
 
 ## Methods
 

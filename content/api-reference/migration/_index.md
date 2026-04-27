@@ -2,7 +2,6 @@
 title: Migration from Flyte 1
 weight: 2
 variants: +flyte +union
-sidebar_expanded: true
 llm_readable_bundle: true
 ---
 

@@ -2,7 +2,6 @@
 title: Downloading logs
 weight: 3
 variants: +flyte +union
-sidebar_expanded: false
 ---
 
 # Downloading logs

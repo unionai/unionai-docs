@@ -80,9 +80,9 @@ class SleepTask(
 
 | Property | Type | Description |
 |-|-|-|
-| `json_schema` | `None` | JSON schema for the task inputs, following the Flyte standard.  Delegates to NativeInterface.json_schema, which uses the type engine to produce a LiteralType per input and converts to JSON schema. |
-| `native_interface` | `None` |  |
-| `source_file` | `None` | Returns the source file of the function, if available. This is useful for debugging and tracing. |
+| `json_schema` | `Dict[str, Any]` | JSON schema for the task inputs, following the Flyte standard.  Delegates to NativeInterface.json_schema, which uses the type engine to produce a LiteralType per input and converts to JSON schema. |
+| `native_interface` | `NativeInterface` |  |
+| `source_file` | `Optional[str]` | Returns the source file of the function, if available. This is useful for debugging and tracing. |
 
 ## Methods
 

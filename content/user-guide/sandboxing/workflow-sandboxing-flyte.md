@@ -2,7 +2,6 @@
 title: Workflow sandboxing
 weight: 2
 variants: +flyte +union
-sidebar_expanded: false
 llm_readable_bundle: true
 mermaid: true
 ---

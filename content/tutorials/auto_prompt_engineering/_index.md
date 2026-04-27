@@ -2,7 +2,6 @@
 title: Automatic prompt engineering
 weight: 2
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # Automatic prompt engineering

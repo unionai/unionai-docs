@@ -52,10 +52,10 @@ validated to form a valid model.
 
 | Property | Type | Description |
 |-|-|-|
-| `lazy_uploader` | `None` |  |
-| `literal` | `None` |  |
-| `metadata` | `None` |  |
-| `val` | `None` |  |
+| `lazy_uploader` | `Callable[[], Coroutine[Any, Any, DataFrame]] \| None` |  |
+| `literal` | `Optional[literals_pb2.StructuredDataset]` |  |
+| `metadata` | `Optional[literals_pb2.StructuredDatasetMetadata]` |  |
+| `val` | `Optional[DF]` |  |
 
 ## Methods
 
