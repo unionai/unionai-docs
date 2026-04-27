@@ -2,7 +2,6 @@
 title: Sweeps
 weight: 2
 variants: +flyte +union
-sidebar_expanded: false
 ---
 
 # Sweeps

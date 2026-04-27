@@ -2,7 +2,6 @@
 title: Run command options
 weight: 4
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # Run command options

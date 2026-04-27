@@ -2,7 +2,6 @@
 title: MLflow
 weight: 2
 variants: +flyte +union
-sidebar_expanded: false
 ---
 
 # MLflow

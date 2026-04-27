@@ -4,7 +4,6 @@ version: 2.1.9
 variants: +flyte +union
 layout: py_api
 weight: 4
-sidebar_expanded: true
 ---
 
 # Flyte SDK
