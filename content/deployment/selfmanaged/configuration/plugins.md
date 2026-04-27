@@ -35,39 +35,41 @@ Add the following to your data plane Helm values to enable the Dask plugin and c
 {{< markdown >}}
 
 ```yaml
-enabled_plugins:
-  tasks:
-    task-plugins:
-      enabled-plugins:
-        - agent-service
-        - container
-        - dask
-        - echo
-        - k8s-array
-        - sidecar
-      default-for-task-types:
-        dask: dask
+config:
+  enabled_plugins:
+    tasks:
+      task-plugins:
+        enabled-plugins:
+          - connector-service
+          - container
+          - dask
+          - echo
+          - fast-task
+          - k8s-array
+          - sidecar
+        default-for-task-types:
+          dask: dask
 
-task_logs:
-  plugins:
-    dask:
-      logs:
-        cloudwatch-enabled: false
-        kubernetes-enabled: false
-        templates:
-          - displayName: "Cloudwatch Logs"
-            scheme: TaskExecution
-            templateUris:
-              - 'https://{{ ternary .Values.storage.s3.region "us-east-2" (eq .Values.storage.type "s3") }}.console.aws.amazon.com/cloudwatch/home?region={{ ternary .Values.storage.s3.region "us-east-2" (eq .Values.storage.type "s3") }}#logsV2:log-groups/log-group/$252Funion$252Fcluster-{{.Values.clusterName}}$252Ftask/log-events/kube.namespace-{{`{{.namespace}}`}}.pod-{{`{{.podName}}`}}.cont-job-runner'
-          - displayName: Dask Dashboard
-            linkType: dashboard
-            scheme: TaskExecution
-            templateUris:
-              - "/dataplane/dask/v1/generated_name/task/{{`{{.executionProject}}`}}/{{`{{.executionDomain}}`}}/{{`{{.executionName}}`}}/{{`{{.nodeID}}`}}/{{`{{.taskRetryAttempt}}`}}/{{.Values.clusterName}}/{{`{{.namespace}}`}}/{{`{{.taskProject}}`}}/{{`{{.taskDomain}}`}}/{{`{{.taskID}}`}}/{{`{{.taskVersion}}`}}/{{`{{.generatedName}}`}}/status"
-          - displayName: Dask Runner logs
-            scheme: TaskExecution
-            templateUris:
-              - "/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
+  task_logs:
+    plugins:
+      dask:
+        logs:
+          cloudwatch-enabled: false
+          kubernetes-enabled: false
+          templates:
+            - displayName: "Cloudwatch Logs"
+              scheme: TaskExecution
+              templateUris:
+                - 'https://{{ ternary .Values.storage.region "us-east-2" (eq .Values.storage.provider "s3") }}.console.aws.amazon.com/cloudwatch/home?region={{ ternary .Values.storage.region "us-east-2" (eq .Values.storage.provider "s3") }}#logsV2:log-groups/log-group/$252Funion$252Fcluster-{{.Values.clusterName}}$252Ftask/log-events/kube.namespace-{{`{{.namespace}}`}}.pod-{{`{{.podName}}`}}.cont-job-runner'
+            - displayName: Dask Dashboard
+              linkType: dashboard
+              scheme: TaskExecution
+              templateUris:
+                - "/dataplane/dask/v1/generated_name/task/{{`{{.executionProject}}`}}/{{`{{.executionDomain}}`}}/{{`{{.executionName}}`}}/{{`{{.nodeID}}`}}/{{`{{.taskRetryAttempt}}`}}/{{.Values.clusterName}}/{{`{{.namespace}}`}}/{{`{{.taskProject}}`}}/{{`{{.taskDomain}}`}}/{{`{{.taskID}}`}}/{{`{{.taskVersion}}`}}/{{`{{.generatedName}}`}}/status"
+            - displayName: Dask Runner logs
+              scheme: TaskExecution
+              templateUris:
+                - "/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
 ```
 
 {{< /markdown >}}
@@ -76,39 +78,41 @@ task_logs:
 {{< markdown >}}
 
 ```yaml
-enabled_plugins:
-  tasks:
-    task-plugins:
-      enabled-plugins:
-        - agent-service
-        - container
-        - dask
-        - echo
-        - k8s-array
-        - sidecar
-      default-for-task-types:
-        dask: dask
+config:
+  enabled_plugins:
+    tasks:
+      task-plugins:
+        enabled-plugins:
+          - connector-service
+          - container
+          - dask
+          - echo
+          - fast-task
+          - k8s-array
+          - sidecar
+        default-for-task-types:
+          dask: dask
 
-task_logs:
-  plugins:
-    dask:
-      logs:
-        cloudwatch-enabled: false
-        kubernetes-enabled: false
-        templates:
-          - displayName: "Stackdriver Logs"
-            scheme: TaskExecution
-            templateUris:
-              - "https://console.cloud.google.com/logs/query;query=resource.labels.namespace_name%3D%22{{`{{.namespace}}`}}%22%0Aresource.labels.pod_name%3D%22{{`{{.podName}}`}}%22%0Aresource.labels.container_name%3D%22job-runner%22?project={{.Values.storage.gcs.projectId}}&angularJsUrl=%2Flogs%2Fviewer%3Fproject%3D{{.Values.storage.gcs.projectId}}"
-          - displayName: Dask Dashboard
-            linkType: dashboard
-            scheme: TaskExecution
-            templateUris:
-              - "/dataplane/dask/v1/generated_name/task/{{`{{.executionProject}}`}}/{{`{{.executionDomain}}`}}/{{`{{.executionName}}`}}/{{`{{.nodeID}}`}}/{{`{{.taskRetryAttempt}}`}}/{{.Values.clusterName}}/{{`{{.namespace}}`}}/{{`{{.taskProject}}`}}/{{`{{.taskDomain}}`}}/{{`{{.taskID}}`}}/{{`{{.taskVersion}}`}}/{{`{{.generatedName}}`}}/status"
-          - displayName: Dask Runner logs
-            scheme: TaskExecution
-            templateUris:
-              - "/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
+  task_logs:
+    plugins:
+      dask:
+        logs:
+          cloudwatch-enabled: false
+          kubernetes-enabled: false
+          templates:
+            - displayName: "Stackdriver Logs"
+              scheme: TaskExecution
+              templateUris:
+                - "https://console.cloud.google.com/logs/query;query=resource.labels.namespace_name%3D%22{{`{{.namespace}}`}}%22%0Aresource.labels.pod_name%3D%22{{`{{.podName}}`}}%22%0Aresource.labels.container_name%3D%22job-runner%22?project={{.Values.storage.gcp.projectId}}&angularJsUrl=%2Flogs%2Fviewer%3Fproject%3D{{.Values.storage.gcp.projectId}}"
+            - displayName: Dask Dashboard
+              linkType: dashboard
+              scheme: TaskExecution
+              templateUris:
+                - "/dataplane/dask/v1/generated_name/task/{{`{{.executionProject}}`}}/{{`{{.executionDomain}}`}}/{{`{{.executionName}}`}}/{{`{{.nodeID}}`}}/{{`{{.taskRetryAttempt}}`}}/{{.Values.clusterName}}/{{`{{.namespace}}`}}/{{`{{.taskProject}}`}}/{{`{{.taskDomain}}`}}/{{`{{.taskID}}`}}/{{`{{.taskVersion}}`}}/{{`{{.generatedName}}`}}/status"
+            - displayName: Dask Runner logs
+              scheme: TaskExecution
+              templateUris:
+                - "/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
 ```
 
 {{< /markdown >}}
@@ -130,51 +134,53 @@ helm repo update
 helm upgrade --install kuberay-operator kuberay/kuberay-operator \
   --create-namespace \
   --namespace kuberay-operator \
-  --version 1.4.0 \
+  --version 1.1.0 \
   --set resources.limits.memory=1Gi \
   --skip-crds
 ```
 
 ### Configure the data plane Helm values
 
-Add the following to your data plane Helm values to enable the Ray plugin and configure dashboard and log links.
+Add the following to your data plane Helm values to enable the Ray plugin and configure log and dashboard links.
 
 {{< tabs >}}
 {{< tab "AWS" >}}
 {{< markdown >}}
 
 ```yaml
-enabled_plugins:
-  tasks:
-    task-plugins:
-      enabled-plugins:
-        - agent-service
-        - container
-        - echo
-        - k8s-array
-        - ray
-        - sidecar
-      default-for-task-types:
-        ray: ray
+config:
+  enabled_plugins:
+    tasks:
+      task-plugins:
+        enabled-plugins:
+          - connector-service
+          - container
+          - echo
+          - fast-task
+          - k8s-array
+          - ray
+          - sidecar
+        default-for-task-types:
+          ray: ray
 
-task_logs:
-  plugins:
-    ray:
-      logs:
-        templates:
-          - displayName: "Ray Dashboard"
-            linkType: dashboard
-            scheme: TaskExecution
-            templateUris:
-              - "/dataplane/ray/v1/generated_name/task/{{`{{.executionProject}}`}}/{{`{{.executionDomain}}`}}/{{`{{.executionName}}`}}/{{`{{.nodeID}}`}}/{{`{{.taskRetryAttempt}}`}}/{{.Values.clusterName}}/{{`{{.namespace}}`}}/{{`{{.taskProject}}`}}/{{`{{.taskDomain}}`}}/{{`{{.taskID}}`}}/{{`{{.taskVersion}}`}}/{{`{{.generatedName}}`}}/"
-          - displayName: "Cloudwatch Logs (Ray All)"
-            scheme: TaskExecution
-            templateUris:
-              - 'https://{{ternary .Values.storage.s3.region "us-east-2" (eq .Values.storage.type "s3")}}.console.aws.amazon.com/cloudwatch/home?region={{ternary .Values.storage.s3.region "us-east-2" (eq .Values.storage.type "s3")}}#logsV2:log-groups/log-group/$252Funion$252Fcluster-{{.Values.clusterName}}$252Ftask$3FlogStreamNameFilter$3Dkube.namespace-{{`{{.namespace}}`}}.pod-{{`{{.executionName}}`}}-{{`{{.nodeID}}`}}-{{`{{.taskRetryAttempt}}`}}'
-          - displayName: Ray Head logs
-            scheme: TaskExecution
-            templateUris:
-              - "/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
+  task_logs:
+    plugins:
+      ray:
+        logs:
+          templates:
+            - displayName: "Ray Dashboard"
+              linkType: dashboard
+              scheme: TaskExecution
+              templateUris:
+                - "/dataplane/ray/v1/generated_name/task/{{`{{.executionProject}}`}}/{{`{{.executionDomain}}`}}/{{`{{.executionName}}`}}/{{`{{.nodeID}}`}}/{{`{{.taskRetryAttempt}}`}}/{{.Values.clusterName}}/{{`{{.namespace}}`}}/{{`{{.taskProject}}`}}/{{`{{.taskDomain}}`}}/{{`{{.taskID}}`}}/{{`{{.taskVersion}}`}}/{{`{{.generatedName}}`}}/"
+            - displayName: "Cloudwatch Logs (Ray All)"
+              scheme: TaskExecution
+              templateUris:
+                - 'https://{{ternary .Values.storage.region "us-east-2" (eq .Values.storage.provider "s3")}}.console.aws.amazon.com/cloudwatch/home?region={{ternary .Values.storage.region "us-east-2" (eq .Values.storage.provider "s3")}}#logsV2:log-groups/log-group/$252Funion$252Fcluster-{{.Values.clusterName}}$252Ftask$3FlogStreamNameFilter$3Dkube.namespace-{{`{{.namespace}}`}}.pod-{{`{{.executionName}}`}}-{{`{{.nodeID}}`}}-{{`{{.taskRetryAttempt}}`}}'
+            - displayName: Ray Head logs
+              scheme: TaskExecution
+              templateUris:
+                - "/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
 ```
 
 {{< /markdown >}}
@@ -183,37 +189,39 @@ task_logs:
 {{< markdown >}}
 
 ```yaml
-enabled_plugins:
-  tasks:
-    task-plugins:
-      enabled-plugins:
-        - agent-service
-        - container
-        - echo
-        - k8s-array
-        - ray
-        - sidecar
-      default-for-task-types:
-        ray: ray
+config:
+  enabled_plugins:
+    tasks:
+      task-plugins:
+        enabled-plugins:
+          - connector-service
+          - container
+          - echo
+          - fast-task
+          - k8s-array
+          - ray
+          - sidecar
+        default-for-task-types:
+          ray: ray
 
-task_logs:
-  plugins:
-    ray:
-      logs:
-        templates:
-          - displayName: "Ray Dashboard"
-            linkType: dashboard
-            scheme: TaskExecution
-            templateUris:
-              - "/dataplane/ray/v1/generated_name/task/{{`{{.executionProject}}`}}/{{`{{.executionDomain}}`}}/{{`{{.executionName}}`}}/{{`{{.nodeID}}`}}/{{`{{.taskRetryAttempt}}`}}/{{.Values.clusterName}}/{{`{{.namespace}}`}}/{{`{{.taskProject}}`}}/{{`{{.taskDomain}}`}}/{{`{{.taskID}}`}}/{{`{{.taskVersion}}`}}/{{`{{.generatedName}}`}}/"
-          - displayName: "Stackdriver Logs (Ray All)"
-            scheme: TaskExecution
-            templateUris:
-              - "https://console.cloud.google.com/logs/query;query=resource.labels.namespace_name%3D%22{{`{{.namespace}}`}}%22%0Aresource.labels.pod_name%3D%7E%22{{`{{.executionName}}`}}-{{`{{.nodeID}}`}}-{{`{{.taskRetryAttempt}}`}}%22?project={{.Values.storage.gcs.projectId}}&angularJsUrl=%2Flogs%2Fviewer%3Fproject%3D{{.Values.storage.gcs.projectId}}"
-          - displayName: Ray Head logs
-            scheme: TaskExecution
-            templateUris:
-              - "/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
+  task_logs:
+    plugins:
+      ray:
+        logs:
+          templates:
+            - displayName: "Ray Dashboard"
+              linkType: dashboard
+              scheme: TaskExecution
+              templateUris:
+                - "/dataplane/ray/v1/generated_name/task/{{`{{.executionProject}}`}}/{{`{{.executionDomain}}`}}/{{`{{.executionName}}`}}/{{`{{.nodeID}}`}}/{{`{{.taskRetryAttempt}}`}}/{{.Values.clusterName}}/{{`{{.namespace}}`}}/{{`{{.taskProject}}`}}/{{`{{.taskDomain}}`}}/{{`{{.taskID}}`}}/{{`{{.taskVersion}}`}}/{{`{{.generatedName}}`}}/"
+            - displayName: "Stackdriver Logs (Ray All)"
+              scheme: TaskExecution
+              templateUris:
+                - "https://console.cloud.google.com/logs/query;query=resource.labels.namespace_name%3D%22{{`{{.namespace}}`}}%22%0Aresource.labels.pod_name%3D%7E%22{{`{{.executionName}}`}}-{{`{{.nodeID}}`}}-{{`{{.taskRetryAttempt}}`}}%22?project={{.Values.storage.gcp.projectId}}&angularJsUrl=%2Flogs%2Fviewer%3Fproject%3D{{.Values.storage.gcp.projectId}}"
+            - displayName: Ray Head logs
+              scheme: TaskExecution
+              templateUris:
+                - "/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
 ```
 
 {{< /markdown >}}
