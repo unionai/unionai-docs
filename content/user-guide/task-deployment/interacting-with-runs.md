@@ -2,7 +2,6 @@
 title: Interact with runs and actions
 weight: 2
 variants: +flyte +union
-sidebar_expanded: true
 mermaid: true
 ---
 

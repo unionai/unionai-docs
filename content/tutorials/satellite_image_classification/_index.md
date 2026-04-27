@@ -2,7 +2,6 @@
 title: Satellite Image Classification with EfficientNet
 weight: 2
 variants: -flyte +union
-sidebar_expanded: false
 ---
 
 # Satellite Image Classification with EfficientNet

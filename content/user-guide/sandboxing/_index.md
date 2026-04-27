@@ -2,7 +2,6 @@
 title: Sandboxing
 weight: 19
 variants: +flyte +union
-sidebar_expanded: false
 llm_readable_bundle: true
 ---
 

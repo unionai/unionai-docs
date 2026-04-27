@@ -2,7 +2,6 @@
 title: Deploy command options
 weight: 6
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # Deploy command options
