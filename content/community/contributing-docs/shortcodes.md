@@ -169,7 +169,7 @@ union = "Union.ai"
 | ctl               | Lowercase control tool identifier     | `{{</* key ctl */>}}` → "flytectl" or "uctl"                               |
 | config_env        | Configuration environment variable    | `{{</* key config_env */>}}` → "FLYTECTL_CONFIG" or "UNION_CONFIG"         |
 | env_prefix        | Environment variable prefix           | `{{</* key env_prefix */>}}` → "FLYTE" or "UNION"                          |
-| docs_home         | Documentation home URL                | `{{</* key docs_home */>}}` → "/docs/flyte" or "/docs/union"              |
+| docs_home         | Documentation home URL                | `{{</* key docs_home */>}}` → "/docs/v1/flyte" or "/docs/v1/union"        |
 | map_func          | Map function name                     | `{{</* key map_func */>}}` → "map_task" or "map"                           |
 | logo              | Logo image filename                   | `{{</* key logo */>}}` → "flyte-logo.svg" or "union-logo.svg"              |
 | favicon           | Favicon image filename                | `{{</* key favicon */>}}` → "flyte-favicon.ico" or "union-favicon.ico"     |

@@ -20,6 +20,9 @@ Currently, the docs site supports two variants:
 
 Each variant is referenced in the page logic using its respective code name: `flyte` or `union`.
 
+> [!NOTE]
+> The previous code names `byoc`, `selfmanaged`, and `serverless` are no longer valid. If you encounter them in older content, frontmatter, or shortcodes, update them to the current `flyte` or `union` codes. BYOC and Self-managed are now treated as deployment types within the `union` variant rather than separate variants.
+
 The available set of variants are defined in the `config.<code_name>.toml` files in the `unionai-docs-infra/` directory.
 
 ## Variants at the whole-page level
