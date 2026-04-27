@@ -61,7 +61,7 @@ The Union SDK provides the Python API for building Union workflows and apps.
 
 The big difference of this site, compared to other documentation sites, is that we generate multiple "flavors" of the documentation that are slightly different from each other. We are calling these "variants."
 
-When you are writing your content, and you want a specific part of the content to be conditional to a flavor, say "Union", you surround that with `variant`.
+When you are writing your content, and you want a specific part of the content to be conditional on a flavor, say "Union", you surround that with `variant`.
 
 >[!NOTE]
 > `variant` is a container, so inside you will specify what you are wrapping.
@@ -138,7 +138,7 @@ In the Flyte variant of the site this will render as:
 
 > The Flyte platform is awesome.
 
-While, in the Union variant of the site it will render as:
+Whereas in the Union variant of the site it will render as:
 
 > The Union.ai platform is awesome.
 
