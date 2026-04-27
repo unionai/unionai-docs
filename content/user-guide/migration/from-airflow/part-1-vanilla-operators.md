@@ -1,10 +1,10 @@
 ---
-title: Part 1 — vanilla operators
+title: Part 1 — Vanilla Operators
 weight: 1
 variants: +flyte +union
 ---
 
-# Part 1 — vanilla operators
+# Part 1 — Vanilla Operators
 
 This is the first part of the [Airflow → Flyte migration guide](./_index). It covers:
 

@@ -12,7 +12,7 @@ The migration is split by operator family. Each section maps an Airflow construc
 
 {{< grid >}}
 
-{{< link-card target="part-1-vanilla-operators" title="Part 1 — vanilla operators" >}}
+{{< link-card target="part-1-vanilla-operators" title="Part 1 — Vanilla Operators" >}}
 PythonOperator, TaskFlow, BashOperator, KubernetesPodOperator, plus DAG schedules, the driver task model, and orchestration patterns (parallelism, conditionals, error handling).
 {{< /link-card >}}
 
