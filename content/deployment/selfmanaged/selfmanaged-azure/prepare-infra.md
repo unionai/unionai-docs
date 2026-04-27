@@ -230,7 +230,7 @@ az identity federated-credential create \
   --identity-name $WORKER_IDENTITY_NAME \
   --resource-group $RESOURCE_GROUP \
   --issuer $AKS_OIDC_ISSUER \
-  --subject "system:serviceaccount:${DATAPLANE_NAMESPACE}:default" \
+  --subject "system:serviceaccount:${DATAPLANE_NAMESPACE}:union" \
   --audiences api://AzureADTokenExchange
 ```
 
@@ -243,7 +243,7 @@ for ns in development staging production; do
     --identity-name $WORKER_IDENTITY_NAME \
     --resource-group $RESOURCE_GROUP \
     --issuer $AKS_OIDC_ISSUER \
-    --subject "system:serviceaccount:${ns}:default" \
+    --subject "system:serviceaccount:${ns}:union" \
     --audiences api://AzureADTokenExchange
 done
 ```
