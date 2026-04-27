@@ -2,7 +2,6 @@
 title: How task deployment works
 weight: 5
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # How task deployment works

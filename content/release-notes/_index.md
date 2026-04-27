@@ -3,7 +3,6 @@ title: Release notes
 weight: 8
 variants: +union -flyte
 top_menu: true
-sidebar_expanded: true
 ---
 
 # Release notes

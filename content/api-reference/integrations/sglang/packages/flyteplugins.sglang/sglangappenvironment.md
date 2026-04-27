@@ -1,7 +1,7 @@
 ---
 title: SGLangAppEnvironment
-version: 2.1.9
-variants: +flyte +byoc +selfmanaged +union
+version: 2.2.0
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -80,7 +80,7 @@ class SGLangAppEnvironment(
 
 | Property | Type | Description |
 |-|-|-|
-| `endpoint` | `None` |  |
+| `endpoint` | `str` |  |
 
 ## Methods
 

@@ -2,7 +2,6 @@
 title: Code generation
 weight: 2
 variants: +flyte +union
-sidebar_expanded: false
 mermaid: true
 ---
 

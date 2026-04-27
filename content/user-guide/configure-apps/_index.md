@@ -2,7 +2,6 @@
 title: Configure apps
 weight: 15
 variants: +flyte +union
-sidebar_expanded: false
 llm_readable_bundle: true
 ---
 

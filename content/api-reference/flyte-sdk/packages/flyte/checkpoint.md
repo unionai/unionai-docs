@@ -1,6 +1,6 @@
 ---
 title: Checkpoint
-version: 2.1.9
+version: 2.2.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,9 +39,9 @@ class Checkpoint(
 
 | Property | Type | Description |
 |-|-|-|
-| `path` | `None` | Local directory for reading checkpoint files. |
-| `remote_destination` | `None` | Object-store prefix where `flyte.Checkpoint.save` writes. |
-| `remote_source` | `None` | Object-store prefix for the previous attempt's checkpoint, if any. |
+| `path` | `pathlib.Path` | Local directory for reading checkpoint files. |
+| `remote_destination` | `str` | Object-store prefix where `flyte.Checkpoint.save` writes. |
+| `remote_source` | `Optional[str]` | Object-store prefix for the previous attempt's checkpoint, if any. |
 
 ## Methods
 

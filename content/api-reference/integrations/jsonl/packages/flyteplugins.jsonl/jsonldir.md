@@ -1,7 +1,7 @@
 ---
 title: JsonlDir
-version: 2.1.9
-variants: +flyte +byoc +selfmanaged +union
+version: 2.2.0
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -66,8 +66,8 @@ validated to form a valid model.
 
 | Property | Type | Description |
 |-|-|-|
-| `is_empty` | `None` | True when this is a sentinel ``Dir`` produced by :class:`EmptyDir`/``Dir.empty()`` — i.e. the task didn't actually produce a directory. Use this to branch on whether the upstream task emitted real data without dealing with ``Optional[Dir]`` (which the type engine cannot round-trip correctly through ``SerializableType``). |
-| `lazy_uploader` | `None` |  |
+| `is_empty` | `bool` | True when this is a sentinel ``Dir`` produced by :class:`EmptyDir`/``Dir.empty()`` — i.e. the task didn't actually produce a directory. Use this to branch on whether the upstream task emitted real data without dealing with ``Optional[Dir]`` (which the type engine cannot round-trip correctly through ``SerializableType``). |
+| `lazy_uploader` | `Callable[[], Coroutine[Any, Any, tuple[str \| None, str]]] \| None` |  |
 
 ## Methods
 

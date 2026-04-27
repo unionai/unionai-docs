@@ -1,6 +1,6 @@
 ---
 title: TaskEnvironment
-version: 2.1.9
+version: 2.2.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -103,8 +103,8 @@ class TaskEnvironment(
 
 | Property | Type | Description |
 |-|-|-|
-| `sandbox` | `None` | Access the sandbox namespace for creating sandboxed tasks. |
-| `tasks` | `None` | Get all tasks defined in the environment. |
+| `sandbox` | `_SandboxNamespace` | Access the sandbox namespace for creating sandboxed tasks. |
+| `tasks` | `Dict[str, TaskTemplate]` | Get all tasks defined in the environment. |
 
 ## Methods
 

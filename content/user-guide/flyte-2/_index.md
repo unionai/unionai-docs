@@ -2,7 +2,6 @@
 title: From Flyte 1 to 2
 weight: 22
 variants: +flyte +union
-sidebar_expanded: false
 llm_readable_bundle: true
 ---
 

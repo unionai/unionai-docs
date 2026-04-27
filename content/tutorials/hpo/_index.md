@@ -2,7 +2,6 @@
 title: Hyperparameter optimization
 weight: 10
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # Hyperparameter optimization

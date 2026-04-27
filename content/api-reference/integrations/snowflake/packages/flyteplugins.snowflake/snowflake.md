@@ -1,7 +1,7 @@
 ---
 title: Snowflake
-version: 2.1.9
-variants: +flyte +byoc +selfmanaged +union
+version: 2.2.0
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -47,8 +47,8 @@ Note: For password authentication or other auth methods, pass them via `connecti
 
 | Property | Type | Description |
 |-|-|-|
-| `native_interface` | `None` |  |
-| `source_file` | `None` |  |
+| `native_interface` | `NativeInterface` |  |
+| `source_file` | `Optional[str]` |  |
 
 ## Methods
 
