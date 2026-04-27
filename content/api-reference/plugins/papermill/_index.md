@@ -1,7 +1,7 @@
 ---
 title: Papermill
 version: 1.16.19
-variants: +flyte +byoc +selfmanaged +union
+variants: +flyte +union
 layout: py_api
 ---
 

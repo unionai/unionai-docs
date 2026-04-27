@@ -1,11 +1,11 @@
 ---
-title: flytekitplugins.spark.pyspark_transformers
+title: flytekit.types.file.image
 version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
 
-# flytekitplugins.spark.pyspark_transformers
+# flytekit.types.file.image
 
 ## Directory
 
@@ -13,14 +13,23 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`PySparkPipelineModelTransformer`](.././flytekitplugins.spark.pyspark_transformers#flytekitpluginssparkpyspark_transformerspysparkpipelinemodeltransformer) |  |
+| [`PILImageTransformer`](.././flytekit.types.file.image#flytekittypesfileimagepilimagetransformer) | TypeTransformer that supports PIL. |
 
-## flytekitplugins.spark.pyspark_transformers.PySparkPipelineModelTransformer
+### Variables
+
+| Property | Type | Description |
+|-|-|-|
+| `T` | `TypeVar` |  |
+
+## flytekit.types.file.image.PILImageTransformer
+
+TypeTransformer that supports PIL.Image as a native type.
+
 
 ### Parameters
 
 ```python
-def PySparkPipelineModelTransformer()
+def PILImageTransformer()
 ```
 ### Properties
 
@@ -109,7 +118,7 @@ This is for dataclass attribute access from input created from the Flyte Console
 
 ```python
 def get_literal_type(
-    t: typing.Type[pyspark.ml.pipeline.PipelineModel],
+    t: typing.Type[~T],
 ) -> flytekit.models.types.LiteralType
 ```
 Converts the python type to a Flyte LiteralType
@@ -117,21 +126,21 @@ Converts the python type to a Flyte LiteralType
 
 | Parameter | Type | Description |
 |-|-|-|
-| `t` | `typing.Type[pyspark.ml.pipeline.PipelineModel]` | |
+| `t` | `typing.Type[~T]` | |
 
 #### guess_python_type()
 
 ```python
 def guess_python_type(
-    literal_type: LiteralType,
-) -> Type[T]
+    literal_type: flytekit.models.types.LiteralType,
+) -> typing.Type[~T]
 ```
 Converts the Flyte LiteralType to a python object type.
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `literal_type` | `LiteralType` | |
+| `literal_type` | `flytekit.models.types.LiteralType` | |
 
 #### isinstance_generic()
 
@@ -168,9 +177,9 @@ False by default — override if needed.
 
 ```python
 def to_html(
-    ctx: FlyteContext,
-    python_val: T,
-    expected_python_type: Type[T],
+    ctx: flytekit.core.context_manager.FlyteContext,
+    python_val: PIL.Image.Image,
+    expected_python_type: typing.Type[~T],
 ) -> str
 ```
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
@@ -178,17 +187,17 @@ Converts any python val (dataframe, int, float) to a html string, and it will be
 
 | Parameter | Type | Description |
 |-|-|-|
-| `ctx` | `FlyteContext` | |
-| `python_val` | `T` | |
-| `expected_python_type` | `Type[T]` | |
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `python_val` | `PIL.Image.Image` | |
+| `expected_python_type` | `typing.Type[~T]` | |
 
 #### to_literal()
 
 ```python
 def to_literal(
     ctx: flytekit.core.context_manager.FlyteContext,
-    python_val: pyspark.ml.pipeline.PipelineModel,
-    python_type: typing.Type[pyspark.ml.pipeline.PipelineModel],
+    python_val: PIL.Image.Image,
+    python_type: typing.Type[~T],
     expected: flytekit.models.types.LiteralType,
 ) -> flytekit.models.literals.Literal
 ```
@@ -201,8 +210,8 @@ what was the mismatch
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
-| `python_val` | `pyspark.ml.pipeline.PipelineModel` | The actual value to be transformed |
-| `python_type` | `typing.Type[pyspark.ml.pipeline.PipelineModel]` | The assumed type of the value (this matches the declared type on the function) |
+| `python_val` | `PIL.Image.Image` | The actual value to be transformed |
+| `python_type` | `typing.Type[~T]` | The assumed type of the value (this matches the declared type on the function) |
 | `expected` | `flytekit.models.types.LiteralType` | Expected Literal Type |
 
 #### to_python_value()
@@ -211,8 +220,8 @@ what was the mismatch
 def to_python_value(
     ctx: flytekit.core.context_manager.FlyteContext,
     lv: flytekit.models.literals.Literal,
-    expected_python_type: typing.Type[pyspark.ml.pipeline.PipelineModel],
-) -> pyspark.ml.pipeline.PipelineModel
+    expected_python_type: typing.Type[~T],
+) -> PIL.Image.Image
 ```
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
@@ -221,5 +230,5 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | FlyteContext |
 | `lv` | `flytekit.models.literals.Literal` | The received literal Value |
-| `expected_python_type` | `typing.Type[pyspark.ml.pipeline.PipelineModel]` | Expected native python type that should be returned |
+| `expected_python_type` | `typing.Type[~T]` | Expected native python type that should be returned |
 
