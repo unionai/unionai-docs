@@ -2,7 +2,6 @@
 title: TensorFlow Distributed
 weight: 1
 variants: +flyte -union
-sidebar_expanded: false
 ---
 
 # TensorFlow Distributed

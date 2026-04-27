@@ -2,7 +2,6 @@
 title: Serving
 variants: -flyte +union
 weight: 1
-sidebar_expanded: true
 ---
 
 # Serving

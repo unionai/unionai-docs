@@ -2,7 +2,6 @@
 title: Configuration reference
 variants: +flyte -union
 weight: 17
-sidebar_expanded: true
 llm_readable_bundle: true
 ---
 

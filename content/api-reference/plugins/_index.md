@@ -2,7 +2,6 @@
 title: FlyteKit Plugins
 variants: +flyte -union
 weight: 99
-sidebar_expanded: true
 ---
 
 # FlyteKit Plugins

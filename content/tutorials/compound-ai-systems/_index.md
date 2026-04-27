@@ -2,7 +2,6 @@
 title: Compound AI Systems
 weight: 1
 variants: -flyte +union
-sidebar_expanded: true
 ---
 
 # Compound AI Systems

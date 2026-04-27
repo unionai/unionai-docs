@@ -2,7 +2,6 @@
 title: Task hardware environment
 weight: 7
 variants: +flyte +union
-sidebar_expanded: false
 ---
 
 # Task hardware environment

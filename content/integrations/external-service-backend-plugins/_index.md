@@ -2,7 +2,6 @@
 title: External service backend plugins
 weight: 4
 variants: +flyte -union
-sidebar_expanded: true
 ---
 
 # External service backend plugins

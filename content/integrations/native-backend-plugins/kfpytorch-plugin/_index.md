@@ -2,7 +2,6 @@
 title: PyTorch Distributed
 weight: 1
 variants: +flyte -union
-sidebar_expanded: false
 ---
 
 # PyTorch Distributed

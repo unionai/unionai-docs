@@ -1,7 +1,6 @@
 ---
 title: Getting started
 weight: 3
-sidebar_expanded: true
 variants: +flyte +union
 llm_readable_bundle: true
 ---
