@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.annotation
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -35,7 +35,7 @@ class TypeAnnotation(
 
 | Property | Type | Description |
 |-|-|-|
-| `annotations` | `None` |  |
+| `annotations` | `typing.Dict[str, typing.Any]` |  |
 
 ### Methods
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.execution
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -45,7 +45,7 @@ class ExecutionError(
 | `code` | `None` |  |
 | `error_uri` | `None` |  |
 | `is_empty` | `None` |  |
-| `kind` | `None` | Enum value from ErrorKind |
+| `kind` | `int` | Enum value from ErrorKind |
 | `message` | `None` |  |
 
 ### Methods

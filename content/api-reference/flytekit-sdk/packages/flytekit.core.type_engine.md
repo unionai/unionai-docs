@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.type_engine
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -241,10 +241,10 @@ class AsyncTypeTransformer(
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 
@@ -513,7 +513,7 @@ class BatchSize(
 
 | Property | Type | Description |
 |-|-|-|
-| `val` | `None` |  |
+| `val` | `int` |  |
 
 ## flytekit.core.type_engine.BinaryIOTransformer
 
@@ -529,10 +529,10 @@ def BinaryIOTransformer()
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 
@@ -788,10 +788,10 @@ def DataclassTransformer()
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 
@@ -1009,10 +1009,10 @@ def DictTransformer()
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 
@@ -1332,10 +1332,10 @@ def EnumTransformer()
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 
@@ -1543,10 +1543,10 @@ def ListTransformer()
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 
@@ -1824,10 +1824,10 @@ def LiteralTypeTransformer()
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 
@@ -2060,8 +2060,8 @@ class LiteralsResolver(
 | Property | Type | Description |
 |-|-|-|
 | `literals` | `None` |  |
-| `native_values` | `None` |  |
-| `variable_map` | `None` |  |
+| `native_values` | `typing.Dict[str, typing.Any]` |  |
+| `variable_map` | `Optional[Dict[str, _interface_models.Variable]]` |  |
 
 ### Methods
 
@@ -2264,10 +2264,10 @@ def ProtobufTransformer()
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 
@@ -2505,10 +2505,10 @@ class RestrictedTypeTransformer(
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 
@@ -2730,11 +2730,11 @@ class SimpleTransformer(
 
 | Property | Type | Description |
 |-|-|-|
-| `base_type` | `None` |  |
-| `is_async` | `None` |  |
+| `base_type` | `Type` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 
@@ -2942,10 +2942,10 @@ def TextIOTransformer()
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 
@@ -3505,10 +3505,10 @@ class TypeTransformer(
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 
@@ -3718,10 +3718,10 @@ def UnionTransformer()
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 

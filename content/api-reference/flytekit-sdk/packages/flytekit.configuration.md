@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -705,8 +705,8 @@ class Image(
 
 | Property | Type | Description |
 |-|-|-|
-| `full` | `None` | " Return the full image name with tag or digest, whichever is available.  When using a tag the separator is `:` and when using a digest the separator is `@`. |
-| `version` | `None` | Return the version of the image. This could be the tag or digest, whichever is available. |
+| `full` | `str` | " Return the full image name with tag or digest, whichever is available.  When using a tag the separator is `:` and when using a digest the separator is `@`. |
+| `version` | `Optional[str]` | Return the version of the image. This could be the tag or digest, whichever is available. |
 
 ### Methods
 
@@ -1335,8 +1335,8 @@ class SerializationSettings(
 
 | Property | Type | Description |
 |-|-|-|
-| `entrypoint_settings` | `None` |  |
-| `serialized_context` | `None` |  |
+| `entrypoint_settings` | `EntrypointSettings` |  |
+| `serialized_context` | `str` |  |
 
 ### Methods
 

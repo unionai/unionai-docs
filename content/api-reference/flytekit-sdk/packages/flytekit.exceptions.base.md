@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.base
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -35,7 +35,7 @@ class FlyteException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 
 ## flytekit.exceptions.base.FlyteRecoverableException
 
@@ -56,5 +56,5 @@ class FlyteRecoverableException(
 
 | Property | Type | Description |
 |-|-|-|
-| `timestamp` | `None` | The timestamp as fractional seconds since epoch |
+| `timestamp` | `typing.Optional[float]` | The timestamp as fractional seconds since epoch |
 

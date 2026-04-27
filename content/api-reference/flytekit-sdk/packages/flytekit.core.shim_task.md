@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.shim_task
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -66,10 +66,10 @@ class ExecutableTemplateShimTask(
 
 | Property | Type | Description |
 |-|-|-|
-| `executor` | `None` |  |
-| `executor_type` | `None` |  |
-| `name` | `None` | Return the name of the underlying task. |
-| `task_template` | `None` |  |
+| `executor` | `ShimTaskExecutor` |  |
+| `executor_type` | `Type[ShimTaskExecutor]` |  |
+| `name` | `str` | Return the name of the underlying task. |
+| `task_template` | `_task_model.TaskTemplate` |  |
 
 ### Methods
 
@@ -162,9 +162,9 @@ class ShimTaskExecutor(
 
 | Property | Type | Description |
 |-|-|-|
-| `instantiated_in` | `None` |  |
+| `instantiated_in` | `str` |  |
 | `lhs` | `None` |  |
-| `location` | `None` |  |
+| `location` | `str` |  |
 
 ### Methods
 

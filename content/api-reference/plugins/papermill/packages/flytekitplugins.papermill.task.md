@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.papermill.task
-version: 1.16.16
-variants: +flyte +union
+version: 1.16.19
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -258,28 +258,28 @@ Please see class level documentation.
 
 | Property | Type | Description |
 |-|-|-|
-| `container_image` | `None` |  |
-| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
-| `disable_deck` | `None` | If true, this task will not output deck html file |
-| `docs` | `None` |  |
-| `enable_deck` | `None` | If true, this task will output deck html file |
-| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
-| `instantiated_in` | `None` |  |
-| `interface` | `None` |  |
+| `container_image` | `Optional[Union[str, ImageSpec]]` |  |
+| `deck_fields` | `typing.List[flytekit.deck.deck.DeckField]` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `bool` | If true, this task will not output deck html file |
+| `docs` | `flytekit.models.documentation.Documentation` |  |
+| `enable_deck` | `bool` | If true, this task will output deck html file |
+| `environment` | `typing.Dict[str, str]` | Any environment variables that supplied during the execution of the task. |
+| `instantiated_in` | `str` |  |
+| `interface` | `flytekit.models.interface.TypedInterface` |  |
 | `lhs` | `None` |  |
-| `location` | `None` |  |
-| `metadata` | `None` |  |
-| `name` | `None` |  |
-| `notebook_path` | `None` |  |
-| `output_notebook_path` | `None` |  |
-| `python_interface` | `None` | Returns this task's python interface. |
-| `rendered_output_path` | `None` |  |
-| `resources` | `None` |  |
-| `security_context` | `None` |  |
-| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
-| `task_resolver` | `None` |  |
-| `task_type` | `None` |  |
-| `task_type_version` | `None` |  |
+| `location` | `str` |  |
+| `metadata` | `flytekit.core.base_task.TaskMetadata` |  |
+| `name` | `str` |  |
+| `notebook_path` | `str` |  |
+| `output_notebook_path` | `str` |  |
+| `python_interface` | `flytekit.core.interface.Interface` | Returns this task's python interface. |
+| `rendered_output_path` | `str` |  |
+| `resources` | `ResourceSpec` |  |
+| `security_context` | `flytekit.models.security.SecurityContext` |  |
+| `task_config` | `typing.Optional[~T]` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_resolver` | `TaskResolverMixin` |  |
+| `task_type` | `str` |  |
+| `task_type_version` | `int` |  |
 
 ### Methods
 

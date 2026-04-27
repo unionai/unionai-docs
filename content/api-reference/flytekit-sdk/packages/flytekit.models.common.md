@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.common
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -245,7 +245,7 @@ class Envs(
 
 | Property | Type | Description |
 |-|-|-|
-| `envs` | `None` |  |
+| `envs` | `typing.Dict[str, str]` |  |
 | `is_empty` | `None` |  |
 
 ### Methods

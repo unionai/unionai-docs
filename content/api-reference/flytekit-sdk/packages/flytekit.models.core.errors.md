@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.errors
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -47,9 +47,9 @@ class ContainerError(
 | `is_empty` | `None` |  |
 | `kind` | `None` |  |
 | `message` | `None` |  |
-| `origin` | `None` | The origin of the error, an enum value from ExecutionError.ErrorKind |
-| `timestamp` | `None` | The timestamp of the error, as number of seconds and nanos since Epoch |
-| `worker` | `None` | The worker name where the error originated |
+| `origin` | `int` | The origin of the error, an enum value from ExecutionError.ErrorKind |
+| `timestamp` | `google.protobuf.timestamp_pb2.Timestamp` | The timestamp of the error, as number of seconds and nanos since Epoch |
+| `worker` | `int` | The worker name where the error originated |
 
 ### Methods
 

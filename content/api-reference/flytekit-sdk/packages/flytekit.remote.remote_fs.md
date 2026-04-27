@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.remote_fs
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -94,7 +94,7 @@ cache_type, cache_options: defaults used in open()
 
 | Property | Type | Description |
 |-|-|-|
-| `fsid` | `None` | Persistent filesystem id that can be used to compare filesystems across sessions. |
+| `fsid` | `str` | Persistent filesystem id that can be used to compare filesystems across sessions. |
 | `loop` | `None` |  |
 | `transaction` | `None` | A context within which files are committed together upon exit  Requires the file class to implement `.commit()` and `.discard()` for the normal and exception cases. |
 

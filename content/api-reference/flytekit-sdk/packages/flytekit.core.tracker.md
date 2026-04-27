@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.tracker
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -221,9 +221,9 @@ class TrackedInstance(
 
 | Property | Type | Description |
 |-|-|-|
-| `instantiated_in` | `None` |  |
+| `instantiated_in` | `str` |  |
 | `lhs` | `None` |  |
-| `location` | `None` |  |
+| `location` | `str` |  |
 
 ### Methods
 

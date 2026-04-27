@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.grpc_utils.auth_interceptor
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -36,7 +36,7 @@ class AuthUnaryInterceptor(
 
 | Property | Type | Description |
 |-|-|-|
-| `authenticator` | `None` |  |
+| `authenticator` | `flytekit.clients.auth.authenticator.Authenticator` |  |
 
 ### Methods
 

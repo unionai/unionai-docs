@@ -82,9 +82,9 @@ class Artifact(
 
 | Property | Type | Description |
 |-|-|-|
-| `concrete_artifact_id` | `None` |  |
-| `partitions` | `None` |  |
-| `time_partition` | `None` |  |
+| `concrete_artifact_id` | `art_id.ArtifactID` |  |
+| `partitions` | `Optional[Partitions]` |  |
+| `time_partition` | `TimePartition` |  |
 
 ### Methods
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.identifier
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -186,9 +186,9 @@ class SignalIdentifier(
 
 | Property | Type | Description |
 |-|-|-|
-| `execution_id` | `None` |  |
+| `execution_id` | `flytekit.models.core.identifier.WorkflowExecutionIdentifier` |  |
 | `is_empty` | `None` |  |
-| `signal_id` | `None` |  |
+| `signal_id` | `str` |  |
 
 ### Methods
 
