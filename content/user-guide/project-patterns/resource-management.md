@@ -133,12 +133,12 @@ The v2 quota system is being modernized substantially.
 
 ### Current state
 
-V2 quotas still largely follow the v1 model, but with infrastructure changes underneath. The v2 UI for quota management is not yet available — quota configuration today is done through the v1 UI.
+v2 quotas still largely follow the v1 model, but with infrastructure changes underneath. The v2 UI for quota management is not yet available — quota configuration today is done through the v1 UI.
 
 ### Architectural changes already underway
 
-- **Decoupled from namespaces.** V2 moves away from the strict "one project equals one namespace" model. Multiple projects can share namespaces, with Union providing its own quota enforcement layer above Kubernetes.
-- **Queue-based scheduling.** V2 introduces a queue construct in the control plane that enables priority-based scheduling and more flexible resource management.
+- **Decoupled from namespaces.** v2 moves away from the strict "one project equals one namespace" model. Multiple projects can share namespaces, with Union providing its own quota enforcement layer above Kubernetes.
+- **Queue-based scheduling.** v2 introduces a queue construct in the control plane that enables priority-based scheduling and more flexible resource management.
 
 ### Planned for the first half of 2026
 
