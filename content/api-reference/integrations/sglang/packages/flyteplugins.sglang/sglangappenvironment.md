@@ -80,7 +80,7 @@ class SGLangAppEnvironment(
 
 | Property | Type | Description |
 |-|-|-|
-| `endpoint` | `None` |  |
+| `endpoint` | `str` |  |
 
 ## Methods
 

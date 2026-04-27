@@ -3,7 +3,6 @@ title: flyte.durable
 version: 2.1.9
 variants: +flyte +union
 layout: py_api
-sidebar_expanded: true
 ---
 
 # flyte.durable

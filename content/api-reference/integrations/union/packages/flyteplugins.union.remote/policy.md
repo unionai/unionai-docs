@@ -27,10 +27,10 @@ class Policy(
 
 | Property | Type | Description |
 |-|-|-|
-| `bindings` | `None` |  |
-| `description` | `None` |  |
-| `name` | `None` |  |
-| `organization` | `None` |  |
+| `bindings` | `list[dict]` |  |
+| `description` | `str` |  |
+| `name` | `str` |  |
+| `organization` | `str` |  |
 
 ## Methods
 

@@ -24,8 +24,8 @@ class Secret(
 
 | Property | Type | Description |
 |-|-|-|
-| `name` | `None` | Get the name of the secret. |
-| `type` | `None` | Get the type of the secret as a string ("regular" or "image_pull"). |
+| `name` | `str` | Get the name of the secret. |
+| `type` | `str` | Get the type of the secret as a string ("regular" or "image_pull"). |
 
 ## Methods
 
