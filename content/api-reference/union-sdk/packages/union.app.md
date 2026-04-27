@@ -43,7 +43,7 @@ class App(
     command: typing.Union[typing.List[str], str, NoneType],
     min_replicas: int,
     max_replicas: int,
-    scaledown_after: typing.Union[int, datetime.timedelta, NoneType],
+    scaledown_after: typing.Union[datetime.timedelta, int, NoneType],
     scaling_metric: typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType],
     include: typing.List[str],
     inputs: typing.List[union.app._models.Input],
@@ -60,7 +60,7 @@ class App(
     custom_domain: typing.Optional[str],
     links: typing.List[union.app._models.Link],
     shared_memory: typing.Union[typing.Literal[True], str, NoneType],
-    request_timeout: typing.Union[int, datetime.timedelta, NoneType],
+    request_timeout: typing.Union[datetime.timedelta, int, NoneType],
 )
 ```
 | Parameter | Type | Description |
@@ -75,7 +75,7 @@ class App(
 | `command` | `typing.Union[typing.List[str], str, NoneType]` | Command to start application. |
 | `min_replicas` | `int` | Minimum number of replicas (ignore if autoscaling is set). |
 | `max_replicas` | `int` | Maximum number of replicas (ignore if autoscaling is set). |
-| `scaledown_after` | `typing.Union[int, datetime.timedelta, NoneType]` | Time to wait before scaling down a replica after it has been idle. |
+| `scaledown_after` | `typing.Union[datetime.timedelta, int, NoneType]` | Time to wait before scaling down a replica after it has been idle. |
 | `scaling_metric` | `typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType]` | Autoscale based on a parameter, e.g. request rate or concurrency (others may be added in the future). |
 | `include` | `typing.List[str]` | Files to include for your application. |
 | `inputs` | `typing.List[union.app._models.Input]` | Inputs for the application. |
@@ -92,14 +92,14 @@ class App(
 | `custom_domain` | `typing.Optional[str]` | Custom full domain for your app. |
 | `links` | `typing.List[union.app._models.Link]` | Links to external URLs or relative paths. |
 | `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` | If True, then shared memory will be attached to the container where the size is equal to the allocated memory. If str, then the shared memory is set to that size. |
-| `request_timeout` | `typing.Union[int, datetime.timedelta, NoneType]` | Optional timeout for requests to the application. Must not exceed 1 hour. |
+| `request_timeout` | `typing.Union[datetime.timedelta, int, NoneType]` | Optional timeout for requests to the application. Must not exceed 1 hour. |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `endpoint` | `None` | Return endpoint for App. |
-| `include_resolved` | `None` |  |
+| `endpoint` | `str` | Return endpoint for App. |
+| `include_resolved` | `typing.List[union.app._models.ResolvedInclude]` |  |
 
 ### Methods
 
@@ -179,7 +179,7 @@ class FlyteConnectorApp(
     command: typing.Union[typing.List[str], str, NoneType],
     min_replicas: int,
     max_replicas: int,
-    scaledown_after: typing.Union[int, datetime.timedelta, NoneType],
+    scaledown_after: typing.Union[datetime.timedelta, int, NoneType],
     scaling_metric: typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType],
     include: typing.List[str],
     inputs: typing.List[union.app._models.Input],
@@ -196,7 +196,7 @@ class FlyteConnectorApp(
     custom_domain: typing.Optional[str],
     links: typing.List[union.app._models.Link],
     shared_memory: typing.Union[typing.Literal[True], str, NoneType],
-    request_timeout: typing.Union[int, datetime.timedelta, NoneType],
+    request_timeout: typing.Union[datetime.timedelta, int, NoneType],
 )
 ```
 | Parameter | Type | Description |
@@ -211,7 +211,7 @@ class FlyteConnectorApp(
 | `command` | `typing.Union[typing.List[str], str, NoneType]` | |
 | `min_replicas` | `int` | |
 | `max_replicas` | `int` | |
-| `scaledown_after` | `typing.Union[int, datetime.timedelta, NoneType]` | |
+| `scaledown_after` | `typing.Union[datetime.timedelta, int, NoneType]` | |
 | `scaling_metric` | `typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType]` | |
 | `include` | `typing.List[str]` | |
 | `inputs` | `typing.List[union.app._models.Input]` | |
@@ -228,14 +228,14 @@ class FlyteConnectorApp(
 | `custom_domain` | `typing.Optional[str]` | |
 | `links` | `typing.List[union.app._models.Link]` | |
 | `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` | |
-| `request_timeout` | `typing.Union[int, datetime.timedelta, NoneType]` | |
+| `request_timeout` | `typing.Union[datetime.timedelta, int, NoneType]` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `endpoint` | `None` | Return endpoint for App. |
-| `include_resolved` | `None` |  |
+| `endpoint` | `str` | Return endpoint for App. |
+| `include_resolved` | `typing.List[union.app._models.ResolvedInclude]` |  |
 
 ### Methods
 

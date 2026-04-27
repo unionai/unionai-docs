@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.webhook.connector
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -52,7 +52,7 @@ class WebhookConnector(
 
 | Property | Type | Description |
 |-|-|-|
-| `task_category` | `None` | task category that the connector supports |
+| `task_category` | `flytekit.extend.backend.base_connector.TaskCategory` | task category that the connector supports |
 
 ### Methods
 

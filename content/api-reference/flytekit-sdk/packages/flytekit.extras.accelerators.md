@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.accelerators
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -159,7 +159,7 @@ For example, to specify a 10GB partition of an A100 GPU, use ``A100.partition_2g
 
 | Property | Type | Description |
 |-|-|-|
-| `unpartitioned` | `None` |  |
+| `unpartitioned` | `~MIG` |  |
 
 ### Methods
 

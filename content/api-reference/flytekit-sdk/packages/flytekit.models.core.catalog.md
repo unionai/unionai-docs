@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.catalog
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -35,9 +35,9 @@ class CatalogArtifactTag(
 
 | Property | Type | Description |
 |-|-|-|
-| `artifact_id` | `None` |  |
+| `artifact_id` | `str` |  |
 | `is_empty` | `None` |  |
-| `name` | `None` |  |
+| `name` | `str` |  |
 
 ### Methods
 
@@ -98,11 +98,11 @@ class CatalogMetadata(
 
 | Property | Type | Description |
 |-|-|-|
-| `artifact_tag` | `None` |  |
-| `dataset_id` | `None` |  |
+| `artifact_tag` | `flytekit.models.core.catalog.CatalogArtifactTag` |  |
+| `dataset_id` | `flytekit.models.core.identifier.Identifier` |  |
 | `is_empty` | `None` |  |
-| `source_execution` | `None` | This is a one of but for now there's only one thing in the one of |
-| `source_task_execution` | `None` |  |
+| `source_execution` | `flytekit.models.core.identifier.TaskExecutionIdentifier` | This is a one of but for now there's only one thing in the one of |
+| `source_task_execution` | `flytekit.models.core.identifier.TaskExecutionIdentifier` |  |
 
 ### Methods
 

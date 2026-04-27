@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.schema.types
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -76,8 +76,8 @@ class FlyteSchema(
 
 | Property | Type | Description |
 |-|-|-|
-| `local_path` | `None` |  |
-| `supported_mode` | `None` |  |
+| `local_path` | `str` |  |
+| `supported_mode` | `SchemaOpenMode` |  |
 
 ### Methods
 
@@ -209,10 +209,10 @@ def FlyteSchemaTransformer()
 
 | Property | Type | Description |
 |-|-|-|
-| `is_async` | `None` |  |
+| `is_async` | `bool` |  |
 | `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+| `python_type` | `Type[T]` | This returns the python type |
+| `type_assertions_enabled` | `bool` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ### Methods
 
@@ -510,8 +510,8 @@ class LocalIOSchemaReader(
 
 | Property | Type | Description |
 |-|-|-|
-| `column_names` | `None` |  |
-| `from_path` | `None` |  |
+| `column_names` | `typing.Optional[typing.List[str]]` |  |
+| `from_path` | `str` |  |
 
 ### Methods
 
@@ -564,8 +564,8 @@ class LocalIOSchemaWriter(
 
 | Property | Type | Description |
 |-|-|-|
-| `column_names` | `None` |  |
-| `to_path` | `None` |  |
+| `column_names` | `typing.Optional[typing.List[str]]` |  |
+| `to_path` | `str` |  |
 
 ### Methods
 
@@ -681,8 +681,8 @@ class SchemaReader(
 
 | Property | Type | Description |
 |-|-|-|
-| `column_names` | `None` |  |
-| `from_path` | `None` |  |
+| `column_names` | `typing.Optional[typing.List[str]]` |  |
+| `from_path` | `str` |  |
 
 ### Methods
 
@@ -735,8 +735,8 @@ class SchemaWriter(
 
 | Property | Type | Description |
 |-|-|-|
-| `column_names` | `None` |  |
-| `to_path` | `None` |  |
+| `column_names` | `typing.Optional[typing.List[str]]` |  |
+| `to_path` | `str` |  |
 
 ### Methods
 

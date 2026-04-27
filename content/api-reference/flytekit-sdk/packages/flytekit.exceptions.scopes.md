@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.scopes
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -112,7 +112,7 @@ class FlyteScopedException(
 | Property | Type | Description |
 |-|-|-|
 | `error_code` | `None` |  |
-| `kind` | `None` |  |
+| `kind` | `int` |  |
 | `traceback` | `None` |  |
 | `type` | `None` |  |
 | `value` | `None` |  |
@@ -142,7 +142,7 @@ class FlyteScopedSystemException(
 | Property | Type | Description |
 |-|-|-|
 | `error_code` | `None` |  |
-| `kind` | `None` |  |
+| `kind` | `int` |  |
 | `traceback` | `None` |  |
 | `type` | `None` |  |
 | `value` | `None` |  |
@@ -172,7 +172,7 @@ class FlyteScopedUserException(
 | Property | Type | Description |
 |-|-|-|
 | `error_code` | `None` |  |
-| `kind` | `None` |  |
+| `kind` | `int` |  |
 | `traceback` | `None` |  |
 | `type` | `None` |  |
 | `value` | `None` |  |

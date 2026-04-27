@@ -847,7 +847,7 @@ class ActorEnvironment(
 | Property | Type | Description |
 |-|-|-|
 | `task` | `None` |  |
-| `version` | `None` |  |
+| `version` | `str` |  |
 
 ## union.Artifact
 
@@ -913,9 +913,9 @@ class Artifact(
 
 | Property | Type | Description |
 |-|-|-|
-| `concrete_artifact_id` | `None` |  |
-| `partitions` | `None` |  |
-| `time_partition` | `None` |  |
+| `concrete_artifact_id` | `art_id.ArtifactID` |  |
+| `partitions` | `Optional[Partitions]` |  |
+| `time_partition` | `TimePartition` |  |
 
 ### Methods
 
@@ -1281,23 +1281,23 @@ deck_fields (Tuple[DeckField]): Tuple of decks to be
 
 | Property | Type | Description |
 |-|-|-|
-| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
-| `disable_deck` | `None` | If true, this task will not output deck html file |
-| `docs` | `None` |  |
-| `enable_deck` | `None` | If true, this task will output deck html file |
-| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
-| `instantiated_in` | `None` |  |
-| `interface` | `None` |  |
+| `deck_fields` | `typing.List[flytekit.deck.deck.DeckField]` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `bool` | If true, this task will not output deck html file |
+| `docs` | `flytekit.models.documentation.Documentation` |  |
+| `enable_deck` | `bool` | If true, this task will output deck html file |
+| `environment` | `typing.Dict[str, str]` | Any environment variables that supplied during the execution of the task. |
+| `instantiated_in` | `str` |  |
+| `interface` | `flytekit.models.interface.TypedInterface` |  |
 | `lhs` | `None` |  |
-| `location` | `None` |  |
-| `metadata` | `None` |  |
-| `name` | `None` |  |
-| `python_interface` | `None` | Returns this task's python interface. |
-| `resources` | `None` |  |
-| `security_context` | `None` |  |
-| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
-| `task_type` | `None` |  |
-| `task_type_version` | `None` |  |
+| `location` | `str` |  |
+| `metadata` | `flytekit.core.base_task.TaskMetadata` |  |
+| `name` | `str` |  |
+| `python_interface` | `flytekit.core.interface.Interface` | Returns this task's python interface. |
+| `resources` | `flytekit.core.resources.ResourceSpec` |  |
+| `security_context` | `flytekit.models.security.SecurityContext` |  |
+| `task_config` | `typing.Optional[~T]` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `task_type` | `str` |  |
+| `task_type_version` | `int` |  |
 
 ### Methods
 
@@ -1649,8 +1649,8 @@ class Deck(
 
 | Property | Type | Description |
 |-|-|-|
-| `html` | `None` |  |
-| `name` | `None` |  |
+| `html` | `str` |  |
+| `name` | `str` |  |
 
 ### Methods
 
@@ -1697,10 +1697,10 @@ class FlyteDirectory(
 
 | Property | Type | Description |
 |-|-|-|
-| `downloaded` | `None` |  |
-| `remote_directory` | `None` |  |
-| `remote_source` | `None` | If this is an input to a task, and the original path is s3://something, flytekit will download the directory for the user. In case the user wants access to the original path, it will be here. |
-| `sep` | `None` |  |
+| `downloaded` | `bool` |  |
+| `remote_directory` | `typing.Optional[typing.Union[os.PathLike, bool, str]]` |  |
+| `remote_source` | `str` | If this is an input to a task, and the original path is s3://something, flytekit will download the directory for the user. In case the user wants access to the original path, it will be here. |
+| `sep` | `str` |  |
 
 ### Methods
 
@@ -2006,9 +2006,9 @@ FlyteFile's init method.
 
 | Property | Type | Description |
 |-|-|-|
-| `downloaded` | `None` |  |
-| `remote_path` | `None` |  |
-| `remote_source` | `None` | If this is an input to a task, and the original path is an ``s3`` bucket, Flytekit downloads the file for the user. In case the user wants access to the original path, it will be here. |
+| `downloaded` | `bool` |  |
+| `remote_path` | `typing.Optional[os.PathLike]` |  |
+| `remote_source` | `str` | If this is an input to a task, and the original path is an ``s3`` bucket, Flytekit downloads the file for the user. In case the user wants access to the original path, it will be here. |
 
 ### Methods
 
@@ -2254,8 +2254,8 @@ class ImageSpec(
 
 | Property | Type | Description |
 |-|-|-|
-| `id` | `None` | Calculate a unique hash as the ID for the ImageSpec, and it will be used to 1. Identify the imageSpec in the ImageConfig in the serialization context. 2. Check if the current container image in the pod is built from this image spec in `is_container()`.  ImageConfig: - deduced abc: flyteorg/flytekit:123 - deduced xyz: flyteorg/flytekit:456  The result of this property also depends on whether or not update_image_spec_copy_handling was called. |
-| `tag` | `None` | Calculate a hash from the image spec. The hash will be the tag of the image. We will also read the content of the requirement file and the source root to calculate the hash. Therefore, it will generate different hash if new dependencies are added or the source code is changed.  Keep in mind the fields source_root and copy may be changed by update_image_spec_copy_handling, so when you call this property in relation to that function matter will change the output. |
+| `id` | `str` | Calculate a unique hash as the ID for the ImageSpec, and it will be used to 1. Identify the imageSpec in the ImageConfig in the serialization context. 2. Check if the current container image in the pod is built from this image spec in `is_container()`.  ImageConfig: - deduced abc: flyteorg/flytekit:123 - deduced xyz: flyteorg/flytekit:456  The result of this property also depends on whether or not update_image_spec_copy_handling was called. |
+| `tag` | `str` | Calculate a hash from the image spec. The hash will be the tag of the image. We will also read the content of the requirement file and the source root to calculate the hash. Therefore, it will generate different hash if new dependencies are added or the source code is changed.  Keep in mind the fields source_root and copy may be changed by update_image_spec_copy_handling, so when you call this property in relation to that function matter will change the output. |
 
 ### Methods
 
@@ -2487,24 +2487,25 @@ class LaunchPlan(
 
 | Property | Type | Description |
 |-|-|-|
-| `annotations` | `None` |  |
-| `concurrency` | `None` |  |
-| `fixed_inputs` | `None` |  |
-| `interface` | `None` |  |
-| `labels` | `None` |  |
-| `max_parallelism` | `None` |  |
-| `name` | `None` |  |
-| `notifications` | `None` |  |
-| `overwrite_cache` | `None` |  |
-| `parameters` | `None` |  |
-| `python_interface` | `None` |  |
-| `raw_output_data_config` | `None` |  |
-| `saved_inputs` | `None` |  |
-| `schedule` | `None` |  |
-| `security_context` | `None` |  |
-| `should_auto_activate` | `None` |  |
-| `trigger` | `None` |  |
-| `workflow` | `None` |  |
+| `annotations` | `Optional[_common_models.Annotations]` |  |
+| `concurrency` | `Optional[ConcurrencyPolicy]` |  |
+| `fixed_inputs` | `_literal_models.LiteralMap` |  |
+| `interface` | `_interface_models.TypedInterface` |  |
+| `labels` | `Optional[_common_models.Labels]` |  |
+| `max_parallelism` | `Optional[int]` |  |
+| `name` | `str` |  |
+| `notifications` | `List[_common_models.Notification]` |  |
+| `overwrite_cache` | `Optional[bool]` |  |
+| `parameters` | `_interface_models.ParameterMap` |  |
+| `python_interface` | `Interface` |  |
+| `raw_fixed_inputs` | `Dict[str, Any]` |  |
+| `raw_output_data_config` | `Optional[_common_models.RawOutputDataConfig]` |  |
+| `saved_inputs` | `Dict[str, Any]` |  |
+| `schedule` | `Optional[_schedule_model.Schedule]` |  |
+| `security_context` | `Optional[security.SecurityContext]` |  |
+| `should_auto_activate` | `bool` |  |
+| `trigger` | `Optional[LaunchPlanTriggerBase]` |  |
+| `workflow` | `_annotated_workflow.WorkflowBase` |  |
 
 ### Methods
 
@@ -2896,9 +2897,9 @@ class StructuredDataset(
 
 | Property | Type | Description |
 |-|-|-|
-| `dataframe` | `None` |  |
-| `literal` | `None` |  |
-| `metadata` | `None` |  |
+| `dataframe` | `Optional[DF]` |  |
+| `literal` | `Optional[literals.StructuredDataset]` |  |
+| `metadata` | `Optional[StructuredDatasetMetadata]` |  |
 
 ### Methods
 
@@ -3062,24 +3063,24 @@ Initialize a FlyteRemote object.
 
 | Property | Type | Description |
 |-|-|-|
-| `apps_service_client` | `None` |  |
-| `artifacts_client` | `None` |  |
-| `async_channel` | `None` |  |
-| `authorizer_service_client` | `None` |  |
-| `client` | `None` | Return a SynchronousFlyteClient for additional operations. |
-| `config` | `None` | Image config. |
-| `context` | `None` |  |
-| `default_domain` | `None` | Default project to use when fetching or executing flyte entities. |
-| `default_project` | `None` | Default project to use when fetching or executing flyte entities. |
-| `file_access` | `None` | File access provider to use for offloading non-literal inputs/outputs. |
-| `hooks_async_client` | `None` |  |
-| `hooks_sync_client` | `None` |  |
-| `images_client` | `None` |  |
-| `interactive_mode_enabled` | `None` | If set to True, the FlyteRemote will pickle the task/workflow. |
-| `secret_client` | `None` |  |
-| `sync_channel` | `None` | Return channel from client. This channel already has the org passed in dynamically by the interceptor. |
-| `user_service_client` | `None` |  |
-| `users_client` | `None` |  |
+| `apps_service_client` | `AppsServiceStub` |  |
+| `artifacts_client` | `artifacts_pb2_grpc.ArtifactRegistryStub` |  |
+| `async_channel` | `grpc.aio.Channel` |  |
+| `authorizer_service_client` | `AuthorizerServiceStub` |  |
+| `client` | `SynchronousFlyteClient` | Return a SynchronousFlyteClient for additional operations. |
+| `config` | `Config` | Image config. |
+| `context` | `FlyteContext` |  |
+| `default_domain` | `str` | Default project to use when fetching or executing flyte entities. |
+| `default_project` | `str` | Default project to use when fetching or executing flyte entities. |
+| `file_access` | `FileAccessProvider` | File access provider to use for offloading non-literal inputs/outputs. |
+| `hooks_async_client` | `HooksServiceStub` |  |
+| `hooks_sync_client` | `HooksServiceStub` |  |
+| `images_client` | `image_service_pb2_grpc.ImageServiceStub` |  |
+| `interactive_mode_enabled` | `bool` | If set to True, the FlyteRemote will pickle the task/workflow. |
+| `secret_client` | `SecretServiceStub` |  |
+| `sync_channel` | `Channel` | Return channel from client. This channel already has the org passed in dynamically by the interceptor. |
+| `user_service_client` | `UserServiceStub` |  |
+| `users_client` | `user_service_pb2_grpc.UserServiceStub` |  |
 
 ### Methods
 

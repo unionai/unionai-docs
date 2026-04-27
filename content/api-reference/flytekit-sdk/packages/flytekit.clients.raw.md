@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.raw
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -50,7 +50,7 @@ Initializes a gRPC channel to the given Flyte Admin service.
 
 | Property | Type | Description |
 |-|-|-|
-| `url` | `None` |  |
+| `url` | `str` |  |
 
 ### Methods
 

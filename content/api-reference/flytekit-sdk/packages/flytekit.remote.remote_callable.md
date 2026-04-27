@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.remote_callable
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -34,9 +34,9 @@ class RemoteEntity(
 
 | Property | Type | Description |
 |-|-|-|
-| `id` | `None` |  |
-| `name` | `None` |  |
-| `python_interface` | `None` |  |
+| `id` | `flytekit.models.core.identifier.Identifier` |  |
+| `name` | `str` |  |
+| `python_interface` | `typing.Optional[ForwardRef('Interface')]` |  |
 
 ### Methods
 

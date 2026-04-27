@@ -100,24 +100,24 @@ Initialize a FlyteRemote object.
 
 | Property | Type | Description |
 |-|-|-|
-| `apps_service_client` | `None` |  |
-| `artifacts_client` | `None` |  |
-| `async_channel` | `None` |  |
-| `authorizer_service_client` | `None` |  |
-| `client` | `None` | Return a SynchronousFlyteClient for additional operations. |
-| `config` | `None` | Image config. |
-| `context` | `None` |  |
-| `default_domain` | `None` | Default project to use when fetching or executing flyte entities. |
-| `default_project` | `None` | Default project to use when fetching or executing flyte entities. |
-| `file_access` | `None` | File access provider to use for offloading non-literal inputs/outputs. |
-| `hooks_async_client` | `None` |  |
-| `hooks_sync_client` | `None` |  |
-| `images_client` | `None` |  |
-| `interactive_mode_enabled` | `None` | If set to True, the FlyteRemote will pickle the task/workflow. |
-| `secret_client` | `None` |  |
-| `sync_channel` | `None` | Return channel from client. This channel already has the org passed in dynamically by the interceptor. |
-| `user_service_client` | `None` |  |
-| `users_client` | `None` |  |
+| `apps_service_client` | `AppsServiceStub` |  |
+| `artifacts_client` | `artifacts_pb2_grpc.ArtifactRegistryStub` |  |
+| `async_channel` | `grpc.aio.Channel` |  |
+| `authorizer_service_client` | `AuthorizerServiceStub` |  |
+| `client` | `SynchronousFlyteClient` | Return a SynchronousFlyteClient for additional operations. |
+| `config` | `Config` | Image config. |
+| `context` | `FlyteContext` |  |
+| `default_domain` | `str` | Default project to use when fetching or executing flyte entities. |
+| `default_project` | `str` | Default project to use when fetching or executing flyte entities. |
+| `file_access` | `FileAccessProvider` | File access provider to use for offloading non-literal inputs/outputs. |
+| `hooks_async_client` | `HooksServiceStub` |  |
+| `hooks_sync_client` | `HooksServiceStub` |  |
+| `images_client` | `image_service_pb2_grpc.ImageServiceStub` |  |
+| `interactive_mode_enabled` | `bool` | If set to True, the FlyteRemote will pickle the task/workflow. |
+| `secret_client` | `SecretServiceStub` |  |
+| `sync_channel` | `Channel` | Return channel from client. This channel already has the org passed in dynamically by the interceptor. |
+| `user_service_client` | `UserServiceStub` |  |
+| `users_client` | `user_service_pb2_grpc.UserServiceStub` |  |
 
 ### Methods
 

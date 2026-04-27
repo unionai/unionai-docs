@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.kfpytorch.task
-version: 1.16.16
-variants: +flyte +union
+version: 1.16.19
+variants: +flyte +byoc +selfmanaged +union
 layout: py_api
 ---
 
@@ -202,28 +202,28 @@ class PyTorchFunctionTask(
 
 | Property | Type | Description |
 |-|-|-|
-| `container_image` | `None` |  |
-| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
-| `disable_deck` | `None` | If true, this task will not output deck html file |
-| `docs` | `None` |  |
-| `enable_deck` | `None` | If true, this task will output deck html file |
-| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
-| `execution_mode` | `None` |  |
-| `instantiated_in` | `None` |  |
-| `interface` | `None` |  |
+| `container_image` | `Optional[Union[str, ImageSpec]]` |  |
+| `deck_fields` | `typing.List[flytekit.deck.deck.DeckField]` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `bool` | If true, this task will not output deck html file |
+| `docs` | `flytekit.models.documentation.Documentation` |  |
+| `enable_deck` | `bool` | If true, this task will output deck html file |
+| `environment` | `typing.Dict[str, str]` | Any environment variables that supplied during the execution of the task. |
+| `execution_mode` | `ExecutionBehavior` |  |
+| `instantiated_in` | `str` |  |
+| `interface` | `flytekit.models.interface.TypedInterface` |  |
 | `lhs` | `None` |  |
-| `location` | `None` |  |
-| `metadata` | `None` |  |
-| `name` | `None` | Returns the name of the task. |
-| `node_dependency_hints` | `None` |  |
-| `python_interface` | `None` | Returns this task's python interface. |
-| `resources` | `None` |  |
-| `security_context` | `None` |  |
-| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `location` | `str` |  |
+| `metadata` | `flytekit.core.base_task.TaskMetadata` |  |
+| `name` | `str` | Returns the name of the task. |
+| `node_dependency_hints` | `Optional[Iterable[Union['PythonFunctionTask', '_annotated_launch_plan.LaunchPlan', WorkflowBase]]]` |  |
+| `python_interface` | `flytekit.core.interface.Interface` | Returns this task's python interface. |
+| `resources` | `ResourceSpec` |  |
+| `security_context` | `flytekit.models.security.SecurityContext` |  |
+| `task_config` | `typing.Optional[~T]` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
 | `task_function` | `None` |  |
-| `task_resolver` | `None` |  |
-| `task_type` | `None` |  |
-| `task_type_version` | `None` |  |
+| `task_resolver` | `TaskResolverMixin` |  |
+| `task_type` | `str` |  |
+| `task_type_version` | `int` |  |
 
 ### Methods
 
@@ -678,28 +678,28 @@ class PytorchElasticFunctionTask(
 
 | Property | Type | Description |
 |-|-|-|
-| `container_image` | `None` |  |
-| `deck_fields` | `None` | If not empty, this task will output deck html file for the specified decks |
-| `disable_deck` | `None` | If true, this task will not output deck html file |
-| `docs` | `None` |  |
-| `enable_deck` | `None` | If true, this task will output deck html file |
-| `environment` | `None` | Any environment variables that supplied during the execution of the task. |
-| `execution_mode` | `None` |  |
-| `instantiated_in` | `None` |  |
-| `interface` | `None` |  |
+| `container_image` | `Optional[Union[str, ImageSpec]]` |  |
+| `deck_fields` | `typing.List[flytekit.deck.deck.DeckField]` | If not empty, this task will output deck html file for the specified decks |
+| `disable_deck` | `bool` | If true, this task will not output deck html file |
+| `docs` | `flytekit.models.documentation.Documentation` |  |
+| `enable_deck` | `bool` | If true, this task will output deck html file |
+| `environment` | `typing.Dict[str, str]` | Any environment variables that supplied during the execution of the task. |
+| `execution_mode` | `ExecutionBehavior` |  |
+| `instantiated_in` | `str` |  |
+| `interface` | `flytekit.models.interface.TypedInterface` |  |
 | `lhs` | `None` |  |
-| `location` | `None` |  |
-| `metadata` | `None` |  |
-| `name` | `None` | Returns the name of the task. |
-| `node_dependency_hints` | `None` |  |
-| `python_interface` | `None` | Returns this task's python interface. |
-| `resources` | `None` |  |
-| `security_context` | `None` |  |
-| `task_config` | `None` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
+| `location` | `str` |  |
+| `metadata` | `flytekit.core.base_task.TaskMetadata` |  |
+| `name` | `str` | Returns the name of the task. |
+| `node_dependency_hints` | `Optional[Iterable[Union['PythonFunctionTask', '_annotated_launch_plan.LaunchPlan', WorkflowBase]]]` |  |
+| `python_interface` | `flytekit.core.interface.Interface` | Returns this task's python interface. |
+| `resources` | `ResourceSpec` |  |
+| `security_context` | `flytekit.models.security.SecurityContext` |  |
+| `task_config` | `typing.Optional[~T]` | Returns the user-specified task config which is used for plugin-specific handling of the task. |
 | `task_function` | `None` |  |
-| `task_resolver` | `None` |  |
-| `task_type` | `None` |  |
-| `task_type_version` | `None` |  |
+| `task_resolver` | `TaskResolverMixin` |  |
+| `task_type` | `str` |  |
+| `task_type_version` | `int` |  |
 
 ### Methods
 

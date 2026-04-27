@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.execution
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -45,9 +45,9 @@ class AbortMetadata(
 
 | Property | Type | Description |
 |-|-|-|
-| `cause` | `None` |  |
+| `cause` | `str` |  |
 | `is_empty` | `None` |  |
-| `principal` | `None` |  |
+| `principal` | `str` |  |
 
 ### Methods
 
@@ -171,7 +171,7 @@ class Execution(
 | Property | Type | Description |
 |-|-|-|
 | `closure` | `None` |  |
-| `id` | `None` |  |
+| `id` | `_identifier.WorkflowExecutionIdentifier` |  |
 | `is_empty` | `None` |  |
 | `spec` | `None` |  |
 
@@ -248,15 +248,15 @@ class ExecutionClosure(
 
 | Property | Type | Description |
 |-|-|-|
-| `abort_metadata` | `None` |  |
-| `created_at` | `None` |  |
-| `duration` | `None` |  |
-| `error` | `None` |  |
+| `abort_metadata` | `AbortMetadata` |  |
+| `created_at` | `typing.Optional[datetime.datetime]` |  |
+| `duration` | `datetime.timedelta` |  |
+| `error` | `_core_execution.ExecutionError` |  |
 | `is_empty` | `None` |  |
-| `outputs` | `None` |  |
-| `phase` | `None` | From the flytekit.models.core.execution.WorkflowExecutionPhase enum |
-| `started_at` | `None` |  |
-| `updated_at` | `None` |  |
+| `outputs` | `LiteralMapBlob` |  |
+| `phase` | `int` | From the flytekit.models.core.execution.WorkflowExecutionPhase enum |
+| `started_at` | `datetime.datetime` |  |
+| `updated_at` | `typing.Optional[datetime.datetime]` |  |
 
 ### Methods
 
@@ -330,13 +330,13 @@ class ExecutionMetadata(
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` | `None` |  |
-| `mode` | `None` | An enum value from ExecutionMetadata.ExecutionMode which specifies how the job started. |
-| `nesting` | `None` | An integer representing how deeply nested the workflow is (i.e. was it triggered by a parent workflow) |
-| `parent_node_execution` | `None` | Which subworkflow node (if any) launched this execution |
-| `principal` | `None` | The entity that triggered the execution |
-| `reference_execution` | `None` | Optional, reference workflow execution related to this execution |
-| `scheduled_at` | `None` | For scheduled executions, the requested time for execution for this specific schedule invocation. |
-| `system_metadata` | `None` | Optional, platform-specific metadata about the execution. |
+| `mode` | `int` | An enum value from ExecutionMetadata.ExecutionMode which specifies how the job started. |
+| `nesting` | `int` | An integer representing how deeply nested the workflow is (i.e. was it triggered by a parent workflow) |
+| `parent_node_execution` | `_identifier.NodeExecutionIdentifier` | Which subworkflow node (if any) launched this execution |
+| `principal` | `str` | The entity that triggered the execution |
+| `reference_execution` | `_identifier.WorkflowExecutionIdentifier` | Optional, reference workflow execution related to this execution |
+| `scheduled_at` | `datetime.datetime` | For scheduled executions, the requested time for execution for this specific schedule invocation. |
+| `system_metadata` | `SystemMetadata` | Optional, platform-specific metadata about the execution. |
 
 ### Methods
 
@@ -429,21 +429,21 @@ class ExecutionSpec(
 |-|-|-|
 | `annotations` | `None` |  |
 | `auth_role` | `None` |  |
-| `cluster_assignment` | `None` |  |
+| `cluster_assignment` | `Optional[ClusterAssignment]` |  |
 | `disable_all` | `None` |  |
-| `envs` | `None` |  |
-| `execution_cluster_label` | `None` |  |
-| `interruptible` | `None` |  |
+| `envs` | `Optional[_common_models.Envs]` |  |
+| `execution_cluster_label` | `Optional[ExecutionClusterLabel]` |  |
+| `interruptible` | `Optional[bool]` |  |
 | `is_empty` | `None` |  |
 | `labels` | `None` |  |
 | `launch_plan` | `None` | If the values were too large, this is the URI where the values were offloaded. |
-| `max_parallelism` | `None` |  |
+| `max_parallelism` | `int` |  |
 | `metadata` | `None` |  |
 | `notifications` | `None` |  |
-| `overwrite_cache` | `None` |  |
+| `overwrite_cache` | `Optional[bool]` |  |
 | `raw_output_data_config` | `None` |  |
-| `security_context` | `None` |  |
-| `tags` | `None` |  |
+| `security_context` | `typing.Optional[security.SecurityContext]` |  |
+| `tags` | `Optional[typing.List[str]]` |  |
 
 ### Methods
 
@@ -573,7 +573,7 @@ class NodeExecutionGetDataResponse(
 
 | Property | Type | Description |
 |-|-|-|
-| `dynamic_workflow` | `None` |  |
+| `dynamic_workflow` | `typing.Optional[DynamicWorkflowNodeMetadata]` |  |
 | `full_inputs` | `None` |  |
 | `full_outputs` | `None` |  |
 | `inputs` | `None` |  |
@@ -701,7 +701,7 @@ class SystemMetadata(
 
 | Property | Type | Description |
 |-|-|-|
-| `execution_cluster` | `None` |  |
+| `execution_cluster` | `str` |  |
 | `is_empty` | `None` |  |
 
 ### Methods

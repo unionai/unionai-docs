@@ -66,9 +66,9 @@ loop: asyncio-compatible IOLoop or None
 |-|-|-|
 | `fsid` | `None` | Persistent filesystem id that can be used to compare filesystems across sessions. |
 | `loop` | `None` |  |
-| `max_attempts` | `None` |  |
-| `max_concurrent_tasks` | `None` |  |
-| `retries` | `None` |  |
+| `max_attempts` | `int` |  |
+| `max_concurrent_tasks` | `int` |  |
+| `retries` | `int` |  |
 | `transaction` | `None` | A context within which files are committed together upon exit  Requires the file class to implement `.commit()` and `.discard()` for the normal and exception cases. |
 
 ### Methods

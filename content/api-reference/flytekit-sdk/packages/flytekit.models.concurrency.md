@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.concurrency
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -60,9 +60,9 @@ class ConcurrencyPolicy(
 
 | Property | Type | Description |
 |-|-|-|
-| `behavior` | `None` | Policy behavior when concurrency limit is reached. |
+| `behavior` | `flytekit.models.concurrency.ConcurrencyLimitBehavior` | Policy behavior when concurrency limit is reached. |
 | `is_empty` | `None` |  |
-| `max_concurrency` | `None` | Maximum number of concurrent workflows allowed. |
+| `max_concurrency` | `int` | Maximum number of concurrent workflows allowed. |
 
 ### Methods
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.extend.backend.base_connector
-version: 1.16.16
+version: 1.16.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -52,8 +52,8 @@ class AsyncConnectorBase(
 
 | Property | Type | Description |
 |-|-|-|
-| `metadata_type` | `None` |  |
-| `task_category` | `None` | task category that the connector supports |
+| `metadata_type` | `flytekit.extend.backend.base_connector.ResourceMeta` |  |
+| `task_category` | `flytekit.extend.backend.base_connector.TaskCategory` | task category that the connector supports |
 
 ### Methods
 
@@ -217,7 +217,7 @@ class ConnectorBase(
 
 | Property | Type | Description |
 |-|-|-|
-| `task_category` | `None` | task category that the connector supports |
+| `task_category` | `flytekit.extend.backend.base_connector.TaskCategory` | task category that the connector supports |
 
 ## flytekit.extend.backend.base_connector.ConnectorRegistry
 
@@ -428,7 +428,7 @@ class SyncConnectorBase(
 
 | Property | Type | Description |
 |-|-|-|
-| `task_category` | `None` | task category that the connector supports |
+| `task_category` | `flytekit.extend.backend.base_connector.TaskCategory` | task category that the connector supports |
 
 ### Methods
 
@@ -503,6 +503,6 @@ class TaskCategory(
 
 | Property | Type | Description |
 |-|-|-|
-| `name` | `None` |  |
-| `version` | `None` |  |
+| `name` | `str` |  |
+| `version` | `int` |  |
 
