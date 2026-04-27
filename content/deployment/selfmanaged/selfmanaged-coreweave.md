@@ -18,8 +18,8 @@ Before you begin, confirm you've met all of the following prerequisites:
 
 - A [CKS cluster](https://docs.coreweave.com/products/cks/clusters/introduction) with `kubectl` access configured.
 - The `helm` CLI installed. For installation instructions, see [Install Helm](https://helm.sh/docs/intro/install/).
-- The [`uctl` CLI](../../../api-reference/uctl-cli/_index) installed.
-- The [`flyte` CLI](../../../api-reference/flyte-cli) installed.
+- The [`uctl` CLI](../../api-reference/uctl-cli/_index) installed.
+- The [`flyte` CLI](../../api-reference/flyte-cli) installed.
 - A Union.ai organization. Contact [Union.ai](https://www.union.ai/) to create one if you don't have one.
 
 ## Configure CoreWeave AI Object Storage
