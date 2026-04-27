@@ -1,6 +1,6 @@
 ---
 title: ImageChecker
-version: 2.1.9
+version: 2.2.0
 variants: +flyte +union
 layout: py_api
 ---
