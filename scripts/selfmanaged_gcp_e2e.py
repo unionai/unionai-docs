@@ -48,6 +48,10 @@ from selfmanaged_common import (
 )
 from smoke_tests import run_smoke_suite
 
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s %(levelname)-7s %(name)s - %(message)s",
+)
 logger = logging.getLogger("flyte.e2e.gcp")
 
 # ============================================================================
@@ -161,7 +165,7 @@ env = flyte.TaskEnvironment(
     image=_image,
     resources=flyte.Resources(cpu="2", memory="2Gi"),
     secrets=[flyte.Secret(key=E2E_CREDS_SECRET_KEY, as_env_var=E2E_CREDS_ENV_VAR)],
-    cache="auto",
+    cache="disable",
 )
 
 
@@ -189,6 +193,19 @@ async def hydrate_gcp_credentials(cfg: Config) -> None:
         )
     if cfg.project_id:
         await sh(f"gcloud config set project {cfg.project_id}", check=False)
+
+
+async def resolve_project_id(cfg: Config) -> str:
+    """Return cfg.project_id, falling back to ``gcloud config get-value project``."""
+    if cfg.project_id:
+        return cfg.project_id
+    out = (await sh("gcloud config get-value project", check=False)).strip()
+    if not out:
+        raise RuntimeError(
+            "project_id is not set and `gcloud config get-value project` is empty. "
+            "Pass --project_id <id> or run `gcloud config set project <id>` first."
+        )
+    return out
 
 
 # ============================================================================
@@ -586,6 +603,7 @@ async def teardown_cluster(
         project_id=project_id,
         region=region,
     )
+    cfg.project_id = await resolve_project_id(cfg)
     resources = GCPResources(project_id=cfg.project_id)
     say(f"teardown_cluster: starting for cluster '{cluster_name}' (project={cfg.project_id})")
     result_str = await teardown_gcp(cfg, resources)
@@ -627,6 +645,7 @@ async def main(
         helm_values_override=helm_values_override,
         dataplane_image_sha=dataplane_image_sha,
     )
+    cfg.project_id = await resolve_project_id(cfg)
     await hydrate_gcp_credentials(cfg)
     await init_union_client(cfg)
     say(f"main: starting e2e for cluster '{cluster_name}' on {control_plane_url} "

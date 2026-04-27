@@ -50,6 +50,10 @@ from selfmanaged_common import (
 )
 from smoke_tests import run_smoke_suite
 
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s %(levelname)-7s %(name)s - %(message)s",
+)
 logger = logging.getLogger("flyte.e2e.aws")
 
 # ============================================================================
@@ -169,7 +173,7 @@ env = flyte.TaskEnvironment(
     # Cache task outputs so a re-run against the same control_plane_url +
     # cluster_name replays prior infra + deploy results instead of re-doing
     # the idempotent-check work. Teardown is explicitly opted out below.
-    cache="auto",
+    cache="disable",
 )
 
 

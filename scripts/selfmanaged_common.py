@@ -25,7 +25,7 @@ from flyte.remote import Project, Secret
 from flyteplugins.union.remote import ApiKey, Cluster
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s %(levelname)-7s %(name)s - %(message)s",
 )
 logger = logging.getLogger("flyte.e2e")
@@ -72,7 +72,7 @@ class BaseConfig:
     helm_chart_repo: str = "https://github.com/unionai/helm-charts.git"
     # Empty = use the published unionai/dataplane chart from the repo.
     # Override via --helm_chart_branch if you want to test a WIP branch.
-    helm_chart_branch: str = ""
+    helm_chart_branch: str = "enghabu/skip-registries"
     helm_chart_path: str = "charts/dataplane"
     helm_values_override: str = ""  # extra values file (e.g. "values-legacy.yaml" from the chart)
     dataplane_image_sha: str = ""  # if set, passed as --set global.image.tag=<sha>
@@ -283,7 +283,7 @@ async def init_union_client(cfg: "BaseConfig", org: str = "") -> None:
     Uses the ``.aio`` variants because the sync wrappers raise
     "Deadlock detected" when invoked from an async task. Idempotent.
     """
-    api_key = os.environ.get("UNION_API_KEY", "")
+    api_key = os.environ.get("UNION_API_KEY", os.environ.get("FLYTE_API_KEY", ""))
     kwargs: dict = {
         "endpoint": cfg.control_plane_url,
         "project": cfg.test_project,
@@ -414,8 +414,13 @@ async def resolve_chart_ref(cfg: BaseConfig) -> str:
         say(f"resolve_chart_ref: using local chart at {chart_ref}")
         return chart_ref
     say("resolve_chart_ref: using published unionai/dataplane")
-    await sh("helm repo add unionai https://unionai.github.io/helm-charts/", check=False)
-    await sh("helm repo update")
+    await sh(
+        "helm repo add unionai https://unionai.github.io/helm-charts/ --force-update",
+        check=False,
+    )
+    # Only refresh the unionai repo — `helm repo update` (no args) fails if
+    # any unrelated repo on the local helm config is unreachable.
+    await sh("helm repo update unionai")
     return "unionai/dataplane"
 
 
@@ -467,7 +472,7 @@ async def helm_install(cfg: BaseConfig, values_yaml: str, chart_ref: str) -> Hel
 
     image_tag_flag = ""
     if cfg.dataplane_image_sha:
-        image_tag_flag = f"--set global.image.tag={cfg.dataplane_image_sha} "
+        image_tag_flag = f"--set image.union.tag={cfg.dataplane_image_sha} "
         logger.info(f"  Overriding dataplane image tag: {cfg.dataplane_image_sha}")
 
     # ``--take-ownership`` (Helm 3.17+) lets an install/upgrade adopt existing
@@ -582,7 +587,7 @@ async def create_project(cfg: BaseConfig) -> str:
 async def route_project_to_pool(
     cfg: BaseConfig, org_name: str, pool_name: str, domain: str
 ) -> None:
-    """`uctl update cluster-pool-attributes` for one (project, domain, pool)."""
+    """`uctl --logger.level 6 update cluster-pool-attributes` for one (project, domain, pool)."""
     org_flag = f"--org {org_name}" if org_name else ""
     attr = tempfile.NamedTemporaryFile(
         mode="w", suffix=".yaml", delete=False, prefix=f"cpa-{domain}-",
@@ -594,6 +599,12 @@ async def route_project_to_pool(
     )
     attr.close()
     try:
+        say(f"uctl update cluster-pool-attributes --force --attrFile {attr.name} {org_flag}")
+        say(f"org: {org_name}\n"        
+            f"domain: {domain}\n"
+                    f"project: {cfg.test_project}\n"
+                    f"clusterPoolName: {pool_name}\n"
+                    )
         await sh(
             f"uctl update cluster-pool-attributes --force --attrFile {attr.name} {org_flag}",
             check=False,
