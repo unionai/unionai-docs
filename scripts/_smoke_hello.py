@@ -12,6 +12,10 @@ import uuid
 
 import flyte
 
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s %(levelname)-7s %(name)s - %(message)s",
+)
 logger = logging.getLogger("flyte.e2e.hello")
 
 env = flyte.TaskEnvironment(name="e2e-hello", cache="disable")
