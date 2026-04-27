@@ -3,7 +3,6 @@ title: Community
 weight: 7
 variants: +flyte +union
 top_menu: true
-sidebar_expanded: true
 ---
 
 # Community

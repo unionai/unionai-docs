@@ -2,7 +2,6 @@
 title: Build tasks
 weight: 11
 variants: +flyte +union
-sidebar_expanded: false
 llm_readable_bundle: true
 ---
 

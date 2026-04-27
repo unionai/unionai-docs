@@ -2,7 +2,6 @@
 title: Run modes
 weight: 4
 variants: +flyte +union
-sidebar_expanded: false
 ---
 
 # Run modes
