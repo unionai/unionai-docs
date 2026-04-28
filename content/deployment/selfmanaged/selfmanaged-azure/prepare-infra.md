@@ -10,6 +10,9 @@ This page walks you through the Azure infrastructure required before deploying t
 
 > [!NOTE] **Deployment model**: This guide covers **Self Managed** — you run only the dataplane chart; Union hosts the control plane.
 
+## Prerequisites
+- Azure CLI [installed](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and [configured](https://learn.microsoft.com/en-us/cli/azure/get-started-with-azure-cli?view=azure-cli-latest#sign-in-to-azure)
+
 ## Environment variables
 
 Set these once at the top of your terminal session. All commands below reference them. Customize the names if you are deploying multiple data planes in the same subscription.
@@ -222,7 +225,7 @@ az identity federated-credential create \
 
 ### Worker identity (task execution pods)
 
-Task pods run under the `default` service account. In single-namespace mode (the default with `low_privilege: true`), create one federated credential for the release namespace:
+Task pods run under the `union` service account. In single-namespace mode (the default with `low_privilege: true`), create one federated credential for the release namespace:
 
 ```bash
 az identity federated-credential create \
@@ -230,7 +233,7 @@ az identity federated-credential create \
   --identity-name $WORKER_IDENTITY_NAME \
   --resource-group $RESOURCE_GROUP \
   --issuer $AKS_OIDC_ISSUER \
-  --subject "system:serviceaccount:${DATAPLANE_NAMESPACE}:default" \
+  --subject "system:serviceaccount:${DATAPLANE_NAMESPACE}:union" \
   --audiences api://AzureADTokenExchange
 ```
 
@@ -252,18 +255,29 @@ done
 
 The managed identities need explicit RBAC permissions on the storage account.
 
+- Obtaine the Storage Account ID:
+
+```bash
+STORAGE_ACCOUNT_ID=$(az storage account show \
+    --name $STORAGE_ACCOUNT \
+    --resource-group $RESOURCE_GROUP \
+    --query id -o tsv)
+```
+
 ```bash
 # Backend identity: read/write workflow metadata
 az role assignment create \
   --assignee-object-id $BACKEND_PRINCIPAL_ID \
   --assignee-principal-type ServicePrincipal \
-  --role "Storage Blob Data Contributor" 
+  --role "Storage Blob Data Contributor" \
+  --scope $STORAGE_ACCOUNT_ID
 
 # Worker identity: read/write artifacts
 az role assignment create \
   --assignee-object-id $WORKER_PRINCIPAL_ID \
   --assignee-principal-type ServicePrincipal \
-  --role "Storage Blob Data Contributor"
+  --role "Storage Blob Data Contributor" \
+  --scope $STORAGE_ACCOUNT_ID
 ```
 
 ## 8. Azure Key Vault (optional)
