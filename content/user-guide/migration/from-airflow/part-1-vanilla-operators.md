@@ -19,8 +19,6 @@ This is the first part of the [Airflow → Flyte migration guide](./_index). It 
 
 **Part 2** (later) covers provider operators: Beam, Dataproc, BigQuery, Databricks, Spark, sensors.
 
-Each code-heavy section has a paired example in the [`airflow-examples`](https://github.com/unionai/airflow-examples/tree/main/guide/examples) repo, with an `airflow/` and a `flyte/` subdirectory.
-
 ---
 
 ## 1. Where dependencies are specified
@@ -185,8 +183,6 @@ The `File` object travels between tasks the same way an `int` does — as a type
 
 Docs: [Files and directories](../../task-programming/files-and-directories)
 
-**Example pair:** [`examples/02_python/`](https://github.com/unionai/airflow-examples/tree/main/guide/examples/02_python)
-
 ---
 
 ## 5. TaskFlow to `@env.task`
@@ -262,8 +258,6 @@ TaskFlow ships several decorators beyond `@task`. Rough mapping:
 | `@task.kubernetes` | [`TaskEnvironment` + PodTemplate](#7-kubernetespodoperator-to-taskenvironment--podtemplate) |
 | `@task.branch` | plain `if` in the driver |
 | `@task.short_circuit` | plain `return` in the driver |
-
-**Example pair:** [`examples/03_taskflow/`](https://github.com/unionai/airflow-examples/tree/main/guide/examples/03_taskflow)
 
 ---
 
@@ -351,8 +345,6 @@ async def extract(date: str) -> int:
 | `do_xcom_push=True` (last stdout line) | `outputs={...}`, written to files in `output_data_dir` |
 | `cwd` | `cd ... && ...` inside the command |
 
-**Example pair:** [`examples/01_bash/`](https://github.com/unionai/airflow-examples/tree/main/guide/examples/01_bash)
-
 Docs: [Container Tasks](../../task-programming/container-tasks)
 
 ---
@@ -430,8 +422,6 @@ async def load_warehouse(ds: str) -> int:
 ```
 
 You don't have to list the primary container in the pod_spec — Flyte fills it in from the env's image, the function's command, and the decorator's resources. Add a `V1Container(name="primary", ...)` entry only when you need to put fields on it directly (volume mounts, extra env, security context).
-
-**Example pair:** [`examples/04_kubernetes_pod/`](https://github.com/unionai/airflow-examples/tree/main/guide/examples/04_kubernetes_pod)
 
 Docs: [TaskEnvironment](../../core-concepts/task-environment) · [Secrets](../../task-configuration/secrets) · [PodTemplate / advanced k8s config](../../task-configuration/pod-templates)
 
@@ -573,8 +563,6 @@ async def driver(ds: str) -> int:
 ```
 
 Docs: [Retries and timeouts](../../task-configuration/retries-and-timeouts) · [Error handling](../../task-programming/error-handling)
-
-**Example pair:** [`examples/05_orchestration/`](https://github.com/unionai/airflow-examples/tree/main/guide/examples/05_orchestration)
 
 ---
 

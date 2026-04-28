@@ -8,7 +8,7 @@ variants: +flyte +union
 
 A staged guide to migrating Airflow DAGs to Flyte 2.
 
-The migration is split by operator family. Each section maps an Airflow construct to its Flyte 2 equivalent and links to a runnable example pair (an Airflow DAG and its Flyte port) in the [`unionai/airflow-examples`](https://github.com/unionai/airflow-examples/tree/main/guide/examples) repo.
+The migration is split by operator family. Each section maps an Airflow construct to its Flyte 2 equivalent.
 
 {{< grid >}}
 
