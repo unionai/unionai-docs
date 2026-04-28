@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # OmegaConf
 
-[OmegaConf](https://omegaconf.readthedocs.io/) is a hierarchical configuration system used by many ML frameworks (and the foundation of [Hydra](../hydra)). The `flyteplugins-omegaconf` plugin makes OmegaConf's `DictConfig` and `ListConfig` first-class types in Flyte tasks, so you can pass entire configs like plain dicts, YAML files or dataclass-backed structured configs between tasks without flattening them into individual scalar arguments.
+[OmegaConf](https://omegaconf.readthedocs.io/) is a hierarchical configuration system used by many ML frameworks (and the foundation of [Hydra](../hydra/_index)). The `flyteplugins-omegaconf` plugin makes OmegaConf's `DictConfig` and `ListConfig` first-class types in Flyte tasks, so you can pass entire configs like plain dicts, YAML files or dataclass-backed structured configs between tasks without flattening them into individual scalar arguments.
 
 The plugin enables:
 
@@ -24,7 +24,7 @@ pip install flyteplugins-omegaconf
 
 Installing the package automatically registers `DictConfig` and `ListConfig` with Flyte's `TypeEngine`. No manual setup is required.
 
-If you are using the [Hydra plugin](../hydra/_index.md), `flyteplugins-omegaconf` is installed as a transitive dependency.
+If you are using the [Hydra plugin](../hydra/_index), `flyteplugins-omegaconf` is installed as a transitive dependency.
 
 ## Quick start
 
@@ -108,7 +108,7 @@ cfg = OmegaConf.merge(base, override)
 flyte.run(train, cfg=cfg)
 ```
 
-This is the same pattern Hydra uses internally. See the [Hydra integration](../hydra/_index.md) for a full composition layer on top of this plugin.
+This is the same pattern Hydra uses internally. See the [Hydra integration](../hydra/_index) for a full composition layer on top of this plugin.
 
 ## Variable interpolation
 
