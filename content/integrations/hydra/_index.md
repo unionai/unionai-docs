@@ -132,7 +132,7 @@ Remote runs print the Flyte run URL immediately after submission, before any wai
 | `flyte hydra run`      | `--wait-max-workers 64`              | `--no-wait`                 |
 | Python SDK             | `wait_max_workers=64`                | `wait=False`                |
 
-For a sweep, every job is submitted first and waits run concurrently. Submission is not blocked by earlier runs reaching a terminal phase.
+For a sweep, every job is submitted first, and then the plugin waits for all runs concurrently. Submission is not blocked by earlier runs reaching a terminal phase.
 
 ## Hydra launcher (`@hydra.main` scripts)
 
