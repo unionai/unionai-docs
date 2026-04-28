@@ -2,7 +2,6 @@
 title: Project patterns
 weight: 13
 variants: +flyte +union
-sidebar_expanded: false
 ---
 
 # Project patterns
@@ -20,6 +19,10 @@ Two patterns for teams that own their Docker images and want Flyte for orchestra
 
 {{< link-card target="monorepo-with-uv" title="Monorepo with uv" >}}
 How to structure Flyte projects with uv, from single-package setups to multi-team monorepos with shared and independent lockfiles.
+{{< /link-card >}}
+
+{{< link-card target="cicd" title="CI/CD deployments" >}}
+How to deploy a Flyte project from CI. Uses GitHub Actions as the reference, but the building blocks — API key, `flyte deploy`, commit-pinned versions — translate to any runner.
 {{< /link-card >}}
 
 {{< /grid >}}

@@ -1,6 +1,6 @@
 ---
 title: File
-version: 2.1.7
+version: 2.2.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -179,7 +179,7 @@ validated to form a valid model.
 
 | Property | Type | Description |
 |-|-|-|
-| `lazy_uploader` | `None` |  |
+| `lazy_uploader` | `Callable[[], Coroutine[Any, Any, tuple[str \| None, str]]] \| None` |  |
 
 ## Methods
 

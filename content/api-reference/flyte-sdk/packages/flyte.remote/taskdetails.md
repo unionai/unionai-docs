@@ -1,6 +1,6 @@
 ---
 title: TaskDetails
-version: 2.1.7
+version: 2.2.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -28,16 +28,16 @@ class TaskDetails(
 
 | Property | Type | Description |
 |-|-|-|
-| `cache` | `None` | The cache policy of the task. |
-| `default_input_args` | `None` | The default input arguments of the task. |
-| `interface` | `None` | The interface of the task. |
-| `name` | `None` | The name of the task. |
-| `queue` | `None` | Get the queue name to use for task execution, if overridden. |
-| `required_args` | `None` | The required input arguments of the task. |
+| `cache` | `flyte.Cache` | The cache policy of the task. |
+| `default_input_args` | `Tuple[str, ...]` | The default input arguments of the task. |
+| `interface` | `NativeInterface` | The interface of the task. |
+| `name` | `str` | The name of the task. |
+| `queue` | `Optional[str]` | Get the queue name to use for task execution, if overridden. |
+| `required_args` | `Tuple[str, ...]` | The required input arguments of the task. |
 | `resources` | `None` | Get the resource requests and limits for the task as a tuple (requests, limits). |
 | `secrets` | `None` | Get the list of secret keys required by the task. |
-| `task_type` | `None` | The type of the task. |
-| `version` | `None` | The version of the task. |
+| `task_type` | `str` | The type of the task. |
+| `version` | `str` | The version of the task. |
 
 ## Methods
 

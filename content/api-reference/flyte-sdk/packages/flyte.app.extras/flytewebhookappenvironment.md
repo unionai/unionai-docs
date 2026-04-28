@@ -1,6 +1,6 @@
 ---
 title: FlyteWebhookAppEnvironment
-version: 2.1.7
+version: 2.2.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,6 +39,7 @@ class FlyteWebhookAppEnvironment(
     env_vars: Optional[Dict[str, str]],
     resources: Optional[Resources],
     interruptible: bool,
+    include: Tuple[str, ...],
     port: int | Port,
     args: *args,
     command: Optional[Union[List[str], str]],
@@ -46,7 +47,6 @@ class FlyteWebhookAppEnvironment(
     scaling: Scaling,
     domain: Domain | None,
     links: List[Link],
-    include: List[str],
     parameters: List[Parameter],
     cluster_pool: str,
     timeouts: Timeouts,
@@ -72,6 +72,7 @@ class FlyteWebhookAppEnvironment(
 | `env_vars` | `Optional[Dict[str, str]]` | |
 | `resources` | `Optional[Resources]` | Resources to allocate for the environment |
 | `interruptible` | `bool` | |
+| `include` | `Tuple[str, ...]` | |
 | `port` | `int \| Port` | |
 | `args` | `*args` | |
 | `command` | `Optional[Union[List[str], str]]` | |
@@ -79,7 +80,6 @@ class FlyteWebhookAppEnvironment(
 | `scaling` | `Scaling` | Scaling configuration for the app environment |
 | `domain` | `Domain \| None` | |
 | `links` | `List[Link]` | |
-| `include` | `List[str]` | |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | |
 | `timeouts` | `Timeouts` | |
@@ -98,7 +98,7 @@ class FlyteWebhookAppEnvironment(
 
 | Property | Type | Description |
 |-|-|-|
-| `endpoint` | `None` |  |
+| `endpoint` | `str` |  |
 
 ## Methods
 

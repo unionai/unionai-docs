@@ -1,7 +1,7 @@
 ---
 title: ParquetToPolarsDecodingHandler
-version: 2.1.7
-variants: +flyte +byoc +selfmanaged +union
+version: 2.2.0
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -25,9 +25,9 @@ and we have to get a Python value out of it. For the other way, see the DataFram
 
 | Property | Type | Description |
 |-|-|-|
-| `protocol` | `None` |  |
-| `python_type` | `None` |  |
-| `supported_format` | `None` |  |
+| `protocol` | `Optional[str]` |  |
+| `python_type` | `Type[DF]` |  |
+| `supported_format` | `str` |  |
 
 ## Methods
 

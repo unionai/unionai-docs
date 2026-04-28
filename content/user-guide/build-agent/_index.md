@@ -1,8 +1,7 @@
 ---
 title: Build an agent
-weight: 17
+weight: 18
 variants: +flyte +serverless +union
-sidebar_expanded: false
 mermaid: true
 llm_readable_bundle: true
 ---

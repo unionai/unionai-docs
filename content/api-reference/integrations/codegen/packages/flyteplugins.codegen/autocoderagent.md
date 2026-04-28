@@ -1,7 +1,7 @@
 ---
 title: AutoCoderAgent
-version: 2.1.7
-variants: +flyte +byoc +selfmanaged +union
+version: 2.2.0
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -41,6 +41,7 @@ class AutoCoderAgent(
     cache: str,
     backend: typing.Literal['litellm', 'claude'],
     agent_max_turns: int,
+    block_network: bool,
 )
 ```
 | Parameter | Type | Description |
@@ -64,6 +65,7 @@ class AutoCoderAgent(
 | `cache` | `str` | CacheRequest for sandboxes: "auto", "override", or "disable". Defaults to "auto". |
 | `backend` | `typing.Literal['litellm', 'claude']` | Execution backend: "litellm" (default) or "claude". |
 | `agent_max_turns` | `int` | Maximum agent turns when backend="claude". Defaults to 50. |
+| `block_network` | `bool` | Block all outbound network access in sandboxes. Defaults to False. |
 
 ## Methods
 
@@ -84,7 +86,7 @@ def generate(
     prompt: str,
     schema: typing.Optional[str],
     constraints: typing.Optional[list[str]],
-    samples: typing.Optional[dict[str, pandas.core.frame.DataFrame | flyte.io._file.File]],
+    samples: typing.Optional[dict[str, pandas.DataFrame | flyte.io._file.File]],
     inputs: typing.Optional[dict[str, type]],
     outputs: typing.Optional[dict[str, type]],
 ) -> flyteplugins.codegen.core.types.CodeGenEvalResult
@@ -100,9 +102,9 @@ Each call is independent with its own sandbox, packages and execution environmen
 | `prompt` | `str` | The prompt to generate code from. |
 | `schema` | `typing.Optional[str]` | Optional free-form context about data formats, structures or schemas. Included verbatim in the LLM prompt. Use for input formats, output schemas, database schemas or any structural context the LLM needs to generate code. |
 | `constraints` | `typing.Optional[list[str]]` | Optional list of constraints or requirements. |
-| `samples` | `typing.Optional[dict[str, pandas.core.frame.DataFrame \| flyte.io._file.File]]` | Optional dict of sample data. Each value is sampled and included in the LLM prompt for context, and converted to a File input for the sandbox. Values are used as defaults at runtime — override them when calling `result.run()` or `result.as_task()`. Supported types: File, pd.DataFrame. |
-| `inputs` | `typing.Optional[dict[str, type]]` | Optional dict declaring non-sample CLI argument types (e.g., `{"threshold": float, "mode": str}`). Sample entries are automatically added as File inputs — don't redeclare them here. Supported types: str, int, float, bool, File. |
-| `outputs` | `typing.Optional[dict[str, type]]` | Optional dict defining output types (e.g., `{"result": str, "report": File}`). Supported types: str, int, float, bool, datetime, timedelta, File. |
+| `samples` | `typing.Optional[dict[str, pandas.DataFrame \| flyte.io._file.File]]` | Optional dict of sample data. Each value is sampled and included in the LLM prompt for context, and converted to a File input for the sandbox. Values are used as defaults at runtime — override them when calling `result.run()` or `result.as_task()`. Supported types: File, pd.DataFrame. |
+| `inputs` | `typing.Optional[dict[str, type]]` | Optional dict declaring non-sample CLI argument types (e.g., `{"threshold": float, "mode": str}`). Sample entries are automatically added as File inputs — don't redeclare them here. Supported types: str, int, float, bool, File, Dir. |
+| `outputs` | `typing.Optional[dict[str, type]]` | Optional dict defining output types (e.g., `{"result": str, "report": File}`). Supported types: str, int, float, bool, datetime, timedelta, File, Dir. |
 
 **Returns:** CodeGenEvalResult with solution and execution details.
 

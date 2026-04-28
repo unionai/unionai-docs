@@ -1,7 +1,7 @@
 ---
 title: BigQueryTask
-version: 2.1.7
-variants: +flyte +byoc +selfmanaged +union
+version: 2.2.0
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -40,8 +40,8 @@ To be used to query BigQuery Tables.
 
 | Property | Type | Description |
 |-|-|-|
-| `native_interface` | `None` |  |
-| `source_file` | `None` |  |
+| `native_interface` | `NativeInterface` |  |
+| `source_file` | `Optional[str]` |  |
 
 ## Methods
 
@@ -198,6 +198,7 @@ def override(
     pod_template: Optional[Union[str, PodTemplate]],
     queue: Optional[str],
     interruptible: Optional[bool],
+    entrypoint: Optional[bool],
     links: Tuple[Link, ...],
     kwargs: **kwargs,
 ) -> TaskTemplate
@@ -221,6 +222,7 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | Optional override for the pod template to use for the task. |
 | `queue` | `Optional[str]` | Optional override for the queue to use for the task. |
 | `interruptible` | `Optional[bool]` | Optional override for the interruptible policy for the task. |
+| `entrypoint` | `Optional[bool]` | Optional override for the entrypoint flag for the task. |
 | `links` | `Tuple[Link, ...]` | Optional override for the Links associated with the task. |
 | `kwargs` | `**kwargs` | Additional keyword arguments for further overrides. Some fields like name, image, docs, and interface cannot be overridden. |
 

@@ -70,7 +70,7 @@ Variants are flavors of the site (that you can change at the top).
 During development, you can render any variant by setting it in `hugo.local.toml`:
 
 ```
-variant = "byoc"
+variant = "union"
 ```
 
 We call this the "active" variant.

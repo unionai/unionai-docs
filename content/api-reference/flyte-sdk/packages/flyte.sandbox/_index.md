@@ -1,9 +1,8 @@
 ---
 title: flyte.sandbox
-version: 2.1.7
+version: 2.2.0
 variants: +flyte +union
 layout: py_api
-sidebar_expanded: true
 ---
 
 # flyte.sandbox
@@ -55,6 +54,10 @@ Warning: Experimental feature: alpha — APIs may change without notice.
     - Code mode — provide Python source that runs with automatic input/output wiring.
     - Verbatim mode — run a script that manages its own I/O via /var/inputs and /var/outputs.
     - Command mode — execute an arbitrary command or entrypoint.
+
+    Network access is allowed by default. Pass `block_network=True` to block all
+    outbound access — locally via Docker `network_mode=none`, on-cluster via a
+    `NetworkPolicy`.
 
     Examples
     --------
@@ -195,6 +198,7 @@ def create(
     env_vars: typing.Optional[dict[str, str]],
     secrets: typing.Optional[list],
     cache: str,
+    block_network: bool,
 ) -> flyte.sandbox._code_sandbox._Sandbox
 ```
 Create a stateless Python code sandbox.
@@ -258,8 +262,8 @@ Example — command mode::
 |-|-|-|
 | `name` | `typing.Optional[str]` | Sandbox name. Derives task and image names. |
 | `code` | `typing.Optional[str]` | Python source to run (auto-IO or verbatim mode). Mutually exclusive with `command`. |
-| `inputs` | `typing.Optional[dict[str, type]]` | Input type declarations. Supported types: - Primitive: `int`, `float`, `str`, `bool` - Date/time: `datetime.datetime`, `datetime.timedelta` - IO handles: `flyte.io.File`   (bind-mounted at `/var/inputs/&lt;name&gt;`; available as a path   string in auto-IO mode) |
-| `outputs` | `typing.Optional[dict[str, type]]` | Output type declarations. Supported types: - Primitive: `int`, `float`, `str`, `bool` - Date/time: `datetime.datetime` (ISO-8601), `datetime.timedelta` - IO handles: `flyte.io.File`   (user code must write the file to `/var/outputs/&lt;name&gt;`) |
+| `inputs` | `typing.Optional[dict[str, type]]` | Input type declarations. Supported types: - Primitive: `int`, `float`, `str`, `bool` - Date/time: `datetime.datetime`, `datetime.timedelta` - IO handles: `flyte.io.File`, `flyte.io.Dir`   (bind-mounted at `/var/inputs/&lt;name&gt;`; available as a path   string in auto-IO mode) |
+| `outputs` | `typing.Optional[dict[str, type]]` | Output type declarations. Supported types: - Primitive: `int`, `float`, `str`, `bool` - Date/time: `datetime.datetime` (ISO-8601), `datetime.timedelta` - IO handles: `flyte.io.File`, `flyte.io.Dir`   (user code must write the file or directory to `/var/outputs/&lt;name&gt;`) |
 | `command` | `typing.Optional[list[str]]` | Entrypoint command (command mode). Mutually exclusive with `code`. |
 | `arguments` | `typing.Optional[list[str]]` | Arguments forwarded to `command` (command mode only). |
 | `packages` | `typing.Optional[list[str]]` | Python packages to install via pip. |
@@ -275,6 +279,7 @@ Example — command mode::
 | `env_vars` | `typing.Optional[dict[str, str]]` | Environment variables available inside the container. |
 | `secrets` | `typing.Optional[list]` | Flyte `flyte.Secret` objects to mount. |
 | `cache` | `str` | Cache behaviour — `"auto"`, `"override"`, or `"disable"`. |
+| `block_network` | `bool` | When `True`, blocks all outbound network access — locally via Docker ``network_mode=none``, on-cluster via a NetworkPolicy. Defaults to `False`. |
 
 **Returns:** Configured sandbox ready to `.run()`.
 

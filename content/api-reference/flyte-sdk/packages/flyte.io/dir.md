@@ -1,6 +1,6 @@
 ---
 title: Dir
-version: 2.1.7
+version: 2.2.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -208,7 +208,8 @@ validated to form a valid model.
 
 | Property | Type | Description |
 |-|-|-|
-| `lazy_uploader` | `None` |  |
+| `is_empty` | `bool` | True when this is a sentinel ``Dir`` produced by :class:`EmptyDir`/``Dir.empty()`` — i.e. the task didn't actually produce a directory. Use this to branch on whether the upstream task emitted real data without dealing with ``Optional[Dir]`` (which the type engine cannot round-trip correctly through ``SerializableType``). |
+| `lazy_uploader` | `Callable[[], Coroutine[Any, Any, tuple[str \| None, str]]] \| None` |  |
 
 ## Methods
 
@@ -216,6 +217,7 @@ validated to form a valid model.
 |-|-|
 | [`download()`](#download) | Asynchronously download the entire directory to a local path. |
 | [`download_sync()`](#download_sync) | Synchronously download the entire directory to a local path. |
+| [`empty()`](#empty) | Return a sentinel ``Dir`` representing 'no directory was produced'. |
 | [`exists()`](#exists) | Asynchronously check if the directory exists. |
 | [`exists_sync()`](#exists_sync) | Synchronously check if the directory exists. |
 | [`from_existing_remote()`](#from_existing_remote) | Create a Dir reference from an existing remote directory. |
@@ -307,6 +309,18 @@ def download_to_path_sync(d: Dir) -> str:
 | `local_path` | `Optional[Union[str, Path]]` | The local path to download the directory to. If None, a temporary directory will be used and a path will be generated. |
 
 **Returns:** The absolute path to the downloaded directory
+
+### empty()
+
+```python
+def empty()
+```
+Return a sentinel ``Dir`` representing 'no directory was produced'.
+
+Use as the return value when a task may or may not produce an output directory; the
+caller can check :attr:`Dir.is_empty` to detect the sentinel. Round-trips cleanly
+through Flyte serialization (unlike ``Optional[Dir]``).
+
 
 ### exists()
 

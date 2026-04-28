@@ -5,7 +5,7 @@ description = "E2E test scripts for selfmanaged Union dataplanes"
 requires-python = ">=3.13"
 dependencies = [
     "flyte>=2.0.0",
-    "cryptography>=46.0.0",
+    "flyteplugins-union>=0.1.0",
     "keyring>=25.0.0",
     "fastapi>=0.135.3",
 ]
@@ -19,4 +19,17 @@ test-images = [
     "httpx",
     "requests",
     "unionai-reuse",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = [
+    "selfmanaged_common",
+    "selfmanaged_aws_e2e",
+    "selfmanaged_gcp_e2e",
+    "smoke_tests",
+    "_smoke_hello",
 ]

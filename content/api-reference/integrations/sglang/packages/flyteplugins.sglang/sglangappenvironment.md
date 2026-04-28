@@ -1,7 +1,7 @@
 ---
 title: SGLangAppEnvironment
-version: 2.1.7
-variants: +flyte +byoc +selfmanaged +union
+version: 2.2.0
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -27,13 +27,13 @@ class SGLangAppEnvironment(
     env_vars: Optional[Dict[str, str]],
     resources: Optional[Resources],
     interruptible: bool,
+    include: Tuple[str, ...],
     args: *args,
     command: Optional[Union[List[str], str]],
     requires_auth: bool,
     scaling: Scaling,
     domain: Domain | None,
     links: List[Link],
-    include: List[str],
     parameters: List[Parameter],
     cluster_pool: str,
     timeouts: Timeouts,
@@ -57,13 +57,13 @@ class SGLangAppEnvironment(
 | `env_vars` | `Optional[Dict[str, str]]` | Environment variables to set for the application. |
 | `resources` | `Optional[Resources]` | |
 | `interruptible` | `bool` | |
+| `include` | `Tuple[str, ...]` | |
 | `args` | `*args` | |
 | `command` | `Optional[Union[List[str], str]]` | |
 | `requires_auth` | `bool` | Whether the public URL requires authentication. |
 | `scaling` | `Scaling` | Scaling configuration for the app environment. |
 | `domain` | `Domain \| None` | Domain to use for the app. |
 | `links` | `List[Link]` | |
-| `include` | `List[str]` | |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | The target cluster_pool where the app should be deployed. |
 | `timeouts` | `Timeouts` | |
@@ -80,7 +80,7 @@ class SGLangAppEnvironment(
 
 | Property | Type | Description |
 |-|-|-|
-| `endpoint` | `None` |  |
+| `endpoint` | `str` |  |
 
 ## Methods
 

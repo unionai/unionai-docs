@@ -1,6 +1,6 @@
 ---
 title: ActionDetails
-version: 2.1.7
+version: 2.2.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -33,24 +33,24 @@ class ActionDetails(
 
 | Property | Type | Description |
 |-|-|-|
-| `abort_info` | `None` | Get the abort information if the action was aborted, otherwise returns None. |
-| `action_id` | `None` | Get the action ID. |
-| `attempts` | `None` | Get the number of attempts of the action. |
-| `error_info` | `None` | Get the error information if the action failed, otherwise returns None. |
-| `initializing_time` | `None` | Get the time spent in the INITIALIZING phase for the latest attempt. |
-| `is_running` | `None` | Check if the action is currently running. |
-| `metadata` | `None` | Get the metadata of the action. |
-| `name` | `None` | Get the name of the action. |
-| `phase` | `None` | Get the phase of the action. |
-| `phase_durations` | `None` | Get the duration spent in each phase as a dictionary.  Returns a mapping of ActionPhase to timedelta for the latest attempt. This provides an easy way to see how long was spent queued, initializing, running, etc. |
-| `queued_time` | `None` | Get the time spent in the QUEUED phase for the latest attempt. |
-| `raw_phase` | `None` | Get the raw phase of the action. |
-| `run_name` | `None` | Get the name of the run. |
-| `running_time` | `None` | Get the time spent in the RUNNING phase for the latest attempt. |
-| `runtime` | `None` | Get the runtime of the action. |
-| `status` | `None` | Get the status of the action. |
-| `task_name` | `None` | Get the name of the task. |
-| `waiting_for_resources_time` | `None` | Get the time spent in the WAITING_FOR_RESOURCES phase for the latest attempt. |
+| `abort_info` | `run_definition_pb2.AbortInfo \| None` | Get the abort information if the action was aborted, otherwise returns None. |
+| `action_id` | `identifier_pb2.ActionIdentifier` | Get the action ID. |
+| `attempts` | `int` | Get the number of attempts of the action. |
+| `error_info` | `run_definition_pb2.ErrorInfo \| None` | Get the error information if the action failed, otherwise returns None. |
+| `initializing_time` | `timedelta \| None` | Get the time spent in the INITIALIZING phase for the latest attempt. |
+| `is_running` | `bool` | Check if the action is currently running. |
+| `metadata` | `run_definition_pb2.ActionMetadata` | Get the metadata of the action. |
+| `name` | `str` | Get the name of the action. |
+| `phase` | `ActionPhase` | Get the phase of the action. |
+| `phase_durations` | `Dict[ActionPhase, timedelta]` | Get the duration spent in each phase as a dictionary.  Returns a mapping of ActionPhase to timedelta for the latest attempt. This provides an easy way to see how long was spent queued, initializing, running, etc. |
+| `queued_time` | `timedelta \| None` | Get the time spent in the QUEUED phase for the latest attempt. |
+| `raw_phase` | `phase_pb2.ActionPhase` | Get the raw phase of the action. |
+| `run_name` | `str` | Get the name of the run. |
+| `running_time` | `timedelta \| None` | Get the time spent in the RUNNING phase for the latest attempt. |
+| `runtime` | `timedelta` | Get the runtime of the action. |
+| `status` | `run_definition_pb2.ActionStatus` | Get the status of the action. |
+| `task_name` | `str \| None` | Get the name of the task. |
+| `waiting_for_resources_time` | `timedelta \| None` | Get the time spent in the WAITING_FOR_RESOURCES phase for the latest attempt. |
 
 ## Methods
 

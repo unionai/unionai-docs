@@ -1,6 +1,6 @@
 ---
 title: DataFrameEncoder
-version: 2.1.7
+version: 2.2.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -36,9 +36,9 @@ the DataFrameEncoder
 
 | Property | Type | Description |
 |-|-|-|
-| `protocol` | `None` |  |
-| `python_type` | `None` |  |
-| `supported_format` | `None` |  |
+| `protocol` | `Optional[str]` |  |
+| `python_type` | `Type[T]` |  |
+| `supported_format` | `str` |  |
 
 ## Methods
 

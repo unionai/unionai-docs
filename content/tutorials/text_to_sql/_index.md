@@ -2,7 +2,6 @@
 title: Text-to-SQL
 weight: 1
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # Text-to-SQL

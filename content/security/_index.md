@@ -3,7 +3,6 @@ title: Security
 weight: 6
 variants: -flyte +union
 top_menu: true
-sidebar_expanded: true
 ---
 
 # Security

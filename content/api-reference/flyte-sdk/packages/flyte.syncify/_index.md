@@ -1,9 +1,8 @@
 ---
 title: flyte.syncify
-version: 2.1.7
+version: 2.2.0
 variants: +flyte +union
 layout: py_api
-sidebar_expanded: true
 ---
 
 # flyte.syncify

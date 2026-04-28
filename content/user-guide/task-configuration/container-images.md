@@ -82,7 +82,16 @@ There are two ways that the image can be built:
 
 ### Configuring the `builder`
 
-[Earlier](../connecting-to-a-cluster), we discussed the `image.builder` property in the `config.yaml`.
+{{< variant flyte >}}
+{{< markdown >}}
+[Earlier](../run-modes/running-devbox#configure), we discussed the `image.builder` property in the `config.yaml`.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
+[Earlier](../run-modes/running-remote), we discussed the `image.builder` property in the `config.yaml`.
+{{< /markdown >}}
+{{< /variant >}}
 
 For Flyte OSS instances, this property must be set to `local`.
 
