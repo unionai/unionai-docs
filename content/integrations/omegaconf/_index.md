@@ -24,7 +24,7 @@ pip install flyteplugins-omegaconf
 
 Installing the package automatically registers `DictConfig` and `ListConfig` with Flyte's `TypeEngine`. No manual setup is required.
 
-If you are using the [Hydra plugin](../hydra), `flyteplugins-omegaconf` is installed as a transitive dependency.
+If you are using the [Hydra plugin](../hydra/_index.md), `flyteplugins-omegaconf` is installed as a transitive dependency.
 
 ## Quick start
 
@@ -108,7 +108,7 @@ cfg = OmegaConf.merge(base, override)
 flyte.run(train, cfg=cfg)
 ```
 
-This is the same pattern Hydra uses internally. See the [Hydra integration](../hydra) for a full composition layer on top of this plugin.
+This is the same pattern Hydra uses internally. See the [Hydra integration](../hydra/_index.md) for a full composition layer on top of this plugin.
 
 ## Variable interpolation
 
