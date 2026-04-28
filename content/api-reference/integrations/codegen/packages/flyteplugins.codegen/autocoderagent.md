@@ -1,7 +1,7 @@
 ---
 title: AutoCoderAgent
-version: 2.1.9
-variants: +flyte +byoc +selfmanaged +union
+version: 2.2.0
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -103,8 +103,8 @@ Each call is independent with its own sandbox, packages and execution environmen
 | `schema` | `typing.Optional[str]` | Optional free-form context about data formats, structures or schemas. Included verbatim in the LLM prompt. Use for input formats, output schemas, database schemas or any structural context the LLM needs to generate code. |
 | `constraints` | `typing.Optional[list[str]]` | Optional list of constraints or requirements. |
 | `samples` | `typing.Optional[dict[str, pandas.DataFrame \| flyte.io._file.File]]` | Optional dict of sample data. Each value is sampled and included in the LLM prompt for context, and converted to a File input for the sandbox. Values are used as defaults at runtime — override them when calling `result.run()` or `result.as_task()`. Supported types: File, pd.DataFrame. |
-| `inputs` | `typing.Optional[dict[str, type]]` | Optional dict declaring non-sample CLI argument types (e.g., `{"threshold": float, "mode": str}`). Sample entries are automatically added as File inputs — don't redeclare them here. Supported types: str, int, float, bool, File. |
-| `outputs` | `typing.Optional[dict[str, type]]` | Optional dict defining output types (e.g., `{"result": str, "report": File}`). Supported types: str, int, float, bool, datetime, timedelta, File. |
+| `inputs` | `typing.Optional[dict[str, type]]` | Optional dict declaring non-sample CLI argument types (e.g., `{"threshold": float, "mode": str}`). Sample entries are automatically added as File inputs — don't redeclare them here. Supported types: str, int, float, bool, File, Dir. |
+| `outputs` | `typing.Optional[dict[str, type]]` | Optional dict defining output types (e.g., `{"result": str, "report": File}`). Supported types: str, int, float, bool, datetime, timedelta, File, Dir. |
 
 **Returns:** CodeGenEvalResult with solution and execution details.
 
