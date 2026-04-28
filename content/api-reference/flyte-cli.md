@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.1.9
+version: 2.2.0
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -160,6 +160,8 @@ $ flyte --config /path/to/config.yaml run ...
 | `--version` | `boolean` | `False` | Show the version and exit. |
 | `--endpoint` | `text` | `Sentinel.UNSET` | The endpoint to connect to. This will override any configuration file and simply use `pkce` to connect. |
 | `--insecure` | `boolean` |  | Use an insecure connection to the endpoint. If not specified, the CLI will use TLS. |
+| {{< multiline >}}`--image-builder`
+`--builder`{{< /multiline >}} | `choice` |  | Image builder to use for building images. Overrides the config file setting. If not specified, the builder from the config file (image.builder) is used, falling back to 'local'. |
 | `--auth-type` | `choice` |  | Authentication type to use for the Flyte backend. Defaults to 'pkce'. |
 | {{< multiline >}}`-v`
 `--verbose`{{< /multiline >}} | `integer` | `0` | Show verbose messages and exception traces. Repeating multiple times increases the verbosity (e.g., -vvv). |
@@ -217,7 +219,8 @@ environments.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--noop` | `boolean` | `Sentinel.UNSET` | Dummy parameter, placeholder for future use. Does not affect the build process. |
+| `--copy-style` | `choice` | `loaded_modules` | Copy style of the eventual deploy. Must match the deploy's --copy-style so the image content hash — and therefore the registry tag — lines up. |
+| `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte create
