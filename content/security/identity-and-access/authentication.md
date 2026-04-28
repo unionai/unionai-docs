@@ -18,7 +18,7 @@ Union.ai supports three authentication methods, each designed for a different us
 
 API keys are issued per user and inherit the user's RBAC permissions. They can be created and revoked via the UI or CLI.
 
-Service accounts are provisioned through the Identity Service, creating OAuth2 applications with distinct, auditable identities independent of any human user.
+Service accounts are provisioned by the platform, creating OAuth2 applications with distinct, auditable identities independent of any human user.
 
 ## Single sign-on
 

@@ -8,11 +8,11 @@ variants: -flyte +union
 
 In the BYOC deployment model, Union.ai maintains a private management connection to the customer's Kubernetes cluster. This connection uses the cloud provider's native private connectivity service: AWS PrivateLink, GCP Private Service Connect, or Azure Private Link, depending on the customer's cloud platform.
 
-This private connection is used exclusively for cluster management operations: Kubernetes version upgrades, node pool provisioning and scaling, Helm chart deployments and updates, and health monitoring. It provides Union.ai with the access needed to manage the Kubernetes cluster without exposing the K8s API to the public internet.
+This private connection is used exclusively for cluster management operations: Kubernetes version upgrades, node pool provisioning and scaling, Helm chart deployments and updates, and health monitoring. It provides Union.ai with the access needed to manage the Kubernetes cluster without exposing the Kubernetes API to the public internet.
 
 The private management connection does **not** carry customer data. Data flows between clients and the customer's object store via presigned URLs, and orchestration traffic flows through the Cloudflare Tunnel. The private connectivity path handles only infrastructure management operations.
 
-By keeping the Kubernetes API endpoint private, this design satisfies several compliance controls, including ISO 27001 A.5.15 (Access control) and A.8.20 (Networks security), as well as CIS Controls v8 4.4 (Implement and manage a firewall on servers) and 12.11 (Ensure all remote access management features are disabled if not required). The K8s API is never reachable from the public internet.
+By keeping the Kubernetes API endpoint private, this design satisfies several compliance controls, including ISO 27001 A.5.15 (Access control) and A.8.20 (Networks security), as well as CIS Controls v8 4.4 (Implement and manage a firewall on servers) and 12.11 (Ensure all remote access management features are disabled if not required). The Kubernetes API is never reachable from the public internet.
 
 For details on the self-managed alternative (where no private management connection exists because the customer operates the data plane independently), see [Deployment models](./deployment-models).
 

@@ -29,8 +29,8 @@ All four backends are available regardless of deployment model. The choice of ba
 
 | Phase | Encrypted? | Details |
 |-------|------------|---------|
-| Client → Control Plane | **Yes** | TLS 1.2+ (ConnectRPC). Wire format: protobuf binary |
-| In Control Plane (DataProxy) | **Plaintext in memory** | Deserialized Go struct. Not persisted, cached, or logged |
+| Client → Control Plane | **Yes** | TLS 1.2+. Wire format: protobuf binary |
+| In Control Plane | **Plaintext in memory** | Deserialized Go struct. Not persisted, cached, or logged |
 | Control Plane → Data Plane | **Yes** | TLS + mTLS + Cloudflare Tunnel. Wire format: protobuf JSON |
 | In Data Plane (operator) | **Plaintext in memory** | Briefly held before writing to secret backend |
 | At rest (secret backend) | **Yes** | AWS Secrets Manager (AES-256/KMS), GCP Secret Manager (Google-managed or CMEK), Azure Key Vault (HSM-backed), or K8s etcd encryption |
@@ -79,10 +79,10 @@ This verification is fully self-service and works immediately.
 
 **How to verify:**
 
-- **Creation path:** Inspect DataProxy pod logs during secret creation:
+- **Creation path:** Inspect the control plane proxy pod logs during secret creation:
 
   ```bash
-  kubectl logs <dataproxy-pod> -n <control-plane-namespace>
+  kubectl logs <control-plane-proxy-pod> -n <control-plane-namespace>
   ```
 
   The logs should show the relay operation but not the secret value.

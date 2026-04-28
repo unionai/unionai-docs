@@ -30,7 +30,7 @@ All communication paths in the Union.ai platform are encrypted using TLS:
 - **Client to object store**: presigned URLs always use HTTPS, enforced by the cloud provider.
 - **Internal data plane communication**: uses cloud-native TLS for inter-service traffic.
 
-No unencrypted communication paths exist in the platform. The combination of TLS at the edge, mutual TLS through the tunnel, and HTTPS for presigned URLs ensures end-to-end encryption for all data in transit. Data content is never logged at any log level. (Note: if debug logging is enabled in the control plane, authentication credentials, not data content, may be logged in plaintext by the header-propagation utility.)
+No unencrypted communication paths exist in the platform. The combination of TLS at the edge, mutual TLS through the tunnel, and HTTPS for presigned URLs ensures end-to-end encryption for all data in transit. Data content is never logged at any log level. (Note: if debug logging is enabled in the control plane, authentication credentials, not data content, may be logged in plaintext during request header propagation.)
 
 For details on the tunnel architecture, see [Two-plane separation](../architecture/two-plane-separation).
 
@@ -38,7 +38,7 @@ For details on the tunnel architecture, see [Two-plane separation](../architectu
 
 The following table summarizes the encryption state for each data category across all phases:
 
-| Data category | In transit | At rest | Enters CP memory? | Persisted in CP? |
+| Data category | In transit | At rest | Enters control plane memory? | Persisted in control plane? |
 |---|---|---|---|---|
 | **Files, directories, DataFrames** | HTTPS (presigned URL) | S3 SSE / GCS / Azure SSE | No | No |
 | **Code bundles** | HTTPS (presigned URL) | S3 SSE / GCS / Azure SSE | No | No |
@@ -48,7 +48,7 @@ The following table summarizes the encryption state for each data category acros
 | **Structured task I/O** (retrieval) | TLS + TLS/mTLS/tunnel | S3 SSE / GCS / Azure SSE | Yes (plaintext, transient) | No |
 | **Secret values** (create/update) | TLS + TLS/mTLS/tunnel | ASM/GCP SM/AKV/etcd encryption | Yes (plaintext, transient) | No |
 | **Secret values** (get/list/delete) | TLS | ASM/GCP SM/AKV/etcd encryption | No (metadata only) | No |
-| **Secret values** (runtime injection) | Linkerd mTLS / K8s API | Secret backend encryption | No (data plane only) | No |
+| **Secret values** (runtime injection) | Linkerd mTLS / Kubernetes API | Secret backend encryption | No (data plane only) | No |
 | **Execution logs** (streaming) | TLS + TLS/mTLS/tunnel | CloudWatch/Stackdriver/Azure Monitor | Yes (plaintext, transient) | No |
 | **Task definitions** (TaskSpec) | TLS | PostgreSQL AES-256/KMS | Yes (read from DB) | **Yes** (encrypted at rest) |
 | **Run/trigger specs** | TLS | PostgreSQL AES-256/KMS | Yes (read from DB) | **Yes** (encrypted at rest) |

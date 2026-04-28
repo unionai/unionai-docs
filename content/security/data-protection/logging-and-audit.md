@@ -14,7 +14,7 @@ Log data is not persisted in the control plane. It is streamed as a stateless pa
 
 ## Observability metrics
 
-A per-cluster instance (Prometheus and/or ClickHouse) stores time-series observability metrics including resource utilization and cost data. Queries are proxied through the DataProxy service to the customer's instance. Metrics data never leaves the customer's infrastructure. In BYOC deployments, Union.ai deploys and manages the monitoring stack.
+A per-cluster instance (Prometheus and/or ClickHouse) stores time-series observability metrics including resource utilization and cost data. Queries are proxied through the control plane to the customer's instance. Metrics data never leaves the customer's infrastructure. In BYOC deployments, Union.ai deploys and manages the monitoring stack.
 
 ## Audit trail
 

@@ -25,7 +25,7 @@ In self-managed deployments, the customer owns and operates the data plane infra
 
 In BYOC deployments, Union.ai assumes additional operational responsibility for the data plane Kubernetes cluster while the customer retains ownership of the cloud account.
 
-| Area | Self-Managed | BYOC |
+| Area | Self-managed | BYOC |
 |---|---|---|
 | Data plane K8s cluster | Customer | Union.ai |
 | Cloud account (VPC, IAM) | Customer | Customer |

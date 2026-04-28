@@ -8,7 +8,17 @@ variants: -flyte +union
 
 ## Control plane compromise
 
-A control plane compromise would expose: orchestration metadata and task definitions stored in the databases (including potentially sensitive fields such as environment variables, default input values, SQL statements, and K8s pod specs), structured task I/O transiting memory during active requests (up to 10-20 MiB per request), secret values being relayed during create/update operations, unredacted log stream content, and error messages. The attacker could not access bulk customer data (files, DataFrames, code bundles, container images) since those are stored in the customer's infrastructure and accessed via presigned URLs generated on the data plane. The attacker could not retrieve secret values via the API (write-only design). The attacker could not initiate connections to customer data planes because the tunnel is outbound-only from the customer's network. See [Two-plane separation](./architecture/two-plane-separation) and [Network architecture](./architecture/network) for details.
+A control plane compromise would expose:
+
+- Orchestration metadata and task definitions stored in the databases, including potentially sensitive fields such as environment variables, default input values, SQL statements, and Kubernetes pod specs.
+- Structured task I/O transiting memory during active requests (up to 10-20 MiB per request).
+- Secret values being relayed during create/update operations.
+- Unredacted log stream content.
+- Error messages.
+
+The attacker could not access bulk customer data (files, DataFrames, code bundles, container images), since those are stored in the customer's infrastructure and accessed via presigned URLs generated on the data plane. The attacker could not retrieve secret values via the API (write-only design). The attacker could not initiate connections to customer data planes because the tunnel is outbound-only from the customer's network.
+
+See [Two-plane separation](./architecture/two-plane-separation) and [Network architecture](./architecture/network) for details.
 
 ## Tunnel interception
 

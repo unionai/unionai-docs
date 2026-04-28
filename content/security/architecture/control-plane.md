@@ -10,35 +10,19 @@ The control plane is the Union.ai-hosted component that orchestrates task execut
 
 ## What it stores
 
-The control plane uses three databases (PostgreSQL + 2x Cassandra/Scylla) to store the information required for orchestration. This information falls into three categories:
+The control plane uses databases to store the information required for orchestration. This information falls into three categories:
 
-**Orchestration metadata** (stored as database columns): task, run, action, and trigger identifiers (including task function names and run names), action state (phase, timestamps, cluster assignment), user identity (who created and deployed each run), and scheduling configuration. This is pure operational data.
+**Orchestration metadata**: task, run, action, and trigger identifiers (including task function names and run names), action state (phase, timestamps, cluster assignment), user profiles (name and email pulled from the configured identity provider, identifying who created and deployed each run), and scheduling configuration.
 
-**Task and run definitions** (stored as serialized protobuf blobs): each run submission includes a full TaskSpec containing the task's container image, command, typed interface, resource requirements, and security context. A full TaskSpec is stored on every run submission, content-addressed by digest. RunSpec blobs carry environment variables, security context, labels, and annotations. Trigger specs carry default input values for scheduled runs.
+**Task and run definitions**: each run submission includes a full TaskSpec containing the task's container image, command, typed interface, resource requirements, and security context. A full TaskSpec is stored on every run submission, content-addressed by digest. RunSpec blobs carry environment variables, security context, labels, and annotations. Trigger specs carry default input values for scheduled runs.
 
 **All the above data is encrypted at rest (AWS RDS AES-256/KMS)**.
-
-The following table enumerates the fields inside TaskSpec blobs. Reviewers can verify these against the open-source protobuf definitions in the [flyte-sdk repository](https://github.com/flyteorg/flyte-sdk).
-
-| Field | Classification |
-|-------|----------------|
-| Input/output parameter names and types | Structural metadata |
-| Container image URL, command, args | Structural metadata |
-| Secret group/key references (not values) | Structural metadata |
-| IAM role ARNs, K8s service account names | Structural metadata |
-| **Environment variables** | **Potentially sensitive** |
-| **Default input literal values** | **Potentially sensitive** |
-| **SQL query statements** | **Potentially sensitive** |
-| **Full Kubernetes pod spec** (arbitrary JSON) | **Potentially sensitive** |
-| **Plugin configuration** (arbitrary JSON) | **Potentially sensitive** |
-| **Config key-value pairs** | **Potentially sensitive** |
-| **OAuth2 client IDs and IDP endpoints** | **Potentially sensitive** |
 
 **Error and event information**: error messages from task executions (which may contain customer data from Python tracebacks) and Kubernetes event messages are persisted via the events system. Plugin state (opaque bytes specific to the executor plugin) is stored per action attempt.
 
 The control plane does **not** store bulk customer data payloads (files, directories, DataFrames, code bundles, container images, or inter-task artifacts). When it references such data, it stores only URIs pointing to objects in the customer's object store (for example, `s3://customer-bucket/org/project/domain/run/action/output.pb`).
 
-Certain inline data does transit control plane memory during request processing: structured task inputs on every run submission (`UploadInputs`, up to 10 MB), structured task inputs and outputs on every retrieval (`GetActionData`, up to 20 MiB), secret values during create/update, and execution log streams. This data is encrypted in transit, exists in memory only for the request duration, and is not persisted, cached, or logged.
+Certain inline data does transit control plane memory during request processing: structured task inputs on every run submission (up to 10 MB), structured task inputs and outputs on every retrieval (up to 20 MiB), secret values during create/update, and execution log streams. This data is encrypted in transit, exists in memory only for the request duration, and is not persisted, cached, or logged.
 
 With full access to the control plane databases, an attacker would obtain task definitions (including the potentially sensitive fields listed above), error messages, and execution metadata. They would not obtain bulk data payloads, which reside in the customer's object store. The blast radius is further limited by the transient nature of inline data (not persisted) and the write-only design of the secrets API (values cannot be read back).
 
@@ -52,7 +36,7 @@ TLS terminates at the edge, and all internal communication occurs over encrypted
 
 The control plane consists of several services, each responsible for a specific aspect of orchestration:
 
-**Admin** serves as the UI and API gateway. It handles user-facing requests from both the web console and CLI tools, enforces authentication and authorization, and exposes the ConnectRPC (gRPC-Web) API.
+**Admin** serves as the UI and API gateway. It handles user-facing requests from both the web console and CLI tools, enforces authentication and authorization, and exposes the HTTPS API.
 
 **Queue Service** is responsible for scheduling TaskActions. When a run requires a task to execute, the Queue Service determines the target data plane cluster and creates the appropriate TaskAction.
 
@@ -60,7 +44,7 @@ The control plane consists of several services, each responsible for a specific 
 
 **Cluster Service** maintains cluster health information and handles DNS reconciliation. It monitors the status of registered data plane clusters and ensures that routing information remains current.
 
-**DataProxy** is the control plane's data-handling gateway. It serves several functions: proxying structured task inputs to the data plane object store on run submission (`UploadInputs`), fetching structured task inputs and outputs on retrieval (`GetActionData`), streaming execution logs from the data plane to clients, and brokering presigned URL signing requests for bulk data access. For `UploadInputs` and `GetActionData`, the full data payload (up to 10-20 MiB) transits DataProxy's memory as plaintext, encrypted in transit on both sides. Log streams pass through without content filtering or redaction. In all cases, the data is not persisted, cached, or logged by DataProxy.
+**DataProxy** is the control plane's data-handling gateway. It proxies structured task inputs to the data plane object store on run submission and fetches structured task inputs and outputs on retrieval. It also streams execution logs from the data plane to clients and brokers presigned URL signing requests for bulk data access. For input submission and result retrieval, the full data payload (up to 10-20 MiB) transits DataProxy's memory as plaintext, encrypted in transit on both sides. Log streams pass through without content filtering or redaction. In all cases, the data is not persisted, cached, or logged by DataProxy.
 
 ## Verification
 

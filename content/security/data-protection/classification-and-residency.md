@@ -10,7 +10,7 @@ variants: -flyte +union
 
 Every data type in the Union.ai platform is classified by its residency and access pattern. This classification determines where data is stored and how it is accessed.
 
-| Classification | Data types | At rest | In transit | Enters CP memory? |
+| Classification | Data types | At rest | In transit | Enters control plane memory? |
 |---|---|---|---|---|
 | Bulk Customer Data | Files, directories, DataFrames, code bundles, container images, reports | Customer infrastructure (S3 SSE / GCS / Azure SSE) | HTTPS via presigned URL | **No**: never enters control plane |
 | Inline Customer Data | Structured task inputs/outputs, secret values (during creation), execution log streams | Customer infrastructure (S3 SSE / GCS / Azure SSE; cloud secret managers) | TLS (client→CP) + TLS+mTLS+tunnel (CP→DP) | **Yes**: plaintext in memory, not persisted/cached/logged |

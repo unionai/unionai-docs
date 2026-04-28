@@ -30,4 +30,4 @@ For details on the data flow patterns that apply across all clouds, see [Data fl
 
 **Reviewer focus:** Confirm that the services listed for each cloud provider are accurate.
 
-This is a factual reference table, not a claim requiring active demonstration. Verify against the Union.ai deployment documentation and cloud provider configurations for each supported deployment.
+**How to verify:** This is a factual reference table, not a claim requiring active demonstration. Verify against the Union.ai deployment documentation and cloud provider configurations for each supported deployment.

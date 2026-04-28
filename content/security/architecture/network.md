@@ -28,10 +28,10 @@ The tunnel carries the following traffic, all encrypted in transit:
 
 - **Orchestration instructions**: TaskAction definitions from the control plane to the data plane
 - **State transitions**: execution phase updates from the data plane to the control plane
-- **Structured task inputs**: serialized protobuf task inputs proxied to the data plane object store on run submission (up to 10 MB per request, plaintext in DataProxy memory during transit, not persisted)
-- **Structured task inputs and outputs**: fetched from the data plane object store on result retrieval (up to 20 MiB per request, plaintext in DataProxy memory, not persisted)
-- **Log streams**: execution log content streamed through the DataProxy relay as plaintext in memory, not persisted or filtered
-- **Secret values**: secret values during create/update operations, relayed through DataProxy as plaintext in memory to the data plane secret manager, not persisted in the control plane
+- **Structured task inputs**: serialized protobuf task inputs proxied to the data plane object store on run submission (up to 10 MB per request, plaintext in control plane memory during transit, not persisted)
+- **Structured task inputs and outputs**: fetched from the data plane object store on result retrieval (up to 20 MiB per request, plaintext in control plane memory, not persisted)
+- **Log streams**: execution log content streamed through the control plane as plaintext in memory, not persisted or filtered
+- **Secret values**: secret values during create/update operations, relayed through the control plane as plaintext in memory to the data plane secret manager, not persisted in the control plane
 - **Presigned URL signing requests**: metadata-only requests brokered to generate time-limited data access URLs
 - **Health checks**: bidirectional health and liveness signals
 
@@ -59,12 +59,12 @@ All communication paths in the system use encryption. No unencrypted communicati
 
 | Path | Protocol | Encryption |
 |---|---|---|
-| Client to Control Plane | ConnectRPC (gRPC-Web) over HTTPS | TLS 1.2+ |
+| Client to Control Plane | HTTPS | TLS 1.2+ |
 | Control Plane to Data Plane | Cloudflare Tunnel (outbound-initiated) | mTLS |
 | Client to Object Store | HTTPS (presigned URL) | TLS 1.2+ (cloud provider enforced) |
 | Fluent Bit to Log Aggregator | Cloud provider SDK | TLS (cloud-native) |
 | Task Pods to Object Store | Cloud provider SDK | TLS (cloud-native) |
-| Union.ai to Customer K8s API (BYOC only) | PrivateLink / PSC | TLS (private connectivity) |
+| Union.ai to Customer Kubernetes API (BYOC only) | PrivateLink / PSC | TLS (private connectivity) |
 
 For details on the BYOC private management connection, see [Private connectivity (BYOC)](./private-connectivity).
 

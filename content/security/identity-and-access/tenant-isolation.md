@@ -8,12 +8,7 @@ variants: -flyte +union
 
 ## Database-layer isolation
 
-Every record in the control plane databases is scoped by organization. The org identifier is part of the primary key on all tenant-scoped tables. All database queries are gated by the org context extracted from the caller's authenticated token at the service layer, before any data access occurs. The primary org identity is derived from the request hostname subdomain (not user-supplied input). The standard `ResolveAuthorizationOrg` check blocks cross-org calls by default, and unrecognized services receive a default-deny response.
-
-> [!NOTE]
-> A source code audit identified areas where tenant isolation enforcement could be strengthened: certain internal proxy routes allow an org name from the request path to override the authenticated identity's organization, and the authorizer for these routes does not perform an active check. These routes are intended to be reachable only from internal services behind the service mesh. Additionally, some services (e.g., secret service) allow org override from the request body, relying on the authorization backend to deny cross-org access rather than using the standard `ResolveAuthorizationOrg` check.
-
-Union.ai does not currently use PostgreSQL row-level security (RLS) policies, but the application-layer enforcement is uniform and independently verifiable through the SOC 2 Type II audit.
+Every record in the control plane databases is scoped by organization. The org identifier is part of the primary key on all tenant-scoped tables. The service layer gates every query by org context, derived from the caller's authenticated token, before any data access occurs. The primary org identity comes from the request hostname subdomain (not user-supplied input). The standard cross-org authorization check blocks cross-org calls by default, and unrecognized services receive a default-deny response.
 
 ## Data plane isolation
 
