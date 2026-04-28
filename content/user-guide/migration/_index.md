@@ -2,7 +2,6 @@
 title: Migration
 weight: 22
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # Migration
