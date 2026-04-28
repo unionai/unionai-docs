@@ -10,6 +10,9 @@ This page walks you through the Azure infrastructure required before deploying t
 
 > [!NOTE] **Deployment model**: This guide covers **Self Managed** — you run only the dataplane chart; Union hosts the control plane.
 
+## Prerequisites
+- Azure CLI [installed](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and [configured](https://learn.microsoft.com/en-us/cli/azure/get-started-with-azure-cli?view=azure-cli-latest#sign-in-to-azure)
+
 ## Environment variables
 
 Set these once at the top of your terminal session. All commands below reference them. Customize the names if you are deploying multiple data planes in the same subscription.
