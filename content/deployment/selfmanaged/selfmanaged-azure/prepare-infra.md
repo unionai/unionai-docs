@@ -225,7 +225,7 @@ az identity federated-credential create \
 
 ### Worker identity (task execution pods)
 
-Task pods run under the `default` service account. In single-namespace mode (the default with `low_privilege: true`), create one federated credential for the release namespace:
+Task pods run under the `union` service account. In single-namespace mode (the default with `low_privilege: true`), create one federated credential for the release namespace:
 
 ```bash
 az identity federated-credential create \
@@ -246,7 +246,7 @@ for ns in development staging production; do
     --identity-name $WORKER_IDENTITY_NAME \
     --resource-group $RESOURCE_GROUP \
     --issuer $AKS_OIDC_ISSUER \
-    --subject "system:serviceaccount:${ns}:union" \
+    --subject "system:serviceaccount:${ns}:default" \
     --audiences api://AzureADTokenExchange
 done
 ```
@@ -255,18 +255,29 @@ done
 
 The managed identities need explicit RBAC permissions on the storage account.
 
+- Obtaine the Storage Account ID:
+
+```bash
+STORAGE_ACCOUNT_ID=$(az storage account show \
+    --name $STORAGE_ACCOUNT \
+    --resource-group $RESOURCE_GROUP \
+    --query id -o tsv)
+```
+
 ```bash
 # Backend identity: read/write workflow metadata
 az role assignment create \
   --assignee-object-id $BACKEND_PRINCIPAL_ID \
   --assignee-principal-type ServicePrincipal \
-  --role "Storage Blob Data Contributor" 
+  --role "Storage Blob Data Contributor" \
+  --scope $STORAGE_ACCOUNT_ID
 
 # Worker identity: read/write artifacts
 az role assignment create \
   --assignee-object-id $WORKER_PRINCIPAL_ID \
   --assignee-principal-type ServicePrincipal \
-  --role "Storage Blob Data Contributor"
+  --role "Storage Blob Data Contributor" \
+  --scope $STORAGE_ACCOUNT_ID
 ```
 
 ## 8. Azure Key Vault (optional)
