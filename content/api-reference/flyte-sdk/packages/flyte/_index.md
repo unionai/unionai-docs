@@ -1,9 +1,8 @@
 ---
 title: flyte
-version: 2.1.9
+version: 2.2.0
 variants: +flyte +union
 layout: py_api
-sidebar_expanded: true
 ---
 
 # flyte
@@ -51,7 +50,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`Neuron()`](#neuron) | Create a Neuron device instance. |
 | [`TPU()`](#tpu) | Create a TPU device instance. |
 | [`build()`](#build) | Build an image. |
-| [`build_images()`](#build_images) | Build the images for the given environments. |
+| [`build_images()`](#build_images) | Build the images for the given environment. |
 | [`ctx()`](#ctx) | Returns flyte. |
 | [`current_domain()`](#current_domain) | Returns the current domain from Runtime environment (on the cluster) or from the initialized configuration. |
 | [`current_project()`](#current_project) | Returns the current project from the Runtime environment (on the cluster) or from the initialized configuration. |
@@ -218,14 +217,16 @@ if __name__ == "__main__":
 ```python
 def build_images(
     envs: Environment,
+    copy_style: 'CopyFiles',
 ) -> ImageCache
 ```
-Build the images for the given environments.
+Build the images for the given environment.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `envs` | `Environment` | Environment to build images for. |
+| `copy_style` | `'CopyFiles'` | Copy style that the eventual deploy will use. Must match the deploy's ``--copy-style`` so the image content hashes — and therefore the registry tags — line up, letting deploy reuse the pre-built image. |
 
 **Returns:** ImageCache containing the built images.
 
@@ -716,6 +717,7 @@ def run_python_script(
     name: 'Optional[str]',
     debug: bool,
     output_dir: 'Optional[str]',
+    include_files: 'Optional[List[str]]',
 ) -> 'Run'
 ```
 Package and run a Python script on a remote Flyte cluster.
@@ -746,6 +748,7 @@ or `flyte.init_from_config()`), consistent with `flyte.run()`.
 | `name` | `'Optional[str]'` | Run name. If omitted, a random name is generated. |
 | `debug` | `bool` | If True, run the task as a VS Code debug task, starting a code-server in the container so you can connect via the UI to interactively debug/run the task. |
 | `output_dir` | `'Optional[str]'` | |
+| `include_files` | `'Optional[List[str]]'` | Extra paths or glob patterns to bundle alongside the script. Relative entries anchor at the script's directory; absolute paths pass through unchanged. Example: `["*.py", "configs/settings.yaml"]`. |
 
 **Returns:** A `flyte.remote.Run` handle for the remote execution.
 

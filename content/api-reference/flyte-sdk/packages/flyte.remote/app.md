@@ -1,6 +1,6 @@
 ---
 title: App
-version: 2.1.9
+version: 2.2.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,12 +24,12 @@ class App(
 
 | Property | Type | Description |
 |-|-|-|
-| `deployment_status` | `None` | Get the deployment status of the app |
-| `desired_state` | `None` | Get the desired state of the app. |
-| `endpoint` | `None` | Get the public endpoint URL of the app. |
-| `name` | `None` | Get the name of the app. |
-| `revision` | `None` | Get the revision number of the app. |
-| `url` | `None` | Get the console URL for viewing the app. |
+| `deployment_status` | `app_definition_pb2.Status.DeploymentStatus` | Get the deployment status of the app |
+| `desired_state` | `app_definition_pb2.Spec.DesiredState` | Get the desired state of the app. |
+| `endpoint` | `str` | Get the public endpoint URL of the app. |
+| `name` | `str` | Get the name of the app. |
+| `revision` | `int` | Get the revision number of the app. |
+| `url` | `str` | Get the console URL for viewing the app. |
 
 ## Methods
 

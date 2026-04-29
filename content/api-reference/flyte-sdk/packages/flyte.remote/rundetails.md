@@ -1,6 +1,6 @@
 ---
 title: RunDetails
-version: 2.1.9
+version: 2.2.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -30,9 +30,9 @@ class RunDetails(
 
 | Property | Type | Description |
 |-|-|-|
-| `action_id` | `None` | Get the action ID. |
-| `name` | `None` | Get the name of the action. |
-| `task_name` | `None` | Get the name of the task. |
+| `action_id` | `identifier_pb2.ActionIdentifier` | Get the action ID. |
+| `name` | `str` | Get the name of the action. |
+| `task_name` | `str \| None` | Get the name of the task. |
 
 ## Methods
 

@@ -1,6 +1,6 @@
 ---
 title: ContainerTask
-version: 2.1.9
+version: 2.2.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -52,8 +52,8 @@ class ContainerTask(
 
 | Property | Type | Description |
 |-|-|-|
-| `native_interface` | `None` |  |
-| `source_file` | `None` |  |
+| `native_interface` | `NativeInterface` |  |
+| `source_file` | `Optional[str]` |  |
 
 ## Methods
 

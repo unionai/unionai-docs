@@ -27,9 +27,9 @@ class Assignment(
 
 | Property | Type | Description |
 |-|-|-|
-| `policies` | `None` |  |
-| `roles` | `None` |  |
-| `subject` | `None` |  |
+| `policies` | `list[str]` |  |
+| `roles` | `list[str]` |  |
+| `subject` | `str` |  |
 
 ## Methods
 

@@ -4,7 +4,6 @@ weight: 1
 variants: +flyte +union
 top_menu: true
 site_root: true
-sidebar_expanded: true
 ---
 
 {{< variant flyte >}}
