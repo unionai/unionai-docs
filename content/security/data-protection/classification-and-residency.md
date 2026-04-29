@@ -39,7 +39,9 @@ For details on the architectural separation that enforces these residency guaran
 
 **How to verify:**
 
-Run a workflow with recognizable data (e.g., a known string or file), then verify the location of each data type:
+The task definition schema is derived from the open-source Flyte protobuf definitions in the [flyte-sdk repository](https://github.com/flyteorg/flyte-sdk). Review the `TaskTemplate` and `RunSpec` protobuf schemas and compare them to the field enumeration in the classification table above to confirm that the fields stored match the documented classifications.
+
+Then run a workflow with recognizable data (e.g., a known string or file), and verify the location of each data type:
 
 1. **Inputs/outputs**: confirm they are in the customer's object store:
 
