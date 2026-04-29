@@ -33,10 +33,11 @@ Flyte 2 integrations fall into the following categories:
 
 1. **Distributed compute**: Provision transient compute clusters to run tasks across multiple nodes, with automatic lifecycle management.
 2. **Agentic AI**: Support for various common aspects of agentic AI applications.
-3. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
-4. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
-5. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
-6. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
+3. **Configuration**: Compose and pass hierarchical configuration objects between tasks, with type-safe schemas and CLI/YAML composition.
+4. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
+5. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
+6. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
+7. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
 
 ## Distributed compute
 
@@ -169,6 +170,17 @@ Experiment tracking integrations let you log metrics, parameters, and artifacts 
 | ------------------------------------ | ---------------------------- | --------------------------------------------- |
 | [MLflow](./mlflow/_index)            | MLflow experiment tracking   | Experiment tracking, autologging, model registry |
 | [Weights and Biases](./wandb/_index) | Weights & Biases integration | Experiment tracking and hyperparameter tuning |
+
+## Configuration
+
+Configuration integrations let you compose and pass hierarchical configuration objects between Flyte tasks, with type-safe schemas and CLI/YAML composition.
+
+### Supported configuration integrations
+
+| Plugin                              | Description                                                | Common use cases                                            |
+| ----------------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------- |
+| [OmegaConf](./omegaconf/_index)     | `DictConfig` / `ListConfig` as native task input and output types | Passing composed configs between tasks, structured configs, YAML-driven pipelines |
+| [Hydra](./hydra/_index)             | Hydra config composition and sweep submission for Flyte tasks    | YAML-driven experiment composition, grid and Bayesian sweeps, hardware presets |
 
 ## Data validation
 
