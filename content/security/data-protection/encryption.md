@@ -89,6 +89,32 @@ The following table summarizes the encryption state for each data category acros
 
 This verification is fully self-service.
 
+### Customer-managed key authority
+
+**Reviewer focus:** Confirm that bulk data is unreadable without the customer's encryption keys, regardless of who holds a presigned URL.
+
+**How to verify:**
+
+1. From a successful workflow run, capture a presigned URL for an output artifact (Union.ai UI, browser developer tools → Network tab, or via `uctl`).
+
+2. Confirm the URL fetches the artifact:
+
+   ```bash
+   curl -o /tmp/output "<presigned-url>"
+   ```
+
+3. Disable the customer-managed key that encrypts the bucket:
+
+   ```bash
+   aws kms disable-key --key-id <bucket-kms-key-id>
+   ```
+
+   On GCP, disable the CMEK key version protecting the bucket. On Azure, disable the customer-managed key in Key Vault.
+
+4. Re-fetch the same URL (or issue a fresh one). The request should fail with `KMS.DisabledException` (AWS) or the equivalent. Re-enable the key to restore access.
+
+The presigned URL itself is unchanged and still authentic. The data behind it is opaque without the customer's key -- proof that customer-controlled keys are the final gate on bulk data access, independent of who can issue URLs.
+
 ### Encryption in transit
 
 **Reviewer focus:** Confirm that all communication paths use TLS and that no plaintext channels exist.

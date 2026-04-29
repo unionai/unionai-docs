@@ -8,15 +8,17 @@ variants: -flyte +union
 
 The control plane is the Union.ai-hosted component that orchestrates task execution, manages user access, and provides the web interface. It runs on AWS infrastructure managed by Union.ai and is covered by Union.ai's SOC 2 Type II certification.
 
-## What it stores
+## What it does and does not store
 
-The control plane uses databases to store the information required for orchestration:
+The control plane stores the information required for orchestration:
 
-- **Orchestration metadata**: identifiers, action state (phase, timestamps, cluster assignment), user profiles, and scheduling configuration.
-- **Task and run definitions**: each run submission includes a full TaskSpec (container image, typed interface, resource requirements, security context) and a RunSpec (environment variables, labels, annotations). Trigger specs carry default input values for scheduled runs.
-- **Error and event information**: error messages from task executions (which may contain customer data from Python tracebacks), Kubernetes event messages, and per-attempt plugin state.
+- **Orchestration metadata**: Identifiers, action state (phase, timestamps, cluster assignment), user profiles, and scheduling configuration.
+- **Task and run definitions**: Each run submission includes a full TaskSpec (container image, typed interface, resource requirements, security context) and a RunSpec (environment variables, labels, annotations). Trigger specs carry default input values for scheduled runs.
+- **Error and event information**: Error messages from task executions (which may contain customer data from Python tracebacks), Kubernetes event messages, and per-attempt plugin state.
 
-The control plane does not store bulk customer data payloads. When it references such data it stores only URIs pointing to objects in the customer's object store (for example, `s3://customer-bucket/org/project/domain/run/action/output.pb`).
+The control plane does not store:
+
+- **Bulk customer data payloads**: When it references such data it stores only URIs pointing to objects in the customer's object store (for example, `s3://customer-bucket/org/project/domain/run/action/output.pb`).
 
 For the full classification of what is and isn't stored in the control plane, the sensitive fields that may appear in task definitions, and how inline data (structured I/O, secret values during creation, log streams) transits control plane memory without being persisted, see [Data classification and residency](../data-protection/classification-and-residency).
 
