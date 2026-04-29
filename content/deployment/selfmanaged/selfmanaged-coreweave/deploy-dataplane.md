@@ -121,28 +121,23 @@ If you have not yet set up the required CoreWeave resources (CKS cluster, AI Obj
    | `config.k8s.plugins.k8s.default-env-vars` (entry: `FLYTE_AWS_ENDPOINT`) | `https://<BUCKET_NAME>.cwobject.com` | Bucket-specific endpoint injected into task pods.               |
    | `executor.extraEnvVars.FLYTE_AWS_S3_ADDRESSING_STYLE`                   | `virtual`                            | Configures the executor to use virtual-hosted style addressing. |
 
-4. Clone the Union Helm charts repository and check out the latest stable release:
-
-   Replace `<RELEASE_TAG>` with the latest stable release tag (for example, `dataplane-2026.3.3`). Check the [Union Helm charts repository](https://github.com/unionai/helm-charts) for available tags.
+4. Add the {{< key product_name >}} Helm repo:
 
    ```bash
-   git clone https://github.com/unionai/helm-charts.git
-   cd helm-charts
-   git checkout <RELEASE_TAG>
+   helm repo add unionai https://unionai.github.io/helm-charts/
+   helm repo update
    ```
 
 5. Install the Custom Resource Definitions (CRDs):
 
    ```bash
-   helm upgrade --install unionai-dataplane-crds charts/dataplane-crds
+   helm upgrade --install unionai-dataplane-crds unionai/dataplane-crds
    ```
 
-6. Build the chart dependencies and install the data plane. Replace `<PATH_TO_VALUES_FILE>` with the path to the Helm values file you customized in step 3.
+6. Install the data plane. Replace `<PATH_TO_VALUES_FILE>` with the path to the Helm values file you customized in step 3.
 
    ```bash
-   cd charts/dataplane
-   helm dependency build
-   helm upgrade --install unionai-dataplane . \
+   helm upgrade --install unionai-dataplane unionai/dataplane \
      --namespace union --create-namespace \
      --values <PATH_TO_VALUES_FILE> \
      --timeout 10m
