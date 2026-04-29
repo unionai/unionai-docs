@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 2.2.0
+version: 2.2.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -23,6 +23,7 @@ Remote Entities that are accessible from the Union Server once deployed or creat
 | [`Run`](../flyte.remote/run) | A class representing a run of a task. |
 | [`RunDetails`](../flyte.remote/rundetails) | A class representing a run of a task. |
 | [`Secret`](../flyte.remote/secret) |  |
+| [`Settings`](../flyte.remote/settings) | Hierarchical configuration settings with inheritance support. |
 | [`Task`](../flyte.remote/task) |  |
 | [`TaskDetails`](../flyte.remote/taskdetails) |  |
 | [`TimeFilter`](../flyte.remote/timefilter) | Filter for time-based fields (e. |

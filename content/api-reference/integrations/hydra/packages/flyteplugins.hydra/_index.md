@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.hydra
-version: 2.2.0
+version: 2.2.1
 variants: +flyte +union
 layout: py_api
 ---
