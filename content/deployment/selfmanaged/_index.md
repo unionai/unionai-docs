@@ -23,7 +23,7 @@ Union.ai has no access to your cluster, providing the highest level of data isol
    - [GCP](./selfmanaged-gcp/_index)
    - [Azure](./selfmanaged-azure/_index)
    - [OCI](./selfmanaged-oci/_index)
-   - [CoreWeave](./selfmanaged-coreweave)
+   - [CoreWeave](./selfmanaged-coreweave/_index)
 
 ## Configuration
 
