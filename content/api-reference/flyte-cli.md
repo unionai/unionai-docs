@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.2.0
+version: 2.2.1
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -23,6 +23,7 @@ This is the command line interface for Flyte.
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
 | `devbox` | [`delete`](#flyte-delete-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
+| `settings` | [`edit`](#flyte-edit-settings), [`get`](#flyte-get-settings)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
@@ -39,8 +40,9 @@ This is the command line interface for Flyte.
 | `create` | [`config`](#flyte-create-config), [`project`](#flyte-create-project), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
 | `delete` | [`app`](#flyte-delete-app), [`devbox`](#flyte-delete-devbox), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
 | [`deploy`](#flyte-deploy) | - |
+| `edit` | [`settings`](#flyte-edit-settings)  |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
+| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
@@ -69,6 +71,7 @@ This is the command line interface for Flyte.
 | `user` | [`create⁺`](#flyte-create-user), [`delete⁺`](#flyte-delete-user), [`get⁺`](#flyte-get-user)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
 | `devbox` | [`delete`](#flyte-delete-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
+| `settings` | [`edit`](#flyte-edit-settings), [`get`](#flyte-get-settings)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `cluster` | [`get⁺`](#flyte-get-cluster)  |
 | `io` | [`get`](#flyte-get-io)  |
@@ -87,8 +90,9 @@ This is the command line interface for Flyte.
 | `create` | [`api-key⁺`](#flyte-create-api-key), [`assignment⁺`](#flyte-create-assignment), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
 | `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`devbox`](#flyte-delete-devbox), [`policy⁺`](#flyte-delete-policy), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
 | [`deploy`](#flyte-deploy) | - |
+| `edit` | [`settings`](#flyte-edit-settings)  |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
@@ -796,6 +800,43 @@ flyte deploy hello.py --help
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
+### flyte edit
+
+**`flyte edit COMMAND [ARGS]...`**
+
+#### flyte edit settings
+
+**`flyte edit settings [OPTIONS]`**
+
+Edit hierarchical settings interactively — or apply a YAML file directly.
+
+    **Interactive mode** (default). Opens settings in your ``$EDITOR``. Three
+    comment tiers appear:
+
+    - ``###`` section headers and the scope line
+    - ``##`` per-field descriptions and inline metadata
+    - ``#`` inactive settings (uncomment the single ``#`` to activate)
+
+    If the edited YAML fails to parse, the editor reopens with an error
+    header so you can fix the syntax without losing your edits. If you
+    decline to reopen — or if the server rejects the update — your buffer
+    is saved under ``~/.flyte/settings-edit-<timestamp>.yaml``.
+
+    **Non-interactive mode**: pass ``--from-file <path>`` to skip the editor
+    entirely. The file's contents are parsed, the diff is printed, and the
+    overrides are applied without a confirmation prompt. Ideal for
+    CI/automation.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`--from-file`
+`-f`{{< /multiline >}} | `file` |  | Apply overrides from a YAML file and skip the editor. The file can be produced by `flyte get settings` (comment markers are honoured) or be a plain YAML mapping of flat dot-notation keys to values. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
 ### flyte gen
 
 **`flyte gen COMMAND [ARGS]...`**
@@ -1155,6 +1196,51 @@ Get a list of all secrets, or details of a specific secret by name.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+#### flyte get settings
+
+**`flyte get settings [OPTIONS]`**
+
+Get settings for a scope as editable YAML.
+
+Renders three sections:
+
+
+* Local overrides — uncommented, applied at this scope.
+* Inherited settings — commented, with the scope they come from.
+* Available settings — commented placeholders for every key that
+  isn't set anywhere yet, so you can see what can be configured.
+
+
+Examples:
+
+```bash
+# Get ORG-level settings
+flyte get settings
+
+# Get settings for a domain
+flyte get settings --domain production
+
+# Get settings for a project (inherits from domain, which inherits from org)
+flyte get settings --domain production --project ml-pipeline
+
+# Dump to a file, edit it, then apply non-interactively
+flyte get settings --domain production -o prod.yaml
+# ...edit prod.yaml...
+flyte edit settings --domain production --from-file prod.yaml
+```
+
+Use `flyte edit settings` to interactively modify these values.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`--to-file`
+`-o`{{< /multiline >}} | `file` |  | Write the scope's YAML to this file instead of printing it. The file round-trips through `flyte edit settings --from-file`. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`

@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.2.0
+version: 2.2.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -128,6 +128,7 @@ layout: py_api
 | [`flyte.remote.Run`](../packages/flyte.remote/run) |A class representing a run of a task. |
 | [`flyte.remote.RunDetails`](../packages/flyte.remote/rundetails) |A class representing a run of a task. |
 | [`flyte.remote.Secret`](../packages/flyte.remote/secret) | |
+| [`flyte.remote.Settings`](../packages/flyte.remote/settings) |Hierarchical configuration settings with inheritance support. |
 | [`flyte.remote.Task`](../packages/flyte.remote/task) | |
 | [`flyte.remote.TaskDetails`](../packages/flyte.remote/taskdetails) | |
 | [`flyte.remote.TimeFilter`](../packages/flyte.remote/timefilter) |Filter for time-based fields (e. |
