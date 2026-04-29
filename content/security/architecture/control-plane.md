@@ -28,19 +28,14 @@ The control plane runs on AWS with multi-AZ redundancy to ensure high availabili
 
 TLS terminates at the edge, and all internal communication occurs over encrypted channels. Automated backups run on a defined schedule with point-in-time recovery capability. Union.ai maintains disaster recovery procedures and applies security patches on a regular cadence. The SOC 2 Type II report covers the availability, security, and operational controls of this infrastructure.
 
-## Components
+## Capabilities
 
-The control plane consists of several services, each responsible for a specific aspect of orchestration:
+The control plane exposes the following capabilities:
 
-**Admin** serves as the UI and API gateway. It handles user-facing requests from both the web console and CLI tools, enforces authentication and authorization, and exposes the HTTPS API.
-
-**Queue Service** is responsible for scheduling TaskActions. When a run requires a task to execute, the Queue Service determines the target data plane cluster and creates the appropriate TaskAction.
-
-**Actions Service** receives state transitions from data plane Executors. As tasks start, succeed, fail, or retry, the Actions Service records these transitions and updates the run state.
-
-**Cluster Service** maintains cluster health information and handles DNS reconciliation. It monitors the status of registered data plane clusters and ensures that routing information remains current.
-
-**DataProxy** is the control plane's data-handling gateway. It proxies structured task inputs and outputs between clients and the data plane object store, streams execution logs from the data plane to clients, and brokers presigned URL signing requests for bulk data access. See [Data flow](../data-protection/data-flow) for what these pathways carry and how data is handled in transit.
+- **API and UI gateway** -- an authenticated HTTPS API and web console for users, the SDK, and the CLI. All requests are subject to authentication and RBAC enforcement before any orchestration logic runs.
+- **Scheduling and execution tracking** -- schedules TaskActions across registered data plane clusters and records execution state (phase transitions, timestamps, errors) reported back from the data plane.
+- **Cluster registry** -- maintains the inventory of registered data plane clusters and their health, and routes orchestration traffic accordingly.
+- **Data gateway** -- proxies structured task inputs and outputs between clients and the data plane object store, streams execution logs from the data plane to clients, and brokers presigned URL signing requests for bulk data access. See [Data flow](../data-protection/data-flow) for what these pathways carry and how data is handled in transit.
 
 ## Verification
 
