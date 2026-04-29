@@ -1,7 +1,7 @@
 ---
 title: JsonlFile
-version: 2.1.9
-variants: +flyte +byoc +selfmanaged +union
+version: 2.2.0
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -82,7 +82,7 @@ validated to form a valid model.
 
 | Property | Type | Description |
 |-|-|-|
-| `lazy_uploader` | `None` |  |
+| `lazy_uploader` | `Callable[[], Coroutine[Any, Any, tuple[str \| None, str]]] \| None` |  |
 
 ## Methods
 

@@ -2,7 +2,6 @@
 title: Platform configuration
 variants: -flyte -union
 weight: 14
-sidebar_expanded: true
 llm_readable_bundle: true
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: CodeSolution
-version: 2.1.9
-variants: +flyte +byoc +selfmanaged +union
+version: 2.2.0
+variants: +flyte +union
 layout: py_api
 ---
 

@@ -59,7 +59,6 @@ include = "include/api.flyte-sdk.md"
 output_folder = "content/api-reference/flyte-sdk"
 version_file = "content/api-reference/flyte-sdk/_index.md"
 weight = 4
-expanded = true
 no_flatten = true
 variants = "+flyte +union"
 
@@ -131,6 +130,12 @@ title = "Human-in-the-Loop"
 name = "hitl"
 
 [[plugins]]
+package = "flyteplugins-hydra"
+plugin = "flyteplugins.hydra"
+title = "Hydra"
+name = "hydra"
+
+[[plugins]]
 package = "flyteplugins-jsonl"
 plugin = "flyteplugins.jsonl"
 title = "JSONL"
@@ -147,6 +152,12 @@ package = "flyteplugins-openai"
 plugin = "flyteplugins.openai"
 title = "OpenAI"
 name = "openai"
+
+[[plugins]]
+package = "flyteplugins-omegaconf"
+plugin = "flyteplugins.omegaconf"
+title = "OmegaConf"
+name = "omegaconf"
 
 [[plugins]]
 package = "flyteplugins-polars"
