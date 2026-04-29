@@ -205,7 +205,7 @@ Similarity of Image is determined by the python reference, not by value.
 
 If images are different, an error is raised. If no image is defined, the image is set to "auto".
 
-For any other tasks that need to be use these tasks, the returned environment can be used in the `depends_on`
+For any other tasks that need to be use by these tasks, the returned environment can be used in the `depends_on`
 attribute of the other TaskEnvironment.
 
 
