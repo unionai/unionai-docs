@@ -72,7 +72,7 @@ class BaseConfig:
     helm_chart_repo: str = "https://github.com/unionai/helm-charts.git"
     # Empty = use the published unionai/dataplane chart from the repo.
     # Override via --helm_chart_branch if you want to test a WIP branch.
-    helm_chart_branch: str = "enghabu/skip-registries"
+    helm_chart_branch: str = ""
     helm_chart_path: str = "charts/dataplane"
     helm_values_override: str = ""  # extra values file (e.g. "values-legacy.yaml" from the chart)
     dataplane_image_sha: str = ""  # if set, passed as --set global.image.tag=<sha>

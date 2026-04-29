@@ -662,11 +662,14 @@ async def main(
     skip_smoke_tests: bool = False,
     helm_values_override: str = "",
     dataplane_image_sha: str = "",
+    helm_chart_branch: str = "",
 ) -> E2EResult:
     """Four phases: infra → deploy → verify → (teardown).
 
     Pass helm_values_override="values-legacy.yaml" to test with legacy defaults.
     Pass dataplane_image_sha=<sha> to override the dataplane image tag.
+    Pass helm_chart_branch=<branch> to test a WIP branch of unionai/helm-charts
+    (empty = use the published unionai/dataplane chart).
 
     ``skip_smoke_tests`` skips Phase 3's run_smoke_suite — useful while the
     cluster-pool-attributes permission issue is unresolved, or when you only
@@ -679,6 +682,7 @@ async def main(
         skip_teardown=skip_teardown,
         helm_values_override=helm_values_override,
         dataplane_image_sha=dataplane_image_sha,
+        helm_chart_branch=helm_chart_branch,
     )
     await hydrate_credentials()
     await init_union_client(cfg)
@@ -792,6 +796,7 @@ async def launch_remote(
     aws_region: str = "us-east-2",
     skip_teardown: bool = False,
     dataplane_image_sha: str = "",
+    helm_chart_branch: str = "",
 ) -> str:
     """flyte.run(main, ...) against the remote control plane.
 
@@ -806,6 +811,7 @@ async def launch_remote(
         aws_region=aws_region,
         skip_teardown=skip_teardown,
         dataplane_image_sha=dataplane_image_sha,
+        helm_chart_branch=helm_chart_branch,
     )
     logger.info(f"Launched remote run: {run.name}")
     logger.info(f"  URL: {run.url}")
