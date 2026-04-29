@@ -75,7 +75,7 @@ class BaseConfig:
     helm_chart_branch: str = ""
     helm_chart_path: str = "charts/dataplane"
     helm_values_override: str = ""  # extra values file (e.g. "values-legacy.yaml" from the chart)
-    dataplane_image_sha: str = ""  # if set, passed as --set global.image.tag=<sha>
+    dataplane_image_sha: str = ""  # if set, passed as --set image.union.tag=<sha>
 
     cluster_healthy_timeout: int = 300
     validate_timeout: int = 300
