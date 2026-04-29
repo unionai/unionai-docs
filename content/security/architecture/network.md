@@ -28,18 +28,17 @@ The tunnel carries the following traffic, all encrypted in transit:
 
 - **Orchestration instructions**: TaskAction definitions from the control plane to the data plane
 - **State transitions**: execution phase updates from the data plane to the control plane
-- **Structured task inputs**: serialized protobuf task inputs proxied to the data plane object store on run submission (up to 10 MB per request, plaintext in control plane memory during transit, not persisted)
-- **Structured task inputs and outputs**: fetched from the data plane object store on result retrieval (up to 20 MiB per request, plaintext in control plane memory, not persisted)
-- **Log streams**: execution log content streamed through the control plane as plaintext in memory, not persisted or filtered
-- **Secret values**: secret values during create/update operations, relayed through the control plane as plaintext in memory to the data plane secret manager, not persisted in the control plane
+- **Structured task inputs and outputs**: protobuf payloads proxied between clients and the data plane object store on run submission and result retrieval
+- **Log streams**: execution log content streamed from the data plane through the control plane to clients
+- **Secret values**: secret values during create/update operations, relayed to the data plane secrets backend
 - **Presigned URL signing requests**: metadata-only requests brokered to generate time-limited data access URLs
 - **Health checks**: bidirectional health and liveness signals
 
-Bulk customer data (files, directories, DataFrames, code bundles, and container images) does **not** traverse the tunnel. These objects are transferred directly between clients and the customer's object store via presigned URLs, bypassing the control plane entirely.
+Bulk customer data (files, directories, DataFrames, code bundles, and container images) does not traverse the tunnel; it transfers directly between clients and the customer's object store via presigned URLs. For payload size limits, in-memory handling, and how each pathway is encrypted at every hop, see [Data flow](../data-protection/data-flow).
 
 ## Regional endpoints
 
-Union.ai provides control plane endpoints in multiple regions. Customers select the region closest to their data plane deployment to minimize latency.
+Union.ai provides control plane endpoints in multiple regions. Customers select the region closest to their data plane deployment to minimize latency. Region selection also has data residency implications -- see [Data classification and residency](../data-protection/classification-and-residency#data-residency).
 
 | Region | Location | Domain |
 |---|---|---|
@@ -110,7 +109,7 @@ For details on the BYOC private management connection, see [Private connectivity
 
    Logs should show health checks, connection establishment, and message exchanges.
 
-2. Analyze VPC Flow Logs for traffic patterns. Bulk data transfers (files, DataFrames, code bundles) should flow directly between task pods and the customer's object store endpoints (S3/GCS/Azure Blob), not through Cloudflare IPs. Structured task I/O (up to 10-20 MiB per request) and log streams will flow through the tunnel as documented.
+2. Analyze VPC Flow Logs for traffic patterns. Bulk data transfers (files, DataFrames, code bundles) should flow directly between task pods and the customer's object store endpoints (S3/GCS/Azure Blob), not through Cloudflare IPs. Structured task I/O and log streams will flow through the tunnel as documented.
 
 3. Use browser developer tools (Network tab) in the Union.ai UI to confirm that binary output artifacts are fetched via presigned URLs (resolving to the customer's storage domain), while structured outputs are fetched via the control plane API.
 

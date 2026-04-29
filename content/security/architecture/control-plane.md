@@ -10,25 +10,19 @@ The control plane is the Union.ai-hosted component that orchestrates task execut
 
 ## What it stores
 
-The control plane uses databases to store the information required for orchestration. This information falls into three categories:
+The control plane uses databases to store the information required for orchestration:
 
-**Orchestration metadata**: task, run, action, and trigger identifiers (including task function names and run names), action state (phase, timestamps, cluster assignment), user profiles (name and email pulled from the configured identity provider, identifying who created and deployed each run), and scheduling configuration.
+- **Orchestration metadata**: identifiers, action state (phase, timestamps, cluster assignment), user profiles, and scheduling configuration.
+- **Task and run definitions**: each run submission includes a full TaskSpec (container image, typed interface, resource requirements, security context) and a RunSpec (environment variables, labels, annotations). Trigger specs carry default input values for scheduled runs.
+- **Error and event information**: error messages from task executions (which may contain customer data from Python tracebacks), Kubernetes event messages, and per-attempt plugin state.
 
-**Task and run definitions**: each run submission includes a full TaskSpec containing the task's container image, command, typed interface, resource requirements, and security context. A full TaskSpec is stored on every run submission, content-addressed by digest. RunSpec blobs carry environment variables, security context, labels, and annotations. Trigger specs carry default input values for scheduled runs.
+The control plane does not store bulk customer data payloads. When it references such data it stores only URIs pointing to objects in the customer's object store (for example, `s3://customer-bucket/org/project/domain/run/action/output.pb`).
 
-**All the above data is encrypted at rest (AWS RDS AES-256/KMS)**.
-
-**Error and event information**: error messages from task executions (which may contain customer data from Python tracebacks) and Kubernetes event messages are persisted via the events system. Plugin state (opaque bytes specific to the executor plugin) is stored per action attempt.
-
-The control plane does **not** store bulk customer data payloads (files, directories, DataFrames, code bundles, container images, or inter-task artifacts). When it references such data, it stores only URIs pointing to objects in the customer's object store (for example, `s3://customer-bucket/org/project/domain/run/action/output.pb`).
-
-Certain inline data does transit control plane memory during request processing: structured task inputs on every run submission (up to 10 MB), structured task inputs and outputs on every retrieval (up to 20 MiB), secret values during create/update, and execution log streams. This data is encrypted in transit, exists in memory only for the request duration, and is not persisted, cached, or logged.
-
-With full access to the control plane databases, an attacker would obtain task definitions (including the potentially sensitive fields listed above), error messages, and execution metadata. They would not obtain bulk data payloads, which reside in the customer's object store. The blast radius is further limited by the transient nature of inline data (not persisted) and the write-only design of the secrets API (values cannot be read back).
+For the full classification of what is and isn't stored in the control plane, the sensitive fields that may appear in task definitions, and how inline data (structured I/O, secret values during creation, log streams) transits control plane memory without being persisted, see [Data classification and residency](../data-protection/classification-and-residency).
 
 ## Infrastructure
 
-The control plane runs on AWS with multi-AZ redundancy to ensure high availability. Its primary data store is managed PostgreSQL (AWS RDS) with AES-256 encryption at rest and automated failover across availability zones. The database is isolated within a VPC with restricted security groups that permit access only from control plane application services.
+The control plane runs on AWS with multi-AZ redundancy to ensure high availability. It uses managed cloud database services for orchestration metadata, task/run definitions, execution events, and error messages. All backends are encrypted at rest and isolated within a VPC with restricted security groups that permit access only from control plane application services. See [Encryption](../data-protection/encryption) for at-rest encryption details by data type.
 
 TLS terminates at the edge, and all internal communication occurs over encrypted channels. Automated backups run on a defined schedule with point-in-time recovery capability. Union.ai maintains disaster recovery procedures and applies security patches on a regular cadence. The SOC 2 Type II report covers the availability, security, and operational controls of this infrastructure.
 
@@ -44,7 +38,7 @@ The control plane consists of several services, each responsible for a specific 
 
 **Cluster Service** maintains cluster health information and handles DNS reconciliation. It monitors the status of registered data plane clusters and ensures that routing information remains current.
 
-**DataProxy** is the control plane's data-handling gateway. It proxies structured task inputs to the data plane object store on run submission and fetches structured task inputs and outputs on retrieval. It also streams execution logs from the data plane to clients and brokers presigned URL signing requests for bulk data access. For input submission and result retrieval, the full data payload (up to 10-20 MiB) transits DataProxy's memory as plaintext, encrypted in transit on both sides. Log streams pass through without content filtering or redaction. In all cases, the data is not persisted, cached, or logged by DataProxy.
+**DataProxy** is the control plane's data-handling gateway. It proxies structured task inputs and outputs between clients and the data plane object store, streams execution logs from the data plane to clients, and brokers presigned URL signing requests for bulk data access. See [Data flow](../data-protection/data-flow) for what these pathways carry and how data is handled in transit.
 
 ## Verification
 
@@ -54,7 +48,7 @@ The control plane consists of several services, each responsible for a specific 
 
 **How to verify:**
 
-1. The task definition schema is derived from the open-source Flyte protobuf definitions in the [flyte-sdk repository](https://github.com/flyteorg/flyte-sdk). Review the `TaskTemplate` and `RunSpec` protobuf schemas and compare them to the field enumeration table above to confirm that the fields stored match the documented classifications.
+1. The task definition schema is derived from the open-source Flyte protobuf definitions in the [flyte-sdk repository](https://github.com/flyteorg/flyte-sdk). Review the `TaskTemplate` and `RunSpec` protobuf schemas and compare them to the field enumeration in [Data classification and residency](../data-protection/classification-and-residency) to confirm that the fields stored match the documented classifications.
 
 2. Query the control plane API for a completed execution:
 
@@ -70,7 +64,7 @@ The control plane consists of several services, each responsible for a specific 
    uctl get task <task-name> -o json
    ```
 
-   The response will include task definition fields (container spec, typed interface, resource requirements). Check whether environment variables, default input values, or other potentially sensitive fields from the table above are present, and confirm they match what you expect for that task.
+   The response will include task definition fields (container spec, typed interface, resource requirements). Check whether environment variables, default input values, or other potentially sensitive fields documented in [Data classification and residency](../data-protection/classification-and-residency) are present, and confirm they match what you expect for that task.
 
 ### Infrastructure
 

@@ -7,7 +7,7 @@ mermaid: true
 
 # Data plane
 
-The data plane runs entirely within the customer's cloud account on a Kubernetes cluster. It is where all computation occurs and where all customer data resides. In the self-managed model, the customer operates the data plane independently. In the BYOC model, Union.ai manages the Kubernetes cluster on the customer's behalf, but it still runs in the customer's cloud account. See [Deployment models](./deployment-models) for the differences.
+The data plane runs entirely within the customer's cloud account on a Kubernetes cluster. It is where all computation occurs and where customer data is stored at rest (see [Data classification and residency](../data-protection/classification-and-residency)). In the self-managed model, the customer operates the data plane independently. In the BYOC model, Union.ai manages the Kubernetes cluster on the customer's behalf, but it still runs in the customer's cloud account. See [Deployment models](./deployment-models) for the differences.
 
 ## Components
 
@@ -15,9 +15,11 @@ The data plane consists of several components, each handling a specific aspect o
 
 **Executor** is a Kubernetes controller that watches for TaskAction custom resources created by the control plane. When a TaskAction appears, the Executor reconciles its lifecycle: creating task pods, monitoring their status, and reporting state transitions back to the control plane. The Executor operates as a standard Kubernetes controller. If connectivity to the control plane is lost, in-flight pods continue running and state reconciles when the connection is restored.
 
-**Object Store Service** handles data access operations on the customer's object store. It supports presigned URL signing for bulk data (files, directories, DataFrames, code bundles, and reports), which clients upload and download directly without data entering the control plane. It also supports object read/write operations used internally by the control plane for structured task I/O, where the full protobuf payload (up to 10-20 MiB) is proxied through control plane memory, encrypted in transit, and not persisted.
+**Object Store Service** handles data access operations on the customer's object store. It signs presigned URLs for bulk data (files, directories, DataFrames, code bundles, and reports) and serves object read/write operations used by the control plane for structured task I/O.
 
-**Log Provider** serves task logs through two channels. For running tasks, it streams live logs from the Kubernetes API. For completed tasks, it retrieves logs from the cloud provider's log aggregator (CloudWatch, Cloud Logging, or Azure Monitor). Logs are streamed through the control plane as a relay, encrypted in transit, as plaintext in control plane memory, without being persisted. There is no content filtering or redaction. Any sensitive data (secrets, PII, stack traces) that applications write to stdout/stderr flows through control plane memory unmodified.
+**Log Provider** serves task logs through two channels. For running tasks, it streams live logs from the Kubernetes API. For completed tasks, it retrieves logs from the cloud provider's log aggregator (CloudWatch, Cloud Logging, or Azure Monitor). There is no content filtering or redaction; any sensitive data (secrets, PII, stack traces) that applications write to stdout/stderr is included in the stream unmodified.
+
+For how each of these pathways handles data in transit, see [Data flow](../data-protection/data-flow).
 
 **Image Builder** uses Buildkit running on the customer's Kubernetes cluster to build container images from user-submitted `Image` specifications. Source code and built images never leave the customer's infrastructure. Base images are pulled from customer-configured registries, and built images are pushed to the customer's container registry (ECR, GCR, or ACR).
 

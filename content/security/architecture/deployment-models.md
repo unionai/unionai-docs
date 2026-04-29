@@ -13,7 +13,7 @@ Union.ai supports two deployment models: **self-managed** and **BYOC** (Bring Yo
 Regardless of deployment model, both self-managed and BYOC share the same core security properties:
 
 - The same control plane / data plane architecture described in [Two-plane separation](./two-plane-separation)
-- Encryption in transit (TLS 1.2+) and at rest (AES-256) for all data
+- Encryption in transit (TLS 1.2+) and cloud-provider native encryption at rest (see [Encryption](../data-protection/encryption))
 - RBAC for user and service account authorization
 - Tenant isolation via Kubernetes namespaces and IAM scoping
 - Audit logging of administrative and user actions

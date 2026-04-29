@@ -6,17 +6,13 @@ variants: -flyte +union
 
 # Workflow data flow
 
-This page traces the security-relevant data movements at each stage of the workflow lifecycle: registration, execution, and result retrieval. Bulk data (files, DataFrames, code bundles, container images) stays in the customer's infrastructure at every stage. Smaller inline data (structured task inputs/outputs, secret values during creation, log streams) transits control plane memory during request processing but is not persisted there.
+This page traces the security-relevant data movements at each stage of the workflow lifecycle: registration, execution, and result retrieval. For the underlying classification of bulk vs. inline data and what each pathway carries, see [Data classification and residency](./classification-and-residency) and [Data flow](./data-flow).
 
 ## Task deployment and run creation
 
-When a run is created, the SDK serializes the full task specification (container image, resource requirements, typed interface, and all configuration) and sends it inline to the control plane along with the structured task inputs. The code bundle is uploaded directly to the customer's object store via a presigned PUT URL. Code never touches the control plane. The task specification is stored in the control plane databases (see [Control plane](../architecture/control-plane) for the full field enumeration).
+When a run is created, the SDK serializes the full task specification (container image, resource requirements, typed interface, and all configuration) and sends it inline to the control plane along with the structured task inputs (up to 10 MiB). The code bundle is uploaded directly to the customer's object store via a presigned PUT URL. Code never touches the control plane. The task specification is stored in the control plane databases. Binary input artifacts (files, directories, DataFrames) are uploaded directly to the customer's object store via presigned URLs. The control plane stores only the input URI, then enqueues the action to the data plane.
 
-The SDK sends structured task inputs to the control plane (up to 10 MB). The control plane proxies the full input payload through its memory (encrypted in transit, plaintext in memory, not persisted) to the data plane object store via the Cloudflare Tunnel. Binary input artifacts (files, directories, DataFrames) are uploaded directly to the customer's object store via presigned URLs, bypassing the control plane. The control plane stores only the input URI, then enqueues the action to the data plane.
-
-The Executor on the data plane creates a pod that reads inputs from and writes outputs back to the customer's object store. During workflow execution, inter-task I/O flows directly between task pods and the object store via IAM, with no control plane involvement. Secrets required by the task are injected into pods from the customer's secrets backend at runtime. Secret values do not traverse the control plane during execution. (Secret values do traverse the control plane during initial secret creation and updates, when the value is relayed through the control plane to the data plane's secrets backend. See [Secrets management](./secrets).) The control plane receives phase transitions, status updates, and error messages from the Executor. Error messages may contain customer data from Python tracebacks.
-
-For details on secrets injection, see [Secrets management](./secrets).
+The Executor on the data plane creates a pod that reads inputs from and writes outputs back to the customer's object store. During workflow execution, inter-task I/O flows directly between task pods and the object store via IAM, with no control plane involvement. Secrets required by the task are injected into pods from the customer's secrets backend at runtime; secret values do not traverse the control plane during execution. (They do traverse the control plane during initial secret creation and updates -- see [Secrets management](./secrets).) The control plane receives phase transitions, status updates, and error messages from the Executor. Error messages may contain customer data from Python tracebacks.
 
 ## Result retrieval
 
@@ -78,4 +74,4 @@ The response should contain phase, timestamps, URIs, and task definition fields.
 
 **Step 4: Negative proof**
 
-Search control plane audit logs for the recognizable data string used in the workflow. It should not appear. If VPC Flow Logs are enabled, bulk data transfers should flow directly between task pods and the customer's object store. Structured task I/O (up to 10-20 MiB) and log streams will transit the Cloudflare Tunnel as documented in [Data flow](./data-flow).
+Search control plane audit logs for the recognizable data string used in the workflow. It should not appear. If VPC Flow Logs are enabled, bulk data transfers should flow directly between task pods and the customer's object store. Structured task I/O and log streams will transit the Cloudflare Tunnel as documented in [Data flow](./data-flow).
