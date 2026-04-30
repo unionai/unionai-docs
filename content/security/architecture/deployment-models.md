@@ -17,7 +17,7 @@ Regardless of deployment model, both self-managed and BYOC share the same core s
 - RBAC for user and service account authorization
 - Tenant isolation via Kubernetes namespaces and IAM scoping
 - Audit logging of administrative and user actions
-- Outbound-only [network connectivity](./network) via Cloudflare Tunnel
+- Outbound-only [network connectivity](./network) (Cloudflare Tunnel and direct gRPC)
 
 The key difference is operational: in BYOC, Union.ai manages the Kubernetes cluster within the customer's cloud account. In self-managed, the customer operates the cluster entirely on their own.
 
@@ -27,7 +27,7 @@ In the self-managed model, the customer operates the data plane independently. U
 
 The customer provisions all IAM roles, configures network policies, manages Kubernetes versions and upgrades, and handles all patching of data plane components. The customer is solely responsible for data plane availability, security hardening, and compliance of the data plane infrastructure.
 
-This model provides maximum isolation and control. It is appropriate for organizations that have the Kubernetes operational expertise to manage the cluster and prefer to eliminate any third-party access to their infrastructure.
+This model provides maximum isolation and control. It is appropriate for organizations that have the Kubernetes operational expertise to manage the cluster and prefer to eliminate any third-party access to their data plane infrastructure.
 
 ## BYOC
 
@@ -58,7 +58,7 @@ Union.ai is responsible for the availability and security of the managed Kuberne
 
 The control plane runs on AWS with multi-AZ redundancy and automated failover. Availability is covered by Union.ai's SOC 2 Type II certification, and specific SLA commitments are defined in customer contracts.
 
-A critical resilience property of the architecture is that **in-flight workflows continue running during control plane outages**. The Executor is a Kubernetes controller: once a task pod is created, it runs independently of the control plane. If the tunnel connection drops or the control plane becomes unavailable, running task pods are unaffected. When connectivity is restored, the Executor reconciles state with the control plane, and the execution history is updated. New workflow submissions require control plane availability, but existing work is not interrupted.
+A critical resilience property of the architecture is that **in-flight workflows continue running during control plane outages**. The Executor is a Kubernetes controller: once a task pod is created, it runs independently of the control plane. If either outbound channel drops or the control plane becomes unavailable, running task pods are unaffected. When connectivity is restored, the Executor reconciles state with the control plane, and the execution history is updated. New workflow submissions require control plane availability, but existing work is not interrupted.
 
 For data plane availability, the responsibility depends on the deployment model. In the self-managed model, the customer is solely responsible for data plane availability. In the BYOC model, Union.ai is responsible for the availability of the managed Kubernetes cluster, while the customer remains responsible for the underlying cloud account resources.
 
@@ -72,7 +72,7 @@ For data plane availability, the responsibility depends on the deployment model.
 
 1. Start a long-running workflow (e.g., a task with a `sleep` of several minutes).
 
-2. Simulate a control plane outage by disconnecting the tunnel. The simplest approach is to scale down the Tunnel Service:
+2. Simulate a connectivity disruption to the control plane by scaling down the Tunnel Service:
 
    ```bash
    kubectl scale deployment <tunnel-deployment> -n union --replicas=0
