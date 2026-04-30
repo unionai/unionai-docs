@@ -13,7 +13,7 @@ Union.ai maintains the following certifications and compliance standards, valida
 | Standard | Status |
 |---|---|
 | SOC 2 Type II (Security, Availability, Processing Integrity) | Certified |
-| SOC 2 Type I (Security, Availability, Integrity) | Certified |
+| SOC 2 Type I (Security, Availability, Processing Integrity) | Certified |
 | HIPAA | Compliant (designed to meet requirements) |
 | CIS 1.4 AWS (restricted access benchmark) | Certified |
 | CIS 3.0 | In progress |
@@ -24,7 +24,7 @@ The 12-week audit covers three trust service criteria: Security (protection agai
 
 The audit scope includes control plane infrastructure and operations, tenant isolation controls (org-scoped primary keys, service-layer query gating), employee security lifecycle (background checks, access provisioning, termination checklists), incident response procedures, vendor management program, and business continuity and disaster recovery plans.
 
-Union.ai maintains 70+ verified controls across 5 categories, continuously monitored via Vanta:
+Union.ai maintains 73 verified controls across 5 categories, continuously monitored via Vanta:
 
 | Category | Controls | Examples |
 |---|---|---|
@@ -38,7 +38,7 @@ The SOC 2 Type II report is available upon request.
 
 ## Trust Center
 
-Union.ai maintains a public Trust Center at [trust.union.ai](https://trust.union.ai) (powered by Vanta) with real-time transparency into security controls, compliance status, and security practices. The Trust Center provides up-to-date certification information and access to request SOC 2 reports. All 70+ verified controls are visible through the Trust Center.
+Union.ai maintains a public Trust Center at [trust.union.ai](https://trust.union.ai) (powered by Vanta) with real-time transparency into security controls, compliance status, and security practices. The Trust Center provides up-to-date certification information and access to request SOC 2 reports. All 73 verified controls are visible through the Trust Center.
 
 ## Verification
 

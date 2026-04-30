@@ -12,7 +12,7 @@ This private connection is used exclusively for cluster management operations: K
 
 The private management connection does **not** carry customer data or orchestration traffic. Customer data and orchestration RPCs flow through the outbound channels described in [Network architecture](./network). The private connectivity path handles only infrastructure management operations.
 
-By keeping the Kubernetes API endpoint private, this design satisfies several compliance controls, including ISO 27001 A.5.15 (Access control) and A.8.20 (Networks security), as well as CIS Controls v8 4.4 (Implement and manage a firewall on servers) and 12.11 (Ensure all remote access management features are disabled if not required). The Kubernetes API is never reachable from the public internet.
+By keeping the Kubernetes API endpoint private, this design aligns with several compliance controls, including ISO 27001 A.5.15 (Access control), A.8.20 (Networks security), A.8.22 (Segregation of networks), and CIS Controls v8 Control 12 (Network infrastructure management). The Kubernetes API is never reachable from the public internet.
 
 For details on the self-managed alternative (where no private management connection exists because the customer operates the data plane independently), see [Deployment models](./deployment-models).
 

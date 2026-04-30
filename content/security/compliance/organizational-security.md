@@ -1,6 +1,6 @@
 ---
 title: Organizational security
-weight: 4
+weight: 6
 variants: -flyte +union
 ---
 
