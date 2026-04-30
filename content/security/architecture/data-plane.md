@@ -13,13 +13,11 @@ The data plane runs entirely within the customer's cloud account on a Kubernetes
 
 The data plane consists of several components, each handling a specific aspect of task execution and data management.
 
-**Executor** is a Kubernetes controller that watches for TaskAction custom resources created by the control plane. When a TaskAction appears, the Executor reconciles its lifecycle: creating task pods, monitoring their status, and reporting state transitions back to the control plane. The Executor operates as a standard Kubernetes controller. If connectivity to the control plane is lost, in-flight pods continue running and state reconciles when the connection is restored.
+**Executor** is a Kubernetes controller that watches for TaskAction custom resources created by the control plane. When a TaskAction appears, the Executor reconciles its lifecycle: creating task pods, monitoring their status, and reporting state transitions back to the control plane. If connectivity to the control plane is lost, in-flight pods continue running and state reconciles when the connection is restored.
 
 **Object Store Service** handles data access operations on the customer's object store. It signs presigned URLs for bulk data (files, directories, DataFrames, code bundles, and reports) and serves object read/write operations used by the control plane for structured task I/O.
 
 **Log Provider** serves task logs through two channels. For running tasks, it streams live logs from the Kubernetes API. For completed tasks, it retrieves logs from the cloud provider's log aggregator (CloudWatch, Cloud Logging, or Azure Monitor). There is no content filtering or redaction; any sensitive data (secrets, PII, stack traces) that applications write to stdout/stderr is included in the stream unmodified.
-
-For how each of these pathways handles data in transit, see [Data flow](../data-protection/data-flow).
 
 **Image Builder** uses Buildkit running on the customer's Kubernetes cluster to build container images from user-submitted `Image` specifications. Source code and built images never leave the customer's infrastructure. Base images are pulled from customer-configured registries, and built images are pushed to the customer's container registry (ECR, GCR, or ACR).
 
@@ -27,15 +25,17 @@ For how each of these pathways handles data in transit, see [Data flow](../data-
 
 **Apps & Serving** provides model and application serving capabilities using Knative with a Kourier gateway. All serving infrastructure runs within the customer's cluster. Authentication is enforced on all endpoints by default (SSO for browser access, API keys for programmatic access), with an option to allow anonymous access on specific endpoints. See [Apps & Serving security](#apps--serving-security) below for details.
 
+For how each of these pathways handles data in transit, see [Data flow](../data-protection/data-flow).
+
 ## Object store layout
 
-Each data plane cluster uses two object store buckets: a **metadata bucket** for execution metadata and a **fast-registration bucket** for rapid code deployment artifacts. Within these buckets, objects are organized by namespace: `org/project/domain/run-name/action-name/`. This layout provides natural namespace isolation: IAM policies and bucket policies can scope access to specific organizational boundaries.
+Each data plane cluster uses two object store buckets: a **metadata bucket** for execution metadata and a **fast-registration bucket** for rapid code deployment artifacts. Within these buckets, objects are organized by namespace: `org/project/domain/run-name/action-name/`. This layout provides isolation: IAM policies and bucket policies can scope access to specific organizational boundaries.
 
 ## Kubernetes security
 
 The data plane enforces several layers of Kubernetes security to protect workloads and limit blast radius.
 
-**Workload identity federation** eliminates the need for static cloud credentials. Task pods and platform services authenticate to cloud APIs using cloud-native identity mechanisms (IRSA on AWS, Workload Identity on GCP, Azure Workload Identity on Azure). No long-lived access keys are stored as Kubernetes secrets.
+**Workload identity federation** eliminates the need for static cloud credentials on the data plane. See [IAM and workload identity](#iam-and-workload-identity) below for details.
 
 **Kubernetes RBAC** restricts what each service account can do within the cluster. Platform components have scoped permissions for their specific functions, and task pods run under service accounts with minimal privileges.
 
@@ -47,7 +47,7 @@ The data plane enforces several layers of Kubernetes security to protect workloa
 
 ## Container security
 
-The Image Builder runs Buildkit on the customer's Kubernetes cluster. When a user defines an `Image` specification, the build executes entirely within the customer's infrastructure. Source code is uploaded to the customer's object store via presigned URL and fetched by the builder. It never transits through the control plane. Built images are pushed directly to the customer's container registry (ECR, GCR, or ACR).
+When a user defines an `Image` specification, source code is uploaded to the customer's object store via presigned URL and fetched by the builder; it never transits through the control plane.
 
 Base images are pulled from registries configured by the customer, allowing the use of hardened or pre-approved base images. Customers can apply their own image tagging conventions, vulnerability scanning policies, and registry access controls.
 
