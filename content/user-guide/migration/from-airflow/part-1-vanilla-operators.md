@@ -489,7 +489,7 @@ results = await asyncio.gather(
 
 `return_exceptions=True` collects per-item failures instead of failing the batch. The semaphore is also the pattern when different tasks in the same fan-out need different concurrency limits.
 
-If your codebase is sync, `flyte.map(process, shards, concurrency=20)` is the sync equivalent of the pattern above.
+If your codebase is sync, `list(flyte.map(process, shards, concurrency=20))` is the sync equivalent of the pattern above.
 
 Docs: [Controlling parallelism](../../task-programming/controlling-parallelism) · [Fanout](../../task-programming/fanout)
 
