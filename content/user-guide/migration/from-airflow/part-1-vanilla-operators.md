@@ -176,7 +176,7 @@ The `File` object travels between tasks the same way an `int` does — as a type
 - `File.new_remote()` — new reference in the run's scratch area, for streaming writes.
 - `File.from_local(path)` / `from_local_sync(path)` — upload a local file, get a `File` back.
 - `File.from_existing_remote(uri)` — wrap an existing remote URI (for example, a path produced by an upstream system).
-- `await file.open("rb" | "wb")` / `file.open_sync(...)` — stream read/write.
+- `async with file.open("rb")` / `async with file.open("wb")` / `with file.open_sync(...)` — stream read/write.
 - `await file.download()` / `file.download_sync()` — materialize to a local path and return it.
 
 `Dir` has the same surface for directories, plus `walk()` and `list_files()` to iterate entries.
