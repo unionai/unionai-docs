@@ -1,6 +1,6 @@
 ---
 title: MLflow
-weight: 2
+weight: 1
 variants: +flyte +union
 ---
 
