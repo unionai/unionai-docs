@@ -10,7 +10,7 @@ In the BYOC deployment model, Union.ai maintains a private management connection
 
 This private connection is used exclusively for cluster management operations: Kubernetes version upgrades, node pool provisioning and scaling, Helm chart deployments and updates, and health monitoring. It provides Union.ai with the access needed to manage the Kubernetes cluster without exposing the Kubernetes API to the public internet.
 
-The private management connection does **not** carry customer data. Data flows between clients and the customer's object store via presigned URLs, and orchestration traffic flows through the Cloudflare Tunnel. The private connectivity path handles only infrastructure management operations.
+The private management connection does **not** carry customer data or orchestration traffic. Customer data and orchestration RPCs flow through the outbound channels described in [Network architecture](./network). The private connectivity path handles only infrastructure management operations.
 
 By keeping the Kubernetes API endpoint private, this design satisfies several compliance controls, including ISO 27001 A.5.15 (Access control) and A.8.20 (Networks security), as well as CIS Controls v8 4.4 (Implement and manage a firewall on servers) and 12.11 (Ensure all remote access management features are disabled if not required). The Kubernetes API is never reachable from the public internet.
 
@@ -30,6 +30,8 @@ For details on the self-managed alternative (where no private management connect
    # AWS example
    aws ec2 describe-vpc-endpoints --filters Name=service-name,Values=*eks*
    ```
+
+   For GCP, use `gcloud compute service-attachments list` and `gcloud compute forwarding-rules list`. For Azure, use `az network private-endpoint list` and `az network private-link-service list`.
 
 2. Verify that the Kubernetes API resolves to a private IP or hostname:
 
