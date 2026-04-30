@@ -8,26 +8,19 @@ variants: -flyte +union
 
 Union.ai uses three distinct patterns to move data between the data plane and clients: presigned URLs for bulk data, an inline proxy for structured task I/O, and streaming relays for live data. All three patterns encrypt data in transit. The patterns differ in whether data enters control plane memory.
 
-```
-Presigned URL pattern (bulk data — never enters control plane):
-  SDK/UI ──HTTPS──→ Object Store (direct, encrypted at rest)
+- **Presigned URL pattern (bulk data -- never enters control plane).** The client (SDK or UI) connects directly to the customer's object store over HTTPS using a presigned URL. The object store encrypts the data at rest. The control plane is not on the data path.
 
-Inline proxy pattern (structured I/O — transits control plane):
-  SDK/UI ──TLS──→ Control Plane ──(plaintext in memory)──→ ──TLS+mTLS+tunnel──→ Operator → Object Store (encrypted at rest)
+- **Inline proxy pattern (structured I/O -- transits control plane).** The client sends data to the control plane over TLS. The control plane proxies it to the data plane operator through the Cloudflare Tunnel (TLS + mTLS), which writes it to the customer's object store (encrypted at rest). The data exists as plaintext in control plane memory only for the duration of the request and is not persisted.
 
-Streaming relay pattern (logs — transits control plane):
-  DP ──TLS+mTLS+tunnel──→ Control Plane ──(plaintext in memory)──→ ──TLS──→ Client
-```
+- **Streaming relay pattern (logs -- transits control plane).** The data plane streams data to the control plane through the Cloudflare Tunnel (TLS + mTLS), and the control plane forwards it to the client over TLS. The data passes through control plane memory as plaintext but is not persisted.
 
 ## Presigned URL pattern
 
 For bulk data -- files (`flyte.io.File`), directories (`flyte.io.Dir`), DataFrames, code bundles, and reports -- the control plane proxies signing requests to the data plane, which generates time-limited presigned URLs using customer-managed IAM credentials. The client then uploads or downloads data directly to the customer's object store. The data content never enters the control plane; only the signing metadata passes through. This model eliminates the need for the control plane to hold persistent cloud IAM credentials.
 
-| Phase | Encrypted? | Details |
-|-------|------------|---------|
-| Client → Object Store | **Yes** | HTTPS via presigned URL, direct to customer storage |
-| At rest | **Yes** | S3 SSE / GCS encryption / Azure SSE |
-| Control plane involvement | **None** | CP generates/relays the signed URL only; data content never enters CP |
+- **Client to object store:** encrypted via HTTPS, using a presigned URL direct to customer storage.
+- **At rest:** encrypted by the cloud provider (S3 SSE, GCS encryption, or Azure SSE).
+- **Control plane involvement:** none. The control plane generates or relays the signed URL only; the data content never enters the control plane.
 
 ## Inline proxy pattern
 

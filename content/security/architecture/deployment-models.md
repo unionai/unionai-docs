@@ -6,11 +6,11 @@ variants: -flyte +union
 
 # Deployment models
 
-Union.ai supports two deployment models: **Self-managed** and **BYOC** (Bring Your Own Cloud). Both models share the same fundamental [two-plane separation](./two-plane-separation): the control plane is hosted by Union.ai, and the data plane runs in the customer's cloud account. They differ in who operates the data plane's Kubernetes cluster.
+Union.ai supports two deployment models: **BYOC** (Bring Your Own Cloud) and **Self-managed**. Both models share the same fundamental [two-plane separation](./two-plane-separation): the control plane is hosted by Union.ai, and the data plane runs in the customer's cloud account. They differ in who operates the data plane's Kubernetes cluster.
 
 ## Common properties
 
-Regardless of deployment model, both self-managed and BYOC share the same core security properties:
+Regardless of deployment model, both BYOC and Self-managed share the same core security properties:
 
 - The same control plane / data plane architecture described in [Two-plane separation](./two-plane-separation)
 - Encryption in transit (TLS 1.2+) and cloud-provider native encryption at rest (see [Encryption](../data-protection/encryption))
@@ -19,15 +19,7 @@ Regardless of deployment model, both self-managed and BYOC share the same core s
 - Audit logging of administrative and user actions
 - Outbound-only [network connectivity](./network) (Cloudflare Tunnel and direct gRPC)
 
-The key difference is operational: in BYOC, Union.ai manages the Kubernetes cluster within the customer's cloud account. In self-managed, the customer operates the cluster entirely on their own.
-
-## Self-managed
-
-In the self-managed model, the customer operates the data plane independently. Union.ai has zero access to the data plane infrastructure. The only connections between the control plane and the data plane are two outbound-only channels initiated by the data plane: a Cloudflare Tunnel and a direct gRPC connection. See [Network architecture](./network) for details.
-
-The customer provisions all IAM roles, configures network policies, manages Kubernetes versions and upgrades, and handles all patching of data plane components. The customer is solely responsible for data plane availability, security hardening, and compliance of the data plane infrastructure.
-
-This model provides maximum isolation and control. It is appropriate for organizations that have the Kubernetes operational expertise to manage the cluster and prefer to eliminate any third-party access to their data plane infrastructure.
+The key difference is operational: in BYOC, Union.ai manages the Kubernetes cluster within the customer's cloud account. In Self-managed, the customer operates the cluster entirely on their own.
 
 ## BYOC
 
@@ -53,6 +45,14 @@ The customer retains ownership and control of:
 - Any additional infrastructure outside the managed cluster
 
 Union.ai is responsible for the availability and security of the managed Kubernetes cluster. The customer is responsible for the availability and security of the surrounding cloud account infrastructure (VPC, IAM, object storage). Union.ai assumes the cluster-level third-party dependency risk: if a Kubernetes vulnerability requires patching, Union.ai handles it.
+
+## Self-managed
+
+In the Self-managed model, the customer operates the data plane independently. Union.ai has zero access to the data plane infrastructure. The only connections between the control plane and the data plane are two outbound-only channels initiated by the data plane: a Cloudflare Tunnel and a direct gRPC connection. See [Network architecture](./network) for details.
+
+The customer provisions all IAM roles, configures network policies, manages Kubernetes versions and upgrades, and handles all patching of data plane components. The customer is solely responsible for data plane availability, security hardening, and compliance of the data plane infrastructure.
+
+This model provides maximum isolation and control. It is appropriate for organizations that have the Kubernetes operational expertise to manage the cluster and prefer to eliminate any third-party access to their data plane infrastructure.
 
 ## Availability and resilience
 

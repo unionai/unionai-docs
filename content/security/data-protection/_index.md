@@ -17,7 +17,7 @@ The platform uses three data access patterns:
 
 This section covers:
 
-* [Classification and residency](./classification-and-residency): How data is classified, where it resides, and multi-cloud region support.
+* [Data classification and residency](./classification-and-residency): How data is classified, where it resides, and multi-cloud region support.
 * [Data flow](./data-flow): Presigned URL and streaming relay patterns, and what data appears in the UI.
 * [Encryption](./encryption): Encryption at rest and in transit across all storage and communication paths.
 * [Secrets management](./secrets): Write-only API design, backends, and secret lifecycle.
