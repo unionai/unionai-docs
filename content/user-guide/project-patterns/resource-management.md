@@ -81,7 +81,7 @@ If a task's resource request exceeds your project-domain quota, the execution fa
 
 ### Be explicit about ephemeral storage
 
-The `disk` default is zero, which means a task pod will consume node storage as needed. A pod can be evicted if the node runs short on storage. Any team doing heavy data processing should always set `disk` explicitly.
+By default, `disk` is unset, so no ephemeral-storage request or limit is applied. A task pod can still consume node storage as needed, and it may be evicted if the node comes under storage pressure. Any team doing heavy data processing should always set `disk` explicitly.
 
 ## RBAC and secrets
 
@@ -149,7 +149,7 @@ See [`uctl update cluster-pool-attributes`](../../api-reference/uctl-cli/uctl-up
 
 Each `<project>/production` pair should have its own quota budget and change-management process. Quota changes in production should go through review rather than ad-hoc CLI updates.
 
-The [Union Terraform provider](../../deployment/terraform) is a good fit for this: it lets you manage projects, roles, policies, and access assignments declaratively, so production configuration lives in version control and changes go through PR review like any other infrastructure change.
+The [Union Terraform provider](../../deployment/terraform/_index) is a good fit for this: it lets you manage projects, roles, policies, and access assignments declaratively, so production configuration lives in version control and changes go through PR review like any other infrastructure change.
 
 ## What's coming next
 
