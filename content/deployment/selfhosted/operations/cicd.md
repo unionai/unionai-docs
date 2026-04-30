@@ -10,7 +10,7 @@ This guide covers how to authenticate `flyte deploy` from a CI/CD pipeline (GitH
 
 In serverless and BYOC deployments, `flyte create api-key` mints an API key automatically. Self-hosted deployments don't have access to the identity service that backs this command. Instead, you create a dedicated OAuth application in your identity provider and encode its credentials as an API key manually.
 
-For `flyte deploy` usage, flags, and workflow examples, see the [CI/CD deployments]({{< docs_home union >}}/user-guide/project-patterns/cicd/) guide.
+For `flyte deploy` usage, flags, and workflow examples, see the [CI/CD deployments]({{< docs_home union v2 >}}/user-guide/project-patterns/cicd/) guide.
 
 ## Prerequisites
 
@@ -231,7 +231,7 @@ The CI/CD app's access depends on your [authorization](../authorization) configu
 - **External authorization**: Configure your external authz service to grant the CI/CD app's identity appropriate permissions
 - **Union RBAC**: Create a role scoped to the target project/domain and bind it to the CI/CD app's identity
 
-For teams sharing a cluster, create **separate OAuth apps per team or per repository** so that one team's CI key cannot deploy to another team's project. See the [CI/CD deployments]({{< docs_home union >}}/user-guide/project-patterns/cicd/#key-scope-and-rotation) guide for more on permission scoping.
+For teams sharing a cluster, create **separate OAuth apps per team or per repository** so that one team's CI key cannot deploy to another team's project. See the [CI/CD deployments]({{< docs_home union v2 >}}/user-guide/project-patterns/cicd/#key-scope-and-rotation) guide for more on permission scoping.
 
 ## Key rotation
 
