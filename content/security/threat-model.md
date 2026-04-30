@@ -4,42 +4,26 @@ weight: 4
 variants: -flyte +union
 ---
 
-# Threat modeling
+# Threat model
+
+This page enumerates the principal threat scenarios considered in Union.ai's security architecture, with pointers to the canonical pages where each scenario's controls and verification live.
 
 ## Control plane compromise
 
-A control plane compromise would expose:
+A compromised control plane would expose orchestration metadata, task definitions, error messages, and inline data transiting memory during active requests. It would not expose bulk customer data, secret values, or any path to initiate connections to customer data planes. The architectural properties that limit this blast radius are described in [Two-plane separation](./architecture/two-plane-separation#blast-radius), and the full classification of what does and does not reside in the control plane is in [Data classification and residency](./data-protection/classification-and-residency).
 
-- Orchestration metadata and task definitions stored in the databases, including potentially sensitive fields such as environment variables, default input values, SQL statements, and Kubernetes pod specs.
-- Structured task I/O transiting memory during active requests (up to 10-20 MiB per request).
-- Secret values being relayed during create/update operations.
-- Unredacted log stream content.
-- Error messages.
+## Cross-plane network interception
 
-The attacker could not access bulk customer data (files, DataFrames, code bundles, container images), since those are stored in the customer's infrastructure and accessed via presigned URLs generated on the data plane. The attacker could not retrieve secret values via the API (write-only design). The attacker could not initiate connections to customer data planes because the tunnel is outbound-only from the customer's network.
-
-See [Two-plane separation](./architecture/two-plane-separation) and [Network architecture](./architecture/network) for details.
-
-## Tunnel interception
-
-The Cloudflare Tunnel uses layered encryption (TLS + mTLS + Cloudflare Access tokens), making man-in-the-middle attacks infeasible. Even if tunnel traffic were intercepted, all data is encrypted in transit and not cached or stored at any intermediate point. The tunnel carries orchestration traffic, structured task I/O (up to 10-20 MiB per request), secret values during creation, and log streams. Bulk customer data (files, DataFrames, code bundles) travels directly between clients and the customer's object store via presigned URLs, bypassing the tunnel entirely.
+Cross-plane traffic uses two outbound-only encrypted channels: a Cloudflare Tunnel (TLS + mTLS + Cloudflare Access tokens) and a direct gRPC connection (TLS 1.2+). All payloads are encrypted in transit, and no intermediate caching or storage occurs on either channel. See [Network architecture](./architecture/network) for the channel design and [Encryption](./data-protection/encryption) for the per-data-type encryption matrix.
 
 ## Presigned URL leakage
 
-A leaked presigned URL exposes a single object for a maximum of one hour (default). The URL grants only the specific operation requested (GET or PUT) and cannot enumerate or access other objects. Organizations can configure shorter expiration times. Because presigned URLs are bearer tokens, Union.ai recommends treating them with the same care as short-lived credentials and configuring the shortest practical TTL.
+A leaked presigned URL exposes a single object for the duration of its TTL (1 hour by default, configurable shorter) and is locked to a single operation (GET or PUT). It cannot enumerate other objects or be replayed beyond its scope. The full enumeration of presigned URL controls is in [Data flow](./data-protection/data-flow#presigned-url-pattern). Customer-managed encryption keys provide an additional kill-switch -- see [Customer-managed key authority](./data-protection/encryption#customer-managed-key-authority).
 
-## Verification
+## Secret exfiltration
 
-### Threat scenarios
+The secrets API is write-only by design: there is no API endpoint that returns a secret value, regardless of the caller's privileges. Compromising the control plane API or a privileged user account does not yield secret values. See [Secrets management](./data-protection/secrets) for the lifecycle and write-only design.
 
-**Reviewer focus:** Confirm that the impact of each threat scenario is limited by the architectural properties described above.
+## Cross-tenant data access
 
-**How to verify:**
-
-These scenarios are validated by demonstrations from other sections:
-
-- **Control plane compromise:** The data classification and workflow data flow verifications in [Two-plane separation](./architecture/two-plane-separation) demonstrate the blast radius limits described above: bulk data is inaccessible, inline data is transient, and task definitions are enumerated.
-- **Presigned URL leakage:** The presigned URL verification in [Data plane](./architecture/data-plane) proves TTL and scope limits.
-- **Tunnel interception:** The network architecture verifications in [Network architecture](./architecture/network) prove encryption.
-
-No additional demonstrations are needed beyond those already identified in the referenced sections.
+Tenant isolation is enforced at multiple layers: org-scoped primary keys in the control plane databases, service-layer query gating before any data access, and physically separate data planes in different cloud accounts. See [Tenant isolation](./identity-and-access/tenant-isolation).
