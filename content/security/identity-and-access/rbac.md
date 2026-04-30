@@ -43,16 +43,16 @@ Union.ai enforces least privilege across all components. IAM roles on the data p
 2. Log in as Viewer and confirm restricted operations are denied:
 
    ```bash
-   uctl create run ...   # Expect 403 denied
-   uctl create secret ...  # Expect denied
-   uctl get executions   # Expect success
+   uctl create run ...    # Expect denied
+   uctl create secret ... # Expect denied
+   uctl get executions    # Expect success
    ```
 
 3. Log in as Contributor scoped to project A:
 
    ```bash
-   uctl create run --project B ...  # Expect denied
-   uctl create run --project A ...  # Expect success
+   uctl create run --project B ... # Expect denied
+   uctl create run --project A ... # Expect success
    ```
 
 4. Create a custom policy scoping a user to project X, development domain only. Attempt to access the production domain. Expect denied.
@@ -63,6 +63,6 @@ Union.ai enforces least privilege across all components. IAM roles on the data p
    uctl get policy
    ```
 
-6. For Union.ai employee access: the customer creates a RBAC policy for Union.ai support, scoped to viewer only and time-limited.
+6. For Union.ai employee access: the customer creates an RBAC policy for Union.ai support, scoped to viewer only and time-limited.
 
-All verification steps are self-service using existing features.
+This verification is fully self-service.

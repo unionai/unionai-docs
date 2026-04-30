@@ -18,7 +18,7 @@ Each customer's data plane runs in a dedicated Kubernetes cluster within the cus
 
 All service-to-service calls within the control plane carry the authenticated org context. The identity service extracts org membership from the OIDC token, and this context is propagated through every downstream service call via request headers. Kubernetes namespaces on the data plane are provisioned per-project within each org, providing namespace-level resource isolation including resource quotas, RBAC bindings, and network policies.
 
-## Isolation verification
+## Defense in depth
 
 Tenant isolation controls are covered by the SOC 2 Type II audit scope. The combination of org-scoped primary keys, service-layer query gating, and physically separate data planes provides defense-in-depth against cross-tenant data access.
 
@@ -42,4 +42,4 @@ Tenant isolation controls are covered by the SOC 2 Type II audit scope. The comb
 
 3. The SOC 2 Type II audit specifically covers tenant isolation controls.
 
-4. The Protobuf definitions and SDK code are open source, so the org context enforcement path can be traced through the codebase.
+4. The protobuf definitions and SDK code are open source, so the org context enforcement path can be traced through the codebase.

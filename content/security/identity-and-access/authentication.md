@@ -12,7 +12,7 @@ Union.ai supports three authentication methods, each designed for a different us
 
 | Method | Identity Type | Credentials | Use Case |
 |---|---|---|---|
-| OIDC (Okta) | Human user | Browser SSO | UI access, initial CLI login |
+| OIDC | Human user | Browser SSO | UI access, initial CLI login |
 | API Keys | Human user (delegated) | Static bearer token | CI/CD scripts, simple automation |
 | Service Accounts | Application identity | OAuth2 client_id + client_secret -> short-lived token | Production pipelines, multi-service systems |
 
@@ -22,7 +22,7 @@ Service accounts are provisioned by the platform, creating OAuth2 applications w
 
 ## Single sign-on
 
-Union.ai uses OAuth2 with Okta as its identity provider, supporting any OIDC or SAML 2.0 compliant provider (Google Workspace, Microsoft Entra ID, Okta, others). SSO provides centralized identity management where the user lifecycle is managed in the customer's IdP. MFA enforcement is delegated to the customer's IdP, so the customer's existing MFA policies apply without additional configuration. Session management is inherited from the IdP configuration, and all authentication events are logged with caller identity.
+Union.ai uses OAuth2 / OIDC for SSO. Customers can configure any OIDC or SAML 2.0 compliant identity provider (Google Workspace, Microsoft Entra ID, Okta, etc.). SSO provides centralized identity management where the user lifecycle is managed in the customer's IdP. MFA enforcement is delegated to the customer's IdP, so the customer's existing MFA policies apply without additional configuration. Session management is inherited from the IdP configuration, and all authentication events are logged with caller identity.
 
 ## Verification
 
@@ -32,7 +32,7 @@ Union.ai uses OAuth2 with Okta as its identity provider, supporting any OIDC or 
 
 **How to verify:**
 
-1. SSO: Log in. The browser redirects to the customer's IdP, and a MFA prompt appears if configured.
+1. SSO: Log in. The browser redirects to the customer's IdP, and an MFA prompt appears if configured.
 
 2. API key: Create a key, use it in a script, then revoke it:
 
@@ -51,4 +51,4 @@ Union.ai uses OAuth2 with Okta as its identity provider, supporting any OIDC or 
 
    Show the OAuth2 token exchange and confirm the service account appears as a distinct identity in the audit log.
 
-All verification steps are self-service using existing features.
+This verification is fully self-service.
