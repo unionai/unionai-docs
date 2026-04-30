@@ -24,7 +24,13 @@ For bulk data -- files (`flyte.io.File`), directories (`flyte.io.Dir`), DataFram
 
 ## Inline proxy pattern
 
-For structured task inputs and outputs (protobuf literals such as ints, strings, lists, dicts, and small serialized objects), the control plane acts as a proxy. On run submission, the SDK sends structured inputs to the control plane (up to 10 MiB). The control plane proxies the full payload through its memory to the data plane object store via the Cloudflare Tunnel. On result retrieval, the control plane fetches both inputs and outputs from the data plane object store and returns them to the client (up to 20 MiB). The data is encrypted in transit (TLS on both sides), exists as plaintext in control plane memory for the duration of each request, and is not persisted, cached, or logged. The same pattern applies to secret values during create/update operations, which are relayed through the control plane to the data plane's secrets backend.
+For structured task inputs and outputs (protobuf literals such as ints, strings, lists, dicts, and small serialized objects), the control plane acts as a proxy.
+
+On run submission, the SDK sends structured inputs to the control plane (up to 10 MiB). The control plane proxies the full payload through its memory to the data plane object store via the Cloudflare Tunnel.
+
+On result retrieval, the control plane fetches both inputs and outputs from the data plane object store and returns them to the client (up to 20 MiB).
+
+The data is encrypted in transit (TLS on both sides), exists as plaintext in control plane memory for the duration of each request, and is not persisted, cached, or logged. The same pattern applies to secret values during create/update operations, which are relayed through the control plane to the data plane's secrets backend.
 
 The distinction between presigned URLs and the inline proxy is by data type, not by size: binary artifacts always use presigned URLs; structured protobuf literals always use the inline proxy.
 
