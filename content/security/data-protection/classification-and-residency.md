@@ -14,8 +14,8 @@ Every data type in the Union.ai platform is classified by its residency and acce
 |---|---|---|---|---|
 | Bulk Customer Data | Files, directories, DataFrames, code bundles, container images, reports | Customer infrastructure (S3 SSE / GCS / Azure SSE) | HTTPS via presigned URL | **No**: never enters control plane |
 | Inline Customer Data | Structured task inputs/outputs, secret values (during creation), execution log streams | Customer infrastructure (S3 SSE / GCS / Azure SSE; cloud secret managers) | TLS (client→CP) + TLS+mTLS+tunnel (CP→DP) | **Yes**: plaintext in memory, not persisted/cached/logged |
-| Orchestration Metadata | Task definitions (including env vars, default values, SQL, pod specs), run/action state, error messages, trigger specs | Control plane databases (PostgreSQL AES-256/KMS; Cassandra) | TLS (API) + TLS+mTLS+tunnel (events) | **Yes**: read from DB into memory for API responses |
-| Platform Metadata | User identity/RBAC records, cluster records | Control plane databases (PostgreSQL AES-256/KMS) | TLS (API) | **Yes**: read from DB into memory for API responses |
+| Orchestration Metadata | Task definitions (including env vars, default values, SQL, pod specs), run/action state, error messages, trigger specs | Control plane databases (AES-256/KMS) | TLS (API) + TLS (gRPC events) | **Yes**: read from DB into memory for API responses |
+| Platform Metadata | User identity/RBAC records, cluster records | Control plane databases (AES-256/KMS) | TLS (API) | **Yes**: read from DB into memory for API responses |
 
 **Bulk customer data** (files, directories, DataFrames, code bundles, container images, and reports) is stored exclusively in the customer's infrastructure and never enters the control plane. These objects are accessed via presigned URLs.
 

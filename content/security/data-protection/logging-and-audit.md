@@ -1,6 +1,6 @@
 ---
 title: Logging and audit
-weight: 1
+weight: 7
 variants: -flyte +union
 ---
 
@@ -10,7 +10,7 @@ variants: -flyte +union
 
 Logs are collected by Fluent Bit (deployed as a DaemonSet on the data plane) and shipped to the customer's cloud-native log service: CloudWatch Logs (AWS), Cloud Logging (GCP), or Azure Monitor (Azure). Live logs are streamed directly from the Kubernetes API while a task is running. Persisted logs are read from the cloud log aggregator after a pod terminates.
 
-Log data is not persisted in the control plane. It is streamed as a stateless pass-through relay, encrypted in transit on both network hops (client-to-CP and DP-to-CP), and exists as plaintext in control plane memory only during each streaming request. Persisted logs (fetched from CloudWatch, Stackdriver, or Azure Monitor for completed executions) also transit the control plane via the same streaming proxy path. There is no content filtering or redaction at any layer of the log pipeline. Any sensitive data (secrets, PII, stack traces) that user code writes to stdout/stderr flows through control plane memory unmodified. Log lines include structured metadata: timestamp, message content, and originator classification. For details on how log data flows through the system, see [Two-plane separation](../architecture/two-plane-separation).
+Log data is not persisted in the control plane. It is streamed as a stateless pass-through relay, encrypted in transit on both network hops (client-to-CP and DP-to-CP), and exists as plaintext in control plane memory only during each streaming request. Persisted logs (fetched from CloudWatch, Cloud Logging, or Azure Monitor for completed executions) also transit the control plane via the same streaming proxy path. There is no content filtering or redaction at any layer of the log pipeline. Any sensitive data (secrets, PII, stack traces) that user code writes to stdout/stderr flows through control plane memory unmodified. Log lines include structured metadata: timestamp, message content, and originator classification. For details on how log data flows through the system, see [Data flow](./data-flow#streaming-relay-pattern).
 
 ## Observability metrics
 
@@ -44,7 +44,7 @@ Every API request is authenticated with the identity context captured. Run and a
    kubectl get ds -n union | grep fluent
    ```
 
-Self-service verification using existing features.
+This verification is fully self-service.
 
 ### Audit trail
 
@@ -52,17 +52,9 @@ Self-service verification using existing features.
 
 **How to verify:**
 
-Ideal: a unified audit command that captures all operations:
+Audit data is available from the following sources:
 
-```bash
-union security audit --window 1h --output audit-report.json
-```
-
-Available today using existing tools:
-
-- `uctl get execution --all -o json` filtered by time
-- IdP audit log (Okta) for authentication events
-- Kubernetes audit log on the data plane for cluster operations
-- CloudTrail for IAM activity
-
-A unified audit command aggregating control plane API logs, Kubernetes audit logs, and cloud audit trails would be a high-value addition.
+- Control plane execution and lifecycle events: `uctl get execution --all -o json`, filtered by time window.
+- Authentication events: the configured identity provider's audit log (e.g., Okta).
+- Cluster operations: the Kubernetes audit log on the data plane.
+- Cloud IAM activity: CloudTrail (AWS), Cloud Audit Logs (GCP), or Azure Monitor activity logs.

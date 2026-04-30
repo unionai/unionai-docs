@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Encryption
 
-Union.ai encrypts all data at rest and in transit across every storage and communication path in the platform. Transit encryption uses TLS + mTLS + Cloudflare Tunnel for all cross-plane communication. At-rest encryption is provided by cloud provider services (S3 SSE, GCS encryption, Azure SSE, AWS RDS AES-256). Data that transits control plane memory (structured task I/O, secret values during creation, log streams) is encrypted on every network hop but exists as plaintext in process memory during request handling. This is standard for any service that processes data.
+Union.ai encrypts all data at rest and in transit across every storage and communication path in the platform. Transit encryption uses TLS for all communication paths, with mutual TLS (mTLS) layered through the Cloudflare Tunnel for cross-plane traffic. At-rest encryption is provided by cloud provider services (S3 SSE, GCS encryption, Azure SSE) for customer-side storage, and by managed cloud database services (AES-256/KMS) for the control plane. Data that transits control plane memory (structured task I/O, secret values during creation, log streams) is encrypted on every network hop but exists as plaintext in process memory during request handling.
 
 ## Encryption at rest
 
@@ -16,23 +16,23 @@ Union.ai encrypts all data at rest and in transit across every storage and commu
 | Container Registry | Cloud-provider encryption | Cloud provider managed |
 | Secrets Backend (cloud) | Cloud-provider encryption | Cloud secrets manager |
 | Secrets Backend (K8s) | etcd encryption | K8s cluster-level |
-| ClickHouse | Encrypted EBS/persistent disk | Cloud provider managed |
-| Control Plane PostgreSQL | AWS RDS encryption | AES-256; AWS KMS managed |
+| Observability metrics store (per-cluster) | Encrypted persistent disk | Cloud provider managed |
+| Control plane databases | Managed cloud database service | AES-256; cloud KMS managed |
 
-All data at rest is encrypted using cloud-provider native encryption. Each storage backend uses the default encryption mechanism provided by the underlying cloud service, ensuring that encryption is always active without requiring additional configuration. For object stores (S3, GCS, Azure Blob Storage), customers can bring their own customer-managed keys (CMK) to gain full control over key rotation, access policies, and revocation. The control plane database uses AES-256 encryption managed through AWS KMS, consistent with Union.ai's SOC 2 Type II controls.
+All data at rest is encrypted using cloud-provider native encryption. Each storage backend uses the default encryption mechanism provided by the underlying cloud service, ensuring that encryption is always active without requiring additional configuration. For object stores (S3, GCS, Azure Blob Storage), customers can bring their own customer-managed keys (CMK) to gain full control over key rotation, access policies, and revocation. Control plane databases use AES-256 encryption managed through the cloud KMS, consistent with Union.ai's SOC 2 Type II controls.
 
 ## Encryption in transit
 
 All communication paths in the Union.ai platform are encrypted using TLS:
 
 - **Client to control plane**: all API and UI traffic uses TLS 1.2 or higher.
-- **Control plane to data plane**: all traffic flows through Cloudflare Tunnel, which enforces mutual TLS.
+- **Data plane to control plane**: two outbound-only channels (Cloudflare Tunnel with mTLS, and direct gRPC over TLS 1.2+). See [Network architecture](../architecture/network).
 - **Client to object store**: presigned URLs always use HTTPS, enforced by the cloud provider.
 - **Internal data plane communication**: uses cloud-native TLS for inter-service traffic.
 
-No unencrypted communication paths exist in the platform. The combination of TLS at the edge, mutual TLS through the tunnel, and HTTPS for presigned URLs ensures end-to-end encryption for all data in transit. Data content is never logged at any log level. (Note: if debug logging is enabled in the control plane, authentication credentials, not data content, may be logged in plaintext during request header propagation.)
+No unencrypted communication paths exist in the platform. The combination of TLS at the edge, mutual TLS through the tunnel, TLS on the gRPC channel, and HTTPS for presigned URLs ensures end-to-end encryption for all data in transit. Data content is never logged at any log level. (Note: if debug logging is enabled in the control plane, authentication credentials, not data content, may be logged in plaintext during request header propagation.)
 
-For details on the tunnel architecture, see [Two-plane separation](../architecture/two-plane-separation).
+For details on the cross-plane channels, see [Network architecture](../architecture/network).
 
 ## Data protection summary
 
@@ -49,11 +49,11 @@ The following table summarizes the encryption state for each data category acros
 | **Secret values** (create/update) | TLS + TLS/mTLS/tunnel | ASM/GCP SM/AKV/etcd encryption | Yes (plaintext, transient) | No |
 | **Secret values** (get/list/delete) | TLS | ASM/GCP SM/AKV/etcd encryption | No (metadata only) | No |
 | **Secret values** (runtime injection) | Linkerd mTLS / Kubernetes API | Secret backend encryption | No (data plane only) | No |
-| **Execution logs** (streaming) | TLS + TLS/mTLS/tunnel | CloudWatch/Stackdriver/Azure Monitor | Yes (plaintext, transient) | No |
-| **Task definitions** (TaskSpec) | TLS | PostgreSQL AES-256/KMS | Yes (read from DB) | **Yes** (encrypted at rest) |
-| **Run/trigger specs** | TLS | PostgreSQL AES-256/KMS | Yes (read from DB) | **Yes** (encrypted at rest) |
-| **Error messages** | TLS/mTLS/tunnel | Cassandra (storage-level) | Yes (read from DB) | **Yes** |
-| **Execution metadata** (phase, timestamps) | TLS/mTLS/tunnel | PostgreSQL AES-256/KMS + Cassandra | Yes (read from DB) | **Yes** (encrypted at rest) |
+| **Execution logs** (streaming) | TLS + TLS/mTLS/tunnel | CloudWatch / Cloud Logging / Azure Monitor | Yes (plaintext, transient) | No |
+| **Task definitions** (TaskSpec) | TLS | Control plane database (AES-256/KMS) | Yes (read from DB) | **Yes** (encrypted at rest) |
+| **Run/trigger specs** | TLS | Control plane database (AES-256/KMS) | Yes (read from DB) | **Yes** (encrypted at rest) |
+| **Error messages** | TLS (gRPC) | Control plane database (storage-level) | Yes (read from DB) | **Yes** |
+| **Execution metadata** (phase, timestamps) | TLS (gRPC) | Control plane database (AES-256/KMS) | Yes (read from DB) | **Yes** (encrypted at rest) |
 
 "Transient" means the data exists in process memory only for the duration of a single request and is not written to disk, cache, or logs. For details on each data flow pattern, see [Data flow](./data-flow).
 

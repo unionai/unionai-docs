@@ -69,9 +69,7 @@ For details on how secrets flow during workflow execution, see [Workflow data fl
 
 5. Verify the secret exists in the customer's secrets backend by checking the cloud secrets manager console directly. The value should be present there.
 
-6. For comparison: some competing platforms document that workspace admins can read secrets via API. Union.ai's API structurally cannot return secret values, regardless of the caller's privilege level.
-
-This verification is fully self-service and works immediately.
+This verification is fully self-service and works immediately. Note that the write-only design is enforced at the protocol level: Union.ai's API structurally cannot return secret values, regardless of the caller's privilege level.
 
 ### Secret lifecycle
 

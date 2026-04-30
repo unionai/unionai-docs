@@ -26,7 +26,7 @@ Once a run completes, its results are accessible through three channels, each wi
 
 **Metadata** (run status, phase transitions, timestamps, and error messages) is served directly from the control plane database.
 
-For details on the two data flow patterns, see [Data flow](./data-flow).
+For details on the data flow patterns, see [Data flow](./data-flow).
 
 ## Verification
 

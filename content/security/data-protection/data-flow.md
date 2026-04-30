@@ -21,7 +21,7 @@ Streaming relay pattern (logs — transits control plane):
 
 ## Presigned URL pattern
 
-For bulk data (files (`flyte.io.File`), directories (`flyte.io.Dir`), DataFrames, code bundles, and reports), the control plane proxies signing requests to the data plane, which generates time-limited presigned URLs using customer-managed IAM credentials. The client then uploads or downloads data directly to the customer's object store. The data content never enters the control plane; only the signing metadata passes through. This model eliminates the need for the control plane to hold persistent cloud IAM credentials.
+For bulk data -- files (`flyte.io.File`), directories (`flyte.io.Dir`), DataFrames, code bundles, and reports -- the control plane proxies signing requests to the data plane, which generates time-limited presigned URLs using customer-managed IAM credentials. The client then uploads or downloads data directly to the customer's object store. The data content never enters the control plane; only the signing metadata passes through. This model eliminates the need for the control plane to hold persistent cloud IAM credentials.
 
 | Phase | Encrypted? | Details |
 |-------|------------|---------|
@@ -69,11 +69,11 @@ For logs and observability metrics, the control plane acts as a stateless relay.
 
 | Phase | Encrypted? | Details |
 |-------|------------|---------|
-| Data plane log source → DP operator | **Yes** | Linkerd mTLS (pod-to-pod) or cloud SDK TLS (CloudWatch/Stackdriver/Azure Monitor) |
+| Data plane log source → DP operator | **Yes** | Linkerd mTLS (pod-to-pod) or cloud SDK TLS (CloudWatch / Cloud Logging / Azure Monitor) |
 | Data Plane → Control Plane | **Yes** | TLS + mTLS + Cloudflare Tunnel. Wire format: protobuf streaming |
 | In Control Plane | **Plaintext in memory** | Each log message deserialized for byte counting. Not persisted, cached, or logged. No content filtering |
 | Control Plane → Client | **Yes** | TLS 1.2+ (streaming) |
-| At rest (data plane log backend) | **Yes** | CloudWatch (AES-256/KMS), Cloud Logging (Google-managed), Azure Monitor (Microsoft-managed) |
+| At rest (data plane log backend) | **Yes** | CloudWatch (AES-256/KMS), Cloud Logging (Google-managed), or Azure Monitor (Microsoft-managed) |
 
 ## Data in the UI
 
@@ -83,18 +83,18 @@ The Union.ai web console displays information from multiple sources. The followi
 |---|---|---|
 | Task names (function/module names) | Control Plane | CP API |
 | User names | IDP (cached in CP memory) | IDP / CP |
-| Inputs/outputs (structured) | Data plane S3 via CP proxy | Cloudflare Tunnel (transits CP memory) |
+| Inputs/outputs (structured) | Data plane object store via CP proxy | Cloudflare Tunnel (transits CP memory) |
 | Logs (live) | Data plane K8s | Cloudflare Tunnel |
-| Logs (persisted) | Data plane S3/CloudWatch/Stackdriver | Cloudflare Tunnel |
+| Logs (persisted) | Data plane log aggregator (CloudWatch / Cloud Logging / Azure Monitor) | Cloudflare Tunnel |
 | K8s events | Data plane K8s | Cloudflare Tunnel |
-| Reports (HTML) | Data plane S3 | Signed URL, rendered in browser iframe |
-| Code explorer | Data plane S3 | Signed URL, JS downloads and unzips bundle |
+| Reports (HTML) | Data plane object store | Signed URL, rendered in browser iframe |
+| Code explorer | Data plane object store | Signed URL, JS downloads and unzips bundle |
 | Timeline timestamps | Control Plane | CP API |
 | Errors | Control Plane | CP API |
 
-Fields sourced from the control plane include orchestration metadata and task definitions, which may contain potentially sensitive fields such as environment variables and default values (see [Control plane](../architecture/control-plane) for details). Structured inputs/outputs are proxied through control plane memory via the inline proxy pattern before reaching the client. Fields sourced directly from the data plane via presigned URLs (reports, code bundles) bypass the control plane entirely. Error messages served from the control plane database may contain customer data from Python tracebacks.
+Fields sourced from the control plane include orchestration metadata and task definitions, which may contain potentially sensitive fields such as environment variables and default values (see [Data classification and residency](./classification-and-residency) for the full enumeration). Structured inputs/outputs are proxied through control plane memory via the inline proxy pattern before reaching the client. Fields sourced directly from the data plane via presigned URLs (reports, code bundles) bypass the control plane entirely. Error messages served from the control plane database may contain customer data from Python tracebacks.
 
-For details on the underlying network architecture, see [Two-plane separation](../architecture/two-plane-separation).
+For details on the underlying network architecture, see [Network architecture](../architecture/network).
 
 ## Verification
 
