@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Deployment models
 
-Union.ai supports two deployment models: **self-managed** and **BYOC** (Bring Your Own Cloud). Both models share the same fundamental [two-plane separation](./two-plane-separation): the control plane is hosted by Union.ai, and the data plane runs in the customer's cloud account. They differ in who operates the data plane's Kubernetes cluster.
+Union.ai supports two deployment models: **Self-managed** and **BYOC** (Bring Your Own Cloud). Both models share the same fundamental [two-plane separation](./two-plane-separation): the control plane is hosted by Union.ai, and the data plane runs in the customer's cloud account. They differ in who operates the data plane's Kubernetes cluster.
 
 ## Common properties
 
