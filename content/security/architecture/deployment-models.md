@@ -23,7 +23,7 @@ The key difference is operational: in BYOC, Union.ai manages the Kubernetes clus
 
 ## Self-managed
 
-In the self-managed model, the customer operates the data plane independently. Union.ai has zero access to the data plane infrastructure. The only connection between the control plane and the data plane is the Cloudflare Tunnel, initiated outbound by the data plane.
+In the self-managed model, the customer operates the data plane independently. Union.ai has zero access to the data plane infrastructure. The only connections between the control plane and the data plane are two outbound-only channels initiated by the data plane: a Cloudflare Tunnel and a direct gRPC connection. See [Network architecture](./network) for details.
 
 The customer provisions all IAM roles, configures network policies, manages Kubernetes versions and upgrades, and handles all patching of data plane components. The customer is solely responsible for data plane availability, security hardening, and compliance of the data plane infrastructure.
 

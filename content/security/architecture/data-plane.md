@@ -21,7 +21,9 @@ The data plane consists of several components, each handling a specific aspect o
 
 **Image Builder** uses Buildkit running on the customer's Kubernetes cluster to build container images from user-submitted `Image` specifications. Source code and built images never leave the customer's infrastructure. Base images are pulled from customer-configured registries, and built images are pushed to the customer's container registry (ECR, GCR, or ACR).
 
-**Tunnel Service** maintains the outbound-only encrypted connection from the data plane to the control plane via Cloudflare. This service initiates the connection (no inbound ports required), performs health checks and heartbeats, and automatically reconnects if the connection drops. See [Network architecture](./network) for details on what traffic traverses this tunnel.
+**Tunnel Service** maintains the outbound-only encrypted Cloudflare Tunnel from the data plane to the control plane. This service initiates the tunnel (no inbound ports required), performs health checks and heartbeats, and automatically reconnects if the connection drops.
+
+In addition to the tunnel, the data plane operator establishes a separate outbound gRPC connection (TLS) to the regional control plane endpoint for orchestration RPCs (cluster registration, action lifecycle, event reporting, catalog and artifact lookups, admin RPCs). Both channels are outbound-initiated; see [Network architecture](./network) for what each carries.
 
 **Apps & Serving** provides model and application serving capabilities using Knative with a Kourier gateway. All serving infrastructure runs within the customer's cluster. Authentication is enforced on all endpoints by default (SSO for browser access, API keys for programmatic access), with an option to allow anonymous access on specific endpoints. See [Apps & Serving security](#apps--serving-security) below for details.
 

@@ -6,47 +6,62 @@ variants: -flyte +union
 
 # Network architecture
 
-The network architecture reinforces the [two-plane separation](./two-plane-separation) with an outbound-only connectivity model. The data plane initiates all connections to the control plane. There are no inbound firewall rules, no VPN tunnels, and no listening services on the customer's network that Union.ai can reach.
+The network architecture reinforces the [two-plane separation](./two-plane-separation) with an outbound-only connectivity model. The data plane initiates all connections to the control plane over two distinct outbound channels: a Cloudflare Tunnel and a direct gRPC connection. There are no inbound firewall rules, no VPN tunnels, and no listening services on the customer's network that Union.ai can reach.
 
 ## Outbound-only model
 
-All network connections between the data plane and the control plane are initiated by the data plane. The customer's network requires only standard outbound HTTPS access to Cloudflare edge nodes. No inbound firewall rules, port forwarding, or VPN configuration is needed.
+All network connections between the data plane and the control plane are initiated by the data plane. The customer's network requires only standard outbound HTTPS access to Cloudflare edge nodes. No inbound firewall rules, port forwarding, or VPN configuration are needed.
 
-This model eliminates the inbound attack surface entirely. There are no listening services on the customer's network for an attacker to discover through port scanning or exploit through service vulnerabilities. The customer's network perimeter remains unaffected by the Union.ai integration. Firewall management is simplified to permitting outbound HTTPS, a rule that most enterprise networks already allow.
+This model eliminates the inbound attack surface entirely. There are no listening services on the customer's network for an attacker to discover through port scanning or exploit through service vulnerabilities. The customer's network perimeter remains unaffected by the Union.ai integration. Firewall management is simplified to a single rule: permit outbound HTTPS, which most enterprise networks already allow.
 
-The trust model is customer-initiated: the data plane decides when and whether to connect, and the customer can sever the connection at any time by blocking outbound traffic or shutting down the Tunnel Service.
+The trust model is customer-initiated: the data plane decides when and whether to connect, and the customer can sever either channel at any time by blocking outbound traffic or shutting down the data plane operator.
 
 ## Cloudflare Tunnel
 
-The connection between the data plane and the control plane uses a Cloudflare Tunnel, an outbound-only encrypted connection from the customer's cluster to the Cloudflare edge network, which then routes to the Union.ai control plane.
+The Cloudflare Tunnel is an outbound-only encrypted connection from the customer's cluster to the Cloudflare edge network, which then routes to the Union.ai control plane. It is initiated by a `cloudflared` sidecar in the data plane and lets the control plane reach data plane services without any inbound firewall rules.
 
-All traffic through the tunnel is encrypted using a layered transport: TLS with mutual authentication (X.509 client certificates), Cloudflare Access service tokens for application-layer authentication, and Cloudflare Tunnel encryption for the network path. Tunnel tokens are managed via operator polling and rotate implicitly when the control plane issues updated values.
+All traffic through the tunnel is encrypted using a layered transport: TLS with mutual authentication (X.509 client certificates), Cloudflare Access service tokens for application-layer authentication, and Cloudflare Tunnel encryption for the network path. Tunnel tokens are rotated automatically: the data plane operator periodically polls the control plane and picks up updated tokens when issued.
 
 The Tunnel Service in the data plane maintains this connection with health checks and heartbeats, and automatically reconnects if the connection drops. State reconciliation occurs upon reconnection, so no data is lost during brief connectivity interruptions.
 
-The tunnel carries the following traffic, all encrypted in transit:
+Once the tunnel is established (outbound from the data plane), it carries bidirectional traffic over the open session. All traffic is encrypted in transit:
 
-- **Orchestration instructions**: TaskAction definitions from the control plane to the data plane
-- **State transitions**: execution phase updates from the data plane to the control plane
 - **Structured task inputs and outputs**: protobuf payloads proxied between clients and the data plane object store on run submission and result retrieval
 - **Log streams**: execution log content streamed from the data plane through the control plane to clients
 - **Secret values**: secret values during create/update operations, relayed to the data plane secrets backend
 - **Presigned URL signing requests**: metadata-only requests brokered to generate time-limited data access URLs
+- **Apps & Serving ingress**: end-user requests routed to model and application endpoints in the customer's cluster
 - **Health checks**: bidirectional health and liveness signals
 
-Bulk customer data (files, directories, DataFrames, code bundles, and container images) does not traverse the tunnel; it transfers directly between clients and the customer's object store via presigned URLs. For payload size limits, in-memory handling, and how each pathway is encrypted at every hop, see [Data flow](../data-protection/data-flow).
+Bulk customer data (files, directories, DataFrames, code bundles, and reports) does not traverse the tunnel; it transfers directly between clients and the customer's object store via presigned URLs. Container images also bypass the tunnel: they are pulled by Kubernetes from the customer's container registry over standard HTTPS. For payload size limits, in-memory handling, and how each pathway is encrypted at every hop, see [Data flow](../data-protection/data-flow).
+
+## Direct gRPC connection
+
+In addition to the Cloudflare Tunnel, the data plane maintains a separate outbound gRPC connection over TLS to the regional control plane endpoint. The data plane operator establishes and multiplexes orchestration RPCs over this connection. Like the tunnel, it is outbound-initiated by the data plane and requires no inbound firewall rules.
+
+This channel carries:
+
+- **Cluster registration**: the data plane registers itself with the control plane on startup and keeps the registration current
+- **Action lifecycle**: TaskAction polling, scheduling decisions, and reconciliation
+- **Event reporting**: execution events, phase transitions, and status updates from the data plane to the control plane
+- **Catalog and artifact lookups**: artifact registry, run metadata, and task definition reads
+- **Admin RPCs**: project, domain, and identity queries
+
+The connection terminates at the Cloudflare edge for the regional `*.unionai.cloud` / `*.union.ai` hostname, which then routes to the hosted control plane. All traffic is encrypted with TLS 1.2+.
 
 ## Regional endpoints
 
 Union.ai provides control plane endpoints in multiple regions. Customers select the region closest to their data plane deployment to minimize latency. Region selection also has data residency implications -- see [Data classification and residency](../data-protection/classification-and-residency#data-residency).
 
-| Region | Location | Domain |
-|---|---|---|
-| US East | us-east-2 | `hosted.unionai.cloud` |
-| US West | us-west-2 | (region-specific subdomain) |
-| Europe West 1 | eu-west-1 | (region-specific subdomain) |
-| Europe West 2 | eu-west-2 | (region-specific subdomain) |
-| Europe Central | eu-central-1 | (region-specific subdomain) |
+| Region | Location |
+|---|---|
+| US East | us-east-2 |
+| US West | us-west-2 |
+| Europe West 1 | eu-west-1 |
+| Europe West 2 | eu-west-2 |
+| Europe Central | eu-central-1 |
+
+Each region has its own dedicated control plane endpoint hostname.
 
 ## Egress configuration
 
@@ -59,7 +74,8 @@ All communication paths in the system use encryption. No unencrypted communicati
 | Path | Protocol | Encryption |
 |---|---|---|
 | Client to Control Plane | HTTPS | TLS 1.2+ |
-| Control Plane to Data Plane | Cloudflare Tunnel (outbound-initiated) | mTLS |
+| Data Plane ↔ Control Plane (outbound-initiated by data plane) | Cloudflare Tunnel | mTLS |
+| Data Plane → Control Plane (outbound-initiated by data plane) | gRPC over TLS | TLS 1.2+ |
 | Client to Object Store | HTTPS (presigned URL) | TLS 1.2+ (cloud provider enforced) |
 | Fluent Bit to Log Aggregator | Cloud provider SDK | TLS (cloud-native) |
 | Task Pods to Object Store | Cloud provider SDK | TLS (cloud-native) |
@@ -95,9 +111,9 @@ For details on the BYOC private management connection, see [Private connectivity
 
 4. (Optional) Run a port scan from an external host against the data plane nodes to confirm no Union.ai-related services are reachable.
 
-### Cloudflare Tunnel
+### Cloudflare Tunnel and direct gRPC
 
-**Reviewer focus:** Confirm that bulk data (files, DataFrames, code bundles) bypasses the tunnel via presigned URLs, and that structured task I/O and log streams transit the tunnel as documented above (encrypted in transit, not persisted).
+**Reviewer focus:** Confirm that bulk data (files, DataFrames, code bundles) bypasses the tunnel via presigned URLs, and that structured task I/O and log streams transit the tunnel as documented above (encrypted in transit, not persisted). Confirm that the direct gRPC connection from the data plane operator to the regional control plane endpoint is outbound-initiated.
 
 **How to verify:**
 
@@ -112,8 +128,6 @@ For details on the BYOC private management connection, see [Private connectivity
 2. Analyze VPC Flow Logs for traffic patterns. Bulk data transfers (files, DataFrames, code bundles) should flow directly between task pods and the customer's object store endpoints (S3/GCS/Azure Blob), not through Cloudflare IPs. Structured task I/O and log streams will flow through the tunnel as documented.
 
 3. Use browser developer tools (Network tab) in the Union.ai UI to confirm that binary output artifacts are fetched via presigned URLs (resolving to the customer's storage domain), while structured outputs are fetched via the control plane API.
-
-4. (Advanced) Request or build a tunnel audit mode that logs all messages crossing the tunnel with their sizes and types. This would provide definitive evidence of the traffic composition documented above.
 
 ### Egress configuration
 
