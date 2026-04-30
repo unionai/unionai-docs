@@ -15,7 +15,7 @@ Unlike serverless and BYOC deployments where {{< key product_name >}} manages au
 
 ## Overview
 
-Self-hosted authentication requires creating **five OAuth2 client applications** in your own identity provider. Each application serves a different authentication flow:
+Self-hosted authentication requires creating **five OAuth2 client applications** in your own identity provider (plus an optional sixth for CI/CD). Each application serves a different authentication flow:
 
 | # | Application | Type | Grant types | Purpose |
 |---|-------------|------|-------------|---------|
@@ -24,6 +24,10 @@ Self-hosted authentication requires creating **five OAuth2 client applications**
 | 3 | Service-to-service | Confidential (service) | `client_credentials` | Control plane inter-service communication through NGINX |
 | 4 | Operator | Confidential (service) | `client_credentials` | Data plane operator, propeller, and cluster-resource-sync authentication to control plane |
 | 5 | EAGER | Confidential (service) | `client_credentials` | Task pod authentication (EAGER_API_KEY) |
+| 6 | CI/CD _(optional)_ | Confidential (service) | `client_credentials` | Non-interactive workflow deployment from CI/CD pipelines |
+
+> [!NOTE]
+> App 6 (CI/CD) is only needed if you deploy workflows from automated pipelines. See the [CI/CD integration](./operations/cicd) guide for full setup instructions.
 
 ## Identity provider requirements
 
