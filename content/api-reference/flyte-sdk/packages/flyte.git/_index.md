@@ -1,6 +1,6 @@
 ---
 title: flyte.git
-version: 2.2.0
+version: 2.2.2
 variants: +flyte +union
 layout: py_api
 ---
