@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.jsonl
-version: 2.2.1
+version: 2.2.2
 variants: +flyte +union
 layout: py_api
 ---
