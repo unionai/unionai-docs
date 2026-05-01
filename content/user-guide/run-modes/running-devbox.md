@@ -25,9 +25,28 @@ pip install flyte
 
 Launch the local cluster:
 
+{{< tabs "cpu" >}}
+{{< tab "CPU" >}}
+{{< markdown >}}
 ```bash
 flyte start devbox
 ```
+{{< /markdown >}}
+{{< /tab >}}
+
+{{< tab "GPU" >}}
+{{< markdown >}}
+```bash
+flyte start devbox --gpu
+```
+{{< /markdown >}}
+
+{{< note >}}
+The `--gpu` flag requires an NVIDIA-enabled host. It currently *does not* support Apple Silicon or AMD GPUs.
+{{< /note>}}
+
+{{< /tab >}}
+{{< /tabs >}}
 
 ![Devbox start](../../_static/images/user-guide/run-modes/flyte-start-devbox.png)
 
@@ -125,6 +144,23 @@ See the [CLI reference](../../api-reference/flyte-cli) for details.
 
 ```bash
 flyte delete devbox  # add the --volume flag to delete the Docker volume
+```
+
+## Using a CUDA-enabled GPU host
+
+If you started the devbox with `flyte start devbox --gpu`, you can use GPUs in your workflows.
+
+```python
+import flyte
+
+env = flyte.TaskEnvironment(
+    name="gpu_env",
+    resources=flyte.Resources(gpu=1),
+)
+
+@env.task
+def gpu_task() -> bool:
+    return torch.cuda.is_available()  # returns True if CUDA (provided by a GPU) is available
 ```
 
 ## Next steps
