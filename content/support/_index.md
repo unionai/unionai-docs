@@ -2,7 +2,6 @@
 title: Getting support
 weight: 9
 variants: -flyte +union
-top_menu: true
 ---
 
 # Getting support
