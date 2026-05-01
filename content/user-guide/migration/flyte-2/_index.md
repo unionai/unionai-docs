@@ -1,6 +1,6 @@
 ---
 title: From Flyte 1 to 2
-weight: 22
+weight: 1
 variants: +flyte +union
 llm_readable_bundle: true
 ---
