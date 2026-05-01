@@ -83,7 +83,13 @@ Airflow's `schedule=` on a DAG maps to a Flyte `Trigger` attached to a task.
 | `schedule="30 9 * * 1-5"` + `timezone=...` | `flyte.Trigger("biz_hours", flyte.Cron("30 9 * * 1-5", timezone="America/New_York"))` |
 
 ```python
-@env.task(triggers=flyte.Trigger("daily_report", flyte.Cron("0 6 * * *")))
+@env.task(
+    triggers=flyte.Trigger(
+        "daily_report",
+        flyte.Cron("0 6 * * *"),
+        inputs={"trigger_time": flyte.TriggerTime},
+    )
+)
 def generate_report(trigger_time: datetime) -> str:
     ...
 ```
