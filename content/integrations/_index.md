@@ -33,11 +33,12 @@ Flyte 2 integrations fall into the following categories:
 
 1. **Distributed compute**: Provision transient compute clusters to run tasks across multiple nodes, with automatic lifecycle management.
 2. **Agentic AI**: Support for various common aspects of agentic AI applications.
-3. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
-4. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
-5. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
-6. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
-7. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
+3. **Configuration**: Compose and pass hierarchical configuration objects between tasks, with type-safe schemas and CLI/YAML composition.
+4. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
+5. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
+6. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
+7. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
+8. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
 
 ## Distributed compute
 
@@ -47,8 +48,8 @@ This enables large-scale parallelism without requiring users to operate or maint
 
 ### Supported distributed compute integrations
 
-| Plugin               | Description                                      | Common use cases                                       |
-| -------------------- | ------------------------------------------------ | ------------------------------------------------------ |
+| Plugin                      | Description                                      | Common use cases                                       |
+| --------------------------- | ------------------------------------------------ | ------------------------------------------------------ |
 | [Ray](./ray/_index)         | Provisions Ray clusters via KubeRay              | Distributed Python, ML training, hyperparameter tuning |
 | [Spark](./spark/_index)     | Provisions Spark clusters via Spark Operator     | Large-scale data processing, ETL pipelines             |
 | [Dask](./dask/_index)       | Provisions Dask clusters via Dask Operator       | Parallel Python workloads, dataframe operations        |
@@ -153,11 +154,11 @@ Agentic AI integrations provide drop-in replacements for LLM provider SDKs. They
 
 ### Supported agentic AI integrations
 
-| Plugin                              | Description                                                  | Common use cases                     |
-| ----------------------------------- | ------------------------------------------------------------ | ------------------------------------ |
-| [OpenAI](./openai/_index)           | Drop-in replacement for OpenAI Agents SDK `function_tool`    | Agentic workflows with OpenAI models |
-| [Anthropic](./anthropic/_index)     | Agent loop and `function_tool` for the Anthropic Claude SDK  | Agentic workflows with Claude        |
-| [Gemini](./gemini/_index)           | Agent loop and `function_tool` for the Google Gemini SDK     | Agentic workflows with Gemini        |
+| Plugin                              | Description                                                    | Common use cases                         |
+| ----------------------------------- | -------------------------------------------------------------- | ---------------------------------------- |
+| [OpenAI](./openai/_index)           | Drop-in replacement for OpenAI Agents SDK `function_tool`      | Agentic workflows with OpenAI models     |
+| [Anthropic](./anthropic/_index)     | Agent loop and `function_tool` for the Anthropic Claude SDK    | Agentic workflows with Claude            |
+| [Gemini](./gemini/_index)           | Agent loop and `function_tool` for the Google Gemini SDK       | Agentic workflows with Gemini            |
 | [Code generation](./codegen/_index) | LLM-driven code generation with automatic testing in sandboxes | Data processing, ETL, analysis pipelines |
 
 ## Experiment tracking
@@ -166,10 +167,21 @@ Experiment tracking integrations let you log metrics, parameters, and artifacts 
 
 ### Supported experiment tracking integrations
 
-| Plugin                               | Description                  | Common use cases                              |
-| ------------------------------------ | ---------------------------- | --------------------------------------------- |
+| Plugin                               | Description                  | Common use cases                                 |
+| ------------------------------------ | ---------------------------- | ------------------------------------------------ |
 | [MLflow](./mlflow/_index)            | MLflow experiment tracking   | Experiment tracking, autologging, model registry |
-| [Weights and Biases](./wandb/_index) | Weights & Biases integration | Experiment tracking and hyperparameter tuning |
+| [Weights and Biases](./wandb/_index) | Weights & Biases integration | Experiment tracking and hyperparameter tuning    |
+
+## Configuration
+
+Configuration integrations let you compose and pass hierarchical configuration objects between Flyte tasks, with type-safe schemas and CLI/YAML composition.
+
+### Supported configuration integrations
+
+| Plugin                          | Description                                                       | Common use cases                                                                  |
+| ------------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| [OmegaConf](./omegaconf/_index) | `DictConfig` / `ListConfig` as native task input and output types | Passing composed configs between tasks, structured configs, YAML-driven pipelines |
+| [Hydra](./hydra/_index)         | Hydra config composition and sweep submission for Flyte tasks     | YAML-driven experiment composition, grid and Bayesian sweeps, hardware presets    |
 
 ## Data validation
 
@@ -177,9 +189,9 @@ Data validation integrations enforce schema contracts on the dataframes flowing 
 
 ### Supported data validation integrations
 
-| Plugin                         | Description                                         | Common use cases                                          |
-| ------------------------------ | --------------------------------------------------- | --------------------------------------------------------- |
-| [Pandera](./pandera/_index)    | Validates dataframes with pandera `DataFrameModel` schemas | Schema enforcement, data quality checks, validation reports |
+| Plugin                      | Description                                                | Common use cases                                            |
+| --------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------- |
+| [Pandera](./pandera/_index) | Validates dataframes with pandera `DataFrameModel` schemas | Schema enforcement, data quality checks, validation reports |
 
 ## Connectors
 
@@ -191,11 +203,11 @@ Connectors are designed to scale horizontally and reduce load on the core Flyte 
 
 ### Supported connectors
 
-| Connector                          | Description                                    | Common use cases                         |
-| ---------------------------------- | ---------------------------------------------- | ---------------------------------------- |
-| [Snowflake](./snowflake/_index)    | Run SQL queries on Snowflake asynchronously    | Data warehousing, ETL, analytics queries |
-| [BigQuery](./bigquery/_index)      | Run SQL queries on Google BigQuery             | Data warehousing, ETL, analytics queries |
-| [Databricks](./databricks/_index)  | Run PySpark jobs on Databricks clusters        | Large-scale data processing, Spark ETL   |
+| Connector                         | Description                                 | Common use cases                         |
+| --------------------------------- | ------------------------------------------- | ---------------------------------------- |
+| [Snowflake](./snowflake/_index)   | Run SQL queries on Snowflake asynchronously | Data warehousing, ETL, analytics queries |
+| [BigQuery](./bigquery/_index)     | Run SQL queries on Google BigQuery          | Data warehousing, ETL, analytics queries |
+| [Databricks](./databricks/_index) | Run PySpark jobs on Databricks clusters     | Large-scale data processing, Spark ETL   |
 
 ### Creating a new connector
 
@@ -411,10 +423,10 @@ LLM serving integrations let you deploy and serve large language models as Flyte
 
 ### Supported LLM serving integrations
 
-| Plugin                                                            | Description                                           | Common use cases                     |
-| ----------------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------ |
-| [SGLang](../user-guide/build-apps/sglang-app)  | Deploy models with SGLang's high-throughput runtime   | LLM inference, model serving         |
-| [vLLM](../user-guide/build-apps/vllm-app)      | Deploy models with vLLM's PagedAttention engine       | LLM inference, model serving         |
+| Plugin                                        | Description                                         | Common use cases             |
+| --------------------------------------------- | --------------------------------------------------- | ---------------------------- |
+| [SGLang](../user-guide/build-apps/sglang-app) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
+| [vLLM](../user-guide/build-apps/vllm-app)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
 
 For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang app](../user-guide/build-apps/sglang-app) and [vLLM app](../user-guide/build-apps/vllm-app) pages.
 
@@ -424,6 +436,6 @@ Notebook execution integrations let you run Jupyter notebooks as first-class Fly
 
 ### Supported notebook execution integrations
 
-| Plugin                              | Description                                       | Common use cases                                            |
-| ----------------------------------- | ------------------------------------------------- | ----------------------------------------------------------- |
-| [Papermill](./papermill/_index)     | Parameterize and execute `.ipynb` files via [papermill](https://papermill.readthedocs.io/) | Productionizing exploratory notebooks, cell-by-cell HTML reports, notebook-driven analysis pipelines |
+| Plugin                          | Description                                                                                | Common use cases                                                                                     |
+| ------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| [Papermill](./papermill/_index) | Parameterize and execute `.ipynb` files via [papermill](https://papermill.readthedocs.io/) | Productionizing exploratory notebooks, cell-by-cell HTML reports, notebook-driven analysis pipelines |
