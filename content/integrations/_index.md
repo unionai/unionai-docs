@@ -37,6 +37,7 @@ Flyte 2 integrations fall into the following categories:
 4. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
 5. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
 6. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
+7. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
 
 ## Distributed compute
 
@@ -416,3 +417,13 @@ LLM serving integrations let you deploy and serve large language models as Flyte
 | [vLLM](../user-guide/build-apps/vllm-app)      | Deploy models with vLLM's PagedAttention engine       | LLM inference, model serving         |
 
 For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang app](../user-guide/build-apps/sglang-app) and [vLLM app](../user-guide/build-apps/vllm-app) pages.
+
+## Notebook execution
+
+Notebook execution integrations let you run Jupyter notebooks as first-class Flyte tasks with typed inputs and outputs, HTML reports surfaced in the Flyte UI, and the ability to call other Flyte tasks from within the notebook.
+
+### Supported notebook execution integrations
+
+| Plugin                              | Description                                       | Common use cases                                            |
+| ----------------------------------- | ------------------------------------------------- | ----------------------------------------------------------- |
+| [Papermill](./papermill/_index)     | Parameterize and execute `.ipynb` files via [papermill](https://papermill.readthedocs.io/) | Productionizing exploratory notebooks, cell-by-cell HTML reports, notebook-driven analysis pipelines |
