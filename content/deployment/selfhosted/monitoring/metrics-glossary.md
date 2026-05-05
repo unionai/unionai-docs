@@ -7,7 +7,7 @@ variants: -flyte +union
 # Metrics Glossary
 
 > [!NOTE] Release version
-> This glossary is a point-in-time snapshot reflecting metrics available in helm-charts release **2026.4.9** (controlplane-2026.4.9 / dataplane-2026.4.9). Metrics may change between releases.
+> This glossary is a point-in-time snapshot reflecting metrics available in helm-charts release **2026.4.9+** with v2 dashboard overhaul (PR #373). Metrics may change between releases. V1-only metrics are marked as such.
 
 This page documents all metrics surfaced in the shipped Grafana dashboards and PrometheusRule definitions. It is organized by plane (controlplane / dataplane), then by dashboard section, followed by recording rules and alert rules.
 
@@ -52,7 +52,8 @@ Recording rules are prefixed with `union:cp:` (controlplane) or `union:dp:` (dat
 
 | Metric | Type | Description |
 |--------|------|-------------|
-| `connect:server_requests_handled_total` | Counter | Connect protocol request throughput, labeled by `service` (e.g., ExecutionService, ClusterService) and `code`. |
+| `connect:server_requests_handled_total` | Counter | Connect protocol request throughput, labeled by `service` (e.g., ExecutionService, ClusterService), `method`, and `code`. The primary v2 request counter. |
+| `connect:server_request_duration_seconds_bucket` | Histogram | Connect server request duration, labeled by `service`, `method`, `type`, `code`. Custom buckets: 0.05s–60s. Use `histogram_quantile()` for per-method latency (e.g., `method="CreateRun"`). |
 | `grpc_server_handled_total` | Counter | gRPC server request count, labeled by `grpc_service`, `grpc_method`, `grpc_code`. Used by CacheService (the only CP service using gRPC instead of Connect). |
 
 ### FlyteAdmin
@@ -81,15 +82,15 @@ Recording rules are prefixed with `union:cp:` (controlplane) or `union:dp:` (dat
 
 | Metric | Type | Description |
 |--------|------|-------------|
-| `executions:executions:handle_create_op_count` | Counter | Execution create operations processed. |
-| `executions:executions:handle_ack_op_count` | Counter | Execution acknowledgement operations processed (DP confirmed receipt). |
-| `executions:executions:handle_create_op_bucket` | Histogram | Execution create operation latency distribution. |
-| `executions:executions:handle_ack_op_bucket` | Histogram | Execution ack operation latency distribution. |
-| `executions:workqueue:announce_cluster_assignment_bucket` | Histogram | Key SLI: end-to-end time from execution create to cluster assignment. Custom buckets from 10ms to 20min. |
-| `executions:workqueue:send_operation_count` | Counter | Operations dispatched to the dataplane. |
-| `executions:workqueue:claim_operations` | Counter | Operations claimed from the database queue. |
-| `executions:workqueue:send_operation_failures` | Counter | Failed operation dispatches. |
-| `executions:workqueue:claim_operation_failures` | Counter | Failed operation claims. |
+| `executions:executions:handle_create_op_count` | Counter | *(v1 path only)* Execution create operations processed. Does not fire on v2 CreateRun. |
+| `executions:executions:handle_ack_op_count` | Counter | *(v1 path only)* Execution acknowledgement operations processed. |
+| `executions:executions:handle_create_op_bucket` | Histogram | *(v1 path only)* Execution create operation latency distribution. |
+| `executions:executions:handle_ack_op_bucket` | Histogram | *(v1 path only)* Execution ack operation latency distribution. |
+| `executions:workqueue:announce_cluster_assignment_bucket` | Histogram | *(v1 path only)* End-to-end time from execution create to cluster assignment. V2 uses lease streaming instead. |
+| `executions:workqueue:send_operation_count` | Counter | *(v1 path only)* Operations dispatched to the dataplane. |
+| `executions:workqueue:claim_operations` | Counter | *(v1 path only)* Operations claimed from the database queue. |
+| `executions:workqueue:send_operation_failures` | Counter | *(v1 path only)* Failed operation dispatches. |
+| `executions:workqueue:claim_operation_failures` | Counter | *(v1 path only)* Failed operation claims. |
 | `executions:database:postgres:repositories:execution_ops:*_count` | Counter | Per-operation DB latency counters (create, ack, claim, unclaim, get, update). |
 | `executions:database:postgres:errors:gorm_error` | Counter | GORM-level database errors. |
 | `executions:database:postgres:errors:postgres_error` | Counter | Native PostgreSQL errors. |
@@ -98,8 +99,8 @@ Recording rules are prefixed with `union:cp:` (controlplane) or `union:dp:` (dat
 | `executions:executions:list_clusters:miss` | Counter | Cluster list cache misses. High miss rate indicates excessive DB queries. |
 | `executions:executions:list_nodepools:hits` | Counter | Nodepool list cache hits. |
 | `executions:executions:list_nodepools:miss` | Counter | Nodepool list cache misses. |
-| `executions:app:leaser:pending_assignment_unlabeled` | Gauge | Apps waiting for cluster assignment. Growing backlog indicates a scheduling bottleneck. |
-| `executions:app:service:first_ack_latency_unlabeled_bucket` | Histogram | Key V2 SLI: time to deliver an app to the dataplane. Measures end-to-end scheduling latency. |
+| `executions:app:leaser:pending_assignment_unlabeled` | Gauge | *(Apps/serving only)* Apps waiting for cluster assignment. Does not track task runs. |
+| `executions:app:service:first_ack_latency_unlabeled_bucket` | Histogram | *(Apps/serving only)* Time to deliver an app deployment to the dataplane. Does not track task runs. |
 | `executions:run:runs_sent` | Counter | V2 runs dispatched to dataplane. |
 | `executions:run:actions_sent` | Counter | V2 actions dispatched to dataplane. |
 | `executions:run:enqueue_action_failures` | Counter | V2 action enqueue failures. Indicates queue service issues. |
@@ -249,16 +250,16 @@ Recording rules are prefixed with `union:cp:` (controlplane) or `union:dp:` (dat
 
 | Metric | Type | Description |
 |--------|------|-------------|
-| `executor:active_actions_count` | Gauge | Current active V2 actions. |
-| `executor:available_capacity` | Gauge | Available executor capacity. Zero means executor is saturated. |
-| `executor:discovery_miss_count` | Counter | V2 cache discovery misses for task output caching. |
-| `executor:discovery_put_success_count` | Counter | V2 cache discovery successful puts. |
-| `executor:actions_terminated` | Counter | Task completion count, labeled by `phase` (Succeeded, Failed, Aborted). Key V2 SLI for task health. |
-| `executor:evaluator:evaluate_duration` | Summary | Time spent in RecursiveNodeHandler (pod creation). Dominant component of V2 task latency. |
-| `executor:system_failures` | Counter | System failures (retryable). |
-| `executor:system_failures_exhausted` | Counter | System failures with retries exhausted — task permanently failed. |
-| `executor:invalid_leases` | Counter | Invalid leases received from queue service (malformed). |
-| `executor:evaluator:evaluate_errors` | Counter | Evaluator errors during task processing. |
+| `executor::v2:active_actions_count` | Gauge | Current active V2 actions. Note: the `::v2:` prefix is a known naming issue (FAB-308). |
+| `executor::v2:available_capacity` | Gauge | Available executor capacity. Zero means executor is saturated. |
+| `executor::v2:discovery_miss_count` | Counter | V2 cache discovery misses for task output caching. |
+| `executor::v2:discovery_put_success_count` | Counter | V2 cache discovery successful puts. |
+| `executor::v2:actions_terminated` | Counter | Task completion count, labeled by `phase` (Succeeded, Failed, Aborted). Key V2 SLI for task health. |
+| `executor::v2:evaluator:evaluate_duration_ms` | Summary | Time spent in RecursiveNodeHandler (pod creation). Dominant component of V2 task latency. |
+| `executor::v2:system_failures` | Counter | System failures (retryable). |
+| `executor::v2:system_failures_exhausted` | Counter | System failures with retries exhausted — task permanently failed. |
+| `executor::v2:invalid_leases` | Counter | Invalid leases received from queue service (malformed). |
+| `executor::v2:evaluator:evaluate_errors` | Counter | Evaluator errors during task processing. |
 
 ### Flyte Propeller (V1)
 
@@ -360,7 +361,7 @@ These rules are always enabled when `monitoring.prometheusRules.enabled: true` (
 | `union:dp:propeller:active_workflows` | Total active workflow executions | `flyte:propeller:all:execstats:active_workflow_executions` |
 | `union:dp:propeller:queue_depth` | Total propeller main workqueue depth | `flyte:propeller:all:main_depth` |
 | `union:dp:operator:work_queue_failed_rate` | Operator work queue failure rate (5m window) | `union_operator:work_queue:operations_failed` |
-| `union:dp:executor:active_actions` | Current executor active action count | `executor:active_actions_count` |
+| `union:dp:executor:active_actions` | Current executor active action count | `executor::v2:active_actions_count` |
 
 ### Dataplane SLO recording rules (opt-in)
 
@@ -371,7 +372,7 @@ Enabled when `monitoring.slos.enabled: true`. Evaluation interval: 30s.
 | `union:dp:slo:availability:ratio` | Average deployment availability across all DP services | `kube_deployment_status_replicas_available` / `kube_deployment_spec_replicas` |
 | `union:dp:slo:propeller_success_rate` | Fraction of propeller rounds that succeed | `flyte:propeller:all:round:success_count` / (`success_count` + `error_count`) |
 | `union:dp:slo:propeller_round_latency_p99` | Propeller round p99 latency in seconds | `flyte:propeller:all:round:round_time_unlabeled_ms` / 1000 |
-| `union:dp:slo:executor_success_rate` | Fraction of V2 actions that succeed | `executor:actions_terminated{phase="Succeeded"}` / total terminated |
+| `union:dp:slo:executor_success_rate` | Fraction of V2 actions that succeed | `executor::v2:actions_terminated{phase="Succeeded"}` / total terminated |
 | `union:dp:slo:execution_success_rate` | Combined V1+V2 execution success rate (average of propeller + executor) | Derived from `propeller_success_rate` and `executor_success_rate` |
 | `union:dp:slo:error_budget_remaining` | Fraction of error budget remaining (< 0 = exhausted) | Derived from `union:dp:slo:execution_success_rate` and configured availability target |
 
