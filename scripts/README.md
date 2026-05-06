@@ -1,9 +1,10 @@
 # Union selfmanaged E2E scripts
 
-End-to-end test harness for a Union selfmanaged (BYOC) dataplane on AWS.
-Provisions the underlying cloud infra, deploys the Union helm chart, wires
-up cluster-pool routing for a test project, and (optionally) runs a smoke
-+ verification suite.
+End-to-end test harness for a Union selfmanaged (BYOC) dataplane on AWS
+or GCP. Provisions the underlying cloud infra, deploys the Union helm
+chart, wires up cluster-pool routing for a test project, and (optionally)
+runs a smoke + verification suite. Remote credential stashing is AWS-only
+today; GCP runs must use `--local`.
 
 ## Layout
 
@@ -14,7 +15,7 @@ scripts/
 ├── smoke_tests.py          # post-deploy verification suite (SDK-only)
 ├── _smoke_hello.py         # isolated hello task — kept small so flyte.run
 │                           # bundles just this file for remote submission
-├── selfmanaged_gcp_e2e.py  # (stub — GCP port is a follow-up)
+├── selfmanaged_gcp_e2e.py  # GCP tasks + main / teardown_cluster (local only)
 └── pyproject.toml
 ```
 
