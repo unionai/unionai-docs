@@ -151,14 +151,6 @@ Each `<project>/production` pair should have its own quota budget and change-man
 
 The [Union Terraform provider](../../deployment/terraform/_index) is a good fit for this: it lets you manage projects, roles, policies, and access assignments declaratively, so production configuration lives in version control and changes go through PR review like any other infrastructure change.
 
-## What's coming next
-
-The next major step in scheduling is the **queue** construct — a control-plane primitive that lets you submit work into named queues with priority levels. Higher-priority work can preempt lower-priority work, and fair-share scheduling decides what runs when capacity is contested. This moves resource arbitration off raw quotas and onto something closer to a Slurm-style scheduler, which scales better for teams running mixed-criticality workloads on shared clusters.
-
-If you're planning ahead for multi-team scaling, the project-domain and quota patterns described above remain the right foundation — queues will sit on top of them rather than replace them.
-
----
-
 ## Quick reference
 
 | Decision | Recommendation |
