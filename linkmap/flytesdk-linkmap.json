@@ -152,6 +152,7 @@
     "flyte.remote.Run": "/api-reference/flyte-sdk/packages/flyte.remote/run/",
     "flyte.remote.RunDetails": "/api-reference/flyte-sdk/packages/flyte.remote/rundetails/",
     "flyte.remote.Secret": "/api-reference/flyte-sdk/packages/flyte.remote/secret/",
+    "flyte.remote.Settings": "/api-reference/flyte-sdk/packages/flyte.remote/settings/",
     "flyte.remote.Task": "/api-reference/flyte-sdk/packages/flyte.remote/task/",
     "flyte.remote.TaskDetails": "/api-reference/flyte-sdk/packages/flyte.remote/taskdetails/",
     "flyte.remote.TimeFilter": "/api-reference/flyte-sdk/packages/flyte.remote/timefilter/",

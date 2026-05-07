@@ -160,6 +160,12 @@ title = "OmegaConf"
 name = "omegaconf"
 
 [[plugins]]
+package = "flyteplugins-papermill"
+plugin = "flyteplugins.papermill"
+title = "Papermill"
+name = "papermill"
+
+[[plugins]]
 package = "flyteplugins-polars"
 plugin = "flyteplugins.polars"
 title = "Polars"
