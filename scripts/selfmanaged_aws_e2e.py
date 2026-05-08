@@ -50,6 +50,10 @@ from selfmanaged_common import (
 )
 from smoke_tests import run_smoke_suite
 
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s %(levelname)-7s %(name)s - %(message)s",
+)
 logger = logging.getLogger("flyte.e2e.aws")
 
 # ============================================================================
@@ -169,7 +173,7 @@ env = flyte.TaskEnvironment(
     # Cache task outputs so a re-run against the same control_plane_url +
     # cluster_name replays prior infra + deploy results instead of re-doing
     # the idempotent-check work. Teardown is explicitly opted out below.
-    cache="auto",
+    cache="disable",
 )
 
 
@@ -657,8 +661,15 @@ async def main(
     skip_teardown: bool = False,
     skip_smoke_tests: bool = False,
     helm_values_override: str = "",
+    dataplane_image_sha: str = "",
+    helm_chart_branch: str = "",
 ) -> E2EResult:
     """Four phases: infra → deploy → verify → (teardown).
+
+    Pass helm_values_override="values-legacy.yaml" to test with legacy defaults.
+    Pass dataplane_image_sha=<sha> to override the dataplane image tag.
+    Pass helm_chart_branch=<branch> to test a WIP branch of unionai/helm-charts
+    (empty = use the published unionai/dataplane chart).
 
     ``skip_smoke_tests`` skips Phase 3's run_smoke_suite — useful while the
     cluster-pool-attributes permission issue is unresolved, or when you only
@@ -670,6 +681,8 @@ async def main(
         aws_region=aws_region,
         skip_teardown=skip_teardown,
         helm_values_override=helm_values_override,
+        dataplane_image_sha=dataplane_image_sha,
+        helm_chart_branch=helm_chart_branch,
     )
     await hydrate_credentials()
     await init_union_client(cfg)
@@ -782,6 +795,8 @@ async def launch_remote(
     cluster_name: str,
     aws_region: str = "us-east-2",
     skip_teardown: bool = False,
+    dataplane_image_sha: str = "",
+    helm_chart_branch: str = "",
 ) -> str:
     """flyte.run(main, ...) against the remote control plane.
 
@@ -795,6 +810,8 @@ async def launch_remote(
         cluster_name=cluster_name,
         aws_region=aws_region,
         skip_teardown=skip_teardown,
+        dataplane_image_sha=dataplane_image_sha,
+        helm_chart_branch=helm_chart_branch,
     )
     logger.info(f"Launched remote run: {run.name}")
     logger.info(f"  URL: {run.url}")
