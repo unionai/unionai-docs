@@ -36,111 +36,7 @@ my_project/
 
 The connector implements four lifecycle methods: `create` (submit the job), `get` (poll status), `delete` (cancel), and `get_logs` (stream paginated log lines to the Flyte UI).
 
-```python
-# my_connector/connector.py
-import time
-import uuid
-from dataclasses import dataclass
-from typing import Any, Dict, Optional
-
-from flyteidl2.connector.connector_pb2 import (
-    GetTaskLogsResponse,
-    GetTaskLogsResponseBody,
-    GetTaskLogsResponseHeader,
-)
-from flyteidl2.core.execution_pb2 import TaskExecution
-from flyteidl2.logs.dataplane.payload_pb2 import LogLine, LogLineOriginator
-from google.protobuf.timestamp_pb2 import Timestamp
-
-from flyte import logger
-from flyte.connectors import AsyncConnector, ConnectorRegistry, Resource, ResourceMeta
-
-
-@dataclass
-class BatchJobMetadata(ResourceMeta):
-    job_id: str
-    created_at: float
-
-
-class BatchJobConnector(AsyncConnector):
-    """Submits and polls an external batch job service."""
-
-    name = "Batch Job Connector"
-    task_type_name = "batch_job"
-    metadata_type = BatchJobMetadata
-
-    async def create(
-        self,
-        task_template,
-        inputs: Optional[Dict[str, Any]] = None,
-        **kwargs,
-    ) -> BatchJobMetadata:
-        job_id = str(uuid.uuid4())[:8]
-        logger.info(f"Submitted batch job {job_id}")
-        return BatchJobMetadata(job_id=job_id, created_at=time.time())
-
-    async def get(self, resource_meta: BatchJobMetadata, **kwargs) -> Resource:
-        elapsed = time.time() - resource_meta.created_at
-        if elapsed < 5:
-            return Resource(phase=TaskExecution.RUNNING, message="Job in progress")
-        return Resource(
-            phase=TaskExecution.SUCCEEDED,
-            message="Job completed",
-            outputs={"result": f"output-from-{resource_meta.job_id}"},
-        )
-
-    async def delete(self, resource_meta: BatchJobMetadata, **kwargs):
-        logger.info(f"Cancelled job {resource_meta.job_id}")
-
-    async def get_logs(self, resource_meta: BatchJobMetadata, token: str = "", **kwargs):
-        """Stream paginated log lines back to the Flyte UI.
-
-        Yield GetTaskLogsResponse messages: body chunks carry log lines,
-        and a header with a non-empty token signals that another page follows.
-        Omit the final header (or set token to "") to end pagination.
-        """
-        def line(message: str, ts: float) -> LogLine:
-            t = Timestamp()
-            t.FromSeconds(int(ts))
-            return LogLine(timestamp=t, message=message, originator=LogLineOriginator.USER)
-
-        start = resource_meta.created_at
-        job_id = resource_meta.job_id
-
-        pages = {
-            "": GetTaskLogsResponseBody(
-                lines=[
-                    line(f"[INFO] Job {job_id} submitted", start),
-                    line(f"[INFO] Job {job_id} started", start + 1),
-                ],
-            ),
-            "page-2": GetTaskLogsResponseBody(
-                lines=[
-                    line(f"[INFO] Job {job_id} is processing...", start + 2),
-                    line(f"[INFO] Job {job_id} step 1 complete", start + 3),
-                ],
-            ),
-            "page-3": GetTaskLogsResponseBody(
-                lines=[
-                    line(f"[INFO] Job {job_id} step 2 complete", start + 4),
-                    line(f"[INFO] Job {job_id} finished", start + 5),
-                ],
-            ),
-        }
-        next_tokens = {"": "page-2", "page-2": "page-3", "page-3": ""}
-
-        body = pages.get(token, GetTaskLogsResponseBody(lines=[]))
-        next_token = next_tokens.get(token, "")
-
-        yield GetTaskLogsResponse(body=body)
-        if next_token:
-            yield GetTaskLogsResponse(
-                header=GetTaskLogsResponseHeader(token=next_token),
-            )
-
-
-ConnectorRegistry.register(BatchJobConnector())
-```
+{{< code file="/unionai-examples/v2/integrations/connectors/batch_job/connector.py" lang=python >}}
 
 Key points:
 
@@ -158,47 +54,7 @@ Connector logs as shown in the Flyte UI:
 
 The task plugin is the Python object your workflows use. It declares the task type, inputs, outputs, and any configuration; `AsyncConnectorExecutorMixin` wires it to the connector at execution time.
 
-```python
-# my_connector/task.py
-from dataclasses import dataclass
-from typing import Any, Dict, Optional, Type
-
-from flyte.connectors import AsyncConnectorExecutorMixin
-from flyte.extend import TaskTemplate
-from flyte.models import NativeInterface, SerializationContext
-
-
-@dataclass
-class BatchJobConfig:
-    timeout_seconds: int = 300
-
-
-class BatchJobTask(AsyncConnectorExecutorMixin, TaskTemplate):
-    _TASK_TYPE = "batch_job"
-
-    def __init__(
-        self,
-        name: str,
-        plugin_config: BatchJobConfig,
-        inputs: Optional[Dict[str, Type]] = None,
-        outputs: Optional[Dict[str, Type]] = None,
-        **kwargs,
-    ):
-        super().__init__(
-            name=name,
-            interface=NativeInterface(
-                {k: (v, None) for k, v in inputs.items()} if inputs else {},
-                outputs or {},
-            ),
-            task_type=self._TASK_TYPE,
-            image=None,
-            **kwargs,
-        )
-        self.plugin_config = plugin_config
-
-    def custom_config(self, sctx: SerializationContext) -> Optional[Dict[str, Any]]:
-        return {"timeout_seconds": self.plugin_config.timeout_seconds}
-```
+{{< code file="/unionai-examples/v2/integrations/connectors/batch_job/task.py" lang=python >}}
 
 Key points:
 
@@ -305,29 +161,9 @@ The connector service is the only component that needs network access to the ext
 
 ## Secrets
 
-There are two ways to pass credentials to a connector, depending on whether all users share the same credentials or each user supplies their own.
+There are two ways to pass credentials to a connector.
 
-### Connector-level secrets (shared credentials)
-
-Use `ConnectorEnvironment.secrets` when all tasks that use this connector share the same credentials — for example, a single service account for an internal API. The secret is mounted into the connector process as an environment variable.
-
-```python
-connector = flyte.app.ConnectorEnvironment(
-    name="batch-job-connector",
-    image=image,
-    resources=flyte.Resources(cpu="1", memory="1Gi"),
-    include=["my_connector"],
-    secrets=[flyte.Secret(key="MY_API_KEY")],
-)
-```
-
-Inside the connector, read it from the environment:
-
-```python
-import os
-
-api_key = os.environ["MY_API_KEY"]
-```
+**Connector-level secrets** are shared across all tasks using the connector. On Union, add them to `ConnectorEnvironment.secrets` and read them from `os.environ` inside the connector. See [Connectors](../../integrations#connector-level-secrets) for details.
 
 ### Per-task secrets (per-user credentials)
 

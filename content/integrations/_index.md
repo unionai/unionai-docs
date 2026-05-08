@@ -231,180 +231,72 @@ To implement a new async connector, extend `AsyncConnector` and implement the fo
 To test the connector locally, the connector task should inherit from
 [AsyncConnectorExecutorMixin](https://github.com/flyteorg/flyte-sdk/blob/1d49299294cd5e15385fe8c48089b3454b7a4cd1/src/flyte/connectors/_connector.py#L206). This mixin simulates how the Flyte 2 system executes asynchronous connector tasks, making it easier to validate your connector implementation before deploying it.
 
-### Example: Model training connector
+### Example: Batch job connector
 
-The following example implements a connector that launches a model training job on an external training service.
+The following example implements a connector that simulates submitting and polling an external batch job. Replace the mock logic with real API calls for your use case.
 
-```python
-import typing
-from dataclasses import dataclass
+**Connector** (`my_connector/connector.py`):
 
-import httpx
-from flyte.connectors import AsyncConnector, Resource, ResourceMeta
-from flyteidl2.connector.connector_pb2 import (
-    GetTaskLogsResponse,
-    GetTaskLogsResponseBody,
-    GetTaskLogsResponseHeader,
-)
-from flyteidl2.core.execution_pb2 import TaskExecution, TaskLog
-from flyteidl2.core.tasks_pb2 import TaskTemplate
-from flyteidl2.logs.dataplane.payload_pb2 import LogLine, LogLineOriginator
-from google.protobuf import json_format
-from google.protobuf.timestamp_pb2 import Timestamp
+{{< code file="/unionai-examples/v2/integrations/connectors/batch_job/connector.py" lang=python >}}
 
+**Task plugin** (`my_connector/task.py`):
 
-@dataclass
-class ModelTrainJobMeta(ResourceMeta):
-    job_id: str
-    endpoint: str
+{{< code file="/unionai-examples/v2/integrations/connectors/batch_job/task.py" lang=python >}}
 
-
-class ModelTrainingConnector(AsyncConnector):
-    """
-    Example connector that launches a ML model training job on an external training service.
-
-    POST   → launch training job
-    GET    → poll training progress
-    DELETE → cancel training job
-    LOGS   → stream log lines to the Flyte UI
-    """
-
-    name = "Model Training Connector"
-    task_type_name = "external_model_training"
-    metadata_type = ModelTrainJobMeta
-
-    async def create(
-        self,
-        task_template: TaskTemplate,
-        inputs: typing.Optional[typing.Dict[str, typing.Any]],
-        **kwargs,
-    ) -> ModelTrainJobMeta:
-        """Submit training job via POST. Response returns job_id used in subsequent calls."""
-        custom = json_format.MessageToDict(task_template.custom) if task_template.custom else None
-        async with httpx.AsyncClient() as client:
-            r = await client.post(
-                custom["endpoint"],
-                json={"dataset_uri": inputs["dataset_uri"], "epochs": inputs["epochs"]},
-            )
-        r.raise_for_status()
-        return ModelTrainJobMeta(job_id=r.json()["job_id"], endpoint=custom["endpoint"])
-
-    async def get(self, resource_meta: ModelTrainJobMeta, **kwargs) -> Resource:
-        """Poll the external API until the training job finishes. Safe to call repeatedly."""
-        async with httpx.AsyncClient() as client:
-            r = await client.get(f"{resource_meta.endpoint}/{resource_meta.job_id}")
-
-        data = r.json()
-
-        if data["status"] == "finished":
-            return Resource(
-                phase=TaskExecution.SUCCEEDED,
-                log_links=[TaskLog(name="training-dashboard", uri=f"https://example-mltrain.com/train/{resource_meta.job_id}")],
-                outputs={"results": data["results"]},
-            )
-
-        return Resource(phase=TaskExecution.RUNNING)
-
-    async def delete(self, resource_meta: ModelTrainJobMeta, **kwargs):
-        """Cancel the training job. Safe to call even if the job has already completed."""
-        async with httpx.AsyncClient() as client:
-            await client.delete(f"{resource_meta.endpoint}/{resource_meta.job_id}")
-
-    async def get_logs(self, resource_meta: ModelTrainJobMeta, token: str = "", **kwargs):
-        """Stream paginated log lines from the external training service to the Flyte UI.
-
-        Fetch one page of logs per call using the token as a cursor. Yield a body with
-        log lines, then a header carrying the next-page token. Omit the final header
-        (or leave token empty) to signal that pagination is complete.
-        """
-        async with httpx.AsyncClient() as client:
-            r = await client.get(
-                f"{resource_meta.endpoint}/{resource_meta.job_id}/logs",
-                params={"token": token} if token else {},
-            )
-        data = r.json()
-
-        def make_line(message: str, timestamp: float) -> LogLine:
-            t = Timestamp()
-            t.FromSeconds(int(timestamp))
-            return LogLine(timestamp=t, message=message, originator=LogLineOriginator.USER)
-
-        lines = [make_line(entry["message"], entry["timestamp"]) for entry in data.get("lines", [])]
-        yield GetTaskLogsResponse(body=GetTaskLogsResponseBody(lines=lines))
-
-        next_token = data.get("next_token", "")
-        if next_token:
-            yield GetTaskLogsResponse(header=GetTaskLogsResponseHeader(token=next_token))
-```
-
-To use this connector, you should define a task whose `task_type` matches the connector.
-
-```python
-import flyte.io
-from typing import Any, Dict, Optional
-
-from flyte.extend import TaskTemplate
-from flyte.connectors import AsyncConnectorExecutorMixin
-from flyte.models import NativeInterface, SerializationContext
-
-
-class ModelTrainTask(AsyncConnectorExecutorMixin, TaskTemplate):
-    _TASK_TYPE = "external_model_training"
-
-    def __init__(
-        self,
-        name: str,
-        endpoint: str,
-        **kwargs,
-    ):
-        super().__init__(
-            name=name,
-            interface=NativeInterface(
-                inputs={"epochs": int, "dataset_uri": str},
-                outputs={"results": flyte.io.File},
-            ),
-            task_type=self._TASK_TYPE,
-            **kwargs,
-        )
-        self.endpoint = endpoint
-
-    def custom_config(self, sctx: SerializationContext) -> Optional[Dict[str, Any]]:
-        return {"endpoint": self.endpoint}
-```
-
-Here is an example of how to use the `ModelTrainTask`:
+**Usage**:
 
 ```python
 import flyte
-from flyteplugins.model_training import ModelTrainTask
+from my_connector.task import BatchJobConfig, BatchJobTask
 
-model_train_task = ModelTrainTask(
-    name="model_train",
-    endpoint="https://example-mltrain.com",
+batch_job = BatchJobTask(
+    name="my_batch_job",
+    plugin_config=BatchJobConfig(timeout_seconds=60),
+    inputs={"name": str},
+    outputs={"result": str},
 )
 
-model_train_env = flyte.TaskEnvironment.from_task("model_train_env", model_train_task)
-
-env = flyte.TaskEnvironment(
-    name="hello_world",
-    resources=flyte.Resources(memory="250Mi"),
-    image=flyte.Image.from_debian_base(name="model_training").with_pip_packages(
-        "flyteplugins-model-training", pre=True
-    ),
-    depends_on=[model_train_env],
-)
-
-
-@env.task
-def data_prep() -> str:
-    return "gs://my-bucket/dataset.csv"
-
-
-@env.task
-def train_model(epochs: int) -> flyte.io.File:
-    dataset_uri = data_prep()
-    return model_train_task(epochs=epochs, dataset_uri=dataset_uri)
+flyte.TaskEnvironment.from_task("batch-job-env", batch_job)
 ```
+
+### Connector-level secrets
+
+If your connector needs credentials (API keys, tokens) shared across all tasks, pass them as environment variables into the connector process.
+
+{{< variant union >}}
+{{< markdown >}}
+On Union, add secrets to `ConnectorEnvironment`:
+
+```python
+connector = flyte.app.ConnectorEnvironment(
+    name="batch-job-connector",
+    image=image,
+    include=["my_connector"],
+    secrets=[flyte.Secret(key="MY_API_KEY")],
+)
+```
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+On OSS Flyte, set environment variables on the connector Kubernetes deployment:
+
+```bash
+kubectl set env deployment/<connector-deployment> MY_API_KEY=<value> -n <flyte-namespace>
+```
+{{< /markdown >}}
+{{< /variant >}}
+
+Inside the connector, read the secret from the environment:
+
+```python
+import os
+
+api_key = os.environ["MY_API_KEY"]
+```
+
+See [Secrets](../user-guide/task-configuration/secrets) for how to store and manage secrets.
 
 ### Deploy a custom connector
 
