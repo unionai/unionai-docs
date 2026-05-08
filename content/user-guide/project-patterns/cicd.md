@@ -174,3 +174,62 @@ jobs:
 ```
 
 Image tags are content hashes of the `flyte.Image` definition: `flyte build` pushes `<registry>:flyte-<hash>`, and `flyte deploy` computes the same hash, sees the image already in the registry, and skips rebuilding. `--copy-style` must match between the two commands — otherwise the hashes diverge and deploy will build again.
+
+## Layering on top of an existing image build
+
+If your team already builds container images in CI from a Dockerfile, you can still route them through `flyte build` to get **lazy-loading container pulls** — pod startup that's seconds instead of minutes, regardless of image size. On a 5GB image we measured cold-node pull time drop from ~1m37s to **839ms**, and published benchmarks show 9.9GB CUDA + PyTorch images going from 4m38s to ~1.2s — roughly 240×.
+
+You get this for free whenever you use `flyte.Image` with the remote builder. Images built outside of it — straight from your own `docker build` and `docker push` — don't get the optimization, which is why this section adds a single `flyte build` step on top of your existing pipeline.
+
+How it works: rather than downloading the full image up front, the cluster fetches a small (~14MB) metadata index, mounts the filesystem immediately, and streams file chunks from the registry as the container actually reads them. Files the task never touches never transfer, and chunks are cached on the node so subsequent pulls of the same or related images are sub-second.
+
+The CI shape is two stages: your existing job builds and pushes the base, then a follow-up job runs `flyte build` to layer on top and `flyte deploy` to register tasks against the result.
+
+```yaml
+# .github/workflows/deploy.yml
+jobs:
+  build-base:
+    runs-on: ubuntu-latest
+    outputs:
+      base_uri: ${{ steps.build.outputs.uri }}
+    steps:
+      # Whatever your team already does to build and push the base image.
+      # Output the full URI tagged with the commit SHA.
+      - id: build
+        run: |
+          ./your-existing-build.sh
+          echo "uri=ghcr.io/myorg/base:${{ github.sha }}" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: build-base
+    runs-on: ubuntu-latest
+    env:
+      BASE_IMAGE: ${{ needs.build-base.outputs.base_uri }}
+      FLYTE_API_KEY: ${{ secrets.FLYTE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --group dev
+      - run: uv run flyte build  --copy-style none --root-dir src src/myproj/envs.py train_env
+      - run: uv run flyte deploy --copy-style none --version ${{ github.sha }} --root-dir src src/myproj/envs.py train_env
+```
+
+`envs.py` reads the base URI from the environment, so each commit's overlay is pinned to that commit's base:
+
+```python
+# src/myproj/envs.py
+import os
+import flyte
+
+train_env = flyte.TaskEnvironment(
+    name="train",
+    image=flyte.Image.from_base(os.environ["BASE_IMAGE"]).clone(
+        name="train", extendable=True,
+    ),
+)
+```
+
+> [!NOTE]
+> This snippet assumes the base image already has the `flyte` SDK installed and your task code on the right `PYTHONPATH`. If it doesn't, see [Bring your own image — Pattern 2](./bring-your-own-image#pattern-2-remote-builder) for the `with_commands()` / `with_env_vars()` / `with_code_bundle()` calls that adapt a Flyte-unaware base.
+
+The `flyte build` job is idempotent — it skips when the same image content has already been published. Workflow code edits don't trigger image rebuilds; only `envs.py` or base-image changes do.
