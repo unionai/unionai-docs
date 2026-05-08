@@ -221,11 +221,12 @@ If none of the existing connectors meet your needs, you can build your own.
 
 To implement a new async connector, extend `AsyncConnector` and implement the following methods, all of which must be idempotent:
 
-| Method   | Purpose                                                     |
-| -------- | ----------------------------------------------------------- |
-| `create` | Launch the external job (via REST, gRPC, SDK, or other API) |
-| `get`    | Fetch current job state (return job status or output)       |
-| `delete` | Delete / cancel the external job                            |
+| Method     | Purpose                                                     |
+| ---------- | ----------------------------------------------------------- |
+| `create`   | Launch the external job (via REST, gRPC, SDK, or other API) |
+| `get`      | Fetch current job state (return job status or output)       |
+| `delete`   | Delete / cancel the external job                            |
+| `get_logs` | Stream paginated log lines to the Flyte UI                  |
 
 To test the connector locally, the connector task should inherit from
 [AsyncConnectorExecutorMixin](https://github.com/flyteorg/flyte-sdk/blob/1d49299294cd5e15385fe8c48089b3454b7a4cd1/src/flyte/connectors/_connector.py#L206). This mixin simulates how the Flyte 2 system executes asynchronous connector tasks, making it easier to validate your connector implementation before deploying it.
@@ -240,9 +241,16 @@ from dataclasses import dataclass
 
 import httpx
 from flyte.connectors import AsyncConnector, Resource, ResourceMeta
+from flyteidl2.connector.connector_pb2 import (
+    GetTaskLogsResponse,
+    GetTaskLogsResponseBody,
+    GetTaskLogsResponseHeader,
+)
 from flyteidl2.core.execution_pb2 import TaskExecution, TaskLog
 from flyteidl2.core.tasks_pb2 import TaskTemplate
+from flyteidl2.logs.dataplane.payload_pb2 import LogLine, LogLineOriginator
 from google.protobuf import json_format
+from google.protobuf.timestamp_pb2 import Timestamp
 
 
 @dataclass
@@ -255,9 +263,10 @@ class ModelTrainingConnector(AsyncConnector):
     """
     Example connector that launches a ML model training job on an external training service.
 
-    POST → launch training job
-    GET  → poll training progress
+    POST   → launch training job
+    GET    → poll training progress
     DELETE → cancel training job
+    LOGS   → stream log lines to the Flyte UI
     """
 
     name = "Model Training Connector"
@@ -270,10 +279,7 @@ class ModelTrainingConnector(AsyncConnector):
         inputs: typing.Optional[typing.Dict[str, typing.Any]],
         **kwargs,
     ) -> ModelTrainJobMeta:
-        """
-        Submit training job via POST.
-        Response returns job_id we later use in get().
-        """
+        """Submit training job via POST. Response returns job_id used in subsequent calls."""
         custom = json_format.MessageToDict(task_template.custom) if task_template.custom else None
         async with httpx.AsyncClient() as client:
             r = await client.post(
@@ -284,10 +290,7 @@ class ModelTrainingConnector(AsyncConnector):
         return ModelTrainJobMeta(job_id=r.json()["job_id"], endpoint=custom["endpoint"])
 
     async def get(self, resource_meta: ModelTrainJobMeta, **kwargs) -> Resource:
-        """
-        Poll external API until training job finishes.
-        Must be safe to call repeatedly.
-        """
+        """Poll the external API until the training job finishes. Safe to call repeatedly."""
         async with httpx.AsyncClient() as client:
             r = await client.get(f"{resource_meta.endpoint}/{resource_meta.job_id}")
 
@@ -303,12 +306,35 @@ class ModelTrainingConnector(AsyncConnector):
         return Resource(phase=TaskExecution.RUNNING)
 
     async def delete(self, resource_meta: ModelTrainJobMeta, **kwargs):
-        """
-        Optionally call DELETE on external API.
-        Safe even if job already completed.
-        """
+        """Cancel the training job. Safe to call even if the job has already completed."""
         async with httpx.AsyncClient() as client:
             await client.delete(f"{resource_meta.endpoint}/{resource_meta.job_id}")
+
+    async def get_logs(self, resource_meta: ModelTrainJobMeta, token: str = "", **kwargs):
+        """Stream paginated log lines from the external training service to the Flyte UI.
+
+        Fetch one page of logs per call using the token as a cursor. Yield a body with
+        log lines, then a header carrying the next-page token. Omit the final header
+        (or leave token empty) to signal that pagination is complete.
+        """
+        async with httpx.AsyncClient() as client:
+            r = await client.get(
+                f"{resource_meta.endpoint}/{resource_meta.job_id}/logs",
+                params={"token": token} if token else {},
+            )
+        data = r.json()
+
+        def make_line(message: str, timestamp: float) -> LogLine:
+            t = Timestamp()
+            t.FromSeconds(int(timestamp))
+            return LogLine(timestamp=t, message=message, originator=LogLineOriginator.USER)
+
+        lines = [make_line(entry["message"], entry["timestamp"]) for entry in data.get("lines", [])]
+        yield GetTaskLogsResponse(body=GetTaskLogsResponseBody(lines=lines))
+
+        next_token = data.get("next_token", "")
+        if next_token:
+            yield GetTaskLogsResponse(header=GetTaskLogsResponseHeader(token=next_token))
 ```
 
 To use this connector, you should define a task whose `task_type` matches the connector.
@@ -380,10 +406,21 @@ def train_model(epochs: int) -> flyte.io.File:
     return model_train_task(epochs=epochs, dataset_uri=dataset_uri)
 ```
 
-### Build a custom connector image
+### Deploy a custom connector
 
-Build a custom image when you're ready to deploy your connector to your cluster.
-To build the Docker image for your connector, run the following script:
+{{< variant union >}}
+{{< markdown >}}
+On Union, deploy your connector as a long-running service using `flyte.app.ConnectorEnvironment`. Union handles building the image, pushing it, and keeping the service running — no manual Kubernetes configuration required.
+
+See the [Connector app](../user-guide/build-apps/connector-app) guide for a complete walkthrough.
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+On OSS Flyte, deploying a connector requires two steps: building a Docker image that contains your connector code, then patching the connector Kubernetes deployment to use it.
+
+**Step 1: Build the connector image**
 
 ```python
 import asyncio
@@ -391,31 +428,34 @@ from flyte import Image
 from flyte.extend import ImageBuildEngine
 
 
-async def build_flyte_connector_bigquery_image(registry: str, name: str, builder: str = "local"):
-    """
-    Build the SDK default connector image optionally overriding
-    the container registry and image name.
-
-    Args:
-        registry: e.g. "ghcr.io/my-org" or "123456789012.dkr.ecr.us-west-2.amazonaws.com".
-        name:     e.g. "my-connector".
-        builder:  e.g. "local" or "remote".
-    """
-
-    default_image = Image.from_debian_base(
+async def build_connector_image(registry: str, name: str, builder: str = "local"):
+    image = Image.from_debian_base(
         registry=registry, name=name
-    ).with_pip_packages("flyteintegrations-bigquery", pre=True)
-    await ImageBuildEngine.build(default_image, builder=builder)
+    ).with_pip_packages("flyte[connector]", "my-connector-package")
+    await ImageBuildEngine.build(image, builder=builder)
 
 
 if __name__ == "__main__":
-    print("Building connector image...")
     asyncio.run(
-        build_flyte_connector_bigquery_image(
-            registry="<YOUR_REGISTRY>", name="flyte-bigquery", builder="local"
+        build_connector_image(
+            registry="<YOUR_REGISTRY>", name="my-connector", builder="local"
         )
     )
 ```
+
+**Step 2: Override the connector deployment image**
+
+Once the image is pushed, patch the connector Kubernetes deployment to use it:
+
+```bash
+kubectl set image deployment/<connector-deployment-name> \
+    connector=<YOUR_REGISTRY>/my-connector:<TAG> \
+    -n <flyte-namespace>
+```
+
+Replace `<connector-deployment-name>` with the name of your connector deployment (e.g. `flyte-connector`), and `<flyte-namespace>` with the namespace where Flyte is installed (typically `flyte`).
+{{< /markdown >}}
+{{< /variant >}}
 
 ## LLM Serving
 
