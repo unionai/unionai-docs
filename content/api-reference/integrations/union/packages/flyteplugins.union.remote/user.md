@@ -1,6 +1,6 @@
 ---
 title: User
-version: 0.2.2
+version: 0.3.0
 variants: +flyte +union
 layout: py_api
 ---

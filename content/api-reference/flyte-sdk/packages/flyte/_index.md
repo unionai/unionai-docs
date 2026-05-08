@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.2.2
+version: 2.2.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -399,6 +399,7 @@ def init(
     log_level: int | None,
     log_format: LogFormat | None,
     reset_root_logger: bool,
+    user_log_level: int | None,
     endpoint: str | None,
     headless: bool,
     insecure: bool,
@@ -438,6 +439,7 @@ remote API methods are called. Thread-safe implementation.
 | `log_level` | `int \| None` | Optional logging level for the logger, default is set using the default initialization policies |
 | `log_format` | `LogFormat \| None` | Optional logging format for the logger, default is "console" |
 | `reset_root_logger` | `bool` | By default, we clear out root logger handlers and set up our own. |
+| `user_log_level` | `int \| None` | |
 | `endpoint` | `str \| None` | Optional API endpoint URL |
 | `headless` | `bool` | Optional Whether to run in headless mode |
 | `insecure` | `bool` | insecure flag for the client |
@@ -524,6 +526,7 @@ def init_from_config(
     root_dir: Path | None,
     log_level: int | None,
     log_format: LogFormat,
+    user_log_level: int | None,
     project: str | None,
     domain: str | None,
     storage: Storage | None,
@@ -544,6 +547,7 @@ other Flyte remote API methods are called. Thread-safe implementation.
 | `root_dir` | `Path \| None` | Optional root directory from which to determine how to load files, and find paths to files like config etc. For example if one uses the copy-style=="all", it is essential to determine the root directory for the current project. If not provided, it defaults to the editable install directory or if not available, the current working directory. |
 | `log_level` | `int \| None` | Optional logging level for the framework logger, default is set using the default initialization policies |
 | `log_format` | `LogFormat` | Optional logging format for the logger, default is "console" |
+| `user_log_level` | `int \| None` | |
 | `project` | `str \| None` | Project name, this will override any project names in the configuration file |
 | `domain` | `str \| None` | Domain name, this will override any domain names in the configuration file |
 | `storage` | `Storage \| None` | Optional blob store (S3, GCS, Azure) configuration if needed to access (i.e. using Minio) |
