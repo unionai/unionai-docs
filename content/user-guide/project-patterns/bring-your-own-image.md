@@ -90,8 +90,12 @@ There is no separate deploy step. The image tag is the version. To ship a code c
 
 Teams hand you their base images. They built these images for their own purposes — Flyte was never a consideration. Your job is to adapt them.
 
+{{< variant union >}}
+{{< markdown >}}
 > [!TIP]
 > Want Union to optimize your images so cold-node pulls drop from minutes to under a second? See [Layering on top of an existing image build](./cicd#layering-on-top-of-an-existing-image-build) for the equivalent flow when your base is built in CI.
+{{< /markdown >}}
+{{< /variant >}}
 
 ### The base images
 
