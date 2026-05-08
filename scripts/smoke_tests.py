@@ -35,6 +35,10 @@ from selfmanaged_common import (
     sh,
 )
 
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s %(levelname)-7s %(name)s - %(message)s",
+)
 logger = logging.getLogger("flyte.e2e.smoke")
 
 
@@ -56,7 +60,7 @@ def _phase_name(run: "flyte.Run") -> str:
 async def _assert_succeeded(run: "flyte.Run", label: str) -> None:
     """Wait for terminal state and raise if not succeeded."""
     await run.wait.aio(wait_for="terminal")
-    await run.sync.aio()
+    run.sync()
     p = _phase_name(run)
     if p != "succeeded":
         raise RuntimeError(f"{label}: run {run.name} ended in phase={run.phase}")
@@ -78,7 +82,7 @@ from _smoke_hello import run_hello  # noqa: E402
 # actually runs the task; flyte's own image cache decides whether to rebuild.
 _imgbuild_env = flyte.TaskEnvironment(
     name="e2e-image-builder",
-    image=flyte.Image.from_debian_base().with_pip_packages("requests==2.32.3"),
+    image=flyte.Image.from_debian_base().with_pip_packages("fastapi", "requests==2.32.3", "flyteplugins-union"),
     cache="disable",
 )
 
@@ -99,7 +103,7 @@ _imgcache_env = flyte.TaskEnvironment(
     name="e2e-image-cache",
     image=(
         flyte.Image.from_debian_base()
-        .with_pip_packages("requests==2.32.3")
+        .with_pip_packages("fastapi", "requests==2.32.3", "flyteplugins-union")
         .with_env_vars({"E2E_CACHE_TEST": "v1"})
     ),
     cache="disable",
@@ -116,7 +120,7 @@ async def _imgcache_task(nonce: str) -> str:
 # -- Reusable containers test ------------------------------------------------
 _reuse_env = flyte.TaskEnvironment(
     name="e2e-reuse",
-    image=flyte.Image.from_debian_base().with_pip_packages("unionai-reuse>=0.1.10"),
+    image=flyte.Image.from_debian_base().with_pip_packages("fastapi", "unionai-reuse>=0.1.10", "flyteplugins-union"),
     resources=flyte.Resources(memory="512Mi", cpu="500m"),
     cache="disable",
     reusable=flyte.ReusePolicy(
@@ -173,14 +177,14 @@ def _build_fastapi_app():
 _app_env = flyte.app.extras.FastAPIAppEnvironment(
     name="e2e-app-deploy",
     app=_build_fastapi_app(),
-    image=flyte.Image.from_debian_base().with_pip_packages("fastapi", "uvicorn", "httpx"),
+    image=flyte.Image.from_debian_base().with_pip_packages("fastapi", "uvicorn", "httpx", "flyteplugins-union"),
     resources=flyte.Resources(cpu=1, memory="512Mi"),
     requires_auth=False,
 )
 
 _app_task_env = flyte.TaskEnvironment(
     name="e2e-app-deploy-tester",
-    image=flyte.Image.from_debian_base().with_pip_packages("fastapi", "uvicorn", "httpx"),
+    image=flyte.Image.from_debian_base().with_pip_packages("fastapi", "uvicorn", "httpx", "flyteplugins-union"),
     resources=flyte.Resources(cpu=1, memory="512Mi"),
     depends_on=[_app_env],
     cache="disable",

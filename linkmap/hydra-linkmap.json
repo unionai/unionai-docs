@@ -1,0 +1,14 @@
+{
+  "packages": {
+    "flyteplugins.hydra": "/api-reference/integrations/hydra/packages/flyteplugins.hydra/"
+  },
+  "identifiers": {},
+  "methods": {
+    "flyteplugins.hydra.apply_task_env": "/api-reference/integrations/hydra/packages/flyteplugins.hydra/#apply_task_env",
+    "apply_task_env": "/api-reference/integrations/hydra/packages/flyteplugins.hydra/#apply_task_env",
+    "flyteplugins.hydra.hydra_run": "/api-reference/integrations/hydra/packages/flyteplugins.hydra/#hydra_run",
+    "hydra_run": "/api-reference/integrations/hydra/packages/flyteplugins.hydra/#hydra_run",
+    "flyteplugins.hydra.hydra_sweep": "/api-reference/integrations/hydra/packages/flyteplugins.hydra/#hydra_sweep",
+    "hydra_sweep": "/api-reference/integrations/hydra/packages/flyteplugins.hydra/#hydra_sweep"
+  }
+}

@@ -11,7 +11,7 @@ llm_readable_bundle: true
 
 This section provides a comprehensive reference for migrating Flyte 1 (flytekit) workflows to Flyte 2 (flyte SDK).
 
-For a quick-start overview of the migration process, see [Migration](../../user-guide/flyte-2/migration) in the User Guide.
+For a quick-start overview of the migration process, see [Migration](../../user-guide/migration/flyte-2/migration) in the User Guide.
 
 ## Key API changes at a glance
 

@@ -25,7 +25,7 @@ from flyte.remote import Project, Secret
 from flyteplugins.union.remote import ApiKey, Cluster
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s %(levelname)-7s %(name)s - %(message)s",
 )
 logger = logging.getLogger("flyte.e2e")
@@ -74,7 +74,8 @@ class BaseConfig:
     # Override via --helm_chart_branch if you want to test a WIP branch.
     helm_chart_branch: str = ""
     helm_chart_path: str = "charts/dataplane"
-    helm_values_override: str = ""
+    helm_values_override: str = ""  # extra values file (e.g. "values-legacy.yaml" from the chart)
+    dataplane_image_sha: str = ""  # if set, passed as --set image.union.tag=<sha>
 
     cluster_healthy_timeout: int = 300
     validate_timeout: int = 300
@@ -282,7 +283,7 @@ async def init_union_client(cfg: "BaseConfig", org: str = "") -> None:
     Uses the ``.aio`` variants because the sync wrappers raise
     "Deadlock detected" when invoked from an async task. Idempotent.
     """
-    api_key = os.environ.get("UNION_API_KEY", "")
+    api_key = os.environ.get("UNION_API_KEY", os.environ.get("FLYTE_API_KEY", ""))
     kwargs: dict = {
         "endpoint": cfg.control_plane_url,
         "project": cfg.test_project,
@@ -413,8 +414,13 @@ async def resolve_chart_ref(cfg: BaseConfig) -> str:
         say(f"resolve_chart_ref: using local chart at {chart_ref}")
         return chart_ref
     say("resolve_chart_ref: using published unionai/dataplane")
-    await sh("helm repo add unionai https://unionai.github.io/helm-charts/", check=False)
-    await sh("helm repo update")
+    await sh(
+        "helm repo add unionai https://unionai.github.io/helm-charts/ --force-update",
+        check=False,
+    )
+    # Only refresh the unionai repo — `helm repo update` (no args) fails if
+    # any unrelated repo on the local helm config is unreachable.
+    await sh("helm repo update unionai")
     return "unionai/dataplane"
 
 
@@ -464,6 +470,11 @@ async def helm_install(cfg: BaseConfig, values_yaml: str, chart_ref: str) -> Hel
         override_flag = f'-f "{override_path}" '
         logger.info(f"  Using values override: {override_path}")
 
+    image_tag_flag = ""
+    if cfg.dataplane_image_sha:
+        image_tag_flag = f"--set image.union.tag={cfg.dataplane_image_sha} "
+        logger.info(f"  Overriding dataplane image tag: {cfg.dataplane_image_sha}")
+
     # ``--take-ownership`` (Helm 3.17+) lets an install/upgrade adopt existing
     # cluster resources (CRDs, namespaces) that lack Helm's owner annotations.
     # Without it, reruns after a partial install fail with "invalid ownership
@@ -476,7 +487,7 @@ async def helm_install(cfg: BaseConfig, values_yaml: str, chart_ref: str) -> Hel
     try:
         await sh(
             f"helm upgrade --install {cfg.helm_release_name} {chart_ref} "
-            f"{override_flag}-f \"{values_file}\" "
+            f"{override_flag}{image_tag_flag}-f \"{values_file}\" "
             f"-n {cfg.helm_namespace} --create-namespace --wait --timeout 10m "
             f"--force-conflicts --take-ownership"
         )
@@ -576,7 +587,7 @@ async def create_project(cfg: BaseConfig) -> str:
 async def route_project_to_pool(
     cfg: BaseConfig, org_name: str, pool_name: str, domain: str
 ) -> None:
-    """`uctl update cluster-pool-attributes` for one (project, domain, pool)."""
+    """`uctl --logger.level 6 update cluster-pool-attributes` for one (project, domain, pool)."""
     org_flag = f"--org {org_name}" if org_name else ""
     attr = tempfile.NamedTemporaryFile(
         mode="w", suffix=".yaml", delete=False, prefix=f"cpa-{domain}-",
@@ -588,6 +599,12 @@ async def route_project_to_pool(
     )
     attr.close()
     try:
+        say(f"uctl update cluster-pool-attributes --force --attrFile {attr.name} {org_flag}")
+        say(f"org: {org_name}\n"        
+            f"domain: {domain}\n"
+                    f"project: {cfg.test_project}\n"
+                    f"clusterPoolName: {pool_name}\n"
+                    )
         await sh(
             f"uctl update cluster-pool-attributes --force --attrFile {attr.name} {org_flag}",
             check=False,
