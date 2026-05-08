@@ -21,6 +21,7 @@ Flyte supports various types of apps:
 - **UI dashboard apps**: Interactive web dashboards and data visualization tools like Streamlit and Gradio
 - **Web API apps**: REST APIs, webhooks, and backend services like FastAPI and Flask
 - **Model serving apps**: High-performance LLM serving with vLLM and SGLang
+- **Connector apps**: Long-running services that delegate task execution to external systems
 
 ## Next steps
 
@@ -33,3 +34,4 @@ Flyte supports various types of apps:
 - [**vLLM app**](./vllm-app): Serve large language models with vLLM
 - [**SGLang app**](./sglang-app): Serve LLMs with SGLang for structured generation
 - [**Flyte webhook**](./flyte-webhook): Pre-built webhook for common Flyte operations
+- [**Connector app**](./connector-app): Deploy a connector as a long-running service
