@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.identity_aware_proxy.cli
-version: 1.16.19
+version: 1.16.20
 variants: +flyte +union
 layout: py_api
 ---
