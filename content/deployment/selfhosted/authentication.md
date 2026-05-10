@@ -76,6 +76,9 @@ Register an **App Registration** in Microsoft Entra ID:
 > Entra ID uses `sub` = Service Principal Object ID for client_credentials tokens, not the Client ID. When configuring trusted identities for service-to-service auth, use the SP Object ID (found in Enterprise Applications, not App Registrations).
 
 > [!NOTE]
+> Entra ID v2.0 tokens always include the `sub` claim, so no fallback claim configuration is required. If you need to override the subject resolution (e.g. to use `oid` or `client_id` instead of `sub`), see the [Subject claim requirements](#subject-claim-requirements) section below for the `subjectClaimNames` fallback chain.
+
+> [!NOTE]
 > Entra ID scope usage by flow:
 > - **Browser login** (authorization_code): standard OIDC scopes only (`profile`, `openid`, `offline_access`) — the IdP returns a plain ID token
 > - **CLI** (authorization_code + PKCE): `api://<app-name>/.default`
