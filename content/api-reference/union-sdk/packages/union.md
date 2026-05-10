@@ -2066,15 +2066,15 @@ def from_dict(
 
 ```python
 def from_json(
-    data: typing.Union[str, bytes, bytearray],
-    decoder: collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]],
+    data: str | bytes | bytearray,
+    decoder: collections.abc.Callable[[str | bytes | bytearray], dict[typing.Any, typing.Any]],
     from_dict_kwargs: typing.Any,
 ) -> ~T
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `data` | `typing.Union[str, bytes, bytearray]` | |
-| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` | |
+| `data` | `str \| bytes \| bytearray` | |
+| `decoder` | `collections.abc.Callable[[str \| bytes \| bytearray], dict[typing.Any, typing.Any]]` | |
 | `from_dict_kwargs` | `typing.Any` | |
 
 #### from_source()
@@ -2168,13 +2168,13 @@ def to_dict()
 
 ```python
 def to_json(
-    encoder: collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]],
+    encoder: collections.abc.Callable[[typing.Any], str | bytes | bytearray],
     to_dict_kwargs: typing.Any,
-) -> typing.Union[str, bytes, bytearray]
+) -> str | bytes | bytearray
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` | |
+| `encoder` | `collections.abc.Callable[[typing.Any], str \| bytes \| bytearray]` | |
 | `to_dict_kwargs` | `typing.Any` | |
 
 ## union.ImageSpec
@@ -2772,15 +2772,15 @@ def from_dict(
 
 ```python
 def from_json(
-    data: typing.Union[str, bytes, bytearray],
-    decoder: collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]],
+    data: str | bytes | bytearray,
+    decoder: collections.abc.Callable[[str | bytes | bytearray], dict[typing.Any, typing.Any]],
     from_dict_kwargs: typing.Any,
 ) -> ~T
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `data` | `typing.Union[str, bytes, bytearray]` | |
-| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` | |
+| `data` | `str \| bytes \| bytearray` | |
+| `decoder` | `collections.abc.Callable[[str \| bytes \| bytearray], dict[typing.Any, typing.Any]]` | |
 | `from_dict_kwargs` | `typing.Any` | |
 
 #### to_dict()
@@ -2792,13 +2792,13 @@ def to_dict()
 
 ```python
 def to_json(
-    encoder: collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]],
+    encoder: collections.abc.Callable[[typing.Any], str | bytes | bytearray],
     to_dict_kwargs: typing.Any,
-) -> typing.Union[str, bytes, bytearray]
+) -> str | bytes | bytearray
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` | |
+| `encoder` | `collections.abc.Callable[[typing.Any], str \| bytes \| bytearray]` | |
 | `to_dict_kwargs` | `typing.Any` | |
 
 ## union.Secret
@@ -2962,15 +2962,15 @@ def from_dict(
 
 ```python
 def from_json(
-    data: typing.Union[str, bytes, bytearray],
-    decoder: collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]],
+    data: str | bytes | bytearray,
+    decoder: collections.abc.Callable[[str | bytes | bytearray], dict[typing.Any, typing.Any]],
     from_dict_kwargs: typing.Any,
 ) -> ~T
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `data` | `typing.Union[str, bytes, bytearray]` | |
-| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` | |
+| `data` | `str \| bytes \| bytearray` | |
+| `decoder` | `collections.abc.Callable[[str \| bytes \| bytearray], dict[typing.Any, typing.Any]]` | |
 | `from_dict_kwargs` | `typing.Any` | |
 
 #### iter()
@@ -3021,13 +3021,13 @@ def to_dict()
 
 ```python
 def to_json(
-    encoder: collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]],
+    encoder: collections.abc.Callable[[typing.Any], str | bytes | bytearray],
     to_dict_kwargs: typing.Any,
-) -> typing.Union[str, bytes, bytearray]
+) -> str | bytes | bytearray
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` | |
+| `encoder` | `collections.abc.Callable[[typing.Any], str \| bytes \| bytearray]` | |
 | `to_dict_kwargs` | `typing.Any` | |
 
 ## union.UnionRemote
