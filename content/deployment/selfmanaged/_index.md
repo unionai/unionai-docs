@@ -2,7 +2,6 @@
 title: Self-managed deployment
 weight: 2
 variants: -flyte +union
-sidebar_expanded: true
 llm_readable_bundle: true
 ---
 
@@ -24,6 +23,7 @@ Union.ai has no access to your cluster, providing the highest level of data isol
    - [GCP](./selfmanaged-gcp/_index)
    - [Azure](./selfmanaged-azure/_index)
    - [OCI](./selfmanaged-oci/_index)
+   - [CoreWeave](./selfmanaged-coreweave/_index)
 
 ## Configuration
 

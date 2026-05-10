@@ -2,7 +2,6 @@
 title: Data plane setup on generic Kubernetes
 weight: 3
 variants: -flyte +union
-sidebar_expanded: true
 ---
 
 # Data plane setup on generic Kubernetes

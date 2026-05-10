@@ -2,7 +2,6 @@
 title: Manual integration
 weight: 5
 variants: +flyte +union
-sidebar_expanded: false
 ---
 
 # Manual integration

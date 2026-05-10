@@ -2,7 +2,6 @@
 title: Data plane setup on GCP
 weight: 4
 variants: -flyte +union
-sidebar_expanded: true
 ---
 
 # Data plane setup on GKE (GCP)

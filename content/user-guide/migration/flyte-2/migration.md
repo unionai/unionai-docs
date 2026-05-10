@@ -7,8 +7,8 @@ variants: +flyte +union
 # Migration from Flyte 1 to Flyte 2
 
 {{< note >}}
-For comprehensive migration reference with detailed API mappings, parameter tables, and complete examples, see [Migration from Flyte 1](../../api-reference/migration/_index) in the Reference section.
-An LLM-optimized bundle of the full migration reference is available at [`section.md`](../../api-reference/migration/section.md).
+For comprehensive migration reference with detailed API mappings, parameter tables, and complete examples, see [Migration from Flyte 1](../../../api-reference/migration/_index) in the Reference section.
+An LLM-optimized bundle of the full migration reference is available at [`section.md`](../../../api-reference/migration/section.md).
 {{< /note >}}
 
 You can migrate from Flyte 1 to Flyte 2 by following the steps below:

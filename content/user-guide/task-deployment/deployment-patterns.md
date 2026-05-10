@@ -2,7 +2,6 @@
 title: Deployment patterns
 weight: 9
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # Deployment patterns

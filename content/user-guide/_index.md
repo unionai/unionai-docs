@@ -4,7 +4,6 @@ weight: 1
 variants: +flyte +union
 top_menu: true
 site_root: true
-sidebar_expanded: true
 ---
 
 {{< variant flyte >}}
@@ -52,7 +51,7 @@ Want to try Flyte without installing anything? [Try Flyte 2 in your browser](htt
 
 {{< grid >}}
 
-{{< link-card target="flyte-2" icon="lightbulb" title="Flyte 2" >}}
+{{< link-card target="migration/flyte-2" icon="lightbulb" title="Flyte 2" >}}
 Flyte 2 represents a fundamental shift in how AI workflows are written and executed. Learn
 more in this section.
 {{< /link-card >}}

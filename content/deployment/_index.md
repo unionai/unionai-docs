@@ -4,7 +4,6 @@ weight: 5
 variants: -flyte +union
 top_menu: true
 mermaid: true
-sidebar_expanded: true
 secondary_topnav: -flyte +union
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: ApiKey
 version: 0.2.2
-variants: +flyte +byoc +selfmanaged +union
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -36,9 +36,9 @@ class ApiKey(
 
 | Property | Type | Description |
 |-|-|-|
-| `client_id` | `None` | The OAuth client ID. |
-| `client_name` | `None` | The human-readable name of the API key. |
-| `client_secret` | `None` | The OAuth client secret (only available on creation). |
+| `client_id` | `str` | The OAuth client ID. |
+| `client_name` | `str` | The human-readable name of the API key. |
+| `client_secret` | `str` | The OAuth client secret (only available on creation). |
 
 ## Methods
 

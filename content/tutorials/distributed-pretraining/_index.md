@@ -2,7 +2,6 @@
 title: Distributed LLM pretraining
 weight: 1
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # Distributed LLM pretraining

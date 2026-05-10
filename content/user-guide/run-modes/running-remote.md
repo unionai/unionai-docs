@@ -1,10 +1,10 @@
 ---
-title: Connecting to a cluster
-weight: 5
-variants: +flyte +union
+title: Running on a remote cluster
+weight: 6
+variants: +union -flyte
 ---
 
-# Connecting to a cluster
+# Running on a remote cluster
 
 This guide covers setting up your local development environment and configuring the `flyte` CLI and SDK to connect to your Union/Flyte instance.
 
@@ -39,7 +39,7 @@ flyte --version
 
 ## Configuration file
 
-As we did in [Quickstart](./quickstart), use `flyte create config` to create a configuration file:
+As we did in [Quickstart](../quickstart), use `flyte create config` to create a configuration file:
 
 {{< variant union >}}
 {{< markdown >}}
@@ -137,13 +137,13 @@ docker login ghcr.io
 ```
 
 > [!NOTE]
-> The `--builder local` option means images are [built locally](./task-configuration/container-images). Union instances can use `--builder remote` instead.
+> The `--builder local` option means images are [built locally](../task-configuration/container-images). Union instances can use `--builder remote` instead.
 
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< markdown >}}
-See the [CLI reference](../api-reference/flyte-cli#flyte-create-config) for all parameters.
+See the [CLI reference](../../api-reference/flyte-cli#flyte-create-config) for all parameters.
 {{< /markdown >}}
 
 {{< /dropdown >}}
@@ -160,13 +160,13 @@ See the [CLI reference](../api-reference/flyte-cli#flyte-create-config) for all 
 
 - `builder`: How container images are built.
   - `remote` (Union): Images built on Union's infrastructure.
-  - `local` (Flyte OSS): Images built on your machine. Requires Docker. See [Image building](./task-configuration/container-images#image-building).
+  - `local` (Flyte OSS): Images built on your machine. Requires Docker. See [Image building](../task-configuration/container-images#image-building).
 
 **`task`** — Default settings for task execution.
 
 - `org`: Organization name (usually matches the first part of your endpoint URL).
 - `domain`: Environment separation (`development`, `staging`, `production`).
-- `project`: Default project for deployments. Must already exist on your instance. See [Projects and domains](./projects-and-domains) for how to create projects.
+- `project`: Default project for deployments. Must already exist on your instance. See [Projects and domains](../core-concepts/projects-and-domains) for how to create projects.
 {{< /markdown >}}
 {{< /dropdown >}}
 
@@ -179,7 +179,7 @@ You can reference your config file explicitly or let the SDK find it automatical
 {{< tabs "explicit-config" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
-Initialize with [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte/_index#init_from_config):
+Initialize with [`flyte.init_from_config`](../../api-reference/flyte-sdk/packages/flyte/_index#init_from_config):
 
 ```python
 flyte.init_from_config("my-config.yaml")
@@ -257,7 +257,7 @@ Skip the config file entirely by passing parameters directly.
 {{< tabs "inline-config" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
-Use [`flyte.init`](../api-reference/flyte-sdk/packages/flyte/_index#init):
+Use [`flyte.init`](../../api-reference/flyte-sdk/packages/flyte/_index#init):
 
 ```python
 flyte.init(
@@ -284,20 +284,20 @@ flyte \
     main
 ```
 
-See the [CLI reference](../api-reference/flyte-cli) for details.
+See the [CLI reference](../../api-reference/flyte-cli) for details.
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
 
 See related methods:
 
-* [`flyte.init_from_api_key`](../api-reference/flyte-sdk/packages/flyte/_index#init_from_api_key)
-* [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte/_index#init_from_config)
-* [`flyte.init_in_cluster`](../api-reference/flyte-sdk/packages/flyte/_index#init_in_cluster)
-* [`flyte.init_passthrough`](../api-reference/flyte-sdk/packages/flyte/_index#init_passthrough)
+* [`flyte.init_from_api_key`](../../api-reference/flyte-sdk/packages/flyte/_index#init_from_api_key)
+* [`flyte.init_from_config`](../../api-reference/flyte-sdk/packages/flyte/_index#init_from_config)
+* [`flyte.init_in_cluster`](../../api-reference/flyte-sdk/packages/flyte/_index#init_in_cluster)
+* [`flyte.init_passthrough`](../../api-reference/flyte-sdk/packages/flyte/_index#init_passthrough)
 
 ## Next steps
 
 With your environment fully configured, you're ready to build:
 
-- [**Core concepts**](./core-concepts/_index): Understand `TaskEnvironment`s, tasks, runs, and actions through working examples.
+- [**Core concepts**](../core-concepts/_index): Understand `TaskEnvironment`s, tasks, runs, and actions through working examples.

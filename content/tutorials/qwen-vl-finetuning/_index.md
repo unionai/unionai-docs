@@ -2,7 +2,6 @@
 title: Fine-tuning a vision-language model with a frozen backbone
 weight: 1
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # Fine-tuning a vision-language model with a frozen backbone

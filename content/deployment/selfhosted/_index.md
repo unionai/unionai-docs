@@ -134,4 +134,8 @@ Configure authorization mode (Noop, External, or Union built-in RBAC)
 Register the image builder for automatic container image builds
 {{< /link-card >}}
 
+{{< link-card target="./operations" icon="settings" title="Operations" >}}
+Operational guides: CI/CD integration, key rotation, and more
+{{< /link-card >}}
+
 {{< /grid >}}

@@ -2,7 +2,6 @@
 title: Run and deploy tasks
 weight: 12
 variants: +flyte +union
-sidebar_expanded: false
 llm_readable_bundle: true
 ---
 

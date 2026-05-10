@@ -1,7 +1,7 @@
 ---
 title: Policy
 version: 0.2.2
-variants: +flyte +byoc +selfmanaged +union
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -27,10 +27,10 @@ class Policy(
 
 | Property | Type | Description |
 |-|-|-|
-| `bindings` | `None` |  |
-| `description` | `None` |  |
-| `name` | `None` |  |
-| `organization` | `None` |  |
+| `bindings` | `list[dict]` |  |
+| `description` | `str` |  |
+| `name` | `str` |  |
+| `organization` | `str` |  |
 
 ## Methods
 

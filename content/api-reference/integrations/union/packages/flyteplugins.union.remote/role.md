@@ -1,7 +1,7 @@
 ---
 title: Role
 version: 0.2.2
-variants: +flyte +byoc +selfmanaged +union
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -27,11 +27,11 @@ class Role(
 
 | Property | Type | Description |
 |-|-|-|
-| `actions` | `None` |  |
-| `description` | `None` |  |
-| `name` | `None` |  |
-| `organization` | `None` |  |
-| `role_type` | `None` |  |
+| `actions` | `list[str]` |  |
+| `description` | `str` |  |
+| `name` | `str` |  |
+| `organization` | `str` |  |
+| `role_type` | `str` |  |
 
 ## Methods
 

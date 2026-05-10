@@ -2,7 +2,6 @@
 title: Data plane setup on Azure
 weight: 5
 variants: -flyte +union
-sidebar_expanded: true
 ---
 
 # Data plane setup on Azure

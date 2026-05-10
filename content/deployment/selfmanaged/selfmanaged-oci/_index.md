@@ -2,7 +2,6 @@
 title: Data plane setup on OCI
 weight: 6
 variants: -flyte +union
-sidebar_expanded: true
 ---
 
 # Data plane setup on OCI

@@ -2,7 +2,6 @@
 title: Distributed training
 weight: 2
 variants: +flyte +union
-sidebar_expanded: false
 ---
 
 # Distributed training

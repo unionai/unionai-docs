@@ -2,7 +2,6 @@
 title: Multi-agent trading simulation
 weight: 1
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # Multi-agent trading simulation

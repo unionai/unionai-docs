@@ -2,7 +2,6 @@
 title: Build apps
 weight: 16
 variants: +flyte +union
-sidebar_expanded: false
 llm_readable_bundle: true
 ---
 

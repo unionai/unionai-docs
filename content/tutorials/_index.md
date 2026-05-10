@@ -3,7 +3,6 @@ title: Tutorials
 weight: 2
 variants: +flyte +union
 top_menu: true
-sidebar_expanded: true
 llm_readable_bundle: true
 ---
 

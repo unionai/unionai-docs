@@ -15,7 +15,7 @@ Unlike serverless and BYOC deployments where {{< key product_name >}} manages au
 
 ## Overview
 
-Self-hosted authentication requires creating **five OAuth2 client applications** in your own identity provider. Each application serves a different authentication flow:
+Self-hosted authentication requires creating **five OAuth2 client applications** in your own identity provider (plus an optional sixth for CI/CD). Each application serves a different authentication flow:
 
 | # | Application | Type | Grant types | Purpose |
 |---|-------------|------|-------------|---------|
@@ -24,6 +24,10 @@ Self-hosted authentication requires creating **five OAuth2 client applications**
 | 3 | Service-to-service | Confidential (service) | `client_credentials` | Control plane inter-service communication through NGINX |
 | 4 | Operator | Confidential (service) | `client_credentials` | Data plane operator, propeller, and cluster-resource-sync authentication to control plane |
 | 5 | EAGER | Confidential (service) | `client_credentials` | Task pod authentication (EAGER_API_KEY) |
+| 6 | CI/CD _(optional)_ | Confidential (service) | `client_credentials` | Non-interactive workflow deployment from CI/CD pipelines |
+
+> [!NOTE]
+> App 6 (CI/CD) is only needed if you deploy workflows from automated pipelines. See the [CI/CD integration](./operations/cicd) guide for full setup instructions.
 
 ## Identity provider requirements
 
@@ -62,20 +66,18 @@ Register an **App Registration** in Microsoft Entra ID:
 
 - **App ID URI**: `api://<app-name>` (this becomes the audience)
 - **Metadata URL**: `.well-known/openid-configuration` (standard OIDC)
-- **Scopes**: Create two custom scopes on the app registration:
-  - `all` — delegated scope for browser login (authorization_code flow)
-  - `/.default` — used automatically for client_credentials flow
+- **Scopes**: The `/.default` scope is used automatically for client_credentials and CLI flows. No custom scopes are required — browser login uses standard OIDC scopes only.
 - **Claims** — configure via the app manifest's `optionalClaims`:
   - `sub` — Entra populates this natively. For client_credentials tokens, `sub` equals the **Service Principal Object ID** (not the Client ID).
-  - `idtyp` — add as an optional access token claim. Emits `"app"` for client_credentials tokens (maps to the `identitytype` concept).
+  - `idtyp` — add as an optional access token claim **on the browser login app registration (App 1)**, since it is the resource server. Emits `"app"` for client_credentials tokens (maps to the `identitytype` concept).
   - `preferred_username` — included by default for user tokens
 
 > [!WARNING]
 > Entra ID uses `sub` = Service Principal Object ID for client_credentials tokens, not the Client ID. When configuring trusted identities for service-to-service auth, use the SP Object ID (found in Enterprise Applications, not App Registrations).
 
 > [!NOTE]
-> Entra ID requires different scopes for different flows:
-> - **Browser login** (authorization_code): `api://<app-name>/all` — Entra rejects `/.default` for same-app auth_code flows (error `AADSTS90009`)
+> Entra ID scope usage by flow:
+> - **Browser login** (authorization_code): standard OIDC scopes only (`profile`, `openid`, `offline_access`) — the IdP returns a plain ID token
 > - **CLI** (authorization_code + PKCE): `api://<app-name>/.default`
 > - **Service-to-service** (client_credentials): `api://<app-name>/.default`
 {{< /markdown >}}
@@ -292,15 +294,10 @@ flyte:
             metadataUrl: ".well-known/openid-configuration"
             allowedAudience:
               - "api://<app-name>"
-            # Entra client_credentials tokens use SP Object ID as sub, not client_id.
-            # Configure fallback chain:
-            subjectClaimNames:
-              - sub
-              - client_id
-            # Map Entra's idtyp claim to internal identitytype:
-            identityTypeClaimsForApps:
-              idtyp:
-                - app
+              - "<browser-login-client-id>"    # App 1 Client ID
+          identityTypeClaimsForApps:
+            idtyp:
+              - app
           thirdPartyConfig:
             flyteClient:
               clientId: "<cli-client-id>"           # App 2
@@ -316,11 +313,15 @@ flyte:
               - profile
               - openid
               - offline_access
-              - "api://<app-name>/all"
           cookieSetting:
             sameSitePolicy: LaxMode
             domain: "<your-domain>"
+          idpQueryParameter: "idp"
 ```
+
+> [!WARNING]
+> After creating service apps (Apps 3-5), you must **grant admin consent** for their App Role assignments in the Azure portal (**Enterprise Applications > your app > Permissions > Grant admin consent**) or via `az ad app permission admin-consent`. Without admin consent, client_credentials token requests will fail.
+
 
 Set globals:
 ```yaml
@@ -553,10 +554,6 @@ Ensure the CLI app (App 2) redirect URIs include `http://localhost:53593/callbac
 uctl config init --host https://<your-domain>
 uctl get project
 ```
-
-### Entra ID: `AADSTS90009` on browser login
-
-This error occurs when using the `/.default` scope with an authorization_code flow on the same app. Entra ID requires a named delegated scope (e.g., `api://<app-name>/all`) for browser login. Check that `userAuth.openId.scopes` includes `api://<app-name>/all` and not `/.default`.
 
 ### Entra ID: `AADSTS1002012` invalid_scope for service-to-service
 

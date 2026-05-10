@@ -2,7 +2,6 @@
 title: Packaging
 weight: 7
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # Code packaging for remote execution

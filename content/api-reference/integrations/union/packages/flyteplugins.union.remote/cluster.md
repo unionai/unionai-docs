@@ -1,7 +1,7 @@
 ---
 title: Cluster
 version: 0.2.2
-variants: +flyte +byoc +selfmanaged +union
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -27,16 +27,16 @@ class Cluster(
 
 | Property | Type | Description |
 |-|-|-|
-| `health` | `None` |  |
-| `health_display` | `None` |  |
-| `monitoring_info` | `None` |  |
-| `name` | `None` |  |
-| `organization` | `None` |  |
-| `state` | `None` |  |
-| `tunnel_status` | `None` |  |
-| `tunnel_status_display` | `None` |  |
-| `tunnel_url` | `None` |  |
-| `unhealthy_reasons` | `None` |  |
+| `health` | `str` |  |
+| `health_display` | `str` |  |
+| `monitoring_info` | `list[dict]` |  |
+| `name` | `str` |  |
+| `organization` | `str` |  |
+| `state` | `str` |  |
+| `tunnel_status` | `str` |  |
+| `tunnel_status_display` | `str` |  |
+| `tunnel_url` | `str` |  |
+| `unhealthy_reasons` | `list[str]` |  |
 
 ## Methods
 
