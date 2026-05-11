@@ -56,12 +56,19 @@ Be aware of the trade-offs in particular for:
 
 Data correctness is not silently violated: re-runs read from current raw data, and the DB record is the source of truth for what executed. You're trading off the ability to recover or inspect old offloaded values.
 
-## Separating raw-data paths within the bucket
+## Designing lifecycle rules
 
-Self-managed deployments can split bucket content into separate paths (or separate buckets) so that lifecycle rules can target specific subsets — for example, purging old `Deck` data while keeping `FlyteFile` outputs. This is configured via `configuration.storage.metadataContainer` and `configuration.storage.userDataContainer` in the [data plane chart](https://github.com/unionai/helm-charts/blob/master/charts/dataplane/values.yaml).
+The {{< key product_name >}} data plane uses a **single object-store bucket** for all execution data. Inside that bucket, content is split by **prefix**, controlled by two settings on flytepropeller:
 
-> [!WARNING] Naming note
-> The Helm chart setting `metadataContainer` and the related `config.core.propeller.metadata-prefix` setting refer to {{< key product_name >}}-internal system data (workflow state and similar engine artifacts that propeller writes into the bucket). They do **not** refer to {{< key product_name >}} metadata in the customer-facing sense — that lives in the control plane database. Be careful when designing lifecycle rules against these paths: purging the propeller "metadata" prefix can break in-flight and historical executions, while purging the user-data prefix purges raw data as described above. Validate any retention rules in a non-production environment before applying them broadly.
+- `config.core.propeller.metadata-prefix` (default `metadata/propeller`) — where the engine writes its per-execution working files: `inputs.pb`, `outputs.pb`, `error.pb`, `futures.pb`, and `deck.html`. These are required for in-flight workflows to complete and for historical-execution input/output and Deck previews to render. **Despite the name, this is not {{< key product_name >}} metadata in the customer-facing sense** — that lives in the control plane database (see [above](#where-metadata-vs-raw-data-lives)). The prefix name reflects Flyte's internal terminology.
+- `config.core.propeller.rawoutput-prefix` (defaults to the bucket root) — where raw outputs land: `FlyteFile` / `FlyteDirectory` contents, `DataFrame` payloads, `_flytecheckpoints/`, and other offloaded values. This is the prefix retention can safely apply to.
+
+When designing S3 lifecycle rules (or the GCS/ABS equivalent), **scope expiration to prefixes other than `metadata/propeller/`** so the engine working state stays durable. Typical patterns are rules scoped to `_flytecheckpoints/` or to domain/project prefixes under the bucket root, rather than a bucket-wide rule.
+
+Validate any retention rule in a non-production environment before applying it broadly.
+
+> [!NOTE] Note on the Union vs. OSS chart
+> The Union {{< key product_name >}} data plane chart uses a single bucket with prefix-based separation as described above. If you've seen `configuration.storage.metadataContainer` / `userDataContainer` referenced elsewhere, those are settings on the Flyte OSS `flyte-binary` chart, not the {{< key product_name >}} data plane chart. They aren't available here.
 
 ## Per-run customization
 
