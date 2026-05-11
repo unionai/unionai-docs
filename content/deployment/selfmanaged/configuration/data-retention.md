@@ -69,7 +69,7 @@ Validate any retention rule in a non-production environment before applying it b
 
 ## Per-run customization
 
-Both the raw-data location and the engine's run base directory can be overridden **per run** (or per trigger) via [`flyte.with_runcontext()`](../../../user-guide/task-deployment/run-context#storage):
+Both the raw-data location and the engine's run base directory can be overridden **per run** via [`flyte.with_runcontext()`](../../../user-guide/task-deployment/run-context#storage):
 
 - `raw_data_path` — storage prefix for offloaded raw data (`flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, checkpoints, etc.).
 - `run_base_dir` — base directory for the engine's per-run system data passed between tasks.
