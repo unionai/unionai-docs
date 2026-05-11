@@ -15,7 +15,7 @@ It helps to be precise about what "metadata" means here, because the term is use
 
 **Metadata in {{< key product_name >}} lives in the control plane database.** It includes:
 
-- Workflow, task, launch-plan, and artifact registrations.
+- Task, trigger and app definitions.
 - Execution status, history, schedules, and audit trail.
 - The literal values of task inputs and outputs — primitives (ints, strings, etc.), JSON-serializable dataclasses, and similar small values that are passed *by value* between tasks. The DB stores these values directly.
 
@@ -28,9 +28,6 @@ It helps to be precise about what "metadata" means here, because the term is use
 - [Trace](../../../user-guide/task-programming/traces) checkpoints.
 
 When a task input or output is *too large to be passed inline as a literal value*, it is offloaded: the bytes are written to the bucket as raw data, and the literal that the DB stores becomes a **pointer** (URI) into the bucket. The DB still holds the canonical record of the input/output — it just holds a reference instead of the value.
-
-> [!NOTE] The bucket does not hold {{< key product_name >}} metadata
-> The data plane bucket is the raw data store. {{< key product_name >}} metadata — registry data, execution status, and the literal values of small inputs/outputs — is stored in the control plane database, not the bucket. Retention policies on the bucket do not delete metadata. They can, however, leave DB-side pointers dangling when the raw data they reference is purged.
 
 ## Impact of raw data loss
 
@@ -58,10 +55,10 @@ Data correctness is not silently violated: re-runs read from current raw data, a
 
 ## Designing lifecycle rules
 
-The {{< key product_name >}} data plane uses a **single object-store bucket** for all execution data. Inside that bucket, content is split by **prefix**, controlled by two settings on flytepropeller:
+The {{< key product_name >}} data plane uses a **single object-store bucket** for all execution data. Inside that bucket, content is split by **prefix**, controlled by two settings in the engine configuration:
 
-- `config.core.propeller.metadata-prefix` (default `metadata/propeller`) — where the engine writes its per-execution working files: `inputs.pb`, `outputs.pb`, `error.pb`, `futures.pb`, and `deck.html`. These are required for in-flight workflows to complete and for historical-execution input/output and Deck previews to render. **Despite the name, this is not {{< key product_name >}} metadata in the customer-facing sense** — that lives in the control plane database (see [above](#where-metadata-vs-raw-data-lives)). The prefix name reflects Flyte's internal terminology.
-- `config.core.propeller.rawoutput-prefix` (defaults to the bucket root) — where raw outputs land: `flyte.io.File` / `flyte.io.Dir` contents, `flyte.io.DataFrame` payloads, checkpoint data, and other offloaded values. This is the prefix retention can safely apply to.
+- `config.core.propeller.metadata-prefix` (default `metadata/propeller`) — where the engine writes its per-execution working files: `inputs.pb`, `outputs.pb`, `error.pb`, `futures.pb`, and `deck.html`. These are required for in-flight workflows to complete and for historical-execution input/output and Deck previews to render. **Despite the name, this is not {{< key product_name >}} metadata in the customer-facing sense** — that lives in the control plane database (see [above](#where-metadata-vs-raw-data-lives)). The prefix name reflects Union's internal terminology.
+- `config.core.propeller.rawoutput-prefix` (defaults to the bucket root) — where raw outputs land: `flyte.io.File` / `flyte.io.Dir` contents, `flyte.io.DataFrame` payloads, checkpoint data, and other offloaded values. This is the prefix to which retention can safely be applied.
 
 When designing S3 lifecycle rules (or the GCS/ABS equivalent), **scope expiration to prefixes other than `metadata/propeller/`** so the engine working state stays durable. Typical patterns are rules scoped to domain/project prefixes (or specific subpaths under the bucket root) rather than a bucket-wide rule.
 
@@ -69,9 +66,4 @@ Validate any retention rule in a non-production environment before applying it b
 
 ## Per-run customization
 
-Both the raw-data location and the engine's run base directory can be overridden **per run** via [`flyte.with_runcontext()`](../../../user-guide/task-deployment/run-context#storage):
-
-- `raw_data_path` — storage prefix for offloaded raw data (`flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, checkpoints, etc.).
-- `run_base_dir` — base directory for the engine's per-run system data passed between tasks.
-
-This is the path BYOC customers have today for directing a run's raw data to a different bucket — for example, a customer-owned bucket with its own retention policy. Setting a deployment-wide default for these paths on BYOC is not currently supported.
+The raw-data location can be overridden **per run** via [`flyte.with_runcontext()`](../../../user-guide/task-deployment/run-context#storage) using the property `raw_data_path`. This property defines the prefix for offloaded raw data (`flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, checkpoints, etc.).
