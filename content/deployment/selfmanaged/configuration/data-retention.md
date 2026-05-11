@@ -67,9 +67,6 @@ When designing S3 lifecycle rules (or the GCS/ABS equivalent), **scope expiratio
 
 Validate any retention rule in a non-production environment before applying it broadly.
 
-> [!NOTE] Note on the Union vs. OSS chart
-> The Union {{< key product_name >}} data plane chart uses a single bucket with prefix-based separation as described above. If you've seen `configuration.storage.metadataContainer` / `userDataContainer` referenced elsewhere, those are settings on the Flyte OSS `flyte-binary` chart, not the {{< key product_name >}} data plane chart. They aren't available here.
-
 ## Per-run customization
 
 Both the raw-data location and the engine's run base directory can be overridden **per run** (or per trigger) via [`flyte.with_runcontext()`](../../../user-guide/task-deployment/run-context#storage):
