@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.2.2
+version: 2.2.4
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -65,6 +65,7 @@ This is the command line interface for Flyte.
 | `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
 | `policy` | [`create⁺`](#flyte-create-policy), [`delete⁺`](#flyte-delete-policy), [`get⁺`](#flyte-get-policy), [`update⁺`](#flyte-update-policy)  |
 | `project` | [`create`](#flyte-create-project), [`get`](#flyte-get-project), [`update`](#flyte-update-project)  |
+| `queue` | [`create⁺`](#flyte-create-queue), [`get⁺`](#flyte-get-queue), [`update⁺`](#flyte-update-queue)  |
 | `role` | [`create⁺`](#flyte-create-role), [`delete⁺`](#flyte-delete-role), [`get⁺`](#flyte-get-role), [`update⁺`](#flyte-update-role)  |
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
@@ -87,18 +88,18 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
-| `create` | [`api-key⁺`](#flyte-create-api-key), [`assignment⁺`](#flyte-create-assignment), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
+| `create` | [`api-key⁺`](#flyte-create-api-key), [`assignment⁺`](#flyte-create-assignment), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`queue⁺`](#flyte-create-queue), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
 | `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`devbox`](#flyte-delete-devbox), [`policy⁺`](#flyte-delete-policy), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
 | [`deploy`](#flyte-deploy) | - |
 | `edit` | [`settings`](#flyte-edit-settings)  |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
 | `start` | [`devbox`](#flyte-start-devbox), [`tui`](#flyte-start-tui)  |
 | `stop` | [`devbox`](#flyte-stop-devbox)  |
-| `update` | [`app`](#flyte-update-app), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
+| `update` | [`app`](#flyte-update-app), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`queue⁺`](#flyte-update-queue), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
 {{< /grid >}}
@@ -175,6 +176,7 @@ $ flyte --config /path/to/config.yaml run ...
 | {{< multiline >}}`--output-format`
 `-of`{{< /multiline >}} | `choice` | `table` | Output format for commands that support it. Defaults to 'table'. |
 | `--log-format` | `choice` | `console` | Formatting for logs, defaults to 'console' which is meant to be human readable. 'json' is meant for machine parsing. |
+| `--user-log-level` | `choice` | `info` | Log level for user task logs. Independent of the internal Flyte log level (-v). |
 | `--reset-root-logger` | `boolean` | `False` | If set, the root logger will be reset to use Flyte logging style |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
@@ -253,12 +255,16 @@ Examples:
     # Create an API key named "ci-pipeline"
     $ flyte create api-key --name ci-pipeline
 
+    # Create a locked-down key with no default policy attachments
+    $ flyte create api-key --name ci-pipeline --no-default-policies
+
     # The output will include an export command like:
     # export FLYTE_API_KEY="<base64-encoded-credentials>"
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--name` | `text` | `Sentinel.UNSET` | Name for API key |
+| `--no-default-policies` | `boolean` | `False` | Skip attaching the server's default policies. Grant access explicitly via 'flyte create assignment'. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
@@ -364,6 +370,43 @@ flyte create project --id my_project_id --name "My Project" --description "My pr
 | {{< multiline >}}`--label`
 `-l`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Labels as key=value pairs. Can be specified multiple times. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte create queue
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte create queue [OPTIONS] NAME`**
+
+Create a scheduling queue.
+
+    Examples:
+
+        $ flyte create queue my-queue --run-concurrency 100 --action-concurrency 1000
+
+        $ flyte create queue gpu-queue --run-concurrency 50 --action-concurrency 500 \
+            --priority min --cluster gpu-cluster-1
+
+        $ flyte create queue backfill --run-concurrency 10 --action-concurrency 100 \
+            --depth 5000 --priority max
+
+        $ flyte create queue team-queue --run-concurrency 100 --action-concurrency 1000 \
+            --project my-project --domain production
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--run-concurrency` | `integer` | `Sentinel.UNSET` | Max concurrent runs (required) |
+| `--action-concurrency` | `integer` | `Sentinel.UNSET` | Max concurrent actions (required) |
+| `--depth` | `integer` | `10000` | Max queue depth |
+| `--priority` | `choice` | `medium` | Queue priority |
+| `--fairness` | `choice` | `round_robin` | Fairness algorithm |
+| `--cluster` | `text` | `Sentinel.UNSET` | Target cluster(s). Repeat for multiple. |
+| `--project` | `text` | `` | Scope queue to a project |
+| `--domain` | `text` | `` | Scope queue to a domain |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< variant union >}}
 {{< markdown >}}
@@ -981,7 +1024,8 @@ Get or list assignments.
 
 Get a cluster or list all clusters.
 
-    If NAME is provided, fetch that specific cluster. Otherwise list all clusters.
+    If NAME is provided, fetch that specific cluster and render a detailed view.
+    Otherwise list all clusters.
 
     Examples:
 
@@ -1128,6 +1172,38 @@ show archived projects instead.
 |--------|------|---------|-------------|
 | `--archived` | `boolean` | `False` | Show archived projects instead of active ones. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte get queue
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte get queue [OPTIONS] [NAME]`**
+
+Get a queue or list all queues.
+
+    If NAME is provided, fetch that specific queue with its current metrics.
+    Use --watch to stream live metrics with progress bars.
+    Otherwise list all queues.
+
+    Examples:
+
+        $ flyte get queue
+
+        $ flyte get queue my-queue
+
+        $ flyte get queue my-queue --watch
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--project` | `text` | `` | Scope to a project |
+| `--domain` | `text` | `` | Scope to a domain |
+| `--limit` | `integer` | `100` | Maximum number of queues to return |
+| `--watch` | `boolean` | `False` | Stream live queue metrics (requires NAME) |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< variant union >}}
 {{< markdown >}}
@@ -1735,6 +1811,39 @@ flyte update project my_project --label team=ml --label env=prod
 | {{< multiline >}}`--archive`
 `--unarchive`{{< /multiline >}} | `boolean` |  | Archive or unarchive the project. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte update queue
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte update queue [OPTIONS] NAME`**
+
+Update a queue.
+
+    Use --drain to begin draining (stops new submissions).
+    Use --activate to re-activate a draining or drained queue.
+    Use --edit to interactively modify queue configuration.
+
+    Examples:
+
+        $ flyte update queue my-queue --drain
+
+        $ flyte update queue my-queue --activate
+
+        $ flyte update queue my-queue --edit
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--project` | `text` | `` | Scope to a project |
+| `--domain` | `text` | `` | Scope to a domain |
+| `--drain` | `boolean` | `False` | Begin draining the queue |
+| `--activate` | `boolean` | `False` | Re-activate a draining or drained queue |
+| `--edit` | `boolean` | `False` | Open an editor to modify queue settings |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< variant union >}}
 {{< markdown >}}
