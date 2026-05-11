@@ -20,11 +20,11 @@ To access a browser-based app:
 
 ### Streamlit apps
 
-Streamlit is ideal for data dashboards and ML prototypes. See [Streamlit apps](../native-app-integrations/streamlit-apps) for details.
+Streamlit is ideal for data dashboards and ML prototypes. See [Streamlit app](../native-app-integrations/streamlit-app) for details.
 
 ### Gradio apps
 
-Gradio is great for ML model demos and interactive interfaces. See [Gradio apps](../native-app-integrations/gradio-apps) for details.
+Gradio is great for ML model demos and interactive interfaces. You can deploy a Gradio app by building a custom [`AppEnvironment`](./single-script-apps) with the `gradio` package installed in your image.
 
 ### Custom HTML/JS apps
 

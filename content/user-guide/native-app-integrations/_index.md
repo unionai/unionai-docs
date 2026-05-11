@@ -9,10 +9,10 @@ llm_readable_bundle: true
 
 {{< llm-bundle-note >}}
 
-Flyte ships with a set of pre-built [`AppEnvironment`](../build-apps) integrations that wrap popular frameworks and serving runtimes, so you can deploy common app types without writing the integration glue yourself. Each integration provides a ready-to-use environment class — just configure your app, image, resources, and scaling, and Flyte handles the rest.
+Flyte ships with a set of pre-built [`AppEnvironment`](../build-apps/_index) integrations that wrap popular frameworks and serving runtimes, so you can deploy common app types without writing the integration glue yourself. Each integration provides a ready-to-use environment class — just configure your app, image, resources, and scaling, and Flyte handles the rest.
 
 > [!TIP]
-> If you're new to apps in Flyte, start with [Introducing apps](../core-concepts/introducing-apps) for an overview, then see [Build apps](../build-apps) to learn how to build custom app environments from scratch.
+> If you're new to apps in Flyte, start with [Introducing apps](../core-concepts/introducing-apps) for an overview, then see [Build apps](../build-apps/_index) to learn how to build custom app environments from scratch.
 
 ## When to use a native integration
 
@@ -22,7 +22,7 @@ Use a native integration when your app fits one of the supported frameworks and 
 - **First-class support** — features like model streaming, OpenAI-compatible APIs, and passthrough auth wired in for you
 - **Faster time-to-deploy** — focus on your app logic, not on packaging and serving plumbing
 
-For app types not covered here, build a custom [`AppEnvironment`](../build-apps) using the patterns in the [Build apps](../build-apps) section.
+For app types not covered here, build a custom [`AppEnvironment`](../build-apps/_index) using the patterns in the [Build apps](../build-apps/_index) section.
 
 ## Available integrations
 
