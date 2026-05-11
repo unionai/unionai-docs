@@ -151,6 +151,44 @@ When `image.builder` is set to `remote` in [your `config.yaml`](../run-modes/run
 > [!NOTE]
 > Remote building is currently exclusive to Union backends. OSS Flyte installations must use `local`
 
+## 6. Source-code link discovery
+
+While each task is being serialized in step 2, Flyte attempts to attach a link from the task back to the source line of its Python function.
+The link is rendered next to the task description in the UI, so anyone viewing a deployed task can jump directly to the code that defines it.
+
+This is fully automatic. There is no decorator argument, no config flag, and no opt-in step — if the conditions below are met, the link appears.
+
+### How the link is built
+
+Flyte inspects the local repository at deploy time using the standard `git` CLI:
+
+- The repository root, current commit SHA, working-tree-clean status, and remote push URL are read via `git rev-parse` and `git remote get-url --push origin`.
+- The file path is taken from the task function's `__code__.co_filename`, made relative to the repo root.
+- The line number is the line of the function definition (the line just after the `@env.task` decorator).
+- For a GitHub remote, the URL takes the form `https://github.com/<owner>/<repo>/blob/<sha>/<file>#L<line>`. GitLab uses the equivalent `/-/blob/` form.
+
+The `#L<line>` anchor is only included when the working tree is clean. A dirty tree still produces a valid blob URL, but without the line jump — because the local file may no longer match the committed file.
+
+### Conditions
+
+For the link to appear, all of the following must hold:
+
+- The `git` CLI is installed and the directory you deploy from is inside a git repository.
+- The repository has a remote. The push URL of `origin` is preferred; otherwise the first remote, alphabetically, is used.
+- The remote host is `github.com` or `gitlab.com`. Other hosts (Bitbucket, self-hosted Gitea, GitHub Enterprise on a custom domain, etc.) currently produce no link.
+- The task's source file lives under the repository root.
+
+If any condition fails, the deploy still succeeds — only the source-code link is omitted.
+
+> [!NOTE]
+> Flyte does not check whether the current commit has been pushed.
+> If you deploy from a clean local commit that is not yet on the remote, the URL will resolve to a missing SHA on GitHub or GitLab.
+> Push your commit before deploying if you want the link to be followable.
+
+For private repositories, the link is still generated; viewers need to be authenticated to the host to follow it.
+
+See [`flyte.git.GitStatus`](../../api-reference/flyte-sdk/packages/flyte.git/gitstatus) for the underlying API.
+
 ## Understanding option relationships
 
 It's important to understand how the various deployment options work together.
