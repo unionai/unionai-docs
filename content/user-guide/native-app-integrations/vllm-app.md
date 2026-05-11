@@ -1,36 +1,36 @@
 ---
-title: SGLang app
-weight: 12
+title: vLLM app
+weight: 11
 variants: +flyte +union
 ---
 
-# SGLang app
+# vLLM app
 
-SGLang is a fast structured generation library for large language models (LLMs). Flyte provides `SGLangAppEnvironment` for deploying SGLang model servers.
+vLLM is a high-performance library for serving large language models (LLMs). Flyte provides `VLLMAppEnvironment` for deploying vLLM model servers.
 
 ## Installation
 
-First, install the SGLang plugin:
+First, install the vLLM plugin:
 
 ```bash
-pip install flyteplugins-sglang
+pip install flyteplugins-vllm
 ```
 
-## Basic SGLang app
+## Basic vLLM app
 
 Here's a simple example serving a HuggingFace model:
 
-{{< code file="/unionai-examples/v2/user-guide/build-apps/sglang/basic_sglang.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/vllm/basic_vllm.py" lang=python >}}
 
 ## Using prefetched models
 
 You can use models prefetched with `flyte.prefetch`:
 
-{{< code file="/unionai-examples/v2/user-guide/build-apps/sglang/sglang_with_prefetch.py" lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/vllm/vllm_with_prefetch.py" lang=python >}}
 
 ## Model streaming
 
-`SGLangAppEnvironment` supports streaming models directly from blob storage to GPU memory, reducing startup time.
+`VLLMAppEnvironment` supports streaming models directly from blob storage to GPU memory, reducing startup time.
 When `stream_model=True` and the `model_path` argument is provided with either a `flyte.io.Dir` or `RunOutput` pointing
 to a path in object store:
 
@@ -39,21 +39,21 @@ to a path in object store:
 - Lower disk space requirements
 
 > [!NOTE]
-> The contents of the model directory must be compatible with the SGLang-supported formats, e.g. the HuggingFace model
+> The contents of the model directory must be compatible with the vLLM-supported formats, e.g. the HuggingFace model
 > serialization format.
 
-## Custom SGLang arguments
+## Custom vLLM arguments
 
-Use `extra_args` to pass additional arguments to SGLang:
+Use `extra_args` to pass additional arguments to vLLM:
 
 ```python
-sglang_app = SGLangAppEnvironment(
-    name="custom-sglang-app",
+vllm_app = VLLMAppEnvironment(
+    name="custom-vllm-app",
     model_hf_path="Qwen/Qwen3-0.6B",
     model_id="qwen3-0.6b",
     extra_args=[
         "--max-model-len", "8192",  # Maximum context length
-        "--mem-fraction-static", "0.8",  # Memory fraction for static allocation
+        "--gpu-memory-utilization", "0.8",  # GPU memory utilization
         "--trust-remote-code",  # Trust remote code in models
     ],
     resources=flyte.Resources(cpu="4", memory="16Gi", gpu="L40s:1"),
@@ -61,17 +61,17 @@ sglang_app = SGLangAppEnvironment(
 )
 ```
 
-See the [SGLang server arguments documentation](https://docs.sglang.io/advanced_features/server_arguments.html) for all available options.
+See the [vLLM documentation](https://docs.vllm.ai/en/stable/configuration/engine_args.html) for all available arguments.
 
 ## Using the OpenAI-compatible API
 
-Once deployed, your SGLang app exposes an OpenAI-compatible API:
+Once deployed, your vLLM app exposes an OpenAI-compatible API:
 
 ```python
 from openai import OpenAI
 
 client = OpenAI(
-    base_url="https://your-app-url/v1",  # SGLang endpoint
+    base_url="https://your-app-url/v1",  # vLLM endpoint
     api_key="your-api-key",  # If you passed an --api-key argument
 )
 
@@ -87,19 +87,19 @@ print(response.choices[0].message.content)
 
 > [!TIP]
 > If you passed an `--api-key` argument, you can use the `api_key` parameter to authenticate your requests.
-> See [here](./secret-based-authentication#deploy-sglang-app-with-authentication) for more details on how to pass auth secrets to your app.
+> See [here](../build-apps/secret-based-authentication#deploy-vllm-app-with-authentication) for more details on how to pass auth secrets to your app.
 
 ## Multi-GPU inference (Tensor Parallelism)
 
 For larger models, use multiple GPUs with tensor parallelism:
 
-{{< code file="/unionai-examples/v2/user-guide/build-apps/sglang/sglang_multi_gpu.py" fragment=multi-gpu lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/build-apps/vllm/vllm_multi_gpu.py" lang=python >}}
 
-The tensor parallelism size (`--tp`) should match the number of GPUs specified in resources.
+The `tensor-parallel-size` should match the number of GPUs specified in resources.
 
 ## Model sharding with prefetch
 
-You can prefetch and shard models for multi-GPU inference using SGLang's sharding:
+You can prefetch and shard models for multi-GPU inference:
 
 ```python
 # Prefetch with sharding configuration
@@ -118,12 +118,12 @@ run = flyte.prefetch.hf_model(
 run.wait()
 
 # Use the sharded model
-sglang_app = SGLangAppEnvironment(
-    name="sharded-sglang-app",
+vllm_app = VLLMAppEnvironment(
+    name="sharded-llm-app",
     model_path=flyte.app.RunOutput(type="directory", run_name=run.name),
     model_id="llama-2-70b",
     resources=flyte.Resources(cpu="8", memory="32Gi", gpu="L40s:4", disk="100Gi"),
-    extra_args=["--tp", "4"],
+    extra_args=["--tensor-parallel-size", "4"],
     stream_model=True,
 )
 ```
@@ -132,11 +132,11 @@ See [Prefetching models](../serve-and-deploy-apps/prefetching-models) for more d
 
 ## Autoscaling
 
-SGLang apps work well with autoscaling:
+vLLM apps work well with autoscaling:
 
 ```python
-sglang_app = SGLangAppEnvironment(
-    name="autoscaling-sglang-app",
+vllm_app = VLLMAppEnvironment(
+    name="autoscaling-llm-app",
     model_hf_path="Qwen/Qwen3-0.6B",
     model_id="qwen3-0.6b",
     resources=flyte.Resources(cpu="4", memory="16Gi", gpu="L40s:1"),
@@ -148,18 +148,14 @@ sglang_app = SGLangAppEnvironment(
 )
 ```
 
-## Structured generation
-
-SGLang is particularly well-suited for structured generation tasks. The deployed app supports standard OpenAI API calls, and you can use SGLang's advanced features through the API.
-
 ## Best practices
 
 1. **Use prefetching**: Prefetch models for faster deployment and better reproducibility
 2. **Enable streaming**: Use `stream_model=True` to reduce startup time and disk usage
 3. **Right-size GPUs**: Match GPU memory to model size
-4. **Use tensor parallelism**: For large models, use multiple GPUs with `--tp`
-5. **Set autoscaling**: Use appropriate idle TTL to balance cost and performance
-6. **Configure memory**: Use `--mem-fraction-static` to control memory allocation
+4. **Configure memory utilization**: Use `--gpu-memory-utilization` to control memory usage
+5. **Use tensor parallelism**: For large models, use multiple GPUs with `tensor-parallel-size`
+6. **Set autoscaling**: Use appropriate idle TTL to balance cost and performance
 7. **Limit context length**: Use `--max-model-len` for smaller models to reduce memory usage
 
 ## Troubleshooting
@@ -171,7 +167,7 @@ SGLang is particularly well-suited for structured generation tasks. The deployed
 
 **Out of memory errors:**
 - Reduce `--max-model-len`
-- Lower `--mem-fraction-static`
+- Lower `--gpu-memory-utilization`
 - Use a smaller model or more GPUs
 
 **Slow startup:**

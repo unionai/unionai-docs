@@ -7,7 +7,7 @@ variants: +flyte +union
 # Prefetching models
 
 Prefetching allows you to download and prepare HuggingFace models (including sharding for multi-GPU inference) before
-deploying [vLLM](../build-apps/vllm-app) or [SGLang](../build-apps/sglang-app) apps. This speeds up deployment and ensures models are ready when your app starts.
+deploying [vLLM](../native-app-integrations/vllm-app) or [SGLang](../native-app-integrations/sglang-app) apps. This speeds up deployment and ensures models are ready when your app starts.
 
 ## Why prefetch?
 

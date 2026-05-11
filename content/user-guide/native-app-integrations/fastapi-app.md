@@ -54,7 +54,7 @@ The helper module:
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/multi_file/module.py" lang=python >}}
 
-See [Multi-script apps](./multi-script-apps) for more details on building FastAPI apps with multiple files.
+See [Multi-script apps](../build-apps/multi-script-apps) for more details on building FastAPI apps with multiple files.
 
 ## Local-to-remote model serving
 
@@ -141,8 +141,8 @@ FastAPI supports many features that work with Flyte:
 
 - **Dependencies**: Use FastAPI's dependency injection system
 - **Background tasks**: Run background tasks with BackgroundTasks
-- **WebSockets**: See [WebSocket-based patterns](./app-usage-patterns#websocket-based-patterns) for details
-- **Authentication**: Add authentication middleware (see [secret-based authentication](./secret-based-authentication))
+- **WebSockets**: See [WebSocket apps](../build-apps/websocket-apps) for details
+- **Authentication**: Add authentication middleware (see [secret-based authentication](../build-apps/secret-based-authentication))
 - **CORS**: Configure CORS for cross-origin requests
 - **Rate limiting**: Add rate limiting middleware
 
