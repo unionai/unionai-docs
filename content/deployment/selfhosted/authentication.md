@@ -76,6 +76,9 @@ Register an **App Registration** in Microsoft Entra ID:
 > Entra ID uses `sub` = Service Principal Object ID for client_credentials tokens, not the Client ID. When configuring trusted identities for service-to-service auth, use the SP Object ID (found in Enterprise Applications, not App Registrations).
 
 > [!NOTE]
+> Entra ID v2.0 tokens always include the `sub` claim, so no fallback claim configuration is required. If you need to override the subject resolution (e.g. to use `oid` or `client_id` instead of `sub`), see the [Subject claim requirements](#subject-claim-requirements) section below for the `subjectClaimNames` fallback chain.
+
+> [!NOTE]
 > Entra ID scope usage by flow:
 > - **Browser login** (authorization_code): standard OIDC scopes only (`profile`, `openid`, `offline_access`) — the IdP returns a plain ID token
 > - **CLI** (authorization_code + PKCE): `api://<app-name>/.default`
@@ -131,6 +134,9 @@ Your IdP must emit a claim that maps to the `identitytype` concept, with values 
 
 > [!WARNING]
 > The `sub` claim value must be **stable and unique** per principal. If your IdP returns different `sub` values for the same user across token refreshes, authorization and ownership tracking will break.
+
+> [!WARNING]
+> The `sub` claim is critical for **all** OAuth applications, including service-to-service (App 3), operator (App 4), and EAGER (App 5). If your IdP does not include `sub` in client credentials tokens, service-to-service authentication will fail with `x-user-subject header not found`. Verify that all five applications produce tokens with a `sub` claim before deploying.
 
 **Your IdP must emit a `sub` claim in all access tokens.** If your IdP's client_credentials tokens use a different claim for the caller identity (or omit `sub` entirely), configure `subjectClaimNames` to specify a fallback chain:
 
@@ -318,6 +324,7 @@ flyte:
 
 > [!WARNING]
 > After creating service apps (Apps 3-5), you must **grant admin consent** for their App Role assignments in the Azure portal (**Enterprise Applications > your app > Permissions > Grant admin consent**) or via `az ad app permission admin-consent`. Without admin consent, client_credentials token requests will fail.
+
 
 Set globals:
 ```yaml
