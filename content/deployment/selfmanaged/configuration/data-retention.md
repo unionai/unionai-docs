@@ -2,63 +2,72 @@
 title: Data retention policies
 weight: 7
 variants: -flyte +union
-description: Implications of object storage retention or lifecycle policies on the default bucket and metadata.
+description: Implications of object storage retention or lifecycle policies on the data plane bucket.
 ---
 
 # Data retention policies
 
-{{< key product_name >}} relies on object storage for both **metadata** and **raw data** (your data that is passing through the workflow). Bucket-level retention and lifecycle policies (such as S3 lifecycle rules) that affect the metadata store can cause execution failures, broken history, and data loss.
+The data plane uses an object store bucket (S3, GCS, or ABS) to hold the **raw data** of your workflows — files, directories, dataframes, models, and other large values offloaded from task inputs and outputs. Bucket-level retention and lifecycle policies (such as S3 lifecycle rules) on this bucket purge raw data and can break historical executions, caches, and trace-based recovery.
 
-## How {{< key product_name >}} uses the default bucket
+## Where metadata vs. raw data lives
 
-The platform uses a **default object store bucket** in the data plane for two distinct purposes:
+It helps to be precise about what "metadata" means here, because the term is used in two very different ways elsewhere in the industry.
 
-1. **Metadata store** — Task **inputs and outputs** passed between tasks at runtime, serialized as Protobuf literal messages. For primitive types (ints, strings, etc.) the literal carries the value directly; for offloaded types (`FlyteFile`, `FlyteDirectory`, `DataFrame`, etc.) it carries a pointer into the raw data store. The execution engine reads and writes these literals to pass results from one task to the next, and the UI reads them to render input/output values for both in-progress and historical runs.
+**Metadata in {{< key product_name >}} lives in the control plane database.** It includes:
 
-   > [!NOTE] What "metadata" does *not* mean here
-   > "Metadata" in this section refers strictly to data stored in the object store bucket — primarily task-to-task input/output literals and the {{< key product_name >}}-internal manifests that reference them. It does **not** refer to control plane database state (workflow and task registrations, execution status, schedules, audit history). That information lives in a separate relational database and is not affected by object-store retention policies.
+- Workflow, task, launch-plan, and artifact registrations.
+- Execution status, history, schedules, and audit trail.
+- The literal values of task inputs and outputs — primitives (ints, strings, etc.), JSON-serializable dataclasses, and similar small values that are passed *by value* between tasks. The DB stores these values directly.
 
-2. **Raw data store** — The actual bytes of offloaded data types (`FlyteFile`, `FlyteDirectory`, `DataFrame` payloads, checkpoints, and similar large objects). The metadata store holds pointers to these blobs; the bytes themselves live here.
+**Raw data lives in the data plane object-store bucket.** It includes:
 
-Because the **default bucket contains the metadata store**, it must be treated as **durable storage**. Retention or lifecycle policies that delete or overwrite objects in this bucket are **not supported** and can lead to data loss and system failure. There is **no supported way** to recover from metadata loss.
+- `FlyteFile` / `FlyteDirectory` contents.
+- `DataFrame` payloads.
+- Models and other pickled / large objects.
+- `Deck` data and artifact payloads.
+- [Trace](../../../user-guide/task-programming/traces) checkpoints.
 
-## Impact of metadata loss
+When a task input or output is *too large to be passed inline as a literal value*, it is offloaded: the bytes are written to the bucket as raw data, and the literal that the DB stores becomes a **pointer** (URI) into the bucket. The DB still holds the canonical record of the input/output — it just holds a reference instead of the value.
+
+> [!NOTE] The bucket does not hold {{< key product_name >}} metadata
+> The data plane bucket is the raw data store. {{< key product_name >}} metadata — registry data, execution status, and the literal values of small inputs/outputs — is stored in the control plane database, not the bucket. Retention policies on the bucket do not delete metadata. They can, however, leave DB-side pointers dangling when the raw data they reference is purged.
+
+## Impact of raw data loss
+
+A retention policy that purges raw data leaves the metadata in the control plane database intact, but the references it holds to offloaded values become **dangling pointers**. The effects:
 
 | Area | Impact |
 |------|--------|
-| **UI and APIs** | Input/output previews may fail to load with "resource not found." Detail views may render incompletely where literals are missing. (The execution list itself is served from the control plane database and is unaffected.) |
-| **Execution engine** | In-flight or downstream tasks that depend on a node's output can fail. Retry state may be lost. |
-| **Caching** | Pointers to cached outputs may be lost, resulting in cache misses; tasks may re-run or fail. |
-| **Traces** | [Trace](../../../user-guide/task-programming/traces) checkpoint data (used by `@flyte.trace` for fine-grained recovery from system failures) may be lost, preventing resume-from-checkpoint. |
-| **Data** | Raw blobs may still exist, but without the literals that point to them the system can no longer resolve them. That data becomes **orphaned**. Downstream tasks that consume outputs by reference will fail at runtime. |
-| **Operations** | The record of what each task actually produced — input/output values, deck data, artifact payloads — is lost. (The control plane audit log of *what ran when* is separate and unaffected.) |
+| **UI and APIs** | Execution detail views still render (status, timing, structure all come from the DB), but input/output previews, `Deck` views, and artifact payload links resolve to purged blobs and fail with "resource not found." |
+| **Execution engine** | Re-runs or downstream tasks that consume a purged upstream output fail at runtime. In-flight tasks that depend on a node whose output was just purged fail. |
+| **Caching** | A cache hit may resolve to a pointer whose underlying raw data has been purged, producing cache misses, task re-execution, or failure. |
+| **Traces** | [Trace](../../../user-guide/task-programming/traces) checkpoints used by `@flyte.trace` for fine-grained recovery are stored in the bucket; if purged, resume-from-checkpoint is not possible for affected executions. |
+| **Operations** | The DB record of what ran, when, and with what *small literal* inputs/outputs is preserved. The record of what *large offloaded* inputs/outputs each task produced is lost wherever the raw data has been purged. |
 
-## Retention on a separate raw-data location
+## Applying retention deliberately
 
-If you separate raw data from metadata, you can apply retention policies **only to the raw data location** while keeping metadata durable. This is the only supported approach for applying retention. You can do this either by configuring separate buckets using `configuration.storage.metadataContainer` and `configuration.storage.userDataContainer` in the [data plane chart](https://github.com/unionai/helm-charts/blob/master/charts/dataplane/values.yaml), or by using a metadata prefix within the same bucket (see [Customizing the metadata path](#customizing-the-metadata-path) below).
+Retention on the raw-data bucket is a legitimate cost-management strategy as long as you accept the trade-off: historical executions that referenced purged data will no longer be re-runnable from cache or recoverable from trace checkpoints, and their UI views will show missing blobs. New executions are unaffected.
 
-Be aware of the trade-offs:
+Be aware of the trade-offs in particular for:
 
-- **Historical executions** that reference purged raw data will fail.
-- **Cached task outputs** stored as raw data will be lost, causing cache misses and task re-execution.
-- **Trace checkpoints** stored in the raw-data location will be purged, preventing resume-from-checkpoint for affected executions.
+- **Cached task outputs** — purging the cached raw data invalidates the cache; affected tasks re-execute on the next call.
+- **Trace checkpoints** — purging prevents resume-from-checkpoint for executions whose checkpoints have aged out.
+- **Historical execution previews** — purged raw data will show as "resource not found" in the UI even though the DB still has the rest of the record.
 
-Data correctness is not silently violated, but the benefits of caching and trace-based recovery are lost for purged data.
+Data correctness is not silently violated: re-runs read from current raw data, and the DB record is the source of truth for what executed. You're trading off the ability to recover or inspect old offloaded values.
 
-## Customizing the metadata path
+## Separating raw-data paths within the bucket
 
-> [!NOTE] Scope
-> The Helm chart settings below apply to **self-managed** deployments where you operate the data plane chart directly. BYOC customers cannot set these values themselves; for per-run customization of the metadata or raw data location on BYOC, see [Per-run customization](#per-run-customization) below.
+Self-managed deployments can split bucket content into separate paths (or separate buckets) so that lifecycle rules can target specific subsets — for example, purging old `Deck` data while keeping `FlyteFile` outputs. This is configured via `configuration.storage.metadataContainer` and `configuration.storage.userDataContainer` in the [data plane chart](https://github.com/unionai/helm-charts/blob/master/charts/dataplane/values.yaml).
 
-You can control where metadata is stored within the bucket via the **`config.core.propeller.metadata-prefix`** setting (e.g. `metadata/propeller` in the [data plane chart values](https://github.com/unionai/helm-charts/blob/master/charts/dataplane/values.yaml)). This lets you design lifecycle rules that **exclude** the metadata prefix (for example, in S3 lifecycle rules, apply expiration only to prefixes that do not include the metadata path) so that only non-metadata paths are subject to retention.
-
-Confirm the exact prefix and bucket layout for your deployment from the chart configuration, and validate any retention rules in a non-production environment before applying them broadly.
+> [!WARNING] Naming note
+> The Helm chart setting `metadataContainer` and the related `config.core.propeller.metadata-prefix` setting refer to {{< key product_name >}}-internal system data (workflow state and similar engine artifacts that propeller writes into the bucket). They do **not** refer to {{< key product_name >}} metadata in the customer-facing sense — that lives in the control plane database. Be careful when designing lifecycle rules against these paths: purging the propeller "metadata" prefix can break in-flight and historical executions, while purging the user-data prefix purges raw data as described above. Validate any retention rules in a non-production environment before applying them broadly.
 
 ## Per-run customization
 
-Regardless of deployment type, both the metadata location and the raw data location can be overridden **per run** via [`flyte.with_runcontext()`](../../../user-guide/task-deployment/run-context#storage):
+Both the raw-data location and the engine's run base directory can be overridden **per run** (or per trigger) via [`flyte.with_runcontext()`](../../../user-guide/task-deployment/run-context#storage):
 
-- `run_base_dir` — base directory for run metadata (inputs/outputs passed between tasks).
-- `raw_data_path` — storage prefix for offloaded data (`FlyteFile`, `FlyteDirectory`, `DataFrame`, checkpoints).
+- `raw_data_path` — storage prefix for offloaded raw data (`FlyteFile`, `FlyteDirectory`, `DataFrame`, checkpoints, etc.).
+- `run_base_dir` — base directory for the engine's per-run system data passed between tasks.
 
-The same parameters can be set per trigger. Setting a deployment-wide default for these paths on BYOC is not currently supported.
+This is the path BYOC customers have today for directing a run's raw data to a different bucket — for example, a customer-owned bucket with its own retention policy. Setting a deployment-wide default for these paths on BYOC is not currently supported.
