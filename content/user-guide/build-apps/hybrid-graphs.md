@@ -1,36 +1,80 @@
 ---
-title: App usage patterns
-weight: 3
+title: Hybrid app-task graphs
+weight: 5
 variants: +flyte +union
+mermaid: true
 ---
 
-# App usage patterns
+# Hybrid app-task graphs
 
-Apps and tasks can interact in various ways: calling each other via HTTP, webhooks, WebSockets, or direct browser usage. This page describes the different patterns and when to use them.
-
-## Patterns overview
-
-1. [Call app from task](#call-app-from-task): A task makes HTTP requests to an app
-2. [Call task from app (webhooks / APIs)](#call-task-from-app-webhooks--apis): An app triggers task execution via the Flyte SDK
-3. [Call app from app](#call-app-from-app): One app makes HTTP requests to another app
-4. [WebSocket-based interaction](#websocket-based-patterns): Real-time, bidirectional communication
-5. **Browser-based access**: Users access apps directly through the browser
+Apps and tasks can interact with each other: tasks can call apps via HTTP, and apps can trigger task execution via the Flyte SDK. This page covers both patterns.
 
 ## Call app from task
 
 Tasks can call apps by making HTTP requests to the app's endpoint. This is useful when:
+
 - You need to use a long-running service during task execution
 - You want to call a model serving endpoint from a batch processing task
 - You need to interact with an API from a workflow
 
-### Example: Task calling an app
+### Example: FastAPI app called from a task 
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/task_calling_app.py" lang=python >}}
 
 Key points:
+
 - The task environment uses `depends_on=[app_env]` to ensure the app is deployed first
 - Access the app endpoint via `app_env.endpoint`
 - Use standard HTTP client libraries (like `httpx`) to make requests
+
+{{< variant flyte >}}
+{{< markdown >}}
+
+### Example: Call a model inference service from a task
+
+There are cases where you want to build a durable batch inference workflow that
+calls to a reusable inference service. You can achieve this by creating a light-weight,
+long-running [`AppEnvironment`](../../api-reference/flyte-sdk/packages/flyte.app/appenvironment) that the task calls via HTTP.
+
+```mermaid
+flowchart LR
+
+    subgraph calls ["Batch inference task (CPU)"]
+        D["Driver task<br/>fans out chunks<br/>(with concurrency cap)"]
+
+        subgraph fanout
+            T1["Inference task call 1"]
+            T2["Inference task call 2"]
+            T3["Inference task call N"]
+        end
+
+        D --> T1
+        D --> T2
+        D --> T3
+
+        R["Aggregate batches"]
+    end
+
+    subgraph app ["Reusable inference service (GPU)"]
+        FA["POST /generate"]
+        B["Shared TokenBatcher"]
+        M["vLLM model<br/>(loaded in lifespan)"]
+        B --> FA
+        M --> FA
+    end
+
+    T1 <--> FA
+    T2 <--> FA
+    T3 <--> FA
+    fanout --> R
+```
+
+See [Batch inference](../run-scaling/batch-inference) implementation details.
+
+{{< /markdown >}}
+{{< /variant >}}
+
+
 
 ## Call task from app (webhooks / APIs)
 
@@ -167,94 +211,6 @@ The `RUN_MODE` variable gives you a smooth development progression:
 2. **Local app, remote task**: `python agent_app.py`. The UI runs locally but the agent executes on the cluster with full compute resources.
 3. **Full remote**: `flyte deploy agent_app.py serving_env`. Both the UI and agent run on the cluster.
 
-## Call app from app
-
-Apps can call other apps by making HTTP requests. This is useful for:
-- Microservice architectures
-- Proxy/gateway patterns
-- A/B testing setups
-- Service composition
-
-### Example: App calling another app
-
-{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/app_calling_app.py" lang=python >}}
-
-Key points:
-- Use `depends_on=[env1]` to ensure dependencies are deployed first
-- Access the app endpoint via `env1.endpoint`
-- Use HTTP clients (like `httpx`) to make requests between apps
-
-### Using AppEndpoint parameter
-
-You can pass app endpoints as parameters for more flexibility:
-
-{{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/app_calling_app_endpoint.py" fragment=using-app-endpoint lang=python >}}
-
-## WebSocket-based patterns
-
-WebSockets enable bidirectional, real-time communication between clients and servers. Flyte apps can serve WebSocket endpoints for real-time applications like chat, live updates, or streaming data.
-
-### Example: Basic WebSocket app
-
-Here's a simple FastAPI app with WebSocket support:
-
-{{< code file="/unionai-examples/v2/user-guide/build-apps/websocket/basic_websocket.py" lang=python >}}
-
-### WebSocket patterns
-
-**Echo server**
-
-{{< code file="/unionai-examples/v2/user-guide/build-apps/websocket/websocket_patterns.py" fragment=echo-server lang=python >}}
-
-**Broadcast server**
-
-{{< code file="/unionai-examples/v2/user-guide/build-apps/websocket/websocket_patterns.py" fragment=broadcast-server lang=python >}}
-
-**Real-time data streaming**
-
-{{< code file="/unionai-examples/v2/user-guide/build-apps/websocket/websocket_patterns.py" fragment=streaming-server lang=python >}}
-
-**Chat application**
-
-{{< code file="/unionai-examples/v2/user-guide/build-apps/websocket/websocket_patterns.py" fragment=chat-room lang=python >}}
-
-### Using WebSockets with Flyte tasks
-
-You can trigger Flyte tasks from WebSocket messages:
-
-{{< code file="/unionai-examples/v2/user-guide/build-apps/websocket/task_runner_websocket.py" fragment=task-runner-websocket lang=python >}}
-
-### WebSocket client example
-
-Connect from Python:
-
-```python
-import asyncio
-import websockets
-import json
-
-async def client():
-    uri = "ws://your-app-url/ws"
-    async with websockets.connect(uri) as websocket:
-        # Send message
-        await websocket.send("Hello, Server!")
-        
-        # Receive message
-        response = await websocket.recv()
-        print(f"Received: {response}")
-
-asyncio.run(client())
-```
-
-## Browser-based apps
-
-For browser-based apps (like Streamlit), users interact directly through the web interface. The app URL is accessible in a browser, and users interact with the UI directly - no API calls needed from other services.
-
-To access a browser-based app:
-1. Deploy the app
-2. Navigate to the app URL in a browser
-3. Interact with the UI directly
-
 ## Best practices
 
 1. **Use `depends_on`**: Always specify dependencies to ensure proper deployment order.
@@ -262,18 +218,4 @@ To access a browser-based app:
 3. **Use async clients**: Use async HTTP clients (`httpx.AsyncClient`) in async contexts.
 4. **Initialize Flyte**: For apps calling tasks, initialize Flyte in the app's startup.
 5. **Endpoint access**: Use `app_env.endpoint` or `AppEndpoint` parameter for accessing app URLs.
-6. **Authentication**: Consider authentication when apps call each other (set `requires_auth=True` if needed).
-7. **Webhook security**: Secure webhooks with auth, validation, and HTTPS.
-8. **WebSocket robustness**: Implement connection management, heartbeats, and rate limiting.
-
-## Summary
-
-| Pattern | Use Case | Implementation |
-|---------|----------|----------------|
-| Task → App | Batch processing using inference services | HTTP requests from task |
-| App → Task | Webhooks, APIs triggering workflows | Flyte SDK in app |
-| App → App | Microservices, proxies, agent routers, LLM routers | HTTP requests between apps |
-| Browser → App | User-facing dashboards | Direct browser access |
-
-Choose the pattern that best fits your architecture and requirements.
-
+6. **Webhook security**: Secure webhooks with auth, validation, and HTTPS.
