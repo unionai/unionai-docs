@@ -21,8 +21,8 @@ It helps to be precise about what "metadata" means here, because the term is use
 
 **Raw data lives in the data plane object-store bucket.** It includes:
 
-- `FlyteFile` / `FlyteDirectory` contents.
-- `DataFrame` payloads.
+- `flyte.io.File` / `flyte.io.Dir` contents.
+- `flyte.io.DataFrame` payloads.
 - Models and other pickled / large objects.
 - `Deck` data and artifact payloads.
 - [Trace](../../../user-guide/task-programming/traces) checkpoints.
@@ -38,7 +38,7 @@ A retention policy that purges raw data leaves the metadata in the control plane
 
 | Area | Impact |
 |------|--------|
-| **UI and APIs** | Execution detail views still render (status, timing, structure all come from the DB), but input/output previews, `Deck` views, and artifact payload links resolve to purged blobs and fail with "resource not found." |
+| **UI and APIs** | Execution detail views still render (status, timing, structure all come from the DB), but input/output previews for offloaded values, `Deck` views, and artifact payload links resolve to purged blobs and fail with "resource not found." |
 | **Execution engine** | Re-runs or downstream tasks that consume a purged upstream output fail at runtime. In-flight tasks that depend on a node whose output was just purged fail. |
 | **Caching** | A cache hit may resolve to a pointer whose underlying raw data has been purged, producing cache misses, task re-execution, or failure. |
 | **Traces** | [Trace](../../../user-guide/task-programming/traces) checkpoints used by `@flyte.trace` for fine-grained recovery are stored in the bucket; if purged, resume-from-checkpoint is not possible for affected executions. |
@@ -61,9 +61,9 @@ Data correctness is not silently violated: re-runs read from current raw data, a
 The {{< key product_name >}} data plane uses a **single object-store bucket** for all execution data. Inside that bucket, content is split by **prefix**, controlled by two settings on flytepropeller:
 
 - `config.core.propeller.metadata-prefix` (default `metadata/propeller`) — where the engine writes its per-execution working files: `inputs.pb`, `outputs.pb`, `error.pb`, `futures.pb`, and `deck.html`. These are required for in-flight workflows to complete and for historical-execution input/output and Deck previews to render. **Despite the name, this is not {{< key product_name >}} metadata in the customer-facing sense** — that lives in the control plane database (see [above](#where-metadata-vs-raw-data-lives)). The prefix name reflects Flyte's internal terminology.
-- `config.core.propeller.rawoutput-prefix` (defaults to the bucket root) — where raw outputs land: `FlyteFile` / `FlyteDirectory` contents, `DataFrame` payloads, `_flytecheckpoints/`, and other offloaded values. This is the prefix retention can safely apply to.
+- `config.core.propeller.rawoutput-prefix` (defaults to the bucket root) — where raw outputs land: `flyte.io.File` / `flyte.io.Dir` contents, `flyte.io.DataFrame` payloads, checkpoint data, and other offloaded values. This is the prefix retention can safely apply to.
 
-When designing S3 lifecycle rules (or the GCS/ABS equivalent), **scope expiration to prefixes other than `metadata/propeller/`** so the engine working state stays durable. Typical patterns are rules scoped to `_flytecheckpoints/` or to domain/project prefixes under the bucket root, rather than a bucket-wide rule.
+When designing S3 lifecycle rules (or the GCS/ABS equivalent), **scope expiration to prefixes other than `metadata/propeller/`** so the engine working state stays durable. Typical patterns are rules scoped to domain/project prefixes (or specific subpaths under the bucket root) rather than a bucket-wide rule.
 
 Validate any retention rule in a non-production environment before applying it broadly.
 
@@ -74,7 +74,7 @@ Validate any retention rule in a non-production environment before applying it b
 
 Both the raw-data location and the engine's run base directory can be overridden **per run** (or per trigger) via [`flyte.with_runcontext()`](../../../user-guide/task-deployment/run-context#storage):
 
-- `raw_data_path` — storage prefix for offloaded raw data (`FlyteFile`, `FlyteDirectory`, `DataFrame`, checkpoints, etc.).
+- `raw_data_path` — storage prefix for offloaded raw data (`flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, checkpoints, etc.).
 - `run_base_dir` — base directory for the engine's per-run system data passed between tasks.
 
 This is the path BYOC customers have today for directing a run's raw data to a different bucket — for example, a customer-owned bucket with its own retention policy. Setting a deployment-wide default for these paths on BYOC is not currently supported.
