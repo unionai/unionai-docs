@@ -5,17 +5,17 @@ name: Build and deploy docs
 # Replaces CF Pages' native build runner — CF Pages stays only as the
 # static host.
 #
-# Currently scoped to the dev branch (`peeter/gha-build-spike-v1**`)
-# and manual dispatch. Will graduate to trigger on PRs (Phase 3) and on
-# v1 pushes (Phase 4 cutover) — and deploy with `--branch=v1` so the
-# result lands at `v1.docs-dog.pages.dev`, the stable alias that
-# CloudFront (today) and the new-infra Worker (later) target for
-# `/docs/v1/*` requests.
+# Triggers:
+#   - pull_request — builds + deploys to docs-staging, posts a sticky
+#     comment on the PR with the preview URL
+#   - workflow_dispatch — manual run, choose project_name
+#
+# Phase 4 (cutover) will add push triggers on main and v1, targeting
+# the prod `docs` project instead of `docs-staging`.
 
 on:
-  push:
-    branches:
-      - 'peeter/gha-build-spike-v1**'
+  pull_request:
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
     inputs:
       project_name:
@@ -26,6 +26,10 @@ on:
         options:
           - docs-staging
           - docs-builder
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
   build:
@@ -94,10 +98,13 @@ jobs:
         if: success()
         id: branch
         run: |
+          # On pull_request events, github.head_ref is the source branch.
+          # On workflow_dispatch and push, github.ref_name is the branch.
           # CF Pages branch names: lowercase alphanumeric + hyphens, max 28 chars.
-          sanitized=$(echo "${{ github.ref_name }}" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-28)
+          raw="${{ github.head_ref || github.ref_name }}"
+          sanitized=$(echo "$raw" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-28)
           echo "name=$sanitized" >> "$GITHUB_OUTPUT"
-          echo "Branch for CF Pages: $sanitized"
+          echo "Source branch: $raw → CF Pages branch: $sanitized"
 
       - name: Deploy to Cloudflare Pages
         if: success()
@@ -106,7 +113,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ./dist --project-name=${{ inputs.project_name || 'docs-staging' }} --branch=${{ steps.branch.outputs.name }} --commit-hash=${{ github.sha }}
+          command: pages deploy ./dist --project-name=${{ inputs.project_name || 'docs-staging' }} --branch=${{ steps.branch.outputs.name }} --commit-hash=${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Deploy summary
         if: success()
@@ -115,7 +122,25 @@ jobs:
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "- Project: \`${{ inputs.project_name || 'docs-staging' }}\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- Branch (CF Pages): \`${{ steps.branch.outputs.name }}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Commit: \`${{ github.sha }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Commit: \`${{ github.event.pull_request.head.sha || github.sha }}\`" >> "$GITHUB_STEP_SUMMARY"
           if [ -n "${{ steps.deploy.outputs.deployment-url }}" ]; then
             echo "- Deployment URL: ${{ steps.deploy.outputs.deployment-url }}" >> "$GITHUB_STEP_SUMMARY"
           fi
+
+      - name: Post / update preview comment on PR
+        if: success() && github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: gha-build-and-deploy-preview
+          message: |
+            ### GHA build & deploy preview
+
+            Built by `.github/workflows/build-and-deploy.yml` and deployed to the **`${{ inputs.project_name || 'docs-staging' }}`** CF Pages project.
+
+            | | |
+            |---|---|
+            | Branch alias | <https://${{ steps.branch.outputs.name }}.docs-staging-ed8.pages.dev> |
+            | This commit | ${{ steps.deploy.outputs.deployment-url }} |
+            | Commit SHA | `${{ github.event.pull_request.head.sha }}` |
+
+            Updated automatically on every push. After Phase 4 cutover this will replace the CF Pages-native preview comment.
