@@ -83,3 +83,34 @@ workflow to decide, in order, if the resource must be in or out:
 3. If all your methods follow the Python convention of everything private starts
    with `_` and everything you want public does not, you do not need to have a
    `__all__` allow list.
+
+## Auto-linking
+
+Every package that the API generator processes — the SDK and all plugins — emits a linkmap file (`linkmap/<name>-linkmap.json`) that maps identifiers to their API reference URLs. Two scripts in the shared infra consume those linkmaps at runtime to turn mentions of those identifiers in docs prose and code samples into links to the API reference:
+
+- `static/js/inline-code-linker.js` — wraps inline `` `code` `` whose text matches a linkmap key.
+- `static/js/codeblock-linker.js` — wraps matching identifiers inside Python code blocks based on the block's `import` statements.
+
+**Registration is automatic.** At build time, `layouts/_default/baseof.html` scans `linkmap/` and exposes every `*-linkmap.json` file as `window.__LINKMAP_SOURCES`. Both linker scripts read that variable and fetch the linkmaps on page load. There is no per-package wiring step — adding an entry to `api-packages.toml` is enough; the generator produces its linkmap and the linkers pick it up.
+
+### Short vs. fully-qualified names
+
+Whether short names get emitted is controlled by the `--short-names` generator flag:
+
+- **Plugins** (`Makefile.api.plugins`): `--short-names` is enabled. Each identifier is emitted under both keys — e.g. `flyteplugins.wandb.wandb_init` *and* the bare `wandb_init` — so authors can use either form in prose.
+- **SDK** (`Makefile.api.sdk`): `--short-names` is not passed. SDK identifiers are only emitted fully qualified.
+
+### How auto-linking works
+
+- **Inline code**: `` `flytekit.task` `` (or `` `wandb_init()` ``) is wrapped with a link to its API reference. A trailing `()` and a leading `@` (for decorators) are stripped before lookup. `ClassName.method` syntax falls back to `<class-url>#method` when the class is in the linkmap.
+- **Code blocks**: identifiers inside Python code blocks are linked based on the block's `from … import …` and `import …` statements — only names that resolve through one of those imports get wrapped.
+
+### Magic-marker syntax for inline code
+
+If an identifier is in some linkmap but not in a form that matches what you wrote, wrap the text in `[[…]]` inside the backticks to force a match by last segment:
+
+```markdown
+The `[[task]]` decorator …
+```
+
+renders as `task` and links to the API reference even when only the fully-qualified form is in the linkmap.
