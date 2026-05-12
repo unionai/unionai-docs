@@ -127,7 +127,9 @@ Safely execute LLM-generated code with workflow sandboxes or ephemeral container
 
 {{< markdown >}}
 
-## Identity and access
+## Access and identity
+
+How to authenticate and manage user permissions on your Union cluster.
 
 {{< /markdown >}}
 
