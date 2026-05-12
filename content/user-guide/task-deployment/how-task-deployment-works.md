@@ -187,7 +187,7 @@ If any condition fails, the deploy still succeeds — only the source-code link 
 
 For private repositories, the link is still generated; viewers need to be authenticated to the host to follow it.
 
-See [`flyte.git.GitStatus`](../../api-reference/flyte-sdk/packages/flyte.git/gitstatus) for the underlying API.
+See `flyte.git.GitStatus` for the underlying API.
 
 ## Understanding option relationships
 
