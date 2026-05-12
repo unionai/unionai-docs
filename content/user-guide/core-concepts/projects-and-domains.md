@@ -28,7 +28,7 @@ When you run or deploy workflows, you target a project and domain:
 - **CLI**: Use `--project` and `--domain` flags with `flyte run` or `flyte deploy`, or set defaults in your [configuration file](../run-modes/running-remote).
 {{< /markdown >}}
 {{< /variant >}}
-- **Python SDK**: Specify `project` and `domain` in [`flyte.init`](../../api-reference/flyte-sdk/packages/flyte/_index#init) or [`flyte.init_from_config`](../../api-reference/flyte-sdk/packages/flyte/_index#init_from_config).
+- **Python SDK**: Specify `project` and `domain` in `flyte.init` or `flyte.init_from_config`.
 
 {{< variant union >}}
 {{< markdown >}}
@@ -118,7 +118,7 @@ flyte update project my-project --unarchive
 
 ## Listing projects programmatically
 
-You can list and retrieve projects from Python using [`flyte.remote.Project`](../../api-reference/flyte-sdk/packages/flyte.remote/project):
+You can list and retrieve projects from Python using `flyte.remote.Project`:
 
 ```python
 import flyte

@@ -84,48 +84,33 @@ workflow to decide, in order, if the resource must be in or out:
    with `_` and everything you want public does not, you do not need to have a
    `__all__` allow list.
 
-## Enabling auto-linking for plugins
+## Auto-linking
 
-When you generate API documentation for a plugin, the build process creates two data files that enable automatic linking from documentation to API references:
+Every package that the API generator processes — the SDK and all plugins — emits a linkmap file (`linkmap/<name>-linkmap.json`) that maps identifiers to their API reference URLs. Two scripts in the shared infra consume those linkmaps at runtime to turn mentions of those identifiers in docs prose and code samples into links to the API reference:
 
-- `data/{name}.yaml` - Hugo data file for server-side code block linking
-- `static/{name}-linkmap.json` - JSON file for client-side inline code linking
+- `static/js/inline-code-linker.js` — wraps inline `` `code` `` whose text matches a linkmap key.
+- `static/js/codeblock-linker.js` — wraps matching identifiers inside Python code blocks based on the block's `import` statements.
 
-For plugins, use the `--short-names` flag when generating API docs (already enabled in `Makefile.api.plugins`). This generates both fully qualified names (`flyteplugins.wandb.wandb_init`) and short names (`wandb_init`) in the linkmap, allowing docs to reference APIs without the full package path.
+**Registration is automatic.** At build time, `layouts/_default/baseof.html` scans `linkmap/` and exposes every `*-linkmap.json` file as `window.__LINKMAP_SOURCES`. Both linker scripts read that variable and fetch the linkmaps on page load. There is no per-package wiring step — adding an entry to `api-packages.toml` is enough; the generator produces its linkmap and the linkers pick it up.
 
-To enable auto-linking for a new plugin, you need to register these files in two places:
+### Short vs. fully-qualified names
 
-### 1. Server-side code block linking
+Whether short names get emitted is controlled by the `--short-names` generator flag:
 
-Edit `unionai-docs-infra/layouts/partials/autolink-python.html` and add your plugin's data file to the merge chain:
-
-```go-html-template
-{{- /* Load and merge all API data sources */ -}}
-{{- $flyteapi := dict "identifiers" (dict) "methods" (dict) "packages" (dict) -}}
-{{- with site.Data.flytesdk -}}
-    {{- $flyteapi = merge $flyteapi (dict "identifiers" (.identifiers | default dict) "methods" (.methods | default dict) "packages" (.packages | default dict)) -}}
-{{- end -}}
-{{- with site.Data.wandb -}}
-    {{- $flyteapi = merge $flyteapi (dict "identifiers" (merge $flyteapi.identifiers (.identifiers | default dict)) "methods" (merge $flyteapi.methods (.methods | default dict)) "packages" (merge $flyteapi.packages (.packages | default dict))) -}}
-{{- end -}}
-{{- /* Add your plugin here following the same pattern */ -}}
-```
-
-### 2. Client-side inline code linking
-
-Edit `static/js/inline-code-linker.js` and add your plugin's linkmap file to the `linkmapFiles` array:
-
-```javascript
-const linkmapFiles = ['flytesdk-linkmap.json', 'wandb-linkmap.json'];
-// Add your plugin's linkmap file here, e.g., 'myplugin-linkmap.json'
-```
+- **Plugins** (`Makefile.api.plugins`): `--short-names` is enabled. Each identifier is emitted under both keys — e.g. `flyteplugins.wandb.wandb_init` *and* the bare `wandb_init` — so authors can use either form in prose.
+- **SDK** (`Makefile.api.sdk`): `--short-names` is not passed. SDK identifiers are only emitted fully qualified (e.g. `flyte.io.File`). Bare short names like `` `File` `` won't autolink against the SDK.
 
 ### How auto-linking works
 
-Once configured, the following will be automatically linked:
+- **Inline code**: `` `flyte.io.File` `` (or `` `wandb_init()` ``) is wrapped with a link to its API reference. A trailing `()` and a leading `@` (for decorators) are stripped before lookup. `ClassName.method` syntax falls back to `<class-url>#method` when the class is in the linkmap.
+- **Code blocks**: identifiers inside Python code blocks are linked based on the block's `from … import …` and `import …` statements — only names that resolve through one of those imports get wrapped.
 
-- **Code blocks**: Python code in fenced code blocks will have API references linked. For example, `wandb_init()` in a Python code block will link to its API documentation.
+### Magic-marker syntax for inline code
 
-- **Inline code**: Inline code like `` `wandb_init()` `` will be linked. The `@` prefix for decorators and `()` suffix for functions are automatically stripped for matching.
+If an identifier is in some linkmap but not in a form that matches what you wrote, wrap the text in `[[…]]` inside the backticks to force a match by last segment:
 
-The linkmap files contain mappings from identifiers to their API documentation URLs. Both short names (e.g., `wandb_init`) and fully qualified names (e.g., `flyteplugins.wandb.wandb_init`) are supported if included in the linkmap.
+```markdown
+The `[[Trigger]]` class …
+```
+
+renders as `Trigger` and links to the API reference (resolving to `flyte.Trigger`) even when only the fully-qualified short form isn't in the linkmap.

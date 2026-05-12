@@ -97,6 +97,39 @@ which content is rendered on which flavor.
 
 Refer to [**Variants**](./shortcodes#variants) for detailed explanation.
 
+## Linking to the API reference
+
+API identifiers and methods that you mention in prose or in Python code blocks are linked to the API reference automatically — you don't need to write explicit Markdown links for them.
+
+```markdown
+✅  A `flyte.io.File` is a reference to an offloaded file.
+✅  A `Trigger` defines when an environment's tasks should run.
+✅  Call `flyte.init()` before submitting a run.
+
+❌  A [`flyte.io.File`](../../api-reference/flyte-sdk/packages/flyte.io/file) …
+❌  Call [`flyte.init()`](../../api-reference/flyte-sdk/packages/flyte/_index#init) …
+```
+
+What gets linked:
+
+- **Class names** in inline code, in either fully-qualified or short form: `` `flyte.io.File` ``, `` `File` ``, `` `flyte.Trigger` ``, `` `Trigger` ``.
+- **Method names** in inline code, only when fully qualified: `` `flyte.init()` ``, `` `flyte.report.log()` ``. Bare `` `init` ``, `` `log` ``, `` `run` `` are not linked — those names are too generic.
+- **Python identifiers in fenced code blocks** when they resolve through one of the block's `import` statements.
+
+Trailing `()` and a leading `@` are stripped before lookup, so `` `flyte.init()` ``, `` `flyte.init` ``, and `` `@flyte.trace` `` all match.
+
+### Sigils for special cases
+
+Three sigils let you override the default behavior. Each must be the entire content of the backticks.
+
+| Sigil | Meaning | Example |
+|---|---|---|
+| `` `[[X]]` `` | Force-link by last-segment lookup; render as `X`. Useful for short forms not in the linkmap (e.g. method short names). | `` `[[get_tab]]` `` → links to `flyte.report.get_tab` |
+| `` `[[X\|Y]]` `` | Link to `X`, render as `Y`. Useful to disambiguate the target while rendering a shorter or different label. | `` `[[flyte.remote.Trigger\|Trigger]]` `` |
+| `` `{{X}}` `` | Opt-out: render `X` with no link, even if `X` is in the linkmap. Use when the backticked text refers to something other than the Flyte identifier (a variable name, a different library, etc.). | `` `{{File}}` `` |
+
+When in doubt, write the bare backticked identifier and let the linker handle it. Reach for sigils only when the default does the wrong thing.
+
 ## Warnings and Notices
 
 You can write regular Markdown and use the notation below to create information and warning boxes:
