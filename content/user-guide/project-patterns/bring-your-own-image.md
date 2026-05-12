@@ -93,7 +93,7 @@ Teams hand you their base images. They built these images for their own purposes
 {{< variant union >}}
 {{< markdown >}}
 > [!TIP]
-> Want Union to optimize your images so cold-node pulls drop from minutes to under a second? See [Layering on top of an existing image build](./cicd#layering-on-top-of-an-existing-image-build) for the equivalent flow when your base is built in CI.
+> Want Union to optimize your images so image pulls for a new image (cold-start) drops from minutes to under a second? See [Layering on top of an existing image build](./cicd#layering-on-top-of-an-existing-image-build) for the equivalent flow when your base is built in CI.
 {{< /markdown >}}
 {{< /variant >}}
 
