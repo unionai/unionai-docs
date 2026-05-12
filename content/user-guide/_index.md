@@ -74,7 +74,7 @@ Build durable, scalable, and reproducible batch workloads.
 {{< grid >}}
 
 {{< link-card target="task-configuration" icon="gear" title="Configure tasks" >}}
-Define `TaskEnvironment`s to set container images, resources, secrets, caching, retries, schedules, and more.
+Define `TaskEnvironment`s for container images, resources, secrets, caching, retries, and more; use triggers for schedules.
 {{< /link-card >}}
 
 {{< link-card target="task-programming" icon="code" title="Build tasks" >}}
