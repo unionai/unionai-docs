@@ -210,7 +210,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
       - run: uv sync --group dev
-      - run: uv run flyte build  --copy-style none --root-dir src src/myproj/envs.py train_env
+      - run: uv run flyte build --copy-style none --root-dir src src/myproj/envs.py train_env
       - run: uv run flyte deploy --copy-style none --version ${{ github.sha }} --root-dir src src/myproj/envs.py train_env
 ```
 
