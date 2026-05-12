@@ -123,6 +123,28 @@ Safely execute LLM-generated code with workflow sandboxes or ephemeral container
 
 {{< /grid >}}
 
+{{< variant union >}}
+
+{{< markdown >}}
+
+## Identity and access
+
+{{< /markdown >}}
+
+{{< grid >}}
+
+{{< link-card target="authenticating" icon="key" title="Authenticating" >}}
+Authenticate with Union.ai using OAuth2, API keys, and service accounts.
+{{< /link-card >}}
+
+{{< link-card target="user-management" icon="person" title="User management" >}}
+Manage users, roles, and policies for your Union cluster.
+{{< /link-card >}}
+
+{{< /grid >}}
+
+{{< /variant >}}
+
 ## Advanced Guides
 
 Organize your codebase, optimize performance for production, and migrate from
