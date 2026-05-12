@@ -163,7 +163,7 @@ Tune task overhead, batching, reusable containers, and fanout to scale your work
 {{< /link-card >}}
 
 {{< link-card target="advanced-project" icon="rocket" title="Advanced project" >}}
-An advanced guide for building a deep research agent on Flyte.
+An advanced guide for building an LLM reporting agent on Flyte.
 {{< /link-card >}}
 
 {{< link-card target="migration" icon="arrow-right" title="Migration" >}}
