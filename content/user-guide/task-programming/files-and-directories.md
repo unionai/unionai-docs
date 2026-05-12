@@ -6,8 +6,8 @@ variants: +flyte +union
 
 # Files and directories
 
-Flyte provides the [`flyte.io.File`](../../api-reference/flyte-sdk/packages/flyte.io/file) and
-[`flyte.io.Dir`](../../api-reference/flyte-sdk/packages/flyte.io/dir) types to represent files and directories, respectively.
+Flyte provides the `flyte.io.File` and
+`flyte.io.Dir` types to represent files and directories, respectively.
 Together with [`flyte.io.DataFrame`](./dataframes) they constitute the *offloaded data types* - unlike [materialized types](./dataclasses-and-structures) like data classes, these pass references rather than full data content.
 
 A variable of an offloaded type does not contain its actual data, but rather a reference to the data.

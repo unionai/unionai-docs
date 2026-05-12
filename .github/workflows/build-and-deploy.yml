@@ -1,0 +1,146 @@
+name: Build and deploy docs
+
+# Part of the gha-docs-build migration: builds the docs via `make dist`
+# and pushes the result to a Cloudflare Pages project via Direct Upload.
+# Replaces CF Pages' native build runner — CF Pages stays only as the
+# static host.
+#
+# Triggers:
+#   - pull_request — builds + deploys to docs-staging, posts a sticky
+#     comment on the PR with the preview URL
+#   - workflow_dispatch — manual run, choose project_name
+#
+# Phase 4 (cutover) will add push triggers on main and v1, targeting
+# the prod `docs` project instead of `docs-staging`.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      project_name:
+        description: 'CF Pages project to deploy to'
+        required: false
+        default: 'docs-staging'
+        type: choice
+        options:
+          - docs-staging
+          - docs-builder
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: Set up Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.161.1'
+          extended: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Print environment
+        run: |
+          echo "::group::versions"
+          hugo version
+          python --version
+          uv --version
+          echo "::endgroup::"
+
+      - name: Build dist
+        run: |
+          start=$(date +%s)
+          make dist
+          echo "BUILD_SECONDS=$(( $(date +%s) - start ))" >> "$GITHUB_ENV"
+
+      - name: Build summary
+        if: always()
+        run: |
+          echo "::group::dist tree (top 2 levels)"
+          find dist -maxdepth 2 -mindepth 1 -print 2>/dev/null | sort || true
+          echo "::endgroup::"
+          echo "::group::dist size"
+          du -sh dist 2>/dev/null || true
+          du -sh dist/docs/v2 dist/docs/v1 2>/dev/null || true
+          echo "::endgroup::"
+          if [ -n "${BUILD_SECONDS:-}" ]; then
+            echo "Build wall time: ${BUILD_SECONDS}s"
+          fi
+
+      - name: Upload dist artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Sanitize branch name for CF Pages
+        if: success()
+        id: branch
+        run: |
+          # On pull_request events, github.head_ref is the source branch.
+          # On workflow_dispatch and push, github.ref_name is the branch.
+          # CF Pages branch names: lowercase alphanumeric + hyphens, max 28 chars.
+          raw="${{ github.head_ref || github.ref_name }}"
+          sanitized=$(echo "$raw" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-28)
+          echo "name=$sanitized" >> "$GITHUB_OUTPUT"
+          echo "Source branch: $raw → CF Pages branch: $sanitized"
+
+      - name: Deploy to Cloudflare Pages
+        if: success()
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy ./dist --project-name=${{ inputs.project_name || 'docs-staging' }} --branch=${{ steps.branch.outputs.name }} --commit-hash=${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Deploy summary
+        if: success()
+        run: |
+          echo "## Deployment" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Project: \`${{ inputs.project_name || 'docs-staging' }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Branch (CF Pages): \`${{ steps.branch.outputs.name }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Commit: \`${{ github.event.pull_request.head.sha || github.sha }}\`" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "${{ steps.deploy.outputs.deployment-url }}" ]; then
+            echo "- Deployment URL: ${{ steps.deploy.outputs.deployment-url }}" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Post / update preview comment on PR
+        if: success() && github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: gha-build-and-deploy-preview
+          message: |
+            ### GHA build & deploy preview
+
+            Built by `.github/workflows/build-and-deploy.yml` and deployed to the **`${{ inputs.project_name || 'docs-staging' }}`** CF Pages project.
+
+            | | |
+            |---|---|
+            | Branch alias | <https://${{ steps.branch.outputs.name }}.docs-staging-ed8.pages.dev> |
+            | This commit | ${{ steps.deploy.outputs.deployment-url }} |
+            | Commit SHA | `${{ github.event.pull_request.head.sha }}` |
+
+            Updated automatically on every push. After Phase 4 cutover this will replace the CF Pages-native preview comment.
