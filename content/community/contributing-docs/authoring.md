@@ -96,6 +96,25 @@ which content is rendered on which flavor.
 
 Refer to [**Variants**](./shortcodes#variants) for detailed explanation.
 
+## Linking to the API reference
+
+API identifiers and methods that you mention in prose or in Python code blocks are linked to the API reference automatically when they appear in inline backticks (`` `name` ``) or, for code blocks, when they resolve through the block's `import` statements. You don't need to write explicit Markdown links for them.
+
+```markdown
+✅  Use the `@task` decorator to define a task.
+✅  A `FlyteFile` references a file managed by Flyte.
+
+❌  Use the [`@task`](../../api-reference/...) decorator …
+```
+
+Whether a bare short form (e.g. `` `task` ``) autolinks depends on whether the package was generated with `--short-names` — plugins do; the SDK does not. If a short form doesn't link automatically, use the magic-marker syntax `` `[[name]]` `` to force a match by last segment:
+
+```markdown
+The `[[task]]` decorator …
+```
+
+renders as `task` and links to the API reference.
+
 ## Warnings and Notices
 
 You can write regular Markdown and use the notation below to create information and warning boxes:
