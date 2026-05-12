@@ -71,10 +71,10 @@ Run the same task code locally, on a devbox, or on a remote cluster.
 
 Build durable, scalable, and reproducible batch workloads.
 
-{{< grid cols=3 >}}
+{{< grid >}}
 
 {{< link-card target="task-configuration" icon="gear" title="Configure tasks" >}}
-Set container images, resources, secrets, caching, retries, schedules, and more.
+Define `TaskEnvironment`s to set container images, resources, secrets, caching, retries, schedules, and more.
 {{< /link-card >}}
 
 {{< link-card target="task-programming" icon="code" title="Build tasks" >}}
@@ -91,7 +91,7 @@ Use `flyte run` for iteration or `flyte deploy` to register a stable task versio
 
 Create long-running services to host dashboards, APIs, and model endpoints.
 
-{{< grid cols=3 >}}
+{{< grid >}}
 
 {{< link-card target="configure-apps" icon="gear" title="Configure apps" >}}
 Define `AppEnvironment`s with ports, autoscaling, custom domains, and authentication.
@@ -99,6 +99,10 @@ Define `AppEnvironment`s with ports, autoscaling, custom domains, and authentica
 
 {{< link-card target="build-apps" icon="code" title="Build apps" >}}
 Build dashboards, REST APIs, and model endpoints with FastAPI, Streamlit, vLLM, and more.
+{{< /link-card >}}
+
+{{< link-card target="native-app-integrations" icon="code" title="Native app integrations" >}}
+Use pre-built environments for popular frameworks like Streamlit, FastAPI, vLLM, and SGLang.
 {{< /link-card >}}
 
 {{< link-card target="serve-and-deploy-apps" icon="rocket" title="Serve and deploy apps" >}}
