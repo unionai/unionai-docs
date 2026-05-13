@@ -106,7 +106,7 @@ Skip the config file entirely by passing parameters directly.
 {{< tabs "inline-config" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
-Use [`flyte.init`](../../api-reference/flyte-sdk/packages/flyte/_index#init):
+Use `flyte.init`:
 
 ```python
 flyte.init(

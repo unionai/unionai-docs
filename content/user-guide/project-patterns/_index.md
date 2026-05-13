@@ -1,6 +1,6 @@
 ---
 title: Project patterns
-weight: 13
+weight: 100
 variants: +flyte +union
 ---
 
@@ -23,6 +23,10 @@ How to structure Flyte projects with uv, from single-package setups to multi-tea
 
 {{< link-card target="cicd" title="CI/CD deployments" >}}
 How to deploy a Flyte project from CI. Uses GitHub Actions as the reference, but the building blocks — API key, `flyte deploy`, commit-pinned versions — translate to any runner.
+{{< /link-card >}}
+
+{{< link-card target="resource-management" title="Resource management and multi-team scaling" >}}
+Projects, domains, quotas, RBAC, and secrets — the primitives to set up before you have ten teams and a noisy-neighbor problem.
 {{< /link-card >}}
 
 {{< /grid >}}

@@ -1,0 +1,211 @@
+name: Build and deploy docs
+
+# Part of the gha-docs-build migration: builds the docs via `make dist`
+# and pushes the result to a Cloudflare Pages project via Direct Upload.
+# Replaces CF Pages' native build runner — CF Pages stays only as the
+# static host.
+#
+# Triggers:
+#   - push to main — production deploy (project=docs, --branch=main).
+#     This is the prod path; CF auto-deploys on the `docs` project are
+#     disabled, so GHA owns prod end-to-end.
+#   - pull_request — branch deploy to the `docs` project. Each PR gets
+#     a preview at <sanitized-branch>.docs-dog.pages.dev, identical to
+#     what CF Pages' bot used to produce. Sticky comment posts the URL.
+#   - workflow_dispatch — manual run; redeploys whatever commit the branch
+#     is at to the docs project (useful for re-runs after a flake).
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+# Opt in early to the Node.js 24 runtime for JavaScript actions. GitHub forces
+# this default on 2026-06-02 and removes Node.js 20 on 2026-09-16. Setting the
+# variable now silences the deprecation warning, tests compatibility with our
+# pinned action versions (checkout@v4, setup-python@v5, upload-artifact@v4,
+# setup-uv@v5, wrangler-action@v3, sticky-pull-request-comment@v2), and gives
+# us a controlled window to bump if any break.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+# Concurrency policy:
+#   - PRs: cancel any in-flight run when a new commit is pushed to the
+#     same PR (only the latest commit's preview matters).
+#   - push to main: queue in order, don't cancel, so we never leave
+#     production in an inconsistent state mid-deploy.
+#   - workflow_dispatch: own group, distinct from push, so manual
+#     re-runs never block or get blocked by an in-progress production
+#     deploy.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref_name }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: Set up Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.161.1'
+          extended: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Print environment
+        run: |
+          echo "::group::versions"
+          hugo version
+          python --version
+          uv --version
+          echo "::endgroup::"
+
+      - name: Build dist
+        run: |
+          start=$(date +%s)
+          make dist
+          echo "BUILD_SECONDS=$(( $(date +%s) - start ))" >> "$GITHUB_ENV"
+
+      - name: Emit build provenance
+        if: success()
+        run: |
+          # Write build-info.json at dist/docs/ so it's served at
+          # docs.union.ai/docs/build-info.json (CloudFront routes /docs/*
+          # to the CF Pages origin). Lets us verify GHA is what's
+          # actually serving prod after Phase 4 cutover, and gives
+          # incident response a quick "what version is live?" probe.
+          mkdir -p dist/docs
+          cat > dist/docs/build-info.json <<EOF
+          {
+            "builder": "github-actions",
+            "repository": "${{ github.repository }}",
+            "workflow_file": ".github/workflows/build-and-deploy.yml",
+            "run_id": "${{ github.run_id }}",
+            "run_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+            "commit": "${{ github.event.pull_request.head.sha || github.sha }}",
+            "ref": "${{ github.head_ref || github.ref_name }}",
+            "event": "${{ github.event_name }}",
+            "built_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          EOF
+          cat dist/docs/build-info.json
+
+      - name: Build summary
+        if: always()
+        run: |
+          echo "::group::dist tree (top 2 levels)"
+          find dist -maxdepth 2 -mindepth 1 -print 2>/dev/null | sort || true
+          echo "::endgroup::"
+          echo "::group::dist size"
+          du -sh dist 2>/dev/null || true
+          du -sh dist/docs/v2 dist/docs/v1 2>/dev/null || true
+          echo "::endgroup::"
+          if [ -n "${BUILD_SECONDS:-}" ]; then
+            echo "Build wall time: ${BUILD_SECONDS}s"
+          fi
+
+      - name: Upload dist artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Sanitize branch name for CF Pages
+        if: success()
+        id: branch
+        run: |
+          # CF Pages branch names: lowercase alphanumeric + hyphens, max 28 chars.
+          #
+          # On pull_request events we prefix the deploy branch with `pr-<num>`.
+          # This both (a) makes each PR's preview alias unique even when two
+          # PRs share a long common branch-name prefix, and (b) guarantees a
+          # PR-event deploy can never sanitize to a production branch name
+          # like `main` or `v1` (e.g. a branch named `main_` would otherwise
+          # sanitize to `main` and overwrite production now that PRs deploy
+          # into the same `docs` Pages project).
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            pr_num="${{ github.event.pull_request.number }}"
+            raw_branch="${{ github.head_ref }}"
+            # Compose `pr-<num>-<branch>` then truncate to 28 chars (CF Pages
+            # limit). Branch portion auto-shrinks as PR numbers grow digits.
+            full=$(printf 'pr-%s-%s' "$pr_num" "$raw_branch" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g' | sed -E 's#^-+|-+$##g')
+            sanitized=$(printf '%s' "$full" | cut -c1-28 | sed -E 's#-+$##g')
+            echo "Source PR #$pr_num branch '$raw_branch' → CF Pages branch: $sanitized"
+          else
+            raw="${{ github.ref_name }}"
+            sanitized=$(echo "$raw" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-28)
+            echo "Source branch: $raw → CF Pages branch: $sanitized"
+          fi
+          echo "name=$sanitized" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to Cloudflare Pages
+        if: success()
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # --commit-dirty: make dist regenerates tracked files (notebooks,
+          # API docs), so the working tree is always dirty by the time we hit
+          # wrangler. The warning is noise, not a real condition.
+          # We don't pass --commit-hash because we use fetch-depth: 1 above
+          # (shallow checkout), which means the local repo can't resolve the
+          # SHA wrangler tries to look up and would emit "fatal: bad object".
+          # wrangler-action records the commit metadata on its own via the
+          # GITHUB_SHA env var.
+          command: pages deploy ./dist --project-name=docs --branch=${{ steps.branch.outputs.name }} --commit-dirty=true
+
+      - name: Deploy summary
+        if: success()
+        run: |
+          echo "## Deployment" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Project: \`docs\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Branch (CF Pages): \`${{ steps.branch.outputs.name }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Commit: \`${{ github.event.pull_request.head.sha || github.sha }}\`" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "${{ steps.deploy.outputs.deployment-url }}" ]; then
+            echo "- Deployment URL: ${{ steps.deploy.outputs.deployment-url }}" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Post / update preview comment on PR
+        if: success() && github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: gha-build-and-deploy-preview
+          message: |
+            ### GHA build & deploy preview
+
+            Built by `.github/workflows/build-and-deploy.yml` and deployed to the **`docs`** CF Pages project.
+
+            | | |
+            |---|---|
+            | Branch alias | <https://${{ steps.branch.outputs.name }}.docs-dog.pages.dev> |
+            | This commit | ${{ steps.deploy.outputs.deployment-url }} |
+            | Commit SHA | `${{ github.event.pull_request.head.sha }}` |
+
+            Updated automatically on every push.
