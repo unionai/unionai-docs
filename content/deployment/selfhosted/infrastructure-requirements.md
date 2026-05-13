@@ -37,22 +37,37 @@ For each resource, the **substrate** description covers what to provision (share
 
 Provision the following resources in your cloud account before installing the {{< key product_name >}} Helm charts. Each item links to the section on this page that covers requirements in detail, and to the relevant cloud-provider documentation for the creation step itself. The {{< key product_name >}} chart assumes all of these are in place at install time.
 
-In separate-cluster topology you complete this checklist **twice** — once per cluster (CP and DP) — with most cloud-provider resources scoped to the relevant plane. In intra-cluster topology you complete it once.
+The checklist is split between **shared substrate** (resources both planes use or that exist once per cluster), **Control plane** (resources the CP needs), and **Data plane** (resources the DP needs). In separate-cluster topology you complete the per-plane sections for each cluster; in intra-cluster topology the lists collapse onto a single cluster.
 
-1. **(GCP only) Enable required APIs** in the target project — see [Project APIs (GCP)](#project-apis-gcp). [Vendor docs: Enabling and disabling services](https://cloud.google.com/service-usage/docs/enable-disable).
+### Shared substrate (per cluster)
+
+1. **(GCP only) Enable required project APIs** — see [Project APIs (GCP)](#project-apis-gcp). [Vendor docs: Enabling and disabling services](https://cloud.google.com/service-usage/docs/enable-disable).
 2. **VPC and subnets** — see [Networking](#networking). [AWS: Create a VPC](https://docs.aws.amazon.com/vpc/latest/userguide/create-vpc.html) · [GCP: Create a VPC network](https://cloud.google.com/vpc/docs/create-modify-vpc-networks).
 3. **NAT egress** — single NAT gateway (cost-optimized) or per-AZ (resilient). [AWS: NAT gateways](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html) · [GCP: Cloud NAT](https://cloud.google.com/nat/docs/set-up-manage-network-address-translation).
-4. **Kubernetes cluster** — managed control plane (EKS / GKE / AKS) plus the node pools described under [Kubernetes cluster](#kubernetes-cluster). [AWS: Create an EKS cluster](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html) · [GCP: Create a GKE cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster).
+4. **Kubernetes cluster** — managed control plane (EKS / GKE / AKS) plus the system node pool described under [Kubernetes cluster](#kubernetes-cluster). [AWS: Create an EKS cluster](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html) · [GCP: Create a GKE cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster).
 5. **Workload identity foundation** — IRSA OIDC provider (AWS) or Workload Identity Federation (GCP). See [Identity and workload binding](#identity-and-workload-binding). [AWS: Configure IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) · [GCP: GKE Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity).
-6. **Managed PostgreSQL (CP only)** — instance plus the network plumbing for the CP cluster to reach it privately. See [Database](#database). [AWS: Create an RDS DB instance](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_CreateDBInstance.html) · [GCP: Cloud SQL Private Service Access](https://cloud.google.com/sql/docs/postgres/configure-private-services-access).
-7. **Object storage buckets** — CP metadata + artifacts buckets; DP metadata + fast-registration buckets. See [Object storage](#object-storage). [AWS: Create an S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html) · [GCP: Create storage buckets](https://cloud.google.com/storage/docs/creating-buckets).
-8. **Service accounts and IAM bindings** — per-service identity bindings for the {{< key product_name >}} chart's required service accounts. See [Identity and workload binding](#identity-and-workload-binding).
-9. **Secrets store (optional)** — only if you choose to sync from a cloud secrets store rather than supply Kubernetes secrets directly. See [Secrets](#secrets).
-10. **Container image registry** — private registry for task images, plus credentials to pull {{< key product_name >}}'s system images. See [Container image registry](#container-image-registry).
-11. **Ingress + DNS** — public DNS name for the CP, a TLS certificate, and a DNS zone. See [Ingress and DNS](#ingress-and-dns).
-12. **Log forwarding destination** — bucket or log-management service for fluentbit to write container logs to. See [Observability and log forwarding](#observability-and-log-forwarding).
 
-After this list is complete, follow [Getting started](./getting-started) for the in-cluster install steps (Helm charts, Kubernetes secrets, OAuth applications in your IdP).
+### Control plane
+
+6. **Managed PostgreSQL** — instance plus the network plumbing for the CP cluster to reach it privately. See [Database](#database). [AWS: Create an RDS DB instance](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_CreateDBInstance.html) · [GCP: Cloud SQL Private Service Access](https://cloud.google.com/sql/docs/postgres/configure-private-services-access).
+7. **CP object storage buckets** — metadata bucket (admin state) and artifacts bucket. See [Object storage → Control plane](#object-storage). [AWS: Create an S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html) · [GCP: Create storage buckets](https://cloud.google.com/storage/docs/creating-buckets).
+8. **CP service accounts and IAM bindings** — identity bindings for flyteadmin / datacatalog / cacheservice / artifacts. See [Identity → Control plane](#control-plane-2).
+9. **Ingress + DNS** — public DNS name for the CP, a TLS certificate, and a DNS zone (`external-dns` writes records into the zone). See [Ingress and DNS](#ingress-and-dns).
+10. **OAuth applications in your identity provider** — the Helm-side step, but the IdP work happens here. See [Authentication](./authentication).
+
+### Data plane
+
+11. **DP system node pool capacity** — the DP cluster's system pool hosts the operator (agent), ingress proxy, and executor. Same sizing as the CP system pool. See [Kubernetes cluster → Data plane](#data-plane).
+12. **DP object storage buckets** — metadata bucket (per DP cluster) and fast-registration bucket. See [Object storage → Data plane](#object-storage). Vendor docs same as above.
+13. **DP service accounts and IAM bindings** — identity bindings for flytepropeller / executor / cluster-resource-sync, plus per-namespace task-pod KSAs, plus fluentbit. See [Identity → Data plane](#data-plane-1).
+14. **Container image registry** — private registry for task images (the image builder writes here; nodes pull from here), plus credentials to pull {{< key product_name >}}'s system images. See [Container image registry](#container-image-registry).
+15. **Log forwarding destination** — bucket or log-management service for fluentbit to write container logs to. See [Observability and log forwarding](#observability-and-log-forwarding).
+
+### Shared optional
+
+16. **Secrets store** (optional) — only if you choose to sync from a cloud secrets store rather than supply Kubernetes secrets directly. Used by both planes. See [Secrets](#secrets).
+
+After this list is complete, follow [Getting started](./getting-started) for the in-cluster install steps (Helm charts, Kubernetes secrets, OAuth client wiring in your IdP).
 
 ## Project APIs (GCP)
 
