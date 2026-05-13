@@ -71,6 +71,30 @@ jobs:
           make dist
           echo "BUILD_SECONDS=$(( $(date +%s) - start ))" >> "$GITHUB_ENV"
 
+      - name: Emit build provenance
+        if: success()
+        run: |
+          # Write build-info.json at dist/docs/ so it's served at
+          # docs.union.ai/docs/build-info.json (CloudFront routes /docs/*
+          # to the CF Pages origin). Lets us verify GHA is what's
+          # actually serving prod after Phase 4 cutover, and gives
+          # incident response a quick "what version is live?" probe.
+          mkdir -p dist/docs
+          cat > dist/docs/build-info.json <<EOF
+          {
+            "builder": "github-actions",
+            "repository": "${{ github.repository }}",
+            "workflow_file": ".github/workflows/build-and-deploy.yml",
+            "run_id": "${{ github.run_id }}",
+            "run_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+            "commit": "${{ github.event.pull_request.head.sha || github.sha }}",
+            "ref": "${{ github.head_ref || github.ref_name }}",
+            "event": "${{ github.event_name }}",
+            "built_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          EOF
+          cat dist/docs/build-info.json
+
       - name: Build summary
         if: always()
         run: |
