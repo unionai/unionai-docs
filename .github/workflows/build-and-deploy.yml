@@ -36,8 +36,16 @@ permissions:
   contents: read
   pull-requests: write
 
+# For PRs: cancel any in-flight run when a new commit is pushed to the same PR
+# (only latest commit's preview matters).
+# For push events on main: queue runs in order (don't cancel) so we never
+# leave production in an inconsistent state mid-deploy.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref_name }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -127,13 +135,28 @@ jobs:
         if: success()
         id: branch
         run: |
-          # On pull_request events, github.head_ref is the source branch.
-          # On workflow_dispatch and push, github.ref_name is the branch.
           # CF Pages branch names: lowercase alphanumeric + hyphens, max 28 chars.
-          raw="${{ github.head_ref || github.ref_name }}"
-          sanitized=$(echo "$raw" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-28)
+          #
+          # On pull_request events we prefix the deploy branch with `pr-<num>`.
+          # This both (a) makes each PR's preview alias unique even when two
+          # PRs share a long common branch-name prefix, and (b) guarantees a
+          # PR-event deploy can never sanitize to a production branch name
+          # like `main` or `v1` (e.g. a branch named `main_` would otherwise
+          # sanitize to `main` and overwrite production now that PRs deploy
+          # into the same `docs` Pages project).
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            pr_num="${{ github.event.pull_request.number }}"
+            raw_branch="${{ github.head_ref }}"
+            # `pr-NNNN-` is 8 chars (for 4-digit PR #s); leave the rest for branch.
+            branch_suffix=$(echo "$raw_branch" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-20)
+            sanitized=$(printf 'pr-%s-%s' "$pr_num" "$branch_suffix" | cut -c1-28 | sed -E 's#-+$##g')
+            echo "Source PR #$pr_num branch '$raw_branch' → CF Pages branch: $sanitized"
+          else
+            raw="${{ github.ref_name }}"
+            sanitized=$(echo "$raw" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-28)
+            echo "Source branch: $raw → CF Pages branch: $sanitized"
+          fi
           echo "name=$sanitized" >> "$GITHUB_OUTPUT"
-          echo "Source branch: $raw → CF Pages branch: $sanitized"
 
       - name: Deploy to Cloudflare Pages
         if: success()
