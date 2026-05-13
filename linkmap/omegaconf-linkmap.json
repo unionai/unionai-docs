@@ -4,7 +4,6 @@
   },
   "identifiers": {},
   "methods": {
-    "flyteplugins.omegaconf.log_yaml": "/api-reference/integrations/omegaconf/packages/flyteplugins.omegaconf/#log_yaml",
-    "log_yaml": "/api-reference/integrations/omegaconf/packages/flyteplugins.omegaconf/#log_yaml"
+    "flyteplugins.omegaconf.log_yaml": "/api-reference/integrations/omegaconf/packages/flyteplugins.omegaconf/#log_yaml"
   }
 }

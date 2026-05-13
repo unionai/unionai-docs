@@ -7,7 +7,6 @@
     "Event": "/api-reference/integrations/hitl/packages/flyteplugins.hitl/event/"
   },
   "methods": {
-    "flyteplugins.hitl.new_event": "/api-reference/integrations/hitl/packages/flyteplugins.hitl/#new_event",
-    "new_event": "/api-reference/integrations/hitl/packages/flyteplugins.hitl/#new_event"
+    "flyteplugins.hitl.new_event": "/api-reference/integrations/hitl/packages/flyteplugins.hitl/#new_event"
   }
 }

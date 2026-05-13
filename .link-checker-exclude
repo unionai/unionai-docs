@@ -43,3 +43,6 @@ user-guide/task-deployment/how-task-deployment-works\.md:\.\./run-modes/running-
 
 # Link inside {{< variant union >}} block on dual-variant page (cicd.md is +union only)
 user-guide/project-patterns/bring-your-own-image\.md:\./cicd
+
+# Link inside {{< variant union >}} block on dual-variant page (connector-app.md is +union only)
+user-guide/build-apps/_index\.md:\./connector-app
