@@ -36,12 +36,15 @@ permissions:
   contents: read
   pull-requests: write
 
-# For PRs: cancel any in-flight run when a new commit is pushed to the same PR
-# (only latest commit's preview matters).
-# For push events on main: queue runs in order (don't cancel) so we never
-# leave production in an inconsistent state mid-deploy.
+# Concurrency policy:
+#   - PRs: cancel any in-flight run when a new commit is pushed to the
+#     same PR (only the latest commit's preview matters).
+#   - push to main: queue in order, don't cancel, so we never leave
+#     production in an inconsistent state mid-deploy.
+#   - workflow_dispatch: own group, distinct from push, so a manual
+#     docs-staging / docs-builder test can't block a production deploy.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref_name }}
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref_name }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
@@ -147,9 +150,10 @@ jobs:
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             pr_num="${{ github.event.pull_request.number }}"
             raw_branch="${{ github.head_ref }}"
-            # `pr-NNNN-` is 8 chars (for 4-digit PR #s); leave the rest for branch.
-            branch_suffix=$(echo "$raw_branch" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-20)
-            sanitized=$(printf 'pr-%s-%s' "$pr_num" "$branch_suffix" | cut -c1-28 | sed -E 's#-+$##g')
+            # Compose `pr-<num>-<branch>` then truncate to 28 chars (CF Pages
+            # limit). Branch portion auto-shrinks as PR numbers grow digits.
+            full=$(printf 'pr-%s-%s' "$pr_num" "$raw_branch" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g' | sed -E 's#^-+|-+$##g')
+            sanitized=$(printf '%s' "$full" | cut -c1-28 | sed -E 's#-+$##g')
             echo "Source PR #$pr_num branch '$raw_branch' → CF Pages branch: $sanitized"
           else
             raw="${{ github.ref_name }}"
@@ -165,7 +169,15 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ./dist --project-name=${{ inputs.project_name || 'docs' }} --branch=${{ steps.branch.outputs.name }} --commit-hash=${{ github.event.pull_request.head.sha || github.sha }}
+          # --commit-dirty: make dist regenerates tracked files (notebooks,
+          # API docs), so the working tree is always dirty by the time we hit
+          # wrangler. The warning is noise, not a real condition.
+          # We don't pass --commit-hash because we use fetch-depth: 1 above
+          # (shallow checkout), which means the local repo can't resolve the
+          # SHA wrangler tries to look up and would emit "fatal: bad object".
+          # wrangler-action records the commit metadata on its own via the
+          # GITHUB_SHA env var.
+          command: pages deploy ./dist --project-name=${{ inputs.project_name || 'docs' }} --branch=${{ steps.branch.outputs.name }} --commit-dirty=true
 
       - name: Deploy summary
         if: success()
