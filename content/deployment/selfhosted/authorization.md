@@ -1,6 +1,6 @@
 ---
 title: Authorization
-weight: 6
+weight: 4
 variants: -flyte +union
 mermaid: true
 ---
@@ -568,7 +568,7 @@ The controlplane exposes Prometheus metrics for monitoring authorization decisio
 
 ### Alerts
 
-When [alerting is enabled]({{< relref "monitoring#alerting" >}}), the following authorization-specific alerts are available:
+When [alerting is enabled]({{< relref "operations/monitoring#alerting" >}}), the following authorization-specific alerts are available:
 
 | Alert | Severity | Condition |
 |-------|----------|-----------|
