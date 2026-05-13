@@ -48,7 +48,7 @@ Key points:
 
 Connector logs as shown in the UI:
 
-![Connector logs shown in the Flyte UI Logs tab](../../_static/images/user-guide/build-apps/connector-app/connector-logs-ui.png)
+![Connector logs shown in the UI Logs tab](../../_static/images/user-guide/build-apps/connector-app/connector-logs-ui.png)
 
 ## Step 2: Create the task plugin
 
