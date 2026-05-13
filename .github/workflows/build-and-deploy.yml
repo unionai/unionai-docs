@@ -81,25 +81,6 @@ jobs:
           uv --version
           echo "::endgroup::"
 
-      - name: Write build_info.yaml for Hugo template provenance
-        run: |
-          # Written at the repo root (not data/) because the infra repo's
-          # baseof.html reads it via readFile (Hugo's data namespace evolution
-          # made .Site.Data/site.Data/hugo.Data all problematic on 0.161).
-          # On local builds without this step, baseof.html's os.FileExists
-          # check silently no-ops.
-          cat > build_info.yaml <<EOF
-          builder: github-actions
-          repository: ${{ github.repository }}
-          run_id: "${{ github.run_id }}"
-          run_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          commit: ${{ github.event.pull_request.head.sha || github.sha }}
-          ref: ${{ github.head_ref || github.ref_name }}
-          event: ${{ github.event_name }}
-          built_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)
-          EOF
-          cat build_info.yaml
-
       - name: Build dist
         run: |
           start=$(date +%s)
