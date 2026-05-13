@@ -265,7 +265,7 @@ If your connector needs credentials (API keys, tokens) shared across all tasks, 
 
 {{< variant union >}}
 {{< markdown >}}
-On Union, add secrets to `ConnectorEnvironment`:
+Add secrets to `ConnectorEnvironment`:
 
 ```python
 connector = flyte.app.ConnectorEnvironment(
