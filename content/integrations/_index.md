@@ -280,7 +280,7 @@ connector = flyte.app.ConnectorEnvironment(
 
 {{< variant flyte >}}
 {{< markdown >}}
-On OSS Flyte, set environment variables on the connector Kubernetes deployment:
+Set environment variables on the connector Kubernetes deployment:
 
 ```bash
 kubectl set env deployment/<connector-deployment> MY_API_KEY=<value> -n <flyte-namespace>
