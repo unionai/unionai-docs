@@ -6,13 +6,14 @@ name: Build and deploy docs
 # static host.
 #
 # Triggers:
-#   - push to main — production deploy (project=docs, --branch=main).
+#   - push to v1 — production deploy (project=docs, --branch=v1).
 #     This is the prod path; CF auto-deploys on the `docs` project are
 #     disabled, so GHA owns prod end-to-end.
 #   - pull_request — branch deploy to the `docs` project. Each PR gets
 #     a preview at <sanitized-branch>.docs-dog.pages.dev, identical to
 #     what CF Pages' bot used to produce. Sticky comment posts the URL.
-#   - workflow_dispatch — manual run, choose project_name (default docs).
+#   - workflow_dispatch — manual run; redeploys whatever commit the branch
+#     is at to the docs project (useful for re-runs after a flake).
 
 on:
   push:
@@ -21,28 +22,28 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
   workflow_dispatch:
-    inputs:
-      project_name:
-        description: 'CF Pages project to deploy to'
-        required: false
-        default: 'docs'
-        type: choice
-        options:
-          - docs
-          - docs-staging
-          - docs-builder
 
 permissions:
   contents: read
   pull-requests: write
 
+# Opt in early to the Node.js 24 runtime for JavaScript actions. GitHub forces
+# this default on 2026-06-02 and removes Node.js 20 on 2026-09-16. Setting the
+# variable now silences the deprecation warning, tests compatibility with our
+# pinned action versions (checkout@v4, setup-python@v5, upload-artifact@v4,
+# setup-uv@v5, wrangler-action@v3, sticky-pull-request-comment@v2), and gives
+# us a controlled window to bump if any break.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 # Concurrency policy:
 #   - PRs: cancel any in-flight run when a new commit is pushed to the
 #     same PR (only the latest commit's preview matters).
-#   - push to main: queue in order, don't cancel, so we never leave
+#   - push to v1: queue in order, don't cancel, so we never leave
 #     production in an inconsistent state mid-deploy.
-#   - workflow_dispatch: own group, distinct from push, so a manual
-#     docs-staging / docs-builder test can't block a production deploy.
+#   - workflow_dispatch: own group, distinct from push, so manual
+#     re-runs never block or get blocked by an in-progress production
+#     deploy.
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref_name }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
@@ -177,14 +178,14 @@ jobs:
           # SHA wrangler tries to look up and would emit "fatal: bad object".
           # wrangler-action records the commit metadata on its own via the
           # GITHUB_SHA env var.
-          command: pages deploy ./dist --project-name=${{ inputs.project_name || 'docs' }} --branch=${{ steps.branch.outputs.name }} --commit-dirty=true
+          command: pages deploy ./dist --project-name=docs --branch=${{ steps.branch.outputs.name }} --commit-dirty=true
 
       - name: Deploy summary
         if: success()
         run: |
           echo "## Deployment" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Project: \`${{ inputs.project_name || 'docs' }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Project: \`docs\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- Branch (CF Pages): \`${{ steps.branch.outputs.name }}\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- Commit: \`${{ github.event.pull_request.head.sha || github.sha }}\`" >> "$GITHUB_STEP_SUMMARY"
           if [ -n "${{ steps.deploy.outputs.deployment-url }}" ]; then
@@ -199,7 +200,7 @@ jobs:
           message: |
             ### GHA build & deploy preview
 
-            Built by `.github/workflows/build-and-deploy.yml` and deployed to the **`${{ inputs.project_name || 'docs' }}`** CF Pages project.
+            Built by `.github/workflows/build-and-deploy.yml` and deployed to the **`docs`** CF Pages project.
 
             | | |
             |---|---|
