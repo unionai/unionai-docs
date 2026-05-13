@@ -43,7 +43,7 @@ Key points:
 - **`task_type_name`** must match the `_TASK_TYPE` on your task plugin (see Step 2)
 - **`ResourceMeta`** carries whatever state you need between `create` and subsequent `get` / `delete` calls (e.g., a job ID)
 - **`Resource.outputs`** maps output names to values; these become the task's return values
-- **`get_logs`** is an async generator that yields `GetTaskLogsResponse` messages. Yield a `body` with log lines, then optionally a `header` carrying the next-page token. Omit the final header to signal end of pagination. The Flyte UI displays these lines under the **Logs** tab of the task run.
+- **`get_logs`** is an async generator that yields `GetTaskLogsResponse` messages. Yield a `body` with log lines, then optionally a `header` carrying the next-page token. Omit the final header to signal end of pagination. The UI displays these lines under the **Logs** tab of the task run.
 - Register the connector with `ConnectorRegistry.register()` at module level so it is discovered on startup
 
 Connector logs as shown in the Flyte UI:
