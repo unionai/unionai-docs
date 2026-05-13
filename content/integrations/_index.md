@@ -302,7 +302,7 @@ See [Secrets](../user-guide/task-configuration/secrets) for how to store and man
 
 {{< variant union >}}
 {{< markdown >}}
-On Union, deploy your connector as a long-running service using `flyte.app.ConnectorEnvironment`. Union handles building the image, pushing it, and keeping the service running — no manual Kubernetes configuration required.
+Deploy your connector as a long-running service using `flyte.app.ConnectorEnvironment`. Union handles building the image, pushing it, and keeping the service running — no manual Kubernetes configuration required.
 
 See the **Connector app** guide (`user-guide/build-apps/connector-app`) for a complete walkthrough.
 {{< /markdown >}}
