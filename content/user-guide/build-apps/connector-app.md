@@ -46,7 +46,7 @@ Key points:
 - **`get_logs`** is an async generator that yields `GetTaskLogsResponse` messages. Yield a `body` with log lines, then optionally a `header` carrying the next-page token. Omit the final header to signal end of pagination. The UI displays these lines under the **Logs** tab of the task run.
 - Register the connector with `ConnectorRegistry.register()` at module level so it is discovered on startup
 
-Connector logs as shown in the Flyte UI:
+Connector logs as shown in the UI:
 
 ![Connector logs shown in the Flyte UI Logs tab](../../_static/images/user-guide/build-apps/connector-app/connector-logs-ui.png)
 
