@@ -6,14 +6,18 @@ name: Build and deploy docs
 # static host.
 #
 # Triggers:
-#   - pull_request — builds + deploys to docs-staging, posts a sticky
-#     comment on the PR with the preview URL
-#   - workflow_dispatch — manual run, choose project_name
-#
-# Phase 4 (cutover) will add push triggers on main and v1, targeting
-# the prod `docs` project instead of `docs-staging`.
+#   - push to main — production deploy (project=docs, --branch=main).
+#     This is the prod path; CF auto-deploys on the `docs` project are
+#     disabled, so GHA owns prod end-to-end.
+#   - pull_request — branch deploy to the `docs` project. Each PR gets
+#     a preview at <sanitized-branch>.docs-dog.pages.dev, identical to
+#     what CF Pages' bot used to produce. Sticky comment posts the URL.
+#   - workflow_dispatch — manual run, choose project_name (default docs).
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     types: [opened, synchronize, reopened]
   workflow_dispatch:
@@ -21,9 +25,10 @@ on:
       project_name:
         description: 'CF Pages project to deploy to'
         required: false
-        default: 'docs-staging'
+        default: 'docs'
         type: choice
         options:
+          - docs
           - docs-staging
           - docs-builder
 
@@ -137,14 +142,14 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ./dist --project-name=${{ inputs.project_name || 'docs-staging' }} --branch=${{ steps.branch.outputs.name }} --commit-hash=${{ github.event.pull_request.head.sha || github.sha }}
+          command: pages deploy ./dist --project-name=${{ inputs.project_name || 'docs' }} --branch=${{ steps.branch.outputs.name }} --commit-hash=${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Deploy summary
         if: success()
         run: |
           echo "## Deployment" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Project: \`${{ inputs.project_name || 'docs-staging' }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Project: \`${{ inputs.project_name || 'docs' }}\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- Branch (CF Pages): \`${{ steps.branch.outputs.name }}\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- Commit: \`${{ github.event.pull_request.head.sha || github.sha }}\`" >> "$GITHUB_STEP_SUMMARY"
           if [ -n "${{ steps.deploy.outputs.deployment-url }}" ]; then
@@ -159,12 +164,12 @@ jobs:
           message: |
             ### GHA build & deploy preview
 
-            Built by `.github/workflows/build-and-deploy.yml` and deployed to the **`${{ inputs.project_name || 'docs-staging' }}`** CF Pages project.
+            Built by `.github/workflows/build-and-deploy.yml` and deployed to the **`${{ inputs.project_name || 'docs' }}`** CF Pages project.
 
             | | |
             |---|---|
-            | Branch alias | <https://${{ steps.branch.outputs.name }}.docs-staging-ed8.pages.dev> |
+            | Branch alias | <https://${{ steps.branch.outputs.name }}.docs-dog.pages.dev> |
             | This commit | ${{ steps.deploy.outputs.deployment-url }} |
             | Commit SHA | `${{ github.event.pull_request.head.sha }}` |
 
-            Updated automatically on every push. After Phase 4 cutover this will replace the CF Pages-native preview comment.
+            Updated automatically on every push.
