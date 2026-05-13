@@ -9,10 +9,10 @@ llm_readable_bundle: true
 
 {{< llm-bundle-note >}}
 
-This section covers how to build different types of apps with Flyte, including Streamlit dashboards, FastAPI REST APIs, vLLM and SGLang model servers, webhooks, and WebSocket applications.
+This section covers how to build different types of apps with Flyte, from single-script apps to multi-file projects, common usage patterns, and authentication.
 
 > [!TIP]
-> Go to [Introducing apps](../core-concepts/introducing-apps) for an overview of apps and a quick example.
+> Go to [Introducing apps](../core-concepts/introducing-apps) for an overview of apps and a quick example. For pre-built environments for popular frameworks like Streamlit, FastAPI, vLLM, and SGLang, see [Native app integrations](../native-app-integrations/_index).
 
 ## App types
 
@@ -27,17 +27,29 @@ Flyte supports various types of apps:
 {{< /markdown >}}
 {{< /variant >}}
 
+For ready-to-use environments for these frameworks, see [Native app integrations](../native-app-integrations/_index).
+
+## Usage patterns
+
+Apps and tasks can interact in various ways: calling each other via HTTP, webhooks, WebSockets, or direct browser usage.
+
+| Pattern | Use Case | Implementation |
+|---------|----------|----------------|
+| App | Stand-alone serving app | HTTP requests from arbitrary clients |
+| App → App | Microservices, proxies, agent routers, LLM routers | HTTP requests between apps |
+| App → Task | Webhooks, APIs triggering workflows | Flyte SDK in app |
+| Task → App | Batch processing using inference services | HTTP requests from task |
+| Browser app | User-facing dashboards (e.g. Streamlit, Gradio) | Direct browser access |
+
 ## Next steps
 
 - [**Single-script apps**](./single-script-apps): The simplest way to build and deploy apps in a single Python script
 - [**Multi-script apps**](./multi-script-apps): Build FastAPI and Streamlit apps with multiple files
-- [**App usage patterns**](./app-usage-patterns): Call apps from tasks, tasks from apps, and apps from apps
+- [**Serving graphs**](./serving-graphs): Apps calling other apps for microservice architectures
+- [**Hybrid graphs**](./hybrid-graphs): Tasks calling apps and apps calling tasks (webhooks, APIs)
+- [**WebSocket apps**](./websocket-apps): Real-time, bidirectional communication with WebSockets
+- [**Browser apps**](./browser-apps): User-facing dashboards and UIs
 - [**Secret-based authentication**](./secret-based-authentication): Authenticate FastAPI apps using Flyte secrets
-- [**Streamlit app**](./streamlit-app): Build interactive Streamlit dashboards
-- [**FastAPI app**](./fastapi-app): Create REST APIs and backend services
-- [**vLLM app**](./vllm-app): Serve large language models with vLLM
-- [**SGLang app**](./sglang-app): Serve LLMs with SGLang for structured generation
-- [**Flyte webhook**](./flyte-webhook): Pre-built webhook for common Flyte operations
 {{< variant union >}}
 {{< markdown >}}
 - [**Connector app**](./connector-app): Deploy a connector as a long-running service
