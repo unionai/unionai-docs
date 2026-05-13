@@ -81,6 +81,28 @@ jobs:
           uv --version
           echo "::endgroup::"
 
+      - name: Write Hugo data file for build provenance
+        run: |
+          # Hugo reads data/*.yaml at build time and exposes it to templates
+          # as .Site.Data.<filename>. The infra repo's baseof.html uses
+          # .Site.Data.build_info to render an HTML comment in <head> so
+          # `view source` on any rendered page shows what built it.
+          # Local `make dist` runs (no GHA) won't write this file, and Hugo's
+          # `{{ with .Site.Data.build_info }}` block silently no-ops in that
+          # case.
+          mkdir -p data
+          cat > data/build_info.yaml <<EOF
+          builder: github-actions
+          repository: ${{ github.repository }}
+          run_id: "${{ github.run_id }}"
+          run_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          commit: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ github.head_ref || github.ref_name }}
+          event: ${{ github.event_name }}
+          built_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+          EOF
+          cat data/build_info.yaml
+
       - name: Build dist
         run: |
           start=$(date +%s)
