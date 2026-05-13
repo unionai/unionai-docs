@@ -34,7 +34,7 @@ my_project/
 
 ## Step 1: Implement the connector
 
-The connector implements four lifecycle methods: `create` (submit the job), `get` (poll status), `delete` (cancel), and `get_logs` (stream paginated log lines to the Flyte UI).
+The connector implements four lifecycle methods: `create` (submit the job), `get` (poll status), `delete` (cancel), and `get_logs` (stream paginated log lines to the UI).
 
 {{< code file="/unionai-examples/v2/integrations/connectors/batch_job/connector.py" lang=python >}}
 
