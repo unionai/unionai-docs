@@ -310,7 +310,7 @@ See the **Connector app** guide (`user-guide/build-apps/connector-app`) for a co
 
 {{< variant flyte >}}
 {{< markdown >}}
-On OSS Flyte, deploying a connector requires two steps: building a Docker image that contains your connector code, then patching the connector Kubernetes deployment to use it.
+Deploying a connector requires two steps: building a Docker image that contains your connector code and then patching the connector Kubernetes deployment to use it.
 
 **Step 1: Build the connector image**
 
