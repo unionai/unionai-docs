@@ -163,7 +163,7 @@ The connector service is the only component that needs network access to the ext
 
 There are two ways to pass credentials to a connector.
 
-**Connector-level secrets** are shared across all tasks using the connector. On Union, add them to `ConnectorEnvironment.secrets` and read them from `os.environ` inside the connector. See [Connectors](../../integrations/_index#connector-level-secrets) for details.
+**Connector-level secrets** are shared across all tasks using the connector. Add them to `ConnectorEnvironment.secrets` and read them from `os.environ` inside the connector. See [Connectors](../../integrations/_index#connector-level-secrets) for details.
 
 ### Per-task secrets (per-user credentials)
 
