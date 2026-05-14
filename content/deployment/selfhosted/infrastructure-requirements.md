@@ -59,9 +59,9 @@ The checklist is split between **shared substrate** (resources both planes use o
 
 11. **DP system node pool capacity** — the DP cluster's system pool hosts the operator (agent), ingress proxy, and executor. Same sizing as the CP system pool. See [Kubernetes cluster → Data plane](#data-plane).
 12. **DP object storage buckets** — metadata bucket (per DP cluster) and fast-registration bucket. See [Object storage → Data plane](#object-storage). Vendor docs same as above.
-13. **DP service accounts and IAM bindings** — identity bindings for flytepropeller / executor / cluster-resource-sync, plus per-namespace task-pod KSAs, plus fluentbit. See [Identity → Data plane](#data-plane-1).
+13. **DP service accounts and IAM bindings** — identity bindings for flytepropeller / executor / cluster-resource-sync, plus per-namespace task-pod KSAs, plus the log-pipeline service account (AWS only — the {{< key product_name >}} fluentbit DaemonSet; GCP uses the managed GKE logging agent). See [Identity → Data plane](#data-plane-1).
 14. **Container image registry** — private registry for task images (the image builder writes here; nodes pull from here), plus credentials to pull {{< key product_name >}}'s system images. See [Container image registry](#container-image-registry).
-15. **Log forwarding destination** — bucket or log-management service for fluentbit to write container logs to. See [Observability and log forwarding](#observability-and-log-forwarding).
+15. **Logging backend** — where task pod stdout/stderr is collected and made available to the data plane operator's log-streaming API. AWS writes via the {{< key product_name >}} fluentbit DaemonSet (to S3 by default, or CloudWatch); GCP uses GKE's managed Cloud Logging agent. See [Logging](#logging).
 
 ### Shared optional
 
@@ -300,7 +300,7 @@ DP service accounts shipped by the {{< key product_name >}} chart that need iden
 
 - **flytepropeller / executor / cluster-resource-sync** — read/write the DP metadata bucket, fetch credentials from the cloud secrets store, authenticate to the CP via OAuth2 client_credentials
 - **task pods** (per-namespace KSAs) — read/write the artifacts bucket, fetch user-supplied secrets, pull task images
-- **fluentbit** — write container logs to the configured destination. See [Observability and log forwarding](#observability-and-log-forwarding).
+- **log pipeline** — see [Logging](#logging). On AWS, the {{< key product_name >}} fluentbit DaemonSet needs an IRSA binding to write to the configured destination. On GCP, GKE's managed Cloud Logging agent handles ingestion via the node service account; the DP backend GSA additionally needs `roles/logging.viewer` so the operator can read post-GC task logs back from the Cloud Logging API.
 
 Optional supporting services follow the same pattern as on the CP — external-secrets, external-dns, and cert-manager need identity bindings only if you deploy them on the DP cluster.
 
@@ -461,9 +461,14 @@ The image-builder destination and the user-supplied task registry can be the sam
 
 The DP is where image-pull pressure shows up: rapid node scale-up means many pods pulling system images simultaneously. See [Image registry pull rate](#image-registry-pull-rate) under Scaling constraints.
 
-## Observability and log forwarding
+## Logging
 
-The data plane runs a log-forwarder (typically `fluentbit`) on each worker node that ships container logs to an aggregator. The destination is your choice — common options are an object-storage bucket (S3 / GCS), a cloud-managed log service (CloudWatch Logs / Cloud Logging), or a third-party log management tool. The {{< key product_name >}} chart does not mandate a destination.
+Task pod stdout/stderr needs to land in a backend the data plane's operator service can read from, so the {{< key product_name >}} console can display logs while a task runs **and** after its pod has been garbage-collected. The {{< key product_name >}} chart targets a different default backend on each cloud, matching what the underlying managed Kubernetes service provides natively:
+
+- **AWS**: a {{< key product_name >}}-managed `fluentbit` DaemonSet runs on every DP worker node and writes container logs to a destination of your choice (DP metadata bucket by default; CloudWatch Logs as an alternative).
+- **GCP**: GKE's managed Cloud Logging agent (Google's `fluentbit-gke` in `kube-system`) ships container logs to Cloud Logging automatically. The {{< key product_name >}} chart's optional fluentbit subchart is disabled by default on GCP — running it would duplicate ingestion. The operator reads post-GC task logs directly from the Cloud Logging API.
+
+Either path supports the console's live and post-GC log-viewing flows; the on-cluster moving parts and IAM differ.
 
 ### Substrate
 
@@ -471,24 +476,55 @@ The data plane runs a log-forwarder (typically `fluentbit`) on each worker node 
 {{< tab "AWS" >}}
 {{< markdown >}}
 
-- **Default destination**: the DP metadata S3 bucket. Fluentbit writes log objects under a date-partitioned prefix; lifecycle rules on the bucket control retention.
-- **Identity binding**: a dedicated IRSA role grants the fluentbit pod the IAM permissions required to write to the destination bucket (`s3:PutObject`, `s3:GetObject` on the relevant prefix).
+The {{< key product_name >}} chart installs a `fluentbit` DaemonSet on every DP worker node.
+
+- **Default destination**: the DP metadata S3 bucket. Fluentbit writes log objects under a `persisted-logs/` prefix templated by namespace, pod, and container; lifecycle rules on the bucket control retention. The operator reads from this prefix when the console requests post-GC logs.
 - **Alternative**: forward to CloudWatch Logs via the CloudWatch Container Insights add-on. EKS provides a `cloudwatch-observability` add-on that ships with its own IRSA role for the agent. [Vendor docs: CloudWatch Container Insights for EKS](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-EKS.html).
+
+If you choose a non-default destination, grant the equivalent permissions to whichever service account the forwarder runs as.
 
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "GCP" >}}
 {{< markdown >}}
 
-- **Default destination**: the DP metadata GCS bucket. Fluentbit writes log objects under a date-partitioned prefix; lifecycle rules on the bucket control retention.
-- **Identity binding**: a dedicated Workload Identity Federation binding grants the fluentbit Kubernetes service account `roles/storage.objectAdmin` (or a narrower custom role) on the destination bucket.
-- **Alternative**: forward to Cloud Logging via GKE's built-in logging integration. GKE clusters created with the default `logging-component-system,workload` configuration ship container logs to Cloud Logging automatically; in that case fluentbit's bucket destination is optional. [Vendor docs: GKE logging](https://cloud.google.com/kubernetes-engine/docs/concepts/about-logs).
+GKE clusters created with the default logging configuration (`loggingConfig.componentConfig.enableComponents` includes `WORKLOADS`) ship container stdout/stderr to Cloud Logging via Google's managed `fluentbit-gke` DaemonSet in `kube-system`. No additional in-cluster agent is required. [Vendor docs: GKE logging](https://cloud.google.com/kubernetes-engine/docs/concepts/about-logs).
+
+The {{< key product_name >}} chart's optional fluentbit subchart is disabled by default on GCP — see `values.gcp.yaml`.
+
+The operator queries Cloud Logging directly when streaming post-GC task logs to the console (filtering by `resource.labels.namespace_name`, `pod_name`, and `container_name`), and the v2 task-logs view includes a "GCP Logs" link that opens `console.cloud.google.com/logs/query` filtered to the task pod's labels.
 
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
 
-The Terraform selfmanaged modules provision the fluentbit IAM/identity binding alongside the rest of the DP service accounts. If you choose a non-default destination (CloudWatch / Cloud Logging / third-party), grant the equivalent permissions to whichever service account the forwarder runs as.
+### IAM bindings
+
+{{< tabs >}}
+{{< tab "AWS" >}}
+{{< markdown >}}
+
+A dedicated IRSA role grants the `fluentbit` Kubernetes service account the permissions required to write to the destination:
+
+- **S3 destination** (default): `s3:PutObject` and `s3:GetObject` on the DP metadata bucket's `persisted-logs/` prefix.
+- **CloudWatch Logs destination**: `logs:CreateLogStream` and `logs:PutLogEvents` on the relevant log group.
+
+The {{< key product_name >}} Terraform selfmanaged modules provision this IRSA binding alongside the rest of the DP service accounts.
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "GCP" >}}
+{{< markdown >}}
+
+GKE's managed `fluentbit-gke` agent gets its IAM via the GKE node service account; no per-pod Workload Identity binding is needed for log ingestion.
+
+For the operator to **read** post-GC task logs from Cloud Logging on behalf of the console, the DP backend service account needs `roles/logging.viewer` on the project. This is the same GSA that's bound to the `union-system` Kubernetes service account in the DP namespace via Workload Identity Federation.
+
+The {{< key product_name >}} Terraform selfmanaged modules provision this binding alongside the rest of the DP service accounts.
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Ingress and DNS
 
