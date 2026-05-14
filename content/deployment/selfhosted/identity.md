@@ -84,13 +84,13 @@ Store the secret in your secret management system (AWS Secrets Manager, GCP Secr
 
 ### Step 4: Note the required values
 
-You'll need these values for Helm configuration:
+You'll need these values for Helm configuration. All values are found on the identity service app registration's **Overview** page in the Azure portal (**Microsoft Entra ID** → **App registrations** → **\<your-org\>-identity-service**):
 
-| Value | Where to find it |
-|-------|------------------|
-| **Tenant ID** | App registration → Overview → Directory (tenant) ID |
-| **Client ID** | App registration → Overview → Application (client) ID |
-| **Client Secret** | The secret value you copied in Step 3 |
+| Value | Azure portal location |
+|-------|----------------------|
+| **Tenant ID** | **Directory (tenant) ID** field on the Overview page |
+| **Client ID** | **Application (client) ID** field on the Overview page |
+| **Client Secret** | The secret value you copied in Step 3 (not visible after creation) |
 
 ## Control plane Helm configuration
 
