@@ -130,6 +130,10 @@ Configure OIDC/OAuth2 authentication for your deployment
 Configure authorization mode (Noop, External, or Union built-in RBAC)
 {{< /link-card >}}
 
+{{< link-card target="./identity" icon="users" title="Identity" >}}
+Configure identity service for User Management
+{{< /link-card >}}
+
 {{< link-card target="./image-builder" icon="package" title="Image builder" >}}
 Register the image builder for automatic container image builds
 {{< /link-card >}}
