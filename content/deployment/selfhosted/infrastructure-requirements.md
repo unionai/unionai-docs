@@ -190,7 +190,7 @@ These CP defaults are starting points, not derived from a BYOC reference. If you
 | Component | Setting |
 | --- | --- |
 | VPC subnet (nodes) | `/22` (1,024 IPs) is sufficient for the CP node count |
-| Pods secondary range | `/20` (4,096 IPs) — with `max_pods_per_node = 30` supports up to 32 nodes |
+| Pods secondary range | `/20` (4,096 IPs) — with `max_pods_per_node = 32` supports up to 32 nodes |
 | Services secondary range | `/22` (1,024 IPs) |
 | Master CIDR | `/28` (GCP requires exactly /28) |
 | Cloud NAT | Dynamic Port Allocation enabled |
@@ -233,14 +233,14 @@ Defaults from `cloud/infra/terraform/modules/dataplane/gcp_base/`:
 | Component | Setting |
 | --- | --- |
 | VPC subnet (nodes) | `/19` (8,192 IPs) per cluster |
-| Pods secondary range | `/19` (8,192 IPs) — with `max_pods_per_node = 30` supports 128 nodes per cluster |
+| Pods secondary range | `/19` (8,192 IPs) — with `max_pods_per_node = 32` supports 128 nodes per cluster |
 | Services secondary range | `/20` (4,096 IPs) |
 | Master CIDR | `/28` (GCP requires exactly /28) |
 | Cloud NAT | Dynamic Port Allocation enabled |
 
 This is the union-managed BYOC starting point. The GCP-published per-cluster maxima are 15,000 nodes and 250,000 pods; if you expect a single cluster to scale beyond a few hundred nodes, enlarge the pods secondary range to `/14` (200,000 IPs) up front — changing the pod range on a running nodepool forces nodepool recreation.
 
-GKE reserves `2 × max_pods_per_node` IPs per node from the pods range. The [Pod density and IP allocation](#pod-density-and-ip-allocation) section under Scaling constraints has the per-node math.
+GKE assigns each node a CIDR block sized to fit at least `2 × max_pods_per_node` IPs, rounded up to the next power-of-2 block (per [Google's published formula](https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr)). The [Pod density and IP allocation](#pod-density-and-ip-allocation) section under Scaling constraints has the per-node math and a pool-aware tuning strategy.
 
 {{< /markdown >}}
 {{< /tab >}}
@@ -593,18 +593,40 @@ The VPC CNI assigns one IP per pod from the **node's subnet**. Completed/termina
 {{< tab "GCP" >}}
 {{< markdown >}}
 
-GKE **preallocates** IP ranges per node based on `max_pods_per_node`. The default of 110 reserves `2 × max_pods_per_node = 256` IPs (a `/24`) per node, regardless of actual pod count.
+GKE **preallocates** a CIDR block per node sized by `max_pods_per_node`. Per [Google's published formula](https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr), the block is the smallest subnet that holds at least `2 × max_pods_per_node` IPs:
 
-The cluster-wide node ceiling is `pods_cidr_size / per_node_reservation`:
+| `max_pods_per_node` (range) | Per-node block | IPs reserved |
+| --- | --- | --- |
+| 8 | /28 | 16 |
+| 9–16 | /27 | 32 |
+| 17–32 | /26 | 64 |
+| 33–64 | /25 | 128 |
+| 65–128 | /24 | 256 |
+| 129–256 | /23 | 512 |
+
+The Standard-cluster default of 110 falls in the 65–128 band, so every node consumes a `/24` (256 IPs). The cluster-wide node ceiling is `pods_cidr_size / per_node_block`:
 
 | Pod CIDR | `max_pods_per_node` | Node ceiling |
 | --- | --- | --- |
 | `/19` (8,192 IPs) | 110 (default) | **32 nodes** |
-| `/19` (8,192 IPs) | 30 (recommended) | 128 nodes |
-| `/16` (65,536 IPs) | 30 (recommended) | 1,024 nodes |
-| `/14` (262,144 IPs) | 30 (recommended) | 4,096 nodes |
+| `/19` (8,192 IPs) | 32 (Google Autopilot value; this module's default) | 128 nodes |
+| `/16` (65,536 IPs) | 32 | 1,024 nodes |
+| `/14` (262,144 IPs) | 32 | 4,096 nodes |
 
-Setting `max_pods_per_node = 30` yields a 4× headroom improvement over the default. The cluster-wide default can't be changed after cluster creation; changing a nodepool's pod range forces nodepool recreation.
+Setting `max_pods_per_node = 32` yields a 4× headroom improvement over the Standard default while filling the `/26` block (no wasted IPs). The cluster-wide default can't be changed after cluster creation; changing a nodepool's pod range forces nodepool recreation.
+
+#### Pool-aware tuning
+
+`max_pods_per_node` is set per nodepool, not just cluster-wide. Picking the smallest power-of-2 band that comfortably fits each pool's realistic pod count maximizes total node count on a given pods CIDR — different pools have very different pod density profiles, and picking a single cluster-wide value over-allocates for the lightest pool.
+
+| Pool | Realistic pod density | `max_pods_per_node` | Per-node block |
+| --- | --- | --- | --- |
+| System pool (operator, ingress-nginx, cert-manager, external-dns, external-secrets) | 10–20 fixed | **16** | /27 (32 IPs) |
+| Worker pool (general task pods) | 5–20 typical, bursts to 30+ | **32** | /26 (64 IPs) |
+| Dedicated monitoring (Prometheus, ClickHouse) | 10–15 stable | **16** | /27 (32 IPs) |
+| GPU pool (1–8 GPUs/node, typically 1 pod/node) | 1–4 | **8** | /28 (16 IPs) |
+
+The selfmanaged module sets the cluster-wide default to 32 (matches the worker pool); override per-pool where it pays off. The BYOC dataplane module already follows this pattern (`dedicated_nodepool_max_pods_per_node = 16` for Prometheus / ClickHouse). Combined with a `/14` pods CIDR, this lifts the practical node ceiling beyond what a single cluster-wide value can deliver.
 
 {{< /markdown >}}
 {{< /tab >}}
