@@ -15,7 +15,7 @@ The identity service integrates with your identity provider to fetch user and ap
 Before configuring the identity service:
 
 1. **Authentication is configured and working** — see the [authentication guide]({{< relref "authentication" >}})
-2. **Authorization is configured** — see the [authorization guide]({{< relref "authorization" >}}). The User Management page is most useful with Union authorization mode enabled.
+2. **Authorization mode is Noop or Union** — the identity service integrates with {{< key product_name >}}'s built-in authorization. If you use [External authorization mode]({{< relref "authorization#external" >}}), the identity service is not applicable — your external authorization system handles user and application management instead.
 
 ## Overview
 
