@@ -162,7 +162,7 @@ Each cluster needs a VPC with private subnets for nodes, a NAT path for egress, 
 - **Control plane: modest, steady-state.** CP runs a fixed set of services — ~50–200 pods total. A small VPC and pod CIDR is sufficient and easier to fit into an existing IP plan.
 - **Data plane: greedy, burst-friendly.** DP pod-IP demand scales with peak workload, and pod-IP exhaustion is the most common scale blocker. Allocate large enough up front to absorb growth without recreating the VPC or cluster. CIDR resizing forces destructive operations on running clusters (nodepool recreation on GKE; VPC CIDR additions on AWS work but resizing existing subnets does not).
 
-The defaults below are derived from {{< key product_name >}}'s BYOC dataplane Terraform modules and are sized to support ~40,000 pods / ~9,000 nodes on AWS and the GCP-published per-cluster maxima (≤15,000 nodes, ≤250,000 pods).
+The defaults below are sized to support ~40,000 pods / ~9,000 nodes on AWS and the GCP-published per-cluster maxima (≤15,000 nodes, ≤250,000 pods).
 
 ### Control plane
 
@@ -180,7 +180,7 @@ CP-side IP demand is small. The CP cluster does not benefit from greedy allocati
 | NAT gateways | 1 (cost-optimized) or per-AZ (production resilience) |
 | VPC interface endpoints | none by default; required for SCP-restricted egress |
 
-These CP defaults are starting points, not derived from a BYOC reference. If your organization has a standard VPC sizing, use it — the CP doesn't need anything larger.
+These CP defaults are starting points. If your organization has a standard VPC sizing, use it — the CP doesn't need anything larger.
 
 {{< /markdown >}}
 {{< /tab >}}
@@ -195,7 +195,7 @@ These CP defaults are starting points, not derived from a BYOC reference. If you
 | Master CIDR | `/28` (GCP requires exactly /28) |
 | Cloud NAT | Dynamic Port Allocation enabled |
 
-These CP defaults are starting points, not derived from a BYOC reference. If your organization has a standard VPC sizing, use it — the CP doesn't need anything larger.
+These CP defaults are starting points. If your organization has a standard VPC sizing, use it — the CP doesn't need anything larger.
 
 {{< /markdown >}}
 {{< /tab >}}
@@ -209,7 +209,7 @@ DP allocation is greedy by design. Pod-IP demand scales with peak workload, and 
 {{< tab "AWS" >}}
 {{< markdown >}}
 
-Defaults from `cloud/infra/terraform/modules/dataplane/aws_base/`:
+Suggested defaults for a production-scale DP cluster:
 
 | Component | Setting |
 | --- | --- |
@@ -228,7 +228,7 @@ This sizing supports up to ~40,000 pods and ~9,000 nodes per VPC, with capacity 
 {{< tab "GCP" >}}
 {{< markdown >}}
 
-Defaults from `cloud/infra/terraform/modules/dataplane/gcp_base/`:
+Suggested defaults for a production-scale DP cluster:
 
 | Component | Setting |
 | --- | --- |
@@ -238,7 +238,7 @@ Defaults from `cloud/infra/terraform/modules/dataplane/gcp_base/`:
 | Master CIDR | `/28` (GCP requires exactly /28) |
 | Cloud NAT | Dynamic Port Allocation enabled |
 
-This is the union-managed BYOC starting point. The GCP-published per-cluster maxima are 15,000 nodes and 250,000 pods; if you expect a single cluster to scale beyond a few hundred nodes, enlarge the pods secondary range to `/14` (200,000 IPs) up front — changing the pod range on a running nodepool forces nodepool recreation.
+The GCP-published per-cluster maxima are 15,000 nodes and 250,000 pods; if you expect a single cluster to scale beyond a few hundred nodes, enlarge the pods secondary range to `/14` (200,000 IPs) up front — changing the pod range on a running nodepool forces nodepool recreation.
 
 GKE assigns each node a CIDR block sized to fit at least `2 × max_pods_per_node` IPs, rounded up to the next power-of-2 block (per [Google's published formula](https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr)). The [Pod density and IP allocation](#pod-density-and-ip-allocation) section under Scaling constraints has the per-node math and a pool-aware tuning strategy.
 
@@ -626,7 +626,7 @@ Setting `max_pods_per_node = 32` yields a 4× headroom improvement over the Stan
 | Dedicated monitoring (Prometheus, ClickHouse) | 10–15 stable | **16** | /27 (32 IPs) |
 | GPU pool (1–8 GPUs/node, typically 1 pod/node) | 1–4 | **8** | /28 (16 IPs) |
 
-The selfmanaged module sets the cluster-wide default to 32 (matches the worker pool); override per-pool where it pays off. The BYOC dataplane module already follows this pattern (`dedicated_nodepool_max_pods_per_node = 16` for Prometheus / ClickHouse). Combined with a `/14` pods CIDR, this lifts the practical node ceiling beyond what a single cluster-wide value can deliver.
+Set the cluster-wide `max_pods_per_node` to match the worker pool (the heaviest user), then override per-nodepool for system / monitoring / GPU pools using GKE's per-nodepool `max-pods-per-node` flag. Combined with a `/14` pods CIDR, this lifts the practical node ceiling beyond what a single cluster-wide value can deliver.
 
 {{< /markdown >}}
 {{< /tab >}}
