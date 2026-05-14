@@ -21,6 +21,11 @@ Flyte supports various types of apps:
 - **UI dashboard apps**: Interactive web dashboards and data visualization tools like Streamlit and Gradio
 - **Web API apps**: REST APIs, webhooks, and backend services like FastAPI and Flask
 - **Model serving apps**: High-performance LLM serving with vLLM and SGLang
+{{< variant union >}}
+{{< markdown >}}
+- **Connector apps**: Long-running services that delegate task execution to external systems
+{{< /markdown >}}
+{{< /variant >}}
 
 For ready-to-use environments for these frameworks, see [Native app integrations](../native-app-integrations/_index).
 
@@ -45,3 +50,8 @@ Apps and tasks can interact in various ways: calling each other via HTTP, webhoo
 - [**WebSocket apps**](./websocket-apps): Real-time, bidirectional communication with WebSockets
 - [**Browser apps**](./browser-apps): User-facing dashboards and UIs
 - [**Secret-based authentication**](./secret-based-authentication): Authenticate FastAPI apps using Flyte secrets
+{{< variant union >}}
+{{< markdown >}}
+- [**Connector app**](./connector-app): Deploy a connector as a long-running service
+{{< /markdown >}}
+{{< /variant >}}
