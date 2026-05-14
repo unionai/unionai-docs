@@ -56,17 +56,22 @@ Create a **separate app registration** in Entra ID for the identity service. Thi
 
 ### Step 2: Configure API permissions
 
-The identity service needs **Application permissions** (not Delegated) to read users and applications:
+The identity service needs **Application permissions** (not Delegated) to manage users, groups, and applications:
 
 1. Go to **API permissions** → **Add a permission** → **Microsoft Graph** → **Application permissions**
 2. Add the following permissions:
-   - `User.Read.All` — read all user profiles
-   - `Application.Read.All` — read all application registrations
-   - `GroupMember.Read.All` — read group memberships (optional, for group-based filtering)
+   - `User.Read.All` — read all user profiles for the User Management page
+   - `GroupMember.ReadWrite.All` — list and manage group members (required when `groupId` is configured)
+   - `Application.ReadWrite.All` — create, update, and delete OAuth application registrations
 3. Click **Grant admin consent for \<your-tenant\>**
 
 > [!WARNING]
-> These are high-privilege permissions. The identity service only reads data — it never modifies users or applications — but you should review your organization's security policies before granting admin consent.
+> These are high-privilege permissions that include write access. The identity service uses these permissions to:
+> - Read user profiles for display in User Management
+> - Manage group memberships when group-based access is configured
+> - Create and manage OAuth application registrations for new service accounts
+>
+> Review your organization's security policies before granting admin consent. If your organization cannot grant write permissions, the identity service will have reduced functionality.
 
 ### Step 3: Create a client secret
 
