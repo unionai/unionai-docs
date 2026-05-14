@@ -1,6 +1,6 @@
 ---
 title: Secret
-version: 2.2.4
+version: 2.3.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -52,6 +52,7 @@ def create(
     name: str,
     value: Union[str, bytes],
     type: SecretTypes,
+    cluster_pool: str | None,
 )
 ```
 Create a new secret.
@@ -64,6 +65,7 @@ Create a new secret.
 | `name` | `str` | The name of the secret. |
 | `value` | `Union[str, bytes]` | The secret value as a string or bytes. |
 | `type` | `SecretTypes` | Type of secret - either "regular" or "image_pull". |
+| `cluster_pool` | `str \| None` | Optional cluster pool name. When set, the secret is scoped to the cluster pool and project/domain must not be set. |
 
 ### delete()
 
@@ -76,6 +78,7 @@ Create a new secret.
 def delete(
     cls,
     name,
+    cluster_pool: str | None,
 )
 ```
 Delete a secret by name.
@@ -86,6 +89,7 @@ Delete a secret by name.
 |-|-|-|
 | `cls` |  | |
 | `name` |  | The name of the secret to delete. |
+| `cluster_pool` | `str \| None` | Optional cluster pool name. When set, the secret is looked up in the cluster pool scope and project/domain must not be set. |
 
 ### get()
 
@@ -98,6 +102,7 @@ Delete a secret by name.
 def get(
     cls,
     name: str,
+    cluster_pool: str | None,
 ) -> Secret
 ```
 Retrieve a secret by name.
@@ -108,6 +113,7 @@ Retrieve a secret by name.
 |-|-|-|
 | `cls` |  | |
 | `name` | `str` | The name of the secret to retrieve. |
+| `cluster_pool` | `str \| None` | Optional cluster pool name. When set, the secret is looked up in the cluster pool scope and project/domain must not be set. |
 
 **Returns:** A Secret object.
 
@@ -122,6 +128,7 @@ Retrieve a secret by name.
 def listall(
     cls,
     limit: int,
+    cluster_pool: str | None,
 ) -> AsyncIterator[Secret]
 ```
 List all secrets in the current project and domain.
@@ -132,6 +139,7 @@ List all secrets in the current project and domain.
 |-|-|-|
 | `cls` |  | |
 | `limit` | `int` | Maximum number of secrets to return per page. |
+| `cluster_pool` | `str \| None` | Optional cluster pool name. When set, secrets are listed from the cluster pool scope and project/domain must not be set. |
 
 **Returns:** An async iterator of Secret objects.
 

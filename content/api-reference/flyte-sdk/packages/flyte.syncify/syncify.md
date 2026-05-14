@@ -1,6 +1,6 @@
 ---
 title: Syncify
-version: 2.2.4
+version: 2.3.1
 variants: +flyte +union
 layout: py_api
 ---

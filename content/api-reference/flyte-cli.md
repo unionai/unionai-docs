@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.2.4
+version: 2.3.1
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -493,6 +493,7 @@ $ flyte create secret my_secret --type image_pull --from-docker-config --registr
 | `--registry` | `text` | `Sentinel.UNSET` | Registry hostname (e.g., ghcr.io, docker.io) for explicit credentials (only for --type image_pull). Mutually exclusive with value, from_file, from_docker_config. |
 | `--username` | `text` | `Sentinel.UNSET` | Username for the registry (only with --registry). |
 | `--password` | `text` | `Sentinel.UNSET` | Password for the registry (only with --registry). If not provided, will prompt. |
+| `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with --project and --domain. Mutually exclusive with project, domain. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -685,6 +686,7 @@ Delete a secret. The name of the secret is required.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with --project and --domain. Mutually exclusive with project, domain. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -1272,6 +1274,7 @@ Get a list of all secrets, or details of a specific secret by name.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with --project and --domain. Mutually exclusive with project, domain. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
