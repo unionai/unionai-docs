@@ -145,19 +145,11 @@ uv run main.py
 
 During development you only rebuild the base image when the Dockerfile changes. Code changes are free — they travel as a tarball at runtime.
 
-### Base image USER requirements
+### Base image USER and WORKDIR requirements
 
-When the remote builder layers on top of your base image, the resulting container runs as whatever `USER` your base image declares. The Flyte runtime extracts the code bundle into the container's `WORKDIR` at the start of every task — so that user must be able to read, write, and traverse it.
+The remote builder honors whatever `USER` and `WORKDIR` your base image declares — it does not override them. The runtime extracts the code bundle into the container's `WORKDIR` at the start of every task, so the resolved `USER` needs to be able to read, write, and traverse that directory.
 
-If your base image declares a non-root `USER` (for example `nonroot` at uid `65532`, common on hardened UBI / distroless / chainguard images) **and** the `WORKDIR` is owned by `root` with restrictive permissions, the very first runtime step fails with:
-
-```text
-PermissionError: [Errno 13] Permission denied
-```
-
-from `flyte._internal.runtime.entrypoints.download_code_bundle`. The build itself succeeds — the failure shows up only when the task runs.
-
-#### Required permissions
+#### What the runtime needs
 
 The container's working directory must satisfy all three for the resolved `USER`:
 
@@ -167,11 +159,46 @@ The container's working directory must satisfy all three for the resolved `USER`
 | `+w` (write) | `tar -xvf` writes the extracted bundle here. |
 | `+r` (read) | Subsequent imports resolve from this directory. |
 
-`/tmp` is already world-writable everywhere, so no special handling is needed for it.
+A base image with `USER root` (or no `USER` declared) trivially satisfies this. Hardened bases that ship a non-root `USER` (UBI `nonroot` uid `65532`, distroless `nonroot`, chainguard `nonroot`) are fine **as long as their `WORKDIR` is a path that user owns** — for example `/home/nonroot`, `/app`, or `/workspace`. The trap is when a hardened base image leaves `WORKDIR` empty or set to `/root`: that path is typically owned by `root` with mode `0700`, and the non-root `USER` cannot use it.
 
-#### Workaround
+#### What you'll see
 
-Use `.with_commands()` to grant the base image's runtime user access to the working directory:
+The remote builder logs the resolved runtime identity at the end of every build:
+
+```text
+Built image runtime identity: USER="nonroot" WORKDIR="/home/nonroot" (source: custom base "registry.example.com/ubi9-minimal/python3.13-runtime:3.13.0")
+```
+
+If your base image hits the bad combination, the builder additionally emits a warning naming the problem and pointing here. The runtime also has a safety net: when the configured `WORKDIR` is unwritable, it reroutes the code bundle to `/tmp/flyte-bundle/<version>` and continues. You'll see this line in the task pod logs:
+
+```text
+CWD /root not writable for current user; rerouting code bundle to /tmp/flyte-bundle/<version>
+```
+
+That's a strong signal that your base image's `USER`/`WORKDIR` pair is wrong and should be fixed at the source.
+
+#### Inspecting your base image
+
+`docker inspect <your-image>` shows the two fields you need to reconcile:
+
+```json
+"Config": {
+  "User": "nonroot",
+  "WorkingDir": "/root",
+  ...
+}
+```
+
+In that example, `User` is non-root but `WorkingDir` is `/root` — the runtime warning will fire. Fix the base image's Dockerfile:
+
+```dockerfile
+USER nonroot
+WORKDIR /home/nonroot
+```
+
+#### If you cannot modify the base image
+
+If you do not control the base image, layer a `WORKDIR` fix into the Flyte build with `.with_commands()`:
 
 ```python
 env = flyte.TaskEnvironment(
@@ -184,28 +211,13 @@ env = flyte.TaskEnvironment(
         extendable=True,
     )
     .with_pip_packages("flyte")
-    # Grant the base image's non-root USER (uid 65532 here) access to the working directory.
-    # Look up the uid:gid your base image declares — `docker inspect <image> --format '{{.Config.User}}'`
-    # or `id` inside a one-shot container.
+    # Make the base image's WORKDIR writable for the declared USER.
+    # Look up the uid:gid your base image uses with `docker inspect <image> --format '{{.Config.User}}'`.
     .with_commands(["chmod 0755 /root && chown 65532:65532 /root"]),
 )
 ```
 
-If your base image uses a different working directory (for example `/app` or `/workspace`), substitute that path. If it uses a username instead of a numeric uid, resolve it first via `getent passwd <name>` inside the image.
-
-#### Verifying
-
-`docker inspect <your-image>` shows both fields you need to reconcile:
-
-```json
-"Config": {
-  "User": "nonroot",
-  "WorkingDir": "/root",
-  ...
-}
-```
-
-If `User` is empty or `root` (`0`), no workaround is needed.
+If your base image uses a different working directory (for example `/app`), substitute that path. If it uses a username instead of a numeric uid, resolve it via `getent passwd <name>` inside the image first.
 
 ## Decision matrix
 
@@ -215,5 +227,5 @@ If `User` is empty or `root` (`0`), no workaround is needed.
 | Teams hand off a base image (no Flyte knowledge required) | Remote Builder |
 | Code change should not require image rebuild | Remote Builder + `with_code_bundle()` |
 | Base has non-standard Python location | `.with_commands()` to fix PATH before Flyte uses it |
-| Base runs as a non-root `USER` | `.with_commands()` to chown the `WORKDIR` (see above) |
+| Base runs as a non-root `USER` | Make sure base's `WORKDIR` is owned by that `USER`; if not, use `.with_commands()` to fix it (see above) |
 | Production deploy, self-contained containers | `copy_style="none"` in `flyte.deploy()` |
