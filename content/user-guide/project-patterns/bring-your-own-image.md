@@ -145,6 +145,68 @@ uv run main.py
 
 During development you only rebuild the base image when the Dockerfile changes. Code changes are free — they travel as a tarball at runtime.
 
+### Base image USER requirements
+
+When the remote builder layers on top of your base image, the resulting container runs as whatever `USER` your base image declares. The Flyte runtime extracts the code bundle into the container's `WORKDIR` at the start of every task — so that user must be able to read, write, and traverse it.
+
+If your base image declares a non-root `USER` (for example `nonroot` at uid `65532`, common on hardened UBI / distroless / chainguard images) **and** the `WORKDIR` is owned by `root` with restrictive permissions, the very first runtime step fails with:
+
+```text
+PermissionError: [Errno 13] Permission denied
+```
+
+from `flyte._internal.runtime.entrypoints.download_code_bundle`. The build itself succeeds — the failure shows up only when the task runs.
+
+#### Required permissions
+
+The container's working directory must satisfy all three for the resolved `USER`:
+
+| Permission | Why |
+|---|---|
+| `+x` (traverse) | The runtime stats the bundle path before extracting. |
+| `+w` (write) | `tar -xvf` writes the extracted bundle here. |
+| `+r` (read) | Subsequent imports resolve from this directory. |
+
+`/tmp` is already world-writable everywhere, so no special handling is needed for it.
+
+#### Workaround
+
+Use `.with_commands()` to grant the base image's runtime user access to the working directory:
+
+```python
+env = flyte.TaskEnvironment(
+    name="hello_world_private_artifactory",
+    image=flyte.Image.from_base("registry.example.com/ubi9-minimal/python3.13-runtime:3.13.0")
+    .clone(
+        registry="registry.example.com/team-images",
+        registry_secret="image-builder-secret",
+        name="hello-world",
+        extendable=True,
+    )
+    .with_pip_packages("flyte")
+    # Grant the base image's non-root USER (uid 65532 here) access to the working directory.
+    # Look up the uid:gid your base image declares — `docker inspect <image> --format '{{.Config.User}}'`
+    # or `id` inside a one-shot container.
+    .with_commands(["chmod 0755 /root && chown 65532:65532 /root"]),
+)
+```
+
+If your base image uses a different working directory (for example `/app` or `/workspace`), substitute that path. If it uses a username instead of a numeric uid, resolve it first via `getent passwd <name>` inside the image.
+
+#### Verifying
+
+`docker inspect <your-image>` shows both fields you need to reconcile:
+
+```json
+"Config": {
+  "User": "nonroot",
+  "WorkingDir": "/root",
+  ...
+}
+```
+
+If `User` is empty or `root` (`0`), no workaround is needed.
+
 ## Decision matrix
 
 | Scenario | Pattern |
@@ -153,4 +215,5 @@ During development you only rebuild the base image when the Dockerfile changes. 
 | Teams hand off a base image (no Flyte knowledge required) | Remote Builder |
 | Code change should not require image rebuild | Remote Builder + `with_code_bundle()` |
 | Base has non-standard Python location | `.with_commands()` to fix PATH before Flyte uses it |
+| Base runs as a non-root `USER` | `.with_commands()` to chown the `WORKDIR` (see above) |
 | Production deploy, self-contained containers | `copy_style="none"` in `flyte.deploy()` |
