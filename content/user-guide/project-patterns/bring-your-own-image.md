@@ -166,16 +166,16 @@ A base image with `USER root` (or no `USER` declared) trivially satisfies this. 
 The remote builder logs the resolved runtime identity at the end of every build:
 
 ```text
-Built image runtime identity: USER="nonroot" WORKDIR="/home/nonroot" (source: custom base "registry.example.com/ubi9-minimal/python3.13-runtime:3.13.0")
+Built image runtime identity: USER="nonroot" WORKDIR="/home/nonroot" (base: registry.example.com/ubi9-minimal/python3.13-runtime:3.13.0)
 ```
 
-If your base image hits the bad combination, the builder additionally emits a warning naming the problem and pointing here. The runtime also has a safety net: when the configured `WORKDIR` is unwritable, it reroutes the code bundle to `/tmp/flyte-bundle/<version>` and continues. You'll see this line in the task pod logs:
+If the resolved `USER` and `WORKDIR` are incompatible (non-root `USER` with `WORKDIR` set to `""`, `/`, or `/root`), the builder emits a warning naming the problem and pointing here. **Fix the base image when you see this warning.** The runtime will not crash on the broken combination, but that's a fail-safe to keep workflows running while you fix the image — not a supported configuration. If you ignore the warning, you'll also see this line in your task pod logs at every task start:
 
 ```text
 CWD /root not writable for current user; rerouting code bundle to /tmp/flyte-bundle/<version>
 ```
 
-That's a strong signal that your base image's `USER`/`WORKDIR` pair is wrong and should be fixed at the source.
+Treat that line as an unfixed-bug indicator. The platform behavior around it may change.
 
 #### Inspecting your base image
 
