@@ -169,13 +169,13 @@ The remote builder logs the resolved runtime identity at the end of every build:
 Built image runtime identity: USER="nonroot" WORKDIR="/home/nonroot" (base: registry.example.com/ubi9-minimal/python3.13-runtime:3.13.0)
 ```
 
-If the resolved `USER` and `WORKDIR` are incompatible (non-root `USER` with `WORKDIR` set to `""`, `/`, or `/root`), the builder emits a warning naming the problem and pointing here. **Fix the base image when you see this warning.** The runtime will not crash on the broken combination, but that's a fail-safe to keep workflows running while you fix the image — not a supported configuration. If you ignore the warning, you'll also see this line in your task pod logs at every task start:
+If the resolved `USER` and `WORKDIR` are incompatible (non-root `USER` with `WORKDIR` set to `""`, `/`, or `/root`), the builder emits a warning naming the problem and pointing here. **Fix the base image when you see this warning.** If you ignore it, your tasks will fail at start with:
 
 ```text
-CWD /root not writable for current user; rerouting code bundle to /tmp/flyte-bundle/<version>
+PermissionError: [Errno 13] Permission denied
 ```
 
-Treat that line as an unfixed-bug indicator. The platform behavior around it may change.
+inside `flyte._internal.runtime.entrypoints.download_code_bundle`. The runtime does not paper over the misconfiguration — there is no silent fallback path.
 
 #### Inspecting your base image
 
