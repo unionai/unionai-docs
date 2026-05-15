@@ -1,6 +1,6 @@
 ---
 title: Configuration
-weight: 8
+weight: 10
 variants: -flyte +union
 llm_readable_bundle: true
 ---
