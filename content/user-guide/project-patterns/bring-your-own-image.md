@@ -192,46 +192,59 @@ inside `flyte._internal.runtime.entrypoints.download_code_bundle`. The runtime d
 In that example, `User` is non-root but `WorkingDir` is `/root` — the runtime warning will fire. Fix the base image's Dockerfile so the runtime `USER` actually owns its `WORKDIR`.
 
 > [!WARNING]
-> **`WORKDIR` alone is not enough.** Docker's `WORKDIR` directive will create the directory if it doesn't exist — but it always creates it as `root:root` mode `0755`, regardless of any preceding `USER` directive. So this *looks* correct but **still fails**:
+> **`USER` must come *before* `WORKDIR` in your Dockerfile.** BuildKit's `WORKDIR` directive creates the directory if it doesn't exist, and it inherits ownership from the *currently active `USER`*. So this works:
 >
 > ```dockerfile
 > USER nonroot
-> WORKDIR /home/nonroot   # Docker creates /home/nonroot as root:root 0755
->                         # nonroot can read+traverse but NOT write → still PermissionError
+> WORKDIR /home/nonroot      # ✅ /home/nonroot created as nonroot:nonroot
 > ```
 >
-> The OCI config will show `WorkingDir: "/home/nonroot"` (so the build-time WARN won't fire), but at runtime the `nonroot` user can't write the code bundle into a directory it doesn't own.
+> But these silently produce a root-owned WORKDIR that the runtime can't write to:
+>
+> ```dockerfile
+> WORKDIR /home/nonroot      # ❌ created as root:root (no USER set yet)
+> USER nonroot
+> ```
+>
+> ```dockerfile
+> WORKDIR /home/nonroot      # ❌ created as root:root (current USER is still root)
+> RUN useradd -u 65532 nonroot
+> USER nonroot
+> ```
+>
+> In both broken cases the OCI config shows `WorkingDir: "/home/nonroot"` (so the build-time WARN won't fire — the path itself isn't on the blocklist), but at runtime the resolved `nonroot` user can't write the code bundle into a directory it doesn't own.
 
-Three patterns that *do* work:
+Three patterns that work — pick whichever fits your base:
 
 ```dockerfile
-# Pattern A — useradd -m pre-creates /home/<user> with the right ownership
+# Pattern A — useradd -m pre-creates /home/<user> with the right ownership,
+# then USER + WORKDIR is a clean no-op on the existing dir.
 RUN useradd -u 65532 -g 65532 -m nonroot
 USER nonroot
 WORKDIR /home/nonroot
 ```
 
 ```dockerfile
-# Pattern B — explicit chown
+# Pattern B — explicit chown, then USER + WORKDIR on an existing dir.
 RUN mkdir -p /work && chown nonroot:nonroot /work
 USER nonroot
 WORKDIR /work
 ```
 
 ```dockerfile
-# Pattern C — install -d, single command
-RUN install -d -o nonroot -g nonroot /work
+# Pattern C — rely on USER-before-WORKDIR ownership inheritance for a path
+# that doesn't exist in the base. WORKDIR creates /work owned by nonroot.
 USER nonroot
 WORKDIR /work
 ```
 
-To verify a base after building:
+To verify a built image's WORKDIR ownership before deploying:
 
 ```bash
 docker run --rm --entrypoint sh <your-image> -c 'id; pwd; ls -ld .'
 ```
 
-You should see the listed directory's owner match the `id` user. If owner is `root` and you're not running as root, the runtime cannot write there.
+The `.` line should show the directory's owner matching the `id` user. If owner is `root` and you're not running as root, the runtime cannot write there — re-order your Dockerfile so `USER` comes before `WORKDIR`.
 
 #### If you cannot modify the base image
 
