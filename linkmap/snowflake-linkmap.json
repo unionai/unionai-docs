@@ -16,10 +16,7 @@
   },
   "methods": {
     "flytekitplugins.snowflake.connector.construct_query_link": "/api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#construct_query_link",
-    "construct_query_link": "/api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#construct_query_link",
     "flytekitplugins.snowflake.connector.get_connection": "/api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#get_connection",
-    "get_connection": "/api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#get_connection",
-    "flytekitplugins.snowflake.connector.get_private_key": "/api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#get_private_key",
-    "get_private_key": "/api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#get_private_key"
+    "flytekitplugins.snowflake.connector.get_private_key": "/api-reference/plugins/snowflake/packages/flytekitplugins.snowflake.connector/#get_private_key"
   }
 }

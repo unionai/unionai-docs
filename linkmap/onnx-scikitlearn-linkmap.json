@@ -13,8 +13,6 @@
   },
   "methods": {
     "flytekitplugins.onnxscikitlearn.schema.extract_config": "/api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn.schema/#extract_config",
-    "extract_config": "/api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn.schema/#extract_config",
-    "flytekitplugins.onnxscikitlearn.schema.to_onnx": "/api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn.schema/#to_onnx",
-    "to_onnx": "/api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn.schema/#to_onnx"
+    "flytekitplugins.onnxscikitlearn.schema.to_onnx": "/api-reference/plugins/onnx-scikitlearn/packages/flytekitplugins.onnxscikitlearn.schema/#to_onnx"
   }
 }

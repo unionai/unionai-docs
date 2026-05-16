@@ -7,7 +7,6 @@
     "Optimizer": "/api-reference/plugins/optuna/packages/flytekitplugins.optuna/#flytekitpluginsoptunaoptimizer"
   },
   "methods": {
-    "flytekitplugins.optuna.optimize": "/api-reference/plugins/optuna/packages/flytekitplugins.optuna/#optimize",
-    "optimize": "/api-reference/plugins/optuna/packages/flytekitplugins.optuna/#optimize"
+    "flytekitplugins.optuna.optimize": "/api-reference/plugins/optuna/packages/flytekitplugins.optuna/#optimize"
   }
 }

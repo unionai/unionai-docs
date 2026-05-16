@@ -19,7 +19,6 @@
     "AirflowTaskResolver": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.task/#flytekitpluginsairflowtaskairflowtaskresolver"
   },
   "methods": {
-    "flytekitplugins.airflow.connector.get_log_links": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.connector/#get_log_links",
-    "get_log_links": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.connector/#get_log_links"
+    "flytekitplugins.airflow.connector.get_log_links": "/api-reference/plugins/airflow/packages/flytekitplugins.airflow.connector/#get_log_links"
   }
 }

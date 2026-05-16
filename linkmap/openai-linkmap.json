@@ -38,7 +38,6 @@
     "ChatGPTTask": "/api-reference/plugins/openai/packages/flytekitplugins.openai.chatgpt.task/#flytekitpluginsopenaichatgpttaskchatgpttask"
   },
   "methods": {
-    "flytekitplugins.openai.batch.workflow.create_batch": "/api-reference/plugins/openai/packages/flytekitplugins.openai.batch.workflow/#create_batch",
-    "create_batch": "/api-reference/plugins/openai/packages/flytekitplugins.openai.batch.workflow/#create_batch"
+    "flytekitplugins.openai.batch.workflow.create_batch": "/api-reference/plugins/openai/packages/flytekitplugins.openai.batch.workflow/#create_batch"
   }
 }

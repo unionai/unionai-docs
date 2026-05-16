@@ -17,10 +17,7 @@
   },
   "methods": {
     "flytekitplugins.mmcloud.utils.async_check_output": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.utils/#async_check_output",
-    "async_check_output": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.utils/#async_check_output",
     "flytekitplugins.mmcloud.utils.flyte_to_mmcloud_resources": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.utils/#flyte_to_mmcloud_resources",
-    "flyte_to_mmcloud_resources": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.utils/#flyte_to_mmcloud_resources",
-    "flytekitplugins.mmcloud.utils.mmcloud_status_to_flyte_phase": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.utils/#mmcloud_status_to_flyte_phase",
-    "mmcloud_status_to_flyte_phase": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.utils/#mmcloud_status_to_flyte_phase"
+    "flytekitplugins.mmcloud.utils.mmcloud_status_to_flyte_phase": "/api-reference/plugins/mmcloud/packages/flytekitplugins.mmcloud.utils/#mmcloud_status_to_flyte_phase"
   }
 }
