@@ -29,12 +29,8 @@
   },
   "methods": {
     "flytekitplugins.kfpytorch.error_handling.create_recoverable_error_file": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.error_handling/#create_recoverable_error_file",
-    "create_recoverable_error_file": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.error_handling/#create_recoverable_error_file",
     "flytekitplugins.kfpytorch.error_handling.is_recoverable_worker_error": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.error_handling/#is_recoverable_worker_error",
-    "is_recoverable_worker_error": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.error_handling/#is_recoverable_worker_error",
     "flytekitplugins.kfpytorch.pod_template.add_shared_mem_volume_to_pod_template": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.pod_template/#add_shared_mem_volume_to_pod_template",
-    "add_shared_mem_volume_to_pod_template": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.pod_template/#add_shared_mem_volume_to_pod_template",
-    "flytekitplugins.kfpytorch.task.spawn_helper": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#spawn_helper",
-    "spawn_helper": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#spawn_helper"
+    "flytekitplugins.kfpytorch.task.spawn_helper": "/api-reference/plugins/kf-pytorch/packages/flytekitplugins.kfpytorch.task/#spawn_helper"
   }
 }
