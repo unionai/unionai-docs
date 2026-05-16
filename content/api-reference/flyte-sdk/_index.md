@@ -1,6 +1,6 @@
 ---
 title: Flyte SDK
-version: 2.3.1
+version: 2.3.2
 variants: +flyte +union
 layout: py_api
 weight: 4
