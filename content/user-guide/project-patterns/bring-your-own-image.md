@@ -189,12 +189,49 @@ inside `flyte._internal.runtime.entrypoints.download_code_bundle`. The runtime d
 }
 ```
 
-In that example, `User` is non-root but `WorkingDir` is `/root` — the runtime warning will fire. Fix the base image's Dockerfile:
+In that example, `User` is non-root but `WorkingDir` is `/root` — the runtime warning will fire. Fix the base image's Dockerfile so the runtime `USER` actually owns its `WORKDIR`.
+
+> [!WARNING]
+> **`WORKDIR` alone is not enough.** Docker's `WORKDIR` directive will create the directory if it doesn't exist — but it always creates it as `root:root` mode `0755`, regardless of any preceding `USER` directive. So this *looks* correct but **still fails**:
+>
+> ```dockerfile
+> USER nonroot
+> WORKDIR /home/nonroot   # Docker creates /home/nonroot as root:root 0755
+>                         # nonroot can read+traverse but NOT write → still PermissionError
+> ```
+>
+> The OCI config will show `WorkingDir: "/home/nonroot"` (so the build-time WARN won't fire), but at runtime the `nonroot` user can't write the code bundle into a directory it doesn't own.
+
+Three patterns that *do* work:
 
 ```dockerfile
+# Pattern A — useradd -m pre-creates /home/<user> with the right ownership
+RUN useradd -u 65532 -g 65532 -m nonroot
 USER nonroot
 WORKDIR /home/nonroot
 ```
+
+```dockerfile
+# Pattern B — explicit chown
+RUN mkdir -p /work && chown nonroot:nonroot /work
+USER nonroot
+WORKDIR /work
+```
+
+```dockerfile
+# Pattern C — install -d, single command
+RUN install -d -o nonroot -g nonroot /work
+USER nonroot
+WORKDIR /work
+```
+
+To verify a base after building:
+
+```bash
+docker run --rm --entrypoint sh <your-image> -c 'id; pwd; ls -ld .'
+```
+
+You should see the listed directory's owner match the `id` user. If owner is `root` and you're not running as root, the runtime cannot write there.
 
 #### If you cannot modify the base image
 
