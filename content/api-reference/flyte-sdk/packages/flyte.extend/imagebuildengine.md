@@ -1,6 +1,6 @@
 ---
 title: ImageBuildEngine
-version: 2.3.1
+version: 2.3.2
 variants: +flyte +union
 layout: py_api
 ---
