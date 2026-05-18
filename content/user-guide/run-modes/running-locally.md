@@ -105,7 +105,7 @@ The [`TaskEnvironment`](../core-concepts/task-environment) is the bridge. Locall
 {{< variant flyte >}}
 {{< markdown >}}
 
-- [**Running the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test containerized execution before deploying remotely.
+- [**Run on the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test containerized execution before deploying remotely.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -113,8 +113,8 @@ The [`TaskEnvironment`](../core-concepts/task-environment) is the bridge. Locall
 {{< variant union >}}
 {{< markdown >}}
 
-- [**Running the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test containerized execution before deploying remotely.
-- [**Running on a remote cluster**](./running-remote): Configure the CLI and SDK to run on a remote Flyte cluster.
+- [**Run on the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test containerized execution before deploying remotely.
+- [**Run on a remote cluster**](./running-remote): Configure the CLI and SDK to run on a remote Flyte cluster.
 
 {{< /markdown >}}
 {{< /variant >}}
