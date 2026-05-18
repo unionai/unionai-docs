@@ -1,12 +1,13 @@
 ---
-title: Running on the devbox
+title: Run on devbox
 weight: 5
 variants: +flyte +union
 ---
 
 {{< variant union >}}
 {{< markdown >}}
-# Running on the devbox: Demo Union.ai on your local machine
+# Run on devbox:
+# Demo Union.ai on your local machine
 
 **The Flyte 2 devbox is a great way to demo a simplified version of Union.ai on your local machine.**
 
@@ -15,7 +16,7 @@ The devbox is a lightweight local cluster that runs on your machine with Docker.
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
-# Running on the devbox
+# Run on devbox
 
 The Flyte devbox is a lightweight local cluster that runs on your machine with Docker. It gives you a full Flyte environment — including the UI, scheduler, and object store — so you can test remote execution without deploying to a real cluster.
 {{< /markdown >}}

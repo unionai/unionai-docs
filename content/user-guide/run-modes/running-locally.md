@@ -1,10 +1,10 @@
 ---
-title: Running locally
+title: Run locally
 weight: 4
 variants: +flyte +union
 ---
 
-# Running locally
+# Run locally
 
 Flyte runs locally with no cluster or Docker needed. Install the SDK, write tasks, and run them on your machine. When you're ready to scale, drop the `--local` flag and the same code runs on a remote cluster with GPUs.
 
