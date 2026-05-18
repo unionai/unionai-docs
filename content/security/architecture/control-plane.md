@@ -20,7 +20,7 @@ The control plane does not store:
 
 - **Bulk customer data payloads**: When it references such data it stores only URIs pointing to objects in the customer's object store (for example, `s3://customer-bucket/org/project/domain/run/action/output.pb`).
 
-For the full classification of what is and isn't stored in the control plane, the sensitive fields that may appear in task definitions, and how inline data (structured I/O, secret values during creation, log streams) transits control plane memory without being persisted, see [Data classification and residency](../data-protection/classification-and-residency).
+For the full classification of what is and isn't stored in the control plane and the sensitive fields that may appear in task definitions, see [Data classification and residency](../data-protection/classification-and-residency). Under Zero Trust, customer data never enters the control plane in any form -- not even transiently -- so the only sensitive content the control plane handles is what is persisted as metadata.
 
 ## Infrastructure
 

@@ -10,7 +10,7 @@ This page enumerates the principal threat scenarios considered in Union.ai's sec
 
 ## Control plane compromise
 
-A compromised control plane would expose orchestration metadata, task definitions, error messages, and inline data transiting memory during active requests. It would not expose bulk customer data, secret values, or any path to initiate connections to customer data planes. The architectural properties that limit this blast radius are described in [Two-plane separation](./architecture/two-plane-separation#blast-radius), and the full classification of what does and does not reside in the control plane is in [Data classification and residency](./data-protection/classification-and-residency).
+Under Zero Trust, a compromised control plane would expose orchestration metadata only: task definitions, run IDs, schedules, phase transitions, error messages, and the RBAC graph. It would not expose customer data of any kind -- workflow inputs and outputs, code bundles, log streams, secrets, and auxiliary UI traffic are all served directly from the data plane through the Direct-to-DataPlane tunnel and never enter the control plane in any form. The architectural properties that limit this blast radius are described in [Two-plane separation](./architecture/two-plane-separation#blast-radius), and the full classification of what does and does not reside in the control plane is in [Data classification and residency](./data-protection/classification-and-residency).
 
 ## Cross-plane network interception
 

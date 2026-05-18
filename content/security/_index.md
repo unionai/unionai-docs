@@ -18,9 +18,8 @@ The only connections between the two planes are outbound-only routes from the cu
 Consequently, no inbound firewall rules are required on the customer's network.
 
 **[Data protection](./data-protection/_index)**
-Bulk customer data items (files, DataFrames, code bundles, container images) are stored in the customer's data plane and never enter the control plane.
-Smaller inline data items (structured task inputs/outputs, secret values during creation, log streams) pass through the control plane memory only transiently. They are not persisted there.
-The control plane does persist orchestration and task metadata, but these are always encrypted at rest.
+No customer data ever transits Union.ai's control plane. Workflow inputs and outputs, code bundles, secret values, logs, reports, and auxiliary UI traffic are served directly from the customer's data plane through the Direct-to-DataPlane tunnel, with authentication and RBAC enforced by an Envoy router inside the customer's cluster.
+The control plane holds orchestration and task metadata only -- run IDs, schedules, phase transitions, task definitions, and the RBAC graph -- always encrypted at rest.
 
 **[Identity and access](./identity-and-access/_index)**
 Authentication is done via OIDC/SSO, API keys, and service accounts.
