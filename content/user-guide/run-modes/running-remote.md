@@ -1,10 +1,10 @@
 ---
-title: Running on a remote cluster
+title: Run on a remote cluster
 weight: 6
 variants: +union -flyte
 ---
 
-# Running on a remote cluster
+# Run on a remote cluster
 
 This guide covers setting up your local development environment and configuring the `flyte` CLI and SDK to connect to your Union/Flyte instance.
 
