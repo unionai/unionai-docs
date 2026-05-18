@@ -67,6 +67,8 @@ Each region has its own dedicated control plane endpoint hostname.
 
 For customers with strict egress controls, outbound traffic can be limited to Cloudflare's published CIDR blocks. These blocks can be further restricted to specific Cloudflare regions to minimize the allowed egress surface. Cloudflare publishes its IP ranges at [cloudflare.com/ips](https://www.cloudflare.com/ips/).
 
+For firewall rules that permit `cloudflared` egress while blocking all ingress, see Cloudflare's [Tunnel with firewall](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/configure-tunnels/tunnel-with-firewall/) guide.
+
 ## Communication paths
 
 All communication paths in the system use encryption. No unencrypted communication paths exist.
