@@ -1,0 +1,118 @@
+---
+title: Where your data lives
+weight: 4
+variants: +flyte +union
+description: A developer's map of what Flyte stores in the control-plane database versus the data-plane object store, and what "metadata" actually means.
+---
+
+# Where your data lives
+
+When you run a Flyte task, two stores end up with your data: a **database** in the control plane and an **object-store bucket** in the data plane. This page is the developer-facing map of which is which, and clears up the word "metadata," which Flyte uses for several unrelated things.
+
+## The two stores
+
+| | Control-plane database | Data-plane object store |
+|---|---|---|
+| **Backing tech** | Postgres | S3, GCS, or ABS bucket |
+| **What's in it** | Every record Flyte uses to *describe* your runs | Every byte of *content* that's too big to put in the database |
+| **Lifetime** | Durable; long-lived history | Durable, but you can apply lifecycle/retention rules |
+
+{{< variant union >}}
+{{< markdown >}}
+**Who manages each store** depends on your deployment model:
+
+- **Serverless** — both the control-plane database and the data-plane bucket are managed by {{< key product_name >}}.
+- **BYOC and Self-managed** — the data-plane bucket lives in your cloud account; the control-plane database is managed by {{< key product_name >}} (BYOC) or by you (Self-managed).
+{{< /markdown >}}
+{{< /variant >}}
+
+The database is the **source of truth for what executed**. The bucket is **where the actual bytes live** when those bytes are too big to inline.
+
+## What goes in the database
+
+The control-plane database holds everything Flyte needs to enumerate, schedule, and replay your work — but only the *small* values directly. Specifically:
+
+- **Registrations** — every task you've deployed, every trigger you've registered, every project and domain.
+- **Execution records** — every run, every action (task / trace / condition) inside that run, attempts, phases, timing, error messages, parent/child relationships.
+- **Schedules and triggers** — `Cron`, event triggers, and their revision history.
+- **Small input/output values** — primitives (`int`, `str`, `bool`), small JSON-serializable dataclasses, and other values that fit inline as a protobuf literal. These are stored *by value* in the database.
+- **Caches** — the cache key → output-URI mapping for `@env.task(cache=...)`.
+
+That last one matters: if your task takes an `int` and returns an `int`, those numbers are in the database, not the bucket.
+
+## What goes in the bucket
+
+Anything too large to inline gets written to the bucket, and the database stores a **pointer** (URI) to it. Specifically:
+
+- **Task inputs**, serialized as `inputs.pb` per run.
+- **Task outputs**, serialized as `outputs.pb` per attempt.
+- **Offloaded values** — `flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, pickled objects, models, anything large.
+- **Decks** — the HTML reports your task renders.
+- **Trace checkpoints** — used by `@flyte.trace` to resume partial work.
+- **Fast-registered code bundles** — what `flyte deploy` and `flyte run --copy-style all` upload so the cluster can run your local Python.
+- **Image-build contexts** — when {{< key product_name >}} builds an image from an `Image.from_uv_script(...)` or similar.
+
+The layout under your bucket is `<project>/<domain>/<run-name>/...`, with per-action subprefixes for outputs / Decks / checkpoints. You don't typically need to know the exact paths; you do need to know that **everything above lives behind one configured bucket prefix**, addressable by `<project>/<domain>/<run>/...`.
+
+## What "metadata" means
+
+The word "metadata" appears in several places and means a different thing each time. The two senses that matter for developers:
+
+### 1. "Metadata" as in the control-plane database (Flyte's usage)
+
+When Flyte documentation says **"metadata is preserved"** or **"metadata lives in the control plane,"** it means the database records above: registrations, run history, status, small literal values. It does **not** mean "the contents of the bucket."
+
+This is the sense most relevant to you: the database is durable, and losing the bucket does not lose your execution history — it loses the *large values* those history records pointed at.
+
+### 2. "Metadata bucket" (a deployment/ops term you may see)
+
+The Helm chart and some operational guides refer to a **"metadata bucket"** or `metadataContainer`. **This is a legacy name.** The bucket it refers to does *not* hold the database-style metadata above — it holds `inputs.pb`, `outputs.pb`, Decks, checkpoints, code bundles, and offloaded data. In other words, it holds exactly the "bucket" contents listed in the previous section.
+
+If you see "metadata bucket" in an ops context, read it as **"the data-plane object-store bucket."** The naming is unfortunate; the contents are what you'd expect from a data bucket.
+
+You can largely ignore other appearances of the word in API surfaces (`TaskMetadata`, `ActionMetadata`, etc.) — those are small property bags on task and action protos and don't change where your data is stored.
+
+## Per-run customization: `raw_data_path`
+
+By default, offloaded values (`File`, `Dir`, `DataFrame`, checkpoints) land alongside everything else under the deployment's configured bucket prefix. You can route them to a different prefix — including a different bucket entirely — for a single run:
+
+```python
+import flyte
+
+flyte.init_from_config()
+
+run = flyte.with_runcontext(
+    raw_data_path="s3://my-other-bucket/some/prefix",
+).run(my_task, x=1)
+```
+
+This is the supported way to send a sensitive run to an isolated bucket, point at a bucket with different lifecycle rules, or otherwise route offloaded data per run. The `inputs.pb` / `outputs.pb` themselves still land in the deployment's bucket; only the *raw* offloaded contents move.
+
+See [Run context](../task-deployment/run-context) for the full set of `with_runcontext` options.
+
+## What happens if the bucket is purged
+
+If a retention rule deletes objects out of the bucket, the database records that pointed at them are **not** deleted — but their pointers now dangle. Concretely:
+
+- Execution history, status, timing, structure: **still visible** in the UI. They come from the database.
+- Input/output **previews of offloaded values, Deck views, artifact payloads**: show "not found" if the underlying bytes were purged.
+- **Cache hits** for purged outputs: the cached pointer is dead, the task re-executes.
+- **Trace resumption**: not possible if the checkpoint blob is gone.
+- **Re-running an old execution**: fails if any input it needs has been purged.
+
+This is the trade-off behind retention policies: you save storage cost at the price of being able to inspect or re-run old executions whose offloaded values have aged out. New executions are unaffected.
+
+Lifecycle / retention rules should be scoped to the offloaded-data prefixes, **not** applied bucket-wide — `inputs.pb` and `outputs.pb` are needed for in-flight executions to complete, so purging them mid-run breaks things.
+
+{{< variant union >}}
+{{< markdown >}}
+For how retention policies are configured in your deployment, see [BYOC data retention policy](../../deployment/byoc/data-retention-policy) or [Self-managed data retention](../../deployment/selfmanaged/configuration/data-retention).
+{{< /markdown >}}
+{{< /variant >}}
+
+## The short version
+
+- **Database** = the system of record. Holds registrations, run history, schedules, and small inline values.
+- **Bucket** = the byte store. Holds large inputs/outputs, Decks, checkpoints, code bundles, and offloaded `File` / `Dir` / `DataFrame` contents.
+- **"Metadata" in docs** usually means database-side records. **"Metadata bucket" in Helm/ops** is legacy naming for the data-plane bucket — it does *not* hold database metadata.
+- **`flyte.with_runcontext(raw_data_path=...)`** is your knob to send offloaded data elsewhere per run.

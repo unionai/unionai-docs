@@ -31,7 +31,7 @@ For how each of these pathways handles data in transit, see [Data flow](../data-
 
 ## Object store layout
 
-Each data plane cluster uses two object store buckets: a **metadata bucket** for execution metadata and a **fast-registration bucket** for rapid code deployment artifacts. Within these buckets, objects are organized by namespace: `org/project/domain/run-name/action-name/`. This layout provides isolation: IAM policies and bucket policies can scope access to specific organizational boundaries.
+Each data plane cluster is configured with one or more object-store buckets in the customer's cloud account, accessed via a configurable storage prefix. Within that prefix, objects are organized by namespace: `<project>/<domain>/<run-name>/<action-name>/...` for per-run execution artifacts (task inputs, outputs, Decks, checkpoints), with sibling prefixes for offloaded inputs and SDK-uploaded code bundles and image-build contexts. This layout provides isolation: IAM policies and bucket policies can scope access to specific organizational boundaries. For the developer-facing map of what the bucket contains versus what lives in the control-plane database, see [Where your data lives](../../user-guide/core-concepts/where-data-lives).
 
 ## Kubernetes security
 

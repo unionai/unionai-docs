@@ -17,6 +17,9 @@ Every data type in the Union.ai platform is classified by its residency and acce
 | Orchestration Metadata | Task definitions (including env vars, default values, SQL, pod specs), run/action state, error messages, trigger specs | Control plane databases (AES-256/KMS) | TLS (API) + TLS (gRPC events) | **Yes**: read from DB into memory for API responses |
 | Platform Metadata | User identity/RBAC records, cluster records | Control plane databases (AES-256/KMS) | TLS (API) | **Yes**: read from DB into memory for API responses |
 
+> [!NOTE] On the word "metadata"
+> In this section "metadata" means **control-plane database records** — task definitions, run state, identity records, and similar. Some deployment and Helm-chart material refers to a "metadata bucket" or `metadataContainer`; that is a legacy term for the data-plane object-store bucket, which holds task inputs, outputs, Decks, checkpoints, and code bundles. It does **not** hold any of the orchestration or platform metadata listed in the table above. For the developer-facing map of which is which, see [Where your data lives](../../user-guide/core-concepts/where-data-lives).
+
 **Bulk customer data** (files, directories, DataFrames, code bundles, container images, and reports) is stored exclusively in the customer's infrastructure and never enters the control plane. These objects are accessed via presigned URLs.
 
 **Inline customer data** (structured task inputs and outputs, secret values during creation/update, and execution log streams) is stored at rest in the customer's infrastructure but transits control plane memory during request processing. This data is encrypted in transit (TLS + Cloudflare Tunnel), exists as plaintext in control plane memory only for the duration of each request, and is not persisted, cached, or logged in the control plane.
