@@ -41,7 +41,7 @@ Finally, we configure flyte and invoke the `main` task:
 `retries=N` covers failures of *your task* — exceptions, non-zero exits, timeouts you've configured.
 Failures caused by the underlying infrastructure (a node disappearing, ephemeral storage running out, a spot instance getting preempted, and so on) are handled separately. The platform retries these on its own and they do not consume your `retries=N` budget.
 
-The platform does, however, eventually give up — a persistent infrastructure problem will still terminate the task. You don't configure this from Python; it's a platform-level concern.
+The platform does eventually give up, but only after many retries — a persistent infrastructure problem can churn for a while before the run is terminated. If you spot a task repeatedly failing on the same infrastructure error, abort it manually rather than waiting for the system to give up on its own. You don't configure the system retry budget from Python; it's a platform-level concern.
 
 For workloads on spot/preemptible compute, see also [Spot to on-demand fallback](./interruptible-tasks-and-queues#spot-to-on-demand-fallback), which describes how interruptible tasks transition to on-demand on their final attempt.
 
