@@ -346,7 +346,7 @@ In Flyte 2, the cap is gone. Total attempts equal `retries + 1`, decided entirel
 
 If you're porting v1 tasks that relied on the implicit ceiling, audit the `retries` value before deploying — a number that was "fine" in v1 because the platform clipped it can produce surprising attempt counts in v2.
 
-Spot-to-on-demand fallback for `interruptible=True` tasks still happens, but it now applies to the *final* attempt rather than kicking in after a fixed number of spot failures. See [Spot to on-demand fallback](../../user-guide/task-configuration/interruptible-tasks-and-queues#spot-to-on-demand-fallback).
+Spot-to-on-demand fallback for `interruptible=True` tasks still happens, but it now applies to the *final* attempt rather than kicking in after a fixed number of spot failures. See [Spot to on-demand fallback](../../../user-guide/task-configuration/interruptible-tasks-and-queues#spot-to-on-demand-fallback).
 
 ### 10. Type annotations
 
