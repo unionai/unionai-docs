@@ -248,7 +248,7 @@ The `.` line should show the directory's owner matching the `id` user. If owner 
 
 #### If you cannot modify the base image
 
-If you do not control the base image, layer a `WORKDIR` fix into the Flyte build with `.with_commands()`:
+If you do not control the base image, override its `WORKDIR` with `.with_workdir()` and point it at a path the declared `USER` already owns (commonly `/home/<user>`, created by `useradd -m` in the base):
 
 ```python
 env = flyte.TaskEnvironment(
@@ -261,13 +261,27 @@ env = flyte.TaskEnvironment(
         extendable=True,
     )
     .with_pip_packages("flyte")
-    # Make the base image's WORKDIR writable for the declared USER.
-    # Look up the uid:gid your base image uses with `docker inspect <image> --format '{{.Config.User}}'`.
-    .with_commands(["chmod 0755 /root && chown 65532:65532 /root"]),
+    # Override the base's WORKDIR with a path the declared USER owns.
+    .with_workdir("/home/nonroot"),
 )
 ```
 
-If your base image uses a different working directory (for example `/app`), substitute that path. If it uses a username instead of a numeric uid, resolve it via `getent passwd <name>` inside the image first.
+> [!WARNING]
+> `.with_commands()` runs as the base image's declared `USER` — there is no `--user=root` escape hatch. Telling customers to layer `chmod 0755 /root && chown 65532:65532 /root` via `.with_commands()` looks plausible but fails the build with:
+>
+> ```text
+> chmod: changing permissions of '/root': Operation not permitted
+> ```
+>
+> because non-root users cannot change ownership of root-owned paths. Use `.with_workdir()` to redirect the WORKDIR instead, or modify the base image.
+
+First confirm the target path exists and is owned by the declared `USER`:
+
+```bash
+docker run --rm --entrypoint sh <base-image> -c 'id; ls -ldn /home/nonroot 2>&1 || echo "/home/nonroot does not exist"'
+```
+
+If `/home/<user>` does not exist either (some hardened bases ship neither `/home/<user>` nor a writable `WORKDIR`), there is no workaround that stays inside the Flyte build — you must publish a new base image whose `WORKDIR` is owned by the declared `USER`.
 
 ## Decision matrix
 
@@ -277,5 +291,5 @@ If your base image uses a different working directory (for example `/app`), subs
 | Teams hand off a base image (no Flyte knowledge required) | Remote Builder |
 | Code change should not require image rebuild | Remote Builder + `with_code_bundle()` |
 | Base has non-standard Python location | `.with_commands()` to fix PATH before Flyte uses it |
-| Base runs as a non-root `USER` | Make sure base's `WORKDIR` is owned by that `USER`; if not, use `.with_commands()` to fix it (see above) |
+| Base runs as a non-root `USER` | Make sure base's `WORKDIR` is owned by that `USER`; if not, use `.with_workdir("<path-the-USER-owns>")` to redirect (see above) |
 | Production deploy, self-contained containers | `copy_style="none"` in `flyte.deploy()` |
