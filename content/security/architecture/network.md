@@ -6,15 +6,17 @@ variants: -flyte +union
 
 # Network architecture
 
-The network architecture reinforces the [two-plane separation](./two-plane-separation) with an outbound-only connectivity model. The data plane initiates two outbound channels: a Direct-to-DataPlane tunnel (Cloudflare Tunnel terminating at an Envoy router inside the customer's cluster), and a direct gRPC connection (orchestration metadata only). There are no inbound firewall rules, no VPN tunnels, and no listening services on the customer's network that Union.ai can reach.
+The network architecture reinforces the [two-plane separation](./two-plane-separation) with an outbound-only connectivity model between the data plane and the control plane. The data plane initiates an outbound-only direct gRPC connection to the control plane for orchestration metadata. Client-to-data-plane traffic uses a separate channel: by default, an outbound-initiated Direct-to-DataPlane tunnel terminating at an Envoy router inside the customer's cluster; under the [Sovereign Data Plane](./sovereign-data-plane) tier, a customer-managed load balancer inside the customer's VPC instead. Under either tier, no inbound firewall rules are required on the customer's external perimeter.
 
 ## Outbound-only model
 
-All network connections from the data plane are initiated by the data plane. The customer's network requires only standard outbound HTTPS access to Cloudflare edge nodes. No inbound firewall rules, port forwarding, or VPN configuration are needed.
+All network connections between the data plane and Union are initiated by the data plane. Under the default tier, the customer's network requires only standard outbound HTTPS access to Cloudflare edge nodes. No inbound firewall rules, port forwarding, or VPN configuration are needed at the customer's external perimeter.
 
-This model eliminates the inbound attack surface entirely. There are no listening services on the customer's network for an attacker to discover through port scanning or exploit through service vulnerabilities. The customer's network perimeter remains unaffected by the Union.ai integration. Firewall management is simplified to a single rule: permit outbound HTTPS, which most enterprise networks already allow.
+At the external perimeter, this model eliminates the inbound attack surface entirely. There are no externally-listening services on the customer's network for an attacker to discover through port scanning or exploit through service vulnerabilities. The customer's external network perimeter remains unaffected by the Union.ai integration. Firewall management at the perimeter is simplified to a single rule: permit outbound HTTPS, which most enterprise networks already allow.
 
 The trust model is customer-initiated: the data plane decides when and whether to connect, and the customer can sever either channel at any time by blocking outbound traffic or shutting down the data plane operator.
+
+Under the [Sovereign Data Plane](./sovereign-data-plane) tier, the client-to-data-plane path runs through a customer-managed internal load balancer inside the customer's VPC instead of the Cloudflare-backed tunnel; the data-plane-to-control-plane gRPC channel remains outbound-only. The external perimeter still requires no inbound rules; the internal load balancer is reachable only from inside the customer's corporate network.
 
 ## Direct-to-DataPlane tunnel
 

@@ -17,7 +17,7 @@ Regardless of deployment model, both BYOC and Self-managed share the same core s
 - RBAC for user and service account authorization
 - Tenant isolation via Kubernetes namespaces and IAM scoping
 - Audit logging of administrative and user actions
-- Outbound-only [network connectivity](./network) (Direct-to-DataPlane tunnel and direct gRPC)
+- Outbound-only [network connectivity](./network) from the data plane (the direct gRPC channel always; in the default tier, also the Direct-to-DataPlane tunnel — see [Sovereign Data Plane](./sovereign-data-plane) for the enhanced option)
 
 The key difference is operational: in BYOC, Union.ai manages the Kubernetes cluster within the customer's cloud account. In Self-managed, the customer operates the cluster entirely on their own.
 
@@ -48,7 +48,7 @@ Union.ai is responsible for the availability and security of the managed Kuberne
 
 ## Self-managed
 
-In the Self-managed model, the customer operates the data plane independently. Union.ai has zero access to the data plane infrastructure. The only connections from the data plane are two outbound-only channels initiated by the data plane: the Direct-to-DataPlane tunnel (which carries client-to-data-plane traffic, not control-plane-to-data-plane traffic) and a direct gRPC channel for orchestration metadata. See [Network architecture](./network) for details.
+In the Self-managed model, the customer operates the data plane independently. Union.ai has zero access to the data plane infrastructure. The data plane initiates an outbound-only direct gRPC connection to the control plane for orchestration metadata; Union cannot initiate any connection back. Client-to-data-plane traffic uses a separate channel: by default the Direct-to-DataPlane tunnel (also outbound-initiated from the data plane), or under the [Sovereign Data Plane](./sovereign-data-plane) tier a customer-managed load balancer inside the customer's VPC. See [Network architecture](./network) for details.
 
 The customer provisions all IAM roles, configures network policies, manages Kubernetes versions and upgrades, and handles all patching of data plane components. The customer is solely responsible for data plane availability, security hardening, and compliance of the data plane infrastructure.
 

@@ -14,7 +14,7 @@ Under Zero Trust, a compromised control plane would expose orchestration metadat
 
 ## Cross-plane network interception
 
-Cross-plane traffic uses two outbound-only encrypted channels: the Direct-to-DataPlane tunnel (TLS 1.3 + mTLS + Cloudflare Access tokens) for client-to-data-plane requests, and a direct gRPC connection (TLS 1.2+) for orchestration metadata. All payloads are encrypted in transit, and no intermediate caching or storage occurs on either channel. See [Network architecture](./architecture/network) for the channel design and [Encryption](./data-protection/encryption) for the per-data-type encryption matrix.
+Cross-plane traffic between Union's control plane and the customer's data plane uses an outbound-only direct gRPC connection (TLS 1.2+) for orchestration metadata. Client-to-data-plane traffic uses a separate channel: under the default tier, the Direct-to-DataPlane tunnel (TLS 1.3 + mTLS + Cloudflare Access tokens); under the [Sovereign Data Plane](./architecture/sovereign-data-plane) tier, a customer-managed load balancer inside the customer's VPC. All payloads are encrypted in transit, and no intermediate caching or storage occurs on any channel. See [Network architecture](./architecture/network) for the channel design and [Encryption](./data-protection/encryption) for the per-data-type encryption matrix.
 
 ## Presigned URL leakage
 
