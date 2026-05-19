@@ -18,7 +18,7 @@ The trust model is customer-initiated: the data plane decides when and whether t
 
 Under the [Sovereign Data Plane](./sovereign-data-plane) tier, the client-to-data-plane path runs through a customer-managed internal load balancer inside the customer's VPC instead of the Cloudflare-backed tunnel; the data-plane-to-control-plane gRPC channel remains outbound-only. The external perimeter still requires no inbound rules; the internal load balancer is reachable only from inside the customer's corporate network.
 
-The Zero Trust client-to-data-plane path is **one network hop shorter** than the prior architecture, in which customer-data requests were proxied through the control plane before reaching the data plane. Log streaming, structured I/O retrieval, and large input uploads consequently complete with lower first-byte and end-to-end latency than they did pre-Zero-Trust; there is no performance trade-off in adopting the new architecture.
+The Zero Trust client-to-data-plane path is **one network hop shorter** than the prior architecture, in which customer-data requests were proxied through the control plane before reaching the data plane. Log streaming, structured I/O retrieval, and large input uploads consequently complete with lower first-byte and end-to-end latency than they did under the pre-Zero-Trust architecture.
 
 ## Direct-to-DataPlane tunnel
 

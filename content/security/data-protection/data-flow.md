@@ -65,9 +65,9 @@ Because presigned URLs are bearer tokens (possession alone grants access), Union
 
 The Direct-to-DataPlane pattern applies at every stage of the workflow lifecycle. The sections below trace how data moves at each stage.
 
-### Run launch: the ping-pong upload flow
+### Run launch: the upload-then-reference flow
 
-Launching a run is the one behavior that changes visibly under Zero Trust. Prior to Zero Trust, the SDK sent inputs to the control plane, which then uploaded them to the customer's object store using a signed URL it issued to itself. Under Zero Trust, the upload happens client-to-data-plane first, and `CreateRun` is called by reference -- a two-step "ping-pong" pattern. The control plane never sees the input bytes.
+Launching a run is the one behavior that changes visibly under Zero Trust. Prior to Zero Trust, the SDK sent inputs to the control plane, which then uploaded them to the customer's object store using a signed URL it issued to itself. Under Zero Trust, the upload happens client-to-data-plane first, and `CreateRun` is called by reference. The control plane never sees the input bytes.
 
 ```
 SDK / CLI / UI                            Data-plane dataproxy        Customer object store     Control plane
@@ -129,7 +129,7 @@ The Union.ai web console displays information from multiple sources. The followi
 | Timeline timestamps | Control plane | CP API |
 | Errors | Control plane | CP API |
 
-Fields sourced from the control plane include orchestration metadata and task definitions, which may contain potentially sensitive fields such as environment variables and default values (see [Data classification and residency](./classification-and-residency) for the full enumeration). Error messages served from the control plane database may contain customer data from Python tracebacks.
+Fields sourced from the control plane include orchestration metadata and task definitions, which may contain potentially sensitive fields such as environment variables and default input values (see [Data classification and residency](./classification-and-residency) for the full enumeration). Error messages served from the control plane database may contain customer data from Python tracebacks.
 
 For details on the underlying network architecture, see [Network architecture](../architecture/network).
 

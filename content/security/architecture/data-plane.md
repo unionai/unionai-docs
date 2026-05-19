@@ -13,7 +13,7 @@ The data plane runs entirely within the customer's cloud account on a Kubernetes
 
 The data plane consists of several components. Under Zero Trust, several customer-data-handling components that previously lived in the control plane now run here in the customer's cluster instead.
 
-**Envoy router** is the AuthN/AuthZ enforcement point that fronts every customer-data request entering the cluster. Under the default tier, it sits at the egress of the Direct-to-DataPlane tunnel; under the [Sovereign Data Plane](./sovereign-data-plane) tier, it sits behind the customer-managed internal load balancer. In either case, every request is authenticated against the requester's Union identity and evaluated against the RBAC policy *inside the customer's cluster* before forwarding to the dataproxy service. The Union control plane is not on the path. Envoy also manages backpressure (notably for scale-from-zero events on auxiliary UIs).
+**Envoy router** is the AuthN/AuthZ enforcement point that fronts every customer-data request entering the cluster. Under the default tier, it sits at the egress of the Direct-to-DataPlane tunnel; under the [Sovereign Data Plane](./sovereign-data-plane) tier, it sits behind the customer-managed internal load balancer. In either case, every request is authenticated against the requester's Union.ai identity and evaluated against the RBAC policy *inside the customer's cluster* before forwarding to the dataproxy service. The Union.ai control plane is not on the path.
 
 **Dataproxy service** is the single endpoint for every customer-data request. It handles:
 
@@ -23,8 +23,6 @@ The data plane consists of several components. Under Zero Trust, several custome
 - **Auxiliary UI proxying** -- Ray dashboards, Spark history servers, in-task debuggers, and other per-action UIs are served back through the dataproxy via the same authenticated path.
 - **Secret writes** -- secret values from the SDK or UI are routed to the data-plane secrets backend (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or K8s Secrets) without traversing the control plane.
 
-Dataproxy ran in the control plane prior to Zero Trust; it now runs in the data plane and customer data never leaves the customer's cloud at any stage of these operations.
-
 **Executor** is a Kubernetes controller that watches for TaskAction custom resources created by the control plane. When a TaskAction appears, the Executor reconciles its lifecycle: creating task pods, monitoring their status, and reporting state transitions back to the control plane. If connectivity to the control plane is lost, in-flight pods continue running and state reconciles when the connection is restored.
 
 **Image Builder** uses Buildkit running on the customer's Kubernetes cluster to build container images from user-submitted `Image` specifications. Source code and built images never leave the customer's infrastructure. Base images are pulled from customer-configured registries, and built images are pushed to the customer's container registry (ECR, GCR, or ACR).
@@ -33,7 +31,7 @@ Dataproxy ran in the control plane prior to Zero Trust; it now runs in the data 
 
 In addition to the client-to-data-plane path, the data plane operator establishes a separate outbound gRPC connection (TLS) to the regional control plane endpoint for orchestration RPCs (cluster registration, action lifecycle, event reporting, catalog and artifact lookups, admin RPCs). This channel is outbound-initiated under both tiers and carries no customer data. See [Network architecture](./network) for the channel details.
 
-**Metrics Reporter** ships operational metrics (resource utilization, GPU utilization, queue depth) from the data plane to the control plane on its own schedule. Under Zero Trust, metrics use a push model so the control plane never needs to dial into the data plane for observability. This was previously a control-plane-pull model and is the reason the control plane can have no network route into the data plane at all (a prerequisite for the Sovereign Data Plane tier).
+**Metrics Reporter** ships operational metrics (resource utilization, GPU utilization, queue depth) from the data plane to the control plane on its own schedule. Under Zero Trust, metrics use a push model so the control plane never needs to dial into the data plane for observability. This was previously a control-plane-pull model. Eliminating the pull means the control plane needs no network route into the data plane at all -- a prerequisite for the Sovereign Data Plane tier.
 
 **Apps & Serving** provides model and application serving capabilities using Knative with a Kourier gateway. All serving infrastructure runs within the customer's cluster. Authentication is enforced on all endpoints by default (SSO for browser access, API keys for programmatic access), with an option to allow anonymous access on specific endpoints. See [Apps & Serving security](#apps--serving-security) below for details.
 
@@ -73,9 +71,9 @@ Task pods mount code bundles via presigned URLs with limited time-to-live (TTL).
 
 The data plane uses two IAM roles to separate platform-level and user-level access:
 
-**adminflyterole** is used by platform services (Executor, Dataproxy). It has read/write access to the object store buckets, access to the secrets manager for retrieving user-defined secrets, and read access to persisted logs. This role is bound to platform service accounts via workload identity federation.
+**`adminflyterole`** is used by platform services (Executor, Dataproxy). It has read/write access to the object store buckets, access to the secrets manager for retrieving user-defined secrets, and read access to persisted logs. This role is bound to platform service accounts via workload identity federation.
 
-**userflyterole** is used by task pods (the containers running user code). It has read/write access to the object store buckets for reading inputs and writing outputs. It does not have access to the secrets manager or platform-level resources.
+**`userflyterole`** is used by task pods (the containers running user code). It has read/write access to the object store buckets for reading inputs and writing outputs. It does not have access to the secrets manager or platform-level resources.
 
 Both roles use cloud-native workload identity federation: IRSA (IAM Roles for Service Accounts) on AWS, Workload Identity on GCP, and Azure Workload Identity on Azure. No static credentials are created, stored, or rotated. The Kubernetes service account annotations bind each pod to the appropriate IAM role automatically.
 

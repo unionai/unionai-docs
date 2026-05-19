@@ -13,7 +13,7 @@ In the BYOC model, Union.ai manages the data plane over a private connection. In
 
 This section covers:
 
-* **[Two-plane separation](./two-plane-separation)**: The division between between the Union.ai-hosted control plane and the customer-hosted data plane is the foundation of the security architecture.
+* **[Two-plane separation](./two-plane-separation)**: The division between the Union.ai-hosted control plane and the customer-hosted data plane is the foundation of the security architecture.
 
 * **[Control plane](./control-plane)**: The control plane is the Union.ai-hosted orchestration component. It stores only orchestration and task metadata, which is encrypted at rest. Bulk data is referenced via signed URIs only, the actual bulk data never touches the control plane.
 

@@ -15,7 +15,7 @@ This is a strictly stronger network perimeter than the default tier. The identit
 The Sovereign Data Plane is intended for organizations whose threat model assumes the vendor itself may be compromised, or whose security policy is "no third-party network can ever reach our data plane." Typical drivers:
 
 - **Regulated industries** (finance, healthcare, defense, life sciences) where the data trust boundary must terminate at the customer's network perimeter.
-- **Organizations that treat Cloudflare as untrusted** for the data path. Under the default tier, Cloudflare terminates TLS at the tunnel edge; under the Sovereign Data Plane this hop is removed entirely.
+- **Organizations that do not trust Cloudflare** for the data path. Under the default tier, Cloudflare terminates TLS at the tunnel edge; under the Sovereign Data Plane this hop is removed entirely.
 - **High-scale model serving** where the serving endpoints must remain entirely inside the customer's cloud and reachable only by internal applications.
 
 The Sovereign Data Plane is available on the Enterprise tier on customer request. The default tier is the only option on Starter and Team.
@@ -74,7 +74,7 @@ Existing Union RBAC and SSO continue to apply -- the network perimeter changes, 
 
 The Sovereign Data Plane is strictly stronger than the default tier on network reachability, but comes with operational responsibilities the default tier does not have:
 
-- **Customer owns the load balancer.** Provisioning, scaling, TLS certificate rotation, and high-availability are the customer's responsibility, the same as for any other internal service in their VPC.
+- **Customer owns the load balancer.** Provisioning, scaling, TLS certificate rotation, and high availability are the customer's responsibility, the same as for any other internal service in their VPC.
 - **VPN coverage drives user reach.** Users who need to inspect runs from outside the corporate network (for example, working from a personal device, or after a VPN outage) cannot reach the data plane. The default tier's Cloudflare path is reachable from anywhere with internet access.
 - **No emergency Union.ai access.** Under the default tier, Union.ai support with UI access can help diagnose customer issues by inspecting the same surfaces the customer sees. Under the Sovereign Data Plane, that path is closed: Union.ai support can no longer see the data plane. This is the point, but worth surfacing to operations teams.
 
