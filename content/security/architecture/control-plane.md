@@ -6,21 +6,21 @@ variants: -flyte +union
 
 # Control plane
 
-The control plane is the Union.ai-hosted component that orchestrates task execution, manages user access, and provides the web interface. It runs on AWS infrastructure managed by Union.ai and is covered by Union.ai's SOC 2 Type II certification.
+The control plane is the Union.ai-hosted component that orchestrates task execution, manages user access, and provides the API surface. It runs on AWS infrastructure managed by Union.ai and is covered by Union.ai's SOC 2 Type II certification.
 
-## What it does and does not store
+Under Zero Trust, the control plane handles only orchestration metadata. Customer data -- workflow inputs and outputs, code bundles, secret values, logs, reports, and auxiliary UI traffic -- never transits the control plane in any form, not even transiently in memory. Those requests are served directly from the data plane through the [Direct-to-DataPlane tunnel](./network).
 
-The control plane stores the information required for orchestration:
+## What it stores
 
-- **Orchestration metadata**: Identifiers, action state (phase, timestamps, cluster assignment), user profiles, and scheduling configuration.
-- **Task and run definitions**: Each run submission includes a full TaskSpec (container image, typed interface, resource requirements, security context) and a RunSpec (environment variables, labels, annotations). Trigger specs carry default input values for scheduled runs.
-- **Error and event information**: Error messages from task executions (which may contain customer data from Python tracebacks), Kubernetes event messages, and per-attempt plugin state.
+The control plane stores the information required for orchestration. All of it is metadata; none of it is customer data payload.
 
-The control plane does not store:
+- **Orchestration metadata**: identifiers, action state (phase, timestamps, cluster assignment), user profiles, scheduling configuration, and the RBAC graph.
+- **Task and run definitions**: each run submission includes a full TaskSpec (container image, typed interface, resource requirements, security context) and a RunSpec (environment variables, labels, annotations). Trigger specs carry default input values for scheduled runs.
+- **Error and event information**: error messages from task executions (which may contain customer data from Python tracebacks), Kubernetes event messages, and per-attempt plugin state.
 
-- **Bulk customer data payloads**: When it references such data it stores only URIs pointing to objects in the customer's object store (for example, `s3://customer-bucket/org/project/domain/run/action/output.pb`).
+It stores only **URIs** pointing into the customer's object store for any payload reference (for example, `s3://customer-bucket/org/project/domain/run/action/output.pb`); the payloads themselves stay in the customer's object store.
 
-For the full classification of what is and isn't stored in the control plane and the sensitive fields that may appear in task definitions, see [Data classification and residency](../data-protection/classification-and-residency). Under Zero Trust, customer data never enters the control plane in any form -- not even transiently -- so the only sensitive content the control plane handles is what is persisted as metadata.
+For the full classification of what is and isn't stored in the control plane and the sensitive fields that may appear in task definitions, see [Data classification and residency](../data-protection/classification-and-residency).
 
 ## Infrastructure
 
@@ -34,6 +34,8 @@ The control plane exposes the following capabilities:
 
 - **API and UI gateway** -- an authenticated HTTPS API and web console for users, the SDK, and the CLI. All requests are subject to authentication and RBAC enforcement before any orchestration logic runs.
 - **Scheduling and execution tracking** -- schedules TaskActions across registered data plane clusters and records execution state (phase transitions, timestamps, errors) reported back from the data plane.
-- **Cluster registry** -- maintains the inventory of registered data plane clusters and their health, and routes orchestration traffic accordingly.
-- **Data gateway** -- proxies structured task inputs and outputs between clients and the data plane object store, streams execution logs from the data plane to clients, and brokers presigned URL signing requests for bulk data access. See [Data flow](../data-protection/data-flow) for what these pathways carry and how data is handled in transit.
+- **Cluster registry** -- maintains the inventory of registered data plane clusters and their health.
+- **Cluster selection** -- exposes the `SelectCluster` RPC that clients (SDK / UI) call to resolve which data plane cluster handles a given customer-data request. The control plane returns the per-cluster tunnel domain (or, under Sovereign DP, internal LB hostname); the client then dispatches the data-path request directly to that cluster. The control plane does not participate in the data path itself.
+
+The control plane has no data-gateway role under Zero Trust. The pre-ZT `dataproxy` service that handled signed URLs, log streaming, structured I/O, and auxiliary UI proxying has been relocated to the data plane (see [Data plane](./data-plane#components)). See [Data flow](../data-protection/data-flow) for the new request path.
 
