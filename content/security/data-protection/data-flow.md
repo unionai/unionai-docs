@@ -65,19 +65,43 @@ Because presigned URLs are bearer tokens (possession alone grants access), Union
 
 The Direct-to-DataPlane pattern applies at every stage of the workflow lifecycle. The sections below trace how data moves at each stage.
 
-### Task deployment and run creation
+### Run launch: the ping-pong upload flow
 
-When a run is created, the SDK uploads inputs directly to the customer's object store **before** calling `CreateRun`:
+Launching a run is the one behavior that changes visibly under Zero Trust. Prior to Zero Trust, the SDK sent inputs to the control plane, which then uploaded them to the customer's object store using a signed URL it issued to itself. Under Zero Trust, the upload happens client-to-data-plane first, and `CreateRun` is called by reference -- a two-step "ping-pong" pattern. The control plane never sees the input bytes.
 
-1. The SDK requests a signed upload URL from the data-plane dataproxy through the Direct-to-DataPlane tunnel.
-2. The SDK uploads the structured inputs and any binary input artifacts directly to the customer's object store.
-3. The SDK calls `CreateRun` with a reference to the upload URI. The control plane receives only the URI, never the input bytes.
+```
+SDK / CLI / UI                            Data-plane dataproxy        Customer object store     Control plane
+     │                                            │                            │                       │
+     │ ─── 1. SelectCluster(project/domain) ──────┼────────────────────────────┼──────────────────────▶ │
+     │ ◀───── per-cluster tunnel domain ──────────┼────────────────────────────┼─────────────────────── │
+     │                                            │                            │                       │
+     │ ─── 2. CreateUploadLocation ──────────────▶│                            │                       │
+     │ ◀───── signed PUT URL ─────────────────────│                            │                       │
+     │                                            │                            │                       │
+     │ ─── 3. PUT inputs (direct upload) ─────────┼───────────────────────────▶│                       │
+     │ ◀───── 200 OK ─────────────────────────────┼────────────────────────────│                       │
+     │                                            │                            │                       │
+     │ ─── 4. CreateRun(inputs_uri = ...) ────────┼────────────────────────────┼──────────────────────▶ │
+     │ ◀───── run ID ─────────────────────────────┼────────────────────────────┼─────────────────────── │
+```
 
-The code bundle follows the same pattern: it is uploaded directly to the customer's object store via a presigned PUT URL issued by the dataproxy. Code never touches the control plane.
+1. **SelectCluster.** The SDK calls `SelectCluster` on the control plane with the run's project/domain (or queue/org). The control plane returns the per-cluster tunnel domain (under the default tier) or the per-cluster internal LB hostname (under Sovereign DP) for the cluster that will handle this request class. The SDK caches this for subsequent calls in the same submission.
 
-The task specification (container image, resource requirements, typed interface, configuration) is stored in the control plane databases -- this is metadata, not customer data. The control plane then enqueues the action to the data plane.
+2. **CreateUploadLocation.** The SDK calls `CreateUploadLocation` on the data-plane dataproxy through the resolved tunnel/LB. The Envoy router authenticates the request against Union identity and enforces RBAC. The dataproxy returns a short-lived signed PUT URL into the customer's object store, plus the URI the URL writes to.
 
-The Executor on the data plane creates a pod that reads inputs from and writes outputs back to the customer's object store. During workflow execution, inter-task I/O flows directly between task pods and the object store via IAM, with no control plane involvement. Secrets required by the task are injected into pods from the customer's secrets backend at runtime; secret values do not traverse the control plane during execution. The control plane receives phase transitions, status updates, and error messages from the Executor. Error messages may contain customer data from Python tracebacks.
+3. **Direct upload.** The SDK uploads the serialized inputs (and any binary input artifacts) directly to the customer's object store using the signed URL. The data flows client-to-object-store; no Union service is on the path. If the signed URL expires before the upload completes, the SDK transparently re-requests a fresh URL and retries once.
+
+4. **CreateRun by reference.** The SDK calls `CreateRun` on the control plane with the URI from step 2 (not the bytes). The control plane validates the URI shape, stores it alongside the run metadata, and enqueues the action to the data plane. The control plane never sees the input bytes.
+
+`CreateRun` and `UploadInputs` are separate APIs under Zero Trust. Prior architectures fused them into a single call that carried the bytes; the split is what makes the no-CP-transit guarantee possible.
+
+The code bundle follows the same pattern: it is uploaded directly to the customer's object store via a presigned PUT URL issued by the dataproxy, and `CreateRun` references the resulting URI. Code never touches the control plane.
+
+### Task execution
+
+Once the action is enqueued, the Executor on the data plane creates a pod that reads inputs from and writes outputs back to the customer's object store. During workflow execution, inter-task I/O flows directly between task pods and the object store via IAM, with no control plane involvement. Secrets required by the task are injected into pods from the customer's secrets backend at runtime; secret values do not traverse the control plane during execution. The control plane receives phase transitions, status updates, and error messages from the Executor. Error messages may contain customer data from Python tracebacks.
+
+The task specification (container image, resource requirements, typed interface, configuration) is stored in the control plane databases -- this is metadata, not customer data.
 
 ### Result retrieval
 
