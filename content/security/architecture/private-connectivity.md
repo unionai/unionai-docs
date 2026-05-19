@@ -1,6 +1,6 @@
 ---
 title: Private connectivity (BYOC)
-weight: 5
+weight: 6
 variants: -flyte +union
 ---
 

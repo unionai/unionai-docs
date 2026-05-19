@@ -6,102 +6,162 @@ variants: -flyte +union
 
 # Data flow
 
-Union.ai uses three distinct patterns to move data between the data plane and clients: presigned URLs for bulk data, an inline proxy for structured task I/O, and streaming relays for live data. All three patterns encrypt data in transit. The patterns differ in whether data enters control plane memory.
+Under Zero Trust, customer data never transits Union.ai's control plane. Every customer-data request -- bulk artifacts, structured task inputs and outputs, secret values, logs, reports, and auxiliary UI traffic -- is served directly from the data plane through the Direct-to-DataPlane tunnel. The control plane is not on the data path.
 
-- **Presigned URL pattern (bulk data -- never enters control plane).** The client (SDK or UI) connects directly to the customer's object store over HTTPS using a presigned URL. The object store encrypts the data at rest. The control plane is not on the data path.
+This page covers two complementary aspects of that model: the **single request pattern** that all customer-data traffic follows, and the **stage-by-stage data movement** during the workflow lifecycle.
 
-- **Inline proxy pattern (structured I/O -- transits control plane).** The client sends data to the control plane over TLS. The control plane proxies it to the data plane operator through the Cloudflare Tunnel (TLS + mTLS), which writes it to the customer's object store (encrypted at rest). The data exists as plaintext in control plane memory only for the duration of the request and is not persisted.
+## The Direct-to-DataPlane request pattern
 
-- **Streaming relay pattern (logs -- transits control plane).** The data plane streams data to the control plane through the Cloudflare Tunnel (TLS + mTLS), and the control plane forwards it to the client over TLS. The data passes through control plane memory as plaintext but is not persisted.
+Every request that touches customer data follows the same path:
 
-## Presigned URL pattern
+```
+Client (SDK / CLI / UI)
+   │
+   ▼
+Cloudflare edge                   ─ TLS 1.3 termination  (default tier only;
+   │                                 replaced by a customer-managed internal LB
+   ▼                                 under the Sovereign Data Plane tier)
+Direct-to-DataPlane tunnel        ─ mTLS, outbound-initiated from the data plane
+   │
+   ▼
+Envoy router (data plane)         ★ AuthN against Union identity, RBAC enforced
+   │
+   ▼
+Dataproxy service (data plane)
+   │
+   ▼
+Object store · logs · secrets ·   ─ customer IAM / Workload Identity
+auxiliary UIs                       customer-managed KMS
+```
 
-For bulk data -- files (`flyte.io.File`), directories (`flyte.io.Dir`), DataFrames, code bundles, and reports -- the control plane proxies signing requests to the data plane, which generates time-limited presigned URLs using customer-managed IAM credentials. The client then uploads or downloads data directly to the customer's object store. The data content never enters the control plane; only the signing metadata passes through. This model eliminates the need for the control plane to hold persistent cloud IAM credentials.
-
-- **Client to object store:** encrypted via HTTPS, using a presigned URL direct to customer storage.
-- **At rest:** encrypted by the cloud provider (S3 SSE, GCS encryption, or Azure SSE).
-- **Control plane involvement:** none. The control plane generates or relays the signed URL only; the data content never enters the control plane.
-
-## Inline proxy pattern
-
-For structured task inputs and outputs (protobuf literals such as ints, strings, lists, dicts, and small serialized objects), the control plane acts as a proxy.
-
-On run submission, the SDK sends structured inputs to the control plane (up to 10 MiB). The control plane proxies the full payload through its memory to the data plane object store via the Cloudflare Tunnel.
-
-On result retrieval, the control plane fetches both inputs and outputs from the data plane object store and returns them to the client (up to 20 MiB).
-
-The data is encrypted in transit (TLS on both sides), exists as plaintext in control plane memory for the duration of each request, and is not persisted, cached, or logged. The same pattern applies to secret values during create/update operations, which are relayed through the control plane to the data plane's secrets backend.
-
-The distinction between presigned URLs and the inline proxy is by data type, not by size: binary artifacts always use presigned URLs; structured protobuf literals always use the inline proxy.
-
-**Encryption at each phase (run submission):**
-
-| Phase | Encrypted? | Details |
-|-------|------------|---------|
-| Client → Control Plane | **Yes** | TLS 1.2+. Wire format: protobuf binary |
-| In Control Plane | **Plaintext in memory** | Deserialized protobuf, hashed for cache key, then re-serialized. Not persisted, cached, or logged |
-| Control Plane → Data Plane | **Yes** | TLS + mTLS + Cloudflare Tunnel. Wire format: protobuf JSON |
-| At rest (data plane object store) | **Yes** | S3 SSE / GCS encryption / Azure SSE |
-
-**Encryption at each phase (result retrieval):**
+The tunnel (or internal load balancer, under the Sovereign Data Plane tier) terminates **inside the customer's cluster** at the Envoy router. Authentication and authorization run there, against the same Union.ai identity that gates the control plane API -- but the enforcement point is inside the customer's network. Union.ai's control plane never sees the request payload under either tier. See [Sovereign Data Plane](../architecture/sovereign-data-plane) for the Sovereign Data Plane topology.
 
 | Phase | Encrypted? | Details |
 |-------|------------|---------|
-| At rest (data plane object store) | **Yes** | S3 SSE / GCS encryption / Azure SSE |
-| Data Plane → Control Plane | **Yes** | TLS + mTLS + Cloudflare Tunnel |
-| In Control Plane | **Plaintext in memory** | Full inputs and outputs deserialized. Not persisted, cached, or logged |
-| Control Plane → Client | **Yes** | TLS 1.2+ |
+| Client → Cloudflare edge | **Yes** | TLS 1.3 (default tier only) |
+| Cloudflare edge → Data Plane (tunnel) | **Yes** | mTLS + Cloudflare Tunnel (default tier only) |
+| Client → Internal load balancer | **Yes** | TLS, customer-managed certificate (Sovereign Data Plane tier only) |
+| At Envoy router (data plane) | **Plaintext in memory** | AuthN + RBAC check; not persisted, cached, or logged |
+| Data Plane → Object store / log source / secret backend | **Yes** | Cloud-native TLS, signed URLs for object access |
+| At rest (customer's storage) | **Yes** | S3 SSE / GCS / Azure SSE; CMK supported |
 
-The following controls are applied to every presigned URL:
+The Cloudflare-edge and tunnel rows apply under the default tier. Under the [Sovereign Data Plane](../architecture/sovereign-data-plane) tier, those two hops are replaced by the single internal-load-balancer hop shown above; the remaining hops are identical.
 
-- **TTL enforcement**: each URL expires after a default of 1 hour, configurable to shorter durations.
-- **Single-object scope**: each URL grants access to exactly one object.
-- **Operation specificity**: each URL is locked to a single operation (GET or PUT).
-- **Transport encryption**: URLs are transmitted only over TLS.
-- **No URL logging**: presigned URLs are not persisted in control plane logs or databases.
+Bulk artifacts (files, directories, DataFrames, code bundles, reports) use **presigned URLs** so that the data content never even enters the dataproxy: the dataproxy issues the signed URL via the tunnel, and the client then transfers data directly between itself and the customer's object store. Structured task inputs and outputs, log streams, secret writes, and auxiliary UI traffic flow through the dataproxy itself within the customer's cluster.
+
+### Presigned URL controls
+
+Every presigned URL issued by the dataproxy carries the same controls:
+
+- **TTL enforcement:** each URL expires after a default of 1 hour, configurable to shorter durations.
+- **Single-object scope:** each URL grants access to exactly one object.
+- **Operation specificity:** each URL is locked to a single operation (GET or PUT).
+- **Transport encryption:** URLs are transmitted only over TLS.
+- **No URL logging:** presigned URLs are not persisted in logs or databases on either plane.
 
 Because presigned URLs are bearer tokens (possession alone grants access), Union.ai recommends treating them with the same care as short-lived credentials and configuring the shortest practical TTL for your use case.
 
-## Streaming relay pattern
+## Workflow lifecycle
 
-For logs and observability metrics, the control plane acts as a stateless relay. It streams data from the data plane through the Cloudflare Tunnel to the client in real time. The data passes through the control plane's memory as plaintext, encrypted in transit on both network hops. It is never written to disk, cached, or stored. Once the stream completes, no trace of the data remains in the control plane. There is no content filtering or redaction in the log streaming pipeline. Any sensitive data (secrets, PII, credentials) that user code writes to stdout/stderr will flow through control plane memory unmodified.
+The Direct-to-DataPlane pattern applies at every stage of the workflow lifecycle. The sections below trace how data moves at each stage.
 
-| Phase | Encrypted? | Details |
-|-------|------------|---------|
-| Data plane log source → DP operator | **Yes** | Linkerd mTLS (pod-to-pod) or cloud SDK TLS (CloudWatch / Cloud Logging / Azure Monitor) |
-| Data Plane → Control Plane | **Yes** | TLS + mTLS + Cloudflare Tunnel. Wire format: protobuf streaming |
-| In Control Plane | **Plaintext in memory** | Each log message deserialized for byte counting. Not persisted, cached, or logged. No content filtering |
-| Control Plane → Client | **Yes** | TLS 1.2+ (streaming) |
-| At rest (data plane log backend) | **Yes** | CloudWatch (AES-256/KMS), Cloud Logging (Google-managed), or Azure Monitor (Microsoft-managed) |
+### Run launch: the upload-then-reference flow
+
+Launching a run is the one behavior that changes visibly under Zero Trust. Prior to Zero Trust, the SDK sent inputs to the control plane, which then uploaded them to the customer's object store using a signed URL it issued to itself. Under Zero Trust, the upload happens client-to-data-plane first, and `CreateRun` is called by reference. The control plane never sees the input bytes.
+
+```
+SDK / CLI / UI                            Data-plane dataproxy        Customer object store     Control plane
+     │                                            │                            │                       │
+     │ ─── 1. SelectCluster(project/domain) ──────┼────────────────────────────┼──────────────────────▶ │
+     │ ◀───── per-cluster tunnel domain ──────────┼────────────────────────────┼─────────────────────── │
+     │                                            │                            │                       │
+     │ ─── 2. CreateUploadLocation ──────────────▶│                            │                       │
+     │ ◀───── signed PUT URL ─────────────────────│                            │                       │
+     │                                            │                            │                       │
+     │ ─── 3. PUT inputs (direct upload) ─────────┼───────────────────────────▶│                       │
+     │ ◀───── 200 OK ─────────────────────────────┼────────────────────────────│                       │
+     │                                            │                            │                       │
+     │ ─── 4. CreateRun(inputs_uri = ...) ────────┼────────────────────────────┼──────────────────────▶ │
+     │ ◀───── run ID ─────────────────────────────┼────────────────────────────┼─────────────────────── │
+```
+
+1. **SelectCluster.** The SDK calls `SelectCluster` on the control plane with the run's project/domain (or queue/org). The control plane returns the per-cluster tunnel domain (under the default tier) or the per-cluster internal LB hostname (under Sovereign Data Plane) for the cluster that will handle this request class. The SDK caches this for subsequent calls in the same submission.
+
+2. **CreateUploadLocation.** The SDK calls `CreateUploadLocation` on the data-plane dataproxy through the resolved tunnel/LB. The Envoy router authenticates the request against Union identity and enforces RBAC. The dataproxy returns a short-lived signed PUT URL into the customer's object store, plus the URI the URL writes to.
+
+3. **Direct upload.** The SDK uploads the serialized inputs (and any binary input artifacts) directly to the customer's object store using the signed URL. The data flows client-to-object-store; no Union service is on the path. If the signed URL expires before the upload completes, the SDK transparently re-requests a fresh URL and retries once.
+
+4. **CreateRun by reference.** The SDK calls `CreateRun` on the control plane with the URI from step 2 (not the bytes). The control plane validates the URI shape, stores it alongside the run metadata, and enqueues the action to the data plane. The control plane never sees the input bytes.
+
+`CreateRun` and `UploadInputs` are separate APIs under Zero Trust. Prior architectures fused them into a single call that carried the bytes; the split is what makes the no-CP-transit guarantee possible.
+
+The code bundle follows the same pattern: it is uploaded directly to the customer's object store via a presigned PUT URL issued by the dataproxy, and `CreateRun` references the resulting URI. Code never touches the control plane.
+
+### Task execution
+
+Once the action is enqueued, the Executor on the data plane creates a pod that reads inputs from and writes outputs back to the customer's object store. During workflow execution, inter-task I/O flows directly between task pods and the object store via IAM, with no control plane involvement. Secrets required by the task are injected into pods from the customer's secrets backend at runtime; secret values do not traverse the control plane during execution. The control plane receives phase transitions, status updates, and error messages from the Executor. Error messages may contain customer data from Python tracebacks.
+
+The task specification (container image, resource requirements, typed interface, configuration) is stored in the control plane databases -- this is metadata, not customer data.
+
+### Result retrieval
+
+All four channels for accessing run results serve their data from the data plane through the Direct-to-DataPlane tunnel; none transit the control plane:
+
+- **Binary outputs, reports, and code bundles** are accessed via presigned URLs issued by the data-plane dataproxy. The data flows directly from the customer's object store to the client.
+- **Structured outputs** (protobuf literals) are retrieved through the data-plane dataproxy from the data-plane object store, served back to the client through the tunnel.
+- **Logs** (live and persisted) are served from the data plane through the tunnel. The control plane is not a relay.
+- **Metadata** (run status, phase transitions, timestamps, error messages) is served directly from the control plane database. Metadata is the only category the control plane ever serves; it contains no customer data payload.
 
 ## Data in the UI
 
-The Union.ai web console displays information from multiple sources. The following table shows where each UI field originates, where that data is stored, and how the browser retrieves it:
+The Union.ai web console displays information from multiple sources. The following table shows where each UI field originates and how the browser retrieves it:
 
 | Field | Source | Access method |
 |---|---|---|
-| Task names (function/module names) | Control Plane | CP API |
+| Task names (function/module names) | Control plane | CP API |
 | User names | IDP (cached in CP memory) | IDP / CP |
-| Inputs/outputs (structured) | Data plane object store via CP proxy | Cloudflare Tunnel (transits CP memory) |
-| Logs (live) | Data plane K8s | Cloudflare Tunnel |
-| Logs (persisted) | Data plane log aggregator (CloudWatch / Cloud Logging / Azure Monitor) | Cloudflare Tunnel |
-| K8s events | Data plane K8s | Cloudflare Tunnel |
+| Inputs/outputs (structured) | Data plane dataproxy | Direct-to-DataPlane tunnel |
+| Logs (live) | Data plane Kubernetes | Direct-to-DataPlane tunnel |
+| Logs (persisted) | Data plane log aggregator (CloudWatch / Cloud Logging / Azure Monitor) | Direct-to-DataPlane tunnel |
+| K8s events | Data plane Kubernetes | Direct-to-DataPlane tunnel |
 | Reports (HTML) | Data plane object store | Signed URL, rendered in browser iframe |
 | Code explorer | Data plane object store | Signed URL, JS downloads and unzips bundle |
-| Timeline timestamps | Control Plane | CP API |
-| Errors | Control Plane | CP API |
+| Timeline timestamps | Control plane | CP API |
+| Errors | Control plane | CP API |
 
-Fields sourced from the control plane include orchestration metadata and task definitions, which may contain potentially sensitive fields such as environment variables and default values (see [Data classification and residency](./classification-and-residency) for the full enumeration). Structured inputs/outputs are proxied through control plane memory via the inline proxy pattern before reaching the client. Fields sourced directly from the data plane via presigned URLs (reports, code bundles) bypass the control plane entirely. Error messages served from the control plane database may contain customer data from Python tracebacks.
+Fields sourced from the control plane include orchestration metadata and task definitions, which may contain potentially sensitive fields such as environment variables and default input values (see [Data classification and residency](./classification-and-residency) for the full enumeration). Error messages served from the control plane database may contain customer data from Python tracebacks.
 
 For details on the underlying network architecture, see [Network architecture](../architecture/network).
 
 ## Verification
 
+### Direct-to-DataPlane request path
+
+**Reviewer focus:** Confirm that customer-data requests resolve to the customer's data plane via the Direct-to-DataPlane tunnel, with no Union control plane involvement.
+
+**How to verify (browser-based):**
+
+1. Open the Union.ai UI and navigate to a completed run.
+2. Open browser developer tools (Network tab) and observe the requests when viewing inputs, outputs, and logs.
+3. Each customer-data request should resolve to a per-cluster tunnel domain (e.g. `<cluster-id>.<base-domain>`), not to the Union control plane endpoint.
+4. Bulk-data requests (binary outputs, reports, code bundles) should resolve directly to the customer's object store domain (S3/GCS/Azure Blob), via a signed URL.
+
+**How to verify (audit-log-based):**
+
+The Direct-to-DataPlane request pattern is auditable independently from outside Union:
+
+- **Cloudflare Access logs** record every authenticated request through the tunnel, including the resolved Union identity, the destination service, and the response status.
+- **Object store audit logs** (CloudTrail / Cloud Audit / Azure Storage) record every read and write. The principal on every payload-bearing access is a customer-controlled identity, never Union.
+- **Kubernetes audit logs** on the data plane record cluster-internal accesses by the dataproxy.
+- **Cloud Audit logs** on the data-plane cluster confirm the outbound-only tunnel connection pattern.
+
+Customers can ingest all of the above into their own SIEM and assert on it without Union's cooperation.
+
 ### Presigned URLs
 
 **Reviewer focus:** Confirm that presigned URLs point to the customer's object store, expire as documented, and are scoped to a single object.
 
-**How to verify (browser-based):**
+**How to verify:**
 
 1. Open the Union.ai UI and navigate to a completed task's outputs.
 2. Open browser developer tools (Network tab) and observe the request when viewing output data.
@@ -109,30 +169,48 @@ For details on the underlying network architecture, see [Network architecture](.
 4. Copy the presigned URL and wait 1 hour. Paste it into the browser. It should return a 403 (TTL expired).
 5. Modify the object key in the URL and retry immediately. It should return a 403 (signature invalid, confirming single-object scope).
 
-### Streaming relay
+### End-to-end workflow
 
-**Reviewer focus:** Confirm that logs and metrics streamed through the control plane are not persisted.
-
-**How to verify:**
-
-Proving non-persistence is inherently difficult. The best available evidence:
-
-1. Inspect the control plane proxy pod configuration:
-
-   ```bash
-   kubectl describe pod <control-plane-proxy-pod> -n <control-plane-namespace>
-   ```
-
-   The pod should have no persistent volumes mounted and no database connection environment variables.
-
-2. The SOC 2 Type II audit covers the non-persistence control for streaming relays. Request the current report from Union.ai.
-
-3. (Advanced) Compare log content flowing through the tunnel against control plane state before and after streaming. There should be no delta in stored data.
-
-### UI data sources
-
-**Reviewer focus:** Confirm that the UI retrieves customer data exclusively through presigned URLs or tunnel relays, not from the control plane.
+**Reviewer focus:** Confirm the data separation model at every workflow stage: customer data stays in the customer's infrastructure throughout the lifecycle.
 
 **How to verify:**
 
-Walk through each panel of the Union.ai UI with browser developer tools open. For each data element, the Network tab shows whether the request goes to the CP API (metadata) or to a presigned URL / tunnel relay endpoint (customer data). Every field in the table above should match its documented access method. This verification is fully self-service.
+**Step 1: Deployment and code bundle**
+
+Run a workflow and observe where the code bundle is stored:
+
+```bash
+union run --remote my_task.py main
+```
+
+Verify that the code bundle is in the customer's bucket:
+
+```bash
+aws s3 ls s3://<customer-bucket>/org/project/domain/code-bundles/
+```
+
+The code bundle `.tgz` file should appear in the customer's own object store.
+
+**Step 2: Execution**
+
+Inspect the task pod to confirm it reads from customer infrastructure:
+
+```bash
+kubectl describe pod <task-pod> -n <workspace-namespace>
+```
+
+The pod description should show volumes mounted from customer S3, secrets from the customer's backend, and a non-root security context.
+
+**Step 3: Retrieval**
+
+Open browser developer tools (Network tab) and view the task's outputs in the Union.ai UI. Customer-data requests should resolve to either the per-cluster tunnel domain (for structured outputs, logs, K8s events) or directly to the customer's S3/GCS/Azure Blob endpoint (for binary artifacts). Confirm that the control plane API returns metadata and URI references only:
+
+```bash
+uctl get execution <execution-id> -o json
+```
+
+The response should contain phase, timestamps, URIs, and task definition fields. Bulk data content should not appear inline.
+
+**Step 4: Negative proof**
+
+Search control plane audit logs for the recognizable data string used in the workflow. It should not appear. If VPC Flow Logs are enabled, customer-data transfers should flow either directly between task pods and the customer's object store, or between clients and the per-cluster tunnel endpoint -- never between the data plane and Union's control plane endpoints.

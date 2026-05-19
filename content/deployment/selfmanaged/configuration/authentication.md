@@ -59,7 +59,7 @@ You must create three OAuth applications in your IdP:
 | Service app (internal) | Service | `client_credentials` | All service-to-service communication |
 
 > [!NOTE]
-> A single service app is shared by both control plane and dataplane services. If your security policy requires separate credentials per component, you can create additional service apps, but the configuration below assumes a single shared client.
+> A single service app is shared by both control plane and data plane services. If your security policy requires separate credentials per component, you can create additional service apps, but the configuration below assumes a single shared client.
 
 ### Authorization server setup
 
@@ -96,7 +96,7 @@ You must create three OAuth applications in your IdP:
 
 - **Type**: Service (machine-to-machine)
 - **Grant types**: `client_credentials`
-- Note the **Client ID** → used as `INTERNAL_CLIENT_ID` (control plane) and `AUTH_CLIENT_ID` (dataplane)
+- Note the **Client ID** → used as `INTERNAL_CLIENT_ID` (control plane) and `AUTH_CLIENT_ID` (data plane)
 - Note the **Client Secret** → stored in multiple Kubernetes secrets (see [Secret delivery](#secret-delivery))
 
 ## Control plane Helm configuration
@@ -257,7 +257,7 @@ For every request to a protected route, nginx makes a subrequest to `/me`. If fl
 
 ## Dataplane Helm configuration
 
-When the control plane has OIDC enabled, the dataplane must also authenticate. All dataplane services use the same service app credentials (`AUTH_CLIENT_ID`), which is the same client as `INTERNAL_CLIENT_ID` on the control plane.
+When the control plane has OIDC enabled, the data plane must also authenticate. All data plane services use the same service app credentials (`AUTH_CLIENT_ID`), which is the same client as `INTERNAL_CLIENT_ID` on the control plane.
 
 ### Dataplane global variables
 
@@ -317,9 +317,15 @@ executor:
       secretName: EAGER_API_KEY
 ```
 
+> [!NOTE] Zero Trust deployments
+> When Zero Trust is enabled in a self-managed deployment, the `EAGER_API_KEY` secret must be provisioned for the organization before any eager-mode task can run. The key value is issued by Union.ai; contact your Union.ai Support representative to have it provisioned for your tenant. Once you have the value, deliver it to the `EAGER_API_KEY` Kubernetes secret in the executor's namespace via External Secrets Operator (or another out-of-band secret delivery mechanism). The provisioning workflow is being moved to a self-serve flow on the Union.ai console; until then, the contact-Support path is the canonical one.
+
+> [!WARNING] Broad scope, deprecation backlog
+> `EAGER_API_KEY` is broadly scoped (a single key per organization) and is on the deprecation backlog. Treat it as a high-value credential: limit its delivery to a single, audited secret store, and do not embed it in container images, repository configuration, or any artifact subject to a broader audience than the secret store itself. Future Union.ai releases will replace it with per-task or per-action credentials; this section will be updated when the replacement ships.
+
 ### Dataplane secrets
 
-Enable the `union-secret-auth` Kubernetes secret mount for dataplane pods:
+Enable the `union-secret-auth` Kubernetes secret mount for data plane pods:
 
 ```yaml
 secrets:
@@ -501,7 +507,7 @@ Verify that `useAuth: true` is set in `flyte.configmap.adminServer.server.securi
 
 ### Operator or propeller cannot authenticate
 
-1. Verify `union-secret-auth` exists in the dataplane namespace and contains `client_secret`.
+1. Verify `union-secret-auth` exists in the data plane namespace and contains `client_secret`.
 2. Check operator logs for auth errors: `kubectl logs -n union -l app.kubernetes.io/name=operator --tail=50 | grep -i auth`.
 3. Verify the `AUTH_CLIENT_ID` matches the control plane's `INTERNAL_CLIENT_ID`.
 4. Verify the service app is included in the authorization server's access policy.

@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Encryption
 
-Union.ai encrypts all data at rest and in transit across every storage and communication path in the platform. Transit encryption uses TLS for all communication paths, with mutual TLS (mTLS) layered through the Cloudflare Tunnel for cross-plane traffic. At-rest encryption is provided by cloud provider services (S3 SSE, GCS encryption, Azure SSE) for customer-side storage, and by managed cloud database services (AES-256/KMS) for the control plane. Data that transits control plane memory (structured task I/O, secret values during creation, log streams) is encrypted on every network hop but exists as plaintext in process memory during request handling.
+Union.ai encrypts all data at rest and in transit across every storage and communication path in the platform. Transit encryption uses TLS 1.2+ for all communication paths, with mutual TLS (mTLS) layered through the Direct-to-DataPlane tunnel for client-to-data-plane traffic. At-rest encryption is provided by cloud provider services (S3 SSE, GCS encryption, Azure SSE) for customer-side storage, and by managed cloud database services (AES-256/KMS) for the control plane. Under Zero Trust, customer data never enters control plane memory in any form -- it is served directly from the data plane through the tunnel.
 
 ## Encryption at rest
 
@@ -25,12 +25,13 @@ All data at rest is encrypted using cloud-provider native encryption. Each stora
 
 All communication paths in the Union.ai platform are encrypted using TLS:
 
-- **Client to control plane**: all API and UI traffic uses TLS 1.2 or higher.
-- **Data plane to control plane**: two outbound-only channels (Cloudflare Tunnel with mTLS, and direct gRPC over TLS 1.2+). See [Network architecture](../architecture/network).
+- **Client to control plane**: orchestration API and UI metadata traffic uses TLS 1.2+.
+- **Client to data plane**: customer-data requests resolve to the per-cluster Direct-to-DataPlane tunnel domain. TLS 1.3 from the client to the Cloudflare edge; mTLS plus Cloudflare Tunnel encryption from the edge to the data plane.
+- **Data plane to control plane**: outbound-only direct gRPC over TLS 1.2+ for orchestration RPCs (action lifecycle, events, registration). No customer data on this channel. See [Network architecture](../architecture/network).
 - **Client to object store**: presigned URLs always use HTTPS, enforced by the cloud provider.
 - **Internal data plane communication**: uses cloud-native TLS for inter-service traffic.
 
-No unencrypted communication paths exist in the platform. The combination of TLS at the edge, mutual TLS through the tunnel, TLS on the gRPC channel, and HTTPS for presigned URLs ensures end-to-end encryption for all data in transit. Data content is never logged at any log level. (Note: if debug logging is enabled in the control plane, authentication credentials, not data content, may be logged in plaintext during request header propagation.)
+No unencrypted communication paths exist in the platform. Data content is never logged at any log level.
 
 For details on the cross-plane channels, see [Network architecture](../architecture/network).
 
@@ -44,18 +45,18 @@ The following table summarizes the encryption state for each data category acros
 | **Code bundles** | HTTPS (presigned URL) | S3 SSE / GCS / Azure SSE | No | No |
 | **Container images** | HTTPS (registry pull) | ECR/GCR/ACR encryption | No | No |
 | **Inter-task I/O** (in-cluster) | Cloud SDK TLS | S3 SSE / GCS / Azure SSE | No | No |
-| **Structured task inputs** (run submission) | TLS + TLS/mTLS/tunnel | S3 SSE / GCS / Azure SSE | Yes (plaintext, transient) | No |
-| **Structured task I/O** (retrieval) | TLS + TLS/mTLS/tunnel | S3 SSE / GCS / Azure SSE | Yes (plaintext, transient) | No |
-| **Secret values** (create/update) | TLS + TLS/mTLS/tunnel | ASM/GCP SM/AKV/etcd encryption | Yes (plaintext, transient) | No |
+| **Structured task inputs** (run submission) | TLS 1.3 + mTLS tunnel | S3 SSE / GCS / Azure SSE | No | No |
+| **Structured task I/O** (retrieval) | TLS 1.3 + mTLS tunnel | S3 SSE / GCS / Azure SSE | No | No |
+| **Secret values** (create/update) | TLS 1.3 + mTLS tunnel | ASM/GCP SM/AKV/etcd encryption | No | No |
 | **Secret values** (get/list/delete) | TLS | ASM/GCP SM/AKV/etcd encryption | No (metadata only) | No |
-| **Secret values** (runtime injection) | Linkerd mTLS / Kubernetes API | Secret backend encryption | No (data plane only) | No |
-| **Execution logs** (streaming) | TLS + TLS/mTLS/tunnel | CloudWatch / Cloud Logging / Azure Monitor | Yes (plaintext, transient) | No |
+| **Secret values** (runtime injection) | Kubernetes secret volume / env var | Secret backend encryption | No (data plane only) | No |
+| **Execution logs** (live & persisted) | TLS 1.3 + mTLS tunnel | CloudWatch / Cloud Logging / Azure Monitor | No | No |
 | **Task definitions** (TaskSpec) | TLS | Control plane database (AES-256/KMS) | Yes (read from DB) | **Yes** (encrypted at rest) |
 | **Run/trigger specs** | TLS | Control plane database (AES-256/KMS) | Yes (read from DB) | **Yes** (encrypted at rest) |
 | **Error messages** | TLS (gRPC) | Control plane database (storage-level) | Yes (read from DB) | **Yes** |
 | **Execution metadata** (phase, timestamps) | TLS (gRPC) | Control plane database (AES-256/KMS) | Yes (read from DB) | **Yes** (encrypted at rest) |
 
-"Transient" means the data exists in process memory only for the duration of a single request and is not written to disk, cache, or logs. For details on each data flow pattern, see [Data flow](./data-flow).
+Customer-data categories (everything above the task-definition row) route from the client directly to the data plane. Under the default tier this is the Direct-to-DataPlane tunnel: TLS 1.3 from the client to the Cloudflare edge, then mTLS plus Cloudflare Tunnel encryption from the edge to the data plane. Under the [Sovereign Data Plane](../architecture/sovereign-data-plane) tier this is a single TLS hop from the client (on the corporate VPN) to a customer-managed internal load balancer. In both cases, authentication and RBAC are enforced by the Envoy router inside the customer's cluster, and the control plane is not on the path. For details, see [Data flow](./data-flow).
 
 ## Verification
 
@@ -136,7 +137,7 @@ The presigned URL itself is unchanged and still authentic. The data behind it is
 4. Check the Cloudflare Tunnel pod logs for TLS handshake confirmation:
 
    ```bash
-   kubectl logs <tunnel-pod> -n <control-plane-namespace>
+   kubectl logs <tunnel-pod> -n union
    ```
 
 This verification is fully self-service.
