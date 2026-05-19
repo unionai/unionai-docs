@@ -34,7 +34,7 @@ Object store · logs · secrets ·   ─ customer IAM / Workload Identity
 auxiliary UIs                       customer-managed KMS
 ```
 
-The tunnel (or internal load balancer, under Sovereign) terminates **inside the customer's cluster** at the Envoy router. Authentication and authorization run there, against the same Union identity that gates the control plane API -- but the enforcement point is inside the customer's network. Union's control plane never sees the request payload under either tier. See [Sovereign Data Plane](../architecture/sovereign-data-plane) for the enhanced-tier topology.
+The tunnel (or internal load balancer, under the Sovereign Data Plane tier) terminates **inside the customer's cluster** at the Envoy router. Authentication and authorization run there, against the same Union.ai identity that gates the control plane API -- but the enforcement point is inside the customer's network. Union.ai's control plane never sees the request payload under either tier. See [Sovereign Data Plane](../architecture/sovereign-data-plane) for the Sovereign Data Plane topology.
 
 | Phase | Encrypted? | Details |
 |-------|------------|---------|
@@ -85,7 +85,7 @@ SDK / CLI / UI                            Data-plane dataproxy        Customer o
      │ ◀───── run ID ─────────────────────────────┼────────────────────────────┼─────────────────────── │
 ```
 
-1. **SelectCluster.** The SDK calls `SelectCluster` on the control plane with the run's project/domain (or queue/org). The control plane returns the per-cluster tunnel domain (under the default tier) or the per-cluster internal LB hostname (under Sovereign DP) for the cluster that will handle this request class. The SDK caches this for subsequent calls in the same submission.
+1. **SelectCluster.** The SDK calls `SelectCluster` on the control plane with the run's project/domain (or queue/org). The control plane returns the per-cluster tunnel domain (under the default tier) or the per-cluster internal LB hostname (under Sovereign Data Plane) for the cluster that will handle this request class. The SDK caches this for subsequent calls in the same submission.
 
 2. **CreateUploadLocation.** The SDK calls `CreateUploadLocation` on the data-plane dataproxy through the resolved tunnel/LB. The Envoy router authenticates the request against Union identity and enforces RBAC. The dataproxy returns a short-lived signed PUT URL into the customer's object store, plus the URI the URL writes to.
 

@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Sovereign Data Plane
 
-The Sovereign Data Plane is an Enterprise-tier deployment option that replaces the Cloudflare-mediated Direct-to-DataPlane tunnel with a customer-managed load balancer inside the customer's VPC, reachable only from inside the customer's corporate network. In this mode, **the data plane is unreachable from any third-party network -- including Cloudflare's -- and Union.ai employees cannot reach customer data even with full Union credentials.**
+The Sovereign Data Plane is an Enterprise-tier deployment option that replaces the Direct-to-DataPlane tunnel with a customer-managed load balancer inside the customer's VPC, reachable only from inside the customer's corporate network. In this mode, **the data plane is unreachable from any third-party network -- including Cloudflare's -- and Union.ai employees cannot reach customer data even with full Union.ai credentials.**
 
 This is a strictly stronger network perimeter than the default tier. The identity perimeter (Union RBAC and SSO) is unchanged, and every visualization feature -- input/output inspection, log streaming, auxiliary UIs -- continues to work for users who are connected to the corporate network.
 
@@ -24,11 +24,11 @@ The Sovereign Data Plane is available on the Enterprise tier on customer request
 
 | | Default (Direct-to-DataPlane) | Sovereign Data Plane |
 |---|---|---|
-| Client → data plane path | Cloudflare Tunnel terminating at the Envoy router inside the customer's cluster | Customer-managed load balancer inside the customer's VPC, terminating at the same Envoy router |
+| Client → data plane path | Direct-to-DataPlane tunnel terminating at the Envoy router inside the customer's cluster | Customer-managed load balancer inside the customer's VPC, terminating at the same Envoy router |
 | Reachable from | Public internet, gated by Cloudflare + Envoy AuthN/RBAC | Only from inside the customer's corporate network (VPN) |
 | TLS termination | Cloudflare edge, then mTLS to the data plane | Customer-controlled, end-to-end inside the VPC |
 | Who can reach the data plane network | Any authenticated, RBAC-authorized user | Only users on the customer's VPN |
-| Union employee access to data | Possible if granted UI access (still bounded by RBAC) | **Not possible** without being on the customer's VPN |
+| Union.ai employee access to data | Possible if granted UI access (still bounded by RBAC) | **Not possible** without being on the customer's VPN |
 | Setup ownership | Provisioned and managed by Union | Customer's SRE/DevOps team stands up the load balancer; Union deploys the data plane behind it |
 
 ## What stays the same
@@ -43,7 +43,7 @@ Switching to the Sovereign Data Plane changes the **network** perimeter only. Ev
 
 ## Topology
 
-The request flow under the Sovereign Data Plane mirrors the default tier with one substitution: the Cloudflare Tunnel is replaced by a customer-managed load balancer.
+The request flow under the Sovereign Data Plane mirrors the default tier with one substitution: the Direct-to-DataPlane tunnel is replaced by a customer-managed load balancer.
 
 ```
 [Authenticated client on corporate VPN]
@@ -66,7 +66,7 @@ The data plane never accepts a connection from any third-party network. The load
 
 ## Setup
 
-The Sovereign Data Plane is a deployment-time configuration. The customer's SRE/DevOps team provisions a load balancer inside their VPC that is reachable only from the corporate VPN, and the Union data plane is deployed behind it instead of behind the Cloudflare tunnel. The exact form of the load balancer (cloud-native, ingress controller, internal ALB/NLB/ILB, route reflector, etc.) depends on the customer's existing infrastructure conventions; Union supports the common patterns.
+The Sovereign Data Plane is a deployment-time configuration. The customer's SRE/DevOps team provisions a load balancer inside their VPC that is reachable only from the corporate VPN, and the Union.ai data plane is deployed behind it instead of behind the Direct-to-DataPlane tunnel. The exact form of the load balancer (cloud-native, ingress controller, internal ALB/NLB/ILB, route reflector, etc.) depends on the customer's existing infrastructure conventions; Union.ai supports the common patterns.
 
 Existing Union RBAC and SSO continue to apply -- the network perimeter changes, but the identity perimeter does not. Engagement is through Union Solutions Engineering as part of an Enterprise deployment.
 
@@ -76,7 +76,7 @@ The Sovereign Data Plane is strictly stronger than the default tier on network r
 
 - **Customer owns the load balancer.** Provisioning, scaling, TLS certificate rotation, and high-availability are the customer's responsibility, the same as for any other internal service in their VPC.
 - **VPN coverage drives user reach.** Users who need to inspect runs from outside the corporate network (for example, working from a personal device, or after a VPN outage) cannot reach the data plane. The default tier's Cloudflare path is reachable from anywhere with internet access.
-- **No emergency Union access.** Under the default tier, Union support with UI access can help diagnose customer issues by inspecting the same surfaces the customer sees. Under the Sovereign Data Plane, that path is closed: Union support can no longer see the data plane. This is the point, but worth surfacing to operations teams.
+- **No emergency Union.ai access.** Under the default tier, Union.ai support with UI access can help diagnose customer issues by inspecting the same surfaces the customer sees. Under the Sovereign Data Plane, that path is closed: Union.ai support can no longer see the data plane. This is the point, but worth surfacing to operations teams.
 
 ## Verification
 

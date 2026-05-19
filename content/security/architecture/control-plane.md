@@ -35,7 +35,7 @@ The control plane exposes the following capabilities:
 - **API and UI gateway** -- an authenticated HTTPS API and web console for users, the SDK, and the CLI. All requests are subject to authentication and RBAC enforcement before any orchestration logic runs.
 - **Scheduling and execution tracking** -- schedules TaskActions across registered data plane clusters and records execution state (phase transitions, timestamps, errors) reported back from the data plane.
 - **Cluster registry** -- maintains the inventory of registered data plane clusters and their health.
-- **Cluster selection** -- exposes the `SelectCluster` RPC that clients (SDK / UI) call to resolve which data plane cluster handles a given customer-data request. The control plane returns the per-cluster tunnel domain (or, under Sovereign DP, internal LB hostname); the client then dispatches the data-path request directly to that cluster. The control plane does not participate in the data path itself.
+- **Cluster selection** -- exposes the `SelectCluster` RPC that clients (SDK / UI) call to resolve which data plane cluster handles a given customer-data request. The control plane returns the per-cluster tunnel domain (or, under Sovereign Data Plane, internal LB hostname); the client then dispatches the data-path request directly to that cluster. The control plane does not participate in the data path itself.
 
 The control plane has no data-gateway role under Zero Trust. The pre-ZT `dataproxy` service that handled signed URLs, log streaming, structured I/O, and auxiliary UI proxying has been relocated to the data plane (see [Data plane](./data-plane#components)). See [Data flow](../data-protection/data-flow) for the new request path.
 

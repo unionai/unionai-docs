@@ -21,7 +21,7 @@ This section covers:
 
 * **[Network architecture](./network)**: The data plane initiates all communication with Union over an outbound-only direct gRPC connection. Customer-data requests flow client-to-data-plane through the Direct-to-DataPlane tunnel, terminating at an Envoy router inside the customer's cluster. There is no inbound attack surface on the customer's external network and therefore no firewall rules are required at the perimeter.
 
-* **[Sovereign Data Plane](./sovereign-data-plane)**: An Enterprise-tier option that replaces the Cloudflare-mediated tunnel with a customer-managed load balancer inside the customer's VPC, reachable only from the corporate VPN. No third-party network can reach the data plane; Union employees cannot reach customer data even with full Union credentials.
+* **[Sovereign Data Plane](./sovereign-data-plane)**: An Enterprise-tier option that replaces the Direct-to-DataPlane tunnel with a customer-managed load balancer inside the customer's VPC, reachable only from the corporate VPN. No third-party network can reach the data plane; Union.ai employees cannot reach customer data even with full Union.ai credentials.
 
 * **[Private connectivity (BYOC)](./private-connectivity)**: In the BYOC model, Union.ai manages the customer's Kubernetes cluster via PrivateLink, Private Service Connect, or Azure Private Link. The Kubernetes API is never exposed to the public internet.
 

@@ -29,7 +29,7 @@ The property does **not** depend on Union employees behaving correctly, Union's 
         ▼
 [Cloudflare edge]                  ─ TLS 1.3 termination,
         │                            service-token policy
-        ▼                            (default tier; absent under Sovereign DP)
+        ▼                            (default tier; absent under Sovereign Data Plane)
 [Customer VPC]                     ─ no inbound port at the external perimeter
         │
         ▼
@@ -48,7 +48,7 @@ The property does **not** depend on Union employees behaving correctly, Union's 
 [Object store · KMS · logs ·       ─ customer IAM / Workload Identity /
  K8s API · auxiliary UIs]            customer-managed KMS
 
-[Union Control Plane]  ───  metadata only  ──────▶   [Customer Data Plane]
+[Union.ai control plane]  ───  metadata only  ─────▶  [Customer data plane]
    (multi-tenant)        (run IDs, status,                (single-tenant,
                           scheduling refs)                 customer-owned)
 ```
@@ -79,7 +79,7 @@ The analysis below references these asset classes:
 
 **Capability.** Full code execution on any control plane service; can read control plane databases and credentials.
 
-**Reach.** This is the adversary Zero Trust is specifically designed against. Full code execution on the control plane yields A5 (workflow metadata) and A6 (identity records, RBAC graph). It does **not** yield A1–A4: those payloads never enter the control plane in any form under Zero Trust, so there is no in-memory or on-disk copy to extract. The control plane also cannot inject itself into the data path -- in default mode it can only initiate the same outbound-authenticated calls a normal client could (subject to Envoy AuthN/AuthZ at the tunnel egress inside the customer's cluster); under Sovereign DP it has no network route to the data plane at all. Lateral movement to A1–A4 requires *also* compromising the customer's own IAM/KMS, which sit inside the customer's cloud account, not Union's.
+**Reach.** This is the adversary Zero Trust is specifically designed against. Full code execution on the control plane yields A5 (workflow metadata) and A6 (identity records, RBAC graph). It does **not** yield A1–A4: those payloads never enter the control plane in any form under Zero Trust, so there is no in-memory or on-disk copy to extract. The control plane also cannot inject itself into the data path -- in default mode it can only initiate the same outbound-authenticated calls a normal client could (subject to Envoy AuthN/AuthZ at the tunnel egress inside the customer's cluster); under Sovereign Data Plane it has no network route to the data plane at all. Lateral movement to A1–A4 requires *also* compromising the customer's own IAM/KMS, which sit inside the customer's cloud account, not Union's.
 
 **Reachable**: A5, A6. **Not reachable**: A1–A4, A7 plaintext.
 
@@ -87,9 +87,9 @@ The analysis below references these asset classes:
 
 **Capability.** Full operator access to control plane and Union-managed infrastructure.
 
-**Reach.** Same blast radius as T2. Operator access to Union infrastructure does not include access to the customer's cloud account; the data lives there, not at Union. Under Sovereign DP, the employee additionally cannot reach the data plane's *network* -- the data plane is reachable only on the customer's corporate VPN, and Union employees are not on it.
+**Reach.** Same blast radius as T2. Operator access to Union infrastructure does not include access to the customer's cloud account; the data lives there, not at Union. Under Sovereign Data Plane, the employee additionally cannot reach the data plane's *network* -- the data plane is reachable only on the customer's corporate VPN, and Union employees are not on it.
 
-**Reachable**: A5, A6. **Not reachable**: A1–A4. Under Sovereign DP, not even the data plane network.
+**Reachable**: A5, A6. **Not reachable**: A1–A4. Under Sovereign Data Plane, not even the data plane network.
 
 ### T4 — Compromised transport intermediary
 
@@ -101,7 +101,7 @@ The analysis below references these asset classes:
 2. Authentication and authorization are enforced *after* the edge, in the Envoy router inside the customer's cluster -- so a compromised edge cannot impersonate a Union user or escalate beyond the user-level RBAC of whatever request it is observing.
 3. For customers who reject this residual risk entirely, the [Sovereign Data Plane](./architecture/sovereign-data-plane) tier removes Cloudflare from the path -- traffic runs over the customer's own VPN/PrivateLink and never touches a third party.
 
-**Reachable (default)**: A1–A4 in flight only, no persistence. **Sovereign DP**: nothing.
+**Reachable (default)**: A1–A4 in flight only, no persistence. **Sovereign Data Plane**: nothing.
 
 ### T5 — Compromised customer data-plane node
 
@@ -123,7 +123,7 @@ The analysis below references these asset classes:
 
 **Capability.** Observes encrypted traffic on the wire.
 
-**Reach.** Every hop is encrypted: TLS 1.3 between the client and the Cloudflare edge (default tier) or directly to the customer-managed LB (Sovereign DP); mTLS on the tunnel; cloud-native TLS between dataproxy and the object store; signed-URL HTTPS for direct object-store access. A passive observer cannot read traffic in transit.
+**Reach.** Every hop is encrypted: TLS 1.3 between the client and the Cloudflare edge (default tier) or directly to the customer-managed LB (Sovereign Data Plane); mTLS on the tunnel; cloud-native TLS between dataproxy and the object store; signed-URL HTTPS for direct object-store access. A passive observer cannot read traffic in transit.
 
 **Reachable**: ciphertext only.
 
@@ -142,7 +142,7 @@ The Zero Trust property is independently auditable from outside Union. A custome
 - **Network topology.** GKE / EKS / AKS audit logs confirm the tunnel pod's outbound-only connection pattern. Cloud Audit Logs show no inbound traffic to the data plane cluster API from Union IP ranges.
 - **Application path.** Union's authorization-service logs record every data-plane request, the resolved Union identity, and the RBAC decision. Control plane logs over the same window show no payload-bearing requests for customer-data operations -- by inspection, the API surfaces that used to proxy customer data have no corresponding endpoints.
 - **Object store.** Cloud-native audit logs (CloudTrail, Cloud Audit Logs, Azure Storage logs) record every read and write to the bucket. The principal on every payload-bearing access is a customer-controlled identity, never Union.
-- **Tunnel.** Cloudflare Access logs record every authenticated request through the tunnel, including the resolved Union identity, the destination service inside the cluster, and the response status. (Under Sovereign DP, the equivalent logs are produced by the customer-managed LB.)
+- **Tunnel.** Cloudflare Access logs record every authenticated request through the tunnel, including the resolved Union identity, the destination service inside the cluster, and the response status. (Under Sovereign Data Plane, the equivalent logs are produced by the customer-managed LB.)
 
 Customers can ingest all of the above into their own SIEM and assert on it independently of Union.
 
@@ -181,7 +181,7 @@ Five risks are not eliminated by the architecture and are stated explicitly so c
 
 - **T1 (external).** Run an external port scan against the data plane cluster's public IP ranges; confirm no Union-related service responds. Inspect VPC Flow Logs for inbound traffic from Cloudflare or Union IP ranges; confirm none.
 - **T2/T3 (compromised CP / malicious employee).** Inspect control plane API endpoints. Confirm that no endpoint returns workflow input or output payloads, log content, or secret values. The `GetSecret` RPC by design returns only metadata.
-- **T4 (transport intermediary).** Inspect the encryption-at-each-phase table in [Data flow](./data-protection/data-flow) for default tier; note the Cloudflare edge hop. For Sovereign DP, inspect the same table; note that the Cloudflare hop is absent.
+- **T4 (transport intermediary).** Inspect the encryption-at-each-phase table in [Data flow](./data-protection/data-flow) for default tier; note the Cloudflare edge hop. For Sovereign Data Plane, inspect the same table; note that the Cloudflare hop is absent.
 - **T5 (compromised node).** Inspect the node service account's IAM policy; confirm scoping (no `iam:PassRole` to admin roles, no broad storage admin, no project editor). Inspect Calico network policies; confirm IMDS and RFC-1918 egress blocks.
 - **T6 (malicious user).** Create a Viewer-role user. Attempt to call data-path endpoints (log streaming, I/O retrieval) via the tunnel. Confirm denial at the Envoy router, not just at the control plane API.
 - **T7 (passive observer).** Inspect [Encryption](./data-protection/encryption) for the encryption status of every hop. Confirm no plaintext hop exists.
@@ -192,7 +192,7 @@ Five risks are not eliminated by the architecture and are stated explicitly so c
 
 **How to verify:**
 
-1. Ingest cluster audit logs, Cloud Audit / CloudTrail logs, Cloudflare Access logs (or the equivalent for the customer-managed LB under Sovereign DP), and Union's authorization-service log export.
+1. Ingest cluster audit logs, Cloud Audit / CloudTrail logs, Cloudflare Access logs (or the equivalent for the customer-managed LB under Sovereign Data Plane), and Union's authorization-service log export.
 2. Query for any customer-data-shaped request reaching the control plane region; assert zero results.
 3. Query for the principal on every object-store access; assert that none are Union-controlled.
 4. Run this query continuously as part of the customer's normal security monitoring; any future drift will produce immediate evidence.

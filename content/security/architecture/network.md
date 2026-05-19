@@ -10,7 +10,7 @@ The network architecture reinforces the [two-plane separation](./two-plane-separ
 
 ## Outbound-only model
 
-All network connections between the data plane and Union are initiated by the data plane. Under the default tier, the customer's network requires only standard outbound HTTPS access to Cloudflare edge nodes. No inbound firewall rules, port forwarding, or VPN configuration are needed at the customer's external perimeter.
+All network connections between the data plane and Union.ai are initiated by the data plane. Under the default tier, the customer's network requires only standard outbound HTTPS access to Cloudflare edge nodes. No inbound firewall rules, port forwarding, or VPN configuration are needed at the customer's external perimeter.
 
 At the external perimeter, this model eliminates the inbound attack surface entirely. There are no externally-listening services on the customer's network for an attacker to discover through port scanning or exploit through service vulnerabilities. The customer's external network perimeter remains unaffected by the Union.ai integration. Firewall management at the perimeter is simplified to a single rule: permit outbound HTTPS, which most enterprise networks already allow.
 
@@ -24,7 +24,7 @@ The Zero Trust client-to-data-plane path is **one network hop shorter** than the
 
 The Direct-to-DataPlane tunnel is an outbound-only encrypted Cloudflare Tunnel from the customer's cluster to the Cloudflare edge network. It is initiated by a `cloudflared` daemon in the data plane and carries client-to-data-plane traffic in -- not control-plane-to-data-plane traffic. The tunnel **terminates inside the customer's cluster** at an Envoy router that authenticates each request against Union identity and enforces RBAC before forwarding to the data-plane `dataproxy` service. The Union control plane is not on this path. For background on the underlying connector, see Cloudflare's [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/) documentation.
 
-All traffic through the tunnel is encrypted using a layered transport: TLS 1.3 from the client to the Cloudflare edge, mTLS plus Cloudflare Tunnel encryption from the edge to the data plane, and Cloudflare Access service tokens for application-layer authentication. Tunnel tokens are rotated automatically: the data plane operator periodically polls Union and picks up updated tokens when issued.
+All traffic through the tunnel is encrypted using a layered transport: TLS 1.3 from the client to the Cloudflare edge, mTLS plus Cloudflare Tunnel encryption from the edge to the data plane, and Cloudflare Access service tokens for application-layer authentication. Tunnel tokens are rotated automatically: the data plane operator periodically polls Union.ai and picks up updated tokens when issued.
 
 The tunnel maintains health checks and heartbeats, and automatically reconnects if the connection drops. State reconciliation occurs upon reconnection, so no requests are lost during brief connectivity interruptions.
 
@@ -36,7 +36,7 @@ In multi-cluster deployments, each data-plane cluster has its own dedicated tunn
 
 ### Sovereign Data Plane
 
-Enterprise customers can replace the Cloudflare-mediated tunnel entirely with a customer-managed load balancer inside their own VPC, reachable only from the corporate VPN. This makes the data plane unreachable from any third-party network -- including Cloudflare's -- and unreachable to Union employees. See [Sovereign Data Plane](./sovereign-data-plane) for the topology and trade-offs.
+Enterprise customers can replace the Direct-to-DataPlane tunnel entirely with a customer-managed load balancer inside their own VPC, reachable only from the corporate VPN. This makes the data plane unreachable from any third-party network -- including Cloudflare's -- and unreachable to Union.ai employees. See [Sovereign Data Plane](./sovereign-data-plane) for the topology and trade-offs.
 
 ## Direct gRPC connection
 

@@ -50,8 +50,8 @@ Union.ai handles upgrades, monitoring, and provisioning, while maintaining stric
 
 In **Self-managed** deployments, the customer operates their data plane independently.
 The customer is responsible for all aspects of data plane management, including upgrades, monitoring, and provisioning.
-Union.ai has no access to the customer's infrastructure: the only pathway between Union and the customer's network is an outbound-initiated direct gRPC connection from the data plane carrying orchestration metadata.
+Union.ai has no access to the customer's infrastructure: the only pathway between Union.ai and the customer's network is an outbound-initiated direct gRPC connection from the data plane carrying orchestration metadata.
 
 For details, see [Deployment models](./architecture/deployment-models).
 
-Independently of deployment model, Enterprise customers can elect the [Sovereign Data Plane](./architecture/sovereign-data-plane) tier, under which the client-to-data-plane path runs through a customer-managed internal load balancer reachable only from the corporate VPN -- no third-party network on the path, and no Union employee able to reach customer data even with full Union credentials.
+Independently of deployment model, Enterprise customers can elect the [Sovereign Data Plane](./architecture/sovereign-data-plane) tier, under which the client-to-data-plane path runs through a customer-managed internal load balancer reachable only from the corporate VPN -- no third-party network on the path, and no Union.ai employee able to reach customer data even with full Union.ai credentials.
