@@ -19,7 +19,9 @@ This section covers:
 
 * **[Data plane](./data-plane)**: The data plane runs entirely within the customer's cloud account. All computation occurs here and all customer data resides here. It uses workload identity federation (IRSA / Workload Identity / Azure Workload Identity) instead of static credentials, so no long-lived access keys are stored on the data plane.
 
-* **[Network architecture](./network)**: The data plane initiates all connections to the control plane via two outbound-only routes. There is no inbound attack surface on the customer's network and therefore no firewall rules are required.
+* **[Network architecture](./network)**: The data plane initiates all connections to Union.ai via two outbound-only routes. Customer-data requests flow client-to-data-plane through the Direct-to-DataPlane tunnel, terminating at an Envoy router inside the customer's cluster. There is no inbound attack surface on the customer's network and therefore no firewall rules are required.
+
+* **[Sovereign Data Plane](./sovereign-data-plane)**: An Enterprise-tier option that replaces the Cloudflare-mediated tunnel with a customer-managed load balancer inside the customer's VPC, reachable only from the corporate VPN. No third-party network can reach the data plane; Union employees cannot reach customer data even with full Union credentials.
 
 * **[Private connectivity (BYOC)](./private-connectivity)**: In the BYOC model, Union.ai manages the customer's Kubernetes cluster via PrivateLink, Private Service Connect, or Azure Private Link. The Kubernetes API is never exposed to the public internet.
 

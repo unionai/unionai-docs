@@ -30,6 +30,10 @@ The tunnel carries every kind of customer-data request: structured task input up
 
 In multi-cluster deployments, each data-plane cluster has its own dedicated tunnel domain (e.g. `<cluster-id>.<base-domain>`). The SDK and UI resolve the right cluster for a given request via the `SelectCluster` RPC and dispatch directly to that cluster's tunnel domain. This keeps log streaming, I/O retrieval, and metrics requests terminating at the correct cluster without round-tripping through any shared aggregator.
 
+### Sovereign Data Plane
+
+Enterprise customers can replace the Cloudflare-mediated tunnel entirely with a customer-managed load balancer inside their own VPC, reachable only from the corporate VPN. This makes the data plane unreachable from any third-party network -- including Cloudflare's -- and unreachable to Union employees. See [Sovereign Data Plane](./sovereign-data-plane) for the topology and trade-offs.
+
 ## Direct gRPC connection
 
 In addition to the Direct-to-DataPlane tunnel, the data plane maintains a separate outbound gRPC connection over TLS to the regional control plane endpoint. The data plane operator multiplexes orchestration RPCs over this connection. It is outbound-initiated by the data plane and requires no inbound firewall rules. No customer data flows on this channel -- only orchestration metadata.
