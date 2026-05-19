@@ -12,6 +12,8 @@ Union.ai's architecture is divided into two distinct planes: a **control plane**
 
 The control plane handles workflow orchestration, user management, and the web interface. It stores only the metadata required for these functions; bulk customer data payloads are stored as URI references rather than inline. See [Control plane](./control-plane) for components and infrastructure.
 
+> **No customer data, metadata, code, or logs ever touch Union.ai's control plane. Not in flight. Not at rest. Not ever.**
+
 ## Data plane
 
 The data plane is where all computation and data handling occurs. It runs entirely within the customer's cloud account, on infrastructure the customer controls (or, in the BYOC model, infrastructure that Union.ai manages on the customer's behalf within the customer's account). It is protected by the customer's IAM policies. See [Data plane](./data-plane) for components, Kubernetes security, and IAM.

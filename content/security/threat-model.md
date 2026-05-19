@@ -10,7 +10,9 @@ This page enumerates the realistic adversaries against a Union.ai deployment and
 
 ## A topological, not behavioral, property
 
-The central security guarantee under Zero Trust -- that no customer data, metadata payload, or log byte ever transits Union's control plane -- is a property of the **deployment topology**, not of Union's operational behavior. It is verifiable by inspecting:
+> **No customer data, metadata, code, or logs ever touch Union.ai's control plane. Not in flight. Not at rest. Not ever.**
+
+This central guarantee under Zero Trust is a property of the **deployment topology**, not of Union's operational behavior. It is verifiable by inspecting:
 
 - The Helm chart that deploys the data plane.
 - The tunnel configuration (`operator/tunnels`) and Envoy filter chain that authenticate and authorize every data-path request inside the customer's cluster.
