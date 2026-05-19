@@ -73,7 +73,7 @@ Task pods mount code bundles via presigned URLs with limited time-to-live (TTL).
 
 The data plane uses two IAM roles to separate platform-level and user-level access:
 
-**adminflyterole** is used by platform services (Executor, Object Store Service, Log Provider). It has read/write access to the object store buckets, access to the secrets manager for retrieving user-defined secrets, and read access to persisted logs. This role is bound to platform service accounts via workload identity federation.
+**adminflyterole** is used by platform services (Executor, Dataproxy). It has read/write access to the object store buckets, access to the secrets manager for retrieving user-defined secrets, and read access to persisted logs. This role is bound to platform service accounts via workload identity federation.
 
 **userflyterole** is used by task pods (the containers running user code). It has read/write access to the object store buckets for reading inputs and writing outputs. It does not have access to the secrets manager or platform-level resources.
 
