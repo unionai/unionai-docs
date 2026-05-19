@@ -1,6 +1,6 @@
 ---
 title: Apps
-weight: 4
+weight: 5
 variants: +flyte +union
 ---
 
