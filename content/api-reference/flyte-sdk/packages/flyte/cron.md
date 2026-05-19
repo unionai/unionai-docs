@@ -1,6 +1,6 @@
 ---
 title: Cron
-version: 2.3.2
+version: 2.3.3
 variants: +flyte +union
 layout: py_api
 ---

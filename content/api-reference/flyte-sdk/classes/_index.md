@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.3.2
+version: 2.3.3
 variants: +flyte +union
 layout: py_api
 ---
@@ -99,6 +99,10 @@ layout: py_api
 | [`flyte.extras.Sleep`](../packages/flyte.extras/sleep) |Route a task to the backend `core-sleep` plugin. |
 | [`flyte.extras.SleepTask`](../packages/flyte.extras/sleeptask) | |
 | [`flyte.extras.TokenBatcher`](../packages/flyte.extras/tokenbatcher) |Token-aware batcher for LLM inference workloads. |
+| [`flyte.extras.shell.FlagSpec`](../packages/flyte.extras.shell/flagspec) |How to render a typed input as a CLI flag in ``{flags. |
+| [`flyte.extras.shell.Glob`](../packages/flyte.extras.shell/glob) |A multi-file output bundle. |
+| [`flyte.extras.shell.Stderr`](../packages/flyte.extras.shell/stderr) |Capture the task's stderr as a typed output. |
+| [`flyte.extras.shell.Stdout`](../packages/flyte.extras.shell/stdout) |Capture the task's stdout as a typed output. |
 | [`flyte.git.GitStatus`](../packages/flyte.git/gitstatus) |A class representing the status of a git repository. |
 | [`flyte.io.DataFrame`](../packages/flyte.io/dataframe) |A Flyte meta DataFrame object, that wraps all other dataframe types (usually available as plugins, pandas. |
 | [`flyte.io.Dir`](../packages/flyte.io/dir) |A generic directory class representing a directory with files of a specified format. |

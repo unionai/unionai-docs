@@ -1,6 +1,6 @@
 ---
 title: SGLangAppEnvironment
-version: 2.3.2
+version: 2.3.3
 variants: +flyte +union
 layout: py_api
 ---
@@ -74,7 +74,7 @@ class SGLangAppEnvironment(
 | `model_path` | `str \| RunOutput` | Remote path to model (e.g., s3 |
 | `model_hf_path` | `str` | Hugging Face path to model (e.g., Qwen/Qwen3-0.6B). |
 | `model_id` | `str` | Model id that is exposed by SGLang. |
-| `stream_model` | `bool` | Set to True to stream model from blob store to the GPU directly. If False, the model will be downloaded to the local file system first and then loaded into the GPU. |
+| `stream_model` | `bool` | When ``model_path`` is set, use True to stream weights from object storage to the GPU (Flyte loader integration). Ignored for ``model_hf_path``-only apps, which use SGLang's normal Hugging Face download path. If False with ``model_path``, the model is downloaded to the local filesystem first, then loaded. |
 
 ## Properties
 
