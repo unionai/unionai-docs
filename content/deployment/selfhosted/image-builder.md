@@ -1,6 +1,6 @@
 ---
 title: Image builder
-weight: 8
+weight: 5
 variants: -flyte +union
 ---
 

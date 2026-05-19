@@ -69,24 +69,24 @@ If your provider requires explicit audience configuration, set the audience to m
 
 ## Step 2: Build the API key
 
-Encode the credentials as a base64 string in the format `<domain>:<client-id>:<client-secret>:` — note the **trailing colon**:
+Encode the credentials as a base64 string in the format `<domain>:<client-id>:<client-secret>:<org>`:
 
 ```shell
-echo -n "<your-domain>:<client-id>:<client-secret>:" | base64
+echo -n "<your-domain>:<client-id>:<client-secret>:<org>" | base64
 ```
 
 For example:
 
 ```shell
-echo -n "union.example.com:abc123:secret456:" | base64
-# dW5pb24uZXhhbXBsZS5jb206YWJjMTIzOnNlY3JldDQ1Njo=
+echo -n "union.example.com:abc123:secret456:acme" | base64
+# dW5pb24uZXhhbXBsZS5jb206YWJjMTIzOnNlY3JldDQ1NjphY21l
 ```
 
 The four fields are:
 1. **Domain** — your control plane ingress domain (without `https://`)
 2. **Client ID** — from the OAuth app you just created
 3. **Client secret** — from the OAuth app you just created
-4. **Organization** — leave empty for self-hosted (the trailing colon is still required)
+4. **Organization** — the value of `global.UNION_ORG` in your control plane Helm values. The SDK sends this with every request; if it doesn't match the org claim issued by your authorization server, the control plane rejects the call as cross-org.
 
 ## Step 3: Store in your CI secret manager
 
@@ -238,7 +238,7 @@ For teams sharing a cluster, create **separate OAuth apps per team or per reposi
 Rotate CI/CD credentials on a regular schedule (90 days recommended):
 
 1. Create a new client secret in your identity provider (don't delete the old one yet)
-2. Re-encode with the new secret: `echo -n "<domain>:<client-id>:<new-secret>:" | base64`
+2. Re-encode with the new secret: `echo -n "<domain>:<client-id>:<new-secret>:<org>" | base64`
 3. Update the `FLYTE_API_KEY` secret in your CI system
 4. Verify a deploy succeeds with the new key
 5. Delete the old client secret from your identity provider

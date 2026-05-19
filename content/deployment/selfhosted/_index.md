@@ -8,7 +8,7 @@ mermaid: true
 
 # Self-hosted deployment
 
-In a self-hosted deployment, you host both the **control plane** and the **data plane** in the same Kubernetes cluster. This gives you complete control over your {{< key product_name >}} installation with full data sovereignty.
+In a self-hosted deployment, you host both the **control plane** and the **data plane**. You choose the topology that fits your operational and regulatory requirements — both planes in a single Kubernetes cluster, in separate clusters, in different regions, or any combination. {{< key product_name >}} gives you complete control over the installation with full data sovereignty.
 
 > [!NOTE]
 > Self-hosted deployment is distinct from [self-managed deployment](../selfmanaged/_index), where {{< key product_name >}} hosts the control plane and you manage only the data plane.
@@ -21,16 +21,25 @@ Choose self-hosted deployment when:
 - You have strict data locality or sovereignty requirements
 - You want to minimize network egress costs
 - You are running in an air-gapped or restricted network environment
+- You need to colocate the control plane with the data plane for latency, isolation, or regulatory reasons
 
 Choose [self-managed deployment](../selfmanaged/_index) when:
 
 - You want {{< key product_name >}} to manage the control plane
 - You need {{< key product_name >}}'s managed services and support
-- Control plane and data plane are in separate clusters
+
+## Topologies
+
+Self-hosted deployments support two topologies, distinguished by how the control plane and data plane are placed relative to each other:
+
+- **Separate-cluster (default and recommended)** — control plane in one Kubernetes cluster, one or more data planes in separate clusters (often per environment, region, or business unit). Communication is via the control plane's external ingress; each data plane authenticates to the CP as a workload identity. Data planes may run on different cloud providers than the CP. This is the topology [Infrastructure requirements](./infrastructure-requirements) is written around.
+- **Intra-cluster (special case)** — both planes in the same Kubernetes cluster, communicating over internal DNS. The simplest topology; used by the [Getting started](./getting-started) walkthrough and for footprint-constrained or evaluation deployments. The chart ships `values.{aws,gcp}.selfhosted-intracluster.yaml` for this case. See [Infrastructure requirements → Intra-cluster topology](./infrastructure-requirements#intra-cluster-topology) for the differences from separate-cluster.
+
+The architecture diagram below shows the intra-cluster topology — the simplest layout to visualize. Separate-cluster uses the same chart components in different cluster boundaries.
 
 ## Architecture
 
-In a self-hosted intra-cluster deployment, the control plane and data plane communicate using Kubernetes internal networking rather than external endpoints.
+In an intra-cluster deployment, the control plane and data plane communicate using Kubernetes internal networking rather than external endpoints.
 
 ```mermaid
 graph TB
@@ -81,45 +90,18 @@ graph TB
 - **Self-signed certificates**: Can use self-signed certificates for intra-cluster TLS
 - **Single-tenant mode**: Simplified security model with explicit organization configuration
 
-## Prerequisites
-
-### Infrastructure
-
-- **Kubernetes cluster** (>= 1.28.0) with sufficient resources for both control plane and data plane. Recommended: at least 6 nodes with 8 CPU / 16GB RAM each.
-- **PostgreSQL database** (12+), either cloud-managed (RDS, Cloud SQL) or self-hosted.
-- **Object storage** (S3 or GCS) for metadata and artifacts.
-- **IAM roles** or **service accounts** configured for cloud resource access.
-
-### Tools
-
-- [Helm](https://helm.sh/docs/intro/install/) 3.18+
-- `kubectl` configured to access your cluster
-- `openssl` or `cert-manager` for TLS certificate generation
-
-### Registry access
-
-{{< key product_name >}} control plane images are hosted in a private registry. You will receive registry credentials from the {{< key product_name >}} team for your organization.
-
 ## Deployment guides
 
-Deploy the control plane first, then the data plane.
+Start with [Getting started](./getting-started) for an end-to-end walkthrough. Review [Infrastructure requirements](./infrastructure-requirements) before provisioning your cloud substrate. The remaining pages cover individual deployment components in depth.
 
 {{< grid >}}
 
-{{< link-card target="./control-plane-aws" icon="server" title="Control plane on AWS" >}}
-Deploy the control plane with Amazon RDS and S3
+{{< link-card target="./getting-started" icon="play" title="Getting started" >}}
+End-to-end walkthrough: provision, install, configure, smoke test
 {{< /link-card >}}
 
-{{< link-card target="./control-plane-gcp" icon="server" title="Control plane on GCP (Preview)" >}}
-Deploy the control plane with Cloud SQL and GCS
-{{< /link-card >}}
-
-{{< link-card target="./data-plane-aws" icon="cpu" title="Data plane on AWS" >}}
-Deploy the data plane with S3 and IRSA
-{{< /link-card >}}
-
-{{< link-card target="./data-plane-gcp" icon="cpu" title="Data plane on GCP (Preview)" >}}
-Deploy the data plane with GCS and Workload Identity
+{{< link-card target="./infrastructure-requirements" icon="layers" title="Infrastructure requirements" >}}
+What to provision — substrate, CP and DP sizing, scaling constraints, topology choice
 {{< /link-card >}}
 
 {{< link-card target="./authentication" icon="lock" title="Authentication" >}}
