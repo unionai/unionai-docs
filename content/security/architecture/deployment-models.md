@@ -17,7 +17,7 @@ Regardless of deployment model, both BYOC and Self-managed share the same core s
 - RBAC for user and service account authorization
 - Tenant isolation via Kubernetes namespaces and IAM scoping
 - Audit logging of administrative and user actions
-- Outbound-only [network connectivity](./network) (Cloudflare Tunnel and direct gRPC)
+- Outbound-only [network connectivity](./network) (Direct-to-DataPlane tunnel and direct gRPC)
 
 The key difference is operational: in BYOC, Union.ai manages the Kubernetes cluster within the customer's cloud account. In Self-managed, the customer operates the cluster entirely on their own.
 

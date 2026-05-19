@@ -40,7 +40,7 @@ All access by Union.ai personnel is authenticated and logged with caller identit
 
 **How to verify:**
 
-Self-managed: Union.ai has no IAM roles, no VPN, no SSH keys, and no kubectl access to the customer's cluster. Both outbound channels (Cloudflare Tunnel and direct gRPC) are initiated FROM the customer's data plane. Union.ai cannot initiate connections TO the customer's infrastructure.
+Self-managed: Union.ai has no IAM roles, no VPN, no SSH keys, and no kubectl access to the customer's cluster. Both outbound channels (the Direct-to-DataPlane tunnel and the direct gRPC connection) are initiated FROM the customer's data plane. Union.ai cannot initiate connections TO the customer's infrastructure.
 
 BYOC:
 

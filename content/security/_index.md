@@ -47,7 +47,7 @@ Union.ai handles upgrades, monitoring, and provisioning, while maintaining stric
 
 In **Self-managed** deployments, the customer operates their data plane independently.
 The customer is responsible for all aspects of data plane management, including upgrades, monitoring, and provisioning.
-Union.ai has no access to the customer's infrastructure, with the Cloudflare Tunnel and GRPC connections being the only pathways between Union.ai and the customer's network
+Union.ai has no access to the customer's infrastructure, with the Direct-to-DataPlane tunnel and direct gRPC connection being the only pathways between Union.ai and the customer's network
 (and even then, only outbound from the customer to Union.ai).
 
 For details, see [Deployment models](./architecture/deployment-models).

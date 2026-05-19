@@ -112,7 +112,7 @@ For details on the BYOC private management connection, see [Private connectivity
 
 4. (Optional) Run a port scan from an external host against the data plane nodes to confirm no Union.ai-related services are reachable.
 
-### Cloudflare Tunnel and direct gRPC
+### Direct-to-DataPlane tunnel and direct gRPC
 
 **Reviewer focus:** Confirm that bulk data (files, DataFrames, code bundles) transfers directly between clients and the customer's object store via presigned URLs, and that structured task I/O and log streams flow through the Direct-to-DataPlane tunnel directly to the data plane (no Union control plane on the path). Confirm that the direct gRPC connection from the data plane operator to the regional control plane endpoint is outbound-initiated and carries no customer data.
 
