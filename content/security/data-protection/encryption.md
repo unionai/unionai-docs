@@ -49,7 +49,7 @@ The following table summarizes the encryption state for each data category acros
 | **Structured task I/O** (retrieval) | TLS 1.3 + mTLS tunnel | S3 SSE / GCS / Azure SSE | No | No |
 | **Secret values** (create/update) | TLS 1.3 + mTLS tunnel | ASM/GCP SM/AKV/etcd encryption | No | No |
 | **Secret values** (get/list/delete) | TLS | ASM/GCP SM/AKV/etcd encryption | No (metadata only) | No |
-| **Secret values** (runtime injection) | Linkerd mTLS / Kubernetes API | Secret backend encryption | No (data plane only) | No |
+| **Secret values** (runtime injection) | Kubernetes secret volume / env var | Secret backend encryption | No (data plane only) | No |
 | **Execution logs** (live & persisted) | TLS 1.3 + mTLS tunnel | CloudWatch / Cloud Logging / Azure Monitor | No | No |
 | **Task definitions** (TaskSpec) | TLS | Control plane database (AES-256/KMS) | Yes (read from DB) | **Yes** (encrypted at rest) |
 | **Run/trigger specs** | TLS | Control plane database (AES-256/KMS) | Yes (read from DB) | **Yes** (encrypted at rest) |
@@ -137,7 +137,7 @@ The presigned URL itself is unchanged and still authentic. The data behind it is
 4. Check the Cloudflare Tunnel pod logs for TLS handshake confirmation:
 
    ```bash
-   kubectl logs <tunnel-pod> -n <control-plane-namespace>
+   kubectl logs <tunnel-pod> -n union
    ```
 
 This verification is fully self-service.
