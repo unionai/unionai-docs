@@ -40,10 +40,7 @@
   },
   "methods": {
     "flyteplugins.union.cli.edit_with_retry": "/api-reference/integrations/union/packages/flyteplugins.union.cli/#edit_with_retry",
-    "edit_with_retry": "/api-reference/integrations/union/packages/flyteplugins.union.cli/#edit_with_retry",
     "flyteplugins.union.utils.auth.encode_app_client_credentials": "/api-reference/integrations/union/packages/flyteplugins.union.utils.auth/#encode_app_client_credentials",
-    "encode_app_client_credentials": "/api-reference/integrations/union/packages/flyteplugins.union.utils.auth/#encode_app_client_credentials",
-    "flyteplugins.union.utils.auth.is_serverless_endpoint": "/api-reference/integrations/union/packages/flyteplugins.union.utils.auth/#is_serverless_endpoint",
-    "is_serverless_endpoint": "/api-reference/integrations/union/packages/flyteplugins.union.utils.auth/#is_serverless_endpoint"
+    "flyteplugins.union.utils.auth.is_serverless_endpoint": "/api-reference/integrations/union/packages/flyteplugins.union.utils.auth/#is_serverless_endpoint"
   }
 }

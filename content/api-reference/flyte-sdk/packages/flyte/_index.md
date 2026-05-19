@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.2.4
+version: 2.3.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -82,6 +82,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | `TriggerTime` | `_trigger_time` |  |
 | `__version__` | `str` |  |
 | `logger` | `Logger` |  |
+| `system_logger` | `Logger` |  |
 
 ## Methods
 
@@ -843,6 +844,7 @@ def with_runcontext(
     interruptible: bool | None,
     log_level: int | None,
     log_format: LogFormat,
+    user_log_level: int | None,
     reset_root_logger: bool,
     disable_run_cache: bool,
     queue: Optional[str],
@@ -901,6 +903,7 @@ if __name__ == "__main__":
 | `interruptible` | `bool \| None` | Optional If true, the run can be scheduled on interruptible instances and false implies that all tasks in the run should only be scheduled on non-interruptible instances. If not specified the original setting on all tasks is retained. |
 | `log_level` | `int \| None` | Optional Log level to set for the run. If not provided, it will be set to the default log level set using `flyte.init()` |
 | `log_format` | `LogFormat` | Optional Log format to set for the run. If not provided, it will be set to the default log format |
+| `user_log_level` | `int \| None` | |
 | `reset_root_logger` | `bool` | If true, the root logger will be preserved and not modified by Flyte. |
 | `disable_run_cache` | `bool` | Optional If true, the run cache will be disabled. This is useful for testing purposes. |
 | `queue` | `Optional[str]` | Optional The queue to use for the run. This is used to specify the cluster to use for the run. |
@@ -928,6 +931,7 @@ def with_servecontext(
     cluster_pool: str | None,
     log_level: int | None,
     log_format: LogFormat,
+    user_log_level: int | None,
     interactive_mode: bool | None,
     copy_bundle_to: pathlib.Path | None,
     deactivate_timeout: float | None,
@@ -986,6 +990,7 @@ print(f"App URL: {app.url}")
 | `cluster_pool` | `str \| None` | Optional cluster pool to deploy the app to |
 | `log_level` | `int \| None` | Optional log level (e.g., logging.DEBUG, logging.INFO). If not provided, uses init config or default |
 | `log_format` | `LogFormat` | Optional log format ("console" or "json", default: "console") |
+| `user_log_level` | `int \| None` | |
 | `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are considered interactive mode, while scripts are not. This is used to determine how the code bundle is created. This is used to determine if the app should be served in interactive mode or not. |
 | `copy_bundle_to` | `pathlib.Path \| None` | When dry_run is True, the bundle will be copied to this location if specified |
 | `deactivate_timeout` | `float \| None` | Timeout in seconds for waiting for the app to stop during `deactivate(wait=True)`. Defaults to 6 s. |
