@@ -18,9 +18,9 @@ Every request that touches customer data follows the same path:
 Client (SDK / CLI / UI)
    │
    ▼
-Cloudflare edge                   ─ TLS 1.3 termination
-   │
-   ▼
+Cloudflare edge                   ─ TLS 1.3 termination  (default tier only;
+   │                                 replaced by a customer-managed internal LB
+   ▼                                 under the Sovereign Data Plane tier)
 Direct-to-DataPlane tunnel        ─ mTLS, outbound-initiated from the data plane
    │
    ▼
@@ -34,15 +34,18 @@ Object store · logs · secrets ·   ─ customer IAM / Workload Identity
 auxiliary UIs                       customer-managed KMS
 ```
 
-The tunnel terminates **inside the customer's cluster** at the Envoy router. Authentication and authorization run there, against the same Union identity that gates the control plane API -- but the enforcement point is inside the customer's network. Union's control plane never sees the request payload.
+The tunnel (or internal load balancer, under Sovereign) terminates **inside the customer's cluster** at the Envoy router. Authentication and authorization run there, against the same Union identity that gates the control plane API -- but the enforcement point is inside the customer's network. Union's control plane never sees the request payload under either tier. See [Sovereign Data Plane](../architecture/sovereign-data-plane) for the enhanced-tier topology.
 
 | Phase | Encrypted? | Details |
 |-------|------------|---------|
-| Client → Cloudflare edge | **Yes** | TLS 1.3 |
-| Cloudflare edge → Data Plane (tunnel) | **Yes** | mTLS + Cloudflare Tunnel |
+| Client → Cloudflare edge | **Yes** | TLS 1.3 (default tier only) |
+| Cloudflare edge → Data Plane (tunnel) | **Yes** | mTLS + Cloudflare Tunnel (default tier only) |
+| Client → Internal load balancer | **Yes** | TLS, customer-managed certificate (Sovereign Data Plane tier only) |
 | At Envoy router (data plane) | **Plaintext in memory** | AuthN + RBAC check; not persisted, cached, or logged |
 | Data Plane → Object store / log source / secret backend | **Yes** | Cloud-native TLS, signed URLs for object access |
 | At rest (customer's storage) | **Yes** | S3 SSE / GCS / Azure SSE; CMK supported |
+
+The Cloudflare-edge and tunnel rows apply under the default tier. Under the [Sovereign Data Plane](../architecture/sovereign-data-plane) tier, those two hops are replaced by the single internal-load-balancer hop shown above; the remaining hops are identical.
 
 Bulk artifacts (files, directories, DataFrames, code bundles, reports) use **presigned URLs** so that the data content never even enters the dataproxy: the dataproxy issues the signed URL via the tunnel, and the client then transfers data directly between itself and the customer's object store. Structured task inputs and outputs, log streams, secret writes, and auxiliary UI traffic flow through the dataproxy itself within the customer's cluster.
 

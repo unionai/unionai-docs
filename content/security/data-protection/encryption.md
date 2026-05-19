@@ -56,7 +56,7 @@ The following table summarizes the encryption state for each data category acros
 | **Error messages** | TLS (gRPC) | Control plane database (storage-level) | Yes (read from DB) | **Yes** |
 | **Execution metadata** (phase, timestamps) | TLS (gRPC) | Control plane database (AES-256/KMS) | Yes (read from DB) | **Yes** (encrypted at rest) |
 
-Customer-data categories (everything above the task-definition row) route through the Direct-to-DataPlane tunnel: TLS 1.3 from the client to the Cloudflare edge, then mTLS plus Cloudflare Tunnel encryption from the edge to the data plane. Authentication and RBAC are enforced by the Envoy router inside the customer's cluster. The control plane is not on the path. For details, see [Data flow](./data-flow).
+Customer-data categories (everything above the task-definition row) route from the client directly to the data plane. Under the default tier this is the Direct-to-DataPlane tunnel: TLS 1.3 from the client to the Cloudflare edge, then mTLS plus Cloudflare Tunnel encryption from the edge to the data plane. Under the [Sovereign Data Plane](../architecture/sovereign-data-plane) tier this is a single TLS hop from the client (on the corporate VPN) to a customer-managed internal load balancer. In both cases, authentication and RBAC are enforced by the Envoy router inside the customer's cluster, and the control plane is not on the path. For details, see [Data flow](./data-flow).
 
 ## Verification
 

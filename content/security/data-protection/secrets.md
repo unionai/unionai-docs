@@ -29,8 +29,9 @@ All four backends are available regardless of deployment model. The choice of ba
 
 | Phase | Encrypted? | Details |
 |-------|------------|---------|
-| Client → Cloudflare edge | **Yes** | TLS 1.3 |
-| Cloudflare edge → Data Plane (tunnel) | **Yes** | mTLS + Cloudflare Tunnel |
+| Client → Cloudflare edge | **Yes** | TLS 1.3 (default tier only) |
+| Cloudflare edge → Data Plane (tunnel) | **Yes** | mTLS + Cloudflare Tunnel (default tier only) |
+| Client → Internal load balancer | **Yes** | TLS, customer-managed certificate ([Sovereign Data Plane](../architecture/sovereign-data-plane) tier only) |
 | At Envoy router (data plane) | **Plaintext in memory** | AuthN + RBAC check; not persisted, cached, or logged |
 | In Data Plane (operator) | **Plaintext in memory** | Briefly held before writing to secret backend |
 | At rest (secret backend) | **Yes** | AWS Secrets Manager (AES-256/KMS), GCP Secret Manager (Google-managed or CMEK), Azure Key Vault (HSM-backed), or K8s etcd encryption |

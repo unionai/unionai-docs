@@ -14,8 +14,9 @@ Beyond describing the security model, it provides concrete verification steps so
 
 **[Architecture](./architecture/_index)**
 The system is divided into a control plane hosted by Union.ai and a data plane hosted on the customer's infrastructure.
-The only connections between the two planes are outbound-only routes from the customer data plane to the control plane.
-Consequently, no inbound firewall rules are required on the customer's network.
+The only connection between the two planes is an outbound-only route from the data plane to the control plane that carries orchestration metadata.
+Enterprise customers can further restrict the client-to-data-plane path with the [Sovereign Data Plane](./architecture/sovereign-data-plane) option.
+No inbound firewall rules are required on the customer's external network perimeter under either configuration.
 
 **[Data protection](./data-protection/_index)**
 No customer data ever transits Union.ai's control plane. Workflow inputs and outputs, code bundles, secret values, logs, reports, and auxiliary UI traffic are served directly from the customer's data plane through the Direct-to-DataPlane tunnel, with authentication and RBAC enforced by an Envoy router inside the customer's cluster.
@@ -47,7 +48,8 @@ Union.ai handles upgrades, monitoring, and provisioning, while maintaining stric
 
 In **Self-managed** deployments, the customer operates their data plane independently.
 The customer is responsible for all aspects of data plane management, including upgrades, monitoring, and provisioning.
-Union.ai has no access to the customer's infrastructure, with the Direct-to-DataPlane tunnel and direct gRPC connection being the only pathways between Union.ai and the customer's network
-(and even then, only outbound from the customer to Union.ai).
+Union.ai has no access to the customer's infrastructure: the only pathway between Union and the customer's network is an outbound-initiated direct gRPC connection from the data plane carrying orchestration metadata.
 
 For details, see [Deployment models](./architecture/deployment-models).
+
+Independently of deployment model, Enterprise customers can elect the [Sovereign Data Plane](./architecture/sovereign-data-plane) tier, under which the client-to-data-plane path runs through a customer-managed internal load balancer reachable only from the corporate VPN -- no third-party network on the path, and no Union employee able to reach customer data even with full Union credentials.

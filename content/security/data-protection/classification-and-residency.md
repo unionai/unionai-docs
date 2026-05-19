@@ -13,7 +13,7 @@ Every data type in the Union.ai platform is classified by its residency and acce
 | Classification | Data types | At rest | In transit | Enters control plane? |
 |---|---|---|---|---|
 | Bulk Customer Data | Files, directories, DataFrames, code bundles, container images, reports | Customer infrastructure (S3 SSE / GCS / Azure SSE) | HTTPS via presigned URL | **No**: served via signed URL direct to/from object store |
-| Inline Customer Data | Structured task inputs/outputs, secret values (during creation), execution log streams | Customer infrastructure (S3 SSE / GCS / Azure SSE; cloud secret managers) | TLS 1.3 + mTLS Direct-to-DataPlane tunnel | **No**: served from data plane through the tunnel |
+| Inline Customer Data | Structured task inputs/outputs, secret values (during creation), execution log streams | Customer infrastructure (S3 SSE / GCS / Azure SSE; cloud secret managers) | Direct-to-DataPlane tunnel (default tier) or customer-managed internal LB (Sovereign DP tier) | **No**: served from data plane |
 | Orchestration Metadata | Task definitions (including env vars, default values, SQL, pod specs), run/action state, error messages, trigger specs | Control plane databases (AES-256/KMS) | TLS (API) + TLS (gRPC events) | **Yes**: read from DB into memory for API responses |
 | Platform Metadata | User identity/RBAC records, cluster records | Control plane databases (AES-256/KMS) | TLS (API) | **Yes**: read from DB into memory for API responses |
 
