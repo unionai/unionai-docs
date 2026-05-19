@@ -48,7 +48,7 @@ Union.ai is responsible for the availability and security of the managed Kuberne
 
 ## Self-managed
 
-In the Self-managed model, the customer operates the data plane independently. Union.ai has zero access to the data plane infrastructure. The only connections between the control plane and the data plane are two outbound-only channels initiated by the data plane: a Cloudflare Tunnel and a direct gRPC connection. See [Network architecture](./network) for details.
+In the Self-managed model, the customer operates the data plane independently. Union.ai has zero access to the data plane infrastructure. The only connections from the data plane are two outbound-only channels initiated by the data plane: the Direct-to-DataPlane tunnel (which carries client-to-data-plane traffic, not control-plane-to-data-plane traffic) and a direct gRPC channel for orchestration metadata. See [Network architecture](./network) for details.
 
 The customer provisions all IAM roles, configures network policies, manages Kubernetes versions and upgrades, and handles all patching of data plane components. The customer is solely responsible for data plane availability, security hardening, and compliance of the data plane infrastructure.
 
