@@ -304,9 +304,143 @@ DP service accounts shipped by the {{< key product_name >}} chart that need iden
 
 Optional supporting services follow the same pattern as on the CP — external-secrets, external-dns, and cert-manager need identity bindings only if you deploy them on the DP cluster.
 
-#### GCP — Token Creator for signed URLs
+#### Control plane service account IAM
 
-On GCP, the DP backend service account additionally needs `roles/iam.serviceAccountTokenCreator` granted to the workload-identity principal of the `union-system` Kubernetes service account in the DP namespace. This lets the dataproxy code path call `signBlob` to mint signed URLs that users use to download task artifacts directly from GCS. The binding is a Workload Identity Federation principal grant rather than a standard service-account-to-service-account impersonation — the chart's docs and Terraform module references show the principal format. Without this binding, signed-URL generation fails and artifact download flows error out.
+{{< tabs >}}
+{{< tab "AWS" >}}
+{{< markdown >}}
+
+The CP uses one IRSA role per chart-side service.
+
+**`flyteadmin` IRSA role** (impersonated by KSAs `flyteadmin`, `datacatalog`, `cacheservice` in the CP namespace)
+
+| Scope | Permissions | Why |
+| --- | --- | --- |
+| Metadata bucket | `s3:GetObject*`, `s3:PutObject*`, `s3:DeleteObject*`, `s3:ListBucket` on the metadata bucket + objects | flyteadmin / datacatalog persist execution metadata, datacatalog rows, cache entries. |
+| Database | (when using IAM auth) `rds-db:connect` on the DB user resource ARN | Optional — only if RDS IAM auth is enabled. Database-native auth uses a Secrets Manager secret instead and needs `secretsmanager:GetSecretValue`. |
+
+**`artifacts` IRSA role** (impersonated by the `artifacts` KSA)
+
+| Scope | Permissions | Why |
+| --- | --- | --- |
+| Artifacts bucket | `s3:GetObject*`, `s3:PutObject*`, `s3:DeleteObject*`, `s3:ListBucket` on the artifacts bucket + objects | Artifacts service persists user-uploaded artifacts. |
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "GCP" >}}
+{{< markdown >}}
+
+The CP uses two backing Google service accounts.
+
+**`flyteadmin` GSA** (impersonated by KSAs `flyteadmin`, `cacheservice` in the CP namespace)
+
+| Scope | Role | Why |
+| --- | --- | --- |
+| Metadata bucket | `roles/storage.admin` | flyteadmin / cacheservice read/write execution metadata + cache entries. (`storage.admin` includes both object and bucket-level permissions, so `bucketViewer` is implied.) |
+| Self-SA | `roles/iam.serviceAccountUser` (granted on itself) | Lets flyteadmin attach the GSA to other resources (e.g. specifying the SA when launching pods that need GCS access). Distinct from `serviceAccountTokenCreator` — this is the *attach* / *actAs* permission, not the *signBlob* one. |
+
+**`artifacts` GSA** (impersonated by the `artifacts` KSA)
+
+| Scope | Role | Why |
+| --- | --- | --- |
+| Artifacts bucket | `roles/storage.objectAdmin` (+ `roles/storage.bucketViewer` if using the StorageConfig stow driver) | Artifacts service persists user-uploaded artifacts. |
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+#### Data plane service account IAM
+
+{{< tabs >}}
+{{< tab "AWS" >}}
+{{< markdown >}}
+
+The DP uses three IRSA roles (terraform provisions them as `${name_prefix}-backend-role`, `${name_prefix}-flyte-worker`, `${name_prefix}-fluentbit`).
+
+**`backend` IRSA role** (impersonated by KSAs `union-system` + `flytepropeller-system` in the DP namespace — when `commonServiceAccount` is enabled, both map to `union-system`)
+
+| Scope | Permissions | Why |
+| --- | --- | --- |
+| Metadata + fast-registration buckets | `s3:GetObject*`, `s3:PutObject*`, `s3:DeleteObject*`, `s3:ListBucket` | flyteadmin / propeller / operator-proxy read/write execution metadata + serve dataproxy upload requests. |
+
+**`flyte-worker` IRSA role** (impersonated by task-pod KSAs across all task namespaces)
+
+| Scope | Permissions | Why |
+| --- | --- | --- |
+| Metadata + fast-registration buckets | `s3:GetObject*`, `s3:PutObject*`, `s3:DeleteObject*`, `s3:ListBucket` | Task pods download inputs / upload outputs; build-image writes `spec.pb` + downloads context. |
+| Secrets Manager | `secretsmanager:GetSecretValue`, `secretsmanager:DescribeSecret` on `secret:*` in the env's region/account | Task pods fetch user-supplied secrets (`flyte.Secret`). |
+| ECR (image builder enabled) | `ecr:GetAuthorizationToken` on `*` | build-image needs an ECR auth token to push built images. The repo-level push grant comes from the ECR repository policy, not this role. |
+
+**`fluentbit` IRSA role** (impersonated by the `fluentbit-system` KSA — AWS only)
+
+| Scope | Permissions | Why |
+| --- | --- | --- |
+| Metadata bucket (path-scoped) | `s3:PutObject` on `metadata-bucket-arn/${fluentbit.s3_path_prefix}/*` | Fluent Bit DaemonSet writes task pod stdout/stderr to S3 for the persistent-logging streaming flow. |
+
+**EKS node IAM role** (the node's instance profile)
+
+| Scope | Permissions | Why |
+| --- | --- | --- |
+| ECR repos | `ecr:BatchGetImage`, `ecr:GetDownloadUrlForLayer`, `ecr:GetAuthorizationToken` (granted via the repository policy on each repo) | Kubelet pulls user task images at pod start. EKS image pull uses the node identity, not the pod's IRSA binding. The terraform module wires this via `repository_read_access_arns = [..., node_iam_role_arn]`. |
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "GCP" >}}
+{{< markdown >}}
+
+The DP uses two backing Google service accounts: a **backend** GSA (impersonated by `union-system` / `flytepropeller-system` Kubernetes SAs in the DP namespace) and a **worker** GSA (impersonated by `default` / `union` KSAs in each task namespace — `development`, `staging`, `production`).
+
+**Backend GSA**
+
+| Scope | Role | Why |
+| --- | --- | --- |
+| Project | `roles/logging.viewer` | Operator reads task pod logs from Cloud Logging on behalf of users viewing executions in the console. |
+| Metadata bucket | `roles/storage.objectAdmin` + `roles/storage.bucketViewer` | flyteadmin / flytepropeller read/write execution metadata (events, node state, outputs). `bucketViewer` is required because the stow storage client introspects the bucket on startup via `storage.buckets.get` — `objectAdmin` alone is insufficient. |
+| Fast-registration bucket | `roles/storage.objectAdmin` + `roles/storage.bucketViewer` | Operator-proxy serves dataproxy uploads (large registration payloads, build context). Same `bucketViewer` startup-probe requirement. |
+| Artifact Registry repo | `roles/artifactregistry.reader` | Operator-proxy looks up image existence before scheduling user task pods (avoids `ErrImagePull` races on freshly built images). |
+| Self-SA | `roles/iam.serviceAccountTokenCreator` (granted on itself) | Used by `CreateSignedURL` paths for artifact-download flows that mint V4 signed URLs. On GKE, `google.DefaultTokenSource` returns GSA-impersonated credentials via the metadata server, so the GSA needs `tokenCreator` on itself to sign on its own behalf. |
+
+**Worker GSA**
+
+| Scope | Role | Why |
+| --- | --- | --- |
+| Metadata bucket | `roles/storage.objectAdmin` + `roles/storage.bucketViewer` | Task pods download inputs and upload outputs. `bucketViewer` is required by the build-image task's datastore client which calls `storage.buckets.get` on startup. |
+| Fast-registration bucket | `roles/storage.objectAdmin` + `roles/storage.bucketViewer` | Build-image writes `spec.pb` + downloads the build context. Same `bucketViewer` startup-probe requirement. |
+| Artifact Registry repo | `roles/artifactregistry.writer` | Build-image pushes built user images. |
+| Self-SA | `roles/iam.serviceAccountTokenCreator` (granted on itself) | Build-image mints V4 signed URLs for `spec.pb` and context upload to the fast-registration bucket. |
+
+**GKE node service account**
+
+| Scope | Role | Why |
+| --- | --- | --- |
+| Artifact Registry repo | `roles/artifactregistry.reader` | Kubelet pulls user task images at pod start. GKE image pull uses the node identity (not the pod's Workload Identity binding), so without this binding user task pods fail `ErrImagePull` with `403 Forbidden` on the OAuth token request. |
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+#### Linking Kubernetes service accounts to cloud identities
+
+Cloud IAM only takes effect once the chart's Kubernetes SAs are annotated to impersonate the cloud SAs you provisioned above. The chart values that drive these annotations:
+
+| Chart value | What it produces | Cloud equivalent it must match |
+| --- | --- | --- |
+| `serviceAccount.annotations."eks.amazonaws.com/role-arn"` | KSA annotation that EKS Pod Identity Webhook / IRSA reads | AWS IAM role ARN (e.g. `arn:aws:iam::<acct>:role/<name_prefix>-backend-role`) |
+| `serviceAccount.annotations."iam.gke.io/gcp-service-account"` | KSA annotation that GKE Workload Identity reads | GCP SA email (e.g. `apple-flyteadmin@<project>.iam.gserviceaccount.com`) |
+
+If the cloud-side IAM is correct but the KSA annotation is missing or points at the wrong identity, pods get `403 Forbidden` / `Unauthorized` from every cloud API call. The terraform modules in this repo emit the right values automatically; if you're bringing your own chart values, mirror the SA-email substitutions exactly.
+
+#### Common pitfalls
+
+**GCP — `objectAdmin` alone is insufficient.** Several Union services use the stow GCS driver, which calls `storage.buckets.get` on startup to introspect the bucket (location, default labels). `roles/storage.objectAdmin` covers object-level read/write but does NOT include the bucket-metadata permission. Symptom: pod crash-loops on startup with `googleapi: Error 403: does not have storage.buckets.get access`. Fix: also grant `roles/storage.bucketViewer`, or use `roles/storage.admin` (which includes both).
+
+**GCP — GKE node SA needs AR reader, not just the pod's GSA.** Kubelet pulls container images using the node's identity, NOT the pod's Workload Identity binding. If only the pod's GSA has `artifactregistry.reader`, task pods will succeed in impersonating the GSA at runtime but fail `ErrImagePull` with `403 Forbidden` on the image-pull OAuth token request. Fix: add the GKE node SA (`tf-gke-…@<project>.iam.gserviceaccount.com`) to `roles/artifactregistry.reader` on the repository.
+
+**AWS — same kubelet pattern via the node IAM role.** EKS image pulls use the node's instance-profile IAM role. Either grant the ECR repository policy to the node role, or use ECR pull-through cache via the node's default ECR auth. The terraform module wires `repository_read_access_arns = [..., node_iam_role_arn]` to handle this.
+
+**GCP SA `account_id` length.** GCP service account IDs are 6–30 characters. If you compose names like `<org>-<cluster>-<service>` and the result exceeds 30 chars, the GCP API rejects creation at apply time. The terraform module includes a `terraform_data` precondition that fails at *plan* time instead. If you hit this, shorten `union_org` or `cluster_name`.
+
+**GCP signed URLs need `tokenCreator` on the SA itself.** Code paths that call `iam.SignBlob` (image-builder spec.pb upload, dataproxy log/artifact download) need the GSA to be allowed to mint tokens for itself — `roles/iam.serviceAccountTokenCreator` granted to the GSA on the GSA. Without this, signed-URL generation fails with `iam.serviceAccounts.signBlob` denied.
 
 ## Database
 
