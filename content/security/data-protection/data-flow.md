@@ -85,7 +85,7 @@ SDK / CLI / UI                            Data-plane dataproxy        Customer o
      │ ◀───── run ID ─────────────────────────────┼────────────────────────────┼─────────────────────── │
 ```
 
-1. **SelectCluster.** The SDK calls `SelectCluster` on the control plane with the run's project/domain (or queue/org). The control plane returns the per-cluster tunnel domain (under the default tier) or the per-cluster internal LB hostname (under Sovereign Data Plane) for the cluster that will handle this request class. The SDK caches this for subsequent calls in the same submission.
+1. **SelectCluster.** The SDK calls `SelectCluster` on the control plane with the run's project/domain (or queue/org). The control plane returns the per-cluster tunnel domain (under the default tier) or the per-cluster internal LB hostname (under the Sovereign Data Plane tier) for the cluster that will handle this request class. The SDK caches this for subsequent calls in the same submission.
 
 2. **CreateUploadLocation.** The SDK calls `CreateUploadLocation` on the data-plane `dataproxy` through the resolved tunnel/LB. The Envoy router authenticates the request against Union.ai identity and enforces RBAC. The `dataproxy` returns a short-lived signed PUT URL into the customer's object store, plus the URI the URL writes to.
 

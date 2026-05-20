@@ -15,7 +15,7 @@ This is a strictly stronger network perimeter than the default tier. The identit
 The Sovereign Data Plane is intended for organizations whose threat model assumes the vendor itself may be compromised, or whose security policy is "no third-party network can ever reach our data plane." Typical drivers:
 
 - **Regulated industries** (finance, healthcare, defense, life sciences) where the data trust boundary must terminate at the customer's network perimeter.
-- **Organizations that do not trust Cloudflare** for the data path. Under the default tier, Cloudflare terminates TLS at the tunnel edge; under the Sovereign Data Plane this hop is removed entirely.
+- **Organizations that do not trust Cloudflare** for the data path. Under the default tier, Cloudflare terminates TLS at the tunnel edge; under the Sovereign Data Plane tier this hop is removed entirely.
 - **High-scale model serving** where the serving endpoints must remain entirely inside the customer's cloud and reachable only by internal applications.
 
 The Sovereign Data Plane is available on the Enterprise tier on customer request. The default tier is the only option on Starter and Team.
@@ -43,7 +43,7 @@ Switching to the Sovereign Data Plane changes the **network** perimeter only. Ev
 
 ## Topology
 
-The request flow under the Sovereign Data Plane mirrors the default tier with one substitution: the Direct-to-DataPlane tunnel is replaced by a customer-managed load balancer.
+The Sovereign Data Plane request flow mirrors the default tier with one substitution: the Direct-to-DataPlane tunnel is replaced by a customer-managed load balancer.
 
 ```
 [Authenticated client on corporate VPN]

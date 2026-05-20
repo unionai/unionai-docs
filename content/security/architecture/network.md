@@ -18,7 +18,7 @@ The trust model is customer-initiated: the data plane decides when and whether t
 
 Under the [Sovereign Data Plane](./sovereign-data-plane) tier, the client-to-data-plane path runs through a customer-managed internal load balancer inside the customer's VPC instead of the Cloudflare-backed tunnel; the data-plane-to-control-plane gRPC channel remains outbound-only. The external perimeter still requires no inbound rules; the internal load balancer is reachable only from inside the customer's corporate network.
 
-The client-to-data-plane path is direct: client → tunnel (or internal load balancer under Sovereign Data Plane) → Envoy router → `dataproxy` → customer storage. Log streaming, structured I/O retrieval, and large input uploads complete with low first-byte and end-to-end latency.
+The client-to-data-plane path is direct: client → tunnel (or internal load balancer under the Sovereign Data Plane tier) → Envoy router → `dataproxy` → customer storage. Log streaming, structured I/O retrieval, and large input uploads complete with low first-byte and end-to-end latency.
 
 ## Direct-to-DataPlane tunnel
 

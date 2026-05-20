@@ -40,7 +40,7 @@ All access by Union.ai personnel is authenticated and logged with caller identit
 
 **How to verify:**
 
-Self-managed: Union.ai has no IAM roles, no VPN, no SSH keys, and no kubectl access to the customer's cluster. Every channel between Union.ai and the customer is initiated FROM the customer's data plane. Union.ai cannot initiate connections TO the customer's infrastructure under any tier.
+Self-managed: Union.ai has no IAM roles, no VPN, no SSH keys, and no kubectl access to the customer's cluster. Every channel between Union.ai and the customer is initiated *from* the customer's data plane. Union.ai cannot initiate connections *to* the customer's infrastructure under any tier.
 
 BYOC:
 

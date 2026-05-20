@@ -29,7 +29,7 @@ The property does **not** depend on Union employees behaving correctly, Union's 
         ▼
 [Cloudflare edge]                  ─ TLS 1.3 termination,
         │                            service-token policy
-        ▼                            (default tier; absent under Sovereign Data Plane)
+        ▼                            (default tier; absent under the Sovereign Data Plane tier)
 [Customer VPC]                     ─ no inbound port at the external perimeter
         │
         ▼
@@ -79,7 +79,7 @@ The analysis below references these asset classes:
 
 **Capability.** Full code execution on any control plane service; can read control plane databases and credentials.
 
-**Reach.** This is the adversary the architecture is specifically designed against. Full code execution on the control plane yields A5 (workflow metadata) and A6 (identity records, RBAC graph). It does **not** yield A1–A4: those payloads never enter the control plane in any form, so there is no in-memory or on-disk copy to extract. The control plane also cannot inject itself into the data path -- in default mode it can only initiate the same outbound-authenticated calls a normal client could (subject to Envoy AuthN/AuthZ at the tunnel egress inside the customer's cluster); under Sovereign Data Plane it has no network route to the data plane at all. Lateral movement to A1–A4 requires *also* compromising the customer's own IAM/KMS, which sit inside the customer's cloud account, not Union's.
+**Reach.** This is the adversary the architecture is specifically designed against. Full code execution on the control plane yields A5 (workflow metadata) and A6 (identity records, RBAC graph). It does **not** yield A1–A4: those payloads never enter the control plane in any form, so there is no in-memory or on-disk copy to extract. The control plane also cannot inject itself into the data path -- in default mode it can only initiate the same outbound-authenticated calls a normal client could (subject to Envoy AuthN/AuthZ at the tunnel egress inside the customer's cluster); under the Sovereign Data Plane tier it has no network route to the data plane at all. Lateral movement to A1–A4 requires *also* compromising the customer's own IAM/KMS, which sit inside the customer's cloud account, not Union's.
 
 **Reachable**: A5, A6. **Not reachable**: A1–A4, A7 plaintext.
 
@@ -192,7 +192,7 @@ Five risks are not eliminated by the architecture and are stated explicitly so c
 
 **How to verify:**
 
-1. Ingest cluster audit logs, Cloud Audit / CloudTrail logs, Cloudflare Access logs (or the equivalent for the customer-managed LB under Sovereign Data Plane), and Union's authorization-service log export.
+1. Ingest cluster audit logs, Cloud Audit / CloudTrail logs, Cloudflare Access logs (or the equivalent for the customer-managed LB under the Sovereign Data Plane tier), and Union's authorization-service log export.
 2. Query for any customer-data-shaped request reaching the control plane region; assert zero results.
 3. Query for the principal on every object-store access; assert that none are Union-controlled.
 4. Run this query continuously as part of the customer's normal security monitoring; any future drift will produce immediate evidence.

@@ -37,7 +37,7 @@ In addition to the client-to-data-plane path, the data plane operator establishe
 
 ### Multi-cluster routing
 
-When a tenant spans multiple data-plane clusters, customer-data requests need to reach the correct one. The control plane exposes a `SelectCluster` RPC that resolves an action ID, project/domain, or queue/org reference to the per-cluster tunnel domain (or, under Sovereign Data Plane, the per-cluster internal LB hostname). The SDK and UI call `SelectCluster` first, then dispatch the data-path request directly to the resolved cluster -- no aggregator or fan-out hop in front of the `dataproxy`. Org-level secrets are scoped through a `--cluster-pool` parameter so that creation, listing, and deletion target the right cluster pool.
+When a tenant spans multiple data-plane clusters, customer-data requests need to reach the correct one. The control plane exposes a `SelectCluster` RPC that resolves an action ID, project/domain, or queue/org reference to the per-cluster tunnel domain (or, under the Sovereign Data Plane tier, the per-cluster internal LB hostname). The SDK and UI call `SelectCluster` first, then dispatch the data-path request directly to the resolved cluster -- no aggregator or fan-out hop in front of the `dataproxy`. Org-level secrets are scoped through a `--cluster-pool` parameter so that creation, listing, and deletion target the right cluster pool.
 
 For how each of these pathways handles data in transit, see [Data flow](../data-protection/data-flow).
 
