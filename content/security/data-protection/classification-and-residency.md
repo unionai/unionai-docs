@@ -19,7 +19,7 @@ Every data type in the Union.ai platform is classified by its residency and acce
 
 **Bulk customer data** (files, directories, DataFrames, code bundles, container images, and reports) is stored exclusively in the customer's infrastructure. These objects are accessed via presigned URLs issued by the data-plane dataproxy.
 
-**Inline customer data** (structured task inputs and outputs, secret values during creation/update, and execution log streams) is stored at rest in the customer's infrastructure and served directly from the data plane through the Direct-to-DataPlane tunnel. Under Zero Trust, no customer data enters Union.ai's control plane in any form -- not even transiently in memory.
+**Inline customer data** (structured task inputs and outputs, secret values during creation/update, and execution log streams) is stored at rest in the customer's infrastructure and served directly from the data plane through the Direct-to-DataPlane tunnel. No customer data enters Union.ai's control plane in any form -- not even transiently in memory.
 
 **Orchestration metadata** is stored in the control plane databases (encrypted at rest). This includes task definitions, which contain structural information (container image references, typed interfaces) and fields that may be customer-sensitive: environment variables, default input literal values, SQL query statements, Kubernetes pod specs, plugin configuration, and config key-value pairs. Error messages from task executions (which may contain data from Python tracebacks) are also stored. A full task definition (TaskSpec) is stored on every run submission.
 

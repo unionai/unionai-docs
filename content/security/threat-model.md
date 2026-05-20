@@ -6,13 +6,13 @@ variants: -flyte +union
 
 # Threat model
 
-This page enumerates the realistic adversaries against a Union.ai deployment and, for each, what they can and cannot reach. The analysis assumes Zero Trust is in effect: the `dataproxy` service runs in the customer's data plane behind the Envoy router, customer data never transits the control plane, and operational metrics flow data-plane-to-control-plane via a push model.
+This page enumerates the realistic adversaries against a Union.ai deployment and, for each, what they can and cannot reach. The analysis assumes the architecture described in the rest of this section: the `dataproxy` service runs in the customer's data plane behind the Envoy router, customer data never transits the control plane, and operational metrics flow data-plane-to-control-plane via a push model.
 
 ## A topological, not behavioral, property
 
 > **No customer data, metadata, code, or logs ever touch Union.ai's control plane. Not in flight. Not at rest. Not ever.**
 
-This central guarantee under Zero Trust is a property of the **deployment topology**, not of Union's operational behavior. It is verifiable by inspecting:
+This central guarantee is a property of the **deployment topology**, not of Union's operational behavior. It is verifiable by inspecting:
 
 - The Helm chart that deploys the data plane.
 - The tunnel configuration (`operator/tunnels`) and Envoy filter chain that authenticate and authorize every data-path request inside the customer's cluster.
@@ -79,7 +79,7 @@ The analysis below references these asset classes:
 
 **Capability.** Full code execution on any control plane service; can read control plane databases and credentials.
 
-**Reach.** This is the adversary Zero Trust is specifically designed against. Full code execution on the control plane yields A5 (workflow metadata) and A6 (identity records, RBAC graph). It does **not** yield A1–A4: those payloads never enter the control plane in any form under Zero Trust, so there is no in-memory or on-disk copy to extract. The control plane also cannot inject itself into the data path -- in default mode it can only initiate the same outbound-authenticated calls a normal client could (subject to Envoy AuthN/AuthZ at the tunnel egress inside the customer's cluster); under Sovereign Data Plane it has no network route to the data plane at all. Lateral movement to A1–A4 requires *also* compromising the customer's own IAM/KMS, which sit inside the customer's cloud account, not Union's.
+**Reach.** This is the adversary the architecture is specifically designed against. Full code execution on the control plane yields A5 (workflow metadata) and A6 (identity records, RBAC graph). It does **not** yield A1–A4: those payloads never enter the control plane in any form, so there is no in-memory or on-disk copy to extract. The control plane also cannot inject itself into the data path -- in default mode it can only initiate the same outbound-authenticated calls a normal client could (subject to Envoy AuthN/AuthZ at the tunnel egress inside the customer's cluster); under Sovereign Data Plane it has no network route to the data plane at all. Lateral movement to A1–A4 requires *also* compromising the customer's own IAM/KMS, which sit inside the customer's cloud account, not Union's.
 
 **Reachable**: A5, A6. **Not reachable**: A1–A4, A7 plaintext.
 
@@ -133,11 +133,11 @@ The analysis below references these asset classes:
 
 **Reach.** This is where the absence-of-path property structurally beats the encryption-of-path property. Recorded ciphertext from data that flowed through the control plane could one day be decrypted; recorded ciphertext from data *that never flowed through the control plane* cannot be, because the bytes were never on a Union wire to record. Customer data only ever traverses customer-controlled networks (or the Cloudflare tunnel inbound to the customer's cluster); whatever future cryptanalysis discovers about Union's TLS termination has nothing to apply to.
 
-**Reachable post-Zero-Trust**: nothing that was ever on a Union wire, because nothing customer-sensitive was ever there.
+**Reachable**: nothing that was ever on a Union wire, because nothing customer-sensitive was ever there.
 
 ## Auditability
 
-The Zero Trust property is independently auditable from outside Union. A customer security team can verify each of the claims above using sources they already have or can enable:
+The no-customer-data-in-the-control-plane property is independently auditable from outside Union. A customer security team can verify each of the claims above using sources they already have or can enable:
 
 - **Network topology.** GKE / EKS / AKS audit logs confirm the tunnel pod's outbound-only connection pattern. Cloud Audit Logs show no inbound traffic to the data plane cluster API from Union IP ranges.
 - **Application path.** Union's authorization-service logs record every data-plane request, the resolved Union identity, and the RBAC decision. Control plane logs over the same window show no payload-bearing requests for customer-data operations; by inspection, the control plane API has no endpoints that return customer-data payloads.
@@ -154,7 +154,7 @@ Five risks are not eliminated by the architecture and are stated explicitly so c
 
 2. **Metadata leakage on control plane compromise** (T2/T3). Run IDs, schedules, action status, error messages, and the RBAC graph are visible on a compromised control plane. Customers who consider workflow *topology* sensitive should be aware that an orchestrator necessarily knows the topology to orchestrate it.
 
-3. **Customer-side IAM is the floor.** Zero Trust does not protect against the customer's own IAM misconfiguration. Union ships correct defaults (least-privilege node service accounts, Workload Identity Federation, IMDS blocking, customer-managed KMS, private nodes); customers retain the ability to loosen them.
+3. **Customer-side IAM is the floor.** This architecture does not protect against the customer's own IAM misconfiguration. Union ships correct defaults (least-privilege node service accounts, Workload Identity Federation, IMDS blocking, customer-managed KMS, private nodes); customers retain the ability to loosen them.
 
 4. **Compromised customer cluster** (T5) sees its own data. Defense in depth at the customer's IAM and network layer is still required.
 
@@ -164,7 +164,7 @@ Five risks are not eliminated by the architecture and are stated explicitly so c
 
 ### Topological property by inspection
 
-**Reviewer focus:** Confirm that the Zero Trust property is verifiable from the deployment artifacts without relying on Union's testimony.
+**Reviewer focus:** Confirm that the no-customer-data-in-the-control-plane property is verifiable from the deployment artifacts without relying on Union's testimony.
 
 **How to verify:**
 
@@ -188,7 +188,7 @@ Five risks are not eliminated by the architecture and are stated explicitly so c
 
 ### Auditability
 
-**Reviewer focus:** Confirm that the customer's own SIEM can produce evidence sufficient to verify the Zero Trust property without Union's cooperation.
+**Reviewer focus:** Confirm that the customer's own SIEM can produce evidence sufficient to verify the no-customer-data-in-the-control-plane property without Union's cooperation.
 
 **How to verify:**
 

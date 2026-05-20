@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Encryption
 
-Union.ai encrypts all data at rest and in transit across every storage and communication path in the platform. Transit encryption uses TLS 1.2+ for all communication paths, with mutual TLS (mTLS) layered through the Direct-to-DataPlane tunnel for client-to-data-plane traffic. At-rest encryption is provided by cloud provider services (S3 SSE, GCS encryption, Azure SSE) for customer-side storage, and by managed cloud database services (AES-256/KMS) for the control plane. Under Zero Trust, customer data never enters control plane memory in any form -- it is served directly from the data plane through the tunnel.
+Union.ai encrypts all data at rest and in transit across every storage and communication path in the platform. Transit encryption uses TLS 1.2+ for all communication paths, with mutual TLS (mTLS) layered through the Direct-to-DataPlane tunnel for client-to-data-plane traffic. At-rest encryption is provided by cloud provider services (S3 SSE, GCS encryption, Azure SSE) for customer-side storage, and by managed cloud database services (AES-256/KMS) for the control plane. Customer data never enters control plane memory in any form -- it is served directly from the data plane through the tunnel.
 
 ## Encryption at rest
 

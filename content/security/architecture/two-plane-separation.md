@@ -20,7 +20,7 @@ The data plane is where all computation and data handling occurs. It runs entire
 
 ## Blast radius
 
-This separation limits the blast radius of a control plane security incident. Under Zero Trust, a compromised control plane would expose only metadata: task definitions, run IDs, schedules, phase transitions, error messages, and the RBAC graph. It could not expose customer data of any kind -- workflow inputs and outputs, code bundles, log streams, secrets, and auxiliary UI traffic are all served directly from the data plane through the Direct-to-DataPlane tunnel and never enter the control plane in any form.
+This separation limits the blast radius of a control plane security incident. A compromised control plane would expose only metadata: task definitions, run IDs, schedules, phase transitions, error messages, and the RBAC graph. It could not expose customer data of any kind -- workflow inputs and outputs, code bundles, log streams, secrets, and auxiliary UI traffic are all served directly from the data plane through the Direct-to-DataPlane tunnel and never enter the control plane in any form.
 
 For the full classification of what data lives in each plane and how each pathway is protected, see [Data classification and residency](../data-protection/classification-and-residency). For network paths between the planes, see [Network architecture](./network).
 

@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Data flow
 
-Under Zero Trust, customer data never transits Union.ai's control plane. Every customer-data request -- bulk artifacts, structured task inputs and outputs, secret values, logs, reports, and auxiliary UI traffic -- is served directly from the data plane through the Direct-to-DataPlane tunnel. The control plane is not on the data path.
+Customer data never transits Union.ai's control plane. Every customer-data request -- bulk artifacts, structured task inputs and outputs, secret values, logs, reports, and auxiliary UI traffic -- is served directly from the data plane through the Direct-to-DataPlane tunnel. The control plane is not on the data path.
 
 This page covers two complementary aspects of that model: the **single request pattern** that all customer-data traffic follows, and the **stage-by-stage data movement** during the workflow lifecycle.
 

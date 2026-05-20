@@ -8,7 +8,7 @@ variants: -flyte +union
 
 The control plane is the Union.ai-hosted component that orchestrates task execution, manages user access, and provides the API surface. It runs on AWS infrastructure managed by Union.ai and is covered by Union.ai's SOC 2 Type II certification.
 
-Under Zero Trust, the control plane handles only orchestration metadata. Customer data -- workflow inputs and outputs, code bundles, secret values, logs, reports, and auxiliary UI traffic -- never transits the control plane in any form, not even transiently in memory. Those requests are served directly from the data plane through the [Direct-to-DataPlane tunnel](./network).
+The control plane handles only orchestration metadata. Customer data -- workflow inputs and outputs, code bundles, secret values, logs, reports, and auxiliary UI traffic -- never transits the control plane in any form, not even transiently in memory. Those requests are served directly from the data plane through the [Direct-to-DataPlane tunnel](./network).
 
 ## What it stores
 
