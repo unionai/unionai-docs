@@ -131,3 +131,17 @@ Backend service accounts need `roles/storage.objectAdmin` (or equivalent) on the
 ## Authentication
 
 See the [Authentication troubleshooting](../authentication#troubleshooting) section.
+
+## CRD install fails with `metadata.annotations: Too long: may not be more than 262144 bytes`
+
+Several operator CRDs bundled with the control plane (`prometheuses.monitoring.coreos.com`, `alertmanagerconfigs.monitoring.coreos.com`, `scylladbclusters.scylla.scylladb.com`, several `gateway.networking.k8s.io` and `gateway.envoyproxy.io` types) have OpenAPI v3 schemas larger than Kubernetes' 256 KiB per-annotation limit. Applying them with a default `kubectl apply` or `helm install` writes the entire spec into `kubectl.kubernetes.io/last-applied-configuration` and the API server rejects the request.
+
+The fix is to apply these CRDs with **server-side apply**, which tracks ownership via `metadata.managedFields` instead and never constructs the oversized annotation:
+
+```shell
+kubectl apply --server-side --force-conflicts -f helm-charts/crds/kube-prometheus-stack/
+kubectl apply --server-side --force-conflicts -f helm-charts/crds/scylla-operator/
+kubectl apply --server-side --force-conflicts -f helm-charts/crds/envoy-gateway/
+```
+
+Then `helm install`/`upgrade` the control plane and data plane charts with `--skip-crds` so Helm does not try to re-apply the bundled copies client-side. See [Getting started → Step 1](../getting-started#step-1-helm-repositories-and-crds) for the full sequence.
