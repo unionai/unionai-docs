@@ -16,7 +16,7 @@ Union.ai supports data plane deployments on AWS, GCP, and Azure. Each cloud prov
 | GCP | GCS | K8s Secrets / GCP Secret Manager | Cloud Logging | GCR / Artifact Registry |
 | Azure | Azure Blob Storage | K8s Secrets / Azure Key Vault | Azure Monitor | ACR |
 
-Union Implementation Services supports additional cloud providers and on-premises deployments through case-by-case engagement.
+Union.ai Implementation Services supports additional cloud providers and on-premises deployments through case-by-case engagement.
 
 ## Consistent security guarantees
 

@@ -18,7 +18,7 @@ The trust model is customer-initiated: the data plane decides when and whether t
 
 Under the [Sovereign Data Plane](./sovereign-data-plane) tier, the client-to-data-plane path runs through a customer-managed internal load balancer inside the customer's VPC instead of the Cloudflare-backed tunnel; the data-plane-to-control-plane gRPC channel remains outbound-only. The external perimeter still requires no inbound rules; the internal load balancer is reachable only from inside the customer's corporate network.
 
-The client-to-data-plane path is direct: client → tunnel (or internal load balancer under Sovereign Data Plane) → Envoy router → dataproxy → customer storage. Log streaming, structured I/O retrieval, and large input uploads complete with low first-byte and end-to-end latency.
+The client-to-data-plane path is direct: client → tunnel (or internal load balancer under Sovereign Data Plane) → Envoy router → `dataproxy` → customer storage. Log streaming, structured I/O retrieval, and large input uploads complete with low first-byte and end-to-end latency.
 
 ## Direct-to-DataPlane tunnel
 
@@ -28,7 +28,7 @@ All traffic through the tunnel is encrypted using a layered transport: TLS 1.3 f
 
 The tunnel maintains health checks and heartbeats, and automatically reconnects if the connection drops. State reconciliation occurs upon reconnection, so no requests are lost during brief connectivity interruptions.
 
-The tunnel carries every kind of customer-data request: structured task input uploads via signed URLs, log streams (live and persisted), secret writes, auxiliary UI traffic (Ray dashboard, Spark history server, in-task debugger), Apps & Serving ingress, and dataproxy RPCs generally. Bulk artifacts (files, directories, DataFrames, code bundles, reports) transit signed URLs issued by the dataproxy, so the bytes themselves flow directly between the client and the customer's object store. Container images also bypass the tunnel: they are pulled by Kubernetes from the customer's container registry over standard HTTPS. For end-to-end request flow, see [Data flow](../data-protection/data-flow).
+The tunnel carries every kind of customer-data request: structured task input uploads via signed URLs, log streams (live and persisted), secret writes, auxiliary UI traffic (Ray dashboard, Spark history server, in-task debugger), Apps & Serving ingress, and `dataproxy` RPCs generally. Bulk artifacts (files, directories, DataFrames, code bundles, reports) transit signed URLs issued by the dataproxy, so the bytes themselves flow directly between the client and the customer's object store. Container images also bypass the tunnel: they are pulled by Kubernetes from the customer's container registry over standard HTTPS. For end-to-end request flow, see [Data flow](../data-protection/data-flow).
 
 ### Per-cluster routing
 

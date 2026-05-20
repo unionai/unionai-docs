@@ -36,7 +36,7 @@ Every API request is authenticated with the identity context captured. Run and a
    aws logs get-log-events --log-group <group> --log-stream <stream>
    ```
 
-3. Open the Union UI task logs panel and use browser developer tools (Network tab) to verify that log data comes through the tunnel.
+3. Open the Union.ai UI task logs panel and use browser developer tools (Network tab) to verify that log data comes through the tunnel.
 
 4. Confirm Fluent Bit is running on every node:
 

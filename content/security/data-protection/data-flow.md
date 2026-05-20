@@ -47,11 +47,11 @@ The tunnel (or internal load balancer, under the Sovereign Data Plane tier) term
 
 The Cloudflare-edge and tunnel rows apply under the default tier. Under the [Sovereign Data Plane](../architecture/sovereign-data-plane) tier, those two hops are replaced by the single internal-load-balancer hop shown above; the remaining hops are identical.
 
-Bulk artifacts (files, directories, DataFrames, code bundles, reports) use **presigned URLs** so that the data content never even enters the dataproxy: the dataproxy issues the signed URL via the tunnel, and the client then transfers data directly between itself and the customer's object store. Structured task inputs and outputs, log streams, secret writes, and auxiliary UI traffic flow through the dataproxy itself within the customer's cluster.
+Bulk artifacts (files, directories, DataFrames, code bundles, reports) use **presigned URLs** so that the data content never even enters the `dataproxy`: the `dataproxy` issues the signed URL via the tunnel, and the client then transfers data directly between itself and the customer's object store. Structured task inputs and outputs, log streams, secret writes, and auxiliary UI traffic flow through the `dataproxy` itself within the customer's cluster.
 
 ### Presigned URL controls
 
-Every presigned URL issued by the dataproxy carries the same controls:
+Every presigned URL issued by the `dataproxy` carries the same controls:
 
 - **TTL enforcement:** each URL expires after a default of 1 hour, configurable to shorter durations.
 - **Single-object scope:** each URL grants access to exactly one object.
@@ -87,7 +87,7 @@ SDK / CLI / UI                            Data-plane dataproxy        Customer o
 
 1. **SelectCluster.** The SDK calls `SelectCluster` on the control plane with the run's project/domain (or queue/org). The control plane returns the per-cluster tunnel domain (under the default tier) or the per-cluster internal LB hostname (under Sovereign Data Plane) for the cluster that will handle this request class. The SDK caches this for subsequent calls in the same submission.
 
-2. **CreateUploadLocation.** The SDK calls `CreateUploadLocation` on the data-plane dataproxy through the resolved tunnel/LB. The Envoy router authenticates the request against Union identity and enforces RBAC. The dataproxy returns a short-lived signed PUT URL into the customer's object store, plus the URI the URL writes to.
+2. **CreateUploadLocation.** The SDK calls `CreateUploadLocation` on the data-plane `dataproxy` through the resolved tunnel/LB. The Envoy router authenticates the request against Union.ai identity and enforces RBAC. The `dataproxy` returns a short-lived signed PUT URL into the customer's object store, plus the URI the URL writes to.
 
 3. **Direct upload.** The SDK uploads the serialized inputs (and any binary input artifacts) directly to the customer's object store using the signed URL. The data flows client-to-object-store; no Union service is on the path. If the signed URL expires before the upload completes, the SDK transparently re-requests a fresh URL and retries once.
 
@@ -95,7 +95,7 @@ SDK / CLI / UI                            Data-plane dataproxy        Customer o
 
 `CreateRun` and `UploadInputs` are separate APIs. Splitting them is what keeps customer data off the control plane: the SDK uploads to the data plane first, then `CreateRun` only references the URI.
 
-The code bundle follows the same pattern: it is uploaded directly to the customer's object store via a presigned PUT URL issued by the dataproxy, and `CreateRun` references the resulting URI. Code never touches the control plane.
+The code bundle follows the same pattern: it is uploaded directly to the customer's object store via a presigned PUT URL issued by the `dataproxy`, and `CreateRun` references the resulting URI. Code never touches the control plane.
 
 ### Task execution
 
@@ -107,8 +107,8 @@ The task specification (container image, resource requirements, typed interface,
 
 All four channels for accessing run results serve their data from the data plane through the Direct-to-DataPlane tunnel; none transit the control plane:
 
-- **Binary outputs, reports, and code bundles** are accessed via presigned URLs issued by the data-plane dataproxy. The data flows directly from the customer's object store to the client.
-- **Structured outputs** (protobuf literals) are retrieved through the data-plane dataproxy from the data-plane object store, served back to the client through the tunnel.
+- **Binary outputs, reports, and code bundles** are accessed via presigned URLs issued by the data-plane `dataproxy`. The data flows directly from the customer's object store to the client.
+- **Structured outputs** (protobuf literals) are retrieved through the data-plane `dataproxy` from the data-plane object store, served back to the client through the tunnel.
 - **Logs** (live and persisted) are served from the data plane through the tunnel. The control plane is not a relay.
 - **Metadata** (run status, phase transitions, timestamps, error messages) is served directly from the control plane database. Metadata is the only category the control plane ever serves; it contains no customer data payload.
 
@@ -152,7 +152,7 @@ The Direct-to-DataPlane request pattern is auditable independently from outside 
 
 - **Cloudflare Access logs** record every authenticated request through the tunnel, including the resolved Union identity, the destination service, and the response status.
 - **Object store audit logs** (CloudTrail / Cloud Audit / Azure Storage) record every read and write. The principal on every payload-bearing access is a customer-controlled identity, never Union.
-- **Kubernetes audit logs** on the data plane record cluster-internal accesses by the dataproxy.
+- **Kubernetes audit logs** on the data plane record cluster-internal accesses by the `dataproxy`.
 - **Cloud Audit logs** on the data-plane cluster confirm the outbound-only tunnel connection pattern.
 
 Customers can ingest all of the above into their own SIEM and assert on it without Union's cooperation.

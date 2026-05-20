@@ -17,7 +17,7 @@ Every data type in the Union.ai platform is classified by its residency and acce
 | Orchestration Metadata | Task definitions (including env vars, default values, SQL, pod specs), run/action state, error messages, trigger specs | Control plane databases (AES-256/KMS) | TLS (API) + TLS (gRPC events) | **Yes**: read from DB into memory for API responses |
 | Platform Metadata | User identity/RBAC records, cluster records | Control plane databases (AES-256/KMS) | TLS (API) | **Yes**: read from DB into memory for API responses |
 
-**Bulk customer data** (files, directories, DataFrames, code bundles, container images, and reports) is stored exclusively in the customer's infrastructure. These objects are accessed via presigned URLs issued by the data-plane dataproxy.
+**Bulk customer data** (files, directories, DataFrames, code bundles, container images, and reports) is stored exclusively in the customer's infrastructure. These objects are accessed via presigned URLs issued by the data-plane `dataproxy`.
 
 **Inline customer data** (structured task inputs and outputs, secret values during creation/update, and execution log streams) is stored at rest in the customer's infrastructure and served directly from the data plane through the Direct-to-DataPlane tunnel. No customer data enters Union.ai's control plane in any form -- not even transiently in memory.
 

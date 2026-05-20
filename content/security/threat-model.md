@@ -123,7 +123,7 @@ The analysis below references these asset classes:
 
 **Capability.** Observes encrypted traffic on the wire.
 
-**Reach.** Every hop is encrypted: TLS 1.3 between the client and the Cloudflare edge (default tier) or directly to the customer-managed LB (Sovereign Data Plane); mTLS on the tunnel; cloud-native TLS between dataproxy and the object store; signed-URL HTTPS for direct object-store access. A passive observer cannot read traffic in transit.
+**Reach.** Every hop is encrypted: TLS 1.3 between the client and the Cloudflare edge (default tier) or directly to the customer-managed LB (Sovereign Data Plane); mTLS on the tunnel; cloud-native TLS between `dataproxy` and the object store; signed-URL HTTPS for direct object-store access. A passive observer cannot read traffic in transit.
 
 **Reachable**: ciphertext only.
 
@@ -131,7 +131,7 @@ The analysis below references these asset classes:
 
 **Capability.** Recovers plaintext from recorded ciphertext at some later date.
 
-**Reach.** This is where the absence-of-path property structurally beats the encryption-of-path property. Recorded ciphertext from data that flowed through the control plane could one day be decrypted; recorded ciphertext from data *that never flowed through the control plane* cannot be, because the bytes were never on a Union wire to record. Customer data only ever traverses customer-controlled networks (or the Cloudflare tunnel inbound to the customer's cluster); whatever future cryptanalysis discovers about Union's TLS termination has nothing to apply to.
+**Reach.** This is where the absence-of-path property structurally beats the encryption-of-path property. Recorded ciphertext from data that flowed through the control plane could one day be decrypted; recorded ciphertext from data *that never flowed through the control plane* cannot be, because the bytes were never on a Union wire to record. Customer data only ever traverses customer-controlled networks (or the Direct-to-DataPlane tunnel inbound to the customer's cluster); whatever future cryptanalysis discovers about Union.ai's TLS termination has nothing to apply to.
 
 **Reachable**: nothing that was ever on a Union wire, because nothing customer-sensitive was ever there.
 

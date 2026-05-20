@@ -13,14 +13,14 @@ The data plane runs entirely within the customer's cloud account on a Kubernetes
 
 The data plane consists of several components, each handling a specific aspect of task execution and data management.
 
-**Envoy router** is the AuthN/AuthZ enforcement point that fronts every customer-data request entering the cluster. Under the default tier, it sits at the egress of the Direct-to-DataPlane tunnel; under the [Sovereign Data Plane](./sovereign-data-plane) tier, it sits behind the customer-managed internal load balancer. In either case, every request is authenticated against the requester's Union.ai identity and evaluated against the RBAC policy *inside the customer's cluster* before forwarding to the dataproxy service. The Union.ai control plane is not on the path.
+**Envoy router** is the AuthN/AuthZ enforcement point that fronts every customer-data request entering the cluster. Under the default tier, it sits at the egress of the Direct-to-DataPlane tunnel; under the [Sovereign Data Plane](./sovereign-data-plane) tier, it sits behind the customer-managed internal load balancer. In either case, every request is authenticated against the requester's Union.ai identity and evaluated against the RBAC policy *inside the customer's cluster* before forwarding to the `dataproxy` service. The Union.ai control plane is not on the path.
 
 **Dataproxy service** is the single endpoint for every customer-data request. It handles:
 
-- **Signed URL generation** for bulk artifacts (files, directories, DataFrames, code bundles, reports) -- the dataproxy issues short-lived signed URLs via the tunnel so clients can read or write directly to the customer's object store. The data bytes themselves do not flow through dataproxy.
-- **Structured I/O retrieval** -- inputs and outputs of actions (small protobuf literals) are served back through the dataproxy.
+- **Signed URL generation** for bulk artifacts (files, directories, DataFrames, code bundles, reports) -- the `dataproxy` issues short-lived signed URLs via the tunnel so clients can read or write directly to the customer's object store. The data bytes themselves do not flow through `dataproxy`.
+- **Structured I/O retrieval** -- inputs and outputs of actions (small protobuf literals) are served back through the `dataproxy`.
 - **Log fetching** -- live logs from the Kubernetes API, persisted logs from the cloud log aggregator (CloudWatch, Cloud Logging, or Azure Monitor). There is no content filtering or redaction; any sensitive data (secrets, PII, stack traces) that user code writes to stdout/stderr is served unmodified.
-- **Auxiliary UI proxying** -- Ray dashboards, Spark history servers, in-task debuggers, and other per-action UIs are served back through the dataproxy via the same authenticated path.
+- **Auxiliary UI proxying** -- Ray dashboards, Spark history servers, in-task debuggers, and other per-action UIs are served back through the `dataproxy` via the same authenticated path.
 - **Secret writes** -- secret values from the SDK or UI are routed to the data-plane secrets backend (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or K8s Secrets) without traversing the control plane.
 
 **Executor** is a Kubernetes controller that watches for TaskAction custom resources created by the control plane. When a TaskAction appears, the Executor reconciles its lifecycle: creating task pods, monitoring their status, and reporting state transitions back to the control plane. If connectivity to the control plane is lost, in-flight pods continue running and state reconciles when the connection is restored.
@@ -37,7 +37,7 @@ In addition to the client-to-data-plane path, the data plane operator establishe
 
 ### Multi-cluster routing
 
-When a tenant spans multiple data-plane clusters, customer-data requests need to reach the correct one. The control plane exposes a `SelectCluster` RPC that resolves an action ID, project/domain, or queue/org reference to the per-cluster tunnel domain (or, under Sovereign Data Plane, the per-cluster internal LB hostname). The SDK and UI call `SelectCluster` first, then dispatch the data-path request directly to the resolved cluster -- no aggregator or fan-out hop in front of the dataproxy. Org-level secrets are scoped through a `--cluster-pool` parameter so that creation, listing, and deletion target the right cluster pool.
+When a tenant spans multiple data-plane clusters, customer-data requests need to reach the correct one. The control plane exposes a `SelectCluster` RPC that resolves an action ID, project/domain, or queue/org reference to the per-cluster tunnel domain (or, under Sovereign Data Plane, the per-cluster internal LB hostname). The SDK and UI call `SelectCluster` first, then dispatch the data-path request directly to the resolved cluster -- no aggregator or fan-out hop in front of the `dataproxy`. Org-level secrets are scoped through a `--cluster-pool` parameter so that creation, listing, and deletion target the right cluster pool.
 
 For how each of these pathways handles data in transit, see [Data flow](../data-protection/data-flow).
 
