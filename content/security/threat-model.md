@@ -140,7 +140,7 @@ The analysis below references these asset classes:
 The Zero Trust property is independently auditable from outside Union. A customer security team can verify each of the claims above using sources they already have or can enable:
 
 - **Network topology.** GKE / EKS / AKS audit logs confirm the tunnel pod's outbound-only connection pattern. Cloud Audit Logs show no inbound traffic to the data plane cluster API from Union IP ranges.
-- **Application path.** Union's authorization-service logs record every data-plane request, the resolved Union identity, and the RBAC decision. Control plane logs over the same window show no payload-bearing requests for customer-data operations -- by inspection, the API surfaces that used to proxy customer data have no corresponding endpoints.
+- **Application path.** Union's authorization-service logs record every data-plane request, the resolved Union identity, and the RBAC decision. Control plane logs over the same window show no payload-bearing requests for customer-data operations; by inspection, the control plane API has no endpoints that return customer-data payloads.
 - **Object store.** Cloud-native audit logs (CloudTrail, Cloud Audit Logs, Azure Storage logs) record every read and write to the bucket. The principal on every payload-bearing access is a customer-controlled identity, never Union.
 - **Tunnel.** Cloudflare Access logs record every authenticated request through the tunnel, including the resolved Union identity, the destination service inside the cluster, and the response status. (Under Sovereign Data Plane, the equivalent logs are produced by the customer-managed LB.)
 

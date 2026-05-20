@@ -67,7 +67,7 @@ The Direct-to-DataPlane pattern applies at every stage of the workflow lifecycle
 
 ### Run launch: the upload-then-reference flow
 
-Launching a run is the one behavior that changes visibly under Zero Trust. Prior to Zero Trust, the SDK sent inputs to the control plane, which then uploaded them to the customer's object store using a signed URL it issued to itself. Under Zero Trust, the upload happens client-to-data-plane first, and `CreateRun` is called by reference. The control plane never sees the input bytes.
+To launch a run, the SDK first uploads the inputs directly to the customer's object store, then calls `CreateRun` with a reference to the upload URI. The control plane never sees the input bytes.
 
 ```
 SDK / CLI / UI                            Data-plane dataproxy        Customer object store     Control plane
@@ -93,7 +93,7 @@ SDK / CLI / UI                            Data-plane dataproxy        Customer o
 
 4. **CreateRun by reference.** The SDK calls `CreateRun` on the control plane with the URI from step 2 (not the bytes). The control plane validates the URI shape, stores it alongside the run metadata, and enqueues the action to the data plane. The control plane never sees the input bytes.
 
-`CreateRun` and `UploadInputs` are separate APIs under Zero Trust. Prior architectures fused them into a single call that carried the bytes; the split is what makes the no-CP-transit guarantee possible.
+`CreateRun` and `UploadInputs` are separate APIs. Splitting them is what keeps customer data off the control plane: the SDK uploads to the data plane first, then `CreateRun` only references the URI.
 
 The code bundle follows the same pattern: it is uploaded directly to the customer's object store via a presigned PUT URL issued by the dataproxy, and `CreateRun` references the resulting URI. Code never touches the control plane.
 

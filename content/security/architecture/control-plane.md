@@ -37,5 +37,5 @@ The control plane exposes the following capabilities:
 - **Cluster registry** -- maintains the inventory of registered data plane clusters and their health.
 - **Cluster selection** -- exposes the `SelectCluster` RPC that clients (SDK / UI) call to resolve which data plane cluster handles a given customer-data request. The control plane returns the per-cluster tunnel domain (or, under Sovereign Data Plane, internal LB hostname); the client then dispatches the data-path request directly to that cluster. The control plane does not participate in the data path itself.
 
-The control plane has no data-gateway role under Zero Trust. The pre-ZT `dataproxy` service that handled signed URLs, log streaming, structured I/O, and auxiliary UI proxying has been relocated to the data plane (see [Data plane](./data-plane#components)). See [Data flow](../data-protection/data-flow) for the new request path.
+The control plane has no data-gateway role. Signed URLs, log streaming, structured I/O retrieval, and auxiliary UI proxying are handled by the `dataproxy` service that runs in the data plane (see [Data plane](./data-plane#components)). For the customer-data request path, see [Data flow](../data-protection/data-flow).
 
