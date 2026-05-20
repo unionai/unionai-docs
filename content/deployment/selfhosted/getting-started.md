@@ -212,7 +212,7 @@ ingress-nginx:
       default-ssl-certificate: "<controlplane-namespace>/controlplane-tls-cert"
 ```
 
-For the full list of available keys, see [`values.aws.selfhosted-intracluster.yaml`](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/values.aws.selfhosted-intracluster.yaml). To enable authentication, add the OIDC stanza per [Authentication](./authentication).
+For the full list of available keys, see [`values.aws.yaml`](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/values.aws.yaml). To enable authentication, add the OIDC stanza per [Authentication](./authentication).
 
 {{< /markdown >}}
 {{< /tab >}}
@@ -240,7 +240,7 @@ ingress-nginx:
       default-ssl-certificate: "<controlplane-namespace>/controlplane-tls-cert"
 ```
 
-For the full list of available keys, see [`values.gcp.selfhosted-intracluster.yaml`](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/values.gcp.selfhosted-intracluster.yaml). To enable authentication, add the OIDC stanza per [Authentication](./authentication).
+For the full list of available keys, see [`values.gcp.yaml`](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/values.gcp.yaml). To enable authentication, add the OIDC stanza per [Authentication](./authentication).
 
 {{< /markdown >}}
 {{< /tab >}}
@@ -255,12 +255,12 @@ Download the chart's intracluster values file, then install with your overrides 
 {{< markdown >}}
 
 ```shell
-curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/controlplane/values.aws.selfhosted-intracluster.yaml
+curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/controlplane/values.aws.yaml
 
 helm upgrade --install unionai-controlplane unionai/controlplane \
   --namespace <controlplane-namespace> \
   --create-namespace \
-  -f values.aws.selfhosted-intracluster.yaml \
+  -f values.aws.yaml \
   -f my-overrides.yaml \
   --skip-crds \
   --timeout 15m --wait
@@ -272,12 +272,12 @@ helm upgrade --install unionai-controlplane unionai/controlplane \
 {{< markdown >}}
 
 ```shell
-curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/controlplane/values.gcp.selfhosted-intracluster.yaml
+curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/controlplane/values.gcp.yaml
 
 helm upgrade --install unionai-controlplane unionai/controlplane \
   --namespace <controlplane-namespace> \
   --create-namespace \
-  -f values.gcp.selfhosted-intracluster.yaml \
+  -f values.gcp.yaml \
   -f my-overrides.yaml \
   --skip-crds \
   --timeout 15m --wait
@@ -340,12 +340,12 @@ global:
 Then install:
 
 ```shell
-curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.aws.selfhosted-intracluster.yaml
+curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.aws.yaml
 
 helm upgrade --install unionai-dataplane unionai/dataplane \
   --namespace <dataplane-namespace> \
   --create-namespace \
-  -f values.aws.selfhosted-intracluster.yaml \
+  -f values.aws.yaml \
   -f dataplane-overrides.yaml \
   --skip-crds \
   --timeout 10m --wait
@@ -374,12 +374,12 @@ global:
 Then install:
 
 ```shell
-curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.gcp.selfhosted-intracluster.yaml
+curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.gcp.yaml
 
 helm upgrade --install unionai-dataplane unionai/dataplane \
   --namespace <dataplane-namespace> \
   --create-namespace \
-  -f values.gcp.selfhosted-intracluster.yaml \
+  -f values.gcp.yaml \
   -f dataplane-overrides.yaml \
   --skip-crds \
   --timeout 10m --wait
@@ -431,6 +431,18 @@ Control plane services discover each other via Kubernetes DNS:
 - **Admin service**: `<admin-service>.<controlplane-namespace>.svc.cluster.local:81`
 - **NGINX ingress**: `<controlplane-ingress>.<controlplane-namespace>.svc.cluster.local`
 - **Data plane (for dataproxy)**: `<dataplane-ingress>.<dataplane-namespace>.svc.cluster.local`
+
+### Topology options
+
+The same `values.{cloud}.yaml` overlay serves three deployment topologies. Topology is decided by the operator at install time by choosing the dataplane nginx ingress Service `type` and annotations — the chart itself stays topology-agnostic.
+
+| Topology | Service type | Cloud-provider annotations | DNS |
+| --- | --- | --- | --- |
+| **Intracluster** (default — CP and DP in the same cluster) | `ClusterIP` | _(none)_ | In-cluster Kubernetes DNS only |
+| **Multi-cluster, same VPC** (DP in its own cluster, private LB) | `LoadBalancer` | AWS: `service.beta.kubernetes.io/aws-load-balancer-scheme: internal` <br/> GCP: `networking.gke.io/load-balancer-type: Internal` <br/> Azure: `service.beta.kubernetes.io/azure-load-balancer-internal: "true"` | Private hosted zone record (Route53 / Cloud DNS private zone) mapping a hostname to the internal LB |
+| **BYOC public** (DP in its own cluster, public LB) | `LoadBalancer` | Cloud default (public) | Public DNS record mapping a hostname to the public LB |
+
+In every topology the control plane reaches the dataplane via `global.DATAPLANE_HOST` (the value the operator sets), so the chart code is unchanged across topologies. See [`charts/MIGRATION.md`](https://github.com/unionai/helm-charts/blob/main/charts/MIGRATION.md) in the helm-charts repo for the canonical host-indirection design.
 
 ## Key differences from a self-managed deployment
 

@@ -889,8 +889,8 @@ Intra-cluster — both planes in the same Kubernetes cluster — is a supported 
 
 The chart's bundled intra-cluster overlays are self-contained and document every override in the file's comment header:
 
-- AWS: [`values.aws.selfhosted-intracluster.yaml`](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/values.aws.selfhosted-intracluster.yaml)
-- GCP: [`values.gcp.selfhosted-intracluster.yaml`](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/values.gcp.selfhosted-intracluster.yaml)
+- AWS: [`values.aws.yaml`](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/values.aws.yaml)
+- GCP: [`values.gcp.yaml`](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/values.gcp.yaml)
 
 ## Next
 
