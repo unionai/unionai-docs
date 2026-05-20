@@ -30,7 +30,7 @@ Two notes on conventions used below:
 
 ## Deployment overview
 
-1. Add Helm repositories and install vendored CRDs.
+1. Add Helm repositories and install control plane CRDs.
 2. Create namespaces and the registry image pull secret.
 3. Generate TLS certificates.
 4. Create the database password secret.
@@ -40,7 +40,7 @@ Two notes on conventions used below:
 8. Install the data plane.
 9. Verify the installation.
 
-## Step 1: Helm repositories and CRDs
+## Step 1: Helm repositories and control plane CRDs
 
 Add the chart repositories:
 
@@ -50,27 +50,39 @@ helm repo add flyte https://helm.flyte.org
 helm repo update
 ```
 
-Several operators bundled with the control plane (kube-prometheus-stack, scylla-operator, envoy-gateway) ship CustomResourceDefinitions whose OpenAPI v3 schemas exceed Kubernetes' 256 KiB per-annotation limit. Applying them via a default Helm install overflows `kubectl.kubernetes.io/last-applied-configuration` and fails with `metadata.annotations: Too long`. To avoid this, the chart no longer renders these CRDs as part of the install; they are vendored under `helm-charts/crds/<name>/` and must be applied up-front via **server-side apply**.
+The control plane chart pulls in subcharts that ship CustomResourceDefinitions with OpenAPI v3 schemas larger than Kubernetes' 256 KiB per-annotation limit. A default Helm install of those CRDs overflows the `kubectl.kubernetes.io/last-applied-configuration` annotation and fails with `metadata.annotations: Too long`. To avoid this, install the CRDs separately via **server-side apply** before installing the chart with `--skip-crds` (Step 6).
 
-Install only the CRD sets you intend to enable. Each CRD file carries an `argocd.argoproj.io/sync-options: ServerSideApply=true` annotation so an ArgoCD adoption later on continues to manage them via SSA:
+The CRDs are vendored in the `helm-charts` repository under `crds/<name>/`. Clone or check out the repo to get the YAML files (paths below are relative to the repo root):
 
 ```shell
-# Required when monitoring.enabled=true on either the control plane or the
-# data plane. Skip if your cluster already runs kube-prometheus-stack from
-# another source AND that installation manages these CRDs.
-kubectl apply --server-side --force-conflicts -f helm-charts/crds/kube-prometheus-stack/
-
-# Required when using the embedded ScyllaDB (default). Skip if you bring
-# your own scylla-operator install that manages these CRDs.
-kubectl apply --server-side --force-conflicts -f helm-charts/crds/scylla-operator/
-
-# Required when envoy-gateway.enabled=true. SKIP if your cluster already
-# has Gateway API CRDs (gateway.networking.k8s.io) installed from another
-# source — this directory bundles both the standard Gateway API CRDs and
-# envoy-specific (gateway.envoyproxy.io) CRDs together, and double-installing
-# the Gateway API CRDs causes field-manager conflicts between owners.
-kubectl apply --server-side --force-conflicts -f helm-charts/crds/envoy-gateway/
+git clone https://github.com/unionai/helm-charts.git
+cd helm-charts
 ```
+
+Install only the CRD sets that match the features you'll enable. Each `kubectl apply` call below targets a single directory and is independent — skip any whose feature is disabled in your overrides.
+
+```shell
+# Required when monitoring.enabled=true on the control plane (the default
+# in the chart's intracluster values files). Also covers the data plane's
+# monitoring stack — install once.
+# Skip if your cluster already runs kube-prometheus-stack from another
+# source AND that installation manages these CRDs.
+kubectl apply --server-side --force-conflicts -f crds/kube-prometheus-stack/
+
+# Required when using the control plane's embedded ScyllaDB (default).
+# Skip if you bring your own scylla-operator install that manages these CRDs.
+kubectl apply --server-side --force-conflicts -f crds/scylla-operator/
+
+# Required when envoy-gateway.enabled=true on the control plane. SKIP if
+# your cluster already has Gateway API CRDs (gateway.networking.k8s.io)
+# installed from another source — this directory bundles both the standard
+# Gateway API CRDs and the envoy-specific (gateway.envoyproxy.io) CRDs,
+# and double-installing the Gateway API CRDs causes field-manager
+# conflicts between owners.
+kubectl apply --server-side --force-conflicts -f crds/envoy-gateway/
+```
+
+Data plane CRDs are installed separately in [Step 7](#step-7-install-data-plane-crds).
 
 `--force-conflicts` is required only on first install (or when adopting CRDs previously owned by a Helm-installed copy). It tells the API server to transfer SSA field ownership to the new `kubectl` field manager.
 
@@ -284,10 +296,23 @@ The registry image pull secret created in Step 2 (`union-registry-secret`) is re
 
 ## Step 7: Install data plane CRDs
 
+The data plane operator reconciles `FlyteWorkflow` resources and (optionally) Knative serving CRs. Install the CRDs from the vendored `helm-charts/crds/` directory (same checkout as Step 1):
+
 ```shell
-helm upgrade --install unionai-dataplane-crds unionai/dataplane-crds \
-  --namespace <dataplane-namespace> \
-  --create-namespace
+# Mandatory — the data plane operator requires the FlyteWorkflow CRD.
+kubectl apply --server-side --force-conflicts -f crds/flyte-v1/
+
+# Required when App Serving is enabled in your data plane overrides
+# (the Knative operator consumes these CRDs at runtime).
+# Skip if App Serving is disabled, or if your cluster already manages
+# the Knative CRDs from another source.
+kubectl apply --server-side --force-conflicts -f crds/knative-operator/
+```
+
+If you enable `monitoring.enabled=true` on the data plane but did not install the `kube-prometheus-stack` CRDs in Step 1, install them now:
+
+```shell
+kubectl apply --server-side --force-conflicts -f crds/kube-prometheus-stack/
 ```
 
 ## Step 8: Install the data plane

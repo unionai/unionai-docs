@@ -144,4 +144,4 @@ kubectl apply --server-side --force-conflicts -f helm-charts/crds/scylla-operato
 kubectl apply --server-side --force-conflicts -f helm-charts/crds/envoy-gateway/
 ```
 
-Then `helm install`/`upgrade` the control plane and data plane charts with `--skip-crds` so Helm does not try to re-apply the bundled copies client-side. See [Getting started → Step 1](../getting-started#step-1-helm-repositories-and-crds) for the full sequence.
+Then `helm install`/`upgrade` the control plane and data plane charts with `--skip-crds` so Helm does not try to re-apply the bundled copies client-side. See [Getting started → Step 1](../getting-started#step-1-helm-repositories-and-control-plane-crds) and [Step 7](../getting-started#step-7-install-data-plane-crds) for the full sequence.
