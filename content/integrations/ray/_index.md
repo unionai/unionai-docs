@@ -30,6 +30,11 @@ image = (
 )
 ```
 
+{{< variant union >}}
+> [!NOTE]
+For self-managed setups, refer to the [setup instructions](../../deployment/selfmanaged//configuration/plugins#ray) to enable the Ray plugin in your data plane.
+{{< /variant >}}
+
 ## Configuration
 
 Create a `RayJobConfig` and pass it as `plugin_config` to a `TaskEnvironment`:

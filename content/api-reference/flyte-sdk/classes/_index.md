@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.2.4
+version: 2.3.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -26,6 +26,16 @@ layout: py_api
 | [`flyte.TaskEnvironment`](../packages/flyte/taskenvironment) |Define an execution environment for a set of tasks. |
 | [`flyte.Timeout`](../packages/flyte/timeout) |Timeout class to define a timeout for a task. |
 | [`flyte.Trigger`](../packages/flyte/trigger) |Specification for a scheduled trigger that can be associated with any Flyte task. |
+| [`flyte.ai.agents.AgentResult`](../packages/flyte.ai.agents/agentresult) |Outcome of a single agent invocation. |
+| [`flyte.ai.agents.CodeModeAgent`](../packages/flyte.ai.agents/codemodeagent) |Generates code via an LLM, executes it in a Monty sandbox, and. |
+| [`flyte.ai.agents.codemode.CodeModeAgent`](../packages/flyte.ai.agents.codemode/codemodeagent) |Generates code via an LLM, executes it in a Monty sandbox, and. |
+| [`flyte.ai.agents.protocol.AgentResult`](../packages/flyte.ai.agents.protocol/agentresult) |Outcome of a single agent invocation. |
+| [`flyte.ai.chat.AgentChatAppEnvironment`](../packages/flyte.ai.chat/agentchatappenvironment) |An :class:`~flyte. |
+| [`flyte.ai.chat.CustomTheme`](../packages/flyte.ai.chat/customtheme) |Declarative color theme for the Agent Chat UI. |
+| [`flyte.ai.chat.app.AgentChatAppEnvironment`](../packages/flyte.ai.chat.app/agentchatappenvironment) |An :class:`~flyte. |
+| [`flyte.ai.chat.app.CustomTheme`](../packages/flyte.ai.chat.app/customtheme) |Declarative color theme for the Agent Chat UI. |
+| [`flyte.ai.mcp.FlyteMCPAppEnvironment`](../packages/flyte.ai.mcp/flytemcpappenvironment) |Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn). |
+| [`flyte.ai.mcp.MCPAppEnvironment`](../packages/flyte.ai.mcp/mcpappenvironment) |Serve a FastMCP server over HTTP (Starlette + Uvicorn). |
 | [`flyte.app.AppEndpoint`](../packages/flyte.app/appendpoint) |Embed an upstream app's endpoint as an app parameter. |
 | [`flyte.app.AppEnvironment`](../packages/flyte.app/appenvironment) |Configure a long-running app environment for APIs, dashboards, or model servers. |
 | [`flyte.app.ConnectorEnvironment`](../packages/flyte.app/connectorenvironment) |Configure a connector environment for custom Flyte connectors. |
@@ -89,6 +99,10 @@ layout: py_api
 | [`flyte.extras.Sleep`](../packages/flyte.extras/sleep) |Route a task to the backend `core-sleep` plugin. |
 | [`flyte.extras.SleepTask`](../packages/flyte.extras/sleeptask) | |
 | [`flyte.extras.TokenBatcher`](../packages/flyte.extras/tokenbatcher) |Token-aware batcher for LLM inference workloads. |
+| [`flyte.extras.shell.FlagSpec`](../packages/flyte.extras.shell/flagspec) |How to render a typed input as a CLI flag in ``{flags. |
+| [`flyte.extras.shell.Glob`](../packages/flyte.extras.shell/glob) |A multi-file output bundle. |
+| [`flyte.extras.shell.Stderr`](../packages/flyte.extras.shell/stderr) |Capture the task's stderr as a typed output. |
+| [`flyte.extras.shell.Stdout`](../packages/flyte.extras.shell/stdout) |Capture the task's stdout as a typed output. |
 | [`flyte.git.GitStatus`](../packages/flyte.git/gitstatus) |A class representing the status of a git repository. |
 | [`flyte.io.DataFrame`](../packages/flyte.io/dataframe) |A Flyte meta DataFrame object, that wraps all other dataframe types (usually available as plugins, pandas. |
 | [`flyte.io.Dir`](../packages/flyte.io/dir) |A generic directory class representing a directory with files of a specified format. |
@@ -155,6 +169,8 @@ layout: py_api
 | [`flyte.AppHandle`](../packages/flyte/apphandle) |Protocol defining the common interface between local and remote app handles. |
 | [`flyte.CachePolicy`](../packages/flyte/cachepolicy) |Protocol for custom cache version strategies. |
 | [`flyte.Link`](../packages/flyte/link) | |
+| [`flyte.ai.agents.Agent`](../packages/flyte.ai.agents/agent) |Minimal protocol that any agent must satisfy to work with. |
+| [`flyte.ai.agents.protocol.Agent`](../packages/flyte.ai.agents.protocol/agent) |Minimal protocol that any agent must satisfy to work with. |
 | [`flyte.extend.ImageBuilder`](../packages/flyte.extend/imagebuilder) | |
 | [`flyte.extend.ImageChecker`](../packages/flyte.extend/imagechecker) | |
 | [`flyte.extras.CostEstimator`](../packages/flyte.extras/costestimator) |Protocol for records that can estimate their own processing cost. |
