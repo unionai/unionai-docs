@@ -322,9 +322,6 @@ executor:
 > [!NOTE] Provisioning the EAGER_API_KEY
 > The `EAGER_API_KEY` secret must be provisioned for the organization before any task pod can call the control plane. The key value is issued by Union.ai; contact your Union.ai Support representative to have it provisioned for your tenant. Once you have the value, deliver it to the `EAGER_API_KEY` Kubernetes secret in the executor's namespace via External Secrets Operator (or another out-of-band secret delivery mechanism). The provisioning workflow is being moved to a self-serve flow on the Union.ai console; until then, the contact-Support path is the canonical one.
 
-> [!WARNING] Broad scope, deprecation backlog
-> `EAGER_API_KEY` is broadly scoped (a single key per organization) and is on the deprecation backlog. Treat it as a high-value credential: limit its delivery to a single, audited secret store, and do not embed it in container images, repository configuration, or any artifact subject to a broader audience than the secret store itself. Future Union.ai releases will replace it with per-task or per-action credentials; this section will be updated when the replacement ships.
-
 ### Dataplane secrets
 
 Enable the `union-secret-auth` Kubernetes secret mount for data plane pods:
