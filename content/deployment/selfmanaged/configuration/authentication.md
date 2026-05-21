@@ -305,9 +305,11 @@ config:
       clientSecretLocation: "/etc/union/secret/client_secret"
 ```
 
-### Executor (eager mode)
+### In-pod control-plane authentication (EAGER_API_KEY)
 
-Injects the `EAGER_API_KEY` secret into task pods for authenticated eager-mode execution:
+Flyte task pods may need to call back into the Union.ai control plane during execution -- to launch sub-tasks, fetch remote references, run apps that make programmatic API calls, and similar. The `EAGER_API_KEY` secret holds the OAuth2 client credentials used to authenticate those calls. (The "eager" prefix is a Flyte 1.x holdover -- the key is needed for every task pod that may reach the control plane, not just eager workflows. There is no separate eager-mode toggle in Flyte 2.x.)
+
+The executor injects the secret into task pods via:
 
 ```yaml
 executor:
@@ -318,7 +320,7 @@ executor:
 ```
 
 > [!NOTE] Provisioning the EAGER_API_KEY
-> For eager-mode tasks to run in a self-managed deployment, the `EAGER_API_KEY` secret must be provisioned for the organization. The key value is issued by Union.ai; contact your Union.ai Support representative to have it provisioned for your tenant. Once you have the value, deliver it to the `EAGER_API_KEY` Kubernetes secret in the executor's namespace via External Secrets Operator (or another out-of-band secret delivery mechanism). The provisioning workflow is being moved to a self-serve flow on the Union.ai console; until then, the contact-Support path is the canonical one.
+> The `EAGER_API_KEY` secret must be provisioned for the organization before any task pod can call the control plane. The key value is issued by Union.ai; contact your Union.ai Support representative to have it provisioned for your tenant. Once you have the value, deliver it to the `EAGER_API_KEY` Kubernetes secret in the executor's namespace via External Secrets Operator (or another out-of-band secret delivery mechanism). The provisioning workflow is being moved to a self-serve flow on the Union.ai console; until then, the contact-Support path is the canonical one.
 
 > [!WARNING] Broad scope, deprecation backlog
 > `EAGER_API_KEY` is broadly scoped (a single key per organization) and is on the deprecation backlog. Treat it as a high-value credential: limit its delivery to a single, audited secret store, and do not embed it in container images, repository configuration, or any artifact subject to a broader audience than the secret store itself. Future Union.ai releases will replace it with per-task or per-action credentials; this section will be updated when the replacement ships.
