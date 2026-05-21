@@ -30,7 +30,7 @@ Two notes on conventions used below:
 
 ## Deployment overview
 
-1. Add Helm repositories and install ScyllaDB CRDs.
+1. Add Helm repositories and install vendored CRDs.
 2. Create namespaces and the registry image pull secret.
 3. Generate TLS certificates.
 4. Create the database password secret.
@@ -50,12 +50,29 @@ helm repo add flyte https://helm.flyte.org
 helm repo update
 ```
 
-If you plan to use the embedded ScyllaDB (default), install its CRDs:
+Several operators bundled with the control plane (kube-prometheus-stack, scylla-operator, envoy-gateway) ship CustomResourceDefinitions whose OpenAPI v3 schemas exceed Kubernetes' 256 KiB per-annotation limit. Applying them via a default Helm install overflows `kubectl.kubernetes.io/last-applied-configuration` and fails with `metadata.annotations: Too long`. To avoid this, the chart no longer renders these CRDs as part of the install; they are vendored under `helm-charts/crds/<name>/` and must be applied up-front via **server-side apply**.
+
+Install only the CRD sets you intend to enable. Each CRD file carries an `argocd.argoproj.io/sync-options: ServerSideApply=true` annotation so an ArgoCD adoption later on continues to manage them via SSA:
 
 ```shell
-cd helm-charts/charts/controlplane
-./scripts/install-scylla-crds.sh
+# Required when monitoring.enabled=true on either the control plane or the
+# data plane. Skip if your cluster already runs kube-prometheus-stack from
+# another source AND that installation manages these CRDs.
+kubectl apply --server-side --force-conflicts -f helm-charts/crds/kube-prometheus-stack/
+
+# Required when using the embedded ScyllaDB (default). Skip if you bring
+# your own scylla-operator install that manages these CRDs.
+kubectl apply --server-side --force-conflicts -f helm-charts/crds/scylla-operator/
+
+# Required when envoy-gateway.enabled=true. SKIP if your cluster already
+# has Gateway API CRDs (gateway.networking.k8s.io) installed from another
+# source — this directory bundles both the standard Gateway API CRDs and
+# envoy-specific (gateway.envoyproxy.io) CRDs together, and double-installing
+# the Gateway API CRDs causes field-manager conflicts between owners.
+kubectl apply --server-side --force-conflicts -f helm-charts/crds/envoy-gateway/
 ```
+
+`--force-conflicts` is required only on first install (or when adopting CRDs previously owned by a Helm-installed copy). It tells the API server to transfer SSA field ownership to the new `kubectl` field manager.
 
 ## Step 2: Namespaces and registry pull secret
 
@@ -233,6 +250,7 @@ helm upgrade --install unionai-controlplane unionai/controlplane \
   --create-namespace \
   -f values.aws.selfhosted-intracluster.yaml \
   -f my-overrides.yaml \
+  --skip-crds \
   --timeout 15m --wait
 ```
 
@@ -249,6 +267,7 @@ helm upgrade --install unionai-controlplane unionai/controlplane \
   --create-namespace \
   -f values.gcp.selfhosted-intracluster.yaml \
   -f my-overrides.yaml \
+  --skip-crds \
   --timeout 15m --wait
 ```
 
@@ -303,6 +322,7 @@ helm upgrade --install unionai-dataplane unionai/dataplane \
   --create-namespace \
   -f values.aws.selfhosted-intracluster.yaml \
   -f dataplane-overrides.yaml \
+  --skip-crds \
   --timeout 10m --wait
 ```
 
@@ -336,6 +356,7 @@ helm upgrade --install unionai-dataplane unionai/dataplane \
   --create-namespace \
   -f values.gcp.selfhosted-intracluster.yaml \
   -f dataplane-overrides.yaml \
+  --skip-crds \
   --timeout 10m --wait
 ```
 
