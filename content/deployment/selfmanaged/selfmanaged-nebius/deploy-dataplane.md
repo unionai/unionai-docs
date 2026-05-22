@@ -38,11 +38,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider metal
    ```
 
-   * The command outputs the ID, name, and a secret used by the Union services to communicate with your control plane. It also generates a YAML values file specific to the `metal` provider.
-
-   * Save the secret that is displayed. Union does not store the credentials; rerunning the same command can be used to retrieve the secret later.
-
-   We use `--provider metal` because Nebius is treated as a generic Kubernetes target rather than a first-class hyperscaler integration (no native IAM-for-Pods equivalent today). <!-- [VERIFY: Nebius Workload Identity GA status] -->
+   The command generates a YAML values file specific to the `metal` provider, including the secrets necessary so your data plane can communicate with Union's control plane.
 
 3. Update the generated values file with your Nebius-specific storage configuration. Replace the placeholders with your actual credentials and settings.
 
@@ -53,74 +49,23 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    provider: metal
 
    storage:
-     provider: custom
-     bucketName: <BUCKET_NAME>
-     fastRegistrationBucketName: <BUCKET_NAME>
-     custom:
-       type: stow
-       container: <BUCKET_NAME>
-       stow:
-         kind: s3
-         config:
-           region: <NEBIUS_REGION>           # e.g., eu-north1
-           auth_type: accesskey
-           access_key_id: <ACCESS_KEY_ID>
-           secret_key: <SECRET_ACCESS_KEY>
-           endpoint: https://storage.<NEBIUS_REGION>.nebius.cloud
-           disable_ssl: false
-           disable_force_path_style: false   # Nebius supports path-style; [VERIFY]
-
-   executor:
-     extraEnvVars:
-       - name: FLYTE_AWS_ENDPOINT
-         value: "https://storage.<NEBIUS_REGION>.nebius.cloud"
-       - name: AWS_ACCESS_KEY_ID
-         value: <ACCESS_KEY_ID>
-       - name: AWS_SECRET_ACCESS_KEY
-         value: <SECRET_ACCESS_KEY>
-       - name: AWS_DEFAULT_REGION
-         value: <NEBIUS_REGION>
-
-   config:
-     k8s:
-       plugins:
-         k8s:
-           default-env-vars:
-             - FLYTE_AWS_ENDPOINT: https://storage.<NEBIUS_REGION>.nebius.cloud
-             - AWS_ACCESS_KEY_ID: <ACCESS_KEY_ID>
-             - AWS_SECRET_ACCESS_KEY: <SECRET_ACCESS_KEY>
-             - AWS_DEFAULT_REGION: <NEBIUS_REGION>
-
-   operator:
-     enableTunnelService: true
+     accessKey: <YOUR_BUCKET_ACCESS_KEY>
+     bucketName: <YOUR_STORAGE_BUCKET_NAME>
+     endpoint: https://storage.<REGION>.nebius.cloud
+     fastRegistrationBucketName: <YOUR_STORAGE_BUCKET_NAME>
+     provider: compat
+     region: <REGION>
+     secretKey: <YOUR_BUCKET_SECRET_KEY>
 
    secrets:
      admin:
        create: true
        clientId: <CLIENT_ID>
        clientSecret: <CLIENT_SECRET>
-
-   fluentbit:
-     enabled: true
-     env:
-       - name: AWS_ACCESS_KEY_ID
-         value: <ACCESS_KEY_ID>
-       - name: AWS_SECRET_ACCESS_KEY
-         value: <SECRET_ACCESS_KEY>
    ```
 
    > [!NOTE]
-   > The `uctl selfserve provision-dataplane-resources` command in step 2 generates the `<CLIENT_ID>` and `<CLIENT_SECRET>` values. Use the values from that command's output.
-
-   The settings below are required for Nebius Object Storage compatibility:
-
-   | Setting                                                                 | Value                                                | Purpose                                                            |
-   | ----------------------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------ |
-   | `storage.custom.stow.config.endpoint`                                   | `https://storage.<NEBIUS_REGION>.nebius.cloud`       | Nebius Object Storage S3-compatible endpoint.                      |
-   | `storage.custom.stow.config.region`                                     | e.g., `eu-north1`                                    | Region of the bucket. Must match the bucket's region.              |
-   | `storage.custom.stow.config.auth_type`                                  | `accesskey`                                          | Use static access key authentication.                              |
-   | `config.k8s.plugins.k8s.default-env-vars` (entry: `FLYTE_AWS_ENDPOINT`) | `https://storage.<NEBIUS_REGION>.nebius.cloud`       | Endpoint injected into task pods so they target Nebius, not AWS.   |
-   | `executor.extraEnvVars.AWS_DEFAULT_REGION`                              | `<NEBIUS_REGION>`                                    | Ensures the S3 SDK signs requests with the correct region.        |
+   > The `uctl selfserve provision-dataplane-resources` command in step 2 generates the `<CLIENT_ID>` and `<CLIENT_SECRET>` values and feeds them into the values file. Don't modify them.
 
 4. Add the {{< key product_name >}} Helm repo:
 
@@ -129,13 +74,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    helm repo update
    ```
 
-5. Install the Custom Resource Definitions (CRDs):
-
-   ```bash
-   helm upgrade --install unionai-dataplane-crds unionai/dataplane-crds
-   ```
-
-6. Install the data plane. Replace `<PATH_TO_VALUES_FILE>` with the path to the Helm values file you customized in step 3.
+5. Install the data plane. Replace `<PATH_TO_VALUES_FILE>` with the path to the Helm values file you customized in step 3.
 
    ```bash
    helm upgrade --install unionai-dataplane unionai/dataplane \
@@ -144,15 +83,15 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
      --timeout 10m
    ```
 
-7. Verify the pods are running:
+6. Verify the pods are running:
 
    ```bash
    kubectl get pods -n union
    ```
 
-   When the deployment succeeds, all pods show a `Running` status, including `union-operator-proxy`, `union-operator-buildkit`, `flytepropeller`, and `executor`.
+   When the deployment succeeds, all pods show a `Running` status, including `union-operator-proxy`, `union-operator-buildkit`, and `executor`.
 
-8. Verify the cluster is registered with the control plane:
+7. Verify the cluster is registered with the control plane:
 
    ```bash
    uctl get cluster
@@ -165,7 +104,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    union-nebius    my-org    STATE_ENABLED  HEALTHY
    ```
 
-9. Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:
+8. Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:
 
    ```bash
    uctl create apikey --keyName EAGER_API_KEY --org <ORG_NAME>
@@ -174,21 +113,129 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    > [!NOTE]
    > If you receive a `PermissionDenied` error, contact [Union.ai support](https://www.union.ai/) to have the permission enabled for your organization.
 
-## GPU node configuration
+## GPU node configuration (Nebius-specific)
 
-To run GPU workloads on Nebius, ensure the NVIDIA device plugin is installed and your task definitions request GPU resources. Nebius MK8s pre-installs the NVIDIA GPU operator on GPU node groups, so no additional setup is typically required. <!-- [VERIFY: confirm NVIDIA operator is installed by default vs. add-on] -->
+Follow these steps to run GPU workloads on Nebius:
 
-Example task resource request:
+1. Ensure the NVIDIA device plugin is installed and your task definitions request GPU resources. Nebius MK8s pre-installs the NVIDIA GPU operator on GPU node groups, so no additional setup is typically required. Learn more about [how to add nodes with GPUs to a cluster](https://docs.nebius.com/kubernetes/gpu/set-up#how-to-add-nodes-with-gpus-to-a-cluster).
 
-```python
-from flyte import Resources
+2. Configure the Union backend to inject the required tolerations and label selectors so only tasks that require GPUs land in GPU-enabled nodes:
 
-@env.task(resources=Resources(gpu="H100:1", memory="64Gi"))
-def train_model(...):
-    ...
-```
+   1. Identify the node(s) that have GPU devices available:
 
-Nebius node selectors / tolerations may be required depending on how your GPU node groups are tainted. Add them via `pod_template` on the task or globally in the Helm values under `config.k8s.plugins.k8s.default-tolerations`.
+      ```bash
+      kubectl get nodes -o jsonpath='{range .items[?(@.status.allocatable.nvidia\.com/gpu)]}{.metadata.name}{"\n"}{end}'
+      ```
+
+   2. Get the labels of a GPU node:
+
+      ```bash
+      kubectl get node <node-name> -o jsonpath='{.metadata.labels}' | jq
+      ```
+
+      Nebius nodes typically include a label that displays the instance type. For example, for a node with NVIDIA H200 GPUs:
+
+      ```text
+      beta.kubernetes.io/instance-type=gpu-h200-sxm
+      ```
+
+   3. If the GPU device supports MIG partitions, the node typically also has a label indicating the partition profile. For example:
+
+      ```text
+      nvidia.com/gpu-partition-size: 2g.35gb
+      ```
+
+3. Update your Helm values file with the information gathered in the previous steps:
+
+   ```yaml
+   # all the existing content of your values file
+   ...
+
+   # ADD
+   config:
+     k8s:
+       plugins:
+         k8s:
+           gpu-device-node-label: "beta.kubernetes.io/instance-type"
+           accelerator-devices:
+             - H200: "gpu-h200-sxm"
+           gpu-partition-size-node-label: "nvidia.com/gpu-partition-size"
+   ```
+
+4. Update your installed release:
+
+   ```bash
+   helm upgrade unionai-dataplane unionai/dataplane \
+     --namespace union \
+     --values <PATH_TO_VALUES_FILE> \
+     --timeout 10m
+   ```
+
+5. Once the above steps are completed, request GPU devices or MIG partitions directly from the Flyte task:
+
+   ```python
+   from flyte import Resources
+
+   @env.task(resources=Resources(gpu="H200:1", memory="64Gi"))
+   def train_model(...):
+       ...
+   ```
+
+## Working with the Nebius Container Registry
+
+Flyte executions bundle your code and run it inside a container in the Nebius MK8s cluster. The contents of the image include the `flyte` package, your task code, and any other dependency your workflow requires.
+
+Flyte automates building the image using an efficient layered mechanism to detect changes. You can decide where to store the images. This section covers the configuration if you plan to use Nebius Container Registry to store your container images.
+
+1. Obtain a long-lived token from Nebius as described in [Working in a CI/CD environment](https://docs.nebius.com/container-registry/authentication#working-in-a-ci/cd-environment).
+
+2. Get the static key token value from the previous step (it usually starts with `v1...`) and add it to an environment variable:
+
+   ```bash
+   TOKEN='v1.CmQK...'
+   ```
+
+3. Encode it into a docker config file (replace the registry region accordingly):
+
+   ```bash
+   cat > docker-config-nebius.json <<EOF
+   {
+     "auths": {
+       "cr.eu-north1.nebius.cloud": {
+         "auth": "$(echo -n "iam:${TOKEN}" | base64)"
+       }
+     }
+   }
+   EOF
+   ```
+
+4. Create an image pull secret:
+
+   ```bash
+   flyte create secret --type image_pull nebius-image-secret \
+     --from-docker-config \
+     --docker-config-path docker-config-nebius.json \
+     --registries cr.eu-north1.nebius.cloud
+   ```
+
+5. Use it in your Flyte `Image` definition:
+
+   ```python
+   custom_image = flyte.Image.from_debian_base(
+       registry="cr.eu-north1.nebius.cloud/e00...",
+       registry_secret="<your-secret-name>",
+   )
+   ```
+
+6. Request the secret in your Flyte `TaskEnvironment` so tasks can pull the image:
+
+   ```python
+   env = flyte.TaskEnvironment(
+       name="hello_v2",
+       image=custom_image,
+       secrets=["<your-secret-name>"],
+   )
+   ```
 
 ## Test a workflow
 
@@ -225,22 +272,6 @@ To run a sample workflow, complete the following steps:
 
    Look for `ACTION_PHASE_SUCCEEDED` in the output to confirm the workflow completed successfully.
 
-## Troubleshooting
-
-| Symptom                                              | Cause                                                                   | Fix                                                                                                                                            |
-| ---------------------------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `403 Forbidden` on S3 operations                     | Service account lacks the `storage.editor` role on the bucket.          | Bind the role in **IAM > Service Accounts**, or scope a custom role to the bucket ARN.                                                         |
-| `SignatureDoesNotMatch`                              | Region mismatch between bucket and `AWS_DEFAULT_REGION` / region in Helm values. | Ensure `region`, `AWS_DEFAULT_REGION`, and the endpoint subdomain (`storage.<region>.nebius.cloud`) all reference the same Nebius region.   |
-| Task pods reach `s3.us-east-1.amazonaws.com`         | Task pods are missing the Nebius endpoint.                              | Add `FLYTE_AWS_ENDPOINT` to `config.k8s.plugins.k8s.default-env-vars` with the value `https://storage.<NEBIUS_REGION>.nebius.cloud`.           |
-| `PathStyleRequestNotAllowed 400`                     | Nebius rejected path-style URLs for this bucket.                        | Set `storage.custom.stow.config.disable_force_path_style: true` to switch to virtual-hosted style. <!-- [VERIFY default] -->                   |
-| `dial tcp: lookup storage.<region>.nebius.cloud: no such host` | Egress restricted by Nebius VPC network policy.                   | Ensure the MK8s node subnet has egress to the Nebius Object Storage endpoint, or use a VPC endpoint if available.                              |
-| "All enabled clusters are unhealthy"                 | The control plane can't reach the data plane.                           | Verify the tunnel service is running: `kubectl get pods -n union \| grep proxy`. Confirm `operator.enableTunnelService: true` in the Helm values. |
-| "Remote image builder is not enabled"                | The remote builder isn't enabled on the control plane.                  | Contact Union.ai to enable the remote builder, or use `--image` with a pre-built image.                                                        |
-| GPU pods stuck in `Pending` with `Insufficient nvidia.com/gpu` | GPU node group not provisioned, or taints not tolerated.       | Confirm GPU node group exists in the Nebius Console; add matching tolerations to the task's `pod_template`.                                    |
-| `invalid keys: collectbillableresourceusage`         | Chart version mismatch with the operator.                               | Use matching chart and operator image versions.                                                                                                |
-| Helm "another operation in progress"                 | An interrupted Helm upgrade.                                            | Run `helm rollback unionai-dataplane <LAST_GOOD_REVISION> -n union`.                                                                           |
-| "Provided Tunnel token is not valid"                 | The control plane isn't configured for this cluster.                    | Complete cluster registration first via `uctl selfserve provision-dataplane-resources`.                                                        |
-
 ## Additional resources
 
 For more information, see the following resources:
@@ -248,13 +279,3 @@ For more information, see the following resources:
 - [Nebius Managed Kubernetes documentation](https://docs.nebius.com/kubernetes)
 - [Nebius Object Storage documentation](https://docs.nebius.com/object-storage)
 - [Nebius IAM and service accounts](https://docs.nebius.com/iam)
-
-<!--
-Open items to confirm before publishing (carried over from draft):
-1. Object Storage endpoint format — storage.<region>.nebius.cloud or different?
-2. Path-style vs. virtual-hosted style — does Nebius support both?
-3. Available regions — confirm slugs (eu-north1, eu-west1, us-central1).
-4. NVIDIA GPU operator — pre-installed on GPU node groups, or opt-in add-on?
-5. Workload Identity — Nebius equivalent of IRSA / Workload Identity Federation?
-6. Service account role name — storage.editor, storage.admin, or custom?
--->
