@@ -120,16 +120,16 @@ Now that you've run your first workflow:
 {{< variant flyte >}}
 {{< markdown >}}
 - [**Core concepts**](./core-concepts/_index): Understand the core concepts of Flyte programming
-- [**Running locally**](./run-modes/running-locally): Learn about the TUI, caching, and other features that work locally
-- [**Running on the devbox**](./run-modes/running-devbox): Learn about the devbox cluster and how to run workflows on it
+- [**Run locally**](./run-modes/running-locally): Learn about the TUI, caching, and other features that work locally
+- [**Run on the devbox**](./run-modes/running-devbox): Learn about the devbox cluster and how to run workflows on it
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant union >}}
 {{< markdown >}}
 - [**Core concepts**](./core-concepts/_index): Understand the core concepts of Flyte programming
-- [**Running locally**](./run-modes/running-locally): Learn about the TUI, caching, and other features that work locally
-- [**Running on the devbox**](./run-modes/running-devbox): Learn about the devbox cluster and how to run workflows on it
-- [**Running on a remote cluster**](./run-modes/running-remote): Configure your environment for remote execution
+- [**Run locally**](./run-modes/running-locally): Learn about the TUI, caching, and other features that work locally
+- [**Run on the devbox**](./run-modes/running-devbox): Learn about the devbox cluster and how to run workflows on it
+- [**Run on a remote cluster**](./run-modes/running-remote): Configure your environment for remote execution
 {{< /markdown >}}
 {{< /variant >}}

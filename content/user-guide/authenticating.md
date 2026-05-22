@@ -54,7 +54,7 @@ This will automatically open your browser to complete authentication.
 {{< /tabs >}}
 
 > [!NOTE]
-> For details on creating and managing configuration files, see [Running on a remote cluster](./run-modes/running-remote#configuration-file).
+> For details on creating and managing configuration files, see [Run on a remote cluster](./run-modes/running-remote#configuration-file).
 
 ## Authentication modes
 
