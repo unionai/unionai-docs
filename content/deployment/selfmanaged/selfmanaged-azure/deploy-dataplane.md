@@ -65,7 +65,7 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
    # Required — FlyteWorkflow CRD consumed by propeller.
    kubectl apply --server-side --force-conflicts -f crds/flyte-v1/
 
-   # Required when monitoring.enabled=true (chart default).
+   # Required when monitoring.enabled=true. Skip if monitoring is disabled (the chart default)
    kubectl apply --server-side --force-conflicts -f crds/kube-prometheus-stack/
    ```
 
