@@ -430,46 +430,15 @@ Within each plane, services discover each other via cluster-local Kubernetes DNS
 
 When the control plane and data plane both run in the *same* Kubernetes cluster, DP→CP traffic can bypass the public ingress and dial CP Services directly through `*.svc.cluster.local`. This is faster, avoids public-LB egress costs, and removes a dependency on external DNS for in-cluster traffic.
 
-The chart's canonical `values.{cloud}.yaml` overlays are mode-agnostic; the chart ships `examples/values.{cloud}.intracluster.yaml` files that override the DP→CP routing globals (`CONTROLPLANE_GRPC_ENDPOINT`, `QUEUE_GRPC_ENDPOINT`) to point at cluster-local Services. Layer the example overlay on top of the canonical one to enable it.
+To enable it, set these two DP globals in your `values.{cloud}.yaml` (replace `controlplane` with your CP release namespace if it differs):
 
-{{< tabs >}}
-{{< tab "AWS" >}}
-{{< markdown >}}
-
-```shell
-curl --create-dirs -O --output-dir examples \
-  https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/examples/values.aws.intracluster.yaml
-
-helm upgrade --install unionai-dataplane unionai/dataplane \
-  --namespace <dataplane-namespace> \
-  -f values.aws.yaml \
-  -f examples/values.aws.intracluster.yaml \
-  -f dataplane-overrides.yaml \
-  --skip-crds --timeout 10m --wait
+```yaml
+global:
+  CONTROLPLANE_GRPC_ENDPOINT: "dns:///controlplane-nginx-controller.controlplane.svc.cluster.local:443"
+  QUEUE_GRPC_ENDPOINT: "dns:///queue.controlplane.svc.cluster.local:80"
 ```
 
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "GCP" >}}
-{{< markdown >}}
-
-```shell
-curl --create-dirs -O --output-dir examples \
-  https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/examples/values.gcp.intracluster.yaml
-
-helm upgrade --install unionai-dataplane unionai/dataplane \
-  --namespace <dataplane-namespace> \
-  -f values.gcp.yaml \
-  -f examples/values.gcp.intracluster.yaml \
-  -f dataplane-overrides.yaml \
-  --skip-crds --timeout 10m --wait
-```
-
-{{< /markdown >}}
-{{< /tab >}}
-{{< /tabs >}}
-
-The example overlay assumes the control plane runs in a namespace called `controlplane` (GCP) or `union-cp` (AWS). Edit the overlay if your release uses a different namespace.
+`QUEUE_GRPC_ENDPOINT` is the auth-less path task pods use for queue events (task pods don't carry OAuth credentials; see chart `MIGRATION.md`).
 
 See [Infrastructure requirements → Intra-cluster topology](./infrastructure-requirements#intra-cluster-topology) for the substrate trade-offs (shared etcd, shared node pools, migration path to split-cluster).
 

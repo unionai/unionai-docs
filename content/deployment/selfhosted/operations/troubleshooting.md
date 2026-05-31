@@ -75,7 +75,7 @@ Common causes: network policies blocking cross-namespace traffic, control plane 
 
 ### Certificate verification errors
 
-If you used self-signed certificates, the data plane chart's `examples/values.{aws,gcp}.intracluster.yaml` already sets `insecureSkipVerify: true` for intra-cluster calls. Verify that `_U_INSECURE_SKIP_VERIFY` is present as an environment variable in task pods:
+If you used self-signed certificates, the data plane chart's `values.{aws,gcp}.yaml` already sets `insecureSkipVerify: true` for intra-cluster calls. Verify that `_U_INSECURE_SKIP_VERIFY` is present as an environment variable in task pods:
 
 ```shell
 kubectl get pod <task-pod> -n <task-namespace> -o yaml | grep -A1 _U_INSECURE_SKIP_VERIFY

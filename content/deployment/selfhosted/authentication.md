@@ -471,7 +471,6 @@ Deploy or upgrade both the control plane and data plane with the updated configu
 helm upgrade unionai-controlplane unionai/controlplane \
   --namespace <controlplane-namespace> \
   -f values.<cloud>.yaml \
-  -f examples/values.<cloud>.intracluster.yaml \
   -f my-overrides.yaml \
   --skip-crds --timeout 15m --wait
 
@@ -479,7 +478,6 @@ helm upgrade unionai-controlplane unionai/controlplane \
 helm upgrade unionai-dataplane unionai/dataplane \
   --namespace <dataplane-namespace> \
   -f values.<cloud>.yaml \
-  -f examples/values.<cloud>.intracluster.yaml \
   -f dataplane-overrides.yaml \
   --skip-crds --timeout 10m --wait
 ```
