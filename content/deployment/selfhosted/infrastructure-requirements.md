@@ -859,7 +859,7 @@ The exact configuration keys, defaults, and override paths live in the chart's `
 
 ## Intra-cluster topology
 
-Intra-cluster — both planes in the same Kubernetes cluster — is a supported special case. It is the topology the [Getting started](./getting-started) walkthrough uses because it has the simplest substrate footprint (one cluster, one VPC, one set of identity bindings) and the chart ships ready-to-use `values.{aws,gcp}.selfhosted-intracluster.yaml` overlays for it.
+Intra-cluster — both planes in the same Kubernetes cluster — is a supported special case. It is the topology the [Getting started](./getting-started) walkthrough uses because it has the simplest substrate footprint (one cluster, one VPC, one set of identity bindings). The canonical `values.{aws,gcp}.yaml` overlays are mode-agnostic; intra-cluster routing is added by layering `examples/values.{aws,gcp}.intracluster.yaml` on top.
 
 ### When to use
 
@@ -876,7 +876,7 @@ Intra-cluster — both planes in the same Kubernetes cluster — is a supported 
 | CP ingress | Public, real CA cert recommended | ClusterIP, self-signed acceptable |
 | Identity bindings | Two clusters, two OIDC providers (AWS) | One cluster, one OIDC provider |
 | Object storage | Separate CP and DP buckets | Same buckets work for both |
-| Helm overlay | `values.{aws,gcp}.yaml` (cloud default) | `values.{aws,gcp}.selfhosted-intracluster.yaml` |
+| Helm overlay | `values.{aws,gcp}.yaml` | `values.{aws,gcp}.yaml` + `examples/values.{aws,gcp}.intracluster.yaml` |
 | etcd headroom | Two etcds, each scales independently | One etcd serving both planes — DP workload pressure also affects CP responsiveness |
 
 ### Scaling considerations specific to intra-cluster

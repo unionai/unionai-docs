@@ -71,11 +71,11 @@ kubectl get networkpolicies -n <dataplane-namespace>
 kubectl get networkpolicies -n <controlplane-namespace>
 ```
 
-Common causes: network policies blocking cross-namespace traffic, control plane pods not yet `Ready`, or `CONTROLPLANE_INTRA_CLUSTER_HOST` misconfigured in the data plane overrides file.
+Common causes: network policies blocking cross-namespace traffic, control plane pods not yet `Ready`, or `CONTROLPLANE_GRPC_ENDPOINT` misconfigured in the data plane overrides file.
 
 ### Certificate verification errors
 
-If you used self-signed certificates, the data plane chart's `values.{aws,gcp}.selfhosted-intracluster.yaml` already sets `insecureSkipVerify: true` for intra-cluster calls. Verify that `_U_INSECURE_SKIP_VERIFY` is present as an environment variable in task pods:
+If you used self-signed certificates, the data plane chart's `examples/values.{aws,gcp}.intracluster.yaml` already sets `insecureSkipVerify: true` for intra-cluster calls. Verify that `_U_INSECURE_SKIP_VERIFY` is present as an environment variable in task pods:
 
 ```shell
 kubectl get pod <task-pod> -n <task-namespace> -o yaml | grep -A1 _U_INSECURE_SKIP_VERIFY

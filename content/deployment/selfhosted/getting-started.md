@@ -6,12 +6,12 @@ variants: -flyte +union
 
 # Getting started
 
-This guide walks you through installing a {{< key product_name >}} self-hosted deployment end-to-end. It covers the **intra-cluster topology** — control plane and data plane in the same Kubernetes cluster — because it has the simplest substrate requirements and is the topology the chart's bundled `values.{aws,gcp}.selfhosted-intracluster.yaml` targets. Separate-cluster topology is also supported; see [Self-hosted deployment → Topologies](./_index#topologies) for the options.
+This guide walks you through installing a {{< key product_name >}} self-hosted deployment end-to-end using the canonical `values.{aws,gcp}.yaml` overlays. The walkthrough is topology-agnostic — control plane and data plane reach each other through `UNION_HOST`. If you're running both planes in the same Kubernetes cluster, see [Optional: intracluster topology](#optional-intracluster-topology) at the bottom to layer in cluster-local routing.
 
 It assumes your cloud substrate (VPC, Kubernetes cluster, database, object storage, identity bindings) is already provisioned. For what to provision and how to size it, see [Infrastructure requirements](./infrastructure-requirements).
 
 > [!NOTE]
-> Self-hosted intra-cluster deployment is officially supported on **AWS**. **GCP** support is in preview; additional cloud providers are coming. The walkthrough below uses tabs to switch between cloud-specific details where they differ.
+> Self-hosted deployment is officially supported on **AWS**. **GCP** support is in preview; additional cloud providers are coming. The walkthrough below uses tabs to switch between cloud-specific details where they differ.
 
 ## Prerequisites
 
@@ -26,7 +26,7 @@ Before starting, confirm you have:
 Two notes on conventions used below:
 
 - Replace `<controlplane-namespace>` and `<dataplane-namespace>` with the Kubernetes namespaces where you intend to install each chart.
-- The walkthrough overrides only the values that must be set per environment. For everything else, the chart's default `values.{aws,gcp}.selfhosted-intracluster.yaml` is sufficient. Avoid copying chart values into your overrides file — they drift quickly. Reference the chart's published values files in the [Helm chart repository](https://github.com/unionai/helm-charts) when you need to inspect a default.
+- The walkthrough overrides only the values that must be set per environment. For everything else, the chart's `values.{aws,gcp}.yaml` provides the defaults. Avoid copying chart values into your overrides file — they drift quickly. Reference the chart's published values files in the [Helm chart repository](https://github.com/unionai/helm-charts) when you need to inspect a default.
 
 ## Deployment overview
 
@@ -62,9 +62,8 @@ cd helm-charts
 Install only the CRD sets that match the features you'll enable. Each `kubectl apply` call below targets a single directory and is independent — skip any whose feature is disabled in your overrides.
 
 ```shell
-# Required when monitoring.enabled=true on the control plane (the default
-# in the chart's intracluster values files). Also covers the data plane's
-# monitoring stack — install once.
+# Required when monitoring.enabled=true on the control plane (chart default).
+# Also covers the data plane's monitoring stack — install once.
 # Skip if your cluster already runs kube-prometheus-stack from another
 # source AND that installation manages these CRDs.
 kubectl apply --server-side --force-conflicts -f crds/kube-prometheus-stack/
@@ -107,7 +106,7 @@ kubectl create secret docker-registry union-registry-secret \
 
 The control plane's NGINX ingress terminates gRPC over HTTP/2, which requires TLS. The chart references a Kubernetes TLS secret by name (`controlplane-tls-cert` in this walkthrough) — it neither generates nor requires any particular certificate source. Populate that secret with whatever certificate fits your trust model.
 
-The chart's base `values.yaml` lists both the external `UNION_HOST` and the in-cluster `controlplane-nginx-controller.<namespace>.svc.cluster.local` on the same cert — one TLS secret serves both call paths. The secret name is wired into your overrides file in [Step 5](#step-5-environment-overrides).
+The chart's control plane Ingress serves `UNION_HOST` (plus any additional hostnames you add via `ingress.extraHosts`). The TLS secret name is wired into your overrides file in [Step 5](#step-5-environment-overrides).
 
 Three common ways to source the certificate:
 
@@ -124,7 +123,7 @@ kubectl create secret tls controlplane-tls-cert \
   -n <controlplane-namespace>
 ```
 
-The certificate's SANs should include your `UNION_HOST` DNS name. For intra-cluster topology, also include the in-cluster `controlplane-nginx-controller.<namespace>.svc.cluster.local` hostname.
+The certificate's SANs should include your `UNION_HOST` DNS name.
 
 {{< /markdown >}}
 {{< /tab >}}
@@ -186,7 +185,7 @@ kubectl create secret generic <controlplane-secrets> \
 
 ## Step 5: Environment overrides
 
-Author your own overrides file with the environment-specific values for your deployment — pick any filename you like (this guide uses `my-overrides.yaml`). The chart's `values.{aws,gcp}.selfhosted-intracluster.yaml` covers everything else.
+Author your own overrides file with the environment-specific values for your deployment — pick any filename you like (this guide uses `my-overrides.yaml`). The chart's `values.{aws,gcp}.yaml` covers everything else.
 
 {{< tabs >}}
 {{< tab "AWS" >}}
@@ -248,7 +247,7 @@ For the full list of available keys, see [`values.gcp.yaml`](https://github.com/
 
 ## Step 6: Install the control plane
 
-Download the chart's intracluster values file, then install with your overrides layered on top:
+Download the chart's cloud overlay, then install with your overrides layered on top:
 
 {{< tabs >}}
 {{< tab "AWS" >}}
@@ -289,7 +288,7 @@ helm upgrade --install unionai-controlplane unionai/controlplane \
 
 **Values file layering (applied in order):**
 
-1. The chart's `values.{aws,gcp}.selfhosted-intracluster.yaml` — cloud infrastructure defaults (database, storage, networking, registry secret references).
+1. The chart's `values.{aws,gcp}.yaml` — cloud infrastructure defaults (database, storage, networking, registry secret references).
 2. Your `my-overrides.yaml` — environment-specific overrides.
 
 The registry image pull secret created in Step 2 (`union-registry-secret`) is referenced by the chart's default `imagePullSecrets` — no separate registry values file is required.
@@ -317,7 +316,7 @@ kubectl apply --server-side --force-conflicts -f crds/kube-prometheus-stack/
 
 ## Step 8: Install the data plane
 
-Author a data plane overrides file `dataplane-overrides.yaml`:
+Author a data plane overrides file `dataplane-overrides.yaml` with the per-environment globals. The data plane reaches the control plane via `CONTROLPLANE_HOST`; the chart defaults `CONTROLPLANE_GRPC_ENDPOINT` to `dns:///{CONTROLPLANE_HOST}:443`.
 
 {{< tabs >}}
 {{< tab "AWS" >}}
@@ -325,16 +324,16 @@ Author a data plane overrides file `dataplane-overrides.yaml`:
 
 ```yaml
 global:
+  UNION_CONTROL_PLANE_HOST: "<UNION_HOST>"
   CLUSTER_NAME: "prod-us-east-1"
   ORG_NAME: "my-company"
   METADATA_BUCKET: "my-company-dp-metadata"
   FAST_REGISTRATION_BUCKET: "my-company-dp-metadata"
   AWS_REGION: "us-east-1"
+  AWS_ACCOUNT_ID: "123456789012"
   BACKEND_IAM_ROLE_ARN: "arn:aws:iam::123456789012:role/union-backend"
   WORKER_IAM_ROLE_ARN: "arn:aws:iam::123456789012:role/union-worker"
-  CONTROLPLANE_INTRA_CLUSTER_HOST: "<controlplane-ingress>.<controlplane-namespace>.svc.cluster.local"
-  QUEUE_SERVICE_HOST: "<queue-service>.<controlplane-namespace>.svc.cluster.local:80"
-  CACHESERVICE_ENDPOINT: "<cacheservice>.<controlplane-namespace>.svc.cluster.local:89"
+  CONTROLPLANE_HOST: "<UNION_HOST>"
 ```
 
 Then install:
@@ -358,6 +357,7 @@ helm upgrade --install unionai-dataplane unionai/dataplane \
 
 ```yaml
 global:
+  UNION_CONTROL_PLANE_HOST: "<UNION_HOST>"
   CLUSTER_NAME: "prod-us-central1"
   ORG_NAME: "my-company"
   METADATA_BUCKET: "my-company-dp-metadata"
@@ -366,9 +366,7 @@ global:
   GOOGLE_PROJECT_ID: "my-gcp-project"
   BACKEND_IAM_ROLE_ARN: "union-backend@my-project.iam.gserviceaccount.com"
   WORKER_IAM_ROLE_ARN: "union-worker@my-project.iam.gserviceaccount.com"
-  CONTROLPLANE_INTRA_CLUSTER_HOST: "<controlplane-ingress>.<controlplane-namespace>.svc.cluster.local"
-  QUEUE_SERVICE_HOST: "<queue-service>.<controlplane-namespace>.svc.cluster.local:80"
-  CACHESERVICE_ENDPOINT: "<cacheservice>.<controlplane-namespace>.svc.cluster.local:89"
+  CONTROLPLANE_HOST: "<UNION_HOST>"
 ```
 
 Then install:
@@ -389,7 +387,7 @@ helm upgrade --install unionai-dataplane unionai/dataplane \
 {{< /tab >}}
 {{< /tabs >}}
 
-If authentication is enabled on the control plane, also set `AUTH_CLIENT_ID` in your overrides file. See [Authentication](./authentication).
+If authentication is enabled on the control plane, also set `AUTH_CLIENT_ID` and `AUTH_TOKEN_URL` in your overrides file. See [Authentication](./authentication).
 
 ## Step 9: Verify the installation
 
@@ -426,23 +424,54 @@ global:
 
 ### Service discovery
 
-Control plane services discover each other via Kubernetes DNS:
+Within each plane, services discover each other via cluster-local Kubernetes DNS (e.g., `flyteadmin.<controlplane-namespace>.svc.cluster.local`). DP→CP and CP→DP cross-plane calls go through `CONTROLPLANE_HOST` and `DATAPLANE_HOST` respectively — those values resolve to whatever ingress the operator points them at (public, private DNS, or cluster-local).
 
-- **Admin service**: `<admin-service>.<controlplane-namespace>.svc.cluster.local:81`
-- **NGINX ingress**: `<controlplane-ingress>.<controlplane-namespace>.svc.cluster.local`
-- **Data plane (for dataproxy)**: `<dataplane-ingress>.<dataplane-namespace>.svc.cluster.local`
+## Optional: intracluster topology
 
-### Topology options
+When the control plane and data plane both run in the *same* Kubernetes cluster, DP→CP traffic can bypass the public ingress and dial CP Services directly through `*.svc.cluster.local`. This is faster, avoids public-LB egress costs, and removes a dependency on external DNS for in-cluster traffic.
 
-The same `values.{cloud}.yaml` overlay serves three deployment topologies. Topology is decided by the operator at install time by choosing the dataplane nginx ingress Service `type` and annotations — the chart itself stays topology-agnostic.
+The chart's canonical `values.{cloud}.yaml` overlays are mode-agnostic; the chart ships `examples/values.{cloud}.intracluster.yaml` files that override the DP→CP routing globals (`CONTROLPLANE_GRPC_ENDPOINT`, `QUEUE_GRPC_ENDPOINT`) to point at cluster-local Services. Layer the example overlay on top of the canonical one to enable it.
 
-| Topology | Service type | Cloud-provider annotations | DNS |
-| --- | --- | --- | --- |
-| **Intracluster** (default — CP and DP in the same cluster) | `ClusterIP` | _(none)_ | In-cluster Kubernetes DNS only |
-| **Multi-cluster, same VPC** (DP in its own cluster, private LB) | `LoadBalancer` | AWS: `service.beta.kubernetes.io/aws-load-balancer-scheme: internal` <br/> GCP: `networking.gke.io/load-balancer-type: Internal` <br/> Azure: `service.beta.kubernetes.io/azure-load-balancer-internal: "true"` | Private hosted zone record (Route53 / Cloud DNS private zone) mapping a hostname to the internal LB |
-| **BYOC public** (DP in its own cluster, public LB) | `LoadBalancer` | Cloud default (public) | Public DNS record mapping a hostname to the public LB |
+{{< tabs >}}
+{{< tab "AWS" >}}
+{{< markdown >}}
 
-In every topology the control plane reaches the dataplane via `global.DATAPLANE_HOST` (the value the operator sets), so the chart code is unchanged across topologies. See [`charts/MIGRATION.md`](https://github.com/unionai/helm-charts/blob/main/charts/MIGRATION.md) in the helm-charts repo for the canonical host-indirection design.
+```shell
+curl --create-dirs -O --output-dir examples \
+  https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/examples/values.aws.intracluster.yaml
+
+helm upgrade --install unionai-dataplane unionai/dataplane \
+  --namespace <dataplane-namespace> \
+  -f values.aws.yaml \
+  -f examples/values.aws.intracluster.yaml \
+  -f dataplane-overrides.yaml \
+  --skip-crds --timeout 10m --wait
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "GCP" >}}
+{{< markdown >}}
+
+```shell
+curl --create-dirs -O --output-dir examples \
+  https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/examples/values.gcp.intracluster.yaml
+
+helm upgrade --install unionai-dataplane unionai/dataplane \
+  --namespace <dataplane-namespace> \
+  -f values.gcp.yaml \
+  -f examples/values.gcp.intracluster.yaml \
+  -f dataplane-overrides.yaml \
+  --skip-crds --timeout 10m --wait
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+The example overlay assumes the control plane runs in a namespace called `controlplane` (GCP) or `union-cp` (AWS). Edit the overlay if your release uses a different namespace.
+
+See [Infrastructure requirements → Intra-cluster topology](./infrastructure-requirements#intra-cluster-topology) for the substrate trade-offs (shared etcd, shared node pools, migration path to split-cluster).
 
 ## Key differences from a self-managed deployment
 

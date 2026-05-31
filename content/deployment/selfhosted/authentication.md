@@ -170,7 +170,7 @@ Used by the web console for user authentication.
 | Post-logout redirect URI | `https://<your-domain>/logout` |
 | Scopes | `openid`, `profile`, `offline_access` |
 
-Note the **Client ID** (used as `OIDC_CLIENT_ID`) and the **Client Secret** (stored in Kubernetes secrets).
+Note the **Client ID** (set as `flyte.configmap.adminServer.auth.userAuth.openId.clientId`) and the **Client Secret** (stored in the Kubernetes secret referenced by `flyte.secrets.adminOauthClientCredentials`).
 
 ### Application 2: CLI (Public)
 
@@ -184,7 +184,7 @@ Used by `uctl` and `flytectl` for CLI-based authentication with PKCE.
 | PKCE | Required |
 | Client authentication | None (PKCE only, no client secret) |
 
-Note the **Client ID** (used as `CLI_CLIENT_ID`).
+Note the **Client ID** (set as `flyte.configmap.adminServer.auth.appAuth.thirdPartyConfig.flyteClient.clientId`).
 
 ### Application 3: Service-to-service (Confidential)
 
@@ -396,9 +396,6 @@ If your IdP's client_credentials tokens don't include a `sub` claim, add:
 > [!NOTE]
 > Setting `useAuth: true` is required for the `/login`, `/callback`, and `/me` endpoints to register. Without this, auth endpoints will return 404.
 
-> [!NOTE]
-> **Deprecated globals:** `OIDC_BASE_URL`, `OIDC_CLIENT_ID`, and `CLI_CLIENT_ID` are deprecated but still functional. New deployments should use the `auth` block directly as shown above. Existing deployments using these globals will continue to work.
-
 ## Step 3: Create Kubernetes secrets (control plane)
 
 The control plane needs secrets for the browser login app (App 1) and the service-to-service app (App 3):
@@ -473,17 +470,18 @@ Deploy or upgrade both the control plane and data plane with the updated configu
 # Upgrade control plane
 helm upgrade unionai-controlplane unionai/controlplane \
   --namespace <controlplane-namespace> \
-  -f values.<cloud>.selfhosted-intracluster.yaml \
-  -f values.registry.yaml \
-  -f values.<cloud>.selfhosted-overrides.yaml \
-  --timeout 15m --wait
+  -f values.<cloud>.yaml \
+  -f examples/values.<cloud>.intracluster.yaml \
+  -f my-overrides.yaml \
+  --skip-crds --timeout 15m --wait
 
 # Upgrade data plane
 helm upgrade unionai-dataplane unionai/dataplane \
   --namespace <dataplane-namespace> \
-  -f values.<cloud>.selfhosted-intracluster.yaml \
-  -f values.<cloud>.selfhosted-overrides.yaml \
-  --timeout 10m --wait
+  -f values.<cloud>.yaml \
+  -f examples/values.<cloud>.intracluster.yaml \
+  -f dataplane-overrides.yaml \
+  --skip-crds --timeout 10m --wait
 ```
 
 ## Verification
