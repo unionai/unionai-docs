@@ -128,11 +128,20 @@ If you have not yet set up the required CoreWeave resources (CKS cluster, AI Obj
    helm repo update
    ```
 
-5. Install the Custom Resource Definitions (CRDs):
+5. Install the Custom Resource Definitions (CRDs) via server-side apply. The CRDs are vendored in [unionai/helm-charts](https://github.com/unionai/helm-charts) under `crds/`:
 
    ```bash
-   helm upgrade --install unionai-dataplane-crds unionai/dataplane-crds
+   git clone https://github.com/unionai/helm-charts.git
+   cd helm-charts
+
+   # Required — FlyteWorkflow CRD consumed by propeller.
+   kubectl apply --server-side --force-conflicts -f crds/flyte-v1/
+
+   # Required when monitoring.enabled=true (chart default).
+   kubectl apply --server-side --force-conflicts -f crds/kube-prometheus-stack/
    ```
+
+   Server-side apply avoids the 256 KiB `last-applied-configuration` annotation overflow on the larger CRDs. `--force-conflicts` is needed only on first install.
 
 6. Install the data plane. Replace `<PATH_TO_VALUES_FILE>` with the path to the Helm values file you customized in step 3.
 
@@ -140,6 +149,7 @@ If you have not yet set up the required CoreWeave resources (CKS cluster, AI Obj
    helm upgrade --install unionai-dataplane unionai/dataplane \
      --namespace union --create-namespace \
      --values <PATH_TO_VALUES_FILE> \
+     --skip-crds \
      --timeout 10m
    ```
 
