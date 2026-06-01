@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 1.16.20
+version: 1.16.22
 variants: +flyte +union
 layout: py_api
 ---
@@ -20,6 +20,7 @@ layout: py_api
 | [`flytekit.clients.auth_helper`](flytekit.clients.auth_helper) |  |
 | [`flytekit.clients.friendly`](flytekit.clients.friendly) |  |
 | [`flytekit.clients.grpc_utils.auth_interceptor`](flytekit.clients.grpc_utils.auth_interceptor) |  |
+| [`flytekit.clients.grpc_utils.deadline_interceptor`](flytekit.clients.grpc_utils.deadline_interceptor) |  |
 | [`flytekit.clients.grpc_utils.default_metadata_interceptor`](flytekit.clients.grpc_utils.default_metadata_interceptor) |  |
 | [`flytekit.clients.grpc_utils.wrap_exception_interceptor`](flytekit.clients.grpc_utils.wrap_exception_interceptor) |  |
 | [`flytekit.clients.helpers`](flytekit.clients.helpers) |  |

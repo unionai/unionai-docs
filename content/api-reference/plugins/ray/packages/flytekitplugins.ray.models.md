@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.ray.models
-version: 1.16.20
+version: 1.16.22
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,11 +13,82 @@ layout: py_api
 
 | Class | Description |
 |-|-|
+| [`AutoscalerOptions`](.././flytekitplugins.ray.models#flytekitpluginsraymodelsautoscaleroptions) |  |
 | [`HeadGroupSpec`](.././flytekitplugins.ray.models#flytekitpluginsraymodelsheadgroupspec) |  |
 | [`RayCluster`](.././flytekitplugins.ray.models#flytekitpluginsraymodelsraycluster) | Define RayCluster spec that will be used by KubeRay to launch the cluster. |
 | [`RayJob`](.././flytekitplugins.ray.models#flytekitpluginsraymodelsrayjob) | Models _ray_pb2. |
 | [`WorkerGroupSpec`](.././flytekitplugins.ray.models#flytekitpluginsraymodelsworkergroupspec) |  |
 
+## flytekitplugins.ray.models.AutoscalerOptions
+
+### Parameters
+
+```python
+class AutoscalerOptions(
+    upscaling_mode: typing.Optional[ForwardRef('AutoscalerOptions.UpscalingMode')],
+    idle_timeout_seconds: typing.Optional[int],
+    image: typing.Optional[str],
+    env: typing.Optional[typing.Dict[str, str]],
+    resources: typing.Optional[flytekit.models.task.Resources],
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `upscaling_mode` | `typing.Optional[ForwardRef('AutoscalerOptions.UpscalingMode')]` | |
+| `idle_timeout_seconds` | `typing.Optional[int]` | |
+| `image` | `typing.Optional[str]` | |
+| `env` | `typing.Optional[typing.Dict[str, str]]` | |
+| `resources` | `typing.Optional[flytekit.models.task.Resources]` | |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `env` | `typing.Optional[typing.Dict[str, str]]` |  |
+| `idle_timeout_seconds` | `typing.Optional[int]` |  |
+| `image` | `typing.Optional[str]` |  |
+| `is_empty` | `None` |  |
+| `resources` | `typing.Optional[flytekit.models.task.Resources]` |  |
+| `upscaling_mode` | `typing.Optional[ForwardRef('AutoscalerOptions.UpscalingMode')]` |  |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) |  |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+
+
+#### from_flyte_idl()
+
+```python
+def from_flyte_idl(
+    proto,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` |  | |
+
+#### serialize_to_string()
+
+```python
+def serialize_to_string()
+```
+#### short_string()
+
+```python
+def short_string()
+```
+**Returns:** Text
+
+#### to_flyte_idl()
+
+```python
+def to_flyte_idl()
+```
 ## flytekitplugins.ray.models.HeadGroupSpec
 
 ### Parameters
@@ -95,6 +166,7 @@ class RayCluster(
     worker_group_spec: typing.List[flytekitplugins.ray.models.WorkerGroupSpec],
     head_group_spec: typing.Optional[flytekitplugins.ray.models.HeadGroupSpec],
     enable_autoscaling: bool,
+    autoscaler_options: typing.Optional[flytekitplugins.ray.models.AutoscalerOptions],
 )
 ```
 | Parameter | Type | Description |
@@ -102,11 +174,13 @@ class RayCluster(
 | `worker_group_spec` | `typing.List[flytekitplugins.ray.models.WorkerGroupSpec]` | |
 | `head_group_spec` | `typing.Optional[flytekitplugins.ray.models.HeadGroupSpec]` | |
 | `enable_autoscaling` | `bool` | |
+| `autoscaler_options` | `typing.Optional[flytekitplugins.ray.models.AutoscalerOptions]` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
+| `autoscaler_options` | `typing.Optional[flytekitplugins.ray.models.AutoscalerOptions]` |  |
 | `enable_autoscaling` | `bool` | Whether to enable autoscaling. |
 | `head_group_spec` | `flytekitplugins.ray.models.HeadGroupSpec` | The head group configuration. |
 | `is_empty` | `None` |  |
