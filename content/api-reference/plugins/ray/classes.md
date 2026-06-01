@@ -1,6 +1,6 @@
 ---
 title: Classes
-version: 1.16.20
+version: 1.16.22
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,10 +9,12 @@ layout: py_api
 
 | Class | Description |
 |-|-|
+| [`flytekitplugins.ray.models.AutoscalerOptions`](../packages/flytekitplugins.ray.models#flytekitpluginsraymodelsautoscaleroptions) | |
 | [`flytekitplugins.ray.models.HeadGroupSpec`](../packages/flytekitplugins.ray.models#flytekitpluginsraymodelsheadgroupspec) | |
 | [`flytekitplugins.ray.models.RayCluster`](../packages/flytekitplugins.ray.models#flytekitpluginsraymodelsraycluster) |Define RayCluster spec that will be used by KubeRay to launch the cluster. |
 | [`flytekitplugins.ray.models.RayJob`](../packages/flytekitplugins.ray.models#flytekitpluginsraymodelsrayjob) |Models _ray_pb2. |
 | [`flytekitplugins.ray.models.WorkerGroupSpec`](../packages/flytekitplugins.ray.models#flytekitpluginsraymodelsworkergroupspec) | |
+| [`flytekitplugins.ray.task.AutoscalerOptionsConfig`](../packages/flytekitplugins.ray.task#flytekitpluginsraytaskautoscaleroptionsconfig) | |
 | [`flytekitplugins.ray.task.HeadNodeConfig`](../packages/flytekitplugins.ray.task#flytekitpluginsraytaskheadnodeconfig) | |
 | [`flytekitplugins.ray.task.RayFunctionTask`](../packages/flytekitplugins.ray.task#flytekitpluginsraytaskrayfunctiontask) |Actual Plugin that transforms the local python code for execution within Ray job. |
 | [`flytekitplugins.ray.task.RayJobConfig`](../packages/flytekitplugins.ray.task#flytekitpluginsraytaskrayjobconfig) | |

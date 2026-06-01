@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.ray.task
-version: 1.16.20
+version: 1.16.22
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,10 +13,34 @@ layout: py_api
 
 | Class | Description |
 |-|-|
+| [`AutoscalerOptionsConfig`](.././flytekitplugins.ray.task#flytekitpluginsraytaskautoscaleroptionsconfig) |  |
 | [`HeadNodeConfig`](.././flytekitplugins.ray.task#flytekitpluginsraytaskheadnodeconfig) |  |
 | [`RayFunctionTask`](.././flytekitplugins.ray.task#flytekitpluginsraytaskrayfunctiontask) | Actual Plugin that transforms the local python code for execution within Ray job. |
 | [`RayJobConfig`](.././flytekitplugins.ray.task#flytekitpluginsraytaskrayjobconfig) |  |
 | [`WorkerNodeConfig`](.././flytekitplugins.ray.task#flytekitpluginsraytaskworkernodeconfig) |  |
+
+## flytekitplugins.ray.task.AutoscalerOptionsConfig
+
+### Parameters
+
+```python
+class AutoscalerOptionsConfig(
+    upscaling_mode: typing.Optional[ForwardRef('AutoscalerOptions.UpscalingMode')],
+    idle_timeout_seconds: typing.Optional[int],
+    env: typing.Optional[typing.Dict[str, str]],
+    image: typing.Optional[str],
+    requests: typing.Optional[flytekit.core.resources.Resources],
+    limits: typing.Optional[flytekit.core.resources.Resources],
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `upscaling_mode` | `typing.Optional[ForwardRef('AutoscalerOptions.UpscalingMode')]` | |
+| `idle_timeout_seconds` | `typing.Optional[int]` | |
+| `env` | `typing.Optional[typing.Dict[str, str]]` | |
+| `image` | `typing.Optional[str]` | |
+| `requests` | `typing.Optional[flytekit.core.resources.Resources]` | |
+| `limits` | `typing.Optional[flytekit.core.resources.Resources]` | |
 
 ## flytekitplugins.ray.task.HeadNodeConfig
 
@@ -521,6 +545,7 @@ class RayJobConfig(
     worker_node_config: typing.List[flytekitplugins.ray.task.WorkerNodeConfig],
     head_node_config: typing.Optional[flytekitplugins.ray.task.HeadNodeConfig],
     enable_autoscaling: bool,
+    autoscaler_options: typing.Optional[flytekitplugins.ray.task.AutoscalerOptionsConfig],
     runtime_env: typing.Optional[dict],
     address: typing.Optional[str],
     shutdown_after_job_finishes: bool,
@@ -532,6 +557,7 @@ class RayJobConfig(
 | `worker_node_config` | `typing.List[flytekitplugins.ray.task.WorkerNodeConfig]` | |
 | `head_node_config` | `typing.Optional[flytekitplugins.ray.task.HeadNodeConfig]` | |
 | `enable_autoscaling` | `bool` | |
+| `autoscaler_options` | `typing.Optional[flytekitplugins.ray.task.AutoscalerOptionsConfig]` | |
 | `runtime_env` | `typing.Optional[dict]` | |
 | `address` | `typing.Optional[str]` | |
 | `shutdown_after_job_finishes` | `bool` | |

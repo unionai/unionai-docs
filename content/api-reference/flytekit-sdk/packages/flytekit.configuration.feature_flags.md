@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration.feature_flags
-version: 1.16.20
+version: 1.16.22
 variants: +flyte +union
 layout: py_api
 ---
