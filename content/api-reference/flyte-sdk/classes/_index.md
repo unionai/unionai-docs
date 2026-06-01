@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.3.4
+version: 2.3.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,6 +9,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
+| [`flyte.Backoff`](../packages/flyte/backoff) |Exponential backoff policy applied between user retries. |
 | [`flyte.BaseCheckpoint`](../packages/flyte/basecheckpoint) |Base type for task checkpoint helpers. |
 | [`flyte.Cache`](../packages/flyte/cache) |Cache configuration for a task. |
 | [`flyte.Checkpoint`](../packages/flyte/checkpoint) |Checkpoint helper using `flyte. |
@@ -20,11 +21,11 @@ layout: py_api
 | [`flyte.ImageBuild`](../packages/flyte/imagebuild) |Result of an image build operation. |
 | [`flyte.PodTemplate`](../packages/flyte/podtemplate) |Custom PodTemplate specification for a Task. |
 | [`flyte.Resources`](../packages/flyte/resources) |Resources such as CPU, Memory, and GPU that can be allocated to a task. |
-| [`flyte.RetryStrategy`](../packages/flyte/retrystrategy) |Retry strategy for the task or task environment. |
+| [`flyte.RetryStrategy`](../packages/flyte/retrystrategy) |Retry strategy for a task. |
 | [`flyte.ReusePolicy`](../packages/flyte/reusepolicy) |Configure a task environment for container reuse across multiple task invocations. |
 | [`flyte.Secret`](../packages/flyte/secret) |Secrets are used to inject sensitive information into tasks or image build context. |
 | [`flyte.TaskEnvironment`](../packages/flyte/taskenvironment) |Define an execution environment for a set of tasks. |
-| [`flyte.Timeout`](../packages/flyte/timeout) |Timeout class to define a timeout for a task. |
+| [`flyte.Timeout`](../packages/flyte/timeout) |Timeout bounds for a task. |
 | [`flyte.Trigger`](../packages/flyte/trigger) |Specification for a scheduled trigger that can be associated with any Flyte task. |
 | [`flyte.ai.agents.AgentResult`](../packages/flyte.ai.agents/agentresult) |Outcome of a single agent invocation. |
 | [`flyte.ai.agents.CodeModeAgent`](../packages/flyte.ai.agents/codemodeagent) |Generates code via an LLM, executes it in a Monty sandbox, and. |
