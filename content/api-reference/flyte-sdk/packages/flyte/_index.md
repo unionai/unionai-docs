@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.3.4
+version: 2.3.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,6 +14,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 
 | Class | Description |
 |-|-|
+| [`Backoff`](../flyte/backoff) | Exponential backoff policy applied between user retries. |
 | [`BaseCheckpoint`](../flyte/basecheckpoint) | Base type for task checkpoint helpers. |
 | [`Cache`](../flyte/cache) | Cache configuration for a task. |
 | [`Checkpoint`](../flyte/checkpoint) | Checkpoint helper using `flyte. |
@@ -25,11 +26,11 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`ImageBuild`](../flyte/imagebuild) | Result of an image build operation. |
 | [`PodTemplate`](../flyte/podtemplate) | Custom PodTemplate specification for a Task. |
 | [`Resources`](../flyte/resources) | Resources such as CPU, Memory, and GPU that can be allocated to a task. |
-| [`RetryStrategy`](../flyte/retrystrategy) | Retry strategy for the task or task environment. |
+| [`RetryStrategy`](../flyte/retrystrategy) | Retry strategy for a task. |
 | [`ReusePolicy`](../flyte/reusepolicy) | Configure a task environment for container reuse across multiple task invocations. |
 | [`Secret`](../flyte/secret) | Secrets are used to inject sensitive information into tasks or image build context. |
 | [`TaskEnvironment`](../flyte/taskenvironment) | Define an execution environment for a set of tasks. |
-| [`Timeout`](../flyte/timeout) | Timeout class to define a timeout for a task. |
+| [`Timeout`](../flyte/timeout) | Timeout bounds for a task. |
 | [`Trigger`](../flyte/trigger) | Specification for a scheduled trigger that can be associated with any Flyte task. |
 
 ### Protocols
@@ -835,6 +836,7 @@ def with_runcontext(
     interactive_mode: bool | None,
     raw_data_path: str | None,
     run_base_dir: str | None,
+    run_start_time: Optional[datetime],
     overwrite_cache: bool,
     project: str | None,
     domain: str | None,
@@ -894,6 +896,7 @@ if __name__ == "__main__":
 | `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are considered interactive mode, while scripts are not. This is used to determine how the code bundle is created. |
 | `raw_data_path` | `str \| None` | Use this path to store the raw data for the run for local and remote, and can be used to store raw data in specific locations. |
 | `run_base_dir` | `str \| None` | Optional The base directory to use for the run. This is used to store the metadata for the run, that is passed between tasks. |
+| `run_start_time` | `Optional[datetime]` | Optional UTC datetime at which the run was triggered. If not provided, defaults to ``datetime.now(timezone.utc)`` at TaskContext construction. Useful for local simulation/tests that need a deterministic timestamp. Accessible inside a task via ``flyte.ctx().run_start_time``. |
 | `overwrite_cache` | `bool` | Optional If true, the cache will be overwritten for the run |
 | `project` | `str \| None` | Optional The project to use for the run |
 | `domain` | `str \| None` | Optional The domain to use for the run |
