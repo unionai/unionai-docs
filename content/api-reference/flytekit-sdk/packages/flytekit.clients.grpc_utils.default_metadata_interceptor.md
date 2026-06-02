@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.grpc_utils.default_metadata_interceptor
-version: 1.16.22
+version: 1.16.23
 variants: +flyte +union
 layout: py_api
 ---
