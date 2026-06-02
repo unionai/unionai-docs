@@ -6,11 +6,7 @@ variants: -flyte +union
 
 # Secrets management
 
-Union.ai's secrets management system stores secret values at rest exclusively within the customer's infrastructure, with a write-only API design that eliminates an entire class of exfiltration attacks. Secret writes are served directly from the data plane through the Direct-to-DataPlane tunnel; secret values never transit the control plane. Get, List, and Delete operations never expose secret values.
-
-## Core design
-
-Secret values are stored exclusively within the customer's infrastructure. The secrets API is write-only by design: there is no API to read back secret values. The `GetSecret` RPC returns only the secret's metadata (name, scope, creation time, cluster presence status), never the value itself. This means that even if an attacker compromises a user account, they cannot retrieve secret values through the API. The value simply is not available through any API endpoint.
+Union.ai's secrets management system stores secret values exclusively within the customer's infrastructure and exposes them through a write-only API: there is no endpoint that returns a secret value. The `GetSecret` RPC returns only metadata (name, scope, creation time, cluster presence status); Get, List, and Delete operations never expose the value. Secret writes go directly to the data plane through the Direct-to-DataPlane tunnel, so secret values never transit the control plane. Compromising a user account or the control plane API yields no path to read secret values back.
 
 ## Backends
 
