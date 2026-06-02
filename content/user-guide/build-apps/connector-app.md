@@ -102,6 +102,9 @@ flyte deploy app.py connector
 
 Flyte builds the image, pushes it, and starts the connector service. The service stays running and handles all `create` / `get` / `delete` calls for tasks with `task_type_name = "batch_job"`.
 
+> [!NOTE] Connectors are scoped to their project and domain
+> A connector only handles tasks that run in the same project and domain it is deployed to. For example, if you deploy the connector to the `flytesnacks` project and `development` domain, it handles only the tasks executing in `flytesnacks` / `development`. Tasks of the same `task_type_name` running in a different project or domain are not routed to it — deploy a separate connector in each project-domain where you need it.
+
 ## Step 4: Register and run tasks
 
 Create and register a `TaskEnvironment` that points to your connector, then run the task:
