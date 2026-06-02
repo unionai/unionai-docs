@@ -1,6 +1,9 @@
 name: Check Internal Links
 
-on: [push]
+on:
+  pull_request:
+  push:
+    branches: [main]
 
 jobs:
   check-links:
