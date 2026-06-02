@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.array_node_map_task
-version: 1.16.22
+version: 1.16.23
 variants: +flyte +union
 layout: py_api
 ---

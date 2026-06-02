@@ -1,6 +1,6 @@
 ---
 title: union.configuration
-version: 0.1.202
+version: 0.1.203
 variants: -flyte +union
 layout: py_api
 ---
