@@ -179,35 +179,7 @@ You can mix and match trigger types, combining predefined triggers with those th
 You can attach notifications to a trigger using the `notifications` parameter of `flyte.Trigger`.
 Notifications fire when a triggered run reaches a terminal execution phase.
 
-```python
-import flyte
-from flyte import notify
-from flyte.models import ActionPhase
-
-env = flyte.TaskEnvironment(name="my_task_env")
-
-trigger_with_notifications = flyte.Trigger(
-    name="daily_report",
-    automation=flyte.Cron("0 9 * * 1-5"),
-    notifications=(
-        notify.Slack(
-            on_phase=ActionPhase.FAILED,
-            webhook_url="https://hooks.slack.com/services/YOUR/WEBHOOK/URL",
-            message="Run {{.Run.Name}} failed with: {{.Error}}",
-        ),
-        notify.Email(
-            on_phase=ActionPhase.SUCCEEDED,
-            recipients=["oncall@example.com"],
-            subject="Run {{.Run.Name}} succeeded",
-            body="Run: {{.Run.Name}}",
-        ),
-    ),
-)
-
-@env.task(triggers=trigger_with_notifications)
-def process_data(date: str) -> str:
-    return f"Processed {date}"
-```
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="trigger-with-notifications" lang="python">}}
 
 ### Execution phases
 
@@ -222,14 +194,7 @@ The `on_phase` parameter accepts a single phase or a tuple of terminal phases fr
 
 To notify on multiple phases with the same notification:
 
-```python
-notify.Email(
-    on_phase=(ActionPhase.FAILED, ActionPhase.ABORTED),
-    recipients=["oncall@example.com"],
-    subject="Alert: Run completed with phase {{.Phase}}",
-    body="Run: {{.Run.Name}}\nError: {{.Error}}",
-)
-```
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/notifications/notifications.py" fragment="email-short-notification" lang="python">}}
 
 ### Template variables
 
@@ -250,89 +215,31 @@ All message fields support template variables that are substituted at delivery t
 
 **Simple message:**
 
-```python
-notify.Slack(
-    on_phase=ActionPhase.FAILED,
-    webhook_url="https://hooks.slack.com/services/YOUR/WEBHOOK/URL",
-    message="Run {{.Run.Name}} failed in {{.Run.Project}}/{{.Run.Domain}}: {{.Error}}",
-)
-```
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/notifications/notifications.py" fragment="slack-notification" lang="python">}}
 
 **Rich formatting with [Block Kit](https://api.slack.com/block-kit):**
 
 Use `blocks` instead of `message` for structured layouts. When `blocks` is provided, `message` is ignored.
 
-```python
-notify.Slack(
-    on_phase=ActionPhase.SUCCEEDED,
-    webhook_url="https://hooks.slack.com/services/YOUR/WEBHOOK/URL",
-    blocks=[
-        {
-            "type": "header",
-            "text": {"type": "plain_text", "text": "Task Succeeded"},
-        },
-        {
-            "type": "section",
-            "fields": [
-                {"type": "mrkdwn", "text": "*Run:*\n{{.Run.Name}}"},
-                {"type": "mrkdwn", "text": "*Phase:*\n{{.Phase}}"},
-            ],
-        },
-        {"type": "divider"},
-        {
-            "type": "context",
-            "elements": [
-                {"type": "mrkdwn", "text": "{{.Run.Project}}/{{.Run.Domain}}"},
-            ],
-        },
-    ],
-)
-```
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/notifications/notifications.py" fragment="notification-blocks" lang="python">}}
 
 ### Email notifications
 
 `notify.Email` sends an email notification. You can provide a plain-text `body`, an `html_body`, or both (the email is sent as multipart when both are present).
 
-```python
-notify.Email(
-    on_phase=ActionPhase.FAILED,
-    recipients=["oncall@example.com"],
-    cc=["team-lead@example.com"],
-    subject="ALERT: Run {{.Run.Name}} failed",
-    body="Run: {{.Run.Name}}\nError: {{.Error}}",
-    html_body="<b>Error:</b> {{.Error}}<br>",
-)
-```
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/notifications/notifications.py" fragment="email-extended-notification" lang="python">}}
 
 ### Microsoft Teams notifications
 
 `notify.Teams` sends a message to a Teams channel via an incoming webhook. Use `card` for [Adaptive Card](https://adaptivecards.io/designer/) formatting; when `card` is set, `title` and `message` are ignored.
 
-```python
-notify.Teams(
-    on_phase=ActionPhase.FAILED,
-    webhook_url="https://outlook.office.com/webhook/YOUR_WEBHOOK_URL",
-    title="Task Failed",
-    message="Run {{.Run.Name}} failed: {{.Error}}\n",
-)
-```
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/notifications/notifications.py" fragment="teams-notification" lang="python">}}
 
 ### Custom webhook notifications
 
 `notify.Webhook` sends an HTTP request to any endpoint. All string values in `headers` and `body` support template variables.
 
-```python
-notify.Webhook(
-    on_phase=ActionPhase.SUCCEEDED,
-    url="https://api.example.com/events",
-    method="POST",
-    headers={"Authorization": "Bearer my-token"},
-    body={
-        "event": "task_succeeded",
-        "run": "{{.Run.Name}}",
-    },
-)
-```
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/notifications/notifications.py" fragment="webhook-notification" lang="python">}}
 
 
 ## Deploying a task with triggers

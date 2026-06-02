@@ -9,41 +9,7 @@ variants: +flyte +union
 You can attach notifications to a single run by passing them to `flyte.with_runcontext()`.
 Notifications fire when the run reaches the terminal execution phase — no trigger or persistent deployment is required.
 
-```python
-import os
-import flyte
-from flyte import notify
-from flyte.models import ActionPhase
-
-env = flyte.TaskEnvironment(name="notify_example")
-
-SLACK_WEBHOOK_URL = os.environ["SLACK_WEBHOOK_URL"]
-NOTIFICATION_EMAIL = os.environ["NOTIFICATION_EMAIL"]
-
-
-@env.task
-def compute(x: int, y: int) -> int:
-    return x + y
-
-
-if __name__ == "__main__":
-    result = flyte.with_runcontext(
-        notifications=(
-            notify.Slack(
-                on_phase=ActionPhase.SUCCEEDED,
-                webhook_url=SLACK_WEBHOOK_URL,
-                message="Run {{.Run.Name}} succeeded.",
-            ),
-            notify.Email(
-                on_phase=ActionPhase.FAILED,
-                recipients=[NOTIFICATION_EMAIL],
-                subject="ALERT: Run {{.Run.Name}} failed",
-                body="Run: {{.Run.Name}}\nError: {{.Error}}",
-            ),
-        ),
-    ).run(compute, x=3, y=7)
-    print(f"Result: {result}")
-```
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/run-context/run_context.py" fragment="run-with-notifications" lang="python">}}
 
 Pass a single notification or a tuple of notifications. All notification types from `flyte.notify` are supported: `Slack`, `Email`, `Teams`, `Webhook`, and `NamedDelivery`.
 
@@ -79,59 +45,19 @@ All message fields support template variables substituted at delivery time:
 
 **Simple message:**
 
-```python
-notify.Slack(
-    on_phase=ActionPhase.FAILED,
-    webhook_url=SLACK_WEBHOOK_URL,
-    message="Run {{.Run.Name}} failed in {{.Run.Project}}/{{.Run.Domain}}: {{.Error}}",
-)
-```
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/notifications/notifications.py" fragment="slack-notification" lang="python">}}
 
 **Rich formatting with [Block Kit](https://api.slack.com/block-kit):**
 
 Use `blocks` instead of `message` for structured layouts. When `blocks` is provided, `message` is ignored.
 
-```python
-notify.Slack(
-    on_phase=ActionPhase.SUCCEEDED,
-    webhook_url=SLACK_WEBHOOK_URL,
-    blocks=[
-        {
-            "type": "header",
-            "text": {"type": "plain_text", "text": "Task Succeeded"},
-        },
-        {
-            "type": "section",
-            "fields": [
-                {"type": "mrkdwn", "text": "*Run:*\n{{.Run.Name}}"},
-                {"type": "mrkdwn", "text": "*Phase:*\n{{.Phase}}"},
-            ],
-        },
-        {"type": "divider"},
-        {
-            "type": "context",
-            "elements": [
-                {"type": "mrkdwn", "text": "{{.Run.Project}}/{{.Run.Domain}}"},
-            ],
-        },
-    ],
-)
-```
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/notifications/notifications.py" fragment="notification-blocks" lang="python">}}
 
 ## Email notifications
 
 `notify.Email` sends an email notification. Provide `body` for plain text, `html_body` for HTML, or both (sent as multipart).
 
-```python
-notify.Email(
-    on_phase=ActionPhase.FAILED,
-    recipients=[NOTIFICATION_EMAIL],
-    cc=["team-lead@example.com"],
-    subject="ALERT: Run {{.Run.Name}} failed",
-    body="Run: {{.Run.Name}}\nError: {{.Error}}",
-    html_body="<b>Error:</b> {{.Error}}<br>",
-)
-```
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/notifications/notifications.py" fragment="email-extended-notification" lang="python">}}
 
 To receive emails locally while developing, start a debug SMTP server before running your script:
 
