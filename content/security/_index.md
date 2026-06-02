@@ -24,7 +24,7 @@ Enterprise customers can further restrict the client-to-data-plane path with the
 No inbound firewall rules are required on the customer's external network perimeter under either configuration.
 
 **[Data protection](./data-protection/_index)**
-No customer data ever transits Union.ai's control plane. Workflow inputs and outputs, code bundles, secret values, logs, reports, and auxiliary UI traffic are served directly from the customer's data plane through the Direct-to-DataPlane tunnel, with authentication and RBAC enforced by a proxy router inside the customer's cluster.
+No customer data ever transits Union.ai's control plane. Workflow inputs and outputs, code bundles, secret values, logs, reports, and auxiliary UI traffic are served directly from the customer's data plane through the Direct-to-DataPlane tunnel, with authentication and RBAC enforced by an Envoy router inside the customer's cluster.
 The control plane holds orchestration and task metadata only -- run IDs, schedules, phase transitions, task definitions, and the RBAC graph -- always encrypted at rest.
 
 **[Identity and access](./identity-and-access/_index)**
