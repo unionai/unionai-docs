@@ -7,6 +7,7 @@ on:
 
 jobs:
   check-redirects:
+    name: "Check Redirects"
     runs-on: ubuntu-latest
 
     steps:

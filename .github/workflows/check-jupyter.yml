@@ -7,6 +7,7 @@ on:
 
 jobs:
   check-jupyter:
+    name: "Check Jupyter Notebooks"
     runs-on: ubuntu-latest
 
     steps:
