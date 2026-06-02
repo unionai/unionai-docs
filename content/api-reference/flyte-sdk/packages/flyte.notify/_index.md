@@ -16,7 +16,7 @@ Quick Start:
     ```python
     import flyte
     import flyte.models
-    import flyte.notify as notify
+    from flyte import notify
 
     @flyte.task(
         trigger=flyte.Trigger(
@@ -30,7 +30,7 @@ Quick Start:
                 notify.Slack(
                     on_phase=flyte.models.ActionPhase.SUCCEEDED,
                     webhook_url="https://hooks.slack.com/...",
-                    message="Daily report completed! {run.url}"
+                    message="Daily report completed! {{.Run.Name}}"
                 )
             ]
         )

@@ -241,7 +241,7 @@ All message fields support template variables that are substituted at delivery t
 | `{{.Run.Domain}}`  | Domain name                                            |
 | `{{.Run.Name}}`    | Run ID                                                 |
 | `{{.Phase}}`       | Execution phase                                        |
-| `{{.Error}}`       | Error message when failed or abort reason whan aborted |
+| `{{.Error}}`       | Error message when failed or abort reason when aborted |
 
 
 ### Slack notifications
