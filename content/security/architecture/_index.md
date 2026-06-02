@@ -15,7 +15,7 @@ This section covers:
 
 * **[Two-plane separation](./two-plane-separation)**: The division between the Union.ai-hosted control plane and the customer-hosted data plane is the foundation of the security architecture.
 
-* **[Control plane](./control-plane)**: The control plane is the Union.ai-hosted orchestration component. It stores only orchestration and task metadata, which is encrypted at rest. Bulk data is referenced via signed URIs only, the actual bulk data never touches the control plane.
+* **[Control plane](./control-plane)**: The control plane is the Union.ai-hosted orchestration component. It stores only orchestration metadata (run IDs, schedules, phase transitions, task definitions, error messages, RBAC graph), encrypted at rest. Bulk data is referenced via signed URIs only; the actual bulk data never touches the control plane.
 
 * **[Data plane](./data-plane)**: The data plane runs entirely within the customer's cloud account. All computation occurs here and all customer data resides here. It uses workload identity federation (IRSA / Workload Identity / Azure Workload Identity) instead of static credentials, so no long-lived access keys are stored on the data plane.
 

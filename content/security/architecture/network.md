@@ -44,7 +44,7 @@ All communication paths in the system use encryption. No unencrypted communicati
 
 | Path | Protocol | Encryption |
 |---|---|---|
-| Client to Control Plane (orchestration API, UI metadata) | HTTPS | TLS 1.2+ |
+| Client to Control Plane (orchestration API) | HTTPS | TLS 1.2+ |
 | Client to Data Plane (customer-data requests) | Direct-to-DataPlane tunnel | TLS 1.3 + mTLS |
 | Data Plane → Control Plane (orchestration metadata, outbound-initiated) | gRPC over TLS | TLS 1.2+ |
 | Client to Object Store | HTTPS (presigned URL) | TLS 1.2+ (cloud provider enforced) |

@@ -12,11 +12,12 @@ The control plane handles only orchestration metadata. Customer data -- workflow
 
 ## What it stores
 
-The control plane stores the information required for orchestration. All of it is metadata; none of it is customer data payload.
+The control plane stores **orchestration metadata** -- the operational scaffolding plus the task definitions and execution records that drive it. None of it is customer data payload. Concretely:
 
-- **Orchestration metadata**: identifiers, action state (phase, timestamps, cluster assignment), user profiles, scheduling configuration, and the RBAC graph.
+- **Action state**: run and action identifiers, phase, timestamps, cluster assignment, and scheduling configuration.
 - **Task and run definitions**: each run submission includes a full TaskSpec (container image, typed interface, resource requirements, security context) and a RunSpec (environment variables, labels, annotations). Trigger specs carry default input values for scheduled runs.
 - **Error and event information**: error messages from task executions (which may contain customer data from Python tracebacks), Kubernetes event messages, and per-attempt plugin state.
+- **Platform metadata**: user identity records, the RBAC graph, and data-plane cluster registrations.
 
 It stores only **URIs** pointing into the customer's object store for any payload reference (for example, `s3://customer-bucket/org/project/domain/run/action/output.pb`); the payloads themselves stay in the customer's object store.
 
