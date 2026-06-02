@@ -1,10 +1,11 @@
-name: block-v1-to-main
+name: Block v1 → main
 on:
   pull_request:
     branches: [main]
 
 jobs:
   block-v1-to-main:
+    name: "Block v1 → main"
     runs-on: ubuntu-latest
     steps:
       - name: Block v1 branch from merging into main

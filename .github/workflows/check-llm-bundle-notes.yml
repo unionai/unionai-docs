@@ -7,6 +7,7 @@ on:
 
 jobs:
   check-llm-bundle-notes:
+    name: "Check LLM Bundle Notes"
     runs-on: ubuntu-latest
     continue-on-error: true
 
