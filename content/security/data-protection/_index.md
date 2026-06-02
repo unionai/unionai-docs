@@ -14,8 +14,5 @@ Customer data never transits Union.ai's control plane. Every customer-data reque
 This section covers:
 
 * [Data classification and residency](./classification-and-residency): How data is classified, where it resides, and multi-cloud region support.
-* [Data flow](./data-flow): How customer data moves at every stage of the workflow lifecycle, and what data appears in the UI.
-* [Encryption](./encryption): Encryption at rest and in transit across all storage and communication paths.
 * [Secrets management](./secrets): Write-only API design, backends, and secret lifecycle.
-* [Multi-cloud support](./multi-cloud): Supported cloud providers and consistent security guarantees.
 * [Logging and audit](./logging-and-audit): Task logging, observability metrics, and audit trails.

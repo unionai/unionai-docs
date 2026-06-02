@@ -24,5 +24,3 @@ This section covers:
 * **[Sovereign Data Plane](./sovereign-data-plane)**: An Enterprise-tier option that replaces the Direct-to-DataPlane tunnel with a customer-managed load balancer inside the customer's VPC, reachable only from the corporate VPN. No third-party network can reach the data plane; Union.ai employees cannot reach customer data even with full Union.ai credentials.
 
 * **[Private connectivity (BYOC)](./private-connectivity)**: In the BYOC model, Union.ai manages the customer's Kubernetes cluster via PrivateLink, Private Service Connect, or Azure Private Link. The Kubernetes API is never exposed to the public internet.
-
-* **[Deployment models](./deployment-models)**: Self-managed and BYOC share the same two-plane architecture and security controls, differing only in who operates the data plane's Kubernetes cluster.

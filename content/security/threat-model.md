@@ -181,10 +181,10 @@ Five risks are not eliminated by the architecture and are stated explicitly so c
 
 - **T1 (external).** Run an external port scan against the data plane cluster's public IP ranges; confirm no Union-related service responds. Inspect VPC Flow Logs for inbound traffic from Cloudflare or Union IP ranges; confirm none.
 - **T2/T3 (compromised CP / malicious employee).** Inspect control plane API endpoints. Confirm that no endpoint returns workflow input or output payloads, log content, or secret values. The `GetSecret` RPC by design returns only metadata.
-- **T4 (transport intermediary).** Inspect the encryption-at-each-phase table in [Data flow](./data-protection/data-flow) for default tier; note the Cloudflare edge hop. For Sovereign Data Plane, inspect the same table; note that the Cloudflare hop is absent.
+- **T4 (transport intermediary).** Inspect the Communication paths table in [Network architecture](./architecture/network#communication-paths) and note the Cloudflare edge hop on the default tier client-to-data-plane row. Under Sovereign Data Plane, that hop is replaced by a customer-managed internal load balancer and Cloudflare is removed from the path.
 - **T5 (compromised node).** Inspect the node service account's IAM policy; confirm scoping (no `iam:PassRole` to admin roles, no broad storage admin, no project editor). Inspect Calico network policies; confirm IMDS and RFC-1918 egress blocks.
 - **T6 (malicious user).** Create a Viewer-role user. Attempt to call data-path endpoints (log streaming, I/O retrieval) via the tunnel. Confirm denial at the Envoy router, not just at the control plane API.
-- **T7 (passive observer).** Inspect [Encryption](./data-protection/encryption) for the encryption status of every hop. Confirm no plaintext hop exists.
+- **T7 (passive observer).** Inspect the Communication paths table in [Network architecture](./architecture/network#communication-paths). Every row should specify a TLS-class encryption protocol; no plaintext hop exists.
 
 ### Auditability
 

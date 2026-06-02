@@ -36,7 +36,6 @@ All four backends are available regardless of deployment model. The choice of ba
 
 **Scoping:** Secrets can be scoped at organization, project, or domain level. Only task pods running within the appropriate scope can access the corresponding secrets. This ensures that teams working in different projects cannot access each other's secrets, even within the same data plane cluster.
 
-For details on how secrets flow during workflow execution, see [Data flow](./data-flow).
 
 ## Verification
 

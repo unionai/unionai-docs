@@ -7,7 +7,7 @@ mermaid: true
 
 # Data plane
 
-The data plane runs entirely within the customer's cloud account on a Kubernetes cluster. It is where all computation occurs and where customer data is stored at rest (see [Data classification and residency](../data-protection/classification-and-residency)). In the self-managed model, the customer operates the data plane independently. In the BYOC model, Union.ai manages the Kubernetes cluster on the customer's behalf, but it still runs in the customer's cloud account. See [Deployment models](./deployment-models) for the differences.
+The data plane runs entirely within the customer's cloud account on a Kubernetes cluster. It is where all computation occurs and where customer data is stored at rest (see [Data classification and residency](../data-protection/classification-and-residency)). In the self-managed model, the customer operates the data plane independently. In the BYOC model, Union.ai manages the Kubernetes cluster on the customer's behalf, but it still runs in the customer's cloud account.
 
 ## Components
 
@@ -23,7 +23,7 @@ The data plane consists of several components, each handling a specific aspect o
 - **Auxiliary UI proxying** -- Ray dashboards, Spark history servers, in-task debuggers, and other per-action UIs are served back through the `dataproxy` via the same authenticated path.
 - **Secret writes** -- secret values from the SDK or UI are routed to the data-plane secrets backend (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or K8s Secrets) without traversing the control plane.
 
-**Executor** is a Kubernetes controller that watches for TaskAction custom resources created by the control plane. When a TaskAction appears, the Executor reconciles its lifecycle: creating task pods, monitoring their status, and reporting state transitions back to the control plane. If connectivity to the control plane is lost, in-flight pods continue running and state reconciles when the connection is restored.
+**Executor** is a Kubernetes controller that creates and manages the task pods based on signals from the control plane. If connectivity to the control plane is lost, in-flight pods continue running and state reconciles when the connection is restored.
 
 **Image Builder** uses Buildkit running on the customer's Kubernetes cluster to build container images from user-submitted `Image` specifications. Source code and built images never leave the customer's infrastructure. Base images are pulled from customer-configured registries, and built images are pushed to the customer's container registry (ECR, GCR, or ACR).
 
@@ -34,12 +34,6 @@ In addition to the client-to-data-plane path, the data plane operator establishe
 **Metrics Reporter** ships operational metrics (resource utilization, GPU utilization, queue depth) from the data plane to the control plane on its own schedule. The push model means the control plane needs no network route into the data plane at all -- a prerequisite for the Sovereign Data Plane tier.
 
 **Apps & Serving** provides model and application serving capabilities using Knative with a Kourier gateway. All serving infrastructure runs within the customer's cluster. Authentication is enforced on all endpoints by default (SSO for browser access, API keys for programmatic access), with an option to allow anonymous access on specific endpoints. See [Apps & Serving security](#apps--serving-security) below for details.
-
-### Multi-cluster routing
-
-When a tenant spans multiple data-plane clusters, customer-data requests need to reach the correct one. The control plane exposes a `SelectCluster` RPC that resolves an action ID, project/domain, or queue/org reference to the per-cluster tunnel domain (or, under the Sovereign Data Plane tier, the per-cluster internal LB hostname). The SDK and UI call `SelectCluster` first, then dispatch the data-path request directly to the resolved cluster -- no aggregator or fan-out hop in front of the `dataproxy`. Org-level secrets are scoped through a `--cluster-pool` parameter so that creation, listing, and deletion target the right cluster pool.
-
-For how each of these pathways handles data in transit, see [Data flow](../data-protection/data-flow).
 
 ## Object store layout
 

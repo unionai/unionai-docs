@@ -33,7 +33,7 @@ In BYOC deployments, Union.ai assumes additional operational responsibility for 
 | Secrets management | Customer (backend + values) | Union.ai (default backend) + Customer (values) |
 | Network security | Union.ai (tunnel) + Customer (firewall/VPC) | Union.ai (tunnel + PrivateLink) + Customer (VPC) |
 
-For details on how the deployment model affects security controls, see [Deployment models](../architecture/deployment-models).
+For the deployment-model summary, see the [security overview](../_index).
 
 ## Verification
 

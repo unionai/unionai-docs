@@ -20,11 +20,11 @@ The control plane stores the information required for orchestration. All of it i
 
 It stores only **URIs** pointing into the customer's object store for any payload reference (for example, `s3://customer-bucket/org/project/domain/run/action/output.pb`); the payloads themselves stay in the customer's object store.
 
-For the full classification of what is and isn't stored in the control plane and the sensitive fields that may appear in task definitions, see [Data classification and residency](../data-protection/classification-and-residency).
+For the full classification of what is and isn't stored in the control plane, see [Data classification and residency](../data-protection/classification-and-residency).
 
 ## Infrastructure
 
-The control plane runs on AWS with multi-AZ redundancy to ensure high availability. It uses managed cloud database services for orchestration metadata, task/run definitions, execution events, and error messages. All backends are encrypted at rest and isolated within a VPC with restricted security groups that permit access only from control plane application services. See [Encryption](../data-protection/encryption) for at-rest encryption details by data type.
+The control plane runs on AWS with multi-AZ redundancy to ensure high availability. It uses managed cloud database services for orchestration metadata, task/run definitions, execution events, and error messages. All backends are encrypted at rest using AES-256 / cloud-KMS, and isolated within a VPC with restricted security groups that permit access only from control plane application services.
 
 TLS terminates at the edge, and all internal communication occurs over encrypted channels. Automated backups run on a defined schedule with point-in-time recovery capability. Union.ai maintains disaster recovery procedures and applies security patches on a regular cadence. The SOC 2 Type II report covers the availability, security, and operational controls of this infrastructure.
 
@@ -37,5 +37,5 @@ The control plane exposes the following capabilities:
 - **Cluster registry** -- maintains the inventory of registered data plane clusters and their health.
 - **Cluster selection** -- exposes the `SelectCluster` RPC that clients (SDK / UI) call to resolve which data plane cluster handles a given customer-data request. The control plane returns the per-cluster tunnel domain (or, under the Sovereign Data Plane tier, the internal LB hostname); the client then dispatches the data-path request directly to that cluster. The control plane does not participate in the data path itself.
 
-The control plane has no data-gateway role. Signed URLs, log streaming, structured I/O retrieval, and auxiliary UI proxying are handled by the `dataproxy` service that runs in the data plane (see [Data plane](./data-plane#components)). For the customer-data request path, see [Data flow](../data-protection/data-flow).
+The control plane has no data-gateway role. Signed URLs, log streaming, structured I/O retrieval, and auxiliary UI proxying are handled by the `dataproxy` service that runs in the data plane (see [Data plane](./data-plane#components)). For the customer-data request path, see [Network architecture](./network).
 

@@ -28,7 +28,7 @@ The Sovereign Data Plane is available on the Enterprise tier on customer request
 | Reachable from | Public internet, gated by Cloudflare + Envoy AuthN/RBAC | Only from inside the customer's corporate network (VPN) |
 | TLS termination | Cloudflare edge, then mTLS to the data plane | Customer-controlled, end-to-end inside the VPC |
 | Who can reach the data plane network | Any authenticated, RBAC-authorized user | Only users on the customer's VPN |
-| Union.ai employee access to data | Possible if granted UI access (still bounded by RBAC) | **Not possible** without being on the customer's VPN |
+| Union.ai employee access to data | Possible only if granted access by customer for support purposes and authenticated by RBAC with full audit trails | **Not possible** without being on the customer's VPN |
 | Setup ownership | Provisioned and managed by Union | Customer's SRE/DevOps team stands up the load balancer; Union deploys the data plane behind it |
 
 ## What stays the same
@@ -76,7 +76,7 @@ The Sovereign Data Plane is strictly stronger than the default tier on network r
 
 - **Customer owns the load balancer.** Provisioning, scaling, TLS certificate rotation, and high availability are the customer's responsibility, the same as for any other internal service in their VPC.
 - **VPN coverage drives user reach.** Users who need to inspect runs from outside the corporate network (for example, working from a personal device, or after a VPN outage) cannot reach the data plane. The default tier's Cloudflare path is reachable from anywhere with internet access.
-- **No emergency Union.ai access.** Under the default tier, Union.ai support with UI access can help diagnose customer issues by inspecting the same surfaces the customer sees. Under the Sovereign Data Plane, that path is closed: Union.ai support can no longer see the data plane. This is the point, but worth surfacing to operations teams.
+- **No emergency Union.ai access.** Under the default tier, Union.ai support personnel who have been granted access to specific projects can help diagnose customer issues by inspecting the same surfaces that the customer sees. Under the Sovereign Data Plane, that path is closed: Union.ai support can no longer see the data plane. Operations teams should know that emergency Union.ai access is unavailable before adopting the Sovereign Data Plane.
 
 ## Verification
 

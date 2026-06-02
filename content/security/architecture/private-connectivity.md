@@ -14,7 +14,7 @@ The private management connection does **not** carry customer data or orchestrat
 
 By keeping the Kubernetes API endpoint private, this design aligns with several compliance controls, including ISO 27001 A.5.15 (Access control), A.8.20 (Networks security), A.8.22 (Segregation of networks), and CIS Controls v8 Control 12 (Network infrastructure management). The Kubernetes API is never reachable from the public internet.
 
-For details on the self-managed alternative (where no private management connection exists because the customer operates the data plane independently), see [Deployment models](./deployment-models).
+In the self-managed alternative, no private management connection exists because the customer operates the data plane independently. See the [security overview](../_index) for the deployment-model summary.
 
 ## Verification
 

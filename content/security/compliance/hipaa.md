@@ -10,8 +10,6 @@ Union.ai supports HIPAA compliance for organizations processing protected health
 
 No PHI ever transits Union.ai's control plane. Bulk PHI (files, DataFrames), structured task inputs and outputs, secret values, log streams, and reports are all served directly from the customer's data plane through the Direct-to-DataPlane tunnel; the control plane is not on the data path. PHI written to stdout/stderr flows through the tunnel to the requesting client without traversing Union.ai infrastructure.
 
-Task definitions stored in the control plane databases may contain fields such as environment variables and default input values. If they contain PHI, they would be persisted (encrypted at rest) in Union.ai infrastructure. Error messages from task executions are also persisted in the control plane and may contain customer data from tracebacks. Organizations should evaluate whether task definitions or error messages in their workflows could contain PHI and scope their BAA accordingly.
-
 To request a Business Associate Agreement (BAA), submit the request through Union.ai's [Trust Center](https://app.vanta.com/c/union/trust-center).
 
 All data is encrypted at rest and in transit. RBAC policies restrict access to authorized users. All API requests are authenticated and logged with identity, operation, and timestamp. These guarantees apply equally to self-managed and BYOC deployments.

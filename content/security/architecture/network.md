@@ -28,7 +28,7 @@ All traffic through the tunnel is encrypted using a layered transport: TLS 1.3 f
 
 The tunnel maintains health checks and heartbeats, and automatically reconnects if the connection drops. State reconciliation occurs upon reconnection, so no requests are lost during brief connectivity interruptions.
 
-The tunnel carries every kind of customer-data request: structured task input uploads via signed URLs, log streams (live and persisted), secret writes, auxiliary UI traffic (Ray dashboard, Spark history server, in-task debugger), Apps & Serving ingress, and `dataproxy` RPCs generally. Bulk artifacts (files, directories, DataFrames, code bundles, reports) transit signed URLs issued by the dataproxy, so the bytes themselves flow directly between the client and the customer's object store. Container images also bypass the tunnel: they are pulled by Kubernetes from the customer's container registry over standard HTTPS. For end-to-end request flow, see [Data flow](../data-protection/data-flow).
+The tunnel carries every kind of customer-data request: structured task input uploads via signed URLs, log streams (live and persisted), secret writes, auxiliary UI traffic (Ray dashboard, Spark history server, in-task debugger), Apps & Serving ingress, and `dataproxy` RPCs generally. Bulk artifacts (files, directories, DataFrames, code bundles, reports) transit signed URLs issued by the dataproxy, so the bytes themselves flow directly between the client and the customer's object store. Container images also bypass the tunnel: they are pulled by Kubernetes from the customer's container registry over standard HTTPS.
 
 ### Per-cluster routing
 
@@ -37,40 +37,6 @@ In multi-cluster deployments, each data-plane cluster has its own dedicated tunn
 ### Sovereign Data Plane
 
 Enterprise customers can replace the Direct-to-DataPlane tunnel entirely with a customer-managed load balancer inside their own VPC, reachable only from the corporate VPN. This makes the data plane unreachable from any third-party network -- including Cloudflare's -- and unreachable to Union.ai employees. See [Sovereign Data Plane](./sovereign-data-plane) for the topology and trade-offs.
-
-## Direct gRPC connection
-
-In addition to the Direct-to-DataPlane tunnel, the data plane maintains a separate outbound gRPC connection over TLS to the regional control plane endpoint. The data plane operator multiplexes orchestration RPCs over this connection. It is outbound-initiated by the data plane and requires no inbound firewall rules. No customer data flows on this channel -- only orchestration metadata.
-
-This channel carries:
-
-- **Cluster registration**: the data plane registers itself with the control plane on startup and keeps the registration current.
-- **Action lifecycle**: TaskAction polling, scheduling decisions, and reconciliation.
-- **Event reporting**: execution events, phase transitions, and status updates from the data plane to the control plane.
-- **Catalog and artifact lookups**: artifact registry, run metadata, and task definition reads.
-- **Admin RPCs**: project, domain, and identity queries.
-
-The connection terminates at the Cloudflare edge for the regional `*.unionai.cloud` / `*.union.ai` hostname, which then routes to the hosted control plane. All traffic is encrypted with TLS 1.2+.
-
-## Regional endpoints
-
-Union.ai provides control plane endpoints in multiple regions. Customers select the region closest to their data plane deployment to minimize latency. Region selection also has data residency implications -- see [Data classification and residency](../data-protection/classification-and-residency#data-residency).
-
-| Region | Location |
-|---|---|
-| US East | us-east-2 |
-| US West | us-west-2 |
-| EU West-1 | eu-west-1 |
-| EU West-2 | eu-west-2 |
-| EU Central | eu-central-1 |
-
-Each region has its own dedicated control plane endpoint hostname.
-
-## Egress configuration
-
-For customers with strict egress controls, outbound traffic can be limited to Cloudflare's published CIDR blocks. These blocks can be further restricted to specific Cloudflare regions to minimize the allowed egress surface. Cloudflare publishes its IP ranges at [cloudflare.com/ips](https://www.cloudflare.com/ips/).
-
-For firewall rules that permit `cloudflared` egress while blocking all ingress, see Cloudflare's [Tunnel with firewall](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/configure-tunnels/tunnel-with-firewall/) guide.
 
 ## Communication paths
 
@@ -116,9 +82,9 @@ For details on the BYOC private management connection, see [Private connectivity
 
 4. (Optional) Run a port scan from an external host against the data plane nodes to confirm no Union.ai-related services are reachable.
 
-### Direct-to-DataPlane tunnel and direct gRPC
+### Direct-to-DataPlane tunnel
 
-**Reviewer focus:** Confirm that bulk data (files, DataFrames, code bundles) transfers directly between clients and the customer's object store via presigned URLs, and that structured task I/O and log streams flow through the Direct-to-DataPlane tunnel directly to the data plane (no Union control plane on the path). Confirm that the direct gRPC connection from the data plane operator to the regional control plane endpoint is outbound-initiated and carries no customer data.
+**Reviewer focus:** Confirm that bulk data (files, DataFrames, code bundles) transfers directly between clients and the customer's object store via presigned URLs, and that structured task I/O and log streams flow through the Direct-to-DataPlane tunnel directly to the data plane (no Union control plane on the path).
 
 **How to verify:**
 
@@ -134,14 +100,3 @@ For details on the BYOC private management connection, see [Private connectivity
 
 3. Use browser developer tools (Network tab) in the Union.ai UI to confirm that binary output artifacts are fetched via presigned URLs (resolving to the customer's storage domain), while structured outputs are fetched via the data plane through the Direct-to-DataPlane tunnel (resolving to a per-cluster tunnel domain, not a control plane endpoint).
 
-### Egress configuration
-
-**Reviewer focus:** Confirm that egress can be restricted to Cloudflare CIDR blocks without breaking functionality.
-
-**How to verify:**
-
-1. Apply egress rules that allow outbound traffic only to Cloudflare CIDR blocks (and the customer's cloud provider endpoints for object store and logging).
-
-2. Verify that the tunnel connection establishes successfully and workflows execute normally.
-
-3. Attempt to reach an endpoint outside the allowed egress list from a task pod to confirm the restriction is effective.
