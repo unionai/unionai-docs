@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.3.4
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 ---
@@ -151,6 +151,18 @@ def from_base(
 ) -> Image
 ```
 Use this method to start with a pre-built base image. This image must already exist in the registry of course.
+
+Unlike `from_debian_base`, this method does **not** create a runtime user or chown
+the working directory. The resulting container runs as whatever ``USER`` your base
+image declares, with whatever ``WORKDIR`` the image (or builder) sets. The Flyte
+runtime extracts the code bundle into that working directory at task start, so the
+resolved user must have read, write, and traverse permissions on it. Hardened bases
+(UBI ``nonroot``, distroless ``nonroot``, chainguard ``nonroot``) commonly need a
+``.with_commands(["chmod 0755 /root && chown &lt;uid&gt;:&lt;gid&gt; /root"])`` layer, or the
+equivalent for whatever path the image uses as ``WorkingDir``.
+
+See the "Base image USER requirements" section of the Bring Your Own Image guide
+for the full pattern.
 
 
 

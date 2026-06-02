@@ -1,6 +1,6 @@
 ---
 title: TaskEnvironment
-version: 2.3.4
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 ---
@@ -232,7 +232,7 @@ def task(
     short_name: Optional[str],
     cache: CacheRequest | None,
     retries: Union[int, RetryStrategy],
-    timeout: Union[timedelta, int],
+    timeout: TimeoutType,
     docs: Optional[Documentation],
     pod_template: Optional[Union[str, PodTemplate]],
     report: bool,
@@ -254,8 +254,8 @@ Decorate a function to be a task.
 | `_func` | `F \| None` | Optional The function to decorate. If not provided, the decorator will return a callable that accepts a function to be decorated. |
 | `short_name` | `Optional[str]` | Optional friendly name for the task or action, used in parts of the UI (defaults to the function name). Overriding `short_name` does not change the task's fully-qualified name. |
 | `cache` | `CacheRequest \| None` | Optional The cache policy for the task, defaults to auto, which will cache the results of the task. |
-| `retries` | `Union[int, RetryStrategy]` | Number of retries (`int`) or a `RetryStrategy` object that defines retry behavior. Defaults to `0` (no retries). |
-| `timeout` | `Union[timedelta, int]` | Task timeout, as a `timedelta` object or an integer number of seconds. `0` means no timeout. |
+| `retries` | `Union[int, RetryStrategy]` | Number of user retries (`int`) or a `RetryStrategy` object. `RetryStrategy` accepts an optional `backoff=Backoff(base, factor, cap)` to pace retries exponentially. Defaults to `0` (no retries). |
+| `timeout` | `TimeoutType` | Task timeout. Accepts a `timedelta`, an integer number of seconds, or a `Timeout` object carrying any combination of `max_runtime`, `max_queued_time`, and `deadline`. A bare `timedelta`/`int` is interpreted as `max_runtime`. A bound is treated as unlimited when unset (`None`) or zero (`0` / `timedelta(0)`); `timeout=0` is the default and means no time bound. |
 | `docs` | `Optional[Documentation]` | Optional The documentation for the task, if not provided the function docstring will be used. |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | Optional The pod template for the task, if not provided the default pod template will be used. |
 | `report` | `bool` | Optional Whether to generate the html report for the task, defaults to False. |

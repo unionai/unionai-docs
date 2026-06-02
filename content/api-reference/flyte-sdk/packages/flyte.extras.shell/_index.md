@@ -1,6 +1,6 @@
 ---
 title: flyte.extras.shell
-version: 2.3.4
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 ---
@@ -94,7 +94,6 @@ def create(
     retries: int,
     timeout: int | None,
     cache: str,
-    block_network: bool,
     env_vars: dict[str, str] | None,
     secrets: list | None,
     local_logs: bool,
@@ -119,7 +118,6 @@ Wrap a CLI tool packaged in a container as a Flyte task.
 | `retries` | `int` | |
 | `timeout` | `int \| None` | |
 | `cache` | `str` | |
-| `block_network` | `bool` | |
 | `env_vars` | `dict[str, str] \| None` | |
 | `secrets` | `list \| None` | |
 | `local_logs` | `bool` | When ``True`` (default), the rendered command and the container's captured stdout/stderr are emitted through the flyte logger at ``DEBUG`` level during local docker execution. Set to ``False`` to silence them entirely (e.g. when running many sub-tasks locally and per-task chatter would clutter output even at DEBUG). Only affects local docker execution; remote execution never invokes the code path that produces these messages. |
