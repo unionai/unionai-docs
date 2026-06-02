@@ -91,6 +91,10 @@ Two consequences worth knowing:
 
 If you want spot pricing to apply to *every* attempt, you need to size `retries` so the workload realistically completes before the final attempt — there's no way to opt out of the on-demand fallback on the last attempt.
 
+{{< variant union >}}
+{{< markdown >}}
 > [!NOTE]
 > Looking for scheduling control — concurrency limits, depth, priority, or routing
 > work to a specific cluster? See [Queues](./queues).
+{{< /markdown >}}
+{{< /variant >}}
