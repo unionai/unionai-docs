@@ -1,7 +1,7 @@
 ---
 title: Queues
 weight: 11
-variants: +union
+variants: -flyte +union
 ---
 
 # Queues
