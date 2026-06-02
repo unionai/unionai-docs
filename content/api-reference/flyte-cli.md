@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.2.4
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -25,6 +25,7 @@ This is the command line interface for Flyte.
 | `devbox` | [`delete`](#flyte-delete-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
 | `settings` | [`edit`](#flyte-edit-settings), [`get`](#flyte-get-settings)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
+| `event` | [`get`](#flyte-get-event), [`signal`](#flyte-signal-event)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
 | `task` | [`get`](#flyte-get-task)  |
@@ -42,10 +43,11 @@ This is the command line interface for Flyte.
 | [`deploy`](#flyte-deploy) | - |
 | `edit` | [`settings`](#flyte-edit-settings)  |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
+| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`event`](#flyte-get-event), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
+| `signal` | [`event`](#flyte-signal-event)  |
 | `start` | [`devbox`](#flyte-start-devbox), [`tui`](#flyte-start-tui)  |
 | `stop` | [`devbox`](#flyte-stop-devbox)  |
 | `update` | [`app`](#flyte-update-app), [`project`](#flyte-update-project), [`trigger`](#flyte-update-trigger)  |
@@ -75,6 +77,7 @@ This is the command line interface for Flyte.
 | `settings` | [`edit`](#flyte-edit-settings), [`get`](#flyte-get-settings)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `cluster` | [`get⁺`](#flyte-get-cluster)  |
+| `event` | [`get`](#flyte-get-event), [`signal`](#flyte-signal-event)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
 | `member` | [`get⁺`](#flyte-get-member)  |
@@ -93,10 +96,11 @@ This is the command line interface for Flyte.
 | [`deploy`](#flyte-deploy) | - |
 | `edit` | [`settings`](#flyte-edit-settings)  |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`config`](#flyte-get-config), [`event`](#flyte-get-event), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
+| `signal` | [`event`](#flyte-signal-event)  |
 | `start` | [`devbox`](#flyte-start-devbox), [`tui`](#flyte-start-tui)  |
 | `stop` | [`devbox`](#flyte-stop-devbox)  |
 | `update` | [`app`](#flyte-update-app), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`queue⁺`](#flyte-update-queue), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
@@ -493,6 +497,7 @@ $ flyte create secret my_secret --type image_pull --from-docker-config --registr
 | `--registry` | `text` | `Sentinel.UNSET` | Registry hostname (e.g., ghcr.io, docker.io) for explicit credentials (only for --type image_pull). Mutually exclusive with value, from_file, from_docker_config. |
 | `--username` | `text` | `Sentinel.UNSET` | Username for the registry (only with --registry). |
 | `--password` | `text` | `Sentinel.UNSET` | Password for the registry (only with --registry). If not provided, will prompt. |
+| `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with --project and --domain. Mutually exclusive with project, domain. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -685,6 +690,7 @@ Delete a secret. The name of the secret is required.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with --project and --domain. Mutually exclusive with project, domain. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -1048,6 +1054,25 @@ Shows the automatically detected configuration to connect with the remote backen
 
 The configuration will include the endpoint, organization, and other settings that are used by the CLI.
 
+#### flyte get event
+
+**`flyte get event [OPTIONS] RUN_NAME [ACTION_NAME]`**
+
+List events (paused condition actions) for a run, optionally filtered to a
+specific parent action.
+
+Each event corresponds to a condition action registered via
+``flyte.new_event(...)`` from a workflow. Use ``flyte signal event`` to
+resolve one.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
 #### flyte get io
 
 **`flyte get io [OPTIONS] RUN_NAME [ACTION_NAME]`**
@@ -1272,6 +1297,7 @@ Get a list of all secrets, or details of a specific secret by name.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with --project and --domain. Mutually exclusive with project, domain. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -1684,6 +1710,32 @@ Serving deployed apps is not currently supported through this CLI command.
 | {{< multiline >}}`--env-var`
 `-e`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Environment variable to set in the app. Format: KEY=VALUE. Can be specified multiple times. Example: --env-var LOG_LEVEL=DEBUG --env-var DATABASE_URL=postgresql://... |
 | `--local` | `boolean` | `False` | Serve the app locally on localhost instead of deploying to the Flyte backend. The app will be served on the port defined in the AppEnvironment. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+### flyte signal
+
+**`flyte signal COMMAND [ARGS]...`**
+
+Signal an event waiting on a paused condition action.
+
+#### flyte signal event
+
+**`flyte signal event [OPTIONS] RUN_NAME ACTION_NAME [VALUE]`**
+
+Signal a paused condition action.
+
+The condition's declared payload type and prompt are read from the
+backend. If VALUE is omitted the condition's prompt is displayed and a
+typed interactive prompt is shown to collect the payload. When VALUE is
+provided it's coerced to the expected type (``true``/``false`` for bool,
+integer literals for int, decimal literals for float, any string for str).
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte start

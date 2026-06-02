@@ -36,6 +36,7 @@ Projects and domains also determine:
 
 - **Access control**: RBAC policies scope permissions to an organization, project, domain, or project-domain pair. See [User management](../user-management).
 - **Data isolation**: Storage and cache are isolated per project-domain pair.
+- **Settings**: Default behavior — such as the task queue, resource requests, and environment variables — can be configured at org, domain, or project scope. See [Settings](./settings).
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}

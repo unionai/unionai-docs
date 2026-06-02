@@ -8,12 +8,8 @@
   },
   "methods": {
     "flyteplugins.papermill.load_dataframe": "/api-reference/integrations/papermill/packages/flyteplugins.papermill/#load_dataframe",
-    "load_dataframe": "/api-reference/integrations/papermill/packages/flyteplugins.papermill/#load_dataframe",
     "flyteplugins.papermill.load_dir": "/api-reference/integrations/papermill/packages/flyteplugins.papermill/#load_dir",
-    "load_dir": "/api-reference/integrations/papermill/packages/flyteplugins.papermill/#load_dir",
     "flyteplugins.papermill.load_file": "/api-reference/integrations/papermill/packages/flyteplugins.papermill/#load_file",
-    "load_file": "/api-reference/integrations/papermill/packages/flyteplugins.papermill/#load_file",
-    "flyteplugins.papermill.record_outputs": "/api-reference/integrations/papermill/packages/flyteplugins.papermill/#record_outputs",
-    "record_outputs": "/api-reference/integrations/papermill/packages/flyteplugins.papermill/#record_outputs"
+    "flyteplugins.papermill.record_outputs": "/api-reference/integrations/papermill/packages/flyteplugins.papermill/#record_outputs"
   }
 }

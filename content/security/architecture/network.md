@@ -18,7 +18,7 @@ The trust model is customer-initiated: the data plane decides when and whether t
 
 ## Cloudflare Tunnel
 
-The Cloudflare Tunnel is an outbound-only encrypted connection from the customer's cluster to the Cloudflare edge network, which then routes to the Union.ai control plane. It is initiated by a `cloudflared` sidecar in the data plane and lets the control plane reach data plane services without any inbound firewall rules.
+The Cloudflare Tunnel is an outbound-only encrypted connection from the customer's cluster to the Cloudflare edge network, which then routes to the Union.ai control plane. It is initiated by a `cloudflared` sidecar in the data plane and lets the control plane reach data plane services without any inbound firewall rules. For background on the underlying connector, see Cloudflare's [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/) documentation.
 
 All traffic through the tunnel is encrypted using a layered transport: TLS with mutual authentication (X.509 client certificates), Cloudflare Access service tokens for application-layer authentication, and Cloudflare Tunnel encryption for the network path. Tunnel tokens are rotated automatically: the data plane operator periodically polls the control plane and picks up updated tokens when issued.
 
@@ -66,6 +66,8 @@ Each region has its own dedicated control plane endpoint hostname.
 ## Egress configuration
 
 For customers with strict egress controls, outbound traffic can be limited to Cloudflare's published CIDR blocks. These blocks can be further restricted to specific Cloudflare regions to minimize the allowed egress surface. Cloudflare publishes its IP ranges at [cloudflare.com/ips](https://www.cloudflare.com/ips/).
+
+For firewall rules that permit `cloudflared` egress while blocking all ingress, see Cloudflare's [Tunnel with firewall](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/configure-tunnels/tunnel-with-firewall/) guide.
 
 ## Communication paths
 

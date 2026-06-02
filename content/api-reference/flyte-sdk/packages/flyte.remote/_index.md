@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 2.2.4
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,6 +19,7 @@ Remote Entities that are accessible from the Union Server once deployed or creat
 | [`ActionInputs`](../flyte.remote/actioninputs) | A class representing the inputs of an action. |
 | [`ActionOutputs`](../flyte.remote/actionoutputs) | A class representing the outputs of an action. |
 | [`App`](../flyte.remote/app) |  |
+| [`Event`](../flyte.remote/event) | A remote Event registered within an action of a run. |
 | [`Project`](../flyte.remote/project) | A class representing a project in the Union API. |
 | [`Run`](../flyte.remote/run) | A class representing a run of a task. |
 | [`RunDetails`](../flyte.remote/rundetails) | A class representing a run of a task. |
