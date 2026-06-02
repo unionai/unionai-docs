@@ -80,16 +80,38 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    helm repo update
    ```
 
-5. Install the data plane. Replace `<PATH_TO_VALUES_FILE>` with the path to the Helm values file you customized in step 3.
+5. Install the data plane CRDs via server-side apply. The CRDs are vendored in [unionai/helm-charts](https://github.com/unionai/helm-charts) under `crds/`:
+
+   ```bash
+   git clone https://github.com/unionai/helm-charts.git
+   cd helm-charts
+
+   # Required — FlyteWorkflow CRD consumed by propeller.
+   kubectl apply --server-side --force-conflicts -f crds/flyte-v1/
+
+   # Required when serving.enabled=true (the chart default). Provides the
+   # Knative Operator + Serving CRDs that back App Serving. The chart's
+   # post-install hook creates a KnativeServing resource and will fail
+   # without these CRDs in place.
+   kubectl apply --server-side --force-conflicts -f crds/knative-operator/
+
+   # Required when monitoring.enabled=true. Skip if monitoring is disabled (the chart default)
+   kubectl apply --server-side --force-conflicts -f crds/kube-prometheus-stack/
+   ```
+
+   Server-side apply avoids the 256 KiB `last-applied-configuration` annotation overflow on larger CRDs. `--force-conflicts` is needed only on first install.
+
+6. Install the data plane with `--skip-crds` so Helm doesn't re-manage the CRDs you just applied. Replace `<PATH_TO_VALUES_FILE>` with the path to the Helm values file you customized in step 3.
 
    ```bash
    helm upgrade --install unionai-dataplane unionai/dataplane \
      --namespace union --create-namespace \
      --values <PATH_TO_VALUES_FILE> \
+     --skip-crds \
      --timeout 10m
    ```
 
-6. Verify the pods are running:
+7. Verify the pods are running:
 
    ```bash
    kubectl get pods -n union
@@ -97,7 +119,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
 
    When the deployment succeeds, all pods show a `Running` status, including `union-operator-proxy`, `union-operator-buildkit`, and `executor`.
 
-7. Verify the cluster is registered with the control plane:
+8. Verify the cluster is registered with the control plane:
 
    ```bash
    uctl get cluster
@@ -110,7 +132,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    union-nebius    my-org    STATE_ENABLED  HEALTHY
    ```
 
-8. **Required for helm charts on a version <= 2026.5.8.** Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:
+9. **Required for helm charts on a version <= 2026.5.8.** Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:
 
    ```bash
    uctl create apikey --keyName EAGER_API_KEY --org <ORG_NAME>
