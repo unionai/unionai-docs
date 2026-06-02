@@ -1,12 +1,10 @@
 ---
-title: Interruptible tasks and queues
+title: Interruptible tasks
 weight: 10
 variants: +flyte +union
 ---
 
-# Interruptible tasks and queues
-
-## Interruptible tasks
+# Interruptible tasks
 
 Cloud providers offer discounted compute instances (AWS Spot Instances, GCP Preemptible VMs)
 that can be reclaimed at any time. These instances are significantly cheaper than on-demand
@@ -93,52 +91,6 @@ Two consequences worth knowing:
 
 If you want spot pricing to apply to *every* attempt, you need to size `retries` so the workload realistically completes before the final attempt — there's no way to opt out of the on-demand fallback on the last attempt.
 
-## Queues
-
-Queues are named routing labels that map tasks to specific resource pools or execution clusters
-in your infrastructure.
-
-Setting a queue directs the task to the corresponding compute partition:
-
-```python
-import flyte
-
-env = flyte.TaskEnvironment(
-    name="my_env",
-    queue="gpu-pool",
-)
-
-@env.task
-def train_model(data: list) -> dict:
-    return {"accuracy": 0.95}
-```
-
-### Setting at different levels
-
-`queue` can be set at the `TaskEnvironment` level, the `@env.task` decorator level,
-and at the `task.override()` invocation level. The more specific level takes precedence.
-
-```python
-import flyte
-
-env = flyte.TaskEnvironment(
-    name="my_env",
-    queue="default-pool",
-)
-
-# Uses environment-level queue ("default-pool")
-@env.task
-def preprocess(data: list) -> list:
-    return [x * 2 for x in data]
-
-# Overrides to a different queue
-@env.task(queue="gpu-pool")
-def train_model(data: list) -> dict:
-    return {"accuracy": 0.95}
-```
-
-If no queue is specified at any level, the default queue is used.
-
 > [!NOTE]
-> Queues are configured as part of your {{< key product_name >}} deployment by your platform administrator.
-> The available queue names depend on your infrastructure setup.
+> Looking for scheduling control — concurrency limits, depth, priority, or routing
+> work to a specific cluster? See [Queues](./queues).
