@@ -1,9 +1,13 @@
 name: Check Images Health
 
-on: [push]
+on:
+  pull_request:
+  push:
+    branches: [main]
 
 jobs:
   check-images:
+    name: "Check Images Health"
     runs-on: ubuntu-latest
 
     steps:
