@@ -2,7 +2,6 @@
 title: Uctl CLI
 weight: 6
 variants: -flyte +union
-sidebar_expanded: true
 ---
 
 # Uctl CLI

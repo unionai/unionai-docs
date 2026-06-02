@@ -24,7 +24,7 @@ The hierarchy of the files and folders under `content/` directly reflect the URL
 Next, set up the live preview by going to the root of your local repository check-out and copy the sample configuration file to `hugo.local.toml`:
 
 ```bash
-cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml
+cp hugo.local.toml~sample hugo.local.toml
 ```
 
 This file contains the configuration for the live preview:

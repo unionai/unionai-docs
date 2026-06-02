@@ -2,7 +2,6 @@
 title: Core concepts
 weight: 3
 variants: +flyte +union
-sidebar_expanded: false
 llm_readable_bundle: true
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: DatabricksConnector
-version: 2.1.2
-variants: +flyte +byoc +selfmanaged +union
+version: 2.3.8
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -16,7 +16,7 @@ layout: py_api
 | [`create()`](#create) | Return a resource meta that can be used to get the status of the task. |
 | [`delete()`](#delete) | Delete the task. |
 | [`get()`](#get) | Return the status of the task, and return the outputs in some cases. |
-| [`get_logs()`](#get_logs) | Return the metrics for the task. |
+| [`get_logs()`](#get_logs) | Return the task execution logs. |
 | [`get_metrics()`](#get_metrics) | Return the metrics for the task. |
 
 
@@ -86,7 +86,9 @@ def get_logs(
     kwargs,
 ) -> flyteidl2.connector.connector_pb2.GetTaskLogsResponse
 ```
-Return the metrics for the task.
+Return the task execution logs. Populate `body.lines` (structured
+LogLine entries with timestamp + originator) in the returned
+GetTaskLogsResponse.
 
 
 | Parameter | Type | Description |

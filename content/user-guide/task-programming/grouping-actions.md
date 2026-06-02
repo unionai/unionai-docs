@@ -1,6 +1,6 @@
 ---
 title: Grouping actions
-weight: 12
+weight: 14
 variants: +flyte +union
 ---
 
@@ -29,7 +29,7 @@ Groups solve this by:
 
 ### How groups work
 
-Groups are declared using the [`flyte.group`](../../api-reference/flyte-sdk/packages/flyte/_index#group) context manager.
+Groups are declared using the `flyte.group` context manager.
 Any task invocations that occur within the `with flyte.group()` block are automatically associated with that group:
 
 ```python
@@ -69,12 +69,6 @@ Groups work well with parallel execution patterns:
 Use groups to organize different phases of complex workflows:
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="multi" lang="python" >}}
-
-### Nested groups
-
-Groups can be nested to create hierarchical organization:
-
-{{< code file="/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="nested" lang="python" >}}
 
 ### Conditional grouping
 

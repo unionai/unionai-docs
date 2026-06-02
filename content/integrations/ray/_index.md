@@ -2,7 +2,6 @@
 title: Ray
 weight: 1
 variants: +flyte +union
-sidebar_expanded: false
 ---
 
 # Ray
@@ -30,6 +29,11 @@ image = (
     .with_pip_packages("ray[default]==2.46.0", "flyteplugins-ray")
 )
 ```
+
+{{< variant union >}}
+> [!NOTE]
+For self-managed setups, refer to the [setup instructions](../../deployment/selfmanaged//configuration/plugins#ray) to enable the Ray plugin in your data plane.
+{{< /variant >}}
 
 ## Configuration
 

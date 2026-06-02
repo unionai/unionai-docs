@@ -1,8 +1,7 @@
 # Flyte and Union.ai documentation
 
 - **[Flyte Docs](https://www.union.ai/docs/flyte/user-guide/)**
-- **[Union BYOC](https://www.union.ai/docs/byoc/user-guide/)**
-- **[Union Serverless](https://www.union.ai/docs/serverless/tutorials/)**
+- **[Union Docs](https://www.union.ai/docs/v2/union/user-guide/)** (covers both BYOC and Self-managed deployments)
 
 This repository holds all documentation for the [Flyte OSS project](https://www.flyte.org) and the [Union.ai](https://www.union.ai) products.
 
@@ -22,7 +21,7 @@ git clone --recurse-submodules https://github.com/unionai/unionai-docs.git
 cd unionai-docs
 
 # Set up local config
-cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml
+cp hugo.local.toml~sample hugo.local.toml
 
 # Start dev server at localhost:1313
 make dev

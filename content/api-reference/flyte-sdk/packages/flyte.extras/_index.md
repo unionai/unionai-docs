@@ -1,9 +1,8 @@
 ---
 title: flyte.extras
-version: 2.1.2
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
-sidebar_expanded: true
 ---
 
 # flyte.extras
@@ -19,6 +18,14 @@ This package provides various utilities that make it possible to build highly cu
                    producers through a single async processing function.  DynamicBatcher is the
                    general-purpose base; TokenBatcher is a convenience subclass for token-budgeted
                    LLM inference with reusable containers.
+
+3. Sleep: Route a task to the backend `core-sleep` plugin, which executes in leaseworker with no
+                   task pod.
+
+4. Shell: Wrap a CLI tool packaged in a container image. Designed as the foundation for
+                bio module libraries (bedtools, samtools, bcftools, GATK, etc.) and any other case
+                where a user wants to call a pre-built binary in a published container with
+                typed inputs and outputs.
 ## Directory
 
 ### Classes
@@ -29,6 +36,8 @@ This package provides various utilities that make it possible to build highly cu
 | [`ContainerTask`](../flyte.extras/containertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
 | [`DynamicBatcher`](../flyte.extras/dynamicbatcher) | Batches records from many concurrent producers and runs them through. |
 | [`Prompt`](../flyte.extras/prompt) | Simple prompt record with built-in token estimation. |
+| [`Sleep`](../flyte.extras/sleep) | Route a task to the backend `core-sleep` plugin. |
+| [`SleepTask`](../flyte.extras/sleeptask) |  |
 | [`TokenBatcher`](../flyte.extras/tokenbatcher) | Token-aware batcher for LLM inference workloads. |
 
 ### Protocols

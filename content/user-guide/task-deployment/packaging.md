@@ -2,7 +2,6 @@
 title: Packaging
 weight: 7
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # Code packaging for remote execution
@@ -178,6 +177,77 @@ Skip code bundling (see [Container-based deployment](#container-based-deployment
 ```python
 run = flyte.with_runcontext(copy_style="none").run(my_task, x=10)
 ```
+
+### Including additional files with `include`
+
+Code bundling discovers Python modules by following imports. That's the right behavior for source code, but it won't pick up non-Python assets like HTML templates, SQL files, small reference datasets, prompt files, or configuration files — your task imports Python, not an `.html` file, so those assets never show up in the bundle.
+
+The `include` parameter on `TaskEnvironment` lets you attach these extra files to the environment's bundle explicitly:
+
+```python
+import flyte
+
+env = flyte.TaskEnvironment(
+    name="html_template_report",
+    image=flyte.Image.from_debian_base(python_version=(3, 12)),
+    include=("report_template.html",),
+)
+```
+
+At bundling time, Flyte resolves each entry, unions it with whatever the `copy_style` discovered, and ships everything in the same tarball. The files land in the container at the same path they occupy in your project, so the task can read them with a normal relative path:
+
+```python
+from datetime import datetime, timezone
+from pathlib import Path
+
+import flyte
+import flyte.report
+
+env = flyte.TaskEnvironment(
+    name="html_template_report",
+    image=flyte.Image.from_debian_base(python_version=(3, 12)),
+    include=("report_template.html",),
+)
+
+@env.task(report=True)
+async def generate_template_report() -> str:
+    template_path = Path(__file__).parent / "report_template.html"
+    template = template_path.read_text()
+    body = template.format(
+        title="Hello",
+        generated_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+    )
+    flyte.report.get_tab("Main").log(body)
+    await flyte.report.flush.aio()
+    return "ok"
+```
+
+#### How paths are resolved
+
+- **Relative paths** are anchored at the directory of the file where the `TaskEnvironment` is instantiated — not at `root_dir` or the current working directory. `include=("report_template.html",)` looks for `report_template.html` next to the Python file that declared the env.
+- **Absolute paths** are used as-is.
+- **Directories** are included recursively.
+- **Glob patterns** are expanded against the declaring file's directory.
+
+`include` supplements the `copy_style` discovery; it does not replace it. Files listed here are bundled *in addition to* the Python modules that `copy_style` picks up. It also works alongside `copy_style="none"` — in that case, only the include entries are bundled.
+
+#### When to use `include`
+
+Good fits:
+
+- **HTML templates** rendered into reports (see the [reports examples](https://github.com/flyteorg/flyte-sdk/tree/main/examples/reports) in the SDK).
+- **Small configuration files** — YAML, JSON, TOML — that the task reads at runtime.
+- **SQL files, prompt templates, or other text assets** versioned alongside the task.
+- **Small reference data files** (a few MB of lookup tables, fixtures, etc.).
+- **Small model files** that you want versioned with the task code.
+
+> [!WARNING]
+> **Don't bundle large files with `include`.** Every container that runs the task downloads the full bundle before it starts, so large includes directly inflate cold-start latency and eat network bandwidth on every execution. As a rule of thumb, if a file is more than a few MB, or if it changes independently of your code, it doesn't belong in `include`.
+>
+> For larger assets, prefer one of these instead:
+>
+> 1. **Store in object storage (most recommended)** — keep the file in S3, GCS, or Azure Blob and read it with `flyte.io.File("s3://...")` or the cloud SDK of your choice. The file is fetched only when needed, cached independently of the code bundle, and can be updated without redeploying.
+> 2. **Bake into the container image** — use [`Image.with_source_file()` or `Image.with_source_folder()`](#image-source-copying-methods) when the asset is stable and tied to a specific image version. The file is downloaded once when the image is pulled, not on every run.
 
 ### Controlling the root directory
 

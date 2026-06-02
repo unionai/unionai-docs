@@ -1,8 +1,7 @@
 ---
 title: Helm chart reference
 variants: -flyte +union
-weight: 18
-sidebar_expanded: true
+weight: 11
 llm_readable_bundle: true
 ---
 

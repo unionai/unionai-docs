@@ -1,7 +1,7 @@
 ---
 title: PyTorch
-version: 2.1.2
-variants: +flyte +byoc +selfmanaged +union
+version: 2.3.8
+variants: +flyte +union
 layout: py_api
 ---
 

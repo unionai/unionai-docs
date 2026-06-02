@@ -21,13 +21,56 @@ running 1.32, 1.31, or 1.30.
 
 Many Container Network Interface (CNI) plugins require planning for IP address allocation capacity.
 For example, [Amazon's VPC CNI](https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html) and [GKE's Dataplane v2](https://cloud.google.com/kubernetes-engine/docs/concepts/dataplane-v2)
-allocate IP addresses to Kubernetes Pods out of one or more or your VPC's subnets.
+allocate IP addresses to Kubernetes Pods out of one or more of your VPC's subnets.
 If you are using one of these CNI plugins, you should ensure that your VPC's subnets have enough available IP addresses to support the number of concurrent tasks you expect to run.
 
-We recommend using at least a `/16` CIDR range (65,536 addresses), you may optionally subdivide this range into smaller subnets to
-support multiple availability zones or other network segmentation requirements.
+### VPC and subnet sizing
 
-In short, you should aim to have at least 1 IP address available for each task you expect to run concurrently.
+We recommend using at least a `/16` CIDR range (65,536 addresses) for the overall VPC. Within that range, size your subnets according to their role:
+
+| Subnet type | Recommended size | Purpose |
+|-------------|-----------------|---------|
+| **Private subnets** (worker nodes) | `/18` per AZ (16,384 addresses) | Pods receive IPs from these subnets. Size for your peak concurrent task count — each running task pod consumes at least one IP. |
+| **Public subnets** (load balancers) | `/24` per AZ (256 addresses) | Only needed for internet-facing load balancers and NAT Gateways. Minimal IP consumption. |
+
+As a rule of thumb, you should have at least 1 available IP address for each task you expect to run concurrently.
+
+### Public vs. private subnets
+
+We recommend running worker nodes in **private subnets** (no direct internet ingress). This is the default for managed Kubernetes services like EKS, GKE, and AKS. Public subnets are only needed for internet-facing load balancers or bastion hosts.
+
+A typical layout per availability zone:
+
+```
+VPC (/16)
+├── Public subnet  (/24) — NAT Gateway, load balancers
+└── Private subnet (/18) — Worker nodes, pods
+```
+
+### NAT Gateway requirements
+
+Worker nodes in private subnets need outbound internet access to pull container images from public registries (e.g. Docker Hub, ECR Public, ghcr.io) and to communicate with the Union control plane. This requires a **NAT Gateway** (or equivalent) in each availability zone's public subnet.
+
+| Cloud | Service | Notes |
+|-------|---------|-------|
+| AWS | [NAT Gateway](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html) | One per AZ for high availability. `eksctl` creates these automatically with the `--managed` flag. |
+| GCP | [Cloud NAT](https://cloud.google.com/nat/docs/overview) | Attach to the Cloud Router for your VPC. Private GKE clusters require this. |
+| Azure | [NAT Gateway](https://learn.microsoft.com/en-us/azure/nat-gateway/nat-overview) | Associate with the AKS subnet. Alternatively, AKS `outboundType: loadBalancer` (default) provides outbound access via the LB. |
+
+> [!NOTE] If you use a fully private cluster with no outbound internet access, you must configure private endpoints or mirrors for all container registries and the Union control plane.
+
+## Service accounts
+
+The {{< key product_name >}} data plane uses a single Kubernetes service account, `union-system`, shared by all platform components (operator, executor, webhook, proxy, and FluentBit). This service account needs cloud provider credentials to access:
+
+- **Object storage** (S3, GCS, or Azure Blob Storage) — read/write workflow execution data (task inputs/outputs, bundled code -in fast registration bucket-).
+- **Container registry** (ECR, Artifact Registry, or ACR) — pull task container images; push images when Image Builder is enabled.
+
+See the cloud-specific setup pages for details on configuring this service account:
+[AWS](./selfmanaged-aws/_index), [GCP](./selfmanaged-gcp/_index), [Azure](./selfmanaged-azure/_index).
+
+> [!NOTE] Common service account
+> In previous versions, each component had its own service account. The consolidated `union-system` service account simplifies IAM configuration — you only need to bind cloud permissions to a single identity.
 
 # Performance Recommendations
 
@@ -36,158 +79,6 @@ In short, you should aim to have at least 1 IP address available for each task y
 It is recommended but not required to use separate node pools for the Union services and the Union worker pods.  This allows you to
 guard against resource contention between Union services and other tasks running in your cluster.  You can find additional information
 in the [Configuring Node Pools](./configuration/node-pools) section.
-
-# AWS
-
-## S3
-
-Each data plane uses an object store (an AWS S3 bucket, GCS bucket or ABS container) that is used to store data used in the execution of workflows.
-As a {{< key product_name >}} administrator, you can specify retention policies for this data when setting up your data plane 
-(learn more [about the different types of data categories](./configuration/data-retention) stored by the data plane.)
-
-Union recommends the use of two S3 buckets:
-
-1. metadata bucket: contains workflow execution data such as Task inputs and outputs, etc
-2. fast registration bucket: contain local code artifacts that will be copied into the Flyte task container at runtime when using `union register` or `union run --remote --copy-all`.
-
-Note: You can choose to use a single bucket in your dataplane
-
-### Data Retention
-
-Union recommends using Lifecycle Policy on these buckets to manage the storage costs. See [Data retention policy](./configuration/data-retention) for more information.
-
-## IAM
-
-You will need to enable access to your S3 buckets from the cluster.
-
-1. Update the EKS Node IAM role for your cluster to allow the data plane nodes to use your S3 buckets.
-   This can be done by creating and attaching a new IAM policy which enables access to your S3 buckets.
-   Use `union-flyte-worker` as the name of the new policy.
-   The permissions for the policy will be:
-
-   ```json
-   {
-       "Version": "2012-10-17",
-       "Statement": [
-           {
-               "Sid": "Statement1",
-               "Effect": "Allow",
-               "Action": [
-                   "s3:DeleteObject*",
-                   "s3:GetObject*",
-                   "s3:ListBucket",
-                   "s3:PutObject*"
-               ],
-               "Resource": [
-                   "arn:aws:s3:::<bucket-name>",
-                   "arn:aws:s3:::<bucket-name>/*"
-               ]
-           }
-       ]
-   }
-   ```
-
-2. Attach this policy to your node group IAM role
-3. Create an [IAM OIDC provider for your EKS cluster](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html#_create_oidc_provider_eksctl).
-4. Create a new role named `union-flyte-role` to enable applications in a Pod’s containers to make API requests to AWS services using AWS Identity and Access Management (IAM) permissions.
-
-   The Trust Policy for this role will be:
-
-   ```json
-   {
-       "Version": "2012-10-17",
-       "Statement": [
-           {
-               "Effect": "Allow",
-               "Principal": {
-                   "Federated": "arn:aws:iam::$account_id:oidc-provider/$oidc_provider"
-               },
-               "Action": "sts:AssumeRoleWithWebIdentity",
-               "Condition": {
-                   "StringLike": {
-                       "$oidc_provider:aud": "sts.amazonaws.com",
-                       "$oidc_provider:sub": "system:serviceaccount:*:*"
-                   }
-               }
-           }
-       ]
-   }
-   ```
-   where `$account_id` is your AWS account ID and `$oidc_provider` is the OIDC provider you created above.
-
-   You can obtain these values using the AWS CLI:
-
-   ```bash
-   aws eks describe-cluster --region $cloud_region --name $cluster_name --query "cluster.identity.oidc.issuer" --output text
-   ```
-
-5. Attach the `union-flyte-worker` policy created above to this new role.
-
-## EKS configuration
-
-Union recommends installing the following EKS add-ons:
-  - CoreDNS
-  - Amazon VPC CNI
-  - Kube-proxy
-
-Union supports Autoscaling and the use of spot (interruptible) instances.
-
-# AKS
-
-## Secure access
-
-Union recommends using [Microsoft Entra Workload ID](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) to securely access Azure resources.
-
-Ensure your AKS cluster is [enabled as OIDC Issuer](https://learn.microsoft.com/en-us/azure/aks/use-oidc-issuer).
-
-Create a User Assigned Managed Identity with Federated Credentials that map to the following Kubernetes Service Accounts:
-
-**Subject Identifier**
-
-- `system:serviceaccount:<NAMESPACE>:flytepropeller-system`
-- `system:serviceaccount:<NAMESPACE>:flytepropeller-webhook-system`
-- `system:serviceaccount:<NAMESPACE>:operator-system`
-- `system:serviceaccount:<NAMESPACE>:proxy-system`
-- `system:serviceaccount:<NAMESPACE>:executor`
-
-Where `<NAMESPACE>` is where you plan to install the Union operator (`union` by default)
-
-Assign the `Storage Blob Data Owner` role to this Identity at the Storage Account level.
-
-### Workers
-
-This is the Identity that the Pods created for each execution will use to access Azure resources. Those Pods use the `default` K8s Service Account on each project-domain namespace, unless otherwise specified.
-
-Create a User Assigned Managed Identity with Federated Credentials that map to the `default` K8s Service Account:
-
-**Subject Identifier**
-
-- `system:serviceaccount:development:default`
-- `system:serviceaccount:staging:default`
-- `system:serviceaccount:production:default`
-
-Assign the `Storage Blob Data Owner` role to this Identity at the Storage Account level.
-
-## Azure Key Vault
-Union ships with an embedded secrets manager. Alternatively, you can enable Union to consume secrets from Azure Key Vault adding the following to your Helm values file:
-
-```yaml
-config:
-
-  ## Optional integration with Azure Key Vault secrets manager
-  core:
-    webhook:
-      embeddedSecretManagerConfig:
-        enabled: true
-        type: Azure
-        azureConfig:
-          vaultURI: ""https://kv-myorg-prod.vault.azure.net/" #full key vault URI
-      secretManagerTypes:
-        - Azure
-        - Embedded
-
-```
-## Node pools
 
 By default, the Union installation request the following resources:
 

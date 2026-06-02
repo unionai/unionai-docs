@@ -1,7 +1,7 @@
 ---
 title: Assignment
-version: 0.2.2
-variants: +flyte +byoc +selfmanaged +union
+version: 0.3.0
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -27,9 +27,9 @@ class Assignment(
 
 | Property | Type | Description |
 |-|-|-|
-| `policies` | `None` |  |
-| `roles` | `None` |  |
-| `subject` | `None` |  |
+| `policies` | `list[str]` |  |
+| `roles` | `list[str]` |  |
+| `subject` | `str` |  |
 
 ## Methods
 

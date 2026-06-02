@@ -1,8 +1,7 @@
 ---
 title: Advanced project
-weight: 8
+weight: 102
 variants: +flyte +union
-sidebar_expanded: false
 mermaid: true
 llm_readable_bundle: true
 ---
@@ -96,8 +95,6 @@ flyte secret create openai-api-key
 2. **[Agentic refinement](./agentic-refinement)**: Build the iterative critique-and-revise loop
 3. **[Parallel outputs](./parallel-outputs)**: Generate multiple formats concurrently
 4. **[Serving app](./serving-app)**: Deploy an interactive UI for report generation
-
-[Resilient generation]()
 
 ## Key takeaways
 

@@ -1,7 +1,7 @@
 ---
 title: PolarsToParquetEncodingHandler
-version: 2.1.2
-variants: +flyte +byoc +selfmanaged +union
+version: 2.3.8
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -26,9 +26,9 @@ the DataFrameEncoder
 
 | Property | Type | Description |
 |-|-|-|
-| `protocol` | `None` |  |
-| `python_type` | `None` |  |
-| `supported_format` | `None` |  |
+| `protocol` | `Optional[str]` |  |
+| `python_type` | `Type[T]` |  |
+| `supported_format` | `str` |  |
 
 ## Methods
 

@@ -2,7 +2,6 @@
 title: Deep research
 weight: 2
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # Deep research

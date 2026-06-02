@@ -56,7 +56,7 @@ This pattern lets you react to runtime conditions and stop unnecessary work. For
 
 Sometimes you need to stop an action manually, outside the workflow code itself. You can abort individual actions using the CLI, the UI, or the API.
 
-When an action is externally aborted, the parent action that awaits it receives a [`flyte.errors.ActionAbortedError`](../../api-reference/flyte-sdk/packages/flyte.errors/actionabortederror). You can catch this error to handle the abort gracefully.
+When an action is externally aborted, the parent action that awaits it receives a `flyte.errors.ActionAbortedError`. You can catch this error to handle the abort gracefully.
 
 ### Aborting via the CLI
 
@@ -66,7 +66,7 @@ To abort a specific action:
 flyte abort <run-name> <action-name>
 ```
 
-Use `--project` and `--domain` to target a specific [project-domain pair](../projects-and-domains).
+Use `--project` and `--domain` to target a specific [project-domain pair](../core-concepts/projects-and-domains).
 For all available options, see the [CLI reference](../../api-reference/flyte-cli#flyte-abort).
 
 ### Handling external aborts

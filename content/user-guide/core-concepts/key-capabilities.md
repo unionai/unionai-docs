@@ -1,6 +1,6 @@
 ---
 title: Key capabilities
-weight: 5
+weight: 6
 variants: +flyte +union
 ---
 
@@ -73,7 +73,7 @@ Manage credentials and automate execution.
   → [Triggers](../task-configuration/triggers)
 
 - **Webhooks**: Build APIs that trigger task execution from external systems
-  → [App usage patterns](../build-apps/app-usage-patterns)
+  → [Hybrid graphs](../build-apps/hybrid-graphs)
 
 ## Durability and reliability
 
@@ -135,16 +135,16 @@ Handle failures and avoid redundant work.
 Deploy long-running services.
 
 - **FastAPI apps**: Deploy REST APIs and webhooks
-  → [FastAPI app](../build-apps/fastapi-app)
+  → [FastAPI app](../native-app-integrations/fastapi-app)
 
 - **LLM serving**: Serve large language models with vLLM or SGLang
-  → [vLLM app](../build-apps/vllm-app), [SGLang app](../build-apps/sglang-app)
+  → [vLLM app](../native-app-integrations/vllm-app), [SGLang app](../native-app-integrations/sglang-app)
 
 - **Autoscaling**: Scale apps up and down based on traffic, including scale-to-zero
   → [Autoscaling apps](../configure-apps/auto-scaling-apps)
 
 - **Streamlit dashboards**: Deploy interactive data dashboards
-  → [Streamlit app](../build-apps/streamlit-app)
+  → [Streamlit app](../native-app-integrations/streamlit-app)
 
 ## Notebooks
 
@@ -155,4 +155,4 @@ Work interactively.
 
 ## Next steps
 
-Ready to put it all together? Head to [Basic project](../basic-project) to build an end-to-end ML system with training tasks and a serving app.
+Ready to put it all together? Head to [Basic project](./basic-project) to build an end-to-end RAG pipeline with embeddings and a Streamlit app.

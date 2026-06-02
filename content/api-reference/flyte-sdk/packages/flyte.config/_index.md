@@ -1,9 +1,8 @@
 ---
 title: flyte.config
-version: 2.1.2
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
-sidebar_expanded: true
 ---
 
 # flyte.config

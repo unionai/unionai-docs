@@ -2,7 +2,6 @@
 title: Work with local data
 weight: 3
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # Work with local data

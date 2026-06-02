@@ -88,7 +88,6 @@ Set the IRSA annotation on the FluentBit service account in your data plane Helm
 ```yaml
 fluentbit:
   serviceAccount:
-    name: fluentbit-system
     annotations:
       eks.amazonaws.com/role-arn: "arn:aws:iam::<ACCOUNT_ID>:role/<FLUENTBIT_ROLE_NAME>"
 ```
@@ -160,7 +159,6 @@ Set the Workload Identity annotation on the FluentBit service account in your da
 ```yaml
 fluentbit:
   serviceAccount:
-    name: fluentbit-system
     annotations:
       azure.workload.identity/client-id: "<CLIENT_ID>"
 ```
@@ -224,7 +222,6 @@ Set the Workload Identity annotation on the FluentBit service account in your da
 ```yaml
 fluentbit:
   serviceAccount:
-    name: fluentbit-system
     annotations:
       iam.gke.io/gcp-service-account: "fluentbit-gsa@<PROJECT_ID>.iam.gserviceaccount.com"
 ```

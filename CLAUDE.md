@@ -17,7 +17,7 @@ Multi-variant Hugo documentation site for Flyte (open-source) and Union.ai produ
 
 ```bash
 # Development (requires hugo.local.toml setup first)
-cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml  # First time only
+cp hugo.local.toml~sample hugo.local.toml  # First time only
 make dev                                    # Start dev server at localhost:1313
 
 # Production build
@@ -142,6 +142,34 @@ Navigation: lower `weight` = higher position. `weight: 0` or missing = alphabeti
 
 ## Content Authoring
 
+### API-reference autolinking
+
+Inline `` `code` `` and Python code blocks are automatically linked to their API reference at runtime by `inline-code-linker.js` and `codeblock-linker.js` (loaded for every page; data comes from `linkmap/*-linkmap.json`).
+
+**Do not write explicit Markdown links for identifiers the autolinker already handles.** Write the bare backticked identifier and let the linker wrap it.
+
+```markdown
+✅  A `flyte.io.File` is a reference to an offloaded file.
+✅  Call `flyte.init()` before submitting a run.
+
+❌  A [`flyte.io.File`](../../api-reference/flyte-sdk/packages/flyte.io/file) is a reference …
+❌  Call [`flyte.init()`](../../api-reference/flyte-sdk/packages/flyte/_index#init) …
+```
+
+What the linker matches (in inline code, exact `<code>` text):
+- Fully-qualified identifiers from any loaded linkmap: `flyte.io.File`, `flyte.report.log()`, `flyte.errors.OOMError`, `flyteplugins.bigquery.BigQueryConfig`, …
+- A trailing `()` is stripped before lookup, so `` `flyte.init()` `` and `` `flyte.init` `` both link.
+- A leading `@` is stripped (decorator form).
+- `ClassName.method` falls back to `<class-url>#method` when the class is in the linkmap.
+
+What it does **not** match — keep an explicit link in these cases:
+- Link text that isn't a pure single backticked identifier (e.g. `` [`Resources` API reference](…) ``, `` [`Trigger` and `Cron`](…) ``).
+- Bare short names (e.g. `` `Trigger` ``, `` `Resources` ``) — the SDK linkmap only emits fully-qualified keys. Prefer `` `flyte.Trigger` ``. (Plugin linkmaps do emit both forms.)
+- Links to specific anchors that aren't `#methodname` (e.g. arbitrary `#section-ids`).
+- Cross-page links (`./other-page`) and non-API-ref URLs.
+
+To check whether an identifier is autolinkable, grep `linkmap/*.json` for it. If it's there, drop the explicit `[...](…)` wrapper.
+
 ### Notices
 
 ```markdown
@@ -174,7 +202,7 @@ jupyter_notebook: /path/to/notebook.ipynb
 ## Development Setup
 
 1. Install Hugo >= 0.145.0: `brew install hugo`
-2. Copy config: `cp unionai-docs-infra/hugo.local.toml~sample hugo.local.toml`
+2. Copy config: `cp hugo.local.toml~sample hugo.local.toml`
 3. Run: `make dev`
 
 Dev settings in `hugo.local.toml`:

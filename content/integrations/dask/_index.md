@@ -2,7 +2,6 @@
 title: Dask
 weight: 1
 variants: +flyte +union
-sidebar_expanded: false
 ---
 
 # Dask
@@ -27,6 +26,11 @@ Your task image must also include the Dask distributed scheduler:
 ```python
 image = flyte.Image.from_debian_base(name="dask").with_pip_packages("flyteplugins-dask")
 ```
+
+{{< variant union >}}
+> [!NOTE]
+For self-managed setups, refer to the [setup instructions](../../deployment/selfmanaged/configuration/plugins#dask) to enable the Dask plugin in your data plane.
+{{< /variant >}}
 
 ## Configuration
 

@@ -196,4 +196,4 @@ def my_task(x: int) -> int:
 | `deprecated` | N/A | Not in Flyte 2 |
 | `docs` | `@env.task(docs=...)` | Task-level only |
 
-For full details, see [Configure tasks](../../user-guide/task-configuration/_index).
+For full details, see [Configure tasks](../../../user-guide/task-configuration/_index).

@@ -1,10 +1,9 @@
 ---
 title: Flyte SDK
-version: 2.1.2
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 weight: 4
-sidebar_expanded: true
 ---
 
 # Flyte SDK

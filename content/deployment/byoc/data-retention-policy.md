@@ -25,7 +25,7 @@ The retention policy system distinguishes three categories of data:
    - Artifact data.
    - Internal metadata used by {{< key product_name >}}.
 2. Fast-registered code:
-   - Local code artifacts that will be copied into the Flyte task container at runtime when using `union register` or `union run --remote --copy-all`.
+   - Local code artifacts that will be copied into the Flyte task container at runtime when using `flyte deploy` or `flyte run --copy-style all`.
 3. Flyte plugin metadata (for example, Spark history server data).
 
 Each category of data is stored in a separate {{< key product_name >}}-managed object store bucket and versioning is enabled on these buckets.

@@ -2,7 +2,6 @@
 title: Workflow sandboxing
 weight: 2
 variants: +flyte +union
-sidebar_expanded: false
 llm_readable_bundle: true
 mermaid: true
 ---
@@ -18,7 +17,7 @@ Three properties of Flyte make it a natural fit for sandboxed code execution:
 
 1. **Infrastructure on demand**: Flyte spins up containers with specific permissions, secrets, and resources for each task.
 2. **LLMs are great at Python**: Models trained on billions of lines of code can reliably generate Python orchestration logic.
-3. **Microsecond startup**: The sandbox is powered by [Monty](https://github.com/pydantic/pydantic-monty) (Pydantic's Rust-based Python interpreter), which starts in microseconds without the overhead of VMs or containers.
+3. **Microsecond startup**: The sandbox is powered by [Monty](https://github.com/pydantic/monty) (Pydantic's Rust-based Python interpreter), which starts in microseconds without the overhead of VMs or containers.
 
 The result: LLMs generate the orchestration code (control flow, conditionals, loops), and Flyte tasks handle the heavy lifting (data access, computation, external APIs) in full containers.
 

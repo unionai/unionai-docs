@@ -1,7 +1,7 @@
 ---
 title: JsonlFile
-version: 2.1.2
-variants: +flyte +byoc +selfmanaged +union
+version: 2.3.8
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -82,7 +82,7 @@ validated to form a valid model.
 
 | Property | Type | Description |
 |-|-|-|
-| `lazy_uploader` | `None` |  |
+| `lazy_uploader` | `Callable[[], Coroutine[Any, Any, tuple[str \| None, str]]] \| None` |  |
 
 ## Methods
 
@@ -99,7 +99,7 @@ validated to form a valid model.
 | [`iter_arrow_batches_sync()`](#iter_arrow_batches_sync) | Sync generator that yields Arrow RecordBatches. |
 | [`iter_records()`](#iter_records) | Async generator that yields parsed dicts line by line. |
 | [`iter_records_sync()`](#iter_records_sync) | Sync generator that yields parsed dicts line by line. |
-| [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialise private attributes. |
+| [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialize private attributes. |
 | [`named_remote()`](#named_remote) | Create a File reference whose remote path is derived deterministically from *name*. |
 | [`new_remote()`](#new_remote) | Create a new File reference for a remote file that will be written to. |
 | [`open()`](#open) | Asynchronously open the file and return a file-like object. |
@@ -449,7 +449,7 @@ def model_post_init(
     context: Any,
 )
 ```
-This function is meant to behave like a BaseModel method to initialise private attributes.
+This function is meant to behave like a BaseModel method to initialize private attributes.
 
 It takes context as an argument since that's what pydantic-core passes when calling it.
 

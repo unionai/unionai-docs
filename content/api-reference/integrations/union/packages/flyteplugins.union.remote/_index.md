@@ -1,7 +1,7 @@
 ---
 title: flyteplugins.union.remote
-version: 0.2.2
-variants: +flyte +byoc +selfmanaged +union
+version: 0.3.0
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -40,6 +40,7 @@ Example:
 | [`Cluster`](../flyteplugins.union.remote/cluster) | Represents a Union cluster. |
 | [`Member`](../flyteplugins.union.remote/member) | Represents a Union organization member (user or application). |
 | [`Policy`](../flyteplugins.union.remote/policy) | Represents a Union RBAC Policy. |
+| [`Queue`](../flyteplugins.union.remote/queue) | Represents a Union scheduling queue. |
 | [`Role`](../flyteplugins.union.remote/role) | Represents a Union RBAC Role. |
 | [`User`](../flyteplugins.union.remote/user) | Represents a Union user. |
 

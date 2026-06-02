@@ -1,7 +1,7 @@
 ---
 title: flyteplugins.union.utils.auth
-version: 0.2.2
-variants: +flyte +byoc +selfmanaged +union
+version: 0.3.0
+variants: +flyte +union
 layout: py_api
 ---
 

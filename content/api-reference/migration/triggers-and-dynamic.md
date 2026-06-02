@@ -113,7 +113,7 @@ flyte deploy my_module.py my_env
 # Otherwise, activate manually via UI or API
 ```
 
-For full details on triggers, see [Triggers](../../user-guide/task-configuration/triggers).
+For full details on triggers, see [Triggers](../../../user-guide/task-configuration/triggers).
 
 ## Dynamic workflows
 

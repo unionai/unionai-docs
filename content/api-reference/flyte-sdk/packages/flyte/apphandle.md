@@ -1,6 +1,6 @@
 ---
 title: AppHandle
-version: 2.1.2
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 ---
@@ -22,9 +22,9 @@ protocol AppHandle()
 
 | Property | Type | Description |
 |-|-|-|
-| `endpoint` | `None` |  |
-| `name` | `None` |  |
-| `url` | `None` |  |
+| `endpoint` | `str` |  |
+| `name` | `str` |  |
+| `url` | `str` |  |
 
 ## Methods
 

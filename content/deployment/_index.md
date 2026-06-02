@@ -4,8 +4,7 @@ weight: 5
 variants: -flyte +union
 top_menu: true
 mermaid: true
-sidebar_expanded: true
-tier2_band: true
+secondary_topnav: -flyte +union
 ---
 
 # Platform deployment

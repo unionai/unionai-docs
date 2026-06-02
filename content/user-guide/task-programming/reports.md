@@ -1,6 +1,6 @@
 ---
 title: Reports
-weight: 7
+weight: 9
 variants: +flyte +union
 ---
 
@@ -9,7 +9,7 @@ variants: +flyte +union
 The reports feature allows you to display and update custom output in the UI during task execution.
 
 First, you set the `report=True` flag in the task decorator. This enables the reporting feature for that task.
-Within a task with reporting enabled, a [`flyte.report.Report`](../../api-reference/flyte-sdk/packages/flyte.report/report) object is created automatically.
+Within a task with reporting enabled, a `flyte.report.Report` object is created automatically.
 
 A `Report` object contains one or more tabs, each of which contains HTML.
 You can write HTML to an existing tab and create new tabs to organize your content.
@@ -17,19 +17,19 @@ Initially, the `Report` object has one tab (the default tab) with no content.
 
 To write content:
 
-- [`flyte.report.log()`](../../api-reference/flyte-sdk/packages/flyte.report/_index#log) appends HTML content directly to the default tab.
-- [`flyte.report.replace()`](../../api-reference/flyte-sdk/packages/flyte.report/_index#replace) replaces the content of the default tab with new HTML.
+- `flyte.report.log()` appends HTML content directly to the default tab.
+- `flyte.report.replace()` replaces the content of the default tab with new HTML.
 
 To get or create a new tab:
 
-- [`flyte.report.get_tab()`](../../api-reference/flyte-sdk/packages/flyte.report/_index#get_tab) allows you to specify a unique name for the tab, and it will return the existing tab if it already exists or create a new one if it doesn't.
+- `flyte.report.get_tab()` allows you to specify a unique name for the tab, and it will return the existing tab if it already exists or create a new one if it doesn't.
   It returns a `flyte.report._report.Tab`
 
 You can `log()` or `replace()` HTML on the `Tab` object just as you can directly on the `Report` object.
 
 Finally, you send the report to the Flyte server and make it visible in the UI:
 
-- [`flyte.report.flush()`](../../api-reference/flyte-sdk/packages/flyte.report/_index#flush) dispatches the report.
+- `flyte.report.flush()` dispatches the report.
   **It is important to call this method to ensure that the data is sent**.
 
 <!-- TODO:

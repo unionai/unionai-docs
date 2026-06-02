@@ -1,7 +1,7 @@
 ---
 title: ApiKey
-version: 0.2.2
-variants: +flyte +byoc +selfmanaged +union
+version: 0.3.0
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -36,9 +36,9 @@ class ApiKey(
 
 | Property | Type | Description |
 |-|-|-|
-| `client_id` | `None` | The OAuth client ID. |
-| `client_name` | `None` | The human-readable name of the API key. |
-| `client_secret` | `None` | The OAuth client secret (only available on creation). |
+| `client_id` | `str` | The OAuth client ID. |
+| `client_name` | `str` | The human-readable name of the API key. |
+| `client_secret` | `str` | The OAuth client secret (only available on creation). |
 
 ## Methods
 
@@ -65,6 +65,7 @@ def create(
     cls,
     name: str,
     redirect_uris: list[str] | None,
+    skip_default_policy_assignments: bool,
 ) -> ApiKey
 ```
 Create a new API key.
@@ -76,6 +77,7 @@ Create a new API key.
 | `cls` |  | |
 | `name` | `str` | Human-readable name for the API key |
 | `redirect_uris` | `list[str] \| None` | OAuth redirect URIs (defaults to localhost callback) |
+| `skip_default_policy_assignments` | `bool` | If True, the server will not attach its default policies to the new app. The caller is responsible for granting access via ``flyte create assignment``. |
 
 **Returns**
 

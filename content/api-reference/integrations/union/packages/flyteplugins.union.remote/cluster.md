@@ -1,7 +1,7 @@
 ---
 title: Cluster
-version: 0.2.2
-variants: +flyte +byoc +selfmanaged +union
+version: 0.3.0
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -27,16 +27,31 @@ class Cluster(
 
 | Property | Type | Description |
 |-|-|-|
-| `health` | `None` |  |
-| `health_display` | `None` |  |
-| `monitoring_info` | `None` |  |
-| `name` | `None` |  |
-| `organization` | `None` |  |
-| `state` | `None` |  |
-| `tunnel_status` | `None` |  |
-| `tunnel_status_display` | `None` |  |
-| `tunnel_url` | `None` |  |
-| `unhealthy_reasons` | `None` |  |
+| `assigned_config_id` | `str` |  |
+| `bucket_name` | `str` |  |
+| `bucket_region` | `str` |  |
+| `capacity` | `str` | Compact capacity for table view: ``'64c/512G/8g'`` (cpu/memory/gpu).  Returns an empty string when the cluster reports no capacity (e.g. disabled or never-reported clusters) — table renderers should display that as ``—``. Memory is rounded to GiB when ≥ 1 GiB, otherwise reported in MiB. The GPU segment is omitted when the cluster has no GPUs. |
+| `cloud_host_name` | `str` |  |
+| `config_drift` | `bool` | True when the cluster has not yet synced to the assigned config. |
+| `dataplane_ingress_enabled` | `bool` |  |
+| `gcp_project_id` | `str` |  |
+| `health` | `str` |  |
+| `health_display` | `str` |  |
+| `metadata_bucket_prefix` | `str` |  |
+| `monitoring_info` | `list[dict]` |  |
+| `name` | `str` |  |
+| `operator_app_id` | `str` |  |
+| `organization` | `str` |  |
+| `queues` | `list[dict]` |  |
+| `state` | `str` |  |
+| `storage_type` | `str` |  |
+| `synced_at` | `str` |  |
+| `synced_config_id` | `str` |  |
+| `tunnel_status` | `str` |  |
+| `tunnel_status_display` | `str` |  |
+| `tunnel_url` | `str` |  |
+| `unhealthy_reasons` | `list[str]` |  |
+| `user_role` | `str` |  |
 
 ## Methods
 

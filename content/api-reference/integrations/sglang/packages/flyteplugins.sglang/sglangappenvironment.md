@@ -1,7 +1,7 @@
 ---
 title: SGLangAppEnvironment
-version: 2.1.2
-variants: +flyte +byoc +selfmanaged +union
+version: 2.3.8
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -27,13 +27,13 @@ class SGLangAppEnvironment(
     env_vars: Optional[Dict[str, str]],
     resources: Optional[Resources],
     interruptible: bool,
+    include: Tuple[str, ...],
     args: *args,
     command: Optional[Union[List[str], str]],
     requires_auth: bool,
     scaling: Scaling,
     domain: Domain | None,
     links: List[Link],
-    include: List[str],
     parameters: List[Parameter],
     cluster_pool: str,
     timeouts: Timeouts,
@@ -57,13 +57,13 @@ class SGLangAppEnvironment(
 | `env_vars` | `Optional[Dict[str, str]]` | Environment variables to set for the application. |
 | `resources` | `Optional[Resources]` | |
 | `interruptible` | `bool` | |
+| `include` | `Tuple[str, ...]` | |
 | `args` | `*args` | |
 | `command` | `Optional[Union[List[str], str]]` | |
 | `requires_auth` | `bool` | Whether the public URL requires authentication. |
 | `scaling` | `Scaling` | Scaling configuration for the app environment. |
 | `domain` | `Domain \| None` | Domain to use for the app. |
 | `links` | `List[Link]` | |
-| `include` | `List[str]` | |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | The target cluster_pool where the app should be deployed. |
 | `timeouts` | `Timeouts` | |
@@ -74,19 +74,19 @@ class SGLangAppEnvironment(
 | `model_path` | `str \| RunOutput` | Remote path to model (e.g., s3 |
 | `model_hf_path` | `str` | Hugging Face path to model (e.g., Qwen/Qwen3-0.6B). |
 | `model_id` | `str` | Model id that is exposed by SGLang. |
-| `stream_model` | `bool` | Set to True to stream model from blob store to the GPU directly. If False, the model will be downloaded to the local file system first and then loaded into the GPU. |
+| `stream_model` | `bool` | When ``model_path`` is set, use True to stream weights from object storage to the GPU (Flyte loader integration). Ignored for ``model_hf_path``-only apps, which use SGLang's normal Hugging Face download path. If False with ``model_path``, the model is downloaded to the local filesystem first, then loaded. |
 
 ## Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `endpoint` | `None` |  |
+| `endpoint` | `str` |  |
 
 ## Methods
 
 | Method | Description |
 |-|-|
-| [`add_dependency()`](#add_dependency) | Add a dependency to the environment. |
+| [`add_dependency()`](#add_dependency) | Add one or more environment dependencies so they are deployed together. |
 | [`clone_with()`](#clone_with) |  |
 | [`container_args()`](#container_args) | Return the container arguments for SGLang. |
 | [`container_cmd()`](#container_cmd) |  |
@@ -103,12 +103,21 @@ def add_dependency(
     env: Environment,
 )
 ```
-Add a dependency to the environment.
+Add one or more environment dependencies so they are deployed together.
+
+When you deploy this environment, any environments added via
+`add_dependency` will also be deployed. This is an alternative to
+passing `depends_on=[...]` at construction time, useful when the
+dependency is defined after the environment is created.
+
+Duplicate dependencies are silently ignored. An environment cannot
+depend on itself.
+
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `env` | `Environment` | |
+| `env` | `Environment` | One or more `Environment` instances to add as dependencies. |
 
 ### clone_with()
 

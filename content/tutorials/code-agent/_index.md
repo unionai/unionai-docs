@@ -2,7 +2,6 @@
 title: Run LLM-generated code
 weight: 1
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # Run LLM-generated code

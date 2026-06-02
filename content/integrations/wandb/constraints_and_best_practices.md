@@ -2,7 +2,6 @@
 title: Constraints and best practices
 weight: 4
 variants: +flyte +union
-sidebar_expanded: false
 ---
 
 # Constraints and best practices

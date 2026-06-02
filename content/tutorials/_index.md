@@ -3,7 +3,6 @@ title: Tutorials
 weight: 2
 variants: +flyte +union
 top_menu: true
-sidebar_expanded: true
 llm_readable_bundle: true
 ---
 
@@ -41,6 +40,10 @@ Adapt Qwen2.5-VL to occluded image classification by training a 10K-parameter ad
 
 {{< link-card target="hpo" title="Hyperparameter optimization" >}}
 Run large-scale HPO experiments with zero manual tracking, deterministic results, and automatic recovery.
+{{< /link-card >}}
+
+{{< link-card target="mle-bot" title="MLE Bot: autonomous ML engineer" >}}
+An autonomous ML agent that designs, runs, and iterates on experiments using Flyte's durable sandbox for safe LLM-generated code execution.
 {{< /link-card >}}
 
 {{< link-card target="trading-agents" title="Multi-agent trading simulation" >}}

@@ -1,7 +1,7 @@
 ---
 title: Event
-version: 2.1.2
-variants: +flyte +byoc +selfmanaged +union
+version: 2.3.8
+variants: +flyte +union
 layout: py_api
 ---
 
@@ -54,9 +54,9 @@ class Event(
 
 | Property | Type | Description |
 |-|-|-|
-| `api_url` | `None` | API endpoint for programmatic submission. |
-| `endpoint` | `None` | Base endpoint of the HITL app. |
-| `form_url` | `None` | URL where humans can submit input for this event. |
+| `api_url` | `str` | API endpoint for programmatic submission. |
+| `endpoint` | `str` | Base endpoint of the HITL app. |
+| `form_url` | `str` | URL where humans can submit input for this event. |
 
 ## Methods
 
@@ -68,14 +68,8 @@ class Event(
 
 ### create()
 
-
-> [!NOTE] This method can be called both synchronously or asynchronously.
-> Default invocation is sync and will block.
-> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
-> `result = await Event.create.aio()`.
 ```python
 def create(
-    cls,
     name: str,
     data_type: Type[T],
     scope: EventScope,
@@ -94,7 +88,6 @@ details are abstracted away - you just get an event to wait on.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `cls` |  | |
 | `name` | `str` | A descriptive name for the event (used in logs and UI) |
 | `data_type` | `Type[T]` | The expected type of the input (int, float, str, bool) |
 | `scope` | `EventScope` | The scope of the event. Currently only "run" is supported. |

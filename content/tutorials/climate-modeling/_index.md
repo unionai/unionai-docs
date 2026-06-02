@@ -2,7 +2,6 @@
 title: GPU-accelerated climate modeling
 weight: 1
 variants: +flyte +union
-sidebar_expanded: true
 ---
 
 # GPU-accelerated climate modeling

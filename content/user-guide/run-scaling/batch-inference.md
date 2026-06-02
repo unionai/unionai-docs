@@ -165,6 +165,245 @@ async with TokenBatcher(
 
 `TokenBatcher` checks the `TokenEstimator` protocol (`estimate_tokens()`) in addition to `CostEstimator` (`estimate_cost()`), making it natural to work with prompt types.
 
+{{< variant flyte >}}
+{{< markdown >}}
+
+## Combining with app environments
+
+[`DynamicBatcher`](../../api-reference/flyte-sdk/packages/flyte.extras/dynamicbatcher) on its own improves utilization within a single task, but the model has to be loaded from scratch on every invocation. To amortize that cost across many task runs, host the model inside a long-lived [`AppEnvironment`](../../api-reference/flyte-sdk/packages/flyte.app/appenvironment) and have driver tasks call it over HTTP:
+
+- **Amortized model loading** — the model is loaded once when the app starts and stays in memory for the lifetime of the replica
+- **Cross-task batching** — every concurrent HTTP request submits to the **same shared [`TokenBatcher`](../../api-reference/flyte-sdk/packages/flyte.extras/tokenbatcher)**, so the GPU always has a full queue of work
+- **Automatic scaling** — the app autoscales between min and max replicas based on a concurrency target, and each replica maintains its own model and batcher
+
+```mermaid
+flowchart LR
+    D["Driver task<br/>fans out chunks<br/>(concurrency cap)"]
+
+    subgraph calls ["infer_batch tasks (HTTP clients)"]
+        T1["call 1"]
+        T2["call 2"]
+        T3["call N"]
+    end
+
+    D --> T1
+    D --> T2
+    D --> T3
+
+    subgraph app ["FastAPI app environment (GPU)"]
+        FA["POST /generate"]
+        B["Shared TokenBatcher"]
+        M["vLLM model<br/>(loaded in lifespan)"]
+        FA --> B --> M
+    end
+
+    T1 --> FA
+    T2 --> FA
+    T3 --> FA
+```
+
+The two key techniques are:
+
+1. **Use FastAPI's `lifespan`** to load the model and start the `TokenBatcher` exactly once per replica, then attach the batcher to `app.state` so request handlers can reach it.
+2. **Cap driver concurrency** with `flyte.map.aio(..., concurrency=N)` so the orchestrator doesn't overload the app with more in-flight requests than its scaling target can serve.
+
+### Example: batch LLM inference with vLLM behind a FastAPI app
+
+This example loads math problems from HuggingFace's gsm8k dataset and solves them by calling a FastAPI app that runs vLLM with a shared `TokenBatcher`.
+
+#### 1. Load the model and batcher once via FastAPI lifespan
+
+The FastAPI `lifespan` runs on startup and shutdown. Use it to load the vLLM model and start the `TokenBatcher` exactly once per replica, then attach the batcher to `app.state` so request handlers can reach it:
+
+```python
+import asyncio
+import logging
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+from dataclasses import dataclass
+
+from fastapi import FastAPI, HTTPException, Request
+from pydantic import BaseModel
+
+import flyte
+import flyte.app
+from flyte.app.extras import FastAPIAppEnvironment
+from flyte.extras import TokenBatcher
+
+logger = logging.getLogger(__name__)
+
+
+@dataclass
+class Prompt:
+    task_id: str
+    index: int
+    text: str
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    """Load the vLLM model and start the TokenBatcher once at startup."""
+    from vllm import LLM, SamplingParams
+
+    llm = LLM(
+        model="Qwen/Qwen2.5-7B-Instruct",
+        gpu_memory_utilization=0.9,
+        max_model_len=4096,
+    )
+    params = SamplingParams(temperature=0.7, max_tokens=512)
+    logger.info("vLLM model loaded")
+
+    async def inference(batch: list[Prompt]) -> list[str]:
+        texts = [p.text for p in batch]
+        outputs = llm.generate(texts, params)
+        return [o.outputs[0].text for o in outputs]
+
+    batcher = TokenBatcher[Prompt, str](
+        inference_fn=inference,
+        target_batch_tokens=32_000,
+        max_batch_size=256,
+        batch_timeout_s=0.05,
+        max_queue_size=5_000,
+    )
+    await batcher.start()
+    logger.info("TokenBatcher started")
+
+    app.state.batcher = batcher
+    yield
+    await batcher.stop()
+
+
+app = FastAPI(title="Batched Inference Service", lifespan=lifespan)
+```
+
+Stashing the batcher on `app.state` means every request handler can grab the same shared instance via `request.app.state.batcher`, so concurrent requests all feed into one queue.
+
+#### 2. Add an endpoint that submits to the shared batcher
+
+Each request just enqueues records — the batcher aggregates records across concurrent requests into token-budgeted batches before hitting the GPU:
+
+```python
+class GenerateRequest(BaseModel):
+    prompts: list[str]
+    task_id: str
+
+
+@app.post("/generate")
+async def generate(request_body: GenerateRequest, request: Request):
+    if not request_body.prompts:
+        raise HTTPException(status_code=400, detail="No prompts provided")
+
+    batcher: TokenBatcher[Prompt, str] = request.app.state.batcher
+
+    futures: list[asyncio.Future[str]] = []
+    for idx, text in enumerate(request_body.prompts):
+        record = Prompt(task_id=request_body.task_id, index=idx, text=text)
+        future = await batcher.submit(record)
+        futures.append(future)
+
+    results = await asyncio.gather(*futures)
+    return {"results": results}
+```
+
+#### 3. Define the app environment and driver task environment
+
+The app uses a [`FastAPIAppEnvironment`](../../api-reference/flyte-sdk/packages/flyte.app.extras/fastapiappenvironment) on a GPU and autoscales via [`Scaling`](../../api-reference/flyte-sdk/packages/flyte.app/scaling). The driver runs in a CPU-only [`TaskEnvironment`](../../api-reference/flyte-sdk/packages/flyte/taskenvironment) that `depends_on` the app so the app is deployed before the driver runs:
+
+```python
+image = (
+    flyte.Image.from_debian_base()
+    .with_pip_packages("vllm", "hf-transfer", "fastapi", "uvicorn")
+    .with_env_vars({"HF_HUB_ENABLE_HF_TRANSFER": "1"})
+)
+
+app_env = FastAPIAppEnvironment(
+    name="batch-inference-saturate-app",
+    app=app,
+    image=image,
+    resources=flyte.Resources(cpu=6, memory="24Gi", gpu="L4:1", disk="64Gi"),
+    scaling=flyte.app.Scaling(
+        replicas=(0, 2),
+        metric=flyte.app.Scaling.Concurrency(val=10),
+        scaledown_after=300,
+    ),
+    requires_auth=False,
+)
+
+driver_env = flyte.TaskEnvironment(
+    name="batch_inference_saturate_app_driver",
+    resources=flyte.Resources(cpu=2, memory="2Gi"),
+    image=image,
+    depends_on=[app_env],
+)
+```
+
+With `replicas=(0, 2)` and a concurrency target of `10`, the app scales between 0 and 2 GPU replicas and aims for ~10 concurrent in-flight requests per replica — so up to ~20 requests can be served in parallel.
+
+#### 4. Define a driver task that calls the app
+
+The driver task POSTs prompt chunks to the app's endpoint. Use generous timeouts and retries to absorb cold starts and transient failures during scaling events:
+
+```python
+import httpx
+
+
+@driver_env.task(retries=20)
+async def infer_batch(
+    endpoint: str,
+    prompts: list[str],
+    task_id: str,
+) -> list[str]:
+    url = f"{endpoint}/generate"
+    async with httpx.AsyncClient(
+        timeout=httpx.Timeout(connect=60.0, read=600.0, write=30.0, pool=10.0),
+    ) as client:
+        response = await client.post(
+            url,
+            json={"prompts": prompts, "task_id": task_id},
+        )
+        response.raise_for_status()
+        return response.json()["results"]
+```
+
+#### 5. Fan out chunks with a concurrency cap
+
+The orchestrator chunks the dataset and submits each chunk as a separate `infer_batch` call. Use `flyte.map.aio(..., concurrency=max_concurrency)` to cap the number of in-flight HTTP calls so the task doesn't overload the app with more requests than its scaling target can serve:
+
+```python
+@driver_env.task
+async def main(
+    num_questions: int = 500,
+    chunk_size: int = 50,
+    max_concurrency: int = 10,
+) -> dict[str, list[str]]:
+    questions = await fetch_gsm8k_questions(num_questions)
+    endpoint = app_env.endpoint
+
+    chunks = [
+        questions[i : i + chunk_size]
+        for i in range(0, len(questions), chunk_size)
+    ]
+    task_ids = [f"gsm8k_{i:03d}" for i in range(len(chunks))]
+
+    all_results = [
+        result
+        async for result in flyte.map.aio(
+            infer_batch,
+            [endpoint] * len(chunks),
+            chunks,
+            task_ids,
+            concurrency=max_concurrency,
+        )
+    ]
+    return dict(zip(task_ids, all_results))
+```
+
+> [!IMPORTANT]
+> Match `max_concurrency` to the app's scaling configuration. In this example, the app autoscales up to 2 replicas with a concurrency target of 10, so ~20 requests can be in flight at once. Setting `max_concurrency=10` keeps the driver from queueing requests far beyond what the app can absorb — which would otherwise stack up behind the batcher's `max_queue_size`, exhaust HTTP timeouts, and waste retry budget.
+
+{{< /markdown >}}
+{{< /variant >}}
+
 {{< variant union >}}
 {{< markdown >}}
 
