@@ -8,6 +8,7 @@ on:
 
 jobs:
   deploy-redirects:
+    name: "Deploy Redirects"
     runs-on: ubuntu-latest
 
     steps:
