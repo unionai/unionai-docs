@@ -1,6 +1,6 @@
 ---
 title: ContainerTask
-version: 2.3.4
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 ---
@@ -29,7 +29,6 @@ class ContainerTask(
     output_data_dir: str | pathlib.Path,
     metadata_format: typing.Literal['JSON', 'YAML', 'PROTO'],
     local_logs: bool,
-    block_network: bool,
     kwargs,
 )
 ```
@@ -45,7 +44,6 @@ class ContainerTask(
 | `output_data_dir` | `str \| pathlib.Path` | The directory where the output data is stored. This is a string or a Path object. |
 | `metadata_format` | `typing.Literal['JSON', 'YAML', 'PROTO']` | The format of the output file. This can be "JSON", "YAML", or "PROTO". |
 | `local_logs` | `bool` | If True, logs will be printed to the console in the local execution. |
-| `block_network` | `bool` | If True, blocks all outbound network access. Locally this sets Docker ``network_mode=none``. On-cluster it applies the pod template ``sandboxed-pod-template``. Defaults to False. |
 | `kwargs` | `**kwargs` | |
 
 ## Properties

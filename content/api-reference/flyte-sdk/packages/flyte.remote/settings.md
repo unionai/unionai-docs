@@ -1,6 +1,6 @@
 ---
 title: Settings
-version: 2.3.4
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 ---
@@ -26,7 +26,6 @@ class Settings(
     _version: int,
     _parent_effective: dict[str, EffectiveSetting],
     _map_entry_origins: dict[str, dict[str, EffectiveSetting]],
-    _list_item_origins: dict[str, list[EffectiveSetting]],
 )
 ```
 | Parameter | Type | Description |
@@ -38,7 +37,6 @@ class Settings(
 | `_version` | `int` | |
 | `_parent_effective` | `dict[str, EffectiveSetting]` | |
 | `_map_entry_origins` | `dict[str, dict[str, EffectiveSetting]]` | |
-| `_list_item_origins` | `dict[str, list[EffectiveSetting]]` | |
 
 ## Methods
 
@@ -130,7 +128,7 @@ Parse YAML content into a dict of overrides.
 
 Uses ``yaml.safe_load``, so all YAML syntax is supported — including
 flow collections (``[a, b]``, ``{k: v}``) and block collections — for
-the list and map leaves (``labels``, ``annotations``,
+the map leaves (``labels``, ``annotations``,
 ``environment_variables``). Commented lines are ignored (template
 entries stay as comments until the user uncomments them).
 
