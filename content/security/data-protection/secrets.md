@@ -21,7 +21,7 @@ All four backends are available regardless of deployment model. The choice of ba
 
 ## Secret lifecycle
 
-**Creation:** When a user creates a secret via the UI or CLI, the value is sent directly to the data plane's secrets backend through the Direct-to-DataPlane tunnel and stored encrypted at rest in the customer's secret manager (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or K8s Secrets). The value never enters Union.ai's control plane in any form. The tunnel's Envoy router authenticates the request against Union identity and enforces RBAC before the value reaches the secrets backend.
+**Creation:** When a user creates a secret via the UI or CLI, the value is sent directly to the data plane's secrets backend over the client-to-data-plane channel -- the Direct-to-DataPlane tunnel under the default tier, or the customer-managed internal load balancer under the [Sovereign Data Plane](../architecture/sovereign-data-plane) tier -- and stored encrypted at rest in the customer's secret manager (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or K8s Secrets). The value never enters Union.ai's control plane in any form. The Envoy router inside the customer's cluster authenticates the request against Union.ai identity and enforces RBAC before the value reaches the secrets backend.
 
 | Phase | Encrypted? | Details |
 |-------|------------|---------|
@@ -35,7 +35,6 @@ All four backends are available regardless of deployment model. The choice of ba
 **Consumption:** When a task pod is created, the Executor configures it to mount the requested secrets from the backend as environment variables or files. The value is read by the data plane's secrets backend and injected into the pod. It never leaves the customer's infrastructure during this process. The control plane is not involved in secret consumption at runtime.
 
 **Scoping:** Secrets can be scoped at organization, project, or domain level. Only task pods running within the appropriate scope can access the corresponding secrets. This ensures that teams working in different projects cannot access each other's secrets, even within the same data plane cluster.
-
 
 ## Verification
 

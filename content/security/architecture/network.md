@@ -22,9 +22,9 @@ The client-to-data-plane path is direct: client → tunnel (or internal load bal
 
 ## Direct-to-DataPlane tunnel
 
-The Direct-to-DataPlane tunnel is an outbound-only encrypted Cloudflare Tunnel from the customer's cluster to the Cloudflare edge network. It is initiated by a `cloudflared` daemon in the data plane and carries client-to-data-plane traffic in -- not control-plane-to-data-plane traffic. The tunnel **terminates inside the customer's cluster** at an Envoy router that authenticates each request against Union identity and enforces RBAC before forwarding to the data-plane `dataproxy` service. The Union control plane is not on this path. For background on the underlying connector, see Cloudflare's [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/) documentation.
+The Direct-to-DataPlane tunnel is an outbound-only encrypted Cloudflare Tunnel from the customer's cluster to the Cloudflare edge network. It is initiated by a `cloudflared` daemon in the data plane and carries only client-to-data-plane traffic; the data-plane-to-control-plane channel is the separate direct gRPC connection described below. The tunnel **terminates inside the customer's cluster** at an Envoy router that authenticates each request against Union identity and enforces RBAC before forwarding to the data-plane `dataproxy` service. The Union.ai control plane is not on this path. For background on the underlying connector, see Cloudflare's [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/) documentation.
 
-All traffic through the tunnel is encrypted using a layered transport: TLS 1.3 from the client to the Cloudflare edge, mTLS plus Cloudflare Tunnel encryption from the edge to the data plane, and Cloudflare Access service tokens for application-layer authentication. Tunnel tokens are rotated automatically: the data plane operator periodically polls Union.ai and picks up updated tokens when issued.
+Under the default tier, all traffic through the tunnel is encrypted using a layered transport: TLS 1.3 from the client to the Cloudflare edge, mTLS plus Cloudflare Tunnel encryption from the edge to the data plane, and Cloudflare Access service tokens for application-layer authentication. Tunnel tokens are rotated automatically: the data plane operator periodically polls Union.ai and picks up updated tokens when issued.
 
 The tunnel maintains health checks and heartbeats, and automatically reconnects if the connection drops. State reconciliation occurs upon reconnection, so no requests are lost during brief connectivity interruptions.
 
@@ -45,7 +45,8 @@ All communication paths in the system use encryption. No unencrypted communicati
 | Path | Protocol | Encryption |
 |---|---|---|
 | Client to Control Plane (orchestration API) | HTTPS | TLS 1.2+ |
-| Client to Data Plane (customer-data requests) | Direct-to-DataPlane tunnel | TLS 1.3 + mTLS |
+| Client to Data Plane (customer-data requests, default tier) | Direct-to-DataPlane tunnel | TLS 1.3 + mTLS |
+| Client to Data Plane (customer-data requests, Sovereign Data Plane tier) | Customer-managed internal LB (corporate VPN) | TLS (customer-managed) |
 | Data Plane → Control Plane (orchestration metadata, outbound-initiated) | gRPC over TLS | TLS 1.2+ |
 | Client to Object Store | HTTPS (presigned URL) | TLS 1.2+ (cloud provider enforced) |
 | Fluent Bit to Log Aggregator | Cloud provider SDK | TLS (cloud-native) |
@@ -84,7 +85,7 @@ For details on the BYOC private management connection, see [Private connectivity
 
 ### Direct-to-DataPlane tunnel
 
-**Reviewer focus:** Confirm that bulk data (files, DataFrames, code bundles) transfers directly between clients and the customer's object store via presigned URLs, and that structured task I/O and log streams flow through the Direct-to-DataPlane tunnel directly to the data plane (no Union control plane on the path).
+**Reviewer focus:** Confirm that bulk data (files, DataFrames, code bundles) transfers directly between clients and the customer's object store via presigned URLs, and that structured task I/O and log streams flow through the Direct-to-DataPlane tunnel directly to the data plane (no Union.ai control plane on the path).
 
 **How to verify:**
 

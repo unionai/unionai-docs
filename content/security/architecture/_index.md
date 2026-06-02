@@ -15,11 +15,11 @@ This section covers:
 
 * **[Two-plane separation](./two-plane-separation)**: The division between the Union.ai-hosted control plane and the customer-hosted data plane is the foundation of the security architecture.
 
-* **[Control plane](./control-plane)**: The control plane is the Union.ai-hosted orchestration component. It stores only orchestration metadata (run IDs, schedules, phase transitions, task definitions, error messages, RBAC graph), encrypted at rest. Bulk data is referenced via signed URIs only; the actual bulk data never touches the control plane.
+* **[Control plane](./control-plane)**: The control plane is the Union.ai-hosted orchestration component. It stores only orchestration metadata (run IDs, schedules, phase transitions, task definitions, error messages, and the RBAC graph), encrypted at rest. Bulk data is referenced via signed URIs only; the actual bulk data never touches the control plane.
 
 * **[Data plane](./data-plane)**: The data plane runs entirely within the customer's cloud account. All computation occurs here and all customer data resides here. It uses workload identity federation (IRSA / Workload Identity / Azure Workload Identity) instead of static credentials, so no long-lived access keys are stored on the data plane.
 
-* **[Network architecture](./network)**: The data plane initiates all communication with Union over an outbound-only direct gRPC connection. Customer-data requests flow client-to-data-plane through the Direct-to-DataPlane tunnel, terminating at an Envoy router inside the customer's cluster. There is no inbound attack surface on the customer's external network and therefore no firewall rules are required at the perimeter.
+* **[Network architecture](./network)**: The data plane initiates all communication with Union.ai over an outbound-only direct gRPC connection. Customer-data requests flow client-to-data-plane through the Direct-to-DataPlane tunnel, terminating at an Envoy router inside the customer's cluster. There is no inbound attack surface on the customer's external network and therefore no firewall rules are required at the perimeter.
 
 * **[Sovereign Data Plane](./sovereign-data-plane)**: An Enterprise-tier option that replaces the Direct-to-DataPlane tunnel with a customer-managed load balancer inside the customer's VPC, reachable only from the corporate VPN. No third-party network can reach the data plane; Union.ai employees cannot reach customer data even with full Union.ai credentials.
 
