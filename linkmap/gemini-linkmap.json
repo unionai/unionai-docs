@@ -8,8 +8,6 @@
   },
   "methods": {
     "flyteplugins.gemini.function_tool": "/api-reference/integrations/gemini/packages/flyteplugins.gemini/#function_tool",
-    "function_tool": "/api-reference/integrations/gemini/packages/flyteplugins.gemini/#function_tool",
-    "flyteplugins.gemini.run_agent": "/api-reference/integrations/gemini/packages/flyteplugins.gemini/#run_agent",
-    "run_agent": "/api-reference/integrations/gemini/packages/flyteplugins.gemini/#run_agent"
+    "flyteplugins.gemini.run_agent": "/api-reference/integrations/gemini/packages/flyteplugins.gemini/#run_agent"
   }
 }

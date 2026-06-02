@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.2.2
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,23 +9,35 @@ layout: py_api
 
 | Class | Description |
 |-|-|
+| [`flyte.Backoff`](../packages/flyte/backoff) |Exponential backoff policy applied between user retries. |
 | [`flyte.BaseCheckpoint`](../packages/flyte/basecheckpoint) |Base type for task checkpoint helpers. |
 | [`flyte.Cache`](../packages/flyte/cache) |Cache configuration for a task. |
 | [`flyte.Checkpoint`](../packages/flyte/checkpoint) |Checkpoint helper using `flyte. |
 | [`flyte.Cron`](../packages/flyte/cron) |Cron-based automation schedule for use with `Trigger`. |
 | [`flyte.Device`](../packages/flyte/device) |Represents a device type, its quantity and partition if applicable. |
 | [`flyte.Environment`](../packages/flyte/environment) |Base class for execution environments, shared by `TaskEnvironment` and. |
+| [`flyte.EventWebhook`](../packages/flyte/eventwebhook) |Webhook configuration for an event notification. |
 | [`flyte.FixedRate`](../packages/flyte/fixedrate) |Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
 | [`flyte.Image`](../packages/flyte/image) |Container image specification built using a fluent, two-step pattern:. |
 | [`flyte.ImageBuild`](../packages/flyte/imagebuild) |Result of an image build operation. |
 | [`flyte.PodTemplate`](../packages/flyte/podtemplate) |Custom PodTemplate specification for a Task. |
 | [`flyte.Resources`](../packages/flyte/resources) |Resources such as CPU, Memory, and GPU that can be allocated to a task. |
-| [`flyte.RetryStrategy`](../packages/flyte/retrystrategy) |Retry strategy for the task or task environment. |
+| [`flyte.RetryStrategy`](../packages/flyte/retrystrategy) |Retry strategy for a task. |
 | [`flyte.ReusePolicy`](../packages/flyte/reusepolicy) |Configure a task environment for container reuse across multiple task invocations. |
 | [`flyte.Secret`](../packages/flyte/secret) |Secrets are used to inject sensitive information into tasks or image build context. |
 | [`flyte.TaskEnvironment`](../packages/flyte/taskenvironment) |Define an execution environment for a set of tasks. |
-| [`flyte.Timeout`](../packages/flyte/timeout) |Timeout class to define a timeout for a task. |
+| [`flyte.Timeout`](../packages/flyte/timeout) |Timeout bounds for a task. |
 | [`flyte.Trigger`](../packages/flyte/trigger) |Specification for a scheduled trigger that can be associated with any Flyte task. |
+| [`flyte.ai.agents.AgentResult`](../packages/flyte.ai.agents/agentresult) |Outcome of a single agent invocation. |
+| [`flyte.ai.agents.CodeModeAgent`](../packages/flyte.ai.agents/codemodeagent) |Generates code via an LLM, executes it in a Monty sandbox, and. |
+| [`flyte.ai.agents.codemode.CodeModeAgent`](../packages/flyte.ai.agents.codemode/codemodeagent) |Generates code via an LLM, executes it in a Monty sandbox, and. |
+| [`flyte.ai.agents.protocol.AgentResult`](../packages/flyte.ai.agents.protocol/agentresult) |Outcome of a single agent invocation. |
+| [`flyte.ai.chat.AgentChatAppEnvironment`](../packages/flyte.ai.chat/agentchatappenvironment) |An :class:`~flyte. |
+| [`flyte.ai.chat.CustomTheme`](../packages/flyte.ai.chat/customtheme) |Declarative color theme for the Agent Chat UI. |
+| [`flyte.ai.chat.app.AgentChatAppEnvironment`](../packages/flyte.ai.chat.app/agentchatappenvironment) |An :class:`~flyte. |
+| [`flyte.ai.chat.app.CustomTheme`](../packages/flyte.ai.chat.app/customtheme) |Declarative color theme for the Agent Chat UI. |
+| [`flyte.ai.mcp.FlyteMCPAppEnvironment`](../packages/flyte.ai.mcp/flytemcpappenvironment) |Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn). |
+| [`flyte.ai.mcp.MCPAppEnvironment`](../packages/flyte.ai.mcp/mcpappenvironment) |Serve a FastMCP server over HTTP (Starlette + Uvicorn). |
 | [`flyte.app.AppEndpoint`](../packages/flyte.app/appendpoint) |Embed an upstream app's endpoint as an app parameter. |
 | [`flyte.app.AppEnvironment`](../packages/flyte.app/appenvironment) |Configure a long-running app environment for APIs, dashboards, or model servers. |
 | [`flyte.app.ConnectorEnvironment`](../packages/flyte.app/connectorenvironment) |Configure a connector environment for custom Flyte connectors. |
@@ -52,6 +64,10 @@ layout: py_api
 | [`flyte.errors.CodeBundleError`](../packages/flyte.errors/codebundleerror) |This error is raised when the code bundle cannot be created, for example when no files are found to bundle. |
 | [`flyte.errors.CustomError`](../packages/flyte.errors/customerror) |This error is raised when the user raises a custom error. |
 | [`flyte.errors.DeploymentError`](../packages/flyte.errors/deploymenterror) |This error is raised when the deployment of a task fails, or some preconditions for deployment are not met. |
+| [`flyte.errors.EventAlreadyExistsError`](../packages/flyte.errors/eventalreadyexistserror) |This error is raised when the user tries to create an event that already exists within the action. |
+| [`flyte.errors.EventFailedError`](../packages/flyte.errors/eventfailederror) |This error is raised when a condition event fails during execution. |
+| [`flyte.errors.EventNotFoundError`](../packages/flyte.errors/eventnotfounderror) |This error is raised when the user tries to access an event that does not exist. |
+| [`flyte.errors.EventTimedoutError`](../packages/flyte.errors/eventtimedouterror) |This error is raised when an event is not signaled within its specified timeout. |
 | [`flyte.errors.ImageBuildError`](../packages/flyte.errors/imagebuilderror) |This error is raised when the image build fails. |
 | [`flyte.errors.ImagePullBackOffError`](../packages/flyte.errors/imagepullbackofferror) |This error is raised when the image cannot be pulled. |
 | [`flyte.errors.InitializationError`](../packages/flyte.errors/initializationerror) |This error is raised when the Union system is tried to access without being initialized. |
@@ -89,6 +105,10 @@ layout: py_api
 | [`flyte.extras.Sleep`](../packages/flyte.extras/sleep) |Route a task to the backend `core-sleep` plugin. |
 | [`flyte.extras.SleepTask`](../packages/flyte.extras/sleeptask) | |
 | [`flyte.extras.TokenBatcher`](../packages/flyte.extras/tokenbatcher) |Token-aware batcher for LLM inference workloads. |
+| [`flyte.extras.shell.FlagSpec`](../packages/flyte.extras.shell/flagspec) |How to render a typed input as a CLI flag in ``{flags. |
+| [`flyte.extras.shell.Glob`](../packages/flyte.extras.shell/glob) |A multi-file output bundle. |
+| [`flyte.extras.shell.Stderr`](../packages/flyte.extras.shell/stderr) |Capture the task's stderr as a typed output. |
+| [`flyte.extras.shell.Stdout`](../packages/flyte.extras.shell/stdout) |Capture the task's stdout as a typed output. |
 | [`flyte.git.GitStatus`](../packages/flyte.git/gitstatus) |A class representing the status of a git repository. |
 | [`flyte.io.DataFrame`](../packages/flyte.io/dataframe) |A Flyte meta DataFrame object, that wraps all other dataframe types (usually available as plugins, pandas. |
 | [`flyte.io.Dir`](../packages/flyte.io/dir) |A generic directory class representing a directory with files of a specified format. |
@@ -124,6 +144,7 @@ layout: py_api
 | [`flyte.remote.ActionInputs`](../packages/flyte.remote/actioninputs) |A class representing the inputs of an action. |
 | [`flyte.remote.ActionOutputs`](../packages/flyte.remote/actionoutputs) |A class representing the outputs of an action. |
 | [`flyte.remote.App`](../packages/flyte.remote/app) | |
+| [`flyte.remote.Event`](../packages/flyte.remote/event) |A remote Event registered within an action of a run. |
 | [`flyte.remote.Project`](../packages/flyte.remote/project) |A class representing a project in the Union API. |
 | [`flyte.remote.Run`](../packages/flyte.remote/run) |A class representing a run of a task. |
 | [`flyte.remote.RunDetails`](../packages/flyte.remote/rundetails) |A class representing a run of a task. |
@@ -155,6 +176,8 @@ layout: py_api
 | [`flyte.AppHandle`](../packages/flyte/apphandle) |Protocol defining the common interface between local and remote app handles. |
 | [`flyte.CachePolicy`](../packages/flyte/cachepolicy) |Protocol for custom cache version strategies. |
 | [`flyte.Link`](../packages/flyte/link) | |
+| [`flyte.ai.agents.Agent`](../packages/flyte.ai.agents/agent) |Minimal protocol that any agent must satisfy to work with. |
+| [`flyte.ai.agents.protocol.Agent`](../packages/flyte.ai.agents.protocol/agent) |Minimal protocol that any agent must satisfy to work with. |
 | [`flyte.extend.ImageBuilder`](../packages/flyte.extend/imagebuilder) | |
 | [`flyte.extend.ImageChecker`](../packages/flyte.extend/imagechecker) | |
 | [`flyte.extras.CostEstimator`](../packages/flyte.extras/costestimator) |Protocol for records that can estimate their own processing cost. |

@@ -1,10 +1,10 @@
 ---
-title: Running on a remote cluster
+title: Run on a remote cluster
 weight: 6
 variants: +union -flyte
 ---
 
-# Running on a remote cluster
+# Run on a remote cluster
 
 This guide covers setting up your local development environment and configuring the `flyte` CLI and SDK to connect to your Union/Flyte instance.
 
@@ -179,7 +179,7 @@ You can reference your config file explicitly or let the SDK find it automatical
 {{< tabs "explicit-config" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
-Initialize with [`flyte.init_from_config`](../../api-reference/flyte-sdk/packages/flyte/_index#init_from_config):
+Initialize with `flyte.init_from_config`:
 
 ```python
 flyte.init_from_config("my-config.yaml")
@@ -257,7 +257,7 @@ Skip the config file entirely by passing parameters directly.
 {{< tabs "inline-config" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
-Use [`flyte.init`](../../api-reference/flyte-sdk/packages/flyte/_index#init):
+Use `flyte.init`:
 
 ```python
 flyte.init(
@@ -291,10 +291,10 @@ See the [CLI reference](../../api-reference/flyte-cli) for details.
 
 See related methods:
 
-* [`flyte.init_from_api_key`](../../api-reference/flyte-sdk/packages/flyte/_index#init_from_api_key)
-* [`flyte.init_from_config`](../../api-reference/flyte-sdk/packages/flyte/_index#init_from_config)
-* [`flyte.init_in_cluster`](../../api-reference/flyte-sdk/packages/flyte/_index#init_in_cluster)
-* [`flyte.init_passthrough`](../../api-reference/flyte-sdk/packages/flyte/_index#init_passthrough)
+* `flyte.init_from_api_key`
+* `flyte.init_from_config`
+* `flyte.init_in_cluster`
+* `flyte.init_passthrough`
 
 ## Next steps
 

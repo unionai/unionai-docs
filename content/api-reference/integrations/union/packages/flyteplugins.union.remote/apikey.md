@@ -1,6 +1,6 @@
 ---
 title: ApiKey
-version: 0.2.2
+version: 0.3.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -65,6 +65,7 @@ def create(
     cls,
     name: str,
     redirect_uris: list[str] | None,
+    skip_default_policy_assignments: bool,
 ) -> ApiKey
 ```
 Create a new API key.
@@ -76,6 +77,7 @@ Create a new API key.
 | `cls` |  | |
 | `name` | `str` | Human-readable name for the API key |
 | `redirect_uris` | `list[str] \| None` | OAuth redirect URIs (defaults to localhost callback) |
+| `skip_default_policy_assignments` | `bool` | If True, the server will not attach its default policies to the new app. The caller is responsible for granting access via ``flyte create assignment``. |
 
 **Returns**
 

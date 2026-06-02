@@ -1,6 +1,6 @@
 ---
 title: FastAPIAppEnvironment
-version: 2.2.2
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 ---
@@ -36,7 +36,6 @@ class FastAPIAppEnvironment(
     type: str,
     app: fastapi.FastAPI,
     uvicorn_config: uvicorn.Config | None,
-    _caller_frame: inspect.FrameInfo | None,
 )
 ```
 | Parameter | Type | Description |
@@ -64,7 +63,6 @@ class FastAPIAppEnvironment(
 | `type` | `str` | |
 | `app` | `fastapi.FastAPI` | |
 | `uvicorn_config` | `uvicorn.Config \| None` | |
-| `_caller_frame` | `inspect.FrameInfo \| None` | |
 
 ## Properties
 

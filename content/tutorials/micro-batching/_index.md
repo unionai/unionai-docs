@@ -3,7 +3,7 @@ title: Batching strategies
 weight: 2
 variants: -flyte +union
 jupyter_notebook: /unionai-examples/v2/tutorials/batching_patterns/batch_processing.ipynb
-content_hash: 287985ba9806b8a841dcd5da16c40d931e83bd4f35be77345910946ea550a0e8
+content_hash: b6eeeaa013f1cdf6a6855f7cbd6d0cfb50b9f5d4fbfbbce93cc79255d966016b
 ---
 
 <!--
@@ -586,7 +586,7 @@ async def process_batch(batch_start: int, batch_end: int) -> List[int]:
 - Ensure traced functions are idempotent when possible
 - Keep traced function signatures simple (serializable inputs/outputs)
 
-See the [Traces]({{< docs_home byoc v2 >}}/user-guide/task-programming/traces/) docs for more details on how it works
+See the [Traces]({{< docs_home union v2 >}}/user-guide/task-programming/traces/) docs for more details on how it works
 
 ### Step 6: Implement the Orchestrator Workflow
 
@@ -823,7 +823,7 @@ On execution, this is what this example looks like at the Kubernetes level:
 
 ![](./images/reusable-containers-k8s.png)
 
-This is, 10 replicas (as defined in the `TaskEnvironment`) and the driver Pod that runs the parent task (`a0`). [Learn more about the parent task]({{< docs_home byoc v2 >}}/user-guide/considerations/#driver-pod-requirements).
+This is, 10 replicas (as defined in the `TaskEnvironment`) and the driver Pod that runs the parent task (`a0`). [Learn more about the parent task]({{< docs_home union v2 >}}/user-guide/considerations/#driver-pod-requirements).
 
 ## Batch Size Selection
 
@@ -838,7 +838,7 @@ This is, 10 replicas (as defined in the `TaskEnvironment`) and the driver Pod th
 - Failure tolerance (critical = smaller batches for faster recovery)
 - Total workload size (larger total = can use larger batches)
 
-Read the [Optimization strategies]({{< docs_home byoc v2 >}}/user-guide/run-scaling/scale-your-workflows/#2-batch-workloads-to-reduce-overhead) page to understand the overheads associated with an execution and how to choose the appropiate batch size.
+Read the [Optimization strategies]({{< docs_home union v2 >}}/user-guide/run-scaling/scale-your-workflows/#2-batch-workloads-to-reduce-overhead) page to understand the overheads associated with an execution and how to choose the appropiate batch size.
 
 
 

@@ -1,6 +1,6 @@
 ---
 title: Secret-based authentication
-weight: 5
+weight: 10
 variants: +flyte +union
 ---
 
@@ -250,6 +250,6 @@ The Swagger UI will show an "Authorize" button where you can enter your Bearer t
 ## Next steps
 
 - Learn more about [managing secrets](../task-configuration/secrets) in Flyte
-- See [app usage patterns](./app-usage-patterns#call-task-from-app-webhooks--apis) for webhook examples and authentication patterns
-- Learn about [vLLM apps](./vllm-app) and [SGLang apps](./sglang-app) for serving LLMs
+- See [hybrid graphs](./hybrid-graphs) for webhook examples and authentication patterns
+- Learn about [vLLM apps](../native-app-integrations/vllm-app) and [SGLang apps](../native-app-integrations/sglang-app) for serving LLMs
 

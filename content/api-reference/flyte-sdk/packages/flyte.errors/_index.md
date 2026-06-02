@@ -1,6 +1,6 @@
 ---
 title: flyte.errors
-version: 2.2.2
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 ---
@@ -23,6 +23,10 @@ unknown error.
 | [`CodeBundleError`](../flyte.errors/codebundleerror) | This error is raised when the code bundle cannot be created, for example when no files are found to bundle. |
 | [`CustomError`](../flyte.errors/customerror) | This error is raised when the user raises a custom error. |
 | [`DeploymentError`](../flyte.errors/deploymenterror) | This error is raised when the deployment of a task fails, or some preconditions for deployment are not met. |
+| [`EventAlreadyExistsError`](../flyte.errors/eventalreadyexistserror) | This error is raised when the user tries to create an event that already exists within the action. |
+| [`EventFailedError`](../flyte.errors/eventfailederror) | This error is raised when a condition event fails during execution. |
+| [`EventNotFoundError`](../flyte.errors/eventnotfounderror) | This error is raised when the user tries to access an event that does not exist. |
+| [`EventTimedoutError`](../flyte.errors/eventtimedouterror) | This error is raised when an event is not signaled within its specified timeout. |
 | [`ImageBuildError`](../flyte.errors/imagebuilderror) | This error is raised when the image build fails. |
 | [`ImagePullBackOffError`](../flyte.errors/imagepullbackofferror) | This error is raised when the image cannot be pulled. |
 | [`InitializationError`](../flyte.errors/initializationerror) | This error is raised when the Union system is tried to access without being initialized. |

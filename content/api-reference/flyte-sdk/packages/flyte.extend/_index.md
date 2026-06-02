@@ -1,6 +1,6 @@
 ---
 title: flyte.extend
-version: 2.2.2
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 ---
@@ -29,6 +29,7 @@ layout: py_api
 | Method | Description |
 |-|-|
 | [`download_code_bundle()`](#download_code_bundle) | Downloads the code bundle if it is not already downloaded. |
+| [`get_proto_extended_resources()`](#get_proto_extended_resources) | TODO Implement partitioning logic string handling for GPU. |
 | [`get_proto_resources()`](#get_proto_resources) | Get main resources IDL representation from the resources object. |
 | [`is_initialized()`](#is_initialized) | Check if the system has been initialized. |
 | [`lazy_module()`](#lazy_module) | This function is used to lazily import modules. |
@@ -59,6 +60,20 @@ Downloads the code bundle if it is not already downloaded.
 | `code_bundle` | `flyte.models.CodeBundle` | The code bundle to download. |
 
 **Returns:** The code bundle with the downloaded path.
+
+#### get_proto_extended_resources()
+
+```python
+def get_proto_extended_resources(
+    resources: flyte._resources.Resources | None,
+) -> typing.Optional[flyteidl2.core.tasks_pb2.ExtendedResources]
+```
+TODO Implement partitioning logic string handling for GPU
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `resources` | `flyte._resources.Resources \| None` | |
 
 #### get_proto_resources()
 

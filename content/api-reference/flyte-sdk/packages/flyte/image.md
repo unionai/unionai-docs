@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.2.2
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 ---
@@ -100,6 +100,7 @@ class Image(
 | [`with_commands()`](#with_commands) | Use this method to create a new image with the specified commands layered on top of the current image. |
 | [`with_dockerignore()`](#with_dockerignore) |  |
 | [`with_env_vars()`](#with_env_vars) | Use this method to create a new image with the specified environment variables layered on top of. |
+| [`with_local_rs_controller()`](#with_local_rs_controller) | Bake the locally-built flyte_controller_base wheel from rs_controller/dist into this image. |
 | [`with_local_v2()`](#with_local_v2) | Use this method to create a new image with the local v2 builder. |
 | [`with_local_v2_plugins()`](#with_local_v2_plugins) | Use this method to create a new image with the local v2 builder. |
 | [`with_pip_packages()`](#with_pip_packages) | Use this method to create a new image with the specified pip packages layered on top of the current image. |
@@ -150,6 +151,18 @@ def from_base(
 ) -> Image
 ```
 Use this method to start with a pre-built base image. This image must already exist in the registry of course.
+
+Unlike `from_debian_base`, this method does **not** create a runtime user or chown
+the working directory. The resulting container runs as whatever ``USER`` your base
+image declares, with whatever ``WORKDIR`` the image (or builder) sets. The Flyte
+runtime extracts the code bundle into that working directory at task start, so the
+resolved user must have read, write, and traverse permissions on it. Hardened bases
+(UBI ``nonroot``, distroless ``nonroot``, chainguard ``nonroot``) commonly need a
+``.with_commands(["chmod 0755 /root && chown &lt;uid&gt;:&lt;gid&gt; /root"])`` layer, or the
+equivalent for whatever path the image uses as ``WorkingDir``.
+
+See the "Base image USER requirements" section of the Bring Your Own Image guide
+for the full pattern.
 
 
 
@@ -370,6 +383,17 @@ the current image. Cannot be used in conjunction with conda
 | `env_vars` | `Dict[str, str]` | dictionary of environment variables to set |
 
 **Returns:** Image
+
+### with_local_rs_controller()
+
+```python
+def with_local_rs_controller()
+```
+Bake the locally-built flyte_controller_base wheel from rs_controller/dist into this image.
+
+Required when running with `_F_USE_RUST_CONTROLLER=1` against an image that does not already
+ship the Rust controller wheel.
+
 
 ### with_local_v2()
 

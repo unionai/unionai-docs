@@ -28,7 +28,7 @@ When you run or deploy workflows, you target a project and domain:
 - **CLI**: Use `--project` and `--domain` flags with `flyte run` or `flyte deploy`, or set defaults in your [configuration file](../run-modes/running-remote).
 {{< /markdown >}}
 {{< /variant >}}
-- **Python SDK**: Specify `project` and `domain` in [`flyte.init`](../../api-reference/flyte-sdk/packages/flyte/_index#init) or [`flyte.init_from_config`](../../api-reference/flyte-sdk/packages/flyte/_index#init_from_config).
+- **Python SDK**: Specify `project` and `domain` in `flyte.init` or `flyte.init_from_config`.
 
 {{< variant union >}}
 {{< markdown >}}
@@ -36,6 +36,7 @@ Projects and domains also determine:
 
 - **Access control**: RBAC policies scope permissions to an organization, project, domain, or project-domain pair. See [User management](../user-management).
 - **Data isolation**: Storage and cache are isolated per project-domain pair.
+- **Settings**: Default behavior — such as the task queue, resource requests, and environment variables — can be configured at org, domain, or project scope. See [Settings](./settings).
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
@@ -118,7 +119,7 @@ flyte update project my-project --unarchive
 
 ## Listing projects programmatically
 
-You can list and retrieve projects from Python using [`flyte.remote.Project`](../../api-reference/flyte-sdk/packages/flyte.remote/project):
+You can list and retrieve projects from Python using `flyte.remote.Project`:
 
 ```python
 import flyte

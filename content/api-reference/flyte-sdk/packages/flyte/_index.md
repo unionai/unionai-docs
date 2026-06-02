@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.2.2
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,22 +14,24 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 
 | Class | Description |
 |-|-|
+| [`Backoff`](../flyte/backoff) | Exponential backoff policy applied between user retries. |
 | [`BaseCheckpoint`](../flyte/basecheckpoint) | Base type for task checkpoint helpers. |
 | [`Cache`](../flyte/cache) | Cache configuration for a task. |
 | [`Checkpoint`](../flyte/checkpoint) | Checkpoint helper using `flyte. |
 | [`Cron`](../flyte/cron) | Cron-based automation schedule for use with `Trigger`. |
 | [`Device`](../flyte/device) | Represents a device type, its quantity and partition if applicable. |
 | [`Environment`](../flyte/environment) | Base class for execution environments, shared by `TaskEnvironment` and. |
+| [`EventWebhook`](../flyte/eventwebhook) | Webhook configuration for an event notification. |
 | [`FixedRate`](../flyte/fixedrate) | Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
 | [`Image`](../flyte/image) | Container image specification built using a fluent, two-step pattern:. |
 | [`ImageBuild`](../flyte/imagebuild) | Result of an image build operation. |
 | [`PodTemplate`](../flyte/podtemplate) | Custom PodTemplate specification for a Task. |
 | [`Resources`](../flyte/resources) | Resources such as CPU, Memory, and GPU that can be allocated to a task. |
-| [`RetryStrategy`](../flyte/retrystrategy) | Retry strategy for the task or task environment. |
+| [`RetryStrategy`](../flyte/retrystrategy) | Retry strategy for a task. |
 | [`ReusePolicy`](../flyte/reusepolicy) | Configure a task environment for container reuse across multiple task invocations. |
 | [`Secret`](../flyte/secret) | Secrets are used to inject sensitive information into tasks or image build context. |
 | [`TaskEnvironment`](../flyte/taskenvironment) | Define an execution environment for a set of tasks. |
-| [`Timeout`](../flyte/timeout) | Timeout class to define a timeout for a task. |
+| [`Timeout`](../flyte/timeout) | Timeout bounds for a task. |
 | [`Trigger`](../flyte/trigger) | Specification for a scheduled trigger that can be associated with any Flyte task. |
 
 ### Protocols
@@ -65,6 +67,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`init_passthrough()`](#init_passthrough) | Initialize the Flyte system with passthrough authentication. |
 | [`latest_checkpoint()`](#latest_checkpoint) | Return the file under *root* matching *glob_pattern* with the largest ``key(path)``, or ``None``. |
 | [`map()`](#map) | Map a function over the provided arguments with concurrent execution. |
+| [`new_event()`](#new_event) | Create an event that can be awaited in a workflow. |
 | [`run()`](#run) | Run a task with the given parameters. |
 | [`run_python_script()`](#run_python_script) | Package and run a Python script on a remote Flyte cluster. |
 | [`serve()`](#serve) | Serve a Flyte app using an AppEnvironment. |
@@ -82,6 +85,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | `TriggerTime` | `_trigger_time` |  |
 | `__version__` | `str` |  |
 | `logger` | `Logger` |  |
+| `system_logger` | `Logger` |  |
 
 ## Methods
 
@@ -399,6 +403,7 @@ def init(
     log_level: int | None,
     log_format: LogFormat | None,
     reset_root_logger: bool,
+    user_log_level: int | None,
     endpoint: str | None,
     headless: bool,
     insecure: bool,
@@ -438,6 +443,7 @@ remote API methods are called. Thread-safe implementation.
 | `log_level` | `int \| None` | Optional logging level for the logger, default is set using the default initialization policies |
 | `log_format` | `LogFormat \| None` | Optional logging format for the logger, default is "console" |
 | `reset_root_logger` | `bool` | By default, we clear out root logger handlers and set up our own. |
+| `user_log_level` | `int \| None` | |
 | `endpoint` | `str \| None` | Optional API endpoint URL |
 | `headless` | `bool` | Optional Whether to run in headless mode |
 | `insecure` | `bool` | insecure flag for the client |
@@ -524,6 +530,7 @@ def init_from_config(
     root_dir: Path | None,
     log_level: int | None,
     log_format: LogFormat,
+    user_log_level: int | None,
     project: str | None,
     domain: str | None,
     storage: Storage | None,
@@ -544,6 +551,7 @@ other Flyte remote API methods are called. Thread-safe implementation.
 | `root_dir` | `Path \| None` | Optional root directory from which to determine how to load files, and find paths to files like config etc. For example if one uses the copy-style=="all", it is essential to determine the root directory for the current project. If not provided, it defaults to the editable install directory or if not available, the current working directory. |
 | `log_level` | `int \| None` | Optional logging level for the framework logger, default is set using the default initialization policies |
 | `log_format` | `LogFormat` | Optional logging format for the logger, default is "console" |
+| `user_log_level` | `int \| None` | |
 | `project` | `str \| None` | Project name, this will override any project names in the configuration file |
 | `domain` | `str \| None` | Domain name, this will override any domain names in the configuration file |
 | `storage` | `Storage \| None` | Optional blob store (S3, GCS, Azure) configuration if needed to access (i.e. using Minio) |
@@ -669,6 +677,53 @@ Map a function over the provided arguments with concurrent execution.
 | `return_exceptions` | `bool` | If True, yield exceptions instead of raising them. |
 
 **Returns:** AsyncIterator yielding results in order.
+
+#### new_event()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await new_event.aio()`.
+```python
+def new_event(
+    name: str,
+    prompt: str,
+    prompt_type: typing.Literal['text', 'markdown'],
+    data_type: typing.Type[~EventType],
+    description: str,
+    timeout: typing.Union[datetime.timedelta, int, float, NoneType],
+    webhook: typing.Optional[flyte._event.EventWebhook],
+) -> flyte._event._Event
+```
+Create an event that can be awaited in a workflow. Events can be used to pause workflow execution until
+an external signal is received.
+
+**Condition protocol (remote execution):**
+
+When running inside a task, ``new_event`` registers a *condition action* with the
+backend. Calling ``event.wait()`` blocks until the condition is resolved. The backend
+delivers the result as an inline ``Literal`` (protobuf scalar/primitive) in the
+``ActionUpdate`` stream — no ``output_uri`` is involved for conditions.
+
+- On success, ``wait()`` returns the value converted to ``data_type``
+  (``True``/``False`` for bool, Python ``int``/``float``/``str`` for the others).
+- If the condition times out, ``wait()`` raises ``flyte.errors.EventTimedoutError``.
+- If the condition fails, ``wait()`` raises ``flyte.errors.EventFailedError``.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | Name of the event |
+| `prompt` | `str` | Prompt message for the event |
+| `prompt_type` | `typing.Literal['text', 'markdown']` | Type of prompt rendering - "text" or "markdown" |
+| `data_type` | `typing.Type[~EventType]` | Data type of the event payload — one of ``bool``, ``int``, ``float``, ``str`` |
+| `description` | `str` | Description of the event |
+| `timeout` | `typing.Union[datetime.timedelta, int, float, NoneType]` | Optional timeout as a timedelta or number of seconds. If the event is not signaled within this duration, ``wait()`` will raise ``flyte.errors.EventTimedoutError``. |
+| `webhook` | `typing.Optional[flyte._event.EventWebhook]` | Optional webhook configuration. When provided, the backend will POST to the given URL with the specified payload. The payload may use ``{callback_uri}`` as a template variable — the backend replaces it with the URI that can be used to signal the event. |
+
+**Returns:** An instance of _Event representing the created event
 
 #### run()
 
@@ -830,6 +885,7 @@ def with_runcontext(
     interactive_mode: bool | None,
     raw_data_path: str | None,
     run_base_dir: str | None,
+    run_start_time: Optional[datetime],
     overwrite_cache: bool,
     project: str | None,
     domain: str | None,
@@ -839,6 +895,7 @@ def with_runcontext(
     interruptible: bool | None,
     log_level: int | None,
     log_format: LogFormat,
+    user_log_level: int | None,
     reset_root_logger: bool,
     disable_run_cache: bool,
     queue: Optional[str],
@@ -888,6 +945,7 @@ if __name__ == "__main__":
 | `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are considered interactive mode, while scripts are not. This is used to determine how the code bundle is created. |
 | `raw_data_path` | `str \| None` | Use this path to store the raw data for the run for local and remote, and can be used to store raw data in specific locations. |
 | `run_base_dir` | `str \| None` | Optional The base directory to use for the run. This is used to store the metadata for the run, that is passed between tasks. |
+| `run_start_time` | `Optional[datetime]` | Optional UTC datetime at which the run was triggered. If not provided, defaults to ``datetime.now(timezone.utc)`` at TaskContext construction. Useful for local simulation/tests that need a deterministic timestamp. Accessible inside a task via ``flyte.ctx().run_start_time``. |
 | `overwrite_cache` | `bool` | Optional If true, the cache will be overwritten for the run |
 | `project` | `str \| None` | Optional The project to use for the run |
 | `domain` | `str \| None` | Optional The domain to use for the run |
@@ -897,6 +955,7 @@ if __name__ == "__main__":
 | `interruptible` | `bool \| None` | Optional If true, the run can be scheduled on interruptible instances and false implies that all tasks in the run should only be scheduled on non-interruptible instances. If not specified the original setting on all tasks is retained. |
 | `log_level` | `int \| None` | Optional Log level to set for the run. If not provided, it will be set to the default log level set using `flyte.init()` |
 | `log_format` | `LogFormat` | Optional Log format to set for the run. If not provided, it will be set to the default log format |
+| `user_log_level` | `int \| None` | |
 | `reset_root_logger` | `bool` | If true, the root logger will be preserved and not modified by Flyte. |
 | `disable_run_cache` | `bool` | Optional If true, the run cache will be disabled. This is useful for testing purposes. |
 | `queue` | `Optional[str]` | Optional The queue to use for the run. This is used to specify the cluster to use for the run. |
@@ -924,6 +983,7 @@ def with_servecontext(
     cluster_pool: str | None,
     log_level: int | None,
     log_format: LogFormat,
+    user_log_level: int | None,
     interactive_mode: bool | None,
     copy_bundle_to: pathlib.Path | None,
     deactivate_timeout: float | None,
@@ -982,6 +1042,7 @@ print(f"App URL: {app.url}")
 | `cluster_pool` | `str \| None` | Optional cluster pool to deploy the app to |
 | `log_level` | `int \| None` | Optional log level (e.g., logging.DEBUG, logging.INFO). If not provided, uses init config or default |
 | `log_format` | `LogFormat` | Optional log format ("console" or "json", default: "console") |
+| `user_log_level` | `int \| None` | |
 | `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are considered interactive mode, while scripts are not. This is used to determine how the code bundle is created. This is used to determine if the app should be served in interactive mode or not. |
 | `copy_bundle_to` | `pathlib.Path \| None` | When dry_run is True, the bundle will be copied to this location if specified |
 | `deactivate_timeout` | `float \| None` | Timeout in seconds for waiting for the app to stop during `deactivate(wait=True)`. Defaults to 6 s. |

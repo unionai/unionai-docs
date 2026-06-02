@@ -197,7 +197,7 @@ Data validation integrations enforce schema contracts on the dataframes flowing 
 
 Connectors are stateless, long‑running services that receive execution requests via gRPC and then submit work to external (or internal) systems. Each connector runs as its own Kubernetes deployment, and is triggered when a Flyte task of the matching type is executed.
 
-Although they normally run inside the control plane, you can also run connectors locally as long as the required secrets/credentials are present locally. This is useful because connectors are just Python services that can be spawned in‑process.
+Although they normally run inside the data plane, you can also run connectors locally as long as the required secrets/credentials are present locally. This is useful because connectors are just Python services that can be spawned in‑process.
 
 Connectors are designed to scale horizontally and reduce load on the core Flyte backend because they execute _outside_ the core system. This decoupling makes connectors efficient, resilient, and easy to iterate on. You can even test them locally without modifying backend configuration, which reduces friction during development.
 
@@ -221,169 +221,98 @@ If none of the existing connectors meet your needs, you can build your own.
 
 To implement a new async connector, extend `AsyncConnector` and implement the following methods, all of which must be idempotent:
 
-| Method   | Purpose                                                     |
-| -------- | ----------------------------------------------------------- |
-| `create` | Launch the external job (via REST, gRPC, SDK, or other API) |
-| `get`    | Fetch current job state (return job status or output)       |
-| `delete` | Delete / cancel the external job                            |
+| Method     | Purpose                                                     |
+| ---------- | ----------------------------------------------------------- |
+| `create`   | Launch the external job (via REST, gRPC, SDK, or other API) |
+| `get`      | Fetch current job state (return job status or output)       |
+| `delete`   | Delete / cancel the external job                            |
+| `get_logs` | Stream paginated log lines to the Flyte UI                  |
 
 To test the connector locally, the connector task should inherit from
 [AsyncConnectorExecutorMixin](https://github.com/flyteorg/flyte-sdk/blob/1d49299294cd5e15385fe8c48089b3454b7a4cd1/src/flyte/connectors/_connector.py#L206). This mixin simulates how the Flyte 2 system executes asynchronous connector tasks, making it easier to validate your connector implementation before deploying it.
 
-### Example: Model training connector
+### Example: Batch job connector
 
-The following example implements a connector that launches a model training job on an external training service.
+The following example implements a connector that simulates submitting and polling an external batch job. Replace the mock logic with real API calls for your use case.
 
-```python
-import typing
-from dataclasses import dataclass
+**Connector** (`my_connector/connector.py`):
 
-import httpx
-from flyte.connectors import AsyncConnector, Resource, ResourceMeta
-from flyteidl2.core.execution_pb2 import TaskExecution, TaskLog
-from flyteidl2.core.tasks_pb2 import TaskTemplate
-from google.protobuf import json_format
+{{< code file="/unionai-examples/v2/integrations/connectors/batch_job/connector.py" lang=python >}}
 
+**Task plugin** (`my_connector/task.py`):
 
-@dataclass
-class ModelTrainJobMeta(ResourceMeta):
-    job_id: str
-    endpoint: str
+{{< code file="/unionai-examples/v2/integrations/connectors/batch_job/task.py" lang=python >}}
 
-
-class ModelTrainingConnector(AsyncConnector):
-    """
-    Example connector that launches a ML model training job on an external training service.
-
-    POST → launch training job
-    GET  → poll training progress
-    DELETE → cancel training job
-    """
-
-    name = "Model Training Connector"
-    task_type_name = "external_model_training"
-    metadata_type = ModelTrainJobMeta
-
-    async def create(
-        self,
-        task_template: TaskTemplate,
-        inputs: typing.Optional[typing.Dict[str, typing.Any]],
-        **kwargs,
-    ) -> ModelTrainJobMeta:
-        """
-        Submit training job via POST.
-        Response returns job_id we later use in get().
-        """
-        custom = json_format.MessageToDict(task_template.custom) if task_template.custom else None
-        async with httpx.AsyncClient() as client:
-            r = await client.post(
-                custom["endpoint"],
-                json={"dataset_uri": inputs["dataset_uri"], "epochs": inputs["epochs"]},
-            )
-        r.raise_for_status()
-        return ModelTrainJobMeta(job_id=r.json()["job_id"], endpoint=custom["endpoint"])
-
-    async def get(self, resource_meta: ModelTrainJobMeta, **kwargs) -> Resource:
-        """
-        Poll external API until training job finishes.
-        Must be safe to call repeatedly.
-        """
-        async with httpx.AsyncClient() as client:
-            r = await client.get(f"{resource_meta.endpoint}/{resource_meta.job_id}")
-
-        data = r.json()
-
-        if data["status"] == "finished":
-            return Resource(
-                phase=TaskExecution.SUCCEEDED,
-                log_links=[TaskLog(name="training-dashboard", uri=f"https://example-mltrain.com/train/{resource_meta.job_id}")],
-                outputs={"results": data["results"]},
-            )
-
-        return Resource(phase=TaskExecution.RUNNING)
-
-    async def delete(self, resource_meta: ModelTrainJobMeta, **kwargs):
-        """
-        Optionally call DELETE on external API.
-        Safe even if job already completed.
-        """
-        async with httpx.AsyncClient() as client:
-            await client.delete(f"{resource_meta.endpoint}/{resource_meta.job_id}")
-```
-
-To use this connector, you should define a task whose `task_type` matches the connector.
-
-```python
-import flyte.io
-from typing import Any, Dict, Optional
-
-from flyte.extend import TaskTemplate
-from flyte.connectors import AsyncConnectorExecutorMixin
-from flyte.models import NativeInterface, SerializationContext
-
-
-class ModelTrainTask(AsyncConnectorExecutorMixin, TaskTemplate):
-    _TASK_TYPE = "external_model_training"
-
-    def __init__(
-        self,
-        name: str,
-        endpoint: str,
-        **kwargs,
-    ):
-        super().__init__(
-            name=name,
-            interface=NativeInterface(
-                inputs={"epochs": int, "dataset_uri": str},
-                outputs={"results": flyte.io.File},
-            ),
-            task_type=self._TASK_TYPE,
-            **kwargs,
-        )
-        self.endpoint = endpoint
-
-    def custom_config(self, sctx: SerializationContext) -> Optional[Dict[str, Any]]:
-        return {"endpoint": self.endpoint}
-```
-
-Here is an example of how to use the `ModelTrainTask`:
+**Usage**:
 
 ```python
 import flyte
-from flyteplugins.model_training import ModelTrainTask
+from my_connector.task import BatchJobConfig, BatchJobTask
 
-model_train_task = ModelTrainTask(
-    name="model_train",
-    endpoint="https://example-mltrain.com",
+batch_job = BatchJobTask(
+    name="my_batch_job",
+    plugin_config=BatchJobConfig(timeout_seconds=60),
+    inputs={"name": str},
+    outputs={"result": str},
 )
 
-model_train_env = flyte.TaskEnvironment.from_task("model_train_env", model_train_task)
-
-env = flyte.TaskEnvironment(
-    name="hello_world",
-    resources=flyte.Resources(memory="250Mi"),
-    image=flyte.Image.from_debian_base(name="model_training").with_pip_packages(
-        "flyteplugins-model-training", pre=True
-    ),
-    depends_on=[model_train_env],
-)
-
-
-@env.task
-def data_prep() -> str:
-    return "gs://my-bucket/dataset.csv"
-
-
-@env.task
-def train_model(epochs: int) -> flyte.io.File:
-    dataset_uri = data_prep()
-    return model_train_task(epochs=epochs, dataset_uri=dataset_uri)
+flyte.TaskEnvironment.from_task("batch-job-env", batch_job)
 ```
 
-### Build a custom connector image
+### Connector-level secrets
 
-Build a custom image when you're ready to deploy your connector to your cluster.
-To build the Docker image for your connector, run the following script:
+If your connector needs credentials (API keys, tokens) shared across all tasks, pass them as environment variables into the connector process.
+
+{{< variant union >}}
+{{< markdown >}}
+Add secrets to `ConnectorEnvironment`:
+
+```python
+connector = flyte.app.ConnectorEnvironment(
+    name="batch-job-connector",
+    image=image,
+    include=["my_connector"],
+    secrets=[flyte.Secret(key="MY_API_KEY")],
+)
+```
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+Set environment variables on the connector Kubernetes deployment:
+
+```bash
+kubectl set env deployment/<connector-deployment> MY_API_KEY=<value> -n <flyte-namespace>
+```
+{{< /markdown >}}
+{{< /variant >}}
+
+Inside the connector, read the secret from the environment:
+
+```python
+import os
+
+api_key = os.environ["MY_API_KEY"]
+```
+
+See [Secrets](../user-guide/task-configuration/secrets) for how to store and manage secrets.
+
+### Deploy a custom connector
+
+{{< variant union >}}
+{{< markdown >}}
+Deploy your connector as a long-running service using `flyte.app.ConnectorEnvironment`. Union handles building the image, pushing it, and keeping the service running — no manual Kubernetes configuration required.
+
+See the **Connector app** guide (`user-guide/build-apps/connector-app`) for a complete walkthrough.
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+Deploying a connector requires two steps: building a Docker image that contains your connector code and then patching the connector Kubernetes deployment to use it.
+
+**Step 1: Build the connector image**
 
 ```python
 import asyncio
@@ -391,31 +320,34 @@ from flyte import Image
 from flyte.extend import ImageBuildEngine
 
 
-async def build_flyte_connector_bigquery_image(registry: str, name: str, builder: str = "local"):
-    """
-    Build the SDK default connector image optionally overriding
-    the container registry and image name.
-
-    Args:
-        registry: e.g. "ghcr.io/my-org" or "123456789012.dkr.ecr.us-west-2.amazonaws.com".
-        name:     e.g. "my-connector".
-        builder:  e.g. "local" or "remote".
-    """
-
-    default_image = Image.from_debian_base(
+async def build_connector_image(registry: str, name: str, builder: str = "local"):
+    image = Image.from_debian_base(
         registry=registry, name=name
-    ).with_pip_packages("flyteintegrations-bigquery", pre=True)
-    await ImageBuildEngine.build(default_image, builder=builder)
+    ).with_pip_packages("flyte[connector]", "my-connector-package")
+    await ImageBuildEngine.build(image, builder=builder)
 
 
 if __name__ == "__main__":
-    print("Building connector image...")
     asyncio.run(
-        build_flyte_connector_bigquery_image(
-            registry="<YOUR_REGISTRY>", name="flyte-bigquery", builder="local"
+        build_connector_image(
+            registry="<YOUR_REGISTRY>", name="my-connector", builder="local"
         )
     )
 ```
+
+**Step 2: Override the connector deployment image**
+
+Once the image is pushed, patch the connector Kubernetes deployment to use it:
+
+```bash
+kubectl set image deployment/<connector-deployment-name> \
+    connector=<YOUR_REGISTRY>/my-connector:<TAG> \
+    -n <flyte-namespace>
+```
+
+Replace `<connector-deployment-name>` with the name of your connector deployment (e.g. `flyte-connector`), and `<flyte-namespace>` with the namespace where Flyte is installed (typically `flyte`).
+{{< /markdown >}}
+{{< /variant >}}
 
 ## LLM Serving
 
@@ -425,10 +357,10 @@ LLM serving integrations let you deploy and serve large language models as Flyte
 
 | Plugin                                        | Description                                         | Common use cases             |
 | --------------------------------------------- | --------------------------------------------------- | ---------------------------- |
-| [SGLang](../user-guide/build-apps/sglang-app) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
-| [vLLM](../user-guide/build-apps/vllm-app)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
+| [SGLang](../user-guide/native-app-integrations/sglang-app) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
+| [vLLM](../user-guide/native-app-integrations/vllm-app)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
 
-For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang app](../user-guide/build-apps/sglang-app) and [vLLM app](../user-guide/build-apps/vllm-app) pages.
+For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang app](../user-guide/native-app-integrations/sglang-app) and [vLLM app](../user-guide/native-app-integrations/vllm-app) pages.
 
 ## Notebook execution
 
