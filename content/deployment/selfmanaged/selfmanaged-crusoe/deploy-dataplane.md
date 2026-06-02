@@ -154,7 +154,7 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
    union-crusoe      my-org    STATE_ENABLED  HEALTHY
    ```
 
-9. Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:
+9. **Required for helm charts on a version <= 2026.5.8.** Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:
 
    ```bash
    uctl create apikey --keyName EAGER_API_KEY --org <ORG_NAME>
