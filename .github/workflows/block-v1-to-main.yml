@@ -1,4 +1,4 @@
-name: block-v1-to-main
+name: Block v1 → main
 on:
   pull_request:
     branches: [main]
