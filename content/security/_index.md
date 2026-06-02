@@ -32,12 +32,6 @@ Authentication is done via OIDC/SSO, API keys, and service accounts.
 Role-based access control enforces least-privilege.
 Union.ai personnel cannot access customer data or secrets.
 
-**[Threat model](./threat-model)**
-An analysis of potential threats and how they are mitigated is provided.
-Control plane compromise, tunnel interception, and presigned URL leakage scenarios are examined,
-and the architectural design and security controls that mitigate these risks are described.
-The goal is to demonstrate that even in worst-case scenarios, customer data remains protected.
-
 **[Compliance and governance](./compliance/_index)**
 Union.ai is SOC 2 Type II certified for Security, Availability, and Processing Integrity, with practices aligned to ISO 27001 and CIS benchmarks.
 The platform is designed to meet HIPAA requirements.
