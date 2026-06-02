@@ -1,4 +1,4 @@
-name: Check Helm Docs
+name: "Advisory: Helm docs freshness"
 
 on:
   pull_request:
@@ -7,6 +7,7 @@ on:
 
 jobs:
   check-helm-docs:
+    name: "Helm docs vs helm-charts (advisory, non-blocking)"
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +24,27 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v4
 
-      - name: Check Helm docs are up-to-date
+      # Advisory only. This compares the committed chart_version: frontmatter
+      # against the latest Chart.yaml in unionai/helm-charts, so it can go out
+      # of date with no change to this repo. It must NOT block PRs: on drift we
+      # surface a warning + job summary and exit 0. Fix by running
+      # `make update-helm-docs` in a separate regen PR. See cleanup-gha
+      # CLAUDE.md for the in-repo vs upstream-tracker distinction.
+      - name: Check Helm docs freshness (advisory)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: make check-helm-docs
+        run: |
+          if make check-helm-docs; then
+            echo "Helm docs are up to date with the latest helm-charts release."
+          else
+            echo "::warning title=Helm docs lag helm-charts (advisory, non-blocking)::Committed Helm chart docs are behind the latest unionai/helm-charts release. This does NOT block your PR and is not caused by your changes. A maintainer should run 'make update-helm-docs' and open a separate regen PR."
+            {
+              echo "### ⚠️ Helm docs are behind upstream — advisory, non-blocking"
+              echo ""
+              echo "The committed \`chart_version:\` frontmatter lags the latest \`Chart.yaml\` in \`unionai/helm-charts\`."
+              echo ""
+              echo "**This does not block your PR and is not caused by your changes.** This check tracks upstream chart releases, not anything in this repository."
+              echo ""
+              echo "To resolve (maintainers): run \`make update-helm-docs\` and open a separate regen PR."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
