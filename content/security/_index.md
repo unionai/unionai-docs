@@ -10,10 +10,7 @@ top_menu: true
 This section provides a comprehensive overview of Union.ai's security architecture, practices, and compliance posture for enterprise security professionals evaluating the platform.
 Beyond describing the security model, it provides concrete verification steps so that reviewers can independently confirm each claim against a running system.
 
-> **No customer data, metadata, code, or logs ever touch Union.ai's control plane. Not in flight. Not at rest. Not ever.**
-<!--
-TODO: Check exact meaning of metadata as used here. Worth doing a full inventory of what metadata is and isn't stored in the control plane, and how it's protected, to ensure this claim is accurate and defensible.
--->
+> **No customer data, code, or logs ever touch Union.ai's control plane. Not in flight. Not at rest. Not ever.**
 
 ## Overview
 
