@@ -1,9 +1,13 @@
 name: Check Redirects
 
-on: [push]
+on:
+  pull_request:
+  push:
+    branches: [main]
 
 jobs:
   check-redirects:
+    name: "Check Redirects"
     runs-on: ubuntu-latest
 
     steps:
