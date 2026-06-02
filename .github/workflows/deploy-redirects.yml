@@ -27,7 +27,7 @@ jobs:
             echo "Manual trigger, proceeding with deploy."
             exit 0
           fi
-          # For push events, check if the infra submodule ref changed and
+          # For push events, check if the unionai-docs-infra submodule ref changed and
           # whether that change includes redirects.csv
           OLD_REF=$(git diff HEAD~1 HEAD -- unionai-docs-infra | grep "^-Subproject" | awk '{print $3}' || true)
           NEW_REF=$(git diff HEAD~1 HEAD -- unionai-docs-infra | grep "^+Subproject" | awk '{print $3}' || true)
