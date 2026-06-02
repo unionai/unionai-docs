@@ -10,6 +10,7 @@ on:
 
 jobs:
   generate:
+    name: "Generate Helm Docs"
     runs-on: ubuntu-latest
 
     steps:
