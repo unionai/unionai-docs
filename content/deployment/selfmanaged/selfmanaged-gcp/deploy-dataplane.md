@@ -30,21 +30,22 @@ If you have not yet set up the required GCP resources (GKE cluster, GCS, Artifac
    helm repo update
    ```
 
-2. Use the `uctl selfserve provision-dataplane-resources` command to generate a new client and client secret for communicating with your Union control plane, provision authorization permissions for the app to operate on the Union cluster name you have selected, generate values file to install dataplane in your Kubernetes cluster and provide follow-up instructions:
+2. Provision an OAuth client and register the cluster with your control plane:
 
    ```bash
    uctl config init --host=<YOUR_UNION_CONTROL_PLANE_URL>
-   uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME>  --provider gcp
+   uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME> --provider gcp
    ```
 
-   * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
-     It will also generate a YAML file specific to the provider that you specify, in this case `gcp`.
+   * The command outputs a client ID and secret that Union services use to communicate with your control plane. Save the secret — Union does not store credentials; rerunning the same command retrieves it.
 
-   * Save the secret that is displayed. Union does not store the credentials; rerunning the same command can be used to retrieve the secret later.
+3. Start from the canonical GCP dataplane values overlay in [unionai/helm-charts](https://github.com/unionai/helm-charts):
 
-3. Update the generated values file with your infrastructure details:
+   ```bash
+   curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.gcp.yaml
+   ```
 
-   Using the [environment variables](../selfmanaged-gcp/prepare-infra#environment-variables) from the prepare infrastructure step:
+   Fill in your infrastructure details (use the [environment variables](../selfmanaged-gcp/prepare-infra#environment-variables) from the prepare infrastructure step):
 
    - Set `global.METADATA_BUCKET` to `${BUCKET_PREFIX}-metadata`.
    - Set `global.FAST_REGISTRATION_BUCKET` to `${BUCKET_PREFIX}-fast-reg`.
@@ -56,6 +57,7 @@ If you have not yet set up the required GCP resources (GKE cluster, GCS, Artifac
    - Set `storage.gcp.projectId` to `${PROJECT_ID}`.
    - Set `commonServiceAccount.annotations."iam.gke.io/gcp-service-account"` to `${GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com`.
    - Set `imageBuilder.registryName` to `${AR_REPOSITORY}` (defaults to `union-dataplane`; the chart auto-generates the full Artifact Registry URL from the project ID and region).
+   - Plug in the `CLIENT_ID` and `CLIENT_SECRET` from step 2 wherever the overlay expects them.
 
 4. Install the data plane CRDs via server-side apply. The CRDs are vendored in [unionai/helm-charts](https://github.com/unionai/helm-charts) under `crds/`:
 
@@ -76,7 +78,7 @@ If you have not yet set up the required GCP resources (GKE cluster, GCS, Artifac
 
    ```bash
    helm upgrade --install union unionai/dataplane \
-     -f <GENERATED_VALUES_FILE> \
+     -f values.gcp.yaml \
      --namespace union \
      --create-namespace \
      --skip-crds \

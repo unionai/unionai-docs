@@ -29,19 +29,22 @@ If you have not yet set up the required CoreWeave resources (CKS cluster, AI Obj
    export KUBECONFIG=<PATH_TO_KUBECONFIG>
    ```
 
-2. Configure the Union CLI and provision data plane resources:
+2. Provision an OAuth client and register the cluster with your control plane:
 
    ```bash
    uctl config init --host=<ORG_NAME>.union.ai
    uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider metal
    ```
 
-   * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
-     It will also generate a YAML values file specific to the `metal` provider.
+   * The command outputs a client ID and secret that Union services use to communicate with your control plane. Save the secret — Union does not store credentials; rerunning the same command retrieves it.
 
-   * Save the secret that is displayed. Union does not store the credentials; rerunning the same command can be used to retrieve the secret later.
+3. Start from the base dataplane values in [unionai/helm-charts](https://github.com/unionai/helm-charts) and overlay CoreWeave's S3-compatible storage configuration. AI Object Storage requires virtual-hosted style S3 URLs, so you must override the default storage configuration. Replace the placeholders with your actual credentials and settings.
 
-3. Update the generated values file with your CoreWeave-specific storage configuration. AI Object Storage requires virtual-hosted style S3 URLs, so you must override the default storage configuration. Replace the placeholders with your actual credentials and settings.
+   ```bash
+   curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.yaml
+   ```
+
+   Then overlay the CoreWeave-specific block:
 
    ```yaml
    host: <ORG_NAME>.union.ai

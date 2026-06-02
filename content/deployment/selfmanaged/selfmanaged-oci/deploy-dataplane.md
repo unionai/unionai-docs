@@ -30,23 +30,27 @@ If you have not yet set up the required OCI resources (OKE cluster, Object Stora
    helm repo update
    ```
 
-2. Use the `uctl selfserve provision-dataplane-resources` command to generate a new client and client secret for communicating with your Union control plane, provision authorization permissions for the app to operate on the union cluster name you have selected, generate values file to install dataplane in your Kubernetes cluster and provide follow-up instructions:
+2. Provision an OAuth client and register the cluster with your control plane:
 
    ```bash
    uctl config init --host=<YOUR_UNION_CONTROL_PLANE_URL>
-   uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME>  --provider oci
+   uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME> --provider oci
    ```
 
-   * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
-     It will also generate a YAML file specific to the provider that you specify, in this case `oci`.
+   * The command outputs a client ID and secret that Union services use to communicate with your control plane. Save the secret — Union does not store credentials; rerunning the same command retrieves it.
 
-   * Save the secret that is displayed. Union does not store the credentials; rerunning the same command can be used to retrieve the secret later.
+3. Start from the base dataplane values in [unionai/helm-charts](https://github.com/unionai/helm-charts) (OCI uses OCI Object Storage's S3-compatible API, layered on the base chart values):
 
-3. Update the generated values file with your infrastructure details:
+   ```bash
+   curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.yaml
+   ```
+
+   Fill in your infrastructure details:
 
    - Set `storage.bucketName` and `storage.fastRegistrationBucketName` to your Object Storage bucket name(s).
    - Set `storage.region` to your OCI region.
    - If using static credentials (Option B), set `storage.accessKey` and `storage.secretKey` to your S3 Compatibility API credentials.
+   - Plug in the `CLIENT_ID` and `CLIENT_SECRET` from step 2 wherever the chart expects them.
 
 4. Install the data plane CRDs via server-side apply. The CRDs are vendored in [unionai/helm-charts](https://github.com/unionai/helm-charts) under `crds/`:
 
@@ -67,7 +71,7 @@ If you have not yet set up the required OCI resources (OKE cluster, Object Stora
 
    ```bash
    helm upgrade --install union unionai/dataplane \
-     -f <GENERATED_VALUES_FILE> \
+     -f values.yaml \
      --namespace union \
      --create-namespace \
      --skip-crds \

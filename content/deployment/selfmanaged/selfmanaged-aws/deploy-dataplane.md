@@ -30,32 +30,34 @@ If you have not yet set up the required AWS resources (EKS cluster, S3, ECR, IAM
    helm repo update
    ```
 
-2. Use the `uctl selfserve provision-dataplane-resources` command to generate a new client and client secret for communicating with your Union control plane, provision authorization permissions for the app to operate on the union cluster name you have selected, generate values file to install dataplane in your Kubernetes cluster and provide follow-up instructions:
+2. Provision an OAuth client and register the cluster with your control plane:
 
    ```bash
    uctl config init --host=<YOUR_UNION_CONTROL_PLANE_URL>
-   uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME>  --provider aws
+   uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME> --provider aws
    ```
 
-   * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
-     It will also generate a YAML file `<org>-values.yaml` specific to the provider that you specify, in this case `aws`.
+   * The command outputs a client ID and secret that Union services use to communicate with your control plane. Save the secret — Union does not store credentials; rerunning the same command retrieves it.
 
-   * Save the secret that is displayed. Union does not store the credentials; rerunning the same command can be used to retrieve the secret later.
+3. Start from the canonical AWS dataplane values overlay in [unionai/helm-charts](https://github.com/unionai/helm-charts):
 
-3. Update the generated values file with your infrastructure details:
+   ```bash
+   curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.aws.yaml
+   ```
 
-   Using the [environment variables](../selfmanaged-aws/prepare-infra#environment-variables) from the prepare infrastructure step:
+   Fill in your infrastructure details (use the [environment variables](../selfmanaged-aws/prepare-infra#environment-variables) from the prepare infrastructure step):
 
-   - Set `global.AWS_ACCOUNT_ID` to your AWS account ID. You can retrieve it with `aws sts get-caller-identity --query Account --output text`.
+   - Set `global.AWS_ACCOUNT_ID` to your AWS account ID. Retrieve with `aws sts get-caller-identity --query Account --output text`.
    - Set `global.METADATA_BUCKET` to `${BUCKET_PREFIX}-metadata`.
    - Set `global.FAST_REGISTRATION_BUCKET` to `${BUCKET_PREFIX}-fast-reg`.
-   - Set `global.BACKEND_IAM_ROLE_ARN` to `arn:aws:iam::${AWS_ACCOUNT_ID}:role/${IAM_ROLE_NAME}` (where `AWS_ACCOUNT_ID` is your 12-digit account ID).
+   - Set `global.BACKEND_IAM_ROLE_ARN` to `arn:aws:iam::${AWS_ACCOUNT_ID}:role/${IAM_ROLE_NAME}`.
    - Set `global.WORKER_IAM_ROLE_ARN` to the same value (or a separate role if you use distinct worker permissions).
    - Set `storage.bucketName` to `${BUCKET_PREFIX}-metadata`.
    - Set `storage.fastRegistrationBucketName` to `${BUCKET_PREFIX}-fast-reg`.
    - Set `storage.region` to `${AWS_REGION}`.
    - Set `commonServiceAccount.annotations."eks.amazonaws.com/role-arn"` to `arn:aws:iam::${AWS_ACCOUNT_ID}:role/${IAM_ROLE_NAME}`.
    - Set `imageBuilder.registryName` to `${ECR_REPO_NAME}` (defaults to `union-dataplane`; the chart auto-generates the full ECR URL from the account ID and region).
+   - Plug in the `CLIENT_ID` and `CLIENT_SECRET` from step 2 wherever the overlay expects them.
 
 4. Install the data plane CRDs via server-side apply. The CRDs are vendored in [unionai/helm-charts](https://github.com/unionai/helm-charts) under `crds/`:
 
@@ -76,7 +78,7 @@ If you have not yet set up the required AWS resources (EKS cluster, S3, ECR, IAM
 
    ```bash
    helm upgrade --install union unionai/dataplane \
-     -f <GENERATED_VALUES_FILE> \
+     -f values.aws.yaml \
      --namespace union \
      --create-namespace \
      --skip-crds \

@@ -31,16 +31,22 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    export KUBECONFIG=<PATH_TO_KUBECONFIG>
    ```
 
-2. Configure the Union CLI and provision data plane resources:
+2. Provision an OAuth client and register the cluster with your control plane:
 
    ```bash
    uctl config init --host=<ORG_NAME>.union.ai
    uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider metal
    ```
 
-   The command generates a YAML values file specific to the `metal` provider, including the secrets necessary so your data plane can communicate with Union's control plane.
+   The command outputs a client ID and secret that Union services use to communicate with your control plane. Save them — Union does not store credentials; rerunning the same command retrieves them.
 
-3. Update the generated values file with your Nebius-specific storage configuration. Replace the placeholders with your actual credentials and settings.
+3. Start from the base dataplane values in [unionai/helm-charts](https://github.com/unionai/helm-charts) and overlay Nebius's S3-compatible storage configuration. Replace the placeholders with your actual credentials and settings.
+
+   ```bash
+   curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.yaml
+   ```
+
+   Then overlay the Nebius-specific block:
 
    ```yaml
    host: <ORG_NAME>.union.ai
@@ -65,7 +71,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    ```
 
    > [!NOTE]
-   > The `uctl selfserve provision-dataplane-resources` command in step 2 generates the `<CLIENT_ID>` and `<CLIENT_SECRET>` values and feeds them into the values file. Don't modify them.
+   > The `uctl selfserve provision-dataplane-resources` command in step 2 outputs the `<CLIENT_ID>` and `<CLIENT_SECRET>`. Plug those values into the `secrets.admin` block above.
 
 4. Add the {{< key product_name >}} Helm repo:
 
