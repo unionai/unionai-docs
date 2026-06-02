@@ -59,6 +59,20 @@ The container is built on demand from declared dependencies, executed once, and 
 
 This is the right choice when you need full Python capabilities — third-party packages, file I/O, shell commands, or any computation that goes beyond pure control flow.
 
+{{< variant union >}}
+{{< markdown >}}
+### Interactive sandbox (session)
+
+An **interactive sandbox** keeps a live session open and runs many commands against it — `open → run() → run() → … → close` — with state persisting on the sandbox filesystem between calls. This fills the *interactive sessions* category above with a Union-native option, via the `unionai-sandbox` library (`union.sandbox`).
+
+It comes in two transports: a **local** sandbox that isolates child processes inside the current container (works anywhere, no deployment), and a **remote** sandbox that runs as its own pod, can be passed between tasks, and can be hardened with gVisor.
+
+Use an interactive sandbox for REPL-style agents, multi-turn apps, or any workflow that runs a sequence of related commands rather than a single one-shot invocation.
+
+See [**Interactive sandboxes**](./interactive-sandboxes/_index) for the full guide.
+{{< /markdown >}}
+{{< /variant >}}
+
 ### When to use which
 
 | | Workflow sandbox | Code sandbox |
@@ -78,3 +92,8 @@ This is the right choice when you need full Python capabilities — third-party 
 - [**Workflow sandboxing**](./workflow-sandboxing-flyte) — How the Monty-based sandboxed orchestrator works, with examples
 - [**Programmatic tool calling for agents**](./code-mode) — The concept behind programmatic tool calling and how to build agents that use it
 - [**Code sandboxing**](./code-sandboxing) — Running arbitrary code and commands in ephemeral containers with `flyte.sandbox.create()`
+{{< variant union >}}
+{{< markdown >}}
+- [**Interactive sandboxes**](./interactive-sandboxes/_index) — Live, multi-command sessions with the `unionai-sandbox` library, in-process (local) or as a pod (remote)
+{{< /markdown >}}
+{{< /variant >}}
