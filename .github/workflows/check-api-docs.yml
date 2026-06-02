@@ -1,4 +1,4 @@
-name: Check API Docs
+name: "Advisory: API docs freshness"
 
 on:
   pull_request:
@@ -7,6 +7,7 @@ on:
 
 jobs:
   check-api-docs:
+    name: "API docs vs PyPI (advisory, non-blocking)"
     runs-on: ubuntu-latest
 
     steps:
@@ -23,5 +24,25 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v4
 
-      - name: Check API docs are up-to-date
-        run: make check-api-docs
+      # Advisory only. This compares committed API docs against the latest
+      # PyPI releases, so it can go out of date with no change to this repo.
+      # It must NOT block PRs: on drift we surface a warning + job summary
+      # and exit 0. Fix by running `make update-api-docs` in a separate
+      # regen PR. See cleanup-gha CLAUDE.md for the in-repo vs upstream-tracker
+      # distinction.
+      - name: Check API docs freshness (advisory)
+        run: |
+          if make check-api-docs; then
+            echo "API docs are up to date with the latest PyPI releases."
+          else
+            echo "::warning title=API docs lag PyPI (advisory, non-blocking)::Committed API reference docs are behind the latest PyPI releases. This does NOT block your PR and is not caused by your changes. A maintainer should run 'make update-api-docs' and open a separate regen PR."
+            {
+              echo "### ⚠️ API docs are behind upstream — advisory, non-blocking"
+              echo ""
+              echo "The committed API reference docs lag the latest \`flytekit\` / \`union\` / plugin releases on PyPI."
+              echo ""
+              echo "**This does not block your PR and is not caused by your changes.** This check tracks upstream package releases, not anything in this repository."
+              echo ""
+              echo "To resolve (maintainers): run \`make update-api-docs\` and open a separate regen PR."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
