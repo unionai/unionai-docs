@@ -1,6 +1,6 @@
 ---
 title: AgentChatAppEnvironment
-version: 2.3.2
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 ---
@@ -116,7 +116,6 @@ class AgentChatAppEnvironment(
     passthrough_auth: bool,
     passthrough_auth_excluded_paths: frozenset[str] | None,
     task_entrypoint: Any | None,
-    _caller_frame: inspect.FrameInfo | None,
 )
 ```
 | Parameter | Type | Description |
@@ -153,7 +152,6 @@ class AgentChatAppEnvironment(
 | `passthrough_auth` | `bool` | |
 | `passthrough_auth_excluded_paths` | `frozenset[str] \| None` | |
 | `task_entrypoint` | `Any \| None` | |
-| `_caller_frame` | `inspect.FrameInfo \| None` | |
 
 ## Properties
 

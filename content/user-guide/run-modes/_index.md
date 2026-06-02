@@ -6,7 +6,16 @@ variants: +flyte +union
 
 # Run modes
 
-Flyte supports three execution modes, letting you choose the right trade-off between speed and fidelity at each stage of development:
+{{< variant flyte >}}
+{{< markdown >}}
+Flyte OSS currently supports two execution modes — Local and Devbox (Remote execution is coming soon):
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
+Union.ai supports three execution modes, letting you choose the right trade-off between speed and fidelity at each stage of development:
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< grid cols=3 >}}
 
@@ -21,7 +30,7 @@ Run tasks and apps in a lightweight Flyte cluster using Docker. Get the full Fly
 {{< variant union >}}
 
 {{< link-card target="running-remote" icon="cloud" title="Remote" >}}
-Run tasks and apps on a remote Flyte or Union cluster with full production capabilities including GPUs, distributed compute, and cloud-scale resources.
+Run tasks and apps on a remote cluster with full production capabilities including GPUs, distributed compute, and cloud-scale resources.
 {{< /link-card >}}
 
 {{< /variant >}}
@@ -40,7 +49,7 @@ Run tasks and apps on a remote Flyte or Union cluster with full production capab
 | **🔀 Parallelism** | Sequential | Cluster-level |
 | **⭐️ Best for** | Fast iteration, debugging | Testing container builds, full Flyte features |
 
-The same task code runs unchanged across all the two modes. Start local for fast feedback, move to the devbox to validate containerized execution, then deploy to a remote cluster for production.
+The same task code runs unchanged in both modes.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -57,7 +66,7 @@ The same task code runs unchanged across all the two modes. Start local for fast
 | **🔀 Parallelism** | Sequential | Cluster-level | Cluster-level |
 | **⭐️ Best for** | Fast iteration, debugging | Testing container builds, full Flyte features | Production, GPUs, scale |
 
-The same task code runs unchanged across all three modes. Start local for fast feedback, move to the devbox to validate containerized execution, then deploy to a remote cluster for production.
+The same task code runs unchanged across all three modes. Start with local execution for fast feedback, move to the Devbox to validate containerized execution, then deploy to a remote cluster for production.
 
 {{< /markdown >}}
 {{< /variant >}}
