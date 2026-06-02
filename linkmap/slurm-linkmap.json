@@ -11,8 +11,6 @@
   },
   "methods": {
     "flytekitplugins.slurm.ssh_utils.get_ssh_conn": "/api-reference/plugins/slurm/packages/flytekitplugins.slurm.ssh_utils/#get_ssh_conn",
-    "get_ssh_conn": "/api-reference/plugins/slurm/packages/flytekitplugins.slurm.ssh_utils/#get_ssh_conn",
-    "flytekitplugins.slurm.ssh_utils.ssh_connect": "/api-reference/plugins/slurm/packages/flytekitplugins.slurm.ssh_utils/#ssh_connect",
-    "ssh_connect": "/api-reference/plugins/slurm/packages/flytekitplugins.slurm.ssh_utils/#ssh_connect"
+    "flytekitplugins.slurm.ssh_utils.ssh_connect": "/api-reference/plugins/slurm/packages/flytekitplugins.slurm.ssh_utils/#ssh_connect"
   }
 }

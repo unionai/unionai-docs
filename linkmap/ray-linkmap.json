@@ -5,6 +5,8 @@
     "flytekitplugins.ray.task": "/api-reference/plugins/ray/packages/flytekitplugins.ray.task/"
   },
   "identifiers": {
+    "flytekitplugins.ray.models.AutoscalerOptions": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/#flytekitpluginsraymodelsautoscaleroptions",
+    "AutoscalerOptions": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/#flytekitpluginsraymodelsautoscaleroptions",
     "flytekitplugins.ray.models.HeadGroupSpec": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/#flytekitpluginsraymodelsheadgroupspec",
     "HeadGroupSpec": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/#flytekitpluginsraymodelsheadgroupspec",
     "flytekitplugins.ray.models.RayCluster": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/#flytekitpluginsraymodelsraycluster",
@@ -13,6 +15,8 @@
     "RayJob": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/#flytekitpluginsraymodelsrayjob",
     "flytekitplugins.ray.models.WorkerGroupSpec": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/#flytekitpluginsraymodelsworkergroupspec",
     "WorkerGroupSpec": "/api-reference/plugins/ray/packages/flytekitplugins.ray.models/#flytekitpluginsraymodelsworkergroupspec",
+    "flytekitplugins.ray.task.AutoscalerOptionsConfig": "/api-reference/plugins/ray/packages/flytekitplugins.ray.task/#flytekitpluginsraytaskautoscaleroptionsconfig",
+    "AutoscalerOptionsConfig": "/api-reference/plugins/ray/packages/flytekitplugins.ray.task/#flytekitpluginsraytaskautoscaleroptionsconfig",
     "flytekitplugins.ray.task.HeadNodeConfig": "/api-reference/plugins/ray/packages/flytekitplugins.ray.task/#flytekitpluginsraytaskheadnodeconfig",
     "HeadNodeConfig": "/api-reference/plugins/ray/packages/flytekitplugins.ray.task/#flytekitpluginsraytaskheadnodeconfig",
     "flytekitplugins.ray.task.RayFunctionTask": "/api-reference/plugins/ray/packages/flytekitplugins.ray.task/#flytekitpluginsraytaskrayfunctiontask",

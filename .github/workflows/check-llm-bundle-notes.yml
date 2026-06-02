@@ -1,9 +1,13 @@
 name: Check LLM Bundle Notes
 
-on: [push]
+on:
+  pull_request:
+  push:
+    branches: [v1]
 
 jobs:
   check-llm-bundle-notes:
+    name: "Check LLM Bundle Notes"
     runs-on: ubuntu-latest
     continue-on-error: true
 

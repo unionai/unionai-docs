@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.auth_client
-version: 1.16.20
+version: 1.16.22
 variants: +flyte +union
 layout: py_api
 ---

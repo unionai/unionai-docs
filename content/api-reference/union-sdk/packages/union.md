@@ -4562,6 +4562,7 @@ def sync_execution(
     execution: FlyteWorkflowExecution,
     entity_definition: typing.Union[FlyteWorkflow, FlyteTask],
     sync_nodes: bool,
+    rpc_timeout: typing.Optional[typing.Union[timedelta, int]],
 ) -> FlyteWorkflowExecution
 ```
 Sync a FlyteWorkflowExecution object with its corresponding remote state.
@@ -4572,6 +4573,7 @@ Sync a FlyteWorkflowExecution object with its corresponding remote state.
 | `execution` | `FlyteWorkflowExecution` | |
 | `entity_definition` | `typing.Union[FlyteWorkflow, FlyteTask]` | |
 | `sync_nodes` | `bool` | |
+| `rpc_timeout` | `typing.Optional[typing.Union[timedelta, int]]` | |
 
 #### sync_node_execution()
 

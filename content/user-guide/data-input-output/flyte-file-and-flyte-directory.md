@@ -411,7 +411,7 @@ def wf():
 
 * The `FlyteFile` object is initialized with the path (local to the `task_1` container) of the file you wish to share.
 * When the `FlyteFile` is passed out of `task_1`, {{< key product_name >}} uploads the local file to a unique location in the {{< key product_name >}} object store. A randomly generated, universally unique location is used to ensure that subsequent uploads of other files never overwrite each other.
-* The object store location is used to initialize the URI attribute of a Flyte `Blob` object. Note that Flyte objects are not Python objects. They exist at the workflow level and are used to pass data between task containers. For more details, see [Flyte Core Language Specification > Literals](../../api-reference/flyteidl#flyteidlcoretypesproto).
+* The object store location is used to initialize the URI attribute of a Flyte `Blob` object. Note that Flyte objects are not Python objects. They exist at the workflow level and are used to pass data between task containers.
 * The `Blob` object is passed to `task_2`.
 * Because the type of the input parameter of `task_2` is `FlyteFile`, {{< key product_name >}} converts the `Blob` back into a `FlyteFile` and sets the `remote_source` attribute of that `FlyteFile` to the URI of the `Blob` object.
 * Inside `task_2` you can now perform a [`FlyteFile.open()`](../../api-reference/flytekit-sdk/packages/flytekit.types.file.file#open) and read the file contents.
@@ -469,9 +469,9 @@ However, you can change the upload location by setting the raw data prefix to yo
 > [!NOTE] Setting up your own object store bucket
 > For details on how to set up your own object store bucket, consult the direction for your cloud provider:
 >
-> * [Enabling AWS S3](../../deployment/enabling-aws-resources/enabling-aws-s3)
-> * [Enabling Google Cloud Storage](../../deployment/enabling-gcp-resources/enabling-google-cloud-storage)
-> * [Enabling Azure Blob Storage](../../deployment/enabling-azure-resources/enabling-azure-blob-storage)
+> * [Enabling AWS S3](../../deployment/byoc/enabling-aws-resources/enabling-aws-s3)
+> * [Enabling Google Cloud Storage](../../deployment/byoc/enabling-gcp-resources/enabling-google-cloud-storage)
+> * [Enabling Azure Blob Storage](../../deployment/byoc/enabling-azure-resources/enabling-azure-blob-storage)
 
 ### Changing the raw data prefix
 
@@ -638,7 +638,7 @@ FlyteDirectory.new_file()
 
 ## Typed aliases
 
-The [{{< key kit_name >}} SDK](../../api-reference/union-sdk) defines some aliases of `FlyteFile` with specific type annotations.
+The [{{< key kit_name >}} SDK](../../api-reference/union-sdk/_index) defines some aliases of `FlyteFile` with specific type annotations.
 Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/flytekit-sdk/packages/flytekit.types.file.file):
 
 * `HDF5EncodedFile`

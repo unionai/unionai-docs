@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.remote
-version: 1.16.20
+version: 1.16.22
 variants: +flyte +union
 layout: py_api
 ---
@@ -29,6 +29,7 @@ but in Python object form.
 
 | Property | Type | Description |
 |-|-|-|
+| `DEFAULT_SYNC_EXECUTION_RPC_TIMEOUT` | `timedelta` |  |
 | `LATEST_VERSION_STR` | `str` |  |
 | `PICKLE_FILE_PATH` | `str` |  |
 
@@ -1378,6 +1379,7 @@ def sync_execution(
     execution: FlyteWorkflowExecution,
     entity_definition: typing.Union[FlyteWorkflow, FlyteTask],
     sync_nodes: bool,
+    rpc_timeout: typing.Optional[typing.Union[timedelta, int]],
 ) -> FlyteWorkflowExecution
 ```
 Sync a FlyteWorkflowExecution object with its corresponding remote state.
@@ -1388,6 +1390,7 @@ Sync a FlyteWorkflowExecution object with its corresponding remote state.
 | `execution` | `FlyteWorkflowExecution` | |
 | `entity_definition` | `typing.Union[FlyteWorkflow, FlyteTask]` | |
 | `sync_nodes` | `bool` | |
+| `rpc_timeout` | `typing.Optional[typing.Union[timedelta, int]]` | |
 
 #### sync_node_execution()
 

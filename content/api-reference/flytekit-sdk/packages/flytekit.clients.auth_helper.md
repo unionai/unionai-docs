@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth_helper
-version: 1.16.20
+version: 1.16.22
 variants: +flyte +union
 layout: py_api
 ---
@@ -284,8 +284,8 @@ Adds authentication headers to the request.
 
 ```python
 def add_headers(
-    request,
-    kwargs,
+    request: PreparedRequest,
+    kwargs: **kwargs,
 )
 ```
 Add any headers needed by the connection. As of v2.0 this does
@@ -300,17 +300,17 @@ when subclassing the
 
 | Parameter | Type | Description |
 |-|-|-|
-| `request` |  | The |
+| `request` | `PreparedRequest` | The |
 | `kwargs` | `**kwargs` | The keyword arguments from the call to send(). |
 
 #### build_connection_pool_key_attributes()
 
 ```python
 def build_connection_pool_key_attributes(
-    request,
-    verify,
-    cert,
-)
+    request: PreparedRequest,
+    verify: _t.VerifyType,
+    cert: _t.CertType,
+) -> tuple[dict[str, Any], dict[str, Any]]
 ```
 Build the PoolKey attributes used by urllib3 to return a connection.
 
@@ -350,17 +350,17 @@ alter the other keys to ensure the desired behaviour.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `request` |  | The PreparedReqest being sent over the connection. |
-| `verify` |  | Either a boolean, in which case it controls whether we verify the server's TLS certificate, or a string, in which case it must be a path to a CA bundle to use. |
-| `cert` |  | Any user-provided SSL certificate for client authentication (a.k.a., mTLS). This may be a string (i.e., just the path to a file which holds both certificate and key) or a tuple of length 2 with the certificate file path and key file path. |
+| `request` | `PreparedRequest` | The PreparedRequest being sent over the connection. |
+| `verify` | `_t.VerifyType` | Either a boolean, in which case it controls whether we verify the server's TLS certificate, or a string, in which case it must be a path to a CA bundle to use. |
+| `cert` | `_t.CertType` | Any user-provided SSL certificate for client authentication (a.k.a., mTLS). This may be a string (i.e., just the path to a file which holds both certificate and key) or a tuple of length 2 with the certificate file path and key file path. |
 
 #### build_response()
 
 ```python
 def build_response(
-    req,
-    resp,
-)
+    req: PreparedRequest,
+    resp: Any,
+) -> Response
 ```
 Builds a :class:`Response &lt;requests.Response&gt;` object from a urllib3
 response. This should not be called from user code, and is only exposed
@@ -371,8 +371,8 @@ for use when subclassing the
 
 | Parameter | Type | Description |
 |-|-|-|
-| `req` |  | The |
-| `resp` |  | The urllib3 response object. |
+| `req` | `PreparedRequest` | The |
+| `resp` | `Any` | The urllib3 response object. |
 
 **Returns:** requests.Response
 
@@ -380,10 +380,10 @@ for use when subclassing the
 
 ```python
 def cert_verify(
-    conn,
-    url,
-    verify,
-    cert,
+    conn: Any,
+    url: str,
+    verify: _t.VerifyType,
+    cert: _t.CertType,
 )
 ```
 Verify a SSL certificate. This method should not be called from user
@@ -394,10 +394,10 @@ code, and is only exposed for use when subclassing the
 
 | Parameter | Type | Description |
 |-|-|-|
-| `conn` |  | The urllib3 connection object associated with the cert. |
-| `url` |  | The requested URL. |
-| `verify` |  | Either a boolean, in which case it controls whether we verify the server's TLS certificate, or a string, in which case it must be a path to a CA bundle to use |
-| `cert` |  | The SSL certificate to verify. |
+| `conn` | `Any` | The urllib3 connection object associated with the cert. |
+| `url` | `str` | The requested URL. |
+| `verify` | `_t.VerifyType` | Either a boolean, in which case it controls whether we verify the server's TLS certificate, or a string, in which case it must be a path to a CA bundle to use |
+| `cert` | `_t.CertType` | The SSL certificate to verify. |
 
 #### close()
 
@@ -414,9 +414,9 @@ which closes any pooled connections.
 
 ```python
 def get_connection(
-    url,
-    proxies,
-)
+    url: str,
+    proxies: dict[str, str] | None,
+) -> HTTPConnectionPool
 ```
 DEPRECATED: Users should move to `get_connection_with_tls_context`
 for all subclasses of HTTPAdapter using Requests&gt;=2.32.2.
@@ -429,43 +429,43 @@ called from user code, and is only exposed for use when subclassing the
 
 | Parameter | Type | Description |
 |-|-|-|
-| `url` |  | The URL to connect to. |
-| `proxies` |  | A Requests-style dictionary of proxies used on this request. |
+| `url` | `str` | The URL to connect to. |
+| `proxies` | `dict[str, str] \| None` | A Requests-style dictionary of proxies used on this request. |
 
-**Returns:** urllib3.ConnectionPool
+**Returns:** urllib3.HTTPConnectionPool
 
 #### get_connection_with_tls_context()
 
 ```python
 def get_connection_with_tls_context(
-    request,
-    verify,
-    proxies,
-    cert,
-)
+    request: PreparedRequest,
+    verify: _t.VerifyType,
+    proxies: dict[str, str] | None,
+    cert: _t.CertType,
+) -> HTTPConnectionPool
 ```
 Returns a urllib3 connection for the given request and TLS settings.
 This should not be called from user code, and is only exposed for use
 when subclassing the :class:`HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;`.
 
-    urllib3.ConnectionPool
+    urllib3.HTTPConnectionPool
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `request` |  | The :class:`PreparedRequest &lt;PreparedRequest&gt;` object to be sent over the connection. |
-| `verify` |  | Either a boolean, in which case it controls whether we verify the server's TLS certificate, or a string, in which case it must be a path to a CA bundle to use. |
-| `proxies` |  | The proxies dictionary to apply to the request. |
-| `cert` |  | Any user-provided SSL certificate to be used for client authentication (a.k.a., mTLS). |
+| `request` | `PreparedRequest` | The :class:`PreparedRequest &lt;PreparedRequest&gt;` object to be sent over the connection. |
+| `verify` | `_t.VerifyType` | Either a boolean, in which case it controls whether we verify the server's TLS certificate, or a string, in which case it must be a path to a CA bundle to use. |
+| `proxies` | `dict[str, str] \| None` | The proxies dictionary to apply to the request. |
+| `cert` | `_t.CertType` | Any user-provided SSL certificate to be used for client authentication (a.k.a., mTLS). |
 
 #### init_poolmanager()
 
 ```python
 def init_poolmanager(
-    connections,
-    maxsize,
-    block,
-    pool_kwargs,
+    connections: int,
+    maxsize: int,
+    block: bool,
+    pool_kwargs: Any,
 )
 ```
 Initializes a urllib3 PoolManager.
@@ -478,17 +478,17 @@ exposed for use when subclassing the
 
 | Parameter | Type | Description |
 |-|-|-|
-| `connections` |  | The number of urllib3 connection pools to cache. |
-| `maxsize` |  | The maximum number of connections to save in the pool. |
-| `block` |  | Block when no free connections are available. |
-| `pool_kwargs` |  | Extra keyword arguments used to initialize the Pool Manager. |
+| `connections` | `int` | The number of urllib3 connection pools to cache. |
+| `maxsize` | `int` | The maximum number of connections to save in the pool. |
+| `block` | `bool` | Block when no free connections are available. |
+| `pool_kwargs` | `Any` | Extra keyword arguments used to initialize the Pool Manager. |
 
 #### proxy_headers()
 
 ```python
 def proxy_headers(
-    proxy,
-)
+    proxy: str,
+) -> dict[str, str]
 ```
 Returns a dictionary of the headers to add to any request sent
 through a proxy. This works with urllib3 magic to ensure that they are
@@ -503,7 +503,7 @@ when subclassing the
 
 | Parameter | Type | Description |
 |-|-|-|
-| `proxy` |  | The url of the proxy being used for this request. |
+| `proxy` | `str` | The url of the proxy being used for this request. |
 
 **Returns:** dict
 
@@ -511,9 +511,9 @@ when subclassing the
 
 ```python
 def proxy_manager_for(
-    proxy,
-    proxy_kwargs,
-)
+    proxy: str,
+    proxy_kwargs: Any,
+) -> Any
 ```
 Return urllib3 ProxyManager for the given proxy.
 
@@ -526,8 +526,8 @@ exposed for use when subclassing the
 
 | Parameter | Type | Description |
 |-|-|-|
-| `proxy` |  | The proxy to return a urllib3 ProxyManager for. |
-| `proxy_kwargs` |  | Extra keyword arguments used to configure the Proxy Manager. |
+| `proxy` | `str` | The proxy to return a urllib3 ProxyManager for. |
+| `proxy_kwargs` | `Any` | Extra keyword arguments used to configure the Proxy Manager. |
 
 **Returns:** urllib3.ProxyManager
 
@@ -535,9 +535,9 @@ exposed for use when subclassing the
 
 ```python
 def request_url(
-    request,
-    proxies,
-)
+    request: PreparedRequest,
+    proxies: dict[str, str] | None,
+) -> str
 ```
 Obtain the url to use when making the final request.
 
@@ -552,8 +552,8 @@ when subclassing the
 
 | Parameter | Type | Description |
 |-|-|-|
-| `request` |  | The |
-| `proxies` |  | A dictionary of schemes or schemes and hosts to proxy URLs. |
+| `request` | `PreparedRequest` | The |
+| `proxies` | `dict[str, str] \| None` | A dictionary of schemes or schemes and hosts to proxy URLs. |
 
 **Returns:** str
 
