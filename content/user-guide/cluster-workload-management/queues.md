@@ -18,40 +18,50 @@ side. For how workflow authors *target* a queue from task code, see
 
 ## How a queue routes
 
-A queue always names one **pool**. Within that pool it can either spread work
-across every healthy cluster (the default `*` selector) or pin to specific
-clusters. It can never reach a cluster outside its pool.
+A queue lives inside one **cluster pool** and routes work to one or more clusters
+*within that pool*. By default (the `*` selector) it spreads across every healthy
+cluster in the pool; you can also pin it to specific clusters. It can never reach a
+cluster in another pool — pools are isolation boundaries.
 
 ```mermaid
-flowchart LR
+flowchart TD
     R(["Runs &amp; actions"])
 
-    R --> QD["Queue: default<br/>pool: default · selector: *"]
-    R --> QG["Queue: gpu-queue<br/>pool: prod · pinned: Cluster C"]
-    R --> QP["Queue: prod-queue<br/>pool: prod · selector: *"]
-
-    subgraph Pdef["Pool: default"]
+    subgraph Pdef["Cluster pool: default"]
+        direction TB
+        QD["Queue: default<br/>selector: *"]
         CA["Cluster A"]
         CB["Cluster B"]
-    end
-    subgraph Pprod["Pool: prod"]
-        CC["Cluster C"]
-        CD["Cluster D"]
+        QD --> CA
+        QD --> CB
     end
 
-    QD --> CA
-    QD --> CB
-    QG --> CC
-    QP --> CC
-    QP --> CD
+    subgraph Pprod["Cluster pool: prod"]
+        direction TB
+        QP["Queue: prod-queue<br/>selector: *"]
+        QG["Queue: gpu-queue<br/>pinned: Cluster C"]
+        CC["Cluster C"]
+        CD["Cluster D"]
+        QP --> CC
+        QP --> CD
+        QG --> CC
+    end
+
+    R --> QD
+    R --> QP
+    R --> QG
 ```
+
+Users submit to a **queue**, never to a pool or a cluster directly. Each queue sits
+inside exactly one pool:
 
 - **`default`** spreads across all clusters in the `default` pool.
 - **`prod-queue`** spreads across all clusters in the `prod` pool.
-- **`gpu-queue`** targets the same `prod` pool but is pinned to a single cluster.
+- **`gpu-queue`** lives in the same `prod` pool but is pinned to a single cluster.
 
-The selector (which clusters within the pool) is freely mutable; the pool itself
-is not — changing it [requires a drain](#change-a-queues-pool--drain-first).
+The selector (which clusters within the pool) is freely mutable; the pool a queue
+lives in is not — moving a queue to another pool means crossing an isolation
+boundary, so it [requires a drain](#change-a-queues-pool--drain-first).
 
 ## Create a queue
 
@@ -85,7 +95,7 @@ flyte create queue gpu-queue \
 
 ### What each setting controls
 
-- **`--cluster-pool`** — the pool this queue routes to. A queue can only route to
+- **`--cluster-pool`** — the pool this queue lives in. A queue can only route to
   clusters in its own pool. Defaults to `default`.
 - **`--cluster`** — pin the queue to one or more clusters in the pool (repeat the
   flag for several). Omit to use all clusters in the pool.
@@ -136,9 +146,10 @@ pool shares the same data plane.
 
 ## Change a queue's pool — drain first
 
-Changing the **pool** a queue routes to is different. In-flight runs have already
-uploaded their inputs, code, and secrets to the old pool's data plane, and a
-different pool's clusters cannot read them. So you must drain the queue first:
+Moving a queue to a different **pool** is different — it crosses an isolation
+boundary. In-flight runs have already landed their data, containers, code, and
+secrets in the old pool's data plane, and a different pool's clusters cannot read
+them. So you must drain the queue first:
 
 ```bash
 # 1. Stop accepting new submissions; let in-flight work finish
