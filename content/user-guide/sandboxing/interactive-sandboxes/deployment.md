@@ -20,10 +20,10 @@ In other words: develop locally, ship remote. The call sites are nearly identica
 ## Local: install and go
 
 ```sh
-pip install unionai-sandbox
+pip install 'unionai-sandbox[flyte]'
 ```
 
-That's it. `sb.local.session(...)` works inside any async Python: a notebook, a script on your laptop, a CI runner, a Flyte task you're iterating on before shipping. The library auto-detects the strongest available backend (`bubblewrap` → `userns` → `sandbox-exec` → `none`) and reports it on each process as `proc.backend`.
+The `[flyte]` extra brings in the Flyte SDK so `@env.task` and the rest of the recommended task-based shape work. (For purely Flyte-less scripts, bare `pip install unionai-sandbox` is enough.) `sb.local.session(...)` works inside any async Python: a notebook, a script on your laptop, a CI runner, a Flyte task you're iterating on before shipping. The library auto-detects the strongest available backend (`bubblewrap` -> `userns` -> `sandbox-exec` -> `none`) and reports it on each process as `proc.backend`.
 
 ### Running a local script
 
@@ -52,13 +52,13 @@ pip install 'unionai-sandbox[deploy]'
 Deploy the default sandbox task envs once per cluster:
 
 ```sh
-union-sandbox-deploy
+unionai-sandbox-deploy
 ```
 
 This runs `flyte deploy --all` against the installed `_server.py`. Project and domain come from your Flyte config (`~/.flyte/config.yaml`) or environment variables (`FLYTE_PROJECT`, `FLYTE_DOMAIN`):
 
 ```sh
-FLYTE_PROJECT=my-project FLYTE_DOMAIN=development union-sandbox-deploy
+FLYTE_PROJECT=my-project FLYTE_DOMAIN=development unionai-sandbox-deploy
 ```
 
 After deploy, open sessions from any task. The caller task's image must have `unionai-sandbox` installed.
@@ -197,7 +197,7 @@ async def run_inference() -> str:
         return out
 ```
 
-The built-in `union-sandbox-deploy` is exactly this pattern applied to the library's own defaults; your custom envs follow the same recipe.
+The built-in `unionai-sandbox-deploy` is exactly this pattern applied to the library's own defaults; your custom envs follow the same recipe.
 
 | Parameter      | Notes                                                                                        |
 | -------------- | -------------------------------------------------------------------------------------------- |

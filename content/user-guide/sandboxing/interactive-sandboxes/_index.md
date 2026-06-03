@@ -39,7 +39,7 @@ The library exposes one `Session` API over two transports: in-process (`union.sa
 ## Quickstart
 
 ```sh
-pip install unionai-sandbox
+pip install 'unionai-sandbox[flyte]'
 ```
 
 ```python
@@ -122,7 +122,7 @@ The same code runs against a remote sandbox by swapping `sb.local.session()` for
 
 ```sh
 pip install 'unionai-sandbox[deploy]'
-union-sandbox-deploy
+unionai-sandbox-deploy
 ```
 
 After that, `await sb.session(...)` works from any task. See [Deployment](./deployment) for the full picture.
@@ -145,4 +145,4 @@ The transports share one API, so the docs are organized by concept. Each page co
 - [Running commands](./running-commands). The `run()` call, output handling, script types, timeouts, and the error model.
 - [Networking](./networking). Per-call `network_mode`, what the allow-list does and does not protect against.
 - [Filesystem](./filesystem). `put_bytes` and `get_bytes`, the default allow-list, and how to extend it.
-- [Deployment](./deployment). When to pick local vs remote, `union-sandbox-deploy`, `SandboxEnvironment`, custom images and resources, ownership and reference mode, and detached-lifetime sessions.
+- [Deployment](./deployment). When to pick local vs remote, `unionai-sandbox-deploy`, `SandboxEnvironment`, custom images and resources, ownership and reference mode, and detached-lifetime sessions.
