@@ -20,5 +20,5 @@ The data plane is where all computation and data handling occurs. It runs entire
 
 This separation limits the blast radius of a control plane security incident. A compromised control plane would only expose what is stored or proxied through it: task metadata in its databases, inline data transiting memory during active requests, and log stream content. It could not expose bulk customer data, which is signed and accessed directly on the data plane.
 
-For the full classification of what data lives in each plane, what transits control plane memory, and how each pathway is protected, see [Data classification and residency](../data-protection/classification-and-residency). For network paths between the planes, see [Network architecture](./network).
+For the full classification of what data lives in each plane, what transits control plane memory, and how each pathway is protected, see [Data classification and residency](../data-protection/classification-and-residency). For a developer-facing view of which records live in the database versus the data-plane bucket, see [Where your data lives](../../user-guide/core-concepts/where-data-lives). For network paths between the planes, see [Network architecture](./network).
 
