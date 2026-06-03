@@ -43,7 +43,7 @@ You can now author agents as a first-class construct: define an agent with regis
 
 ### :computer: Build and Deploy MCP Servers
 
-You can now author a Model Context Protocol server with the SDK and deploy it as a Union app, so agents and IDEs can call your tasks and data as tools. See the [MCP server documentation](../user-guide/build-mcp) to get started.
+You can now author a Model Context Protocol server with the SDK and deploy it as a Union app, so agents and IDEs can call your tasks and data as tools. See the [MCP server documentation](../user-guide/build-mcp/_index) to get started.
 
 ### :sparkles: Queues with Concurrency and Depth Control (Beta)
 
