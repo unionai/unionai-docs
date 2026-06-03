@@ -1,10 +1,10 @@
 ---
-title: Build an MCP server
+title: Build an MCP
 weight: 19
 variants: +flyte +union
 ---
 
-# Build an MCP server
+# Build an MCP
 
 {{< key product_name >}} supports serving [Model Context Protocol (MCP)](https://modelcontextprotocol.io) servers over HTTP.
 
