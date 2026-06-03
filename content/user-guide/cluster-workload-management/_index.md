@@ -8,7 +8,7 @@ mermaid: true
 # Cluster and workload management
 
 > [!NOTE] Beta
-> Cluster pools, clusters, and queue management are managed through the `flyte`
+> Cluster pools, clusters, and queues are managed through the `flyte`
 > CLI and are configured by your platform administrator. The commands on these
 > pages are administrative operations — most workflow authors only need
 > [task-side queue routing](../task-configuration/queues).
