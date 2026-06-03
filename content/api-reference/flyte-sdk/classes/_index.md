@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.3.8
+version: 2.4.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -28,9 +28,26 @@ layout: py_api
 | [`flyte.TaskEnvironment`](../packages/flyte/taskenvironment) |Define an execution environment for a set of tasks. |
 | [`flyte.Timeout`](../packages/flyte/timeout) |Timeout bounds for a task. |
 | [`flyte.Trigger`](../packages/flyte/trigger) |Specification for a scheduled trigger that can be associated with any Flyte task. |
+| [`flyte.ai.agents.AccessDenied`](../packages/flyte.ai.agents/accessdenied) |Raised when a write targets a read-only or reserved prefix. |
+| [`flyte.ai.agents.Agent`](../packages/flyte.ai.agents/agent) |A flyte-native tool-use agent harness. |
+| [`flyte.ai.agents.AgentEvent`](../packages/flyte.ai.agents/agentevent) |Lightweight event emitted by the agent loop. |
 | [`flyte.ai.agents.AgentResult`](../packages/flyte.ai.agents/agentresult) |Outcome of a single agent invocation. |
+| [`flyte.ai.agents.AgentTool`](../packages/flyte.ai.agents/agenttool) |A normalized tool descriptor used by :class:`Agent`. |
 | [`flyte.ai.agents.CodeModeAgent`](../packages/flyte.ai.agents/codemodeagent) |Generates code via an LLM, executes it in a Monty sandbox, and. |
+| [`flyte.ai.agents.ConcurrencyError`](../packages/flyte.ai.agents/concurrencyerror) |Raised when an ``expected_sha`` precondition does not match the current state. |
+| [`flyte.ai.agents.LLMMessage`](../packages/flyte.ai.agents/llmmessage) |Provider-agnostic shape returned by :data:`LLMCallable`. |
+| [`flyte.ai.agents.MCPServerSpec`](../packages/flyte.ai.agents/mcpserverspec) |Declarative spec for a remote MCP server that exposes tools. |
+| [`flyte.ai.agents.MemoryMeta`](../packages/flyte.ai.agents/memorymeta) |Per-file metadata sidecar (sha256, actor, timestamp, …) for a memory entry. |
+| [`flyte.ai.agents.MemoryStore`](../packages/flyte.ai.agents/memorystore) |Conversation transcript + path-addressed artifact memory backed by :class:`flyte. |
+| [`flyte.ai.agents.MemoryStoreError`](../packages/flyte.ai.agents/memorystoreerror) |Base class for :class:`MemoryStore` errors. |
+| [`flyte.ai.agents.agent.Agent`](../packages/flyte.ai.agents.agent/agent) |A flyte-native tool-use agent harness. |
+| [`flyte.ai.agents.agent.AgentEvent`](../packages/flyte.ai.agents.agent/agentevent) |Lightweight event emitted by the agent loop. |
 | [`flyte.ai.agents.codemode.CodeModeAgent`](../packages/flyte.ai.agents.codemode/codemodeagent) |Generates code via an LLM, executes it in a Monty sandbox, and. |
+| [`flyte.ai.agents.memory.AccessDenied`](../packages/flyte.ai.agents.memory/accessdenied) |Raised when a write targets a read-only or reserved prefix. |
+| [`flyte.ai.agents.memory.ConcurrencyError`](../packages/flyte.ai.agents.memory/concurrencyerror) |Raised when an ``expected_sha`` precondition does not match the current state. |
+| [`flyte.ai.agents.memory.MemoryMeta`](../packages/flyte.ai.agents.memory/memorymeta) |Per-file metadata sidecar (sha256, actor, timestamp, …) for a memory entry. |
+| [`flyte.ai.agents.memory.MemoryStore`](../packages/flyte.ai.agents.memory/memorystore) |Conversation transcript + path-addressed artifact memory backed by :class:`flyte. |
+| [`flyte.ai.agents.memory.MemoryStoreError`](../packages/flyte.ai.agents.memory/memorystoreerror) |Base class for :class:`MemoryStore` errors. |
 | [`flyte.ai.agents.protocol.AgentResult`](../packages/flyte.ai.agents.protocol/agentresult) |Outcome of a single agent invocation. |
 | [`flyte.ai.chat.AgentChatAppEnvironment`](../packages/flyte.ai.chat/agentchatappenvironment) |An :class:`~flyte. |
 | [`flyte.ai.chat.CustomTheme`](../packages/flyte.ai.chat/customtheme) |Declarative color theme for the Agent Chat UI. |
@@ -176,8 +193,8 @@ layout: py_api
 | [`flyte.AppHandle`](../packages/flyte/apphandle) |Protocol defining the common interface between local and remote app handles. |
 | [`flyte.CachePolicy`](../packages/flyte/cachepolicy) |Protocol for custom cache version strategies. |
 | [`flyte.Link`](../packages/flyte/link) | |
-| [`flyte.ai.agents.Agent`](../packages/flyte.ai.agents/agent) |Minimal protocol that any agent must satisfy to work with. |
-| [`flyte.ai.agents.protocol.Agent`](../packages/flyte.ai.agents.protocol/agent) |Minimal protocol that any agent must satisfy to work with. |
+| [`flyte.ai.agents.AgentProtocol`](../packages/flyte.ai.agents/agentprotocol) |Minimal protocol that any agent must satisfy to work with. |
+| [`flyte.ai.agents.protocol.AgentProtocol`](../packages/flyte.ai.agents.protocol/agentprotocol) |Minimal protocol that any agent must satisfy to work with. |
 | [`flyte.extend.ImageBuilder`](../packages/flyte.extend/imagebuilder) | |
 | [`flyte.extend.ImageChecker`](../packages/flyte.extend/imagechecker) | |
 | [`flyte.extras.CostEstimator`](../packages/flyte.extras/costestimator) |Protocol for records that can estimate their own processing cost. |

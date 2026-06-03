@@ -1,20 +1,20 @@
 ---
-title: Agent
-version: 2.3.8
+title: AgentProtocol
+version: 2.4.0
 variants: +flyte +union
 layout: py_api
 ---
 
-# Agent
+# AgentProtocol
 
-**Package:** `flyte.ai.agents.protocol`
+**Package:** `flyte.ai.agents`
 
 Minimal protocol that any agent must satisfy to work with
 :class:`AgentChatAppEnvironment`.
 
 
 ```python
-protocol Agent()
+protocol AgentProtocol()
 ```
 ## Methods
 
@@ -33,6 +33,8 @@ def run(
 ) -> AgentResult
 ```
 Process *message* (with prior *history*) and return an :class:`AgentResult`.
+
+Synchronous entry point. In async contexts, use ``run.aio(...)``.
 
 
 | Parameter | Type | Description |

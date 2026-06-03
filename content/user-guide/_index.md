@@ -125,6 +125,10 @@ Implement ReAct, Plan-and-Execute, and other agent patterns with full observabil
 Safely execute LLM-generated code with workflow sandboxes or ephemeral containers.
 {{< /link-card >}}
 
+{{< link-card target="build-mcp" icon="code" title="Build an MCP" >}}
+Serve Model Context Protocol servers for AI assistants to interact with, hosted on {{< key product_name >}}.
+{{< /link-card >}}
+
 {{< /grid >}}
 
 {{< variant union >}}

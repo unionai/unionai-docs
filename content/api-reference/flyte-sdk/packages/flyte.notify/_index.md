@@ -1,6 +1,6 @@
 ---
 title: flyte.notify
-version: 2.3.8
+version: 2.4.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,7 +16,7 @@ Quick Start:
     ```python
     import flyte
     import flyte.models
-    import flyte.notify as notify
+    from flyte import notify
 
     @flyte.task(
         trigger=flyte.Trigger(
@@ -30,7 +30,7 @@ Quick Start:
                 notify.Slack(
                     on_phase=flyte.models.ActionPhase.SUCCEEDED,
                     webhook_url="https://hooks.slack.com/...",
-                    message="Daily report completed! {run.url}"
+                    message="Daily report completed! {{.Run.Name}}"
                 )
             ]
         )
@@ -54,15 +54,11 @@ Supported Phases:
 
 Template Variables:
     All notification messages support template variables:
-    - {task.name}: Task name
-    - {run.name}: Run ID/name
-    - {run.phase}: Current run phase
-    - {run.error}: Error message (if failed)
-    - {run.duration}: Run duration
-    - {run.timestamp}: ISO 8601 timestamp
-    - {run.url}: URL to run details page
-    - {project}: Flyte project name
-    - {domain}: Flyte domain name
+    - {{.Run.Project}}: Run project name
+    - {{.Run.Domain}}: Run domain name
+    - {{.Run.Name}}: Run ID/name
+    - {{.Phase}}: Terminal run phase
+    - {{.Error}}: Error message (if failed)
 ## Directory
 
 ### Classes
