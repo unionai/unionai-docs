@@ -6,11 +6,7 @@ variants: -flyte +union
 
 # Secrets management
 
-Union.ai's secrets management system stores secret values at rest exclusively within the customer's infrastructure, with a write-only API design that eliminates an entire class of exfiltration attacks. During secret creation and update, the value transits control plane memory (encrypted in transit, plaintext in memory, not persisted or logged) on its way to the data plane's secrets backend. Get, List, and Delete operations never expose secret values.
-
-## Core design
-
-Secret values are stored exclusively within the customer's infrastructure. The secrets API is write-only by design: there is no API to read back secret values. The `GetSecret` RPC returns only the secret's metadata (name, scope, creation time, cluster presence status), never the value itself. This means that even if an attacker compromises a user account or the control plane API, they cannot retrieve secret values through the API. The value simply is not available through any API endpoint.
+Union.ai's secrets management system stores secret values exclusively within the customer's infrastructure and exposes them through a write-only API: there is no endpoint that returns a secret value. The `GetSecret` RPC returns only metadata (name, scope, creation time, cluster presence status); Get, List, and Delete operations never expose the value. Secret writes go directly to the data plane through the Direct-to-DataPlane tunnel, so secret values never transit the control plane. Compromising a user account or the control plane API yields no path to read secret values back.
 
 ## Backends
 
@@ -25,21 +21,20 @@ All four backends are available regardless of deployment model. The choice of ba
 
 ## Secret lifecycle
 
-**Creation:** When a user creates a secret via the UI or CLI, the value is sent to the control plane over TLS, relayed through the Cloudflare Tunnel (encrypted) to the data plane's secrets backend, and stored encrypted at rest in the customer's secret manager (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or K8s Secrets). The value exists as plaintext in control plane memory only during this relay and is never written to disk, database, cache, or logs on the control plane. Only the secret identifier is logged. Once the relay completes, no trace of the value remains in the control plane (though Go's garbage collector does not zero deallocated memory, so the plaintext may persist in heap until reused).
+**Creation:** When a user creates a secret via the UI or CLI, the value is sent directly to the data plane's secrets backend over the client-to-data-plane channel -- the Direct-to-DataPlane tunnel under the default tier, or the customer-managed internal load balancer under the [Sovereign Data Plane](../architecture/sovereign-data-plane) tier -- and stored encrypted at rest in the customer's secret manager (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or K8s Secrets). The value never enters Union.ai's control plane in any form. The Envoy router inside the customer's cluster authenticates the request against Union.ai identity and enforces RBAC before the value reaches the secrets backend.
 
 | Phase | Encrypted? | Details |
 |-------|------------|---------|
-| Client → Control Plane | **Yes** | TLS 1.2+. Wire format: protobuf binary |
-| In Control Plane | **Plaintext in memory** | Deserialized Go struct. Not persisted, cached, or logged |
-| Control Plane → Data Plane | **Yes** | TLS + mTLS + Cloudflare Tunnel. Wire format: protobuf JSON |
+| Client → Cloudflare edge | **Yes** | TLS 1.3 (default tier only) |
+| Cloudflare edge → Data Plane (tunnel) | **Yes** | mTLS + Cloudflare Tunnel |
+| Client → Internal load balancer | **Yes** | TLS, customer-managed certificate ([Sovereign Data Plane](../architecture/sovereign-data-plane) tier only) |
+| At Envoy router (data plane) | **Plaintext in memory** | AuthN + RBAC check; not persisted, cached, or logged |
 | In Data Plane (operator) | **Plaintext in memory** | Briefly held before writing to secret backend |
 | At rest (secret backend) | **Yes** | AWS Secrets Manager (AES-256/KMS), GCP Secret Manager (Google-managed or CMEK), Azure Key Vault (HSM-backed), or K8s etcd encryption |
 
-**Consumption:** When a task pod is created, the Executor configures it to mount the requested secrets from the backend as environment variables or files. The value is read by the data plane's secrets backend and injected into the pod. It never leaves the customer's infrastructure during this process. The control plane is not involved in secret consumption at runtime.
+**Consumption:** When a task pod is created, the system configures it to mount the requested secrets from the backend as environment variables or files. The value is read by the data plane's secrets backend and injected into the pod. It never leaves the customer's infrastructure during this process. The control plane is not involved in secret consumption at runtime.
 
-**Scoping:** Secrets can be scoped at organization, project, or domain level. Only task pods running within the appropriate scope can access the corresponding secrets. This ensures that teams working in different projects cannot access each other's secrets, even within the same data plane cluster.
-
-For details on how secrets flow during workflow execution, see [Workflow data flow](./workflow-data-flow).
+**Scoping:** Secrets can be scoped at the organization, domain, or project-domain level. Only task pods running within the appropriate scope can access the corresponding secrets. This ensures that teams working in different projects cannot access each other's secrets, even within the same data plane cluster.
 
 ## Verification
 
@@ -73,17 +68,11 @@ This verification is fully self-service and works immediately. Note that the wri
 
 ### Secret lifecycle
 
-**Reviewer focus:** Confirm that secret values transit the control plane only in-memory during creation and are consumed entirely within the data plane at runtime.
+**Reviewer focus:** Confirm that secret values are written directly to the data plane backend through the Direct-to-DataPlane tunnel without traversing the control plane, and are consumed entirely within the data plane at runtime.
 
 **How to verify:**
 
-- **Creation path:** Inspect the control plane proxy pod logs during secret creation:
-
-  ```bash
-  kubectl logs <control-plane-proxy-pod> -n <control-plane-namespace>
-  ```
-
-  The logs should show the relay operation but not the secret value.
+- **Creation path:** Inspect Cloudflare Access logs for the tunnel during a secret create operation. Each request should show the authenticated Union identity, the data-plane endpoint, and a 2xx status. Control plane API logs over the same window should show no payload-bearing requests for the secret.
 
 - **Consumption path:** Inspect the task pod configuration:
 
