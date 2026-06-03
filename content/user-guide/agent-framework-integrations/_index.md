@@ -33,7 +33,7 @@ Whichever model your framework uses, the integration is the same in spirit: the 
 - [**PydanticAI**](./pydantic-ai) — type-safe agents whose tools delegate to durable tasks.
 - [**OpenAI Agents SDK**](./openai-agents-sdk) — expose durable tasks as Agents SDK tools with `flyteplugins-openai`.
 
-Don't see your framework? The same pattern — invoke the framework from inside an `@env.task` and trace its calls — applies to any Python agent library.
+Don't see your framework? The same pattern — invoke the framework from inside an `@env.task` and trace its calls — applies to any Python agent library. See [Bring your own framework](./bring-your-own-framework) for a framework-agnostic template.
 
 ## Next steps
 
