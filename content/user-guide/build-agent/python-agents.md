@@ -1,13 +1,15 @@
 ---
-title: Building agentic workflows
+title: Pure Python agents
 weight: 1
 variants: +flyte +serverless +union
 mermaid: true
 ---
 
-# Building agentic workflows on {{< key product_name >}}
+# Pure Python agents
 
-{{< key product_name >}} is framework-agnostic: use any Python LLM library (OpenAI SDK, Anthropic SDK, LangChain, LiteLLM, etc.) inside your tasks. The platform provides the production infrastructure layer: sandboxed execution, parallel fan-out, durable checkpointing, and observability for every step of the agent loop.
+The lightest way to build an agent on {{< key product_name >}} is to write the loop yourself in plain Python. {{< key product_name >}} is framework-agnostic: use any Python LLM library (OpenAI SDK, Anthropic SDK, LiteLLM, etc.) inside your tasks. The platform provides the production infrastructure layer: sandboxed execution, parallel fan-out, durable checkpointing, and observability for every step of the agent loop.
+
+This approach gives you full control over the loop and the smallest possible dependency footprint. If you'd rather not hand-roll the tool-call loop, see [The Flyte Agent harness](./flyte-agents), which provides a batteries-included loop with tools, MCP servers, memory, and HITL. If you already have agents written in a third-party framework, see [Agent framework integrations](../agent-framework-integrations/_index) for [LangGraph](../agent-framework-integrations/langgraph), [PydanticAI](../agent-framework-integrations/pydantic-ai), and [OpenAI Agents SDK](../agent-framework-integrations/openai-agents-sdk).
 
 Two decorators are all you need:
 
@@ -24,58 +26,7 @@ The [ReAct pattern](https://arxiv.org/abs/2210.03629) is the most common agent a
 Thought → Action → Observation → repeat until done
 ```
 
-```python
-# agent.py
-import json
-from pydantic import BaseModel
-
-import flyte
-from openai import AsyncOpenAI
-
-env = flyte.TaskEnvironment(
-    name="agent_env",
-    image=flyte.Image.from_debian_base(python_version=(3, 13)).with_pip_packages("openai"),
-    resources=flyte.Resources(cpu=2, memory="2Gi"),
-    secrets=[flyte.Secret(key="OPENAI_API_KEY")],
-)
-
-TOOLS = {"add": lambda a, b: a + b, "multiply": lambda a, b: a * b}
-
-@flyte.trace                                       # each call = a span in {{< key product_name >}} dashboard
-async def reason(goal: str, history: str) -> dict:
-    """LLM picks a tool or returns a final answer."""
-    r = await AsyncOpenAI().chat.completions.create(
-        model="gpt-4.1-nano",
-        response_format={"type": "json_object"},
-        messages=[
-            {"role": "system", "content":
-                f"Tools: {list(TOOLS)}. Respond JSON: "
-                '{"thought":..,"tool":..,"args":{}} or {"thought":..,"done":true,"answer":..}'},
-            {"role": "user", "content": f"Goal: {goal}\n\n{history}\nWhat next?"},
-        ],
-    )
-    return json.loads(r.choices[0].message.content)
-
-@flyte.trace
-async def act(tool: str, args: dict) -> str:
-    """Execute the chosen tool."""
-    return str(TOOLS[tool](**args))
-
-class AgentResult(BaseModel):
-    answer: str
-    steps: int
-
-@env.task                                          # runs in its own sandboxed container
-async def react_agent(goal: str, max_steps: int = 10) -> AgentResult:
-    history = ""
-    for step in range(1, max_steps + 1):           # the agent loop
-        decision = await reason(goal, history)      # Thought
-        if decision.get("done"):
-            return AgentResult(answer=str(decision["answer"]), steps=step)
-        result = await act(decision["tool"], decision["args"])  # Action
-        history += f"Step {step}: {decision['thought']} -> {decision['tool']}({decision['args']}) = {result}\n"  # Observation
-    return AgentResult(answer="Max steps reached", steps=max_steps)
-```
+{{< code file="/unionai-examples/v2/user-guide/build-agent/building-agents/react_agent.py" fragment="all" lang="python" >}}
 
 ```bash
 flyte run agent.py react_agent --goal "What is (12 + 8) * 3?"
@@ -83,7 +34,7 @@ flyte run agent.py react_agent --goal "What is (12 + 8) * 3?"
 ```
 
 **What's happening under the hood:**
-- `react_agent` runs in a sandboxed container with only `openai` installed and 2 CPU / 2GB RAM
+- `react_agent` runs in a container with only `openai` installed and 2 CPU / 2GB RAM
 - Each `reason()` and `act()` call is traced, so you see every LLM call, every tool invocation, and every intermediate result in the {{< key product_name >}} dashboard
 - The agent's inputs and final output are durably persisted, letting you inspect any past run end-to-end
 - Swap in your own tools (web search, database queries, API calls) by adding to the `TOOLS` dict
@@ -91,82 +42,48 @@ flyte run agent.py react_agent --goal "What is (12 + 8) * 3?"
 > [!TIP]
 > See the [Agentic Refinement docs](../advanced-project/agentic-refinement), [Traces docs](../task-programming/traces), and [more patterns (planner, debate, etc.)](https://github.com/unionai/workshops/tree/main/tutorials/multi-agent-workflows).
 
-## Plan-and-Execute with parallel fan-out (LangGraph on {{< key product_name >}})
+## Plan-and-Execute with parallel fan-out
 
-The [Plan-and-Execute pattern](https://blog.langchain.com/plan-and-execute-agents/) splits a complex query into sub-tasks, fans them out in parallel, then synthesizes the results. This example runs a LangGraph research agent with web search tool calling, and {{< key product_name >}} handles the parallelization, giving each sub-task its own container.
-
-Here's `graph.py`, a LangGraph agent with tool calling (search the web, then summarize):
+The [Plan-and-Execute pattern](https://blog.langchain.com/plan-and-execute-agents/) splits a complex query into sub-tasks, fans them out in parallel, then synthesizes the results. With {{< key product_name >}} the fan-out is just `asyncio.gather()`, and each sub-task gets its own container, giving you true parallelism on separate hardware.
 
 ```python
-import flyte
-from langchain_openai import ChatOpenAIe
-from langchain_core.messages import SystemMessage
-from langgraph.graph import StateGraph, MessagesState
-from langgraph.prebuilt import ToolNode
-from langchain_community.tools.tavily_search import TavilySearchResults
-
-def build_research_graph(openai_key: str, tavily_key: str):
-    tools = [TavilySearchResults(max_results=2, tavily_api_key=tavily_key)]
-    llm = ChatOpenAI(model="gpt-4.1-nano", api_key=openai_key).bind_tools(tools)
-
-    @flyte.trace
-    async def agent(state: MessagesState):
-        msgs = [SystemMessage(content="Research the topic. Use search, then summarize.")] + state["messages"]
-        return {"messages": [await llm.ainvoke(msgs)]}
-
-    @flyte.trace
-    async def route(state: MessagesState):
-        last = state["messages"][-1]
-        return "tools" if getattr(last, "tool_calls", None) else "__end__"
-
-    g = StateGraph(MessagesState)
-    g.add_node("agent", agent)
-    g.add_node("tools", ToolNode(tools))
-    g.set_entry_point("agent")
-    g.add_conditional_edges("agent", route, {"tools": "tools", "__end__": "__end__"})
-    g.add_edge("tools", "agent")
-    return g.compile()
-```
-
-And `workflow.py`, which plans topics, fans out research in parallel, and synthesizes:
-
-```python
+# workflow.py
 import os, json, asyncio, flyte
-from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage
-from graph import build_research_graph
+from openai import AsyncOpenAI
 
 env = flyte.TaskEnvironment(
     name="research_env",
-    image=flyte.Image.from_debian_base(python_version=(3, 13))
-        .with_pip_packages("openai", "langchain-openai", "langchain-community", "langgraph", "tavily-python"),
+    image=flyte.Image.from_debian_base(python_version=(3, 13)).with_pip_packages("openai"),
     resources=flyte.Resources(cpu=2, memory="2Gi"),
-    secrets=[flyte.Secret(key="OPENAI_API_KEY"), flyte.Secret(key="TAVILY_API_KEY")],
+    secrets=[flyte.Secret(key="OPENAI_API_KEY")],
 )
+
+@flyte.trace
+async def llm(prompt: str) -> str:
+    r = await AsyncOpenAI().chat.completions.create(
+        model="gpt-4.1-nano",
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return r.choices[0].message.content
 
 @env.task
 async def plan(query: str, n: int = 3) -> list[str]:
-    """Split query into sub-topics."""
-    r = await ChatOpenAI(model="gpt-4.1-nano", api_key=os.environ["OPENAI_API_KEY"]).ainvoke(
-        f"Break into exactly {n} sub-topics. Return ONLY a JSON array of strings, e.g. [\"topic1\", \"topic2\"]. No objects.\n\n{query}")
-    topics = json.loads(r.content)[:n]
-    return [t if isinstance(t, str) else str(t.get("sub_topic", t)) for t in topics]
+    """Split the query into sub-topics."""
+    raw = await llm(
+        f'Break this into exactly {n} sub-topics. Return ONLY a JSON array of strings.\n\n{query}'
+    )
+    return json.loads(raw)[:n]
 
 @env.task
 async def research(topic: str) -> str:
-    """Run LangGraph agent on one topic (each call = separate container)."""
-    graph = build_research_graph(os.environ["OPENAI_API_KEY"], os.environ["TAVILY_API_KEY"])
-    result = await graph.ainvoke({"messages": [HumanMessage(content=f"Research: {topic}")]})
-    return json.dumps({"topic": topic, "report": result["messages"][-1].content})
+    """Research one sub-topic (each call = its own container)."""
+    return await llm(f"Write a short, factual report on: {topic}")
 
 @env.task
 async def synthesize(query: str, reports: list[str]) -> str:
-    """Combine sub-reports into a final summary."""
-    parsed = [json.loads(r) for r in reports]
-    sections = "\n\n".join(f"## {r['topic']}\n{r['report']}" for r in parsed)
-    r = await ChatOpenAI(model="gpt-4.1-nano", api_key=os.environ["OPENAI_API_KEY"]).ainvoke(
-        f"Synthesize reports on: {query}\n\n{sections}\n\nKey takeaways:")
-    return r.content
+    """Combine the sub-reports into a final answer."""
+    sections = "\n\n".join(reports)
+    return await llm(f"Synthesize a final answer to '{query}' from:\n\n{sections}")
 
 @env.task
 async def research_workflow(query: str, num_topics: int = 3) -> str:
@@ -183,17 +100,19 @@ flyte run workflow.py research_workflow --query "Impact of storms on travel insu
 
 ```
 research_workflow (orchestrator)
-  ├── plan          → LLM breaks query into N sub-topics          [container 1]
-  ├── research(t1)  → LangGraph agent loop with web search tools  [container 2]  ┐
-  ├── research(t2)  → LangGraph agent loop with web search tools  [container 3]  ├ parallel
-  ├── research(t3)  → LangGraph agent loop with web search tools  [container 4]  ┘
-  └── synthesize    → LLM combines reports into final answer      [container 5]
+  ├── plan          → LLM breaks query into N sub-topics      [container 1]
+  ├── research(t1)  → researches one sub-topic                [container 2]  ┐
+  ├── research(t2)  → researches one sub-topic                [container 3]  ├ parallel
+  ├── research(t3)  → researches one sub-topic                [container 4]  ┘
+  └── synthesize    → LLM combines reports into final answer  [container 5]
 ```
 
-- **Fan-out:** `asyncio.gather()` launches all research tasks in parallel, each in its own sandboxed container
-- **Tool calling inside each research task:** The LangGraph agent calls Tavily web search, observes results, reasons about them, and loops until it has enough information (the inner agentic loop)
-- **Observability:** `@flyte.trace` on the LangGraph nodes means every LLM call, every tool call, and every routing decision is visible as a span in the {{< key product_name >}} dashboard
+- **Fan-out:** `asyncio.gather()` launches all research tasks in parallel, each in its own container
+- **Observability:** `@flyte.trace` on each LLM call means every prompt and response is visible as a span in the {{< key product_name >}} dashboard
 - **Durable checkpointing:** Each task's output is persisted. If `synthesize` fails, re-running skips the completed `plan` and `research` steps (with caching enabled)
+
+> [!TIP]
+> The same fan-out works with any framework inside the `research` task. See [LangGraph](../agent-framework-integrations/langgraph) for a version that runs a LangGraph research agent (with web-search tool calling) inside each parallel container.
 
 ## More agentic patterns
 
@@ -227,3 +146,8 @@ If you're coming from LangGraph, CrewAI, OpenAI Agents SDK, or similar framework
 **Guardrails and validation** are Python code between steps: `if/else` checks, Pydantic validation, structured output parsing, or libraries like NeMo Guardrails. Raise an exception to fail a step and trigger retries.
 
 **Observability:** The {{< key product_name >}} dashboard shows the full execution tree with per-step inputs, outputs, logs, resource usage, and timing. `@flyte.trace` adds spans within a task for fine-grained visibility into individual LLM calls and tool invocations. For LLM-specific metrics (token usage, cost per call), integrate with Langfuse or LangSmith from within your tasks.
+
+## Next steps
+
+- [The Flyte Agent harness](./flyte-agents): skip the boilerplate with a built-in tool-use loop.
+- [Deploy an agent as a service](./deploy-agent-as-service): run this agent on a schedule or behind a webhook.

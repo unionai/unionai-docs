@@ -1,124 +1,92 @@
 ---
 title: Deploy an agent as a service
-weight: 2
+weight: 10
 variants: +flyte +serverless +union
 mermaid: true
 ---
 
 # Deploy an agent as a service
 
-{{< key product_name >}} makes it straightforward to deploy internal apps (chatbots, dashboards, API endpoints) behind a URL, with no separate infrastructure. This is how you turn an agent into a hosted service that your team (or other agents) can call.
+Once you've built an agent — with [pure Python](./python-agents), the [`Agent` harness](./flyte-agents), or a [third-party framework](../agent-framework-integrations/_index) — *how* you run it is an independent choice. The same agent object can be deployed in several ways:
 
-## Chat agent with Gradio
+| Pattern | When to use it | What invokes the agent |
+|---------|----------------|------------------------|
+| **As a task** | On-demand runs from the CLI, a notebook, or another service | `flyte.run(...)` |
+| **As a scheduled task** | Recurring autonomous wakeups (triage, monitoring, reports) | A `flyte.Trigger` (cron or fixed-rate) |
+| **Behind a webhook** | React to external events (GitHub, paging tools, CI) | An HTTP `POST` to an `AppEnvironment` |
 
-This example takes the ReAct agent from [Building agentic workflows](./building-agents) and wraps it in a Gradio chat interface, deployed as a {{< key product_name >}} app. Users interact in the browser, and each reasoning step streams back in real time.
+All three wrap the agent loop in a regular Flyte task, so every run is durable, retryable, and observable in the {{< key product_name >}} dashboard. The examples below use the `Agent` harness, but the pattern is identical for any agent — just call your agent's entry point inside the task.
+
+## As a task
+
+The simplest deployment: put the agent loop in an `@env.task` and invoke it on demand. This works for any agent.
 
 ```python
-# app.py
-import json
-
-import gradio as gr
-
 import flyte
-from flyte.app import AppEnvironment
-from openai import AsyncOpenAI
+from flyte.ai.agents import Agent
 
-# --- ReAct agent (same pattern as the ReAct agent in Building agentic workflows on {{< key product_name >}}) ---
-
-TOOLS = {"add": lambda a, b: a + b, "multiply": lambda a, b: a * b}
-
-async def reason(goal: str, history: str) -> dict:
-    """LLM picks a tool or returns a final answer."""
-    r = await AsyncOpenAI().chat.completions.create(
-        model="gpt-4.1-nano",
-        response_format={"type": "json_object"},
-        messages=[
-            {"role": "system", "content":
-                f"Tools: {list(TOOLS)}. Respond JSON: "
-                '{"thought":..,"tool":..,"args":{}} or '
-                '{"thought":..,"done":true,"answer":..}'},
-            {"role": "user", "content": f"Goal: {goal}\n\n{history}\nWhat next?"},
-        ],
-    )
-    return json.loads(r.choices[0].message.content)
-
-async def act(tool: str, args: dict) -> str:
-    """Execute the chosen tool."""
-    return str(TOOLS[tool](**args))
-
-async def react_agent(message: str, history: list):
-    """ReAct loop that streams intermediate steps, then the final answer."""
-    output, trace = "", ""
-    for step in range(1, 11):
-        decision = await reason(message, trace)
-        if decision.get("done"):
-            yield output + f"\n\n**Answer:** {decision['answer']}"
-            return
-        result = await act(decision["tool"], decision["args"])
-        trace += (
-            f"Step {step}: {decision['thought']} "
-            f"-> {decision['tool']}({decision['args']}) = {result}\n"
-        )
-        output += (
-            f"**Step {step}:** {decision['thought']}\n"
-            f"`{decision['tool']}({decision['args']})` -> `{result}`\n\n"
-        )
-        yield output
-    yield output + "\n\nMax steps reached."
-
-# --- Deploy as a {{< key product_name >}} app ---
-
-serving_env = AppEnvironment(
-    name="react-agent-chat",
-    image=flyte.Image.from_debian_base(python_version=(3, 12)).with_pip_packages(
-        "gradio", "openai",
-    ),
-    secrets=[flyte.Secret(key="OPENAI_API_KEY")],
-    resources=flyte.Resources(cpu=1, memory="512Mi"),
-    requires_auth=False,
-    port=7860,
+env = flyte.TaskEnvironment(
+    name="concierge-agent",
+    image=flyte.Image.from_debian_base().with_pip_packages("litellm"),
+    secrets=[flyte.Secret(key="internal-anthropic-api-key", as_env_var="ANTHROPIC_API_KEY")],
 )
 
-@serving_env.server
-def server():
-    gr.ChatInterface(
-        react_agent,
-        title="ReAct Agent",
-        examples=["What is (12 + 8) * 3?", "Add 99 and 1, then multiply by 5"],
-    ).launch(server_name="0.0.0.0", server_port=7860)
+agent = Agent(
+    name="customer-concierge",
+    instructions="You are a customer-service concierge.",
+    tools=[...],
+)
 
-if __name__ == "__main__":
-    flyte.init_from_config()
-    flyte.serve(serving_env)
+
+@env.task(report=True)
+async def concierge(request: str) -> str:
+    """Run the agent for a single request."""
+    result = await agent.run.aio(request)
+    return result.summary or result.error
 ```
 
-Run locally, then deploy to {{< key product_name >}} with one command:
+Run it on demand:
 
 ```bash
-# Local development
-python app.py
-
-# Deploy to {{< key product_name >}}
-flyte deploy app.py serving_env
+flyte run agent.py concierge --request "Refund order #12345 to the customer."
 ```
 
-{{< key product_name >}} assigns a URL, handles TLS, and auto-scales the app.
+Or from Python with `flyte.run(concierge, request="...")`. To register a stable, deployed version of the task, use `flyte deploy agent.py env`.
 
-**What's happening under the hood:**
+## As a scheduled task (via `Trigger`)
 
-- `AppEnvironment` defines the container image, secrets, resources, and port for the app
-- `@serving_env.server` marks the function that {{< key product_name >}} calls on remote deployment
-- `gr.ChatInterface` with an async generator gives streaming output: users see each reasoning step appear as the agent works
-- `requires_auth=False` makes the app publicly accessible; set to `True` to require {{< key product_name >}} authentication
+To run an agent autonomously on a schedule, attach a `flyte.Trigger` to the task. The "wakeup" is a regular Flyte task — the agent loop runs inside it, so every tool call is durable, observable, and retryable. Pair this with [agent memory](./agent-memory) so the agent resumes prior context on each wakeup.
 
-## Other deployment patterns
+{{< code file="/unionai-examples/v2/user-guide/build-agent/deploy/scheduled_triage_agent.py" fragment="scheduled" lang="python" >}}
 
-**FastAPI endpoint:** For API-first agents, use `FastAPIAppEnvironment` to expose your agent behind a REST endpoint that other services or agents can call programmatically.
+The agent's tools (`list_open_issues`, `classify_issue`, `post_digest`) are durable `@env.task`s; see the [full example](https://github.com/unionai/unionai-examples/tree/main/v2/user-guide/build-agent/deploy/scheduled_triage_agent.py) for their definitions.
 
-**Webhook-triggered workflows:** [Deploy a FastAPI app](../native-app-integrations/fastapi-app) that receives webhooks and calls `flyte.run()` on a [remote task](../task-programming/remote-tasks) to kick off longer agentic workflows as background tasks.
+Deploying the task registers the trigger; from then on {{< key product_name >}} wakes the agent on schedule. Use `flyte.Cron(...)` for calendar schedules or `flyte.FixedRate(...)` for fixed intervals. The `flyte.TriggerTime` input is filled with the scheduled fire time. See [Triggers](../task-configuration/triggers) for the full schedule reference.
 
-**Model serving:** [Serve open-weight LLMs](../native-app-integrations/vllm-app) on GPUs behind an OpenAI-compatible API with `VLLMAppEnvironment` or `SGLangAppEnvironment`.
+## Behind a webhook (`AppEnvironment`)
+
+To kick off an agent run in response to an external event, deploy a small FastAPI app via an `AppEnvironment` that exposes an HTTP endpoint. The endpoint launches the agent task with `flyte.run.aio(...)`, so the long-running agent loop executes durably in the background while the webhook returns immediately with a run URL.
+
+{{< code file="/unionai-examples/v2/user-guide/build-agent/deploy/webhook_agent.py" fragment="webhook" lang="python" >}}
+
+The agent and its tools (`fetch_pr`, `post_comment`) are defined in the [full example](https://github.com/unionai/unionai-examples/tree/main/v2/user-guide/build-agent/deploy/webhook_agent.py).
+
+Once deployed, point your external system at the `/trigger` URL:
+
+```bash
+curl -X POST -H "Content-Type: application/json" \
+    -d '{"repository": "flyteorg/flyte", "pull_request": {"number": 123}, "action": "opened"}' \
+    https://<subdomain>.apps.<endpoint>/trigger
+```
+
+> [!NOTE]
+> When the webhook app submits runs on behalf of incoming requests, it needs valid {{< key product_name >}} credentials. Use passthrough auth (a `FastAPIPassthroughAuthMiddleware` and `flyte.init_passthrough`) so the run is submitted with the caller's identity. See [FastAPI apps](../native-app-integrations/fastapi-app).
+
+## Chat and other app patterns
+
+- **Chat UI:** To let users converse with the agent in a browser, serve it behind a chat interface. See [Add a chat UI](./agent-chat-ui).
+- **FastAPI endpoint:** For API-first agents, expose your agent behind a REST endpoint with `FastAPIAppEnvironment` so other services or agents can call it programmatically.
+- **Model serving:** [Serve open-weight LLMs](../native-app-integrations/vllm-app) on GPUs behind an OpenAI-compatible API with `VLLMAppEnvironment` or `SGLangAppEnvironment`.
 
 > [!TIP]
-> See [Build Apps](../build-apps/_index) and [Configure Apps](../configure-apps/_index) for more details.
-> For a hands-on example with a research agent Gradio UI, see [workshops/starter-examples/flyte-local-dev](https://github.com/unionai/workshops/tree/main/tutorials/starter-examples/flyte-local-dev).
+> See [Build Apps](../build-apps/_index) and [Configure Apps](../configure-apps/_index) for more details on hosting services on {{< key product_name >}}.
