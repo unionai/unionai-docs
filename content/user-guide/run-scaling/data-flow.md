@@ -138,7 +138,7 @@ When using [traces](../task-programming/traces), the data flow behavior is diffe
 By default, Flyte uses object stores like S3, GCS, Azure Storage, and R2 to persist task inputs, outputs, and offloaded reference data. These have high latency for smaller objects, so:
 
 - **Minimum task duration**: Tasks should take at least a second to run to amortize storage overhead.
-- **Future improvements**: High-performance metastores like Redis and PostgreSQL may be supported in the future. Contact the Union team if you're interested.
+- **Future improvements**: High-performance key/value or relational stores like Redis and PostgreSQL may be supported in the future as alternative offload backends. Contact the Union team if you're interested.
 
 ## Configuring data storage
 

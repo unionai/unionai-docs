@@ -17,7 +17,7 @@ As a {{< key product_name >}} administrator, retention policies are specified in
 The retention policy system distinguishes the following categories of data:
 
 1. **Workflow execution data** — the per-run artifacts written during task execution:
-   - Task inputs and outputs (the `inputs.pb` / `outputs.pb` protobuf payloads written by the runs service and executor).
+   - Task inputs and outputs (the `inputs.pb` / `outputs.pb` protobuf payloads written by the platform during run setup and task execution).
    - Offloaded large values: `flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, and other reference-type payloads — both in their default location and in any custom location specified per run via `flyte.with_runcontext(raw_data_path=...)`.
    - `Deck` and report artifacts.
    - Trace checkpoints.

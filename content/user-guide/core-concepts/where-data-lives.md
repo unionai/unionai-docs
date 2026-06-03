@@ -7,13 +7,13 @@ description: A developer's map of what Flyte stores in the control-plane databas
 
 # Where your data lives
 
-When you run a Flyte task, two stores end up with your data: a **database** in the control plane and an **object-store bucket** in the data plane. This page is the developer-facing map of which is which, and clears up the word "metadata," which Flyte uses for several unrelated things.
+When you run a Flyte task, your data ends up in two stores: a **database** in the control plane and an **object-store bucket** in the data plane. This page is the developer-facing map of which is which, and clears up the word "metadata," which Flyte uses for several unrelated things.
 
 ## The two stores
 
 | | Control-plane database | Data-plane object store |
 |---|---|---|
-| **Backing tech** | Postgres | S3, GCS, or ABS bucket |
+| **Backing tech** | Postgres (plus a few internal coordination stores) | S3, GCS, or ABS bucket |
 | **What's in it** | Every record Flyte uses to *describe* your runs | Every byte of *content* that's too big to put in the database |
 | **Lifetime** | Durable; long-lived history | Durable, but you can apply lifecycle/retention rules |
 
@@ -40,9 +40,11 @@ The control-plane database holds everything Flyte needs to enumerate, schedule, 
 
 That last one matters: if your task takes an `int` and returns an `int`, those numbers are in the database, not the bucket.
 
+(Internally, Flyte uses several backing databases — Postgres for registrations and run history, separate stores for in-flight action coordination and caches. For developer purposes the only thing that matters is that they're all small-record, structured stores; none of them hold bulk content.)
+
 ## What goes in the bucket
 
-Anything too large to inline gets written to the bucket, and the database stores a **pointer** (URI) to it. Specifically:
+Anything too large to inline gets written to the bucket, and the database stores a **pointer** (URI) to it. In particular:
 
 - **Task inputs**, serialized as `inputs.pb` per run.
 - **Task outputs**, serialized as `outputs.pb` per attempt.
@@ -50,9 +52,9 @@ Anything too large to inline gets written to the bucket, and the database stores
 - **Decks** — the HTML reports your task renders.
 - **Trace checkpoints** — used by `@flyte.trace` to resume partial work.
 - **Fast-registered code bundles** — what `flyte deploy` and `flyte run --copy-style all` upload so the cluster can run your local Python.
-- **Image-build contexts** — when {{< key product_name >}} builds an image from an `Image.from_uv_script(...)` or similar.
+- **Image-build contexts** — when {{< key product_name >}} builds a container image from an `Image` definition that requires a build context.
 
-The layout under your bucket is `<project>/<domain>/<run-name>/...`, with per-action subprefixes for outputs / Decks / checkpoints. You don't typically need to know the exact paths; you do need to know that **everything above lives behind one configured bucket prefix**, addressable by `<project>/<domain>/<run>/...`.
+The layout under your bucket is `<project>/<domain>/...`, with the bulk of execution artifacts under per-run, per-action subprefixes (`<run-name>/<action>/...` for outputs / Decks / checkpoints) and sibling prefixes for offloaded inputs and SDK uploads (code bundles, image-build contexts). You don't typically need to know the exact paths; you do need to know that **everything above lives behind one configured bucket prefix**.
 
 ## What "metadata" means
 
@@ -70,7 +72,7 @@ The Helm chart and some operational guides refer to a **"metadata bucket"** or `
 
 If you see "metadata bucket" in an ops context, read it as **"the data-plane object-store bucket."** The naming is unfortunate; the contents are what you'd expect from a data bucket.
 
-You can largely ignore other appearances of the word in API surfaces (`TaskMetadata`, `ActionMetadata`, etc.) — those are small property bags on task and action protos and don't change where your data is stored.
+You can largely ignore other appearances of the word in API surfaces (`TaskMetadata`, `ActionMetadata`, and `metadata_path` on `RunContext`, which is a local scratch directory used only by `from_local()` execution) — those are small property bags or local scratch paths and don't change where your data is stored.
 
 ## Per-run customization: `raw_data_path`
 
@@ -113,6 +115,6 @@ For how retention policies are configured in your deployment, see [BYOC data ret
 ## The short version
 
 - **Database** = the system of record. Holds registrations, run history, schedules, and small inline values.
-- **Bucket** = the byte store. Holds large inputs/outputs, Decks, checkpoints, code bundles, and offloaded `File` / `Dir` / `DataFrame` contents.
+- **Bucket** = the object-store bucket. Holds large inputs/outputs, Decks, checkpoints, code bundles, and offloaded `File` / `Dir` / `DataFrame` contents.
 - **"Metadata" in docs** usually means database-side records. **"Metadata bucket" in Helm/ops** is legacy naming for the data-plane bucket — it does *not* hold database metadata.
 - **`flyte.with_runcontext(raw_data_path=...)`** is your knob to send offloaded data elsewhere per run.
