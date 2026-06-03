@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 2.3.2
+version: 2.3.8
 variants: +flyte +union
 layout: py_api
 ---
@@ -25,6 +25,7 @@ layout: py_api
 | [`flyte.errors`](flyte.errors) | Exceptions raised by Union. |
 | [`flyte.extend`](flyte.extend) |  |
 | [`flyte.extras`](flyte.extras) | Flyte extras package. |
+| [`flyte.extras.shell`](flyte.extras.shell) | Shell task — wrap a CLI tool packaged in a container image. |
 | [`flyte.git`](flyte.git) |  |
 | [`flyte.io`](flyte.io) | ## IO data types. |
 | [`flyte.io.extend`](flyte.io.extend) |  |
