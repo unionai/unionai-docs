@@ -8,7 +8,7 @@ variants: -flyte +union
 
 ## Task logging
 
-Logs are collected by Fluent Bit (deployed as a DaemonSet on the data plane) and shipped to the customer's cloud-native log service: CloudWatch Logs (AWS), Cloud Logging (GCP), or Azure Monitor (Azure). Live logs are streamed directly from the Kubernetes API while a task is running. Persisted logs are read from the cloud log aggregator after a pod terminates.
+Logs are collected and shipped to the customer's cloud-native log service: CloudWatch Logs (AWS), Cloud Logging (GCP), or Azure Monitor (Azure). Live logs are streamed directly from the Kubernetes API while a task is running. Persisted logs are read from the cloud log aggregator after a pod terminates.
 
 Log data does not transit the control plane. Live and persisted logs alike are served from the data plane through the Direct-to-DataPlane tunnel directly to the requesting client; no log byte ever passes through Union.ai infrastructure. There is no content filtering or redaction at any layer of the log pipeline. Log lines include structured metadata: timestamp, message content, and originator classification.
 
