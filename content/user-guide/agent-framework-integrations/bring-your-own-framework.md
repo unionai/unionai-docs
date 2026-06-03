@@ -13,7 +13,7 @@ This page is a framework-agnostic template. Drop in any library — [CrewAI](htt
 
 ## The core pattern
 
-Put your framework's agent invocation inside an `@env.task`. The task gives you a sandboxed container, durable inputs/outputs, retries, and a span in the dashboard. Everything inside the task is ordinary Python, so the framework behaves exactly as it does locally.
+Put your framework's agent invocation inside an `@env.task`. The task gives you a container, durable inputs/outputs, retries, and a span in the dashboard. Everything inside the task is ordinary Python, so the framework behaves exactly as it does locally.
 
 ```python
 import flyte
@@ -120,7 +120,7 @@ async def run_one(task_input: str) -> str:
 
 @env.task
 async def run_many(inputs: list[str]) -> list[str]:
-    # Each run_one call lands in its own sandboxed container.
+    # Each run_one call lands in its own container.
     results = await asyncio.gather(*[run_one(i) for i in inputs])
     return list(results)
 ```

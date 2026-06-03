@@ -7,7 +7,7 @@ sidebar_expanded: false
 
 # Agent framework integrations
 
-**Any Python-based agent framework works with {{< key product_name >}}.** {{< key product_name >}} doesn't replace your framework — it provides the production layer around it. You write your agent with whatever framework you prefer, then invoke it from inside an `@env.task`, where it runs in a sandboxed container with durable checkpointing and full observability. Each LLM call, tool call, and routing decision can be captured as a span in the {{< key product_name >}} dashboard.
+**Any Python-based agent framework works with {{< key product_name >}}.** {{< key product_name >}} doesn't replace your framework — it provides the production layer around it. You write your agent with whatever framework you prefer, then invoke it from inside an `@env.task`, where it runs in a container with durable checkpointing and full observability. Each LLM call, tool call, and routing decision can be captured as a span in the {{< key product_name >}} dashboard.
 
 Because the framework drives the loop and {{< key product_name >}} wraps it, you don't need a dedicated plugin for a framework to use it — if it runs in Python, it runs on {{< key product_name >}}.
 

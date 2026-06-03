@@ -34,7 +34,7 @@ flyte run agent.py react_agent --goal "What is (12 + 8) * 3?"
 ```
 
 **What's happening under the hood:**
-- `react_agent` runs in a sandboxed container with only `openai` installed and 2 CPU / 2GB RAM
+- `react_agent` runs in a container with only `openai` installed and 2 CPU / 2GB RAM
 - Each `reason()` and `act()` call is traced, so you see every LLM call, every tool invocation, and every intermediate result in the {{< key product_name >}} dashboard
 - The agent's inputs and final output are durably persisted, letting you inspect any past run end-to-end
 - Swap in your own tools (web search, database queries, API calls) by adding to the `TOOLS` dict
@@ -107,7 +107,7 @@ research_workflow (orchestrator)
   └── synthesize    → LLM combines reports into final answer  [container 5]
 ```
 
-- **Fan-out:** `asyncio.gather()` launches all research tasks in parallel, each in its own sandboxed container
+- **Fan-out:** `asyncio.gather()` launches all research tasks in parallel, each in its own container
 - **Observability:** `@flyte.trace` on each LLM call means every prompt and response is visible as a span in the {{< key product_name >}} dashboard
 - **Durable checkpointing:** Each task's output is persisted. If `synthesize` fails, re-running skips the completed `plan` and `research` steps (with caching enabled)
 

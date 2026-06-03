@@ -7,7 +7,7 @@ mermaid: true
 
 # PydanticAI agents
 
-[PydanticAI](https://ai.pydantic.dev/) is a type-safe agent framework from the Pydantic team. As with any Python agent framework, you run a PydanticAI agent on {{< key product_name >}} by invoking it from inside an `@env.task` — the framework drives the loop, while {{< key product_name >}} gives you a sandboxed container, durable checkpointing, and observability.
+[PydanticAI](https://ai.pydantic.dev/) is a type-safe agent framework from the Pydantic team. As with any Python agent framework, you run a PydanticAI agent on {{< key product_name >}} by invoking it from inside an `@env.task` — the framework drives the loop, while {{< key product_name >}} gives you a container, durable checkpointing, and observability.
 
 The key integration point: PydanticAI tools are just Python functions, so a tool can delegate to a durable `@env.task`. That gives you the best of both worlds — PydanticAI's typed tool-calling and {{< key product_name >}}'s durable, observable, on-cluster tool execution.
 
@@ -19,7 +19,7 @@ Define a PydanticAI [Agent](https://pydantic.dev/docs/ai/api/pydantic-ai/agent/#
 
 **What's happening under the hood:**
 
-- `run_agent` runs in a sandboxed container with only `pydantic-ai-slim` installed.
+- `run_agent` runs in a container with only `pydantic-ai-slim` installed.
 - PydanticAI drives its own typed tool-call loop. Each tool delegates to an `@env.task`, so `fetch_weather` and `add` execute durably on the cluster and appear in the {{< key product_name >}} dashboard.
 - `flyte.group("pydantic-ai-run")` groups the loop's tool calls under one span for readability.
 - The task's input prompt and final output are durably persisted for end-to-end inspection.

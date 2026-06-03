@@ -115,7 +115,7 @@ research_workflow (orchestrator)
   └── synthesize    → LLM combines reports into final answer      [container 5]
 ```
 
-- **Fan-out:** `asyncio.gather()` launches all research tasks in parallel, each in its own sandboxed container.
+- **Fan-out:** `asyncio.gather()` launches all research tasks in parallel, each in its own container.
 - **Tool calling inside each graph:** The LangGraph agent calls Tavily web search, observes results, reasons, and loops until done.
 - **Observability:** `@flyte.trace` on the LangGraph nodes makes every LLM call, tool call, and routing decision visible as a span.
 - **Durable checkpointing:** Each task's output is persisted. If `synthesize` fails, re-running skips completed steps (with caching enabled).
