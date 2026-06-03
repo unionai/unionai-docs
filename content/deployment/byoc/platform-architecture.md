@@ -90,6 +90,8 @@ This type of data is read by (and may be temporarily cached) by the control plan
 
 These are passed by value, not by reference, and may be stored in the {{< key product_name >}} control plane.
 
+For the developer-facing map of which specific records live in the control-plane database versus the data-plane bucket — including what "metadata" means in different contexts — see [Where your data lives](../../user-guide/core-concepts/where-data-lives).
+
 ## Data privacy
 
 If you are concerned with maintaining strict data privacy, be sure not to pass private information in literal form between tasks.

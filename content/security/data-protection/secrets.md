@@ -32,7 +32,7 @@ All four backends are available regardless of deployment model. The choice of ba
 | In Data Plane (operator) | **Plaintext in memory** | Briefly held before writing to secret backend |
 | At rest (secret backend) | **Yes** | AWS Secrets Manager (AES-256/KMS), GCP Secret Manager (Google-managed or CMEK), Azure Key Vault (HSM-backed), or K8s etcd encryption |
 
-**Consumption:** When a task pod is created, the Executor configures it to mount the requested secrets from the backend as environment variables or files. The value is read by the data plane's secrets backend and injected into the pod. It never leaves the customer's infrastructure during this process. The control plane is not involved in secret consumption at runtime.
+**Consumption:** When a task pod is created, the system configures it to mount the requested secrets from the backend as environment variables or files. The value is read by the data plane's secrets backend and injected into the pod. It never leaves the customer's infrastructure during this process. The control plane is not involved in secret consumption at runtime.
 
 **Scoping:** Secrets can be scoped at the organization, domain, or project-domain level. Only task pods running within the appropriate scope can access the corresponding secrets. This ensures that teams working in different projects cannot access each other's secrets, even within the same data plane cluster.
 
