@@ -28,4 +28,4 @@ Here's how {{< key product_name >}} maps to the agentic world:
 
 - [**Deploy an agent as a service**](./deploy-agent-as-service): Host a FastAPI app, webhook pattern, model serving
 - [**Building agents on {{< key product_name >}}**](./building-agents): ReAct pattern, Plan-and-Execute with fan-out, LangGraph integration, and more patterns
-- [**Build an MCP server**](./build-mcp/_index): Serve Model Context Protocol servers for AI assistants to interact with Flyte
+- [**Build an MCP server**](../build-mcp/_index): Serve Model Context Protocol servers for AI assistants to interact with Flyte
