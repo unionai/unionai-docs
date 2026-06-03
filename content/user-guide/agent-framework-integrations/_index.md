@@ -2,7 +2,7 @@
 title: Agent framework integrations
 weight: 19
 variants: +flyte +serverless +union
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Agent framework integrations
