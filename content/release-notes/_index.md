@@ -85,10 +85,6 @@ DNS resolution now uses the operating system's resolver, fixing connectivity in 
 
 Heavy imports have been moved off the CLI's direct path for faster startup. Image and bundle caches are consolidated into a single local database, and the local cache is scoped by init config so different configurations no longer collide.
 
-### :sparkles: Run Start Time in Task Context
-
-You can now read the run's start time from context with `flyte.ctx().run_start_time` instead of threading it through inputs.
-
 ### :sparkles: Pydantic Union Types with Field Annotations
 
 Pydantic `Union` types with `Field` annotations are now supported in task signatures.
