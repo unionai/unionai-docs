@@ -11,7 +11,7 @@ Notifications fire when the run reaches the terminal execution phase — no trig
 
 {{< code file="/unionai-examples/v2/user-guide/task-deployment/run-with-notifications/run_with_notifications.py" fragment="run-with-notifications" lang="python">}}
 
-Pass a single notification or a tuple of notifications. All notification types from `flyte.notify` are supported: `Slack`, `Email`, `Teams`, `Webhook`, and `NamedDelivery`.
+Pass a single notification or a tuple of notifications. The notification types in `flyte.notify` are `Slack`, `Email`, `Teams`, `Webhook`, and `NamedDelivery`.
 
 > [!NOTE]
 > To attach notifications to every run created by a scheduled trigger, set `notifications` on the `flyte.Trigger` object instead. See [Notifications](../task-configuration/triggers#notifications).
@@ -64,7 +64,7 @@ To receive emails locally while developing, start a debug SMTP server before run
 ```bash
 # Python >= 3.12
 pip install aiosmtpd
-sudo python -m aiosmtpd -n -l localhost:25
+python -m aiosmtpd -n -l localhost:1025
 ```
 
-The server prints received emails to stdout. Port 25 requires root; use port 1025 as an alternative (update the SMTP port in your configuration accordingly).
+The server prints received emails to stdout. Port 1025 needs no special privileges; to listen on the standard SMTP port 25 instead, run the command with `sudo`. Either way, set the SMTP port in your configuration to match.
