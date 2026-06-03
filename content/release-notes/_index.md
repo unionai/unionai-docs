@@ -11,7 +11,7 @@ top_menu: true
 
 ### :rocket: Retries with Backoff and Timeout Controls
 
-Tasks now accept a `flyte.RetryStrategy` with exponential backoff and a `flyte.Timeout` with three independent bounds: `max_runtime` (per-attempt running time), `max_queued_time` (per-attempt time waiting for capacity), and `deadline` (an absolute wall-clock budget across all attempts). The `max_runtime` budget starts when your code actually begins running — pod scheduling and image pulls no longer count against it. See the [Retries and timeouts documentation](https://www.union.ai/docs/v2/union/user-guide/task-configuration/retries-and-timeouts/) for details.
+Tasks now accept a `flyte.RetryStrategy` with exponential backoff and a `flyte.Timeout` with three independent bounds: `max_runtime` (per-attempt running time), `max_queued_time` (per-attempt time waiting for capacity), and `deadline` (an absolute wall-clock budget across all attempts). The `max_runtime` budget starts when your code actually begins running — pod scheduling and image pulls no longer count against it. See the [Retries and timeouts documentation](../user-guide/task-configuration/retries-and-timeouts) for details.
 
 ```python
 import flyte
@@ -43,11 +43,11 @@ You can now author agents as a first-class construct: define an agent with regis
 
 ### :computer: Build and Deploy MCP Servers
 
-You can now author a Model Context Protocol server with the SDK and deploy it as a Union app, so agents and IDEs can call your tasks and data as tools. See the [MCP server documentation](https://www.union.ai/docs/v2/union/user-guide/build-mcp/) to get started.
+You can now author a Model Context Protocol server with the SDK and deploy it as a Union app, so agents and IDEs can call your tasks and data as tools. See the [MCP server documentation](../user-guide/build-mcp) to get started.
 
 ### :sparkles: Queues with Concurrency and Depth Control (Beta)
 
-Queues now support concurrency control (how many actions a queue runs at once) and depth control (how deep the queue can grow), with runnable SDK examples. Queues are in Beta: queue definitions are not yet enforced by the execution engine, and full queue management from the CLI and Console arrives with general availability. See the [Queues documentation](https://www.union.ai/docs/v2/union/user-guide/task-configuration/queues/).
+Queues now support concurrency control (how many actions a queue runs at once) and depth control (how deep the queue can grow), with runnable SDK examples. Queues are in Beta: queue definitions are not yet enforced by the execution engine, and full queue management from the CLI and Console arrives with general availability. See the [Queues documentation](../user-guide/task-configuration/queues).
 
 ### :gear: Cluster and Cluster Pool Management from the CLI
 
@@ -67,7 +67,7 @@ You can now exclude files from code bundles even when they are tracked in git �
 
 ### :wrench: Settings Applied at Run Creation
 
-Org- and domain-scoped settings are now fully applied when runs are created: tasks submitted without explicit resource values pick up the defaults configured in Settings. See the [Settings documentation](https://www.union.ai/docs/v2/union/user-guide/core-concepts/settings/).
+Org- and domain-scoped settings are now fully applied when runs are created: tasks submitted without explicit resource values pick up the defaults configured in Settings. See the [Settings documentation](../user-guide/core-concepts/settings).
 
 ### :sparkles: Friendlier Build and Deploy Errors
 
