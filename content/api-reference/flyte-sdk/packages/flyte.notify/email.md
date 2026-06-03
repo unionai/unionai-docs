@@ -16,8 +16,9 @@ Send email notifications.
         Email(
             on_phase=ActionPhase.FAILED,
             recipients=["oncall@example.com"],
-            subject="Alert: Task failed",
-            body="Error: {{.Error}}"
+            subject="Alert: Task {task.name} failed",
+            body="Error: {run.error}
+Details: {run.url}"
         )
         ```
 

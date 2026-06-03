@@ -16,7 +16,7 @@ Send Slack notifications with optional Block Kit formatting.
         Slack(
             on_phase=ActionPhase.FAILED,
             webhook_url="https://hooks.slack.com/services/YOUR/WEBHOOK/URL",
-            message="🚨 Run {{.Run.Name}} failed: {{.Error}}
+            message="🚨 Task {task.name} failed: {run.error}
 {run.url}",
         )
         ```

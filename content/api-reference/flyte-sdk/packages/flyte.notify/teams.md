@@ -16,8 +16,9 @@ Send Microsoft Teams notifications with optional Adaptive Cards.
         Teams(
             on_phase=ActionPhase.SUCCEEDED,
             webhook_url="https://outlook.office.com/webhook/YOUR_WEBHOOK_URL",
-            title="✅ Run Complete",
-            message="Run {{.Run.Name}} completed"
+            title="✅ Task Complete",
+            message="Task {task.name} completed in {run.duration}
+[View Details]({run.url})"
         )
         ```
 

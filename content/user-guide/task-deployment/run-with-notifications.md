@@ -1,6 +1,6 @@
 ---
 title: Run with notifications
-weight: 11
+weight: 13
 variants: +flyte +union
 ---
 
@@ -9,7 +9,7 @@ variants: +flyte +union
 You can attach notifications to a single run by passing them to `flyte.with_runcontext()`.
 Notifications fire when the run reaches the terminal execution phase — no trigger or persistent deployment is required.
 
-{{< code file="/unionai-examples/v2/user-guide/task-deployment/run-context/run_context.py" fragment="run-with-notifications" lang="python">}}
+{{< code file="/unionai-examples/v2/user-guide/task-deployment/run-with-notifications/run_with_notifications.py" fragment="run-with-notifications" lang="python">}}
 
 Pass a single notification or a tuple of notifications. All notification types from `flyte.notify` are supported: `Slack`, `Email`, `Teams`, `Webhook`, and `NamedDelivery`.
 
