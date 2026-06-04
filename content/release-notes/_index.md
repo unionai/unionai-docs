@@ -7,6 +7,190 @@ top_menu: true
 
 # Release notes
 
+## June 2026
+
+
+### :rocket: Retries with Backoff and Timeout Controls
+
+Tasks now accept a `flyte.RetryStrategy` with exponential backoff and a `flyte.Timeout` with three independent bounds: `max_runtime` (per-attempt running time), `max_queued_time` (per-attempt time waiting for capacity), and `deadline` (an absolute wall-clock budget across all attempts). The `max_runtime` budget starts when your code actually begins running — pod scheduling and image pulls no longer count against it. See the [Retries and timeouts documentation](../user-guide/task-configuration/retries-and-timeouts) for details.
+
+```python
+import flyte
+from datetime import timedelta
+
+env = flyte.TaskEnvironment(name="resilient")
+
+@env.task(
+    retries=flyte.RetryStrategy(
+        count=4,
+        backoff=flyte.Backoff(base=timedelta(seconds=1), factor=2.0, cap=timedelta(seconds=3)),
+    ),
+    timeout=flyte.Timeout(
+        max_runtime=timedelta(minutes=10),
+        max_queued_time=timedelta(minutes=5),
+        deadline=timedelta(minutes=30),
+    ),
+)
+async def bounded_work() -> str: ...
+```
+
+
+### :robot: Flyte-Native Agent Construct
+
+You can now author agents as a first-class construct: define an agent with registered tools, persist memory across runs with `MemoryStore`, and serve it behind a chat interface using the pre-built app environment. Mark sensitive tools with `@tool(requires_approval=True)` to pause the run until a human approves. `agent.run(...)` works synchronously, and `await agent.run.aio(...)` works in async code.
+
+
+### :memo: Multi-Pod Log Streaming
+
+Log streaming now covers every pod of a distributed action (Ray, Spark, multi-node training), for both live tail and persisted logs. A pod filter in the Console log viewer selects which pod you're reading, and task metrics can be filtered by pod for multi-pod executions.
+
+
+### :computer: Build and Deploy MCP Servers
+
+You can now author a Model Context Protocol server with the SDK and deploy it as a Union app, so agents and IDEs can call your tasks and data as tools. See the [MCP server documentation](../user-guide/build-mcp/_index) to get started.
+
+
+### :sparkles: Smarter Failure Classification
+
+A task that raises `flyte.errors.NonRecoverableError` now fails on the first attempt without consuming its retry budget. Image pulls rejected by registry rate limits are classified as system errors rather than user failures, so they no longer burn your retries.
+
+
+### :zap: Faster CLI Startup and Unified Local Caches
+
+Heavy imports have been moved off the CLI's direct path for faster startup. Image and bundle caches are consolidated into a single local database, and the local cache is scoped by init config so different configurations no longer collide.
+
+
+### :sparkles: Friendlier Build and Deploy Errors
+
+Missing image source folders, unknown image references at deploy time, and user-module import failures now surface as specific, actionable error types instead of raw tracebacks. Dependency-export failures include the underlying tool output.
+
+
+### :zap: More Resilient Uploads
+
+Uploads now honor server `Retry-After` hints on 429/503 responses, use a higher retry backoff cap, and report clearer errors when retries are exhausted.
+
+
+### :wrench: SDK Reliability Improvements
+
+DNS resolution now uses the operating system's resolver, fixing connectivity in VPN and split-DNS environments. Pydantic and dataclass default values are resolved correctly at serialization time, and CLI clients request refresh tokens by default so you log in less often.
+
+
+### :wrench: Exclude Files from Code Bundles with `.flyteignore`
+
+You can now exclude files from code bundles even when they are tracked in git — large datasets, notebooks, docs. `.flyteignore` files use gitignore-style patterns and are applied automatically during every bundle build.
+
+
+### :wrench: Settings Applied at Run Creation
+
+Org- and domain-scoped settings are now fully applied when runs are created: tasks submitted without explicit resource values pick up the defaults configured in Settings. See the [Settings documentation](../user-guide/core-concepts/settings).
+
+
+### :sparkles: Console Run Exploration Improvements
+
+The runs list now supports unconstrained lookback past the previous 7-day window. Run labels render in Run Info, trace action durations are accurate in the run sidebar, the log viewer's full-screen mode matches the reports experience, inputs and outputs past their retention window show a clear retention notice, the versions table scrolls infinitely with graceful handling of invalid versions, browser tab titles include the entity name, and secrets are cluster-pool aware.
+
+
+### :sparkles: Task Environment Details Drawer
+
+From a run's details page in the Console, you can now inspect the environment behind the run: name, version, image, resources, and the full reuse policy.
+
+
+### :gear: Cluster and Cluster Pool Management from the CLI
+
+You can now register and manage clusters and cluster pools directly from the CLI. `flyte create|get|delete cluster` registers clusters into your org, with a detail view covering identity, health, cloud and storage, config drift, capacity, and bound queues. `flyte create|get|delete cluster-pool` manages the shared object-store, secret-store, and image-registry configuration for a group of clusters.
+
+
+### :chart_with_upwards_trend: GPU Configuration for Ray Clusters
+
+Accelerator and shared-memory settings now propagate automatically from your resource requests to Ray head and worker groups.
+
+
+### :sparkles: Pydantic Union Types with Field Annotations
+
+Pydantic `Union` types with `Field` annotations are now supported in task signatures.
+
+
+### :sparkles: Queues with Concurrency and Depth Control (Beta)
+
+Queues now support concurrency control (how many actions a queue runs at once) and depth control (how deep the queue can grow), with runnable SDK examples. Queues are in Beta: queue definitions are not yet enforced by the execution engine, and full queue management from the CLI and Console arrives with general availability. See the [Queues documentation](../user-guide/task-configuration/queues).
+
+
+### :sparkles: Events API (Beta)
+
+A new top-level SDK construct lets you emit events from your tasks, with a runnable example. Signalling events from the Console is not yet available.
+
+
+### :gear: Self-Managed Dataplane Updates
+
+Update to the latest Union helm chart to pick up accurate `max_runtime` anchoring and per-attempt `max_queued_time` enforcement, immediate failure on `NonRecoverableError`, multi-pod log streaming, VSCode debugger links routed through the dataplane ingress, app connector endpoint fixes with project/domain propagation, billing metering on the dataplane operator in low-privilege mode, and configurable Azure OAuth app secret expiry.
+
+## May 2026
+
+
+### :robot: AI Agent Components in `flyte.ai`
+
+The new `flyte.ai` submodule ships pre-built components for agentic applications: `flyte.ai.agents.CodeModeAgent` wraps the orchestrator sandbox with a customizable `litellm`-compatible LLM generator, and `flyte.ai.AgentChatAppEnvironment` serves chat-shaped agents. End-to-end examples cover vLLM serving, Claude Code, and token-level batching with `TokenBatcher` inside a FastAPI app.
+
+
+### :wrench: Hierarchical Settings
+
+A new Settings hierarchy spans the SDK, control plane, and Console. The interactive `flyte settings edit` CLI command views and edits hierarchical settings, tasks created without explicit CPU, GPU, memory, or storage values inherit org- and domain-scoped defaults, and a Console Settings page exposes the same hierarchy with org-level controls including configurable retention for user-built images.
+
+
+### :sparkles: Interactive Triggers
+
+Triggers grow from a list view into a fully interactive surface. Pass arbitrary input through a trigger with `custom_context`, attach multiple triggers or links in a single `@env.task` decorator, and use first-class sleep tasks for explicit delays. In the Console you can create a trigger directly from a task's details page, bulk-delete triggers with confirmation, and view the full trigger spec on the details page.
+
+
+### :hammer: Non-Root Images by Default
+
+Default built images now create a non-root `flyte` user and switch to it at the end of the build. Files added via `with_source_folder`, `with_source_file`, and `with_code_bundle` are copied with the right ownership automatically.
+
+
+### :sparkles: Actionable CLI Error Messages
+
+Common failures — missing Docker, missing `kubectl`, missing source files, unpicklable deployments, and user-module load failures — now surface as actionable error messages. Uploads automatically retry on transient network errors.
+
+
+### :hammer: Image Building Enhancements
+
+A new reference architecture covers bringing your own externally built images into Flyte v2 workflows. A top-level `--builder` flag on `flyte` and `flyte build` resolves from config when not provided, `FLYTE_DOCKER_BUILDKIT_BUILDER_NAME` selects a custom buildx builder, the `exclude-newer` uv option quarantines new dependency releases for five days to protect builds from upstream regressions, and cache behavior accepts common aliases like `enable` and `off`.
+
+
+### :sparkles: Console Enhancements
+
+Task details gain a Versions tab for side-by-side comparison, the entry file path, descriptions, and sub-action totals. App details pages show parameters, descriptions, and a delete action, with a Kubernetes service account selector in the launch form. Run logs get a full-screen button and an actor filter, policies and roles get confirm-delete dialogs, and a logout option lands in the Console.
+
+
+### :computer: TUI and Shell Task Improvements
+
+Trace output is now readable for long-running runs in the TUI. Shell tasks gain a `defaults` parameter plus rendering fixes, directories can be passed alongside files into sandbox-based agents, and long-form descriptions render in `flyte --help`.
+
+
+### :sparkles: New Plugins and Examples
+
+New plugins land for HuggingFace datasets, Hydra, omegaconf, and papermill. New examples cover conditional caching, custom-context triggers, an autoresearch loop, genomics helper utilities, and a Vue app alongside the existing FastAPI, Streamlit, and Gradio examples.
+
+
+### :wrench: User-Facing Logger
+
+`flyte.logger` is now a user-facing logger, separated from the internal SDK logger, with an INFO default and no prefix.
+
+
+### :wrench: Keyring Opt-Out
+
+The new `disable_keyring` config option skips storing and retrieving tokens from the system keyring — useful in CI and headless environments.
+
+
+### :gear: Cluster-Aware Data Access
+
+Workflows running against a specific dataplane can resolve their data proxy directly, and authentication continues to land on the control plane even when the data plane endpoint is used directly.
+
+
+### :gear: OpenShift Support for Self-Managed Deployments
+
+Self-managed deployments gain platform-level OpenShift support: restricted-module installs, AWS EBS CSI driver, ECR pull secrets, AWS pod identity webhook, and post-install helper tooling. The helm chart also adds `external-secrets` v1 API support, a configurable worker-pod security context, connector logs configuration, and a per-deployment network policy toggle.
+
 ## March 2026
 
 ### :wrench: Extended Idle Timeout for Panel Apps
