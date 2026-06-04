@@ -14,7 +14,7 @@ When you run a Flyte task, your data ends up in two stores: a **database** in th
 | | Control-plane database | Data-plane object store |
 |---|---|---|
 | **Backing tech** | Postgres (plus a few internal coordination stores) | S3, GCS, or ABS bucket |
-| **What's in it** | Every record Flyte uses to *describe* your runs | Every byte of *content* that's too big to put in the database |
+| **What's in it** | Every record Flyte uses to *describe* your runs, plus pointers to where each run's inputs and outputs live | Every run's inputs and outputs, and all bulk/offloaded content |
 | **Lifetime** | Durable; long-lived history | Durable, but you can apply lifecycle/retention rules |
 
 {{< variant union >}}
@@ -26,25 +26,25 @@ When you run a Flyte task, your data ends up in two stores: a **database** in th
 {{< /markdown >}}
 {{< /variant >}}
 
-The database is the **source of truth for what executed**. The bucket is **where the actual bytes live** when those bytes are too big to inline.
+The database is the **source of truth for what executed**. The bucket is **where your runs' actual input and output values live**.
 
 ## What goes in the database
 
-The control-plane database holds everything Flyte needs to enumerate, schedule, and replay your work — but only the *small* values directly. Specifically:
+The control-plane database holds everything Flyte needs to enumerate, schedule, and replay your work. Specifically:
 
-- **Registrations** — every task you've deployed, every trigger you've registered, every project and domain.
+- **Registrations** — every task you've deployed, every trigger you've registered, every project and domain. A task's definition includes its *default* input values, which are stored inline as part of the registration.
 - **Execution records** — every run, every action (task / trace / condition) inside that run, attempts, phases, timing, error messages, parent/child relationships.
 - **Schedules and triggers** — `Cron`, event triggers, and their revision history.
-- **Small input/output values** — primitives (`int`, `str`, `bool`), small JSON-serializable dataclasses, and other values that fit inline as a protobuf literal. These are stored *by value* in the database.
+- **Pointers to runtime inputs and outputs** — the database stores the *URI* of each run's `inputs.pb` / `outputs.pb`, not the values themselves. (One exception: an awaited *condition* / approval action stores the value that satisfies it inline.)
 - **Caches** — the cache key → output-URI mapping for `@env.task(cache=...)`.
 
-That last one matters: if your task takes an `int` and returns an `int`, those numbers are in the database, not the bucket.
+The values your tasks actually pass at runtime — even a bare `int` — do **not** live in the database. They are written to `inputs.pb` / `outputs.pb` in the bucket, and the database keeps only the pointer. See the next section.
 
 (Internally, Flyte uses several backing databases — Postgres for registrations and run history, separate stores for in-flight action coordination and caches. For developer purposes the only thing that matters is that they're all small-record, structured stores; none of them hold bulk content.)
 
 ## What goes in the bucket
 
-Anything too large to inline gets written to the bucket, and the database stores a **pointer** (URI) to it. In particular:
+Every run's inputs and outputs are written to the bucket as `inputs.pb` / `outputs.pb`, and the database stores a **pointer** (URI) to them. Within those files, small scalar values are inlined directly while large values are offloaded to separate objects and referenced by URI. The bucket holds:
 
 - **Task inputs**, serialized as `inputs.pb` per run.
 - **Task outputs**, serialized as `outputs.pb` per attempt.
@@ -62,7 +62,7 @@ The word "metadata" appears in several places and means a different thing each t
 
 ### 1. "Metadata" as in the control-plane database (Flyte's usage)
 
-When Flyte documentation says **"metadata is preserved"** or **"metadata lives in the control plane,"** it means the database records above: registrations, run history, status, small literal values. It does **not** mean "the contents of the bucket."
+When Flyte documentation says **"metadata is preserved"** or **"metadata lives in the control plane,"** it means the database records above: registrations (including task default values), run history, and status. It does **not** mean "the contents of the bucket."
 
 This is the sense most relevant to you: the database is durable, and losing the bucket does not lose your execution history — it loses the *large values* those history records pointed at.
 
@@ -97,7 +97,7 @@ See [Run context](../task-deployment/run-context) for the full set of `with_runc
 If a retention rule deletes objects out of the bucket, the database records that pointed at them are **not** deleted — but their pointers now dangle. Concretely:
 
 - Execution history, status, timing, structure: **still visible** in the UI. They come from the database.
-- Input/output **previews of offloaded values, Deck views, artifact payloads**: show "not found" if the underlying bytes were purged.
+- Input/output **previews, Deck views, artifact payloads**: show "not found" if the underlying bytes were purged.
 - **Cache hits** for purged outputs: the cached pointer is dead, the task re-executes.
 - **Trace resumption**: not possible if the checkpoint blob is gone.
 - **Re-running an old execution**: fails if any input it needs has been purged.
@@ -114,7 +114,7 @@ For how retention policies are configured in your deployment, see [BYOC data ret
 
 ## The short version
 
-- **Database** = the system of record. Holds registrations, run history, schedules, and small inline values.
-- **Bucket** = the object-store bucket. Holds large inputs/outputs, Decks, checkpoints, code bundles, and offloaded `File` / `Dir` / `DataFrame` contents.
+- **Database** = the system of record. Holds registrations (including task default values), run history, schedules, and pointers to each run's inputs/outputs.
+- **Bucket** = the object-store bucket. Holds every run's `inputs.pb`/`outputs.pb`, Decks, checkpoints, code bundles, and offloaded `File` / `Dir` / `DataFrame` contents.
 - **"Metadata" in docs** usually means database-side records. **"Metadata bucket" in Helm/ops** is legacy naming for the data-plane bucket — it does *not* hold database metadata.
 - **`flyte.with_runcontext(raw_data_path=...)`** is your knob to send offloaded data elsewhere per run.
