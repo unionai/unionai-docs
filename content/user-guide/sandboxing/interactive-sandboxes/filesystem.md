@@ -13,18 +13,23 @@ Each session has its own work dir on the sandbox filesystem. State written there
 `put_bytes` and `get_bytes` are the simplest way to stage a file into a sandbox before a command, or retrieve a result after:
 
 ```python
-async with sb.local.session() as sbx:
-    await sbx.put_bytes("/tmp/input.json", b'{"x": 1}')
+import tempfile
 
-    proc = await sbx.run("python3 /tmp/process.py")
-    await proc.communicate()
+with tempfile.TemporaryDirectory() as work:
+    async with sb.local.session(host_work_dir=work) as sbx:
+        await sbx.put_bytes(f"{work}/input.json", b'{"x": 1}')
 
-    result = await sbx.get_bytes("/tmp/result.json", max_bytes=10 * 1024 * 1024)
+        proc = await sbx.run(f"python3 {work}/process.py")
+        await proc.communicate()
+
+        result = await sbx.get_bytes(f"{work}/result.json", max_bytes=10 * 1024 * 1024)
 ```
 
-`max_bytes` caps the response size; the call raises if the file is larger. Both methods operate on absolute paths inside the sandbox; the path must land in the RW allow-list. `/tmp` and `/dev/shm` are in the default allow-list on every backend, so they're the safe places to stage files unless you've pinned a `host_work_dir` (see below).
+Both methods take absolute paths that must resolve under the session's work directory. Pin it with `host_work_dir=...` when you want a known path to interpolate (as above); leave it unset and the session creates a fresh temp dir for its lifetime. Paths outside the work dir are refused, as are symlinks in the prefix. `max_bytes` caps the response size; the call raises if the file is larger.
 
-Use them together with `network_mode="blocked"` to keep an untrusted `run()` from doing any I/O of its own: stage inputs via `put_bytes`, run with no network, collect outputs via `get_bytes`.
+The work-dir constraint is its own rule, separate from the filesystem allow-list (covered below). The allow-list governs what the sandboxed process can read or write at runtime; `put_bytes` / `get_bytes` operate on the work dir specifically. To make a file available at, say, `/tmp/input.json` inside the sandbox, write it to the work dir with `put_bytes` and have the sandboxed script read from there.
+
+Use these together with `network_mode="blocked"` to keep an untrusted `run()` from doing any I/O of its own: stage inputs via `put_bytes`, run with no network, collect outputs via `get_bytes`.
 
 ## The default allow-list
 
