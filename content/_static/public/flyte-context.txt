@@ -138,7 +138,7 @@ def my_task():
 
 **Creating Secrets:**
 ```bash
-flyte create secret MY_SECRET_KEY my_secret_value
+flyte create secret MY_SECRET_KEY --value my_secret_value
 # Optional scoping: --project project_name --domain domain_name
 ```
 
