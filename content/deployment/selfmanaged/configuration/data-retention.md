@@ -15,9 +15,9 @@ It helps to be precise about what "metadata" means here, because the term is use
 
 **Metadata in {{< key product_name >}} lives in the control plane database.** It includes:
 
-- Task, trigger and app definitions.
+- Task, trigger and app definitions (including their default input values).
 - Execution status, history, schedules, and audit trail.
-- The literal values of task inputs and outputs — primitives (ints, strings, etc.), JSON-serializable dataclasses, and similar small values that are passed *by value* between tasks. The DB stores these values directly.
+- Pointers (URIs) to each run's `inputs.pb` / `outputs.pb` — the database records *where* each task's inputs and outputs live, not the values themselves.
 
 **Raw data lives in the data plane object-store bucket.** It includes:
 
@@ -27,7 +27,7 @@ It helps to be precise about what "metadata" means here, because the term is use
 - `Deck` data and artifact payloads.
 - [Trace](../../../user-guide/task-programming/traces) checkpoints.
 
-When a task input or output is *too large to be passed inline as a literal value*, it is offloaded: the bytes are written to the bucket as raw data, and the literal that the DB stores becomes a **pointer** (URI) into the bucket. The DB still holds the canonical record of the input/output — it just holds a reference instead of the value.
+Every task's inputs and outputs are serialized to `inputs.pb` / `outputs.pb` in the data plane object-store bucket, and the database stores only a **pointer** (URI) to them. Within those files, small values (primitives, small dataclasses) are inlined *by value*, while values too large to inline — `flyte.io.File`, `flyte.io.DataFrame`, models, and similar — are offloaded to separate objects in the bucket and referenced by URI. Either way, the values themselves live in the data plane; the control plane holds only the pointer.
 
 ## Impact of raw data loss
 
@@ -39,7 +39,7 @@ A retention policy that purges raw data leaves the metadata in the control plane
 | **Execution engine** | Re-runs or downstream tasks that consume a purged upstream output fail at runtime. In-flight tasks that depend on a node whose output was just purged fail. |
 | **Caching** | A cache hit may resolve to a pointer whose underlying raw data has been purged, producing cache misses, task re-execution, or failure. |
 | **Traces** | [Trace](../../../user-guide/task-programming/traces) checkpoints used by `@flyte.trace` for fine-grained recovery are stored in the bucket; if purged, resume-from-checkpoint is not possible for affected executions. |
-| **Operations** | The DB record of what ran, when, and with what *small literal* inputs/outputs is preserved. The record of what *large offloaded* inputs/outputs each task produced is lost wherever the raw data has been purged. |
+| **Operations** | The DB record of what ran, when, and the pointers to each task's inputs/outputs is preserved. The input/output *values* themselves — which live in the bucket — are lost wherever the raw data has been purged. |
 
 ## Applying retention deliberately
 

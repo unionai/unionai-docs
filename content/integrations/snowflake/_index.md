@@ -70,14 +70,14 @@ if __name__ == "__main__":
     # Run locally (connector runs in-process, requires credentials and packages locally)
     run = flyte.with_runcontext(mode="local").run(count_users)
 
-    # Run remotely (connector runs on the control plane)
+    # Run remotely (connector runs as a service in your data plane)
     run = flyte.with_runcontext(mode="remote").run(count_users)
 
     print(run.url)
 ```
 
 > [!NOTE]
-> The `TaskEnvironment` created by `from_task` does not need an image or pip packages. Snowflake tasks are connector tasks, which means the query executes on the connector service, not in your task container. In `local` mode, the connector runs in-process and requires `flyteplugins-snowflake` and credentials to be available on your machine. In `remote` mode, the connector runs on the control plane.
+> The `TaskEnvironment` created by `from_task` does not need an image or pip packages. Snowflake tasks are connector tasks, which means the query executes on the connector service, not in your task container. In `local` mode, the connector runs in-process and requires `flyteplugins-snowflake` and credentials to be available on your machine. In `remote` mode, the connector runs as a service in your data plane.
 
 ## Configuration
 
