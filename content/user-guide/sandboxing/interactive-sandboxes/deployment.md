@@ -55,11 +55,7 @@ Deploy the default sandbox task envs once per cluster:
 unionai-sandbox-deploy
 ```
 
-This runs `flyte deploy --all` against the installed `_server.py`. Project and domain come from your Flyte config (`~/.flyte/config.yaml`) or environment variables (`FLYTE_PROJECT`, `FLYTE_DOMAIN`):
-
-```sh
-FLYTE_PROJECT=my-project FLYTE_DOMAIN=development unionai-sandbox-deploy
-```
+This runs `flyte deploy --all` against the installed `_server.py`.
 
 After deploy, open sessions from any task. The caller task's image must have `unionai-sandbox` installed.
 
@@ -70,7 +66,7 @@ from union import sandbox as sb
 
 env = flyte.TaskEnvironment(
     name="agent",
-    image=flyte.Image.from_debian_base(platform=("linux/amd64",)).with_pip_packages(
+    image=flyte.Image.from_debian_base().with_pip_packages(
         "unionai-sandbox[remote]"
     ),
 )
@@ -84,8 +80,7 @@ async def main() -> str:
         return out
 ```
 
-> [!IMPORTANT] Caller image must install `unionai-sandbox`
-> Pin the image platform to the cluster's architecture (`linux/amd64` for most Union clusters) and pip-install `unionai-sandbox[remote]` so the Connect-RPC transport is available. Without an explicit pin, a wheel built for your laptop can end up inside a Linux pod and fail to load with an `invalid ELF header` error.
+> [!IMPORTANT] Caller image must install `unionai-sandbox[remote]`.
 
 Bringup is split into two phases so your setup work overlaps with pod startup: `sb.session(...)` submits the run and returns instantly; `async with` (or `await sbx`) waits for the pod to become addressable; the transport health-check is deferred to the first `run()`.
 
@@ -104,12 +99,6 @@ flyte run --project my-project --domain development my_agent.py main
 ```
 
 `my_agent.py` here is the file containing your `@env.task async def main(...)` definition; `main` is the task name. The `sb.session(...)` call inside `main` submits the deployed sandbox task as its own run.
-
-For local iteration against a remote sandbox (the caller task runs on your laptop, the sandbox pod lives on the cluster), use `--local`:
-
-```sh
-flyte run --local my_agent.py main
-```
 
 A `SandboxSession` exposes this metadata:
 
@@ -169,7 +158,7 @@ ml_sandbox_env = ml_sandbox.task_env
 Deploy once:
 
 ```sh
-flyte deploy --all deploy_my_sandboxes.py
+flyte deploy deploy_my_sandboxes.py ml_sandbox_env
 ```
 
 Then launch sessions against it from any task:
@@ -181,7 +170,7 @@ from my_sandboxes import ml_sandbox
 
 env = flyte.TaskEnvironment(
     name="agent",
-    image=flyte.Image.from_debian_base(platform=("linux/amd64",)).with_pip_packages(
+    image=flyte.Image.from_debian_base().with_pip_packages(
         "unionai-sandbox[remote]"
     ),
 )
@@ -251,7 +240,7 @@ from union import sandbox as sb
 
 env = flyte.TaskEnvironment(
     name="long-running-service",
-    image=flyte.Image.from_debian_base(platform=("linux/amd64",)).with_pip_packages(
+    image=flyte.Image.from_debian_base().with_pip_packages(
         "unionai-sandbox[remote]"
     ),
 )
