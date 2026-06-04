@@ -1,6 +1,6 @@
 ---
 title: Slack
-version: 2.3.8
+version: 2.4.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -11,23 +11,6 @@ layout: py_api
 
 Send Slack notifications with optional Block Kit formatting.
 
-    Example:
-        ```python
-        Slack(
-            on_phase=ActionPhase.FAILED,
-            webhook_url="https://hooks.slack.com/services/YOUR/WEBHOOK/URL",
-            message="🚨 Task {task.name} failed: {run.error}
-{run.url}",
-        )
-        ```
-
-    Args:
-        on_phase:ActionPhase(s) to trigger notification
-        webhook_url: Slack webhook URL
-        message: Simple text message (supports template variables)
-        blocks: Optional Slack Block Kit blocks for rich formatting
-            (if provided, message is ignored). See: https://api.slack.com/block-kit
-    
 
 
 ## Parameters
@@ -42,8 +25,8 @@ class Slack(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `on_phase` | `typing.Union[flyte.models.ActionPhase, typing.Tuple[flyte.models.ActionPhase, ...]]` | |
-| `webhook_url` | `str` | |
-| `message` | `typing.Optional[str]` | |
-| `blocks` | `typing.Optional[typing.Tuple[typing.Dict[str, typing.Any], ...]]` | |
+| `on_phase` | `typing.Union[flyte.models.ActionPhase, typing.Tuple[flyte.models.ActionPhase, ...]]` | ActionPhase(s) to trigger notification |
+| `webhook_url` | `str` | Slack webhook URL |
+| `message` | `typing.Optional[str]` | Simple text message (supports template variables) |
+| `blocks` | `typing.Optional[typing.Tuple[typing.Dict[str, typing.Any], ...]]` | Optional Slack Block Kit blocks for rich formatting (if provided, message is ignored). See: https://api.slack.com/block-kit |
 

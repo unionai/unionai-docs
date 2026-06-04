@@ -104,4 +104,4 @@ For example:
 > A `TaskEnvironment` can only access a secret if the scope of the secret includes the project and domain where the `TaskEnvironment` is deployed.
 
 > [!WARNING]
-> Do not return secret values from tasks, as this will expose secrets to the control plane.
+> Do not return secret values from tasks. Returned values are stored in plaintext in your data plane's object store and shown in the UI and to downstream tasks, defeating the secret store's protections.
