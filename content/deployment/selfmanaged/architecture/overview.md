@@ -73,7 +73,7 @@ Raw data is comprised of:
 * Python-pickled types
 
 These are passed by reference between tasks and are always stored in an object store in your data plane.
-This type of data is read by (and may be temporarily cached) by the control plane as needed, but is never stored there.
+They are fetched directly from the data-plane object store via presigned URLs issued by the data-plane `dataproxy` service; the bytes never pass through the control plane.
 
 ### Literal data
 
