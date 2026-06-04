@@ -39,7 +39,7 @@ A retention policy that purges raw data leaves the metadata in the control plane
 | **Execution engine** | Re-runs or downstream tasks that consume a purged upstream output fail at runtime. In-flight tasks that depend on a node whose output was just purged fail. |
 | **Caching** | A cache hit may resolve to a pointer whose underlying raw data has been purged, producing cache misses, task re-execution, or failure. |
 | **Traces** | [Trace](../../../user-guide/task-programming/traces) checkpoints used by `@flyte.trace` for fine-grained recovery are stored in the bucket; if purged, resume-from-checkpoint is not possible for affected executions. |
-| **Operations** | The DB record of what ran, when, and the pointers to each task's inputs/outputs is preserved. The input/output *values* themselves — which live in the bucket — are lost wherever the raw data has been purged. |
+| **Operations** | The DB record of what ran and when, the pointers to each task's inputs/outputs, and the small inline values in `inputs.pb`/`outputs.pb` are preserved. The *large offloaded* inputs/outputs are lost wherever the raw data has been purged. |
 
 ## Applying retention deliberately
 

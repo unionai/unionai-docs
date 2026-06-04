@@ -88,11 +88,11 @@ They are fetched directly from the data-plane object store via presigned URLs is
 * Primitive execution inputs (int, string... etc.)
 * JSON-serializable dataclasses
 
-These small values are passed by value rather than as a reference to a separately offloaded object. Like raw data, they are stored in the object store in your data plane -- inlined within the run's `inputs.pb`/`outputs.pb` payload -- and the control plane stores only a URI pointer to them.
+These small values are passed by value rather than as a reference to a separately offloaded object. Like raw data, they are stored in the object store in your data plane — inlined within the run's `inputs.pb`/`outputs.pb` payload — and the control plane stores only a URI pointer to them.
 
 For the developer-facing map of which specific records live in the control-plane database versus the data-plane bucket — including what "metadata" means in different contexts — see [Where your data lives](../../user-guide/core-concepts/where-data-lives).
 
 ## Data privacy
 
-All runtime execution data -- both raw and literal inputs and outputs -- is stored in the object store in your data plane, never in the control plane. The control plane holds orchestration metadata only: task definitions (which include default input values, environment variables, and SQL statements), run state, and error messages (which may include data from Python tracebacks).
+All runtime execution data — both raw and literal inputs and outputs — is stored in the object store in your data plane, never in the control plane. The control plane holds orchestration metadata only: task definitions (which include default input values, environment variables, and SQL statements), run state, and error messages (which may include data from Python tracebacks).
 
