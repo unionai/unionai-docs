@@ -26,12 +26,28 @@ Run ensemble atmospheric simulations on H200 GPUs with multi-source data ingesti
 Securely execute and iterate on LLM-generated code using a code agent with error reflection and retry logic.
 {{< /link-card >}}
 
+{{< link-card target="competitive-intelligence-agent" title="Competitive intelligence agent" >}}
+Fan out across competitors, extract source-cited market deltas with the You.com Search API, and build a knowledge-graph-ready intelligence table.
+{{< /link-card >}}
+
+{{< link-card target="compliance-monitoring-agent" title="Compliance monitoring agent" >}}
+Monitor trusted regulatory sources with the You.com Research API and route citation-precise findings to the right team.
+{{< /link-card >}}
+
 {{< link-card target="deep-research" title="Deep research" >}}
 Build an agentic workflow for deep research with multi-step reasoning and evaluation.
 {{< /link-card >}}
 
 {{< link-card target="distributed-pretraining" title="Distributed LLM pretraining" >}}
 Pretrain large language models at scale with PyTorch Lightning, FSDP, and H200 GPUs, featuring streaming data and real-time metrics.
+{{< /link-card >}}
+
+{{< link-card target="field-data-enrichment-agent" title="Field data enrichment agent" >}}
+Enrich geo-tagged operational events with real-world public context using the You.com Search API with country and freshness targeting.
+{{< /link-card >}}
+
+{{< link-card target="financial-research-agent" title="Financial research agent" >}}
+Prep equity briefings for the earnings cycle with grounded You.com Research synthesis and fresh news from the Search API.
 {{< /link-card >}}
 
 {{< link-card target="qwen-vl-finetuning" title="Fine-tuning a VLM with a frozen backbone" >}}
@@ -52,6 +68,10 @@ A multi-agent trading simulation, modeling how agents within a firm might intera
 
 {{< link-card target="text_to_sql" title="Text-to-SQL" >}}
 Learn how to turn natural language questions into SQL queries with Flyte and LlamaIndex, and explore prompt optimization in practice.
+{{< /link-card >}}
+
+{{< link-card target="support-resolution-agent" title="Support resolution agent" >}}
+Ground support tickets in fresh public sources via the You.com Research API and draft cited, customer-ready replies for human review.
 {{< /link-card >}}
 
 {{< /grid >}}
