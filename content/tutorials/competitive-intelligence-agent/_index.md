@@ -9,14 +9,12 @@ variants: +flyte +union
 > [!NOTE]
 > Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/competitive_intelligence_agent).
 
-This example demonstrates how to build a continuous competitive and market intelligence agent on Flyte. The agent fans out across a list of competitors, pulls fresh, source-cited web and news results from the [You.com Search API](https://you.com/docs/search/overview), and uses Claude to extract structured **deltas** — pricing changes, product launches, funding events, leadership moves, and more — into a knowledge-graph-ready table.
+This example demonstrates how to build a continuous competitive and market intelligence agent on Flyte. The agent fans out across a list of competitors, pulls fresh, source-cited web and news results from the [You.com Search API](https://you.com/docs/search/overview), and uses [Claude](https://docs.anthropic.com/) via [LiteLLM](https://docs.litellm.ai/) to extract structured **deltas** — pricing changes, product launches, funding events, leadership moves, and more — into a knowledge-graph-ready table.
 
-A competitive-intelligence knowledge graph must be populated with **fresh web data that carries attributable sources**, not training-data recall or brittle SERP scraping. The You.com Search API returns ranked, structured web and news results with snippets and publication timestamps. The agent feeds those into an LLM that emits structured, source-cited deltas.
-
-Flyte is a strong fit for this pattern:
+You.com returns ranked web and news results with snippets and publication timestamps, giving the LLM attributable sources to cite. Flyte orchestrates the rest:
 
 - **Fan-out parallelism** across competitors with `asyncio.gather`
-- **`cache="auto"`** so converging parallel or repeat runs reuse prior You.com and LLM results instead of paying for duplicate external calls
+- **`cache="auto"`** so converging parallel or repeat runs reuse prior You.com and LLM results when queries overlap
 - **`@flyte.trace`** on every You.com and LLM call for full prompt → query → source lineage
 - **Flyte reports** that render an HTML dashboard grouping deltas by competitor and category
 
@@ -58,7 +56,7 @@ See the [Search API reference](https://you.com/docs/api-reference/search/v1-sear
 
 ## Extract deltas with Claude
 
-A shared `llm_json` helper calls Claude via LiteLLM and parses structured JSON from the response.
+A shared `llm_json` helper routes to Claude through LiteLLM and parses structured JSON from the response.
 
 {{< code file="/unionai-examples/v2/tutorials/competitive_intelligence_agent/main.py" fragment=llm lang=python >}}
 
@@ -78,7 +76,7 @@ The `competitive_intelligence` driver task fans out across all competitors with 
 
 ### Create secrets
 
-Get a You.com API key from the [You.com platform](https://you.com/platform) (see the [quickstart guide](https://you.com/docs/quickstart) for details). Get an Anthropic API key from [console.anthropic.com](https://console.anthropic.com/).
+Get a You.com API key from the [You.com platform](https://you.com/platform) (see the [quickstart guide](https://you.com/docs/quickstart)). Get an Anthropic API key from the [Anthropic console](https://console.anthropic.com/).
 
 Register both keys as Flyte secrets. The secret key names must match those declared in the `TaskEnvironment`:
 
@@ -91,9 +89,10 @@ See [Secrets](../../user-guide/task-configuration/secrets) for scoping and file-
 
 ### Run locally or remotely
 
-Run the agent with `uv`:
+From the [example directory](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/competitive_intelligence_agent):
 
 ```
+cd v2/tutorials/competitive_intelligence_agent
 uv run --script main.py
 ```
 

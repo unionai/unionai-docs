@@ -11,9 +11,7 @@ variants: +flyte +union
 
 This example demonstrates how to build an autonomous systems and field-data enrichment agent on Flyte. The agent enriches geo-tagged operational events — from autonomous vehicles, aircraft, satellites, or field sensors — with **real-world public context**: road closures, weather events, airspace changes, or local incidents tied to a geofence.
 
-Sensitive operational data never leaves your cloud. Only lightweight, public-web grounding queries go out to You.com.
-
-The [You.com Search API](https://you.com/docs/search/overview) provides unified web and news results with `freshness` and `country` targeting, letting an agent ground a geo-tagged event in current public information without building and maintaining a per-customer crawler.
+Operational data stays in your environment while public-web grounding queries go to the [You.com Search API](https://you.com/docs/search/overview). The API provides unified web and news results with `freshness` and `country` targeting, and [Claude](https://docs.anthropic.com/) via [LiteLLM](https://docs.litellm.ai/) summarizes the relevant context for each geo-tagged event.
 
 Flyte provides:
 
@@ -23,6 +21,8 @@ Flyte provides:
 - **Flyte reports** with operational severity and per-incident citations
 
 ## Setting up the environment
+
+The agent runs in a `TaskEnvironment` with secrets for the You.com and Anthropic API keys, automatic caching, and a container image built from the `uv` script dependencies.
 
 {{< code file="/unionai-examples/v2/tutorials/field_data_enrichment_agent/main.py" fragment=env lang=python >}}
 
@@ -67,9 +67,9 @@ The `field_data_enrichment` driver task fans out across all events and renders a
 
 ### Create secrets
 
-Get a You.com API key from the [You.com platform](https://you.com/platform) (see the [quickstart guide](https://you.com/docs/quickstart)). Get an Anthropic API key from [console.anthropic.com](https://console.anthropic.com/).
+Get a You.com API key from the [You.com platform](https://you.com/platform) (see the [quickstart guide](https://you.com/docs/quickstart)). Get an Anthropic API key from the [Anthropic console](https://console.anthropic.com/).
 
-Register both keys as Flyte secrets:
+Register both keys as Flyte secrets. The secret key names must match those declared in the `TaskEnvironment`:
 
 ```
 flyte create secret youdotcom-api-key <YOUR_YOU_API_KEY>
@@ -80,7 +80,10 @@ See [Secrets](../../user-guide/task-configuration/secrets) for scoping and file-
 
 ### Run locally or remotely
 
+From the [example directory](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/field_data_enrichment_agent):
+
 ```
+cd v2/tutorials/field_data_enrichment_agent
 uv run --script main.py
 ```
 

@@ -11,7 +11,7 @@ variants: +flyte +union
 
 This example demonstrates how to build a regulatory and compliance monitoring agent on Flyte. The agent watches trusted regulatory sources — FDA guidance, SEC filings, sanctions lists, state-level privacy laws — and routes structured, **citation-precise** findings to the right downstream team (compliance, legal, or clinical ops).
 
-Compliance use cases live or die on **citation precision and recency**. A hallucinated regulatory citation is a liability. The [You.com Research API](https://you.com/docs/research/overview) returns a grounded, synthesized answer plus structured sources (URL, title, snippet). Its `source_control` parameter lets the agent restrict research to trusted government and regulator domains within a recency window. Combined with Flyte's audit lineage, you get end-to-end traceability: Flyte logs which agent issued which You.com query and received which document on which date.
+Compliance monitoring requires **citation precision and recency** so every finding can be verified. The [You.com Research API](https://you.com/docs/research/overview) returns a grounded, synthesized answer plus structured sources (URL, title, snippet). Use `source_control` to restrict research to trusted government and regulator domains within a recency window, and `output_schema` when you need machine-readable findings. [Claude](https://docs.anthropic.com/) via [LiteLLM](https://docs.litellm.ai/) triages each finding for severity and routing. Combined with Flyte's audit lineage, you get end-to-end traceability from query to citation.
 
 Flyte provides:
 
@@ -21,6 +21,8 @@ Flyte provides:
 - **Flyte reports** grouped by team and severity
 
 ## Setting up the environment
+
+The agent runs in a `TaskEnvironment` with secrets for the You.com and Anthropic API keys and a container image built from the `uv` script dependencies.
 
 {{< code file="/unionai-examples/v2/tutorials/compliance_monitoring_agent/main.py" fragment=env lang=python >}}
 
@@ -47,7 +49,7 @@ Each `WatchItem` specifies a regulatory topic, a list of trusted domains for `so
 
 The `you_research` helper calls the [You.com Research API](https://you.com/docs/research/overview) at `https://api.you.com/v1/research`. It passes `source_control` with an `include_domains` allowlist and a `freshness` filter, and requests structured output via `output_schema`.
 
-See the [Research API overview](https://you.com/docs/research/overview) for `research_effort` levels (`lite`, `standard`, `deep`, `exhaustive`) and the full `source_control` reference. The `output_schema` field requests structured JSON output — useful when you need machine-readable findings rather than free-form prose.
+See the [Research API reference](https://you.com/docs/api-reference/research/v1-research) for `research_effort` levels (`lite`, `standard`, `deep`, `exhaustive`), `source_control`, and `output_schema` parameters.
 
 {{< code file="/unionai-examples/v2/tutorials/compliance_monitoring_agent/main.py" fragment=you_research lang=python >}}
 
@@ -73,9 +75,9 @@ The `compliance_monitoring` driver task fans out across all watch items, aggrega
 
 ### Create secrets
 
-Get a You.com API key from the [You.com platform](https://you.com/platform) (see the [quickstart guide](https://you.com/docs/quickstart)). Get an Anthropic API key from [console.anthropic.com](https://console.anthropic.com/).
+Get a You.com API key from the [You.com platform](https://you.com/platform) (see the [quickstart guide](https://you.com/docs/quickstart)). Get an Anthropic API key from the [Anthropic console](https://console.anthropic.com/).
 
-Register both keys as Flyte secrets:
+Register both keys as Flyte secrets. The secret key names must match those declared in the `TaskEnvironment`:
 
 ```
 flyte create secret youdotcom-api-key <YOUR_YOU_API_KEY>
@@ -86,7 +88,10 @@ See [Secrets](../../user-guide/task-configuration/secrets) for scoping and file-
 
 ### Run locally or remotely
 
+From the [example directory](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/compliance_monitoring_agent):
+
 ```
+cd v2/tutorials/compliance_monitoring_agent
 uv run --script main.py
 ```
 

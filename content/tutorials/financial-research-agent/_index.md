@@ -11,7 +11,7 @@ variants: +flyte +union
 
 This example demonstrates how to build a financial research and earnings-cycle agent on Flyte. For each company, the agent runs grounded, source-cited research and fresh news, then synthesizes an analyst-ready equity briefing.
 
-Financial research demands **low-latency, ranked, source-cited results** across both the general web and news streams. The [You.com Research API](https://you.com/docs/research/overview) produces a grounded, citation-backed synthesis that a downstream LLM can turn into a narrative briefing. The [You.com Search API](https://you.com/docs/search/overview) adds a fresh-news layer. Flyte's `cache="auto"` further cuts duplicate spend when runs converge on the same companies.
+Financial research benefits from **low-latency, ranked, source-cited results** across both the general web and news streams. The [You.com Research API](https://you.com/docs/research/overview) produces a grounded, citation-backed synthesis, and the [You.com Search API](https://you.com/docs/search/overview) adds a fresh-news layer. [Claude](https://docs.anthropic.com/) via [LiteLLM](https://docs.litellm.ai/) turns that evidence into an analyst-ready briefing. Flyte's `cache="auto"` reuses prior results when runs converge on the same companies.
 
 Flyte provides:
 
@@ -21,6 +21,8 @@ Flyte provides:
 - **Flyte reports** with thesis, risks, watch items, and source citations per company
 
 ## Setting up the environment
+
+The agent runs in a `TaskEnvironment` with secrets for the You.com and Anthropic API keys, automatic caching, and a container image built from the `uv` script dependencies.
 
 {{< code file="/unionai-examples/v2/tutorials/financial_research_agent/main.py" fragment=env lang=python >}}
 
@@ -47,14 +49,14 @@ Each `Briefing` carries a thesis, recent developments, risks, watch items, and a
 
 The agent uses both You.com APIs in parallel for each company:
 
-- **Research API** (`https://api.you.com/v1/research`) — grounded, citation-backed analysis with configurable `research_effort` (`lite`, `standard`, `deep`, `exhaustive`). See the [Research API overview](https://you.com/docs/research/overview).
-- **Search API** (`https://ydc-index.io/v1/search`) — fresh news headlines with `freshness` filtering. See the [Search API overview](https://you.com/docs/search/overview).
+- **Research API** (`https://api.you.com/v1/research`) — grounded, citation-backed analysis with configurable `research_effort` (`lite`, `standard`, `deep`, `exhaustive`). See the [Research API reference](https://you.com/docs/api-reference/research/v1-research).
+- **Search API** (`https://ydc-index.io/v1/search`) — fresh news headlines with `freshness` filtering. See the [Search API reference](https://you.com/docs/api-reference/search/v1-search).
 
 {{< code file="/unionai-examples/v2/tutorials/financial_research_agent/main.py" fragment=you_apis lang=python >}}
 
 ## Synthesize briefings with Claude
 
-Claude turns the grounded research answer and news headlines into a structured equity briefing, constrained to only the evidence provided.
+Claude, routed through LiteLLM, turns the grounded research answer and news headlines into a structured equity briefing grounded in the evidence provided.
 
 {{< code file="/unionai-examples/v2/tutorials/financial_research_agent/main.py" fragment=llm lang=python >}}
 
@@ -74,9 +76,9 @@ The `financial_research` driver task fans out across all companies and renders a
 
 ### Create secrets
 
-Get a You.com API key from the [You.com platform](https://you.com/platform) (see the [quickstart guide](https://you.com/docs/quickstart)). Get an Anthropic API key from [console.anthropic.com](https://console.anthropic.com/).
+Get a You.com API key from the [You.com platform](https://you.com/platform) (see the [quickstart guide](https://you.com/docs/quickstart)). Get an Anthropic API key from the [Anthropic console](https://console.anthropic.com/).
 
-Register both keys as Flyte secrets:
+Register both keys as Flyte secrets. The secret key names must match those declared in the `TaskEnvironment`:
 
 ```
 flyte create secret youdotcom-api-key <YOUR_YOU_API_KEY>
@@ -87,7 +89,10 @@ See [Secrets](../../user-guide/task-configuration/secrets) for scoping and file-
 
 ### Run locally or remotely
 
+From the [example directory](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/financial_research_agent):
+
 ```
+cd v2/tutorials/financial_research_agent
 uv run --script main.py
 ```
 
