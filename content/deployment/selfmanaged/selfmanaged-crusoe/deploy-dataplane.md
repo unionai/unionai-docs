@@ -127,13 +127,14 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
    git clone https://github.com/unionai/helm-charts.git
    cd helm-charts
 
-   # Required — FlyteWorkflow CRD consumed by propeller.
-   kubectl apply --server-side --force-conflicts -f crds/flyte-v1/
+   # Required — FlyteWorkflow CRD + Knative Serving CRDs consumed by propeller
+   # and the dataplane chart's serving stack.
+   kubectl apply --server-side --force-conflicts -f crds/dataplane/
 
    # Required when serving.enabled=true (the chart default). Provides the
-   # Knative Operator + Serving CRDs that back App Serving. The chart's
-   # post-install hook creates a KnativeServing resource and will fail
-   # without these CRDs in place.
+   # Knative Operator CRDs that back App Serving. The chart's post-install
+   # hook creates a KnativeServing resource and will fail without these
+   # CRDs in place.
    kubectl apply --server-side --force-conflicts -f crds/knative-operator/
 
    # Required when monitoring.enabled=true. Skip if monitoring is disabled (the chart default)
