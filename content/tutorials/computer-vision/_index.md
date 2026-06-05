@@ -11,7 +11,7 @@ Tutorials for image and vision-language model workloads.
 
 {{< grid >}}
 
-{{< link-card target="qwen-vl-finetuning" title="Fine-tuning a VLM with a frozen backbone" >}}
+{{< link-card target="qwen-vl-finetuning" title="Fine-tuning a VLM" >}}
 Adapt Qwen2.5-VL to occluded image classification by training a 10K-parameter adapter with multi-node DeepSpeed, automatic recovery, and live training dashboards.
 {{< /link-card >}}
 
