@@ -1,10 +1,10 @@
 ---
-title: Text-to-SQL
+title: Text-to-SQL prompt optimization
 weight: 1
 variants: +flyte +union
 ---
 
-# Text-to-SQL
+# Text-to-SQL prompt optimization
 
 > [!NOTE]
 > Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/text_to_sql); based on work by [LlamaIndex](https://docs.llamaindex.ai/en/stable/examples/workflow/advanced_text_to_sql/).
