@@ -20,6 +20,8 @@ Flyte provides:
 - **`@flyte.trace`** on every external call for full prompt → citation lineage
 - **Flyte reports** with thesis, risks, watch items, and source citations per company
 
+![Financial research agent report](../../_static/images/tutorials/financial_research_agent/financial-research-agent.png)
+
 ## Setting up the environment
 
 The agent runs in a `TaskEnvironment` with secrets for the You.com and Anthropic API keys, automatic caching, and a container image built from the `uv` script dependencies.

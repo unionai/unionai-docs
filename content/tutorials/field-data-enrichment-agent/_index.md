@@ -20,6 +20,8 @@ Flyte provides:
 - **`@flyte.trace`** on every external call for lineage
 - **Flyte reports** with operational severity and per-incident citations
 
+![Field data enrichment agent report](../../_static/images/tutorials/field_data_enrichment_agent/field-data-enrichment-data.png)
+
 ## Setting up the environment
 
 The agent runs in a `TaskEnvironment` with secrets for the You.com and Anthropic API keys, automatic caching, and a container image built from the `uv` script dependencies.

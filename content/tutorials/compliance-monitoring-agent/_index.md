@@ -20,6 +20,8 @@ Flyte provides:
 - **Retries** on monitoring tasks for robustness
 - **Flyte reports** grouped by team and severity
 
+![Compliance monitoring agent report](../../_static/images/tutorials/compliance_monitoring_agent/compliance-monitoring-agent.png)
+
 ## Setting up the environment
 
 The agent runs in a `TaskEnvironment` with secrets for the You.com and Anthropic API keys and a container image built from the `uv` script dependencies.

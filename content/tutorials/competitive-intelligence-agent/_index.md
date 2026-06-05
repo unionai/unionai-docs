@@ -18,6 +18,8 @@ You.com returns ranked web and news results with snippets and publication timest
 - **`@flyte.trace`** on every You.com and LLM call for full prompt → query → source lineage
 - **Flyte reports** that render an HTML dashboard grouping deltas by competitor and category
 
+![Competitive intelligence agent report](../../_static/images/tutorials/competitive_intelligence_agent/competitive-intelligence-agent.png)
+
 ## Setting up the environment
 
 The agent runs in a single `TaskEnvironment` with secrets for the You.com and Anthropic API keys, automatic caching, and a container image built from the `uv` script dependencies.

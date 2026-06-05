@@ -20,6 +20,8 @@ Flyte provides:
 - A **two-step pipeline** per ticket: ground the answer, then draft the reply
 - **Flyte reports** with draft replies and verifiable source citations
 
+![Support resolution agent report](../../_static/images/tutorials/support_resolution_agent/support-resolutions-agent.png)
+
 ## Setting up the environment
 
 The agent runs in a `TaskEnvironment` with secrets for the You.com and Anthropic API keys and a container image built from the `uv` script dependencies.
