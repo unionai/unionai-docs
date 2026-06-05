@@ -10,6 +10,12 @@ Human-in-the-loop (HITL) workflows pause execution at a defined point, wait for 
 
 The `flyteplugins-hitl` package provides an event-based API for this pattern. When an event is created, Flyte automatically serves a small FastAPI web app with a form where a human can submit input. The workflow then resumes with the submitted value.
 
+> **`flyteplugins-hitl` vs. core conditions.** This page covers the `flyteplugins-hitl` package, which
+> serves a web form for submitting input. The SDK also has a built-in core API, `flyte.new_event(...)`,
+> for pausing on an external signal (approval, callback, or runtime value) without the FastAPI app — see
+> [Conditions]({{< ref "conditions" >}}). Use `flyteplugins-hitl` when you want the hosted input form;
+> use core conditions for programmatic/CLI signaling and webhook callbacks.
+
 ```bash
 pip install flyteplugins-hitl
 ```
