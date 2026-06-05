@@ -38,7 +38,9 @@ All parameters are optional. Unset parameters inherit from the configuration fil
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `raw_data_path` | `str` | *from config* | Storage prefix for offloaded data types ([Files](../task-programming/files-and-directories), [Dirs](../task-programming/files-and-directories), [DataFrames](../task-programming/dataframes), checkpoints). Accepts `s3://`, `gs://`, or local paths. |
-| `run_base_dir` | `str` | *auto-generated* | Base directory for run metadata passed between tasks. Distinct from `raw_data_path`. |
+| `run_base_dir` | `str` | *auto-generated* | Base directory for the run's inputs, outputs, and intermediate per-action artifacts in the data-plane object store. Distinct from `raw_data_path`. |
+
+For the difference between what `raw_data_path` controls (offloaded values) and what stays at the deployment-configured location (`inputs.pb`, `outputs.pb`, Decks) or in the control-plane database, see [Where your data lives](../core-concepts/where-data-lives).
 
 To direct all task outputs to a specific bucket for a run:
 
@@ -103,7 +105,7 @@ Inside a running task, `flyte.ctx()` returns a `TaskContext` object with informa
 | `mode` | `"local"` \| `"remote"` \| `"hybrid"` | Execution mode of the current run. |
 | `version` | `str` | Version of the deployed task code bundle. |
 | `raw_data_path` | `str` | Storage prefix where offloaded outputs are written. |
-| `run_base_dir` | `str` | Base directory for run metadata. |
+| `run_base_dir` | `str` | Base directory for the run's inputs, outputs, and intermediate per-action artifacts in the data-plane object store. |
 | `custom_context` | `Dict[str, str]` | Propagated context metadata from `with_runcontext()`. |
 | `disable_run_cache` | `bool` | Whether run caching is disabled for this run. |
 | `is_in_cluster()` | method | Returns `True` when `mode == "remote"`. Useful for branching local/remote behavior. |

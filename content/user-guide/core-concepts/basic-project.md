@@ -1,6 +1,6 @@
 ---
 title: Basic project
-weight: 7
+weight: 8
 variants: +flyte +union
 ---
 

@@ -19,6 +19,8 @@ The actual data is only downloaded from the blob stored when the task needs to a
 This allows Flyte to efficiently handle large files and directories without needing to transfer the data unnecessarily.
 Even very large data objects like video files and DNA datasets can be passed efficiently between tasks.
 
+For the full picture of what gets stored in the bucket versus what stays in the control-plane database, see [Where your data lives](../core-concepts/where-data-lives).
+
 The `File` and `Dir` classes provide both `sync` and `async` methods to interact with the data.
 
 ## Example usage

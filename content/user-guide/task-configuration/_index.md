@@ -66,8 +66,8 @@ For the complete parameter interaction matrix showing which parameters can be se
 | **cache** | All three levels | [Caching](./caching) &bull; [`Cache` API ref](../../api-reference/flyte-sdk/packages/flyte/cache) |
 | **pod_template** | All three levels | [Pod templates](./pod-templates) &bull; [`PodTemplate` API ref](../../api-reference/flyte-sdk/packages/flyte/podtemplate) |
 | **reusable** | `TaskEnvironment`, `override` | [Reusable containers](./reusable-containers) &bull; [`ReusePolicy` API ref](../../api-reference/flyte-sdk/packages/flyte/reusepolicy) |
-| **interruptible** | All three levels | [Interruptible tasks and queues](./interruptible-tasks-and-queues) |
-| **queue** | All three levels | [Interruptible tasks and queues](./interruptible-tasks-and-queues) |
+| **interruptible** | All three levels | [Interruptible tasks](./interruptible-tasks-and-queues) |
+| **queue** | All three levels | [Queues](./queues) |
 | **short_name** | `@env.task`, `override` | [Additional task settings](./additional-task-settings) |
 | **retries** | `@env.task`, `override` | [Retries and timeouts](./retries-and-timeouts) &bull; [`RetryStrategy` API ref](../../api-reference/flyte-sdk/packages/flyte/retrystrategy) |
 | **timeout** | `@env.task`, `override` | [Retries and timeouts](./retries-and-timeouts) &bull; [`Timeout` API ref](../../api-reference/flyte-sdk/packages/flyte/timeout) |

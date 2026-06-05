@@ -101,7 +101,7 @@ Define `AppEnvironment`s with ports, autoscaling, custom domains, and authentica
 Build dashboards, REST APIs, and model endpoints with FastAPI, Streamlit, vLLM, and more.
 {{< /link-card >}}
 
-{{< link-card target="native-app-integrations" icon="code" title="Native app integrations" >}}
+{{< link-card target="native-app-integrations" icon="plugin" title="Native app integrations" >}}
 Use pre-built environments for popular frameworks like Streamlit, FastAPI, vLLM, and SGLang.
 {{< /link-card >}}
 
@@ -121,8 +121,16 @@ Build durable, self-healing agents using tasks and apps as building blocks.
 Implement ReAct, Plan-and-Execute, and other agent patterns with full observability.
 {{< /link-card >}}
 
+{{< link-card target="agent-framework-integrations" icon="plugin" title="Agent framework integrations" >}}
+Integrate with third-party agent frameworks like LangGraph, PydanticAI, and OpenAI Agents SDK.
+{{< /link-card >}}
+
 {{< link-card target="sandboxing" icon="box" title="Sandboxing" >}}
 Safely execute LLM-generated code with workflow sandboxes or ephemeral containers.
+{{< /link-card >}}
+
+{{< link-card target="build-mcp" icon="code" title="Build an MCP" >}}
+Serve Model Context Protocol servers for AI assistants to interact with, hosted on {{< key product_name >}}.
 {{< /link-card >}}
 
 {{< /grid >}}

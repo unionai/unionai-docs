@@ -77,12 +77,11 @@ Once the code bundle is created:
 
 ## Phase 5: Run creation and queuing
 
-The `CreateRun` API is invoked:
-
-1. **Copy inputs**: Input data is copied to the object store.
-2. **En-queue a run**: The run is queued into the Union Control Plane.
-3. **Hand off to executor**: Union Control Plane hands the task to the Executor Service in your data plane.
-4. **Create action**: The parent task action (called `a0`) is created.
+1. **Upload inputs**: The SDK uploads the run's inputs to the data-plane `dataproxy` service, which writes them to the object store. The input values never pass through the control plane.
+2. **Invoke `CreateRun`**: The SDK calls the `CreateRun` API with a reference (URI) to the uploaded inputs, not the input values themselves.
+3. **En-queue a run**: The run is queued into the Union Control Plane.
+4. **Hand off to executor**: The Union Control Plane hands the task to the Executor Service in your data plane.
+5. **Create action**: The parent task action (called `a0`) is created.
 
 ## Phase 6: Task execution in data plane
 
@@ -91,7 +90,7 @@ The `CreateRun` API is invoked:
 1. **Container starts**: The task container starts in your data plane.
 2. **Download code bundle**: The Flyte runtime downloads the code bundle from object storage.
 3. **Inflate task**: The task is inflated from the code bundle.
-4. **Download inputs**: Inline inputs are downloaded from the object store.
+4. **Download inputs**: The task's inputs are downloaded from the object store.
 5. **Execute task**: The task is executed with context and inputs.
 
 ### Invoking downstream tasks
@@ -121,9 +120,9 @@ sequenceDiagram
     Data-->>Control: Signed URL
     Control-->>Client: Signed URL
     Client->>ObjStore: Upload code bundle (signed URL)
-    Client->>Control: CreateRun API with inputs
-    Control->>Data: Copy inputs
+    Client->>Data: Upload inputs (dataproxy)
     Data->>ObjStore: Write inputs
+    Client->>Control: CreateRun API (input URI)
     Control->>Data: Queue task (create action a0)
     Data->>Container: Start container
     Container->>Data: Request code bundle

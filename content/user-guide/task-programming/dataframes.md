@@ -12,6 +12,8 @@ To avoid downloading large datasets into memory, Flyte V2 exposes [`flyte.io.dat
 
 The `flyte.io.DataFrame` type provides serialization support for common engines like `pandas`, `polars`, `pyarrow`, `dask`, etc.; enabling you to move data between different DataFrame backends.
 
+DataFrame contents are written to the data-plane object store and passed between tasks by reference. For the full map of what goes in the bucket versus what stays in the control-plane database, see [Where your data lives](../core-concepts/where-data-lives).
+
 ## Setting up the environment and sample data
 
 For our example we will start by setting up our task environment with the required dependencies and create some sample data.
