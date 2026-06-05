@@ -137,14 +137,16 @@ If you have not yet set up the required CoreWeave resources (CKS cluster, AI Obj
    git clone https://github.com/unionai/helm-charts.git
    cd helm-charts
 
-   # Required — FlyteWorkflow CRD + Knative Serving CRDs consumed by propeller
-   # and the dataplane chart's serving stack.
+   # Mandatory in all modes — FlyteWorkflow CRD + Knative Serving CRDs
+   # consumed by propeller and the dataplane chart's serving stack.
    kubectl apply --server-side --force-conflicts -f crds/dataplane/
 
-   # Required when serving.enabled=true (the chart default). Provides the
-   # Knative Operator CRDs that back App Serving. The chart's post-install
-   # hook creates a KnativeServing resource and will fail without these
-   # CRDs in place.
+   # Required when knative-operator.enabled=true (the chart default). The
+   # post-install hook creates a KnativeServing resource and will fail
+   # without these CRDs in place. Skip in zero-trust mode
+   # (knative-operator.enabled=false), which vendors Knative Serving
+   # directly via the dataplane chart's gateway templates instead of the
+   # operator subchart.
    kubectl apply --server-side --force-conflicts -f crds/knative-operator/
 
    # Required when monitoring.enabled=true. Skip if monitoring is disabled (the chart default)
