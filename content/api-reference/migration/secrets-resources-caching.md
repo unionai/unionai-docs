@@ -91,7 +91,7 @@ secrets=[
 
 ```bash
 # Create secret
-flyte create secret MY_SECRET_KEY my_secret_value
+flyte create secret MY_SECRET_KEY --value my_secret_value
 
 # From file
 flyte create secret MY_SECRET_KEY --from-file /path/to/secret
