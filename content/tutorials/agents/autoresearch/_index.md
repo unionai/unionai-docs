@@ -34,11 +34,10 @@ The task needs a GPU, a generous disk for the cloned repo and model weights, and
 
 The agent targets a specific repository, identity, and branch via module-level constants. Update these to point at your own fork before running:
 
-```python
-GITHUB_USERNAME = "parnianz"
-GITHUB_EMAIL = "parnianzargham@gmail.com"
-AUTORESEARCH_REPO_URL = "https://github.com/unionai-oss/autoresearch.git"
-AUTORESEARCH_REPO_FULL_NAME = "unionai-oss/autoresearch"
+GITHUB_USERNAME = "<YOUR_GITHUB_USERNAME>"
+GITHUB_EMAIL = "you@example.com"
+AUTORESEARCH_REPO_URL = "https://github.com/<YOUR_ORG>/<YOUR_REPO>.git"
+AUTORESEARCH_REPO_FULL_NAME = "<YOUR_ORG>/<YOUR_REPO>"
 ```
 
 ## Model the result
