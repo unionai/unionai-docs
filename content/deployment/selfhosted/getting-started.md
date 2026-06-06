@@ -391,6 +391,32 @@ helm upgrade --install unionai-dataplane unionai/dataplane \
 
 If authentication is enabled on the control plane, also set `AUTH_CLIENT_ID` in your overrides file. See [Authentication](./authentication).
 
+### Data plane self-registration
+
+The data plane operator self-registers with the control plane on first contact — no manual provisioning step is required. On startup, the operator:
+
+1. Uses its existing OAuth client credentials (configured into the chart via `AUTH_CLIENT_ID` + secret) to authenticate to the control plane.
+2. The control plane's authorizer recognizes the identity (bound to the org admin policy at install time via the control plane chart's `services.authorizer.configMap.authorizer.bootstrap.serviceAccounts` block) and lazily creates the per-cluster authz Resource on the first `Heartbeat` and `UpdateStatus` call.
+3. On every `UpdateStatus` call, the operator reports a `connection_config` blob — the data the control plane needs to dial back to this data plane on the zero-trust execution path. This replaces the previous admin-set ingress URL flow.
+
+For the third step to take effect, set the dataplane's externally-reachable hostname in the chart's `updateStatus.connectionConfig` block:
+
+```yaml
+updateStatus:
+  connectionConfig:
+    # DP-reachable hostname the control plane should dial back to reach this
+    # data plane. The chart formats this as `dns:///<host>:443` and the
+    # operator ships it in every UpdateStatus call.
+    host: "dp-1.internal.<your-tenant-domain>"
+    # CP dials with plain HTTP/2 when true. Default false.
+    insecure: false
+    # CP skips TLS cert validation. Set true for envs where the data plane
+    # presents a self-signed certificate.
+    insecureSkipVerify: false
+```
+
+If `host` is left empty, the operator skips self-reporting and the control plane falls back to its legacy admin-set `DataplaneIngressURL`. Adding a new data plane to a multi-DP installation works the same way — no control plane re-deploy required.
+
 ## Step 9: Verify the installation
 
 ```shell
