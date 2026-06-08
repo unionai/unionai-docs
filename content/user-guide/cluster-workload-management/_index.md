@@ -13,6 +13,10 @@ mermaid: true
 > pages are administrative operations — most workflow authors only need
 > [task-side queue routing](../task-configuration/queues).
 
+> [!NOTE] Requires the `flyteplugins-union` plugin
+> The `flyte` cluster, pool, and queue commands on these pages are provided by the
+> `flyteplugins-union` package. Install it with `pip install flyteplugins-union`.
+
 As a {{< key product_name >}} deployment grows past a single cluster, you need a
 way to decide *where* a workload runs and *under what limits*. Three primitives
 work together to make that decision explicit and safe:

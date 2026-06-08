@@ -6,6 +6,10 @@ variants: -flyte +union
 
 # Clusters
 
+> [!NOTE] Requires the `flyteplugins-union` plugin
+> The `flyte` cluster commands on this page are provided by the
+> `flyteplugins-union` package. Install it with `pip install flyteplugins-union`.
+
 A **cluster** is an execution cluster registered with {{< key product_name >}}.
 Every cluster subscribes to exactly one [cluster pool](./cluster-pools), which
 determines the data plane (object store, secrets, registry) the cluster uses.

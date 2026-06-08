@@ -7,6 +7,10 @@ mermaid: true
 
 # Queues
 
+> [!NOTE] Requires the `flyteplugins-union` plugin
+> The `flyte` queue commands on this page are provided by the
+> `flyteplugins-union` package. Install it with `pip install flyteplugins-union`.
+
 A **queue** is a named scheduling lane. It does two jobs at once: it **routes**
 work to a [cluster pool](./cluster-pools) (and, optionally, specific clusters
 within it), and it **governs** that work with concurrency, depth, priority, and

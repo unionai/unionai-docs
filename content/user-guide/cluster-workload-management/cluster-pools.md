@@ -6,6 +6,10 @@ variants: -flyte +union
 
 # Cluster pools
 
+> [!NOTE] Requires the `flyteplugins-union` plugin
+> The `flyte` cluster-pool commands on this page are provided by the
+> `flyteplugins-union` package. Install it with `pip install flyteplugins-union`.
+
 A **cluster pool** is a named group of clusters that share one **data-plane
 configuration** — the same object store, secret store, and container registry.
 Because every cluster in a pool reads and writes the same data plane, a workload
