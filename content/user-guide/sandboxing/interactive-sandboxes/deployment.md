@@ -12,20 +12,22 @@ variants: -flyte +union
 
 The two transports cover different stages of a sandbox workflow:
 
-- **Local** (`sb.local.session(...)`): development, CI, and install checks. Runs sandboxed child processes inside the current container. Needs no Union connection, no pod, no deploy. Lowest latency. Not for production: it shares a container with your task's code and credentials. See [Security model](./security-model) for the blast-radius argument.
+- **On-device** (`sb.on_device.session(...)`): development, CI, and install checks. Runs sandboxed child processes inside the current container or task pod — no separate sandbox-server. Needs no Union connection, no extra pod, no deploy. Lowest latency. Not for production untrusted code: it shares a container with your task's code and credentials. See [Security model](./security-model) for the blast-radius argument.
 - **Remote** (`sb.session(...)`): production. Runs the sandbox in its own Flyte-task pod with a minimal image, its own service account, and an independent lifecycle. Serializable across task boundaries, observable in the UI, optionally hardened with gVisor.
 
-In other words: develop locally, ship remote. The call sites are nearly identical (`sb.local.session(...)` vs `await sb.session(...)`), so promoting a working local prototype to production is a one-token change plus a one-time deploy.
+In other words: develop on-device, ship remote. The call sites are nearly identical (`sb.on_device.session(...)` vs `await sb.session(...)`), so promoting a working prototype to production is a one-line change plus a one-time deploy.
 
-## Local: install and go
+## On-device: install and go
 
 ```sh
 pip install 'unionai-sandbox[flyte]'
 ```
 
-The `[flyte]` extra brings in the Flyte SDK so `@env.task` and the rest of the recommended task-based shape work. (For purely Flyte-less scripts, bare `pip install unionai-sandbox` is enough.) `sb.local.session(...)` works inside any async Python: a notebook, a script on your laptop, a CI runner, a Flyte task you're iterating on before shipping. The library auto-detects the strongest available backend (`bubblewrap` -> `userns` -> `sandbox-exec` -> `none`) and reports it on each process as `proc.backend`.
+The `[flyte]` extra brings in the Flyte SDK so `@env.task` and the rest of the recommended task-based shape work. (For purely Flyte-less scripts, bare `pip install unionai-sandbox` is enough.) `sb.on_device.session(...)` works inside any async Python: a notebook, a script on your laptop, a CI runner, a Flyte task you're iterating on before shipping.
 
-### Running a local script
+Pick the backend explicitly with `backend=` — there's no auto-detection and no fallback. `backend="userns"` runs anywhere; `backend="bubblewrap"` (the default, strongest) needs a pod with `CAP_SYS_ADMIN` + unconfined AppArmor (see below). The active backend is reported on each process as `proc.backend`.
+
+### Running an on-device script
 
 If the script calls `asyncio.run(main())` at module scope, run it directly:
 
@@ -39,7 +41,45 @@ If the code is wrapped in a `flyte.TaskEnvironment` + `@env.task` (which is the 
 python my_agent.py
 ```
 
-No Union cluster needed, no `flyte run` invocation. The local sandbox spawns inside whatever container or virtualenv you launched `python` in.
+No Union cluster needed, no `flyte run` invocation. The on-device sandbox spawns inside whatever container or virtualenv you launched `python` in.
+
+### Running an on-device sandbox in a task pod
+
+On-device isn't only for the laptop — you can run the sandbox child inside a real task pod, no extra sandbox-server. The only thing that changes between the two backends is the pod:
+
+```python
+import flyte
+from union import sandbox as sb
+
+# userns: vanilla pod, no special capabilities.
+userns_env = flyte.TaskEnvironment(
+    name="sandboxed-userns",
+    image=sb.base_sandbox_image,
+)
+
+# bwrap: same image, but the pod grants CAP_SYS_ADMIN + unconfined AppArmor.
+bwrap_env = flyte.TaskEnvironment(
+    name="sandboxed-bwrap",
+    image=sb.base_sandbox_image,
+    pod_template=flyte.PodTemplate().allow_nested_sandboxing(),
+)
+
+@userns_env.task
+async def run_userns() -> str:
+    async with sb.on_device.session(backend="userns") as sbx:
+        proc = await sbx.run("uname -a", stdout=True)
+        out, _ = await proc.communicate_text()
+        return out
+
+@bwrap_env.task
+async def run_bwrap() -> str:
+    async with sb.on_device.session(backend="bubblewrap") as sbx:
+        proc = await sbx.run("uname -a", stdout=True)
+        out, _ = await proc.communicate_text()
+        return out
+```
+
+`flyte.PodTemplate().allow_nested_sandboxing()` grants exactly the `CAP_SYS_ADMIN` + unconfined-AppArmor posture `bubblewrap` needs (and nothing more — the pod is not privileged). Without it, a `backend="bubblewrap"` session fails loudly. See [Security model](./security-model#pod-security-for-the-bubblewrap-backend).
 
 ## Remote: one-time deploy, then per-run sessions
 
@@ -195,7 +235,8 @@ The built-in `unionai-sandbox-deploy` is exactly this pattern applied to the lib
 | `resources`    | Default per-session `flyte.Resources`. Override per launch with `sb.session(resources=...)`. |
 | `secrets`      | `flyte.Secret`s forwarded to the sandbox pod.                                                |
 | `env_vars`     | Environment variables forwarded to the pod.                                                  |
-| `sandbox_mode` | In-pod isolation backend: `"userns"` (default) or `"bwrap"`.                                 |
+| `sandbox_mode` | In-pod isolation backend: `"userns"` (default) or `"bwrap"`. `"bwrap"` makes the deployed pod carry `CAP_SYS_ADMIN` + unconfined AppArmor. |
+| `sys_cap_admin`| Explicit override of the `CAP_SYS_ADMIN` grant. `None` (default) grants it iff `sandbox_mode="bwrap"`; `True` always; `False` never. Use `False` to run `bwrap` on a cluster that already allows unprivileged user namespaces, or `True` for `userns` on a cluster whose seccomp profile blocks the userns syscalls. |
 | `runtime`      | Pod runtime: `"container"` (default) or `"gvisor"`.                                          |
 
 Two ready-built defaults are exported: `sb.DEFAULT_SANDBOX_ENV` (userns, container runtime) and `sb.DEFAULT_SANDBOX_ENV_BWRAP` (bubblewrap, container runtime).
@@ -257,7 +298,7 @@ async def serve_user_session(user_id: str) -> str:
         await sbx.close()           # closes the transport and aborts the run (owner side)
 ```
 
-The same pattern works outside a task for local development. To attach to a `sandbox-server` you started yourself, use `sb.remote.session(endpoint=...)` instead of `sb.session()`.
+The same pattern works outside a task for on-device development. To attach to a `sandbox-server` you started yourself, use `sb.remote.session(endpoint=...)` instead of `sb.session()`.
 
 ## Per-session timeout vs hard ceiling
 
@@ -270,6 +311,6 @@ Design your soft timeouts to be well below the hard ceiling. The ceiling is a sa
 
 ## Related
 
-- [Security model](./security-model). When to pick local vs remote, when to enable gVisor.
+- [Security model](./security-model). When to pick on-device vs remote, pod security for the bubblewrap backend, when to enable gVisor.
 - [Networking](./networking). Per-call `network_mode` and what the allow-list does and does not protect against.
 - [Filesystem](./filesystem). `read_only_paths` and `read_write_paths` extensions, volumes roadmap.

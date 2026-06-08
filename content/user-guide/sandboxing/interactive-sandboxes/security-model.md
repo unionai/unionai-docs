@@ -6,8 +6,8 @@ variants: -flyte +union
 
 # Security model
 
-> [!NOTE] Local is for development, remote is for production
-> A **local** sandbox shares a container with the code that launched it. That's fine for development on a laptop, CI, or sanity-checking your install, but it doesn't isolate the sandboxed process from your task's own code, secrets, and cloud credentials. **This page is about production posture, which means a remote sandbox.** The "blast radius" section below justifies why; the rest of the page assumes you're picking knobs on a remote `SandboxEnvironment`.
+> [!NOTE] On-device is for development, remote is for production
+> An **on-device** sandbox shares a container with the code that launched it. That's fine for development on a laptop, CI, or sanity-checking your install, but it doesn't isolate the sandboxed process from your task's own code, secrets, and cloud credentials. **This page is about production posture, which means a remote sandbox.** The "blast radius" section below justifies why; the rest of the page assumes you're picking knobs on a remote `SandboxEnvironment`.
 
 A production sandbox is built from two independent layers:
 
@@ -18,27 +18,52 @@ These are independent. A sandbox pod can run `userns` inside a gVisor pod, or `b
 
 ## Isolation backends
 
-The library reports the backend on each process as `proc.backend`. On a remote sandbox, set it with `SandboxEnvironment(sandbox_mode=...)`.
+The backend is always **explicit** — there's no auto-detection and no silent downgrade. On-device, you pass it as `sb.on_device.session(backend=...)`; on remote, you set it with `SandboxEnvironment(sandbox_mode=...)`. If the chosen backend isn't usable where the session runs (e.g. `bubblewrap` on a pod without `CAP_SYS_ADMIN`), `run()` fails loudly rather than falling back to weaker isolation. The library reports the active backend on each process as `proc.backend`.
 
-| Backend        | How it works                                                                                                        | Default?                                                                                              |
+| Backend        | How it works                                                                                                        | Notes                                                                                              |
 | -------------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `userns`       | `unshare(2)` + `prctl(NO_NEW_PRIVS)` + `capset` + `setrlimit`, plus Landlock and a seccomp BPF deny-list            | Remote default                                                                                        |
-| `bubblewrap`   | `bwrap(1)` with `--unshare-all --die-with-parent --cap-drop ALL`, plus a Landlock ruleset as a kernel-side backstop | Opt-in for remote (`DEFAULT_SANDBOX_ENV_BWRAP` or `sandbox_mode="bwrap"`); default for local on Linux |
-| `sandbox-exec` | macOS wrapper around Apple's `sandbox-exec`; restricts writes to the work dir and can deny outbound sockets         | macOS local only                                                                                      |
-| `none`         | `setpgid` + best-effort `setrlimit`; logs a warning                                                                 | Dev fallback only                                                                                     |
+| `bubblewrap`   | `bwrap(1)` with `--unshare-all --die-with-parent --cap-drop ALL`, plus a Landlock ruleset as a kernel-side backstop | Strongest; the default on-device `backend`. Needs `CAP_SYS_ADMIN` + unconfined AppArmor on the pod (see below). |
+| `userns`       | `unshare(2)` + `prctl(NO_NEW_PRIVS)` + `capset` + `setrlimit`, plus Landlock and a seccomp BPF deny-list            | Lite backend; runs in a vanilla pod with no extra capabilities. Remote default (`sandbox_mode`). |
+| `sandbox-exec` | macOS wrapper around Apple's `sandbox-exec`; restricts writes to the work dir and can deny outbound sockets         | macOS on-device only                                                                                      |
+| `none`         | `setpgid` + best-effort `setrlimit`; logs a warning                                                                 | Dev fallback only; no filesystem/network jail                                                          |
 
 Both `userns` and `bubblewrap` layer namespaces (user, mount, UTS, IPC, net), dropped capabilities, and a [Landlock](https://docs.kernel.org/userspace-api/landlock.html) filesystem ruleset. `userns` additionally enforces a seccomp BPF deny-list for syscalls with no legitimate purpose in a sandbox.
 
-The remote default is `userns` rather than `bubblewrap` because `bwrap` isn't always present in minimal container images. They are equivalent in security posture; pick `bubblewrap` if you prefer its ruleset model or already rely on it.
+`bubblewrap` and `userns` are equivalent in security posture. The practical difference is the pod they need: `userns` runs anywhere (a vanilla unprivileged pod), while `bubblewrap` needs the pod to carry `CAP_SYS_ADMIN` + an unconfined AppArmor profile. The remote default is `userns` for that reason (`bwrap` also isn't always present in minimal images). Pick `bubblewrap` if you prefer its ruleset model or already rely on it.
+
+## Pod security for the bubblewrap backend
+
+`bubblewrap` runs as a **non-root** user via unprivileged user namespaces — it is not privileged. But the containerd default seccomp profile only permits the `mount` / `pivot_root` / `setns` / `unshare` syscalls `bwrap` needs when the container's capability set includes `CAP_SYS_ADMIN`, and the default AppArmor profile must be `unconfined` so those calls aren't blocked.
+
+`flyte.PodTemplate().allow_nested_sandboxing()` grants exactly that — `CAP_SYS_ADMIN` plus unconfined AppArmor, `allowPrivilegeEscalation: false`, and nothing else. How you apply it depends on the transport:
+
+- **On-device:** put it on the task that opens the session, since the sandbox child runs in that pod.
+
+  ```python
+  bwrap_env = flyte.TaskEnvironment(
+      name="sandboxed-task",
+      image=sb.base_sandbox_image,
+      pod_template=flyte.PodTemplate().allow_nested_sandboxing(),
+  )
+
+  @bwrap_env.task
+  async def main() -> str:
+      async with sb.on_device.session(backend="bubblewrap") as sbx:
+          ...
+  ```
+
+- **Remote:** the `SandboxEnvironment` derives the pod template from `sandbox_mode`/`sys_cap_admin` for you — `sandbox_mode="bwrap"` carries the grant automatically. See [Deployment](./deployment).
+
+The `userns` backend needs **none** of this — it runs in a vanilla pod. Choose `userns` to keep the pod's host attack surface minimal; choose `bubblewrap` (with the template) when you want its ruleset.
 
 ## Blast radius: why remote
 
 The backend constrains the sandboxed process. What an _escaping_ process can reach is determined by where the sandbox runs.
 
-> [!WARNING] A local sandbox shares the caller's container
-> A local sandbox runs inside the **same container as the code that launched it**. If the backend is breached, the escaping process can reach your **task's own code, mounted secrets, and service-account or cloud credentials**. The pod boundary is the only thing still containing it; unless the **task pod itself** runs under gVisor, that boundary is the host kernel.
+> [!WARNING] An on-device sandbox shares the caller's container
+> An on-device sandbox runs inside the **same container as the code that launched it**. If the backend is breached, the escaping process can reach your **task's own code, mounted secrets, and service-account or cloud credentials**. The pod boundary is the only thing still containing it; unless the **task pod itself** runs under gVisor, that boundary is the host kernel.
 >
-> Treat local as a dev-time convenience, not a production isolation boundary.
+> Treat on-device as a dev-time convenience, not a production isolation boundary.
 
 A remote sandbox runs in its own pod with:
 

@@ -61,7 +61,7 @@ Use this when full Python capabilities are required, including third-party packa
 {{< markdown >}}
 ### Interactive sandbox (session)
 
-A **live, multi-turn sandbox** via `unionai-sandbox` (`union.sandbox`). You open a session, send it many commands, watch state evolve on its filesystem, then close it. Network and filesystem posture are set per call, so the same session can isolate a tool call, then allow-list a `pip install`, then drop back to blocked.
+A **live, multi-turn sandbox** via `unionai-sandbox` (`union.sandbox`). You open a session, send it many commands, watch state evolve on its work dir, then close it. The session is like a long-lived machine: the work dir and a venv persist across calls, so `uv pip install` in one call is importable in the next. Network and filesystem posture are set per call, so the same session can isolate a tool call, then allow-list an install, then drop back to blocked.
 
 Use it for agent loops, REPL-style apps, and any workflow that runs a sequence of related commands rather than a single one-shot invocation. See [Interactive sandboxes](./interactive-sandboxes/_index) for the full guide.
 {{< /markdown >}}

@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Running commands
 
-Once you have an open session, everything below works the same whether you got it from `sb.local.session(...)` or `await sb.session(...)`. The `Session` API is identical across transports.
+Once you have an open session, everything below works the same whether you got it from `sb.on_device.session(...)` or `await sb.session(...)`. The `Session` API is identical across transports.
 
 ## Lifecycle
 
@@ -15,7 +15,7 @@ A session follows `open → run → close`. The recommended shape is an `async w
 ```python
 from union import sandbox as sb
 
-async with sb.local.session() as sbx:
+async with sb.on_device.session(backend="userns") as sbx:
     proc = await sbx.run("uname -a", stdout=True)
     out, _ = await proc.communicate_text()
 # session closed automatically here
@@ -24,7 +24,7 @@ async with sb.local.session() as sbx:
 You can also manage the lifetime yourself:
 
 ```python
-sbx = await sb.local.session().open()
+sbx = await sb.on_device.session(backend="userns").open()
 try:
     proc = await sbx.run("uname -a", stdout=True)
     out, _ = await proc.communicate_text()
@@ -97,20 +97,34 @@ proc.termination_reason  # "" on a clean exit, otherwise a reason string
 
 `script_type="shell"` (the default) runs `cmd` through the sandbox shell. `script_type="python"` runs `cmd` as a Python script in the sandbox's interpreter, which is cleaner for multi-line code:
 
-> [!NOTE] `python` vs `python3`, `pip` vs `python3 -m pip`
-> The remote sandbox image is based on `flyte.Image.from_debian_base()`, which ships both `python` and `pip` on PATH, so either form works there. The **local** transport runs against the **host's** Python, which on stock macOS has no `python` symlink and on uv-managed Pythons has no `pip` on PATH. If you're writing examples meant to run in either transport (or you don't know what's on the host), prefer `python3` and `python3 -m pip` for portability.
-
 ```python
 proc = await sbx.run(
     """
     import json, pathlib
-    data = json.loads(pathlib.Path("/tmp/my-job/in.json").read_text())
+    data = json.loads(pathlib.Path("in.json").read_text())  # under the work dir
     print(sum(data["values"]))
     """,
     script_type="python",
     stdout=True,
 )
 ```
+
+## Installing packages
+
+A session keeps **one venv on its work dir**, and every `run()` uses it. Installing is therefore just another `run()`: install in one call, import in the next, for the life of the session — like pip on a long-lived machine.
+
+```python
+async with await sb.session(
+    network_mode="allowlist", network_allowlist=sb.PYPI_HOSTS,
+) as sbx:
+    await sbx.run("uv pip install pandas")
+    await sbx.run("import pandas; print(pandas.__version__)", script_type="python")
+```
+
+The session venv is uv-managed and ships no `pip`, so install with **`uv pip install`** (not `pip`). It's a distinct environment from the owner interpreter — installs land in the session venv, never in the task's own Python. Installing needs egress to PyPI, so open the session with `network_mode="allowlist"` and `network_allowlist=sb.PYPI_HOSTS` (the `pypi.org` / `pythonhosted.org` hosts). See [Networking](./networking).
+
+> [!NOTE] Work dir persists, `/tmp` does not
+> The work dir is the session's persistent disk — files written there in one `run()` are visible to the next, and `cwd` defaults to it. The rest of the filesystem, **including `/tmp`**, is reset for every command. Keep state you need across calls in the work dir. See [Filesystem](./filesystem).
 
 ## Errors vs non-zero exits
 
