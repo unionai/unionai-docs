@@ -157,6 +157,22 @@ Manage users, roles, and policies for your Union cluster.
 
 {{< /grid >}}
 
+{{< markdown >}}
+
+## Cluster and workload management
+
+Stand up clusters and govern where your workloads run.
+
+{{< /markdown >}}
+
+{{< grid >}}
+
+{{< link-card target="cluster-workload-management" icon="cloud" title="Clusters and queues" >}}
+Group clusters into pools, register clusters, and create queues that route and rate-limit your workloads.
+{{< /link-card >}}
+
+{{< /grid >}}
+
 {{< /variant >}}
 
 ## Advanced Guides
