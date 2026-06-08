@@ -101,6 +101,46 @@ flyte edit settings --domain production --from-file settings.yaml
 
 The file should be a plain YAML mapping of dot-notation keys to values. Changes are printed and applied immediately without a confirmation prompt.
 
+## Editing settings from Python
+
+The same scopes can be read and written from Python with `flyte.remote.Settings` — useful for scripted setup, audits, or wiring configuration into your own tooling. Fetch a scope with `get_settings_for_edit()`, inspect its values, then write them back with `update_settings()`.
+
+```python
+import flyte.remote as remote
+
+# Fetch a scope. With no arguments you get the org scope; pass `domain`,
+# or `domain` and `project`, to narrow it.
+settings = remote.Settings.get_settings_for_edit(domain="production", project="ml-pipeline")
+
+# Effective settings: every key resolved through inheritance, each tagged
+# with the scope it came from (ORG, DOMAIN, or PROJECT).
+for s in settings.effective_settings:
+    print(s.key, "=", s.value, "from", s.origin)
+
+# Local settings: only the keys explicitly overridden at *this* scope.
+for s in settings.local_settings:
+    print(s.key, "=", s.value)
+
+# Every settable key, in dot notation:
+print(remote.Settings.available_keys())
+```
+
+If you want plain dictionaries instead of the origin-annotated objects, `settings.effective_values()` and `settings.local_overrides()` each return a `{key: value}` mapping.
+
+To change settings, pass a mapping of dot-notation keys to `update_settings()`:
+
+```python
+settings.update_settings({
+    "run.default_queue": "fast-queue",
+    "task_resource.min.cpu": "2",
+})
+```
+
+`update_settings()` **replaces the complete set of local overrides** for the scope the object was fetched for: keys you include are set locally, and any key you omit reverts to inheriting from the parent scope. The call uses optimistic locking against the version returned by `get_settings_for_edit()` — if another writer changed the same scope in between, re-fetch the scope and re-apply. To explicitly clear a value so it blocks parent inheritance (rather than reverting to it), use the `~unset` token in the `flyte edit settings` editor described above.
+
+> [!NOTE]
+> Treat `available_keys()` as the source of truth for which keys are settable on your version — the set grows over time, so prefer it over hardcoding key names.
+
 ## Available settings
 
 | Key | Type | Description |
