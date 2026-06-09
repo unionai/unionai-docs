@@ -1,6 +1,6 @@
 ---
 title: MemoryStore
-version: 2.4.0
+version: 2.4.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,13 +21,14 @@ The construct combines two complementary stores:
   :meth:`read_json` / :meth:`list_paths` for arbitrary named blobs that
   should round-trip through Flyte object storage.
 
-Persistence is :class:`flyte.io.Dir`-backed. For durable agent memories,
-prefer :meth:`create` or :meth:`get_or_create`; keyed stores save to a
-deterministic blob-store namespace under the active Flyte raw-data bucket.
-Lower-level callers can still call :meth:`save` directly to persist the
-working root. :meth:`create`, :meth:`get_or_create`, and :meth:`save` are
-sync-by-default (``MemoryStore.create(...)``) with an ``.aio(...)`` companion
-for async call sites, mirroring the rest of the Flyte SDK.
+Persistence is :class:`flyte.io.Dir`-backed. Obtain a store via
+:meth:`create` or :meth:`get_or_create`; it saves to a deterministic
+blob-store namespace under the active Flyte raw-data bucket, derived from
+its ``key``. :meth:`save` always targets that deterministic
+:attr:`remote_path`. :meth:`create`, :meth:`get_or_create`, and
+:meth:`save` are sync-by-default (``MemoryStore.create(...)``) with an
+``.aio(...)`` companion for async call sites, mirroring the rest of the
+Flyte SDK.
 
 The on-disk layout under ``root`` looks like::
 
@@ -58,8 +59,17 @@ companion that runs the same logic on the calling thread; the async
 version simply dispatches the sync version to a background thread via
 :func:`asyncio.to_thread`.
 
+Every :class:`MemoryStore` is **keyed**: it is bound to a deterministic
+blob-store namespace derived from its ``key``. Obtain one via
+:meth:`create` or :meth:`get_or_create` (the recommended entry points);
+direct construction is supported for serialization / advanced use but still
+requires a ``key``. There is no such thing as an unkeyed / ephemeral store.
+
 Parameters
 ----------
+key:
+    Deterministic memory key (a single path segment). Determines the
+    durable :attr:`remote_path` under the active raw-data root.
 messages:
     Pre-existing conversation transcript. Defaults to empty.
 root:
@@ -67,11 +77,12 @@ root:
     temporary directory is created (and automatically cleaned up when
     the :class:`MemoryStore` is garbage-collected). When pointing at an
     existing directory that contains ``messages.json``, the transcript
-    is auto-loaded.
-key:
-    Optional deterministic memory key. Usually set by :meth:`create` or
-    :meth:`get_or_create`; keyed stores save back to their computed
-    ``remote_path`` unless explicitly reloaded without a key.
+    is auto-loaded. This is an internal staging directory; callers
+    normally never set it.
+remote_path:
+    Durable destination for :meth:`save`. Usually resolved from ``key``
+    (and the Flyte context) by :meth:`create` / :meth:`get_or_create`;
+    when omitted it is resolved lazily on first :meth:`save` / hydration.
 read_only_prefixes:
     Prefixes that direct writes are not permitted to target.
 audit:
@@ -84,9 +95,9 @@ keep_versions:
 
 ```python
 class MemoryStore(
+    key: str,
     messages: list[dict[str, Any]],
     root: pathlib.Path | str | None,
-    key: str | None,
     remote_path: str | None,
     read_only_prefixes: tuple[str, ...],
     audit: bool,
@@ -95,9 +106,9 @@ class MemoryStore(
 ```
 | Parameter | Type | Description |
 |-|-|-|
+| `key` | `str` | |
 | `messages` | `list[dict[str, Any]]` | |
 | `root` | `pathlib.Path \| str \| None` | |
-| `key` | `str \| None` | |
 | `remote_path` | `str \| None` | |
 | `read_only_prefixes` | `tuple[str, ...]` | |
 | `audit` | `bool` | |
@@ -122,7 +133,7 @@ class MemoryStore(
 | [`read_json()`](#read_json) | Return the JSON-decoded contents of ``rel_path`` (or ``default`` if empty/missing). |
 | [`read_text()`](#read_text) | Return the UTF-8 contents of ``rel_path`` (or ``default`` if missing). |
 | [`remote_path_for_key()`](#remote_path_for_key) | Return the deterministic blob-store path for a keyed memory store. |
-| [`save()`](#save) | Serialize this memory to a remote directory. |
+| [`save()`](#save) | Serialize this memory to its deterministic keyed remote path. |
 | [`write_json()`](#write_json) | JSON-encode ``obj`` and write it via :meth:`write_text`. |
 | [`write_text()`](#write_text) | Write ``content`` to ``rel_path`` with optional concurrency + audit + versioning. |
 
@@ -438,23 +449,18 @@ The ``agents/memory-store`` prefix and ``v0`` version come from
 > To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
 > `result = await <MemoryStore instance>.save.aio()`.
 ```python
-def save(
-    remote_destination: str | None,
-) -> Dir
+def save()
 ```
-Serialize this memory to a remote directory.
+Serialize this memory to its deterministic keyed remote path.
 
 Call synchronously via ``memory.save(...)``; in async contexts use
 ``memory.save.aio(...)``.
 
 Flushes the conversation transcript to ``messages.json`` under the working
 root, then uploads the whole root (live files plus audit log, metadata
-sidecars, and any version snapshots) to ``remote_destination``.
+sidecars, and any version snapshots) to :attr:`remote_path` (resolved
+from :attr:`key` if not already set).
 
-
-| Parameter | Type | Description |
-|-|-|-|
-| `remote_destination` | `str \| None` | |
 
 ### write_json()
 

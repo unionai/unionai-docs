@@ -1,6 +1,6 @@
 ---
 title: AgentResult
-version: 2.4.0
+version: 2.4.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,6 +21,7 @@ class AgentResult(
     summary: str,
     error: str,
     attempts: int,
+    memory: 'MemoryStore | None',
 )
 ```
 | Parameter | Type | Description |
@@ -30,4 +31,5 @@ class AgentResult(
 | `summary` | `str` | |
 | `error` | `str` | |
 | `attempts` | `int` | |
+| `memory` | `'MemoryStore \| None'` | |
 
