@@ -47,7 +47,8 @@ There are three broad approaches to sandboxing LLM-generated code, each with dif
 
 ### Workflow sandbox (Monty)
 
-A **sandboxed orchestrator** built on [Monty](https://github.com/pydantic/pydantic-monty), a Rust-based sandboxed Python interpreter. The sandbox starts in microseconds, runs pure Python control flow, and dispatches heavy work to full container tasks through the Flyte controller.
+A **sandboxed orchestrator** built on [Monty](https://github.com/pydantic/monty), a Rust-based sandboxed Python interpreter.
+The sandbox starts in microseconds, runs pure Python control flow, and dispatches heavy work to full container tasks through the Flyte controller.
 
 This is how you safely run the **programmatic tool calling** (a.k.a. code mode) pattern: an LLM generates Python that calls a known set of tools, and Flyte executes the orchestration with full durability, observability and type checking. Use it when the thing you need to sandbox is the control flow.
 
