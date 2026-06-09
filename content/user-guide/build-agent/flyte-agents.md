@@ -39,7 +39,7 @@ flowchart TB
 
     user(["user message"]) --> llm
     agent --> llm
-    done --> result(["AgentResult<br/>+ persisted memory"])
+    done --> result(["AgentResult<br/>+ updated memory"])
 ```
 
 The call returns an `AgentResult` with the final `summary`, an `error` string (empty on success), and the number of `attempts` (turns) taken.
@@ -105,6 +105,19 @@ async def issue_refund(order_id: str, amount_usd: float) -> dict:
 ```
 
 When the LLM tries to call a tool marked `requires_approval=True`, the harness invokes the agent's `approval_callback` and waits for a boolean decision before executing. The default callback raises a human-input request via the `flyteplugins-hitl` plugin and blocks until a human approves or denies. If denied, the agent receives a synthetic tool message explaining the rejection so it can recover gracefully.
+
+Pass `call_handler` to intercept *how* a tool is invoked. The handler is an async callback `(call_llm, tool_fn, **kwargs) -> result` that runs in place of the default execution. Await `tool_fn` to run the default behavior, or reach into `tool_fn.target` (the underlying task / callable) and `call_llm` (the agent's LLM callback) to do something custom — for example, ask the LLM how to size compute, then run the task with overridden resources and retry on OOM:
+
+```python
+async def right_size(call_llm, tool_fn, **kwargs):
+    resources = await _ask_llm_for_resources(call_llm, tool_fn, kwargs)
+    return await tool_fn.target.override(resources=resources).aio(**kwargs)
+
+
+@tool(call_handler=right_size)
+@env.task
+async def train(...): ...
+```
 
 ## MCP integration
 
@@ -199,11 +212,12 @@ Because `GuardedAgent` still subclasses `Agent`, every other feature — tools, 
 
 ### Strategy 2: implement `run` from scratch
 
-If you want a completely custom loop, implement the `AgentProtocol`: a class exposing `run(message, history) -> AgentResult` and `tool_descriptions() -> list[dict]`. Any object satisfying this protocol can be used anywhere the harness is accepted, including the [chat UI](./agent-chat-ui).
+If you want a completely custom loop, implement the `AgentProtocol`: a class exposing `run(message, memory) -> AgentResult` and `tool_descriptions() -> list[dict]`. Any object satisfying this protocol can be used anywhere the harness is accepted, including the [chat UI](./agent-chat-ui). `memory` may be a `list[dict]` of prior messages (a chat history) or a `MemoryStore`.
 
 ```python
 from __future__ import annotations
 
+from flyte.ai.agents import MemoryStore
 from flyte.ai.agents.protocol import AgentResult
 from flyte.syncify import syncify
 
@@ -215,9 +229,10 @@ class MyCustomAgent:
         self._tools = tools
 
     @syncify
-    async def run(self, message: str, history: list[dict] | None = None) -> AgentResult:
+    async def run(self, message: str, memory: list[dict] | MemoryStore | None = None) -> AgentResult:
         # Your own control flow: reasoning, routing, tool calls, retries, etc.
-        answer = await self._my_loop(message, history or [])
+        prior = memory.messages if isinstance(memory, MemoryStore) else (memory or [])
+        answer = await self._my_loop(message, prior)
         return AgentResult(summary=answer)
 
     def tool_descriptions(self) -> list[dict[str, str]]:
