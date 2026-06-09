@@ -1,6 +1,5 @@
 ---
 title: Security
-description: Union.ai's Zero Trust Security model — two-plane separation, an outbound-only network architecture, and the Sovereign Data Plane, with concrete verification steps for each claim.
 weight: 6
 variants: -flyte +union
 top_menu: true
