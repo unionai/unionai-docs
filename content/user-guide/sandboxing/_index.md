@@ -47,7 +47,7 @@ Flyte provides two complementary sandboxing approaches:
 
 ### Workflow sandbox (Monty)
 
-A **sandboxed orchestrator** built on [Monty](https://github.com/pydantic/pydantic-monty), a Rust-based sandboxed Python interpreter.
+A **sandboxed orchestrator** built on [Monty](https://github.com/pydantic/monty), a Rust-based sandboxed Python interpreter.
 The sandbox starts in microseconds, runs pure Python control flow, and dispatches heavy work to full container tasks through the Flyte controller.
 
 This enables the **programmatic tool calling** pattern (also known as code mode): LLMs generate Python orchestration code that invokes registered tools, and Flyte executes it safely with full durability, observability, and type checking.
