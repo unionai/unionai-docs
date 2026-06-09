@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.snowflake
-version: 2.4.0
+version: 2.4.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     # Run locally (connector runs in-process, requires credentials and packages locally)
     run = flyte.with_runcontext(mode="local").run(count_users)
 
-    # Run remotely (connector runs on the control plane)
+    # Run remotely (connector runs as a service in your data plane)
     run = flyte.with_runcontext(mode="remote").run(count_users)
 
     print(run.url)

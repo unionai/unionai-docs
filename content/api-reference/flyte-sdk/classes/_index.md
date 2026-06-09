@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.4.0
+version: 2.4.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -33,16 +33,15 @@ layout: py_api
 | [`flyte.ai.agents.AgentEvent`](../packages/flyte.ai.agents/agentevent) |Lightweight event emitted by the agent loop. |
 | [`flyte.ai.agents.AgentResult`](../packages/flyte.ai.agents/agentresult) |Outcome of a single agent invocation. |
 | [`flyte.ai.agents.AgentTool`](../packages/flyte.ai.agents/agenttool) |A normalized tool descriptor used by :class:`Agent`. |
-| [`flyte.ai.agents.CodeModeAgent`](../packages/flyte.ai.agents/codemodeagent) |Generates code via an LLM, executes it in a Monty sandbox, and. |
 | [`flyte.ai.agents.ConcurrencyError`](../packages/flyte.ai.agents/concurrencyerror) |Raised when an ``expected_sha`` precondition does not match the current state. |
 | [`flyte.ai.agents.LLMMessage`](../packages/flyte.ai.agents/llmmessage) |Provider-agnostic shape returned by :data:`LLMCallable`. |
 | [`flyte.ai.agents.MCPServerSpec`](../packages/flyte.ai.agents/mcpserverspec) |Declarative spec for a remote MCP server that exposes tools. |
 | [`flyte.ai.agents.MemoryMeta`](../packages/flyte.ai.agents/memorymeta) |Per-file metadata sidecar (sha256, actor, timestamp, …) for a memory entry. |
 | [`flyte.ai.agents.MemoryStore`](../packages/flyte.ai.agents/memorystore) |Conversation transcript + path-addressed artifact memory backed by :class:`flyte. |
 | [`flyte.ai.agents.MemoryStoreError`](../packages/flyte.ai.agents/memorystoreerror) |Base class for :class:`MemoryStore` errors. |
+| [`flyte.ai.agents.ToolFn`](../packages/flyte.ai.agents/toolfn) |The tool under invocation, handed to a :data:`ToolCallHandler`. |
 | [`flyte.ai.agents.agent.Agent`](../packages/flyte.ai.agents.agent/agent) |A flyte-native tool-use agent harness. |
 | [`flyte.ai.agents.agent.AgentEvent`](../packages/flyte.ai.agents.agent/agentevent) |Lightweight event emitted by the agent loop. |
-| [`flyte.ai.agents.codemode.CodeModeAgent`](../packages/flyte.ai.agents.codemode/codemodeagent) |Generates code via an LLM, executes it in a Monty sandbox, and. |
 | [`flyte.ai.agents.memory.AccessDenied`](../packages/flyte.ai.agents.memory/accessdenied) |Raised when a write targets a read-only or reserved prefix. |
 | [`flyte.ai.agents.memory.ConcurrencyError`](../packages/flyte.ai.agents.memory/concurrencyerror) |Raised when an ``expected_sha`` precondition does not match the current state. |
 | [`flyte.ai.agents.memory.MemoryMeta`](../packages/flyte.ai.agents.memory/memorymeta) |Per-file metadata sidecar (sha256, actor, timestamp, …) for a memory entry. |
