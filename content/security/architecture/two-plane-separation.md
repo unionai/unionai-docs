@@ -8,11 +8,13 @@ variants: -flyte +union
 
 Union.ai's architecture is divided into two distinct planes: a **control plane** hosted by Union.ai on AWS, and a **data plane** that runs on the customer's own Kubernetes cluster within their cloud account.
 
+Two-plane separation is the structural foundation of Union.ai's **Zero-trust security** model: because the control plane never holds customer data, code, or logs, there is no implicit trust to exploit even if the control plane were fully compromised.
+
 ## Control plane
 
 The control plane handles workflow orchestration, user management, and the web interface. It stores only the metadata required for these functions; bulk customer data payloads are stored as URI references rather than inline. See [Control plane](./control-plane) for components and infrastructure.
 
-> **No customer data, code, or logs ever touch Union.ai's control plane. Not in flight. Not at rest. Not ever.**
+> **Zero-trust, in one line:** No customer data, code, or logs ever touch Union.ai's control plane. Not in flight. Not at rest. Not ever.
 
 ## Data plane
 
