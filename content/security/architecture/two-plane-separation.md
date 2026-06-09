@@ -14,7 +14,7 @@ Two-plane separation is the structural foundation of Union.ai's **Zero Trust Sec
 
 The control plane handles workflow orchestration, user management, and the web interface. It stores only the metadata required for these functions; bulk customer data payloads are stored as URI references rather than inline. See [Control plane](./control-plane) for components and infrastructure.
 
-> **No customer data, code, or logs ever touch Union.ai's control plane. Not in flight. Not at rest. Not ever.**
+> **Zero Trust, in one line:** No customer data, code, or logs ever touch Union.ai's control plane. Not in flight. Not at rest. Not ever.
 
 ## Data plane
 
