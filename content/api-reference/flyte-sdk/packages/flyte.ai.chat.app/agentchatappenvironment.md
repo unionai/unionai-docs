@@ -1,6 +1,6 @@
 ---
 title: AgentChatAppEnvironment
-version: 2.4.0
+version: 2.4.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -49,8 +49,8 @@ passthrough_auth:
     When ``True``, the FastAPI app initializes ``flyte.init_passthrough`` at
     startup and adds ``FastAPIPassthroughAuthMiddleware`` so incoming
     ``Authorization`` / cookie headers are forwarded to Flyte remote calls.
-    Enable this when using ``CodeModeAgent`` with ``@env.task`` tools —
-    nested task execution needs caller credentials (same pattern as
+    Enable this when using an agent with ``@env.task`` tools — nested task
+    execution needs caller credentials (same pattern as
     ``FlyteWebhookAppEnvironment``).
 passthrough_auth_excluded_paths:
     Paths skipped by passthrough middleware. When omitted, defaults include
@@ -63,11 +63,11 @@ task_entrypoint:
 
     When set, ``/api/chat`` calls the task (via ``flyte.run.aio``) instead
     of calling ``agent.run`` directly. This is useful for agents whose tool
-    calls must run under a parent task context (e.g. a ``CodeModeAgent``
-    using durable ``@env.task`` tools). When streaming chat
+    calls must run under a parent task context (e.g. an ``Agent`` in
+    ``code_mode`` using durable ``@env.task`` tools). When streaming chat
     (``stream: true``), progress lines use :meth:`~flyte.remote.Run.watch`
     on the returned run (first ``RUNNING`` → ``generating_code``, next →
-    ``executing``). Fine-grained codemode phases still require
+    ``executing``). Fine-grained per-turn phases still require
     ``agent.run`` in the web process, or future worker-side signaling.
 
     The entrypoint may accept either:

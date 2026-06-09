@@ -1,6 +1,6 @@
 ---
 title: Role
-version: 0.3.0
+version: 0.4.0
 variants: +flyte +union
 layout: py_api
 ---
