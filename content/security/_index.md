@@ -1,16 +1,17 @@
 ---
-title: Security
+title: Zero-trust security
 weight: 6
 variants: -flyte +union
 top_menu: true
 ---
 
-# Security
+# Zero-trust security
 
-This section provides a comprehensive overview of Union.ai's security architecture, practices, and compliance posture for enterprise security professionals evaluating the platform.
-Beyond describing the security model, it provides concrete verification steps so that reviewers can independently confirm each claim against a running system.
+Union.ai is built on a **Zero-trust security** model: no component is trusted by default, every request is authenticated and authorized, and customer data, code, and secrets never leave the customer's own data plane.
+This section provides a comprehensive overview of that model — Union.ai's security architecture, practices, and compliance posture — for enterprise security professionals evaluating the platform.
+Beyond describing the model, it provides concrete verification steps so that reviewers can independently confirm each claim against a running system.
 
-> **No customer data, code, or logs ever touch Union.ai's control plane. Not in flight. Not at rest. Not ever.**
+> **Zero-trust, in one line:** No customer data, code, or logs ever touch Union.ai's control plane. Not in flight. Not at rest. Not ever.
 
 ## Overview
 
