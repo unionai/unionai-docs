@@ -33,15 +33,15 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
 
    ```bash
    uctl config init --host=<ORG_NAME>.union.ai
-   uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider metal
+   uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider custom
    ```
 
    * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
-     It will also generate a YAML values file specific to the `metal` provider.
+     It will also generate a YAML values file specific to the `custom` provider.
 
    * Save the secret that is displayed. Union does not store the credentials; rerunning the same command can be used to retrieve the secret later.
 
-   We use `--provider metal` for Crusoe because the Union operator treats Crusoe as a generic S3-compatible / Kubernetes environment rather than a first-class cloud provider integration (like AWS/GCP/Azure).
+   We use `--provider custom` for Crusoe because the Union operator treats Crusoe as a generic S3-compatible / Kubernetes environment rather than a first-class cloud provider integration (like AWS/GCP/Azure).
 
 3. Update the generated values file with your Crusoe-specific storage configuration. Replace the placeholders with your actual credentials and settings.
 
@@ -49,7 +49,7 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
    host: <ORG_NAME>.union.ai
    clusterName: <CLUSTER_NAME>
    orgName: <ORG_NAME>
-   provider: metal
+   provider: custom
 
    storage:
      provider: custom
