@@ -7,7 +7,7 @@ sidebar_expanded: true
 
 # Architecture
 
-Union.ai's security architecture rests on a foundational division between the Union.ai-hosted control plane, which orchestrates execution, and the customer-hosted data plane, where all computation occurs and all customer data resides. The data plane initiates all communication with the control plane over an outbound-only channel, requiring no inbound firewall rules on the customer side.
+Union.ai's **Zero Trust Security** architecture rests on a foundational division between the Union.ai-hosted control plane, which orchestrates execution, and the customer-hosted data plane, where all computation occurs and all customer data resides. Under this model nothing is trusted implicitly: the data plane initiates all communication with the control plane over an outbound-only channel, requiring no inbound firewall rules on the customer side, and every customer-data request is authenticated and authorized at an Envoy router inside the customer's cluster.
 
 In the BYOC model, Union.ai manages the data plane over a private connection. In the self-managed model, the customer manages the data plane themselves. In both cases, the same security controls apply, and the same [data residency guarantees](../data-protection/classification-and-residency) hold.
 
