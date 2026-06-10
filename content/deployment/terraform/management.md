@@ -225,7 +225,7 @@ data "unionai_application" "existing" {
 }
 ```
 
-### Data Plane Information
+### Data plane information
 
 Query information about the data plane:
 
@@ -235,7 +235,7 @@ data "unionai_dataplane" "current" {
 }
 ```
 
-### Control Plane Information
+### Control plane information
 
 Access control plane details:
 
@@ -245,7 +245,7 @@ data "unionai_controlplane" "current" {
 }
 ```
 
-### Data Plane Listings
+### Data plane listings
 
 List all available data planes:
 

@@ -44,10 +44,10 @@ All communication paths in the system use encryption. No unencrypted communicati
 
 | Path | Protocol | Encryption |
 |---|---|---|
-| Client to Control Plane (orchestration API) | HTTPS | TLS 1.2+ |
-| Client to Data Plane (customer-data requests, default tier) | Direct-to-Data-Plane tunnel | TLS 1.3 + mTLS |
-| Client to Data Plane (customer-data requests, Sovereign Data Plane tier) | Customer-managed internal LB (corporate VPN) | TLS (customer-managed) |
-| Data Plane → Control Plane (orchestration metadata, outbound-initiated) | gRPC over TLS | TLS 1.2+ |
+| Client to control plane (orchestration API) | HTTPS | TLS 1.2+ |
+| Client to data plane (customer-data requests, default tier) | Direct-to-Data-Plane tunnel | TLS 1.3 + mTLS |
+| Client to data plane (customer-data requests, Sovereign Data Plane tier) | Customer-managed internal LB (corporate VPN) | TLS (customer-managed) |
+| Data plane → control plane (orchestration metadata, outbound-initiated) | gRPC over TLS | TLS 1.2+ |
 | Client to Object Store | HTTPS (presigned URL) | TLS 1.2+ (cloud provider enforced) |
 | Fluent Bit to Log Aggregator | Cloud provider SDK | TLS (cloud-native) |
 | Task Pods to Object Store | Cloud provider SDK | TLS (cloud-native) |
