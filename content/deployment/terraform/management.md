@@ -1,16 +1,16 @@
 ---
-title: Resource Management
+title: Resource management
 weight: 2
 variants: -flyte +union
 ---
 
-# Managing Union Resources with Terraform
+# Managing Union resources with Terraform
 
 The Union Terraform provider enables you to manage Union resources using infrastructure-as-code principles. This page provides an overview of the provider's capabilities, including authentication, available resources, and data sources.
 
-## Provider Configuration
+## Provider configuration
 
-### Basic Configuration
+### Basic configuration
 
 Configure the Union provider in your Terraform configuration:
 
@@ -30,7 +30,7 @@ provider "unionai" {
 }
 ```
 
-### Configuration Parameters
+### Configuration parameters
 
 - **`api_key`** (Required): Your Union API key for authentication
 - **`allowed_orgs`** (Optional): List of organization names to restrict operations to, preventing unintended operations across multiple organizations
@@ -39,7 +39,7 @@ provider "unionai" {
 
 The Union Terraform provider uses API key authentication. You can provide your API key in two ways:
 
-### 1. Provider Configuration
+### 1. Provider configuration
 
 Specify the API key directly in the provider block (use variables to avoid hardcoding):
 
@@ -49,7 +49,7 @@ provider "unionai" {
 }
 ```
 
-### 2. Environment Variable
+### 2. Environment variable
 
 Set the `UNIONAI_API_KEY` environment variable:
 
@@ -57,7 +57,7 @@ Set the `UNIONAI_API_KEY` environment variable:
 export UNIONAI_API_KEY="your-api-key"
 ```
 
-### Generating an API Key
+### Generating an API key
 
 Create an API key using the Flyte CLI:
 
@@ -69,7 +69,7 @@ For more information on creating API keys, see the [Flyte CLI documentation](../
 
 Save the generated key securely, as it will be used to authenticate all Terraform operations against your Union deployment.
 
-## Available Resources
+## Available resources
 
 The Union Terraform provider supports the following resources for managing your Union deployment:
 
@@ -121,7 +121,7 @@ resource "unionai_policy" "example" {
 }
 ```
 
-### API Keys
+### API keys
 
 Generate and manage API keys programmatically:
 
@@ -132,7 +132,7 @@ resource "unionai_api_key" "example" {
 }
 ```
 
-### OAuth Applications
+### OAuth applications
 
 Configure OAuth applications for external integrations:
 
@@ -143,7 +143,7 @@ resource "unionai_oauth_application" "example" {
 }
 ```
 
-### Access Assignments
+### Access assignments
 
 Assign users and applications to resources with specific roles:
 
@@ -161,7 +161,7 @@ resource "unionai_application_access" "example" {
 }
 ```
 
-## Available Data Sources
+## Available data sources
 
 Data sources allow you to query existing Union resources for use in your Terraform configuration.
 
@@ -205,7 +205,7 @@ data "unionai_policy" "existing" {
 }
 ```
 
-### API Keys
+### API keys
 
 Reference existing API keys:
 
@@ -255,9 +255,9 @@ data "unionai_dataplanes" "all" {
 }
 ```
 
-## Best Practices
+## Best practices
 
-### Use Variables for Sensitive Data
+### Use variables for sensitive data
 
 Never hardcode sensitive information like API keys in your Terraform files:
 
@@ -273,7 +273,7 @@ provider "unionai" {
 }
 ```
 
-### Organize Resources with Modules
+### Organize resources with modules
 
 Structure your Terraform code using modules for reusability:
 
@@ -291,7 +291,7 @@ terraform/
 └── main.tf
 ```
 
-### Use Organization Restrictions
+### Use organization restrictions
 
 Prevent accidental operations across multiple organizations:
 
@@ -302,7 +302,7 @@ provider "unionai" {
 }
 ```
 
-### Version Control Your Configuration
+### Version control your configuration
 
 Store your Terraform configuration in version control to track changes over time, but ensure sensitive files are excluded:
 
@@ -314,7 +314,7 @@ Store your Terraform configuration in version control to track changes over time
 .terraform/
 ```
 
-### Use Remote State
+### Use remote state
 
 For team environments, use remote state storage:
 
@@ -328,7 +328,7 @@ terraform {
 }
 ```
 
-## Example: Complete Setup
+## Example: complete setup
 
 Here's a complete example that creates a project with access control:
 
@@ -380,7 +380,7 @@ resource "unionai_api_key" "ci_cd" {
 }
 ```
 
-## Additional Resources
+## Additional resources
 
 - [Union Terraform Provider Documentation](https://registry.terraform.io/providers/unionai/unionai/latest/docs)
 - [Terraform Documentation](https://www.terraform.io/docs)
@@ -392,6 +392,6 @@ resource "unionai_api_key" "ci_cd" {
 - **Union API Key**: Generated via Flyte CLI
 - **Go**: >= 1.24 (for development only)
 
-## Support and Contributions
+## Support and contributions
 
 The Union Terraform provider is open source and licensed under the Mozilla Public License 2.0. For the complete provider documentation, visit the [Terraform Registry](https://registry.terraform.io/providers/unionai/unionai/latest/docs).
