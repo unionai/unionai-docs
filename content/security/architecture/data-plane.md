@@ -13,7 +13,7 @@ The data plane runs entirely within the customer's cloud account on a Kubernetes
 
 The data plane consists of several components, each handling a specific aspect of task execution and data management.
 
-**Envoy router** is the AuthN/AuthZ enforcement point that fronts every customer-data request entering the cluster. Under the default tier, it sits at the egress of the Direct-to-DataPlane tunnel; under the [Sovereign Data Plane](./sovereign-data-plane) tier, it sits behind the customer-managed internal load balancer. In either case, every request is authenticated against the requester's Union.ai identity and evaluated against the RBAC policy *inside the customer's cluster* before forwarding to the `dataproxy` service. The Union.ai control plane is not on the path.
+**Envoy router** is the AuthN/AuthZ enforcement point that fronts every customer-data request entering the cluster. Under the default tier, it sits at the egress of the Direct-to-Data-Plane tunnel; under the [Sovereign Data Plane](./sovereign-data-plane) tier, it sits behind the customer-managed internal load balancer. In either case, every request is authenticated against the requester's Union.ai identity and evaluated against the RBAC policy *inside the customer's cluster* before forwarding to the `dataproxy` service. The Union.ai control plane is not on the path.
 
 **Dataproxy service** is the single endpoint for every customer-data request. It handles:
 
@@ -27,7 +27,7 @@ The data plane consists of several components, each handling a specific aspect o
 
 **Image Builder** uses Buildkit running on the customer's Kubernetes cluster to build container images from user-submitted `Image` specifications. Source code and built images never leave the customer's infrastructure. Base images are pulled from customer-configured registries, and built images are pushed to the customer's container registry (ECR, GCR, or ACR).
 
-**Tunnel Service** maintains the outbound-only encrypted Direct-to-DataPlane tunnel (a Cloudflare Tunnel under the hood) from the data plane to the Cloudflare edge under the default tier. This service initiates the tunnel (no inbound ports required), performs health checks and heartbeats, and automatically reconnects if the connection drops. Under the [Sovereign Data Plane](./sovereign-data-plane) tier, the Tunnel Service is replaced by a customer-managed internal load balancer that fronts the Envoy router; the rest of the data-plane components are identical.
+**Tunnel Service** maintains the outbound-only encrypted Direct-to-Data-Plane tunnel (a Cloudflare Tunnel under the hood) from the data plane to the Cloudflare edge under the default tier. This service initiates the tunnel (no inbound ports required), performs health checks and heartbeats, and automatically reconnects if the connection drops. Under the [Sovereign Data Plane](./sovereign-data-plane) tier, the Tunnel Service is replaced by a customer-managed internal load balancer that fronts the Envoy router; the rest of the data-plane components are identical.
 
 In addition to the client-to-data-plane path, the data plane operator establishes a separate outbound gRPC connection (TLS) to the regional control plane endpoint for orchestration RPCs (cluster registration, action lifecycle, event reporting, catalog and artifact lookups, admin RPCs). This channel is outbound-initiated under both tiers and carries no customer data. See [Network architecture](./network) for the channel details.
 

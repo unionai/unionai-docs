@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Secrets management
 
-Union.ai's secrets management system stores secret values exclusively within the customer's infrastructure and exposes them through a write-only API: there is no endpoint that returns a secret value. The `GetSecret` RPC returns only metadata (name, scope, creation time, cluster presence status); Get, List, and Delete operations never expose the value. Secret writes go directly to the data plane through the Direct-to-DataPlane tunnel, so secret values never transit the control plane. Compromising a user account or the control plane API yields no path to read secret values back.
+Union.ai's secrets management system stores secret values exclusively within the customer's infrastructure and exposes them through a write-only API: there is no endpoint that returns a secret value. The `GetSecret` RPC returns only metadata (name, scope, creation time, cluster presence status); Get, List, and Delete operations never expose the value. Secret writes go directly to the data plane through the Direct-to-Data-Plane tunnel, so secret values never transit the control plane. Compromising a user account or the control plane API yields no path to read secret values back.
 
 ## Backends
 
@@ -21,7 +21,7 @@ All four backends are available regardless of deployment model. The choice of ba
 
 ## Secret lifecycle
 
-**Creation:** When a user creates a secret via the UI or CLI, the value is sent directly to the data plane's secrets backend over the client-to-data-plane channel -- the Direct-to-DataPlane tunnel under the default tier, or the customer-managed internal load balancer under the [Sovereign Data Plane](../architecture/sovereign-data-plane) tier -- and stored encrypted at rest in the customer's secret manager (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or K8s Secrets). The value never enters Union.ai's control plane in any form. The Envoy router inside the customer's cluster authenticates the request against Union.ai identity and enforces RBAC before the value reaches the secrets backend.
+**Creation:** When a user creates a secret via the UI or CLI, the value is sent directly to the data plane's secrets backend over the client-to-data-plane channel -- the Direct-to-Data-Plane tunnel under the default tier, or the customer-managed internal load balancer under the [Sovereign Data Plane](../architecture/sovereign-data-plane) tier -- and stored encrypted at rest in the customer's secret manager (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or K8s Secrets). The value never enters Union.ai's control plane in any form. The Envoy router inside the customer's cluster authenticates the request against Union.ai identity and enforces RBAC before the value reaches the secrets backend.
 
 | Phase | Encrypted? | Details |
 |-------|------------|---------|
@@ -68,7 +68,7 @@ This verification is fully self-service and works immediately. Note that the wri
 
 ### Secret lifecycle
 
-**Reviewer focus:** Confirm that secret values are written directly to the data plane backend through the Direct-to-DataPlane tunnel without traversing the control plane, and are consumed entirely within the data plane at runtime.
+**Reviewer focus:** Confirm that secret values are written directly to the data plane backend through the Direct-to-Data-Plane tunnel without traversing the control plane, and are consumed entirely within the data plane at runtime.
 
 **How to verify:**
 

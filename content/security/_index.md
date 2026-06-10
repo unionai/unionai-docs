@@ -1,17 +1,17 @@
 ---
-title: Zero-trust security
+title: Zero Trust security
 weight: 6
 variants: -flyte +union
 top_menu: true
 ---
 
-# Zero-trust security
+# Zero Trust security
 
-Union.ai is built on a **Zero-trust security** model: no component is trusted by default, every request is authenticated and authorized, and customer data, code, and secrets never leave the customer's own data plane.
+Union.ai is built on a **Zero Trust security** model: no component is trusted by default, every request is authenticated and authorized, and customer data, code, and secrets never leave the customer's own data plane.
 This section provides a comprehensive overview of that model — Union.ai's security architecture, practices, and compliance posture — for enterprise security professionals evaluating the platform.
 Beyond describing the model, it provides concrete verification steps so that reviewers can independently confirm each claim against a running system.
 
-> **Zero-trust, in one line:** No customer data, code, or logs ever touch Union.ai's control plane. Not in flight. Not at rest. Not ever.
+> **Zero Trust, in one line:** No customer data, code, or logs ever touch Union.ai's control plane. Not in flight. Not at rest. Not ever.
 
 ## Overview
 
@@ -22,7 +22,7 @@ Enterprise customers can further restrict the client-to-data-plane path with the
 No inbound firewall rules are required on the customer's external network perimeter under either configuration.
 
 **[Data protection](./data-protection/_index)**
-No customer data ever transits Union.ai's control plane. Workflow inputs and outputs, code bundles, secret values, logs, reports, and auxiliary UI traffic are served directly from the customer's data plane through the Direct-to-DataPlane tunnel, with authentication and RBAC enforced by an Envoy router inside the customer's cluster.
+No customer data ever transits Union.ai's control plane. Workflow inputs and outputs, code bundles, secret values, logs, reports, and auxiliary UI traffic are served directly from the customer's data plane through the Direct-to-Data-Plane tunnel, with authentication and RBAC enforced by an Envoy router inside the customer's cluster.
 The control plane holds orchestration metadata only -- run IDs, schedules, phase transitions, task definitions, error messages, and the RBAC graph -- always encrypted at rest.
 
 **[Identity and access](./identity-and-access/_index)**
