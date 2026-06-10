@@ -50,7 +50,7 @@ az group create \
   --location $LOCATION
 ```
 
-## 2. AKS Cluster
+## 2. AKS cluster
 
 You need an AKS cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
 
@@ -127,7 +127,7 @@ az aks nodepool add \
 
 > [!NOTE] **Spot VMs**: Union supports interruptible workloads on Azure Spot. Spot nodes are identified by the label `kubernetes.azure.com/scalesetpriority: spot`, which AKS sets automatically when `--priority Spot` is used.
 
-## 4. Storage Account and Container
+## 4. Storage account and container
 
 Union stores workflow metadata and code bundle artifacts in Azure Blob Storage. The storage account **must have Data Lake Storage Gen2 enabled** (`--enable-hierarchical-namespace`) — Union uses the `abfs://` protocol which requires this.
 

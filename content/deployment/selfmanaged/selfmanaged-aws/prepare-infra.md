@@ -20,7 +20,7 @@ export ECR_REPO_NAME=${ECR_REPO_NAME}    # ECR repository name
 export IAM_ROLE_NAME=union-system-role               # IAM role name
 ```
 
-## EKS Cluster
+## EKS cluster
 
 You need an EKS cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
 

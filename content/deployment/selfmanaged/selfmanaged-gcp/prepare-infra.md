@@ -21,7 +21,7 @@ export AR_REPOSITORY=union-dataplane    # Artifact Registry repository name
 export GSA_NAME=union-system            # Google Service Account name
 ```
 
-## GKE Cluster
+## GKE cluster
 
 You need a GKE cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
 

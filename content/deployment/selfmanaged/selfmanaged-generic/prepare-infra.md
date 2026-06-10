@@ -10,7 +10,7 @@ This page walks you through creating the resources needed for a Union data plane
 
 > [!NOTE] If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](../selfmanaged-aws/_index), [GCP](../selfmanaged-gcp/_index), [Azure](../selfmanaged-azure/_index), [OCI](../selfmanaged-oci/_index).
 
-## Kubernetes Cluster
+## Kubernetes cluster
 
 You need a Kubernetes cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
 

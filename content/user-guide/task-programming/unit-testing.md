@@ -150,7 +150,7 @@ async def test_traced_multiply():
     assert result == 42
 ```
 
-## Best Practices
+## Best practices
 
 1. **Test logic with direct invocation**: For most unit tests, call tasks directly to test your business logic without Flyte overhead.
 

@@ -75,7 +75,7 @@ provider "unionai" {
 }
 ```
 
-### 3. Use Environment Variables
+### 3. Use environment variables
 
 For local development or CI/CD pipelines, use environment variables:
 

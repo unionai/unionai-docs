@@ -47,7 +47,7 @@ VPC (/16)
 └── Private subnet (/18) — Worker nodes, pods
 ```
 
-### NAT Gateway requirements
+### NAT gateway requirements
 
 Worker nodes in private subnets need outbound internet access to pull container images from public registries (e.g. Docker Hub, ECR Public, ghcr.io) and to communicate with the Union control plane. This requires a **NAT Gateway** (or equivalent) in each availability zone's public subnet.
 

@@ -8,7 +8,7 @@ variants: -flyte +union
 
 This page walks you through creating the OCI resources needed for a Union data plane. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-oci/deploy-dataplane).
 
-## OKE Cluster
+## OKE cluster
 
 You need an OKE cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
 

@@ -238,7 +238,7 @@ Container tasks support all standard Flyte types:
 - File system: `File`, `Dir`
 - Complex types: dataclasses, Pydantic models (serialized as JSON/YAML/PROTO)
 
-## Best Practices
+## Best practices
 
 1. **Use specific image tags**: Prefer `alpine:3.18` over `alpine:latest` for reproducibility
 2. **Keep containers focused**: Each container task should do one thing well

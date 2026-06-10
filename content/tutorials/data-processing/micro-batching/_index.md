@@ -106,7 +106,7 @@ Prepare the runtime environment for execution
 !uv pip install --no-cache --prerelease=allow --upgrade "flyte>=2.0.0b52" "unionai-reuse>=0.1.10"
 ```
 
-### Step 1: Initialize Flyte Configuration
+### Step 1: Initialize Flyte configuration
 
 Configure your connection to the Flyte cluster. This tells Flyte where to run your workflows and how to build container images.
 
@@ -167,7 +167,7 @@ BATCH_SIZE = 1000
 # Each batch processes 1K items concurrently within its container
 ```
 
-### Step 2: Define Container Image
+### Step 2: Define container image
 
 Create a container image specification with all required dependencies.
 
@@ -741,7 +741,7 @@ async def microbatch_workflow(
 # 5. Use Flyte UI to visualize execution patterns
 ```
 
-### Step 7: Execute the Workflow
+### Step 7: Execute the workflow
 
 Now let's run the entire workflow remotely on your Union cluster.
 
