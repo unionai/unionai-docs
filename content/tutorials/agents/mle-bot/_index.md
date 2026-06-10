@@ -1,10 +1,10 @@
 ---
-title: MLE Bot
+title: MLE bot
 weight: 1
 variants: +flyte +union
 ---
 
-# MLE Bot: an autonomous ML engineer
+# MLE bot: an autonomous ML engineer
 
 > [!NOTE]
 > Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/mle_bot).

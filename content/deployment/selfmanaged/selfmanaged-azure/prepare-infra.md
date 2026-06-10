@@ -38,7 +38,7 @@ export WORKER_IDENTITY_NAME=union-executions
 export DATAPLANE_NAMESPACE=union
 ```
 
-## 1. Subscription and Resource Group
+## 1. Subscription and resource group
 
 All Union infrastructure lives in a dedicated resource group for access control and cost tracking.
 
@@ -92,7 +92,7 @@ az aks get-credentials \
   --name $CLUSTER_NAME
 ```
 
-## 3. Node Pools
+## 3. Node pools
 
 Union workloads run on dedicated node pools. Separating system, worker, and GPU nodes allows independent scaling and keeps system pods stable.
 
@@ -161,11 +161,11 @@ az storage cors add \
   --account-name $STORAGE_ACCOUNT
 ```
 
-### Data Retention
+### Data retention
 
 Union recommends using lifecycle management policies on your Storage Account to manage storage costs. See [Data retention policy](../configuration/data-retention) for more information.
 
-## 5. Managed Identities
+## 5. Managed identities
 
 Union separates infrastructure-level access from workload-level access using two identities:
 
@@ -207,7 +207,7 @@ export WORKER_PRINCIPAL_ID=$(az identity show \
   --query principalId --output tsv)
 ```
 
-## 6. Workload Identity and Federated Credentials
+## 6. Workload Identity and federated credentials
 
 Azure Workload Identity lets Kubernetes pods authenticate to Azure services using a projected service account token — no credentials stored in secrets.
 
@@ -251,7 +251,7 @@ for ns in development staging production; do
 done
 ```
 
-## 7. Role Assignments
+## 7. Role assignments
 
 The managed identities need explicit RBAC permissions on the storage account.
 

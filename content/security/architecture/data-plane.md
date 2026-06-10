@@ -71,7 +71,7 @@ The data plane uses two IAM roles to separate platform-level and user-level acce
 
 Both roles use cloud-native workload identity federation: IRSA (IAM Roles for Service Accounts) on AWS, Workload Identity on GCP, and Azure Workload Identity on Azure. No static credentials are created, stored, or rotated. The Kubernetes service account annotations bind each pod to the appropriate IAM role automatically.
 
-## Apps & Serving security
+## Apps & serving security
 
 App and serving traffic flows entirely within the customer's infrastructure. No application code, data, or serving requests pass through the control plane.
 

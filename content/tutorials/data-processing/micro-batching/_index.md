@@ -23,7 +23,7 @@ content_hash: b6eeeaa013f1cdf6a6855f7cbd6d0cfb50b9f5d4fbfbbce93cc79255d966016b
 
 This notebook demonstrates a production-ready pattern for processing millions of items efficiently using Flyte v2's advanced features. You'll learn how to build resilient, scalable workflows that can handle failures gracefully and optimize resource consumption.
 
-## Use Case
+## Use case
 
 **The Challenge:** Processing massive datasets (100K to 1M+ items) that require external API calls or long-running operations.
 
@@ -60,7 +60,7 @@ The `@flyte.trace` decorator creates automatic checkpoints:
 - **Why it matters:** If a task fails, it resumes from the last successful checkpoint
 - **Result:** No re-execution of completed work
 
-### 2. Reusable Containers for Efficiency
+### 2. Reusable containers for efficiency
 Instead of creating a new container for each task:
 - **Container pools:** Pre-warmed replicas ready to handle work
 - **Concurrent processing:** Each replica handles multiple items simultaneously
@@ -74,7 +74,7 @@ Instead of creating a new container for each task:
 - **Massive parallelism** - process thousands of batches concurrently  
 - **Cost efficient** - container reuse minimizes cold-start overhead  
 
-### Architecture Flow:
+### Architecture flow:
 ```
 1M items → Split into 1,000 batches (1K each)
          ↓
@@ -85,7 +85,7 @@ Instead of creating a new container for each task:
     Aggregate results from all batches
 ```
 
-### Architecture Diagram
+### Architecture diagram
 
 ![Micro-batching Architecture](./images/micro-batching.png)
 
@@ -191,11 +191,11 @@ image = (
 )
 ```
 
-### Step 3: Define Task Environments
+### Step 3: Define task environments
 
 Task environments encapsulate the runtime configuration for tasks. We'll create one with **Reusable Containers** for efficient batch processing.
 
-#### What are Reusable Containers?
+#### What are reusable containers?
 
 Instead of creating a new Kubernetes Pod for every task execution, Reusable Containers maintain a pool of pre-warmed replicas that can handle multiple tasks sequentially or concurrently.
 
@@ -278,7 +278,7 @@ batch_env = flyte.TaskEnvironment(
 - The container image specification with all dependencies
 - Built once and reused across all task executions
 
-#### Creating the Orchestrator Environment
+#### Creating the orchestrator environment
 
 The orchestrator task coordinates all batch processing but doesn't need container reuse since it only runs once per workflow execution.
 
@@ -304,7 +304,7 @@ orchestrator_env = flyte.TaskEnvironment(
 )
 ```
 
-#### Why Two Environments?
+#### Why two environments?
 
 **Separation of Concerns:**
 - **Batch Environment:** Does the heavy lifting (processing items)
@@ -320,7 +320,7 @@ orchestrator_env = flyte.TaskEnvironment(
 
 This separation optimizes both cost and performance.
 
-### Step 4: Define External Service Interactions
+### Step 4: Define external service interactions
 
 These helper functions simulate interactions with external services (APIs, web scraping, etc.). 
 
@@ -410,7 +410,7 @@ async def poll_job_status(job_id: str, request_id: int) -> int:
 # 2. Add logging for debugging and monitoring
 ```
 
-### Step 5: Implement the Batch Processing Task
+### Step 5: Implement the batch processing task
 
 This is the heart of the pattern. The `process_batch` task processes a batch of items with automatic checkpointing using `@flyte.trace`.
 
@@ -588,7 +588,7 @@ async def process_batch(batch_start: int, batch_end: int) -> List[int]:
 
 See the [Traces]({{< docs_home union v2 >}}/user-guide/task-programming/traces/) docs for more details on how it works
 
-### Step 6: Implement the Orchestrator Workflow
+### Step 6: Implement the orchestrator workflow
 
 The orchestrator is the top-level task that:
 1. Splits the total workload into batches
@@ -825,7 +825,7 @@ On execution, this is what this example looks like at the Kubernetes level:
 
 This is, 10 replicas (as defined in the `TaskEnvironment`) and the driver Pod that runs the parent task (`a0`). [Learn more about the parent task]({{< docs_home union v2 >}}/user-guide/considerations/#driver-pod-requirements).
 
-## Batch Size Selection
+## Batch size selection
 
 **Finding the optimal batch size:**
 - **Too small:** More overhead from task management, less efficient

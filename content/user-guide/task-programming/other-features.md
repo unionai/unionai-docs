@@ -6,7 +6,7 @@ variants: +flyte +union
 
 This section covers advanced programming patterns and techniques for working with Flyte tasks.
 
-## Task Forwarding
+## Task forwarding
 
 When one task calls another task using the normal invocation syntax (e.g., `await inner_task(x)`), Flyte creates a durable action that's recorded in the UI with data passed through the metadata store. However, if you want to execute a task in the same Python VM without this overhead, use the `.forward()` method.
 
@@ -44,7 +44,7 @@ def sync_outer_task(x: int) -> int:
     return sync_inner_task(v)
 ```
 
-## Passing Tasks and Functions as Arguments
+## Passing tasks and functions as arguments
 
 You can pass both Flyte tasks and regular Python functions as arguments to other tasks. Flyte handles this through pickling, so the code appears as pickled data in the UI.
 
@@ -79,7 +79,7 @@ async def main() -> list[int]:
 
 **Note**: Both tasks and regular functions are serialized via pickling when passed as arguments.
 
-## Custom Action Names
+## Custom action names
 
 By default, actions in the UI use the task's function name. You can provide custom, user-friendly names using the `short_name` parameter.
 
@@ -95,7 +95,7 @@ async def some_task() -> str:
     return "Hello, Flyte!"
 ```
 
-### Override at Call Time
+### Override at call time
 
 ```python
 @env.task(short_name="entrypoint")
@@ -109,7 +109,7 @@ async def main() -> str:
 
 This is useful when the same task is called multiple times with different contexts, making the UI more readable.
 
-## Invoking Async Functions from Sync Tasks
+## Invoking async functions from sync tasks
 
 When migrating from Flyte 1.x to 2.0, you may have legacy sync code that needs to call async functions. Use `nest_asyncio.apply()` to enable `asyncio.run()` within sync tasks.
 
@@ -141,11 +141,11 @@ def sync_task() -> str:
 - Add `nest_asyncio` to your image dependencies
 - This is particularly useful during migration when you have mixed sync/async code
 
-## Async and Sync Task Interoperability
+## Async and sync task interoperability
 
 When migrating from older sync-based code to async tasks, or when working with mixed codebases, you need to call sync tasks from async parent tasks. Flyte provides the `.aio` method on every task (even sync ones) to enable this.
 
-### Calling Sync Tasks from Async Tasks
+### Calling sync tasks from async tasks
 
 Every sync task automatically has an `.aio` property that returns an async-compatible version:
 
@@ -198,7 +198,7 @@ async def async_main(n: int) -> List[str]:
 
 **Why this matters**: This pattern is powerful when migrating from Flyte 1.x or integrating legacy sync tasks with new async code. You don't need to rewrite all sync tasks at once—they can be called seamlessly from async contexts.
 
-## Using AnyIO in Async Tasks
+## Using AnyIO in async tasks
 
 Flyte async tasks support `anyio` for structured concurrency as an alternative to `asyncio.gather()`.
 

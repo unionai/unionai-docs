@@ -24,7 +24,7 @@ cp hugo.local.toml~sample hugo.local.toml
 
 3. Make sure you review `hugo.local.toml`.
 
-## Managing the Tutorial Pages
+## Managing the tutorial pages
 
 The tutorials are maintained in the [unionai/unionai-examples](https://github.com/unionai/unionai-examples) repository and is imported as a git submodule in the `unionai-examples`
 directory.
@@ -52,7 +52,7 @@ $ make dev
 This will launch the site in development mode.
 The changes are hot reloaded: just change in your favorite editor and it will refresh immediately on the browser.
 
-### Controlling Development Environment
+### Controlling development environment
 
 You can change how the development environment works by settings values in `hugo.local.toml`. The following settings are available:
 
@@ -93,7 +93,7 @@ highlight_active = true
 
 ## Troubleshootting
 
-### Identifying Problems: Missing Content
+### Identifying problems: missing content
 
 Content may be hidden due to `{{</* variant */>}}` blocks. To see what's missing,
 you can adjust the variant show/hide in development mode.
@@ -108,7 +108,7 @@ For a full-developer experience, set:
     show_inactive = true
     highlight_active = true
 
-### Identifying Problems: Page Visibility
+### Identifying problems: page visibility
 
 The developer site will show you in red any pages missing from the variant.
 For a page to exist in the variant (or be excluded, you have to pick one), it must be listed in the `variants:` at the top of the file.

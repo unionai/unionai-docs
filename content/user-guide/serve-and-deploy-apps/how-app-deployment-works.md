@@ -36,7 +36,7 @@ Flyte automatically creates a deployment plan that includes:
 
 {{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=deployment-plan lang=python >}}
 
-## Overriding App configuration at deployment time
+## Overriding app configuration at deployment time
 
 If you need to override the app configuration at deployment time, you can use the `clone_with` method to create a new
 app environment with the desired overrides.

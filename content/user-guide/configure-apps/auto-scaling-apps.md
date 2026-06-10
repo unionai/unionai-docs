@@ -63,7 +63,7 @@ For apps with variable load:
 
 {{< code file="/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=burstable lang=python >}}
 
-### Idle TTL (Time To Live)
+### Idle TTL (Time to live)
 
 The `scaledown_after` parameter (idle TTL) determines how long an app instance can be idle before it's scaled down. 
 

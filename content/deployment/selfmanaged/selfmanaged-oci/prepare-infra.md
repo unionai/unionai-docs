@@ -71,7 +71,7 @@ OCI Object Storage CORS is configured via bucket settings. See the [OCI CORS doc
 - **Expose Headers:** `ETag`
 - **Max Age Seconds:** `3600`
 
-### Data Retention
+### Data retention
 
 Union recommends using lifecycle policies on these buckets to manage storage costs. See [Data retention policy](../configuration/data-retention) for more information.
 
@@ -92,11 +92,11 @@ Note the repository path (e.g. `${REGION}.ocir.io/<TENANCY_NAMESPACE>/union-data
 
 Union services and workflow task pods need access to your Object Storage buckets and Container Registry. OCI supports two authentication models:
 
-### Option A: Instance Principals (recommended)
+### Option A: Instance principals (recommended)
 
 Use [Instance Principals](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/callingservicesfrominstances.htm) so that pods running on OKE nodes inherit permissions automatically.
 
-#### 1. Create a Dynamic Group
+#### 1. Create a dynamic group
 
 Create a [Dynamic Group](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingdynamicgroups.htm) matching your OKE worker nodes:
 
@@ -123,11 +123,11 @@ oci iam policy create \
     "Allow dynamic-group union-dataplane-nodes to manage repos in compartment id '"${COMPARTMENT_ID}"'"]'
 ```
 
-### Option B: Static Credentials
+### Option B: Static credentials
 
 If Instance Principals are not available, you can use S3-compatible access keys:
 
-#### 1. Generate a Customer Secret Key
+#### 1. Generate a customer secret key
 
 Create a [Customer Secret Key](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingcredentials.htm#s3) for S3 Compatibility API access:
 

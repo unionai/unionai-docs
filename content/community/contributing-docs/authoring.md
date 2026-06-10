@@ -34,7 +34,7 @@ As you edit the preview will update automatically.
 
 See [Publishing](./publishing) for how to set up your machine.
 
-## Pull Requests + Site Preview
+## Pull requests + site preview
 
 Pull requests will create a preview build of the site on CloudFlare.
 Check the pull request for a dynamic link to the site changes within that PR.
@@ -153,7 +153,7 @@ There are various short codes to generate content or special components (tabs, d
 
 Refer to [**Content Generation**](./shortcodes) for more information.
 
-## Python Generated Content
+## Python generated content
 
 You can generate pages from markdown-commented Python files.
 
@@ -231,7 +231,7 @@ The conversion tool is located at `unionai-docs-infra/tools/jupyter_generator`.
 
 **Committing the change:** When the PR is pushed, a CI check verifies consistency between the notebook and its generated content. Please ensure that if you change the notebook, you run `make dist` to update the generated page.
 
-## Mapped Keys (`{{</* key */>}}`)
+## Mapped keys (`{{</* key */>}}`)
 
 Key is a very special command that allows us to define mapped values to a variant.
 For example, the product name changes if it is Flyte, Union BYOC, etc. For that,

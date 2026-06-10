@@ -1,11 +1,11 @@
 ---
-title: Biotech & Healthcare
+title: Biotech & healthcare
 weight: 1
 variants: +flyte +union
 sidebar_expanded: true
 ---
 
-# Biotech & Healthcare
+# Biotech & healthcare
 
 Tutorials for bioinformatics, medical imaging, and other life-sciences workloads.
 

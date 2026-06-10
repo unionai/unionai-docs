@@ -117,7 +117,7 @@ gcloud projects add-iam-policy-binding <ProjectId> \
     --role="projects/<ProjectId>/roles/UnionaiAdministrator"
 ```
 
-## Grant access for the Workflow Identity Pool to the Service Account
+## Grant access for the workflow identity pool to the service account
 
 ### In the GCP web console
 
@@ -209,7 +209,7 @@ Once your VPC is set up, provide the following to {{< key product_name >}}:
 * The secondary range name for the /15 CIDR mask and /16 CIDR mask
 * The /18 CIDR block that was left unallocated for the Kubernetes Master
 
-### Example VPC CIDR Block allocation
+### Example VPC CIDR block allocation
 
 * 10.0.0.0/18 Subnet 1 primary IPv4 range → Used for GCP Nodes
 * 10.32.0.0/14 Cluster secondary IPv4 range named `gke-pods` → Used for Kubernetes Pods

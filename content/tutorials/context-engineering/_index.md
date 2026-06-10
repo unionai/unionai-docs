@@ -1,11 +1,11 @@
 ---
-title: Context Engineering
+title: Context engineering
 weight: 7
 variants: +flyte +union
 sidebar_expanded: true
 ---
 
-# Context Engineering
+# Context engineering
 
 Tutorials for prompt engineering, prompt optimization, and context construction.
 

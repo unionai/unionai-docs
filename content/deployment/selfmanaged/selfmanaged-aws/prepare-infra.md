@@ -105,7 +105,7 @@ aws s3api put-bucket-cors --bucket ${BUCKET_PREFIX}-metadata --cors-configuratio
 aws s3api put-bucket-cors --bucket ${BUCKET_PREFIX}-fast-reg --cors-configuration file://cors.json
 ```
 
-### Data Retention
+### Data retention
 
 Union recommends using Lifecycle Policy on these buckets to manage storage costs. See [Data retention policy](../configuration/data-retention) for more information.
 

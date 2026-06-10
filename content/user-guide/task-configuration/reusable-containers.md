@@ -25,7 +25,7 @@ This approach reduces start up overhead and improves resource efficiency.
 > [!NOTE]
 > The reusable container feature is only available when running your Flyte code on a Union backend.
 
-## How It Works
+## How it works
 
 With reusable containers, the system maintains a pool of persistent containers that can handle multiple task executions.
 When you configure a `TaskEnvironment` with a `ReusePolicy`, the system does the following:

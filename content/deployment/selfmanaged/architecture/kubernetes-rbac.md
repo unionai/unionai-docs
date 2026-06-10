@@ -4,7 +4,7 @@ weight: 4
 variants: -flyte +union
 ---
 
-# Kubernetes Access Controls
+# Kubernetes access controls
 
 Union's data plane runs entirely within your Kubernetes cluster. This page documents the Kubernetes RBAC configuration
 applied by the https://github.com/unionai/helm-charts/tree/main/charts/dataplane — including service account configuration, 

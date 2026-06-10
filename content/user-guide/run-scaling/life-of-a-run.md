@@ -222,7 +222,7 @@ sequenceDiagram
 
 ## State replication and visualization
 
-### Queue Service to Run Service
+### Queue service to run service
 
 1. **Reliable replication**: Queue Service reliably replicates execution state back to Run Service.
 2. **Eventual consistency**: The Run Service may be slightly behind the actual execution state.
