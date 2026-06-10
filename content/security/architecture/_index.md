@@ -7,7 +7,7 @@ sidebar_expanded: true
 
 # Architecture
 
-Union.ai's **Zero-trust security** architecture rests on a foundational division between the Union.ai-hosted control plane, which orchestrates execution, and the customer-hosted data plane, where all computation occurs and all customer data resides. Under this model nothing is trusted implicitly: the data plane initiates all communication with the control plane over an outbound-only channel, requiring no inbound firewall rules on the customer side, and every customer-data request is authenticated and authorized inside the customer's cluster.
+Union.ai's **Zero Trust security** architecture rests on a foundational division between the Union.ai-hosted control plane, which orchestrates execution, and the customer-hosted data plane, where all computation occurs and all customer data resides. Under this model nothing is trusted implicitly: the data plane initiates all communication with the control plane over an outbound-only channel, requiring no inbound firewall rules on the customer side, and every customer-data request is authenticated and authorized inside the customer's cluster.
 
 In the BYOC model, Union.ai manages the data plane over a private connection. In the self-managed model, the customer manages the data plane themselves. In both cases, the same security controls apply, and the same [data residency guarantees](../data-protection/classification-and-residency) hold.
 
@@ -19,8 +19,8 @@ This section covers:
 
 * **[Data plane](./data-plane)**: The data plane runs entirely within the customer's cloud account. All computation occurs here and all customer data resides here. It uses workload identity federation (IRSA / Workload Identity / Azure Workload Identity) instead of static credentials, so no long-lived access keys are stored on the data plane.
 
-* **[Network architecture](./network)**: The data plane initiates all communication with Union.ai over an outbound-only direct gRPC connection. Customer-data requests flow client-to-data-plane through the Direct-to-DataPlane tunnel, terminating at an Envoy router inside the customer's cluster. There is no inbound attack surface on the customer's external network and therefore no firewall rules are required at the perimeter.
+* **[Network architecture](./network)**: The data plane initiates all communication with Union.ai over an outbound-only direct gRPC connection. Customer-data requests flow client-to-data-plane through the Direct-to-Data-Plane tunnel, terminating at an Envoy router inside the customer's cluster. There is no inbound attack surface on the customer's external network and therefore no firewall rules are required at the perimeter.
 
-* **[Sovereign Data Plane](./sovereign-data-plane)**: An Enterprise-tier option that replaces the Direct-to-DataPlane tunnel with a customer-managed load balancer inside the customer's VPC, reachable only from the corporate VPN. No third-party network can reach the data plane; Union.ai employees cannot reach customer data even with full Union.ai credentials.
+* **[Sovereign Data Plane](./sovereign-data-plane)**: An Enterprise-tier option that replaces the Direct-to-Data-Plane tunnel with a customer-managed load balancer inside the customer's VPC, reachable only from the corporate VPN. No third-party network can reach the data plane; Union.ai employees cannot reach customer data even with full Union.ai credentials.
 
 * **[Private connectivity (BYOC)](./private-connectivity)**: In the BYOC model, Union.ai manages the customer's Kubernetes cluster via PrivateLink, Private Service Connect, or Azure Private Link. The Kubernetes API is never exposed to the public internet.

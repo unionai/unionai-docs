@@ -10,11 +10,11 @@ variants: -flyte +union
 
 Logs are collected and shipped to the customer's cloud-native log service: CloudWatch Logs (AWS), Cloud Logging (GCP), or Azure Monitor (Azure). Live logs are streamed directly from the Kubernetes API while a task is running. Persisted logs are read from the cloud log aggregator after a pod terminates.
 
-Log data does not transit the control plane. Live and persisted logs alike are served from the data plane through the Direct-to-DataPlane tunnel directly to the requesting client; no log byte ever passes through Union.ai infrastructure. There is no content filtering or redaction at any layer of the log pipeline. Log lines include structured metadata: timestamp, message content, and originator classification.
+Log data does not transit the control plane. Live and persisted logs alike are served from the data plane through the Direct-to-Data-Plane tunnel directly to the requesting client; no log byte ever passes through Union.ai infrastructure. There is no content filtering or redaction at any layer of the log pipeline. Log lines include structured metadata: timestamp, message content, and originator classification.
 
 ## Observability metrics
 
-A per-cluster monitoring instance stores time-series observability metrics including resource utilization and cost data. Queries are served from the data plane through the Direct-to-DataPlane tunnel. Metrics data never leaves the customer's infrastructure. In BYOC deployments, Union.ai deploys and manages the monitoring stack.
+A per-cluster monitoring instance stores time-series observability metrics including resource utilization and cost data. Queries are served from the data plane through the Direct-to-Data-Plane tunnel. Metrics data never leaves the customer's infrastructure. In BYOC deployments, Union.ai deploys and manages the monitoring stack.
 
 ## Audit trail
 
