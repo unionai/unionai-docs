@@ -29,7 +29,7 @@ It's a well-structured dataset - balanced, clearly labeled - which makes it idea
 
 We use EfficientNet-B0 from `timm` (the PyTorch Image Models library), pretrained on ImageNet. EfficientNet was designed to scale depth, width, and resolution jointly using a compound coefficient, giving strong accuracy with a relatively small parameter count (~5.3M). The ImageNet pretraining means the backbone already understands edges, textures, and shapes - features that transfer well to satellite imagery.
 
-## Two-Phase Training
+## Two-phase training
 
 Fine-tuning a pretrained model naively by using all weights immediately often leads to catastrophic forgetting: the model destroys its learned representations before the new task-specific head has had a chance to stabilize.
 
@@ -51,7 +51,7 @@ Training a model is only part of the story. The real challenge is building a sys
 
 The pipeline has four components, each with its own environment defined in `config.py`.
 
-### Task 1: Data Download (`dataset_env`)
+### Task 1: Data download (`dataset_env`)
 
 {{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/run.py" fragment="data_download" lang="python" >}}
 
@@ -59,7 +59,7 @@ This task downloads the raw EuroSAT JPEG files via torchvision and packages them
 
 No preprocessing happens here. Raw images are passed directly to training so that all transforms - resize, normalization, and augmentation - happen per-batch with the full training context, giving the model properly prepared 224×224 input from the original pixels.
 
-### Task 2: GPU Training (`training_env`)
+### Task 2: GPU training (`training_env`)
 
 {{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/run.py" fragment="gpu_training" lang="python" >}}
 
@@ -73,7 +73,7 @@ Two things worth noting:
 
 {{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/training.py" fragment="wandb_logging" lang="python" >}}
 
-### Task 3: Report Generation (`report_env`)
+### Task 3: Report generation (`report_env`)
 
 This task reads the `metrics.json` produced by training and renders interactive Plotly charts - validation accuracy and train/val loss curves - directly in the Union UI. The `report=True` flag tells Union to render the task output as a rich report panel. A dashed vertical line marks the Phase 1 → Phase 2 transition, making it easy to see how much the backbone fine-tuning contributes.
 
@@ -85,7 +85,7 @@ The pipeline task is a lightweight orchestrator. It has no heavy dependencies of
 
 {{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/run.py" fragment="orchestration" lang="python" >}}
 
-## Running the Pipeline
+## Running the pipeline
 
 Submit the pipeline with a single command from the project directory:
 
@@ -98,7 +98,7 @@ This calls:
 
 The W&B project and entity are wired in at submission time. Union handles spinning up the right containers, routing data between tasks, and surfacing results in the UI.
 
-## What You Get
+## What you get
 
 After the pipeline completes:
 

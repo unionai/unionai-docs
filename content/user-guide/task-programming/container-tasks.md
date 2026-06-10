@@ -6,7 +6,7 @@ variants: +flyte +union
 
 Container tasks are one of Flyte's superpowers. They allow you to execute tasks using any container image without requiring the Flyte SDK to be installed in that container. This means you can run code written in any language, execute shell scripts, or even use pre-built containers pulled directly from the internet while still maintaining Flyte's data orchestration capabilities.
 
-## What are Container Tasks?
+## What are container tasks?
 
 A container task is a special type of Flyte task that executes arbitrary container images. Unlike standard `@task` decorated functions that require the Flyte SDK, container tasks can run:
 
@@ -16,7 +16,7 @@ A container task is a special type of Flyte task that executes arbitrary contain
 - Shell scripts and command-line tools
 - Dynamically generated code in sandboxed environments
 
-## How Data Flows In and Out
+## How data flows in and out
 
 The magic of container tasks lies in Flyte's **copilot sidecar system**. When you execute a container task, Flyte:
 
@@ -50,7 +50,7 @@ greeting_task = ContainerTask(
 )
 ```
 
-### Template Syntax for Inputs
+### Template syntax for inputs
 
 Container tasks support template-style references to inputs using the syntax `{{.inputs.<input_name>}}`. This gets replaced with the actual input value at runtime:
 
@@ -58,7 +58,7 @@ Container tasks support template-style references to inputs using the syntax `{{
 command=["/bin/sh", "-c", "echo 'Processing {{.inputs.user_id}}' > /var/outputs/result"]
 ```
 
-### Using Container Tasks in Workflows
+### Using container tasks in workflows
 
 Container tasks integrate seamlessly with Python tasks:
 
@@ -72,7 +72,7 @@ async def say_hello(name: str = "flyte") -> str:
     return await greeting_task(name=name)
 ```
 
-## Advanced: Passing Files and Directories
+## Advanced: Passing files and directories
 
 Container tasks can accept `File` and `Dir` inputs. For these types, use path-based syntax (not template syntax) in your commands:
 
@@ -103,7 +103,7 @@ async def execute_script() -> int:
 
 Note that when passing files, the input key can include the filename (e.g., `"script.py"`), and you reference it in the command as `/var/inputs/script.py`.
 
-## Use Case: Agentic Sandbox Execution
+## Use case: Agentic sandbox execution
 
 Container tasks are perfect for running AI-generated code in isolated environments. You can generate a data analysis script dynamically and execute it safely:
 
@@ -147,7 +147,7 @@ This pattern allows you to:
 - Capture results and integrate them back into your workflow
 - Maintain full observability and reproducibility
 
-## Use Case: Legacy and Specialized Containers
+## Use case: Legacy and specialized containers
 
 Many scientific and bioinformatics tools are distributed as pre-built containers. Container tasks let you integrate them directly:
 
@@ -186,7 +186,7 @@ legacy_task = ContainerTask(
 )
 ```
 
-## Use Case: Multi-Language Workflows
+## Use case: Multi-language workflows
 
 Build workflows that span multiple languages:
 
@@ -229,7 +229,7 @@ async def multi_lang_workflow(iterations: int) -> dict:
 - **metadata_format**: Format for metadata serialization (`"JSON"`, `"YAML"`, or `"PROTO"`)
 - **local_logs**: Whether to print container logs during local execution (default: `True`)
 
-### Supported Input/Output Types
+### Supported input/output types
 
 Container tasks support all standard Flyte types:
 
@@ -258,7 +258,7 @@ Container tasks require Docker to be installed and running on your local machine
 
 This makes it easy to develop and test container tasks before deploying to a remote cluster.
 
-## When to Use Container Tasks
+## When to use container tasks
 
 Choose container tasks when you need to:
 

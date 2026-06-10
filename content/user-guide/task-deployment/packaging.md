@@ -529,7 +529,7 @@ Or via CLI:
 flyte run --copy-style=none app.py my_task --n 10
 ```
 
-#### 2. Copy Code into Image
+#### 2. Copy code into image
 
 Use `Image.with_source_file()` or `Image.with_source_folder()`:
 
@@ -546,7 +546,7 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-#### 3. Set Correct `root_dir`
+#### 3. Set correct `root_dir`
 
 Match your image copy configuration:
 
@@ -558,7 +558,7 @@ flyte.init_from_config(
 
 ### Image source copying methods
 
-#### `with_source_file()` - Copy individual files
+#### `with_source_file()` - copy individual files
 
 Copy a single file into the container:
 
@@ -574,7 +574,7 @@ image = flyte.Image.from_debian_base().with_source_file(
 - Copying configuration files
 - Adding scripts to existing images
 
-#### `with_source_folder()` - Copy directories
+#### `with_source_folder()` - copy directories
 
 Copy entire directories into the container:
 

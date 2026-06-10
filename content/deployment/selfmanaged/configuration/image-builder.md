@@ -4,7 +4,7 @@ weight: 2
 variants: -flyte +union
 ---
 
-# Image Builder
+# Image builder
 
 Union Image Builder supports the ability to build container images within the dataplane. This enables the use of the `remote` builder type for any defined [Container Image](../../../user-guide/task-configuration/container-images).
 
@@ -131,7 +131,7 @@ Similarly, the `operator-proxy` requires the following permissions
 }
 ```
 
-#### AWS Cross Account access
+#### AWS cross account access
 
 Access to repositories that do not exist in the same AWS account as the data plane requires additional ECR resource-based permissions. An ECR policy like the following is required if the configured `defaultRepository` or `ImageSpec`'s `registry` exists in an AWS account different from the dataplane's.
 
@@ -208,7 +208,7 @@ By default, GCP uses [Kubernetes Service Accounts to GCP IAM](https://cloud.goog
 
 It is necessary to configure the GCP user service account with `iam.serviceAccounts.signBlob` project level permissions.
 
-#### GCP Cross project access
+#### GCP cross project access
 
 Access to registries that do not exist in the same GCP project as the data plane requires additional GCP permissions.
 

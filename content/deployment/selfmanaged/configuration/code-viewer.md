@@ -4,7 +4,7 @@ weight: 2
 variants: -flyte +union
 ---
 
-# Code Viewer
+# Code viewer
 
 The Union UI allows you to view the exact code that executed a specific task. Union securely transfers the [code bundle](../../../user-guide/run-scaling/life-of-a-run#phase-2-image-building) directly to your browser without routing it through the control plane.
 
