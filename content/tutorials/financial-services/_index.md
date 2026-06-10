@@ -1,11 +1,11 @@
 ---
-title: Financial Services & Fintech
+title: Financial services & fintech
 weight: 3
 variants: +flyte +union
 sidebar_expanded: true
 ---
 
-# Financial Services & Fintech
+# Financial services & fintech
 
 Tutorials for financial research, trading, and other fintech workloads.
 

@@ -89,7 +89,7 @@ print(response.choices[0].message.content)
 > If you passed an `--api-key` argument, you can use the `api_key` parameter to authenticate your requests.
 > See [here](../build-apps/secret-based-authentication#deploy-sglang-app-with-authentication) for more details on how to pass auth secrets to your app.
 
-## Multi-GPU inference (Tensor Parallelism)
+## Multi-GPU inference (Tensor parallelism)
 
 For larger models, use multiple GPUs with tensor parallelism:
 

@@ -137,10 +137,10 @@ pyproject_package/
 
 The business logic is completely separate from Flyte and can be used independently:
 
-#### Data Loading (`data/loader.py`)
+#### Data loading (`data/loader.py`)
 {{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/data/loader.py" lang="python" >}}
 
-#### Data Processing (`data/processor.py`)
+#### Data processing (`data/processor.py`)
 {{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/data/processor.py" lang="python" >}}
 
 #### Analysis (`models/analyzer.py`)
@@ -373,7 +373,7 @@ The main.py file imports from a local dependency that gets included in the build
 
 ### Configuration options
 
-#### Option A: Copy Folder Structure
+#### Option A: Copy folder structure
 ```python
 # Copies the entire folder structure into the container
 image=flyte.Image.from_debian_base().with_source_folder(
@@ -385,7 +385,7 @@ image=flyte.Image.from_debian_base().with_source_folder(
 flyte.init_from_config(root_dir=pathlib.Path(__file__).parent.parent)
 ```
 
-#### Option B: Copy Contents Only (Recommended)
+#### Option B: Copy contents only (recommended)
 ```python
 # Copies only the contents of the folder (flattens structure)
 # This is useful when you want to avoid nested folders - for example all your code is in the root of the repo
@@ -487,7 +487,7 @@ This pattern allows sharing task environments across modules while maintaining p
 - **Execution flexibility**: Works regardless of where you execute the script
 - **PYTHONPATH handling**: Different behavior for CLI vs direct Python execution
 
-### CLI vs Direct Python execution
+### CLI vs direct Python execution
 
 #### Using Flyte CLI with `--root-dir` (Recommended)
 

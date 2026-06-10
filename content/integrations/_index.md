@@ -349,7 +349,7 @@ Replace `<connector-deployment-name>` with the name of your connector deployment
 {{< /markdown >}}
 {{< /variant >}}
 
-## LLM Serving
+## LLM serving
 
 LLM serving integrations let you deploy and serve large language models as Flyte apps with an OpenAI-compatible API. They handle model loading, GPU management, and autoscaling.
 

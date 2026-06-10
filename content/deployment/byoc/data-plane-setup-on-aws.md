@@ -17,7 +17,7 @@ If you do not wish to manage your own VPC then no additional configuration is ne
 
 You can do the setup quickly using AWS CloudFormation.
 
-### Click the Launch Stack button
+### Click the launch stack button
 
 Ensure that you are logged into the desired AWS account and then select the appropriate region and launch the corresponding CloudFormation stack:
 

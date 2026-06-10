@@ -129,7 +129,7 @@ gcloud storage buckets update gs://${BUCKET_PREFIX}-metadata --cors-file=cors.js
 gcloud storage buckets update gs://${BUCKET_PREFIX}-fast-reg --cors-file=cors.json
 ```
 
-### Data Retention
+### Data retention
 
 Union recommends using Lifecycle Policy on these buckets to manage storage costs. See [Data retention policy](../configuration/data-retention) for more information.
 
@@ -151,7 +151,7 @@ Note the repository path (`${REGION}-docker.pkg.dev/${PROJECT_ID}/${AR_REPOSITOR
 
 Union recommends using [GKE Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) to securely access GCP resources.
 
-### 1. Create a Google Service Account
+### 1. Create a Google service account
 
 ```bash
 gcloud iam service-accounts create ${GSA_NAME} \

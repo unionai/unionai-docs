@@ -175,7 +175,7 @@ Group clusters into pools, register clusters, and create queues that route and r
 
 {{< /variant >}}
 
-## Advanced Guides
+## Advanced guides
 
 Organize your codebase, optimize performance for production, and migrate from
 other workflow orchestrators.

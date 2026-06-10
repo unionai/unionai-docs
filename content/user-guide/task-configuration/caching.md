@@ -34,7 +34,7 @@ If found, the cached result is returned immediately instead of re-executing the 
 
 Flyte 2 supports three main cache behaviors:
 
-### `"auto"` - Automatic versioning
+### `"auto"` - automatic versioning
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="auto" lang="python" >}}
 
@@ -139,7 +139,7 @@ You can implement custom cache policies by following the `CachePolicy` protocol:
 
 You can configure caching at three levels: `TaskEnvironment` definition, `@env.task` decorator, and task invocation.
 
-### `TaskEnvironment` Level
+### `TaskEnvironment` level
 
 You can configure caching at the `TaskEnvironment` level.
 This will set the default cache behavior for all tasks defined using that environment.

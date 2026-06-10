@@ -80,7 +80,7 @@ mc anonymous set-json cors.json myminio/union-fast-reg
 
 Consult your object storage provider's documentation for the equivalent configuration if you are not using MinIO.
 
-### Data Retention
+### Data retention
 
 Union recommends using lifecycle policies on these buckets to manage storage costs. See [Data retention policy](../configuration/data-retention) for more information.
 

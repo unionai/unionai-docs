@@ -86,7 +86,7 @@ uv run main.py
 
 There is no separate deploy step. The image tag is the version. To ship a code change: edit tasks, rebuild both images, push new tags, update the tag constants in `main.py`, run again.
 
-## Pattern 2: Remote Builder
+## Pattern 2: Remote builder
 
 Teams hand you their base images. They built these images for their own purposes — Flyte was never a consideration. Your job is to adapt them.
 

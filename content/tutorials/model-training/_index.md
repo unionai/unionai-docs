@@ -1,11 +1,11 @@
 ---
-title: Model Training
+title: Model training
 weight: 8
 variants: +flyte +union
 sidebar_expanded: true
 ---
 
-# Model Training
+# Model training
 
 Tutorials for training, fine-tuning, and hyperparameter optimization of models at scale.
 

@@ -65,7 +65,7 @@ The `flyte.Cron` has the following signature:
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="cron-examples" lang="python">}}
 
-#### Cron Expressions
+#### Cron expressions
 
 Here are some common cron expressions you can use:
 
@@ -140,7 +140,7 @@ You can pass various data types through trigger inputs:
 For common scheduling needs, Flyte provides predefined trigger methods that create Cron-based schedules without requiring you to specify cron expressions manually.
 These are convenient shortcuts for frequently used scheduling patterns.
 
-### Available Predefined Triggers
+### Available predefined triggers
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="predefined-available" lang="python">}}
 
@@ -365,7 +365,7 @@ flyte delete trigger custom_cron my_task_env.custom_task --project <project> --d
 
 ## Schedule time zones
 
-### Setting time zone for a Cron schedule
+### Setting time zone for a cron schedule
 
 Cron expressions are by default in UTC, but it's possible to specify custom time zones like so:
 
@@ -379,7 +379,7 @@ The `flyte.TriggerTime` value is always in UTC. For timezone-aware logic, conver
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="trigger-time-utc" lang="python">}}
 
-### Daylight Savings Time behavior
+### Daylight savings time behavior
 
 When Daylight Savings Time (DST) begins and ends, it can impact when the scheduled execution begins.
 
