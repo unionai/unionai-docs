@@ -13,7 +13,7 @@ Every data type in the Union.ai platform is classified by its residency and acce
 | Classification | Data types | At rest | In transit | Enters control plane? |
 |---|---|---|---|---|
 | Bulk Customer Data | Files, directories, DataFrames, code bundles, container images, reports | Customer infrastructure (S3 SSE / GCS / Azure SSE) | HTTPS via presigned URL | **No**: served via signed URL direct to/from object store |
-| Inline Customer Data | Structured task inputs/outputs, secret values (during creation), execution log streams | Customer infrastructure (S3 SSE / GCS / Azure SSE; cloud secret managers) | Direct-to-DataPlane tunnel (default tier) or customer-managed internal LB (Sovereign Data Plane tier) | **No**: served from data plane |
+| Inline Customer Data | Structured task inputs/outputs, secret values (during creation), execution log streams | Customer infrastructure (S3 SSE / GCS / Azure SSE; cloud secret managers) | Direct-to-Data-Plane tunnel (default tier) or customer-managed internal LB (Sovereign Data Plane tier) | **No**: served from data plane |
 | Orchestration Metadata | Task definitions (including env vars, default values, SQL, pod specs), run/action state, error messages, trigger specs | Control plane databases (AES-256/KMS) | TLS (API) + TLS (gRPC events) | **Yes**: read from DB into memory for API responses |
 | Platform Metadata | User identity/RBAC records, cluster records | Control plane databases (AES-256/KMS) | TLS (API) | **Yes**: read from DB into memory for API responses |
 
@@ -22,7 +22,7 @@ Every data type in the Union.ai platform is classified by its residency and acce
 
 **Bulk customer data** (files, directories, DataFrames, code bundles, container images, and reports) is stored exclusively in the customer's infrastructure and never enters the control plane. These objects are accessed via presigned URLs issued by the data-plane `dataproxy`.
 
-**Inline customer data** (structured task inputs and outputs, secret values during creation/update, and execution log streams) is stored at rest in the customer's infrastructure and served directly from the data plane through the Direct-to-DataPlane tunnel. No customer data enters Union.ai's control plane in any form -- not even transiently in memory.
+**Inline customer data** (structured task inputs and outputs, secret values during creation/update, and execution log streams) is stored at rest in the customer's infrastructure and served directly from the data plane through the Direct-to-Data-Plane tunnel. No customer data enters Union.ai's control plane in any form -- not even transiently in memory.
 
 **Orchestration metadata** is stored in the control plane databases (encrypted at rest). This includes task definitions, which contain structural information (container image references, typed interfaces) and fields that may be customer-sensitive: environment variables, default input literal values, SQL query statements, Kubernetes pod specs, plugin configuration, and config key-value pairs. Error messages from task executions (which may contain data from Python tracebacks) are also stored. A full task definition (TaskSpec) is stored on every run submission.
 
@@ -30,7 +30,7 @@ Every data type in the Union.ai platform is classified by its residency and acce
 
 All customer data resides in the customer's own cloud account and region. The customer chooses the region for their data plane deployment, and all data plane resources (object storage, container registry, secrets backend, log aggregator, and compute) are provisioned within that region.
 
-The control plane is available in the following regions: US West (us-west-2), US East (us-east-2), EU West-1 (Ireland), EU West-2 (London), and EU Central (eu-central-1). No customer data of any kind is replicated to, cached in, or routed through Union.ai infrastructure -- inline data is served from the customer's data plane through the Direct-to-DataPlane tunnel and never traverses the control plane region. Only orchestration metadata (run IDs, schedules, phase transitions, task definitions, error messages, and the RBAC graph) resides in the control plane region.
+The control plane is available in the following regions: US West (us-west-2), US East (us-east-2), EU West-1 (Ireland), EU West-2 (London), and EU Central (eu-central-1). No customer data of any kind is replicated to, cached in, or routed through Union.ai infrastructure -- inline data is served from the customer's data plane through the Direct-to-Data-Plane tunnel and never traverses the control plane region. Only orchestration metadata (run IDs, schedules, phase transitions, task definitions, error messages, and the RBAC graph) resides in the control plane region.
 
 Customers whose data-residency policy extends to orchestration metadata (e.g., GDPR, or jurisdiction-specific policies that cover operational records about workflows in addition to the workflow data itself) should select a control plane region consistent with that policy. For EU-deployed data planes using an EU control plane region, all data and metadata (both at rest and in transit) stay within the EU, supporting GDPR data residency requirements.
 
