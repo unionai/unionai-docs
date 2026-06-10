@@ -75,7 +75,7 @@ provider "unionai" {
 }
 ```
 
-### 3. Use Environment Variables
+### 3. Use environment variables
 
 For local development or CI/CD pipelines, use environment variables:
 
@@ -117,7 +117,7 @@ unionai_api_key = "your-api-key-here"
 
 ## Additional Security Measures
 
-### Encrypt Terraform State
+### Encrypt Terraform state
 
 Always use encrypted remote state backends to protect sensitive data:
 
@@ -253,7 +253,7 @@ terraform:
 - Enable audit logging for all Terraform operations
 - Restrict who can view/modify CI/CD secrets
 
-## Additional Resources
+## Additional resources
 
 - [Terraform Security Best Practices](https://developer.hashicorp.com/terraform/tutorials/configuration-language/sensitive-variables)
 - [HashiCorp Vault Documentation](https://developer.hashicorp.com/vault/docs)

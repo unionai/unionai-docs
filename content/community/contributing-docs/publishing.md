@@ -47,7 +47,7 @@ $ make update-examples
 $ make dev
 ```
 
-## Developer Experience
+## Developer experience
 
 This will launch the site in development mode.
 The changes are hot reloaded: just change in your favorite editor and it will refresh immediately on the browser.
@@ -116,7 +116,7 @@ Clicking on the red page will give you the path you must add to the appropriate 
 
 Please refer to [Authoring](./authoring) for more details.
 
-## Building Production
+## Building production
 
 ```
 $ make dist
@@ -124,7 +124,7 @@ $ make dist
 
 This will build all the variants and place the result in the `dist` folder.
 
-### Testing Production Build
+### Testing production build
 
 You can run a local web server and serve the `dist/` folder. The site must behave correctly, as it would be in its official URL.
 

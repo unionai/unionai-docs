@@ -12,7 +12,7 @@ When you perform a deployment, here's what happens:
 
 ## 1. Module loading and task environment discovery
 
-In the first step, Flyte determines which files to load in order to search for task environments, based on the command line options provided:
+In the first step, Flyte determines which files to load in order to search for task environments, based on the command-line options provided:
 
 ### Single file (default)
 

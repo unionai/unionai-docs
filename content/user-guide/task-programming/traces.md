@@ -38,7 +38,7 @@ Traces capture detailed execution information:
 
 Only successful trace executions are recorded in the checkpoint system. When a traced function fails, the exception propagates up to your task code where you can handle it with standard error handling patterns.
 
-### Supported Function Types
+### Supported function types
 
 The trace decorator works with:
 - **Asynchronous functions**: Functions defined with `async def`.

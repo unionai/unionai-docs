@@ -1,5 +1,5 @@
 ---
-title: Node Pools
+title: Node pools
 weight: 1
 variants: -flyte +union
 ---
