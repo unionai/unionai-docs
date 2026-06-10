@@ -195,7 +195,7 @@ gcloud services enable storage-api.googleapis.com
 If you decide to manage your own VPC instead of leaving it to {{< key product_name >}}, then you will need to set it up yourself.
 The VPC should be configured with the following characteristics:
 
-* We recommend using a VPC that resides in the same project as the {{< key product_name >}} Data Plane Kubernetes cluster. If you want to use a [shared VPC](https://cloud.google.com/vpc/docs/shared-vpc), contact {{< key product_name >}} support.
+* We recommend using a VPC that resides in the same project as the {{< key product_name >}} data plane Kubernetes cluster. If you want to use a [shared VPC](https://cloud.google.com/vpc/docs/shared-vpc), contact {{< key product_name >}} support.
 * Create a single VPC subnet with:
   * A primary IPv4 range with /18 CIDR mask. This is used for cluster node IP addresses.
   * A secondary range with /15 CIDR mask. This is used for Kubernetes Pod IP addresses. We recommend associating the name with pods, e.g. `gke-pods`.

@@ -127,7 +127,7 @@ To understand how the below components interact with each other, refer to [Compo
 
 | **Repo** | [flyteadmin](https://github.com/flyteorg/flyteadmin) \| [Code Reference](https://pkg.go.dev/mod/github.com/flyteorg/flyteadmin) |
 |----------|------------------------------------------------------------------------------------------------|
-| **Purpose** | Control Plane |
+| **Purpose** | Control plane |
 | **Language** | Go |
 | **Guidelines** |                                                                                          |
 |              | - Check for Makefile in the root repo                                                      |
