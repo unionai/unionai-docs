@@ -61,7 +61,7 @@ from opentelemetry.propagate import inject
 
 with tracer.start_as_current_span("workflow_run"):
     carrier = {}
-    inject(carrier)   # writes {"traceparent": "..."} into carrier
+    inject(carrier)   # writes traceparent (and tracestate/baggage if configured) into carrier
     run = flyte.with_runcontext(custom_context=carrier).run(main, url="https://httpbin.org/get")
     print(run.url)
 ```
@@ -73,13 +73,16 @@ The carrier is a regular `Dict[str, str]`, which is exactly what `custom_context
 Each task pulls the parent context out of `flyte.ctx().custom_context` and uses it to anchor its own spans:
 
 ```python
+import httpx
 from opentelemetry.propagate import extract
 
 @env.task
 async def fetch(url: str) -> int:
     parent = extract(flyte.ctx().custom_context)
     with tracer.start_as_current_span("fetch", context=parent):
-        return httpx.get(url).status_code
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(url)
+        return resp.status_code
 ```
 
 Without `extract(...)`, the span you open inside the task would be a new root span in your tracing backend, disconnected from the rest of the workflow.
@@ -97,7 +100,7 @@ async def main(url: str) -> int:
     with tracer.start_as_current_span("main", context=parent):
         carrier = {}
         inject(carrier)
-        with flyte.custom_context(traceparent=carrier["traceparent"]):
+        with flyte.custom_context(**carrier):
             return await fetch(url)
 ```
 
@@ -119,7 +122,7 @@ def traced(span_name: str):
             with tracer.start_as_current_span(span_name, context=parent):
                 carrier = {}
                 inject(carrier)
-                with flyte.custom_context(traceparent=carrier["traceparent"]):
+                with flyte.custom_context(**carrier):
                     return await fn(*args, **kwargs)
         return wrapper
     return decorator
@@ -128,7 +131,9 @@ def traced(span_name: str):
 @env.task
 @traced("fetch")
 async def fetch(url: str) -> int:
-    return httpx.get(url).status_code
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(url)
+    return resp.status_code
 ```
 
 ## Choosing an exporter
