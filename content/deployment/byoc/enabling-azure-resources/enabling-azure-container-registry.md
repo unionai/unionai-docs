@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Enabling Azure Container Registry (ACR)
 
-ACR can be used to store container images within Azure and accessed within your Azure-based Data Plane.
+ACR can be used to store container images within Azure and accessed within your Azure-based data plane.
 
 {{< key product_name >}} leverages Azure Kubernetes Service (AKS) managed identities to authenticate with ACR.
 
