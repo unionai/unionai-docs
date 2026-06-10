@@ -87,7 +87,7 @@ For a full guide on Cron syntax, refer to [Crontab Guru](https://crontab.guru/).
 The `inputs` parameter allows you to provide default values for your task's parameters when the trigger fires.
 This is essential for parameterizing your automated executions and passing trigger-specific data to your tasks.
 
-### Basic Usage
+### Basic usage
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="inputs-basic-usage" lang="python">}}
 

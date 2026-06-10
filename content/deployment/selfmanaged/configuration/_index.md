@@ -5,7 +5,7 @@ variants: -flyte +union
 llm_readable_bundle: true
 ---
 
-# Advanced Configurations
+# Advanced configurations
 
 {{< llm-bundle-note >}}
 

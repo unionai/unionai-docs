@@ -17,7 +17,7 @@ To set up your {{< key product_name >}} instance to use Microsoft Entra ID as th
 
 1. Log into your Azure account as a cloud application administrator or higher permission level.
 
-1. In the identity drop down on the top right of the page (indicated by the email you are currently logged in as) select **Switch directory**, then select the directory yin which you want to register this application.
+1. In the identity dropdown on the top right of the page (indicated by the email you are currently logged in as) select **Switch directory**, then select the directory yin which you want to register this application.
 
 1. Browse to **Identity > Applications > App registrations** and select **New registration**.
 

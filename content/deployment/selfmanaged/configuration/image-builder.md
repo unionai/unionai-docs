@@ -208,7 +208,7 @@ By default, GCP uses [Kubernetes Service Accounts to GCP IAM](https://cloud.goog
 
 It is necessary to configure the GCP user service account with `iam.serviceAccounts.signBlob` project level permissions.
 
-#### GCP Cross Project access
+#### GCP Cross project access
 
 Access to registries that do not exist in the same GCP project as the data plane requires additional GCP permissions.
 

@@ -37,7 +37,7 @@ In low-privilege mode, the chart automatically:
 - Limits resource sync, executor, and monitoring to the release namespace
 - Disables features that require cluster-wide access (e.g. ClusterResourceSync and OpenCost. Both require cluster-wide access to function — OpenCost to aggregate spend across all namespaces, and ClusterResourceSync to propagate configs and RBAC into user namespaces.)
 
-## Namespace-scoped Roles
+## Namespace-scoped roles
 
 ##### `proxy-system-secret`
 - Scoped to `union` namespace
@@ -56,7 +56,7 @@ In low-privilege mode, the chart automatically:
 > [!NOTE] Low-privilege mode
 > The ClusterRoles below are **not created** in low-privilege mode. Equivalent namespace-scoped Roles are created instead.
 
-### Metrics and Monitoring
+### Metrics and monitoring
 
 ##### `release-name-kube-state-metrics`
 
@@ -78,7 +78,7 @@ In low-privilege mode, the chart automatically:
 - **Resources**: nodes, services, endpoints, pods, endpointslices, ingresses
 - **Special**: Access to `/metrics` and `/metrics/cadvisor` endpoints
 
-### Resource Management
+### Resource management
 
 ##### `clustersync-resource`
 - **Access**: Full control (`*`) over core and RBAC resources
@@ -91,7 +91,7 @@ In low-privilege mode, the chart automatically:
 - **Access**: Read-only (`get`, `list`, `watch`)
 - **Resources**: events, flyteworkflows, pods/log, pods, rayjobs, resourcequotas
 
-### Workflow Management
+### Workflow management
 
 ##### `operator-system`
 - **Access**: Full control over Flyte workflows, CRUD for core resources
@@ -112,14 +112,14 @@ In low-privilege mode, the chart automatically:
   - CRD management
   - Full control over flyteworkflows including finalizers
 
-## Service Access
+## Service access
 
 ### `operator/operator-proxy`
 Service that provides access to both cluster resources and cloud provider APIs, particularly focused on compute resource management.
 
-#### Kubernetes Resources
+#### Kubernetes resources
 
-##### Core Resources
+##### Core resources
 - Pods: Access via informers to monitor and manage pod lifecycle.
 - Nodes: Access to retrieve node information.
 - ResourceQuotas: Read access.
@@ -127,7 +127,7 @@ Service that provides access to both cluster resources and cloud provider APIs, 
 - Secrets: Access for credentials storage
 - Namespaces: Referenced in container/pod identification contexts
 
-##### Custom Resources
+##### Custom resources
 - FlyteWorkflows: Management of v1alpha1.FlyteWorkflow resources
 - Kueue Resources (optional): Access to ResourceFlavor, ClusterQueue, and other queue resources
 - Karpenter NodePools (optional): For AWS-based compute resource management
@@ -135,7 +135,7 @@ Service that provides access to both cluster resources and cloud provider APIs, 
 ##### Cloud Provider Resources
 - Object Storage: Read/write operations to cloud storage buckets
 
-##### Authentication and Configuration
+##### Authentication and configuration
 - OAuth: Uses app ID for authentication with Union cloud services
 - Service Account Roles: Configured via UserRoleKey and UserRole
 - Cluster Information: Access to cluster metadata and metrics
@@ -143,10 +143,10 @@ Service that provides access to both cluster resources and cloud provider APIs, 
 ### `FlytePropeller/PropellerWebhook`
 Kubernetes operator that executes Flyte graphs natively on Kubernetes. The webhook runs as a separate deployment with configurable certificate management (Helm-generated, cert-manager, external, or legacy).
 
-#### Kubernetes Resources
+#### Kubernetes resources
 - Manages pod creation for executions
 - Secret injection
 - MutatingWebhookConfiguration management (standard mode only; disabled in low-privilege mode)
 
-#### Custom Resources
+#### Custom resources
 - FlyteWorkflows: Management of v1alpha1.FlyteWorkflow resources

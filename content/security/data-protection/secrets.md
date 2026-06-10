@@ -12,7 +12,7 @@ Union.ai's secrets management system stores secret values exclusively within the
 
 | Backend | Storage Location | Default |
 |---|---|---|
-| Kubernetes Secrets | K8s etcd on customer cluster | Self-managed default |
+| Kubernetes Secrets | Kubernetes etcd on customer cluster | Self-managed default |
 | AWS Secrets Manager | AWS-managed service | BYOC default (AWS) |
 | GCP Secret Manager | GCP-managed service | BYOC default (GCP) |
 | Azure Key Vault | Azure-managed service | BYOC default (Azure) |
@@ -21,7 +21,7 @@ All four backends are available regardless of deployment model. The choice of ba
 
 ## Secret lifecycle
 
-**Creation:** When a user creates a secret via the UI or CLI, the value is sent directly to the data plane's secrets backend over the client-to-data-plane channel -- the Direct-to-Data-Plane tunnel under the default tier, or the customer-managed internal load balancer under the [Sovereign Data Plane](../architecture/sovereign-data-plane) tier -- and stored encrypted at rest in the customer's secret manager (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or K8s Secrets). The value never enters Union.ai's control plane in any form. The Envoy router inside the customer's cluster authenticates the request against Union.ai identity and enforces RBAC before the value reaches the secrets backend.
+**Creation:** When a user creates a secret via the UI or CLI, the value is sent directly to the data plane's secrets backend over the client-to-data-plane channel -- the Direct-to-Data-Plane tunnel under the default tier, or the customer-managed internal load balancer under the [Sovereign Data Plane](../architecture/sovereign-data-plane) tier -- and stored encrypted at rest in the customer's secret manager (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or Kubernetes Secrets). The value never enters Union.ai's control plane in any form. The Envoy router inside the customer's cluster authenticates the request against Union.ai identity and enforces RBAC before the value reaches the secrets backend.
 
 | Phase | Encrypted? | Details |
 |-------|------------|---------|
@@ -30,7 +30,7 @@ All four backends are available regardless of deployment model. The choice of ba
 | Client → Internal load balancer | **Yes** | TLS, customer-managed certificate ([Sovereign Data Plane](../architecture/sovereign-data-plane) tier only) |
 | At Envoy router (data plane) | **Plaintext in memory** | AuthN + RBAC check; not persisted, cached, or logged |
 | In data plane (operator) | **Plaintext in memory** | Briefly held before writing to secret backend |
-| At rest (secret backend) | **Yes** | AWS Secrets Manager (AES-256/KMS), GCP Secret Manager (Google-managed or CMEK), Azure Key Vault (HSM-backed), or K8s etcd encryption |
+| At rest (secret backend) | **Yes** | AWS Secrets Manager (AES-256/KMS), GCP Secret Manager (Google-managed or CMEK), Azure Key Vault (HSM-backed), or Kubernetes etcd encryption |
 
 **Consumption:** When a task pod is created, the system configures it to mount the requested secrets from the backend as environment variables or files. The value is read by the data plane's secrets backend and injected into the pod. It never leaves the customer's infrastructure during this process. The control plane is not involved in secret consumption at runtime.
 

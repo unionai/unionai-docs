@@ -20,7 +20,7 @@ Union.ai supports three execution modes, letting you choose the right trade-off 
 {{< grid cols=3 >}}
 
 {{< link-card target="running-locally" icon="laptop" title="Local" >}}
-Run tasks and apps directly in your local Python process with no K8s cluster or Docker required. Ideal for rapid iteration and debugging.
+Run tasks and apps directly in your local Python process with no Kubernetes cluster or Docker required. Ideal for rapid iteration and debugging.
 {{< /link-card >}}
 
 {{< link-card target="running-devbox" icon="box" title="Devbox" >}}

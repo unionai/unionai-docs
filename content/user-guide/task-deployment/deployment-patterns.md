@@ -574,7 +574,7 @@ Use `flyte.current_domain()` to deterministically create different task environm
 
 **Critical:** `flyte.init()` invocation at the module level is **strictly discouraged**. The reason is that at runtime, Flyte controls the initialization and configuration files are not present at runtime.
 
-### Alternative: Environment variable approach
+### Alternative: environment variable approach
 
 For cases where you need to pass domain information as environment variables to the container runtime, use this approach:
 

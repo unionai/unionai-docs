@@ -11,7 +11,7 @@ top_menu: true
 {{< markdown >}}
 
 Flyte is an open source project that is built and maintained by a community of contributors.
-Union AI is the primary maintainer of Flyte and developer of Union.ai, a closed source commercial product that is built on top of Flyte.
+Union.ai is the primary maintainer of Flyte and developer of Union.ai, a closed source commercial product that is built on top of Flyte.
 
 Since the success of Flyte is essential to the success of Union.ai,
 the company is dedicated to building and expanding the Flyte open source project and community.
@@ -40,7 +40,7 @@ For information on how to get involved and how to keep in touch, see the [Flyte 
 
 ## Contributing to documentation
 
-Union AI maintains and hosts both Flyte and Union documentation at [www.union.ai/docs]({{< docs_home root v2 >}}).
+Union.ai maintains and hosts both Flyte and Union documentation at [www.union.ai/docs]({{< docs_home root v2 >}}).
 The two sets of documentation are deeply integrated, as the Union product is built on top of Flyte.
 To better maintain both sets of docs, they are hosted in the same repository (but rendered so that you can choose to view one or the other).
 
