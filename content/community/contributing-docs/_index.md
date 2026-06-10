@@ -14,9 +14,9 @@ This section will explain how the docs site works, how to author and build it lo
 
 ## The combined Flyte and Union docs site
 
-As the primary maintainer and contributor of the open-source Flyte project, Union AI is responsible for hosting the Flyte documentation.
+As the primary maintainer and contributor of the open-source Flyte project, Union.ai is responsible for hosting the Flyte documentation.
 
-Additionally, Union AI is also the company behind the commercial Union.ai product, which is based on Flyte.
+Additionally, Union.ai is also the company behind the commercial Union.ai product, which is based on Flyte.
 
 Since Flyte and Union.ai share a lot of common functionality, much of the documentation content is common between the two.
 However, there are some significant differences between not only Flyte and Union.ai but also among the different Union.ai product offering (Serverless, BYOC, and Self-managed).

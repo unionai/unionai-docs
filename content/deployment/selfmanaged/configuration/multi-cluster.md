@@ -4,7 +4,7 @@ weight: 3
 variants: -flyte +union
 ---
 
-# Multiple Clusters
+# Multiple clusters
 
 Union enables you to integrate multiple Kubernetes clusters into a single Union control plane using the `clusterPool` abstraction.
 

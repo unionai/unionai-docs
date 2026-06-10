@@ -372,7 +372,7 @@ flyte delete api-key my-ci-key
 {{< /tab >}}
 {{< /tabs >}}
 
-#### Using API keys with Union Apps
+#### Using API keys with Union apps
 
 API keys created with `flyte create api-key` can be used to authenticate requests to Union Apps hosted on your Union cluster. However, note that:
 

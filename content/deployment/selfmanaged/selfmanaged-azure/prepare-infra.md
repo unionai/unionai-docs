@@ -8,7 +8,7 @@ variants: -flyte +union
 
 This page walks you through the Azure infrastructure required before deploying the Union dataplane on AKS. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-azure/deploy-dataplane).
 
-> [!NOTE] **Deployment model**: This guide covers **Self Managed** — you run only the dataplane chart; Union hosts the control plane.
+> [!NOTE] **Deployment model**: This guide covers **Self-managed** — you run only the dataplane chart; Union hosts the control plane.
 
 ## Prerequisites
 - Azure CLI [installed](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and [configured](https://learn.microsoft.com/en-us/cli/azure/get-started-with-azure-cli?view=azure-cli-latest#sign-in-to-azure)
@@ -38,7 +38,7 @@ export WORKER_IDENTITY_NAME=union-executions
 export DATAPLANE_NAMESPACE=union
 ```
 
-## 1. Subscription and Resource Group
+## 1. Subscription and resource group
 
 All Union infrastructure lives in a dedicated resource group for access control and cost tracking.
 
@@ -50,7 +50,7 @@ az group create \
   --location $LOCATION
 ```
 
-## 2. AKS Cluster
+## 2. AKS cluster
 
 You need an AKS cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
 
@@ -92,7 +92,7 @@ az aks get-credentials \
   --name $CLUSTER_NAME
 ```
 
-## 3. Node Pools
+## 3. Node pools
 
 Union workloads run on dedicated node pools. Separating system, worker, and GPU nodes allows independent scaling and keeps system pods stable.
 
@@ -127,7 +127,7 @@ az aks nodepool add \
 
 > [!NOTE] **Spot VMs**: Union supports interruptible workloads on Azure Spot. Spot nodes are identified by the label `kubernetes.azure.com/scalesetpriority: spot`, which AKS sets automatically when `--priority Spot` is used.
 
-## 4. Storage Account and Container
+## 4. Storage account and container
 
 Union stores workflow metadata and code bundle artifacts in Azure Blob Storage. The storage account **must have Data Lake Storage Gen2 enabled** (`--enable-hierarchical-namespace`) — Union uses the `abfs://` protocol which requires this.
 
@@ -146,7 +146,7 @@ az storage container create \
   --account-name $STORAGE_ACCOUNT
 ```
 
-### CORS Configuration
+### CORS configuration
 
 To enable the [Code Viewer](../configuration/code-viewer) in the Union UI, configure a CORS rule on your Storage Account:
 
@@ -161,11 +161,11 @@ az storage cors add \
   --account-name $STORAGE_ACCOUNT
 ```
 
-### Data Retention
+### Data retention
 
 Union recommends using lifecycle management policies on your Storage Account to manage storage costs. See [Data retention policy](../configuration/data-retention) for more information.
 
-## 5. Managed Identities
+## 5. Managed identities
 
 Union separates infrastructure-level access from workload-level access using two identities:
 
@@ -207,7 +207,7 @@ export WORKER_PRINCIPAL_ID=$(az identity show \
   --query principalId --output tsv)
 ```
 
-## 6. Workload Identity and Federated Credentials
+## 6. Workload Identity and federated credentials
 
 Azure Workload Identity lets Kubernetes pods authenticate to Azure services using a projected service account token — no credentials stored in secrets.
 
@@ -251,7 +251,7 @@ for ns in development staging production; do
 done
 ```
 
-## 7. Role Assignments
+## 7. Role assignments
 
 The managed identities need explicit RBAC permissions on the storage account.
 

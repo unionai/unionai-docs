@@ -48,7 +48,7 @@ sequenceDiagram
 - Access to create OAuth applications in your IdP.
 - A secret management solution for delivering client secrets to pods (e.g., External Secrets Operator with AWS Secrets Manager, HashiCorp Vault, or native Kubernetes secrets).
 
-## Configuring your Identity Provider
+## Configuring your identity provider
 
 You must create three OAuth applications in your IdP:
 
@@ -492,7 +492,7 @@ export FLYTE_CREDENTIALS_AUTH_MODE=basic
 
 Verify that `useAuth: true` is set in `flyte.configmap.adminServer.server.security`. Without this, the `/login`, `/callback`, and `/me` endpoints are not registered.
 
-### SDK gets 401 Unauthenticated
+### SDK gets 401 unauthenticated
 
 1. Check that the `AuthMetadataService` routes are in the **unprotected** ingress (no auth-url annotation).
 2. Verify the SDK can reach the token endpoint. The SDK discovers it via `AuthMetadataService/GetOAuth2Metadata`.

@@ -13,7 +13,7 @@ Use these as you would normally, passing them as inputs and outputs of tasks.
 Unlike **offloaded types** like [`DataFrame`s](./dataframes), [`File`s and `Dir`s](./files-and-directories), data class and Pydantic model data is fully serialized, stored, and deserialized between tasks.
 This makes them ideal for configuration objects, metadata, and smaller structured data where all fields should be serializable.
 
-## Example: Combining Dataclasses and Pydantic Models
+## Example: Combining dataclasses and Pydantic models
 
 This example demonstrates how data classes and Pydantic models work together as materialized data types, showing nested structures and batch processing patterns:
 

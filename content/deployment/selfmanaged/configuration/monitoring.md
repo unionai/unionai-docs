@@ -31,7 +31,7 @@ The chart offers two Prometheus deployment options for Union features:
 
 ```
                     ┌─────────────────────────────────────┐
-                    │          Data Plane Cluster         │
+                    │          Data plane cluster         │
                     │                                     │
                     │  ┌──────────────────────┐           │
                     │  │  Prometheus          │           │
@@ -117,7 +117,7 @@ http://union-operator-prometheus.<NAMESPACE>.svc:80/prometheus
 
 OpenCost is pre-configured to use this endpoint. You do not need to change it unless you rename the Helm release.
 
-## Prometheus Simple (low-privilege mode)
+## Prometheus simple (low-privilege mode)
 
 For deployments that cannot use cluster-wide RBAC (e.g., single-namespace or low-privilege mode), enable `prometheus-simple` instead of the default static Prometheus:
 
