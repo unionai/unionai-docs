@@ -20,7 +20,7 @@ All the buildable APIs are defined in Makefiles of the form:
 To build it, run `make -f unionai-docs-infra/Makefile.api.<your_api>` and observe the setup
 requirements in the `README.md` file above. Alternatively, `make update-api-docs` will regenerate all API docs.
 
-## Package Resource Resolution
+## Package resource resolution
 
 When scanning the packages we need to know when to include or exclude an object
 (class, function, variable) from the documentation. The parser will follow this
@@ -72,7 +72,7 @@ workflow to decide, in order, if the resource must be in or out:
    In this example only `AnotherLocalThingy` and `b_func` will show in the docs.
    Neither none of the imports nor `_LocalThingy` will show in the documentation.
 
-## Tips and Tricks
+## Tips and tricks
 
 1. If you either have no resources without a `_` nor an `__all__` to
    export blocked resources (imports or starting with `_`, the package will have no content and thus will not be generated.

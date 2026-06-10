@@ -83,7 +83,7 @@ async def main() -> list[int]:
 
 By default, actions in the UI use the task's function name. You can provide custom, user-friendly names using the `short_name` parameter.
 
-### Set at Task Definition
+### Set at task definition
 
 ```python
 import flyte

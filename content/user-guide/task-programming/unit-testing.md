@@ -166,7 +166,7 @@ async def test_traced_multiply():
 
 5. **Mock external dependencies**: Use standard Python mocking techniques for external services, databases, etc.
 
-## Quick Reference
+## Quick reference
 
 | Test Scenario | Method | Example |
 |--------------|--------|---------|

@@ -27,7 +27,7 @@ The magic of container tasks lies in Flyte's **copilot sidecar system**. When yo
 
 This means you can construct workflows where some tasks are container tasks while others are Python functions, and data will flow seamlessly between them.
 
-## Basic Usage
+## Basic usage
 
 Here's a simple example that runs a shell command in an Alpine container:
 
@@ -214,9 +214,9 @@ async def multi_lang_workflow(iterations: int) -> dict:
     return {"rust_result": computed, "analysis": processed}
 ```
 
-## Configuration Options
+## Configuration options
 
-### ContainerTask Parameters
+### ContainerTask parameters
 
 - **name**: Unique identifier for the task
 - **image**: Container image to use (string or `Image` object)
@@ -247,7 +247,7 @@ Container tasks support all standard Flyte types:
 5. **Consider image size**: Smaller images lead to faster task startup times
 6. **Document input/output contracts**: Clearly specify what data flows in and out
 
-## Local Execution
+## Local execution
 
 Container tasks require Docker to be installed and running on your local machine. When you run them locally, Flyte will:
 

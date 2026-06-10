@@ -8,7 +8,7 @@ variants: -flyte +union
 
 This page walks you through the Azure infrastructure required before deploying the Union dataplane on AKS. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-azure/deploy-dataplane).
 
-> [!NOTE] **Deployment model**: This guide covers **Self Managed** — you run only the dataplane chart; Union hosts the control plane.
+> [!NOTE] **Deployment model**: This guide covers **Self-managed** — you run only the dataplane chart; Union hosts the control plane.
 
 ## Prerequisites
 - Azure CLI [installed](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and [configured](https://learn.microsoft.com/en-us/cli/azure/get-started-with-azure-cli?view=azure-cli-latest#sign-in-to-azure)
@@ -146,7 +146,7 @@ az storage container create \
   --account-name $STORAGE_ACCOUNT
 ```
 
-### CORS Configuration
+### CORS configuration
 
 To enable the [Code Viewer](../configuration/code-viewer) in the Union UI, configure a CORS rule on your Storage Account:
 

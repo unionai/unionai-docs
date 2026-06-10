@@ -105,7 +105,7 @@ gcloud storage buckets create gs://${BUCKET_PREFIX}-fast-reg \
   --location ${REGION}
 ```
 
-### CORS Configuration
+### CORS configuration
 
 To enable the [Code Viewer](../configuration/code-viewer) in the Union UI, configure a CORS policy on your buckets. This allows the UI to securely fetch code bundles directly from GCS.
 

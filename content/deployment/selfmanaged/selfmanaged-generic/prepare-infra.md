@@ -30,7 +30,7 @@ Regardless of how you create your cluster, verify the following requirements are
 
 Union supports autoscaling and the use of spot (interruptible) instances if your infrastructure provides them.
 
-## Object Storage
+## Object storage
 
 Each data plane uses S3-compatible object storage (such as [MinIO](https://min.io)) to store data used in workflow execution.
 Union recommends the use of two buckets:
@@ -51,7 +51,7 @@ mc mb myminio/union-metadata
 mc mb myminio/union-fast-reg
 ```
 
-### CORS Configuration
+### CORS configuration
 
 To enable the [Code Viewer](../configuration/code-viewer) in the Union UI, configure a CORS policy on your bucket(s). This allows the UI to securely fetch code bundles directly from storage.
 
@@ -102,7 +102,7 @@ docker run -d -p 5000:5000 --restart=always --name registry registry:2
 
 Note the registry URL (e.g. `registry.example.com:5000/union`) — you will configure it in your Helm values.
 
-## Identity & Access
+## Identity & access
 
 On generic Kubernetes, Union authenticates to object storage and the container registry using static credentials (access key and secret key). These are configured in the generated values file during deployment.
 

@@ -21,7 +21,7 @@ The data plane consists of several components, each handling a specific aspect o
 - **Structured I/O retrieval** -- inputs and outputs of actions (small protobuf literals) are served back through the `dataproxy`.
 - **Log fetching** -- live logs from the Kubernetes API, persisted logs from the cloud log aggregator (CloudWatch, Cloud Logging, or Azure Monitor). There is no content filtering or redaction; any sensitive data (secrets, PII, stack traces) that user code writes to stdout/stderr is served unmodified.
 - **Auxiliary UI proxying** -- Ray dashboards, Spark history servers, in-task debuggers, and other per-action UIs are served back through the `dataproxy` via the same authenticated path.
-- **Secret writes** -- secret values from the SDK or UI are routed to the data-plane secrets backend (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or K8s Secrets) without traversing the control plane.
+- **Secret writes** -- secret values from the SDK or UI are routed to the data-plane secrets backend (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or Kubernetes Secrets) without traversing the control plane.
 
 **Executor** is a Kubernetes controller that creates and manages the task pods based on signals from the control plane. If connectivity to the control plane is lost, in-flight pods continue running and state reconciles when the connection is restored.
 

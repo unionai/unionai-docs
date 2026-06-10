@@ -33,7 +33,7 @@ oci ce cluster create \
 
 Union supports Autoscaling and the use of preemptible instances.
 
-## Object Storage
+## Object storage
 
 Each data plane uses OCI Object Storage buckets to store data used in workflow execution.
 Union recommends the use of two buckets:
@@ -59,7 +59,7 @@ oci os bucket create \
   --region ${REGION}
 ```
 
-### CORS Configuration
+### CORS configuration
 
 To enable the [Code Viewer](../configuration/code-viewer) in the Union UI, configure a CORS policy on your bucket(s). This allows the UI to securely fetch code bundles directly from storage.
 
@@ -88,7 +88,7 @@ oci artifacts container-repository create \
 
 Note the repository path (e.g. `${REGION}.ocir.io/<TENANCY_NAMESPACE>/union-dataplane/imagebuilder`) — you will reference it when configuring access below.
 
-## Identity & Access
+## Identity & access
 
 Union services and workflow task pods need access to your Object Storage buckets and Container Registry. OCI supports two authentication models:
 

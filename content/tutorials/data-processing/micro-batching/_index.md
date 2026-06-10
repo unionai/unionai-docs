@@ -50,7 +50,7 @@ This notebook demonstrates a production-ready pattern for processing millions of
 3. **Efficiency:** Optimize resource consumption through container reuse and parallel processing
 4. **Cost Savings:** Minimize wasted compute by checkpointing progress
 
-## Solution Architecture
+## Solution architecture
 
 This example demonstrates a production-ready micro-batching pattern that combines some Union features, including:
 
@@ -67,7 +67,7 @@ Instead of creating a new container for each task:
 - **Automatic scaling:** Replicas scale between min/max based on workload
 - **Resource optimization:** Dramatically reduced startup overhead
 
-### Key Benefits:
+### Key benefits:
 - **Automatic checkpointing** at batch and operation boundaries  
 - **Resume from last successful point** on any failure  
 - **No wasted compute** - never re-execute completed work  
@@ -245,7 +245,7 @@ batch_env = flyte.TaskEnvironment(
 # - Time to process all: ~20 rounds of execution
 ```
 
-#### Understanding TaskEnvironment Parameters
+#### Understanding TaskEnvironment parameters
 
 **name:** 
 - Used as the prefix for Kubernetes pod names
@@ -414,7 +414,7 @@ async def poll_job_status(job_id: str, request_id: int) -> int:
 
 This is the heart of the pattern. The `process_batch` task processes a batch of items with automatic checkpointing using `@flyte.trace`.
 
-#### Key Concepts:
+#### Key concepts:
 
 **Two-Phase Processing:**
 1. **Submit Phase:** Send all items to external service concurrently

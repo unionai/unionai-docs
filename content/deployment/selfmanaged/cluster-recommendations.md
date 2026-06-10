@@ -1,5 +1,5 @@
 ---
-title: Cluster Recommendations
+title: Cluster recommendations
 weight: 2
 variants: -flyte +union
 ---
@@ -11,13 +11,13 @@ This includes managed Kubernetes services such as Google Kubernetes Engine (GKE)
 
 While many configurations are supported, we have some recommendations to ensure the best performance and reliability of your Union deployment.
 
-## Kubernetes Versions
+## Kubernetes versions
 
 We recommend running Kubernetes versions that are [actively supported by the Kubernetes community](https://kubernetes.io/releases/).  This
 typically means running one of the most recent three minor versions.  For example, if the most recent version is 1.32, we recommend
 running 1.32, 1.31, or 1.30.
 
-## Networking Requirements
+## Networking requirements
 
 Many Container Network Interface (CNI) plugins require planning for IP address allocation capacity.
 For example, [Amazon's VPC CNI](https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html) and [GKE's Dataplane v2](https://cloud.google.com/kubernetes-engine/docs/concepts/dataplane-v2)
@@ -72,9 +72,9 @@ See the cloud-specific setup pages for details on configuring this service accou
 > [!NOTE] Common service account
 > In previous versions, each component had its own service account. The consolidated `union-system` service account simplifies IAM configuration — you only need to bind cloud permissions to a single identity.
 
-# Performance Recommendations
+# Performance recommendations
 
-## Node Pools
+## Node pools
 
 It is recommended but not required to use separate node pools for the Union services and the Union worker pods.  This allows you to
 guard against resource contention between Union services and other tasks running in your cluster.  You can find additional information

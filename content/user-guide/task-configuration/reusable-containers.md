@@ -36,7 +36,7 @@ When you configure a `TaskEnvironment` with a `ReusePolicy`, the system does the
 4. Supports concurrent task execution within containers (for async tasks).
 5. Preserves the Python execution environment across task executions, allowing you to maintain state through global variables.
 
-## Basic Usage
+## Basic usage
 
 > [!NOTE]
 > The reusable containers feature currently requires a dedicated runtime library

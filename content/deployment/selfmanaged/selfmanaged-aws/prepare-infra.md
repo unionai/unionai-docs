@@ -78,7 +78,7 @@ aws s3api create-bucket \
 
 > [!NOTE] If your region is `us-east-1`, omit the `--create-bucket-configuration` flag.
 
-### CORS Configuration
+### CORS configuration
 
 To enable the [Code Viewer](../configuration/code-viewer) in the Union UI, configure a CORS policy on your buckets. This allows the UI to securely fetch code bundles directly from S3.
 
