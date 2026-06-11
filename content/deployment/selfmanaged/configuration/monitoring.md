@@ -168,25 +168,20 @@ This deploys a full [kube-prometheus-stack](https://github.com/prometheus-commun
 
 The `kube-prometheus-stack` uses the Prometheus Operator, which discovers scrape targets and alerting rules through Kubernetes CRDs (ServiceMonitor, PodMonitor, PrometheusRule, etc.). If you prefer to use static scrape configs with your own Prometheus instead, see [Scraping Union services from your own Prometheus](#scraping-union-services-from-your-own-prometheus).
 
-To install the CRDs, use the `dataplane-crds` chart:
-
-```yaml
-# dataplane-crds values
-crds:
-  flyte: true
-  prometheusOperator: true  # Install Prometheus Operator CRDs
-```
-
-Then install or upgrade the CRDs chart before the data plane chart:
+The Prometheus Operator CRDs are vendored in [unionai/helm-charts](https://github.com/unionai/helm-charts) under `crds/kube-prometheus-stack/`. Install them via server-side apply before the data plane chart:
 
 ```shell
-helm upgrade --install union-dataplane-crds unionai/dataplane-crds \
-  --namespace union \
-  --set crds.prometheusOperator=true
+# From a checkout of unionai/helm-charts
+git clone https://github.com/unionai/helm-charts.git
+cd helm-charts
+
+kubectl apply --server-side --force-conflicts -f crds/kube-prometheus-stack/
 ```
 
+Server-side apply is required: the prometheus-operator CRDs ship OpenAPI v3 schemas larger than Kubernetes' 256 KiB `kubectl.kubernetes.io/last-applied-configuration` annotation limit. `--force-conflicts` is needed only on first install (or when adopting CRDs previously owned by another tool) to transfer SSA field ownership.
+
 > [!NOTE] CRD installation order
-> CRDs must be installed before the data plane chart. The `dataplane-crds` chart should be deployed first, and the monitoring stack's own CRD installation is disabled (`monitoring.crds.enabled: false`) to avoid conflicts.
+> CRDs must be installed before the data plane chart. The data plane chart is installed with `--skip-crds` so Helm doesn't attempt to manage them; the monitoring stack's own CRD installation is also disabled (`monitoring.crds.enabled: false`) to avoid conflicts.
 
 ### Customizing the monitoring stack
 
@@ -285,7 +280,7 @@ spec:
       interval: 30s
 ```
 
-This requires the Prometheus Operator CRDs. Install them via the `dataplane-crds` chart with `crds.prometheusOperator: true`.
+This requires the Prometheus Operator CRDs. Install them via server-side apply from `crds/kube-prometheus-stack/` in [unionai/helm-charts](https://github.com/unionai/helm-charts) — see [Prometheus Operator CRDs](#prometheus-operator-crds) above.
 
 ## Further reading
 
