@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Triggers and dynamic workflows
 
-## LaunchPlan to Trigger migration
+## LaunchPlan to trigger migration
 
 {{< tabs "migration-triggers" >}}
 {{< tab "Flyte 1" >}}

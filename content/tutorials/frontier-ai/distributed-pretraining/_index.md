@@ -150,7 +150,7 @@ The callback only runs on rank 0. In distributed training, all 8 GPUs have ident
 
 When you restart a failed run, pass the checkpoint via `resume_checkpoint` so training resumes exactly where it left off, including the same step count, optimizer state, and learning rate schedule position.
 
-### Real-time metrics with Flyte Reports
+### Real-time metrics with Flyte reports
 
 Multi-day training runs need observability. Is the loss decreasing? Did training diverge? Is the learning rate schedule behaving correctly? Flyte Reports let you build live dashboards directly in the UI:
 

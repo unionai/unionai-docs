@@ -1,11 +1,11 @@
 ---
-title: Computer Vision
+title: Computer vision
 weight: 5
 variants: +flyte +union
 sidebar_expanded: true
 ---
 
-# Computer Vision
+# Computer vision
 
 Tutorials for image and vision-language model workloads.
 

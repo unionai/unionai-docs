@@ -10,7 +10,7 @@ Documentation for installing and configuring the Union Terraform provider is com
 
 In the meantime, you can find the latest information about the provider in the [Terraform Registry](https://registry.terraform.io/providers/unionai/unionai/latest/docs).
 
-## Quick Start
+## Quick start
 
 To use the Union Terraform provider, add it to your Terraform configuration:
 

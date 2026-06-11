@@ -175,7 +175,7 @@ agent = Agent(
 
 Every step of the loop emits a typed `AgentEvent` (`agent_start`, `turn_start`, `tool_start`, `tool_end`, `approval_request`, …). Subscribe by setting the `agent_progress_cb` context variable to forward events to logs, NDJSON streams, websockets, or {{< key product_name >}} reports. The built-in chat UI uses this hook to stream progress; see [Add a chat UI](./agent-chat-ui).
 
-## Extending the Agent class
+## Extending the agent class
 
 The default loop is robust, but sometimes you need custom behavior around it: input guardrails, output post-processing, a different control flow, or extra bookkeeping. The cleanest way to do this is to subclass `Agent` and override its `run` method.
 

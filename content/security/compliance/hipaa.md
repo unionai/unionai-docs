@@ -8,7 +8,7 @@ variants: -flyte +union
 
 Union.ai supports HIPAA compliance for organizations processing protected health information (PHI). The architectural separation between control plane and data plane described in [Two-plane separation](../architecture/two-plane-separation) is the foundation of HIPAA compliance.
 
-No PHI ever transits Union.ai's control plane. Bulk PHI (files, DataFrames), structured task inputs and outputs, secret values, log streams, and reports are all served directly from the customer's data plane through the Direct-to-DataPlane tunnel; the control plane is not on the data path. PHI written to stdout/stderr flows through the tunnel to the requesting client without traversing Union.ai infrastructure.
+No PHI ever transits Union.ai's control plane. Bulk PHI (files, DataFrames), structured task inputs and outputs, secret values, log streams, and reports are all served directly from the customer's data plane through the Direct-to-Data-Plane tunnel; the control plane is not on the data path. PHI written to stdout/stderr flows through the tunnel to the requesting client without traversing Union.ai infrastructure.
 
 To request a Business Associate Agreement (BAA), submit the request through Union.ai's [Trust Center](https://app.vanta.com/c/union/trust-center).
 

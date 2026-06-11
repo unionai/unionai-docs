@@ -25,7 +25,7 @@ that points to:
 All links within LLM-optimized files use absolute URLs (`https://www.union.ai/docs/...`),
 so files work correctly when copied locally and used outside the docs site.
 
-## Per-page Markdown (`page.md`)
+## Per-page markdown (`page.md`)
 
 Every page on this site has a parallel LLM-optimized version in clean Markdown,
 accessible at the same URL path with `/page.md` appended and via the "**This page**" link in the "**LLM-optimized**" section of the right sidebar.

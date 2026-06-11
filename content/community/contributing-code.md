@@ -68,7 +68,7 @@ This is helpful to build human-readable release notes. [Learn more](https://keep
 > [!NOTE]
 > Learn how to apply a label to a PR in the [GitHub docs](https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels#applying-a-label).
 
-## 🐞 File an issue
+## 🐞 file an issue
 
 We use [GitHub Issues](https://github.com/flyteorg/flyte/issues) for issue tracking. The following issue types are available for filing an issue:
 
@@ -85,7 +85,7 @@ Also, add relevant labels to your issue. For example, if you are filing a Flytek
 
 For feedback at any point in the contribution process, feel free to reach out to us on [Slack](https://flyte-org.slack.com/archives/C04NJPLRWUX).
 
-## Component Reference
+## Component reference
 
 To understand how the below components interact with each other, refer to [Component Reference](#component-reference).
 
@@ -127,7 +127,7 @@ To understand how the below components interact with each other, refer to [Compo
 
 | **Repo** | [flyteadmin](https://github.com/flyteorg/flyteadmin) \| [Code Reference](https://pkg.go.dev/mod/github.com/flyteorg/flyteadmin) |
 |----------|------------------------------------------------------------------------------------------------|
-| **Purpose** | Control Plane |
+| **Purpose** | Control plane |
 | **Language** | Go |
 | **Guidelines** |                                                                                          |
 |              | - Check for Makefile in the root repo                                                      |
@@ -193,7 +193,7 @@ To understand how the below components interact with each other, refer to [Compo
 | **Language** | Go |
 | **Guidelines** | Refer to the [FlyteCTL Contribution Guide](https://docs.flyte.org/en/latest/flytectl/contribute.html) |
 
-## Development Environment Setup Guide
+## Development environment setup guide
 
 This guide provides a step-by-step approach to setting up a local
 development environment for
