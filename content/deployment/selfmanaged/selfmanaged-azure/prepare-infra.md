@@ -29,6 +29,7 @@ export ORG_NAME=<your-union-org-name>       # provided by Union
 # --- Storage ---
 export STORAGE_ACCOUNT=uniondataplane       # 3-24 lowercase alphanumeric, globally unique
 export METADATA_CONTAINER=union-metadata
+export FLUENTBIT_SECRET_NAME=fluentbit-azure-key   # k8s secret holding the storage key for persisted logs
 
 # --- Identities ---
 export BACKEND_IDENTITY_NAME=union-backend
@@ -139,12 +140,21 @@ az storage account create \
   --sku Standard_LRS \
   --kind StorageV2 \
   --enable-hierarchical-namespace true \
-  --allow-blob-public-access false
+  --allow-blob-public-access false \
+  --allow-shared-key-access true
 
 az storage container create \
   --name $METADATA_CONTAINER \
   --account-name $STORAGE_ACCOUNT
 ```
+
+> [!NOTE] **Shared key access is required for persisted task logs.** Union ships task
+> logs to Blob Storage using FluentBit's `azure_blob` output plugin, which only supports
+> storage-account *shared key* (or SAS) authentication — it does **not** support Workload
+> Identity. All other components (operator, propeller, task pods) continue to use Workload
+> Identity; only FluentBit needs the shared key. Keep `--allow-shared-key-access true` so
+> the persisted-logs feature can authenticate. If your security policy requires shared-key
+> access to be disabled, you must instead use Azure Log Analytics for persisted logs.
 
 ### CORS Configuration
 
@@ -280,7 +290,57 @@ az role assignment create \
   --scope $STORAGE_ACCOUNT_ID
 ```
 
-## 8. Azure Key Vault (optional)
+## 8. Persisted logs storage key (FluentBit)
+
+To display historical task logs in the Union UI, FluentBit ships container logs to your
+storage account. Because its `azure_blob` output cannot use Workload Identity (see the note in
+[Storage Account and Container](#4-storage-account-and-container)), you must provide the storage
+account shared key as a Kubernetes secret. The dataplane chart references this secret to inject
+the key into FluentBit at runtime, so the key never appears in the rendered ConfigMap.
+
+> [!NOTE] This step requires cluster credentials from [AKS Cluster](#2-aks-cluster)
+> (`az aks get-credentials`).
+
+Retrieve the storage account key and create the secret in the dataplane namespace:
+
+```bash
+# Ensure the dataplane namespace exists
+kubectl create namespace $DATAPLANE_NAMESPACE \
+  --dry-run=client -o yaml | kubectl apply -f -
+
+# Fetch the storage account key
+export STORAGE_ACCOUNT_KEY=$(az storage account keys list \
+  --account-name $STORAGE_ACCOUNT \
+  --resource-group $RESOURCE_GROUP \
+  --query "[0].value" --output tsv)
+
+# Create the secret FluentBit reads (key name must be 'shared_key')
+kubectl create secret generic $FLUENTBIT_SECRET_NAME \
+  --namespace $DATAPLANE_NAMESPACE \
+  --from-literal=shared_key="$STORAGE_ACCOUNT_KEY"
+```
+
+You will wire this secret into the chart in [Deploy the dataplane](../selfmanaged-azure/deploy-dataplane)
+via the `fluentbit` values, for example:
+
+```yaml
+fluentbit:
+  # Placeholder is expanded by FluentBit at runtime from the env var below,
+  # keeping the key out of the rendered ConfigMap.
+  azureBlobSharedKey: "${AZURE_STORAGE_SHARED_KEY}"
+  env:
+    - name: AZURE_STORAGE_SHARED_KEY
+      valueFrom:
+        secretKeyRef:
+          name: fluentbit-azure-key
+          key: shared_key
+```
+
+> [!NOTE] The storage account key grants full access to the account. Rotate it on your normal
+> schedule; after rotation, update the secret (`kubectl create secret ... --dry-run=client -o yaml
+> | kubectl apply -f -`) and restart the FluentBit DaemonSet.
+
+## 9. Azure Key Vault (optional)
 
 Union provides an embedded secrets management backend. If your organization needs to integrate with Azure Key Vault, create a vault and grant the backend identity access:
 
