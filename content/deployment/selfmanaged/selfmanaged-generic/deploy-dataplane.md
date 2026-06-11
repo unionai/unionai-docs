@@ -34,11 +34,11 @@ If you have not yet set up the required resources (Kubernetes cluster, object st
 
    ```bash
    uctl config init --host=<YOUR_UNION_CONTROL_PLANE_URL>
-   uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME>  --provider metal
+   uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME>  --provider custom
    ```
 
    * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
-     It will also generate a YAML file specific to the provider that you specify, in this case `metal` (bare metal / generic).
+     It will also generate a YAML file specific to the provider that you specify, in this case `custom` (generic / on-premise).
 
    * Save the secret that is displayed. Union does not store the credentials; rerunning the same command can be used to retrieve the secret later.
 
