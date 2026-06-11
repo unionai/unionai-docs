@@ -301,7 +301,7 @@ kubectl create namespace $DATAPLANE_NAMESPACE \
   --dry-run=client -o yaml | kubectl apply -f -
 
 # Fetch the storage account key
-export STORAGE_ACCOUNT_KEY=$(az storage account keys list \
+STORAGE_ACCOUNT_KEY=$(az storage account keys list \
   --account-name $STORAGE_ACCOUNT \
   --resource-group $RESOURCE_GROUP \
   --query "[0].value" --output tsv)
@@ -310,6 +310,8 @@ export STORAGE_ACCOUNT_KEY=$(az storage account keys list \
 kubectl create secret generic $FLUENTBIT_SECRET_NAME \
   --namespace $DATAPLANE_NAMESPACE \
   --from-literal=shared_key="$STORAGE_ACCOUNT_KEY"
+
+unset STORAGE_ACCOUNT_KEY
 ```
 
 You will wire this secret into the chart in [Deploy the dataplane](../selfmanaged-azure/deploy-dataplane)
