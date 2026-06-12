@@ -16,7 +16,7 @@ Each session has its own work dir on the sandbox filesystem. State written there
 import tempfile
 
 with tempfile.TemporaryDirectory() as work:
-    async with sb.on_device.session(host_work_dir=work) as sbx:
+    async with sb.on_device.session(host_work_dir=work, backend="userns") as sbx:
         await sbx.put_bytes(f"{work}/input.json", b'{"x": 1}')
 
         proc = await sbx.run(f"python {work}/process.py")
@@ -46,6 +46,7 @@ You can add host paths to the allow-list. Additions never replace the secure def
 
 ```python
 sbx = sb.on_device.session(
+    backend="userns",                        # vanilla pod; no extra capabilities
     read_only_paths=["/opt/models"],         # extend the read-only allow-list
     read_write_paths=["/data/scratch"],      # extend the read-write allow-list
     host_work_dir="/tmp/my-sandbox-work",    # pin the per-session work dir
@@ -53,6 +54,8 @@ sbx = sb.on_device.session(
 ```
 
 `host_work_dir` is useful when you want a stable, inspectable location for the work dir (CI artifacts, post-mortem debugging). When omitted, the library picks a fresh directory.
+
+One common use of `read_only_paths` is exposing a venv baked into the image so the sandboxed interpreter can import it — point it at the image's `VIRTUAL_ENV` (e.g. `/opt/venv`), which lives outside the default `/usr` allow-list. On the on-device transport you usually don't need to: when the session builds its shared venv (whenever `uv` is available), it bridges and mounts the image venv read-only for you. Reach for `read_only_paths` here only when `uv` isn't present or the framework lives at a path the auto-bridge won't mount.
 
 Inspect the effective allow-list at any time:
 

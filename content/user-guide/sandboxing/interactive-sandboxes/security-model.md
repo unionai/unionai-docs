@@ -27,12 +27,34 @@ The library reports the backend on each process as `proc.backend`. On a remote s
 | `sandbox-exec` | macOS wrapper around Apple's `sandbox-exec`; restricts writes to the work dir and can deny outbound sockets         | macOS on-device only                                                                                  |
 | `none`         | `setpgid` + best-effort `setrlimit`; logs a warning                                                                 | Dev only (no isolation)                                                                               |
 
-Both `userns` and `bubblewrap` layer namespaces (user, mount, UTS, IPC, net), dropped capabilities, and a [Landlock](https://docs.kernel.org/userspace-api/landlock.html) filesystem ruleset. `userns` additionally enforces a seccomp BPF deny-list for syscalls with no legitimate purpose in a sandbox.
+Both `userns` and `bubblewrap` layer namespaces, dropped capabilities, a [Landlock](https://docs.kernel.org/userspace-api/landlock.html) filesystem ruleset, and a seccomp BPF deny-list. They are not equally strong though: `bubblewrap` is the stronger backend. With `CAP_SYS_ADMIN` it pivots into a fresh mount root, which closes the gap where the sandbox shares the pod's root filesystem. `userns` is the lite variant: it runs in a vanilla pod with no extra capabilities, but it leaves that shared-rootfs gap open, so its mount isolation is weaker.
 
-The remote default is `userns` rather than `bubblewrap` because `bwrap` isn't always present in minimal container images. They are equivalent in security posture; pick `bubblewrap` if you prefer its ruleset model or already rely on it.
+The remote default is `userns` because it runs anywhere (`bwrap` needs `CAP_SYS_ADMIN` + unconfined AppArmor and isn't always present in minimal images). When you can grant the pod those capabilities and want the strongest in-pod isolation, choose `bubblewrap`.
 
-> [!IMPORTANT] The backend is always explicit — no auto-detection, no fallback
-> On the on-device transport you choose the backend with `backend=` on `sb.on_device.session(...)`; it defaults to `"bubblewrap"`. There is no auto-detection and no silent downgrade: if the chosen backend isn't available here, `run()` fails loudly rather than dropping to weaker isolation. `bubblewrap` needs `CAP_SYS_ADMIN` + unconfined AppArmor on the pod (via `flyte.PodTemplate.allow_nested_sandboxing()`), so on a vanilla pod with no extra capabilities you must pass `backend="userns"` explicitly. On a remote sandbox the backend is fixed by the `SandboxEnvironment`'s `sandbox_mode` instead.
+## Pod security for the bubblewrap backend
+
+`bubblewrap` runs as a non-root user via unprivileged user namespaces. But the containerd default seccomp profile only permits the `mount` / `pivot_root` / `setns` / `unshare` syscalls `bwrap` needs when the container's capability set includes `CAP_SYS_ADMIN`, and the default AppArmor profile must be `unconfined` so those calls aren't blocked.
+
+`flyte.PodTemplate().allow_nested_sandboxing()` grants exactly that: `CAP_SYS_ADMIN` plus unconfined AppArmor, `allowPrivilegeEscalation: false`. How you apply it depends on the transport:
+
+- On-device: put it on the task that opens the session, since the sandbox child runs in that pod.
+
+  ```python
+  bwrap_env = flyte.TaskEnvironment(
+      name="sandboxed-task",
+      image=sb.base_sandbox_image,
+      pod_template=flyte.PodTemplate().allow_nested_sandboxing(),
+  )
+
+  @bwrap_env.task
+  async def main() -> str:
+      async with sb.on_device.session(backend="bubblewrap") as sbx:
+          ...
+  ```
+
+- Remote: the `SandboxEnvironment` derives the pod template from `sandbox_mode` / `sys_cap_admin` for you and `sandbox_mode="bwrap"` carries the grant automatically. See [Deployment](./deployment).
+
+The `userns` backend needs none of this because it runs in a vanilla pod. Choose `userns` when you can't (or don't want to) grant the pod extra capabilities; choose `bubblewrap` when you can, for its stronger isolation — at the cost of the `CAP_SYS_ADMIN` + AppArmor grant above.
 
 ## Blast radius: why remote
 
@@ -73,14 +95,14 @@ hardened = sb.SandboxEnvironment(
 
 ## Choosing a posture
 
-Backend choice (`userns` vs `bwrap`) isn't really a threat-model decision; both layer namespaces, capability drops, and Landlock, and they're close enough in posture that the right call is usually "whatever is in your image." The defaults are fine for production. The process-level isolation they provide, in a normal container pod, is the **right default for the common case** — you don't need gVisor to run a sandbox responsibly. What changes as the trust level drops is the **pod runtime** (`container` vs `gvisor`) and **tenant isolation** (shared `SandboxEnvironment` vs one per tenant).
+Backend choice does affect isolation strength: `bubblewrap` is stronger than `userns`-lite (it closes the shared-rootfs gap, as above), so prefer `bubblewrap` when the pod can carry `CAP_SYS_ADMIN` + AppArmor and `userns` when it can't. But both are solid process-level isolation that's fine for production in a normal container pod. You don't need gVisor to run a sandbox responsibly. The bigger lever as trust drops is the pod runtime (`container` vs `gvisor`) and tenant isolation (shared `SandboxEnvironment` vs one per tenant).
 
 | Trust level                                                   | Pod runtime           | Tenant isolation                                               | Per-call notes                                                                                                            |
 | ------------------------------------------------------------- | --------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | Trusted (your own code/prompts, not exposed to end users)     | `container`           | Shared env is fine                                             | Default `network_mode="blocked"`; allow-list when you need it. Process isolation is sufficient.                          |
 | Semi-trusted (vetted third-party libraries, your own ML code) | `container`           | Shared env is fine                                             | Default `network_mode="blocked"`; allow-list when you need it.                                                            |
 | Untrusted (LLM-generated from end-user input, user-submitted) | `gvisor` (recommended) | Shared env is fine                                             | Stage inputs via `put_bytes`; keep `network_mode="blocked"` unless a step needs egress.                                   |
-| Multi-tenant, hostile inputs assumed                          | **`gvisor`**          | One `SandboxEnvironment` per tenant; no cross-tenant pod reuse | `network_mode="blocked"` on every `run()`; the proxy allow-list is not adversarial-safe (see [Networking](./networking)). |
+| Multi-tenant, hostile inputs assumed                          | `gvisor`           | One `SandboxEnvironment` per tenant; no cross-tenant pod reuse | `network_mode="blocked"` on every `run()`; the proxy allow-list is not adversarial-safe (see [Networking](./networking)). |
 
 The principle: **let the workload pick the floor, let the threat model pick the ceiling**. The default backend is the floor and is appropriate for the common case. Reach for gVisor when you're actually running hostile code or sharing the system across tenants — not as a blanket requirement.
 

@@ -87,7 +87,7 @@ Use it for agent loops, REPL-style apps, and any workflow that runs a sequence o
 | | Workflow sandbox (Monty) | Code sandbox (`flyte.sandbox.create()`) | Interactive sandbox (`union.sandbox`) |
 |---|---|---|---|
 | **Shape** | One sandboxed orchestration run that fans out to tools | One sandboxed invocation, typed inputs and outputs | Many commands against one live session, shared filesystem |
-| **Startup** | Microseconds | Seconds (image build, container spin-up) | Milliseconds (local), seconds (remote pod) |
+| **Startup** | Microseconds | Seconds (image build, container spin-up) | Milliseconds (on-device), seconds (remote pod) |
 | **State** | None across runs | None across runs | Persists on the sandbox FS across calls |
 | **Capabilities** | Pure Python control flow, no imports, no I/O, no network | Full Python and shell, declared dependencies | Full Python and shell, network and FS posture set per call |
 | **Isolation** | Structural (dangerous operations are impossible) | Container | bubblewrap / userns by default; gVisor on remote pods |

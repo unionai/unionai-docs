@@ -11,12 +11,14 @@ A sandbox session has two layers of network posture: a **session-level default**
 ```python
 async with await sb.session(
     network_mode="allowlist",
-    network_allowlist=["pypi.org", "*.pythonhosted.org"],
+    network_allowlist=sb.PYPI_HOSTS,
 ) as sbx:
     await sbx.run("python my_tool.py", network_mode="blocked")       # tighten to blocked
     await sbx.run("uv pip install requests")                         # uses session default
     await sbx.run("python use_requests.py", network_mode="blocked")  # tighten again
 ```
+
+`sb.PYPI_HOSTS` is an exported convenience list (`pypi.org`, `files.pythonhosted.org`, `*.pythonhosted.org`) for the common case of allowing `uv pip install` and nothing else.
 
 > [!IMPORTANT] Per-call can narrow, not broaden
 > On a remote sandbox, the pod's network namespace is committed at session open and can't be widened later. On-device sessions create a fresh network namespace per `run()` and don't have this constraint, but writing for both transports is simplest if you treat session-level as the ceiling everywhere.
@@ -69,6 +71,7 @@ Instead of the built-in allow/deny proxy, you can route a session's egress throu
 
 ```python
 async with sb.on_device.session(
+    backend="userns",
     network_mode="open",
     network_proxy_url="http://127.0.0.1:8080",   # your inspecting proxy
     network_socks_url="socks5h://127.0.0.1:1080",
@@ -94,11 +97,12 @@ Pass `network_mode=` and `network_allowlist=` to `session(...)` to set the defau
 
 ```python
 async with sb.on_device.session(
+    backend="userns",
     network_mode="allowlist",
-    network_allowlist=["pypi.org", "*.pythonhosted.org"],
+    network_allowlist=sb.PYPI_HOSTS,
 ) as sbx:
-    await sbx.run("uv pip install numpy")             # uses session default
-    await sbx.run("python untrusted.py", network_mode="blocked")  # tightened
+    await sbx.run("uv pip install numpy")                        # uses session default
+    await sbx.run("python untrusted.py", network_mode="blocked") # tightened
 ```
 
 ## Session default vs per-call override

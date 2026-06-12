@@ -103,9 +103,14 @@ env = flyte.TaskEnvironment(
 
 @env.task
 async def main() -> str:
+    # base_sandbox_image ships uv, so the session venv is built and the image
+    # venv (with torch) is auto-exposed read-only — no read_only_paths needed.
     async with sb.on_device.session(backend="bubblewrap") as sbx:
         return await sbx.run_code("import torch; print(torch.cuda.is_available())")
 ```
+
+> [!NOTE] When you still need `read_only_paths`
+> Add `read_only_paths=[sys.prefix]` only as a fallback: when `uv` isn't available (no session venv is built, so nothing is auto-bridged), or when the framework lives at a path the auto-bridge won't mount. `is_safe_to_mount` refuses broad roots like `/usr` (already in the default allow-list) but accepts a specific prefix such as `/opt/venv`.
 
 Prefer remote for production GPU work: it isolates the GPU job in its own pod with its own credentials, the same blast-radius argument that applies to any remote sandbox (see [Security model](./security-model)).
 

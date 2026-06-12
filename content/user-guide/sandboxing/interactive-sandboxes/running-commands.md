@@ -15,7 +15,7 @@ A session follows `open → run → close`. The recommended shape is an `async w
 ```python
 from union import sandbox as sb
 
-async with sb.on_device.session() as sbx:
+async with sb.on_device.session(backend="userns") as sbx:  # userns: runs on a vanilla pod, no extra capabilities
     proc = await sbx.run("uname -a", stdout=True)
     out, _ = await proc.communicate_text()
 # session closed automatically here
@@ -24,7 +24,7 @@ async with sb.on_device.session() as sbx:
 You can also manage the lifetime yourself:
 
 ```python
-sbx = await sb.on_device.session().open()
+sbx = await sb.on_device.session(backend="userns").open()
 try:
     proc = await sbx.run("uname -a", stdout=True)
     out, _ = await proc.communicate_text()
@@ -147,14 +147,15 @@ A session keeps one shared virtualenv on its work dir, and every Python `run()` 
 
 ```python
 async with sb.on_device.session(
+    backend="userns",
     network_mode="allowlist",
     network_allowlist=sb.PYPI_HOSTS,
 ) as sbx:
-    await sbx.run("uv pip install requests")                       # lands in the session venv
+    await sbx.run("uv pip install requests") # lands in the session venv
     out = await sbx.run_code("import requests; print(requests.__version__)")
 ```
 
-Install once, import anywhere: the package a `run()` installs is visible to every later `run()` in the same session. The session venv is built `--system-site-packages` so it can read the owner interpreter's packages, but installs go into the session venv only; the task's own Python is never mutated. The venv is `uv`-managed and ships no `pip`, so use `uv pip install` (not bare `pip`). `sb.PYPI_HOSTS` is an exported allow-list covering the PyPI hosts.
+Install once, import anywhere: the package a `run()` installs is visible to every later `run()` in the same session. The session venv is built `--system-site-packages` so it can read the owner interpreter's packages, but installs go into the session venv only; the task's own Python is never mutated. The venv is `uv`-managed and ships no `pip`, so use `uv pip install` (not bare `pip`).
 
 > [!NOTE] Only the work dir and the session venv persist
 > Files written under the session work dir, and packages installed into the shared session venv, survive across `run()` calls. The writable scratch mounts (`/tmp`, `/dev/shm`) are a fresh tmpfs on every `run()`, so anything written to bare `/tmp` does not carry over; the rest of the filesystem is read-only. Note the default work dir lives at `/tmp/sandbox-work`. That's a separate persistent mount, distinct from the per-run `/tmp` scratch. See [Filesystem](./filesystem).

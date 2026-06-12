@@ -12,13 +12,13 @@ llm_readable_bundle: true
 > [!NOTE]
 > Interactive sandboxes are in Beta. APIs may change between releases. Reach out on Slack with feedback or feature requests.
 
-`unionai-sandbox` (`union.sandbox`) runs untrusted Python or shell commands in a live, multi-turn session. You open a sandbox, send it many commands, watch state evolve on its filesystem, and close it when you're done.
+`unionai-sandbox` (`union.sandbox`) runs untrusted Python or shell commands in a live, multi-turn session. You open a sandbox, send it many commands, watch state evolve on its work dir, and close it when you're done.
 
 ```
 session ┐
-        │  filesystem state persists across calls ─┐
+        │  work dir + venv persist across calls ────┐
         ├─ run("write data.json")        net: blocked     │
-        ├─ run("pip install numpy")      net: allowlist   │
+        ├─ run("uv pip install numpy")   net: allowlist   │
         ├─ put_bytes / get_bytes         (push/pull files)│
         ├─ run("load data, compute")     net: blocked     │
         └─ close                                          ┘
@@ -28,13 +28,14 @@ It's built for the workloads where a one-shot container falls apart: an agent th
 
 ## What you get
 
-- **Built for agents and multi-turn apps.** Untrusted code (LLM-generated, third-party, multi-tenant) gets a real interactive session, not a fresh container per turn. Earlier output and on-disk artifacts are still there on the next `run()`.
-- **Lightweight by default, hardened when you need to.** The defaults use `bubblewrap` or kernel user namespaces, which start in milliseconds and add negligible overhead. You opt into [gVisor](https://gvisor.dev/), dedicated pods, and stricter capability drops only when the threat model calls for it. The library makes picking the right mechanism easy.
-- **Per-call security knobs.** Flip `network_mode` between `blocked`, `allowlist`, and `open` on each `run()`. The same session can execute a network-isolated tool call, then do an allow-listed `pip install`, then drop back to blocked, without tearing anything down.
-- **First-class integration.** A remote sandbox is a regular Flyte task: observable in the Union console, governed by the same RBAC and project/domain scoping, serializable across task boundaries, recoverable independently of the caller. (Local sessions skip the pod entirely and aren't serializable; pick remote when you need those properties.)
-- **Embeddable.** One pip install, one `async with`, drops into any async Python. The local transport has no daemon and no Docker requirement; the remote transport adds a one-time per-cluster deploy.
+- **Built for agents and multi-turn apps.** Untrusted code (LLM-generated, third-party, multi-tenant) gets a real interactive session, not a fresh container per turn. The work dir and the session venv are still there on the next `run()`.
+- **Like a long-lived machine.** The session keeps one venv on its work dir, so installing is just a `run()`: `run("uv pip install X")` persists, and a later `run("import X", script_type="python")` sees it — install once, import anywhere. The work dir is the persistent disk; `/tmp` is reset per command.
+- **Explicit isolation, no silent downgrade.** You pick the backend per session (`bubblewrap`, user namespaces) — there's no auto-detection and no fallback to weaker isolation. You opt into [gVisor](https://gvisor.dev/), dedicated pods, and stricter capability drops only when the threat model calls for it.
+- **Per-call security knobs.** Flip `network_mode` between `blocked`, `allowlist`, and `open` on each `run()`. The same session can execute a network-isolated tool call, then do an allow-listed `uv pip install`, then drop back to blocked, without tearing anything down.
+- **First-class integration.** A remote sandbox is a regular Flyte task: observable in the Union console, governed by the same RBAC and project/domain scoping, serializable across task boundaries, recoverable independently of the caller. (On-device sessions skip the extra pod entirely and aren't serializable; pick remote when you need those properties.)
+- **Embeddable.** One pip install, one `async with`, drops into any async Python. The on-device transport has no daemon and no Docker requirement; the remote transport adds a one-time per-cluster deploy.
 
-The library exposes one `Session` API over two transports: in-process (`union.sandbox.local`) for sandboxing inside the current container, and a remote `sandbox-server` pod for everything else. The call sites are identical; the choice is documented in [Deployment](./deployment).
+The library exposes one `Session` API over two transports: in-process (`union.sandbox.on_device`) for sandboxing inside the current container or task pod, and a remote `sandbox-server` pod for everything else. The call sites are nearly identical; the choice is documented in [Deployment](./deployment).
 
 ## Quickstart
 
