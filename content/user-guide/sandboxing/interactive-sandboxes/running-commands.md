@@ -15,7 +15,7 @@ A session follows `open → run → close`. The recommended shape is an `async w
 ```python
 from union import sandbox as sb
 
-async with sb.on_device.session(backend="userns") as sbx:
+async with sb.on_device.session() as sbx:
     proc = await sbx.run("uname -a", stdout=True)
     out, _ = await proc.communicate_text()
 # session closed automatically here
@@ -24,7 +24,7 @@ async with sb.on_device.session(backend="userns") as sbx:
 You can also manage the lifetime yourself:
 
 ```python
-sbx = await sb.on_device.session(backend="userns").open()
+sbx = await sb.on_device.session().open()
 try:
     proc = await sbx.run("uname -a", stdout=True)
     out, _ = await proc.communicate_text()
@@ -41,7 +41,7 @@ finally:
 
 ```python
 proc = await sbx.run(
-    "python3 -c 'import os; print(os.uname())'",
+    "python -c 'import os; print(os.uname())'",
     stdout=True,                                    # PIPE | INHERIT | DEVNULL | False
     stderr=True,
     env={"FOO": "bar"},
@@ -63,6 +63,35 @@ proc = await sbx.run(
 | `network_mode` | `"blocked"` / `"open"` / `"allowlist"` | Network posture for this call. See [Networking](./networking). |
 | `network_allowlist` | `list[str]` | CIDRs or DNS patterns, used only with `network_mode="allowlist"`. |
 | `timeout_s` | `float` | Kill the process after this many seconds. |
+
+> [!NOTE] `network_denylist` is set on the session, not per `run()`
+> `run()` takes `network_mode` and `network_allowlist` per call, but not `network_denylist`. The deny-list is a session-level policy; pass it to `sb.on_device.session(...)` / `sb.session(...)`. See [Networking](./networking).
+
+## One-shot commands: `exec()` and `run_code()`
+
+`run()` returns a process handle that you manage directly. If you only need the command output, use one of the helper methods, which combine `run()` and `communicate()` into a single call.
+
+`exec()` runs a command to completion and returns an `ExecResult` (exit code plus decoded streams):
+
+```python
+result = await sbx.exec("ls -la")
+result.returncode   # int
+result.stdout       # decoded str
+result.stderr       # decoded str
+result.ok           # True when returncode == 0
+
+result = await sbx.exec("false", check=True)   # raises SandboxCommandError on non-zero
+```
+
+`run_code()` is the shortest path from Python source to its stdout. It runs `code` as a Python script (`script_type="python"`), raises `SandboxCommandError` on a non-zero exit, and returns the decoded stdout:
+
+```python
+out = await sbx.run_code("print(2 + 2)")   # "4\n"
+```
+
+Both take the same `env`, `cwd`, `network_mode`, `network_allowlist`, and `timeout_s` arguments as `run()`. `SandboxCommandError` carries the failing command and the full `ExecResult` (`err.result.stderr` for diagnostics); both are exported from `union.sandbox`.
+
+Reach for `run()` when you need to stream output, branch on a non-zero exit without an exception, or inspect process metadata; reach for `exec()` / `run_code()` for the common capture-and-go case.
 
 ## Reading output
 
@@ -97,11 +126,14 @@ proc.termination_reason  # "" on a clean exit, otherwise a reason string
 
 `script_type="shell"` (the default) runs `cmd` through the sandbox shell. `script_type="python"` runs `cmd` as a Python script in the sandbox's interpreter, which is cleaner for multi-line code:
 
+> [!NOTE] `python` vs `python3` on the host
+> These examples use `python`. The remote sandbox image is based on `flyte.Image.from_debian_base()`, which ships both `python` and `pip` on PATH, so `python` always works there. The on-device transport runs against the host's Python: stock macOS has no `python` symlink, so use `python3` there (and for installs, prefer `uv pip install` — the session venv is uv-managed and ships no `pip`).
+
 ```python
 proc = await sbx.run(
     """
     import json, pathlib
-    data = json.loads(pathlib.Path("in.json").read_text())  # under the work dir
+    data = json.loads(pathlib.Path("/tmp/my-job/in.json").read_text())
     print(sum(data["values"]))
     """,
     script_type="python",
@@ -109,22 +141,23 @@ proc = await sbx.run(
 )
 ```
 
-## Installing packages
+## Installing packages: install is just a `run()`
 
-A session keeps **one venv on its work dir**, and every `run()` uses it. Installing is therefore just another `run()`: install in one call, import in the next, for the life of the session — like pip on a long-lived machine.
+A session keeps one shared virtualenv on its work dir, and every Python `run()` uses it. So there's no separate install API. Installing a package is an ordinary `run()`, and it persists for the life of the session:
 
 ```python
-async with await sb.session(
-    network_mode="allowlist", network_allowlist=sb.PYPI_HOSTS,
+async with sb.on_device.session(
+    network_mode="allowlist",
+    network_allowlist=sb.PYPI_HOSTS,
 ) as sbx:
-    await sbx.run("uv pip install pandas")
-    await sbx.run("import pandas; print(pandas.__version__)", script_type="python")
+    await sbx.run("uv pip install requests")                       # lands in the session venv
+    out = await sbx.run_code("import requests; print(requests.__version__)")
 ```
 
-The session venv is uv-managed and ships no `pip`, so install with **`uv pip install`** (not `pip`). It's a distinct environment from the owner interpreter — installs land in the session venv, never in the task's own Python. Installing needs egress to PyPI, so open the session with `network_mode="allowlist"` and `network_allowlist=sb.PYPI_HOSTS` (the `pypi.org` / `pythonhosted.org` hosts). See [Networking](./networking).
+Install once, import anywhere: the package a `run()` installs is visible to every later `run()` in the same session. The session venv is built `--system-site-packages` so it can read the owner interpreter's packages, but installs go into the session venv only; the task's own Python is never mutated. The venv is `uv`-managed and ships no `pip`, so use `uv pip install` (not bare `pip`). `sb.PYPI_HOSTS` is an exported allow-list covering the PyPI hosts.
 
-> [!NOTE] Work dir persists, `/tmp` does not
-> The work dir is the session's persistent disk — files written there in one `run()` are visible to the next, and `cwd` defaults to it. The rest of the filesystem, **including `/tmp`**, is reset for every command. Keep state you need across calls in the work dir. See [Filesystem](./filesystem).
+> [!NOTE] Only the work dir and the session venv persist
+> Files written under the session work dir, and packages installed into the shared session venv, survive across `run()` calls. The writable scratch mounts (`/tmp`, `/dev/shm`) are a fresh tmpfs on every `run()`, so anything written to bare `/tmp` does not carry over; the rest of the filesystem is read-only. Note the default work dir lives at `/tmp/sandbox-work`. That's a separate persistent mount, distinct from the per-run `/tmp` scratch. See [Filesystem](./filesystem).
 
 ## Errors vs non-zero exits
 
