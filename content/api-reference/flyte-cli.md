@@ -469,6 +469,9 @@ Create a scheduling queue.
         $ flyte create queue gpu-queue --run-concurrency 50 --action-concurrency 500 \
             --priority min --cluster gpu-cluster-1
 
+        $ flyte create queue pool-queue --run-concurrency 50 --action-concurrency 500 \
+            --cluster-pool gpu-pool
+
         $ flyte create queue backfill --run-concurrency 10 --action-concurrency 100 \
             --depth 5000 --priority max
 
@@ -483,6 +486,7 @@ Create a scheduling queue.
 | `--priority` | `choice` | `medium` | Queue priority |
 | `--fairness` | `choice` | `round_robin` | Fairness algorithm |
 | `--cluster` | `text` | `Sentinel.UNSET` | Target cluster(s). Repeat for multiple. |
+| `--cluster-pool` | `text` | `None` | Cluster pool to bind the queue to (defaults to the org's default pool). Cannot be changed later. |
 | `--project` | `text` | `` | Scope queue to a project |
 | `--domain` | `text` | `` | Scope queue to a domain |
 | `--help` | `boolean` | `False` | Show this message and exit. |
