@@ -113,8 +113,8 @@ The training task is a standard PyTorch Lightning training loop with distributed
 
 The `@wandb_init` decorator integrates with the `wandb_config` context created in the driver task. It retrieves the initialized WandB run and attaches a `WandbLogger` to the trainer. The `report=True` flag on the task decorator enables Flyte Reports for live dashboard streaming from this task.
 
-![Live Training](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/tutorials/qwen-vl-finetuning/live_training_graph.png)
-![Live Training Contd](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/tutorials/qwen-vl-finetuning/losses.png)
+![Live Training](../../../_static/images/tutorials/qwen-vl-finetuning/live_training_graph.png)
+![Live Training Contd](../../../_static/images/tutorials/qwen-vl-finetuning/losses.png)
 
 DeepSpeed Stage 2 shards optimizer states and gradients across GPUs, reducing per-GPU memory usage significantly. The critical configuration flag here is `exclude_frozen_parameters=True`:
 
@@ -164,11 +164,11 @@ This means each run gets its own recovery location, so you can identify exactly 
 
 For resumed runs, the prior metrics history is seeded into the table on `on_train_start`, so the metrics view is continuous across runs rather than restarting from zero.
 
-![Recovery](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/tutorials/qwen-vl-finetuning/recovery.png)
+![Recovery](../../../_static/images/tutorials/qwen-vl-finetuning/recovery.png)
 
 WandB metrics are logged in parallel by `AdapterMetricsCallback` after each validation epoch, including per-epoch train and validation losses, the LM loss component, the reconstruction loss component, and the current adapter gate value.
 
-![WandB](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/tutorials/qwen-vl-finetuning/wandb.png)
+![WandB](../../../_static/images/tutorials/qwen-vl-finetuning/wandb.png)
 
 ### Evaluation
 
@@ -215,8 +215,8 @@ When you run this, the pipeline:
 5. **Runs evaluation**: a single-GPU task loads the adapter and runs inference, computing exact-match accuracy
 6. **Generates the final report**: training curves, evaluation summary, and sample prediction cards appear in the Flyte UI
 
-![Final Report](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/tutorials/qwen-vl-finetuning/final_report.png)
-![Predictions](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/tutorials/qwen-vl-finetuning/predictions.png)
+![Final Report](../../../_static/images/tutorials/qwen-vl-finetuning/final_report.png)
+![Predictions](../../../_static/images/tutorials/qwen-vl-finetuning/predictions.png)
 
 To resume a failed or interrupted run, uncomment the `resume_training_artifacts` line in `train.py` and point it to the recovery URI from the previous run. Training picks up from the last checkpoint with metrics history intact.
 

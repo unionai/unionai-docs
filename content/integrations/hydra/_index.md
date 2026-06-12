@@ -383,7 +383,7 @@ flyte hydra run --config-path conf --config-name training \
 
 Because completion has to import the target script, keep task definitions and `ConfigStore` registration import-safe, and avoid expensive top-level work in scripts you reach via `flyte hydra run`.
 
-![Auto Completion](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/integrations/hydra/auto_complete.gif)
+![Auto Completion](../../_static/images/integrations/hydra/auto_complete.gif)
 
 ## Override grammar
 

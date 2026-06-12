@@ -42,7 +42,7 @@ flyte.with_runcontext(
 ).run(train_task)
 ```
 
-![Logs](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/integrations/wandb/logs.png)
+![Logs](../../_static/images/integrations/wandb/logs.png)
 
 For sweeps, set `download_logs=True` on `@wandb_sweep` or `wandb_sweep_config()` to download all trial data:
 
@@ -55,7 +55,7 @@ async def run_sweep():
     return sweep_id
 ```
 
-![Sweep Logs](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/integrations/wandb/sweep_logs.png)
+![Sweep Logs](../../_static/images/integrations/wandb/sweep_logs.png)
 
 ## Accessing run directories during execution
 
