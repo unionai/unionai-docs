@@ -80,15 +80,16 @@ sensible default. With no `--cluster` a queue spreads work across **all** health
 clusters in its pool.
 
 > [!NOTE] Queues are bound to a cluster pool
-> Every queue is bound to a cluster pool. The `--cluster-pool` flag for selecting
-> which pool a queue lives in will be added soon. Until then, in the absence of
-> `--cluster-pool`, all queues are bound to the `default` cluster pool only.
+> Every queue is bound to a cluster pool, chosen at creation time with
+> `--cluster-pool`. In the absence of `--cluster-pool`, the queue is bound to the
+> `default` cluster pool.
 
 Pin a queue to specific clusters within its pool, scope it to a project/domain, and
 tune its limits:
 
 ```bash
 flyte create queue gpu-queue \
+  --cluster-pool prod \
   --cluster prod-us-east-1 \
   --run-concurrency 50 \
   --action-concurrency 500 \
@@ -102,8 +103,9 @@ flyte create queue gpu-queue \
 ### What each setting controls
 
 - **`--cluster-pool`** — the pool this queue lives in. A queue can only route to
-  clusters in its own pool. This flag will be added soon; until then every queue is
-  bound to the `default` pool.
+  clusters in its own pool. Omit to bind the queue to the `default` pool. The pool
+  is fixed at creation time; moving a queue to another pool later
+  [requires a drain](#change-a-queues-pool--drain-first).
 - **`--cluster`** — pin the queue to one or more clusters in the pool (repeat the
   flag for several). Omit to use all clusters in the pool.
 - **`--run-concurrency`** — maximum number of *runs* active on the queue at once.
