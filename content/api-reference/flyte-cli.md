@@ -486,7 +486,7 @@ Create a scheduling queue.
 | `--priority` | `choice` | `medium` | Queue priority |
 | `--fairness` | `choice` | `round_robin` | Fairness algorithm |
 | `--cluster` | `text` | `Sentinel.UNSET` | Target cluster(s). Repeat for multiple. |
-| `--cluster-pool` | `text` | `None` | Cluster pool to bind the queue to (defaults to the org's default pool). Cannot be changed later. |
+| `--cluster-pool` | `text` | `default` | Cluster pool to bind the queue to. Defaults to `default` when omitted. Changing pools requires draining and updating the queue configuration. |
 | `--project` | `text` | `` | Scope queue to a project |
 | `--domain` | `text` | `` | Scope queue to a domain |
 | `--help` | `boolean` | `False` | Show this message and exit. |
