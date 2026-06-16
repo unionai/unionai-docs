@@ -21,17 +21,17 @@ Retention periods are not adjustable through the UI or CLI.
 
 ## Data categories
 
-The retention policy applies to the following categories of data:
+The retention policy applies to the following data:
 
-1. **Workflow execution data** — the per-run artifacts written during task execution:
+1. **Workflow execution data**: the per-run artifacts written during task execution:
    - Task inputs and outputs (the `inputs.pb` / `outputs.pb` protobuf payloads written by the platform during run setup and task execution).
    - Offloaded large values: `flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, and other reference-type payloads — both in their default location and in any custom location specified per run via `flyte.with_runcontext(raw_data_path=...)`.
    - `Deck` and report artifacts.
    - Trace checkpoints.
 
-2. **Fast-registered code** — the local code artifacts that are uploaded by `flyte deploy` or `flyte run --copy-style all` so the cluster can run your local Python without rebuilding the container image.
+2. **Workflow code**: The code that is uploaded by `flyte deploy` or `flyte run --copy-style all` and that make up the logic of your tasks and apps and other Flyte entities.
 
-When data reaches the plan's retention period, it expires and is deleted.
+When the age of the data reaches the plan's retention period, it is deleted.
 
 ## Attempting to access deleted data
 
@@ -43,9 +43,9 @@ If you attempt to access deleted data, you will receive an error:
 
 To remedy these types of errors, you have to re-run the workflow that generated the data in question.
 
-- When fast-registered code data is deleted, executions that depend on it will fail.
+- When workflow code is deleted, executions that depend on it will fail.
 
-To remedy this, you have to both re-register and re-run the workflow.
+To remedy this, you have to both re-deploy and re-run the workflow.
 
 ## Data retention and task caching
 
