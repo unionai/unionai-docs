@@ -9,7 +9,7 @@ variants: +flyte +union
 Understanding how data flows between tasks is critical for optimizing workflow performance in Flyte. Tasks take inputs and produce outputs, with data flowing seamlessly through your workflow using an efficient transport layer.
 
 > [!NOTE]
-> This page focuses on **how** data moves at runtime. For the static map of **what** lives in the control-plane database versus the data-plane object store — including what "metadata" means in different contexts — see [Where your data lives](../core-concepts/where-data-lives).
+> This page focuses on **how** data moves at runtime. For the static map of **what** lives in the control plane database versus the data plane object store — including what "metadata" means in different contexts — see [Where your data lives](../core-concepts/where-data-lives).
 
 ## Overview
 

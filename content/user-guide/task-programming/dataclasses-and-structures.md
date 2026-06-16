@@ -1,6 +1,6 @@
 ---
 title: Data classes and structures
-weight: 2
+weight: 3
 variants: +flyte +union
 ---
 

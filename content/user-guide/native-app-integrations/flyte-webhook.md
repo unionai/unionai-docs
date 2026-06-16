@@ -107,7 +107,7 @@ token:
 
 `FlyteWebhookAppEnvironment` uses `FastAPIPassthroughAuthMiddleware`, which
 extracts the caller's auth token from the `Authorization` header and sets up
-a {{< key product_name >}} context so that every control-plane call (e.g.
+a {{< key product_name >}} context so that every control plane call (e.g.
 `remote.Task.get`, `flyte.run`) runs with the caller's identity.
 
 The `/health`, `/docs`, `/openapi.json`, and `/redoc` endpoints are excluded
