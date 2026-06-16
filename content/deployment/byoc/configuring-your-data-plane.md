@@ -64,8 +64,8 @@ If you are provisioning your own VPC, provide the VPC ID.
 
 Each cluster has its own internal object store that is used to store data used in the execution of workflows.
 This includes task input-output metadata, task input-output raw data, Flyte Decks data, and fast registration data.
-For each cluster, you can choose to enable a data retention policy that defines a maximum time for this data to be stored, after which it will be automatically deleted.
-Alternatively, you can set this to `unlimited` to disable automatic data deletion.
+The data retention policy defines the maximum time this data is stored, after which it is automatically deleted.
+The retention period is set by your {{< key product_name >}} plan.
 See [Data retention policy](./data-retention-policy) for more details.
 
 ## Worker node groups
@@ -142,7 +142,6 @@ Values provided by you are in single quotes (').
         - Account ID: 'account-id-1'
         - Region: 'us-west'
         - VPC: 'vpc-id-1'
-        - Data retention policy: '30 days'
         - Node groups:
             - 'node-group-1'
                 - Node type: 'p3d.4xlarge'
@@ -162,7 +161,6 @@ Values provided by you are in single quotes (').
         - Account ID: 'account-id-2'
         - Region: 'us-west'
         - VPC: 'vpc-id-2'
-        - Data retention policy: '30 days'
         - Node groups:
             - 'node-group-1'
                 - Node type: 'p3d.4xlarge'
@@ -182,7 +180,6 @@ Values provided by you are in single quotes (').
         - Account ID: 'account-id-3'
         - Region: 'us-west'
         - VPC: 'vpc-id-3'
-        - Data retention policy: 'unlimited'
         - Node groups:
             - 'node-group-1'
                 - Node type: 'p3d.4xlarge'
