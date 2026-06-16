@@ -62,10 +62,10 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
        azureBlobSharedKey: "${AZURE_STORAGE_SHARED_KEY}"
        env:
          - name: AZURE_STORAGE_SHARED_KEY
-           valueFrom:
-             secretKeyRef:
-               name: fluentbit-azure-key
-               key: shared_key
+            valueFrom:
+              secretKeyRef:
+                name: ${FLUENTBIT_SECRET_NAME}
+                key: shared_key
      ```
 
    If using Azure Key Vault (optional):
