@@ -141,4 +141,4 @@ oci iam customer-secret-key create \
 
 > [!NOTE] The command output contains the secret key value. Save it immediately — it cannot be retrieved again.
 
-You will configure these credentials in the generated values file during deployment (see step 3 in [Deploy the dataplane](../selfmanaged-oci/deploy-dataplane)).
+You will configure these credentials in your dataplane Helm values during deployment (see step 3 in [Deploy the dataplane](../selfmanaged-oci/deploy-dataplane)).

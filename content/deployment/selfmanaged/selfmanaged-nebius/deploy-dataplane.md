@@ -31,16 +31,22 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    export KUBECONFIG=<PATH_TO_KUBECONFIG>
    ```
 
-2. Configure the Union CLI and provision data plane resources:
+2. Provision an OAuth client and register the cluster with your control plane:
 
    ```bash
    uctl config init --host=<ORG_NAME>.union.ai
    uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider metal
    ```
 
-   The command generates a YAML values file specific to the `metal` provider, including the secrets necessary so your data plane can communicate with Union's control plane.
+   The command outputs a client ID and secret that Union services use to communicate with your control plane. Save them — Union does not store credentials; rerunning the same command retrieves them.
 
-3. Update the generated values file with your Nebius-specific storage configuration. Replace the placeholders with your actual credentials and settings.
+3. Start from the base dataplane values in [unionai/helm-charts](https://github.com/unionai/helm-charts) and overlay Nebius's S3-compatible storage configuration. Replace the placeholders with your actual credentials and settings.
+
+   ```bash
+   curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.yaml
+   ```
+
+   Then overlay the Nebius-specific block:
 
    ```yaml
    host: <ORG_NAME>.union.ai
@@ -65,7 +71,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    ```
 
    > [!NOTE]
-   > The `uctl selfserve provision-dataplane-resources` command in step 2 generates the `<CLIENT_ID>` and `<CLIENT_SECRET>` values and feeds them into the values file. Don't modify them.
+   > The `uctl selfserve provision-dataplane-resources` command in step 2 outputs the `<CLIENT_ID>` and `<CLIENT_SECRET>`. Plug those values into the `secrets.admin` block above.
 
 4. Add the {{< key product_name >}} Helm repo:
 
@@ -74,16 +80,41 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    helm repo update
    ```
 
-5. Install the data plane. Replace `<PATH_TO_VALUES_FILE>` with the path to the Helm values file you customized in step 3.
+5. Install the data plane CRDs via server-side apply. The CRDs are vendored in [unionai/helm-charts](https://github.com/unionai/helm-charts) under `crds/`:
+
+   ```bash
+   git clone https://github.com/unionai/helm-charts.git
+   cd helm-charts
+
+   # Mandatory in all modes — FlyteWorkflow CRD + Knative Serving CRDs
+   # consumed by propeller and the dataplane chart's serving stack.
+   kubectl apply --server-side --force-conflicts -f crds/dataplane/
+
+   # Required when knative-operator.enabled=true (the chart default). The
+   # post-install hook creates a KnativeServing resource and will fail
+   # without these CRDs in place. Skip in zero-trust mode
+   # (knative-operator.enabled=false), which vendors Knative Serving
+   # directly via the dataplane chart's gateway templates instead of the
+   # operator subchart.
+   kubectl apply --server-side --force-conflicts -f crds/knative-operator/
+
+   # Required when monitoring.enabled=true. Skip if monitoring is disabled (the chart default)
+   kubectl apply --server-side --force-conflicts -f crds/kube-prometheus-stack/
+   ```
+
+   Server-side apply avoids the 256 KiB `last-applied-configuration` annotation overflow on larger CRDs. `--force-conflicts` is needed only on first install.
+
+6. Install the data plane with `--skip-crds` so Helm doesn't re-manage the CRDs you just applied. Replace `<PATH_TO_VALUES_FILE>` with the path to the Helm values file you customized in step 3.
 
    ```bash
    helm upgrade --install unionai-dataplane unionai/dataplane \
      --namespace union --create-namespace \
      --values <PATH_TO_VALUES_FILE> \
+     --skip-crds \
      --timeout 10m
    ```
 
-6. Verify the pods are running:
+7. Verify the pods are running:
 
    ```bash
    kubectl get pods -n union
@@ -91,7 +122,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
 
    When the deployment succeeds, all pods show a `Running` status, including `union-operator-proxy`, `union-operator-buildkit`, and `executor`.
 
-7. Verify the cluster is registered with the control plane:
+8. Verify the cluster is registered with the control plane:
 
    ```bash
    uctl get cluster
@@ -104,7 +135,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    union-nebius    my-org    STATE_ENABLED  HEALTHY
    ```
 
-8. **Required for helm charts on a version <= 2026.5.8.** Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:
+9. **Required for helm charts on a version <= 2026.5.8.** Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:
 
    ```bash
    uctl create apikey --keyName EAGER_API_KEY --org <ORG_NAME>
