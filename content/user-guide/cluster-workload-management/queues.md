@@ -175,7 +175,7 @@ flyte update queue gpu-queue --activate
 > A task can override its queue at runtime
 > ([`task.override(queue=...)`](../task-configuration/queues#overriding-a-queue-at-runtime)),
 > but only to another queue in the **same pool** as the run's original queue. A
-> cross-pool override is rejected, for the same data-plane reason that pool changes
+> cross-pool override is rejected, for the same data plane reason that pool changes
 > require a drain.
 
 ## Draining and reactivating

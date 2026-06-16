@@ -32,7 +32,7 @@ For app types not covered here, build a custom [`AppEnvironment`](../build-apps/
 | [FastAPI app](./fastapi-app) | [FastAPI](https://fastapi.tiangolo.com/) | REST APIs, webhooks, and backend services |
 | [vLLM app](./vllm-app) | [vLLM](https://docs.vllm.ai/) | High-throughput LLM inference with an OpenAI-compatible API |
 | [SGLang app](./sglang-app) | [SGLang](https://docs.sglang.io/) | Structured generation and LLM serving with an OpenAI-compatible API |
-| [Flyte webhook](./flyte-webhook) | [FastAPI](https://fastapi.tiangolo.com/) | Pre-built HTTP endpoints for common Flyte control-plane operations |
+| [Flyte webhook](./flyte-webhook) | [FastAPI](https://fastapi.tiangolo.com/) | Pre-built HTTP endpoints for common Flyte control plane operations |
 
 ## Next steps
 

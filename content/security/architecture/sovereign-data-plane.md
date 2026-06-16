@@ -39,7 +39,7 @@ Switching to the Sovereign Data Plane changes the **network** perimeter only. Ev
 - **Visualization features.** Workflow inputs and outputs, live and persisted logs, reports, Ray and Spark dashboards, and the in-task debugger all continue to work, served directly from the data plane.
 - **Two-plane separation.** The control plane still orchestrates runs and holds metadata; the data plane still holds and serves all customer data.
 - **Data residency.** All customer data continues to reside in the customer's chosen cloud account and region. No customer data ever transits Union infrastructure under either tier.
-- **`dataproxy` service.** The data-plane `dataproxy` service that handles signed URL generation, log fetching, I/O retrieval, and auxiliary UI proxying is the same component under both tiers.
+- **`dataproxy` service.** The data plane `dataproxy` service that handles signed URL generation, log fetching, I/O retrieval, and auxiliary UI proxying is the same component under both tiers.
 
 ## Topology
 
