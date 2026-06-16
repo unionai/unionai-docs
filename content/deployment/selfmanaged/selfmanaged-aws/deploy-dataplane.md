@@ -12,7 +12,7 @@ If you have not yet set up the required AWS resources (EKS cluster, S3, ECR, IAM
 
 * You have a {{< key product_name >}} organization, and you know the control plane URL for your organization.
 * You have a cluster name provided by or coordinated with Union.
-* You have an EKS cluster with OIDC enabled, running one of the most recent three minor K8s versions.
+* You have an EKS cluster with OIDC enabled, running one of the most recent three minor Kubernetes versions.
   [Learn more](https://kubernetes.io/releases/version-skew-policy/)
 * You have configured S3 bucket(s), ECR, and IAM role as described in [Prepare infrastructure](../selfmanaged-aws/prepare-infra).
 

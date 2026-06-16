@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.3.8
+version: 2.4.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -52,7 +52,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`Neuron()`](#neuron) | Create a Neuron device instance. |
 | [`TPU()`](#tpu) | Create a TPU device instance. |
 | [`build()`](#build) | Build an image. |
-| [`build_images()`](#build_images) | Build the images for the given environment. |
+| [`build_images()`](#build_images) | Build the images for the given environment(s). |
 | [`ctx()`](#ctx) | Returns flyte. |
 | [`current_domain()`](#current_domain) | Returns the current domain from Runtime environment (on the cluster) or from the initialized configuration. |
 | [`current_project()`](#current_project) | Returns the current project from the Runtime environment (on the cluster) or from the initialized configuration. |
@@ -224,12 +224,12 @@ def build_images(
     copy_style: 'CopyFiles',
 ) -> ImageCache
 ```
-Build the images for the given environment.
+Build the images for the given environment(s).
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `envs` | `Environment` | Environment to build images for. |
+| `envs` | `Environment` | One or more environments to build images for. When multiple environments are passed they are planned together in a single pass (mirroring ``deploy``), and the resulting image caches are merged into one. |
 | `copy_style` | `'CopyFiles'` | Copy style that the eventual deploy will use. Must match the deploy's ``--copy-style`` so the image content hashes — and therefore the registry tags — line up, letting deploy reuse the pre-built image. |
 
 **Returns:** ImageCache containing the built images.

@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.codegen
-version: 2.3.8
+version: 2.4.4
 variants: +flyte +union
 layout: py_api
 ---

@@ -31,7 +31,7 @@ Using Terraform to manage Union provides several benefits:
 - **Consistency**: Ensure consistent configuration across your organization
 - **Documentation**: Your Terraform files serve as living documentation
 
-## Getting Started
+## Getting started
 
 To get started with the Union Terraform provider:
 

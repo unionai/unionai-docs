@@ -101,7 +101,7 @@ On AKS, use [Microsoft Entra Workload Identity](https://learn.microsoft.com/en-u
 - Your AKS cluster must be [enabled as an OIDC Issuer](https://learn.microsoft.com/en-us/azure/aks/use-oidc-issuer)
 - The [Azure Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster) mutating webhook must be installed on your cluster
 
-### 1. Create or reuse a Managed Identity
+### 1. Create or reuse a managed identity
 
 Create a User Assigned Managed Identity (or reuse an existing one):
 

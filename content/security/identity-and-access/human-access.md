@@ -26,9 +26,9 @@ This is distinct from BYOC Kubernetes cluster management access (described above
 
 ## Access scope
 
-When Union.ai personnel are granted access to a customer's tenant (in BYOC, or via the optional support service in self-managed), they CAN: view orchestration metadata, view logs relayed through the tunnel, perform administrative operations as authorized by the customer's RBAC policy, and (in BYOC) manage the Kubernetes cluster.
+When Union.ai personnel are granted access to a customer's tenant (in BYOC, or via the optional support service in self-managed), they *can*: view orchestration metadata, view logs relayed through the tunnel, perform administrative operations as authorized by the customer's RBAC policy, and (in BYOC) manage the Kubernetes cluster.
 
-Personnel CANNOT: read secret values (the API is write-only), access bulk data in customer object stores (presigned URLs are per-request and not retained), or access the customer's cloud account, IAM roles, object stores, secrets backends, container registries, or log aggregators. Personnel with control plane infrastructure access could in principle observe inline data transiting control plane memory during request processing (structured task I/O, log streams, secret values during create/update), but this data is transient (not persisted, not logged, not cached) and is inherent to any pass-through proxy architecture.
+They *cannot*: read secret values (the API is write-only), access bulk data in customer object stores (presigned URLs are per-request and not retained), or access the customer's cloud account, IAM roles, object stores, secrets backends, container registries, or log aggregators. Customer data never transits Union.ai's control plane in any form, so personnel with control plane infrastructure access cannot observe customer data even in flight; every customer-data request is served from the data plane through the Direct-to-Data-Plane tunnel, with authentication and RBAC enforced inside the customer's cluster.
 
 All access by Union.ai personnel is authenticated and logged with caller identity, operation performed, and timestamp.
 
@@ -40,7 +40,7 @@ All access by Union.ai personnel is authenticated and logged with caller identit
 
 **How to verify:**
 
-Self-managed: Union.ai has no IAM roles, no VPN, no SSH keys, and no kubectl access to the customer's cluster. Both outbound channels (Cloudflare Tunnel and direct gRPC) are initiated FROM the customer's data plane. Union.ai cannot initiate connections TO the customer's infrastructure.
+Self-managed: Union.ai has no IAM roles, no VPN, no SSH keys, and no kubectl access to the customer's cluster. Every channel between Union.ai and the customer is initiated *from* the customer's data plane. Union.ai cannot initiate connections *to* the customer's infrastructure under any tier.
 
 BYOC:
 

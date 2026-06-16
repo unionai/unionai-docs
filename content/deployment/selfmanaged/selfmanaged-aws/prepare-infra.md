@@ -20,7 +20,7 @@ export ECR_REPO_NAME=${ECR_REPO_NAME}    # ECR repository name
 export IAM_ROLE_NAME=union-system-role               # IAM role name
 ```
 
-## EKS Cluster
+## EKS cluster
 
 You need an EKS cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
 
@@ -78,7 +78,7 @@ aws s3api create-bucket \
 
 > [!NOTE] If your region is `us-east-1`, omit the `--create-bucket-configuration` flag.
 
-### CORS Configuration
+### CORS configuration
 
 To enable the [Code Viewer](../configuration/code-viewer) in the Union UI, configure a CORS policy on your buckets. This allows the UI to securely fetch code bundles directly from S3.
 
@@ -105,7 +105,7 @@ aws s3api put-bucket-cors --bucket ${BUCKET_PREFIX}-metadata --cors-configuratio
 aws s3api put-bucket-cors --bucket ${BUCKET_PREFIX}-fast-reg --cors-configuration file://cors.json
 ```
 
-### Data Retention
+### Data retention
 
 Union recommends using Lifecycle Policy on these buckets to manage storage costs. See [Data retention policy](../configuration/data-retention) for more information.
 

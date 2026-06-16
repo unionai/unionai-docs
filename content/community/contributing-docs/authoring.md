@@ -34,12 +34,12 @@ As you edit the preview will update automatically.
 
 See [Publishing](./publishing) for how to set up your machine.
 
-## Pull Requests + Site Preview
+## Pull requests + site preview
 
 Pull requests will create a preview build of the site on CloudFlare.
 Check the pull request for a dynamic link to the site changes within that PR.
 
-## Page Visibility
+## Page visibility
 
 This site uses variants, which means different "flavors" of the content.
 For a given -age, its variant visibility is governed by the `variants:` field in the front matter of the page source.
@@ -90,7 +90,7 @@ weight: 3
 | `toc_max`          | int  | Maximum heading to incorporate in the right navigation table of contents.         |
 | `llm_readable_bundle` | bool | If `true`, generates a `section.md` bundle for this section. Requires `{{</* llm-bundle-note */>}}` shortcode. See [LLM-optimized documentation](./llm-docs). |
 
-## Conditional Content
+## Conditional content
 
 The site has "flavors" of the documentation. We leverage the `{{</* variant */>}}` tag to control
 which content is rendered on which flavor.
@@ -130,7 +130,7 @@ Three sigils let you override the default behavior. Each must be the entire cont
 
 When in doubt, write the bare backticked identifier and let the linker handle it. Reach for sigils only when the default does the wrong thing.
 
-## Warnings and Notices
+## Warnings and notices
 
 You can write regular Markdown and use the notation below to create information and warning boxes:
 
@@ -147,13 +147,13 @@ Or if you want a warning:
 > And here you write what you want to warn about.
 ```
 
-## Special Content Generation
+## Special content generation
 
 There are various short codes to generate content or special components (tabs, dropdowns, etc.)
 
 Refer to [**Content Generation**](./shortcodes) for more information.
 
-## Python Generated Content
+## Python generated content
 
 You can generate pages from markdown-commented Python files.
 
@@ -195,7 +195,7 @@ Note that the text content is embedded in comments as Markdown, and the code is 
 
 The generator will convert the markdown into normal page text content and the code into code blocks within that Markdown content.
 
-### Run on Union Instructions
+### Run on Union instructions
 
 We can add the run on Union instructions anywhere in the content.
 Annotate the location you want to include it with `{{run-on-union}}`. Like this:
@@ -211,7 +211,7 @@ Annotate the location you want to include it with `{{run-on-union}}`. Like this:
 The resulting **Run on Union** section in the rendered docs will include the run command and source location,
 specified as `run_command` and `source_location` in the front matter of the corresponding `.md` page.
 
-## Jupyter Notebooks
+## Jupyter notebooks
 
 You can also generate pages from Jupyter notebooks.
 
@@ -231,7 +231,7 @@ The conversion tool is located at `unionai-docs-infra/tools/jupyter_generator`.
 
 **Committing the change:** When the PR is pushed, a CI check verifies consistency between the notebook and its generated content. Please ensure that if you change the notebook, you run `make dist` to update the generated page.
 
-## Mapped Keys (`{{</* key */>}}`)
+## Mapped keys (`{{</* key */>}}`)
 
 Key is a very special command that allows us to define mapped values to a variant.
 For example, the product name changes if it is Flyte, Union BYOC, etc. For that,
@@ -240,7 +240,7 @@ without the need to `if variant` around it.
 
 Please refer to [{{</* key */>}} shortcode](./shortcodes#key) for more details.
 
-## Mermaid Graphs
+## Mermaid graphs
 
 To embed Mermaid diagrams in a page, insert the code inside a block like this:
 

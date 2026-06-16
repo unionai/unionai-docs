@@ -8,6 +8,9 @@ variants: +flyte +union
 
 Understanding how data flows between tasks is critical for optimizing workflow performance in Flyte. Tasks take inputs and produce outputs, with data flowing seamlessly through your workflow using an efficient transport layer.
 
+> [!NOTE]
+> This page focuses on **how** data moves at runtime. For the static map of **what** lives in the control plane database versus the data plane object store — including what "metadata" means in different contexts — see [Where your data lives](../core-concepts/where-data-lives).
+
 ## Overview
 
 Flyte tasks are run to completion. Each task takes inputs and produces exactly one output. Even if multiple instances run concurrently (such as in retries), only one output will be accepted. This deterministic data flow model provides several key benefits:
@@ -68,7 +71,7 @@ When a task starts:
 When a task returns data:
 
 1. **Inline data**: Uploaded to the Flyte object store configured at the organization, project, or domain level.
-2. **Reference data**: Stored in the same metadata store by default, or configured using `flyte.with_runcontext(raw_data_storage=...)`.
+2. **Reference data**: Stored under the same bucket prefix by default, or routed to a different location using `flyte.with_runcontext(raw_data_path=...)`.
 3. **Separate prefixes**: Each task creates one output per retry attempt in separate prefixes, making data incorruptible by design.
 
 ## Task-to-task data flow
@@ -132,10 +135,10 @@ When using [traces](../task-programming/traces), the data flow behavior is diffe
 
 ## Object stores and latency considerations
 
-By default, Flyte uses object stores like S3, GCS, Azure Storage, and R2 as metadata stores. These have high latency for smaller objects, so:
+By default, Flyte uses object stores like S3, GCS, Azure Storage, and R2 to persist task inputs, outputs, and offloaded reference data. These have high latency for smaller objects, so:
 
 - **Minimum task duration**: Tasks should take at least a second to run to amortize storage overhead.
-- **Future improvements**: High-performance metastores like Redis and PostgreSQL may be supported in the future. Contact the Union team if you're interested.
+- **Future improvements**: High-performance key/value or relational stores like Redis and PostgreSQL may be supported in the future as alternative offload backends. Contact the Union team if you're interested.
 
 ## Configuring data storage
 
@@ -149,8 +152,8 @@ Configure raw data storage on a per-run basis using `flyte.with_runcontext`:
 
 ```python
 run = flyte.with_runcontext(
-    raw_data_storage="s3://my-bucket/custom-path"
+    raw_data_path="s3://my-bucket/custom-path"
 ).run(my_task, input_data=data)
 ```
 
-This allows you to control where reference data (files, directories, DataFrames) is stored for specific runs.
+This allows you to control where reference data (files, directories, DataFrames) is stored for specific runs. See [Run context](../task-deployment/run-context) for the full set of options.

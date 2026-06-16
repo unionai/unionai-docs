@@ -8,7 +8,7 @@ variants: -flyte +union
 
 This page walks you through the Azure infrastructure required before deploying the Union dataplane on AKS. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-azure/deploy-dataplane).
 
-> [!NOTE] **Deployment model**: This guide covers **Self Managed** — you run only the dataplane chart; Union hosts the control plane.
+> [!NOTE] **Deployment model**: This guide covers **Self-managed** — you run only the dataplane chart; Union hosts the control plane.
 
 ## Prerequisites
 - Azure CLI [installed](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and [configured](https://learn.microsoft.com/en-us/cli/azure/get-started-with-azure-cli?view=azure-cli-latest#sign-in-to-azure)
@@ -29,6 +29,7 @@ export ORG_NAME=<your-union-org-name>       # provided by Union
 # --- Storage ---
 export STORAGE_ACCOUNT=uniondataplane       # 3-24 lowercase alphanumeric, globally unique
 export METADATA_CONTAINER=union-metadata
+export FLUENTBIT_SECRET_NAME=fluentbit-azure-key   # k8s secret holding the storage key for persisted logs
 
 # --- Identities ---
 export BACKEND_IDENTITY_NAME=union-backend
@@ -38,7 +39,7 @@ export WORKER_IDENTITY_NAME=union-executions
 export DATAPLANE_NAMESPACE=union
 ```
 
-## 1. Subscription and Resource Group
+## 1. Subscription and resource group
 
 All Union infrastructure lives in a dedicated resource group for access control and cost tracking.
 
@@ -50,7 +51,7 @@ az group create \
   --location $LOCATION
 ```
 
-## 2. AKS Cluster
+## 2. AKS cluster
 
 You need an AKS cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
 
@@ -92,7 +93,7 @@ az aks get-credentials \
   --name $CLUSTER_NAME
 ```
 
-## 3. Node Pools
+## 3. Node pools
 
 Union workloads run on dedicated node pools. Separating system, worker, and GPU nodes allows independent scaling and keeps system pods stable.
 
@@ -127,7 +128,7 @@ az aks nodepool add \
 
 > [!NOTE] **Spot VMs**: Union supports interruptible workloads on Azure Spot. Spot nodes are identified by the label `kubernetes.azure.com/scalesetpriority: spot`, which AKS sets automatically when `--priority Spot` is used.
 
-## 4. Storage Account and Container
+## 4. Storage account and container
 
 Union stores workflow metadata and code bundle artifacts in Azure Blob Storage. The storage account **must have Data Lake Storage Gen2 enabled** (`--enable-hierarchical-namespace`) — Union uses the `abfs://` protocol which requires this.
 
@@ -139,14 +140,15 @@ az storage account create \
   --sku Standard_LRS \
   --kind StorageV2 \
   --enable-hierarchical-namespace true \
-  --allow-blob-public-access false
+  --allow-blob-public-access false \
+  --allow-shared-key-access true
 
 az storage container create \
   --name $METADATA_CONTAINER \
   --account-name $STORAGE_ACCOUNT
 ```
 
-### CORS Configuration
+### CORS configuration
 
 To enable the [Code Viewer](../configuration/code-viewer) in the Union UI, configure a CORS rule on your Storage Account:
 
@@ -161,11 +163,11 @@ az storage cors add \
   --account-name $STORAGE_ACCOUNT
 ```
 
-### Data Retention
+### Data retention
 
 Union recommends using lifecycle management policies on your Storage Account to manage storage costs. See [Data retention policy](../configuration/data-retention) for more information.
 
-## 5. Managed Identities
+## 5. Managed identities
 
 Union separates infrastructure-level access from workload-level access using two identities:
 
@@ -207,7 +209,7 @@ export WORKER_PRINCIPAL_ID=$(az identity show \
   --query principalId --output tsv)
 ```
 
-## 6. Workload Identity and Federated Credentials
+## 6. Workload Identity and federated credentials
 
 Azure Workload Identity lets Kubernetes pods authenticate to Azure services using a projected service account token — no credentials stored in secrets.
 
@@ -251,7 +253,7 @@ for ns in development staging production; do
 done
 ```
 
-## 7. Role Assignments
+## 7. Role assignments
 
 The managed identities need explicit RBAC permissions on the storage account.
 
@@ -280,7 +282,58 @@ az role assignment create \
   --scope $STORAGE_ACCOUNT_ID
 ```
 
-## 8. Azure Key Vault (optional)
+## 8. Persisted logs storage key (FluentBit)
+
+To display historical task logs in the Union UI, FluentBit ships container logs to your
+storage account. Because its `azure_blob` output cannot use Workload Identity (see the note in
+[Storage Account and Container](#4-storage-account-and-container)), you must provide the storage
+account shared key as a Kubernetes secret. The dataplane chart references this secret to inject
+the key into FluentBit at runtime, so the key never appears in the rendered ConfigMap.
+
+> [!NOTE] This step requires cluster credentials from [AKS Cluster](#2-aks-cluster)
+> (`az aks get-credentials`).
+
+Retrieve the storage account key and create the secret in the dataplane namespace:
+
+```bash
+# Ensure the dataplane namespace exists
+kubectl create namespace $DATAPLANE_NAMESPACE \
+  --dry-run=client -o yaml | kubectl apply -f -
+
+# Fetch the storage account key
+STORAGE_ACCOUNT_KEY=$(az storage account keys list \
+  --account-name $STORAGE_ACCOUNT \
+  --resource-group $RESOURCE_GROUP \
+  --query "[0].value" --output tsv)
+
+# Create the secret FluentBit reads (key name must be 'shared_key')
+kubectl create secret generic $FLUENTBIT_SECRET_NAME \
+  --namespace $DATAPLANE_NAMESPACE \
+  --from-literal=shared_key="$STORAGE_ACCOUNT_KEY"
+
+unset STORAGE_ACCOUNT_KEY
+```
+
+You will wire this secret into the chart in [Deploy the dataplane](../selfmanaged-azure/deploy-dataplane)
+via the `fluentbit` values, for example:
+
+```yaml
+fluentbit:
+  # Placeholder is expanded by FluentBit at runtime from the env var below,
+  # keeping the key out of the rendered ConfigMap.
+  azureBlobSharedKey: "${AZURE_STORAGE_SHARED_KEY}"
+  env:
+    - name: AZURE_STORAGE_SHARED_KEY
+      valueFrom:
+        secretKeyRef:
+          name: ${FLUENTBIT_SECRET_NAME}
+```
+
+> [!NOTE] The storage account key grants full access to the account. Rotate it on your normal
+> schedule; after rotation, update the secret (`kubectl create secret ... --dry-run=client -o yaml
+> | kubectl apply -f -`) and restart the FluentBit DaemonSet.
+
+## 9. Azure Key Vault (optional)
 
 Union provides an embedded secrets management backend. If your organization needs to integrate with Azure Key Vault, create a vault and grant the backend identity access:
 

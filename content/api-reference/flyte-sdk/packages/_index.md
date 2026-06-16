@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 2.3.8
+version: 2.4.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -11,7 +11,8 @@ layout: py_api
 |-|-|
 | [`flyte`](flyte) | Flyte SDK for authoring compound AI applications, services and workflows. |
 | [`flyte.ai.agents`](flyte.ai.agents) | flyte. |
-| [`flyte.ai.agents.codemode`](flyte.ai.agents.codemode) | CodeModeAgent — LLM + Monty sandbox orchestration with automatic retry. |
+| [`flyte.ai.agents.agent`](flyte.ai.agents.agent) | Agent — a flyte-native tool-use agent harness. |
+| [`flyte.ai.agents.memory`](flyte.ai.agents.memory) | Dir-backed memory for :class:`flyte. |
 | [`flyte.ai.agents.protocol`](flyte.ai.agents.protocol) | Agent protocol for the flyte. |
 | [`flyte.ai.chat`](flyte.ai.chat) | flyte. |
 | [`flyte.ai.chat.app`](flyte.ai.chat.app) | AgentChatAppEnvironment — FastAPI-based chat UI for any Agent. |

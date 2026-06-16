@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.union.internal.validate.validate.validate_pb2
-version: 0.3.0
+version: 0.4.0
 variants: +flyte +union
 layout: py_api
 ---

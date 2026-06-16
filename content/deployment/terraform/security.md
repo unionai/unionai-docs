@@ -4,13 +4,13 @@ weight: 3
 variants: -flyte +union
 ---
 
-# Security Best Practices
+# Security best practices
 
 **Never hardcode API keys directly in your Terraform configuration files.** API keys are sensitive credentials that should be stored securely and never committed to version control.
 
-## Recommended Approaches
+## Recommended approaches
 
-### 1. Use Cloud Secret Managers
+### 1. Use cloud secret managers
 
 Store your Union API key in a cloud-based secret manager and retrieve it dynamically:
 
@@ -75,7 +75,7 @@ provider "unionai" {
 }
 ```
 
-### 3. Use Environment Variables
+### 3. Use environment variables
 
 For local development or CI/CD pipelines, use environment variables:
 
@@ -91,7 +91,7 @@ provider "unionai" {
 }
 ```
 
-### 4. Use Terraform Variables with `.tfvars` Files
+### 4. Use Terraform variables with `.tfvars` files
 
 If using variable files, ensure they are excluded from version control:
 
@@ -115,9 +115,9 @@ Create a `terraform.tfvars` file (add to `.gitignore`):
 unionai_api_key = "your-api-key-here"
 ```
 
-## Additional Security Measures
+## Additional security measures
 
-### Encrypt Terraform State
+### Encrypt Terraform state
 
 Always use encrypted remote state backends to protect sensitive data:
 
@@ -133,7 +133,7 @@ terraform {
 }
 ```
 
-### Use State Locking
+### Use state locking
 
 Enable state locking to prevent concurrent modifications:
 
@@ -141,7 +141,7 @@ Enable state locking to prevent concurrent modifications:
 - **Google Cloud Storage**: Automatic state locking
 - **Azure Blob Storage**: Automatic state locking
 
-### Rotate API Keys Regularly
+### Rotate API keys regularly
 
 Implement a rotation schedule for your API keys:
 
@@ -150,7 +150,7 @@ Implement a rotation schedule for your API keys:
 3. Verify Terraform can authenticate with the new key
 4. Delete the old API key
 
-### Restrict Provider Permissions
+### Restrict provider permissions
 
 Use the `allowed_orgs` parameter to limit which organizations the provider can access:
 
@@ -163,7 +163,7 @@ provider "unionai" {
 
 This prevents accidental operations on the wrong organization.
 
-### Use Separate API Keys per Environment
+### Use separate API keys per environment
 
 Create different API keys for each environment (development, staging, production):
 
@@ -181,7 +181,7 @@ provider "unionai" {
 }
 ```
 
-## Security Checklist
+## Security checklist
 
 - ✅ Store API keys in a secret manager or secure vault
 - ✅ Use environment variables for local development
@@ -198,7 +198,7 @@ provider "unionai" {
 - ❌ Never share API keys in plain text (chat, email, etc.)
 - ❌ Never use production API keys in development environments
 
-## CI/CD Pipeline Security
+## CI/CD pipeline security
 
 When using Terraform in CI/CD pipelines:
 
@@ -245,7 +245,7 @@ terraform:
     - main
 ```
 
-### Best Practices for CI/CD
+### Best practices for CI/CD
 
 - Store API keys as encrypted secrets in your CI/CD platform
 - Use separate API keys for CI/CD (not personal keys)
@@ -253,7 +253,7 @@ terraform:
 - Enable audit logging for all Terraform operations
 - Restrict who can view/modify CI/CD secrets
 
-## Additional Resources
+## Additional resources
 
 - [Terraform Security Best Practices](https://developer.hashicorp.com/terraform/tutorials/configuration-language/sensitive-variables)
 - [HashiCorp Vault Documentation](https://developer.hashicorp.com/vault/docs)
