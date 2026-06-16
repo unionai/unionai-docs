@@ -15,7 +15,7 @@ This is needed because in a multi-cluster setup, the execution engine (`flytepro
 
 ## Scaling Beyond Kubernetes
 
-As described in the [Architecture Overview](https://docs.flyte.org/en/latest/concepts/architecture.html), the Flyte control plane (`flyteadmin`) sends workflows off to the Data Plane (`flytepropeller`) for execution.
+As described in the [Architecture Overview](https://docs.flyte.org/en/latest/concepts/architecture.html), the Flyte control plane (`flyteadmin`) sends workflows off to the data plane (`flytepropeller`) for execution.
 The data plane fulfills these workflows by launching pods in Kubernetes.
 
 The case for multiple Kubernetes clusters may arise due to security constraints, cost-effectiveness or a need to scale out computing resources.
@@ -51,7 +51,7 @@ To make sure that your multi-cluster deployment is able to scale and process req
     By default, every Pod created for a Task execution, uses the `default` Service Account in their respective namespace.
     In your cluster, you'll have as many namespaces as `project` and `domain` combinations you may have.
 
-### Data Plane Deployment
+### Data plane deployment
 
 This guide assumes that you have two Kubernetes clusters and that you can access them all with `kubectl`.
 
@@ -113,7 +113,7 @@ Let's call these clusters `dataplane1` and `dataplane2`. In this section, you'll
           --create-namespace flyte
    ```
 
-## Control Plane configuration
+## Control plane configuration
 
 For `flyteadmin` to access and create Kubernetes resources in one or more Flyte data plane clusters, it needs credentials to each cluster.
 Flyte makes use of Kubernetes Service Accounts to enable every control plane cluster to perform authenticated requests to the Kubernetes API Server in the data plane cluster.

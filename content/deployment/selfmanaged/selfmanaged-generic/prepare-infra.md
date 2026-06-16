@@ -10,7 +10,7 @@ This page walks you through creating the resources needed for a Union data plane
 
 > [!NOTE] If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](../selfmanaged-aws/_index), [GCP](../selfmanaged-gcp/_index), [Azure](../selfmanaged-azure/_index), [OCI](../selfmanaged-oci/_index).
 
-## Kubernetes Cluster
+## Kubernetes cluster
 
 You need a Kubernetes cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
 
@@ -30,7 +30,7 @@ Regardless of how you create your cluster, verify the following requirements are
 
 Union supports autoscaling and the use of spot (interruptible) instances if your infrastructure provides them.
 
-## Object Storage
+## Object storage
 
 Each data plane uses S3-compatible object storage (such as [MinIO](https://min.io)) to store data used in workflow execution.
 Union recommends the use of two buckets:
@@ -51,7 +51,7 @@ mc mb myminio/union-metadata
 mc mb myminio/union-fast-reg
 ```
 
-### CORS Configuration
+### CORS configuration
 
 To enable the [Code Viewer](../configuration/code-viewer) in the Union UI, configure a CORS policy on your bucket(s). This allows the UI to securely fetch code bundles directly from storage.
 
@@ -80,7 +80,7 @@ mc anonymous set-json cors.json myminio/union-fast-reg
 
 Consult your object storage provider's documentation for the equivalent configuration if you are not using MinIO.
 
-### Data Retention
+### Data retention
 
 Union recommends using lifecycle policies on these buckets to manage storage costs. See [Data retention policy](../configuration/data-retention) for more information.
 
@@ -102,7 +102,7 @@ docker run -d -p 5000:5000 --restart=always --name registry registry:2
 
 Note the registry URL (e.g. `registry.example.com:5000/union`) — you will configure it in your Helm values.
 
-## Identity & Access
+## Identity & access
 
 On generic Kubernetes, Union authenticates to object storage and the container registry using static credentials (access key and secret key). These are configured in the generated values file during deployment.
 

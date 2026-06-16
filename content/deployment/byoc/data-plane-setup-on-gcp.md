@@ -117,7 +117,7 @@ gcloud projects add-iam-policy-binding <ProjectId> \
     --role="projects/<ProjectId>/roles/UnionaiAdministrator"
 ```
 
-## Grant access for the Workflow Identity Pool to the Service Account
+## Grant access for the workflow identity pool to the service account
 
 ### In the GCP web console
 
@@ -195,7 +195,7 @@ gcloud services enable storage-api.googleapis.com
 If you decide to manage your own VPC instead of leaving it to {{< key product_name >}}, then you will need to set it up yourself.
 The VPC should be configured with the following characteristics:
 
-* We recommend using a VPC that resides in the same project as the {{< key product_name >}} Data Plane Kubernetes cluster. If you want to use a [shared VPC](https://cloud.google.com/vpc/docs/shared-vpc), contact {{< key product_name >}} support.
+* We recommend using a VPC that resides in the same project as the {{< key product_name >}} data plane Kubernetes cluster. If you want to use a [shared VPC](https://cloud.google.com/vpc/docs/shared-vpc), contact {{< key product_name >}} support.
 * Create a single VPC subnet with:
   * A primary IPv4 range with /18 CIDR mask. This is used for cluster node IP addresses.
   * A secondary range with /15 CIDR mask. This is used for Kubernetes Pod IP addresses. We recommend associating the name with pods, e.g. `gke-pods`.
@@ -209,7 +209,7 @@ Once your VPC is set up, provide the following to {{< key product_name >}}:
 * The secondary range name for the /15 CIDR mask and /16 CIDR mask
 * The /18 CIDR block that was left unallocated for the Kubernetes Master
 
-### Example VPC CIDR Block allocation
+### Example VPC CIDR block allocation
 
 * 10.0.0.0/18 Subnet 1 primary IPv4 range → Used for GCP Nodes
 * 10.32.0.0/14 Cluster secondary IPv4 range named `gke-pods` → Used for Kubernetes Pods

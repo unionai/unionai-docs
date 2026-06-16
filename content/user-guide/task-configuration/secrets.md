@@ -16,7 +16,7 @@ Secrets in the store can be accessed and used within your workflow tasks, withou
 You can create a secret using the [`flyte create secret`](../../api-reference/flyte-cli#flyte-create-secret) command like this:
 
 ```bash
-flyte create secret MY_SECRET_KEY my_secret_value
+flyte create secret MY_SECRET_KEY --value my_secret_value
 ```
 
 This will create a secret called `MY_SECRET_KEY` with the value `my_secret_value`.
@@ -49,7 +49,7 @@ You can optionally specify either or both of the `--project` and `--domain` flag
 For example, to create a secret that it is only available in `my_project/development`, you would execute the following command:
 
 ```bash
-flyte create secret  --project my_project --domain development MY_SECRET_KEY my_secret_value
+flyte create secret  --project my_project --domain development MY_SECRET_KEY --value my_secret_value
 ```
 
 ## Listing secrets
@@ -104,4 +104,4 @@ For example:
 > A `TaskEnvironment` can only access a secret if the scope of the secret includes the project and domain where the `TaskEnvironment` is deployed.
 
 > [!WARNING]
-> Do not return secret values from tasks, as this will expose secrets to the control plane.
+> Do not return secret values from tasks. Returned values are stored in plaintext in your data plane's object store and shown in the UI and to downstream tasks, defeating the secret store's protections.

@@ -71,18 +71,17 @@ For more details on code packaging, see [Packaging](../task-deployment/packaging
 
 Once the code bundle is created:
 
-1. **Request signed URL**: The SDK sends the bundle checksum and target path to the Control Plane.
-2. **Control Plane obtains URL**: The Control Plane calls the Data Plane to obtain a signed URL for that checksum and path.
+1. **Request signed URL**: The SDK sends the bundle checksum and target path to the control plane.
+2. **Control plane obtains URL**: The control plane calls the data plane to obtain a signed URL for that checksum and path.
 3. **Direct upload**: The signed URL is returned to the SDK, which uploads the code bundle directly to the object store.
 
 ## Phase 5: Run creation and queuing
 
-The `CreateRun` API is invoked:
-
-1. **Copy inputs**: Input data is copied to the object store.
-2. **En-queue a run**: The run is queued into the Union Control Plane.
-3. **Hand off to executor**: Union Control Plane hands the task to the Executor Service in your data plane.
-4. **Create action**: The parent task action (called `a0`) is created.
+1. **Upload inputs**: The SDK uploads the run's inputs to the data plane `dataproxy` service, which writes them to the object store. The input values never pass through the control plane.
+2. **Invoke `CreateRun`**: The SDK calls the `CreateRun` API with a reference (URI) to the uploaded inputs, not the input values themselves.
+3. **En-queue a run**: The run is queued into the Union control plane.
+4. **Hand off to executor**: The Union control plane hands the task to the Executor Service in your data plane.
+5. **Create action**: The parent task action (called `a0`) is created.
 
 ## Phase 6: Task execution in data plane
 
@@ -91,7 +90,7 @@ The `CreateRun` API is invoked:
 1. **Container starts**: The task container starts in your data plane.
 2. **Download code bundle**: The Flyte runtime downloads the code bundle from object storage.
 3. **Inflate task**: The task is inflated from the code bundle.
-4. **Download inputs**: Inline inputs are downloaded from the object store.
+4. **Download inputs**: The task's inputs are downloaded from the object store.
 5. **Execute task**: The task is executed with context and inputs.
 
 ### Invoking downstream tasks
@@ -100,7 +99,7 @@ If the task invokes other tasks:
 
 1. **Controller thread**: A controller thread starts to communicate with the backend Queue Service.
 2. **Monitor status**: The controller monitors the status of downstream actions.
-3. **Crash recovery**: If the task crashes, the action identifier is deterministic, allowing the task to resurrect its state from Union Control Plane.
+3. **Crash recovery**: If the task crashes, the action identifier is deterministic, allowing the task to resurrect its state from Union control plane.
 4. **Replay**: The controller efficiently replays state (even at large scale) to find missing completions and resume monitoring.
 
 ### Execution flow diagram
@@ -108,8 +107,8 @@ If the task invokes other tasks:
 ```mermaid
 sequenceDiagram
     participant Client as SDK/Client
-    participant Control as Control Plane<br/>(Queue Service)
-    participant Data as Data Plane<br/>(Executor)
+    participant Control as Control plane<br/>(Queue Service)
+    participant Data as Data plane<br/>(Executor)
     participant ObjStore as Object Store
     participant Container as Task Container
 
@@ -121,9 +120,9 @@ sequenceDiagram
     Data-->>Control: Signed URL
     Control-->>Client: Signed URL
     Client->>ObjStore: Upload code bundle (signed URL)
-    Client->>Control: CreateRun API with inputs
-    Control->>Data: Copy inputs
+    Client->>Data: Upload inputs (dataproxy)
     Data->>ObjStore: Write inputs
+    Client->>Control: CreateRun API (input URI)
     Control->>Data: Queue task (create action a0)
     Data->>Container: Start container
     Container->>Data: Request code bundle
@@ -158,7 +157,7 @@ Flyte uses deterministic action identifiers to enable robust crash recovery:
 - **Consistent identifiers**: Action identifiers are consistently computed based on task and invocation context.
 - **Re-run identical**: In any re-run, the action identifier is identical for the same invocation.
 - **Multiple invocations**: Multiple invocations of the same task receive unique identifiers.
-- **Efficient resurrection**: On crash, the `a0` action resurrects its state from Union Control Plane efficiently, even at large scale.
+- **Efficient resurrection**: On crash, the `a0` action resurrects its state from Union control plane efficiently, even at large scale.
 - **Replay and resume**: The controller replays execution until it finds missing completions and starts watching them.
 
 ## Downstream task execution
@@ -223,7 +222,7 @@ sequenceDiagram
 
 ## State replication and visualization
 
-### Queue Service to Run Service
+### Queue service to run service
 
 1. **Reliable replication**: Queue Service reliably replicates execution state back to Run Service.
 2. **Eventual consistency**: The Run Service may be slightly behind the actual execution state.

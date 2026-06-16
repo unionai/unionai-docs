@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.union.remote
-version: 0.3.0
+version: 0.4.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -38,9 +38,17 @@ Example:
 | [`ApiKey`](../flyteplugins.union.remote/apikey) | Represents a Union API Key (OAuth Application). |
 | [`Assignment`](../flyteplugins.union.remote/assignment) | Represents role/policy assignments for an identity. |
 | [`Cluster`](../flyteplugins.union.remote/cluster) | Represents a Union cluster. |
+| [`ClusterPool`](../flyteplugins.union.remote/clusterpool) | Represents a Union cluster pool — the configuration shared by its member clusters. |
 | [`Member`](../flyteplugins.union.remote/member) | Represents a Union organization member (user or application). |
 | [`Policy`](../flyteplugins.union.remote/policy) | Represents a Union RBAC Policy. |
 | [`Queue`](../flyteplugins.union.remote/queue) | Represents a Union scheduling queue. |
 | [`Role`](../flyteplugins.union.remote/role) | Represents a Union RBAC Role. |
 | [`User`](../flyteplugins.union.remote/user) | Represents a Union user. |
+| [`VolumeExplore`](../flyteplugins.union.remote/volumeexplore) | A resolved :class:`Volume` plus the IO to inspect and walk its lineage. |
+
+### Errors
+
+| Exception | Description |
+|-|-|
+| [`VolumeResolveError`](../flyteplugins.union.remote/volumeresolveerror) | No (or ambiguous) Volume-typed value could be resolved on an action. |
 

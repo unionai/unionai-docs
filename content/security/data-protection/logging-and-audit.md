@@ -8,13 +8,13 @@ variants: -flyte +union
 
 ## Task logging
 
-Logs are collected by Fluent Bit (deployed as a DaemonSet on the data plane) and shipped to the customer's cloud-native log service: CloudWatch Logs (AWS), Cloud Logging (GCP), or Azure Monitor (Azure). Live logs are streamed directly from the Kubernetes API while a task is running. Persisted logs are read from the cloud log aggregator after a pod terminates.
+Logs are collected and shipped to the customer's cloud-native log service: CloudWatch Logs (AWS), Cloud Logging (GCP), or Azure Monitor (Azure). Live logs are streamed directly from the Kubernetes API while a task is running. Persisted logs are read from the cloud log aggregator after a pod terminates.
 
-Log data is not persisted in the control plane. It is streamed as a stateless pass-through relay, encrypted in transit on both network hops (client-to-CP and DP-to-CP), and exists as plaintext in control plane memory only during each streaming request. Persisted logs (fetched from CloudWatch, Cloud Logging, or Azure Monitor for completed executions) also transit the control plane via the same streaming proxy path. There is no content filtering or redaction at any layer of the log pipeline. Any sensitive data (secrets, PII, stack traces) that user code writes to stdout/stderr flows through control plane memory unmodified. Log lines include structured metadata: timestamp, message content, and originator classification. For details on how log data flows through the system, see [Data flow](./data-flow#streaming-relay-pattern).
+Log data does not transit the control plane. Live and persisted logs alike are served from the data plane through the Direct-to-Data-Plane tunnel directly to the requesting client; no log byte ever passes through Union.ai infrastructure. There is no content filtering or redaction at any layer of the log pipeline. Log lines include structured metadata: timestamp, message content, and originator classification.
 
 ## Observability metrics
 
-A per-cluster instance (Prometheus and/or ClickHouse) stores time-series observability metrics including resource utilization and cost data. Queries are proxied through the control plane to the customer's instance. Metrics data never leaves the customer's infrastructure. In BYOC deployments, Union.ai deploys and manages the monitoring stack.
+A per-cluster monitoring instance stores time-series observability metrics including resource utilization and cost data. Queries are served from the data plane through the Direct-to-Data-Plane tunnel. Metrics data never leaves the customer's infrastructure. In BYOC deployments, Union.ai deploys and manages the monitoring stack.
 
 ## Audit trail
 
@@ -36,7 +36,7 @@ Every API request is authenticated with the identity context captured. Run and a
    aws logs get-log-events --log-group <group> --log-stream <stream>
    ```
 
-3. Open the Union UI task logs panel and use browser developer tools (Network tab) to verify that log data comes through the tunnel.
+3. Open the Union.ai UI task logs panel and use browser developer tools (Network tab) to verify that log data comes through the tunnel.
 
 4. Confirm Fluent Bit is running on every node:
 

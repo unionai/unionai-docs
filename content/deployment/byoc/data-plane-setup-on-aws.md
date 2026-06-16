@@ -17,7 +17,7 @@ If you do not wish to manage your own VPC then no additional configuration is ne
 
 You can do the setup quickly using AWS CloudFormation.
 
-### Click the Launch Stack button
+### Click the launch stack button
 
 Ensure that you are logged into the desired AWS account and then select the appropriate region and launch the corresponding CloudFormation stack:
 
@@ -651,7 +651,7 @@ Next, you must create the role. Follow the directions here:
 11. (Optional) Under **Tags**, add tags as key-value pairs. For more information about using tags in IAM, see[ Tagging IAM resources](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html).
 12. After reviewing the role, choose **Create role**.
 13. Search for the `union-ai-admin` role in the IAM Roles list and click on it.
-14. Click **Add permissions** and select **Create inline policy** from the drop down menu.
+14. Click **Add permissions** and select **Create inline policy** from the dropdown menu.
 15. On the Create policy screen, click the **JSON** tab.
 16. Replace the contents of the policy editor with the **UnionIAMPolicy.json** file that you edited earlier.
 17. Click **Review policy**.
@@ -731,7 +731,7 @@ For this setup, there are additional requirements you'll need to complete in you
 
 ### Create additional roles for ECS
 
-#### ECS Task Execution role
+#### ECS task execution role
 - **Role name**: `unionai-access-<REGION>-ecs-execution-role` 
 - **Attached policy**: `AmazonECSTaskExecutionRolePolicy` (built-in policy)
 - **Trust Relationship**:
@@ -750,7 +750,7 @@ For this setup, there are additional requirements you'll need to complete in you
 }
 ```
 
-#### ECS Task Definition role
+#### ECS task definition role
 - **Role name**: `unionai-access-<REGION>-ecs-task-role`  
 - **Attached policy**:
 
@@ -1014,7 +1014,7 @@ Add the following permissions as a new IAM policy attached to the `union-ai-admi
 Share the ARN of the two roles with the {{< key product_name >}} team.
 The {{< key product_name >}} team will get back to you to verify that they are able to assume the role.
 
-### Configure VPC Endpoints
+### Configure VPC endpoints
 
 Ensure your VPC include these endpoints so when the Union stack needs to connect to the corresponding AWS services, it does so without leaving the AWS network:
 

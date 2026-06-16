@@ -1,16 +1,16 @@
 ---
 title: Unit Testing Tasks
-weight: 18
+weight: 19
 variants: +flyte +union
 ---
 
 Unit testing is essential for ensuring your Flyte tasks work correctly. Flyte 2.0 provides flexible testing approaches that allow you to test both your business logic and Flyte-specific features like type transformations and caching.
 
-## Understanding Task Invocation
+## Understanding task invocation
 
 When working with functions decorated with `@env.task`, there are two ways to invoke them, each with different behavior:
 
-### Direct Function Invocation
+### Direct function invocation
 
 When you call a task directly like a regular Python function:
 
@@ -41,7 +41,7 @@ result = run.outputs()
 
 This allows you to test Flyte-specific behavior like serialization and caching.
 
-## Testing Business Logic
+## Testing business logic
 
 For most unit tests, you want to verify your business logic works correctly. Use **direct function invocation** for this:
 
@@ -59,7 +59,7 @@ def test_add():
     assert result == 8
 ```
 
-### Testing Async Tasks
+### Testing async tasks
 
 Async tasks work the same way with direct invocation:
 
@@ -76,7 +76,7 @@ async def test_subtract():
     assert result == 6
 ```
 
-### Testing Nested Tasks
+### Testing nested tasks
 
 When tasks call other tasks, direct invocation continues to work without any Flyte overhead:
 
@@ -90,7 +90,7 @@ def test_nested():
     assert result == 8
 ```
 
-## Testing Type Transformations and Serialization
+## Testing type transformations and serialization
 
 When you need to test how Flyte handles data types, serialization, or caching, use `flyte.run()`:
 
@@ -101,7 +101,7 @@ async def test_add_with_flyte_run():
     assert run.outputs() == 8
 ```
 
-### Testing Type Restrictions
+### Testing type restrictions
 
 Some types may not be supported or may be restricted. Use `flyte.run()` to test that these restrictions are enforced:
 
@@ -124,7 +124,7 @@ async def test_not_supported_types():
         flyte.run(not_supported_types, x=("a", "b"))
 ```
 
-### Testing Nested Tasks with Serialization
+### Testing nested tasks with serialization
 
 You can also test nested task execution with Flyte's full machinery:
 
@@ -135,7 +135,7 @@ async def test_nested_with_run():
     assert run.outputs() == 8
 ```
 
-## Testing Traced Functions
+## Testing traced functions
 
 Functions decorated with `@flyte.trace` can be tested similarly to tasks:
 
@@ -150,7 +150,7 @@ async def test_traced_multiply():
     assert result == 42
 ```
 
-## Best Practices
+## Best practices
 
 1. **Test logic with direct invocation**: For most unit tests, call tasks directly to test your business logic without Flyte overhead.
 
@@ -166,7 +166,7 @@ async def test_traced_multiply():
 
 5. **Mock external dependencies**: Use standard Python mocking techniques for external services, databases, etc.
 
-## Quick Reference
+## Quick reference
 
 | Test Scenario | Method | Example |
 |--------------|--------|---------|
@@ -177,7 +177,7 @@ async def test_traced_multiply():
 | Caching behavior | `flyte.run()` | `r = flyte.run(task, x=10)` |
 | Type restrictions | `flyte.run()` + pytest.raises | `pytest.raises(flyte.errors.RestrictedTypeError)` |
 
-## Example Test Suite
+## Example test suite
 
 Here's a complete example showing different testing approaches:
 
@@ -218,7 +218,7 @@ async def test_subtract_serialization():
     assert run.outputs() == 6
 ```
 
-## Future Improvements
+## Future improvements
 
 The Flyte SDK team is actively working on improvements for advanced unit testing scenarios, particularly around initialization and setup for complex test cases. Additional utilities and patterns may be introduced in future releases to make unit testing even more streamlined.
 

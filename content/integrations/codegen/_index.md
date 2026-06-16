@@ -288,7 +288,7 @@ Separately, Flyte can cache task results across runs. With `cache="auto"`, sandb
 
 Together, replay logs handle crash recovery within a run, and caching avoids redundant work across runs.
 
-### Non-determinism in Agent mode
+### Non-determinism in agent mode
 
 One challenge with agents is that they are inherently non-deterministic — the sequence of actions can vary between runs, which could break replay.
 
