@@ -237,12 +237,13 @@ no change to your task code is required.
 
 ### Tuning the mount
 
-`mount()` accepts options to match the I/O profile of your workload. The most
-useful are the mount location and the metadata cache TTLs:
+`mount()` accepts options to match the I/O profile of your workload — where to
+mount, how aggressively to upload, and how long to cache metadata:
 
 ```python
 await vol.mount(
     mount_path="/data",      # where to mount (default: /workspace)
+    max_uploads=100,         # raise upload concurrency for write-heavy bursts (default 50)
     attr_cache=120.0,        # cache file metadata longer (default 60s)
     entry_cache=120.0,       # cache name lookups longer
     dir_entry_cache=120.0,   # cache directory listings longer
@@ -252,6 +253,7 @@ await vol.mount(
 | Option | Default | Use it to… |
 |---|---|---|
 | `mount_path` | `/workspace` | Mount somewhere other than the default. |
+| `max_uploads` | `50` | Raise the cap on concurrent uploads. Bump it during write-heavy bursts of many small files, where the default concurrency can't saturate the upload link to object storage. |
 | `attr_cache` / `entry_cache` / `dir_entry_cache` | `60.0` | Cache file metadata, name lookups, and directory listings longer to collapse repeated `stat`/listing calls. |
 
 > [!NOTE]
