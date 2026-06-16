@@ -184,6 +184,36 @@ of versions to compare against or roll back to. Forks are also isolated — two
 branches (or two parallel runs) can write at the same time without clobbering
 each other.
 
+## Writing in parallel
+
+A Volume has a **single writer** while it is mounted. One task mounts an
+`RWVolume`, writes, and commits; mounting the *same* volume read-write from two
+tasks at once is not supported, and there is no distributed file locking.
+
+To write in parallel, don't share one mount — **fork**. Each fork is an
+independent `RWVolume` on a disjoint key space, so branches never collide, even
+when they run at the same time:
+
+```python
+import asyncio
+
+@env.task
+async def process_shard(base: ROVolume, i: int) -> ROVolume:
+    branch = await base.fork(name=f"shard-{i}")   # isolated writable branch
+    await branch.mount()
+    Path(f"/workspace/shard-{i}.bin").write_bytes(compute_shard(i))
+    return await branch.finalize(message=f"shard {i}")
+
+@env.task
+async def fan_out(base: ROVolume) -> list[ROVolume]:
+    # each shard runs as its own action, writing its own fork concurrently
+    return await asyncio.gather(*(process_shard(base, i) for i in range(8)))
+```
+
+Each branch commits its own immutable version; downstream you can read them
+independently or fork a new branch from any of them. Reading is never
+restricted — any number of tasks can mount the same `ROVolume` read-only at once.
+
 ## Going further
 
 ### Checkpoint while you work
@@ -260,6 +290,51 @@ await vol.mount(
 > Raising the cache TTLs is safe because a Volume has a single writer while it is
 > mounted. It helps most when a tool repeatedly stats or lists the same paths
 > (common with package managers and build systems).
+
+## Inspecting a volume
+
+To browse a volume without mounting it, use the CLI. `flyte explore volume`
+opens an interactive view of a volume's file tree and its version history,
+reading only the small metadata index — no FUSE mount and no file downloads:
+
+```bash
+# Explore the volume produced by a run (auto-discovers the volume output)
+flyte explore volume <run-name>
+
+# Pin a specific action and the exact output to inspect
+flyte explore volume <run-name> <action-name> --op-name my_volume
+```
+
+It follows the version lineage, so you can step back through earlier commits and
+jump to the action that produced any version. To open an index you already have
+on disk, pass `--from-file <path> --store-type sqlite`.
+
+## Performance and trade-offs
+
+A Volume is a durable, object-store-backed file system, so it behaves
+differently from a local disk. Know the trade-offs before reaching for one:
+
+- **It is not local memory or disk.** Reads and writes go through a cache over
+  object storage. Sequential, file-system-style I/O is fast, but small random
+  operations have higher latency than `tmpfs` or a local SSD. For raw throughput
+  into memory — streaming model weights, say — a purpose-built loader reading
+  directly from object storage will beat mounting a Volume.
+- **Writes are decoupled from durability.** With write-back (the default),
+  writes land in a local cache and upload in the background; the cost of making
+  them durable is paid at `commit()` / `finalize()`, not on each write. Budget
+  for commit time separately from your write loop.
+- **Metadata scales with file count.** Mounting and traversal grow with the
+  number of files. The metadata cache TTLs and [high-throughput
+  mode](#high-throughput-mode) exist to absorb this — reach for them on
+  file-count-heavy workloads.
+- **Versions are retained.** Every commit keeps an immutable version, so commit
+  on a deliberate cadence and prune versions you no longer need.
+
+Exact numbers depend on your object store, region, file sizes, and file count,
+so measure in your own environment. This repository ships a benchmark at
+`benchmarks/volume_benchmark.py` that reports mount time vs. file count, write
+throughput against `tmpfs` and local disk (excluding commit), commit time, and
+metadata throughput.
 
 ## Reference
 
