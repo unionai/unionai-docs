@@ -326,8 +326,7 @@ fluentbit:
     - name: AZURE_STORAGE_SHARED_KEY
       valueFrom:
         secretKeyRef:
-          name: fluentbit-azure-key
-          key: shared_key
+          name: ${FLUENTBIT_SECRET_NAME}
 ```
 
 > [!NOTE] The storage account key grants full access to the account. Rotate it on your normal
