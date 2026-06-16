@@ -9,9 +9,10 @@ description: Persistent, mountable filesystems that tasks can read and write lik
 
 A **Volume** is a persistent file system that your task mounts and uses like an
 ordinary local directory. Unlike [`flyte.io.File` and `flyte.io.Dir`](./files-and-directories),
-which pass a *snapshot* of data between tasks, a Volume is **mutable and
-long-lived**: you write to it during one run, seal it, and any later task or run
-can mount it again — picking up exactly where you left off.
+which pass a *snapshot* of data between tasks, a Volume is **long-lived and
+versioned**: you write to it during one run, seal it into an immutable version,
+and any later task or run can mount that version again — picking up exactly where
+you left off.
 
 Every time you seal a Volume you get a new immutable version, and versions share
 unchanged data, so keeping history is cheap. Forking a Volume is a
@@ -32,15 +33,17 @@ stateful, and file-heavy:
   a real, writable file system to read and write many files in. Fork a clean
   base per session so concurrent runs stay isolated from each other.
 - **Model and dataset caching.** Pull a model, dataset, or package cache into a
-  Volume once, then mount it across every task and run — warm starts instead of
-  re-downloading gigabytes each time.
+  Volume once and mount it across runs instead of re-downloading gigabytes each
+  time. This pays off most with
+  [reusable containers](../task-configuration/reusable-containers), where the
+  container — and the cache it has already loaded — stays warm across runs.
 - **Branching experiments and parallel runs.** Fork a base Volume per
   experiment or per agent run; copy-on-write makes each branch independent and
   cheap, with full version history to compare or roll back.
 
-More broadly, reach for a Volume whenever you need **mutable, long-lived state**
-that evolves across tasks or runs — anything you'd otherwise rebuild from
-scratch every time.
+More broadly, reach for a Volume whenever you need **long-lived, versioned
+state** that carries forward across tasks or runs — anything you'd otherwise
+rebuild from scratch every time.
 
 If you only need to hand a finished file or folder from one task to the next,
 use [`flyte.io.File` or `flyte.io.Dir`](./files-and-directories) instead — they're
