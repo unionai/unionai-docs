@@ -1,6 +1,6 @@
 ---
 title: Custom types
-weight: 4
+weight: 5
 variants: +flyte +union
 ---
 
