@@ -191,17 +191,11 @@ async def commit_cost(commit_mb: int = 1024, max_uploads: int = 50) -> dict[str,
     }
 
 
-@env.task
-async def metadata_throughput(meta_files: int = 20000) -> dict[str, float]:
-    """Small-file create rate and stat-traversal rate."""
-    vol = Volume.new()
-    mnt, meta, cache = _paths(vol.name)
-    await vol.mount(mount_path=mnt, meta_dir=meta, cache_dir=cache)
-    d = Path(mnt) / "many"
+def _meta_bench(d: Path, n: int) -> tuple[float, float]:
+    """Create n empty files in ``d`` then stat-traverse them; return (create/s, stat/s)."""
     d.mkdir(parents=True, exist_ok=True)
-
     t0 = time.perf_counter()
-    for i in range(meta_files):
+    for i in range(n):
         (d / f"f{i:07d}").write_bytes(b"")
     create_s = time.perf_counter() - t0
 
@@ -212,10 +206,27 @@ async def metadata_throughput(meta_files: int = 20000) -> dict[str, float]:
             os.stat(os.path.join(root, f))
             count += 1
     stat_s = time.perf_counter() - t0
+    return (
+        round(n / create_s, 1) if create_s > 0 else float("nan"),
+        round(count / stat_s, 1) if stat_s > 0 else float("nan"),
+    )
+
+
+@env.task
+async def metadata_throughput(meta_files: int = 20000) -> dict[str, float]:
+    """Small-file create and stat-traversal rates: Volume vs. local disk."""
+    vol = Volume.new()
+    mnt, meta, cache = _paths(vol.name)
+    await vol.mount(mount_path=mnt, meta_dir=meta, cache_dir=cache)
+
+    vol_create, vol_stat = _meta_bench(Path(mnt) / "many", meta_files)
+    local_create, local_stat = _meta_bench(Path(tempfile.gettempdir()) / "many", meta_files)
 
     return {
-        "create_files_per_s": round(meta_files / create_s, 1) if create_s > 0 else float("nan"),
-        "stat_files_per_s": round(count / stat_s, 1) if stat_s > 0 else float("nan"),
+        "volume_create_files_per_s": vol_create,
+        "local_disk_create_files_per_s": local_create,
+        "volume_stat_files_per_s": vol_stat,
+        "local_disk_stat_files_per_s": local_stat,
     }
 
 

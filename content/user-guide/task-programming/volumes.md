@@ -338,21 +338,27 @@ Numbers from a single run on AWS (S3 storage, `us-east-2` region) on a
 cloud provider, region, file sizes, and instance type, so treat them as ballpark
 and re-run the benchmark for your own environment.
 
-| Measurement | Result |
+Head-to-head against a local disk (the pod's container filesystem):
+
+| Operation | Local disk | Volume |
+|---|---|---|
+| Sequential write (512 MB) | ~2,200 MB/s | ~930 MB/s |
+| Create small files | ~21,500 files/s | ~1,750 files/s |
+| Stat / traverse files | ~235,000 files/s | ~34,000 files/s |
+
+Volume-specific costs (no local-disk equivalent):
+
+| Operation | Result |
 |---|---|
 | Mount time, 100 → 50,000 files | ~0.55 s → ~0.63 s (roughly flat) |
-| Sequential write — Volume | ~930 MB/s |
-| Sequential write — local disk | ~2,200 MB/s |
 | Commit 512 MB to durable storage | ~3.3 s (~160 MB/s) |
-| Create many small files | ~1,800 files/s |
-| Stat / traverse files | ~33,000 files/s |
 
-In other words: making 512 MB durable adds a few seconds at `commit()`, mounting
-stays sub-second even at 50k files, and creating many small files is the slowest
-path. Sequential writes land at roughly **0.4× local disk** — even though
-uploads happen in the background, each write still passes through the FUSE layer
-and the client's chunking/hashing into the cache, so it trails a raw local-disk
-write.
+In other words, a Volume trades raw speed for durability and sharing. Sequential
+writes run ~0.4× local disk — even though uploads are async, each write still
+passes through the FUSE layer and the client's chunking/hashing into the cache.
+The gap is widest for **many small files** (create ~12× slower, stat ~7× slower),
+so batch those or keep them on local scratch. Mounting stays sub-second even at
+50k files, and making 512 MB durable adds a few seconds at `commit()`.
 
 ## Reference
 
