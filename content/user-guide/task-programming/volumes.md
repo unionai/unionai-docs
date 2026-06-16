@@ -323,18 +323,34 @@ differently from a local disk. Know the trade-offs before reaching for one:
   writes land in a local cache and upload in the background; the cost of making
   them durable is paid at `commit()` / `finalize()`, not on each write. Budget
   for commit time separately from your write loop.
-- **Metadata scales with file count.** Mounting and traversal grow with the
-  number of files. The metadata cache TTLs and [high-throughput
-  mode](#high-throughput-mode) exist to absorb this — reach for them on
-  file-count-heavy workloads.
+- **Per-file work dominates with many small files.** Mounting itself stays fast
+  even with tens of thousands of files, but operations that touch every file —
+  creating or traversing them — are bounded by per-file metadata cost. The
+  metadata cache TTLs and [high-throughput mode](#high-throughput-mode) exist to
+  absorb this; reach for them on file-count-heavy workloads.
 - **Versions are retained.** Every commit keeps an immutable version, so commit
   on a deliberate cadence and prune versions you no longer need.
 
-Exact numbers depend on your object store, region, file sizes, and file count,
-so measure in your own environment. This repository ships a benchmark at
-`benchmarks/volume_benchmark.py` that reports mount time vs. file count, write
-throughput against `tmpfs` and local disk (excluding commit), commit time, and
-metadata throughput.
+### Measured example
+
+Numbers from a single run on Union canary (AWS S3, `us-east-2`; 4 vCPU / 8 GiB
+pod) via `benchmarks/volume_benchmark.py`. They depend heavily on object store,
+region, file sizes, and instance type, so treat them as ballpark and re-run the
+benchmark for your own environment.
+
+| Measurement | Result |
+|---|---|
+| Mount time, 100 → 50,000 files | ~0.55 s → ~0.63 s (roughly flat) |
+| Sequential write — Volume | ~930 MB/s |
+| Sequential write — local disk | ~2,200 MB/s |
+| Commit 512 MB to durable storage | ~3.3 s (~160 MB/s) |
+| Create many small files | ~1,800 files/s |
+| Stat / traverse files | ~33,000 files/s |
+
+In other words: Volume sequential writes land at roughly **0.4× local disk**
+(they pass through the cache), making 512 MB durable adds a few seconds at
+`commit()`, mounting stays sub-second even at 50k files, and creating many small
+files is the slowest path.
 
 ## Reference
 

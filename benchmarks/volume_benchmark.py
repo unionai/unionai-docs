@@ -35,6 +35,8 @@ from __future__ import annotations
 
 import logging
 import os
+import shutil
+import tempfile
 import time
 from pathlib import Path
 
@@ -46,6 +48,10 @@ logger = logging.getLogger("volume-bench")
 
 image = (
     flyte.Image.from_debian_base()
+    .with_apt_packages("fuse")  # JuiceFS execs /bin/fusermount to mount the volume
+    # fusermount reads /etc/mtab on unmount; minimal images lack it. Point it at
+    # the kernel mount table so unmount/finalize succeeds.
+    .with_commands(["ln -sf /proc/mounts /etc/mtab"])
     .with_pip_packages("flyteplugins-union")
 )
 
@@ -59,6 +65,24 @@ env = flyte.TaskEnvironment(
 )
 
 _CHUNK = 8 * 1024 * 1024  # 8 MiB write buffer
+
+
+def _paths(name: str) -> tuple[str, str, str]:
+    """Per-volume mount point, metadata dir, and cache dir — all writable.
+
+    Two reasons everything is keyed by the (unique) volume name:
+    * The defaults (``/workspace``, ``/var/lib``, ``/var/cache``) aren't
+      writable from an unprivileged FUSE container, so we put them under
+      ``/tmp``.
+    * A unique path per volume avoids mounting two volumes onto the same point.
+    """
+    base = os.path.join(tempfile.gettempdir(), "fv", name)
+    mnt = os.path.join(base, "mnt")
+    meta = os.path.join(base, "meta")
+    cache = os.path.join(base, "cache")
+    for p in (mnt, meta, cache):
+        os.makedirs(p, exist_ok=True)
+    return mnt, meta, cache
 
 
 def _write_bytes(path: str, total_bytes: int, chunk: int = _CHUNK) -> float:
@@ -79,21 +103,31 @@ def _write_bytes(path: str, total_bytes: int, chunk: int = _CHUNK) -> float:
     return (total_bytes / 1e6) / dt if dt > 0 else float("nan")
 
 
+def _fits(path_dir: str, want_bytes: int) -> int:
+    """Return a write size that fits in ``path_dir`` (cap at its free space)."""
+    try:
+        free = shutil.disk_usage(path_dir).free
+    except OSError:
+        return want_bytes
+    return min(want_bytes, int(free * 0.8))
+
+
 @env.task
 async def mount_vs_files(file_counts: list[int]) -> dict[str, float]:
     """Mount time (seconds) for a volume already containing N small files."""
     results: dict[str, float] = {}
     for n in file_counts:
-        vol = Volume.new(name=f"bench-mount-{n}")
-        await vol.mount(mount_path="/workspace")
-        d = Path("/workspace/files")
+        vol = Volume.new()  # auto-unique name; avoids "storage not empty" collisions
+        mnt, meta, cache = _paths(vol.name)
+        await vol.mount(mount_path=mnt, meta_dir=meta, cache_dir=cache)
+        d = Path(mnt) / "files"
         d.mkdir(parents=True, exist_ok=True)
         for i in range(n):
             (d / f"f{i:07d}.bin").write_bytes(b"x")
-        ro = await vol.finalize(message=f"{n} files")  # unmounts
+        ro = await vol.finalize(message=f"{n} files", mount_path=mnt, meta_dir=meta)  # unmounts
 
         t0 = time.perf_counter()
-        await ro.mount(mount_path="/workspace")
+        await ro.mount(mount_path=mnt, meta_dir=meta, cache_dir=cache)
         results[str(n)] = round(time.perf_counter() - t0, 4)
         logger.info("mount with %d files: %.4fs", n, results[str(n)])
     return results
@@ -101,21 +135,31 @@ async def mount_vs_files(file_counts: list[int]) -> dict[str, float]:
 
 @env.task
 async def write_throughput(write_mb: int = 1024) -> dict[str, float]:
-    """Sequential write MB/s to the volume vs. tmpfs vs. local disk (no commit)."""
-    total = write_mb * 1024 * 1024
-    vol = Volume.new(name="bench-write")
-    await vol.mount(mount_path="/workspace")
+    """Sequential write MB/s to the volume vs. tmpfs vs. local disk (no commit).
 
+    Each target is best-effort: a path that can't hold the payload (e.g. a small
+    /dev/shm) is capped to its free space, and any failure is recorded as -1 so
+    one bad path doesn't sink the whole run.
+    """
+    total = write_mb * 1024 * 1024
+    vol = Volume.new()
+    mnt, meta, cache = _paths(vol.name)
+    await vol.mount(mount_path=mnt, meta_dir=meta, cache_dir=cache)
+
+    tmp = tempfile.gettempdir()  # local container filesystem
     targets = {
-        "volume": "/workspace/bench.bin",
-        "tmpfs": "/dev/shm/bench.bin",          # in-memory
-        "local_disk": "/root/bench.bin",        # pod container filesystem
+        "volume": (os.path.join(mnt, "bench.bin"), total),
+        "tmpfs": ("/dev/shm/bench.bin", _fits("/dev/shm", total)),   # in-memory
+        "local_disk": (os.path.join(tmp, "bench.bin"), _fits(tmp, total)),
     }
     results: dict[str, float] = {}
-    for kind, path in targets.items():
+    for kind, (path, n) in targets.items():
         try:
-            results[kind] = round(_write_bytes(path, total), 1)
-            logger.info("write %s: %.1f MB/s", kind, results[kind])
+            results[kind] = round(_write_bytes(path, n), 1)
+            logger.info("write %s: %.1f MB/s (%d MiB)", kind, results[kind], n // (1024 * 1024))
+        except OSError as e:
+            logger.warning("write %s failed: %s", kind, e)
+            results[kind] = -1.0
         finally:
             try:
                 os.remove(path)
@@ -128,12 +172,13 @@ async def write_throughput(write_mb: int = 1024) -> dict[str, float]:
 async def commit_cost(commit_mb: int = 1024) -> dict[str, float]:
     """Time to make ``commit_mb`` of written data durable via finalize()."""
     total = commit_mb * 1024 * 1024
-    vol = Volume.new(name="bench-commit")
-    await vol.mount(mount_path="/workspace")
-    _write_bytes("/workspace/payload.bin", total)  # not timed
+    vol = Volume.new()
+    mnt, meta, cache = _paths(vol.name)
+    await vol.mount(mount_path=mnt, meta_dir=meta, cache_dir=cache)
+    _write_bytes(os.path.join(mnt, "payload.bin"), total)  # not timed
 
     t0 = time.perf_counter()
-    await vol.finalize(message=f"commit {commit_mb} MiB")
+    await vol.finalize(message=f"commit {commit_mb} MiB", mount_path=mnt, meta_dir=meta)
     secs = time.perf_counter() - t0
     return {
         "commit_seconds": round(secs, 3),
@@ -144,9 +189,10 @@ async def commit_cost(commit_mb: int = 1024) -> dict[str, float]:
 @env.task
 async def metadata_throughput(meta_files: int = 20000) -> dict[str, float]:
     """Small-file create rate and stat-traversal rate."""
-    vol = Volume.new(name="bench-meta")
-    await vol.mount(mount_path="/workspace")
-    d = Path("/workspace/many")
+    vol = Volume.new()
+    mnt, meta, cache = _paths(vol.name)
+    await vol.mount(mount_path=mnt, meta_dir=meta, cache_dir=cache)
+    d = Path(mnt) / "many"
     d.mkdir(parents=True, exist_ok=True)
 
     t0 = time.perf_counter()
@@ -156,7 +202,7 @@ async def metadata_throughput(meta_files: int = 20000) -> dict[str, float]:
 
     t0 = time.perf_counter()
     count = 0
-    for root, _dirs, files in os.walk(d):
+    for root, _dirs_, files in os.walk(d):
         for f in files:
             os.stat(os.path.join(root, f))
             count += 1
