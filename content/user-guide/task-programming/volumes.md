@@ -331,12 +331,12 @@ differently from a local disk. Know the trade-offs before reaching for one:
 - **Versions are retained.** Every commit keeps an immutable version, so commit
   on a deliberate cadence and prune versions you no longer need.
 
-### Measured example
+### Benchmark
 
-Numbers from a single run on Union canary (AWS S3, `us-east-2`; 4 vCPU / 8 GiB
-pod) via `benchmarks/volume_benchmark.py`. They depend heavily on object store,
-region, file sizes, and instance type, so treat them as ballpark and re-run the
-benchmark for your own environment.
+Numbers from a single run on AWS (S3 storage, `us-east-2` region) on a
+4 vCPU / 8 GiB pod, via `benchmarks/volume_benchmark.py`. They depend heavily on
+cloud provider, region, file sizes, and instance type, so treat them as ballpark
+and re-run the benchmark for your own environment.
 
 | Measurement | Result |
 |---|---|
@@ -347,10 +347,12 @@ benchmark for your own environment.
 | Create many small files | ~1,800 files/s |
 | Stat / traverse files | ~33,000 files/s |
 
-In other words: Volume sequential writes land at roughly **0.4× local disk**
-(they pass through the cache), making 512 MB durable adds a few seconds at
-`commit()`, mounting stays sub-second even at 50k files, and creating many small
-files is the slowest path.
+In other words: making 512 MB durable adds a few seconds at `commit()`, mounting
+stays sub-second even at 50k files, and creating many small files is the slowest
+path. Sequential writes land at roughly **0.4× local disk** — even though
+uploads happen in the background, each write still passes through the FUSE layer
+and the client's chunking/hashing into the cache, so it trails a raw local-disk
+write.
 
 ## Reference
 

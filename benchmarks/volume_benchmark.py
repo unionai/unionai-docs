@@ -169,18 +169,23 @@ async def write_throughput(write_mb: int = 1024) -> dict[str, float]:
 
 
 @env.task
-async def commit_cost(commit_mb: int = 1024) -> dict[str, float]:
-    """Time to make ``commit_mb`` of written data durable via finalize()."""
+async def commit_cost(commit_mb: int = 1024, max_uploads: int = 50) -> dict[str, float]:
+    """Time to make ``commit_mb`` of written data durable via finalize().
+
+    ``max_uploads`` caps concurrent S3 PUTs during the upload drain; raise it to
+    see whether commit is upload-concurrency-bound on your store.
+    """
     total = commit_mb * 1024 * 1024
     vol = Volume.new()
     mnt, meta, cache = _paths(vol.name)
-    await vol.mount(mount_path=mnt, meta_dir=meta, cache_dir=cache)
+    await vol.mount(mount_path=mnt, meta_dir=meta, cache_dir=cache, max_uploads=max_uploads)
     _write_bytes(os.path.join(mnt, "payload.bin"), total)  # not timed
 
     t0 = time.perf_counter()
     await vol.finalize(message=f"commit {commit_mb} MiB", mount_path=mnt, meta_dir=meta)
     secs = time.perf_counter() - t0
     return {
+        "max_uploads": float(max_uploads),
         "commit_seconds": round(secs, 3),
         "effective_MBps": round((total / 1e6) / secs, 1) if secs > 0 else float("nan"),
     }
