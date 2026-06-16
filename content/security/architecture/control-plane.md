@@ -17,7 +17,7 @@ The control plane stores **orchestration metadata** -- the operational scaffoldi
 - **Action state**: run and action identifiers, phase, timestamps, cluster assignment, and scheduling configuration.
 - **Task and run definitions**: each run submission includes a full TaskSpec (container image, typed interface, resource requirements, security context) and a RunSpec (environment variables, labels, annotations). Trigger specs carry default input values for scheduled runs.
 - **Error and event information**: error messages from task executions (which may contain customer data from Python tracebacks), Kubernetes event messages, and per-attempt plugin state.
-- **Platform metadata**: user identity records, the RBAC graph, and data-plane cluster registrations.
+- **Platform metadata**: user identity records, the RBAC graph, and data plane cluster registrations.
 
 It stores only **URIs** pointing into the customer's object store for any payload reference (for example, `s3://customer-bucket/org/project/domain/run/action/output.pb`); the payloads themselves stay in the customer's object store.
 

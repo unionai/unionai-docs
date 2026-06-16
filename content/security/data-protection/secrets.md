@@ -72,7 +72,7 @@ This verification is fully self-service and works immediately. Note that the wri
 
 **How to verify:**
 
-- **Creation path:** Inspect Cloudflare Access logs for the tunnel during a secret create operation. Each request should show the authenticated Union identity, the data-plane endpoint, and a 2xx status. Control plane API logs over the same window should show no payload-bearing requests for the secret.
+- **Creation path:** Inspect Cloudflare Access logs for the tunnel during a secret create operation. Each request should show the authenticated Union identity, the data plane endpoint, and a 2xx status. Control plane API logs over the same window should show no payload-bearing requests for the secret.
 
 - **Consumption path:** Inspect the task pod configuration:
 
