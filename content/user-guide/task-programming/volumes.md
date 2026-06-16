@@ -2,57 +2,92 @@
 title: Volumes
 weight: 2
 variants: -flyte +union
-description: Persistent, mountable filesystems that tasks can read and write like a local directory, with versioning and cheap copy-on-write forks.
+description: A durable, versioned file system that tasks mount and read and write like a local directory, with cheap copy-on-write forks.
 ---
 
 # Volumes
 
-A **Volume** is a persistent file system that your task mounts and uses like an
-ordinary local directory. Unlike [`flyte.io.File` and `flyte.io.Dir`](./files-and-directories),
-which pass a *snapshot* of data between tasks, a Volume is **long-lived and
-versioned**: you write to it during one run, seal it into an immutable version,
-and any later task or run can mount that version again — picking up exactly where
-you left off.
+A **Volume** is a durable file system that your task mounts and uses like an
+ordinary local directory — backed by object storage, but with real file-system
+semantics: open, read, write, list, and seek over many files in place.
 
-Every time you seal a Volume you get a new immutable version, and versions share
-unchanged data, so keeping history is cheap. Forking a Volume is a
-copy-on-write operation: you get an independent, writable branch without copying
-the underlying data.
+Unlike [`flyte.io.File` and `flyte.io.Dir`](./files-and-directories), which pass
+a *snapshot* of data as a value between tasks, a Volume is **long-lived and
+versioned**. You write to it during one run and commit it as an immutable
+version; any later task or run can mount that version and pick up exactly where
+you left off. Each commit is a new immutable version, and versions share
+unchanged data, so keeping history is cheap.
+
+## Volumes vs. files and directories
+
+`File`/`Dir` and Volumes solve different problems. Use the one that matches how
+your data is shaped and used.
+
+| | `flyte.io.File` / `flyte.io.Dir` | Volume |
+|---|---|---|
+| **What it is** | A single file or folder passed as a value | A whole file system you mount |
+| **Access** | Uploaded/downloaded as a unit | Mounted; read and written in place, like a local disk |
+| **Lifetime** | Tied to the run that produced it | Long-lived; remount across tasks and runs |
+| **Changing it** | Produce a new `File`/`Dir` | Fork, write, and commit a new version (copy-on-write) |
+| **Best for** | Handing a finished artifact to the next task | Evolving, file-system-heavy state |
+
+If you just need to hand a finished file or folder from one task to the next,
+reach for [`flyte.io.File` or `flyte.io.Dir`](./files-and-directories) — they're
+simpler and need no setup. Choose a Volume when you need a *mountable, durable
+file system* that evolves over time.
+
+> [!NOTE]
+> A Volume is a durable, network-backed file system — not an in-memory cache.
+> Use it when you want file-system semantics over durable, shared data
+> (mounting, partial and random reads, tools that expect files on disk). It is
+> **not** a way to speed up model loading: pulling weights into memory through a
+> Volume is slower than streaming them directly from object storage with a
+> purpose-built loader.
 
 ## When to use a Volume
 
-Volumes are built for AI and agentic workloads, where work is long-running,
-stateful, and file-heavy:
+Volumes fit AI and agentic workloads, where work is long-running, stateful, and
+file-heavy:
 
 - **Agent memory and state.** Give an agent a durable workspace it builds up
   across turns, tasks, and sessions — notes, intermediate artifacts, a growing
-  working set of files — and resume exactly where it left off on the next run,
-  instead of starting cold each time.
+  working set of files — and resume exactly where it left off, instead of
+  starting cold each run.
 - **Sandboxes and code execution.** Back a [sandbox](../sandboxing/_index) or
   code-execution environment with a Volume so agent- or model-generated code has
-  a real, writable file system to read and write many files in. Fork a clean
-  base per session so concurrent runs stay isolated from each other.
-- **Model and dataset caching.** Pull a model, dataset, or package cache into a
-  Volume once and mount it across runs instead of re-downloading gigabytes each
-  time. This pays off most with
-  [reusable containers](../task-configuration/reusable-containers), where the
-  container — and the cache it has already loaded — stays warm across runs.
-- **Branching experiments and parallel runs.** Fork a base Volume per
-  experiment or per agent run; copy-on-write makes each branch independent and
-  cheap, with full version history to compare or roll back.
+  a real, writable file system to work in. Fork a clean base per session so
+  concurrent runs stay isolated from each other.
+- **Shared, durable datasets.** Keep a dataset, index, or other large working
+  set on a Volume and mount it from many tasks to read — or fork and update — it
+  as files, without re-fetching or re-uploading the whole thing each run.
+- **Branching experiments.** Fork a base Volume per experiment or per run;
+  copy-on-write makes each branch independent and cheap, with version history to
+  compare against or roll back to.
 
 More broadly, reach for a Volume whenever you need **long-lived, versioned
 state** that carries forward across tasks or runs — anything you'd otherwise
 rebuild from scratch every time.
 
-If you only need to hand a finished file or folder from one task to the next,
-use [`flyte.io.File` or `flyte.io.Dir`](./files-and-directories) instead — they're
-simpler and need no setup.
+## Read-write and read-only volumes
+
+A Volume is always one of two types, and the type tells you what you can do with
+it:
+
+- **`RWVolume`** — a writable handle. `Volume.new()` returns one. Mount it,
+  write to it, and `commit()` to record an immutable version. While it is
+  mounted it is the **single writer**.
+- **`ROVolume`** — an immutable, committed version. Mount it read-only to read
+  its contents. To change it, `fork()` it into a new `RWVolume`.
+
+Because the type is part of a task's signature, the read/write contract is
+enforced at the task boundary: a task that declares `vol: ROVolume` can read
+shared data but cannot mutate it. Returning a writable `RWVolume` from a task
+commits it and hands the next task an `ROVolume`.
 
 ## Setup
 
 Volumes are mounted inside the task pod, so the task environment must grant the
-pod permission to mount a filesystem and install the `flyteplugins-union`
+pod permission to mount a file system and install the `flyteplugins-union`
 package. The mount permission comes from a pod template with `allow_fuse()`:
 
 ```python
@@ -85,8 +120,8 @@ env = flyte.TaskEnvironment(
 ## Get started
 
 The lifecycle is: **create → mount → write → return**. Returning a writable
-volume from a task automatically seals it into an immutable `ROVolume`;
-downstream tasks receive that and mount it read-only.
+volume from a task commits it into an immutable `ROVolume`; downstream tasks
+receive that and mount it read-only.
 
 ```python
 from pathlib import Path
@@ -100,7 +135,7 @@ async def create_dataset() -> RWVolume:
 
     Path("/workspace/greeting.txt").write_text("hello from a volume\n")
 
-    return vol                            # returning it seals the volume automatically
+    return vol                            # returning it commits the volume
 
 @env.task
 async def read_dataset(vol: ROVolume) -> str:
@@ -114,25 +149,27 @@ async def main() -> str:
 ```
 
 `Volume.new()` hands you a writable `RWVolume`. When you return it from a task,
-your writes are flushed and the volume is sealed into an immutable `ROVolume` —
-a durable version safe to pass between tasks. The next task receives that
+your writes are flushed and the volume is committed into an immutable `ROVolume`
+— a durable version safe to pass between tasks. The next task receives that
 `ROVolume` and mounts the exact same data.
 
 > [!NOTE]
-> To attach a description to the sealed version, or to seal partway through a
-> task instead of at return, call `finalize()` explicitly — for example
-> `await vol.finalize(message="initial dataset")`. It returns the immutable
-> `ROVolume`.
+> Returning a mounted `RWVolume` commits and unmounts it for you. To attach a
+> message to that final version, return `finalize()` explicitly:
+> `return await vol.finalize(message="initial dataset")`. To record a version
+> *partway* through a task without unmounting, use `commit()` — see
+> [Checkpoint while you work](#checkpoint-while-you-work).
 
-### Updating an existing Volume
+## Updating a volume by forking
 
-An `ROVolume` is immutable, so to change one you **fork** it into a new writable
-branch, edit, and seal again:
+An `ROVolume` is immutable, so you never edit one in place. Instead you **fork**
+it — creating an independent, writable `RWVolume` branch — then write and commit
+a new version:
 
 ```python
 @env.task
 async def add_file(vol: ROVolume) -> ROVolume:
-    rw = await vol.fork(name="my-dataset-v2")  # writable copy-on-write branch
+    rw = await vol.fork(name="my-dataset-v2")  # copy-on-write writable branch
     await rw.mount()
 
     Path("/workspace/extra.txt").write_text("added in a later run\n")
@@ -140,17 +177,20 @@ async def add_file(vol: ROVolume) -> ROVolume:
     return await rw.finalize(message="add extra.txt")
 ```
 
-The fork shares all unchanged data with its parent, so this is fast and cheap
-even for very large Volumes. The original `ROVolume` is untouched, giving you a
-clean version history.
+Forking is **copy-on-write**: the branch shares all unchanged data with its
+parent and only stores what you actually change, so it stays cheap even for very
+large Volumes. The parent version is never touched, so you keep a clean lineage
+of versions to compare against or roll back to. Forks are also isolated — two
+branches (or two parallel runs) can write at the same time without clobbering
+each other.
 
 ## Going further
 
 ### Checkpoint while you work
 
-Use `commit()` to snapshot the current state **without unmounting** — ideal for
-long-running loops like training, where you want a durable checkpoint every few
-steps but intend to keep writing:
+Use `commit()` to record a version **without unmounting** — useful in
+long-running loops where you want a durable point you can resume from if the run
+is interrupted:
 
 ```python
 @env.task
@@ -158,18 +198,18 @@ async def train(base: ROVolume) -> ROVolume:
     rw = await base.fork(name="training-run")
     await rw.mount()
 
-    checkpoints = []
     for epoch in range(100):
         train_one_epoch()                       # writes to /workspace
         if epoch % 10 == 0:
-            snap = await rw.commit(message=f"epoch {epoch}")
-            checkpoints.append(snap)            # each is an immutable ROVolume
+            await rw.commit(message=f"epoch {epoch}")   # durable checkpoint
 
     return await rw.finalize(message="training complete")
 ```
 
-Each `commit()` returns an immutable `ROVolume` you can keep, branch from, or
-hand to another task, while the mount stays live and writable.
+Each `commit()` records a durable, immutable version you can resume from. Those
+versions are **retained**, so commit on a cadence that matches how often you'd
+actually want to roll back — checkpoint periodically rather than every step, and
+prune versions you no longer need.
 
 ### High-throughput mode
 
@@ -197,13 +237,12 @@ no change to your task code is required.
 
 ### Tuning the mount
 
-`mount()` accepts options to match the I/O profile of your workload:
+`mount()` accepts options to match the I/O profile of your workload. The most
+useful are the mount location and the metadata cache TTLs:
 
 ```python
 await vol.mount(
     mount_path="/data",      # where to mount (default: /workspace)
-    max_uploads=100,         # more concurrent uploads for write-heavy bursts
-    upload_delay="30m",      # defer uploads; skip files deleted before then (scratch space)
     attr_cache=120.0,        # cache file metadata longer (default 60s)
     entry_cache=120.0,       # cache name lookups longer
     dir_entry_cache=120.0,   # cache directory listings longer
@@ -213,14 +252,12 @@ await vol.mount(
 | Option | Default | Use it to… |
 |---|---|---|
 | `mount_path` | `/workspace` | Mount somewhere other than the default. |
-| `max_uploads` | `50` | Raise upload concurrency for write-heavy bursts. |
-| `upload_delay` | `None` | Defer uploads (e.g. `"1h"`); useful for scratch files that are deleted before the delay elapses, so they're never uploaded. |
-| `attr_cache` / `entry_cache` / `dir_entry_cache` | `60.0` | Cache metadata, name lookups, and directory listings longer to collapse repeated `stat`/listing calls. |
+| `attr_cache` / `entry_cache` / `dir_entry_cache` | `60.0` | Cache file metadata, name lookups, and directory listings longer to collapse repeated `stat`/listing calls. |
 
 > [!NOTE]
-> The larger caching values above are safe because a Volume has a single writer
-> while it is mounted. Raise them when a tool repeatedly stats or lists the same
-> paths (common with package managers and build systems).
+> Raising the cache TTLs is safe because a Volume has a single writer while it is
+> mounted. It helps most when a tool repeatedly stats or lists the same paths
+> (common with package managers and build systems).
 
 ## Reference
 
