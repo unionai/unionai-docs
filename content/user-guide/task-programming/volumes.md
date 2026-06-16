@@ -135,7 +135,7 @@ async def create_dataset() -> RWVolume:
 
     Path("/workspace/greeting.txt").write_text("hello from a volume\n")
 
-    return vol                            # returning it commits the volume
+    return vol                            # auto-committed; the next task receives an ROVolume
 
 @env.task
 async def read_dataset(vol: ROVolume) -> str:
