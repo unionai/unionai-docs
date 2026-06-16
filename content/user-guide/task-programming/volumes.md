@@ -20,17 +20,27 @@ the underlying data.
 
 ## When to use a Volume
 
-Reach for a Volume when plain files and directories aren't the right fit:
+Volumes are built for AI and agentic workloads, where work is long-running,
+stateful, and file-heavy:
 
-- **Large datasets you download once and reuse.** Fetch a model or dataset into
-  a Volume, then have every downstream task mount it instead of re-downloading.
-- **State that evolves across tasks or runs.** Training checkpoints, incremental
-  indexes, caches — anything you want to update in place and carry forward.
-- **A working file system for tools that expect one.** Compilers, package
-  managers, and code generators that read and write thousands of files run
-  directly against the mount.
-- **Branching experiments.** Fork a base Volume to try a change in isolation
-  without disturbing the original.
+- **Agent memory and state.** Give an agent a durable workspace it builds up
+  across turns, tasks, and sessions — notes, intermediate artifacts, a growing
+  working set of files — and resume exactly where it left off on the next run,
+  instead of starting cold each time.
+- **Sandboxes and code execution.** Back a [sandbox](../sandboxing/_index) or
+  code-execution environment with a Volume so agent- or model-generated code has
+  a real, writable file system to read and write many files in. Fork a clean
+  base per session so concurrent runs stay isolated from each other.
+- **Model and dataset caching.** Pull a model, dataset, or package cache into a
+  Volume once, then mount it across every task and run — warm starts instead of
+  re-downloading gigabytes each time.
+- **Branching experiments and parallel runs.** Fork a base Volume per
+  experiment or per agent run; copy-on-write makes each branch independent and
+  cheap, with full version history to compare or roll back.
+
+More broadly, reach for a Volume whenever you need **mutable, long-lived state**
+that evolves across tasks or runs — anything you'd otherwise rebuild from
+scratch every time.
 
 If you only need to hand a finished file or folder from one task to the next,
 use [`flyte.io.File` or `flyte.io.Dir`](./files-and-directories) instead — they're
@@ -163,7 +173,7 @@ hand to another task, while the mount stays live and writable.
 The default configuration suits most workloads. For workloads that create or
 update **very large numbers of files** — package installs, build trees, code
 generation — switch on high-throughput mode by preparing the image with
-`with_high_throughput_volume_deps`:
+`flyteplugins.union.io.with_high_throughput_volume_deps`:
 
 ```python
 from flyteplugins.union.io import with_high_throughput_volume_deps
@@ -211,6 +221,7 @@ await vol.mount(
 
 ## Reference
 
-- API: `Volume`, `RWVolume`, `ROVolume`, and `with_high_throughput_volume_deps`.
+- API: `Volume`, `RWVolume`, `ROVolume`, and
+  `flyteplugins.union.io.with_high_throughput_volume_deps`.
 - Related: [Files and directories](./files-and-directories) for passing
   snapshot data between tasks.
