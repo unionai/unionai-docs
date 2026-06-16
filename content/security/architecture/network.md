@@ -32,7 +32,7 @@ The tunnel carries every kind of customer-data request: structured task input up
 
 ### Per-cluster routing
 
-In multi-cluster deployments, each data-plane cluster has its own dedicated tunnel domain (e.g. `<cluster-id>.<base-domain>`). The SDK and UI resolve the right cluster for a given request via the `SelectCluster` RPC and dispatch directly to that cluster's tunnel domain. This keeps log streaming, I/O retrieval, and metrics requests terminating at the correct cluster without round-tripping through any shared aggregator.
+In multi-cluster deployments, each data plane cluster has its own dedicated tunnel domain (e.g. `<cluster-id>.<base-domain>`). The SDK and UI resolve the right cluster for a given request via the `SelectCluster` RPC and dispatch directly to that cluster's tunnel domain. This keeps log streaming, I/O retrieval, and metrics requests terminating at the correct cluster without round-tripping through any shared aggregator.
 
 ### Sovereign Data Plane
 

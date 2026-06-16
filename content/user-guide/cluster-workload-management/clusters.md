@@ -29,7 +29,7 @@ flyte create cluster prod-us-east-1 --pool prod
 ```
 
 When a cluster registers, its declared object store, secret store, and container
-registry are validated against the target pool's data-plane contract. A cluster
+registry are validated against the target pool's data plane contract. A cluster
 whose configuration doesn't match the pool is rejected — this is what guarantees
 that any workload routed to the pool can run on any of its clusters.
 
@@ -58,7 +58,7 @@ current) pool's `member_clusters` list:
 flyte update cluster-pool prod
 ```
 
-Because pools share a data-plane contract, only move a cluster into a pool whose
+Because pools share a data plane contract, only move a cluster into a pool whose
 object store, secrets, and registry match the cluster's configuration.
 
 ## Delete a cluster

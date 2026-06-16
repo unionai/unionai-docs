@@ -2,16 +2,16 @@
 title: Where your data lives
 weight: 4
 variants: +flyte +union
-description: A developer's map of what Flyte stores in the control-plane database versus the data-plane object store, and what "metadata" actually means.
+description: A developer's map of what Flyte stores in the control plane database versus the data plane object store, and what "metadata" actually means.
 ---
 
 # Where your data lives
 
-When you run a Flyte task, your data ends up in two stores: a **database** in the control plane and an **object-store bucket** in the data plane. This page is the developer-facing map of which is which, and clears up the word "metadata," which Flyte uses for several unrelated things.
+When you run a Flyte task, your data ends up in two stores: a **database** in the control plane and an **object-store bucket** in the data plane.
 
 ## The two stores
 
-| | Control-plane database | Data-plane object store |
+| | Control plane database | Data plane object store |
 |---|---|---|
 | **Backing tech** | Postgres (plus a few internal coordination stores) | S3, GCS, or ABS bucket |
 | **What's in it** | Every record Flyte uses to *describe* your runs, plus pointers to where each run's inputs and outputs live | Every run's inputs and outputs, and all bulk/offloaded content |
@@ -19,10 +19,11 @@ When you run a Flyte task, your data ends up in two stores: a **database** in th
 
 {{< variant union >}}
 {{< markdown >}}
-**Who manages each store** depends on your deployment model:
+## Who manages the stores
 
-- **Serverless** — both the control-plane database and the data-plane bucket are managed by {{< key product_name >}}.
-- **BYOC and Self-managed** — the data-plane bucket lives in your cloud account; the control-plane database is managed by {{< key product_name >}} (BYOC) or by you (Self-managed).
+* The Control plane database (being part of the control plane) is always managed by Union.ai, regardless of whether you are using a BYOC or self-managed deployment.
+
+* The data plane bucket lives in your cloud account. In a BYOC deployment, it is managed by Union.ai (as is the entire data plane). In a self-managed deployment, you manage the bucket yourself, since you are in charge of managing your own data plane under this model.
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -30,7 +31,7 @@ The database is the **source of truth for what executed**. The bucket is **where
 
 ## What goes in the database
 
-The control-plane database holds everything Flyte needs to enumerate, schedule, and replay your work. Specifically:
+The control plane database holds everything Flyte needs to enumerate, schedule, and replay your work. Specifically:
 
 - **Registrations** — every task you've deployed, every trigger you've registered, every project and domain. A task's definition includes its *default* input values, which are stored inline as part of the registration.
 - **Execution records** — every run, every action (task / trace / condition) inside that run, attempts, phases, timing, error messages, parent/child relationships.
@@ -60,7 +61,7 @@ The layout under your bucket is `<project>/<domain>/...`, with the bulk of execu
 
 The word "metadata" appears in several places and means a different thing each time. The two senses that matter for developers:
 
-### 1. "Metadata" as in the control-plane database (Flyte's usage)
+### 1. "Metadata" as in the control plane database (Flyte's usage)
 
 When Flyte documentation says **"metadata is preserved"** or **"metadata lives in the control plane,"** it means the database records above: registrations (including task default values), run history, and status. It does **not** mean "the contents of the bucket."
 
@@ -70,7 +71,7 @@ This is the sense most relevant to you: the database is durable, and losing the 
 
 The Helm chart and some operational guides refer to a **"metadata bucket"** or `metadataContainer`. **This is a legacy name.** The bucket it refers to does *not* hold the database-style metadata above — it holds `inputs.pb`, `outputs.pb`, Decks, checkpoints, code bundles, and offloaded data. In other words, it holds exactly the "bucket" contents listed in the previous section.
 
-If you see "metadata bucket" in an ops context, read it as **"the data-plane object-store bucket."** The naming is unfortunate; the contents are what you'd expect from a data bucket.
+If you see "metadata bucket" in an ops context, read it as **"the data plane object-store bucket."** The naming is unfortunate; the contents are what you'd expect from a data bucket.
 
 You can largely ignore other appearances of the word in API surfaces (`TaskMetadata`, `ActionMetadata`, and `metadata_path` on `RunContext`, which is a local scratch directory used only by `from_local()` execution) — those are small property bags or local scratch paths and don't change where your data is stored.
 
@@ -116,5 +117,5 @@ For how retention policies are configured in your deployment, see [BYOC data ret
 
 - **Database** = the system of record. Holds registrations (including task default values), run history, schedules, and pointers to each run's inputs/outputs.
 - **Bucket** = the object-store bucket. Holds every run's `inputs.pb`/`outputs.pb`, Decks, checkpoints, code bundles, and offloaded `File` / `Dir` / `DataFrame` contents.
-- **"Metadata" in docs** usually means database-side records. **"Metadata bucket" in Helm/ops** is legacy naming for the data-plane bucket — it does *not* hold database metadata.
+- **"Metadata" in docs** usually means database-side records. **"Metadata bucket" in Helm/ops** is legacy naming for the data plane bucket — it does *not* hold database metadata.
 - **`flyte.with_runcontext(raw_data_path=...)`** is your knob to send offloaded data elsewhere per run.

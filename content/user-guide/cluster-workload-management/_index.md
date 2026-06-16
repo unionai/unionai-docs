@@ -22,7 +22,7 @@ way to decide *where* a workload runs and *under what limits*. Three primitives
 work together to make that decision explicit and safe:
 
 - **Cluster pool** — an org-level **isolation boundary**. Both the clusters *and*
-  the queues inside a pool share one **data-plane configuration**: the same object
+  the queues inside a pool share one **data plane configuration**: the same object
   store, secret store, and container registry. Anything {{< key product_name >}}
   uploads for a run (inputs, code bundles, secrets) is reachable from every cluster
   in the same pool — and from no cluster outside it. Pools do not connect: you

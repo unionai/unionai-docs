@@ -10,7 +10,7 @@ variants: -flyte +union
 > The `flyte` cluster-pool commands on this page are provided by the
 > `flyteplugins-union` package. Install it with `pip install flyteplugins-union`.
 
-A **cluster pool** is a named group of clusters that share one **data-plane
+A **cluster pool** is a named group of clusters that share one **data plane
 configuration** — the same object store, secret store, and container registry.
 Because every cluster in a pool reads and writes the same data plane, a workload
 can run on any cluster in the pool and still find its inputs, code, and secrets.
@@ -39,7 +39,7 @@ flyte create cluster-pool prod --edit
 flyte create cluster-pool prod --file prod-pool.yaml
 ```
 
-The manifest declares the shared data-plane contract:
+The manifest declares the shared data plane contract:
 
 ```yaml
 name: prod
@@ -56,7 +56,7 @@ config:
 ```
 
 > [!WARNING] Pool configuration is immutable
-> The data-plane `config` of a pool cannot be changed after it is created. This is
+> The data plane `config` of a pool cannot be changed after it is created. This is
 > deliberate: flipping the bucket or secret path under live workloads would leave
 > in-flight runs unable to read data they already uploaded. To move to a different
 > bucket, secrets vault, or registry, **create a new pool** and migrate clusters
