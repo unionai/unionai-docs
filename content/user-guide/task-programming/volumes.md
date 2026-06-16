@@ -1,13 +1,13 @@
 ---
 title: Volumes
-weight: 1
+weight: 2
 variants: -flyte +union
 description: Persistent, mountable filesystems that tasks can read and write like a local directory, with versioning and cheap copy-on-write forks.
 ---
 
 # Volumes
 
-A **Volume** is a persistent filesystem that your task mounts and uses like an
+A **Volume** is a persistent file system that your task mounts and uses like an
 ordinary local directory. Unlike [`flyte.io.File` and `flyte.io.Dir`](./files-and-directories),
 which pass a *snapshot* of data between tasks, a Volume is **mutable and
 long-lived**: you write to it during one run, seal it, and any later task or run
@@ -26,7 +26,7 @@ Reach for a Volume when plain files and directories aren't the right fit:
   a Volume, then have every downstream task mount it instead of re-downloading.
 - **State that evolves across tasks or runs.** Training checkpoints, incremental
   indexes, caches — anything you want to update in place and carry forward.
-- **A working filesystem for tools that expect one.** Compilers, package
+- **A working file system for tools that expect one.** Compilers, package
   managers, and code generators that read and write thousands of files run
   directly against the mount.
 - **Branching experiments.** Fork a base Volume to try a change in isolation

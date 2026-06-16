@@ -1,6 +1,6 @@
 ---
 title: Error handling
-weight: 12
+weight: 13
 variants: +flyte +union
 ---
 
