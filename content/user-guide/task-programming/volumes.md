@@ -32,8 +32,10 @@ stateful, and file-heavy:
   a real, writable file system to read and write many files in. Fork a clean
   base per session so concurrent runs stay isolated from each other.
 - **Model and dataset caching.** Pull a model, dataset, or package cache into a
-  Volume once, then mount it across every task and run — warm starts instead of
-  re-downloading gigabytes each time.
+  Volume once and mount it across runs instead of re-downloading gigabytes each
+  time. This pays off most with
+  [reusable containers](../task-configuration/reusable-containers), where the
+  container — and the cache it has already loaded — stays warm across runs.
 - **Branching experiments and parallel runs.** Fork a base Volume per
   experiment or per agent run; copy-on-write makes each branch independent and
   cheap, with full version history to compare or roll back.
