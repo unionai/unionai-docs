@@ -1,6 +1,6 @@
 ---
 title: Classes
-version: 0.4.0
+version: 0.4.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -10,6 +10,7 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`flyteplugins.union.errors.VolumeCommandError`](../packages/flyteplugins.union.errors/volumecommanderror) |A backend CLI invocation (e. |
+| [`flyteplugins.union.errors.VolumeCommitError`](../packages/flyteplugins.union.errors/volumecommiterror) |A keep-alive checkpoint could not be made durable: the writeback staging. |
 | [`flyteplugins.union.errors.VolumeError`](../packages/flyteplugins.union.errors/volumeerror) |Base for Volume *system* failures — infra/runtime problems the caller. |
 | [`flyteplugins.union.errors.VolumeMigrateNoop`](../packages/flyteplugins.union.errors/volumemigratenoop) |Metadata-store migration was requested to the store type already in use. |
 | [`flyteplugins.union.errors.VolumeMountError`](../packages/flyteplugins.union.errors/volumemounterror) |The volume could not be mounted — the client exited prematurely, the. |

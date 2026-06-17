@@ -26,6 +26,8 @@
   "identifiers": {
     "flyteplugins.union.errors.VolumeCommandError": "/api-reference/integrations/union/packages/flyteplugins.union.errors/volumecommanderror/",
     "VolumeCommandError": "/api-reference/integrations/union/packages/flyteplugins.union.errors/volumecommanderror/",
+    "flyteplugins.union.errors.VolumeCommitError": "/api-reference/integrations/union/packages/flyteplugins.union.errors/volumecommiterror/",
+    "VolumeCommitError": "/api-reference/integrations/union/packages/flyteplugins.union.errors/volumecommiterror/",
     "flyteplugins.union.errors.VolumeError": "/api-reference/integrations/union/packages/flyteplugins.union.errors/volumeerror/",
     "VolumeError": "/api-reference/integrations/union/packages/flyteplugins.union.errors/volumeerror/",
     "flyteplugins.union.errors.VolumeMigrateNoop": "/api-reference/integrations/union/packages/flyteplugins.union.errors/volumemigratenoop/",

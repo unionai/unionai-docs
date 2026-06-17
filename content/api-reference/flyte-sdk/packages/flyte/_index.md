@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.4.4
+version: 2.5.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,10 +18,10 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`BaseCheckpoint`](../flyte/basecheckpoint) | Base type for task checkpoint helpers. |
 | [`Cache`](../flyte/cache) | Cache configuration for a task. |
 | [`Checkpoint`](../flyte/checkpoint) | Checkpoint helper using `flyte. |
+| [`ConditionWebhook`](../flyte/conditionwebhook) | Webhook configuration for a condition notification. |
 | [`Cron`](../flyte/cron) | Cron-based automation schedule for use with `Trigger`. |
 | [`Device`](../flyte/device) | Represents a device type, its quantity and partition if applicable. |
 | [`Environment`](../flyte/environment) | Base class for execution environments, shared by `TaskEnvironment` and. |
-| [`EventWebhook`](../flyte/eventwebhook) | Webhook configuration for an event notification. |
 | [`FixedRate`](../flyte/fixedrate) | Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
 | [`Image`](../flyte/image) | Container image specification built using a fluent, two-step pattern:. |
 | [`ImageBuild`](../flyte/imagebuild) | Result of an image build operation. |
@@ -67,7 +67,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`init_passthrough()`](#init_passthrough) | Initialize the Flyte system with passthrough authentication. |
 | [`latest_checkpoint()`](#latest_checkpoint) | Return the file under *root* matching *glob_pattern* with the largest ``key(path)``, or ``None``. |
 | [`map()`](#map) | Map a function over the provided arguments with concurrent execution. |
-| [`new_event()`](#new_event) | Create an event that can be awaited in a workflow. |
+| [`new_condition()`](#new_condition) | Create a condition that can be awaited in a workflow. |
 | [`run()`](#run) | Run a task with the given parameters. |
 | [`run_python_script()`](#run_python_script) | Package and run a Python script on a remote Flyte cluster. |
 | [`serve()`](#serve) | Serve a Flyte app using an AppEnvironment. |
@@ -531,6 +531,7 @@ def init_from_config(
     log_level: int | None,
     log_format: LogFormat,
     user_log_level: int | None,
+    org: str | None,
     project: str | None,
     domain: str | None,
     storage: Storage | None,
@@ -552,6 +553,7 @@ other Flyte remote API methods are called. Thread-safe implementation.
 | `log_level` | `int \| None` | Optional logging level for the framework logger, default is set using the default initialization policies |
 | `log_format` | `LogFormat` | Optional logging format for the logger, default is "console" |
 | `user_log_level` | `int \| None` | |
+| `org` | `str \| None` | Org name, this will override the org in the configuration file when non-empty |
 | `project` | `str \| None` | Project name, this will override any project names in the configuration file |
 | `domain` | `str \| None` | Domain name, this will override any domain names in the configuration file |
 | `storage` | `Storage \| None` | Optional blob store (S3, GCS, Azure) configuration if needed to access (i.e. using Minio) |
@@ -678,52 +680,52 @@ Map a function over the provided arguments with concurrent execution.
 
 **Returns:** AsyncIterator yielding results in order.
 
-#### new_event()
+#### new_condition()
 
 
 > [!NOTE] This method can be called both synchronously or asynchronously.
 > Default invocation is sync and will block.
 > To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
-> `result = await new_event.aio()`.
+> `result = await new_condition.aio()`.
 ```python
-def new_event(
+def new_condition(
     name: str,
     prompt: str,
     prompt_type: typing.Literal['text', 'markdown'],
-    data_type: typing.Type[~EventType],
+    data_type: typing.Type[~ConditionType],
     description: str,
     timeout: typing.Union[datetime.timedelta, int, float, NoneType],
-    webhook: typing.Optional[flyte._event.EventWebhook],
-) -> flyte._event._Event
+    webhook: typing.Optional[flyte._condition.ConditionWebhook],
+) -> flyte._condition._Condition
 ```
-Create an event that can be awaited in a workflow. Events can be used to pause workflow execution until
-an external signal is received.
+Create a condition that can be awaited in a workflow. Conditions can be used to pause workflow execution
+until an external signal is received.
 
 **Condition protocol (remote execution):**
 
-When running inside a task, ``new_event`` registers a *condition action* with the
-backend. Calling ``event.wait()`` blocks until the condition is resolved. The backend
+When running inside a task, ``new_condition`` registers a *condition action* with the
+backend. Calling ``condition.wait()`` blocks until the condition is resolved. The backend
 delivers the result as an inline ``Literal`` (protobuf scalar/primitive) in the
 ``ActionUpdate`` stream — no ``output_uri`` is involved for conditions.
 
 - On success, ``wait()`` returns the value converted to ``data_type``
   (``True``/``False`` for bool, Python ``int``/``float``/``str`` for the others).
-- If the condition times out, ``wait()`` raises ``flyte.errors.EventTimedoutError``.
-- If the condition fails, ``wait()`` raises ``flyte.errors.EventFailedError``.
+- If the condition times out, ``wait()`` raises ``flyte.errors.ConditionTimedoutError``.
+- If the condition fails, ``wait()`` raises ``flyte.errors.ConditionFailedError``.
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | Name of the event |
-| `prompt` | `str` | Prompt message for the event |
+| `name` | `str` | Name of the condition |
+| `prompt` | `str` | Prompt message for the condition |
 | `prompt_type` | `typing.Literal['text', 'markdown']` | Type of prompt rendering - "text" or "markdown" |
-| `data_type` | `typing.Type[~EventType]` | Data type of the event payload — one of ``bool``, ``int``, ``float``, ``str`` |
-| `description` | `str` | Description of the event |
-| `timeout` | `typing.Union[datetime.timedelta, int, float, NoneType]` | Optional timeout as a timedelta or number of seconds. If the event is not signaled within this duration, ``wait()`` will raise ``flyte.errors.EventTimedoutError``. |
-| `webhook` | `typing.Optional[flyte._event.EventWebhook]` | Optional webhook configuration. When provided, the backend will POST to the given URL with the specified payload. The payload may use ``{callback_uri}`` as a template variable — the backend replaces it with the URI that can be used to signal the event. |
+| `data_type` | `typing.Type[~ConditionType]` | Data type of the condition payload — one of ``bool``, ``int``, ``float``, ``str`` |
+| `description` | `str` | Description of the condition |
+| `timeout` | `typing.Union[datetime.timedelta, int, float, NoneType]` | Optional timeout as a timedelta or number of seconds. If the condition is not signaled within this duration, ``wait()`` will raise ``flyte.errors.ConditionTimedoutError``. |
+| `webhook` | `typing.Optional[flyte._condition.ConditionWebhook]` | Optional webhook configuration. When provided, the backend will POST to the given URL with the specified payload. The payload may use ``{callback_uri}`` as a template variable — the backend replaces it with the URI that can be used to signal the condition. |
 
-**Returns:** An instance of _Event representing the created event
+**Returns:** An instance of _Condition representing the created condition
 
 #### run()
 
@@ -899,6 +901,7 @@ def with_runcontext(
     reset_root_logger: bool,
     disable_run_cache: bool,
     queue: Optional[str],
+    max_action_concurrency: int | None,
     notifications: Notification | Tuple[Notification, ...] | None,
     custom_context: Dict[str, str] | None,
     cache_lookup_scope: CacheLookupScope,
@@ -959,6 +962,7 @@ if __name__ == "__main__":
 | `reset_root_logger` | `bool` | If true, the root logger will be preserved and not modified by Flyte. |
 | `disable_run_cache` | `bool` | Optional If true, the run cache will be disabled. This is useful for testing purposes. |
 | `queue` | `Optional[str]` | Optional The queue to use for the run. This is used to specify the cluster to use for the run. |
+| `max_action_concurrency` | `int \| None` | Optional Maximum number of actions that can run concurrently within this run. Only applies to remote runs. If not provided, the platform default (configurable via the ``run.max_action_concurrency`` setting at org/domain/project scope) applies. Must be 0 (platform default) or at least 2 — a value of 1 would deadlock the run, since the parent action holds a concurrency slot while waiting for its child actions. |
 | `notifications` | `Notification \| Tuple[Notification, ...] \| None` | Optional Notification(s) to send when the run reaches specific execution phases. Accepts a single notification or a tuple of notifications. Supports Email, Slack, Teams, and Webhook types. See `flyte.notify` for available notification types and template variables. |
 | `custom_context` | `Dict[str, str] \| None` | Optional global input context to pass to the task. This will be available via get_custom_context() within the task and will automatically propagate to sub-tasks. Acts as base/default values that can be overridden by context managers in the code. |
 | `cache_lookup_scope` | `CacheLookupScope` | Optional Scope to use for the run. This is used to specify the scope to use for cache lookups. If not specified, it will be set to the default scope (global unless overridden at the system level). |

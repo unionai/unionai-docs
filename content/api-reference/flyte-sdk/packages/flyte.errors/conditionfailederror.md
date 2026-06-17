@@ -1,24 +1,24 @@
 ---
-title: EventFailedError
-version: 2.4.4
+title: ConditionFailedError
+version: 2.5.1
 variants: +flyte +union
 layout: py_api
 ---
 
-# EventFailedError
+# ConditionFailedError
 
 **Package:** `flyte.errors`
 
-This error is raised when a condition event fails during execution.
+This error is raised when a condition fails during execution.
 
 This can happen when the backend encounters an error while processing the condition,
-or when the event is explicitly marked as failed by the system.
+or when the condition is explicitly marked as failed by the system.
 
 
 ## Parameters
 
 ```python
-class EventFailedError(
+class ConditionFailedError(
     message: str,
 )
 ```

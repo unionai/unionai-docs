@@ -1,6 +1,6 @@
 ---
 title: Queue
-version: 0.4.0
+version: 0.4.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -29,6 +29,7 @@ class Queue(
 | Property | Type | Description |
 |-|-|-|
 | `action_concurrency` | `int` |  |
+| `cluster_pool` | `str` |  |
 | `clusters` | `list[str]` |  |
 | `created_at` | `str` |  |
 | `depth` | `int` |  |
@@ -105,9 +106,13 @@ def create(
     priority: str,
     fairness: str,
     clusters: list[str] | None,
+    cluster_pool: str | None,
 ) -> Queue
 ```
 Create a new queue.
+
+The queue is bound to ``cluster_pool`` at creation time; when unset, the
+server assigns the org's default pool. The binding cannot be changed later.
 
 
 | Parameter | Type | Description |
@@ -123,6 +128,7 @@ Create a new queue.
 | `priority` | `str` | |
 | `fairness` | `str` | |
 | `clusters` | `list[str] \| None` | |
+| `cluster_pool` | `str \| None` | |
 
 ### details()
 

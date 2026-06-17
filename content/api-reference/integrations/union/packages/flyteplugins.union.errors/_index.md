@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.union.errors
-version: 0.4.0
+version: 0.4.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,6 +24,7 @@ envelope) via the ``_code`` class attribute; subclasses just override it.
 | Exception | Description |
 |-|-|
 | [`VolumeCommandError`](../flyteplugins.union.errors/volumecommanderror) | A backend CLI invocation (e. |
+| [`VolumeCommitError`](../flyteplugins.union.errors/volumecommiterror) | A keep-alive checkpoint could not be made durable: the writeback staging. |
 | [`VolumeError`](../flyteplugins.union.errors/volumeerror) | Base for Volume *system* failures — infra/runtime problems the caller. |
 | [`VolumeMigrateNoop`](../flyteplugins.union.errors/volumemigratenoop) | Metadata-store migration was requested to the store type already in use. |
 | [`VolumeMountError`](../flyteplugins.union.errors/volumemounterror) | The volume could not be mounted — the client exited prematurely, the. |
