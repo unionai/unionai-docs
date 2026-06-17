@@ -859,7 +859,7 @@ The exact configuration keys, defaults, and override paths live in the chart's `
 
 ## Intra-cluster topology
 
-Intra-cluster — both planes in the same Kubernetes cluster — is a supported special case. It is the topology the [Getting started](./getting-started) walkthrough uses because it has the simplest substrate footprint (one cluster, one VPC, one set of identity bindings) and the chart ships ready-to-use `values.{aws,gcp}.selfhosted-intracluster.yaml` overlays for it.
+Intra-cluster — both planes in the same Kubernetes cluster — is a supported special case. It is the topology the [Getting started](./getting-started) walkthrough uses because it has the simplest substrate footprint (one cluster, one VPC, one set of identity bindings). Enable by setting `CONTROLPLANE_GRPC_ENDPOINT` + `QUEUE_GRPC_ENDPOINT` to cluster-local svc URLs in your `values.{aws,gcp}.yaml` — see [Getting started → Optional: intracluster topology](./getting-started#optional-intracluster-topology).
 
 ### When to use
 
@@ -876,7 +876,7 @@ Intra-cluster — both planes in the same Kubernetes cluster — is a supported 
 | CP ingress | Public, real CA cert recommended | ClusterIP, self-signed acceptable |
 | Identity bindings | Two clusters, two OIDC providers (AWS) | One cluster, one OIDC provider |
 | Object storage | Separate CP and DP buckets | Same buckets work for both |
-| Helm overlay | `values.{aws,gcp}.yaml` (cloud default) | `values.{aws,gcp}.selfhosted-intracluster.yaml` |
+| Helm overlay | `values.{aws,gcp}.yaml` | `values.{aws,gcp}.yaml` with cluster-local `CONTROLPLANE_GRPC_ENDPOINT` + `QUEUE_GRPC_ENDPOINT` set |
 | etcd headroom | Two etcds, each scales independently | One etcd serving both planes — DP workload pressure also affects CP responsiveness |
 
 ### Scaling considerations specific to intra-cluster
@@ -889,8 +889,8 @@ Intra-cluster — both planes in the same Kubernetes cluster — is a supported 
 
 The chart's bundled intra-cluster overlays are self-contained and document every override in the file's comment header:
 
-- AWS: [`values.aws.selfhosted-intracluster.yaml`](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/values.aws.selfhosted-intracluster.yaml)
-- GCP: [`values.gcp.selfhosted-intracluster.yaml`](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/values.gcp.selfhosted-intracluster.yaml)
+- AWS: [`values.aws.yaml`](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/values.aws.yaml)
+- GCP: [`values.gcp.yaml`](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/values.gcp.yaml)
 
 ## Next
 
