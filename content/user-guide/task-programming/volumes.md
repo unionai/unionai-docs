@@ -86,9 +86,9 @@ commits it and hands the next task an `ROVolume`.
 
 ## Setup
 
-Volumes are mounted inside the task pod, so the task environment must grant the
-pod permission to mount a file system and install the `flyteplugins-union`
-package. The mount permission comes from a pod template with `allow_fuse()`:
+Volumes are mounted inside the task pod, so the task environment needs two
+things: an **image** with the volume client (`flyteplugins-union`) and the FUSE
+tools, and a **pod template** that grants the mount capability.
 
 ```python
 import flyte
@@ -96,7 +96,8 @@ from flyteplugins.union.io import Volume, ROVolume
 
 image = (
     flyte.Image.from_debian_base()
-    .with_pip_packages("flyteplugins-union")
+    .with_pip_packages("flyteplugins-union")  # volume client (bundles the mount binary)
+    .with_install_fuse()                       # FUSE userspace tools needed to mount
 )
 
 env = flyte.TaskEnvironment(
@@ -108,14 +109,22 @@ env = flyte.TaskEnvironment(
 )
 ```
 
+Two pieces make a mount possible, and you need both:
+
 > [!NOTE]
-> `flyte.PodTemplate.allow_fuse()` is what makes a Volume mountable: it requests
-> the FUSE device resource and grants the capability the mount needs, without
-> running the container as privileged. Your cluster must run a FUSE device
-> plugin for this — the Union data plane ships an opt-in one. (For clusters
-> without it, `allow_fuse(privileged=True)` is a fallback that runs the
-> container privileged instead.) A task whose environment doesn't apply
-> `allow_fuse()` cannot mount a Volume.
+> **`flyte.PodTemplate.allow_fuse()`** grants the *kernel* side: it requests the
+> FUSE device resource and adds the capability the mount needs, without running
+> the container as privileged. Your cluster must run a FUSE device plugin for
+> this — the Union data plane ships an opt-in one. (For clusters without it,
+> `allow_fuse(privileged=True)` is a fallback that runs the container
+> privileged.)
+>
+> **`Image.with_install_fuse()`** provides the *userspace* side: the FUSE tools
+> (`fusermount`) that the mount client invokes. The default minimal images don't
+> include them, so without this the mount fails with `fusermount: not found`. If
+> you bring your own image, see [Custom images](#custom-images).
+>
+> A task missing either piece cannot mount a Volume.
 
 ## Get started
 
@@ -131,16 +140,16 @@ from flyteplugins.union.io import Volume, RWVolume, ROVolume
 @env.task
 async def create_dataset() -> RWVolume:
     vol = Volume.new(name="my-dataset")   # a fresh writable RWVolume
-    await vol.mount()                     # mounts at /workspace by default
+    await vol.mount(mount_path="/data")   # mount it somewhere in the task
 
-    Path("/workspace/greeting.txt").write_text("hello from a volume\n")
+    Path("/data/greeting.txt").write_text("hello from a volume\n")
 
     return vol                            # auto-committed; the next task receives an ROVolume
 
 @env.task
 async def read_dataset(vol: ROVolume) -> str:
-    await vol.mount()                     # ROVolume always mounts read-only
-    return Path("/workspace/greeting.txt").read_text()
+    await vol.mount(mount_path="/data")   # ROVolume always mounts read-only
+    return Path("/data/greeting.txt").read_text()
 
 @env.task
 async def main() -> str:
@@ -170,9 +179,9 @@ a new version:
 @env.task
 async def add_file(vol: ROVolume) -> ROVolume:
     rw = await vol.fork(name="my-dataset-v2")  # copy-on-write writable branch
-    await rw.mount()
+    await rw.mount(mount_path="/data")
 
-    Path("/workspace/extra.txt").write_text("added in a later run\n")
+    Path("/data/extra.txt").write_text("added in a later run\n")
 
     return await rw.finalize(message="add extra.txt")
 ```
@@ -200,8 +209,8 @@ import asyncio
 @env.task
 async def process_shard(base: ROVolume, i: int) -> ROVolume:
     branch = await base.fork(name=f"shard-{i}")   # isolated writable branch
-    await branch.mount()
-    Path(f"/workspace/shard-{i}.bin").write_bytes(compute_shard(i))
+    await branch.mount(mount_path="/data")
+    Path(f"/data/shard-{i}.bin").write_bytes(compute_shard(i))
     return await branch.finalize(message=f"shard {i}")
 
 @env.task
@@ -226,10 +235,10 @@ is interrupted:
 @env.task
 async def train(base: ROVolume) -> ROVolume:
     rw = await base.fork(name="training-run")
-    await rw.mount()
+    await rw.mount(mount_path="/data")
 
     for epoch in range(100):
-        train_one_epoch()                       # writes to /workspace
+        train_one_epoch()                       # writes to /data
         if epoch % 10 == 0:
             await rw.commit(message=f"epoch {epoch}")   # durable checkpoint
 
@@ -272,7 +281,7 @@ mount, how aggressively to upload, and how long to cache metadata:
 
 ```python
 await vol.mount(
-    mount_path="/data",      # where to mount (default: /workspace)
+    mount_path="/data",      # where to mount (default: ~/flyte-volume)
     max_uploads=100,         # raise upload concurrency for write-heavy bursts (default 50)
     attr_cache=120.0,        # cache file metadata longer (default 60s)
     entry_cache=120.0,       # cache name lookups longer
@@ -282,7 +291,7 @@ await vol.mount(
 
 | Option | Default | Use it to… |
 |---|---|---|
-| `mount_path` | `/workspace` | Mount somewhere other than the default. |
+| `mount_path` | `~/flyte-volume` | Mount somewhere other than the default. |
 | `max_uploads` | `50` | Raise the cap on concurrent uploads. Bump it during write-heavy bursts of many small files, where the default concurrency can't saturate the upload link to object storage. |
 | `attr_cache` / `entry_cache` / `dir_entry_cache` | `60.0` | Cache file metadata, name lookups, and directory listings longer to collapse repeated `stat`/listing calls. |
 
@@ -290,6 +299,41 @@ await vol.mount(
 > Raising the cache TTLs is safe because a Volume has a single writer while it is
 > mounted. It helps most when a tool repeatedly stats or lists the same paths
 > (common with package managers and build systems).
+
+## Custom images
+
+`with_install_fuse()` works on top of any image built from
+`flyte.Image.from_debian_base()`. If you bring a **fully custom image** (your own
+Dockerfile / base), it must satisfy the same requirements the helper otherwise
+handles. A volume-capable image needs:
+
+1. **The volume client** — `pip install flyteplugins-union`. The wheel bundles
+   the mount binary, so there's nothing else to fetch.
+2. **FUSE userspace tools** — the `fuse3` package. The mount runs unprivileged,
+   so `fusermount3` **must be setuid-root**; the Debian package's post-install
+   sets that bit, so install it with the package manager (don't just copy the
+   binary in — a copy loses the setuid bit and the mount fails with `EPERM`).
+3. **`/etc/mtab`** — minimal images omit it, and `fusermount` reads/updates it on
+   mount and unmount. Symlink it to the kernel mount table.
+
+In a Dockerfile that's:
+
+```dockerfile
+RUN apt-get update && apt-get install -y --no-install-recommends fuse3 \
+    && ln -sf /proc/mounts /etc/mtab \
+    && pip install flyteplugins-union
+```
+
+Beyond the image, the same runtime prerequisites apply as for the default setup:
+the pod must use `flyte.PodTemplate().allow_fuse()` (FUSE device + capability),
+and the cluster must run a FUSE device plugin (the Union data plane ships one).
+
+> [!NOTE]
+> The container also needs to run as a user that can write the volume's
+> `mount_path`, `meta_dir`, and `cache_dir`. The defaults live under the task
+> user's `$HOME`, which the default image owns; if your image runs as a
+> different user or root, either keep those dirs writable or pass explicit
+> writable paths to `mount()`.
 
 ## Inspecting a volume
 
