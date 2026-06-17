@@ -1,12 +1,12 @@
 ---
 title: Authentication and SSO
-variants: -flyte +union
+variants: +flyte -union
 weight: 3
 ---
 
 # Authentication and SSO
 
-A Flyte 2 deployment has two independent places you can add authentication:
+A Flyte deployment has two independent places you can add authentication:
 
 1. **API authentication** — the Flyte binary itself authenticates SDK/CLI clients and
    the console against an OIDC provider. Configured with `configuration.auth`.
@@ -50,10 +50,10 @@ configuration:
 
 ### External authorization server
 
-Delegate token issuance to an existing OAuth2 authorization server and have Flyte 2
-only **validate** the tokens it receives (`enableAuthServer: false`). This is useful
-when you already run an identity service (for example an existing Flyte 1 deployment)
-and want Flyte 2 to trust the same tokens:
+Delegate token issuance to an existing OAuth2 authorization server and have Flyte only
+**validate** the tokens it receives (`enableAuthServer: false`). This is useful when
+you already run an identity service (for example another Flyte deployment you already
+operate) and want this deployment to trust the same tokens:
 
 ```yaml
 configuration:
@@ -144,7 +144,7 @@ In the **same namespace as the ingress**, with keys **exactly** `clientID` /
 `clientSecret`:
 
 ```bash
-kubectl create secret generic flyte2-console-oidc -n flyte \
+kubectl create secret generic flyte-console-oidc -n flyte \
   --from-literal=clientID='<client-id>' \
   --from-literal=clientSecret='<client-secret>'
 ```
@@ -182,7 +182,7 @@ subjects:
   namespace: kube-system
 ```
 
-Without this you'll see `FailedBuildModel … secrets "flyte2-console-oidc" is
+Without this you'll see `FailedBuildModel … secrets "flyte-console-oidc" is
 forbidden` on the ingress and no auth rule is applied.
 
 ### 4. Add the auth annotations
@@ -199,7 +199,7 @@ ingress:
     alb.ingress.kubernetes.io/auth-scope: openid email
     alb.ingress.kubernetes.io/auth-on-unauthenticated-request: authenticate
     alb.ingress.kubernetes.io/auth-session-timeout: "604800"   # 7 days
-    alb.ingress.kubernetes.io/auth-idp-oidc: '{"issuer":"<issuer>","authorizationEndpoint":"<authorize>","tokenEndpoint":"<token>","userInfoEndpoint":"<userinfo>","secretName":"flyte2-console-oidc"}'
+    alb.ingress.kubernetes.io/auth-idp-oidc: '{"issuer":"<issuer>","authorizationEndpoint":"<authorize>","tokenEndpoint":"<token>","userInfoEndpoint":"<userinfo>","secretName":"flyte-console-oidc"}'
 ```
 
 ### 5. Verify

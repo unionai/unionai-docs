@@ -1,23 +1,23 @@
 ---
-title: Installing Flyte 2
-variants: -flyte +union
+title: Installing Flyte
+variants: +flyte -union
 weight: 2
 ---
 
-# Installing Flyte 2
+# Installing Flyte
 
-This guide installs Flyte 2 with the `flyte-binary` Helm chart. It assumes you have
+This guide installs Flyte with the `flyte-binary` Helm chart. It assumes you have
 already provisioned the [external dependencies](./planning) — a Kubernetes cluster, a
 PostgreSQL database, and an object-store bucket — and that you have `helm` and
 `kubectl` configured against your cluster.
 
 ## 1. Get the chart
 
-The Flyte 2 chart is not yet published to a Helm repository, so install it from a
-checkout of the Flyte repo (the `v2` branch):
+The chart is not yet published to a Helm repository, so install it from a checkout of
+the Flyte repo:
 
 ```bash
-git clone -b v2 https://github.com/flyteorg/flyte.git
+git clone https://github.com/flyteorg/flyte.git
 cd flyte/charts/flyte-binary
 ```
 
@@ -26,14 +26,15 @@ is published, you can replace the path with a chart-repo or OCI reference.
 
 ## 2. Write a values file
 
-Create a `values-flyte2.yaml` with the minimum configuration. Everything in angle
-brackets is a placeholder you replace:
+Create a `values.yaml` with the minimum configuration. Everything in angle brackets is
+a placeholder you replace:
 
 ```yaml
-# values-flyte2.yaml — minimal Flyte 2 configuration
+# values.yaml — minimal Flyte configuration
 
-# Predictable resource names: flyte2, flyte2-http, flyte2-console.
-fullnameOverride: flyte2
+# fullnameOverride names all resources (here: flyte, flyte-http, flyte-console).
+# Give each release a distinct name if you run more than one Flyte instance.
+fullnameOverride: flyte
 
 configuration:
   database:
@@ -59,11 +60,6 @@ serviceAccount:
   create: true
   # Bind a cloud IAM identity here so Flyte can reach the object store. See step 4.
   annotations: {}
-
-deployment:
-  image:
-    repository: cr.flyte.org/flyteorg/flyte-binary-v2
-    tag: latest
 ```
 
 The required fields:
@@ -86,16 +82,16 @@ Render the manifests first to check your values, then install for real:
 
 ```bash
 # Dry run — renders templates without touching the cluster
-helm install flyte2 . -n flyte --create-namespace -f values-flyte2.yaml --dry-run
+helm install flyte . -n flyte --create-namespace -f values.yaml --dry-run
 
 # Install
-helm install flyte2 . -n flyte --create-namespace -f values-flyte2.yaml
+helm install flyte . -n flyte --create-namespace -f values.yaml
 ```
 
 Watch the rollout:
 
 ```bash
-kubectl -n flyte rollout status deploy/flyte2
+kubectl -n flyte rollout status deploy/flyte
 kubectl -n flyte get pods
 ```
 
@@ -151,15 +147,15 @@ executor config (merged via `configuration.inline`):
 configuration:
   inline:
     executor:
-      defaultK8sServiceAccount: flyte2   # IAM-annotated SA tasks run as
+      defaultK8sServiceAccount: flyte   # IAM-annotated SA tasks run as
 ```
 
 ## 5. Expose Flyte with an ingress
 
 By default the chart only creates `ClusterIP` Services. To reach Flyte from outside
-the cluster, enable the ingress. A **single HTTP ingress** serves the console
-(`/v2`), the API, and the auth-discovery endpoints — there is no separate gRPC
-ingress (see [Planning](./planning)).
+the cluster, enable the ingress. A **single HTTP ingress** serves the console, the
+API, and the auth-discovery endpoints — there is no separate gRPC ingress (see
+[Planning](./planning)).
 
 ```yaml
 ingress:
@@ -169,8 +165,8 @@ ingress:
 ```
 
 The console is served under `console.basePath` (default `/v2`) on this same host. It
-talks to the API same-origin, so it only works when the console and the API are
-behind the **same ingress host** — always expose them together.
+talks to the API same-origin, so it only works when the console and the API are behind
+the **same ingress host** — always expose them together.
 
 For provider-specific ingress annotations (TLS, ALB scheme, health checks), add them
 under `ingress.httpAnnotations`. See the AWS/EKS example below and the
@@ -181,7 +177,7 @@ under `ingress.httpAnnotations`. See the AWS/EKS example below and the
 **Without an ingress**, port-forward the API service and call a Connect endpoint:
 
 ```bash
-kubectl -n flyte port-forward service/flyte2-http 8090:8090
+kubectl -n flyte port-forward service/flyte-http 8090:8090
 ```
 
 ```bash
@@ -205,7 +201,7 @@ hostnames, or ARNs are included.
 
 ```yaml
 # values-eks.yaml
-fullnameOverride: flyte2
+fullnameOverride: flyte
 
 configuration:
   database:
@@ -228,17 +224,12 @@ configuration:
   inline:
     executor:
       # Task pods run as this service account so they inherit S3 access via IRSA.
-      defaultK8sServiceAccount: flyte2
+      defaultK8sServiceAccount: flyte
 
 serviceAccount:
   create: true
   annotations:
     eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/<flyte-role>
-
-deployment:
-  image:
-    repository: cr.flyte.org/flyteorg/flyte-binary-v2
-    tag: latest
 
 ingress:
   create: true
@@ -257,7 +248,7 @@ ingress:
 Install it the same way:
 
 ```bash
-helm install flyte2 . -n flyte --create-namespace -f values-eks.yaml
+helm install flyte . -n flyte --create-namespace -f values-eks.yaml
 ```
 
 ## Advanced configuration

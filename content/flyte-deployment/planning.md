@@ -1,18 +1,18 @@
 ---
 title: Planning your deployment
-variants: -flyte +union
+variants: +flyte -union
 weight: 1
 ---
 
-# Planning your Flyte 2 deployment
+# Planning your Flyte deployment
 
-Before you install Flyte 2, it helps to understand what the deployment is made of and
+Before you install Flyte, it helps to understand what the deployment is made of and
 which external dependencies you need to provide yourself.
 
 ## Architecture
 
-Flyte 2 runs as a **single unified binary** (`flyte-binary-v2`). One container image
-bundles all of the backend components into one process:
+Flyte runs as a **single unified binary**. One container image bundles all of the
+backend components into one process:
 
 | Component | Responsibility |
 |---|---|
@@ -21,30 +21,27 @@ bundles all of the backend components into one process:
 | Data proxy | Issues signed URLs for uploading and downloading data to the object store. |
 | Secret service | Mediates access to Kubernetes secrets for tasks. |
 
-A second image, **`flyteconsole-v2`**, serves the web UI as a static single-page
-application. It is deployed as its own Deployment and Service but has no backend
-configuration of its own — it talks to the Flyte API on the same origin (same ingress
-host) and is served under a base path (default `/v2`).
+A second image serves the web **console** as a static single-page application. It is
+deployed as its own Deployment and Service but has no backend configuration of its
+own — it talks to the Flyte API on the same origin (same ingress host) and is served
+under a base path (default `/v2`, configurable via `console.basePath`).
 
-Because everything is one process, you scale Flyte 2 **vertically** — give the
+Because everything is one process, you scale Flyte **vertically** — give the
 Deployment more CPU and memory — rather than scaling individual microservices.
 
-## What changed from Flyte 1
+### Networking
 
-The most important change for deployment is the networking model:
+Flyte clients (the SDK and CLI) speak [buf Connect](https://connectrpc.com/) **over
+HTTP**, so a **single HTTP ingress** serves the console, the API, and the
+auth-discovery endpoints — there is no separate gRPC port to expose. The single
+ingress routes, by path, to two backends:
 
-- **One HTTP ingress, no gRPC.** Flyte 1 exposed two protocols (`HTTP` for the UI and
-  `gRPC` for clients) and typically needed two ingresses or two ports. Flyte 2 clients
-  (the SDK and CLI) speak [buf Connect](https://connectrpc.com/) **over HTTP**, so a
-  single HTTP ingress serves the console (`/v2`), the API, and the auth-discovery
-  endpoints. There is no separate gRPC port to expose.
-- The single ingress routes, by path, to two backends:
-  - `console.basePath` (default `/v2`, and `/v2/*`) → the `flyteconsole-v2` Service.
-  - the `flyteidl2.*` Connect service paths (for example
-    `/flyteidl2.project.ProjectService`, `/flyteidl2.workflow.RunService`,
-    `/flyteidl2.task.TaskService`, `/flyteidl2.dataproxy.DataProxyService`) and the
-    auth-discovery paths (`/.well-known/oauth-authorization-server`,
-    `/flyteidl2.auth.*`) → the Flyte binary's HTTP Service.
+- `console.basePath` (default `/v2`, and `/v2/*`) → the console Service.
+- the `flyteidl2.*` Connect service paths (for example
+  `/flyteidl2.project.ProjectService`, `/flyteidl2.workflow.RunService`,
+  `/flyteidl2.task.TaskService`, `/flyteidl2.dataproxy.DataProxyService`) and the
+  auth-discovery paths (`/.well-known/oauth-authorization-server`,
+  `/flyteidl2.auth.*`) → the Flyte binary's HTTP Service.
 
 ## External dependencies
 
@@ -59,11 +56,11 @@ offerings (EKS, GKE, AKS), self-managed clusters, and on-prem all work.
 
 ### Relational database
 
-Flyte 2 stores its persistent records in **PostgreSQL** (12 or newer). The binary
-reads a single database configuration, rendered by the chart under `runs.database`
-from your `configuration.database` values. Provision a database and a user before
-installing; the chart can create the database password Secret for you, or you can
-mount it from your own secret manager.
+Flyte stores its persistent records in **PostgreSQL** (12 or newer). The binary reads
+a single database configuration, rendered by the chart under `runs.database` from your
+`configuration.database` values. Provision a database and a user before installing;
+the chart can create the database password Secret for you, or you can mount it from
+your own secret manager.
 
 ### Object store
 
@@ -108,11 +105,12 @@ referenced from the Ingress.
 ## Container images
 
 The chart deploys two images, configurable under `deployment.image` and
-`console.image`:
+`console.image`. You normally don't need to set these — the chart ships with working
+defaults:
 
 | Image | Default repository |
 |---|---|
 | Flyte binary | `cr.flyte.org/flyteorg/flyte-binary-v2` |
 | Console | `ghcr.io/unionai-oss/flyteconsole-v2` |
 
-When you're ready, continue to [Installing Flyte 2](./installing).
+When you're ready, continue to [Installing Flyte](./installing).
