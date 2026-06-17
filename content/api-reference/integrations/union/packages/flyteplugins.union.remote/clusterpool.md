@@ -1,6 +1,6 @@
 ---
 title: ClusterPool
-version: 0.4.0
+version: 0.4.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -40,39 +40,14 @@ class ClusterPool(
 
 | Method | Description |
 |-|-|
-| [`add_cluster()`](#add_cluster) | Add a cluster to the pool. |
 | [`create()`](#create) | Create a cluster pool. |
 | [`delete()`](#delete) | Delete a cluster pool by name. |
 | [`get()`](#get) | Get a cluster pool by name. |
 | [`listall()`](#listall) | List all cluster pools in the organization. |
-| [`remove_cluster()`](#remove_cluster) | Remove a cluster from the pool. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`update()`](#update) | Update a cluster pool's configuration. |
 
-
-### add_cluster()
-
-
-> [!NOTE] This method can be called both synchronously or asynchronously.
-> Default invocation is sync and will block.
-> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
-> `result = await ClusterPool.add_cluster.aio()`.
-```python
-def add_cluster(
-    cls,
-    name: str,
-    cluster_name: str,
-)
-```
-Add a cluster to the pool.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `cls` |  | |
-| `name` | `str` | |
-| `cluster_name` | `str` | |
 
 ### create()
 
@@ -170,29 +145,6 @@ List all cluster pools in the organization.
 |-|-|-|
 | `cls` |  | |
 | `limit` | `int` | |
-
-### remove_cluster()
-
-
-> [!NOTE] This method can be called both synchronously or asynchronously.
-> Default invocation is sync and will block.
-> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
-> `result = await ClusterPool.remove_cluster.aio()`.
-```python
-def remove_cluster(
-    cls,
-    name: str,
-    cluster_name: str,
-)
-```
-Remove a cluster from the pool.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `cls` |  | |
-| `name` | `str` | |
-| `cluster_name` | `str` | |
 
 ### to_dict()
 

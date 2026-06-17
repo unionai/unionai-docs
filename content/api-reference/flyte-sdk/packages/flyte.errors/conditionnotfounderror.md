@@ -1,21 +1,21 @@
 ---
-title: EventTimedoutError
-version: 2.4.4
+title: ConditionNotFoundError
+version: 2.5.1
 variants: +flyte +union
 layout: py_api
 ---
 
-# EventTimedoutError
+# ConditionNotFoundError
 
 **Package:** `flyte.errors`
 
-This error is raised when an event is not signaled within its specified timeout.
+This error is raised when the user tries to access a condition that does not exist.
 
 
 ## Parameters
 
 ```python
-class EventTimedoutError(
+class ConditionNotFoundError(
     message: str,
 )
 ```

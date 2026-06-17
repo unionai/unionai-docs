@@ -1,6 +1,6 @@
 ---
 title: RunOutput
-version: 2.4.4
+version: 2.5.1
 variants: +flyte +union
 layout: py_api
 ---

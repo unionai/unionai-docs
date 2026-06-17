@@ -5,13 +5,16 @@ name: Build and deploy docs
 # Replaces CF Pages' native build runner — CF Pages stays only as the
 # static host.
 #
+# Production-only path. PR previews are handled by the two-stage pair
+# `build-pr.yml` (untrusted build, no secrets) + `deploy-pr-preview.yml`
+# (trusted workflow_run deploy, has secrets), because GitHub does NOT expose
+# repo secrets to pull_request workflows triggered from forks (so the deploy
+# here fails on fork PRs). See DOC-1228.
+#
 # Triggers:
 #   - push to main — production deploy (project=docs, --branch=main).
 #     This is the prod path; CF auto-deploys on the `docs` project are
 #     disabled, so GHA owns prod end-to-end.
-#   - pull_request — branch deploy to the `docs` project. Each PR gets
-#     a preview at <sanitized-branch>.docs-dog.pages.dev, identical to
-#     what CF Pages' bot used to produce. Sticky comment posts the URL.
 #   - workflow_dispatch — manual run; redeploys whatever commit the branch
 #     is at to the docs project (useful for re-runs after a flake).
 
@@ -19,8 +22,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 permissions:
@@ -37,16 +38,14 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 # Concurrency policy:
-#   - PRs: cancel any in-flight run when a new commit is pushed to the
-#     same PR (only the latest commit's preview matters).
 #   - push to main: queue in order, don't cancel, so we never leave
 #     production in an inconsistent state mid-deploy.
 #   - workflow_dispatch: own group, distinct from push, so manual
 #     re-runs never block or get blocked by an in-progress production
 #     deploy.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref_name }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
   build-and-deploy:
@@ -105,8 +104,8 @@ jobs:
             "workflow_file": ".github/workflows/build-and-deploy.yml",
             "run_id": "${{ github.run_id }}",
             "run_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
-            "commit": "${{ github.event.pull_request.head.sha || github.sha }}",
-            "ref": "${{ github.head_ref || github.ref_name }}",
+            "commit": "${{ github.sha }}",
+            "ref": "${{ github.ref_name }}",
             "event": "${{ github.event_name }}",
             "built_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           }
@@ -141,27 +140,9 @@ jobs:
         id: branch
         run: |
           # CF Pages branch names: lowercase alphanumeric + hyphens, max 28 chars.
-          #
-          # On pull_request events we prefix the deploy branch with `pr-<num>`.
-          # This both (a) makes each PR's preview alias unique even when two
-          # PRs share a long common branch-name prefix, and (b) guarantees a
-          # PR-event deploy can never sanitize to a production branch name
-          # like `main` or `v1` (e.g. a branch named `main_` would otherwise
-          # sanitize to `main` and overwrite production now that PRs deploy
-          # into the same `docs` Pages project).
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            pr_num="${{ github.event.pull_request.number }}"
-            raw_branch="${{ github.head_ref }}"
-            # Compose `pr-<num>-<branch>` then truncate to 28 chars (CF Pages
-            # limit). Branch portion auto-shrinks as PR numbers grow digits.
-            full=$(printf 'pr-%s-%s' "$pr_num" "$raw_branch" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g' | sed -E 's#^-+|-+$##g')
-            sanitized=$(printf '%s' "$full" | cut -c1-28 | sed -E 's#-+$##g')
-            echo "Source PR #$pr_num branch '$raw_branch' → CF Pages branch: $sanitized"
-          else
-            raw="${{ github.ref_name }}"
-            sanitized=$(echo "$raw" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-28)
-            echo "Source branch: $raw → CF Pages branch: $sanitized"
-          fi
+          raw="${{ github.ref_name }}"
+          sanitized=$(echo "$raw" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-28)
+          echo "Source branch: $raw → CF Pages branch: $sanitized"
           echo "name=$sanitized" >> "$GITHUB_OUTPUT"
 
       - name: Deploy to Cloudflare Pages
@@ -188,25 +169,7 @@ jobs:
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "- Project: \`docs\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- Branch (CF Pages): \`${{ steps.branch.outputs.name }}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Commit: \`${{ github.event.pull_request.head.sha || github.sha }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Commit: \`${{ github.sha }}\`" >> "$GITHUB_STEP_SUMMARY"
           if [ -n "${{ steps.deploy.outputs.deployment-url }}" ]; then
             echo "- Deployment URL: ${{ steps.deploy.outputs.deployment-url }}" >> "$GITHUB_STEP_SUMMARY"
           fi
-
-      - name: Post / update preview comment on PR
-        if: success() && github.event_name == 'pull_request'
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          header: gha-build-and-deploy-preview
-          message: |
-            ### GHA build & deploy preview
-
-            Built by `.github/workflows/build-and-deploy.yml` and deployed to the **`docs`** CF Pages project.
-
-            | | |
-            |---|---|
-            | Branch alias | <https://${{ steps.branch.outputs.name }}.docs-dog.pages.dev> |
-            | This commit | ${{ steps.deploy.outputs.deployment-url }} |
-            | Commit SHA | `${{ github.event.pull_request.head.sha }}` |
-
-            Updated automatically on every push.
