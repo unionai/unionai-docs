@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 2.4.4
+version: 2.5.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,6 +19,7 @@ layout: py_api
 | [`flyte.ai.mcp`](flyte.ai.mcp) |  |
 | [`flyte.app`](flyte.app) |  |
 | [`flyte.app.extras`](flyte.app.extras) |  |
+| [`flyte.clustered`](flyte.clustered) |  |
 | [`flyte.config`](flyte.config) |  |
 | [`flyte.connectors`](flyte.connectors) |  |
 | [`flyte.connectors.utils`](flyte.connectors.utils) |  |

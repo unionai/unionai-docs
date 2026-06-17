@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 0.4.0
+version: 0.4.2
 variants: +flyte +union
 layout: py_api
 ---

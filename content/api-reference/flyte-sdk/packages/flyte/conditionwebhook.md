@@ -1,27 +1,27 @@
 ---
-title: EventWebhook
-version: 2.4.4
+title: ConditionWebhook
+version: 2.5.1
 variants: +flyte +union
 layout: py_api
 ---
 
-# EventWebhook
+# ConditionWebhook
 
 **Package:** `flyte`
 
-Webhook configuration for an event notification.
+Webhook configuration for a condition notification.
 
-When specified, the backend will POST to the given URL when the event is created.
+When specified, the backend will POST to the given URL when the condition is created.
 The ``payload`` dict may contain the template variable ``{callback_uri}`` in any
 string value — the backend replaces it with the actual URI that can be used to
-signal the event.
+signal the condition.
 
 
 
 ## Parameters
 
 ```python
-class EventWebhook(
+class ConditionWebhook(
     url: str,
     payload: typing.Optional[typing.Dict[str, typing.Any]],
 )
