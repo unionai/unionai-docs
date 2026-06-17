@@ -97,7 +97,7 @@ from flyteplugins.union.io import Volume, ROVolume
 image = (
     flyte.Image.from_debian_base()
     .with_pip_packages("flyteplugins-union")  # volume client (bundles the mount binary)
-    .with_install_fuse()                       # FUSE userspace tools needed to mount
+    .with_apt_packages("fuse3")               # FUSE userspace tools needed to mount
 )
 
 env = flyte.TaskEnvironment(
@@ -119,10 +119,12 @@ Two pieces make a mount possible, and you need both:
 > `allow_fuse(privileged=True)` is a fallback that runs the container
 > privileged.)
 >
-> **`Image.with_install_fuse()`** provides the *userspace* side: the FUSE tools
-> (`fusermount`) that the mount client invokes. The default minimal images don't
-> include them, so without this the mount fails with `fusermount: not found`. If
-> you bring your own image, see [Custom images](#custom-images).
+> **The `fuse3` apt package** provides the *userspace* side: the `fusermount3`
+> helper that the mount client invokes (the package's post-install makes it
+> setuid-root, which is what lets an unprivileged task mount). The default
+> minimal images don't include it, so without it the mount fails with
+> `fusermount: not found`. If you bring your own image, see
+> [Custom images](#custom-images).
 >
 > A task missing either piece cannot mount a Volume.
 
@@ -302,10 +304,9 @@ await vol.mount(
 
 ## Custom images
 
-`with_install_fuse()` works on top of any image built from
-`flyte.Image.from_debian_base()`. If you bring a **fully custom image** (your own
-Dockerfile / base), it must satisfy the same requirements the helper otherwise
-handles. A volume-capable image needs:
+The two-package setup above (`flyteplugins-union` + `fuse3`) works on top of any
+image built from `flyte.Image.from_debian_base()`. If you bring a **fully custom
+image** (your own Dockerfile / base), it must satisfy the same two requirements:
 
 1. **The volume client** — `pip install flyteplugins-union`. The wheel bundles
    the mount binary, so there's nothing else to fetch.
@@ -313,14 +314,11 @@ handles. A volume-capable image needs:
    so `fusermount3` **must be setuid-root**; the Debian package's post-install
    sets that bit, so install it with the package manager (don't just copy the
    binary in — a copy loses the setuid bit and the mount fails with `EPERM`).
-3. **`/etc/mtab`** — minimal images omit it, and `fusermount` reads/updates it on
-   mount and unmount. Symlink it to the kernel mount table.
 
 In a Dockerfile that's:
 
 ```dockerfile
 RUN apt-get update && apt-get install -y --no-install-recommends fuse3 \
-    && ln -sf /proc/mounts /etc/mtab \
     && pip install flyteplugins-union
 ```
 
