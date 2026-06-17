@@ -1,6 +1,6 @@
 ---
 title: CodeModeAgent
-version: 2.3.4
+version: 2.4.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -79,6 +79,11 @@ class CodeModeAgent(
 
 ### run()
 
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <CodeModeAgent instance>.run.aio()`.
 ```python
 def run(
     message: str,
@@ -86,6 +91,8 @@ def run(
 ) -> AgentResult
 ```
 Generate code, execute in sandbox, retry on failure.
+
+Call synchronously via ``run(...)``; in async contexts use ``run.aio(...)``.
 
 
 | Parameter | Type | Description |

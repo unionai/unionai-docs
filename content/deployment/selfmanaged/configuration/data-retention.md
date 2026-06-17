@@ -15,9 +15,9 @@ It helps to be precise about what "metadata" means here, because the term is use
 
 **Metadata in {{< key product_name >}} lives in the control plane database.** It includes:
 
-- Task, trigger and app definitions.
+- Task, trigger and app definitions (including their default input values).
 - Execution status, history, schedules, and audit trail.
-- The literal values of task inputs and outputs — primitives (ints, strings, etc.), JSON-serializable dataclasses, and similar small values that are passed *by value* between tasks. The DB stores these values directly.
+- Pointers (URIs) to each run's `inputs.pb` / `outputs.pb` — the database records *where* each task's inputs and outputs live, not the values themselves.
 
 **Raw data lives in the data plane object-store bucket.** It includes:
 
@@ -27,7 +27,7 @@ It helps to be precise about what "metadata" means here, because the term is use
 - `Deck` data and artifact payloads.
 - [Trace](../../../user-guide/task-programming/traces) checkpoints.
 
-When a task input or output is *too large to be passed inline as a literal value*, it is offloaded: the bytes are written to the bucket as raw data, and the literal that the DB stores becomes a **pointer** (URI) into the bucket. The DB still holds the canonical record of the input/output — it just holds a reference instead of the value.
+Every task's inputs and outputs are serialized to `inputs.pb` / `outputs.pb` in the data plane object-store bucket, and the database stores only a **pointer** (URI) to them. Within those files, small values (primitives, small dataclasses) are inlined *by value*, while values too large to inline — `flyte.io.File`, `flyte.io.DataFrame`, models, and similar — are offloaded to separate objects in the bucket and referenced by URI. Either way, the values themselves live in the data plane; the control plane holds only the pointer.
 
 ## Impact of raw data loss
 
@@ -39,7 +39,7 @@ A retention policy that purges raw data leaves the metadata in the control plane
 | **Execution engine** | Re-runs or downstream tasks that consume a purged upstream output fail at runtime. In-flight tasks that depend on a node whose output was just purged fail. |
 | **Caching** | A cache hit may resolve to a pointer whose underlying raw data has been purged, producing cache misses, task re-execution, or failure. |
 | **Traces** | [Trace](../../../user-guide/task-programming/traces) checkpoints used by `@flyte.trace` for fine-grained recovery are stored in the bucket; if purged, resume-from-checkpoint is not possible for affected executions. |
-| **Operations** | The DB record of what ran, when, and with what *small literal* inputs/outputs is preserved. The record of what *large offloaded* inputs/outputs each task produced is lost wherever the raw data has been purged. |
+| **Operations** | The DB record of what ran and when, the pointers to each task's inputs/outputs, and the small inline values in `inputs.pb`/`outputs.pb` are preserved. The *large offloaded* inputs/outputs are lost wherever the raw data has been purged. |
 
 ## Applying retention deliberately
 
@@ -55,15 +55,11 @@ Data correctness is not silently violated: re-runs read from current raw data, a
 
 ## Designing lifecycle rules
 
-The {{< key product_name >}} data plane uses a **single object-store bucket** for all execution data. Inside that bucket, content is split by **prefix**, controlled by two settings in the engine configuration:
+The {{< key product_name >}} data plane organizes execution data under a single configured storage prefix, with sub-prefixes per project, domain, run, and action. Two broad categories of object share this layout:
 
-- `config.core.propeller.metadata-prefix` (default `metadata/propeller`) — where the engine writes its per-execution working files: `inputs.pb`, `outputs.pb`, `error.pb`, `futures.pb`, and `deck.html`. These are required for in-flight workflows to complete and for historical-execution input/output and Deck previews to render. **Despite the name, this is not {{< key product_name >}} metadata in the customer-facing sense** — that lives in the control plane database (see [above](#where-metadata-vs-raw-data-lives)). The prefix name reflects Union's internal terminology.
-- `config.core.propeller.rawoutput-prefix` (defaults to the bucket root) — where raw outputs land: `flyte.io.File` / `flyte.io.Dir` contents, `flyte.io.DataFrame` payloads, checkpoint data, and other offloaded values. This is the prefix to which retention can safely be applied.
+- **Execution working files** — `inputs.pb` and `outputs.pb` per run/attempt, `Deck` HTML reports, and similar small per-execution artifacts. These are required for in-flight workflows to complete and for historical-execution input/output and `Deck` previews to render. Despite some legacy naming conventions, this is **not** {{< key product_name >}} metadata in the customer-facing sense — that lives in the control plane database (see [above](#where-metadata-vs-raw-data-lives)).
+- **Offloaded raw data** — `flyte.io.File` / `flyte.io.Dir` contents, `flyte.io.DataFrame` payloads, checkpoint data, and other values too large to inline. By default these land under the same configured storage prefix; they can be routed elsewhere per run via `flyte.with_runcontext(raw_data_path=...)` (see [Run context](../../../user-guide/task-deployment/run-context#storage)).
 
-When designing S3 lifecycle rules (or the GCS/ABS equivalent), **scope expiration to prefixes other than `metadata/propeller/`** so the engine working state stays durable. Typical patterns are rules scoped to domain/project prefixes (or specific subpaths under the bucket root) rather than a bucket-wide rule.
+When designing S3 lifecycle rules (or the GCS/ABS equivalent), **scope expiration to the offloaded raw-data subpaths** rather than applying a bucket-wide rule. The execution working files (`inputs.pb`, `outputs.pb`, Decks) must remain durable for in-flight executions to complete and for historical-execution previews to render. Typical patterns are rules scoped to domain/project prefixes, or to per-run raw-data paths that have been routed to dedicated buckets via `raw_data_path`.
 
-Validate any retention rule in a non-production environment before applying it broadly.
-
-## Per-run customization
-
-The raw-data location can be overridden **per run** via [`flyte.with_runcontext()`](../../../user-guide/task-deployment/run-context#storage) using the property `raw_data_path`. This property defines the prefix for offloaded raw data (`flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, checkpoints, etc.).
+Validate any retention rule in a non-production environment before applying it broadly. For the full developer-facing map of what's in the bucket, see [Where your data lives](../../../user-guide/core-concepts/where-data-lives).

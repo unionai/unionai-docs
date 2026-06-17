@@ -1,6 +1,6 @@
 ---
 title: FlyteMCPAppEnvironment
-version: 2.3.4
+version: 2.4.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -12,8 +12,8 @@ layout: py_api
 Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn).
 
 Use this environment when you want LLM clients to call Flyte operations
-(tasks, runs, apps, triggers, image builds, UV scripts, docs search) through
-the Model Context Protocol. Install extras with ``pip install 'flyte[mcp]'``.
+(tasks, runs, apps, triggers, docs search) through the Model Context
+Protocol. Install extras with ``pip install 'flyte[mcp]'``.
 
 **HTTP layout**
 
@@ -31,8 +31,12 @@ limit which tasks, apps, or triggers remote calls may target. Search tools
 require ``sdk_examples_path``, ``docs_examples_path``, and/or
 ``full_docs_path`` when those tools are enabled.
 
-The UV script remote build/run tools are placeholders when not backed by a
-remote MCP deployment that implements them.
+**Image**
+
+When ``image`` is omitted (or set to ``"auto"``), the environment uses
+:data:`DEFAULT_IMAGE`, which preinstalls the MCP/Starlette/Uvicorn stack
+and clones the flyte-sdk + unionai-examples repos and the Union docs
+``llms.txt`` into ``/root`` so the search tools have content to scan.
 
 
 ## Parameters

@@ -1,6 +1,6 @@
 ---
 title: Timeout
-version: 2.3.4
+version: 2.4.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,30 +9,22 @@ layout: py_api
 
 **Package:** `flyte`
 
-Timeout class to define a timeout for a task.
-The task timeout can be set to a maximum runtime and a maximum queued time.
-Maximum runtime is the maximum time the task can run for (in one attempt).
-Maximum queued time is the maximum time the task can stay in the queue before it starts executing.
+Timeout bounds for a task. See module docstring for semantics.
 
-Example usage:
-```python
-timeout = Timeout(max_runtime=timedelta(minutes=5), max_queued_time=timedelta(minutes=10))
-@env.task(timeout=timeout)
-async def my_task():
-    pass
-```
 
 
 ## Parameters
 
 ```python
 class Timeout(
-    max_runtime: datetime.timedelta | int,
+    max_runtime: datetime.timedelta | int | None,
     max_queued_time: datetime.timedelta | int | None,
+    deadline: datetime.timedelta | int | None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `max_runtime` | `datetime.timedelta \| int` | timedelta or int - Maximum runtime for the task. If specified int, it will be converted to timedelta as seconds. |
-| `max_queued_time` | `datetime.timedelta \| int \| None` | optional, timedelta or int - Maximum queued time for the task. If specified int, it will be converted to timedelta as seconds. Defaults to None. |
+| `max_runtime` | `datetime.timedelta \| int \| None` | Per-attempt RUNNING-phase bound. ``int`` is interpreted as seconds. ``None`` or ``0`` means unlimited. |
+| `max_queued_time` | `datetime.timedelta \| int \| None` | Per-attempt queue-wait bound. ``int`` is interpreted as seconds. ``None`` or ``0`` means unlimited. |
+| `deadline` | `datetime.timedelta \| int \| None` | Absolute wall-clock budget across all attempts. ``int`` is interpreted as seconds. ``None`` or ``0`` means unlimited. |
 

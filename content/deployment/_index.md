@@ -68,7 +68,7 @@ When you run your workflow:
 4. Container images are pulled down from the registry for each pod as needed
 5. Containers load their inputs from, and save their outputs to, the object store
 
-All of this happens in the data plane, with the control plane aware only of the workflow execution state, and not the code, data, logs, secrets, or any other proprietary information. The data plane communicates with the control plane through an outgoing port through a zero trust proxy. There is no open incoming port to the data plane.
+All of this happens in the data plane, with the control plane aware only of the workflow execution state, and not the code, data, logs, secrets, or any other proprietary information. The data plane initiates an outbound-only connection to the control plane. There is no open incoming port to the data plane.
 
 ## Control plane
 

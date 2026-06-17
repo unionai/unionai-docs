@@ -10,11 +10,16 @@ llm_readable_bundle: true
 
 {{< llm-bundle-note >}}
 
-This section covers how to build, deploy, and run agentic AI applications on {{< key product_name >}}. You'll learn how to implement common agent patterns like ReAct and Plan-and-Execute and deploy agents as hosted services.
+This section covers how to build, deploy, and run agentic AI applications on {{< key product_name >}}.
 
-## Quickstart
+Building an agent on {{< key product_name >}} breaks down into two **orthogonal** choices:
 
-Here's how {{< key product_name >}} maps to the agentic world:
+1. **How you build the agent loop** — plain Python, the built-in `flyte.ai.agents.Agent` harness, or a third-party framework (LangGraph, PydanticAI, OpenAI Agents SDK).
+2. **How you deploy and run it** — as a task you invoke on demand, as a scheduled task driven by a `flyte.Trigger`, or as a long-running app (e.g. a webhook or chat UI).
+
+Any agent from axis (1) can be deployed via any pattern in axis (2). The two are independent, so you can start with a pure-Python loop run on demand and later move it behind a schedule or a webhook without rewriting the agent.
+
+## How {{< key product_name >}} maps to the agentic world
 
 - **`TaskEnvironment`**: The sandboxed execution environment for your agent steps. It configures the container image, hardware resources (CPU, GPU), and secrets (API keys). Think of it as defining "where this code runs."
 - **`@env.task`**: Turns any Python function into a remotely-executed step. Each task runs in its own container with the resources you specified. This is the equivalent of a node in LangGraph or n8n.
@@ -24,7 +29,25 @@ Here's how {{< key product_name >}} maps to the agentic world:
 > [!TIP]
 > See the [{{< key product_name >}} Quickstart](../quickstart) for a hands-on walkthrough.
 
-## Next steps
+## Ways to build an agent
 
-- [**Deploy an agent as a service**](./deploy-agent-as-service): Host a FastAPI app, webhook pattern, model serving
-- [**Building agents on {{< key product_name >}}**](./building-agents): ReAct pattern, Plan-and-Execute with fan-out, LangGraph integration, and more patterns
+| Approach | When to use it | Guide |
+|----------|----------------|-------|
+| **Pure Python** | You want full control over the loop and the lightest possible dependency footprint | [Build an agent with pure Python](./python-agents) |
+| **The `Agent` harness** | You want a batteries-included tool-use loop with tools, MCP servers, memory, and HITL built in | [The Flyte Agent harness](./flyte-agents) |
+| **Third-party frameworks** | You already have agents written with LangGraph, PydanticAI, or the OpenAI Agents SDK | [Agent framework integrations](../agent-framework-integrations/_index) |
+
+The `Agent` harness has a few dedicated guides of its own:
+
+- [**Extend the Agent class**](./flyte-agents#extending-the-agent-class): customize the loop by overriding `run`.
+- [**Agent memory**](./agent-memory): persist conversation history and artifacts across runs with `MemoryStore`.
+- [**Add a chat UI**](./agent-chat-ui): give any agent a hosted chat interface.
+
+## Deploying an agent
+
+Once you've built an agent, [**Deploy an agent as a service**](./deploy-agent-as-service) covers running it as a task, on a schedule via `flyte.Trigger`, and behind an `AppEnvironment` webhook.
+
+## Related
+
+- [**Sandboxing**](../sandboxing/_index): safely execute LLM-generated code.
+- [**Build an MCP server**](../build-mcp/_index): serve Model Context Protocol servers for AI assistants to interact with {{< key product_name >}}.

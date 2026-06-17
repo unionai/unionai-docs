@@ -1,6 +1,6 @@
 ---
 title: AgentChatAppEnvironment
-version: 2.3.4
+version: 2.4.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -10,12 +10,12 @@ layout: py_api
 **Package:** `flyte.ai.chat`
 
 An :class:`~flyte.app.AppEnvironment` that spins up a FastAPI chat
-interface backed by any object satisfying the :class:`Agent` protocol.
+interface backed by any object satisfying the :class:`AgentProtocol`.
 
 Parameters
 ----------
 agent:
-    Any object implementing the :class:`Agent` protocol.
+    Any object implementing the :class:`AgentProtocol`.
 title:
     Title displayed in the UI header and browser tab. Defaults to
     the environment *name*.
@@ -61,11 +61,11 @@ passthrough_auth_excluded_paths:
 task_entrypoint:
     Optional Flyte task used as the chat handler entrypoint.
 
-    When set, ``/api/chat`` calls the task (via ``task_entrypoint.aio``)
-    instead of calling ``agent.run`` directly. This is useful for agents
-    whose tool calls must run under a parent task context (e.g. a
-    ``CodeModeAgent`` using durable ``@env.task`` tools). When streaming
-    chat (``stream: true``), progress lines use :meth:`~flyte.remote.Run.watch`
+    When set, ``/api/chat`` calls the task (via ``flyte.run.aio``) instead
+    of calling ``agent.run`` directly. This is useful for agents whose tool
+    calls must run under a parent task context (e.g. a ``CodeModeAgent``
+    using durable ``@env.task`` tools). When streaming chat
+    (``stream: true``), progress lines use :meth:`~flyte.remote.Run.watch`
     on the returned run (first ``RUNNING`` → ``generating_code``, next →
     ``executing``). Fine-grained codemode phases still require
     ``agent.run`` in the web process, or future worker-side signaling.
@@ -116,7 +116,6 @@ class AgentChatAppEnvironment(
     passthrough_auth: bool,
     passthrough_auth_excluded_paths: frozenset[str] | None,
     task_entrypoint: Any | None,
-    _caller_frame: inspect.FrameInfo | None,
 )
 ```
 | Parameter | Type | Description |
@@ -153,7 +152,6 @@ class AgentChatAppEnvironment(
 | `passthrough_auth` | `bool` | |
 | `passthrough_auth_excluded_paths` | `frozenset[str] \| None` | |
 | `task_entrypoint` | `Any \| None` | |
-| `_caller_frame` | `inspect.FrameInfo \| None` | |
 
 ## Properties
 

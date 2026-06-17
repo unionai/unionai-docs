@@ -1,6 +1,6 @@
 ---
 title: RetryStrategy
-version: 2.3.4
+version: 2.4.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,20 +9,7 @@ layout: py_api
 
 **Package:** `flyte`
 
-Retry strategy for the task or task environment. Retry strategy is optional or can be a simple number of retries.
-
-- This will retry the task 5 times.
-```
-@task(retries=5)
-def my_task():
-    pass
-```
-- This will retry the task 5 times with a maximum backoff of 10 seconds and a backoff factor of 2.
-```
-@task(retries=RetryStrategy(count=5))
-def my_task():
-    pass
-```
+Retry strategy for a task.
 
 
 
@@ -31,9 +18,11 @@ def my_task():
 ```python
 class RetryStrategy(
     count: int,
+    backoff: typing.Optional[flyte._retry.Backoff],
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `count` | `int` | The number of retries. |
+| `count` | `int` | Number of user retries. ``count=0`` disables retries. |
+| `backoff` | `typing.Optional[flyte._retry.Backoff]` | Optional When unset, retries fire immediately back-to-back. |
 
