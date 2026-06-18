@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.wandb`](flyteplugins.wandb) | ## Key features:. |
+| [`flyteplugins.wandb`](flyteplugins.wandb/_index) | ## Key features:. |

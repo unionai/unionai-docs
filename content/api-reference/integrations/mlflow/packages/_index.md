@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.mlflow`](flyteplugins.mlflow) | ## Key features:. |
+| [`flyteplugins.mlflow`](flyteplugins.mlflow/_index) | ## Key features:. |

@@ -9,3 +9,19 @@ layout: py_api
 
 
 
+## Directory
+
+### Classes
+
+| Class | Description |
+|-|-|
+| [`flyteplugins.spark.ParquetToSparkDecoder`](packages/flyteplugins.spark/parquettosparkdecoder) |  |
+| [`flyteplugins.spark.Spark`](packages/flyteplugins.spark/spark) | Use this to configure a SparkContext for a your task. |
+| [`flyteplugins.spark.SparkToParquetEncoder`](packages/flyteplugins.spark/sparktoparquetencoder) |  |
+
+### Packages
+
+| Package | Description |
+|-|-|
+| [`flyteplugins.spark`](packages/flyteplugins.spark/_index) |  |
+

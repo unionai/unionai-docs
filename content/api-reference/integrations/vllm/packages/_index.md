@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.vllm`](flyteplugins.vllm) |  |
+| [`flyteplugins.vllm`](flyteplugins.vllm/_index) |  |

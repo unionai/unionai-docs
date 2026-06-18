@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.pytorch`](flyteplugins.pytorch) |  |
+| [`flyteplugins.pytorch`](flyteplugins.pytorch/_index) |  |

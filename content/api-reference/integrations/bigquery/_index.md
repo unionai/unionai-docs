@@ -9,3 +9,19 @@ layout: py_api
 
 
 
+## Directory
+
+### Classes
+
+| Class | Description |
+|-|-|
+| [`flyteplugins.bigquery.BigQueryConfig`](packages/flyteplugins.bigquery/bigqueryconfig) | Configuration for a BigQuery task. |
+| [`flyteplugins.bigquery.BigQueryConnector`](packages/flyteplugins.bigquery/bigqueryconnector) |  |
+| [`flyteplugins.bigquery.BigQueryTask`](packages/flyteplugins.bigquery/bigquerytask) |  |
+
+### Packages
+
+| Package | Description |
+|-|-|
+| [`flyteplugins.bigquery`](packages/flyteplugins.bigquery/_index) | BigQuery connector plugin for Flyte. |
+

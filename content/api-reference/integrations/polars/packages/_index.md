@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.polars.df_transformer`](flyteplugins.polars.df_transformer) |  |
+| [`flyteplugins.polars.df_transformer`](flyteplugins.polars.df_transformer/_index) |  |

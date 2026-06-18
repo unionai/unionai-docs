@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.snowflake`](flyteplugins.snowflake) | Key features:. |
+| [`flyteplugins.snowflake`](flyteplugins.snowflake/_index) | Key features:. |

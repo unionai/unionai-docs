@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.codegen`](flyteplugins.codegen) |  |
+| [`flyteplugins.codegen`](flyteplugins.codegen/_index) |  |

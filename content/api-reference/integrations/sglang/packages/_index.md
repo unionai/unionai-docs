@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.sglang`](flyteplugins.sglang) |  |
+| [`flyteplugins.sglang`](flyteplugins.sglang/_index) |  |

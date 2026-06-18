@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.bigquery`](flyteplugins.bigquery) | BigQuery connector plugin for Flyte. |
+| [`flyteplugins.bigquery`](flyteplugins.bigquery/_index) | BigQuery connector plugin for Flyte. |

@@ -9,3 +9,17 @@ layout: py_api
 
 
 
+## Directory
+
+### Classes
+
+| Class | Description |
+|-|-|
+| [`flyteplugins.pytorch.Elastic`](packages/flyteplugins.pytorch/elastic) | Elastic defines the configuration for running a PyTorch elastic job using torch. |
+
+### Packages
+
+| Package | Description |
+|-|-|
+| [`flyteplugins.pytorch`](packages/flyteplugins.pytorch/_index) |  |
+

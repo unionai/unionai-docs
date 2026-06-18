@@ -9,3 +9,11 @@ layout: py_api
 
 
 
+## Directory
+
+### Packages
+
+| Package | Description |
+|-|-|
+| [`flyteplugins.hydra`](packages/flyteplugins.hydra/_index) | flyteplugins-hydra — Hydra launcher plugin for Flyte. |
+
