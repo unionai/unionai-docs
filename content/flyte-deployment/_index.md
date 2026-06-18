@@ -14,7 +14,7 @@ This section covers how to deploy **Flyte** to your own Kubernetes cluster using
 `flyte-binary` Helm chart.
 
 Flyte ships as a single unified binary that bundles the runs service, the
-task/actions controller, the data proxy, and the secret service, served alongside the
+task/actions controller, the data proxy, and the app service, served alongside the
 Flyte web console. You point it at three things you provision yourself — a Kubernetes
 cluster, a PostgreSQL database, and an object store — and it runs as one Deployment
 that you scale vertically.

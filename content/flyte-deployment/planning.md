@@ -19,7 +19,7 @@ backend components into one process:
 | Runs service | Accepts and stores run/task/workflow requests; owns the database. |
 | Actions / task controller | Reconciles task executions onto Kubernetes. |
 | Data proxy | Issues signed URLs for uploading and downloading data to the object store. |
-| Secret service | Mediates access to Kubernetes secrets for tasks. |
+| App service | Manages apps — long-running serving deployments — and their lifecycle. |
 
 A second image serves the web **console** as a static single-page application. It is
 deployed as its own Deployment and Service but has no backend configuration of its

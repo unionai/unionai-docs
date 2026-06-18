@@ -11,18 +11,14 @@ already provisioned the [external dependencies](./planning) — a Kubernetes clu
 PostgreSQL database, and an object-store bucket — and that you have `helm` and
 `kubectl` configured against your cluster.
 
-## 1. Get the chart
-
-The chart is not yet published to a Helm repository, so install it from a checkout of
-the Flyte repo:
+## 1. Add the Helm repository
 
 ```bash
-git clone https://github.com/flyteorg/flyte.git
-cd flyte/charts/flyte-binary
+helm repo add flyteorg https://flyteorg.github.io/flyte
+helm repo update
 ```
 
-All `helm` commands below reference the chart by its local path (`.`). Once the chart
-is published, you can replace the path with a chart-repo or OCI reference.
+The `helm install` commands below reference the chart as `flyteorg/flyte-binary`.
 
 ## 2. Write a values file
 
@@ -82,10 +78,10 @@ Render the manifests first to check your values, then install for real:
 
 ```bash
 # Dry run — renders templates without touching the cluster
-helm install flyte . -n flyte --create-namespace -f values.yaml --dry-run
+helm install flyte flyteorg/flyte-binary -n flyte --create-namespace -f values.yaml --dry-run
 
 # Install
-helm install flyte . -n flyte --create-namespace -f values.yaml
+helm install flyte flyteorg/flyte-binary -n flyte --create-namespace -f values.yaml
 ```
 
 Watch the rollout:
@@ -250,7 +246,7 @@ ingress:
 Install it the same way:
 
 ```bash
-helm install flyte . -n flyte --create-namespace -f values-eks.yaml
+helm install flyte flyteorg/flyte-binary -n flyte --create-namespace -f values-eks.yaml
 ```
 
 ## Advanced configuration
