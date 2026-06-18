@@ -27,3 +27,5 @@ Read these pages in order:
    command, object-storage access, ingress, and a worked AWS/EKS example.
 3. [Authentication and SSO](./authentication) — securing the API and putting single
    sign-on in front of the console.
+4. [Serving apps](./app-serving) — running long-running apps on Knative, including how
+   to install the Knative Serving prerequisite.
