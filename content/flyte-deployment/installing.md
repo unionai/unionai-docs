@@ -161,7 +161,9 @@ API, and the auth-discovery endpoints — there is no separate gRPC ingress (see
 ingress:
   create: true
   host: <flyte.example.com>
-  ingressClassName: <nginx-or-alb>
+  # Your cloud's native ingress class, e.g. alb (EKS), gce (GKE),
+  # azure-application-gateway (AKS). See Planning for the options.
+  ingressClassName: <ingress-class>
 ```
 
 The console is served under `console.basePath` (default `/v2`) on this same host. It

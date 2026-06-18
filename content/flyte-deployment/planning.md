@@ -82,14 +82,31 @@ Flyte runs without these, but integrates with them when present.
 
 ### Ingress controller
 
-To expose Flyte beyond `kubectl port-forward`, you need an ingress controller already
-installed in the cluster (the chart creates the Ingress resource, but something has to
-reconcile it). Commonly used controllers:
+To expose Flyte beyond `kubectl port-forward`, you need an **ingress controller**
+installed in the cluster: the chart creates a standard Kubernetes `Ingress` resource,
+but a controller has to reconcile it into an actual load balancer.
 
-| Environment | Controller |
-|---|---|
-| AWS | AWS Load Balancer Controller (ALB) |
-| GCP / Azure / on-prem | NGINX, Traefik |
+On a managed cloud you don't need to run your own controller — each cloud has a native
+one that reconciles the `Ingress` and provisions the cloud's own load balancer:
+
+| Environment | Ingress controller | Provisions |
+|---|---|---|
+| AWS (EKS) | [AWS Load Balancer Controller](https://kubernetes-sigs.github.io/aws-load-balancer-controller/) | Application Load Balancer (ALB) |
+| GCP (GKE) | [GKE Ingress](https://cloud.google.com/kubernetes-engine/docs/concepts/ingress) (built in) | Google Cloud HTTP(S) Load Balancer |
+| Azure (AKS) | [Application Gateway Ingress Controller (AGIC)](https://learn.microsoft.com/azure/application-gateway/ingress-controller-overview) | Azure Application Gateway |
+| On-prem / any | [Traefik](https://traefik.io/) (with MetalLB or a NodePort for the external address) | self-managed |
+
+> **About NGINX.** The community `ingress-nginx` controller is being
+> [retired](https://kubernetes.io/blog/2026/01/29/ingress-nginx-statement/): no releases
+> or security patches after March 2026. For new clusters prefer your cloud's native
+> controller above, or move to the Gateway API.
+
+If you'd rather use the **Gateway API** instead of the `Ingress` API — for example
+[Envoy Gateway](https://gateway.envoyproxy.io/) — keep in mind that Gateway API
+controllers reconcile `Gateway`/`HTTPRoute` resources, not the `Ingress` this chart
+emits. Leave `ingress.create: false` and point an `HTTPRoute` at the Flyte HTTP Service
+yourself; the [`ingress2gateway`](https://github.com/kubernetes-sigs/ingress2gateway)
+tool can convert the chart's `Ingress` as a starting point.
 
 ### DNS
 
