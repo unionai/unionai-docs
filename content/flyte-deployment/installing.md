@@ -98,10 +98,12 @@ are wrong.
 ## 4. Grant object-store access
 
 The Flyte pod and the task pods it launches need credentials to read and write the
-bucket. Prefer cloud-native workload identity over static keys.
+bucket. Prefer cloud-native workload identity over static keys — pick your provider:
 
-**AWS (IRSA).** Annotate the service account with an IAM role that has access to the
-bucket:
+{{< tabs "object-store-access" >}}
+{{< tab "AWS" >}}
+{{< markdown >}}
+**IRSA.** Annotate the service account with an IAM role that can access the bucket:
 
 ```yaml
 serviceAccount:
@@ -109,8 +111,11 @@ serviceAccount:
   annotations:
     eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/<flyte-role>
 ```
-
-**GCP (Workload Identity).** Annotate with the Google service account, and keep
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "GCP" >}}
+{{< markdown >}}
+**Workload Identity.** Annotate with the Google service account, and set
 `provider: gcs` with `providerConfig.gcs.project: <project-id>`:
 
 ```yaml
@@ -119,8 +124,34 @@ serviceAccount:
   annotations:
     iam.gke.io/gcp-service-account: <gsa-name>@<project-id>.iam.gserviceaccount.com
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Azure" >}}
+{{< markdown >}}
+**Workload Identity.** Set `provider: azure` with your storage account, annotate the
+service account with the managed identity's client ID, and label the pod so the token
+is injected:
 
-**Static access keys (S3-compatible / MinIO, not recommended for production).**
+```yaml
+serviceAccount:
+  create: true
+  annotations:
+    azure.workload.identity/client-id: <managed-identity-client-id>
+deployment:
+  podLabels:
+    azure.workload.identity/use: "true"
+configuration:
+  storage:
+    provider: azure
+    providerConfig:
+      azure:
+        account: <storage-account-name>
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Other (static keys)" >}}
+{{< markdown >}}
+For S3-compatible stores such as MinIO — static keys, not recommended for production:
 
 ```yaml
 configuration:
@@ -134,6 +165,9 @@ configuration:
         disableSSL: false
         v2Signing: false                          # set true for some MinIO setups
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 **Task pods.** Tasks run in their own pods, which need the same object-store access.
 Run them under a service account that carries the IAM binding by setting it in the
