@@ -198,8 +198,12 @@ name = "spark"
 [[plugins]]
 package = "flyteplugins-union"
 plugin = "flyteplugins.union"
-title = "Union"
-name = "union"
+title = "Union plugin"
+name = "union-plugin"
+# Promoted out of the shared integrations/ base to a top-level api-reference section,
+# positioned in the nav between flyte-sdk (weight 4) and integrations (weight 6).
+output_folder = "content/api-reference/union-plugin"
+weight = 5
 
 [[plugins]]
 package = "flyteplugins-vllm"

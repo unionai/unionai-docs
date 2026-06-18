@@ -125,7 +125,7 @@ This is the command line interface for Flyte.
 > (user management, RBAC, API keys).
 > Install it with `pip install flyteplugins-union`.
 >
-> See the [flyteplugins.union API reference](../integrations/union/_index)
+> See the [flyteplugins.union API reference](../union-plugin/_index)
 > for the programmatic interface.
 
 {{< /markdown >}}
