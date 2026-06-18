@@ -71,6 +71,10 @@ jobs:
 
       - name: Deploy to Cloudflare Pages
         id: deploy
+        # Step-level cap: fail a hung wrangler upload fast (normal deploy ~1-3
+        # min) instead of consuming the whole job budget. Parity with
+        # build-and-deploy.yml. See DOC-1229.
+        timeout-minutes: 10
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
