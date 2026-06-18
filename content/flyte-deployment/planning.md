@@ -96,18 +96,6 @@ one that reconciles the `Ingress` and provisions the cloud's own load balancer:
 | Azure (AKS) | [Application Gateway Ingress Controller (AGIC)](https://learn.microsoft.com/azure/application-gateway/ingress-controller-overview) | Azure Application Gateway |
 | On-prem / any | [Traefik](https://traefik.io/) (with MetalLB or a NodePort for the external address) | self-managed |
 
-> **About NGINX.** The community `ingress-nginx` controller is being
-> [retired](https://kubernetes.io/blog/2026/01/29/ingress-nginx-statement/): no releases
-> or security patches after March 2026. For new clusters prefer your cloud's native
-> controller above, or move to the Gateway API.
-
-If you'd rather use the **Gateway API** instead of the `Ingress` API — for example
-[Envoy Gateway](https://gateway.envoyproxy.io/) — keep in mind that Gateway API
-controllers reconcile `Gateway`/`HTTPRoute` resources, not the `Ingress` this chart
-emits. Leave `ingress.create: false` and point an `HTTPRoute` at the Flyte HTTP Service
-yourself; the [`ingress2gateway`](https://github.com/kubernetes-sigs/ingress2gateway)
-tool can convert the chart's `Ingress` as a starting point.
-
 ### DNS
 
 For anything beyond local testing, point a DNS record at your ingress host so clients
