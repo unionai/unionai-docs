@@ -94,7 +94,7 @@ one that reconciles the `Ingress` and provisions the cloud's own load balancer:
 | AWS (EKS) | [AWS Load Balancer Controller](https://kubernetes-sigs.github.io/aws-load-balancer-controller/) | Application Load Balancer (ALB) |
 | GCP (GKE) | [GKE Ingress](https://cloud.google.com/kubernetes-engine/docs/concepts/ingress) (built in) | Google Cloud HTTP(S) Load Balancer |
 | Azure (AKS) | [Application Gateway Ingress Controller (AGIC)](https://learn.microsoft.com/azure/application-gateway/ingress-controller-overview) | Azure Application Gateway |
-| On-prem / any | [Traefik](https://traefik.io/) (with MetalLB or a NodePort for the external address) | self-managed |
+| On-prem / any | [Contour](https://projectcontour.io/) or [Traefik](https://traefik.io/) (with MetalLB or a NodePort for the external address) | self-managed |
 
 ### DNS
 
