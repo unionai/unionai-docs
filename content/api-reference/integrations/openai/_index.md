@@ -9,3 +9,11 @@ layout: py_api
 
 
 
+## Directory
+
+### Packages
+
+| Package | Description |
+|-|-|
+| [`flyteplugins.openai.agents`](packages/flyteplugins.openai.agents/_index) |  |
+

@@ -9,3 +9,17 @@ layout: py_api
 
 
 
+## Directory
+
+### Classes
+
+| Class | Description |
+|-|-|
+| [`flyteplugins.vllm.VLLMAppEnvironment`](packages/flyteplugins.vllm/vllmappenvironment) | App environment backed by vLLM for serving large language models. |
+
+### Packages
+
+| Package | Description |
+|-|-|
+| [`flyteplugins.vllm`](packages/flyteplugins.vllm/_index) |  |
+

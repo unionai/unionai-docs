@@ -9,3 +9,17 @@ layout: py_api
 
 
 
+## Directory
+
+### Classes
+
+| Class | Description |
+|-|-|
+| [`flyteplugins.sglang.SGLangAppEnvironment`](packages/flyteplugins.sglang/sglangappenvironment) | App environment backed by SGLang for serving large language models. |
+
+### Packages
+
+| Package | Description |
+|-|-|
+| [`flyteplugins.sglang`](packages/flyteplugins.sglang/_index) |  |
+

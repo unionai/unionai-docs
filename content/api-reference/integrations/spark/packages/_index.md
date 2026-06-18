@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.spark`](flyteplugins.spark) |  |
+| [`flyteplugins.spark`](flyteplugins.spark/_index) |  |

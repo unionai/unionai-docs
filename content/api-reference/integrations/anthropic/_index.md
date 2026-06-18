@@ -9,3 +9,17 @@ layout: py_api
 
 
 
+## Directory
+
+### Classes
+
+| Class | Description |
+|-|-|
+| [`flyteplugins.anthropic.Agent`](packages/flyteplugins.anthropic/agent) | A Claude agent configuration. |
+
+### Packages
+
+| Package | Description |
+|-|-|
+| [`flyteplugins.anthropic`](packages/flyteplugins.anthropic/_index) | Anthropic Claude plugin for Flyte. |
+

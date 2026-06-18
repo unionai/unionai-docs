@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.databricks`](flyteplugins.databricks) | Databricks connector plugin for Flyte. |
+| [`flyteplugins.databricks`](flyteplugins.databricks/_index) | Databricks connector plugin for Flyte. |

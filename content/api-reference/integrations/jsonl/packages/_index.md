@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.jsonl`](flyteplugins.jsonl) |  |
+| [`flyteplugins.jsonl`](flyteplugins.jsonl/_index) |  |
