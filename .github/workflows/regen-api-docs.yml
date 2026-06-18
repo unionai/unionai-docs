@@ -14,11 +14,14 @@ name: "Regenerate API docs"
 #                                      signal misfires, and makes this useful pre-Part-B).
 #   workflow_dispatch                — manual / on-demand.
 #
-# PREREQUISITE for CI to run on the PR: set repo secret DOCSY_BOT_TOKEN to a
-# fine-grained PAT / App token with contents:write + pull-requests:write. PRs opened
-# by the default GITHUB_TOKEN do NOT trigger other workflows (so the docs build /
-# Check Generated Content checks would not run). The workflow falls back to
-# GITHUB_TOKEN so it still runs, but the PR's checks stay idle until the token is set.
+# PREREQUISITE for CI to run on the PR: the PR is opened with a GitHub App
+# installation token (the "docsy-bot" App) so the docs build / Check Generated
+# Content checks run on it — PRs opened by the default GITHUB_TOKEN do NOT trigger
+# other workflows. Set repo secrets DOCSY_BOT_APP_ID + DOCSY_BOT_PRIVATE_KEY (the
+# App's id + .pem private key); the App must be installed on this repo with
+# Contents: RW + Pull requests: RW. The workflow falls back to GITHUB_TOKEN when
+# those secrets are absent, so it still runs — the PR's checks just stay idle until
+# the App is configured.
 
 on:
   repository_dispatch:
@@ -39,12 +42,26 @@ jobs:
   regen:
     name: "Regenerate API docs and open draft PR"
     runs-on: ubuntu-latest
+    # Job-level env so the App id is referenceable in step `if:` (secrets aren't).
+    env:
+      DOCSY_BOT_APP_ID: ${{ secrets.DOCSY_BOT_APP_ID }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           submodules: "true"
+
+      # Mint a short-lived installation token for the docsy-bot App so the draft
+      # PR triggers CI (and is attributed to the bot). Skipped until the App
+      # secrets exist; create-pull-request then falls back to GITHUB_TOKEN.
+      - name: Mint docsy-bot App token
+        id: app-token
+        if: ${{ env.DOCSY_BOT_APP_ID != '' }}
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.DOCSY_BOT_APP_ID }}
+          private-key: ${{ secrets.DOCSY_BOT_PRIVATE_KEY }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -104,14 +121,14 @@ jobs:
             echo ""
             echo "Produced by docsy's API-docs automation (Option 2 / DOC-1044) — the CI complement to \`/docsy --refresh-api\`. Left as a **draft** for human review (agent proposes; human disposes)."
             echo ""
-            echo "> If this PR's checks are not running, set the \`DOCSY_BOT_TOKEN\` repo secret (PRs opened by GITHUB_TOKEN do not trigger workflows)."
+            echo "> If this PR's checks are not running, the docsy-bot App isn't configured yet — set the \`DOCSY_BOT_APP_ID\` + \`DOCSY_BOT_PRIVATE_KEY\` repo secrets (PRs opened by GITHUB_TOKEN do not trigger workflows)."
           } > /tmp/pr-body.md
 
       - name: Create or update draft PR
         if: steps.drift.outputs.drift == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.DOCSY_BOT_TOKEN || secrets.GITHUB_TOKEN }}
+          token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
           branch: docsy/api-ref-refresh-auto
           base: main
           draft: true
