@@ -83,6 +83,14 @@ jobs:
           echo "::endgroup::"
 
       - name: Build dist
+        env:
+          # Distinguish PR-preview builds from production so Hugo's
+          # `hugo.IsProduction` can gate non-prod-only features (e.g. the
+          # Hypothesis annotation embed, which should appear on previews
+          # but not on docs.union.ai). Without this, `hugo` defaults to
+          # the `production` environment for both prod and PR builds and
+          # they're indistinguishable in templates.
+          HUGO_ENVIRONMENT: ${{ github.event_name == 'pull_request' && 'preview' || 'production' }}
         run: |
           start=$(date +%s)
           make dist
