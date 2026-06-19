@@ -44,11 +44,11 @@ Inside each research task, a ReAct subgraph (`graph.py`) uses `@flyte.trace` on 
 
 ## Run the agent
 
-Create secrets for OpenAI and Tavily:
+Create secrets for Anthropic and Tavily:
 
 ```
-flyte create secret openai-api-key <YOUR_OPENAI_API_KEY>
-flyte create secret tavily-api-key <YOUR_TAVILY_API_KEY>
+flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
+flyte create secret tavily_api_key <YOUR_TAVILY_API_KEY>
 ```
 
 From the [example directory](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/langgraph_agent_research):
