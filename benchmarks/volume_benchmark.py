@@ -48,10 +48,7 @@ logger = logging.getLogger("volume-bench")
 
 image = (
     flyte.Image.from_debian_base()
-    .with_apt_packages("fuse")  # JuiceFS execs /bin/fusermount to mount the volume
-    # fusermount reads /etc/mtab on unmount; minimal images lack it. Point it at
-    # the kernel mount table so unmount/finalize succeeds.
-    .with_commands(["ln -sf /proc/mounts /etc/mtab"])
+    .with_apt_packages("fuse3")  # FUSE userspace tools (fusermount3) needed to mount
     .with_pip_packages("flyteplugins-union")
 )
 
