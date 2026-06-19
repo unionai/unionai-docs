@@ -35,6 +35,7 @@ The Python packages are declared at the top of the file using the `uv` script st
 # dependencies = [
 #    "flyte>=2.4.0",
 #    "unionai-sandbox",
+#    "litellm",
 # ]
 # ///
 ```

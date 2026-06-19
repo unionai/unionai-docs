@@ -28,7 +28,7 @@ The pipeline runs on CPU with RDKit and system libraries for 2D structure render
 # requires-python = ">=3.12"
 # dependencies = [
 #    "flyte>=2.4.0",
-#    "rdkit-pypi",
+#    "rdkit",
 #    "numpy",
 #    "scikit-learn",
 #    "pillow",

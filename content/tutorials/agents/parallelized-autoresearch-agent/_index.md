@@ -48,7 +48,7 @@ From the [example directory](https://github.com/unionai/unionai-examples/tree/ma
 
 ```
 cd v2/tutorials/mle_autoresearch_fanout
-uv run --script mle_autoresearch_fanout.py --n-experiments 6 --batch-size 3 --num-shards 1
+uv run --script mle_autoresearch_fanout.py -- --n_experiments 6 --batch_size 3 --num_shards 1
 ```
 
 Use `--memory-key` to resume a prior research session. Code mode needs more turns than JSON tool mode — increase `--max-turns` for larger sweeps.
