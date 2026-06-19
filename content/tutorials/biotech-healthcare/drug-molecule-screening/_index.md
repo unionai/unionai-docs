@@ -53,10 +53,10 @@ cd v2/tutorials/drug_molecule_screening
 uv run --script drug_molecule_screening.py
 ```
 
-The default run screens a curated library of ~15 well-known drugs. Pass custom inputs to narrow the target profile:
+Pass a custom target profile:
 
 ```
-uv run --script drug_molecule_screening.py pipeline \
+flyte run drug_molecule_screening.py pipeline \
   --target_profile '{"mw": [100, 400], "logp": [-0.5, 4.0]}'
 ```
 

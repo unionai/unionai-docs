@@ -51,7 +51,7 @@ cd v2/tutorials/mle_autoresearch_fanout
 uv run --script mle_autoresearch_fanout.py -- --n_experiments 6 --batch_size 3 --num_shards 1
 ```
 
-Use `--memory-key` to resume a prior research session. Code mode needs more turns than JSON tool mode — increase `--max-turns` for larger sweeps.
+Use `--memory_key` to resume a prior research session. Code mode needs more turns than JSON tool mode — increase `--max_turns` for larger sweeps.
 
 > [!NOTE]
 > The first run downloads climbmix data shards and trains a BPE tokenizer. Subsequent runs reuse cached bundle tasks.
