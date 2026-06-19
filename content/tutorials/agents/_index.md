@@ -39,6 +39,10 @@ Monitor trusted regulatory sources with the You.com Research API and route citat
 Build an agentic workflow for deep research with multi-step reasoning and evaluation.
 {{< /link-card >}}
 
+{{< link-card target="langgraph-agent-research" title="LangGraph research agent" >}}
+Combine LangGraph control flow with Flyte tasks for multi-topic web research with quality-check loops.
+{{< /link-card >}}
+
 {{< link-card target="field-data-enrichment-agent" title="Field data enrichment agent" >}}
 Enrich geo-tagged operational events with real-world public context using the You.com Search API with country and freshness targeting.
 {{< /link-card >}}
