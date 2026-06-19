@@ -135,23 +135,22 @@ volume from a task commits it into an immutable `ROVolume`; downstream tasks
 receive that and mount it read-only.
 
 ```python
-from pathlib import Path
 import flyte
 from flyteplugins.union.io import Volume, RWVolume, ROVolume
 
 @env.task
 async def create_dataset() -> RWVolume:
     vol = Volume.new(name="my-dataset")   # a fresh writable RWVolume
-    await vol.mount(mount_path="/data")   # mount it somewhere in the task
+    data = await vol.mount()              # mount (default: ~/flyte-volume); returns the path
 
-    Path("/data/greeting.txt").write_text("hello from a volume\n")
+    (data / "greeting.txt").write_text("hello from a volume\n")
 
     return vol                            # auto-committed; the next task receives an ROVolume
 
 @env.task
 async def read_dataset(vol: ROVolume) -> str:
-    await vol.mount(mount_path="/data")   # ROVolume always mounts read-only
-    return Path("/data/greeting.txt").read_text()
+    data = await vol.mount()              # ROVolume always mounts read-only
+    return (data / "greeting.txt").read_text()
 
 @env.task
 async def main() -> str:
@@ -181,9 +180,9 @@ a new version:
 @env.task
 async def add_file(vol: ROVolume) -> ROVolume:
     rw = await vol.fork(name="my-dataset-v2")  # copy-on-write writable branch
-    await rw.mount(mount_path="/data")
+    data = await rw.mount()
 
-    Path("/data/extra.txt").write_text("added in a later run\n")
+    (data / "extra.txt").write_text("added in a later run\n")
 
     return await rw.finalize(message="add extra.txt")
 ```
@@ -211,8 +210,8 @@ import asyncio
 @env.task
 async def process_shard(base: ROVolume, i: int) -> ROVolume:
     branch = await base.fork(name=f"shard-{i}")   # isolated writable branch
-    await branch.mount(mount_path="/data")
-    Path(f"/data/shard-{i}.bin").write_bytes(compute_shard(i))
+    data = await branch.mount()
+    (data / f"shard-{i}.bin").write_bytes(compute_shard(i))
     return await branch.finalize(message=f"shard {i}")
 
 @env.task
@@ -237,10 +236,10 @@ is interrupted:
 @env.task
 async def train(base: ROVolume) -> ROVolume:
     rw = await base.fork(name="training-run")
-    await rw.mount(mount_path="/data")
+    data = await rw.mount()
 
     for epoch in range(100):
-        train_one_epoch()                       # writes to /data
+        train_one_epoch(data)                   # writes under the mounted volume
         if epoch % 10 == 0:
             await rw.commit(message=f"epoch {epoch}")   # durable checkpoint
 
@@ -282,8 +281,8 @@ no change to your task code is required.
 mount, how aggressively to upload, and how long to cache metadata:
 
 ```python
-await vol.mount(
-    mount_path="/data",      # where to mount (default: ~/flyte-volume)
+data = await vol.mount(
+    mount_path="/tmp/data",  # a writable mount point (default: ~/flyte-volume)
     max_uploads=100,         # raise upload concurrency for write-heavy bursts (default 50)
     attr_cache=120.0,        # cache file metadata longer (default 60s)
     entry_cache=120.0,       # cache name lookups longer
