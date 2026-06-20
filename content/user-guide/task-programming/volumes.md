@@ -379,20 +379,28 @@ Numbers from a single run on AWS (S3 storage, `us-east-2` region) on a
 cloud provider, region, file sizes, and instance type, so treat them as ballpark
 and re-run the benchmark for your own environment.
 
-Head-to-head against a local disk (the pod's container filesystem):
+Head-to-head against a local disk (the pod's container filesystem), in the
+default mode and in [high-throughput mode](#high-throughput-mode):
 
-| Operation | Local disk | Volume |
-|---|---|---|
-| Sequential write (512 MB) | ~2,200 MB/s | ~930 MB/s |
-| Create small files | ~21,500 files/s | ~1,750 files/s |
-| Stat / traverse files | ~235,000 files/s | ~34,000 files/s |
+| Operation | Local disk | Volume (default) | Volume (high-throughput) |
+|---|---|---|---|
+| Sequential write (512 MB) | ~2,200 MB/s | ~930 MB/s | ~930 MB/s |
+| Create small files | ~21,500 files/s | ~1,750 files/s | ~2,960 files/s |
+| Stat / traverse files | ~235,000 files/s | ~34,000 files/s | ~132,000 files/s |
 
 Volume-specific costs (no local-disk equivalent):
 
-| Operation | Result |
-|---|---|
-| Mount time, 100 → 50,000 files | ~0.55 s → ~0.63 s (roughly flat) |
-| Commit 512 MB to durable storage | ~3.3 s (~160 MB/s) |
+| Operation | Default | High-throughput |
+|---|---|---|
+| Mount time, 100 → 50,000 files | ~0.55 s → ~0.63 s | ~0.75 s → ~0.99 s |
+| Commit 512 MB to durable storage | ~3.3 s (~160 MB/s) | ~3.3 s (~160 MB/s) |
+
+High-throughput mode only changes **metadata** operations — writes and commits
+are identical (same data path). It speeds those up sharply (here, `stat` ~4×,
+create ~1.7×) by keeping the volume's whole namespace **resident in memory**, so
+its RAM grows with file count and the mount is a touch slower (it loads that
+namespace at startup). Reach for it on metadata-heavy workloads; the default
+mode's lower memory and faster mount win otherwise.
 
 In other words, a Volume trades raw speed for durability and sharing. Sequential
 writes run ~0.4× local disk — even though uploads are async, each write still
