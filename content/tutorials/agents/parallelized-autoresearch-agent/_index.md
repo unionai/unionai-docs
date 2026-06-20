@@ -7,7 +7,7 @@ variants: +flyte +union
 # Parallelized autoresearch agent
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/mle_autoresearch_fanout).
+> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/parallelized_autoresearch).
 
 This tutorial extends the [Autoresearch agent](./autoresearch/) pattern with a code-mode MLE agent that plans **batches** of training experiments, saves distinct `train.py` edits, and runs them **in parallel** via `flyte.map`. It follows the [karpathy/autoresearch](https://github.com/karpathy/autoresearch) loop — minimize validation bits-per-byte on a TinyGPT variant — but orchestrates fan-out batches with durable Flyte tasks and [unionai-sandbox](https://www.union.ai/docs/v2/union/user-guide/sandboxing/interactive-sandboxes/) execution.
 
@@ -22,7 +22,7 @@ Compared to the single-threaded Claude Code autoresearch tutorial, this agent:
 
 The example uses three environments — bundle preparation, sandbox experiments, and the agent driver — sharing a Debian-based image with PyTorch and sandbox tooling.
 
-{{< code file="/unionai-examples/v2/tutorials/mle_autoresearch_fanout/bundle.py" fragment=env lang=python >}}
+{{< code file="/unionai-examples/v2/tutorials/parallelized_autoresearch/bundle.py" fragment=env lang=python >}}
 
 Supporting modules (`train.py`, `prepare.py`, `sandbox_runner.py`, `code_edit_tools.py`, `fanout_tools.py`, and others) live alongside the entry point in the example directory.
 
@@ -30,7 +30,7 @@ Supporting modules (`train.py`, `prepare.py`, `sandbox_runner.py`, `code_edit_to
 
 The driver task restores prior memory, streams Activity / Leaderboard / Code edits / Memory report tabs, and runs the code-mode agent loop.
 
-{{< code file="/unionai-examples/v2/tutorials/mle_autoresearch_fanout/mle_autoresearch_fanout.py" fragment=agent lang=python >}}
+{{< code file="/unionai-examples/v2/tutorials/parallelized_autoresearch/parallelized_autoresearch.py" fragment=agent lang=python >}}
 
 ## Run the agent
 
@@ -44,11 +44,11 @@ flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
 
 ### Run remotely
 
-From the [example directory](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/mle_autoresearch_fanout):
+From the [example directory](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/parallelized_autoresearch):
 
 ```
-cd v2/tutorials/mle_autoresearch_fanout
-uv run --script mle_autoresearch_fanout.py -- --n-experiments 6 --batch-size 3 --num-shards 1
+cd v2/tutorials/parallelized_autoresearch
+uv run --script parallelized_autoresearch.py -- --n-experiments 6 --batch-size 3 --num-shards 1
 ```
 
 Use `--memory-key` to resume a prior research session. Code mode needs more turns than JSON tool mode — increase `--max-turns` for larger sweeps.
@@ -56,7 +56,7 @@ Use `--memory-key` to resume a prior research session. Code mode needs more turn
 Or invoke the agent task directly with `flyte run` (snake_case task inputs):
 
 ```
-flyte run mle_autoresearch_fanout.py mle_autoresearch_code_fanout_agent \
+flyte run parallelized_autoresearch.py mle_autoresearch_code_fanout_agent \
   --n_experiments 6 --batch_size 3 --num_shards 1 --max_turns 12
 ```
 
