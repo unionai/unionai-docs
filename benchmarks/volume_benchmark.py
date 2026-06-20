@@ -48,7 +48,11 @@ logger = logging.getLogger("volume-bench")
 
 image = (
     flyte.Image.from_debian_base()
-    .with_apt_packages("fuse3")  # FUSE userspace tools (fusermount3) needed to mount
+    # fuse3: the fusermount3 helper every mount needs. redis-server: the in-pod
+    # daemon the "redis" (high-throughput) metadata store runs against. We do NOT
+    # set UNION_VOLUME_METADATA_STORE here, so sqlite stays the default and the
+    # benchmark picks the backend per volume to compare the two.
+    .with_apt_packages("fuse3", "redis-server", "redis-tools")
     .with_pip_packages("flyteplugins-union")
 )
 
@@ -110,23 +114,28 @@ def _fits(path_dir: str, want_bytes: int) -> int:
 
 
 @env.task
-async def mount_vs_files(file_counts: list[int]) -> dict[str, float]:
-    """Mount time (seconds) for a volume already containing N small files."""
+async def mount_vs_files(file_counts: list[int], store: str = "sqlite") -> dict[str, float]:
+    """Mount time (seconds) for a volume already holding N small files, on the
+    given metadata backend (``"sqlite"`` or ``"redis"``)."""
     results: dict[str, float] = {}
     for n in file_counts:
-        vol = Volume.new()  # auto-unique name; avoids "storage not empty" collisions
+        vol = Volume.new(metadata_store_type=store)  # auto-unique name
         mnt, meta, cache = _paths(vol.name)
         await vol.mount(mount_path=mnt, meta_dir=meta, cache_dir=cache)
         d = Path(mnt) / "files"
         d.mkdir(parents=True, exist_ok=True)
         for i in range(n):
             (d / f"f{i:07d}.bin").write_bytes(b"x")
-        ro = await vol.finalize(message=f"{n} files", mount_path=mnt, meta_dir=meta)  # unmounts
+        ro = await vol.finalize(message=f"{n} files")  # publish (operates on the recorded mount)
 
+        # Re-mount the published volume at a FRESH path and time it. Re-using the
+        # original mount point would collide with it if finalize couldn't unmount
+        # (no /etc/mtab) and left it live.
+        rmnt, rmeta, rcache = _paths(vol.name + "-read")
         t0 = time.perf_counter()
-        await ro.mount(mount_path=mnt, meta_dir=meta, cache_dir=cache)
+        await ro.mount(mount_path=rmnt, meta_dir=rmeta, cache_dir=rcache)
         results[str(n)] = round(time.perf_counter() - t0, 4)
-        logger.info("mount with %d files: %.4fs", n, results[str(n)])
+        logger.info("[%s] mount with %d files: %.4fs", store, n, results[str(n)])
     return results
 
 
@@ -179,7 +188,7 @@ async def commit_cost(commit_mb: int = 1024, max_uploads: int = 50) -> dict[str,
     _write_bytes(os.path.join(mnt, "payload.bin"), total)  # not timed
 
     t0 = time.perf_counter()
-    await vol.finalize(message=f"commit {commit_mb} MiB", mount_path=mnt, meta_dir=meta)
+    await vol.finalize(message=f"commit {commit_mb} MiB")
     secs = time.perf_counter() - t0
     return {
         "max_uploads": float(max_uploads),
@@ -210,9 +219,11 @@ def _meta_bench(d: Path, n: int) -> tuple[float, float]:
 
 
 @env.task
-async def metadata_throughput(meta_files: int = 20000) -> dict[str, float]:
-    """Small-file create and stat-traversal rates: Volume vs. local disk."""
-    vol = Volume.new()
+async def metadata_throughput(meta_files: int = 20000, store: str = "sqlite") -> dict[str, float]:
+    """Small-file create and stat-traversal rates on the given metadata backend
+    (``"sqlite"`` or ``"redis"``) vs. local disk. This is where the backend
+    choice matters most — the data path (write/commit) is backend-agnostic."""
+    vol = Volume.new(metadata_store_type=store)
     mnt, meta, cache = _paths(vol.name)
     await vol.mount(mount_path=mnt, meta_dir=meta, cache_dir=cache)
 
@@ -239,23 +250,32 @@ async def main(
     write_mb: int = 1024,
     commit_mb: int = 1024,
     meta_files: int = 20000,
-) -> dict[str, dict[str, float]]:
-    """Run all benchmarks and log a Markdown summary."""
-    file_counts = file_counts or [100, 1000, 10000, 50000]
+    stores: list[str] | None = None,
+) -> dict[str, str]:
+    """Run all benchmarks and log a Markdown table you can paste into the docs.
 
-    mounts = await mount_vs_files(file_counts=file_counts)
-    writes = await write_throughput(write_mb=write_mb)
-    commit = await commit_cost(commit_mb=commit_mb)
-    meta = await metadata_throughput(meta_files=meta_files)
+    Returns the flat ``metric -> value`` map. The metadata-bound benchmarks
+    (``mount_vs_files``, ``metadata_throughput``) run once per metadata backend
+    in ``stores`` so SQLite and Redis (high-throughput) can be compared; the
+    data-path benchmarks (write / commit) are backend-agnostic and run once.
+    """
+    file_counts = file_counts or [100, 1000, 10000, 50000]
+    stores = stores or ["sqlite", "redis"]
 
     rows: list[tuple[str, str]] = []
-    rows += [(f"mount time @ {n} files (s)", f"{v}") for n, v in mounts.items()]
+    for s in stores:
+        mounts = await mount_vs_files(file_counts=file_counts, store=s)
+        meta = await metadata_throughput(meta_files=meta_files, store=s)
+        rows += [(f"[{s}] mount @ {n} files (s)", f"{v}") for n, v in mounts.items()]
+        rows += [(f"[{s}] metadata — {k}", f"{v}") for k, v in meta.items()]
+
+    writes = await write_throughput(write_mb=write_mb)
+    commit = await commit_cost(commit_mb=commit_mb)
     rows += [(f"write throughput — {k} (MB/s)", f"{v}") for k, v in writes.items()]
     rows += [(f"commit — {k}", f"{v}") for k, v in commit.items()]
-    rows += [(f"metadata — {k}", f"{v}") for k, v in meta.items()]
-    logger.info("Benchmark results:\n%s", _md_table(rows))
 
-    return {"mount_vs_files": mounts, "write_throughput": writes, "commit_cost": commit, "metadata": meta}
+    logger.info("Benchmark results:\n%s", _md_table(rows))
+    return dict(rows)
 
 
 if __name__ == "__main__":
