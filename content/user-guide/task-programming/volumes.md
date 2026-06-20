@@ -251,6 +251,41 @@ versions are **retained**, so commit on a cadence that matches how often you'd
 actually want to roll back — checkpoint periodically rather than every step, and
 prune versions you no longer need.
 
+### Reference a volume across runs
+
+The usual way to receive a volume is as a typed task input or from
+`run.outputs`. When you instead want to pin a **specific version** and reach it
+from an unrelated run — a config value, a scheduled job, an external system —
+save its **locator**. Every committed version exposes one via the `locator`
+property: a stable object-store address you can store anywhere.
+
+```python
+@env.task
+async def publish() -> str:
+    vol = Volume.new(name="my-dataset")
+    await vol.mount()
+    # ... write data ...
+    ro = await vol.finalize(message="v1")
+    return ro.locator                       # e.g. persist this string somewhere
+```
+
+Later — in a different run, with no shared task input — load it back with
+`Volume.from_locator`. It returns a read-only `ROVolume` with everything
+recovered (the data index, bucket, store type, stats and lineage), so you can
+mount it directly or `fork()` it to branch and write:
+
+```python
+@env.task
+async def consume(addr: str) -> int:
+    ro = await Volume.from_locator(addr)    # -> ROVolume, no task context needed
+    data = await ro.mount()                 # read-only
+    return len(list(data.glob("**/*")))
+```
+
+The locator stays resolvable as long as the producing run's outputs are
+retained. `locator` is `None` for a freshly created volume that hasn't been
+committed yet — there's no published version to point at.
+
 ### High-throughput mode
 
 The default configuration suits most workloads. For workloads that create or
