@@ -67,6 +67,11 @@ env = flyte.TaskEnvironment(
 
 _CHUNK = 8 * 1024 * 1024  # 8 MiB write buffer
 
+# User-facing metadata "mode" -> the metadata_store_type that backs it. The
+# default keeps the namespace in an on-disk file; high-throughput keeps it
+# resident in memory for faster metadata ops (see with_high_throughput_volume_deps).
+_STORE_BY_MODE = {"default": "sqlite", "high-throughput": "redis"}
+
 
 def _paths(name: str) -> tuple[str, str, str]:
     """Per-volume mount point, metadata dir, and cache dir — all writable.
@@ -114,9 +119,10 @@ def _fits(path_dir: str, want_bytes: int) -> int:
 
 
 @env.task
-async def mount_vs_files(file_counts: list[int], store: str = "sqlite") -> dict[str, float]:
-    """Mount time (seconds) for a volume already holding N small files, on the
-    given metadata backend (``"sqlite"`` or ``"redis"``)."""
+async def mount_vs_files(file_counts: list[int], mode: str = "default") -> dict[str, float]:
+    """Mount time (seconds) for a volume already holding N small files, in the
+    given metadata mode (``"default"`` or ``"high-throughput"``)."""
+    store = _STORE_BY_MODE[mode]
     results: dict[str, float] = {}
     for n in file_counts:
         vol = Volume.new(metadata_store_type=store)  # auto-unique name
@@ -135,7 +141,7 @@ async def mount_vs_files(file_counts: list[int], store: str = "sqlite") -> dict[
         t0 = time.perf_counter()
         await ro.mount(mount_path=rmnt, meta_dir=rmeta, cache_dir=rcache)
         results[str(n)] = round(time.perf_counter() - t0, 4)
-        logger.info("[%s] mount with %d files: %.4fs", store, n, results[str(n)])
+        logger.info("[%s] mount with %d files: %.4fs", mode, n, results[str(n)])
     return results
 
 
@@ -219,11 +225,11 @@ def _meta_bench(d: Path, n: int) -> tuple[float, float]:
 
 
 @env.task
-async def metadata_throughput(meta_files: int = 20000, store: str = "sqlite") -> dict[str, float]:
-    """Small-file create and stat-traversal rates on the given metadata backend
-    (``"sqlite"`` or ``"redis"``) vs. local disk. This is where the backend
-    choice matters most — the data path (write/commit) is backend-agnostic."""
-    vol = Volume.new(metadata_store_type=store)
+async def metadata_throughput(meta_files: int = 20000, mode: str = "default") -> dict[str, float]:
+    """Small-file create and stat-traversal rates in the given metadata mode
+    (``"default"`` or ``"high-throughput"``) vs. local disk. This is where the
+    mode matters most — the data path (write/commit) is mode-agnostic."""
+    vol = Volume.new(metadata_store_type=_STORE_BY_MODE[mode])
     mnt, meta, cache = _paths(vol.name)
     await vol.mount(mount_path=mnt, meta_dir=meta, cache_dir=cache)
 
@@ -250,24 +256,24 @@ async def main(
     write_mb: int = 1024,
     commit_mb: int = 1024,
     meta_files: int = 20000,
-    stores: list[str] | None = None,
+    modes: list[str] | None = None,
 ) -> dict[str, str]:
     """Run all benchmarks and log a Markdown table you can paste into the docs.
 
     Returns the flat ``metric -> value`` map. The metadata-bound benchmarks
-    (``mount_vs_files``, ``metadata_throughput``) run once per metadata backend
-    in ``stores`` so SQLite and Redis (high-throughput) can be compared; the
-    data-path benchmarks (write / commit) are backend-agnostic and run once.
+    (``mount_vs_files``, ``metadata_throughput``) run once per metadata ``mode``
+    so the default and high-throughput modes can be compared; the data-path
+    benchmarks (write / commit) are mode-agnostic and run once.
     """
     file_counts = file_counts or [100, 1000, 10000, 50000]
-    stores = stores or ["sqlite", "redis"]
+    modes = modes or ["default", "high-throughput"]
 
     rows: list[tuple[str, str]] = []
-    for s in stores:
-        mounts = await mount_vs_files(file_counts=file_counts, store=s)
-        meta = await metadata_throughput(meta_files=meta_files, store=s)
-        rows += [(f"[{s}] mount @ {n} files (s)", f"{v}") for n, v in mounts.items()]
-        rows += [(f"[{s}] metadata — {k}", f"{v}") for k, v in meta.items()]
+    for m in modes:
+        mounts = await mount_vs_files(file_counts=file_counts, mode=m)
+        meta = await metadata_throughput(meta_files=meta_files, mode=m)
+        rows += [(f"[{m}] mount @ {n} files (s)", f"{v}") for n, v in mounts.items()]
+        rows += [(f"[{m}] metadata — {k}", f"{v}") for k, v in meta.items()]
 
     writes = await write_throughput(write_mb=write_mb)
     commit = await commit_cost(commit_mb=commit_mb)
