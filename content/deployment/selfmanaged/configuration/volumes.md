@@ -23,9 +23,9 @@ devices-cgroup allowlist. The only thing that adds a device to that allowlist is
 kubelet, and kubelet only does so when the pod **requests the device as a
 device-plugin resource**.
 
-The dataplane chart ships an opt-in [`smarter-device-manager`](https://gitlab.com/arm-research/smarter/smarter-device-manager)
-DaemonSet that advertises the host `/dev/fuse` device as the Kubernetes extended
-resource `smarter-devices/fuse`. When it is enabled, a task pod that requests
+The dataplane chart ships an opt-in **FUSE device-plugin DaemonSet** that
+advertises the host `/dev/fuse` device as the Kubernetes extended resource
+`smarter-devices/fuse`. When it is enabled, a task pod that requests
 `smarter-devices/fuse` gets `/dev/fuse` injected into its devices-cgroup
 allowlist and can complete the mount with only the `CAP_SYS_ADMIN` capability —
 **no privileged container and no `/dev/fuse` hostPath**.
@@ -113,9 +113,7 @@ The `fuseDevicePlugin` values block in the dataplane chart:
 | Key | Default | Description |
 |---|---|---|
 | `fuseDevicePlugin.enabled` | `false` | Enable the FUSE device-plugin DaemonSet. |
-| `fuseDevicePlugin.image.repository` | `registry.gitlab.com/arm-research/smarter/smarter-device-manager` | Device-manager image. |
-| `fuseDevicePlugin.image.tag` | `v1.20.11` | Image tag. |
-| `fuseDevicePlugin.devices` | `[{ devicematch: ^fuse$, nummaxdevices: 1000 }]` | Devices advertised, in `smarter-device-manager` `conf.yaml` format. `nummaxdevices` is the per-node claim count. |
+| `fuseDevicePlugin.devices` | `[{ devicematch: ^fuse$, nummaxdevices: 1000 }]` | Devices the plugin advertises. `nummaxdevices` is the per-node claim count. |
 | `fuseDevicePlugin.nodeSelector` | `{}` | Restrict the DaemonSet to selected nodes; empty means all nodes. |
 | `fuseDevicePlugin.tolerations` | `[{ operator: Exists }]` | Tolerate everything so it lands on every selected node, including tainted ones. |
 | `fuseDevicePlugin.securityContext` | drops `ALL`, adds `SYS_ADMIN` | The plugin needs `SYS_ADMIN` to read host devices and register with kubelet; the workloads it serves stay unprivileged. |
