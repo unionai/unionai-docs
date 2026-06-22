@@ -8,9 +8,9 @@ variants: -flyte +union
 
 [Volumes](../../../user-guide/task-programming/volumes) give tasks a durable,
 versioned file system that they mount and read and write like a local directory.
-A Volume is mounted **inside the task pod** with [FUSE](https://www.kernel.org/doc/html/latest/filesystems/fuse.html)
-(JuiceFS), so on a self-managed cluster the data plane must allow task pods to
-perform a FUSE mount. By default it does not — you enable it per cluster by
+A Volume is mounted **inside the task pod** with [FUSE](https://www.kernel.org/doc/html/latest/filesystems/fuse.html),
+so on a self-managed cluster the data plane must allow task pods to perform a
+FUSE mount. By default it does not — you enable it per cluster by
 turning on the **FUSE device-plugin DaemonSet** described below.
 
 ## Why a device plugin is required
