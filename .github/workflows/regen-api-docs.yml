@@ -1,0 +1,142 @@
+name: "Regenerate API docs"
+
+# Automated API-reference regen (Option 2 / DOC-1044).
+#
+# Regenerates the generated API reference (SDK + CLI + plugin docs) against the
+# latest PyPI releases and opens/updates a DRAFT PR. The complement to the manual
+# `/docsy --refresh-api` mode — same pipeline (`make update-api-docs`), same PR
+# shape (`docsy/api-ref-refresh-*`). Nothing auto-merges; a human reviews + merges.
+#
+# Triggers:
+#   repository_dispatch(sdk-release) — the cross-repo signal from flyteorg/flyte-sdk
+#                                      (Part B; harmless until that side is wired up).
+#   schedule                         — daily backstop poll (catches drift even if the
+#                                      signal misfires, and makes this useful pre-Part-B).
+#   workflow_dispatch                — manual / on-demand.
+#
+# PREREQUISITE for CI to run on the PR: the PR is opened with a GitHub App
+# installation token (the "docsy-bot" App) so the docs build / Check Generated
+# Content checks run on it — PRs opened by the default GITHUB_TOKEN do NOT trigger
+# other workflows. Set repo secrets DOCSY_BOT_APP_ID + DOCSY_BOT_PRIVATE_KEY (the
+# App's id + .pem private key); the App must be installed on this repo with
+# Contents: RW + Pull requests: RW. The workflow falls back to GITHUB_TOKEN when
+# those secrets are absent, so it still runs — the PR's checks just stay idle until
+# the App is configured.
+
+on:
+  repository_dispatch:
+    types: [sdk-release]
+  schedule:
+    - cron: "0 13 * * *"   # daily 13:00 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: regen-api-docs
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  regen:
+    name: "Regenerate API docs and open draft PR"
+    runs-on: ubuntu-latest
+    # Job-level env so the App id is referenceable in step `if:` (secrets aren't).
+    env:
+      DOCSY_BOT_APP_ID: ${{ secrets.DOCSY_BOT_APP_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: "true"
+
+      # Mint a short-lived installation token for the docsy-bot App so the draft
+      # PR triggers CI (and is attributed to the bot). Skipped until the App
+      # secrets exist; create-pull-request then falls back to GITHUB_TOKEN.
+      - name: Mint docsy-bot App token
+        id: app-token
+        if: ${{ env.DOCSY_BOT_APP_ID != '' }}
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.DOCSY_BOT_APP_ID }}
+          private-key: ${{ secrets.DOCSY_BOT_PRIVATE_KEY }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      # Belt-and-suspenders: when triggered by the release signal, make sure the
+      # announced version is actually installable on PyPI before regenerating
+      # (the regen installs from PyPI). No-op for schedule/manual runs.
+      - name: Wait for PyPI availability (dispatch only)
+        if: github.event_name == 'repository_dispatch' && github.event.client_payload.version != ''
+        run: |
+          VERSION="${{ github.event.client_payload.version }}"
+          LINK="https://pypi.org/project/flyte/${VERSION}/"
+          echo "Waiting for $LINK"
+          for i in $(seq 1 60); do
+            if curl -L -I -s -f "$LINK" >/dev/null; then
+              echo "Found on PyPI: $LINK"; exit 0
+            fi
+            echo "Attempt $i: not yet available, retrying in 10s..."; sleep 10
+          done
+          echo "ERROR: timed out waiting for PyPI ($LINK)"; exit 1
+
+      # Gate: check-api-docs exits non-zero on drift. Capture, don't fail the job.
+      - name: Check API docs freshness
+        id: drift
+        run: |
+          set -o pipefail
+          if make check-api-docs 2>&1 | tee /tmp/drift.txt; then
+            echo "drift=false" >> "$GITHUB_OUTPUT"
+            echo "API docs are already up to date with PyPI — nothing to regenerate."
+          else
+            echo "drift=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Regenerate API docs
+        if: steps.drift.outputs.drift == 'true'
+        run: make update-api-docs < /dev/null
+
+      - name: Build PR body
+        if: steps.drift.outputs.drift == 'true'
+        run: |
+          {
+            echo "## Automated API-reference regeneration"
+            echo ""
+            echo "Regenerated the generated API reference against the latest PyPI releases via the build pipeline (\`make update-api-docs\`). No hand-authored content."
+            echo ""
+            echo "Triggered by: \`${{ github.event_name }}\`."
+            echo ""
+            echo "### Drift detected"
+            echo '```'
+            grep -E "OUTDATED|up-to-date" /tmp/drift.txt || cat /tmp/drift.txt
+            echo '```'
+            echo ""
+            echo "Produced by docsy's API-docs automation (Option 2 / DOC-1044) — the CI complement to \`/docsy --refresh-api\`. Left as a **draft** for human review (agent proposes; human disposes)."
+            echo ""
+            echo "> If this PR's checks are not running, the docsy-bot App isn't configured yet — set the \`DOCSY_BOT_APP_ID\` + \`DOCSY_BOT_PRIVATE_KEY\` repo secrets (PRs opened by GITHUB_TOKEN do not trigger workflows)."
+          } > /tmp/pr-body.md
+
+      - name: Create or update draft PR
+        if: steps.drift.outputs.drift == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          branch: docsy/api-ref-refresh-auto
+          base: main
+          draft: true
+          add-paths: |
+            content/api-reference/**
+            linkmap/*-linkmap.json
+          commit-message: "docs(api-reference): regenerate API docs (automated)"
+          title: "docs(api-reference): regenerate API docs (automated)"
+          body-path: /tmp/pr-body.md
+          labels: api-docs-regen
+          delete-branch: false
