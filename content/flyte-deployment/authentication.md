@@ -238,3 +238,49 @@ back into the console.
 
 The ALB callback path is fixed at `/oauth2/idpresponse`, and auth applies only to the
 annotated ingress's HTTPS listener rules.
+
+## Run attribution (`executed_by`)
+
+Once authentication happens at the edge, Flyte records **who created each run**
+(surfaced as `executed_by` in run metadata). The runs service does not re-validate
+tokens itself — it reads the identity from the headers the proxy forwards. After ALB
+`authenticate-oidc` those are:
+
+- `X-Amzn-Oidc-Data` — a signed JWT carrying the full claims (`sub`, `email`,
+  `given_name`, `family_name`); used on the browser/cookie path.
+- `X-Amzn-Oidc-Identity` — the subject only; used when the data header is absent.
+- `Authorization: Bearer <jwt>` — the SDK/CLI path (proxy-agnostic, always honored).
+  This token carries only the subject, so name and email are filled from the IdP's
+  `userinfo` endpoint when `runs.authMetadata.externalAuthServerBaseUrl` is set.
+
+The defaults match ALB, so a standard ALB SSO deployment needs no extra configuration.
+
+> **Trust boundary.** The forwarded JWTs are decoded but **not** signature-verified by
+> the runs service. That is safe only behind a trusted proxy that validates tokens and
+> strips any client-supplied copies of these headers. If the service can be reached
+> directly, set `trustForwardedIdentityHeaders: false` and `executed_by` is left unset
+> rather than risk a spoofed identity.
+
+### Behind a non-ALB proxy (oauth2-proxy / Traefik)
+
+The header names are configurable, so attribution works behind any auth proxy. For
+oauth2-proxy or Traefik forward-auth, which forward plain values instead of a JWT:
+
+```yaml
+flyte-core-components:
+  runs:
+    trustForwardedIdentityHeaders: true   # default; gates header-derived attribution
+    identityHeaders:
+      claimsJwtHeader: ""                  # no JWT header on this path
+      subjectHeader: X-Auth-Request-User   # ALB default: X-Amzn-Oidc-Identity
+      emailHeader: X-Auth-Request-Email    # ALB default: unset (email is in the JWT)
+```
+
+| Setting | Header read | ALB default | oauth2-proxy / Traefik |
+|---|---|---|---|
+| `claimsJwtHeader` | JWT with full claims | `X-Amzn-Oidc-Data` | *(empty)* |
+| `subjectHeader` | subject, plain value | `X-Amzn-Oidc-Identity` | `X-Auth-Request-User` |
+| `emailHeader` | email, plain value | *(unset)* | `X-Auth-Request-Email` |
+
+The same trust boundary applies: the proxy must validate identity and strip any
+client-supplied copies of these headers, with `trustForwardedIdentityHeaders` enabled.
