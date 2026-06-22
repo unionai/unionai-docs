@@ -24,7 +24,7 @@ The example uses three environments — bundle preparation, sandbox experiments,
 
 {{< code file="/unionai-examples/v2/tutorials/parallelized_autoresearch/bundle.py" fragment=env lang=python >}}
 
-Supporting modules (`train.py`, `prepare.py`, `sandbox_runner.py`, `code_edit_tools.py`, `fanout_tools.py`, and others) live alongside the entry point in the example directory.
+Supporting modules (`train.py`, `prepare.py`, `tools.py`, and `ui.py`) live alongside the entry point in the example directory.
 
 ## The fan-out agent task
 
