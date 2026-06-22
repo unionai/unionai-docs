@@ -170,8 +170,7 @@ with your ACM certificate and forwards to Kourier, which routes by hostname to e
 
 ## 4. Enable app serving in Flyte
 
-Add the app-controller config and the Knative RBAC it needs to your Flyte values, then
-upgrade the release:
+Turn on the app controller in your Flyte values, then upgrade the release:
 
 ```yaml
 configuration:
@@ -181,20 +180,28 @@ configuration:
       baseDomain: <apps.example.com>   # must match config-domain from step 2
       scheme: https
       ingressAppsPort: 0               # apps sit behind the LB on 443; omit the port
-
-# The app controller creates and watches Knative Services, so grant the Flyte
-# ClusterRole access to the serving.knative.dev API group.
-rbac:
-  extraRules:
-    - apiGroups: ["serving.knative.dev"]
-      resources: ["services", "revisions", "configurations", "routes"]
-      verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 ```
 
 ```bash
 helm upgrade flyte flyteorg/flyte-binary -n flyte -f values.yaml
 kubectl -n flyte rollout status deploy/flyte
 ```
+
+The app controller creates and watches Knative Services, which needs
+`serving.knative.dev` permissions on Flyte's ClusterRole. The chart grants these
+**automatically** when `internalApps.enabled: true`.
+
+{{< note >}}
+On older chart versions that don't grant it automatically, add the rules yourself:
+
+```yaml
+rbac:
+  extraRules:
+    - apiGroups: ["serving.knative.dev"]
+      resources: ["services", "revisions", "configurations", "routes"]
+      verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+```
+{{< /note >}}
 
 {{< note >}}
 `baseDomain` must match the domain you set in `config-domain`, so the URLs Flyte
