@@ -25,8 +25,6 @@ with the Python SDK.
 
 Open the run in the UI. In the top-right corner of the run view, click **Rerun**.
 
-![Re-run a run from the UI](../_static/images/user-guide/task-deployment/rerun-run.png)
-
 This opens the launch form pre-filled with the original run's inputs, environment variables, and
 code. You can either:
 
@@ -39,8 +37,6 @@ code. You can either:
 You can also re-run an individual action without re-running the whole workflow. Navigate to the
 action in the run's action list, open its details view, and use the **Rerun action** option (in the
 action menu in the top-right of the action details panel).
-
-![Re-run a single action from the UI](../_static/images/user-guide/task-deployment/rerun-action.png)
 
 This launches a new run starting from that action, using the action's recorded inputs. As with a
 full re-run, you can adjust the inputs in the launch form first.
@@ -136,9 +132,3 @@ flyte.with_runcontext(
 
 - [Interact with runs and actions](./interacting-with-runs) — retrieve, monitor, and inspect runs and actions.
 - [Run command options](./run-command-options) — the full set of `flyte run` options.
-
-{{< variant union >}}
-{{< markdown >}}
-- [Debug a run](./debug-runs) — drop into a live debugging session for an action.
-{{< /markdown >}}
-{{< /variant >}}
