@@ -15,7 +15,7 @@ The pattern follows how cheminformatics agents like ChemCrow and PharmAgents are
 
 Flyte provides:
 
-- **Flyte-native agent orchestration** via `flyte.ai.agents.Agent` — see [Flyte-native agents](../../user-guide/build-agent/flyte-agents/)
+- **Flyte-native agent orchestration** via `flyte.ai.agents.Agent` — see [Flyte-native agents](../../../user-guide/build-agent/flyte-agents/)
 - **Typed agent tool I/O** — Flyte 2.5.4+ passes `flyte.io.Dir`, `File`, and `DataFrame` between agent tool calls so the LLM can compose multi-step pipelines directly
 - **Cached molecule loading** so repeated runs skip re-parsing SMILES
 - **Report-enabled stage tasks** that stream property charts, similarity matrices, and candidate spotlights as each step completes
