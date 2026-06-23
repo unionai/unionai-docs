@@ -9,7 +9,7 @@ variants: +flyte +union
 > [!NOTE]
 > Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/parallelized_autoresearch).
 
-This tutorial extends the [Autoresearch agent](../autoresearch/_index) pattern with a code-mode MLE agent that plans **batches** of training experiments, saves distinct `train.py` edits, and runs them **in parallel** via `flyte.map`. It follows the [karpathy/autoresearch](https://github.com/karpathy/autoresearch) loop — minimize validation bits-per-byte on a TinyGPT variant — but orchestrates fan-out batches with durable Flyte tasks and [unionai-sandbox](https://www.union.ai/docs/v2/union/user-guide/sandboxing/interactive-sandboxes/) execution.
+This tutorial extends the [Autoresearch agent](../autoresearch/_index) pattern with a code-mode MLE agent that plans **batches** of training experiments, saves distinct `train.py` edits, and runs them **in parallel** via `flyte.map`. It follows the [karpathy/autoresearch](https://github.com/karpathy/autoresearch) loop — minimize validation bits-per-byte on a TinyGPT variant — but orchestrates fan-out batches with durable Flyte tasks and [unionai-sandbox](../../../user-guide/sandboxing/_index) execution.
 
 Compared to the single-threaded Claude Code autoresearch tutorial, this agent:
 
