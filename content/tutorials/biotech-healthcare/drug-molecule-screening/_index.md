@@ -14,8 +14,8 @@ This tutorial builds a virtual drug-screening pipeline on Flyte. The workflow lo
 Flyte provides:
 
 - **Cached molecule loading** so repeated runs skip re-parsing SMILES
-- **Report tasks** that stream property charts, similarity matrices, and candidate spotlights as each stage completes
-- **End-to-end orchestration** from library loading through final ranked recommendations
+- **Report-enabled stage tasks** that stream property charts, similarity matrices, and candidate spotlights as each step completes
+- **Lightweight orchestration** — the top-level `pipeline` task chains stages without its own report surface
 
 ## Define the task environment
 
@@ -38,11 +38,11 @@ The pipeline runs on CPU with RDKit and system libraries for 2D structure render
 
 ## Orchestrate the pipeline
 
-The `pipeline` task loads molecules, computes properties, screens against a target profile, and generates a final report.
+The `pipeline` task is a lightweight orchestrator: it calls four stage tasks in sequence and returns a JSON summary.
 
 {{< code file="/unionai-examples/v2/tutorials/drug_molecule_screening/drug_molecule_screening.py" fragment=pipeline lang=python >}}
 
-Intermediate tasks (`load_molecules`, `compute_properties`, `screen_candidates`, `generate_report`) each update the Flyte report as they run.
+Each stage task (`load_molecules`, `compute_properties`, `screen_candidates`, `generate_report`) owns its own `report=True` surface and updates the Flyte UI as it runs.
 
 ## Run the workflow
 

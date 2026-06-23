@@ -42,7 +42,7 @@ The Python packages are declared at the top of the file using the `uv` script st
 
 ## Run the security pipeline
 
-Each target flows through four stages: static scan, LLM hypothesis, PoC construction, and sandbox validation. The driver task analyzes all bundled targets in parallel and streams a findings report.
+Each target flows through four stages: static scan, LLM hypothesis, PoC construction, and sandbox validation. The `run_autosec_agent` driver task analyzes all bundled targets in parallel and streams a findings report.
 
 {{< code file="/unionai-examples/v2/tutorials/autosec_research_agent/main.py" fragment=pipeline lang=python >}}
 

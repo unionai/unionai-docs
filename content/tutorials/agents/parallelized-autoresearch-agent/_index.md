@@ -28,7 +28,7 @@ Supporting modules (`train.py`, `prepare.py`, `tools.py`, and `ui.py`) live alon
 
 ## The fan-out agent task
 
-The driver task restores prior memory, streams Activity / Leaderboard / Code edits / Memory report tabs, and runs the code-mode agent loop.
+The driver task `parallelized_autoresearch` restores prior memory (default key `parallelized-autoresearch`), streams Activity / Leaderboard / Code edits / Memory report tabs, and runs the code-mode agent loop.
 
 {{< code file="/unionai-examples/v2/tutorials/parallelized_autoresearch/parallelized_autoresearch.py" fragment=agent lang=python >}}
 
@@ -51,13 +51,14 @@ cd v2/tutorials/parallelized_autoresearch
 uv run --script parallelized_autoresearch.py -- --n-experiments 6 --batch-size 3 --num-shards 1
 ```
 
-Use `--memory-key` to resume a prior research session. Code mode needs more turns than JSON tool mode — increase `--max-turns` for larger sweeps.
+Use `--memory-key` to resume a prior research session (default: `parallelized-autoresearch`). Pass a unique key — for example `parallelized-autoresearch-20260622-215057` — to start with empty memory. Code mode needs more turns than JSON tool mode — increase `--max-turns` for larger sweeps.
 
 Or invoke the agent task directly with `flyte run` (snake_case task inputs):
 
 ```
 flyte run parallelized_autoresearch.py parallelized_autoresearch \
-  --n_experiments 6 --batch_size 3 --num_shards 1 --max_turns 12
+  --n_experiments 6 --batch_size 3 --num_shards 1 --max_turns 12 \
+  --memory_key parallelized-autoresearch
 ```
 
 > [!NOTE]
