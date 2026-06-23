@@ -9,7 +9,7 @@ variants: +flyte +union
 > [!NOTE]
 > Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/parallelized_autoresearch).
 
-This tutorial extends the [Autoresearch agent](./autoresearch/) pattern with a code-mode MLE agent that plans **batches** of training experiments, saves distinct `train.py` edits, and runs them **in parallel** via `flyte.map`. It follows the [karpathy/autoresearch](https://github.com/karpathy/autoresearch) loop — minimize validation bits-per-byte on a TinyGPT variant — but orchestrates fan-out batches with durable Flyte tasks and [unionai-sandbox](https://www.union.ai/docs/v2/union/user-guide/sandboxing/interactive-sandboxes/) execution.
+This tutorial extends the [Autoresearch agent](../autoresearch/_index) pattern with a code-mode MLE agent that plans **batches** of training experiments, saves distinct `train.py` edits, and runs them **in parallel** via `flyte.map`. It follows the [karpathy/autoresearch](https://github.com/karpathy/autoresearch) loop — minimize validation bits-per-byte on a TinyGPT variant — but orchestrates fan-out batches with durable Flyte tasks and [unionai-sandbox](https://www.union.ai/docs/v2/union/user-guide/sandboxing/interactive-sandboxes/) execution.
 
 Compared to the single-threaded Claude Code autoresearch tutorial, this agent:
 
@@ -64,4 +64,4 @@ flyte run parallelized_autoresearch.py parallelized_autoresearch \
 > [!NOTE]
 > The first run downloads climbmix data shards and trains a BPE tokenizer. Subsequent runs reuse cached bundle tasks.
 
-See also the single-task [Autoresearch agent](./autoresearch/) tutorial for the Claude Code + pull-request workflow.
+See also the single-task [Autoresearch agent](../autoresearch/_index) tutorial for the Claude Code + pull-request workflow.
