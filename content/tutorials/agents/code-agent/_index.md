@@ -1,6 +1,6 @@
 ---
 title: Coding agent
-weight: 1
+weight: 3
 variants: +flyte +union
 sidebar_expanded: true
 ---

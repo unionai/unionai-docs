@@ -12,7 +12,7 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
 
 * You have a {{< key product_name >}} organization, and you know the control plane URL for your organization.
 * You have a cluster name provided by or coordinated with Union.
-* You have an AKS cluster with OIDC issuer and Workload Identity enabled, running one of the most recent three minor K8s versions.
+* You have an AKS cluster with OIDC issuer and Workload Identity enabled, running one of the most recent three minor Kubernetes versions.
   [Learn more](https://kubernetes.io/releases/version-skew-policy/).
 * You have configured a Storage Account, Managed Identities, and Workload Identity as described in [Prepare infrastructure](../selfmanaged-azure/prepare-infra).
 
@@ -52,6 +52,21 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
    - Set `storage.custom.stow.config.account` to `${STORAGE_ACCOUNT}`.
    - Set `storage.region` to `${LOCATION}`.
    - Set `commonServiceAccount.annotations."azure.workload.identity/client-id"` to `${BACKEND_CLIENT_ID}`.
+   - For persisted task logs, wire FluentBit to the `${FLUENTBIT_SECRET_NAME}` secret you created in
+     [Prepare infrastructure](../selfmanaged-azure/prepare-infra#8-persisted-logs-storage-key-fluentbit).
+     FluentBit's `azure_blob` output cannot use Workload Identity, so it reads the storage key from
+     that secret at runtime (the key never lands in the rendered ConfigMap):
+
+     ```yaml
+     fluentbit:
+       azureBlobSharedKey: "${AZURE_STORAGE_SHARED_KEY}"
+       env:
+         - name: AZURE_STORAGE_SHARED_KEY
+            valueFrom:
+              secretKeyRef:
+                name: ${FLUENTBIT_SECRET_NAME}
+                key: shared_key
+     ```
 
    If using Azure Key Vault (optional):
    - Set `AZURE_KEY_VAULT_URI` to `https://${KEY_VAULT_NAME}.vault.azure.net/`.

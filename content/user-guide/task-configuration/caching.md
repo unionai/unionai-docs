@@ -34,7 +34,7 @@ If found, the cached result is returned immediately instead of re-executing the 
 
 Flyte 2 supports three main cache behaviors:
 
-### `"auto"` - Automatic versioning
+### `"auto"` - automatic versioning
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="auto" lang="python" >}}
 
@@ -117,6 +117,41 @@ Use `salt` to vary cache keys without changing function logic:
 - Temporary cache namespaces for experiments.
 - Environment-specific cache isolation.
 
+## Content-based caching for DataFrames, files, and directories
+
+When a task input is a DataFrame (`pandas`, `polars`, or `flyte.io.DataFrame`), a `flyte.io.File`, or a `flyte.io.Dir`, the value is passed *by reference* - the cache key is derived from the data's storage location, not its contents. As a result, a downstream task keyed on such an input does **not** get a cache hit when the underlying data is identical but lives at a new path (the common case, since each run writes to a fresh location).
+
+To cache on **content** instead, attach a hash of the data at the point where it is produced. Flyte then uses that content hash when computing the cache key of any downstream consuming task, so identical content produces a cache hit regardless of where it is stored.
+
+> [!NOTE]
+> Caching applies only on a remote cluster - local execution does not produce cache hits across runs.
+
+### DataFrames
+
+For a raw `pandas` or `polars` DataFrame, supply a content hash with `flyte.io.HashFunction.from_fn` in a `typing.Annotated` return type. Define the hash function once and reuse the annotated alias:
+
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/content_caching.py" fragment="pandas" lang="python" >}}
+
+The producer's return annotation tells Flyte to compute the content hash; the consumer is cached on it. The same pattern works for `polars`:
+
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/content_caching.py" fragment="polars" lang="python" >}}
+
+For `flyte.io.DataFrame`, pass the `HashFunction` to `DataFrame.from_local` via the `hash_method` parameter instead of annotating the return type:
+
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/content_caching.py" fragment="flyte-dataframe" lang="python" >}}
+
+### Files
+
+A `flyte.io.File` accepts a `hash_method` on `File.from_local` (and on `File.new_remote`). Pass a `HashFunction` that hashes the file's bytes, and the file is cached on its content rather than its remote path:
+
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/content_caching.py" fragment="file" lang="python" >}}
+
+### Directories
+
+`flyte.io.Dir.from_local` does **not** take a `HashFunction` callable. Instead, compute a content key yourself and pass it as the precomputed `dir_cache_key`:
+
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/content_caching.py" fragment="dir" lang="python" >}}
+
 ## Cache policies
 
 For details on implementing custom cache policies, see the [`CachePolicy` protocol](../../api-reference/flyte-sdk/packages/flyte/cachepolicy) and [`Cache` class](../../api-reference/flyte-sdk/packages/flyte/cache) API references.
@@ -139,7 +174,7 @@ You can implement custom cache policies by following the `CachePolicy` protocol:
 
 You can configure caching at three levels: `TaskEnvironment` definition, `@env.task` decorator, and task invocation.
 
-### `TaskEnvironment` Level
+### `TaskEnvironment` level
 
 You can configure caching at the `TaskEnvironment` level.
 This will set the default cache behavior for all tasks defined using that environment.

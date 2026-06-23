@@ -79,7 +79,7 @@ Example:
 {{</* /variant */>}}
 ```
 
-## Component Library
+## Component library
 
 ### `{{</* audio */>}}`
 

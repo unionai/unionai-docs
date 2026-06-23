@@ -35,10 +35,10 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
 
    ```bash
    uctl config init --host=<ORG_NAME>.union.ai
-   uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider metal
+   uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider custom
    ```
 
-   The command generates a YAML values file specific to the `metal` provider, including the secrets necessary so your data plane can communicate with Union's control plane.
+   The command generates a YAML values file specific to the `custom` provider, including the secrets necessary so your data plane can communicate with Union's control plane.
 
 3. Update the generated values file with your Nebius-specific storage configuration. Replace the placeholders with your actual credentials and settings.
 
@@ -46,7 +46,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    host: <ORG_NAME>.union.ai
    clusterName: <CLUSTER_NAME>
    orgName: <ORG_NAME>
-   provider: metal
+   provider: custom
 
    storage:
      accessKey: <YOUR_BUCKET_ACCESS_KEY>

@@ -1,6 +1,6 @@
 ---
 title: TaskDetails
-version: 2.4.0
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,6 +16,7 @@ class TaskDetails(
     pb2: task_definition_pb2.TaskDetails,
     max_inline_io_bytes: int,
     overriden_queue: Optional[str],
+    overridden: bool,
 )
 ```
 | Parameter | Type | Description |
@@ -23,6 +24,7 @@ class TaskDetails(
 | `pb2` | `task_definition_pb2.TaskDetails` | |
 | `max_inline_io_bytes` | `int` | |
 | `overriden_queue` | `Optional[str]` | |
+| `overridden` | `bool` | |
 
 ## Properties
 

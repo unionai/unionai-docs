@@ -27,7 +27,7 @@ In BYOC deployments, Union.ai assumes additional operational responsibility for 
 
 | Area | Self-managed | BYOC |
 |---|---|---|
-| Data plane K8s cluster | Customer | Union.ai |
+| Data plane Kubernetes cluster | Customer | Union.ai |
 | Cloud account (VPC, IAM) | Customer | Customer |
 | IAM role provisioning | Customer | Union.ai |
 | Secrets management | Customer (backend + values) | Union.ai (default backend) + Customer (values) |

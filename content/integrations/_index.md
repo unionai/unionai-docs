@@ -39,6 +39,7 @@ Flyte 2 integrations fall into the following categories:
 6. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
 7. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
 8. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
+9. **Observability**: Patterns for connecting tasks to external tracing and observability tooling.
 
 ## Distributed compute
 
@@ -349,7 +350,7 @@ Replace `<connector-deployment-name>` with the name of your connector deployment
 {{< /markdown >}}
 {{< /variant >}}
 
-## LLM Serving
+## LLM serving
 
 LLM serving integrations let you deploy and serve large language models as Flyte apps with an OpenAI-compatible API. They handle model loading, GPU management, and autoscaling.
 
@@ -371,3 +372,13 @@ Notebook execution integrations let you run Jupyter notebooks as first-class Fly
 | Plugin                          | Description                                                                                | Common use cases                                                                                     |
 | ------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
 | [Papermill](./papermill/_index) | Parameterize and execute `.ipynb` files via [papermill](https://papermill.readthedocs.io/) | Productionizing exploratory notebooks, cell-by-cell HTML reports, notebook-driven analysis pipelines |
+
+## Observability
+
+Patterns for connecting Flyte tasks to external tracing and observability backends. Unlike the entries above, these are not plugins — they are usage patterns built on top of Flyte's [custom context](../user-guide/task-programming/custom-context) primitive plus the standard libraries from the relevant ecosystem.
+
+### Supported observability integrations
+
+| Integration                              | Description                                                                                                | Common use cases                                     |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| [OpenTelemetry](./opentelemetry/_index)  | Propagate W3C trace context across task boundaries so workflow traces unify with downstream service traces | Distributed tracing, debugging cross-service latency |

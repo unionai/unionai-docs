@@ -4,7 +4,7 @@ weight: 8
 variants: -flyte +union
 ---
 
-# Running Tasks via Webhooks
+# Running tasks via webhooks
 
 On Union, you can deploy apps (see [Apps documentation](../build-apps/_index)) that can run any deployed Flyte tasks. These apps can be REST API services, like FastAPI, that accept HTTP requests and run tasks on behalf of the caller.
 

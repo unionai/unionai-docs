@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.4.0
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -23,9 +23,10 @@ This is the command line interface for Flyte.
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
 | `devbox` | [`delete`](#flyte-delete-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
+| `local-cache` | [`delete`](#flyte-delete-local-cache)  |
 | `settings` | [`edit`](#flyte-edit-settings), [`get`](#flyte-get-settings)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
-| `event` | [`get`](#flyte-get-event), [`signal`](#flyte-signal-event)  |
+| `condition` | [`get`](#flyte-get-condition), [`signal`](#flyte-signal-condition)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
 | `task` | [`get`](#flyte-get-task)  |
@@ -39,15 +40,15 @@ This is the command line interface for Flyte.
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
 | `create` | [`config`](#flyte-create-config), [`project`](#flyte-create-project), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
-| `delete` | [`app`](#flyte-delete-app), [`devbox`](#flyte-delete-devbox), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
+| `delete` | [`app`](#flyte-delete-app), [`devbox`](#flyte-delete-devbox), [`local-cache`](#flyte-delete-local-cache), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
 | [`deploy`](#flyte-deploy) | - |
 | `edit` | [`settings`](#flyte-edit-settings)  |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`event`](#flyte-get-event), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
+| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
-| `signal` | [`event`](#flyte-signal-event)  |
+| `signal` | [`condition`](#flyte-signal-condition)  |
 | `start` | [`devbox`](#flyte-start-devbox), [`tui`](#flyte-start-tui)  |
 | `stop` | [`devbox`](#flyte-stop-devbox)  |
 | `update` | [`app`](#flyte-update-app), [`project`](#flyte-update-project), [`trigger`](#flyte-update-trigger)  |
@@ -64,6 +65,8 @@ This is the command line interface for Flyte.
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
 | `api-key` | [`create⁺`](#flyte-create-api-key), [`delete⁺`](#flyte-delete-api-key), [`get⁺`](#flyte-get-api-key)  |
 | `assignment` | [`create⁺`](#flyte-create-assignment), [`delete⁺`](#flyte-delete-assignment), [`get⁺`](#flyte-get-assignment)  |
+| `cluster` | [`create⁺`](#flyte-create-cluster), [`delete⁺`](#flyte-delete-cluster), [`get⁺`](#flyte-get-cluster)  |
+| `cluster-pool` | [`create⁺`](#flyte-create-cluster-pool), [`delete⁺`](#flyte-delete-cluster-pool), [`get⁺`](#flyte-get-cluster-pool), [`update⁺`](#flyte-update-cluster-pool)  |
 | `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
 | `policy` | [`create⁺`](#flyte-create-policy), [`delete⁺`](#flyte-delete-policy), [`get⁺`](#flyte-get-policy), [`update⁺`](#flyte-update-policy)  |
 | `project` | [`create`](#flyte-create-project), [`get`](#flyte-get-project), [`update`](#flyte-update-project)  |
@@ -74,10 +77,11 @@ This is the command line interface for Flyte.
 | `user` | [`create⁺`](#flyte-create-user), [`delete⁺`](#flyte-delete-user), [`get⁺`](#flyte-get-user)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
 | `devbox` | [`delete`](#flyte-delete-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
+| `local-cache` | [`delete`](#flyte-delete-local-cache)  |
 | `settings` | [`edit`](#flyte-edit-settings), [`get`](#flyte-get-settings)  |
+| `volume` | [`explore⁺`](#flyte-explore-volume)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
-| `cluster` | [`get⁺`](#flyte-get-cluster)  |
-| `event` | [`get`](#flyte-get-event), [`signal`](#flyte-signal-event)  |
+| `condition` | [`get`](#flyte-get-condition), [`signal`](#flyte-signal-condition)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
 | `member` | [`get⁺`](#flyte-get-member)  |
@@ -91,19 +95,20 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
-| `create` | [`api-key⁺`](#flyte-create-api-key), [`assignment⁺`](#flyte-create-assignment), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`queue⁺`](#flyte-create-queue), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
-| `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`devbox`](#flyte-delete-devbox), [`policy⁺`](#flyte-delete-policy), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
+| `create` | [`api-key⁺`](#flyte-create-api-key), [`assignment⁺`](#flyte-create-assignment), [`cluster⁺`](#flyte-create-cluster), [`cluster-pool⁺`](#flyte-create-cluster-pool), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`queue⁺`](#flyte-create-queue), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
+| `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`cluster⁺`](#flyte-delete-cluster), [`cluster-pool⁺`](#flyte-delete-cluster-pool), [`devbox`](#flyte-delete-devbox), [`local-cache`](#flyte-delete-local-cache), [`policy⁺`](#flyte-delete-policy), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
 | [`deploy`](#flyte-deploy) | - |
 | `edit` | [`settings`](#flyte-edit-settings)  |
+| `explore⁺` | [`volume⁺`](#flyte-explore-volume)  |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`config`](#flyte-get-config), [`event`](#flyte-get-event), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
-| `signal` | [`event`](#flyte-signal-event)  |
+| `signal` | [`condition`](#flyte-signal-condition)  |
 | `start` | [`devbox`](#flyte-start-devbox), [`tui`](#flyte-start-tui)  |
 | `stop` | [`devbox`](#flyte-stop-devbox)  |
-| `update` | [`app`](#flyte-update-app), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`queue⁺`](#flyte-update-queue), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
+| `update` | [`app`](#flyte-update-app), [`cluster-pool⁺`](#flyte-update-cluster-pool), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`queue⁺`](#flyte-update-queue), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
 {{< /grid >}}
@@ -120,7 +125,7 @@ This is the command line interface for Flyte.
 > (user management, RBAC, API keys).
 > Install it with `pip install flyteplugins-union`.
 >
-> See the [flyteplugins.union API reference](../integrations/union/_index)
+> See the [flyteplugins.union API reference](../union-plugin/_index)
 > for the programmatic interface.
 
 {{< /markdown >}}
@@ -182,6 +187,7 @@ $ flyte --config /path/to/config.yaml run ...
 | `--log-format` | `choice` | `console` | Formatting for logs, defaults to 'console' which is meant to be human readable. 'json' is meant for machine parsing. |
 | `--user-log-level` | `choice` | `info` | Log level for user task logs. Independent of the internal Flyte log level (-v). |
 | `--reset-root-logger` | `boolean` | `False` | If set, the root logger will be reset to use Flyte logging style |
+| `--no-progress` | `boolean` | `False` | Disable the animated progress spinner — useful in CI / non-interactive logs. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte abort
@@ -227,10 +233,33 @@ Abort a run.
 Build the environments defined in a python file or directory. This will build the images associated with the
 environments.
 
+To build the image for a single named environment:
+
+```bash
+flyte build hello.py my_env
+```
+
+To build the images for all environments in a file (without naming one), use the `--all` flag:
+
+```bash
+flyte build --all hello.py
+```
+
+To recursively build all environments in a directory and its subdirectories, use the `--recursive` flag:
+
+```bash
+flyte build --all --recursive ./src
+```
+
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--copy-style` | `choice` | `loaded_modules` | Copy style of the eventual deploy. Must match the deploy's --copy-style so the image content hash — and therefore the registry tag — lines up. |
 | `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
+| {{< multiline >}}`--recursive`
+`-r`{{< /multiline >}} | `boolean` | `False` | Recursively build all environments in the current directory and its subdirectories. |
+| `--all` | `boolean` | `False` | Build the images for all environments in the file or directory, ignoring the file name. |
+| {{< multiline >}}`--ignore-load-errors`
+`-i`{{< /multiline >}} | `boolean` | `False` | Ignore errors when loading environments, especially when using --recursive or --all. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte create
@@ -297,6 +326,56 @@ Assign a policy to an identity.
 | `--creds-subject` | `text` |  | Client credentials application subject |
 | `--email` | `text` |  | User email for lookup |
 | `--policy` | `text` | `Sentinel.UNSET` | Policy name to assign |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte create cluster
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte create cluster [OPTIONS] NAME`**
+
+Register a new cluster.
+
+    Examples:
+
+        $ flyte create cluster my-cluster
+
+        $ flyte create cluster my-cluster --pool my-pool
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--pool` | `text` | `` | Cluster pool to associate the cluster with. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte create cluster-pool
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte create cluster-pool [OPTIONS] NAME`**
+
+Create a cluster pool.
+
+    A cluster pool holds the object store / secret store / image registry config
+    shared by its member clusters. Requires --file or --edit to supply the config.
+
+    Examples:
+
+        $ flyte create cluster-pool my-pool --edit
+
+        $ flyte create cluster-pool my-pool --file pool.yaml
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--file` | `path` |  | Create pool from a YAML file |
+| `--edit` | `boolean` | `False` | Open an editor to configure the pool before creating |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
@@ -392,6 +471,9 @@ Create a scheduling queue.
         $ flyte create queue gpu-queue --run-concurrency 50 --action-concurrency 500 \
             --priority min --cluster gpu-cluster-1
 
+        $ flyte create queue pool-queue --run-concurrency 50 --action-concurrency 500 \
+            --cluster-pool gpu-pool
+
         $ flyte create queue backfill --run-concurrency 10 --action-concurrency 100 \
             --depth 5000 --priority max
 
@@ -406,6 +488,7 @@ Create a scheduling queue.
 | `--priority` | `choice` | `medium` | Queue priority |
 | `--fairness` | `choice` | `round_robin` | Fairness algorithm |
 | `--cluster` | `text` | `Sentinel.UNSET` | Target cluster(s). Repeat for multiple. |
+| `--cluster-pool` | `text` |  | Cluster pool to bind the queue to (defaults to the org's default pool). Cannot be changed later. |
 | `--project` | `text` | `` | Scope queue to a project |
 | `--domain` | `text` | `` | Scope queue to a domain |
 | `--help` | `boolean` | `False` | Show this message and exit. |
@@ -627,6 +710,52 @@ Unassign a policy from an identity.
 {{< /markdown >}}
 {{< /variant >}}
 
+{{< variant union >}}
+{{< markdown >}}
+#### flyte delete cluster
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte delete cluster [OPTIONS] NAME`**
+
+Delete a cluster.
+
+    Examples:
+
+        $ flyte delete cluster my-cluster
+
+        $ flyte delete cluster my-cluster --yes
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--yes` | `boolean` | `False` | Skip confirmation prompt |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte delete cluster-pool
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte delete cluster-pool [OPTIONS] NAME`**
+
+Delete a cluster pool.
+
+    Examples:
+
+        $ flyte delete cluster-pool my-pool
+
+        $ flyte delete cluster-pool my-pool --yes
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--yes` | `boolean` | `False` | Skip confirmation prompt |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 #### flyte delete devbox
 
 **`flyte delete devbox [OPTIONS]`**
@@ -637,6 +766,15 @@ Stop and remove the local Flyte devbox cluster container.
 |--------|------|---------|-------------|
 | `--volume` | `boolean` | `False` | Also delete the Docker volume used for persistent storage. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+#### flyte delete local-cache
+
+**`flyte delete local-cache`**
+
+Delete the entire local cache directory (~/.flyte/local-cache).
+
+This removes the local SQLite cache used for image lookups, bundle uploads,
+run history, and task caching.
 
 {{< variant union >}}
 {{< markdown >}}
@@ -886,6 +1024,64 @@ Edit hierarchical settings interactively — or apply a YAML file directly.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
+{{< variant union >}}
+{{< markdown >}}
+### flyte explore
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte explore COMMAND [ARGS]...`**
+
+Explore artifacts produced by Flyte runs.
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte explore volume
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte explore volume [OPTIONS] [RUN_NAME] [ACTION_NAME]`**
+
+Browse a Volume's metadata index in an interactive TUI.
+
+    Only RUN_NAME is required: ACTION_NAME defaults to the root action
+    ``a0``, and when ``--op-name`` is omitted the action's outputs are
+    searched for a Volume, then its inputs.
+
+    Examples:
+
+        # Root action's Volume, auto-discovered.
+        $ flyte explore volume my-run
+
+        # A specific action; still auto-discovers the Volume op.
+        $ flyte explore volume my-run my-action
+
+        # Pin the exact output (or input) to explore.
+        $ flyte explore volume my-run my-action --op-name ckpt
+
+        # Different project / domain than the CLI default.
+        $ flyte explore volume my-run my-action --project p --domain d
+
+        # Already-downloaded Volume .json — no control-plane round-trip.
+        $ flyte explore volume --from-file ./my-volume.json
+
+        # Raw index file (sqlite | redis) — debug path.
+        $ flyte explore volume --from-file ./index.db --store-type sqlite
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--op-name` | `text` |  | Name of the Volume value on the action (output or input). If omitted, the action's outputs are searched for a Volume, then its inputs. |
+| `--from-file` | `file` |  | Skip remote resolution; open a local Volume .json or raw index file directly. |
+| `--store-type` | `choice` |  | Backend type when --from-file points at a raw index. Auto-detected from a Volume value otherwise. |
+| `--name` | `text` |  | Display name shown in the TUI header (only meaningful with --from-file on a raw index). |
+| `--project` | `text` |  | Override the project context for resolution. Defaults to the CLI config. |
+| `--domain` | `text` |  | Override the domain context for resolution. Defaults to the CLI config. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 ### flyte gen
 
 **`flyte gen COMMAND [ARGS]...`**
@@ -1035,9 +1231,9 @@ Get a cluster or list all clusters.
 
     Examples:
 
-        $ flyte --org my-org get cluster
+        $ flyte get cluster
 
-        $ flyte --org my-org get cluster my-cluster
+        $ flyte get cluster my-cluster
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1046,23 +1242,40 @@ Get a cluster or list all clusters.
 {{< /markdown >}}
 {{< /variant >}}
 
-#### flyte get config
+{{< variant union >}}
+{{< markdown >}}
+#### flyte get cluster-pool
 
-**`flyte get config`**
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
 
-Shows the automatically detected configuration to connect with the remote backend.
+**`flyte get cluster-pool [OPTIONS] [NAME]`**
 
-The configuration will include the endpoint, organization, and other settings that are used by the CLI.
+Get or list cluster pools.
 
-#### flyte get event
+    If NAME is provided, gets a specific pool. Otherwise, lists all pools.
 
-**`flyte get event [OPTIONS] RUN_NAME [ACTION_NAME]`**
+    Examples:
 
-List events (paused condition actions) for a run, optionally filtered to a
+        $ flyte get cluster-pool
+
+        $ flyte get cluster-pool my-pool
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Maximum number of cluster pools to list |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+#### flyte get condition
+
+**`flyte get condition [OPTIONS] RUN_NAME [ACTION_NAME]`**
+
+List conditions (paused condition actions) for a run, optionally filtered to a
 specific parent action.
 
-Each event corresponds to a condition action registered via
-``flyte.new_event(...)`` from a workflow. Use ``flyte signal event`` to
+Each condition corresponds to a condition action registered via
+``flyte.new_condition(...)`` from a workflow. Use ``flyte signal condition`` to
 resolve one.
 
 | Option | Type | Default | Description |
@@ -1072,6 +1285,14 @@ resolve one.
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+#### flyte get config
+
+**`flyte get config`**
+
+Shows the automatically detected configuration to connect with the remote backend.
+
+The configuration will include the endpoint, organization, and other settings that are used by the CLI.
 
 #### flyte get io
 
@@ -1272,6 +1493,13 @@ $ flyte get run --task-name my_task
 $ flyte get run --task-name my_task --task-version v1.0
 ```
 
+You can filter runs by their user-defined labels:
+
+```bash
+$ flyte get run --with-label team=ml --with-label env=prod
+$ flyte get run --with-label-key team
+```
+
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Limit the number of runs to fetch when listing. |
@@ -1283,6 +1511,8 @@ $ flyte get run --task-name my_task --task-version v1.0
 | `--created-before` | `datetime` |  | Show runs created before this datetime (UTC). |
 | `--updated-after` | `datetime` |  | Show runs updated at or after this datetime (UTC). Accepts ISO dates, 'now', 'today', or 'now - 1 day'. |
 | `--updated-before` | `datetime` |  | Show runs updated before this datetime (UTC). |
+| `--with-label` | `text` | `()` | Filter runs that have this label key=value. Can be specified multiple times (AND semantics). |
+| `--with-label-key` | `text` | `()` | Filter runs that have this label key present (existence check). Can be specified multiple times. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -1605,6 +1835,8 @@ flyte run hello.py my_task --help
 | `--debug` | `boolean` | `False` | Run the task as a VSCode debug task. Starts a code-server in the container so you can connect via the UI to interactively debug/run the task. |
 | {{< multiline >}}`--env`
 `-e`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Environment variable to set on the run context. Format: KEY=VALUE. Can be specified multiple times, e.g. `-e LOG_LEVEL=debug -e FOO=bar`. |
+| `--max-action-concurrency` | `integer range` |  | Maximum number of actions that can run concurrently within the run. If not provided, the platform default (run.max_action_concurrency setting) applies. |
+| `--label` | `text` | `Sentinel.UNSET` | User-defined label to attach to the run. Format: KEY=VALUE. Can be specified multiple times, e.g. `--label team=ml --label env=prod`. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte run deployed-task
@@ -1716,11 +1948,11 @@ Serving deployed apps is not currently supported through this CLI command.
 
 **`flyte signal COMMAND [ARGS]...`**
 
-Signal an event waiting on a paused condition action.
+Signal a paused condition action.
 
-#### flyte signal event
+#### flyte signal condition
 
-**`flyte signal event [OPTIONS] RUN_NAME ACTION_NAME [VALUE]`**
+**`flyte signal condition [OPTIONS] RUN_NAME ACTION_NAME [VALUE]`**
 
 Signal a paused condition action.
 
@@ -1813,6 +2045,28 @@ flyte update app <app_name> --activate | --deactivate [--wait] [--project <proje
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte update cluster-pool
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte update cluster-pool NAME`**
+
+Update a cluster pool interactively.
+
+    Opens the pool in your $EDITOR as YAML. Save and close to apply changes.
+
+    Examples:
+
+        $ flyte update cluster-pool my-pool
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< variant union >}}
 {{< markdown >}}

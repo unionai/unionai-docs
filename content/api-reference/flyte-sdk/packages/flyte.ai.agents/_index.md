@@ -1,6 +1,6 @@
 ---
 title: flyte.ai.agents
-version: 2.4.0
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,11 +18,11 @@ flyte.ai.agents — Agent abstractions for Flyte apps.
 | [`AgentEvent`](../flyte.ai.agents/agentevent) | Lightweight event emitted by the agent loop. |
 | [`AgentResult`](../flyte.ai.agents/agentresult) | Outcome of a single agent invocation. |
 | [`AgentTool`](../flyte.ai.agents/agenttool) | A normalized tool descriptor used by :class:`Agent`. |
-| [`CodeModeAgent`](../flyte.ai.agents/codemodeagent) | Generates code via an LLM, executes it in a Monty sandbox, and. |
 | [`LLMMessage`](../flyte.ai.agents/llmmessage) | Provider-agnostic shape returned by :data:`LLMCallable`. |
 | [`MCPServerSpec`](../flyte.ai.agents/mcpserverspec) | Declarative spec for a remote MCP server that exposes tools. |
 | [`MemoryMeta`](../flyte.ai.agents/memorymeta) | Per-file metadata sidecar (sha256, actor, timestamp, …) for a memory entry. |
 | [`MemoryStore`](../flyte.ai.agents/memorystore) | Conversation transcript + path-addressed artifact memory backed by :class:`flyte. |
+| [`ToolFn`](../flyte.ai.agents/toolfn) | The tool under invocation, handed to a :data:`ToolCallHandler`. |
 
 ### Protocols
 
@@ -61,6 +61,7 @@ def tool(
     name: str | None,
     description: str | None,
     requires_approval: bool,
+    call_handler: ToolCallHandler | None,
 ) -> AgentTool | Callable[[Any], AgentTool]
 ```
 Wrap a task, ``@flyte.trace`` helper, plain callable, or ``LazyEntity`` as an :class:`AgentTool`.
@@ -87,6 +88,21 @@ or as a (parametrized) decorator stacked on top of ``@env.task`` /
 The wrapped task is still registered with its :class:`~flyte.TaskEnvironment`
 and executes on-cluster via ``task.aio`` when the agent calls it.
 
+Pass ``call_handler`` to intercept *how* the tool is invoked. The handler is
+an async callback ``(call_llm, tool_fn, **kwargs) -&gt; result`` that runs in
+place of the default execution. ``tool_fn`` is a :class:`ToolFn`: await it to
+run the default behavior, or use ``tool_fn.target`` (the underlying task /
+callable) and ``call_llm`` to do something custom — e.g. ask the LLM how to
+size compute, then run the task with overridden resources and retry on OOM::
+
+    async def right_size(call_llm, tool_fn, **kwargs):
+        resources = await _ask_llm_for_resources(call_llm, tool_fn, kwargs)
+        return await tool_fn.target.override(resources=resources).aio(**kwargs)
+
+    @tool(call_handler=right_size)
+    @env.task
+    async def train(...): ...
+
 
 
 | Parameter | Type | Description |
@@ -95,6 +111,7 @@ and executes on-cluster via ``task.aio`` when the agent calls it.
 | `name` | `str \| None` | Override the tool name shown to the model. Defaults to the function / task name. |
 | `description` | `str \| None` | Override the description shown to the model. Defaults to the first paragraph of the object's docstring. |
 | `requires_approval` | `bool` | Gate execution behind the agent's HITL approval callback. |
+| `call_handler` | `ToolCallHandler \| None` | Optional async interceptor ``(call_llm, tool_fn, **kwargs)`` that customizes how the tool is invoked. See :data:`ToolCallHandler` and :class:`ToolFn`. |
 
 **Returns:** An :class:`AgentTool` (direct call) or a decorator returning one.
 
