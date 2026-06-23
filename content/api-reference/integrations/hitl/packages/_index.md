@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 2.5.1
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.hitl`](flyteplugins.hitl) | Human-in-the-Loop (HITL) plugin for Flyte. |
+| [`flyteplugins.hitl`](flyteplugins.hitl/_index) | Human-in-the-Loop (HITL) plugin for Flyte. |

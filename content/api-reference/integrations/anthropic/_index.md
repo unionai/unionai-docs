@@ -1,6 +1,6 @@
 ---
 title: Anthropic
-version: 2.5.1
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -8,4 +8,18 @@ layout: py_api
 # Anthropic
 
 
+
+## Directory
+
+### Classes
+
+| Class | Description |
+|-|-|
+| [`flyteplugins.anthropic.Agent`](packages/flyteplugins.anthropic/agent) | A Claude agent configuration. |
+
+### Packages
+
+| Package | Description |
+|-|-|
+| [`flyteplugins.anthropic`](packages/flyteplugins.anthropic/_index) | Anthropic Claude plugin for Flyte. |
 
