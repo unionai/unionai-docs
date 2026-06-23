@@ -1,6 +1,6 @@
 ---
 title: Deep research
-weight: 2
+weight: 3
 variants: +flyte +union
 ---
 
