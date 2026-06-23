@@ -56,7 +56,7 @@ Use `--memory-key` to resume a prior research session. Code mode needs more turn
 Or invoke the agent task directly with `flyte run` (snake_case task inputs):
 
 ```
-flyte run parallelized_autoresearch.py mle_autoresearch_code_fanout_agent \
+flyte run parallelized_autoresearch.py parallelized_autoresearch \
   --n_experiments 6 --batch_size 3 --num_shards 1 --max_turns 12
 ```
 
