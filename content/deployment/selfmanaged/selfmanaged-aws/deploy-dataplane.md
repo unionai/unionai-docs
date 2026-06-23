@@ -12,7 +12,7 @@ If you have not yet set up the required AWS resources (EKS cluster, S3, ECR, IAM
 
 * You have a {{< key product_name >}} organization, and you know the control plane URL for your organization.
 * You have a cluster name provided by or coordinated with Union.
-* You have an EKS cluster with OIDC enabled, running one of the most recent three minor K8s versions.
+* You have an EKS cluster with OIDC enabled, running one of the most recent three minor Kubernetes versions.
   [Learn more](https://kubernetes.io/releases/version-skew-policy/)
 * You have configured S3 bucket(s), ECR, and IAM role as described in [Prepare infrastructure](../selfmanaged-aws/prepare-infra).
 
@@ -86,3 +86,18 @@ If you have not yet set up the required AWS resources (EKS cluster, S3, ECR, IAM
    ```
 
 7. Follow the [Quickstart](../../../user-guide/quickstart) to run your first workflow and verify your cluster is working correctly.
+
+## Next: manage your cluster and pools
+
+`uctl selfserve provision-dataplane-resources` provisions the data plane and
+registers this cluster with the control plane. Once it is connected, you manage
+the **cluster pool** it belongs to — and route work to it with queues — from the
+[Cluster and workload management](../../../user-guide/cluster-workload-management/_index)
+user guide:
+
+- [Cluster pools](../../../user-guide/cluster-workload-management/cluster-pools) — group clusters that share one data plane (object store, secrets, registry).
+- [Clusters](../../../user-guide/cluster-workload-management/clusters) — inspect and manage the cluster records registered with the control plane.
+- [Queues](../../../user-guide/cluster-workload-management/queues) — route workloads to a pool and enforce concurrency, priority, and fairness.
+
+Every organization is provisioned with a `default` pool that new clusters join
+automatically, so a single-cluster deployment needs no extra pool setup.

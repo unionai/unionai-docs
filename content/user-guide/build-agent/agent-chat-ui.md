@@ -9,7 +9,7 @@ mermaid: true
 
 A useful way to interact with an agent is through a chat interface. Because {{< key product_name >}} can [host apps](../build-apps/_index) behind a URL, you can serve a chat UI for your agent with no separate infrastructure. There are two approaches:
 
-1. **`AgentChatAppEnvironment`** — the fastest path. Any agent that implements the `AgentProtocol` (including the built-in `Agent` and `CodeModeAgent`) gets a hosted chat shell, tool sidebar, and streaming for free.
+1. **`AgentChatAppEnvironment`** — the fastest path. Any agent that implements the `AgentProtocol` (including the built-in `Agent`, in tool-use or `code_mode`) gets a hosted chat shell, tool sidebar, and streaming for free.
 2. **A custom FastAPI app** — full control over the UI. Wrap the agent in a `FastAPIAppEnvironment` and serve your own HTML/CSS/JS.
 
 Both reuse the same agent object, so you can start with the built-in shell and graduate to a custom UI later.
@@ -24,7 +24,7 @@ The `task_entrypoint` is a parent task that owns the agent loop, so the nested d
 
 ## Option 2: a custom FastAPI chat app
 
-When you want to control the look and feel, wrap any `AgentProtocol`-compatible agent in a `FastAPIAppEnvironment` and serve your own UI. This is the pattern used by the `CodeModeAgent` chat app: a single LLM call generates Python code, runs it in a [sandbox](../sandboxing/_index), and returns charts + a summary, all behind a conversational web interface.
+When you want to control the look and feel, wrap any `AgentProtocol`-compatible agent in a `FastAPIAppEnvironment` and serve your own UI. A natural fit is an `Agent` in **code mode** (`code_mode=True`): each turn the LLM writes Python that runs in a [sandbox](../sandboxing/_index) with the tools exposed as functions, returning code + a summary (and any charts you choose to surface), all behind a conversational web interface.
 
 The architecture is small:
 
@@ -32,8 +32,8 @@ The architecture is small:
 Browser (Chat UI)
   ├── GET  /            -> embedded HTML/CSS/JS chat interface
   ├── GET  /api/tools   -> JSON list of available tool descriptions
-  └── POST /api/chat    -> { message, history } -> { code, charts, summary, error }
-           └── CodeModeAgent.run(message, history)
+  └── POST /api/chat    -> { message, memory } -> { code, charts, summary, error }
+           └── Agent.run(message, memory)
 ```
 
 The app itself is just a FastAPI server. The endpoints call the agent's `run.aio` and `tool_descriptions` methods:
@@ -46,7 +46,7 @@ from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
 import flyte
-from flyte.ai.agents import CodeModeAgent
+from flyte.ai.agents import Agent
 from flyte.app.extras import FastAPIAppEnvironment
 
 app = FastAPI(title="Chat Data Analytics Agent")
@@ -61,12 +61,18 @@ env = FastAPIAppEnvironment(
     scaling=flyte.app.Scaling(replicas=1),
 )
 
-agent = CodeModeAgent(tools=ALL_TOOLS, max_retries=2)
+agent = Agent(
+    name="analytics",
+    instructions="You are a data analyst. Use the tools to fetch, aggregate, and chart data.",
+    tools=ALL_TOOLS,
+    code_mode=True,
+    max_turns=15,
+)
 
 
 class ChatRequest(BaseModel):
     message: str
-    history: list[dict] = []
+    memory: list[dict] = []
 
 
 class ChatResponse(BaseModel):
@@ -85,7 +91,7 @@ async def get_tools() -> list[dict]:
 @app.post("/api/chat")
 async def chat(req: ChatRequest) -> ChatResponse:
     """Generate code, run it in the sandbox, and return results."""
-    result = await agent.run.aio(req.message, req.history)
+    result = await agent.run.aio(req.message, memory=req.memory)
     return ChatResponse(code=result.code, charts=result.charts,
                         summary=result.summary, error=result.error)
 
@@ -117,10 +123,10 @@ flyte deploy chat_app.py env
 {{< key product_name >}} assigns a URL, handles TLS, and auto-scales the app.
 
 > [!TIP]
-> Swap `CodeModeAgent` for the [`Agent` harness](./flyte-agents) (or any object implementing the `AgentProtocol`) to serve a tool-use agent behind the same UI. The endpoints only depend on `run.aio` and `tool_descriptions`.
+> Drop `code_mode=True` to serve a standard tool-use [`Agent`](./flyte-agents) (or plug in any object implementing the `AgentProtocol`) behind the same UI. The endpoints only depend on `run.aio` and `tool_descriptions`.
 
 ## Next steps
 
 - [The Flyte Agent harness](./flyte-agents): the agent powering the chat UI.
-- [Sandboxing](../sandboxing/_index): how `CodeModeAgent` safely executes generated code.
+- [Sandboxing](../sandboxing/_index): how an `Agent` in code mode safely executes generated code.
 - [Deploy an agent as a service](./deploy-agent-as-service): other ways to run an agent (task, schedule, webhook).

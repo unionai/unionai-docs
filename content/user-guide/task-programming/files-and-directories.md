@@ -19,9 +19,12 @@ The actual data is only downloaded from the blob stored when the task needs to a
 This allows Flyte to efficiently handle large files and directories without needing to transfer the data unnecessarily.
 Even very large data objects like video files and DNA datasets can be passed efficiently between tasks.
 
-For the full picture of what gets stored in the bucket versus what stays in the control-plane database, see [Where your data lives](../core-concepts/where-data-lives).
+For the full picture of what gets stored in the bucket versus what stays in the control plane database, see [Where your data lives](../core-concepts/where-data-lives).
 
 The `File` and `Dir` classes provide both `sync` and `async` methods to interact with the data.
+
+> [!NOTE]
+> Because `File` and `Dir` are passed by reference, a downstream cached task does not get a cache hit on identical content stored at a new path. To cache on content, attach a hash at production time - see [Content-based caching for DataFrames, files, and directories](../task-configuration/caching#content-based-caching-for-dataframes-files-and-directories).
 
 ## Example usage
 

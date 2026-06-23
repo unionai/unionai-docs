@@ -1,6 +1,6 @@
 ---
 title: Traces
-weight: 13
+weight: 14
 variants: +flyte +union
 ---
 
@@ -27,7 +27,7 @@ Here is an example:
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/traces/task_vs_trace.py" fragment="all" lang="python" >}}
 
-## What Gets Traced
+## What gets traced
 
 Traces capture detailed execution information:
 - **Execution time**: How long each function call takes.
@@ -38,7 +38,7 @@ Traces capture detailed execution information:
 
 Only successful trace executions are recorded in the checkpoint system. When a traced function fails, the exception propagates up to your task code where you can handle it with standard error handling patterns.
 
-### Supported Function Types
+### Supported function types
 
 The trace decorator works with:
 - **Asynchronous functions**: Functions defined with `async def`.
@@ -50,7 +50,7 @@ The trace decorator works with:
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/traces/function_types.py" fragment="all" lang="python" >}}
 
-## Task Orchestration Pattern
+## Task orchestration pattern
 
 The typical Flyte workflow follows this pattern:
 
@@ -61,7 +61,7 @@ The typical Flyte workflow follows this pattern:
 - Each operation is independently observable and debuggable
 - Clear separation between workflow coordination (task) and execution (traced functions)
 
-## Relationship to Caching and Checkpointing
+## Relationship to caching and checkpointing
 
 Understanding how traces work with Flyte's other execution features:
 
@@ -71,7 +71,7 @@ Understanding how traces work with Flyte's other execution features:
 | **Traces** | Individual helper functions | Observability and fine-grained resumption | Manual (requires `@flyte.trace`) |
 | **Checkpointing** | Workflow state | Resume workflows from failure points | Automatic when traces are used |
 
-### How They Work Together
+### How they work together
 
 <!-- TODO
 Lets use better typing for all of these examples, we have the opportunity to make this right for our users
@@ -79,7 +79,7 @@ Lets use better typing for all of these examples, we have the opportunity to mak
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/traces/caching_vs_checkpointing.py" fragment="all" lang="python" >}}
 
-### Execution Flow
+### Execution flow
 
 1. **Task Submission**: Task is submitted with input parameters
 2. **Cache Check**: Flyte checks if identical task execution exists in cache
@@ -92,7 +92,7 @@ Lets use better typing for all of these examples, we have the opportunity to mak
 <!--
 Clarify what actually happens on error vs success with traces
 
-## Error Handling and Observability
+## Error handling and observability
 
 Traces capture comprehensive execution information for debugging and monitoring:
 
@@ -115,9 +115,9 @@ TODO:
 Ketan Umare:
 we should show an example where tasks and traces can be used interchangeably
 
-## Examples in Practice
+## Examples in practice
 
-### LLM Pipeline with Traces
+### LLM pipeline with traces
 
 ```python
 import flyte

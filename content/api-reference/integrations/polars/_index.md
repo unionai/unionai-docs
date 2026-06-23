@@ -1,6 +1,6 @@
 ---
 title: Polars
-version: 2.4.0
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -8,4 +8,21 @@ layout: py_api
 # Polars
 
 
+
+## Directory
+
+### Classes
+
+| Class | Description |
+|-|-|
+| [`flyteplugins.polars.df_transformer.ParquetToPolarsDecodingHandler`](packages/flyteplugins.polars.df_transformer/parquettopolarsdecodinghandler) |  |
+| [`flyteplugins.polars.df_transformer.ParquetToPolarsLazyFrameDecodingHandler`](packages/flyteplugins.polars.df_transformer/parquettopolarslazyframedecodinghandler) |  |
+| [`flyteplugins.polars.df_transformer.PolarsLazyFrameToParquetEncodingHandler`](packages/flyteplugins.polars.df_transformer/polarslazyframetoparquetencodinghandler) |  |
+| [`flyteplugins.polars.df_transformer.PolarsToParquetEncodingHandler`](packages/flyteplugins.polars.df_transformer/polarstoparquetencodinghandler) |  |
+
+### Packages
+
+| Package | Description |
+|-|-|
+| [`flyteplugins.polars.df_transformer`](packages/flyteplugins.polars.df_transformer/_index) |  |
 

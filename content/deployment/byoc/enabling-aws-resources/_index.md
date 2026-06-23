@@ -149,7 +149,7 @@ To set up global access, you must bind the `<CustomPolicy>` that you created abo
 
 * Go to **IAM > Access management > Roles**.
 * Find `<UserFlyteRole>` and select the checkbox beside it.
-* In the **Add Permissions** drop-down menu, select **Attach Policies**.
+* In the **Add Permissions** dropdown menu, select **Attach Policies**.
 * In the displayed list find `<CustomPolicy>` and select its checkbox, then select **Add permissions**.
 
 > [!NOTE]

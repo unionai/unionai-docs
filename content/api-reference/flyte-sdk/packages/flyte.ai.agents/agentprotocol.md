@@ -1,6 +1,6 @@
 ---
 title: AgentProtocol
-version: 2.4.0
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -20,7 +20,7 @@ protocol AgentProtocol()
 
 | Method | Description |
 |-|-|
-| [`run()`](#run) | Process *message* (with prior *history*) and return an :class:`AgentResult`. |
+| [`run()`](#run) | Process *message* (with prior *memory*) and return an :class:`AgentResult`. |
 | [`tool_descriptions()`](#tool_descriptions) | Return JSON-friendly metadata for every registered tool. |
 
 
@@ -29,10 +29,13 @@ protocol AgentProtocol()
 ```python
 def run(
     message: str,
-    history: list[dict[str, str]],
+    memory: list[dict[str, Any]] | 'MemoryStore' | None,
 ) -> AgentResult
 ```
-Process *message* (with prior *history*) and return an :class:`AgentResult`.
+Process *message* (with prior *memory*) and return an :class:`AgentResult`.
+
+``memory`` may be a ``list[dict]`` of prior messages (e.g. a chat
+``history``) or a :class:`MemoryStore` for durable, cross-run state.
 
 Synchronous entry point. In async contexts, use ``run.aio(...)``.
 
@@ -40,7 +43,7 @@ Synchronous entry point. In async contexts, use ``run.aio(...)``.
 | Parameter | Type | Description |
 |-|-|-|
 | `message` | `str` | |
-| `history` | `list[dict[str, str]]` | |
+| `memory` | `list[dict[str, Any]] \| 'MemoryStore' \| None` | |
 
 ### tool_descriptions()
 

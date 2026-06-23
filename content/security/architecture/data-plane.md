@@ -13,7 +13,7 @@ The data plane runs entirely within the customer's cloud account on a Kubernetes
 
 The data plane consists of several components, each handling a specific aspect of task execution and data management.
 
-**Envoy router** is the AuthN/AuthZ enforcement point that fronts every customer-data request entering the cluster. Under the default tier, it sits at the egress of the Direct-to-DataPlane tunnel; under the [Sovereign Data Plane](./sovereign-data-plane) tier, it sits behind the customer-managed internal load balancer. In either case, every request is authenticated against the requester's Union.ai identity and evaluated against the RBAC policy *inside the customer's cluster* before forwarding to the `dataproxy` service. The Union.ai control plane is not on the path.
+**Envoy router** is the AuthN/AuthZ enforcement point that fronts every customer-data request entering the cluster. Under the default tier, it sits at the egress of the Direct-to-Data-Plane tunnel; under the [Sovereign Data Plane](./sovereign-data-plane) tier, it sits behind the customer-managed internal load balancer. In either case, every request is authenticated against the requester's Union.ai identity and evaluated against the RBAC policy *inside the customer's cluster* before forwarding to the `dataproxy` service. The Union.ai control plane is not on the path.
 
 **Dataproxy service** is the single endpoint for every customer-data request. It handles:
 
@@ -21,13 +21,13 @@ The data plane consists of several components, each handling a specific aspect o
 - **Structured I/O retrieval** -- inputs and outputs of actions (small protobuf literals) are served back through the `dataproxy`.
 - **Log fetching** -- live logs from the Kubernetes API, persisted logs from the cloud log aggregator (CloudWatch, Cloud Logging, or Azure Monitor). There is no content filtering or redaction; any sensitive data (secrets, PII, stack traces) that user code writes to stdout/stderr is served unmodified.
 - **Auxiliary UI proxying** -- Ray dashboards, Spark history servers, in-task debuggers, and other per-action UIs are served back through the `dataproxy` via the same authenticated path.
-- **Secret writes** -- secret values from the SDK or UI are routed to the data-plane secrets backend (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or K8s Secrets) without traversing the control plane.
+- **Secret writes** -- secret values from the SDK or UI are routed to the data plane secrets backend (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or Kubernetes Secrets) without traversing the control plane.
 
 **Executor** is a Kubernetes controller that creates and manages the task pods based on signals from the control plane. If connectivity to the control plane is lost, in-flight pods continue running and state reconciles when the connection is restored.
 
 **Image Builder** uses Buildkit running on the customer's Kubernetes cluster to build container images from user-submitted `Image` specifications. Source code and built images never leave the customer's infrastructure. Base images are pulled from customer-configured registries, and built images are pushed to the customer's container registry (ECR, GCR, or ACR).
 
-**Tunnel Service** maintains the outbound-only encrypted Direct-to-DataPlane tunnel (a Cloudflare Tunnel under the hood) from the data plane to the Cloudflare edge under the default tier. This service initiates the tunnel (no inbound ports required), performs health checks and heartbeats, and automatically reconnects if the connection drops. Under the [Sovereign Data Plane](./sovereign-data-plane) tier, the Tunnel Service is replaced by a customer-managed internal load balancer that fronts the Envoy router; the rest of the data-plane components are identical.
+**Tunnel Service** maintains the outbound-only encrypted Direct-to-Data-Plane tunnel (a Cloudflare Tunnel under the hood) from the data plane to the Cloudflare edge under the default tier. This service initiates the tunnel (no inbound ports required), performs health checks and heartbeats, and automatically reconnects if the connection drops. Under the [Sovereign Data Plane](./sovereign-data-plane) tier, the Tunnel Service is replaced by a customer-managed internal load balancer that fronts the Envoy router; the rest of the data plane components are identical.
 
 In addition to the client-to-data-plane path, the data plane operator establishes a separate outbound gRPC connection (TLS) to the regional control plane endpoint for orchestration RPCs (cluster registration, action lifecycle, event reporting, catalog and artifact lookups, admin RPCs). This channel is outbound-initiated under both tiers and carries no customer data. See [Network architecture](./network) for the channel details.
 
@@ -37,7 +37,7 @@ In addition to the client-to-data-plane path, the data plane operator establishe
 
 ## Object store layout
 
-Each data plane cluster is configured with one or more object-store buckets in the customer's cloud account, accessed via a configurable storage prefix. Within that prefix, objects are organized by namespace: `<project>/<domain>/<run-name>/<action-name>/...` for per-run execution artifacts (task inputs, outputs, Decks, checkpoints), with sibling prefixes for offloaded inputs and SDK-uploaded code bundles and image-build contexts. This layout provides isolation: IAM policies and bucket policies can scope access to specific organizational boundaries. For the developer-facing map of what the bucket contains versus what lives in the control-plane database, see [Where your data lives](../../user-guide/core-concepts/where-data-lives).
+Each data plane cluster is configured with one or more object-store buckets in the customer's cloud account, accessed via a configurable storage prefix. Within that prefix, objects are organized by namespace: `<project>/<domain>/<run-name>/<action-name>/...` for per-run execution artifacts (task inputs, outputs, Decks, checkpoints), with sibling prefixes for offloaded inputs and SDK-uploaded code bundles and image-build contexts. This layout provides isolation: IAM policies and bucket policies can scope access to specific organizational boundaries. For the developer-facing map of what the bucket contains versus what lives in the control plane database, see [Where your data lives](../../user-guide/core-concepts/where-data-lives).
 
 ## Kubernetes security
 
@@ -71,7 +71,7 @@ The data plane uses two IAM roles to separate platform-level and user-level acce
 
 Both roles use cloud-native workload identity federation: IRSA (IAM Roles for Service Accounts) on AWS, Workload Identity on GCP, and Azure Workload Identity on Azure. No static credentials are created, stored, or rotated. The Kubernetes service account annotations bind each pod to the appropriate IAM role automatically.
 
-## Apps & Serving security
+## Apps & serving security
 
 App and serving traffic flows entirely within the customer's infrastructure. No application code, data, or serving requests pass through the control plane.
 

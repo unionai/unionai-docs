@@ -1,6 +1,6 @@
 ---
 title: AgentTool
-version: 2.4.0
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,7 +19,8 @@ explicitly when you need to:
 - rename a tool for the LLM,
 - override the description shown to the model,
 - require human approval before execution (HITL),
-- inject a fully custom JSON schema.
+- inject a fully custom JSON schema,
+- intercept invocation with a ``call_handler``.
 
 
 ## Parameters
@@ -32,6 +33,8 @@ class AgentTool(
     execute: _ToolExecutor,
     requires_approval: bool,
     source: Literal['function', 'task', 'trace', 'remote_task', 'mcp', 'custom'],
+    target: Any,
+    call_handler: ToolCallHandler | None,
 )
 ```
 | Parameter | Type | Description |
@@ -42,6 +45,8 @@ class AgentTool(
 | `execute` | `_ToolExecutor` | |
 | `requires_approval` | `bool` | |
 | `source` | `Literal['function', 'task', 'trace', 'remote_task', 'mcp', 'custom']` | |
+| `target` | `Any` | |
+| `call_handler` | `ToolCallHandler \| None` | |
 
 ## Methods
 

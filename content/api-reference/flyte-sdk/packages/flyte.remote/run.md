@@ -1,6 +1,6 @@
 ---
 title: Run
-version: 2.4.0
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -196,6 +196,8 @@ def listall(
     domain: str | None,
     created_at: TimeFilter | None,
     updated_at: TimeFilter | None,
+    with_labels: dict[str, str] | None,
+    with_label_keys: list[str] | None,
 ) -> AsyncIterator[Run]
 ```
 Get all runs for the current project and domain.
@@ -215,6 +217,8 @@ Get all runs for the current project and domain.
 | `domain` | `str \| None` | The domain to list runs for. Defaults to the globally configured domain. |
 | `created_at` | `TimeFilter \| None` | Filter runs by creation time range. |
 | `updated_at` | `TimeFilter \| None` | Filter runs by last-update time range. |
+| `with_labels` | `dict[str, str] \| None` | Filter runs whose labels include all of these key=value pairs (AND semantics). |
+| `with_label_keys` | `list[str] \| None` | Filter runs that have all of these label keys present (existence check). |
 
 **Returns:** An iterator of runs.
 

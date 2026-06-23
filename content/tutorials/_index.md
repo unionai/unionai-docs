@@ -10,48 +10,52 @@ llm_readable_bundle: true
 
 {{< llm-bundle-note >}}
 
-This section contains tutorials that showcase relevant use cases and provide step-by-step instructions on how to implement various features using Flyte and Union.
+This section contains tutorials that showcase relevant use cases and provide step-by-step instructions on how to implement various features using Flyte and Union. Tutorials are organized by **industry vertical** and by **technical topic**.
+
+## Industry verticals
 
 {{< grid >}}
 
-{{< link-card target="auto_prompt_engineering" title="Automatic prompt engineering" >}}
-Easily run prompt optimization with real-time observability, traceability, and automatic recovery.
+{{< link-card target="biotech-healthcare" title="Biotech & Healthcare" >}}
+Bioinformatics, medical imaging, and other life-sciences workloads.
 {{< /link-card >}}
 
-{{< link-card target="climate-modeling" title="GPU-accelerated climate modeling" >}}
-Run ensemble atmospheric simulations on H200 GPUs with multi-source data ingestion and real-time extreme event detection.
+{{< link-card target="geospatial" title="Geospatial" >}}
+Satellite imagery, remote sensing, and earth and atmospheric modeling workloads.
 {{< /link-card >}}
 
-{{< link-card target="code-agent" title="Run LLM-generated code" >}}
-Securely execute and iterate on LLM-generated code using a code agent with error reflection and retry logic.
+{{< link-card target="financial-services" title="Financial Services & Fintech" >}}
+Financial research, trading, and other fintech workloads.
 {{< /link-card >}}
 
-{{< link-card target="deep-research" title="Deep research" >}}
-Build an agentic workflow for deep research with multi-step reasoning and evaluation.
+{{< link-card target="frontier-ai" title="Frontier AI" >}}
+Frontier-model pretraining, automated experimentation, and large-scale AI workloads.
 {{< /link-card >}}
 
-{{< link-card target="distributed-pretraining" title="Distributed LLM pretraining" >}}
-Pretrain large language models at scale with PyTorch Lightning, FSDP, and H200 GPUs, featuring streaming data and real-time metrics.
+{{< /grid >}}
+
+## Technical topics
+
+{{< grid >}}
+
+{{< link-card target="computer-vision" title="Computer Vision" >}}
+Image and vision-language model workloads.
 {{< /link-card >}}
 
-{{< link-card target="qwen-vl-finetuning" title="Fine-tuning a VLM with a frozen backbone" >}}
-Adapt Qwen2.5-VL to occluded image classification by training a 10K-parameter adapter with multi-node DeepSpeed, automatic recovery, and live training dashboards.
+{{< link-card target="agents" title="Agents" >}}
+Agentic workflows and autonomous LLM-powered systems.
 {{< /link-card >}}
 
-{{< link-card target="hpo" title="Hyperparameter optimization" >}}
-Run large-scale HPO experiments with zero manual tracking, deterministic results, and automatic recovery.
+{{< link-card target="context-engineering" title="Context Engineering" >}}
+Prompt engineering, prompt optimization, and context construction.
 {{< /link-card >}}
 
-{{< link-card target="mle-bot" title="MLE Bot: autonomous ML engineer" >}}
-An autonomous ML agent that designs, runs, and iterates on experiments using Flyte's durable sandbox for safe LLM-generated code execution.
+{{< link-card target="model-training" title="Model Training" >}}
+Training, fine-tuning, and hyperparameter optimization of models at scale.
 {{< /link-card >}}
 
-{{< link-card target="trading-agents" title="Multi-agent trading simulation" >}}
-A multi-agent trading simulation, modeling how agents within a firm might interact, strategize, and make trades collaboratively.
-{{< /link-card >}}
-
-{{< link-card target="text_to_sql" title="Text-to-SQL" >}}
-Learn how to turn natural language questions into SQL queries with Flyte and LlamaIndex, and explore prompt optimization in practice.
+{{< link-card target="data-processing" title="Data Processing" >}}
+Large-scale data processing and batching strategies.
 {{< /link-card >}}
 
 {{< /grid >}}

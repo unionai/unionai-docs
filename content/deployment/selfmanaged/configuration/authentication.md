@@ -48,7 +48,7 @@ sequenceDiagram
 - Access to create OAuth applications in your IdP.
 - A secret management solution for delivering client secrets to pods (e.g., External Secrets Operator with AWS Secrets Manager, HashiCorp Vault, or native Kubernetes secrets).
 
-## Configuring your Identity Provider
+## Configuring your identity provider
 
 You must create three OAuth applications in your IdP:
 
@@ -305,7 +305,7 @@ config:
       clientSecretLocation: "/etc/union/secret/client_secret"
 ```
 
-### In-pod control-plane authentication (EAGER_API_KEY)
+### In-pod control plane authentication (EAGER_API_KEY)
 
 Flyte task pods may need to call back into the Union.ai control plane during execution -- to launch sub-tasks, fetch remote references, run apps that make programmatic API calls, and similar. The `EAGER_API_KEY` secret holds the OAuth2 client credentials used to authenticate those calls. (The "eager" prefix is a Flyte 1.x holdover -- the key is needed for every task pod that may reach the control plane, not just eager workflows. There is no separate eager-mode toggle in Flyte 2.x.)
 
@@ -322,7 +322,7 @@ executor:
 > [!NOTE] Provisioning the EAGER_API_KEY
 > The `EAGER_API_KEY` secret must be provisioned for the organization before any task pod can call the control plane. The key value is issued by Union.ai; contact your Union.ai Support representative to have it provisioned for your tenant. Once you have the value, deliver it to the `EAGER_API_KEY` Kubernetes secret in the executor's namespace via External Secrets Operator (or another out-of-band secret delivery mechanism). The provisioning workflow is being moved to a self-serve flow on the Union.ai console; until then, the contact-Support path is the canonical one.
 
-### Dataplane secrets
+### Data plane secrets
 
 Enable the `union-secret-auth` Kubernetes secret mount for data plane pods:
 
@@ -492,7 +492,7 @@ export FLYTE_CREDENTIALS_AUTH_MODE=basic
 
 Verify that `useAuth: true` is set in `flyte.configmap.adminServer.server.security`. Without this, the `/login`, `/callback`, and `/me` endpoints are not registered.
 
-### SDK gets 401 Unauthenticated
+### SDK gets 401 unauthenticated
 
 1. Check that the `AuthMetadataService` routes are in the **unprotected** ingress (no auth-url annotation).
 2. Verify the SDK can reach the token endpoint. The SDK discovers it via `AuthMetadataService/GetOAuth2Metadata`.

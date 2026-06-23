@@ -17,6 +17,11 @@ The task programming section covers key patterns for building effective Flyte wo
 
 **Data handling and types**
 - [**Files and directories**](./files-and-directories): Work with large datasets using Flyte's efficient file and directory types that automatically handle data upload, storage, and transfer between tasks.
+{{< variant union >}}
+{{< markdown >}}
+- [**Volumes**](./volumes): Mount a persistent file system and use it from within your task like an ordinary local directory.
+{{< /markdown >}}
+{{< /variant >}}
 - [**DataFrames**](./dataframes): Pass DataFrames between tasks without downloading data into memory, with support for Pandas, Polars, PyArrow, Dask, and other DataFrame backends.
 - [**Data classes and structures**](./dataclasses-and-structures): Use Python data classes and Pydantic models as task inputs and outputs to create well-structured, type-safe workflows.
 - [**Custom context**](./custom-context): Use custom context to pass metadata through your task execution hierarchy without adding parameters to every task.

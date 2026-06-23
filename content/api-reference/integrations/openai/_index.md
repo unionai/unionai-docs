@@ -1,6 +1,6 @@
 ---
 title: OpenAI
-version: 2.4.0
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -8,4 +8,12 @@ layout: py_api
 # OpenAI
 
 
+
+## Directory
+
+### Packages
+
+| Package | Description |
+|-|-|
+| [`flyteplugins.openai.agents`](packages/flyteplugins.openai.agents/_index) |  |
 

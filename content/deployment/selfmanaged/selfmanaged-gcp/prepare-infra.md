@@ -21,7 +21,7 @@ export AR_REPOSITORY=union-dataplane    # Artifact Registry repository name
 export GSA_NAME=union-system            # Google Service Account name
 ```
 
-## GKE Cluster
+## GKE cluster
 
 You need a GKE cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
 
@@ -105,7 +105,7 @@ gcloud storage buckets create gs://${BUCKET_PREFIX}-fast-reg \
   --location ${REGION}
 ```
 
-### CORS Configuration
+### CORS configuration
 
 To enable the [Code Viewer](../configuration/code-viewer) in the Union UI, configure a CORS policy on your buckets. This allows the UI to securely fetch code bundles directly from GCS.
 
@@ -129,7 +129,7 @@ gcloud storage buckets update gs://${BUCKET_PREFIX}-metadata --cors-file=cors.js
 gcloud storage buckets update gs://${BUCKET_PREFIX}-fast-reg --cors-file=cors.json
 ```
 
-### Data Retention
+### Data retention
 
 Union recommends using Lifecycle Policy on these buckets to manage storage costs. See [Data retention policy](../configuration/data-retention) for more information.
 
@@ -151,7 +151,7 @@ Note the repository path (`${REGION}-docker.pkg.dev/${PROJECT_ID}/${AR_REPOSITOR
 
 Union recommends using [GKE Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) to securely access GCP resources.
 
-### 1. Create a Google Service Account
+### 1. Create a Google service account
 
 ```bash
 gcloud iam service-accounts create ${GSA_NAME} \
