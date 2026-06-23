@@ -1,6 +1,6 @@
 ---
 title: MLE bot
-weight: 1
+weight: 3
 variants: +flyte +union
 ---
 
