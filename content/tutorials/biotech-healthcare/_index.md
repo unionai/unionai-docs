@@ -27,4 +27,8 @@ Zero-shot pathogenicity scoring with HuggingFace Carbon and interactive VEP repo
 Classify brain MRI scans with a two-phase EfficientNet-B4 pipeline featuring resumable GPU checkpointing and in-UI reports.
 {{< /link-card >}}
 
+{{< link-card target="drug-molecule-screening" title="Drug molecule screening agent" >}}
+Agentic virtual screening with RDKit stage tools, Lipinski filters, and ranked drug-likeness reports.
+{{< /link-card >}}
+
 {{< /grid >}}
