@@ -22,7 +22,13 @@ Flyte provides:
 - **Hybrid iteration** — the agent re-runs `screen_candidates` and `generate_report` with adjusted criteria when the funnel is too narrow, reusing cached `molecule_dir` and `properties_json`
 
 > [!NOTE] Prerequisites
-> The agent requires an `internal-anthropic-api-key` secret on your cluster (same as other agent tutorials).
+> Create an Anthropic API key secret (the key name must match the `TaskEnvironment`):
+>
+> ```
+> flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
+> ```
+>
+> See [Secrets](../../../user-guide/task-configuration/secrets) for scoping and file-based secrets.
 
 ## Define the task environment
 
