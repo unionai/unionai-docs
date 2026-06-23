@@ -55,23 +55,39 @@ uv pip install flyteplugins-union
 enabled (fetching that run's code and inputs), waits for the pod's ssh route to come up, and prints
 a ready-to-paste `~/.ssh/config` block.
 
+The canonical flow is to write the `Host` block straight into `~/.ssh/config`, then `ssh` to it:
+
 ```bash
-# Relaunch a run in debug mode and connect to its root action (a0)
-flyte debug <run-name>
-
-# Name the session, use an API key for auth, and write the Host block into ~/.ssh/config
-flyte debug <run-name> --name my-dbg --api-key --write-config
-
-# Fire-and-forget: relaunch and return immediately, without waiting for the pod to come up
-flyte debug <run-name> --no-wait
+flyte debug <run-name> --write-config
+ssh flyte-debug
 ```
 
-Only `RUN_NAME` is required; the action name defaults to the root action `a0`. Pass an action name
-as a second argument to source the task and inputs from a nested action instead.
+`--write-config` adds a `Host flyte-debug` block to your `~/.ssh/config`, so `ssh flyte-debug` (or
+**VS Code → Remote-SSH → `flyte-debug`**) connects straight into the task pod. Only `RUN_NAME` is
+required; the action name defaults to the root action `a0` — pass an action name as a second
+argument to source the task and inputs from a nested action instead.
 
-The debug run uses a **deterministic name** derived from the source run (or from `--name`), so
-re-running `flyte debug <run-name>` **reconnects to the live debug session instead of spawning a
-duplicate**. To start a fresh debug run (for example if the previous one died), pass a new `--name`.
+#### Naming a session
+
+Pass `--name` to name the debug session. The name is used as **both** the remote debug run name and
+the `~/.ssh/config` Host alias, so you then `ssh <name>`:
+
+```bash
+flyte debug <run-name> --name my-dbg --write-config
+ssh my-dbg
+```
+
+Naming lets you keep several debug sessions side by side. The debug run uses a **deterministic
+name** (derived from the source run, or from `--name`), so re-running the same command
+**reconnects to the live debug session instead of spawning a duplicate**. To start a fresh debug
+run (for example if the previous one died), pass a new `--name`.
+
+For a long-lived tunnel that survives re-logins, add `--api-key`; to relaunch without blocking on
+the pod coming up, add `--no-wait`:
+
+```bash
+flyte debug <run-name> --name my-dbg --api-key --write-config
+```
 
 Useful options:
 
@@ -85,6 +101,11 @@ Useful options:
 | `--write-config` | Write the `Host` block into `~/.ssh/config`, replacing any prior block of the same name. |
 | `--wait` / `--no-wait` | Wait for the route to become ready and print the ssh-config (default), or relaunch and return immediately. |
 | `--timeout` | Seconds to wait for the debug route to become ready (default `300`). |
+
+> [!NOTE]
+> Tokens expire. If you get a `401` on reconnect, just re-run the same `flyte debug` command — it
+> reconnects and refreshes the token in place (no `--write-config` needed). For multi-day sessions,
+> use `--api-key`.
 
 ### Debug programmatically
 
@@ -129,23 +150,6 @@ env = flyte.TaskEnvironment(
     resources=flyte.Resources(cpu=1, memory="1000Mi"),
 )
 ```
-
-### Attach your editor
-
-Once the `Host` block is in place (use `--write-config`, or paste the printed block into
-`~/.ssh/config`), connect with either:
-
-```bash
-ssh flyte-debug
-```
-
-or, in **VS Code**: **Remote-SSH → Connect to Host → `flyte-debug`** (use the session name you chose
-with `--name`).
-
-> [!NOTE]
-> Tokens expire. If you get a `401` on reconnect, just re-run the same `flyte debug` command — it
-> reconnects and refreshes the token in place (no `--write-config` needed). For multi-day sessions,
-> use `--api-key`.
 
 ## Related
 
