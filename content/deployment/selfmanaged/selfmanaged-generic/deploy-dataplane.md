@@ -79,3 +79,18 @@ If you have not yet set up the required resources (Kubernetes cluster, object st
    ```
 
 7. Follow the [Quickstart](../../../user-guide/quickstart) to run your first workflow and verify your cluster is working correctly.
+
+## Next: manage your cluster and pools
+
+`uctl selfserve provision-dataplane-resources` provisions the data plane and
+registers this cluster with the control plane. Once it is connected, you manage
+the **cluster pool** it belongs to — and route work to it with queues — from the
+[Cluster and workload management](../../../user-guide/cluster-workload-management/_index)
+user guide:
+
+- [Cluster pools](../../../user-guide/cluster-workload-management/cluster-pools) — group clusters that share one data plane (object store, secrets, registry).
+- [Clusters](../../../user-guide/cluster-workload-management/clusters) — inspect and manage the cluster records registered with the control plane.
+- [Queues](../../../user-guide/cluster-workload-management/queues) — route workloads to a pool and enforce concurrency, priority, and fairness.
+
+Every organization is provisioned with a `default` pool that new clusters join
+automatically, so a single-cluster deployment needs no extra pool setup.
