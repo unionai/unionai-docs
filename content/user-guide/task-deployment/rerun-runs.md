@@ -85,7 +85,7 @@ the `--rerun-from` flag. This deploys **your local code** and feeds it the input
 run, so you don't need to re-specify any per-task input flags:
 
 ```bash
-flyte run main.py main --rerun-from <run-name>
+flyte run --rerun-from <run-name> main.py main
 ```
 
 `--rerun-from` is remote-only — it cannot be combined with `--local`.
@@ -95,7 +95,7 @@ flyte run main.py main --rerun-from <run-name>
 | Command | Code | Inputs |
 |---|---|---|
 | `flyte run <file> <task>` | local | from CLI |
-| `flyte run <file> <task> --rerun-from <run>` | local | prior run's |
+| `flyte run --rerun-from <run> <file> <task>` | local | prior run's |
 | `flyte rerun <run>` | fetched from backend | prior run's |
 
 ## Re-run programmatically
