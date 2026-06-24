@@ -27,13 +27,13 @@ The quickest way to set the level is via environment variables. They apply to bo
 For example, to see Flyte's internal debug messages:
 
 ```bash
-LOG_LEVEL=debug python my_workflow.py
+LOG_LEVEL=debug flyte run --local my_workflow.py main
 ```
 
 Each level variable accepts either a **named level** — `critical`, `error`, `warning` (or `warn`), `info`, `debug` (case-insensitive) — or a **numeric** Python logging level, such as `10` (`DEBUG`) or `20` (`INFO`):
 
 ```bash
-LOG_LEVEL=10 USER_LOG_LEVEL=debug python my_workflow.py
+LOG_LEVEL=10 USER_LOG_LEVEL=debug flyte run --local my_workflow.py main
 ```
 
 An unrecognized value falls back to the default for that variable.
