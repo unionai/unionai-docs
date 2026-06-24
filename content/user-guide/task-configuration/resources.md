@@ -28,6 +28,16 @@ The main parameters are:
 - **`disk`**: Ephemeral storage — `"10Gi"`.
 - **`shm`**: Shared memory — `"1Gi"` or `"auto"`.
 
+{{< note >}}
+**A node's allocatable memory is less than its total capacity.** The `memory` you request becomes the pod's Kubernetes memory request, and the scheduler places the pod only on a node whose *allocatable* memory can satisfy it. Allocatable is the node's total capacity minus the overhead the kubelet reserves for the operating system and system daemons (`kube-reserved`, `system-reserved`, and the eviction threshold), so it is always somewhat smaller than the machine's advertised RAM. A request sized right up to a node's nominal capacity can therefore leave the pod stuck `Pending`, because no node has that much *allocatable* memory free. Size memory requests with headroom below the node's total — and remember the same applies to CPU and ephemeral storage.
+{{< /note >}}
+
+{{< variant union >}}
+{{< markdown >}}
+For how task resource requests interact with project-domain quotas as you scale across teams, see [Resource management and multi-team scaling](../../project-patterns/resource-management).
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Examples
 
 ### Usage in TaskEnvironment
