@@ -39,6 +39,17 @@ Output:
 Flyte SDK version: 2.*.*
 ```
 
+{{< note "Run the CLI without installing" >}}
+If you have [`uv`](https://docs.astral.sh/uv/) installed, you can run the `flyte` CLI directly with `uvx`, without installing the package into your environment:
+
+```bash
+uvx --prerelease=allow flyte --version
+uvx --prerelease=allow flyte get run
+```
+
+`--prerelease=allow` is required because Flyte 2 currently ships as prereleases, which `uv` excludes by default.
+{{< /note >}}
+
 ## Configure
 
 Create a config file for local execution. Runs will be persisted locally in a SQLite database.
