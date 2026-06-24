@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 2.4.4
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.wandb`](flyteplugins.wandb) | ## Key features:. |
+| [`flyteplugins.wandb`](flyteplugins.wandb/_index) | ## Key features:. |

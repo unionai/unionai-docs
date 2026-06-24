@@ -17,12 +17,24 @@ mermaid: true
 > The `flyte` cluster, pool, and queue commands on these pages are provided by the
 > `flyteplugins-union` package. Install it with `pip install flyteplugins-union`.
 
+> [!NOTE] Standing up a new cluster?
+> The pages in this section manage the **control-plane records** for pools,
+> clusters, and the **queues** that route work to them. If you run a self-managed
+> deployment and still need to provision the **data plane** itself — the cloud
+> resources (object store, secret store, registry) and the Helm release that
+> registers a cluster with the control plane — start with
+> [Self-managed deployment](../../deployment/selfmanaged/_index) (for example,
+> [Data plane setup on AWS](../../deployment/selfmanaged/selfmanaged-aws/_index)).
+> The two are complementary: the deployment runbook provisions and connects a
+> cluster's data plane, and the commands here manage the pool, cluster, and queue
+> records that route work to it.
+
 As a {{< key product_name >}} deployment grows past a single cluster, you need a
 way to decide *where* a workload runs and *under what limits*. Three primitives
 work together to make that decision explicit and safe:
 
 - **Cluster pool** — an org-level **isolation boundary**. Both the clusters *and*
-  the queues inside a pool share one **data-plane configuration**: the same object
+  the queues inside a pool share one **data plane configuration**: the same object
   store, secret store, and container registry. Anything {{< key product_name >}}
   uploads for a run (inputs, code bundles, secrets) is reachable from every cluster
   in the same pool — and from no cluster outside it. Pools do not connect: you

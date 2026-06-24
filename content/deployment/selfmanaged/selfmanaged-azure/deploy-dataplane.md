@@ -52,6 +52,21 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
    - Set `storage.custom.stow.config.account` to `${STORAGE_ACCOUNT}`.
    - Set `storage.region` to `${LOCATION}`.
    - Set `commonServiceAccount.annotations."azure.workload.identity/client-id"` to `${BACKEND_CLIENT_ID}`.
+   - For persisted task logs, wire FluentBit to the `${FLUENTBIT_SECRET_NAME}` secret you created in
+     [Prepare infrastructure](../selfmanaged-azure/prepare-infra#8-persisted-logs-storage-key-fluentbit).
+     FluentBit's `azure_blob` output cannot use Workload Identity, so it reads the storage key from
+     that secret at runtime (the key never lands in the rendered ConfigMap):
+
+     ```yaml
+     fluentbit:
+       azureBlobSharedKey: "${AZURE_STORAGE_SHARED_KEY}"
+       env:
+         - name: AZURE_STORAGE_SHARED_KEY
+            valueFrom:
+              secretKeyRef:
+                name: ${FLUENTBIT_SECRET_NAME}
+                key: shared_key
+     ```
 
    If using Azure Key Vault (optional):
    - Set `AZURE_KEY_VAULT_URI` to `https://${KEY_VAULT_NAME}.vault.azure.net/`.
@@ -85,3 +100,18 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
    ```
 
 7. Follow the [Quickstart](../../../user-guide/quickstart) to run your first workflow and verify your cluster is working correctly.
+
+## Next: manage your cluster and pools
+
+`uctl selfserve provision-dataplane-resources` provisions the data plane and
+registers this cluster with the control plane. Once it is connected, you manage
+the **cluster pool** it belongs to — and route work to it with queues — from the
+[Cluster and workload management](../../../user-guide/cluster-workload-management/_index)
+user guide:
+
+- [Cluster pools](../../../user-guide/cluster-workload-management/cluster-pools) — group clusters that share one data plane (object store, secrets, registry).
+- [Clusters](../../../user-guide/cluster-workload-management/clusters) — inspect and manage the cluster records registered with the control plane.
+- [Queues](../../../user-guide/cluster-workload-management/queues) — route workloads to a pool and enforce concurrency, priority, and fairness.
+
+Every organization is provisioned with a `default` pool that new clusters join
+automatically, so a single-cluster deployment needs no extra pool setup.

@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 2.4.4
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.bigquery`](flyteplugins.bigquery) | BigQuery connector plugin for Flyte. |
+| [`flyteplugins.bigquery`](flyteplugins.bigquery/_index) | BigQuery connector plugin for Flyte. |

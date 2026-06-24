@@ -1,6 +1,6 @@
 ---
 title: Trigger
-version: 2.4.4
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -47,6 +47,7 @@ class Trigger(
     interruptible: bool | None,
     overwrite_cache: bool,
     queue: str | None,
+    max_action_concurrency: int | None,
     labels: Mapping[str, str] | None,
     annotations: Mapping[str, str] | None,
     notifications: NamedRule | Notification | Tuple[Notification, ...] | None,
@@ -64,6 +65,7 @@ class Trigger(
 | `interruptible` | `bool \| None` | Whether triggered runs use spot/preemptible instances. `None` (default) preserves the task's configured behavior. Overrides the task's configured value. |
 | `overwrite_cache` | `bool` | Force cache refresh on triggered runs. Default `False`. |
 | `queue` | `str \| None` | Queue name for triggered runs (overrides the task's configured value). |
+| `max_action_concurrency` | `int \| None` | Maximum number of actions that can run concurrently within a triggered run. `None` (default) defers to the platform default (the ``run.max_action_concurrency`` setting). Must be 0 (platform default) or at least 2 — a value of 1 would deadlock the run, since the parent action holds a concurrency slot while waiting for its child actions. |
 | `labels` | `Mapping[str, str] \| None` | Kubernetes labels to attach to triggered runs. |
 | `annotations` | `Mapping[str, str] \| None` | Kubernetes annotations to attach to triggered runs. |
 | `notifications` | `NamedRule \| Notification \| Tuple[Notification, ...] \| None` | |
@@ -93,6 +95,7 @@ def daily(
     interruptible: bool | None,
     overwrite_cache: bool,
     queue: str | None,
+    max_action_concurrency: int | None,
     labels: Mapping[str, str] | None,
     annotations: Mapping[str, str] | None,
     custom_context: Mapping[str, str] | None,
@@ -113,6 +116,7 @@ Creates a Cron trigger that runs daily at midnight.
 | `interruptible` | `bool \| None` | Whether the triggered run is interruptible. |
 | `overwrite_cache` | `bool` | Whether to overwrite the cache. |
 | `queue` | `str \| None` | Optional queue to run the trigger in. |
+| `max_action_concurrency` | `int \| None` | Optional maximum number of actions that can run concurrently within a triggered run. |
 | `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
 | `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
 | `custom_context` | `Mapping[str, str] \| None` | Optional context metadata propagated to triggered runs. |
@@ -132,6 +136,7 @@ def hourly(
     interruptible: bool | None,
     overwrite_cache: bool,
     queue: str | None,
+    max_action_concurrency: int | None,
     labels: Mapping[str, str] | None,
     annotations: Mapping[str, str] | None,
     custom_context: Mapping[str, str] | None,
@@ -152,6 +157,7 @@ Creates a Cron trigger that runs every hour.
 | `interruptible` | `bool \| None` | Whether the trigger is interruptible. |
 | `overwrite_cache` | `bool` | Whether to overwrite the cache. |
 | `queue` | `str \| None` | Optional queue to run the trigger in. |
+| `max_action_concurrency` | `int \| None` | Optional maximum number of actions that can run concurrently within a triggered run. |
 | `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
 | `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
 | `custom_context` | `Mapping[str, str] \| None` | Optional context metadata propagated to triggered runs. |
@@ -171,6 +177,7 @@ def minutely(
     interruptible: bool | None,
     overwrite_cache: bool,
     queue: str | None,
+    max_action_concurrency: int | None,
     labels: Mapping[str, str] | None,
     annotations: Mapping[str, str] | None,
     custom_context: Mapping[str, str] | None,
@@ -191,6 +198,7 @@ Creates a Cron trigger that runs every minute.
 | `interruptible` | `bool \| None` | Whether the trigger is interruptible. |
 | `overwrite_cache` | `bool` | Whether to overwrite the cache. |
 | `queue` | `str \| None` | Optional queue to run the trigger in. |
+| `max_action_concurrency` | `int \| None` | Optional maximum number of actions that can run concurrently within a triggered run. |
 | `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
 | `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
 | `custom_context` | `Mapping[str, str] \| None` | Optional context metadata propagated to triggered runs. |
@@ -210,6 +218,7 @@ def monthly(
     interruptible: bool | None,
     overwrite_cache: bool,
     queue: str | None,
+    max_action_concurrency: int | None,
     labels: Mapping[str, str] | None,
     annotations: Mapping[str, str] | None,
     custom_context: Mapping[str, str] | None,
@@ -230,6 +239,7 @@ Creates a Cron trigger that runs monthly on the 1st at midnight.
 | `interruptible` | `bool \| None` | Whether the trigger is interruptible. |
 | `overwrite_cache` | `bool` | Whether to overwrite the cache. |
 | `queue` | `str \| None` | Optional queue to run the trigger in. |
+| `max_action_concurrency` | `int \| None` | Optional maximum number of actions that can run concurrently within a triggered run. |
 | `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
 | `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
 | `custom_context` | `Mapping[str, str] \| None` | Optional context metadata propagated to triggered runs. |
@@ -249,6 +259,7 @@ def weekly(
     interruptible: bool | None,
     overwrite_cache: bool,
     queue: str | None,
+    max_action_concurrency: int | None,
     labels: Mapping[str, str] | None,
     annotations: Mapping[str, str] | None,
     custom_context: Mapping[str, str] | None,
@@ -269,6 +280,7 @@ Creates a Cron trigger that runs weekly on Sundays at midnight.
 | `interruptible` | `bool \| None` | Whether the trigger is interruptible. |
 | `overwrite_cache` | `bool` | Whether to overwrite the cache. |
 | `queue` | `str \| None` | Optional queue to run the trigger in. |
+| `max_action_concurrency` | `int \| None` | Optional maximum number of actions that can run concurrently within a triggered run. |
 | `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
 | `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
 | `custom_context` | `Mapping[str, str] \| None` | Optional context metadata propagated to triggered runs. |

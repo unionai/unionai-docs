@@ -1,6 +1,6 @@
 ---
 title: MLflow
-version: 2.4.4
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -8,4 +8,18 @@ layout: py_api
 # MLflow
 
 
+
+## Directory
+
+### Classes
+
+| Class | Description |
+|-|-|
+| [`flyteplugins.mlflow.Mlflow`](packages/flyteplugins.mlflow/mlflow) | MLflow UI link for Flyte tasks. |
+
+### Packages
+
+| Package | Description |
+|-|-|
+| [`flyteplugins.mlflow`](packages/flyteplugins.mlflow/_index) | ## Key features:. |
 

@@ -1,6 +1,6 @@
 ---
 title: flyte.connectors.utils
-version: 2.4.4
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---

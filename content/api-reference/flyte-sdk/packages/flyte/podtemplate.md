@@ -1,6 +1,6 @@
 ---
 title: PodTemplate
-version: 2.4.4
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -33,7 +33,7 @@ class PodTemplate(
 
 | Method | Description |
 |-|-|
-| [`allow_fuse()`](#allow_fuse) | Return a copy of this template granted everything a container needs to. |
+| [`allow_fuse()`](#allow_fuse) | Return a copy of this template granted everything an **unprivileged**. |
 | [`allow_nested_sandboxing()`](#allow_nested_sandboxing) | Return a copy of this template granted the prerequisites for creating. |
 | [`from_spec()`](#from_spec) | Create a :class:`PodTemplate` from an existing ``V1PodSpec``. |
 | [`to_k8s_pod()`](#to_k8s_pod) |  |
@@ -46,42 +46,49 @@ def allow_fuse(
     privileged: bool,
 ) -> PodTemplate
 ```
-Return a copy of this template granted everything a container needs to
-perform an in-process FUSE mount (e.g. for ``Volume`` support).
+Return a copy of this template granted everything an **unprivileged**
+container needs to perform an in-process FUSE mount (e.g. for ``Volume``
+support).
 
-Specifically, the copy:
+By default (``privileged=False``) the copy:
 
-* adds a ``hostPath`` volume named ``fuse-device`` pointing at
-  ``/dev/fuse`` on the node, mounted into the primary container;
-* adds ``CAP_SYS_ADMIN`` to the primary container so the ``mount``
-  syscall is permitted;
-* with ``privileged=True`` (the default), sets ``privileged: true`` on
-  the primary container; with ``privileged=False``, instead sets the
-  ``container.apparmor.security.beta.kubernetes.io/&lt;primary&gt;:
-  unconfined`` pod annotation (the default AppArmor profile would
-  otherwise block ``mount``);
+* requests the ``smarter-devices/fuse`` extended resource (request +
+  limit) on the primary container, so the cluster's FUSE **device
+  plugin** (smarter-device-manager / fuse-device-plugin DaemonSet)
+  injects ``/dev/fuse`` into the container's devices-cgroup allowlist —
+  making the node device *usable* from an unprivileged container; and
+* adds ``CAP_SYS_ADMIN`` to the primary container, required for the
+  ``mount(2)`` syscall that attaches the FUSE filesystem;
 * stamps the ``flyte.org/capability-fuse`` annotation for auditability.
 
-Why privileged is the default: opening ``/dev/fuse`` is gated by the
-container runtime's device-cgroup allowlist, which only ``privileged``
-bypasses — there is no pod-spec field to whitelist a device for a
-non-privileged container. Pass ``privileged=False`` **only** on
-clusters that permit ``/dev/fuse`` for non-privileged containers (e.g.
-via a FUSE device plugin or runtime device-allowlist configuration);
-otherwise the pod deploys fine but ``open("/dev/fuse")`` fails with
-``EPERM`` at runtime. ``privileged=False`` composes with
-``allow_nested_sandboxing()``; ``privileged=True`` does not (Kubernetes
-rejects privileged containers that set
-``allowPrivilegeEscalation: false``).
+It does **not** set ``privileged: true`` and does **not** add a
+``/dev/fuse`` hostPath. A hostPath only makes the device *node* visible;
+the devices cgroup still denies ``open()`` with ``EPERM`` — the device
+plugin is what actually grants access. This default composes with
+``allow_nested_sandboxing()``. The cluster must run a FUSE device plugin
+advertising ``smarter-devices/fuse`` (the Union dataplane chart ships an
+opt-in ``fuseDevicePlugin`` DaemonSet for this).
+
+``privileged=True`` is a legacy escape hatch for clusters **without** a
+FUSE device plugin: it instead adds a ``/dev/fuse`` hostPath volume +
+mount and sets ``privileged: true`` on the primary container (the device
+cgroup is bypassed by privilege). It does not compose with
+``allow_nested_sandboxing()`` (Kubernetes rejects privileged containers
+that set ``allowPrivilegeEscalation: false``).
+
+AppArmor note: on clusters that enforce a restrictive default AppArmor
+profile, the ``mount`` syscall may additionally need the primary
+container's profile set to ``unconfined`` — set that annotation on the
+template yourself if needed; it is not applied by default to keep this
+grant minimal.
 
 The original template is never mutated; existing volumes, mounts,
-sidecars, labels, annotations, and unrelated security-context fields
-are preserved. Re-applying with the same arguments is idempotent.
+resources, sidecars, labels, annotations, and unrelated security-context
+fields are preserved. Re-applying with the same arguments is idempotent.
 
-Raises ``ValueError`` if the template already pins a conflicting
-security posture (with ``privileged=True``: ``privileged: false`` or
-``allowPrivilegeEscalation: false`` pre-set; with ``privileged=False``:
-a different AppArmor profile for the primary container).
+Raises ``ValueError`` if the template already pins a conflicting security
+posture (with ``privileged=True``: ``privileged: false`` or
+``allowPrivilegeEscalation: false`` pre-set).
 
 
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.4.4
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -123,6 +123,7 @@ def clone(
     python_version: Optional[Tuple[int, int]],
     addl_layer: Optional[Layer],
     extendable: Optional[bool],
+    platform: Union[Architecture, Tuple[Architecture, ...], None],
 ) -> Image
 ```
 Clone an existing image, optionally with a new name or registry.
@@ -142,6 +143,7 @@ registry, or other base properties.
 | `python_version` | `Optional[Tuple[int, int]]` | Python version for the image, if not specified, will use the current Python version |
 | `addl_layer` | `Optional[Layer]` | Additional layer to add to the image. This will be added to the end of the layers. |
 | `extendable` | `Optional[bool]` | Whether the image is extendable by other images. If True, the image can be used as a base image for other images, and additional layers can be added on top of it. If False, the image cannot be used as a base image for other images, and additional layers cannot be added on top of it. If None (default), defaults to False for safety. |
+| `platform` | `Union[Architecture, Tuple[Architecture, ...], None]` | Architecture(s) to build for. If not specified, the cloned image keeps the original's platform. Pass a tuple for multi-arch builds, e.g. ``("linux/amd64", "linux/arm64")``. |
 
 ### from_base()
 

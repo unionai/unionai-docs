@@ -90,7 +90,7 @@ They are fetched directly from the data-plane object store via presigned URLs is
 
 These small values are passed by value rather than as a reference to a separately offloaded object. Like raw data, they are stored in the object store in your data plane — inlined within the run's `inputs.pb`/`outputs.pb` payload — and the control plane stores only a URI pointer to them.
 
-For the developer-facing map of which specific records live in the control-plane database versus the data-plane bucket — including what "metadata" means in different contexts — see [Where your data lives](../../user-guide/core-concepts/where-data-lives).
+For the developer-facing map of which specific records live in the control plane database versus the data plane bucket — including what "metadata" means in different contexts — see [Where your data lives](../../user-guide/core-concepts/where-data-lives).
 
 ## Data privacy
 

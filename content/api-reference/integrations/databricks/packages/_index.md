@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 2.4.4
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.databricks`](flyteplugins.databricks) | Databricks connector plugin for Flyte. |
+| [`flyteplugins.databricks`](flyteplugins.databricks/_index) | Databricks connector plugin for Flyte. |

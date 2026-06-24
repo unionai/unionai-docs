@@ -77,7 +77,7 @@ Once the code bundle is created:
 
 ## Phase 5: Run creation and queuing
 
-1. **Upload inputs**: The SDK uploads the run's inputs to the data-plane `dataproxy` service, which writes them to the object store. The input values never pass through the control plane.
+1. **Upload inputs**: The SDK uploads the run's inputs to the data plane `dataproxy` service, which writes them to the object store. The input values never pass through the control plane.
 2. **Invoke `CreateRun`**: The SDK calls the `CreateRun` API with a reference (URI) to the uploaded inputs, not the input values themselves.
 3. **En-queue a run**: The run is queued into the Union control plane.
 4. **Hand off to executor**: The Union control plane hands the task to the Executor Service in your data plane.
