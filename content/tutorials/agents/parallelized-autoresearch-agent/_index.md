@@ -48,7 +48,7 @@ From the [example directory](https://github.com/unionai/unionai-examples/tree/ma
 
 ```
 cd v2/tutorials/parallelized_autoresearch
-uv run --script parallelized_autoresearch.py -- --n-experiments 6 --batch-size 3 --num-shards 1
+uv run --script parallelized_autoresearch.py --n-experiments 6 --batch-size 3 --num-shards 1
 ```
 
 Use `--memory-key` to resume a prior research session (default: `parallelized-autoresearch`). Pass a unique key — for example `parallelized-autoresearch-20260622-215057` — to start with empty memory. Code mode needs more turns than JSON tool mode — increase `--max-turns` for larger sweeps.
