@@ -37,7 +37,7 @@ where `<{{< key cli >}}-host-url>` is the URL of your {{< key product_name >}}  
 
 These command will create the file `~/.{{< key product >}}/config.yaml` with the configuration information to connect to the {{< key product_name >}}  instance.
 
-See [Getting started &gt; Local setup](../user-guide/getting-started/local-setup) for more details.
+See [Getting started &gt; Local setup](../../user-guide/getting-started/local-setup) for more details.
 
 ## Overriding the configuration file location
 
