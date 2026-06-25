@@ -78,6 +78,6 @@ flyte run parallelized_autoresearch.py parallelized_autoresearch \
 ```
 
 > [!NOTE]
-> The first run downloads climbmix data shards and trains a BPE tokenizer. Subsequent runs reuse cached bundle tasks. Requires **flyte ≥ 2.5.5** for `call_handler` support in code mode and on `AgentTool.aio` (used by `flyte.map` fan-out).
+> The first run downloads climbmix data shards and trains a BPE tokenizer. Subsequent runs reuse cached bundle tasks. Requires **Flyte SDK ≥ 2.5.5** for `call_handler` support in code mode and on `AgentTool.aio` (used by `flyte.map` fan-out).
 
 See also the single-task [Autoresearch agent](../autoresearch/_index) tutorial for the Claude Code + pull-request workflow.
