@@ -187,22 +187,6 @@ helm upgrade flyte flyteorg/flyte-binary -n flyte -f values.yaml
 kubectl -n flyte rollout status deploy/flyte
 ```
 
-The app controller creates and watches Knative Services, which needs
-`serving.knative.dev` permissions on Flyte's ClusterRole. The chart grants these
-**automatically** when `internalApps.enabled: true`.
-
-{{< note >}}
-On older chart versions that don't grant it automatically, add the rules yourself:
-
-```yaml
-rbac:
-  extraRules:
-    - apiGroups: ["serving.knative.dev"]
-      resources: ["services", "revisions", "configurations", "routes"]
-      verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-```
-{{< /note >}}
-
 {{< note >}}
 `baseDomain` must match the domain you set in `config-domain`, so the URLs Flyte
 advertises line up with the hostnames Knative actually serves — and with your wildcard
