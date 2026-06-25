@@ -135,9 +135,8 @@ configuration:
 ## 5. Expose Flyte with an ingress
 
 By default the chart only creates `ClusterIP` Services. To reach Flyte from outside
-the cluster, enable the ingress. A **single HTTP ingress** serves the console, the
-API, and the auth-discovery endpoints — there is no separate gRPC ingress (see
-[Planning](./planning)).
+the cluster, enable the ingress. A **single HTTP ingress** serves the console and the
+API — there is no separate gRPC ingress (see [Planning](./planning)).
 
 ```yaml
 ingress:
