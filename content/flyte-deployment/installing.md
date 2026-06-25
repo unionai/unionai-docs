@@ -232,20 +232,42 @@ Install it the same way:
 helm install flyte flyteorg/flyte-binary -n flyte --create-namespace -f values-eks.yaml
 ```
 
-## Advanced configuration
+## Default task resources
 
-The chart merges anything under `configuration.inline` into the rendered Flyte config,
-which is how you set options the top-level values don't expose directly:
+Anything under `configuration.inline` is merged into the rendered Flyte config, which
+is how you set options the top-level values don't expose directly.
 
-- **Default task resources** — `task_resources.defaults` / `.limits`.
-- **Default pod scheduling for tasks** — `plugins.k8s.default-env-vars`,
-  `default-tolerations`, `default-affinity`.
-- **OpenTelemetry traces & metrics** — `otel.*`; see [OpenTelemetry](#opentelemetry) below.
+Set the default CPU and memory **requests** for task pods that don't specify their own,
+via the Kubernetes plugin config:
 
-To supply the database password (or other secrets) from an existing Kubernetes Secret
-instead of putting it in the values file, leave `password` empty and reference the
-Secret with `configuration.extraInlineSecretRefs`, or mount a file and point
-`configuration.database.postgres.passwordPath` at it.
+```yaml
+configuration:
+  inline:
+    plugins:
+      k8s:
+        default-cpus: 500m
+        default-memory: 1Gi
+```
+
+## Default scheduling for task pods
+
+Add tolerations, affinity / node selectors, or injected environment variables to every
+task pod under `configuration.inline.plugins.k8s`:
+
+```yaml
+configuration:
+  inline:
+    plugins:
+      k8s:
+        default-tolerations:
+          - key: flyte.org/node-role
+            operator: Equal
+            value: worker
+            effect: NoSchedule
+        default-affinity: {}             # a standard core/v1 Affinity
+        default-env-vars:
+          - MY_ENV_VAR: value            # injected into every task pod
+```
 
 ## OpenTelemetry
 
@@ -276,5 +298,14 @@ configuration:
 Prefer `otlpgrpc` — the `otlphttp` metric exporter reuses the trace endpoint path.
 Send to any OTLP collector (e.g. the [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/),
 which can fan metrics out to Prometheus and traces to Jaeger/Tempo).
+
+## Database password from a Secret
+
+Instead of putting the password in your values file, leave
+`configuration.database.postgres.password` empty and either:
+
+- reference an existing Kubernetes Secret with `configuration.extraInlineSecretRefs`, or
+- mount the password as a file and point
+  `configuration.database.postgres.passwordPath` at it.
 
 Next: secure the deployment with [Authentication and SSO](./authentication).
