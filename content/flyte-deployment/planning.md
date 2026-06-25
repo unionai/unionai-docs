@@ -26,9 +26,6 @@ deployed as its own Deployment and Service but has no backend configuration of i
 own — it talks to the Flyte API on the same origin (same ingress host) and is served
 under a base path (default `/v2`, configurable via `console.basePath`).
 
-Because everything is one process, you scale Flyte **vertically** — give the
-Deployment more CPU and memory — rather than scaling individual microservices.
-
 ### Networking
 
 Flyte clients (the SDK and CLI) speak [buf Connect](https://connectrpc.com/) **over
