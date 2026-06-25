@@ -18,7 +18,7 @@ Compared to the single-threaded Claude Code autoresearch tutorial, this agent:
 - Persists a **leaderboard**, code-edit history, and batch plans in `MemoryStore`
 - **Right-sizes each experiment** with an LLM via a `@tool` **`call_handler`**, then retries on Flyte or sandbox OOM by bumping memory
 
-Each experiment has different compute needs (wider models, larger batch sizes, longer training loops). A single static `flyte.Resources` on the task would either waste cluster memory or OOM on the heavy configs. Instead, this example uses the same [`call_handler` pattern](../../../user-guide/build-agent/flyte-agents.md) as the Flyte SDK self-correcting agent: before every run, a sizing LLM reads the tool name, docstring, and call arguments and returns a JSON resource spec; the handler applies it with `tool_fn.target.override(resources=...).aio(**kwargs)` and retries with more memory when needed.
+Each experiment has different compute needs (wider models, larger batch sizes, longer training loops). A single static `flyte.Resources` on the task would either waste cluster memory or OOM on the heavy configs. Instead, this example uses the same [`call_handler` pattern](../../../user-guide/build-agent/flyte-agents) as the Flyte SDK self-correcting agent: before every run, a sizing LLM reads the tool name, docstring, and call arguments and returns a JSON resource spec; the handler applies it with `tool_fn.target.override(resources=...).aio(**kwargs)` and retries with more memory when needed.
 
 ## Define the task environments
 
