@@ -14,6 +14,9 @@ The `flyte.io.DataFrame` type provides serialization support for common engines 
 
 DataFrame contents are written to the data plane object store and passed between tasks by reference. For the full map of what goes in the bucket versus what stays in the control plane database, see [Where your data lives](../core-concepts/where-data-lives).
 
+> [!NOTE]
+> Because a DataFrame is passed by reference, a downstream cached task does not get a cache hit on identical content stored at a new path. To cache on content, attach a hash with `flyte.io.HashFunction` - see [Content-based caching for DataFrames, files, and directories](../task-configuration/caching#content-based-caching-for-dataframes-files-and-directories).
+
 ## Setting up the environment and sample data
 
 For our example we will start by setting up our task environment with the required dependencies and create some sample data.

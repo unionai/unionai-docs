@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 2.5.1
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.gemini`](flyteplugins.gemini) | Google Gemini plugin for Flyte. |
+| [`flyteplugins.gemini`](flyteplugins.gemini/_index) | Google Gemini plugin for Flyte. |

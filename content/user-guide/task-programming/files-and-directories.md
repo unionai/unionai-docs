@@ -23,6 +23,9 @@ For the full picture of what gets stored in the bucket versus what stays in the 
 
 The `File` and `Dir` classes provide both `sync` and `async` methods to interact with the data.
 
+> [!NOTE]
+> Because `File` and `Dir` are passed by reference, a downstream cached task does not get a cache hit on identical content stored at a new path. To cache on content, attach a hash at production time - see [Content-based caching for DataFrames, files, and directories](../task-configuration/caching#content-based-caching-for-dataframes-files-and-directories).
+
 ## Example usage
 
 The examples below show the basic use-cases of uploading files and directories created locally, and using them as inputs to a task.
