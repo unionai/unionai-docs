@@ -7,7 +7,7 @@ weight: 6
 # A local IdP with Dex (for testing)
 
 [Step 7 of the kind guide](./local-kind) wires the console behind oauth2-proxy but still
-expects an **external** OIDC provider (Okta, Google, …). This page replaces that
+expects an **external** OIDC provider (Okta, Google, ...). This page replaces that
 provider with [Dex](https://dexidp.io/) running **inside the same kind cluster**, so you
 can test the whole authentication flow with no cloud account and no real users.
 
@@ -274,6 +274,19 @@ curl -s -o /dev/null -w "%{url_effective}\n" -L --max-redirs 5 \
 > `errors` handler, which a browser follows automatically. On a plain `curl` you see the
 > raw 401 — that still confirms the request is being gated. The redirect itself is
 > verified by checks 2 and 3.
+
+To reach Flyte from a browser, `flyte.local` must resolve to the local Traefik node
+port. The `curl --resolve` checks above bypass DNS, but a browser can't — add a hosts
+entry once:
+
+```bash
+echo "127.0.0.1 flyte.local" | sudo tee -a /etc/hosts
+```
+
+Without it the browser can't resolve `flyte.local`. Reaching the console at
+`http://127.0.0.1/v2` instead does **not** work: Traefik has no route for that host (you
+get a 404), and even past that the OIDC issuer is minted as `flyte.local`, so login would
+fail on an issuer mismatch. The hostname must be `flyte.local` end to end.
 
 Then open `http://flyte.local/v2` in a browser, log in as **`admin@example.com` /
 `password`**, and you should land in the console. The `X-Auth-Request-Email` header Dex

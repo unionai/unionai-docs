@@ -364,9 +364,18 @@ spec:
               number: 80
 ```
 
-After `helm upgrade flyte … -f values-local.yaml`, open `http://flyte.local/v2` —
-Traefik bounces you through the IdP and back into the console. SDK/CLI clients that send
-an `Authorization: Bearer` token authenticate against the same IdP.
+After `helm upgrade flyte … -f values-local.yaml`, add a hosts entry so the browser can
+resolve `flyte.local` to the local Traefik node port (do this once):
+
+```bash
+echo "127.0.0.1 flyte.local" | sudo tee -a /etc/hosts
+```
+
+`http://127.0.0.1/v2` won't work in its place — Traefik has no route for that host, and
+the OIDC issuer is `flyte.local`, so login fails on an issuer mismatch. Then open
+`http://flyte.local/v2` — Traefik bounces you through the IdP and back into the console.
+SDK/CLI clients that send an `Authorization: Bearer` token authenticate against the same
+IdP.
 
 To make the API trust those tokens (rather than only gating the browser), turn on
 Flyte's own token validation as well — see
