@@ -62,8 +62,8 @@ chart can render up to **three ingresses**:
 
 Enable the JWT and discovery ingresses and supply your controller/JWT config via their
 `annotations` — e.g. on ALB: the ACM `certificate-arn`, the JWT-validation config, the
-`Authorization: Bearer*` match condition, and a `group.order` that ranks
-`wellknownIngress` highest, then `apiJwtIngress`, then the http ingress:
+`Authorization: Bearer*` match condition, and `group.order` values (lower = evaluated
+first) that put `wellknownIngress` first, then `apiJwtIngress`, then the http ingress:
 
 ```yaml
 ingress:
@@ -229,10 +229,10 @@ back into the console.
 The ALB callback path is fixed at `/oauth2/idpresponse`, and auth applies only to the
 annotated ingress's HTTPS listener rules.
 
-## Run attribution (`created_by`)
+## Run attribution (`executed_by`)
 
 Once authentication happens at the edge, Flyte records **who created each run**
-(stored as `created_by`). The runs service does not re-validate
+(surfaced as `executed_by` in run metadata). The runs service does not re-validate
 tokens itself — it reads the identity from the headers the proxy forwards. After ALB
 `authenticate-oidc` those are:
 
@@ -248,7 +248,7 @@ The defaults match ALB, so a standard ALB SSO deployment needs no extra configur
 > **Trust boundary.** The forwarded JWTs are decoded but **not** signature-verified by
 > the runs service. That is safe only behind a trusted proxy that validates tokens and
 > strips any client-supplied copies of these headers. If the service can be reached
-> directly, set `trustForwardedIdentityHeaders: false` and `created_by` is left unset
+> directly, set `trustForwardedIdentityHeaders: false` and `executed_by` is left unset
 > rather than risk a spoofed identity.
 
 ### Behind a non-ALB proxy (oauth2-proxy / Traefik)
