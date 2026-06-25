@@ -194,7 +194,7 @@ configuration:
       port: 5432
       dbname: flyte
       username: flyte
-      password: <db-password>
+      password: <db-password>          # chart stores this in a Secret, not the ConfigMap
       options: "sslmode=require"
   storage:
     metadataContainer: <flyte-bucket>
@@ -301,7 +301,12 @@ which can fan metrics out to Prometheus and traces to Jaeger/Tempo).
 
 ## Database password from a Secret
 
-Instead of putting the password in your values file, leave
+When you set `configuration.database.postgres.password`, the chart writes it into a
+Kubernetes Secret (kept out of the plaintext ConfigMap) and mounts it into the Flyte
+pod — the password lives only in your values file. The same applies to S3 access keys
+when `authType: accesskey`.
+
+To keep the password out of the values file too, leave
 `configuration.database.postgres.password` empty and either:
 
 - reference an existing Kubernetes Secret with `configuration.extraInlineSecretRefs`, or
