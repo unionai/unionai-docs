@@ -240,12 +240,41 @@ which is how you set options the top-level values don't expose directly:
 - **Default task resources** — `task_resources.defaults` / `.limits`.
 - **Default pod scheduling for tasks** — `plugins.k8s.default-env-vars`,
   `default-tolerations`, `default-affinity`.
-- **OpenTelemetry traces/metrics** — `otel.type` (`otlpgrpc`, `otlphttp`, …) and the
-  matching exporter endpoint.
+- **OpenTelemetry traces & metrics** — `otel.*`; see [OpenTelemetry](#opentelemetry) below.
 
 To supply the database password (or other secrets) from an existing Kubernetes Secret
 instead of putting it in the values file, leave `password` empty and reference the
 Secret with `configuration.extraInlineSecretRefs`, or mount a file and point
 `configuration.database.postgres.passwordPath` at it.
+
+## OpenTelemetry
+
+Flyte exports traces (and metrics, which reuse the trace exporter) via OpenTelemetry.
+It's off by default (`otel.type: noop`). Point it at a collector under
+`configuration.inline.otel`:
+
+```yaml
+configuration:
+  inline:
+    otel:
+      type: otlpgrpc                    # noop | file | jaeger | otlpgrpc | otlphttp
+      otlpgrpc:
+        endpoint: http://otel-collector.flyte.svc.cluster.local:4317
+      # Trace sampling — keep a fraction in production.
+      sampler:
+        parentSampler: traceid
+        traceIdRatio: 0.01             # sample 1% of traces
+```
+
+| `otel.type` | Where it sends | Endpoint key |
+|---|---|---|
+| `otlpgrpc` | OTLP collector over gRPC (recommended) | `otlpgrpc.endpoint` |
+| `otlphttp` | OTLP collector over HTTP | `otlphttp.endpoint` |
+| `jaeger` / `file` | Jaeger / a local file | `jaeger.*` / `file.*` |
+| `noop` | disabled (default) | — |
+
+Prefer `otlpgrpc` — the `otlphttp` metric exporter reuses the trace endpoint path.
+Send to any OTLP collector (e.g. the [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/),
+which can fan metrics out to Prometheus and traces to Jaeger/Tempo).
 
 Next: secure the deployment with [Authentication and SSO](./authentication).
