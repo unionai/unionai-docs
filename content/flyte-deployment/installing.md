@@ -45,8 +45,7 @@ configuration:
       password: <db-password>          # creates a mounted Secret (or use passwordPath)
       options: "sslmode=require"       # use sslmode=disable only for local/dev
   storage:
-    metadataContainer: <bucket-name>   # bucket for Flyte metadata
-    userDataContainer: <bucket-name>   # bucket for task I/O (can be the same bucket)
+    metadataContainer: <bucket-name>   # object-store bucket Flyte reads and writes
     provider: s3
     providerConfig:
       s3:
@@ -75,8 +74,7 @@ configuration:
       password: <db-password>          # creates a mounted Secret (or use passwordPath)
       options: "sslmode=require"
   storage:
-    metadataContainer: <bucket-name>   # GCS bucket for Flyte metadata
-    userDataContainer: <bucket-name>   # GCS bucket for task I/O (can be the same bucket)
+    metadataContainer: <bucket-name>   # GCS bucket Flyte reads and writes
     provider: gcs
     providerConfig:
       gcs:
@@ -104,8 +102,7 @@ configuration:
       password: <db-password>          # creates a mounted Secret (or use passwordPath)
       options: "sslmode=require"
   storage:
-    metadataContainer: <container-name>  # Blob container for Flyte metadata
-    userDataContainer: <container-name>  # Blob container for task I/O (can be the same)
+    metadataContainer: <container-name>  # Blob container Flyte reads and writes
     provider: azure
     providerConfig:
       azure:
@@ -127,8 +124,7 @@ The required fields:
 | Database name | `configuration.database.postgres.dbname` | Must already exist. |
 | Database user | `configuration.database.postgres.username` | Default `postgres`. |
 | Database password | `configuration.database.postgres.password` | Creates and mounts a Secret. Use `passwordPath` instead to mount your own. The two are mutually exclusive. |
-| Metadata bucket | `configuration.storage.metadataContainer` | Object-store bucket for metadata. |
-| User-data bucket | `configuration.storage.userDataContainer` | Bucket for task inputs/outputs; can equal the metadata bucket. |
+| Storage bucket | `configuration.storage.metadataContainer` | The object-store bucket Flyte reads and writes. |
 | Storage provider | `configuration.storage.provider` | `s3`, `gcs`, or `azure`. |
 | Storage config | `configuration.storage.providerConfig.<provider>` | Provider-specific — S3 `region`, GCS `project`, Azure `account`. |
 | Service account | `serviceAccount.annotations` | Cloud IAM binding for object-store access (step 4). |
@@ -307,7 +303,6 @@ configuration:
       options: "sslmode=require"
   storage:
     metadataContainer: <flyte-bucket>
-    userDataContainer: <flyte-bucket>
     provider: s3
     providerConfig:
       s3:

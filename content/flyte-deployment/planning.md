@@ -70,8 +70,8 @@ and the identity Flyte runs as needs these minimum permissions on it:
 - `ListBucket`
 - `DeleteObject`
 
-You can use the same bucket for both metadata (`metadataContainer`) and user data
-(`userDataContainer`).
+Configure it as `metadataContainer` — Flyte stores everything (metadata, task
+inputs/outputs, and uploads) in that one bucket.
 
 ## Optional dependencies
 
