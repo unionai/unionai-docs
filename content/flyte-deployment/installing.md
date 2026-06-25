@@ -288,14 +288,9 @@ console, and point the SDK/CLI at the same host.
 
 ## Worked example
 
-A fuller values file for each managed cloud — database, object store, workload
-identity, and ingress wired together. Replace every placeholder; no real account IDs,
+A fuller values file for an AWS/EKS cluster — RDS for PostgreSQL, S3 for storage, IRSA
+for credentials, and an ALB ingress. Replace every placeholder; no real account IDs,
 hostnames, or ARNs are included.
-
-{{< tabs "worked-example" >}}
-{{< tab "AWS (EKS)" >}}
-{{< markdown >}}
-RDS for PostgreSQL, S3 for storage, IRSA for credentials, and an ALB ingress:
 
 ```yaml
 # values-eks.yaml
@@ -340,105 +335,8 @@ ingress:
     alb.ingress.kubernetes.io/healthcheck-path: /healthz
     alb.ingress.kubernetes.io/healthcheck-port: "8090"
 ```
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "GCP (GKE)" >}}
-{{< markdown >}}
-Cloud SQL for PostgreSQL, GCS for storage, Workload Identity for credentials, and a
-GKE Ingress (`gce`). The static IP and managed certificate referenced below are
-separate GKE resources you create — see the
-[GKE Ingress docs](https://cloud.google.com/kubernetes-engine/docs/concepts/ingress):
 
-```yaml
-# values-gke.yaml
-fullnameOverride: flyte
-
-configuration:
-  database:
-    postgres:
-      host: <cloudsql-private-ip>
-      port: 5432
-      dbname: flyte
-      username: flyte
-      password: <db-password>
-      options: "sslmode=require"
-  storage:
-    metadataContainer: <flyte-bucket>
-    userDataContainer: <flyte-bucket>
-    provider: gcs
-    providerConfig:
-      gcs:
-        project: <gcp-project-id>
-  inline:
-    executor:
-      defaultK8sServiceAccount: flyte   # task pods inherit GCS access via Workload Identity
-
-serviceAccount:
-  create: true
-  annotations:
-    iam.gke.io/gcp-service-account: <gsa-name>@<gcp-project-id>.iam.gserviceaccount.com
-
-ingress:
-  create: true
-  host: <flyte.example.com>
-  ingressClassName: gce
-  httpAnnotations:
-    kubernetes.io/ingress.global-static-ip-name: <reserved-ip-name>
-    networking.gke.io/managed-certificates: <managed-cert-name>
-```
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "Azure (AKS)" >}}
-{{< markdown >}}
-Azure Database for PostgreSQL, Blob Storage, Workload Identity for credentials, and an
-Application Gateway ingress (AGIC):
-
-```yaml
-# values-aks.yaml
-fullnameOverride: flyte
-
-configuration:
-  database:
-    postgres:
-      host: <server>.postgres.database.azure.com
-      port: 5432
-      dbname: flyte
-      username: flyte
-      password: <db-password>
-      options: "sslmode=require"
-  storage:
-    metadataContainer: <flyte-container>
-    userDataContainer: <flyte-container>
-    provider: azure
-    providerConfig:
-      azure:
-        account: <storage-account-name>
-  inline:
-    executor:
-      defaultK8sServiceAccount: flyte   # task pods inherit Blob access via Workload Identity
-
-serviceAccount:
-  create: true
-  annotations:
-    azure.workload.identity/client-id: <managed-identity-client-id>
-
-deployment:
-  podLabels:
-    azure.workload.identity/use: "true"
-
-ingress:
-  create: true
-  host: <flyte.example.com>
-  ingressClassName: azure-application-gateway
-  httpAnnotations:
-    appgw.ingress.kubernetes.io/health-probe-path: /healthz
-    appgw.ingress.kubernetes.io/health-probe-port: "8090"
-```
-{{< /markdown >}}
-{{< /tab >}}
-{{< /tabs >}}
-
-Install it the same way, pointing `-f` at your cloud's values file:
+Install it the same way:
 
 ```bash
 helm install flyte flyteorg/flyte-binary -n flyte --create-namespace -f values-eks.yaml
