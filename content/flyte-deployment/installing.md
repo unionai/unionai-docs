@@ -22,14 +22,11 @@ The `helm install` commands below reference the chart as `flyteorg/flyte-binary`
 
 ## 2. Write a values file
 
-Create a `values.yaml` with the minimum configuration — pick your object-store
-provider. Everything in angle brackets is a placeholder you replace:
+Create a `values.yaml` with the minimum configuration. Everything in angle brackets is
+a placeholder you replace:
 
-{{< tabs "minimal-values" >}}
-{{< tab "AWS (S3)" >}}
-{{< markdown >}}
 ```yaml
-# values.yaml — minimal Flyte configuration (AWS / S3)
+# values.yaml — minimal Flyte configuration
 
 # fullnameOverride names all resources (here: flyte, flyte-http, flyte-console).
 # Give each release a distinct name if you run more than one Flyte instance.
@@ -46,7 +43,7 @@ configuration:
       options: "sslmode=require"       # use sslmode=disable only for local/dev
   storage:
     metadataContainer: <bucket-name>   # object-store bucket Flyte reads and writes
-    provider: s3
+    provider: s3                       # s3 | gcs | azure
     providerConfig:
       s3:
         region: <region>              # e.g. us-east-1
@@ -56,65 +53,6 @@ serviceAccount:
   create: true
   annotations: {}                     # IRSA role binding — see step 4
 ```
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "GCP (GCS)" >}}
-{{< markdown >}}
-```yaml
-# values.yaml — minimal Flyte configuration (GCP / GCS)
-fullnameOverride: flyte
-
-configuration:
-  database:
-    postgres:
-      host: <postgres-host>            # e.g. a Cloud SQL private IP
-      port: 5432
-      dbname: flyte
-      username: flyte
-      password: <db-password>          # creates a mounted Secret (or use passwordPath)
-      options: "sslmode=require"
-  storage:
-    metadataContainer: <bucket-name>   # GCS bucket Flyte reads and writes
-    provider: gcs
-    providerConfig:
-      gcs:
-        project: <gcp-project-id>
-
-serviceAccount:
-  create: true
-  annotations: {}                     # Workload Identity binding — see step 4
-```
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "Azure (Blob)" >}}
-{{< markdown >}}
-```yaml
-# values.yaml — minimal Flyte configuration (Azure / Blob)
-fullnameOverride: flyte
-
-configuration:
-  database:
-    postgres:
-      host: <postgres-host>            # e.g. <server>.postgres.database.azure.com
-      port: 5432
-      dbname: flyte
-      username: flyte
-      password: <db-password>          # creates a mounted Secret (or use passwordPath)
-      options: "sslmode=require"
-  storage:
-    metadataContainer: <container-name>  # Blob container Flyte reads and writes
-    provider: azure
-    providerConfig:
-      azure:
-        account: <storage-account-name>
-
-serviceAccount:
-  create: true
-  annotations: {}                     # Workload Identity binding — see step 4
-```
-{{< /markdown >}}
-{{< /tab >}}
-{{< /tabs >}}
 
 The required fields:
 
@@ -126,7 +64,7 @@ The required fields:
 | Database password | `configuration.database.postgres.password` | Creates and mounts a Secret. Use `passwordPath` instead to mount your own. The two are mutually exclusive. |
 | Storage bucket | `configuration.storage.metadataContainer` | The object-store bucket Flyte reads and writes. |
 | Storage provider | `configuration.storage.provider` | `s3`, `gcs`, or `azure`. |
-| Storage config | `configuration.storage.providerConfig.<provider>` | Provider-specific — S3 `region`, GCS `project`, Azure `account`. |
+| Storage region | `configuration.storage.providerConfig.s3.region` | S3 region (S3 provider). |
 | Service account | `serviceAccount.annotations` | Cloud IAM binding for object-store access (step 4). |
 
 ## 3. Install
@@ -155,12 +93,10 @@ are wrong.
 ## 4. Grant object-store access
 
 The Flyte pod and the task pods it launches need credentials to read and write the
-bucket. Prefer cloud-native workload identity over static keys — pick your provider:
+bucket. Prefer cloud-native workload identity over static keys.
 
-{{< tabs "object-store-access" >}}
-{{< tab "AWS" >}}
-{{< markdown >}}
-**IRSA.** Annotate the service account with an IAM role that can access the bucket:
+**IRSA (recommended).** Annotate the service account with an IAM role that can access
+the bucket:
 
 ```yaml
 serviceAccount:
@@ -168,47 +104,9 @@ serviceAccount:
   annotations:
     eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/<flyte-role>
 ```
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "GCP" >}}
-{{< markdown >}}
-**Workload Identity.** Annotate with the Google service account, and set
-`provider: gcs` with `providerConfig.gcs.project: <project-id>`:
 
-```yaml
-serviceAccount:
-  create: true
-  annotations:
-    iam.gke.io/gcp-service-account: <gsa-name>@<project-id>.iam.gserviceaccount.com
-```
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "Azure" >}}
-{{< markdown >}}
-**Workload Identity.** Set `provider: azure` with your storage account, annotate the
-service account with the managed identity's client ID, and label the pod so the token
-is injected:
-
-```yaml
-serviceAccount:
-  create: true
-  annotations:
-    azure.workload.identity/client-id: <managed-identity-client-id>
-deployment:
-  podLabels:
-    azure.workload.identity/use: "true"
-configuration:
-  storage:
-    provider: azure
-    providerConfig:
-      azure:
-        account: <storage-account-name>
-```
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "Other (static keys)" >}}
-{{< markdown >}}
-For S3-compatible stores such as MinIO — static keys, not recommended for production:
+**Static keys** for S3-compatible stores such as MinIO — not recommended for
+production:
 
 ```yaml
 configuration:
@@ -222,9 +120,6 @@ configuration:
         disableSSL: false
         v2Signing: false                          # set true for some MinIO setups
 ```
-{{< /markdown >}}
-{{< /tab >}}
-{{< /tabs >}}
 
 **Task pods.** Tasks run in their own pods, which need the same object-store access.
 Run them under a service account that carries the IAM binding by setting it in the
