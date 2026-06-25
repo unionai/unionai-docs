@@ -16,10 +16,6 @@ Google, Auth0, …). Two things are involved:
    challenges browsers with SSO) *before* requests reach Flyte. Configured with ingress
    annotations.
 
-> Issuing tokens from Flyte itself (a self-hosted authorization server) is also
-> possible — see [Self-hosting the authorization server](#self-hosting-the-authorization-server)
-> at the end. Most deployments delegate to an existing IdP, as below.
-
 ## Advertise your identity provider
 
 The runs service serves OAuth2 authorization-server metadata
@@ -278,12 +274,3 @@ flyte-core-components:
 
 The same trust boundary applies: the proxy must validate identity and strip any
 client-supplied copies of these headers, with `trustForwardedIdentityHeaders` enabled.
-
-## Self-hosting the authorization server
-
-If you'd rather have Flyte issue its own OAuth2 tokens instead of delegating to an
-external IdP, set `configuration.auth.enableAuthServer: true` — the chart reads the
-`configuration.auth` block only in that mode. Flyte then runs as its own authorization
-server (issuing and validating tokens), and you point your OIDC provider at it for user
-login. Most deployments use the external-IdP model above; self-hosting is for
-environments without a suitable external authorization server.
