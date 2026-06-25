@@ -229,10 +229,10 @@ back into the console.
 The ALB callback path is fixed at `/oauth2/idpresponse`, and auth applies only to the
 annotated ingress's HTTPS listener rules.
 
-## Run attribution (`executed_by`)
+## Run attribution (`created_by`)
 
 Once authentication happens at the edge, Flyte records **who created each run**
-(surfaced as `executed_by` in run metadata). The runs service does not re-validate
+(stored as `created_by`). The runs service does not re-validate
 tokens itself — it reads the identity from the headers the proxy forwards. After ALB
 `authenticate-oidc` those are:
 
@@ -248,7 +248,7 @@ The defaults match ALB, so a standard ALB SSO deployment needs no extra configur
 > **Trust boundary.** The forwarded JWTs are decoded but **not** signature-verified by
 > the runs service. That is safe only behind a trusted proxy that validates tokens and
 > strips any client-supplied copies of these headers. If the service can be reached
-> directly, set `trustForwardedIdentityHeaders: false` and `executed_by` is left unset
+> directly, set `trustForwardedIdentityHeaders: false` and `created_by` is left unset
 > rather than risk a spoofed identity.
 
 ### Behind a non-ALB proxy (oauth2-proxy / Traefik)
