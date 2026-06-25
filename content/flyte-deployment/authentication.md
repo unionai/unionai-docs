@@ -6,94 +6,88 @@ weight: 3
 
 # Authentication and SSO
 
-A Flyte deployment has two independent places you can add authentication:
+Flyte delegates authentication to an **external OIDC identity provider** (Okta,
+Google, Auth0, …). Two things are involved:
 
-1. **API authentication** — the Flyte binary itself authenticates SDK/CLI clients and
-   the console against an OIDC provider. Configured with `configuration.auth`.
-2. **Console SSO at the ingress** — the load balancer challenges browsers for login
-   *before* the request reaches the console, with no change to the Flyte binary.
-   Configured with ingress annotations.
+1. **Auth metadata** — the runs service advertises *which* IdP to use, so SDK/CLI and
+   browser clients can discover where to log in and get tokens. Configured under
+   `flyte-core-components.runs.authMetadata`.
+2. **Enforcement at the ingress** — the load balancer validates those tokens (and
+   challenges browsers with SSO) *before* requests reach Flyte. Configured with ingress
+   annotations.
 
-You can use either layer on its own or both together. API authentication is what
-protects the API and identifies users; ingress SSO is a convenient way to gate the
-console UI at the edge.
+> Issuing tokens from Flyte itself (a self-hosted authorization server) is also
+> possible — see [Self-hosting the authorization server](#self-hosting-the-authorization-server)
+> at the end. Most deployments delegate to an existing IdP, as below.
 
-## Layer 1: API authentication
+## Advertise your identity provider
 
-Authentication is off by default (`configuration.auth.enabled: false`). Turn it on and
-choose where tokens come from. There are two modes.
-
-### Self-hosted authorization server (default)
-
-Flyte issues its own OAuth2 tokens (`enableAuthServer: true`) and uses an external
-OIDC provider for browser login:
-
-```yaml
-configuration:
-  auth:
-    enabled: true
-    enableAuthServer: true
-    oidc:
-      baseUrl: https://<your-idp>/oauth2/default   # OIDC issuer URL
-      clientId: <oidc-client-id>
-      clientSecret: <oidc-client-secret>           # prefer the Secret ref below
-    flyteClient:
-      clientId: flytectl
-      redirectUri: http://localhost:53593/callback # CLI/SDK PKCE callback
-      scopes:
-        - all
-        - offline
-    # Every host a redirect might legitimately come back to during the OAuth2 flow.
-    authorizedUris:
-      - https://<flyte.example.com>
-```
-
-### External authorization server
-
-Delegate token issuance to an existing OAuth2 authorization server and have Flyte only
-**validate** the tokens it receives (`enableAuthServer: false`). This is useful when
-you already run an identity service (for example another Flyte deployment you already
-operate) and want this deployment to trust the same tokens:
+The runs service serves OAuth2 authorization-server metadata
+(`/.well-known/oauth-authorization-server` and the `AuthMetadataService` RPC) that
+proxies your external IdP. Clients that discover auth at this deployment are pointed at
+the IdP and obtain IdP-issued tokens, which the ingress then validates.
 
 ```yaml
-configuration:
-  auth:
-    enabled: true
-    enableAuthServer: false
-    oidc:
-      baseUrl: https://<your-idp>/oauth2/default
-      clientId: <oidc-client-id>
-      clientSecret: <oidc-client-secret>
-    externalAuthServer:
-      baseUrl: https://<external-authz-server>
-      metadataUrl: .well-known/oauth-authorization-server
-      allowedAudience:
-        - https://<external-authz-server>
+flyte-core-components:
+  runs:
+    authMetadata:
+      # Your external OAuth2 authorization server (the IdP issuer URL).
+      externalAuthServerBaseUrl: https://<your-idp>/oauth2/default
+      # Public (PKCE) client advertised to the SDK/CLI via GetPublicClientConfig
+      # for browser login. Register this app at your IdP with the localhost redirect.
+      flyteClient:
+        clientId: <public-client-id>
+        redirectUri: http://localhost:53593/callback
+        scopes:
+          - openid
+          - profile
+          - offline_access
 ```
 
-### Keeping secrets out of values
+The `redirectUri` (default `http://localhost:53593/callback`) is the SDK/CLI's local
+PKCE callback and must be registered as a redirect URI on the IdP application.
 
-Rather than putting `clientSecret` in your values file, create a Kubernetes Secret
-that supplies `client_secret` and `oidc_client_secret`, and reference it. The chart
-then mounts it instead of generating its own:
+> **Okta note.** PKCE needs an Okta **native app** client ID with the
+> `http://localhost:53593/callback` redirect registered; the `client_credentials`
+> (machine) flow needs a custom scope on the auth server. Adjust `clientId` / `scopes`
+> for the flow you use.
+
+## Enforce auth at the ingress
+
+Browsers and machine clients authenticate differently, and on a controller like AWS
+ALB a single ingress can't combine cookie-OIDC (browser) and JWT (token) auth — so the
+chart can render up to **three ingresses**:
+
+| Ingress (values key) | Purpose |
+|---|---|
+| `ingress` (`httpAnnotations`) | Serves the console (`/v2`) and API; challenges **browsers** with cookie-OIDC SSO ([walkthrough below](#single-sign-on-for-the-console-at-the-alb)). |
+| `ingress.apiJwtIngress` | **JWT-validates** the `flyteidl2.*` API paths for requests carrying `Authorization: Bearer` (SDK / CLI / machine clients). Give it higher controller precedence than the http ingress so Bearer requests match it first. |
+| `ingress.wellknownIngress` | Serves the **unauthenticated** auth-discovery endpoints (`/.well-known/oauth-authorization-server`, `AuthMetadataService`) — clients need these *before* they hold a token, so give it the highest precedence to bypass auth. |
+
+Enable the JWT and discovery ingresses and supply your controller/JWT config via their
+`annotations` — e.g. on ALB: the ACM `certificate-arn`, the JWT-validation config, the
+`Authorization: Bearer*` match condition, and a `group.order` that ranks
+`wellknownIngress` highest, then `apiJwtIngress`, then the http ingress:
 
 ```yaml
-configuration:
-  auth:
+ingress:
+  create: true
+  host: <flyte.example.com>
+  # Browser SSO annotations on the main http ingress — see the walkthrough below.
+  httpAnnotations: { }
+  apiJwtIngress:
     enabled: true
-    clientSecretsExternalSecretRef: <my-flyte-client-secrets>
+    annotations: { }     # JWT validation + the `Authorization: Bearer*` match
+  wellknownIngress:
+    enabled: true
+    annotations: { }     # highest controller precedence; no auth
 ```
 
-### Connecting a client
+## Single sign-on for the console at the ALB
 
-Once API auth is enabled, point the SDK/CLI at your Flyte host and authenticate
-through the browser PKCE flow advertised by `flyteClient`. The `redirectUri`
-(`http://localhost:53593/callback` by default) must be registered as a redirect URI on
-the OIDC application.
-
-## Layer 2: Single sign-on for the console at the ingress
-
-On AWS you can put OIDC single sign-on **in front of the console** at the ALB, so that
+This is the browser cookie-OIDC SSO referenced above — it goes on the main http
+ingress's `httpAnnotations`. You can put OIDC single sign-on **in front of the console**
+at the ALB, so that
 hitting `https://<host>/v2` challenges the user to log in at your IdP before the
 request ever reaches the console. ALB's native `authenticate-oidc` action handles the
 login and manages the session cookie; the Flyte binary is unchanged. SDK/machine
@@ -284,3 +278,12 @@ flyte-core-components:
 
 The same trust boundary applies: the proxy must validate identity and strip any
 client-supplied copies of these headers, with `trustForwardedIdentityHeaders` enabled.
+
+## Self-hosting the authorization server
+
+If you'd rather have Flyte issue its own OAuth2 tokens instead of delegating to an
+external IdP, set `configuration.auth.enableAuthServer: true` — the chart reads the
+`configuration.auth` block only in that mode. Flyte then runs as its own authorization
+server (issuing and validating tokens), and you point your OIDC provider at it for user
+login. Most deployments use the external-IdP model above; self-hosting is for
+environments without a suitable external authorization server.
