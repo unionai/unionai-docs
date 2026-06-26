@@ -23,10 +23,16 @@ For the full class definition, parameter types, and accepted formats, see the [`
 The main parameters are:
 
 - **`cpu`**: CPU allocation — number, string (`"500m"`), or `(request, limit)` tuple.
-- **`memory`**: Memory with Kubernetes units — `"4Gi"`, or `(request, limit)` tuple.
+- **`memory`**: Memory with Kubernetes units — `"4Gi"`, or `(request, limit)` tuple. Leave headroom below a node's total RAM: its *allocatable* memory is smaller (the kubelet reserves overhead for the OS and system daemons), so a request near a node's nominal capacity can leave the pod stuck `Pending`.
 - **`gpu`**: GPU allocation — `"A100:2"`, integer count, or `GPU()`/`TPU()`/`Device()` for advanced config.
 - **`disk`**: Ephemeral storage — `"10Gi"`.
 - **`shm`**: Shared memory — `"1Gi"` or `"auto"`.
+
+{{< variant union >}}
+{{< markdown >}}
+For how task resource requests interact with project-domain quotas as you scale across teams, see [Resource management and multi-team scaling](../project-patterns/resource-management).
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Examples
 
