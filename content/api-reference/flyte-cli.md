@@ -1064,7 +1064,7 @@ Browse a Volume's metadata index in an interactive TUI.
         # Different project / domain than the CLI default.
         $ flyte explore volume my-run my-action --project p --domain d
 
-        # Already-downloaded Volume .json — no control-plane round-trip.
+        # Already-downloaded Volume .json — no control plane round-trip.
         $ flyte explore volume --from-file ./my-volume.json
 
         # Raw index file (sqlite | redis) — debug path.

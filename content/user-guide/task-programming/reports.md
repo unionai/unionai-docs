@@ -15,6 +15,19 @@ Reports are the Flyte 2 successor to **Decks** in Flyte 1. Where Flyte 1 used `e
 First, you set the `report=True` flag in the task decorator. This enables the reporting feature for that task.
 Within a task with reporting enabled, a `flyte.report.Report` object is created automatically.
 
+> [!NOTE] Import `flyte.report` explicitly
+> `flyte.report` is a submodule that `import flyte` does **not** import automatically.
+> You must import it explicitly:
+>
+> ```python
+> import flyte.report
+> ```
+>
+> Without this, calls like `flyte.report.replace()` or `flyte.report.flush()` raise
+> `AttributeError: module 'flyte' has no attribute 'report'` — most commonly hit in local or
+> notebook runs. This applies to all `flyte.*` submodules: import the specific submodule you use,
+> not just the top-level `flyte` package.
+
 A `Report` object contains one or more tabs, each of which contains HTML.
 You can write HTML to an existing tab and create new tabs to organize your content.
 Initially, the `Report` object has one tab (the default tab) with no content.
