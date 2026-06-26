@@ -38,6 +38,26 @@ LOG_LEVEL=10 USER_LOG_LEVEL=debug flyte run --local my_workflow.py main
 
 An unrecognized value falls back to the default for that variable.
 
+## Set the framework verbosity from the CLI
+
+The `flyte` CLI's `-v` flag is a shorthand for the **framework** log level (the `flyte` logger). It's a global option, so it goes *before* the subcommand, and repeating it raises the verbosity:
+
+| Flag | Framework level |
+|------|-----------------|
+| *(none)* or `-v` | `WARNING` |
+| `-vv` | `INFO` |
+| `-vvv` | `DEBUG` |
+
+```bash
+flyte -vvv run --local my_workflow.py main
+```
+
+`-v` controls only the framework logger — it does **not** change your task (user) log level. Set that separately with `--user-log-level` (also a global option, so likewise before the subcommand), or the `USER_LOG_LEVEL` environment variable:
+
+```bash
+flyte --user-log-level debug run --local my_workflow.py main
+```
+
 ## Set the logging level with `flyte.init()`
 
 You can also set logging when you initialize the SDK. The `log_level` and `user_log_level` parameters take numeric Python logging levels:
