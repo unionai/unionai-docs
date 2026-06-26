@@ -23,14 +23,10 @@ For the full class definition, parameter types, and accepted formats, see the [`
 The main parameters are:
 
 - **`cpu`**: CPU allocation — number, string (`"500m"`), or `(request, limit)` tuple.
-- **`memory`**: Memory with Kubernetes units — `"4Gi"`, or `(request, limit)` tuple.
+- **`memory`**: Memory with Kubernetes units — `"4Gi"`, or `(request, limit)` tuple. Leave headroom below a node's total RAM: its *allocatable* memory is smaller (the kubelet reserves overhead for the OS and system daemons), so a request near a node's nominal capacity can leave the pod stuck `Pending`.
 - **`gpu`**: GPU allocation — `"A100:2"`, integer count, or `GPU()`/`TPU()`/`Device()` for advanced config.
 - **`disk`**: Ephemeral storage — `"10Gi"`.
 - **`shm`**: Shared memory — `"1Gi"` or `"auto"`.
-
-{{< note >}}
-**A node's allocatable memory is less than its total capacity.** The `memory` you request becomes the pod's Kubernetes memory request, and the scheduler places the pod only on a node whose *allocatable* memory can satisfy it. Allocatable is the node's total capacity minus the overhead the kubelet reserves for the operating system and system daemons (`kube-reserved`, `system-reserved`, and the eviction threshold), so it is always somewhat smaller than the machine's advertised RAM. A request sized right up to a node's nominal capacity can therefore leave the pod stuck `Pending`, because no node has that much *allocatable* memory free. Size memory requests with headroom below the node's total — and remember the same applies to CPU and ephemeral storage.
-{{< /note >}}
 
 {{< variant union >}}
 {{< markdown >}}
