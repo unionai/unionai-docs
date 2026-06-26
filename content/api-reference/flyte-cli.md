@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.5.1
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -1493,6 +1493,13 @@ $ flyte get run --task-name my_task
 $ flyte get run --task-name my_task --task-version v1.0
 ```
 
+You can filter runs by their user-defined labels:
+
+```bash
+$ flyte get run --with-label team=ml --with-label env=prod
+$ flyte get run --with-label-key team
+```
+
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Limit the number of runs to fetch when listing. |
@@ -1504,6 +1511,8 @@ $ flyte get run --task-name my_task --task-version v1.0
 | `--created-before` | `datetime` |  | Show runs created before this datetime (UTC). |
 | `--updated-after` | `datetime` |  | Show runs updated at or after this datetime (UTC). Accepts ISO dates, 'now', 'today', or 'now - 1 day'. |
 | `--updated-before` | `datetime` |  | Show runs updated before this datetime (UTC). |
+| `--with-label` | `text` | `()` | Filter runs that have this label key=value. Can be specified multiple times (AND semantics). |
+| `--with-label-key` | `text` | `()` | Filter runs that have this label key present (existence check). Can be specified multiple times. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -1827,6 +1836,7 @@ flyte run hello.py my_task --help
 | {{< multiline >}}`--env`
 `-e`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Environment variable to set on the run context. Format: KEY=VALUE. Can be specified multiple times, e.g. `-e LOG_LEVEL=debug -e FOO=bar`. |
 | `--max-action-concurrency` | `integer range` |  | Maximum number of actions that can run concurrently within the run. If not provided, the platform default (run.max_action_concurrency setting) applies. |
+| `--label` | `text` | `Sentinel.UNSET` | User-defined label to attach to the run. Format: KEY=VALUE. Can be specified multiple times, e.g. `--label team=ml --label env=prod`. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte run deployed-task

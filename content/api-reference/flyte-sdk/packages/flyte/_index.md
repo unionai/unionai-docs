@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.5.1
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -953,7 +953,7 @@ if __name__ == "__main__":
 | `project` | `str \| None` | Optional The project to use for the run |
 | `domain` | `str \| None` | Optional The domain to use for the run |
 | `env_vars` | `Dict[str, str] \| None` | Optional Environment variables to set for the run |
-| `labels` | `Dict[str, str] \| None` | Optional Labels to set for the run |
+| `labels` | `Dict[str, str] \| None` | Optional user-defined labels to attach to the run as KEY=VALUE pairs, used for filtering and organizing runs (e.g. ``flyte get run --with-label team=ml``) |
 | `annotations` | `Dict[str, str] \| None` | Optional Annotations to set for the run |
 | `interruptible` | `bool \| None` | Optional If true, the run can be scheduled on interruptible instances and false implies that all tasks in the run should only be scheduled on non-interruptible instances. If not specified the original setting on all tasks is retained. |
 | `log_level` | `int \| None` | Optional Log level to set for the run. If not provided, it will be set to the default log level set using `flyte.init()` |

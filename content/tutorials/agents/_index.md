@@ -15,6 +15,14 @@ Tutorials for building agentic workflows and autonomous LLM-powered systems.
 Run an autonomous research loop that drives Claude Code in a GPU container to run experiments, then commits results and opens a pull request.
 {{< /link-card >}}
 
+{{< link-card target="parallelized-autoresearch-agent" title="Parallelized autoresearch agent" >}}
+Scale autoresearch with a code-mode MLE agent that batches train.py edits and runs sandbox experiments in parallel via flyte.map.
+{{< /link-card >}}
+
+{{< link-card target="autosec-research-agent" title="AutoSec researcher agent" >}}
+Fan out vulnerability analysis across C targets, hypothesize exploits with an LLM agent, and validate PoCs in an isolated sandbox.
+{{< /link-card >}}
+
 {{< link-card target="code-agent" title="Coding agent" >}}
 Securely execute and iterate on LLM-generated code using a code agent with error reflection and retry logic.
 {{< /link-card >}}
