@@ -30,7 +30,7 @@ The main parameters are:
 
 {{< variant union >}}
 {{< markdown >}}
-For how task resource requests interact with project-domain quotas as you scale across teams, see [Resource management and multi-team scaling](../../project-patterns/resource-management).
+For how task resource requests interact with project-domain quotas as you scale across teams, see [Resource management and multi-team scaling](../project-patterns/resource-management).
 {{< /markdown >}}
 {{< /variant >}}
 
