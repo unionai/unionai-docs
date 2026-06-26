@@ -1,10 +1,10 @@
 ---
-title: A local IdP with Dex (for testing)
+title: Deploy local IdP with Dex (for testing)
 variants: +flyte -union
 weight: 6
 ---
 
-# A local IdP with Dex (for testing)
+# Deploy local IdP with Dex (for testing)
 
 [Step 7 of the kind guide](./local-kind) wires the console behind oauth2-proxy but still
 expects an **external** OIDC provider (Okta, Google, ...). This page replaces that

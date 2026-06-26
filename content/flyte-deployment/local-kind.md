@@ -27,8 +27,24 @@ Install these on your machine:
 
 ## 2. Create the kind cluster
 
+Create the cluster with two host-port mappings up front. kind fixes a cluster's port
+mappings **at creation time** — they can't be added later — and both are awkward to add
+after the fact, so map them now even though they're used in later steps:
+
 ```bash
-kind create cluster --name flyte
+kind create cluster --name flyte --config - <<'EOF'
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 30002   # MinIO's nodePort (set in step 3) — presigned uploads
+        hostPort: 30002        # reach the object store at http://localhost:30002
+        protocol: TCP
+      - containerPort: 30080   # Traefik's web nodePort (set in step 7) — the ingress
+        hostPort: 80           # reach the ingress at http://flyte.local
+        protocol: TCP
+EOF
 ```
 
 This creates a single-node cluster and points your `kubectl` context at it. Confirm it
@@ -38,62 +54,50 @@ is up:
 kubectl cluster-info --context kind-flyte
 ```
 
-> [!WARNING] Planning to add authentication? Create the cluster with a port mapping
-> The optional [auth setup](#7-add-authentication-via-an-ingress-controller-optional)
-> reaches Flyte through a Traefik ingress on the node's port `30080`, but a default kind
-> cluster maps no host port to it — so `http://flyte.local` won't resolve from your
-> browser. A cluster's port mappings are fixed **at creation time** and can't be added
-> later, so if you intend to do step 7, create the cluster like this instead (and skip
-> the plain `kind create cluster` above):
-> ```bash
-> kind create cluster --name flyte --config - <<'EOF'
-> kind: Cluster
-> apiVersion: kind.x-k8s.io/v1alpha4
-> nodes:
->   - role: control-plane
->     extraPortMappings:
->       - containerPort: 30080   # Traefik's web nodePort (set in step 7)
->         hostPort: 80           # reach the ingress at http://flyte.local
->         protocol: TCP
-> EOF
-> ```
-> The base port-forward access in step 6 doesn't need this; only the ingress in step 7
-> does. If you already created a plain cluster and want auth, delete it
-> (`kind delete cluster --name flyte`) and recreate it with the config above.
+> [!NOTE] What the two mappings are for
+> - **`30002 → 30002`** lets the SDK reach MinIO directly to upload code bundles. Flyte
+>   signs upload URLs with a host the SDK must be able to resolve; the SDK is off-cluster,
+>   so it can't use the in-cluster service DNS. This mapping exposes MinIO's nodePort on
+>   `localhost:30002`, which is what [step 4](#4-write-the-values-file) signs the URLs
+>   with. Without it, `flyte.run` fails the upload with `Unauthorized`. (On a real cloud
+>   this never comes up — the S3 endpoint is already publicly resolvable.)
+> - **`30080 → 80`** lets the browser reach the Traefik ingress used by the optional
+>   [auth setup](#7-add-authentication-via-an-ingress-controller-optional) at
+>   `http://flyte.local`.
+>
+> If you already created a plain `kind create cluster --name flyte` without these, delete
+> it (`kind delete cluster --name flyte`) and recreate it with the config above.
 
 ## 3. Deploy the dependencies
 
-kind has no object store or database of its own, so deploy them. The main path runs
-both inside the cluster; if you already have a PostgreSQL you want to reuse, use the
-second tab.
+kind has no object store or database of its own, so Flyte needs one of each. Pick a
+PostgreSQL and an object store below — the all-local pair (in-cluster PostgreSQL +
+MinIO) needs no cloud account, or you can point at a hosted service like Supabase,
+AWS S3, or Cloudflare R2. The two choices are independent; mix and match. Each tab's
+config block plugs into [the values file in step 4](#4-write-the-values-file).
 
-{{< tabs "local-deps" >}}
-{{< tab "In-cluster (MinIO + PostgreSQL)" >}}
+Create the namespace once, whichever options you pick:
+
+```bash
+kubectl create namespace flyte
+```
+
+### PostgreSQL
+
+{{< tabs "local-postgres" >}}
+{{< tab "In-cluster PostgreSQL" >}}
 {{< markdown >}}
-Add the Bitnami chart repo and install MinIO and PostgreSQL into the `flyte` namespace:
+Install Bitnami's PostgreSQL chart into the `flyte` namespace:
 
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
-kubectl create namespace flyte
 
-# PostgreSQL — sets the password and a database named "flyte"
 helm install postgres bitnami/postgresql -n flyte \
   --set auth.username=flyte \
   --set auth.password=flyte \
   --set auth.database=flyte \
   --set image.repository=bitnamilegacy/postgresql \
-  --set global.security.allowInsecureImages=true
-
-# MinIO — sets the root credentials and creates a "flyte" bucket
-helm install minio bitnami/minio -n flyte \
-  --set auth.rootUser=minio \
-  --set auth.rootPassword=miniostorage \
-  --set defaultBuckets=flyte \
-  --set image.repository=bitnamilegacy/minio \
-  --set console.image.repository=bitnamilegacy/minio-object-browser \
-  --set clientImage.repository=bitnamilegacy/minio-client \
-  --set defaultInitContainers.volumePermissions.image.repository=bitnamilegacy/os-shell \
   --set global.security.allowInsecureImages=true
 ```
 
@@ -105,55 +109,10 @@ helm install minio bitnami/minio -n flyte \
 > redirect each image to `bitnamilegacy/*`; `allowInsecureImages=true` lets the
 > chart use a registry other than its pinned default.
 
-This gives you the in-cluster service addresses the values file below points at:
-
-- PostgreSQL: `postgres-postgresql.flyte.svc.cluster.local:5432`
-- MinIO: `http://minio.flyte.svc.cluster.local:9000`
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "Use your own PostgreSQL" >}}
-{{< markdown >}}
-Install only MinIO for object storage, and point the database config at your existing
-PostgreSQL instead:
-
-```bash
-helm repo add bitnami https://charts.bitnami.com/bitnami
-helm repo update
-kubectl create namespace flyte
-
-helm install minio bitnami/minio -n flyte \
-  --set auth.rootUser=minio \
-  --set auth.rootPassword=miniostorage \
-  --set defaultBuckets=flyte \
-  --set image.repository=bitnamilegacy/minio \
-  --set console.image.repository=bitnamilegacy/minio-object-browser \
-  --set clientImage.repository=bitnamilegacy/minio-client \
-  --set defaultInitContainers.volumePermissions.image.repository=bitnamilegacy/os-shell \
-  --set global.security.allowInsecureImages=true
-```
-
-The `bitnamilegacy/*` overrides are required because Bitnami no longer publishes
-these images under `bitnami/*` — see the note in the first tab.
-
-In the values file below, replace the `database.postgres` block with your own host,
-database name, and credentials. The database must already exist. If it isn't reachable
-over an in-cluster service name, use an address kind can reach — for a database running
-on your host, that is `host.docker.internal`.
-{{< /markdown >}}
-{{< /tab >}}
-{{< /tabs >}}
-
-## 4. Write the values file
-
-Create `values-local.yaml`. This points Flyte at the in-cluster PostgreSQL and MinIO,
-uses static access keys (no cloud workload identity), and skips the ingress — you'll
-reach Flyte with `kubectl port-forward`:
+In-cluster service address for the values file:
+`postgres-postgresql.flyte.svc.cluster.local:5432`.
 
 ```yaml
-# values-local.yaml — local kind deployment
-fullnameOverride: flyte
-
-configuration:
   database:
     postgres:
       host: postgres-postgresql.flyte.svc.cluster.local
@@ -162,6 +121,77 @@ configuration:
       username: flyte
       password: flyte
       options: "sslmode=disable"        # in-cluster Postgres has no TLS here
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Supabase (hosted)" >}}
+{{< markdown >}}
+Nothing to install in the cluster — create a project at [supabase.com](https://supabase.com/),
+then open **Project Settings → Database → Connection string** and switch the tab to
+**Session pooler**. Use that string, **not** the direct connection.
+
+> [!WARNING] Use the session pooler, not the direct connection
+> Supabase's direct host (`db.<project-ref>.supabase.co`) resolves to **IPv6 only**.
+> A kind cluster is IPv4-only, so the Flyte pod can't reach it — `wait-for-db` passes
+> (it only probes the port) but Flyte then crash-loops on `failed to connect`. The
+> **session pooler** host (`aws-<n>-<region>.pooler.supabase.com`) has IPv4, so use it.
+> Use the **session** pooler on port `5432`, not the transaction pooler (`6543`) —
+> Flyte's migrations need session semantics.
+>
+> Two things the pooler changes versus the direct string, both shown verbatim in the
+> Session pooler tab — **copy them, don't guess**:
+> - **Username carries the project ref**: `postgres.<project-ref>`, not bare `postgres`.
+> - **The region must match your project's**: `aws-<n>-<region>.pooler.supabase.com`.
+>   A mismatched region connects but is rejected with `tenant/user not found`.
+
+```yaml
+  database:
+    postgres:
+      # From the "Session pooler" connection string — copy host and username verbatim.
+      host: aws-1-ap-northeast-1.pooler.supabase.com   # <- your project's pooler host
+      port: 5432                        # session mode (not 6543 transaction mode)
+      dbname: postgres                  # Supabase's default database
+      username: postgres.<project-ref>  # pooler requires the ref-qualified username
+      password: <your-supabase-db-password>
+      options: "sslmode=require"        # Supabase requires TLS
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+### Object store
+
+{{< tabs "local-objectstore" >}}
+{{< tab "In-cluster MinIO" >}}
+{{< markdown >}}
+Install MinIO into the `flyte` namespace. It creates a `flyte` bucket and exposes its
+API on nodePort `30002` so the off-cluster SDK can upload to presigned URLs:
+
+```bash
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+
+helm install minio bitnami/minio -n flyte \
+  --set auth.rootUser=minio \
+  --set auth.rootPassword=miniostorage \
+  --set defaultBuckets=flyte \
+  --set service.type=NodePort \
+  --set service.nodePorts.api=30002 \
+  --set image.repository=bitnamilegacy/minio \
+  --set console.image.repository=bitnamilegacy/minio-object-browser \
+  --set clientImage.repository=bitnamilegacy/minio-client \
+  --set defaultInitContainers.volumePermissions.image.repository=bitnamilegacy/os-shell \
+  --set global.security.allowInsecureImages=true
+```
+
+The `bitnamilegacy/*` overrides are required because Bitnami no longer publishes these
+images under `bitnami/*` — see the note under the in-cluster PostgreSQL tab.
+
+The presigned-upload host (`signedURL` block) is the reason step 2 maps nodePort
+`30002 → 30002`: the SDK signs uploads with `localhost:30002`, which the cluster routes
+straight to MinIO.
+
+```yaml
   storage:
     metadataContainer: flyte
     userDataContainer: flyte
@@ -175,6 +205,109 @@ configuration:
         disableSSL: true                # MinIO is served over plain HTTP here
         v2Signing: false                # set true if MinIO rejects v4 signatures
         region: us-east-1               # any value; MinIO ignores it
+  inline:
+    storage:
+      signedURL:
+        stowConfigOverride:
+          # The SDK uploads code bundles to a presigned URL that Flyte signs.
+          # In-cluster, Flyte reaches MinIO at the service DNS above — but your
+          # off-cluster SDK can't resolve that name, so the upload fails with
+          # "Unauthorized". Sign these URLs with MinIO's nodePort instead, which
+          # the cluster maps to localhost:30002 (see step 2). On a real cloud
+          # this isn't needed: the S3 endpoint is already publicly resolvable.
+          endpoint: http://localhost:30002
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "AWS S3" >}}
+{{< markdown >}}
+Create an S3 bucket in your AWS account and an IAM user (or access key) that can read
+and write it. With a real, publicly-resolvable S3 endpoint the SDK uploads to presigned
+URLs directly, so **no MinIO nodePort and no `signedURL` override** are needed — you can
+drop the `30002` mapping from step 2 if you're not also running MinIO.
+
+```yaml
+  storage:
+    metadataContainer: <your-s3-bucket>
+    userDataContainer: <your-s3-bucket>
+    provider: s3
+    providerConfig:
+      s3:
+        region: <bucket-region>         # e.g. us-east-1
+        authType: accesskey
+        accessKey: <aws-access-key-id>
+        secretKey: <aws-secret-access-key>
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Cloudflare R2" >}}
+{{< markdown >}}
+Create an R2 bucket and an R2 API token (Access Key ID + Secret) in the Cloudflare
+dashboard. R2 is S3-compatible: point the `endpoint` at your account's R2 URL and use
+`auto` for the region. Its endpoint is publicly resolvable, so like S3 it needs **no
+MinIO nodePort and no `signedURL` override**.
+
+```yaml
+  storage:
+    metadataContainer: <your-r2-bucket>
+    userDataContainer: <your-r2-bucket>
+    provider: s3
+    providerConfig:
+      s3:
+        endpoint: https://<account-id>.r2.cloudflarestorage.com
+        region: auto                    # R2 ignores region; "auto" is conventional
+        authType: accesskey
+        accessKey: <r2-access-key-id>
+        secretKey: <r2-secret-access-key>
+        v2Signing: false
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+## 4. Write the values file
+
+Create `values-local.yaml` by dropping in the `database` and `storage` blocks from the
+PostgreSQL and object-store tabs you picked in [step 3](#3-deploy-the-dependencies). It
+uses static access keys (no cloud workload identity) and skips the ingress — you'll
+reach Flyte with `kubectl port-forward`:
+
+```yaml
+# values-local.yaml — local kind deployment
+fullnameOverride: flyte
+
+configuration:
+  # ── paste your PostgreSQL block here (from step 3) ──
+  database:
+    postgres:
+      host: postgres-postgresql.flyte.svc.cluster.local
+      port: 5432
+      dbname: flyte
+      username: flyte
+      password: flyte
+      options: "sslmode=disable"
+  # ── paste your object-store block here (from step 3) ──
+  storage:
+    metadataContainer: flyte
+    userDataContainer: flyte
+    provider: s3
+    providerConfig:
+      s3:
+        endpoint: http://minio.flyte.svc.cluster.local:9000
+        authType: accesskey
+        accessKey: minio
+        secretKey: miniostorage
+        disableSSL: true
+        v2Signing: false
+        region: us-east-1
+  # The signedURL override below is MinIO-only — it makes the SDK sign uploads
+  # with localhost:30002 (see step 2). Drop this whole `inline.storage` block
+  # when using S3 or R2; their endpoints are already publicly resolvable.
+  inline:
+    storage:
+      signedURL:
+        stowConfigOverride:
+          endpoint: http://localhost:30002
 
 serviceAccount:
   create: true
@@ -183,6 +316,11 @@ serviceAccount:
 ingress:
   create: false                         # reach Flyte via port-forward instead
 ```
+
+The block above shows the all-local pair (in-cluster PostgreSQL + MinIO). If you chose
+Supabase, S3, or R2, swap the matching block for that tab's — and for S3/R2 remove the
+`inline.storage` block, since the `signedURL` override only exists to route uploads
+through MinIO's nodePort.
 
 ## 5. Install Flyte
 
@@ -221,6 +359,33 @@ curl -s -X POST \
 
 A JSON response (rather than a connection error) confirms the binary is up and talking
 to its database.
+
+### Submitting runs from the SDK
+
+Point the SDK at the API forward you just started. Write `~/.flyte/config.yaml`:
+
+```yaml
+# ~/.flyte/config.yaml
+admin:
+  endpoint: dns:///localhost:8090   # the port-forwarded API
+  insecure: True                    # plain HTTP, no TLS
+task:
+  org: local
+  domain: development
+  project: flytesnacks
+```
+
+The code-bundle upload needs no extra setup: Flyte signs the presigned URL with
+`localhost:30002` (from [step 4](#4-write-the-values-file)), which the cluster maps
+straight to MinIO (from [step 2](#2-create-the-kind-cluster)). Only the one API
+port-forward is required — MinIO is reached over its nodePort, not a second forward.
+
+> [!NOTE] `Unauthorized` on upload
+> If `flyte.run` fails the code-bundle upload with `Unauthorized`, the signed MinIO host
+> isn't reachable from your machine. Check that the cluster has the `30002 → 30002`
+> mapping (`docker ps --filter name=flyte-control-plane --format '{{.Ports}}'`), that
+> MinIO was installed with `service.type=NodePort` and `service.nodePorts.api=30002`, and
+> that `signedURL.stowConfigOverride.endpoint` is `http://localhost:30002`.
 
 ## 7. Add authentication via an ingress controller (optional)
 
