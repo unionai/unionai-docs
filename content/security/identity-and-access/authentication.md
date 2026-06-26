@@ -35,18 +35,18 @@ Union.ai uses OAuth2 / OIDC for SSO. Customers can configure any OIDC or SAML 2.
 2. API key: Create a key, use it in a script, then revoke it:
 
    ```bash
-   uctl create api-key
+   flyte create api-key --name <key-name>
    # Use the key in a script to authenticate
-   uctl delete api-key <key-id>
+   flyte delete api-key <key-name>
    # Confirm the revoked key is rejected
    ```
 
-3. Service account: Create a service account and confirm it has a distinct identity:
+3. Application identity: `flyte create api-key` provisions OAuth application credentials (an OAuth2 `client_id` + `client_secret`, encoded into the API key) with a distinct, auditable identity independent of any human user:
 
    ```bash
-   uctl create service-account
+   flyte create api-key --name <app-name>
    ```
 
-   Show the OAuth2 token exchange and confirm the service account appears as a distinct identity in the audit log.
+   Show the OAuth2 token exchange and confirm the application appears as a distinct identity in the audit log. Use [`flyte create assignment`](../../api-reference/flyte-cli#flyte-create-assignment) to bind policies that scope what the identity can do.
 
 This verification is fully self-service.
