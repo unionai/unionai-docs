@@ -1,10 +1,10 @@
 ---
-title: Node Pools
+title: Node pools
 weight: 1
 variants: -flyte +union
 ---
 
-# Configuring Service and Worker Node Pools
+# Configuring service and worker node pools
 
 As a best practice, we recommend using separate node pools for the Union services and the Union worker pods. This allows
 you to guard against resource contention between Union services and other tasks running in your cluster.

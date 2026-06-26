@@ -8,6 +8,10 @@ variants: +flyte +union
 
 Triggers allow you to automate and parameterize an execution by scheduling its start time and providing overrides for its task inputs.
 
+{{< note >}}
+In Flyte 1 these were configured with a `LaunchPlan` (the `flytekit.LaunchPlan` API) and `CronSchedule`. Flyte 2 replaces them with `flyte.Trigger` and `flyte.Cron`, described below.
+{{< /note >}}
+
 Currently, only **schedule triggers** are supported.
 This type of trigger runs a task based on a Cron expression or a fixed-rate schedule.
 
@@ -65,7 +69,7 @@ The `flyte.Cron` has the following signature:
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="cron-examples" lang="python">}}
 
-#### Cron Expressions
+#### Cron expressions
 
 Here are some common cron expressions you can use:
 
@@ -87,7 +91,7 @@ For a full guide on Cron syntax, refer to [Crontab Guru](https://crontab.guru/).
 The `inputs` parameter allows you to provide default values for your task's parameters when the trigger fires.
 This is essential for parameterizing your automated executions and passing trigger-specific data to your tasks.
 
-### Basic Usage
+### Basic usage
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="inputs-basic-usage" lang="python">}}
 
@@ -140,7 +144,7 @@ You can pass various data types through trigger inputs:
 For common scheduling needs, Flyte provides predefined trigger methods that create Cron-based schedules without requiring you to specify cron expressions manually.
 These are convenient shortcuts for frequently used scheduling patterns.
 
-### Available Predefined Triggers
+### Available predefined triggers
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="predefined-available" lang="python">}}
 
@@ -365,7 +369,7 @@ flyte delete trigger custom_cron my_task_env.custom_task --project <project> --d
 
 ## Schedule time zones
 
-### Setting time zone for a Cron schedule
+### Setting time zone for a cron schedule
 
 Cron expressions are by default in UTC, but it's possible to specify custom time zones like so:
 
@@ -379,7 +383,7 @@ The `flyte.TriggerTime` value is always in UTC. For timezone-aware logic, conver
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="trigger-time-utc" lang="python">}}
 
-### Daylight Savings Time behavior
+### Daylight savings time behavior
 
 When Daylight Savings Time (DST) begins and ends, it can impact when the scheduled execution begins.
 

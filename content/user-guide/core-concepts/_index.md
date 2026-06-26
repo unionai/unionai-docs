@@ -30,3 +30,23 @@ When you run code with Flyte, here's what happens:
 4. Each task execution within a run is an **action**
 
 Let's explore each of these in detail.
+
+{{< variant union >}}
+
+{{< markdown >}}
+
+## Reliability
+
+How Union.ai keeps your work accountable when running across clusters.
+
+{{< /markdown >}}
+
+{{< grid >}}
+
+{{< link-card target="leases" icon="key" title="Leases" >}}
+How Union.ai tracks work across clusters, why you occasionally see `lease expired`, and how the system protects you from runaway compute.
+{{< /link-card >}}
+
+{{< /grid >}}
+
+{{< /variant >}}

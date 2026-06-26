@@ -1,6 +1,6 @@
 ---
 title: Agent
-version: 2.4.0
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -20,7 +20,7 @@ instructions:
     automatically.
 model:
     Model identifier passed to ``call_llm``. Defaults to
-    ``"claude-haiku-4-5"`` to match :class:`CodeModeAgent`.
+    ``"claude-haiku-4-5"``.
 tools:
     Sequence (or ``{name: tool}`` mapping) of tools the agent may call.
     Each entry can be a plain callable, a ``@flyte.trace`` helper, an
@@ -38,12 +38,6 @@ max_turns:
 call_llm:
     Optional async callback ``(model, system, messages, tools) -&gt; LLMMessage``.
     Defaults to :func:`_default_call_llm` (uses litellm).
-memory:
-    Optional :class:`MemoryStore` initialized from a previous session.
-    When provided, the existing transcript is prepended to every
-    conversation and the in-flight transcript is appended to it on each
-    call. Tools may also use the same instance for path-addressed
-    artifact reads / writes (with audit + optional concurrency).
 approval_callback:
     Optional async callback ``(tool, args) -&gt; bool`` invoked when a tool
     with ``requires_approval=True`` is about to run. Defaults to a HITL
@@ -52,6 +46,19 @@ parallel_tool_calls:
     When ``True`` (default) tool calls returned in a single assistant
     message are executed concurrently. Set to ``False`` to force strict
     sequential execution (useful when tool side-effects must be ordered).
+    Ignored in code mode.
+code_mode:
+    When ``True`` the agent runs in *code mode*: instead of emitting JSON
+    tool calls, the LLM writes a small Python program each turn that is
+    executed in the Monty sandbox (``flyte.sandbox.orchestrate_local``) with
+    the tools exposed as plain functions. The value of the program's last
+    expression becomes the observation for the next turn; the loop ends when
+    the LLM replies with plain text (no code block). This unlocks generated
+    control flow (loops, ``flyte_map`` fan-out, intermediate aggregation)
+    while still dispatching ``@env.task`` tools durably on-cluster. Requires
+    ``pydantic-monty`` in the runtime image. Note: per-tool HITL approval is
+    not enforced in code mode, since tools are invoked from inside the
+    sandbox rather than as discrete approved calls.
 
 
 ## Parameters
@@ -66,9 +73,9 @@ class Agent(
     skills: Sequence[str | pathlib.Path],
     max_turns: int,
     call_llm: LLMCallable,
-    memory: MemoryStore | None,
     approval_callback: ApprovalCallback,
     parallel_tool_calls: bool,
+    code_mode: bool,
 )
 ```
 | Parameter | Type | Description |
@@ -81,9 +88,9 @@ class Agent(
 | `skills` | `Sequence[str \| pathlib.Path]` | |
 | `max_turns` | `int` | |
 | `call_llm` | `LLMCallable` | |
-| `memory` | `MemoryStore \| None` | |
 | `approval_callback` | `ApprovalCallback` | |
 | `parallel_tool_calls` | `bool` | |
+| `code_mode` | `bool` | |
 
 ## Properties
 
@@ -175,7 +182,7 @@ Gemini, Bedrock, local OpenAI-compatible servers, …).
 ```python
 def run(
     message: str,
-    history: list[dict[str, Any]] | None,
+    memory: list[dict[str, Any]] | MemoryStore | None,
 ) -> AgentResult
 ```
 Drive the LLM ↔ tool loop until the assistant returns a final reply.
@@ -184,13 +191,25 @@ Implements the :class:`~flyte.ai.agents.protocol.AgentProtocol` so
 instances can be plugged directly into
 :class:`~flyte.ai.chat.AgentChatAppEnvironment`.
 
+The agent is decoupled from any persistent state: memory is passed in
+per call rather than attached to the agent. ``memory`` may be:
+
+- ``None``: a stateless, single-shot conversation.
+- a ``list[dict]``: prior messages to prepend (e.g. a chat ``history``).
+  The returned :class:`AgentResult` carries no memory in this case.
+- a :class:`MemoryStore`: its transcript is prepended, the in-flight
+  transcript is appended back to it, and it is returned on
+  :attr:`AgentResult.memory`. Persistence is the caller's
+  responsibility: call ``memory.save()`` (or ``.save.aio()``) after
+  ``run`` to write the updated transcript back to its keyed remote path.
+
 Call synchronously via ``run(...)``; in async contexts use ``run.aio(...)``.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `message` | `str` | |
-| `history` | `list[dict[str, Any]] \| None` | |
+| `memory` | `list[dict[str, Any]] \| MemoryStore \| None` | |
 
 ### tool_descriptions()
 

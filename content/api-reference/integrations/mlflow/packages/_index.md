@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 2.4.0
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flyteplugins.mlflow`](flyteplugins.mlflow) | ## Key features:. |
+| [`flyteplugins.mlflow`](flyteplugins.mlflow/_index) | ## Key features:. |

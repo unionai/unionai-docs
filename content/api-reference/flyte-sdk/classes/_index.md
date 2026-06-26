@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.4.0
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,10 +13,10 @@ layout: py_api
 | [`flyte.BaseCheckpoint`](../packages/flyte/basecheckpoint) |Base type for task checkpoint helpers. |
 | [`flyte.Cache`](../packages/flyte/cache) |Cache configuration for a task. |
 | [`flyte.Checkpoint`](../packages/flyte/checkpoint) |Checkpoint helper using `flyte. |
+| [`flyte.ConditionWebhook`](../packages/flyte/conditionwebhook) |Webhook configuration for a condition notification. |
 | [`flyte.Cron`](../packages/flyte/cron) |Cron-based automation schedule for use with `Trigger`. |
 | [`flyte.Device`](../packages/flyte/device) |Represents a device type, its quantity and partition if applicable. |
 | [`flyte.Environment`](../packages/flyte/environment) |Base class for execution environments, shared by `TaskEnvironment` and. |
-| [`flyte.EventWebhook`](../packages/flyte/eventwebhook) |Webhook configuration for an event notification. |
 | [`flyte.FixedRate`](../packages/flyte/fixedrate) |Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
 | [`flyte.Image`](../packages/flyte/image) |Container image specification built using a fluent, two-step pattern:. |
 | [`flyte.ImageBuild`](../packages/flyte/imagebuild) |Result of an image build operation. |
@@ -33,16 +33,15 @@ layout: py_api
 | [`flyte.ai.agents.AgentEvent`](../packages/flyte.ai.agents/agentevent) |Lightweight event emitted by the agent loop. |
 | [`flyte.ai.agents.AgentResult`](../packages/flyte.ai.agents/agentresult) |Outcome of a single agent invocation. |
 | [`flyte.ai.agents.AgentTool`](../packages/flyte.ai.agents/agenttool) |A normalized tool descriptor used by :class:`Agent`. |
-| [`flyte.ai.agents.CodeModeAgent`](../packages/flyte.ai.agents/codemodeagent) |Generates code via an LLM, executes it in a Monty sandbox, and. |
 | [`flyte.ai.agents.ConcurrencyError`](../packages/flyte.ai.agents/concurrencyerror) |Raised when an ``expected_sha`` precondition does not match the current state. |
 | [`flyte.ai.agents.LLMMessage`](../packages/flyte.ai.agents/llmmessage) |Provider-agnostic shape returned by :data:`LLMCallable`. |
 | [`flyte.ai.agents.MCPServerSpec`](../packages/flyte.ai.agents/mcpserverspec) |Declarative spec for a remote MCP server that exposes tools. |
 | [`flyte.ai.agents.MemoryMeta`](../packages/flyte.ai.agents/memorymeta) |Per-file metadata sidecar (sha256, actor, timestamp, …) for a memory entry. |
 | [`flyte.ai.agents.MemoryStore`](../packages/flyte.ai.agents/memorystore) |Conversation transcript + path-addressed artifact memory backed by :class:`flyte. |
 | [`flyte.ai.agents.MemoryStoreError`](../packages/flyte.ai.agents/memorystoreerror) |Base class for :class:`MemoryStore` errors. |
+| [`flyte.ai.agents.ToolFn`](../packages/flyte.ai.agents/toolfn) |The tool under invocation, handed to a :data:`ToolCallHandler`. |
 | [`flyte.ai.agents.agent.Agent`](../packages/flyte.ai.agents.agent/agent) |A flyte-native tool-use agent harness. |
 | [`flyte.ai.agents.agent.AgentEvent`](../packages/flyte.ai.agents.agent/agentevent) |Lightweight event emitted by the agent loop. |
-| [`flyte.ai.agents.codemode.CodeModeAgent`](../packages/flyte.ai.agents.codemode/codemodeagent) |Generates code via an LLM, executes it in a Monty sandbox, and. |
 | [`flyte.ai.agents.memory.AccessDenied`](../packages/flyte.ai.agents.memory/accessdenied) |Raised when a write targets a read-only or reserved prefix. |
 | [`flyte.ai.agents.memory.ConcurrencyError`](../packages/flyte.ai.agents.memory/concurrencyerror) |Raised when an ``expected_sha`` precondition does not match the current state. |
 | [`flyte.ai.agents.memory.MemoryMeta`](../packages/flyte.ai.agents.memory/memorymeta) |Per-file metadata sidecar (sha256, actor, timestamp, …) for a memory entry. |
@@ -68,6 +67,10 @@ layout: py_api
 | [`flyte.app.extras.FastAPIAppEnvironment`](../packages/flyte.app.extras/fastapiappenvironment) | |
 | [`flyte.app.extras.FastAPIPassthroughAuthMiddleware`](../packages/flyte.app.extras/fastapipassthroughauthmiddleware) |FastAPI middleware that automatically sets Flyte auth metadata from request headers. |
 | [`flyte.app.extras.FlyteWebhookAppEnvironment`](../packages/flyte.app.extras/flytewebhookappenvironment) |A pre-built FastAPI app environment for common Flyte webhook operations. |
+| [`flyte.clustered.ClusterFailurePolicy`](../packages/flyte.clustered/clusterfailurepolicy) |Failure and restart policy for the JobSet as a whole. |
+| [`flyte.clustered.ClusteredTaskEnvironment`](../packages/flyte.clustered/clusteredtaskenvironment) |A TaskEnvironment that emits a Kubernetes JobSet for distributed multi-node training. |
+| [`flyte.clustered.ClusteredTaskTemplate`](../packages/flyte.clustered/clusteredtasktemplate) |Task template for ``ClusteredTaskEnvironment``. |
+| [`flyte.clustered.TorchRun`](../packages/flyte.clustered/torchrun) |TorchRun launcher configuration for a ClusteredTaskEnvironment. |
 | [`flyte.config.Config`](../packages/flyte.config/config) |This the parent configuration object and holds all the underlying configuration object types. |
 | [`flyte.connectors.AsyncConnector`](../packages/flyte.connectors/asyncconnector) |This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
 | [`flyte.connectors.AsyncConnectorExecutorMixin`](../packages/flyte.connectors/asyncconnectorexecutormixin) |This mixin class is used to run the connector task locally, and it's only used for local execution. |
@@ -79,12 +82,12 @@ layout: py_api
 | [`flyte.errors.ActionNotFoundError`](../packages/flyte.errors/actionnotfounderror) |This error is raised when the user tries to access an action that does not exist. |
 | [`flyte.errors.BaseRuntimeError`](../packages/flyte.errors/baseruntimeerror) |Base class for all Union runtime errors. |
 | [`flyte.errors.CodeBundleError`](../packages/flyte.errors/codebundleerror) |This error is raised when the code bundle cannot be created, for example when no files are found to bundle. |
+| [`flyte.errors.ConditionAlreadyExistsError`](../packages/flyte.errors/conditionalreadyexistserror) |This error is raised when the user tries to create a condition that already exists within the action. |
+| [`flyte.errors.ConditionFailedError`](../packages/flyte.errors/conditionfailederror) |This error is raised when a condition fails during execution. |
+| [`flyte.errors.ConditionNotFoundError`](../packages/flyte.errors/conditionnotfounderror) |This error is raised when the user tries to access a condition that does not exist. |
+| [`flyte.errors.ConditionTimedoutError`](../packages/flyte.errors/conditiontimedouterror) |This error is raised when a condition is not signaled within its specified timeout. |
 | [`flyte.errors.CustomError`](../packages/flyte.errors/customerror) |This error is raised when the user raises a custom error. |
 | [`flyte.errors.DeploymentError`](../packages/flyte.errors/deploymenterror) |This error is raised when the deployment of a task fails, or some preconditions for deployment are not met. |
-| [`flyte.errors.EventAlreadyExistsError`](../packages/flyte.errors/eventalreadyexistserror) |This error is raised when the user tries to create an event that already exists within the action. |
-| [`flyte.errors.EventFailedError`](../packages/flyte.errors/eventfailederror) |This error is raised when a condition event fails during execution. |
-| [`flyte.errors.EventNotFoundError`](../packages/flyte.errors/eventnotfounderror) |This error is raised when the user tries to access an event that does not exist. |
-| [`flyte.errors.EventTimedoutError`](../packages/flyte.errors/eventtimedouterror) |This error is raised when an event is not signaled within its specified timeout. |
 | [`flyte.errors.ImageBuildError`](../packages/flyte.errors/imagebuilderror) |This error is raised when the image build fails. |
 | [`flyte.errors.ImagePullBackOffError`](../packages/flyte.errors/imagepullbackofferror) |This error is raised when the image cannot be pulled. |
 | [`flyte.errors.InitializationError`](../packages/flyte.errors/initializationerror) |This error is raised when the Union system is tried to access without being initialized. |
@@ -161,7 +164,7 @@ layout: py_api
 | [`flyte.remote.ActionInputs`](../packages/flyte.remote/actioninputs) |A class representing the inputs of an action. |
 | [`flyte.remote.ActionOutputs`](../packages/flyte.remote/actionoutputs) |A class representing the outputs of an action. |
 | [`flyte.remote.App`](../packages/flyte.remote/app) | |
-| [`flyte.remote.Event`](../packages/flyte.remote/event) |A remote Event registered within an action of a run. |
+| [`flyte.remote.Condition`](../packages/flyte.remote/condition) |A remote Condition registered within an action of a run. |
 | [`flyte.remote.Project`](../packages/flyte.remote/project) |A class representing a project in the Union API. |
 | [`flyte.remote.Run`](../packages/flyte.remote/run) |A class representing a run of a task. |
 | [`flyte.remote.RunDetails`](../packages/flyte.remote/rundetails) |A class representing a run of a task. |

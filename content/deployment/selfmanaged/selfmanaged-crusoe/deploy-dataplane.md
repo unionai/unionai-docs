@@ -33,15 +33,15 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
 
    ```bash
    uctl config init --host=<ORG_NAME>.union.ai
-   uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider metal
+   uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider custom
    ```
 
    * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
-     It will also generate a YAML values file specific to the `metal` provider.
+     It will also generate a YAML values file specific to the `custom` provider.
 
    * Save the secret that is displayed. Union does not store the credentials; rerunning the same command can be used to retrieve the secret later.
 
-   We use `--provider metal` for Crusoe because the Union operator treats Crusoe as a generic S3-compatible / Kubernetes environment rather than a first-class cloud provider integration (like AWS/GCP/Azure).
+   We use `--provider custom` for Crusoe because the Union operator treats Crusoe as a generic S3-compatible / Kubernetes environment rather than a first-class cloud provider integration (like AWS/GCP/Azure).
 
 3. Update the generated values file with your Crusoe-specific storage configuration. Replace the placeholders with your actual credentials and settings.
 
@@ -49,7 +49,7 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
    host: <ORG_NAME>.union.ai
    clusterName: <CLUSTER_NAME>
    orgName: <ORG_NAME>
-   provider: metal
+   provider: custom
 
    storage:
      provider: custom
@@ -214,6 +214,21 @@ To run a sample workflow, complete the following steps:
 | `invalid keys: collectbillableresourceusage` | Chart/operator version mismatch.                       | Use matching chart and operator image versions.                                                                           |
 | Helm "another operation in progress"         | Interrupted Helm upgrade.                              | Run `helm rollback unionai-dataplane <LAST_GOOD_REVISION> -n union`.                                                      |
 | "Provided Tunnel token is not valid"         | Control plane not configured for this cluster.         | Complete cluster registration first.                                                                                      |
+
+## Next: manage your cluster and pools
+
+`uctl selfserve provision-dataplane-resources` provisions the data plane and
+registers this cluster with the control plane. Once it is connected, you manage
+the **cluster pool** it belongs to — and route work to it with queues — from the
+[Cluster and workload management](../../../user-guide/cluster-workload-management/_index)
+user guide:
+
+- [Cluster pools](../../../user-guide/cluster-workload-management/cluster-pools) — group clusters that share one data plane (object store, secrets, registry).
+- [Clusters](../../../user-guide/cluster-workload-management/clusters) — inspect and manage the cluster records registered with the control plane.
+- [Queues](../../../user-guide/cluster-workload-management/queues) — route workloads to a pool and enforce concurrency, priority, and fairness.
+
+Every organization is provisioned with a `default` pool that new clusters join
+automatically, so a single-cluster deployment needs no extra pool setup.
 
 ## Additional resources
 

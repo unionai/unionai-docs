@@ -1,6 +1,6 @@
 ---
 title: Custom context
-weight: 5
+weight: 6
 variants: +flyte +union
 ---
 
@@ -9,6 +9,10 @@ variants: +flyte +union
 Custom context provides a mechanism for implicitly passing configuration and metadata through your entire task execution hierarchy without adding parameters to every task. It is ideal for cross-cutting concerns such as tracing, environment metadata, or experiment identifiers.
 
 Think of custom context as **execution-scoped metadata** that automatically flows from parent to child tasks.
+
+{{< note >}}
+In Flyte 1 the runtime context was accessed with `current_context()` (the `flytekit.current_context` API). Flyte 2 uses `flyte.ctx()`, shown below.
+{{< /note >}}
 
 ## Overview
 

@@ -359,6 +359,13 @@ for task in tasks:
 
 **Managing API keys**
 
+Create a key:
+```bash
+flyte create api-key --name my-ci-key
+```
+
+This creates OAuth application credentials and prints an `export FLYTE_API_KEY="..."` command to use the key. OAuth applications should not be confused with Union Apps, which are a different construct entirely.
+
 List existing keys:
 ```bash
 flyte get api-key
@@ -372,7 +379,7 @@ flyte delete api-key my-ci-key
 {{< /tab >}}
 {{< /tabs >}}
 
-#### Using API keys with Union Apps
+#### Using API keys with Union apps
 
 API keys created with `flyte create api-key` can be used to authenticate requests to Union Apps hosted on your Union cluster. However, note that:
 

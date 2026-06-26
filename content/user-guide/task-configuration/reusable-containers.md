@@ -25,7 +25,7 @@ This approach reduces start up overhead and improves resource efficiency.
 > [!NOTE]
 > The reusable container feature is only available when running your Flyte code on a Union backend.
 
-## How It Works
+## How it works
 
 With reusable containers, the system maintains a pool of persistent containers that can handle multiple task executions.
 When you configure a `TaskEnvironment` with a `ReusePolicy`, the system does the following:
@@ -36,7 +36,7 @@ When you configure a `TaskEnvironment` with a `ReusePolicy`, the system does the
 4. Supports concurrent task execution within containers (for async tasks).
 5. Preserves the Python execution environment across task executions, allowing you to maintain state through global variables.
 
-## Basic Usage
+## Basic usage
 
 > [!NOTE]
 > The reusable containers feature currently requires a dedicated runtime library

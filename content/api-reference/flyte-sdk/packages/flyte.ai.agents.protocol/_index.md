@@ -1,6 +1,6 @@
 ---
 title: flyte.ai.agents.protocol
-version: 2.4.0
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,4 +21,10 @@ Agent protocol for the flyte.ai.agents module.
 | Protocol | Description |
 |-|-|
 | [`AgentProtocol`](../flyte.ai.agents.protocol/agentprotocol) | Minimal protocol that any agent must satisfy to work with. |
+
+### Variables
+
+| Property | Type | Description |
+|-|-|-|
+| `TYPE_CHECKING` | `bool` |  |
 

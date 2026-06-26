@@ -32,6 +32,7 @@ The Flyte devbox is a lightweight local cluster that runs on your machine with D
 
 - Python 3.10+ in a virtual environment
 - [Docker](https://docs.docker.com/get-docker/) installed and running
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
 
 ## Install the SDK
 

@@ -1,6 +1,6 @@
 ---
 title: Fanout
-weight: 15
+weight: 16
 variants: +flyte +union
 ---
 
@@ -8,6 +8,10 @@ variants: +flyte +union
 
 Flyte is designed to scale effortlessly, allowing you to run workflows with large fanouts.
 When you need to execute many tasks in parallel—such as processing a large dataset or running hyperparameter sweeps—Flyte provides powerful patterns to implement these operations efficiently.
+
+{{< note >}}
+In Flyte 1, mapping a task over many inputs used `map_task()` (the `flytekit.map_task` API). In Flyte 2, fan out with `asyncio.gather()` or `flyte.map()`.
+{{< /note >}}
 
 {{< variant union >}}
 {{< markdown >}}

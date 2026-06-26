@@ -1,6 +1,6 @@
 ---
 title: ContainerTask
-version: 2.4.0
+version: 2.5.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -29,6 +29,7 @@ class ContainerTask(
     output_data_dir: str | pathlib.Path,
     metadata_format: typing.Literal['JSON', 'YAML', 'PROTO'],
     local_logs: bool,
+    file_input_layout: typing.Literal['DIRECT', 'NAMED_DIR'],
     kwargs,
 )
 ```
@@ -44,6 +45,7 @@ class ContainerTask(
 | `output_data_dir` | `str \| pathlib.Path` | The directory where the output data is stored. This is a string or a Path object. |
 | `metadata_format` | `typing.Literal['JSON', 'YAML', 'PROTO']` | The format of the output file. This can be "JSON", "YAML", or "PROTO". |
 | `local_logs` | `bool` | If True, logs will be printed to the console in the local execution. |
+| `file_input_layout` | `typing.Literal['DIRECT', 'NAMED_DIR']` | How CoPilot stages File / list[File] inputs on disk. "DIRECT" (default) uses the bare path/index; "NAMED_DIR" preserves each input's original basename (and extension), so extension-sniffing tools work. |
 | `kwargs` | `**kwargs` | |
 
 ## Properties

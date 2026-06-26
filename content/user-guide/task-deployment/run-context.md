@@ -38,9 +38,9 @@ All parameters are optional. Unset parameters inherit from the configuration fil
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `raw_data_path` | `str` | *from config* | Storage prefix for offloaded data types ([Files](../task-programming/files-and-directories), [Dirs](../task-programming/files-and-directories), [DataFrames](../task-programming/dataframes), checkpoints). Accepts `s3://`, `gs://`, or local paths. |
-| `run_base_dir` | `str` | *auto-generated* | Base directory for the run's inputs, outputs, and intermediate per-action artifacts in the data-plane object store. Distinct from `raw_data_path`. |
+| `run_base_dir` | `str` | *auto-generated* | Base directory for the run's inputs, outputs, and intermediate per-action artifacts in the data plane object store. Distinct from `raw_data_path`. |
 
-For the difference between what `raw_data_path` controls (offloaded values) and what stays at the deployment-configured location (`inputs.pb`, `outputs.pb`, Decks) or in the control-plane database, see [Where your data lives](../core-concepts/where-data-lives).
+For the difference between what `raw_data_path` controls (offloaded values) and what stays at the deployment-configured location (`inputs.pb`, `outputs.pb`, Decks) or in the control plane database, see [Where your data lives](../core-concepts/where-data-lives).
 
 To direct all task outputs to a specific bucket for a run:
 
@@ -69,9 +69,12 @@ The equivalent CLI flag is `--raw-data-path`. See [Run command options](./run-co
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `log_level` | `int` | *from config* | Python log level (e.g. `logging.DEBUG`). |
-| `log_format` | `"console"` \| ... | `"console"` | Log output format. |
-| `reset_root_logger` | `bool` | `False` | If `True`, preserve the root logger unchanged. |
+| `log_level` | `int` | *from config* | Python log level for the framework logger (`flyte`), e.g. `logging.DEBUG`. |
+| `user_log_level` | `int` | *from config* | Python log level for the user logger (`flyte.user`, i.e. `flyte.logger`). |
+| `log_format` | `"console"` \| `"json"` | `"console"` | Log output format. |
+| `reset_root_logger` | `bool` | `False` | If `True`, clear the root logger's existing handlers and install Flyte's own. If `False` (the default), leave existing root handlers in place and wrap their formatters with the run/action context. |
+
+For setting the logging level (including via environment variables) and the framework-vs-user logger split, see [Logging](../task-configuration/logging).
 
 ### Code bundling
 
@@ -105,7 +108,7 @@ Inside a running task, `flyte.ctx()` returns a `TaskContext` object with informa
 | `mode` | `"local"` \| `"remote"` \| `"hybrid"` | Execution mode of the current run. |
 | `version` | `str` | Version of the deployed task code bundle. |
 | `raw_data_path` | `str` | Storage prefix where offloaded outputs are written. |
-| `run_base_dir` | `str` | Base directory for the run's inputs, outputs, and intermediate per-action artifacts in the data-plane object store. |
+| `run_base_dir` | `str` | Base directory for the run's inputs, outputs, and intermediate per-action artifacts in the data plane object store. |
 | `custom_context` | `Dict[str, str]` | Propagated context metadata from `with_runcontext()`. |
 | `disable_run_cache` | `bool` | Whether run caching is disabled for this run. |
 | `is_in_cluster()` | method | Returns `True` when `mode == "remote"`. Useful for branching local/remote behavior. |

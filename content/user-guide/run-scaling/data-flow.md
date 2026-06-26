@@ -9,7 +9,7 @@ variants: +flyte +union
 Understanding how data flows between tasks is critical for optimizing workflow performance in Flyte. Tasks take inputs and produce outputs, with data flowing seamlessly through your workflow using an efficient transport layer.
 
 > [!NOTE]
-> This page focuses on **how** data moves at runtime. For the static map of **what** lives in the control-plane database versus the data-plane object store — including what "metadata" means in different contexts — see [Where your data lives](../core-concepts/where-data-lives).
+> This page focuses on **how** data moves at runtime. For the static map of **what** lives in the control plane database versus the data plane object store — including what "metadata" means in different contexts — see [Where your data lives](../core-concepts/where-data-lives).
 
 ## Overview
 
@@ -105,10 +105,7 @@ All inline data is cached using a consistent hashing system. The cache key is de
 
 ### Reference data hashing
 
-Reference data (files, directories) is hashed shallowly by default using the hash of the storage location. You can customize hashing:
-
-- Use `flyte.io.File.new_remote()` or `flyte.io.File.from_existing_remote()` with custom hash functions or values.
-- Provide explicit hash values for deep content hashing if needed.
+Reference data (DataFrames, files, directories) is hashed shallowly by default using the hash of the storage location, so a downstream task does not cache-hit on identical content stored at a new path. To cache on content instead, attach a content hash at production time with `flyte.io.HashFunction`. See [Content-based caching for DataFrames, files, and directories](../task-configuration/caching#content-based-caching-for-dataframes-files-and-directories).
 
 ### Cache control
 

@@ -75,7 +75,7 @@ You can also fetch and run remote (previously deployed) tasks within the course 
 
 {{< code file="/unionai-examples/v2/user-guide/flyte-2/remote.py" fragment="all" lang="python" >}}
 
-## Native Notebook support
+## Native notebook support
 
 Author and run workflows and fetch workflow metadata (I/O and logs) directly from Jupyter notebooks.
 

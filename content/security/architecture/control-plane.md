@@ -8,7 +8,7 @@ variants: -flyte +union
 
 The control plane is the Union.ai-hosted component that orchestrates task execution, manages user access, and provides the API surface. It runs on AWS infrastructure managed by Union.ai and is covered by Union.ai's SOC 2 Type II certification.
 
-The control plane handles only orchestration metadata. Customer data -- workflow inputs and outputs, code bundles, secret values, logs, reports, and auxiliary UI traffic -- never transits the control plane in any form, not even transiently in memory. Those requests are served directly from the data plane through the [Direct-to-DataPlane tunnel](./network).
+The control plane handles only orchestration metadata. Customer data -- workflow inputs and outputs, code bundles, secret values, logs, reports, and auxiliary UI traffic -- never transits the control plane in any form, not even transiently in memory. Those requests are served directly from the data plane through the [Direct-to-Data-Plane tunnel](./network).
 
 ## What it stores
 
@@ -17,7 +17,7 @@ The control plane stores **orchestration metadata** -- the operational scaffoldi
 - **Action state**: run and action identifiers, phase, timestamps, cluster assignment, and scheduling configuration.
 - **Task and run definitions**: each run submission includes a full TaskSpec (container image, typed interface, resource requirements, security context) and a RunSpec (environment variables, labels, annotations). Trigger specs carry default input values for scheduled runs.
 - **Error and event information**: error messages from task executions (which may contain customer data from Python tracebacks), Kubernetes event messages, and per-attempt plugin state.
-- **Platform metadata**: user identity records, the RBAC graph, and data-plane cluster registrations.
+- **Platform metadata**: user identity records, the RBAC graph, and data plane cluster registrations.
 
 It stores only **URIs** pointing into the customer's object store for any payload reference (for example, `s3://customer-bucket/org/project/domain/run/action/output.pb`); the payloads themselves stay in the customer's object store.
 
