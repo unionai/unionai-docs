@@ -10,6 +10,10 @@ Custom context provides a mechanism for implicitly passing configuration and met
 
 Think of custom context as **execution-scoped metadata** that automatically flows from parent to child tasks.
 
+{{< note >}}
+In Flyte 1 the runtime context was accessed with `current_context()` (the `flytekit.current_context` API). Flyte 2 uses `flyte.ctx()`, shown below.
+{{< /note >}}
+
 ## Overview
 
 Custom context is an implicit key–value configuration map that is automatically available to tasks during execution. It is stored in the blob store of your Union/Flyte instance together with the task’s inputs, making it available across tasks without needing to pass it explicitly.
