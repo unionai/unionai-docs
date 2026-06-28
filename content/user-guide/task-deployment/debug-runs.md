@@ -38,10 +38,11 @@ gives you a ready-to-paste `~/.ssh/config` block so you can attach your **local*
 
 ### Requirements
 
-- `flyte` (SDK) version **greater than 2.5.3**
+- `flyte` (SDK) version **2.5.8 or newer**
 - `flyteplugins-union` version **greater than 0.5.0**
-- `openssh-server` available in the task image (bake it in for a fast cold start; otherwise it is
-  installed on the pod at startup)
+
+The in-pod SSH server is pure Python (`asyncssh`, bundled with `flyte`), so **no extra packages are
+needed in the task image** — there is no `openssh-server` install and nothing to bake in.
 
 Install the plugin:
 
@@ -110,8 +111,8 @@ Useful options:
 ### Debug programmatically
 
 The `debug()` convenience function mirrors `flyte.run()` / `flyte.rerun()`, with the ssh-debug
-environment injected so the new run comes up with `sshd`. After it returns, resolve the connection
-with `SSHDebug.connect()`:
+environment injected so the new run comes up with an in-pod SSH server. After it returns, resolve the
+connection with `SSHDebug.connect()`:
 
 ```python
 import flyte
@@ -139,16 +140,6 @@ and sets the SSH-debug environment variables), so you call `.run(...)` or `.reru
 from flyteplugins.union import with_debugcontext
 
 run = with_debugcontext(env_vars={"LOG_LEVEL": "20"}).run(my_task, x=1)
-```
-
-To bake `openssh-server` into the task image for a fast cold start:
-
-```python
-env = flyte.TaskEnvironment(
-    name="ssh_debug",
-    image=flyte.Image.from_debian_base(name="ssh-debug").with_apt_packages("openssh-server"),
-    resources=flyte.Resources(cpu=1, memory="1000Mi"),
-)
 ```
 
 ## Related
