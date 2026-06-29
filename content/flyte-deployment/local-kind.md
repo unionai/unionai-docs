@@ -6,10 +6,10 @@ weight: 5
 
 # Running Flyte locally with kind
 
-This guide spins up a complete Flyte stack — the Flyte binary plus an in-cluster
-PostgreSQL and an S3-compatible object store (MinIO) — on a local
-[kind](https://kind.sigs.k8s.io/) cluster. It's the fastest way to try Flyte without
-provisioning any cloud infrastructure.
+This guide spins up a complete Flyte stack — the Flyte binary on a local
+[kind](https://kind.sigs.k8s.io/) cluster, backed by a hosted PostgreSQL and an
+S3-compatible object store. It's a fast way to try Flyte without running a
+production-grade control plane.
 
 > [!WARNING] For local evaluation only
 > This runs on a single-node kind cluster with static credentials (no workload identity),
@@ -29,9 +29,9 @@ Install these on your machine:
 
 ## 2. Create the kind cluster
 
-Create the cluster with three host-port mappings up front. kind fixes a cluster's port
-mappings **at creation time** — they can't be added later — and all three are awkward to
-add after the fact, so map them now even though they're used in later steps:
+Create the cluster with two host-port mappings up front. kind fixes a cluster's port
+mappings **at creation time** — they can't be added later — so map them now even
+though they're only used in the optional auth step:
 
 ```bash
 kind create cluster --name flyte --config - <<'EOF'
@@ -40,9 +40,6 @@ apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
   - role: control-plane
     extraPortMappings:
-      - containerPort: 30002   # MinIO's nodePort (set in step 3) — presigned uploads
-        hostPort: 30002        # reach the object store at http://localhost:30002
-        protocol: TCP
       - containerPort: 30080   # Traefik's web (HTTP) nodePort (step 7) — browser ingress
         hostPort: 80           # reach the ingress at http://flyte.local
         protocol: TCP
@@ -59,14 +56,7 @@ is up:
 kubectl cluster-info --context kind-flyte
 ```
 
-> [!NOTE] What the three mappings are for
-> - **`30002 → 30002`** lets the SDK reach MinIO directly to upload code bundles. Flyte
->   signs upload URLs with a host the SDK must be able to resolve; the SDK is off-cluster,
->   so it can't use the in-cluster service DNS. This mapping exposes MinIO's nodePort on
->   `localhost:30002`, which is what [step 4](#4-write-the-values-file) signs the URLs
->   with. Without it, `flyte.run` fails the upload with `Unauthorized`. (On a real cloud
->   this never comes up — the S3 endpoint is already publicly resolvable.) Only needed for
->   the in-cluster MinIO object store; harmless otherwise.
+> [!NOTE] What the two mappings are for
 > - **`30080 → 80`** lets the **browser** reach the Traefik ingress (plain HTTP) used by
 >   the optional [auth setup](#7-add-authentication-via-an-ingress-controller-optional) at
 >   `http://flyte.local`.
@@ -81,13 +71,12 @@ kubectl cluster-info --context kind-flyte
 
 ## 3. Deploy the dependencies
 
-kind has no object store or database of its own, so Flyte needs one of each. Pick a
-PostgreSQL and an object store below — the all-local pair (in-cluster PostgreSQL +
-MinIO) needs no cloud account, or you can point at a hosted service like Supabase,
-AWS S3, or Cloudflare R2. The two choices are independent; mix and match. Each tab's
-config block plugs into [the values file in step 4](#4-write-the-values-file).
+kind runs only the Flyte binary; the database and object store are hosted. You need a
+PostgreSQL (Supabase or another external/self-hosted instance) and an S3-compatible
+object store (AWS S3 or Cloudflare R2). The two choices are independent. Each config
+block below plugs into [the values file in step 4](#4-write-the-values-file).
 
-Create the namespace once, whichever options you pick:
+Create the namespace:
 
 ```bash
 kubectl create namespace flyte
@@ -95,51 +84,12 @@ kubectl create namespace flyte
 
 ### PostgreSQL
 
-{{< tabs "local-postgres" >}}
-{{< tab "In-cluster PostgreSQL" >}}
-{{< markdown >}}
-Install Bitnami's PostgreSQL chart into the `flyte` namespace:
-
-```bash
-helm repo add bitnami https://charts.bitnami.com/bitnami
-helm repo update
-
-helm install postgres bitnami/postgresql -n flyte \
-  --set auth.username=flyte \
-  --set auth.password=flyte \
-  --set auth.database=flyte \
-  --set image.repository=bitnamilegacy/postgresql \
-  --set global.security.allowInsecureImages=true
-```
-
-> [!NOTE] Why the `bitnamilegacy` image overrides
-> In late 2025 Bitnami moved its free container images to the `bitnamilegacy`
-> Docker Hub org and stopped publishing new tags under `bitnami/*`. The chart
-> defaults still point at `bitnami/*`, so an unmodified install fails with
-> `ImagePullBackOff` (image `not found`). The `--set …image.repository` flags
-> redirect each image to `bitnamilegacy/*`; `allowInsecureImages=true` lets the
-> chart use a registry other than its pinned default.
-
-In-cluster service address for the values file:
-`postgres-postgresql.flyte.svc.cluster.local:5432`.
-
-```yaml
-  database:
-    postgres:
-      host: postgres-postgresql.flyte.svc.cluster.local
-      port: 5432
-      dbname: flyte
-      username: flyte
-      password: flyte
-      options: "sslmode=disable"        # in-cluster Postgres has no TLS here
-```
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "Supabase (hosted)" >}}
-{{< markdown >}}
-Nothing to install in the cluster — create a project at [supabase.com](https://supabase.com/),
-then open **Project Settings → Database → Connection string** and switch the tab to
-**Session pooler**. Use that string, **not** the direct connection.
+Create a project at [supabase.com](https://supabase.com/), then open **Project
+Settings → Database → Connection string** and switch the tab to **Session pooler**.
+Use that string, **not** the direct connection. (Another external or self-hosted
+PostgreSQL works the same way — supply its host, database, user, and password, with
+`sslmode` to match. For a DB on your host machine, use `host.docker.internal` as the
+host. The database must already exist.)
 
 > [!WARNING] Use the session pooler, not the direct connection
 > Supabase's direct host (`db.<project-ref>.supabase.co`) resolves to **IPv6 only**.
@@ -166,76 +116,18 @@ then open **Project Settings → Database → Connection string** and switch the
       password: <your-supabase-db-password>
       options: "sslmode=require"        # Supabase requires TLS
 ```
-{{< /markdown >}}
-{{< /tab >}}
-{{< /tabs >}}
 
 ### Object store
 
+Both AWS S3 and Cloudflare R2 have publicly-resolvable endpoints, so the off-cluster
+SDK uploads code bundles to presigned URLs directly — no nodePort or `signedURL`
+override is needed.
+
 {{< tabs "local-objectstore" >}}
-{{< tab "In-cluster MinIO" >}}
-{{< markdown >}}
-Install MinIO into the `flyte` namespace. It creates a `flyte` bucket and exposes its
-API on nodePort `30002` so the off-cluster SDK can upload to presigned URLs:
-
-```bash
-helm repo add bitnami https://charts.bitnami.com/bitnami
-helm repo update
-
-helm install minio bitnami/minio -n flyte \
-  --set auth.rootUser=minio \
-  --set auth.rootPassword=miniostorage \
-  --set defaultBuckets=flyte \
-  --set service.type=NodePort \
-  --set service.nodePorts.api=30002 \
-  --set image.repository=bitnamilegacy/minio \
-  --set console.image.repository=bitnamilegacy/minio-object-browser \
-  --set clientImage.repository=bitnamilegacy/minio-client \
-  --set defaultInitContainers.volumePermissions.image.repository=bitnamilegacy/os-shell \
-  --set global.security.allowInsecureImages=true
-```
-
-The `bitnamilegacy/*` overrides are required because Bitnami no longer publishes these
-images under `bitnami/*` — see the note under the in-cluster PostgreSQL tab.
-
-The presigned-upload host (`signedURL` block) is the reason step 2 maps nodePort
-`30002 → 30002`: the SDK signs uploads with `localhost:30002`, which the cluster routes
-straight to MinIO.
-
-```yaml
-  storage:
-    metadataContainer: flyte
-    userDataContainer: flyte
-    provider: s3
-    providerConfig:
-      s3:
-        endpoint: http://minio.flyte.svc.cluster.local:9000
-        authType: accesskey
-        accessKey: minio
-        secretKey: miniostorage
-        disableSSL: true                # MinIO is served over plain HTTP here
-        v2Signing: false                # set true if MinIO rejects v4 signatures
-        region: us-east-1               # any value; MinIO ignores it
-  inline:
-    storage:
-      signedURL:
-        stowConfigOverride:
-          # The SDK uploads code bundles to a presigned URL that Flyte signs.
-          # In-cluster, Flyte reaches MinIO at the service DNS above — but your
-          # off-cluster SDK can't resolve that name, so the upload fails with
-          # "Unauthorized". Sign these URLs with MinIO's nodePort instead, which
-          # the cluster maps to localhost:30002 (see step 2). On a real cloud
-          # this isn't needed: the S3 endpoint is already publicly resolvable.
-          endpoint: http://localhost:30002
-```
-{{< /markdown >}}
-{{< /tab >}}
 {{< tab "AWS S3" >}}
 {{< markdown >}}
 Create an S3 bucket in your AWS account and an IAM user (or access key) that can read
-and write it. With a real, publicly-resolvable S3 endpoint the SDK uploads to presigned
-URLs directly, so **no MinIO nodePort and no `signedURL` override** are needed — you can
-drop the `30002` mapping from step 2 if you're not also running MinIO.
+and write it.
 
 ```yaml
   storage:
@@ -255,8 +147,7 @@ drop the `30002` mapping from step 2 if you're not also running MinIO.
 {{< markdown >}}
 Create an R2 bucket and an R2 API token (Access Key ID + Secret) in the Cloudflare
 dashboard. R2 is S3-compatible: point the `endpoint` at your account's R2 URL and use
-`auto` for the region. Its endpoint is publicly resolvable, so like S3 it needs **no
-MinIO nodePort and no `signedURL` override**.
+`auto` for the region.
 
 ```yaml
   storage:
@@ -278,47 +169,35 @@ MinIO nodePort and no `signedURL` override**.
 
 ## 4. Write the values file
 
-Create `values-local.yaml` by dropping in the `database` and `storage` blocks from the
-PostgreSQL and object-store tabs you picked in [step 3](#3-deploy-the-dependencies). It
-uses static access keys (no cloud workload identity) and skips the ingress — you'll
-reach Flyte with `kubectl port-forward`:
+Create `values-local.yaml` by dropping in the `database` and `storage` blocks from
+[step 3](#3-deploy-the-dependencies). It uses static access keys (no cloud workload
+identity) and skips the ingress — you'll reach Flyte with `kubectl port-forward`:
 
 ```yaml
 # values-local.yaml — local kind deployment
 fullnameOverride: flyte
 
 configuration:
-  # ── paste your PostgreSQL block here (from step 3) ──
+  # ── your PostgreSQL block (from step 3) — Supabase shown ──
   database:
     postgres:
-      host: postgres-postgresql.flyte.svc.cluster.local
+      host: aws-1-ap-northeast-1.pooler.supabase.com   # <- your project's pooler host
       port: 5432
-      dbname: flyte
-      username: flyte
-      password: flyte
-      options: "sslmode=disable"
-  # ── paste your object-store block here (from step 3) ──
+      dbname: postgres
+      username: postgres.<project-ref>
+      password: <your-supabase-db-password>
+      options: "sslmode=require"
+  # ── your object-store block (from step 3) — AWS S3 shown ──
   storage:
-    metadataContainer: flyte
-    userDataContainer: flyte
+    metadataContainer: <your-s3-bucket>
+    userDataContainer: <your-s3-bucket>
     provider: s3
     providerConfig:
       s3:
-        endpoint: http://minio.flyte.svc.cluster.local:9000
+        region: <bucket-region>
         authType: accesskey
-        accessKey: minio
-        secretKey: miniostorage
-        disableSSL: true
-        v2Signing: false
-        region: us-east-1
-  # The signedURL override below is MinIO-only — it makes the SDK sign uploads
-  # with localhost:30002 (see step 2). Drop this whole `inline.storage` block
-  # when using S3 or R2; their endpoints are already publicly resolvable.
-  inline:
-    storage:
-      signedURL:
-        stowConfigOverride:
-          endpoint: http://localhost:30002
+        accessKey: <aws-access-key-id>
+        secretKey: <aws-secret-access-key>
 
 serviceAccount:
   create: true
@@ -328,10 +207,7 @@ ingress:
   create: false                         # reach Flyte via port-forward instead
 ```
 
-The block above shows the all-local pair (in-cluster PostgreSQL + MinIO). If you chose
-Supabase, S3, or R2, swap the matching block for that tab's — and for S3/R2 remove the
-`inline.storage` block, since the `signedURL` override only exists to route uploads
-through MinIO's nodePort.
+Swap in the R2 storage block if you chose Cloudflare R2.
 
 ## 5. Install Flyte
 
@@ -387,22 +263,8 @@ task:
 ```
 
 The code-bundle upload needs no extra setup — only the one API port-forward is required,
-never a second one for the object store, whichever you chose in
-[step 3](#3-deploy-the-dependencies):
-
-- **In-cluster MinIO** — Flyte signs the presigned URL with `localhost:30002` (the
-  `signedURL` override from [step 4](#4-write-the-values-file)), which the cluster maps
-  straight to MinIO's nodePort (from [step 2](#2-create-the-kind-cluster)).
-- **AWS S3 / Cloudflare R2** — the endpoint is publicly resolvable, so the SDK uploads to
-  the presigned URL directly. No nodePort, no `signedURL` override.
-
-> [!NOTE] `Unauthorized` on upload (MinIO only)
-> With in-cluster MinIO, if `flyte.run` fails the code-bundle upload with `Unauthorized`,
-> the signed MinIO host isn't reachable from your machine. Check that the cluster has the
-> `30002 → 30002` mapping (`docker ps --filter name=flyte-control-plane --format '{{.Ports}}'`),
-> that MinIO was installed with `service.type=NodePort` and `service.nodePorts.api=30002`,
-> and that `signedURL.stowConfigOverride.endpoint` is `http://localhost:30002`. With S3 or
-> R2 this doesn't apply — their endpoints are already public.
+never a second one for the object store. The S3/R2 endpoint is publicly resolvable, so
+the SDK uploads to the presigned URL directly.
 
 ## 7. Add authentication via an ingress controller (optional)
 
@@ -874,11 +736,14 @@ present, the default `IfNotPresent` pull policy won't try to fetch it from a reg
 
 ## 9. Tear down
 
-Delete the whole cluster — Flyte, PostgreSQL, MinIO, and all data — in one command:
+Delete the cluster and Flyte in one command:
 
 ```bash
 kind delete cluster --name flyte
 ```
+
+The hosted PostgreSQL and S3/R2 bucket are untouched — clean those up in their own
+consoles.
 
 When you're ready to deploy to a real cluster, continue to
 [Installing Flyte](./installing).
