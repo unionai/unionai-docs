@@ -312,10 +312,8 @@ $ ssh my-run-dbg
 |--------|------|---------|-------------|
 | `--user` | `text` | `root` | SSH login user inside the pod. |
 | `--identity-file` | `text` |  | Private key to authenticate with. Defaults to the auto-managed ~/.flyte/ssh-debug/id_ed25519 (created for you; no ssh-keygen needed). |
-| {{< multiline >}}`--host-alias`
-`--name`{{< /multiline >}} | `text` | `flyte-debug` | Host name to use in the ~/.ssh/config block (use distinct names to keep several runs side by side). |
-| {{< multiline >}}`--api-key`
-`--no-api-key`{{< /multiline >}} | `boolean` | `False` | Authenticate the tunnel with a dedicated, long-lived API key (created/reused as `flyte-ssh-debug`) instead of your interactive session token. Survives re-logins and won't expire mid-session. |
+| `--host-alias` / `--name` | `text` | `flyte-debug` | Host name to use in the ~/.ssh/config block (use distinct names to keep several runs side by side). |
+| `--api-key` / `--no-api-key` | `boolean` | `False` | Authenticate the tunnel with a dedicated, long-lived API key (created/reused as `flyte-ssh-debug`) instead of your interactive session token. Survives re-logins and won't expire mid-session. |
 | `--refresh-token` | `boolean` | `False` | Force a fresh Bearer instead of reusing the cached one (use if you hit auth errors). |
 | `--write-config` | `boolean` | `False` | Write the Host block into ~/.ssh/config (replacing any prior block for the same name). |
 | `--timeout` | `float` | `300.0` | Seconds to wait for the debug route to become ready. |
