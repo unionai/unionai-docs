@@ -58,6 +58,7 @@ staticClients:
     secret: oauth2-proxy-secret
     redirectURIs:
       - 'http://flyte.local/oauth2/callback'
+      - 'https://flyte.local/oauth2/callback'   # console opened over TLS (websecure)
 
   # Flyte CLI — public client for SDK/CLI PKCE login
   - id: flytectl
@@ -73,15 +74,15 @@ staticPasswords:
     username: "admin"
     userID: "08a8684b-db88-4b73-90a9-3cd1661f5466"
     # bcrypt hash of the literal string "password" — see the note below
-    hash: "$2a$10$y8dpOZQJstU/LFps5YmME.7zKR1PmWFD1gdla7tpyfThTtrZEytBK"
+    hash: "$2a$10$wi77Jcsjw08l416Q4./OCu6qNvYMaNSvA3Jbo30QeyZAvq9b4BSRK"
 ```
 
 > [!WARNING] `hash` must be a real bcrypt hash
 > Dex validates the hash at startup and crashes (`CrashLoopBackOff`) with
 > `malformed bcrypt hash: hashedSecret too short to be a bcrypted password` if it
-> isn't a complete 60-character bcrypt string. The hash above is for `password`;
-> to use a different one, generate it yourself rather than editing the string by
-> hand:
+> isn't a complete 60-character bcrypt string. The hash above is for `password` and
+> is known-good — but verify length 60 before pasting (`echo -n "$HASH" | wc -c`); a
+> char lost in transit looks fine and crashes Dex. To use a different password:
 > ```bash
 > htpasswd -bnBC 10 "" 'your-password' | tr -d ':\n' | sed 's/^\$2y/\$2a/'
 > ```
@@ -108,6 +109,7 @@ config:
       secret: oauth2-proxy-secret
       redirectURIs:
         - 'http://flyte.local/oauth2/callback'
+      - 'https://flyte.local/oauth2/callback'   # console opened over TLS (websecure)
     - id: flytectl
       name: 'Flyte CLI'
       public: true
@@ -118,7 +120,7 @@ config:
     - email: "admin@example.com"
       username: "admin"
       userID: "08a8684b-db88-4b73-90a9-3cd1661f5466"
-      hash: "$2a$10$y8dpOZQJstU/LFps5YmME.7zKR1PmWFD1gdla7tpyfThTtrZEytBK"
+      hash: "$2a$10$wi77Jcsjw08l416Q4./OCu6qNvYMaNSvA3Jbo30QeyZAvq9b4BSRK"
 ```
 
 ```bash
@@ -299,5 +301,5 @@ create — see [Authentication and SSO](./authentication#run-attribution-execute
 |---|---|
 | oauth2-proxy `CrashLoopBackOff`, logs stuck on `Performing OIDC Discovery...` | The pod can't resolve `flyte.local` in-cluster. Add the `hostAlias` from step 4 mapping `flyte.local` to Traefik's ClusterIP. |
 | oauth2-proxy `CrashLoopBackOff`, logs show `could not fetch .well-known` | oauth2-proxy can't reach the issuer. Confirm step 3's curl returns the discovery doc and that `oidc-issuer-url` matches `issuer` in `dex-config.yaml` **exactly**. |
-| Browser: `redirect_uri did not match` | The `oauth2-proxy` static client's `redirectURIs` must list `http://flyte.local/oauth2/callback` verbatim. |
+| Browser: `Unregistered redirect_uri` / `redirect_uri did not match` | The `oauth2-proxy` static client's `redirectURIs` must list the callback for the scheme you open the console with — `http://flyte.local/oauth2/callback` **and** `https://flyte.local/oauth2/callback` (opening `/v2` over TLS uses the `https` one). List both. |
 | Login succeeds but loops back to sign-in | Issuer mismatch between what the browser saw and what oauth2-proxy validated. Both must be `http://flyte.local/dex` — not a service name, not `localhost`. |
