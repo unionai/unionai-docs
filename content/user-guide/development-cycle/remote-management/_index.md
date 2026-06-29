@@ -19,20 +19,21 @@ Ensure that you have the {{<key kit_name >}} SDK installed, import the `{{< key 
 
 ```python
 import {{< key kit_import >}}
+from flytekit.configuration import Config
 
-remote = {{< key kit_as >}}.{{< key kit_remote >}}()
+remote = {{< key kit_as >}}.{{< key kit_remote >}}(config=Config.auto())
 ```
 
 {{< variant union >}}
 {{< markdown >}}
-By default, when created with a no-argument constructor, `{{< key kit_remote >}}` will use the prevailing configuration in the local environment to connect to {{< key product_name >}},
+By default, when created with `config=Config.auto()`, `{{< key kit_remote >}}` will use the prevailing configuration in the local environment to connect to {{< key product_name >}},
 that is, the same configuration as would be used by the {{< key cli_name >}} CLI in that environment
 (see [{{< key cli_name >}} CLI configuration search path](../../../api-reference/union-cli#-key-cli--cli-configuration-search-path)).
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
-By default, when created with a no-argument constructor, `{{< key kit_remote >}}` will use the prevailing configuration in the local environment to connect to {{< key product_name >}},
+By default, when created with `config=Config.auto()`, `{{< key kit_remote >}}` will use the prevailing configuration in the local environment to connect to {{< key product_name >}},
 that is, the same configuration as would be used by the {{< key cli_name >}} CLI in that environment
 (see [{{< key cli_name >}} CLI configuration search path](../../../api-reference/pyflyte-cli#-key-cli--cli-configuration-search-path)).
 {{< /markdown >}}
