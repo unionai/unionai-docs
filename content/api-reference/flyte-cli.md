@@ -288,23 +288,25 @@ Connect your local machine to a running Flyte task.
 
 Attach to a running ssh-debug task (launched with ``_F_E_SSH=1``).
 
-    Only RUN_NAME is required; ACTION_NAME defaults to the root action ``a0``.
-    The Bearer token is reused from a local cache between calls (no re-minting
-    every time); pass ``--refresh-token`` to force a new one.
+Only RUN_NAME is required; ACTION_NAME defaults to the root action ``a0``.
+The Bearer token is reused from a local cache between calls (no re-minting
+every time); pass ``--refresh-token`` to force a new one.
 
-    Examples:
+Examples:
 
-        # Resolve + print the ssh-config for a debug run's root action
-        $ flyte connect ssh my-run
+```bash
+# Resolve + print the ssh-config for a debug run's root action
+$ flyte connect ssh my-run
 
-        # A named host + login user, written into ~/.ssh/config
-        $ flyte connect ssh my-run --name my-run-dbg --user flyte --write-config
+# A named host + login user, written into ~/.ssh/config
+$ flyte connect ssh my-run --name my-run-dbg --user flyte --write-config
 
-        # Use a long-lived, user-specific API key for the tunnel auth
-        $ flyte connect ssh my-run --api-key --write-config
+# Use a long-lived, user-specific API key for the tunnel auth
+$ flyte connect ssh my-run --api-key --write-config
 
-        # Then connect (or VS Code -> Remote-SSH -> name)
-        $ ssh my-run-dbg
+# Then connect (or VS Code -> Remote-SSH -> <name>)
+$ ssh my-run-dbg
+```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -344,14 +346,16 @@ confused with Union Apps, which are a different construct entirely.
 
 Examples:
 
-    # Create an API key named "ci-pipeline"
-    $ flyte create api-key --name ci-pipeline
+```bash
+# Create an API key named "ci-pipeline"
+$ flyte create api-key --name ci-pipeline
 
-    # Create a locked-down key with no default policy attachments
-    $ flyte create api-key --name ci-pipeline --no-default-policies
+# Create a locked-down key with no default policy attachments
+$ flyte create api-key --name ci-pipeline --no-default-policies
 
-    # The output will include an export command like:
-    # export FLYTE_API_KEY="<base64-encoded-credentials>"
+# The output will include an export command like:
+# export FLYTE_API_KEY="<base64-encoded-credentials>"
+```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
