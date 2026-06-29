@@ -12,8 +12,10 @@ runtime. The paused action stays observable, resumable, and governable like any 
 you no longer need polling loops or side processes to wait on something the workflow can't produce
 itself.
 
-`flyte.new_condition(...)` registers a condition action and returns a handle; `await handle.wait()`
-blocks the task until the condition is signaled and returns the typed payload.
+Inside a task, `await flyte.new_condition.aio(...)` registers a condition action and returns a
+handle; `await handle.wait.aio()` blocks the task until the condition is signaled and returns the
+typed payload. (`new_condition` and `wait` are sync-by-default; in an `async def` task use their
+`.aio()` form.)
 
 ## Supported types
 
@@ -41,19 +43,19 @@ env = flyte.TaskEnvironment("approvals")
 async def etl_pipeline():
     staged = await transform()
 
-    approval = await flyte.new_condition(
+    approval = await flyte.new_condition.aio(
         "prod_write_approval",
         prompt="Approve writing staged data to production?",
         data_type=bool,
         timeout=timedelta(hours=24),
     )
-    if not await approval.wait():
+    if not await approval.wait.aio():
         raise RuntimeError("Pipeline rejected by reviewer")
 
     await write_to_prod(staged)
 ```
 
-The task pauses at `await approval.wait()` until someone signals the condition (see
+The task pauses at `await approval.wait.aio()` until someone signals the condition (see
 [Signaling a condition](#signaling-a-condition)). If the timeout elapses with no signal, `wait()`
 raises `flyte.errors.ConditionTimedoutError`.
 
@@ -69,43 +71,55 @@ env = flyte.TaskEnvironment("conditions")
 
 @env.task
 async def deploy_with_reason():
-    reason = await flyte.new_condition(
+    reason = await flyte.new_condition.aio(
         "deploy_reason",
         prompt="Enter a deployment reason to continue:",
         data_type=str,
     )
-    note: str = await reason.wait()
+    note: str = await reason.wait.aio()
     # `note` now holds the string a human supplied — use it downstream.
     await record_audit(note)
 ```
 
 ## Parameters
 
-`flyte.new_condition(name, *, prompt, prompt_type, data_type, description, timeout)`
+```python
+flyte.new_condition(
+    name,
+    prompt="Approve?",
+    prompt_type="text",
+    data_type=bool,
+    description="",
+    timeout=None,
+    webhook=None,
+)
+```
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `name` | `str` | required | Identifier for the condition within the parent action. Address it via the CLI / remote API as `<action-name>`. |
+| `name` | `str` | required | Identifier for the condition within the parent action. Signal it with this name (`flyte signal condition <run> <name>`) or look it up with `flyte.remote.Condition.get("<name>", ...)`. |
 | `prompt` | `str` | `"Approve?"` | Human-readable text shown in the UI signal form. |
 | `prompt_type` | `"text"` \| `"markdown"` | `"text"` | How the prompt is rendered. |
 | `data_type` | `type` | `bool` | Payload type — one of `bool`, `int`, `float`, `str`. Determines what `wait()` returns and what a signal must supply. |
 | `description` | `str` | `""` | Longer explanation rendered alongside the prompt. |
 | `timeout` | `timedelta` \| `int` \| `float` \| `None` | `None` | Maximum wait. If it elapses with no signal, `wait()` raises `flyte.errors.ConditionTimedoutError`. |
 
+An optional advanced `webhook` parameter accepts a `flyte.ConditionWebhook` so the backend POSTs a
+callback URL when the condition is created; see the API reference for details.
+
 ## Signaling a condition
 
-A condition is satisfied by delivering exactly one typed signal. Signaling is idempotent —
-re-signaling an already-satisfied condition raises `flyte.errors.ConditionAlreadyExistsError`.
+A condition is satisfied by delivering exactly one typed signal of its declared `data_type`.
 
 ### From the CLI
 
 ```shell
 # List the conditions on a run, optionally scoped to one parent action.
 flyte get condition <run-name>
-flyte get condition <run-name> <action-name>
+flyte get condition <run-name> <parent-action>
 
-# Signal a condition. Omit the value for an interactive typed prompt.
-flyte signal condition <run-name> <action-name> true
+# Signal a specific condition by its name. Omit the value for an interactive typed prompt.
+flyte signal condition <run-name> <condition-name> true
 ```
 
 The value is coerced to the condition's declared `data_type` (`true`/`false` for `bool`, integer
@@ -133,11 +147,13 @@ from datetime import timedelta
 import flyte
 from flyte.errors import ConditionTimedoutError
 
+env = flyte.TaskEnvironment("conditions")
+
 @env.task
 async def with_default():
-    cond = await flyte.new_condition("threshold", data_type=float, timeout=timedelta(minutes=30))
+    cond = await flyte.new_condition.aio("threshold", data_type=float, timeout=timedelta(minutes=30))
     try:
-        threshold = await cond.wait()
+        threshold = await cond.wait.aio()
     except ConditionTimedoutError:
         threshold = 0.5   # proceed with a default if no one responds
 ```
@@ -147,7 +163,7 @@ async def with_default():
 | Situation | Raised |
 |---|---|
 | Timeout elapses before a signal | `flyte.errors.ConditionTimedoutError` |
-| Condition signaled more than once | `flyte.errors.ConditionAlreadyExistsError` |
+| Creating a condition whose `name` already exists in the action | `flyte.errors.ConditionAlreadyExistsError` |
 | Condition fails during execution | `flyte.errors.ConditionFailedError` |
 | Signal value doesn't match `data_type` | `TypeError` (client-side, before any call) |
 | `wait()` called outside a task context | `RuntimeError` |
