@@ -725,7 +725,7 @@ For additional security, the EKS endpoint can be configured as `Private` only. I
 
 When AWS rolls out changes to the EKS endpoint, its IP address might change. To handle this and prevent any disconnect, the Union automation sets up a "jumper" ECS container in the customer account which forwards the incoming requests to the EKS Endpoint, acting as a reverse proxy, while a Network Load Balancer exposes an stable endpoint address. In this way, you get the security of a fully private connection and a reliable channel for Union staff to manage your cluster proactively or troubleshoot issues when needed.
 
-![](../../_static/images/deployment/data-plane-setup-on-aws/aws_private_link_architecture.png)
+![Diagram of the AWS PrivateLink setup connecting Union to a private EKS endpoint through a jumper ECS reverse proxy and a Network Load Balancer](../../_static/images/deployment/data-plane-setup-on-aws/aws_private_link_architecture.png)
 
 For this setup, there are additional requirements you'll need to complete in your AWS account:
 

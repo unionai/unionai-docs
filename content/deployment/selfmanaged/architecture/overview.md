@@ -8,7 +8,7 @@ variants: -flyte +union
 
 The {{< key product_name >}} architecture consists of two components, referred to as planes — the control plane and the data plane.
 
-![](../../../_static/images/deployment/architecture.svg)
+![Diagram of the architecture showing the control plane and data plane components](../../../_static/images/deployment/architecture.svg)
 
 ## Control plane
 
