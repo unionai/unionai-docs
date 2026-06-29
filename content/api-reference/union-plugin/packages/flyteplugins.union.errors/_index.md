@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.union.errors
-version: 0.4.2
+version: 0.4.3
 variants: +flyte +union
 layout: py_api
 ---
@@ -34,5 +34,6 @@ envelope) via the ``_code`` class attribute; subclasses just override it.
 | [`VolumeNotMounted`](../flyteplugins.union.errors/volumenotmounted) | An operation that needs a live mount was called on an unmounted Volume. |
 | [`VolumeStoreTypeNotSet`](../flyteplugins.union.errors/volumestoretypenotset) | The Volume's ``metadata_store_type`` is unset and couldn't be resolved. |
 | [`VolumeUnmountError`](../flyteplugins.union.errors/volumeunmounterror) | The volume could not be unmounted (``fusermount`` kept returning EBUSY). |
+| [`VolumeUnmountUnsupportedError`](../flyteplugins.union.errors/volumeunmountunsupportederror) | The runtime cannot unmount the FUSE client at all because ``fusermount``. |
 | [`VolumeUsageError`](../flyteplugins.union.errors/volumeusageerror) | Base for Volume *user* errors — caller misuse the caller can fix. |
 

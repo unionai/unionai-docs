@@ -10,8 +10,10 @@
     "flyteplugins.union.cli.policy": "/api-reference/union-plugin/packages/flyteplugins.union.cli.policy/",
     "flyteplugins.union.cli.queue": "/api-reference/union-plugin/packages/flyteplugins.union.cli.queue/",
     "flyteplugins.union.cli.role": "/api-reference/union-plugin/packages/flyteplugins.union.cli.role/",
+    "flyteplugins.union.cli.ssh": "/api-reference/union-plugin/packages/flyteplugins.union.cli.ssh/",
     "flyteplugins.union.cli.user": "/api-reference/union-plugin/packages/flyteplugins.union.cli.user/",
     "flyteplugins.union.cli.volume": "/api-reference/union-plugin/packages/flyteplugins.union.cli.volume/",
+    "flyteplugins.union.debug": "/api-reference/union-plugin/packages/flyteplugins.union.debug/",
     "flyteplugins.union.errors": "/api-reference/union-plugin/packages/flyteplugins.union.errors/",
     "flyteplugins.union.internal": "/api-reference/union-plugin/packages/flyteplugins.union.internal/",
     "flyteplugins.union.internal.validate": "/api-reference/union-plugin/packages/flyteplugins.union.internal.validate/",
@@ -21,9 +23,12 @@
     "flyteplugins.union.remote": "/api-reference/union-plugin/packages/flyteplugins.union.remote/",
     "flyteplugins.union.utils": "/api-reference/union-plugin/packages/flyteplugins.union.utils/",
     "flyteplugins.union.utils.auth": "/api-reference/union-plugin/packages/flyteplugins.union.utils.auth/",
-    "flyteplugins.union.utils.image": "/api-reference/union-plugin/packages/flyteplugins.union.utils.image/"
+    "flyteplugins.union.utils.image": "/api-reference/union-plugin/packages/flyteplugins.union.utils.image/",
+    "flyteplugins.union.ws_proxy": "/api-reference/union-plugin/packages/flyteplugins.union.ws_proxy/"
   },
   "identifiers": {
+    "flyteplugins.union.debug.SSHDebug": "/api-reference/union-plugin/packages/flyteplugins.union.debug/sshdebug/",
+    "SSHDebug": "/api-reference/union-plugin/packages/flyteplugins.union.debug/sshdebug/",
     "flyteplugins.union.errors.VolumeCommandError": "/api-reference/union-plugin/packages/flyteplugins.union.errors/volumecommanderror/",
     "VolumeCommandError": "/api-reference/union-plugin/packages/flyteplugins.union.errors/volumecommanderror/",
     "flyteplugins.union.errors.VolumeCommitError": "/api-reference/union-plugin/packages/flyteplugins.union.errors/volumecommiterror/",
@@ -46,6 +51,8 @@
     "VolumeStoreTypeNotSet": "/api-reference/union-plugin/packages/flyteplugins.union.errors/volumestoretypenotset/",
     "flyteplugins.union.errors.VolumeUnmountError": "/api-reference/union-plugin/packages/flyteplugins.union.errors/volumeunmounterror/",
     "VolumeUnmountError": "/api-reference/union-plugin/packages/flyteplugins.union.errors/volumeunmounterror/",
+    "flyteplugins.union.errors.VolumeUnmountUnsupportedError": "/api-reference/union-plugin/packages/flyteplugins.union.errors/volumeunmountunsupportederror/",
+    "VolumeUnmountUnsupportedError": "/api-reference/union-plugin/packages/flyteplugins.union.errors/volumeunmountunsupportederror/",
     "flyteplugins.union.errors.VolumeUsageError": "/api-reference/union-plugin/packages/flyteplugins.union.errors/volumeusageerror/",
     "VolumeUsageError": "/api-reference/union-plugin/packages/flyteplugins.union.errors/volumeusageerror/",
     "flyteplugins.union.io.ActionRef": "/api-reference/union-plugin/packages/flyteplugins.union.io/actionref/",
@@ -72,6 +79,7 @@
     "Queue": "/api-reference/union-plugin/packages/flyteplugins.union.remote/queue/",
     "flyteplugins.union.remote.Role": "/api-reference/union-plugin/packages/flyteplugins.union.remote/role/",
     "Role": "/api-reference/union-plugin/packages/flyteplugins.union.remote/role/",
+    "flyteplugins.union.remote.SSHDebug": "/api-reference/union-plugin/packages/flyteplugins.union.remote/sshdebug/",
     "flyteplugins.union.remote.User": "/api-reference/union-plugin/packages/flyteplugins.union.remote/user/",
     "User": "/api-reference/union-plugin/packages/flyteplugins.union.remote/user/",
     "flyteplugins.union.remote.VolumeExplore": "/api-reference/union-plugin/packages/flyteplugins.union.remote/volumeexplore/",
@@ -83,11 +91,13 @@
   },
   "methods": {
     "flyteplugins.union.cli.edit_with_retry": "/api-reference/union-plugin/packages/flyteplugins.union.cli/#edit_with_retry",
+    "flyteplugins.union.debug.with_debugcontext": "/api-reference/union-plugin/packages/flyteplugins.union.debug/#with_debugcontext",
     "flyteplugins.union.io.with_high_throughput_volume_deps": "/api-reference/union-plugin/packages/flyteplugins.union.io/#with_high_throughput_volume_deps",
     "flyteplugins.union.utils.with_local_flyteplugins_union": "/api-reference/union-plugin/packages/flyteplugins.union.utils/#with_local_flyteplugins_union",
     "flyteplugins.union.utils.auth.encode_app_client_credentials": "/api-reference/union-plugin/packages/flyteplugins.union.utils.auth/#encode_app_client_credentials",
     "flyteplugins.union.utils.auth.is_serverless_endpoint": "/api-reference/union-plugin/packages/flyteplugins.union.utils.auth/#is_serverless_endpoint",
     "flyteplugins.union.utils.image.local_dist_folder": "/api-reference/union-plugin/packages/flyteplugins.union.utils.image/#local_dist_folder",
-    "flyteplugins.union.utils.image.with_local_flyteplugins_union": "/api-reference/union-plugin/packages/flyteplugins.union.utils.image/#with_local_flyteplugins_union"
+    "flyteplugins.union.utils.image.with_local_flyteplugins_union": "/api-reference/union-plugin/packages/flyteplugins.union.utils.image/#with_local_flyteplugins_union",
+    "flyteplugins.union.ws_proxy.main": "/api-reference/union-plugin/packages/flyteplugins.union.ws_proxy/#main"
   }
 }
