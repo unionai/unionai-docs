@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.5.2
+version: 2.5.6
 variants: +flyte +union
 layout: py_api
 ---
@@ -68,6 +68,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`latest_checkpoint()`](#latest_checkpoint) | Return the file under *root* matching *glob_pattern* with the largest ``key(path)``, or ``None``. |
 | [`map()`](#map) | Map a function over the provided arguments with concurrent execution. |
 | [`new_condition()`](#new_condition) | Create a condition that can be awaited in a workflow. |
+| [`rerun()`](#rerun) | Re-run a prior run, returning a new `Run`. |
 | [`run()`](#run) | Run a task with the given parameters. |
 | [`run_python_script()`](#run_python_script) | Package and run a Python script on a remote Flyte cluster. |
 | [`serve()`](#serve) | Serve a Flyte app using an AppEnvironment. |
@@ -727,6 +728,38 @@ delivers the result as an inline ``Literal`` (protobuf scalar/primitive) in the
 
 **Returns:** An instance of _Condition representing the created condition
 
+#### rerun()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await rerun.aio()`.
+```python
+def rerun(
+    run_name: str,
+    action_name: str,
+    task_template: TaskTemplate[P, R, F] | None,
+    inputs: Any,
+) -> Run
+```
+Re-run a prior run, returning a new `Run`.
+
+`rerun("r1")` reuses the prior run's exact inputs (fetching its code from the platform);
+pass keyword inputs to change parameters (`rerun("r1", x=2)`), or `task_template=` to substitute
+code. Use `with_runcontext(...).rerun(...)` to apply run-context overrides (env_vars, recover, …).
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `run_name` | `str` | Name of the prior run to re-run. |
+| `action_name` | `str` | Action within the prior run to source the task + inputs from (default `a0`). |
+| `task_template` | `TaskTemplate[P, R, F] \| None` | Optional task to substitute for the prior run's code. |
+| `inputs` | `Any` | Optional native keyword inputs to change parameters; omit to reuse prior inputs. |
+
+**Returns:** the new Run.
+
 #### run()
 
 
@@ -907,6 +940,7 @@ def with_runcontext(
     cache_lookup_scope: CacheLookupScope,
     preserve_original_types: bool,
     debug: bool,
+    recover: bool | str | None,
     _tracker: Any,
 ) -> _Runner
 ```
@@ -968,6 +1002,7 @@ if __name__ == "__main__":
 | `cache_lookup_scope` | `CacheLookupScope` | Optional Scope to use for the run. This is used to specify the scope to use for cache lookups. If not specified, it will be set to the default scope (global unless overridden at the system level). |
 | `preserve_original_types` | `bool` | Optional If true, the type engine will preserve original types (e.g., pd.DataFrame) when guessing python types from literal types. If false (default), it will return the generic flyte.io.DataFrame. This option is automatically set to True if interactive_mode is True unless overridden explicitly by this parameter. |
 | `debug` | `bool` | Optional If true, the task will be run as a VSCode debug task, starting a code-server in the container so users can connect via the UI to interactively debug/run the task. |
+| `recover` | `bool \| str \| None` | Recover (reuse a prior run's succeeded actions, re-running only what failed or changed). ``True`` recovers from the run being rerun — only valid with ``.rerun(...)``; a run-name string recovers from that named run and is the only form valid on ``.run(...)``. Remote-only. Not yet supported by the backend (raises NotImplementedError at submit until flyteidl2 RunSpec.recover ships). |
 | `_tracker` | `Any` | This is an internal only parameter used by the CLI to render the TUI. |
 
 **Returns:** runner

@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.union.io
-version: 0.4.2
+version: 0.4.3
 variants: +flyte +union
 layout: py_api
 ---
@@ -35,7 +35,7 @@ under :mod:`flyteplugins.union.io._internal` and is not part of the public API.
 
 | Method | Description |
 |-|-|
-| [`with_high_throughput_volume_deps()`](#with_high_throughput_volume_deps) | Provision the in-pod Redis metadata daemon on ``base`` for Volumes that. |
+| [`with_high_throughput_volume_deps()`](#with_high_throughput_volume_deps) | Prepare ``base`` for high-throughput (Redis-backed) Volumes. |
 
 
 ## Methods
@@ -47,11 +47,14 @@ def with_high_throughput_volume_deps(
     base: Image,
 ) -> Image
 ```
-Provision the in-pod Redis metadata daemon on ``base`` for Volumes that
-use ``metadata_store_type="redis"``.
+Prepare ``base`` for high-throughput (Redis-backed) Volumes.
 
 Returns a new :class:`flyte.Image` that, on top of ``base``:
 
+* installs ``fuse3`` — the ``fusermount3`` userspace helper JuiceFS execs to
+  mount the FUSE filesystem. *Every* Volume mount needs this under the
+  default unprivileged :meth:`flyte.PodTemplate.allow_fuse`; without it the
+  mount client exits immediately with ``fuse: fuse is not installed``;
 * installs ``redis-server`` / ``redis-tools`` (the in-pod daemon the Redis
   store runs against), and
 * sets ``UNION_VOLUME_METADATA_STORE=redis`` so volumes created in this
@@ -59,11 +62,11 @@ Returns a new :class:`flyte.Image` that, on top of ``base``:
   without the caller passing ``metadata_store_type=`` each time (still
   overridable per-volume).
 
-This is the **only** image helper Volumes need. The default SQLite store
-runs in-process and mounts via raw syscalls under ``CAP_SYS_ADMIN`` +
-``/dev/fuse`` (``enable_fuse_mount=True`` on the
-:class:`flyte.TaskEnvironment`) — so a plain image that pip-installs
-``flyteplugins-union`` Just Works for it, no extra apt packages.
+With this helper the image is complete: just add
+``pod_template=flyte.PodTemplate().allow_fuse()`` to the
+:class:`flyte.TaskEnvironment` and Volumes mount and run. For the default
+SQLite store you don't need Redis, but you *do* still need ``fuse3`` —
+install it with ``image.with_apt_packages("fuse3")`` (see :meth:`Volume.mount`).
 
 
 | Parameter | Type | Description |

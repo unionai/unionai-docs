@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 2.5.2
+version: 2.5.6
 variants: +flyte +union
 layout: py_api
 ---

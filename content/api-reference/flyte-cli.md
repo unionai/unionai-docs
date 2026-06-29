@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.5.2
+version: 2.5.6
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -46,6 +46,7 @@ This is the command line interface for Flyte.
 | `gen` | [`docs`](#flyte-gen-docs)  |
 | `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
+| [`rerun`](#flyte-rerun) | - |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
 | `signal` | [`condition`](#flyte-signal-condition)  |
@@ -63,6 +64,7 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `action` | [`abort`](#flyte-abort-action), [`get`](#flyte-get-action)  |
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
+| `ssh` | [`connect⁺`](#flyte-connect-ssh)  |
 | `api-key` | [`create⁺`](#flyte-create-api-key), [`delete⁺`](#flyte-delete-api-key), [`get⁺`](#flyte-get-api-key)  |
 | `assignment` | [`create⁺`](#flyte-create-assignment), [`delete⁺`](#flyte-delete-assignment), [`get⁺`](#flyte-get-assignment)  |
 | `cluster` | [`create⁺`](#flyte-create-cluster), [`delete⁺`](#flyte-delete-cluster), [`get⁺`](#flyte-get-cluster)  |
@@ -95,6 +97,7 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
+| `connect⁺` | [`ssh⁺`](#flyte-connect-ssh)  |
 | `create` | [`api-key⁺`](#flyte-create-api-key), [`assignment⁺`](#flyte-create-assignment), [`cluster⁺`](#flyte-create-cluster), [`cluster-pool⁺`](#flyte-create-cluster-pool), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`queue⁺`](#flyte-create-queue), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
 | `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`cluster⁺`](#flyte-delete-cluster), [`cluster-pool⁺`](#flyte-delete-cluster-pool), [`devbox`](#flyte-delete-devbox), [`local-cache`](#flyte-delete-local-cache), [`policy⁺`](#flyte-delete-policy), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
 | [`deploy`](#flyte-deploy) | - |
@@ -103,6 +106,7 @@ This is the command line interface for Flyte.
 | `gen` | [`docs`](#flyte-gen-docs)  |
 | `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
+| [`rerun`](#flyte-rerun) | - |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
 | `signal` | [`condition`](#flyte-signal-condition)  |
@@ -261,6 +265,61 @@ flyte build --all --recursive ./src
 | {{< multiline >}}`--ignore-load-errors`
 `-i`{{< /multiline >}} | `boolean` | `False` | Ignore errors when loading environments, especially when using --recursive or --all. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant union >}}
+{{< markdown >}}
+### flyte connect
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte connect COMMAND [ARGS]...`**
+
+Connect your local machine to a running Flyte task.
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte connect ssh
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte connect ssh [OPTIONS] RUN_NAME [ACTION_NAME]`**
+
+Attach to a running ssh-debug task (launched with ``_F_E_SSH=1``).
+
+    Only RUN_NAME is required; ACTION_NAME defaults to the root action ``a0``.
+    The Bearer token is reused from a local cache between calls (no re-minting
+    every time); pass ``--refresh-token`` to force a new one.
+
+    Examples:
+
+        # Resolve + print the ssh-config for a debug run's root action
+        $ flyte connect ssh my-run
+
+        # A named host + login user, written into ~/.ssh/config
+        $ flyte connect ssh my-run --name my-run-dbg --user flyte --write-config
+
+        # Use a long-lived, user-specific API key for the tunnel auth
+        $ flyte connect ssh my-run --api-key --write-config
+
+        # Then connect (or VS Code -> Remote-SSH -> <name>)
+        $ ssh my-run-dbg
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--user` | `text` | `root` | SSH login user inside the pod. |
+| `--identity-file` | `text` |  | Private key to authenticate with. Defaults to the auto-managed ~/.flyte/ssh-debug/id_ed25519 (created for you; no ssh-keygen needed). |
+| {{< multiline >}}`--host-alias`
+`--name`{{< /multiline >}} | `text` | `flyte-debug` | Host name to use in the ~/.ssh/config block (use distinct names to keep several runs side by side). |
+| {{< multiline >}}`--api-key`
+`--no-api-key`{{< /multiline >}} | `boolean` | `False` | Authenticate the tunnel with a dedicated, long-lived API key (created/reused as `flyte-ssh-debug`) instead of your interactive session token. Survives re-logins and won't expire mid-session. |
+| `--refresh-token` | `boolean` | `False` | Force a fresh Bearer instead of reusing the cached one (use if you hit auth errors). |
+| `--write-config` | `boolean` | `False` | Write the Host block into ~/.ssh/config (replacing any prior block for the same name). |
+| `--timeout` | `float` | `300.0` | Seconds to wait for the debug route to become ready. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 ### flyte create
 
@@ -1064,7 +1123,7 @@ Browse a Volume's metadata index in an interactive TUI.
         # Different project / domain than the CLI default.
         $ flyte explore volume my-run my-action --project p --domain d
 
-        # Already-downloaded Volume .json — no control plane round-trip.
+        # Already-downloaded Volume .json — no control-plane round-trip.
         $ flyte explore volume --from-file ./my-volume.json
 
         # Raw index file (sqlite | redis) — debug path.
@@ -1719,6 +1778,35 @@ $ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --wait
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
+### flyte rerun
+
+**`flyte rerun [OPTIONS] RUN_NAME`**
+
+Re-run an existing run RUN_NAME with its original code and inputs.
+
+    Fetches the prior run's task + inputs from the platform (no local code needed) and launches a
+    new run that returns the same way ``flyte run`` does. To re-run with *new* local code (reusing
+    the prior run's inputs), use ``flyte run <file> <task> --rerun-from <run>``.
+
+    Examples:
+
+        $ flyte rerun ul56wcvgqrb9vzhzz5l2
+        $ flyte rerun ul56wcvgqrb9vzhzz5l2 --name retry-1 --follow
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project for the new run (defaults to config). |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain for the new run (defaults to config). |
+| `--name` | `text` |  | Name for the new run (a random name is generated if unset). |
+| {{< multiline >}}`-e`
+`--env`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Env var KEY=VALUE for the new run. Repeatable. |
+| `--label` | `text` | `Sentinel.UNSET` | Label KEY=VALUE for the new run. Repeatable. |
+| {{< multiline >}}`--follow`
+`-f`{{< /multiline >}} | `boolean` | `False` | Stream the parent action logs after launch. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
 ### flyte run
 
 **`flyte run [OPTIONS] COMMAND [ARGS]...`**
@@ -1837,6 +1925,8 @@ flyte run hello.py my_task --help
 `-e`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Environment variable to set on the run context. Format: KEY=VALUE. Can be specified multiple times, e.g. `-e LOG_LEVEL=debug -e FOO=bar`. |
 | `--max-action-concurrency` | `integer range` |  | Maximum number of actions that can run concurrently within the run. If not provided, the platform default (run.max_action_concurrency setting) applies. |
 | `--label` | `text` | `Sentinel.UNSET` | User-defined label to attach to the run. Format: KEY=VALUE. Can be specified multiple times, e.g. `--label team=ml --label env=prod`. |
+| `--rerun-from` | `text` |  | Re-run an existing run with THIS local code, reusing that run's inputs (no per-task input flags are needed). Remote-only. |
+| `--queue` | `text` |  | Queue (cluster) to send the run to. Overrides any queue set on the task. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte run deployed-task

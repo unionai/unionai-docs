@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.union.remote
-version: 0.4.2
+version: 0.4.3
 variants: +flyte +union
 layout: py_api
 ---
@@ -43,6 +43,7 @@ Example:
 | [`Policy`](../flyteplugins.union.remote/policy) | Represents a Union RBAC Policy. |
 | [`Queue`](../flyteplugins.union.remote/queue) | Represents a Union scheduling queue. |
 | [`Role`](../flyteplugins.union.remote/role) | Represents a Union RBAC Role. |
+| [`SSHDebug`](../flyteplugins.union.remote/sshdebug) | Resolved SSH-into-task connect info for a running debug action. |
 | [`User`](../flyteplugins.union.remote/user) | Represents a Union user. |
 | [`VolumeExplore`](../flyteplugins.union.remote/volumeexplore) | A resolved :class:`Volume` plus the IO to inspect and walk its lineage. |
 
