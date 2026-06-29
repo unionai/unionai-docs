@@ -1,6 +1,6 @@
 ---
 title: Agent
-version: 2.5.2
+version: 2.5.6
 variants: +flyte +union
 layout: py_api
 ---
@@ -55,10 +55,11 @@ code_mode:
     expression becomes the observation for the next turn; the loop ends when
     the LLM replies with plain text (no code block). This unlocks generated
     control flow (loops, ``flyte_map`` fan-out, intermediate aggregation)
-    while still dispatching ``@env.task`` tools durably on-cluster. Requires
-    ``pydantic-monty`` in the runtime image. Note: per-tool HITL approval is
-    not enforced in code mode, since tools are invoked from inside the
-    sandbox rather than as discrete approved calls.
+    while still dispatching ``@env.task`` tools durably on-cluster. Tools
+    with a ``call_handler`` run through that handler in code mode as well.
+    Requires ``pydantic-monty`` in the runtime image. Note: per-tool HITL
+    approval is not enforced in code mode, since tools are invoked from inside
+    the sandbox rather than as discrete approved calls.
 
 
 ## Parameters
