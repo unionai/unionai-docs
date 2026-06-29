@@ -303,7 +303,7 @@ Attach to a running ssh-debug task (launched with ``_F_E_SSH=1``).
         # Use a long-lived, user-specific API key for the tunnel auth
         $ flyte connect ssh my-run --api-key --write-config
 
-        # Then connect (or VS Code -> Remote-SSH -> <name>)
+        # Then connect (or VS Code -> Remote-SSH -> name)
         $ ssh my-run-dbg
 
 | Option | Type | Default | Description |
