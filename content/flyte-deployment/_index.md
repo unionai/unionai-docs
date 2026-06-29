@@ -29,3 +29,10 @@ Read these pages in order:
    sign-on in front of the console.
 4. [Serving apps](./app-serving) — running long-running apps on Knative, including how
    to install the Knative Serving prerequisite.
+
+Or, to try Flyte locally without provisioning any cloud infrastructure:
+
+- [Running Flyte locally with kind](./local-kind) — spin up the whole stack (Flyte,
+  PostgreSQL, MinIO) on a local kind cluster for evaluation.
+- [A local IdP with Dex](./local-dex) — run a throwaway OIDC provider in the cluster to
+  test the authentication flow without an external IdP.
