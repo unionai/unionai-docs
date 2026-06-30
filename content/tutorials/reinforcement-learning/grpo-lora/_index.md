@@ -269,7 +269,7 @@ This is where Flyte's reliability shows up with almost no code:
 
 `report=True` on the driver, together with the dependency-free toolkit in [`report_helpers.py`](https://github.com/unionai/unionai-examples/blob/main/v2/tutorials/rl_grpo_lora/report_helpers.py), gives you a self-contained HTML report that is re-published every iteration. It charts reward, accuracy, format rate, and loss, shows a per-iteration table, and surfaces the best sample completion. It is pure Python with inline SVG and no plotting dependency, so the CPU driver stays light. Open it from the run's **Report** tab in the Union UI and watch training move in real time.
 
-![Live GRPO training report in the Union UI](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/tutorials/reinforcement-learning/grpo-lora/report.png)
+![Live GRPO training report in the Union UI](../../../_static/images/tutorials/reinforcement-learning/grpo-lora/report.png)
 
 ## What this validates
 
