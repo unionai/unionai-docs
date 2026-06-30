@@ -292,7 +292,7 @@ if __name__ == "__main__":
 
 Every `NotebookTask` execution renders the executed notebook to HTML and logs it to the Flyte Report tab for that task. This happens whether the notebook succeeds or fails — see [Failure reports](#failure-reports) below. The report is on by default and requires no configuration.
 
-![HTML Report](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/integrations/papermill/default_report.png)
+![HTML Report](../../_static/images/integrations/papermill/default_report.png)
 
 ### Notebook artifacts
 
@@ -334,7 +334,7 @@ notebook = NotebookTask(
 )
 ```
 
-![Clean Report](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/integrations/papermill/clean_report.png)
+![Clean Report](../../_static/images/integrations/papermill/clean_report.png)
 
 ### Failure reports
 
@@ -342,7 +342,7 @@ The HTML report is rendered even when the notebook fails. Papermill writes the o
 
 This is especially useful for long-running notebooks: you can inspect partial results without re-running the whole pipeline.
 
-![Failed Report](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/integrations/papermill/failed_report.png)
+![Failed Report](../../_static/images/integrations/papermill/failed_report.png)
 
 ## Spark notebooks
 

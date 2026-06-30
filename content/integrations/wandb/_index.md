@@ -37,7 +37,7 @@ This example demonstrates the core pattern:
 
 The plugin handles calling `wandb.init()` and `wandb.finish()` for you, and automatically adds a link to the W&B run in the Flyte UI.
 
-![UI](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/integrations/wandb/ui.png)
+![UI](../../_static/images/integrations/wandb/ui.png)
 
 ## What's next
 

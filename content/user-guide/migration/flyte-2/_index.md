@@ -79,7 +79,7 @@ You can also fetch and run remote (previously deployed) tasks within the course 
 
 Author and run workflows and fetch workflow metadata (I/O and logs) directly from Jupyter notebooks.
 
-![Native Notebook](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/notebook.png)
+![Native Notebook](../../../_static/images/user-guide/notebook.png)
 
 {{< variant union >}}
 {{< markdown >}}
@@ -98,7 +98,7 @@ Coupled with multi-cluster, multi-cloud, and multi-region support, Flyte 2 on Un
 
 The Union.ai backend also offers a new UI with a streamlined and user-friendly experience for authoring and managing workflows.
 
-![New UI](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/v2ui.png)
+![New UI](../../../_static/images/user-guide/v2ui.png)
 
 This UI improves the visualization of workflow execution and monitoring, simplifying access to logs, metadata, and other important information.
 
