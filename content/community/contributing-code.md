@@ -92,7 +92,7 @@ To understand how the below components interact with each other, refer to [Compo
 > [!NOTE]
 > Except for `flytekit`, the below components are maintained in the [`flyte` monorepo](https://github.com/flyteorg/flyte).
 
-![Dependency graph between various flyteorg repos](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/community/contributing-code/dependency-graph.png)
+![Dependency graph between various flyteorg repos](../_static/images/community/contributing-code/dependency-graph.png)
 
 ### `flyte`
 
