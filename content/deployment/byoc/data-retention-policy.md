@@ -83,7 +83,7 @@ Edit the settings for a project and domain interactively, then set `storage.raw_
 flyte edit settings --domain production --project ml-pipeline
 ```
 
-You can also configure this in the Union UI under the project's settings. See [Settings](../../user-guide/core-concepts/settings) for the full list of available settings (including `storage.raw_data_path`) and how scopes are resolved.
+You can also configure this in the Union UI under the project's settings. See [Settings](../../user-guide/core-concepts/settings#available-settings) for the full list of available settings (including `storage.raw_data_path`) and how scopes are resolved.
 
 ## Data retention and task caching
 
