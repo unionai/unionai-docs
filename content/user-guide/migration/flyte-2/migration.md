@@ -11,6 +11,25 @@ For comprehensive migration reference with detailed API mappings, parameter tabl
 An LLM-optimized bundle of the full migration reference is available at [`section.md`](../../../api-reference/migration/section.md).
 {{< /note >}}
 
+## Terminology and concept mapping
+
+Several Flyte 1 concepts were renamed or reshaped in Flyte 2. The table below maps the ones you'll meet most often, so you can recognize the Flyte 2 equivalent of a term you already know.
+
+| Flyte 1 | Flyte 2 | Notes |
+|---|---|---|
+| `flytekit` (package) | `flyte` (package) | The Python SDK was renamed; imports change from `import flytekit` to `import flyte`. |
+| `pyflyte` (CLI) | `flyte` (CLI) | The command-line tool was renamed. |
+| `@task` / `@workflow` / `@dynamic` | `@env.task` | A single task decorator off a `flyte.TaskEnvironment`. Workflows and dynamic tasks are no longer distinct constructs — everything is a task, and orchestration is plain Python. |
+| `map_task()` | `flyte.map()` | Plus `asyncio.gather()` for async fan-out. |
+| `conditional()` | native `if` / `elif` / `else` | Branching is now ordinary Python control flow, not a DSL. |
+| `ImageSpec` | `flyte.Image` | Container image definition. |
+| `current_context()` | `flyte.ctx()` | Runtime context access. |
+| `LaunchPlan` | `flyte.Trigger` | Scheduling and parameterized entry points. |
+| `CronSchedule` | `flyte.Cron` | Cron-based scheduling, used with a `flyte.Trigger`. |
+| Decks (`enable_deck=True`) | Reports (`report=True`) | Custom HTML rendered in the UI during/after a run. See [Reports](../../task-programming/reports). |
+
+For the full API-level mapping — every import, parameter, and signature change with side-by-side examples — see [Migration from Flyte 1](../../../api-reference/migration/_index) in the Reference section.
+
 You can migrate from Flyte 1 to Flyte 2 by following the steps below:
 
 ### 1. Move task configuration to a `TaskEnvironment` object

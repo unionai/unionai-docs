@@ -11,6 +11,10 @@ Every task defined using that `TaskEnvironment` will run in a container based on
 
 If a `TaskEnvironment` does not specify an `image`, it will use the default Flyte image ([`ghcr.io/flyteorg/flyte:py{python-version}-v{flyte_version}`](https://github.com/orgs/flyteorg/packages/container/package/flyte)).
 
+{{< note >}}
+In Flyte 1 the container image was defined with `ImageSpec` (the `flytekit.ImageSpec` API). Flyte 2 uses `flyte.Image`, described below.
+{{< /note >}}
+
 ## Specifying your own image directly
 
 You can directly reference an image by URL in the `image` parameter, like this:

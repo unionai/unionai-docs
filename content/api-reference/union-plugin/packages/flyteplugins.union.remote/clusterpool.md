@@ -1,6 +1,6 @@
 ---
 title: ClusterPool
-version: 0.4.2
+version: 0.4.3
 variants: +flyte +union
 layout: py_api
 ---
