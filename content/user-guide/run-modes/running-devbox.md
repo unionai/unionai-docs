@@ -8,7 +8,7 @@ variants: +flyte +union
 
 <sl-alert open variant="primary">
   <sl-icon slot="icon" name="info-circle"></sl-icon>
-  <strong style="font-size: 1.75rem; line-height: 2;">💻 Try a Union.ai cluster locally</strong><br />
+  <strong style="font-size: 1.75rem; line-height: 2;">💻 Demo a Union.ai cluster locally</strong><br />
   The Flyte 2 devbox is a great way to try a simplified Union.ai cluster on your local machine.
 </sl-alert>
 
