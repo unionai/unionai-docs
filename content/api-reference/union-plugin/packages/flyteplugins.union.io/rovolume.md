@@ -1,6 +1,6 @@
 ---
 title: ROVolume
-version: 0.4.2
+version: 0.4.3
 variants: +flyte +union
 layout: py_api
 ---
@@ -66,6 +66,13 @@ validated to form a valid model.
 | `produced_by` | `typing.Optional[flyteplugins.union.io._base_volume.ActionRef]` | |
 | `parent_produced_by` | `typing.Optional[flyteplugins.union.io._base_volume.ActionRef]` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `locator` | `Optional[str]` | The object-store address of *this* published version, or ``None`` if the volume has never been sealed (a fresh :meth:`new` / :meth:`empty`).  It's the path of this version's metadata object (``produced_by.locator`` — the JSON value :func:`_publish_metadata` writes), which carries the complete Volume: ``index``, ``bucket``, ``metadata_store_type``, stats, and lineage. Persist it anywhere (a task output, your own store, a config) and recover the exact version later with :meth:`from_locator` — that's the across-run handle that doesn't depend on name or live task context.  Available immediately off a :meth:`RWVolume.commit` / ``finalize`` / :meth:`fork` result, since each stamps ``produced_by`` on the version it publishes. ``None`` before the first seal — there's no version to point at yet.  Durability note: the address lives under the producing action's output path, so it stays resolvable as long as that action's artifacts are retained. |
+| `mount_path` | `Optional[Path]` | Where this handle is currently mounted, or ``None`` if not mounted.  Set by :meth:`mount` and cleared by the terminal seal (:meth:`RWVolume.finalize` / auto-finalize). Use it to locate files without re-deriving the path: ``(vol.mount_path / "data.bin")``. |
+
 ## Methods
 
 | Method | Description |
@@ -73,9 +80,10 @@ validated to form a valid model.
 | [`commit()`](#commit) | **Deprecated. |
 | [`empty()`](#empty) | Declare a brand-new volume. |
 | [`fork()`](#fork) | Branch this immutable into a new writable working copy. |
+| [`from_locator()`](#from_locator) | Load a previously published volume version by its :attr:`locator`. |
 | [`migrate_metadata_store_type()`](#migrate_metadata_store_type) | Re-host this Volume's metadata on ``new_metadata_store_type``. |
 | [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialize private attributes. |
-| [`mount()`](#mount) | Mount this volume read-only at ``mount_path``. |
+| [`mount()`](#mount) | Mount this volume read-only at ``mount_path`` and return the path. |
 | [`new()`](#new) | PRD §Lifecycle: create a fresh empty :class:`RWVolume`. |
 
 
@@ -83,8 +91,8 @@ validated to form a valid model.
 
 ```python
 def commit(
-    mount_path: str,
-    meta_dir: str,
+    mount_path: Optional[str],
+    meta_dir: Optional[str],
     timeout: float,
     message: Optional[str],
 ) -> 'Volume'
@@ -102,8 +110,8 @@ working; it emits :class:`DeprecationWarning`.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `mount_path` | `str` | |
-| `meta_dir` | `str` | |
+| `mount_path` | `Optional[str]` | |
+| `meta_dir` | `Optional[str]` | |
 | `timeout` | `float` | |
 | `message` | `Optional[str]` | |
 
@@ -127,18 +135,24 @@ task context as ``{raw_data_root}/{project}/{domain}/volumes`` —
 following Flyte's own layout for offloaded data. Must be called
 from inside a task in that case.
 
+Regardless of store type, *mounting* the returned Volume needs a
+FUSE-capable image and pod — the ``fuse3`` apt package and
+``flyte.PodTemplate().allow_fuse()`` — see :meth:`mount` for the full
+runtime requirements.
+
 ``metadata_store_type`` controls the in-pod metadata backend. When
 omitted it resolves from ``$UNION_VOLUME_METADATA_STORE`` and
 otherwise defaults to ``"sqlite"``.
 
 * ``"sqlite"`` (default) keeps the namespace in a local SQLite file —
-  runs in-process with no extra package in the task image, and supports
-  :meth:`fork`.
+  runs in-process and needs no *extra* package beyond ``fuse3``, and
+  supports :meth:`fork`.
 * ``"redis"`` runs an in-process ``redis-server`` and persists the
   namespace as an RDB snapshot — faster than the embedded stores for
-  metadata-heavy workloads, but requires ``redis-server`` in the image
-  (see :func:`with_high_throughput_volume_deps`, which also sets
-  ``$UNION_VOLUME_METADATA_STORE=redis`` so it is the default there).
+  metadata-heavy workloads, but additionally requires ``redis-server``
+  in the image. Use :func:`with_high_throughput_volume_deps`, which
+  installs ``fuse3`` + ``redis-server`` and sets
+  ``$UNION_VOLUME_METADATA_STORE=redis`` so Redis is the default there.
 
 The choice is baked into the Volume and travels with it through
 lineage; subsequent mounts of the same Volume must use the same
@@ -170,7 +184,7 @@ the consumer's env.
 ```python
 def fork(
     name: str,
-    meta_dir: str,
+    meta_dir: Optional[str],
     timeout: float,
 ) -> 'RWVolume'
 ```
@@ -185,15 +199,42 @@ colliding on shared keys.
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | |
-| `meta_dir` | `str` | |
+| `meta_dir` | `Optional[str]` | |
 | `timeout` | `float` | |
+
+### from_locator()
+
+```python
+def from_locator(
+    locator: str,
+) -> 'ROVolume'
+```
+Load a previously published volume version by its :attr:`locator`.
+
+The inverse of :attr:`locator`: download the metadata object at
+``locator`` (the full serialized Volume value) and reconstruct it as an
+immutable :class:`ROVolume` — ``index``, ``bucket``,
+``metadata_store_type``, stats and lineage all recovered, so the result
+is mountable read-only (or :meth:`fork`-able to branch + write) without
+any other arguments. This is how you reference a specific volume version
+across runs: stash ``vol.locator`` somewhere, then ``Volume.from_locator``
+it back later.
+
+Reads only the metadata object; the index and chunks are fetched lazily
+by :meth:`mount`. Needs object-store credentials for ``locator`` but no
+active task context. Raises :class:`VolumeError` if ``locator`` is empty.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `locator` | `str` | |
 
 ### migrate_metadata_store_type()
 
 ```python
 def migrate_metadata_store_type(
     new_metadata_store_type: str,
-    meta_dir: str,
+    meta_dir: Optional[str],
     new_meta_dir: Optional[str],
 ) -> 'Volume'
 ```
@@ -226,7 +267,7 @@ one of the stores is ``"redis"``).
 | Parameter | Type | Description |
 |-|-|-|
 | `new_metadata_store_type` | `str` | |
-| `meta_dir` | `str` | |
+| `meta_dir` | `Optional[str]` | |
 | `new_meta_dir` | `Optional[str]` | |
 
 ### model_post_init()
@@ -250,28 +291,29 @@ It takes context as an argument since that's what pydantic-core passes when call
 
 ```python
 def mount(
-    mount_path: str,
-    meta_dir: str,
-    cache_dir: str,
+    mount_path: Optional[str],
+    meta_dir: Optional[str],
+    cache_dir: Optional[str],
     timeout: float,
     attr_cache: float,
     entry_cache: float,
     dir_entry_cache: float,
-)
+) -> Path
 ```
-Mount this volume read-only at ``mount_path``.
+Mount this volume read-only at ``mount_path`` and return the path.
 
-``read_only`` is intentionally absent from the signature — an
-:class:`ROVolume` is statically un-writable, so the writeback /
-upload-delay knobs that only make sense for write-paths are
+Unset paths default to this volume's name-keyed locations (see
+:meth:`Volume.mount`). ``read_only`` is intentionally absent from the
+signature — an :class:`ROVolume` is statically un-writable, so the
+writeback / upload-delay knobs that only make sense for write-paths are
 omitted too.
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `mount_path` | `str` | |
-| `meta_dir` | `str` | |
-| `cache_dir` | `str` | |
+| `mount_path` | `Optional[str]` | |
+| `meta_dir` | `Optional[str]` | |
+| `cache_dir` | `Optional[str]` | |
 | `timeout` | `float` | |
 | `attr_cache` | `float` | |
 | `entry_cache` | `float` | |
@@ -300,6 +342,10 @@ Equivalent in mechanics to :meth:`empty`, but:
 
 Prefer :meth:`new` in new code; :meth:`empty` is retained for
 existing callers that already declare ``-&gt; Volume``.
+
+Creating the handle does no I/O; the first :meth:`mount` formats the
+namespace and needs a FUSE-capable image + pod (``fuse3`` and
+``allow_fuse()`` — see :meth:`mount`).
 
 
 | Parameter | Type | Description |
