@@ -17,7 +17,7 @@ Unlike the other entries in this section, OpenTelemetry is not a Flyte plugin. I
 | Trace context propagation across task boundaries                       | `flyte.custom_context` / `flyte.ctx().custom_context` |
 | Tracer provider and span exporter                                      | Your code (`opentelemetry-sdk`)                       |
 | Auto-instrumentation for libraries (httpx, requests, SQLAlchemy, etc.) | Your code (`opentelemetry-instrumentation-*`)         |
-| Span emission for Flyte control-plane API calls                        | Not exposed                                           |
+| Span emission for Flyte control plane API calls                        | Not exposed                                           |
 | Span emission for task lifecycle (scheduling, retries)                 | Not exposed                                           |
 
 Flyte does not emit OTel spans into your collector. Every span that shows up in your tracing backend is one you create from inside your own code.

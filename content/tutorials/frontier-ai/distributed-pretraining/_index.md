@@ -160,7 +160,7 @@ The `_initialize_report` method (see complete code) creates an HTML/JavaScript d
 
 There is no need to deploy Grafana, configure Prometheus, or keep a TensorBoard server running. Using `flyte.report.log()` is sufficient to get live training metrics directly in the Flyte UI.
 
-![Metrics viz](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/tutorials/distributed-llm-pretraining/metrics.png)
+![Metrics viz](../../../_static/images/tutorials/distributed-llm-pretraining/metrics.png)
 
 ### Streaming data at scale
 
@@ -250,7 +250,7 @@ When you run this, Flyte:
 
 Open the Flyte UI to observe the workflow execution. The data preparation task completes first, followed by the training task spinning up. As training begins, the Flyte Reports dashboard starts plotting loss curves. If anything goes wrong, the logs are immediately available in the UI.
 
-![Training Log](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/tutorials/distributed-llm-pretraining/logs.png)
+![Training Log](../../../_static/images/tutorials/distributed-llm-pretraining/logs.png)
 
 If training fails due to an out-of-memory error, a GPU driver error, or a hardware issue, check the logs, fix the problem, and restart the run with `resume_checkpoint` pointing to the most recent checkpoint. Training resumes from where it left off. Flyte tracks the full execution history, so it is easy to see exactly what happened.
 

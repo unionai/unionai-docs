@@ -14,9 +14,11 @@ This tutorial extends the [Autoresearch agent](../autoresearch/_index) pattern w
 Compared to the single-threaded Claude Code autoresearch tutorial, this agent:
 
 - Edits full `train.py` source (upstream karpathy style) instead of calling a remote coding CLI
-- Uses **`code_mode=True`** so the LLM writes Python plans that call `run_experiment_batch` or `flyte_map`
+- Uses **`code_mode=True`** so the LLM writes Python plans that call batch tools such as `run_experiment_batch`
 - Persists a **leaderboard**, code-edit history, and batch plans in `MemoryStore`
-- Self-heals **OOM** during sandbox training runs by bumping memory and retrying
+- **Right-sizes each experiment** with an LLM via a `@tool` **`call_handler`**, then retries on Flyte or sandbox OOM by bumping memory
+
+Each experiment has different compute needs (wider models, larger batch sizes, longer training loops). A single static `flyte.Resources` on the task would either waste cluster memory or OOM on the heavy configs. Instead, this example uses the same [`call_handler` pattern](../../../user-guide/build-agent/flyte-agents) as the Flyte SDK self-correcting agent: before every run, a sizing LLM reads the tool name, docstring, and call arguments and returns a JSON resource spec; the handler applies it with `tool_fn.target.override(resources=...).aio(**kwargs)` and retries with more memory when needed.
 
 ## Define the task environments
 
@@ -26,9 +28,23 @@ The example uses three environments — bundle preparation, sandbox experiments,
 
 Supporting modules (`train.py`, `prepare.py`, `tools.py`, and `ui.py`) live alongside the entry point in the example directory.
 
+## Right-size experiments with `call_handler`
+
+The right-sizing logic lives in `tools.py`. `execute_with_right_sizing` asks the LLM for a resource estimate, runs the underlying `@env.task` with `override(resources=...)`, and loops on `flyte.errors.OOMError` or a sandbox-reported OOM flag until the run succeeds or retries are exhausted:
+
+{{< code file="/unionai-examples/v2/tutorials/parallelized_autoresearch/tools.py" fragment=right_size lang=python >}}
+
+`right_size` is the pre-built handler passed to `@tool(call_handler=...)`. The agent does not need a back-reference to the `Agent` instance — the harness passes `call_llm` and `tool_fn.model` into the handler on each invocation.
+
+The experiment task stacks `@tool(call_handler=tools.right_size)` on `@experiment_env.task`. The task body only loads edited code and runs sandbox training; sizing and OOM recovery happen in the handler:
+
+{{< code file="/unionai-examples/v2/tutorials/parallelized_autoresearch/parallelized_autoresearch.py" fragment=run_experiment lang=python >}}
+
+Batch fan-out calls `flyte.map.aio(run_experiment, ...)` from `run_experiment_batch`. That path invokes `run_experiment.aio()` directly — **not** through the agent registry — so the example binds `call_llm` and `model` on the tool after construction (see the `dataclasses.replace` block above). With Flyte SDK ≥ 2.5.5, `AgentTool.aio` routes through `call_handler`, so every mapped experiment gets LLM right-sizing even when the agent only exposes `run_experiment_batch` in code mode.
+
 ## The fan-out agent task
 
-The driver task `parallelized_autoresearch` restores prior memory (default key `parallelized-autoresearch`), streams Activity / Leaderboard / Code edits / Memory report tabs, and runs the code-mode agent loop.
+The driver task `parallelized_autoresearch` restores prior memory (default key `parallelized-autoresearch`), streams Activity / Leaderboard / Code edits / Memory report tabs, and runs the code-mode agent loop. The agent tool registry is trimmed to the batch workflow — `run_experiment` is internal to `run_experiment_batch`, not a sandbox function the LLM calls directly.
 
 {{< code file="/unionai-examples/v2/tutorials/parallelized_autoresearch/parallelized_autoresearch.py" fragment=agent lang=python >}}
 
@@ -36,7 +52,7 @@ The driver task `parallelized_autoresearch` restores prior memory (default key `
 
 ### Create secrets
 
-Register an Anthropic API key for the agent LLM calls:
+Register an Anthropic API key for agent LLM calls and for per-experiment resource sizing inside `call_handler`:
 
 ```
 flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
@@ -62,6 +78,6 @@ flyte run parallelized_autoresearch.py parallelized_autoresearch \
 ```
 
 > [!NOTE]
-> The first run downloads climbmix data shards and trains a BPE tokenizer. Subsequent runs reuse cached bundle tasks.
+> The first run downloads climbmix data shards and trains a BPE tokenizer. Subsequent runs reuse cached bundle tasks. Requires **Flyte SDK ≥ 2.5.5** for `call_handler` support in code mode and on `AgentTool.aio` (used by `flyte.map` fan-out).
 
 See also the single-task [Autoresearch agent](../autoresearch/_index) tutorial for the Claude Code + pull-request workflow.

@@ -1,6 +1,6 @@
 ---
 title: ActionDetails
-version: 2.5.2
+version: 2.5.6
 variants: +flyte +union
 layout: py_api
 ---
@@ -20,6 +20,7 @@ class ActionDetails(
     _inputs: ActionInputs | None,
     _outputs: ActionOutputs | None,
     _preserve_original_types: bool,
+    _action_data: dataproxy_service_pb2.GetActionDataResponse | None,
 )
 ```
 | Parameter | Type | Description |
@@ -28,6 +29,7 @@ class ActionDetails(
 | `_inputs` | `ActionInputs \| None` | |
 | `_outputs` | `ActionOutputs \| None` | |
 | `_preserve_original_types` | `bool` | |
+| `_action_data` | `dataproxy_service_pb2.GetActionDataResponse \| None` | |
 
 ## Properties
 
@@ -60,11 +62,15 @@ class ActionDetails(
 | [`get()`](#get) | Get a run by its ID or name. |
 | [`get_details()`](#get_details) | Get the details of the action. |
 | [`get_phase_transitions()`](#get_phase_transitions) | Get the phase transitions for a specific attempt, showing the granular breakdown. |
+| [`input_literals()`](#input_literals) | Return the action's raw input literals keyed by input name, without reconstructing types. |
 | [`inputs()`](#inputs) | Return the inputs of the action. |
 | [`logs_available()`](#logs_available) | Check if logs are available for the action, optionally for a specific attempt. |
+| [`output_literals()`](#output_literals) | Return the action's raw output literals keyed by output name (``o0``, ``o1``,. |
 | [`outputs()`](#outputs) | Returns the outputs of the action, returns instantly if outputs are already cached, else fetches them and. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
+| [`typed_inputs()`](#typed_inputs) | Fetch the action's inputs and re-hydrate the requested ones into caller-supplied types. |
+| [`typed_outputs()`](#typed_outputs) | Fetch the action's outputs and re-hydrate the requested ones into caller-supplied types. |
 | [`watch()`](#watch) | Watch the action for updates. |
 | [`watch_updates()`](#watch_updates) | Watch for updates to the action details, yielding each update until the action is done. |
 
@@ -146,6 +152,15 @@ of time spent in each phase (queued, initializing, running, etc.).
 List of PhaseTransitionInfo objects, one for each phase the action went through.
 
 
+### input_literals()
+
+```python
+def input_literals()
+```
+Return the action's raw input literals keyed by input name, without reconstructing types.
+The input-side equivalent of :meth:`output_literals`.
+
+
 ### inputs()
 
 ```python
@@ -169,6 +184,20 @@ If attempt is None, it checks for the latest attempt.
 | Parameter | Type | Description |
 |-|-|-|
 | `attempt` | `int \| None` | |
+
+### output_literals()
+
+```python
+def output_literals()
+```
+Return the action's raw output literals keyed by output name (``o0``, ``o1``, ...) without
+reconstructing the producer's types from the stored schema.
+
+Unlike :meth:`outputs`, this never calls ``guess_python_type``, so it can't fail (or pay the
+cost) when an output's type isn't reconstructable on the client, and it returns every output
+even if a sibling's type is un-guessable. Pair it with :meth:`typed_outputs` (or
+``TypeEngine.literal_map_to_kwargs``) to decode the specific outputs you care about.
+
 
 ### outputs()
 
@@ -203,6 +232,50 @@ Convert the object to a JSON string.
 
 
 **Returns:** str: A JSON string representation of the object.
+
+### typed_inputs()
+
+```python
+def typed_inputs(
+    types: Dict[str, type],
+    deserializers: Dict[type, Callable[[Any], Any]] | None,
+) -> Dict[str, Any]
+```
+Fetch the action's inputs and re-hydrate the requested ones into caller-supplied types.
+The input-side equivalent of :meth:`typed_outputs`; ``deserializers`` works the same way.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `types` | `Dict[str, type]` | |
+| `deserializers` | `Dict[type, Callable[[Any], Any]] \| None` | |
+
+### typed_outputs()
+
+```python
+def typed_outputs(
+    types: Dict[str, type],
+    deserializers: Dict[type, Callable[[Any], Any]] | None,
+) -> Dict[str, Any]
+```
+Fetch the action's outputs and re-hydrate the requested ones into caller-supplied types.
+
+This is the supported "give me this action's ``o0`` as ``MyModel``" path:
+
+* Only the outputs named in ``types`` are converted -- sibling outputs are never
+  reconstructed, so an un-reconstructable sibling type can't fail the whole fetch.
+* Because you supply the type, the result is your real class (with its validators, methods
+  and custom (de)serializers), not a permissive schema-derived look-alike.
+
+    present in the action's outputs.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `types` | `Dict[str, type]` | Mapping of output name (``o0``, ``o1``, ...) to the Python type to decode into. |
+| `deserializers` | `Dict[type, Callable[[Any], Any]] \| None` | Optional mapping of Python type -&gt; a callable that builds an instance from the raw (pre-validation) payload, e.g. ``{MyModel: MyModel.load}``. When a requested output's type appears here, the raw payload is handed to the callable instead of the default decode/``model_validate`` -- the hook for versioned-schema models that must migrate historical payloads before validation. Types not listed use the normal decode. |
+
+**Returns:** Mapping of output name to decoded value, restricted to the requested names that are
 
 ### watch()
 

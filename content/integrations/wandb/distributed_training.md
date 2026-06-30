@@ -31,7 +31,7 @@ A few things to note:
 The `if run:` check is always safe regardless of run mode. In `shared` and `new` modes all ranks get a run object, but the check doesn't hurt and keeps your code portable across modes.
 {{< /note >}}
 
-![Single-node auto](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/wandb/single_node_auto_flyte.png)
+![Single-node auto](../../_static/images/integrations/wandb/single_node_auto_flyte.png)
 
 ## Run modes in distributed training
 
@@ -157,11 +157,11 @@ def train_with_per_gpu_metrics() -> float:
     return loss
 ```
 
-![Single-node shared](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/wandb/single_node_shared_flyte.png)
+![Single-node shared](../../_static/images/integrations/wandb/single_node_shared_flyte.png)
 
 In the W&B UI, metrics from each rank appear with distinct labels, allowing you to compare GPU utilization and throughput across devices.
 
-![Single-node shared W&B UI](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/wandb/single_node_shared_wandb.png)
+![Single-node shared W&B UI](../../_static/images/integrations/wandb/single_node_shared_wandb.png)
 
 ### Using `new` mode for per-rank runs
 
@@ -334,7 +334,7 @@ With `run_mode="auto"`, `rank_scope="worker"`:
 - Run IDs follow the pattern `{run_name}-{action_name}-worker-{worker_index}`
 - The Flyte UI shows links to each worker's W&B run
 
-![Multi-node](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/wandb/multi_node.png)
+![Multi-node](../../_static/images/integrations/wandb/multi_node.png)
 
 ### Shared mode: All ranks log to the same run
 

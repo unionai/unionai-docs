@@ -8,6 +8,10 @@ variants: +flyte +union
 
 Triggers allow you to automate and parameterize an execution by scheduling its start time and providing overrides for its task inputs.
 
+{{< note >}}
+In Flyte 1 these were configured with a `LaunchPlan` (the `flytekit.LaunchPlan` API) and `CronSchedule`. Flyte 2 replaces them with `flyte.Trigger` and `flyte.Cron`, described below.
+{{< /note >}}
+
 Currently, only **schedule triggers** are supported.
 This type of trigger runs a task based on a Cron expression or a fixed-rate schedule.
 

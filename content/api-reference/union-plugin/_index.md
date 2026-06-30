@@ -1,6 +1,6 @@
 ---
 title: Union plugin
-version: 0.4.2
+version: 0.4.3
 variants: +flyte +union
 layout: py_api
 weight: 5
@@ -16,6 +16,7 @@ weight: 5
 
 | Class | Description |
 |-|-|
+| [`flyteplugins.union.debug.SSHDebug`](packages/flyteplugins.union.debug/sshdebug) | Resolved SSH-into-task connect info for a running debug action. |
 | [`flyteplugins.union.errors.VolumeCommandError`](packages/flyteplugins.union.errors/volumecommanderror) | A backend CLI invocation (e. |
 | [`flyteplugins.union.errors.VolumeCommitError`](packages/flyteplugins.union.errors/volumecommiterror) | A keep-alive checkpoint could not be made durable: the writeback staging. |
 | [`flyteplugins.union.errors.VolumeError`](packages/flyteplugins.union.errors/volumeerror) | Base for Volume *system* failures — infra/runtime problems the caller. |
@@ -27,6 +28,7 @@ weight: 5
 | [`flyteplugins.union.errors.VolumeNotMounted`](packages/flyteplugins.union.errors/volumenotmounted) | An operation that needs a live mount was called on an unmounted Volume. |
 | [`flyteplugins.union.errors.VolumeStoreTypeNotSet`](packages/flyteplugins.union.errors/volumestoretypenotset) | The Volume's ``metadata_store_type`` is unset and couldn't be resolved. |
 | [`flyteplugins.union.errors.VolumeUnmountError`](packages/flyteplugins.union.errors/volumeunmounterror) | The volume could not be unmounted (``fusermount`` kept returning EBUSY). |
+| [`flyteplugins.union.errors.VolumeUnmountUnsupportedError`](packages/flyteplugins.union.errors/volumeunmountunsupportederror) | The runtime cannot unmount the FUSE client at all because ``fusermount``. |
 | [`flyteplugins.union.errors.VolumeUsageError`](packages/flyteplugins.union.errors/volumeusageerror) | Base for Volume *user* errors — caller misuse the caller can fix. |
 | [`flyteplugins.union.io.ActionRef`](packages/flyteplugins.union.io/actionref) | Provenance: the action (one task execution within a run) that. |
 | [`flyteplugins.union.io.ROVolume`](packages/flyteplugins.union.io/rovolume) | Immutable, versioned volume — PRD §Core Concepts. |
@@ -40,6 +42,7 @@ weight: 5
 | [`flyteplugins.union.remote.Policy`](packages/flyteplugins.union.remote/policy) | Represents a Union RBAC Policy. |
 | [`flyteplugins.union.remote.Queue`](packages/flyteplugins.union.remote/queue) | Represents a Union scheduling queue. |
 | [`flyteplugins.union.remote.Role`](packages/flyteplugins.union.remote/role) | Represents a Union RBAC Role. |
+| [`flyteplugins.union.remote.SSHDebug`](packages/flyteplugins.union.remote/sshdebug) | Resolved SSH-into-task connect info for a running debug action. |
 | [`flyteplugins.union.remote.User`](packages/flyteplugins.union.remote/user) | Represents a Union user. |
 | [`flyteplugins.union.remote.VolumeExplore`](packages/flyteplugins.union.remote/volumeexplore) | A resolved :class:`Volume` plus the IO to inspect and walk its lineage. |
 | [`flyteplugins.union.remote.VolumeResolveError`](packages/flyteplugins.union.remote/volumeresolveerror) | No (or ambiguous) Volume-typed value could be resolved on an action. |
@@ -52,6 +55,7 @@ weight: 5
 | [`flyteplugins.union.cli`](packages/flyteplugins.union.cli/_index) |  |
 | [`flyteplugins.union.cli.cluster_pool`](packages/flyteplugins.union.cli.cluster_pool/_index) |  |
 | [`flyteplugins.union.cli.queue`](packages/flyteplugins.union.cli.queue/_index) |  |
+| [`flyteplugins.union.debug`](packages/flyteplugins.union.debug/_index) | SSH-into-task debug helpers. |
 | [`flyteplugins.union.errors`](packages/flyteplugins.union.errors/_index) | Volume-specific runtime errors. |
 | [`flyteplugins.union.internal.validate.validate.validate_pb2`](packages/flyteplugins.union.internal.validate.validate.validate_pb2/_index) | Generated protocol buffer code. |
 | [`flyteplugins.union.io`](packages/flyteplugins.union.io/_index) | Persistent, mountable :class:`Volume` type for the Flyte SDK v2. |
@@ -59,4 +63,5 @@ weight: 5
 | [`flyteplugins.union.utils`](packages/flyteplugins.union.utils/_index) | Public utilities for ``flyteplugins. |
 | [`flyteplugins.union.utils.auth`](packages/flyteplugins.union.utils.auth/_index) |  |
 | [`flyteplugins.union.utils.image`](packages/flyteplugins.union.utils.image/_index) | Shared helpers for building :class:`flyte. |
+| [`flyteplugins.union.ws_proxy`](packages/flyteplugins.union.ws_proxy/_index) | Stdio <-> WebSocket proxy used as an ssh ``ProxyCommand`` for ssh-into-task. |
 
