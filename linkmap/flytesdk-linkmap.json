@@ -426,6 +426,7 @@
     "flyte.latest_checkpoint": "/api-reference/flyte-sdk/packages/flyte/#latest_checkpoint",
     "flyte.map": "/api-reference/flyte-sdk/packages/flyte/#map",
     "flyte.new_condition": "/api-reference/flyte-sdk/packages/flyte/#new_condition",
+    "flyte.rerun": "/api-reference/flyte-sdk/packages/flyte/#rerun",
     "flyte.run": "/api-reference/flyte-sdk/packages/flyte/#run",
     "flyte.run_python_script": "/api-reference/flyte-sdk/packages/flyte/#run_python_script",
     "flyte.serve": "/api-reference/flyte-sdk/packages/flyte/#serve",

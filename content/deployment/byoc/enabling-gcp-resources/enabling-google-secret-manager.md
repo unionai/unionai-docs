@@ -30,12 +30,12 @@ Create your secrets in **Secret Manager** (see the [Secret Manager documentation
 
 Your secret should now be on the secrets list:
 
-![](../../../_static/images/user-guide/integrations/enabling-gcp-resources/enabling-google-secret-manager/secret-manager.png)
+![Google Secret Manager secrets list showing a secret named example-secret](../../../_static/images/user-guide/integrations/enabling-gcp-resources/enabling-google-secret-manager/secret-manager.png)
 
 Above we see a secret named `example-secret`.
 Clicking on it will bring us to the **Secret details** page:
 
-![](../../../_static/images/user-guide/integrations/enabling-gcp-resources/enabling-google-secret-manager/secret-details.png)
+![Google Secret Manager Secret details page for the example-secret secret](../../../_static/images/user-guide/integrations/enabling-gcp-resources/enabling-google-secret-manager/secret-details.png)
 
 The secret has three important identifiers:
 
