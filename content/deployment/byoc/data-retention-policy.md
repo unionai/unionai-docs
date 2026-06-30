@@ -49,7 +49,13 @@ To remedy this, you have to both re-deploy and re-run the workflow.
 
 ## Separating raw data from metadata
 
-You can route a run's **raw data** (offloaded values such as `flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, and checkpoints) to a different bucket or prefix than the rest of the run's data — for example, to a bucket with its own lifecycle rules. On BYOC this is done **per run, from the client**, so it needs no Helm setting and no changes to your data plane deployment:
+You can route a run's **raw data** (offloaded values such as `flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, and checkpoints) to a different bucket or prefix than the rest of the run's data — for example, to a bucket with its own lifecycle rules. Only the raw offloaded contents move; the `inputs.pb` / `outputs.pb` payloads still land in the configured metadata bucket. For the conceptual map of what "raw data" versus "metadata" means, see [Where your data lives](../../user-guide/core-concepts/where-data-lives).
+
+You can set the raw-data path **per run**, or as a **default for a whole project or domain**.
+
+### Per run
+
+Set `raw_data_path` on an individual run from the client:
 
 ```python
 import flyte
@@ -61,12 +67,23 @@ run = flyte.with_runcontext(
 ).run(my_task, x=1)
 ```
 
-The equivalent CLI flag is `flyte run --raw-data-path s3://my-other-bucket/some/prefix …`.
+Or use the `--raw-data-path` flag on `flyte run`:
 
-Only the raw offloaded contents move. The `inputs.pb` / `outputs.pb` payloads still land in the deployment's configured bucket. For the conceptual map of what "raw data" versus "metadata" means, see [Where your data lives](../../user-guide/core-concepts/where-data-lives).
+```shell
+flyte run --raw-data-path s3://my-other-bucket/some/prefix my_workflow.py main
+```
 
-> [!NOTE]
-> This is **per-run** configuration. A settable cluster-wide **default** raw-data path for a BYOC deployment is **not yet available** — there is currently no Helm value to point all runs' raw data at a separate bucket by default. To separate raw data today, set `raw_data_path` on each run as shown above.
+### As a project or domain default
+
+To point **all** runs in a project and/or domain at a separate raw-data path by default, set the `storage.raw_data_path` setting. This is self-service — no redeployment required — and settings resolve from broadest to narrowest scope (org → domain → project), so you can set a wide default and override it more specifically.
+
+Edit the settings for a project and domain interactively, then set `storage.raw_data_path` to your bucket or prefix:
+
+```shell
+flyte edit settings --domain production --project ml-pipeline
+```
+
+You can also configure this in the Union UI under the project's settings. See [Settings](../../user-guide/core-concepts/settings) for the full list of available settings (including `storage.raw_data_path`) and how scopes are resolved.
 
 ## Data retention and task caching
 
