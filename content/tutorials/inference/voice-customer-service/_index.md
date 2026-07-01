@@ -141,11 +141,9 @@ The model is public, so there is no token to set up. Bring up the two apps in or
 ```bash
 # 1. Bring up the GPU model server (provisions an L4 and pulls weights, so give it a few minutes)
 python app.py llm
-#    -> prints:  LLM app: https://<llm-url>
 
-# 2. Bring up the voice UI, pointed at the model from step 1
+# 2. Bring up the voice UI, pointed at the deployed model endpoint from step 1
 python app.py ui --llm-url https://<llm-url>
-#    -> prints:  Voice UI: https://<ui-url>
 ```
 
 Open the UI URL in Google Chrome, click the call button, and start talking. The first deploy of each app also builds its image, which takes a few minutes; later deploys reuse it.
