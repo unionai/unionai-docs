@@ -90,7 +90,7 @@ Finally, we run the workflow:
 
 When the workflow runs, the report will be visible in the UI:
 
-![Globe visualization](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/globe_visualization.png)
+![Globe visualization](../../_static/images/user-guide/globe_visualization.png)
 
 ## Streaming example
 
@@ -128,4 +128,4 @@ The key to the live update ability is the `while` loop that appends Javascript t
 
 When the workflow runs, you can see the report updating in real-time in the UI:
 
-![Data Processing Dashboard](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/data_processing_dashboard.png)
+![Data Processing Dashboard](../../_static/images/user-guide/data_processing_dashboard.png)

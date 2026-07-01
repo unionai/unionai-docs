@@ -54,6 +54,10 @@ Prompt engineering, prompt optimization, and context construction.
 Training, fine-tuning, and hyperparameter optimization of models at scale.
 {{< /link-card >}}
 
+{{< link-card target="reinforcement-learning" title="Reinforcement Learning" >}}
+RL fine-tuning of language models.
+{{< /link-card >}}
+
 {{< link-card target="data-processing" title="Data Processing" >}}
 Large-scale data processing and batching strategies.
 {{< /link-card >}}

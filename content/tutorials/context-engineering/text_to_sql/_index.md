@@ -15,7 +15,7 @@ Text-to-SQL narrows this gap by turning natural language into executable SQL que
 
 In this tutorial, we build a Text-to-SQL workflow using LlamaIndex and evaluate it on the [WikiTableQuestions dataset](https://ppasupat.github.io/WikiTableQuestions/) (a benchmark of natural language questions over semi-structured tables). We then explore prompt optimization to see whether it improves accuracy and show how to track prompts and results over time. Along the way, we'll see what worked, what didn't, and what we learned about building durable evaluation pipelines. The pattern here can be adapted to your own datasets and workflows.
 
-![Evaluation](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/tutorials/text-to-sql/evaluation.png)
+![Evaluation](../../../_static/images/tutorials/text-to-sql/evaluation.png)
 
 ## Ingesting data
 
@@ -147,7 +147,7 @@ We evaluate each prompt variant against the golden dataset, split into validatio
 
 Here's how prompt accuracy evolves over time, as shown in the UI report:
 
-![Prompt accuracies](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/tutorials/text-to-sql/prompt_accuracies.png)
+![Prompt accuracies](../../../_static/images/tutorials/text-to-sql/prompt_accuracies.png)
 
 ### Iterative optimization
 
