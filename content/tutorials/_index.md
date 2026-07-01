@@ -58,4 +58,8 @@ Training, fine-tuning, and hyperparameter optimization of models at scale.
 Large-scale data processing and batching strategies.
 {{< /link-card >}}
 
+{{< link-card target="inference" title="Inference" >}}
+Serving models and building inference applications as Flyte apps.
+{{< /link-card >}}
+
 {{< /grid >}}
