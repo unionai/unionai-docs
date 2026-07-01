@@ -173,7 +173,7 @@ curl -N https://<ui-url>/api/chat -H 'content-type: application/json' -d '{
 
 Because it is all plain Flyte apps, each of these is a small change:
 
-- **A bigger model.** You can swap in a larger model and run it on any silicon for better answers with slightly higher latency.
+- **A bigger model.** You can swap in a larger model and run it on any silicon for better answers with higher latency.
 - **A model switcher.** Deploy a second model app and set `LLM_BACKENDS` on the UI app to a comma-separated list of `Label|https://url` pairs. The switcher appears automatically and each turn routes to the selected model.
 - **Lower cost when idle.** Change the model app's `Scaling` to `replicas=(0, 1)` with a scaledown so the GPU is released when no one is calling, at the cost of a cold start on the next request. The header's model pill will show that cold start as it happens.
 - **Authentication.** Set `requires_auth=True` on the apps and pass a token from the client, so the demo doubles as an example of exposing an app safely.
