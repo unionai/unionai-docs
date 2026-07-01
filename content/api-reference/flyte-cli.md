@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.5.6
+version: 2.5.7
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -64,7 +64,6 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `action` | [`abort`](#flyte-abort-action), [`get`](#flyte-get-action)  |
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
-| `ssh` | [`connect⁺`](#flyte-connect-ssh)  |
 | `api-key` | [`create⁺`](#flyte-create-api-key), [`delete⁺`](#flyte-delete-api-key), [`get⁺`](#flyte-get-api-key)  |
 | `assignment` | [`create⁺`](#flyte-create-assignment), [`delete⁺`](#flyte-delete-assignment), [`get⁺`](#flyte-get-assignment)  |
 | `cluster` | [`create⁺`](#flyte-create-cluster), [`delete⁺`](#flyte-delete-cluster), [`get⁺`](#flyte-get-cluster)  |
@@ -97,7 +96,6 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
-| `connect⁺` | [`ssh⁺`](#flyte-connect-ssh)  |
 | `create` | [`api-key⁺`](#flyte-create-api-key), [`assignment⁺`](#flyte-create-assignment), [`cluster⁺`](#flyte-create-cluster), [`cluster-pool⁺`](#flyte-create-cluster-pool), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`queue⁺`](#flyte-create-queue), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
 | `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`cluster⁺`](#flyte-delete-cluster), [`cluster-pool⁺`](#flyte-delete-cluster-pool), [`devbox`](#flyte-delete-devbox), [`local-cache`](#flyte-delete-local-cache), [`policy⁺`](#flyte-delete-policy), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
 | [`deploy`](#flyte-deploy) | - |
@@ -255,61 +253,6 @@ flyte build --all --recursive ./src
 | `--all` | `boolean` | `False` | Build the images for all environments in the file or directory, ignoring the file name. |
 | `--ignore-load-errors` `-i` | `boolean` | `False` | Ignore errors when loading environments, especially when using --recursive or --all. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
-
-{{< variant union >}}
-{{< markdown >}}
-### flyte connect
-
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
-
-**`flyte connect COMMAND [ARGS]...`**
-
-Connect your local machine to a running Flyte task.
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant union >}}
-{{< markdown >}}
-#### flyte connect ssh
-
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
-
-**`flyte connect ssh [OPTIONS] RUN_NAME [ACTION_NAME]`**
-
-Attach to a running ssh-debug task (launched with ``_F_E_SSH=1``).
-
-Only RUN_NAME is required; ACTION_NAME defaults to the root action ``a0``.
-The Bearer token is reused from a local cache between calls (no re-minting
-every time); pass ``--refresh-token`` to force a new one.
-
-Examples:
-
-```bash
-# Resolve + print the ssh-config for a debug run's root action
-$ flyte connect ssh my-run
-
-# A named host + login user, written into ~/.ssh/config
-$ flyte connect ssh my-run --name my-run-dbg --user flyte --write-config
-
-# Use a long-lived, user-specific API key for the tunnel auth
-$ flyte connect ssh my-run --api-key --write-config
-
-# Then connect (or VS Code -> Remote-SSH -> <name>)
-$ ssh my-run-dbg
-```
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `--user` | `text` | `root` | SSH login user inside the pod. |
-| `--identity-file` | `text` |  | Private key to authenticate with. Defaults to the auto-managed ~/.flyte/ssh-debug/id_ed25519 (created for you; no ssh-keygen needed). |
-| `--host-alias` `--name` | `text` | `flyte-debug` | Host name to use in the ~/.ssh/config block (use distinct names to keep several runs side by side). |
-| `--api-key` `--no-api-key` | `boolean` | `False` | Authenticate the tunnel with a dedicated, long-lived API key (created/reused as `flyte-ssh-debug`) instead of your interactive session token. Survives re-logins and won't expire mid-session. |
-| `--refresh-token` | `boolean` | `False` | Force a fresh Bearer instead of reusing the cached one (use if you hit auth errors). |
-| `--write-config` | `boolean` | `False` | Write the Host block into ~/.ssh/config (replacing any prior block for the same name). |
-| `--timeout` | `float` | `300.0` | Seconds to wait for the debug route to become ready. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
-{{< /markdown >}}
-{{< /variant >}}
 
 ### flyte create
 
@@ -694,6 +637,55 @@ $ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@
 {{< /markdown >}}
 {{< /variant >}}
 
+{{< variant union >}}
+{{< markdown >}}
+### flyte debug
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte debug [OPTIONS] RUN_NAME [ACTION_NAME]`**
+
+Relaunch RUN_NAME's task with ssh-debug enabled, then connect.
+
+Only RUN_NAME is required; ACTION_NAME defaults to the root action ``a0``. The new run
+re-uses the original inputs and comes up with sshd; this then prints its ssh-config.
+
+Re-running ``flyte debug RUN_NAME`` reconnects to the same debug run (it isn't relaunched
+twice) and refreshes the token in place — so it doubles as "just reattach".
+
+Examples:
+
+```bash
+# Relaunch a prior run in debug mode and print its ssh-config
+$ flyte debug my-run
+
+# Named session (ssh Host alias + remote run name), written into ~/.ssh/config
+$ flyte debug my-run --name my-dbg --api-key --write-config
+
+# A new --name starts a fresh debug run (e.g. the previous one died)
+$ flyte debug my-run --name my-dbg2
+
+# Fire-and-forget: relaunch and return without waiting for the pod to come up
+$ flyte debug my-run --no-wait
+
+# Then connect (or VS Code -> Remote-SSH -> <name>)
+$ ssh my-dbg
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--user` | `text` | `root` | SSH login user inside the pod. |
+| `--identity-file` | `text` |  | Private key to authenticate with. Defaults to the auto-managed ~/.flyte/ssh-debug/id_ed25519 (created for you; no ssh-keygen needed). |
+| `--name` | `text` |  | Name for this debug session — used as both the ~/.ssh/config Host alias and the remote debug run name. Re-running with the same name reconnects to the live session; a new name starts a fresh debug run (handy if the previous one died). Defaults to a name derived from RUN_NAME. |
+| `--api-key` `--no-api-key` | `boolean` | `False` | Authenticate the tunnel with a dedicated, long-lived API key (created/reused as `flyte-ssh-debug`) instead of your interactive session token. Survives re-logins and won't expire mid-session. |
+| `--refresh-token` | `boolean` | `False` | Force a fresh Bearer instead of reusing the cached one (use if you hit auth errors). |
+| `--write-config` | `boolean` | `False` | Write the Host block into ~/.ssh/config (replacing any prior block for the same name). |
+| `--wait` `--no-wait` | `boolean` | `True` | Wait for the debug run to start and its ssh route to become ready, then print the ssh-config. With --no-wait, relaunch and return immediately (don't block on the pod coming up); re-run the same command later to attach once it's running. |
+| `--timeout` | `float` | `300.0` | Seconds to wait for the debug route to become ready. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 ### flyte delete
 
 **`flyte delete COMMAND [ARGS]...`**
@@ -749,19 +741,21 @@ Delete apps from a Flyte deployment.
 
 Unassign a policy from an identity.
 
-One of --user-subject or --creds-subject must be provided.
+Exactly one of --user-subject, --creds-subject, or --email must be provided.
 
 Examples:
 
 ```bash
 $ flyte --org my-org delete assignment --user-subject user-123 --policy admin
 $ flyte --org my-org delete assignment --creds-subject app-456 --policy admin
+$ flyte --org my-org delete assignment --email jane@example.com --policy admin
 ```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--user-subject` | `text` |  | User subject identifier |
 | `--creds-subject` | `text` |  | Client credentials application subject |
+| `--email` | `text` |  | User email for lookup |
 | `--policy` | `text` | `Sentinel.UNSET` | Policy name to unassign |
 | `--yes` | `boolean` | `False` | Skip confirmation prompt |
 | `--help` | `boolean` | `False` | Show this message and exit. |
@@ -1254,7 +1248,7 @@ Apps are long-running services deployed on the Flyte platform.
 
 Get or list assignments.
 
-Without --user-subject or --creds-subject, lists all assignments.
+Without --user-subject, --creds-subject, or --email, lists all assignments.
 
 Examples:
 
@@ -1262,12 +1256,14 @@ Examples:
 $ flyte --org my-org get assignment
 $ flyte --org my-org get assignment --user-subject user-123
 $ flyte --org my-org get assignment --creds-subject app-456
+$ flyte --org my-org get assignment --email jane@example.com
 ```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--user-subject` | `text` |  | User subject identifier |
 | `--creds-subject` | `text` |  | Client credentials application subject |
+| `--email` | `text` |  | User email for lookup |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}

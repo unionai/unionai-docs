@@ -1,6 +1,6 @@
 ---
 title: flyte.syncify
-version: 2.5.6
+version: 2.5.7
 variants: +flyte +union
 layout: py_api
 ---
