@@ -451,7 +451,7 @@ The only practical consideration is Python's normal attribute-vs-method conflict
 
 The Flyte I/O panel displays the literal wire representation of a `DictConfig`.
 
-![Wire Representation](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/integrations/omegaconf/input.png)
+![Wire Representation](../../_static/images/integrations/omegaconf/input.png)
 
 For a YAML view, enable a Flyte report on the task and log the config with `log_yaml`:
 
@@ -465,7 +465,7 @@ async def train(cfg: DictConfig) -> DictConfig:
     ...
 ```
 
-![YAML Report](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/integrations/omegaconf/yaml_repr.png)
+![YAML Report](../../_static/images/integrations/omegaconf/yaml_repr.png)
 
 The plugin also exposes:
 

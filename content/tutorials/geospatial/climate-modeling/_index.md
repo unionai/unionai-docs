@@ -12,7 +12,7 @@ In practice, many climate workflows are held together with scripts, cron jobs, a
 
 In this tutorial, we build a production-grade climate modeling pipeline using Flyte. We ingest data from three different sources in parallel, combine it with Dask, run ensemble atmospheric simulations on H200 GPUs, detect extreme weather events as they emerge, and visualize everything in a live dashboard. The entire pipeline is orchestrated, cached, and fault-tolerant, so it can run reliably at scale.
 
-![Report](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/tutorials/climate-modeling/report.png)
+![Report](../../../_static/images/tutorials/climate-modeling/report.png)
 
 > [!NOTE]
 > Full code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/climate_modeling/simulation.py).

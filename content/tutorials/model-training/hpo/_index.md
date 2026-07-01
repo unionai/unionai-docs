@@ -98,7 +98,7 @@ We pass the `objective` function, number of trials to run (`n_trials`), and maxi
 
 This method periodically prints the number of trials in each state (e.g., running, complete, fail). It keeps users informed of ongoing optimization progress and is invoked as a background task when logging is enabled.
 
-![Optuna logging](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/tutorials/hpo/logging.png)
+![Optuna logging](../../../_static/images/tutorials/hpo/logging.png)
 _Logs are streamed live as the execution progresses._
 
 {{< code file="/unionai-examples/v2/tutorials/ml/optimizer.py" fragment="optimizer-spawn" lang="python" >}}
@@ -137,5 +137,5 @@ Finally, we include an executable entry point to run this optimization using `fl
 
 We load Flyte config from `config.yaml`, launch the optimize task with 100 trials and concurrency of 10, and print a link to view the execution in the Flyte UI.
 
-![HPO execution](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/tutorials/hpo/execution.png)
+![HPO execution](../../../_static/images/tutorials/hpo/execution.png)
 _Each objective run is cached, recorded, and recoverable. With concurrency set to 10, only 10 trials execute in parallel at any given time._
