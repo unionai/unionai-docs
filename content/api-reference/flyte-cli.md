@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.5.6
+version: 2.5.7
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -64,7 +64,6 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `action` | [`abort`](#flyte-abort-action), [`get`](#flyte-get-action)  |
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
-| `ssh` | [`connect⁺`](#flyte-connect-ssh)  |
 | `api-key` | [`create⁺`](#flyte-create-api-key), [`delete⁺`](#flyte-delete-api-key), [`get⁺`](#flyte-get-api-key)  |
 | `assignment` | [`create⁺`](#flyte-create-assignment), [`delete⁺`](#flyte-delete-assignment), [`get⁺`](#flyte-get-assignment)  |
 | `cluster` | [`create⁺`](#flyte-create-cluster), [`delete⁺`](#flyte-delete-cluster), [`get⁺`](#flyte-get-cluster)  |
@@ -97,7 +96,6 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
-| `connect⁺` | [`ssh⁺`](#flyte-connect-ssh)  |
 | `create` | [`api-key⁺`](#flyte-create-api-key), [`assignment⁺`](#flyte-create-assignment), [`cluster⁺`](#flyte-create-cluster), [`cluster-pool⁺`](#flyte-create-cluster-pool), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`queue⁺`](#flyte-create-queue), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
 | `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`cluster⁺`](#flyte-delete-cluster), [`cluster-pool⁺`](#flyte-delete-cluster-pool), [`devbox`](#flyte-delete-devbox), [`local-cache`](#flyte-delete-local-cache), [`policy⁺`](#flyte-delete-policy), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
 | [`deploy`](#flyte-deploy) | - |
@@ -178,12 +176,16 @@ $ flyte --config /path/to/config.yaml run ...
 | `--version` | `boolean` | `False` | Show the version and exit. |
 | `--endpoint` | `text` | `Sentinel.UNSET` | The endpoint to connect to. This will override any configuration file and simply use `pkce` to connect. |
 | `--insecure` | `boolean` |  | Use an insecure connection to the endpoint. If not specified, the CLI will use TLS. |
-| `--image-builder` `--builder` | `choice` |  | Image builder to use for building images. Overrides the config file setting. If not specified, the builder from the config file (image.builder) is used, falling back to 'local'. |
+| {{< multiline >}}`--image-builder`
+`--builder`{{< /multiline >}} | `choice` |  | Image builder to use for building images. Overrides the config file setting. If not specified, the builder from the config file (image.builder) is used, falling back to 'local'. |
 | `--auth-type` | `choice` |  | Authentication type to use for the Flyte backend. Defaults to 'pkce'. |
-| `-v` `--verbose` | `integer` | `0` | Show verbose messages and exception traces. Repeating multiple times increases the verbosity (e.g., -vvv). |
+| {{< multiline >}}`-v`
+`--verbose`{{< /multiline >}} | `integer` | `0` | Show verbose messages and exception traces. Repeating multiple times increases the verbosity (e.g., -vvv). |
 | `--org` | `text` | `Sentinel.UNSET` | The organization to which the command applies. |
-| `-c` `--config` | `file` | `Sentinel.UNSET` | Path to the configuration file to use. If not specified, the default configuration file is used. |
-| `--output-format` `-of` | `choice` | `table` | Output format for commands that support it. Defaults to 'table'. |
+| {{< multiline >}}`-c`
+`--config`{{< /multiline >}} | `file` | `Sentinel.UNSET` | Path to the configuration file to use. If not specified, the default configuration file is used. |
+| {{< multiline >}}`--output-format`
+`-of`{{< /multiline >}} | `choice` | `table` | Output format for commands that support it. Defaults to 'table'. |
 | `--log-format` | `choice` | `console` | Formatting for logs, defaults to 'console' which is meant to be human readable. 'json' is meant for machine parsing. |
 | `--user-log-level` | `choice` | `info` | Log level for user task logs. Independent of the internal Flyte log level (-v). |
 | `--reset-root-logger` | `boolean` | `False` | If set, the root logger will be reset to use Flyte logging style |
@@ -205,8 +207,10 @@ Abort an action associated with a run.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--reason` | `text` | `Manually aborted from the CLI` | The reason to abort the run. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte abort run
@@ -218,8 +222,10 @@ Abort a run.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--reason` | `text` | `Manually aborted from the CLI` | The reason to abort the run. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte build
@@ -251,65 +257,12 @@ flyte build --all --recursive ./src
 |--------|------|---------|-------------|
 | `--copy-style` | `choice` | `loaded_modules` | Copy style of the eventual deploy. Must match the deploy's --copy-style so the image content hash — and therefore the registry tag — lines up. |
 | `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
-| `--recursive` `-r` | `boolean` | `False` | Recursively build all environments in the current directory and its subdirectories. |
+| {{< multiline >}}`--recursive`
+`-r`{{< /multiline >}} | `boolean` | `False` | Recursively build all environments in the current directory and its subdirectories. |
 | `--all` | `boolean` | `False` | Build the images for all environments in the file or directory, ignoring the file name. |
-| `--ignore-load-errors` `-i` | `boolean` | `False` | Ignore errors when loading environments, especially when using --recursive or --all. |
+| {{< multiline >}}`--ignore-load-errors`
+`-i`{{< /multiline >}} | `boolean` | `False` | Ignore errors when loading environments, especially when using --recursive or --all. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
-
-{{< variant union >}}
-{{< markdown >}}
-### flyte connect
-
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
-
-**`flyte connect COMMAND [ARGS]...`**
-
-Connect your local machine to a running Flyte task.
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant union >}}
-{{< markdown >}}
-#### flyte connect ssh
-
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
-
-**`flyte connect ssh [OPTIONS] RUN_NAME [ACTION_NAME]`**
-
-Attach to a running ssh-debug task (launched with ``_F_E_SSH=1``).
-
-Only RUN_NAME is required; ACTION_NAME defaults to the root action ``a0``.
-The Bearer token is reused from a local cache between calls (no re-minting
-every time); pass ``--refresh-token`` to force a new one.
-
-Examples:
-
-```bash
-# Resolve + print the ssh-config for a debug run's root action
-$ flyte connect ssh my-run
-
-# A named host + login user, written into ~/.ssh/config
-$ flyte connect ssh my-run --name my-run-dbg --user flyte --write-config
-
-# Use a long-lived, user-specific API key for the tunnel auth
-$ flyte connect ssh my-run --api-key --write-config
-
-# Then connect (or VS Code -> Remote-SSH -> <name>)
-$ ssh my-run-dbg
-```
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `--user` | `text` | `root` | SSH login user inside the pod. |
-| `--identity-file` | `text` |  | Private key to authenticate with. Defaults to the auto-managed ~/.flyte/ssh-debug/id_ed25519 (created for you; no ssh-keygen needed). |
-| `--host-alias` `--name` | `text` | `flyte-debug` | Host name to use in the ~/.ssh/config block (use distinct names to keep several runs side by side). |
-| `--api-key` `--no-api-key` | `boolean` | `False` | Authenticate the tunnel with a dedicated, long-lived API key (created/reused as `flyte-ssh-debug`) instead of your interactive session token. Survives re-logins and won't expire mid-session. |
-| `--refresh-token` | `boolean` | `False` | Force a fresh Bearer instead of reusing the cached one (use if you hit auth errors). |
-| `--write-config` | `boolean` | `False` | Write the Host block into ~/.ssh/config (replacing any prior block for the same name). |
-| `--timeout` | `float` | `300.0` | Seconds to wait for the debug route to become ready. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
-{{< /markdown >}}
-{{< /variant >}}
 
 ### flyte create
 
@@ -334,16 +287,14 @@ confused with Union Apps, which are a different construct entirely.
 
 Examples:
 
-```bash
-# Create an API key named "ci-pipeline"
-$ flyte create api-key --name ci-pipeline
+    # Create an API key named "ci-pipeline"
+    $ flyte create api-key --name ci-pipeline
 
-# Create a locked-down key with no default policy attachments
-$ flyte create api-key --name ci-pipeline --no-default-policies
+    # Create a locked-down key with no default policy attachments
+    $ flyte create api-key --name ci-pipeline --no-default-policies
 
-# The output will include an export command like:
-# export FLYTE_API_KEY="<base64-encoded-credentials>"
-```
+    # The output will include an export command like:
+    # export FLYTE_API_KEY="<base64-encoded-credentials>"
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -363,15 +314,13 @@ $ flyte create api-key --name ci-pipeline --no-default-policies
 
 Assign a policy to an identity.
 
-Exactly one of --user-subject, --creds-subject, or --email must be provided.
+    Exactly one of --user-subject, --creds-subject, or --email must be provided.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte --org my-org create assignment --user-subject user-123 --policy admin
-$ flyte --org my-org create assignment --creds-subject app-456 --policy admin
-$ flyte --org my-org create assignment --email jane@example.com --policy admin
-```
+        $ flyte --org my-org create assignment --user-subject user-123 --policy admin
+        $ flyte --org my-org create assignment --creds-subject app-456 --policy admin
+        $ flyte --org my-org create assignment --email jane@example.com --policy admin
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -393,13 +342,11 @@ $ flyte --org my-org create assignment --email jane@example.com --policy admin
 
 Register a new cluster.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte create cluster my-cluster
+        $ flyte create cluster my-cluster
 
-$ flyte create cluster my-cluster --pool my-pool
-```
+        $ flyte create cluster my-cluster --pool my-pool
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -418,16 +365,14 @@ $ flyte create cluster my-cluster --pool my-pool
 
 Create a cluster pool.
 
-A cluster pool holds the object store / secret store / image registry config
-shared by its member clusters. Requires --file or --edit to supply the config.
+    A cluster pool holds the object store / secret store / image registry config
+    shared by its member clusters. Requires --file or --edit to supply the config.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte create cluster-pool my-pool --edit
+        $ flyte create cluster-pool my-pool --edit
 
-$ flyte create cluster-pool my-pool --file pool.yaml
-```
+        $ flyte create cluster-pool my-pool --file pool.yaml
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -450,13 +395,17 @@ If the file already exists, it will raise an error unless the `--force` option i
 | `--endpoint` | `text` | `Sentinel.UNSET` | Endpoint of the Flyte backend. |
 | `--insecure` | `boolean` | `False` | Use an insecure connection to the Flyte backend. |
 | `--org` | `text` | `Sentinel.UNSET` | Organization to use. This will override the organization in the configuration file. |
-| `-o` `--output` | `path` | `.flyte/config.yaml` | Path to the output directory where the configuration will be saved. Defaults to current directory. |
+| {{< multiline >}}`-o`
+`--output`{{< /multiline >}} | `path` | `.flyte/config.yaml` | Path to the output directory where the configuration will be saved. Defaults to current directory. |
 | `--force` | `boolean` | `False` | Force overwrite of the configuration file if it already exists. |
-| `--image-builder` `--builder` | `choice` | `local` | Image builder to use for building images. Defaults to 'local'. |
+| {{< multiline >}}`--image-builder`
+`--builder`{{< /multiline >}} | `choice` | `local` | Image builder to use for building images. Defaults to 'local'. |
 | `--auth-type` | `choice` |  | Authentication type to use for the Flyte backend. Defaults to 'pkce'. |
 | `--local-persistence` | `boolean` | `False` | Enable SQLite persistence for local run metadata, allowing past runs to be browsed via 'flyte start tui'. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 {{< variant union >}}
@@ -469,14 +418,12 @@ If the file already exists, it will raise an error unless the `--force` option i
 
 Create a policy.
 
-Requires --file or --edit to specify bindings for the policy.
+    Requires --file or --edit to specify bindings for the policy.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte --org my-org create policy my-policy --edit
-$ flyte --org my-org create policy my-policy --file policy.yaml
-```
+        $ flyte --org my-org create policy my-policy --edit
+        $ flyte --org my-org create policy my-policy --file policy.yaml
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -505,7 +452,8 @@ flyte create project --id my_project_id --name "My Project" --description "My pr
 | `--id` | `text` | `Sentinel.UNSET` | Unique identifier for the project (immutable). |
 | `--name` | `text` | `Sentinel.UNSET` | Display name for the project. |
 | `--description` | `text` | `` | Description for the project. |
-| `--label` `-l` | `text` | `Sentinel.UNSET` | Labels as key=value pairs. Can be specified multiple times. |
+| {{< multiline >}}`--label`
+`-l`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Labels as key=value pairs. Can be specified multiple times. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 {{< variant union >}}
@@ -518,23 +466,21 @@ flyte create project --id my_project_id --name "My Project" --description "My pr
 
 Create a scheduling queue.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte create queue my-queue --run-concurrency 100 --action-concurrency 1000
+        $ flyte create queue my-queue --run-concurrency 100 --action-concurrency 1000
 
-$ flyte create queue gpu-queue --run-concurrency 50 --action-concurrency 500 \
-    --priority min --cluster gpu-cluster-1
+        $ flyte create queue gpu-queue --run-concurrency 50 --action-concurrency 500 \
+            --priority min --cluster gpu-cluster-1
 
-$ flyte create queue pool-queue --run-concurrency 50 --action-concurrency 500 \
-    --cluster-pool gpu-pool
+        $ flyte create queue pool-queue --run-concurrency 50 --action-concurrency 500 \
+            --cluster-pool gpu-pool
 
-$ flyte create queue backfill --run-concurrency 10 --action-concurrency 100 \
-    --depth 5000 --priority max
+        $ flyte create queue backfill --run-concurrency 10 --action-concurrency 100 \
+            --depth 5000 --priority max
 
-$ flyte create queue team-queue --run-concurrency 100 --action-concurrency 1000 \
-    --project my-project --domain production
-```
+        $ flyte create queue team-queue --run-concurrency 100 --action-concurrency 1000 \
+            --project my-project --domain production
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -561,14 +507,12 @@ $ flyte create queue team-queue --run-concurrency 100 --action-concurrency 1000 
 
 Create a role.
 
-Requires --file or --edit to specify actions for the role.
+    Requires --file or --edit to specify actions for the role.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte --org my-org create role my-role --edit
-$ flyte --org my-org create role my-role --file role.yaml
-```
+        $ flyte --org my-org create role my-role --edit
+        $ flyte --org my-org create role my-role --file role.yaml
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -639,8 +583,10 @@ $ flyte create secret my_secret --type image_pull --from-docker-config --registr
 | `--username` | `text` | `Sentinel.UNSET` | Username for the registry (only with --registry). |
 | `--password` | `text` | `Sentinel.UNSET` | Password for the registry (only with --registry). If not provided, will prompt. |
 | `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with --project and --domain. Mutually exclusive with project, domain. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte create trigger
@@ -663,8 +609,10 @@ This will create a trigger that runs every day at midnight.
 | `--description` | `text` | `` | Description of the trigger. |
 | `--auto-activate` | `boolean` | `True` | Whether the trigger should not be automatically activated. Defaults to True. |
 | `--trigger-time-var` | `text` | `trigger_time` | Variable name for the trigger time in the task inputs. Defaults to 'trigger_time'. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 {{< variant union >}}
@@ -677,12 +625,10 @@ This will create a trigger that runs every day at midnight.
 
 Create (invite) a new user.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@example.com
-$ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@example.com --policy admin
-```
+        $ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@example.com
+        $ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@example.com --policy admin
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -690,6 +636,55 @@ $ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@
 | `--last-name` | `text` | `Sentinel.UNSET` | Last name of the user |
 | `--email` | `text` | `Sentinel.UNSET` | Email address of the user |
 | `--policy` | `text` |  | Policy to assign to the user after creation |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+### flyte debug
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte debug [OPTIONS] RUN_NAME [ACTION_NAME]`**
+
+Relaunch RUN_NAME's task with ssh-debug enabled, then connect.
+
+    Only RUN_NAME is required; ACTION_NAME defaults to the root action ``a0``. The new run
+    re-uses the original inputs and comes up with sshd; this then prints its ssh-config.
+
+    Re-running ``flyte debug RUN_NAME`` reconnects to the same debug run (it isn't relaunched
+    twice) and refreshes the token in place — so it doubles as "just reattach".
+
+    Examples:
+
+        # Relaunch a prior run in debug mode and print its ssh-config
+        $ flyte debug my-run
+
+        # Named session (ssh Host alias + remote run name), written into ~/.ssh/config
+        $ flyte debug my-run --name my-dbg --api-key --write-config
+
+        # A new --name starts a fresh debug run (e.g. the previous one died)
+        $ flyte debug my-run --name my-dbg2
+
+        # Fire-and-forget: relaunch and return without waiting for the pod to come up
+        $ flyte debug my-run --no-wait
+
+        # Then connect (or VS Code -> Remote-SSH -> <name>)
+        $ ssh my-dbg
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--user` | `text` | `root` | SSH login user inside the pod. |
+| `--identity-file` | `text` |  | Private key to authenticate with. Defaults to the auto-managed ~/.flyte/ssh-debug/id_ed25519 (created for you; no ssh-keygen needed). |
+| `--name` | `text` |  | Name for this debug session — used as both the ~/.ssh/config Host alias and the remote debug run name. Re-running with the same name reconnects to the live session; a new name starts a fresh debug run (handy if the previous one died). Defaults to a name derived from RUN_NAME. |
+| {{< multiline >}}`--api-key`
+`--no-api-key`{{< /multiline >}} | `boolean` | `False` | Authenticate the tunnel with a dedicated, long-lived API key (created/reused as `flyte-ssh-debug`) instead of your interactive session token. Survives re-logins and won't expire mid-session. |
+| `--refresh-token` | `boolean` | `False` | Force a fresh Bearer instead of reusing the cached one (use if you hit auth errors). |
+| `--write-config` | `boolean` | `False` | Write the Host block into ~/.ssh/config (replacing any prior block for the same name). |
+| {{< multiline >}}`--wait`
+`--no-wait`{{< /multiline >}} | `boolean` | `True` | Wait for the debug run to start and its ssh route to become ready, then print the ssh-config. With --no-wait, relaunch and return immediately (don't block on the pod coming up); re-run the same command later to attach once it's running. |
+| `--timeout` | `float` | `300.0` | Seconds to wait for the debug route to become ready. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
@@ -712,13 +707,11 @@ Delete an API key.
 
 Examples:
 
-```bash
-# Delete an API key (with confirmation)
-$ flyte delete api-key my-client-id
+    # Delete an API key (with confirmation)
+    $ flyte delete api-key my-client-id
 
-# Delete without confirmation
-$ flyte delete api-key my-client-id --yes
-```
+    # Delete without confirmation
+    $ flyte delete api-key my-client-id --yes
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -735,8 +728,10 @@ Delete apps from a Flyte deployment.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 {{< variant union >}}
@@ -749,19 +744,19 @@ Delete apps from a Flyte deployment.
 
 Unassign a policy from an identity.
 
-One of --user-subject or --creds-subject must be provided.
+    Exactly one of --user-subject, --creds-subject, or --email must be provided.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte --org my-org delete assignment --user-subject user-123 --policy admin
-$ flyte --org my-org delete assignment --creds-subject app-456 --policy admin
-```
+        $ flyte --org my-org delete assignment --user-subject user-123 --policy admin
+        $ flyte --org my-org delete assignment --creds-subject app-456 --policy admin
+        $ flyte --org my-org delete assignment --email jane@example.com --policy admin
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--user-subject` | `text` |  | User subject identifier |
 | `--creds-subject` | `text` |  | Client credentials application subject |
+| `--email` | `text` |  | User email for lookup |
 | `--policy` | `text` | `Sentinel.UNSET` | Policy name to unassign |
 | `--yes` | `boolean` | `False` | Skip confirmation prompt |
 | `--help` | `boolean` | `False` | Show this message and exit. |
@@ -778,13 +773,11 @@ $ flyte --org my-org delete assignment --creds-subject app-456 --policy admin
 
 Delete a cluster.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte delete cluster my-cluster
+        $ flyte delete cluster my-cluster
 
-$ flyte delete cluster my-cluster --yes
-```
+        $ flyte delete cluster my-cluster --yes
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -803,13 +796,11 @@ $ flyte delete cluster my-cluster --yes
 
 Delete a cluster pool.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte delete cluster-pool my-pool
+        $ flyte delete cluster-pool my-pool
 
-$ flyte delete cluster-pool my-pool --yes
-```
+        $ flyte delete cluster-pool my-pool --yes
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -848,12 +839,10 @@ run history, and task caching.
 
 Delete a policy.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte --org my-org delete policy my-policy
-$ flyte --org my-org delete policy my-policy --yes
-```
+        $ flyte --org my-org delete policy my-policy
+        $ flyte --org my-org delete policy my-policy --yes
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -872,12 +861,10 @@ $ flyte --org my-org delete policy my-policy --yes
 
 Delete a role.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte --org my-org delete role my-role
-$ flyte --org my-org delete role my-role --yes
-```
+        $ flyte --org my-org delete role my-role
+        $ flyte --org my-org delete role my-role --yes
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -895,8 +882,10 @@ Delete a secret. The name of the secret is required.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with --project and --domain. Mutually exclusive with project, domain. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte delete trigger
@@ -907,8 +896,10 @@ Delete a trigger. The name of the trigger is required.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 {{< variant union >}}
@@ -921,12 +912,10 @@ Delete a trigger. The name of the trigger is required.
 
 Delete a user.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte --org my-org delete user user-subject-id
-$ flyte --org my-org delete user user-subject-id --yes
-```
+        $ flyte --org my-org delete user user-subject-id
+        $ flyte --org my-org delete user user-subject-id --yes
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1033,15 +1022,20 @@ flyte deploy hello.py --help
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--version` | `text` | `Sentinel.UNSET` | Version of the environment to deploy |
-| `--dry-run` `--dryrun` | `boolean` | `False` | Dry run. Do not actually call the backend service. |
+| {{< multiline >}}`--dry-run`
+`--dryrun`{{< /multiline >}} | `boolean` | `False` | Dry run. Do not actually call the backend service. |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
 | `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
-| `--recursive` `-r` | `boolean` | `False` | Recursively deploy all environments in the current directory |
+| {{< multiline >}}`--recursive`
+`-r`{{< /multiline >}} | `boolean` | `False` | Recursively deploy all environments in the current directory |
 | `--all` | `boolean` | `False` | Deploy all environments in the current directory, ignoring the file name |
-| `--ignore-load-errors` `-i` | `boolean` | `False` | Ignore errors when loading environments especially when using --recursive or --all. |
+| {{< multiline >}}`--ignore-load-errors`
+`-i`{{< /multiline >}} | `boolean` | `False` | Ignore errors when loading environments especially when using --recursive or --all. |
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
@@ -1056,28 +1050,31 @@ flyte deploy hello.py --help
 
 Edit hierarchical settings interactively — or apply a YAML file directly.
 
-**Interactive mode** (default). Opens settings in your ``$EDITOR``. Three
-comment tiers appear:
+    **Interactive mode** (default). Opens settings in your ``$EDITOR``. Three
+    comment tiers appear:
 
-- ``###`` section headers and the scope line
-- ``##`` per-field descriptions and inline metadata
-- ``#`` inactive settings (uncomment the single ``#`` to activate)
+    - ``###`` section headers and the scope line
+    - ``##`` per-field descriptions and inline metadata
+    - ``#`` inactive settings (uncomment the single ``#`` to activate)
 
-If the edited YAML fails to parse, the editor reopens with an error
-header so you can fix the syntax without losing your edits. If you
-decline to reopen — or if the server rejects the update — your buffer
-is saved under ``~/.flyte/settings-edit-<timestamp>.yaml``.
+    If the edited YAML fails to parse, the editor reopens with an error
+    header so you can fix the syntax without losing your edits. If you
+    decline to reopen — or if the server rejects the update — your buffer
+    is saved under ``~/.flyte/settings-edit-<timestamp>.yaml``.
 
-**Non-interactive mode**: pass ``--from-file <path>`` to skip the editor
-entirely. The file's contents are parsed, the diff is printed, and the
-overrides are applied without a confirmation prompt. Ideal for
-CI/automation.
+    **Non-interactive mode**: pass ``--from-file <path>`` to skip the editor
+    entirely. The file's contents are parsed, the diff is printed, and the
+    overrides are applied without a confirmation prompt. Ideal for
+    CI/automation.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--from-file` `-f` | `file` |  | Apply overrides from a YAML file and skip the editor. The file can be produced by `flyte get settings` (comment markers are honoured) or be a plain YAML mapping of flat dot-notation keys to values. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`--from-file`
+`-f`{{< /multiline >}} | `file` |  | Apply overrides from a YAML file and skip the editor. The file can be produced by `flyte get settings` (comment markers are honoured) or be a plain YAML mapping of flat dot-notation keys to values. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 {{< variant union >}}
@@ -1102,31 +1099,29 @@ Explore artifacts produced by Flyte runs.
 
 Browse a Volume's metadata index in an interactive TUI.
 
-Only RUN_NAME is required: ACTION_NAME defaults to the root action
-``a0``, and when ``--op-name`` is omitted the action's outputs are
-searched for a Volume, then its inputs.
+    Only RUN_NAME is required: ACTION_NAME defaults to the root action
+    ``a0``, and when ``--op-name`` is omitted the action's outputs are
+    searched for a Volume, then its inputs.
 
-Examples:
+    Examples:
 
-```bash
-# Root action's Volume, auto-discovered.
-$ flyte explore volume my-run
+        # Root action's Volume, auto-discovered.
+        $ flyte explore volume my-run
 
-# A specific action; still auto-discovers the Volume op.
-$ flyte explore volume my-run my-action
+        # A specific action; still auto-discovers the Volume op.
+        $ flyte explore volume my-run my-action
 
-# Pin the exact output (or input) to explore.
-$ flyte explore volume my-run my-action --op-name ckpt
+        # Pin the exact output (or input) to explore.
+        $ flyte explore volume my-run my-action --op-name ckpt
 
-# Different project / domain than the CLI default.
-$ flyte explore volume my-run my-action --project p --domain d
+        # Different project / domain than the CLI default.
+        $ flyte explore volume my-run my-action --project p --domain d
 
-# Already-downloaded Volume .json — no control-plane round-trip.
-$ flyte explore volume --from-file ./my-volume.json
+        # Already-downloaded Volume .json — no control-plane round-trip.
+        $ flyte explore volume --from-file ./my-volume.json
 
-# Raw index file (sqlite | redis) — debug path.
-$ flyte explore volume --from-file ./index.db --store-type sqlite
-```
+        # Raw index file (sqlite | redis) — debug path.
+        $ flyte explore volume --from-file ./index.db --store-type sqlite
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1156,8 +1151,10 @@ Generate documentation.
 |--------|------|---------|-------------|
 | `--type` | `text` | `Sentinel.UNSET` | Type of documentation (valid: markdown) |
 | `--plugin-variants` | `text` |  | Hugo variant names for plugin commands (e.g., 'union'). When set, plugin command sections and index entries are wrapped in {{&lt; variant >}} shortcodes. Core commands appear unconditionally. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte get
@@ -1191,8 +1188,10 @@ Get all actions for a run or details for a specific action.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--in-phase` | `choice` | `Sentinel.UNSET` | Filter actions by their phase. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 {{< variant union >}}
@@ -1210,16 +1209,14 @@ Otherwise, lists all API keys.
 
 Examples:
 
-```bash
-# List all API keys
-$ flyte get api-key
+    # List all API keys
+    $ flyte get api-key
 
-# List with a limit
-$ flyte get api-key --limit 10
+    # List with a limit
+    $ flyte get api-key --limit 10
 
-# Get a specific API key
-$ flyte get api-key my-client-id
-```
+    # Get a specific API key
+    $ flyte get api-key my-client-id
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1240,8 +1237,10 @@ Apps are long-running services deployed on the Flyte platform.
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Limit the number of apps to fetch when listing. |
 | `--only-mine` | `boolean` | `False` | Show only apps created by the current user (you). |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 {{< variant union >}}
@@ -1254,20 +1253,20 @@ Apps are long-running services deployed on the Flyte platform.
 
 Get or list assignments.
 
-Without --user-subject or --creds-subject, lists all assignments.
+    Without --user-subject, --creds-subject, or --email, lists all assignments.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte --org my-org get assignment
-$ flyte --org my-org get assignment --user-subject user-123
-$ flyte --org my-org get assignment --creds-subject app-456
-```
+        $ flyte --org my-org get assignment
+        $ flyte --org my-org get assignment --user-subject user-123
+        $ flyte --org my-org get assignment --creds-subject app-456
+        $ flyte --org my-org get assignment --email jane@example.com
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--user-subject` | `text` |  | User subject identifier |
 | `--creds-subject` | `text` |  | Client credentials application subject |
+| `--email` | `text` |  | User email for lookup |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
@@ -1282,16 +1281,14 @@ $ flyte --org my-org get assignment --creds-subject app-456
 
 Get a cluster or list all clusters.
 
-If NAME is provided, fetch that specific cluster and render a detailed view.
-Otherwise list all clusters.
+    If NAME is provided, fetch that specific cluster and render a detailed view.
+    Otherwise list all clusters.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte get cluster
+        $ flyte get cluster
 
-$ flyte get cluster my-cluster
-```
+        $ flyte get cluster my-cluster
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1310,15 +1307,13 @@ $ flyte get cluster my-cluster
 
 Get or list cluster pools.
 
-If NAME is provided, gets a specific pool. Otherwise, lists all pools.
+    If NAME is provided, gets a specific pool. Otherwise, lists all pools.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte get cluster-pool
+        $ flyte get cluster-pool
 
-$ flyte get cluster-pool my-pool
-```
+        $ flyte get cluster-pool my-pool
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1340,8 +1335,10 @@ resolve one.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get config
@@ -1373,10 +1370,14 @@ $ flyte get io my_run my_action
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--inputs-only` `-i` | `boolean` | `False` | Show only inputs |
-| `--outputs-only` `-o` | `boolean` | `False` | Show only outputs |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`--inputs-only`
+`-i`{{< /multiline >}} | `boolean` | `False` | Show only inputs |
+| {{< multiline >}}`--outputs-only`
+`-o`{{< /multiline >}} | `boolean` | `False` | Show only outputs |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get logs
@@ -1405,13 +1406,17 @@ $ flyte get logs my_run my_action --pretty --lines 50
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--lines` `-l` | `integer` | `30` | Number of lines to show, only useful for --pretty |
+| {{< multiline >}}`--lines`
+`-l`{{< /multiline >}} | `integer` | `30` | Number of lines to show, only useful for --pretty |
 | `--show-ts` | `boolean` | `False` | Show timestamps |
 | `--pretty` | `boolean` | `False` | Show logs in an auto-scrolling box, where number of lines is limited to `--lines` |
-| `--attempt` `-a` | `integer` |  | Attempt number to show logs for, defaults to the latest attempt. |
+| {{< multiline >}}`--attempt`
+`-a`{{< /multiline >}} | `integer` |  | Attempt number to show logs for, defaults to the latest attempt. |
 | `--filter-system` | `boolean` | `False` | Filter all system logs from the output. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 {{< variant union >}}
@@ -1424,11 +1429,9 @@ $ flyte get logs my_run my_action --pretty --lines 50
 
 List all members (users and applications) in an organization.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte --org my-org get member
-```
+        $ flyte --org my-org get member
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -1442,15 +1445,13 @@ $ flyte --org my-org get member
 
 Get or list policies.
 
-If NAME is provided, gets a specific policy. Otherwise, lists all policies.
+    If NAME is provided, gets a specific policy. Otherwise, lists all policies.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte --org my-org get policy
-$ flyte --org my-org get policy --limit 10
-$ flyte --org my-org get policy my-policy
-```
+        $ flyte --org my-org get policy
+        $ flyte --org my-org get policy --limit 10
+        $ flyte --org my-org get policy my-policy
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1483,19 +1484,17 @@ show archived projects instead.
 
 Get a queue or list all queues.
 
-If NAME is provided, fetch that specific queue with its current metrics.
-Use --watch to stream live metrics with progress bars.
-Otherwise list all queues.
+    If NAME is provided, fetch that specific queue with its current metrics.
+    Use --watch to stream live metrics with progress bars.
+    Otherwise list all queues.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte get queue
+        $ flyte get queue
 
-$ flyte get queue my-queue
+        $ flyte get queue my-queue
 
-$ flyte get queue my-queue --watch
-```
+        $ flyte get queue my-queue --watch
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1517,15 +1516,13 @@ $ flyte get queue my-queue --watch
 
 Get or list roles.
 
-If NAME is provided, gets a specific role. Otherwise, lists all roles.
+    If NAME is provided, gets a specific role. Otherwise, lists all roles.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte --org my-org get role
-$ flyte --org my-org get role --limit 10
-$ flyte --org my-org get role my-role
-```
+        $ flyte --org my-org get role
+        $ flyte --org my-org get role --limit 10
+        $ flyte --org my-org get role my-role
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1578,8 +1575,10 @@ $ flyte get run --paused-only
 | `--updated-before` | `datetime` |  | Show runs updated before this datetime (UTC). |
 | `--with-label` | `text` | `()` | Filter runs that have this label key=value. Can be specified multiple times (AND semantics). |
 | `--with-label-key` | `text` | `()` | Filter runs that have this label key present (existence check). Can be specified multiple times. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get secret
@@ -1591,8 +1590,10 @@ Get a list of all secrets, or details of a specific secret by name.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with --project and --domain. Mutually exclusive with project, domain. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get settings
@@ -1632,9 +1633,12 @@ Use `flyte edit settings` to interactively modify these values.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--to-file` `-o` | `file` |  | Write the scope's YAML to this file instead of printing it. The file round-trips through `flyte edit settings --from-file`. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`--to-file`
+`-o`{{< /multiline >}} | `file` |  | Write the scope's YAML to this file instead of printing it. The file round-trips through `flyte edit settings --from-file`. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get task
@@ -1649,8 +1653,10 @@ Currently, both `name` and `version` are required to get a specific task.
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Limit the number of tasks to fetch. |
 | `--entrypoint` | `boolean` | `False` | Show only entrypoint tasks. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get trigger
@@ -1662,8 +1668,10 @@ Get a list of all triggers, or details of a specific trigger by name.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Limit the number of triggers to fetch. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 {{< variant union >}}
@@ -1676,16 +1684,14 @@ Get a list of all triggers, or details of a specific trigger by name.
 
 Get or list users.
 
-If SUBJECT is provided, gets a specific user. Otherwise, lists all users.
+    If SUBJECT is provided, gets a specific user. Otherwise, lists all users.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte --org my-org get user
-$ flyte --org my-org get user --limit 10
-$ flyte --org my-org get user user-subject-id
-$ flyte --org my-org get user --email jane@example.com
-```
+        $ flyte --org my-org get user
+        $ flyte --org my-org get user --limit 10
+        $ flyte --org my-org get user user-subject-id
+        $ flyte --org my-org get user --email jane@example.com
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -1739,11 +1745,9 @@ Then run:
 
 ```bash
 $ flyte prefetch hf-model meta-llama/Llama-2-70b-hf \
-```bash
---shard-config shard_config.yaml \
---accelerator A100:8 \
---hf-token-key HF_TOKEN
-```
+    --shard-config shard_config.yaml \
+    --accelerator A100:8 \
+    --hf-token-key HF_TOKEN
 ```
 
 **Wait for Completion:**
@@ -1771,8 +1775,10 @@ $ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --wait
 | `--disk` | `text` | `50Gi` | Disk storage request for the prefetch task (e.g., '100Gi', '500Gi'). |
 | `--shm` | `text` |  | Shared memory request for the prefetch task (e.g., '100Gi', 'auto'). |
 | `--shard-config` | `path` | `Sentinel.UNSET` | Path to a YAML file containing sharding configuration. The file should have 'engine' (currently only 'vllm') and 'args' keys. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte rerun
@@ -1781,25 +1787,27 @@ $ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --wait
 
 Re-run an existing run RUN_NAME with its original code and inputs.
 
-Fetches the prior run's task + inputs from the platform (no local code needed) and launches a
-new run that returns the same way ``flyte run`` does. To re-run with *new* local code (reusing
-the prior run's inputs), use ``flyte run <file> <task> --rerun-from <run>``.
+    Fetches the prior run's task + inputs from the platform (no local code needed) and launches a
+    new run that returns the same way ``flyte run`` does. To re-run with *new* local code (reusing
+    the prior run's inputs), use ``flyte run <file> <task> --rerun-from <run>``.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte rerun ul56wcvgqrb9vzhzz5l2
-$ flyte rerun ul56wcvgqrb9vzhzz5l2 --name retry-1 --follow
-```
+        $ flyte rerun ul56wcvgqrb9vzhzz5l2
+        $ flyte rerun ul56wcvgqrb9vzhzz5l2 --name retry-1 --follow
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `-p` `--project` | `text` |  | Project for the new run (defaults to config). |
-| `-d` `--domain` | `text` |  | Domain for the new run (defaults to config). |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project for the new run (defaults to config). |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain for the new run (defaults to config). |
 | `--name` | `text` |  | Name for the new run (a random name is generated if unset). |
-| `-e` `--env` | `text` | `Sentinel.UNSET` | Env var KEY=VALUE for the new run. Repeatable. |
+| {{< multiline >}}`-e`
+`--env`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Env var KEY=VALUE for the new run. Repeatable. |
 | `--label` | `text` | `Sentinel.UNSET` | Label KEY=VALUE for the new run. Repeatable. |
-| `--follow` `-f` | `boolean` | `False` | Stream the parent action logs after launch. |
+| {{< multiline >}}`--follow`
+`-f`{{< /multiline >}} | `boolean` | `False` | Stream the parent action logs after launch. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte run
@@ -1898,22 +1906,26 @@ flyte run hello.py my_task --help
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--local` | `boolean` | `False` | Run the task locally |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
 | `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
 | `--raw-data-path` | `text` | `Sentinel.UNSET` | Override the output prefix used to store offloaded data types. e.g. s3://bucket/ |
 | `--service-account` | `text` | `Sentinel.UNSET` | Kubernetes service account. If not provided, the configured default will be used |
 | `--name` | `text` | `Sentinel.UNSET` | Name of the run. If not provided, a random name will be generated. |
-| `--follow` `-f` | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
+| {{< multiline >}}`--follow`
+`-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
 | `--tui` | `boolean` | `False` | Show interactive TUI for local execution (requires flyte[tui]). |
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
 | `--run-project` | `text` |  | Run the remote task in this project, only applicable when using `deployed-task` subcommand. |
 | `--run-domain` | `text` |  | Run the remote task in this domain, only applicable when using `deployed-task` subcommand. |
 | `--debug` | `boolean` | `False` | Run the task as a VSCode debug task. Starts a code-server in the container so you can connect via the UI to interactively debug/run the task. |
-| `--env` `-e` | `text` | `Sentinel.UNSET` | Environment variable to set on the run context. Format: KEY=VALUE. Can be specified multiple times, e.g. `-e LOG_LEVEL=debug -e FOO=bar`. |
+| {{< multiline >}}`--env`
+`-e`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Environment variable to set on the run context. Format: KEY=VALUE. Can be specified multiple times, e.g. `-e LOG_LEVEL=debug -e FOO=bar`. |
 | `--max-action-concurrency` | `integer range` |  | Maximum number of actions that can run concurrently within the run. If not provided, the platform default (run.max_action_concurrency setting) applies. |
 | `--label` | `text` | `Sentinel.UNSET` | User-defined label to attach to the run. Format: KEY=VALUE. Can be specified multiple times, e.g. `--label team=ml --label env=prod`. |
 | `--rerun-from` | `text` |  | Re-run an existing run with THIS local code, reusing that run's inputs (no per-task input flags are needed). Remote-only. |
@@ -1928,8 +1940,10 @@ Run remote task from the Flyte backend
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte serve
@@ -2006,16 +2020,20 @@ Serving deployed apps is not currently supported through this CLI command.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when serving the app |
 | `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
 | `--service-account` | `text` | `Sentinel.UNSET` | Kubernetes service account. If not provided, the configured default will be used |
 | `--name` | `text` | `Sentinel.UNSET` | Name of the app deployment. If not provided, the app environment name will be used. |
-| `--follow` `-f` | `boolean` | `False` | Wait and watch logs for the app. If not provided, the CLI will exit after successfully deploying the app with a link to the UI. |
+| {{< multiline >}}`--follow`
+`-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the app. If not provided, the CLI will exit after successfully deploying the app with a link to the UI. |
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the serve. Format: imagename=imageuri. Can be specified multiple times. |
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
-| `--env-var` `-e` | `text` | `Sentinel.UNSET` | Environment variable to set in the app. Format: KEY=VALUE. Can be specified multiple times. Example: --env-var LOG_LEVEL=DEBUG --env-var DATABASE_URL=postgresql://... |
+| {{< multiline >}}`--env-var`
+`-e`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Environment variable to set in the app. Format: KEY=VALUE. Can be specified multiple times. Example: --env-var LOG_LEVEL=DEBUG --env-var DATABASE_URL=postgresql://... |
 | `--local` | `boolean` | `False` | Serve the app locally on localhost instead of deploying to the Flyte backend. The app will be served on the port defined in the AppEnvironment. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
@@ -2039,8 +2057,10 @@ integer literals for int, decimal literals for float, any string for str).
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte start
@@ -2110,10 +2130,13 @@ flyte update app <app_name> --activate | --deactivate [--wait] [--project <proje
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--activate` `--deactivate` | `boolean` |  | Activate or deactivate app. |
+| {{< multiline >}}`--activate`
+`--deactivate`{{< /multiline >}} | `boolean` |  | Activate or deactivate app. |
 | `--wait` | `boolean` | `False` | Wait for the app to reach the desired state. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 {{< variant union >}}
@@ -2126,13 +2149,11 @@ flyte update app <app_name> --activate | --deactivate [--wait] [--project <proje
 
 Update a cluster pool interactively.
 
-Opens the pool in your $EDITOR as YAML. Save and close to apply changes.
+    Opens the pool in your $EDITOR as YAML. Save and close to apply changes.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte update cluster-pool my-pool
-```
+        $ flyte update cluster-pool my-pool
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -2150,14 +2171,12 @@ $ flyte update cluster-pool my-pool
 
 Update a policy interactively.
 
-Opens the policy in your $EDITOR as YAML. Save and close to apply changes.
-Bindings that are added or removed will be applied to the policy.
+    Opens the policy in your $EDITOR as YAML. Save and close to apply changes.
+    Bindings that are added or removed will be applied to the policy.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte --org my-org update policy my-policy
-```
+        $ flyte --org my-org update policy my-policy
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -2186,8 +2205,10 @@ flyte update project my_project --label team=ml --label env=prod
 |--------|------|---------|-------------|
 | `--name` | `text` |  | Update the project display name. |
 | `--description` | `text` |  | Update the project description. |
-| `--label` `-l` | `text` | `Sentinel.UNSET` | Set labels as key=value pairs. Can be specified multiple times. Replaces all existing labels. |
-| `--archive` `--unarchive` | `boolean` |  | Archive or unarchive the project. |
+| {{< multiline >}}`--label`
+`-l`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Set labels as key=value pairs. Can be specified multiple times. Replaces all existing labels. |
+| {{< multiline >}}`--archive`
+`--unarchive`{{< /multiline >}} | `boolean` |  | Archive or unarchive the project. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 {{< variant union >}}
@@ -2200,19 +2221,17 @@ flyte update project my_project --label team=ml --label env=prod
 
 Update a queue.
 
-Use --drain to begin draining (stops new submissions).
-Use --activate to re-activate a draining or drained queue.
-Use --edit to interactively modify queue configuration.
+    Use --drain to begin draining (stops new submissions).
+    Use --activate to re-activate a draining or drained queue.
+    Use --edit to interactively modify queue configuration.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte update queue my-queue --drain
+        $ flyte update queue my-queue --drain
 
-$ flyte update queue my-queue --activate
+        $ flyte update queue my-queue --activate
 
-$ flyte update queue my-queue --edit
-```
+        $ flyte update queue my-queue --edit
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -2235,13 +2254,11 @@ $ flyte update queue my-queue --edit
 
 Update a role interactively.
 
-Opens the role in your $EDITOR as YAML. Save and close to apply changes.
+    Opens the role in your $EDITOR as YAML. Save and close to apply changes.
 
-Examples:
+    Examples:
 
-```bash
-$ flyte --org my-org update role my-role
-```
+        $ flyte --org my-org update role my-role
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -2265,9 +2282,12 @@ flyte update trigger <trigger_name> <task_name> --activate | --deactivate
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--activate` `--deactivate` | `boolean` | `Sentinel.UNSET` | Activate or deactivate the trigger. |
-| `-p` `--project` | `text` |  | Project to which this command applies. |
-| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| {{< multiline >}}`--activate`
+`--deactivate`{{< /multiline >}} | `boolean` | `Sentinel.UNSET` | Activate or deactivate the trigger. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte whoami
