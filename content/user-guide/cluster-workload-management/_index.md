@@ -91,8 +91,8 @@ means physically re-landing the workload in the destination pool's data plane â€
 moving its **data, containers (images), code, and secrets** into the new pool's
 object store, registry, and secret store. This is deliberate friction: it keeps
 in-flight work from ever pointing at storage it can't read, and it's why pool
-changes are rare and explicit (a queue's pool change [requires a
-drain](./queues#change-a-queues-pool--drain-first)).
+changes are rare and explicit (moving work between pools is a
+[drain-and-replace migration](./queues#move-work-to-another-pool)).
 
 > [!NOTE] The simple case is invisible
 > Every organization is provisioned with a `default` pool that all clusters join

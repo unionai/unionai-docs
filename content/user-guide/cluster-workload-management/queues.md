@@ -64,9 +64,9 @@ inside exactly one pool:
 - **`gpu-queue`** lives in the same `prod` pool but is pinned to a single cluster.
 
 The selector (which clusters within the pool) is mutable. The pool a queue lives
-in should be treated as fixed after creation. To move workloads to another pool,
-create a replacement queue in that pool and update callers to target it after old
-work has finished.
+in is **fixed at creation** — an update that changes it is rejected, because
+moving a queue to another pool would cross an isolation boundary. To move
+workloads to another pool, see [Move work to another pool](#move-work-to-another-pool).
 
 > [!NOTE] Queue scope
 > Queues are currently organization-scoped. Some CLI and Python surfaces expose
@@ -246,26 +246,76 @@ Changing the **cluster selector within the same pool** (which clusters the queue
 pins to) takes effect immediately because every cluster in the pool shares the
 same data plane.
 
+## Drain and reactivate a queue
+
+**Draining** takes a queue out of rotation without losing in-flight work: the
+queue stops admitting new submissions, work already in flight runs to
+completion, and once nothing is left the queue settles into the `drained` state.
+Draining is how you quiesce a queue — before deleting the cluster behind it,
+before maintenance, or as part of
+[moving work to another pool](#move-work-to-another-pool).
+
+A queue is in one of three states:
+
+```
+active --[drain]--> draining --[in-flight work completes]--> drained
+  ^                    |                                        |
+  +----[activate]------+----------------[activate]-------------+
+```
+
+> [!WARNING] Draining is temporarily disabled
+> The drain operation is not yet enabled — the control plane currently rejects
+> drain requests. Support is coming in a future release. Until then, quiesce a
+> queue manually: stop submitting to it and watch in-flight work finish with
+> `flyte get queue <name> --watch`.
+
+{{< tabs "drain-queue" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+```python
+from flyteplugins.union.remote import Queue
+
+Queue.drain("gpu-queue")     # stop new submissions; let in-flight work finish
+Queue.activate("gpu-queue")  # put the queue back in rotation
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+```bash
+flyte update queue gpu-queue --drain      # stop new submissions; let in-flight work finish
+flyte update queue gpu-queue --activate   # put the queue back in rotation
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+The `default` queue is always active — its state cannot be changed. Note also
+that queues cannot be deleted: draining is how a queue is retired, and an idle
+queue costs nothing.
+
 ## Move work to another pool
 
 Moving work to a different **pool** crosses an isolation boundary. In-flight runs
 have already landed their data, containers, code, and secrets in the old pool's
-data plane, and a different pool's clusters cannot read them.
-
-Treat the queue's pool binding as creation-time configuration:
+data plane, and a different pool's clusters cannot read them. So a queue can
+never change pools in place; moving work is a drain-and-replace migration:
 
 1. Create a new queue in the destination pool.
 2. Update workflows, launch plans, triggers, or run overrides to target the new
    queue.
-3. Let old work finish on the old queue.
-4. Leave the old queue unused once nothing still submits to it.
+3. [Drain](#drain-and-reactivate-a-queue) the old queue so in-flight work
+   finishes without new submissions landing. (While draining is disabled, stop
+   submissions at the source and watch the queue empty.)
+4. Leave the old queue drained. Queues cannot be deleted; an idle queue costs
+   nothing.
 
 > [!NOTE] Queue overrides stay within a pool
 > A task can override its queue at runtime
 > ([`task.override(queue=...)`](../task-configuration/queues#overriding-a-queue-at-runtime)),
 > but only to another queue in the **same pool** as the run's original queue. A
-> cross-pool override is rejected, for the same data plane reason that pool changes
-> are handled as a migration.
+> cross-pool override is rejected, for the same data plane reason that moving
+> work between pools requires a drain-and-replace migration.
 
 ## See also
 

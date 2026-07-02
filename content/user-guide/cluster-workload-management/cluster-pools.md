@@ -144,14 +144,19 @@ flyte create cluster prod-us-east-1 --pool prod
 {{< /tab >}}
 {{< /tabs >}}
 
-Existing clusters cannot be moved between pools in place. To change the pool for
-a cluster, register a replacement cluster in the destination pool, move queues or
-workload routing, and remove the old cluster record when it is no longer used.
+Existing clusters cannot be moved between pools in place — a registration that
+names a different pool for an existing cluster is rejected. Moving a cluster is
+a drain, delete, and re-register sequence; see
+[Move a cluster to a different pool](./clusters#move-a-cluster-to-a-different-pool).
 
 ## Delete a pool
 
-The `default` pool cannot be deleted. A non-default pool can only be deleted after
-all clusters and queues stop referencing it.
+The `default` pool cannot be deleted. Deleting a non-default pool is rejected
+while any cluster or queue still references it: delete the member
+[clusters](./clusters#delete-a-cluster) first. Queues cannot currently be
+deleted, so a pool that has acquired queues (including the implicit queue
+created with each registered cluster) cannot be removed until queue removal
+becomes available.
 
 {{< tabs "delete-cluster-pool" >}}
 {{< tab "Programmatic" >}}

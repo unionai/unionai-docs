@@ -58,6 +58,12 @@ whose configuration doesn't match the pool is marked unhealthy or rejected,
 depending on where the mismatch is detected. This is what guarantees that any
 workload routed to the pool can run on any of its healthy clusters.
 
+Registering a cluster also ensures two **implicit queues** exist: the org-wide
+`default` queue (in the `default` pool, routing to all of its clusters), and a
+queue named after the cluster, pinned to it, in the cluster's pool — so every
+cluster can be targeted by name from day one. Both are ordinary queues; manage
+them like any other on the [Queues](./queues) page.
+
 ## Inspect clusters
 
 {{< tabs "inspect-cluster" >}}
@@ -96,21 +102,41 @@ flyte get cluster --limit 50
 The detailed view shows the cluster's pool, current state, available capacity, and
 which queues are bound to it — useful when deciding where to route or pin a queue.
 
-## Change a cluster's pool
+## Move a cluster to a different pool
 
-A cluster's pool assignment is effectively fixed once the cluster exists. Repeating
-cluster creation with a different pool is rejected, because the cluster may already
-have reported status, synced configuration, and served workloads against the old
-pool's data plane.
+A cluster's pool assignment is fixed for the life of the cluster record — a
+registration that names a different pool for an existing cluster is rejected,
+because the cluster may already have reported status, synced configuration, and
+served workloads against the old pool's data plane. Moving a cluster is
+therefore a delete-and-re-register:
 
-To use a different pool, register a new cluster in the destination pool and move
-queues or workload routing to that new cluster. If you need to replace the
-existing cluster with the same name, repoint any queues first, delete the old
-cluster record, then register it again in the intended pool.
+1. [Drain](./queues#drain-and-reactivate-a-queue) the queues that pin the
+   cluster, so in-flight work finishes without new submissions landing. (While
+   draining is disabled, stop submissions and watch the queues empty with
+   `flyte get queue <name> --watch`.)
+2. Delete the cluster record. This automatically removes the cluster from the
+   selector of every queue that pinned it.
+3. Register the cluster in the destination pool — under a **new name**.
+4. Point queues at the new cluster: create new queues in the destination pool,
+   or add the new cluster to the selectors of existing queues in that pool.
+
+Use a new name for the re-registered cluster. Registration creates an implicit
+queue named after the cluster, and a queue's pool can never change — so if you
+reuse the old name, the existing same-named queue stays bound to the **old**
+pool with an empty selector, and anything still targeting that queue by name
+silently routes nowhere.
 
 ## Delete a cluster
 
-Repoint any queues bound to a cluster before removing it.
+[Drain](./queues#drain-and-reactivate-a-queue) or repoint any queues bound to a
+cluster before removing it, so in-flight work isn't lost when the cluster goes
+away. (While draining is disabled, stop submissions and let in-flight work
+finish first.)
+
+Deleting a cluster automatically removes it from the selector of every queue
+that pins it explicitly; wildcard (`*`) queues are unaffected. A queue whose
+selector becomes empty stops routing work anywhere until you point it at
+another cluster.
 
 {{< tabs "delete-cluster" >}}
 {{< tab "Programmatic" >}}
