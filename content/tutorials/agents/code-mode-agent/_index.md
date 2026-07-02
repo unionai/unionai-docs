@@ -113,7 +113,7 @@ The chat handler is then small. It launches a run per question, waits for it, at
 
 {{< code file="/unionai-examples/v2/tutorials/code_mode_agent/app.py" fragment=chat lang=python >}}
 
-This is the "call a task from an app" shape: initialize in-cluster once in the lifespan, then use `flyte.run.aio(...)` per request. For more on running in the cluster, see [running remote](../../../user-guide/run-modes/running-remote), and for how apps are served, see [how app serving works](../../../user-guide/serve-and-deploy-apps/how-app-serving-works).
+This is the "call a task from an app" shape: initialize in-cluster once in the lifespan, then use `flyte.run.aio(...)` per request. For more on apps and tasks calling each other, see [hybrid app-task graphs](../../../user-guide/build-apps/hybrid-graphs), and for how apps are served, see [how app serving works](../../../user-guide/serve-and-deploy-apps/how-app-serving-works).
 
 ## Previewing the data
 
