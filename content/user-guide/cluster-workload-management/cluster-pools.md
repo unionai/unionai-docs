@@ -72,7 +72,7 @@ config:
     uri: s3://my-prod-bucket/prefix
     endpoint: ""
   secret_store:
-    type: AWS_SECRETS_MANAGER  # or KUBERNETES, GCP_SECRET_MANAGER, VAULT
+    type: AWS_SECRETS_MANAGER
     locator: us-east-1
   image_registry:
     locator: 123456789012.dkr.ecr.us-east-1.amazonaws.com/union
