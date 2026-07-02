@@ -34,21 +34,6 @@ A pool is defined by its shared data plane contract: object store, secret store,
 and optional image registry.
 
 {{< tabs "create-cluster-pool" >}}
-{{< tab "Programmatic" >}}
-{{< markdown >}}
-```python
-from flyteplugins.union.remote import ClusterPool
-
-ClusterPool.create(
-    "prod",
-    object_store_uri="s3://my-prod-bucket/prefix",
-    secret_store_type="AWS_SECRETS_MANAGER",
-    secret_store_locator="us-east-1",
-    image_registry="123456789012.dkr.ecr.us-east-1.amazonaws.com/union",
-)
-```
-{{< /markdown >}}
-{{< /tab >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
 Create one interactively with an editor, or from a file:
@@ -77,6 +62,21 @@ config:
 ```
 {{< /markdown >}}
 {{< /tab >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+```python
+from flyteplugins.union.remote import ClusterPool
+
+ClusterPool.create(
+    "prod",
+    object_store_uri="s3://my-prod-bucket/prefix",
+    secret_store_type="AWS_SECRETS_MANAGER",
+    secret_store_locator="us-east-1",
+    image_registry="123456789012.dkr.ecr.us-east-1.amazonaws.com/union",
+)
+```
+{{< /markdown >}}
+{{< /tab >}}
 {{< /tabs >}}
 
 Supported `secret_store_type` values are `AWS_SECRETS_MANAGER`,
@@ -86,6 +86,17 @@ Supported `secret_store_type` values are `AWS_SECRETS_MANAGER`,
 ## Inspect pools
 
 {{< tabs "inspect-cluster-pool" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+```bash
+# List all pools
+flyte get cluster-pool
+
+# Inspect a specific pool — its config and member clusters
+flyte get cluster-pool prod
+```
+{{< /markdown >}}
+{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 ```python
@@ -103,17 +114,6 @@ print(pool.image_registry)
 ```
 {{< /markdown >}}
 {{< /tab >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-```bash
-# List all pools
-flyte get cluster-pool
-
-# Inspect a specific pool — its config and member clusters
-flyte get cluster-pool prod
-```
-{{< /markdown >}}
-{{< /tab >}}
 {{< /tabs >}}
 
 `member_clusters` is derived from clusters that were registered into the pool.
@@ -124,19 +124,19 @@ Assign clusters when you register them; see [Clusters](./clusters).
 Cluster pool membership is set when clusters are registered:
 
 {{< tabs "cluster-pool-membership" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+```bash
+flyte create cluster prod-us-east-1 --pool prod
+```
+{{< /markdown >}}
+{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 ```python
 from flyteplugins.union.remote import Cluster
 
 Cluster.create("prod-us-east-1", cluster_pool_name="prod")
-```
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-```bash
-flyte create cluster prod-us-east-1 --pool prod
 ```
 {{< /markdown >}}
 {{< /tab >}}
@@ -157,20 +157,20 @@ created with each registered cluster) cannot be removed until queue removal
 becomes available.
 
 {{< tabs "delete-cluster-pool" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+```bash
+flyte delete cluster-pool prod
+flyte delete cluster-pool prod --yes   # skip the confirmation prompt
+```
+{{< /markdown >}}
+{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 ```python
 from flyteplugins.union.remote import ClusterPool
 
 ClusterPool.delete("prod")
-```
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-```bash
-flyte delete cluster-pool prod
-flyte delete cluster-pool prod --yes   # skip the confirmation prompt
 ```
 {{< /markdown >}}
 {{< /tab >}}
