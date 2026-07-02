@@ -9,13 +9,15 @@ mermaid: true
 
 > [!NOTE] Beta
 > Cluster pools, clusters, and queues are managed through the `flyte`
-> CLI and are configured by your platform administrator. The commands on these
-> pages are administrative operations — most workflow authors only need
+> CLI or the `flyteplugins.union.remote` Python objects, and are configured by
+> your platform administrator. The operations on these pages are administrative
+> operations — most workflow authors only need
 > [task-side queue routing](../task-configuration/queues).
 
 > [!NOTE] Requires the `flyteplugins-union` plugin
-> The `flyte` cluster, pool, and queue commands on these pages are provided by the
-> `flyteplugins-union` package. Install it with `pip install flyteplugins-union`.
+> The `flyte` cluster, pool, and queue commands and the Python objects on these
+> pages are provided by the `flyteplugins-union` package. Install it with
+> `pip install flyteplugins-union`.
 
 > [!NOTE] Standing up a new cluster?
 > The pages in this section manage the **control-plane records** for pools,
@@ -89,8 +91,8 @@ means physically re-landing the workload in the destination pool's data plane �
 moving its **data, containers (images), code, and secrets** into the new pool's
 object store, registry, and secret store. This is deliberate friction: it keeps
 in-flight work from ever pointing at storage it can't read, and it's why pool
-changes are rare and explicit (a queue's pool change [requires a
-drain](./queues#change-a-queues-pool--drain-first)).
+changes are rare and explicit (moving work between pools is a
+[drain-and-replace migration](./queues#move-work-to-another-pool)).
 
 > [!NOTE] The simple case is invisible
 > Every organization is provisioned with a `default` pool that all clusters join
