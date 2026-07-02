@@ -26,6 +26,17 @@ If you omit the pool, the cluster is registered into the `default` pool. To use 
 custom pool, create that pool first.
 
 {{< tabs "register-cluster" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+```bash
+# Register in the default pool.
+flyte create cluster my-cluster
+
+# Register in a specific pool.
+flyte create cluster prod-us-east-1 --pool prod
+```
+{{< /markdown >}}
+{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 ```python
@@ -36,17 +47,6 @@ Cluster.create("my-cluster")
 
 # Register in a specific pool.
 Cluster.create("prod-us-east-1", cluster_pool_name="prod")
-```
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-```bash
-# Register in the default pool.
-flyte create cluster my-cluster
-
-# Register in a specific pool.
-flyte create cluster prod-us-east-1 --pool prod
 ```
 {{< /markdown >}}
 {{< /tab >}}
@@ -70,6 +70,20 @@ pool never does. These are ordinary queues; manage them like any other on the
 ## Inspect clusters
 
 {{< tabs "inspect-cluster" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+```bash
+# List all clusters (grouped by enabled / disabled)
+flyte get cluster
+
+# Inspect one cluster — cloud config, state, capacity, and bound queues
+flyte get cluster prod-us-east-1
+
+# Cap the number of results
+flyte get cluster --limit 50
+```
+{{< /markdown >}}
+{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 ```python
@@ -83,20 +97,6 @@ print(cluster.name)
 print(cluster.pools)
 print(cluster.queues)
 print(cluster.config_drift)
-```
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-```bash
-# List all clusters (grouped by enabled / disabled)
-flyte get cluster
-
-# Inspect one cluster — cloud config, state, capacity, and bound queues
-flyte get cluster prod-us-east-1
-
-# Cap the number of results
-flyte get cluster --limit 50
 ```
 {{< /markdown >}}
 {{< /tab >}}
@@ -143,20 +143,20 @@ replacement cluster lives in a different pool, create a new queue there
 instead.
 
 {{< tabs "delete-cluster" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+```bash
+flyte delete cluster prod-us-east-1
+flyte delete cluster prod-us-east-1 --yes   # skip the confirmation prompt
+```
+{{< /markdown >}}
+{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 ```python
 from flyteplugins.union.remote import Cluster
 
 Cluster.delete("prod-us-east-1")
-```
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-```bash
-flyte delete cluster prod-us-east-1
-flyte delete cluster prod-us-east-1 --yes   # skip the confirmation prompt
 ```
 {{< /markdown >}}
 {{< /tab >}}
