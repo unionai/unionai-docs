@@ -19,6 +19,10 @@ Run an autonomous research loop that drives Claude Code in a GPU container to ru
 Scale autoresearch with a code-mode MLE agent that batches train.py edits and runs sandbox experiments in parallel via flyte.map.
 {{< /link-card >}}
 
+{{< link-card target="code-mode-agent" title="Code mode analytics agent" >}}
+Chat with a dataset in the browser: Claude writes a Python program that runs in the Monty sandbox, with the heavy DuckDB query dispatched as a durable Flyte task.
+{{< /link-card >}}
+
 {{< link-card target="autosec-research-agent" title="AutoSec researcher agent" >}}
 Fan out vulnerability analysis across C targets, hypothesize exploits with an LLM agent, and validate PoCs in an isolated sandbox.
 {{< /link-card >}}
