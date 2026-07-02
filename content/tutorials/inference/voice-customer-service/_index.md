@@ -1,7 +1,7 @@
 ---
 title: Voice customer-service agent
 weight: 1
-variants: -flyte +union
+variants: +flyte +union
 mermaid: true
 ---
 
