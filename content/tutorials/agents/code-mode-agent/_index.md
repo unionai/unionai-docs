@@ -11,7 +11,7 @@ variants: +flyte +union
 
 This tutorial builds a "chat with your data" app. You ask a question in the browser, and the app launches a Flyte run to answer it. Inside that run, Claude writes one small Python program, the program executes in Flyte's [Monty sandbox](../../../user-guide/sandboxing/code-sandboxing), and the only things it can touch are the tools you registered. The heavy tool, a DuckDB `query`, is a durable Flyte task, so every query the model writes shows up as a tracked, retryable child task you can open in the UI. The cheap tools that render metrics, charts, and tables run in-process. The app itself is a thin front end that gates access behind Union auth and hands each question off to a real workflow.
 
-![Code mode analytics agent](../../../_static/images/tutorials/code_mode_agent/code-mode-agent.gif)
+![Code mode analytics agent](../../../_static/images/tutorials/code_mode_agent/demo.gif)
 
 ## Why code mode
 
