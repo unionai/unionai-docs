@@ -47,8 +47,6 @@ ClusterPool.create(
     image_registry="123456789012.dkr.ecr.us-east-1.amazonaws.com/union",
 )
 ```
-
-```
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
