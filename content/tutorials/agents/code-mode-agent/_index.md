@@ -54,15 +54,15 @@ Here `query` points at the durable `@env.task` for execution, and the four rende
 
 ## The durable environment
 
-`query` becomes durable by living in a `flyte.TaskEnvironment`. The environment carries the image (DuckDB, pandas, the Anthropic SDK, and the Monty sandbox package), the Anthropic API key as a `flyte.Secret`, and `cache="auto"`:
+`query` becomes durable by living in a `flyte.TaskEnvironment`. The environment carries the image (DuckDB, pandas, the Anthropic SDK, and the Monty sandbox package) and the Anthropic API key as a `flyte.Secret`:
 
 {{< code file="/unionai-examples/v2/tutorials/code_mode_agent/analysis.py" fragment=env lang=python >}}
 
-The `query` task itself is a thin wrapper over the tool function, so the durable version and the in-process version run identical code. Only the binding differs:
+The `query` task itself is a thin wrapper over the tool function, so the durable version and the in-process version run identical code. Only the binding differs, and the task carries `cache="auto"`:
 
 {{< code file="/unionai-examples/v2/tutorials/code_mode_agent/analysis.py" fragment=query_task lang=python >}}
 
-With `cache="auto"`, a repeated query returns instantly from cache, which is handy when you ask several related questions that share sub-queries. Note that caching applies to every task in the environment, so identical questions to `analyze` come back from cache too.
+Caching is scoped to `query`, not the whole environment. The same SQL over a fixed dataset is deterministic, so identical queries return instantly from cache and dedupe across every conversation and user. `analyze` is deliberately left uncached: it is a non-deterministic model turn keyed on the whole conversation, so it rarely repeats, and caching it could freeze a transient failure.
 
 ## Turning the registry into a prompt
 
@@ -89,7 +89,7 @@ On success it also records which tools the code called and how many times, which
 
 ## The analysis task
 
-`analyze` is the task that ties the loop together. Because it runs inside a task context, the `query` calls made by its sandboxed code are dispatched as durable child tasks rather than running locally. It returns a `ChatResponse` carrying the blocks, the summary, the generated code, and the tools that ran:
+`analyze` is the task that ties the loop together. It takes the question and the prior conversation as `history`, so a follow-up like "now break that down by month" is answered with the earlier turns as context. Because it runs inside a task context, the `query` calls made by its sandboxed code are dispatched as durable child tasks rather than running locally. It returns a `ChatResponse` carrying the blocks, the summary, the generated code, and the tools that ran:
 
 {{< code file="/unionai-examples/v2/tutorials/code_mode_agent/analysis.py" fragment=analyze lang=python >}}
 
@@ -109,7 +109,7 @@ The app environment declares its image, pins one replica, depends on the analysi
 
 {{< code file="/unionai-examples/v2/tutorials/code_mode_agent/app.py" fragment=app_env lang=python >}}
 
-The chat handler is then small. It launches a run per question, waits for it, attaches the run URL so the UI can link to it, and returns the result. Inside that run there is a task context, so the sandbox's `query` calls become durable child tasks:
+The chat handler launches a run per question and streams two messages back. A run has a URL the moment it is submitted, so the handler sends that link first, before the run finishes: the UI shows a live link into the Union UI right away. It then streams the result once the run completes. Inside that run there is a task context, so the sandbox's `query` calls become durable child tasks, which you can watch appear on that live run page:
 
 {{< code file="/unionai-examples/v2/tutorials/code_mode_agent/app.py" fragment=chat lang=python >}}
 
