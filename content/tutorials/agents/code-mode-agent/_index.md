@@ -1,5 +1,5 @@
 ---
-title: Code Mode analytics agent
+title: Code mode analytics agent
 weight: 8
 variants: +flyte +union
 ---
@@ -42,7 +42,7 @@ The dataset is a small `orders` table (ecommerce orders for 2024) that the examp
 
 {{< code file="/unionai-examples/v2/tutorials/code_mode_agent/tools.py" fragment=query_tool lang=python >}}
 
-To point this at your own data for example, change the DataFrame the query registers to read a Parquet file or a warehouse table.
+To point this at your own data, for example, change the DataFrame the query registers to read a Parquet file or a warehouse table.
 
 ## One registry, two bindings
 
@@ -89,7 +89,7 @@ On success it also records which tools the code called and how many times, which
 
 ## The analysis task
 
-`analyze` is the task that ties the loop together. Because it runs inside a task context, the `query` calls its sandboxed code makes dispatch as durable child tasks rather than running locally. It returns a `ChatResponse` carrying the blocks, the summary, the generated code, and the tools that ran:
+`analyze` is the task that ties the loop together. Because it runs inside a task context, the `query` calls made by its sandboxed code are dispatched as durable child tasks rather than running locally. It returns a `ChatResponse` carrying the blocks, the summary, the generated code, and the tools that ran:
 
 {{< code file="/unionai-examples/v2/tutorials/code_mode_agent/analysis.py" fragment=analyze lang=python >}}
 
