@@ -263,11 +263,9 @@ active --[drain]--> draining --[in-flight work completes]--> drained
   +----[activate]------+----------------[activate]-------------+
 ```
 
-> [!WARNING] Draining is temporarily disabled
-> The drain operation is not yet enabled — the control plane currently rejects
-> drain requests. Support is coming in a future release. Until then, quiesce a
-> queue manually: stop submitting to it and watch in-flight work finish with
-> `flyte get queue <name> --watch`.
+> [!WARNING] Draining is not yet available
+> The drain operation is currently disabled — the control plane rejects drain
+> requests. Support is coming in a future release.
 
 {{< tabs "drain-queue" >}}
 {{< tab "Programmatic" >}}
@@ -304,10 +302,10 @@ never change pools in place; moving work is a drain-and-replace migration:
 1. Create a new queue in the destination pool.
 2. Update workflows, launch plans, triggers, or run overrides to target the new
    queue.
-3. [Drain](#drain-and-reactivate-a-queue) the old queue so in-flight work
-   finishes without new submissions landing. (While draining is disabled, stop
-   submissions at the source and watch the queue empty.)
-4. Leave the old queue drained. Queues cannot be deleted; an idle queue costs
+3. Let in-flight work finish on the old queue. Once
+   [draining](#drain-and-reactivate-a-queue) is available, drain it to also
+   shut out any straggler submissions.
+4. Leave the old queue idle. Queues cannot be deleted; an idle queue costs
    nothing.
 
 > [!NOTE] Queue overrides stay within a pool

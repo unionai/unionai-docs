@@ -58,11 +58,14 @@ whose configuration doesn't match the pool is marked unhealthy or rejected,
 depending on where the mismatch is detected. This is what guarantees that any
 workload routed to the pool can run on any of its healthy clusters.
 
-Registering a cluster also ensures two **implicit queues** exist: the org-wide
-`default` queue (in the `default` pool, routing to all of its clusters), and a
-queue named after the cluster, pinned to it, in the cluster's pool — so every
-cluster can be targeted by name from day one. Both are ordinary queues; manage
-them like any other on the [Queues](./queues) page.
+Registering a cluster also creates an implicit queue named after the
+cluster, pinned to it, in the cluster's pool — so every cluster can be targeted
+by name from day one. Registration additionally ensures the org-wide `default`
+queue exists. The `default` queue lives in the `default` pool with the `*`
+selector, so it routes to every healthy cluster in the `default` pool: a
+cluster registered there joins it automatically, while a cluster in any other
+pool never does. These are ordinary queues; manage them like any other on the
+[Queues](./queues) page.
 
 ## Inspect clusters
 
@@ -111,9 +114,9 @@ served workloads against the old pool's data plane. Moving a cluster is
 therefore a delete-and-re-register:
 
 1. [Drain](./queues#drain-and-reactivate-a-queue) the queues that pin the
-   cluster, so in-flight work finishes without new submissions landing. (While
-   draining is disabled, stop submissions and watch the queues empty with
-   `flyte get queue <name> --watch`.)
+   cluster, so in-flight work finishes without new submissions landing.
+   (Draining is not yet available — until it is, wait for in-flight work to
+   finish, watching with `flyte get queue <name> --watch`.)
 2. Delete the cluster record. This automatically removes the cluster from the
    selector of every queue that pinned it.
 3. Register the cluster in the destination pool — under a **new name**.
@@ -122,7 +125,7 @@ therefore a delete-and-re-register:
 
 Use a new name for the re-registered cluster. Registration creates an implicit
 queue named after the cluster, and a queue's pool can never change — so if you
-reuse the old name, the existing same-named queue stays bound to the **old**
+reuse the old name, the existing same-named queue stays bound to the old
 pool with an empty selector, and anything still targeting that queue by name
 silently routes nowhere.
 
@@ -130,13 +133,14 @@ silently routes nowhere.
 
 [Drain](./queues#drain-and-reactivate-a-queue) or repoint any queues bound to a
 cluster before removing it, so in-flight work isn't lost when the cluster goes
-away. (While draining is disabled, stop submissions and let in-flight work
-finish first.)
+away. (Draining is not yet available — coming in a future release.)
 
 Deleting a cluster automatically removes it from the selector of every queue
 that pins it explicitly; wildcard (`*`) queues are unaffected. A queue whose
 selector becomes empty stops routing work anywhere until you point it at
-another cluster.
+another cluster **in its pool** — a queue's pool can never change, so if the
+replacement cluster lives in a different pool, create a new queue there
+instead.
 
 {{< tabs "delete-cluster" >}}
 {{< tab "Programmatic" >}}
