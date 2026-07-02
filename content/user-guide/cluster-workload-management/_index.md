@@ -9,13 +9,15 @@ mermaid: true
 
 > [!NOTE] Beta
 > Cluster pools, clusters, and queues are managed through the `flyte`
-> CLI and are configured by your platform administrator. The commands on these
-> pages are administrative operations — most workflow authors only need
+> CLI or the `flyteplugins.union.remote` Python objects, and are configured by
+> your platform administrator. The operations on these pages are administrative
+> operations — most workflow authors only need
 > [task-side queue routing](../task-configuration/queues).
 
 > [!NOTE] Requires the `flyteplugins-union` plugin
-> The `flyte` cluster, pool, and queue commands on these pages are provided by the
-> `flyteplugins-union` package. Install it with `pip install flyteplugins-union`.
+> The `flyte` cluster, pool, and queue commands and the Python objects on these
+> pages are provided by the `flyteplugins-union` package. Install it with
+> `pip install flyteplugins-union`.
 
 > [!NOTE] Standing up a new cluster?
 > The pages in this section manage the **control-plane records** for pools,
