@@ -80,6 +80,28 @@ sensible default. With no cluster selector, a queue spreads work across **all**
 healthy clusters in its pool.
 
 {{< tabs "create-queue" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+```bash
+flyte create queue my-queue \
+  --run-concurrency 100 \
+  --action-concurrency 1000
+```
+
+Create a higher-priority queue in a specific pool:
+
+```bash
+flyte create queue gpu-queue \
+  --cluster-pool prod \
+  --cluster prod-us-east-1 \
+  --run-concurrency 50 \
+  --action-concurrency 500 \
+  --depth 5000 \
+  --priority max \
+  --fairness round_robin
+```
+{{< /markdown >}}
+{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 ```python
@@ -107,28 +129,6 @@ queue = Queue.create(
     priority="max",
     fairness="round_robin",
 )
-```
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-```bash
-flyte create queue my-queue \
-  --run-concurrency 100 \
-  --action-concurrency 1000
-```
-
-Create a higher-priority queue in a specific pool:
-
-```bash
-flyte create queue gpu-queue \
-  --cluster-pool prod \
-  --cluster prod-us-east-1 \
-  --run-concurrency 50 \
-  --action-concurrency 500 \
-  --depth 5000 \
-  --priority max \
-  --fairness round_robin
 ```
 {{< /markdown >}}
 {{< /tab >}}
@@ -166,6 +166,20 @@ flyte create queue gpu-queue \
 ## Inspect queues
 
 {{< tabs "inspect-queue" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+```bash
+# List all queues
+flyte get queue
+
+# Inspect one queue's settings and status
+flyte get queue gpu-queue
+
+# Stream live metrics — runs in-flight, actions in-flight, queue depth
+flyte get queue gpu-queue --watch
+```
+{{< /markdown >}}
+{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 ```python
@@ -189,20 +203,6 @@ for metrics in Queue.watch("gpu-queue"):
 ```
 {{< /markdown >}}
 {{< /tab >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-```bash
-# List all queues
-flyte get queue
-
-# Inspect one queue's settings and status
-flyte get queue gpu-queue
-
-# Stream live metrics — runs in-flight, actions in-flight, queue depth
-flyte get queue gpu-queue --watch
-```
-{{< /markdown >}}
-{{< /tab >}}
 {{< /tabs >}}
 
 `--watch` renders live progress bars for run concurrency, action concurrency, and
@@ -216,6 +216,15 @@ current queue first, changing only the fields you pass, and writing the complete
 spec back.
 
 {{< tabs "update-queue" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+```bash
+flyte update queue gpu-queue --edit
+```
+
+This opens the queue in your `$EDITOR` so you can adjust the mutable settings.
+{{< /markdown >}}
+{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 ```python
@@ -229,15 +238,6 @@ Queue.update(
     clusters=["prod-us-east-1"],
 )
 ```
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-```bash
-flyte update queue gpu-queue --edit
-```
-
-This opens the queue in your `$EDITOR` so you can adjust the mutable settings.
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -268,6 +268,14 @@ active --[drain]--> draining --[in-flight work completes]--> drained
 > requests. Support is coming in a future release.
 
 {{< tabs "drain-queue" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+```bash
+flyte update queue gpu-queue --drain      # stop new submissions; let in-flight work finish
+flyte update queue gpu-queue --activate   # put the queue back in rotation
+```
+{{< /markdown >}}
+{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 ```python
@@ -275,14 +283,6 @@ from flyteplugins.union.remote import Queue
 
 Queue.drain("gpu-queue")     # stop new submissions; let in-flight work finish
 Queue.activate("gpu-queue")  # put the queue back in rotation
-```
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-```bash
-flyte update queue gpu-queue --drain      # stop new submissions; let in-flight work finish
-flyte update queue gpu-queue --activate   # put the queue back in rotation
 ```
 {{< /markdown >}}
 {{< /tab >}}
