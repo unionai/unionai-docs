@@ -296,6 +296,10 @@ the key into FluentBit at runtime, so the key never appears in the rendered Conf
 Retrieve the storage account key and create the secret in the dataplane namespace:
 
 ```bash
+# Ensure the dataplane namespace exists
+kubectl create namespace $DATAPLANE_NAMESPACE \
+  --dry-run=client -o yaml | kubectl apply -f -
+
 # Fetch the storage account key
 STORAGE_ACCOUNT_KEY=$(az storage account keys list \
   --account-name $STORAGE_ACCOUNT \
