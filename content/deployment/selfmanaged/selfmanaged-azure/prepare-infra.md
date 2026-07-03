@@ -296,10 +296,6 @@ the key into FluentBit at runtime, so the key never appears in the rendered Conf
 Retrieve the storage account key and create the secret in the dataplane namespace:
 
 ```bash
-# Ensure the dataplane namespace exists
-kubectl create namespace $DATAPLANE_NAMESPACE \
-  --dry-run=client -o yaml | kubectl apply -f -
-
 # Fetch the storage account key
 STORAGE_ACCOUNT_KEY=$(az storage account keys list \
   --account-name $STORAGE_ACCOUNT \
@@ -314,19 +310,20 @@ kubectl create secret generic $FLUENTBIT_SECRET_NAME \
 unset STORAGE_ACCOUNT_KEY
 ```
 
-You will wire this secret into the chart in [Deploy the dataplane](../selfmanaged-azure/deploy-dataplane)
-via the `fluentbit` values, for example:
+The chart values will then consume this secret. **If you need to modify the secret name**, adjust this on the relevant values section:
 
 ```yaml
+
 fluentbit:
-  # Placeholder is expanded by FluentBit at runtime from the env var below,
-  # keeping the key out of the rendered ConfigMap.
   azureBlobSharedKey: "${AZURE_STORAGE_SHARED_KEY}"
   env:
     - name: AZURE_STORAGE_SHARED_KEY
       valueFrom:
         secretKeyRef:
-          name: ${FLUENTBIT_SECRET_NAME}
+          name: fluentbit-azure-key # <- CHANGE THIS
+          key: shared_key
+```
+
 ```
 
 > [!NOTE] The storage account key grants full access to the account. Rotate it on your normal
