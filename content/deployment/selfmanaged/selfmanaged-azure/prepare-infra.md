@@ -324,7 +324,6 @@ fluentbit:
           key: shared_key
 ```
 
-```
 
 > [!NOTE] The storage account key grants full access to the account. Rotate it on your normal
 > schedule; after rotation, update the secret (`kubectl create secret ... --dry-run=client -o yaml
