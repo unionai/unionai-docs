@@ -8,7 +8,7 @@ mermaid: true
 # Queues
 
 > [!NOTE] Requires the `flyteplugins-union` plugin
-> The `flyte` queue commands on this page are provided by the
+> The queue CLI commands and Python objects on this page are provided by the
 > `flyteplugins-union` package. Install it with `pip install flyteplugins-union`.
 
 A **queue** is a named scheduling lane. It does two jobs at once: it **routes**
@@ -16,8 +16,8 @@ work to a [cluster pool](./cluster-pools) (and, optionally, specific clusters
 within it), and it **governs** that work with concurrency, depth, priority, and
 fairness limits.
 
-This page covers creating and managing queues from the CLI — the administrative
-side. For how workflow authors *target* a queue from task code, see
+This page covers creating and managing queues administratively, from either the
+CLI or Python. For how workflow authors *target* a queue from task code, see
 [Queues in Configure tasks](../task-configuration/queues).
 
 ## How a queue routes
@@ -63,29 +63,32 @@ inside exactly one pool:
 - **`prod-queue`** spreads across all clusters in the `prod` pool.
 - **`gpu-queue`** lives in the same `prod` pool but is pinned to a single cluster.
 
-The selector (which clusters within the pool) is freely mutable; the pool a queue
-lives in is not — moving a queue to another pool means crossing an isolation
-boundary, so it [requires a drain](#change-a-queues-pool--drain-first).
+The selector (which clusters within the pool) is mutable. The pool a queue lives
+in is **fixed at creation** — an update that changes it is rejected, because
+moving a queue to another pool would cross an isolation boundary. To move
+workloads to another pool, see [Move work to another pool](#move-work-to-another-pool).
+
+> [!NOTE] Queue scope
+> Queues are currently organization-scoped. Some CLI and Python surfaces expose
+> `project` and `domain` parameters for future scoped queues, but current
+> deployments reject project/domain-scoped queue creation.
 
 ## Create a queue
 
+`run_concurrency` and `action_concurrency` are required; everything else has a
+sensible default. With no cluster selector, a queue spreads work across **all**
+healthy clusters in its pool.
+
+{{< tabs "create-queue" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
 ```bash
 flyte create queue my-queue \
   --run-concurrency 100 \
   --action-concurrency 1000
 ```
 
-`--run-concurrency` and `--action-concurrency` are required; everything else has a
-sensible default. With no `--cluster` a queue spreads work across **all** healthy
-clusters in its pool.
-
-> [!NOTE] Queues are bound to a cluster pool
-> Every queue is bound to a cluster pool, chosen at creation time with
-> `--cluster-pool`. In the absence of `--cluster-pool`, the queue is bound to the
-> `default` cluster pool.
-
-Pin a queue to specific clusters within its pool, scope it to a project/domain, and
-tune its limits:
+Create a higher-priority queue in a specific pool:
 
 ```bash
 flyte create queue gpu-queue \
@@ -95,38 +98,76 @@ flyte create queue gpu-queue \
   --action-concurrency 500 \
   --depth 5000 \
   --priority max \
-  --fairness round_robin \
-  --project myproj \
-  --domain production
+  --fairness round_robin
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+```python
+from flyteplugins.union.remote import Queue
+
+queue = Queue.create(
+    "my-queue",
+    run_concurrency=100,
+    action_concurrency=1000,
+)
+
+print(queue.to_dict())
+```
+
+Create a higher-priority queue in a specific pool:
+
+```python
+queue = Queue.create(
+    "gpu-queue",
+    cluster_pool="prod",
+    clusters=["prod-us-east-1"],
+    run_concurrency=50,
+    action_concurrency=500,
+    depth=5000,
+    priority="max",
+    fairness="round_robin",
+)
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+> [!NOTE] Queues are bound to a cluster pool
+> Every queue is bound to a cluster pool, chosen at creation time with
+> `cluster_pool` in Python or `--cluster-pool` in the CLI. If you omit it, the
+> queue is bound to the `default` cluster pool.
 
 ### What each setting controls
 
-- **`--cluster-pool`** — the pool this queue lives in. A queue can only route to
-  clusters in its own pool. Omit to bind the queue to the `default` pool. The pool
-  is fixed at creation time; moving a queue to another pool later
-  [requires a drain](#change-a-queues-pool--drain-first).
-- **`--cluster`** — pin the queue to one or more clusters in the pool (repeat the
-  flag for several). Omit to use all clusters in the pool.
-- **`--run-concurrency`** — maximum number of *runs* active on the queue at once.
-  Children of an active run aren't counted; use this to stop a job from overlapping
-  with a previous invocation of itself.
-- **`--action-concurrency`** — maximum number of *actions* (tasks) running at once.
-  A cap of 1 serializes the queue; higher values bound the burst rate.
-- **`--depth`** — total in-flight plus waiting items the queue will hold (default
-  `10000`). When full, new submissions are rejected with `RESOURCE_EXHAUSTED` —
-  back-pressure, not an unbounded backlog.
-- **`--priority`** — `min`, `medium` (default), or `max`. Among queues contending
-  for the same pool's capacity, higher-priority work is scheduled first. Priority
-  controls ordering, not preemption.
-- **`--fairness`** — `round_robin` (default) or `shuffle_interleave`. How actions
-  from different projects sharing the queue are interleaved.
-- **`--project` / `--domain`** — scope the queue so only that project/domain can
-  route to it. Pools are org-level; queue *scope* is independent of the pool it
-  targets.
+- **`cluster_pool` / `--cluster-pool`** — the pool this queue lives in. A queue can
+  only route to clusters in its own pool. Omit to bind the queue to the `default`
+  pool.
+- **`clusters` / `--cluster`** — pin the queue to one or more clusters in the pool.
+  Omit to use all clusters in the pool. In the API, `["*"]` means all enabled and
+  healthy clusters in the pool, and `*` must be the only entry if used.
+- **`run_concurrency` / `--run-concurrency`** — maximum number of *runs* active on
+  the queue at once. Children of an active run aren't counted; use this to stop a
+  job from overlapping with a previous invocation of itself. `0` means no limit.
+- **`action_concurrency` / `--action-concurrency`** — maximum number of *actions*
+  (tasks) running at once. A cap of 1 serializes the queue; higher values bound
+  the burst rate. `0` means no limit.
+- **`depth` / `--depth`** — total in-flight plus waiting items the queue will hold
+  (default `10000`). `0` means no limit.
+- **`priority` / `--priority`** — `min`, `medium` (default), or `max`. Among queues
+  contending for the same pool's capacity, higher-priority work is scheduled
+  first. Under the hood these map to enum values 1, 50, and 100; use `max` for a
+  priority higher than 50. Priority controls ordering, not preemption.
+- **`fairness` / `--fairness`** — `round_robin` (default) or `shuffle_interleave`.
+  This controls how actions from different projects sharing the queue are
+  interleaved.
 
 ## Inspect queues
 
+{{< tabs "inspect-queue" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
 ```bash
 # List all queues
 flyte get queue
@@ -137,56 +178,142 @@ flyte get queue gpu-queue
 # Stream live metrics — runs in-flight, actions in-flight, queue depth
 flyte get queue gpu-queue --watch
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+```python
+from flyteplugins.union.remote import Queue
+
+for queue in Queue.listall(limit=100):
+    print(queue.name, queue.status, queue.priority, queue.cluster_pool, queue.clusters)
+
+queue = Queue.get("gpu-queue")
+print(queue.to_dict())
+
+metrics = Queue.details("gpu-queue")
+print(metrics)
+```
+
+To stream metrics:
+
+```python
+for metrics in Queue.watch("gpu-queue"):
+    print(metrics)
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 `--watch` renders live progress bars for run concurrency, action concurrency, and
 depth, so you can see a queue filling up or draining in real time.
 
 ## Change a queue's settings
 
-Edit a queue's limits, priority, fairness, or cluster pinning interactively:
+You can update limits, priority, fairness, or cluster pinning. The update API
+replaces the full queue spec; the Python wrapper handles this by reading the
+current queue first, changing only the fields you pass, and writing the complete
+spec back.
 
+{{< tabs "update-queue" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
 ```bash
 flyte update queue gpu-queue --edit
 ```
 
-Changing the **cluster selector within the same pool** (which clusters the queue
-pins to) takes effect immediately — no drain required, because every cluster in the
-pool shares the same data plane.
+This opens the queue in your `$EDITOR` so you can adjust the mutable settings.
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+```python
+from flyteplugins.union.remote import Queue
 
-## Change a queue's pool — drain first
-
-Moving a queue to a different **pool** is different — it crosses an isolation
-boundary. In-flight runs have already landed their data, containers, code, and
-secrets in the old pool's data plane, and a different pool's clusters cannot read
-them. So you must drain the queue first:
-
-```bash
-# 1. Stop accepting new submissions; let in-flight work finish
-flyte update queue gpu-queue --drain
-
-# 2. Once drained, repoint the queue to the new pool
-flyte update queue gpu-queue --edit   # set cluster_pool to the new pool
-
-# 3. Start accepting work again
-flyte update queue gpu-queue --activate
+Queue.update(
+    "gpu-queue",
+    run_concurrency=75,
+    action_concurrency=750,
+    priority="max",
+    clusters=["prod-us-east-1"],
+)
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+Changing the **cluster selector within the same pool** (which clusters the queue
+pins to) takes effect immediately because every cluster in the pool shares the
+same data plane.
+
+## Drain and reactivate a queue
+
+**Draining** takes a queue out of rotation without losing in-flight work: the
+queue stops admitting new submissions, work already in flight runs to
+completion, and once nothing is left the queue settles into the `drained` state.
+Draining is how you quiesce a queue — before deleting the cluster behind it,
+before maintenance, or as part of
+[moving work to another pool](#move-work-to-another-pool).
+
+A queue is in one of three states:
+
+```
+active --[drain]--> draining --[in-flight work completes]--> drained
+  ^                    |                                        |
+  +----[activate]------+----------------[activate]-------------+
+```
+
+> [!WARNING] Draining is not yet available
+> The drain operation is currently disabled — the control plane rejects drain
+> requests. Support is coming in a future release.
+
+{{< tabs "drain-queue" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+```bash
+flyte update queue gpu-queue --drain      # stop new submissions; let in-flight work finish
+flyte update queue gpu-queue --activate   # put the queue back in rotation
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+```python
+from flyteplugins.union.remote import Queue
+
+Queue.drain("gpu-queue")     # stop new submissions; let in-flight work finish
+Queue.activate("gpu-queue")  # put the queue back in rotation
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+The `default` queue is always active — its state cannot be changed. Note also
+that queues cannot be deleted: draining is how a queue is retired, and an idle
+queue costs nothing.
+
+## Move work to another pool
+
+Moving work to a different **pool** crosses an isolation boundary. In-flight runs
+have already landed their data, containers, code, and secrets in the old pool's
+data plane, and a different pool's clusters cannot read them. So a queue can
+never change pools in place; moving work is a drain-and-replace migration:
+
+1. Create a new queue in the destination pool.
+2. Update workflows, launch plans, triggers, or run overrides to target the new
+   queue.
+3. Let in-flight work finish on the old queue. Once
+   [draining](#drain-and-reactivate-a-queue) is available, drain it to also
+   shut out any straggler submissions.
+4. Leave the old queue idle. Queues cannot be deleted; an idle queue costs
+   nothing.
 
 > [!NOTE] Queue overrides stay within a pool
 > A task can override its queue at runtime
 > ([`task.override(queue=...)`](../task-configuration/queues#overriding-a-queue-at-runtime)),
 > but only to another queue in the **same pool** as the run's original queue. A
-> cross-pool override is rejected, for the same data plane reason that pool changes
-> require a drain.
-
-## Draining and reactivating
-
-Draining is also how you take a queue out of rotation without losing in-flight work
-— for maintenance, or before deleting the clusters behind it:
-
-```bash
-flyte update queue gpu-queue --drain      # stop new submissions, let current work finish
-flyte update queue gpu-queue --activate   # accept work again
-```
+> cross-pool override is rejected, for the same data plane reason that moving
+> work between pools requires a drain-and-replace migration.
 
 ## See also
 
