@@ -164,6 +164,72 @@ kubectl apply -f kourier-alb-ingress.yaml
 
 Point a wildcard DNS record `*.<apps.example.com>` at the ALB. The ALB terminates TLS
 with your ACM certificate and forwards to Kourier, which routes by hostname to each app.
+
+**Require authentication (optional).** Apps are public by default — anyone who can reach
+the ALB can open them. To put the same OIDC login your console uses in front of every app,
+add edge authentication to the `kourier-alb` Ingress. The AWS Load Balancer Controller then
+programs an `authenticate-oidc` action on the ALB, so unauthenticated requests are bounced
+to your identity provider first.
+
+Add these annotations to the Ingress above:
+
+```yaml
+    alb.ingress.kubernetes.io/auth-type: oidc
+    alb.ingress.kubernetes.io/auth-on-unauthenticated-request: authenticate
+    alb.ingress.kubernetes.io/auth-scope: openid email profile
+    alb.ingress.kubernetes.io/auth-idp-oidc: |
+      {"issuer":"https://<issuer>",
+       "authorizationEndpoint":"https://<issuer>/v1/authorize",
+       "tokenEndpoint":"https://<issuer>/v1/token",
+       "userInfoEndpoint":"https://<issuer>/v1/userinfo",
+       "secretName":"apps-oidc"}
+```
+
+The controller reads the OIDC `clientID` and `clientSecret` from the Secret named by
+`secretName`, which **must live in the same namespace as the Ingress** (`kourier-system`):
+
+```bash
+kubectl create secret generic apps-oidc -n kourier-system \
+  --from-literal=clientID=<client-id> \
+  --from-literal=clientSecret=<client-secret>
+```
+
+Grant the controller permission to read Secrets in that namespace (its Secret access is
+per-namespace). Without this the Ingress fails to reconcile with `secrets "apps-oidc" is
+forbidden`, which stalls reconciliation of the **whole ALB group**, not just this Ingress:
+
+```yaml
+# kourier-oidc-rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: alb-oidc-secret-reader
+  namespace: kourier-system
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: alb-oidc-secret-reader
+  namespace: kourier-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: alb-oidc-secret-reader
+subjects:
+  - kind: ServiceAccount
+    name: aws-load-balancer-controller   # your controller's ServiceAccount
+    namespace: kube-system
+```
+
+Finally, allow the ALB's callback on your OIDC client. The ALB redirects back to
+`https://<app-host>/oauth2/idpresponse`, and every app has a different hostname, so register
+the wildcard `https://*.<apps.example.com>/oauth2/idpresponse` as a sign-in redirect URI
+(your IdP must permit wildcard redirect URIs). Without it, login dead-ends after the redirect
+with a `redirect_uri` error.
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}

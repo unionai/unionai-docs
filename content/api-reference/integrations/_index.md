@@ -1,7 +1,7 @@
 ---
 title: Integrations
 variants: +flyte +union
-weight: 5
+weight: 6
 ---
 
 # Integrations
