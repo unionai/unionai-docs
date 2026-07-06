@@ -1,6 +1,6 @@
 ---
 title: Run
-version: 2.5.6
+version: 2.5.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -217,6 +217,7 @@ def listall(
     updated_at: TimeFilter | None,
     with_labels: dict[str, str] | None,
     with_label_keys: list[str] | None,
+    paused_actions_only: bool,
 ) -> AsyncIterator[Run]
 ```
 Get all runs for the current project and domain.
@@ -238,6 +239,7 @@ Get all runs for the current project and domain.
 | `updated_at` | `TimeFilter \| None` | Filter runs by last-update time range. |
 | `with_labels` | `dict[str, str] \| None` | Filter runs whose labels include all of these key=value pairs (AND semantics). |
 | `with_label_keys` | `list[str] \| None` | Filter runs that have all of these label keys present (existence check). |
+| `paused_actions_only` | `bool` | If True, only return runs that have at least one paused action (i.e. runs waiting on a human in the loop). |
 
 **Returns:** An iterator of runs.
 
