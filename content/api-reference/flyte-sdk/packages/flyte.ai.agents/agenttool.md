@@ -1,6 +1,6 @@
 ---
 title: AgentTool
-version: 2.5.2
+version: 2.5.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -35,6 +35,8 @@ class AgentTool(
     source: Literal['function', 'task', 'trace', 'remote_task', 'mcp', 'custom'],
     target: Any,
     call_handler: ToolCallHandler | None,
+    call_llm: LLMCallable | None,
+    model: str | None,
 )
 ```
 | Parameter | Type | Description |
@@ -47,13 +49,38 @@ class AgentTool(
 | `source` | `Literal['function', 'task', 'trace', 'remote_task', 'mcp', 'custom']` | |
 | `target` | `Any` | |
 | `call_handler` | `ToolCallHandler \| None` | |
+| `call_llm` | `LLMCallable \| None` | |
+| `model` | `str \| None` | |
 
 ## Methods
 
 | Method | Description |
 |-|-|
+| [`aio()`](#aio) | Invoke the tool, routing through ``call_handler`` when one is registered. |
 | [`to_openai_format()`](#to_openai_format) | Convert to the OpenAI / litellm tools schema. |
 
+
+### aio()
+
+```python
+def aio(
+    args: *args,
+    kwargs: **kwargs,
+) -> Any
+```
+Invoke the tool, routing through ``call_handler`` when one is registered.
+
+Mirrors :meth:`~flyte._task.TaskTemplate.aio` enough for ``flyte.map`` and
+in-task calls on ``@tool``-wrapped tasks. When a ``call_handler`` is set,
+it runs with :attr:`call_llm` and :attr:`model` (or their defaults).
+Otherwise, durable ``@env.task`` / remote-task targets delegate to their
+underlying ``.aio``; everything else goes through :meth:`execute`.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ### to_openai_format()
 

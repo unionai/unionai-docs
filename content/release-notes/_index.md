@@ -720,7 +720,7 @@ You can now specify the addressing style for S3-compatible backends by setting t
 ### :fast_forward: Grouped Runs
 We redesigned the Runs page to better support large numbers of runs. Historically, large projects produced so many runs that flat listings became difficult to navigate. The new design groups Runs by their root task - leveraging the fact that while there may be millions of runs, there are typically only dozens or hundreds of deployed tasks. This grouped view, combined with enhanced filtering (by status, owner, duration, and more coming soon), makes it dramatically faster and easier to locate the exact runs users are looking for, even in the largest deployments.
 
-![Grouped Runs View](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/release-notes/2025-11_grouped_runs.gif)
+![Grouped Runs View](../_static/images/release-notes/2025-11_grouped_runs.gif)
 
 ### :globe_with_meridians: Apps (beta)
 
@@ -797,7 +797,7 @@ if __name__ == "__main__":
 
 Now you can view and create secrets directly from the UI. Secrets are stored securely in your configured secrets manager and injected into your task environments at runtime.
 
-![Secrets Creation Flow](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/release-notes/2025-11_secrets_creation.gif)
+![Secrets Creation Flow](../_static/images/release-notes/2025-11_secrets_creation.gif)
 
 ### Image builds now run in the same project-domain
 The image build task is now executed within the same project and domain as the user task, rather than in system-production. This change improves isolation and is a key step toward supporting multi-dataplane clusters.
@@ -830,7 +830,7 @@ You can now run up to 50,000 actions within a run and up to 1,000 actions concur
 To enable observability across so many actions, we added group and sub-actions UI views, which show summary statistics about the actions which were spawned within a group or action.
 You can use these summary views (as well as the action status filter) to spot check long-running or failed actions.
 
-![50k Fanout Visualization](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/release-notes/2025-10_50k_fanout.gif)
+![50k Fanout Visualization](../_static/images/release-notes/2025-10_50k_fanout.gif)
 
 ### :computer: Remote debugging for Ray head nodes
 Rather than locally reproducing errors, sometimes you just want to zoom into the remote execution and see what's happening.
@@ -839,7 +839,7 @@ When you click "Debug action" from an action in a run, we spin up that action's 
 Previously, this was only possible with vanilla Python tasks.
 Now, you can debug multi-node distributed computations on Ray directly.
 
-![Debugging Ray Head Node](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/release-notes/2025-10_ray_head_debug.gif)
+![Debugging Ray Head Node](../_static/images/release-notes/2025-10_ray_head_debug.gif)
 
 ### :zap: Triggers and audit history
 [Triggers](../user-guide/task-configuration/triggers) let you templatize and set schedules for your workflows, similar to Launch Plans in Flyte 1.0.
@@ -852,14 +852,14 @@ def example_task(trigger_time: datetime, x: int = 1) -> str:
 
 Once you deploy, it's possible to see all the triggers which are associated with a task:
 
-![Triggers for a Task](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/release-notes/2025-10_triggers_for_task.png)
+![Triggers for a Task](../_static/images/release-notes/2025-10_triggers_for_task.png)
 
 We also maintain an audit history of every deploy, activation, and deactivation event, so you can get a sense of who's touched an automation.
 
-![Triggers Activity Log](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/release-notes/2025-10_trigger_activity_log.gif)
+![Triggers Activity Log](../_static/images/release-notes/2025-10_trigger_activity_log.gif)
 
 ### :arrow_up: Deployed tasks and input passing
 
 You can see the runs, task spec, and triggers associated with any deployed task, and launch it from the UI. We've converted the launch forms to a convenient JSON Schema syntax, so you can easily copy-paste the inputs from a previous run into a new run for any task.
 
-![Deployed Tasks and Input Passing](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/release-notes/2025-10_tasks_and_input_passing.gif)
+![Deployed Tasks and Input Passing](../_static/images/release-notes/2025-10_tasks_and_input_passing.gif)

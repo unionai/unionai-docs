@@ -119,7 +119,7 @@ To find the actual name of this GSA do the following:
 * In the GCP data plane project, go to **IAM & Admin > Service accounts**.
 * In the list of service account, find the one whose name and email match the pattern above. For example:
 
-![](../../../_static/images/user-guide/integrations/enabling-gcp-resources/user-flyte-gsa.png)
+![GCP IAM & Admin Service accounts list, used to find the UserFlyteGSA service account name and email](../../../_static/images/user-guide/integrations/enabling-gcp-resources/user-flyte-gsa.png)
 
 * Copy this name to document in an editor.
   You will need it later to configure each specific resource.

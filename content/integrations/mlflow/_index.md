@@ -46,9 +46,9 @@ async def train_model(learning_rate: float) -> str:
     return run.info.run_id
 ```
 
-![Link](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/mlflow/link.png)
+![Link](../../_static/images/integrations/mlflow/link.png)
 
-![Mlflow UI](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/mlflow/mlflow_dashboard.png)
+![Mlflow UI](../../_static/images/integrations/mlflow/mlflow_dashboard.png)
 
 > [!NOTE]
 > `@mlflow_run` must be the outermost decorator, before `@env.task`:
@@ -109,7 +109,7 @@ async def train_pytorch():
     ...
 ```
 
-![Autolog](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/mlflow/autolog.png)
+![Autolog](../../_static/images/integrations/mlflow/autolog.png)
 
 ## Run modes
 
@@ -154,7 +154,7 @@ async def standalone_experiment():
 
 Use `run_mode="nested"` to create a child run that appears under the parent in the MLflow UI. This works across processes and containers via the `mlflow.parentRunId` tag.
 
-![Nested runs](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/mlflow/mlflow_hpo.png)
+![Nested runs](../../_static/images/integrations/mlflow/mlflow_hpo.png)
 
 This is the recommended pattern for hyperparameter optimization, where each trial should be tracked as a child of the parent study run:
 
@@ -191,7 +191,7 @@ async def hpo_search(n_trials: int = 30) -> str:
     return run.info.run_id
 ```
 
-![HPO](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/mlflow/hpo.png)
+![HPO](../../_static/images/integrations/mlflow/hpo.png)
 
 ## Workflow-level configuration
 
@@ -250,7 +250,7 @@ async def distributed_train():
 
 On non-rank-0 workers, no MLflow run is created and `get_mlflow_run()` returns `None`. The task function still executes normally — only the MLflow instrumentation is skipped.
 
-![Distributed training](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/mlflow/distributed_training.png)
+![Distributed training](../../_static/images/integrations/mlflow/distributed_training.png)
 
 You can also set rank explicitly:
 

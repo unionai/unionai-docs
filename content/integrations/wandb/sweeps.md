@@ -44,7 +44,7 @@ This pattern provides:
 `run_parallel_sweep` links to the main Weights & Biases sweeps page and `sweep_agent` links to the specific sweep URL because we cannot determine the sweep ID at link rendering time.
 {{< /note >}}
 
-![Sweep](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/integrations/wandb/sweep.png)
+![Sweep](../../_static/images/integrations/wandb/sweep.png)
 
 ## Writing objective functions
 

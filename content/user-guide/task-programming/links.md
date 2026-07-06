@@ -8,7 +8,7 @@ variants: +flyte +union
 
 Links let you add clickable URLs to tasks that appear in the Flyte UI. Use them to connect tasks to external tools like experiment trackers, monitoring dashboards or custom internal services.
 
-![Links in the Flyte UI](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/wandb/single_node_auto_flyte.png)
+![Links in the Flyte UI](../../_static/images/integrations/wandb/single_node_auto_flyte.png)
 
 You can attach links to tasks in two ways:
 
