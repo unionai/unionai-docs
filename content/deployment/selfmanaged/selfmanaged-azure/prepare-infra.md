@@ -314,7 +314,7 @@ kubectl create secret generic $FLUENTBIT_SECRET_NAME \
 unset STORAGE_ACCOUNT_KEY
 ```
 
-The chart values will then consume this secret. **If you need to modify the secret name**, adjust this on the relevant values section:
+The chart values will then consume this secret. **If you need to modify the secret name**, adjust this in the relevant values section:
 
 ```yaml
 
