@@ -64,7 +64,7 @@ ssh flyte-debug
 ```
 
 `--write-config` adds a `Host flyte-debug` block to your `~/.ssh/config`, so `ssh flyte-debug` (or
-**VS Code → Remote-SSH → `flyte-debug`**) connects straight into the task pod. Only `RUN_NAME` is
+**VS Code → Remote-SSH → `flyte-debug`**) connects straight into the task pod. Only `<run-name>` is
 required; the action name defaults to the root action `a0` — pass an action name as a second
 argument to source the task and inputs from a nested action instead.
 
