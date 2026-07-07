@@ -1,10 +1,10 @@
 ---
-title: Serving apps
+title: Enable app serving
 variants: +flyte -union
-weight: 4
+weight: 5
 ---
 
-# Serving apps
+# Enable app serving
 
 Flyte can host long-running **apps** — web services, dashboards, model servers — next to
 your workflows. Each app runs as a [Knative](https://knative.dev) Service that Flyte's
@@ -24,7 +24,7 @@ Serving first, then turn app serving on in the `flyte-binary` chart.
 
 ## Prerequisites
 
-- A running Flyte deployment (see [Installing Flyte](./installing)).
+- A running Flyte deployment (see [AWS deployment](./aws-deployment)).
 - Cluster-admin access to install Knative (CRDs and controllers).
 - A **wildcard DNS record** and a **TLS certificate** for the app base domain (details
   in steps 2–3).

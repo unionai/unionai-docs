@@ -1,10 +1,10 @@
 ---
-title: Planning your deployment
+title: Deployment overview
 variants: +flyte -union
 weight: 1
 ---
 
-# Planning your Flyte deployment
+# Deployment overview
 
 Before you install Flyte, it helps to understand what the deployment is made of and
 which external dependencies you need to provide yourself.
@@ -115,4 +115,6 @@ defaults:
 | Flyte binary | `cr.flyte.org/flyteorg/flyte-binary-v2` |
 | Console | `ghcr.io/unionai-oss/flyteconsole-v2` |
 
-When you're ready, continue to [Installing Flyte](./installing).
+When you're ready, continue to the
+[evaluation deployment with Kind](./kind-evaluation) to try Flyte on a kind cluster,
+or the [AWS deployment](./aws-deployment) guide for a real deployment.

@@ -1,13 +1,13 @@
 ---
-title: Installing Flyte
+title: AWS deployment
 variants: +flyte -union
-weight: 2
+weight: 3
 ---
 
-# Installing Flyte
+# AWS deployment
 
 This guide installs Flyte with the `flyte-binary` Helm chart. It assumes you have
-already provisioned the [external dependencies](./planning) — a Kubernetes cluster, a
+already provisioned the [external dependencies](./overview) — a Kubernetes cluster, a
 PostgreSQL database, and an object-store bucket — and that you have `helm` and
 `kubectl` configured against your cluster.
 
@@ -136,14 +136,15 @@ configuration:
 
 By default the chart only creates `ClusterIP` Services. To reach Flyte from outside
 the cluster, enable the ingress. A **single HTTP ingress** serves the console and the
-API — there is no separate gRPC ingress (see [Planning](./planning)).
+API — there is no separate gRPC ingress (see the
+[Deployment overview](./overview)).
 
 ```yaml
 ingress:
   create: true
   host: <flyte.example.com>
   # Your cloud's native ingress class, e.g. alb (EKS), gce (GKE),
-  # azure-application-gateway (AKS). See Planning for the options.
+  # azure-application-gateway (AKS). See the Deployment overview for the options.
   ingressClassName: <ingress-class>
 ```
 
