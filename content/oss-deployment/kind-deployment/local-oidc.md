@@ -6,7 +6,7 @@ weight: 1
 
 # Set up local OIDC provider with Dex
 
-[Step 7 of the Kind evaluation guide](_index#7-add-authentication-with-a-local-idp-optional)
+[Step 7 of the Kind deployment guide](_index#7-add-authentication-with-a-local-idp-optional)
 gates the console behind Traefik and oauth2-proxy, using [Dex](https://dexidp.io/)
 running **inside the same kind cluster** as the identity provider — so you can test the
 whole authentication flow with no cloud account and no real users. This page covers
@@ -157,5 +157,5 @@ the issuer it advertises.
 
 ## Next step
 
-With Dex up and its issuer routable, return to the Kind evaluation guide and
+With Dex up and its issuer routable, return to the Kind deployment guide and
 [deploy oauth2-proxy](_index#deploy-oauth2-proxy) pointed at `http://flyte.local/dex`.

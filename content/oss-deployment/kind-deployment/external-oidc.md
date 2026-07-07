@@ -6,13 +6,13 @@ weight: 2
 
 # Set up external OIDC provider
 
-[Step 7 of the Kind evaluation guide](_index#7-add-authentication-with-a-local-idp-optional)
+[Step 7 of the Kind deployment guide](_index#7-add-authentication-with-a-local-idp-optional)
 gates the console behind Traefik and oauth2-proxy using [Dex](https://dexidp.io/) as a
 throwaway in-cluster IdP. This page is the same setup with a **real external OIDC
 provider** (Okta, Google, Auth0, …) instead of Dex — useful when you want to test the
 authentication flow against the provider you'll actually use.
 
-This page assumes you've completed [steps 1–6 of the Kind evaluation guide](_index) and are
+This page assumes you've completed [steps 1–6 of the Kind deployment guide](_index) and are
 about to do step 7. Register an app at your provider first: it needs the redirect URI
 `http://<host>/oauth2/callback`, and you'll need its client ID and secret ready.
 
@@ -25,7 +25,7 @@ or well-known-rewrite workarounds apply here.
 Install Traefik with its Helm chart and expose **both** entrypoints on the kind node's
 nodePorts — `web` (HTTP) on `30080` and `websecure` (HTTPS) on `30443`, the ports the
 cluster maps to host `80` and `443` (see
-[step 2 of the Kind evaluation guide](_index#2-create-the-kind-cluster)). The browser uses
+[step 2 of the Kind deployment guide](_index#2-create-the-kind-cluster)). The browser uses
 HTTP; **the SDK needs HTTPS** — expose both up front so you don't have to reinstall
 later.
 
@@ -45,7 +45,7 @@ the `30080 → 80` / `30443 → 443` mappings from step 2, Traefik is unreachabl
 `flyte.local` and you'll need to recreate the cluster.
 
 Then replace Traefik's default certificate with one for `flyte.local`, exactly as in
-[the Kind evaluation guide](_index#replace-the-default-cert-with-one-for-flytelocal) — the
+[the Kind deployment guide](_index#replace-the-default-cert-with-one-for-flytelocal) — the
 SDK rejects the built-in cert, and the fix (a two-tier root-CA-signs-leaf chain) is
 identical whichever IdP you use.
 
@@ -297,7 +297,7 @@ task:
 ```
 
 The `insecureSkipVerify` and `SelectCluster` caveats from
-[the Kind evaluation guide](_index#point-the-sdk-at-the-https-endpoint) apply unchanged.
+[the Kind deployment guide](_index#point-the-sdk-at-the-https-endpoint) apply unchanged.
 Because your IdP is publicly resolvable and serves the standard
 `/.well-known/oauth-authorization-server` path, Flyte's `GetOAuth2Metadata` works
 without the DNS and discovery-path fixes the in-cluster Dex needs.
@@ -310,7 +310,7 @@ with the resulting token.
 | Symptom | Cause and fix |
 |---|---|
 | `flyte.run` fails the upload with `Unauthorized`, **no browser opens** | The SDK is on plain HTTP (`insecure: True`) and skipped auth. Use `insecure: False` + `https://flyte.local`. |
-| `InitializationError: Service is unavailable` / `EndpointUnavailable`, **no browser opens** | The SDK couldn't reach the API or discovery paths. Two common causes: the auth-discovery/API paths are still behind `oauth2-signin` (apply the two `IngressRoute`s in [Split the API and discovery paths](#split-the-api-and-discovery-paths-off-the-browser-middleware)); or the TLS cert is rejected (see the cert section of the [Kind evaluation guide](_index#replace-the-default-cert-with-one-for-flytelocal)). |
-| `Connection refused` to `https://flyte.local` | No TLS listener — Traefik's `websecure` isn't exposed, or the cluster lacks the `30443 → 443` mapping. See [step 2 of the Kind evaluation guide](_index#2-create-the-kind-cluster) / the [Traefik install](#install-the-ingress-controller). |
+| `InitializationError: Service is unavailable` / `EndpointUnavailable`, **no browser opens** | The SDK couldn't reach the API or discovery paths. Two common causes: the auth-discovery/API paths are still behind `oauth2-signin` (apply the two `IngressRoute`s in [Split the API and discovery paths](#split-the-api-and-discovery-paths-off-the-browser-middleware)); or the TLS cert is rejected (see the cert section of the [Kind deployment guide](_index#replace-the-default-cert-with-one-for-flytelocal)). |
+| `Connection refused` to `https://flyte.local` | No TLS listener — Traefik's `websecure` isn't exposed, or the cluster lacks the `30443 → 443` mapping. See [step 2 of the Kind deployment guide](_index#2-create-the-kind-cluster) / the [Traefik install](#install-the-ingress-controller). |
 | Upload still 401 *after* a successful browser login | oauth2-proxy rejects the Bearer token. Confirm `skip-jwt-bearer-tokens=true` and `oidc-extra-audience=<your-client-id>` ([oauth2-proxy install](#deploy-oauth2-proxy)); check its logs for `audience ... does not match`. |
 | Browser: `Unregistered redirect_uri` | The exact callback isn't registered on the IdP app. Add `http://flyte.local/oauth2/callback` **and** `https://flyte.local/oauth2/callback` (opening `/v2` over TLS uses the `https` one). |

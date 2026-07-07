@@ -23,11 +23,11 @@ Read these pages in order:
 
 1. [Deployment overview](./overview) — architecture and the external
    dependencies you need to provision.
-2. [Evaluation deployment with Kind](./kind-evaluation) — spin up the whole stack on
-   a kind cluster (on your machine or a cloud VM) for evaluation, including an
-   optional self-contained authentication setup with
-   [Dex](./kind-evaluation/local-oidc) (or an
-   [external OIDC provider](./kind-evaluation/external-oidc)).
+2. [Kind deployment](./kind-deployment) — spin up the whole stack on a kind cluster
+   (on your machine or a cloud VM — DigitalOcean, AWS EC2, or GCP) for evaluation,
+   including an optional self-contained authentication setup with
+   [Dex](./kind-deployment/local-oidc) (or an
+   [external OIDC provider](./kind-deployment/external-oidc)).
 3. [AWS deployment](./aws-deployment) — a minimal `values.yaml`, the `helm install`
    command, object-storage access, ingress, and a worked AWS/EKS example.
 4. [Authentication and SSO](./authentication) — securing the API and putting single

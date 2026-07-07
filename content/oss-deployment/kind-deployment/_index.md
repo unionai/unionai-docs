@@ -773,18 +773,22 @@ echo "127.0.0.1 flyte.local" | sudo tee -a /etc/hosts
 ```
 {{< /markdown >}}
 {{< /tab >}}
-{{< tab "DigitalOcean VM" >}}
+{{< tab "Cloud VM (DigitalOcean, EC2, GCP)" >}}
 {{< markdown >}}
-Traefik's node ports are bound to the droplet's public IP, so point `flyte.local` there
-in **your own machine's** `/etc/hosts` (not the droplet's):
+Traefik's node ports are bound to the VM's public IP, so point `flyte.local` there
+in **your own machine's** `/etc/hosts` (not the VM's):
 
 ```bash
-echo "<droplet-ip> flyte.local" | sudo tee -a /etc/hosts
+echo "<vm-public-ip> flyte.local" | sudo tee -a /etc/hosts
 ```
+
+This is the same on all three providers — only where you look up the public IP differs
+(`doctl compute droplet get flyte-kind`, `aws ec2 describe-instances`, or
+`gcloud compute instances describe flyte-kind`; it's also shown in each dashboard).
 
 Every other `flyte.local` reference in this step (Dex issuer, redirect URIs, cert SAN,
 ingress host) stays exactly the same — only this mapping differs. Alternatively, create
-a real DNS A record pointing at the droplet and substitute that hostname everywhere
+a real DNS A record pointing at the VM and substitute that hostname everywhere
 `flyte.local` appears.
 {{< /markdown >}}
 {{< /tab >}}
@@ -873,11 +877,11 @@ command line before opening a browser. These use `curl --resolve` to point `flyt
 at the Traefik node port, so they work even without the `/etc/hosts` entry (the
 browser still needs it):
 
-> [!NOTE] `--resolve` on a DigitalOcean droplet
+> [!NOTE] `--resolve` on a cloud VM
 > The `--resolve flyte.local:<port>:127.0.0.1` flags in this guide assume the curl runs
-> on the machine hosting kind. That's still true on a droplet — run them in your SSH
+> on the machine hosting kind. That's still true on a cloud VM — run them in your SSH
 > session and `127.0.0.1` works as-is. To run them from your own machine instead,
-> substitute the droplet's public IP for `127.0.0.1`.
+> substitute the VM's public IP for `127.0.0.1`.
 
 ```bash
 # 1. The console is gated — an unauthenticated request is rejected by the auth middleware:
@@ -1092,9 +1096,9 @@ Flyte image, load it into the cluster so pods can run it without a registry:
 kind load docker-image <your-image>:<tag> --name flyte
 ```
 
-On a DigitalOcean droplet, the image must be in the **droplet's** Docker daemon first —
-either build it there, or ship it from your machine with
-`docker save <image> | ssh root@<droplet-ip> docker load`.
+On a cloud VM, the image must be in the **VM's** Docker daemon first — either build it
+there, or ship it from your machine with
+`docker save <image> | ssh <user>@<vm-public-ip> docker load`.
 
 Reference that exact `<your-image>:<tag>` in your task config; with the image already
 present, the default `IfNotPresent` pull policy won't try to fetch it from a registry.
@@ -1107,10 +1111,12 @@ Delete the cluster and Flyte in one command:
 kind delete cluster --name flyte
 ```
 
-On DigitalOcean, also destroy the droplet so it stops billing:
+On a cloud VM, also delete the instance so it stops billing:
 
 ```bash
-doctl compute droplet delete flyte-kind
+doctl compute droplet delete flyte-kind                     # DigitalOcean
+aws ec2 terminate-instances --instance-ids <instance-id>    # AWS EC2 (also delete the flyte-kind security group)
+gcloud compute instances delete flyte-kind --zone <your-zone>   # GCP (also delete the flyte-kind-web firewall rule)
 ```
 
 The hosted PostgreSQL and S3/R2 bucket are untouched — clean those up in their own
