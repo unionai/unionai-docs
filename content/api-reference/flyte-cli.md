@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.5.7
+version: 2.5.8
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -2229,9 +2229,10 @@ $ flyte update queue my-queue --edit
 
 **`flyte update role NAME`**
 
-Update a role interactively.
+Update a role's actions interactively.
 
 Opens the role in your $EDITOR as YAML. Save and close to apply changes.
+Only actions can be edited; the role name and description cannot be changed.
 
 Examples:
 
