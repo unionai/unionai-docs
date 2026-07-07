@@ -1,5 +1,6 @@
 ---
 title: LLM-optimized documentation
+description: LLM-optimized documentation for Union.ai and Flyte, provided at four levels of granularity and following the llms.txt convention so AI coding agents and search engines can consume the docs.
 variants: +flyte +union
 weight: 1
 ---
