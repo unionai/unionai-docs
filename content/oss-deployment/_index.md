@@ -23,7 +23,7 @@ Read these pages in order:
 
 1. [Deployment overview](./overview) — architecture and the external
    dependencies you need to provision.
-2. [Kind deployment](./kind-deployment) — spin up the whole stack on a kind cluster
+2. [Kind deployment](./kind-deployment/_index) — spin up the whole stack on a kind cluster
    (on your machine or a cloud VM — DigitalOcean, AWS EC2, or GCP) for evaluation,
    including an optional self-contained authentication setup with
    [Dex](./kind-deployment/local-oidc) (or an
