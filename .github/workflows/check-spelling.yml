@@ -1,0 +1,50 @@
+name: Check Spelling
+
+# Spell check (DOC-967).
+#
+# NOTE ON TOOLING: the ticket asks for "LTEX spell-check". LTEX (ltex-ls) is an
+# LSP server oriented at editors (VS Code), with no first-class GitHub Action.
+# The pragmatic CI analogue is cspell, which is purpose-built for CI, supports
+# incremental (changed-files-only) checking, and reads a committed project
+# dictionary — so contributors get the same "unknown word" feedback in CI that
+# LTEX gives in the editor. The shared dictionary lives in
+# `.cspell-project-words.txt` and is the single place to add product terms.
+#
+# ROLLOUT POSTURE — advisory, changed-files-only (same rationale as
+# check-markdownlint.yml):
+#   1. `incremental_files_only: true` — only the Markdown files changed in the
+#      PR are checked; untouched legacy pages are never flagged.
+#   2. `strict: false` + `inline: warning` — misspellings surface as inline
+#      warnings but do NOT fail the check during rollout.
+#   3. Generated / code / release-notes content is excluded (see cspell.json).
+# TODO(DOC-967): once the corpus and dictionary are settled, set
+# `strict: true` to make this a required, blocking check.
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  spellcheck:
+    name: "Check Spelling"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Full history so the incremental check can diff against the PR base.
+          fetch-depth: 0
+
+      - name: Spell check changed docs
+        uses: streetsidesoftware/cspell-action@v6
+        with:
+          config: cspell.json
+          files: |
+            content/**/*.md
+          incremental_files_only: true
+          # Advisory during rollout — warn, don't block. See header TODO.
+          strict: false
+          inline: warning

@@ -1,0 +1,59 @@
+name: Check Markdown Lint
+
+# Markdown style/consistency check (DOC-967).
+#
+# ROLLOUT POSTURE — advisory, changed-files-only.
+# The existing docs corpus predates any linter and will contain many
+# pre-existing violations, so this check is deliberately scoped so it does NOT
+# turn the whole build red on legacy content:
+#   1. It lints ONLY the Markdown files changed in the PR (tj-actions/changed-files),
+#      never the whole tree — untouched legacy pages are never flagged.
+#   2. The config (.markdownlint-cli2.jsonc) disables the rules that a large
+#      Hugo/shortcode docs corpus trips on (line length, inline HTML, etc.).
+#   3. The lint step is `continue-on-error` — findings surface as inline PR
+#      annotations but do NOT fail the check during rollout.
+# TODO(DOC-967): once the corpus is clean, remove `continue-on-error` on the
+# lint step to make this a required, blocking check.
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  markdownlint:
+    name: "Check Markdown Lint"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Full history so changed-files can diff against the PR base.
+          fetch-depth: 0
+
+      - name: Get changed Markdown files
+        id: changed
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            content/**/*.md
+          # Generated API reference and prds-owned release notes are excluded:
+          # they are machine-authored / owned by another pipeline.
+          files_ignore: |
+            content/api-reference/**
+            content/release-notes/**
+
+      - name: Run markdownlint-cli2 on changed files
+        if: steps.changed.outputs.any_changed == 'true'
+        # Advisory during rollout — annotate, don't block. See header TODO.
+        continue-on-error: true
+        uses: DavidAnson/markdownlint-cli2-action@v19
+        with:
+          globs: ${{ steps.changed.outputs.all_changed_files }}
+
+      - name: Report status
+        if: ${{ steps.changed.outputs.any_changed == 'true' }}
+        run: |
+          echo "::notice::markdownlint ran on changed Markdown files (advisory). Run 'npx markdownlint-cli2 \"content/**/*.md\"' locally, or see the annotations above."
