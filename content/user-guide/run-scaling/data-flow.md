@@ -9,7 +9,7 @@ variants: +flyte +union
 Understanding how data flows between tasks is critical for optimizing workflow performance in Flyte. Tasks take inputs and produce outputs, with data flowing seamlessly through your workflow using an efficient transport layer.
 
 > [!NOTE]
-> This page focuses on **how** data moves at runtime. For the static map of **what** lives in the control plane database versus the data plane object store — including what "metadata" means in different contexts — see [Where your data lives](../core-concepts/where-data-lives).
+> This page focuses on **how** data moves at runtime. For the static map of **what** lives in the control plane database versus the data plane object store — including what *metadata*, *literals*, and *raw data* (which this page also calls *reference data*) mean — see [Where your data lives](../core-concepts/where-data-lives).
 
 ## Overview
 
@@ -27,7 +27,7 @@ Flyte handles different data types with different transport mechanisms:
 
 ### Passed by reference
 
-These types are not copied but passed as references to storage locations:
+These types are not copied but passed as references to storage locations. Their offloaded contents are what Flyte calls **raw data** (referred to on this page as **reference data** — the two are the same thing, named for the by-reference transport):
 
 - **Files**: `flyte.io.File`
 - **Directories**: `flyte.io.Dir`

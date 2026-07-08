@@ -2,7 +2,7 @@
 title: Where your data lives
 weight: 4
 variants: +flyte +union
-description: A developer's map of what Flyte stores in the control plane database versus the data plane object store, and what "metadata" actually means.
+description: A developer's map of what Flyte stores in the control plane database versus the data plane object store, and what "metadata," "literals," and "raw data" actually mean.
 ---
 
 # Where your data lives
@@ -56,6 +56,21 @@ Every run's inputs and outputs are written to the bucket as `inputs.pb` / `outpu
 - **Image-build contexts** — when {{< key product_name >}} builds a container image from an `Image` definition that requires a build context.
 
 The layout under your bucket is `<project>/<domain>/...`, with the bulk of execution artifacts under per-run, per-action subprefixes (`<run-name>/<action>/...` for outputs / Decks / checkpoints) and sibling prefixes for offloaded inputs and SDK uploads (code bundles, image-build contexts). You don't typically need to know the exact paths; you do need to know that **everything above lives behind one configured bucket prefix**.
+
+## What "literal," "raw data," and "reference data" mean
+
+Every value a task takes in or returns is, in Flyte's data model, a **literal** — a typed, serialized representation of that value. Literals are how data flows between tasks, and each one is stored in one of two ways:
+
+- **Inline** — small values (primitives like `int` / `float` / `str` / `bool`, collections, and JSON-serializable dataclasses and Pydantic models) are serialized *by value* directly into the run's `inputs.pb` / `outputs.pb`.
+- **By reference** — large values (`flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, models, pickled objects) are offloaded to their own objects in the bucket; the literal recorded in `inputs.pb` / `outputs.pb` then holds only a *URI pointer* to them.
+
+**Raw data** is that offloaded content itself — the file, directory, dataframe, or model bytes a by-reference literal points at. It's exactly the offloaded values listed under [What goes in the bucket](#what-goes-in-the-bucket) above, and it's what `raw_data_path` (below) relocates.
+
+**Reference data** is the same thing as raw data, named for *how* it moves: raw data is "passed by reference" (the literal carries a URI, not the bytes), while inline literals are "passed by value." When you see *reference data* — for example throughout [Data flow](../run-scaling/data-flow) — read it as **raw data described from the transport side**; the two terms are interchangeable.
+
+(In the deployment and architecture guides you may also see execution data split into *literal data* and *raw data*. There, *literal data* means specifically the inline values above and *raw data* the offloaded ones — the same distinction, named as two categories.)
+
+In short: every input and output is a **literal**; a literal is stored either **inline** (the value lives in `inputs.pb` / `outputs.pb`) or **by reference** to **raw data** — also called **reference data** — offloaded elsewhere in the bucket.
 
 ## What "metadata" means
 
@@ -117,5 +132,6 @@ For how retention policies are configured in your deployment, see [BYOC data ret
 
 - **Database** = the system of record. Holds registrations (including task default values), run history, schedules, and pointers to each run's inputs/outputs.
 - **Bucket** = the object-store bucket. Holds every run's `inputs.pb`/`outputs.pb`, Decks, checkpoints, code bundles, and offloaded `File` / `Dir` / `DataFrame` contents.
+- **Values** = every task input/output is a **literal**, stored either *inline* in `inputs.pb`/`outputs.pb` or *by reference* to **raw data** (a.k.a. **reference data**) offloaded in the bucket.
 - **"Metadata" in docs** usually means database-side records. **"Metadata bucket" in Helm/ops** is legacy naming for the data plane bucket — it does *not* hold database metadata.
 - **`flyte.with_runcontext(raw_data_path=...)`** is your knob to send offloaded data elsewhere per run.
