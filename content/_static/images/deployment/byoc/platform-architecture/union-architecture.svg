@@ -39,7 +39,7 @@
 <text x="423.8" y="297.5" font-size="11.7" fill="#23303a" letter-spacing="0.00">Run</text>
 <text x="399.3" y="312.4" font-size="11.7" fill="#23303a" letter-spacing="0.00">management</text>
 <rect x="503.3" y="147.7" width="111.7" height="36.4" fill="#fbe4b3" stroke="#9a8a6a" stroke-width="1"></rect>
-<text x="525.5" y="169.7" font-size="11.2" fill="#6a5a33" letter-spacing="0.00">Blob store</text>
+<text x="518.8" y="169.7" font-size="11.2" fill="#6a5a33" letter-spacing="0.00">Object store</text>
 <rect x="503.3" y="195.3" width="111.7" height="50.5" fill="#fbe4b3" stroke="#9a8a6a" stroke-width="1"></rect>
 <text x="532.2" y="217.3" font-size="11.2" fill="#6a5a33" letter-spacing="0.00">Metadata</text>
 <text x="542.3" y="231.4" font-size="11.2" fill="#6a5a33" letter-spacing="0.00">store</text>
