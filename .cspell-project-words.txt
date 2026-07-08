@@ -73,6 +73,8 @@ GCS
 IAM
 OAuth
 OIDC
+PKCE
+CUDA
 webhook
 webhooks
 middleware

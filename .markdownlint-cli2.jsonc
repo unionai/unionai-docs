@@ -48,6 +48,11 @@
     // MD046 code-block-style: mixed indented/fenced blocks exist. Off for now.
     "MD046": false,
 
+    // MD060 table-column-style: the existing corpus uses compact tables
+    // (`|---|`) throughout; this is a style preference, not correctness. Off
+    // (consistent with the other table/style rules disabled here).
+    "MD060": false,
+
     // MD040 fenced-code-language: many existing blocks omit a language. Off for
     // now (re-enable later to encourage syntax highlighting).
     "MD040": false,
