@@ -111,5 +111,9 @@ From the run view, select an action to see its logs, phases, inputs, and outputs
 ## Related
 
 - [Interact with runs and actions](./interacting-with-runs) — retrieve runs, actions, inputs, and outputs.
-- [Debug a run](./debug-runs) — use logs and run information to diagnose failures.
 - [Flyte CLI reference](../../api-reference/flyte-cli#flyte-get-logs) — the complete `flyte get logs` reference.
+{{< variant union >}}
+{{< markdown >}}
+- [Debug a run](./debug-runs) — use logs and run information to diagnose failures.
+{{< /markdown >}}
+{{< /variant >}}
