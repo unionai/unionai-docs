@@ -1,10 +1,10 @@
 ---
-title: Set up local OIDC provider with Dex
+title: Set up local OIDC provider
 variants: +flyte -union
 weight: 1
 ---
 
-# Set up local OIDC provider with Dex
+# Set up local OIDC provider
 
 [Step 7 of the Kind deployment guide](_index#7-add-authentication-with-a-local-idp-optional)
 gates the console behind Traefik and oauth2-proxy, using [Dex](https://dexidp.io/)

@@ -177,7 +177,31 @@ to its database.
 **With an ingress**, open `https://<flyte.example.com>/v2` in a browser to load the
 console, and point the SDK/CLI at the same host.
 
-## Worked example
+
+## 7. Tear down
+
+Uninstall the Helm release and delete the namespace:
+
+```bash
+helm uninstall flyte -n flyte
+kubectl delete namespace flyte
+```
+
+Uninstalling the release removes the ingress resource, which prompts the ingress
+controller (e.g. the AWS Load Balancer Controller) to delete the load balancer it
+provisioned.
+
+{{< WARNING >}}
+Confirm the ALB is gone in the AWS console so it stops billing.
+{{< /WARNING >}}
+
+The external dependencies — the RDS database, the S3 bucket, and the EKS cluster
+itself — are untouched. Delete those separately in the AWS console (or with the tool
+you provisioned them with) if you no longer need them.
+
+Next: secure the deployment with [Authentication and SSO](./authentication).
+
+## Full Values File Example
 
 A fuller values file for an AWS/EKS cluster — RDS for PostgreSQL, S3 for storage, IRSA
 for credentials, and an ALB ingress. Replace every placeholder; no real account IDs,
@@ -312,5 +336,3 @@ To keep the password out of the values file too, leave
 - reference an existing Kubernetes Secret with `configuration.extraInlineSecretRefs`, or
 - mount the password as a file and point
   `configuration.database.postgres.passwordPath` at it.
-
-Next: secure the deployment with [Authentication and SSO](./authentication).
