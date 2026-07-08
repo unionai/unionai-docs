@@ -32,6 +32,7 @@ All parameters are optional. Unset parameters inherit from the configuration fil
 | `version` | `str` | *from code bundle* | Version string for the ephemeral task deployment. |
 | `queue` | `str` | *from config* | Cluster queue to schedule tasks on. |
 | `interruptible` | `bool` | *per-task setting* | Override the interruptible setting for all tasks in the run. `True` allows spot/preemptible instances; `False` forces non-interruptible instances. |
+| `debug` | `bool` | `False` | Launch the run in debug mode, starting a browser-based VS Code session on the task pod so you can step through the task interactively. |
 
 ### Storage
 
