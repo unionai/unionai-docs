@@ -9,9 +9,8 @@ weight: 2
 This guide spins up a complete Flyte stack — the Flyte binary on a
 [kind](https://kind.sigs.k8s.io/) cluster, backed by a hosted PostgreSQL and an
 S3-compatible object store. kind runs anywhere Docker runs, so the same steps work on
-**your own machine** or on a **cloud VM** — tabs below show DigitalOcean, AWS EC2, and
-GCP Compute Engine. Either way it's a fast way to try Flyte without running a
-production-grade control plane.
+**your own machine** or on a **cloud VM** (a DigitalOcean Droplet is shown here). Either
+way it's a fast way to try Flyte without running a production-grade control plane.
 
 > [!WARNING] For evaluation only
 > This runs on a single-node kind cluster with static credentials (no workload identity),
@@ -19,11 +18,8 @@ production-grade control plane.
 > uses a self-signed cert the SDK only accepts via `insecureSkipVerify`. Use it to try
 > Flyte — not as a template for a production deployment. For that, see
 > [AWS deployment](../aws-deployment). On a cloud VM, remember the stack is reachable
-> from the public internet: restrict ports `80`/`443` (and `22`) to your own IP with
-> your provider's network controls — a
-> [DigitalOcean cloud firewall](https://docs.digitalocean.com/products/networking/firewalls/),
-> an [EC2 security group](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html),
-> or a [GCP firewall rule](https://cloud.google.com/firewall/docs/firewalls) — while
+> from the public internet: restrict ports `80`/`443` (and `22`) to your own IP with a
+> [cloud firewall](https://docs.digitalocean.com/products/networking/firewalls/) while
 > you evaluate.
 
 ## 1. Prerequisites
@@ -77,113 +73,6 @@ From here on, run every `kind`, `kubectl`, and `helm` command in this guide **on
 droplet**; only the SDK/CLI and browser run on your own machine.
 {{< /markdown >}}
 {{< /tab >}}
-{{< tab "AWS EC2" >}}
-{{< markdown >}}
-Launch an Ubuntu instance to host the cluster — kind needs a few GB of headroom, so
-pick at least 4 vCPUs / 8 GB (e.g. `t3.xlarge`). First create a security group that
-admits only you — SSH now, and ports `80`/`443` for the optional auth step:
-
-```bash
-MY_IP=$(curl -s https://checkip.amazonaws.com)
-
-aws ec2 create-security-group --group-name flyte-kind \
-  --description "Flyte kind evaluation"
-for port in 22 80 443; do
-  aws ec2 authorize-security-group-ingress --group-name flyte-kind \
-    --protocol tcp --port $port --cidr ${MY_IP}/32
-done
-```
-
-Then launch the instance with the current Ubuntu 24.04 AMI (resolved via the public
-SSM parameter) and your key pair:
-
-```bash
-aws ec2 run-instances \
-  --image-id "$(aws ssm get-parameters \
-      --names /aws/service/canonical/ubuntu/server/24.04/stable/current/amd64/hvm/ebs-gp3/ami-id \
-      --query 'Parameters[0].Value' --output text)" \
-  --instance-type t3.xlarge \
-  --key-name <your-key-pair> \
-  --security-groups flyte-kind
-```
-
-SSH in (Ubuntu AMIs log in as `ubuntu`, so the installs need `sudo`) and install
-Docker, kind, `kubectl`, and `helm`:
-
-```bash
-ssh -i <your-key.pem> ubuntu@<instance-public-ip>
-
-# Docker — then let the ubuntu user run it without sudo
-curl -fsSL https://get.docker.com | sudo sh
-sudo usermod -aG docker $USER && newgrp docker
-
-# kind
-sudo curl -Lo /usr/local/bin/kind \
-  https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-linux-amd64
-sudo chmod +x /usr/local/bin/kind
-
-# kubectl
-sudo curl -Lo /usr/local/bin/kubectl \
-  "https://dl.k8s.io/release/$(curl -Ls https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-sudo chmod +x /usr/local/bin/kubectl
-
-# helm
-curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo bash
-```
-
-From here on, run every `kind`, `kubectl`, and `helm` command in this guide **on the
-instance**; only the SDK/CLI and browser run on your own machine.
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "GCP Compute Engine" >}}
-{{< markdown >}}
-Create an Ubuntu instance to host the cluster — kind needs a few GB of headroom, so
-pick at least 4 vCPUs / 8 GB (e.g. `e2-standard-4`):
-
-```bash
-gcloud compute instances create flyte-kind \
-  --machine-type e2-standard-4 --zone <your-zone> \
-  --image-family ubuntu-2404-lts-amd64 --image-project ubuntu-os-cloud \
-  --tags flyte-kind
-```
-
-GCP blocks inbound `80`/`443` until a firewall rule allows them (needed for the
-optional auth step). Scope the rule to the instance's tag and your own IP:
-
-```bash
-MY_IP=$(curl -s https://checkip.amazonaws.com)
-
-gcloud compute firewall-rules create flyte-kind-web \
-  --allow tcp:80,tcp:443 --target-tags flyte-kind --source-ranges ${MY_IP}/32
-```
-
-SSH in (the installs need `sudo`) and install Docker, kind, `kubectl`, and `helm`:
-
-```bash
-gcloud compute ssh flyte-kind --zone <your-zone>
-
-# Docker — then let your user run it without sudo
-curl -fsSL https://get.docker.com | sudo sh
-sudo usermod -aG docker $USER && newgrp docker
-
-# kind
-sudo curl -Lo /usr/local/bin/kind \
-  https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-linux-amd64
-sudo chmod +x /usr/local/bin/kind
-
-# kubectl
-sudo curl -Lo /usr/local/bin/kubectl \
-  "https://dl.k8s.io/release/$(curl -Ls https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-sudo chmod +x /usr/local/bin/kubectl
-
-# helm
-curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo bash
-```
-
-From here on, run every `kind`, `kubectl`, and `helm` command in this guide **on the
-instance**; only the SDK/CLI and browser run on your own machine.
-{{< /markdown >}}
-{{< /tab >}}
 {{< /tabs >}}
 
 ## 2. Create the kind cluster
@@ -225,10 +114,10 @@ kubectl cluster-info --context kind-flyte
 >   so this mapping is required if you enable ingress auth *and* want to submit runs from
 >   the SDK. Harmless if you never enable auth.
 >
-> On a **cloud VM** (DigitalOcean, EC2, GCP) the same mappings bind to the VM's
-> **public IP** — in step 7, `flyte.local` points at that IP instead of `127.0.0.1`.
-> Make sure inbound `80`/`443` are admitted only from your own IP (the security
-> group / firewall rules from step 1; see the warning at the top).
+> On a **DigitalOcean droplet** the same mappings bind to the droplet's **public IP** —
+> in step 7, `flyte.local` points at that IP instead of `127.0.0.1`, and the two ports
+> are open to the internet unless you restrict them with a cloud firewall (see the
+> warning at the top).
 >
 > If you already created a plain `kind create cluster --name flyte` without these, delete
 > it (`kind delete cluster --name flyte`) and recreate it with the config above.
@@ -240,7 +129,6 @@ PostgreSQL (Supabase or another external/self-hosted instance) and an S3-compati
 object store (e.g. AWS S3, Cloudflare R2, etc). The two choices are independent. Each config
 block below plugs into [the values file in step 4](#4-write-the-values-file).
 
-Create the namespace:
 
 ```bash
 kubectl create namespace flyte
@@ -422,37 +310,6 @@ Keep it running while you use the SDK/CLI — everything below works identically
 the tunnel.
 {{< /markdown >}}
 {{< /tab >}}
-{{< tab "AWS EC2" >}}
-{{< markdown >}}
-The port-forward runs on the instance, so tunnel it back to your own machine over SSH.
-This single command starts the port-forward on the instance *and* exposes it at
-`localhost:8090` locally:
-
-```bash
-ssh -i <your-key.pem> -L 8090:localhost:8090 ubuntu@<instance-public-ip> \
-  kubectl -n flyte port-forward service/flyte-http 8090:8090
-```
-
-Keep it running while you use the SDK/CLI — everything below works identically through
-the tunnel.
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "GCP Compute Engine" >}}
-{{< markdown >}}
-The port-forward runs on the instance, so tunnel it back to your own machine over SSH.
-This single command starts the port-forward on the instance *and* exposes it at
-`localhost:8090` locally:
-
-```bash
-gcloud compute ssh flyte-kind --zone <your-zone> \
-  --ssh-flag="-L 8090:localhost:8090" \
-  --command="kubectl -n flyte port-forward service/flyte-http 8090:8090"
-```
-
-Keep it running while you use the SDK/CLI — everything below works identically through
-the tunnel.
-{{< /markdown >}}
-{{< /tab >}}
 {{< /tabs >}}
 
 ```bash
@@ -596,10 +453,10 @@ kubectl -n traefik rollout restart deploy/traefik
 > limitation. To drop it entirely, either install `ca.crt` into each client's system
 > trust store, or front Flyte with a **publicly-resolvable domain** and a publicly-trusted
 > cert (e.g. Traefik's ACME / Let's Encrypt resolver — the cloud ALB's ACM equivalent).
-> Neither is possible for a purely-local `flyte.local`. On a **cloud VM** the
-> domain route *is* attainable — point a real DNS record at the VM's public IP and
-> substitute that hostname for `flyte.local` throughout — but this guide sticks with the
-> self-signed chain so the local and cloud-VM paths stay identical.
+> Neither is possible for a purely-local `flyte.local`. On a **DigitalOcean droplet** the
+> domain route *is* attainable — point a real DNS record at the droplet and substitute
+> that hostname for `flyte.local` throughout — but this guide sticks with the self-signed
+> chain so the local and cloud-VM paths stay identical.
 
 ### Deploy Dex
 
@@ -773,22 +630,18 @@ echo "127.0.0.1 flyte.local" | sudo tee -a /etc/hosts
 ```
 {{< /markdown >}}
 {{< /tab >}}
-{{< tab "Cloud VM (DigitalOcean, EC2, GCP)" >}}
+{{< tab "DigitalOcean VM" >}}
 {{< markdown >}}
-Traefik's node ports are bound to the VM's public IP, so point `flyte.local` there
-in **your own machine's** `/etc/hosts` (not the VM's):
+Traefik's node ports are bound to the droplet's public IP, so point `flyte.local` there
+in **your own machine's** `/etc/hosts` (not the droplet's):
 
 ```bash
-echo "<vm-public-ip> flyte.local" | sudo tee -a /etc/hosts
+echo "<droplet-ip> flyte.local" | sudo tee -a /etc/hosts
 ```
-
-This is the same on all three providers — only where you look up the public IP differs
-(`doctl compute droplet get flyte-kind`, `aws ec2 describe-instances`, or
-`gcloud compute instances describe flyte-kind`; it's also shown in each dashboard).
 
 Every other `flyte.local` reference in this step (Dex issuer, redirect URIs, cert SAN,
 ingress host) stays exactly the same — only this mapping differs. Alternatively, create
-a real DNS A record pointing at the VM and substitute that hostname everywhere
+a real DNS A record pointing at the droplet and substitute that hostname everywhere
 `flyte.local` appears.
 {{< /markdown >}}
 {{< /tab >}}
@@ -877,11 +730,11 @@ command line before opening a browser. These use `curl --resolve` to point `flyt
 at the Traefik node port, so they work even without the `/etc/hosts` entry (the
 browser still needs it):
 
-> [!NOTE] `--resolve` on a cloud VM
+> [!NOTE] `--resolve` on a DigitalOcean droplet
 > The `--resolve flyte.local:<port>:127.0.0.1` flags in this guide assume the curl runs
-> on the machine hosting kind. That's still true on a cloud VM — run them in your SSH
+> on the machine hosting kind. That's still true on a droplet — run them in your SSH
 > session and `127.0.0.1` works as-is. To run them from your own machine instead,
-> substitute the VM's public IP for `127.0.0.1`.
+> substitute the droplet's public IP for `127.0.0.1`.
 
 ```bash
 # 1. The console is gated — an unauthenticated request is rejected by the auth middleware:
@@ -1096,9 +949,9 @@ Flyte image, load it into the cluster so pods can run it without a registry:
 kind load docker-image <your-image>:<tag> --name flyte
 ```
 
-On a cloud VM, the image must be in the **VM's** Docker daemon first — either build it
-there, or ship it from your machine with
-`docker save <image> | ssh <user>@<vm-public-ip> docker load`.
+On a DigitalOcean droplet, the image must be in the **droplet's** Docker daemon first —
+either build it there, or ship it from your machine with
+`docker save <image> | ssh root@<droplet-ip> docker load`.
 
 Reference that exact `<your-image>:<tag>` in your task config; with the image already
 present, the default `IfNotPresent` pull policy won't try to fetch it from a registry.
@@ -1111,12 +964,10 @@ Delete the cluster and Flyte in one command:
 kind delete cluster --name flyte
 ```
 
-On a cloud VM, also delete the instance so it stops billing:
+On DigitalOcean, also destroy the droplet so it stops billing:
 
 ```bash
-doctl compute droplet delete flyte-kind                     # DigitalOcean
-aws ec2 terminate-instances --instance-ids <instance-id>    # AWS EC2 (also delete the flyte-kind security group)
-gcloud compute instances delete flyte-kind --zone <your-zone>   # GCP (also delete the flyte-kind-web firewall rule)
+doctl compute droplet delete flyte-kind
 ```
 
 The hosted PostgreSQL and S3/R2 bucket are untouched — clean those up in their own
