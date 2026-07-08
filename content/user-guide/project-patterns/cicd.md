@@ -1,12 +1,12 @@
 ---
 title: CI/CD deployments
 weight: 3
-variants: -flyte +union
+variants: +flyte +union
 ---
 
 # CI/CD deployments
 
-This guide walks through deploying a Flyte project from CI. It uses GitHub Actions as the reference implementation, but the building blocks — an API key secret, `flyte deploy`, and a commit-pinned version — translate to GitLab CI, Buildkite, CircleCI, or any runner that can run a Python script.
+This guide walks through deploying a Flyte project from CI. It uses GitHub Actions as the reference implementation, but the building blocks — a non-interactive credential, `flyte deploy`, and a commit-pinned version — translate to GitLab CI, Buildkite, CircleCI, or any runner that can run a Python script.
 
 The examples below assume the project layout and image definitions from the [Monorepo with uv](./monorepo-with-uv) pattern — that guide covers how to structure `pyproject.toml`, `envs.py`, and task modules in a way that makes the `flyte deploy` commands shown here work cleanly.
 
@@ -15,11 +15,13 @@ The examples below assume the project layout and image definitions from the [Mon
 A deploy pipeline has three jobs:
 
 1. **Install** the project and the `flyte` CLI.
-2. **Authenticate** non-interactively against your tenant.
+2. **Authenticate** non-interactively against your deployment.
 3. **Run `flyte deploy`** for every `TaskEnvironment` in your project, pinned to the commit SHA.
 
 Everything else — branch protections, approvals, notifications — is generic CI concerns and out of scope.
 
+{{< variant union >}}
+{{< markdown >}}
 ## Authentication: API keys
 
 Locally, `flyte deploy` typically authenticates via a browser login (PKCE). A CI runner has no browser and no human to click through a consent screen, so you need a credential the CLI can use without any prompts — an **API key**.
@@ -57,13 +59,60 @@ When `FLYTE_API_KEY` is present in the environment at deploy time, the `flyte` C
 ### Key scope and rotation
 
 The key inherits the permissions of the user who minted it. For CI you typically want a dedicated service identity with narrow scope — deploy rights on the target project/domain only. Rotate on a schedule (90 days is a reasonable default) by running `flyte create api-key` again and updating the secret.
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+## Authentication: client credentials
+
+Locally, `flyte deploy` typically authenticates via a browser login (PKCE). A CI runner has no browser and no human to click through a consent screen, so you need a credential the CLI can use without any prompts. For Flyte OSS this is an **OAuth2 client-credentials** application: a client ID and client secret for a machine ("service") identity that your Flyte deployment's identity provider (IdP) trusts.
+
+### Register a client-credentials application
+
+Client-credentials applications are provisioned in your **identity provider** — not through the `flyte` CLI. (The `flyte create api-key` command referenced elsewhere is a Union feature from the `flyteplugins-union` package and isn't available in Flyte OSS.) The exact steps depend on the IdP your deployment is configured against — Okta, Keycloak, Auth0, Google, Azure AD, and so on — but the result is always a **client ID** and a **client secret**.
+
+Ask whoever administers your Flyte deployment for:
+
+- The **client ID** of a service application authorized to register tasks in the target project and domain.
+- The matching **client secret**.
+- The admin **endpoint** — the same host you pass to `flyte create config`.
+
+> [!NOTE]
+> The application must be granted whatever scopes your admin API requires. Provisioning and scoping the IdP application is a deployment-administration task; see your Flyte deployment's authentication setup for the specifics.
+
+### Store the secret as a CI secret
+
+Add the **client secret** to your CI system's secret store. However it's configured, the secret needs to:
+
+- Be exposed to the deploy job as an environment variable (this guide uses `FLYTE_CLIENT_SECRET`).
+- Be masked in logs (most CI systems do this automatically for secrets).
+- Be scoped to the branches/environments that actually deploy — typically `main` or a release branch, not every feature branch or fork PR.
+
+The client ID and endpoint aren't secret — they live in the `config.yaml` you check into the repo (see [below](#project-configuration)). Only the client secret goes in the secret store.
+
+### Point the CLI at the credential
+
+The `flyte` CLI reads client-credentials settings from `config.yaml` under `admin:`:
+
+- **`authType: ClientSecret`** selects the OAuth2 client-credentials flow instead of the interactive PKCE default.
+- **`clientId`** is the application's client ID.
+- **`clientSecretEnvVar`** names the environment variable the CLI reads the secret from — `FLYTE_CLIENT_SECRET` here. (Alternatively, `clientSecretLocation` points at a file containing the secret, which suits runners that mount secrets as files rather than env vars.)
+
+### Scope and rotation
+
+Grant the service identity only the permissions CI needs — deploy rights on the target project/domain, nothing more. Rotate the client secret on a schedule (90 days is a reasonable default) in your IdP and update the CI secret to match.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Project configuration
 
-Two files drive `flyte deploy` behavior in CI: `pyproject.toml` (or `uv.lock`) for dependencies, and `config.yaml` for tenant endpoints.
+Two files drive `flyte deploy` behavior in CI: `pyproject.toml` (or `uv.lock`) for dependencies, and `config.yaml` for your endpoint and image-builder settings.
 
 ### `config.yaml`
 
+{{< variant union >}}
+{{< markdown >}}
 Check this into the repo. It supplies the project, domain, and image builder settings — the things the API key doesn't carry:
 
 ```yaml
@@ -75,11 +124,35 @@ task:
   project: <default-project>
   domain: development
 ```
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+Check this into the repo. It supplies the endpoint, the client-credentials auth settings, and the (local) image builder — everything `flyte deploy` needs beyond the client secret:
+
+```yaml
+admin:
+  endpoint: dns:///<your-flyte-host>
+  authType: ClientSecret
+  clientId: <client-id>
+  clientSecretEnvVar: FLYTE_CLIENT_SECRET
+image:
+  builder: local
+task:
+  project: <default-project>
+  domain: development
+```
+
+The `clientId` and `endpoint` are safe to commit; only the client secret named by `clientSecretEnvVar` comes from the CI secret store. `builder: local` means images are built on the runner with Docker (Flyte OSS has no remote builder) — see [Container images](../task-configuration/container-images#image-building).
+{{< /markdown >}}
+{{< /variant >}}
 
 ## The GitHub Actions workflow
 
 A minimal deploy workflow — one job, one step per `TaskEnvironment`:
 
+{{< variant union >}}
+{{< markdown >}}
 ```yaml
 # .github/workflows/deploy.yml
 name: Deploy to Union
@@ -129,6 +202,66 @@ jobs:
             --domain "$FLYTE_DOMAIN" \
             src/workspace_app/tasks/ml_tasks.py ml_env
 ```
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+The client ID and endpoint live in the checked-in `config.yaml`; `FLYTE_CONFIG` points the CLI at it, and each deploy step injects the client secret from the CI secret store.
+
+```yaml
+# .github/workflows/deploy.yml
+name: Deploy to Flyte
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  FLYTE_CONFIG: .flyte/config.yaml
+  FLYTE_PROJECT: my-project
+  FLYTE_DOMAIN: development
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Sync dependencies
+        run: uv sync --group etl --group ml
+
+      - name: Deploy etl_env
+        env:
+          FLYTE_CLIENT_SECRET: ${{ secrets.FLYTE_CLIENT_SECRET }}
+        run: |
+          uv run flyte deploy \
+            --copy-style none \
+            --version ${{ github.sha }} \
+            --project "$FLYTE_PROJECT" \
+            --domain "$FLYTE_DOMAIN" \
+            src/workspace_app/tasks/etl_tasks.py etl_env
+
+      - name: Deploy ml_env
+        env:
+          FLYTE_CLIENT_SECRET: ${{ secrets.FLYTE_CLIENT_SECRET }}
+        run: |
+          uv run flyte deploy \
+            --copy-style none \
+            --version ${{ github.sha }} \
+            --project "$FLYTE_PROJECT" \
+            --domain "$FLYTE_DOMAIN" \
+            src/workspace_app/tasks/ml_tasks.py ml_env
+```
+
+Because Flyte OSS builds images locally, the deploy steps need Docker available on the runner (the `ubuntu-latest` image includes it) and access to your container registry — add a `docker login` step for private registries before the first deploy.
+{{< /markdown >}}
+{{< /variant >}}
 
 ### Key flag choices
 
@@ -136,6 +269,8 @@ jobs:
 - **`--version ${{ github.sha }}`** — makes deploys idempotent and traceable. Re-running the same commit produces the same version identifier; tasks already registered at that version are no-ops.
 - **Path argument points at the task file, not `envs.py`.** `flyte deploy` only imports the file you give it, so tasks decorated with `@env.task` in separate files won't register unless you point at (or transitively import) those files. Pointing at `etl_tasks.py` pulls in `envs.py` via its import chain and runs the `@etl_env.task` decorators. As an alternative, you can point at a directory and pass `--recursive` to load every task module under it in one command — for a `src/` layout project, also pass `--root-dir src` so shared modules like `envs.py` resolve to a single import path instead of being loaded twice:
 
+{{< variant union >}}
+{{< markdown >}}
   ```yaml
   - name: Deploy all envs
     env:
@@ -148,11 +283,31 @@ jobs:
         --domain "$FLYTE_DOMAIN" \
         --root-dir src --recursive src/workspace_app/tasks
   ```
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+  ```yaml
+  - name: Deploy all envs
+    env:
+      FLYTE_CLIENT_SECRET: ${{ secrets.FLYTE_CLIENT_SECRET }}
+    run: |
+      uv run flyte deploy \
+        --copy-style none \
+        --version ${{ github.sha }} \
+        --project "$FLYTE_PROJECT" \
+        --domain "$FLYTE_DOMAIN" \
+        --root-dir src --recursive src/workspace_app/tasks
+  ```
+{{< /markdown >}}
+{{< /variant >}}
 
 ### Splitting build from deploy
 
 `flyte deploy` builds any missing images before it registers tasks. If you'd rather treat image builds as a separate CI concern — for clearer logs, independent retry, or parallel builds per env — run `flyte build` first and let deploy reuse the result:
 
+{{< variant union >}}
+{{< markdown >}}
 ```yaml
 - name: Build etl image
   env:
@@ -172,9 +327,36 @@ jobs:
       --project "$FLYTE_PROJECT" --domain "$FLYTE_DOMAIN" \
       --root-dir src src/workspace_app/tasks/etl_tasks.py etl_env
 ```
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+```yaml
+- name: Build etl image
+  env:
+    FLYTE_CLIENT_SECRET: ${{ secrets.FLYTE_CLIENT_SECRET }}
+  run: |
+    uv run flyte build \
+      --copy-style none --root-dir src \
+      src/workspace_app/tasks/etl_tasks.py etl_env
+
+- name: Deploy etl_env
+  env:
+    FLYTE_CLIENT_SECRET: ${{ secrets.FLYTE_CLIENT_SECRET }}
+  run: |
+    uv run flyte deploy \
+      --copy-style none \
+      --version ${{ github.sha }} \
+      --project "$FLYTE_PROJECT" --domain "$FLYTE_DOMAIN" \
+      --root-dir src src/workspace_app/tasks/etl_tasks.py etl_env
+```
+{{< /markdown >}}
+{{< /variant >}}
 
 Image tags are content hashes of the `flyte.Image` definition: `flyte build` pushes `<registry>:flyte-<hash>`, and `flyte deploy` computes the same hash, sees the image already in the registry, and skips rebuilding. `--copy-style` must match between the two commands — otherwise the hashes diverge and deploy will build again.
 
+{{< variant union >}}
+{{< markdown >}}
 ## Layering on top of an existing image build
 
 If your team already builds container images in CI from a Dockerfile, you can still route them through `flyte build` to get **lazy-loading container pulls** — pod startup that's seconds instead of minutes, regardless of image size. On a 5GB image we measured cold-node pull time drop from ~1m37s to **839ms**, and published benchmarks show 9.9GB CUDA + PyTorch images going from 4m38s to ~1.2s — roughly 240×.
@@ -233,3 +415,5 @@ train_env = flyte.TaskEnvironment(
 > This snippet assumes the base image already has the `flyte` SDK installed and your task code on the right `PYTHONPATH`. If it doesn't, see [Bring your own image — Pattern 2](./bring-your-own-image#pattern-2-remote-builder) for the `with_commands()` / `with_env_vars()` / `with_code_bundle()` calls that adapt a Flyte-unaware base.
 
 The `flyte build` job is idempotent — it skips when the same image content has already been published. Workflow code edits don't trigger image rebuilds; only `envs.py` or base-image changes do.
+{{< /markdown >}}
+{{< /variant >}}
