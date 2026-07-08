@@ -1,6 +1,6 @@
 ---
 title: ResourceMeta
-version: 2.5.7
+version: 2.5.8
 variants: +flyte +union
 layout: py_api
 ---

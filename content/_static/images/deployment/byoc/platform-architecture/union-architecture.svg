@@ -1,1 +1,151 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1070" height="1070" viewBox="0 0 1070 1070" font-family="IBM Plex Mono, Menlo, Consolas, monospace"><rect x="0" y="0" width="1070" height="1070" fill="rgb(255, 255, 255)" stroke="rgb(207, 203, 192)" stroke-width="1"></rect><text x="35" y="42" dominant-baseline="central" font-size="17" fill="rgb(35, 48, 58)" font-weight="600" letter-spacing="2px">UNION — PLATFORM ARCHITECTURE</text><rect x="35" y="98" width="1000" height="88.5" fill="none" stroke="rgb(154, 164, 171)" stroke-width="1" stroke-dasharray="4 3"></rect><rect x="48" y="90" width="243.5" height="17" fill="rgb(255, 255, 255)"></rect><text x="56" y="98.5" dominant-baseline="central" font-size="11" fill="rgb(35, 48, 58)" letter-spacing="1.5px">USER INTERACTION SURFACES</text><rect x="266.5" y="90" width="17" height="17" rx="8.5" fill="rgb(222, 154, 38)"></rect><text x="271.25" y="98.5" dominant-baseline="central" font-size="10" fill="rgb(255, 255, 255)" letter-spacing="1.5px">1</text><rect x="56" y="127" width="229" height="40.5" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="129.25" y="147.25" dominant-baseline="central" font-size="12.5" fill="rgb(35, 48, 58)">Frontend UI</text><rect x="299" y="127" width="229" height="40.5" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="383.5" y="147.25" dominant-baseline="central" font-size="12.5" fill="rgb(35, 48, 58)">gRPC API</text><rect x="542" y="127" width="229" height="40.5" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="622.75" y="147.25" dominant-baseline="central" font-size="12.5" fill="rgb(35, 48, 58)">Flyte CLI</text><rect x="785" y="127" width="229" height="40.5" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="865.75" y="147.25" dominant-baseline="central" font-size="12.5" fill="rgb(35, 48, 58)">Flyte SDK</text><text x="516.48" y="190.25" dominant-baseline="central" font-size="10" fill="rgb(35, 48, 58)">▲</text><rect x="518.99" y="194.5" width="1" height="40" fill="rgb(35, 48, 58)"></rect><text x="516.48" y="238.25" dominant-baseline="central" font-size="10" fill="rgb(35, 48, 58)">▼</text><rect x="536.51" y="206" width="17" height="17" rx="8.5" fill="rgb(222, 154, 38)"></rect><text x="542.01" y="214.5" dominant-baseline="central" font-size="10" fill="rgb(255, 255, 255)">2</text><rect x="35" y="242.5" width="1000" height="269.5" fill="rgb(251, 241, 220)" stroke="rgb(154, 164, 171)" stroke-width="1" stroke-dasharray="4 3"></rect><rect x="48" y="234.5" width="235.41" height="17" fill="rgb(255, 255, 255)"></rect><text x="56" y="243" dominant-baseline="central" font-size="11" fill="rgb(35, 48, 58)" letter-spacing="1.5px">UNION CONTROL PLANE CELL</text><rect x="258.41" y="234.5" width="17" height="17" rx="8.5" fill="rgb(222, 154, 38)"></rect><text x="263.16" y="243" dominant-baseline="central" font-size="10" fill="rgb(255, 255, 255)" letter-spacing="1.5px">3</text><rect x="56" y="273.5" width="453" height="191.5" fill="none" stroke="rgb(203, 178, 124)" stroke-width="1" stroke-dasharray="4 3"></rect><rect x="67" y="266.5" width="355" height="12.5" fill="rgb(251, 241, 220)"></rect><text x="73" y="272.75" dominant-baseline="central" font-size="10" fill="rgb(138, 109, 31)" letter-spacing="1px">REGIONAL CONTROL PLANE · MULTI-REGION COMING SOON</text><rect x="73" y="302.5" width="202.5" height="40.5" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="121.75" y="322.75" dominant-baseline="central" font-size="12.5" fill="rgb(35, 48, 58)">App management</text><rect x="73" y="355" width="202.5" height="40.5" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="121.75" y="375.25" dominant-baseline="central" font-size="12.5" fill="rgb(35, 48, 58)">Task inventory</text><rect x="73" y="407.5" width="202.5" height="40.5" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="121.75" y="427.75" dominant-baseline="central" font-size="12.5" fill="rgb(35, 48, 58)">Run management</text><rect x="289.5" y="302.5" width="202.5" height="40" fill="rgb(251, 228, 179)" stroke="rgb(154, 138, 106)" stroke-width="1"></rect><text x="354.75" y="322.5" dominant-baseline="central" font-size="12" fill="rgb(106, 90, 51)">Blob store</text><rect x="289.5" y="354.5" width="202.5" height="40" fill="rgb(251, 228, 179)" stroke="rgb(154, 138, 106)" stroke-width="1"></rect><text x="340.34" y="374.5" dominant-baseline="central" font-size="12" fill="rgb(106, 90, 51)">Metadata store</text><rect x="289.5" y="406.5" width="202.5" height="40" fill="rgb(251, 228, 179)" stroke="rgb(154, 138, 106)" stroke-width="1"></rect><text x="372.75" y="426.5" dominant-baseline="central" font-size="12" fill="rgb(106, 90, 51)">Cache</text><text x="513" y="357.75" dominant-baseline="central" font-size="10" fill="rgb(35, 48, 58)">◀</text><rect x="519.02" y="357.25" width="31.95" height="1" fill="rgb(35, 48, 58)"></rect><text x="550.98" y="357.75" dominant-baseline="central" font-size="10" fill="rgb(35, 48, 58)">▶</text><rect x="526.5" y="370" width="17" height="17" rx="8.5" fill="rgb(222, 154, 38)"></rect><text x="532" y="378.5" dominant-baseline="central" font-size="10" fill="rgb(255, 255, 255)">4</text><rect x="561" y="273.5" width="453" height="191.5" fill="none" stroke="rgb(203, 178, 124)" stroke-width="1" stroke-dasharray="4 3"></rect><rect x="572" y="266.5" width="222" height="12.5" fill="rgb(251, 241, 220)"></rect><text x="578" y="272.75" dominant-baseline="central" font-size="10" fill="rgb(138, 109, 31)" letter-spacing="1px">DATA PLANE MANAGEMENT SERVICES</text><rect x="578" y="302.5" width="203.5" height="40.5" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="634.75" y="322.75" dominant-baseline="central" font-size="12.5" fill="rgb(35, 48, 58)">Core leasing</text><rect x="793.5" y="302.5" width="203.5" height="40.5" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="846.5" y="322.75" dominant-baseline="central" font-size="12.5" fill="rgb(35, 48, 58)">Stateful task</text><rect x="578" y="355" width="203.5" height="40.5" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="612.25" y="375.25" dominant-baseline="central" font-size="12.5" fill="rgb(35, 48, 58)">Cluster management</text><rect x="793.5" y="355" width="203.5" height="40.5" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="850.25" y="375.25" dominant-baseline="central" font-size="12.5" fill="rgb(35, 48, 58)">Shard router</text><rect x="578" y="407.5" width="419" height="40" fill="rgb(251, 228, 179)" stroke="rgb(154, 138, 106)" stroke-width="1"></rect><text x="747.9" y="427.5" dominant-baseline="central" font-size="12" fill="rgb(106, 90, 51)">State store</text><rect x="275.84" y="465" width="1" height="46" fill="rgb(35, 48, 58)"></rect><rect x="275.3" y="512" width="1" height="22" fill="rgb(35, 48, 58)"></rect><text x="272.78" y="536.75" dominant-baseline="central" font-size="10" fill="rgb(35, 48, 58)">▼</text><rect x="193.59" y="542" width="164.41" height="36" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="214.59" y="560" dominant-baseline="central" font-size="12" fill="rgb(35, 48, 58)">Identity provider</text><text x="531.98" y="515.75" dominant-baseline="central" font-size="10" fill="rgb(35, 48, 58)">▲</text><rect x="534.5" y="520" width="1" height="22" fill="rgb(35, 48, 58)"></rect><rect x="434.8" y="542" width="200.41" height="36" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="455.8" y="560" dominant-baseline="central" font-size="12" fill="rgb(35, 48, 58)">Elastic load balancing</text><rect x="647.2" y="551.5" width="17" height="17" rx="8.5" fill="rgb(222, 154, 38)"></rect><text x="652.7" y="560" dominant-baseline="central" font-size="10" fill="rgb(255, 255, 255)">5</text><text x="674.2" y="559.75" dominant-baseline="central" font-size="10" fill="rgb(154, 138, 106)" letter-spacing="1px">MUTUAL TLS · PROVISION / REPORT</text><rect x="534.5" y="578" width="1" height="22" fill="rgb(35, 48, 58)"></rect><text x="531.98" y="603.75" dominant-baseline="central" font-size="10" fill="rgb(35, 48, 58)">▼</text><rect x="35" y="608" width="1000" height="271.5" fill="rgb(234, 243, 251)" stroke="rgb(154, 164, 171)" stroke-width="1" stroke-dasharray="4 3"></rect><rect x="48" y="600" width="429.1" height="14.5" fill="rgb(255, 255, 255)"></rect><text x="56" y="607.25" dominant-baseline="central" font-size="11" fill="rgb(35, 48, 58)" letter-spacing="1.5px">CUSTOMER DATA PLANE · AWS / GCP / AZURE / NEOCLOUDS</text><rect x="814" y="600" width="208" height="12.5" fill="rgb(255, 255, 255)"></rect><text x="822" y="606.25" dominant-baseline="central" font-size="10" fill="rgb(222, 154, 38)" font-style="italic">*Completely isolated and private</text><rect x="56" y="641" width="470" height="171" fill="none" stroke="rgb(203, 178, 124)" stroke-width="1" stroke-dasharray="4 3"></rect><rect x="67" y="634" width="138" height="12.5" fill="rgb(234, 243, 251)"></rect><text x="73" y="640.25" dominant-baseline="central" font-size="10" fill="rgb(138, 109, 31)" letter-spacing="1px">KUBERNETES CLUSTER</text><rect x="71" y="668" width="214" height="40.5" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="136.75" y="688.25" dominant-baseline="central" font-size="12.5" fill="rgb(35, 48, 58)">Union agent</text><rect x="297" y="668" width="214" height="40.5" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="344" y="688.25" dominant-baseline="central" font-size="12.5" fill="rgb(35, 48, 58)">Execution engine</text><rect x="179.69" y="720.5" width="49.8" height="28.5" fill="rgb(251, 228, 179)" stroke="rgb(154, 138, 106)" stroke-width="1"></rect><text x="194.69" y="734.75" dominant-baseline="central" font-size="11" fill="rgb(106, 90, 51)">Pod</text><rect x="239.49" y="720.5" width="49.8" height="28.5" fill="rgb(251, 228, 179)" stroke="rgb(154, 138, 106)" stroke-width="1"></rect><text x="254.49" y="734.75" dominant-baseline="central" font-size="11" fill="rgb(106, 90, 51)">Pod</text><rect x="299.3" y="720.5" width="49.8" height="28.5" fill="rgb(251, 228, 179)" stroke="rgb(154, 138, 106)" stroke-width="1"></rect><text x="314.3" y="734.75" dominant-baseline="central" font-size="11" fill="rgb(106, 90, 51)">Pod</text><rect x="359.1" y="720.5" width="43.2" height="28.5" fill="none" stroke="rgb(154, 138, 106)" stroke-width="1" stroke-dasharray="4 3"></rect><text x="374.1" y="734.75" dominant-baseline="central" font-size="11" fill="rgb(154, 138, 106)">×n</text><rect x="71" y="761" width="440" height="36" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="226.2" y="779" dominant-baseline="central" font-size="12" fill="rgb(35, 48, 58)">Cold start booster</text><rect x="544" y="641" width="470" height="171" fill="none" stroke="rgb(203, 178, 124)" stroke-width="1" stroke-dasharray="4 3"></rect><rect x="555" y="634" width="138" height="12.5" fill="rgb(234, 243, 251)"></rect><text x="561" y="640.25" dominant-baseline="central" font-size="10" fill="rgb(138, 109, 31)" letter-spacing="1px">KUBERNETES CLUSTER</text><rect x="559" y="668" width="214" height="40.5" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="624.75" y="688.25" dominant-baseline="central" font-size="12.5" fill="rgb(35, 48, 58)">Union agent</text><rect x="785" y="668" width="214" height="40.5" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="832" y="688.25" dominant-baseline="central" font-size="12.5" fill="rgb(35, 48, 58)">Execution engine</text><rect x="667.69" y="720.5" width="49.8" height="28.5" fill="rgb(251, 228, 179)" stroke="rgb(154, 138, 106)" stroke-width="1"></rect><text x="682.69" y="734.75" dominant-baseline="central" font-size="11" fill="rgb(106, 90, 51)">Pod</text><rect x="727.49" y="720.5" width="49.8" height="28.5" fill="rgb(251, 228, 179)" stroke="rgb(154, 138, 106)" stroke-width="1"></rect><text x="742.49" y="734.75" dominant-baseline="central" font-size="11" fill="rgb(106, 90, 51)">Pod</text><rect x="787.3" y="720.5" width="49.8" height="28.5" fill="rgb(251, 228, 179)" stroke="rgb(154, 138, 106)" stroke-width="1"></rect><text x="802.3" y="734.75" dominant-baseline="central" font-size="11" fill="rgb(106, 90, 51)">Pod</text><rect x="847.1" y="720.5" width="43.2" height="28.5" fill="none" stroke="rgb(154, 138, 106)" stroke-width="1" stroke-dasharray="4 3"></rect><text x="862.1" y="734.75" dominant-baseline="central" font-size="11" fill="rgb(154, 138, 106)">×n</text><rect x="559" y="761" width="440" height="36" fill="rgb(246, 172, 63)" stroke="rgb(35, 48, 58)" stroke-width="1"></rect><text x="714.2" y="779" dominant-baseline="central" font-size="12" fill="rgb(35, 48, 58)">Cold start booster</text><rect x="56" y="828" width="958" height="32.5" fill="rgb(251, 228, 179)" stroke="rgb(154, 138, 106)" stroke-width="1"></rect><text x="348.8" y="844.25" dominant-baseline="central" font-size="11" fill="rgb(106, 90, 51)" letter-spacing="1px">OBJECT STORE · S3 / R2 / GCS / ABFS / VAST / WEKA</text><rect x="35" y="903.5" width="1000" height="1" fill="rgb(207, 203, 192)"></rect><rect x="35" y="920.5" width="16" height="16" rx="8" fill="rgb(222, 154, 38)"></rect><text x="40.15" y="928.38" dominant-baseline="central" font-size="9.5" fill="rgb(255, 255, 255)">1</text><text x="61" y="928.75" dominant-baseline="central" font-size="11" fill="rgb(106, 90, 51)">Flyte OSS DevX plus enhanced Union UI.</text><rect x="35" y="945" width="16" height="16" rx="8" fill="rgb(222, 154, 38)"></rect><text x="40.15" y="952.88" dominant-baseline="central" font-size="9.5" fill="rgb(255, 255, 255)">2</text><text x="61" y="953.25" dominant-baseline="central" font-size="11" fill="rgb(106, 90, 51)">Secure connection via OAuth2, SSO and RBAC.</text><rect x="35" y="969.5" width="16" height="16" rx="8" fill="rgb(222, 154, 38)"></rect><text x="40.15" y="977.38" dominant-baseline="central" font-size="9.5" fill="rgb(255, 255, 255)">3</text><text x="61" y="977.75" dominant-baseline="central" font-size="11" fill="rgb(106, 90, 51)">Scalable, multi-tenant regional control plane cell.</text><rect x="35" y="994" width="16" height="16" rx="8" fill="rgb(222, 154, 38)"></rect><text x="40.15" y="1001.88" dominant-baseline="central" font-size="9.5" fill="rgb(255, 255, 255)">4</text><text x="61" y="1002.25" dominant-baseline="central" font-size="11" fill="rgb(106, 90, 51)">Frontend services segregated from runtime services for high availability and failure tolerance.</text><rect x="35" y="1018.5" width="16" height="16" rx="8" fill="rgb(222, 154, 38)"></rect><text x="40.15" y="1026.38" dominant-baseline="central" font-size="9.5" fill="rgb(255, 255, 255)">5</text><text x="61" y="1026.75" dominant-baseline="central" font-size="11" fill="rgb(106, 90, 51)">Data plane hosted in customer cloud / VPC. No data or logs accessible by control plane. Fully isolated, secure, multi-cloud.</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="927.6" viewBox="0 0 1000 927.6" font-family="&#39;IBM Plex Mono&#39;, monospace">
+
+<rect x="0.5" y="0.5" width="999" height="926.6" fill="#ffffff" stroke="#cfcbc0"></rect>
+<text x="32.7" y="44.8" font-size="15.9" fill="#23303a" font-weight="600" letter-spacing="1.87">UNION — PLATFORM ARCHITECTURE</text>
+<rect x="32.7" y="91.6" width="261.7" height="271.0" fill="none" stroke="#9aa4ab" stroke-width="1" stroke-dasharray="4 3"></rect>
+<rect x="44.9" y="84.1" width="227.6" height="15.9" fill="#ffffff"></rect>
+<text x="52.3" y="95.6" font-size="10.3" fill="#23303a" letter-spacing="1.40">USER INTERACTION SURFACES</text>
+<rect x="249.1" y="84.1" width="15.9" height="15.9" fill="#de9a26" rx="7.9"></rect>
+<text x="253.5" y="95.4" font-size="9.3" fill="#ffffff" letter-spacing="1.40">1</text>
+<rect x="48.6" y="118.7" width="229.9" height="37.4" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="125.0" y="141.4" font-size="11.7" fill="#23303a" letter-spacing="0.00">Frontend UI</text>
+<rect x="48.6" y="169.2" width="229.9" height="37.4" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="135.5" y="191.9" font-size="11.7" fill="#23303a" letter-spacing="0.00">gRPC API</text>
+<rect x="48.6" y="219.6" width="229.9" height="37.4" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="132.0" y="242.3" font-size="11.7" fill="#23303a" letter-spacing="0.00">Flyte CLI</text>
+<rect x="48.6" y="270.1" width="229.9" height="37.4" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="132.0" y="292.8" font-size="11.7" fill="#23303a" letter-spacing="0.00">Flyte SDK</text>
+<text x="298.1" y="219.7" font-size="9.3" fill="#23303a" letter-spacing="0.00">◀</text>
+<rect x="303.8" y="215.9" width="29.8" height="0.9" fill="#23303a"></rect>
+<text x="333.6" y="219.7" font-size="9.3" fill="#23303a" letter-spacing="0.00">▶</text>
+<rect x="310.7" y="228.0" width="15.9" height="15.9" fill="#de9a26" rx="7.9"></rect>
+<text x="315.9" y="239.3" font-size="9.3" fill="#ffffff" letter-spacing="0.00">2</text>
+<rect x="343.0" y="91.6" width="624.3" height="271.0" fill="#fbf1dc" stroke="#9aa4ab" stroke-width="1" stroke-dasharray="4 3"></rect>
+<rect x="355.1" y="84.1" width="220.0" height="15.9" fill="#ffffff"></rect>
+<text x="362.6" y="95.6" font-size="10.3" fill="#23303a" letter-spacing="1.40">UNION CONTROL PLANE CELL</text>
+<rect x="551.8" y="84.1" width="15.9" height="15.9" fill="#de9a26" rx="7.9"></rect>
+<text x="556.2" y="95.4" font-size="9.3" fill="#ffffff" letter-spacing="1.40">3</text>
+<rect x="362.6" y="120.6" width="268.2" height="222.4" fill="none" stroke="#cbb27c" stroke-width="1" stroke-dasharray="4 3"></rect>
+<rect x="372.9" y="114.0" width="257.0" height="24.3" fill="#fbf1dc"></rect>
+<text x="378.5" y="123.4" font-size="9.3" fill="#8a6d1f" letter-spacing="0.93">REGIONAL CONTROL PLANE · MULTI-REGION</text>
+<text x="378.5" y="135.6" font-size="9.3" fill="#8a6d1f" letter-spacing="0.93">COMING SOON</text>
+<rect x="378.5" y="147.7" width="111.7" height="52.3" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="423.8" y="170.4" font-size="11.7" fill="#23303a" letter-spacing="0.00">App</text>
+<text x="399.3" y="185.3" font-size="11.7" fill="#23303a" letter-spacing="0.00">management</text>
+<rect x="378.5" y="211.2" width="111.7" height="52.3" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="420.3" y="233.9" font-size="11.7" fill="#23303a" letter-spacing="0.00">Task</text>
+<text x="402.8" y="248.9" font-size="11.7" fill="#23303a" letter-spacing="0.00">inventory</text>
+<rect x="378.5" y="274.8" width="111.7" height="52.3" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="423.8" y="297.5" font-size="11.7" fill="#23303a" letter-spacing="0.00">Run</text>
+<text x="399.3" y="312.4" font-size="11.7" fill="#23303a" letter-spacing="0.00">management</text>
+<rect x="503.3" y="147.7" width="111.7" height="36.4" fill="#fbe4b3" stroke="#9a8a6a" stroke-width="1"></rect>
+<text x="518.8" y="169.7" font-size="11.2" fill="#6a5a33" letter-spacing="0.00">Object store</text>
+<rect x="503.3" y="195.3" width="111.7" height="50.5" fill="#fbe4b3" stroke="#9a8a6a" stroke-width="1"></rect>
+<text x="532.2" y="217.3" font-size="11.2" fill="#6a5a33" letter-spacing="0.00">Metadata</text>
+<text x="542.3" y="231.4" font-size="11.2" fill="#6a5a33" letter-spacing="0.00">store</text>
+<rect x="503.3" y="257.0" width="111.7" height="36.4" fill="#fbe4b3" stroke="#9a8a6a" stroke-width="1"></rect>
+<text x="542.3" y="279.0" font-size="11.2" fill="#6a5a33" letter-spacing="0.00">Cache</text>
+<text x="634.6" y="224.4" font-size="9.3" fill="#23303a" letter-spacing="0.00">◀</text>
+<rect x="640.2" y="220.6" width="29.8" height="0.9" fill="#23303a"></rect>
+<text x="670.1" y="224.4" font-size="9.3" fill="#23303a" letter-spacing="0.00">▶</text>
+<rect x="647.2" y="232.7" width="15.9" height="15.9" fill="#de9a26" rx="7.9"></rect>
+<text x="652.3" y="244.0" font-size="9.3" fill="#ffffff" letter-spacing="0.00">4</text>
+<rect x="679.4" y="120.6" width="268.2" height="222.4" fill="none" stroke="#cbb27c" stroke-width="1" stroke-dasharray="4 3"></rect>
+<rect x="689.7" y="114.0" width="207.5" height="12.1" fill="#fbf1dc"></rect>
+<text x="695.3" y="123.4" font-size="9.3" fill="#8a6d1f" letter-spacing="0.93">DATA PLANE MANAGEMENT SERVICES</text>
+<rect x="695.3" y="147.7" width="112.6" height="37.4" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="709.6" y="170.4" font-size="11.7" fill="#23303a" letter-spacing="0.00">Core leasing</text>
+<rect x="819.2" y="147.7" width="112.6" height="37.4" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="829.9" y="170.4" font-size="11.7" fill="#23303a" letter-spacing="0.00">Stateful task</text>
+<rect x="695.3" y="196.3" width="112.6" height="52.3" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="727.1" y="219.0" font-size="11.7" fill="#23303a" letter-spacing="0.00">Cluster</text>
+<text x="716.6" y="233.9" font-size="11.7" fill="#23303a" letter-spacing="0.00">management</text>
+<rect x="819.2" y="196.3" width="112.6" height="52.3" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="833.4" y="219.0" font-size="11.7" fill="#23303a" letter-spacing="0.00">Shard router</text>
+<rect x="695.3" y="259.8" width="236.4" height="36.4" fill="#fbe4b3" stroke="#9a8a6a" stroke-width="1"></rect>
+<text x="776.5" y="281.8" font-size="11.2" fill="#6a5a33" letter-spacing="0.00">State store</text>
+<text x="160.7" y="369.2" font-size="9.3" fill="#23303a" letter-spacing="0.00">▲</text>
+<rect x="163.1" y="370.1" width="0.9" height="21.5" fill="#23303a"></rect>
+<rect x="65.4" y="391.6" width="196.3" height="32.7" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="79.4" y="411.7" font-size="11.2" fill="#23303a" letter-spacing="0.00">Customer code, data, logs</text>
+<rect x="272.9" y="400.0" width="15.9" height="15.9" fill="#de9a26" rx="7.9"></rect>
+<text x="278.0" y="411.3" font-size="9.3" fill="#ffffff" letter-spacing="0.00">5</text>
+<rect x="163.1" y="424.3" width="0.9" height="7.5" fill="#23303a"></rect>
+<text x="160.7" y="438.4" font-size="9.3" fill="#23303a" letter-spacing="0.00">▼</text>
+<rect x="496.2" y="343.0" width="0.9" height="27.1" fill="#23303a"></rect>
+<rect x="496.2" y="370.1" width="0.9" height="13.6" fill="#23303a"></rect>
+<text x="493.9" y="389.3" font-size="9.3" fill="#23303a" letter-spacing="0.00">▼</text>
+<rect x="419.8" y="391.1" width="153.7" height="32.7" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="439.5" y="411.3" font-size="11.2" fill="#23303a" letter-spacing="0.00">Identity provider</text>
+<text x="764.7" y="369.2" font-size="9.3" fill="#23303a" letter-spacing="0.00">▲</text>
+<rect x="767.0" y="370.1" width="0.9" height="21.0" fill="#23303a"></rect>
+<rect x="677.2" y="391.1" width="180.6" height="32.7" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="696.9" y="411.3" font-size="11.2" fill="#23303a" letter-spacing="0.00">Orchestration control</text>
+<rect x="869.0" y="399.5" width="15.9" height="15.9" fill="#de9a26" rx="7.9"></rect>
+<text x="874.1" y="410.8" font-size="9.3" fill="#ffffff" letter-spacing="0.00">6</text>
+<rect x="767.0" y="423.8" width="0.9" height="21.0" fill="#23303a"></rect>
+<text x="764.7" y="451.5" font-size="9.3" fill="#23303a" letter-spacing="0.00">▼</text>
+<rect x="32.7" y="452.3" width="934.6" height="251.4" fill="#eaf3fb" stroke="#9aa4ab" stroke-width="1" stroke-dasharray="4 3"></rect>
+<rect x="44.9" y="444.9" width="424.4" height="15.9" fill="#ffffff"></rect>
+<text x="52.3" y="456.4" font-size="10.3" fill="#23303a" letter-spacing="1.40">CUSTOMER DATA PLANE · AWS / GCP / AZURE / NEOCLOUDS</text>
+<rect x="445.9" y="444.9" width="15.9" height="15.9" fill="#de9a26" rx="7.9"></rect>
+<text x="450.3" y="456.1" font-size="9.3" fill="#ffffff" letter-spacing="1.40">7</text>
+<rect x="52.3" y="483.2" width="439.3" height="157.9" fill="none" stroke="#cbb27c" stroke-width="1" stroke-dasharray="4 3"></rect>
+<rect x="62.6" y="476.6" width="129.0" height="12.1" fill="#eaf3fb"></rect>
+<text x="68.2" y="486.0" font-size="9.3" fill="#8a6d1f" letter-spacing="0.93">KUBERNETES CLUSTER</text>
+<rect x="66.4" y="508.4" width="200.0" height="37.4" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="127.8" y="531.1" font-size="11.7" fill="#23303a" letter-spacing="0.00">Union agent</text>
+<rect x="277.6" y="508.4" width="200.0" height="37.4" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="321.5" y="531.1" font-size="11.7" fill="#23303a" letter-spacing="0.00">Execution engine</text>
+<rect x="167.9" y="557.0" width="46.6" height="26.2" fill="#fbe4b3" stroke="#9a8a6a" stroke-width="1"></rect>
+<text x="181.9" y="573.7" font-size="10.3" fill="#6a5a33" letter-spacing="0.00">Pod</text>
+<rect x="223.8" y="557.0" width="46.6" height="26.2" fill="#fbe4b3" stroke="#9a8a6a" stroke-width="1"></rect>
+<text x="237.8" y="573.7" font-size="10.3" fill="#6a5a33" letter-spacing="0.00">Pod</text>
+<rect x="279.7" y="557.0" width="46.6" height="26.2" fill="#fbe4b3" stroke="#9a8a6a" stroke-width="1"></rect>
+<text x="293.7" y="573.7" font-size="10.3" fill="#6a5a33" letter-spacing="0.00">Pod</text>
+<rect x="335.6" y="557.0" width="40.4" height="26.2" fill="none" stroke="#9a8a6a" stroke-width="1" stroke-dasharray="4 3"></rect>
+<text x="349.6" y="573.7" font-size="10.3" fill="#9a8a6a" letter-spacing="0.00">×n</text>
+<rect x="66.4" y="594.4" width="411.2" height="32.7" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="211.4" y="614.5" font-size="11.2" fill="#23303a" letter-spacing="0.00">Cold start booster</text>
+<rect x="508.4" y="483.2" width="439.3" height="157.9" fill="none" stroke="#cbb27c" stroke-width="1" stroke-dasharray="4 3"></rect>
+<rect x="518.7" y="476.6" width="129.0" height="12.1" fill="#eaf3fb"></rect>
+<text x="524.3" y="486.0" font-size="9.3" fill="#8a6d1f" letter-spacing="0.93">KUBERNETES CLUSTER</text>
+<rect x="522.4" y="508.4" width="200.0" height="37.4" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="583.9" y="531.1" font-size="11.7" fill="#23303a" letter-spacing="0.00">Union agent</text>
+<rect x="733.6" y="508.4" width="200.0" height="37.4" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="777.6" y="531.1" font-size="11.7" fill="#23303a" letter-spacing="0.00">Execution engine</text>
+<rect x="624.0" y="557.0" width="46.6" height="26.2" fill="#fbe4b3" stroke="#9a8a6a" stroke-width="1"></rect>
+<text x="638.0" y="573.7" font-size="10.3" fill="#6a5a33" letter-spacing="0.00">Pod</text>
+<rect x="679.9" y="557.0" width="46.6" height="26.2" fill="#fbe4b3" stroke="#9a8a6a" stroke-width="1"></rect>
+<text x="693.9" y="573.7" font-size="10.3" fill="#6a5a33" letter-spacing="0.00">Pod</text>
+<rect x="735.8" y="557.0" width="46.6" height="26.2" fill="#fbe4b3" stroke="#9a8a6a" stroke-width="1"></rect>
+<text x="749.8" y="573.7" font-size="10.3" fill="#6a5a33" letter-spacing="0.00">Pod</text>
+<rect x="791.7" y="557.0" width="40.4" height="26.2" fill="none" stroke="#9a8a6a" stroke-width="1" stroke-dasharray="4 3"></rect>
+<text x="805.7" y="573.7" font-size="10.3" fill="#9a8a6a" letter-spacing="0.00">×n</text>
+<rect x="522.4" y="594.4" width="411.2" height="32.7" fill="#f6ac3f" stroke="#23303a" stroke-width="1"></rect>
+<text x="667.5" y="614.5" font-size="11.2" fill="#23303a" letter-spacing="0.00">Cold start booster</text>
+<rect x="52.3" y="656.1" width="895.3" height="29.9" fill="#fbe4b3" stroke="#9a8a6a" stroke-width="1"></rect>
+<text x="326.0" y="674.6" font-size="10.3" fill="#6a5a33" letter-spacing="0.93">OBJECT STORE · S3 / R2 / GCS / ABFS / VAST / WEKA</text>
+<line x1="32.7" y1="726.2" x2="967.3" y2="726.2" stroke="#cfcbc0" stroke-width="1"></line>
+<rect x="32.7" y="742.1" width="15.0" height="15.0" fill="#de9a26" rx="7.5"></rect>
+<text x="37.5" y="752.3" font-size="8.9" fill="#ffffff" letter-spacing="0.00">1</text>
+<text x="57.0" y="753.1" font-size="10.3" fill="#6a5a33" letter-spacing="0.00">Flyte OSS DevX plus enhanced Union UI.</text>
+<rect x="32.7" y="765.0" width="15.0" height="15.0" fill="#de9a26" rx="7.5"></rect>
+<text x="37.5" y="775.2" font-size="8.9" fill="#ffffff" letter-spacing="0.00">2</text>
+<text x="57.0" y="776.0" font-size="10.3" fill="#6a5a33" letter-spacing="0.00">Secure connection via OAuth2, SSO and RBAC.</text>
+<rect x="32.7" y="787.9" width="15.0" height="15.0" fill="#de9a26" rx="7.5"></rect>
+<text x="37.5" y="798.1" font-size="8.9" fill="#ffffff" letter-spacing="0.00">3</text>
+<text x="57.0" y="798.9" font-size="10.3" fill="#6a5a33" letter-spacing="0.00">Scalable, multi-tenant regional control plane cell.</text>
+<rect x="32.7" y="810.7" width="15.0" height="15.0" fill="#de9a26" rx="7.5"></rect>
+<text x="37.5" y="821.0" font-size="8.9" fill="#ffffff" letter-spacing="0.00">4</text>
+<text x="57.0" y="821.8" font-size="10.3" fill="#6a5a33" letter-spacing="0.00">Frontend services segregated from runtime services for high availability and failure tolerance.</text>
+<rect x="32.7" y="833.6" width="15.0" height="15.0" fill="#de9a26" rx="7.5"></rect>
+<text x="37.5" y="843.9" font-size="8.9" fill="#ffffff" letter-spacing="0.00">5</text>
+<text x="57.0" y="844.7" font-size="10.3" fill="#6a5a33" letter-spacing="0.00">Customer code, data and logs transit directly between data plane and user. No transit through control plane.</text>
+<rect x="32.7" y="856.5" width="15.0" height="15.0" fill="#de9a26" rx="7.5"></rect>
+<text x="37.5" y="866.8" font-size="8.9" fill="#ffffff" letter-spacing="0.00">6</text>
+<text x="57.0" y="867.6" font-size="10.3" fill="#6a5a33" letter-spacing="0.00">Orchestration control only. No customer code, data or logs transit</text>
+<rect x="32.7" y="879.4" width="15.0" height="15.0" fill="#de9a26" rx="7.5"></rect>
+<text x="37.5" y="889.7" font-size="8.9" fill="#ffffff" letter-spacing="0.00">7</text>
+<text x="57.0" y="890.5" font-size="10.3" fill="#6a5a33" letter-spacing="0.00">Data plane hosted in customer cloud / VPC. No customer code, data, or logs accessible by control plane. Fully isolated, secure, multi-cloud.</text>
+</svg>
