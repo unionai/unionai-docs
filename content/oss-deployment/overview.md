@@ -2,6 +2,7 @@
 title: Deployment overview
 variants: +flyte -union
 weight: 1
+mermaid: true
 ---
 
 # Deployment overview
@@ -21,6 +22,42 @@ backend components into one process:
 | Data proxy | Issues signed URLs for uploading and downloading data to the object store. |
 | App service | Manages apps — long-running serving deployments — and their lifecycle. |
 
+At a high level, clients reach Flyte through a single HTTP ingress that fronts the console and the Flyte binary. The binary bundles the backend services into one process, reconciles task pods onto Kubernetes, and depends on an external database and object store:
+
+```mermaid
+flowchart TB
+    client["SDK & CLI"]
+
+    subgraph cluster["Kubernetes cluster"]
+        ingress["HTTP ingress"]
+        console["Console<br/>(static SPA)"]
+
+        subgraph binary["Flyte binary (unified)"]
+            runs["Runs service"]
+            controller["Actions / task controller"]
+            dataproxy["Data proxy"]
+            apps["App service"]
+        end
+
+        pods["Task pods & app deployments"]
+    end
+
+    db[("PostgreSQL")]
+    store[("Object store<br/>S3 / GCS / Azure")]
+
+    client -->|Connect over HTTP| ingress
+    ingress -->|/v2| console
+    ingress -->|flyteidl2.* + auth| binary
+    console -.->|API on same origin| ingress
+
+    runs --> db
+    controller --> pods
+    apps --> pods
+    dataproxy -->|signed URLs| store
+    client -.->|upload / download| store
+    pods --> store
+```
+
 A second image serves the web **console** as a static single-page application. It is
 deployed as its own Deployment and Service but has no backend configuration of its
 own — it talks to the Flyte API on the same origin (same ingress host) and is served
@@ -33,12 +70,13 @@ HTTP**, so a **single HTTP ingress** serves the console, the API, and the
 auth-discovery endpoints — there is no separate gRPC port to expose. The single
 ingress routes, by path, to two backends:
 
-- `console.basePath` (default `/v2`, and `/v2/*`) → the console Service.
-- the `flyteidl2.*` Connect service paths (for example
-  `/flyteidl2.project.ProjectService`, `/flyteidl2.workflow.RunService`,
-  `/flyteidl2.task.TaskService`, `/flyteidl2.dataproxy.DataProxyService`) and the
-  auth-discovery paths (`/.well-known/oauth-authorization-server`,
-  `/flyteidl2.auth.*`) → the Flyte binary's HTTP Service.
+- **Console Service**: `console.basePath` (default `/v2`, and `/v2/*`)
+- **Flyte HTTP Service**: this service consists of:
+  - The `flyteidl2.*` Connect service paths, for example:
+    `/flyteidl2.project.ProjectService`, `/flyteidl2.workflow.RunService`,
+    `/flyteidl2.task.TaskService`, `/flyteidl2.dataproxy.DataProxyService`
+  - The auth-discovery paths, for example:
+    `/.well-known/oauth-authorization-server`, `/flyteidl2.auth.*`
 
 ## External dependencies
 

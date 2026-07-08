@@ -237,7 +237,7 @@ kubectl cluster-info --context kind-flyte
 
 kind runs only the Flyte binary; the database and object store are hosted. You need a
 PostgreSQL (Supabase or another external/self-hosted instance) and an S3-compatible
-object store (AWS S3 or Cloudflare R2). The two choices are independent. Each config
+object store (e.g. AWS S3, Cloudflare R2, etc). The two choices are independent. Each config
 block below plugs into [the values file in step 4](#4-write-the-values-file).
 
 Create the namespace:
