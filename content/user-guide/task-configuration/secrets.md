@@ -25,7 +25,6 @@ It will be available across all projects and domains in your organization.
 See the [scoping secrets](#scoping-secrets) section below for more details.
 See [Using a literal string secret](#using-a-literal-string-secret) for how to access the secret in your task code.
 
-
 ## Creating a file secret
 
 You can also create a secret by specifying a local file:
@@ -42,6 +41,7 @@ When you create a secret without specifying a project or domain, as we did above
 This means that the secret will be available across all projects and domains in the organization.
 
 You can optionally specify either or both of the `--project` and `--domain` flags to restrict the scope of the secret to:
+
 * A specific project (across all domains)
 * A specific domain (across all project)
 * A specific project and a specific domain.
@@ -99,6 +99,12 @@ For example:
 > Currently, to access a file secret you must specify a `mount` parameter value of `"/etc/flyte/secrets"`.
 > This fixed path is the directory in which the secret file will be placed.
 > The name of the secret file will be equal to the key of the secret.
+
+## Overriding secrets at invocation time
+
+The secrets above are declared when the task is defined, on the `TaskEnvironment` or in the `@env.task` decorator.
+You can also override which secrets are injected for a **single invocation** of a task using `task.override(secrets=...)` &mdash; useful when the same task needs different credentials depending on how it's called.
+See [Overriding secrets](./overrides#overriding-secrets) for details and an example.
 
 > [!NOTE]
 > A `TaskEnvironment` can only access a secret if the scope of the secret includes the project and domain where the `TaskEnvironment` is deployed.

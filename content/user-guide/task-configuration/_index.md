@@ -37,7 +37,7 @@ Task configuration is done at three levels. From most general to most specific, 
 
 * The `TaskEnvironment` level: setting parameters when defining the `TaskEnvironment` object.
 * The `@env.task` decorator level: Setting parameters in the `@env.task` decorator when defining a task function.
-* The task invocation level: Using the `task.override()` method when invoking task execution.
+* The task invocation level: Using the [`task.override()`](./overrides) method when invoking task execution.
 
 Each level has its own set of parameters, and some parameters are shared across levels.
 For shared parameters, the more specific level will override the more general one.
@@ -78,4 +78,3 @@ For the complete parameter interaction matrix showing which parameters can be se
 | **docs** | `@env.task` only | [Additional task settings](./additional-task-settings#docs) |
 
 \*When `reusable` is set, `resources`, `env_vars`, and `secrets` can only be overridden via `task.override()` with `reusable="off"` in the same call.
-
