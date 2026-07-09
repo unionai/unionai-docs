@@ -25,7 +25,7 @@ when checkpointing isn't configured) bound to the action's checkpoint location i
 - **Load**: `await checkpoint.load()` or `checkpoint.load_sync()`. Returns a local
   `pathlib.Path` to the restored file or directory tree, or `None` when there is no
   previous checkpoint (i.e. on the first attempt).
-- `flyte.latest_checkpoint(root)` finds the newest checkpoint file under a restored
+- `flyte.latest_checkpoint(root, glob_pattern="**/last.ckpt")` finds the newest checkpoint file under a restored
   directory tree — useful for frameworks like PyTorch Lightning that write
   `last.ckpt` files into a directory.
 
