@@ -136,7 +136,7 @@ For `JsonlDir`, set `shard_extension=".jsonl.zst"` on `writer()`. Mixed compress
 The record iterators accept an `on_error` argument — `"raise"` (default), `"skip"` to drop malformed lines, or a callable `(line_number, raw_line, exception) -> None` for custom handling:
 
 ```python
-async for record in f.iter_records(on_error="skip"):
+for record in f.iter_records_sync(on_error="skip"):
     ...
 ```
 
