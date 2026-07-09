@@ -65,3 +65,48 @@ results = await asyncio.gather(fetch_data(1), fetch_data(2), fetch_data(3))
 ```
 
 Instead of three coroutines sharing one CPU, you get three separate containers running simultaneously, each with their own CPU, memory, and resources. Flyte seamlessly bridges the gap between Python's concurrency model and distributed parallel computing, allowing for massive scalability while maintaining the familiar async/await programming model.
+
+## Iterative fanout: recursive feature elimination
+
+Fanout isn't limited to a single parallel burst—you can fan out **repeatedly**, using the results of one round to shape the next.
+A good real-world example is [recursive feature elimination (RFE)](https://github.com/flyteorg/flyte-sdk/blob/main/examples/ml/rfe.py), a feature-selection technique that repeatedly trains a model with one candidate feature held out, drops the feature whose removal least hurts the score, and repeats until a single feature remains.
+Every iteration is itself a fanout: for each remaining feature, a `train` action runs in parallel with that feature dropped, scored by cross-validation.
+
+The `train` task evaluates the model with a single feature held out and returns its cross-validated score:
+
+```python
+@worker.task
+async def train(features: list[str], drop: str) -> float:
+    features.remove(drop)
+
+    X, y = fetch_california_housing(as_frame=True, return_X_y=True)
+    fold = KFold(n_splits=5, random_state=42, shuffle=True)
+    model = LinearRegression()
+
+    scores = cross_val_score(estimator=model, X=X[features], y=y, cv=fold, scoring="r2")
+    return float(scores.mean())
+```
+
+The `rfe` driver task runs the elimination loop.
+Each round wraps its fanout in a [`flyte.group`](./grouping-actions) so the iterations appear as collapsible folders in the UI, and uses `asyncio.gather()` to evaluate every candidate feature in parallel:
+
+```python
+@worker.task
+async def rfe():
+    x, _y = fetch_california_housing(as_frame=True, return_X_y=True)
+    features = list(x.columns)
+
+    for i in range(len(features) - 1):
+        with flyte.group(f"iteration-{i}"):
+            runs = {feature: train(list(features), drop=feature) for feature in features}
+            values = await asyncio.gather(*(runs[feature] for feature in runs))
+            scores = dict(zip(runs.keys(), values))
+            best = max(scores, key=scores.get)
+            features.remove(best)
+```
+
+Because each `train` call becomes its own action, every iteration's candidate evaluations run as separate containers in true parallel, while grouping keeps the nested rounds organized in the run tree.
+
+{{< note >}}
+The full runnable example lives in the [Flyte SDK repository](https://github.com/flyteorg/flyte-sdk/blob/main/examples/ml/rfe.py). Run it with `uv run --prerelease=allow examples/ml/rfe.py`.
+{{< /note >}}
