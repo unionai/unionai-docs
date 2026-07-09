@@ -16,8 +16,8 @@ where the previous attempt left off instead of repeating completed work.
 
 ## The checkpoint object
 
-Inside a running task, `flyte.ctx().checkpoint` returns a `flyte.Checkpoint` bound
-to the action's checkpoint location in object storage:
+Inside a running task, `flyte.ctx().checkpoint` returns a `flyte.Checkpoint` (or `None`
+when checkpointing isn't configured) bound to the action's checkpoint location in object storage:
 
 - **Save**: `await checkpoint.save(...)` (async tasks) or `checkpoint.save_sync(...)`
   (sync tasks and synchronous framework callbacks). Accepts raw `bytes`, a file path,
