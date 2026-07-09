@@ -59,8 +59,7 @@ flyte create config \
     --endpoint my-org.my-company.com \
     --domain development \
     --project my-project \
-    --builder local \
-    --registry ghcr.io/my-org
+    --builder local
 ```
 {{< /markdown >}}
 {{< /variant >}}
@@ -88,7 +87,6 @@ admin:
   endpoint: dns:///my-org.my-company.com
 image:
   builder: local
-  registry: ghcr.io/my-org
 task:
   org: my-org
   domain: development
@@ -109,7 +107,6 @@ flyte create config \
     --domain development \
     --project my-project \
     --builder remote \
-    --registry ghcr.io/my-org \
     --insecure \
     --output my-config.yaml \
     --force
@@ -126,7 +123,6 @@ flyte create config \
     --domain development \
     --project my-project \
     --builder local \
-    --registry ghcr.io/my-org \
     --insecure \
     --output my-config.yaml \
     --force
@@ -165,7 +161,6 @@ See the [CLI reference](../../api-reference/flyte-cli#flyte-create-config) for a
 - `builder`: How container images are built.
   - `remote` (Union): Images built on Union's infrastructure.
   - `local` (Flyte OSS): Images built on your machine. Requires Docker. See [Image building](../task-configuration/container-images#image-building).
-- `registry`: Optional registry prefix to use for image builds. This is helpful when you want the SDK to push or pull images from a custom registry without changing your code. You can also set it with the `FLYTE_IMAGE_REGISTRY` environment variable.
 
 **`task`** — Default settings for task execution.
 
