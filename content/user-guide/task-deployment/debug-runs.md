@@ -59,8 +59,8 @@ def say_hello(name: str) -> str:
 if __name__ == "__main__":
     flyte.init_from_config()
     run = flyte.with_runcontext(debug=True).run(say_hello, name="World")
-    print("Run url:", run.url)
-    print("Debug url:", run.get_debug_url())
+    print("Run URL:", run.url)
+    print("Debug URL:", run.get_debug_url())
 ```
 
 `run.get_debug_url()` waits for the VS Code Debugger entry to appear in the run's action details,
