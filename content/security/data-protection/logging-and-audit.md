@@ -54,7 +54,7 @@ This verification is fully self-service.
 
 Audit data is available from the following sources:
 
-- Control plane execution and lifecycle events: `uctl get execution --all -o json`, filtered by time window.
+- Control plane run and action lifecycle events: `flyte get run`, filtered by time window.
 - Authentication events: the configured identity provider's audit log (e.g., Okta).
 - Cluster operations: the Kubernetes audit log on the data plane.
 - Cloud IAM activity: CloudTrail (AWS), Cloud Audit Logs (GCP), or Azure Monitor activity logs.

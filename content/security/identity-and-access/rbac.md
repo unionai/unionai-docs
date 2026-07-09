@@ -20,7 +20,7 @@ Additional internal system roles exist for platform operations but are not user-
 
 ## Custom policies
 
-Custom policies bind roles (built-in or custom) to resources scoped at org-wide, domain, or project+domain level using composable YAML bindings via `uctl`. This allows organizations to define fine-grained access policies that match their team structure and security requirements.
+Custom policies bind roles (built-in or custom) to resources scoped at org-wide, domain, or project+domain level using composable YAML bindings managed with the `flyte` CLI (`flyte create policy` / `flyte create role`). This allows organizations to define fine-grained access policies that match their team structure and security requirements.
 
 ## Enforcement
 
@@ -43,16 +43,16 @@ Union.ai enforces least privilege across all components. IAM roles on the data p
 2. Log in as Viewer and confirm restricted operations are denied:
 
    ```bash
-   uctl create run ...    # Expect denied
-   uctl create secret ... # Expect denied
-   uctl get executions    # Expect success
+   flyte run ...          # Expect denied
+   flyte create secret ... # Expect denied
+   flyte get run          # Expect success
    ```
 
 3. Log in as Contributor scoped to project A:
 
    ```bash
-   uctl create run --project B ... # Expect denied
-   uctl create run --project A ... # Expect success
+   flyte run --project B ... # Expect denied
+   flyte run --project A ... # Expect success
    ```
 
 4. Create a custom policy scoping a user to project X, development domain only. Attempt to access the production domain. Expect denied.
@@ -60,7 +60,7 @@ Union.ai enforces least privilege across all components. IAM roles on the data p
 5. Display all active policy bindings:
 
    ```bash
-   uctl get policy
+   flyte get policy
    ```
 
 6. For Union.ai employee access: the customer creates an RBAC policy for Union.ai support, scoped to viewer only and time-limited.
