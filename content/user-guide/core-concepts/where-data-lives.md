@@ -64,7 +64,7 @@ Every value a task takes in or returns is, in Flyte's data model, a **literal** 
 - **Inline** — small values (primitives like `int` / `float` / `str` / `bool`, collections, and JSON-serializable dataclasses and Pydantic models) are serialized *by value* directly into the run's `inputs.pb` / `outputs.pb`.
 - **By reference** — large values (`flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, models, pickled objects) are offloaded to their own objects in the bucket; the literal recorded in `inputs.pb` / `outputs.pb` then holds only a *URI pointer* to them.
 
-**Raw data** is that offloaded content itself — the file, directory, dataframe, or model bytes a by-reference literal points at. It's exactly the offloaded values listed under [What goes in the bucket](#what-goes-in-the-bucket) above, and it's what `raw_data_path` (below) relocates.
+**Raw data** is that offloaded content itself — the file, directory, DataFrame, or model bytes a by-reference literal points at. It's exactly the offloaded values listed under [What goes in the bucket](#what-goes-in-the-bucket) above, and it's what `raw_data_path` (below) relocates.
 
 **Reference data** is the same thing as raw data, named for *how* it moves: raw data is "passed by reference" (the literal carries a URI, not the bytes), while inline literals are "passed by value." When you see *reference data* — for example throughout [Data flow](../run-scaling/data-flow) — read it as **raw data described from the transport side**; the two terms are interchangeable.
 
