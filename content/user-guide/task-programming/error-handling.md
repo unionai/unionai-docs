@@ -29,7 +29,7 @@ When a downstream task fails, the failure propagates to the awaiting parent task
   surfaces to the parent as a `flyte.errors.RuntimeUserError`.
 - `flyte.errors.RuntimeSystemError` — the failure was caused by the platform rather than your code.
 - `flyte.errors.RuntimeUnknownError` — the failure could not be classified as a user or system error.
-Every concrete error carries a `code` attribute (a stable string identifier such as `"OOMError"`) that you can
+Every concrete error carries a `code` attribute (a short, stable string identifier — often the exception's class name, e.g. `"TaskTimeoutError"`) that you can
 inspect when logging or branching. Because the errors form a hierarchy, you can catch broadly
 (`except flyte.errors.RuntimeUserError`) or narrowly (`except flyte.errors.OOMError`), depending on how specific
 your recovery logic needs to be.
