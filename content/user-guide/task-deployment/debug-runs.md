@@ -44,6 +44,7 @@ Pass `debug=True` to `flyte.with_runcontext()`, then call `.run(...)` as usual. 
 starts, `run.get_debug_url()` returns the URL of the VS Code session:
 
 ```python
+# debug.py
 import flyte
 
 env = flyte.TaskEnvironment(name="debug_example")
