@@ -15,7 +15,7 @@ Flyte 2 recognizes this and allows you to handle them gracefully as part of your
 This ability is a direct result of the fact that workflows are now written in regular Python,
 giving you all the power and flexibility of Python error handling.
 When a task fails, Flyte surfaces the failure to the calling task as a typed exception that you can catch with a
-standard `try...except` block and respond to however you like—retry with more resources, fall back to a different
+standard `try...except` block and respond to however you like: retry with more resources, fall back to a different
 code path, or clean up and re-raise.
 
 ## How Flyte represents failures
