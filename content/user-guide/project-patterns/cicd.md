@@ -111,7 +111,7 @@ Two files drive `flyte deploy` behavior in CI: `pyproject.toml` (or `uv.lock`) f
 
 ### `config.yaml`
 
-Save this at `.flyte/config.yaml` (or `config.yaml`) in your repo and check it in. The `flyte` CLI auto-discovers config from the repo checkout — it searches `./config.yaml`, `./.flyte/config.yaml`, and `<git-root>/.flyte/config.yaml` before any home-directory config (`~/.flyte/config.yaml`) — so CI picks it up automatically after checkout, with no `FLYTE_CONFIG` or `--config` needed. (Set `FLYTE_CONFIG=<path>` only to point at a non-standard location.)
+Save this at `.flyte/config.yaml` (or `config.yaml`) in your repo and check it in. In CI the `flyte` CLI auto-discovers config from the repo checkout — repo-relative paths (`./config.yaml`, `./.flyte/config.yaml`, `<git-root>/.flyte/config.yaml`) take precedence over any home-directory config, so it's picked up automatically after checkout with no `FLYTE_CONFIG` or `--config` needed. See [the config discovery order](../../api-reference/flyte-sdk/packages/flyte.config/_index#auto) for the full precedence; set `FLYTE_CONFIG=<path>` only to point at a non-standard location.
 
 {{< variant union >}}
 {{< markdown >}}
