@@ -165,7 +165,7 @@ See the [CLI reference](../../api-reference/flyte-cli#flyte-create-config) for a
 - `builder`: How container images are built.
   - `remote` (Union): Images built on Union's infrastructure.
   - `local` (Flyte OSS): Images built on your machine. Requires Docker. See [Image building](../task-configuration/container-images#image-building).
-- `registry`: Optional registry prefix to use for image builds. This is helpful when you want Flyte to push or pull images from a custom registry without changing your code. You can also set it with `FLYTE_IMAGE_REGISTRY` environment variable.
+- `registry`: Optional registry prefix to use for image builds. This is helpful when you want the SDK to push or pull images from a custom registry without changing your code. You can also set it with the `FLYTE_IMAGE_REGISTRY` environment variable.
 
 **`task`** — Default settings for task execution.
 
