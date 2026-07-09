@@ -122,6 +122,8 @@ Give the file a `.jsonl.zst` (or `.jsonl.zstd`) extension and records are zstd-c
 ```python
 from flyteplugins.jsonl import JsonlFile
 
+
+@env.task
 async def write_compressed() -> JsonlFile:
     f = JsonlFile.new_remote("data.jsonl.zst")
     async with f.writer(compression_level=6) as w:  # higher = smaller, slower
@@ -142,7 +144,7 @@ for record in f.iter_records_sync(on_error="skip"):
 
 ### Arrow batches
 
-To hand JSONL data to columnar tooling, stream it as Arrow `RecordBatch`es with `iter_arrow_batches(batch_size=...)`. Memory usage stays bounded by the batch size.
+To hand JSONL data to columnar tooling, stream it as Arrow `RecordBatch`es with `iter_arrow_batches(batch_size=...)`. Memory usage stays bounded by the batch size. Arrow iteration requires the optional `pyarrow` dependency — install it with `pip install 'flyteplugins-jsonl[arrow]'`.
 
 ## Common use cases
 

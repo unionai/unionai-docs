@@ -119,7 +119,7 @@ def to_flyte_df(df: pl.DataFrame) -> flyte.io.DataFrame:
 
 @env.task
 def from_flyte_df(df: flyte.io.DataFrame) -> pl.DataFrame:
-    return df  # decoded to a Polars DataFrame on input
+    return df  # returned to the caller as a Polars DataFrame
 ```
 
 This makes it straightforward to mix Polars with pandas or PySpark tasks in the same workflow — each side declares the dataframe type it wants, and Flyte handles the Parquet interchange.
