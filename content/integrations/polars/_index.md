@@ -20,7 +20,7 @@ Installing the plugin registers encode/decode handlers with Flyte's `flyte.io.Da
 ## Installation
 
 ```bash
-pip install --pre flyteplugins-polars
+pip install flyteplugins-polars
 ```
 
 Add the plugin to your task image. Installing it registers the Polars type handlers automatically — no explicit registration call is needed:
