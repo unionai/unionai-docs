@@ -29,6 +29,7 @@ The task programming section covers key patterns for building effective Flyte wo
 **Execution patterns**
 - [**Fanout**](./fanout): Scale your workflows by running many tasks in parallel, perfect for processing large datasets or running hyperparameter sweeps.
 - [**Controlling parallel execution**](./controlling-parallelism): Limit concurrent task executions using semaphores or `flyte.map` concurrency for rate-limited APIs, GPU quotas, and resource-constrained workflows.
+- [**Streaming map-reduce**](./streaming-map-reduce): Process fanout results as they complete with `asyncio.as_completed`, reducing in batches incrementally instead of waiting for every task to finish.
 - [**External conditions**](./conditions): Pause a task until an external signal arrives — a human approval, a callback from an external service, or a value supplied at runtime.
 - [**Grouping actions**](./grouping-actions): Organize related task executions into logical groups for better visualization and management in the UI.
 - [**Container tasks**](./container-tasks): Run arbitrary containers in any language without the Flyte SDK installed, using Flyte's copilot sidecar for seamless data flow.
@@ -51,6 +52,7 @@ The task programming section covers key patterns for building effective Flyte wo
 These programming patterns become essential as your workflows grow in complexity:
 
 - Use **fanout** when you need to process multiple items concurrently or run parameter sweeps. Use **controlling parallel execution** when you need to limit how many run at the same time.
+- Apply **streaming map-reduce** when map tasks have uneven durations or you want to reduce results in batches as they complete, rather than waiting for the entire fanout to finish.
 - Implement **error handling** for production workflows that need to recover from infrastructure failures.
 - Apply **grouping** to organize complex workflows with many task executions.
 - Leverage **files and directories** when working with large datasets that don't fit in memory.
