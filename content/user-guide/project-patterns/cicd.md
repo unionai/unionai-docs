@@ -111,9 +111,11 @@ Two files drive `flyte deploy` behavior in CI: `pyproject.toml` (or `uv.lock`) f
 
 ### `config.yaml`
 
+Save this at `.flyte/config.yaml` (or `config.yaml`) in your repo and check it in. The `flyte` CLI auto-discovers config from the repo checkout — it searches `./config.yaml`, `./.flyte/config.yaml`, and `<git-root>/.flyte/config.yaml` before any home-directory config (`~/.flyte/config.yaml`) — so CI picks it up automatically after checkout, with no `FLYTE_CONFIG` or `--config` needed. (Set `FLYTE_CONFIG=<path>` only to point at a non-standard location.)
+
 {{< variant union >}}
 {{< markdown >}}
-Check this into the repo. It supplies the project, domain, and image builder settings — the things the API key doesn't carry:
+It supplies the project, domain, and image builder settings — the things the API key doesn't carry:
 
 ```yaml
 admin:
@@ -128,7 +130,7 @@ task:
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
-Check this into the repo. It supplies the endpoint, the client-credentials auth settings, and the (local) image builder — everything `flyte deploy` needs beyond the client secret:
+It supplies the endpoint, the client-credentials auth settings, and the (local) image builder — everything `flyte deploy` needs beyond the client secret:
 
 ```yaml
 admin:
@@ -206,7 +208,7 @@ jobs:
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
-The client ID and endpoint live in the checked-in `config.yaml`; `FLYTE_CONFIG` points the CLI at it, and each deploy step injects the client secret from the CI secret store.
+The client ID and endpoint live in the checked-in `config.yaml` (auto-discovered from the repo, as above); each deploy step injects the client secret from the CI secret store.
 
 ```yaml
 # .github/workflows/deploy.yml
@@ -218,7 +220,6 @@ on:
   workflow_dispatch:
 
 env:
-  FLYTE_CONFIG: .flyte/config.yaml
   FLYTE_PROJECT: my-project
   FLYTE_DOMAIN: development
 
