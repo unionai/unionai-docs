@@ -28,6 +28,7 @@ The task programming section covers key patterns for building effective Flyte wo
 
 **Execution patterns**
 - [**Fanout**](./fanout): Scale your workflows by running many tasks in parallel, perfect for processing large datasets or running hyperparameter sweeps.
+- [**Consuming a message queue**](./consuming-a-message-queue): Pull messages from an external queue such as AWS SQS and fan out processing across a pool of reusable containers.
 - [**Controlling parallel execution**](./controlling-parallelism): Limit concurrent task executions using semaphores or `flyte.map` concurrency for rate-limited APIs, GPU quotas, and resource-constrained workflows.
 - [**External conditions**](./conditions): Pause a task until an external signal arrives — a human approval, a callback from an external service, or a value supplied at runtime.
 - [**Grouping actions**](./grouping-actions): Organize related task executions into logical groups for better visualization and management in the UI.
