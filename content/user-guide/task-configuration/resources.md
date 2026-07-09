@@ -34,6 +34,33 @@ For how task resource requests interact with project-domain quotas as you scale 
 {{< /markdown >}}
 {{< /variant >}}
 
+## Ephemeral storage
+
+The `disk` parameter requests *ephemeral storage* — node-local scratch disk for the task's container. Set it as a string with Kubernetes units, for example `"50Gi"`:
+
+```python
+env = flyte.TaskEnvironment(
+    name="etl_env",
+    resources=flyte.Resources(cpu=2, memory="4Gi", disk="50Gi"),
+)
+```
+
+Under the hood, `disk` maps to the Kubernetes [`ephemeral-storage`](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#local-ephemeral-storage) resource on the task's pod.
+
+**What it covers.** Ephemeral storage is the local disk a task writes to while it runs: the container's writable filesystem and any temporary files your code creates on the local filesystem during execution (downloaded datasets, intermediate outputs, model checkpoints staged before offload). It is distinct from the offloaded storage backing `flyte.io.File` and `flyte.io.Dir`, which lives in the blob store rather than on the node.
+
+**Lifecycle.** Ephemeral storage is tied to the task's pod: it is provisioned when the task starts and reclaimed when the pod terminates. Nothing written to it survives beyond the task run, so use it for scratch work — persist anything you need to keep to a `flyte.io.File` or `flyte.io.Dir` in object storage.
+
+**Single value, not a request/limit range.** Unlike `cpu` and `memory`, `disk` takes a single string, not a `(request, limit)` tuple.
+
+**Default behavior.** If you don't set `disk`, no ephemeral-storage request or limit is applied. The pod can still write to node-local disk, but it may be evicted if the node comes under storage pressure. Tasks doing heavy local data processing should set `disk` explicitly.
+
+{{< variant union >}}
+{{< markdown >}}
+For how ephemeral-storage sizing plays out as you scale across teams and quotas, see [Be explicit about ephemeral storage](../project-patterns/resource-management#be-explicit-about-ephemeral-storage).
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Examples
 
 ### Usage in TaskEnvironment
