@@ -15,6 +15,7 @@
   "ignorePaths": [
     "content/api-reference/**",
     "content/release-notes/**",
+    "content/deployment/selfmanaged/helm-chart-reference/**",
     "unionai-docs-infra/**",
     "unionai-examples/**",
     "node_modules/**",
