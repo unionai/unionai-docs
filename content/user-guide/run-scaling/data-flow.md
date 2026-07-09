@@ -27,7 +27,7 @@ Flyte handles different data types with different transport mechanisms:
 
 ### Passed by reference
 
-These types are not copied but passed as references to storage locations. Their offloaded contents are what Flyte calls **raw data** (referred to on this page as **reference data** — the two are the same thing, named for the by-reference transport):
+These types are not copied but passed as references to storage locations. This page calls this by-reference data **reference data** (also known as **raw data**):
 
 - **Files**: `flyte.io.File`
 - **Directories**: `flyte.io.Dir`
