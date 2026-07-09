@@ -59,7 +59,7 @@ flyte create config \
     --endpoint my-org.my-company.com \
     --domain development \
     --project my-project \
-    --builder local
+    --builder local \
     --registry ghcr.io/my-org
 ```
 {{< /markdown >}}
