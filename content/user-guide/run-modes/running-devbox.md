@@ -1,5 +1,5 @@
 ---
-title: Run on the devbox
+title: Run locally on the devbox
 weight: 5
 variants: +flyte +union
 ---
@@ -13,7 +13,7 @@ variants: +flyte +union
 </sl-alert>
 
 {{< markdown >}}
-# Run on the devbox
+# Run locally on the devbox
 
 The devbox is a lightweight local cluster that runs on your machine with Docker. It includes a UI preview, scheduler, and object store, so you can test remote execution without deploying to a real cluster.
 {{< /markdown >}}
@@ -22,7 +22,7 @@ The devbox is a lightweight local cluster that runs on your machine with Docker.
 
 {{< variant flyte >}}
 {{< markdown >}}
-# Run on the devbox
+# Run locally on the devbox
 
 The Flyte devbox is a lightweight local cluster that runs on your machine with Docker. It gives you a full Flyte environment — including the UI, scheduler, and object store — so you can test remote execution without deploying to a real cluster.
 {{< /markdown >}}
