@@ -63,6 +63,10 @@
     // MD029 ordered-list numbering: allow existing `1.`-repeated lists. Off.
     "MD029": false,
 
+    // MD004 unordered-list-style: content mixes `-` and `*` bullet markers across
+    // (and within) pages; enforcing one marker is churn, not correctness. Off.
+    "MD004": false,
+
     // MD036 emphasis-as-heading: docs use bold lead-ins that aren't headings. Off.
     "MD036": false,
 
