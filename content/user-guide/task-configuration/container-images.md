@@ -84,8 +84,6 @@ There are two ways that the image can be built:
 * If you are running a Flyte OSS instance then the image will be built locally on your machine and pushed to the container registry you specified in the `Image` definition.
 * If you are running a Union instance, the image can be built locally, as with Flyte OSS, or using the Union `ImageBuilder`, which runs remotely on Union's infrastructure.
 
-If you want the SDK to use a specific registry for image builds without changing your code, set `image.registry` in your config file or the `FLYTE_IMAGE_REGISTRY` environment variable. You can also add it when generating config with `flyte create config --registry <registry>`.
-
 ### Configuring the `builder`
 
 {{< variant flyte >}}
