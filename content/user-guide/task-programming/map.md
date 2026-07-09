@@ -144,8 +144,7 @@ Set `return_exceptions=False` to fail fast instead: iteration raises on the firs
 ## Binding constant arguments with `functools.partial`
 
 Often you want to map over one argument while holding others constant. Bind the constants with
-`functools.partial`, leaving exactly one parameter — the **first positional parameter** of the
-task — free for mapping:
+`functools.partial`, leaving exactly one parameter free — that's the one `flyte.map` varies:
 
 ```python
 from functools import partial
@@ -164,14 +163,18 @@ def score(compound_id: str, model_name: str, batch_id: str) -> str:
 def main() -> None:
     compounds = [str(i) for i in range(3)]
     scorer = partial(score, model_name="v2", batch_id="run-42")
-    # compound_id is the first parameter and the only one left unbound, so it is what map varies.
+    # compound_id is the only parameter left unbound, so it is what map varies.
     results = list(flyte.map(scorer, compounds))
     print("\n".join(results))
 ```
 
-The mapped parameter must be the task's **first positional parameter**. If the partial leaves a
-later parameter unbound — for example binding `compound_id` and `model_name` but leaving `batch_id`
-(the third parameter) for mapping — `flyte.map` raises a `TypeError`.
+`flyte.map` inserts each mapped value **positionally, right after the partial's bound positional
+arguments**, and requires **exactly one** parameter to be left unbound. Above, `model_name` and
+`batch_id` are bound as keywords, so the mapped value fills the first slot — `compound_id`. To vary a
+*later* parameter, bind the ones before it positionally and the ones after it by keyword — for
+example, `partial(score, "compound-1", batch_id="run-42")` maps `model_name`. `flyte.map` raises a
+`TypeError` if more or fewer than one parameter is left unbound, or if the mapped positional slot is
+also bound as a keyword.
 
 {{< variant union >}}
 {{< markdown >}}
