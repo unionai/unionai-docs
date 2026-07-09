@@ -120,9 +120,13 @@ async def read_shards(d: JsonlDir) -> int:
 Give the file a `.jsonl.zst` (or `.jsonl.zstd`) extension and records are zstd-compressed transparently on write and decompressed on read. Tune the level via the writer:
 
 ```python
-f = JsonlFile.new_remote("data.jsonl.zst")
-async with f.writer(compression_level=6) as w:  # higher = smaller, slower
-    await w.write({"key": "value"})
+from flyteplugins.jsonl import JsonlFile
+
+async def write_compressed() -> JsonlFile:
+    f = JsonlFile.new_remote("data.jsonl.zst")
+    async with f.writer(compression_level=6) as w:  # higher = smaller, slower
+        await w.write({"key": "value"})
+    return f
 ```
 
 For `JsonlDir`, set `shard_extension=".jsonl.zst"` on `writer()`. Mixed compressed and uncompressed shards within a directory are supported on read.
