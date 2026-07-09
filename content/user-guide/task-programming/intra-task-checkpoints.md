@@ -92,7 +92,7 @@ Subclass it to mirror the checkpoint directory to Flyte after each epoch
 {{< code file="/unionai-examples/v2/user-guide/task-programming/intra-task-checkpoints/pytorch_lightning_checkpoint.py" fragment="callback" lang="python" >}}
 {{< markdown >}}
 In the task, restore the previous tree, pick the newest `last.ckpt` with
-`flyte.latest_checkpoint`, and hand it to `Trainer.fit(ckpt_path=...)` — Lightning
+`flyte.latest_checkpoint(restored_root, glob_pattern="**/last.ckpt")`, and hand it to `Trainer.fit(ckpt_path=...)` — Lightning
 restores the model, optimizer, and epoch from there:
 {{< /markdown >}}
 {{< code file="/unionai-examples/v2/user-guide/task-programming/intra-task-checkpoints/pytorch_lightning_checkpoint.py" fragment="task" lang="python" >}}
