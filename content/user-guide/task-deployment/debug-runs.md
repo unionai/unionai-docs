@@ -75,7 +75,7 @@ Pass `--debug` to `flyte run`:
 flyte run --debug debug.py say_hello --name World
 ```
 
-The run starts with a code-server attached. Once the session is ready, the CLI prints a **Debug**
+The run starts with a `code-server` attached. Once the session is ready, the CLI prints a **Debug**
 panel containing the VS Code Debugger URL — open it to connect to the interactive session. If the
 URL doesn't appear, the panel points you to the task logs.
 
