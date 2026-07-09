@@ -80,6 +80,9 @@ directory back to the framework's native resume mechanism.
 Save the model state dict, optimizer state, and epoch counter with `torch.save`
 after each epoch, and restore all three with `torch.load` on retry:
 {{< /markdown >}}
+
+<br>
+
 {{< code file="/unionai-examples/v2/user-guide/task-programming/intra-task-checkpoints/pytorch_checkpoint.py" fragment="task" lang="python" >}}
 {{< /tab >}}
 
@@ -89,12 +92,18 @@ Lightning already writes `last.ckpt` through its `ModelCheckpoint` callback.
 Subclass it to mirror the checkpoint directory to Flyte after each epoch
 (Lightning callbacks are synchronous, so use `flyte.Checkpoint.save_sync`):
 {{< /markdown >}}
+
+<br>
+
 {{< code file="/unionai-examples/v2/user-guide/task-programming/intra-task-checkpoints/pytorch_lightning_checkpoint.py" fragment="callback" lang="python" >}}
 {{< markdown >}}
 In the task, restore the previous tree, pick the newest `last.ckpt` with
 `flyte.latest_checkpoint(restored_root, glob_pattern="**/last.ckpt")`, and hand it to `Trainer.fit(ckpt_path=...)` — Lightning
 restores the model, optimizer, and epoch from there:
 {{< /markdown >}}
+
+<br>
+
 {{< code file="/unionai-examples/v2/user-guide/task-programming/intra-task-checkpoints/pytorch_lightning_checkpoint.py" fragment="task" lang="python" >}}
 {{< /tab >}}
 
@@ -104,11 +113,17 @@ restores the model, optimizer, and epoch from there:
 `output_dir` (here, every epoch via `save_strategy="epoch"`). A `TrainerCallback`
 mirrors that directory to Flyte after each save:
 {{< /markdown >}}
+
+<br>
+
 {{< code file="/unionai-examples/v2/user-guide/task-programming/intra-task-checkpoints/huggingface_trainer_checkpoint.py" fragment="callback" lang="python" >}}
 {{< markdown >}}
 On retry, restore the tree, locate the last Hugging Face checkpoint with
 `get_last_checkpoint`, and pass it to `trainer.train(resume_from_checkpoint=...)`:
 {{< /markdown >}}
+
+<br>
+
 {{< code file="/unionai-examples/v2/user-guide/task-programming/intra-task-checkpoints/huggingface_trainer_checkpoint.py" fragment="task" lang="python" >}}
 {{< /tab >}}
 
@@ -118,6 +133,9 @@ For estimators that support incremental training with `partial_fit`, pickle the
 estimator together with a progress counter after each training chunk. A retry
 unpickles the bundle and continues from the next chunk:
 {{< /markdown >}}
+
+<br>
+
 {{< code file="/unionai-examples/v2/user-guide/task-programming/intra-task-checkpoints/sklearn_partial_checkpoint.py" fragment="task" lang="python" >}}
 {{< /tab >}}
 
@@ -128,6 +146,9 @@ same callback-and-resume pattern as the Hugging Face `Trainer`, since `SFTTraine
 is built on it. Unsloth requires an NVIDIA, AMD, or Intel GPU, so the task
 environment requests one:
 {{< /markdown >}}
+
+<br>
+
 {{< code file="/unionai-examples/v2/user-guide/task-programming/intra-task-checkpoints/unsloth_sft_checkpoint.py" fragment="task" lang="python" >}}
 {{< /tab >}}
 
