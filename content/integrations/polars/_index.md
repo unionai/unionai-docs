@@ -105,15 +105,16 @@ def lazy_summary(lf: pl.LazyFrame) -> pl.LazyFrame:
 
 ## Interoperating with `flyte.io.DataFrame`
 
-Because the Polars handlers register against the shared dataframe transformer engine, a task can accept the generic `flyte.io.DataFrame` and return a Polars frame, or vice versa. Convert an in-memory Polars frame to a `flyte.io.DataFrame` with `flyte.io.DataFrame.from_df()`:
+Because the Polars handlers register against the shared dataframe transformer engine, a task can accept the generic `flyte.io.DataFrame` and return a Polars frame, or vice versa. Convert an in-memory Polars frame to a `flyte.io.DataFrame` with `flyte.io.DataFrame.wrap_df()` (preferred over deprecated `from_df()`):
 
 ```python
+import polars as pl
 import flyte.io
 
 
 @env.task
 def to_flyte_df(df: pl.DataFrame) -> flyte.io.DataFrame:
-    return flyte.io.DataFrame.from_df(df)
+    return flyte.io.DataFrame.wrap_df(df)
 
 
 @env.task
