@@ -260,7 +260,7 @@ This advanced option works identically to the deploy command equivalent, useful 
 
 ## Task argument passing
 
-A task's inputs are passed **after** the task name. On the CLI every input is a **named option**, `--<input_name> <value>`, where `<input_name>` is the exact parameter name in the task's function signature:
+A task's inputs are passed **after** the task name. On the CLI every input is a **named option**, `--<input_name>`, followed by a value when the type requires one, where `<input_name>` is the exact parameter name in the task's function signature:
 
 ```bash
 flyte run my_file.py my_task --name "World" --count 5 --verbose
