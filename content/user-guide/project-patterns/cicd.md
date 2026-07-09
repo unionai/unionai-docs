@@ -36,7 +36,7 @@ The `flyte create api-key` command is provided by the `flyteplugins-union` packa
 dev = ["flyteplugins-union"]
 ```
 
-Then, from a machine already logged in to your tenant:
+Then, from a machine already logged in to your instance:
 
 ```bash
 uv run flyte create api-key --name ci-cd-key
@@ -66,20 +66,20 @@ The key inherits the permissions of the user who minted it. For CI you typically
 {{< markdown >}}
 ## Authentication: client credentials
 
-Locally, `flyte deploy` typically authenticates via a browser login (PKCE). A CI runner has no browser and no human to click through a consent screen, so you need a credential the CLI can use without any prompts. For Flyte OSS this is an **OAuth2 client-credentials** application: a client ID and client secret for a machine ("service") identity that your Flyte deployment's identity provider (IdP) trusts.
+Locally, `flyte deploy` typically authenticates via a browser login (PKCE). A CI runner has no browser and no human to click through a consent screen, so you need a credential the CLI can use without any prompts. For Flyte OSS this is an **OAuth2 client-credentials** application: a client ID and client secret for a machine ("service") identity that your instance's identity provider (IdP) trusts.
 
 ### Register a client-credentials application
 
-Client-credentials applications are provisioned in your **identity provider** — not through the `flyte` CLI. (The `flyte create api-key` command referenced elsewhere is a Union feature from the `flyteplugins-union` package and isn't available in Flyte OSS.) The exact steps depend on the IdP your deployment is configured against — Okta, Keycloak, Auth0, Google, Azure AD, and so on — but the result is always a **client ID** and a **client secret**.
+Client-credentials applications are provisioned in your **identity provider** — not through the `flyte` CLI. (The `flyte create api-key` command referenced elsewhere is a Union feature from the `flyteplugins-union` package and isn't available in Flyte OSS.) The exact steps depend on the IdP your instance is configured against — Okta, Keycloak, Auth0, Google, Azure AD, and so on — but the result is always a **client ID** and a **client secret**.
 
-Ask whoever administers your Flyte deployment for:
+Ask whoever administers your instance for:
 
 - The **client ID** of a service application authorized to register tasks in the target project and domain.
 - The matching **client secret**.
 - The admin **endpoint** — the same host you pass to `flyte create config`.
 
 > [!NOTE]
-> The application must be granted whatever scopes your admin API requires. Provisioning and scoping the IdP application is a deployment-administration task; see your Flyte deployment's authentication setup for the specifics.
+> The application must be granted whatever scopes your admin API requires. Provisioning and scoping the IdP application is an instance-administration task; see your instance's authentication setup for the specifics.
 
 ### Store the secret as a CI secret
 
@@ -119,7 +119,7 @@ It supplies the project, domain, and image builder settings — the things the A
 
 ```yaml
 admin:
-  endpoint: dns:///<tenant>.hosted.unionai.cloud
+  endpoint: dns:///<your-instance>.hosted.unionai.cloud
 image:
   builder: remote
 task:
