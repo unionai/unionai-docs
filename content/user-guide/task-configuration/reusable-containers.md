@@ -25,6 +25,19 @@ This approach reduces start up overhead and improves resource efficiency.
 > [!NOTE]
 > The reusable container feature is only available when running your Flyte code on a Union backend.
 
+## Why use reusable containers
+
+The default fresh-container-per-execution model gives every task strong isolation, but it pays a cold-start cost on every execution: the container has to be created, the image pulled, and the Python process initialized before your code runs.
+When that startup cost is large relative to how long the task actually runs, the overhead dominates.
+Reusable containers address this by keeping a pool of warm containers ready to accept work.
+Reach for them when you have:
+
+- **Many short tasks with high per-execution startup cost.** Fan-out and map-style workloads — where the same small task runs hundreds or thousands of times — benefit most, because the startup overhead is paid once per container instead of once per execution.
+- **Expensive in-memory state to keep warm.** Because the same container (and its Python process) is reused across executions, you can load a model, dataset, or connection once and reuse it on subsequent invocations — for example by caching it in a global variable or with an in-memory cache — instead of reloading it every time.
+- **A need for higher throughput and better resource utilization.** A reusable environment can process multiple `async` tasks concurrently within each container. Total capacity is `replicas × concurrency`, so you can drive up utilization without provisioning a fresh container per task. See [Scale your workflows](../run-scaling/scale-your-workflows) for how this fits into a broader scaling strategy.
+
+Stick with the default (non-reusable) model when tasks are long-running, run infrequently, or need strong isolation between executions — in those cases the startup cost is negligible and container reuse adds no benefit.
+
 ## How it works
 
 With reusable containers, the system maintains a pool of persistent containers that can handle multiple task executions.
