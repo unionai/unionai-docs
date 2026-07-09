@@ -173,10 +173,12 @@ The mapped parameter must be the task's **first positional parameter**. If the p
 later parameter unbound — for example binding `compound_id` and `model_name` but leaving `batch_id`
 (the third parameter) for mapping — `flyte.map` raises a `TypeError`.
 
-## Mapping with reusable environments (actors)
+{{< variant union >}}
+{{< markdown >}}
+## Mapping with reusable environments
 
-`flyte.map` composes naturally with [reusable containers](../task-configuration/reusable-containers)
-(sometimes called *actors*): a warm pool of persistent containers that survive across invocations,
+`flyte.map` composes naturally with [reusable containers](../task-configuration/reusable-containers):
+a warm pool of persistent containers that survive across invocations,
 eliminating per-action container startup overhead. This is the highest-throughput way to run a
 large map of short tasks.
 
@@ -186,7 +188,7 @@ Attach a `flyte.ReusePolicy` to the task's `flyte.TaskEnvironment`, then map ove
 import flyte
 
 env = flyte.TaskEnvironment(
-    name="map-actors",
+    name="map-reusable",
     image=flyte.Image.from_debian_base().with_pip_packages("unionai-reuse"),
     reusable=flyte.ReusePolicy(replicas=4, concurrency=3),
 )
@@ -216,10 +218,12 @@ Two concurrency controls are in play, and they are independent:
   to let the pool absorb the full fan-out, or set it to shape submission independently of pool size.
 
 > [!NOTE]
-> Reusable containers run only on a Union backend and require the
+> Reusable containers require the
 > [`unionai-reuse`](https://pypi.org/project/unionai-reuse/) runtime library in the task image, as
 > shown above. See [Reusable containers](../task-configuration/reusable-containers) for the full
 > `ReusePolicy` parameter reference and lifecycle details.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## When to use `flyte.map`
 

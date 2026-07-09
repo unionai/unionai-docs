@@ -52,8 +52,19 @@ For uniform work — applying the same task to a list of inputs — `flyte.map` 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/controlling-parallelism/controlling_parallelism.py" fragment="map-concurrency" lang="python" >}}
 
 This achieves the same concurrency limit with less boilerplate.
+
+{{< variant union >}}
+{{< markdown >}}
 For the full `flyte.map` treatment — signature, return order, error handling, partials, and use with
 reusable environments — see [Mapping over inputs](./map).
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+For the full `flyte.map` treatment — signature, return order, error handling, and partials — see
+[Mapping over inputs](./map).
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Running the example
 

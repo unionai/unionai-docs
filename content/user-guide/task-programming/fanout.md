@@ -14,8 +14,18 @@ In Flyte 1, mapping a task over many inputs used `map_task()` (the `flytekit.map
 {{< /note >}}
 
 This page covers the general `asyncio.gather` fanout pattern. For applying the *same* task to every
-item of a list — the direct successor to Flyte 1's `map_task` — see [Mapping over inputs](./map),
-which also covers concurrency limits, error handling, and use with reusable environments.
+item of a list — the direct successor to Flyte 1's `map_task` — see [Mapping over inputs](./map).
+
+{{< variant union >}}
+{{< markdown >}}
+That page also covers concurrency limits, error handling, and use with reusable environments.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+That page also covers concurrency limits and error handling.
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< variant union >}}
 {{< markdown >}}
