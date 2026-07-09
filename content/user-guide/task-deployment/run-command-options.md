@@ -8,7 +8,7 @@ variants: +flyte +union
 
 The `flyte run` command provides the following options:
 
-**`flyte run [OPTIONS] <PATH>|deployed_task <TASK_NAME>`**
+**`flyte run [OPTIONS] <PATH>|deployed-task <TASK_NAME>`**
 
 | Option                      | Short | Type   | Default                   | Description                                            |
 |-----------------------------|-------|--------|---------------------------|--------------------------------------------------------|
@@ -28,7 +28,7 @@ The `flyte run` command provides the following options:
 
 ## `--project`, `--domain`
 
-**`flyte run --domain <DOMAIN> --project <PROJECT> <PATH>|deployed_task <TASK_NAME>`**
+**`flyte run --domain <DOMAIN> --project <PROJECT> <PATH>|deployed-task <TASK_NAME>`**
 
 You can specify `--project` and `--domain` which will override any defaults defined in your `config.yaml`:
 
@@ -99,7 +99,7 @@ flyte run --copy-style all my_example.py my_task
 No code bundling (task must be pre-deployed):
 
 ```bash
-flyte run --copy-style none deployed_task my_deployed_task
+flyte run --copy-style none deployed-task my_deployed_task
 ```
 
 ### Copy style options
