@@ -15,7 +15,7 @@ The examples below assume the project layout and image definitions from the [Mon
 A deploy pipeline has three jobs:
 
 1. **Install** the project and the `flyte` CLI.
-2. **Authenticate** non-interactively against your deployment.
+2. **Authenticate** non-interactively against your instance.
 3. **Run `flyte deploy`** for every `TaskEnvironment` in your project, pinned to the commit SHA.
 
 Everything else — branch protections, approvals, notifications — is generic CI concerns and out of scope.
