@@ -19,12 +19,12 @@ There are three ways of defining [PodTemplate](https://kubernetes.io/docs/concep
 2. Runtime PodTemplates
 3. Cluster-wide default PodTemplate
 
-> These approaches can be used simultaneously, where the cluste-wide configuration will override the default PodTemplate values.
+> These approaches can be used simultaneously, where the cluster-wide configuration will override the default PodTemplate values.
 
 ## A note about containers kinds
 
 In a Kubernetes Pod, you can have multiple containers but typically there is one considered "primary", or the one that runs the microservice or main application.
-You can also have [initContainers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/#understanding-init-containers) which are designed to run before the primary to perform anciliary tasks like downloading data. They run sequentially and must complete succesfully before the primary container can run. You would define them under a separate section of the PodTemplate spec:
+You can also have [initContainers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/#understanding-init-containers) which are designed to run before the primary to perform ancillary tasks like downloading data. They run sequentially and must complete successfully before the primary container can run. You would define them under a separate section of the PodTemplate spec:
 
 ```yaml
 apiVersion: v1

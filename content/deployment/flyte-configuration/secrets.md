@@ -283,7 +283,7 @@ Breaking down this sequence diagram:
 
 4. Before persisting the Pod, `ApiServer` invokes all the registered Pod Webhooks and Flyte's Pod Webhook is called.
 
-5. Using the labels and annotiations attached in **step 2**, Flyte Pod Webhook looks up globally mounted secrets for each of the requested secrets.
+5. Using the labels and annotations attached in **step 2**, Flyte Pod Webhook looks up globally mounted secrets for each of the requested secrets.
 
 6. If found, the Pod Webhook mounts them directly in the Pod. If not found, the Pod Webhook injects the appropriate annotations to load the secrets for K8s (or Vault or Confidant or any secret management system plugin configured) into the task pod.
 

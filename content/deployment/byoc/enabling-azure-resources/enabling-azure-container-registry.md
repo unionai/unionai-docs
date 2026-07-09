@@ -34,7 +34,7 @@ By default this {{< key product_name >}}-managed ACR instance:
 Upon request, {{< key product_name >}} can:
 
 * Configure the [Container Registry service tier](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-skus).
-* Disable the purge task to prevent automated image delettion.
+* Disable the purge task to prevent automated image deletion.
 * Configure the purge task to run daily, weekly, and monthly deleting tasks with last modified dates older then 1, 7, and 30 days respectively.
 * Configure a [regexp2 with RE2 compatiblity](https://github.com/dlclark/regexp2) regular expression to filter for which repository to purge. For example, `^(?!keep-repo).*` will keep all images with repositories prefixed with keep-repo, E.G., `<CONTAINER_REGISTRY_NAME>/keep-repo/my-image:my-tag>`.
 
