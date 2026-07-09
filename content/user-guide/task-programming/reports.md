@@ -129,3 +129,61 @@ The key to the live update ability is the `while` loop that appends Javascript t
 When the workflow runs, you can see the report updating in real-time in the UI:
 
 ![Data Processing Dashboard](../../_static/images/user-guide/data_processing_dashboard.png)
+
+## Rendering a custom type
+
+The examples above build report HTML by hand. When you have a **custom type** — or a DataFrame, or a `StructuredDataset` — that you render the same way in many places, you can define a reusable **renderer** for the type and attach it to the type, instead of repeating the HTML-building logic at every call site.
+
+A renderer is any class that satisfies the `flyte.types.Renderable` protocol: it implements a single `to_html(self, value) -> str` method that returns an HTML fragment for a value of your type.
+
+```python
+from flyte.types import Renderable
+
+class Molecule:
+    def __init__(self, name: str, smiles: str):
+        self.name = name
+        self.smiles = smiles
+
+class MoleculeRenderer:
+    """A Renderable for the Molecule type."""
+
+    def to_html(self, mol: Molecule) -> str:
+        return f"<h2>{mol.name}</h2><pre>{mol.smiles}</pre>"
+```
+
+You attach the renderer to the type with `typing.Annotated`, then dispatch a value through its attached renderer with `flyte.types.TypeEngine.to_html()`. Log the resulting HTML to the report just like any other content:
+
+```python
+from typing import Annotated
+
+import flyte
+import flyte.report
+from flyte.types import TypeEngine
+
+env = flyte.TaskEnvironment(name="custom_renderer")
+
+# Attaching the renderer to the type is the "registration".
+RenderedMolecule = Annotated[Molecule, MoleculeRenderer()]
+
+@env.task(report=True)
+async def show_molecule() -> Molecule:
+    mol = Molecule("caffeine", "CN1C=NC2=C1C(=O)N(C(=O)N2C)C")
+
+    # Dispatch the value through the renderer attached to RenderedMolecule.
+    html = TypeEngine.to_html(mol, RenderedMolecule)
+    await flyte.report.log.aio(html)
+    await flyte.report.flush.aio()
+
+    return mol
+
+if __name__ == "__main__":
+    flyte.init_from_config()
+    print(flyte.run(show_molecule).url)
+```
+
+`TypeEngine.to_html()` finds the `Renderable` attached to the type via `Annotated`, calls its `to_html()`, and returns the HTML string — which you then send to the report with `flyte.report.log()` (or `replace()`). The same pattern works for a DataFrame or `StructuredDataset`: annotate the type with a renderer that turns the frame into an HTML table.
+
+> [!NOTE]
+> The report contains only what you explicitly `log()` or `replace()`. Returning a value whose type has a renderer attached does **not** by itself add it to the report — render the value and log the HTML, as shown above.
+
+Flyte also ships several ready-made renderers you can use as reference implementations for your own, including ones that render a pandas or PyArrow DataFrame as an HTML table and one that renders a Markdown string.

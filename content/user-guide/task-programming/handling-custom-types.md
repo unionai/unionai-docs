@@ -223,3 +223,7 @@ DataFrame extensions use encoders and decoders from `flyte.io.extend`. Documenta
 3. **Add validation**: Validate data in your transformer to catch errors early
 4. **Use meaningful tags**: The `TypeStructure.tag` helps identify your type in the Flyte UI
 5. **Be judicious with plugins**: Only install the plugins you need to minimize initialization overhead
+
+## See also
+
+To render a custom type as HTML in a task report, define a `flyte.types.Renderable` for it — see [Rendering a custom type](./reports#rendering-a-custom-type) on the Reports page.
