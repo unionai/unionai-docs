@@ -52,4 +52,4 @@ and do what you might expect.
 
 Flyte provides typed JSON Lines (JSONL) I/O through the `flyteplugins-jsonl` plugin, which extends `File` and `Dir` with the `JsonlFile` and `JsonlDir` types — adding streaming record-level read/write, optional zstd compression, and automatic shard rotation for large datasets.
 
-See the [JSONL integration](../../integrations/jsonl) guide for installation and usage.
+See the [JSONL integration](../../integrations/jsonl/_index) guide for installation and usage.
