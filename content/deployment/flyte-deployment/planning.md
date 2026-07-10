@@ -45,7 +45,7 @@ Flyte can be operated without the following elements, but is prepared to use the
 
 Flyte operates with two protocols: `HTTP` for the UI and `gRPC` for the client-to-control-plane communication. You can expose both ports through `port-forward` which is typically a temporary measure, or expose them in a stable manner using Ingress. For a Kubernetes Ingress resource to be properly materialized, it needs an Ingress controller already installed in the cluster.
 The Flyte Helm charts can trigger the creation of the Ingress resource but the config needs to be reconciled by an Ingress controller (doesn't ship with Flyte).
-The Flyte community has used the following controllers succesfully:
+The Flyte community has used the following controllers successfully:
 
 | Environment  | Controller  | Example configuration  |
 |---|---|---|
