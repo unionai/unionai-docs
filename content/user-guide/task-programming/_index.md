@@ -44,6 +44,7 @@ The task programming section covers key patterns for building effective Flyte wo
 - [**Links**](./links): Add clickable URLs to tasks in the Flyte UI, connecting them to external tools like experiment trackers and monitoring dashboards.
 - [**Reports**](./reports): Generate custom HTML reports during task execution to display progress, results, and visualizations in the UI.
 - [**Traces**](./traces): Add fine-grained observability to helper functions within your tasks for better debugging and resumption capabilities.
+- [**Intra-task checkpoints**](./intra-task-checkpoints): Save in-progress state within a task — such as a training loop — so retries resume from the last checkpoint instead of starting over.
 - [**Error handling**](./error-handling): Implement robust error recovery strategies, including automatic resource scaling and graceful failure handling.
 
 ## When to use these patterns
@@ -60,6 +61,7 @@ These programming patterns become essential as your workflows grow in complexity
 - Use **remote tasks** to reuse tasks deployed by other teams without managing their dependencies.
 - Apply **pod templates** when you need advanced Kubernetes features like sidecars or specialized storage configurations.
 - Use **traces** to debug non-deterministic operations like API calls or ML inference.
+- Use **intra-task checkpoints** to make long-running training loops resumable across retries, preemptions, and interruptions.
 - Use **links** to connect tasks to external tools like Weights & Biases, Grafana, or custom dashboards directly from the Flyte UI.
 - Create **reports** to monitor long-running workflows and share results with stakeholders.
 - Use **custom context** when you need lightweight, cross-cutting metadata to flow through your task hierarchy without becoming part of the task's logical inputs.

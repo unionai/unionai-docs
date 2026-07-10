@@ -257,7 +257,7 @@ done
 
 The managed identities need explicit RBAC permissions on the storage account.
 
-- Obtaine the Storage Account ID:
+- Obtain the Storage Account ID:
 
 ```bash
 STORAGE_ACCOUNT_ID=$(az storage account show \
