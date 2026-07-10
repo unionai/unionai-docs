@@ -10,9 +10,11 @@ When an action behaves unexpectedly, {{< key product_name >}} lets you drop into
 session for that action — inspecting its environment, filesystem, and code from the inside instead
 of guessing from logs alone.
 
-There are two ways to debug:
+There are three ways to debug:
 
 - **From the UI** — open a debugging session for any action with a single click.
+- **From the SDK or CLI** — launch a run in debug mode (`debug=True` / `--debug`) to start a
+  browser-based VS Code session on the task pod and step through your code line-by-line.
 - **SSH into the task** (Beta) — attach your local terminal or VS Code directly to a running task
   pod, using the `flyteplugins-union` plugin.
 
@@ -24,6 +26,64 @@ details view, click **Debug action** (the button in the top-right of the summary
 This opens an interactive debugging session for that action, where you can explore the action's
 state directly. Debugging is scoped to the individual action, so you can debug a single nested
 action without affecting the rest of the run.
+
+## Debug from the SDK or CLI
+
+Launching a run in **debug mode** starts a browser-based VS Code session (a `code-server`) inside
+the task pod. You connect to it from the UI and step through your task code line-by-line on the
+same infrastructure the run uses — against the same data, images, and dependencies. This is
+especially valuable when a task behaves differently remotely than it does locally, where the inputs,
+models, or environment often differ and reproducing the problem on your laptop is impractical.
+
+Unlike **[Debug from the UI](#debug-from-the-ui)**, which you open on an action after it has
+started, debug mode is requested at **launch time** — from your own code or from the CLI.
+
+### From the SDK
+
+Pass `debug=True` to `flyte.with_runcontext()`, then call `.run(...)` as usual. After the run
+starts, `run.get_debug_url()` returns the URL of the VS Code session:
+
+```python
+# debug.py
+import flyte
+
+env = flyte.TaskEnvironment(name="debug_example")
+
+
+@env.task
+def say_hello(name: str) -> str:
+    greeting = f"Hello, {name}!"
+    print(greeting)
+    return greeting
+
+
+if __name__ == "__main__":
+    flyte.init_from_config()
+    run = flyte.with_runcontext(debug=True).run(say_hello, name="World")
+    print("Run URL:", run.url)
+    print("Debug URL:", run.get_debug_url())
+```
+
+`run.get_debug_url()` waits for the VS Code Debugger entry to appear in the run's action details,
+then returns its URL. It returns `None` if the entry never appears — check the task logs if so. The
+same URL is also available in the UI on the action's details view.
+
+### From the CLI
+
+Pass `--debug` to `flyte run`:
+
+```bash
+flyte run --debug debug.py say_hello --name World
+```
+
+The run starts with a `code-server` attached. Once the session is ready, the CLI prints a **Debug**
+panel containing the VS Code Debugger URL — open it to connect to the interactive session. If the
+URL doesn't appear, the panel points you to the task logs.
+
+> [!NOTE]
+> The debug session runs on the remote task pod and stays alive while you use it, shutting down
+> automatically after a period of inactivity. Because the session runs inside the task container,
+> it has the run's real inputs, image, and dependencies available for interactive inspection.
 
 ## SSH into the task (Beta)
 
@@ -144,5 +204,6 @@ run = with_debugcontext(env_vars={"LOG_LEVEL": "20"}).run(my_task, x=1)
 
 ## Related
 
+- [Run context](./run-context) — set `debug` and other invocation-time parameters with `flyte.with_runcontext()`.
 - [Re-run a run](./rerun-runs) — launch a new run from a previous one.
 - [Interact with runs and actions](./interacting-with-runs) — retrieve, monitor, and inspect runs and actions.
