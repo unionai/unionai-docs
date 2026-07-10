@@ -25,6 +25,13 @@ Want to try Flyte without installing anything? [Try Flyte 2 in your browser](htt
 > to stand one up, or use the [Devbox](./running-devbox) to run a local cluster in Docker.
 {{< /markdown >}}
 {{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
+> [!NOTE]
+> Don't have a Union.ai instance yet? See [Platform deployment](../../deployment/_index)
+> to stand one up, or use the [Devbox](./running-devbox) to run a local cluster in Docker.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Install the flyte package
 
