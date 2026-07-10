@@ -9,7 +9,7 @@ variants: +flyte +union
 Understanding how data flows between tasks is critical for optimizing workflow performance in Flyte. Tasks take inputs and produce outputs, with data flowing seamlessly through your workflow using an efficient transport layer.
 
 > [!NOTE]
-> This page focuses on **how** data moves at runtime. For the static map of **what** lives in the control plane database versus the data plane object store — including what *metadata*, *literals*, and *raw data* (which this page also calls *reference data*) mean — see [Where your data lives](../core-concepts/where-data-lives).
+> This page focuses on **how** data moves at runtime. For the static map of **what** lives in the control plane database versus the data plane object store — including what *metadata*, *literals*, and *raw data* mean — see [Where your data lives](../core-concepts/where-data-lives).
 
 ## Overview
 
@@ -27,7 +27,7 @@ Flyte handles different data types with different transport mechanisms:
 
 ### Passed by reference
 
-These types are not copied but passed as references to storage locations. This page refers to that offloaded, by-reference content as **reference data** (also known as **raw data**):
+These types are not copied but passed as references to storage locations. That offloaded, by-reference content is called **raw data**:
 
 - **Files**: `flyte.io.File`
 - **Directories**: `flyte.io.Dir`
@@ -64,14 +64,14 @@ When a task starts:
 1. **Inline inputs download**: The task downloads inline inputs from the configured Flyte object store.
 2. **Size limits**: By default, inline inputs are limited to 10MB, but this can be adjusted using `flyte.TaskEnvironment`'s `max_inline_io` parameter.
 3. **Memory consideration**: Inline data is materialized in memory, so adjust your task resources accordingly.
-4. **Reference materialization**: Reference data (files, directories) is passed using special types in `flyte.io`. Dataframes are automatically materialized if using `pd.DataFrame`. Use `flyte.io.DataFrame` to avoid automatic materialization.
+4. **Raw data materialization**: Raw data (files, directories) is passed using special types in `flyte.io`. Dataframes are automatically materialized if using `pd.DataFrame`. Use `flyte.io.DataFrame` to avoid automatic materialization.
 
 ### Output upload
 
 When a task returns data:
 
 1. **Inline data**: Uploaded to the Flyte object store configured at the organization, project, or domain level.
-2. **Reference data**: Stored under the same bucket prefix by default, or routed to a different location using `flyte.with_runcontext(raw_data_path=...)`.
+2. **Raw data**: Stored under the same bucket prefix by default, or routed to a different location using `flyte.with_runcontext(raw_data_path=...)`.
 3. **Separate prefixes**: Each task creates one output per retry attempt in separate prefixes, making data incorruptible by design.
 
 ## Task-to-task data flow
@@ -103,9 +103,9 @@ A cache hit occurs when the following components match:
 
 All inline data is cached using a consistent hashing system. The cache key is derived from the data content.
 
-### Reference data hashing
+### Raw data hashing
 
-Reference data (DataFrames, files, directories) is hashed shallowly by default using the hash of the storage location, so a downstream task does not cache-hit on identical content stored at a new path. To cache on content instead, attach a content hash at production time with `flyte.io.HashFunction`. See [Content-based caching for DataFrames, files, and directories](../task-configuration/caching#content-based-caching-for-dataframes-files-and-directories).
+Raw data (DataFrames, files, directories) is hashed shallowly by default using the hash of the storage location, so a downstream task does not cache-hit on identical content stored at a new path. To cache on content instead, attach a content hash at production time with `flyte.io.HashFunction`. See [Content-based caching for DataFrames, files, and directories](../task-configuration/caching#content-based-caching-for-dataframes-files-and-directories).
 
 ### Cache control
 
@@ -132,7 +132,7 @@ When using [traces](../task-programming/traces), the data flow behavior is diffe
 
 ## Object stores and latency considerations
 
-By default, Flyte uses object stores like S3, GCS, Azure Storage, and R2 to persist task inputs, outputs, and offloaded reference data. These have high latency for smaller objects, so:
+By default, Flyte uses object stores like S3, GCS, Azure Storage, and R2 to persist task inputs, outputs, and offloaded raw data. These have high latency for smaller objects, so:
 
 - **Minimum task duration**: Tasks should take at least a second to run to amortize storage overhead.
 - **Future improvements**: High-performance key/value or relational stores like Redis and PostgreSQL may be supported in the future as alternative offload backends. Contact the Union team if you're interested.
@@ -153,4 +153,4 @@ run = flyte.with_runcontext(
 ).run(my_task, input_data=data)
 ```
 
-This allows you to control where reference data (files, directories, DataFrames) is stored for specific runs. See [Run context](../task-deployment/run-context) for the full set of options.
+This allows you to control where raw data (files, directories, DataFrames) is stored for specific runs. See [Run context](../task-deployment/run-context) for the full set of options.
