@@ -73,7 +73,7 @@ Copy the **Value** of this secret to a plain text file on your computer.
 
 6. Enter the **client secret** in plain text and encrypt it.
 
-7. Save encypted text to a file and share with the {{< key product_name >}} team over Slack.
+7. Save encrypted text to a file and share with the {{< key product_name >}} team over Slack.
 
 8. Delete the **client secret** from the text file on your computer.
 

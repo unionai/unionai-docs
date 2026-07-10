@@ -35,7 +35,7 @@ The parameters can be used to generate a unique URL to the logs using a template
 | `{{ .podUnixFinishTime }}` | Don't have a good mechanism for this yet, but approximating with `time.Now` for now |
 
 
-The parameterization engine uses Golangs native templating format and hence uses `{{ }}`.
+The parameterization engine uses Golang's native templating format and hence uses `{{ }}`.
 
 Since Helm chart uses the same templating syntax for args (like `{{ }}`), compiling the chart results in helm replacing Flyte log link templates as well. To avoid this, you can use escaped templating for Flyte logs in the helm chart.
 This ensures that Flyte log link templates remain in place during helm chart compilation.
