@@ -19,7 +19,7 @@ terraform {
   required_providers {
     unionai = {
       source  = "unionai/unionai"
-      version = "~> 1.0"
+      version = "~> 0.2"
     }
   }
 }
