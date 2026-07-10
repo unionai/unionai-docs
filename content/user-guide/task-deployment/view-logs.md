@@ -81,8 +81,8 @@ flyte get logs my_run a0 --project my-project --domain development
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--lines`, `-l` | integer | `30` | Number of lines to show; only applies with `--pretty`. |
-| `--show-ts` | flag | `False` | Show timestamps. |
-| `--pretty` | flag | `False` | Show logs in an auto-scrolling box, limited to `--lines` lines. |
+| `--show-ts` | boolean | `False` | Show timestamps. |
+| `--pretty` | boolean | `False` | Show logs in an auto-scrolling box, limited to `--lines` lines. |
 | `--attempt`, `-a` | integer | latest | Attempt number to show logs for; defaults to the latest attempt. |
 | `--filter-system` | flag | `False` | Filter all system logs from the output. |
 | `--project`, `-p` | text | configured | Project to which this command applies. |
