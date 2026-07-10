@@ -838,7 +838,7 @@ This is, 10 replicas (as defined in the `TaskEnvironment`) and the driver Pod th
 - Failure tolerance (critical = smaller batches for faster recovery)
 - Total workload size (larger total = can use larger batches)
 
-Read the [Optimization strategies]({{< docs_home union v2 >}}/user-guide/run-scaling/scale-your-workflows/#2-batch-workloads-to-reduce-overhead) page to understand the overheads associated with an execution and how to choose the appropiate batch size.
+Read the [Optimization strategies]({{< docs_home union v2 >}}/user-guide/run-scaling/scale-your-workflows/#2-batch-workloads-to-reduce-overhead) page to understand the overheads associated with an execution and how to choose the appropriate batch size.
 
 
 

@@ -61,7 +61,7 @@ In this section, you can find canonical examples of how to set up OIDC on some o
 browser.
 
 > [!NOTE]
-> Using the following configurations as a reference, the community has succesfully configured auth with other IdPs as Flyte implements open standards.
+> Using the following configurations as a reference, the community has successfully configured auth with other IdPs as Flyte implements open standards.
 
 #### Google
 
