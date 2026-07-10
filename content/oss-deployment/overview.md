@@ -18,9 +18,11 @@ backend components into one process:
 | Component | Responsibility |
 |---|---|
 | Runs service | Accepts and stores run/task/workflow requests; owns the database. |
-| Actions / task controller | Reconciles task executions onto Kubernetes. |
+| Executor | Reconciles task runs onto Kubernetes. |
 | Data proxy | Issues signed URLs for uploading and downloading data to the object store. |
 | App service | Manages apps — long-running serving deployments — and their lifecycle. |
+| Action service | Manages actions — short-lived task runs — and their lifecycle. |
+| Cache service | Manages the cache for task runs and actions. |
 
 At a high level, clients reach Flyte through a single HTTP ingress that fronts the console and the Flyte binary. The binary bundles the backend services into one process, reconciles task pods onto Kubernetes, and depends on an external database and object store:
 
