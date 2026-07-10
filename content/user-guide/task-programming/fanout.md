@@ -1,6 +1,6 @@
 ---
 title: Fanout
-weight: 16
+weight: 17
 variants: +flyte +union
 ---
 
@@ -44,7 +44,7 @@ Next we implement the most common fanout pattern, which is to collect task invoc
 
 ### Running the example
 
-To actually run our example, we create a main guard that intializes Flyte and runs our main driver task:
+To actually run our example, we create a main guard that initializes Flyte and runs our main driver task:
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/fanout/fanout.py" fragment="run" lang="python" >}}
 
