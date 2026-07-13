@@ -29,6 +29,7 @@ The task programming section covers key patterns for building effective Flyte wo
 **Execution patterns**
 - [**Fanout**](./fanout): Scale your workflows by running many tasks in parallel, perfect for processing large datasets or running hyperparameter sweeps.
 - [**Controlling parallel execution**](./controlling-parallelism): Limit concurrent task executions using semaphores or `flyte.map` concurrency for rate-limited APIs, GPU quotas, and resource-constrained workflows.
+- [**Structured concurrency with anyio**](./structured-concurrency-anyio): Use `anyio` task groups as a top-level structured-concurrency alternative to raw `asyncio`, with automatic sibling cancellation when one task fails.
 - [**External conditions**](./conditions): Pause a task until an external signal arrives — a human approval, a callback from an external service, or a value supplied at runtime.
 - [**Grouping actions**](./grouping-actions): Organize related task executions into logical groups for better visualization and management in the UI.
 - [**Container tasks**](./container-tasks): Run arbitrary containers in any language without the Flyte SDK installed, using Flyte's copilot sidecar for seamless data flow.
