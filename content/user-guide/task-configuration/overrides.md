@@ -59,7 +59,7 @@ The key idiom is `task.override(...)(args)`: `override()` returns a callable tas
 | **interruptible** | [Interruptible tasks](./interruptible-tasks-and-queues) |
 | **links** | [Additional task settings](./additional-task-settings#links) |
 
-For the full parameter interaction matrix showing which parameters can be set at which level, see [Task configuration levels](./#task-configuration-levels).
+For the full parameter interaction matrix showing which parameters can be set at which level, see [Task configuration levels](_index#task-configuration-levels).
 
 > [!NOTE] Overrides replace, they don't merge
 > When you override a collection-valued parameter such as `resources`, `env_vars`, or `secrets`, the value you pass **replaces** the environment's value for that invocation &mdash; it is not merged with it.
