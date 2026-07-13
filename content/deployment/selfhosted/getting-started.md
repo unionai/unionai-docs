@@ -393,6 +393,9 @@ If authentication is enabled on the control plane, also set `AUTH_CLIENT_ID` in 
 
 ### Data plane self-registration
 
+> [!NOTE] Available as of the 2026.7.0 release
+> Self-registration requires **both the control plane and the data plane on 2026.7.0 or later**. The ability to read the operator's self-reported `connection_config` and construct the dial-back target is added to the control plane in this release, so update the control plane before (or together with) the data planes that rely on it. On an earlier control plane the self-report is ignored and routing falls back to the admin-set `DataplaneIngressURL`.
+
 The data plane operator self-registers with the control plane on first contact — no manual provisioning step is required. On startup, the operator:
 
 1. Uses its existing OAuth client credentials (configured into the chart via `AUTH_CLIENT_ID` + secret) to authenticate to the control plane.
@@ -405,8 +408,9 @@ For the third step to take effect, set the dataplane's externally-reachable host
 updateStatus:
   connectionConfig:
     # DP-reachable hostname the control plane should dial back to reach this
-    # data plane. The chart formats this as `dns:///<host>:443` and the
-    # operator ships it in every UpdateStatus call.
+    # data plane. The operator self-reports this bare host in every
+    # UpdateStatus call; the control plane (2026.7.0+) constructs the dial
+    # target (dns:///<host>:443) and reverse-proxy URL from it.
     host: "dp-1.internal.<your-tenant-domain>"
     # CP dials with plain HTTP/2 when true. Default false.
     insecure: false
