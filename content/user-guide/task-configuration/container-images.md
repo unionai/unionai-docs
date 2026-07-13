@@ -79,7 +79,7 @@ Do the opposite to enable remote runs.
 
 ## Customizing an image with `with_*` methods
 
-Once you have a base image from a `from_*` constructor, you can layer additional customizations on top using the `with_*` methods.
+Images from `from_debian_base()` and `from_uv_script()` are *extendable*: you can layer additional customizations on top using the `with_*` methods. (Images from `from_base()` and `from_dockerfile()` are **not** extendable &mdash; calling a `with_*` method on one raises an error; customize those at their source instead.)
 Each method returns a new `flyte.Image`, so you can chain them together in a fluent style:
 
 ```python
@@ -169,6 +169,9 @@ from flyte import Image
 
 image = Image.from_base("ghcr.io/my-org/my-base-image:latest")
 ```
+
+> [!NOTE]
+> An image from `from_base()` is **not extendable** &mdash; you can't chain `with_*` methods onto it. Bake any extra dependencies into the pre-built image itself, or start from `from_debian_base()` / `from_uv_script()` instead.
 
 You can also use `flyte.Image.clone()` to reuse an existing image definition while overriding its registry, name, or Python version:
 
