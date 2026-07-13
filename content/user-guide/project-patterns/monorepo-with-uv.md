@@ -102,7 +102,7 @@ Three patterns cover most cases:
 |---|---|---|---|
 | Lockfile | One `uv.lock` for everything | Each package has its own | One `uv.lock` for the whole workspace |
 | Package model | Single package; libraries are modules under one `src/` | Separate, independently-locked packages | Multiple installable members sharing the root lockfile |
-| Sibling code reaches the container via | Code bundle (fast deploy) | `with_source_folder()` baked into the image | uv install of workspace members (fast deploy preserved) |
+| Sibling code reaches the container via | Code bundle (fast deploy) | `with_source_folder()` baked into the image | Code bundle, `root_dir` = workspace root (fast deploy) |
 | Use when | Packages developed together, shared dep graph | Different release cadences, fully independent | Multiple versioned packages developed and locked together |
 
 ### Pattern A: Shared lockfile (recommended)
@@ -275,7 +275,7 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-Because uv installs the workspace members into the environment, sibling imports (`from bird_feeder.actions import ...`, `from seeds.actions import ...`) resolve directly — you do **not** need `with_source_folder()` to bake sibling code into the image, as Pattern B requires.
+You do **not** need `with_source_folder()` to bake sibling code into the image (as Pattern B requires): in the default `dependencies_only` build the workspace members are *not* installed into the image — only `pyproject.toml` and `uv.lock` enter the build context — and the sibling source (`from bird_feeder.actions import ...`, `from seeds.actions import ...`) travels in the **code bundle** instead (the entry point below sets `root_dir` to the workspace root, so the bundle packages every member). The `[tool.uv.workspace]` config's job is to let uv resolve `bird-feeder` and `seeds` from the one lockfile; it does not put their code in the image.
 
 **Entry point** — set `root_dir` to the workspace root so the code bundle packages every member's source and imports resolve the same way locally and at runtime:
 
