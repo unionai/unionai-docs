@@ -394,13 +394,13 @@ If authentication is enabled on the control plane, also set `AUTH_CLIENT_ID` in 
 ### Data plane self-registration
 
 > [!NOTE]
-> Self-registration is **opt-in as of 2026.7.0** and becomes the default in a future release; it requires the control plane and data planes on 2026.7.0 or later. Leaving it off preserves the legacy admin-set `DataplaneIngressURL` flow. See the helm-charts [control plane](https://github.com/unionai/helm-charts/releases/tag/controlplane-2026.7.0) and [data plane](https://github.com/unionai/helm-charts/releases/tag/dataplane-2026.7.0) release notes.
+> Self-registration is **opt-in as of 2026.7.0** and becomes the default in a future release; it requires the control plane and data planes on 2026.7.0 or later. Leaving it off keeps the existing behavior — the control plane routes to its statically-configured data plane URL. See the helm-charts [control plane](https://github.com/unionai/helm-charts/releases/tag/controlplane-2026.7.0) and [data plane](https://github.com/unionai/helm-charts/releases/tag/dataplane-2026.7.0) release notes.
 
 The data plane operator self-registers with the control plane on first contact — no manual provisioning step is required. On startup, the operator:
 
 1. Uses its existing OAuth client credentials (configured into the chart via `AUTH_CLIENT_ID` + secret) to authenticate to the control plane.
 2. The control plane's authorizer recognizes the identity (bound to the org admin policy at install time via the control plane chart's `services.authorizer.configMap.authorizer.bootstrap.serviceAccounts` block) and lazily creates the per-cluster authz Resource on the first `Heartbeat` and `UpdateStatus` call.
-3. On every `UpdateStatus` call, the operator reports a `connection_config` blob — the data the control plane needs to dial back to this data plane on the zero-trust execution path. This replaces the previous admin-set ingress URL flow.
+3. On every `UpdateStatus` call, the operator reports a `connection_config` blob — the reachable host and TLS posture the control plane uses to dial this data plane, so it can reach a data plane in a separate cluster without a statically-configured endpoint.
 
 For the third step to take effect, opt in and set the data plane's externally-reachable hostname in the chart's `updateStatus.connectionConfig` block:
 
@@ -422,7 +422,7 @@ updateStatus:
     insecureSkipVerify: false
 ```
 
-If `host` is left empty, the operator skips self-reporting and the control plane falls back to its legacy admin-set `DataplaneIngressURL`.
+If `host` is left empty, the operator skips self-reporting and the control plane routes to its statically-configured data plane URL (the intra-cluster default).
 
 For a control plane serving **multiple** data planes, also set the dataproxy `clusterSelector.type: direct` on the control-plane chart so it routes across data planes using these self-reports; the default `local` does single-data-plane self-resolution only. Once enabled, adding a further data plane needs no control plane re-deploy.
 
