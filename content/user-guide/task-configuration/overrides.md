@@ -43,6 +43,8 @@ The key idiom is `task.override(...)(args)`: `override()` returns a callable tas
 
 `override()` accepts the parameters that are settable at the task-invocation level:
 
+{{< variant flyte >}}
+{{< markdown >}}
 | Parameter | Details |
 |-----------|---------|
 | **short_name** | [Additional task settings](./additional-task-settings) |
@@ -57,11 +59,26 @@ The key idiom is `task.override(...)(args)`: `override()` returns a callable tas
 | **pod_template** | [Pod templates](./pod-templates) &bull; [`PodTemplate` API ref](../../api-reference/flyte-sdk/packages/flyte/podtemplate) |
 | **interruptible** | [Interruptible tasks](./interruptible-tasks-and-queues) |
 | **links** | [Additional task settings](./additional-task-settings#links) |
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< variant union >}}
 {{< markdown >}}
-> [!NOTE] Queue routing (Union)
-> `override(queue=…)` also routes the task to a specific [queue](./queues) to control concurrency, priority, and fairness. See [Queues](./queues).
+| Parameter | Details |
+|-----------|---------|
+| **short_name** | [Additional task settings](./additional-task-settings) |
+| **resources** | [Resources](./resources) &bull; [`Resources` API ref](../../api-reference/flyte-sdk/packages/flyte/resources) |
+| **cache** | [Caching](./caching) &bull; [`Cache` API ref](../../api-reference/flyte-sdk/packages/flyte/cache) |
+| **retries** | [Retries and timeouts](./retries-and-timeouts) &bull; [`RetryStrategy` API ref](../../api-reference/flyte-sdk/packages/flyte/retrystrategy) |
+| **timeout** | [Retries and timeouts](./retries-and-timeouts) &bull; [`Timeout` API ref](../../api-reference/flyte-sdk/packages/flyte/timeout) |
+| **reusable** | [Reusable containers](./reusable-containers) &bull; [`ReusePolicy` API ref](../../api-reference/flyte-sdk/packages/flyte/reusepolicy) |
+| **env_vars** | [Additional task settings](./additional-task-settings#environment-variables) |
+| **secrets** | [Overriding secrets](#overriding-secrets) &bull; [Secrets](./secrets) &bull; [`Secret` API ref](../../api-reference/flyte-sdk/packages/flyte/secret) |
+| **max_inline_io_bytes** | [Additional task settings](./additional-task-settings#inline-io-threshold) |
+| **pod_template** | [Pod templates](./pod-templates) &bull; [`PodTemplate` API ref](../../api-reference/flyte-sdk/packages/flyte/podtemplate) |
+| **queue** | [Queues](./queues) |
+| **interruptible** | [Interruptible tasks](./interruptible-tasks-and-queues) |
+| **links** | [Additional task settings](./additional-task-settings#links) |
 {{< /markdown >}}
 {{< /variant >}}
 
