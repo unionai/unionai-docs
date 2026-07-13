@@ -394,7 +394,7 @@ If authentication is enabled on the control plane, also set `AUTH_CLIENT_ID` in 
 ### Data plane self-registration
 
 > [!NOTE]
-> Self-registration is **opt-in as of 2026.7.0** and becomes the default in a future release; it requires the control plane and data planes on 2026.7.0 or later. Leaving it off preserves the legacy admin-set `DataplaneIngressURL` flow. See the [release notes](../../release-notes).
+> Self-registration is **opt-in as of 2026.7.0** and becomes the default in a future release; it requires the control plane and data planes on 2026.7.0 or later. Leaving it off preserves the legacy admin-set `DataplaneIngressURL` flow. See the helm-charts [control plane](https://github.com/unionai/helm-charts/releases/tag/controlplane-2026.7.0) and [data plane](https://github.com/unionai/helm-charts/releases/tag/dataplane-2026.7.0) release notes.
 
 The data plane operator self-registers with the control plane on first contact — no manual provisioning step is required. On startup, the operator:
 
