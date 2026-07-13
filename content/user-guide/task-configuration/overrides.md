@@ -143,6 +143,9 @@ async def main() -> str:
     return alternate
 ```
 
+> [!NOTE]
+> If the task's environment uses **reusable containers** (`reusable` is set), overriding `secrets` &mdash; like `resources` and `env_vars` &mdash; requires passing `reusable="off"` in the **same** `override()` call. Otherwise the override is rejected.
+
 As with the environment-level `secrets` parameter, the secret is injected at runtime and accessed inside the task &mdash; typically as an environment variable via `os.environ` (or mounted as a file).
 See [Secrets](./secrets) for how to create secrets and how they are injected, and remember that the overriding `secrets` value **replaces** the environment's secrets for that invocation rather than adding to them.
 
