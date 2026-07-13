@@ -11,7 +11,7 @@ Flyte 2 has no such API. Instead, **the dependency graph is inferred from the da
 When you await one task's result and pass it into another, Flyte records the edge; tasks that share no data run independently.
 This page shows how to express the ordering patterns you used to build by hand — sequencing, fan-out, fan-in, and fine-grained dependency-driven scheduling — using ordinary Python `asyncio`.
 
-If you are coming from Flyte 1, read [Parallelism and async](../../../api-reference/migration/parallelism-and-async) first for the migration mapping.
+If you are coming from Flyte 1, read [Parallelism and async](../../api-reference/migration/parallelism-and-async) first for the migration mapping.
 
 ## The dependency graph is implicit
 
