@@ -55,7 +55,7 @@ The key idiom is `task.override(...)(args)`: `override()` returns a callable tas
 | **secrets** | [Overriding secrets](#overriding-secrets) &bull; [Secrets](./secrets) &bull; [`Secret` API ref](../../api-reference/flyte-sdk/packages/flyte/secret) |
 | **max_inline_io_bytes** | [Additional task settings](./additional-task-settings#inline-io-threshold) |
 | **pod_template** | [Pod templates](./pod-templates) &bull; [`PodTemplate` API ref](../../api-reference/flyte-sdk/packages/flyte/podtemplate) |
-| **queue** | [Queues](./queues) |
+| **queue** | {{< variant union >}}<a href="../queues/">Queues</a>{{< /variant >}}{{< variant flyte >}}Queues{{< /variant >}} |
 | **interruptible** | [Interruptible tasks](./interruptible-tasks-and-queues) |
 | **links** | [Additional task settings](./additional-task-settings#links) |
 
