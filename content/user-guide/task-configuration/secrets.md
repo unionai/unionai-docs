@@ -102,7 +102,7 @@ For example:
 
 ## Overriding secrets at invocation time
 
-The secrets above are declared when the task is defined, on the `TaskEnvironment` or in the `@env.task` decorator.
+The secrets above are declared when the task is defined, on the `TaskEnvironment`.
 You can also override which secrets are injected for a **single invocation** of a task using `task.override(secrets=...)` &mdash; useful when the same task needs different credentials depending on how it's called.
 See [Overriding secrets](./overrides#overriding-secrets) for details and an example.
 

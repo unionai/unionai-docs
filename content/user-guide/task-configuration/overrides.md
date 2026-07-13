@@ -111,7 +111,7 @@ result = await my_task.override(
 Just as you can override resources per invocation, you can override the [secrets](./secrets) injected into a task for a single call.
 This is useful when the same task needs different credentials depending on how it's invoked &mdash; for example, calling an external API with a different key per tenant, or supplying a secret that the task's environment doesn't declare.
 
-Pass `secrets` to `override()` exactly as you would to the `TaskEnvironment` or `@env.task` decorator: a secret key, a `Secret` object, or a list of either.
+Pass `secrets` to `override()` exactly as you would to the `TaskEnvironment`: a secret key, a `Secret` object, or a list of either.
 
 ```python
 import flyte
