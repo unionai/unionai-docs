@@ -393,8 +393,8 @@ If authentication is enabled on the control plane, also set `AUTH_CLIENT_ID` in 
 
 ### Data plane self-registration
 
-> [!NOTE] Available as of the 2026.7.0 release
-> Self-registration requires **both the control plane and the data plane on 2026.7.0 or later**. The ability to read the operator's self-reported `connection_config` and construct the dial-back target is added to the control plane in this release, so update the control plane before (or together with) the data planes that rely on it. On an earlier control plane the self-report is ignored and routing falls back to the admin-set `DataplaneIngressURL`.
+> [!NOTE]
+> Self-registration is **opt-in as of 2026.7.0** and becomes the default in a future release; it requires the control plane and data planes on 2026.7.0 or later. Leaving it off preserves the legacy admin-set `DataplaneIngressURL` flow. See the [release notes](../../release-notes).
 
 The data plane operator self-registers with the control plane on first contact — no manual provisioning step is required. On startup, the operator:
 
@@ -402,11 +402,14 @@ The data plane operator self-registers with the control plane on first contact �
 2. The control plane's authorizer recognizes the identity (bound to the org admin policy at install time via the control plane chart's `services.authorizer.configMap.authorizer.bootstrap.serviceAccounts` block) and lazily creates the per-cluster authz Resource on the first `Heartbeat` and `UpdateStatus` call.
 3. On every `UpdateStatus` call, the operator reports a `connection_config` blob — the data the control plane needs to dial back to this data plane on the zero-trust execution path. This replaces the previous admin-set ingress URL flow.
 
-For the third step to take effect, set the dataplane's externally-reachable hostname in the chart's `updateStatus.connectionConfig` block:
+For the third step to take effect, opt in and set the data plane's externally-reachable hostname in the chart's `updateStatus.connectionConfig` block:
 
 ```yaml
 updateStatus:
   connectionConfig:
+    # Opt in to self-reporting (off by default). Enable only on operator
+    # images that support connection_config.
+    enabled: true
     # DP-reachable hostname the control plane should dial back to reach this
     # data plane. The operator self-reports this bare host in every
     # UpdateStatus call; the control plane (2026.7.0+) constructs the dial
@@ -419,7 +422,9 @@ updateStatus:
     insecureSkipVerify: false
 ```
 
-If `host` is left empty, the operator skips self-reporting and the control plane falls back to its legacy admin-set `DataplaneIngressURL`. Adding a new data plane to a multi-DP installation works the same way — no control plane re-deploy required.
+If `host` is left empty, the operator skips self-reporting and the control plane falls back to its legacy admin-set `DataplaneIngressURL`.
+
+For a control plane serving **multiple** data planes, also set the dataproxy `clusterSelector.type: direct` on the control-plane chart so it routes across data planes using these self-reports; the default `local` does single-data-plane self-resolution only. Once enabled, adding a further data plane needs no control plane re-deploy.
 
 ## Step 9: Verify the installation
 

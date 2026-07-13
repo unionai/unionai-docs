@@ -7,6 +7,12 @@ top_menu: true
 
 # Release notes
 
+## July 2026
+
+### :gear: Self-Hosted Data Plane Self-Registration (Opt-In)
+
+Self-hosted data planes can now register with the control plane automatically: the operator creates its authorization resources on first contact and self-reports how the control plane should reach it, so routing works without a manual provisioning step or an admin-set ingress URL. This is opt-in in 2026.7.0 and becomes the default in a future release. See [Self-hosted → Getting started](../deployment/selfhosted/getting-started#data-plane-self-registration) for how to enable it.
+
 ## June 2026
 
 
