@@ -13,8 +13,8 @@ mermaid: true
 
 Authentication is enforced at two layers:
 
-1. **Ingress layer** — The control plane nginx ingress validates every request to protected routes via an auth subrequest to the `/me` endpoint.
-2. **Application layer** — `flyteadmin` manages browser sessions, validates tokens, and exposes OIDC discovery endpoints.
+1. **Ingress layer**: The control plane nginx ingress validates every request to protected routes via an auth subrequest to the `/me` endpoint.
+2. **Application layer**: `flyteadmin` manages browser sessions, validates tokens, and exposes OIDC discovery endpoints.
 
 The following diagram shows how these layers interact for browser-based authentication:
 
@@ -159,9 +159,9 @@ flyte:
 
 Key settings:
 
-- `useAuth: true` — registers the `/login`, `/callback`, `/me`, and `/logout` HTTP endpoints. **Required** for auth to function.
-- `authServerType: External` — use your IdP as the authorization server (not flyteadmin's built-in server).
-- `grpcAuthorizationHeader: flyte-authorization` — the header name used for bearer tokens. Both the SDK and internal services use this header.
+- `useAuth: true`: registers the `/login`, `/callback`, `/me`, and `/logout` HTTP endpoints. **Required** for auth to function.
+- `authServerType: External`: use your IdP as the authorization server (not flyteadmin's built-in server).
+- `grpcAuthorizationHeader: flyte-authorization`: the header name used for bearer tokens. Both the SDK and internal services use this header.
 
 ### Flyteadmin and scheduler admin SDK client
 

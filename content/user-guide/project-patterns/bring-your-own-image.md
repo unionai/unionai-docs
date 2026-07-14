@@ -29,13 +29,13 @@ Two patterns solve this. Pick based on who controls what:
 | | Pattern 1: Pure BYOI | Pattern 2: Remote Builder |
 |---|---|---|
 | Who owns the image? | Each team owns everything | Each team owns the base |
-| Flyte-aware? | Yes — code is baked in | No — Flyte adapts on top |
+| Flyte-aware? | Yes: code is baked in | No: Flyte adapts on top |
 | Code change = image rebuild? | Yes | No |
 | Use when | Teams can't let Flyte touch images | Teams can hand off a base |
 
 ## Pattern 1: Pure BYOI
 
-Teams build complete, Flyte-aware images. Workflow code is COPYed into the Dockerfile. Flyte runs the container as a black box — it sends no code and modifies nothing.
+Teams build complete, Flyte-aware images. Workflow code is COPYed into the Dockerfile. Flyte runs the container as a black box: it sends no code and modifies nothing.
 
 ### Dockerfiles
 
@@ -64,17 +64,17 @@ docker push <your-registry>/training:latest
 
 ### Python code
 
-**Environment definitions** — image names are specified via `from_ref_name()`:
+**Environment definitions**. Image names are specified via `from_ref_name()`:
 
 {{< code file="/unionai-examples/v2/user-guide/project-patterns/bring-your-own-image/pure_byoi/workflow_code/envs.py" lang="python" >}}
 
-`from_ref_name()` is a placeholder resolved at runtime. The actual URIs are passed in the entry point via `init_from_config(images=...)`. This is necessary because the envs file is COPYed into both images — hardcoding a URI would create a circular reference.
+`from_ref_name()` is a placeholder resolved at runtime. The actual URIs are passed in the entry point via `init_from_config(images=...)`. This is necessary because the envs file is COPYed into both images. Hardcoding a URI would create a circular reference.
 
 **Task definitions:**
 
 {{< code file="/unionai-examples/v2/user-guide/project-patterns/bring-your-own-image/pure_byoi/workflow_code/tasks.py" lang="python" >}}
 
-**Entry point** — this is where image URIs are wired in:
+**Entry point**. This is where image URIs are wired in:
 
 {{< code file="/unionai-examples/v2/user-guide/project-patterns/bring-your-own-image/pure_byoi/main.py" lang="python" >}}
 
@@ -88,7 +88,7 @@ There is no separate deploy step. The image tag is the version. To ship a code c
 
 ## Pattern 2: Remote builder
 
-Teams hand you their base images. They built these images for their own purposes — Flyte was never a consideration. Your job is to adapt them.
+Teams hand you their base images. They built these images for their own purposes. Flyte was never a consideration. Your job is to adapt them.
 
 {{< variant union >}}
 {{< markdown >}}
@@ -113,7 +113,7 @@ Teams hand you their base images. They built these images for their own purposes
 {{< code file="/unionai-examples/v2/user-guide/project-patterns/bring-your-own-image/remote_builder/training/Dockerfile" lang="dockerfile" >}}
 
 - Python at `/opt/venv/bin/python`
-- `PATH` does **not** include `/opt/venv/bin` — the venv was created but never activated
+- `PATH` does **not** include `/opt/venv/bin`: the venv was created but never activated
 - No PYTHONPATH set
 - WORKDIR `/workspace`
 
@@ -143,7 +143,7 @@ Teams hand you their base images. They built these images for their own purposes
 uv run main.py
 ```
 
-During development you only rebuild the base image when the Dockerfile changes. Code changes are free — they travel as a tarball at runtime.
+During development you only rebuild the base image when the Dockerfile changes. Code changes are free: they travel as a tarball at runtime.
 
 ## Decision matrix
 

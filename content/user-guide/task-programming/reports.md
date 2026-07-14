@@ -24,7 +24,7 @@ Within a task with reporting enabled, a `flyte.report.Report` object is created 
 > ```
 >
 > Without this, calls like `flyte.report.replace()` or `flyte.report.flush()` raise
-> `AttributeError: module 'flyte' has no attribute 'report'` — most commonly hit in local or
+> `AttributeError: module 'flyte' has no attribute 'report'`, most commonly hit in local or
 > notebook runs. This applies to all `flyte.*` submodules: import the specific submodule you use,
 > not just the top-level `flyte` package.
 

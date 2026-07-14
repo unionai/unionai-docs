@@ -188,6 +188,18 @@ action_details = flyte.remote.ActionDetails.get(
 print(action_details.pb2)  # Full protobuf representation
 ```
 
+## Accessing logs
+
+Each action captures the logs emitted by its task, per attempt. Stream them from the CLI with `flyte get logs`, or view them on the action in the console. For details and all available options, see [View logs](./view-logs).
+
+```bash
+# Logs for the run's main action
+flyte get logs my_run_name
+
+# Logs for a specific action
+flyte get logs my_run_name a1
+```
+
 ## Retrieving inputs and outputs
 
 {{< tabs "get-io" >}}
@@ -286,7 +298,7 @@ export FLYTE_AWS_ACCESS_KEY_ID="your-access-key-id"
 export FLYTE_AWS_SECRET_ACCESS_KEY="your-secret-access-key"
 ```
 
-These are standard AWS credential environment variables that Flyte recognizes. They are your IAM user's access keys — if you don't already have them, follow the AWS guide on [managing access keys for IAM users](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) to create them.
+These are standard AWS credential environment variables that Flyte recognizes. They are your IAM user's access keys. If you don't already have them, follow the AWS guide on [managing access keys for IAM users](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) to create them.
 
 **2. Initialize Flyte with S3 storage configuration:**
 

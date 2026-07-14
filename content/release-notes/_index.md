@@ -12,7 +12,7 @@ top_menu: true
 
 ### :rocket: Retries with Backoff and Timeout Controls
 
-Tasks now accept a `flyte.RetryStrategy` with exponential backoff and a `flyte.Timeout` with three independent bounds: `max_runtime` (per-attempt running time), `max_queued_time` (per-attempt time waiting for capacity), and `deadline` (an absolute wall-clock budget across all attempts). The `max_runtime` budget starts when your code actually begins running — pod scheduling and image pulls no longer count against it. See the [Retries and timeouts documentation](../user-guide/task-configuration/retries-and-timeouts) for details.
+Tasks now accept a `flyte.RetryStrategy` with exponential backoff and a `flyte.Timeout` with three independent bounds: `max_runtime` (per-attempt running time), `max_queued_time` (per-attempt time waiting for capacity), and `deadline` (an absolute wall-clock budget across all attempts). The `max_runtime` budget starts when your code actually begins running. Pod scheduling and image pulls no longer count against it. See the [Retries and timeouts documentation](../user-guide/task-configuration/retries-and-timeouts) for details.
 
 ```python
 import flyte
@@ -77,7 +77,7 @@ DNS resolution now uses the operating system's resolver, fixing connectivity in 
 
 ### :wrench: Exclude Files from Code Bundles with `.flyteignore`
 
-You can now exclude files from code bundles even when they are tracked in git — large datasets, notebooks, docs. `.flyteignore` files use gitignore-style patterns and are applied automatically during every bundle build.
+You can now exclude files from code bundles even when they are tracked in git: large datasets, notebooks, docs. `.flyteignore` files use gitignore-style patterns and are applied automatically during every bundle build.
 
 
 ### :wrench: Settings Applied at Run Creation
@@ -149,7 +149,7 @@ Default built images now create a non-root `flyte` user and switch to it at the 
 
 ### :sparkles: Actionable CLI Error Messages
 
-Common failures — missing Docker, missing `kubectl`, missing source files, unpicklable deployments, and user-module load failures — now surface as actionable error messages. Uploads automatically retry on transient network errors.
+Common failures (missing Docker, missing `kubectl`, missing source files, unpicklable deployments, and user-module load failures) now surface as actionable error messages. Uploads automatically retry on transient network errors.
 
 
 ### :hammer: Image Building Enhancements
@@ -179,7 +179,7 @@ New plugins land for HuggingFace datasets, Hydra, omegaconf, and papermill. New 
 
 ### :wrench: Keyring Opt-Out
 
-The new `disable_keyring` config option skips storing and retrieving tokens from the system keyring — useful in CI and headless environments.
+The new `disable_keyring` config option skips storing and retrieving tokens from the system keyring, useful in CI and headless environments.
 
 
 ### :gear: Cluster-Aware Data Access
@@ -411,7 +411,7 @@ runs = Run.listall(
 
 ### :robot: MLE Agent Enhancements
 
-Two new agents — the MLE Orchestrator Agent and the MLE Tool Builder Agent — use LLMs to automatically generate orchestration and processing code. They create, execute, and iteratively optimize ML models in an isolated sandbox environment with configurable computing resources.
+Two new agents, the MLE Orchestrator Agent and the MLE Tool Builder Agent, use LLMs to automatically generate orchestration and processing code. They create, execute, and iteratively optimize ML models in an isolated sandbox environment with configurable computing resources.
 
 ### :sparkles: Improved Task Command Initialization
 
@@ -678,7 +678,7 @@ A new retry interceptor for gRPC channels allows you to define how many times a 
 
 ### :sparkles: Orchestration Sandbox Feature
 
-Flyte 2.0 now supports dynamic orchestration within a sandbox using `flyte.sandbox.orchestrator_from_str()`. Create reusable orchestration templates directly from Python code strings without defining decorated functions — useful when code is dynamically generated from UIs or language models.
+Flyte 2.0 now supports dynamic orchestration within a sandbox using `flyte.sandbox.orchestrator_from_str()`. Create reusable orchestration templates directly from Python code strings without defining decorated functions, useful when code is dynamically generated from UIs or language models.
 
 ### :wrench: Task Shortname Override Fix
 
@@ -767,7 +767,7 @@ You can call apps from tasks by using `depends_on` and making HTTP requests to t
 
 ### :label: Custom context
 
-You can now pass configuration and metadata implicitly through your entire task execution hierarchy using custom context. This is ideal for cross-cutting concerns like tracing IDs, experiment metadata, environment information, or logging correlation keys—data that needs to be available everywhere but isn't logically part of your task's computation.
+You can now pass configuration and metadata implicitly through your entire task execution hierarchy using custom context. This is ideal for cross-cutting concerns like tracing IDs, experiment metadata, environment information, or logging correlation keys: data that needs to be available everywhere but isn't logically part of your task's computation.
 
 Custom context is a string key-value map that automatically flows from parent to child tasks without adding parameters to every function signature. Set it once at the run level with `with_runcontext()`, or override values within tasks using the `flyte.custom_context()` context manager:
 

@@ -43,15 +43,28 @@ As each one completes, the next waiting task starts.
 
 > [!NOTE]
 > The semaphore controls how many tasks execute concurrently on the Flyte cluster.
-> Each task still runs in its own container with its own resources — the semaphore simply limits how many containers are active at a time.
+> Each task still runs in its own container with its own resources: the semaphore simply limits how many containers are active at a time.
 
 ## Using flyte.map with concurrency
 
-For uniform work — applying the same task to a list of inputs — `flyte.map` with the `concurrency` parameter is simpler:
+For uniform work (applying the same task to a list of inputs), `flyte.map` with the `concurrency` parameter is simpler:
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/controlling-parallelism/controlling_parallelism.py" fragment="map-concurrency" lang="python" >}}
 
 This achieves the same concurrency limit with less boilerplate.
+
+{{< variant union >}}
+{{< markdown >}}
+For the full `flyte.map` treatment (signature, return order, error handling, partials, and use with
+reusable environments), see [Mapping over inputs](./map).
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+For the full `flyte.map` treatment (signature, return order, error handling, and partials), see
+[Mapping over inputs](./map).
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Running the example
 
