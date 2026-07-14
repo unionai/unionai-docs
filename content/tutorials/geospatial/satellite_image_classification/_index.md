@@ -12,7 +12,7 @@ variants: -flyte +union
 
 Remote sensing has transformed how we monitor our planet. From tracking deforestation to detecting urban sprawl, satellite imagery provides a bird's-eye view of land use change at global scale.
 
-But training a model that can reliably classify that imagery — across 10 distinct land-use categories, at production quality — requires more than just a good model. It requires a pipeline that handles data, compute, caching, experiment tracking, and reporting as first-class concerns.
+But training a model that can reliably classify that imagery (across 10 distinct land-use categories, at production quality) requires more than just a good model. It requires a pipeline that handles data, compute, caching, experiment tracking, and reporting as first-class concerns.
 
 This tutorial walks through a complete satellite image classification pipeline built on {{< key product_name >}}, using EfficientNet-B0, a two-phase training strategy, and Weights & Biases for experiment tracking.
 
@@ -69,7 +69,7 @@ Two things worth noting:
 
 - With `cache="auto"`, training results are cached based on the input data and config. If you rerun the pipeline with the same dataset and hyperparameters, Union skips training entirely and returns the cached metrics. This makes hyperparameter search much cheaper: only configurations you haven't tried before actually execute.
 
-- `@wandb_init` — the `flyteplugins-wandb` integration initializes a W&B run automatically and makes it available via `get_wandb_run()`. This means every training run automatically logs metrics, learning rate curves, and t-SNE visualizations of the learned feature space to your W&B project.
+- `@wandb_init`: the `flyteplugins-wandb` integration initializes a W&B run automatically and makes it available via `get_wandb_run()`. This means every training run automatically logs metrics, learning rate curves, and t-SNE visualizations of the learned feature space to your W&B project.
 
 {{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/training.py" fragment="wandb_logging" lang="python" >}}
 

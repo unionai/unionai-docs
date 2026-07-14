@@ -219,13 +219,13 @@ To run a sample workflow, complete the following steps:
 
 `uctl selfserve provision-dataplane-resources` provisions the data plane and
 registers this cluster with the control plane. Once it is connected, you manage
-the **cluster pool** it belongs to — and route work to it with queues — from the
+the **cluster pool** it belongs to (and route work to it with queues) from the
 [Cluster and workload management](../../../user-guide/cluster-workload-management/_index)
 user guide:
 
-- [Cluster pools](../../../user-guide/cluster-workload-management/cluster-pools) — group clusters that share one data plane (object store, secrets, registry).
-- [Clusters](../../../user-guide/cluster-workload-management/clusters) — inspect and manage the cluster records registered with the control plane.
-- [Queues](../../../user-guide/cluster-workload-management/queues) — route workloads to a pool and enforce concurrency, priority, and fairness.
+- [Cluster pools](../../../user-guide/cluster-workload-management/cluster-pools): group clusters that share one data plane (object store, secrets, registry).
+- [Clusters](../../../user-guide/cluster-workload-management/clusters): inspect and manage the cluster records registered with the control plane.
+- [Queues](../../../user-guide/cluster-workload-management/queues): route workloads to a pool and enforce concurrency, priority, and fairness.
 
 Every organization is provisioned with a `default` pool that new clusters join
 automatically, so a single-cluster deployment needs no extra pool setup.
@@ -239,16 +239,16 @@ For more information, see the following resources:
 
 <!--
 Open items to confirm before publishing (carried over from draft):
-1. S3 endpoint URL — object.crusoecloud.com, storage.crusoecloud.com, region-scoped, or other?
-2. Addressing style — does Crusoe require virtual-hosted style or support path-style?
-3. Region naming — canonical region/AZ format (e.g., us-northcentral1-a)?
-4. IAM policy schema — AWS-style JSON or custom?
-5. Console navigation paths — exact menu paths for buckets, keys, policies.
-6. Kubernetes service name — CMK, CKE, or other branding?
-7. GPU node pool labels & taints — canonical labels (e.g., crusoe.ai/gpu-type=h100)?
-8. Supported Kubernetes versions — confirm the "most recent three minor" claim.
-9. Networking / egress — special config for outbound tunnel to *.union.ai on 443?
+1. S3 endpoint URL: object.crusoecloud.com, storage.crusoecloud.com, region-scoped, or other?
+2. Addressing style: does Crusoe require virtual-hosted style or support path-style?
+3. Region naming: canonical region/AZ format (e.g., us-northcentral1-a)?
+4. IAM policy schema: AWS-style JSON or custom?
+5. Console navigation paths: exact menu paths for buckets, keys, policies.
+6. Kubernetes service name: CMK, CKE, or other branding?
+7. GPU node pool labels & taints: canonical labels (e.g., crusoe.ai/gpu-type=h100)?
+8. Supported Kubernetes versions: confirm the "most recent three minor" claim.
+9. Networking / egress: special config for outbound tunnel to *.union.ai on 443?
 10. Default StorageClass on CMK for PVCs (BuildKit cache, fluent-bit)?
 11. Image registry pull-through cache to reduce GHCR pull latency?
-12. Logging sink — back to the same bucket, or a managed logging service?
+12. Logging sink: back to the same bucket, or a managed logging service?
 -->

@@ -7,7 +7,7 @@ variants: +flyte +union
 # Run with notifications
 
 You can attach notifications to a single run by passing them to `flyte.with_runcontext()`.
-Notifications fire when the run reaches the terminal execution phase — no trigger or persistent deployment is required.
+Notifications fire when the run reaches the terminal execution phase; no trigger or persistent deployment is required.
 
 {{< code file="/unionai-examples/v2/user-guide/task-deployment/run-with-notifications/run_with_notifications.py" fragment="run-with-notifications" lang="python">}}
 

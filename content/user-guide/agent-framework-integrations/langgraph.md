@@ -7,7 +7,7 @@ mermaid: true
 
 # LangGraph agents
 
-If you already build agents with [LangGraph](https://langchain-ai.github.io/langgraph/), you can run them on {{< key product_name >}} unchanged. {{< key product_name >}} doesn't replace your graph — it provides the production layer around it: each graph runs inside a sandboxed `@env.task` container, and you can fan out many graphs in parallel, one container each.
+If you already build agents with [LangGraph](https://langchain-ai.github.io/langgraph/), you can run them on {{< key product_name >}} unchanged. {{< key product_name >}} doesn't replace your graph. It provides the production layer around it: each graph runs inside a sandboxed `@env.task` container, and you can fan out many graphs in parallel, one container each.
 
 The pattern is: define your LangGraph graph as you normally would, then invoke it from inside a task. Decorate the graph's nodes with `@flyte.trace` so each LLM call, tool call, and routing decision shows up as a span in the {{< key product_name >}} dashboard.
 
@@ -19,7 +19,7 @@ Put your graph behind an `@env.task`. The `langgraph` and `langchain` dependenci
 
 ## Plan-and-Execute: fan out LangGraph agents in parallel
 
-A common production pattern is to plan a set of sub-topics, run a LangGraph research agent on each in parallel, then synthesize. {{< key product_name >}} handles the parallelization — each `research` call gets its own container via `asyncio.gather()`.
+A common production pattern is to plan a set of sub-topics, run a LangGraph research agent on each in parallel, then synthesize. {{< key product_name >}} handles the parallelization: each `research` call gets its own container via `asyncio.gather()`.
 
 First, the graph (`graph.py`), a LangGraph agent with web-search tool calling:
 

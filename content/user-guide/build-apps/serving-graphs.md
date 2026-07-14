@@ -9,7 +9,7 @@ mermaid: true
 
 A *serving graph* is a set of Flyte apps that talk to each other inside the
 cluster. Instead of putting every stage of a request into one process, you
-split the work across multiple `AppEnvironment`s that you deploy together —
+split the work across multiple `AppEnvironment`s that you deploy together:
 each one sized for its own bottleneck, with its own image and scaling policy.
 
 This pattern is useful for:
@@ -21,7 +21,7 @@ This pattern is useful for:
 
 ## Core concepts: a minimal two-app chain
 
-The simplest serving graph — `app2` proxies HTTP calls to `app1` — is enough
+The simplest serving graph (`app2` proxies HTTP calls to `app1`) is enough
 to introduce every core concept: deploying multiple apps together, discovering
 an upstream app's endpoint, and sizing each app independently.
 
@@ -33,7 +33,7 @@ Both apps share an image and live in the same Python file:
 
 ### Deploying multiple apps together with `depends_on`
 
-The callee env is straightforward — it has no upstream dependencies of its
+The callee env is straightforward; it has no upstream dependencies of its
 own:
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/serving_graphs/two_app_chain.py" fragment=env-direct lang=python >}}
@@ -48,7 +48,7 @@ transitively, so you only ever name the entry-point app:
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/serving_graphs/two_app_chain.py" fragment=deploy lang=python >}}
 
-`depends_on` is about deployment co-scheduling, not request-time ordering —
+`depends_on` is about deployment co-scheduling, not request-time ordering:
 at runtime each app is independent.
 
 ### Getting an upstream app's endpoint
@@ -56,25 +56,25 @@ at runtime each app is independent.
 There are two ways for one app to discover another app's URL. Both resolve
 correctly across local, in-cluster, and external contexts.
 
-**Pattern A — `env.endpoint` (Python property).** When both apps live in the
+**Pattern A: `env.endpoint` (Python property).** When both apps live in the
 same Python module, the upstream env object is in scope and you can read
 `env.endpoint` directly. The example above uses this pattern in `app2`'s
 proxy endpoint:
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/serving_graphs/two_app_chain.py" fragment=endpoint-property-pattern lang=python >}}
 
-**Pattern B — `flyte.app.AppEndpoint` as a parameter.** When the upstream env
+**Pattern B: `flyte.app.AppEndpoint` as a parameter.** When the upstream env
 object isn't importable (different file, different process, looking it up by
 name), declare it as a `flyte.app.Parameter` and have Flyte inject the
 resolved URL via an environment variable. The `env2` definition above shows
-this — `app1_url` becomes available as `os.getenv("APP1_URL")` at runtime:
+this. `app1_url` becomes available as `os.getenv("APP1_URL")` at runtime:
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/serving_graphs/two_app_chain.py" fragment=endpoint-env-var-pattern lang=python >}}
 
 ### Sizing each node independently
 
 Each `AppEnvironment` carries its own image, resources, and scaling. That's
-the entire point of splitting — for example, the GPU side of an inference
+the entire point of splitting: for example, the GPU side of an inference
 graph can stay narrow with `scaling=Scaling(replicas=(1, 2))` while the CPU
 side scales wide with `scaling=Scaling(replicas=(1, 8))`, with no shared
 autoscaling policy between them. The next example shows this in practice.
@@ -115,7 +115,7 @@ weights stay resident across requests:
 
 The inference endpoint speaks raw `float32` bytes over
 `application/octet-stream`. For anything tensor-shaped this is the single
-biggest perf knob — JSON-serializing a 19MB batch dominates end-to-end
+biggest perf knob. JSON-serializing a 19MB batch dominates end-to-end
 latency:
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/serving_graphs/image_classification.py" fragment=gpu-infer lang=python >}}
@@ -126,7 +126,7 @@ The GPU environment requests a GPU and keeps replicas narrow:
 
 ### CPU app: pre/postprocess + call GPU
 
-Preprocessing is deliberately CPU-bound — decode, denoise, resize, normalize:
+Preprocessing is deliberately CPU-bound (decode, denoise, resize, normalize):
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/serving_graphs/image_classification.py" fragment=cpu-preprocess lang=python >}}
 
@@ -238,12 +238,12 @@ variant = experiment.get("variant", "A")
 
 Split when stages have:
 
-- **Different bottlenecks** — CPU vs GPU vs memory
-- **Different scaling needs** — bursty vs steady, wide vs narrow
-- **Different lifecycles** — model weights you don't want to reload, expensive cold starts
-- **Different routing concerns** — A/B, canary, proxy, gateway
+- **Different bottlenecks**: CPU vs GPU vs memory
+- **Different scaling needs**: bursty vs steady, wide vs narrow
+- **Different lifecycles**: model weights you don't want to reload, expensive cold starts
+- **Different routing concerns**: A/B, canary, proxy, gateway
 
-Don't split just to separate code — a single app with a few endpoints is
+Don't split just to separate code; a single app with a few endpoints is
 simpler to operate.
 
 ## Best practices

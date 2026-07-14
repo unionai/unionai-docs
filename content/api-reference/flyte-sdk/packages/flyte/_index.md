@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.5.8
+version: 2.5.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -223,6 +223,7 @@ if __name__ == "__main__":
 def build_images(
     envs: Environment,
     copy_style: 'CopyFiles',
+    seed_cache: ImageCache | None,
 ) -> ImageCache
 ```
 Build the images for the given environment(s).
@@ -232,6 +233,7 @@ Build the images for the given environment(s).
 |-|-|-|
 | `envs` | `Environment` | One or more environments to build images for. When multiple environments are passed they are planned together in a single pass (mirroring ``deploy``), and the resulting image caches are merged into one. |
 | `copy_style` | `'CopyFiles'` | Copy style that the eventual deploy will use. Must match the deploy's ``--copy-style`` so the image content hashes — and therefore the registry tags — line up, letting deploy reuse the pre-built image. |
+| `seed_cache` | `ImageCache \| None` | Optional ImageCache of environments already built by a prior deploy. Seeded environments reuse the recorded URI and skip the build pipeline entirely; see ``_build_images`` for details. |
 
 **Returns:** ImageCache containing the built images.
 
@@ -424,6 +426,7 @@ def init(
     batch_size: int,
     image_builder: ImageBuildEngine.ImageBuilderType,
     images: typing.Dict[str, str] | None,
+    image_registry: str | None,
     source_config_path: Optional[Path],
     sync_local_sys_paths: bool,
     load_plugin_type_transformers: bool,
@@ -464,6 +467,7 @@ remote API methods are called. Thread-safe implementation.
 | `batch_size` | `int` | Optional batch size for operations that use listings, defaults to 1000, so limit larger than batch_size will be split into multiple requests. |
 | `image_builder` | `ImageBuildEngine.ImageBuilderType` | Optional image builder configuration, if not provided, the default image builder will be used. |
 | `images` | `typing.Dict[str, str] \| None` | Optional dict of images that can be used by referencing the image name. |
+| `image_registry` | `str \| None` | Optional container registry to push built images to, overriding the built-in default base registry. Equivalent to the ``image.registry`` config entry. |
 | `source_config_path` | `Optional[Path]` | Optional path to the source configuration file (This is only used for documentation) |
 | `sync_local_sys_paths` | `bool` | Whether to include and synchronize local sys.path entries under the root directory into the remote container (default: True). |
 | `load_plugin_type_transformers` | `bool` | If enabled (default True), load the type transformer plugins registered under the "flyte.plugins.types" entry point group. |

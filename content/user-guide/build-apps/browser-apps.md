@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Browser apps
 
-For browser-based apps (like Streamlit, Gradio, or custom HTML/JS dashboards), users interact directly through the web interface. The app URL is accessible in a browser, and users interact with the UI directly—no API calls needed from other services.
+For browser-based apps (like Streamlit, Gradio, or custom HTML/JS dashboards), users interact directly through the web interface. The app URL is accessible in a browser, and users interact with the UI directly: no API calls needed from other services.
 
 ## Accessing browser-based apps
 
