@@ -1,6 +1,6 @@
 ---
 title: Flyte SDK
-version: 2.5.8
+version: 2.5.9
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -196,6 +196,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.remote.Trigger`](packages/flyte.remote/trigger) | Represents a trigger in the Flyte platform. |
 | [`flyte.remote.User`](packages/flyte.remote/user) | Represents a user in the Flyte platform. |
 | [`flyte.report.Report`](packages/flyte.report/report) |  |
+| [`flyte.report.Timeline`](packages/flyte.report/timeline) | Append a best-effort chronological timeline to a tab of the task report. |
 | [`flyte.sandbox.CodeTaskTemplate`](packages/flyte.sandbox/codetasktemplate) | A sandboxed task created from a code string rather than a decorated function. |
 | [`flyte.sandbox.ImageConfig`](packages/flyte.sandbox/imageconfig) | Configuration for Docker image building at runtime. |
 | [`flyte.sandbox.SandboxedConfig`](packages/flyte.sandbox/sandboxedconfig) | Configuration for a sandboxed task executed via Monty. |
