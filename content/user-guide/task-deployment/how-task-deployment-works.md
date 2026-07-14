@@ -156,7 +156,7 @@ When `image.builder` is set to `remote` in [your `config.yaml`](../run-modes/run
 While each task is being serialized in step 2, Flyte attempts to attach a link from the task back to the source line of its Python function.
 The link is rendered next to the task description in the UI, so anyone viewing a deployed task can jump directly to the code that defines it.
 
-This is fully automatic. There is no decorator argument, no config flag, and no opt-in step — if the conditions below are met, the link appears.
+This is fully automatic. There is no decorator argument, no config flag, and no opt-in step. If the conditions below are met, the link appears.
 
 ### How the link is built
 
@@ -167,7 +167,7 @@ Flyte inspects the local repository at deploy time using the standard `git` CLI:
 - The line number is the line of the function definition (the line just after the `@env.task` decorator).
 - For a GitHub remote, the URL takes the form `https://github.com/<owner>/<repo>/blob/<sha>/<file>#L<line>`. GitLab uses the equivalent `/-/blob/` form.
 
-The `#L<line>` anchor is only included when the working tree is clean. A dirty tree still produces a valid blob URL, but without the line jump — because the local file may no longer match the committed file.
+The `#L<line>` anchor is only included when the working tree is clean. A dirty tree still produces a valid blob URL, but without the line jump, because the local file may no longer match the committed file.
 
 ### Conditions
 
@@ -178,7 +178,7 @@ For the link to appear, all of the following must hold:
 - The remote host is `github.com` or `gitlab.com`. Other hosts (Bitbucket, self-hosted Gitea, GitHub Enterprise on a custom domain, etc.) currently produce no link.
 - The task's source file lives under the repository root.
 
-If any condition fails, the deploy still succeeds — only the source-code link is omitted.
+If any condition fails, the deploy still succeeds: only the source-code link is omitted.
 
 > [!NOTE]
 > Flyte does not check whether the current commit has been pushed.

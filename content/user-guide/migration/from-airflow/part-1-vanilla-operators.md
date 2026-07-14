@@ -1,10 +1,10 @@
 ---
-title: Part 1 — vanilla operators
+title: Part 1: vanilla operators
 weight: 1
 variants: +flyte +union
 ---
 
-# Part 1 — vanilla operators
+# Part 1: vanilla operators
 
 This is the first part of the [Airflow → Flyte migration guide](./_index). It covers:
 
@@ -55,7 +55,7 @@ Airflow DAGs are static graphs. The `with DAG(...)` block runs at parse time; th
 
 Flyte has no parse-time graph. The driver task is Python code that runs at execution time; the graph is built dynamically as the driver calls other tasks. There is no compilation step.
 
-Flyte tasks are async-native — `@env.task` functions are typically declared `async def` and tasks are invoked with `await`. Plain `def` tasks are also supported when you don't need concurrency.
+Flyte tasks are async-native: `@env.task` functions are typically declared `async def` and tasks are invoked with `await`. Plain `def` tasks are also supported when you don't need concurrency.
 
 ```python
 @env.task
@@ -67,7 +67,7 @@ async def driver(start: date, regions: list[str]) -> list[Summary]:
     return summaries
 ```
 
-The driver is just a task that calls other tasks — there's no separate workflow object.
+The driver is just a task that calls other tasks; there's no separate workflow object.
 
 ---
 
@@ -94,7 +94,7 @@ def generate_report(trigger_time: datetime) -> str:
     ...
 ```
 
-Multiple triggers per task and parameterized trigger inputs are supported — see the [Triggers docs](../../task-configuration/triggers).
+Multiple triggers per task and parameterized trigger inputs are supported; see the [Triggers docs](../../task-configuration/triggers).
 
 ---
 
@@ -102,7 +102,7 @@ Multiple triggers per task and parameterized trigger inputs are supported — se
 
 Airflow's `PythonOperator` runs a Python callable in the worker's environment. The callable's return value becomes XCom, and inputs arrive through three channels: `op_args`/`op_kwargs` passed at operator construction, the Airflow context injected as `**kwargs` (`ti`, `ds`, `dag_run`, `logical_date`, …), and `ti.xcom_pull(...)` for data from upstream tasks.
 
-Flyte's equivalent is `@env.task` on a plain function. The function's parameters and return type are the interface — there is no separate context channel and no XCom step.
+Flyte's equivalent is `@env.task` on a plain function. The function's parameters and return type are the interface; there is no separate context channel and no XCom step.
 
 ```python
 # Airflow
@@ -142,19 +142,19 @@ async def driver(ds: str) -> str:
 A few things change in the move:
 
 - **Inputs are the function parameters.** No `**context`. If the task needs the run's date, declare it as a parameter (`ds: str`) and the driver passes it in. The driver itself can receive trigger time when a [Trigger](../../task-configuration/triggers) fires it.
-- **Data flows through `await`, not XCom.** The value returned by `fetch_events` is the value `summarize` receives — the function call graph IS the dependency graph. No `xcom_pull` and no `t1 >> t2` to maintain separately from the data flow.
+- **Data flows through `await`, not XCom.** The value returned by `fetch_events` is the value `summarize` receives: the function call graph IS the dependency graph. No `xcom_pull` and no `t1 >> t2` to maintain separately from the data flow.
 - **Types are part of the signature.** Flyte uses the hints to serialize between tasks, but keep expectations calibrated: the runtime is more like typed JSON than a fully enforced contract. It is useful as documentation and for tooling, not as a strict static check.
-- **Async-native, sync-also-works.** Tasks are typically `async def` and invoked with `await`. Plain `def` tasks are fully supported if you'd rather stay in a sync codebase — you just give up some of the flexibility async offers.
+- **Async-native, sync-also-works.** Tasks are typically `async def` and invoked with `await`. Plain `def` tasks are fully supported if you'd rather stay in a sync codebase; you just give up some of the flexibility async offers.
 
-The driver above has nothing in it but task calls, for readability. It doesn't have to — a driver is just a `@env.task`, and any code that belongs in a Python function belongs in a driver: plain expressions, loops, `if`/`try`, helpers. Turn something into a `@env.task` when you want it to have its own resources, image, retries, caching, or parallelism. Otherwise leave it as regular Python and call it inline.
+The driver above has nothing in it but task calls, for readability. It doesn't have to. A driver is just a `@env.task`, and any code that belongs in a Python function belongs in a driver: plain expressions, loops, `if`/`try`, helpers. Turn something into a `@env.task` when you want it to have its own resources, image, retries, caching, or parallelism. Otherwise leave it as regular Python and call it inline.
 
 Docs: [Tasks](../../core-concepts/tasks)
 
-### File and Dir — for data that doesn't fit in a return value
+### File and Dir: for data that doesn't fit in a return value
 
-Primitive and JSON-serializable values (`int`, `str`, `list`, `dict`, dataclasses, Pydantic models) flow directly as return values — the SDK serializes them. Same shape as XCom, but typed. Most tasks will use these and nothing else.
+Primitive and JSON-serializable values (`int`, `str`, `list`, `dict`, dataclasses, Pydantic models) flow directly as return values: the SDK serializes them. Same shape as XCom, but typed. Most tasks will use these and nothing else.
 
-Flyte adds `File` and `Dir` for the cases where the payload is too big or too binary to inline. In Airflow this is where pipelines step outside the framework: XCom is a Postgres row with a soft ~48KB limit, so larger payloads are written to a shared filesystem or object storage and a path is passed as a string — the upload, the lifecycle, and the cleanup are the author's responsibility, outside Airflow's model.
+Flyte adds `File` and `Dir` for the cases where the payload is too big or too binary to inline. In Airflow this is where pipelines step outside the framework: XCom is a Postgres row with a soft ~48KB limit, so larger payloads are written to a shared filesystem or object storage and a path is passed as a string; the upload, the lifecycle, and the cleanup are the author's responsibility, outside Airflow's model.
 
 Flyte covers both cases with the same interface. A task that returns `File` or `Dir` is declaring that its output is an offloaded blob, and the SDK handles the upload on write and the download on read.
 
@@ -177,13 +177,13 @@ async def count_rows(csv: File) -> int:
     return data.count(b"\n") - 1
 ```
 
-The `File` object travels between tasks the same way an `int` does — as a typed argument. Underneath, it carries a remote path. Common methods:
+The `File` object travels between tasks the same way an `int` does: as a typed argument. Underneath, it carries a remote path. Common methods:
 
-- `File.new_remote()` — new reference in the run's scratch area, for streaming writes.
-- `File.from_local(path)` / `from_local_sync(path)` — upload a local file, get a `File` back.
-- `File.from_existing_remote(uri)` — wrap an existing remote URI (for example, a path produced by an upstream system).
-- `async with file.open("rb")` / `async with file.open("wb")` / `with file.open_sync(...)` — stream read/write.
-- `await file.download()` / `file.download_sync()` — materialize to a local path and return it.
+- `File.new_remote()`: new reference in the run's scratch area, for streaming writes.
+- `File.from_local(path)` / `from_local_sync(path)`: upload a local file, get a `File` back.
+- `File.from_existing_remote(uri)`: wrap an existing remote URI (for example, a path produced by an upstream system).
+- `async with file.open("rb")` / `async with file.open("wb")` / `with file.open_sync(...)`: stream read/write.
+- `await file.download()` / `file.download_sync()`: materialize to a local path and return it.
 
 `Dir` has the same surface for directories, plus `walk()` and `list_files()` to iterate entries.
 
@@ -231,13 +231,13 @@ async def driver() -> str:
     return await summarize(await fetch_events())
 ```
 
-The thing worth internalizing — and the main place this stops being a find-and-replace — is what the outer function is doing.
+The thing worth internalizing, and the main place this stops being a find-and-replace, is what the outer function is doing.
 
-An Airflow `@dag` function runs at **parse time**. Calling `fetch_events()` inside it doesn't run `fetch_events` — it registers a task and an edge in the static graph. The scheduler later traverses that graph. By the time the tasks actually execute, the `@dag` function is long gone.
+An Airflow `@dag` function runs at **parse time**. Calling `fetch_events()` inside it doesn't run `fetch_events`; it registers a task and an edge in the static graph. The scheduler later traverses that graph. By the time the tasks actually execute, the `@dag` function is long gone.
 
-A Flyte driver is a `@env.task` that runs at **execution time**. There is no parse-time graph-building step. Calling `await fetch_events()` actually calls `fetch_events`. That means the driver — and any task — is just Python: `if`/`else`, `try`/`except`, loops, recursion, calling other tasks from inside other tasks, nested drivers, reading a value from one task and deciding what to do next. All of it works because there is no static graph to fit into.
+A Flyte driver is a `@env.task` that runs at **execution time**. There is no parse-time graph-building step. Calling `await fetch_events()` actually calls `fetch_events`. That means the driver (and any task) is just Python: `if`/`else`, `try`/`except`, loops, recursion, calling other tasks from inside other tasks, nested drivers, reading a value from one task and deciding what to do next. All of it works because there is no static graph to fit into.
 
-To make the point concrete — a task can call itself:
+To make the point concrete, a task can call itself:
 
 ```python
 @env.task
@@ -247,7 +247,7 @@ async def countdown(n: int) -> int:
     return 1 + await countdown(n - 1)
 ```
 
-Each `await countdown(...)` call is a real task invocation — the graph grows as the computation runs. This is impossible to express in Airflow's `@dag` model, where the graph has to be known before execution.
+Each `await countdown(...)` call is a real task invocation; the graph grows as the computation runs. This is impossible to express in Airflow's `@dag` model, where the graph has to be known before execution.
 
 The practical effect: patterns that Airflow encodes with its own primitives (`BranchPythonOperator`, `ShortCircuitOperator`, `trigger_rule`, `.expand()` for dynamic mapping, custom `XComArg` gymnastics) are just Python constructs in Flyte. Branching is `if`. Short-circuit is `return`. Dynamic mapping is `asyncio.gather` or `flyte.map`. Error handling is `try`/`except`/`finally`. Section 8 covers these with runnable examples.
 
@@ -301,7 +301,7 @@ extract = ContainerTask(
 )
 ```
 
-A `ContainerTask` is invoked the same way as any other task — by calling it from a driver with `await`:
+A `ContainerTask` is invoked the same way as any other task, by calling it from a driver with `await`:
 
 ```python
 container_env = flyte.TaskEnvironment.from_task("extract_env", extract)
@@ -319,11 +319,11 @@ async def driver(date: str) -> int:
 Two things about the invocation:
 
 - `TaskEnvironment.from_task(...)` wraps the container task in an environment so it can be registered alongside the driver.
-- The driver's env `depends_on=[container_env]` so Flyte registers both together. The driver's own image needs Flyte installed (that's what `from_uv_project` does — builds an image from your `pyproject.toml`, which includes `flyte`). The container task's image does *not* need Flyte — it just needs the tools its command invokes.
+- The driver's env `depends_on=[container_env]` so Flyte registers both together. The driver's own image needs Flyte installed (that's what `from_uv_project` does: builds an image from your `pyproject.toml`, which includes `flyte`). The container task's image does *not* need Flyte; it just needs the tools its command invokes.
 
 ### When to use `ContainerTask`
 
-`ContainerTask` is the right choice when the container shouldn't or can't have Flyte installed — for example:
+`ContainerTask` is the right choice when the container shouldn't or can't have Flyte installed, for example:
 
 - The tool is not Python (a Go/C CLI, a bioinformatics binary, an ML framework container)
 - You want to reuse an existing production image without modifying it
@@ -357,15 +357,15 @@ Docs: [Container Tasks](../../task-programming/container-tasks)
 
 ## 7. KubernetesPodOperator to TaskEnvironment + PodTemplate
 
-`KubernetesPodOperator` (KPO) gives you the full pod spec: image, commands, env, secrets, resources, volumes, node selectors, tolerations, service accounts, affinity — plus XCom via a sidecar writing to `/airflow/xcom/return.json`.
+`KubernetesPodOperator` (KPO) gives you the full pod spec: image, commands, env, secrets, resources, volumes, node selectors, tolerations, service accounts, affinity, plus XCom via a sidecar writing to `/airflow/xcom/return.json`.
 
 In Flyte, the same knobs live in three places:
 
-1. **`TaskEnvironment(...)`** — the common knobs. Image, resources, env vars, secrets, interruptible/spot, and an option to add a `pod_template` for every task in the env.
-2. **`@env.task(...)`** — per-task overrides on top of the env: retries, timeout, cache, triggers, and a task-level `pod_template` if this one task needs to differ.
-3. **`flyte.PodTemplate(...)`** — raw Kubernetes escape hatch. Wraps `kubernetes.client.V1PodSpec`, so anything in the pod spec (volumes, node selectors, tolerations, affinity, service accounts, sidecars, init containers, image pull secrets, security contexts, lifecycle hooks) is available.
+1. **`TaskEnvironment(...)`**: the common knobs. Image, resources, env vars, secrets, interruptible/spot, and an option to add a `pod_template` for every task in the env.
+2. **`@env.task(...)`**: per-task overrides on top of the env: retries, timeout, cache, triggers, and a task-level `pod_template` if this one task needs to differ.
+3. **`flyte.PodTemplate(...)`**: raw Kubernetes escape hatch. Wraps `kubernetes.client.V1PodSpec`, so anything in the pod spec (volumes, node selectors, tolerations, affinity, service accounts, sidecars, init containers, image pull secrets, security contexts, lifecycle hooks) is available.
 
-XCom has no equivalent — the task's typed return value is the output, and large payloads use `File`/`Dir` (Section 4). The sidecar-writing-to-`/airflow/xcom/return.json` contract doesn't exist.
+XCom has no equivalent; the task's typed return value is the output, and large payloads use `File`/`Dir` (Section 4). The sidecar-writing-to-`/airflow/xcom/return.json` contract doesn't exist.
 
 ### Where every KPO knob lands
 
@@ -385,8 +385,8 @@ XCom has no equivalent — the task's typed return value is the output, and larg
 | `init_containers`, sidecars | `PodTemplate(pod_spec=V1PodSpec(init_containers=[...], containers=[primary, ...]))` |
 | `retries`, `retry_delay` | `@env.task(retries=...)` |
 | `execution_timeout` | `@env.task(timeout=timedelta(...))` |
-| `do_xcom_push` + sidecar contract | function return type — primitives/dataclasses inline, large payloads via `File`/`Dir` |
-| `on_finish_action` / pod cleanup | handled by Flyte — pods are cleaned up per run lifecycle |
+| `do_xcom_push` + sidecar contract | function return type: primitives/dataclasses inline, large payloads via `File`/`Dir` |
+| `on_finish_action` / pod cleanup | handled by Flyte: pods are cleaned up per run lifecycle |
 
 ### What a fully-specified task looks like
 
@@ -427,7 +427,7 @@ async def load_warehouse(ds: str) -> int:
     ...
 ```
 
-You don't have to list the primary container in the pod_spec — Flyte fills it in from the env's image, the function's command, and the decorator's resources. Add a `V1Container(name="primary", ...)` entry only when you need to put fields on it directly (volume mounts, extra env, security context).
+You don't have to list the primary container in the pod_spec; Flyte fills it in from the env's image, the function's command, and the decorator's resources. Add a `V1Container(name="primary", ...)` entry only when you need to put fields on it directly (volume mounts, extra env, security context).
 
 Docs: [TaskEnvironment](../../core-concepts/task-environment) · [Secrets](../../task-configuration/secrets) · [PodTemplate / advanced k8s config](../../task-configuration/pod-templates)
 
@@ -435,7 +435,7 @@ Docs: [TaskEnvironment](../../core-concepts/task-environment) · [Secrets](../..
 
 ## 8. Orchestration: parallelism, conditionals, error handling
 
-Airflow encodes orchestration in first-class primitives — `[t1, t2, t3] >> merge` for fan-out, `.expand()` for dynamic mapping, `BranchPythonOperator` / `@task.branch` for branching, `ShortCircuitOperator` for early exit, `trigger_rule` for post-branch merges, and `on_failure_callback` / `trigger_rule=ALL_DONE` for failure paths.
+Airflow encodes orchestration in first-class primitives: `[t1, t2, t3] >> merge` for fan-out, `.expand()` for dynamic mapping, `BranchPythonOperator` / `@task.branch` for branching, `ShortCircuitOperator` for early exit, `trigger_rule` for post-branch merges, and `on_failure_callback` / `trigger_rule=ALL_DONE` for failure paths.
 
 In Flyte these are plain Python inside a driver task, because the driver runs at execution time. There is no static graph to encode into.
 
@@ -447,7 +447,7 @@ Static fan-out in Airflow:
 fetch >> [summarize_us, summarize_eu, summarize_apac] >> merge
 ```
 
-Flyte — concurrent awaits with `asyncio.gather`:
+Flyte, concurrent awaits with `asyncio.gather`:
 
 ```python
 @env.task
@@ -461,7 +461,7 @@ async def driver(ds: str) -> Summary:
     return await merge(us, eu, apac)
 ```
 
-Each `summarize(...)` returns a coroutine; `asyncio.gather` runs them concurrently and awaits all of them. Tasks called concurrently run in their own pods — the concurrency is real, not just asyncio on one worker.
+Each `summarize(...)` returns a coroutine; `asyncio.gather` runs them concurrently and awaits all of them. Tasks called concurrently run in their own pods; the concurrency is real, not just asyncio on one worker.
 
 ### Dynamic mapping
 
@@ -471,7 +471,7 @@ Airflow uses `.expand()` to fan out over values known only at runtime:
 process.partial(batch_size=100).expand(shard_id=list_shards())
 ```
 
-Flyte — regular comprehension over the runtime list:
+Flyte, regular comprehension over the runtime list:
 
 ```python
 shards = await list_shards()
@@ -516,7 +516,7 @@ async def driver(ds: str) -> Summary:
     return await slow_path(ds)
 ```
 
-Plain `if` / `elif` / `else`, plain `return`. There is no `trigger_rule` to set because there are no skipped tasks to reconcile — the code below the branch simply doesn't run.
+Plain `if` / `elif` / `else`, plain `return`. There is no `trigger_rule` to set because there are no skipped tasks to reconcile; the code below the branch simply doesn't run.
 
 ### Error handling
 
@@ -528,7 +528,7 @@ async def flaky(ds: str) -> int:
     ...
 ```
 
-Orchestration-level error handling — Airflow's `trigger_rule=ALL_DONE` cleanup and `on_failure_callback` alerts — is `try` / `except` / `finally` in the driver:
+Orchestration-level error handling (Airflow's `trigger_rule=ALL_DONE` cleanup and `on_failure_callback` alerts) is `try` / `except` / `finally` in the driver:
 
 ```python
 @env.task
@@ -543,7 +543,7 @@ async def driver(ds: str) -> Summary:
         await cleanup(ds)
 ```
 
-`finally` runs on both success and failure. `except` catches task failures at the `await` site after the task's own retries are exhausted. Specific failure modes live in `flyte.errors` — `OOMError`, `TaskTimeoutError`, `RetriesExhaustedError`, `ActionAbortedError` — and can be caught by type. A common pattern is retrying an OOM with larger resources via `.override(...)`:
+`finally` runs on both success and failure. `except` catches task failures at the `await` site after the task's own retries are exhausted. Specific failure modes live in `flyte.errors` (`OOMError`, `TaskTimeoutError`, `RetriesExhaustedError`, `ActionAbortedError`) and can be caught by type. A common pattern is retrying an OOM with larger resources via `.override(...)`:
 
 ```python
 import flyte.errors
@@ -586,7 +586,7 @@ async def expensive(ds: str) -> Result:
     ...
 ```
 
-Airflow has no equivalent — XCom stores outputs but doesn't short-circuit on re-execution.
+Airflow has no equivalent; XCom stores outputs but doesn't short-circuit on re-execution.
 
 Docs: [Caching](../../task-configuration/caching)
 
@@ -608,7 +608,7 @@ Docs: [Reusable containers](../../task-configuration/reusable-containers)
 
 ### Reports
 
-A task can emit an HTML report — tables, plots, logs — attached to the run and viewable in the UI. Written from inside the task with `flyte.report`.
+A task can emit an HTML report (tables, plots, logs) attached to the run and viewable in the UI. Written from inside the task with `flyte.report`.
 
 ```python
 @env.task(report=True)

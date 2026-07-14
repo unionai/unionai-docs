@@ -8,7 +8,7 @@ top_menu: true
 # Zero Trust security
 
 Union.ai is built on a **Zero Trust security** model: no component is trusted by default, every request is authenticated and authorized, and customer data, code, and secrets never leave the customer's own data plane.
-This section provides a comprehensive overview of that model — Union.ai's security architecture, practices, and compliance posture — for enterprise security professionals evaluating the platform.
+This section provides a comprehensive overview of that model (Union.ai's security architecture, practices, and compliance posture) for enterprise security professionals evaluating the platform.
 Beyond describing the model, it provides concrete verification steps so that reviewers can independently confirm each claim against a running system.
 
 > **Zero Trust, in one line:** No customer data, code, or logs ever touch Union.ai's control plane. Not in flight. Not at rest. Not ever.
@@ -23,7 +23,7 @@ No inbound firewall rules are required on the customer's external network perime
 
 **[Data protection](./data-protection/_index)**
 No customer data ever transits Union.ai's control plane. Workflow inputs and outputs, code bundles, secret values, logs, reports, and auxiliary UI traffic are served directly from the customer's data plane through the Direct-to-Data-Plane tunnel, with authentication and RBAC enforced by an Envoy router inside the customer's cluster.
-The control plane holds orchestration metadata only -- run IDs, schedules, phase transitions, task definitions, error messages, and the RBAC graph -- always encrypted at rest.
+The control plane holds orchestration metadata only (run IDs, schedules, phase transitions, task definitions, error messages, and the RBAC graph), always encrypted at rest.
 
 **[Identity and access](./identity-and-access/_index)**
 Authentication is done via OIDC/SSO, API keys, and service accounts.
@@ -47,4 +47,4 @@ In **Self-managed** deployments, the customer operates their data plane independ
 The customer is responsible for all aspects of data plane management, including upgrades, monitoring, and provisioning.
 Union.ai has no access to the customer's infrastructure: the only pathway between Union.ai and the customer's network is an outbound-initiated direct gRPC connection from the data plane carrying orchestration metadata.
 
-Independently of deployment model, Enterprise customers can elect the [Sovereign Data Plane](./architecture/sovereign-data-plane) tier, under which the client-to-data-plane path runs through a customer-managed internal load balancer reachable only from the corporate VPN -- no third-party network on the path, and no Union.ai employee able to reach customer data even with full Union.ai credentials.
+Independently of deployment model, Enterprise customers can elect the [Sovereign Data Plane](./architecture/sovereign-data-plane) tier, under which the client-to-data-plane path runs through a customer-managed internal load balancer reachable only from the corporate VPN: no third-party network on the path, and no Union.ai employee able to reach customer data even with full Union.ai credentials.

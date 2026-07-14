@@ -7,15 +7,15 @@ mermaid: true
 
 # Maximize GPU utilization for batch inference
 
-GPUs are expensive. When running batch inference, the single biggest cost driver is **idle GPU time** — cycles where the GPU sits waiting with nothing to do. Understanding why this happens and how to fix it is the key to cost-effective batch inference.
+GPUs are expensive. When running batch inference, the single biggest cost driver is **idle GPU time**: cycles where the GPU sits waiting with nothing to do. Understanding why this happens and how to fix it is the key to cost-effective batch inference.
 
 ## Why GPU utilization drops
 
 A typical inference task does three things:
 
-1. **Load data** — read from storage, deserialize, preprocess (CPU/IO-bound)
-2. **Run inference** — forward pass through the model (GPU-bound)
-3. **Post-process** — format results, write outputs (CPU/IO-bound)
+1. **Load data**: read from storage, deserialize, preprocess (CPU/IO-bound)
+2. **Run inference**: forward pass through the model (GPU-bound)
+3. **Post-process**: format results, write outputs (CPU/IO-bound)
 
 When these steps run sequentially, the GPU is idle during steps 1 and 3. For many workloads, data loading and preprocessing dominate wall-clock time, leaving the GPU busy for only a fraction of the total:
 
@@ -43,7 +43,7 @@ gantt
     Idle                   :crit, g5, 11, 12
 ```
 
-In this example, the GPU is busy for only 4 out of 12 time units — **33% utilization**. The rest is wasted waiting for CPU and IO operations.
+In this example, the GPU is busy for only 4 out of 12 time units: **33% utilization**. The rest is wasted waiting for CPU and IO operations.
 
 ## Serving vs in-process batch inference
 
@@ -52,11 +52,11 @@ There are two common approaches to batch inference: sending requests to a **host
 | | Hosted serving | In-process (Flyte) |
 |---|---|---|
 | **Architecture** | Separate inference server (e.g. Triton, vLLM server, TGI) accessed over the network | Model loaded directly in the task process, inference via `DynamicBatcher` |
-| **Data transfer** | Every request serialized over the network; large payloads add latency | Zero-copy — data stays in-process, no serialization overhead |
-| **Backpressure** | Hard to implement; push-based architecture can overwhelm the server or drop requests | Two levels: `DynamicBatcher` queue blocks producers when full, and Flyte's task scheduling automatically queues new inference tasks when replicas are busy — backpressure propagates end-to-end without any extra code |
+| **Data transfer** | Every request serialized over the network; large payloads add latency | Zero-copy: data stays in-process, no serialization overhead |
+| **Backpressure** | Hard to implement; push-based architecture can overwhelm the server or drop requests | Two levels: `DynamicBatcher` queue blocks producers when full, and Flyte's task scheduling automatically queues new inference tasks when replicas are busy; backpressure propagates end-to-end without any extra code |
 | **Utilization** | Servers are often over-provisioned to maintain availability, leading to low average utilization | Batcher continuously fills the GPU with work from concurrent producers |
-| **Multi-model** | Each model needs its own serving deployment, load balancer, and scaling config | Multiple models can time-share the same GPU — when one model finishes, the next is loaded automatically via reusable containers, no container orchestration required |
-| **Scaling** | Requires separate infrastructure for the serving layer (load balancers, autoscalers, health checks) | Scales with Flyte — replicas auto-scale based on demand |
+| **Multi-model** | Each model needs its own serving deployment, load balancer, and scaling config | Multiple models can time-share the same GPU: when one model finishes, the next is loaded automatically via reusable containers, no container orchestration required |
+| **Scaling** | Requires separate infrastructure for the serving layer (load balancers, autoscalers, health checks) | Scales with Flyte: replicas auto-scale based on demand |
 | **Cost** | Pay for always-on serving infrastructure even during low-traffic periods | Pay only for the duration of the batch job |
 | **Fault tolerance** | Need retries, circuit breakers, and timeout handling for network failures | Failures are local; Flyte handles retries and recovery at the task level |
 | **Best for** | Real-time / low-latency serving with unpredictable request patterns | Large-scale batch processing with known datasets |
@@ -93,10 +93,10 @@ flowchart LR
 
 The batcher runs two internal loops:
 
-1. **Aggregation loop** — drains the submission queue and assembles batches that respect a cost budget (`target_batch_cost`), a maximum size (`max_batch_size`), and a timeout (`batch_timeout_s`). This ensures the GPU always receives optimally-sized batches.
-2. **Processing loop** — pulls assembled batches and calls your processing function, resolving each record's future with its result.
+1. **Aggregation loop**: drains the submission queue and assembles batches that respect a cost budget (`target_batch_cost`), a maximum size (`max_batch_size`), and a timeout (`batch_timeout_s`). This ensures the GPU always receives optimally-sized batches.
+2. **Processing loop**: pulls assembled batches and calls your processing function, resolving each record's future with its result.
 
-This pipelining means the GPU is processing batch N while data for batch N+1 is being loaded and assembled — **eliminating idle time**.
+This pipelining means the GPU is processing batch N while data for batch N+1 is being loaded and assembled, **eliminating idle time**.
 
 ### Basic usage
 
@@ -121,16 +121,16 @@ async with DynamicBatcher(
     results = await asyncio.gather(*futures)
 ```
 
-Each call to `submit()` is non-blocking — it enqueues the record and immediately returns a `Future`. When the queue is full, `submit()` awaits until space is available, providing natural backpressure to prevent producers from overwhelming the GPU.
+Each call to `submit()` is non-blocking; it enqueues the record and immediately returns a `Future`. When the queue is full, `submit()` awaits until space is available, providing natural backpressure to prevent producers from overwhelming the GPU.
 
 ### Cost estimation
 
 The batcher uses cost estimates to decide how many records to group into each batch. You can provide costs in several ways (checked in order of precedence):
 
-1. **Explicit** — pass `estimated_cost` to `submit()`
-2. **Estimator function** — pass `cost_estimator` to the constructor
-3. **Protocol** — implement `estimate_cost()` on your record type
-4. **Default** — falls back to `default_cost` (default: 1)
+1. **Explicit**: pass `estimated_cost` to `submit()`
+2. **Estimator function**: pass `cost_estimator` to the constructor
+3. **Protocol**: implement `estimate_cost()` on your record type
+4. **Default**: falls back to `default_cost` (default: 1)
 
 ## `TokenBatcher` for LLM inference
 
@@ -172,9 +172,9 @@ async with TokenBatcher(
 
 [`DynamicBatcher`](../../api-reference/flyte-sdk/packages/flyte.extras/dynamicbatcher) on its own improves utilization within a single task, but the model has to be loaded from scratch on every invocation. To amortize that cost across many task runs, host the model inside a long-lived [`AppEnvironment`](../../api-reference/flyte-sdk/packages/flyte.app/appenvironment) and have driver tasks call it over HTTP:
 
-- **Amortized model loading** — the model is loaded once when the app starts and stays in memory for the lifetime of the replica
-- **Cross-task batching** — every concurrent HTTP request submits to the **same shared [`TokenBatcher`](../../api-reference/flyte-sdk/packages/flyte.extras/tokenbatcher)**, so the GPU always has a full queue of work
-- **Automatic scaling** — the app autoscales between min and max replicas based on a concurrency target, and each replica maintains its own model and batcher
+- **Amortized model loading**: the model is loaded once when the app starts and stays in memory for the lifetime of the replica
+- **Cross-task batching**: every concurrent HTTP request submits to the **same shared [`TokenBatcher`](../../api-reference/flyte-sdk/packages/flyte.extras/tokenbatcher)**, so the GPU always has a full queue of work
+- **Automatic scaling**: the app autoscales between min and max replicas based on a concurrency target, and each replica maintains its own model and batcher
 
 ```mermaid
 flowchart LR
@@ -280,7 +280,7 @@ Stashing the batcher on `app.state` means every request handler can grab the sam
 
 #### 2. Add an endpoint that submits to the shared batcher
 
-Each request just enqueues records — the batcher aggregates records across concurrent requests into token-budgeted batches before hitting the GPU:
+Each request just enqueues records; the batcher aggregates records across concurrent requests into token-budgeted batches before hitting the GPU:
 
 ```python
 class GenerateRequest(BaseModel):
@@ -337,7 +337,7 @@ driver_env = flyte.TaskEnvironment(
 )
 ```
 
-With `replicas=(0, 2)` and a concurrency target of `10`, the app scales between 0 and 2 GPU replicas and aims for ~10 concurrent in-flight requests per replica — so up to ~20 requests can be served in parallel.
+With `replicas=(0, 2)` and a concurrency target of `10`, the app scales between 0 and 2 GPU replicas and aims for ~10 concurrent in-flight requests per replica, so up to ~20 requests can be served in parallel.
 
 #### 4. Define a driver task that calls the app
 
@@ -399,7 +399,7 @@ async def main(
 ```
 
 > [!IMPORTANT]
-> Match `max_concurrency` to the app's scaling configuration. In this example, the app autoscales up to 2 replicas with a concurrency target of 10, so ~20 requests can be in flight at once. Setting `max_concurrency=10` keeps the driver from queueing requests far beyond what the app can absorb — which would otherwise stack up behind the batcher's `max_queue_size`, exhaust HTTP timeouts, and waste retry budget.
+> Match `max_concurrency` to the app's scaling configuration. In this example, the app autoscales up to 2 replicas with a concurrency target of 10, so ~20 requests can be in flight at once. Setting `max_concurrency=10` keeps the driver from queueing requests far beyond what the app can absorb, which would otherwise stack up behind the batcher's `max_queue_size`, exhaust HTTP timeouts, and waste retry budget.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -411,9 +411,9 @@ async def main(
 
 `DynamicBatcher` on its own improves utilization within a single task. When combined with [reusable containers](../task-configuration/reusable-containers), it becomes significantly more powerful:
 
-- **Amortized model loading** — the model is loaded once per container and reused across many task invocations, avoiding repeated download and initialization costs
-- **Cross-task batching** — with `ReusePolicy(concurrency=N)`, multiple task invocations run concurrently on the same replica, all feeding records into the **same shared batcher**. This means the GPU always has a full queue of work.
-- **Automatic scaling** — replicas scale between min and max based on demand, and each replica maintains its own model + batcher
+- **Amortized model loading**: the model is loaded once per container and reused across many task invocations, avoiding repeated download and initialization costs
+- **Cross-task batching**: with `ReusePolicy(concurrency=N)`, multiple task invocations run concurrently on the same replica, all feeding records into the **same shared batcher**. This means the GPU always has a full queue of work.
+- **Automatic scaling**: replicas scale between min and max based on demand, and each replica maintains its own model + batcher
 
 ```mermaid
 flowchart TB
@@ -444,7 +444,7 @@ flowchart TB
     end
 ```
 
-The key technique is using `@alru_cache` to create **process-level singletons** — the model and batcher are initialized on the first task invocation and reused by all subsequent invocations on that replica.
+The key technique is using `@alru_cache` to create **process-level singletons**: the model and batcher are initialized on the first task invocation and reused by all subsequent invocations on that replica.
 
 ### Example: batch LLM inference with vLLM
 
@@ -594,7 +594,7 @@ print(f"Idle time: {stats.idle_time_s:.1f}s")
 
 | Metric | Description |
 |---|---|
-| `utilization` | Fraction of wall-clock time spent inside `process_fn` (0.0–1.0). Target: > 0.9. |
+| `utilization` | Fraction of wall-clock time spent inside `process_fn` (0.0 to 1.0). Target: > 0.9. |
 | `total_submitted` | Total records submitted via `submit()` |
 | `total_completed` | Total records whose futures have been resolved |
 | `total_batches` | Number of batches dispatched to `process_fn` |
@@ -604,7 +604,7 @@ print(f"Idle time: {stats.idle_time_s:.1f}s")
 | `idle_time_s` | Cumulative seconds the processing loop waited for batches |
 
 If utilization is low, consider:
-- **Increasing concurrency** — more concurrent producers means the batcher has more records to assemble into batches
-- **Reducing `batch_timeout_s`** — dispatch partial batches faster instead of waiting
-- **Increasing `max_queue_size`** — allow more records to be buffered ahead of the GPU
-- **Adding more data streams** — ensure the GPU always has work queued up
+- **Increasing concurrency**: more concurrent producers means the batcher has more records to assemble into batches
+- **Reducing `batch_timeout_s`**: dispatch partial batches faster instead of waiting
+- **Increasing `max_queue_size`**: allow more records to be buffered ahead of the GPU
+- **Adding more data streams**: ensure the GPU always has work queued up

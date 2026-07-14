@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Overview
 
-The {{< key product_name >}} architecture consists of two components, referred to as planes — the control plane and the data plane.
+The {{< key product_name >}} architecture consists of two components, referred to as planes: the control plane and the data plane.
 
 ![Diagram of the Union.ai platform architecture: user-facing surfaces and control-plane services on the Union side, connected over a secure channel to the customer's isolated Kubernetes data plane across cloud providers](../../../_static/images/deployment/byoc/platform-architecture/union-architecture.svg)
 
@@ -80,9 +80,9 @@ They are fetched directly from the data-plane object store via presigned URLs is
 * Primitive execution inputs (int, string... etc.)
 * JSON-serializable dataclasses
 
-These small values are passed by value rather than as a reference to a separately offloaded object. Like raw data, they are stored in the object store in your data plane — inlined within the run's `inputs.pb`/`outputs.pb` payload — and the control plane stores only a URI pointer to them.
+These small values are passed by value rather than as a reference to a separately offloaded object. Like raw data, they are stored in the object store in your data plane (inlined within the run's `inputs.pb`/`outputs.pb` payload), and the control plane stores only a URI pointer to them.
 
 ## Data privacy
 
-All runtime execution data — both raw and literal inputs and outputs — is stored in the object store in your data plane, never in the control plane. The control plane holds orchestration metadata only: task definitions (which include default input values, environment variables, and SQL statements), run state, and error messages (which may include data from Python tracebacks).
+All runtime execution data, both raw and literal inputs and outputs, is stored in the object store in your data plane, never in the control plane. The control plane holds orchestration metadata only: task definitions (which include default input values, environment variables, and SQL statements), run state, and error messages (which may include data from Python tracebacks).
 

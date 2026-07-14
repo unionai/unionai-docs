@@ -298,7 +298,7 @@ export FLYTE_AWS_ACCESS_KEY_ID="your-access-key-id"
 export FLYTE_AWS_SECRET_ACCESS_KEY="your-secret-access-key"
 ```
 
-These are standard AWS credential environment variables that Flyte recognizes. They are your IAM user's access keys — if you don't already have them, follow the AWS guide on [managing access keys for IAM users](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) to create them.
+These are standard AWS credential environment variables that Flyte recognizes. They are your IAM user's access keys. If you don't already have them, follow the AWS guide on [managing access keys for IAM users](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) to create them.
 
 **2. Initialize Flyte with S3 storage configuration:**
 

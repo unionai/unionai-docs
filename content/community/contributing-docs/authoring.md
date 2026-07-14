@@ -85,21 +85,21 @@ weight: 3
 | Setting            | Type | Description                                                                       |
 | ------------------ | ---- | --------------------------------------------------------------------------------- |
 | `top_menu`         | bool | If `true` the item becomes a tab at the top and its hierarchy goes to the sidebar |
-| `sidebar_expanded` | bool | If `true`, force this section to render expanded in the sidebar even when it is not on the active path. Use sparingly — by default sections collapse and only the active path expands automatically. |
+| `sidebar_expanded` | bool | If `true`, force this section to render expanded in the sidebar even when it is not on the active path. Use sparingly. By default sections collapse and only the active path expands automatically. |
 | `site_root`        | bool | If `true` indicates that the page is the site landing page                        |
 | `toc_max`          | int  | Maximum heading to incorporate in the right navigation table of contents.         |
 | `llm_readable_bundle` | bool | If `true`, generates a `section.md` bundle for this section. Requires `{{</* llm-bundle-note */>}}` shortcode. See [LLM-optimized documentation](./llm-docs). |
 
 ## Conditional content
 
-The site has "flavors" of the documentation. We leverage the `{{</* variant */>}}` tag to control
+The site has "flavors" of the documentation. We use the `{{</* variant */>}}` tag to control
 which content is rendered on which flavor.
 
 Refer to [**Variants**](./shortcodes#variants) for detailed explanation.
 
 ## Linking to the API reference
 
-API identifiers and methods that you mention in prose or in Python code blocks are linked to the API reference automatically — you don't need to write explicit Markdown links for them.
+API identifiers and methods that you mention in prose or in Python code blocks are linked to the API reference automatically. You don't need to write explicit Markdown links for them.
 
 ```markdown
 ✅  A `flyte.io.File` is a reference to an offloaded file.
@@ -113,7 +113,7 @@ API identifiers and methods that you mention in prose or in Python code blocks a
 What gets linked:
 
 - **Class names** in inline code, in either fully-qualified or short form: `` `flyte.io.File` ``, `` `File` ``, `` `flyte.Trigger` ``, `` `Trigger` ``.
-- **Method names** in inline code, only when fully qualified: `` `flyte.init()` ``, `` `flyte.report.log()` ``. Bare `` `init` ``, `` `log` ``, `` `run` `` are not linked — those names are too generic.
+- **Method names** in inline code, only when fully qualified: `` `flyte.init()` ``, `` `flyte.report.log()` ``. Bare `` `init` ``, `` `log` ``, `` `run` `` are not linked: those names are too generic.
 - **Python identifiers in fenced code blocks** when they resolve through one of the block's `import` statements.
 
 Trailing `()` and a leading `@` are stripped before lookup, so `` `flyte.init()` ``, `` `flyte.init` ``, and `` `@flyte.trace` `` all match.

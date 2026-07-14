@@ -19,8 +19,8 @@ Use cases:
 
 A `MemoryStore` combines two complementary stores backed by a working directory:
 
-- **`messages`** — the live LLM conversation transcript, managed by the agent. Mutate it only via `append()` / `extend()`.
-- **Path-addressed files** — arbitrary named blobs under the working root. Read and write them with `read_text` / `write_text` / `read_json` / `write_json` / `list_paths`.
+- **`messages`**: the live LLM conversation transcript, managed by the agent. Mutate it only via `append()` / `extend()`.
+- **Path-addressed files**: arbitrary named blobs under the working root. Read and write them with `read_text` / `write_text` / `read_json` / `write_json` / `list_paths`.
 
 The on-disk layout under the root looks like:
 
@@ -44,7 +44,7 @@ For durable agent memory, use a **keyed store**. `MemoryStore.get_or_create(key=
 {storage_root}/agents/memory-store/v0/{org}/{project}/{domain}/{key}
 ```
 
-First, define the agent. Here it's a small research assistant with a single, **stateless** `web_search` tool — its continuity comes from memory, not from the tool:
+First, define the agent. Here it's a small research assistant with a single, **stateless** `web_search` tool. Its continuity comes from memory, not from the tool:
 
 {{< code file="/unionai-examples/v2/user-guide/build-agent/agent-memory/agent_with_memory.py" fragment="agent" lang="python" >}}
 
@@ -52,11 +52,11 @@ Reuse the same `key` across runs to keep continuity. The chat task below picks u
 
 {{< code file="/unionai-examples/v2/user-guide/build-agent/agent-memory/agent_with_memory.py" fragment="chat" lang="python" >}}
 
-The agent has no note-taking tools. Continuity comes entirely from the persisted transcript, and it remembers two kinds of things for free: the **facts the user shares** and the **results its tools return**. The first run records both in `messages.json`; a later run with the same `memory_key` reloads and prepends them, so the agent recalls earlier context — and reuses prior `web_search` findings instead of searching again. That is the core value of `MemoryStore` — no extra plumbing required.
+The agent has no note-taking tools. Continuity comes entirely from the persisted transcript, and it remembers two kinds of things for free: the **facts the user shares** and the **results its tools return**. The first run records both in `messages.json`; a later run with the same `memory_key` reloads and prepends them, so the agent recalls earlier context, and reuses prior `web_search` findings instead of searching again. That is the core value of `MemoryStore`: no extra plumbing required.
 
 ## Working with a MemoryStore independently
 
-Beyond the transcript, you can persist structured artifacts under arbitrary paths in the same store. This is optional — most agents get all the continuity they need from the transcript above — but it's useful when you want durable, queryable state (a scratchpad, a dedupe ledger, intermediate results).
+Beyond the transcript, you can persist structured artifacts under arbitrary paths in the same store. This is optional (most agents get all the continuity they need from the transcript above) but it's useful when you want durable, queryable state (a scratchpad, a dedupe ledger, intermediate results).
 
 A flyte task can commit its own artifact by loading the keyed store, read-modify-writing a path-addressed file, and calling `save()`. Every write is recorded in a metadata sidecar (sha256, actor, timestamp) and, by default, appended to an audit log:
 
@@ -79,7 +79,7 @@ async def add_note(note: str) -> str:
 ```
 
 > [!NOTE] Coordinating tool writes with the transcript
-> Artifacts live on independent paths (e.g. `notes/notes.json`) from the transcript (`messages.json`), so they never collide. But when a tool writes to the same keyed store that the orchestrator also saves, the orchestrator's working copy goes stale mid-run. Reload the store with `get_or_create` after `agent.run`, carry over the updated transcript (`reloaded.messages = result.memory.messages`), and save once — otherwise the orchestrator's final save re-uploads a stale copy and clobbers the tool's artifact.
+> Artifacts live on independent paths (e.g. `notes/notes.json`) from the transcript (`messages.json`), so they never collide. But when a tool writes to the same keyed store that the orchestrator also saves, the orchestrator's working copy goes stale mid-run. Reload the store with `get_or_create` after `agent.run`, carry over the updated transcript (`reloaded.messages = result.memory.messages`), and save once. Otherwise the orchestrator's final save re-uploads a stale copy and clobbers the tool's artifact.
 
 ## Optimistic concurrency
 
@@ -108,11 +108,11 @@ except ConcurrencyError:
 | `keep_versions` | `False` | Snapshot every write under `versions/` for full history (≈ 2× storage per write). |
 | `read_only_prefixes` | `()` | Reject direct writes into the given prefixes (e.g. `("memory/",)`), so the agent must stage proposals elsewhere and a trusted pipeline promotes them. |
 
-The internal `audit/`, `meta/`, and `versions/` prefixes and `messages.json` are reserved — writes to them are rejected, and they're excluded from `list_paths`.
+The internal `audit/`, `meta/`, and `versions/` prefixes and `messages.json` are reserved: writes to them are rejected, and they're excluded from `list_paths`.
 
 ## Passing memory to the agent
 
-Memory is not attached to the agent — it is passed in per call and returned on the result. `agent.run(message, memory=store)` prepends the store's prior transcript, runs the loop, and appends the new turn back onto the store. Persisting is explicit: `run` never writes on its own, so call `memory.save()` (or `await memory.save.aio()`) yourself afterward.
+Memory is not attached to the agent: it is passed in per call and returned on the result. `agent.run(message, memory=store)` prepends the store's prior transcript, runs the loop, and appends the new turn back onto the store. Persisting is explicit: `run` never writes on its own, so call `memory.save()` (or `await memory.save.aio()`) yourself afterward.
 
 ```python
 memory = await MemoryStore.get_or_create.aio(key="my-assistant")
@@ -124,7 +124,7 @@ You can also pass a plain `list[dict]` of prior messages as `memory` for a state
 
 ## Lower-level usage
 
-Every `MemoryStore` is **keyed** — there is no unkeyed/ephemeral store. You normally obtain one via `MemoryStore.create(key=...)` or `MemoryStore.get_or_create(key=...)`, but direct construction is supported for advanced use and serialization (`MemoryStore` is a Flyte I/O type, so it can be passed as a task input/output). `save()` takes no arguments: it always uploads the working root to the deterministic keyed `remote_path`. When `root` is omitted, a temporary working directory is created and cleaned up automatically.
+Every `MemoryStore` is **keyed**: there is no unkeyed/ephemeral store. You normally obtain one via `MemoryStore.create(key=...)` or `MemoryStore.get_or_create(key=...)`, but direct construction is supported for advanced use and serialization (`MemoryStore` is a Flyte I/O type, so it can be passed as a task input/output). `save()` takes no arguments: it always uploads the working root to the deterministic keyed `remote_path`. When `root` is omitted, a temporary working directory is created and cleaned up automatically.
 
 ## Next steps
 

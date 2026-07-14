@@ -94,7 +94,7 @@ With these in place, the next step is to build a "golden" QA dataset that will g
 ## Building the QA dataset
 
 > [!NOTE]
-> The WikiTableQuestions dataset already includes question–answer pairs, available in its [GitHub repository](https://github.com/ppasupat/WikiTableQuestions/tree/master/data). To use them for this workflow, you'll need to adapt the data into the required format, but the raw material is there for you to build on.
+> The WikiTableQuestions dataset already includes question-answer pairs, available in its [GitHub repository](https://github.com/ppasupat/WikiTableQuestions/tree/master/data). To use them for this workflow, you'll need to adapt the data into the required format, but the raw material is there for you to build on.
 
 We generate a dataset of natural language questions paired with executable SQL queries. This dataset acts as the benchmark for prompt tuning and evaluation.
 
@@ -102,10 +102,10 @@ We generate a dataset of natural language questions paired with executable SQL q
 
 The pipeline does the following:
 
-- Schema extraction – pull full database schemas, including table names, columns, and sample rows.
-- Question–SQL generation – use an LLM to produce natural language questions with matching SQL queries.
-- Validation – run each query against the database, filter out invalid results, and also remove results that aren't relevant.
-- Final export – store the clean, validated pairs in CSV format for downstream use.
+- Schema extraction: pull full database schemas, including table names, columns, and sample rows.
+- Question-SQL generation: use an LLM to produce natural language questions with matching SQL queries.
+- Validation: run each query against the database, filter out invalid results, and also remove results that aren't relevant.
+- Final export: store the clean, validated pairs in CSV format for downstream use.
 
 ### Schema extraction and chunking
 
@@ -187,8 +187,8 @@ Evaluation and optimization aren’t one-off experiments; they’re continuous p
 
 Systems succeed when they:
 
-- **Observe** failures with clarity — track exactly what failed and why.
-- **Remain durable** across iterations — run pipelines that are stable, reproducible, and comparable over time.
+- **Observe** failures with clarity: track exactly what failed and why.
+- **Remain durable** across iterations: run pipelines that are stable, reproducible, and comparable over time.
 
 That's where Flyte 2 comes in. Prompt optimization is one lever, but it becomes powerful only when combined with:
 

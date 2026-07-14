@@ -13,8 +13,8 @@ reproducing a result, or tweaking a few inputs and running again.
 
 You can re-run at two levels of granularity:
 
-- **The whole run** — re-execute the entry point task (the `a0` action) and everything it calls.
-- **A single action** — re-execute one nested action on its own.
+- **The whole run**: re-execute the entry point task (the `a0` action) and everything it calls.
+- **A single action**: re-execute one nested action on its own.
 
 And you can trigger a re-run from three places: the **UI**, the **CLI**, or **programmatically**
 with the Python SDK.
@@ -46,10 +46,10 @@ full re-run, you can adjust the inputs in the launch form first.
 The CLI offers two complementary commands depending on whether you want the **original code** or
 **new local code**.
 
-### `flyte rerun` — re-run with the original code and inputs
+### `flyte rerun`: re-run with the original code and inputs
 
 `flyte rerun` fetches the prior run's task **and** inputs from the backend and launches a new run.
-You don't need the original code checked out locally — everything is pulled from the platform:
+You don't need the original code checked out locally. Everything is pulled from the platform:
 
 ```bash
 # Re-run with the prior run's exact code and inputs
@@ -74,7 +74,7 @@ Common options:
 > `flyte rerun` reuses the prior run's inputs as-is. To change input values from the command line,
 > use the programmatic `flyte.rerun(<run-name>, key=value)` form shown below.
 
-### `flyte run --rerun-from` — re-run with new local code
+### `flyte run --rerun-from`: re-run with new local code
 
 When you've changed your code locally but want to reuse a prior run's inputs, use `flyte run` with
 the `--rerun-from` flag. This deploys **your local code** and feeds it the inputs from the prior
@@ -84,7 +84,7 @@ run, so you don't need to re-specify any per-task input flags:
 flyte run --rerun-from <run-name> main.py main
 ```
 
-`--rerun-from` is remote-only — it cannot be combined with `--local`.
+`--rerun-from` is remote-only; it cannot be combined with `--local`.
 
 ### Choosing between the two
 
@@ -130,5 +130,5 @@ flyte.with_runcontext(
 
 ## Related
 
-- [Interact with runs and actions](./interacting-with-runs) — retrieve, monitor, and inspect runs and actions.
-- [Run command options](./run-command-options) — the full set of `flyte run` options.
+- [Interact with runs and actions](./interacting-with-runs): retrieve, monitor, and inspect runs and actions.
+- [Run command options](./run-command-options): the full set of `flyte run` options.

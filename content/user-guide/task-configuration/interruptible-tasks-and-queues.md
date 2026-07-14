@@ -77,24 +77,24 @@ def train_model(data: list) -> dict:
 > [!NOTE]
 > Retries due to spot preemption do not count against the user-configured retry budget.
 > System retries (for preemptions and other system-level failures) are tracked separately.
-> This is independent from how the medium (spot vs. on-demand) is chosen for each user-budget attempt — see [Spot to on-demand fallback](#spot-to-on-demand-fallback) below.
+> This is independent from how the medium (spot vs. on-demand) is chosen for each user-budget attempt. See [Spot to on-demand fallback](#spot-to-on-demand-fallback) below.
 
 ### Spot to on-demand fallback
 
 By default, the **final attempt** of an interruptible task runs on an on-demand instance rather than on spot.
-This shields long-running or expensive workloads from getting stuck in a preemption loop — once you're on your last attempt, the platform stops gambling on spot capacity.
+This shields long-running or expensive workloads from getting stuck in a preemption loop: once you're on your last attempt, the platform stops gambling on spot capacity.
 
 Two consequences worth knowing:
 
 - A task with `interruptible=True` and no retries is effectively on-demand. Its single attempt is also its final attempt, so it never runs on spot.
 - A task with `interruptible=True, retries=2` makes up to 3 attempts: attempts 1 and 2 run on spot, attempt 3 (if reached) runs on on-demand.
 
-If you want spot pricing to apply to *every* attempt, you need to size `retries` so the workload realistically completes before the final attempt — there's no way to opt out of the on-demand fallback on the last attempt.
+If you want spot pricing to apply to *every* attempt, you need to size `retries` so the workload realistically completes before the final attempt. There's no way to opt out of the on-demand fallback on the last attempt.
 
 {{< variant union >}}
 {{< markdown >}}
 > [!NOTE]
-> Looking for scheduling control — concurrency limits, depth, priority, or routing
+> Looking for scheduling control: concurrency limits, depth, priority, or routing
 > work to a specific cluster? See [Queues](./queues).
 {{< /markdown >}}
 {{< /variant >}}

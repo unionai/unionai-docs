@@ -12,7 +12,7 @@ Groups help you organize task executions into manageable, hierarchical structure
 ## What are groups?
 
 Groups provide a way to organize task invocations into logical units in the Flyte UI.
-When you have multiple task executions—whether from large [fanouts](./fanout), sequential operations, or any combination of tasks—groups help organize them into manageable units.
+When you have multiple task executions (whether from large [fanouts](./fanout), sequential operations, or any combination of tasks), groups help organize them into manageable units.
 
 ### The problem groups solve
 
@@ -78,6 +78,6 @@ Groups can be used with conditional logic:
 
 ## Key insights
 
-Groups are primarily an organizational and UI visualization tool—they don't change how your tasks execute or aggregate their outputs, but they help organize related task invocations (actions) into collapsible folder-like structures for better workflow management and display. The aggregated status information (success/failure rates) is visible when hovering over group folders in the UI.
+Groups are primarily an organizational and UI visualization tool; they don't change how your tasks execute or aggregate their outputs, but they help organize related task invocations (actions) into collapsible folder-like structures for better workflow management and display. The aggregated status information (success/failure rates) is visible when hovering over group folders in the UI.
 
 Groups make your Flyte workflows more maintainable and easier to understand, especially when working with complex workflows that involve multiple logical phases or large numbers of task executions. They serve as organizational "folders" in the UI's call stack tree, allowing you to collapse sections to reduce visual distraction while still seeing aggregated status information on hover.

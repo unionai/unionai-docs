@@ -9,7 +9,7 @@ mermaid: true
 
 The dedicated pages ([LangGraph](./langgraph), [PydanticAI](./pydantic-ai), [OpenAI Agents SDK](./openai-agents-sdk)) are just worked examples of one underlying idea: **{{< key product_name >}} is the runtime, your framework is the loop.** If your agent library is written in Python, it runs on {{< key product_name >}} with no special plugin.
 
-This page is a framework-agnostic template. Drop in any library — [CrewAI](https://docs.crewai.com/), [AutoGen](https://microsoft.github.io/autogen/), [smolagents](https://github.com/huggingface/smolagents), [Atomic Agents](https://github.com/BrainBlend-AI/atomic-agents), a raw provider SDK, or your own homegrown loop — wherever the comments say so.
+This page is a framework-agnostic template. Drop in any library ([CrewAI](https://docs.crewai.com/), [AutoGen](https://microsoft.github.io/autogen/), [smolagents](https://github.com/huggingface/smolagents), [Atomic Agents](https://github.com/BrainBlend-AI/atomic-agents), a raw provider SDK, or your own homegrown loop) wherever the comments say so.
 
 ## The core pattern
 
@@ -79,7 +79,7 @@ async def fetch_data(source: str) -> dict:
 
 ## Trace the framework's internals
 
-If your framework exposes hooks, callbacks, or lets you wrap its node/step functions, decorate those with `@flyte.trace` to turn each LLM call, tool call, and routing decision into a span — with inputs and outputs captured and checkpointed.
+If your framework exposes hooks, callbacks, or lets you wrap its node/step functions, decorate those with `@flyte.trace` to turn each LLM call, tool call, and routing decision into a span, with inputs and outputs captured and checkpointed.
 
 ```python
 @flyte.trace
@@ -106,7 +106,7 @@ async def run_agent(prompt: str) -> str:
 
 ## Fan out across containers
 
-Run many independent agents in parallel — each in its own container — with `asyncio.gather()`. This works for any framework because each call is just an awaited task.
+Run many independent agents in parallel, each in its own container, with `asyncio.gather()`. This works for any framework because each call is just an awaited task.
 
 ```python
 import asyncio
@@ -129,12 +129,12 @@ async def run_many(inputs: list[str]) -> list[str]:
 
 To bring any Python agent framework onto {{< key product_name >}}:
 
-1. **Wrap the run** — call the framework's entry point inside an `@env.task`.
-2. **Declare deps** — add the framework + provider packages to the task's `image`.
-3. **Supply secrets** — mount model-provider API keys via `flyte.Secret`.
-4. **(Optional) Durable tools** — have tools delegate to `@env.task`s.
-5. **(Optional) Observe** — decorate hooks/steps with `@flyte.trace`, or wrap in `flyte.group(...)`.
-6. **(Optional) Scale** — fan out with `asyncio.gather()` for parallel, per-container runs.
+1. **Wrap the run**: call the framework's entry point inside an `@env.task`.
+2. **Declare deps**: add the framework + provider packages to the task's `image`.
+3. **Supply secrets**: mount model-provider API keys via `flyte.Secret`.
+4. **(Optional) Durable tools**: have tools delegate to `@env.task`s.
+5. **(Optional) Observe**: decorate hooks/steps with `@flyte.trace`, or wrap in `flyte.group(...)`.
+6. **(Optional) Scale**: fan out with `asyncio.gather()` for parallel, per-container runs.
 
 ## Next steps
 

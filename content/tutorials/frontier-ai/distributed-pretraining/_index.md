@@ -209,7 +209,7 @@ The trainer configuration brings together all the pieces we've discussed:
 - **`precision="bf16-mixed"`**: BFloat16 mixed precision training. BF16 has the same dynamic range as FP32 (unlike FP16), so you don't need loss scaling. This is the standard choice for modern GPU training.
 - **`gradient_clip_val=1.0`**: Clips gradients to prevent exploding gradients during training. Combined with value-based clipping for FSDP compatibility.
 - **`accumulate_grad_batches`**: Accumulates gradients over multiple forward passes before updating weights. This lets us hit a larger effective batch size than what fits in GPU memory.
-- **`val_check_interval`**: How often to run validation. For long training runs, you don't want to validate every epoch — that would be too infrequent. Instead, validate every `N` training steps.
+- **`val_check_interval`**: How often to run validation. For long training runs, you don't want to validate every epoch. That would be too infrequent. Instead, validate every `N` training steps.
 - **`use_distributed_sampler=False`**: We disable Lightning's built-in distributed sampler because `StreamingDataset` handles data sharding internally. Using both would cause conflicts.
 - **`benchmark=True`**: Enables cuDNN autotuning. PyTorch will benchmark different convolution algorithms on the first batch and pick the fastest one for your specific input sizes.
 
@@ -231,7 +231,7 @@ With everything defined, running is simple:
 
 {{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="main" lang="python" >}}
 
-This configuration is designed for testing and demonstration. Notice `max_train_samples=5_000_000` — that's 5 million samples from a dataset with 627 billion tokens. A tiny fraction, enough to verify everything works without burning through compute.
+This configuration is designed for testing and demonstration. Notice `max_train_samples=5_000_000`: that's 5 million samples from a dataset with 627 billion tokens. A tiny fraction, enough to verify everything works without burning through compute.
 
 For a real pretraining run, you would remove this limit by setting `max_train_samples=None`, or increase it significantly. You would also increase `max_steps` to match your compute budget, likely scale to multiple nodes by setting `NUM_NODES=4` or higher, and allocate more resources. The rest of the pipeline remains unchanged.
 
