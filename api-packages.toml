@@ -124,12 +124,6 @@ title = "Gemini"
 name = "gemini"
 
 [[plugins]]
-package = "flyteplugins-hitl"
-plugin = "flyteplugins.hitl"
-title = "Human-in-the-Loop"
-name = "hitl"
-
-[[plugins]]
 package = "flyteplugins-hydra"
 plugin = "flyteplugins.hydra"
 title = "Hydra"

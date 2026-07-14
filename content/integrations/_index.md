@@ -36,10 +36,11 @@ Flyte 2 integrations fall into the following categories:
 3. **Configuration**: Compose and pass hierarchical configuration objects between tasks, with type-safe schemas and CLI/YAML composition.
 4. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
 5. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
-6. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
-7. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
-8. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
-9. **Observability**: Patterns for connecting tasks to external tracing and observability tooling.
+6. **Data types**: Add native support for additional file and dataframe types as task inputs and outputs.
+7. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
+8. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
+9. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
+10. **Observability**: Patterns for connecting tasks to external tracing and observability tooling.
 
 ## Distributed compute
 
@@ -193,6 +194,17 @@ Data validation integrations enforce schema contracts on the dataframes flowing 
 | Plugin                      | Description                                                | Common use cases                                            |
 | --------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------- |
 | [Pandera](./pandera/_index) | Validates dataframes with pandera `DataFrameModel` schemas | Schema enforcement, data quality checks, validation reports |
+
+## Data types
+
+Data type integrations add native support for additional file and dataframe types as task inputs and outputs. They register typed encoders and decoders with Flyte's type engine, so you can annotate task signatures with the type directly and let Flyte handle serialization.
+
+### Supported data type integrations
+
+| Plugin                    | Description                                                          | Common use cases                                            |
+| ------------------------- | ------------------------------------------------------------------- | ----------------------------------------------------------- |
+| [JSONL](./jsonl/_index)   | Typed `JsonlFile` / `JsonlDir` for streaming JSON Lines data         | LLM dataset pipelines, event logs, large line-delimited I/O |
+| [Polars](./polars/_index) | Native `pl.DataFrame` / `pl.LazyFrame` support via Parquet           | High-performance dataframe ETL, feature engineering         |
 
 ## Connectors
 
