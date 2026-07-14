@@ -33,6 +33,13 @@ All parameters are optional. Unset parameters inherit from the configuration fil
 | `queue` | `str` | *from config* | Cluster queue to schedule tasks on. |
 | `interruptible` | `bool` | *per-task setting* | Override the interruptible setting for all tasks in the run. `True` allows spot/preemptible instances; `False` forces non-interruptible instances. |
 
+{{< variant union >}}
+{{< markdown >}}
+> [!NOTE]
+> `with_runcontext()` also accepts a `debug` parameter (`bool`, default `False`): launch the run in debug mode, starting a browser-based VS Code session on the task pod so you can step through the task interactively. See [Debug a run](./debug-runs).
+{{< /markdown >}}
+{{< /variant >}}
+
 ### Storage
 
 | Parameter | Type | Default | Description |
@@ -69,9 +76,12 @@ The equivalent CLI flag is `--raw-data-path`. See [Run command options](./run-co
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `log_level` | `int` | *from config* | Python log level (e.g. `logging.DEBUG`). |
-| `log_format` | `"console"` \| ... | `"console"` | Log output format. |
-| `reset_root_logger` | `bool` | `False` | If `True`, preserve the root logger unchanged. |
+| `log_level` | `int` | *from config* | Python log level for the framework logger (`flyte`), e.g. `logging.DEBUG`. |
+| `user_log_level` | `int` | *from config* | Python log level for the user logger (`flyte.user`, i.e. `flyte.logger`). |
+| `log_format` | `"console"` \| `"json"` | `"console"` | Log output format. |
+| `reset_root_logger` | `bool` | `False` | If `True`, clear the root logger's existing handlers and install Flyte's own. If `False` (the default), leave existing root handlers in place and wrap their formatters with the run/action context. |
+
+For setting the logging level (including via environment variables) and the framework-vs-user logger split, see [Logging](../task-configuration/logging).
 
 ### Code bundling
 

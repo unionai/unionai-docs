@@ -1,6 +1,6 @@
 ---
 title: Run
-version: 2.5.2
+version: 2.5.8
 variants: +flyte +union
 layout: py_api
 ---
@@ -47,13 +47,17 @@ class Run(
 | [`get()`](#get) | Get the current run. |
 | [`get_debug_url()`](#get_debug_url) | Get the debug URL of the run. |
 | [`get_logs()`](#get_logs) | Get logs for the run as an iterator of strings. |
+| [`input_literals()`](#input_literals) | Raw input literals of the run's action, without reconstructing types. |
 | [`inputs()`](#inputs) | Get the inputs of the run. |
 | [`listall()`](#listall) | Get all runs for the current project and domain. |
+| [`output_literals()`](#output_literals) | Raw output literals of the run's action, without reconstructing types. |
 | [`outputs()`](#outputs) | Get the outputs of the run. |
 | [`show_logs()`](#show_logs) |  |
 | [`sync()`](#sync) | Sync the run with the remote server. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
+| [`typed_inputs()`](#typed_inputs) | Re-hydrate the run's requested inputs into caller-supplied types. |
+| [`typed_outputs()`](#typed_outputs) | Re-hydrate the run's requested outputs into caller-supplied types. |
 | [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions,. |
 | [`watch()`](#watch) | Watch the run for updates, updating the internal Run state with latest details. |
 
@@ -163,6 +167,21 @@ via `.aio()` (returns `AsyncIterator[str]`).
 | `filter_system` | `bool` | If True, filter out system-generated log lines. |
 | `show_ts` | `bool` | If True, prefix each line with an ISO-8601 timestamp. |
 
+### input_literals()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.input_literals.aio()`.
+```python
+def input_literals()
+```
+Raw input literals of the run's action, without reconstructing types.
+
+See :meth:`ActionDetails.input_literals`.
+
+
 ### inputs()
 
 
@@ -198,6 +217,7 @@ def listall(
     updated_at: TimeFilter | None,
     with_labels: dict[str, str] | None,
     with_label_keys: list[str] | None,
+    paused_actions_only: bool,
 ) -> AsyncIterator[Run]
 ```
 Get all runs for the current project and domain.
@@ -219,8 +239,24 @@ Get all runs for the current project and domain.
 | `updated_at` | `TimeFilter \| None` | Filter runs by last-update time range. |
 | `with_labels` | `dict[str, str] \| None` | Filter runs whose labels include all of these key=value pairs (AND semantics). |
 | `with_label_keys` | `list[str] \| None` | Filter runs that have all of these label keys present (existence check). |
+| `paused_actions_only` | `bool` | If True, only return runs that have at least one paused action (i.e. runs waiting on a human in the loop). |
 
 **Returns:** An iterator of runs.
+
+### output_literals()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.output_literals.aio()`.
+```python
+def output_literals()
+```
+Raw output literals of the run's action, without reconstructing types.
+
+See :meth:`ActionDetails.output_literals`.
+
 
 ### outputs()
 
@@ -288,6 +324,52 @@ Convert the object to a JSON string.
 
 
 **Returns:** str: A JSON string representation of the object.
+
+### typed_inputs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.typed_inputs.aio()`.
+```python
+def typed_inputs(
+    types: Dict[str, type],
+    deserializers: Dict[type, Callable[[Any], Any]] | None,
+) -> Dict[str, Any]
+```
+Re-hydrate the run's requested inputs into caller-supplied types.
+
+See :meth:`ActionDetails.typed_inputs`.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `types` | `Dict[str, type]` | |
+| `deserializers` | `Dict[type, Callable[[Any], Any]] \| None` | |
+
+### typed_outputs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.typed_outputs.aio()`.
+```python
+def typed_outputs(
+    types: Dict[str, type],
+    deserializers: Dict[type, Callable[[Any], Any]] | None,
+) -> Dict[str, Any]
+```
+Re-hydrate the run's requested outputs into caller-supplied types.
+
+See :meth:`ActionDetails.typed_outputs`.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `types` | `Dict[str, type]` | |
+| `deserializers` | `Dict[type, Callable[[Any], Any]] \| None` | |
 
 ### wait()
 

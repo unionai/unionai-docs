@@ -158,7 +158,7 @@ Once your VPC is set up, provide the following to {{< key product_name >}}:
 
 ## {{< key product_name >}} maintenance windows
 
-{{< key product_name >}} configures a four hour maintainence window to run monthly on the first Sunday at 3AM with respect to the Azure location's timezone.
+{{< key product_name >}} configures a four hour maintenance window to run monthly on the first Sunday at 3AM with respect to the Azure location's timezone.
 
 > [!NOTE] Setting up Tasks for Fault Tolerance
 > During this time window Flyte execution pods could be potentially interrupted.

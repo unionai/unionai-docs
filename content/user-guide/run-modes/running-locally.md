@@ -1,10 +1,10 @@
 ---
-title: Run locally
+title: Run locally in Python
 weight: 4
 variants: +flyte +union
 ---
 
-# Run locally
+# Run locally in Python
 
 Flyte runs locally with no cluster or Docker needed. Install the SDK, write tasks, and run them on your machine. When you're ready to scale, drop the `--local` flag and the same code runs on a remote cluster with GPUs.
 
@@ -29,6 +29,56 @@ flyte run --local --tui hello.py main
 ```
 
 You can also run tasks programmatically using the Python SDK with `flyte.run()`. See [Run and deploy tasks](../task-deployment/_index) for details.
+
+## Two ways to run a task
+
+There are two distinct ways to run a task, and it's easy to confuse them when you're new. They differ in *who* calls `flyte.run()`.
+
+### As a script: `python hello.py`
+
+You call `flyte.run()` yourself, from inside an `if __name__ == "__main__":` block, and execute the file with plain Python:
+
+```python
+# hello.py
+import flyte
+
+env = flyte.TaskEnvironment(name="hello_env")
+
+@env.task
+def main(x_list: list[int] = list(range(10))) -> float:
+    return sum(x_list) / len(x_list)
+
+if __name__ == "__main__":
+    flyte.init_from_config()       # load your local config (.flyte/config.yaml)
+    run = flyte.run(main)          # call the task; pass inputs as keyword args
+    print(run.name)
+    run.wait()
+```
+
+Then run the file as an ordinary Python script:
+
+```bash
+python hello.py
+```
+
+Because *your code* decides which task runs and with what inputs, you pass inputs directly as arguments to `flyte.run()` — for example `flyte.run(main, x_list=[1, 2, 3])`. Use `flyte.run.aio(...)` from within async code.
+
+### Via the CLI: `flyte run`
+
+The `flyte run` CLI does the calling for you. You don't need a `__main__` block — instead you name the file and the task on the command line, and the CLI invokes it:
+
+```bash
+flyte run --local hello.py main
+```
+
+The task's **parameters become CLI options**. Each task input maps to a `--<name>` flag (run `flyte run --local hello.py main --help` to see them, with their defaults). For example, to override `x_list`:
+
+```bash
+flyte run --local hello.py main --x-list '[1, 2, 3]'
+```
+
+> [!NOTE]
+> A common first-run trip-up: invoking `flyte run` against a task whose inputs have **no defaults** without supplying them. The CLI then can't construct the input and you'll see a confusing type-converter error rather than a "missing argument" message. If you hit one, check `--help` and pass the required `--<name>` values (or give the parameters defaults in the task signature, as `main` does above).
 
 ## Terminal UI
 

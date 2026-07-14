@@ -52,7 +52,7 @@ async def process_data(csv_file: File) -> tuple[float, int, int]:
 
 The `depends_on=[sandbox_environment]` declaration is required. It ensures the sandbox runtime is available when dynamically-created sandboxes execute.
 
-![Sandbox](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/codegen/sandbox.png)
+![Sandbox](../../_static/images/integrations/codegen/sandbox.png)
 
 ## Two execution backends
 
@@ -96,7 +96,7 @@ flowchart TD
 
 The loop continues until tests pass or `max_iterations` is reached.
 
-![LiteLLM](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/codegen/litellm.png)
+![LiteLLM](../../_static/images/integrations/codegen/litellm.png)
 
 ### Agent (Claude)
 
@@ -182,7 +182,7 @@ result = await agent.generate.aio(
 )
 ```
 
-![Pandera Constraints](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/codegen/pandera_constraints.png)
+![Pandera Constraints](../../_static/images/integrations/codegen/pandera_constraints.png)
 
 ### Inputs and outputs
 
@@ -294,11 +294,11 @@ One challenge with agents is that they are inherently non-deterministic — the 
 
 In practice, the codegen agent follows a predictable pattern (write code, generate tests, run tests, inspect results), which works in replay's favor. The plugin also embeds logic that instructs the agent not to regenerate or re-execute steps that already completed successfully in the first run. This acts as an additional safety check alongside the replay log to account for non-determinism.
 
-![Agent](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/codegen/agent.png)
+![Agent](../../_static/images/integrations/codegen/agent.png)
 
 On the first attempt, the full pipeline runs. If a transient failure occurs, the system instantly replays the traces (which track model calls) and sandbox executions, allowing the pipeline to resume from the point of failure.
 
-![Durability](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/codegen/durability.png)
+![Durability](../../_static/images/integrations/codegen/durability.png)
 
 ## Observability
 

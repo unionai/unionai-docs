@@ -1,0 +1,45 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "//": "Spell-check config for the Union.ai / Flyte docs (DOC-967). Add new product terms to .cspell-project-words.txt, not here.",
+
+  "dictionaryDefinitions": [
+    {
+      "name": "project-words",
+      "path": "./.cspell-project-words.txt",
+      "addWords": true
+    }
+  ],
+  "dictionaries": ["project-words"],
+
+  "ignorePaths": [
+    "content/api-reference/**",
+    "content/release-notes/**",
+    "content/deployment/selfmanaged/helm-chart-reference/dataplane.md",
+    "content/deployment/selfmanaged/helm-chart-reference/knative-operator.md",
+    "unionai-docs-infra/**",
+    "unionai-examples/**",
+    "node_modules/**",
+    "**/*.py",
+    "**/*.ipynb",
+    "**/*.svg",
+    "**/*.json",
+    "**/*.toml",
+    "**/*.yaml",
+    "**/*.yml"
+  ],
+
+  "//ignoreRegExpList": "Do not spell-check code, Hugo shortcodes, front-matter fences, or URLs — those are not prose.",
+  "ignoreRegExpList": [
+    "/```[\\s\\S]*?```/g",
+    "/`[^`\\n]+`/g",
+    "/\\{\\{[<%][\\s\\S]*?[%>]\\}\\}/g",
+    "/^---[\\s\\S]*?^---/gm",
+    "/https?:\\/\\/[^\\s)]+/g",
+    "/\\[[^\\]]*\\]\\([^)]*\\)/g"
+  ],
+
+  "words": [],
+  "flagWords": [],
+  "allowCompoundWords": true
+}

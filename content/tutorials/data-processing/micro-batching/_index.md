@@ -821,7 +821,7 @@ if __name__ == "__main__":
 
 On execution, this is what this example looks like at the Kubernetes level:
 
-![](./images/reusable-containers-k8s.png)
+![Kubernetes view of the micro-batching example: 10 worker replicas plus the driver Pod running the parent task a0](./images/reusable-containers-k8s.png)
 
 This is, 10 replicas (as defined in the `TaskEnvironment`) and the driver Pod that runs the parent task (`a0`). [Learn more about the parent task]({{< docs_home union v2 >}}/user-guide/considerations/#driver-pod-requirements).
 
@@ -838,7 +838,7 @@ This is, 10 replicas (as defined in the `TaskEnvironment`) and the driver Pod th
 - Failure tolerance (critical = smaller batches for faster recovery)
 - Total workload size (larger total = can use larger batches)
 
-Read the [Optimization strategies]({{< docs_home union v2 >}}/user-guide/run-scaling/scale-your-workflows/#2-batch-workloads-to-reduce-overhead) page to understand the overheads associated with an execution and how to choose the appropiate batch size.
+Read the [Optimization strategies]({{< docs_home union v2 >}}/user-guide/run-scaling/scale-your-workflows/#2-batch-workloads-to-reduce-overhead) page to understand the overheads associated with an execution and how to choose the appropriate batch size.
 
 
 

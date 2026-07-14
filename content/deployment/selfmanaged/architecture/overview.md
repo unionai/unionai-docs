@@ -8,7 +8,7 @@ variants: -flyte +union
 
 The {{< key product_name >}} architecture consists of two components, referred to as planes — the control plane and the data plane.
 
-![](../../../_static/images/deployment/architecture.svg)
+![Diagram of the Union.ai platform architecture: user-facing surfaces and control-plane services on the Union side, connected over a secure channel to the customer's isolated Kubernetes data plane across cloud providers](../../../_static/images/deployment/byoc/platform-architecture/union-architecture.svg)
 
 ## Control plane
 

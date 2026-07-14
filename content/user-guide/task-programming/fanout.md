@@ -1,6 +1,6 @@
 ---
 title: Fanout
-weight: 16
+weight: 17
 variants: +flyte +union
 ---
 
@@ -8,6 +8,24 @@ variants: +flyte +union
 
 Flyte is designed to scale effortlessly, allowing you to run workflows with large fanouts.
 When you need to execute many tasks in parallel—such as processing a large dataset or running hyperparameter sweeps—Flyte provides powerful patterns to implement these operations efficiently.
+
+{{< note >}}
+In Flyte 1, mapping a task over many inputs used `map_task()` (the `flytekit.map_task` API). In Flyte 2, fan out with `asyncio.gather()` or `flyte.map()`.
+{{< /note >}}
+
+This page covers the general `asyncio.gather` fanout pattern. For applying the *same* task to every
+item of a list — the direct successor to Flyte 1's `map_task` — see [Mapping over inputs](./map).
+
+{{< variant union >}}
+{{< markdown >}}
+That page also covers concurrency limits, error handling, and use with reusable environments.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+That page also covers concurrency limits and error handling.
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< variant union >}}
 {{< markdown >}}
@@ -40,7 +58,7 @@ Next we implement the most common fanout pattern, which is to collect task invoc
 
 ### Running the example
 
-To actually run our example, we create a main guard that intializes Flyte and runs our main driver task:
+To actually run our example, we create a main guard that initializes Flyte and runs our main driver task:
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/fanout/fanout.py" fragment="run" lang="python" >}}
 

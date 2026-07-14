@@ -359,6 +359,13 @@ for task in tasks:
 
 **Managing API keys**
 
+Create a key:
+```bash
+flyte create api-key --name my-ci-key
+```
+
+This creates OAuth application credentials and prints an `export FLYTE_API_KEY="..."` command to use the key. OAuth applications should not be confused with Union Apps, which are a different construct entirely.
+
 List existing keys:
 ```bash
 flyte get api-key

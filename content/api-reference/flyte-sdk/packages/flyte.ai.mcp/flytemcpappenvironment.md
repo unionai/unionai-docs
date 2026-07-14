@@ -1,6 +1,6 @@
 ---
 title: FlyteMCPAppEnvironment
-version: 2.5.2
+version: 2.5.8
 variants: +flyte +union
 layout: py_api
 ---

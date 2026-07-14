@@ -1,0 +1,80 @@
+// markdownlint-cli2 config for the Union.ai / Flyte docs (DOC-967).
+//
+// Tuned PERMISSIVE for an existing Hugo docs corpus: the rules disabled below
+// are the ones a large body of already-published docs (long prose lines, Hugo
+// shortcodes / inline HTML, front matter, GFM callouts) trips on constantly and
+// which are style-preference rather than correctness. Keep the correctness-ish
+// rules (broken emphasis, list indentation, trailing spaces) on.
+//
+// This is the STARTING point. Tighten over time (re-enable a rule, fix the
+// fallout on changed files) rather than flipping everything on at once.
+{
+  "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/markdownlint-cli2-config-schema.json",
+
+  // Lint content only; never the generated API ref or prds-owned release notes,
+  // and not the build infra. (The workflow also scopes to changed files; this
+  // is the belt-and-suspenders for local `markdownlint-cli2` runs.)
+  "ignores": [
+    "content/api-reference/**",
+    "content/release-notes/**",
+    "node_modules/**",
+    "unionai-docs-infra/**",
+    "unionai-examples/**",
+    "**/*.py",
+    "**/*.ipynb"
+  ],
+
+  "config": {
+    "default": true,
+
+    // MD013 line-length: docs prose uses long, unwrapped lines. Off.
+    "MD013": false,
+
+    // MD033 inline HTML: Hugo shortcodes and raw HTML are used throughout. Off.
+    "MD033": false,
+
+    // MD041 first-line-heading: pages start with YAML front matter / shortcodes,
+    // not an H1. Off.
+    "MD041": false,
+
+    // MD025 single-H1 vs front-matter title: the front matter `title` is the H1,
+    // so don't double-count a body H1.
+    "MD025": { "front_matter_title": "" },
+
+    // MD024 duplicate headings: allow the same heading text under different
+    // parents (common in reference-style docs); only flag true siblings.
+    "MD024": { "siblings_only": true },
+
+    // MD046 code-block-style: mixed indented/fenced blocks exist. Off for now.
+    "MD046": false,
+
+    // MD060 table-column-style: the existing corpus uses compact tables
+    // (`|---|`) throughout; this is a style preference, not correctness. Off
+    // (consistent with the other table/style rules disabled here).
+    "MD060": false,
+
+    // MD040 fenced-code-language: many existing blocks omit a language. Off for
+    // now (re-enable later to encourage syntax highlighting).
+    "MD040": false,
+
+    // MD034 bare-URLs: bare URLs appear in existing content and in shortcodes. Off.
+    "MD034": false,
+
+    // MD029 ordered-list numbering: allow existing `1.`-repeated lists. Off.
+    "MD029": false,
+
+    // MD004 unordered-list-style: content mixes `-` and `*` bullet markers across
+    // (and within) pages; enforcing one marker is churn, not correctness. Off.
+    "MD004": false,
+
+    // MD036 emphasis-as-heading: docs use bold lead-ins that aren't headings. Off.
+    "MD036": false,
+
+    // MD026 trailing punctuation in headings: some headings legitimately end in
+    // `?` or `:`. Off.
+    "MD026": false,
+
+    // MD028 blank line inside blockquote: GFM `> [!NOTE]` callouts trip this. Off.
+    "MD028": false
+  }
+}

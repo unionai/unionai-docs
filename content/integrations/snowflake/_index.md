@@ -55,7 +55,7 @@ This defines a task called `count_users` that runs `SELECT COUNT(*) FROM users` 
 3. Polls until the query completes or fails
 4. Provides a link to the query in the Snowflake dashboard
 
-![Snowflake Link](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/integrations/snowflake/ui.png)
+![Snowflake Link](../../_static/images/integrations/snowflake/ui.png)
 
 To run the task, create a `TaskEnvironment` from it and execute it locally or remotely:
 

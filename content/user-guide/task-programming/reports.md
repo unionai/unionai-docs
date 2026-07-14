@@ -8,8 +8,25 @@ variants: +flyte +union
 
 The reports feature allows you to display and update custom output in the UI during task execution.
 
+{{< note >}}
+Reports are the Flyte 2 successor to **Decks** in Flyte 1. Where Flyte 1 used `enable_deck=True` and the `flytekit.Deck` API, Flyte 2 uses `report=True` and the `flyte.report` API described below.
+{{< /note >}}
+
 First, you set the `report=True` flag in the task decorator. This enables the reporting feature for that task.
 Within a task with reporting enabled, a `flyte.report.Report` object is created automatically.
+
+> [!NOTE] Import `flyte.report` explicitly
+> `flyte.report` is a submodule that `import flyte` does **not** import automatically.
+> You must import it explicitly:
+>
+> ```python
+> import flyte.report
+> ```
+>
+> Without this, calls like `flyte.report.replace()` or `flyte.report.flush()` raise
+> `AttributeError: module 'flyte' has no attribute 'report'` — most commonly hit in local or
+> notebook runs. This applies to all `flyte.*` submodules: import the specific submodule you use,
+> not just the top-level `flyte` package.
 
 A `Report` object contains one or more tabs, each of which contains HTML.
 You can write HTML to an existing tab and create new tabs to organize your content.
@@ -73,7 +90,7 @@ Finally, we run the workflow:
 
 When the workflow runs, the report will be visible in the UI:
 
-![Globe visualization](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/globe_visualization.png)
+![Globe visualization](../../_static/images/user-guide/globe_visualization.png)
 
 ## Streaming example
 
@@ -111,4 +128,4 @@ The key to the live update ability is the `while` loop that appends Javascript t
 
 When the workflow runs, you can see the report updating in real-time in the UI:
 
-![Data Processing Dashboard](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/data_processing_dashboard.png)
+![Data Processing Dashboard](../../_static/images/user-guide/data_processing_dashboard.png)
