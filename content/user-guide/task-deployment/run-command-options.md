@@ -8,7 +8,7 @@ variants: +flyte +union
 
 The `flyte run` command provides the following options:
 
-**`flyte run [OPTIONS] <PATH>|deployed_task <TASK_NAME>`**
+**`flyte run [OPTIONS] <PATH>|deployed-task <TASK_NAME>`**
 
 | Option                      | Short | Type   | Default                   | Description                                            |
 |-----------------------------|-------|--------|---------------------------|--------------------------------------------------------|
@@ -28,7 +28,7 @@ The `flyte run` command provides the following options:
 
 ## `--project`, `--domain`
 
-**`flyte run --domain <DOMAIN> --project <PROJECT> <PATH>|deployed_task <TASK_NAME>`**
+**`flyte run --domain <DOMAIN> --project <PROJECT> <PATH>|deployed-task <TASK_NAME>`**
 
 You can specify `--project` and `--domain` which will override any defaults defined in your `config.yaml`:
 
@@ -99,7 +99,7 @@ flyte run --copy-style all my_example.py my_task
 No code bundling (task must be pre-deployed):
 
 ```bash
-flyte run --copy-style none deployed_task my_deployed_task
+flyte run --copy-style none deployed-task my_deployed_task
 ```
 
 ### Copy style options
@@ -260,19 +260,149 @@ This advanced option works identically to the deploy command equivalent, useful 
 
 ## Task argument passing
 
-Arguments are passed directly as function parameters:
-
-CLI — arguments as flags:
+A task's inputs are passed **after** the task name. On the CLI every input is a **named option**, `--<input_name>`, followed by a value when the type requires one, where `<input_name>` is the exact parameter name in the task's function signature:
 
 ```bash
-flyte run my_file.py my_task --name "World" --count 5 --debug true
+flyte run my_file.py my_task --name "World" --count 5 --verbose
 ```
 
-SDK — arguments as function parameters:
+The equivalent SDK call passes the same inputs as keyword arguments:
 
 ```python
-result = flyte.run(my_task, name="World", count=5, debug=True)
+result = flyte.run(my_task, name="World", count=5, verbose=True)
 ```
+
+A few rules apply to every input:
+
+- **The option name matches the parameter name exactly, including underscores.** A parameter `event_time` is passed as `--event_time` (not `--event-time`).
+- **Quote any value that contains spaces**, for example `--name "Ada Lovelace"`.
+- **An input with a default is optional**; an input with no default is required.
+
+### Passing inputs by type
+
+Flyte parses each value according to the parameter's Python type. The type-specific syntax is summarized below and detailed in the following sections.
+
+| Python type | CLI syntax | Example |
+|---|---|---|
+| `str` | Plain text (quote if it contains spaces) | `--name "Ada"` |
+| `int` | Integer literal | `--count 5` |
+| `float` | Decimal literal | `--rate 0.01` |
+| `bool` | A flag (see [Boolean inputs](#boolean-inputs)) | `--verbose` |
+| `datetime.datetime` / `datetime.date` | ISO 8601, `now`, `today`, or a relative expression | `--start 2024-01-15` |
+| `datetime.timedelta` | ISO 8601 duration or a human-readable duration | `--timeout PT2H30M` |
+| `enum.Enum` | The **member name** (case-sensitive) | `--color RED` |
+| `list` / `dict` | A JSON literal (or a path to a `.json`/`.yaml` file) | `--nums '[1, 2, 3]'` |
+| dataclass / Pydantic model / `TypedDict` / `NamedTuple` | A JSON literal (or a path to a `.json`/`.yaml` file) | `--config '{"lr": 0.01}'` |
+| `flyte.io.File` / `flyte.io.Dir` | A local path or a remote URI | `--data ./input.csv` |
+| `flyte.io.DataFrame` | A path to a `.parquet` or `.csv` file (local or remote) | `--df ./data.parquet` |
+
+The `now`/`today`, relative-datetime, human-duration, and JSON-string forms are **CLI conveniences**. When you call `flyte.run()` programmatically, pass the corresponding native Python objects instead (a `datetime.datetime`, a `datetime.timedelta`, a dataclass instance, and so on).
+
+### Boolean inputs
+
+A `bool` input is a **flag**, not a value-taking option — do not write `--debug true`.
+
+- If the parameter defaults to `False` (or has no default), pass the bare flag to set it `True`, and omit it to leave it `False`:
+
+  ```bash
+  flyte run my_file.py my_task --verbose      # verbose=True
+  flyte run my_file.py my_task                # verbose=False
+  ```
+
+- If the parameter defaults to `True`, Flyte also registers a `--no-` form so you can turn it off:
+
+  ```bash
+  flyte run my_file.py my_task --no-cache     # cache=False
+  ```
+
+### Datetime and duration inputs
+
+A `datetime.datetime` (or `datetime.date`) input accepts an ISO 8601 timestamp, the keywords `now` or `today`, or a **relative expression** of the form `<base> <+|-> <ISO 8601 duration>` (the spaces around the sign are required, so quote the value):
+
+```bash
+flyte run my_file.py my_task --start 2024-01-15
+flyte run my_file.py my_task --start "2024-01-15T13:30:00"
+flyte run my_file.py my_task --start now
+flyte run my_file.py my_task --start "now - P1D"        # 24 hours ago
+flyte run my_file.py my_task --start "today + P1DT2H"   # tomorrow, 02:00
+```
+
+A `datetime.timedelta` input accepts an ISO 8601 duration or a human-readable duration (`<minutes>:<seconds>`, or a value with a unit such as `days`, `hours`, `minutes`, `seconds`):
+
+```bash
+flyte run my_file.py my_task --timeout P1DT2H30M    # 1 day, 2 hours, 30 minutes
+flyte run my_file.py my_task --timeout "10 days"
+flyte run my_file.py my_task --timeout "1 minute"
+flyte run my_file.py my_task --timeout 1:24         # 1 minute, 24 seconds
+```
+
+### Enum inputs
+
+For an `enum.Enum` input, pass the **name** of the member (case-sensitive), not its value:
+
+```python
+# my_file.py
+import enum
+
+class Color(enum.Enum):
+    RED = "red"
+    GREEN = "green"
+```
+
+```bash
+flyte run my_file.py my_task --color RED
+```
+
+### List, dict, dataclass, and other structured inputs
+
+Collections (`list`, `dict`) and structured types (dataclasses, Pydantic models, `TypedDict`, `NamedTuple`) are passed as a **JSON literal**:
+
+```bash
+flyte run my_file.py my_task --nums '[1, 2, 3]'
+flyte run my_file.py my_task --mapping '{"a": 1, "b": 2}'
+flyte run my_file.py my_task --config '{"lr": 0.01, "epochs": 5}'
+```
+
+For anything larger than a one-liner, pass a **path to a `.json` or `.yaml` file** instead — Flyte reads and parses the file:
+
+```bash
+flyte run my_file.py my_task --config ./config.yaml
+```
+
+### File, directory, and dataframe inputs
+
+A `flyte.io.File`, `flyte.io.Dir`, or `flyte.io.DataFrame` input accepts either a **local path** or a **remote URI**. A local path is uploaded to the run's data store before execution; a remote URI (for example `s3://…` or `gs://…`) is used as-is. Under `--local`, the local path is used directly without uploading:
+
+```bash
+flyte run my_file.py my_task --data ./input.csv
+flyte run my_file.py my_task --data s3://my-bucket/input.csv
+flyte run my_file.py my_task --df ./data.parquet
+```
+
+### Optional inputs
+
+An `Optional[...]` input (or any input with a default) is not required — omit the option to leave it at its default:
+
+```bash
+flyte run my_file.py my_task --count 5      # `name` omitted, uses its default
+```
+
+## Positional arguments
+
+**The CLI has no positional form for task inputs.** `flyte run` always passes inputs as named options (`--<input_name>`), as shown above — there is no `flyte run my_file.py my_task "World" 5` form.
+
+Positional arguments apply only when you invoke a task **programmatically**. `flyte.run()`, and a direct (native) call to one task from inside another, accept positional arguments and map them to the task's parameters in signature order:
+
+```python
+# Positional and keyword forms are equivalent here:
+flyte.run(greet, "Good morning!")
+flyte.run(greet, message="Good morning!")
+```
+
+Two caveats apply:
+
+- **Deployed tasks are keyword-only.** A task retrieved with `flyte.remote.Task.get()` (or run via the `deployed-task` CLI subcommand) does **not** accept positional arguments — pass its inputs by keyword (or, on the CLI, as `--<input_name>` options).
+- **Don't provide the same input both positionally and by keyword.**
 
 ## SDK options
 
