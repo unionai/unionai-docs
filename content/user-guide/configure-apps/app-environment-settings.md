@@ -61,7 +61,7 @@ This is particularly useful for passing API keys or other sensitive values to co
 > [!TIP]
 > For most `AppEnvironment`s, use `args` instead of `command` to specify the app startup command
 > in the container. This is because `args` will use the `fserve` command to run the app, which
-> unlocks features like local code bundling and file/directory mounting via parameter injection.
+> enables features like local code bundling and file/directory mounting via parameter injection.
 
 ## App startup
 

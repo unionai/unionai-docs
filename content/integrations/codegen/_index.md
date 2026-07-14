@@ -126,9 +126,9 @@ agent = AutoCoderAgent(
 
 In Agent mode, Bash commands are classified before execution:
 
-- **Safe** (`ls`, `cat`, `grep`, `head`, etc.) — allowed to run directly
-- **Intercepted** (`pytest`) — routed to sandbox execution
-- **Denied** (`apt`, `pip install`, `curl`, etc.) — blocked for safety
+- **Safe** (`ls`, `cat`, `grep`, `head`, etc.): allowed to run directly
+- **Intercepted** (`pytest`): routed to sandbox execution
+- **Denied** (`apt`, `pip install`, `curl`, etc.): blocked for safety
 
 ## Providing data
 
@@ -137,12 +137,12 @@ In Agent mode, Bash commands are classified before execution:
 Pass sample data via `samples` as `File` objects or pandas `DataFrame`s. The plugin automatically:
 
 1. Converts DataFrames to CSV files
-2. Infers [Pandera](https://pandera.readthedocs.io/) schemas from the data — column types, nullability
+2. Infers [Pandera](https://pandera.readthedocs.io/) schemas from the data: column types, nullability
 3. Parses natural-language `constraints` into Pandera checks (e.g., `"quantity must be positive"` becomes `pa.Check.gt(0)`)
-4. Extracts data context — column statistics, distributions, patterns, sample rows
+4. Extracts data context: column statistics, distributions, patterns, sample rows
 5. Injects all of this into the LLM prompt so the generated code is aware of the exact data structure
 
-Pandera is used purely for prompt enrichment, not runtime validation. The generated code does not import Pandera — it benefits from the LLM knowing the precise data structure. The generated schemas are stored on `result.generated_schemas` for inspection.
+Pandera is used purely for prompt enrichment, not runtime validation. The generated code does not import Pandera; it benefits from the LLM knowing the precise data structure. The generated schemas are stored on `result.generated_schemas` for inspection.
 
 ```python{hl_lines=[3]}
 result = await agent.generate.aio(
@@ -190,7 +190,7 @@ Declare `inputs` for non-sample arguments (e.g., thresholds, flags) and `outputs
 
 Supported output types: `str`, `int`, `float`, `bool`, `datetime.datetime`, `datetime.timedelta`, `File`.
 
-Sample entries are automatically added as `File` inputs — you do not need to redeclare them.
+Sample entries are automatically added as `File` inputs; you do not need to redeclare them.
 
 ```python{hl_lines=[4, 5]}
 result = await agent.generate.aio(
@@ -267,7 +267,7 @@ In Agent mode, the agent diagnoses and fixes issues autonomously based on error 
 
 ## Durable execution
 
-Code generation is expensive — it involves multiple LLM calls, image builds, and sandbox executions. Without durability, a transient failure in the pipeline (network blip, OOM, downstream service error) would force the entire process to restart from scratch: regenerating code, rebuilding images, re-running sandboxes, making additional LLM calls.
+Code generation is expensive: it involves multiple LLM calls, image builds, and sandbox executions. Without durability, a transient failure in the pipeline (network blip, OOM, downstream service error) would force the entire process to restart from scratch: regenerating code, rebuilding images, re-running sandboxes, making additional LLM calls.
 
 Flyte solves this through two complementary mechanisms: **replay logs** and **caching**.
 
@@ -284,13 +284,13 @@ The workflow breezes through the earlier steps and resumes from the failure poin
 
 ### Caching
 
-Separately, Flyte can cache task results across runs. With `cache="auto"`, sandbox executions (image builds, test runs, code execution) are cached. This is useful when you re-run the same pipeline — not just when recovering from a crash, but across entirely separate invocations with the same inputs.
+Separately, Flyte can cache task results across runs. With `cache="auto"`, sandbox executions (image builds, test runs, code execution) are cached. This is useful when you re-run the same pipeline, not just when recovering from a crash, but across entirely separate invocations with the same inputs.
 
 Together, replay logs handle crash recovery within a run, and caching avoids redundant work across runs.
 
 ### Non-determinism in agent mode
 
-One challenge with agents is that they are inherently non-deterministic — the sequence of actions can vary between runs, which could break replay.
+One challenge with agents is that they are inherently non-deterministic: the sequence of actions can vary between runs, which could break replay.
 
 In practice, the codegen agent follows a predictable pattern (write code, generate tests, run tests, inspect results), which works in replay's favor. The plugin also embeds logic that instructs the agent not to regenerate or re-execute steps that already completed successfully in the first run. This acts as an additional safety check alongside the replay log to account for non-determinism.
 

@@ -7,7 +7,7 @@ variants: +flyte +union
 # External conditions
 
 An **external condition** is a first-class action that pauses a running task until an external
-signal arrives — a human approval, a callback from an external service, or a value supplied at
+signal arrives: a human approval, a callback from an external service, or a value supplied at
 runtime. The paused action stays observable, resumable, and governable like any other action, so
 you no longer need polling loops or side processes to wait on something the workflow can't produce
 itself.
@@ -31,7 +31,7 @@ returns:
 
 ## Example: human approval
 
-A typed approval gate with a timeout — the most common use case:
+A typed approval gate with a timeout (the most common use case):
 
 ```python
 from datetime import timedelta
@@ -61,7 +61,7 @@ raises `flyte.errors.ConditionTimedoutError`.
 
 ## Example: string input at runtime
 
-A condition can collect a typed value — not just a yes/no — and feed it back into the workflow.
+A condition can collect a typed value (not just a yes/no) and feed it back into the workflow.
 Here the task waits for a free-form string before continuing:
 
 ```python
@@ -100,7 +100,7 @@ flyte.new_condition(
 | `name` | `str` | required | Identifier for the condition within the parent action. Signal it with this name (`flyte signal condition <run> <name>`) or look it up with `flyte.remote.Condition.get("<name>", ...)`. |
 | `prompt` | `str` | `"Approve?"` | Human-readable text shown in the UI signal form. |
 | `prompt_type` | `"text"` \| `"markdown"` | `"text"` | How the prompt is rendered. |
-| `data_type` | `type` | `bool` | Payload type — one of `bool`, `int`, `float`, `str`. Determines what `wait()` returns and what a signal must supply. |
+| `data_type` | `type` | `bool` | Payload type: one of `bool`, `int`, `float`, `str`. Determines what `wait()` returns and what a signal must supply. |
 | `description` | `str` | `""` | Longer explanation rendered alongside the prompt. |
 | `timeout` | `timedelta` \| `int` \| `float` \| `None` | `None` | Maximum wait. If it elapses with no signal, `wait()` raises `flyte.errors.ConditionTimedoutError`. |
 

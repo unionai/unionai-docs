@@ -14,8 +14,8 @@ This tutorial demonstrates an autonomous security-research agent on Flyte. The p
 Flyte provides:
 
 - **Parallel fan-out** across every target file with `asyncio.gather`
-- **Self-healing tasks** — LLM timeouts, malformed JSON, and OOM during static analysis retry with bounded resources
-- **Sandbox isolation** — PoC compilation and execution never runs on the orchestration node
+- **Self-healing tasks**: LLM timeouts, malformed JSON, and OOM during static analysis retry with bounded resources
+- **Sandbox isolation**: PoC compilation and execution never runs on the orchestration node
 - **Live HTML reports** with per-target detail tabs in the Flyte UI
 
 > [!WARNING]

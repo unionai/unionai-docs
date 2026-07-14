@@ -10,7 +10,7 @@ variants: -flyte +union
 versioned file system that they mount and read and write like a local directory.
 A Volume is mounted **inside the task pod** with [FUSE](https://www.kernel.org/doc/html/latest/filesystems/fuse.html),
 so on a self-managed cluster the data plane must allow task pods to perform a
-FUSE mount. By default it does not — you enable it per cluster by
+FUSE mount. By default it does not. You enable it per cluster by
 turning on the **FUSE device-plugin DaemonSet** described below.
 
 ## Why a device plugin is required
@@ -27,7 +27,7 @@ The dataplane chart ships an opt-in **FUSE device-plugin DaemonSet** that
 advertises the host `/dev/fuse` device as the Kubernetes extended resource
 `smarter-devices/fuse`. When it is enabled, a task pod that requests
 `smarter-devices/fuse` gets `/dev/fuse` injected into its devices-cgroup
-allowlist and can complete the mount with only the `CAP_SYS_ADMIN` capability —
+allowlist and can complete the mount with only the `CAP_SYS_ADMIN` capability:
 **no privileged container and no `/dev/fuse` hostPath**.
 
 {{< variant union >}}
@@ -36,7 +36,7 @@ allowlist and can complete the mount with only the `CAP_SYS_ADMIN` capability �
 > [!NOTE]
 > {{< key product_name >}} adds the `smarter-devices/fuse` request and the
 > `CAP_SYS_ADMIN` capability to volume-mounting task pods automatically. You only
-> need to enable the device plugin — your users do not change their task code.
+> need to enable the device plugin; your users do not change their task code.
 > Privilege is confined to the DaemonSet; the workloads it serves stay
 > unprivileged.
 
@@ -122,7 +122,7 @@ The `fuseDevicePlugin` values block in the dataplane chart:
 
 ## Using Volumes
 
-Once the device plugin is enabled, no further setup is needed — users create and
+Once the device plugin is enabled, no further setup is needed. Users create and
 mount Volumes directly from their task code. See the
 [Volumes user guide](../../../user-guide/task-programming/volumes) for the
 programming model.

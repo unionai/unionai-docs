@@ -850,7 +850,7 @@ This notebook demonstrated a production-ready micro-batching pattern for Flyte v
 1. **Reusable Containers** for efficiency
 2. **@flyte.trace** for checkpointing and recovery
 3. **Massive parallelism** via async/await
-4. **Robust error handling** for resilience
+4. **Error handling** for resilience
 
 **Key Takeaways:**
 - Use `@flyte.trace` for non-deterministic operations

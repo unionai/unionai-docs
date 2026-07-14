@@ -23,13 +23,13 @@ code path, or clean up and re-raise.
 When a downstream task fails, the failure propagates to the awaiting parent task as an exception from the
 `flyte.errors` module. Every native exception derives from a small hierarchy of base classes:
 
-- `flyte.errors.BaseRuntimeError` — the root of all Flyte runtime errors.
-- `flyte.errors.RuntimeUserError` — the failure was caused by your code (a bug, an exception you raised, an
-  out-of-memory condition, and so on). An exception you raise inside a task—say a `ValueError`—is wrapped and
+- `flyte.errors.BaseRuntimeError`: the root of all Flyte runtime errors.
+- `flyte.errors.RuntimeUserError`: the failure was caused by your code (a bug, an exception you raised, an
+  out-of-memory condition, and so on). An exception you raise inside a task, say a `ValueError`, is wrapped and
   surfaces to the parent as a `flyte.errors.RuntimeUserError`.
-- `flyte.errors.RuntimeSystemError` — the failure was caused by the platform rather than your code.
-- `flyte.errors.RuntimeUnknownError` — the failure could not be classified as a user or system error.
-Every concrete error carries a `code` attribute (a short, stable string identifier — often the exception's class name, e.g. `"TaskTimeoutError"`) that you can
+- `flyte.errors.RuntimeSystemError`: the failure was caused by the platform rather than your code.
+- `flyte.errors.RuntimeUnknownError`: the failure could not be classified as a user or system error.
+Every concrete error carries a `code` attribute (a short, stable string identifier, often the exception's class name, e.g. `"TaskTimeoutError"`) that you can
 inspect when logging or branching. Because the errors form a hierarchy, you can catch broadly
 (`except flyte.errors.RuntimeUserError`) or narrowly (`except flyte.errors.OOMError`), depending on how specific
 your recovery logic needs to be.
@@ -61,7 +61,7 @@ the optimal memory setting across runs, see the
 [`resource_tuner` example](https://github.com/flyteorg/flyte-sdk/blob/main/examples/advanced/resource_tuner.py).
 
 > [!NOTE] Programmatic recovery vs. automatic retries
-> Catching an exception and re-running a task is *programmatic* recovery—you decide what to do differently on
+> Catching an exception and re-running a task is *programmatic* recovery: you decide what to do differently on
 > the next attempt. This is distinct from Flyte's *automatic* retries (`retries=N` on a task), which simply
 > re-run the same attempt unchanged. The two compose: automatic retries handle transient failures, while a
 > `try...except` handles failures you want to respond to deliberately. See
@@ -69,7 +69,7 @@ the optimal memory setting across runs, see the
 
 ## Limiting inline I/O
 
-Small task inputs and outputs are passed *inline*—embedded directly in the task's metadata—rather than offloaded
+Small task inputs and outputs are passed *inline* (embedded directly in the task's metadata) rather than offloaded
 to blob storage. This is fast, but very large inline values are undesirable, so each task has a ceiling on the
 size of its inline I/O. You set this ceiling with the `max_inline_io_bytes` parameter on `@env.task`, and Flyte
 raises a `flyte.errors.InlineIOMaxBytesBreached` when an input or output exceeds it:
@@ -127,10 +127,10 @@ care about. The most commonly caught errors are:
 | `flyte.errors.NonRecoverableError` | A failure that should not be retried, regardless of the retry budget. |
 
 These all derive from `flyte.errors.RuntimeUserError`, so a single `except flyte.errors.RuntimeUserError`
-catches any of them when you want uniform handling. This is only a selection—for the complete catalog of
+catches any of them when you want uniform handling. This is only a selection. For the complete catalog of
 catchable exception classes, see the [`flyte.errors` API reference](../../api-reference/flyte-sdk/packages/flyte.errors/_index).
 
 ## Related pages
 
-- [Retries and timeouts](../task-configuration/retries-and-timeouts) — configure automatic retries and execution time limits.
-- [Abort and cancel actions](./abort-tasks) — stop actions programmatically or externally, and handle `flyte.errors.ActionAbortedError`.
+- [Retries and timeouts](../task-configuration/retries-and-timeouts): configure automatic retries and execution time limits.
+- [Abort and cancel actions](./abort-tasks): stop actions programmatically or externally, and handle `flyte.errors.ActionAbortedError`.

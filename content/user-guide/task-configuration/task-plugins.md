@@ -30,8 +30,8 @@ Flyte supports several popular distributed computing frameworks through compute 
 Compute plugins create temporary, isolated clusters within the same Kubernetes environment as Flyte:
 
 1. **Ephemeral clusters**: Each task execution gets its own cluster, spun up on-demand
-2. **Kubernetes operators**: Flyte leverages specialized Kubernetes operators (Spark operator, Ray operator, etc.) to manage cluster lifecycle
-3. **Native containerization**: The same container image system used for regular tasks works seamlessly with compute plugins
+2. **Kubernetes operators**: Flyte uses specialized Kubernetes operators (Spark operator, Ray operator, etc.) to manage cluster lifecycle
+3. **Native containerization**: The same container image system used for regular tasks works with compute plugins
 4. **Per-environment configuration**: You can define the cluster shape (number of workers, resources, etc.) using `plugin_config` in your `TaskEnvironment`
 
 ### Using compute plugins
@@ -97,7 +97,7 @@ Most compute plugins are enabled by default on Union or can be enabled upon requ
 
 ## Backend integrations
 
-Beyond compute plugins, Flyte also supports **integrations** with external SaaS services and internal systems through **connectors**. These allow you to seamlessly interact with:
+Beyond compute plugins, Flyte also supports **integrations** with external SaaS services and internal systems through **connectors**. These allow you to interact with:
 
 - **Data warehouses**: Snowflake, BigQuery, Redshift
 - **Data platforms**: Databricks

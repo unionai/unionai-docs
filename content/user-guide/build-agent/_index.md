@@ -14,8 +14,8 @@ This section covers how to build, deploy, and run agentic AI applications on {{<
 
 Building an agent on {{< key product_name >}} breaks down into two **orthogonal** choices:
 
-1. **How you build the agent loop** — plain Python, the built-in `flyte.ai.agents.Agent` harness, or a third-party framework (LangGraph, PydanticAI, OpenAI Agents SDK).
-2. **How you deploy and run it** — as a task you invoke on demand, as a scheduled task driven by a `flyte.Trigger`, or as a long-running app (e.g. a webhook or chat UI).
+1. **How you build the agent loop**: plain Python, the built-in `flyte.ai.agents.Agent` harness, or a third-party framework (LangGraph, PydanticAI, OpenAI Agents SDK).
+2. **How you deploy and run it**: as a task you invoke on demand, as a scheduled task driven by a `flyte.Trigger`, or as a long-running app (e.g. a webhook or chat UI).
 
 Any agent from axis (1) can be deployed via any pattern in axis (2). The two are independent, so you can start with a pure-Python loop run on demand and later move it behind a schedule or a webhook without rewriting the agent.
 

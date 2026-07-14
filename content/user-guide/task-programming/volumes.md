@@ -8,7 +8,7 @@ description: A durable, versioned file system that tasks mount and read and writ
 # Volumes
 
 A **Volume** is a durable file system that your task mounts and uses like an
-ordinary local directory — backed by object storage, but with real file-system
+ordinary local directory, backed by object storage, but with real file-system
 semantics: open, read, write, list, and seek over many files in place.
 
 Unlike [`flyte.io.File` and `flyte.io.Dir`](./files-and-directories), which pass
@@ -32,12 +32,12 @@ your data is shaped and used.
 | **Best for** | Handing a finished artifact to the next task | Evolving, file-system-heavy state |
 
 If you just need to hand a finished file or folder from one task to the next,
-reach for [`flyte.io.File` or `flyte.io.Dir`](./files-and-directories) — they're
+reach for [`flyte.io.File` or `flyte.io.Dir`](./files-and-directories). They're
 simpler and need no setup. Choose a Volume when you need a *mountable, durable
 file system* that evolves over time.
 
 > [!NOTE]
-> A Volume is a durable, network-backed file system — not an in-memory cache.
+> A Volume is a durable, network-backed file system, not an in-memory cache.
 > Use it when you want file-system semantics over durable, shared data
 > (mounting, partial and random reads, tools that expect files on disk). It is
 > **not** a way to speed up model loading: pulling weights into memory through a
@@ -50,22 +50,22 @@ Volumes fit AI and agentic workloads, where work is long-running, stateful, and
 file-heavy:
 
 - **Agent memory and state.** Give an agent a durable workspace it builds up
-  across turns, tasks, and sessions — notes, intermediate artifacts, a growing
-  working set of files — and resume exactly where it left off, instead of
+  across turns, tasks, and sessions (notes, intermediate artifacts, a growing
+  working set of files) and resume exactly where it left off, instead of
   starting cold each run.
 - **Sandboxes and code execution.** Back a [sandbox](../sandboxing/_index) or
   code-execution environment with a Volume so agent- or model-generated code has
   a real, writable file system to work in. Fork a clean base per session so
   concurrent runs stay isolated from each other.
 - **Shared, durable datasets.** Keep a dataset, index, or other large working
-  set on a Volume and mount it from many tasks to read — or fork and update — it
+  set on a Volume and mount it from many tasks to read (or fork and update) it
   as files, without re-fetching or re-uploading the whole thing each run.
 - **Branching experiments.** Fork a base Volume per experiment or per run;
   copy-on-write makes each branch independent and cheap, with version history to
   compare against or roll back to.
 
 More broadly, reach for a Volume whenever you need **long-lived, versioned
-state** that carries forward across tasks or runs — anything you'd otherwise
+state** that carries forward across tasks or runs: anything you'd otherwise
 rebuild from scratch every time.
 
 ## Read-write and read-only volumes
@@ -73,10 +73,10 @@ rebuild from scratch every time.
 A Volume is always one of two types, and the type tells you what you can do with
 it:
 
-- **`RWVolume`** — a writable handle. `Volume.new()` returns one. Mount it,
+- **`RWVolume`**: a writable handle. `Volume.new()` returns one. Mount it,
   write to it, and `commit()` to record an immutable version. While it is
   mounted it is the **single writer**.
-- **`ROVolume`** — an immutable, committed version. Mount it read-only to read
+- **`ROVolume`**: an immutable, committed version. Mount it read-only to read
   its contents. To change it, `fork()` it into a new `RWVolume`.
 
 Because the type is part of a task's signature, the read/write contract is
@@ -115,7 +115,7 @@ Two pieces make a mount possible, and you need both:
 > **`flyte.PodTemplate.allow_fuse()`** grants the *kernel* side: it requests the
 > FUSE device resource and adds the capability the mount needs, without running
 > the container as privileged. Your cluster must run a FUSE device plugin for
-> this — the Union data plane ships an opt-in one. (For clusters without it,
+> this. The Union data plane ships an opt-in one. (For clusters without it,
 > `allow_fuse(privileged=True)` is a fallback that runs the container
 > privileged.)
 >
@@ -159,21 +159,21 @@ async def main() -> str:
 ```
 
 `Volume.new()` hands you a writable `RWVolume`. When you return it from a task,
-your writes are flushed and the volume is committed into an immutable `ROVolume`
-— a durable version safe to pass between tasks. The next task receives that
+your writes are flushed and the volume is committed into an immutable `ROVolume`:
+a durable version safe to pass between tasks. The next task receives that
 `ROVolume` and mounts the exact same data.
 
 > [!NOTE]
 > Returning a mounted `RWVolume` commits and unmounts it for you. To attach a
 > message to that final version, return `finalize()` explicitly:
 > `return await vol.finalize(message="initial dataset")`. To record a version
-> *partway* through a task without unmounting, use `commit()` — see
+> *partway* through a task without unmounting, use `commit()`. See
 > [Checkpoint while you work](#checkpoint-while-you-work).
 
 ## Updating a volume by forking
 
 An `ROVolume` is immutable, so you never edit one in place. Instead you **fork**
-it — creating an independent, writable `RWVolume` branch — then write and commit
+it (creating an independent, writable `RWVolume` branch), then write and commit
 a new version:
 
 ```python
@@ -190,7 +190,7 @@ async def add_file(vol: ROVolume) -> ROVolume:
 Forking is **copy-on-write**: the branch shares all unchanged data with its
 parent and only stores what you actually change, so it stays cheap even for very
 large Volumes. The parent version is never touched, so you keep a clean lineage
-of versions to compare against or roll back to. Forks are also isolated — two
+of versions to compare against or roll back to. Forks are also isolated: two
 branches (or two parallel runs) can write at the same time without clobbering
 each other.
 
@@ -200,7 +200,7 @@ A Volume has a **single writer** while it is mounted. One task mounts an
 `RWVolume`, writes, and commits; mounting the *same* volume read-write from two
 tasks at once is not supported, and there is no distributed file locking.
 
-To write in parallel, don't share one mount — **fork**. Each fork is an
+To write in parallel, don't share one mount: **fork**. Each fork is an
 independent `RWVolume` on a disjoint key space, so branches never collide, even
 when they run at the same time:
 
@@ -222,13 +222,13 @@ async def fan_out(base: ROVolume) -> list[ROVolume]:
 
 Each branch commits its own immutable version; downstream you can read them
 independently or fork a new branch from any of them. Reading is never
-restricted — any number of tasks can mount the same `ROVolume` read-only at once.
+restricted: any number of tasks can mount the same `ROVolume` read-only at once.
 
 ## Going further
 
 ### Checkpoint while you work
 
-Use `commit()` to record a version **without unmounting** — useful in
+Use `commit()` to record a version **without unmounting**: useful in
 long-running loops where you want a durable point you can resume from if the run
 is interrupted:
 
@@ -248,14 +248,14 @@ async def train(base: ROVolume) -> ROVolume:
 
 Each `commit()` records a durable, immutable version you can resume from. Those
 versions are **retained**, so commit on a cadence that matches how often you'd
-actually want to roll back — checkpoint periodically rather than every step, and
+actually want to roll back: checkpoint periodically rather than every step, and
 prune versions you no longer need.
 
 ### Reference a volume across runs
 
 The usual way to receive a volume is as a typed task input or from
 `run.outputs`. When you instead want to pin a **specific version** and reach it
-from an unrelated run — a config value, a scheduled job, an external system —
+from an unrelated run (a config value, a scheduled job, an external system),
 save its **locator**. Every committed version exposes one via the `locator`
 property: a stable object-store address you can store anywhere.
 
@@ -269,7 +269,7 @@ async def publish() -> str:
     return ro.locator                       # e.g. persist this string somewhere
 ```
 
-Later — in a different run, with no shared task input — load it back with
+Later, in a different run, with no shared task input, load it back with
 `Volume.from_locator`. It returns a read-only `ROVolume` with everything
 recovered (the data index, bucket, store type, stats and lineage), so you can
 mount it directly or `fork()` it to branch and write:
@@ -284,13 +284,13 @@ async def consume(addr: str) -> int:
 
 The locator stays resolvable as long as the producing run's outputs are
 retained. `locator` is `None` for a freshly created volume that hasn't been
-committed yet — there's no published version to point at.
+committed yet: there's no published version to point at.
 
 ### High-throughput mode
 
 The default configuration suits most workloads. For workloads that create or
-update **very large numbers of files** — package installs, build trees, code
-generation — switch on high-throughput mode by preparing the image with
+update **very large numbers of files** (package installs, build trees, code
+generation), switch on high-throughput mode by preparing the image with
 `flyteplugins.union.io.with_high_throughput_volume_deps`:
 
 ```python
@@ -307,12 +307,12 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-Volumes created in this environment automatically use the faster metadata path —
-no change to your task code is required.
+Volumes created in this environment automatically use the faster metadata path.
+No change to your task code is required.
 
 ### Tuning the mount
 
-`mount()` accepts options to match the I/O profile of your workload — where to
+`mount()` accepts options to match the I/O profile of your workload: where to
 mount, how aggressively to upload, and how long to cache metadata:
 
 ```python
@@ -342,12 +342,12 @@ The two-package setup above (`flyteplugins-union` + `fuse3`) works on top of any
 image built from `flyte.Image.from_debian_base()`. If you bring a **fully custom
 image** (your own Dockerfile / base), it must satisfy the same two requirements:
 
-1. **The volume client** — `pip install flyteplugins-union`. The wheel bundles
+1. **The volume client**: `pip install flyteplugins-union`. The wheel bundles
    the mount binary, so there's nothing else to fetch.
-2. **FUSE userspace tools** — the `fuse3` package. The mount runs unprivileged,
+2. **FUSE userspace tools**: the `fuse3` package. The mount runs unprivileged,
    so `fusermount3` **must be setuid-root**; the Debian package's post-install
    sets that bit, so install it with the package manager (don't just copy the
-   binary in — a copy loses the setuid bit and the mount fails with `EPERM`).
+   binary in; a copy loses the setuid bit and the mount fails with `EPERM`).
 
 In a Dockerfile that's:
 
@@ -371,7 +371,7 @@ and the cluster must run a FUSE device plugin (the Union data plane ships one).
 
 To browse a volume without mounting it, use the CLI. `flyte explore volume`
 opens an interactive view of a volume's file tree and its version history,
-reading only the small metadata index — no FUSE mount and no file downloads:
+reading only the small metadata index (no FUSE mount and no file downloads):
 
 ```bash
 # Explore the volume produced by a run (auto-discovers the volume output)
@@ -393,15 +393,15 @@ differently from a local disk. Know the trade-offs before reaching for one:
 - **It is not local memory or disk.** Reads and writes go through a cache over
   object storage. Sequential, file-system-style I/O is fast, but small random
   operations have higher latency than `tmpfs` or a local SSD. For raw throughput
-  into memory — streaming model weights, say — a purpose-built loader reading
+  into memory (streaming model weights, say), a purpose-built loader reading
   directly from object storage will beat mounting a Volume.
 - **Writes are decoupled from durability.** With write-back (the default),
   writes land in a local cache and upload in the background; the cost of making
   them durable is paid at `commit()` / `finalize()`, not on each write. Budget
   for commit time separately from your write loop.
 - **Per-file work dominates with many small files.** Mounting itself stays fast
-  even with tens of thousands of files, but operations that touch every file —
-  creating or traversing them — are bounded by per-file metadata cost. The
+  even with tens of thousands of files, but operations that touch every file
+  (creating or traversing them) are bounded by per-file metadata cost. The
   metadata cache TTLs and [high-throughput mode](#high-throughput-mode) exist to
   absorb this; reach for them on file-count-heavy workloads.
 - **Versions are retained.** Every commit keeps an immutable version, so commit
@@ -430,7 +430,7 @@ Volume-specific costs (no local-disk equivalent):
 | Mount time, 100 → 50,000 files | ~0.55 s → ~0.63 s | ~0.75 s → ~0.99 s |
 | Commit 512 MB to durable storage | ~3.3 s (~160 MB/s) | ~3.3 s (~160 MB/s) |
 
-High-throughput mode only changes **metadata** operations — writes and commits
+High-throughput mode only changes **metadata** operations: writes and commits
 are identical (same data path). It speeds those up sharply (here, `stat` ~4×,
 create ~1.7×) by keeping the volume's whole namespace **resident in memory**, so
 its RAM grows with file count and the mount is a touch slower (it loads that
@@ -438,7 +438,7 @@ namespace at startup). Reach for it on metadata-heavy workloads; the default
 mode's lower memory and faster mount win otherwise.
 
 In other words, a Volume trades raw speed for durability and sharing. Sequential
-writes run ~0.4× local disk — even though uploads are async, each write still
+writes run ~0.4× local disk: even though uploads are async, each write still
 passes through the FUSE layer and the client's chunking/hashing into the cache.
 The gap is widest for **many small files** (create ~12× slower, stat ~7× slower),
 so batch those or keep them on local scratch. Mounting stays sub-second even at

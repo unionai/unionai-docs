@@ -289,7 +289,7 @@ This requires the Prometheus Operator CRDs. Install them via the `dataplane-crds
 
 ## Further reading
 
-- [Prometheus documentation](https://prometheus.io/docs/introduction/overview/) -- comprehensive guide to Prometheus configuration, querying, and operation
+- [Prometheus documentation](https://prometheus.io/docs/introduction/overview/) -- guide to Prometheus configuration, querying, and operation
 - [Prometheus remote write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) -- forwarding metrics to external storage
 - [Prometheus `kubernetes_sd_config`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config) -- Kubernetes service discovery for scrape targets
 - [kube-prometheus-stack chart](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) -- full monitoring stack with Grafana and alerting
