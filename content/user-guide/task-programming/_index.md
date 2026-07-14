@@ -28,6 +28,7 @@ The task programming section covers key patterns for building effective Flyte wo
 
 **Execution patterns**
 - [**Fanout**](./fanout): Scale your workflows by running many tasks in parallel, perfect for processing large datasets or running hyperparameter sweeps.
+- [**Mapping over inputs**](./map): Apply the same task to every item of a list with `flyte.map` — in-order results, error handling, concurrency limits, and partials.
 - [**Controlling parallel execution**](./controlling-parallelism): Limit concurrent task executions using semaphores or `flyte.map` concurrency for rate-limited APIs, GPU quotas, and resource-constrained workflows.
 - [**External conditions**](./conditions): Pause a task until an external signal arrives — a human approval, a callback from an external service, or a value supplied at runtime.
 - [**Grouping actions**](./grouping-actions): Organize related task executions into logical groups for better visualization and management in the UI.
@@ -43,13 +44,15 @@ The task programming section covers key patterns for building effective Flyte wo
 - [**Links**](./links): Add clickable URLs to tasks in the Flyte UI, connecting them to external tools like experiment trackers and monitoring dashboards.
 - [**Reports**](./reports): Generate custom HTML reports during task execution to display progress, results, and visualizations in the UI.
 - [**Traces**](./traces): Add fine-grained observability to helper functions within your tasks for better debugging and resumption capabilities.
+- [**Intra-task checkpoints**](./intra-task-checkpoints): Save in-progress state within a task — such as a training loop — so retries resume from the last checkpoint instead of starting over.
 - [**Error handling**](./error-handling): Implement robust error recovery strategies, including automatic resource scaling and graceful failure handling.
 
 ## When to use these patterns
 
 These programming patterns become essential as your workflows grow in complexity:
 
-- Use **fanout** when you need to process multiple items concurrently or run parameter sweeps. Use **controlling parallel execution** when you need to limit how many run at the same time.
+- Use **fanout** when you need to process multiple items concurrently or run parameter sweeps.
+- Use **mapping over inputs** to apply the same task to every item of a list, and **controlling parallel execution** when you need to limit how many run at the same time.
 - Implement **error handling** for production workflows that need to recover from infrastructure failures.
 - Apply **grouping** to organize complex workflows with many task executions.
 - Leverage **files and directories** when working with large datasets that don't fit in memory.
@@ -58,6 +61,7 @@ These programming patterns become essential as your workflows grow in complexity
 - Use **remote tasks** to reuse tasks deployed by other teams without managing their dependencies.
 - Apply **pod templates** when you need advanced Kubernetes features like sidecars or specialized storage configurations.
 - Use **traces** to debug non-deterministic operations like API calls or ML inference.
+- Use **intra-task checkpoints** to make long-running training loops resumable across retries, preemptions, and interruptions.
 - Use **links** to connect tasks to external tools like Weights & Biases, Grafana, or custom dashboards directly from the Flyte UI.
 - Create **reports** to monitor long-running workflows and share results with stakeholders.
 - Use **custom context** when you need lightweight, cross-cutting metadata to flow through your task hierarchy without becoming part of the task's logical inputs.

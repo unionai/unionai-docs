@@ -188,6 +188,18 @@ action_details = flyte.remote.ActionDetails.get(
 print(action_details.pb2)  # Full protobuf representation
 ```
 
+## Accessing logs
+
+Each action captures the logs emitted by its task, per attempt. Stream them from the CLI with `flyte get logs`, or view them on the action in the console. For details and all available options, see [View logs](./view-logs).
+
+```bash
+# Logs for the run's main action
+flyte get logs my_run_name
+
+# Logs for a specific action
+flyte get logs my_run_name a1
+```
+
 ## Retrieving inputs and outputs
 
 {{< tabs "get-io" >}}

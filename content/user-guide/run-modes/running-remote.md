@@ -1,12 +1,12 @@
 ---
 title: Run on a remote cluster
 weight: 6
-variants: +union -flyte
+variants: +flyte +union
 ---
 
 # Run on a remote cluster
 
-This guide covers setting up your local development environment and configuring the `flyte` CLI and SDK to connect to your Union/Flyte instance.
+This guide covers setting up your local development environment and configuring the `flyte` CLI and SDK to connect to your {{< key product_name >}} instance.
 
 {{< note >}}
 Want to try Flyte without installing anything? [Try Flyte 2 in your browser](https://flyte2intro.apps.demo.hosted.unionai.cloud/).
@@ -16,7 +16,22 @@ Want to try Flyte without installing anything? [Try Flyte 2 in your browser](htt
 
 - **Python 3.10+**
 - **`uv`** — A fast Python package installer. See the [`uv` installation guide](https://docs.astral.sh/uv/getting-started/installation/).
-- Access to a Union/Flyte instance (URL and a project where you can run workflows)
+- Access to a {{< key product_name >}} instance (URL and a project where you can run workflows)
+
+{{< variant flyte >}}
+{{< markdown >}}
+> [!NOTE]
+> Don't have a Flyte cluster yet? See [Platform deployment](../../oss-deployment/_index)
+> to stand one up, or use the [Devbox](./running-devbox) to run a local cluster in Docker.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
+> [!NOTE]
+> Don't have a Union.ai instance yet? See [Platform deployment](../../deployment/_index)
+> to stand one up, or use the [Devbox](./running-devbox) to run a local cluster in Docker.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Install the flyte package
 
@@ -97,6 +112,26 @@ task:
 {{< /markdown >}}
 {{< /variant >}}
 
+{{< variant flyte >}}
+{{< markdown >}}
+### Set up local Docker
+
+The `--builder local` setting means container images are
+[built locally](../task-configuration/container-images) on your machine and pushed to a
+container registry that your Flyte cluster can pull from. You'll need Docker running and
+logged into that registry, for example:
+
+```bash
+docker login ghcr.io
+```
+
+See [Image building](../task-configuration/container-images#image-building) for how to
+specify the registry in your `Image` definitions. (Union instances can use
+`--builder remote` instead, which builds images on the cluster with no local Docker
+required.)
+{{< /markdown >}}
+{{< /variant >}}
+
 {{< dropdown title="Full example with all options" icon="bento" >}}
 
 {{< variant union >}}
@@ -131,18 +166,6 @@ flyte create config \
     --output my-config.yaml \
     --force
 ```
-
-### Set up local Docker
-
-Since Flyte OSS uses local image building, you'll need Docker running and logged into the GitHub registry:
-
-```bash
-docker login ghcr.io
-```
-
-> [!NOTE]
-> The `--builder local` option means images are [built locally](../task-configuration/container-images). Union instances can use `--builder remote` instead.
-
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -155,7 +178,7 @@ See the [CLI reference](../../api-reference/flyte-cli#flyte-create-config) for a
 {{< dropdown title="Config properties explained" icon="control_knobs" >}}
 {{< markdown >}}
 
-**`admin`** — Connection details for your Union/Flyte instance.
+**`admin`** — Connection details for your {{< key product_name >}} instance.
 
 - `endpoint`: URL with `dns:///` prefix. If your UI is at `https://my-org.my-company.com`, use `dns:///my-org.my-company.com`.
 - `insecure`: Set to `true` only for local instances without TLS.
