@@ -96,13 +96,14 @@ flyte.init_from_config(root_dir=Path(__file__).parent)  # -> my_project/
 
 ## Monorepo patterns
 
-Two patterns cover most cases:
+Three patterns cover most cases:
 
-| | Pattern A: Shared Lockfile | Pattern B: Independent Packages |
-|---|---|---|
-| Lockfile | One `uv.lock` for everything | Each package has its own |
-| Image isolation | Dependency groups (`--only-group etl`) | Separate `pyproject.toml` per package |
-| Use when | Packages developed together, shared dep graph | Different release cadences, fully independent |
+| | Pattern A: Shared Lockfile | Pattern B: Independent Packages | Pattern C: uv workspace |
+|---|---|---|---|
+| Lockfile | One `uv.lock` for everything | Each package has its own | One `uv.lock` for the whole workspace |
+| Package model | Single package; libraries are modules under one `src/` | Separate, independently-locked packages | Multiple installable members sharing the root lockfile |
+| Sibling code reaches the container via | Code bundle (fast deploy) | `with_source_folder()` baked into the image | Code bundle, `root_dir` = workspace root (fast deploy) |
+| Use when | Packages developed together, shared dep graph | Different release cadences, fully independent | Multiple versioned packages developed and locked together |
 
 ### Pattern A: Shared lockfile (recommended)
 
@@ -188,6 +189,112 @@ repo_root/
 **Entry point**: `root_dir` covers only `my_app` source; `my_lib` is baked into the image:
 
 {{< code file="/unionai-examples/v2/user-guide/project-patterns/monorepo-with-uv/02_sibling_packages/my_app/src/my_app/main.py" lang="python" >}}
+
+### Pattern C: uv workspace (`[tool.uv.workspace]`)
+
+A uv *workspace* is uv's native mechanism for a multi-package repository: several packages share **one root `uv.lock`**, and any package can depend on its siblings through `[tool.uv.sources]` entries marked `{ workspace = true }`. Unlike Pattern A, each member is a real installable package rather than a plain module under a shared `src/`; unlike Pattern B, you manage a single lockfile for the whole tree instead of one per package.
+
+Reach for a workspace when your packages are distinct, versioned distributions that are nonetheless developed and locked together.
+
+```
+albatross/
+├── pyproject.toml         <- workspace root: [tool.uv.workspace] + shared deps
+├── uv.lock                <- ONE lockfile for the whole workspace
+├── src/
+│   └── albatross/         <- the root package's source
+│       ├── main.py
+│       └── condor/
+│           └── strategy.py
+└── packages/              <- workspace members
+    ├── bird_feeder/
+    │   ├── pyproject.toml  <- member package
+    │   └── src/bird_feeder/actions.py
+    └── seeds/
+        ├── pyproject.toml
+        └── src/seeds/...
+```
+
+**Workspace root `pyproject.toml`** — declares the members and wires the sibling packages as workspace sources:
+
+```toml
+[project]
+name = "albatross"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = ["bird-feeder"]
+
+[tool.uv.sources]
+bird-feeder = { workspace = true }
+seeds = { workspace = true }
+
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[build-system]
+requires = ["uv_build>=0.9.3,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+albatross = ["numpy", "bird-feeder"]
+```
+
+`members = ["packages/*"]` includes every package under `packages/`. The `{ workspace = true }` sources tell uv to resolve `bird-feeder` and `seeds` from the workspace instead of PyPI, so a single `uv.lock` covers the whole tree. A member package is an ordinary package that can itself depend on other members:
+
+```toml
+# packages/bird_feeder/pyproject.toml
+[project]
+name = "bird-feeder"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = ["seeds"]
+
+[tool.uv]
+package = true
+```
+
+**Building the image** — point `.with_uv_project()` at the *workspace-root* `pyproject.toml`. Because `project_install_mode` defaults to `dependencies_only`, only the workspace's `pyproject.toml` and `uv.lock` enter the build context, so the image rebuilds only when dependencies change — fast registration is preserved. `extra_args` is forwarded to the `uv sync` that installs the dependencies (not to `pip install`), so `uv sync` flags apply — here `--only-group albatross` installs just that dependency group, keeping the image lean:
+
+```python
+from pathlib import Path
+
+from bird_feeder.actions import bird_env, get_feeder
+from seeds.actions import get_seed
+
+import flyte
+from albatross.condor.strategy import get_strategy
+
+UV_WORKSPACE_ROOT = Path(__file__).parent.parent.parent  # -> albatross/
+
+env = flyte.TaskEnvironment(
+    name="uv_workspace",
+    image=flyte.Image.from_debian_base().with_uv_project(
+        pyproject_file=UV_WORKSPACE_ROOT / "pyproject.toml",
+        extra_args="--only-group albatross",
+    ),
+    depends_on=[bird_env],
+)
+```
+
+You do **not** need `with_source_folder()` to bake sibling code into the image (as Pattern B requires): in the default `dependencies_only` build `uv sync` resolves the members `bird-feeder` and `seeds` from the shared `uv.lock` (uv reads the member metadata during the sync), but their **code is not baked into the image** — only `pyproject.toml` and `uv.lock` enter the build context. The sibling source (`from bird_feeder.actions import ...`, `from seeds.actions import ...`) travels in the **code bundle** instead (the entry point below sets `root_dir` to the workspace root, so the bundle packages every member) and is on `sys.path` at runtime. The `[tool.uv.workspace]` config's job is to let uv resolve the siblings from the one lockfile; it does not put their code in the image.
+
+**Entry point** — set `root_dir` to the *workspace root* (here `albatross/`), **not** to any single member's `src/`. A workspace spreads its members across several `src/` trees (`src/albatross/`, `packages/bird_feeder/src/`, …), so the workspace root is the one directory whose bundle captures them all — this is the `root_dir` rule from the start of this page applied to a multi-member tree, not an exception to it. With every member's source in the bundle, imports resolve the same way locally and at runtime:
+
+```python
+@env.task
+async def albatross_task() -> str:
+    get_feeder()
+    get_strategy()
+    seed = get_seed(seed_name="Sun Flower seed")
+    return f"Get bird feeder and feed with {seed}"
+
+
+if __name__ == "__main__":
+    flyte.init_from_config(root_dir=UV_WORKSPACE_ROOT)
+    run = flyte.run(albatross_task)
+    print(run.url)
+```
+
+Each member can define its own `TaskEnvironment` pointing at the same workspace-root `pyproject.toml`; because they all resolve against the one lockfile, their images stay mutually consistent. For production, bake the bundle with `flyte.deploy(env, copy_style="none", version="1.2.3")` exactly as in the other patterns.
 
 ## The full build path (production)
 
