@@ -19,7 +19,7 @@ Several Flyte 1 concepts were renamed or reshaped in Flyte 2. The table below ma
 |---|---|---|
 | `flytekit` (package) | `flyte` (package) | The Python SDK was renamed; imports change from `import flytekit` to `import flyte`. |
 | `pyflyte` (CLI) | `flyte` (CLI) | The command-line tool was renamed. |
-| `@task` / `@workflow` / `@dynamic` | `@env.task` | A single task decorator off a `flyte.TaskEnvironment`. Workflows and dynamic tasks are no longer distinct constructs — everything is a task, and orchestration is plain Python. |
+| `@task` / `@workflow` / `@dynamic` | `@env.task` | A single task decorator off a `flyte.TaskEnvironment`. Workflows and dynamic tasks are no longer distinct constructs: everything is a task, and orchestration is plain Python. |
 | `map_task()` | `flyte.map()` | Plus `asyncio.gather()` for async fan-out. |
 | `conditional()` | native `if` / `elif` / `else` | Branching is now ordinary Python control flow, not a DSL. |
 | `ImageSpec` | `flyte.Image` | Container image definition. |
@@ -28,7 +28,7 @@ Several Flyte 1 concepts were renamed or reshaped in Flyte 2. The table below ma
 | `CronSchedule` | `flyte.Cron` | Cron-based scheduling, used with a `flyte.Trigger`. |
 | Decks (`enable_deck=True`) | Reports (`report=True`) | Custom HTML rendered in the UI during/after a run. See [Reports](../../task-programming/reports). |
 
-For the full API-level mapping — every import, parameter, and signature change with side-by-side examples — see [Migration from Flyte 1](../../../api-reference/migration/_index) in the Reference section.
+For the full API-level mapping (every import, parameter, and signature change with side-by-side examples), see [Migration from Flyte 1](../../../api-reference/migration/_index) in the Reference section.
 
 You can migrate from Flyte 1 to Flyte 2 by following the steps below:
 

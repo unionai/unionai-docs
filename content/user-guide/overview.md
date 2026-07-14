@@ -6,13 +6,13 @@ variants: +flyte +union
 
 # Overview
 
-In this guide we cover how to build AI applications, data pipelines, and ML workflows using the Flyte 2 SDK.
+This guide covers how to build AI applications, data pipelines, and ML workflows using the Flyte 2 SDK.
 
 Programs written using the Flyte 2 SDK can run on either a Union.ai or Flyte OSS back-end. This guide applies to both.
 
 ## Pure Python, no DSL
 
-Flyte lets you write workflows in standard Python—no domain-specific language, no special syntax, no restrictions.
+Flyte lets you write workflows in standard Python: no domain-specific language, no special syntax, no restrictions.
 
 Your "workflow" is simply a task that calls other tasks:
 
@@ -29,10 +29,10 @@ async def my_workflow(data: list[str]) -> list[str]:
 
 You can use everything Python offers:
 
-- **Loops and conditionals** — standard `for`, `while`, `if-elif-else`
-- **Error handling** — `try/except` blocks work as expected
-- **Async/await** — native Python concurrency model
-- **Any library** — import and use whatever you need
+- **Loops and conditionals**: standard `for`, `while`, `if-elif-else`
+- **Error handling**: `try/except` blocks work as expected
+- **Async/await**: native Python concurrency model
+- **Any library**: import and use whatever you need
 
 This means no learning curve beyond Python itself, and no fighting a DSL when your requirements don't fit its constraints.
 
@@ -40,19 +40,19 @@ This means no learning curve beyond Python itself, and no fighting a DSL when yo
 
 Every task execution in Flyte is automatically persisted. Inputs, outputs, and intermediate results are stored in an object store, giving you:
 
-- **Full observability** — see exactly what data flowed through each step
-- **Audit trail** — track what ran, when, and with what parameters
-- **Data lineage** — trace outputs back to their inputs
+- **Full observability**: see exactly what data flowed through each step
+- **Audit trail**: track what ran, when, and with what parameters
+- **Data lineage**: trace outputs back to their inputs
 
-This persistence happens automatically. You don't need to add logging or manually save state—Flyte handles it.
+This persistence happens automatically. You don't need to add logging or manually save state. Flyte handles it.
 
 ## Reproducibility
 
 Flyte ensures that runs can be reproduced exactly:
 
-- **Deterministic execution** — same inputs produce same outputs
-- **Caching** — task results are cached and reused when inputs match
-- **Versioned containers** — code runs in the same environment every time
+- **Deterministic execution**: same inputs produce same outputs
+- **Caching**: task results are cached and reused when inputs match
+- **Versioned containers**: code runs in the same environment every time
 
 Caching is configurable per task:
 
@@ -69,20 +69,20 @@ When you rerun a workflow, Flyte serves cached results for unchanged tasks rathe
 
 When something fails, Flyte doesn't make you start over. Failed workflows can resume from where they left off:
 
-- **Completed tasks are preserved** — successful outputs remain cached
-- **Retry from failure point** — no need to re-execute what already succeeded
-- **Fine-grained checkpoints** — the `@flyte.trace` decorator creates checkpoints within tasks
+- **Completed tasks are preserved**: successful outputs remain cached
+- **Retry from failure point**: no need to re-execute what already succeeded
+- **Fine-grained checkpoints**: the `@flyte.trace` decorator creates checkpoints within tasks
 
-This reduces wasted compute and speeds up debugging. When a task fails after hours of prior computation, you fix the issue and continue—not restart.
+This reduces wasted compute and speeds up debugging. When a task fails after hours of prior computation, you fix the issue and continue, not restart.
 
 ## Built for scale
 
 Flyte handles the hard parts of distributed execution:
 
-- **Parallel execution** — express parallelism with `asyncio.gather()`, Flyte handles the rest
-- **Dynamic workflows** — construct workflows based on runtime data, not just static definitions
-- **Fast scheduling** — reusable containers achieve millisecond-level task startup
-- **Resource management** — specify CPU, memory, and GPU requirements per task
+- **Parallel execution**: express parallelism with `asyncio.gather()`, Flyte handles the rest
+- **Dynamic workflows**: construct workflows based on runtime data, not just static definitions
+- **Fast scheduling**: reusable containers achieve millisecond-level task startup
+- **Resource management**: specify CPU, memory, and GPU requirements per task
 
 ## What this means in practice
 

@@ -9,13 +9,13 @@ variants: +flyte +union
 > [!NOTE]
 > Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/multimodal-retrieval-evaluation).
 
-This tutorial builds an experiment framework for benchmarking **visual document retrieval** on the [ViDoRe benchmark](https://huggingface.co/vidore). The corpus is a set of PDF page *images* and the queries are plain-text questions — each retrieval method must find the page that answers a question from the raw image alone.
+This tutorial builds an experiment framework for benchmarking **visual document retrieval** on the [ViDoRe benchmark](https://huggingface.co/vidore). The corpus is a set of PDF page *images* and the queries are plain-text questions. Each retrieval method must find the page that answers a question from the raw image alone.
 
 Three approaches are compared:
 
-- **ColPali-v1.2** — patch-level multi-vector embeddings from a vision-language model (PaliGemma), scored with MaxSim late interaction. No OCR.
-- **SigLIP-SO400M** — a single global embedding per page from Google's CLIP successor.
-- **OCR + BM25** — a text-only baseline that OCRs each page with [docTR](https://github.com/mindee/doctr) on GPU and ranks with BM25.
+- **ColPali-v1.2**: patch-level multi-vector embeddings from a vision-language model (PaliGemma), scored with MaxSim late interaction. No OCR.
+- **SigLIP-SO400M**: a single global embedding per page from Google's CLIP successor.
+- **OCR + BM25**: a text-only baseline that OCRs each page with [docTR](https://github.com/mindee/doctr) on GPU and ranks with BM25.
 
 Each experiment is one `ExperimentConfig`; the pipeline fans them out as concurrent Flyte tasks and returns a ranked comparison table with an interactive HTML report. It's a strong showcase of several Flyte features working together:
 
@@ -61,7 +61,7 @@ Search uses the `DynamicBatcher` so queries from all concurrent search-task invo
 
 ## Run one experiment
 
-`run_experiment` selects the right index/search path based on the runtime value of `config.model` — Flyte v2's dynamic execution means there's no static DAG to wire up. `flyte.group` wraps each experiment in a named span in the UI.
+`run_experiment` selects the right index/search path based on the runtime value of `config.model`. Flyte v2's dynamic execution means there's no static DAG to wire up. `flyte.group` wraps each experiment in a named span in the UI.
 
 {{< code file="/unionai-examples/v2/tutorials/multimodal-retrieval-evaluation/retrieval_eval.py" fragment=run_experiment lang=python >}}
 
@@ -73,7 +73,7 @@ The driver loads the dataset once, fans out across all configs with `asyncio.gat
 
 ## Run the evaluation
 
-This example has no secrets — datasets and model weights are pulled from public Hugging Face repositories. It does require GPUs, so run it remotely.
+This example has no secrets: datasets and model weights are pulled from public Hugging Face repositories. It does require GPUs, so run it remotely.
 
 The experiment grid is defined in the entry point; adding a model or varying `top_k` is a one-line change:
 

@@ -95,6 +95,8 @@ This command:
 1. **Temporarily deploys** the task environment named `greeting_env` (held by the variable `env`) that contains the `greet` task.
 2. **Executes** the `greet` function with argument `message` set to `"Good morning!"`. Note that `message` is the actual parameter name defined in the function signature.
 3. **Returns** the execution results and displays them in the terminal.
+
+For how to pass inputs of other types (datetimes, durations, enums, files, dataclasses, and more) on the command line, see [Passing inputs by type](./run-command-options#passing-inputs-by-type).
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}

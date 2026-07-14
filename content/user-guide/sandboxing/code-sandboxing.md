@@ -9,7 +9,7 @@ llm_readable_bundle: true
 
 `flyte.sandbox.create()` runs arbitrary Python code or shell commands inside an ephemeral, stateless Docker container.
 The container is built on demand from declared dependencies, executed once, and discarded.
-Each invocation starts from a clean slate — no filesystem state, environment variables, or side effects carry over between runs.
+Each invocation starts from a clean slate: no filesystem state, environment variables, or side effects carry over between runs.
 
 ## Execution modes
 
@@ -17,7 +17,7 @@ Each invocation starts from a clean slate — no filesystem state, environment v
 
 ### Auto-IO mode
 
-The default mode. Write only the business logic — Flyte generates the I/O boilerplate automatically.
+The default mode. Write only the business logic. Flyte generates the I/O boilerplate automatically.
 
 How it works:
 
@@ -79,7 +79,7 @@ When there are multiple outputs, `.run()` returns them as a tuple in declaration
 ### Verbatim mode
 
 Set `auto_io=False` to run a complete Python script with full control over I/O.
-Flyte runs the script exactly as written — no injected preamble, no automatic output collection.
+Flyte runs the script exactly as written: no injected preamble, no automatic output collection.
 
 Your script must:
 
@@ -188,10 +188,10 @@ Inputs and outputs must use one of the following types:
 
 **In auto-IO mode:**
 
-- **Primitive and date/time inputs** are injected as local variables with the correct Python type. Flyte generates an `argparse` preamble behind the scenes — your code just uses the variable names directly.
+- **Primitive and date/time inputs** are injected as local variables with the correct Python type. Flyte generates an `argparse` preamble behind the scenes. Your code just uses the variable names directly.
 - **`File` inputs** are bind-mounted into the container. The input variable contains the file path as a string (e.g., `"/var/inputs/payload"`), so you can read it with `pathlib.Path(payload).read_text()`.
 - **Primitive and date/time outputs** are written to `/var/outputs/<name>` automatically. Just assign the value to a variable matching the declared output name.
-- **`File` outputs** are the exception — your code must write the file to `/var/outputs/<name>` manually.
+- **`File` outputs** are the exception: your code must write the file to `/var/outputs/<name>` manually.
 
 **In verbatim mode:**
 

@@ -36,10 +36,11 @@ Flyte 2 integrations fall into the following categories:
 3. **Configuration**: Compose and pass hierarchical configuration objects between tasks, with type-safe schemas and CLI/YAML composition.
 4. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
 5. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
-6. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
-7. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
-8. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
-9. **Observability**: Patterns for connecting tasks to external tracing and observability tooling.
+6. **Data types**: Add native support for additional file and dataframe types as task inputs and outputs.
+7. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
+8. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
+9. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
+10. **Observability**: Patterns for connecting tasks to external tracing and observability tooling.
 
 ## Distributed compute
 
@@ -194,11 +195,22 @@ Data validation integrations enforce schema contracts on the dataframes flowing 
 | --------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------- |
 | [Pandera](./pandera/_index) | Validates dataframes with pandera `DataFrameModel` schemas | Schema enforcement, data quality checks, validation reports |
 
+## Data types
+
+Data type integrations add native support for additional file and dataframe types as task inputs and outputs. They register typed encoders and decoders with Flyte's type engine, so you can annotate task signatures with the type directly and let Flyte handle serialization.
+
+### Supported data type integrations
+
+| Plugin                    | Description                                                          | Common use cases                                            |
+| ------------------------- | ------------------------------------------------------------------- | ----------------------------------------------------------- |
+| [JSONL](./jsonl/_index)   | Typed `JsonlFile` / `JsonlDir` for streaming JSON Lines data         | LLM dataset pipelines, event logs, large line-delimited I/O |
+| [Polars](./polars/_index) | Native `pl.DataFrame` / `pl.LazyFrame` support via Parquet           | High-performance dataframe ETL, feature engineering         |
+
 ## Connectors
 
-Connectors are stateless, long‑running services that receive execution requests via gRPC and then submit work to external (or internal) systems. Each connector runs as its own Kubernetes deployment, and is triggered when a Flyte task of the matching type is executed.
+Connectors are stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems. Each connector runs as its own Kubernetes deployment, and is triggered when a Flyte task of the matching type is executed.
 
-Although they normally run inside the data plane, you can also run connectors locally as long as the required secrets/credentials are present locally. This is useful because connectors are just Python services that can be spawned in‑process.
+Although they normally run inside the data plane, you can also run connectors locally as long as the required secrets/credentials are present locally. This is useful because connectors are just Python services that can be spawned in-process.
 
 Connectors are designed to scale horizontally and reduce load on the core Flyte backend because they execute _outside_ the core system. This decoupling makes connectors efficient, resilient, and easy to iterate on. You can even test them locally without modifying backend configuration, which reduces friction during development.
 
@@ -303,7 +315,7 @@ See [Secrets](../user-guide/task-configuration/secrets) for how to store and man
 
 {{< variant union >}}
 {{< markdown >}}
-Deploy your connector as a long-running service using `flyte.app.ConnectorEnvironment`. Union handles building the image, pushing it, and keeping the service running — no manual Kubernetes configuration required.
+Deploy your connector as a long-running service using `flyte.app.ConnectorEnvironment`. Union handles building the image, pushing it, and keeping the service running: no manual Kubernetes configuration required.
 
 See the **Connector app** guide (`user-guide/build-apps/connector-app`) for a complete walkthrough.
 {{< /markdown >}}
@@ -375,7 +387,7 @@ Notebook execution integrations let you run Jupyter notebooks as first-class Fly
 
 ## Observability
 
-Patterns for connecting Flyte tasks to external tracing and observability backends. Unlike the entries above, these are not plugins — they are usage patterns built on top of Flyte's [custom context](../user-guide/task-programming/custom-context) primitive plus the standard libraries from the relevant ecosystem.
+Patterns for connecting Flyte tasks to external tracing and observability backends. Unlike the entries above, these are not plugins: they are usage patterns built on top of Flyte's [custom context](../user-guide/task-programming/custom-context) primitive plus the standard libraries from the relevant ecosystem.
 
 ### Supported observability integrations
 

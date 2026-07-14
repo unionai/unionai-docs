@@ -1,6 +1,6 @@
 ---
 title: Structured concurrency with anyio
-weight: 21
+weight: 19
 variants: +flyte +union
 ---
 

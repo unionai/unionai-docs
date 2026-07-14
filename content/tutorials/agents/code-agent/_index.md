@@ -95,7 +95,7 @@ To handle this, we use an LLM (GPT-4 in this case) that supports extended contex
 
 ## Code generation
 
-Next, we define a utility function to construct the LLM chain responsible for generating Python code from user input. This chain leverages
+Next, we define a utility function to construct the LLM chain responsible for generating Python code from user input. This chain uses
 a LangChain `PromptTemplate` to structure the input and an OpenAI chat model to generate well-formed, Flyte 2-compatible Python scripts.
 
 {{< code file="/unionai-examples/v2/tutorials/code_runner/agent.py" fragment=generate_code_gen_chain lang=python >}}

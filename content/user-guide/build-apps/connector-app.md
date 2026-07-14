@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Connector app
 
-A **connector** lets you extend Flyte with custom task execution backends — for example, submitting jobs to an internal batch service, a proprietary ML platform, or any external API. Rather than running your task code directly in a container, Flyte delegates execution to the connector, which polls the external system and reports status back to the orchestrator.
+A **connector** lets you extend Flyte with custom task execution backends (for example, submitting jobs to an internal batch service, a proprietary ML platform, or any external API). Rather than running your task code directly in a container, Flyte delegates execution to the connector, which polls the external system and reports status back to the orchestrator.
 
 Connectors are deployed as long-running services via `flyte.app.ConnectorEnvironment`, the same app deployment model used for FastAPI endpoints and model servers.
 
@@ -60,7 +60,7 @@ Key points:
 
 - **`_TASK_TYPE`** ties this plugin to the connector that declares the same `task_type_name`
 - **`custom_config`** serializes plugin-specific settings into the task template; the connector receives these in `task_template.custom` during `create`
-- `image=None` is correct — the connector service, not the task container, executes this task
+- `image=None` is correct: the connector service, not the task container, executes this task
 
 ## Step 3: Deploy the connector
 
@@ -103,7 +103,7 @@ flyte deploy app.py connector
 Flyte builds the image, pushes it, and starts the connector service. The service stays running and handles all `create` / `get` / `delete` calls for tasks with `task_type_name = "batch_job"`.
 
 > [!NOTE] Connectors are scoped to their project and domain
-> A connector only handles tasks that run in the same project and domain it is deployed to. For example, if you deploy the connector to the `flytesnacks` project and `development` domain, it handles only the tasks executing in `flytesnacks` / `development`. Tasks of the same `task_type_name` running in a different project or domain are not routed to it — deploy a separate connector in each project-domain where you need it.
+> A connector only handles tasks that run in the same project and domain it is deployed to. For example, if you deploy the connector to the `flytesnacks` project and `development` domain, it handles only the tasks executing in `flytesnacks` / `development`. Tasks of the same `task_type_name` running in a different project or domain are not routed to it. Deploy a separate connector in each project-domain where you need it.
 
 ## Step 4: Register and run tasks
 

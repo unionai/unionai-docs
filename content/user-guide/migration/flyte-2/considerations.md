@@ -9,7 +9,7 @@ variants: +flyte +union
 Flyte 2 represents a substantial change from Flyte 1.
 Each Python-based task action has the ability to act as its own engine, kicking off sub-actions, and assembling the outputs, passing them to yet other sub-actions and such.
 
-While this model of execution comes with an enormous amount of flexibility, that flexibility does warrant some caveats to keep in mind when authoring your tasks.
+While this model of execution comes with an enormous amount of flexibility, that flexibility does warrant some caveats when authoring your tasks.
 
 ## Non-deterministic behavior
 
@@ -101,7 +101,7 @@ The pod running `t_main` will hang in between tasks `t1` and `t2`. Your parent t
 
 ## OOM risk from materialized I/O
 
-Something maybe more nuanced to keep in mind is that if you're not using the soon-to-be-released ref mode, outputs are actually
+Something maybe more nuanced is that if you're not using the soon-to-be-released ref mode, outputs are actually
 materialized. That is, if you have the following scenario,
 
 ```python

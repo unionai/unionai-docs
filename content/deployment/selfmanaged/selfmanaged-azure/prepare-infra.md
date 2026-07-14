@@ -8,7 +8,7 @@ variants: -flyte +union
 
 This page walks you through the Azure infrastructure required before deploying the Union dataplane on AKS. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-azure/deploy-dataplane).
 
-> [!NOTE] **Deployment model**: This guide covers **Self-managed** — you run only the dataplane chart; Union hosts the control plane.
+> [!NOTE] **Deployment model**: This guide covers **Self-managed**: you run only the dataplane chart; Union hosts the control plane.
 
 ## Prerequisites
 - Azure CLI [installed](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and [configured](https://learn.microsoft.com/en-us/cli/azure/get-started-with-azure-cli?view=azure-cli-latest#sign-in-to-azure)
@@ -75,7 +75,7 @@ az aks create \
   --node-vm-size Standard_D4s_v3
 ```
 
-Save the OIDC issuer URL — you will need it when creating federated credentials:
+Save the OIDC issuer URL. You will need it when creating federated credentials:
 
 ```bash
 export AKS_OIDC_ISSUER=$(az aks show \
@@ -130,7 +130,7 @@ az aks nodepool add \
 
 ## 4. Storage account and container
 
-Union stores workflow metadata and code bundle artifacts in Azure Blob Storage. The storage account **must have Data Lake Storage Gen2 enabled** (`--enable-hierarchical-namespace`) — Union uses the `abfs://` protocol which requires this.
+Union stores workflow metadata and code bundle artifacts in Azure Blob Storage. The storage account **must have Data Lake Storage Gen2 enabled** (`--enable-hierarchical-namespace`). Union uses the `abfs://` protocol which requires this.
 
 ```bash
 az storage account create \
@@ -211,7 +211,7 @@ export WORKER_PRINCIPAL_ID=$(az identity show \
 
 ## 6. Workload Identity and federated credentials
 
-Azure Workload Identity lets Kubernetes pods authenticate to Azure services using a projected service account token — no credentials stored in secrets.
+Azure Workload Identity lets Kubernetes pods authenticate to Azure services using a projected service account token: no credentials stored in secrets.
 
 ### Backend identity (Union system components)
 
