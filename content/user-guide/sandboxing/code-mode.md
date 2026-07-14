@@ -8,7 +8,7 @@ llm_readable_bundle: true
 # Programmatic tool calling for agents
 
 **Programmatic tool calling** (also known as **code mode**) is a pattern where LLMs write executable code instead of making individual tool calls.
-Rather than the model emitting a sequence of JSON tool-call objects and the system routing each one, the model generates a single block of code that calls multiple tools, transforms data, and applies logic — all executed in a sandbox.
+Rather than the model emitting a sequence of JSON tool-call objects and the system routing each one, the model generates a single block of code that calls multiple tools, transforms data, and applies logic, all executed in a sandbox.
 
 The key insight: LLMs are trained on billions of lines of code, but only a small amount of synthetic tool-call data.
 Code generation is a more natural and reliable output modality for models than structured tool-call schemas.
@@ -26,7 +26,7 @@ The sandbox executes it, and only the final result returns to the model.
 |--------|-------------|-----------|
 | **Output format** | JSON tool-call objects, one at a time | A single block of executable code |
 | **Data flow** | Every intermediate result passes through the model | Intermediate results stay in the sandbox |
-| **Context overhead** | Grows with each tool call (all results in context) | Fixed — only tool signatures in context |
+| **Context overhead** | Grows with each tool call (all results in context) | Fixed: only tool signatures in context |
 | **Multi-step logic** | Model re-invoked at every step | Sandbox executes loops, conditionals, transforms |
 | **Scaling with tools** | Context grows linearly with number of tool definitions | Tools discovered progressively or loaded on demand |
 
@@ -37,13 +37,13 @@ The sandbox executes it, and only the final result returns to the model.
 Sequential tool calling loads all tool definitions into the context window upfront and passes every intermediate result through the model.
 Programmatic tool calling reduces this dramatically:
 
-- **98%+ context reduction** reported by Anthropic when using code execution with MCP servers — from 150,000 tokens down to 2,000 tokens for the same task.
-- **99.9% reduction** reported by Cloudflare for large APIs — approximately 1,000 tokens with programmatic tool calling versus 1.17 million tokens when exposing each API endpoint as a separate tool.
+- **98%+ context reduction** reported by Anthropic when using code execution with MCP servers: from 150,000 tokens down to 2,000 tokens for the same task.
+- **99.9% reduction** reported by Cloudflare for large APIs: approximately 1,000 tokens with programmatic tool calling versus 1.17 million tokens when exposing each API endpoint as a separate tool.
 
 ### Performance
 
 By eliminating round-trips through the model for intermediate steps, programmatic tool calling achieves significant speed improvements.
-The sandbox evaluates conditionals, loops, and data transformations locally — no "time to first token" delay for each step.
+The sandbox evaluates conditionals, loops, and data transformations locally: no "time to first token" delay for each step.
 
 ### Natural programming patterns
 
@@ -331,7 +331,7 @@ flyte run durable_agent.py analyze \
 
 ## References
 
-- [Code execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp) — Anthropic engineering blog on the code execution pattern
-- [Code Mode](https://blog.cloudflare.com/code-mode/) — Cloudflare's introduction to code mode for LLM tool calling
-- [Code Mode MCP](https://blog.cloudflare.com/code-mode-mcp/) — Cloudflare's server-side code mode implementation
-- [Code Mode Protocol](https://github.com/universal-tool-calling-protocol/code-mode) — Open specification for the code mode pattern
+- [Code execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp): Anthropic engineering blog on the code execution pattern
+- [Code Mode](https://blog.cloudflare.com/code-mode/): Cloudflare's introduction to code mode for LLM tool calling
+- [Code Mode MCP](https://blog.cloudflare.com/code-mode-mcp/): Cloudflare's server-side code mode implementation
+- [Code Mode Protocol](https://github.com/universal-tool-calling-protocol/code-mode): Open specification for the code mode pattern

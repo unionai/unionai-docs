@@ -13,7 +13,7 @@ coroutines by hand and passing them to `asyncio.gather`, you hand `flyte.map` th
 inputs and it produces one action per item.
 
 Use `flyte.map` when every item goes through the *same* task. For fanning out across *different*
-tasks, or for full control over how invocations are assembled, use `asyncio.gather` — see
+tasks, or for full control over how invocations are assembled, use `asyncio.gather`. See
 [Fanout](./fanout).
 
 ## Minimal example
@@ -69,7 +69,7 @@ async def main(n: int) -> List[str]:
 ```
 
 `flyte.map.aio` works over both async and sync tasks, so you can call an existing synchronous task
-in parallel from an async context without rewriting it — useful when migrating a Flyte 1.x
+in parallel from an async context without rewriting it: useful when migrating a Flyte 1.x
 `map_task` or integrating legacy sync code.
 
 ## Signature and parameters
@@ -84,19 +84,19 @@ flyte.map(
 )
 ```
 
-- **`func`** — the task to map. It receives one item per invocation. To hold some arguments
+- **`func`**: the task to map. It receives one item per invocation. To hold some arguments
   constant across the map, wrap it with `functools.partial` (see [Binding constant
   arguments](#binding-constant-arguments-with-functoolspartial)).
-- **`*args`** — one or more input iterables. With multiple iterables they are **zipped**: the
+- **`*args`**: one or more input iterables. With multiple iterables they are **zipped**: the
   *i*-th invocation receives the *i*-th element of each, matching `func`'s positional parameters in
   order.
-- **`group_name`** — groups the resulting actions under a single label in the UI (see
+- **`group_name`**: groups the resulting actions under a single label in the UI (see
   [Grouping actions](./grouping-actions)).
-- **`concurrency`** — the maximum number of actions in flight at any moment. `0` (the default)
+- **`concurrency`**: the maximum number of actions in flight at any moment. `0` (the default)
   submits everything at once. A positive value bounds the fan-out with a worker pool, so memory
-  stays proportional to `concurrency` rather than to the total number of items — see
+  stays proportional to `concurrency` rather than to the total number of items. See
   [Controlling parallel execution](./controlling-parallelism).
-- **`return_exceptions`** — when `True` (the default), a failed invocation yields the raised
+- **`return_exceptions`**: when `True` (the default), a failed invocation yields the raised
   exception as its result instead of aborting the whole map; check each result with
   `isinstance(r, Exception)`. When `False`, the first failure stops iteration and raises.
 
@@ -144,7 +144,7 @@ Set `return_exceptions=False` to fail fast instead: iteration raises on the firs
 ## Binding constant arguments with `functools.partial`
 
 Often you want to map over one argument while holding others constant. Bind the constants with
-`functools.partial`, leaving exactly one parameter free — that's the one `flyte.map` varies:
+`functools.partial`, leaving exactly one parameter free. That's the one `flyte.map` varies:
 
 ```python
 from functools import partial
@@ -170,8 +170,8 @@ def main() -> None:
 
 `flyte.map` inserts each mapped value **positionally, right after the partial's bound positional
 arguments**, and requires **exactly one** parameter to be left unbound. Above, `model_name` and
-`batch_id` are bound as keywords, so the mapped value fills the first slot — `compound_id`. To vary a
-*later* parameter, bind the ones before it positionally and the ones after it by keyword — for
+`batch_id` are bound as keywords, so the mapped value fills the first slot: `compound_id`. To vary a
+*later* parameter, bind the ones before it positionally and the ones after it by keyword. For
 example, `partial(score, "compound-1", batch_id="run-42")` maps `model_name`. `flyte.map` raises a
 `TypeError` if more or fewer than one parameter is left unbound, or if the mapped positional slot is
 also bound as a keyword.
@@ -215,7 +215,7 @@ async def main(n: int) -> list[str]:
 The mapped actions are routed onto the reusable pool instead of each spinning up a fresh container.
 Two concurrency controls are in play, and they are independent:
 
-- **`ReusePolicy(replicas, concurrency)`** sizes the pool — total capacity is
+- **`ReusePolicy(replicas, concurrency)`** sizes the pool: total capacity is
   `replicas × concurrency` actions running at once (here, `4 × 3 = 12`).
 - **`flyte.map(concurrency=N)`** bounds how many map actions are submitted at once. Leave it at `0`
   to let the pool absorb the full fan-out, or set it to shape submission independently of pool size.

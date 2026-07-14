@@ -6,12 +6,12 @@ variants: +flyte +union
 
 # Run context
 
-Every Flyte run has a **run context** — a set of invocation-time parameters that control where the run executes, where its outputs are stored, how caching behaves, and more.
+Every Flyte run has a **run context**: a set of invocation-time parameters that control where the run executes, where its outputs are stored, how caching behaves, and more.
 
 There are two sides to run context:
 
-- **Write side**: `flyte.with_runcontext()` — set run parameters before the run starts (programmatic) or via CLI flags.
-- **Read side**: `flyte.ctx()` — access run parameters inside a running task.
+- **Write side**: `flyte.with_runcontext()` sets run parameters before the run starts (programmatic) or via CLI flags.
+- **Read side**: `flyte.ctx()` accesses run parameters inside a running task.
 
 ## Configuring a run with `flyte.with_runcontext()`
 
