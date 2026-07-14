@@ -17,10 +17,10 @@ variants: -flyte +union
 ## Architecture components
 
 **Control plane**
-: The orchestration layer that manages workflow execution state. Includes FlyteAdmin, scheduler, queue service, cache service, and supporting services. In self-managed deployments, the control plane is hosted by {{< key product_name >}}. In self-hosted deployments, you deploy it in the `union-cp` namespace.
+: The orchestration layer that manages workflow execution state. Includes FlyteAdmin, scheduler, queue service, cache service, and supporting services. In self-managed deployments, the control plane is hosted by {{< key product_name >}}. In self-hosted deployments, you deploy it in a namespace you choose — the install guides use the `<controlplane-namespace>` placeholder (typically `union-cp`).
 
 **Data plane**
-: The execution layer where your code and data reside. Includes the operator, propeller, and worker pods that run your tasks. Deployed in the `union` namespace.
+: The execution layer where your code and data reside. Includes the operator, propeller, and worker pods that run your tasks. Deployed in a namespace you choose — the install guides use the `<dataplane-namespace>` placeholder (typically `union`).
 
 **Intra-cluster**
 : A deployment topology where the control plane and data plane run in the same Kubernetes cluster and communicate via internal DNS (e.g., `controlplane-nginx-controller.union-cp.svc.cluster.local`) rather than external networking.

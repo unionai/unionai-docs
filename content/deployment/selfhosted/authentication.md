@@ -170,7 +170,7 @@ Used by the web console for user authentication.
 | Post-logout redirect URI | `https://<your-domain>/logout` |
 | Scopes | `openid`, `profile`, `offline_access` |
 
-Note the **Client ID** (set as `flyte.configmap.adminServer.auth.userAuth.openId.clientId`) and the **Client Secret** (stored in the Kubernetes secret referenced by `flyte.secrets.adminOauthClientCredentials`).
+Note the **Client ID** (set as `flyte.configmap.adminServer.auth.userAuth.openId.clientId`) and the **Client Secret** (stored in the `flyte-admin-secrets` Secret under the key `oidc_client_secret` — see [Step 3](#step-3-create-kubernetes-secrets-control-plane)).
 
 ### Application 2: CLI (Public)
 
@@ -401,16 +401,19 @@ If your IdP's client_credentials tokens don't include a `sub` claim, add:
 The control plane needs secrets for the browser login app (App 1) and the service-to-service app (App 3):
 
 ```shell
-# Secret for admin service (mounted at /etc/secrets/)
-# Note: "flyte-admin-secrets" is the default name expected by the Helm chart
+# Browser-login secret (App 1), read by flyteadmin's userAuth.openId.
+# The key MUST be "oidc_client_secret" — that is the default clientSecretName
+# flyteadmin looks for. "flyte-admin-secrets" is the default Secret name
+# expected by the Helm chart (mounted at /etc/secrets/ in the flyteadmin pod).
 kubectl create secret generic flyte-admin-secrets \
-  --from-literal=client_secret='<BROWSER_LOGIN_CLIENT_SECRET>' \
+  --from-literal=oidc_client_secret='<BROWSER_LOGIN_CLIENT_SECRET>' \
   -n <controlplane-namespace>
 
-# Secret for scheduler (mounted at /etc/secrets/)
-# Note: "flyte-secret-auth" is the default name expected by the Helm chart
+# Service-to-service secret (App 3), used by the scheduler/admin client whose
+# clientId is INTERNAL_CLIENT_ID. Read at /etc/secrets/client_secret.
+# "flyte-secret-auth" is the default Secret name expected by the Helm chart.
 kubectl create secret generic flyte-secret-auth \
-  --from-literal=client_secret='<BROWSER_LOGIN_CLIENT_SECRET>' \
+  --from-literal=client_secret='<SERVICE_TO_SERVICE_CLIENT_SECRET>' \
   -n <controlplane-namespace>
 
 # Add service-to-service client secret to the controlplane secrets

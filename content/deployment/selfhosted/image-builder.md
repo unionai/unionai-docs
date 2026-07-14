@@ -121,7 +121,7 @@ Set `imageBuilder.bootstrap.enabled: false` in the controlplane chart values to 
 The task definition is published in the chart at `charts/controlplane/files/build_image_task.py`. To register it manually:
 
 ```shell
-APP_VERSION=$(helm list -n <controlplane-namespace> -o json | jq -r '.[0].app_version')
+APP_VERSION=$(helm list -n <controlplane-namespace> --filter '^unionai-controlplane$' -o json | jq -r '.[0].app_version')
 
 UNION_IMAGE_NAME_PREFIX=public.ecr.aws/g1m2l3c1/imagebuilder-staging \
 APP_VERSION="${APP_VERSION}" \
