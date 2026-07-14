@@ -7,8 +7,8 @@ weight: 3
 # AWS deployment
 
 This guide installs Flyte with the `flyte-binary` Helm chart. It assumes you have
-already provisioned the [external dependencies](./overview) — a Kubernetes cluster, a
-PostgreSQL database, and an object-store bucket — and that you have `helm` and
+already provisioned the [external dependencies](./overview) (a Kubernetes cluster, a
+PostgreSQL database, and an object-store bucket) and that you have `helm` and
 `kubectl` configured against your cluster.
 
 ## 1. Add the Helm repository
@@ -105,7 +105,7 @@ serviceAccount:
     eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/<flyte-role>
 ```
 
-**Static keys** for S3-compatible stores such as MinIO — not recommended for
+**Static keys** for S3-compatible stores such as MinIO, not recommended for
 production:
 
 ```yaml
@@ -136,7 +136,7 @@ configuration:
 
 By default the chart only creates `ClusterIP` Services. To reach Flyte from outside
 the cluster, enable the ingress. A **single HTTP ingress** serves the console and the
-API — there is no separate gRPC ingress (see the
+API. There is no separate gRPC ingress (see the
 [Deployment overview](./overview)).
 
 ```yaml
@@ -150,7 +150,7 @@ ingress:
 
 The console is served under `console.basePath` (default `/v2`) on this same host. It
 talks to the API same-origin, so it only works when the console and the API are behind
-the **same ingress host** — always expose them together.
+the **same ingress host**: always expose them together.
 
 For provider-specific ingress annotations (TLS, ALB scheme, health checks), add them
 under `ingress.httpAnnotations`. See the AWS/EKS example below and the
@@ -195,15 +195,15 @@ provisioned.
 Confirm the ALB is gone in the AWS console so it stops billing.
 {{< /WARNING >}}
 
-The external dependencies — the RDS database, the S3 bucket, and the EKS cluster
-itself — are untouched. Delete those separately in the AWS console (or with the tool
+The external dependencies (the RDS database, the S3 bucket, and the EKS cluster
+itself) are untouched. Delete those separately in the AWS console (or with the tool
 you provisioned them with) if you no longer need them.
 
 Next: secure the deployment with [Authentication and SSO](./authentication).
 
 ## Full Values File Example
 
-A fuller values file for an AWS/EKS cluster — RDS for PostgreSQL, S3 for storage, IRSA
+A fuller values file for an AWS/EKS cluster: RDS for PostgreSQL, S3 for storage, IRSA
 for credentials, and an ALB ingress. Replace every placeholder; no real account IDs,
 hostnames, or ARNs are included.
 
@@ -317,9 +317,9 @@ configuration:
 | `otlpgrpc` | OTLP collector over gRPC (recommended) | `otlpgrpc.endpoint` |
 | `otlphttp` | OTLP collector over HTTP | `otlphttp.endpoint` |
 | `jaeger` / `file` | Jaeger / a local file | `jaeger.*` / `file.*` |
-| `noop` | disabled (default) | — |
+| `noop` | disabled (default) | - |
 
-Prefer `otlpgrpc` — the `otlphttp` metric exporter reuses the trace endpoint path.
+Prefer `otlpgrpc`: the `otlphttp` metric exporter reuses the trace endpoint path.
 Send to any OTLP collector (e.g. the [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/),
 which can fan metrics out to Prometheus and traces to Jaeger/Tempo).
 
@@ -327,7 +327,7 @@ which can fan metrics out to Prometheus and traces to Jaeger/Tempo).
 
 When you set `configuration.database.postgres.password`, the chart writes it into a
 Kubernetes Secret (kept out of the plaintext ConfigMap) and mounts it into the Flyte
-pod — the password lives only in your values file. The same applies to S3 access keys
+pod: the password lives only in your values file. The same applies to S3 access keys
 when `authType: accesskey`.
 
 To keep the password out of the values file too, leave

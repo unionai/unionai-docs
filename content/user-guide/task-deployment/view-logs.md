@@ -11,8 +11,8 @@ Because Flyte is a durable execution engine, these logs are persisted per action
 
 There are two ways to view logs:
 
-- **The CLI** — stream logs for a run or a specific action with `flyte get logs`.
-- **The console** — open the run in the UI and inspect logs on any of its actions.
+- **The CLI**: stream logs for a run or a specific action with `flyte get logs`.
+- **The console**: open the run in the UI and inspect logs on any of its actions.
 
 ## Stream logs with the CLI
 
@@ -28,7 +28,7 @@ If you provide only the run name, Flyte streams the logs for the run's parent (m
 flyte get logs my_run
 ```
 
-To see the logs for a specific action within the run, provide the action name as the second argument. Action names such as `a0` (the main action) and `a1`, `a2`, … (nested actions) identify each task execution in the run — see [Interact with runs and actions](./interacting-with-runs#understanding-runs-and-actions):
+To see the logs for a specific action within the run, provide the action name as the second argument. Action names such as `a0` (the main action) and `a1`, `a2`, … (nested actions) identify each task execution in the run. See [Interact with runs and actions](./interacting-with-runs#understanding-runs-and-actions):
 
 ```bash
 flyte get logs my_run a0
@@ -92,7 +92,7 @@ For the full command reference, see [`flyte get logs`](../../api-reference/flyte
 
 ## View logs in the console
 
-Logs are also available in the {{< key product_name >}} console. Open the run — the `url` attribute of a `flyte.remote.Run` gives its console link:
+Logs are also available in the {{< key product_name >}} console. Open the run. The `url` attribute of a `flyte.remote.Run` gives its console link:
 
 ```python
 import flyte
@@ -110,10 +110,10 @@ From the run view, select an action to see its logs, phases, inputs, and outputs
 
 ## Related
 
-- [Interact with runs and actions](./interacting-with-runs) — retrieve runs, actions, inputs, and outputs.
-- [Flyte CLI reference](../../api-reference/flyte-cli#flyte-get-logs) — the complete `flyte get logs` reference.
+- [Interact with runs and actions](./interacting-with-runs): retrieve runs, actions, inputs, and outputs.
+- [Flyte CLI reference](../../api-reference/flyte-cli#flyte-get-logs): the complete `flyte get logs` reference.
 {{< variant union >}}
 {{< markdown >}}
-- [Debug a run](./debug-runs) — use logs and run information to diagnose failures.
+- [Debug a run](./debug-runs): use logs and run information to diagnose failures.
 {{< /markdown >}}
 {{< /variant >}}

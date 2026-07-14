@@ -196,7 +196,7 @@ async def async_main(n: int) -> List[str]:
     return results
 ```
 
-**Why this matters**: This pattern is powerful when migrating from Flyte 1.x or integrating legacy sync tasks with new async code. You don't need to rewrite all sync tasks at once—they can be called seamlessly from async contexts.
+**Why this matters**: This pattern is powerful when migrating from Flyte 1.x or integrating legacy sync tasks with new async code. You don't need to rewrite all sync tasks at once; they can be called from async contexts.
 
 ## Using AnyIO in async tasks
 

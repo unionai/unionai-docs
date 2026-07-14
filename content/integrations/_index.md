@@ -208,9 +208,9 @@ Data type integrations add native support for additional file and dataframe type
 
 ## Connectors
 
-Connectors are stateless, long‑running services that receive execution requests via gRPC and then submit work to external (or internal) systems. Each connector runs as its own Kubernetes deployment, and is triggered when a Flyte task of the matching type is executed.
+Connectors are stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems. Each connector runs as its own Kubernetes deployment, and is triggered when a Flyte task of the matching type is executed.
 
-Although they normally run inside the data plane, you can also run connectors locally as long as the required secrets/credentials are present locally. This is useful because connectors are just Python services that can be spawned in‑process.
+Although they normally run inside the data plane, you can also run connectors locally as long as the required secrets/credentials are present locally. This is useful because connectors are just Python services that can be spawned in-process.
 
 Connectors are designed to scale horizontally and reduce load on the core Flyte backend because they execute _outside_ the core system. This decoupling makes connectors efficient, resilient, and easy to iterate on. You can even test them locally without modifying backend configuration, which reduces friction during development.
 
@@ -315,7 +315,7 @@ See [Secrets](../user-guide/task-configuration/secrets) for how to store and man
 
 {{< variant union >}}
 {{< markdown >}}
-Deploy your connector as a long-running service using `flyte.app.ConnectorEnvironment`. Union handles building the image, pushing it, and keeping the service running — no manual Kubernetes configuration required.
+Deploy your connector as a long-running service using `flyte.app.ConnectorEnvironment`. Union handles building the image, pushing it, and keeping the service running: no manual Kubernetes configuration required.
 
 See the **Connector app** guide (`user-guide/build-apps/connector-app`) for a complete walkthrough.
 {{< /markdown >}}
@@ -387,7 +387,7 @@ Notebook execution integrations let you run Jupyter notebooks as first-class Fly
 
 ## Observability
 
-Patterns for connecting Flyte tasks to external tracing and observability backends. Unlike the entries above, these are not plugins — they are usage patterns built on top of Flyte's [custom context](../user-guide/task-programming/custom-context) primitive plus the standard libraries from the relevant ecosystem.
+Patterns for connecting Flyte tasks to external tracing and observability backends. Unlike the entries above, these are not plugins: they are usage patterns built on top of Flyte's [custom context](../user-guide/task-programming/custom-context) primitive plus the standard libraries from the relevant ecosystem.
 
 ### Supported observability integrations
 

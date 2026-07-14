@@ -21,7 +21,7 @@ For instructions on creating a cluster, see [Create a CMK cluster](https://docs.
 
 Union uses S3-compatible object storage to store workflow data and artifacts. Crusoe Cloud Storage is supported and is S3-compatible.
 
-<!-- [VERIFY: confirm whether Crusoe requires virtual-hosted or path-style URLs — adjust the disable_force_path_style flag accordingly.] -->
+<!-- [VERIFY: confirm whether Crusoe requires virtual-hosted or path-style URLs. Adjust the disable_force_path_style flag accordingly.] -->
 
 ### Create a bucket
 
@@ -39,7 +39,7 @@ You need this key pair so the Helm values and workload environment variables can
 
 Create a policy that grants your access key permissions on the bucket. Replace `<BUCKET_NAME>` with the name of your bucket.
 
-<!-- [VERIFY: confirm Crusoe's policy syntax — the snippet below assumes standard S3-style IAM JSON. Crusoe may use a different policy schema.] -->
+<!-- [VERIFY: confirm Crusoe's policy syntax. The snippet below assumes standard S3-style IAM JSON. Crusoe may use a different policy schema.] -->
 
 ```json
 {

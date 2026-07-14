@@ -6,7 +6,7 @@ weight: 5
 
 # Enable app serving
 
-Flyte can host long-running **apps** — web services, dashboards, model servers — next to
+Flyte can host long-running **apps** (web services, dashboards, model servers) next to
 your workflows. Each app runs as a [Knative](https://knative.dev) Service that Flyte's
 built-in app controller creates and manages for you, including scaling to zero when an
 app is idle and giving every app a stable URL.
@@ -27,11 +27,11 @@ Serving first, then turn app serving on in the `flyte-binary` chart.
 - A running Flyte deployment (see [AWS deployment](./aws-deployment)).
 - Cluster-admin access to install Knative (CRDs and controllers).
 - A **wildcard DNS record** and a **TLS certificate** for the app base domain (details
-  in steps 2–3).
+  in steps 2 to 3).
 
 {{< note >}}
 Your cloud's ingress/load-balancer controller (for example the AWS Load Balancer
-Controller) **cannot** act as Knative's networking layer — Knative needs one of its own
+Controller) **cannot** act as Knative's networking layer. Knative needs one of its own
 networking layers: **Kourier**, Istio, or Contour. This guide uses **Kourier**, the
 lightweight default. You can still place your cloud load balancer *in front of* Kourier
 (see step 3).
@@ -40,7 +40,7 @@ lightweight default. You can still place your cloud load balancer *in front of* 
 ## 1. Install Knative Serving and Kourier
 
 Pick a Knative release that supports your Kubernetes version (Knative supports only the
-most recent Kubernetes versions — check the
+most recent Kubernetes versions; check the
 [Knative install docs](https://knative.dev/docs/install/)). Then install Serving and the
 Kourier networking layer:
 
@@ -165,7 +165,7 @@ kubectl apply -f kourier-alb-ingress.yaml
 Point a wildcard DNS record `*.<apps.example.com>` at the ALB. The ALB terminates TLS
 with your ACM certificate and forwards to Kourier, which routes by hostname to each app.
 
-**Require authentication (optional).** Apps are public by default — anyone who can reach
+**Require authentication (optional).** Apps are public by default: anyone who can reach
 the ALB can open them. To put the same OIDC login your console uses in front of every app,
 add edge authentication to the `kourier-alb` Ingress. The AWS Load Balancer Controller then
 programs an `authenticate-oidc` action on the ALB, so unauthenticated requests are bounced
@@ -255,7 +255,7 @@ kubectl -n flyte rollout status deploy/flyte
 
 {{< note >}}
 `baseDomain` must match the domain you set in `config-domain`, so the URLs Flyte
-advertises line up with the hostnames Knative actually serves — and with your wildcard
+advertises line up with the hostnames Knative actually serves, and with your wildcard
 certificate.
 {{< /note >}}
 
@@ -268,7 +268,7 @@ kubectl auth can-i create services.serving.knative.dev \
   --as=system:serviceaccount:flyte:flyte -n flyte   # -> yes
 ```
 
-Port-forward the API and call the app service — it should return an empty list (`{}`),
+Port-forward the API and call the app service. It should return an empty list (`{}`),
 not a 404:
 
 ```bash
@@ -295,4 +295,4 @@ The console's **Apps** section now loads. Deploy an app with the SDK and open it
 - **An app URL doesn't resolve.** The wildcard DNS record `*.<apps.example.com>` isn't
   pointing at the load balancer in front of Kourier.
 - **Knative manifests are rejected on apply.** The Knative release is newer than your
-  Kubernetes version supports — install an older Knative version (step 1).
+  Kubernetes version supports. Install an older Knative version (step 1).

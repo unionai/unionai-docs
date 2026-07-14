@@ -45,7 +45,7 @@ Both `scaledown_ttl` and `idle_ttl` must be at least 30 seconds.
 
 ### Standard environment for orchestration
 
-The driver environment doesn't need container reuse—it just coordinates work.
+The driver environment doesn't need container reuse; it just coordinates work.
 The `depends_on` parameter declares that tasks in this environment call tasks
 in `llm_env`, ensuring both environments are deployed together:
 

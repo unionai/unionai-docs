@@ -15,7 +15,7 @@ Want to try Flyte without installing anything? [Try Flyte 2 in your browser](htt
 ## Prerequisites
 
 - **Python 3.10+**
-- **`uv`** — A fast Python package installer. See the [`uv` installation guide](https://docs.astral.sh/uv/getting-started/installation/).
+- **`uv`**: A fast Python package installer. See the [`uv` installation guide](https://docs.astral.sh/uv/getting-started/installation/).
 - Access to a {{< key product_name >}} instance (URL and a project where you can run workflows)
 
 {{< variant flyte >}}
@@ -113,7 +113,7 @@ task:
 {{< /variant >}}
 
 > [!NOTE]
-> The registry (`--registry`, the `image.registry` config entry, or the `FLYTE_IMAGE_REGISTRY` environment variable) sets where **locally-built** images are pushed. It applies whenever the builder is `local` &mdash; always on Flyte OSS, and on Union if you opt out of remote builds. With `--builder remote` (the Union default) images are built on the cluster, so no registry is required, which is why the Union example above omits it. Setting the registry from config requires flyte 2.5.9 or later.
+> The registry (`--registry`, the `image.registry` config entry, or the `FLYTE_IMAGE_REGISTRY` environment variable) sets where **locally-built** images are pushed. It applies whenever the builder is `local`: always on Flyte OSS, and on Union if you opt out of remote builds. With `--builder remote` (the Union default) images are built on the cluster, so no registry is required, which is why the Union example above omits it. Setting the registry from config requires flyte 2.5.9 or later.
 
 {{< variant flyte >}}
 {{< markdown >}}
@@ -129,7 +129,7 @@ docker login ghcr.io
 ```
 
 Because you set `image.registry` in your config above, your `Image` definitions don't
-need a registry &mdash; the local build pushes there automatically. (Set `registry=` on an
+need a registry; the local build pushes there automatically. (Set `registry=` on an
 individual `Image` only to override it.) See
 [Image building](../task-configuration/container-images#image-building) for details.
 {{< /markdown >}}
@@ -181,19 +181,19 @@ See the [CLI reference](../../api-reference/flyte-cli#flyte-create-config) for a
 {{< dropdown title="Config properties explained" icon="control_knobs" >}}
 {{< markdown >}}
 
-**`admin`** — Connection details for your {{< key product_name >}} instance.
+**`admin`**: Connection details for your {{< key product_name >}} instance.
 
 - `endpoint`: URL with `dns:///` prefix. If your UI is at `https://my-org.my-company.com`, use `dns:///my-org.my-company.com`.
 - `insecure`: Set to `true` only for local instances without TLS.
 
-**`image`** — Docker image building configuration.
+**`image`**: Docker image building configuration.
 
 - `builder`: How container images are built.
   - `remote` (Union): Images built on Union's infrastructure.
   - `local` (Flyte OSS): Images built on your machine. Requires Docker. See [Image building](../task-configuration/container-images#image-building).
 - `registry`: Optional registry prefix to use for image builds. This is helpful when you want the SDK to push or pull images from a custom registry without changing your code. You can also set it with the `FLYTE_IMAGE_REGISTRY` environment variable.
 
-**`task`** — Default settings for task execution.
+**`task`**: Default settings for task execution.
 
 - `org`: Organization name (usually matches the first part of your endpoint URL).
 - `domain`: Environment separation (`development`, `staging`, `production`).

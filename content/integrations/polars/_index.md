@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Polars
 
-The Polars plugin adds native support for [Polars](https://pola.rs/) `pl.DataFrame` (eager) and `pl.LazyFrame` (lazy) values as task inputs and outputs. Frames are serialized to and from [Parquet](https://parquet.apache.org/) automatically, so you can pass Polars data between tasks with no manual conversion — just annotate your task signatures with the Polars types.
+The Polars plugin adds native support for [Polars](https://pola.rs/) `pl.DataFrame` (eager) and `pl.LazyFrame` (lazy) values as task inputs and outputs. Frames are serialized to and from [Parquet](https://parquet.apache.org/) automatically, so you can pass Polars data between tasks with no manual conversion. Just annotate your task signatures with the Polars types.
 
 Installing the plugin registers encode/decode handlers with Flyte's `flyte.io.DataFrame` transformer engine. That also means a `pl.DataFrame` can be exchanged with the generic `flyte.io.DataFrame` type and with other dataframe backends (pandas, PySpark) through the same Parquet interchange.
 
@@ -23,7 +23,7 @@ Installing the plugin registers encode/decode handlers with Flyte's `flyte.io.Da
 pip install flyteplugins-polars
 ```
 
-Add the plugin to your task image. Installing it registers the Polars type handlers automatically — no explicit registration call is needed:
+Add the plugin to your task image. Installing it registers the Polars type handlers automatically; no explicit registration call is needed:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/polars/polars_example.py" fragment="setup" lang="python" >}}
 
@@ -56,13 +56,13 @@ Because the Polars handlers register against the shared dataframe transformer en
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/polars/polars_example.py" fragment="interop" lang="python" >}}
 
-This makes it straightforward to mix Polars with pandas or PySpark tasks in the same workflow — each side declares the dataframe type it wants, and Flyte handles the Parquet interchange.
+This makes it straightforward to mix Polars with pandas or PySpark tasks in the same workflow: each side declares the dataframe type it wants, and Flyte handles the Parquet interchange.
 
 ## Common use cases
 
-- **ETL and feature engineering** — filter, join, and aggregate large tables with Polars' fast query engine across task boundaries.
-- **Deferred pipelines** — build up a `pl.LazyFrame` query plan and let Polars optimize it before materialization.
-- **Mixed-backend workflows** — bridge Polars and pandas/PySpark tasks through `flyte.io.DataFrame`.
+- **ETL and feature engineering**: filter, join, and aggregate large tables with Polars' fast query engine across task boundaries.
+- **Deferred pipelines**: build up a `pl.LazyFrame` query plan and let Polars optimize it before materialization.
+- **Mixed-backend workflows**: bridge Polars and pandas/PySpark tasks through `flyte.io.DataFrame`.
 
 ## API reference
 
