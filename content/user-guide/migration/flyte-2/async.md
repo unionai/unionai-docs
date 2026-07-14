@@ -14,7 +14,7 @@ We believe, in particular, that with the rise of the agentic AI pattern, asynchr
 
 With Flyte 2, the entire framework is now written with async constructs, allowing for:
 
-- Seamless overlapping of I/O and independent external operations.
+- Overlapping of I/O and independent external operations.
 - Composing multiple tasks and external tool invocations within the same Python process.
 - Native support of streaming operations for data, observability and downstream invocations.
 
@@ -22,7 +22,7 @@ It is also a natural fit for the expression parallelism in workflows.
 
 ### Understanding concurrency vs. parallelism
 
-**Concurrency** means running multiple tasks at once. This can be achieved by interleaving execution on a single thread (switching between tasks when one is waiting) or by true **parallelism**—executing tasks truly simultaneously across multiple cores or machines. Parallelism is a form of concurrency, but concurrency doesn't require parallelism.
+**Concurrency** means running multiple tasks at once. This can be achieved by interleaving execution on a single thread (switching between tasks when one is waiting) or by true **parallelism**: executing tasks truly simultaneously across multiple cores or machines. Parallelism is a form of concurrency, but concurrency doesn't require parallelism.
 
 ### Python's async evolution
 
@@ -38,7 +38,7 @@ Python's asynchronous programming capabilities have evolved significantly:
 
 | | Flyte 1 | Flyte 2 |
 | --- | --- | --- |
-| Parallelism | The workflow DSL automatically parallelized tasks that weren't dependent on each other. The `map` operator allowed running a task multiple times in parallel with different inputs. | Leverages Python's `asyncio` as the primary mechanism for expressing parallelism, but with a crucial difference: **the Flyte orchestrator acts as the event loop**, managing task execution across distributed infrastructure. |
+| Parallelism | The workflow DSL automatically parallelized tasks that weren't dependent on each other. The `map` operator allowed running a task multiple times in parallel with different inputs. | Uses Python's `asyncio` as the primary mechanism for expressing parallelism, but with a crucial difference: **the Flyte orchestrator acts as the event loop**, managing task execution across distributed infrastructure. |
 
 ### Core async concepts
 
@@ -77,8 +77,8 @@ The Flyte platform handles the complex orchestration while you express paralleli
 
 ### Synchronous task support
 
-Since many existing codebases use synchronous functions, Flyte 2 provides synchronous support. Under the hood, Flyte automatically "asyncifies" synchronous functions, wrapping them to participate seamlessly in the async execution model.
-You don't need to rewrite existing code, just leverage the `.aio()` method when calling sync tasks from async contexts:
+Since many existing codebases use synchronous functions, Flyte 2 provides synchronous support. Under the hood, Flyte automatically "asyncifies" synchronous functions, wrapping them to participate in the async execution model.
+You don't need to rewrite existing code, just use the `.aio()` method when calling sync tasks from async contexts:
 
 {{< code file="/unionai-examples/v2/user-guide/flyte-2/async/async.py" fragment="calling-sync-from-async" lang="python" >}}
 

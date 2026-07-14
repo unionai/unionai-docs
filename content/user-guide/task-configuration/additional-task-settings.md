@@ -69,7 +69,7 @@ See [Reports](../task-programming/reports) for details.
 
 In addition to the description and docs above, Flyte automatically attaches a link from each deployed task back to its source code on GitHub or GitLab, when you deploy from inside a checked-out git repository.
 The link is rendered next to the task description in the UI.
-There is no parameter to set — see [Source-code link discovery](../task-deployment/how-task-deployment-works#6-source-code-link-discovery) for the conditions and caveats.
+There is no parameter to set. See [Source-code link discovery](../task-deployment/how-task-deployment-works#6-source-code-link-discovery) for the conditions and caveats.
 
 ### `links`
 

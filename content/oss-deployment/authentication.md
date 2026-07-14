@@ -9,10 +9,10 @@ weight: 4
 Flyte delegates authentication to an **external OIDC identity provider** (Okta,
 Google, Auth0, …). Two things are involved:
 
-1. **Auth metadata** — the runs service advertises *which* IdP to use, so SDK/CLI and
+1. **Auth metadata**: the runs service advertises *which* IdP to use, so SDK/CLI and
    browser clients can discover where to log in and get tokens. Configured under
    `flyte-core-components.runs.authMetadata`.
-2. **Enforcement at the ingress** — the load balancer validates those tokens (and
+2. **Enforcement at the ingress**: the load balancer validates those tokens (and
    challenges browsers with SSO) *before* requests reach Flyte. Configured with ingress
    annotations.
 
@@ -51,17 +51,17 @@ PKCE callback and must be registered as a redirect URI on the IdP application.
 ## Enforce auth at the ingress
 
 Browsers and machine clients authenticate differently, and on a controller like AWS
-ALB a single ingress can't combine cookie-OIDC (browser) and JWT (token) auth — so the
+ALB a single ingress can't combine cookie-OIDC (browser) and JWT (token) auth, so the
 chart can render up to **three ingresses**:
 
 | Ingress (values key) | Purpose |
 |---|---|
 | `ingress` (`httpAnnotations`) | Serves the console (`/v2`) and API; challenges **browsers** with cookie-OIDC SSO ([walkthrough below](#single-sign-on-for-the-console-at-the-alb)). |
 | `ingress.apiJwtIngress` | **JWT-validates** the `flyteidl2.*` API paths for requests carrying `Authorization: Bearer` (SDK / CLI / machine clients). Give it higher controller precedence than the http ingress so Bearer requests match it first. |
-| `ingress.wellknownIngress` | Serves the **unauthenticated** auth-discovery endpoints (`/.well-known/oauth-authorization-server`, `AuthMetadataService`) — clients need these *before* they hold a token, so give it the highest precedence to bypass auth. |
+| `ingress.wellknownIngress` | Serves the **unauthenticated** auth-discovery endpoints (`/.well-known/oauth-authorization-server`, `AuthMetadataService`). Clients need these *before* they hold a token, so give it the highest precedence to bypass auth. |
 
 Enable the JWT and discovery ingresses and supply your controller/JWT config via their
-`annotations` — e.g. on ALB: the ACM `certificate-arn`, the JWT-validation config, the
+`annotations`, e.g. on ALB: the ACM `certificate-arn`, the JWT-validation config, the
 `Authorization: Bearer*` match condition, and `group.order` values (lower = evaluated
 first) that put `wellknownIngress` first, then `apiJwtIngress`, then the http ingress:
 
@@ -81,7 +81,7 @@ ingress:
 
 ## Single sign-on for the console at the ALB
 
-This is the browser cookie-OIDC SSO referenced above — it goes on the main http
+This is the browser cookie-OIDC SSO referenced above. It goes on the main http
 ingress's `httpAnnotations`. You can put OIDC single sign-on **in front of the console**
 at the ALB, so that
 hitting `https://<host>/v2` challenges the user to log in at your IdP before the
@@ -100,7 +100,7 @@ Browser ──GET /v2──▶ ALB ──(no session)──▶ 302 ▶ IdP login
 ### Prerequisites
 
 - The **AWS Load Balancer Controller** managing your ingress (`ingressClassName: alb`).
-- An **HTTPS listener** with an ACM certificate covering your host — OIDC auth only
+- An **HTTPS listener** with an ACM certificate covering your host. OIDC auth only
   applies to HTTPS rules.
 - An **OIDC application** at your IdP (confidential client, Authorization Code flow)
   with a client ID and secret.
@@ -109,7 +109,7 @@ Browser ──GET /v2──▶ ALB ──(no session)──▶ 302 ▶ IdP login
 
 On the IdP application:
 
-- Add the **sign-in / redirect URI** exactly (note the path — ALB's callback is fixed):
+- Add the **sign-in / redirect URI** exactly (note the path: ALB's callback is fixed):
   ```
   https://<your-host>/oauth2/idpresponse
   ```
@@ -143,7 +143,7 @@ kubectl create secret generic flyte-console-oidc -n flyte \
 
 The AWS Load Balancer Controller's service account must be able to `get`/`list`/
 `watch` Secrets in the ingress namespace. The upstream Helm chart usually grants this
-cluster-wide, but hardened installs may not — if yours doesn't, add a namespaced Role
+cluster-wide, but hardened installs may not. If yours doesn't, add a namespaced Role
 and RoleBinding:
 
 ```yaml
@@ -205,7 +205,7 @@ curl -s -o /dev/null -w '%{http_code}\n' -X POST \
   -H 'Content-Type: application/json' -d '{}'
 ```
 
-Then open `https://<host>/v2` in a browser — you should be bounced through the IdP and
+Then open `https://<host>/v2` in a browser. You should be bounced through the IdP and
 back into the console.
 
 ### Troubleshooting
@@ -214,7 +214,7 @@ back into the console.
 |---|---|
 | `FailedBuildModel … secrets "…" is forbidden` on the ingress | The LB controller can't read the Secret. Apply the RBAC in step 3. |
 | Browser: `'redirect_uri' parameter must be a Login redirect URI` | The exact callback isn't registered. Add `https://<host>/oauth2/idpresponse` (with that path) to the IdP app's redirect URIs. |
-| `401 Authorization Required` *after* a successful login | The token exchange failed — almost always a wrong client **secret** or **client_id**. A trailing `%` on a secret copied from a terminal is the shell's no-newline marker, not part of the secret; strip it. |
+| `401 Authorization Required` *after* a successful login | The token exchange failed: almost always a wrong client **secret** or **client_id**. A trailing `%` on a secret copied from a terminal is the shell's no-newline marker, not part of the secret; strip it. |
 
 ### Annotation reference
 
@@ -233,13 +233,13 @@ annotated ingress's HTTPS listener rules.
 
 Once authentication happens at the edge, Flyte records **who created each run**
 (surfaced as `executed_by` in run metadata). The runs service does not re-validate
-tokens itself — it reads the identity from the headers the proxy forwards. After ALB
+tokens itself. It reads the identity from the headers the proxy forwards. After ALB
 `authenticate-oidc` those are:
 
-- `X-Amzn-Oidc-Data` — a signed JWT carrying the full claims (`sub`, `email`,
+- `X-Amzn-Oidc-Data`: a signed JWT carrying the full claims (`sub`, `email`,
   `given_name`, `family_name`); used on the browser/cookie path.
-- `X-Amzn-Oidc-Identity` — the subject only; used when the data header is absent.
-- `Authorization: Bearer <jwt>` — the SDK/CLI path (proxy-agnostic, always honored).
+- `X-Amzn-Oidc-Identity`: the subject only; used when the data header is absent.
+- `Authorization: Bearer <jwt>`: the SDK/CLI path (proxy-agnostic, always honored).
   This token carries only the subject, so name and email are filled from the IdP's
   `userinfo` endpoint when `runs.authMetadata.externalAuthServerBaseUrl` is set.
 

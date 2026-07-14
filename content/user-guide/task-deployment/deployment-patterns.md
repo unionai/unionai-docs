@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Deployment patterns
 
-Once you understand the basics of task deployment, you can leverage various deployment patterns to handle different project structures, dependency management approaches, and deployment requirements. This section covers the most common patterns with practical examples.
+Once you understand the basics of task deployment, you can use various deployment patterns to handle different project structures, dependency management approaches, and deployment requirements. This section covers the most common patterns with practical examples.
 
 ## Overview of deployment patterns
 
@@ -209,7 +209,7 @@ python -m pyproject_package.main  # Uses remote execution
 - Async Flyte tasks with external API calls
 - Separation of business logic from orchestration
 - External dependencies (`httpx`, `numpy`, `pydantic`)
-- **Data validation with Pydantic models** for robust data processing
+- **Data validation with Pydantic models** for data processing
 - **Professional error handling** with try/catch for data validation
 - **Timeout configuration** for external API calls (`timeout=10.0`)
 - **Async context managers** for proper resource management (`async with httpx.AsyncClient()`)

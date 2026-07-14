@@ -8,7 +8,7 @@ variants: -flyte +union
 
 {{< key product_name >}} provides a hierarchical settings system for configuring default behavior at each level of your [org → domain → project hierarchy](./projects-and-domains). Settings defined at a broader scope are inherited by narrower scopes, and any scope can override an inherited value.
 
-Most settings are **defaults only** — they apply when a task or workflow does not specify a value directly. Per-task configuration (such as `Resources` or `TaskEnvironment`) takes precedence over scope-level settings. The exception is `task_resource.max.*` settings, which are enforced as hard limits that cannot be exceeded by per-task configuration.
+Most settings are **defaults only**: they apply when a task or workflow does not specify a value directly. Per-task configuration (such as `Resources` or `TaskEnvironment`) takes precedence over scope-level settings. The exception is `task_resource.max.*` settings, which are enforced as hard limits that cannot be exceeded by per-task configuration.
 
 ## Scope hierarchy
 
@@ -16,7 +16,7 @@ Settings are stored at three scope levels:
 
 | Scope | Who manages it | Inherits from |
 |-------|---------------|---------------|
-| **Org** | Org admins | — |
+| **Org** | Org admins | - |
 | **Domain** | Org admins | Org |
 | **Project** | Project owners, org admins | Domain, then org |
 
@@ -39,9 +39,9 @@ flyte edit settings --domain production --project ml-pipeline
 
 The editor file has three sections:
 
-- **Local overrides** — values explicitly set at this scope.
-- **Inherited settings** — values resolved from a parent scope, shown as comments with their origin.
-- **Available settings** — all remaining keys, shown as commented placeholders with descriptions.
+- **Local overrides**: values explicitly set at this scope.
+- **Inherited settings**: values resolved from a parent scope, shown as comments with their origin.
+- **Available settings**: all remaining keys, shown as commented placeholders with descriptions.
 
 Example editor file for a domain that has one local override and one inherited setting:
 
@@ -74,7 +74,7 @@ The three comment prefixes have distinct roles:
 |--------|---------|
 | `###` | Section header |
 | `##` | Field description or metadata |
-| `#` | Inactive setting — remove the leading `#` to activate |
+| `#` | Inactive setting: remove the leading `#` to activate |
 
 To set or change a value, uncomment the relevant line and edit it. To stop overriding a setting and revert to inheriting from the parent scope, comment out or delete the line entirely.
 
@@ -103,7 +103,7 @@ The file should be a plain YAML mapping of dot-notation keys to values. Changes 
 
 ## Editing settings from Python
 
-The same scopes can be read and written from Python with `flyte.remote.Settings` — useful for scripted setup, audits, or wiring configuration into your own tooling. Fetch a scope with `get_settings_for_edit()`, inspect its values, then write them back with `update_settings()`.
+The same scopes can be read and written from Python with `flyte.remote.Settings`: useful for scripted setup, audits, or wiring configuration into your own tooling. Fetch a scope with `get_settings_for_edit()`, inspect its values, then write them back with `update_settings()`.
 
 ```python
 import flyte.remote as remote
@@ -136,10 +136,10 @@ settings.update_settings({
 })
 ```
 
-`update_settings()` **replaces the complete set of local overrides** for the scope the object was fetched for: keys you include are set locally, and any key you omit reverts to inheriting from the parent scope. The call uses optimistic locking against the version returned by `get_settings_for_edit()` — if another writer changed the same scope in between, re-fetch the scope and re-apply. To explicitly clear a value so it blocks parent inheritance (rather than reverting to it), use the `~unset` token in the `flyte edit settings` editor described above.
+`update_settings()` **replaces the complete set of local overrides** for the scope the object was fetched for: keys you include are set locally, and any key you omit reverts to inheriting from the parent scope. The call uses optimistic locking against the version returned by `get_settings_for_edit()`. If another writer changed the same scope in between, re-fetch the scope and re-apply. To explicitly clear a value so it blocks parent inheritance (rather than reverting to it), use the `~unset` token in the `flyte edit settings` editor described above.
 
 > [!NOTE]
-> Treat `available_keys()` as the source of truth for which keys are settable on your version — the set grows over time, so prefer it over hardcoding key names.
+> Treat `available_keys()` as the source of truth for which keys are settable on your version. The set grows over time, so prefer it over hardcoding key names.
 
 ## Available settings
 
@@ -152,10 +152,10 @@ settings.update_settings({
 | `task_resource.min.gpu` | quantity | Minimum GPU request applied to task pods (e.g. `1`) |
 | `task_resource.min.memory` | quantity | Minimum memory request applied to task pods (e.g. `256Mi`, `4Gi`) |
 | `task_resource.min.storage` | quantity | Minimum ephemeral storage request applied to task pods (e.g. `10Gi`) |
-| `task_resource.max.cpu` | quantity | Maximum CPU limit enforced on task pods — cannot be overridden by per-task configuration |
-| `task_resource.max.gpu` | quantity | Maximum GPU limit enforced on task pods — cannot be overridden by per-task configuration |
-| `task_resource.max.memory` | quantity | Maximum memory limit enforced on task pods — cannot be overridden by per-task configuration |
-| `task_resource.max.storage` | quantity | Maximum ephemeral storage limit enforced on task pods — cannot be overridden by per-task configuration |
+| `task_resource.max.cpu` | quantity | Maximum CPU limit enforced on task pods: cannot be overridden by per-task configuration |
+| `task_resource.max.gpu` | quantity | Maximum GPU limit enforced on task pods: cannot be overridden by per-task configuration |
+| `task_resource.max.memory` | quantity | Maximum memory limit enforced on task pods: cannot be overridden by per-task configuration |
+| `task_resource.max.storage` | quantity | Maximum ephemeral storage limit enforced on task pods: cannot be overridden by per-task configuration |
 | `task_resource.mirror_limits_request` | bool | When `true`, resource limits are set equal to requests |
 | `labels` | map | Kubernetes labels applied to task pods |
 | `annotations` | map | Kubernetes annotations applied to task pods |
@@ -165,9 +165,9 @@ Quantity values use Kubernetes resource quantity format. Examples: `500m` (0.5 C
 
 ## Inheritance rules
 
-**Scalar settings** — `run`, `security`, `storage`, and `task_resource` fields: the most specific scope with a value wins. If the project sets `run.default_queue`, that value is used. If not, the domain's value is checked, then the org's.
+**Scalar settings** (`run`, `security`, `storage`, and `task_resource` fields): the most specific scope with a value wins. If the project sets `run.default_queue`, that value is used. If not, the domain's value is checked, then the org's.
 
-**Map settings** — `labels`, `annotations`, and `environment_variables`: entries merge across scopes, with parent entries applied first and child entries overriding on key conflict. For example, if the org sets `LOG_LEVEL=info` and the project sets `LOG_LEVEL=debug`, the project's value wins.
+**Map settings** (`labels`, `annotations`, and `environment_variables`): entries merge across scopes, with parent entries applied first and child entries overriding on key conflict. For example, if the org sets `LOG_LEVEL=info` and the project sets `LOG_LEVEL=debug`, the project's value wins.
 
 ### Explicitly clearing a value
 
@@ -183,7 +183,7 @@ environment_variables: ~unset
 
 ## Relationship to task configuration
 
-Most settings provide defaults only. Any value set directly on a task — through `Resources`, `TaskEnvironment`, task decorator arguments, or a per-invocation override — takes precedence over the scope-level setting for that task, regardless of which scope the setting was defined at.
+Most settings provide defaults only. Any value set directly on a task (through `Resources`, `TaskEnvironment`, task decorator arguments, or a per-invocation override) takes precedence over the scope-level setting for that task, regardless of which scope the setting was defined at.
 
 For example, if the org sets `task_resource.min.cpu: "500m"` as a default, a task with `@task(resources=Resources(cpu="2"))` will still use `2` CPUs.
 

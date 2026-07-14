@@ -36,7 +36,7 @@ Key points:
 - Uses `json_mode=True` to ensure the LLM returns valid JSON
 - Parses the response into a Pydantic `Critique` model
 - Returns a typed object for reliable downstream processing
-- `@flyte.trace` provides checkpointing—if the task retries, completed critiques aren't re-run
+- `@flyte.trace` provides checkpointing: if the task retries, completed critiques aren't re-run
 
 ## Revise function
 
@@ -74,7 +74,7 @@ the actual LLM work efficiently.
 ### Early exit
 
 The `if critique.score >= quality_threshold: break` pattern enables early exit
-when quality is sufficient. This saves compute costs and time—no need to run
+when quality is sufficient. This saves compute costs and time: no need to run
 all iterations if the first draft is already good.
 
 ## Grouping iterations with flyte.group

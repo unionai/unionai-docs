@@ -46,7 +46,7 @@ The call returns an `AgentResult` with the final `summary`, an `error` string (e
 
 ### Sync vs async
 
-`agent.run` is synchronous by default. Inside `async def` code — Flyte tasks, FastAPI handlers, etc. — use the `.aio(...)` companion instead.
+`agent.run` is synchronous by default. Inside `async def` code (Flyte tasks, FastAPI handlers, etc.) use the `.aio(...)` companion instead.
 
 | Context | Call |
 |---------|------|
@@ -106,7 +106,7 @@ async def issue_refund(order_id: str, amount_usd: float) -> dict:
 
 When the LLM tries to call a tool marked `requires_approval=True`, the harness invokes the agent's `approval_callback` and waits for a boolean decision before executing. The default callback raises a human-input request via the `flyteplugins-hitl` plugin and blocks until a human approves or denies. If denied, the agent receives a synthetic tool message explaining the rejection so it can recover gracefully.
 
-Pass `call_handler` to intercept *how* a tool is invoked. The handler is an async callback `(call_llm, tool_fn, **kwargs) -> result` that runs in place of the default execution. Await `tool_fn` to run the default behavior, or reach into `tool_fn.target` (the underlying task / callable) and `call_llm` (the agent's LLM callback) to do something custom — for example, ask the LLM how to size compute, then run the task with overridden resources and retry on OOM:
+Pass `call_handler` to intercept *how* a tool is invoked. The handler is an async callback `(call_llm, tool_fn, **kwargs) -> result` that runs in place of the default execution. Await `tool_fn` to run the default behavior, or reach into `tool_fn.target` (the underlying task / callable) and `call_llm` (the agent's LLM callback) to do something custom. For example, ask the LLM how to size compute, then run the task with overridden resources and retry on OOM:
 
 ```python
 async def right_size(call_llm, tool_fn, **kwargs):
@@ -123,7 +123,7 @@ async def train(...): ...
 
 The harness can connect to one or more [Model Context Protocol (MCP)](https://modelcontextprotocol.io) servers and surface their tools transparently. On the first `run` call, the harness connects to each server, lists its tools, and registers them in the catalog.
 
-Declare servers with `MCPServerSpec` — either an HTTP(S) `url` (for streamable-http / SSE transports) or a `command` (for stdio servers):
+Declare servers with `MCPServerSpec`: either an HTTP(S) `url` (for streamable-http / SSE transports) or a `command` (for stdio servers):
 
 ```python
 from flyte.ai.agents import Agent, MCPServerSpec
@@ -150,9 +150,9 @@ agent = Agent(
 
 Useful `MCPServerSpec` knobs:
 
-- `tool_prefix` — prepend a prefix to every tool name from this server to avoid collisions.
-- `tool_filter` — an allowlist of tool names to expose to the LLM (`None` exposes all).
-- `headers` — HTTP headers (e.g. `Authorization`) for authenticated servers.
+- `tool_prefix`: prepend a prefix to every tool name from this server to avoid collisions.
+- `tool_filter`: an allowlist of tool names to expose to the LLM (`None` exposes all).
+- `headers`: HTTP headers (e.g. `Authorization`) for authenticated servers.
 
 MCP support requires the `mcp` package: `pip install 'flyte[mcp]'`. To serve your own MCP servers on {{< key product_name >}}, see [Build an MCP](../build-mcp/_index).
 
@@ -181,8 +181,8 @@ The default loop is robust, but sometimes you need custom behavior around it: in
 
 `Agent` is a [dataclass](https://docs.python.org/3/library/dataclasses.html), and `run` is the single public entry point that drives the loop. There are two common strategies:
 
-1. **Wrap the built-in loop** — add logic before and after `super().run(...)`. Best when you mostly want the default behavior plus pre/post steps.
-2. **Replace the loop entirely** — implement `run` (and `tool_descriptions`) yourself. Best when you need a fundamentally different control flow but still want to plug into the rest of the ecosystem (e.g. the chat UI).
+1. **Wrap the built-in loop**: add logic before and after `super().run(...)`. Best when you mostly want the default behavior plus pre/post steps.
+2. **Replace the loop entirely**: implement `run` (and `tool_descriptions`) yourself. Best when you need a fundamentally different control flow but still want to plug into the rest of the ecosystem (e.g. the chat UI).
 
 ### `run` is sync-by-default
 
@@ -208,7 +208,7 @@ agent = GuardedAgent(
 result = agent.run("Summarize today's open tickets.")
 ```
 
-Because `GuardedAgent` still subclasses `Agent`, every other feature — tools, MCP servers, memory, HITL — keeps working unchanged.
+Because `GuardedAgent` still subclasses `Agent`, every other feature (tools, MCP servers, memory, HITL) keeps working unchanged.
 
 ### Strategy 2: implement `run` from scratch
 
@@ -247,7 +247,7 @@ class MyCustomAgent:
 
 ### Choosing between subclassing and composition
 
-Subclassing is the right tool when you need to change *how the loop runs*. If you only need to change *what happens around a run* — for example, looping the agent until a condition is met, or combining several agents — prefer plain composition: call `agent.run.aio(...)` from inside your own `@env.task`. This keeps the harness untouched and your orchestration logic explicit and observable in the dashboard.
+Subclassing is the right tool when you need to change *how the loop runs*. If you only need to change *what happens around a run* (for example, looping the agent until a condition is met, or combining several agents) prefer plain composition: call `agent.run.aio(...)` from inside your own `@env.task`. This keeps the harness untouched and your orchestration logic explicit and observable in the dashboard.
 
 ## Next steps
 

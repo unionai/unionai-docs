@@ -84,7 +84,7 @@ flyte run my_example.py my_task --input "test_data"
 The `--copy-style` option controls code bundling for remote execution.
 This applies to the ephemeral preparation step of the `flyte run` command and works similarly to `flyte deploy`:
 
-Smart bundling (default) — includes only imported project modules:
+Smart bundling (default) includes only imported project modules:
 
 ```bash
 flyte run --copy-style loaded_modules my_example.py my_task
@@ -300,7 +300,7 @@ The `now`/`today`, relative-datetime, human-duration, and JSON-string forms are 
 
 ### Boolean inputs
 
-A `bool` input is a **flag**, not a value-taking option — do not write `--debug true`.
+A `bool` input is a **flag**, not a value-taking option. Do not write `--debug true`.
 
 - If the parameter defaults to `False` (or has no default), pass the bare flag to set it `True`, and omit it to leave it `False`:
 
@@ -363,7 +363,7 @@ flyte run my_file.py my_task --mapping '{"a": 1, "b": 2}'
 flyte run my_file.py my_task --config '{"lr": 0.01, "epochs": 5}'
 ```
 
-For anything larger than a one-liner, pass a **path to a `.json` or `.yaml` file** instead — Flyte reads and parses the file:
+For anything larger than a one-liner, pass a **path to a `.json` or `.yaml` file** instead. Flyte reads and parses the file:
 
 ```bash
 flyte run my_file.py my_task --config ./config.yaml
@@ -381,7 +381,7 @@ flyte run my_file.py my_task --df ./data.parquet
 
 ### Optional inputs
 
-An `Optional[...]` input (or any input with a default) is not required — omit the option to leave it at its default:
+An `Optional[...]` input (or any input with a default) is not required. Omit the option to leave it at its default:
 
 ```bash
 flyte run my_file.py my_task --count 5      # `name` omitted, uses its default
@@ -389,7 +389,7 @@ flyte run my_file.py my_task --count 5      # `name` omitted, uses its default
 
 ## Positional arguments
 
-**The CLI has no positional form for task inputs.** `flyte run` always passes inputs as named options (`--<input_name>`), as shown above — there is no `flyte run my_file.py my_task "World" 5` form.
+**The CLI has no positional form for task inputs.** `flyte run` always passes inputs as named options (`--<input_name>`), as shown above. There is no `flyte run my_file.py my_task "World" 5` form.
 
 Positional arguments apply only when you invoke a task **programmatically**. `flyte.run()`, and a direct (native) call to one task from inside another, accept positional arguments and map them to the task's parameters in signature order:
 
@@ -401,7 +401,7 @@ flyte.run(greet, message="Good morning!")
 
 Two caveats apply:
 
-- **Deployed tasks are keyword-only.** A task retrieved with `flyte.remote.Task.get()` (or run via the `deployed-task` CLI subcommand) does **not** accept positional arguments — pass its inputs by keyword (or, on the CLI, as `--<input_name>` options).
+- **Deployed tasks are keyword-only.** A task retrieved with `flyte.remote.Task.get()` (or run via the `deployed-task` CLI subcommand) does **not** accept positional arguments. Pass its inputs by keyword (or, on the CLI, as `--<input_name>` options).
 - **Don't provide the same input both positionally and by keyword.**
 
 ## SDK options

@@ -43,13 +43,13 @@ This means that the secret will be available across all projects and domains in 
 
 You can optionally specify either or both of the `--project` and `--domain` flags to restrict the scope of the secret to:
 * A specific project (across all domains)
-* A specific domain (across all project)
+* A specific domain (across all projects)
 * A specific project and a specific domain.
 
 For example, to create a secret that it is only available in `my_project/development`, you would execute the following command:
 
 ```bash
-flyte create secret  --project my_project --domain development MY_SECRET_KEY --value my_secret_value
+flyte create secret MY_SECRET_KEY --value my_secret_value --project my_project --domain development
 ```
 
 ## Listing secrets

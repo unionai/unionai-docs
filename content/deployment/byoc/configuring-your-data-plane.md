@@ -127,7 +127,7 @@ Specify the disk size for the nodes in GiB. The default is `500 GiB`.
 
 ## Resources held back
 
-When specifying node types and other resource parameters, you should keep in mind that the nominally quoted amount of a given resource is not always available to Flyte tasks.
+When specifying node types and other resource parameters, note that the nominally quoted amount of a given resource is not always available to Flyte tasks.
 For example, in an node instance rated at `16GiB`, some of that is held back for overhead and will not be available to Flyte task processes.
 
 ## Example specification
