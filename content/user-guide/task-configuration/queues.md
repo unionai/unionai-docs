@@ -152,8 +152,8 @@ is scheduled first.
 How long a task is willing to *wait* in a queue before it gives up is a separate,
 per-task concern controlled by the timeout settings. If a queue is busy or
 capped, an action sits in the **Queued** phase until a slot opens: set
-[`max_queued_time`](./retries-and-timeouts#max_queued_time--fail-fast-when-capacity-isnt-available)
+[`max_queued_time`](./retries-and-timeouts#max_queued_time-fail-fast-when-capacity-isnt-available)
 to fail fast when capacity isn't available within your window, and
-[`deadline`](./retries-and-timeouts#deadline--bound-the-total-wall-clock) to put
+[`deadline`](./retries-and-timeouts#deadline-bound-the-total-wall-clock) to put
 an absolute ceiling on total wall-clock including queue wait. See
 [Retries and timeouts](./retries-and-timeouts) for the full picture.

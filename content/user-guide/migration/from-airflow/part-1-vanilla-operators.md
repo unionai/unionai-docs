@@ -1,5 +1,5 @@
 ---
-title: Part 1: vanilla operators
+title: "Part 1: vanilla operators"
 weight: 1
 variants: +flyte +union
 ---
