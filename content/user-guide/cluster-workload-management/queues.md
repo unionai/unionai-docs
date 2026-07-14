@@ -25,7 +25,7 @@ CLI or Python. For how workflow authors *target* a queue from task code, see
 A queue lives inside one **cluster pool** and routes work to one or more clusters
 *within that pool*. By default (the `*` selector) it spreads across every healthy
 cluster in the pool; you can also pin it to specific clusters. It can never reach a
-cluster in another pool — pools are isolation boundaries.
+cluster in another pool: pools are isolation boundaries.
 
 ```mermaid
 flowchart TD
@@ -64,7 +64,7 @@ inside exactly one pool:
 - **`gpu-queue`** lives in the same `prod` pool but is pinned to a single cluster.
 
 The selector (which clusters within the pool) is mutable. The pool a queue lives
-in is **fixed at creation** — an update that changes it is rejected, because
+in is **fixed at creation**: an update that changes it is rejected, because
 moving a queue to another pool would cross an isolation boundary. To move
 workloads to another pool, see [Move work to another pool](#move-work-to-another-pool).
 
@@ -141,25 +141,25 @@ queue = Queue.create(
 
 ### What each setting controls
 
-- **`cluster_pool` / `--cluster-pool`** — the pool this queue lives in. A queue can
+- **`cluster_pool` / `--cluster-pool`**: the pool this queue lives in. A queue can
   only route to clusters in its own pool. Omit to bind the queue to the `default`
   pool.
-- **`clusters` / `--cluster`** — pin the queue to one or more clusters in the pool.
+- **`clusters` / `--cluster`**: pin the queue to one or more clusters in the pool.
   Omit to use all clusters in the pool. In the API, `["*"]` means all enabled and
   healthy clusters in the pool, and `*` must be the only entry if used.
-- **`run_concurrency` / `--run-concurrency`** — maximum number of *runs* active on
+- **`run_concurrency` / `--run-concurrency`**: maximum number of *runs* active on
   the queue at once. Children of an active run aren't counted; use this to stop a
   job from overlapping with a previous invocation of itself. `0` means no limit.
-- **`action_concurrency` / `--action-concurrency`** — maximum number of *actions*
+- **`action_concurrency` / `--action-concurrency`**: maximum number of *actions*
   (tasks) running at once. A cap of 1 serializes the queue; higher values bound
   the burst rate. `0` means no limit.
-- **`depth` / `--depth`** — total in-flight plus waiting items the queue will hold
+- **`depth` / `--depth`**: total in-flight plus waiting items the queue will hold
   (default `10000`). `0` means no limit.
-- **`priority` / `--priority`** — `min`, `medium` (default), or `max`. Among queues
+- **`priority` / `--priority`**: `min`, `medium` (default), or `max`. Among queues
   contending for the same pool's capacity, higher-priority work is scheduled
   first. Under the hood these map to enum values 1, 50, and 100; use `max` for a
   priority higher than 50. Priority controls ordering, not preemption.
-- **`fairness` / `--fairness`** — `round_robin` (default) or `shuffle_interleave`.
+- **`fairness` / `--fairness`**: `round_robin` (default) or `shuffle_interleave`.
   This controls how actions from different projects sharing the queue are
   interleaved.
 
@@ -251,7 +251,7 @@ same data plane.
 **Draining** takes a queue out of rotation without losing in-flight work: the
 queue stops admitting new submissions, work already in flight runs to
 completion, and once nothing is left the queue settles into the `drained` state.
-Draining is how you quiesce a queue — before deleting the cluster behind it,
+Draining is how you quiesce a queue: before deleting the cluster behind it,
 before maintenance, or as part of
 [moving work to another pool](#move-work-to-another-pool).
 
@@ -264,7 +264,7 @@ active --[drain]--> draining --[in-flight work completes]--> drained
 ```
 
 > [!WARNING] Draining is not yet available
-> The drain operation is currently disabled — the control plane rejects drain
+> The drain operation is currently disabled: the control plane rejects drain
 > requests. Support is coming in a future release.
 
 {{< tabs "drain-queue" >}}
@@ -288,7 +288,7 @@ Queue.activate("gpu-queue")  # put the queue back in rotation
 {{< /tab >}}
 {{< /tabs >}}
 
-The `default` queue is always active — its state cannot be changed. Note also
+The `default` queue is always active; its state cannot be changed. Note also
 that queues cannot be deleted: draining is how a queue is retired, and an idle
 queue costs nothing.
 
@@ -317,7 +317,7 @@ never change pools in place; moving work is a drain-and-replace migration:
 
 ## See also
 
-- [Queues in Configure tasks](../task-configuration/queues) — routing work to a
+- [Queues in Configure tasks](../task-configuration/queues): routing work to a
   queue from task code, triggers, and per-run context.
-- [Cluster pools](./cluster-pools) and [Clusters](./clusters) — the routing
+- [Cluster pools](./cluster-pools) and [Clusters](./clusters): the routing
   targets a queue points at.

@@ -32,7 +32,7 @@ parameterized re-runs from the UI.
 flyte run python-script hello.py
 ```
 
-This uses the default Debian base image, 1 CPU, and 2 GiB of memory —
+This uses the default Debian base image, 1 CPU, and 2 GiB of memory,
 enough for "hello world". Add flags to request more.
 
 ```bash

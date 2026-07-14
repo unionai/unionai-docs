@@ -9,7 +9,7 @@ variants: +flyte +union
 > [!NOTE]
 > Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/parallelized_autoresearch).
 
-This tutorial extends the [Autoresearch agent](../autoresearch/_index) pattern with a code-mode MLE agent that plans **batches** of training experiments, saves distinct `train.py` edits, and runs them **in parallel** via `flyte.map`. It follows the [karpathy/autoresearch](https://github.com/karpathy/autoresearch) loop — minimize validation bits-per-byte on a TinyGPT variant — but orchestrates fan-out batches with durable Flyte tasks and [unionai-sandbox](../../../user-guide/sandboxing/_index) execution.
+This tutorial extends the [Autoresearch agent](../autoresearch/_index) pattern with a code-mode MLE agent that plans **batches** of training experiments, saves distinct `train.py` edits, and runs them **in parallel** via `flyte.map`. It follows the [karpathy/autoresearch](https://github.com/karpathy/autoresearch) loop (minimize validation bits-per-byte on a TinyGPT variant) but orchestrates fan-out batches with durable Flyte tasks and [unionai-sandbox](../../../user-guide/sandboxing/_index) execution.
 
 Compared to the single-threaded Claude Code autoresearch tutorial, this agent:
 
@@ -22,7 +22,7 @@ Each experiment has different compute needs (wider models, larger batch sizes, l
 
 ## Define the task environments
 
-The example uses three environments — bundle preparation, sandbox experiments, and the agent driver — sharing a Debian-based image with PyTorch and sandbox tooling.
+The example uses three environments (bundle preparation, sandbox experiments, and the agent driver) sharing a Debian-based image with PyTorch and sandbox tooling.
 
 {{< code file="/unionai-examples/v2/tutorials/parallelized_autoresearch/bundle.py" fragment=env lang=python >}}
 
@@ -34,17 +34,17 @@ The right-sizing logic lives in `tools.py`. `execute_with_right_sizing` asks the
 
 {{< code file="/unionai-examples/v2/tutorials/parallelized_autoresearch/tools.py" fragment=right_size lang=python >}}
 
-`right_size` is the pre-built handler passed to `@tool(call_handler=...)`. The agent does not need a back-reference to the `Agent` instance — the harness passes `call_llm` and `tool_fn.model` into the handler on each invocation.
+`right_size` is the pre-built handler passed to `@tool(call_handler=...)`. The agent does not need a back-reference to the `Agent` instance: the harness passes `call_llm` and `tool_fn.model` into the handler on each invocation.
 
 The experiment task stacks `@tool(call_handler=tools.right_size)` on `@experiment_env.task`. The task body only loads edited code and runs sandbox training; sizing and OOM recovery happen in the handler:
 
 {{< code file="/unionai-examples/v2/tutorials/parallelized_autoresearch/parallelized_autoresearch.py" fragment=run_experiment lang=python >}}
 
-Batch fan-out calls `flyte.map.aio(run_experiment, ...)` from `run_experiment_batch`. That path invokes `run_experiment.aio()` directly — **not** through the agent registry — so the example binds `call_llm` and `model` on the tool after construction (see the `dataclasses.replace` block above). With Flyte SDK ≥ 2.5.5, `AgentTool.aio` routes through `call_handler`, so every mapped experiment gets LLM right-sizing even when the agent only exposes `run_experiment_batch` in code mode.
+Batch fan-out calls `flyte.map.aio(run_experiment, ...)` from `run_experiment_batch`. That path invokes `run_experiment.aio()` directly (**not** through the agent registry) so the example binds `call_llm` and `model` on the tool after construction (see the `dataclasses.replace` block above). With Flyte SDK ≥ 2.5.5, `AgentTool.aio` routes through `call_handler`, so every mapped experiment gets LLM right-sizing even when the agent only exposes `run_experiment_batch` in code mode.
 
 ## The fan-out agent task
 
-The driver task `parallelized_autoresearch` restores prior memory (default key `parallelized-autoresearch`), streams Activity / Leaderboard / Code edits / Memory report tabs, and runs the code-mode agent loop. The agent tool registry is trimmed to the batch workflow — `run_experiment` is internal to `run_experiment_batch`, not a sandbox function the LLM calls directly.
+The driver task `parallelized_autoresearch` restores prior memory (default key `parallelized-autoresearch`), streams Activity / Leaderboard / Code edits / Memory report tabs, and runs the code-mode agent loop. The agent tool registry is trimmed to the batch workflow: `run_experiment` is internal to `run_experiment_batch`, not a sandbox function the LLM calls directly.
 
 {{< code file="/unionai-examples/v2/tutorials/parallelized_autoresearch/parallelized_autoresearch.py" fragment=agent lang=python >}}
 
@@ -67,7 +67,7 @@ cd v2/tutorials/parallelized_autoresearch
 uv run --script parallelized_autoresearch.py --n-experiments 6 --batch-size 3 --num-shards 1
 ```
 
-Use `--memory-key` to resume a prior research session (default: `parallelized-autoresearch`). Pass a unique key — for example `parallelized-autoresearch-20260622-215057` — to start with empty memory. Code mode needs more turns than JSON tool mode — increase `--max-turns` for larger sweeps.
+Use `--memory-key` to resume a prior research session (default: `parallelized-autoresearch`). Pass a unique key (for example `parallelized-autoresearch-20260622-215057`) to start with empty memory. Code mode needs more turns than JSON tool mode. Increase `--max-turns` for larger sweeps.
 
 Or invoke the agent task directly with `flyte run` (snake_case task inputs):
 

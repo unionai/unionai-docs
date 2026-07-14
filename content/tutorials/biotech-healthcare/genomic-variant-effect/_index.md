@@ -55,4 +55,4 @@ Use a smaller Carbon model for faster iteration:
 flyte run genomic_variant_effect.py pipeline --model_name HuggingFaceBio/Carbon-500M
 ```
 
-Negative VEP scores indicate the model prefers the reference allele over the alternate — a signal correlated with pathogenicity in this zero-shot setup.
+Negative VEP scores indicate the model prefers the reference allele over the alternate, a signal correlated with pathogenicity in this zero-shot setup.

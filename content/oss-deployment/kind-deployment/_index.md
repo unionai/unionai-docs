@@ -6,7 +6,7 @@ weight: 2
 
 # Kind deployment
 
-This guide spins up a complete Flyte stack — the Flyte binary on a
+This guide spins up a complete Flyte stack: the Flyte binary on a
 [kind](https://kind.sigs.k8s.io/) cluster, backed by a hosted PostgreSQL and an
 S3-compatible object store. kind runs anywhere Docker runs, so the same steps work on
 **your own machine** or on a **cloud VM** (a DigitalOcean Droplet is shown here). Either
@@ -16,7 +16,7 @@ way it's a fast way to try Flyte without running a production-grade control plan
 > This runs on a single-node kind cluster with static credentials (no workload identity),
 > and the optional [auth setup](#7-add-authentication-with-a-local-idp-optional)
 > uses a self-signed cert the SDK only accepts via `insecureSkipVerify`. Use it to try
-> Flyte — not as a template for a production deployment. For that, see
+> Flyte, not as a template for a production deployment. For that, see
 > [AWS deployment](../aws-deployment). On a cloud VM, remember the stack is reachable
 > from the public internet: restrict ports `80`/`443` (and `22`) to your own IP with a
 > [cloud firewall](https://docs.digitalocean.com/products/networking/firewalls/) while
@@ -37,7 +37,7 @@ Install these on your machine:
 {{< /tab >}}
 {{< tab "DigitalOcean VM" >}}
 {{< markdown >}}
-Create a Droplet to host the cluster — kind needs a few GB of headroom, so pick at
+Create a Droplet to host the cluster: kind needs a few GB of headroom, so pick at
 least 4 vCPUs / 8 GB (e.g. `s-4vcpu-8gb`). Use the dashboard or
 [`doctl`](https://docs.digitalocean.com/reference/doctl/):
 
@@ -78,7 +78,7 @@ droplet**; only the SDK/CLI and browser run on your own machine.
 ## 2. Create the kind cluster
 
 Create the cluster with two host-port mappings up front. kind fixes a cluster's port
-mappings **at creation time** — they can't be added later — so map them now even
+mappings **at creation time** (they can't be added later), so map them now even
 though they're only used in the optional auth step:
 
 ```bash
@@ -114,7 +114,7 @@ kubectl cluster-info --context kind-flyte
 >   so this mapping is required if you enable ingress auth *and* want to submit runs from
 >   the SDK. Harmless if you never enable auth.
 >
-> On a **DigitalOcean droplet** the same mappings bind to the droplet's **public IP** —
+> On a **DigitalOcean droplet** the same mappings bind to the droplet's **public IP**:
 > in step 7, `flyte.local` points at that IP instead of `127.0.0.1`, and the two ports
 > are open to the internet unless you restrict them with a cloud firewall (see the
 > warning at the top).
@@ -139,20 +139,20 @@ kubectl create namespace flyte
 Create a project at [supabase.com](https://supabase.com/), then open **Project
 Settings → Database → Connection string** and switch the tab to **Session pooler**.
 Use that string, **not** the direct connection. (Another external or self-hosted
-PostgreSQL works the same way — supply its host, database, user, and password, with
+PostgreSQL works the same way: supply its host, database, user, and password, with
 `sslmode` to match. For a DB on your host machine, use `host.docker.internal` as the
 host. The database must already exist.)
 
 > [!WARNING] Use the session pooler, not the direct connection
 > Supabase's direct host (`db.<project-ref>.supabase.co`) resolves to **IPv6 only**.
-> A kind cluster is IPv4-only, so the Flyte pod can't reach it — `wait-for-db` passes
+> A kind cluster is IPv4-only, so the Flyte pod can't reach it: `wait-for-db` passes
 > (it only probes the port) but Flyte then crash-loops on `failed to connect`. The
 > **session pooler** host (`aws-<n>-<region>.pooler.supabase.com`) has IPv4, so use it.
-> Use the **session** pooler on port `5432`, not the transaction pooler (`6543`) —
+> Use the **session** pooler on port `5432`, not the transaction pooler (`6543`):
 > Flyte's migrations need session semantics.
 >
 > Two things the pooler changes versus the direct string, both shown verbatim in the
-> Session pooler tab — **copy them, don't guess**:
+> Session pooler tab (**copy them, don't guess**):
 > - **Username carries the project ref**: `postgres.<project-ref>`, not bare `postgres`.
 > - **The region must match your project's**: `aws-<n>-<region>.pooler.supabase.com`.
 >   A mismatched region connects but is rejected with `tenant/user not found`.
@@ -172,7 +172,7 @@ host. The database must already exist.)
 ### Object store
 
 Both AWS S3 and Cloudflare R2 have publicly-resolvable endpoints, so the off-cluster
-SDK uploads code bundles to presigned URLs directly — no nodePort or `signedURL`
+SDK uploads code bundles to presigned URLs directly: no nodePort or `signedURL`
 override is needed.
 
 {{< tabs "local-objectstore" >}}
@@ -223,7 +223,7 @@ dashboard. R2 is S3-compatible: point the `endpoint` at your account's R2 URL an
 
 Create `values-local.yaml` by dropping in the `database` and `storage` blocks from
 [step 3](#3-deploy-the-dependencies). It uses static access keys (no cloud workload
-identity) and skips the ingress — you'll reach Flyte with `kubectl port-forward`:
+identity) and skips the ingress. You'll reach Flyte with `kubectl port-forward`:
 
 ```yaml
 # values-local.yaml — local kind deployment
@@ -306,7 +306,7 @@ ssh -L 8090:localhost:8090 root@<droplet-ip> \
   kubectl -n flyte port-forward service/flyte-http 8090:8090
 ```
 
-Keep it running while you use the SDK/CLI — everything below works identically through
+Keep it running while you use the SDK/CLI. Everything below works identically through
 the tunnel.
 {{< /markdown >}}
 {{< /tab >}}
@@ -338,14 +338,14 @@ task:
   project: flytesnacks
 ```
 
-The code-bundle upload needs no extra setup — only the one API port-forward is required,
+The code-bundle upload needs no extra setup: only the one API port-forward is required,
 never a second one for the object store. The S3/R2 endpoint is publicly resolvable, so
 the SDK uploads to the presigned URL directly.
 
 ## 7. Add authentication with a local IdP (optional)
 
 The cloud worked examples in [AWS deployment](../aws-deployment) gate the console with
-OIDC single sign-on at the load balancer — on AWS that's the ALB, configured through
+OIDC single sign-on at the load balancer: on AWS that's the ALB, configured through
 `alb.ingress.kubernetes.io/auth-*` annotations. Those annotations are instructions to
 the *AWS Load Balancer Controller* and do nothing on kind, which has no ALB.
 
@@ -353,12 +353,12 @@ The pattern is the same on kind; only the ingress controller changes. Here you r
 [Traefik](https://doc.traefik.io/traefik/) and delegate auth to
 [oauth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/): Traefik intercepts each
 request through a `ForwardAuth` middleware, asks oauth2-proxy whether the caller is
-logged in, and redirects to your IdP if not. oauth2-proxy plays the role the ALB played
-— an auth proxy at the edge.
+logged in, and redirects to your IdP if not. oauth2-proxy plays the role the ALB played:
+an auth proxy at the edge.
 
 For the IdP itself, this step runs [Dex](https://dexidp.io/) **inside the same kind
 cluster**, so you can test the whole authentication flow with no cloud account and no
-real users — the Dex deployment itself is covered in
+real users. The Dex deployment itself is covered in
 [Set up local OIDC provider (Dex)](./local-oidc).
 
 > [!NOTE] Prefer an external provider?
@@ -369,10 +369,10 @@ real users — the Dex deployment itself is covered in
 ### Install the ingress controller
 
 Install Traefik with its Helm chart and expose **both** entrypoints on the kind node's
-nodePorts — `web` (HTTP) on `30080` and `websecure` (HTTPS) on `30443`, the ports the
+nodePorts: `web` (HTTP) on `30080` and `websecure` (HTTPS) on `30443`, the ports the
 cluster maps to host `80` and `443` (see the warning in
-[step 2](#2-create-the-kind-cluster)). The browser uses HTTP; **the SDK needs HTTPS** —
-expose both up front so you don't have to reinstall later.
+[step 2](#2-create-the-kind-cluster)). The browser uses HTTP; **the SDK needs HTTPS**.
+Expose both up front so you don't have to reinstall later.
 
 ```bash
 helm repo add traefik https://traefik.github.io/charts
@@ -398,12 +398,12 @@ only set `insecureSkipVerify` later:
   `certificate not valid for name "flyte.local"`. The SDK validates the SAN **even with
   `insecureSkipVerify`** (that flag relaxes CA trust, not the hostname).
 - The SDK implements `insecureSkipVerify` by fetching the server's cert chain and
-  **pinning it as the CA**. A bare self-signed leaf then fails with `CaUsedAsEndEntity` —
+  **pinning it as the CA**. A bare self-signed leaf then fails with `CaUsedAsEndEntity`:
   rustls won't use a leaf cert as a CA.
 
 The fix is a **two-tier chain**: a self-signed root CA that signs a leaf carrying
 `SAN=flyte.local`. Traefik serves `leaf + CA`; the SDK pins the root as CA and validates
-the leaf against it. (You can skip this if you only need the browser console — it's the
+the leaf against it. (You can skip this if you only need the browser console; it's the
 SDK that requires a trusted-chain TLS cert.)
 
 ```bash
@@ -449,13 +449,13 @@ kubectl -n traefik rollout restart deploy/traefik
 > [!NOTE] A self-signed CA still needs `insecureSkipVerify`
 > This cert chains to a **self-signed root the SDK doesn't trust**, so the SDK config
 > [below](#point-the-sdk-at-the-https-endpoint) still sets `insecureSkipVerify` to accept
-> it — inherent to any private/self-signed CA (AWS Private CA included), not a Traefik
+> it, inherent to any private/self-signed CA (AWS Private CA included), not a Traefik
 > limitation. To drop it entirely, either install `ca.crt` into each client's system
 > trust store, or front Flyte with a **publicly-resolvable domain** and a publicly-trusted
-> cert (e.g. Traefik's ACME / Let's Encrypt resolver — the cloud ALB's ACM equivalent).
+> cert (e.g. Traefik's ACME / Let's Encrypt resolver, the cloud ALB's ACM equivalent).
 > Neither is possible for a purely-local `flyte.local`. On a **DigitalOcean droplet** the
-> domain route *is* attainable — point a real DNS record at the droplet and substitute
-> that hostname for `flyte.local` throughout — but this guide sticks with the self-signed
+> domain route *is* attainable (point a real DNS record at the droplet and substitute
+> that hostname for `flyte.local` throughout), but this guide sticks with the self-signed
 > chain so the local and cloud-VM paths stay identical.
 
 ### Deploy Dex
@@ -476,9 +476,9 @@ Give oauth2-proxy the Dex client details and a random cookie secret. `--set-xaut
 makes it emit the `X-Auth-Request-*` headers Traefik forwards downstream, and
 `--reverse-proxy` tells it to trust the forwarded host/proto from Traefik.
 `skip-jwt-bearer-tokens`, `oidc-extra-audience`, and `bearer-token-login-fallback` let
-the **SDK/CLI** authenticate too (not just the browser) — set them now so you don't have
-to upgrade later. The `hostAliases` setting is the one addition an in-cluster Dex needs —
-see the warning below for why:
+the **SDK/CLI** authenticate too (not just the browser). Set them now so you don't have
+to upgrade later. The `hostAliases` setting is the one addition an in-cluster Dex needs.
+See the warning below for why:
 
 ```bash
 # 32-byte cookie secret. Must decode to 16/24/32 bytes — head -c 32 trims the
@@ -511,17 +511,17 @@ helm install oauth2-proxy oauth2-proxy/oauth2-proxy -n flyte \
 
 A few of these flags deserve explanation:
 
-- `cookie-secure='false'` — the browser flow runs over local HTTP, not HTTPS.
-- `skip-jwt-bearer-tokens='true'` — the browser path uses the session cookie, but the
+- `cookie-secure='false'`: the browser flow runs over local HTTP, not HTTPS.
+- `skip-jwt-bearer-tokens='true'`: the browser path uses the session cookie, but the
   **SDK** sends an `Authorization: Bearer` JWT instead. This makes oauth2-proxy verify
   that JWT against Dex's JWKS and pass it through.
-- `oidc-extra-audience='flytectl'` — must list the **public client ID** the SDK uses
+- `oidc-extra-audience='flytectl'`: must list the **public client ID** the SDK uses
   (the `flytectl` static client from the [Dex configuration](./local-oidc#dex-configuration);
-  also the `flyteClient.clientId` you'll advertise in `authMetadata` below) — its
+  also the `flyteClient.clientId` you'll advertise in `authMetadata` below). Its
   tokens carry that as their audience.
-  The flag is **singular** — `oidc-extra-audiences` (plural) is not valid and
+  The flag is **singular**: `oidc-extra-audiences` (plural) is not valid and
   crash-loops oauth2-proxy with `unknown flag`.
-- `bearer-token-login-fallback='false'` — an invalid token gets a `403`, not an HTML
+- `bearer-token-login-fallback='false'`: an invalid token gets a `403`, not an HTML
   login page the SDK can't parse.
 
 Without the SDK flags, the SDK is rejected and `flyte.run` fails the upload with
@@ -530,7 +530,7 @@ Without the SDK flags, the SDK is rejected and `flyte.run` fails the upload with
 the rest of the SDK setup.
 
 > [!WARNING] Why `hostAliases` is required for Dex
-> Unlike an external IdP, Dex's issuer is `flyte.local` — a name that resolves on your
+> Unlike an external IdP, Dex's issuer is `flyte.local`, a name that resolves on your
 > host (via `/etc/hosts`) but **not inside the cluster**, where CoreDNS doesn't know it.
 > Without help, oauth2-proxy hangs on `Performing OIDC Discovery...` at startup and
 > `CrashLoopBackOff`s. The `hostAliases` flag above adds `flyte.local → Traefik's
@@ -580,7 +580,7 @@ spec:
 
 Re-render Flyte with the ingress enabled and pointed at Traefik. The
 `traefik.ingress.kubernetes.io/router.middlewares` annotation chains both middlewares
-onto every route — this is the Traefik equivalent of the ALB's `auth-type: oidc`. The
+onto every route. This is the Traefik equivalent of the ALB's `auth-type: oidc`. The
 reference format is `<namespace>-<name>@kubernetescrd`:
 
 ```yaml
@@ -640,32 +640,32 @@ echo "<droplet-ip> flyte.local" | sudo tee -a /etc/hosts
 ```
 
 Every other `flyte.local` reference in this step (Dex issuer, redirect URIs, cert SAN,
-ingress host) stays exactly the same — only this mapping differs. Alternatively, create
+ingress host) stays exactly the same; only this mapping differs. Alternatively, create
 a real DNS A record pointing at the droplet and substitute that hostname everywhere
 `flyte.local` appears.
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
 
-Opening the console by raw IP won't work in its place — Traefik has no route for that
+Opening the console by raw IP won't work in its place: Traefik has no route for that
 host, and the OIDC issuer is `flyte.local`, so login fails on an issuer mismatch. Then
-open `http://flyte.local/v2` — Traefik bounces you through Dex and back into the console.
+open `http://flyte.local/v2`. Traefik bounces you through Dex and back into the console.
 
 #### Split the API and discovery paths off the browser middleware
 
 This gates the **browser** correctly, but the same `oauth2-signin` redirect on **every**
-path breaks the SDK (the cloud walkthrough avoids this by splitting into three ingresses —
-`ingress` / `apiJwtIngress` / `wellknownIngress` — since ALB can't mix cookie-OIDC and JWT
+path breaks the SDK (the cloud walkthrough avoids this by splitting into three ingresses,
+`ingress` / `apiJwtIngress` / `wellknownIngress`, since ALB can't mix cookie-OIDC and JWT
 auth on one). Two path groups need different handling:
 
-- **Auth-discovery** (`AuthMetadataService`, `IdentityService`) — the SDK reads these
+- **Auth-discovery** (`AuthMetadataService`, `IdentityService`): the SDK reads these
   *before* it has a token, so they must **bypass auth**. Gated, they return a `text/plain`
   401 that ConnectRPC reports as `UNAVAILABLE`, and the SDK never starts login.
-- **The `flyteidl2.*` API** — needs `oauth2-auth` (Bearer validation) but **not**
+- **The `flyteidl2.*` API**: needs `oauth2-auth` (Bearer validation) but **not**
   `oauth2-signin`, so an unauthenticated call gets a clean gRPC 401 the SDK retries after
   login, not sign-in HTML.
 
-Add two higher-priority `IngressRoute`s — Traefik matches the highest `priority` first,
+Add two higher-priority `IngressRoute`s. Traefik matches the highest `priority` first,
 so these win over the `flyte-http` Ingress for their paths:
 
 ```bash
@@ -712,7 +712,7 @@ EOF
 ```
 
 Now `flyte.local` routes three ways by precedence: discovery (300) bypasses auth, the
-API (100) requires a Bearer token, and everything else — the `/v2` console — falls
+API (100) requires a Bearer token, and everything else (the `/v2` console) falls
 through to the `flyte-http` Ingress with the full browser middleware chain. Verify the
 discovery path returns JSON rather than oauth2-proxy's 401:
 
@@ -732,7 +732,7 @@ browser still needs it):
 
 > [!NOTE] `--resolve` on a DigitalOcean droplet
 > The `--resolve flyte.local:<port>:127.0.0.1` flags in this guide assume the curl runs
-> on the machine hosting kind. That's still true on a droplet — run them in your SSH
+> on the machine hosting kind. That's still true on a droplet: run them in your SSH
 > session and `127.0.0.1` works as-is. To run them from your own machine instead,
 > substitute the droplet's public IP for `127.0.0.1`.
 
@@ -757,24 +757,24 @@ curl -s -o /dev/null -w "%{url_effective}\n" -L --max-redirs 5 \
 > [!NOTE] Why 401 and not 302 on a raw curl
 > Traefik's `oauth2-signin` middleware turns the 401 into a sign-in redirect via its
 > `errors` handler, which a browser follows automatically. On a plain `curl` you see the
-> raw 401 — that still confirms the request is being gated. The redirect itself is
+> raw 401; that still confirms the request is being gated. The redirect itself is
 > verified by checks 2 and 3.
 
 Then open `http://flyte.local/v2` in a browser, log in as **`admin@example.com` /
 `password`**, and you should land in the console. The `X-Auth-Request-Email` header Dex
 supplies flows through oauth2-proxy to Flyte and populates `executed_by` on runs you
-create — see [Authentication and SSO](../authentication#run-attribution-executed_by).
+create. See [Authentication and SSO](../authentication#run-attribution-executed_by).
 
 ### Letting the SDK/CLI authenticate (with auth enabled)
 
 The browser flow above works over plain HTTP, but **the SDK does not**. Like the cloud
-walkthrough in [Authentication and SSO](../authentication) — which requires an **HTTPS
-listener** because "OIDC auth only applies to HTTPS rules" — the SDK path here only works
+walkthrough in [Authentication and SSO](../authentication), which requires an **HTTPS
+listener** because "OIDC auth only applies to HTTPS rules", the SDK path here only works
 over **TLS**. The reason is in the SDK itself: it attaches its auth interceptors (PKCE
 browser login, token injection) **only when the client uses TLS**. With `insecure: True`
 it assumes "plaintext endpoint ⇒ no auth server" and skips authentication entirely, so an
 SDK pointed at `http://flyte.local` sends **no token**, oauth2-proxy rejects every call,
-and `flyte.run` fails the code-bundle upload with `Unauthorized` — without ever opening a
+and `flyte.run` fails the code-bundle upload with `Unauthorized`, without ever opening a
 browser login.
 
 With oauth2-proxy configured for Bearer tokens (the SDK flags in
@@ -805,7 +805,7 @@ flyte-core-components:
           - offline_access
 ```
 
-This is the same `authMetadata` block as a real IdP — only the issuer URL points at the
+This is the same `authMetadata` block as a real IdP; only the issuer URL points at the
 in-cluster Dex. V2 has no auth server of its own; it just advertises Dex.
 
 #### Point the SDK at the HTTPS endpoint
@@ -829,7 +829,7 @@ task:
 > The SDK reads `admin.insecureSkipVerify`. The snake_case `insecure_skip_verify` is
 > silently ignored, so the SDK keeps full verification and fails on the self-signed cert.
 > The SDK also reads the **project-local** `.flyte/config.yaml` (in the directory you run
-> from) before `~/.flyte/config.yaml` — make sure the flag is in whichever file actually
+> from) before `~/.flyte/config.yaml`. Make sure the flag is in whichever file actually
 > applies.
 
 > [!WARNING] `endpoint` must match what `SelectCluster` returns
@@ -847,9 +847,9 @@ task:
 #### Let Flyte reach Dex's discovery document
 
 Because Dex runs **in-cluster** with an issuer that only your host's `/etc/hosts` knows
-about, two fixes are needed so Flyte's `GetOAuth2Metadata` — which fetches the IdP's
-discovery document to tell the SDK where to log in — actually succeeds. (An **external**
-IdP is publicly resolvable and serves the standard discovery paths, so it needs neither —
+about, two fixes are needed so Flyte's `GetOAuth2Metadata`, which fetches the IdP's
+discovery document to tell the SDK where to log in, actually succeeds. (An **external**
+IdP is publicly resolvable and serves the standard discovery paths, so it needs neither;
 see [Set up an external OIDC provider](./external-oidc).)
 
 **(a) DNS.** Flyte fetches `http://flyte.local/dex/...`, but `flyte.local` isn't
@@ -900,7 +900,7 @@ spec:
 EOF
 ```
 
-Verify both fixes landed — this should return JSON, not a `404` or a timeout:
+Verify both fixes landed. This should return JSON, not a `404` or a timeout:
 
 ```bash
 curl -s -X POST --resolve flyte.local:443:127.0.0.1 -k \
@@ -909,7 +909,7 @@ curl -s -X POST --resolve flyte.local:443:127.0.0.1 -k \
 ```
 
 **First clear any stale SDK token from a previous cluster.** The SDK caches OAuth
-tokens in the keyring (macOS Keychain), keyed by endpoint host — `kind delete cluster`
+tokens in the keyring (macOS Keychain), keyed by endpoint host; `kind delete cluster`
 doesn't wipe them. Dex's `storage: memory` mints new signing keys on every restart, so
 an old token fails oauth2-proxy's signature check with `403 Forbidden` on
 `SelectCluster` and **no browser opens**. Clear it after any cluster/Dex recreate:
@@ -928,17 +928,17 @@ and the SDK submits the run with the resulting token.
 |---|---|
 | oauth2-proxy `CrashLoopBackOff`, logs stuck on `Performing OIDC Discovery...` | The pod can't resolve `flyte.local` in-cluster. Add the `hostAliases` from the [oauth2-proxy install](#deploy-oauth2-proxy) mapping `flyte.local` to Traefik's ClusterIP. |
 | oauth2-proxy `CrashLoopBackOff`, logs show `could not fetch .well-known` | oauth2-proxy can't reach the issuer. Confirm the discovery curl in [Route the issuer path](./local-oidc#route-the-issuer-path-through-traefik) returns the discovery doc and that `oidc-issuer-url` matches `issuer` in the Dex config **exactly**. |
-| Browser: `Unregistered redirect_uri` / `redirect_uri did not match` | The `oauth2-proxy` static client's `redirectURIs` must list the callback for the scheme you open the console with — `http://flyte.local/oauth2/callback` **and** `https://flyte.local/oauth2/callback` (opening `/v2` over TLS uses the `https` one). List both. |
-| Login succeeds but loops back to sign-in | Issuer mismatch between what the browser saw and what oauth2-proxy validated. Both must be `http://flyte.local/dex` — not a service name, not `localhost`. |
+| Browser: `Unregistered redirect_uri` / `redirect_uri did not match` | The `oauth2-proxy` static client's `redirectURIs` must list the callback for the scheme you open the console with: `http://flyte.local/oauth2/callback` **and** `https://flyte.local/oauth2/callback` (opening `/v2` over TLS uses the `https` one). List both. |
+| Login succeeds but loops back to sign-in | Issuer mismatch between what the browser saw and what oauth2-proxy validated. Both must be `http://flyte.local/dex`, not a service name, not `localhost`. |
 | `flyte.run` fails the upload with `Unauthorized`, **no browser opens** | The SDK is on plain HTTP (`insecure: True`) and skipped auth. Use `insecure: False` + `https://flyte.local`. |
 | `InitializationError: Service is unavailable` / `EndpointUnavailable`, **no browser opens** | The SDK couldn't reach the API or discovery paths. Two common causes: the auth-discovery/API paths are still behind `oauth2-signin` (apply the two `IngressRoute`s in [Split the API and discovery paths](#split-the-api-and-discovery-paths-off-the-browser-middleware)); or the TLS cert is rejected (next two rows). |
 | `invalid peer certificate: ... not valid for name "flyte.local"` | Traefik is serving its default cert (`SAN=*.traefik.default`). Apply the `flyte.local` cert in [Replace the default cert](#replace-the-default-cert-with-one-for-flytelocal). |
 | `invalid peer certificate: ... CaUsedAsEndEntity` | The cert is a bare self-signed leaf; the SDK pins it as a CA. Use the two-tier root-CA-signs-leaf chain in [Replace the default cert](#replace-the-default-cert-with-one-for-flytelocal). |
-| `Connection refused` to `https://flyte.local` | No TLS listener — Traefik's `websecure` isn't exposed, or the cluster lacks the `30443 → 443` mapping. See [step 2](#2-create-the-kind-cluster) / the [Traefik install](#install-the-ingress-controller). |
+| `Connection refused` to `https://flyte.local` | No TLS listener: Traefik's `websecure` isn't exposed, or the cluster lacks the `30443 → 443` mapping. See [step 2](#2-create-the-kind-cluster) / the [Traefik install](#install-the-ingress-controller). |
 | Upload still 401 *after* a successful browser login | oauth2-proxy rejects the Bearer token. Confirm `skip-jwt-bearer-tokens=true` and `oidc-extra-audience=flytectl` ([oauth2-proxy install](#deploy-oauth2-proxy)); check its logs for `audience ... does not match`. |
 | `403 Forbidden` on `SelectCluster`, **no browser opens** (oauth2-proxy logs `failed to verify id token signature`) | Stale cached token; Dex's in-memory keys changed on restart. Clear the keyring tokens (block above) and rerun. |
-| `GetOAuth2Metadata` returns `... 404 ... oauth-authorization-server` | The well-known rewrite isn't applied — fix (b) in [Let Flyte reach Dex's discovery document](#let-flyte-reach-dexs-discovery-document). |
-| `GetOAuth2Metadata` times out (`context deadline exceeded`) | Flyte can't resolve `flyte.local` in-cluster. Apply the `hostAliases` — fix (a) in [Let Flyte reach Dex's discovery document](#let-flyte-reach-dexs-discovery-document). |
+| `GetOAuth2Metadata` returns `... 404 ... oauth-authorization-server` | The well-known rewrite isn't applied: fix (b) in [Let Flyte reach Dex's discovery document](#let-flyte-reach-dexs-discovery-document). |
+| `GetOAuth2Metadata` times out (`context deadline exceeded`) | Flyte can't resolve `flyte.local` in-cluster. Apply the `hostAliases`: fix (a) in [Let Flyte reach Dex's discovery document](#let-flyte-reach-dexs-discovery-document). |
 
 ## 8. Load a local image into kind (optional)
 
@@ -949,7 +949,7 @@ Flyte image, load it into the cluster so pods can run it without a registry:
 kind load docker-image <your-image>:<tag> --name flyte
 ```
 
-On a DigitalOcean droplet, the image must be in the **droplet's** Docker daemon first —
+On a DigitalOcean droplet, the image must be in the **droplet's** Docker daemon first:
 either build it there, or ship it from your machine with
 `docker save <image> | ssh root@<droplet-ip> docker load`.
 
@@ -970,7 +970,7 @@ On DigitalOcean, also destroy the droplet so it stops billing:
 doctl compute droplet delete flyte-kind
 ```
 
-The hosted PostgreSQL and S3/R2 bucket are untouched — clean those up in their own
+The hosted PostgreSQL and S3/R2 bucket are untouched; clean those up in their own
 consoles.
 
 When you're ready to deploy to a real cluster, continue to

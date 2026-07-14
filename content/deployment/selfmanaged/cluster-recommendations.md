@@ -30,7 +30,7 @@ We recommend using at least a `/16` CIDR range (65,536 addresses) for the overal
 
 | Subnet type | Recommended size | Purpose |
 |-------------|-----------------|---------|
-| **Private subnets** (worker nodes) | `/18` per AZ (16,384 addresses) | Pods receive IPs from these subnets. Size for your peak concurrent task count — each running task pod consumes at least one IP. |
+| **Private subnets** (worker nodes) | `/18` per AZ (16,384 addresses) | Pods receive IPs from these subnets. Size for your peak concurrent task count. Each running task pod consumes at least one IP. |
 | **Public subnets** (load balancers) | `/24` per AZ (256 addresses) | Only needed for internet-facing load balancers and NAT Gateways. Minimal IP consumption. |
 
 As a rule of thumb, you should have at least 1 available IP address for each task you expect to run concurrently.
@@ -63,14 +63,14 @@ Worker nodes in private subnets need outbound internet access to pull container 
 
 The {{< key product_name >}} data plane uses a single Kubernetes service account, `union-system`, shared by all platform components (operator, executor, webhook, proxy, and FluentBit). This service account needs cloud provider credentials to access:
 
-- **Object storage** (S3, GCS, or Azure Blob Storage) — read/write workflow execution data (task inputs/outputs, bundled code -in fast registration bucket-).
-- **Container registry** (ECR, Artifact Registry, or ACR) — pull task container images; push images when Image Builder is enabled.
+- **Object storage** (S3, GCS, or Azure Blob Storage): read/write workflow execution data (task inputs/outputs, bundled code -in fast registration bucket-).
+- **Container registry** (ECR, Artifact Registry, or ACR): pull task container images; push images when Image Builder is enabled.
 
 See the cloud-specific setup pages for details on configuring this service account:
 [AWS](./selfmanaged-aws/_index), [GCP](./selfmanaged-gcp/_index), [Azure](./selfmanaged-azure/_index).
 
 > [!NOTE] Common service account
-> In previous versions, each component had its own service account. The consolidated `union-system` service account simplifies IAM configuration — you only need to bind cloud permissions to a single identity.
+> In previous versions, each component had its own service account. The consolidated `union-system` service account simplifies IAM configuration: you only need to bind cloud permissions to a single identity.
 
 # Performance recommendations
 

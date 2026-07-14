@@ -112,7 +112,7 @@ Handle failures and avoid redundant work.
       return answer
   ```
 
-- **Reports**: Add `report=True` to a task and it can generate an HTML report (charts, tables, images) saved alongside the task output. Combined with caching and persisted inputs/outputs, reports act as lightweight experiment tracking—each run produces a self-contained HTML file you can compare across runs and share with your team.
+- **Reports**: Add `report=True` to a task and it can generate an HTML report (charts, tables, images) saved alongside the task output. Combined with caching and persisted inputs/outputs, reports act as lightweight experiment tracking: each run produces a self-contained HTML file you can compare across runs and share with your team.
   → [Reports](../task-programming/reports)
 
   ```python
