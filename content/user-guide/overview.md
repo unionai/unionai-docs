@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Overview
 
-In this guide we cover how to build AI applications, data pipelines, and ML workflows using the Flyte 2 SDK.
+This guide covers how to build AI applications, data pipelines, and ML workflows using the Flyte 2 SDK.
 
 Programs written using the Flyte 2 SDK can run on either a Union.ai or Flyte OSS back-end. This guide applies to both.
 

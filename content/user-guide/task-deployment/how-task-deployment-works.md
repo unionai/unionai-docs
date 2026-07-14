@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # How task deployment works
 
-In this section, we will take a deep dive into how the `flyte deploy` command and the `flyte.deploy()` SDK function work under the hood to deploy tasks to your Flyte backend.
+This section explains how the `flyte deploy` command and the `flyte.deploy()` SDK function work under the hood to deploy tasks to your Flyte backend.
 
 When you perform a deployment, here's what happens:
 
@@ -91,7 +91,7 @@ This selective approach results in smaller, faster-to-upload bundles that contai
 
 ### `--copy_style all`
 
-This comprehensive bundling strategy takes a directory-walking approach, recursively traversing your entire project directory and including every file it encounters.
+This bundling strategy takes a directory-walking approach, recursively traversing your entire project directory and including every file it encounters.
 Unlike the smart bundling that only includes imported Python modules, this method captures all project files regardless of whether they were imported during discovery.
 This is particularly useful for projects that use dynamic imports, load configuration files or data assets at runtime, or have dependencies that aren't captured through normal Python import mechanisms.
 

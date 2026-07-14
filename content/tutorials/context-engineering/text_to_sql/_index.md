@@ -66,7 +66,7 @@ Each row becomes a text node stored in LlamaIndex’s `VectorStoreIndex`. This l
 
 ### Table retrieval and context building
 
-We then retrieve the most relevant tables for a given query and build rich context that combines schema information with sample rows.
+We then retrieve the most relevant tables for a given query and build context that combines schema information with sample rows.
 
 {{< code file="/unionai-examples/v2/tutorials/text_to_sql/text_to_sql.py" fragment=retrieve_tables lang=python >}}
 
@@ -80,7 +80,7 @@ Finally, we generate SQL queries and produce natural language answers.
 
 The SQL generation prompt includes schema, example rows, and formatting rules. After execution, the system returns a final answer.
 
-At this point, we have an end-to-end Text-to-SQL pipeline: natural language questions go in, SQL queries run, and answers come back. To make this workflow production-ready, we leveraged several Flyte 2 capabilities. Caching ensures that repeated steps, like table ingestion or vector indexing, don’t need to rerun unnecessarily, saving time and compute. Containerization provides consistent, reproducible execution across environments, making it easier to scale and deploy. Observability features let us track every step of the pipeline, monitor performance, and debug issues quickly.
+At this point, we have an end-to-end Text-to-SQL pipeline: natural language questions go in, SQL queries run, and answers come back. To make this workflow production-ready, we used several Flyte 2 capabilities. Caching ensures that repeated steps, like table ingestion or vector indexing, don’t need to rerun unnecessarily, saving time and compute. Containerization provides consistent, reproducible execution across environments, making it easier to scale and deploy. Observability features let us track every step of the pipeline, monitor performance, and debug issues quickly.
 
 While the pipeline works end-to-end, to get a pulse on how it performs across multiple prompts and to gradually improve performance, we can start experimenting with prompt tuning.
 
