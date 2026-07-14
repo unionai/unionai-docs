@@ -1,6 +1,6 @@
 ---
 title: flyte.report
-version: 2.5.8
+version: 2.5.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,12 +14,15 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`Report`](../flyte.report/report) |  |
+| [`Timeline`](../flyte.report/timeline) | Append a best-effort chronological timeline to a tab of the task report. |
 
 ### Methods
 
 | Method | Description |
 |-|-|
+| [`abbreviate()`](#abbreviate) | HTML-escape ``value`` for a report row. |
 | [`current_report()`](#current_report) | Get the current report. |
+| [`duration_ms()`](#duration_ms) | Format the gap between two ISO-8601 timestamps as ``"<n> ms"`` (best-effort). |
 | [`flush()`](#flush) | Flush the report. |
 | [`get_tab()`](#get_tab) | Get a tab by name. |
 | [`log()`](#log) | Log content to the main tab. |
@@ -27,6 +30,27 @@ layout: py_api
 
 
 ## Methods
+
+#### abbreviate()
+
+```python
+def abbreviate(
+    value: typing.Any,
+    limit: int,
+) -> str
+```
+HTML-escape ``value`` for a report row.
+
+Short values render inline. Longer ones collapse into an expandable ``&lt;details&gt;``:
+the row shows a ``limit``-character preview with a ``+N`` overflow marker, and
+clicking it reveals the full content (up to a hard cap). Nothing is dropped on the
+floor, so a value that trails off in the report can always be opened in place.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `typing.Any` | |
+| `limit` | `int` | |
 
 #### current_report()
 
@@ -38,6 +62,22 @@ Get the current report. This is a dummy report if not in a task context.
 
 
 **Returns:** The current report.
+
+#### duration_ms()
+
+```python
+def duration_ms(
+    start_iso: typing.Any,
+    end_iso: typing.Any,
+) -> str
+```
+Format the gap between two ISO-8601 timestamps as ``"&lt;n&gt; ms"`` (best-effort).
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `start_iso` | `typing.Any` | |
+| `end_iso` | `typing.Any` | |
 
 #### flush()
 

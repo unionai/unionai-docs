@@ -48,8 +48,8 @@ For example:
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/container-images/from_debian_base.py" lang="python" >}}
 
 > [!NOTE]
-> The `registry` parameter is only needed if you are building the image locally. It is not required when using the Union backend `ImageBuilder`.
-> See [Image building](#image-building) for more details.
+> A registry is only needed when the image is **built locally** (it's where the built image is pushed); it isn't required when using the Union backend `ImageBuilder`, which builds on the cluster.
+> The easiest way to set it is once in your config &mdash; `image.registry` (or the `FLYTE_IMAGE_REGISTRY` environment variable) &mdash; so you don't have to repeat it in every `Image`. Set `registry=` on an `Image` only to override. See [Image building](#image-building).
 
 > [!NOTE]
 > Images built with `[[Image.from_debian_base()]]` do not include CA certificates by default, which can cause TLS
@@ -81,8 +81,20 @@ Do the opposite to enable remote runs.
 
 There are two ways that the image can be built:
 
-* If you are running a Flyte OSS instance then the image will be built locally on your machine and pushed to the container registry you specified in the `Image` definition.
-* If you are running a Union instance, the image can be built locally, as with Flyte OSS, or using the Union `ImageBuilder`, which runs remotely on Union's infrastructure.
+* If you are running a Flyte OSS instance then the image is built locally on your machine and pushed to a container registry that your cluster can pull from.
+* If you are running a Union instance, the image can be built locally, as with Flyte OSS, or using the Union `ImageBuilder`, which runs remotely on Union's infrastructure (no registry required).
+
+**Setting the registry for local builds.** Rather than repeat a registry in every `Image` definition, set it once, globally, in any of these ways:
+
+* **Config file** &mdash; add a `registry` key under `image:` in your `config.yaml`:
+  ```yaml
+  image:
+    registry: ghcr.io/my-org
+  ```
+* **Environment variable** &mdash; set `FLYTE_IMAGE_REGISTRY=ghcr.io/my-org`.
+* **CLI** &mdash; pass `--registry` when generating the config: `flyte create config --registry ghcr.io/my-org`. (The `--registry` flag requires flyte 2.5.9 or later; the `image.registry` config key and `FLYTE_IMAGE_REGISTRY` variable also require 2.5.9.)
+
+Any of these sets the base registry for all image builds, so your `Image` definitions can omit `registry=` entirely. Set `registry=` on an individual `Image` only to override the global value.
 
 ### Configuring the `builder`
 
@@ -106,7 +118,7 @@ For Union instances, this property can be set to `remote` to use the Union `Imag
 When `image.builder` in the `config.yaml` is set to `local`, `flyte.run()` does the following:
 
 * Builds the Docker image using your local Docker installation, installing the dependencies specified in the `uv` inline script metadata.
-* Pushes the image to the container registry you specified.
+* Pushes the image to the configured registry (`image.registry`, or a per-`Image` `registry=`).
 * Deploys your code to the backend.
 * Kicks off the execution of your workflow
 * Before the task that uses your custom image is executed, the backend pulls the image from the registry to set up the container.
