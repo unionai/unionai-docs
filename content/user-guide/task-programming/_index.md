@@ -54,13 +54,9 @@ The task programming section covers key patterns for building effective Flyte wo
 
 These programming patterns become essential as your workflows grow in complexity:
 
-<<<<<<< HEAD
-- Use **fanout** when you need to process multiple items concurrently or run parameter sweeps. Use **controlling parallel execution** when you need to limit how many run at the same time.
-- Apply **streaming map-reduce** when map tasks have uneven durations or you want to reduce results in batches as they complete, rather than waiting for the entire fanout to finish.
-=======
 - Use **fanout** when you need to process multiple items concurrently or run parameter sweeps.
 - Use **mapping over inputs** to apply the same task to every item of a list, and **controlling parallel execution** when you need to limit how many run at the same time.
->>>>>>> origin/main
+- Apply **streaming map-reduce** when map tasks have uneven durations or you want to reduce results in batches as they complete, rather than waiting for the entire fanout to finish.
 - Implement **error handling** for production workflows that need to recover from infrastructure failures.
 - Apply **grouping** to organize complex workflows with many task executions.
 - Use **files and directories** when working with large datasets that don't fit in memory.
