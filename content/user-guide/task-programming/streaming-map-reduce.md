@@ -25,7 +25,7 @@ If your goal is to *cap* how many map tasks run at once, see [Controlling parall
 
 ## Example
 
-We define a reusable environment and two tasks: one that maps over a single item, and one that reduces a batch of results.
+We define an environment and two tasks: one that maps over a single item, and one that reduces a batch of results.
 
 ```python
 import asyncio
@@ -33,13 +33,9 @@ import random
 
 import flyte
 
-reusable_image = flyte.Image.from_debian_base(name="streaming").with_pip_packages("unionai-reuse>=0.1.3")
-
 env = flyte.TaskEnvironment(
     name="streaming_map_reduce",
     resources=flyte.Resources(cpu="1"),
-    reusable=flyte.ReusePolicy(replicas=20, idle_ttl=30),
-    image=reusable_image,
 )
 
 
@@ -57,7 +53,26 @@ async def reduce_batch(items: list[str]) -> str:
     return f"reduced_batch_of_{len(items)}_items"
 ```
 
-We use a [reusable container](../task-configuration/reusable-containers) (`flyte.ReusePolicy`) so the many short `process_item` actions reuse warm workers instead of paying container-startup cost each time.
+{{< variant union >}}
+{{< markdown >}}
+#### Speed up the map step with reusable containers
+
+The map step fans out many short `process_item` actions, each of which would otherwise pay container-startup cost. On {{< key product_name >}} you can make them reuse warm workers instead by giving the environment a [reusable container](../task-configuration/reusable-containers):
+
+```python
+reusable_image = flyte.Image.from_debian_base(name="streaming").with_pip_packages("unionai-reuse>=0.1.10")
+
+env = flyte.TaskEnvironment(
+    name="streaming_map_reduce",
+    resources=flyte.Resources(cpu="1"),
+    reusable=flyte.ReusePolicy(replicas=20, idle_ttl=30),
+    image=reusable_image,
+)
+```
+
+Reusable containers require a {{< key product_name >}} backend, so this optimization is not available when running on an open-source Flyte backend.
+{{< /markdown >}}
+{{< /variant >}}
 
 ### The driver task
 
