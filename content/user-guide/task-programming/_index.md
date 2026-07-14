@@ -30,6 +30,7 @@ The task programming section covers key patterns for building effective Flyte wo
 - [**Fanout**](./fanout): Scale your workflows by running many tasks in parallel, perfect for processing large datasets or running hyperparameter sweeps.
 - [**Mapping over inputs**](./map): Apply the same task to every item of a list with `flyte.map`: in-order results, error handling, concurrency limits, and partials.
 - [**Controlling parallel execution**](./controlling-parallelism): Limit concurrent task executions using semaphores or `flyte.map` concurrency for rate-limited APIs, GPU quotas, and resource-constrained workflows.
+- [**Task dependencies and ordering**](./task-dependencies): Replicate DAG-like behavior (sequencing, fan-out, fan-in, and fine-grained dependency-driven scheduling) using `asyncio` in Flyte 2's implicit dependency model.
 - [**External conditions**](./conditions): Pause a task until an external signal arrives: a human approval, a callback from an external service, or a value supplied at runtime.
 - [**Grouping actions**](./grouping-actions): Organize related task executions into logical groups for better visualization and management in the UI.
 - [**Container tasks**](./container-tasks): Run arbitrary containers in any language without the Flyte SDK installed, using Flyte's copilot sidecar for data flow.
