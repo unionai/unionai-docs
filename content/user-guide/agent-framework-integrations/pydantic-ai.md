@@ -7,9 +7,9 @@ mermaid: true
 
 # PydanticAI agents
 
-[PydanticAI](https://ai.pydantic.dev/) is a type-safe agent framework from the Pydantic team. As with any Python agent framework, you run a PydanticAI agent on {{< key product_name >}} by invoking it from inside an `@env.task` — the framework drives the loop, while {{< key product_name >}} gives you a container, durable checkpointing, and observability.
+[PydanticAI](https://ai.pydantic.dev/) is a type-safe agent framework from the Pydantic team. As with any Python agent framework, you run a PydanticAI agent on {{< key product_name >}} by invoking it from inside an `@env.task`: the framework drives the loop, while {{< key product_name >}} gives you a container, durable checkpointing, and observability.
 
-The key integration point: PydanticAI tools are just Python functions, so a tool can delegate to a durable `@env.task`. That gives you the best of both worlds — PydanticAI's typed tool-calling and {{< key product_name >}}'s durable, observable, on-cluster tool execution.
+The key integration point: PydanticAI tools are just Python functions, so a tool can delegate to a durable `@env.task`. That gives you the best of both worlds: PydanticAI's typed tool-calling and {{< key product_name >}}'s durable, observable, on-cluster tool execution.
 
 ## A PydanticAI agent in a task
 
@@ -29,7 +29,7 @@ Define a PydanticAI [Agent](https://pydantic.dev/docs/ai/api/pydantic-ai/agent/#
 
 ## Parallel agents
 
-To run many PydanticAI agents concurrently — each in its own container — fan out with `asyncio.gather()`:
+To run many PydanticAI agents concurrently, each in its own container, fan out with `asyncio.gather()`:
 
 ```python
 import asyncio

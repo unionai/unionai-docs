@@ -7,7 +7,7 @@ mermaid: true
 
 # Deploy an agent as a service
 
-Once you've built an agent — with [pure Python](./python-agents), the [`Agent` harness](./flyte-agents), or a [third-party framework](../agent-framework-integrations/_index) — *how* you run it is an independent choice. The same agent object can be deployed in several ways:
+Once you've built an agent (with [pure Python](./python-agents), the [`Agent` harness](./flyte-agents), or a [third-party framework](../agent-framework-integrations/_index)), *how* you run it is an independent choice. The same agent object can be deployed in several ways:
 
 | Pattern | When to use it | What invokes the agent |
 |---------|----------------|------------------------|
@@ -15,7 +15,7 @@ Once you've built an agent — with [pure Python](./python-agents), the [`Agent`
 | **As a scheduled task** | Recurring autonomous wakeups (triage, monitoring, reports) | A `flyte.Trigger` (cron or fixed-rate) |
 | **Behind a webhook** | React to external events (GitHub, paging tools, CI) | An HTTP `POST` to an `AppEnvironment` |
 
-All three wrap the agent loop in a regular Flyte task, so every run is durable, retryable, and observable in the {{< key product_name >}} dashboard. The examples below use the `Agent` harness, but the pattern is identical for any agent — just call your agent's entry point inside the task.
+All three wrap the agent loop in a regular Flyte task, so every run is durable, retryable, and observable in the {{< key product_name >}} dashboard. The examples below use the `Agent` harness, but the pattern is identical for any agent: just call your agent's entry point inside the task.
 
 ## As a task
 
@@ -55,7 +55,7 @@ Or from Python with `flyte.run(concierge, request="...")`. To register a stable,
 
 ## As a scheduled task (via `Trigger`)
 
-To run an agent autonomously on a schedule, attach a `flyte.Trigger` to the task. The "wakeup" is a regular Flyte task — the agent loop runs inside it, so every tool call is durable, observable, and retryable. Pair this with [agent memory](./agent-memory) so the agent resumes prior context on each wakeup.
+To run an agent autonomously on a schedule, attach a `flyte.Trigger` to the task. The "wakeup" is a regular Flyte task: the agent loop runs inside it, so every tool call is durable, observable, and retryable. Pair this with [agent memory](./agent-memory) so the agent resumes prior context on each wakeup.
 
 {{< code file="/unionai-examples/v2/user-guide/build-agent/deploy/scheduled_triage_agent.py" fragment="scheduled" lang="python" >}}
 

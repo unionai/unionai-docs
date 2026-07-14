@@ -8,8 +8,8 @@ variants: +flyte +union
 
 Flyte uses two separate loggers, each with its own level:
 
-- The **framework logger** (`flyte`) — Flyte's own internal messages. Lines are prefixed with `[flyte]`. Defaults to `WARNING`.
-- The **user logger** (`flyte.user`) — the logger you get from `flyte.logger`, for your own application messages. Defaults to `INFO`.
+- The **framework logger** (`flyte`): Flyte's own internal messages. Lines are prefixed with `[flyte]`. Defaults to `WARNING`.
+- The **user logger** (`flyte.user`): the logger you get from `flyte.logger`, for your own application messages. Defaults to `INFO`.
 
 Splitting the two lets you turn up Flyte's internal logging for debugging without flooding your output with framework noise during normal use, and vice versa.
 
@@ -30,7 +30,7 @@ For example, to see Flyte's internal debug messages:
 LOG_LEVEL=debug flyte run --local my_workflow.py main
 ```
 
-Each level variable accepts either a **named level** — `critical`, `error`, `warning` (or `warn`), `info`, `debug` (case-insensitive) — or a **numeric** Python logging level, such as `10` (`DEBUG`) or `20` (`INFO`):
+Each level variable accepts either a **named level** (`critical`, `error`, `warning` or `warn`, `info`, `debug`, case-insensitive) or a **numeric** Python logging level, such as `10` (`DEBUG`) or `20` (`INFO`):
 
 ```bash
 LOG_LEVEL=10 USER_LOG_LEVEL=debug flyte run --local my_workflow.py main
@@ -52,7 +52,7 @@ The `flyte` CLI's `-v` flag is a shorthand for the **framework** log level (the 
 flyte -vvv run --local my_workflow.py main
 ```
 
-`-v` controls only the framework logger — it does **not** change your task (user) log level. Set that separately with `--user-log-level` (also a global option, so likewise before the subcommand), or the `USER_LOG_LEVEL` environment variable:
+`-v` controls only the framework logger; it does **not** change your task (user) log level. Set that separately with `--user-log-level` (also a global option, so likewise before the subcommand), or the `USER_LOG_LEVEL` environment variable:
 
 ```bash
 flyte --user-log-level debug run --local my_workflow.py main

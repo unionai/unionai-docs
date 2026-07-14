@@ -16,11 +16,11 @@ Reach for `MCPAppEnvironment` when:
 - You want an LLM client like Claude Code, Claude Desktop, or OpenCode to call those tools over a stable, authenticated HTTP endpoint.
 - You want the tool server to run on {{< key product_name >}} infrastructure, with the same image, secrets, resources, and autoscaling story as any other app.
 
-If instead you want assistants to *operate your {{< key product_name >}} cluster* (run tasks, inspect runs, build images, search docs), use [`FlyteMCPAppEnvironment`](./flyte_mcp_server) — it ships those tools for you. The two can also run side by side as separate apps.
+If instead you want assistants to *operate your {{< key product_name >}} cluster* (run tasks, inspect runs, build images, search docs), use [`FlyteMCPAppEnvironment`](./flyte_mcp_server). It ships those tools for you. The two can also run side by side as separate apps.
 
 ## How it works
 
-You build a `FastMCP` instance and register tools on it with the `@mcp.tool()` decorator. `MCPAppEnvironment` wraps that instance in a Starlette + Uvicorn server and deploys it as an app. Every tool you defined on the instance is exposed automatically — there is no extra registration step.
+You build a `FastMCP` instance and register tools on it with the `@mcp.tool()` decorator. `MCPAppEnvironment` wraps that instance in a Starlette + Uvicorn server and deploys it as an app. Every tool you defined on the instance is exposed automatically; there is no extra registration step.
 
 ## Basic example
 
@@ -57,7 +57,7 @@ env = MCPAppEnvironment(
 
 ## Connecting a client
 
-User-defined MCP servers are always deployed as remote HTTP apps — there is no local CLI equivalent. Once `flyte.serve(env)` prints your endpoint, register it with your client.
+User-defined MCP servers are always deployed as remote HTTP apps; there is no local CLI equivalent. Once `flyte.serve(env)` prints your endpoint, register it with your client.
 
 The session URL depends on your `mcp_mount_path` (default `/mcp`) and transport (default `streamable-http`), so the full endpoint is `https://<YOUR_HOST>/mcp/mcp`.
 
@@ -98,7 +98,7 @@ Replace `<YOUR_HOST>` with the hostname from `handle.endpoint`. If you deployed 
 
 ## Best practices
 
-1. **Write clear docstrings**: The docstring on each `@mcp.tool()` function is what the LLM sees when deciding whether and how to call it. Treat it as the tool's API contract — describe the purpose, arguments, and return value.
+1. **Write clear docstrings**: The docstring on each `@mcp.tool()` function is what the LLM sees when deciding whether and how to call it. Treat it as the tool's API contract: describe the purpose, arguments, and return value.
 2. **Use precise type hints**: FastMCP derives the tool's input schema from your function signature, so accurate types lead to better-formed tool calls.
 3. **Keep tools focused**: Prefer several small, single-purpose tools over one tool with many modes. LLMs select narrowly-scoped tools more reliably.
 4. **Require auth in production**: Keep `requires_auth=True` (the default) so only authenticated clients can reach your tools.

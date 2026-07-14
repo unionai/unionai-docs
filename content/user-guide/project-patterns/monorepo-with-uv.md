@@ -51,7 +51,7 @@ image = flyte.Image.from_debian_base().with_uv_project(
 
 - `install_project`: The entire project directory is copied into the build context. Any code change triggers a full image rebuild. Use this only when you need the project installed as a proper package (e.g., when you need package entry points or compiled extension modules).
 
-## `with_code_bundle()` — one image for dev and prod
+## `with_code_bundle()`: one image for dev and prod
 
 `with_code_bundle()` is how you write an image definition that works for both development and production without changing any code.
 
@@ -126,7 +126,7 @@ workspace_root/
         └── baseline.py
 ```
 
-**`pyproject.toml`** — only external PyPI deps in dependency groups. Local libraries travel via the code bundle:
+**`pyproject.toml`**: only external PyPI deps in dependency groups. Local libraries travel via the code bundle:
 
 {{< code file="/unionai-examples/v2/user-guide/project-patterns/monorepo-with-uv/01_workspace_monorepo/pyproject.toml" lang="toml" >}}
 
@@ -144,7 +144,7 @@ Both `etl_env` and `ml_env` point to the same `pyproject.toml` but install diffe
 
 {{< code file="/unionai-examples/v2/user-guide/project-patterns/monorepo-with-uv/01_workspace_monorepo/src/workspace_app/tasks/ml_tasks.py" lang="python" >}}
 
-**Entry point** — `root_dir` is set to `src/` so the code bundle covers all packages:
+**Entry point**: `root_dir` is set to `src/` so the code bundle covers all packages:
 
 {{< code file="/unionai-examples/v2/user-guide/project-patterns/monorepo-with-uv/01_workspace_monorepo/src/workspace_app/main.py" lang="python" >}}
 
@@ -168,25 +168,25 @@ repo_root/
         └── stats.py
 ```
 
-**Root `pyproject.toml`** — dev-only, installs both packages as editable for local development:
+**Root `pyproject.toml`**: dev-only, installs both packages as editable for local development:
 
 {{< code file="/unionai-examples/v2/user-guide/project-patterns/monorepo-with-uv/02_sibling_packages/pyproject.toml" lang="toml" >}}
 
-**`my_app/pyproject.toml`** — declares `my-lib` as an editable path dep:
+**`my_app/pyproject.toml`**: declares `my-lib` as an editable path dep:
 
 {{< code file="/unionai-examples/v2/user-guide/project-patterns/monorepo-with-uv/02_sibling_packages/my_app/pyproject.toml" lang="toml" >}}
 
-**Image definition** — sibling library baked into the image via `with_source_folder()`:
+**Image definition**: sibling library baked into the image via `with_source_folder()`:
 
 {{< code file="/unionai-examples/v2/user-guide/project-patterns/monorepo-with-uv/02_sibling_packages/my_app/src/my_app/env.py" lang="python" >}}
 
-`with_source_folder(MY_LIB_PKG)` copies the `my_lib` package directory into the image at `/root/my_lib/`. This is necessary because the editable install's `.pth` file points to a path that only exists during the image build stage. The `my_lib` layer is part of the image hash, so the image rebuilds when `my_lib` changes — correct behavior for a dependency.
+`with_source_folder(MY_LIB_PKG)` copies the `my_lib` package directory into the image at `/root/my_lib/`. This is necessary because the editable install's `.pth` file points to a path that only exists during the image build stage. The `my_lib` layer is part of the image hash, so the image rebuilds when `my_lib` changes: correct behavior for a dependency.
 
 **Task definitions:**
 
 {{< code file="/unionai-examples/v2/user-guide/project-patterns/monorepo-with-uv/02_sibling_packages/my_app/src/my_app/tasks.py" lang="python" >}}
 
-**Entry point** — `root_dir` covers only `my_app` source; `my_lib` is baked into the image:
+**Entry point**: `root_dir` covers only `my_app` source; `my_lib` is baked into the image:
 
 {{< code file="/unionai-examples/v2/user-guide/project-patterns/monorepo-with-uv/02_sibling_packages/my_app/src/my_app/main.py" lang="python" >}}
 
@@ -306,7 +306,7 @@ flyte.deploy(my_env, copy_style="none", version="1.2.3")
 
 `with_code_bundle()` on the image resolves to a `COPY` instruction. The image is fully self-contained.
 
-Use a deterministic version string — a git commit SHA, a git tag, a CI build number. Avoid auto-generated strings so you can trace which code is in which image.
+Use a deterministic version string: a git commit SHA, a git tag, a CI build number. Avoid auto-generated strings so you can trace which code is in which image.
 
 > [!IMPORTANT]
 > Do not use `install_project` mode for production builds. `install_project` copies the entire project directory into the build context and hashes all of it. Every code change triggers a full image rebuild. `with_code_bundle()` + `copy_style="none"` is more surgical: only the files you select are in the image.

@@ -17,7 +17,7 @@ _Trading agents execution visualization_
 ## TL;DR
 
 - You'll build a trading firm made up of agents that analyze, argue, and act, modeled with Python functions.
-- You'll use the Flyte SDK to orchestrate this world — giving you visibility, retries, caching, and durability.
+- You'll use the Flyte SDK to orchestrate this world, giving you visibility, retries, caching, and durability.
 - You'll learn how to plug in tools, structure conversations, and track decisions across agents.
 - You'll see how agents debate, use context, generate reports, and retain memory via vector DBs.
 
@@ -69,13 +69,13 @@ This task accepts several inputs:
 
 The most interesting parameter here is the list of analysts to run. It determines which analyst agents will be invoked and shapes the overall structure of the simulation. Based on this input, the task dynamically launches agent tasks, running them in parallel.
 
-The `main` task is written as a regular asynchronous Python function wrapped with Flyte's task decorator. No domain-specific language or orchestration glue is needed — just idiomatic Python, optionally using async for better performance. The task environment is configured once and shared across all tasks for consistency.
+The `main` task is written as a regular asynchronous Python function wrapped with Flyte's task decorator. No domain-specific language or orchestration glue is needed: just idiomatic Python, optionally using async for better performance. The task environment is configured once and shared across all tasks for consistency.
 
 {{< code file="/unionai-examples/v2/tutorials/trading_agents/flyte_env.py" fragment=env lang=python >}}
 
 ### Analyst agents
 
-Each analyst agent comes equipped with a set of tools and a carefully designed prompt tailored to its specific domain. These tools are modular Flyte tasks — for example, downloading financial reports or computing technical indicators — and benefit from Flyte's built-in caching to avoid redundant computation.
+Each analyst agent comes equipped with a set of tools and a carefully designed prompt tailored to its specific domain. These tools are modular Flyte tasks (for example, downloading financial reports or computing technical indicators) and benefit from Flyte's built-in caching to avoid redundant computation.
 
 {{< code file="/unionai-examples/v2/tutorials/trading_agents/tools/toolkit.py" fragment=get_stockstats_indicators_report_online lang=python >}}
 
@@ -113,7 +113,7 @@ Risk agents comprise agents with different risk tolerances: a risky debater, a n
 
 {{< code file="/unionai-examples/v2/tutorials/trading_agents/agents/risk_debators.py" fragment=risk_debator lang=python >}}
 
-The outcome of the risk manager — whether to proceed with the trade or not — is considered the final decision of the trading simulation.
+The outcome of the risk manager, whether to proceed with the trade or not, is considered the final decision of the trading simulation.
 
 You can visualize this full pipeline in the Flyte/Union UI, where every step is logged.
 You’ll see input/output metadata for each tool and agent task.
@@ -183,7 +183,7 @@ Absolutely. But as your project grows, you'll likely run into these challenges:
 
     - Isolated state per agent,
     - Shared context where needed,
-    - And coordination — sequential or parallel.
+    - And coordination: sequential or parallel.
 
     Managing this manually gets fragile, fast. Flyte handles it for you.
 

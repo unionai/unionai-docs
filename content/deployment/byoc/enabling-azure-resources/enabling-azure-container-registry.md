@@ -8,7 +8,7 @@ variants: -flyte +union
 
 ACR can be used to store container images within Azure and accessed within your Azure-based data plane.
 
-{{< key product_name >}} leverages Azure Kubernetes Service (AKS) managed identities to authenticate with ACR.
+{{< key product_name >}} uses Azure Kubernetes Service (AKS) managed identities to authenticate with ACR.
 
 Refer to [Azure documentation for more details](https://learn.microsoft.com/en-us/azure/container-registry/authenticate-kubernetes-options)
 

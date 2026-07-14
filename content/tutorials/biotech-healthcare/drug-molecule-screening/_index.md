@@ -9,17 +9,17 @@ variants: +flyte +union
 > [!NOTE]
 > Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/drug_molecule_screening).
 
-This tutorial builds an **agentic** virtual drug-screening workflow on Flyte. A medicinal-chemistry agent interprets your therapeutic goal in plain language, derives screening criteria, and composes durable RDKit stage tasks — while the scientific core (property computation, Lipinski filters, Tanimoto similarity, ranking, and HTML reports) stays in trusted, deterministic tools.
+This tutorial builds an **agentic** virtual drug-screening workflow on Flyte. A medicinal-chemistry agent interprets your therapeutic goal in plain language, derives screening criteria, and composes durable RDKit stage tasks, while the scientific core (property computation, Lipinski filters, Tanimoto similarity, ranking, and HTML reports) stays in trusted, deterministic tools.
 
 The pattern follows how cheminformatics agents like ChemCrow and PharmAgents are built: **the LLM plans and reflects; RDKit computes.**
 
 Flyte provides:
 
-- **Flyte-native agent orchestration** via `flyte.ai.agents.Agent` — see [Flyte-native agents](../../../user-guide/build-agent/flyte-agents/)
-- **Typed agent tool I/O** — Flyte 2.5.4+ passes `flyte.io.Dir`, `File`, and `DataFrame` between agent tool calls so the LLM can compose multi-step pipelines directly
+- **Flyte-native agent orchestration** via `flyte.ai.agents.Agent` (see [Flyte-native agents](../../../user-guide/build-agent/flyte-agents/))
+- **Typed agent tool I/O**: Flyte 2.5.4+ passes `flyte.io.Dir`, `File`, and `DataFrame` between agent tool calls so the LLM can compose multi-step pipelines directly
 - **Cached molecule loading** so repeated runs skip re-parsing SMILES
 - **Report-enabled stage tasks** that stream property charts, similarity matrices, and candidate spotlights as each step completes
-- **Hybrid iteration** — the agent re-runs `screen_candidates` and `generate_report` with adjusted criteria when the funnel is too narrow, reusing cached `molecule_dir` and `properties_json`
+- **Hybrid iteration**: the agent re-runs `screen_candidates` and `generate_report` with adjusted criteria when the funnel is too narrow, reusing cached `molecule_dir` and `properties_json`
 
 > [!NOTE] Prerequisites
 > Create an Anthropic API key secret (the key name must match the `TaskEnvironment`):

@@ -12,7 +12,7 @@ This page walks you through creating the resources needed for a Union data plane
 
 You need a [Nebius Managed Kubernetes cluster](https://docs.nebius.com/kubernetes) running one of the most recent three minor Kubernetes versions, with `kubectl` access configured. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
 
-GPU node groups should be provisioned ahead of time if you plan to run training or inference workloads. Nebius supports H100, H200, and B200 SKUs — confirm your tenant has quota in the [desired region](https://docs.nebius.com/overview/regions#public-regions).
+GPU node groups should be provisioned ahead of time if you plan to run training or inference workloads. Nebius supports H100, H200, and B200 SKUs. Confirm your tenant has quota in the [desired region](https://docs.nebius.com/overview/regions#public-regions).
 
 For instructions on creating a node group, see [How to create node groups](https://docs.nebius.com/kubernetes/node-groups/manage#how-to-create-node-groups).
 

@@ -13,7 +13,7 @@ The simplest way to build and deploy an app with Flyte is to write everything in
 - **Learning**: Understanding how Flyte apps work without complexity
 - **Minimal examples**: Demonstrating core functionality
 
-All the code for your app—the application logic, the app environment configuration, and the deployment code—lives in one file. This makes it easy to understand, share, and deploy.
+All the code for your app (the application logic, the app environment configuration, and the deployment code) lives in one file. This makes it easy to understand, share, and deploy.
 
 ## Plain Python HTTP server
 

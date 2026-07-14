@@ -26,7 +26,7 @@ Performance optimization focuses on two key dimensions:
 - Use tasks for orchestration and parallelism
 - Use [traces](../task-programming/traces) for fine-grained checkpointing
 - Model parallelism using `asyncio` and use things methods like `asyncio.as_completed` or `asyncio.gather` to join the parallelism
-- Leverage [reusable containers](../task-configuration/reusable-containers) with concurrency to eliminate startup overhead and optimize resource utilization
+- Use [reusable containers](../task-configuration/reusable-containers) with concurrency to eliminate startup overhead and optimize resource utilization
 
 ### Throughput
 
@@ -268,7 +268,7 @@ async def process_metadata(metadata: dict) -> dict:
 
 See [Data flow](./data-flow) for details on data types and transport.
 
-### 6. Leverage caching
+### 6. Use caching
 
 Enable [caching](../task-configuration/caching) to avoid redundant computation:
 
@@ -333,7 +333,7 @@ Follow this workflow to optimize your Flyte workflows:
 
 ## Real-world example: PyIceberg batch processing
 
-For a comprehensive example of efficient data processing with Flyte, see the [PyIceberg parallel batch aggregation example](https://github.com/flyteorg/flyte-sdk/blob/main/examples/data_processing/pyiceberg_example.py). This example demonstrates:
+For an example of efficient data processing with Flyte, see the [PyIceberg parallel batch aggregation example](https://github.com/flyteorg/flyte-sdk/blob/main/examples/data_processing/pyiceberg_example.py). This example demonstrates:
 
 - **Zero-copy data passing**: Pass file paths instead of data between tasks
 - **Reusable containers with concurrency**: Maximize CPU utilization across workers
