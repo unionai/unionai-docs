@@ -171,9 +171,15 @@ image = Image.from_base("ghcr.io/my-org/my-base-image:latest")
 ```
 
 > [!NOTE]
-> An image from `from_base()` is **not extendable** &mdash; you can't chain `with_*` methods onto it. Bake any extra dependencies into the pre-built image itself, or start from `from_debian_base()` / `from_uv_script()` instead.
+> An image from `from_base()` is **not extendable** by default &mdash; chaining `with_*` methods onto it raises an error. To add layers, first clone it with `extendable=True`, then chain as usual:
+>
+> ```python
+> image = Image.from_base("ghcr.io/my-org/my-base-image:latest").clone(extendable=True).with_pip_packages("pandas")
+> ```
+>
+> Otherwise, bake any extra dependencies into the pre-built image itself, or start from `from_debian_base()` / `from_uv_script()`.
 
-You can also use `flyte.Image.clone()` to reuse an existing image definition while overriding its registry, name, or Python version:
+You can also use `flyte.Image.clone()` to reuse an existing image definition while overriding its registry, name, Python version, or extendability:
 
 ```python
 from flyte import Image
