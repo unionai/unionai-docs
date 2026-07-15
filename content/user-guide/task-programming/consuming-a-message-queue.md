@@ -19,6 +19,16 @@ The complete, runnable source for this example, a producer (`generator.py`) and 
 (`processor.py`), lives in the Flyte SDK repository under
 [`examples/queue-reader`](https://github.com/flyteorg/flyte-sdk/tree/main/examples/queue-reader).
 
+{{< variant flyte >}}
+{{< markdown >}}
+
+> [!NOTE]
+> This example relies on [reusable containers](../task-configuration/reusable-containers) (`flyte.ReusePolicy`), which are only available when running your Flyte code on a Union backend.
+> See [Reusable containers](../task-configuration/reusable-containers) for details.
+
+{{< /markdown >}}
+{{< /variant >}}
+
 > [!NOTE]
 > This example reads from AWS SQS and therefore requires an SQS queue and AWS credentials
 > available to the running task (here the queue is passed as an ARN via the `QUEUE_ARN`
@@ -38,6 +48,15 @@ The image is built from the script's own inline dependencies with
 require:
 
 ```python
+# /// script
+# requires-python = "==3.13"
+# dependencies = [
+#    "flyte",
+#    "aioboto3>=11.3.0",
+#    "asyncio",
+# ]
+# ///
+
 import asyncio
 import json
 import os
@@ -76,8 +95,11 @@ def get_queue_url_from_arn(queue_arn: str) -> str:
 
 ### Process a single message
 
-Each message is handled by its own task. Because it is an `async def` task, many invocations
-can run concurrently across the reusable pool:
+Each message is handled by its own task. These tasks run in parallel across the reusable pool,
+bounded by the number of worker replicas: with `replicas=3` and the default `concurrency=1`, the
+parent consumer loop occupies one replica and the other two each process a single message at a
+time, so about two messages are handled concurrently. To let a single replica handle more than one
+message at once, raise `concurrency` above 1:
 
 ```python
 @env.task
