@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Overrides
 
-Most task configuration is set when you define a task &mdash; on the `TaskEnvironment` or in the `@env.task` decorator.
+Most task configuration is set when you define a task: on the `TaskEnvironment` or in the `@env.task` decorator.
 But you often need to change some of that configuration for a **single invocation** of a task: give one call more memory, point it at a different secret, or bump its retries.
 
 The `task.override()` method does exactly this.
@@ -37,7 +37,7 @@ async def main() -> str:
     return heavy
 ```
 
-The key idiom is `task.override(...)(args)`: `override()` returns a callable task, which you then invoke with the task's arguments &mdash; note the two sets of parentheses.
+The key idiom is `task.override(...)(args)`: `override()` returns a callable task, which you then invoke with the task's arguments. Note the two sets of parentheses.
 
 ## What you can override
 
@@ -85,17 +85,17 @@ The key idiom is `task.override(...)(args)`: `override()` returns a callable tas
 For the full parameter interaction matrix showing which parameters can be set at which level, see [Task configuration levels](_index#task-configuration-levels).
 
 > [!NOTE] Overrides replace, they don't merge
-> When you override a collection-valued parameter such as `resources`, `env_vars`, or `secrets`, the value you pass **replaces** the environment's value for that invocation &mdash; it is not merged with it.
+> When you override a collection-valued parameter such as `resources`, `env_vars`, or `secrets`, the value you pass **replaces** the environment's value for that invocation. It is not merged with it.
 > To keep some of the original entries, include them in the override.
 
 ## What you cannot override
 
-`name`, `image`, `docs`, and the task's interface (its input and output types) **cannot** be overridden &mdash; attempting to override them raises an error.
+`name`, `image`, `docs`, and the task's interface (its input and output types) **cannot** be overridden. Attempting to override them raises an error.
 To run a task with a different image, define it in a separate `TaskEnvironment` (see [Container images](./container-images) and [Multiple environments](./multiple-environments)).
 
 ## Overriding when a task is reusable
 
-When a task uses a [reusable container](./reusable-containers) (`reusable` is set), its `resources`, `env_vars`, and `secrets` come from the parent environment and **cannot** be overridden while reuse is active &mdash; the container is already running.
+When a task uses a [reusable container](./reusable-containers) (`reusable` is set), its `resources`, `env_vars`, and `secrets` come from the parent environment and **cannot** be overridden while reuse is active. The container is already running.
 
 To override any of these on a reusable task, turn reuse off in the same `override()` call by passing `reusable="off"`:
 
@@ -109,7 +109,7 @@ result = await my_task.override(
 ## Overriding secrets
 
 Just as you can override resources per invocation, you can override the [secrets](./secrets) injected into a task for a single call.
-This is useful when the same task needs different credentials depending on how it's invoked &mdash; for example, calling an external API with a different key per tenant, or supplying a secret that the task's environment doesn't declare.
+This is useful when the same task needs different credentials depending on how it's invoked: for example, calling an external API with a different key per tenant, or supplying a secret that the task's environment doesn't declare.
 
 Pass `secrets` to `override()` exactly as you would to the `TaskEnvironment`: a secret key, a `Secret` object, or a list of either.
 
@@ -144,9 +144,9 @@ async def main() -> str:
 ```
 
 > [!NOTE]
-> If the task's environment uses **reusable containers** (`reusable` is set), overriding `secrets` &mdash; like `resources` and `env_vars` &mdash; requires passing `reusable="off"` in the **same** `override()` call. Otherwise the override is rejected.
+> If the task's environment uses **reusable containers** (`reusable` is set), overriding `secrets`, like `resources` and `env_vars`, requires passing `reusable="off"` in the **same** `override()` call. Otherwise the override is rejected.
 
-As with the environment-level `secrets` parameter, the secret is injected at runtime and accessed inside the task &mdash; typically as an environment variable via `os.environ` (or mounted as a file).
+As with the environment-level `secrets` parameter, the secret is injected at runtime and accessed inside the task: typically as an environment variable via `os.environ` (or mounted as a file).
 See [Secrets](./secrets) for how to create secrets and how they are injected, and remember that the overriding `secrets` value **replaces** the environment's secrets for that invocation rather than adding to them.
 
 > [!NOTE]
