@@ -24,6 +24,8 @@ Union.ai has no access to your cluster, providing the highest level of data isol
    - [Azure](./selfmanaged-azure/_index)
    - [OCI](./selfmanaged-oci/_index)
    - [CoreWeave](./selfmanaged-coreweave/_index)
+   - [Crusoe](./selfmanaged-crusoe/_index)
+   - [Nebius](./selfmanaged-nebius/_index)
 
 ## Configuration
 

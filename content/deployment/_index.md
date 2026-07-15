@@ -31,7 +31,7 @@ The BYOC deployment offers a fully "serverless in your cloud", turnkey solution 
 
 The Self-managed deployment allows you to manage the data plane yourself on cloud infrastructure that you control and maintain:
 
-* The **data plane** resides in your cloud provider account and is managed by you. Your team will handle deployment, monitoring, Kubernetes upgrades, and all other operational aspects of the platform. You do not need to provide any permissions to the Union.ai system to create a data plane. Self-managed deployment supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), Microsoft Azure and Oracle Compute Infrastructure (OCI).
+* The **data plane** resides in your cloud provider account and is managed by you. Your team will handle deployment, monitoring, Kubernetes upgrades, and all other operational aspects of the platform. You do not need to provide any permissions to the Union.ai system to create a data plane. Self-managed deployment supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), Microsoft Azure, and Oracle Cloud Infrastructure (OCI); on neocloud providers including CoreWeave, Crusoe, and Nebius; and on any generic Kubernetes environment. See [Set up your data plane](./selfmanaged/_index) for the full list of supported providers.
 
 * The **control plane**, as with all Union.ai deployment options, resides in the Union.ai Amazon Web Services (AWS) account and is administered by Union.ai. However, as mentioned, data separation is maintained between the data plane and the control plane, with no control plane access to the code, input/output, images or logs in the data plane.
 
