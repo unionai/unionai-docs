@@ -186,4 +186,4 @@ if __name__ == "__main__":
 > [!NOTE]
 > The report contains only what you explicitly `log()` or `replace()`. Returning a value whose type has a renderer attached does **not** by itself add it to the report — render the value and log the HTML, as shown above.
 
-Flyte also ships several ready-made renderers you can use as reference implementations for your own, including ones that render a pandas or PyArrow DataFrame as an HTML table and one that renders a Markdown string.
+Flyte's SDK also implements a few renderers of this kind internally — for pandas and PyArrow DataFrames and for Markdown strings. These aren't exposed as public API (only the `flyte.types.Renderable` protocol is), so treat them as examples of the same pattern rather than importable helpers.
