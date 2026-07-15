@@ -11,18 +11,18 @@ from an external message queue (such as [AWS SQS](https://aws.amazon.com/sqs/)) 
 each message concurrently.
 Flyte 2 expresses this naturally by combining three building blocks you have already seen:
 
-- **Async tasks** — the consumer loop is an `async def` task that awaits I/O against the queue.
-- [**Fanout**](./fanout) — each received message is dispatched to its own `process_message` action with `asyncio.create_task()`, so processing runs in parallel across the cluster.
-- [**Reusable containers**](../task-configuration/reusable-containers) — a `ReusePolicy` keeps a warm pool of replicas ready, so messages are processed without per-message container cold-start.
+- **Async tasks**: the consumer loop is an `async def` task that awaits I/O against the queue.
+- [**Fanout**](./fanout): each received message is dispatched to its own `process_message` action with `asyncio.create_task()`, so processing runs in parallel across the cluster.
+- [**Reusable containers**](../task-configuration/reusable-containers): a `ReusePolicy` keeps a warm pool of replicas ready, so messages are processed without per-message container cold-start.
 
-The complete, runnable source for this example — a producer (`generator.py`) and a consumer
-(`processor.py`) — lives in the Flyte SDK repository under
+The complete, runnable source for this example, a producer (`generator.py`) and a consumer
+(`processor.py`), lives in the Flyte SDK repository under
 [`examples/queue-reader`](https://github.com/flyteorg/flyte-sdk/tree/main/examples/queue-reader).
 
 > [!NOTE]
 > This example reads from AWS SQS and therefore requires an SQS queue and AWS credentials
 > available to the running task (here the queue is passed as an ARN via the `QUEUE_ARN`
-> environment variable). The Flyte pattern shown below applies to any external queue — swap
+> environment variable). The Flyte pattern shown below applies to any external queue: swap
 > the SQS client calls for your queue's client.
 
 ## The consumer
@@ -92,7 +92,7 @@ async def process_message(message: dict) -> str:
 ### The consumer loop
 
 The driver task long-polls the queue, and for each message it receives it **dispatches a
-`process_message` action with `asyncio.create_task()`** rather than awaiting it inline — this
+`process_message` action with `asyncio.create_task()`** rather than awaiting it inline. This
 is what fans the work out in parallel. It deletes each message once processing has started, then
 awaits all dispatched tasks with `asyncio.gather()`:
 
@@ -153,7 +153,7 @@ if __name__ == "__main__":
 To exercise the consumer, the example includes a standalone
 [`generator.py`](https://github.com/flyteorg/flyte-sdk/tree/main/examples/queue-reader) that
 pushes ten JSON messages onto the same SQS queue with `boto3`. It is an ordinary Python script,
-not a Flyte task — any producer that writes to the queue will do.
+not a Flyte task. Any producer that writes to the queue will do.
 
 ## Notes and gotchas
 
