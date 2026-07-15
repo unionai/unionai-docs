@@ -19,13 +19,13 @@ The control plane:
 
 ## Data plane
 
-All your workflow and task executions are performed in the data plane, which runs within your AWS or GCP account. The data plane's clusters are provisioned and managed by the control plane through a resident Union operator with minimal required permissions.
+All your workflow and task executions are performed in the data plane, which runs within your cloud provider account. Your data plane is a Kubernetes cluster provisioned by the control plane and then managed on an ongoing basis through a resident {{< key product_name >}} operator that runs with minimal required permissions (described in the following section).
 
 {{< key product_name >}} operates one control plane for each supported region, which supports all data planes within that region. You can choose the region in which to locate your data plane. Currently, {{< key product_name >}} supports the `us-west`, `us-east`, `eu-west`, and `eu-central` regions, and more are being added.
 
 ### Data plane nodes
 
-Once the data plane is deployed in your AWS or GCP account, there are different kinds of nodes with different responsibilities running in your cluster. In {{< key product_name >}}, we distinguish between default nodes and worker nodes.
+Once the data plane is deployed in your cloud provider account, there are different kinds of nodes with different responsibilities running in your cluster. In {{< key product_name >}}, we distinguish between default nodes and worker nodes.
 
 Default nodes guarantee the basic operation of the data plane and are always running. Example services that run on these nodes include autoscaling (worker nodes), monitoring services, union operator, and many more.
 
@@ -35,12 +35,24 @@ When worker nodes are not in use, they automatically scale down to the configure
 
 ## {{< key product_name >}} operator
 
-The {{< key product_name >}} hybrid architecture lets you maintain ultimate ownership and control of your data and compute infrastructure while enabling {{< key product_name >}} to handle the details of managing that infrastructure.
+The {{< key product_name >}} hybrid architecture lets you maintain ultimate ownership and control of your data and compute infrastructure while enabling {{< key product_name >}} to handle the details of managing that infrastructure. The component that makes this possible is the **{{< key product_name >}} operator**: a dedicated service, resident in your data plane, that acts as the primary channel through which the control plane and your data plane interact. It is designed to perform its functions with only the very minimum set of required permissions.
 
-Management of the data plane is mediated by a dedicated operator (the {{< key product_name >}} operator) resident on that plane.
-This operator is designed to perform its functions with only the very minimum set of required permissions.
-It allows the control plane to spin up and down clusters and provides {{< key product_name >}}'s support engineers with access to system-level logs and the ability to apply changes as per customer requests.
-It _does not_ provide direct access to secrets or data.
+### How your data plane is provisioned and maintained
+
+Your data plane is created by the control plane, not by the operator. When you onboard, the control plane uses infrastructure-as-code, applied against your cloud account, to provision the Kubernetes cluster (for example, an EKS cluster on AWS) along with the supporting cloud resources the platform requires — such as IAM roles and the object-storage buckets that hold your workflow data and metadata. Once that cluster is up, {{< key product_name >}} deploys the operator onto it.
+
+The control plane periodically re-runs this same provisioning process to apply infrastructure changes to your cluster as part of ongoing deployment and maintenance — for example, adding instance types, adjusting node-group sizes, or updating the versions of platform components — so that upgrades and configuration changes are handled for you.
+
+### What the operator does
+
+Once installed, the operator is the resident data-plane component that keeps your cluster in sync with the control plane. It is the primary way the two systems interact. Working with only the minimum permissions it requires, the operator:
+
+* **Runs your executions.** The control plane assigns executions to your data plane; the operator picks up those operations and carries them out, creating and tearing down the Kubernetes pods that run your tasks and applications.
+* **Reports cluster state.** It sends heartbeat, status, health, and resource-usage information back to the control plane, so the control plane can observe and schedule work without needing direct access to your cluster.
+* **Maintains platform services.** It manages the data plane's supporting services — including the secure tunnel used for connectivity, API-key provisioning, image building, secret watching, and compute reconciliation.
+* **Moves your data.** It runs the data-plane `dataproxy` service, which issues the presigned URLs that let clients read and write your workflow data directly to and from the object store in your data plane (see [Execution data](#execution-data)), so that data never transits the control plane.
+
+The operator also allows {{< key product_name >}}'s support engineers to access system-level logs and to apply changes at your request. It _does not_ provide direct access to your secrets or data.
 
 In addition, communication is always initiated by the {{< key product_name >}} operator in the data plane toward the {{< key product_name >}} control plane, not the other way around.
 This further enhances the security of your data plane.
