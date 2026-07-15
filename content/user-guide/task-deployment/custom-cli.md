@@ -69,8 +69,8 @@ if __name__ == "__main__":
     config = tyro.cli(Config)
 
     flyte.init_from_config()
-    r = flyte.run(main, config)
-    print(r.url)
+    run = flyte.run(main, config)
+    print(run.url)
 ```
 
 Run it like any script — `tyro` exposes `foo` and `bar` as CLI options and prints
@@ -84,8 +84,7 @@ Here `tyro.cli(Config)` does the parsing, `flyte.init_from_config()` loads your
 `config.yaml` (endpoint, project, domain, and so on), and
 `flyte.run(main, config)` deploys and runs the task with the parsed config as its
 input. The `config` object is passed **positionally** to `main`, mapping to its
-`config` parameter — the same positional form documented in
-[Run command options](./run-command-options).
+`config` parameter — these are ordinary Python positional arguments.
 
 ## Using a different parser
 
@@ -112,8 +111,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     flyte.init_from_config()
-    r = flyte.run(main, foo=args.foo, bar=args.bar)
-    print(r.url)
+    run = flyte.run(main, foo=args.foo, bar=args.bar)
+    print(run.url)
 ```
 
 Swap `argparse` for `click` or `hydra` the same way: parse however you like, then
