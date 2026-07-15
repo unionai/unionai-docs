@@ -77,6 +77,195 @@ Do the opposite to enable remote runs.
 > This will ensure that `flyte` is installed when running the script locally using `uv run`.
 > When running on the Flyte/Union backend, the `flyte` package from the uv script dependencies will overwrite the one included automatically from the default Flyte image.
 
+## Customizing an image with `with_*` methods
+
+Images from `from_debian_base()` and `from_uv_script()` are *extendable*: you can layer additional customizations on top using the `with_*` methods. (Images from `from_base()` and `from_dockerfile()` are **not** extendable &mdash; calling a `with_*` method on one raises an error; customize those at their source instead.)
+Each method returns a new `flyte.Image`, so you can chain them together in a fluent style:
+
+```python
+import flyte
+from flyte import Image
+
+image = (
+    Image.from_debian_base()
+    .with_apt_packages("git", "vim")
+    .with_pip_packages("pandas", "numpy")
+    .with_env_vars({"MY_ENV_VAR": "my_value"})
+    .with_commands(["echo 'building image'"])
+)
+
+env = flyte.TaskEnvironment(name="my_env", image=image)
+```
+
+The available customization methods are:
+
+| Method | Description |
+|---|---|
+| `flyte.Image.with_pip_packages()` | Install one or more packages with `pip` (supports `index_url`, `extra_index_urls`, `pre` for pre-releases, and `secret_mounts` for private indexes). |
+| `flyte.Image.with_apt_packages()` | Install one or more system packages with `apt`. |
+| `flyte.Image.with_requirements()` | Install Python dependencies from a `requirements.txt` file. |
+| `flyte.Image.with_uv_project()` | Install dependencies from a `pyproject.toml` + `uv.lock` pair. |
+| `flyte.Image.with_poetry_project()` | Install dependencies from a `pyproject.toml` + `poetry.lock` pair. |
+| `flyte.Image.with_source_file()` | Copy a single local file into the image. |
+| `flyte.Image.with_source_folder()` | Copy a local directory into the image. |
+| `flyte.Image.with_commands()` | Run additional shell commands during the build (do not prefix them with `RUN`). |
+| `flyte.Image.with_env_vars()` | Set environment variables in the image. |
+| `flyte.Image.with_workdir()` | Set the working directory in the image. |
+| `flyte.Image.with_dockerignore()` | Point at a `.dockerignore` file to exclude paths from the build context. |
+
+For the full signature of each method, see the [`Image` API reference](../../api-reference/flyte-sdk/packages/flyte/image).
+
+> [!NOTE]
+> The `with_*` methods that install Python dependencies (`with_pip_packages`, `with_requirements`, `with_uv_project`, `with_poetry_project`) cannot be combined with a conda-based image.
+
+### Installing dependencies from a `uv` or Poetry project
+
+If your project already declares its dependencies in a `pyproject.toml`, you can install them directly into the image rather than listing packages individually.
+Use `flyte.Image.with_uv_project()` for a `uv.lock` or `flyte.Image.with_poetry_project()` for a `poetry.lock`:
+
+```python
+from pathlib import Path
+
+from flyte import Image
+
+image = (
+    Image.from_debian_base(install_flyte=False)
+    .with_apt_packages("git")
+    .with_uv_project(
+        pyproject_file=Path("pyproject.toml"),
+        uvlock=Path("uv.lock"),
+    )
+)
+```
+
+By default only the dependencies are installed. To also install the project itself as a package, pass `project_install_mode="install_project"`.
+
+### Copying local files into the image
+
+Use `flyte.Image.with_source_file()` to copy a single file, or `flyte.Image.with_source_folder()` to copy a directory, into the image:
+
+```python
+from pathlib import Path
+
+from flyte import Image
+
+image = (
+    Image.from_debian_base()
+    .with_source_file(Path("config.yaml"), dst="/app/config.yaml")
+    .with_source_folder(Path("./src"), dst="/app/src")
+)
+```
+
+## More ways to define a base image
+
+Beyond `from_debian_base` and `from_uv_script`, `flyte.Image` provides several other base constructors.
+
+### Starting from an existing image
+
+If you already have a pre-built image in a registry, use `flyte.Image.from_base()` to use it as the starting point:
+
+```python
+from flyte import Image
+
+image = Image.from_base("ghcr.io/my-org/my-base-image:latest")
+```
+
+> [!NOTE]
+> An image from `from_base()` is **not extendable** by default &mdash; chaining `with_*` methods onto it raises an error. To add layers, first clone it with `extendable=True`, then chain as usual:
+>
+> ```python
+> image = Image.from_base("ghcr.io/my-org/my-base-image:latest").clone(extendable=True).with_pip_packages("pandas")
+> ```
+>
+> Otherwise, bake any extra dependencies into the pre-built image itself, or start from `from_debian_base()` / `from_uv_script()`.
+
+You can also use `flyte.Image.clone()` to reuse an existing image definition while overriding its registry, name, Python version, or extendability:
+
+```python
+from flyte import Image
+
+image = Image.from_base("ghcr.io/my-org/my-base-image:latest").clone(name="my-flyte-image")
+```
+
+### Building from a Dockerfile
+
+If you need full control over the build, use `flyte.Image.from_dockerfile()` to build the image from a Dockerfile you provide:
+
+```python
+from pathlib import Path
+
+from flyte import Image
+
+image = Image.from_dockerfile(
+    file=Path("Dockerfile").absolute(),
+    registry="ghcr.io/my-org",
+    name="my-image",
+)
+```
+
+> [!NOTE]
+> Because Flyte does not parse the Dockerfile, you cannot layer additional `with_*` methods on top of a `from_dockerfile()` image — put all of your build logic into the Dockerfile itself.
+> Use an absolute `Path` for the Dockerfile; the build context is the directory containing it.
+
+### Referencing an image defined in configuration
+
+Use `flyte.Image.from_ref_name()` to reference an image by a name defined in your configuration, rather than hard-coding it in your task code.
+This lets you swap images without changing code:
+
+```python
+import flyte
+
+env = flyte.TaskEnvironment(
+    name="my_env",
+    image=flyte.Image.from_ref_name("custom-image"),
+)
+```
+
+The named references are supplied at initialization — either in your `config.yaml`:
+
+```yaml
+image:
+  image_refs:
+    custom-image: ghcr.io/flyteorg/flyte:py{python-version}-v{flyte_version}
+```
+
+or through `flyte.init_from_config()`:
+
+```python
+flyte.init_from_config(images=("custom-image=ghcr.io/flyteorg/flyte:py{python-version}-v{flyte_version}",))
+```
+
+Calling `flyte.Image.from_ref_name()` with no argument references the image named `default`.
+
+## Using different images for different tasks
+
+A single project can use multiple images: each `flyte.TaskEnvironment` specifies its own image, so tasks in different environments run in different containers.
+This is useful when, for example, a data-preparation task needs only a lightweight image while a training task needs a large GPU image.
+
+```python
+import flyte
+from flyte import Image
+
+prep_image = Image.from_debian_base().with_pip_packages("pandas", "pyarrow")
+train_image = Image.from_debian_base().with_pip_packages("torch")
+
+prep_env = flyte.TaskEnvironment(name="prep", image=prep_image)
+train_env = flyte.TaskEnvironment(name="train", image=train_image, depends_on=[prep_env])
+
+
+@prep_env.task
+async def prepare(data: str) -> str:
+    return data
+
+
+@train_env.task
+async def train(data: str) -> str:
+    return data
+```
+
+> [!NOTE]
+> For patterns where each team fully owns and builds its own image (rather than layering with `flyte.Image`), see [Bring your own image](../project-patterns/bring-your-own-image).
+
 ## Image building
 
 There are two ways that the image can be built:

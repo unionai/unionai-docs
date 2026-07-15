@@ -108,3 +108,7 @@ The `collect()` call in `aggregate_by_department` is what triggers execution of 
 ### Run the example
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/dataframes/polars_dataframes.py" fragment="main" lang="python" >}}
+
+## See also
+
+To display a DataFrame as an HTML table in a task report, define a `flyte.types.Renderable` for it — see [Rendering a custom type](./reports#rendering-a-custom-type) on the Reports page.

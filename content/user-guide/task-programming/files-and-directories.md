@@ -21,7 +21,7 @@ Even very large data objects like video files and DNA datasets can be passed eff
 
 For the full picture of what gets stored in the bucket versus what stays in the control plane database, see [Where your data lives](../core-concepts/where-data-lives).
 
-The `File` and `Dir` classes provide both `sync` and `async` methods to interact with the data.
+The `File` and `Dir` classes provide both synchronous and asynchronous methods to interact with the data, so you can use them from either kind of task. See [Synchronous and asynchronous APIs](#synchronous-and-asynchronous-apis) for the full method pairing.
 
 > [!NOTE]
 > Because `File` and `Dir` are passed by reference, a downstream cached task does not get a cache hit on identical content stored at a new path. To cache on content, attach a hash at production time - see [Content-based caching for DataFrames, files, and directories](../task-configuration/caching#content-based-caching-for-dataframes-files-and-directories).
@@ -47,6 +47,114 @@ Helper functions like `walk` and `open` have been added to the objects
 and do what you might expect.
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/files-and-directories/file_and_dir.py" fragment="create-and-check-dir" lang="python" >}}
+
+## Synchronous and asynchronous APIs
+
+Every I/O operation on `File` and `Dir` comes in two forms, so you can use the offloaded types from both asynchronous and synchronous tasks:
+
+- In an **asynchronous task** (`async def`), use the coroutine methods: `await` the upload, download, and existence calls, use `async with file.open(...)` to stream, and `async for` to walk a `Dir`. This is the pattern shown in [Example usage](#example-usage) above.
+- In a **synchronous task** (plain `def`), use the `_sync` variants: `File.from_local_sync()`, `file.open_sync()`, `dir.walk_sync()`, and so on. These block until the operation completes.
+
+The two forms are otherwise equivalent — pick the one that matches how your task is defined. A few constructors do no I/O and so have a single form that is used unchanged from either kind of task: `File.new_remote()`, `File.from_existing_remote()`, `Dir.new_remote()`, and `Dir.from_existing_remote()`.
+
+### File methods
+
+| Asynchronous (in `async def` tasks) | Synchronous (in `def` tasks) | Purpose |
+|---|---|---|
+| `await File.from_local(path)` | `File.from_local_sync(path)` | Upload a local file to the blob store |
+| `File.new_remote()` | `File.new_remote()` | Allocate a new remote file to stream into |
+| `File.from_existing_remote(uri)` | `File.from_existing_remote(uri)` | Reference a file that already exists remotely |
+| `async with file.open(mode) as fh` | `with file.open_sync(mode) as fh` | Open the file as a stream for reading or writing |
+| `await file.download()` | `file.download_sync()` | Download the file to the local filesystem |
+| `await file.exists()` | `file.exists_sync()` | Check whether the file exists |
+
+### Dir methods
+
+| Asynchronous (in `async def` tasks) | Synchronous (in `def` tasks) | Purpose |
+|---|---|---|
+| `await Dir.from_local(path)` | `Dir.from_local_sync(path)` | Upload a local directory to the blob store |
+| `Dir.new_remote()` | `Dir.new_remote()` | Allocate a new remote directory to stream into |
+| `Dir.from_existing_remote(uri)` | `Dir.from_existing_remote(uri)` | Reference a directory that already exists remotely |
+| `async for f in dir.walk()` | `for f in dir.walk_sync()` | Iterate over the files in the directory |
+| `await dir.list_files()` | `dir.list_files_sync()` | List the files in the directory (non-recursive) |
+| `await dir.get_file(name)` | `dir.get_file_sync(name)` | Get a single file from the directory by name |
+| `await dir.download()` | `dir.download_sync()` | Download the whole directory to the local filesystem |
+| `await dir.exists()` | `dir.exists_sync()` | Check whether the directory exists |
+
+> [!NOTE]
+> `walk_sync()` additionally accepts a `file_pattern` glob (for example `file_pattern="*.txt"`) to filter the files it yields. Both forms accept `recursive` and `max_depth`.
+
+### Synchronous example
+
+The [example above](#example-usage) uses `await`, `async with`, and `async for`. The same kind of workflow written with the synchronous API uses plain `def` tasks and the `_sync` method names:
+
+```python
+import flyte
+from flyte.io import File
+
+env = flyte.TaskEnvironment(name="sync-file")
+
+
+@env.task
+def write_file(content: str) -> File:
+    # Allocate a new remote file and stream content into it
+    f = File.new_remote()
+    with f.open_sync("wb") as fh:
+        fh.write(content.encode("utf-8"))
+    return f
+
+
+@env.task
+def read_file(f: File) -> str:
+    # Open the file for reading without downloading the whole object
+    with f.open_sync("rb") as fh:
+        return fh.read().decode("utf-8")
+
+
+@env.task
+def main() -> str:
+    f = write_file(content="hello world")
+    return read_file(f)
+```
+
+Directories work the same way — use `Dir.from_local_sync()` to upload and `walk_sync()` to iterate:
+
+```python
+import os
+import tempfile
+
+import flyte
+from flyte.io import Dir
+
+env = flyte.TaskEnvironment(name="sync-dir")
+
+
+@env.task
+def upload_dir() -> Dir:
+    with tempfile.TemporaryDirectory() as tmp:
+        for i in range(3):
+            with open(os.path.join(tmp, f"file{i}.txt"), "w") as fh:
+                fh.write(f"content {i}")
+        # Upload the directory to the blob store
+        return Dir.from_local_sync(tmp)
+
+
+@env.task
+def read_dir(d: Dir) -> int:
+    count = 0
+    # Walk and read every file, all synchronously
+    for file in d.walk_sync(recursive=True):
+        with file.open_sync("rb") as fh:
+            print(f"{file.name}: {fh.read().decode('utf-8')}")
+        count += 1
+    return count
+
+
+@env.task
+def main() -> int:
+    d = upload_dir()
+    return read_dir(d)
+```
 
 ## JSONL files
 

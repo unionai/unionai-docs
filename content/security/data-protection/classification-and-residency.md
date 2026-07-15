@@ -81,7 +81,7 @@ Then run a workflow with recognizable data (e.g., a known string or file), and v
 6. **Task definition**: confirm it contains the expected fields, stored in the control plane:
 
    ```bash
-   uctl get task <task-name> -o json
+   flyte get task <task-name>
    ```
 
    The response will contain resource requirements, typed interfaces, container image references, and potentially sensitive fields (environment variables, default values, etc.) as documented in [Control plane](../architecture/control-plane). Bulk data content should not appear inline.
@@ -89,7 +89,7 @@ Then run a workflow with recognizable data (e.g., a known string or file), and v
 7. **Run metadata**: confirm it contains metadata and URI references, stored in the control plane:
 
    ```bash
-   uctl get execution <execution-id> -o json
+   flyte get run <run-name>
    ```
 
    The response should contain phase, timestamps, URIs, error messages, and task definition fields. Bulk data content should not appear inline.
@@ -113,7 +113,7 @@ Then run a workflow with recognizable data (e.g., a known string or file), and v
 3. Confirm the cluster region via the Union.ai API:
 
    ```bash
-   uctl get cluster
+   flyte get cluster
    ```
 
    The cluster region should match the customer's chosen deployment region.
