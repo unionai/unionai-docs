@@ -24,7 +24,7 @@ The main parameters are:
 
 - **`cpu`**: CPU allocation — number, string (`"500m"`), or `(request, limit)` tuple.
 - **`memory`**: Memory with Kubernetes units — `"4Gi"`, or `(request, limit)` tuple. Leave headroom below a node's total RAM: its *allocatable* memory is smaller (the kubelet reserves overhead for the OS and system daemons), so a request near a node's nominal capacity can leave the pod stuck `Pending`.
-- **`gpu`**: GPU or other accelerator allocation — `"A100:2"`, integer count, or `GPU()`/`TPU()`/`Device()` for advanced config. See [Accelerators](#accelerators) below.
+- **`gpu`**: GPU or other accelerator allocation — `"A100:2"`, integer count, or `flyte.GPU()`, `flyte.TPU()`, `flyte.AMD_GPU()`, or `flyte.Device()` for advanced config. See [Accelerators](#accelerators) below.
 - **`disk`**: Ephemeral storage — `"10Gi"`.
 - **`shm`**: Shared memory — `"1Gi"` or `"auto"`.
 
