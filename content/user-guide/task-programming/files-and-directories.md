@@ -55,7 +55,7 @@ Every I/O operation on `File` and `Dir` comes in two forms, so you can use the o
 - In an **asynchronous task** (`async def`), use the coroutine methods: `await` the upload, download, and existence calls, use `async with file.open(...)` to stream, and `async for` to walk a `Dir`. This is the pattern shown in [Example usage](#example-usage) above.
 - In a **synchronous task** (plain `def`), use the `_sync` variants: `File.from_local_sync()`, `file.open_sync()`, `dir.walk_sync()`, and so on. These block until the operation completes.
 
-The two forms are otherwise equivalent — pick the one that matches how your task is defined. A few constructors do no I/O and so have a single form that is used unchanged from either kind of task: `File.new_remote()`, `File.from_existing_remote()`, and `Dir.from_existing_remote()`.
+The two forms are otherwise equivalent — pick the one that matches how your task is defined. A few constructors do no I/O and so have a single form that is used unchanged from either kind of task: `File.new_remote()`, `File.from_existing_remote()`, `Dir.new_remote()`, and `Dir.from_existing_remote()`.
 
 ### File methods
 
@@ -73,6 +73,7 @@ The two forms are otherwise equivalent — pick the one that matches how your ta
 | Asynchronous (in `async def` tasks) | Synchronous (in `def` tasks) | Purpose |
 |---|---|---|
 | `await Dir.from_local(path)` | `Dir.from_local_sync(path)` | Upload a local directory to the blob store |
+| `Dir.new_remote()` | `Dir.new_remote()` | Allocate a new remote directory to stream into |
 | `Dir.from_existing_remote(uri)` | `Dir.from_existing_remote(uri)` | Reference a directory that already exists remotely |
 | `async for f in dir.walk()` | `for f in dir.walk_sync()` | Iterate over the files in the directory |
 | `await dir.list_files()` | `dir.list_files_sync()` | List the files in the directory (non-recursive) |
@@ -130,12 +131,12 @@ env = flyte.TaskEnvironment(name="sync-dir")
 
 @env.task
 def upload_dir() -> Dir:
-    tmp = tempfile.mkdtemp()
-    for i in range(3):
-        with open(os.path.join(tmp, f"file{i}.txt"), "w") as fh:
-            fh.write(f"content {i}")
-    # Upload the directory to the blob store
-    return Dir.from_local_sync(tmp)
+    with tempfile.TemporaryDirectory() as tmp:
+        for i in range(3):
+            with open(os.path.join(tmp, f"file{i}.txt"), "w") as fh:
+                fh.write(f"content {i}")
+        # Upload the directory to the blob store
+        return Dir.from_local_sync(tmp)
 
 
 @env.task
