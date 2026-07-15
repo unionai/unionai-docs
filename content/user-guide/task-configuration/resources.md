@@ -45,7 +45,7 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-Under the hood, `disk` maps to the Kubernetes [`ephemeral-storage`](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#local-ephemeral-storage) resource on the task's pod.
+Under the hood, `disk` maps to the Kubernetes [`ephemeral-storage`](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#local-ephemeral-storage) resource on the task's container.
 
 **What it covers.** Ephemeral storage is the local disk a task writes to while it runs: the container's writable filesystem and any temporary files your code creates on the local filesystem during execution (downloaded datasets, intermediate outputs, model checkpoints staged before offload). It is distinct from the offloaded storage backing `flyte.io.File` and `flyte.io.Dir`, which lives in the blob store rather than on the node.
 
@@ -53,7 +53,7 @@ Under the hood, `disk` maps to the Kubernetes [`ephemeral-storage`](https://kube
 
 **Single value, not a request/limit range.** Unlike `cpu` and `memory`, `disk` takes a single string, not a `(request, limit)` tuple.
 
-**Default behavior.** If you don't set `disk`, no ephemeral-storage request or limit is applied. The pod can still write to node-local disk, but it may be evicted if the node comes under storage pressure. Tasks doing heavy local data processing should set `disk` explicitly.
+**Default behavior.** Flyte does not set an `ephemeral-storage` request or limit when `disk` is unset. (A cluster-level Kubernetes `LimitRange`, if configured, may still inject a default.) The pod can still write to node-local disk, but it may be evicted if the node comes under storage pressure. Tasks doing heavy local data processing should set `disk` explicitly.
 
 {{< variant union >}}
 {{< markdown >}}
