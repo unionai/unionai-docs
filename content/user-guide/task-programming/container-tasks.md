@@ -25,7 +25,7 @@ The magic of container tasks lies in Flyte's **copilot sidecar system**. When yo
 3. Reads inputs from `input_data_dir` and writes outputs to `output_data_dir`
 4. Automatically handles serialization and deserialization of typed data
 
-This means you can construct workflows where some tasks are container tasks while others are Python functions, and data will flow seamlessly between them.
+This means you can construct workflows where some tasks are container tasks while others are Python functions, and data will flow between them.
 
 ## Basic usage
 
@@ -60,7 +60,7 @@ command=["/bin/sh", "-c", "echo 'Processing {{.inputs.user_id}}' > /var/outputs/
 
 ### Using container tasks in workflows
 
-Container tasks integrate seamlessly with Python tasks:
+Container tasks integrate with Python tasks:
 
 ```python
 container_env = flyte.TaskEnvironment.from_task("container_env", greeting_task)

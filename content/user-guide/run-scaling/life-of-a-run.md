@@ -21,6 +21,9 @@ When you execute `flyte.run()`, the system goes through several phases:
 6. **Task execution**: Execute the task in the data plane
 7. **State management**: Track and persist execution state
 
+> [!NOTE]
+> This walkthrough follows a run's *control flow*. For what the inputs and outputs actually are (**literals**, stored inline or offloaded as **raw data**) and where each lives, see [Where your data lives](../core-concepts/where-data-lives).
+
 ## Phase 1: Code analysis and preparation
 
 When `flyte.run()` is invoked:

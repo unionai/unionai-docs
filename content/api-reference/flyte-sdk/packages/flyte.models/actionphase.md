@@ -1,6 +1,6 @@
 ---
 title: ActionPhase
-version: 2.5.8
+version: 2.5.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,6 +16,7 @@ Actions progress through different phases during their lifecycle:
 - Waiting for resources: Action is waiting for compute resources
 - Initializing: Action is being initialized
 - Running: Action is currently executing
+- Paused: Action is paused waiting for external input (e.g. a condition signal)
 - Succeeded: Action completed successfully
 - Failed: Action failed during execution
 - Aborted: Action was manually aborted

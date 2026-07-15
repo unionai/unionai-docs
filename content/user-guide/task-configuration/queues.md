@@ -18,13 +18,13 @@ platform a place to apply policy: how many things run at once, how deep the
 backlog can get, how this work is prioritized relative to everyone else's, and
 which cluster it lands on.
 
-Targeting a queue is a single parameter — you don't change your task code, you
+Targeting a queue is a single parameter: you don't change your task code, you
 just say *where* it should be scheduled. Anything you don't explicitly route
 goes to the **default queue**.
 
 ## Routing work to a queue
 
-The `queue` parameter can be set at three levels — on the `flyte.TaskEnvironment`,
+The `queue` parameter can be set at three levels: on the `flyte.TaskEnvironment`,
 on the `@env.task` decorator, and at invocation time via `task.override()`. The
 more specific level always wins, exactly like the other task settings.
 
@@ -61,7 +61,7 @@ definition:
 flyte.with_runcontext(queue="my-queue").run(main, count=10)
 ```
 
-And a [trigger](./triggers) can send its scheduled runs to a specific queue —
+And a [trigger](./triggers) can send its scheduled runs to a specific queue,
 useful when you want scheduled or automated work to run under different limits
 than ad-hoc runs:
 
@@ -77,7 +77,7 @@ trigger = flyte.Trigger(
 
 ### Overriding a queue at runtime
 
-A running workflow can route a specific task invocation to a different queue —
+A running workflow can route a specific task invocation to a different queue,
 for example to push one heavy step onto a dedicated lane:
 
 ```python
@@ -92,19 +92,19 @@ async def main(queue_name: str):
 Queues are configured by your platform admin, but it helps to understand the
 knobs so you can pick the right queue for a workload:
 
-- **Action concurrency** — the maximum number of tasks routed to the queue that
+- **Action concurrency**: the maximum number of tasks routed to the queue that
   run at the same time. A queue with a cap of 1 serializes its work; a cap of 3
   lets at most three run concurrently and holds the rest until a slot frees up.
-- **Run concurrency** — the maximum number of *runs* on the queue that are active
+- **Run concurrency**: the maximum number of *runs* on the queue that are active
   at once. Children of an active run aren't capped by this; only the runs
   themselves are. Use this for a job that parallelizes well internally but must
   not overlap with a previous invocation of itself.
-- **Depth** — the total number of in-flight plus waiting items the queue will
+- **Depth**: the total number of in-flight plus waiting items the queue will
   hold. When a queue is full, new submissions are rejected immediately with a
   `RESOURCE_EXHAUSTED` error rather than queueing forever. That rejection is a
-  back-pressure signal to your caller — catch it and slow down, rather than
+  back-pressure signal to your caller: catch it and slow down, rather than
   retrying in a tight loop.
-- **Priority** — when several queues share the same cluster capacity, higher
+- **Priority**: when several queues share the same cluster capacity, higher
   priority work is scheduled ahead of lower priority work. Priority controls
   *ordering*, not preemption: a lower-priority task that has already started is
   not interrupted when higher-priority work arrives.
@@ -126,7 +126,7 @@ async def nightly_job(fan_out: int = 50) -> list[str]:
     # ...but two nightly_job runs never overlap.
 ```
 
-This pairs naturally with [triggers](./triggers) — give the trigger a serialized
+This pairs naturally with [triggers](./triggers): give the trigger a serialized
 queue and you get self-non-overlapping scheduled jobs for free.
 
 ### Backfill control
@@ -151,9 +151,9 @@ is scheduled first.
 
 How long a task is willing to *wait* in a queue before it gives up is a separate,
 per-task concern controlled by the timeout settings. If a queue is busy or
-capped, an action sits in the **Queued** phase until a slot opens — set
-[`max_queued_time`](./retries-and-timeouts#max_queued_time--fail-fast-when-capacity-isnt-available)
+capped, an action sits in the **Queued** phase until a slot opens: set
+[`max_queued_time`](./retries-and-timeouts#max_queued_time-fail-fast-when-capacity-isnt-available)
 to fail fast when capacity isn't available within your window, and
-[`deadline`](./retries-and-timeouts#deadline--bound-the-total-wall-clock) to put
+[`deadline`](./retries-and-timeouts#deadline-bound-the-total-wall-clock) to put
 an absolute ceiling on total wall-clock including queue wait. See
 [Retries and timeouts](./retries-and-timeouts) for the full picture.

@@ -61,11 +61,11 @@ Then run the file as an ordinary Python script:
 python hello.py
 ```
 
-Because *your code* decides which task runs and with what inputs, you pass inputs directly as arguments to `flyte.run()` — for example `flyte.run(main, x_list=[1, 2, 3])`. Use `flyte.run.aio(...)` from within async code.
+Because *your code* decides which task runs and with what inputs, you pass inputs directly as arguments to `flyte.run()`, for example `flyte.run(main, x_list=[1, 2, 3])`. Use `flyte.run.aio(...)` from within async code.
 
 ### Via the CLI: `flyte run`
 
-The `flyte run` CLI does the calling for you. You don't need a `__main__` block — instead you name the file and the task on the command line, and the CLI invokes it:
+The `flyte run` CLI does the calling for you. You don't need a `__main__` block; instead you name the file and the task on the command line, and the CLI invokes it:
 
 ```bash
 flyte run --local hello.py main

@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Flyte MCP server
 
-`FlyteMCPAppEnvironment` exposes {{< key product_name >}} operations as standardized [MCP](https://modelcontextprotocol.io) tools, so AI assistants and LLM clients can drive your cluster programmatically — running tasks, monitoring runs, managing apps and triggers, building images, running UV scripts, and searching the SDK and docs.
+`FlyteMCPAppEnvironment` exposes {{< key product_name >}} operations as standardized [MCP](https://modelcontextprotocol.io) tools, so AI assistants and LLM clients can drive your cluster programmatically: running tasks, monitoring runs, managing apps and triggers, building images, running UV scripts, and searching the SDK and docs.
 
 Unlike [`MCPAppEnvironment`](./mcp_server), where you supply your own tools, this environment ships a curated set of Flyte tools out of the box. You decide which of them to expose and what they're allowed to touch.
 
@@ -14,7 +14,7 @@ Unlike [`MCPAppEnvironment`](./mcp_server), where you supply your own tools, thi
 
 Use a Flyte MCP server when you want an assistant to *act on your cluster on your behalf*. Common scenarios:
 
-- **Agentic development loops**: Let Claude Code or OpenCode run a task, wait for it, read its outputs, and iterate — without you copy-pasting commands.
+- **Agentic development loops**: Let Claude Code or OpenCode run a task, wait for it, read its outputs, and iterate, without you copy-pasting commands.
 - **Conversational operations**: Ask an assistant to list recent runs, check a run's status, or abort a stuck run.
 - **Docs- and example-aware coding**: Enable the `search` tools so an assistant can ground its answers in the Flyte SDK examples and Union documentation.
 - **Self-service automation**: Give a trusted internal agent a tightly-scoped server (a few allowlisted tasks, no destructive tools) to perform a narrow job.
@@ -32,7 +32,7 @@ There are two ways to run a Flyte MCP server, suited to different stages:
 
 ### Running locally with `uvx`
 
-The `flyte[mcp]` extra ships a `flyte-mcp` CLI entrypoint. Run it with [`uvx`](https://docs.astral.sh/uv/guides/tools/) — no global install required:
+The `flyte[mcp]` extra ships a `flyte-mcp` CLI entrypoint. Run it with [`uvx`](https://docs.astral.sh/uv/guides/tools/) (no global install required):
 
 ```bash
 uvx --from "flyte[mcp]" flyte-mcp
@@ -43,7 +43,7 @@ uvx --from "flyte[mcp]" flyte-mcp
 > [!TIP]
 > Pin to a specific SDK version: `uvx --from "flyte[mcp]==2.4.0" flyte-mcp`
 
-Once running, register it with your client as a **stdio** transport — the client manages the process lifetime. See the [connecting a client](#connecting-a-client) section below.
+Once running, register it with your client as a **stdio** transport: the client manages the process lifetime. See the [connecting a client](#connecting-a-client) section below.
 
 ### Deploying remotely
 
@@ -132,9 +132,9 @@ When an allowlist is set, calls targeting anything outside it are rejected. Omit
 
 The `search` tools need a corpus to scan, so you must point them at filesystem paths that exist *inside the app image*:
 
-- `sdk_examples_path` — Flyte SDK examples (powers `search_flyte_sdk_examples`)
-- `docs_examples_path` — Union examples (powers `search_flyte_docs_examples`)
-- `full_docs_path` — the docs `llms.txt` index (powers `search_full_docs`)
+- `sdk_examples_path`: Flyte SDK examples (powers `search_flyte_sdk_examples`)
+- `docs_examples_path`: Union examples (powers `search_flyte_docs_examples`)
+- `full_docs_path`: the docs `llms.txt` index (powers `search_full_docs`)
 
 The default image already clones the flyte-sdk and unionai-examples repos and downloads `llms.txt` into `/root` for you. If you supply a custom `image`, bake the corpora in yourself and pass matching paths:
 
@@ -168,7 +168,7 @@ This example combines tool groups, an allowlist, search paths, and instructions 
 
 ## Connecting a client
 
-### Claude Code — local (stdio)
+### Claude Code: local (stdio)
 
 Registers the `flyte-mcp` process as a locally managed stdio server. Claude Code starts and stops the `uvx` process automatically:
 
@@ -176,7 +176,7 @@ Registers the `flyte-mcp` process as a locally managed stdio server. Claude Code
 claude mcp add --transport stdio flyte-mcp -- uvx --from "flyte[mcp]" flyte-mcp
 ```
 
-### Claude Code — remote (HTTP)
+### Claude Code: remote (HTTP)
 
 For a deployed server with a public URL:
 
@@ -186,7 +186,7 @@ claude mcp add --transport http \
   flyte-mcp-remote https://<YOUR_HOST>/flyte-mcp/mcp
 ```
 
-### OpenCode — local
+### OpenCode: local
 
 OpenCode spawns the `uvx` command for you:
 
@@ -203,7 +203,7 @@ OpenCode spawns the `uvx` command for you:
 }
 ```
 
-### OpenCode — remote
+### OpenCode: remote
 
 ```json
 {

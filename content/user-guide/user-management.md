@@ -24,7 +24,7 @@ Union ships with three built-in policies:
 | **Contributor** | `create_flyte_executions`, `register_flyte_inventory`, `view_flyte_executions`, `view_flyte_inventory` | Register and run workflows |
 | **Viewer** | `view_flyte_executions`, `view_flyte_inventory` | Read-only access |
 
-Users can hold multiple policies — permissions are the union of all assigned policies.
+Users can hold multiple policies: permissions are the union of all assigned policies.
 
 ## Custom roles and policies
 
@@ -84,7 +84,7 @@ Assignment.create(email="jane@example.com", policy="Team Prod Access")
 {{< /tab >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
-**Step 1 — Create the role**
+**Step 1: Create the role**
 
 Use `--edit` to open an interactive editor (no YAML file needed):
 
@@ -103,9 +103,9 @@ actions:
   - create_flyte_executions
 ```
 
-Save and close — the role is created.
+Save and close. The role is created.
 
-**Step 2 — Create the policy**
+**Step 2: Create the policy**
 
 ```bash
 flyte create policy "Team Prod Access" --edit
@@ -123,7 +123,7 @@ bindings:
       domain: production
 ```
 
-**Step 3 — Assign the policy to a user**
+**Step 3: Assign the policy to a user**
 
 ```bash
 flyte create assignment --email jane@example.com --policy "Team Prod Access"
@@ -186,10 +186,10 @@ flyte update policy "Team Prod Access"
 
 Navigate to **Settings > User Management** to:
 
-* **View users** — see all users and their assigned policies.
-* **Add a user** — specify name, email, and policies. The user receives an email invite.
-* **Change policies** — select a user and edit their assignments.
-* **Remove a user** — select a user and remove them.
+* **View users**: see all users and their assigned policies.
+* **Add a user**: specify name, email, and policies. The user receives an email invite.
+* **Change policies**: select a user and edit their assignments.
+* **Remove a user**: select a user and remove them.
 
 ## Available actions
 

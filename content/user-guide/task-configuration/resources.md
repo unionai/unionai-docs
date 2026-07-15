@@ -22,11 +22,11 @@ For the full class definition, parameter types, and accepted formats, see the [`
 
 The main parameters are:
 
-- **`cpu`**: CPU allocation — number, string (`"500m"`), or `(request, limit)` tuple.
-- **`memory`**: Memory with Kubernetes units — `"4Gi"`, or `(request, limit)` tuple. Leave headroom below a node's total RAM: its *allocatable* memory is smaller (the kubelet reserves overhead for the OS and system daemons), so a request near a node's nominal capacity can leave the pod stuck `Pending`.
-- **`gpu`**: GPU or other accelerator allocation — `"A100:2"`, integer count, or `flyte.GPU()`, `flyte.TPU()`, `flyte.AMD_GPU()`, or `flyte.Device()` for advanced config. See [Accelerators](#accelerators) below.
-- **`disk`**: Ephemeral storage — `"10Gi"`.
-- **`shm`**: Shared memory — `"1Gi"` or `"auto"`.
+- **`cpu`**: CPU allocation, as a number, string (`"500m"`), or `(request, limit)` tuple.
+- **`memory`**: Memory with Kubernetes units, such as `"4Gi"`, or a `(request, limit)` tuple. Leave headroom below a node's total RAM: its *allocatable* memory is smaller (the kubelet reserves overhead for the OS and system daemons), so a request near a node's nominal capacity can leave the pod stuck `Pending`.
+- **`gpu`**: GPU or other accelerator allocation, as `"A100:2"`, an integer count, or `flyte.GPU()`, `flyte.TPU()`, `flyte.AMD_GPU()`, or `flyte.Device()` for advanced config. See [Accelerators](#accelerators) below.
+- **`disk`**: Ephemeral storage, such as `"10Gi"`.
+- **`shm`**: Shared memory, such as `"1Gi"` or `"auto"`.
 
 {{< variant union >}}
 {{< markdown >}}

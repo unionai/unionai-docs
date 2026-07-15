@@ -25,7 +25,7 @@ The retention policy applies to the following data:
 
 1. **Workflow execution data**: the per-run artifacts written during task execution:
    - Task inputs and outputs (the `inputs.pb` / `outputs.pb` protobuf payloads written by the platform during run setup and task execution).
-   - Offloaded large values: `flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, and other reference-type payloads — both in their default location and in any custom location specified per run via `flyte.with_runcontext(raw_data_path=...)`.
+   - Offloaded large values: `flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, and other reference-type payloads, both in their default location and in any custom location specified per run via `flyte.with_runcontext(raw_data_path=...)`.
    - `Deck` and report artifacts.
    - Trace checkpoints.
 
@@ -49,7 +49,7 @@ To remedy this, you have to both re-deploy and re-run the workflow.
 
 ## Separating raw data from metadata
 
-You can route a run's **raw data** (offloaded values such as `flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, and checkpoints) to a different bucket or prefix than the rest of the run's data — for example, to a bucket with its own lifecycle rules. Only the raw offloaded contents move; the `inputs.pb` / `outputs.pb` payloads still land in the configured metadata bucket. For the conceptual map of what "raw data" versus "metadata" means, see [Where your data lives](../../user-guide/core-concepts/where-data-lives).
+You can route a run's **raw data** (offloaded values such as `flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, and checkpoints) to a different bucket or prefix than the rest of the run's data, for example, to a bucket with its own lifecycle rules. Only the raw offloaded contents move; the `inputs.pb` / `outputs.pb` payloads still land in the configured metadata bucket. For the conceptual map of what "raw data" versus "metadata" means, see [Where your data lives](../../user-guide/core-concepts/where-data-lives).
 
 You can set the raw-data path **per run**, or as a **default for a whole project or domain**.
 
@@ -75,7 +75,7 @@ flyte run --raw-data-path s3://my-other-bucket/some/prefix my_workflow.py main
 
 ### As a project or domain default
 
-To point **all** runs in a project and/or domain at a separate raw-data path by default, set the `storage.raw_data_path` setting. This is self-service — no redeployment required — and settings resolve from broadest to narrowest scope (org → domain → project), so you can set a wide default and override it more specifically.
+To point **all** runs in a project and/or domain at a separate raw-data path by default, set the `storage.raw_data_path` setting. This is self-service (no redeployment required) and settings resolve from broadest to narrowest scope (org → domain → project), so you can set a wide default and override it more specifically.
 
 Edit the settings for a project and domain interactively, then set `storage.raw_data_path` to your bucket or prefix:
 

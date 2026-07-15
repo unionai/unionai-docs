@@ -12,7 +12,7 @@ variants: -flyte +union
 > `pip install flyteplugins-union`.
 
 A **cluster pool** is a named group of clusters that share one **data plane
-configuration** — the same object store, secret store, and container registry.
+configuration**: the same object store, secret store, and container registry.
 Because every cluster in a pool reads and writes the same data plane, a workload
 can run on any healthy cluster in the pool and still find its inputs, code, and
 secrets.
@@ -24,7 +24,7 @@ Most deployments need exactly one pool. Every organization is provisioned with a
 clusters share a bucket, secret store, and registry, leave them in `default` and
 move on to [Clusters](./clusters).
 
-Create additional pools when you have clusters with **distinct** data planes —
+Create additional pools when you have clusters with **distinct** data planes:
 for example, separate development and production cloud accounts, each with its own
 bucket, secrets vault, and registry. Each such environment becomes its own pool.
 
@@ -142,7 +142,7 @@ Cluster.create("prod-us-east-1", cluster_pool_name="prod")
 {{< /tab >}}
 {{< /tabs >}}
 
-Existing clusters cannot be moved between pools in place — a registration that
+Existing clusters cannot be moved between pools in place: a registration that
 names a different pool for an existing cluster is rejected. Moving a cluster is
 a drain, delete, and re-register sequence; see
 [Move a cluster to a different pool](./clusters#move-a-cluster-to-a-different-pool).

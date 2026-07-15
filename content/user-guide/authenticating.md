@@ -466,7 +466,7 @@ When you authenticate using PKCE or device flow, Flyte stores your OAuth tokens 
 - **Windows**: Windows Credential Manager
 - **Linux**: Secret Service API (GNOME Keyring, KWallet, etc.)
 
-These tokens are automatically refreshed as needed, providing a seamless experience across multiple commands and sessions.
+These tokens are automatically refreshed as needed across multiple commands and sessions.
 
 ### Systems without keyring support
 

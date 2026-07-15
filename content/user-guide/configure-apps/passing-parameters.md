@@ -113,7 +113,7 @@ You can override parameter values when serving apps using `parameter_values` in
 
 > [!NOTE]
 > Parameter overrides are only available when using `flyte.with_servecontext().serve()`.
-> The `flyte.deploy()` function does not support parameter overrides — parameters must be specified in the `AppEnvironment` definition.
+> The `flyte.deploy()` function does not support parameter overrides. Parameters must be specified in the `AppEnvironment` definition.
 
 This is useful for:
 - Testing different configurations during development
@@ -133,7 +133,7 @@ Here's a complete example showing how to use parameters in a FastAPI app:
 ## Best practices
 
 1. **Use `from_existing_remote`**: Always use `flyte.io.File.from_existing_remote(...)` or `flyte.io.Dir.from_existing_remote(...)` to reference remote files and directories as parameter values.
-2. **Use delayed parameters**: Leverage `RunOutput` and `AppEndpoint` to create app dependencies between tasks and apps, or app-to-app chains.
+2. **Use delayed parameters**: Use `RunOutput` and `AppEndpoint` to create app dependencies between tasks and apps, or app-to-app chains.
 3. **Override for testing**: Use the `parameter_values` argument in `flyte.with_servecontext()` to test different configurations without changing code.
 4. **Mount paths clearly**: Use descriptive mount paths for file/directory parameters so your app code is easy to understand.
 5. **Use environment variables**: For paths that your app needs to reference dynamically, use `env_var` to inject values as environment variables.
