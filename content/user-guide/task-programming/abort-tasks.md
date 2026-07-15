@@ -20,7 +20,7 @@ For background on runs and actions, see [Runs and actions](../core-concepts/runs
 ## Action lifetime
 
 The lifetime of all actions in a [run](../core-concepts/runs-and-actions) is tied to the lifetime of the root action (the first task that was invoked).
-When the root action exits—whether it succeeds, fails, or returns early—all in-progress descendant actions are automatically aborted and no new actions can be enqueued.
+When the root action exits (whether it succeeds, fails, or returns early) all in-progress descendant actions are automatically aborted and no new actions can be enqueued.
 
 This means you don't need to manually clean up child actions. Flyte handles it for you.
 

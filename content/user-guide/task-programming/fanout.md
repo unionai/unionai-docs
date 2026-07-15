@@ -6,12 +6,26 @@ variants: +flyte +union
 
 # Fanout
 
-Flyte is designed to scale effortlessly, allowing you to run workflows with large fanouts.
-When you need to execute many tasks in parallel—such as processing a large dataset or running hyperparameter sweeps—Flyte provides powerful patterns to implement these operations efficiently.
+Flyte is designed to scale, allowing you to run workflows with large fanouts.
+When you need to execute many tasks in parallel (such as processing a large dataset or running hyperparameter sweeps), Flyte provides powerful patterns to implement these operations efficiently.
 
 {{< note >}}
 In Flyte 1, mapping a task over many inputs used `map_task()` (the `flytekit.map_task` API). In Flyte 2, fan out with `asyncio.gather()` or `flyte.map()`.
 {{< /note >}}
+
+This page covers the general `asyncio.gather` fanout pattern. For applying the *same* task to every
+item of a list (the direct successor to Flyte 1's `map_task`), see [Mapping over inputs](./map).
+
+{{< variant union >}}
+{{< markdown >}}
+That page also covers concurrency limits, error handling, and use with reusable environments.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+That page also covers concurrency limits and error handling.
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< variant union >}}
 {{< markdown >}}
@@ -28,7 +42,7 @@ A "fanout" pattern occurs when you spawn multiple tasks concurrently.
 Each task runs in its own container and contributes an output that you later collect.
 The most common way to implement this is using the [`asyncio.gather`](https://docs.python.org/3/library/asyncio-task.html#asyncio.gather) function.
 
-In Flyte terminology, each individual task execution is called an "action"—this represents a specific invocation of a task with particular inputs. When you call a task multiple times in a loop, you create multiple actions.
+In Flyte terminology, each individual task execution is called an "action": this represents a specific invocation of a task with particular inputs. When you call a task multiple times in a loop, you create multiple actions.
 
 ## Example
 
@@ -64,11 +78,11 @@ This means that when you write:
 results = await asyncio.gather(fetch_data(1), fetch_data(2), fetch_data(3))
 ```
 
-Instead of three coroutines sharing one CPU, you get three separate containers running simultaneously, each with their own CPU, memory, and resources. Flyte seamlessly bridges the gap between Python's concurrency model and distributed parallel computing, allowing for massive scalability while maintaining the familiar async/await programming model.
+Instead of three coroutines sharing one CPU, you get three separate containers running simultaneously, each with their own CPU, memory, and resources. Flyte bridges the gap between Python's concurrency model and distributed parallel computing, allowing for massive scalability while maintaining the familiar async/await programming model.
 
 ## Iterative fanout: recursive feature elimination
 
-Fanout isn't limited to a single parallel burst—you can fan out **repeatedly**, using the results of one round to shape the next.
+Fanout isn't limited to a single parallel burst; you can fan out **repeatedly**, using the results of one round to shape the next.
 A good real-world example is [recursive feature elimination (RFE)](https://github.com/flyteorg/flyte-sdk/blob/main/examples/ml/rfe.py), a feature-selection technique that repeatedly trains a model with one candidate feature held out, drops the feature whose removal least hurts the score, and repeats until a single feature remains.
 Every iteration is itself a fanout: for each remaining feature, a `train` action runs in parallel with that feature dropped, scored by cross-validation.
 

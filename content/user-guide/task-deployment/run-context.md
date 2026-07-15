@@ -6,12 +6,12 @@ variants: +flyte +union
 
 # Run context
 
-Every Flyte run has a **run context** — a set of invocation-time parameters that control where the run executes, where its outputs are stored, how caching behaves, and more.
+Every Flyte run has a **run context**: a set of invocation-time parameters that control where the run executes, where its outputs are stored, how caching behaves, and more.
 
 There are two sides to run context:
 
-- **Write side**: `flyte.with_runcontext()` — set run parameters before the run starts (programmatic) or via CLI flags.
-- **Read side**: `flyte.ctx()` — access run parameters inside a running task.
+- **Write side**: `flyte.with_runcontext()` sets run parameters before the run starts (programmatic) or via CLI flags.
+- **Read side**: `flyte.ctx()` accesses run parameters inside a running task.
 
 ## Configuring a run with `flyte.with_runcontext()`
 
@@ -32,6 +32,13 @@ All parameters are optional. Unset parameters inherit from the configuration fil
 | `version` | `str` | *from code bundle* | Version string for the ephemeral task deployment. |
 | `queue` | `str` | *from config* | Cluster queue to schedule tasks on. |
 | `interruptible` | `bool` | *per-task setting* | Override the interruptible setting for all tasks in the run. `True` allows spot/preemptible instances; `False` forces non-interruptible instances. |
+
+{{< variant union >}}
+{{< markdown >}}
+> [!NOTE]
+> `with_runcontext()` also accepts a `debug` parameter (`bool`, default `False`): launch the run in debug mode, starting a browser-based VS Code session on the task pod so you can step through the task interactively. See [Debug a run](./debug-runs).
+{{< /markdown >}}
+{{< /variant >}}
 
 ### Storage
 

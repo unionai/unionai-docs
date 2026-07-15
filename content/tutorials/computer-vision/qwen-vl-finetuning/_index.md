@@ -10,7 +10,7 @@ Large vision-language models like Qwen2.5-VL are remarkably capable out of the b
 
 Usually, no. The **frozen backbone pattern** is a practical alternative: keep all pretrained weights frozen and train only a small, task-specific adapter inserted before the vision encoder. The adapter learns to transform its input in a way that makes the frozen model perform well on your task without touching the underlying billions of parameters. The result is faster training, lower memory pressure, and a much smaller set of weights to store and version.
 
-This tutorial makes that pattern concrete. We take a partially-occluded image classification task — CIFAR-10 images with random black rectangles covering 22–45% of the frame — and train a tiny Conv2d adapter to "see through" the occlusion before the frozen VLM processes it. The adapter has approximately **10,500 trainable parameters**. The backbone has 3 billion.
+This tutorial makes that pattern concrete. We take a partially-occluded image classification task (CIFAR-10 images with random black rectangles covering 22 to 45% of the frame) and train a tiny Conv2d adapter to "see through" the occlusion before the frozen VLM processes it. The adapter has approximately **10,500 trainable parameters**. The backbone has 3 billion.
 
 The machine learning is interesting, but the real focus here is on shipping a production-grade training pipeline:
 
@@ -54,7 +54,7 @@ With images defined, each task gets its own resource declaration:
 
 A few things worth noting here:
 
-- **`Elastic(nnodes=2, nproc_per_node=4)`**: Flyte's integration with PyTorch's elastic launch. It handles process spawning (one process per GPU), rank assignment, and distributed environment setup — master address, world size, rendezvous — without any shell scripting or manual `torchrun` invocations.
+- **`Elastic(nnodes=2, nproc_per_node=4)`**: Flyte's integration with PyTorch's elastic launch. It handles process spawning (one process per GPU), rank assignment, and distributed environment setup (master address, world size, rendezvous) without any shell scripting or manual `torchrun` invocations.
 - **`shm="16Gi"`**: Shared memory is required for NCCL inter-GPU communication on the same node. Without it, you'll see cryptic errors from the communication library when training starts.
 - **`cache="auto"`**: The dataset preparation task is cached by input hash. Running the pipeline twice with the same hyperparameters skips it entirely on the second run.
 - **`depends_on`**: The driver task declares that each worker image must finish building before it starts, ensuring containers are ready before the driver begins orchestrating.
@@ -72,7 +72,7 @@ The dataset task handles everything: downloading CIFAR-10, generating occlusions
 
 {{< code file="/unionai-examples/v2/tutorials/qwen_vl_frozen_backbone_finetuning/data.py" fragment="prepare-dataset-task" lang="python" >}}
 
-Each image gets a randomly-placed black rectangle. The occlusion covers 22–42% of the image area during training and 28–45% during evaluation. The occlusion is deliberately harder at eval time to test how robust the adapter is. The bounding box coordinates are written into each manifest record alongside the image path and ground-truth label, so the training task can reconstruct the binary occlusion mask as the adapter's fourth input channel.
+Each image gets a randomly-placed black rectangle. The occlusion covers 22 to 42% of the image area during training and 28 to 45% during evaluation. The occlusion is deliberately harder at eval time to test how robust the adapter is. The bounding box coordinates are written into each manifest record alongside the image path and ground-truth label, so the training task can reconstruct the binary occlusion mask as the adapter's fourth input channel.
 
 Two Flyte primitives handle data persistence without any manual storage management:
 

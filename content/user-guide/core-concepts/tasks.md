@@ -9,7 +9,7 @@ variants: +flyte +union
 A task is a Python function that runs remotely in a container. You create tasks by decorating functions with `@env.task`.
 
 {{< note >}}
-In Flyte 1, tasks and workflows were defined with separate `@task`, `@workflow`, and `@dynamic` decorators. Flyte 2 uses a single `@env.task` decorator off a `flyte.TaskEnvironment` — everything is a task.
+In Flyte 1, tasks and workflows were defined with separate `@task`, `@workflow`, and `@dynamic` decorators. Flyte 2 uses a single `@env.task` decorator off a `flyte.TaskEnvironment`: everything is a task.
 {{< /note >}}
 
 ## Defining a task

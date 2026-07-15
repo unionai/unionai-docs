@@ -120,7 +120,7 @@ aws ecr create-repository \
   --image-scanning-configuration scanOnPush=true
 ```
 
-Note the repository URI from the output (e.g. `<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/${ECR_REPO_NAME}`) — you will reference it when configuring IAM permissions below.
+Note the repository URI from the output (e.g. `<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/${ECR_REPO_NAME}`). You will reference it when configuring IAM permissions below.
 
 ## IAM
 

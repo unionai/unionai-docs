@@ -16,7 +16,7 @@ In Flyte 1 the runtime context was accessed with `current_context()` (the `flyte
 
 ## Overview
 
-Custom context is an implicit key–value configuration map that is automatically available to tasks during execution. It is stored in the blob store of your Union/Flyte instance together with the task’s inputs, making it available across tasks without needing to pass it explicitly.
+Custom context is an implicit key-value configuration map that is automatically available to tasks during execution. It is stored in the blob store of your Union/Flyte instance together with the task’s inputs, making it available across tasks without needing to pass it explicitly.
 
 You can access it in a Flyte task via:
 
@@ -54,8 +54,8 @@ It is the cleanest mechanism when you need something available everywhere, but n
 
 There are two ways to set custom context for a Flyte run:
 
-1. Set it once for the entire run when you launch (`with_runcontext`) — this establishes the base context for the execution
-2. Set or override it inside task code using `flyte.custom_context(...)` context manager — this changes the active context for that task block and any nested tasks called from it
+1. Set it once for the entire run when you launch (`with_runcontext`): this establishes the base context for the execution
+2. Set or override it inside task code using `flyte.custom_context(...)` context manager: this changes the active context for that task block and any nested tasks called from it
 
 Both are legitimate and complementary. The important behavioral rules to understand are:
 
