@@ -20,8 +20,8 @@ backend components into one process:
 | Runs service | Accepts and stores run/task/workflow requests; owns the database. |
 | Executor | Reconciles task runs onto Kubernetes. |
 | Data proxy | Issues signed URLs for uploading and downloading data to the object store. |
-| App service | Manages apps — long-running serving deployments — and their lifecycle. |
-| Action service | Manages actions — short-lived task runs — and their lifecycle. |
+| App service | Manages apps (long-running serving deployments) and their lifecycle. |
+| Action service | Manages actions (short-lived task runs) and their lifecycle. |
 | Cache service | Manages the cache for task runs and actions. |
 
 At a high level, clients reach Flyte through a single HTTP ingress that fronts the console and the Flyte binary. The binary bundles the backend services into one process, reconciles task pods onto Kubernetes, and depends on an external database and object store:
@@ -62,14 +62,14 @@ flowchart TB
 
 A second image serves the web **console** as a static single-page application. It is
 deployed as its own Deployment and Service but has no backend configuration of its
-own — it talks to the Flyte API on the same origin (same ingress host) and is served
+own. It talks to the Flyte API on the same origin (same ingress host) and is served
 under a base path (default `/v2`, configurable via `console.basePath`).
 
 ### Networking
 
 Flyte clients (the SDK and CLI) speak [buf Connect](https://connectrpc.com/) **over
 HTTP**, so a **single HTTP ingress** serves the console, the API, and the
-auth-discovery endpoints — there is no separate gRPC port to expose. The single
+auth-discovery endpoints. There is no separate gRPC port to expose. The single
 ingress routes, by path, to two backends:
 
 - **Console Service**: `console.basePath` (default `/v2`, and `/v2/*`)
@@ -88,7 +88,7 @@ infrastructure they depend on. Provision these before installing, regardless of 
 ### Kubernetes cluster
 
 Use a [supported Kubernetes version](https://kubernetes.io/releases/version-skew-policy/#supported-versions).
-Flyte does not constrain the provider or how you stand the cluster up — managed
+Flyte does not constrain the provider or how you stand the cluster up: managed
 offerings (EKS, GKE, AKS), self-managed clusters, and on-prem all work.
 
 ### Relational database
@@ -110,7 +110,7 @@ and the identity Flyte runs as needs these minimum permissions on it:
 - `ListBucket`
 - `DeleteObject`
 
-Configure it as `metadataContainer` — Flyte stores everything (metadata, task
+Configure it as `metadataContainer`. Flyte stores everything (metadata, task
 inputs/outputs, and uploads) in that one bucket.
 
 ## Optional dependencies
@@ -123,7 +123,7 @@ To expose Flyte beyond `kubectl port-forward`, you need an **ingress controller*
 installed in the cluster: the chart creates a standard Kubernetes `Ingress` resource,
 but a controller has to reconcile it into an actual load balancer.
 
-On a managed cloud you don't need to run your own controller — each cloud has a native
+On a managed cloud you don't need to run your own controller. Each cloud has a native
 one that reconciles the `Ingress` and provisions the cloud's own load balancer:
 
 | Environment | Ingress controller | Provisions |
@@ -147,7 +147,7 @@ referenced from the Ingress.
 ## Container images
 
 The chart deploys two images, configurable under `deployment.image` and
-`console.image`. You normally don't need to set these — the chart ships with working
+`console.image`. You normally don't need to set these; the chart ships with working
 defaults:
 
 | Image | Default repository |

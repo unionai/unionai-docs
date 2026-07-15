@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Notebooks
 
-Flyte is designed to work seamlessly with Jupyter notebooks, allowing you to write and execute workflows directly within a notebook environment.
+Flyte is designed to work with Jupyter notebooks, allowing you to write and execute workflows directly within a notebook environment.
 
 ## Iterating on and running a workflow
 
@@ -42,6 +42,6 @@ Similarly, you can download the following notebook file and open it in your favo
 
 In this example we use the `flyte.remote` package to list existing runs, access them, and download their details and logs.
 
-For a comprehensive guide on working with runs, actions, inputs, and outputs, see [Interact with runs and actions](../task-deployment/interacting-with-runs).
+For a guide on working with runs, actions, inputs, and outputs, see [Interact with runs and actions](../task-deployment/interacting-with-runs).
 
 

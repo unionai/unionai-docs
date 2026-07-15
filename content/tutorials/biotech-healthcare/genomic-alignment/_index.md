@@ -9,7 +9,7 @@ variants: +flyte +union
 > [!NOTE]
 > Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/genomic_alignment).
 
-This tutorial builds a bioinformatics pipeline that aligns raw sequencing reads to a reference genome. The workflow downloads a reference genome and paired-end sequencing data, performs quality filtering, builds a reference index, and aligns the filtered reads with the [Bowtie 2](https://bowtie-bio.sourceforge.net/bowtie2/index.shtml) aligner — running each sample in parallel.
+This tutorial builds a bioinformatics pipeline that aligns raw sequencing reads to a reference genome. The workflow downloads a reference genome and paired-end sequencing data, performs quality filtering, builds a reference index, and aligns the filtered reads with the [Bowtie 2](https://bowtie-bio.sourceforge.net/bowtie2/index.shtml) aligner, running each sample in parallel.
 
 It's a good showcase of how Flyte handles real bioinformatics workloads:
 
@@ -81,7 +81,7 @@ The top-level task fetches the assets, filters every sample in parallel, builds 
 
 ## Run the workflow
 
-This example has no secrets or external API keys — it pulls public test data from GitHub.
+This example has no secrets or external API keys; it pulls public test data from GitHub.
 
 From the [example directory](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/genomic_alignment), run it as a `uv` script:
 

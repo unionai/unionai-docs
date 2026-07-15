@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Pod templates
 
-Flyte is built on Kubernetes and leverages its powerful container orchestration capabilities. A Kubernetes [pod](https://kubernetes.io/docs/concepts/workloads/pods/) is a group of one or more containers that share storage and network resources. While Flyte automatically runs your task code in a container, pod templates let you customize the entire pod specification for advanced use cases.
+Flyte is built on Kubernetes and uses its powerful container orchestration capabilities. A Kubernetes [pod](https://kubernetes.io/docs/concepts/workloads/pods/) is a group of one or more containers that share storage and network resources. While Flyte automatically runs your task code in a container, pod templates let you customize the entire pod specification for advanced use cases.
 
 The `pod_template` parameter in `TaskEnvironment` allows you to:
 
@@ -24,7 +24,7 @@ When you define a pod template:
 1. **Primary container**: Flyte automatically injects your task code into the container specified by `primary_container_name` (default: `"primary"`)
 2. **Automatic monitoring**: Flyte watches the primary container and exits the entire pod when it completes
 3. **Image handling**: The image for your task environment is built automatically by Flyte; images for sidecar containers must be provided by you
-4. **Local execution**: When running locally, only the task code executes—additional containers are not started
+4. **Local execution**: When running locally, only the task code executes; additional containers are not started
 
 ## Requirements
 

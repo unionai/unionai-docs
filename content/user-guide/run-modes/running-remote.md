@@ -1,12 +1,12 @@
 ---
 title: Run on a remote cluster
 weight: 6
-variants: +union -flyte
+variants: +flyte +union
 ---
 
 # Run on a remote cluster
 
-This guide covers setting up your local development environment and configuring the `flyte` CLI and SDK to connect to your Union/Flyte instance.
+This guide covers setting up your local development environment and configuring the `flyte` CLI and SDK to connect to your {{< key product_name >}} instance.
 
 {{< note >}}
 Want to try Flyte without installing anything? [Try Flyte 2 in your browser](https://flyte2intro.apps.demo.hosted.unionai.cloud/).
@@ -15,8 +15,23 @@ Want to try Flyte without installing anything? [Try Flyte 2 in your browser](htt
 ## Prerequisites
 
 - **Python 3.10+**
-- **`uv`** — A fast Python package installer. See the [`uv` installation guide](https://docs.astral.sh/uv/getting-started/installation/).
-- Access to a Union/Flyte instance (URL and a project where you can run workflows)
+- **`uv`**: A fast Python package installer. See the [`uv` installation guide](https://docs.astral.sh/uv/getting-started/installation/).
+- Access to a {{< key product_name >}} instance (URL and a project where you can run workflows)
+
+{{< variant flyte >}}
+{{< markdown >}}
+> [!NOTE]
+> Don't have a Flyte cluster yet? See [Platform deployment](../../oss-deployment/_index)
+> to stand one up, or use the [Devbox](./running-devbox) to run a local cluster in Docker.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
+> [!NOTE]
+> Don't have a Union.ai instance yet? See [Platform deployment](../../deployment/_index)
+> to stand one up, or use the [Devbox](./running-devbox) to run a local cluster in Docker.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Install the flyte package
 
@@ -59,7 +74,8 @@ flyte create config \
     --endpoint my-org.my-company.com \
     --domain development \
     --project my-project \
-    --builder local
+    --builder local \
+    --registry ghcr.io/my-org
 ```
 {{< /markdown >}}
 {{< /variant >}}
@@ -87,11 +103,35 @@ admin:
   endpoint: dns:///my-org.my-company.com
 image:
   builder: local
+  registry: ghcr.io/my-org
 task:
   org: my-org
   domain: development
   project: my-project
 ```
+{{< /markdown >}}
+{{< /variant >}}
+
+> [!NOTE]
+> The registry (`--registry`, the `image.registry` config entry, or the `FLYTE_IMAGE_REGISTRY` environment variable) sets where **locally-built** images are pushed. It applies whenever the builder is `local`: always on Flyte OSS, and on Union if you opt out of remote builds. With `--builder remote` (the Union default) images are built on the cluster, so no registry is required, which is why the Union example above omits it. Setting the registry from config requires flyte 2.5.9 or later.
+
+{{< variant flyte >}}
+{{< markdown >}}
+### Set up local Docker
+
+The `--builder local` setting means container images are
+[built locally](../task-configuration/container-images) on your machine and pushed to a
+container registry that your Flyte cluster can pull from. You'll need Docker running and
+logged into that registry, for example:
+
+```bash
+docker login ghcr.io
+```
+
+Because you set `image.registry` in your config above, your `Image` definitions don't
+need a registry; the local build pushes there automatically. (Set `registry=` on an
+individual `Image` only to override it.) See
+[Image building](../task-configuration/container-images#image-building) for details.
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -107,6 +147,7 @@ flyte create config \
     --domain development \
     --project my-project \
     --builder remote \
+    --registry ghcr.io/my-org \
     --insecure \
     --output my-config.yaml \
     --force
@@ -123,22 +164,11 @@ flyte create config \
     --domain development \
     --project my-project \
     --builder local \
+    --registry ghcr.io/my-org \
     --insecure \
     --output my-config.yaml \
     --force
 ```
-
-### Set up local Docker
-
-Since Flyte OSS uses local image building, you'll need Docker running and logged into the GitHub registry:
-
-```bash
-docker login ghcr.io
-```
-
-> [!NOTE]
-> The `--builder local` option means images are [built locally](../task-configuration/container-images). Union instances can use `--builder remote` instead.
-
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -151,18 +181,19 @@ See the [CLI reference](../../api-reference/flyte-cli#flyte-create-config) for a
 {{< dropdown title="Config properties explained" icon="control_knobs" >}}
 {{< markdown >}}
 
-**`admin`** — Connection details for your Union/Flyte instance.
+**`admin`**: Connection details for your {{< key product_name >}} instance.
 
 - `endpoint`: URL with `dns:///` prefix. If your UI is at `https://my-org.my-company.com`, use `dns:///my-org.my-company.com`.
 - `insecure`: Set to `true` only for local instances without TLS.
 
-**`image`** — Docker image building configuration.
+**`image`**: Docker image building configuration.
 
 - `builder`: How container images are built.
   - `remote` (Union): Images built on Union's infrastructure.
   - `local` (Flyte OSS): Images built on your machine. Requires Docker. See [Image building](../task-configuration/container-images#image-building).
+- `registry`: Optional registry prefix to use for image builds. This is helpful when you want the SDK to push or pull images from a custom registry without changing your code. You can also set it with the `FLYTE_IMAGE_REGISTRY` environment variable.
 
-**`task`** — Default settings for task execution.
+**`task`**: Default settings for task execution.
 
 - `org`: Organization name (usually matches the first part of your endpoint URL).
 - `domain`: Environment separation (`development`, `staging`, `production`).

@@ -42,14 +42,14 @@ The `init_passthrough()` function configures the Flyte SDK to accept authenticat
 
 **Parameters:**
 
-- `endpoint`: **Required**. The Flyte control plane endpoint URL
+- `endpoint`: Optional. The Flyte control plane endpoint URL. When running inside a Flyte cluster, it is auto-configured from the injected environment, so you can omit it. Pass it explicitly when running outside a cluster (for example, a locally run webhook app), where it cannot be inferred.
 - `project`: Optional. Default project to use if not specified per request
 - `domain`: Optional. Default domain to use if not specified per request
 - `org`: Optional. Organization name
 - `insecure`: Optional. Whether to use an insecure connection (default: `False`)
 
-> [!IMPORTANT]
-> The `endpoint` parameter is required when using passthrough authentication. Unlike other authentication modes, passthrough cannot infer the endpoint from environment variables or config files since it needs explicit initialization.
+> [!NOTE]
+> When your app runs inside a Flyte cluster, `init_passthrough()` reads the endpoint from the injected environment automatically, so passing `endpoint` is not required. Provide it explicitly only when running outside a cluster, where the endpoint cannot be inferred.
 
 ### Passing authentication metadata
 
@@ -293,7 +293,7 @@ The task will execute with the permissions associated with the API key used in t
 
 ## Best practices
 
-1. **Always set an endpoint**: The `endpoint` parameter is required for `init_passthrough()`
+1. **Set an endpoint when running outside a cluster**: `init_passthrough()` auto-configures the `endpoint` from the injected environment when running inside a Flyte cluster; pass it explicitly (for example, from `FLYTE_ENDPOINT`) when running outside one
 
 2. **Use middleware for FastAPI**: The `FastAPIPassthroughAuthMiddleware` eliminates boilerplate and ensures consistent auth handling
 

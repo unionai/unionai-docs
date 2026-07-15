@@ -11,8 +11,8 @@ site_root: true
 
 # Flyte OSS
 
-Flyte is a free and open source platform that provides a full suite of powerful features for orchestrating AI workflows.
-Flyte empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
+Flyte is a free and open source platform that provides a full suite of features for orchestrating AI workflows.
+Flyte enables AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 > [!NOTE]
@@ -26,7 +26,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 # {{< key product_name >}}
 
-{{< key product_name >}} empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience. With {{< key product_name >}} your team can:
+{{< key product_name >}} enables AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience. With {{< key product_name >}} your team can:
 
 * Run complex AI workloads with performance, scale, and efficiency.
 * Achieve millisecond-level execution times with reusable containers.

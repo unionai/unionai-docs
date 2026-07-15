@@ -470,7 +470,7 @@ Remote tasks run in the **caller's project and domain** using the caller's compu
 
 ### Type system
 
-Remote tasks use Flyte's default types as inputs and outputs. Flyte's type system seamlessly translates data between tasks without requiring the original dependencies:
+Remote tasks use Flyte's default types as inputs and outputs. Flyte's type system translates data between tasks without requiring the original dependencies:
 
 | Remote Task Type | Flyte Type |
 |-------------------|------------|
@@ -479,7 +479,7 @@ Remote tasks use Flyte's default types as inputs and outputs. Flyte's type syste
 | Object store directories | `flyte.io.Dir` |
 | Pydantic models | Dictionary (Flyte creates a representation) |
 
-Any DataFrame type (pandas, polars, spark) automatically becomes `flyte.io.DataFrame`, allowing seamless data exchange between tasks using different DataFrame libraries. You can also write custom integrations or explore Flyte's plugin system for additional types.
+Any DataFrame type (pandas, polars, spark) automatically becomes `flyte.io.DataFrame`, allowing data exchange between tasks using different DataFrame libraries. You can also write custom integrations or explore Flyte's plugin system for additional types.
 
 For Pydantic models specifically, you don't need the exact model locally. Pass a dictionary as input, and Flyte will handle the translation.
 
@@ -735,7 +735,7 @@ flyte deploy orchestration_env/
 
 1. **Lazy error detection**: Because of lazy loading, errors about missing or invalid tasks only occur during invocation, not when calling `get()`. You'll receive a `flyte.errors.RemoteTaskNotFoundError` if the task doesn't exist and `flyte.errors.RemoteTaskUsageError` if it can't be invoked in the way you are passing either arguments or overrides.
 
-2. **Type fidelity**: While Flyte translates types seamlessly, you work with Flyte's representation of Pydantic models, not the exact original types
+2. **Type fidelity**: While Flyte translates types, you work with Flyte's representation of Pydantic models, not the exact original types
 
 3. **Deployment order**: Referenced tasks must be deployed before tasks that reference them can be invoked
 

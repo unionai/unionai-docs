@@ -16,7 +16,7 @@ This guide helps you understand and optimize the performance of your Flyte workf
 
 Before optimizing performance, it's important to understand how Flyte executes your workflows:
 
-- **[Data flow](./data-flow)**: Learn how data moves between tasks, including inline vs. reference data types, caching mechanisms, and storage configuration.
+- **[Data flow](./data-flow)**: Learn how data moves between tasks, including inline vs. raw (by-reference) data, caching mechanisms, and storage configuration.
 - **[Life of a run](./life-of-a-run)**: Understand what happens when you invoke `flyte.run()`, from code analysis and image building to task execution and state management.
 
 ## Performance optimization

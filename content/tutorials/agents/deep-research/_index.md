@@ -9,7 +9,7 @@ variants: +flyte +union
 > [!NOTE]
 > Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/deep_research_agent); based on work by [Together AI](https://github.com/togethercomputer/open_deep_research).
 
-This example demonstrates how to build an agentic workflow for deep research—a multi-step reasoning system that mirrors how a human researcher explores, analyzes, and synthesizes information from the web.
+This example demonstrates how to build an agentic workflow for deep research: a multi-step reasoning system that mirrors how a human researcher explores, analyzes, and synthesizes information from the web.
 
 Deep research refers to the iterative process of thoroughly investigating a topic: identifying relevant sources, evaluating their usefulness, refining the research direction, and ultimately producing a well-structured summary or report. It's a long-running task that requires the agent to reason over time, adapt its strategy, and chain multiple steps together, making it an ideal fit for an agentic architecture.
 
@@ -36,7 +36,7 @@ Flyte is uniquely well-suited for this kind of system. It provides:
 
 ![Result](../../../_static/images/tutorials/deep-research/result.gif)
 
-Throughout this guide, we'll show how to design this workflow using the Flyte SDK, and how to unlock the full potential of agentic development with tools you already know and trust.
+Throughout this guide, we'll show how to design this workflow using the Flyte SDK, and how to make the most of agentic development with tools you already know and trust.
 
 ## Setting up the environment
 

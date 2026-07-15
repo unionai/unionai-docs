@@ -29,7 +29,6 @@ The simplest possible case is a `TaskEnvironment` with only a `name` parameter, 
 This will run your task in the default container environment with default settings.
 
 But, of course, one of the key advantages of Flyte is the ability to control the software environment, hardware environment, and other execution parameters for each task, right in your Python code.
-In this section we will explore the various configuration options available for tasks in Flyte.
 
 ## Task configuration levels
 

@@ -8,7 +8,7 @@ weight: 1
 
 [Step 7 of the Kind deployment guide](_index#7-add-authentication-with-a-local-idp-optional)
 gates the console behind Traefik and oauth2-proxy, using [Dex](https://dexidp.io/)
-running **inside the same kind cluster** as the identity provider — so you can test the
+running **inside the same kind cluster** as the identity provider, so you can test the
 whole authentication flow with no cloud account and no real users. This page covers
 deploying Dex itself: do it after
 [installing Traefik](_index#install-the-ingress-controller) and before
@@ -16,7 +16,7 @@ deploying Dex itself: do it after
 
 > [!WARNING] For local testing only
 > Dex here uses in-memory storage and a static test password baked into its config.
-> It is an IdP stand-in for development — never use this configuration anywhere real.
+> It is an IdP stand-in for development. Never use this configuration anywhere real.
 
 ## The issuer-URL problem
 
@@ -30,7 +30,7 @@ everywhere it's seen.
 A service name like `dex.flyte.svc.cluster.local` isn't resolvable from your browser; a
 `localhost` URL isn't resolvable from inside the cluster. The fix is to serve Dex under
 the **same host as Flyte** (`flyte.local`) at a sub-path (`/dex`), and route to it
-through Traefik. One URL — `http://flyte.local/dex` — works from both sides.
+through Traefik. One URL, `http://flyte.local/dex`, works from both sides.
 
 ## Dex configuration
 
@@ -39,7 +39,7 @@ The issuer is the through-Traefik URL; the two static clients are oauth2-proxy
 `staticPasswords` gives you a login with no external user store.
 
 The Dex Helm chart renders whatever you pass under its `config` value into a Secret and
-mounts it as `config.yaml` — so write the configuration nested under a top-level
+mounts it as `config.yaml`, so write the configuration nested under a top-level
 `config:` key in a values file:
 
 ```yaml
@@ -86,7 +86,7 @@ config:
 > Dex validates the hash at startup and crashes (`CrashLoopBackOff`) with
 > `malformed bcrypt hash: hashedSecret too short to be a bcrypted password` if it
 > isn't a complete 60-character bcrypt string. The hash above is for `password` and
-> is known-good — but verify length 60 before pasting (`echo -n "$HASH" | wc -c`); a
+> is known-good, but verify length 60 before pasting (`echo -n "$HASH" | wc -c`); a
 > char lost in transit looks fine and crashes Dex. To use a different password:
 > ```bash
 > htpasswd -bnBC 10 "" 'your-password' | tr -d ':\n' | sed 's/^\$2y/\$2a/'
@@ -145,7 +145,7 @@ spec:
 kubectl apply -f dex-ingress.yaml
 ```
 
-Check discovery works through the host path — this is the URL oauth2-proxy will fetch:
+Check discovery works through the host path. This is the URL oauth2-proxy will fetch:
 
 ```bash
 # (with "127.0.0.1 flyte.local" in /etc/hosts and Traefik reachable on the node port)

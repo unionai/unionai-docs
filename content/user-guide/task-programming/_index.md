@@ -28,10 +28,14 @@ The task programming section covers key patterns for building effective Flyte wo
 
 **Execution patterns**
 - [**Fanout**](./fanout): Scale your workflows by running many tasks in parallel, perfect for processing large datasets or running hyperparameter sweeps.
+- [**Mapping over inputs**](./map): Apply the same task to every item of a list with `flyte.map`: in-order results, error handling, concurrency limits, and partials.
 - [**Controlling parallel execution**](./controlling-parallelism): Limit concurrent task executions using semaphores or `flyte.map` concurrency for rate-limited APIs, GPU quotas, and resource-constrained workflows.
-- [**External conditions**](./conditions): Pause a task until an external signal arrives — a human approval, a callback from an external service, or a value supplied at runtime.
+- [**Streaming map-reduce**](./streaming-map-reduce): Process fanout results as they complete with `asyncio.as_completed`, reducing in batches incrementally instead of waiting for every task to finish.
+- [**Task dependencies and ordering**](./task-dependencies): Replicate DAG-like behavior (sequencing, fan-out, fan-in, and fine-grained dependency-driven scheduling) using `asyncio` in Flyte 2's implicit dependency model.
+- [**Structured concurrency with anyio**](./structured-concurrency-anyio): Use `anyio` task groups as a top-level structured-concurrency alternative to raw `asyncio`, with automatic sibling cancellation when one task fails.
+- [**External conditions**](./conditions): Pause a task until an external signal arrives: a human approval, a callback from an external service, or a value supplied at runtime.
 - [**Grouping actions**](./grouping-actions): Organize related task executions into logical groups for better visualization and management in the UI.
-- [**Container tasks**](./container-tasks): Run arbitrary containers in any language without the Flyte SDK installed, using Flyte's copilot sidecar for seamless data flow.
+- [**Container tasks**](./container-tasks): Run arbitrary containers in any language without the Flyte SDK installed, using Flyte's copilot sidecar for data flow.
 - [**Remote tasks**](./remote-tasks): Use previously deployed tasks without importing their code or dependencies, enabling team collaboration and task reuse.
 - [**Pod templates**](../task-configuration/pod-templates): Extend tasks with Kubernetes pod templates to add sidecars, volume mounts, and advanced Kubernetes configurations.
 - [**Abort and cancel actions**](./abort-tasks): Stop in-progress actions automatically, programmatically, or manually via the CLI and UI.
@@ -43,17 +47,19 @@ The task programming section covers key patterns for building effective Flyte wo
 - [**Links**](./links): Add clickable URLs to tasks in the Flyte UI, connecting them to external tools like experiment trackers and monitoring dashboards.
 - [**Reports**](./reports): Generate custom HTML reports during task execution to display progress, results, and visualizations in the UI.
 - [**Traces**](./traces): Add fine-grained observability to helper functions within your tasks for better debugging and resumption capabilities.
-- [**Intra-task checkpoints**](./intra-task-checkpoints): Save in-progress state within a task — such as a training loop — so retries resume from the last checkpoint instead of starting over.
+- [**Intra-task checkpoints**](./intra-task-checkpoints): Save in-progress state within a task (such as a training loop) so retries resume from the last checkpoint instead of starting over.
 - [**Error handling**](./error-handling): Implement robust error recovery strategies, including automatic resource scaling and graceful failure handling.
 
 ## When to use these patterns
 
 These programming patterns become essential as your workflows grow in complexity:
 
-- Use **fanout** when you need to process multiple items concurrently or run parameter sweeps. Use **controlling parallel execution** when you need to limit how many run at the same time.
+- Use **fanout** when you need to process multiple items concurrently or run parameter sweeps.
+- Use **mapping over inputs** to apply the same task to every item of a list, and **controlling parallel execution** when you need to limit how many run at the same time.
+- Apply **streaming map-reduce** when map tasks have uneven durations or you want to reduce results in batches as they complete, rather than waiting for the entire fanout to finish.
 - Implement **error handling** for production workflows that need to recover from infrastructure failures.
 - Apply **grouping** to organize complex workflows with many task executions.
-- Leverage **files and directories** when working with large datasets that don't fit in memory.
+- Use **files and directories** when working with large datasets that don't fit in memory.
 - Use **DataFrames** to efficiently pass tabular data between tasks across different processing engines.
 - Choose **container tasks** when you need to run code in non-Python languages, use legacy containers, or execute AI-generated code in sandboxes.
 - Use **remote tasks** to reuse tasks deployed by other teams without managing their dependencies.

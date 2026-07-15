@@ -9,7 +9,7 @@ variants: +flyte +union
 > [!NOTE]
 > Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/support_resolution_agent).
 
-This example demonstrates how to build a customer-support and field-service resolution agent on Flyte. The agent resolves tickets that need current public information — return policies, weather advisories, product recalls, manufacturer specs — and drafts a customer-ready reply with sources a human agent can verify before sending.
+This example demonstrates how to build a customer-support and field-service resolution agent on Flyte. The agent resolves tickets that need current public information (return policies, weather advisories, product recalls, manufacturer specs) and drafts a customer-ready reply with sources a human agent can verify before sending.
 
 The [You.com Research API](https://you.com/docs/research/overview) grounds each ticket in fresh, citable sources. [Claude](https://docs.anthropic.com/) via [LiteLLM](https://docs.litellm.ai/) turns that research into a reply draft. With `research_effort="lite"`, the research step stays fast enough for human-in-the-loop support flows.
 
