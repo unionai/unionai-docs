@@ -11,7 +11,7 @@ from an external message queue (such as [AWS SQS](https://aws.amazon.com/sqs/)) 
 each message concurrently.
 Flyte 2 expresses this naturally by combining three building blocks you have already seen:
 
-- [**Async tasks**](./fanout) — the consumer loop is an `async def` task that awaits I/O against the queue.
+- **Async tasks** — the consumer loop is an `async def` task that awaits I/O against the queue.
 - [**Fanout**](./fanout) — each received message is dispatched to its own `process_message` action with `asyncio.create_task()`, so processing runs in parallel across the cluster.
 - [**Reusable containers**](../task-configuration/reusable-containers) — a `ReusePolicy` keeps a warm pool of replicas ready, so messages are processed without per-message container cold-start.
 
@@ -55,10 +55,23 @@ env = flyte.TaskEnvironment(
         name="flyte",
     ).with_pip_packages("unionai-reuse>=0.1.3"),
     reusable=flyte.ReusePolicy(
-        replicas=3,  # Minimum of 2 replicas to ensure no starvation of tasks
+        replicas=3,  # 1 for the consumer loop + 2 workers, so processing never starves
         idle_ttl=300,  # Idle time to keep the task environment alive
     ),
 )
+
+# The queue is passed as an ARN via the QUEUE_ARN environment variable.
+DEFAULT_QUEUE_ARN = os.getenv("QUEUE_ARN")
+
+
+def get_queue_url_from_arn(queue_arn: str) -> str:
+    """Convert an SQS ARN to a queue URL."""
+    parts = queue_arn.split(":")
+    region = parts[3]
+    account = parts[4]
+    queue_name = parts[5]
+
+    return f"https://sqs.{region}.amazonaws.com/{account}/{queue_name}"
 ```
 
 ### Process a single message
