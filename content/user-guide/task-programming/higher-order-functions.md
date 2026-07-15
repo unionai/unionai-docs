@@ -6,13 +6,13 @@ variants: +flyte +union
 
 # Higher-order functions
 
-A *higher-order function* is a function that takes other functions as arguments or returns them. Because Flyte 2 tasks execute as native Python and can be [passed as arguments](./other-features#passing-tasks-and-functions-as-arguments) like any other callable, you can write higher-order functions that operate on **tasks themselves** — reusable orchestration components that wrap a task with retry, fallback, batching, or fault-tolerance logic, without changing the task's business logic.
+A *higher-order function* is a function that takes other functions as arguments or returns them. Because Flyte 2 tasks execute as native Python and can be [passed as arguments](./other-features#passing-tasks-and-functions-as-arguments) like any other callable, you can write higher-order functions that operate on **tasks themselves**: reusable orchestration components that wrap a task with retry, fallback, batching, or fault-tolerance logic, without changing the task's business logic.
 
 This is possible because Flyte 2 workflows run as ordinary Python:
 
 - **Tasks are callables.** You can accept a task as a parameter and `await` it, `.override(...)` its resources, or hand it to `asyncio`.
 - **Arbitrary nesting.** A task can invoke other tasks at any depth, so an orchestration wrapper can drive a task from inside another task.
-- **Native control flow.** Loops, conditionals, and `try`/`except` work directly on task results — task outputs are plain Python objects, not promises — so a wrapper can inspect a result or catch an exception and react.
+- **Native control flow.** Loops, conditionals, and `try`/`except` work directly on task results (task outputs are plain Python objects, not promises), so a wrapper can inspect a result or catch an exception and react.
 
 > [!NOTE] Higher-order functions are plain functions, not tasks
 > The wrappers below are **not** decorated with `@env.task`. They are regular `async` Python functions that orchestrate tasks. You call them from inside a driver task (an `@env.task`), which is where the actual task invocations happen. Keep the reusable orchestration logic in a plain function so it can be applied to any task.
@@ -109,7 +109,7 @@ See [Error handling](./error-handling) for more on `flyte.errors.OOMError` and r
 
 ## Circuit breaker
 
-Run a task over many items in parallel, but stop early ("open the circuit") once failures exceed a threshold — so a systemic problem doesn't burn resources on every remaining item. It launches all invocations with `asyncio.create_task`, processes them as they complete, and cancels the rest when the limit is crossed.
+Run a task over many items in parallel, but stop early ("open the circuit") once failures exceed a threshold, so a systemic problem doesn't burn resources on every remaining item. It launches all invocations with `asyncio.create_task`, processes them as they complete, and cancels the rest when the limit is crossed.
 
 ```python
 import asyncio
@@ -191,4 +191,4 @@ For a first-class parallel-map primitive, see `flyte.map` in [Fanout](./fanout).
 
 ## Composing the patterns
 
-Because each wrapper is just a function that takes a task, you can layer them — for example, wrap a task in the OOM retrier and then hand *that* to the fallback runner — to build orchestration behavior out of small, reusable pieces without touching the underlying task code.
+Because each wrapper is just a function that takes a task, you can layer them (for example, wrap a task in the OOM retrier and then hand *that* to the fallback runner) to build orchestration behavior out of small, reusable pieces without touching the underlying task code.
