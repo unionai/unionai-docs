@@ -88,7 +88,7 @@ async def train(features: list[str], drop: str) -> float:
 ```
 
 The `rfe` driver task runs the elimination loop.
-Each round wraps its fanout in a [`flyte.group`](./grouping-actions) so the iterations appear as collapsible folders in the UI, and uses `asyncio.gather()` to evaluate every candidate feature in parallel:
+Each round wraps its fanout in a `flyte.group` context (see [Grouping actions](./grouping-actions)) so the iterations appear as collapsible folders in the UI, and uses `asyncio.gather()` to evaluate every candidate feature in parallel:
 
 ```python
 @worker.task
@@ -108,5 +108,5 @@ async def rfe():
 Because each `train` call becomes its own action, every iteration's candidate evaluations run as separate containers in true parallel, while grouping keeps the nested rounds organized in the run tree.
 
 {{< note >}}
-The full runnable example lives in the [Flyte SDK repository](https://github.com/flyteorg/flyte-sdk/blob/main/examples/ml/rfe.py). Run it with `uv run --prerelease=allow examples/ml/rfe.py`.
+The full runnable example lives in the [Flyte SDK repository](https://github.com/flyteorg/flyte-sdk/blob/main/examples/ml/rfe.py). From a local checkout of the `flyte-sdk` repository, run it with `uv run --prerelease=allow examples/ml/rfe.py` (the command uses a repo-relative path).
 {{< /note >}}
