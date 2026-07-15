@@ -144,7 +144,7 @@ class Molecule:
         self.name = name
         self.smiles = smiles
 
-class MoleculeRenderer:
+class MoleculeRenderer(Renderable):
     """A Renderable for the Molecule type."""
 
     def to_html(self, mol: Molecule) -> str:
