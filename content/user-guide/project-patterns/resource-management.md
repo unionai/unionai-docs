@@ -54,6 +54,21 @@ Verify with:
 uctl get cluster-resource-attribute -p <project> -d <domain>
 ```
 
+### GPU limits
+
+The `projectQuota*` attributes above set namespace CPU and memory quotas; there is no equivalent standard GPU quota key. GPU limits are enforced instead through the [settings](../core-concepts/settings) system, which resolves through the org → domain → project hierarchy:
+
+- **`task_resource.max.gpu`**: the maximum GPU per task pod, enforced as a hard ceiling: a per-task `flyte.Resources` GPU request above it is **capped to the maximum rather than rejected**. This is how you cap (or raise) the GPU ceiling for a domain or project.
+- **`task_resource.min.gpu`**: the default GPU request applied when a task doesn't specify one.
+
+Set them at the scope you want with `flyte edit settings`, then uncomment and edit the relevant key:
+
+```bash
+flyte edit settings --domain production
+```
+
+Unlike the CPU and memory quotas above, these are per-task limits rather than a namespace-wide aggregate. See [Settings](../core-concepts/settings) for the full key list and how inheritance and overrides work.
+
 ### Why quotas matter
 
 Without quotas, projects can starve each other for shared resources. Runs that exceed available capacity are still dispatched to the cluster, and pods sit pending while the execution shows as "running." Quotas turn that silent contention into an explicit, fail-fast signal teams can act on.
