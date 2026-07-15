@@ -20,7 +20,7 @@ Additional internal system roles exist for platform operations but are not user-
 
 ## Custom policies
 
-Custom policies bind roles (built-in or custom) to resources scoped at org-wide, domain, or project+domain level using composable YAML bindings managed with the `flyte` CLI (`flyte create policy` / `flyte create role`). This allows organizations to define fine-grained access policies that match their team structure and security requirements.
+Roles (built-in or custom) define sets of permitted **actions**; custom **policies** then bind those roles to resources — scoped org-wide, by domain, or by project+domain — using composable YAML **bindings**. Both are managed with the `flyte` CLI (`flyte create role` / `flyte create policy`). This allows organizations to define fine-grained access policies that match their team structure and security requirements.
 
 ## Enforcement
 
