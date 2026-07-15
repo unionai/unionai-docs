@@ -29,6 +29,7 @@ The task programming section covers key patterns for building effective Flyte wo
 **Execution patterns**
 - [**Fanout**](./fanout): Scale your workflows by running many tasks in parallel, perfect for processing large datasets or running hyperparameter sweeps.
 - [**Mapping over inputs**](./map): Apply the same task to every item of a list with `flyte.map`: in-order results, error handling, concurrency limits, and partials.
+- [**Consuming a message queue**](./consuming-a-message-queue): Pull messages from an external queue such as AWS SQS and fan out processing across a pool of reusable containers.
 - [**Controlling parallel execution**](./controlling-parallelism): Limit concurrent task executions using semaphores or `flyte.map` concurrency for rate-limited APIs, GPU quotas, and resource-constrained workflows.
 - [**Streaming map-reduce**](./streaming-map-reduce): Process fanout results as they complete with `asyncio.as_completed`, reducing in batches incrementally instead of waiting for every task to finish.
 - [**Task dependencies and ordering**](./task-dependencies): Replicate DAG-like behavior (sequencing, fan-out, fan-in, and fine-grained dependency-driven scheduling) using `asyncio` in Flyte 2's implicit dependency model.
