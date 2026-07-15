@@ -86,7 +86,7 @@ oci artifacts container-repository create \
   --is-public false
 ```
 
-Note the repository path (e.g. `${REGION}.ocir.io/<TENANCY_NAMESPACE>/union-dataplane/imagebuilder`) — you will reference it when configuring access below.
+Note the repository path (e.g. `${REGION}.ocir.io/<TENANCY_NAMESPACE>/union-dataplane/imagebuilder`). You will reference it when configuring access below.
 
 ## Identity & access
 
@@ -139,6 +139,6 @@ oci iam customer-secret-key create \
   --display-name union-dataplane-s3-compat
 ```
 
-> [!NOTE] The command output contains the secret key value. Save it immediately — it cannot be retrieved again.
+> [!NOTE] The command output contains the secret key value. Save it immediately; it cannot be retrieved again.
 
 You will configure these credentials in the generated values file during deployment (see step 3 in [Deploy the dataplane](../selfmanaged-oci/deploy-dataplane)).

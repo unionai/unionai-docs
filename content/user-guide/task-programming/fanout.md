@@ -6,12 +6,26 @@ variants: +flyte +union
 
 # Fanout
 
-Flyte is designed to scale effortlessly, allowing you to run workflows with large fanouts.
-When you need to execute many tasks in parallel—such as processing a large dataset or running hyperparameter sweeps—Flyte provides powerful patterns to implement these operations efficiently.
+Flyte is designed to scale, allowing you to run workflows with large fanouts.
+When you need to execute many tasks in parallel (such as processing a large dataset or running hyperparameter sweeps), Flyte provides powerful patterns to implement these operations efficiently.
 
 {{< note >}}
 In Flyte 1, mapping a task over many inputs used `map_task()` (the `flytekit.map_task` API). In Flyte 2, fan out with `asyncio.gather()` or `flyte.map()`.
 {{< /note >}}
+
+This page covers the general `asyncio.gather` fanout pattern. For applying the *same* task to every
+item of a list (the direct successor to Flyte 1's `map_task`), see [Mapping over inputs](./map).
+
+{{< variant union >}}
+{{< markdown >}}
+That page also covers concurrency limits, error handling, and use with reusable environments.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+That page also covers concurrency limits and error handling.
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< variant union >}}
 {{< markdown >}}
@@ -28,7 +42,7 @@ A "fanout" pattern occurs when you spawn multiple tasks concurrently.
 Each task runs in its own container and contributes an output that you later collect.
 The most common way to implement this is using the [`asyncio.gather`](https://docs.python.org/3/library/asyncio-task.html#asyncio.gather) function.
 
-In Flyte terminology, each individual task execution is called an "action"—this represents a specific invocation of a task with particular inputs. When you call a task multiple times in a loop, you create multiple actions.
+In Flyte terminology, each individual task execution is called an "action": this represents a specific invocation of a task with particular inputs. When you call a task multiple times in a loop, you create multiple actions.
 
 ## Example
 
@@ -64,4 +78,49 @@ This means that when you write:
 results = await asyncio.gather(fetch_data(1), fetch_data(2), fetch_data(3))
 ```
 
-Instead of three coroutines sharing one CPU, you get three separate containers running simultaneously, each with their own CPU, memory, and resources. Flyte seamlessly bridges the gap between Python's concurrency model and distributed parallel computing, allowing for massive scalability while maintaining the familiar async/await programming model.
+Instead of three coroutines sharing one CPU, you get three separate containers running simultaneously, each with their own CPU, memory, and resources. Flyte bridges the gap between Python's concurrency model and distributed parallel computing, allowing for massive scalability while maintaining the familiar async/await programming model.
+
+## Iterative fanout: recursive feature elimination
+
+Fanout isn't limited to a single parallel burst; you can fan out **repeatedly**, using the results of one round to shape the next.
+A good real-world example is [recursive feature elimination (RFE)](https://github.com/flyteorg/flyte-sdk/blob/main/examples/ml/rfe.py), a feature-selection technique that repeatedly trains a model with one candidate feature held out, drops the feature whose removal least hurts the score, and repeats until a single feature remains.
+Every iteration is itself a fanout: for each remaining feature, a `train` action runs in parallel with that feature dropped, scored by cross-validation.
+
+The `train` task evaluates the model with a single feature held out and returns its cross-validated score:
+
+```python
+@worker.task
+async def train(features: list[str], drop: str) -> float:
+    features.remove(drop)
+
+    X, y = fetch_california_housing(as_frame=True, return_X_y=True)
+    fold = KFold(n_splits=5, random_state=42, shuffle=True)
+    model = LinearRegression()
+
+    scores = cross_val_score(estimator=model, X=X[features], y=y, cv=fold, scoring="r2")
+    return float(scores.mean())
+```
+
+The `rfe` driver task runs the elimination loop.
+Each round wraps its fanout in a `flyte.group` context (see [Grouping actions](./grouping-actions)) so the iterations appear as collapsible folders in the UI, and uses `asyncio.gather()` to evaluate every candidate feature in parallel:
+
+```python
+@worker.task
+async def rfe():
+    x, _y = fetch_california_housing(as_frame=True, return_X_y=True)
+    features = list(x.columns)
+
+    for i in range(len(features) - 1):
+        with flyte.group(f"iteration-{i}"):
+            runs = {feature: train(list(features), drop=feature) for feature in features}
+            values = await asyncio.gather(*(runs[feature] for feature in runs))
+            scores = dict(zip(runs.keys(), values))
+            best = max(scores, key=scores.get)
+            features.remove(best)
+```
+
+Because each `train` call becomes its own action, every iteration's candidate evaluations run as separate containers in true parallel, while grouping keeps the nested rounds organized in the run tree.
+
+{{< note >}}
+The full runnable example lives in the [Flyte SDK repository](https://github.com/flyteorg/flyte-sdk/blob/main/examples/ml/rfe.py). From a local checkout of the `flyte-sdk` repository, run it with `uv run --prerelease=allow examples/ml/rfe.py` (the command uses a repo-relative path).
+{{< /note >}}

@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Intra-task checkpoints
 
-Long-running tasks — model training especially — can fail partway through: a spot
+Long-running tasks (model training especially) can fail partway through: a spot
 instance is reclaimed, a pod is evicted, an out-of-memory error kills the process.
 When the task is retried, it normally starts over from the beginning.
 
@@ -21,12 +21,12 @@ when checkpointing isn't configured) bound to the action's checkpoint location i
 
 - **Save**: `await checkpoint.save(...)` (async tasks) or `checkpoint.save_sync(...)`
   (sync tasks and synchronous framework callbacks). Accepts raw `bytes`, a file path,
-  or a directory path — a directory is stored as a single compressed archive.
+  or a directory path; a directory is stored as a single compressed archive.
 - **Load**: `await checkpoint.load()` or `checkpoint.load_sync()`. Returns a local
   `pathlib.Path` to the restored file or directory tree, or `None` when there is no
   previous checkpoint (i.e. on the first attempt).
 - `flyte.latest_checkpoint(root, glob_pattern="**/last.ckpt")` finds the newest checkpoint file under a restored
-  directory tree — useful for frameworks like PyTorch Lightning that write
+  directory tree, useful for frameworks like PyTorch Lightning that write
   `last.ckpt` files into a directory.
 
 Checkpoints only matter when the task can run more than once, so give the task
@@ -36,8 +36,8 @@ by the attempt before it.
 > [!NOTE] Checkpoints vs. caching vs. traces
 > - **Task caching** skips an entire task when it has already run with the same inputs.
 > - **[Traces](./traces)** checkpoint at the boundaries of helper functions called by a task.
-> - **Intra-task checkpoints** save state *within* a single task body — mid-loop,
->   mid-epoch — across retry attempts of the same action.
+> - **Intra-task checkpoints** save state *within* a single task body (mid-loop,
+>   mid-epoch) across retry attempts of the same action.
 
 ## Basic usage
 
@@ -65,7 +65,7 @@ The same pattern applies to real training loops, whatever the framework:
 
 1. **Load** the previous attempt's checkpoint at the start of the task; if one
    exists, restore the model/optimizer state and work out where to resume.
-2. **Save** a checkpoint at a regular interval — every epoch or every N steps —
+2. **Save** a checkpoint at a regular interval (every epoch or every N steps)
    as training progresses.
 
 Frameworks with their own checkpoint files (PyTorch Lightning, Hugging Face
@@ -98,7 +98,7 @@ Subclass it to mirror the checkpoint directory to Flyte after each epoch
 {{< code file="/unionai-examples/v2/user-guide/task-programming/intra-task-checkpoints/pytorch_lightning_checkpoint.py" fragment="callback" lang="python" >}}
 {{< markdown >}}
 In the task, restore the previous tree, pick the newest `last.ckpt` with
-`flyte.latest_checkpoint(restored_root, glob_pattern="**/last.ckpt")`, and hand it to `Trainer.fit(ckpt_path=...)` — Lightning
+`flyte.latest_checkpoint(restored_root, glob_pattern="**/last.ckpt")`, and hand it to `Trainer.fit(ckpt_path=...)`; Lightning
 restores the model, optimizer, and epoch from there:
 {{< /markdown >}}
 
@@ -157,7 +157,7 @@ environment requests one:
 > [!NOTE] Simulated failures in the runnable examples
 > The full example files for the basic, PyTorch, and scikit-learn cases inject a
 > failure at a regular interval (`failure_interval`) so you can watch the retries
-> resume from the checkpoint. In production code you would drop those lines — real
+> resume from the checkpoint. In production code you would drop those lines; real
 > failures (preemptions, OOMs, crashes) trigger the same resume path.
 
 ## How checkpoints are stored
@@ -166,7 +166,7 @@ Each action attempt gets a checkpoint prefix in the object store configured for
 your cluster. `flyte.Checkpoint.save` uploads a file as-is, stores a directory as
 a gzip-compressed tarball, and accepts raw `bytes` as a single blob.
 `flyte.Checkpoint.load` downloads the previous attempt's object into a local
-temporary workspace and returns the path — a restored directory tree, or the path
+temporary workspace and returns the path: a restored directory tree, or the path
 to the single restored file.
 
 Saving repeatedly overwrites the same checkpoint object, so the cost of frequent

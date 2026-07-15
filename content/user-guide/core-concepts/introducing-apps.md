@@ -116,6 +116,6 @@ You now understand the core building blocks of Flyte:
 - **Apps** are long-running services
 - **Runs** and **Actions** track executions
 
-Before diving deeper, check out [Key capabilities](./key-capabilities) for an overview of what Flyte can do—from parallelism and caching to LLM serving and error recovery.
+Before diving deeper, check out [Key capabilities](./key-capabilities) for an overview of what Flyte can do: from parallelism and caching to LLM serving and error recovery.
 
 Then head to [Basic project](./basic-project) to build a RAG application with an embedding pipeline and a Streamlit app.

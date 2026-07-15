@@ -55,7 +55,7 @@ The advantage of the unified `flyte.io.DataFrame` wrapper is that you can be exp
 
 ## Automatically convert between types
 
-You can leverage Flyte to automatically download and convert the DataFrame between types when needed:
+You can use Flyte to automatically download and convert the DataFrame between types when needed:
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="automatic" lang="python" >}}
 
@@ -79,7 +79,7 @@ Finally, we can define a `main` function to run the tasks defined above and a `_
 
 ## Polars DataFrames
 
-The `flyteplugins-polars` package extends Flyte's DataFrame support to `polars.DataFrame` and `polars.LazyFrame`. Install it alongside the core SDK and it registers automatically — no additional configuration required.
+The `flyteplugins-polars` package extends Flyte's DataFrame support to `polars.DataFrame` and `polars.LazyFrame`. Install it alongside the core SDK and it registers automatically. No additional configuration required.
 
 ```bash
 pip install flyteplugins-polars
@@ -108,3 +108,7 @@ The `collect()` call in `aggregate_by_department` is what triggers execution of 
 ### Run the example
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/dataframes/polars_dataframes.py" fragment="main" lang="python" >}}
+
+## See also
+
+To display a DataFrame as an HTML table in a task report, define a `flyte.types.Renderable` for it — see [Rendering a custom type](./reports#rendering-a-custom-type) on the Reports page.

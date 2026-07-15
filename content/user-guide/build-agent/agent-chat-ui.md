@@ -9,8 +9,8 @@ mermaid: true
 
 A useful way to interact with an agent is through a chat interface. Because {{< key product_name >}} can [host apps](../build-apps/_index) behind a URL, you can serve a chat UI for your agent with no separate infrastructure. There are two approaches:
 
-1. **`AgentChatAppEnvironment`** — the fastest path. Any agent that implements the `AgentProtocol` (including the built-in `Agent`, in tool-use or `code_mode`) gets a hosted chat shell, tool sidebar, and streaming for free.
-2. **A custom FastAPI app** — full control over the UI. Wrap the agent in a `FastAPIAppEnvironment` and serve your own HTML/CSS/JS.
+1. **`AgentChatAppEnvironment`**: the fastest path. Any agent that implements the `AgentProtocol` (including the built-in `Agent`, in tool-use or `code_mode`) gets a hosted chat shell, tool sidebar, and streaming for free.
+2. **A custom FastAPI app**: full control over the UI. Wrap the agent in a `FastAPIAppEnvironment` and serve your own HTML/CSS/JS.
 
 Both reuse the same agent object, so you can start with the built-in shell and graduate to a custom UI later.
 
@@ -108,7 +108,7 @@ if __name__ == "__main__":
     print(f"Deployed Chat Analytics Agent: {app_handle.url}")
 ```
 
-`CHAT_HTML` is the embedded front-end (a single HTML string with the chat markup, styles, and a small fetch-based client that POSTs to `/api/chat` and renders the returned charts and summary). `ALL_TOOLS` is the agent's tool registry. Keeping both in their own modules means adding a tool is the only change required — the agent auto-generates its system prompt from each tool's signature and docstring.
+`CHAT_HTML` is the embedded front-end (a single HTML string with the chat markup, styles, and a small fetch-based client that POSTs to `/api/chat` and renders the returned charts and summary). `ALL_TOOLS` is the agent's tool registry. Keeping both in their own modules means adding a tool is the only change required; the agent auto-generates its system prompt from each tool's signature and docstring.
 
 Run it locally during development, then deploy with one command:
 

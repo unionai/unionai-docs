@@ -23,12 +23,12 @@ See the sub-pages for detailed guides:
 
 All MCP app environments expose the same HTTP endpoints:
 
-- `GET /health` — Liveness/readiness check (`{"status": "healthy"}`)
-- `POST {mcp_mount_path}/mcp` or `{mcp_mount_path}/sse` — MCP protocol endpoint (default: `/mcp` for generic, `/flyte-mcp` for Flyte)
+- `GET /health`: Liveness/readiness check (`{"status": "healthy"}`)
+- `POST {mcp_mount_path}/mcp` or `{mcp_mount_path}/sse`: MCP protocol endpoint (default: `/mcp` for generic, `/flyte-mcp` for Flyte)
 
 ## Quickstart
 
-The fastest way to try Flyte MCP is locally — no deployment needed:
+The fastest way to try Flyte MCP is locally (no deployment needed):
 
 ```bash
 uvx --from "flyte[mcp]" flyte-mcp

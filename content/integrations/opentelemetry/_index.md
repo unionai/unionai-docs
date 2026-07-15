@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # OpenTelemetry
 
-[OpenTelemetry](https://opentelemetry.io/) (OTel) tracing in Flyte 2 is user-owned. Flyte exposes a context-propagation primitive — [`custom_context`](../../user-guide/task-programming/custom-context) — that lets you carry the W3C `traceparent` header (and any other tracing metadata) across task boundaries. You bring the rest of the OTel stack: tracer provider, span exporter, and any instrumentation libraries you need.
+[OpenTelemetry](https://opentelemetry.io/) (OTel) tracing in Flyte 2 is user-owned. Flyte exposes a context-propagation primitive, [`custom_context`](../../user-guide/task-programming/custom-context), that lets you carry the W3C `traceparent` header (and any other tracing metadata) across task boundaries. You bring the rest of the OTel stack: tracer provider, span exporter, and any instrumentation libraries you need.
 
 Unlike the other entries in this section, OpenTelemetry is not a Flyte plugin. It is a usage pattern built on top of `custom_context` plus the standard `opentelemetry-*` packages.
 
@@ -38,7 +38,7 @@ The same packages must also be importable in the driver process that calls `flyt
 
 ## Configure the tracer
 
-Initialize a tracer provider and exporter once at module import. The example below uses `ConsoleSpanExporter` for clarity — in production swap in an OTLP, Jaeger, or vendor-specific exporter that points at your collector.
+Initialize a tracer provider and exporter once at module import. The example below uses `ConsoleSpanExporter` for clarity; in production swap in an OTLP, Jaeger, or vendor-specific exporter that points at your collector.
 
 ```python
 from opentelemetry import trace
@@ -104,7 +104,7 @@ async def main(url: str) -> int:
             return await fetch(url)
 ```
 
-The pattern composes — every task that opens a span and calls another task repeats the `inject` + `flyte.custom_context(...)` step.
+The pattern composes: every task that opens a span and calls another task repeats the `inject` + `flyte.custom_context(...)` step.
 
 ## Reusable decorator
 
@@ -138,10 +138,10 @@ async def fetch(url: str) -> int:
 
 ## Choosing an exporter
 
-`ConsoleSpanExporter` only prints to stdout. To send spans to a real backend, replace it with the exporter that targets your collector — for example:
+`ConsoleSpanExporter` only prints to stdout. To send spans to a real backend, replace it with the exporter that targets your collector, for example:
 
 - **OTLP** (most collectors, including the OpenTelemetry Collector): `opentelemetry-exporter-otlp`
 - **Jaeger**: `opentelemetry-exporter-jaeger`
-- **Vendor exporters**: Datadog, Honeycomb, New Relic, Splunk, etc. — each ships its own pip package.
+- **Vendor exporters**: Datadog, Honeycomb, New Relic, Splunk, etc. Each ships its own pip package.
 
 The exporter, endpoint, and credentials are configured entirely in your task code; Flyte does not mediate that connection.
