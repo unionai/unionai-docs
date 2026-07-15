@@ -293,7 +293,7 @@ tasks = remote.Task.listall(project="flytesnacks", domain="development")
 Both methods work identically. The `init_from_api_key()` method is a convenience function specifically designed for API key authentication. If no `api_key` parameter is provided, it automatically reads from the `FLYTE_API_KEY` environment variable.
 
 > [!NOTE]
-> Use `flyte.init_from_api_key()` or `flyte.init(api_key=...)` for API key authentication — **not** `flyte.init_from_config()`. `init_from_config()` reads its auth settings from a `config.yaml` file, which has no API key field, so it cannot authenticate with an API key.
+> Use `flyte.init_from_api_key()` or `flyte.init(api_key=...)` for API key authentication, **not** `flyte.init_from_config()`. `init_from_config()` reads its auth settings from a `config.yaml` file, which has no API key field, so it cannot authenticate with an API key.
 
 > [!NOTE]
 > The API key is a base64-encoded string containing endpoint, client_id, client_secret, and org information. The SDK automatically decodes this and uses OAuth2 client credentials flow for authentication.
