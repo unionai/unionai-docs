@@ -191,7 +191,7 @@ from pathlib import Path
 from flyte import Image
 
 image = Image.from_dockerfile(
-    file=Path("Dockerfile"),
+    file=Path("Dockerfile").absolute(),
     registry="ghcr.io/my-org",
     name="my-image",
 )
@@ -220,13 +220,13 @@ The named references are supplied at initialization — either in your `config.y
 ```yaml
 image:
   image_refs:
-    custom-image: ghcr.io/flyteorg/flyte:py3.13-v2.0.0b52
+    custom-image: ghcr.io/flyteorg/flyte:py{python-version}-v{flyte_version}
 ```
 
 or through `flyte.init_from_config()`:
 
 ```python
-flyte.init_from_config(images=("custom-image=ghcr.io/flyteorg/flyte:py3.13-v2.0.0b52",))
+flyte.init_from_config(images=("custom-image=ghcr.io/flyteorg/flyte:py{python-version}-v{flyte_version}",))
 ```
 
 Calling `flyte.Image.from_ref_name()` with no argument references the image named `default`.
