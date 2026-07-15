@@ -4,11 +4,9 @@ weight: 1
 variants: -flyte +union
 ---
 
-# Installing the Union Terraform Provider
+# Installing the Union Terraform provider
 
-Documentation for installing and configuring the Union Terraform provider is coming soon.
-
-In the meantime, you can find the latest information about the provider in the [Terraform Registry](https://registry.terraform.io/providers/unionai/unionai/latest/docs).
+The Union Terraform provider is distributed through the [Terraform Registry](https://registry.terraform.io/providers/unionai/unionai/latest/docs). Terraform installs it automatically when you declare it in your configuration and run `terraform init`, so there is no separate download step. Add the provider block below, then run `terraform init` to fetch it.
 
 ## Quick start
 
@@ -19,7 +17,7 @@ terraform {
   required_providers {
     unionai = {
       source  = "unionai/unionai"
-      version = "~> 1.0"
+      version = "~> 0.2"
     }
   }
 }
@@ -29,7 +27,7 @@ provider "unionai" {
 }
 ```
 
-> **Security Note:** Never hardcode API keys in your Terraform files. See [Security Best Practices](./security) for recommended approaches to securely manage your API keys.
+> **Security note:** Never hardcode API keys in your Terraform files. See [Security best practices](./security) for recommended approaches to securely manage your API keys.
 
 ## Versioning
 

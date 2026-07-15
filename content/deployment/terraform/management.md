@@ -19,7 +19,7 @@ terraform {
   required_providers {
     unionai = {
       source  = "unionai/unionai"
-      version = "~> 1.0"
+      version = "~> 0.2"
     }
   }
 }
@@ -59,13 +59,13 @@ export UNIONAI_API_KEY="your-api-key"
 
 ### Generating an API key
 
-Create an API key using the Flyte CLI:
+Create an API key using the Union CLI:
 
 ```bash
-flyte create api-key --name "terraform-api-key"
+union create api-key admin --name "terraform-api-key"
 ```
 
-For more information on creating API keys, see the [Flyte CLI documentation](../../api-reference/flyte-cli#flyte-create-config).
+For more information on creating API keys, see the [Flyte CLI documentation](../../api-reference/flyte-cli#flyte-create-api-key).
 
 Save the generated key securely, as it will be used to authenticate all Terraform operations against your Union deployment.
 
@@ -106,8 +106,14 @@ Define custom roles for access control:
 resource "unionai_role" "example" {
   name        = "custom-role"
   description = "Custom role with specific permissions"
+  actions = [
+    "create_flyte_executions",
+    "view_flyte_inventory",
+  ]
 }
 ```
+
+The `actions` argument is required: it is the set of actions the role grants (for example, `create_flyte_executions`, `register_flyte_inventory`, `administer_project`).
 
 ### Policies
 
@@ -117,9 +123,16 @@ Create access policies that define permissions:
 resource "unionai_policy" "example" {
   name        = "project-access-policy"
   description = "Policy for project access"
-  # Policy configuration details
+
+  project {
+    id      = unionai_project.example.id
+    role_id = unionai_role.example.id
+    domains = ["development", "staging"]
+  }
 }
 ```
+
+A policy binds a role to a subject at a given scope. Use an `organization`, `project`, or `domain` block (each takes an `id` and a `role_id`); the `project` block also accepts an optional `domains` set.
 
 ### API keys
 
@@ -127,51 +140,57 @@ Generate and manage API keys programmatically:
 
 ```hcl
 resource "unionai_api_key" "example" {
-  name        = "automation-key"
-  description = "API key for CI/CD automation"
+  id = "automation-key"
 }
 ```
+
+The `id` is the only argument; it must be unique within your organization. The generated `secret` is a read-only, sensitive attribute stored in state, available only at creation time.
 
 ### OAuth applications
 
 Configure OAuth applications for external integrations:
 
 ```hcl
-resource "unionai_oauth_application" "example" {
-  name         = "external-app"
-  redirect_uri = "https://example.com/callback"
+resource "unionai_application" "example" {
+  client_id   = "external-app"
+  client_name = "External Application"
+
+  grant_types   = ["AUTHORIZATION_CODE"]
+  redirect_uris = ["https://example.com/callback"]
 }
 ```
 
+The required arguments are `client_id` and `client_name`. `redirect_uris` is a set of strings (not a single value). The client `secret` is a read-only, sensitive attribute available only at creation time.
+
 ### Access assignments
 
-Assign users and applications to resources with specific roles:
+Access is policy-based: a policy carries the role-to-scope binding, and an access resource assigns that policy to a user or an application. Each access resource takes just two arguments.
 
 ```hcl
+# Assign a policy to a user
 resource "unionai_user_access" "example" {
-  user_id    = unionai_user.example.id
-  project_id = unionai_project.example.id
-  role_id    = unionai_role.example.id
+  user_id   = unionai_user.example.id
+  policy_id = unionai_policy.example.id
 }
 
+# Assign a policy to an application
 resource "unionai_application_access" "example" {
-  application_id = unionai_oauth_application.example.id
-  project_id     = unionai_project.example.id
-  role_id        = unionai_role.example.id
+  app_id    = unionai_application.example.id
+  policy_id = unionai_policy.example.id
 }
 ```
 
 ## Available data sources
 
-Data sources allow you to query existing Union resources for use in your Terraform configuration.
+Data sources allow you to query existing Union resources for use in your Terraform configuration. Each is looked up by its `id`; attributes such as `name` and `email` are read-only outputs, not lookup keys.
 
 ### Projects
 
-Query existing projects:
+Query an existing project:
 
 ```hcl
 data "unionai_project" "existing" {
-  name = "existing-project"
+  id = "my-project-id"
 }
 ```
 
@@ -181,47 +200,47 @@ Look up user information:
 
 ```hcl
 data "unionai_user" "existing" {
-  email = "user@example.com"
+  id = "user-id"
 }
 ```
 
 ### Roles
 
-Reference existing roles:
+Reference an existing role:
 
 ```hcl
 data "unionai_role" "admin" {
-  name = "admin"
+  id = "admin-role-id"
 }
 ```
 
 ### Policies
 
-Query existing policies:
+Query an existing policy:
 
 ```hcl
 data "unionai_policy" "existing" {
-  name = "default-policy"
+  id = "policy-id"
 }
 ```
 
 ### API keys
 
-Reference existing API keys:
+Reference an existing API key:
 
 ```hcl
 data "unionai_api_key" "existing" {
-  name = "existing-key"
+  id = "api-key-id"
 }
 ```
 
 ### Applications
 
-Look up OAuth applications:
+Look up an OAuth application:
 
 ```hcl
 data "unionai_application" "existing" {
-  name = "existing-app"
+  id = "app-client-id"
 }
 ```
 
@@ -337,7 +356,7 @@ terraform {
   required_providers {
     unionai = {
       source  = "unionai/unionai"
-      version = "~> 1.0"
+      version = "~> 0.2"
     }
   }
 }
@@ -357,26 +376,39 @@ resource "unionai_project" "ml_pipeline" {
 resource "unionai_role" "ml_engineer" {
   name        = "ml-engineer"
   description = "Role for ML engineers"
+  actions = [
+    "create_flyte_executions",
+    "view_flyte_inventory",
+  ]
 }
 
 # Create a user
 resource "unionai_user" "data_scientist" {
-  email      = "data.scientist@example.com"
   first_name = "Jane"
   last_name  = "Smith"
+  email      = "data.scientist@example.com"
 }
 
-# Assign user to project with role
+# Bind the role to the project with a policy
+resource "unionai_policy" "ml_pipeline_access" {
+  name        = "ml-pipeline-access"
+  description = "Grant the ML engineer role on the ML pipeline project"
+
+  project {
+    id      = unionai_project.ml_pipeline.id
+    role_id = unionai_role.ml_engineer.id
+  }
+}
+
+# Assign the policy to the user
 resource "unionai_user_access" "scientist_access" {
-  user_id    = unionai_user.data_scientist.id
-  project_id = unionai_project.ml_pipeline.id
-  role_id    = unionai_role.ml_engineer.id
+  user_id   = unionai_user.data_scientist.id
+  policy_id = unionai_policy.ml_pipeline_access.id
 }
 
-# Create API key for automation
+# Create an API key for automation
 resource "unionai_api_key" "ci_cd" {
-  name        = "ci-cd-pipeline"
-  description = "API key for CI/CD automation"
+  id = "ci-cd-pipeline-key"
 }
 ```
 
@@ -389,7 +421,7 @@ resource "unionai_api_key" "ci_cd" {
 ## Requirements
 
 - **Terraform**: >= 1.0
-- **Union API Key**: Generated via Flyte CLI
+- **Union API key**: Generated via the Union CLI
 - **Go**: >= 1.24 (for development only)
 
 ## Support and contributions

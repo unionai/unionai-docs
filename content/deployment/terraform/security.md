@@ -1,5 +1,5 @@
 ---
-title: Security Best Practices
+title: Security best practices
 weight: 3
 variants: -flyte +union
 ---
