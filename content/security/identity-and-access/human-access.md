@@ -65,7 +65,7 @@ Customer-side support access:
 2. If support access has been granted, verify the RBAC binding:
 
    ```bash
-   uctl get policy
+   flyte get policy
    ```
 
    The Union.ai support user should appear with the scoped role and time limit configured by the customer.

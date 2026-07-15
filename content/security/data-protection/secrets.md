@@ -47,13 +47,13 @@ All four backends are available regardless of deployment model. The choice of ba
 1. Create a test secret:
 
    ```bash
-   uctl create secret --name test-secret --value "s3cr3t-value" --project myproject
+   flyte create secret --project myproject test-secret --value "s3cr3t-value"
    ```
 
 2. Attempt to read it back:
 
    ```bash
-   uctl get secret --name test-secret --project myproject
+   flyte get secret --project myproject test-secret
    ```
 
    The output should show name, scope, creation time, and cluster status. There should be **no value field** in the response.
