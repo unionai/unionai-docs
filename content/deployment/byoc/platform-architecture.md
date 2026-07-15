@@ -19,13 +19,13 @@ The control plane:
 
 ## Data plane
 
-All your workflow and task executions are performed in the data plane, which runs within your AWS or GCP account. Your data plane is a Kubernetes cluster provisioned by the control plane and then managed on an ongoing basis through a resident {{< key product_name >}} operator that runs with minimal required permissions (described in the following section).
+All your workflow and task executions are performed in the data plane, which runs within your cloud provider account. Your data plane is a Kubernetes cluster provisioned by the control plane and then managed on an ongoing basis through a resident {{< key product_name >}} operator that runs with minimal required permissions (described in the following section).
 
 {{< key product_name >}} operates one control plane for each supported region, which supports all data planes within that region. You can choose the region in which to locate your data plane. Currently, {{< key product_name >}} supports the `us-west`, `us-east`, `eu-west`, and `eu-central` regions, and more are being added.
 
 ### Data plane nodes
 
-Once the data plane is deployed in your AWS or GCP account, there are different kinds of nodes with different responsibilities running in your cluster. In {{< key product_name >}}, we distinguish between default nodes and worker nodes.
+Once the data plane is deployed in your cloud provider account, there are different kinds of nodes with different responsibilities running in your cluster. In {{< key product_name >}}, we distinguish between default nodes and worker nodes.
 
 Default nodes guarantee the basic operation of the data plane and are always running. Example services that run on these nodes include autoscaling (worker nodes), monitoring services, union operator, and many more.
 
