@@ -45,7 +45,7 @@ Hover any `h2`–`h6` to reveal its `#` anchor affordance.
 ### Body text and inline elements
 
 A standard paragraph mixing **bold text**, *italic text*, ***bold italic***,
-`inline code`, an [inline link](https://union.ai/docs/v2/union), and
+`inline code`, an [inline link](https://union.ai), and
 ~~strikethrough~~. Sentences wrap and flow at the site's default measure and
 line height. Inline API identifiers such as `flyte.init()` and `flyte.io.File`
 are auto-linked at runtime by the inline-code linker.
@@ -119,7 +119,7 @@ alert blockquote (preferred house style) and the `note` / `warning` shortcodes.
 
 > [!NOTE] This is a note
 > Body of the note. Supports **markdown**, `inline code`, and
-> [links](https://union.ai/docs/v2/union). It can span multiple paragraphs.
+> [links](https://union.ai). It can span multiple paragraphs.
 
 > [!WARNING] This is a warning
 > Use this for operations that need care — for example, an action that is
@@ -309,7 +309,7 @@ An external call-to-action button (opens in a new tab).
 ```
 
 {{< button-link text="Get started" variant="primary" target="https://union.ai" >}}
-{{< button-link text="Learn more" variant="default" target="https://union.ai/docs/v2/union" >}}
+{{< button-link text="Learn more" variant="default" target="https://union.ai" >}}
 
 ### Dropdown
 
