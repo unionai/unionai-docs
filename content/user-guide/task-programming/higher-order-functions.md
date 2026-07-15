@@ -91,9 +91,9 @@ async def retry_with_memory(
                 resources=flyte.Resources(cpu=cpu, memory=f"{current}Mi")
             )(*args, **kwargs)
         except flyte.errors.OOMError:
-            if current + increment_mi > max_memory_mi:
+            if current >= max_memory_mi:
                 break
-            current += increment_mi
+            current = min(current + increment_mi, max_memory_mi)
     raise RuntimeError(f"Task still OOMing at {max_memory_mi}Mi")
 ```
 
