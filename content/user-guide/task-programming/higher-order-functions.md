@@ -51,11 +51,13 @@ Call it from a driver task, passing the two tasks as arguments:
 
 ```python
 import flyte
+import flyte.errors
 
 env = flyte.TaskEnvironment("fallback")
 
 @env.task
 async def primary(x: int) -> int:
+    # Business logic that may fail, e.g. raise ValueError(...) on bad input.
     ...
 
 @env.task
@@ -64,8 +66,10 @@ async def backup(x: int) -> int:
 
 @env.task
 async def main(x: int) -> int:
-    return await run_with_fallback(primary, backup, x, fallback_exceptions=[ValueError])
+    return await run_with_fallback(primary, backup, x, fallback_exceptions=[flyte.errors.RuntimeUserError])
 ```
+
+Note the `fallback_exceptions` list holds `flyte.errors` types, not bare Python exceptions. An exception raised inside a task does not reach the parent as its original Python type: Flyte wraps it as a `flyte.errors` type (a `ValueError` raised in a task surfaces to the caller as a `flyte.errors.RuntimeUserError` whose `code` is `"ValueError"`). So `isinstance`/type-matching in a wrapper must target the `flyte.errors.*` hierarchy; matching on `ValueError` here would never fire and the fallback would never run. See [Error handling](./error-handling) for how failures propagate.
 
 ## Retry with increasing memory (OOM retrier)
 
@@ -100,6 +104,11 @@ async def retry_with_memory(
 Because the wrapper only takes the task and its arguments, it works with any task:
 
 ```python
+@env.task
+async def process(data: list[int]) -> int:
+    # Business logic that may run out of memory on large inputs.
+    return sum(data)
+
 @env.task
 async def main(data: list[int]) -> int:
     return await retry_with_memory(process, data, initial_memory_mi=500, max_memory_mi=8192)
