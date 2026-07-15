@@ -58,8 +58,8 @@ uctl get cluster-resource-attribute -p <project> -d <domain>
 
 The `projectQuota*` attributes above set namespace CPU and memory quotas; there is no equivalent standard GPU quota key. GPU limits are enforced instead through the [settings](../core-concepts/settings) system, which resolves through the org → domain → project hierarchy:
 
-- **`task_resource.max.gpu`** — the maximum GPU per task pod, enforced as a hard limit that a per-task `flyte.Resources` request cannot exceed. This is how you cap (or raise) the GPU ceiling for a domain or project.
-- **`task_resource.min.gpu`** — the default GPU request applied when a task doesn't specify one.
+- **`task_resource.max.gpu`**: the maximum GPU per task pod, enforced as a hard ceiling: a per-task `flyte.Resources` GPU request above it is **capped to the maximum rather than rejected**. This is how you cap (or raise) the GPU ceiling for a domain or project.
+- **`task_resource.min.gpu`**: the default GPU request applied when a task doesn't specify one.
 
 Set them at the scope you want with `flyte edit settings`, then uncomment and edit the relevant key:
 
