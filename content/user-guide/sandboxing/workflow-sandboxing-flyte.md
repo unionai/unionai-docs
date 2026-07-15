@@ -23,7 +23,7 @@ The result: LLMs generate the orchestration code (control flow, conditionals, lo
 
 ## How it works
 
-Your generated code runs inside one or more **Monty sandboxes** — lightweight Python interpreters embedded within a **worker container**. Each sandbox can execute pure Python (variables, loops, conditionals, function calls) but has no access to the filesystem, network, imports, or OS. A **bridge layer** acts as a hypervisor between the worker container and the sandboxes, handling opaque IO and routing callable tasks. When your code calls an external task, the bridge dispatches it — either as a method in the outer Python process or as a durable remote call through the Flyte controller (via the Queue Service):
+Your generated code runs inside one or more **Monty sandboxes**: lightweight Python interpreters embedded within a **worker container**. Each sandbox can execute pure Python (variables, loops, conditionals, function calls) but has no access to the filesystem, network, imports, or OS. A **bridge layer** acts as a hypervisor between the worker container and the sandboxes, handling opaque IO and routing callable tasks. When your code calls an external task, the bridge dispatches it, either as a method in the outer Python process or as a durable remote call through the Flyte controller (via the Queue Service):
 
 ```mermaid
 flowchart TB
@@ -48,14 +48,14 @@ flowchart TB
     QS -- "completion" --> bridge
 ```
 
-Each sandbox sees external tasks as opaque function calls. When your code hits one, Monty **pauses**, and the bridge layer dispatches the task — either directly in the outer Python process or as a remote durable call through the Flyte controller system (Queue Service). Once the call completes, Monty **resumes** with the result. Your code never knows the difference — it just looks like a regular function call that returns a value. Multiple Monty sandboxes can run within the same worker container, each isolated like a lightweight VM.
+Each sandbox sees external tasks as opaque function calls. When your code hits one, Monty **pauses**, and the bridge layer dispatches the task, either directly in the outer Python process or as a remote durable call through the Flyte controller system (Queue Service). Once the call completes, Monty **resumes** with the result. Your code never knows the difference: it just looks like a regular function call that returns a value. Multiple Monty sandboxes can run within the same worker container, each isolated like a lightweight VM.
 
 **Opaque IO types** like `File`, `Dir`, and `DataFrame` are managed by the bridge layer and pass through the sandbox without inspection. Your code can route them between tasks but cannot read or modify their contents.
 
 ## Example: sandboxed orchestrator
 
 Use `@env.sandbox.orchestrator` to define a sandboxed task that calls regular worker tasks.
-The orchestrator contains only pure Python control flow — all heavy computation runs in worker containers.
+The orchestrator contains only pure Python control flow; all heavy computation runs in worker containers.
 
 ```python
 import flyte
@@ -99,11 +99,11 @@ def pipeline(n: int) -> dict[str, int]:
 
 When `pipeline` runs, Monty executes the control flow in the sandbox. Each call to `fib`, `multiply`, and `add` pauses the sandbox, runs the worker task in a container, and resumes with the result.
 
-Both `def` and `async def` orchestrators are supported — Monty natively handles `await` expressions.
+Both `def` and `async def` orchestrators are supported; Monty natively handles `await` expressions.
 
 ## Example: dynamic code execution
 
-For cases where the code itself is generated at runtime — from templates, user input, or LLM output — use `orchestrator_from_str()` and `orchestrate_local()`.
+For cases where the code itself is generated at runtime (from templates, user input, or LLM output), use `orchestrator_from_str()` and `orchestrate_local()`.
 
 ### Reusable task from a code string
 
@@ -143,7 +143,7 @@ compute_pipeline = flyte.sandbox.orchestrator_from_str(
 
 ### One-shot local execution
 
-`orchestrate_local()` executes a code string and returns the result directly — no task template, no controller.
+`orchestrate_local()` executes a code string and returns the result directly: no task template, no controller.
 Use it for quick one-off computations.
 
 ```python
@@ -193,7 +193,7 @@ product_task = make_reducer("product")
 
 ## Building agents with programmatic tool calling
 
-The sandboxed orchestrator and `orchestrate_local()` are the foundation for building agents that use **programmatic tool calling** — systems where an LLM generates Python orchestration code, and the sandbox executes it with registered tools.
+The sandboxed orchestrator and `orchestrate_local()` are the foundation for building agents that use **programmatic tool calling**: systems where an LLM generates Python orchestration code, and the sandbox executes it with registered tools.
 
 Because `orchestrate_local()` accepts a plain code string and a list of tool functions, you can wire it into an LLM generate-execute-retry loop: the model writes code, the sandbox runs it, and on failure the error feeds back to the model for correction.
 
@@ -202,7 +202,7 @@ See [Programmatic tool calling for agents](./code-mode) for the full concept, ag
 ## Syntax restrictions
 
 Monty enforces strict syntax restrictions to guarantee sandbox safety.
-These restrictions are a feature, not a limitation — they ensure that sandboxed code is deterministic and side-effect free.
+These restrictions are a feature, not a limitation: they ensure that sandboxed code is deterministic and side-effect free.
 
 ### Allowed
 
@@ -231,7 +231,7 @@ These restrictions are a feature, not a limitation — they ensure that sandboxe
 | Subscript assignment (`d[k] = v`, `l[i] = v`) | Build dicts as literals; use `.append()` for lists |
 | Augmented assignment (`x += 1`) | Use `x = x + 1` |
 | `class` definitions | Use dicts or tuples |
-| `with` statements | Not needed — no resource management in sandbox |
+| `with` statements | Not needed: no resource management in sandbox |
 | `try`/`except` | Errors propagate to the controller |
 | Walrus operator (`:=`) | Use separate assignment |
 | `yield`/`yield from` | Not supported |
@@ -244,7 +244,7 @@ These restrictions are a feature, not a limitation — they ensure that sandboxe
 
 - **Primitive types**: `int`, `float`, `str`, `bool`, `bytes`, `None`
 - **Collection types**: `list`, `dict`, `tuple` (including generic forms like `list[int]`, `dict[str, float]`)
-- **Opaque IO handles**: `File`, `Dir`, `DataFrame` — pass-through only, cannot be inspected in the sandbox
+- **Opaque IO handles**: `File`, `Dir`, `DataFrame`; pass-through only, cannot be inspected in the sandbox
 - **Union types**: `Optional[T]` and `Union` of allowed types
 - **Not allowed**: Custom classes, dataclasses, Pydantic models, or any user-defined types
 
@@ -256,8 +256,8 @@ The sandboxed orchestrator provides security through restriction, not trust:
 - **No network access**: Cannot make HTTP requests, open sockets, or resolve DNS
 - **No OS access**: Cannot spawn processes, read environment variables, or access system resources
 - **No imports**: Cannot load any Python modules
-- **Opaque IO**: `File`, `Dir`, and `DataFrame` values pass through the sandbox without inspection — the sandbox can route them between tasks but cannot read their contents
+- **Opaque IO**: `File`, `Dir`, and `DataFrame` values pass through the sandbox without inspection; the sandbox can route them between tasks but cannot read their contents
 - **Type-checked boundaries**: Inputs and outputs are validated against declared types at the sandbox boundary
 - **Deterministic execution**: The same inputs always produce the same outputs (excluding external task results)
 
-The sandbox runs untrusted code safely because dangerous operations are not just discouraged — they are structurally impossible in the Monty runtime.
+The sandbox runs untrusted code safely because dangerous operations are not just discouraged: they are structurally impossible in the Monty runtime.

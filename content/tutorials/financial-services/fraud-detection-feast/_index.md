@@ -15,7 +15,7 @@ Flyte provides:
 
 - **Cached data preparation** for the Kaggle dataset download and feature engineering.
 - **Report-backed training** with confusion matrix and ROC-style metrics in the UI.
-- **Durable artifacts** — the trained model and Feast repo are returned as `flyte.io.File` and `flyte.io.Dir`.
+- **Durable artifacts**: the trained model and Feast repo are returned as `flyte.io.File` and `flyte.io.Dir`.
 
 ## Define the task environment
 

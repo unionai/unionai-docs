@@ -51,8 +51,8 @@ Each `Briefing` carries a thesis, recent developments, risks, watch items, and a
 
 The agent uses both You.com APIs in parallel for each company:
 
-- **Research API** (`https://api.you.com/v1/research`) — grounded, citation-backed analysis with configurable `research_effort` (`lite`, `standard`, `deep`, `exhaustive`). See the [Research API reference](https://you.com/docs/api-reference/research/v1-research).
-- **Search API** (`https://ydc-index.io/v1/search`) — fresh news headlines with `freshness` filtering. See the [Search API reference](https://you.com/docs/api-reference/search/v1-search).
+- **Research API** (`https://api.you.com/v1/research`): grounded, citation-backed analysis with configurable `research_effort` (`lite`, `standard`, `deep`, `exhaustive`). See the [Research API reference](https://you.com/docs/api-reference/research/v1-research).
+- **Search API** (`https://ydc-index.io/v1/search`): fresh news headlines with `freshness` filtering. See the [Search API reference](https://you.com/docs/api-reference/search/v1-search).
 
 {{< code file="/unionai-examples/v2/tutorials/financial_research_agent/main.py" fragment=you_apis lang=python >}}
 

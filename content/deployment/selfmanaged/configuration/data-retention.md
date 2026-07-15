@@ -7,7 +7,7 @@ description: Implications of object storage retention or lifecycle policies on t
 
 # Data retention policies
 
-The data plane uses an object store bucket (S3, GCS, or ABS) to hold the **raw data** of your workflows — files, directories, dataframes, models, and other large values offloaded from task inputs and outputs. Bucket-level retention and lifecycle policies (such as S3 lifecycle rules) on this bucket purge raw data and can break historical executions, caches, and trace-based recovery.
+The data plane uses an object store bucket (S3, GCS, or ABS) to hold the **raw data** of your workflows: files, directories, dataframes, models, and other large values offloaded from task inputs and outputs. Bucket-level retention and lifecycle policies (such as S3 lifecycle rules) on this bucket purge raw data and can break historical executions, caches, and trace-based recovery.
 
 ## Where metadata vs. raw data lives
 
@@ -17,7 +17,7 @@ It helps to be precise about what "metadata" means here, because the term is use
 
 - Task, trigger and app definitions (including their default input values).
 - Execution status, history, schedules, and audit trail.
-- Pointers (URIs) to each run's `inputs.pb` / `outputs.pb` — the database records *where* each task's inputs and outputs live, not the values themselves.
+- Pointers (URIs) to each run's `inputs.pb` / `outputs.pb`: the database records *where* each task's inputs and outputs live, not the values themselves.
 
 **Raw data lives in the data plane object-store bucket.** It includes:
 
@@ -27,7 +27,7 @@ It helps to be precise about what "metadata" means here, because the term is use
 - `Deck` data and artifact payloads.
 - [Trace](../../../user-guide/task-programming/traces) checkpoints.
 
-Every task's inputs and outputs are serialized to `inputs.pb` / `outputs.pb` in the data plane object-store bucket, and the database stores only a **pointer** (URI) to them. Within those files, small values (primitives, small dataclasses) are inlined *by value*, while values too large to inline — `flyte.io.File`, `flyte.io.DataFrame`, models, and similar — are offloaded to separate objects in the bucket and referenced by URI. Either way, the values themselves live in the data plane; the control plane holds only the pointer.
+Every task's inputs and outputs are serialized to `inputs.pb` / `outputs.pb` in the data plane object-store bucket, and the database stores only a **pointer** (URI) to them. Within those files, small values (primitives, small dataclasses) are inlined *by value*, while values too large to inline (`flyte.io.File`, `flyte.io.DataFrame`, models, and similar) are offloaded to separate objects in the bucket and referenced by URI. Either way, the values themselves live in the data plane; the control plane holds only the pointer.
 
 ## Impact of raw data loss
 
@@ -47,9 +47,9 @@ Retention on the raw-data bucket is a legitimate cost-management strategy as lon
 
 Be aware of the trade-offs in particular for:
 
-- **Cached task outputs** — purging the cached raw data invalidates the cache; affected tasks re-execute on the next call.
-- **Trace checkpoints** — purging prevents resume-from-checkpoint for executions whose checkpoints have aged out.
-- **Historical execution previews** — purged raw data will show as "resource not found" in the UI even though the DB still has the rest of the record.
+- **Cached task outputs**: purging the cached raw data invalidates the cache; affected tasks re-execute on the next call.
+- **Trace checkpoints**: purging prevents resume-from-checkpoint for executions whose checkpoints have aged out.
+- **Historical execution previews**: purged raw data will show as "resource not found" in the UI even though the DB still has the rest of the record.
 
 Data correctness is not silently violated: re-runs read from current raw data, and the DB record is the source of truth for what executed. You're trading off the ability to recover or inspect old offloaded values.
 
@@ -57,8 +57,8 @@ Data correctness is not silently violated: re-runs read from current raw data, a
 
 The {{< key product_name >}} data plane organizes execution data under a single configured storage prefix, with sub-prefixes per project, domain, run, and action. Two broad categories of object share this layout:
 
-- **Execution working files** — `inputs.pb` and `outputs.pb` per run/attempt, `Deck` HTML reports, and similar small per-execution artifacts. These are required for in-flight workflows to complete and for historical-execution input/output and `Deck` previews to render. Despite some legacy naming conventions, this is **not** {{< key product_name >}} metadata in the customer-facing sense — that lives in the control plane database (see [above](#where-metadata-vs-raw-data-lives)).
-- **Offloaded raw data** — `flyte.io.File` / `flyte.io.Dir` contents, `flyte.io.DataFrame` payloads, checkpoint data, and other values too large to inline. By default these land under the same configured storage prefix; they can be routed elsewhere per run via `flyte.with_runcontext(raw_data_path=...)` (see [Run context](../../../user-guide/task-deployment/run-context#storage)).
+- **Execution working files**: `inputs.pb` and `outputs.pb` per run/attempt, `Deck` HTML reports, and similar small per-execution artifacts. These are required for in-flight workflows to complete and for historical-execution input/output and `Deck` previews to render. Despite some legacy naming conventions, this is **not** {{< key product_name >}} metadata in the customer-facing sense; that lives in the control plane database (see [above](#where-metadata-vs-raw-data-lives)).
+- **Offloaded raw data**: `flyte.io.File` / `flyte.io.Dir` contents, `flyte.io.DataFrame` payloads, checkpoint data, and other values too large to inline. By default these land under the same configured storage prefix; they can be routed elsewhere per run via `flyte.with_runcontext(raw_data_path=...)` (see [Run context](../../../user-guide/task-deployment/run-context#storage)).
 
 When designing S3 lifecycle rules (or the GCS/ABS equivalent), **scope expiration to the offloaded raw-data subpaths** rather than applying a bucket-wide rule. The execution working files (`inputs.pb`, `outputs.pb`, Decks) must remain durable for in-flight executions to complete and for historical-execution previews to render. Typical patterns are rules scoped to domain/project prefixes, or to per-run raw-data paths that have been routed to dedicated buckets via `raw_data_path`.
 

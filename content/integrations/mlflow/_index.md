@@ -248,7 +248,7 @@ async def distributed_train():
     ...
 ```
 
-On non-rank-0 workers, no MLflow run is created and `get_mlflow_run()` returns `None`. The task function still executes normally — only the MLflow instrumentation is skipped.
+On non-rank-0 workers, no MLflow run is created and `get_mlflow_run()` returns `None`. The task function still executes normally; only the MLflow instrumentation is skipped.
 
 ![Distributed training](../../_static/images/integrations/mlflow/distributed_training.png)
 

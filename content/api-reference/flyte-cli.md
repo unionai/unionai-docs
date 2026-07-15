@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.5.8
+version: 2.5.9
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -396,6 +396,7 @@ If the file already exists, it will raise an error unless the `--force` option i
 | `-o` `--output` | `path` | `.flyte/config.yaml` | Path to the output directory where the configuration will be saved. Defaults to current directory. |
 | `--force` | `boolean` | `False` | Force overwrite of the configuration file if it already exists. |
 | `--image-builder` `--builder` | `choice` | `local` | Image builder to use for building images. Defaults to 'local'. |
+| `--registry` | `text` |  | Container registry to use as the base registry when building images (e.g. 'ghcr.io/my-org'). When set, this overrides the built-in default base registry. Equivalent to the 'image.registry' config entry or the FLYTE_IMAGE_REGISTRY environment variable. |
 | `--auth-type` | `choice` |  | Authentication type to use for the Flyte backend. Defaults to 'pkce'. |
 | `--local-persistence` | `boolean` | `False` | Enable SQLite persistence for local run metadata, allowing past runs to be browsed via 'flyte start tui'. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
@@ -2060,18 +2061,30 @@ Start a local Flyte devbox cluster.
 
 #### flyte start tui
 
-**`flyte start tui`**
+**`flyte start tui [OPTIONS]`**
 
-Launch TUI explore mode to browse past local runs. To use the TUI install `pip install flyte[tui]`
-TUI, allows you to explore all your local runs if you have persistence enabled.
+Launch the Flyte TUI. Install with ``pip install flyte[tui]``.
 
-Persistence can be enabled in 2 ways,
-1. By setting it in the config to record every local run
-```bash
-flyte create config --endpoint ...  --local-persistence
-```
-2. By passing it in flyte.init(local_persistence=True)
-This will record all `flyte.run` runs, that are local and are within the flyte.init being active.
+The mode is chosen from the resolved config:
+
+* Remote (config has an endpoint, or FLYTE_API_KEY is set): browse a remote
+  Flyte v2 cluster — projects, runs, actions, logs, tasks, apps, and triggers.
+  ``flyte start tui --config remote.yaml``
+* Local (no endpoint): explore past local runs recorded with persistence.
+  ``flyte start tui --config local.yaml``
+
+Local persistence can be enabled in 2 ways:
+
+1. In the config, to record every local run:
+   ``flyte create config --endpoint ... --local-persistence``
+2. Via ``flyte.init(local_persistence=True)``, recording ``flyte.run`` runs
+   that are local and within the active ``flyte.init``.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `-c` `--config` | `file` |  | Path to the Flyte configuration file. Defaults to ~/.flyte/config.yaml. |
+| `--poll-interval` | `float` | `2.0` | Seconds between run detail refreshes while browsing a remote run. Remote mode only. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte stop
 

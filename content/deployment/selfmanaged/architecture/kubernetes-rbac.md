@@ -7,7 +7,7 @@ variants: -flyte +union
 # Kubernetes access controls
 
 Union's data plane runs entirely within your Kubernetes cluster. This page documents the Kubernetes RBAC configuration
-applied by the https://github.com/unionai/helm-charts/tree/main/charts/dataplane — including service account configuration, 
+applied by the https://github.com/unionai/helm-charts/tree/main/charts/dataplane: including service account configuration, 
 namespace-scoped Roles, and cluster-wide ClusterRoles for each component.
 
 ## Service account
@@ -35,7 +35,7 @@ and usage collection are disabled.
 In low-privilege mode, the chart automatically:
 - Replaces ClusterRoles with namespace-scoped Roles
 - Limits resource sync, executor, and monitoring to the release namespace
-- Disables features that require cluster-wide access (e.g. ClusterResourceSync and OpenCost. Both require cluster-wide access to function — OpenCost to aggregate spend across all namespaces, and ClusterResourceSync to propagate configs and RBAC into user namespaces.)
+- Disables features that require cluster-wide access (e.g. ClusterResourceSync and OpenCost. Both require cluster-wide access to function: OpenCost to aggregate spend across all namespaces, and ClusterResourceSync to propagate configs and RBAC into user namespaces.)
 
 ## Namespace-scoped roles
 
@@ -62,7 +62,7 @@ In low-privilege mode, the chart automatically:
 
 - **Purpose**: Collects metrics from Kubernetes resources
 - **Access Pattern**: Read-only (`list`, `watch`) to numerous resources across multiple API groups
-- **Scope**: Comprehensive — covers core resources, workloads, networking, storage, and authentication
+- **Scope**: Comprehensive, covers core resources, workloads, networking, storage, and authentication
 
 ##### `prometheus-operator`
 - **Access**: Full control (`*`) over Prometheus monitoring resources

@@ -80,9 +80,9 @@ reuse_policy = flyte.ReusePolicy(
 
 ## Simple example
 
-Here is a simple, but complete, example of reuse with concurrency
+Here is a simple, but complete, example of reuse with concurrency.
 
-First, import the needed modules, set upf logging:
+First, import the needed modules and set up logging:
 
 {{< /markdown >}}
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/reusable-containers/reuse_concurrency.py" fragment="import" lang="python" >}}

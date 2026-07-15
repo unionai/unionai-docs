@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Resource management and multi-team scaling
 
-This guide covers the foundational primitives Union provides for multi-tenancy — projects, domains, quotas, task-level resources, RBAC, and secrets — and the patterns that work best as you scale to multiple teams.
+This guide covers the foundational primitives Union provides for multi-tenancy (projects, domains, quotas, task-level resources, RBAC, and secrets) and the patterns that work best as you scale to multiple teams.
 
 Teams that set these up well early avoid most of the noisy-neighbor, cache-bleed, and resource-starvation problems that surface later.
 
@@ -20,11 +20,11 @@ Every independent team or ML product should have its own Union project. Projects
 
 ### Domains are environments, not teams
 
-Domains are orthogonal to projects. They represent distinct environments — typically development, staging, and production — and enable dedicated configurations, permissions, secrets, cached execution history, and resource allocations for each environment.
+Domains are orthogonal to projects. They represent distinct environments (typically development, staging, and production) and enable dedicated configurations, permissions, secrets, cached execution history, and resource allocations for each environment.
 
 A production domain in particular ensures a clean slate, so cached executions from development don't produce unexpected behavior in production runs.
 
-A common pattern is to split clusters and networking across domains as well — for example, a dedicated production cluster with stricter network controls, separate from the cluster development and staging share. See [multi-cluster and multi-cloud](../../deployment/byoc/multi-cluster) for how this maps to underlying cloud accounts.
+A common pattern is to split clusters and networking across domains as well: for example, a dedicated production cluster with stricter network controls, separate from the cluster development and staging share. See [multi-cluster and multi-cloud](../../deployment/byoc/multi-cluster) for how this maps to underlying cloud accounts.
 
 ## Resource quotas
 
@@ -77,7 +77,7 @@ def my_task():
     ...
 ```
 
-If a task's resource request exceeds your project-domain quota, the execution fails immediately rather than queueing forever. That's the behavior you want — but it means teams should know what their quota is before sizing tasks. Coordinate with whoever owns quota configuration so requests stay within budget, or so the budget gets raised intentionally.
+If a task's resource request exceeds your project-domain quota, the execution fails immediately rather than queueing forever. That's the behavior you want, but it means teams should know what their quota is before sizing tasks. Coordinate with whoever owns quota configuration so requests stay within budget, or so the budget gets raised intentionally.
 
 ### Be explicit about ephemeral storage
 
@@ -90,7 +90,7 @@ By default, `disk` is unset, so no ephemeral-storage request or limit is applied
 Union splits access control into two concepts:
 
 - **Roles** are named sets of actions (for example, "can register workflows", "can launch executions"). They describe *what* a principal can do.
-- **Policies** bind roles to a scope — a specific project-domain pair, a whole domain (across all projects), a whole project (across all domains), or the entire organization. They describe *where* the role applies.
+- **Policies** bind roles to a scope: a specific project-domain pair, a whole domain (across all projects), a whole project (across all domains), or the entire organization. They describe *where* the role applies.
 
 This split means you don't have to define roles per project-domain pair. A single "Contributor" role can be bound by one policy to `team-alpha/development`, and by another policy to *every* `production` domain across the organization. Pick the binding scope that matches the access you actually want to grant.
 
@@ -103,7 +103,7 @@ See [user management](../user-management) for the full walkthrough on creating r
 
 ### Scope secrets as narrowly as possible
 
-Union supports secrets at the project-domain level, ensuring API keys, tokens, and other sensitive material are only accessible within the workflows that need them. Like RBAC, secrets can also be scoped more broadly when shared across projects or domains — but default to the narrowest scope that satisfies the workflows that need access.
+Union supports secrets at the project-domain level, ensuring API keys, tokens, and other sensitive material are only accessible within the workflows that need them. Like RBAC, secrets can also be scoped more broadly when shared across projects or domains, but default to the narrowest scope that satisfies the workflows that need access.
 
 ## Multi-team scaling patterns
 
@@ -128,7 +128,7 @@ This requires governance around versioning and backward compatibility, but it sc
 
 ### Use cluster assignment for multi-cluster deployments
 
-The cluster assignment matchable attribute pins matching executions to a specific Union cluster in multi-cluster deployments. Without an explicit assignment, cluster selection is random — fine for homogeneous setups, but a poor default once cluster heterogeneity exists (for example, GPU clusters alongside CPU-only clusters).
+The cluster assignment matchable attribute pins matching executions to a specific Union cluster in multi-cluster deployments. Without an explicit assignment, cluster selection is random: fine for homogeneous setups, but a poor default once cluster heterogeneity exists (for example, GPU clusters alongside CPU-only clusters).
 
 Set the assignment per project-domain with `uctl`:
 
