@@ -227,6 +227,11 @@ The UI and system have limits on the number of actions per run:
 - **Current limit**: 50k actions per run
 - **Future**: Higher limits will be supported (contact the Union team if needed)
 
+This ceiling counts the **total** actions in the run, summed across every map and fan-out. Note that
+per-map `concurrency` does **not** help here: it throttles how many actions run *at once*, not how
+many the run creates in total, so only batching reduces the count. For how the two controls compose,
+see [Per-map concurrency vs. the run-level action cap](../task-programming/controlling-parallelism#per-map-concurrency-vs-the-run-level-action-cap).
+
 **Example: Control fanout with batching**
 
 ```python
