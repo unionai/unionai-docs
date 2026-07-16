@@ -11,6 +11,8 @@ For comprehensive migration reference with detailed API mappings, parameter tabl
 An LLM-optimized bundle of the full migration reference is available at [`section.md`](../../../api-reference/migration/section.md).
 {{< /note >}}
 
+This section walks through the Flyte 1 workload patterns you already know — data ETL, model training, hyperparameter sweeps, batch inference — and their Flyte 2 equivalents. Every pattern is a complete, runnable v1↔v2 example pair in the [`unionai-examples`](https://github.com/unionai/unionai-examples/tree/main/v2/user-guide/migration/flyte-2) repository.
+
 ## Terminology and concept mapping
 
 Several Flyte 1 concepts were renamed or reshaped in Flyte 2. The table below maps the ones you'll meet most often, so you can recognize the Flyte 2 equivalent of a term you already know.
@@ -24,102 +26,60 @@ Several Flyte 1 concepts were renamed or reshaped in Flyte 2. The table below ma
 | `conditional()` | native `if` / `elif` / `else` | Branching is now ordinary Python control flow, not a DSL. |
 | `ImageSpec` | `flyte.Image` | Container image definition. |
 | `current_context()` | `flyte.ctx()` | Runtime context access. |
+| `FlyteFile` / `FlyteDirectory` | `flyte.io.File` / `flyte.io.Dir` | Offloaded file and directory references. |
+| `StructuredDataset` | `flyte.io.DataFrame` | Offloaded tabular data. |
 | `LaunchPlan` | `flyte.Trigger` | Scheduling and parameterized entry points. |
 | `CronSchedule` | `flyte.Cron` | Cron-based scheduling, used with a `flyte.Trigger`. |
 | Decks (`enable_deck=True`) | Reports (`report=True`) | Custom HTML rendered in the UI during/after a run. See [Reports](../../task-programming/reports). |
 
 For the full API-level mapping (every import, parameter, and signature change with side-by-side examples), see [Migration from Flyte 1](../../../api-reference/migration/_index) in the Reference section.
 
-You can migrate from Flyte 1 to Flyte 2 by following the steps below:
+## The two mechanical changes behind (almost) every migration
 
-### 1. Move task configuration to a `TaskEnvironment` object
+Most of a migration comes down to two moves:
 
-Instead of configuring the image, hardware resources, and so forth, directly in the task decorator. You configure it in `TaskEnvironment` object. For example:
+### 1. Move task configuration into a `TaskEnvironment`
 
-```python
-env = flyte.TaskEnvironment(name="my_task_env")
-```
-
-### 2. Replace workflow decorators
-
-Then, you replace the `@workflow` and `@task` decorators with `@env.task` decorators.
-
-{{< tabs "migration" >}}
-
-{{< tab "Flyte 1" >}}
-{{< markdown >}}
-Here's a simple hello world example with fanout.
+Instead of configuring the image, hardware resources, and caching directly on each task decorator, you configure them once on a `flyte.TaskEnvironment` and share it across tasks:
 
 ```python
-import flytekit
-
-@flytekit.task
-def hello_world(name: str) -> str:
-    return f"Hello, {name}!"
-
-@flytekit.workflow
-def main(names: list[str]) -> list[str]:
-    return flytekit.map(hello_world)(names)
+env = flyte.TaskEnvironment(
+    name="training",
+    image=flyte.Image.from_debian_base().with_pip_packages("scikit-learn", "pandas"),
+    resources=flyte.Resources(cpu="2", memory="4Gi"),
+    cache="auto",
+)
 ```
 
-{{< /markdown >}}
-{{< /tab >}}
+### 2. Replace `@task` / `@workflow` / `@dynamic` with `@env.task`
 
-{{< tab "Flyte 2 Sync" >}}
-{{< markdown >}}
-Change all the decorators to `@env.task` and swap out `flytekit.map` with `flyte.map`.
-Notice that `flyte.map` is a drop-in replacement for Python's built-in `map` function.
-
-```diff
--@flytekit.task
-+@env.task
-def hello_world(name: str) -> str:
-    return f"Hello, {name}!"
-
--@flytekit.workflow
-+@env.task
-def main(names: list[str]) -> list[str]:
-    return flyte.map(hello_world, names)
-```
-
-{{< /markdown >}}
+Every decorated function becomes an `@env.task`. There is no separate workflow or dynamic construct: a "workflow" is simply a task that calls other tasks, and orchestration is plain Python.
 
 {{< note >}}
-Note that the reason our task decorator uses `env` is simply because that is the variable to which we assigned the `TaskEnvironment` above.
+The `env` in `@env.task` is just the variable you assigned your `TaskEnvironment` to. Name it whatever you like.
 {{< /note >}}
 
-{{< /tab >}}
-{{< tab "Flyte 2 Async" >}}
-{{< markdown >}}
-To take advantage of full concurrency (not just parallelism), use Python async
-syntax and the `asyncio` standard library to implement fa-out.
+## In this section
 
-```diff
-+import asyncio
+The migration patterns are grouped by theme. Start with **Tasks and workflows**, then jump to whatever your workload needs:
 
-@env.task
--def hello_world(name: str) -> str:
-+async def hello_world(name: str) -> str:
-    return f"Hello, {name}!"
+- **[Tasks and workflows](./tasks-and-workflows)** — the structural shift: `@task`/`@workflow` → `@env.task`, sequential ordering, and nested "subworkflows".
+- **[Task configuration](./configuration)** — moving image/resources/cache to the `TaskEnvironment`, secrets, and scheduling with triggers.
+- **[Control flow](./control-flow)** — `conditional()` and `@dynamic` become plain Python `if`/loops, and `on_failure` becomes `try`/`except`.
+- **[Parallelism and fan-out](./parallelism)** — `map_task` → `flyte.map` / `asyncio.gather`, plus a data-backfill example.
+- **[Data types and I/O](./data-io)** — `FlyteFile`/`FlyteDirectory` → `flyte.io.File`/`Dir`, `StructuredDataset` → `flyte.io.DataFrame`, dataclasses, and an ETL example.
+- **[ML workloads](./ml-workloads)** — small-model training, hyperparameter optimization, deep learning, batch inference, and an end-to-end pipeline.
+- **[New in Flyte 2](./new-in-flyte-2)** — patterns that weren't possible in Flyte 1 at all: real-time model serving, apps, and sandboxed code execution.
 
-@env.task
--def main(names: list[str]) -> list[str]:
-+async def main(names: list[str]) -> list[str]:
--    return flyte.map(hello_world, names)
-+    return await asyncio.gather(*[hello_world(name) for name in names])
-```
+Two more pages round out the section: **[Considerations](./considerations)** covers the caveats of the new execution model, and **[Hybrid v1 and v2 pipelines](./hybrid-pipelines)** shows how to call between v1 and v2 during the transition.
 
-{{< /markdown >}}
+## Common gotchas
 
-{{< note >}}
-To use Python async syntax, you need to:
+- **`flyte.map` returns a generator.** Wrap it in `list()` to materialize results, unlike `map_task` which returned a list directly.
+- **`memory`, not `mem`.** The `Resources` parameter was renamed, and there are no separate `requests`/`limits`.
+- **GPUs use a `"T4:1"` string.** Type and count are combined; the separate `accelerator=` argument is gone.
+- **Retries no longer have a platform cap.** In Flyte 1 the control plane capped attempts at 3; in Flyte 2 total attempts equal `retries + 1`. Audit any large `retries` values before deploying.
+- **You can only `await` async tasks.** Calling a sync task from an async context uses `.aio()`; see the [Asynchronous model](./async) guide.
+- **Keep orchestration lightweight.** A task that calls other tasks acts as a driver pod. Avoid heavy CPU work in it — see [Considerations](./considerations).
 
-- Use `asyncio.gather()` or `flyte.map()` for parallel execution
-- Add `async`/`await` keywords where you want parallelism
-- Keep existing sync task functions unchanged
-
-Learn more about about the benefits of async in the [Asynchronous Model](./async) guide.
-{{< /note >}}
-
-{{< /tab >}}
-{{< /tabs >}}
+For the full list, see [Examples and common gotchas](../../../api-reference/migration/examples-and-gotchas) in the reference.
