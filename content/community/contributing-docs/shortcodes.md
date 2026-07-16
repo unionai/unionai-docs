@@ -240,7 +240,7 @@ Parameters:
 The examples in this section uses this file as base:
 
 {{< code file="/_static/__docs_builder__/sample.py" show_fragments=true lang=python >}}
-Link to [/_static/__docs_builder__/sample.py](/_static/__docs_builder__/sample.py)
+Link to [/_static/__docs_builder__/sample.py](../../_static/__docs_builder__/sample.py)
 
 #### Including a section of a file: `{{docs-fragment}}`
 
