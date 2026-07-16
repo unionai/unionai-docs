@@ -229,6 +229,17 @@ Two concurrency controls are in play, and they are independent:
 {{< /markdown >}}
 {{< /variant >}}
 
+## Caching
+
+Caching is configured on the **task**, not on the map call: give the mapped task a
+[`Cache`](../task-configuration/caching) and each item is cached **independently**, because every
+item runs as its own task action with its own inputs. An item whose inputs are unchanged is a cache
+hit even when other items change or the list is reordered. Constant arguments bound with
+`functools.partial` become part of each item's cache key, so use
+[`ignored_inputs`](../task-configuration/caching#excluding-a-bound-argument-from-the-per-element-key)
+to exclude a bound value that shouldn't affect caching. See
+[Caching with `flyte.map`](../task-configuration/caching#caching-with-flytemap) for details.
+
 ## When to use `flyte.map`
 
 Reach for `flyte.map` when:
