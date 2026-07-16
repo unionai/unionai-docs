@@ -24,6 +24,7 @@ The devbox is a lightweight local cluster that runs on your machine with Docker.
 {{< variant flyte >}}
 {{< markdown >}}
 
+<!-- markdownlint-disable-next-line MD024 -- same heading as the union variant block; only one renders per variant -->
 # Run locally on the devbox
 
 The Flyte devbox is a lightweight local cluster that runs on your machine with Docker. It gives you a full Flyte environment (including the UI, scheduler, and object store) so you can test remote execution without deploying to a real cluster.

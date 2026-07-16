@@ -40,17 +40,17 @@ In low-privilege mode, the chart automatically:
 
 ## Namespace-scoped roles
 
-##### `proxy-system-secret`
+### `proxy-system-secret`
 
 - Scoped to `union` namespace
 - Permissions on secrets: get, list, create, update, delete
 
-##### `operator-system`
+### `operator-system`
 
 - Scoped to `union` namespace
 - Permissions on secrets and deployments: get, list, watch, create, update
 
-##### `union-operator-admission` (for webhook)
+### `union-operator-admission` (for webhook)
 
 - Scoped to `union` namespace
 - Permissions on secrets: get, create
@@ -62,13 +62,13 @@ In low-privilege mode, the chart automatically:
 
 ### Metrics and monitoring
 
-##### `release-name-kube-state-metrics`
+#### `release-name-kube-state-metrics`
 
 - **Purpose**: Collects metrics from Kubernetes resources
 - **Access Pattern**: Read-only (`list`, `watch`) to numerous resources across multiple API groups
 - **Scope**: Comprehensive, covers core resources, workloads, networking, storage, and authentication
 
-##### `prometheus-operator`
+#### `prometheus-operator`
 
 - **Access**: Full control (`*`) over Prometheus monitoring resources
 - **Key Permissions**:
@@ -78,7 +78,7 @@ In low-privilege mode, the chart automatically:
   - Service/endpoint management
   - Read-only for nodes, namespaces, ingresses
 
-##### `union-operator-prometheus`
+#### `union-operator-prometheus`
 
 - **Access**: Read-only access to metrics sources
 - **Resources**: nodes, services, endpoints, pods, endpointslices, ingresses
@@ -86,7 +86,7 @@ In low-privilege mode, the chart automatically:
 
 ### Resource management
 
-##### `clustersync-resource`
+#### `clustersync-resource`
 
 - **Access**: Full control (`*`) over core and RBAC resources
 - **Resources**:
@@ -94,14 +94,14 @@ In low-privilege mode, the chart automatically:
   - RBAC: roles, rolebindings, clusterrolebindings
 - **API Groups**: `""` (core) and `rbac.authorization.k8s.io`
 
-##### `proxy-system`
+#### `proxy-system`
 
 - **Access**: Read-only (`get`, `list`, `watch`)
 - **Resources**: events, flyteworkflows, pods/log, pods, rayjobs, resourcequotas
 
 ### Workflow management
 
-##### `operator-system`
+#### `operator-system`
 
 - **Access**: Full control over Flyte workflows, CRUD for core resources
 - **Resources**:
@@ -109,12 +109,12 @@ In low-privilege mode, the chart automatically:
   - Management of pods, configmaps, resourcequotas, podtemplates, nodes
   - Access to `/metrics` endpoint
 
-##### `flytepropeller-webhook-role`
+#### `flytepropeller-webhook-role`
 
 - **Access**: Get, create, update, patch
 - **Resources**: mutatingwebhookconfigurations, secrets, pods, replicasets/finalizers
 
-##### `flytepropeller-role`
+#### `flytepropeller-role`
 
 - **Access**: Varied per resource type
 - **Key Permissions**:

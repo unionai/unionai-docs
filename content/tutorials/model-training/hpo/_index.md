@@ -7,7 +7,7 @@ variants: +flyte +union
 # Hyperparameter optimization
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/ml/optimizer.py).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/ml/optimizer.py).
 
 Hyperparameter Optimization (HPO) is a critical step in the machine learning (ML) lifecycle. Hyperparameters are the knobs and dials of a model: values such as learning rates, tree depths, or dropout rates that significantly impact performance but cannot be learned during training. Instead, we must select them manually or optimize them through guided search.
 

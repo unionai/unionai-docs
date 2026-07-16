@@ -72,9 +72,9 @@ See the cloud-specific setup pages for details on configuring this service accou
 > [!NOTE] Common service account
 > In previous versions, each component had its own service account. The consolidated `union-system` service account simplifies IAM configuration: you only need to bind cloud permissions to a single identity.
 
-# Performance recommendations
+## Performance recommendations
 
-## Node pools
+### Node pools
 
 It is recommended but not required to use separate node pools for the Union services and the Union worker pods.  This allows you to
 guard against resource contention between Union services and other tasks running in your cluster.  You can find additional information

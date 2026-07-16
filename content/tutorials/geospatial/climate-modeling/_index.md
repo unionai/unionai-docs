@@ -15,7 +15,7 @@ In this tutorial, we build a production-grade climate modeling pipeline using Fl
 ![Report](../../../_static/images/tutorials/climate-modeling/report.png)
 
 > [!NOTE]
-> Full code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/climate_modeling/simulation.py).
+> Full code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/climate_modeling/simulation.py).
 
 ## Overview
 

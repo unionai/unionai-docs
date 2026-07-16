@@ -87,7 +87,7 @@ print(response.choices[0].message.content)
 
 > [!TIP]
 > If you passed an `--api-key` argument, you can use the `api_key` parameter to authenticate your requests.
-> See [here](../build-apps/secret-based-authentication#deploy-vllm-app-with-authentication) for more details on how to pass auth secrets to your app.
+> See [secret-based authentication](../build-apps/secret-based-authentication#deploy-vllm-app-with-authentication) for more details on how to pass auth secrets to your app.
 
 ## Multi-GPU inference (Tensor parallelism)
 

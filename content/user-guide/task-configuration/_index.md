@@ -77,6 +77,7 @@ For the complete parameter interaction matrix showing which parameters can be se
 | **report** | `@env.task` only | [Additional task settings](./additional-task-settings#report) |
 | **triggers** | `@env.task` only | [Triggers](./triggers) &bull; [`Trigger` API ref](../../api-reference/flyte-sdk/packages/flyte/trigger) |
 | **docs** | `@env.task` only | [Additional task settings](./additional-task-settings#docs) |
+
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -106,6 +107,7 @@ For the complete parameter interaction matrix showing which parameters can be se
 | **report** | `@env.task` only | [Additional task settings](./additional-task-settings#report) |
 | **triggers** | `@env.task` only | [Triggers](./triggers) &bull; [`Trigger` API ref](../../api-reference/flyte-sdk/packages/flyte/trigger) |
 | **docs** | `@env.task` only | [Additional task settings](./additional-task-settings#docs) |
+
 {{< /markdown >}}
 {{< /variant >}}
 

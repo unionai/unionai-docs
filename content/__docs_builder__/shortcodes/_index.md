@@ -18,7 +18,7 @@ variants: -flyte -union
 
 {{< icon "book" >}}
 
-List of icons [here](https://shoelace.style/components/icon)
+[List of icons](https://shoelace.style/components/icon)
 
 ## Notes
 

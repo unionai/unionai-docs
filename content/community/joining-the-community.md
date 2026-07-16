@@ -18,8 +18,8 @@ Please join us on:
 
 1. **When**: First Tuesday of every month, 9:00 AM Pacific Time.
 2. **Where**: Live streamed on [YouTube](https://www.youtube.com/@flyteorg/streams) and [LinkedIn](https://www.linkedin.com/company/union-ai/events/).
-3. **Watch the recordings**: [here](https://www.youtube.com/live/d81Jd4rfmzw?feature=shared).
-4. **Import the public calendar**: [here](https://lists.lfaidata.foundation/g/flyte-announce/ics/12031983/2145304139/feed.ics) to not miss any event.
+3. **Watch the recordings**: [on YouTube](https://www.youtube.com/live/d81Jd4rfmzw?feature=shared).
+4. **Import the public calendar**: [subscribe to the calendar feed](https://lists.lfaidata.foundation/g/flyte-announce/ics/12031983/2145304139/feed.ics) to not miss any event.
 5. **Want to present?** Fill out [this form](https://tally.so/r/wgN8LM). We're eager to learn from you!
 
 You're welcome to join and learn from other community members sharing their experiences with Flyte or any other technology from the AI ecosystem.
@@ -29,7 +29,7 @@ You're welcome to join and learn from other community members sharing their expe
 1. **When**: Every 2 weeks on Thursdays. Alternating schedule between 11:00 AM PT and 7:00 AM PT.
 2. **Where**: Live on [Zoom](https://zoom-lfx.platform.linuxfoundation.org/meeting/92309721545?password=c93d76a7-801a-47c6-9916-08e38e5a5c1f).
 3. **Purpose**: Address questions from new contributors, discuss active initiatives, and RFCs.
-4. **Import the public calendar**: [here](https://lists.lfaidata.foundation/g/flyte-announce/ics/12031983/2145304139/feed.ics) to not miss any event.
+4. **Import the public calendar**: [subscribe to the calendar feed](https://lists.lfaidata.foundation/g/flyte-announce/ics/12031983/2145304139/feed.ics) to not miss any event.
 
 ## Newsletter
 

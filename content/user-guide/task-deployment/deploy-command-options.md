@@ -18,7 +18,7 @@ The `flyte deploy` command provides extensive configuration options:
 | `--dry-run`/`--dryrun`      |       | flag   | `false`                   | Preview deployment without executing              |
 | `--all`                     |       | flag   | `false`                   | Deploy all environments in specified path         |
 | `--recursive`               | `-r`  | flag   | `false`                   | Deploy environments recursively in subdirectories |
-| `--copy-style`              |       | choice | `loaded_modules|all|none` | Code bundling strategy                            |
+| `--copy-style`              |       | choice | `loaded_modules\|all\|none` | Code bundling strategy                            |
 | `--root-dir`                |       | path   | *current dir*             | Override source root directory                    |
 | `--image`                   |       | text   |                           | Image URI mappings (format: `name=uri`)           |
 | `--ignore-load-errors`      | `-i`  | flag   | `false`                   | Continue deployment despite module load failures  |

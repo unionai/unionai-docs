@@ -15,7 +15,7 @@ The `flyte run` command provides the following options:
 | `--project`                 | `-p`  | text   | *from config*             | Project to run tasks in                                |
 | `--domain`                  | `-d`  | text   | *from config*             | Domain to run tasks in                                 |
 | `--local`                   |       | flag   | `false`                   | Run the task locally                                   |
-| `--copy-style`              |       | choice | `loaded_modules|all|none` | Code bundling strategy                                 |
+| `--copy-style`              |       | choice | `loaded_modules\|all\|none` | Code bundling strategy                                 |
 | `--root-dir`                |       | path   | *current dir*             | Override source root directory                         |
 | `--raw-data-path`           |       | text   |                           | Override the output location for offloaded data types. |
 | `--service-account`         |       | text   |                           | Kubernetes service account.                            |

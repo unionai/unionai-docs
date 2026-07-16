@@ -104,11 +104,11 @@ Beyond compute plugins, Flyte also supports **integrations** with external SaaS 
 - **Data platforms**: Databricks
 - **Custom services**: Your internal APIs and services
 
-Connectors enable Flyte to delegate task execution to these external systems while maintaining Flyte's orchestration, observability, and data lineage capabilities. See the [connectors documentation](#) for more details on available integrations.
+Connectors enable Flyte to delegate task execution to these external systems while maintaining Flyte's orchestration, observability, and data lineage capabilities. See the [connectors documentation](../../integrations/_index) for more details on available integrations.
 
 ## Next steps
 
-For detailed guides on each compute plugin, including configuration options, best practices, and advanced examples, see the [Plugins section](#) of the documentation. Each plugin guide covers:
+For detailed guides on each compute plugin, including configuration options, best practices, and advanced examples, see the [Plugins section](../../integrations/_index) of the documentation. Each plugin guide covers:
 
 - Installation and setup
 - Configuration options
