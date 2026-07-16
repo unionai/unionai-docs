@@ -14,6 +14,7 @@ Currently, the clusterPool configuration is performed by Union in the control pl
 clusterPoolname:
   - clusterName
 ```
+
 With `clusterName` matching the name you used to install the Union operator Helm chart.
 
 You can have as many cluster pools as needed:
@@ -55,6 +56,7 @@ clusterPoolName: development-cp
 ```bash
 uctl update cluster-pool-attributes --attrFile cpa-dev.yaml
 ```
+
 3. New executions in `flytesnacks-development` should now run in the `my-dev-cluster`
 
 ### project-domain-workflow-clusterPool mapping
@@ -75,6 +77,7 @@ clusterPoolName: production-cp
 ```bash
 uctl update cluster-pool-attributes --attrFile cpa-prod.yaml
 ```
+
 3. New executions of the `my_critical_wf` workflow in `flytesnacks-production` should now run in any of the clusters under `production-cp`
 
 ## Data sharing between cluster pools

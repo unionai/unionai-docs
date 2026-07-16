@@ -94,7 +94,7 @@ async def train_sklearn():
     model.fit(X_train, y_train)
 ```
 
-Supported frameworks include any framework with an `mlflow.{framework}.autolog()` function. You can find the full list of supported frameworks [here](https://mlflow.org/docs/latest/ml/tracking/autolog/#supported-libraries).
+Supported frameworks include any framework with an `mlflow.{framework}.autolog()` function. You can find the [full list of supported frameworks](https://mlflow.org/docs/latest/ml/tracking/autolog/#supported-libraries) in the MLflow documentation.
 
 You can pass additional autolog parameters via `autolog_kwargs`:
 

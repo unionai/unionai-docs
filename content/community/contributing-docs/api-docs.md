@@ -97,7 +97,7 @@ Every package that the API generator processes, the SDK and all plugins, emits a
 
 Whether short names get emitted is controlled by the `--short-names` generator flag:
 
-- **Plugins** (`Makefile.api.plugins`): `--short-names` is enabled. Each identifier is emitted under both keys, e.g. `flyteplugins.wandb.wandb_init` *and* the bare `wandb_init`, so authors can use either form in prose.
+- **Plugins** (`Makefile.api.plugins`): `--short-names` is enabled. Each identifier is emitted under both keys, e.g. `flyteplugins.wandb.wandb_init` _and_ the bare `wandb_init`, so authors can use either form in prose.
 - **SDK** (`Makefile.api.sdk`): `--short-names` is not passed. SDK identifiers are only emitted fully qualified (e.g. `flyte.io.File`). Bare short names like `` `File` `` won't autolink against the SDK.
 
 ### How auto-linking works

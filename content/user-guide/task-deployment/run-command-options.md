@@ -15,7 +15,7 @@ The `flyte run` command provides the following options:
 | `--project`                 | `-p`  | text   | *from config*             | Project to run tasks in                                |
 | `--domain`                  | `-d`  | text   | *from config*             | Domain to run tasks in                                 |
 | `--local`                   |       | flag   | `false`                   | Run the task locally                                   |
-| `--copy-style`              |       | choice | `loaded_modules|all|none` | Code bundling strategy                                 |
+| `--copy-style`              |       | choice | `loaded_modules\|all\|none` | Code bundling strategy                                 |
 | `--root-dir`                |       | path   | *current dir*             | Override source root directory                         |
 | `--raw-data-path`           |       | text   |                           | Override the output location for offloaded data types. |
 | `--service-account`         |       | text   |                           | Kubernetes service account.                            |
@@ -125,6 +125,7 @@ Handle cross-directory imports:
 ```bash
 flyte run --root-dir .. my_example.py my_workflow
 ```
+
 This applies to the ephemeral preparation step of the `flyte run` command.
 It works identically to the `flyte deploy` command's `--root-dir` option.
 
@@ -254,6 +255,7 @@ flyte run --no-sync-local-sys-paths my_example.py my_task
 ```
 
 This advanced option works identically to the deploy command equivalent, useful for:
+
 - **Container isolation**: Prevent local development paths from affecting remote execution
 - **Custom environments**: When containers have pre-configured Python paths
 - **Security**: Avoiding exposure of local directory structures

@@ -35,6 +35,7 @@ Use `include` when:
 {{< code file="/unionai-examples/v2/user-guide/build-apps/streamlit/multi_file_streamlit.py" lang=python >}}
 
 In this example:
+
 - `main.py` is your main Streamlit app file
 - `utils.py` contains helper functions used by `main.py`
 - Both files are included in the app bundle
@@ -86,4 +87,3 @@ include=["utils.py", "config.yaml"]  # Relative to apps/ directory
 - Large files or directories can slow down deployment
 - Binary files are supported but consider using data storage (S3, etc.) for very large files
 - The bundle size is limited by your Flyte cluster configuration
-

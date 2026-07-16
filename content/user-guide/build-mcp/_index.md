@@ -16,6 +16,7 @@ There are two main MCP environment types:
 | **`FlyteMCPAppEnvironment`** | Flyte-specific server that exposes Flyte operations as tools |
 
 See the sub-pages for detailed guides:
+
 - [User-defined MCP servers](./mcp_server): Build and deploy your own FastMCP instances
 - [Flyte MCP servers](./flyte_mcp_server): Use Flyte-specific tools to interact with your cluster
 

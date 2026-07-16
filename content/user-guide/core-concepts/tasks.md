@@ -39,6 +39,7 @@ def process_numbers(values: list[int]) -> int:
 ```
 
 Supported types include:
+
 - Primitives: `int`, `float`, `str`, `bool`
 - Collections: `list`, `dict`, `tuple`
 - DataFrames: `pandas.DataFrame`, `polars.DataFrame`

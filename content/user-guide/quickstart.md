@@ -23,6 +23,7 @@ Install the `flyte` package:
 ```bash
 pip install 'flyte[tui]'
 ```
+
 {{< note >}}
 We also install the `tui` extra to enable the terminal user interface.
 {{< /note >}}
@@ -46,6 +47,7 @@ If you have [`uv`](https://docs.astral.sh/uv/) installed, you can run the `flyte
 uvx flyte --version
 uvx flyte get run
 ```
+
 {{< /note >}}
 
 ## Configure
@@ -128,6 +130,7 @@ Now that you've run your first workflow:
 
 {{< variant flyte >}}
 {{< markdown >}}
+
 - [**Core concepts**](./core-concepts/_index): Understand the core concepts of Flyte programming
 - [**Run locally**](./run-modes/running-locally): Learn about the TUI, caching, and other features that work locally
 - [**Run on the devbox**](./run-modes/running-devbox): Learn about the devbox cluster and how to run workflows on it
@@ -136,6 +139,7 @@ Now that you've run your first workflow:
 
 {{< variant union >}}
 {{< markdown >}}
+
 - [**Core concepts**](./core-concepts/_index): Understand the core concepts of Flyte programming
 - [**Run locally**](./run-modes/running-locally): Learn about the TUI, caching, and other features that work locally
 - [**Run on the devbox**](./run-modes/running-devbox): Learn about the devbox cluster and how to run workflows on it

@@ -87,6 +87,7 @@ async def distributed_compute(n: int = 10) -> list[int]:
 ```
 
 When this task runs, Flyte will:
+
 1. Spin up a Ray cluster with 1 head node and 2 worker nodes
 2. Execute your task code in the Ray cluster
 3. Tear down the cluster after completion
@@ -103,11 +104,11 @@ Beyond compute plugins, Flyte also supports **integrations** with external SaaS 
 - **Data platforms**: Databricks
 - **Custom services**: Your internal APIs and services
 
-Connectors enable Flyte to delegate task execution to these external systems while maintaining Flyte's orchestration, observability, and data lineage capabilities. See the [connectors documentation](#) for more details on available integrations.
+Connectors enable Flyte to delegate task execution to these external systems while maintaining Flyte's orchestration, observability, and data lineage capabilities. See the [connectors documentation](../../integrations/_index) for more details on available integrations.
 
 ## Next steps
 
-For detailed guides on each compute plugin, including configuration options, best practices, and advanced examples, see the [Plugins section](#) of the documentation. Each plugin guide covers:
+For detailed guides on each compute plugin, including configuration options, best practices, and advanced examples, see the [Plugins section](../../integrations/_index) of the documentation. Each plugin guide covers:
 
 - Installation and setup
 - Configuration options

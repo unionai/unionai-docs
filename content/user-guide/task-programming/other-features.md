@@ -137,6 +137,7 @@ def sync_task() -> str:
 ```
 
 **Important**:
+
 - Call `nest_asyncio.apply()` at the module level before defining tasks
 - Add `nest_asyncio` to your image dependencies
 - This is particularly useful during migration when you have mixed sync/async code
@@ -232,4 +233,3 @@ async def batch_process(items: list[int]) -> list[int]:
 ```
 
 **Note**: You can use anyio's task groups, timeouts, and other structured concurrency primitives within Flyte async tasks.
-

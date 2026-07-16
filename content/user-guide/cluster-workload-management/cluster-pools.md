@@ -60,10 +60,12 @@ config:
   image_registry:
     locator: 123456789012.dkr.ecr.us-east-1.amazonaws.com/union
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 from flyteplugins.union.remote import ClusterPool
 
@@ -75,6 +77,7 @@ ClusterPool.create(
     image_registry="123456789012.dkr.ecr.us-east-1.amazonaws.com/union",
 )
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -88,6 +91,7 @@ Supported `secret_store_type` values are `AWS_SECRETS_MANAGER`,
 {{< tabs "inspect-cluster-pool" >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
+
 ```bash
 # List all pools
 flyte get cluster-pool
@@ -95,10 +99,12 @@ flyte get cluster-pool
 # Inspect a specific pool — its config and member clusters
 flyte get cluster-pool prod
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 from flyteplugins.union.remote import ClusterPool
 
@@ -112,6 +118,7 @@ print(pool.object_store_uri)
 print(pool.secret_store_type)
 print(pool.image_registry)
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -126,18 +133,22 @@ Cluster pool membership is set when clusters are registered:
 {{< tabs "cluster-pool-membership" >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
+
 ```bash
 flyte create cluster prod-us-east-1 --pool prod
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 from flyteplugins.union.remote import Cluster
 
 Cluster.create("prod-us-east-1", cluster_pool_name="prod")
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -159,19 +170,23 @@ becomes available.
 {{< tabs "delete-cluster-pool" >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
+
 ```bash
 flyte delete cluster-pool prod
 flyte delete cluster-pool prod --yes   # skip the confirmation prompt
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 from flyteplugins.union.remote import ClusterPool
 
 ClusterPool.delete("prod")
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}

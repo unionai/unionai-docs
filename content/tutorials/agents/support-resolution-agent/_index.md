@@ -7,7 +7,7 @@ variants: +flyte +union
 # Support resolution agent
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/support_resolution_agent).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/support_resolution_agent).
 
 This example demonstrates how to build a customer-support and field-service resolution agent on Flyte. The agent resolves tickets that need current public information (return policies, weather advisories, product recalls, manufacturer specs) and drafts a customer-ready reply with sources a human agent can verify before sending.
 

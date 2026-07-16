@@ -19,6 +19,7 @@ Any helper functions defined or imported into the same file as a task definition
 At the task level, observability and resumption of failed executions is provided by caching, but what if you want these capabilities at a more granular level, for the individual operations that tasks perform?
 
 This is where **traced functions** come in. By decorating helper functions with `@flyte.trace`, you enable:
+
 - **Detailed observability**: Track execution time, inputs/outputs, and errors for each function call.
 - **Fine-grained resumption**: If a workflow fails, resume from the last successful traced function instead of re-running the entire task.
 Each traced function is effectively a checkpoint within its task.
@@ -30,6 +31,7 @@ Here is an example:
 ## What gets traced
 
 Traces capture detailed execution information:
+
 - **Execution time**: How long each function call takes.
 - **Inputs and outputs**: Function parameters and return values.
 - **Checkpoints**: State that enables workflow resumption.
@@ -41,6 +43,7 @@ Only successful trace executions are recorded in the checkpoint system. When a t
 ### Supported function types
 
 The trace decorator works with:
+
 - **Asynchronous functions**: Functions defined with `async def`.
 - **Generator functions**: Functions that `yield` values.
 - **Async generators**: Functions that `async yield` values.
@@ -57,6 +60,7 @@ The typical Flyte workflow follows this pattern:
 {{< code file="/unionai-examples/v2/user-guide/task-programming/traces/pattern.py" fragment="all" lang="python" >}}
 
 **Benefits of this pattern:**
+
 - If `search_web` succeeds but `summarize_content` fails, resumption skips the search step
 - Each operation is independently observable and debuggable
 - Clear separation between workflow coordination (task) and execution (traced functions)
@@ -96,7 +100,6 @@ Clarify what actually happens on error vs success with traces
 
 Traces capture comprehensive execution information for debugging and monitoring:
 
-
 {{< code file="/unionai-examples/v2/user-guide/task-programming/traces/error_handling.py" fragment="all" lang="python" >}}
 
 **What traces capture:**
@@ -109,7 +112,6 @@ Traces capture comprehensive execution information for debugging and monitoring:
 - Errors from traced functions are not recorded in checkpoints
 - Exceptions propagate to your task code for standard error handling
 - The error_handling example shows how to catch and handle these exceptions in your task
-
 
 TODO:
 Ketan Umare:

@@ -10,6 +10,7 @@ In many applications, different tasks within your workflow may require different
 Flyte enables you to manage this complexity by allowing multiple environments within a single workflow.
 
 Multiple environments are useful when:
+
 - Different tasks in your workflow need different dependencies.
 - Some tasks require specific CPU/GPU or memory configurations.
 - A task requires a secret that other tasks do not (and you want to limit exposure of the secret value).
@@ -72,6 +73,7 @@ The example project looks like this:
 ├── __init__.py
 └── main.py
 ```
+
 (The source code for this example can be found here:[AlphaFold2 mock example](https://github.com/unionai/unionai-examples/tree/main/v2/user-guide/task-configuration/multiple-environments/af2))
 
 In file `msa/run.py` we define the task `run_msa`, which mocks the multiple sequence alignment step of the process:
@@ -97,6 +99,7 @@ We import the required modules and functions:
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/multiple-environments/af2/main.py" fragment="import" lang="python" >}}
 
 Notice that we import
+
 * The task functions that we will be calling: `run_fold` and `run_msa`.
 * The environments of those tasks: `fold_env` and `msa_env`.
 * The dependency list of the `run_msa` task: `MSA_PACKAGES`
@@ -110,6 +113,7 @@ The image for the `main` task (`main_image`) is built by starting with `fold_ima
 This ensures that `main_image` includes all dependencies needed by both the `run_fold` and `run_msa` tasks.
 
 The environment for the `main` task is defined with:
+
 * The image `main_image`. This ensures that the `main` task has all the dependencies it needs.
 * A depends_on list that includes both `fold_env` and `msa_env`. This establishes the deploy-time dependencies on those environments.
 

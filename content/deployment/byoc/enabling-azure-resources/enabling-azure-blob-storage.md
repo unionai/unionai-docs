@@ -28,12 +28,14 @@ The simplest, most flexible approach is to provide {{< key product_name >}} the 
 2. In the storage container's access control (IAM) section, create a new role assignment.
 3. For the 'Assigned to' field, select the {{< key product_name >}} application's service principal.
 4. For the 'Role' field, you have two options:
-  * Simplest approach: Assign the built-in Azure role `User Access Administrator`.
-  * Advanced approach: Create a custom role with the following specific permissions:
-    * `Microsoft.Authorization/roleAssignments/write`
-    * `Microsoft.Authorization/roleAssignments/delete`
-    * `Microsoft.Authorization/roleAssignments/read`
-    * `Microsoft.Authorization/roleDefinitions/read`
+
+* Simplest approach: Assign the built-in Azure role `User Access Administrator`.
+* Advanced approach: Create a custom role with the following specific permissions:
+  * `Microsoft.Authorization/roleAssignments/write`
+  * `Microsoft.Authorization/roleAssignments/delete`
+  * `Microsoft.Authorization/roleAssignments/read`
+  * `Microsoft.Authorization/roleDefinitions/read`
+
 5. Ensure the 'Scope' is set to the target blob storage container.
 6. Complete the role assignment process.
 7. Provide the blob storage container [resource ID](https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.management.storage.models.resource.id) to {{< key product_name >}} support.

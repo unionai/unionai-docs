@@ -31,6 +31,7 @@ One key advantage of serving is the ability to override parameters dynamically:
 {{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/serve_examples.py" fragment=override-parameters lang=python >}}
 
 This is useful for:
+
 - Testing different configurations
 - Using different models or data sources
 - A/B testing during development
@@ -72,16 +73,19 @@ Where `app` is the variable name of the `AppEnvironment` object.
 ## Troubleshooting
 
 **App not activating:**
+
 - Check cluster connectivity
 - Verify app configuration is correct
 - Review container logs for errors
 
 **Parameter overrides not working:**
+
 - Verify parameter names match exactly
 - Check that parameters are defined in the app environment
 - Ensure you're using the `input_values` parameter correctly
 
 **Slow serving:**
+
 - Images may need to be built (first time is slower).
 - Large code bundles can slow down deployment.
 - Check network connectivity to the cluster.

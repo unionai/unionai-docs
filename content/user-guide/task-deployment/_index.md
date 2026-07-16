@@ -15,12 +15,14 @@ Now you need to decide how to execute them on your Flyte backend.
 Flyte offers two distinct approaches for getting your tasks onto the backend:
 
 **Use `flyte run` when you're iterating and experimenting:**
+
 - Quickly test changes during development
 - Try different parameters or code modifications
 - Debug issues without creating permanent artifacts
 - Prototype new ideas rapidly
 
 **Use `flyte deploy` when your project is ready to be formalized:**
+
 - Freeze a stable version of your tasks for repeated use
 - Share tasks with team members or across environments
 - Move from experimentation to a more structured workflow
@@ -75,6 +77,7 @@ Now you can run the `greet` task on the backend just by executing the `greeting.
 ```bash
 python greeting.py
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
@@ -92,6 +95,7 @@ flyte run greeting.py greet --message "Good morning!"
 ```
 
 This command:
+
 1. **Temporarily deploys** the task environment named `greeting_env` (held by the variable `env`) that contains the `greet` task.
 2. **Executes** the `greet` function with argument `message` set to `"Good morning!"`. Note that `message` is the actual parameter name defined in the function signature.
 3. **Returns** the execution results and displays them in the terminal.
@@ -135,6 +139,7 @@ Now you can deploy the `greeting_env` task environment (and therefore the `greet
 ```bash
 python greeting.py
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}

@@ -81,10 +81,10 @@ You can also use the direct string shorthand:
 
 Sometimes you want to cache based on some inputs but not others:
 
-
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="ignored" lang="python" >}}
 
 **This is useful for**:
+
 - Debug flags that don't affect computation
 - Logging levels or output formats
 - Metadata that doesn't impact results
@@ -96,11 +96,13 @@ Cache serialization ensures that only one instance of a task runs at a time for 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="serialize" lang="python" >}}
 
 **When to use serialization**:
+
 - Very expensive computations (model training, large data processing)
 - Shared resources that shouldn't be accessed concurrently
 - Operations where multiple parallel executions provide no benefit
 
 **How it works**:
+
 1. First execution acquires a reservation and runs normally.
 2. Concurrent executions with identical inputs wait for the first to complete.
 3. Once complete, all waiting executions receive the cached result.
@@ -113,6 +115,7 @@ Use `salt` to vary cache keys without changing function logic:
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="salt" lang="python" >}}
 
 **`salt` is useful for**:
+
 - A/B testing with identical code.
 - Temporary cache namespaces for experiments.
 - Environment-specific cache isolation.
@@ -206,6 +209,7 @@ run = flyte.with_runcontext(overwrite_cache=True).run(my_cached_task, data="test
 ## Project and domain cache isolation
 
 Caches are automatically isolated by:
+
 - **Project**: Tasks in different projects have separate cache namespaces.
 - **Domain**: Development, staging, and production domains maintain separate caches.
 
@@ -220,6 +224,7 @@ result = flyte.run(my_cached_task, data="test")
 ```
 
 Local cache behavior:
+
 - Stored in `~/.flyte/local-cache/` directory
 - No project/domain isolation (since running locally)
 - Disabled by setting `FLYTE_LOCAL_CACHE_ENABLED=false`

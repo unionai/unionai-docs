@@ -17,7 +17,7 @@ Tasks can call apps by making HTTP requests to the app's endpoint. This is usefu
 - You want to call a model serving endpoint from a batch processing task
 - You need to interact with an API from a workflow
 
-### Example: FastAPI app called from a task 
+### Example: FastAPI app called from a task
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/task_calling_app.py" lang=python >}}
 
@@ -73,8 +73,6 @@ See [Batch inference](../run-scaling/batch-inference) implementation details.
 
 {{< /markdown >}}
 {{< /variant >}}
-
-
 
 ## Call task from app (webhooks / APIs)
 

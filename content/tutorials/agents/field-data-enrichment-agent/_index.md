@@ -7,7 +7,7 @@ variants: +flyte +union
 # Field data enrichment agent
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/field_data_enrichment_agent).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/field_data_enrichment_agent).
 
 This example demonstrates how to build an autonomous systems and field-data enrichment agent on Flyte. The agent enriches geo-tagged operational events (from autonomous vehicles, aircraft, satellites, or field sensors) with **real-world public context**: road closures, weather events, airspace changes, or local incidents tied to a geofence.
 

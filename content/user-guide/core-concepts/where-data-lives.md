@@ -19,6 +19,7 @@ When you run a Flyte task, your data ends up in two stores: a **database** in th
 
 {{< variant union >}}
 {{< markdown >}}
+
 ## Who manages the stores
 
 * The control plane database (being part of the control plane) is always managed by Union.ai, regardless of whether you are using a BYOC or self-managed deployment.

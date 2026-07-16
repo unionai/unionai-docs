@@ -7,7 +7,7 @@ variants: +flyte +union
 # Automatic prompt engineering
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/auto_prompt_engineering).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/auto_prompt_engineering).
 
 When building with LLMs and agents, the first prompt almost never works. We usually need several iterations before results are useful. Doing this manually is slow, inconsistent, and hard to reproduce.
 

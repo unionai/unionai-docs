@@ -25,7 +25,6 @@ Deploy an app:
 
 `flyte.deploy()` returns a list of `Deployment` objects. Each `Deployment` contains a dictionary of `DeployedEnvironment` objects (one for each environment deployed, including environment dependencies). For apps, the `DeployedEnvironment` is a `DeployedAppEnvironment` which has a `deployed_app` property of type `App`.
 
-
 ## Deployment plan
 
 Flyte automatically creates a deployment plan that includes:
@@ -100,17 +99,19 @@ For apps, each `DeployedAppEnvironment` includes:
 ## Troubleshooting
 
 **Deployment fails:**
+
 - Check that all dependencies are available
 - Verify image builds succeed
 - Review deployment logs
 
 **App not accessible:**
+
 - Ensure the app is activated
 - Check cluster connectivity
 - Verify app configuration
 
 **Version conflicts:**
+
 - Use unique versions for each deployment
 - Check existing app versions
 - Clean up old versions if needed
-
