@@ -6,12 +6,6 @@
 contributing-docs/shortcodes\.md:DEVELOPER\.md
 contributing-docs/authoring\.md:SHORTCODES\.md
 
-# Illustrative link to the docs-builder sample .py (a /_static asset, not a Hugo
-# page). The checker's static-asset skip list (non_page_exts) omits `.py`, so a
-# relative link to a .py static file is mis-validated as a page reference. The
-# link is version-scoped + serves 200 (DOC-966). Systemic fix: add `.py` to
-# non_page_exts in check_internal_links.py (infra follow-up).
-contributing-docs/shortcodes\.md:\.\./\.\./_static/__docs_builder__/sample\.py
 
 # API reference auto-generated cross-references (case mismatch in generated content)
 # api-reference/flyte-sdk/
