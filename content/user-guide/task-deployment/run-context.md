@@ -69,8 +69,16 @@ The equivalent CLI flag is `--raw-data-path`. See [Run command options](./run-co
 |-----------|------|---------|-------------|
 | `service_account` | `str` | *from config* | Kubernetes service account for task pods. |
 | `env_vars` | `Dict[str, str]` | `None` | Additional environment variables to inject into task containers. |
-| `labels` | `Dict[str, str]` | `None` | Kubernetes labels to apply to task pods. |
+| `labels` | `Dict[str, str]` | `None` | User-defined `key=value` labels attached to the run for filtering and organizing runs (for example, by team, environment, or experiment). |
 | `annotations` | `Dict[str, str]` | `None` | Kubernetes annotations to apply to task pods. |
+
+Labels tag a run with arbitrary `key=value` metadata so you can find and group related runs later. Set them programmatically with `with_runcontext(labels={...})`, or from the CLI with the repeatable `--label` flag:
+
+```bash
+flyte run --label team=ml --label env=prod my_example.py main
+```
+
+To list and filter runs by their labels, see [Filtering runs by label](./interacting-with-runs#filtering-runs-by-label).
 
 ### Logging
 

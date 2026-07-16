@@ -20,6 +20,7 @@ The `flyte run` command provides the following options:
 | `--raw-data-path`           |       | text   |                           | Override the output location for offloaded data types. |
 | `--service-account`         |       | text   |                           | Kubernetes service account.                            |
 | `--name`                    |       | text   |                           | Name of the run.                                       |
+| `--label`                   |       | text   |                           | User-defined `key=value` label on the run. Repeatable. |
 | `--follow`                  | `-f`  | flag   | `false`                   | Wait and watch logs for the parent action.             |
 | `--image`                   |       | text   |                           | Image to be used in the run (format: `name=uri`).      |
 | `--no-sync-local-sys-paths` |       | flag   | `false`                   | Disable synchronization of local sys.path entries.      |
@@ -186,6 +187,18 @@ flyte run --name "experiment-lr-0.01-batch-32" my_example.py hyperparameter_swee
 - **Easy identification**: Find specific runs in the Flyte console
 - **Experiment tracking**: Include key parameters or dates in names
 - **Automation**: Programmatically generate meaningful names for scheduled runs
+
+## `--label`
+
+**`flyte run --label <KEY>=<VALUE> <PATH> <TASK_NAME>`**
+
+Attach one or more user-defined `key=value` labels to the run for filtering and organizing runs. The flag is repeatable:
+
+```bash
+flyte run --label team=ml --label env=prod my_example.py train_model
+```
+
+Later, list or filter runs by these labels with `flyte get run --with-label team=ml` (see [Filtering runs by label](./interacting-with-runs#filtering-runs-by-label)).
 
 ## `--follow`
 
