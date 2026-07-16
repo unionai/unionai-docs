@@ -102,6 +102,7 @@ All three tasks return Flyte `File` objects that hold references to data in blob
 ### Preprocessing with Dask
 
 The three data sources need to be combined into a unified atmospheric state. This means:
+
 - Interpolating to a common grid
 - Handling missing values
 - Merging variables from different sources
@@ -136,6 +137,7 @@ The physics step is the computational kernel. It runs advection (wind transport)
 `@torch.compile(mode="reduce-overhead")` compiles this function into optimized CUDA kernels. Combined with mixed precision (`torch.cuda.amp.autocast`), this runs 3-4x faster than eager PyTorch.
 
 Every 10 timesteps, the simulation checks for extreme events:
+
 - **Hurricanes**: Wind speed > 33 m/s with low pressure
 - **Heatwaves**: Temperature anomalies exceeding thresholds
 
@@ -162,6 +164,7 @@ Everything comes together in the orchestration task:
 `flyte.group("data-ingestion")` visually groups the ingestion tasks in the Flyte UI. Inside the group, three tasks launch concurrently. `asyncio.gather` waits for all three to complete before preprocessing begins.
 
 The workflow then enters an iterative loop:
+
 1. Run GPU simulation (single or multi-GPU)
 2. Check convergence by comparing forecasts across iterations
 3. Detect extreme events
@@ -198,6 +201,7 @@ The default configuration uses the Atlantic region for September 2024, which is 
 Weather prediction is inherently uncertain. Small errors in the initial conditions grow over time due to chaotic dynamics, which means a single forecast can only ever be one possible outcome.
 
 Ensemble forecasting addresses this uncertainty by:
+
 - Perturbing the initial conditions within known observational error bounds
 - Running many independent forecasts
 - Computing the ensemble mean as the most likely outcome and the ensemble spread as a measure of uncertainty
@@ -205,6 +209,7 @@ Ensemble forecasting addresses this uncertainty by:
 ### Adaptive mesh refinement
 
 When a hurricane begins to form, coarse spatial grids are not sufficient to resolve critical features like eyewall dynamics. Adaptive mesh refinement allows the simulation to focus compute where it matters most by:
+
 - Increasing grid resolution, for example from 10 km to 5 km
 - Reducing the timestep to maintain numerical stability
 - Refining only the regions of interest instead of the entire domain
@@ -216,6 +221,7 @@ This approach is computationally expensive, but it is essential for producing ac
 Rather than analyzing results after a simulation completes, this pipeline detects significant events as the simulation runs.
 
 The system monitors for conditions such as:
+
 - **Hurricanes**: Wind speeds exceeding 33 m/s (Category 1 threshold) combined with central pressure below 980 mb
 - **Heatwaves**: Sustained temperature anomalies over a defined period
 
@@ -230,4 +236,3 @@ To model different ocean basins, change the `region` parameter to values like `"
 To run longer forecasts, increase `simulation_hours` in `SimulationParams`. The default of 240 hours, or 10 days, is typical for medium-range forecasting, but you can run longer simulations if you have the compute budget.
 
 Finally, the physics step here is deliberately simplified. Production systems usually incorporate additional components such as radiation schemes, boundary layer parameterizations, and land surface models. These can be added incrementally as separate steps without changing the overall structure of the pipeline.
-

@@ -54,6 +54,7 @@ For the complete parameter interaction matrix showing which parameters can be se
 
 {{< variant flyte >}}
 {{< markdown >}}
+
 | Parameter | Set at | Details |
 |-----------|--------|---------|
 | **name** | `TaskEnvironment` only | [Additional task settings](./additional-task-settings) &bull; [`TaskEnvironment` API ref](../../api-reference/flyte-sdk/packages/flyte/taskenvironment) |
@@ -81,6 +82,7 @@ For the complete parameter interaction matrix showing which parameters can be se
 
 {{< variant union >}}
 {{< markdown >}}
+
 | Parameter | Set at | Details |
 |-----------|--------|---------|
 | **name** | `TaskEnvironment` only | [Additional task settings](./additional-task-settings) &bull; [`TaskEnvironment` API ref](../../api-reference/flyte-sdk/packages/flyte/taskenvironment) |

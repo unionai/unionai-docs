@@ -88,6 +88,7 @@ config:
 > isn't a complete 60-character bcrypt string. The hash above is for `password` and
 > is known-good, but verify length 60 before pasting (`echo -n "$HASH" | wc -c`); a
 > char lost in transit looks fine and crashes Dex. To use a different password:
+>
 > ```bash
 > htpasswd -bnBC 10 "" 'your-password' | tr -d ':\n' | sed 's/^\$2y/\$2a/'
 > ```

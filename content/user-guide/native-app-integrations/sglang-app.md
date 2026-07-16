@@ -165,17 +165,19 @@ SGLang is particularly well-suited for structured generation tasks. The deployed
 ## Troubleshooting
 
 **Model loading fails:**
+
 - Verify GPU memory is sufficient for the model
 - Check that the model path or HuggingFace path is correct
 - Review container logs for detailed error messages
 
 **Out of memory errors:**
+
 - Reduce `--max-model-len`
 - Lower `--mem-fraction-static`
 - Use a smaller model or more GPUs
 
 **Slow startup:**
+
 - Enable `stream_model=True` for faster loading
 - Prefetch models before deployment
 - Use faster storage backends
-

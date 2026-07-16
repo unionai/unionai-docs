@@ -81,17 +81,21 @@ You can also reference Dockerfiles from subdirectories:
 ### Key considerations
 
 - **Path handling**: Use `Path(__file__).parent` for relative Dockerfile paths
+
   ```python
   # relative paths in python change based on where you call, so set it relative to this file
   Path(__file__).parent / "Dockerfile"
   ```
+
 - **Registry configuration**: Specify a registry for image storage
 - **Build context**: The directory containing the Dockerfile becomes the build context
 - **Flyte installation**: Ensure Flyte is installed in the container and available on `$PATH`
+
   ```dockerfile
   # Install Flyte in your Dockerfile
   RUN pip install flyte
   ```
+
 - **Dependencies**: Include all application requirements in the Dockerfile or requirements.txt
 
 ### When to use
@@ -138,15 +142,19 @@ pyproject_package/
 The business logic is completely separate from Flyte and can be used independently:
 
 #### Data loading (`data/loader.py`)
+
 {{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/data/loader.py" lang="python" >}}
 
 #### Data processing (`data/processor.py`)
+
 {{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/data/processor.py" lang="python" >}}
 
 #### Analysis (`models/analyzer.py`)
+
 {{< code file="/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/models/analyzer.py" lang="python" >}}
 
 These modules demonstrate:
+
 - **No Flyte dependencies** - can be tested and used independently
 - **Pydantic models** for data validation with custom validators
 - **Async patterns** with proper context managers and error handling
@@ -189,16 +197,19 @@ The main entrypoint demonstrates proper initialization and execution patterns:
 ### Usage patterns
 
 **Run locally:**
+
 ```bash
 python -m pyproject_package.main
 ```
 
 **Deploy to Flyte:**
+
 ```bash
 flyte deploy .
 ```
 
 **Run remotely:**
+
 ```bash
 python -m pyproject_package.main  # Uses remote execution
 ```
@@ -321,11 +332,13 @@ When you need complete reproducibility and want to embed all code directly in th
 ### Overview
 
 By default, Flyte uses a fast deployment system that:
+
 - Creates a tar archive of your files
 - Skips the full image build and push process
 - Provides faster iteration during development
 
 However, sometimes you need to **completely embed your code into the container image** for:
+
 - Full reproducibility with immutable container images
 - Environments where fast deployment isn't available
 - Production deployments with all dependencies baked in
@@ -344,36 +357,45 @@ The main.py file imports from a local dependency that gets included in the build
 ### Critical configuration components
 
 1. **Set `copy_style` to `"none"`**:
+
    ```python
    flyte.with_runcontext(copy_style="none", version="x").run(main, n=10)
    ```
+
    This disables Flyte's fast deployment system and forces a full container build.
 
 2. **Set a custom version**:
+
    ```python
    flyte.with_runcontext(copy_style="none", version="x").run(main, n=10)
    ```
+
    The `version` parameter should be set to a desired value (not auto-generated) for consistent image tagging.
 
 3. **Configure image source copying**:
+
    ```python
    image=flyte.Image.from_debian_base().with_source_folder(
        pathlib.Path(__file__).parent,
        copy_contents_only=True
    )
    ```
+
    Use `.with_source_folder()` to specify what code to copy into the container.
 
 4. **Set `root_dir` correctly**:
+
    ```python
    flyte.init_from_config(root_dir=pathlib.Path(__file__).parent)
    ```
+
    - If `copy_contents_only=True`: Set `root_dir` to the source folder (contents are copied)
    - If `copy_contents_only=False`: Set `root_dir` to parent directory (folder is copied)
 
 ### Configuration options
 
 #### Option A: Copy folder structure
+
 ```python
 # Copies the entire folder structure into the container
 image=flyte.Image.from_debian_base().with_source_folder(
@@ -386,6 +408,7 @@ flyte.init_from_config(root_dir=pathlib.Path(__file__).parent.parent)
 ```
 
 #### Option B: Copy contents only (recommended)
+
 ```python
 # Copies only the contents of the folder (flattens structure)
 # This is useful when you want to avoid nested folders - for example all your code is in the root of the repo
@@ -401,6 +424,7 @@ flyte.init_from_config(root_dir=pathlib.Path(__file__).parent)
 ### Version management best practices
 
 When using `copy_style="none"`, always specify an explicit version:
+
 - Use semantic versioning: `"v1.0.0"`, `"v1.1.0"`
 - Use build numbers: `"build-123"`
 - Use git commits: `"abc123"`
@@ -417,6 +441,7 @@ Avoid auto-generated versions to ensure reproducible deployments.
 ### When to use
 
 ✅ **Use full build when:**
+
 - Deploying to production environments
 - Need immutable, reproducible container images
 - Working with complex dependency structures
@@ -424,6 +449,7 @@ Avoid auto-generated versions to ensure reproducible deployments.
 - Building CI/CD pipelines
 
 ❌ **Don't use full build when:**
+
 - Rapid development and iteration
 - Working with frequently changing code
 - Development environments where speed matters
@@ -432,12 +458,14 @@ Avoid auto-generated versions to ensure reproducible deployments.
 ### Troubleshooting
 
 **Common issues:**
+
 1. **Import errors**: Check your `root_dir` configuration matches `copy_contents_only`
 2. **Missing files**: Ensure all dependencies are in the source folder
 3. **Version conflicts**: Use explicit, unique version strings
 4. **Build failures**: Check that the base image has all required system dependencies
 
 **Debug tips:**
+
 - Add print statements to verify file paths in containers
 - Use `docker run -it <image> /bin/bash` to inspect built images
 - Check Flyte logs for build errors and warnings
@@ -498,6 +526,7 @@ flyte run --root-dir . workflows/workflow.py greet --name "World"
 ```
 
 The CLI automatically:
+
 - Adds the `--root-dir` location to `sys.path`
 - Resolves all imports correctly
 - Packages files from the root directory for remote execution
@@ -511,6 +540,7 @@ PYTHONPATH=.:$PYTHONPATH python workflows/workflow.py
 ```
 
 This is because:
+
 - Python doesn't automatically know about your project structure
 - You need to explicitly tell Python where to find your modules
 - The `root_dir` parameter handles remote packaging, not local path resolution
@@ -605,12 +635,14 @@ DOMAIN_NAME=development flyte run environment_picker.py entrypoint --n 5
 #### When to use environment variables vs domain-based
 
 **Use environment variables when:**
+
 - Tasks need runtime access to environment information
 - External systems set environment configuration
 - You need flexibility to override environment externally
 - Debugging requires visibility into environment selection
 
 **Use domain-based approach when:**
+
 - Environment selection should be automatic based on Flyte domain
 - You want tighter integration with Flyte's domain system
 - No need for runtime environment inspection within tasks
@@ -637,17 +669,20 @@ For programmatic usage, ensure proper initialization:
 ### When to use dynamic environments
 
 **General use cases:**
+
 - Multi-environment deployments (dev/staging/prod)
 - Different resource requirements per environment
 - Environment-specific dependencies or settings
 - Context-sensitive configuration needs
 
 **Domain-based approach for:**
+
 - Automatic environment selection tied to Flyte domains
 - Simpler configuration without external environment variables
 - Integration with Flyte's built-in domain system
 
 **Environment variable approach for:**
+
 - Runtime visibility into environment selection within tasks
 - External control over environment configuration
 - Debugging and logging environment-specific behavior

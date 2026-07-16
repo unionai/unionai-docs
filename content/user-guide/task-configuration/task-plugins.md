@@ -87,6 +87,7 @@ async def distributed_compute(n: int = 10) -> list[int]:
 ```
 
 When this task runs, Flyte will:
+
 1. Spin up a Ray cluster with 1 head node and 2 worker nodes
 2. Execute your task code in the Ray cluster
 3. Tear down the cluster after completion

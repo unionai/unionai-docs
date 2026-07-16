@@ -16,6 +16,7 @@ Through the Flyte SDK and CLI, you can interact with the run and its actions to 
 
 Runs are not declared explicitly in the code of the entry point task.
 Instead, they are simply a result of the task being invoked in a specific way:
+
 * User with `flyte run`
 * User via the UI
 * Other code calling `flyte.run()`
@@ -73,6 +74,7 @@ run = flyte.remote.Run.get("my_run_name")
 print(run.url)        # UI URL for the run
 print(run.action.phase)  # Phase of the main action
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
@@ -129,6 +131,7 @@ Actions represent individual task executions within a run. Each action has a uni
 {{< tabs "get-action" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 # Get a specific action by run name and action name
 action = flyte.remote.Action.get(
@@ -141,6 +144,7 @@ print(action.phase)       # Current phase
 print(action.task_name)   # Task being executed
 print(action.start_time)  # Execution start time
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
@@ -379,12 +383,14 @@ To access data stored in Azure Blob Storage (ABFS):
 **1. Set environment variables:**
 
 For storage account key authentication:
+
 ```bash
 export AZURE_STORAGE_ACCOUNT_NAME="your-storage-account"
 export AZURE_STORAGE_ACCOUNT_KEY="your-account-key"
 ```
 
 For service principal authentication:
+
 ```bash
 export AZURE_TENANT_ID="your-tenant-id"
 export AZURE_CLIENT_ID="your-client-id"
@@ -490,6 +496,7 @@ if run.action.done():
 ### CLI commands
 
 For complete CLI documentation and all available options, see the [Flyte CLI reference](../../api-reference/flyte-cli):
+
 - [`flyte get run`](../../api-reference/flyte-cli#flyte-get-run) - Get run information
 - [`flyte get action`](../../api-reference/flyte-cli#flyte-get-action) - Get action information
 - [`flyte get io`](../../api-reference/flyte-cli#flyte-get-io) - Get inputs and outputs

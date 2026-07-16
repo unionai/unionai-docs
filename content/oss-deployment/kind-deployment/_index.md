@@ -105,6 +105,7 @@ kubectl cluster-info --context kind-flyte
 ```
 
 > [!NOTE] What the two mappings are for
+>
 > - **`30080 → 80`** lets the **browser** reach the Traefik ingress (plain HTTP) used by
 >   the optional [auth setup](#7-add-authentication-with-a-local-idp-optional) at
 >   `http://flyte.local`.
@@ -129,7 +130,6 @@ PostgreSQL (Supabase or another external/self-hosted instance) and an S3-compati
 object store (e.g. AWS S3, Cloudflare R2, etc). The two choices are independent. Each config
 block below plugs into [the values file in step 4](#4-write-the-values-file).
 
-
 ```bash
 kubectl create namespace flyte
 ```
@@ -153,6 +153,7 @@ host. The database must already exist.)
 >
 > Two things the pooler changes versus the direct string, both shown verbatim in the
 > Session pooler tab (**copy them, don't guess**):
+>
 > - **Username carries the project ref**: `postgres.<project-ref>`, not bare `postgres`.
 > - **The region must match your project's**: `aws-<n>-<region>.pooler.supabase.com`.
 >   A mismatched region connects but is rejected with `tenant/user not found`.
@@ -193,6 +194,7 @@ and write it.
         accessKey: <aws-access-key-id>
         secretKey: <aws-secret-access-key>
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Cloudflare R2" >}}
@@ -215,6 +217,7 @@ dashboard. R2 is S3-compatible: point the `endpoint` at your account's R2 URL an
         secretKey: <r2-secret-access-key>
         v2Signing: false
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -293,6 +296,7 @@ Port-forward the API service:
 ```bash
 kubectl -n flyte port-forward service/flyte-http 8090:8090
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "DigitalOcean VM" >}}
@@ -628,6 +632,7 @@ Traefik's node ports are mapped to your own host, so point `flyte.local` at loop
 ```bash
 echo "127.0.0.1 flyte.local" | sudo tee -a /etc/hosts
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "DigitalOcean VM" >}}
@@ -836,6 +841,7 @@ task:
 > Before uploading, the SDK calls `SelectCluster`; if the returned `clusterEndpoint`
 > differs from your `admin.endpoint`, it builds a *separate* per-cluster session for the
 > upload that may skip auth. Check the value and match it exactly:
+>
 > ```bash
 > curl -s -X POST --resolve flyte.local:443:127.0.0.1 -k \
 >   https://flyte.local/flyteidl2.cluster.ClusterService/SelectCluster \

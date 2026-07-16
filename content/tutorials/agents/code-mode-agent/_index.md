@@ -130,8 +130,8 @@ Deploying is one command. The entry point uses the remote image builder so no lo
 Register your Anthropic key as a secret and deploy:
 
 ```shell
-$ flyte create secret anthropic_api_key <your-anthropic-key>
-$ python app.py
+flyte create secret anthropic_api_key <your-anthropic-key>
+python app.py
 ```
 
 Open the printed URL and ask something like "Compare AAPL and MSFT over the last 6 months" or "Rank the FAANG stocks by 6-month return." The first question is slower as the task image builds and the MCP server cold-starts, then each answer streams progress while the run executes, and comes back as a short report of headline numbers, a chart, and sometimes a table, with the generated code and a link to the run so you can see the query tasks it dispatched.

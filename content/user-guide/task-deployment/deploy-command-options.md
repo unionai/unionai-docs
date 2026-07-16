@@ -24,7 +24,6 @@ The `flyte deploy` command provides extensive configuration options:
 | `--ignore-load-errors`      | `-i`  | flag   | `false`                   | Continue deployment despite module load failures  |
 | `--no-sync-local-sys-paths` |       | flag   | `false`                   | Disable local `sys.path` synchronization          |
 
-
 ## `--project`, `--domain`
 
 **`flyte deploy --domain <DOMAIN> --project <PROJECT> <SOURCE_FILE> <TASK_ENV_VARIABLE>`**
@@ -187,6 +186,7 @@ flyte deploy --root-dir .. my_example.py env
 ```
 
 **Working directory independence:**
+
 ```bash
 flyte deploy --root-dir /path/to/project /path/to/project/my_example.py env
 ```
@@ -199,6 +199,7 @@ flyte deploy --root-dir /path/to/project /path/to/project/my_example.py env
 4. **Dependency packaging**: Captures all necessary modules that may be located outside the workflow file's immediate directory
 
 ### Example with complex project structure
+
 ```
 my-project/
 ├── services/
@@ -248,7 +249,6 @@ flyte deploy --image ghcr.io/org/default:latest my_example.py env
 - Unnamed mappings (e.g., just `URI`) override the default "auto" image.
 - Multiple `--image` flags can be specified.
 - Mappings are resolved during the image building phase of deployment.
-
 
 ## `--ignore-load-errors`
 

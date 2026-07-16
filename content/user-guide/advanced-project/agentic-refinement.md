@@ -33,6 +33,7 @@ It's a traced function (not a separate task) that runs inside `refine_report`:
 {{< code file="/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="critique-content" >}}
 
 Key points:
+
 - Uses `json_mode=True` to ensure the LLM returns valid JSON
 - Parses the response into a Pydantic `Critique` model
 - Returns a typed object for reliable downstream processing
@@ -45,6 +46,7 @@ The revise function takes the current draft and specific improvements to address
 {{< code file="/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="revise-content" >}}
 
 The prompt includes:
+
 1. The list of improvements from the critique
 2. The current draft to revise
 
@@ -106,6 +108,7 @@ refine_report
 ```
 
 Benefits:
+
 - **Clarity**: See exactly how many iterations occurred
 - **Debugging**: Quickly find which iteration had issues
 - **Observability**: Track time spent in each refinement cycle
@@ -143,6 +146,7 @@ based on your quality requirements and budget.
    the score and improvements from LLM responses.
 
 3. **Log iteration progress**: Print statements help debug when reviewing logs:
+
    ```python
    print(f"Iteration {i + 1}: score={critique.score}")
    ```

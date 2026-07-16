@@ -19,6 +19,7 @@ result = my_task(x=10, y=20)
 ```
 
 **Flyte features are NOT invoked**, including:
+
 - Type transformations and serialization
 - Caching
 - Data validation
@@ -35,6 +36,7 @@ result = run.outputs()
 ```
 
 **Flyte features ARE invoked**, including:
+
 - Type transformations and serialization
 - Data validation
 - Type checking (raises `flyte.errors` if types are not supported or restricted)
@@ -221,4 +223,3 @@ async def test_subtract_serialization():
 ## Future improvements
 
 The Flyte SDK team is actively working on improvements for advanced unit testing scenarios, particularly around initialization and setup for complex test cases. Additional utilities and patterns may be introduced in future releases to further simplify unit testing.
-

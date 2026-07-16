@@ -45,6 +45,7 @@ The key idiom is `task.override(...)(args)`: `override()` returns a callable tas
 
 {{< variant flyte >}}
 {{< markdown >}}
+
 | Parameter | Details |
 |-----------|---------|
 | **short_name** | [Additional task settings](./additional-task-settings) |
@@ -64,6 +65,7 @@ The key idiom is `task.override(...)(args)`: `override()` returns a callable tas
 
 {{< variant union >}}
 {{< markdown >}}
+
 | Parameter | Details |
 |-----------|---------|
 | **short_name** | [Additional task settings](./additional-task-settings) |

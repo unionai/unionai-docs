@@ -19,6 +19,7 @@ The nodes for Union services should be tainted with:
 ```bash
 kubectl taint nodes <node-name> union.ai/node-role=services:NoSchedule
 ```
+
 The nodes for execution workers should be tainted with:
 
 ```bash

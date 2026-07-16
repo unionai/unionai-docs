@@ -13,6 +13,7 @@ variants: +flyte +union
 </sl-alert>
 
 {{< markdown >}}
+
 # Run locally on the devbox
 
 The devbox is a lightweight local cluster that runs on your machine with Docker. It includes a UI preview, scheduler, and object store, so you can test remote execution without deploying to a real cluster.
@@ -22,6 +23,7 @@ The devbox is a lightweight local cluster that runs on your machine with Docker.
 
 {{< variant flyte >}}
 {{< markdown >}}
+
 # Run locally on the devbox
 
 The Flyte devbox is a lightweight local cluster that runs on your machine with Docker. It gives you a full Flyte environment (including the UI, scheduler, and object store) so you can test remote execution without deploying to a real cluster.
@@ -49,17 +51,21 @@ Launch the local cluster:
 {{< tabs "cpu" >}}
 {{< tab "CPU" >}}
 {{< markdown >}}
+
 ```bash
 flyte start devbox
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 
 {{< tab "GPU" >}}
 {{< markdown >}}
+
 ```bash
 flyte start devbox --gpu
 ```
+
 {{< /markdown >}}
 
 {{< note >}}
@@ -137,6 +143,7 @@ flyte.init(
     insecure=True,
 )
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
@@ -159,7 +166,6 @@ See the [CLI reference](../../api-reference/flyte-cli) for details.
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
-
 
 ## Delete the devbox
 

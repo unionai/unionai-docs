@@ -215,31 +215,37 @@ The Swagger UI will show an "Authorize" button where you can enter your Bearer t
 1. **Use strong API keys**: Generate cryptographically secure random strings for your API keys
 2. **Rotate keys regularly**: Periodically rotate your API keys for better security
 3. **Scope secrets appropriately**: Use project/domain scoping when creating secrets if you want to limit access:
+
    ```bash
    flyte create secret --project my-project --domain development API_KEY my-secret-value
    ```
+
 4. **Never commit secrets**: Always use Flyte secrets for API keys, never hardcode them in your code
 5. **Use HTTPS**: Always use HTTPS in production (Flyte apps are served over HTTPS by default)
 
 ## Troubleshooting
 
 **Authentication failing:**
+
 - Verify the secret exists: `flyte get secret API_KEY`
 - Check that the secret key name matches exactly (case-sensitive)
 - Ensure you're using the correct Bearer token value
 - Verify the `as_env_var` parameter matches the environment variable name in your code
 
 **Secret not found:**
+
 - Make sure you've created the secret before deploying the app
 - Check the secret scope (organization vs project/domain) matches your app's project/domain
 - Verify the secret name matches exactly (should be `API_KEY`)
 
 **App not starting:**
+
 - Check container logs for errors
 - Verify all dependencies are installed in the image
 - Ensure the secret is accessible in the app's project/domain
 
 **LLM app authentication not working:**
+
 - Verify the secret exists: `flyte get secret AUTH_SECRET`
 - Check that `$AUTH_SECRET` is correctly specified in `extra_args` (note the `$` prefix)
 - Ensure the secret name matches exactly (case-sensitive) in both the `flyte.Secret()` call and `extra_args`
@@ -252,4 +258,3 @@ The Swagger UI will show an "Authorize" button where you can enter your Bearer t
 - Learn more about [managing secrets](../task-configuration/secrets) in Flyte
 - See [hybrid graphs](./hybrid-graphs) for webhook examples and authentication patterns
 - Learn about [vLLM apps](../native-app-integrations/vllm-app) and [SGLang apps](../native-app-integrations/sglang-app) for serving LLMs
-

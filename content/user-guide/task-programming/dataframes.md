@@ -35,6 +35,7 @@ We simply create the DataFrame as normal, and return it.
 Because the task has been declared to return a supported native DataFrame type (in this case `pandas.DataFrame` Flyte will automatically detect it, serialize it correctly and upload it at task completion enabling it to be passed transparently to the next task.
 
 Flyte supports auto-serialization for the following DataFrame types:
+
 * `pandas.DataFrame`
 * `pyarrow.Table`
 * `dask.dataframe.DataFrame`

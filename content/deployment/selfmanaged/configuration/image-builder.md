@@ -9,11 +9,13 @@ variants: -flyte +union
 Union Image Builder supports the ability to build container images within the dataplane. This enables the use of the `remote` builder type for any defined [Container Image](../../../user-guide/task-configuration/container-images).
 
 Configure the use of remote image builder:
+
 ```bash
 flyte create config --builder=remote --endpoint...
 ```
 
 Write custom [container images](../../../user-guide/task-configuration/container-images):
+
 ```python
 env = flyte.TaskEnvironment(
     name="hello_v2",
@@ -230,6 +232,7 @@ Follow guidance in this section to integrate Image Builder with private registri
 
 1. Follow the [GitHub guide](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) to log in to the registry locally.
 2. Create a Union secret:
+
 ```bash
 flyte create secret --type image_pull --from-docker-config --registries ghcr.io SECRET_NAME
 ```

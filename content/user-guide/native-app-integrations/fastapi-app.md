@@ -15,6 +15,7 @@ Here's a simple FastAPI app:
 {{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/basic_fastapi.py" lang=python >}}
 
 Once deployed, you can:
+
 - Access the API at the generated URL
 - View interactive API docs at `/docs` (Swagger UI)
 - View alternative docs at `/redoc`
@@ -25,7 +26,6 @@ Here's an example of serving a scikit-learn model:
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/ml_model_serving.py" fragment=ml-model lang=python >}}
 
-
 ## Accessing Swagger documentation
 
 FastAPI automatically generates interactive API documentation. Once deployed:
@@ -35,6 +35,7 @@ FastAPI automatically generates interactive API documentation. Once deployed:
 - **OpenAPI JSON**: Access at `{app_url}/openapi.json`
 
 The Swagger UI provides an interactive interface where you can:
+
 - See all available endpoints
 - Test API calls directly from the browser
 - View request/response schemas
@@ -149,17 +150,19 @@ FastAPI supports many features that work with Flyte:
 ## Troubleshooting
 
 **App not starting:**
+
 - Check that uvicorn can find your app module
 - Verify all dependencies are installed in the image
 - Check container logs for startup errors
 
 **Import errors:**
+
 - Ensure all imported modules are available
 - Use `include` parameter if you have custom modules
 - Check that file paths are correct
 
 **API not accessible:**
+
 - Verify `requires_auth` setting
 - Check that the app is listening on the correct port (8080)
 - Review network/firewall settings
-

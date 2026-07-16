@@ -61,6 +61,7 @@ def hello_world(name: str) -> str:
 def main(names: list[str]) -> list[str]:
     return flytekit.map(hello_world)(names)
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 
@@ -80,6 +81,7 @@ def hello_world(name: str) -> str:
 def main(names: list[str]) -> list[str]:
     return flyte.map(hello_world, names)
 ```
+
 {{< /markdown >}}
 
 {{< note >}}
@@ -106,10 +108,12 @@ syntax and the `asyncio` standard library to implement fa-out.
 -    return flyte.map(hello_world, names)
 +    return await asyncio.gather(*[hello_world(name) for name in names])
 ```
+
 {{< /markdown >}}
 
 {{< note >}}
 To use Python async syntax, you need to:
+
 - Use `asyncio.gather()` or `flyte.map()` for parallel execution
 - Add `async`/`await` keywords where you want parallelism
 - Keep existing sync task functions unchanged

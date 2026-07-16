@@ -11,6 +11,7 @@ This page walks you through the Azure infrastructure required before deploying t
 > [!NOTE] **Deployment model**: This guide covers **Self-managed**: you run only the dataplane chart; Union hosts the control plane.
 
 ## Prerequisites
+
 - Azure CLI [installed](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and [configured](https://learn.microsoft.com/en-us/cli/azure/get-started-with-azure-cli?view=azure-cli-latest#sign-in-to-azure)
 
 ## Environment variables
@@ -327,7 +328,6 @@ fluentbit:
           name: fluentbit-azure-key # <- CHANGE THIS
           key: shared_key
 ```
-
 
 > [!NOTE] The storage account key grants full access to the account. Rotate it on your normal
 > schedule; after rotation, update the secret (`kubectl create secret ... --dry-run=client -o yaml

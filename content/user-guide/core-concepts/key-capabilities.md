@@ -20,6 +20,7 @@ Configure how and where your code runs.
 
 {{< variant union >}}
 {{< markdown >}}
+
 - **Reusable containers**: Eliminate container startup overhead with pooled, warm containers for millisecond-level task scheduling
   → [Reusable containers](../task-configuration/reusable-containers)
 {{< /markdown >}}
@@ -31,6 +32,7 @@ Get your code running remotely.
 
 {{< variant union >}}
 {{< markdown >}}
+
 - **Cloud image building**: Build container images remotely without needing local Docker
   → [Container images](../task-configuration/container-images)
 {{< /markdown >}}
