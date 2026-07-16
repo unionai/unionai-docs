@@ -66,6 +66,8 @@ Because every connection is [outbound-only](#outbound-only-model), configuring n
 
 Both destinations are reached over the customer's existing outbound path (typically a NAT gateway). No inbound rules are required on the customer's external perimeter.
 
+Your tenant's Direct-to-Data-Plane tunnel is published at a tunnel domain of the form `<tenant>-<tenant>-tunnel.unionai.cloud` — the hostname clients and the UI resolve to reach the data plane through the tunnel. This is a client-side resolution target, not an additional data plane egress destination: the `cloudflared` daemon's own outbound connection is to the Cloudflare edge network on TCP 7844, as in the table above.
+
 ### Resolving control plane IP addresses
 
 Some environments must allowlist egress by IP address rather than by hostname. The control plane endpoints sit behind network load balancers whose IP addresses **change over time**, and an upcoming migration to Envoy-based routing will introduce new load balancers. For this reason, do not hardcode a static IP table.
