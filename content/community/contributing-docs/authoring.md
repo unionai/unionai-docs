@@ -1,48 +1,31 @@
 ---
 title: Authoring
-weight: 4
+weight: 2
 variants: +flyte +union
 ---
 
 # Authoring
 
+This page covers how to write and structure docs pages: creating files, controlling page visibility, linking, notices, and generating content from Python or Jupyter.
+Before you start, [set up a local docs dev environment](./quick-start) so you can preview your changes.
+For the editorial conventions to follow, see the [writing guidelines](./writing-guidelines); when you are ready to open a pull request, see [Submit a contribution](./submitting-contributions).
+
 ## Getting started
 
 Content is located in the `content` folder.
 
-To create a new page, simply create a new Markdown file in the appropriate folder and start writing it!
-
-## Target the right branch
-
-Remember that there are two production branches in the docs: `main` and `v1`.
-
-* **For Flyte or Union 1, create a branch off of `v1` and target your pull request to `v1`**
-* **For Flyte or Union 2, create a branch off of `main` and target your pull request to `main`**
+To create a new page, create a new Markdown file in the appropriate folder and start writing.
 
 ## Live preview
 
-While editing, you can use Hugo's local live preview capabilities.
-Simply execute
-
-```bash
-make dev
-```
-
-This will build the site and launch a local server at `http://localhost:1313`.
-Go to that URL to the live preview. Leave the server running.
-As you edit the preview will update automatically.
-
-See [Publishing](./publishing) for how to set up your machine.
-
-## Pull requests + site preview
-
-Pull requests will create a preview build of the site on CloudFlare.
-Check the pull request for a dynamic link to the site changes within that PR.
+While editing, use Hugo's live preview: run `make dev` and open `http://localhost:1313`.
+The preview updates automatically as you edit.
+See [Set up a local docs dev environment](./quick-start) for the full setup.
 
 ## Page visibility
 
 This site uses variants, which means different "flavors" of the content.
-For a given -age, its variant visibility is governed by the `variants:` field in the front matter of the page source.
+For a given page, its variant visibility is governed by the `variants:` field in the front matter of the page source.
 For each variant you specify `+<variant>` to include or `-<variant>` to exclude it.
 For example:
 

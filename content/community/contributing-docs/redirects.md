@@ -1,6 +1,6 @@
 ---
 title: Redirects
-weight: 7
+weight: 10
 variants: +flyte +union
 ---
 

@@ -1,64 +1,123 @@
 ---
-title: Quick start
+title: Set up a local docs dev environment
 weight: 1
 variants: +flyte +union
 ---
 
-# Quick start
+# Set up a local docs dev environment
+
+Follow these steps to build and preview the docs site on your own machine.
+Once it is running, you can edit content and see your changes live.
 
 ## Prerequisites
 
-The docs site is built using the [Hugo](https://gohugo.io/) static site generator.
-You will need to install it to build the site locally.
-See [Hugo Installation](https://gohugo.io/getting-started/installing/).
+The site is built with the [Hugo](https://gohugo.io/) static site generator.
+Install Hugo version 0.145.0 or later:
+
+```bash
+brew install hugo
+```
+
+For other platforms, see [Hugo installation](https://gohugo.io/getting-started/installing/).
+You also need `git` and `make`.
 
 ## Clone the repository
 
-Clone the [`unionai/unionai-docs`](https://github.com/unionai/unionai-docs) repository to your local machine.
+Clone [`unionai/unionai-docs`](https://github.com/unionai/unionai-docs) to your machine:
 
-The content is located in the `content/` folder in the form of Markdown files.
-The hierarchy of the files and folders under `content/` directly reflect the URL and navigation structure of the site.
+```bash
+git clone https://github.com/unionai/unionai-docs.git
+cd unionai-docs
+```
 
-## Live preview
+Content lives in the `content/` folder as Markdown files.
+The hierarchy of files and folders under `content/` maps directly to the URL and navigation structure of the site.
 
-Next, set up the live preview by going to the root of your local repository check-out and copy the sample configuration file to `hugo.local.toml`:
+## Initialize the submodules
+
+The docs repository uses two Git submodules that you must initialize before the first build:
+
+* `unionai-docs-infra/` holds the shared build infrastructure (Hugo configuration, layouts, themes, and build tools).
+* `unionai-examples/` holds the runnable example code that pages embed.
+
+Initialize the build infrastructure:
+
+```bash
+make init-infra
+```
+
+Then initialize the examples:
+
+```bash
+make init-examples
+```
+
+To update the examples submodule to its latest `main` later, run `make update-examples`.
+
+## Configure the live preview
+
+Copy the sample local configuration file at the root of the repository to `hugo.local.toml`:
 
 ```bash
 cp hugo.local.toml~sample hugo.local.toml
 ```
 
-This file contains the configuration for the live preview:
+This file controls the development preview and is not committed.
+By default it displays the `flyte` variant with the `show_inactive`, `highlight_active`, and `highlight_keys` flags enabled.
 
-By default, it is set to display the `flyte` variant of the docs site along with enabling the flags `show_inactive`, `highlight_active`, and `highlight_keys` (more about these below)
+## Start the live preview
 
-Now you can start the live preview server by running:
+Start the development server:
 
 ```bash
 make dev
 ```
 
-This will build the site and launch a local server at `http://localhost:1313`.
-Go to that URL to the live preview. Leave the server running.
-As you edit the content you will see the changes reflected in the live preview.
+This builds the site and launches a local server at `http://localhost:1313`.
+Open that URL in your browser and leave the server running.
+As you edit content, the preview reloads automatically to reflect your changes.
 
-## Distribution build
+## Development settings
 
-To build the site for distribution, run:
+Adjust the preview by editing `hugo.local.toml`. Save the file and the browser refreshes automatically.
+
+| Setting | Effect |
+| --- | --- |
+| `variant` | The variant to display (`flyte` or `union`). This is the "active" variant. |
+| `show_inactive` | If `true`, also shows content that does not match the active variant, so you can see every variant at once. |
+| `highlight_active` | If `true`, highlights the active variant's content to distinguish it from content common to all variants. |
+| `highlight_keys` | If `true`, highlights [key](./shortcodes#key) replacements and their values. |
+
+For more on variants, see [Variants](./variants).
+
+## Build the production site
+
+To build the site the way the production pipeline does, run:
 
 ```bash
 make dist
 ```
 
-This will build the site locally just  as it is built by the Cloudflare CI for production.
+This builds every variant and writes the result to the `dist/` folder.
+To build and validate a single variant, run `make variant VARIANT=union` (or `VARIANT=flyte`).
 
-You can view the result of the build by running a local server:
+Serve the production build locally to check it:
 
 ```bash
 make serve
 ```
 
-This will start a local server at `http://localhost:9000` and serve the contents of the `dist/` folder. You can also specify a port number:
+This serves the `dist/` folder at `http://localhost:9000`.
+To use a different port, pass `PORT`:
 
 ```bash
-make serve PORT=<nnnnn>
+make serve PORT=4444
 ```
+
+For production build details and troubleshooting, see [Production builds and troubleshooting](./publishing).
+
+## Next steps
+
+* [Author content](./authoring) with Markdown, shortcodes, and variants.
+* Follow the [writing guidelines](./writing-guidelines) so your docs match the rest of the site.
+* [Submit your contribution](./submitting-contributions) as a pull request.
