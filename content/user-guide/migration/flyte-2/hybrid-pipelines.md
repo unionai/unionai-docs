@@ -85,7 +85,7 @@ def main(x: int) -> str:
 The referenced Flyte 2 task (`my_v2_env.process` above) must be **deployed** before the bridge runs — `flyte.remote.Task.get()` looks it up by `env_name.task_name`. See [Remote tasks](../../task-programming/remote-tasks) for versioning options (`auto_version="latest"`, `version="v1.2.3"`) and `flyte.run` details.
 
 {{< note >}}
-`flyte.init_from_api_key()` is required here — do **not** use `flyte.init_from_config()`, which reads a `config.yaml` that has no API-key field. See [Authenticating](../../authenticating#api-key).
+`flyte.init_from_api_key()` is required here — do **not** use `flyte.init_from_config()`, which reads a `config.yaml` that has no API-key field. See [Run on a remote cluster](../../run-modes/running-remote) for the authentication methods.
 {{< /note >}}
 
 ## Running a Flyte 1 workflow from a Flyte 2 task
@@ -149,11 +149,16 @@ execution = remote.execute(wf, inputs={"x": x}, wait=True)
 - **Both SDKs in one image.** The bridging task installs `flytekit` and `flyte` together. Pin versions and watch for dependency conflicts; keep the bridge image minimal.
 - **Deploy the callee first.** For the v1→v2 direction, the Flyte 2 task must be deployed (`flyte deploy`) before `flyte.remote.Task.get()` can resolve it. For the v2→v1 direction, the Flyte 1 workflow must be registered on its cluster.
 - **Wait vs. fire-and-forget.** Both `run.wait()` (v2) and `execute(..., wait=True)` (v1) block until the launched run finishes. Omit them to launch and return immediately, then poll or hand off the execution URL.
-- **Credentials cross a boundary.** The bridge authenticates to a *different* control plane than the one it runs on. Store the API key or client credentials as a secret — never hard-code them. See [Secrets](../../task-configuration/secrets) and [Authenticating](../../authenticating).
+- **Credentials cross a boundary.** The bridge authenticates to a *different* control plane than the one it runs on. Store the API key or client credentials as a secret — never hard-code them. See [Secrets](../../task-configuration/secrets) and [Run on a remote cluster](../../run-modes/running-remote).
 - **Keep the bridge lightweight.** Like any orchestrating task, it should mostly launch and assemble results rather than do heavy compute — see [Considerations](./considerations).
 
 ## See also
 
 - [Remote tasks](../../task-programming/remote-tasks) — fetching and running deployed Flyte 2 tasks
-- [Authenticating](../../authenticating#api-key) — API key authentication and `flyte.init_from_api_key()`
+- [Run on a remote cluster](../../run-modes/running-remote) — authentication methods, including `flyte.init_from_api_key()`
+{{< variant union >}}
+{{< markdown >}}
+- [Authenticating](../../authenticating#api-key) — API key authentication in depth
+{{< /markdown >}}
+{{< /variant >}}
 - [Migration](./migration) — mapping Flyte 1 workload patterns to Flyte 2
