@@ -47,13 +47,41 @@ All communication paths in the system use encryption. No unencrypted communicati
 | Client to control plane (orchestration API) | HTTPS | TLS 1.2+ |
 | Client to data plane (customer-data requests, default tier) | Direct-to-Data-Plane tunnel | TLS 1.3 + mTLS |
 | Client to data plane (customer-data requests, Sovereign Data Plane tier) | Customer-managed internal LB (corporate VPN) | TLS (customer-managed) |
-| Data plane → control plane (orchestration metadata, outbound-initiated) | gRPC over TLS | TLS 1.2+ |
+| Data plane → control plane (orchestration metadata, outbound-initiated) | gRPC over TLS (TCP 443) | TLS 1.2+ |
 | Client to Object Store | HTTPS (presigned URL) | TLS 1.2+ (cloud provider enforced) |
 | Fluent Bit to Log Aggregator | Cloud provider SDK | TLS (cloud-native) |
 | Task Pods to Object Store | Cloud provider SDK | TLS (cloud-native) |
 | Union.ai to Customer Kubernetes API (BYOC only) | PrivateLink / PSC | TLS (private connectivity) |
 
-For details on the BYOC private management connection, see [Private connectivity (BYOC)](./private-connectivity).
+For details on the BYOC private management connection, see [Private connectivity (BYOC)](./private-connectivity). For the concrete outbound ports and endpoints the data plane connects to, see [Egress requirements](#egress-requirements) below.
+
+## Egress requirements
+
+Because every connection is [outbound-only](#outbound-only-model), configuring network access for the data plane is a matter of permitting a small set of outbound destinations -- there are no inbound firewall rules, port forwarding, or listening services to open. This section makes that model concrete: the specific destinations, ports, and protocols the data plane initiates connections to.
+
+| Source (data plane) | Destination | Port / protocol | Purpose |
+|---|---|---|---|
+| Data plane operator (all components) | Union.ai control plane, at your tenant endpoint (`<tenant>.hosted.unionai.cloud`) | TCP 443 (TLS) | Outbound gRPC-over-TLS orchestration RPCs: cluster registration, action lifecycle, event reporting, catalog and artifact lookups, admin RPCs, and metrics. This is the same tenant DNS the UI and CLI use, and every data plane component authenticates to the control plane over it. See [Data plane](./data-plane) for the components that use this channel. |
+| `cloudflared` (Tunnel Service) | Cloudflare edge network | TCP 7844 | Establishes the outbound [Direct-to-Data-Plane tunnel](#direct-to-data-plane-tunnel) (default tier only). See Cloudflare's [firewall configuration guidance](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/configure-tunnels/tunnel-with-firewall/) for the exact ports and hostnames the `cloudflared` daemon needs. |
+
+Both destinations are reached over the customer's existing outbound path (typically a NAT gateway). No inbound rules are required on the customer's external perimeter.
+
+### Resolving control plane IP addresses
+
+Some environments must allowlist egress by IP address rather than by hostname. The control plane endpoints sit behind network load balancers whose IP addresses **change over time**, and an upcoming migration to Envoy-based routing will introduce new load balancers. For this reason, do not hardcode a static IP table.
+
+Instead, resolve your own tenant endpoint and re-resolve it on a schedule rather than pinning fixed addresses:
+
+```bash
+dig <tenant>.hosted.unionai.cloud
+```
+
+Allowlist the addresses returned, and refresh the allowlist periodically. Where your egress policy supports it, prefer an FQDN- or DNS-based rule over static IPs so that load-balancer changes are picked up automatically.
+
+### VPN alternative to the tunnel
+
+> [!NOTE]
+> A forthcoming VPN-based option will let the data plane connect without the Cloudflare Tunnel, making the `cloudflared` egress on TCP 7844 optional as a do-it-yourself alternative. This is not yet available: under the default tier today, the Direct-to-Data-Plane tunnel requires outbound TCP 7844 to the Cloudflare edge. Enterprise customers who need to eliminate the third-party tunnel path now can use the [Sovereign Data Plane](./sovereign-data-plane) tier, which replaces it with a customer-managed internal load balancer reachable only from the corporate VPN.
 
 ## Verification
 
