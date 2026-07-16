@@ -1,6 +1,6 @@
 ---
 title: Variants
-weight: 2
+weight: 5
 variants: +flyte +union
 ---
 
@@ -34,12 +34,12 @@ In the public website, if you are on page in one variant, and you change to a di
 If it does not exist, you will see a message indicating that the page is not available in the selected variant.
 
 In the source Markdown, the presence or absence of a page in a given variant is governed by  `variants` field in the front matter parameter of the page.
-For example, if you look at the Markdown source for [this page (the page you are currently viewing)](https://github.com/unionai/unionai-docs/blob/main/content/community/contributing-docs.md), you will see the following front matter:
+For example, if you look at the Markdown source for [this page (the page you are currently viewing)](https://github.com/unionai/unionai-docs/blob/main/content/community/contributing-docs/variants.md), you will see the following front matter:
 
 ```markdown
 ---
-title: Platform overview
-weight: 1
+title: Variants
+weight: 5
 variants: +flyte +union
 ---
 ```
