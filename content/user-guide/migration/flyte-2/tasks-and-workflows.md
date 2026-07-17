@@ -47,7 +47,60 @@ A `@workflow` invoked by another `@workflow` (for example, a reusable preprocess
 {{< /tab >}}
 {{< /tabs >}}
 
-For the complete `@task` → `TaskEnvironment` + `@env.task` parameter mapping, see [Tasks and workflows](../../../api-reference/migration/tasks-and-workflows) in the reference.
+## TaskEnvironment configuration
+
+The `TaskEnvironment` holds the configuration that Flyte 1 spread across the `@task` decorator. The task decorator can still override a few settings per-task.
+
+```python
+import flyte
+
+env = flyte.TaskEnvironment(
+    name="my_env",                           # Required: unique name
+    image=flyte.Image.from_debian_base(),    # Or a string, or "auto"
+    resources=flyte.Resources(
+        cpu="2",
+        memory="4Gi",
+        gpu="A100:1",
+        disk="10Gi",
+    ),
+    env_vars={"LOG_LEVEL": "INFO"},
+    secrets=[flyte.Secret(key="api-key", as_env_var="API_KEY")],
+    cache="auto",                            # "auto", "override", "disable", or a Cache object
+    reusable=flyte.ReusePolicy(replicas=5, idle_ttl=60),
+    interruptible=True,
+)
+
+# The task decorator can override some settings:
+@env.task(
+    short_name="my_task",   # Display name
+    cache="disable",        # Override cache
+    retries=3,              # Retry count
+    timeout=3600,           # Seconds or a timedelta
+    report=True,            # Generate an HTML report
+)
+def my_task(x: int) -> int:
+    return x
+```
+
+## Parameter mapping: `@task` → `TaskEnvironment` + `@env.task`
+
+| Flyte 1 `@task` parameter | Flyte 2 location | Notes |
+|---|---|---|
+| `container_image` | `TaskEnvironment(image=...)` | Env-level only |
+| `requests` | `TaskEnvironment(resources=...)` | Env-level only |
+| `limits` | `TaskEnvironment(resources=...)` | Combined with requests (single value) |
+| `environment` | `TaskEnvironment(env_vars=...)` | Env-level only |
+| `secret_requests` | `TaskEnvironment(secrets=...)` | Env-level only |
+| `cache` | Both | Can override at task level |
+| `cache_version` | `flyte.Cache(version_override=...)` | In a `Cache` object |
+| `retries` | `@env.task(retries=...)` | Task-level only |
+| `timeout` | `@env.task(timeout=...)` | Task-level only |
+| `interruptible` | Both | Can override at task level |
+| `pod_template` | Both | Can override at task level |
+| `deprecated` | N/A | Not in Flyte 2 |
+| `docs` | `@env.task(docs=...)` | Task-level only |
+
+For image, resource, secret, and caching detail, see [Task configuration](./configuration).
 
 ## Next
 

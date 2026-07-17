@@ -1,6 +1,6 @@
 ---
 title: New in Flyte 2
-weight: 10
+weight: 11
 variants: +flyte +union
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: Parallelism and fan-out
-weight: 7
+weight: 8
 variants: +flyte +union
 ---
 
@@ -24,7 +24,39 @@ Flyte 1's `map_task` becomes `flyte.map`, and the idiomatic Flyte 2 approach to 
 {{< /tab >}}
 {{< /tabs >}}
 
-See the [Asynchronous model](./async) guide and [Parallelism and async](../../../api-reference/migration/parallelism-and-async) for the full story.
+See the [Asynchronous model](./async) guide for the concepts behind async execution.
+
+### Choosing `flyte.map` vs `asyncio.gather`
+
+| Feature | `flyte.map` (sync) | `asyncio.gather` (async) |
+|---|---|---|
+| Syntax | `list(flyte.map(fn, items))` | `await asyncio.gather(*tasks)` |
+| Concurrency limit | Built-in `concurrency=N` | Use `asyncio.Semaphore` |
+| Streaming / as-completed | No | Yes, via `asyncio.as_completed()` |
+| Error handling | `return_exceptions=True` | Check return type |
+
+Use **`flyte.map`** for the smallest change from Flyte 1 `map_task`, or when you're stuck in synchronous code. Use **`asyncio.gather`** for new code where you want streaming results or fine-grained concurrency control.
+
+### Concurrency control and error handling
+
+`map_task`'s `concurrency` and `min_success_ratio` become an `asyncio.Semaphore` and `return_exceptions=True`:
+
+```python
+import asyncio
+
+@env.task
+async def main(items: list[int], max_concurrent: int = 5) -> list[str]:
+    sem = asyncio.Semaphore(max_concurrent)
+
+    async def process_with_limit(item: int) -> str:
+        async with sem:
+            return await process_item(item)
+
+    tasks = [process_with_limit(i) for i in items]
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+
+    return [r for r in results if not isinstance(r, Exception)]
+```
 
 ## Data backfills
 
