@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Parallelism and fan-out
 
-Flyte 1's `map_task` becomes `flyte.map`, and the idiomatic Flyte 2 approach to fan-out is Python `async`/`await` with `asyncio.gather`. See the [Asynchronous model](./async) guide for the concepts, and [Migration](./migration) for the overall approach.
+Flyte 1's `map_task` becomes `flyte.map`, and the idiomatic Flyte 2 approach to fan-out is Python `async`/`await` with `asyncio.gather`. See the [Asynchronous model](./overview#asynchronous-model) guide for the concepts, and [Migration](./overview) for the overall approach.
 
 ## Fan-out: `map_task`
 
@@ -24,7 +24,7 @@ Flyte 1's `map_task` becomes `flyte.map`, and the idiomatic Flyte 2 approach to 
 {{< /tab >}}
 {{< /tabs >}}
 
-See the [Asynchronous model](./async) guide for the concepts behind async execution.
+See the [Asynchronous model](./overview#asynchronous-model) guide for the concepts behind async execution.
 
 ### Choosing `flyte.map` vs `asyncio.gather`
 

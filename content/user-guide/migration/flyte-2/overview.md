@@ -1,16 +1,84 @@
 ---
-title: Migration
-weight: 3
+title: Migration Overview
+weight: 1
 variants: +flyte +union
 ---
 
-# Migration from Flyte 1 to Flyte 2
+# Migration Overview
 
 This section walks through the Flyte 1 workload patterns you already know — data ETL, model training, hyperparameter sweeps, batch inference — and their Flyte 2 equivalents. Every pattern is a complete, runnable v1↔v2 example pair in the [`unionai-examples`](https://github.com/unionai/unionai-examples/tree/main/v2/user-guide/migration/flyte-2) repository.
 
+Two conceptual shifts motivate almost every change — **pure Python execution** and the **asynchronous model** — after which most migrations come down to a couple of mechanical moves. This page covers both shifts, the terminology mapping, and a quick-reference module.
+
+## Pure Python execution
+
+In Flyte 1, `@workflow` functions were constrained to a DSL subset of Python that compiled to a static DAG. In Flyte 2 there is **no `@workflow` decorator**: everything is a `@env.task`, and a "workflow" is simply a task that calls other tasks. Orchestration runs as real Python at runtime, so loops, conditionals, and `try`/`except` work anywhere.
+
+| Flyte 1 | Flyte 2 |
+| --- | --- |
+| `@workflow` functions are constrained to a subset of Python defining a static DAG. | **No `@workflow` decorator**: your top-level "workflow" is just a task that calls other tasks. |
+| `@task` functions had the full power of Python, but only within a single container execution. | `@env.task`s call other tasks and build dynamic structures with any Python construct, anywhere. |
+| Workflows compiled to static DAGs at registration time. | Workflows are tasks calling tasks; compile-time safety is coming via `compiled_task`. |
+
+{{< tabs "whats-new-dsl-to-python" >}}
+{{< tab "Flyte 1" >}}
+{{< code file="/unionai-examples/v2/user-guide/flyte-2/pure-python/flyte_1.py" lang="python" >}}
+{{< /tab >}}
+{{< tab "Flyte 2" >}}
+{{< code file="/unionai-examples/v2/user-guide/flyte-2/pure-python/flyte_2.py" fragment="all" lang="python" >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+This unlocks workflows that adapt to runtime conditions, native `try`/`except` error handling, and the intuitive composition of ordinary Python functions.
+
+## Asynchronous model
+
+Flyte 2 is built on Python's `asyncio`, with a crucial twist: **the Flyte orchestrator acts as the event loop**, scheduling awaited tasks across distributed infrastructure. This makes `async`/`await` the natural way to express parallelism.
+
+| | Flyte 1 | Flyte 2 |
+| --- | --- | --- |
+| Parallelism | The DSL auto-parallelized independent tasks; the `map` operator ran a task over many inputs. | Python's `asyncio` expresses parallelism, with the Flyte orchestrator acting as the event loop across distributed infrastructure. |
+
+The core async keywords carry Flyte-specific meaning:
+
+- **`async def`** declares a coroutine.
+- **`await`** signals where a task can be scheduled in parallel — not just an I/O yield point.
+- **`asyncio.gather`** tells the orchestrator that a set of tasks are independent and can be distributed across separate compute resources.
+
+Consider this pattern for parallel data processing:
+
+{{< code file="/unionai-examples/v2/user-guide/flyte-2/async/async.py" fragment="async" lang="python" >}}
+
+In standard Python this mainly benefits I/O-bound work; in Flyte 2 the orchestrator schedules each `process_chunk` task on its own pod.
+
+### True parallelism for all workloads
+
+Async syntax in Flyte 2 is **not just for I/O-bound operations**. When the orchestrator encounters `await asyncio.gather(...)`, it runs those independent tasks simultaneously across compute resources — achieving true parallelism for CPU-bound work (model training, heavy math), I/O-bound work (queries, API calls), and mixed workloads alike.
+
+### Calling sync tasks from async tasks
+
+You don't need to rewrite existing synchronous code. Flyte automatically "asyncifies" sync functions; just call them from an async context with `.aio()`:
+
+{{< code file="/unionai-examples/v2/user-guide/flyte-2/async/async.py" fragment="calling-sync-from-async" lang="python" >}}
+
+### The `flyte.map` function: Familiar patterns
+
+For code that used Flyte 1's `map`, `flyte.map` is a direct replacement that works in both sync and async contexts:
+
+{{< tabs "whats-new-map-function" >}}
+{{< tab "Sync Map" >}}
+{{< code file="/unionai-examples/v2/user-guide/flyte-2/async/async.py" fragment="sync-map" lang="python" >}}
+{{< /tab >}}
+{{< tab "Async Map" >}}
+{{< code file="/unionai-examples/v2/user-guide/flyte-2/async/async.py" fragment="async-map" lang="python" >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+It provides dual interfaces (`flyte.map.aio()` and `flyte.map()`), `return_exceptions` for graceful failure handling (a more flexible replacement for Flyte 1's `min_success_ratio`), automatic UI grouping, and optional concurrency limits.
+
 ## Terminology and concept mapping
 
-Several Flyte 1 concepts were renamed or reshaped in Flyte 2. The table below maps the ones you'll meet most often, so you can recognize the Flyte 2 equivalent of a term you already know.
+Several Flyte 1 concepts were renamed or reshaped in Flyte 2. The table below maps the ones you'll meet most often.
 
 | Flyte 1 | Flyte 2 | Notes |
 |---|---|---|
@@ -29,7 +97,7 @@ Several Flyte 1 concepts were renamed or reshaped in Flyte 2. The table below ma
 
 ## Package imports
 
-The most visible change is the package rename from `flytekit` to `flyte`, along with the disappearance of the workflow/dynamic/map_task imports.
+The package is renamed from `flytekit` to `flyte`, and the workflow/dynamic/map_task imports disappear:
 
 {{< tabs "migration-imports" >}}
 {{< tab "Flyte 1" >}}
@@ -53,27 +121,13 @@ from flyte import Image, Trigger, Cron
 {{< /tab >}}
 {{< /tabs >}}
 
-| Flyte 1 import | Flyte 2 equivalent | Notes |
-|---|---|---|
-| `flytekit.task` | `env.task` | Decorator from a `TaskEnvironment` |
-| `flytekit.workflow` | `env.task` | Workflows are now tasks |
-| `flytekit.dynamic` | `env.task` | All tasks can be dynamic |
-| `flytekit.map_task` | `flyte.map` / `asyncio.gather` | Different API |
-| `flytekit.ImageSpec` | `flyte.Image` | Different API |
-| `flytekit.Resources` | `flyte.Resources` | Similar API |
-| `flytekit.Secret` | `flyte.Secret` | Different access pattern |
-| `flytekit.current_context()` | `flyte.ctx()` | Different API |
-| `flytekit.LaunchPlan` | `flyte.Trigger` | Different concept |
-| `flytekit.CronSchedule` | `flyte.Cron` | Used with a `Trigger` |
-| `flytekit.conditional` | native `if`/`else` | No longer needed |
-
 ## The two mechanical changes behind (almost) every migration
 
 Most of a migration comes down to two moves:
 
 ### 1. Move task configuration into a `TaskEnvironment`
 
-Instead of configuring the image, hardware resources, and caching directly on each task decorator, you configure them once on a `flyte.TaskEnvironment` and share it across tasks:
+Instead of configuring the image, resources, and caching on each task decorator, configure them once on a `flyte.TaskEnvironment` and share it across tasks:
 
 ```python
 env = flyte.TaskEnvironment(
@@ -109,22 +163,8 @@ The migration patterns are grouped by theme. Start with **Tasks and workflows**,
 - **[Union features](./union-features)** — migrating Union-specific Actors (→ reusable containers) and Apps (→ the Flyte SDK).
 {{< /markdown >}}
 {{< /variant >}}
-
-Two more pages round out the section: **[Considerations](./considerations)** covers the caveats of the new execution model, and **[Hybrid v1 and v2 pipelines](./hybrid-pipelines)** shows how to call between v1 and v2 during the transition.
-
-## Common gotchas
-
-- **`flyte.map` returns a generator.** Wrap it in `list()` to materialize results, unlike `map_task` which returned a list directly.
-- **`memory`, not `mem`.** The `Resources` parameter was renamed, and there are no separate `requests`/`limits` — a single value serves as both.
-- **GPUs use a `"T4:1"` string.** Type and count are combined; the separate `accelerator=` argument is gone.
-- **Image, resources, and cache live on the `TaskEnvironment`.** Set them once at the env level instead of repeating them on every task decorator.
-- **`current_context()` is gone.** Read secrets from environment variables and use `flyte.ctx()` for runtime context.
-- **The `>>` ordering operator is gone.** Sequential (sync) calls and sequential `await`s are naturally ordered.
-- **Retries no longer have a platform cap.** In Flyte 1 the control plane capped attempts at 3; in Flyte 2 total attempts equal `retries + 1`. Audit any large `retries` values before deploying.
-- **You can only `await` async tasks.** Call a sync task from an async context with `.aio()`; see the [Asynchronous model](./async) guide.
-- **Pick an entrypoint task name.** There's no `@workflow`, so the top-level task is just a task (commonly `main`); run it with `flyte run module.py main`.
-- **Type annotations are more lenient.** Flyte 2 will pickle untyped I/O rather than rejecting it at registration.
-- **Keep orchestration lightweight.** A task that calls other tasks acts as a driver pod. Avoid heavy CPU work in it — see [Considerations](./considerations).
+- **[Hybrid v1 and v2 pipelines](./hybrid-pipelines)** — calling between v1 and v2 in both directions during the transition.
+- **[Gotchas and caveats](./gotchas-and-caveats)** — common gotchas plus the deeper caveats of the new execution model, including non-deterministic behavior and keeping orchestration lightweight.
 
 ## Quick reference
 

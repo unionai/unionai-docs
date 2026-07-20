@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # CLI and configuration
 
-The command-line tool is renamed from `pyflyte` to `flyte`, and the config file is trimmed down. See [Migration](./migration) for the overall approach.
+The command-line tool is renamed from `pyflyte` to `flyte`, and the config file is trimmed down. See [Migration](./overview) for the overall approach.
 
 ## CLI command mapping
 
