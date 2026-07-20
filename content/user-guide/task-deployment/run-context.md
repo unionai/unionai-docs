@@ -89,7 +89,7 @@ To list and filter runs by their labels, see [Filtering runs by label](./interac
 | `log_format` | `"console"` \| `"json"` | `"console"` | Log output format. |
 | `reset_root_logger` | `bool` | `False` | If `True`, clear the root logger's existing handlers and install Flyte's own. If `False` (the default), leave existing root handlers in place and wrap their formatters with the run/action context. |
 
-For setting the logging level (including via environment variables) and the framework-vs-user logger split, see [Logging](../task-configuration/logging).
+For setting the logging level (including via environment variables), the framework-vs-user logger split, and capturing third-party library logs as JSON with `reset_root_logger`, see [Logging](../task-configuration/logging).
 
 ### Code bundling
 
