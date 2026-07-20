@@ -9,6 +9,7 @@ variants: +flyte +union
 When running Flyte tasks that take inputs like DataFrames, files, or directories, data is passed between actions through the configured blob store. For details on how data flows through your workflows, see [data flow](../run-scaling/data-flow).
 
 Flyte provides several built-in types for handling data:
+
 - `flyte.io.DataFrame` for tabular data
 - `flyte.io.File` for individual files
 - `flyte.io.Dir` for directories
@@ -196,6 +197,7 @@ new_run = flyte.run(my_task, data=previous_output)
 The `from_local_sync()` method uses HTTP to upload data. This is convenient but not the most performant option for large datasets.
 
 **Best suited for:**
+
 - Small to medium test datasets
 - Development and debugging
 - Quick prototyping

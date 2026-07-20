@@ -15,7 +15,7 @@ Most distributed training tutorials focus on PyTorch primitives. This one focuse
 Real training jobs need more than a training loop. They need checkpointing, fault tolerance, data streaming, visibility into what’s happening, and the ability to recover from failures. In this tutorial, we build all of that using Flyte, without having to stand up or manage any additional infrastructure.
 
 > [!NOTE]
-> Full code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/pretraining/train.py).
+> Full code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/pretraining/train.py).
 
 ## Overview
 

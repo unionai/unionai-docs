@@ -13,9 +13,10 @@ The {{< key product_name >}} architecture consists of two virtual private clouds
 ## Control plane
 
 The control plane:
-  * Runs within the {{< key product_name >}} AWS account.
-  * Provides the user interface through which users can access authentication, authorization, observation, and management functions.
-  * Is responsible for placing executions onto data plane clusters and performing other cluster control and management functions.
+
+* Runs within the {{< key product_name >}} AWS account.
+* Provides the user interface through which users can access authentication, authorization, observation, and management functions.
+* Is responsible for placing executions onto data plane clusters and performing other cluster control and management functions.
 
 ## Data plane
 
@@ -81,7 +82,7 @@ Execution data is composed of::
 * Workflow outputs
 * Data passed between tasks (task inputs and outputs)
 
-This data is divided into two categories: *raw data* and *literal data*.
+This data is divided into two categories: _raw data_ and _literal data_.
 
 ### Raw data
 
@@ -107,4 +108,3 @@ For the developer-facing map of which specific records live in the control plane
 ## Data privacy
 
 All runtime execution data, both raw and literal inputs and outputs, is stored in the object store in your data plane, never in the control plane. The control plane holds orchestration metadata only: task definitions (which include default input values, environment variables, and SQL statements), run state, and error messages (which may include data from Python tracebacks).
-

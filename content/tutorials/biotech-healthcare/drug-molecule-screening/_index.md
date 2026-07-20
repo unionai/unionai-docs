@@ -7,7 +7,7 @@ variants: +flyte +union
 # Drug molecule screening agent
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/drug_molecule_screening).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/drug_molecule_screening).
 
 This tutorial builds an **agentic** virtual drug-screening workflow on Flyte. A medicinal-chemistry agent interprets your therapeutic goal in plain language, derives screening criteria, and composes durable RDKit stage tasks, while the scientific core (property computation, Lipinski filters, Tanimoto similarity, ranking, and HTML reports) stays in trusted, deterministic tools.
 

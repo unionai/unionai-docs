@@ -134,4 +134,3 @@ def t1():
 
 > [!WARNING]
 > Do not return secret values from tasks. Returned values are stored in plaintext in your data plane's object store and shown in the UI and to downstream tasks, defeating the secret store's protections.
-

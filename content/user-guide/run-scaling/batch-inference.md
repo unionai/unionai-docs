@@ -604,6 +604,7 @@ print(f"Idle time: {stats.idle_time_s:.1f}s")
 | `idle_time_s` | Cumulative seconds the processing loop waited for batches |
 
 If utilization is low, consider:
+
 - **Increasing concurrency**: more concurrent producers means the batcher has more records to assemble into batches
 - **Reducing `batch_timeout_s`**: dispatch partial batches faster instead of waiting
 - **Increasing `max_queue_size`**: allow more records to be buffered ahead of the GPU

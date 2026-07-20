@@ -65,7 +65,7 @@ For apps with variable load:
 
 ### Idle TTL (Time to live)
 
-The `scaledown_after` parameter (idle TTL) determines how long an app instance can be idle before it's scaled down. 
+The `scaledown_after` parameter (idle TTL) determines how long an app instance can be idle before it's scaled down.
 
 #### Considerations
 

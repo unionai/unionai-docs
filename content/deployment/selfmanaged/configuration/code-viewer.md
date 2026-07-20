@@ -56,6 +56,7 @@ For more details, see the [AWS S3 CORS documentation](https://docs.aws.amazon.co
 Google Cloud Storage requires CORS configuration via the command line.
 
 1. Create a `cors.json` file with the following content:
+
     ```json
     [
         {
@@ -66,11 +67,15 @@ Google Cloud Storage requires CORS configuration via the command line.
         }
     ]
     ```
+
 2. Apply the CORS configuration to your bucket:
+
     ```bash
     gcloud storage buckets update gs://<fast_registration_bucket> --cors-file=cors.json
     ```
+
 3. Verify the configuration was applied:
+
    ```bash
    gcloud storage buckets describe gs://<fast_registration_bucket> --format="default(cors_config)"
 
@@ -84,6 +89,7 @@ Google Cloud Storage requires CORS configuration via the command line.
      responseHeader:
      - ETag
    ```
+
 For more details, see the [Google Cloud Storage CORS documentation](https://docs.cloud.google.com/storage/docs/using-cors#command-line).
 
 {{< /markdown >}}

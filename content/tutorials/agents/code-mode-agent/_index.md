@@ -7,7 +7,7 @@ variants: +flyte +union
 # Code mode analytics agent
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/code_mode_agent).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/code_mode_agent).
 
 This tutorial builds a "chat with live market data" app on Flyte's native AI stack. You ask a question in the browser, and the app launches a Flyte run to answer it. Inside that run, `flyte.ai.agents.Agent` running in code mode has Claude write one small Python program, the program executes in Flyte's [Monty sandbox](../../../user-guide/sandboxing/code-sandboxing), and the only things it can touch are the tools you registered. It fetches daily stock prices from a Yahoo Finance server plugged in over MCP, and hands them to a DuckDB `query` (a durable Flyte task), so every query the model writes shows up as a tracked, retryable child task you can open in the UI. The cheap tools that render metrics, charts, and tables run in-process. And the web layer is not hand-built either: `flyte.ai.chat.AgentChatAppEnvironment` provides the chat UI, the streaming, and the run-per-question wiring in one declaration.
 
@@ -130,8 +130,8 @@ Deploying is one command. The entry point uses the remote image builder so no lo
 Register your Anthropic key as a secret and deploy:
 
 ```shell
-$ flyte create secret anthropic_api_key <your-anthropic-key>
-$ python app.py
+flyte create secret anthropic_api_key <your-anthropic-key>
+python app.py
 ```
 
 Open the printed URL and ask something like "Compare AAPL and MSFT over the last 6 months" or "Rank the FAANG stocks by 6-month return." The first question is slower as the task image builds and the MCP server cold-starts, then each answer streams progress while the run executes, and comes back as a short report of headline numbers, a chart, and sometimes a table, with the generated code and a link to the run so you can see the query tasks it dispatched.

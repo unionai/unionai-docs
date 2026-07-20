@@ -178,6 +178,7 @@ also bound as a keyword.
 
 {{< variant union >}}
 {{< markdown >}}
+
 ## Mapping with reusable environments
 
 `flyte.map` composes naturally with [reusable containers](../task-configuration/reusable-containers):

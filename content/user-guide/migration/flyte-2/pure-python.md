@@ -31,4 +31,3 @@ These fundamental changes bring several transformative benefits:
 - **Dynamic workflows**: Create workflows that adapt to runtime conditions, handle variable data structures, and make decisions based on intermediate results.
 - **Natural error handling**: Use standard Python `try`/`except` patterns throughout your workflows, making them more robust and easier to debug.
 - **Intuitive composability**: Build complex workflows by naturally composing Python functions, following familiar patterns that any Python developer understands.
-

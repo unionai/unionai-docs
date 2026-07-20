@@ -7,7 +7,7 @@ variants: +flyte +union
 # Competitive intelligence agent
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/competitive_intelligence_agent).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/competitive_intelligence_agent).
 
 This example demonstrates how to build a continuous competitive and market intelligence agent on Flyte. The agent fans out across a list of competitors, pulls fresh, source-cited web and news results from the [You.com Search API](https://you.com/docs/search/overview), and uses [Claude](https://docs.anthropic.com/) via [LiteLLM](https://docs.litellm.ai/) to extract structured **deltas** (pricing changes, product launches, funding events, leadership moves, and more) into a knowledge-graph-ready table.
 

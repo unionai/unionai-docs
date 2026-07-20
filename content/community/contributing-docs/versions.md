@@ -18,7 +18,7 @@ while the URL for version `v1` of the same page is:
 
 `{{< docs_home flyte v1 >}}/community/contributing-docs/versions`
 
-### Versions are branches
+## Versions are branches
 
 The versioning system is based on long-lived Git branches in the `unionai/unionai-docs` GitHub repository:
 

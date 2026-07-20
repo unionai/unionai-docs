@@ -22,6 +22,7 @@ Everything else (branch protections, approvals, notifications) is generic CI con
 
 {{< variant union >}}
 {{< markdown >}}
+
 ## Authentication: API keys
 
 Locally, `flyte deploy` typically authenticates via a browser login (PKCE). A CI runner has no browser and no human to click through a consent screen, so you need a credential the CLI can use without any prompts: an **API key**.
@@ -64,6 +65,7 @@ The key inherits the permissions of the user who minted it. For CI you typically
 
 {{< variant flyte >}}
 {{< markdown >}}
+
 ## Authentication: client credentials
 
 Locally, `flyte deploy` typically authenticates via a browser login (PKCE). A CI runner has no browser and no human to click through a consent screen, so you need a credential the CLI can use without any prompts. For Flyte OSS this is an **OAuth2 client-credentials** application: a client ID and client secret for a machine ("service") identity that your instance's identity provider (IdP) trusts.
@@ -126,6 +128,7 @@ task:
   project: <default-project>
   domain: development
 ```
+
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
@@ -155,6 +158,7 @@ A minimal deploy workflow, one job, one step per `TaskEnvironment`:
 
 {{< variant union >}}
 {{< markdown >}}
+
 ```yaml
 # .github/workflows/deploy.yml
 name: Deploy to Union
@@ -204,6 +208,7 @@ jobs:
             --domain "$FLYTE_DOMAIN" \
             src/workspace_app/tasks/ml_tasks.py ml_env
 ```
+
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
@@ -272,6 +277,7 @@ Because Flyte OSS builds images locally, the deploy steps need Docker available 
 
 {{< variant union >}}
 {{< markdown >}}
+
   ```yaml
   - name: Deploy all envs
     env:
@@ -284,10 +290,12 @@ Because Flyte OSS builds images locally, the deploy steps need Docker available 
         --domain "$FLYTE_DOMAIN" \
         --root-dir src --recursive src/workspace_app/tasks
   ```
+
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
+
   ```yaml
   - name: Deploy all envs
     env:
@@ -300,6 +308,7 @@ Because Flyte OSS builds images locally, the deploy steps need Docker available 
         --domain "$FLYTE_DOMAIN" \
         --root-dir src --recursive src/workspace_app/tasks
   ```
+
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -309,6 +318,7 @@ Because Flyte OSS builds images locally, the deploy steps need Docker available 
 
 {{< variant union >}}
 {{< markdown >}}
+
 ```yaml
 - name: Build etl image
   env:
@@ -328,10 +338,12 @@ Because Flyte OSS builds images locally, the deploy steps need Docker available 
       --project "$FLYTE_PROJECT" --domain "$FLYTE_DOMAIN" \
       --root-dir src src/workspace_app/tasks/etl_tasks.py etl_env
 ```
+
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
+
 ```yaml
 - name: Build etl image
   env:
@@ -351,6 +363,7 @@ Because Flyte OSS builds images locally, the deploy steps need Docker available 
       --project "$FLYTE_PROJECT" --domain "$FLYTE_DOMAIN" \
       --root-dir src src/workspace_app/tasks/etl_tasks.py etl_env
 ```
+
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -358,6 +371,7 @@ Image tags are content hashes of the `flyte.Image` definition: `flyte build` pus
 
 {{< variant union >}}
 {{< markdown >}}
+
 ## Layering on top of an existing image build
 
 If your team already builds container images in CI from a Dockerfile, you can still route them through `flyte build` to get **lazy-loading container pulls**: pod startup that's seconds instead of minutes, regardless of image size. On a 5GB image we measured cold-node pull time drop from ~1m37s to **839ms**, and published benchmarks show 9.9GB CUDA + PyTorch images going from 4m38s to ~1.2s, roughly 240×.

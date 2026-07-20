@@ -34,6 +34,7 @@ retries with `@env.task(retries=...)`. Each retry attempt sees the checkpoint sa
 by the attempt before it.
 
 > [!NOTE] Checkpoints vs. caching vs. traces
+>
 > - **Task caching** skips an entire task when it has already run with the same inputs.
 > - **[Traces](./traces)** checkpoint at the boundaries of helper functions called by a task.
 > - **Intra-task checkpoints** save state *within* a single task body (mid-loop,

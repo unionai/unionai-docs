@@ -7,7 +7,7 @@ variants: +flyte +union
 # LangGraph research agent
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/langgraph_agent_research).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/langgraph_agent_research).
 
 This tutorial combines [LangGraph](https://langchain-ai.github.io/langgraph/) for agentic control flow with Flyte for durable compute. A research pipeline plans sub-topics, fans out ReAct agents that search the web with [Tavily](https://tavily.com/), synthesizes findings, and loops on quality gaps until the report is good enough. Each LangGraph step dispatches to a separate Flyte task so planning, research, synthesis, and quality checks appear independently in the run UI.
 

@@ -66,6 +66,7 @@ This is particularly useful for passing API keys or other sensitive values to co
 ## App startup
 
 There are two ways to start up an app in Flyte:
+
 1. With a server function using `@app_env.server`
 2. As a container command using `command` or `args`
 

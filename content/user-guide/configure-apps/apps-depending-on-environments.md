@@ -23,6 +23,7 @@ app2_env = flyte.app.AppEnvironment(
 ```
 
 When you deploy `app2_env`, Flyte will:
+
 1. First deploy `app1_env` (if not already deployed)
 2. Then deploy `app2_env`
 3. Make sure `app1_env` is available before `app2_env` starts
@@ -34,6 +35,7 @@ Here's a complete example where one FastAPI app calls another:
 {{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/app_calling_app.py" lang=python >}}
 
 When you deploy `env2`, Flyte will:
+
 1. Deploy `env1` first (backend-api)
 2. Wait for `env1` to be ready
 3. Deploy `env2` (frontend-api)
@@ -105,6 +107,7 @@ for deployment in deployments:
 ```
 
 Flyte will:
+
 1. Build a deployment plan that includes all dependencies
 2. Deploy dependencies in the correct order
 3. Ensure dependencies are ready before deploying dependent apps
@@ -160,4 +163,3 @@ The root app can route traffic to either variant A or B based on A/B testing log
 - Circular dependencies are not supported
 - Dependencies must be in the same project/domain
 - Dependency deployment order is deterministic but dependencies at the same level may deploy in parallel
-

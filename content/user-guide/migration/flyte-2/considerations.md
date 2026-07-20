@@ -1,6 +1,6 @@
 ---
 title: Considerations
-weight: 4
+weight: 13
 variants: +flyte +union
 ---
 
@@ -97,6 +97,7 @@ async def t_main():
     local_cpu_intensive_function()
     await t2()
 ```
+
 The pod running `t_main` will hang in between tasks `t1` and `t2`. Your parent tasks should ideally focus only on orchestration.
 
 ## OOM risk from materialized I/O

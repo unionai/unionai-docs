@@ -90,12 +90,14 @@ Click the link to view your app in the UI. You can find the app URL there, or vi
 ## When to use apps vs tasks
 
 Use **tasks** when:
+
 - Processing takes seconds to hours
 - You need durability (inputs/outputs tracked)
 - Work is triggered by events or schedules
 - Results need to be cached or resumed
 
 Use **apps** when:
+
 - Responses must be fast (milliseconds)
 - You're serving an API or dashboard
 - Users interact in real-time

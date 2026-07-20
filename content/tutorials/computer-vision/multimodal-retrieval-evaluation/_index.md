@@ -7,7 +7,7 @@ variants: +flyte +union
 # Multimodal retrieval evaluation
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/multimodal-retrieval-evaluation).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/multimodal-retrieval-evaluation).
 
 This tutorial builds an experiment framework for benchmarking **visual document retrieval** on the [ViDoRe benchmark](https://huggingface.co/vidore). The corpus is a set of PDF page *images* and the queries are plain-text questions. Each retrieval method must find the page that answers a question from the raw image alone.
 

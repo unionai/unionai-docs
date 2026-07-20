@@ -43,6 +43,7 @@ Parameter(
 ```
 
 This configuration:
+
 1. **Finds the latest run** of `report_batch_pipeline` in the `driver` environment
 2. **Downloads the output** to local storage (`download=True`)
 3. **Sets an environment variable** with the path (`REPORTS_PATH`)
@@ -62,6 +63,7 @@ The app provides a sidebar for selecting between reports when multiple are avail
 {{< code file="/unionai-examples/v2/user-guide/advanced-project/app.py" lang="python" fragment="display-reports" >}}
 
 Features:
+
 - **Report selector**: Sidebar navigation when multiple reports exist
 - **Executive summary**: Expandable section with key takeaways
 - **Tabbed views**: Switch between Markdown and HTML preview
@@ -84,6 +86,7 @@ uv run serve.py
 ```
 
 The deployment process:
+
 1. Builds a container image with the app code
 2. Deploys the app to {{< key product_name >}}
 3. Connects to the latest pipeline output
@@ -94,11 +97,13 @@ The deployment process:
 The typical workflow is:
 
 1. **Run the batch pipeline** to generate reports:
+
    ```bash
    uv run generate.py
    ```
 
 2. **Deploy or refresh the app** to view results:
+
    ```bash
    uv run serve.py
    ```
@@ -114,6 +119,7 @@ The `RunOutput` connection is evaluated at app startup. Each time the app
 restarts or redeploys, it fetches the latest batch pipeline output.
 
 For real-time updates without redeployment, you could:
+
 1. Poll for new runs using the Flyte API
 2. Implement a webhook that triggers app refresh
 3. Use a database to track run status
@@ -133,17 +139,20 @@ advanced-project/
 ## Running the complete example
 
 1. **Set up the secret**:
+
    ```bash
    flyte secret create openai-api-key
    ```
 
 2. **Run the pipeline**:
+
    ```bash
    cd /path/to/unionai-examples/v2/user-guide/advanced-project
    uv run generate.py
    ```
 
 3. **Deploy the app**:
+
    ```bash
    uv run serve.py
    ```

@@ -1,6 +1,6 @@
 ---
 title: Agent
-version: 2.5.9
+version: 2.5.11
 variants: +flyte +union
 layout: py_api
 ---
@@ -41,7 +41,7 @@ call_llm:
 approval_callback:
     Optional async callback ``(tool, args) -&gt; bool`` invoked when a tool
     with ``requires_approval=True`` is about to run. Defaults to a HITL
-    prompt via ``flyteplugins-hitl``.
+    prompt via a flyte-native condition (:func:`flyte.new_condition`).
 parallel_tool_calls:
     When ``True`` (default) tool calls returned in a single assistant
     message are executed concurrently. Set to ``False`` to force strict
@@ -104,7 +104,7 @@ class Agent(
 | Method | Description |
 |-|-|
 | [`add_tool()`](#add_tool) | Register an additional tool after construction. |
-| [`approval_callback()`](#approval_callback) | Default HITL approval: ask the user via ``flyteplugins-hitl``. |
+| [`approval_callback()`](#approval_callback) | Default HITL approval: pause the run on a flyte-native condition. |
 | [`call_llm()`](#call_llm) | Default LLM callback that uses ``litellm. |
 | [`run()`](#run) | Drive the LLM ↔ tool loop until the assistant returns a final reply. |
 | [`tool_descriptions()`](#tool_descriptions) | Conform to :class:`~flyte. |
@@ -137,12 +137,14 @@ def approval_callback(
     args: *args,
 ) -> bool
 ```
-Default HITL approval: ask the user via ``flyteplugins-hitl``.
+Default HITL approval: pause the run on a flyte-native condition.
 
-Returns ``True`` if the user approves the tool call. When the plugin is not
-installed (or the agent is running outside a Flyte task context), this
-falls back to denying the call so that the agent can recover by trying a
-different approach.
+Registers a condition via :func:`flyte.new_condition` and blocks until a
+human signals it — from the UI, ``flyte signal condition``, or
+``flyte.remote.Condition.signal``. Returns ``True`` if the user approves
+the tool call. When the agent is running outside a Flyte task context
+there is no backend to signal the condition, so this falls back to denying
+the call so that the agent can recover by trying a different approach.
 
 
 | Parameter | Type | Description |

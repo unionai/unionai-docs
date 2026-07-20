@@ -75,15 +75,18 @@ And finally the app serving logic:
 ## Troubleshooting
 
 **App not loading:**
+
 - Verify the port matches (use `--server.port 8080`)
 - Check that all required files are included
 - Review container logs for errors
 
 **Missing dependencies:**
+
 - Ensure all required packages are in your image's pip packages
 - Check that file paths in `include` are correct
 
 **Performance issues:**
+
 - Increase CPU/memory resources
 - Use Streamlit's caching features (`@st.cache_data`, `@st.cache_resource`)
 - Optimize data processing

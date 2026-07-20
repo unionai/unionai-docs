@@ -87,7 +87,7 @@ print(response.choices[0].message.content)
 
 > [!TIP]
 > If you passed an `--api-key` argument, you can use the `api_key` parameter to authenticate your requests.
-> See [here](../build-apps/secret-based-authentication#deploy-sglang-app-with-authentication) for more details on how to pass auth secrets to your app.
+> See [secret-based authentication](../build-apps/secret-based-authentication#deploy-sglang-app-with-authentication) for more details on how to pass auth secrets to your app.
 
 ## Multi-GPU inference (Tensor parallelism)
 
@@ -165,17 +165,19 @@ SGLang is particularly well-suited for structured generation tasks. The deployed
 ## Troubleshooting
 
 **Model loading fails:**
+
 - Verify GPU memory is sufficient for the model
 - Check that the model path or HuggingFace path is correct
 - Review container logs for detailed error messages
 
 **Out of memory errors:**
+
 - Reduce `--max-model-len`
 - Lower `--mem-fraction-static`
 - Use a smaller model or more GPUs
 
 **Slow startup:**
+
 - Enable `stream_model=True` for faster loading
 - Prefetch models before deployment
 - Use faster storage backends
-

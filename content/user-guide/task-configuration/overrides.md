@@ -45,6 +45,7 @@ The key idiom is `task.override(...)(args)`: `override()` returns a callable tas
 
 {{< variant flyte >}}
 {{< markdown >}}
+
 | Parameter | Details |
 |-----------|---------|
 | **short_name** | [Additional task settings](./additional-task-settings) |
@@ -59,11 +60,13 @@ The key idiom is `task.override(...)(args)`: `override()` returns a callable tas
 | **pod_template** | [Pod templates](./pod-templates) &bull; [`PodTemplate` API ref](../../api-reference/flyte-sdk/packages/flyte/podtemplate) |
 | **interruptible** | [Interruptible tasks](./interruptible-tasks-and-queues) |
 | **links** | [Additional task settings](./additional-task-settings#links) |
+
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant union >}}
 {{< markdown >}}
+
 | Parameter | Details |
 |-----------|---------|
 | **short_name** | [Additional task settings](./additional-task-settings) |
@@ -79,6 +82,7 @@ The key idiom is `task.override(...)(args)`: `override()` returns a callable tas
 | **queue** | [Queues](./queues) |
 | **interruptible** | [Interruptible tasks](./interruptible-tasks-and-queues) |
 | **links** | [Additional task settings](./additional-task-settings#links) |
+
 {{< /markdown >}}
 {{< /variant >}}
 

@@ -42,6 +42,7 @@ This process happens transparently - every container downloads and extracts the 
 
 > [!NOTE]
 > Code bundling is optimized for speed:
+>
 > - Bundles are created without timestamps for consistent hashing
 > - Identical code produces identical hashes, enabling deduplication
 > - Only modified code triggers new uploads
@@ -56,6 +57,7 @@ This process happens transparently - every container downloads and extracts the 
 #### What gets bundled
 
 Flyte includes modules that are:
+
 - ✅ **Loaded when environment is parsed** (imported at module level)
 - ✅ **Part of your codebase** (not system packages)
 - ✅ **Within your project directory**
@@ -87,11 +89,13 @@ if __name__ == "__main__":
 ```
 
 When you run this:
+
 ```bash
 flyte run app.py process_data --x 42
 ```
 
 Flyte automatically:
+
 1. Bundles `app.py` and `my_module.py`
 2. Preserves the directory structure
 3. Uploads to blob storage
@@ -161,11 +165,13 @@ run = flyte.with_runcontext(copy_style="all").run(
 ```
 
 Or via CLI:
+
 ```bash
 flyte run --copy-style=all app.py my_task --input-data sample.csv
 ```
 
 **Use when:**
+
 - You have data files or configuration that tasks need
 - You use dynamic imports or lazy loading
 - You want to ensure all project files are available
@@ -424,6 +430,7 @@ if __name__ == "__main__":
 ```
 
 **Run with:**
+
 ```bash
 cd my_package
 flyte run src/my_package/main.py analyze_task --data '[{"value": 1}]'
@@ -472,12 +479,14 @@ if __name__ == "__main__":
 ```
 
 **Why this works:**
+
 - `flyte.current_domain()` is set correctly when Flyte re-instantiates modules remotely
 - Environment configuration is deterministic and reproducible
 - Code automatically bundled with domain-specific settings
 
 > [!NOTE]
 > `flyte.current_domain()` only works after `flyte.init()` is called:
+>
 > - ✅ Works with `flyte run` and `flyte deploy` (auto-initialize)
 > - ✅ Works in `if __name__ == "__main__"` after explicit `flyte.init()`
 > - ❌ Does NOT work at module level without initialization
@@ -485,6 +494,7 @@ if __name__ == "__main__":
 ### When to use code bundling
 
 ✅ **Use code bundling when:**
+
 - Rapid development and iteration
 - Frequently changing code
 - Multiple developers testing changes
@@ -492,6 +502,7 @@ if __name__ == "__main__":
 - Quick prototyping and experimentation
 
 ❌ **Consider container-based instead when:**
+
 - Need easy rollback to previous versions (container tags are simpler than finding git commits)
 - Working with air-gapped environments (no blob storage access)
 - Code changes require coordinated dependency updates
@@ -525,6 +536,7 @@ flyte.with_runcontext(copy_style="none").run(my_task, n=10)
 ```
 
 Or via CLI:
+
 ```bash
 flyte run --copy-style=none app.py my_task --n 10
 ```
@@ -570,6 +582,7 @@ image = flyte.Image.from_debian_base().with_source_file(
 ```
 
 **Use for:**
+
 - Single-file workflows
 - Copying configuration files
 - Adding scripts to existing images
@@ -587,6 +600,7 @@ image = flyte.Image.from_debian_base().with_source_folder(
 ```
 
 **Parameters:**
+
 - `src`: Source directory path
 - `dst`: Destination path in container (optional, defaults to workdir)
 - `copy_contents_only`: If `True`, copies folder contents; if `False`, copies folder itself
@@ -685,6 +699,7 @@ if __name__ == "__main__":
 ```
 
 **Project structure:**
+
 ```
 project/
 ├── full_build.py
@@ -694,11 +709,13 @@ project/
 ```
 
 **Run with:**
+
 ```bash
 python full_build.py
 ```
 
 This will:
+
 1. Build a container image with `full_build.py` and `dep.py` embedded
 2. Tag it as `v1.0.0`
 3. Push to registry
@@ -759,6 +776,7 @@ if __name__ == "__main__":
 ```
 
 Or via CLI:
+
 ```bash
 flyte run \
   --copy-style=none \
@@ -767,6 +785,7 @@ flyte run \
 ```
 
 **For deployment:**
+
 ```bash
 flyte deploy \
   --image my-app-image=myregistry.com/my-app:v1.2.3 \
@@ -817,6 +836,7 @@ if __name__ == "__main__":
 ### Container-based best practices
 
 1. **Always set explicit versions** when using `copy_style="none"`:
+
    ```python
    flyte.with_runcontext(copy_style="none", version="v1.0.0")
    ```
@@ -828,6 +848,7 @@ if __name__ == "__main__":
 3. **Ensure `flyte` executable is in container** - Add to PATH or install flyte package
 
 4. **Use `.dockerignore`** to exclude unnecessary files:
+
    ```
    # .dockerignore
    __pycache__/
@@ -838,6 +859,7 @@ if __name__ == "__main__":
    ```
 
 5. **Test containers locally** before deploying:
+
    ```bash
    docker run -it myimage:latest /bin/bash
    python -c "import mymodule"  # Verify imports work
@@ -846,6 +868,7 @@ if __name__ == "__main__":
 ### When to use container-based deployment
 
 ✅ **Use container-based when:**
+
 - Deploying to production
 - Need immutable, reproducible environments
 - Working with complex system dependencies
@@ -854,6 +877,7 @@ if __name__ == "__main__":
 - Code changes are infrequent
 
 ❌ **Don't use container-based when:**
+
 - Rapid development and frequent code changes
 - Quick prototyping
 - Interactive development (Jupyter notebooks)
@@ -935,6 +959,7 @@ if __name__ == "__main__":
 **Solutions:**
 
 1. **Check loaded modules** - Ensure modules are imported at module level:
+
    ```python
    # ✅ Good - bundled automatically
    from mymodule import helper
@@ -953,6 +978,7 @@ if __name__ == "__main__":
    ```
 
 2. **Verify `root_dir`** matches your import structure:
+
    ```python
    # If imports are: from mypackage.utils import foo
    # Then root_dir should be parent of mypackage/
@@ -960,6 +986,7 @@ if __name__ == "__main__":
    ```
 
 3. **Use `copy_style="all"`** to bundle everything:
+
    ```bash
    flyte run --copy-style=all app.py my_task
    ```
@@ -974,11 +1001,13 @@ if __name__ == "__main__":
 **Solutions:**
 
 1. **Use explicit version bump** (mainly for container-based deployments):
+
    ```python
    run = flyte.with_runcontext(version="v2").run(my_task)
    ```
 
 2. **Check if `copy_style="none"`** is set - this requires image rebuild:
+
    ```python
    # If using copy_style="none", rebuild image
    run = flyte.with_runcontext(
@@ -994,11 +1023,13 @@ if __name__ == "__main__":
 **Solutions:**
 
 1. **Use `copy_style="all"`** to bundle all files:
+
    ```bash
    flyte run --copy-style=all app.py my_task
    ```
 
 2. **Copy files explicitly in image**:
+
    ```python
    image = flyte.Image.from_debian_base().with_source_file(
        src=pathlib.Path("config.yaml"),
@@ -1007,6 +1038,7 @@ if __name__ == "__main__":
    ```
 
 3. **Store data in remote storage** instead of bundling:
+
    ```python
    @flyte.task
    def my_task():
@@ -1022,6 +1054,7 @@ if __name__ == "__main__":
 **Solutions:**
 
 1. **Check `root_dir` matches `copy_contents_only`**:
+
    ```python
    # copy_contents_only=True
    image = Image.from_debian_base().with_source_folder(
@@ -1032,11 +1065,13 @@ if __name__ == "__main__":
    ```
 
 2. **Ensure `flyte` executable available**:
+
    ```python
    image = Image.from_debian_base()  # Has flyte pre-installed
    ```
 
 3. **Check file permissions** in source directory:
+
    ```bash
    chmod -R +r project/
    ```
@@ -1048,6 +1083,7 @@ if __name__ == "__main__":
 **Solutions:**
 
 1. **Use explicit versions**:
+
    ```python
    run = flyte.with_runcontext(
        copy_style="none",
@@ -1056,11 +1092,13 @@ if __name__ == "__main__":
    ```
 
 2. **Clean old images**:
+
    ```bash
    docker image prune -a
    ```
 
 3. **Use semantic versioning** for clarity:
+
    ```python
    version = "v1.0.0"  # Major.Minor.Patch
    ```

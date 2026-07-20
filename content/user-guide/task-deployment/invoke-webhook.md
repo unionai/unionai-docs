@@ -138,8 +138,6 @@ with remote.auth_metadata(
     ...
 ```
 
-
-
 ## Complete example
 
 Here's a complete FastAPI webhook service that runs Flyte tasks with passthrough authentication:
@@ -316,6 +314,7 @@ Ensure you set the `FLYTE_ENDPOINT` environment variable in your app configurati
 ### "Authentication credentials required"
 
 The middleware returns this error when no authentication headers are found. Ensure:
+
 - The client includes an `Authorization` header with a valid token
 - The endpoint is not in the `excluded_paths` set
 - Header extractors are configured correctly
@@ -323,6 +322,7 @@ The middleware returns this error when no authentication headers are found. Ensu
 ### "Task not found"
 
 Verify:
+
 - The task exists in the specified project/domain
 - The task name is correct (use the fully qualified name: `package.module.task_name`)
 - The caller has permission to view the task
@@ -330,6 +330,7 @@ Verify:
 ### Tasks run with wrong permissions
 
 If tasks aren't respecting the caller's permissions:
+
 - Verify `init_passthrough()` is called with `auth_type="Passthrough"`
 - Ensure auth headers are being extracted and forwarded correctly
 - Check that the middleware is added before route handlers

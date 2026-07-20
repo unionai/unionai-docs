@@ -230,6 +230,7 @@ variant = experiment.get("variant", "A")
 1. Get a Server Secret Key at [statsig.com](https://www.statsig.com/) → Settings → API Keys.
 2. Create a feature gate named `variant_b` (e.g. 50% rollout).
 3. Set the Flyte secret:
+
    ```bash
    flyte create secret statsig-api-key <your-secret-key-here>
    ```
