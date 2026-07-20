@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Tasks and workflows
 
-The biggest structural change in Flyte 2 is that **everything is a task**. The `@task`, `@workflow`, and `@dynamic` decorators all collapse into a single `@env.task` off a `flyte.TaskEnvironment`, and a "workflow" is just a task that calls other tasks. This page covers the basic structure; see [Task configuration](./configuration) for the environment settings and [Migration](./migration) for the big picture.
+The biggest structural change in Flyte 2 is that **everything is a task**. The `@task`, `@workflow`, and `@dynamic` decorators all collapse into a single `@env.task` on a `flyte.TaskEnvironment`, and a "workflow" is just a task that calls other tasks. This page covers the basic structure; see [Task configuration](./configuration) for the environment settings and [Migration](./migration) for the big picture.
 
 ## Hello world: tasks and workflows
 

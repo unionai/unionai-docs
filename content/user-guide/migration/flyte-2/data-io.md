@@ -10,7 +10,7 @@ Flyte 2 renames the offloaded-data types and makes their I/O `async`, but the me
 
 ## Files and directories
 
-`FlyteFile` and `FlyteDirectory` become `flyte.io.File` and `flyte.io.Dir` — the way you pass model artifacts and datasets between tasks. The I/O is now `async`: use `await File.from_local(...)` to upload and `file.open(...)` to read. Like their Flyte 1 counterparts, these are lightweight references to offloaded data, not the materialized bytes.
+`FlyteFile` and `FlyteDirectory` become `flyte.io.File` and `flyte.io.Dir` — the way you pass model artifacts and datasets between tasks. The I/O is now `async`: use `await File.from_local(...)` to upload and `async with file.open(...)` to read. Like their Flyte 1 counterparts, these are lightweight references to offloaded data, not the materialized bytes.
 
 {{< tabs "migration-files" >}}
 {{< tab "Flyte 1" >}}

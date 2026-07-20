@@ -21,20 +21,32 @@ The bridge is a single Flyte 1 task — call it `launch_v2_from_v1` — that run
 **High-level steps:**
 
 1. Give the `launch_v2_from_v1` task an image with **both** `flytekit` (Flyte 1) and `flyte` (Flyte 2) installed.
-2. Give it a Flyte 2 **API key**. Create one with `flyte create api-key` (or through the Flyte 2 UI). The command prints an `export FLYTE_API_KEY="..."` line — that value is the key.
+2. Give it a Flyte 2 **API key** (see [Create the API key](#1-create-the-api-key-and-store-it) below — how you create one differs between Union and open-source Flyte). The key is the `export FLYTE_API_KEY="..."` value it produces.
 3. Make the key available to the task, either by storing it as a secret it can read, or by injecting it as the `FLYTE_API_KEY` environment variable.
 4. Authenticate inside the task with `flyte.init_from_api_key()`.
 5. Fetch the deployed Flyte 2 task with `flyte.remote.Task.get(...)` and run it with `flyte.run(...)`.
 
 ### 1. Create the API key and store it
 
+{{< variant union >}}
+{{< markdown >}}
+Create a key with `flyte create api-key` (a command provided by the `flyteplugins-union` plugin) or through the Union UI, then store it as a secret:
+
 ```bash
 # Create a Flyte 2 API key (prints `export FLYTE_API_KEY="..."`)
 flyte create api-key --name v1-to-v2-bridge
 
-# Store that value as a Flyte 2 secret (you can also create it in the Flyte 2 UI)
+# Store that value as a Flyte 2 secret (you can also create it in the Union UI)
 flyte create secret flyte_api_key --value "<the-encoded-key>"
 ```
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+Obtain an API key through your Flyte deployment's authentication setup (the `flyte create api-key` convenience command shown for Union is provided by the `flyteplugins-union` plugin), then store it as a secret the bridging task can read — see [Run on a remote cluster](../../run-modes/running-remote) for the authentication options.
+{{< /markdown >}}
+{{< /variant >}}
 
 You can also make the same value available to your Flyte 1 task as a secret through your existing Flyte 1 secret workflow, or set it directly as the `FLYTE_API_KEY` environment variable on the task.
 
