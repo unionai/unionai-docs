@@ -61,7 +61,7 @@ You don't need to rewrite existing synchronous code. Flyte automatically "asynci
 
 {{< code file="/unionai-examples/v2/user-guide/flyte-2/async/async.py" fragment="calling-sync-from-async" lang="python" >}}
 
-### The `flyte.map` function: familiar patterns
+### The `flyte.map` function: Familiar patterns
 
 For code that used Flyte 1's `map`, `flyte.map` is a direct replacement that works in both sync and async contexts:
 
