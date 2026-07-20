@@ -59,6 +59,10 @@ Worker nodes in private subnets need outbound internet access to pull container 
 
 > [!NOTE] If you use a fully private cluster with no outbound internet access, you must configure private endpoints or mirrors for all container registries and the Union control plane.
 
+### Control plane egress
+
+Data plane nodes reach the Union control plane over **outbound gRPC-over-TLS (TCP 443)** and, under the default tier, the Cloudflare Tunnel over **TCP 7844**. All connectivity is outbound-only; no inbound firewall rules are required. For the full list of outbound destinations and ports, and guidance on allowlisting by IP address, see [Egress requirements](../../security/architecture/network#egress-requirements).
+
 ## Service accounts
 
 The {{< key product_name >}} data plane uses a single Kubernetes service account, `union-system`, shared by all platform components (operator, executor, webhook, proxy, and FluentBit). This service account needs cloud provider credentials to access:
