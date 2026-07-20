@@ -4,7 +4,7 @@ weight: 1
 variants: +flyte +union
 ---
 
-# Migration Overview
+# Migration overview
 
 This section walks through the Flyte 1 workload patterns you already know — data ETL, model training, hyperparameter sweeps, batch inference — and their Flyte 2 equivalents. Every pattern is a complete, runnable v1↔v2 example pair in the [`unionai-examples`](https://github.com/unionai/unionai-examples/tree/main/v2/user-guide/migration/flyte-2) repository.
 
