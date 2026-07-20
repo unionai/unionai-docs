@@ -69,10 +69,10 @@ The equivalent CLI flag is `--raw-data-path`. See [Run command options](./run-co
 |-----------|------|---------|-------------|
 | `service_account` | `str` | *from config* | Kubernetes service account for task pods. |
 | `env_vars` | `Dict[str, str]` | `None` | Additional environment variables to inject into task containers. |
-| `labels` | `Dict[str, str]` | `None` | User-defined `key=value` labels attached to the run for filtering and organizing runs (for example, by team, environment, or experiment). |
-| `annotations` | `Dict[str, str]` | `None` | Kubernetes annotations to apply to task pods. |
+| `labels` | `Dict[str, str]` | `None` | User-defined `key=value` labels attached to the run — used to filter/organize runs (`flyte get run --with-label`) and propagated to the task pods as Kubernetes labels. |
+| `annotations` | `Dict[str, str]` | `None` | User-defined `key=value` annotations attached to the run and propagated to the task pods as Kubernetes annotations (not filterable; no CLI flag). |
 
-Labels tag a run with arbitrary `key=value` metadata so you can find and group related runs later. Set them programmatically with `with_runcontext(labels={...})`, or from the CLI with the repeatable `--label` flag:
+Labels tag a run with arbitrary `key=value` metadata so you can find and group related runs later, and are also propagated to the run's task pods as Kubernetes labels (available for cluster-level monitoring, routing, or policies). Set them programmatically with `with_runcontext(labels={...})`, or from the CLI with the repeatable `--label` flag:
 
 ```bash
 flyte run --label team=ml --label env=prod my_example.py main
