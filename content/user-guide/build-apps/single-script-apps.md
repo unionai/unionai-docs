@@ -73,6 +73,7 @@ uv run my_app.py
 ```
 
 The script will:
+
 - Initialize Flyte from your config
 - Deploy the app to your Union/Flyte instance
 - Print the app URL
@@ -80,6 +81,7 @@ The script will:
 ## When to use single-script apps
 
 **Use single-script apps when:**
+
 - Building prototypes or proof-of-concepts
 - Creating simple services with minimal logic
 - Learning how Flyte apps work
@@ -87,6 +89,7 @@ The script will:
 - Building demos or tutorials
 
 **Consider multi-script apps when:**
+
 - Your app grows beyond a few hundred lines
 - You need to organize code into modules
 - You want to reuse components across apps

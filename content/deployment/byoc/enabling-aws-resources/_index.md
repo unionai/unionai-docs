@@ -111,7 +111,7 @@ To enable your task code to access a resource:
 
 You can then choose whether to enable **global access** or **project-domain-scoped access**:
 
-* [**To enable global access** ](#setting-up-global-access) to the resource, you simply attach `<CustomPolicy>` to the existing `<UserFlyteRole>`.
+* [**To enable global access**](#setting-up-global-access) to the resource, you simply attach `<CustomPolicy>` to the existing `<UserFlyteRole>`.
 * [**To enable project-domain-scoped access**](#setting-up-project-domain-scoped-access) to your resource:
   * Create your own custom role (let's refer to it `<CustomRole>`)
   * Attach `<CustomPolicy>` to `<CustomRole>`.
@@ -209,7 +209,7 @@ In {{< key product_name >}} (using `uctl`):
 
 Repeat the following steps for each project-domain pair:
 
-1.  Create a file named `cluster_resource_attributes.yaml` with the following contents:
+1. Create a file named `cluster_resource_attributes.yaml` with the following contents:
 
 ```yaml
 attributes:
@@ -218,13 +218,13 @@ domain: <domain>
 project: <project>
 ```
 
-2.  Run the following command to override the IAM role used for {{< key product_name >}} Tasks in this Project-Domain:
+2. Run the following command to override the IAM role used for {{< key product_name >}} Tasks in this Project-Domain:
 
 ```bash
 uctl update cluster-resource-attribute --attrFile cluster_resource_attributes.yaml
 ```
 
-3.  You can verify the overrides by running:
+3. You can verify the overrides by running:
 
 ```bash
 uctl get cluster-resource-attribute -p <project> -d <domain>

@@ -92,19 +92,21 @@ This is convenient for development but less suitable for production where you wa
 ## Troubleshooting
 
 **App not accessible after activation:**
+
 - Verify activation succeeded
 - Check app logs for startup errors
 - Verify cluster connectivity
 - Check that the app is listening on the correct port
 
 **Activation fails:**
+
 - Check that the app was deployed successfully
 - Verify app configuration is correct
 - Check cluster resources
 - Review deployment logs
 
 **Cannot deactivate:**
+
 - Ensure you have proper permissions
 - Check if there are dependencies preventing deactivation
 - Verify the app name and version
-

@@ -288,6 +288,7 @@ connector = flyte.app.ConnectorEnvironment(
     secrets=[flyte.Secret(key="MY_API_KEY")],
 )
 ```
+
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -298,6 +299,7 @@ Set environment variables on the connector Kubernetes deployment:
 ```bash
 kubectl set env deployment/<connector-deployment> MY_API_KEY=<value> -n <flyte-namespace>
 ```
+
 {{< /markdown >}}
 {{< /variant >}}
 

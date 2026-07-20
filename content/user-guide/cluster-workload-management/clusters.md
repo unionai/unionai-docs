@@ -28,6 +28,7 @@ custom pool, create that pool first.
 {{< tabs "register-cluster" >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
+
 ```bash
 # Register in the default pool.
 flyte create cluster my-cluster
@@ -35,10 +36,12 @@ flyte create cluster my-cluster
 # Register in a specific pool.
 flyte create cluster prod-us-east-1 --pool prod
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 from flyteplugins.union.remote import Cluster
 
@@ -48,6 +51,7 @@ Cluster.create("my-cluster")
 # Register in a specific pool.
 Cluster.create("prod-us-east-1", cluster_pool_name="prod")
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -72,6 +76,7 @@ pool never does. These are ordinary queues; manage them like any other on the
 {{< tabs "inspect-cluster" >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
+
 ```bash
 # List all clusters (grouped by enabled / disabled)
 flyte get cluster
@@ -82,10 +87,12 @@ flyte get cluster prod-us-east-1
 # Cap the number of results
 flyte get cluster --limit 50
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 from flyteplugins.union.remote import Cluster
 
@@ -98,6 +105,7 @@ print(cluster.pools)
 print(cluster.queues)
 print(cluster.config_drift)
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -145,19 +153,23 @@ instead.
 {{< tabs "delete-cluster" >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
+
 ```bash
 flyte delete cluster prod-us-east-1
 flyte delete cluster prod-us-east-1 --yes   # skip the confirmation prompt
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 from flyteplugins.union.remote import Cluster
 
 Cluster.delete("prod-us-east-1")
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}

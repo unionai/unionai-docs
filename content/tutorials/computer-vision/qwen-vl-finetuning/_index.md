@@ -21,7 +21,7 @@ The machine learning is interesting, but the real focus here is on shipping a pr
 - **Clean task isolation**: each stage runs with exactly the resources it needs, nothing more
 
 > [!NOTE]
-> Full code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/qwen_vl_frozen_backbone_finetuning).
+> Full code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/qwen_vl_frozen_backbone_finetuning).
 
 ## Overview
 

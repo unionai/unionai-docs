@@ -57,11 +57,13 @@ summary = await generate_summary(content)     # Then start this
 ### When to use asyncio.gather
 
 Use `asyncio.gather` when:
+
 - Operations are independent (don't depend on each other's results)
 - Operations are I/O-bound (API calls, file operations)
 - You want to minimize total execution time
 
 Don't use `asyncio.gather` when:
+
 - Operations depend on each other
 - Operations are CPU-bound (use process pools instead)
 - Order of execution matters for side effects
@@ -135,6 +137,7 @@ uv run generate.py
 ```
 
 The pipeline will:
+
 1. Process all topics in parallel (each with iterative refinement)
 2. Format all reports in parallel
 3. Return a list of directories, each containing a report's outputs

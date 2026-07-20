@@ -54,7 +54,6 @@ Flyte uses efficient MessagePack serialization for most types, providing compact
 > [!NOTE]
 > If type annotations are not used, or if `typing.Any` or unrecognized types are used, data will be pickled. By default, pickled objects smaller than 10KB are passed inline, while larger pickled objects are automatically passed as a file. Pickling allows for progressive typing but should be used carefully.
 
-
 ## Task execution and data flow
 
 ### Input download

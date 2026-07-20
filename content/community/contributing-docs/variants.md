@@ -67,6 +67,7 @@ As you can see, the `variants` field expects a space-separated list of keywords:
 Content can also differ *within a page* based on the selected variant.
 This is done with conditional rendering using the `{{</* variant */>}}` and `{{</* key */>}}` [Hugo shortcodes](https://gohugo.io/content-management/shortcodes/).
 
+<!-- markdownlint-disable-next-line MD037 -- Hugo escaped-shortcode syntax, not emphasis -->
 ### {{</* variant */>}}
 
 The syntax for the `{{</* variant */>}}` shortcode is:
@@ -93,6 +94,7 @@ This content is only visible in the `union` variant.
 
 For more details on the `{{</* variant */>}}` shortcode, see the [Shortcodes > `variant`](./shortcodes#variant).
 
+<!-- markdownlint-disable-next-line MD037 -- Hugo escaped-shortcode syntax, not emphasis -->
 ### {{</* key */>}}
 
 The syntax for the `{{</* key */>}}` shortcode is:
@@ -107,6 +109,7 @@ For example, if you want to render the product name keyword, you would use:
 ```markdown
 {{</* key product_name */>}}
 ```
+
 The available key names are defined in the [params.key] section of the `hugo.site.toml` configuration file in the root of the repository.
 
 For example the `product_name` used above is defined in that file as
@@ -118,7 +121,6 @@ union = "Union.ai"
 ```
 
 Meaning that in any content that appears in the `flyte` variant of the site `{{</* key product_name */>}}` shortcode will be replaced with `Flyte`, and in any content that appears in the `union` variant, it will be replaced with `Union.ai`.
-
 
 For more details on the `{{</* key */>}}` shortcode, see the [Shortcodes > `key`](./shortcodes#key)
 

@@ -648,7 +648,7 @@ Next, you must create the role. Follow the directions here:
 8. Select **Next**. We will setup permissions in a later step.
 9. Enter the role name `union-ai-admin`.
 10. (Optional) For **Description**, enter a description for the new role.
-11. (Optional) Under **Tags**, add tags as key-value pairs. For more information about using tags in IAM, see[ Tagging IAM resources](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html).
+11. (Optional) Under **Tags**, add tags as key-value pairs. For more information about using tags in IAM, see[Tagging IAM resources](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html).
 12. After reviewing the role, choose **Create role**.
 13. Search for the `union-ai-admin` role in the IAM Roles list and click on it.
 14. Click **Add permissions** and select **Create inline policy** from the dropdown menu.
@@ -715,9 +715,9 @@ Once your VPC is set up, you will need to provide the {{< key product_name >}} t
 
 ## Private EKS endpoint
 
-The requirements described so far, enable Union to operate with a `Public` or `Public and Private` EKS endpoint. 
+The requirements described so far, enable Union to operate with a `Public` or `Public and Private` EKS endpoint.
 
-To deploy the Union operator in your EKS cluster and to perform troubleshooting at the Kubernetes layer, Union requires access to the [EKS endpoint](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html). 
+To deploy the Union operator in your EKS cluster and to perform troubleshooting at the Kubernetes layer, Union requires access to the [EKS endpoint](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html).
 
 > This connection is not used for executions, only for cluster onboarding, upgrades and support.
 
@@ -732,9 +732,11 @@ For this setup, there are additional requirements you'll need to complete in you
 ### Create additional roles for ECS
 
 #### ECS task execution role
-- **Role name**: `unionai-access-<REGION>-ecs-execution-role` 
+
+- **Role name**: `unionai-access-<REGION>-ecs-execution-role`
 - **Attached policy**: `AmazonECSTaskExecutionRolePolicy` (built-in policy)
 - **Trust Relationship**:
+
 ```json
  {
     "Version": "2012-10-17",
@@ -751,6 +753,7 @@ For this setup, there are additional requirements you'll need to complete in you
 ```
 
 #### ECS task definition role
+
 - **Role name**: `unionai-access-<REGION>-ecs-task-role`  
 - **Attached policy**:
 
@@ -778,7 +781,9 @@ For this setup, there are additional requirements you'll need to complete in you
     ]
 }
 ```
+
 - **Trust Relationship**:
+
 ```json
  {
     "Version": "2012-10-17",
@@ -793,6 +798,7 @@ For this setup, there are additional requirements you'll need to complete in you
     ]
 }
 ```
+
 ### Attach a new IAM policy to the Union role
 
 Add the following permissions as a new IAM policy attached to the `union-ai-admin` role (described in the [Prepare the policy document](#prepare-the-policy-documents) section) , replacing `REGION` and `ACCOUNT_ID` to match your environment:
@@ -1011,6 +1017,7 @@ Add the following permissions as a new IAM policy attached to the `union-ai-admi
     "Version": "2012-10-17"
 }
 ```
+
 Share the ARN of the two roles with the {{< key product_name >}} team.
 The {{< key product_name >}} team will get back to you to verify that they are able to assume the role.
 

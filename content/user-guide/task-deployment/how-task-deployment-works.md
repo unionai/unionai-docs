@@ -29,6 +29,7 @@ flyte deploy my_example.py env
 ```bash
 flyte deploy --all my_example.py
 ```
+
 - The file `my_example.py` is executed,
 - All declared `TaskEnvironment` objects in the file are instantiated and selected for deployment.
 - No specific variable name is required.
@@ -126,6 +127,7 @@ When `image.builder` is set to `local` in [your `config.yaml`](../run-modes/runn
 When `image.builder` is set to `local` in [your `config.yaml`](../run-modes/running-remote), images are built on your local machine using Docker. This approach:
 {{< /markdown >}}
 {{< /variant >}}
+
 - Requires Docker to be installed and running on your development machine
 - Uses Docker BuildKit to build images from generated Dockerfiles or your custom Dockerfile
 - Pushes built images to the container registry specified in your `Image` configuration
@@ -143,6 +145,7 @@ When `image.builder` is set to `remote` in your `config.yaml`, images are built 
 When `image.builder` is set to `remote` in [your `config.yaml`](../run-modes/running-remote), images are built on cloud infrastructure. This approach:
 {{< /markdown >}}
 {{< /variant >}}
+
 - Builds images using Union's ImageBuilder service (currently only available for Union backends, not OSS Flyte)
 - Requires no local Docker installation or configuration
 - Can push to Union's internal registry or external registries you specify

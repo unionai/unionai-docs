@@ -55,7 +55,8 @@ async def reduce_batch(items: list[str]) -> str:
 
 {{< variant union >}}
 {{< markdown >}}
-#### Speed up the map step with reusable containers
+
+### Speed up the map step with reusable containers
 
 The map step fans out many short `process_item` actions, each of which would otherwise pay container-startup cost. On {{< key product_name >}} you can make them reuse warm workers instead by giving the environment a [reusable container](../task-configuration/reusable-containers):
 

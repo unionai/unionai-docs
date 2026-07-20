@@ -14,7 +14,7 @@ For {{< key product_name >}} customers whose data plane is in GCP, we walk throu
 >
 > **These are not the GCS buckets we are talking about in this section.**
 >
-> **We are discussing the case where you have **_**your own GCS bucket**_** that you set up to store input and output data used by your workflows.**
+> **We are discussing the case where you have _your own GCS bucket_ that you set up to store input and output data used by your workflows.**
 
 ## Grant `<UserFlyteGSA>` access to the bucket
 

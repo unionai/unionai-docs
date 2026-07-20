@@ -44,22 +44,25 @@ Deployment is designed for production use:
 
 ## Using the CLI
 
-
 {{< tabs >}}
 {{< tab "Serve" >}}
 
 {{< markdown >}}
+
 ```bash
 flyte serve path/to/app.py app_env
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Deploy" >}}
 
 {{< markdown >}}
+
 ```bash
 flyte deploy path/to/app.py app_env
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}

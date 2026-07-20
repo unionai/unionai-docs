@@ -11,20 +11,20 @@ You will need to send the following details to the {{< key product_name >}} team
 
 * Which [cloud provider](#cloud-provider) will you use?
 * Will this be a [multi-cluster](#multi-cluster) setup?
-    * If so, how will Flyte domains and/or Flyte projects be mapped to clusters?
-    * Additionally, how will clusters be grouped into cluster pools? (Each cluster pool will have its own metadata bucket)
+  * If so, how will Flyte domains and/or Flyte projects be mapped to clusters?
+  * Additionally, how will clusters be grouped into cluster pools? (Each cluster pool will have its own metadata bucket)
 * For each cluster:
-    * [Account ID](#account-id) for this cluster (each cluster must be in its own account on your cloud provider)
-    * [Region](#region) in which the cluster will be deployed.
-    * [VPC](#vpc) setup (will you use your own VPC or have {{< key product_name >}} provision one for you?)
-    * [Data retention policy](#data-retention-policy) for workflow execution data stored in this cloud provider account.
-    * For each [node group](#node-group-name):
-        * [Node type](#node-type)
-        * [Minimum](#minimum)
-        * [Maximum](#maximum)
-        * [Interruptible](#interruptible-instances)
-        * [Taints](#taints)
-        * [Disk](#disk)
+  * [Account ID](#account-id) for this cluster (each cluster must be in its own account on your cloud provider)
+  * [Region](#region) in which the cluster will be deployed.
+  * [VPC](#vpc) setup (will you use your own VPC or have {{< key product_name >}} provision one for you?)
+  * [Data retention policy](#data-retention-policy) for workflow execution data stored in this cloud provider account.
+  * For each [node group](#node-group-name):
+    * [Node type](#node-type)
+    * [Minimum](#minimum)
+    * [Maximum](#maximum)
+    * [Interruptible](#interruptible-instances)
+    * [Taints](#taints)
+    * [Disk](#disk)
 
 ## Cloud provider
 
@@ -131,6 +131,7 @@ When specifying node types and other resource parameters, note that the nominall
 For example, in an node instance rated at `16GiB`, some of that is held back for overhead and will not be available to Flyte task processes.
 
 ## Example specification
+
 Values provided by you are in single quotes (').
 
 ```yaml

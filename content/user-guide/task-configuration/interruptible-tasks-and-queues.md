@@ -26,7 +26,7 @@ def train_model(data: list) -> dict:
     return {"accuracy": 0.95}
 ```
 
-### Setting at different levels
+## Setting at different levels
 
 `interruptible` can be set at the `TaskEnvironment` level, the `@env.task` decorator level,
 and at the `task.override()` invocation level. The more specific level always takes precedence.
@@ -63,7 +63,7 @@ async def main(data: list) -> str:
     return save_results.override(interruptible=False)(results={"data": processed})
 ```
 
-### Behavior on preemption
+## Behavior on preemption
 
 When a spot instance is reclaimed, the task is terminated and rescheduled.
 Combine `interruptible=True` with [retries](./retries-and-timeouts) to handle preemptions gracefully:
@@ -79,7 +79,7 @@ def train_model(data: list) -> dict:
 > System retries (for preemptions and other system-level failures) are tracked separately.
 > This is independent from how the medium (spot vs. on-demand) is chosen for each user-budget attempt. See [Spot to on-demand fallback](#spot-to-on-demand-fallback) below.
 
-### Spot to on-demand fallback
+## Spot to on-demand fallback
 
 By default, the **final attempt** of an interruptible task runs on an on-demand instance rather than on spot.
 This shields long-running or expensive workloads from getting stuck in a preemption loop: once you're on your last attempt, the platform stops gambling on spot capacity.

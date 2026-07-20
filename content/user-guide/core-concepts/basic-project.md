@@ -31,6 +31,7 @@ It specifies the container image, required packages, and resource allocations:
 {{< code file="/unionai-examples/v2/user-guide/basic-project/embed.py" lang="python" fragment="embedding-env" >}}
 
 The environment uses:
+
 - `Image.from_debian_base()` to create a container with Python 3.12
 - `with_pip_packages()` to install sentence-transformers and ChromaDB
 - `Resources` to request 2 CPUs and 4GB of memory
@@ -43,6 +44,7 @@ The `fetch_quotes` task retrieves quotes from a public API:
 {{< code file="/unionai-examples/v2/user-guide/basic-project/embed.py" lang="python" fragment="fetch-quotes" >}}
 
 This task demonstrates:
+
 - Async task definition with `async def`
 - Returning structured data (`list[dict]`) from a task
 - Using the `@embedding_env.task` decorator to associate the task with its environment
@@ -54,6 +56,7 @@ The `embed_quotes` task creates vector embeddings and stores them in ChromaDB:
 {{< code file="/unionai-examples/v2/user-guide/basic-project/embed.py" lang="python" fragment="embed-quotes" >}}
 
 Key points:
+
 - Uses the `all-MiniLM-L6-v2` model from sentence-transformers (runs on CPU)
 - Creates a persistent ChromaDB database with cosine similarity
 - Returns a `Dir` artifact that captures the entire database directory
@@ -76,6 +79,7 @@ uv run embed.py
 ```
 
 The pipeline will:
+
 1. Fetch 100 quotes from the API
 2. Create embeddings using sentence-transformers
 3. Store everything in a ChromaDB database
@@ -93,6 +97,7 @@ The `AppEnvironment` defines how the application runs:
 {{< code file="/unionai-examples/v2/user-guide/basic-project/serve.py" lang="python" fragment="app-env" >}}
 
 Key configuration:
+
 - `args` specifies the command to run the Streamlit app
 - `port=8080` exposes the application on port 8080
 - `parameters` defines inputs to the app:

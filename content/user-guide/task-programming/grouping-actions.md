@@ -17,11 +17,13 @@ When you have multiple task executions (whether from large [fanouts](./fanout), 
 ### The problem groups solve
 
 Without groups, complex workflows can become visually overwhelming in the Flyte UI:
+
 - Multiple task executions appear as separate nodes, making it hard to see the high-level structure
 - Related operations are scattered throughout the workflow graph
 - Debugging and monitoring becomes difficult when dealing with many individual task executions
 
 Groups solve this by:
+
 - **Organizing actions**: Multiple task executions within a group are presented as a hierarchical "folder" structure
 - **Improving UI visualization**: Instead of many individual nodes cluttering the view, you see logical groups that can be collapsed or expanded
 - **Aggregating status information**: Groups show aggregated run status (success/failure) of their contained actions when you hover over them in the UI

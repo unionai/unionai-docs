@@ -110,9 +110,11 @@ Browser ──GET /v2──▶ ALB ──(no session)──▶ 302 ▶ IdP login
 On the IdP application:
 
 - Add the **sign-in / redirect URI** exactly (note the path: ALB's callback is fixed):
+
   ```
   https://<your-host>/oauth2/idpresponse
   ```
+
 - Grant type **Authorization Code**; scopes at least `openid email`.
 - Assign the users/groups allowed into the console.
 

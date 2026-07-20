@@ -7,7 +7,7 @@ variants: +flyte +union
 # BERT emotion classification
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/bert_fine_tuning_emotion).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/bert_fine_tuning_emotion).
 
 This tutorial fine-tunes a BERT-style model (ModernBERT by default) on the [dair-ai/emotion](https://huggingface.co/datasets/dair-ai/emotion) Twitter dataset for six-way emotion classification: sadness, joy, love, anger, fear, and surprise. The pipeline trains the classifier, evaluates with a confusion matrix and per-class F1, and explores inference with attention and token-importance visualizations in Flyte reports.
 

@@ -11,12 +11,16 @@
 {
   "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/markdownlint-cli2-config-schema.json",
 
-  // Lint content only; never the generated API ref or prds-owned release notes,
-  // and not the build infra. (The workflow also scopes to changed files; this
-  // is the belt-and-suspenders for local `markdownlint-cli2` runs.)
+  // Lint content only; never the generated API ref, generated Helm-chart
+  // reference, or prds-owned release notes, and not the build infra. (The
+  // workflow also scopes to changed files; this is the belt-and-suspenders for
+  // local `markdownlint-cli2` runs.)
   "ignores": [
     "content/api-reference/**",
     "content/release-notes/**",
+    // Generated from unionai/helm-charts via `make update-helm-docs`; the field
+    // descriptions (incl. any non-descriptive link text) come from upstream.
+    "content/deployment/selfmanaged/helm-chart-reference/**",
     "node_modules/**",
     "unionai-docs-infra/**",
     "unionai-examples/**",

@@ -16,6 +16,7 @@ This section covers the essential programming patterns and techniques for develo
 The task programming section covers key patterns for building effective Flyte workflows:
 
 **Data handling and types**
+
 - [**Files and directories**](./files-and-directories): Work with large datasets using Flyte's efficient file and directory types that automatically handle data upload, storage, and transfer between tasks.
 {{< variant union >}}
 {{< markdown >}}
@@ -27,6 +28,7 @@ The task programming section covers key patterns for building effective Flyte wo
 - [**Custom context**](./custom-context): Use custom context to pass metadata through your task execution hierarchy without adding parameters to every task.
 
 **Execution patterns**
+
 - [**Fanout**](./fanout): Scale your workflows by running many tasks in parallel, perfect for processing large datasets or running hyperparameter sweeps.
 - [**Mapping over inputs**](./map): Apply the same task to every item of a list with `flyte.map`: in-order results, error handling, concurrency limits, and partials.
 - [**Consuming a message queue**](./consuming-a-message-queue): Pull messages from an external queue such as AWS SQS and fan out processing across a pool of reusable containers.
@@ -44,6 +46,7 @@ The task programming section covers key patterns for building effective Flyte wo
 - [**Higher-order functions**](./higher-order-functions): Write reusable functions that take tasks as arguments — fallback, memory-scaling retry, circuit breaker, and batch map-reduce wrappers built on Flyte's dynamic execution.
 
 **Development and debugging**
+
 - [**Notebooks**](./notebooks): Write and iterate on workflows directly in Jupyter notebooks for interactive development and experimentation.
 - [**Unit testing**](./unit-testing): Test your Flyte tasks using direct invocation for business logic or `flyte.run()` for Flyte-specific features.
 - [**Links**](./links): Add clickable URLs to tasks in the Flyte UI, connecting them to external tools like experiment trackers and monitoring dashboards.

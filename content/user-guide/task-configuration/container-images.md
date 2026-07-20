@@ -56,7 +56,6 @@ For example:
 > validation errors and block access to HTTPS-based storage such as Amazon S3. Libraries like Polars (e.g., `polars.scan_parquet()`) are particularly affected.
 > **Solution:** Add `"ca-certificates"` using `.with_apt_packages()` in your image definition.
 
-
 ## Example: Defining an image based on uv script metadata
 
 Another common technique for defining an image is to use [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies) to specify your dependencies right in your Python file and then use the `flyte.Image.from_uv_script()` method to create a `flyte.Image` object.
@@ -276,10 +275,12 @@ There are two ways that the image can be built:
 **Setting the registry for local builds.** Rather than repeat a registry in every `Image` definition, set it once, globally, in any of these ways:
 
 * **Config file**: add a `registry` key under `image:` in your `config.yaml`:
+
   ```yaml
   image:
     registry: ghcr.io/my-org
   ```
+
 * **Environment variable**: set `FLYTE_IMAGE_REGISTRY=ghcr.io/my-org`.
 * **CLI**: pass `--registry` when generating the config: `flyte create config --registry ghcr.io/my-org`. (The `--registry` flag requires flyte 2.5.9 or later; the `image.registry` config key and `FLYTE_IMAGE_REGISTRY` variable also require 2.5.9.)
 
@@ -354,7 +355,6 @@ There is no set up of Docker nor any other local configuration required on your 
 > The Flyte SDK checks whether the image builder is enabled for your cluster by verifying that the `image_build` task is deployed in the `system` project within the `production` domain.
 > If you are using custom roles and policies, ensure that users are granted the `view_flyte_inventory` action for the `production/system` project-domain pair.
 > See the [V1 user management documentation]({{< docs_home union v1 >}}/user-guide/administration/user-management) for more details on creating and assigning custom roles and policies (V2 user management currently works identically to V1).
-
 
 #### ImageBuilder with external registries
 

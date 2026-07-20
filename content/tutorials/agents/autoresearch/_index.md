@@ -7,7 +7,7 @@ variants: +flyte +union
 # Autoresearch agent
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/autoresearch).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/autoresearch).
 
 This tutorial wraps an autonomous AI research loop in a single Flyte task. The task spins up a GPU container, installs the [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview) CLI, clones a research repository, and points Claude Code at a `program.md` brief. The agent runs experiments to improve a model, writes results to disk, and the task then commits the changes and opens a pull request, with a progress plot rendered both in the PR and in the Flyte UI.
 

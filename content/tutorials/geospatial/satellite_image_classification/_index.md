@@ -17,7 +17,7 @@ But training a model that can reliably classify that imagery (across 10 distinct
 This tutorial walks through a complete satellite image classification pipeline built on {{< key product_name >}}, using EfficientNet-B0, a two-phase training strategy, and Weights & Biases for experiment tracking.
 
 > [!NOTE]
-> Full code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/satellite_image_classification).
+> Full code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/satellite_image_classification).
 
 ## Dataset
 

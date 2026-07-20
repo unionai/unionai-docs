@@ -7,7 +7,7 @@ variants: -flyte +union
 # Kubernetes access controls
 
 Union's data plane runs entirely within your Kubernetes cluster. This page documents the Kubernetes RBAC configuration
-applied by the https://github.com/unionai/helm-charts/tree/main/charts/dataplane: including service account configuration, 
+applied by the https://github.com/unionai/helm-charts/tree/main/charts/dataplane: including service account configuration,
 namespace-scoped Roles, and cluster-wide ClusterRoles for each component.
 
 ## Service account
@@ -33,21 +33,25 @@ that multi-namespace workflow execution, automatic namespace provisioning (Clust
 and usage collection are disabled.
 
 In low-privilege mode, the chart automatically:
+
 - Replaces ClusterRoles with namespace-scoped Roles
 - Limits resource sync, executor, and monitoring to the release namespace
 - Disables features that require cluster-wide access (e.g. ClusterResourceSync and OpenCost. Both require cluster-wide access to function: OpenCost to aggregate spend across all namespaces, and ClusterResourceSync to propagate configs and RBAC into user namespaces.)
 
 ## Namespace-scoped roles
 
-##### `proxy-system-secret`
+### `proxy-system-secret`
+
 - Scoped to `union` namespace
 - Permissions on secrets: get, list, create, update, delete
 
-##### `operator-system`
+### `operator-system`
+
 - Scoped to `union` namespace
 - Permissions on secrets and deployments: get, list, watch, create, update
 
-##### `union-operator-admission` (for webhook)
+### `union-operator-admission` (for webhook)
+
 - Scoped to `union` namespace
 - Permissions on secrets: get, create
 
@@ -58,13 +62,14 @@ In low-privilege mode, the chart automatically:
 
 ### Metrics and monitoring
 
-##### `release-name-kube-state-metrics`
+#### `release-name-kube-state-metrics`
 
 - **Purpose**: Collects metrics from Kubernetes resources
 - **Access Pattern**: Read-only (`list`, `watch`) to numerous resources across multiple API groups
 - **Scope**: Comprehensive, covers core resources, workloads, networking, storage, and authentication
 
-##### `prometheus-operator`
+#### `prometheus-operator`
+
 - **Access**: Full control (`*`) over Prometheus monitoring resources
 - **Key Permissions**:
   - Complete access to monitoring.coreos.com API group resources
@@ -73,38 +78,44 @@ In low-privilege mode, the chart automatically:
   - Service/endpoint management
   - Read-only for nodes, namespaces, ingresses
 
-##### `union-operator-prometheus`
+#### `union-operator-prometheus`
+
 - **Access**: Read-only access to metrics sources
 - **Resources**: nodes, services, endpoints, pods, endpointslices, ingresses
 - **Special**: Access to `/metrics` and `/metrics/cadvisor` endpoints
 
 ### Resource management
 
-##### `clustersync-resource`
+#### `clustersync-resource`
+
 - **Access**: Full control (`*`) over core and RBAC resources
 - **Resources**:
   - Core: configmaps, namespaces, pods, resourcequotas, secrets, services, serviceaccounts, podtemplates
   - RBAC: roles, rolebindings, clusterrolebindings
 - **API Groups**: `""` (core) and `rbac.authorization.k8s.io`
 
-##### `proxy-system`
+#### `proxy-system`
+
 - **Access**: Read-only (`get`, `list`, `watch`)
 - **Resources**: events, flyteworkflows, pods/log, pods, rayjobs, resourcequotas
 
 ### Workflow management
 
-##### `operator-system`
+#### `operator-system`
+
 - **Access**: Full control over Flyte workflows, CRUD for core resources
 - **Resources**:
   - Full access to flyteworkflows
   - Management of pods, configmaps, resourcequotas, podtemplates, nodes
   - Access to `/metrics` endpoint
 
-##### `flytepropeller-webhook-role`
+#### `flytepropeller-webhook-role`
+
 - **Access**: Get, create, update, patch
 - **Resources**: mutatingwebhookconfigurations, secrets, pods, replicasets/finalizers
 
-##### `flytepropeller-role`
+#### `flytepropeller-role`
+
 - **Access**: Varied per resource type
 - **Key Permissions**:
   - Read-only for pods
@@ -115,11 +126,13 @@ In low-privilege mode, the chart automatically:
 ## Service access
 
 ### `operator/operator-proxy`
+
 Service that provides access to both cluster resources and cloud provider APIs, particularly focused on compute resource management.
 
 #### Kubernetes resources
 
 ##### Core resources
+
 - Pods: Access via informers to monitor and manage pod lifecycle.
 - Nodes: Access to retrieve node information.
 - ResourceQuotas: Read access.
@@ -128,25 +141,31 @@ Service that provides access to both cluster resources and cloud provider APIs, 
 - Namespaces: Referenced in container/pod identification contexts
 
 ##### Custom resources
+
 - FlyteWorkflows: Management of v1alpha1.FlyteWorkflow resources
 - Kueue Resources (optional): Access to ResourceFlavor, ClusterQueue, and other queue resources
 - Karpenter NodePools (optional): For AWS-based compute resource management
 
 ##### Cloud Provider Resources
+
 - Object Storage: Read/write operations to cloud storage buckets
 
 ##### Authentication and configuration
+
 - OAuth: Uses app ID for authentication with Union cloud services
 - Service Account Roles: Configured via UserRoleKey and UserRole
 - Cluster Information: Access to cluster metadata and metrics
 
 ### `FlytePropeller/PropellerWebhook`
+
 Kubernetes operator that executes Flyte graphs natively on Kubernetes. The webhook runs as a separate deployment with configurable certificate management (Helm-generated, cert-manager, external, or legacy).
 
 #### Kubernetes resources
+
 - Manages pod creation for executions
 - Secret injection
 - MutatingWebhookConfiguration management (standard mode only; disabled in low-privilege mode)
 
 #### Custom resources
+
 - FlyteWorkflows: Management of v1alpha1.FlyteWorkflow resources

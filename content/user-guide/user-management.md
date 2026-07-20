@@ -48,6 +48,7 @@ bind it to the production domain of a specific project, and assign it to a user.
 {{< tabs "walkthrough-create" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 from flyteplugins.union.remote import Role, Policy, Assignment
 
@@ -80,6 +81,7 @@ Policy.create(
 # Step 3 — Assign the policy to a user
 Assignment.create(email="jane@example.com", policy="Team Prod Access")
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
@@ -135,6 +137,7 @@ You can also assign by user subject or application credentials subject:
 flyte create assignment --user-subject user-123 --policy "Team Prod Access"
 flyte create assignment --creds-subject app-456 --policy "Team Prod Access"
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -144,6 +147,7 @@ flyte create assignment --creds-subject app-456 --policy "Team Prod Access"
 {{< tabs "walkthrough-update" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 from flyteplugins.union.remote import Role, Policy
 
@@ -168,6 +172,7 @@ new_bindings = policy.bindings + [
 ]
 Policy.update("Team Prod Access", old_bindings=policy.bindings, new_bindings=new_bindings)
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
@@ -178,6 +183,7 @@ Policy.update("Team Prod Access", old_bindings=policy.bindings, new_bindings=new
 flyte update role "Production Runner"
 flyte update policy "Team Prod Access"
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}

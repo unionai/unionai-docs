@@ -1,6 +1,6 @@
 ---
 title: Run
-version: 2.5.9
+version: 2.5.11
 variants: +flyte +union
 layout: py_api
 ---
@@ -47,6 +47,7 @@ class Run(
 | [`get()`](#get) | Get the current run. |
 | [`get_debug_url()`](#get_debug_url) | Get the debug URL of the run. |
 | [`get_logs()`](#get_logs) | Get logs for the run as an iterator of strings. |
+| [`get_report()`](#get_report) | Get the HTML report associated with this run's root action. |
 | [`input_literals()`](#input_literals) | Raw input literals of the run's action, without reconstructing types. |
 | [`inputs()`](#inputs) | Get the inputs of the run. |
 | [`listall()`](#listall) | Get all runs for the current project and domain. |
@@ -166,6 +167,33 @@ via `.aio()` (returns `AsyncIterator[str]`).
 | `attempt` | `int \| None` | The attempt number to retrieve logs for (defaults to latest attempt). |
 | `filter_system` | `bool` | If True, filter out system-generated log lines. |
 | `show_ts` | `bool` | If True, prefix each line with an ISO-8601 timestamp. |
+
+### get_report()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.get_report.aio()`.
+```python
+def get_report(
+    attempt: int | None,
+    expires_in: timedelta,
+) -> str
+```
+Get the HTML report associated with this run's root action.
+
+This first requests a signed download link from the data proxy for the report artifact,
+then downloads the report from that URL and returns its contents as an HTML string.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `attempt` | `int \| None` | The attempt number to fetch the report for. Defaults to the latest attempt. |
+| `expires_in` | `timedelta` | How long the signed download link should remain valid. Defaults to 1 hour. |
+
+**Returns:** The report contents as an HTML string.
 
 ### input_literals()
 

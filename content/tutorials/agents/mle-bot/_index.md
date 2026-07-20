@@ -7,7 +7,7 @@ variants: +flyte +union
 # MLE bot: an autonomous ML engineer
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/mle_bot).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/mle_bot).
 
 You have a dataset and a business question. Today, going from a raw CSV to a trained, evaluated model with a written report takes an ML engineer hours of experimentation: profiling the data, picking algorithms, engineering features, tuning hyperparameters, analyzing results, and iterating. What if you could describe the problem in plain English and let an agent handle the rest?
 
