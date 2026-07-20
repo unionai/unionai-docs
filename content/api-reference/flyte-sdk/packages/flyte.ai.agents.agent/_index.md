@@ -1,6 +1,6 @@
 ---
 title: flyte.ai.agents.agent
-version: 2.5.9
+version: 2.5.11
 variants: +flyte +union
 layout: py_api
 ---
@@ -32,8 +32,9 @@ Design goals
   letting the agent persist state across runs (e.g. across scheduled wake-ups
   or webhook invocations). Includes opt-in audit log, read-only prefixes, and
   optimistic concurrency for multi-agent / sleep-wake patterns.
-- **HITL**: opt-in per-tool human approval that pauses the loop and waits for a
-  human via the ``flyteplugins-hitl`` plugin before executing the tool.
+- **HITL**: opt-in per-tool human approval that pauses the loop on a
+  flyte-native condition (:func:`flyte.new_condition`) and waits for a human
+  to signal it before executing the tool.
 - **Flyte-native**: implements the :class:`AgentProtocol` so it works
   seamlessly with :class:`~flyte.ai.chat.AgentChatAppEnvironment` and is happy
   to be wrapped in ``@env.task(triggers=...)`` for scheduled or webhook-driven
