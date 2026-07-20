@@ -70,15 +70,27 @@ Your tenant's Direct-to-Data-Plane tunnel is published at a tunnel domain of the
 
 ### Resolving control plane IP addresses
 
-Some environments must allowlist egress by IP address rather than by hostname. The control plane endpoints sit behind network load balancers whose IP addresses **change over time**. For this reason, do not hardcode a static IP table.
+Some environments must allowlist egress by IP address rather than by hostname. The control plane endpoints sit behind regional network load balancers whose IP addresses **can change over time**, so resolve them dynamically wherever your egress policy allows rather than pinning a fixed table.
 
-Instead, resolve your own tenant endpoint and re-resolve it on a schedule rather than pinning fixed addresses:
+**Once your tenant is provisioned**, resolve its endpoint and re-resolve it on a schedule rather than pinning fixed addresses:
 
 ```bash
 dig <tenant>.hosted.unionai.cloud
 ```
 
 Allowlist the addresses returned, and refresh the allowlist periodically. Where your egress policy supports it, prefer an FQDN- or DNS-based rule over static IPs so that load-balancer changes are picked up automatically.
+
+**Before your tenant is provisioned** — or wherever you must stage egress rules ahead of time — allowlist the current production regional control plane load balancers below, or resolve their DNS names for the latest addresses. Your tenant endpoint resolves to the load balancer in its region, so the addresses returned by `dig` match the corresponding row.
+
+| Region | Control plane load balancer (DNS) | Current IP addresses |
+|---|---|---|
+| `us-east-2` | `opta-production-lb-f6b2dc1ac0c5d1b3.elb.us-east-2.amazonaws.com` | `3.137.115.239`, `3.129.166.66`, `3.19.82.116` |
+| `us-west-2` | `opta-production-us-west-2-lb-eed1102869e8e87d.elb.us-west-2.amazonaws.com` | `44.242.13.239`, `54.202.254.106`, `34.218.20.123` |
+| `eu-west-1` | `opta-production-eu-west-1-lb-4f0b7b3ab565ae1b.elb.eu-west-1.amazonaws.com` | `52.30.110.77`, `52.51.69.225`, `54.220.70.146` |
+| `eu-west-2` | `opta-production-eu-west-2-lb-8e072fd05bfb19ae.elb.eu-west-2.amazonaws.com` | `18.169.71.70`, `3.11.48.43`, `18.134.175.75` |
+| `eu-central-1` | `opta-production-eu-central--lb-5d94314b0baac0c8.elb.eu-central-1.amazonaws.com` | `3.78.52.222`, `3.127.122.108`, `3.68.3.26` |
+
+These addresses are current as of July 2026 and can change; where possible allowlist by DNS (re-resolving the names above) rather than pinning the IPs, and re-verify with your Union account team.
 
 ### VPN alternative to the tunnel
 
