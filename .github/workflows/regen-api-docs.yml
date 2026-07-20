@@ -136,6 +136,13 @@ jobs:
             content/api-reference/**
             linkmap/*-linkmap.json
           commit-message: "docs(api-reference): regenerate API docs (automated)"
+          # DCO: "Check DCO" is a required status check on main (DOC-1244), so the
+          # automated regen commit must carry a Signed-off-by trailer or the PR
+          # can never merge. Pin the bot as author+committer and let the action
+          # append the sign-off from that identity (peter-evans signoff option).
+          author: "unionai-docsy-bot[bot] <295918299+unionai-docsy-bot[bot]@users.noreply.github.com>"
+          committer: "unionai-docsy-bot[bot] <295918299+unionai-docsy-bot[bot]@users.noreply.github.com>"
+          signoff: true
           title: "docs(api-reference): regenerate API docs (automated)"
           body-path: /tmp/pr-body.md
           labels: api-docs-regen
