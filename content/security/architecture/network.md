@@ -70,7 +70,7 @@ Your tenant's Direct-to-Data-Plane tunnel is published at a tunnel domain of the
 
 ### Resolving control plane IP addresses
 
-Some environments must allowlist egress by IP address rather than by hostname. The control plane endpoints sit behind network load balancers whose IP addresses **change over time**, and an upcoming migration to Envoy-based routing will introduce new load balancers. For this reason, do not hardcode a static IP table.
+Some environments must allowlist egress by IP address rather than by hostname. The control plane endpoints sit behind network load balancers whose IP addresses **change over time**. For this reason, do not hardcode a static IP table.
 
 Instead, resolve your own tenant endpoint and re-resolve it on a schedule rather than pinning fixed addresses:
 
@@ -83,7 +83,7 @@ Allowlist the addresses returned, and refresh the allowlist periodically. Where 
 ### VPN alternative to the tunnel
 
 > [!NOTE]
-> A forthcoming VPN-based option will let the data plane connect without the Cloudflare Tunnel, making the `cloudflared` egress on TCP 7844 optional as a do-it-yourself alternative. This is not yet available: under the default tier today, the Direct-to-Data-Plane tunnel requires outbound TCP 7844 to the Cloudflare edge. Enterprise customers who need to eliminate the third-party tunnel path now can use the [Sovereign Data Plane](./sovereign-data-plane) tier, which replaces it with a customer-managed internal load balancer reachable only from the corporate VPN.
+> A forthcoming VPN-based option will let the data plane connect without the Cloudflare Tunnel, making the `cloudflared` egress on TCP 7844 optional. This is not yet available: under the default tier today, the Direct-to-Data-Plane tunnel requires outbound TCP 7844 to the Cloudflare edge. Enterprise customers who need to eliminate the third-party tunnel path now can use the [Sovereign Data Plane](./sovereign-data-plane) tier, which replaces it with a customer-managed internal load balancer reachable only from the corporate VPN.
 
 ## Verification
 

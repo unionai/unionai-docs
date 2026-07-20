@@ -61,7 +61,7 @@ Worker nodes in private subnets need outbound internet access to pull container 
 
 ### Control plane egress
 
-Data plane nodes reach the Union control plane over **outbound HTTPS (TCP 443)** and, under the default tier, the Cloudflare Tunnel over **TCP 7844**. All connectivity is outbound-only; no inbound firewall rules are required. For the full list of outbound destinations and ports, and guidance on allowlisting by IP address, see [Egress requirements](../../security/architecture/network#egress-requirements).
+Data plane nodes reach the Union control plane over **outbound gRPC-over-TLS (TCP 443)** and, under the default tier, the Cloudflare Tunnel over **TCP 7844**. All connectivity is outbound-only; no inbound firewall rules are required. For the full list of outbound destinations and ports, and guidance on allowlisting by IP address, see [Egress requirements](../../security/architecture/network#egress-requirements).
 
 ## Service accounts
 
