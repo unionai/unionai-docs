@@ -12,9 +12,9 @@ For {{< key product_name >}} customers whose data plane is in AWS, we walk throu
 > Your data plane is set up with a Kubernetes cluster and other resources.
 > Among these are several S3 buckets used internally by the {{< key product_name >}} operator running in the cluster (see [Platform architecture](../platform-architecture)) to store things like workflow metadata.
 >
-> **These **_**are not**_** the S3 bucket we are talking about in this section.**
+> **These _are not_ the S3 bucket we are talking about in this section.**
 >
-> **We are discussing the case where you have **_**your own S3 bucket**_** that you set up to store input and output data used by your workflows.**
+> **We are discussing the case where you have _your own S3 bucket_ that you set up to store input and output data used by your workflows.**
 
 ## Add permissions to your custom policy
 

@@ -17,12 +17,14 @@ Performance optimization focuses on two key dimensions:
 **Goal**: Minimize end-to-end execution time for individual workflows.
 
 **Characteristics**:
+
 - Fast individual actions (milliseconds to seconds)
 - Total action count typically less than 1,000
 - Critical for interactive applications and real-time processing
 - Multi-step inference, with reusing model or data in memory (use reusable containers with [@alru.cache](https://pypi.org/project/async-lru/))
 
 **Recommended approach**:
+
 - Use tasks for orchestration and parallelism
 - Use [traces](../task-programming/traces) for fine-grained checkpointing
 - Model parallelism using `asyncio` and use things methods like `asyncio.as_completed` or `asyncio.gather` to join the parallelism
@@ -33,11 +35,13 @@ Performance optimization focuses on two key dimensions:
 **Goal**: Maximize the number of items processed per unit time.
 
 **Characteristics**:
+
 - Processing large datasets (millions of items)
 - High total action count (10k to 50k actions)
 - Batch processing, large-scale batch inference and ETL workflows
 
 **Recommended approach**:
+
 - Batch workloads to reduce overhead
 - Limit fanout to manage system load
 - Use reusable containers with concurrency for maximum utilization
@@ -57,6 +61,7 @@ Understanding task overhead is critical for performance optimization. When you i
 **Total overhead per task**: `2u + 2d + e + t`
 
 This overhead includes:
+
 - Uploading inputs from the parent task (`u`)
 - Downloading inputs in the child task (`d`)
 - Uploading outputs from the child task (`u`)
@@ -73,6 +78,7 @@ Total overhead (2u + 2d + e + t) << Task runtime
 ```
 
 If task runtime is comparable to or less than overhead, consider:
+
 1. **Batching**: Combine multiple work items into a single task
 2. **Traces**: Use traces instead of tasks for lightweight operations
 3. **Reusable containers**: Eliminate container creation overhead (`t`)
@@ -116,12 +122,14 @@ async def process_item(item: dict) -> dict:
 ```
 
 **Benefits**:
+
 - Eliminates container startup overhead (`t ≈ 0`)
 - Supports concurrent execution (multiple tasks per container)
 - Auto-scales based on demand
 - Reuses Python environment and loaded dependencies
 
 **Limitations**:
+
 - Concurrency is limited by CPU and I/O resources in the container
 - Memory requirements scale with total working set size
 - Best for I/O-bound tasks or async operations
@@ -154,11 +162,13 @@ async def process_large_dataset(dataset: list[dict]) -> list[dict]:
 ```
 
 **Benefits**:
+
 - Reduces total number of tasks (e.g., 1000 tasks instead of 1M)
 - Amortizes overhead across multiple items
 - Lower load on Queue Service and object storage
 
 **Choosing batch size**:
+
 1. Calculate overhead: `overhead = 2u + 2d + e + t`
 2. Target task runtime: `runtime > 10 × overhead` (rule of thumb)
 3. Adjust batch size to achieve target runtime
@@ -192,17 +202,20 @@ async def process_workflow(urls: list[str]) -> list[dict]:
 ```
 
 **Benefits**:
+
 - Only storage overhead (no task orchestration overhead)
 - Runs in the same Python process with asyncio parallelism
 - Provides checkpointing and resumption
 - Visible in execution logs and UI
 
 **Trade-offs**:
+
 - No caching (use tasks for cacheable operations)
 - Shares resources with the parent task (CPU, memory)
 - Storage writes may still be slow due to object store latency
 
 **When to use traces**:
+
 - API calls and external service interactions
 - Deterministic transformations that need checkpointing
 - Operations taking more than 1 second (to amortize storage overhead)
@@ -237,6 +250,7 @@ async def process_million_items(items: list[dict]) -> list[dict]:
 Minimize data transfer overhead by choosing appropriate data types:
 
 **Use reference types for large data**:
+
 ```python
 from flyte.io import File, Directory, DataFrame
 
@@ -254,6 +268,7 @@ async def process_large_file(input_file: File) -> File:
 ```
 
 **Use inline types for small data**:
+
 ```python
 @env.task
 async def process_metadata(metadata: dict) -> dict:
@@ -262,6 +277,7 @@ async def process_metadata(metadata: dict) -> dict:
 ```
 
 **Guideline**:
+
 - **< 10 MB**: Use inline types (primitives, small dicts, lists)
 - **> 10 MB**: Use reference types (File, Directory, DataFrame)
 - **Adjust**: Use `max_inline_io` in `TaskEnvironment` to change the threshold
@@ -281,11 +297,13 @@ async def expensive_computation(input_data: dict) -> dict:
 ```
 
 **Benefits**:
+
 - Skips re-execution for identical inputs
 - Reduces overall workflow runtime
 - Preserves resources for new computations
 
 **When to use**:
+
 - Deterministic tasks (same inputs → same outputs)
 - Expensive computations (model training, large data processing)
 - Stable intermediate results
@@ -307,11 +325,13 @@ async def parallel_processing(items: list[dict]) -> list[dict]:
 ```
 
 **Benefits**:
+
 - Automatic parallelization
 - Dynamic scaling based on available resources
 - Built-in error handling and retries
 
 **Best practices**:
+
 - Combine with batching to control fanout
 - Use with reusable containers for maximum throughput
 - Consider memory and resource limits
@@ -376,6 +396,7 @@ async def process_dataset(items: list[dict]) -> list[dict]:
 ```
 
 **Issues**:
+
 - 1M tasks created (exceeds UI limit)
 - Task overhead >> task runtime (100ms task, seconds of overhead)
 - High load on Queue Service and object storage
@@ -410,6 +431,7 @@ async def process_dataset(items: list[dict]) -> list[dict]:
 ```
 
 **Improvements**:
+
 - 1000 tasks instead of 1M (within limits)
 - Batch runtime ~100 seconds (100ms × 1000 items)
 - Reusable containers eliminate startup overhead

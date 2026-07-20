@@ -82,6 +82,7 @@ healthy clusters in its pool.
 {{< tabs "create-queue" >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
+
 ```bash
 flyte create queue my-queue \
   --run-concurrency 100 \
@@ -100,10 +101,12 @@ flyte create queue gpu-queue \
   --priority max \
   --fairness round_robin
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 from flyteplugins.union.remote import Queue
 
@@ -130,6 +133,7 @@ queue = Queue.create(
     fairness="round_robin",
 )
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -168,6 +172,7 @@ queue = Queue.create(
 {{< tabs "inspect-queue" >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
+
 ```bash
 # List all queues
 flyte get queue
@@ -178,10 +183,12 @@ flyte get queue gpu-queue
 # Stream live metrics — runs in-flight, actions in-flight, queue depth
 flyte get queue gpu-queue --watch
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 from flyteplugins.union.remote import Queue
 
@@ -201,6 +208,7 @@ To stream metrics:
 for metrics in Queue.watch("gpu-queue"):
     print(metrics)
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -218,6 +226,7 @@ spec back.
 {{< tabs "update-queue" >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
+
 ```bash
 flyte update queue gpu-queue --edit
 ```
@@ -227,6 +236,7 @@ This opens the queue in your `$EDITOR` so you can adjust the mutable settings.
 {{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 from flyteplugins.union.remote import Queue
 
@@ -238,6 +248,7 @@ Queue.update(
     clusters=["prod-us-east-1"],
 )
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -270,20 +281,24 @@ active --[drain]--> draining --[in-flight work completes]--> drained
 {{< tabs "drain-queue" >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
+
 ```bash
 flyte update queue gpu-queue --drain      # stop new submissions; let in-flight work finish
 flyte update queue gpu-queue --activate   # put the queue back in rotation
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 from flyteplugins.union.remote import Queue
 
 Queue.drain("gpu-queue")     # stop new submissions; let in-flight work finish
 Queue.activate("gpu-queue")  # put the queue back in rotation
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}

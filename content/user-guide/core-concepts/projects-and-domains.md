@@ -20,6 +20,7 @@ When you run or deploy workflows, you target a project and domain:
 
 {{< variant flyte >}}
 {{< markdown >}}
+
 - **CLI**: Use `--project` and `--domain` flags with `flyte run` or `flyte deploy`, or set defaults in your [configuration file](../run-modes/running-devbox#configure).
 {{< /markdown >}}
 {{< /variant >}}

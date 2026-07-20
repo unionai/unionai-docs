@@ -152,20 +152,22 @@ Here's a complete example of prefetching and using a model:
 ## Troubleshooting
 
 **Prefetch fails:**
+
 - Check HuggingFace token (if required)
 - Verify model repo exists and is accessible
 - Check resource availability
 - Review prefetch task logs
 
 **Sharding fails:**
+
 - Ensure accelerator matches shard config
 - Check GPU memory is sufficient
 - Verify `tensor_parallel_size` matches GPU count
 - Review prefetch task logs for sharding-related errors
 
 **Model not found in app:**
+
 - Verify RunOutput references correct run name
 - Check that prefetch completed successfully
 - Ensure model_path is set correctly
 - Review app startup logs
-

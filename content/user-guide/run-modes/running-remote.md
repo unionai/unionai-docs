@@ -58,6 +58,7 @@ As we did in [Quickstart](../quickstart), use `flyte create config` to create a 
 
 {{< variant union >}}
 {{< markdown >}}
+
 ```bash
 flyte create config \
     --endpoint my-org.my-company.com \
@@ -65,10 +66,12 @@ flyte create config \
     --project my-project \
     --builder remote
 ```
+
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
+
 ```bash
 flyte create config \
     --endpoint my-org.my-company.com \
@@ -77,6 +80,7 @@ flyte create config \
     --builder local \
     --registry ghcr.io/my-org
 ```
+
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -84,6 +88,7 @@ This creates `./.flyte/config.yaml`:
 
 {{< variant union >}}
 {{< markdown >}}
+
 ```yaml
 admin:
   endpoint: dns:///my-org.my-company.com
@@ -94,10 +99,12 @@ task:
   domain: development
   project: my-project
 ```
+
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
+
 ```yaml
 admin:
   endpoint: dns:///my-org.my-company.com
@@ -109,6 +116,7 @@ task:
   domain: development
   project: my-project
 ```
+
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -117,6 +125,7 @@ task:
 
 {{< variant flyte >}}
 {{< markdown >}}
+
 ### Set up local Docker
 
 The `--builder local` setting means container images are
@@ -140,6 +149,7 @@ individual `Image` only to override it.) See
 {{< variant union >}}
 {{< markdown >}}
 Create a custom config file with all available options:
+
 ```bash
 flyte create config \
     --endpoint my-org.my-company.com \
@@ -152,11 +162,13 @@ flyte create config \
     --output my-config.yaml \
     --force
 ```
+
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
 Create a custom config file with all available options:
+
 ```bash
 flyte create config \
     --endpoint my-org.my-company.com \
@@ -169,6 +181,7 @@ flyte create config \
     --output my-config.yaml \
     --force
 ```
+
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -216,6 +229,7 @@ Initialize with `flyte.init_from_config`:
 flyte.init_from_config("my-config.yaml")
 run = flyte.run(main)
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
@@ -226,6 +240,7 @@ Use `--config` or `-c`:
 flyte --config my-config.yaml run hello.py main
 flyte -c my-config.yaml run hello.py main
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -248,16 +263,20 @@ Without an explicit path, the SDK searches these locations in order:
 {{< tabs "auto-config" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 flyte.init_from_config()
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
+
 ```bash
 flyte run hello.py main
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -298,6 +317,7 @@ flyte.init(
     domain="development",
 )
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}

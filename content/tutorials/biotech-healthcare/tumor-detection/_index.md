@@ -7,7 +7,7 @@ variants: +flyte +union
 # Brain tumor MRI classification
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/tumor_detection).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/tumor_detection).
 
 This tutorial builds a medical-imaging pipeline that classifies brain MRI scans into four categories (Glioma, Meningioma, No Tumor, and Pituitary) using a two-phase EfficientNet-B4 transfer-learning strategy. The pipeline downloads the dataset, trains on a GPU with fault-tolerant checkpointing, and renders training curves and a confusion matrix directly in the {{< key product_name >}} UI.
 

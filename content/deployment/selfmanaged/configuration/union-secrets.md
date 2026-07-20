@@ -11,6 +11,7 @@ variants: -flyte +union
 The only configurable option is the namespace where the secret is stored. To override the default behavior, set `proxy.secretManager.namespace` in the values file used by the helm chart. If this is not specified, the `union` namespace will be used by default.
 
 Example:
+
 ```yaml
 proxy:
   secretManager:

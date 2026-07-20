@@ -381,6 +381,7 @@ async def orchestrate_pipeline(data_path: str) -> float:
 Run the orchestration task directly (no deployment needed):
 
 **Using Python API**:
+
 ```python
 if __name__ == "__main__":
     flyte.init_from_config()
@@ -399,6 +400,7 @@ if __name__ == "__main__":
 ```
 
 **Using CLI**:
+
 ```bash
 flyte run orchestration_env.py orchestrate_pipeline --data_path s3://my-bucket/data.parquet
 ```
@@ -406,6 +408,7 @@ flyte run orchestration_env.py orchestrate_pipeline --data_path s3://my-bucket/d
 ## Invoke remote tasks in a script.
 
 You can also run any remote task directly using a script in a similar way
+
 ```python
 import flyte
 import flyte.models
@@ -696,6 +699,7 @@ async def my_task(data: str):
 ```
 
 This approach:
+
 - Makes dependencies clear and discoverable
 - Reduces code duplication
 - Works well with lazy loading (no performance penalty)

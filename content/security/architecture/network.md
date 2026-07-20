@@ -130,4 +130,3 @@ Allowlist the addresses returned, and refresh the allowlist periodically. Where 
 2. Analyze VPC Flow Logs for traffic patterns. Bulk data transfers (files, DataFrames, code bundles) should flow directly between task pods and the customer's object store endpoints (S3/GCS/Azure Blob), not through Cloudflare IPs. Structured task I/O and log streams will flow through the tunnel as documented.
 
 3. Use browser developer tools (Network tab) in the Union.ai UI to confirm that binary output artifacts are fetched via presigned URLs (resolving to the customer's storage domain), while structured outputs are fetched via the data plane through the Direct-to-Data-Plane tunnel (resolving to a per-cluster tunnel domain, not a control plane endpoint).
-

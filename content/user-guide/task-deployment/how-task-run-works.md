@@ -22,6 +22,7 @@ The most common development pattern combines ephemeral task preparation and exec
 {{< tabs "ephemeral-run" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 import flyte
 
@@ -39,10 +40,12 @@ if __name__ == "__main__":
     print(f"Result: {result}")
     print(f"Execution URL: {result.url}")
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
+
 ```bash
 flyte run my_example.py my_task --name "World"
 ```
@@ -58,11 +61,13 @@ With deployment options:
 ```bash
 flyte run --version v1.0.0 --copy-style all my_example.py my_task --name "World"
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
 
 **How it works:**
+
 1. **Environment discovery**: Flyte loads the specified Python file and identifies task environments
 2. **Ephemeral preparation**: Temporarily prepares the task environment for execution (similar to deployment but not persistent)
 3. **Task execution**: Immediately runs the specified task with provided arguments in the ephemeral environment
@@ -70,6 +75,7 @@ flyte run --version v1.0.0 --copy-style all my_example.py my_task --name "World"
 5. **Cleanup**: The ephemeral environment is not stored permanently in the backend
 
 **Benefits of ephemeral deployment + run:**
+
 - **Development efficiency**: No separate permanent deployment step required
 - **Always current**: Uses your latest code changes without polluting the backend
 - **Clean development**: Ephemeral environments don't clutter your task registry
@@ -82,6 +88,7 @@ For production workflows or when you want to use stable deployed versions, you c
 {{< tabs "run-deployed" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 import flyte
 
@@ -95,10 +102,12 @@ result = flyte.run(deployed_task, name="World")
 deployed_task = flyte.remote.Task.get("my_env.my_task", auto_version="latest")
 result = flyte.run(deployed_task, name="World")
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
+
 ```bash
 flyte run deployed-task my_env.my_task --name "World"
 ```
@@ -108,11 +117,13 @@ With a specific project and domain:
 ```bash
 flyte run --project prod --domain production deployed-task my_env.my_task --batch_size 1000
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
 
 **Task reference format:** `{environment_name}.{task_name}`
+
 - `environment_name`: The `name` property of your `TaskEnvironment`
 - `task_name`: The function name of your task
 
@@ -121,6 +132,7 @@ flyte run --project prod --domain production deployed-task my_env.my_task --batc
 > Once deployed, you refer to it by its `name` property.
 
 **Benefits of running deployed tasks:**
+
 - **Performance**: No deployment overhead, faster execution startup
 - **Stability**: Uses tested, stable versions of your code
 - **Production safety**: Isolated from local development changes
@@ -133,6 +145,7 @@ For development, debugging, and testing, you can run tasks locally on your machi
 {{< tabs "local-execution" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 import flyte
 
@@ -149,10 +162,12 @@ result = flyte.run(my_task, name="World")
 flyte.init_from_config()  # Client configured
 result = flyte.with_runcontext(mode="local").run(my_task, name="World")
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
+
 ```bash
 flyte run --local my_example.py my_task --name "World"
 ```
@@ -162,11 +177,13 @@ With development data:
 ```bash
 flyte run --local data_pipeline.py process_data --input_path "/local/data" --debug true
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
 
 **Benefits of local execution:**
+
 - **Rapid development**: Instant feedback without network latency
 - **Debugging**: Full access to local debugging tools
 - **Offline development**: Works without backend connectivity
@@ -185,6 +202,7 @@ If you are running your Flyte code on a Union backend, the UI provides an intera
 5. **Monitor progress**: Watch real-time execution progress and logs
 
 **UI execution benefits:**
+
 - **User-friendly**: No command-line expertise required
 - **Visual monitoring**: Real-time progress visualization
 - **Input validation**: Built-in parameter validation and type checking

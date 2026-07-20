@@ -25,6 +25,7 @@ Similar to `[[TaskEnvironment]]`, configuration can be set when creating the `[[
 Here's a complete example of deploying a simple Streamlit "hello world" app with a custom subdomain.
 
 There are two ways to build apps in Flyte:
+
 1. Defining `AppEnvironment(.., args=[...])` to run the app with the underlying `fserve` command.
 2. Defining `@app_env.server` to run the app with a custom server function.
 
@@ -83,7 +84,6 @@ While `AppEnvironment` inherits from `Environment` (the same base class as `Task
 | `cluster_pool` | ✅ | ❌ | Cluster pool for deployment |
 
 Parameters like `image`, `resources`, `secrets`, `env_vars`, and `depends_on` are shared between both environment types. See the [task configuration](../task-configuration/_index) docs for details on these shared parameters.
-
 
 ## Configuration topics
 

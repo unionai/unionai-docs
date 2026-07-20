@@ -27,8 +27,6 @@ The Flyte SDK provides the core Python API for building workflows and apps on yo
 The Flyte CLI is the command-line interface for interacting with your Union instance.
 {{< /link-card >}}
 
-{{< link-card target="migration" icon="arrow_forward" title="Migration from Flyte 1" >}}
-Comprehensive reference for migrating Flyte 1 workflows to Flyte 2.
-{{< /link-card >}}
-
 {{< /grid >}}
+
+Migrating from Flyte 1? See [Migration from Flyte 1](../user-guide/migration/flyte-2/migration) in the User Guide.

@@ -212,7 +212,6 @@ All message fields support template variables that are substituted at delivery t
 | `{{.Phase}}`       | Execution phase                                        |
 | `{{.Error}}`       | Error message when failed or abort reason when aborted |
 
-
 ### Slack notifications
 
 `notify.Slack` sends a message to a Slack channel via an [incoming webhook](https://api.slack.com/messaging/webhooks).
@@ -244,7 +243,6 @@ Use `blocks` instead of `message` for structured layouts. When `blocks` is provi
 `notify.Webhook` sends an HTTP request to any endpoint. All string values in `headers` and `body` support template variables.
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/notifications/notifications.py" fragment="webhook-notification" lang="python">}}
-
 
 ## Deploying a task with triggers
 

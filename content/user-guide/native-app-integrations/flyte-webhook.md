@@ -76,6 +76,7 @@ Limit which tasks can be run or queried through the webhook:
 {{< code file="/unionai-examples/v2/user-guide/build-apps/flyte_webhook_examples.py" fragment=task-allowlist lang=python >}}
 
 Task identifiers support three formats:
+
 - `domain/project/name`: exact match
 - `project/name`: matches any domain
 - `name`: matches any domain and project
@@ -93,6 +94,7 @@ Limit which triggers can be activated or deactivated:
 {{< code file="/unionai-examples/v2/user-guide/build-apps/flyte_webhook_examples.py" fragment=trigger-allowlist lang=python >}}
 
 Trigger identifiers support two formats:
+
 - `task_name/trigger_name`: exact match
 - `trigger_name`: matches any task
 

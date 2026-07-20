@@ -16,6 +16,7 @@ Flyte 2.0's advanced features for building production-grade AI workflows.
 ## What you'll build
 
 A batch report generator that:
+
 1. Processes multiple topics in parallel
 2. Iteratively critiques and refines each report until it meets a quality threshold
 3. Produces multiple output formats (Markdown, HTML, summary) for each report

@@ -15,11 +15,12 @@ The `flyte run` command provides the following options:
 | `--project`                 | `-p`  | text   | *from config*             | Project to run tasks in                                |
 | `--domain`                  | `-d`  | text   | *from config*             | Domain to run tasks in                                 |
 | `--local`                   |       | flag   | `false`                   | Run the task locally                                   |
-| `--copy-style`              |       | choice | `loaded_modules|all|none` | Code bundling strategy                                 |
+| `--copy-style`              |       | choice | `loaded_modules\|all\|none` | Code bundling strategy                                 |
 | `--root-dir`                |       | path   | *current dir*             | Override source root directory                         |
 | `--raw-data-path`           |       | text   |                           | Override the output location for offloaded data types. |
 | `--service-account`         |       | text   |                           | Kubernetes service account.                            |
 | `--name`                    |       | text   |                           | Name of the run.                                       |
+| `--label`                   |       | text   |                           | User-defined `key=value` label on the run. Repeatable. |
 | `--follow`                  | `-f`  | flag   | `false`                   | Wait and watch logs for the parent action.             |
 | `--image`                   |       | text   |                           | Image to be used in the run (format: `name=uri`).      |
 | `--no-sync-local-sys-paths` |       | flag   | `false`                   | Disable synchronization of local sys.path entries.      |
@@ -125,6 +126,7 @@ Handle cross-directory imports:
 ```bash
 flyte run --root-dir .. my_example.py my_workflow
 ```
+
 This applies to the ephemeral preparation step of the `flyte run` command.
 It works identically to the `flyte deploy` command's `--root-dir` option.
 
@@ -186,6 +188,18 @@ flyte run --name "experiment-lr-0.01-batch-32" my_example.py hyperparameter_swee
 - **Easy identification**: Find specific runs in the Flyte console
 - **Experiment tracking**: Include key parameters or dates in names
 - **Automation**: Programmatically generate meaningful names for scheduled runs
+
+## `--label`
+
+**`flyte run --label <KEY>=<VALUE> <PATH> <TASK_NAME>`**
+
+Attach one or more user-defined `key=value` labels to the run for filtering and organizing runs. The flag is repeatable:
+
+```bash
+flyte run --label team=ml --label env=prod my_example.py train_model
+```
+
+Later, list or filter runs by these labels with `flyte get run --with-label team=ml` (see [Filtering runs by label](./interacting-with-runs#filtering-runs-by-label)).
 
 ## `--follow`
 
@@ -254,6 +268,7 @@ flyte run --no-sync-local-sys-paths my_example.py my_task
 ```
 
 This advanced option works identically to the deploy command equivalent, useful for:
+
 - **Container isolation**: Prevent local development paths from affecting remote execution
 - **Custom environments**: When containers have pre-configured Python paths
 - **Security**: Avoiding exposure of local directory structures

@@ -52,6 +52,7 @@ The Union SDK provides the Python API for building Union workflows and apps.
 
 > [!NOTE]
 > If you're wondering why we have a `{{</* markdown */>}}` when we can generate markdown at the top level, it is due to a quirk in Hugo:
+>
 > * At the top level of the page, Hugo can render markdown directly, interspersed with shortcodes.
 > * However, *inside* a container shortcode, Hugo can only render *either* other shortcodes *or* Markdown.
 > * The `{{</* markdown */>}}` shortcode is designed to contain only Markdown (not other shortcodes).
@@ -179,6 +180,7 @@ union = "Union.ai"
 Generates a download link.
 
 Parameters:
+
 - `url`: The URL to download from
 - `filename`: The filename to save the file as
 - `text`: The text to display for the download link
@@ -205,6 +207,7 @@ Helper functions to track Python classes in Flyte documentation, so we can link 
 the appropriate documentation.
 
 Parameters:
+
 - name of the class
 - text to add to the link
 
@@ -229,6 +232,7 @@ Example:
 Includes a code snippet or file.
 
 Parameters:
+
 - `file`: The path to the file to include.
 - `fragment`: The name of the fragment to include.
 - `from`: The line number to start including from.
@@ -276,4 +280,3 @@ Simply specify no filters, just the `file` attribute:
 Effect:
 
 {{< code file="/_static/__docs_builder__/sample.py" >}}
-

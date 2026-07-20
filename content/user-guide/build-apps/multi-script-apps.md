@@ -103,16 +103,19 @@ project/
 ## Troubleshooting
 
 **Import errors:**
+
 - Verify all files are included in the `include` parameter
 - Check that file paths are correct (relative to app definition file)
 - Ensure `__init__.py` files are included for packages
 
 **Module not found:**
+
 - Add missing files to the `include` list
 - Check that import paths match the file structure
 - Verify that the image includes all necessary packages
 
 **File not found at runtime:**
+
 - Ensure all referenced files are included
 - Check mount paths for file/directory inputs
 - Verify file paths are relative to the app root directory

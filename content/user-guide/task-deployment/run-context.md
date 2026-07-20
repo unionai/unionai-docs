@@ -69,8 +69,16 @@ The equivalent CLI flag is `--raw-data-path`. See [Run command options](./run-co
 |-----------|------|---------|-------------|
 | `service_account` | `str` | *from config* | Kubernetes service account for task pods. |
 | `env_vars` | `Dict[str, str]` | `None` | Additional environment variables to inject into task containers. |
-| `labels` | `Dict[str, str]` | `None` | Kubernetes labels to apply to task pods. |
-| `annotations` | `Dict[str, str]` | `None` | Kubernetes annotations to apply to task pods. |
+| `labels` | `Dict[str, str]` | `None` | User-defined `key=value` labels attached to the run — used to filter/organize runs (`flyte get run --with-label`) and propagated to the task pods as Kubernetes labels. |
+| `annotations` | `Dict[str, str]` | `None` | User-defined `key=value` annotations attached to the run and propagated to the task pods as Kubernetes annotations (not filterable; no CLI flag). |
+
+Labels tag a run with arbitrary `key=value` metadata so you can find and group related runs later, and are also propagated to the run's task pods as Kubernetes labels (available for cluster-level monitoring, routing, or policies). Set them programmatically with `with_runcontext(labels={...})`, or from the CLI with the repeatable `--label` flag:
+
+```bash
+flyte run --label team=ml --label env=prod my_example.py main
+```
+
+To list and filter runs by their labels, see [Filtering runs by label](./interacting-with-runs#filtering-runs-by-label).
 
 ### Logging
 
@@ -81,7 +89,7 @@ The equivalent CLI flag is `--raw-data-path`. See [Run command options](./run-co
 | `log_format` | `"console"` \| `"json"` | `"console"` | Log output format. |
 | `reset_root_logger` | `bool` | `False` | If `True`, clear the root logger's existing handlers and install Flyte's own. If `False` (the default), leave existing root handlers in place and wrap their formatters with the run/action context. |
 
-For setting the logging level (including via environment variables) and the framework-vs-user logger split, see [Logging](../task-configuration/logging).
+For setting the logging level (including via environment variables), the framework-vs-user logger split, and capturing third-party library logs as JSON with `reset_root_logger`, see [Logging](../task-configuration/logging).
 
 ### Code bundling
 

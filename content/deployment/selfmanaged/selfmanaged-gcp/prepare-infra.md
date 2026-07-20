@@ -34,6 +34,7 @@ gcloud services enable container.googleapis.com --project ${PROJECT_ID}
 ```
 
 > [!NOTE] If the project has no default VPC network, create one before proceeding:
+>
 > ```bash
 > gcloud compute networks create default --project ${PROJECT_ID} --subnet-mode=auto
 > ```
@@ -51,9 +52,10 @@ gcloud container clusters create ${CLUSTER_NAME} \
 > [!NOTE] The `--workload-pool` flag enables [GKE Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity), which is required for the [Workload Identity](#workload-identity) setup below.
 
 The following GKE add-ons are required and come pre-installed on GKE clusters:
-  - CoreDNS (kube-dns)
-  - GKE networking (Dataplane V2 / Calico)
-  - Kube-proxy
+
+- CoreDNS (kube-dns)
+- GKE networking (Dataplane V2 / Calico)
+- Kube-proxy
 
 If you created your cluster through other means, verify that Workload Identity is enabled:
 

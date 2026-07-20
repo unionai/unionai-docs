@@ -7,7 +7,7 @@ variants: +flyte +union
 # Multi-agent trading simulation
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/trading_agents); based on work by [TauricResearch](https://github.com/TauricResearch/TradingAgents).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/trading_agents); based on work by [TauricResearch](https://github.com/TauricResearch/TradingAgents).
 
 This example walks you through building a multi-agent trading simulation, modeling how agents within a firm might interact, strategize, and make trades collaboratively.
 
@@ -170,7 +170,7 @@ uv run main.py
 You might now be wondering: can't I just build all this with Python and LangChain?
 Absolutely. But as your project grows, you'll likely run into these challenges:
 
-1.  **Observability**: Agent workflows can feel opaque. You send a prompt, get a response, but what happened in between?
+1. **Observability**: Agent workflows can feel opaque. You send a prompt, get a response, but what happened in between?
 
     - Were the right tools used?
     - Were correct arguments passed?
@@ -179,7 +179,7 @@ Absolutely. But as your project grows, you'll likely run into these challenges:
 
     Flyte gives you a window into each of these stages.
 
-2.  **Multi-agent coordination**: Real-world applications often require multiple agents with distinct roles and responsibilities. In such cases, you'll need:
+2. **Multi-agent coordination**: Real-world applications often require multiple agents with distinct roles and responsibilities. In such cases, you'll need:
 
     - Isolated state per agent,
     - Shared context where needed,
@@ -187,8 +187,8 @@ Absolutely. But as your project grows, you'll likely run into these challenges:
 
     Managing this manually gets fragile, fast. Flyte handles it for you.
 
-3.  **Scalability**: Agents and tools might need to run in isolated or containerized environments. Whether you're scaling out to more agents or more powerful hardware, Flyte lets you scale without taxing your local machine or racking up unnecessary cloud bills.
-4.  **Durability & recovery**: LLM-based workflows are often long-running and expensive. If something fails halfway:
+3. **Scalability**: Agents and tools might need to run in isolated or containerized environments. Whether you're scaling out to more agents or more powerful hardware, Flyte lets you scale without taxing your local machine or racking up unnecessary cloud bills.
+4. **Durability & recovery**: LLM-based workflows are often long-running and expensive. If something fails halfway:
 
     - Do you lose all progress?
     - Replay everything from scratch?

@@ -29,11 +29,13 @@ With just a `name`, you get Flyte's default container image and resource allocat
 A TaskEnvironment specifies two things:
 
 **Hardware environment** - The compute resources allocated to each task:
+
 - CPU cores
 - Memory
 - GPU type and count
 
 **Software environment** - The container image your code runs in:
+
 - Base image (Python version, OS)
 - Installed packages and dependencies
 - Environment variables

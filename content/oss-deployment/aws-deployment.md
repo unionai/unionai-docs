@@ -177,7 +177,6 @@ to its database.
 **With an ingress**, open `https://<flyte.example.com>/v2` in a browser to load the
 console, and point the SDK/CLI at the same host.
 
-
 ## 7. Tear down
 
 Uninstall the Helm release and delete the namespace:

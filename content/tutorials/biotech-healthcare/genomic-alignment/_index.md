@@ -7,7 +7,7 @@ variants: +flyte +union
 # Genomic alignment
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/genomic_alignment).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/genomic_alignment).
 
 This tutorial builds a bioinformatics pipeline that aligns raw sequencing reads to a reference genome. The workflow downloads a reference genome and paired-end sequencing data, performs quality filtering, builds a reference index, and aligns the filtered reads with the [Bowtie 2](https://bowtie-bio.sourceforge.net/bowtie2/index.shtml) aligner, running each sample in parallel.
 

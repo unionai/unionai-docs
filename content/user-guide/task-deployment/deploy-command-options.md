@@ -18,12 +18,11 @@ The `flyte deploy` command provides extensive configuration options:
 | `--dry-run`/`--dryrun`      |       | flag   | `false`                   | Preview deployment without executing              |
 | `--all`                     |       | flag   | `false`                   | Deploy all environments in specified path         |
 | `--recursive`               | `-r`  | flag   | `false`                   | Deploy environments recursively in subdirectories |
-| `--copy-style`              |       | choice | `loaded_modules|all|none` | Code bundling strategy                            |
+| `--copy-style`              |       | choice | `loaded_modules\|all\|none` | Code bundling strategy                            |
 | `--root-dir`                |       | path   | *current dir*             | Override source root directory                    |
 | `--image`                   |       | text   |                           | Image URI mappings (format: `name=uri`)           |
 | `--ignore-load-errors`      | `-i`  | flag   | `false`                   | Continue deployment despite module load failures  |
 | `--no-sync-local-sys-paths` |       | flag   | `false`                   | Disable local `sys.path` synchronization          |
-
 
 ## `--project`, `--domain`
 
@@ -187,6 +186,7 @@ flyte deploy --root-dir .. my_example.py env
 ```
 
 **Working directory independence:**
+
 ```bash
 flyte deploy --root-dir /path/to/project /path/to/project/my_example.py env
 ```
@@ -199,6 +199,7 @@ flyte deploy --root-dir /path/to/project /path/to/project/my_example.py env
 4. **Dependency packaging**: Captures all necessary modules that may be located outside the workflow file's immediate directory
 
 ### Example with complex project structure
+
 ```
 my-project/
 ├── services/
@@ -248,7 +249,6 @@ flyte deploy --image ghcr.io/org/default:latest my_example.py env
 - Unnamed mappings (e.g., just `URI`) override the default "auto" image.
 - Multiple `--image` flags can be specified.
 - Mappings are resolved during the image building phase of deployment.
-
 
 ## `--ignore-load-errors`
 
