@@ -44,7 +44,7 @@ flyte create secret flyte_api_key --value "<the-encoded-key>"
 
 {{< variant flyte >}}
 {{< markdown >}}
-Obtain an API key through your Flyte deployment's authentication setup (the `flyte create api-key` convenience command shown for Union is provided by the `flyteplugins-union` plugin), then store it as a secret the bridging task can read — see [Run on a remote cluster](../../run-modes/running-remote) for the authentication options.
+Obtain a Flyte 2 API key from your control plane's authentication setup and store it as a secret the bridging task can read — see [Run on a remote cluster](../../run-modes/running-remote) for the authentication options.
 {{< /markdown >}}
 {{< /variant >}}
 
