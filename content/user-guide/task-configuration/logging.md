@@ -23,7 +23,7 @@ The quickest way to set the level is via environment variables. They apply to bo
 | `USER_LOG_LEVEL` | The user logger (`flyte.user`) | `INFO` |
 | `LOG_FORMAT` | Output format: `console` or `json` | `console` |
 | `DISABLE_RICH_LOGGING` | If set (to any value), disables the Rich-formatted console handler | *unset* |
-| `FLYTE_RESET_ROOT_LOGGER` | If set to `1`, resets the root logger so third-party library logs are formatted too (see [JSON logging and third-party libraries](#json-logging-and-third-party-libraries)) | *unset* |
+| `FLYTE_RESET_ROOT_LOGGER` | If set to `1`, resets the root logger so third-party library logs are captured as JSON too (see [JSON logging and third-party libraries](#json-logging-and-third-party-libraries)) | *unset* |
 
 For example, to see Flyte's internal debug messages:
 
@@ -97,7 +97,7 @@ flyte.logger.debug("Intermediate value: %r", value)
 
 ## JSON logging and third-party libraries
 
-Setting `LOG_FORMAT=json` (or `log_format="json"`) switches Flyte's output to JSON — but only for the two Flyte loggers, `flyte` and `flyte.user`. Both have propagation disabled, so neither reaches the Python **root logger**. Third-party libraries (`urllib3`, `boto3`, your own dependencies) typically emit through the root logger, so their lines are left untouched: your Flyte output is JSON, but library log lines stay plain text.
+Setting `LOG_FORMAT=json` (or `log_format="json"`) switches Flyte's output to JSON — but only for the two Flyte loggers, `flyte` and `flyte.user`. Both have propagation disabled, so neither reaches the Python **root logger**. Third-party libraries (`urllib3`, `boto3`, your own dependencies) typically emit through the root logger, so their lines are not converted to JSON: your Flyte output is JSON, but library log lines stay plain text.
 
 This matters when you ship logs to a cloud logging backend — Google Cloud Logging (Stackdriver), AWS CloudWatch, Datadog — that expects one consistent JSON format across every line.
 
