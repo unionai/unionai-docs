@@ -30,7 +30,7 @@ adaptive behavior. Flyte 2 supports:
 
 - Python's asynchronous programming model to express parallelism.
 - Python's native error handling with `try-except` to overridden configurations, like resource requests.
-- Predefined static workflows when compile-time safety is critical.
+- Python's native conditional `if`/`elif`/`else` syntax and `for`/`while` loops.
 
 ## Simplified API
 
