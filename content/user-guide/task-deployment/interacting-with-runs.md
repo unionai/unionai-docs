@@ -97,6 +97,54 @@ For all available options, see the [CLI reference](../../api-reference/flyte-cli
 {{< /tab >}}
 {{< /tabs >}}
 
+### Filtering runs by label
+
+If runs were launched with [labels](./run-context#identity-and-resources) — arbitrary `key=value` metadata attached at launch — you can filter the run list by those labels. Multiple label filters combine with **AND** semantics: a run must match every label you specify to be returned.
+
+{{< tabs "filter-by-label" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+Filter by one or more `key=value` labels:
+
+```bash
+flyte get run --with-label team=ml --with-label env=prod
+```
+
+Filter by the presence of a label key, regardless of its value:
+
+```bash
+flyte get run --with-label-key team
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+`flyte.remote.Run.listall()` accepts the same filters and returns an async iterator of runs:
+
+```python
+import flyte
+
+flyte.init_from_config()
+
+# Runs that carry BOTH labels (AND semantics)
+async for run in flyte.remote.Run.listall(with_labels={"team": "ml", "env": "prod"}):
+    print(run.name)
+
+# Runs that have the "team" label key set to any value
+async for run in flyte.remote.Run.listall(with_label_keys=["team"]):
+    print(run.name)
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "UI" >}}
+{{< markdown >}}
+In the run list, each run shows its labels as chips in the **Labels** column. Click a label chip to filter the list down to the runs that share that label.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+To attach labels to a run when you launch it, see [Run context](./run-context#identity-and-resources).
+
 ### Watching run progress
 
 Monitor a run as it progresses through phases:
