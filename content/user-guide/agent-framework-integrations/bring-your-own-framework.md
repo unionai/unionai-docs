@@ -7,9 +7,12 @@ mermaid: true
 
 # Bring your own framework
 
-The dedicated pages ([LangGraph](./langgraph), [PydanticAI](./pydantic-ai), [OpenAI Agents SDK](./openai-agents-sdk)) are just worked examples of one underlying idea: **{{< key product_name >}} is the runtime, your framework is the loop.** If your agent library is written in Python, it runs on {{< key product_name >}} with no special plugin.
+The [supported plugins](../../integrations/agents/_index) are worked examples of one underlying idea: **{{< key product_name >}} is the runtime, your framework is the loop.** If your agent library is written in Python, it runs on {{< key product_name >}} with no special plugin.
 
-This page is a framework-agnostic template. Drop in any library ([CrewAI](https://docs.crewai.com/), [AutoGen](https://microsoft.github.io/autogen/), [smolagents](https://github.com/huggingface/smolagents), [Atomic Agents](https://github.com/BrainBlend-AI/atomic-agents), a raw provider SDK, or your own homegrown loop) wherever the comments say so.
+This page is a framework-agnostic template for the frameworks that don't have one. Drop in any library ([AutoGen](https://microsoft.github.io/autogen/), [smolagents](https://github.com/huggingface/smolagents), [Atomic Agents](https://github.com/BrainBlend-AI/atomic-agents), a raw provider SDK, or your own homegrown loop) wherever the comments say so.
+
+> [!NOTE] Check for a plugin first
+> If your framework is one of the ten with a first-party adapter, use that instead. The plugins give you per-tool containerization, model-turn replay and cross-run memory that this template does not. See [Agent frameworks](../../integrations/agents/_index).
 
 ## The core pattern
 

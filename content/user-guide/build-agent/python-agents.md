@@ -9,7 +9,7 @@ mermaid: true
 
 The lightest way to build an agent on {{< key product_name >}} is to write the loop yourself in plain Python. {{< key product_name >}} is framework-agnostic: use any Python LLM library (OpenAI SDK, Anthropic SDK, LiteLLM, etc.) inside your tasks. The platform provides the production infrastructure layer: sandboxed execution, parallel fan-out, durable checkpointing, and observability for every step of the agent loop.
 
-This approach gives you full control over the loop and the smallest possible dependency footprint. If you'd rather not hand-roll the tool-call loop, see [The Flyte Agent harness](./flyte-agents), which provides a batteries-included loop with tools, MCP servers, memory, and HITL. If you already have agents written in a third-party framework, see [Agent framework integrations](../agent-framework-integrations/_index) for [LangGraph](../agent-framework-integrations/langgraph), [PydanticAI](../agent-framework-integrations/pydantic-ai), and [OpenAI Agents SDK](../agent-framework-integrations/openai-agents-sdk).
+This approach gives you full control over the loop and the smallest possible dependency footprint. If you'd rather not hand-roll the tool-call loop, see [The Flyte Agent harness](./flyte-agents), which provides a batteries-included loop with tools, MCP servers, memory, and HITL. If you already have agents written in a third-party framework, see [Agent frameworks](../../integrations/agents/_index) for the ten supported plugins, or [Agent framework integrations](../agent-framework-integrations/_index) for the framework-agnostic pattern.
 
 Two decorators are all you need:
 
@@ -113,7 +113,7 @@ research_workflow (orchestrator)
 - **Durable checkpointing:** Each task's output is persisted. If `synthesize` fails, re-running skips the completed `plan` and `research` steps (with caching enabled)
 
 > [!TIP]
-> The same fan-out works with any framework inside the `research` task. See [LangGraph](../agent-framework-integrations/langgraph) for a version that runs a LangGraph research agent (with web-search tool calling) inside each parallel container.
+> The same fan-out works with any framework inside the `research` task. See [Agent frameworks](../../integrations/agents/_index) for versions that run a LangGraph, CrewAI or OpenAI Agents SDK researcher inside each parallel container, with the tool calls durable on their own.
 
 ## More agentic patterns
 
