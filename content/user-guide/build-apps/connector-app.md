@@ -69,7 +69,7 @@ Before deploying, you can exercise your connector entirely in your local Python 
 A run executes locally whenever no Flyte backend connection is configured, or when you force local mode explicitly. Point Flyte at the module that instantiates your task and run it:
 
 ```python
-# test_connector.py
+# main.py
 from my_connector.task import BatchJobConfig, BatchJobTask
 
 import flyte
@@ -82,13 +82,13 @@ batch_job = BatchJobTask(
 )
 
 if __name__ == "__main__":
-    flyte.init()  # no backend configured -> local execution
+    flyte.init()  # runs locally
     result = flyte.run(batch_job, name="hello")
     print(result.outputs())
 ```
 
 ```bash
-python test_connector.py
+python main.py
 ```
 
 Or force local mode from the CLI with `--local`, pointing at the same file you run remotely:
