@@ -158,7 +158,7 @@ clusterPoolName: gpu-pool
 uctl update cluster-pool-attributes --attrFile cpa.yaml
 ```
 
-See [`uctl update cluster-pool-attributes`](../../api-reference/uctl-cli/uctl-update/uctl-update-cluster-pool-attributes) for the full reference.
+Run `uctl update cluster-pool-attributes --help` for the full reference.
 
 ### Treat production as a managed service
 
