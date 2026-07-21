@@ -158,8 +158,6 @@ clusterPoolName: gpu-pool
 uctl update cluster-pool-attributes --attrFile cpa.yaml
 ```
 
-Run `uctl update cluster-pool-attributes --help` for the full reference.
-
 ### Treat production as a managed service
 
 Each `<project>/production` pair should have its own quota budget and change-management process. Quota changes in production should go through review rather than ad-hoc CLI updates.
