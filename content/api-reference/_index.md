@@ -29,4 +29,4 @@ The Flyte CLI is the command-line interface for interacting with your Union inst
 
 {{< /grid >}}
 
-Migrating from Flyte 1? See [Migration from Flyte 1](../user-guide/migration/flyte-2/migration) in the User Guide.
+Migrating from Flyte 1? See [Migration from Flyte 1](../user-guide/migration/flyte-2/overview) in the User Guide.

@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Task configuration
 
-In Flyte 1, image, resources, caching, secrets, and scheduling were configured per-task on the `@task` decorator or per-workflow on a `LaunchPlan`. In Flyte 2 most of this moves to the `flyte.TaskEnvironment`, so it's declared once and shared. See [Migration](./migration) for the overall approach.
+In Flyte 1, image, resources, caching, secrets, and scheduling were configured per-task on the `@task` decorator or per-workflow on a `LaunchPlan`. In Flyte 2 most of this moves to the `flyte.TaskEnvironment`, so it's declared once and shared. See [Migration](./overview) for the overall approach.
 
 ## Image, resources, and caching
 

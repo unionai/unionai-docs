@@ -1,15 +1,28 @@
 ---
-title: Considerations
-weight: 13
+title: Gotchas and caveats
+weight: 15
 variants: +flyte +union
 ---
 
-# Considerations
+# Gotchas and caveats
 
-Flyte 2 represents a substantial change from Flyte 1.
-Each Python-based task action has the ability to act as its own engine, kicking off sub-actions, and assembling the outputs, passing them to yet other sub-actions and such.
+Flyte 2 is a substantial change from Flyte 1: each Python task can act as its own engine, launching sub-tasks and assembling their outputs. That flexibility is powerful, but it warrants some caveats when authoring your tasks.
 
-While this model of execution comes with an enormous amount of flexibility, that flexibility does warrant some caveats when authoring your tasks.
+This page starts with a quick list of common gotchas you'll hit during a migration, then covers the deeper execution-model considerations in detail.
+
+## Common gotchas
+
+- **`flyte.map` returns a generator.** Wrap it in `list()` to materialize results, unlike `map_task` which returned a list directly.
+- **`memory`, not `mem`.** The `Resources` parameter was renamed, and there are no separate `requests`/`limits` — a single value serves as both.
+- **GPUs use a `"T4:1"` string.** Type and count are combined; the separate `accelerator=` argument is gone.
+- **Image, resources, and cache live on the `TaskEnvironment`.** Set them once at the env level instead of repeating them on every task decorator.
+- **`current_context()` is gone.** Read secrets from environment variables and use `flyte.ctx()` for runtime context.
+- **The `>>` ordering operator is gone.** Sequential (sync) calls and sequential `await`s are naturally ordered.
+- **Retries no longer have a platform cap.** In Flyte 1 the control plane capped attempts at 3; in Flyte 2 total attempts equal `retries + 1`. Audit any large `retries` values before deploying.
+- **You can only `await` async tasks.** Call a sync task from an async context with `.aio()`; see the [Asynchronous model](./overview#asynchronous-model).
+- **Pick an entrypoint task name.** There's no `@workflow`, so the top-level task is just a task (commonly `main`); run it with `flyte run module.py main`.
+- **Type annotations are more lenient.** Flyte 2 will pickle untyped I/O rather than rejecting it at registration.
+- **Keep orchestration lightweight.** A task that calls other tasks acts as a driver pod. Avoid heavy CPU work in it — see [Driver pod requirements](#driver-pod-requirements) below.
 
 ## Non-deterministic behavior
 

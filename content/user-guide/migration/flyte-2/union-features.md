@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Migrating Union-specific features
 
-A couple of constructs that were specific to Union in Flyte 1 — **Actors** and **Apps** — have direct equivalents in Flyte 2. Apps, in particular, are now part of the open-source Flyte SDK rather than a Union-only add-on. See [Migration](./migration) for the overall approach.
+A couple of constructs that were specific to Union in Flyte 1 — **Actors** and **Apps** — have direct equivalents in Flyte 2. Apps, in particular, are now part of the open-source Flyte SDK rather than a Union-only add-on. See [Migration](./overview) for the overall approach.
 
 ## Actors → reusable containers
 
@@ -131,4 +131,4 @@ Because apps are now part of the OSS SDK, the same `flyte.app` API covers dashbo
 ## Next
 
 - [New in Flyte 2](./new-in-flyte-2) — real-time serving, batch inference, and sandboxing
-- [Considerations](./considerations) — caveats of the new execution model
+- [Gotchas and caveats](./gotchas-and-caveats) — caveats of the new execution model
