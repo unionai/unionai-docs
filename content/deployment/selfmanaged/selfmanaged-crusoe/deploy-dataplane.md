@@ -83,7 +83,7 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
      authType: accesskey
      bucketName: <BUCKET_NAME>
      fastRegistrationBucketName: <BUCKET_NAME>
-     endpoint: https://object.crusoecloud.com    # [VERIFY endpoint]
+     endpoint: <YOUR_STORAGE_ENDPOINT>
      region: <CRUSOE_REGION>
      disableSSL: false
      credentialsSecretRef:
@@ -243,18 +243,3 @@ For more information, see the following resources:
 - [Crusoe Managed Kubernetes overview](https://docs.crusoecloud.com/kubernetes/overview/)
 - [Crusoe Cloud Storage overview](https://docs.crusoecloud.com/storage/object-storage/overview)
 
-<!--
-Open items to confirm before publishing (carried over from draft):
-1. S3 endpoint URL: object.crusoecloud.com, storage.crusoecloud.com, region-scoped, or other?
-2. Addressing style: does Crusoe require virtual-hosted style or support path-style?
-3. Region naming: canonical region/AZ format (e.g., us-northcentral1-a)?
-4. IAM policy schema: AWS-style JSON or custom?
-5. Console navigation paths: exact menu paths for buckets, keys, policies.
-6. Kubernetes service name: CMK, CKE, or other branding?
-7. GPU node pool labels & taints: canonical labels (e.g., crusoe.ai/gpu-type=h100)?
-8. Supported Kubernetes versions: confirm the "most recent three minor" claim.
-9. Networking / egress: RESOLVED — outbound-only; TCP 443 to the control plane tenant endpoint and TCP 7844 for the Cloudflare Tunnel (default tier). Documented at content/security/architecture/network.md#egress-requirements.
-10. Default StorageClass on CMK for PVCs (BuildKit cache, fluent-bit)?
-11. Image registry pull-through cache to reduce GHCR pull latency?
-12. Logging sink: back to the same bucket, or a managed logging service?
--->

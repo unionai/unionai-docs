@@ -99,7 +99,7 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
      --set-string secrets.admin.clientId=<CLIENT_ID> \
      --set secrets.admin.clientSecret=<CLIENT_SECRET> \
      --namespace union \
-     --create-namespace \
+     --create-namespace
    ```
 
 6. Once deployed you can check to see if the cluster has been successfully registered to the control plane:

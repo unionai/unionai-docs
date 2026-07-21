@@ -79,7 +79,7 @@ If you have not yet set up the required OCI resources (OKE cluster, Object Stora
      --set-string secrets.admin.clientId=<CLIENT_ID> \
      --set secrets.admin.clientSecret=<CLIENT_SECRET> \
      --namespace union \
-     --create-namespace \
+     --create-namespace 
      --force-conflicts
    ```
 

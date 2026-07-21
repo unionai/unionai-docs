@@ -93,7 +93,7 @@ If you have not yet set up the required CoreWeave resources (CKS cluster, AI Obj
            auth_type: accesskey
            endpoint: https://cwobject.com
            disable_ssl: false
-           disable_force_path_style: "true"
+           disable_force_path_style: true
 
    fluentbit:
      enabled: true
