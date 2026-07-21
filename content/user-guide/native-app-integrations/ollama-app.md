@@ -81,7 +81,33 @@ The container entrypoint runs that helper, then hands the exposed port to Stream
 
 ## Authentication
 
-The generic `AppEnvironment` uses Union's platform-level authentication. Leave `requires_auth=True` (the default) to require an authenticated caller, or set `requires_auth=False` for a public endpoint. Ollama has no built-in API-key argument of its own, so prefer platform auth over exposing a public endpoint. See [Secret-based authentication](../build-apps/secret-based-authentication) for injecting secrets into an app.
+The generic `AppEnvironment` uses Union's platform-level authentication. Leave `requires_auth=True` (the default) to require an authenticated caller, or set `requires_auth=False` for a public endpoint. Ollama has no built-in API-key argument of its own, so prefer platform auth over exposing a public endpoint. For app-managed authentication (verifying a Bearer token yourself with a Flyte secret), see [Secret-based authentication](../build-apps/secret-based-authentication).
+
+{{< variant union >}}
+{{< markdown >}}
+### Calling an authenticated app
+
+With `requires_auth=True` (the default), callers authenticate with a Union API key. Create one with the CLI:
+
+```bash
+flyte create api-key --name ollama-app-key
+```
+
+This prints an `export FLYTE_API_KEY="..."` command. Pass the key in the `Authorization: Bearer` header when you invoke the endpoint:
+
+```bash
+curl -X POST "https://your-app-url/v1/chat/completions" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $FLYTE_API_KEY" \
+  -d '{
+    "model": "qwen3:0.6b",
+    "messages": [{"role": "user", "content": "Hello, how are you?"}]
+  }'
+```
+
+When calling through the OpenAI client, pass the same key as `api_key` — it becomes the `Authorization: Bearer` token (Ollama itself ignores the value). See [Using API keys with Union apps](../authenticating#using-api-keys-with-union-apps) for details.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Autoscaling
 
