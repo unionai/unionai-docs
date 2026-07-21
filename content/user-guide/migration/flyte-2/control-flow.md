@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Control flow
 
-Flyte 1 expressed branching, dynamic fan-out, and failure handling through DSL constructs (`conditional()`, `@dynamic`, `@workflow(on_failure=...)`). In Flyte 2 these are all ordinary Python, because orchestration runs as real Python at runtime. See [Migration](./migration) for the overall approach.
+Flyte 1 expressed branching, dynamic fan-out, and failure handling through DSL constructs (`conditional()`, `@dynamic`, `@workflow(on_failure=...)`). In Flyte 2 these are all ordinary Python, because orchestration runs as real Python at runtime. See [Migration](./overview) for the overall approach.
 
 ## Conditional execution
 

@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # ML workloads
 
-The core patterns compose into the workloads data scientists and ML engineers run every day. Each of these is a complete v1→v2 pair in the [examples repo](https://github.com/unionai/unionai-examples/tree/main/v2/user-guide/migration/flyte-2). See [Migration](./migration) for the overall approach.
+The core patterns compose into the workloads data scientists and ML engineers run every day. Each of these is a complete v1→v2 pair in the [examples repo](https://github.com/unionai/unionai-examples/tree/main/v2/user-guide/migration/flyte-2). See [Migration](./overview) for the overall approach.
 
 ## Small model training (scikit-learn / XGBoost)
 
@@ -78,4 +78,4 @@ Putting it together — a load / train / evaluate pipeline shows the image, reso
 ## Next
 
 - [New in Flyte 2](./new-in-flyte-2) — real-time serving, apps, and sandboxing
-- [Considerations](./considerations) — caveats of the new execution model
+- [Gotchas and caveats](./gotchas-and-caveats) — caveats of the new execution model
