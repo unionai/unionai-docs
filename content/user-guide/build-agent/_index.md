@@ -35,7 +35,8 @@ Any agent from axis (1) can be deployed via any pattern in axis (2). The two are
 |----------|----------------|-------|
 | **Pure Python** | You want full control over the loop and the lightest possible dependency footprint | [Build an agent with pure Python](./python-agents) |
 | **The `Agent` harness** | You want a batteries-included tool-use loop with tools, MCP servers, memory, and HITL built in | [The Flyte Agent harness](./flyte-agents) |
-| **Third-party frameworks** | You already have agents written with LangGraph, PydanticAI, or the OpenAI Agents SDK | [Agent framework integrations](../agent-framework-integrations/_index) |
+| **Third-party frameworks** | You already have agents in LangGraph, CrewAI, OpenAI Agents SDK, Pydantic AI, and more | [Agent frameworks](../../integrations/agents/_index) |
+| **An unsupported framework** | Your framework has no first-party plugin | [Bring your own framework](./bring-your-own-framework) |
 
 The `Agent` harness has a few dedicated guides of its own:
 
