@@ -181,3 +181,7 @@ SGLang is particularly well-suited for structured generation tasks. The deployed
 - Enable `stream_model=True` for faster loading
 - Prefetch models before deployment
 - Use faster storage backends
+
+## API reference
+
+See the [SGLang API reference](../../api-reference/integrations/sglang/_index) for full details.

@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Data types and I/O
 
-Flyte 2 renames the offloaded-data types and makes their I/O `async`, but the mental model is the same: pass lightweight references to large data between tasks. See [Migration](./migration) for the overall approach.
+Flyte 2 renames the offloaded-data types and makes their I/O `async`, but the mental model is the same: pass lightweight references to large data between tasks. See [Migration](./overview) for the overall approach.
 
 ## Files and directories
 

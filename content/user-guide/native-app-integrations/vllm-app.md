@@ -177,3 +177,7 @@ vllm_app = VLLMAppEnvironment(
 - Enable `stream_model=True` for faster loading
 - Prefetch models before deployment
 - Use faster storage backends
+
+## API reference
+
+See the [vLLM API reference](../../api-reference/integrations/vllm/_index) for full details.

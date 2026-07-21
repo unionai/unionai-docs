@@ -11,7 +11,7 @@ Migrations rarely happen all at once. For a while you'll have Flyte 1 and Flyte 
 You can bridge the two in both directions. The idea is the same each way: one task installs **both** SDKs, authenticates to the **other** control plane, fetches the entity it wants to run, and launches it.
 
 {{< note >}}
-The bridging task acts as a driver: it authenticates to a remote control plane and launches work there. Keep it lightweight and focused on orchestration — see [Considerations](./considerations).
+The bridging task acts as a driver: it authenticates to a remote control plane and launches work there. Keep it lightweight and focused on orchestration — see [Gotchas and caveats](./gotchas-and-caveats).
 {{< /note >}}
 
 ## Running a Flyte 2 task from a Flyte 1 workflow
@@ -162,7 +162,7 @@ execution = remote.execute(wf, inputs={"x": x}, wait=True)
 - **Deploy the callee first.** For the v1→v2 direction, the Flyte 2 task must be deployed (`flyte deploy`) before `flyte.remote.Task.get()` can resolve it. For the v2→v1 direction, the Flyte 1 workflow must be registered on its cluster.
 - **Wait vs. fire-and-forget.** Both `run.wait()` (v2) and `execute(..., wait=True)` (v1) block until the launched run finishes. Omit them to launch and return immediately, then poll or hand off the execution URL.
 - **Credentials cross a boundary.** The bridge authenticates to a *different* control plane than the one it runs on. Store the API key or client credentials as a secret — never hard-code them. See [Secrets](../../task-configuration/secrets) and [Run on a remote cluster](../../run-modes/running-remote).
-- **Keep the bridge lightweight.** Like any orchestrating task, it should mostly launch and assemble results rather than do heavy compute — see [Considerations](./considerations).
+- **Keep the bridge lightweight.** Like any orchestrating task, it should mostly launch and assemble results rather than do heavy compute — see [Gotchas and caveats](./gotchas-and-caveats).
 
 ## See also
 
@@ -173,4 +173,4 @@ execution = remote.execute(wf, inputs={"x": x}, wait=True)
 - [Authenticating](../../authenticating#api-key) — API key authentication in depth
 {{< /markdown >}}
 {{< /variant >}}
-- [Migration](./migration) — mapping Flyte 1 workload patterns to Flyte 2
+- [Migration](./overview) — mapping Flyte 1 workload patterns to Flyte 2

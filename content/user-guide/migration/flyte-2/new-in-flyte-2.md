@@ -62,5 +62,5 @@ Call it from a task with `await sum_sandbox.run.aio(n=10, conditional=True)`. Se
 
 ## Next
 
-- [Considerations](./considerations) — caveats of the new execution model
+- [Gotchas and caveats](./gotchas-and-caveats) — caveats of the new execution model
 - [Hybrid v1 and v2 pipelines](./hybrid-pipelines) — calling between v1 and v2 during the transition
