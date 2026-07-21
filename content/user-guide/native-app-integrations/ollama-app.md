@@ -98,7 +98,7 @@ app_env = flyte.app.AppEnvironment(
         replicas=(0, 1),  # Scale to zero when idle
         scaledown_after=600,  # 10 minutes idle before scaling down
     ),
-    requires_auth=False,
+    requires_auth=True,
 )
 ```
 
