@@ -35,7 +35,7 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
 2. Configure the `flyte` CLI to talk to your control plane, then register the cluster name:
 
    ```bash
-   flyte create config --endpoint dns:///<YOUR_UNION_CONTROL_PLANE_URL> --org <YOUR_ORG_NAME>
+   flyte create config --endpoint <YOUR_UNION_CONTROL_PLANE_URL> --org <YOUR_ORG_NAME>
    flyte create cluster <YOUR_SELECTED_CLUSTERNAME> --pool default
    ```
 

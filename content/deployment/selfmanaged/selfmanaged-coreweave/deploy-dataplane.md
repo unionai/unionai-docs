@@ -33,7 +33,7 @@ If you have not yet set up the required CoreWeave resources (CKS cluster, AI Obj
 2. Configure the `flyte` CLI to talk to your control plane, then register the cluster name:
 
    ```bash
-   flyte create config --endpoint dns:///<ORG_NAME>.union.ai --org <ORG_NAME>
+   flyte create config --endpoint <ORG_NAME>.union.ai --org <ORG_NAME>
    flyte create cluster <CLUSTER_NAME> --pool default
    ```
 
