@@ -398,9 +398,9 @@ The data plane operator self-registers with the control plane on first contact �
 
 1. Uses its existing OAuth client credentials (configured into the chart via `AUTH_CLIENT_ID` + secret) to authenticate to the control plane.
 2. The control plane's authorizer recognizes the identity (bound to the org admin policy at install time via the control plane chart's `services.authorizer.configMap.authorizer.bootstrap.serviceAccounts` block) and lazily creates the per-cluster authz Resource on the first `Heartbeat` and `UpdateStatus` call.
-3. On every `UpdateStatus` call, the operator reports a `connection_config` blob — the reachable host and TLS posture the control plane uses to dial this data plane, so it can reach a data plane in a separate cluster without a statically-configured endpoint.
+3. On every `UpdateStatus` call, the operator reports a `connection_config` blob — the host and TLS posture the control plane uses to dial this data plane back. The reported host **must be resolvable and network-reachable from the control plane**, because the control plane connects to it directly. When the planes run in **separate clusters**, this is the data plane's externally-reachable DNS name. When they **share a cluster**, use the data plane's cluster-local Service address — a local network name only the in-cluster control plane needs to reach — so the return path stays in-cluster instead of hairpinning out through a public ingress.
 
-For the third step to take effect, opt in and set the data plane's externally-reachable hostname in the chart's `updateStatus.connectionConfig` block:
+For the third step to take effect, opt in and set that host in the chart's `updateStatus.connectionConfig` block:
 
 ```yaml
 updateStatus:
@@ -408,10 +408,13 @@ updateStatus:
     # Opt in to self-reporting (off by default). Enable only on operator
     # images that support connection_config.
     enabled: true
-    # DP-reachable hostname the control plane should dial back to reach this
-    # data plane. The operator self-reports this bare host in every
-    # UpdateStatus call; the control plane (2026.7.0+) constructs the dial
-    # target (dns:///<host>:443) and reverse-proxy URL from it.
+    # Bare host the control plane dials back to reach this data plane. It must
+    # be resolvable and reachable FROM the control plane. The operator
+    # self-reports it in every UpdateStatus call; the control plane (2026.7.0+)
+    # builds the dial target (dns:///<host>:443) and reverse-proxy URL from it.
+    #   Separate clusters:  an externally-reachable DNS name (below).
+    #   Shared cluster:     the DP's cluster-local Service, e.g.
+    #     "dataplane-nginx-controller.<dataplane-namespace>.svc.cluster.local"
     host: "dp-1.internal.<your-tenant-domain>"
     # CP dials with plain HTTP/2 when true. Default false.
     insecure: false
@@ -420,7 +423,7 @@ updateStatus:
     insecureSkipVerify: false
 ```
 
-If `host` is left empty, the operator skips self-reporting and the control plane routes to its statically-configured data plane URL (the intra-cluster default).
+If `host` is left empty the operator skips self-reporting, and the control plane falls back to a statically-configured data plane endpoint (or routes via the control-plane Host header when none is set). Self-reporting applies to **both** topologies — a co-located data plane still reports a host, just a cluster-local one.
 
 For a control plane serving **multiple** data planes, also set the dataproxy `clusterSelector.type: direct` on the control-plane chart so it routes across data planes using these self-reports; the default `local` does single-data-plane self-resolution only. Once enabled, adding a further data plane needs no control plane re-deploy.
 
@@ -474,6 +477,16 @@ global:
 ```
 
 `QUEUE_GRPC_ENDPOINT` is the auth-less path task pods use for queue events (task pods don't carry OAuth credentials; see chart `MIGRATION.md`).
+
+The two globals above wire the **forward** path (DP→CP). The **reverse** path (CP→DP) — how the control plane dials the data plane back — comes from the data plane's self-reported host (see [Data plane self-registration](#data-plane-self-registration)). In a shared cluster, point that host at the data plane's cluster-local Service so the return path also stays in-cluster:
+
+```yaml
+updateStatus:
+  connectionConfig:
+    enabled: true
+    host: "dataplane-nginx-controller.<dataplane-namespace>.svc.cluster.local"
+    insecureSkipVerify: true   # the DP presents a self-signed cert in-cluster
+```
 
 See [Infrastructure requirements → Intra-cluster topology](./infrastructure-requirements#intra-cluster-topology) for the substrate trade-offs (shared etcd, shared node pools, migration path to split-cluster).
 
