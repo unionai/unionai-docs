@@ -162,7 +162,7 @@ Once your VPC is set up, provide the following to {{< key product_name >}}:
 
 > [!NOTE] Setting up Tasks for Fault Tolerance
 > During this time window Flyte execution pods could be potentially interrupted.
-> We recommend leveraging
+> We recommend using
 > [Flyte fault tolerance](https://docs.flyte.org/en/latest/concepts/tasks.html#fault-tolerance) and
 > [checkpointing](https://docs.flyte.org/en/latest/user_guide/advanced_composition/intratask_checkpoints.html)
 > to efficiently minimize failed executions.

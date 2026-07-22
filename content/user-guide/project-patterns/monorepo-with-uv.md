@@ -214,7 +214,7 @@ albatross/
         └── src/seeds/...
 ```
 
-**Workspace root `pyproject.toml`** — declares the members and wires the sibling packages as workspace sources:
+**Workspace root `pyproject.toml`**. Declares the members and wires the sibling packages as workspace sources:
 
 ```toml
 [project]
@@ -252,7 +252,7 @@ dependencies = ["seeds"]
 package = true
 ```
 
-**Building the image** — point `.with_uv_project()` at the *workspace-root* `pyproject.toml`. Because `project_install_mode` defaults to `dependencies_only`, only the workspace's `pyproject.toml` and `uv.lock` enter the build context, so the image rebuilds only when dependencies change — fast registration is preserved. `extra_args` is forwarded to the `uv sync` that installs the dependencies (not to `pip install`), so `uv sync` flags apply — here `--only-group albatross` installs just that dependency group, keeping the image lean:
+**Building the image**. Point `.with_uv_project()` at the *workspace-root* `pyproject.toml`. Because `project_install_mode` defaults to `dependencies_only`, only the workspace's `pyproject.toml` and `uv.lock` enter the build context, so the image rebuilds only when dependencies change; fast registration is preserved. `extra_args` is forwarded to the `uv sync` that installs the dependencies (not to `pip install`), so `uv sync` flags apply. Here `--only-group albatross` installs just that dependency group, keeping the image lean:
 
 ```python
 from pathlib import Path
@@ -275,9 +275,9 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-You do **not** need `with_source_folder()` to bake sibling code into the image (as Pattern B requires): in the default `dependencies_only` build `uv sync` resolves the members `bird-feeder` and `seeds` from the shared `uv.lock` (uv reads the member metadata during the sync), but their **code is not baked into the image** — only `pyproject.toml` and `uv.lock` enter the build context. The sibling source (`from bird_feeder.actions import ...`, `from seeds.actions import ...`) travels in the **code bundle** instead (the entry point below sets `root_dir` to the workspace root, so the bundle packages every member) and is on `sys.path` at runtime. The `[tool.uv.workspace]` config's job is to let uv resolve the siblings from the one lockfile; it does not put their code in the image.
+You do **not** need `with_source_folder()` to bake sibling code into the image (as Pattern B requires): in the default `dependencies_only` build `uv sync` resolves the members `bird-feeder` and `seeds` from the shared `uv.lock` (uv reads the member metadata during the sync), but their **code is not baked into the image**. Only `pyproject.toml` and `uv.lock` enter the build context. The sibling source (`from bird_feeder.actions import ...`, `from seeds.actions import ...`) travels in the **code bundle** instead (the entry point below sets `root_dir` to the workspace root, so the bundle packages every member) and is on `sys.path` at runtime. The `[tool.uv.workspace]` config's job is to let uv resolve the siblings from the one lockfile; it does not put their code in the image.
 
-**Entry point** — set `root_dir` to the *workspace root* (here `albatross/`), **not** to any single member's `src/`. A workspace spreads its members across several `src/` trees (`src/albatross/`, `packages/bird_feeder/src/`, …), so the workspace root is the one directory whose bundle captures them all — this is the `root_dir` rule from the start of this page applied to a multi-member tree, not an exception to it. With every member's source in the bundle, imports resolve the same way locally and at runtime:
+**Entry point**. Set `root_dir` to the *workspace root* (here `albatross/`), **not** to any single member's `src/`. A workspace spreads its members across several `src/` trees (`src/albatross/`, `packages/bird_feeder/src/`, …), so the workspace root is the one directory whose bundle captures them all. This is the `root_dir` rule from the start of this page applied to a multi-member tree, not an exception to it. With every member's source in the bundle, imports resolve the same way locally and at runtime:
 
 ```python
 @env.task

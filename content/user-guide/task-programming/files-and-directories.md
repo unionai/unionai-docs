@@ -8,7 +8,7 @@ variants: +flyte +union
 
 Flyte provides the `flyte.io.File` and
 `flyte.io.Dir` types to represent files and directories, respectively.
-Together with [`flyte.io.DataFrame`](./dataframes) they constitute the *offloaded data types* - unlike [materialized types](./dataclasses-and-structures) like data classes, these pass references rather than full data content.
+Together with [`flyte.io.DataFrame`](./dataframes) they constitute the *offloaded data types*. Unlike [materialized types](./dataclasses-and-structures) like data classes, these pass references rather than full data content.
 
 A variable of an offloaded type does not contain its actual data, but rather a reference to the data.
 The actual data is stored in the internal blob store of your Union/Flyte instance.
@@ -24,7 +24,7 @@ For the full picture of what gets stored in the bucket versus what stays in the 
 The `File` and `Dir` classes provide both synchronous and asynchronous methods to interact with the data, so you can use them from either kind of task. See [Synchronous and asynchronous APIs](#synchronous-and-asynchronous-apis) for the full method pairing.
 
 > [!NOTE]
-> Because `File` and `Dir` are passed by reference, a downstream cached task does not get a cache hit on identical content stored at a new path. To cache on content, attach a hash at production time - see [Content-based caching for DataFrames, files, and directories](../task-configuration/caching#content-based-caching-for-dataframes-files-and-directories).
+> Because `File` and `Dir` are passed by reference, a downstream cached task does not get a cache hit on identical content stored at a new path. To cache on content, attach a hash at production time. See [Content-based caching for DataFrames, files, and directories](../task-configuration/caching#content-based-caching-for-dataframes-files-and-directories).
 
 ## Example usage
 
@@ -55,7 +55,7 @@ Every I/O operation on `File` and `Dir` comes in two forms, so you can use the o
 - In an **asynchronous task** (`async def`), use the coroutine methods: `await` the upload, download, and existence calls, use `async with file.open(...)` to stream, and `async for` to walk a `Dir`. This is the pattern shown in [Example usage](#example-usage) above.
 - In a **synchronous task** (plain `def`), use the `_sync` variants: `File.from_local_sync()`, `file.open_sync()`, `dir.walk_sync()`, and so on. These block until the operation completes.
 
-The two forms are otherwise equivalent — pick the one that matches how your task is defined. A few constructors do no I/O and so have a single form that is used unchanged from either kind of task: `File.new_remote()`, `File.from_existing_remote()`, `Dir.new_remote()`, and `Dir.from_existing_remote()`.
+The two forms are otherwise equivalent. Pick the one that matches how your task is defined. A few constructors do no I/O and so have a single form that is used unchanged from either kind of task: `File.new_remote()`, `File.from_existing_remote()`, `Dir.new_remote()`, and `Dir.from_existing_remote()`.
 
 ### File methods
 
@@ -117,7 +117,7 @@ def main() -> str:
     return read_file(f)
 ```
 
-Directories work the same way — use `Dir.from_local_sync()` to upload and `walk_sync()` to iterate:
+Directories work the same way: use `Dir.from_local_sync()` to upload and `walk_sync()` to iterate:
 
 ```python
 import os

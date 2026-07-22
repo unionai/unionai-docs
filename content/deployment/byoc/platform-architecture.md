@@ -40,9 +40,9 @@ The {{< key product_name >}} hybrid architecture lets you maintain ultimate owne
 
 ### How your data plane is provisioned and maintained
 
-Your data plane is created by the control plane, not by the operator. When you onboard, the control plane uses infrastructure-as-code, applied against your cloud account, to provision the Kubernetes cluster (for example, an EKS cluster on AWS) along with the supporting cloud resources the platform requires — such as IAM roles and the object-storage buckets that hold your workflow data and metadata. Once that cluster is up, {{< key product_name >}} deploys the operator onto it.
+Your data plane is created by the control plane, not by the operator. When you onboard, the control plane uses infrastructure-as-code, applied against your cloud account, to provision the Kubernetes cluster (for example, an EKS cluster on AWS) along with the supporting cloud resources the platform requires, such as IAM roles and the object-storage buckets that hold your workflow data and metadata. Once that cluster is up, {{< key product_name >}} deploys the operator onto it.
 
-The control plane periodically re-runs this same provisioning process to apply infrastructure changes to your cluster as part of ongoing deployment and maintenance — for example, adding instance types, adjusting node-group sizes, or updating the versions of platform components — so that upgrades and configuration changes are handled for you.
+The control plane periodically re-runs this same provisioning process to apply infrastructure changes to your cluster as part of ongoing deployment and maintenance (for example, adding instance types, adjusting node-group sizes, or updating the versions of platform components), so that upgrades and configuration changes are handled for you.
 
 ### What the operator does
 
@@ -50,7 +50,7 @@ Once installed, the operator is the resident data-plane component that keeps you
 
 * **Runs your executions.** The control plane assigns executions to your data plane; the operator picks up those operations and carries them out, creating and tearing down the Kubernetes pods that run your tasks and applications.
 * **Reports cluster state.** It sends heartbeat, status, health, and resource-usage information back to the control plane, so the control plane can observe and schedule work without needing direct access to your cluster.
-* **Maintains platform services.** It manages the data plane's supporting services — including the secure tunnel used for connectivity, API-key provisioning, image building, secret watching, and compute reconciliation.
+* **Maintains platform services.** It manages the data plane's supporting services, including the secure tunnel used for connectivity, API-key provisioning, image building, secret watching, and compute reconciliation.
 * **Moves your data.** It runs the data-plane `dataproxy` service, which issues the presigned URLs that let clients read and write your workflow data directly to and from the object store in your data plane (see [Execution data](#execution-data)), so that data never transits the control plane.
 
 The operator also allows {{< key product_name >}}'s support engineers to access system-level logs and to apply changes at your request. It _does not_ provide direct access to your secrets or data.

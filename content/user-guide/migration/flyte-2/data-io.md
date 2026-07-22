@@ -10,7 +10,7 @@ Flyte 2 renames the offloaded-data types and makes their I/O `async`, but the me
 
 ## Files and directories
 
-`FlyteFile` and `FlyteDirectory` become `flyte.io.File` and `flyte.io.Dir` — the way you pass model artifacts and datasets between tasks. The I/O is now `async`: use `await File.from_local(...)` to upload and `async with file.open(...)` to read. Like their Flyte 1 counterparts, these are lightweight references to offloaded data, not the materialized bytes.
+`FlyteFile` and `FlyteDirectory` become `flyte.io.File` and `flyte.io.Dir`: the way you pass model artifacts and datasets between tasks. The I/O is now `async`: use `await File.from_local(...)` to upload and `async with file.open(...)` to read. Like their Flyte 1 counterparts, these are lightweight references to offloaded data, not the materialized bytes.
 
 {{< tabs "migration-files" >}}
 {{< tab "Flyte 1" >}}
@@ -40,7 +40,7 @@ See [DataFrames](../../task-programming/dataframes) for more.
 
 ## Dataclasses and structured types
 
-Flyte 1 required a `@dataclass_json` mixin for dataclass I/O. In Flyte 2, plain dataclasses (and Pydantic `BaseModel`s) work directly as task inputs and outputs — handy for passing around a training config.
+Flyte 1 required a `@dataclass_json` mixin for dataclass I/O. In Flyte 2, plain dataclasses (and Pydantic `BaseModel`s) work directly as task inputs and outputs, handy for passing around a training config.
 
 {{< tabs "migration-dataclasses" >}}
 {{< tab "Flyte 1" >}}
@@ -66,5 +66,5 @@ Putting the data types together: extract, clean, aggregate, and write out a feat
 
 ## Next
 
-- [ML workloads](./ml-workloads) — training, HPO, and batch inference
-- [Parallelism and fan-out](./parallelism) — processing partitions in parallel
+- [ML workloads](./ml-workloads): training, HPO, and batch inference
+- [Parallelism and fan-out](./parallelism): processing partitions in parallel

@@ -44,7 +44,7 @@ To get or create a new tab:
 
 You can `log()` or `replace()` HTML on the `Tab` object just as you can directly on the `Report` object.
 
-To access the current `Report` object directly — for example, to enumerate its tabs or assemble the final HTML — call `flyte.report.current_report()`.
+To access the current `Report` object directly (for example, to enumerate its tabs or assemble the final HTML), call `flyte.report.current_report()`.
 
 Finally, you send the report to the Flyte backend and make it visible in the UI:
 
@@ -132,7 +132,7 @@ When the workflow runs, you can see the report updating in real-time in the UI:
 
 ## Rendering a custom type
 
-The examples above build report HTML by hand. When you have a **custom type** — or a DataFrame, or a `StructuredDataset` — that you render the same way in many places, you can define a reusable **renderer** for the type and attach it to the type, instead of repeating the HTML-building logic at every call site.
+The examples above build report HTML by hand. When you have a **custom type** (or a DataFrame, or a `StructuredDataset`) that you render the same way in many places, you can define a reusable **renderer** for the type and attach it to the type, instead of repeating the HTML-building logic at every call site.
 
 A renderer is any class that satisfies the `flyte.types.Renderable` protocol: it implements a single `to_html(self, value) -> str` method that returns an HTML fragment for a value of your type.
 
@@ -181,9 +181,9 @@ if __name__ == "__main__":
     print(flyte.run(show_molecule).url)
 ```
 
-`TypeEngine.to_html()` finds the `Renderable` attached to the type via `Annotated`, calls its `to_html()`, and returns the HTML string — which you then send to the report with `flyte.report.log()` (or `replace()`). The same pattern works for a DataFrame or `StructuredDataset`: annotate the type with a renderer that turns the frame into an HTML table.
+`TypeEngine.to_html()` finds the `Renderable` attached to the type via `Annotated`, calls its `to_html()`, and returns the HTML string, which you then send to the report with `flyte.report.log()` (or `replace()`). The same pattern works for a DataFrame or `StructuredDataset`: annotate the type with a renderer that turns the frame into an HTML table.
 
 > [!NOTE]
-> The report contains only what you explicitly `log()` or `replace()`. Returning a value whose type has a renderer attached does **not** by itself add it to the report — render the value and log the HTML, as shown above.
+> The report contains only what you explicitly `log()` or `replace()`. Returning a value whose type has a renderer attached does **not** by itself add it to the report: render the value and log the HTML, as shown above.
 
-Flyte's SDK also implements a few renderers of this kind internally — for pandas and PyArrow DataFrames and for Markdown strings. These aren't exposed as public API (only the `flyte.types.Renderable` protocol is), so treat them as examples of the same pattern rather than importable helpers.
+Flyte's SDK also implements a few renderers of this kind internally: for pandas and PyArrow DataFrames and for Markdown strings. These aren't exposed as public API (only the `flyte.types.Renderable` protocol is), so treat them as examples of the same pattern rather than importable helpers.

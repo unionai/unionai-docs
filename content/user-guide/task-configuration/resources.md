@@ -36,7 +36,7 @@ For how task resource requests interact with project-domain quotas as you scale 
 
 ## Ephemeral storage
 
-The `disk` parameter requests *ephemeral storage* — node-local scratch disk for the task's container. Set it as a string with Kubernetes units, for example `"50Gi"`:
+The `disk` parameter requests *ephemeral storage*: node-local scratch disk for the task's container. Set it as a string with Kubernetes units, for example `"50Gi"`:
 
 ```python
 env = flyte.TaskEnvironment(
@@ -49,7 +49,7 @@ Under the hood, `disk` maps to the Kubernetes [`ephemeral-storage`](https://kube
 
 **What it covers.** Ephemeral storage is the local disk a task writes to while it runs: the container's writable filesystem and any temporary files your code creates on the local filesystem during execution (downloaded datasets, intermediate outputs, model checkpoints staged before offload). It is distinct from the offloaded storage backing `flyte.io.File` and `flyte.io.Dir`, which lives in the blob store rather than on the node.
 
-**Lifecycle.** Ephemeral storage is tied to the task's pod: it is provisioned when the task starts and reclaimed when the pod terminates. Nothing written to it survives beyond the task run, so use it for scratch work — persist anything you need to keep to a `flyte.io.File` or `flyte.io.Dir` in object storage.
+**Lifecycle.** Ephemeral storage is tied to the task's pod: it is provisioned when the task starts and reclaimed when the pod terminates. Nothing written to it survives beyond the task run, so use it for scratch work. Persist anything you need to keep to a `flyte.io.File` or `flyte.io.Dir` in object storage.
 
 **Single value, not a request/limit range.** Unlike `cpu` and `memory`, `disk` takes a single string, not a `(request, limit)` tuple.
 
@@ -77,13 +77,13 @@ For complete format specifications for each resource type (CPU, memory, GPU/TPU/
 
 ## Accelerators
 
-To run a task on a hardware accelerator — an NVIDIA or AMD GPU, a Google TPU, an AWS Trainium/Inferentia (Neuron) chip, or an Intel Habana Gaudi device — set the `gpu` parameter of `Resources`. Despite its name, `gpu` selects any supported accelerator type.
+To run a task on a hardware accelerator, such as an NVIDIA or AMD GPU, a Google TPU, an AWS Trainium/Inferentia (Neuron) chip, or an Intel Habana Gaudi device, set the `gpu` parameter of `Resources`. Despite its name, `gpu` selects any supported accelerator type.
 
 You can request an accelerator in three ways:
 
-- **Type-and-count string** — `"<device>:<count>"`, for example `"T4:1"` or `"A100:8"`. This is the most common form.
-- **Integer count** — `gpu=2` requests that many GPUs of whatever type is available.
-- **Device object** — `flyte.GPU()`, `flyte.TPU()`, `flyte.AMD_GPU()`, or `flyte.Device()` for advanced configuration such as GPU partitioning (MIG) and TPU slice topologies.
+- **Type-and-count string**: `"<device>:<count>"`, for example `"T4:1"` or `"A100:8"`. This is the most common form.
+- **Integer count**: `gpu=2` requests that many GPUs of whatever type is available.
+- **Device object**: `flyte.GPU()`, `flyte.TPU()`, `flyte.AMD_GPU()`, or `flyte.Device()` for advanced configuration such as GPU partitioning (MIG) and TPU slice topologies.
 
 The `gpu` value can be set on the `TaskEnvironment` (applying to every task in it) or on a per-task `override`, exactly like the other resource fields shown above.
 
@@ -134,7 +134,7 @@ Supported AMD types include `MI100`, `MI210`, `MI250`, `MI250X`, `MI300A`, `MI30
 
 ### AWS Trainium and Inferentia (Neuron)
 
-Request AWS Neuron accelerators — Trainium (`Trn`) or Inferentia (`Inf`) — by type and count:
+Request AWS Neuron accelerators, Trainium (`Trn`) or Inferentia (`Inf`), by type and count:
 
 ```python
 resources=flyte.Resources(gpu="Trn1:1")

@@ -239,7 +239,7 @@ For the full set of configurable values, see the [kube-prometheus-stack chart do
 If you already run Prometheus in your cluster, you can scrape {{< key product_name >}} data plane services for operational visibility. All services expose metrics on standard ports.
 
 > [!NOTE] Union features Prometheus
-> The built-in static Prometheus handles all metrics required for {{< key product_name >}} platform features. Scraping from your own Prometheus is for additional operational visibility only -- it does not replace the built-in instance.
+> The built-in static Prometheus handles all metrics required for {{< key product_name >}} platform features. Scraping from your own Prometheus is for additional operational visibility only: it does not replace the built-in instance.
 
 ### Static scrape configs
 
@@ -289,8 +289,8 @@ This requires the Prometheus Operator CRDs. Install them via the `dataplane-crds
 
 ## Further reading
 
-- [Prometheus documentation](https://prometheus.io/docs/introduction/overview/) -- guide to Prometheus configuration, querying, and operation
-- [Prometheus remote write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) -- forwarding metrics to external storage
-- [Prometheus `kubernetes_sd_config`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config) -- Kubernetes service discovery for scrape targets
-- [kube-prometheus-stack chart](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) -- full monitoring stack with Grafana and alerting
-- [OpenCost documentation](https://www.opencost.io/docs/) -- cost allocation and tracking
+- [Prometheus documentation](https://prometheus.io/docs/introduction/overview/): guide to Prometheus configuration, querying, and operation
+- [Prometheus remote write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write): forwarding metrics to external storage
+- [Prometheus `kubernetes_sd_config`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config): Kubernetes service discovery for scrape targets
+- [kube-prometheus-stack chart](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack): full monitoring stack with Grafana and alerting
+- [OpenCost documentation](https://www.opencost.io/docs/): cost allocation and tracking

@@ -10,7 +10,7 @@ The biggest structural change in Flyte 2 is that **everything is a task**. The `
 
 ## Hello world: tasks and workflows
 
-A `@task` plus `@workflow` becomes two `@env.task`s, where the entrypoint task calls the others. Sequential calls are naturally ordered — no `>>` operator required.
+A `@task` plus `@workflow` becomes two `@env.task`s, where the entrypoint task calls the others. Sequential calls are naturally ordered; no `>>` operator required.
 
 {{< tabs "migration-hello-world" >}}
 {{< tab "Flyte 1" >}}
@@ -36,7 +36,7 @@ In Flyte 1 you sometimes used `>>` to force ordering between tasks with no data 
 
 ## Subworkflows
 
-A `@workflow` invoked by another `@workflow` (for example, a reusable preprocessing pipeline) becomes a task that calls other tasks — nest them as deeply as you like.
+A `@workflow` invoked by another `@workflow` (for example, a reusable preprocessing pipeline) becomes a task that calls other tasks; nest them as deeply as you like.
 
 {{< tabs "migration-subworkflow" >}}
 {{< tab "Flyte 1" >}}
@@ -104,6 +104,6 @@ For image, resource, secret, and caching detail, see [Task configuration](./conf
 
 ## Next
 
-- [Task configuration](./configuration) — image, resources, caching, secrets, and scheduling
-- [Control flow](./control-flow) — conditionals, dynamic behavior, and error handling
-- [Parallelism and fan-out](./parallelism) — running tasks in parallel
+- [Task configuration](./configuration): image, resources, caching, secrets, and scheduling
+- [Control flow](./control-flow): conditionals, dynamic behavior, and error handling
+- [Parallelism and fan-out](./parallelism): running tasks in parallel

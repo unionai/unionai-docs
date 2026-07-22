@@ -36,7 +36,7 @@ In multi-cluster deployments, each data plane cluster has its own dedicated tunn
 
 ### Sovereign Data Plane
 
-Enterprise customers can replace the Direct-to-Data-Plane tunnel entirely with a customer-managed load balancer inside their own VPC, reachable only from the corporate VPN. This makes the data plane unreachable from any third-party network -- including Cloudflare's -- and unreachable to Union.ai employees. See [Sovereign Data Plane](./sovereign-data-plane) for the topology and trade-offs.
+Enterprise customers can replace the Direct-to-Data-Plane tunnel entirely with a customer-managed load balancer inside their own VPC, reachable only from the corporate VPN. This makes the data plane unreachable from any third-party network, including Cloudflare's, and unreachable to Union.ai employees. See [Sovereign Data Plane](./sovereign-data-plane) for the topology and trade-offs.
 
 ## Communication paths
 
@@ -57,7 +57,7 @@ For details on the BYOC private management connection, see [Private connectivity
 
 ## Egress requirements
 
-Because every connection is [outbound-only](#outbound-only-model), configuring network access for the data plane is a matter of permitting a small set of outbound destinations -- there are no inbound firewall rules, port forwarding, or listening services to open. This section makes that model concrete: the specific destinations, ports, and protocols the data plane initiates connections to.
+Because every connection is [outbound-only](#outbound-only-model), configuring network access for the data plane is a matter of permitting a small set of outbound destinations. There are no inbound firewall rules, port forwarding, or listening services to open. This section makes that model concrete: the specific destinations, ports, and protocols the data plane initiates connections to.
 
 | Source (data plane) | Destination | Port / protocol | Purpose |
 |---|---|---|---|
@@ -66,7 +66,7 @@ Because every connection is [outbound-only](#outbound-only-model), configuring n
 
 Both destinations are reached over the customer's existing outbound path (typically a NAT gateway). No inbound rules are required on the customer's external perimeter.
 
-Your tenant's Direct-to-Data-Plane tunnel is published at a tunnel domain of the form `<tenant>-<tenant>-tunnel.unionai.cloud` — the hostname clients and the UI resolve to reach the data plane through the tunnel. This is a client-side resolution target, not an additional data plane egress destination: the `cloudflared` daemon's own outbound connection is to the Cloudflare edge network on TCP 7844, as in the table above.
+Your tenant's Direct-to-Data-Plane tunnel is published at a tunnel domain of the form `<tenant>-<tenant>-tunnel.unionai.cloud`: the hostname clients and the UI resolve to reach the data plane through the tunnel. This is a client-side resolution target, not an additional data plane egress destination: the `cloudflared` daemon's own outbound connection is to the Cloudflare edge network on TCP 7844, as in the table above.
 
 ### Resolving control plane IP addresses
 
@@ -80,7 +80,7 @@ dig <tenant>.hosted.unionai.cloud
 
 Allowlist the addresses returned, and refresh the allowlist periodically. Where your egress policy supports it, prefer an FQDN- or DNS-based rule over static IPs so that load-balancer changes are picked up automatically.
 
-**Before your tenant is provisioned** — or wherever you must stage egress rules ahead of time — allowlist the current production regional control plane load balancers below, or resolve their DNS names for the latest addresses. Your tenant endpoint resolves to the load balancer in its region, so the addresses returned by `dig` match the corresponding row.
+**Before your tenant is provisioned**, or wherever you must stage egress rules ahead of time, allowlist the current production regional control plane load balancers below, or resolve their DNS names for the latest addresses. Your tenant endpoint resolves to the load balancer in its region, so the addresses returned by `dig` match the corresponding row.
 
 | Region | Control plane load balancer (DNS) | Current IP addresses |
 |---|---|---|

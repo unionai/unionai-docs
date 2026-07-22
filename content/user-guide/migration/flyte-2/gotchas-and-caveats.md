@@ -13,7 +13,7 @@ This page starts with a quick list of common gotchas you'll hit during a migrati
 ## Common gotchas
 
 - **`flyte.map` returns a generator.** Wrap it in `list()` to materialize results, unlike `map_task` which returned a list directly.
-- **`memory`, not `mem`.** The `Resources` parameter was renamed, and there are no separate `requests`/`limits` — a single value serves as both.
+- **`memory`, not `mem`.** The `Resources` parameter was renamed, and there are no separate `requests`/`limits`: a single value serves as both.
 - **GPUs use a `"T4:1"` string.** Type and count are combined; the separate `accelerator=` argument is gone.
 - **Image, resources, and cache live on the `TaskEnvironment`.** Set them once at the env level instead of repeating them on every task decorator.
 - **`current_context()` is gone.** Read secrets from environment variables and use `flyte.ctx()` for runtime context.
@@ -22,7 +22,7 @@ This page starts with a quick list of common gotchas you'll hit during a migrati
 - **You can only `await` async tasks.** Call a sync task from an async context with `.aio()`; see the [Asynchronous model](./overview#asynchronous-model).
 - **Pick an entrypoint task name.** There's no `@workflow`, so the top-level task is just a task (commonly `main`); run it with `flyte run module.py main`.
 - **Type annotations are more lenient.** Flyte 2 will pickle untyped I/O rather than rejecting it at registration.
-- **Keep orchestration lightweight.** A task that calls other tasks acts as a driver pod. Avoid heavy CPU work in it — see [Driver pod requirements](#driver-pod-requirements) below.
+- **Keep orchestration lightweight.** A task that calls other tasks acts as a driver pod. Avoid heavy CPU work in it. See [Driver pod requirements](#driver-pod-requirements) below.
 
 ## Non-deterministic behavior
 

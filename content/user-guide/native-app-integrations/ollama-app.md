@@ -12,7 +12,7 @@ Unlike vLLM and SGLang, Ollama has no dedicated `*AppEnvironment` plugin. Instea
 
 ## Installation
 
-Ollama needs no Flyte plugin — it is installed into the app image. Start from the default Flyte base image and add the Ollama binary with a build command:
+Ollama needs no Flyte plugin; it is installed into the app image. Start from the default Flyte base image and add the Ollama binary with a build command:
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/ollama/basic_ollama.py" fragment=ollama-image lang=python >}}
 
@@ -34,7 +34,7 @@ Deploy it with `flyte.serve`:
 
 ## Choosing a model
 
-`MODEL` can be any tag from the [Ollama library](https://ollama.com/library) — for example `qwen3:0.6b`, `llama3.2:1b`, or `gemma3:1b`. Larger models need more GPU memory and disk; size the `resources` accordingly.
+`MODEL` can be any tag from the [Ollama library](https://ollama.com/library), for example `qwen3:0.6b`, `llama3.2:1b`, or `gemma3:1b`. Larger models need more GPU memory and disk; size the `resources` accordingly.
 
 > [!NOTE]
 > Small models run comfortably on CPU. To run without a GPU, drop the `gpu` field from `resources`. A GPU is recommended for larger models or higher throughput.
@@ -105,7 +105,7 @@ curl -X POST "https://your-app-url/v1/chat/completions" \
   }'
 ```
 
-When calling through the OpenAI client, pass the same key as `api_key` — it becomes the `Authorization: Bearer` token (Ollama itself ignores the value). See [Using API keys with Union apps](../authenticating#using-api-keys-with-union-apps) for details.
+When calling through the OpenAI client, pass the same key as `api_key`; it becomes the `Authorization: Bearer` token (Ollama itself ignores the value). See [Using API keys with Union apps](../authenticating#using-api-keys-with-union-apps) for details.
 {{< /markdown >}}
 {{< /variant >}}
 

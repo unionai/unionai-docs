@@ -78,7 +78,7 @@ Do the opposite to enable remote runs.
 
 ## Customizing an image with `with_*` methods
 
-Images from `from_debian_base()` and `from_uv_script()` are *extendable*: you can layer additional customizations on top using the `with_*` methods. (Images from `from_base()` and `from_dockerfile()` are **not** extendable &mdash; calling a `with_*` method on one raises an error; customize those at their source instead.)
+Images from `from_debian_base()` and `from_uv_script()` are *extendable*: you can layer additional customizations on top using the `with_*` methods. (Images from `from_base()` and `from_dockerfile()` are **not** extendable: calling a `with_*` method on one raises an error; customize those at their source instead.)
 Each method returns a new `flyte.Image`, so you can chain them together in a fluent style:
 
 ```python
@@ -170,7 +170,7 @@ image = Image.from_base("ghcr.io/my-org/my-base-image:latest")
 ```
 
 > [!NOTE]
-> An image from `from_base()` is **not extendable** by default &mdash; chaining `with_*` methods onto it raises an error. To add layers, first clone it with `extendable=True`, then chain as usual:
+> An image from `from_base()` is **not extendable** by default: chaining `with_*` methods onto it raises an error. To add layers, first clone it with `extendable=True`, then chain as usual:
 >
 > ```python
 > image = Image.from_base("ghcr.io/my-org/my-base-image:latest").clone(extendable=True).with_pip_packages("pandas")
@@ -203,7 +203,7 @@ image = Image.from_dockerfile(
 ```
 
 > [!NOTE]
-> Because Flyte does not parse the Dockerfile, you cannot layer additional `with_*` methods on top of a `from_dockerfile()` image — put all of your build logic into the Dockerfile itself.
+> Because Flyte does not parse the Dockerfile, you cannot layer additional `with_*` methods on top of a `from_dockerfile()` image; put all of your build logic into the Dockerfile itself.
 > Use an absolute `Path` for the Dockerfile; the build context is the directory containing it.
 
 ### Referencing an image defined in configuration
@@ -220,7 +220,7 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-The named references are supplied at initialization — either in your `config.yaml`:
+The named references are supplied at initialization, either in your `config.yaml`:
 
 ```yaml
 image:

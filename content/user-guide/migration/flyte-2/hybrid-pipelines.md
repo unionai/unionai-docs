@@ -11,17 +11,17 @@ Migrations rarely happen all at once. For a while you'll have Flyte 1 and Flyte 
 You can bridge the two in both directions. The idea is the same each way: one task installs **both** SDKs, authenticates to the **other** control plane, fetches the entity it wants to run, and launches it.
 
 {{< note >}}
-The bridging task acts as a driver: it authenticates to a remote control plane and launches work there. Keep it lightweight and focused on orchestration — see [Gotchas and caveats](./gotchas-and-caveats).
+The bridging task acts as a driver: it authenticates to a remote control plane and launches work there. Keep it lightweight and focused on orchestration. See [Gotchas and caveats](./gotchas-and-caveats).
 {{< /note >}}
 
 ## Running a Flyte 2 task from a Flyte 1 workflow
 
-The bridge is a single Flyte 1 task — call it `launch_v2_from_v1` — that runs the Flyte 2 client.
+The bridge is a single Flyte 1 task (call it `launch_v2_from_v1`) that runs the Flyte 2 client.
 
 **High-level steps:**
 
 1. Give the `launch_v2_from_v1` task an image with **both** `flytekit` (Flyte 1) and `flyte` (Flyte 2) installed.
-2. Give it a Flyte 2 **API key** (see [Create the API key](#1-create-the-api-key-and-store-it) below — how you create one differs between Union and open-source Flyte). The key is the `export FLYTE_API_KEY="..."` value it produces.
+2. Give it a Flyte 2 **API key** (see [Create the API key](#1-create-the-api-key-and-store-it) below; how you create one differs between Union and open-source Flyte). The key is the `export FLYTE_API_KEY="..."` value it produces.
 3. Make the key available to the task, either by storing it as a secret it can read, or by injecting it as the `FLYTE_API_KEY` environment variable.
 4. Authenticate inside the task with `flyte.init_from_api_key()`.
 5. Fetch the deployed Flyte 2 task with `flyte.remote.Task.get(...)` and run it with `flyte.run(...)`.
@@ -44,7 +44,7 @@ flyte create secret flyte_api_key --value "<the-encoded-key>"
 
 {{< variant flyte >}}
 {{< markdown >}}
-Obtain a Flyte 2 API key from your control plane's authentication setup and store it as a secret the bridging task can read — see [Run on a remote cluster](../../run-modes/running-remote) for the authentication options.
+Obtain a Flyte 2 API key from your control plane's authentication setup and store it as a secret the bridging task can read. See [Run on a remote cluster](../../run-modes/running-remote) for the authentication options.
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -94,10 +94,10 @@ def main(x: int) -> str:
     return launch_v2_from_v1(x=x)
 ```
 
-The referenced Flyte 2 task (`my_v2_env.process` above) must be **deployed** before the bridge runs — `flyte.remote.Task.get()` looks it up by `env_name.task_name`. See [Remote tasks](../../task-programming/remote-tasks) for versioning options (`auto_version="latest"`, `version="v1.2.3"`) and `flyte.run` details.
+The referenced Flyte 2 task (`my_v2_env.process` above) must be **deployed** before the bridge runs. `flyte.remote.Task.get()` looks it up by `env_name.task_name`. See [Remote tasks](../../task-programming/remote-tasks) for versioning options (`auto_version="latest"`, `version="v1.2.3"`) and `flyte.run` details.
 
 {{< note >}}
-`flyte.init_from_api_key()` is required here — do **not** use `flyte.init_from_config()`, which reads a `config.yaml` that has no API-key field. See [Run on a remote cluster](../../run-modes/running-remote) for the authentication methods.
+`flyte.init_from_api_key()` is required here. Do **not** use `flyte.init_from_config()`, which reads a `config.yaml` that has no API-key field. See [Run on a remote cluster](../../run-modes/running-remote) for the authentication methods.
 {{< /note >}}
 
 ## Running a Flyte 1 workflow from a Flyte 2 task
@@ -161,16 +161,16 @@ execution = remote.execute(wf, inputs={"x": x}, wait=True)
 - **Both SDKs in one image.** The bridging task installs `flytekit` and `flyte` together. Pin versions and watch for dependency conflicts; keep the bridge image minimal.
 - **Deploy the callee first.** For the v1→v2 direction, the Flyte 2 task must be deployed (`flyte deploy`) before `flyte.remote.Task.get()` can resolve it. For the v2→v1 direction, the Flyte 1 workflow must be registered on its cluster.
 - **Wait vs. fire-and-forget.** Both `run.wait()` (v2) and `execute(..., wait=True)` (v1) block until the launched run finishes. Omit them to launch and return immediately, then poll or hand off the execution URL.
-- **Credentials cross a boundary.** The bridge authenticates to a *different* control plane than the one it runs on. Store the API key or client credentials as a secret — never hard-code them. See [Secrets](../../task-configuration/secrets) and [Run on a remote cluster](../../run-modes/running-remote).
-- **Keep the bridge lightweight.** Like any orchestrating task, it should mostly launch and assemble results rather than do heavy compute — see [Gotchas and caveats](./gotchas-and-caveats).
+- **Credentials cross a boundary.** The bridge authenticates to a *different* control plane than the one it runs on. Store the API key or client credentials as a secret; never hard-code them. See [Secrets](../../task-configuration/secrets) and [Run on a remote cluster](../../run-modes/running-remote).
+- **Keep the bridge lightweight.** Like any orchestrating task, it should mostly launch and assemble results rather than do heavy compute. See [Gotchas and caveats](./gotchas-and-caveats).
 
 ## See also
 
-- [Remote tasks](../../task-programming/remote-tasks) — fetching and running deployed Flyte 2 tasks
-- [Run on a remote cluster](../../run-modes/running-remote) — authentication methods, including `flyte.init_from_api_key()`
+- [Remote tasks](../../task-programming/remote-tasks): fetching and running deployed Flyte 2 tasks
+- [Run on a remote cluster](../../run-modes/running-remote): authentication methods, including `flyte.init_from_api_key()`
 {{< variant union >}}
 {{< markdown >}}
-- [Authenticating](../../authenticating#api-key) — API key authentication in depth
+- [Authenticating](../../authenticating#api-key): API key authentication in depth
 {{< /markdown >}}
 {{< /variant >}}
-- [Migration](./overview) — mapping Flyte 1 workload patterns to Flyte 2
+- [Migration](./overview): mapping Flyte 1 workload patterns to Flyte 2

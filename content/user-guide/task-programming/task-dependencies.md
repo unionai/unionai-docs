@@ -9,7 +9,7 @@ variants: +flyte +union
 Flyte 1 built a workflow's DAG (directed acyclic graph) explicitly: you declared nodes and wired their edges with the `>>` operator or `create_node`.
 Flyte 2 has no such API. Instead, **the dependency graph is inferred from the data you `await`**.
 When you await one task's result and pass it into another, Flyte records the edge; tasks that share no data run independently.
-This page shows how to express the ordering patterns you used to build by hand — sequencing, fan-out, fan-in, and fine-grained dependency-driven scheduling — using ordinary Python `asyncio`.
+This page shows how to express the ordering patterns you used to build by hand (sequencing, fan-out, fan-in, and fine-grained dependency-driven scheduling) using ordinary Python `asyncio`.
 
 If you are coming from Flyte 1, read [Parallelism and fan-out](../migration/flyte-2/parallelism) first for the migration mapping.
 
@@ -47,11 +47,11 @@ async def main() -> str:
     return await load(clean)       # waits for transform — it consumes `clean`
 ```
 
-Each `await` means "wait for this to finish before continuing," so a chain of `await`s that pass results downstream runs sequentially — exactly like a linear Flyte 1 workflow. You never declare the edges; passing `raw` into `transform` and `clean` into `load` *is* the DAG.
+Each `await` means "wait for this to finish before continuing," so a chain of `await`s that pass results downstream runs sequentially, exactly like a linear Flyte 1 workflow. You never declare the edges; passing `raw` into `transform` and `clean` into `load` *is* the DAG.
 
 ## Ordering without a data dependency
 
-Sometimes you need task `B` to run after task `A` even though `B` does not consume `A`'s output — for example, `A` writes to a store that `B` reads out-of-band, or `A` must finish before you send a notification.
+Sometimes you need task `B` to run after task `A` even though `B` does not consume `A`'s output. For example, `A` writes to a store that `B` reads out-of-band, or `A` must finish before you send a notification.
 
 Because ordering comes from `await`, you force it simply by awaiting `A` before invoking `B`:
 
@@ -63,12 +63,12 @@ async def main() -> str:
     return result
 ```
 
-You do not need a special "run after" construct — a preceding `await` is the ordering primitive.
+You do not need a special "run after" construct: a preceding `await` is the ordering primitive.
 
 ## Fan-out and fan-in
 
 **Fan-out** launches independent tasks concurrently; **fan-in** collects their results into a single downstream task.
-Use [`asyncio.gather`](https://docs.python.org/3/library/asyncio-task.html#asyncio.gather) to await several tasks at once — Flyte runs each in its own container in parallel (see [Fanout](./fanout)):
+Use [`asyncio.gather`](https://docs.python.org/3/library/asyncio-task.html#asyncio.gather) to await several tasks at once. Flyte runs each in its own container in parallel (see [Fanout](./fanout)):
 
 ```python
 @env.task
@@ -170,14 +170,14 @@ async def main() -> str:
     return str(results)
 ```
 
-`needs_short` starts about a second in, as soon as `short_producer` returns — it does not wait for the 10-second `long_producer`. Awaiting an `asyncio` task handle more than once is safe: the handle caches its result, so `long_task` can feed both `run_needs_long` and `run_needs_all` without re-running the producer.
+`needs_short` starts about a second in, as soon as `short_producer` returns. It does not wait for the 10-second `long_producer`. Awaiting an `asyncio` task handle more than once is safe: the handle caches its result, so `long_task` can feed both `run_needs_long` and `run_needs_all` without re-running the producer.
 
 > [!NOTE]
-> Reach for helper coroutines that each `await` their specific handles, rather than a manual completion loop that inspects [`asyncio.as_completed`](https://docs.python.org/3/library/asyncio-task.html#asyncio.as_completed) and dispatches downstream tasks by hand. Hand-rolled dispatch loops are easy to get wrong — a mis-tracked "has this fired yet?" check can launch the same downstream task twice. Let the dependency edges fall out of `await` instead.
+> Reach for helper coroutines that each `await` their specific handles, rather than a manual completion loop that inspects [`asyncio.as_completed`](https://docs.python.org/3/library/asyncio-task.html#asyncio.as_completed) and dispatches downstream tasks by hand. Hand-rolled dispatch loops are easy to get wrong: a mis-tracked "has this fired yet?" check can launch the same downstream task twice. Let the dependency edges fall out of `await` instead.
 
 ## When to reach for `as_completed`
 
-Use [`asyncio.as_completed`](https://docs.python.org/3/library/asyncio-task.html#asyncio.as_completed) when you want to process results **in completion order** — for example, streaming each result into a running reduction as it lands — rather than to encode a fixed dependency graph:
+Use [`asyncio.as_completed`](https://docs.python.org/3/library/asyncio-task.html#asyncio.as_completed) when you want to process results **in completion order** (for example, streaming each result into a running reduction as it lands) rather than to encode a fixed dependency graph:
 
 ```python
 @env.task
@@ -195,7 +195,7 @@ For a worked streaming/reduce example, see [Fanout](./fanout) and [Controlling p
 ## Summary
 
 - Flyte 2 has no explicit DAG-construction API; dependencies come from the data you `await`.
-- Sequence tasks by awaiting them in order — a preceding `await` orders even tasks that share no data.
+- Sequence tasks by awaiting them in order: a preceding `await` orders even tasks that share no data.
 - Fan out with `asyncio.gather`; fan in by awaiting several results into one downstream task.
 - For fine-grained scheduling, keep producer handles from `asyncio.create_task` and have each consumer await only the handles it depends on, so it starts as early as possible.
 - Prefer letting `await` express the graph over hand-rolled completion-tracking loops.

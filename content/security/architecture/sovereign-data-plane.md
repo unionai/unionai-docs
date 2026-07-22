@@ -6,9 +6,9 @@ variants: -flyte +union
 
 # Sovereign Data Plane
 
-The Sovereign Data Plane is an Enterprise-tier deployment option that replaces the Direct-to-Data-Plane tunnel with a customer-managed load balancer inside the customer's VPC, reachable only from inside the customer's corporate network. In this mode, **the data plane is unreachable from any third-party network -- including Cloudflare's -- and Union.ai employees cannot reach customer data even with full Union.ai credentials.**
+The Sovereign Data Plane is an Enterprise-tier deployment option that replaces the Direct-to-Data-Plane tunnel with a customer-managed load balancer inside the customer's VPC, reachable only from inside the customer's corporate network. In this mode, **the data plane is unreachable from any third-party network (including Cloudflare's), and Union.ai employees cannot reach customer data even with full Union.ai credentials.**
 
-This is a strictly stronger network perimeter than the default tier. The identity perimeter (Union RBAC and SSO) is unchanged, and every visualization feature -- input/output inspection, log streaming, auxiliary UIs -- continues to work for users who are connected to the corporate network.
+This is a strictly stronger network perimeter than the default tier. The identity perimeter (Union RBAC and SSO) is unchanged, and every visualization feature (input/output inspection, log streaming, auxiliary UIs) continues to work for users who are connected to the corporate network.
 
 ## When to use it
 
@@ -68,7 +68,7 @@ The data plane never accepts a connection from any third-party network. The load
 
 The Sovereign Data Plane is a deployment-time configuration. The customer's SRE/DevOps team provisions a load balancer inside their VPC that is reachable only from the corporate VPN, and the Union.ai data plane is deployed behind it instead of behind the Direct-to-Data-Plane tunnel. The exact form of the load balancer (cloud-native, ingress controller, internal ALB/NLB/ILB, route reflector, etc.) depends on the customer's existing infrastructure conventions; Union.ai supports the common patterns.
 
-Existing Union RBAC and SSO continue to apply -- the network perimeter changes, but the identity perimeter does not. Engagement is through Union Solutions Engineering as part of an Enterprise deployment.
+Existing Union RBAC and SSO continue to apply: the network perimeter changes, but the identity perimeter does not. Engagement is through Union Solutions Engineering as part of an Enterprise deployment.
 
 ## Trade-offs
 
@@ -104,7 +104,7 @@ The Sovereign Data Plane is strictly stronger than the default tier on network r
 
 ### Identity continues to gate access
 
-**Reviewer focus:** Confirm that being on the corporate VPN is necessary but not sufficient -- Union identity and RBAC still gate every data-path request.
+**Reviewer focus:** Confirm that being on the corporate VPN is necessary but not sufficient: Union identity and RBAC still gate every data-path request.
 
 **How to verify:**
 

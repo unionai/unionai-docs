@@ -9,7 +9,7 @@ llm_readable_bundle: true
 
 {{< llm-bundle-note >}}
 
-Now that you've completed the [Quickstart](../quickstart), let's explore Flyte's core concepts through working examples.
+Now that you've completed the [Quickstart](../quickstart), this section covers Flyte's core concepts through working examples.
 
 By the end of this section, you'll understand:
 
@@ -29,7 +29,7 @@ When you run code with Flyte, here's what happens:
 3. When you execute a task, Flyte creates a **run** that tracks the execution
 4. Each task execution within a run is an **action**
 
-Let's explore each of these in detail.
+The following sections cover each in detail.
 
 {{< variant union >}}
 

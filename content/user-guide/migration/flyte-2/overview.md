@@ -6,9 +6,9 @@ variants: +flyte +union
 
 # Migration overview
 
-This section walks through the Flyte 1 workload patterns you already know — data ETL, model training, hyperparameter sweeps, batch inference — and their Flyte 2 equivalents. Every pattern is a complete, runnable v1↔v2 example pair in the [`unionai-examples`](https://github.com/unionai/unionai-examples/tree/main/v2/user-guide/migration/flyte-2) repository.
+This section walks through the Flyte 1 workload patterns you already know (data ETL, model training, hyperparameter sweeps, batch inference) and their Flyte 2 equivalents. Every pattern is a complete, runnable v1↔v2 example pair in the [`unionai-examples`](https://github.com/unionai/unionai-examples/tree/main/v2/user-guide/migration/flyte-2) repository.
 
-Two conceptual shifts motivate almost every change — **pure Python execution** and the **asynchronous model** — after which most migrations come down to a couple of mechanical moves. This page covers both shifts, the terminology mapping, and a quick-reference module.
+Two conceptual shifts motivate almost every change (**pure Python execution** and the **asynchronous model**), after which most migrations come down to a couple of mechanical moves. This page covers both shifts, the terminology mapping, and a quick-reference module.
 
 ## Pure Python execution
 
@@ -29,7 +29,7 @@ In Flyte 1, `@workflow` functions were constrained to a DSL subset of Python tha
 {{< /tab >}}
 {{< /tabs >}}
 
-This unlocks workflows that adapt to runtime conditions, native `try`/`except` error handling, and the intuitive composition of ordinary Python functions.
+This enables workflows that adapt to runtime conditions, native `try`/`except` error handling, and the intuitive composition of ordinary Python functions.
 
 ## Asynchronous model
 
@@ -42,7 +42,7 @@ Flyte 2 is built on Python's `asyncio`, with a crucial twist: **the Flyte orches
 The core async keywords carry Flyte-specific meaning:
 
 - **`async def`** declares a coroutine.
-- **`await`** signals where a task can be scheduled in parallel — not just an I/O yield point.
+- **`await`** signals where a task can be scheduled in parallel, not just an I/O yield point.
 - **`asyncio.gather`** tells the orchestrator that a set of tasks are independent and can be distributed across separate compute resources.
 
 Consider this pattern for parallel data processing:
@@ -53,7 +53,7 @@ In standard Python this mainly benefits I/O-bound work; in Flyte 2 the orchestra
 
 ### True parallelism for all workloads
 
-Async syntax in Flyte 2 is **not just for I/O-bound operations**. When the orchestrator encounters `await asyncio.gather(...)`, it runs those independent tasks simultaneously across compute resources — achieving true parallelism for CPU-bound work (model training, heavy math), I/O-bound work (queries, API calls), and mixed workloads alike.
+Async syntax in Flyte 2 is **not just for I/O-bound operations**. When the orchestrator encounters `await asyncio.gather(...)`, it runs those independent tasks simultaneously across compute resources, achieving true parallelism for CPU-bound work (model training, heavy math), I/O-bound work (queries, API calls), and mixed workloads alike.
 
 ### Calling sync tasks from async tasks
 
@@ -150,21 +150,21 @@ The `env` in `@env.task` is just the variable you assigned your `TaskEnvironment
 
 The migration patterns are grouped by theme. Start with **Tasks and workflows**, then jump to whatever your workload needs:
 
-- **[Tasks and workflows](./tasks-and-workflows)** — the structural shift: `@task`/`@workflow` → `@env.task`, sequential ordering, nested "subworkflows", and the `@task` → `TaskEnvironment` parameter mapping.
-- **[Task configuration](./configuration)** — moving image/resources/cache to the `TaskEnvironment`, GPUs, secrets, caching, and scheduling with triggers.
-- **[CLI and configuration](./cli-and-configuration)** — `pyflyte` → `flyte` command mapping and config-file changes.
-- **[Control flow](./control-flow)** — `conditional()` and `@dynamic` become plain Python `if`/loops, and `on_failure` becomes `try`/`except`.
-- **[Parallelism and fan-out](./parallelism)** — `map_task` → `flyte.map` / `asyncio.gather`, plus a data-backfill example.
-- **[Data types and I/O](./data-io)** — `FlyteFile`/`FlyteDirectory` → `flyte.io.File`/`Dir`, `StructuredDataset` → `flyte.io.DataFrame`, dataclasses, and an ETL example.
-- **[ML workloads](./ml-workloads)** — small-model training, hyperparameter optimization, deep learning, batch inference, and an end-to-end pipeline.
-- **[New in Flyte 2](./new-in-flyte-2)** — patterns that weren't possible in Flyte 1 at all: real-time model serving, batch inference, apps, and sandboxed code execution.
+- **[Tasks and workflows](./tasks-and-workflows)**: the structural shift: `@task`/`@workflow` → `@env.task`, sequential ordering, nested "subworkflows", and the `@task` → `TaskEnvironment` parameter mapping.
+- **[Task configuration](./configuration)**: moving image/resources/cache to the `TaskEnvironment`, GPUs, secrets, caching, and scheduling with triggers.
+- **[CLI and configuration](./cli-and-configuration)**: `pyflyte` → `flyte` command mapping and config-file changes.
+- **[Control flow](./control-flow)**: `conditional()` and `@dynamic` become plain Python `if`/loops, and `on_failure` becomes `try`/`except`.
+- **[Parallelism and fan-out](./parallelism)**: `map_task` → `flyte.map` / `asyncio.gather`, plus a data-backfill example.
+- **[Data types and I/O](./data-io)**: `FlyteFile`/`FlyteDirectory` → `flyte.io.File`/`Dir`, `StructuredDataset` → `flyte.io.DataFrame`, dataclasses, and an ETL example.
+- **[ML workloads](./ml-workloads)**: small-model training, hyperparameter optimization, deep learning, batch inference, and an end-to-end pipeline.
+- **[New in Flyte 2](./new-in-flyte-2)**: patterns that weren't possible in Flyte 1 at all: real-time model serving, batch inference, apps, and sandboxed code execution.
 {{< variant union >}}
 {{< markdown >}}
-- **[Union features](./union-features)** — migrating Union-specific Actors (→ reusable containers) and Apps (→ the Flyte SDK).
+- **[Union features](./union-features)**: migrating Union-specific Actors (→ reusable containers) and Apps (→ the Flyte SDK).
 {{< /markdown >}}
 {{< /variant >}}
-- **[Hybrid v1 and v2 pipelines](./hybrid-pipelines)** — calling between v1 and v2 in both directions during the transition.
-- **[Gotchas and caveats](./gotchas-and-caveats)** — common gotchas plus the deeper caveats of the new execution model, including non-deterministic behavior and keeping orchestration lightweight.
+- **[Hybrid v1 and v2 pipelines](./hybrid-pipelines)**: calling between v1 and v2 in both directions during the transition.
+- **[Gotchas and caveats](./gotchas-and-caveats)**: common gotchas plus the deeper caveats of the new execution model, including non-deterministic behavior and keeping orchestration lightweight.
 
 ## Quick reference
 

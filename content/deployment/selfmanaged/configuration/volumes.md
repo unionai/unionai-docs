@@ -118,7 +118,7 @@ The `fuseDevicePlugin` values block in the dataplane chart:
 | `fuseDevicePlugin.tolerations` | `[{ operator: Exists }]` | Tolerate everything so it lands on every selected node, including tainted ones. |
 | `fuseDevicePlugin.securityContext` | drops `ALL`, adds `SYS_ADMIN` | The plugin needs `SYS_ADMIN` to read host devices and register with kubelet; the workloads it serves stay unprivileged. |
 | `fuseDevicePlugin.priorityClassName` | `""` | Override the priority class (defaults to `operator.priorityClassName`). |
-| `fuseDevicePlugin.resources` | `cpu: 10m–100m`, `memory: 15Mi` | Resource requests and limits for the plugin pod. |
+| `fuseDevicePlugin.resources` | `cpu: 10m to 100m`, `memory: 15Mi` | Resource requests and limits for the plugin pod. |
 
 ## Using Volumes
 
