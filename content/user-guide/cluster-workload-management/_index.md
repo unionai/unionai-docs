@@ -99,7 +99,7 @@ changes are rare and explicit (moving work between pools is a
 > automatically. If you run a single cluster, or several clusters that share one
 > bucket, secret store, and registry, you never need to think about pools. Your
 > cluster lands in `default`, queues route to `default`, and you can skip straight
-> to [Queues](./queues). Pools only matter once you have clusters with **distinct**
+> to [Managing queues](./queues). Pools only matter once you have clusters with **distinct**
 > data planes (for example, separate dev and prod cloud accounts).
 
 ## In this section
@@ -114,7 +114,7 @@ Group clusters that share a data plane. Create and manage pools, or stay on the 
 Register execution clusters into a pool and inspect their state, capacity, and bound queues.
 {{< /link-card >}}
 
-{{< link-card target="queues" icon="workflow" title="Queues" >}}
+{{< link-card target="queues" icon="workflow" title="Managing queues" >}}
 Create and manage the scheduling lanes that route workloads to a pool and enforce concurrency, priority, and fairness.
 {{< /link-card >}}
 

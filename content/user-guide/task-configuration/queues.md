@@ -89,8 +89,10 @@ async def main(queue_name: str):
 
 ## What a queue controls
 
-Queues are configured by your platform admin, but it helps to understand the
-knobs so you can pick the right queue for a workload:
+Queues are configured by your platform admin (see
+[Managing queues](../cluster-workload-management/queues) for how they are created
+and managed), but it helps to understand the knobs so you can pick the right
+queue for a workload:
 
 - **Action concurrency**: the maximum number of tasks routed to the queue that
   run at the same time. A queue with a cap of 1 serializes its work; a cap of 3
