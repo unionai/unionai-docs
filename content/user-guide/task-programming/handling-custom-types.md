@@ -226,4 +226,4 @@ DataFrame extensions use encoders and decoders from `flyte.io.extend`. Documenta
 
 ## See also
 
-To render a custom type as HTML in a task report, define a `flyte.types.Renderable` for it — see [Rendering a custom type](./reports#rendering-a-custom-type) on the Reports page.
+To render a custom type as HTML in a task report, define a `flyte.types.Renderable` for it. See [Rendering a custom type](./reports#rendering-a-custom-type) on the Reports page.

@@ -149,9 +149,9 @@ flyte.init(
 )
 ```
 
-For API-key authentication in non-interactive environments, use `flyte.init_from_api_key()` — see [Run on a remote cluster](../../run-modes/running-remote).
+For API-key authentication in non-interactive environments, use `flyte.init_from_api_key()`. See [Run on a remote cluster](../../run-modes/running-remote).
 
 ## Next
 
-- [Control flow](./control-flow) — conditionals, dynamic behavior, and error handling
-- [Hybrid v1 and v2 pipelines](./hybrid-pipelines) — calling between v1 and v2 during the transition
+- [Control flow](./control-flow): conditionals, dynamic behavior, and error handling
+- [Hybrid v1 and v2 pipelines](./hybrid-pipelines): calling between v1 and v2 during the transition

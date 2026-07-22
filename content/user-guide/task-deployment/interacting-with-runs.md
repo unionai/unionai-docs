@@ -99,7 +99,7 @@ For all available options, see the [CLI reference](../../api-reference/flyte-cli
 
 ### Filtering runs by label
 
-If runs were launched with [labels](./run-context#identity-and-resources) — arbitrary `key=value` metadata attached at launch — you can filter the run list by those labels. Multiple label filters combine with **AND** semantics: a run must match every label you specify to be returned.
+If runs were launched with [labels](./run-context#identity-and-resources), arbitrary `key=value` metadata attached at launch, you can filter the run list by those labels. Multiple label filters combine with **AND** semantics: a run must match every label you specify to be returned.
 
 {{< tabs "filter-by-label" >}}
 {{< tab "CLI" >}}

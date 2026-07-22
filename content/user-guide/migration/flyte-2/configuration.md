@@ -10,7 +10,7 @@ In Flyte 1, image, resources, caching, secrets, and scheduling were configured p
 
 ## Image, resources, and caching
 
-Image, resources, and caching move from the `@task` decorator to the `TaskEnvironment`. Per-task settings like `retries` and `timeout` stay on `@env.task`. Note that `mem` is renamed to `memory`, and there are no separate `requests`/`limits` — a single `Resources` value serves as both.
+Image, resources, and caching move from the `@task` decorator to the `TaskEnvironment`. Per-task settings like `retries` and `timeout` stay on `@env.task`. Note that `mem` is renamed to `memory`, and there are no separate `requests`/`limits`. A single `Resources` value serves as both.
 
 {{< tabs "migration-task-config" >}}
 {{< tab "Flyte 1" >}}
@@ -82,7 +82,7 @@ See [Container images](../../task-configuration/container-images) for more.
 
 ## Resources
 
-A single `flyte.Resources` value serves as both request and limit — there are no separate `requests`/`limits`. Several parameters were renamed.
+A single `flyte.Resources` value serves as both request and limit. There are no separate `requests`/`limits`. Several parameters were renamed.
 
 | Flyte 1 | Flyte 2 | Notes |
 |---|---|---|
@@ -141,7 +141,7 @@ See [Caching](../../task-configuration/caching) for more.
 
 ## Secrets
 
-Secrets move from `secret_requests` on the task to `secrets` on the `TaskEnvironment`, and you read them from environment variables instead of `current_context().secrets` — for example, an API key for a model registry or hosted LLM.
+Secrets move from `secret_requests` on the task to `secrets` on the `TaskEnvironment`, and you read them from environment variables instead of `current_context().secrets`, for example, an API key for a model registry or hosted LLM.
 
 {{< tabs "migration-secrets" >}}
 {{< tab "Flyte 1" >}}
@@ -193,6 +193,6 @@ Triggers support `flyte.Cron("0 9 * * *", timezone="America/New_York")` and `fly
 
 ## Next
 
-- [CLI and configuration](./cli-and-configuration) — `pyflyte` → `flyte` command and config-file mapping
-- [Control flow](./control-flow) — conditionals, dynamic behavior, and error handling
-- [Data types and I/O](./data-io) — files, DataFrames, and dataclasses
+- [CLI and configuration](./cli-and-configuration): `pyflyte` → `flyte` command and config-file mapping
+- [Control flow](./control-flow): conditionals, dynamic behavior, and error handling
+- [Data types and I/O](./data-io): files, DataFrames, and dataclasses

@@ -21,7 +21,7 @@ All four backends are available regardless of deployment model. The choice of ba
 
 ## Secret lifecycle
 
-**Creation:** When a user creates a secret via the UI or CLI, the value is sent directly to the data plane's secrets backend over the client-to-data-plane channel -- the Direct-to-Data-Plane tunnel under the default tier, or the customer-managed internal load balancer under the [Sovereign Data Plane](../architecture/sovereign-data-plane) tier -- and stored encrypted at rest in the customer's secret manager (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or Kubernetes Secrets). The value never enters Union.ai's control plane in any form. The Envoy router inside the customer's cluster authenticates the request against Union.ai identity and enforces RBAC before the value reaches the secrets backend.
+**Creation:** When a user creates a secret via the UI or CLI, the value is sent directly to the data plane's secrets backend over the client-to-data-plane channel (the Direct-to-Data-Plane tunnel under the default tier, or the customer-managed internal load balancer under the [Sovereign Data Plane](../architecture/sovereign-data-plane) tier) and stored encrypted at rest in the customer's secret manager (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or Kubernetes Secrets). The value never enters Union.ai's control plane in any form. The Envoy router inside the customer's cluster authenticates the request against Union.ai identity and enforces RBAC before the value reaches the secrets backend.
 
 | Phase | Encrypted? | Details |
 |-------|------------|---------|

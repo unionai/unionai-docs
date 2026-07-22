@@ -75,5 +75,5 @@ For fine-grained concurrency control (semaphores, `as_completed`, error handling
 
 ## Next
 
-- [Data types and I/O](./data-io) — files, DataFrames, and dataclasses
-- [ML workloads](./ml-workloads) — training, HPO, and batch inference
+- [Data types and I/O](./data-io): files, DataFrames, and dataclasses
+- [ML workloads](./ml-workloads): training, HPO, and batch inference

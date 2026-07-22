@@ -9,7 +9,7 @@ variants: +flyte +union
 When you [fan out](./fanout) with [`asyncio.gather`](https://docs.python.org/3/library/asyncio-task.html#asyncio.gather), you wait for **every** task to finish before doing anything with the results.
 For a map-reduce workload that is wasteful: the reduce step sits idle until the slowest mapper returns.
 
-A better pattern is to process results **as they complete** — accumulating them into batches and kicking off reduce operations incrementally, while the remaining map tasks are still running.
+A better pattern is to process results **as they complete**, accumulating them into batches and kicking off reduce operations incrementally, while the remaining map tasks are still running.
 This is a *gradual* (or *streaming*) map-reduce, and it is built on the standard-library [`asyncio.as_completed`](https://docs.python.org/3/library/asyncio-task.html#asyncio.as_completed) function.
 
 ## When to use it
@@ -18,7 +18,7 @@ Reach for streaming map-reduce when:
 
 - Map tasks have **uneven durations**, so waiting for the slowest one wastes time the faster ones could spend reducing.
 - You are processing a **large number of items** and want to reduce in batches rather than holding every intermediate result in memory at once.
-- The reduce step is **associative** — batch results can themselves be reduced into a final result (counts, sums, aggregations, embeddings, inference outputs).
+- The reduce step is **associative**: batch results can themselves be reduced into a final result (counts, sums, aggregations, embeddings, inference outputs).
 
 If you simply need all results before a single reduce, plain `asyncio.gather` (see [Fanout](./fanout)) is simpler.
 If your goal is to *cap* how many map tasks run at once, see [Controlling parallel execution](./controlling-parallelism); the two patterns compose.
@@ -78,7 +78,7 @@ Reusable containers require a {{< key product_name >}} backend, so this optimiza
 ### The driver task
 
 The driver fans out all the map tasks up front, then walks the results in completion order with `asyncio.as_completed`.
-Each time a batch fills up, it launches a `reduce_batch` action **without blocking** — the loop keeps consuming newly completed map results while the reduce runs.
+Each time a batch fills up, it launches a `reduce_batch` action **without blocking**; the loop keeps consuming newly completed map results while the reduce runs.
 
 ```python
 @env.task
@@ -134,7 +134,7 @@ if __name__ == "__main__":
 
 The key building blocks are all standard `asyncio`:
 
-1. **`asyncio.create_task(process_item(item))`** schedules each map action. Because `process_item` is a Flyte task, each of these runs in its own container on the cluster — the fanout is real distributed parallelism, not single-machine concurrency (see [Fanout](./fanout) for how Flyte turns `asyncio` into distributed execution).
+1. **`asyncio.create_task(process_item(item))`** schedules each map action. Because `process_item` is a Flyte task, each of these runs in its own container on the cluster; the fanout is real distributed parallelism, not single-machine concurrency (see [Fanout](./fanout) for how Flyte turns `asyncio` into distributed execution).
 2. **`asyncio.as_completed(tasks)`** yields the task handles in the order they *finish*, not the order they were submitted. This is what lets the driver react to the fastest map results first.
 3. **`asyncio.create_task(reduce_batch(...))`** launches each reduce as its own Flyte action and appends it to `reducers` without awaiting it, so map consumption and reduction overlap.
 4. **`asyncio.gather(*reducers)`** joins all the in-flight batch reduces before the final combine step.
@@ -142,5 +142,5 @@ The key building blocks are all standard `asyncio`:
 The result is a pipeline where reduce work begins as soon as the first batch of map results is ready, instead of after the last map task returns.
 
 > [!NOTE]
-> `as_completed` returns awaitables in completion order but gives you no control over *how many* map tasks run at once — it schedules all of them.
+> `as_completed` returns awaitables in completion order but gives you no control over *how many* map tasks run at once; it schedules all of them.
 > To bound the map fanout as well, combine this pattern with an `asyncio.Semaphore` or `flyte.map(concurrency=...)` from [Controlling parallel execution](./controlling-parallelism).

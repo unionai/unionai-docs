@@ -200,7 +200,7 @@ To run a sample workflow, complete the following steps:
 
 > [!NOTE] Crusoe-specific tip
 > To land tasks on Crusoe GPU nodes, add a task-level resource request and a node selector matching Crusoe's GPU node pool labels.
-> <!-- [VERIFY label keys — e.g., crusoe.ai/gpu-type=h100] -->
+> <!-- [VERIFY label keys, e.g., crusoe.ai/gpu-type=h100] -->
 
 ## Troubleshooting
 
@@ -247,7 +247,7 @@ Open items to confirm before publishing (carried over from draft):
 6. Kubernetes service name: CMK, CKE, or other branding?
 7. GPU node pool labels & taints: canonical labels (e.g., crusoe.ai/gpu-type=h100)?
 8. Supported Kubernetes versions: confirm the "most recent three minor" claim.
-9. Networking / egress: RESOLVED — outbound-only; TCP 443 to the control plane tenant endpoint and TCP 7844 for the Cloudflare Tunnel (default tier). Documented at content/security/architecture/network.md#egress-requirements.
+9. Networking / egress: RESOLVED: outbound-only; TCP 443 to the control plane tenant endpoint and TCP 7844 for the Cloudflare Tunnel (default tier). Documented at content/security/architecture/network.md#egress-requirements.
 10. Default StorageClass on CMK for PVCs (BuildKit cache, fluent-bit)?
 11. Image registry pull-through cache to reduce GHCR pull latency?
 12. Logging sink: back to the same bucket, or a managed logging service?

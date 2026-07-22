@@ -43,7 +43,7 @@ The task programming section covers key patterns for building effective Flyte wo
 - [**Pod templates**](../task-configuration/pod-templates): Extend tasks with Kubernetes pod templates to add sidecars, volume mounts, and advanced Kubernetes configurations.
 - [**Abort and cancel actions**](./abort-tasks): Stop in-progress actions automatically, programmatically, or manually via the CLI and UI.
 - [**Other features**](./other-features): Advanced patterns like task forwarding and other specialized task execution techniques.
-- [**Higher-order functions**](./higher-order-functions): Write reusable functions that take tasks as arguments — fallback, memory-scaling retry, circuit breaker, and batch map-reduce wrappers built on Flyte's dynamic execution.
+- [**Higher-order functions**](./higher-order-functions): Write reusable functions that take tasks as arguments: fallback, memory-scaling retry, circuit breaker, and batch map-reduce wrappers built on Flyte's dynamic execution.
 
 **Development and debugging**
 
@@ -77,6 +77,6 @@ These programming patterns become essential as your workflows grow in complexity
 - Write **unit tests** to validate your task logic and ensure type transformations work correctly before deployment.
 - Use **abort and cancel** to stop unnecessary actions when conditions change, such as early convergence in HPO or manual intervention.
 - Use **external conditions** to insert approval gates or data collection checkpoints into automated workflows.
-- Apply **higher-order functions** to factor recurring orchestration logic — retry-on-OOM, fallback, circuit breaking, batching — into reusable wrappers that work with any task.
+- Apply **higher-order functions** to factor recurring orchestration logic (retry-on-OOM, fallback, circuit breaking, batching) into reusable wrappers that work with any task.
 
 Each guide includes practical examples and best practices to help you implement these patterns effectively in your own workflows.

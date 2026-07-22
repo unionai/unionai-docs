@@ -147,7 +147,7 @@ gcloud artifacts repositories create ${AR_REPOSITORY} \
   --description "Union Image Builder repository"
 ```
 
-Note the repository path (`${REGION}-docker.pkg.dev/${PROJECT_ID}/${AR_REPOSITORY}`) -- you will reference it when configuring Workload Identity permissions below.
+Note the repository path (`${REGION}-docker.pkg.dev/${PROJECT_ID}/${AR_REPOSITORY}`); you will reference it when configuring Workload Identity permissions below.
 
 ## Workload Identity
 

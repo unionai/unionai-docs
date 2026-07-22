@@ -307,7 +307,7 @@ config:
 
 ### In-pod control plane authentication (EAGER_API_KEY)
 
-Flyte task pods may need to call back into the Union.ai control plane during execution -- to launch sub-tasks, fetch remote references, run apps that make programmatic API calls, and similar. The `EAGER_API_KEY` secret holds the OAuth2 client credentials used to authenticate those calls. (The "eager" prefix is a Flyte 1.x holdover -- the key is needed for every task pod that may reach the control plane, not just eager workflows. There is no separate eager-mode toggle in Flyte 2.x.)
+Flyte task pods may need to call back into the Union.ai control plane during execution: to launch sub-tasks, fetch remote references, run apps that make programmatic API calls, and similar. The `EAGER_API_KEY` secret holds the OAuth2 client credentials used to authenticate those calls. (The "eager" prefix is a Flyte 1.x holdover: the key is needed for every task pod that may reach the control plane, not just eager workflows. There is no separate eager-mode toggle in Flyte 2.x.)
 
 The executor injects the secret into task pods via:
 

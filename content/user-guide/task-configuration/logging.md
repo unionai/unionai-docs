@@ -97,9 +97,9 @@ flyte.logger.debug("Intermediate value: %r", value)
 
 ## JSON logging and third-party libraries
 
-Setting `LOG_FORMAT=json` (or `log_format="json"`) switches Flyte's output to JSON — but only for the two Flyte loggers, `flyte` and `flyte.user`. Both have propagation disabled, so neither reaches the Python **root logger**. Third-party libraries (`urllib3`, `boto3`, your own dependencies) typically emit through the root logger, so their lines are not converted to JSON: your Flyte output is JSON, but library log lines stay plain text.
+Setting `LOG_FORMAT=json` (or `log_format="json"`) switches Flyte's output to JSON, but only for the two Flyte loggers, `flyte` and `flyte.user`. Both have propagation disabled, so neither reaches the Python **root logger**. Third-party libraries (`urllib3`, `boto3`, your own dependencies) typically emit through the root logger, so their lines are not converted to JSON: your Flyte output is JSON, but library log lines stay plain text.
 
-This matters when you ship logs to a cloud logging backend — Google Cloud Logging (Stackdriver), AWS CloudWatch, Datadog — that expects one consistent JSON format across every line.
+This matters when you ship logs to a cloud logging backend (Google Cloud Logging (Stackdriver), AWS CloudWatch, Datadog) that expects one consistent JSON format across every line.
 
 To make third-party lines JSON as well, also set `reset_root_logger=True`. Flyte then clears the root logger's existing handlers and attaches a JSON handler at the root, so every library that propagates to the root logger is captured as JSON:
 
@@ -120,7 +120,7 @@ By default (`reset_root_logger=False`), Flyte does **not** clear the root logger
 
 Passing `reset_root_logger=True` to `flyte.with_runcontext()` automatically injects `FLYTE_RESET_ROOT_LOGGER=1` into the task container, so the reset happens in the remote task as well as locally.
 
-To configure it on the task environment instead — resetting the root logger for every run, at registration time rather than per-run — set the environment variable directly. The value must be the string `1`:
+To configure it on the task environment instead (resetting the root logger for every run, at registration time rather than per-run), set the environment variable directly. The value must be the string `1`:
 
 ```python
 import flyte

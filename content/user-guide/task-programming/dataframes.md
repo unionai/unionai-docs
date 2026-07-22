@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # DataFrames
 
-By default, return values in Python are materialized - meaning the actual data is downloaded and loaded into memory. This applies to simple types like integers, as well as more complex types like DataFrames.
+By default, return values in Python are materialized, meaning the actual data is downloaded and loaded into memory. This applies to simple types like integers, as well as more complex types like DataFrames.
 
 To avoid downloading large datasets into memory, Flyte V2 exposes [`flyte.io.dataframe`](../../api-reference/flyte-sdk/packages/flyte.io/dataframe): a thin,  uniform wrapper type for DataFrame-style objects that allows you to pass a reference to the data, rather than the fully materialized contents.
 
@@ -15,7 +15,7 @@ The `flyte.io.DataFrame` type provides serialization support for common engines 
 DataFrame contents are written to the data plane object store and passed between tasks by reference. For the full map of what goes in the bucket versus what stays in the control plane database, see [Where your data lives](../core-concepts/where-data-lives).
 
 > [!NOTE]
-> Because a DataFrame is passed by reference, a downstream cached task does not get a cache hit on identical content stored at a new path. To cache on content, attach a hash with `flyte.io.HashFunction` - see [Content-based caching for DataFrames, files, and directories](../task-configuration/caching#content-based-caching-for-dataframes-files-and-directories).
+> Because a DataFrame is passed by reference, a downstream cached task does not get a cache hit on identical content stored at a new path. To cache on content, attach a hash with `flyte.io.HashFunction`. See [Content-based caching for DataFrames, files, and directories](../task-configuration/caching#content-based-caching-for-dataframes-files-and-directories).
 
 ## Setting up the environment and sample data
 
@@ -112,4 +112,4 @@ The `collect()` call in `aggregate_by_department` is what triggers execution of 
 
 ## See also
 
-To display a DataFrame as an HTML table in a task report, define a `flyte.types.Renderable` for it — see [Rendering a custom type](./reports#rendering-a-custom-type) on the Reports page.
+To display a DataFrame as an HTML table in a task report, define a `flyte.types.Renderable` for it. See [Rendering a custom type](./reports#rendering-a-custom-type) on the Reports page.

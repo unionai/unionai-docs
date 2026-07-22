@@ -17,11 +17,11 @@ The data plane consists of several components, each handling a specific aspect o
 
 **Dataproxy service** is the single endpoint for every customer-data request. It handles:
 
-- **Signed URL generation** for bulk artifacts (files, directories, DataFrames, code bundles, reports) -- the `dataproxy` issues short-lived signed URLs via the tunnel so clients can read or write directly to the customer's object store. The data bytes themselves do not flow through `dataproxy`.
-- **Structured I/O retrieval** -- inputs and outputs of actions (small protobuf literals) are served back through the `dataproxy`.
-- **Log fetching** -- live logs from the Kubernetes API, persisted logs from the cloud log aggregator (CloudWatch, Cloud Logging, or Azure Monitor). There is no content filtering or redaction; any sensitive data (secrets, PII, stack traces) that user code writes to stdout/stderr is served unmodified.
-- **Auxiliary UI proxying** -- Ray dashboards, Spark history servers, in-task debuggers, and other per-action UIs are served back through the `dataproxy` via the same authenticated path.
-- **Secret writes** -- secret values from the SDK or UI are routed to the data plane secrets backend (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or Kubernetes Secrets) without traversing the control plane.
+- **Signed URL generation** for bulk artifacts (files, directories, DataFrames, code bundles, reports): the `dataproxy` issues short-lived signed URLs via the tunnel so clients can read or write directly to the customer's object store. The data bytes themselves do not flow through `dataproxy`.
+- **Structured I/O retrieval**: inputs and outputs of actions (small protobuf literals) are served back through the `dataproxy`.
+- **Log fetching**: live logs from the Kubernetes API, persisted logs from the cloud log aggregator (CloudWatch, Cloud Logging, or Azure Monitor). There is no content filtering or redaction; any sensitive data (secrets, PII, stack traces) that user code writes to stdout/stderr is served unmodified.
+- **Auxiliary UI proxying**: Ray dashboards, Spark history servers, in-task debuggers, and other per-action UIs are served back through the `dataproxy` via the same authenticated path.
+- **Secret writes**: secret values from the SDK or UI are routed to the data plane secrets backend (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or Kubernetes Secrets) without traversing the control plane.
 
 **Executor** is a Kubernetes controller that creates and manages the task pods based on signals from the control plane. If connectivity to the control plane is lost, in-flight pods continue running and state reconciles when the connection is restored.
 
@@ -31,7 +31,7 @@ The data plane consists of several components, each handling a specific aspect o
 
 In addition to the client-to-data-plane path, the data plane operator establishes a separate outbound gRPC connection (TLS) to the regional control plane endpoint for orchestration RPCs (cluster registration, action lifecycle, event reporting, catalog and artifact lookups, admin RPCs). This channel is outbound-initiated under both tiers and carries no customer data. See [Network architecture](./network) for the channel details, and [Egress requirements](./network#egress-requirements) for the specific outbound ports and endpoints.
 
-**Metrics Reporter** ships operational metrics (resource utilization, GPU utilization, queue depth) from the data plane to the control plane on its own schedule. The push model means the control plane needs no network route into the data plane at all -- a prerequisite for the Sovereign Data Plane tier.
+**Metrics Reporter** ships operational metrics (resource utilization, GPU utilization, queue depth) from the data plane to the control plane on its own schedule. The push model means the control plane needs no network route into the data plane at all: a prerequisite for the Sovereign Data Plane tier.
 
 **Apps & Serving** provides model and application serving capabilities using Knative with a Kourier gateway. All serving infrastructure runs within the customer's cluster. Authentication is enforced on all endpoints by default (SSO for browser access, API keys for programmatic access), with an option to allow anonymous access on specific endpoints. See [Apps & Serving security](#apps--serving-security) below for details.
 

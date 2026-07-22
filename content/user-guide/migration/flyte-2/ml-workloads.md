@@ -64,7 +64,7 @@ Load a trained model once and score many batches in parallel. `map_task` with a 
 
 ## A complete example: end-to-end ML pipeline
 
-Putting it together — a load / train / evaluate pipeline shows the image, resources, caching, file I/O, and orchestration changes in one place.
+Putting it together, a load / train / evaluate pipeline shows the image, resources, caching, file I/O, and orchestration changes in one place.
 
 {{< tabs "migration-ml-pipeline" >}}
 {{< tab "Flyte 1" >}}
@@ -77,5 +77,5 @@ Putting it together — a load / train / evaluate pipeline shows the image, reso
 
 ## Next
 
-- [New in Flyte 2](./new-in-flyte-2) — real-time serving, apps, and sandboxing
-- [Gotchas and caveats](./gotchas-and-caveats) — caveats of the new execution model
+- [New in Flyte 2](./new-in-flyte-2): real-time serving, apps, and sandboxing
+- [Gotchas and caveats](./gotchas-and-caveats): caveats of the new execution model

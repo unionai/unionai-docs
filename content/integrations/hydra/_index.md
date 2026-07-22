@@ -14,7 +14,7 @@ The plugin offers three complementary entry points that share a single launcher 
 | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | `hydra/launcher=flyte` (Hydra Launcher plugin) | You already have a `@hydra.main` script and want standard Hydra CLI ergonomics, including `--multirun` and custom sweepers.              |
 | `flyte hydra run` (Flyte CLI extension)        | You want a Flyte-style CLI that imports a task from a Python file and composes a Hydra config without requiring a `@hydra.main` wrapper. |
-| `hydra_run` / `hydra_sweep` (Python SDK)       | You want to submit runs directly from Python -- notebooks, tests, examples or another orchestration script.                              |
+| `hydra_run` / `hydra_sweep` (Python SDK)       | You want to submit runs directly from Python: notebooks, tests, examples or another orchestration script.                              |
 
 All three paths converge on the same `FlyteLauncher`.
 

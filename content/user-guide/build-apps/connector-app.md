@@ -64,7 +64,7 @@ Key points:
 
 ## Step 3: Test your connector locally
 
-Before deploying, you can exercise your connector entirely in your local Python process — no connector service, no cluster, no build-and-deploy cycle. When you run a connector-backed task **locally**, `AsyncConnectorExecutorMixin` calls your connector's `create` and `get` methods directly in-process, polling until the task reaches a terminal phase, then returns its outputs. This lets you iterate on connector logic quickly.
+Before deploying, you can exercise your connector entirely in your local Python process: no connector service, no cluster, no build-and-deploy cycle. When you run a connector-backed task **locally**, `AsyncConnectorExecutorMixin` calls your connector's `create` and `get` methods directly in-process, polling until the task reaches a terminal phase, then returns its outputs. This lets you iterate on connector logic quickly.
 
 A run executes locally whenever no Flyte backend connection is configured, or when you force local mode explicitly. Point Flyte at the module that instantiates your task and run it:
 
@@ -97,7 +97,7 @@ Or force local mode from the CLI with `--local`, pointing at the same file you r
 flyte run --local main.py my_batch_job --name hello
 ```
 
-Because the connector runs in-process, you can set breakpoints in `create` and `get`, inspect intermediate state, and confirm your `ResourceMeta` round-trips — all before you deploy. The connector module must be imported so its `ConnectorRegistry.register()` call runs; importing your task plugin (which imports the connector) is enough.
+Because the connector runs in-process, you can set breakpoints in `create` and `get`, inspect intermediate state, and confirm your `ResourceMeta` round-trips, all before you deploy. The connector module must be imported so its `ConnectorRegistry.register()` call runs; importing your task plugin (which imports the connector) is enough.
 
 > [!NOTE] Local runs skip the connector service
 > Local execution calls your connector code directly; it does not start the gRPC connector service or route through a deployed `ConnectorEnvironment`. Once the connector is deployed (next step) and you run against a Flyte backend, the same task is routed to the running connector service instead.

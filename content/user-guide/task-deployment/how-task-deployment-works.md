@@ -149,7 +149,7 @@ When `image.builder` is set to `remote` in [your `config.yaml`](../run-modes/run
 - Builds images using Union's ImageBuilder service (currently only available for Union backends, not OSS Flyte)
 - Requires no local Docker installation or configuration
 - Can push to Union's internal registry or external registries you specify
-- Provides faster, more consistent builds by leveraging cloud resources
+- Provides faster, more consistent builds by using cloud resources
 
 > [!NOTE]
 > Remote building is currently exclusive to Union backends. OSS Flyte installations must use `local`
