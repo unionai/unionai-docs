@@ -7,7 +7,7 @@ variants: -flyte +union
 # Interruptible task scheduling
 
 Interruptible tasks are allowed to run on spot (also called preemptible) instances, which cloud
-providers offer at a lower price but can reclaim at any time. A task left non-interruptible should
+providers offer at a lower price but can be reclaimed at any time. A task left non-interruptible should
 stay on on-demand instances so that it is not evicted while it runs.
 
 On a self-managed cluster, Union has no way to tell which of your nodes are spot and which are
