@@ -104,7 +104,7 @@ Note the registry URL (e.g. `registry.example.com:5000/union`); you will configu
 
 ## Identity & access
 
-On generic Kubernetes, Union authenticates to object storage and the container registry using static credentials (access key and secret key). These are configured in the generated values file during deployment.
+On generic Kubernetes, Union authenticates to object storage and the container registry using static credentials (access key and secret key). These are configured in the Helm values file during deployment.
 
 ### Storage credentials
 

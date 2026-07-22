@@ -8,6 +8,9 @@ variants: -flyte +union
 
 If you have not yet set up the required Nebius resources (MK8s cluster, Object Storage bucket, service account, access key), see [Prepare infrastructure](../selfmanaged-nebius/prepare-infra) first.
 
+> [!NOTE] Planning more than one cluster?
+> This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing: clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones, so it affects the metadata bucket you configure below.
+
 ## Assumptions
 
 * You have a {{< key product_name >}} organization, and you know the control plane URL for your organization.
@@ -20,6 +23,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
 * Install [Helm 3](https://helm.sh/docs/intro/install/).
 * Install [uctl](../../../api-reference/uctl-cli/_index).
 * Install the [`flyte` CLI](../../../api-reference/flyte-cli) (used later to run a sample workflow).
+* Install the [`flyteplugins-union` plugin](../../../api-reference/flyte-cli#plugin-commands), which provides the `flyte get cluster` command: `pip install flyteplugins-union`.
 * Install the [Nebius CLI](https://docs.nebius.com/cli) and authenticate with `nebius profile create`.
 
 ## Deploy the {{< key product_name >}} operator
@@ -31,16 +35,42 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    export KUBECONFIG=<PATH_TO_KUBECONFIG>
    ```
 
-2. Configure the Union CLI and provision data plane resources:
+2. Configure the `flyte` CLI to talk to your control plane, then register the cluster name:
+
+   ```bash
+   flyte create config --endpoint <ORG_NAME>.union.ai --org <ORG_NAME>
+   flyte create cluster <CLUSTER_NAME> --pool default
+   ```
+
+   `flyte create config` writes `.flyte/config.yaml`. The first command that contacts the control plane opens a browser to authenticate you.
+
+   Register the cluster before you install the chart: the data plane binds to this record when it starts. Every organization is provisioned with a `default` pool, so `--pool default` needs no extra setup.
+
+3. Configure the Union CLI and provision data plane resources:
 
    ```bash
    uctl config init --host=<ORG_NAME>.union.ai
    uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider custom
    ```
 
-   The command generates a YAML values file specific to the `custom` provider, including the secrets necessary so your data plane can communicate with Union's control plane.
+   The command outputs the client ID and client secret your data plane uses to communicate with Union's control plane. Save the secret that is displayed. Union does not store it, and it cannot be retrieved later.
 
-3. Update the generated values file with your Nebius-specific storage configuration. Replace the placeholders with your actual credentials and settings.
+4. Create a values file for the data plane chart. Start from the base values file and layer your Nebius-specific storage configuration on top, replacing the placeholders with your actual credentials and settings:
+
+   ```bash
+   curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.yaml
+   ```
+
+   Rather than putting your bucket access keys in the values file, store them in a Kubernetes Secret and reference it from the chart. Create the namespace and the secret first; the chart reads the secret while rendering, so it must exist before you install:
+
+   ```bash
+   kubectl create namespace union
+   kubectl create secret generic storage-credentials -n union \
+     --from-literal=access_key_id=<YOUR_BUCKET_ACCESS_KEY> \
+     --from-literal=secret_key=<YOUR_BUCKET_SECRET_KEY>
+   ```
+
+   Then point the values file at that secret:
 
    ```yaml
    host: <ORG_NAME>.union.ai
@@ -49,41 +79,38 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    provider: custom
 
    storage:
-     accessKey: <YOUR_BUCKET_ACCESS_KEY>
      bucketName: <YOUR_STORAGE_BUCKET_NAME>
      endpoint: https://storage.<REGION>.nebius.cloud
      fastRegistrationBucketName: <YOUR_STORAGE_BUCKET_NAME>
      provider: compat
      region: <REGION>
-     secretKey: <YOUR_BUCKET_SECRET_KEY>
-
-   secrets:
-     admin:
-       create: true
-       clientId: <CLIENT_ID>
-       clientSecret: <CLIENT_SECRET>
+     credentialsSecretRef:
+       name: storage-credentials
    ```
 
    > [!NOTE]
-   > The `uctl selfserve provision-dataplane-resources` command in step 2 generates the `<CLIENT_ID>` and `<CLIENT_SECRET>` values and feeds them into the values file. Don't modify them.
+   > The chart resolves the secret with a Helm `lookup`, which returns nothing during `helm template` or `--dry-run`. Those commands render the storage config without credentials; only a real install picks them up. If your secret uses different field names, set `credentialsSecretRef.accessKeyIdKey` and `credentialsSecretRef.secretKeyKey` to match.
 
-4. Add the {{< key product_name >}} Helm repo:
+5. Add the {{< key product_name >}} Helm repo:
 
    ```bash
    helm repo add unionai https://unionai.github.io/helm-charts/
    helm repo update
    ```
 
-5. Install the data plane. Replace `<PATH_TO_VALUES_FILE>` with the path to the Helm values file you customized in step 3.
+6. Install the data plane. Replace `<PATH_TO_VALUES_FILE>` with the path to the Helm values file you customized in step 4, and `<CLIENT_ID>` / `<CLIENT_SECRET>` with the credentials printed in step 3.
 
    ```bash
    helm upgrade --install unionai-dataplane unionai/dataplane \
      --namespace union --create-namespace \
      --values <PATH_TO_VALUES_FILE> \
+     --set-string global.AUTH_CLIENT_ID=<CLIENT_ID> \
+     --set secrets.admin.clientId=<CLIENT_ID> \
+     --set secrets.admin.clientSecret=<CLIENT_SECRET> \
      --timeout 10m
    ```
 
-6. Verify the pods are running:
+7. Verify the pods are running:
 
    ```bash
    kubectl get pods -n union
@@ -91,27 +118,19 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
 
    When the deployment succeeds, all pods show a `Running` status, including `union-operator-proxy`, `union-operator-buildkit`, and `executor`.
 
-7. Verify the cluster is registered with the control plane:
+8. Verify the cluster is registered with the control plane:
 
    ```bash
-   uctl get cluster
+   flyte get cluster
    ```
 
    The output is similar to the following:
 
    ```text
-   NAME            ORG       STATE          HEALTH
-   union-nebius    my-org    STATE_ENABLED  HEALTHY
+   Enabled Clusters
+   NAME            ORG       STATE     HEALTH
+   union-nebius    my-org    enabled   healthy
    ```
-
-8. **Required for helm charts on a version <= 2026.5.8.** Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:
-
-   ```bash
-   uctl create apikey --keyName EAGER_API_KEY --org <ORG_NAME>
-   ```
-
-   > [!NOTE]
-   > If you receive a `PermissionDenied` error, contact [Union.ai support](https://www.union.ai/) to have the permission enabled for your organization.
 
 ## GPU node configuration (Nebius-specific)
 

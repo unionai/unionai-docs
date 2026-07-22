@@ -8,6 +8,9 @@ variants: -flyte +union
 
 If you have not yet set up the required Azure resources (AKS cluster, Storage Account, Managed Identities, Workload Identity), see [Prepare infrastructure](../selfmanaged-azure/prepare-infra) first.
 
+> [!NOTE] Planning more than one cluster?
+> This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing: clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones, so it affects the metadata bucket you configure below.
+
 ## Assumptions
 
 * You have a {{< key product_name >}} organization, and you know the control plane URL for your organization.
@@ -20,6 +23,8 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
 
 * Install [Helm 3](https://helm.sh/docs/intro/install/).
 * Install [uctl](../../../api-reference/uctl-cli/_index).
+* Install the [`flyte` CLI](../../../api-reference/flyte-cli).
+* Install the [`flyteplugins-union` plugin](../../../api-reference/flyte-cli#plugin-commands), which provides the `flyte get cluster` command: `pip install flyteplugins-union`.
 
 ## Deploy the {{< key product_name >}} operator
 
@@ -30,7 +35,18 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
    helm repo update
    ```
 
-2. Use the `uctl selfserve provision-dataplane-resources` command to generate a new client and client secret for communicating with your Union control plane, provision authorization permissions for the app to operate on the Union cluster name you have selected, generate values file to install dataplane in your Kubernetes cluster and provide follow-up instructions:
+2. Configure the `flyte` CLI to talk to your control plane, then register the cluster name:
+
+   ```bash
+   flyte create config --endpoint <YOUR_UNION_CONTROL_PLANE_URL> --org <YOUR_ORG_NAME>
+   flyte create cluster <YOUR_SELECTED_CLUSTERNAME> --pool default
+   ```
+
+   `flyte create config` writes `.flyte/config.yaml`. The first command that contacts the control plane opens a browser to authenticate you.
+
+   Register the cluster before you install the chart: the data plane binds to this record when it starts. Every organization is provisioned with a `default` pool, so `--pool default` needs no extra setup.
+
+3. Use the `uctl selfserve provision-dataplane-resources` command to generate a new client and client secret for communicating with your Union control plane, provision authorization permissions for the app to operate on the Union cluster name you have selected, and provide follow-up instructions:
 
    ```bash
    uctl config init --host=<YOUR_UNION_CONTROL_PLANE_URL>
@@ -38,20 +54,26 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
    ```
 
    * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
-     It will also generate a YAML file `<org>-values.yaml` specific to the provider that you specify, in this case `azure`.
+     You will pass the client ID and client secret to the Helm chart in step 5.
 
-   * Save the secret that is displayed. Union does not store the credentials; rerunning the same command can be used to retrieve the secret later.
+   * Save the secret that is displayed. Union does not store it, and it cannot be retrieved later.
 
-3. Update the generated values file with your infrastructure details:
+4. Download the Azure values file for the data plane chart and fill in your infrastructure details:
 
-   Using the [environment variables](../selfmanaged-azure/prepare-infra#environment-variables) from the prepare infrastructure step:
+   ```bash
+   curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.azure.yaml
+   ```
 
-   - Set `global.BACKEND_IAM_ROLE_ARN` to `${BACKEND_CLIENT_ID}` (the backend managed identity client ID).
-   - Set `global.WORKER_IAM_ROLE_ARN` to `${WORKER_CLIENT_ID}` (the worker managed identity client ID).
-   - Set `global.METADATA_BUCKET` to `${METADATA_CONTAINER}`.
-   - Set `storage.custom.stow.config.account` to `${STORAGE_ACCOUNT}`.
-   - Set `storage.region` to `${LOCATION}`.
-   - Set `commonServiceAccount.annotations."azure.workload.identity/client-id"` to `${BACKEND_CLIENT_ID}`.
+   Using the [environment variables](../selfmanaged-azure/prepare-infra#environment-variables) from the prepare infrastructure step, set the following keys under `global`. The rest of the file (Blob storage, service account annotations, Workload Identity) is templated from these values, so you do not need to edit it:
+
+   - Set `global.UNION_CONTROL_PLANE_HOST` and `global.CONTROLPLANE_HOST` to your control plane hostname (no scheme, no port).
+   - Set `global.CLUSTER_NAME` to the cluster name you registered in step 2.
+   - Set `global.ORG_NAME` to your organization name.
+   - Set `global.METADATA_CONTAINER` to `${METADATA_CONTAINER}`.
+   - Set `global.AZURE_STORAGE_ACCOUNT` to `${STORAGE_ACCOUNT}`.
+   - Set `global.AZURE_SUBSCRIPTION_ID`, `global.AZURE_TENANT_ID`, and `global.AZURE_RESOURCE_GROUP` to the subscription, tenant, and resource group holding your Union resources.
+   - Set `global.AZURE_BACKEND_CLIENT_ID` to `${BACKEND_CLIENT_ID}` (the backend managed identity client ID).
+   - Set `global.AZURE_WORKER_CLIENT_ID` to `${WORKER_CLIENT_ID}` (the worker managed identity client ID).
    - For persisted task logs, wire FluentBit to the `${FLUENTBIT_SECRET_NAME}` secret you created in
      [Prepare infrastructure](../selfmanaged-azure/prepare-infra#8-persisted-logs-storage-key-fluentbit).
      FluentBit's `azure_blob` output cannot use Workload Identity, so it reads the storage key from
@@ -62,41 +84,39 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
        azureBlobSharedKey: "${AZURE_STORAGE_SHARED_KEY}"
        env:
          - name: AZURE_STORAGE_SHARED_KEY
-            valueFrom:
-              secretKeyRef:
-                name: ${FLUENTBIT_SECRET_NAME}
-                key: shared_key
+           valueFrom:
+             secretKeyRef:
+               name: ${FLUENTBIT_SECRET_NAME}
+               key: shared_key
      ```
 
    If using Azure Key Vault (optional):
-   - Set `AZURE_KEY_VAULT_URI` to `https://${KEY_VAULT_NAME}.vault.azure.net/`.
+   - Set `global.AZURE_KEY_VAULT_URI` to `https://${KEY_VAULT_NAME}.vault.azure.net/`.
 
-4. Install the data plane Helm chart:
+5. Install the data plane Helm chart, passing the client ID and client secret from step 3:
 
    ```bash
    helm upgrade --install union unionai/dataplane \
-     -f <GENERATED_VALUES_FILE> \
+     -f values.azure.yaml \
+     --set global.AUTH_CLIENT_ID=<CLIENT_ID> \
+     --set-string secrets.admin.clientId=<CLIENT_ID> \
+     --set secrets.admin.clientSecret=<CLIENT_SECRET> \
      --namespace union \
-     --create-namespace \
-     --force-conflicts
-   ```
-
-5. **Required for helm charts on a version <= 2026.5.8.** Create an API key for your organization. This is required for v2 workflow executions on the data plane. If you have already created one, rerun the same command to propagate the key to the new cluster:
-
-   ```bash
-   uctl create apikey --keyName EAGER_API_KEY --org <YOUR_ORG_NAME>
+     --create-namespace
    ```
 
 6. Once deployed you can check to see if the cluster has been successfully registered to the control plane:
 
    ```bash
-   uctl get cluster
-    ----------- ------- --------------- -----------
-   | NAME      | ORG   | STATE         | HEALTH    |
-    ----------- ------- --------------- -----------
-   | <cluster> | <org> | STATE_ENABLED | HEALTHY   |
-    ----------- ------- --------------- -----------
-   1 rows
+   flyte get cluster
+   ```
+
+   The command groups clusters by state. A successfully registered cluster appears under **Enabled Clusters**:
+
+   ```text
+   Enabled Clusters
+   NAME        ORG     STATE     HEALTH
+   <cluster>   <org>   enabled   healthy
    ```
 
 7. Follow the [Quickstart](../../../user-guide/quickstart) to run your first workflow and verify your cluster is working correctly.
