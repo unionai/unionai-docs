@@ -7,12 +7,11 @@ mermaid: true
 
 # Cluster and workload management
 
-> [!NOTE]
-> Cluster pools, clusters, and queues are managed through the `flyte`
-> CLI or the `flyteplugins.union.remote` Python objects, and are configured by
-> your platform administrator. The operations on these pages are administrative
-> operations. Most workflow authors only need
-> [task-side queue routing](../task-configuration/queues).
+Cluster pools, clusters, and queues are managed through the `flyte`
+CLI or the `flyteplugins.union.remote` Python objects, and are configured by
+your platform administrator. The operations on these pages are administrative
+operations. Most workflow authors only need
+[task-side queue routing](../task-configuration/queues).
 
 > [!NOTE] Requires the `flyteplugins-union` plugin
 > The `flyte` cluster, pool, and queue commands and the Python objects on these
