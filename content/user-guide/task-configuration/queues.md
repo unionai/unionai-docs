@@ -6,12 +6,6 @@ variants: -flyte +union
 
 # Queues
 
-> [!NOTE] Beta
-> Queues are a beta feature. The set of queues available to you, and the limits
-> each one enforces, are configured by your platform administrator. Talk to your
-> platform admin about which queues exist in your environment, what they're
-> intended for, and what limits they apply before pinning workloads to them.
-
 A **queue** is a named scheduling lane for your work. Instead of every run and
 action competing for whatever capacity happens to be free, a queue gives the
 platform a place to apply policy: how many things run at once, how deep the

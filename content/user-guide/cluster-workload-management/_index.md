@@ -7,7 +7,7 @@ mermaid: true
 
 # Cluster and workload management
 
-> [!NOTE] Beta
+> [!NOTE]
 > Cluster pools, clusters, and queues are managed through the `flyte`
 > CLI or the `flyteplugins.union.remote` Python objects, and are configured by
 > your platform administrator. The operations on these pages are administrative
