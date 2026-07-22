@@ -9,7 +9,7 @@ variants: -flyte +union
 If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Storage bucket, access keys, access policy), see [Prepare infrastructure](../selfmanaged-crusoe/prepare-infra) first.
 
 > [!NOTE] Planning more than one cluster?
-> This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing -- clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones -- so it affects the metadata bucket you configure below.
+> This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing: clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones, so it affects the metadata bucket you configure below.
 
 ## Assumptions
 
@@ -42,7 +42,7 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
 
    `flyte create config` writes `.flyte/config.yaml`. The first command that contacts the control plane opens a browser to authenticate you.
 
-   Register the cluster before you install the chart -- the data plane binds to this record when it starts. Every organization is provisioned with a `default` pool, so `--pool default` needs no extra setup.
+   Register the cluster before you install the chart: the data plane binds to this record when it starts. Every organization is provisioned with a `default` pool, so `--pool default` needs no extra setup.
 
 3. Configure the Union CLI and provision data plane resources:
 
@@ -64,7 +64,7 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
    curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.yaml
    ```
 
-   Rather than putting your access keys in the values file, store them in a Kubernetes Secret and reference it from the chart. Create the namespace and the secret first -- the chart reads the secret while rendering, so it must exist before you install:
+   Rather than putting your access keys in the values file, store them in a Kubernetes Secret and reference it from the chart. Create the namespace and the secret first; the chart reads the secret while rendering, so it must exist before you install:
 
    ```bash
    kubectl create namespace union
@@ -209,13 +209,12 @@ To run a sample workflow, complete the following steps:
 
 > [!NOTE] Crusoe-specific tip
 > To land tasks on Crusoe GPU nodes, add a task-level resource request and a node selector matching Crusoe's GPU node pool labels.
-> <!-- [VERIFY label keys — e.g., crusoe.ai/gpu-type=h100] -->
 
 ## Troubleshooting
 
 | Symptom                                      | Cause                                                  | Fix                                                                                                                       |
 | -------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| `PathStyleRequestNotAllowed 400`             | Control plane generates path-style URLs but Crusoe requires virtual-hosted. | `compat` cannot express this setting. Switch `storage` to `provider: custom` with an explicit `stow` block setting `disable_force_path_style: true`. Keep `credentialsSecretRef` (it still injects the task-pod variables) and resolve the stow credentials with a `lookup` expression, as the [CoreWeave page](../selfmanaged-coreweave/deploy-dataplane) shows. |
+| `PathStyleRequestNotAllowed 400`             | Control plane generates path-style URLs but Crusoe requires virtual-hosted. | `compat` cannot express this setting. Switch `storage` to `provider: custom` with an explicit `stow` block setting `disable_force_path_style: true`. Keep `credentialsSecretRef`: the chart still injects the task-pod variables and also merges the stow credentials into the `custom` stow config automatically, as the [CoreWeave page](../selfmanaged-coreweave/deploy-dataplane) shows. |
 | `403 Forbidden` on S3 operations             | No access policy attached to the storage key.          | Create/attach an object storage access policy in the Crusoe Cloud Console.                                                |
 | Task pods reach `s3.us-east-1.amazonaws.com` | Task pods missing the Crusoe endpoint.                 | The chart injects `FLYTE_AWS_ENDPOINT` from `storage.endpoint` when `injectPodEnvVars` is enabled (the default); confirm that value is set.                     |
 | "All enabled clusters are unhealthy"         | Control plane can't reach the data plane.              | Verify the tunnel service: `kubectl get pods -n union \| grep proxy`.                                                     |

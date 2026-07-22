@@ -307,7 +307,7 @@ config:
 
 ### In-pod control plane authentication (EAGER_API_KEY)
 
-Flyte task pods may need to call back into the Union.ai control plane during execution -- to launch sub-tasks, fetch remote references, run apps that make programmatic API calls, and similar. The `EAGER_API_KEY` secret holds the OAuth2 client credentials used to authenticate those calls. (The "eager" prefix is a Flyte 1.x holdover -- the key is needed for every task pod that may reach the control plane, not just eager workflows. There is no separate eager-mode toggle in Flyte 2.x.)
+Flyte task pods may need to call back into the Union.ai control plane during execution: to launch sub-tasks, fetch remote references, run apps that make programmatic API calls, and similar. The `EAGER_API_KEY` secret holds the OAuth2 client credentials used to authenticate those calls. (The "eager" prefix is a Flyte 1.x holdover; the key is needed for every task pod that may reach the control plane, not just eager workflows. There is no separate eager-mode toggle in Flyte 2.x.)
 
 The executor injects the secret into task pods via:
 
@@ -321,7 +321,7 @@ executor:
 
 #### Provisioning
 
-The {{< key product_name >}} operator provisions this key for you -- no manual step and no support request are needed. On each reconciliation tick the operator checks whether the key already exists; if it does not, the operator mints one on the control plane and writes it into the cluster through the local operator proxy. Once the key is in place the check is a no-op, so the loop is safe to run continuously and re-provisions the key automatically if it is ever removed.
+The {{< key product_name >}} operator provisions this key for you: no manual step and no support request are needed. On each reconciliation tick the operator checks whether the key already exists; if it does not, the operator mints one on the control plane and writes it into the cluster through the local operator proxy. Once the key is in place the check is a no-op, so the loop is safe to run continuously and re-provisions the key automatically if it is ever removed.
 
 Self-provisioning is active when secret management is enabled, which is the chart default:
 

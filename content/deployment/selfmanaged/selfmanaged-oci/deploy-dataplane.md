@@ -9,7 +9,7 @@ variants: -flyte +union
 If you have not yet set up the required OCI resources (OKE cluster, Object Storage, Container Registry, IAM access), see [Prepare infrastructure](../selfmanaged-oci/prepare-infra) first.
 
 > [!NOTE] Planning more than one cluster?
-> This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing -- clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones -- so it affects the metadata bucket you configure below.
+> This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing: clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones, so it affects the metadata bucket you configure below.
 
 ## Assumptions
 
@@ -44,7 +44,7 @@ If you have not yet set up the required OCI resources (OKE cluster, Object Stora
 
    `flyte create config` writes `.flyte/config.yaml`. The first command that contacts the control plane opens a browser to authenticate you.
 
-   Register the cluster before you install the chart -- the data plane binds to this record when it starts. Every organization is provisioned with a `default` pool, so `--pool default` needs no extra setup.
+   Register the cluster before you install the chart: the data plane binds to this record when it starts. Every organization is provisioned with a `default` pool, so `--pool default` needs no extra setup.
 
 3. Use the `uctl selfserve provision-dataplane-resources` command to generate a new client and client secret for communicating with your Union control plane, provision authorization permissions for the app to operate on the union cluster name you have selected, and provide follow-up instructions:
 
@@ -82,8 +82,7 @@ If you have not yet set up the required OCI resources (OKE cluster, Object Stora
      --set-string secrets.admin.clientId=<CLIENT_ID> \
      --set secrets.admin.clientSecret=<CLIENT_SECRET> \
      --namespace union \
-     --create-namespace 
-     --force-conflicts
+     --create-namespace
    ```
 
 6. Once deployed you can check to see if the cluster has been successfully registered to the control plane:

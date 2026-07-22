@@ -9,7 +9,7 @@ variants: -flyte +union
 If you have not yet set up the required Nebius resources (MK8s cluster, Object Storage bucket, service account, access key), see [Prepare infrastructure](../selfmanaged-nebius/prepare-infra) first.
 
 > [!NOTE] Planning more than one cluster?
-> This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing -- clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones -- so it affects the metadata bucket you configure below.
+> This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing: clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones, so it affects the metadata bucket you configure below.
 
 ## Assumptions
 
@@ -44,7 +44,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
 
    `flyte create config` writes `.flyte/config.yaml`. The first command that contacts the control plane opens a browser to authenticate you.
 
-   Register the cluster before you install the chart -- the data plane binds to this record when it starts. Every organization is provisioned with a `default` pool, so `--pool default` needs no extra setup.
+   Register the cluster before you install the chart: the data plane binds to this record when it starts. Every organization is provisioned with a `default` pool, so `--pool default` needs no extra setup.
 
 3. Configure the Union CLI and provision data plane resources:
 
@@ -53,7 +53,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider custom
    ```
 
-   The command outputs the client ID and client secret your data plane uses to communicate with Union's control plane. Save the secret that is displayed — Union does not store it, and it cannot be retrieved later.
+   The command outputs the client ID and client secret your data plane uses to communicate with Union's control plane. Save the secret that is displayed. Union does not store it, and it cannot be retrieved later.
 
 4. Create a values file for the data plane chart. Start from the base values file and layer your Nebius-specific storage configuration on top, replacing the placeholders with your actual credentials and settings:
 
@@ -61,7 +61,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.yaml
    ```
 
-   Rather than putting your bucket access keys in the values file, store them in a Kubernetes Secret and reference it from the chart. Create the namespace and the secret first -- the chart reads the secret while rendering, so it must exist before you install:
+   Rather than putting your bucket access keys in the values file, store them in a Kubernetes Secret and reference it from the chart. Create the namespace and the secret first; the chart reads the secret while rendering, so it must exist before you install:
 
    ```bash
    kubectl create namespace union

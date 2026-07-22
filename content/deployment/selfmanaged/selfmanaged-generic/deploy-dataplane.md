@@ -9,7 +9,7 @@ variants: -flyte +union
 If you have not yet set up the required resources (Kubernetes cluster, object storage, container registry, credentials), see [Prepare infrastructure](../selfmanaged-generic/prepare-infra) first.
 
 > [!NOTE] Planning more than one cluster?
-> This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing -- clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones -- so it affects the metadata bucket you configure below.
+> This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing: clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones, so it affects the metadata bucket you configure below.
 
 ## Assumptions
 
@@ -44,7 +44,7 @@ If you have not yet set up the required resources (Kubernetes cluster, object st
 
    `flyte create config` writes `.flyte/config.yaml`. The first command that contacts the control plane opens a browser to authenticate you.
 
-   The second command registers the cluster before you install the chart -- the data plane binds to this record when it starts. Every organization is provisioned with a `default` pool, so `--pool default` needs no extra setup.
+   The second command registers the cluster before you install the chart: the data plane binds to this record when it starts. Every organization is provisioned with a `default` pool, so `--pool default` needs no extra setup.
 
 3. Use the `uctl selfserve provision-dataplane-resources` command to generate a new client and client secret for communicating with your Union control plane, provision authorization permissions for the app to operate on the Union cluster name you have selected, and provide follow-up instructions:
 
@@ -74,7 +74,7 @@ If you have not yet set up the required resources (Kubernetes cluster, object st
    - Set `storage.region` to the region of your storage provider.
    - The same credentials are also needed in `fluentbit.env` for log shipping.
 
-   Rather than putting your storage credentials in the values file, store them in a Kubernetes Secret and reference it from the chart. Create the namespace and the secret first -- the chart reads the secret while rendering, so it must exist before you install:
+   Rather than putting your storage credentials in the values file, store them in a Kubernetes Secret and reference it from the chart. Create the namespace and the secret first; the chart reads the secret while rendering, so it must exist before you install:
 
    ```bash
    kubectl create namespace union

@@ -9,7 +9,7 @@ variants: -flyte +union
 If you have not yet set up the required CoreWeave resources (CKS cluster, AI Object Storage bucket, access keys, access policy), see [Prepare infrastructure](../selfmanaged-coreweave/prepare-infra) first.
 
 > [!NOTE] Planning more than one cluster?
-> This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing -- clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones -- so it affects the metadata bucket you configure below.
+> This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing: clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones, so it affects the metadata bucket you configure below.
 
 ## Assumptions
 
@@ -42,7 +42,7 @@ If you have not yet set up the required CoreWeave resources (CKS cluster, AI Obj
 
    `flyte create config` writes `.flyte/config.yaml`. The first command that contacts the control plane opens a browser to authenticate you.
 
-   Register the cluster before you install the chart -- the data plane binds to this record when it starts. Every organization is provisioned with a `default` pool, so `--pool default` needs no extra setup.
+   Register the cluster before you install the chart: the data plane binds to this record when it starts. Every organization is provisioned with a `default` pool, so `--pool default` needs no extra setup.
 
 3. Configure the Union CLI and provision data plane resources:
 
@@ -62,7 +62,7 @@ If you have not yet set up the required CoreWeave resources (CKS cluster, AI Obj
    curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.yaml
    ```
 
-   Rather than putting your access keys in the values file, store them in a Kubernetes Secret and reference it from the chart. Create the namespace and the secret first -- the chart reads the secret while rendering, so it must exist before you install:
+   Rather than putting your access keys in the values file, store them in a Kubernetes Secret and reference it from the chart. Create the namespace and the secret first; the chart reads the secret while rendering, so it must exist before you install:
 
    ```bash
    kubectl create namespace union
@@ -116,13 +116,13 @@ If you have not yet set up the required CoreWeave resources (CKS cluster, AI Obj
    Two separate mechanisms read that secret:
 
    - `storage.credentialsSecretRef` makes the chart inject `FLYTE_AWS_ACCESS_KEY_ID` and `FLYTE_AWS_SECRET_ACCESS_KEY` into task pods. This path is independent of `storage.provider`, so it works with `custom`, and it is why no per-executor environment variables are needed.
-   - The `storage.custom` block is rendered as a Helm template, so the `lookup` expressions above resolve the same secret into the stow configuration the control plane components use.
+   - The chart renders the `storage.custom` block as a Helm template. When `credentialsSecretRef` is set, the chart looks up that secret and merges its `access_key_id` and `secret_key` into the stow configuration the control plane components use, so you do not add credentials to the `custom` block yourself.
 
    > [!NOTE]
    > The `uctl selfserve provision-dataplane-resources` command in step 3 generates the `<CLIENT_ID>` and `<CLIENT_SECRET>` values. Use the values from that command's output.
 
    > [!NOTE]
-   > The chart resolves the secret with a Helm `lookup`, which returns nothing during `helm template` or `--dry-run`. Those commands render the storage config without credentials; only a real install picks them up. If your secret uses different field names, set `credentialsSecretRef.accessKeyIdKey` and `credentialsSecretRef.secretKeyKey` to match, and adjust the `lookup` expressions accordingly.
+   > The chart resolves the secret with a Helm `lookup`, which returns nothing during `helm template` or `--dry-run`. Those commands render the storage config without credentials; only a real install picks them up. If your secret uses different field names, set `credentialsSecretRef.accessKeyIdKey` and `credentialsSecretRef.secretKeyKey` to match.
    >
    > This page keeps `storage.provider: custom` because CoreWeave AI Object Storage requires virtual-hosted style URLs, and `disable_force_path_style` is only reachable through a `custom` stow block.
 
