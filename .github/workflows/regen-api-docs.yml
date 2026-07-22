@@ -104,6 +104,86 @@ jobs:
         if: steps.drift.outputs.drift == 'true'
         run: make update-api-docs < /dev/null
 
+      # Deterministic surface-delta classifier (NO AI runs in CI). Decides whether
+      # this regen moved the public API surface (material) or is only version-string
+      # churn (cosmetic). Detection lives here because both the pre- and post-regen
+      # trees are in hand; the narrative-impact ASSESSMENT happens later and
+      # pull-based on the docsy side: process-sources picks up the
+      # `docsy:api-surface-delta` label -> a scoped docsy ticket -> assess-docs-impact.
+      # CI never invokes a model. See docsy FINDINGS 2026-07-22.
+      - name: Classify surface delta
+        id: classify
+        if: steps.drift.outputs.drift == 'true'
+        run: |
+          set -euo pipefail
+          # Stage so newly-generated (untracked) pages are visible to `git diff`.
+          git add -A content/api-reference/ linkmap/ || true
+
+          material=false
+          reasons=""
+
+          # (1) Structural: an added / deleted / renamed generated page means a public
+          #     symbol appeared / disappeared / moved (renames show as R under -M).
+          structural=$(git -c core.quotepath=false diff --cached --name-status -M \
+                        -- content/api-reference/ | grep -E '^(A|D|R)' || true)
+          if [ -n "$structural" ]; then
+            material=true
+            reasons+=$'symbol pages added / removed / renamed:\n'"$structural"$'\n\n'
+          fi
+
+          # (2) Content: in MODIFIED pages, is any changed line something OTHER than a
+          #     frontmatter `version:` bump? This is the PRIMARY detector: the most
+          #     common material delta is a new method on an EXISTING class, which shows
+          #     as a modified page (not a new file), so the structural check misses it.
+          #     -U0 = changed lines only; drop file headers; drop the version-bump line.
+          substantive=$(git diff --cached -U0 -- content/api-reference/ \
+                          | grep -E '^[+-]' \
+                          | grep -vE '^(\+\+\+|---)' \
+                          | grep -vE '^[+-][[:space:]]*version:[[:space:]]' \
+                          || true)
+          if [ -n "$substantive" ]; then
+            material=true
+            reasons+=$'non-version content changed in existing pages\n\n'
+          fi
+
+          # Enhancement: name the specific new symbols so the downstream docsy ticket
+          # seeds assess-docs-impact with exact xref keys. New method/function sections
+          # in these generated pages render as `### name()`.
+          symbols=$(git diff --cached -U0 -- content/api-reference/ \
+                      | grep -oE '^\+### [a-zA-Z_][a-zA-Z0-9_]*\(\)' \
+                      | sed -E 's/^\+### //' | sort -u || true)
+
+          echo "material=$material" >> "$GITHUB_OUTPUT"
+
+          # Machine-readable block appended to the PR body for the funnel to read.
+          {
+            echo ""
+            if [ "$material" = "true" ]; then
+              echo "### API surface delta: \`material\`"
+              echo ""
+              echo "This regen changes the **public API surface**, not just version strings. docsy will assess whether narrative docs (user guide, how-tos) that cite these symbols need updating: \`process-sources\` picks up the \`docsy:api-surface-delta\` label, opens a scoped ticket, and runs \`assess-docs-impact\`."
+              if [ -n "$symbols" ]; then
+                echo ""
+                echo "**Changed public symbols (seed for the narrative-impact assessment):**"
+                echo '```'
+                printf '%s\n' "$symbols"
+                echo '```'
+              fi
+              echo ""
+              echo "<details><summary>Detection detail</summary>"
+              echo ""
+              echo '```'
+              printf '%s' "$reasons"
+              echo '```'
+              echo ""
+              echo "</details>"
+            else
+              echo "### API surface delta: \`cosmetic\`"
+              echo ""
+              echo "Only frontmatter \`version:\` bumps. No narrative-impact assessment needed."
+            fi
+          } > /tmp/delta.md
+
       - name: Build PR body
         if: steps.drift.outputs.drift == 'true'
         run: |
@@ -123,6 +203,8 @@ jobs:
             echo ""
             echo "> If this PR's checks are not running, the docsy-bot App isn't configured yet — set the \`DOCSY_BOT_APP_ID\` + \`DOCSY_BOT_PRIVATE_KEY\` repo secrets (PRs opened by GITHUB_TOKEN do not trigger workflows)."
           } > /tmp/pr-body.md
+          # Append the surface-delta classification (material/cosmetic + symbols).
+          cat /tmp/delta.md >> /tmp/pr-body.md 2>/dev/null || true
 
       - name: Create or update draft PR
         if: steps.drift.outputs.drift == 'true'
@@ -145,5 +227,11 @@ jobs:
           signoff: true
           title: "docs(api-reference): regenerate API docs (automated)"
           body-path: /tmp/pr-body.md
-          labels: api-docs-regen
+          # Always label api-docs-regen; add docsy:api-surface-delta only when the
+          # regen moved the public surface, so process-sources opens a
+          # narrative-impact ticket (docsy FINDINGS 2026-07-22). The empty string on
+          # the cosmetic branch yields a blank line the action ignores.
+          labels: |
+            api-docs-regen
+            ${{ steps.classify.outputs.material == 'true' && 'docsy:api-surface-delta' || '' }}
           delete-branch: false
