@@ -8,6 +8,9 @@ variants: -flyte +union
 
 If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Storage bucket, access keys, access policy), see [Prepare infrastructure](../selfmanaged-crusoe/prepare-infra) first.
 
+> [!NOTE] Planning more than one cluster?
+> This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing -- clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones -- so it affects the metadata bucket you configure below.
+
 ## Assumptions
 
 * You have a {{< key product_name >}} organization, and you know the control plane URL for your organization.
