@@ -30,7 +30,7 @@ Self-hosted authentication requires creating **five OAuth2 client applications**
 > App 6 (CI/CD) is only needed if you deploy workflows from automated pipelines. See the [CI/CD integration](./operations/cicd) guide for full setup instructions.
 
 > [!IMPORTANT]
-> **With more than one data plane, create a separate Operator (App 4) and EAGER (App 5) client for _each_ data plane cluster.** Each data plane then authenticates as its own identity — one you can grant cluster-management permission on only its own cluster — and mints its own `EAGER_API_KEY`. Sharing a single Operator client forces one identity to hold cluster-management rights on every cluster, and sharing a single EAGER client causes rotation interference: each data plane's key request rotates the shared secret and invalidates the others. Apps 1–3 (and the optional App 6) stay single and control-plane-wide.
+> **With more than one data plane, it's best practice to create a separate Operator (App 4) and EAGER (App 5) client for each data plane cluster.** Each data plane then authenticates as its own identity — one you can grant cluster-management permission on only its own cluster — and mints its own `EAGER_API_KEY`. Sharing a single Operator client forces one identity to hold cluster-management rights on every cluster, and sharing a single EAGER client causes rotation interference: each data plane's key request rotates the shared secret and invalidates the others. Apps 1–3 (and the optional App 6) stay single and control-plane-wide.
 
 ## Identity provider requirements
 
@@ -510,9 +510,12 @@ services:
   identity:
     apiKeyOverrides:
       - key: EAGER_API_KEY
-        clusterName: dp-1          # this override applies to the dp-1 data plane
         existingSecret:
-          name: eager-dp-1-creds   # Secret holding the seeded EAGER client credentials
+          name: eager-default-creds  # no clusterName — control-plane-wide fallback
+      - key: EAGER_API_KEY
+        clusterName: dp-1            # this override applies only to the dp-1 data plane
+        existingSecret:
+          name: eager-dp-1-creds     # Secret holding the seeded EAGER client credentials
       - key: EAGER_API_KEY
         clusterName: dp-2
         existingSecret:
@@ -520,7 +523,7 @@ services:
 ```
 
 - **`key`** — the system key to override (`EAGER_API_KEY`).
-- **`clusterName`** _(optional)_ — scopes the override to one data plane. Overrides are resolved on `(organization, key, clusterName)`; an entry without `clusterName` matches any cluster (a control-plane-wide fallback). With multiple data planes, give each its own `clusterName` entry and its own seeded Secret so their credentials stay independent.
+- **`clusterName`** _(optional)_ — scopes the override to one data plane. A key request resolves on `(organization, key, clusterName)`, preferring the entry that matches the requesting data plane's cluster and falling back to a nameless entry (the control-plane-wide default, shown first above). With multiple data planes, give each its own `clusterName` entry and seeded Secret so their credentials stay independent.
 - **`existingSecret.name`** — a Secret you create in the control plane namespace holding the seeded EAGER client's ID and secret. By default the chart reads the keys `client_id` and `client_secret`; set `clientIdKey` / `clientSecretKey` if your Secret uses different keys.
 
 Create one seeded Secret per data plane:
