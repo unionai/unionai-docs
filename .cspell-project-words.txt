@@ -23,6 +23,7 @@ devbox
 docsy
 BYOC
 Serverless
+Ollama
 
 # --- Flyte / Union domain concepts ---
 ImageSpec
